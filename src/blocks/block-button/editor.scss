@@ -1,0 +1,104 @@
+$default-font: -apple-system, BlinkMacSystemFont,"Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell,"Helvetica Neue", sans-serif;
+$default-font-size: 13px;
+$big-font-size: 18px;
+$default-line-height: 1.4;
+$blocks-button__height: 46px;
+$blocks-button__line-height: $big-font-size + 6px;
+$icon-button-size: 36px;
+$white: #fff;
+$dark-gray-100: #8f98a1;
+$dark-gray-700: #32373c;
+
+.editor-block-list__block[data-type="core/button"] {
+	&[data-align="center"] {
+		text-align: center;
+	}
+
+	&[data-align="right"] {
+		/*!rtl:ignore*/
+		text-align: right;
+	}
+}
+
+.wp-block-gx-animation-button {
+	display: inline-block;
+	margin-bottom: 0;
+	position: relative;
+
+	.editor-rich-text__tinymce {
+		cursor: text;
+		line-height: 1;
+	}
+
+	&:not(.has-text-color) .editor-rich-text__tinymce[data-is-placeholder-visible="true"] + .editor-rich-text__tinymce {
+		color: $white;
+		opacity: 0.8;
+	}
+}
+
+.block-library-button__inline-link {
+	background: $white;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	font-family: $default-font;
+	font-size: $default-font-size;
+	line-height: $default-line-height;
+
+	$blocks-button__link-input-width: 280px;
+	width: $blocks-button__link-input-width;
+
+	.editor-url-input {
+		width: auto;
+	}
+
+	.editor-url-input__suggestions {
+		width: $blocks-button__link-input-width - $icon-button-size - $icon-button-size;
+		z-index: z-index(".block-library-button__inline-link .editor-url-input__suggestions");
+	}
+
+	> .dashicon {
+		width: $icon-button-size;
+	}
+
+	.dashicon {
+		color: $dark-gray-100;
+	}
+
+	.editor-url-input input[type="text"]::placeholder {
+		color: $dark-gray-100;
+	}
+
+	[data-align="center"] & {
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	[data-align="right"] & {
+		margin-left: auto;
+		margin-right: 0;
+	}
+}
+
+.gx-button {
+	width: calc( 50% - 20px );
+	text-align: center;
+	display: inline-block;
+	margin: 5px;
+	font-size: 9px;
+	cursor: pointer;
+	border-radius: 30px;
+	box-shadow: 0px 0 1px 1px rgba(0, 0, 0, 0.2);
+	vertical-align: middle;
+	text-decoration: none !important;
+}
+
+.gx-button.active {
+	box-shadow: 0px 0 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+.wp-block-button.is-style-squared .wp-block-button__link {
+	border-radius: 0;
+}
+
+

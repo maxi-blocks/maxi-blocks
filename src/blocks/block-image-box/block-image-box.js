@@ -1,5 +1,5 @@
 /**
- * BLOCK: gutenberg-extra/block-image-box
+ * BLOCK: gutenberg-den/block-image-box
  *
  * Registering an image block with Gutenberg.
  * Shows an image and a description. A test block.
@@ -20,11 +20,15 @@ const {RichText,MediaUpload,InspectorControls, URLInput} = wp.editor;
 const {PanelBody, PanelRow, Button, TextControl, ToggleControl, RadioControl, RangeControl, SelectControl, TextareaControl, ColourPicker, ColourIndicator, GradientPicker, BaseControl, Text, Popover } = wp.components;
 const {PanelColorSettings, PanelColorGradientSettings} = wp.blockEditor;
 
+const Divider = () => (
+    <hr style={{marginBottom: '15px',}} />
+);
+
 registerBlockType( 'gutenberg-extra/block-image-box', {
 	title: ( 'GX Image Box'), // Block title.
 	icon: <svg preserveAspectRatio="none" x="0px" y="0px" width="24px" height="24px" viewBox="0 0 24 24"><defs><path id="Layer2_0_1_STROKES" stroke="#00CCFF" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" fill="none" d="M 21.6 20.85 L 21.6 21.6 2.45 21.6 2.45 21.5 2.45 2.45 21.6 2.45 21.6 20.85 14.7 14.25 10.5 17.25 8.25 9.05 2.45 21.5 M 18 8.4 Q 18 9.4 17.25 10.15 16.55 10.9 15.5 10.9 14.55 10.9 13.8 10.15 13 9.4 13 8.4 13 7.4 13.8 6.65 14.55 5.95 15.5 5.95 16.55 5.95 17.25 6.65 18 7.4 18 8.4 Z"/></defs><g transform="matrix( 1, 0, 0, 1, 0,0) "><use href="#Layer2_0_1_STROKES"/></g></svg>,
 	category: 'gutenberg-extra-blocks', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
-	supports: { 
+	supports: {
         align: true,
     },
 	attributes: {
@@ -207,22 +211,36 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 	        type: 'string',
 	        default: 'px',
 	    },
-	    fontSizeTitletUnit: {
+	    fontSizeTitleUnit: {
 	        type: 'string',
 	        default: 'px',
 	    },
+      letterSpacingUnit:{
+        type: 'string',
+        default: 'px'
+      },
 	    fontSizeTitle: {
 	        type: 'number',
 	    },
+      lineHeightTitle:{
+        type: 'number',
+      },
 	    blockHeight: {
 	        type: 'number',
 	    },
+      fontWeight:{
+        type: 'number',
+      },
 	    minHeight: {
 	        type: 'number',
 	    },
 	    extraClassName: {
 			type: 'string',
 		},
+    lineHeightUnit:{
+      type: 'string',
+      default: 'px'
+    },
 		extraStyles: {
 			type: 'string',
 		},
@@ -281,13 +299,25 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 				linkTitle,
 				opensInNewWindow,
 				addUgc,
+        fontWeight,
 				addSponsored,
 				addNoreferrer,
 				addNofollow,
 				addNoopener,
 				fontSizeTitle,
+        fontSizeTitleTablet,
+        fontSizeTitleDesktop,
+        fontSizeTitleMobile,
 				lineHeight,
+        lineHeightTitle,
+        lineHeightDesktop,
+        lineHeightTablet,
+        lineHeightMobile,
 				letterSpacing,
+        letterSpacingTitle,
+        letterSpacingDesktop,
+        letterSpacingTablet,
+        letterSpacingMobile,
 				maxWidth,
 				maxWidthUnit,
 				minWidth,
@@ -300,8 +330,12 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 				minHeightUnit,
 				minHeight,
 				fontSizeTitleUnit,
+        lineHeightUnit,
+        letterSpacingUnit,
 				blockHeight,
-				textTransform, 
+				textTransform,
+        textDecoration,
+        fontStyle,
 				borderWidth,
 				borderRadius,
 				borderType,
@@ -446,7 +480,9 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 
 		const titleStyles = {
 			color: titleColor ? titleColor : undefined,
-			fontSize: fontSizeTitle ? (fontSizeTitle + fontSizeTitleUnit) : undefined,
+			fontSize: fontSizeTitleDesktop ? (fontSizeTitleDesktop + fontSizeTitleUnit) : undefined,
+      lineHeight: lineHeightDesktop ? (lineHeightDesktop + lineHeightUnit) : undefined,
+      letterSpacing: letterSpacingDesktop ? (letterSpacingDesktop + letterSpacingUnit) : undefined,
 		}
 
 		const subTitleStyles = {
@@ -468,7 +504,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 			borderRadius: borderRadius ? borderRadius + 'px' : undefined,
 			borderColor: borderColor ? borderColor : undefined,
 			borderStyle: borderType ? borderType : undefined,
-			lineHeight: lineHeight ? lineHeight + '%' : undefined,
+			lineHeight: lineHeight ? lineHeight + 'px' : undefined,
 			letterSpacing: letterSpacing ? letterSpacing + 'px' : undefined,
 			width: blockWidth ? (blockWidth + widthUnit) : undefined,
 			maxWidth: maxWidth ? (maxWidth + maxWidthUnit) : undefined,
@@ -476,7 +512,10 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 			height: blockHeight ? (blockHeight + heightUnite) : undefined,
 			maxHeight: maxHeight ? (maxHeight + maxHeightUnit) : undefined,
 			minHeight: minHeight ? (minHeight + minHeightUnit) : undefined,
-			textTransform: textTransform ? textTransform: undefined,
+			textTransform: textTransform ? textTransform : undefined,
+      textDecoration: textDecoration ? textDecoration : undefined,
+      fontWeight: fontWeight ? fontWeight : undefined,
+      fontStyle: fontStyle ? fontStyle : undefined,
 			// paddingTop: paddingTop ? (paddingTop + paddingUnit) : undefined,
 			// paddingRight: paddingRight ? (paddingRight + paddingUnit) : undefined,
 			// paddingBottom: paddingBottom ? (paddingBottom + paddingUnit) : undefined,
@@ -491,6 +530,95 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 			// borderBottomLeftRadius: borderRadiusBottomLeft ? (borderRadiusBottomLeft + borderRadiusUnit) : undefined,
 		};
 
+// General function to create responsive css
+    const saveMeta = () => {
+      const head = document.head || document.getElementsByTagName( 'head' )[ 0 ];
+      while (head.firstChild) {
+        head.removeChild(head.lastChild);
+      }
+      const style = document.createElement( 'style' );
+      let responsiveCss = '';
+      style.type = 'text/css';
+      //add responsive styling
+        responsiveCss += '@media only screen and (max-width: 768px) {';
+        responsiveCss += '.gx-image-box-title{';
+        if(typeof fontSizeTitleTablet !== 'undefined'){
+        responsiveCss += 'font-size: ' + fontSizeTitleTablet + fontSizeTitleUnit + ' !important;';
+        }
+        if(typeof lineHeightTablet !== 'undefined'){
+          responsiveCss += 'line-height: ' + lineHeightTablet + lineHeightUnit + ' !important';
+        }
+        if(typeof letterSpacingTablet !== 'undefined'){
+          responsiveCss += 'letter-spacing: ' + letterSpacingTablet + letterSpacingUnit + ' !important';
+        }
+        responsiveCss += '}';
+        responsiveCss += '}';
+        responsiveCss += '@media only screen and (max-width: 514px) {';
+        responsiveCss += '.gx-image-box-title{';
+        if(typeof fontSizeTitleMobile !== 'undefined'){
+        responsiveCss += 'font-size: ' + fontSizeTitleMobile + fontSizeTitleUnit + ' !important;';
+        }
+        if(typeof lineHeightMobile !== 'undefined'){
+          responsiveCss += 'line-height: ' + lineHeightMobile + lineHeightUnit + ' !important';
+        }
+        if(typeof letterSpacingMobile !== 'undefined'){
+          responsiveCss += 'letter-spacing: ' + letterSpacingMobile + letterSpacingUnit + ' !important';
+        }
+        responsiveCss += '}';
+        responsiveCss += '}';
+
+      if ( style.styleSheet ) {
+        style.innerHTML = responsiveCss;
+      } else {
+        style.appendChild( document.createTextNode( responsiveCss ) );
+      }
+      head.appendChild( style );
+    };
+
+// When font size is changed
+    const onChangeFontSize = (value) => {
+      setAttributes({fontSizeTitle: value });
+      if(deviceTypography == 'tablet'){
+        setAttributes({fontSizeTitleTablet: value});
+      }else if(deviceTypography == 'desktop'){
+        setAttributes({fontSizeTitleDesktop: value});
+      }else if(deviceTypography == 'mobile'){
+        setAttributes({fontSizeTitleMobile: value});
+      }
+      saveMeta();
+    }
+
+// When line height is changed
+    const onChangeLineHeight = (value) => {
+      setAttributes({ lineHeightTitle: value });
+      if(deviceTypography == 'tablet'){
+        setAttributes({lineHeightTablet : value});
+      }else if(deviceTypography == 'desktop'){
+        setAttributes({lineHeightDesktop : value});
+      }else if(deviceTypography == 'mobile'){
+        setAttributes({lineHeightMobile : value})
+      }
+      saveMeta();
+    }
+
+// When letter spacing is changed
+    const onChangeLetterSpacing = (value) => {
+      setAttributes({ letterSpacingTitle: value });
+      if(deviceTypography == 'tablet'){
+        setAttributes({letterSpacingTablet : value});
+      }else if(deviceTypography == 'desktop'){
+        setAttributes({letterSpacingDesktop : value});
+      }else if(deviceTypography == 'mobile'){
+        setAttributes({letterSpacingMobile : value})
+      }
+      saveMeta();
+    }
+
+    const onChangeDevice = (value) => {
+      setAttributes({ deviceTypography: value });
+    }
+
+
 		const onSelectImage = ( media ) => {
 			setAttributes( {
 				mediaURL: media.url,
@@ -503,7 +631,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 
 
 		return (
-			<div 
+			<div
 			className={ 'gx-block ' + blockStyle+ ' gx-image-box ' + className }
 			data-gx_initial_block_class = {defaultBlockStyle}
 			style={blockStyles}>
@@ -515,7 +643,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 						value={ mediaID }
 						render={ ( { open } ) => (
 							<Button className={ mediaID ? 'image-button' : 'button button-large' } onClick={ open }>
-								{ ! mediaID ? __( 'Upload Image', 'gutenberg-extra' ) : <img src={ mediaURL } alt={ __( 'Upload Image', 'gutenberg-extra' ) } /> }
+								{ ! mediaID ? __( 'Upload Image', 'gutenberg-den' ) : <img src={ mediaURL } alt={ __( 'Upload Image', 'gutenberg-den' ) } /> }
 							</Button>
 						) }
 					/>
@@ -524,7 +652,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 				<RichText
 					tagName={titleLevel}
 					style={ titleStyles}
-					placeholder={ __( 'Write title…', 'gutenberg-extra' ) }
+					placeholder={ __( 'Write title…', 'gutenberg-den' ) }
 					value={ title }
 					onChange={ ( value ) => setAttributes({ title: value }) }
 					className="gx-image-box-title"
@@ -532,7 +660,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 				<RichText
 					tagName="p"
 					style={ subTitleStyles }
-					placeholder={ __( 'Write sub-title…', 'gutenberg-extra' ) }
+					placeholder={ __( 'Write sub-title…', 'gutenberg-den' ) }
 					value={ additionalText }
 					onChange={ ( value ) => setAttributes({ additionalText: value }) }
 					className="gx-image-box-subtitle"
@@ -541,7 +669,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 					tagName="p"
 					style={descriptionStyles}
 					multiline="br"
-					placeholder={ __( 'Write some text…', 'gutenberg-extra' ) }
+					placeholder={ __( 'Write some text…', 'gutenberg-den' ) }
 					value={ description }
 					onChange={ ( value ) => setAttributes({ description: value }) }
 					className="gx-image-box-description"
@@ -549,14 +677,14 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 				<RichText
 					tagName="span"
 					style={ buttonStyles}
-					placeholder={ __( 'Read more text…', 'gutenberg-extra' ) }
+					placeholder={ __( 'Read more text…', 'gutenberg-den' ) }
 					value={ readMoreText }
 					onChange={ ( value ) => setAttributes({ readMoreText: value }) }
 					className="gx-image-box-read-more-text"
 				/>
 				<URLInput
 					value={ readMoreLink}
-					placeholder={ __( 'Read more link…', 'gutenberg-extra' ) }
+					placeholder={ __( 'Read more link…', 'gutenberg-den' ) }
 					onChange={ ( value ) => setAttributes( { readMoreLink: value } ) }
 					className="gx-image-box-read-more-link"
 				/>
@@ -635,38 +763,38 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 						label={ __( 'Add "nofollow" attribute' ) }
 						checked={ addNofollow }
 						onChange={ () => setAttributes( { addNofollow: ! addNofollow } ) }
-						/>  
+						/>
 
 					<ToggleControl
 						label={ __( 'Add "noopener" attribute' ) }
 						checked={ addNoopener }
 						onChange={ () => setAttributes( { addNoopener : ! addNoopener  } ) }
-						/>  
+						/>
 
 					<ToggleControl
 						label={ __( 'Add "noreferrer" attribute' ) }
 						checked={ addNoreferrer  }
 						onChange={ () => setAttributes( {addNoreferrer: ! addNoreferrer } ) }
-						/> 
+						/>
 
 					<ToggleControl
 						label={ __( 'Add "sponsored" attribute' ) }
 						checked={ addSponsored }
 						onChange={ () => setAttributes( { addSponsored: ! addSponsored } ) }
-						/>  
+						/>
 
 					<ToggleControl
 						label={ __( 'Add "ugc" attribute' ) }
 						checked={ addUgc }
 						onChange={ () => setAttributes( { addUgc: ! addUgc } ) }
-						/>          
+						/>
 				</PanelBody>
 				<PanelBody className="gx-panel gx-color-setting gx-style-tab-setting" initialOpen={ true } title={ __( 'Colour settings' ) }>
 					<BaseControl
 					className={"gx-settings-button"}
 					>
 						<BaseControl.VisualLabel>Title Typography</BaseControl.VisualLabel>
-						<Button 
+						<Button
 						isSecondary
 						onClick={() => { setAttributes({  titlePopUpisVisible: ! titlePopUpisVisible }) }}
 						>
@@ -679,7 +807,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 					    noArrow = {true}
 					    >
 					       <SelectControl
-						        label="Font Family"
+						        label="Family"
 						        className="gx-title-typography-setting"
 						        value={ titleFontFamily }
 						        options={ [
@@ -696,7 +824,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 						            { label: '', value: 'tablet' },
 						            { label: '', value: 'mobile' },
 						        ] }
-						        onChange={ ( value ) => props.setAttributes({ deviceTypography: value }) }
+						        onChange={ onChangeDevice }
 						    />
 							<RadioControl
 								className={'gx-unit-control'}
@@ -710,17 +838,118 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 						        onChange={ ( value ) => props.setAttributes({ fontSizeTitleUnit: value }) }
 						    />
 						    <RangeControl
-	                            label="Size"
-	                            className={'gx-with-unit-control'}
-	                            value={fontSizeTitle}
-	                            onChange={ ( value ) => props.setAttributes({ fontSizeTitle: value }) }
+                label="Size"
+                className={'gx-with-unit-control'}
+                value={fontSizeTitle}
+                onChange={ onChangeFontSize }
+                id={'size-control'}
 								min={ 0 }
 								step={0.1}
 								allowReset = {true}
                         	/>
+              <RadioControl
+  							className={'gx-unit-control'}
+  					        selected={lineHeightUnit }
+  					        options={ [
+  					            { label: 'PX', value: 'px' },
+  					            { label: 'EM', value: 'em' },
+  					            { label: 'VW', value: 'vw' },
+  					            { label: '%', value: '%' },
+  					        ] }
+  					        onChange={ ( value ) => props.setAttributes({ lineHeightUnit: value }) }
+  					    />
+                <RangeControl
+                label="Line Height"
+                className={'gx-with-unit-control'}
+                value={lineHeightTitle}
+                onChange={ onChangeLineHeight }
+								min={ 0 }
+								step={0.1}
+								allowReset = {true}
+                        	/>
+
+                <RadioControl
+    							className={'gx-unit-control'}
+    					        selected={letterSpacingUnit }
+    					        options={ [
+    					            { label: 'PX', value: 'px' },
+    					            { label: 'EM', value: 'em' },
+    					            { label: 'VW', value: 'vw' },
+    					            { label: '%', value: '%' },
+    					        ] }
+    					        onChange={ ( value ) => props.setAttributes({ letterSpacingUnit: value }) }
+    					    />
+                <RangeControl
+                label="Letter Spacing"
+                className={'gx-with-unit-control'}
+                value={letterSpacingTitle}
+                onChange={ onChangeLetterSpacing }
+  							min={ 0 }
+  							step={0.1}
+  							allowReset = {true}
+                        	/>
+                <Divider/>
+                <SelectControl
+                   label="Weight"
+                   className="gx-title-typography-setting"
+                   value={ fontWeight }
+                   options={ [
+                     { label: 'Thin (Hairline)', value: 100 },
+                     { label: 'Extra Light (Ultra Light)', value: 200 },
+                     { label: 'Light', value: 300 },
+                     { label: 'Normal (Regular)', value: 400 },
+                     { label: 'Medium', value: 500 },
+                     { label: 'Semi Bold (Demi Bold)', value: 600 },
+                     { label: 'Bold', value: 700 },
+                     { label: 'Extra Bold (Ultra Bold)', value: 800 },
+                     { label: 'Black (Heavy)', value: 900 },
+                     { label: 'Extra Black (Ultra Black)', value: 950 },
+                   ] }
+                   onChange={ ( value ) => props.setAttributes({ fontWeight: value }) }
+                />
+                <SelectControl
+                   label="Transform"
+                   className="gx-title-typography-setting"
+                   value={ textTransform }
+                   options={ [
+                     { label: 'Default', value: 'none' },
+                     { label: 'Capitilize', value: 'capitalize' },
+                     { label: 'Uppercase', value: 'uppercase' },
+                     { label: 'Lowercase', value: 'lowercase' },
+                     { label: 'Full Width', value: 'full-width' },
+                     { label: 'Full Size Kana', value: 'full-size-kana' },
+                   ] }
+                   onChange={ ( value ) => props.setAttributes({ textTransform: value }) }
+                />
+                <SelectControl
+                   label="Style"
+                   className="gx-title-typography-setting"
+                   value={ fontStyle }
+                   options={ [
+                     { label: 'Default', value: 'normal' },
+                     { label: 'Italic', value: 'italic' },
+                     { label: 'Oblique', value: 'oblique' },
+                     { label: 'Oblique (40 deg)', value: 'oblique 40deg' },
+                   ] }
+                   onChange={ ( value ) => props.setAttributes({ fontStyle: value }) }
+                />
+                <SelectControl
+                   label="Decoration"
+                   className="gx-title-typography-setting"
+                   value={ textDecoration }
+                   options={ [
+                     { label: 'Default', value: 'none' },
+                     { label: 'Overline', value: 'overline' },
+                     { label: 'Line Through ', value: 'line-through' },
+                     { label: 'Underline ', value: 'underline' },
+                     { label: 'Underline Overline ', value: 'underline overline' },
+                   ] }
+                   onChange={ ( value ) => props.setAttributes({ textDecoration: value }) }
+                />
+
 					     </Popover>
 					) }
-					
+
 					<PanelColorSettings
 							title={ __( 'Background Colour Settings' ) }
 							colorSettings={ [
@@ -1014,7 +1243,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 							syncUnitsMobile={ marginSyncUnitsMobile }
 							dimensionSize={ marginSize }
 						/>
-						
+
 					</PanelBody>
 					<PanelBody initialOpen={ true } className="gx-panel gx-advanced-setting gx-advanced-tab-setting"  title={ __( 'Advanced Settings' ) }>
 							<SelectControl
@@ -1037,7 +1266,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 					        	{ label: 'Normal', value: 'normal' },
 					        	{ label: 'Long', value: 'long' },
 					        	{ label: 'Longer', value: 'longer' },
-					           
+
 					        ] }
 					        onChange={ ( value ) => props.setAttributes({ hoverAnimationDuration: value }) }
 							/>
@@ -1133,7 +1362,14 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 				readMore,
 				counter,
 				lineHeight,
+        lineHeightDesktop,
+        lineHeightTablet,
+        lineHeightMobile,
 				letterSpacing,
+        letterSpacingDesktop,
+        letterSpacingMobile,
+        letterSpacingTablet,
+        letterSpacingTitle,
 				maxWidth,
 				maxWidthUnit,
 				minWidth,
@@ -1147,8 +1383,15 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 				minHeight,
 				fontSizeTitle,
 				fontSizeTitleUnit,
+        fontSizeTitleTablet,
+        fontSizeTitleDesktop,
+        fontSizeTitleMobile,
+        lineHeightTitle,
 				blockHeight,
-				textTransform, 
+				textTransform,
+        textDecoration,
+        fontWeight,
+        fontStyle,
 				borderWidth,
 				borderRadius,
 				borderType,
@@ -1276,7 +1519,9 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 
 		const titleStyles = {
 			color: titleColor ? titleColor : undefined,
-			fontSize: fontSizeTitle ? (fontSizeTitle + fontSizeTitleUnit) : undefined,
+			fontSize: fontSizeTitleDesktop ? (fontSizeTitleDesktop + fontSizeTitleUnit) : undefined,
+      lineHeight: lineHeightDesktop ? (lineHeightDesktop + lineHeightUnit) : undefined,
+      letterSpacing: letterSpacingDesktop ? (letterSpacingDesktop + letterSpacingUnit) : undefined
 		}
 
 		const subTitleStyles = {
@@ -1299,7 +1544,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 			borderRadius: borderRadius ? borderRadius + 'px' : undefined,
 			borderColor: borderColor ? borderColor : undefined,
 			borderStyle: borderType ? borderType : undefined,
-			lineHeight: lineHeight ? lineHeight + '%' : undefined,
+			lineHeight: lineHeight ? lineHeight + 'px' : undefined,
 			letterSpacing: letterSpacing ? letterSpacing + 'px' : undefined,
 			width: blockWidth ? (blockWidth + widthUnit) : undefined,
 			maxWidth: maxWidth ? (maxWidth + maxWidthUnit) : undefined,
@@ -1307,7 +1552,10 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 			height: blockHeight ? (blockHeight + heightUnite) : undefined,
 			maxHeight: maxHeight ? (maxHeight + maxHeightUnit) : undefined,
 			minHeight: minHeight ? (minHeight + minHeightUnit) : undefined,
-			textTransform: textTransform ? textTransform: undefined,
+			textTransform: textTransform ? textTransform : undefined,
+      textDecoration: textDecoration ? textDecoration : undefined,
+      fontWeight: fontWeight ? fontWeight: undefined,
+      fontStyle: fontStyle ? fontStyle: undefined,
 			// paddingTop: paddingTop ? (paddingTop + paddingUnit) : undefined,
 			// paddingRight: paddingRight ? (paddingRight + paddingUnit) : undefined,
 			// paddingBottom: paddingBottom ? (paddingBottom + paddingUnit) : undefined,
@@ -1322,7 +1570,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 			// borderBottomLeftRadius: borderRadiusBottomLeft ? (borderRadiusBottomLeft + borderRadiusUnit) : undefined,
 		};
 		return (
-			<div 
+			<div
 			className= { 'gx-block ' + blockStyle+ ' gx-image-box ' + className }
 			data-gx_initial_block_class = {defaultBlockStyle}
 			style={blockStyles}>
@@ -1336,7 +1584,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 
 				{
 					mediaURL && (
-						<img className="gx-image-box-image" src={ mediaURL } alt={title +  __( ' Image', 'gutenberg-extra' )}/>
+						<img className="gx-image-box-image" src={ mediaURL } alt={title +  __( ' Image', 'gutenberg-den' )}/>
 					)
 				}
 

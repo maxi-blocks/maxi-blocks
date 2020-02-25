@@ -10,6 +10,7 @@ import './style.scss';
 import './editor.scss';
 import { withState } from '@wordpress/compose';
 import DimensionsControl from '../../components/dimensions-control/';
+import { FontFamily } from '../../components/fontfamilyselector/index';
 import { useSelect } from '@wordpress/data';
 
 const { __ } = wp.i18n; // Import __() from wp.i18n
@@ -678,15 +679,11 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 					    onFocusOutside = {() => { setAttributes({  titlePopUpisVisible: ! titlePopUpisVisible }) }}
 					    noArrow = {true}
 					    >
-					       <SelectControl
-						        label="Font Family"
-						        className="gx-title-typography-setting"
-						        value={ titleFontFamily }
-						        options={ [
-						        	{ label: 'Default', value: 'inherit' },
-						        	{ label: 'Placeholder', value: 'inherit' },
-						        ] }
-						        onChange={ ( value ) => props.setAttributes({ titleFontFamily: value }) }
+							<FontFamily 
+								font={titleFontFamily}
+								onChange={ value => {
+									setAttributes ({ titleFontFamily: value });
+								  } }
 							/>
 							<RadioControl
 								className={'gx-device-control'}

@@ -172,8 +172,7 @@ class DimensionsControl extends Component {
 		const block = wp.data.select( 'core/block-editor' ).getBlock( this.props.clientId );
 		let dimensions = {};
 
-		if ( typeof this.props.attributes.gx !== 'undefined' && typeof this.props.attributes.gx.id !== 'undefined' ) {
-			const id = this.props.name.split( '/' ).join( '-' ) + '-' + this.props.attributes.gx.id;
+			const id = this.props.name.split( '/' ).join( '-' );
 			const paddingUnit = block.attributes.paddingUnit;
 			const marginUnit = block.attributes.marginUnit;
 			const borderRadiusUnit = block.attributes.borderRadiusUnit;
@@ -394,7 +393,7 @@ class DimensionsControl extends Component {
 			}
 
 			head.appendChild( style );
-		}
+		
 	}
 
 	render() {

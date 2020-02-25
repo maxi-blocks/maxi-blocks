@@ -129,7 +129,7 @@ function addGXLayoutButtonAdmin() {
     let buttonDiv = document.createElement('div');
     jQuery(buttonDiv).addClass('gx-toolbar-layout').css('display', 'inline-block');
     let html = `<button id="gxAddLayoutButton" class="components-button components-icon-button" aria-label="Add Layout">\
-    </i><img src="/wp-content/plugins/gutenberg-den/img/GX-icon.png" /> GX Library</button>`;
+    </i><img src="/wp-content/plugins/gutenberg-extra/img/GX-icon.png" /> GX Library</button>`;
     buttonDiv.innerHTML = html;
     if (wp_toolbar) jQuery("a.page-title-action").after(buttonDiv);
 

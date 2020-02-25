@@ -10,7 +10,7 @@
 /**
  * Plugin Name: Gutenberg Extra
  * Plugin URI:
- * Description: gutenberg-den — is a Gutenberg plugin created via create-guten-block.
+ * Description: gutenberg-extra — is a Gutenberg plugin created via create-guten-block.
  * Author: Gutenberg Den
  * Author URI:
  * Version: 1.0.0

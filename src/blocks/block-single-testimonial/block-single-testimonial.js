@@ -41,10 +41,10 @@ const {
     FormToggle,
 } = wp.components;
 
-registerBlockType( 'gutenberg-den/block-single-testimonial', {
+registerBlockType( 'gutenberg-extra/block-single-testimonial', {
     title: __( 'GX Single Testimonial'),
     icon: 'admin-comments',
-    category: 'gutenberg-den-blocks',
+    category: 'gutenberg-extra-blocks',
     attributes: {
         alignment: {
             type: 'string',
@@ -415,7 +415,7 @@ registerBlockType( 'gutenberg-den/block-single-testimonial', {
                 <RichText
                     tagName="h2"
                     className="gx-single-testimonial-title"
-                    placeholder={ __( 'Write title…', 'gutenberg-den' ) }
+                    placeholder={ __( 'Write title…', 'gutenberg-extra' ) }
                     value={ title }
                     onChange={ onChangeTitle }
                 />
@@ -426,7 +426,7 @@ registerBlockType( 'gutenberg-den/block-single-testimonial', {
 						value={ mediaID }
 						render={ ( { open } ) => (
 							<Button className={ mediaID ? 'image-button' : 'button button-large' } onClick={ open }>
-								{ ! mediaID ? __( 'Upload Image', 'gutenberg-den' ) : <img src={ mediaURL } alt={ __( 'Upload Image', 'gutenberg-den' ) } /> }
+								{ ! mediaID ? __( 'Upload Image', 'gutenberg-extra' ) : <img src={ mediaURL } alt={ __( 'Upload Image', 'gutenberg-extra' ) } /> }
 							</Button>
 						) }
 					/>
@@ -434,21 +434,21 @@ registerBlockType( 'gutenberg-den/block-single-testimonial', {
                 <RichText
                     tagName="p"
                     className="gx-single-testimonial-text"
-                    placeholder={ __( 'Write text', 'gutenberg-den' ) }
+                    placeholder={ __( 'Write text', 'gutenberg-extra' ) }
                     value={ testimonial }
                     onChange={ onChangeTestimonial }
                 />
                 <RichText
                     tagName="p"
                     className="gx-single-testimonial-name"
-                    placeholder={ __( 'Write name', 'gutenberg-den' ) }
+                    placeholder={ __( 'Write name', 'gutenberg-extra' ) }
                     value={ name }
                     onChange={ onChangeName }
                 />
                 <RichText
                     tagName="p"
                     className="gx-single-testimonial-position"
-                    placeholder={ __( 'Write position', 'gutenberg-den' ) }
+                    placeholder={ __( 'Write position', 'gutenberg-extra' ) }
                     value={ position }
                     onChange={ onChangePosition }
                 />
@@ -507,7 +507,7 @@ registerBlockType( 'gutenberg-den/block-single-testimonial', {
 
 				{
 					mediaURL && (
-						<img className="gx-single-testimonial-image" src={ mediaURL } alt={ __( 'Person Image', 'gutenberg-den' ) } />
+						<img className="gx-single-testimonial-image" src={ mediaURL } alt={ __( 'Person Image', 'gutenberg-extra' ) } />
 					)
 				}
 

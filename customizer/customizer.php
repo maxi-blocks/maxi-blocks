@@ -156,7 +156,7 @@ function gx_customizer_init( WP_Customize_Manager $wp_customize ){
 
             $wp_customize->add_control($ColSchSett, [
                 'section' => $section,
-                'label' => __('Colour Scheme', 'gutenberg-den'),
+                'label' => __('Colour Scheme', 'gutenberg-extra'),
                 'type' => 'select',
                 'choices' => $ColSchSettValues
             ]);
@@ -615,15 +615,15 @@ function gx_admin_js_file() {
         }
 
 
-        wp_enqueue_script('select2-js', plugin_dir_url(__FILE__) . "/js/select2.min.js", ['jquery', 'customize-preview'], '', true);
-        wp_enqueue_script('theme-customizer', plugin_dir_url(__FILE__) . "/js/gx-admin.js", ['jquery', 'customize-preview'], '', true);
+        wp_enqueue_script('select2-js', plugin_dir_url(__FILE__) . "/js/select2.min.js?v=" . rand(), ['jquery', 'customize-preview'], '', true);
+        wp_enqueue_script('theme-customizer', plugin_dir_url(__FILE__) . "/js/gx-admin.js?v=" . rand(), ['jquery', 'customize-preview'], '', true);
         wp_localize_script('theme-customizer', 'gx_ajax_object',
             array(
                 'defaultThemeOptions' => json_encode(require_once('theme_default_styles.php')),
                 'bodyClass' => ''/*get_theme_mod( 'color_scheme' )*/,
                 'list' => $list,
                 'font_info' => $font_info,
-                'ajax_url' => admin_url() . '../wp-content/plugins/gutenberg-den/customizer/customizer.php',
+                'ajax_url' => admin_url() . '../wp-content/plugins/gutenberg-extra/customizer/customizer.php',
             )
         );
     }

@@ -18,7 +18,7 @@ function addGXLayoutButton() {
 	let buttonDiv = document.createElement( 'div' );
 	let html = '<div class="gx-toolbar-layout">';
 	html += `<button id="gxAddLayoutButton" class="components-button components-icon-button" aria-label="${ __( 'Add Layout' ) }">\
-	</i><img src="/wp-content/plugins/gutenberg-den/img/GX-icon.png" /> ${ __( 'GX Library') }</button>`;
+	</i><img src="/wp-content/plugins/gutenberg-extra/img/GX-icon.png" /> ${ __( 'GX Library') }</button>`;
 	html += '</div>';
 	buttonDiv.innerHTML = html;
 	if (wp_toolbar) wp_toolbar.next().append( buttonDiv );

@@ -93,7 +93,7 @@ export default class LayoutLibrary extends Component {
 				<div className="gx-layout-modal-header">
 					<SelectControl
 						key={ 'layout-library-select-categories-' + this.props.clientId }
-						label={ __( 'Layout Categories', 'gutenberg-den-blocks' ) }
+						label={ __( 'Layout Categories', 'gutenberg-extra-blocks' ) }
 						value={ this.state.category }
 						options={ catOptions }
 						onChange={ value => this.setState( { category: value } ) }
@@ -102,17 +102,17 @@ export default class LayoutLibrary extends Component {
 						key={ 'layout-library-search-layouts-' + this.props.clientId }
 						type="text"
 						value={ this.state.search }
-						placeholder={ __( 'Search Layouts', 'gutenberg-den-blocks' ) }
+						placeholder={ __( 'Search Layouts', 'gutenberg-extra-blocks' ) }
 						onChange={ value => this.setState( { search: value } ) }
 					/>
 				</div>
 
 				<div className={ 'gx-layout-view' }>
-					{ <div className={ 'gx-layout-view-left' }><p>{ __( 'Showing: ', 'gutenberg-den-blocks' ) + this.props.data.length }</p></div> }
+					{ <div className={ 'gx-layout-view-left' }><p>{ __( 'Showing: ', 'gutenberg-extra-blocks' ) + this.props.data.length }</p></div> }
 
 					{ /* Grid width view. */ }
 					<div className={ 'gx-layout-view-right' }>
-						<Tooltip key={ 'layout-library-grid-view-tooltip-' + this.props.clientId } text={ __( 'Grid View', 'gutenberg-den-blocks' ) }>
+						<Tooltip key={ 'layout-library-grid-view-tooltip-' + this.props.clientId } text={ __( 'Grid View', 'gutenberg-extra-blocks' ) }>
 							<Button
 								key={ 'layout-library-grid-view-button-' + this.props.clientId }
 								className={ classnames(
@@ -133,7 +133,7 @@ export default class LayoutLibrary extends Component {
 						</Tooltip>
 
 						{ /* Full width layout view. */ }
-						<Tooltip key={ 'layout-library-full-view-tooltip-' + this.props.clientId } text={ __( 'Full Width View', 'gutenberg-den-blocks' ) }>
+						<Tooltip key={ 'layout-library-full-view-tooltip-' + this.props.clientId } text={ __( 'Full Width View', 'gutenberg-extra-blocks' ) }>
 							<Button
 								key={ 'layout-library-full-view-button-' + this.props.clientId }
 								className={ classnames(
@@ -163,7 +163,7 @@ export default class LayoutLibrary extends Component {
 								'gx-layout-choices',
 								this.state.activeView === 'full' ? 'gx-layout-view-full' : null,
 							) }
-							aria-label={ __( 'Layout Options', 'gutenberg-den-blocks' ) }
+							aria-label={ __( 'Layout Options', 'gutenberg-extra-blocks' ) }
 						>
 							{ map( this.props.data, ( { name, key, image, content, category, keywords } ) => {
 								if ( ( 'all' === this.state.category || category.includes( this.state.category ) ) && ( ! this.state.search || ( keywords && keywords.some( x => x.toLowerCase().includes( this.state.search.toLowerCase() ) ) ) ) ) {

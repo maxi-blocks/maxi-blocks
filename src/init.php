@@ -64,7 +64,7 @@ function gutenberg_den_cgb_block_assets() { // phpcs:ignore
 	 * @since 1.16.0
 	 */
 	register_block_type(
-		'cgb/block-gutenberg-den', array(
+		'cgb/block-gutenberg-extra', array(
 			// Enqueue blocks.style.build.css on both frontend & backend.
 			'style'         => 'gutenberg_den-cgb-style-css',
 			// Enqueue blocks.build.js in the editor only.
@@ -119,8 +119,8 @@ function gutenberg_den_cgb_block_category( $categories ) {
 		$categories,
 		array(
 			array(
-				'slug'  => 'gutenberg-den-blocks',
-				'title' => __( 'GutenbergExtra Blocks', 'gutenberg-den-blocks' ),
+				'slug'  => 'gutenberg-extra-blocks',
+				'title' => __( 'GutenbergExtra Blocks', 'gutenberg-extra-blocks' ),
 			),
 		)
 	);

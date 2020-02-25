@@ -140,6 +140,15 @@ class DimensionsControl extends Component {
 				}
 				this.props.setAttributes( { borderRadiusTopLeft: size, borderRadiusTopRight: size, borderRadiusBottomLeft: size, borderRadiusBottomLeft: size, borderRadiusUnit: 'px' } );
 			}
+		} else if ( this.props.type === 'borderWidth' ) {
+			this.props.setAttributes( { borderWidthSyncUnits: true } );
+			this.props.setAttributes( { borderWidthSize: value } );
+			if ( size ) {
+				if ( size < 0 ) {
+					size = '';
+				}
+				this.props.setAttributes( { borderWidthTop: size, borderWidthRight: size, borderWidthBottom: size, borderWidthLeft: size, borderWidthUnit: 'px' } );
+			}
 		}
 
 		this.saveMeta();
@@ -176,6 +185,7 @@ class DimensionsControl extends Component {
 			const paddingUnit = block.attributes.paddingUnit;
 			const marginUnit = block.attributes.marginUnit;
 			const borderRadiusUnit = block.attributes.borderRadiusUnit;
+			const borderWidthUnit = block.attributes.borderWidthUnit;
 			const padding = {
 				paddingTop: ( typeof block.attributes.paddingTop !== 'undefined' ) ? block.attributes.paddingTop + paddingUnit : null,
 				paddingRight: ( typeof block.attributes.paddingRight !== 'undefined' ) ? block.attributes.paddingRight + paddingUnit : null,

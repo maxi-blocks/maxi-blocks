@@ -137,7 +137,7 @@ jQuery(function($) {
 
         let activeFontFamily = $('#customize-control-'+id+'Font'+selectedTheme+'-'+device+' input').val();
         //weight related to active font
-        console.log(activeFontFamily, '#customize-control-'+id+'Font'+selectedTheme+'-'+device+' input')
+
         let initWeightsRelFont = gx_ajax_object.font_info[activeFontFamily] ? Object.values(gx_ajax_object.font_info[activeFontFamily].weights) : ['100', '200', '300', '400', '500', '600', '700', '800', '900'];
         let initweightsRelFontHtml = (initWeightsRelFont.map(item => `<option ${weightValue == item ? 'selected' : ''} value="${item}">${item}</option>`)).join();
 
@@ -160,19 +160,19 @@ jQuery(function($) {
         html+='</select>' +
             '            <div class="devices">';
         if(device == 'desktop'){
-            html+=' <div data-type="desktop" class="device active"><img src="/wp-content/plugins/gutenberg-den/img/icons/tv-icon.png"></div>';
+            html+=' <div data-type="desktop" class="device active"><img src="/wp-content/plugins/gutenberg-extra/img/icons/tv-icon.png"></div>';
         } else {
-            html+=' <div data-type="desktop" class="device"><img src="/wp-content/plugins/gutenberg-den/img/icons/tv-icon.png"></div>';
+            html+=' <div data-type="desktop" class="device"><img src="/wp-content/plugins/gutenberg-extra/img/icons/tv-icon.png"></div>';
         }
         if(device == 'tablet') {
-            html+='<div data-type="tablet" class="device active"><img src="/wp-content/plugins/gutenberg-den/img/icons/tablet-icon.png"></div>';
+            html+='<div data-type="tablet" class="device active"><img src="/wp-content/plugins/gutenberg-extra/img/icons/tablet-icon.png"></div>';
         } else {
-            html+='<div data-type="tablet" class="device"><img src="/wp-content/plugins/gutenberg-den/img/icons/tablet-icon.png"></div>';
+            html+='<div data-type="tablet" class="device"><img src="/wp-content/plugins/gutenberg-extra/img/icons/tablet-icon.png"></div>';
         }
         if(device == 'mobile'){
-            html+= ' <div data-type="mobile" class="device active"><img src="/wp-content/plugins/gutenberg-den/img/icons/phone-icon.png"></div>';
+            html+= ' <div data-type="mobile" class="device active"><img src="/wp-content/plugins/gutenberg-extra/img/icons/phone-icon.png"></div>';
         }else {
-            html+= ' <div data-type="mobile" class="device"><img src="/wp-content/plugins/gutenberg-den/img/icons/phone-icon.png"></div>';
+            html+= ' <div data-type="mobile" class="device"><img src="/wp-content/plugins/gutenberg-extra/img/icons/phone-icon.png"></div>';
         }
         html+='</div>'+
             '        </div>' +
@@ -295,10 +295,10 @@ jQuery(function($) {
     function initLeftSide() {
         let html = `<div class="gx-sec-globalStyling active" data-left-section="globalStyling" title="Global Styling
 ">
-                        <img src="/wp-content/plugins/gutenberg-den/img/icons/gs-icon.png" />
+                        <img src="/wp-content/plugins/gutenberg-extra/img/icons/gs-icon.png" />
                     </div>
                     <div class="gx-sec-test" data-left-section="test" title="Placeholder Tab">
-                        <img src="/wp-content/plugins/gutenberg-den/img/icons/xx-icon.png" />
+                        <img src="/wp-content/plugins/gutenberg-extra/img/icons/xx-icon.png" />
                     </div>`;
         $('#customize-control-leftSide').html(html);
         $('#customize-control-leftSideTest').html(html);;
@@ -312,19 +312,19 @@ jQuery(function($) {
         // 'Natural', 'Admiral', 'Peach', hided themes
         var $themes = ['Default', 'Mint', 'Elegance', 'Candy', 'Bumblebee'];
         $.each($themes, function( key, theme ) {
-            // console.log('$.each($themes, function START');
-            $(`#customize-control-body_background_color${theme}-color-dark .customize-control-title`).html('<img class="icon-color" title="Background" src="/wp-content/plugins/gutenberg-den/img/icons/fill-light.png" />')
-            $(`#customize-control-p_color${theme}-color-dark .customize-control-title`).html('<img class="icon-color" title="Text" src="/wp-content/plugins/gutenberg-den/img/icons/edit-tool-light.png" />')
-            $(`#customize-control-a_color${theme}-color-dark .customize-control-title`).html('<img class="icon-color" title="Link" src="/wp-content/plugins/gutenberg-den/img/icons/broken-link-light.png" />')
-            $(`#customize-control-highlight${theme}-color-dark .customize-control-title`).html('<img class="icon-color" title="Highlight" src="/wp-content/plugins/gutenberg-den/img/icons/permanent-light.png" />')
-            $(`#customize-control-hover${theme}-color-dark .customize-control-title`).html('<img class="icon-color" title="Hover" src="/wp-content/plugins/gutenberg-den/img/icons/cursor-light.png" />')
 
-            $(`#customize-control-body_background_color${theme}-color-light .customize-control-title`).html('<img class="icon-color" title="Background" src="/wp-content/plugins/gutenberg-den/img/icons/fill-dark.png" />')
-            $(`#customize-control-p_color${theme}-color-light .customize-control-title`).html('<img class="icon-color" title="Text" src="/wp-content/plugins/gutenberg-den/img/icons/edit-tool-dark.png" />')
-            $(`#customize-control-a_color${theme}-color-light .customize-control-title`).html('<img class="icon-color" title="Link" src="/wp-content/plugins/gutenberg-den/img/icons/broken-link-dark.png" />')
-            $(`#customize-control-highlight${theme}-color-light .customize-control-title`).html('<img class="icon-color" title="Highlight" src="/wp-content/plugins/gutenberg-den/img/icons/permanent-dark.png" />')
-            $(`#customize-control-hover${theme}-color-light .customize-control-title`).html('<img class="icon-color" title="Hover" src="/wp-content/plugins/gutenberg-den/img/icons/cursor-dark.png" />')
-             // console.log('$.each($themes, function END');
+            $(`#customize-control-body_background_color${theme}-color-dark .customize-control-title`).html('<img class="icon-color" title="Background" src="/wp-content/plugins/gutenberg-extra/img/icons/fill-light.png" />')
+            $(`#customize-control-p_color${theme}-color-dark .customize-control-title`).html('<img class="icon-color" title="Text" src="/wp-content/plugins/gutenberg-extra/img/icons/edit-tool-light.png" />')
+            $(`#customize-control-a_color${theme}-color-dark .customize-control-title`).html('<img class="icon-color" title="Link" src="/wp-content/plugins/gutenberg-extra/img/icons/broken-link-light.png" />')
+            $(`#customize-control-highlight${theme}-color-dark .customize-control-title`).html('<img class="icon-color" title="Highlight" src="/wp-content/plugins/gutenberg-extra/img/icons/permanent-light.png" />')
+            $(`#customize-control-hover${theme}-color-dark .customize-control-title`).html('<img class="icon-color" title="Hover" src="/wp-content/plugins/gutenberg-extra/img/icons/cursor-light.png" />')
+
+            $(`#customize-control-body_background_color${theme}-color-light .customize-control-title`).html('<img class="icon-color" title="Background" src="/wp-content/plugins/gutenberg-extra/img/icons/fill-dark.png" />')
+            $(`#customize-control-p_color${theme}-color-light .customize-control-title`).html('<img class="icon-color" title="Text" src="/wp-content/plugins/gutenberg-extra/img/icons/edit-tool-dark.png" />')
+            $(`#customize-control-a_color${theme}-color-light .customize-control-title`).html('<img class="icon-color" title="Link" src="/wp-content/plugins/gutenberg-extra/img/icons/broken-link-dark.png" />')
+            $(`#customize-control-highlight${theme}-color-light .customize-control-title`).html('<img class="icon-color" title="Highlight" src="/wp-content/plugins/gutenberg-extra/img/icons/permanent-dark.png" />')
+            $(`#customize-control-hover${theme}-color-light .customize-control-title`).html('<img class="icon-color" title="Hover" src="/wp-content/plugins/gutenberg-extra/img/icons/cursor-dark.png" />')
+
         })
     }
 
@@ -454,7 +454,7 @@ jQuery(function($) {
          * Setup lefside panel
          */
 
-         // console.log("Setup lefside panel");
+
         $('#customize-control-leftSide').on('click','div',function (e) {
             setActiveSection(this);
         });
@@ -653,7 +653,7 @@ jQuery(function($) {
         function customizePopUp() {
             let device = $('#customize-footer-actions .devices .active').attr('data-device');
             var selectedTheme = $('#_customize-input-color_scheme').val();
-            // console.log("each($('.has-popup') START");
+
 
             $.each($('.has-popup'), function (i, popup) {
                 let id = $(this).attr('data-name');
@@ -685,8 +685,6 @@ jQuery(function($) {
                     })
                 })
             })
-
-             // console.log("each($('.has-popup') END");
 
             $(document).on('click', '#accordion-panel-GutenbergExtra', function () {
                 loaderSetUp();
@@ -755,24 +753,24 @@ jQuery(function($) {
             // h1...h6, p customize start
             var tagBlocks = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
             var BlocksStyles = [
-                ['DarkFont', 'Dark', 'font-family'], // which control, which block, which style will change for
+                ['DarkFont',    'Dark', 'font-family'], // which control, which block, which style will change for
                 ['DarkFS', 'Dark', 'font-size'],
                 ['DarkWeight', 'Dark', 'font-weight'],
-                // ['DarkWeight', 'Dark', 'line-height'],
-                // ['DarkWeight', 'Dark', 'letter-spacing'],
-                // ['DarkWeight', 'Dark', 'text-transform'],
-                // ['DarkWeight', 'Dark', 'font-style'],
-                // ['DarkWeight', 'Dark', 'text-decoration-style'],
-                // ['DarkWeight', 'Dark', 'text-decoration-line'],
+                ['DarkLineHgt', 'Dark', 'line-height'],
+                ['DarkLetterSpc', 'Dark', 'letter-spacing'],
+                ['DarkTransform', 'Dark', 'text-transform'],
+                ['DarkStyle', 'Dark', 'font-style'],
+                ['DarkDecoration', 'Dark', 'text-decoration-style'],
+                ['DarkDecorationLine', 'Dark', 'text-decoration-line'],
                 ['LightFont', 'Light', 'font-family'],
                 ['LightFS', 'Light', 'font-size'],
-                ['LightWeight', 'Light', 'font-weight'],
-                // ['LightWeight', 'Dark', 'line-height'],
-                // ['LightWeight', 'Dark', 'letter-spacing'],
-                // ['LightWeight', 'Dark', 'text-transform'],
-                // ['LightWeight', 'Dark', 'font-style'],
-                // ['LightWeight', 'Dark', 'text-decoration-style'],
-                // ['LightWeight', 'Dark', 'text-decoration-line'],
+                ['LightWeight',  'Light', 'font-weight'],
+                ['LightLineHgt', 'Light', 'line-height'],
+                ['LightLetterSpc',  'Light', 'letter-spacing'],
+                ['LightTransform',  'Light', 'text-transform'],
+                ['LightStyle',  'Light', 'font-style'],
+                ['LightDecoration',  'Light', 'text-decoration-style'],
+                ['LightDecorationLine',  'Light', 'text-decoration-line'],
             ];
 
 

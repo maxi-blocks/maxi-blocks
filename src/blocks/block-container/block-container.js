@@ -41,10 +41,10 @@ const {
     FormToggle,
 } = wp.components;
 
-registerBlockType( 'gutenberg-den/container', {
+registerBlockType( 'gutenberg-extra/container', {
     title: __( 'GX Container'),
     icon: 'editor-expand',
-    category: 'gutenberg-den-blocks',
+    category: 'gutenberg-extra-blocks',
     attributes: {
         alignment: {
             type: 'string',

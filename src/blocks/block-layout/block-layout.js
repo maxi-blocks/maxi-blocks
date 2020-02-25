@@ -20,14 +20,14 @@ const { registerBlockType } = wp.blocks;
 /**
  * Register the Layout block
  */
-registerBlockType( 'gutenberg-den/gx-layout', {
+registerBlockType( 'gutenberg-extra/gx-layout', {
 	title: __( 'GX Layout'),
 	description: __( 'Add a pre-made block or layout.'),
 	icon: 'layout',
-	category: 'gutenberg-den-blocks',
+	category: 'gutenberg-extra-blocks',
 	keywords: [
-		__( 'layout', 'gutenberg-den-blocks' ),
-		__( 'block', 'gutenberg-den-blocks' ),
+		__( 'layout', 'gutenberg-extra-blocks' ),
+		__( 'block', 'gutenberg-extra-blocks' ),
 	],
 
 	/* Render the block components. */
@@ -57,7 +57,7 @@ function addGXLayoutButton() {
 	let buttonDiv = document.createElement( 'div' );
 	let html = '<div class="gx-toolbar-layout">';
 	html += `<button id="gxAddLayoutButton" class="components-button components-icon-button" aria-label="${ __( 'Add Layout' ) }">\
-	</i><img src="/wp-content/plugins/gutenberg-den/img/gx-icon.png" /> ${ __( 'GX Library') }</button>`;
+	</i><img src="/wp-content/plugins/gutenberg-extra/img/gx-icon.png" /> ${ __( 'GX Library') }</button>`;
 	html += '</div>';
 	buttonDiv.innerHTML = html;
 	toolbar.appendChild( buttonDiv );
@@ -68,6 +68,6 @@ function addGXLayoutButton() {
  * Add the GX Layout block on click.
  */
 function abInsertLayout() {
-	let block = wp.blocks.createBlock( 'gutenberg-den/gx-layout' );
+	let block = wp.blocks.createBlock( 'gutenberg-extra/gx-layout' );
 	wp.data.dispatch( 'core/editor' ).insertBlocks( block );
 }

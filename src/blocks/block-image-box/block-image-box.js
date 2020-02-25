@@ -1,5 +1,5 @@
 /**
- * BLOCK: gutenberg-den/block-image-box
+ * BLOCK: gutenberg-extra/block-image-box
  *
  * Registering an image block with Gutenberg.
  * Shows an image and a description. A test block.
@@ -20,10 +20,10 @@ const {RichText,MediaUpload,InspectorControls, URLInput} = wp.editor;
 const {PanelBody, PanelRow, Button, TextControl, ToggleControl, RadioControl, RangeControl, SelectControl, TextareaControl, ColourPicker, ColourIndicator, GradientPicker, BaseControl, Text, Popover } = wp.components;
 const {PanelColorSettings, PanelColorGradientSettings} = wp.blockEditor;
 
-registerBlockType( 'gutenberg-den/block-image-box', {
+registerBlockType( 'gutenberg-extra/block-image-box', {
 	title: ( 'GX Image Box'), // Block title.
 	icon: <svg preserveAspectRatio="none" x="0px" y="0px" width="24px" height="24px" viewBox="0 0 24 24"><defs><path id="Layer2_0_1_STROKES" stroke="#00CCFF" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" fill="none" d="M 21.6 20.85 L 21.6 21.6 2.45 21.6 2.45 21.5 2.45 2.45 21.6 2.45 21.6 20.85 14.7 14.25 10.5 17.25 8.25 9.05 2.45 21.5 M 18 8.4 Q 18 9.4 17.25 10.15 16.55 10.9 15.5 10.9 14.55 10.9 13.8 10.15 13 9.4 13 8.4 13 7.4 13.8 6.65 14.55 5.95 15.5 5.95 16.55 5.95 17.25 6.65 18 7.4 18 8.4 Z"/></defs><g transform="matrix( 1, 0, 0, 1, 0,0) "><use href="#Layer2_0_1_STROKES"/></g></svg>,
-	category: 'gutenberg-den-blocks', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
+	category: 'gutenberg-extra-blocks', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
 	supports: { 
         align: true,
     },
@@ -515,7 +515,7 @@ registerBlockType( 'gutenberg-den/block-image-box', {
 						value={ mediaID }
 						render={ ( { open } ) => (
 							<Button className={ mediaID ? 'image-button' : 'button button-large' } onClick={ open }>
-								{ ! mediaID ? __( 'Upload Image', 'gutenberg-den' ) : <img src={ mediaURL } alt={ __( 'Upload Image', 'gutenberg-den' ) } /> }
+								{ ! mediaID ? __( 'Upload Image', 'gutenberg-extra' ) : <img src={ mediaURL } alt={ __( 'Upload Image', 'gutenberg-extra' ) } /> }
 							</Button>
 						) }
 					/>
@@ -524,7 +524,7 @@ registerBlockType( 'gutenberg-den/block-image-box', {
 				<RichText
 					tagName={titleLevel}
 					style={ titleStyles}
-					placeholder={ __( 'Write title…', 'gutenberg-den' ) }
+					placeholder={ __( 'Write title…', 'gutenberg-extra' ) }
 					value={ title }
 					onChange={ ( value ) => setAttributes({ title: value }) }
 					className="gx-image-box-title"
@@ -532,7 +532,7 @@ registerBlockType( 'gutenberg-den/block-image-box', {
 				<RichText
 					tagName="p"
 					style={ subTitleStyles }
-					placeholder={ __( 'Write sub-title…', 'gutenberg-den' ) }
+					placeholder={ __( 'Write sub-title…', 'gutenberg-extra' ) }
 					value={ additionalText }
 					onChange={ ( value ) => setAttributes({ additionalText: value }) }
 					className="gx-image-box-subtitle"
@@ -541,7 +541,7 @@ registerBlockType( 'gutenberg-den/block-image-box', {
 					tagName="p"
 					style={descriptionStyles}
 					multiline="br"
-					placeholder={ __( 'Write some text…', 'gutenberg-den' ) }
+					placeholder={ __( 'Write some text…', 'gutenberg-extra' ) }
 					value={ description }
 					onChange={ ( value ) => setAttributes({ description: value }) }
 					className="gx-image-box-description"
@@ -549,14 +549,14 @@ registerBlockType( 'gutenberg-den/block-image-box', {
 				<RichText
 					tagName="span"
 					style={ buttonStyles}
-					placeholder={ __( 'Read more text…', 'gutenberg-den' ) }
+					placeholder={ __( 'Read more text…', 'gutenberg-extra' ) }
 					value={ readMoreText }
 					onChange={ ( value ) => setAttributes({ readMoreText: value }) }
 					className="gx-image-box-read-more-text"
 				/>
 				<URLInput
 					value={ readMoreLink}
-					placeholder={ __( 'Read more link…', 'gutenberg-den' ) }
+					placeholder={ __( 'Read more link…', 'gutenberg-extra' ) }
 					onChange={ ( value ) => setAttributes( { readMoreLink: value } ) }
 					className="gx-image-box-read-more-link"
 				/>
@@ -1336,7 +1336,7 @@ registerBlockType( 'gutenberg-den/block-image-box', {
 
 				{
 					mediaURL && (
-						<img className="gx-image-box-image" src={ mediaURL } alt={title +  __( ' Image', 'gutenberg-den' )}/>
+						<img className="gx-image-box-image" src={ mediaURL } alt={title +  __( ' Image', 'gutenberg-extra' )}/>
 					)
 				}
 

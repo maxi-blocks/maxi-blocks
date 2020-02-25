@@ -57,7 +57,7 @@ class LayoutModal extends Component {
                         modalOpen: true
                     } ) }
                 >
-                    { __( 'Layout Library', 'gutenberg-den-blocks' ) }
+                    { __( 'Layout Library', 'gutenberg-extra-blocks' ) }
                 </Button>
                 { this.state.modalOpen ?
                     <LayoutsContext.Consumer key={ 'layouts-context-provider-' + this.props.clientId }>
@@ -65,7 +65,7 @@ class LayoutModal extends Component {
                             <Modal
                                 key={ 'layout-modal-modal-component-' + this.props.clientId }
                                 className="gx-layout-modal"
-                                title={ __( 'Gutenberg Extra Layouts and Blocks Library', 'gutenberg-den-blocks' ) }
+                                title={ __( 'Gutenberg Extra Layouts and Blocks Library', 'gutenberg-extra-blocks' ) }
                                // shouldCloseOnOverlayClick={false}
                               //  onRequestClose={ () => this.setState( { modalOpen: false } ) }
                             >

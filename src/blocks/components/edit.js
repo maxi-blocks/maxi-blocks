@@ -44,8 +44,8 @@ export default class Edit extends Component {
 				</BlockControls>
 				<Placeholder
 					key="placeholder"
-					label={ __( 'Layout Selector', 'gutenberg-den-blocks' ) }
-					instructions={ __( 'Launch the layout library to browse pre-designed sections.', 'gutenberg-den-blocks' ) }
+					label={ __( 'Layout Selector', 'gutenberg-extra-blocks' ) }
+					instructions={ __( 'Launch the layout library to browse pre-designed sections.', 'gutenberg-extra-blocks' ) }
 					className={ 'gx-layout-selector-placeholder' }
 					icon="layout"
 				>

@@ -447,7 +447,8 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 
 		const titleStyles = {
 			color: titleColor ? titleColor : undefined,
-			fontFamily: titleFontFamily != 'inherit' ? titleFontFamily : '',
+			//fontFamily: titleFontFamily != 'inherit' ? titleFontFamily : '',
+			fontFamily: titleFontFamily,
 			fontSize: fontSizeTitle ? (fontSizeTitle + fontSizeTitleUnit) : undefined,
 		}
 

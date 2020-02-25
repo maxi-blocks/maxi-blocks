@@ -54,7 +54,13 @@ const getFontFamilyOptions = (data) => {
  */
 
 const loadFonts = (font, files) => {
-    if (document.fonts) {
+    // Avoid reloading fonts already load
+    for (var fontFace of document.fonts.values()) {
+        if ( fontFace.family === font ) {
+            return;
+        }
+    }
+    if (document.fonts) {   // FontFace API
         Object.entries(files).map(variant => {
             const style = getFontStyle(variant[0]);
             const fontLoad = new FontFace(font, `url(${variant[1]})`, style);

@@ -90,10 +90,8 @@ export const FontFamily = (props) => {
     }
 
     const getFontStyle = ( variant ) => {
-        console.log ( variant.charAt( 0 ) )
-        switch ( variant.charAt( 0 ) ) {
-            
-        }
+        const styles = variant.split(/([0-9]+)/);
+        console.log ( styles )
     }
 
     return (

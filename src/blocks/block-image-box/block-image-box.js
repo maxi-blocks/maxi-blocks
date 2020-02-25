@@ -447,7 +447,6 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 
 		const titleStyles = {
 			color: titleColor ? titleColor : undefined,
-			//fontFamily: titleFontFamily != 'inherit' ? titleFontFamily : '',
 			fontFamily: titleFontFamily,
 			fontSize: fontSizeTitle ? (fontSizeTitle + fontSizeTitleUnit) : undefined,
 		}
@@ -1281,6 +1280,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 
 		const titleStyles = {
 			color: titleColor ? titleColor : undefined,
+			fontFamily: titleFontFamily,
 			fontSize: fontSizeTitle ? (fontSizeTitle + fontSizeTitleUnit) : undefined,
 		}
 
@@ -1347,7 +1347,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 
 				<div class='gx-image-box-text'>
 
-				<RichText.Content tagName={titleLevel} style={ titleStyles } className="gx-image-box-title" value={ title } />
+				<RichText.Content tagName={titleLevel} style={ titleStyles } className="gx-image-box-title" value={ title } font={titleFontFamily} />
 
 				<RichText.Content tagName="p" style={ subTitleStyles } className="gx-image-box-subtitle" value={ additionalText } />
 

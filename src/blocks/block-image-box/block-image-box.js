@@ -10,7 +10,7 @@ import './style.scss';
 import './editor.scss';
 import { withState } from '@wordpress/compose';
 import DimensionsControl from '../../components/dimensions-control/';
-import { FontFamily } from '../../components/fontfamilyselector/index';
+import { FontFamilySelector, fontFamilyinit } from '../../components/fontfamilyselector/index';
 import { useSelect } from '@wordpress/data';
 
 const { __ } = wp.i18n; // Import __() from wp.i18n
@@ -447,6 +447,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 
 		const titleStyles = {
 			color: titleColor ? titleColor : undefined,
+			fontFamily: titleFontFamily != 'inherit' ? titleFontFamily : '',
 			fontSize: fontSizeTitle ? (fontSizeTitle + fontSizeTitleUnit) : undefined,
 		}
 
@@ -502,6 +503,12 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 		const gradients = "";
 		const disableCustomGradients = false;
 
+		// Init the saved fonts
+		const blockFonts = [
+			titleFontFamily
+		];
+
+		fontFamilyinit( blockFonts );
 
 		return (
 			<div 
@@ -524,7 +531,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 				<div class='gx-image-box-text'>
 				<RichText
 					tagName={titleLevel}
-					style={ titleStyles}
+					style={ titleStyles }
 					placeholder={ __( 'Write title…', 'gutenberg-extra' ) }
 					value={ title }
 					onChange={ ( value ) => setAttributes({ title: value }) }
@@ -679,7 +686,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 					    onFocusOutside = {() => { setAttributes({  titlePopUpisVisible: ! titlePopUpisVisible }) }}
 					    noArrow = {true}
 					    >
-							<FontFamily 
+							<FontFamilySelector
 								font={titleFontFamily}
 								onChange={ value => {
 									setAttributes ({ titleFontFamily: value });

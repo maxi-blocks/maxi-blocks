@@ -239,7 +239,10 @@ const DimensionsAttributes = {
 		type: 'boolean',
 		default: true,
 	},
-
+	fontSizeTitleUnit: {
+		type: 'string',
+		default: 'px',
+	}
 };
 
 export default DimensionsAttributes;

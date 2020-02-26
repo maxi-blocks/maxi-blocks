@@ -201,71 +201,71 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 			type: 'boolean',
 			default: false,
 		},
-	    blockWidth: {
-	        type: 'number',
-	    },
-	    minWidth: {
-	        type: 'number',
-	    },
-	    maxWidth: {
-	        type: 'number',
-	    },
-	    maxWidthUnit: {
-	        type: 'string',
-	        default: 'px',
-	    },
-	    maxHeight: {
-	        type: 'number',
-	    },
-	    maxHeightUnit: {
-	        type: 'string',
-	        default: 'px',
-	    },
-	    deviceTypography: {
-	        type: 'string',
-	        default: 'desktop',
-	    },
-	    minWidthUnit: {
-	        type: 'string',
-	        default: 'px',
-	    },
-	    widthUnit: {
-	        type: 'string',
-	        default: '%',
-	    },
-	    heightUnit: {
-	        type: 'string',
-	        default: '%',
-	    },
-	    minHeightUnit: {
-	        type: 'string',
-	        default: 'px',
-	    },
-	    fontSizeTitleUnit: {
-	        type: 'string',
-	        default: 'px',
-	    },
-      letterSpacingUnit:{
-        type: 'string',
-        default: 'px'
-      },
-	    fontSizeTitle: {
-	        type: 'number',
-	    },
-      lineHeightTitle:{
+    blockWidth: {
+      type: 'number',
+    },
+    minWidth: {
+      type: 'number',
+    },
+    maxWidth: {
+      type: 'number',
+    },
+    maxWidthUnit: {
+      type: 'string',
+      default: 'px',
+    },
+    maxHeight: {
+      type: 'number',
+    },
+    maxHeightUnit: {
+      type: 'string',
+      default: 'px',
+    },
+    deviceTypography: {
+      type: 'string',
+      default: 'desktop',
+    },
+    minWidthUnit: {
+      type: 'string',
+      default: 'px',
+    },
+    widthUnit: {
+      type: 'string',
+      default: '%',
+    },
+    heightUnit: {
+      type: 'string',
+      default: '%',
+    },
+    minHeightUnit: {
+      type: 'string',
+      default: 'px',
+    },
+    fontSizeTitleUnit: {
+      type: 'string',
+      default: 'px',
+    },
+    letterSpacingUnit:{
+      type: 'string',
+      default: 'px'
+    },
+    fontSizeTitle: {
+      type: 'number',
+    },
+    lineHeightTitle:{
+      type: 'number',
+    },
+    blockHeight: {
         type: 'number',
-      },
-	    blockHeight: {
-	        type: 'number',
-	    },
-      fontWeight:{
-        type: 'number',
-      },
-	    minHeight: {
-	        type: 'number',
-	    },
-	    extraClassName: {
-			type: 'string',
+    },
+    fontWeight:{
+      type: 'number',
+    },
+    minHeight: {
+      type: 'number',
+    },
+    extraClassName: {
+		  type: 'string',
 		},
     lineHeightUnit:{
       type: 'string',

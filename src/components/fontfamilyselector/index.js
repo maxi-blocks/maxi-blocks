@@ -121,7 +121,8 @@ export const FontFamilySelector = (props) => {
 
     const {
         font,
-        onChange
+        onChange,
+        className
     } = props;
 
     let isOpen = false;
@@ -147,7 +148,7 @@ export const FontFamilySelector = (props) => {
     return (
         <Fragment>
             <Dropdown
-                className='gx-font-family-selector'
+                className={className}
                 contentClassName="gx-font-family-selector-popover"
                 renderToggle={({ isOpen, onToggle }) => (
                     <Button

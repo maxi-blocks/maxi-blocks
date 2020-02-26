@@ -11,6 +11,7 @@ import './editor.scss';
 import { withState } from '@wordpress/compose';
 import DimensionsControl from '../../components/dimensions-control/';
 import { FontFamilySelector, fontFamilyinit } from '../../components/fontfamilyselector/index';
+import { FontPopover } from '../../components/fonts/index.js';
 import { useSelect } from '@wordpress/data';
 
 const { __ } = wp.i18n; // Import __() from wp.i18n
@@ -188,10 +189,6 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 	        type: 'string',
 	        default: 'px',
 	    },
-	    deviceTypography: {
-	        type: 'string',
-	        default: 'desktop',
-	    },
 	    minWidthUnit: {
 	        type: 'string',
 	        default: 'px',
@@ -321,7 +318,6 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 				backgroundGradient,
 				blockStyle,
 				defaultBlockStyle,
-				deviceTypography
 			},
 			setAttributes,
 		} = props;
@@ -670,61 +666,15 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 						/>          
 				</PanelBody>
 				<PanelBody className="gx-panel gx-color-setting gx-style-tab-setting" initialOpen={ true } title={ __( 'Colour settings' ) }>
-					<BaseControl
-					className={"gx-settings-button"}
-					>
-						<BaseControl.VisualLabel>Title Typography</BaseControl.VisualLabel>
-						<Button 
-						isSecondary
-						onClick={() => { setAttributes({  titlePopUpisVisible: ! titlePopUpisVisible }) }}
-						>
-						Typography</Button>
-					</BaseControl>
-					{ titlePopUpisVisible && (
-					    <Popover
-					    className="gx-popover"
-					    onFocusOutside = {() => { setAttributes({  titlePopUpisVisible: ! titlePopUpisVisible }) }}
-					    noArrow = {true}
-					    >
-							<FontFamilySelector
-								font={titleFontFamily}
-								onChange={ value => {
-									setAttributes ({ titleFontFamily: value });
-								  } }
-							/>
-							<RadioControl
-								className={'gx-device-control'}
-						        selected={deviceTypography }
-						        options={ [
-						            { label: '', value: 'desktop' },
-						            { label: '', value: 'tablet' },
-						            { label: '', value: 'mobile' },
-						        ] }
-						        onChange={ ( value ) => props.setAttributes({ deviceTypography: value }) }
-						    />
-							<RadioControl
-								className={'gx-unit-control'}
-						        selected={fontSizeTitleUnit }
-						        options={ [
-						            { label: 'PX', value: 'px' },
-						            { label: 'EM', value: 'em' },
-						            { label: 'VW', value: 'vw' },
-						            { label: '%', value: '%' },
-						        ] }
-						        onChange={ ( value ) => props.setAttributes({ fontSizeTitleUnit: value }) }
-						    />
-						    <RangeControl
-	                            label="Size"
-	                            className={'gx-with-unit-control'}
-	                            value={fontSizeTitle}
-	                            onChange={ ( value ) => props.setAttributes({ fontSizeTitle: value }) }
-								min={ 0 }
-								step={0.1}
-								allowReset = {true}
-                        	/>
-					     </Popover>
-					) }
-					
+					<FontPopover 
+						title='Title Typography'
+						font={titleFontFamily}
+						onFontFamilyChange={value => { setAttributes ({ titleFontFamily: value }); }}
+						fontSizeUnit={fontSizeTitleUnit}
+						onFontSizeUnitChange={( value ) => props.setAttributes({ fontSizeTitleUnit: value })}
+						fontSize={fontSizeTitle}
+						onFontSizeChange={( value ) => props.setAttributes({ fontSizeTitle: value })}
+					/>
 					<PanelColorSettings
 							title={ __( 'Background Colour Settings' ) }
 							colorSettings={ [
@@ -1171,7 +1121,6 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 				backgroundGradient,
 				blockStyle,
 				defaultBlockStyle,
-				deviceTypography
 			},
 		} = props;
 

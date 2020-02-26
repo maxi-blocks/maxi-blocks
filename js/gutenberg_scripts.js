@@ -22,8 +22,8 @@ class FontFamilyResolver {
 
     getJSON () {
         /** !! I don't like this way... !! **/
-        const fontsUrl = window.origin + '/wp-content/plugins/gutenberg-extra/customizer/dist/fonts.json';
-        //const fontsUrl = window.origin + '/gutenden/wp-content/plugins/gutenberg-extra/customizer/dist/fonts.json';
+        //const fontsUrl = window.origin + '/wp-content/plugins/gutenberg-extra/customizer/dist/fonts.json';
+        const fontsUrl = window.origin + '/gutenden/wp-content/plugins/gutenberg-extra/customizer/dist/fonts.json';
         fetch ( fontsUrl )
             .then ( (result) => {
                 return result.json();

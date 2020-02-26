@@ -20,6 +20,36 @@ const {RichText,MediaUpload,InspectorControls, URLInput} = wp.editor;
 const {PanelBody, PanelRow, Button, TextControl, ToggleControl, RadioControl, RangeControl, SelectControl, TextareaControl, ColourPicker, ColourIndicator, GradientPicker, BaseControl, Text, Popover } = wp.components;
 const {PanelColorSettings, PanelColorGradientSettings} = wp.blockEditor;
 
+// Declaring placeholder variables because attributes are not async when setting them
+let textDecorationTitleValue;
+let textDecorationTabletValue;
+let textDecorationMobileValue;
+let textDecorationDesktopValue;
+let fontSizeTitleValue;
+let fontSizeTitleTabletValue;
+let fontSizeTitleMobileValue;
+let fontSizeTitleDesktopValue;
+let lineHeightDesktopValue;
+let lineHeightTitleValue;
+let lineHeightTabletValue;
+let lineHeightMobileValue;
+let letterSpacingTitleValue;
+let letterSpacingDesktopValue;
+let letterSpacingTabletValue;
+let letterSpacingMobileValue;
+let fontWeightTitleValue;
+let fontWeightTabletValue;
+let fontWeightMobileValue;
+let fontWeightDesktopValue;
+let textTransformTitleValue;
+let textTransformDesktopValue;
+let textTransformTabletValue;
+let textTransformMobileValue;
+let fontStyleTitleValue;
+let fontStyleDesktopValue;
+let fontStyleTabletValue;
+let fontStyleMobileValue;
+
 const Divider = () => (
     <hr style={{marginBottom: '15px',}} />
 );
@@ -300,6 +330,10 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 				opensInNewWindow,
 				addUgc,
         fontWeight,
+        fontWeightTitle,
+        fontWeightMobile,
+        fontWeightTablet,
+        fontWeightDesktop,
 				addSponsored,
 				addNoreferrer,
 				addNofollow,
@@ -334,8 +368,20 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
         letterSpacingUnit,
 				blockHeight,
 				textTransform,
+        textTransformTitle,
+        textTransformDesktop,
+        textTransformMobile,
+        textTransformTablet,
         textDecoration,
+        textDecorationTitle,
+        textDecorationDesktop,
+        textDecorationTablet,
+        textDecorationMobile,
         fontStyle,
+        fontStyleTitle,
+        fontStyleDesktop,
+        fontStyleMobile,
+        fontStyleTablet,
 				borderWidth,
 				borderRadius,
 				borderType,
@@ -512,10 +558,10 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 			height: blockHeight ? (blockHeight + heightUnite) : undefined,
 			maxHeight: maxHeight ? (maxHeight + maxHeightUnit) : undefined,
 			minHeight: minHeight ? (minHeight + minHeightUnit) : undefined,
-			textTransform: textTransform ? textTransform : undefined,
-      textDecoration: textDecoration ? textDecoration : undefined,
-      fontWeight: fontWeight ? fontWeight : undefined,
-      fontStyle: fontStyle ? fontStyle : undefined,
+			textTransform: textTransformDesktop ? textTransformDesktop : undefined,
+      textDecoration: textDecorationDesktop ? textDecorationDesktop : undefined,
+      fontWeight: fontWeightDesktop ? fontWeightDesktop : undefined,
+      fontStyle: fontStyleDesktop ? fontStyleDesktop : undefined,
 			// paddingTop: paddingTop ? (paddingTop + paddingUnit) : undefined,
 			// paddingRight: paddingRight ? (paddingRight + paddingUnit) : undefined,
 			// paddingBottom: paddingBottom ? (paddingBottom + paddingUnit) : undefined,
@@ -542,27 +588,52 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
       //add responsive styling
         responsiveCss += '@media only screen and (max-width: 768px) {';
         responsiveCss += '.gx-image-box-title{';
-        if(typeof fontSizeTitleTablet !== 'undefined'){
-        responsiveCss += 'font-size: ' + fontSizeTitleTablet + fontSizeTitleUnit + ' !important;';
+        if(typeof fontSizeTitleTabletValue !== 'undefined'){
+        responsiveCss += 'font-size: ' + fontSizeTitleTabletValue + fontSizeTitleUnit + ' !important;';
         }
-        if(typeof lineHeightTablet !== 'undefined'){
-          responsiveCss += 'line-height: ' + lineHeightTablet + lineHeightUnit + ' !important';
+        if(typeof lineHeightTabletValue !== 'undefined'){
+          responsiveCss += 'line-height: ' + lineHeightTabletValue + lineHeightUnit + ' !important;';
         }
-        if(typeof letterSpacingTablet !== 'undefined'){
-          responsiveCss += 'letter-spacing: ' + letterSpacingTablet + letterSpacingUnit + ' !important';
+        if(typeof letterSpacingTabletValue !== 'undefined'){
+          responsiveCss += 'letter-spacing: ' + letterSpacingTabletValue + letterSpacingUnit + ' !important;';
+        }
+        if(typeof fontWeightTabletValue !== 'undefined'){
+          responsiveCss += 'font-weight: ' + fontWeightTabletValue + ' !important;';
+        }
+        if(typeof textTransformTabletValue !== 'undefined'){
+          responsiveCss += 'text-transform: ' + textTransformTabletValue + ' !important;';
+        }
+        if(typeof fontStyleTabletValue !== 'undefined'){
+          responsiveCss += 'font-style: ' + fontStyleTabletValue + ' !important;';
+        }
+        if(typeof textDecorationTabletValue !== 'undefined'){
+          responsiveCss += 'text-decoration: ' + textDecorationTabletValue + ' !important;';
         }
         responsiveCss += '}';
         responsiveCss += '}';
+
         responsiveCss += '@media only screen and (max-width: 514px) {';
         responsiveCss += '.gx-image-box-title{';
-        if(typeof fontSizeTitleMobile !== 'undefined'){
-        responsiveCss += 'font-size: ' + fontSizeTitleMobile + fontSizeTitleUnit + ' !important;';
+        if(typeof fontSizeTitleMobileValue !== 'undefined'){
+        responsiveCss += 'font-size: ' + fontSizeTitleMobileValue + fontSizeTitleUnit + ' !important;';
         }
-        if(typeof lineHeightMobile !== 'undefined'){
-          responsiveCss += 'line-height: ' + lineHeightMobile + lineHeightUnit + ' !important';
+        if(typeof lineHeightMobileValue !== 'undefined'){
+          responsiveCss += 'line-height: ' + lineHeightMobileValue + lineHeightUnit + ' !important;';
         }
-        if(typeof letterSpacingMobile !== 'undefined'){
-          responsiveCss += 'letter-spacing: ' + letterSpacingMobile + letterSpacingUnit + ' !important';
+        if(typeof letterSpacingMobileValue !== 'undefined'){
+          responsiveCss += 'letter-spacing: ' + letterSpacingMobileValue + letterSpacingUnit + ' !important;';
+        }
+        if(typeof fontWeightMobileValue !== 'undefined'){
+          responsiveCss += 'font-weight: ' + fontWeightMobileValue + ' !important;';
+        }
+        if(typeof textTransformMobileValue !== 'undefined'){
+          responsiveCss += 'text-transform:  ' + textTransformMobileValue + ' !important;';
+        }
+        if(typeof fontStyleMobileValue !== 'undefined'){
+          responsiveCss += 'font-style: ' + fontStyleMobileValue + ' !important;';
+        }
+        if(typeof textDecorationMobileValue !== 'undefined'){
+          responsiveCss += 'text-decoration: ' + textDecorationMobileValue + ' !important;';
         }
         responsiveCss += '}';
         responsiveCss += '}';
@@ -578,12 +649,16 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 // When font size is changed
     const onChangeFontSize = (value) => {
       setAttributes({fontSizeTitle: value });
+      fontSizeTitleValue = value;
       if(deviceTypography == 'tablet'){
         setAttributes({fontSizeTitleTablet: value});
+        fontSizeTitleTabletValue = value;
       }else if(deviceTypography == 'desktop'){
         setAttributes({fontSizeTitleDesktop: value});
+        fontSizeTitleDesktopValue = value;
       }else if(deviceTypography == 'mobile'){
         setAttributes({fontSizeTitleMobile: value});
+        fontSizeTitleMobileValue = value;
       }
       saveMeta();
     }
@@ -591,12 +666,16 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 // When line height is changed
     const onChangeLineHeight = (value) => {
       setAttributes({ lineHeightTitle: value });
+      lineHeightTitleValue = value;
       if(deviceTypography == 'tablet'){
         setAttributes({lineHeightTablet : value});
+        lineHeightTabletValue = value;
       }else if(deviceTypography == 'desktop'){
         setAttributes({lineHeightDesktop : value});
+        lineHeightDesktopValue = value;
       }else if(deviceTypography == 'mobile'){
         setAttributes({lineHeightMobile : value})
+        lineHeightMobileValue = value;
       }
       saveMeta();
     }
@@ -604,16 +683,92 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 // When letter spacing is changed
     const onChangeLetterSpacing = (value) => {
       setAttributes({ letterSpacingTitle: value });
+      letterSpacingTitleValue = value;
       if(deviceTypography == 'tablet'){
         setAttributes({letterSpacingTablet : value});
+        letterSpacingTabletValue = value;
       }else if(deviceTypography == 'desktop'){
         setAttributes({letterSpacingDesktop : value});
+        letterSpacingDesktopValue = value;
       }else if(deviceTypography == 'mobile'){
         setAttributes({letterSpacingMobile : value})
+        letterSpacingMobileValue = value;
       }
       saveMeta();
     }
 
+  // When weight is changed
+  const onChangeWeight = (value) => {
+    setAttributes({ fontWeightTitle: value });
+    fontWeightTitleValue = value;
+    if(deviceTypography == 'tablet'){
+      setAttributes({fontWeightTablet : value});
+      fontWeightTabletValue = value;
+    }else if(deviceTypography == 'desktop'){
+      setAttributes({fontWeightDesktop : value});
+      fontWeightDesktopValue = value;
+    }else if(deviceTypography == 'mobile'){
+      setAttributes({fontWeightMobile : value})
+      fontWeightMobileValue = value;
+    }
+    saveMeta();
+  }
+
+// When text transform is changed
+  const onChangeTextTransform = (value) => {
+    setAttributes({ textTransformTitle: value });
+    textTransformTitleValue = value;
+    if(deviceTypography == 'tablet'){
+      setAttributes({textTransformTablet : value});
+      textTransformTabletValue = value;
+    }else if(deviceTypography == 'desktop'){
+      setAttributes({textTransformDesktop : value});
+      textTransformDesktopValue = value;
+    }else if(deviceTypography == 'mobile'){
+      setAttributes({textTransformMobile : value})
+      textTransformMobileValue = value;
+    }
+    saveMeta();
+  }
+
+// When text style is changed
+  const onChangeFontStyle = (value) => {
+    setAttributes({ fontStyle: value });
+    fontStyleTitleValue = value;
+    if(deviceTypography == 'tablet'){
+      setAttributes({fontStyleTablet : value});
+      fontStyleTabletValue = value;
+    }else if(deviceTypography == 'desktop'){
+      setAttributes({fontStyleDesktop : value});
+      fontStyleDesktopValue = value;
+    }else if(deviceTypography == 'mobile'){
+      setAttributes({fontStyleMobile : value})
+      fontStyleMobileValue = value;
+    }
+    saveMeta();
+  }
+
+// When Text Decoration is changed
+
+
+  const onChangeTextDecoration = (value) => {
+    setAttributes({ textDecorationTitle: value });
+    textDecorationTitleValue = value;
+    if(deviceTypography == 'tablet'){
+      setAttributes({textDecorationTablet : value});
+      textDecorationTabletValue = value;
+    }else if(deviceTypography == 'desktop'){
+      setAttributes({textDecorationDesktop : value});
+      textDecorationDesktopValue = value;
+    }else if(deviceTypography == 'mobile'){
+      setAttributes({textDecorationMobile : value})
+      textDecorationMobileValue = value;
+    }
+    saveMeta();
+  }
+
+
+// When device is changed
     const onChangeDevice = (value) => {
       setAttributes({ deviceTypography: value });
     }
@@ -892,7 +1047,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
                 <SelectControl
                    label="Weight"
                    className="gx-title-typography-setting"
-                   value={ fontWeight }
+                   value={ fontWeightTitle }
                    options={ [
                      { label: 'Thin (Hairline)', value: 100 },
                      { label: 'Extra Light (Ultra Light)', value: 200 },
@@ -905,7 +1060,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
                      { label: 'Black (Heavy)', value: 900 },
                      { label: 'Extra Black (Ultra Black)', value: 950 },
                    ] }
-                   onChange={ ( value ) => props.setAttributes({ fontWeight: value }) }
+                   onChange={ onChangeWeight }
                 />
                 <SelectControl
                    label="Transform"
@@ -919,7 +1074,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
                      { label: 'Full Width', value: 'full-width' },
                      { label: 'Full Size Kana', value: 'full-size-kana' },
                    ] }
-                   onChange={ ( value ) => props.setAttributes({ textTransform: value }) }
+                   onChange={ onChangeTextTransform }
                 />
                 <SelectControl
                    label="Style"
@@ -931,12 +1086,12 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
                      { label: 'Oblique', value: 'oblique' },
                      { label: 'Oblique (40 deg)', value: 'oblique 40deg' },
                    ] }
-                   onChange={ ( value ) => props.setAttributes({ fontStyle: value }) }
+                   onChange={ onChangeFontStyle }
                 />
                 <SelectControl
                    label="Decoration"
                    className="gx-title-typography-setting"
-                   value={ textDecoration }
+                   value={ textDecorationTitle }
                    options={ [
                      { label: 'Default', value: 'none' },
                      { label: 'Overline', value: 'overline' },
@@ -944,7 +1099,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
                      { label: 'Underline ', value: 'underline' },
                      { label: 'Underline Overline ', value: 'underline overline' },
                    ] }
-                   onChange={ ( value ) => props.setAttributes({ textDecoration: value }) }
+                   onChange={ onChangeTextDecoration }
                 />
 
 					     </Popover>
@@ -1389,9 +1544,25 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
         lineHeightTitle,
 				blockHeight,
 				textTransform,
+        textTransformTitle,
+        textTransformDesktop,
+        textTransformTablet,
+        textTransformMobile,
         textDecoration,
+        textDecorationTitle,
+        textDecorationDesktop,
+        textDecorationTablet,
+        textDecorationMobile,
         fontWeight,
+        fontWeightTitle,
+        fontWeightDesktop,
+        fontWeightMobile,
+        fontWeightTablet,
         fontStyle,
+        fontStyleTitle,
+        fontStyleDesktop,
+        fontStyleMobile,
+        fontStyleTablet,
 				borderWidth,
 				borderRadius,
 				borderType,
@@ -1552,8 +1723,8 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 			height: blockHeight ? (blockHeight + heightUnite) : undefined,
 			maxHeight: maxHeight ? (maxHeight + maxHeightUnit) : undefined,
 			minHeight: minHeight ? (minHeight + minHeightUnit) : undefined,
-			textTransform: textTransform ? textTransform : undefined,
-      textDecoration: textDecoration ? textDecoration : undefined,
+			textTransform: textTransformDesktop ? textTransformDesktop : undefined,
+      textDecoration: textDecorationDesktop ? textDecorationDesktop : undefined,
       fontWeight: fontWeight ? fontWeight: undefined,
       fontStyle: fontStyle ? fontStyle: undefined,
 			// paddingTop: paddingTop ? (paddingTop + paddingUnit) : undefined,

@@ -1,5 +1,5 @@
 /**
- * BLOCK: gutenberg-den/block-image-box
+ * BLOCK: gutenberg-extra/block-image-box
  *
  * Registering an image block with Gutenberg.
  * Shows an image and a description. A test block.
@@ -308,7 +308,11 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 		titleFontFamily: {
 			type: 'string',
 			default: 'inherit'
-		}
+		},
+    fontSizeTitleUnit: {
+			type: 'string',
+			default: 'px',
+		},
 	},
 	edit: ( props ) => {
 		const {
@@ -339,6 +343,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 				addNofollow,
 				addNoopener,
 				fontSizeTitle,
+        fontSize,
         fontSizeTitleTablet,
         fontSizeTitleDesktop,
         fontSizeTitleMobile,
@@ -524,12 +529,13 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 			flexDirection: renderImagePosition(imagePosition),
 		}
 
-		const titleStyles = {
+    const titleStyles = {
 			color: titleColor ? titleColor : undefined,
-			fontSize: fontSizeTitleDesktop ? (fontSizeTitleDesktop + fontSizeTitleUnit) : undefined,
+			fontSize: fontSizeTitleDesktopValue ? (fontSizeTitleDesktopValue + fontSizeTitleUnit) : undefined,
       lineHeight: lineHeightDesktop ? (lineHeightDesktop + lineHeightUnit) : undefined,
-      letterSpacing: letterSpacingDesktop ? (letterSpacingDesktop + letterSpacingUnit) : undefined,
+      letterSpacing: letterSpacingDesktop ? (letterSpacingDesktop + letterSpacingUnit) : undefined
 		}
+
 
 		const subTitleStyles = {
 			color: subTitleColor ? subTitleColor : undefined,
@@ -648,16 +654,16 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 
 // When font size is changed
     const onChangeFontSize = (value) => {
-      setAttributes({fontSizeTitle: value });
+      props.setAttributes({fontSizeTitle: value });
       fontSizeTitleValue = value;
       if(deviceTypography == 'tablet'){
-        setAttributes({fontSizeTitleTablet: value});
+        props.setAttributes({fontSizeTitleTablet: value});
         fontSizeTitleTabletValue = value;
       }else if(deviceTypography == 'desktop'){
-        setAttributes({fontSizeTitleDesktop: value});
+        props.setAttributes({fontSizeTitleDesktop: value});
         fontSizeTitleDesktopValue = value;
       }else if(deviceTypography == 'mobile'){
-        setAttributes({fontSizeTitleMobile: value});
+        props.setAttributes({fontSizeTitleMobile: value});
         fontSizeTitleMobileValue = value;
       }
       saveMeta();
@@ -665,16 +671,16 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 
 // When line height is changed
     const onChangeLineHeight = (value) => {
-      setAttributes({ lineHeightTitle: value });
+      props.setAttributes({ lineHeightTitle: value });
       lineHeightTitleValue = value;
       if(deviceTypography == 'tablet'){
-        setAttributes({lineHeightTablet : value});
+        props.setAttributes({lineHeightTablet : value});
         lineHeightTabletValue = value;
       }else if(deviceTypography == 'desktop'){
-        setAttributes({lineHeightDesktop : value});
+        props.setAttributes({lineHeightDesktop : value});
         lineHeightDesktopValue = value;
       }else if(deviceTypography == 'mobile'){
-        setAttributes({lineHeightMobile : value})
+        props.setAttributes({lineHeightMobile : value})
         lineHeightMobileValue = value;
       }
       saveMeta();
@@ -682,16 +688,16 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 
 // When letter spacing is changed
     const onChangeLetterSpacing = (value) => {
-      setAttributes({ letterSpacingTitle: value });
+      props.setAttributes({ letterSpacingTitle: value });
       letterSpacingTitleValue = value;
       if(deviceTypography == 'tablet'){
-        setAttributes({letterSpacingTablet : value});
+        props.setAttributes({letterSpacingTablet : value});
         letterSpacingTabletValue = value;
       }else if(deviceTypography == 'desktop'){
-        setAttributes({letterSpacingDesktop : value});
+        props.setAttributes({letterSpacingDesktop : value});
         letterSpacingDesktopValue = value;
       }else if(deviceTypography == 'mobile'){
-        setAttributes({letterSpacingMobile : value})
+        props.setAttributes({letterSpacingMobile : value})
         letterSpacingMobileValue = value;
       }
       saveMeta();
@@ -699,16 +705,16 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 
   // When weight is changed
   const onChangeWeight = (value) => {
-    setAttributes({ fontWeightTitle: value });
+    props.setAttributes({ fontWeightTitle: value });
     fontWeightTitleValue = value;
     if(deviceTypography == 'tablet'){
-      setAttributes({fontWeightTablet : value});
+      props.setAttributes({fontWeightTablet : value});
       fontWeightTabletValue = value;
     }else if(deviceTypography == 'desktop'){
-      setAttributes({fontWeightDesktop : value});
+      props.setAttributes({fontWeightDesktop : value});
       fontWeightDesktopValue = value;
     }else if(deviceTypography == 'mobile'){
-      setAttributes({fontWeightMobile : value})
+      props.setAttributes({fontWeightMobile : value})
       fontWeightMobileValue = value;
     }
     saveMeta();
@@ -716,16 +722,16 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 
 // When text transform is changed
   const onChangeTextTransform = (value) => {
-    setAttributes({ textTransformTitle: value });
+    props.setAttributes({ textTransformTitle: value });
     textTransformTitleValue = value;
     if(deviceTypography == 'tablet'){
-      setAttributes({textTransformTablet : value});
+      props.setAttributes({textTransformTablet : value});
       textTransformTabletValue = value;
     }else if(deviceTypography == 'desktop'){
-      setAttributes({textTransformDesktop : value});
+      props.setAttributes({textTransformDesktop : value});
       textTransformDesktopValue = value;
     }else if(deviceTypography == 'mobile'){
-      setAttributes({textTransformMobile : value})
+      props.setAttributes({textTransformMobile : value})
       textTransformMobileValue = value;
     }
     saveMeta();
@@ -733,16 +739,16 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 
 // When text style is changed
   const onChangeFontStyle = (value) => {
-    setAttributes({ fontStyle: value });
+    props.setAttributes({ fontStyle: value });
     fontStyleTitleValue = value;
     if(deviceTypography == 'tablet'){
-      setAttributes({fontStyleTablet : value});
+      props.setAttributes({fontStyleTablet : value});
       fontStyleTabletValue = value;
     }else if(deviceTypography == 'desktop'){
-      setAttributes({fontStyleDesktop : value});
+      props.setAttributes({fontStyleDesktop : value});
       fontStyleDesktopValue = value;
     }else if(deviceTypography == 'mobile'){
-      setAttributes({fontStyleMobile : value})
+      props.setAttributes({fontStyleMobile : value})
       fontStyleMobileValue = value;
     }
     saveMeta();
@@ -752,16 +758,16 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 
 
   const onChangeTextDecoration = (value) => {
-    setAttributes({ textDecorationTitle: value });
+    props.setAttributes({ textDecorationTitle: value });
     textDecorationTitleValue = value;
     if(deviceTypography == 'tablet'){
-      setAttributes({textDecorationTablet : value});
+      props.setAttributes({textDecorationTablet : value});
       textDecorationTabletValue = value;
     }else if(deviceTypography == 'desktop'){
-      setAttributes({textDecorationDesktop : value});
+      props.setAttributes({textDecorationDesktop : value});
       textDecorationDesktopValue = value;
     }else if(deviceTypography == 'mobile'){
-      setAttributes({textDecorationMobile : value})
+      props.setAttributes({textDecorationMobile : value})
       textDecorationMobileValue = value;
     }
     saveMeta();
@@ -770,7 +776,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 
 // When device is changed
     const onChangeDevice = (value) => {
-      setAttributes({ deviceTypography: value });
+      props.setAttributes({ deviceTypography: value });
     }
 
 
@@ -1500,6 +1506,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 		const {
 			className,
 			attributes: {
+        linkTitle,
 				title,
 				mediaID,
 				mediaURL,
@@ -1590,6 +1597,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 		} = props;
 
 		const {
+      fontSize,
 			paddingBottom,
 			paddingLeft,
 			paddingRight,
@@ -1690,7 +1698,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 
 		const titleStyles = {
 			color: titleColor ? titleColor : undefined,
-			fontSize: fontSizeTitleDesktop ? (fontSizeTitleDesktop + fontSizeTitleUnit) : undefined,
+			fontSize: fontSizeTitleDesktopValue ? (fontSizeTitleDesktopValue + fontSizeTitleUnit) : undefined,
       lineHeight: lineHeightDesktop ? (lineHeightDesktop + lineHeightUnit) : undefined,
       letterSpacing: letterSpacingDesktop ? (letterSpacingDesktop + letterSpacingUnit) : undefined
 		}

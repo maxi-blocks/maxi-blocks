@@ -21,10 +21,16 @@ class FontFamilyResolver {
     }
 
     getJSON () {
-        /** !! I don't like this way... !! **/
-        //const fontsUrl = window.origin + '/wp-content/plugins/gutenberg-extra/customizer/dist/fonts.json';
-        const fontsUrl = window.origin + '/gutenden/wp-content/plugins/gutenberg-extra/customizer/dist/fonts.json';
-        fetch ( fontsUrl )
+        const fontsUrl = 'https://ddlicensed.s3-eu-west-1.amazonaws.com/gutenberg-extra/fonts.json';
+        const options = {
+            method: 'GET',
+            mode: 'cors',
+            header: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*'
+            }
+        }
+        fetch ( fontsUrl, options )
             .then ( (result) => {
                 return result.json();
             })

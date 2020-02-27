@@ -10,7 +10,7 @@ import './style.scss';
 import './editor.scss';
 import { withState } from '@wordpress/compose';
 import DimensionsControl from '../../components/dimensions-control/';
-import { FontFamilySelector, fontFamilyinit } from '../../components/fontfamilyselector/index';
+import { fontFamilyinit } from '../../components/fonts/fontfamilyselector/index';
 import { FontPopover } from '../../components/fonts/index.js';
 import { useSelect } from '@wordpress/data';
 
@@ -671,9 +671,9 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 						font={titleFontFamily}
 						onFontFamilyChange={value => { setAttributes ({ titleFontFamily: value }); }}
 						fontSizeUnit={fontSizeTitleUnit}
-						onFontSizeUnitChange={( value ) => props.setAttributes({ fontSizeTitleUnit: value })}
+						onFontSizeUnitChange={( value ) => setAttributes({ fontSizeTitleUnit: value })}
 						fontSize={fontSizeTitle}
-						onFontSizeChange={( value ) => props.setAttributes({ fontSizeTitle: value })}
+						onFontSizeChange={( value ) => setAttributes({ fontSizeTitle: value })}
 					/>
 					<PanelColorSettings
 							title={ __( 'Background Colour Settings' ) }

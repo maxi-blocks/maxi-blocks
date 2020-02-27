@@ -21,6 +21,7 @@ const {PanelBody, PanelRow, Button, TextControl, ToggleControl, RadioControl, Ra
 const {PanelColorSettings, PanelColorGradientSettings} = wp.blockEditor;
 
 // Declaring placeholder variables because attributes are not async when setting them
+let cssResponsive = '';
 let textDecorationTitleValue;
 let textDecorationTabletValue;
 let textDecorationMobileValue;
@@ -247,6 +248,34 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
     },
     letterSpacingUnit:{
       type: 'string',
+      default: '%',
+    },
+    letterSpacingDesktop:{
+      type: 'number',
+    },
+    letterSpacingTablet:{
+      type: 'number',
+    },
+    letterSpacingMobile:{
+      type: 'number',
+    },
+    letterSpacingTitle:{
+      type: 'number',
+    },
+    fontSizeTitle: {
+			type: 'number',
+		},
+    fontSizeTitleDesktop: {
+			type: 'number',
+		},
+    fontSizeTitleTablet: {
+			type: 'number',
+		},
+    fontSizeTitleMobile: {
+			type: 'number',
+		},
+    letterSpacingUnit:{
+      type: 'string',
       default: 'px'
     },
     fontSizeTitle: {
@@ -258,8 +287,35 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
     blockHeight: {
         type: 'number',
     },
+    fontWeightTitle:{
+      type: 'string',
+    },
     fontWeight:{
-      type: 'number',
+      type: 'string',
+    },
+    fontWeightDesktop:{
+      type: 'string',
+    },
+    fontWeightTablet:{
+      type: 'string',
+    },
+    fontWeightMobile:{
+      type: 'string',
+    },
+    textTransform:{
+      type: 'string',
+    },
+    textTransformTitle:{
+      type: 'string',
+    },
+    textTransformTablet:{
+      type: 'string',
+    },
+    textTransformDesktop:{
+      type: 'string',
+    },
+    textTransformMobile:{
+      type: 'string',
     },
     minHeight: {
       type: 'number',
@@ -313,6 +369,279 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 			type: 'string',
 			default: 'px',
 		},
+    paddingTop: {
+				type: 'number',
+			},
+			paddingRight: {
+				type: 'number',
+			},
+			paddingBottom: {
+				type: 'number',
+			},
+			paddingLeft: {
+				type: 'number',
+			},
+			paddingTopTablet: {
+				type: 'number',
+			},
+			paddingRightTablet: {
+				type: 'number',
+			},
+			paddingBottomTablet: {
+				type: 'number',
+			},
+			paddingLeftTablet: {
+				type: 'number',
+			},
+			paddingTopMobile: {
+				type: 'number',
+			},
+			paddingRightMobile: {
+				type: 'number',
+			},
+			paddingBottomMobile: {
+				type: 'number',
+			},
+			paddingLeftMobile: {
+				type: 'number',
+			},
+			paddingUnit: {
+				type: 'string',
+				default: 'px',
+			},
+			paddingSize: {
+				type: 'string',
+				default: 'advanced',
+			},
+			paddingSyncUnits: {
+				type: 'boolean',
+				default: false,
+			},
+			paddingSyncUnitsTablet: {
+				type: 'boolean',
+				default: true,
+			},
+			paddingSyncUnitsMobile: {
+				type: 'boolean',
+				default: true,
+			},
+			marginTop: {
+				type: 'number',
+			},
+			marginRight: {
+				type: 'number',
+			},
+			marginBottom: {
+				type: 'number',
+			},
+			marginLeft: {
+				type: 'number',
+			},
+			marginTopTablet: {
+				type: 'number',
+			},
+			marginRightTablet: {
+				type: 'number',
+			},
+			marginBottomTablet: {
+				type: 'number',
+			},
+			marginLeftTablet: {
+				type: 'number',
+			},
+			marginTopMobile: {
+				type: 'number',
+			},
+			marginRightMobile: {
+				type: 'number',
+			},
+			marginBottomMobile: {
+				type: 'number',
+			},
+			marginLeftMobile: {
+				type: 'number',
+			},
+			marginUnit: {
+				type: 'string',
+				default: 'px',
+			},
+			marginSize: {
+				type: 'string',
+				default: 'no',
+			},
+			marginSyncUnits: {
+				type: 'boolean',
+				default: false,
+			},
+			marginSyncUnitsTablet: {
+				type: 'boolean',
+				default: false,
+			},
+			marginSyncUnitsMobile: {
+				type: 'boolean',
+				default: false,
+			},
+			hasMarginControl: {
+				type: 'boolean',
+				default: true,
+			},
+			hasAlignmentControls: {
+				type: 'boolean',
+				default: true,
+			},
+			hasStackedControl: {
+				type: 'boolean',
+				default: true,
+			},
+			borderRadiusTopLeft: {
+				type: 'number',
+			},
+			borderRadiusTopRight: {
+				type: 'number',
+			},
+			borderRadiusBottomLeft: {
+				type: 'number',
+			},
+			borderRadiusBottomRight: {
+				type: 'number',
+			},
+			borderRadiusTopLeftTablet: {
+				type: 'number',
+			},
+			borderRadiusTopRightTablet: {
+				type: 'number',
+			},
+			borderRadiusBottomLeftTablet: {
+				type: 'number',
+			},
+			borderRadiusBottomRightTablet: {
+				type: 'number',
+			},
+			borderRadiusTopLeftMobile: {
+				type: 'number',
+			},
+			borderRadiusTopRightMobile: {
+				type: 'number',
+			},
+			borderRadiusBottomLeftMobile: {
+				type: 'number',
+			},
+			borderRadiusBottomRightMobile: {
+				type: 'number',
+			},
+			borderRadiusUnit: {
+				type: 'string',
+				default: 'px',
+			},
+			borderRadiusSize: {
+				type: 'string',
+				default: 'advanced',
+			},
+			borderRadiusSyncUnits: {
+				type: 'boolean',
+				default: false,
+			},
+			borderRadiusSyncUnitsTablet: {
+				type: 'boolean',
+				default: true,
+			},
+			borderRadiusSyncUnitsMobile: {
+				type: 'boolean',
+				default: true,
+			},
+			borderWidthRight: {
+				type: 'number',
+			},
+			borderWidthTop: {
+				type: 'number',
+			},
+			borderWidthLeft: {
+				type: 'number',
+			},
+			borderWidthBottom: {
+				type: 'number',
+			},
+			borderWidthRightTablet: {
+				type: 'number',
+			},
+			borderWidthTopTablet: {
+				type: 'number',
+			},
+			borderWidthLeftTablet: {
+				type: 'number',
+			},
+			borderWidthBottomTablet: {
+				type: 'number',
+			},
+			borderWidthRightMobile: {
+				type: 'number',
+			},
+			borderWidthTopMobile: {
+				type: 'number',
+			},
+			borderWidthLeftMobile: {
+				type: 'number',
+			},
+			borderWidthBottomMobile: {
+				type: 'number',
+			},
+			borderWidthUnit: {
+				type: 'string',
+				default: 'px',
+			},
+			borderWidthSize: {
+				type: 'string',
+				default: 'advanced',
+			},
+			borderWidthSyncUnits: {
+				type: 'boolean',
+				default: false,
+			},
+			borderWidthSyncUnitsTablet: {
+				type: 'boolean',
+				default: true,
+			},
+			borderWidthSyncUnitsMobile: {
+				type: 'boolean',
+				default: true,
+			},
+			fontSizeTitleUnit: {
+				type: 'string',
+				default: 'px',
+			},
+      fontStyle: {
+        type: 'string',
+      },
+      fontStyleMobile:{
+        type: 'string',
+      },
+      fontStyleTitle:{
+        type: 'string',
+      },
+      fontStyleTablet:{
+        type: 'string',
+      },
+      fontStyleDesktop:{
+        type: 'string',
+      },
+      textDecorationTitle:{
+        type: 'string',
+      },
+      textDecorationMobile:{
+        type: 'string',
+      },
+      textDecorationTablet:{
+        type: 'string',
+      },
+      textDecorationDesktop:{
+        type: 'string',
+      },
+      textDecoration:{
+        type: 'string',
+      },
+      customCss:{
+        type: 'string'
+      }
 	},
 	edit: ( props ) => {
 		const {
@@ -357,6 +686,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
         letterSpacingDesktop,
         letterSpacingTablet,
         letterSpacingMobile,
+        letterSpacingUnit,
 				maxWidth,
 				maxWidthUnit,
 				minWidth,
@@ -370,7 +700,6 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 				minHeight,
 				fontSizeTitleUnit,
         lineHeightUnit,
-        letterSpacingUnit,
 				blockHeight,
 				textTransform,
         textTransformTitle,
@@ -405,7 +734,8 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 				backgroundGradient,
 				blockStyle,
 				defaultBlockStyle,
-				deviceTypography
+				deviceTypography,
+        customCss
 			},
 			setAttributes,
 		} = props;
@@ -531,8 +861,12 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 
     const titleStyles = {
 			color: titleColor ? titleColor : undefined,
-			fontSize: fontSizeTitleDesktopValue ? (fontSizeTitleDesktopValue + fontSizeTitleUnit) : undefined,
+			fontSize: fontSizeTitleDesktop ? (fontSizeTitleDesktop + fontSizeTitleUnit) : undefined,
       lineHeight: lineHeightDesktop ? (lineHeightDesktop + lineHeightUnit) : undefined,
+      fontWeight: fontWeightDesktop ? fontWeightDesktop : undefined,
+      textTransform: textTransformDesktop ? textTransformDesktop : undefined,
+      fontStyle: fontStyleDesktop ? fontStyleDesktop : undefined,
+      textDecoration: textDecorationDesktop ? textDecorationDesktop : undefined,
       letterSpacing: letterSpacingDesktop ? (letterSpacingDesktop + letterSpacingUnit) : undefined
 		}
 
@@ -556,44 +890,114 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 			borderRadius: borderRadius ? borderRadius + 'px' : undefined,
 			borderColor: borderColor ? borderColor : undefined,
 			borderStyle: borderType ? borderType : undefined,
-			lineHeight: lineHeight ? lineHeight + 'px' : undefined,
+			lineHeight: lineHeight ? lineHeight + '%' : undefined,
 			letterSpacing: letterSpacing ? letterSpacing + 'px' : undefined,
 			width: blockWidth ? (blockWidth + widthUnit) : undefined,
 			maxWidth: maxWidth ? (maxWidth + maxWidthUnit) : undefined,
 			minWidth: minWidth ? (minWidth + minWidthUnit) : undefined,
-			height: blockHeight ? (blockHeight + heightUnite) : undefined,
+			height: blockHeight ? (blockHeight + heightUnit) : undefined,
 			maxHeight: maxHeight ? (maxHeight + maxHeightUnit) : undefined,
 			minHeight: minHeight ? (minHeight + minHeightUnit) : undefined,
-			textTransform: textTransformDesktop ? textTransformDesktop : undefined,
-      textDecoration: textDecorationDesktop ? textDecorationDesktop : undefined,
-      fontWeight: fontWeightDesktop ? fontWeightDesktop : undefined,
-      fontStyle: fontStyleDesktop ? fontStyleDesktop : undefined,
-			// paddingTop: paddingTop ? (paddingTop + paddingUnit) : undefined,
-			// paddingRight: paddingRight ? (paddingRight + paddingUnit) : undefined,
-			// paddingBottom: paddingBottom ? (paddingBottom + paddingUnit) : undefined,
-			// paddingLeft: paddingLeft ? (paddingLeft + paddingUnit) : undefined,
-			// marginTop: marginTop ? (marginTop + marginUnit) : undefined,
-			// marginRight: marginRight ? (marginRight + marginUnit) : undefined,
-			// marginBottom: marginBottom ? (marginBottom + marginUnit) : undefined,
-			// marginLeft: marginLeft ? (marginLeft + marginUnit) : undefined,
-			// borderTopLeftRadius: borderRadiusTopLeft ? (borderRadiusTopLeft + borderRadiusUnit) : undefined,
-			// borderTopRightRadius: borderRadiusTopRight ? (borderRadiusTopRight + borderRadiusUnit) : undefined,
-			// borderBottomRightRadius: borderRadiusBottomRight ? (borderRadiusBottomRight + borderRadiusUnit) : undefined,
-			// borderBottomLeftRadius: borderRadiusBottomLeft ? (borderRadiusBottomLeft + borderRadiusUnit) : undefined,
+			paddingTop: paddingTop ? (paddingTop + paddingUnit) : undefined,
+			paddingRight: paddingRight ? (paddingRight + paddingUnit) : undefined,
+			paddingBottom: paddingBottom ? (paddingBottom + paddingUnit) : undefined,
+			paddingLeft: paddingLeft ? (paddingLeft + paddingUnit) : undefined,
+			marginTop: marginTop ? (marginTop + marginUnit) : undefined,
+			marginRight: marginRight ? (marginRight + marginUnit) : undefined,
+			marginBottom: marginBottom ? (marginBottom + marginUnit) : undefined,
+			marginLeft: marginLeft ? (marginLeft + marginUnit) : undefined,
+			borderTopLeftRadius: borderRadiusTopLeft ? (borderRadiusTopLeft + borderRadiusUnit) : undefined,
+			borderTopRightRadius: borderRadiusTopRight ? (borderRadiusTopRight + borderRadiusUnit) : undefined,
+			borderBottomRightRadius: borderRadiusBottomRight ? (borderRadiusBottomRight + borderRadiusUnit) : undefined,
+			borderBottomLeftRadius: borderRadiusBottomLeft ? (borderRadiusBottomLeft + borderRadiusUnit) : undefined,
+      borderTopWidth: borderWidthTop ? (borderWidthTop + borderWidthUnit) : undefined,
+			borderRightWidth: borderWidthRight ? (borderWidthRight + borderWidthUnit) : undefined,
+			borderBottomWidth: borderWidthBottom ? (borderWidthBottom + borderWidthUnit) : undefined,
+			borderLeftWidth: borderWidthLeft ? (borderWidthLeft + borderWidthUnit) : undefined,
 		};
 
+
 // General function to create responsive css
+
     const saveMeta = () => {
       const head = document.head || document.getElementsByTagName( 'head' )[ 0 ];
+      const meta = wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' );
+      const block = wp.data.select( 'core/block-editor' ).getBlock( props.clientId );
+      let dimensions = {};
+			const id = props.name.split( '/' ).join( '-' );
+      // Truncating head tag
       while (head.firstChild) {
         head.removeChild(head.lastChild);
       }
+      const fontSize = {
+      	fontSize: ( typeof block.attributes.fontSizeTitleDesktop !== 'undefined' ) ? block.attributes.fontSizeTitleDesktop + block.attributes.fontSizeTitleUnit : null,
+      	fontSizeTitleTablet: ( typeof block.attributes.fontSizeTitleTablet !== 'undefined' ) ? block.attributes.fontSizeTitleTablet + block.attributes.fontSizeTitleUnit : null,
+      	fontSizeTitleMobile: ( typeof block.attributes.fontSizeTitleMobile !== 'undefined' ) ? block.attributes.fontSizeTitleMobile + block.attributes.fontSizeTitleUnit : null,
+      };
+
+      const lineHeight = {
+        lineHeight: ( typeof block.attributes.lineHeightDesktop !== 'undefined' ) ? block.attributes.lineHeightDesktop + block.attributes.lineHeightUnit : null,
+      	lineHeightTablet: ( typeof block.attributes.lineHeightTablet !== 'undefined' ) ? block.attributes.lineHeightTablet + block.attributes.lineHeightUnit : null,
+      	lineHeightMobile: ( typeof block.attributes.lineHeightMobile !== 'undefined' ) ? block.attributes.lineHeightMobile + block.attributes.lineHeightUnit : null,
+      }
+
+      const letterSpacing = {
+        letterSpacing: ( typeof block.attributes.letterSpacingDesktop !== 'undefined' ) ? block.attributes.letterSpacingDesktop + block.attributes.letterSpacingUnit : null,
+        letterSpacingTablet: ( typeof block.attributes.letterSpacingTablet !== 'undefined' ) ? block.attributes.letterSpacingTablet + block.attributes.letterSpacingUnit : null,
+        letterSpacingMobile: ( typeof block.attributes.letterSpacingMobile !== 'undefined' ) ? block.attributes.letterSpacingMobile + block.attributes.letterSpacingUnit : null,
+      }
+
+      const fontWeight = {
+        fontWeight: ( typeof block.attributes.fontWeightDesktop !== 'undefined' ) ? block.attributes.fontWeightDesktop : null,
+        fontWeightTablet: ( typeof block.attributes.fontWeightTablet !== 'undefined' ) ? block.attributes.fontWeightTablet : null,
+        fontWeightMobile: ( typeof block.attributes.fontWeightMobile !== 'undefined' ) ? block.attributes.fontWeightMobile : null,
+      }
+
+      const textTransform = {
+        textTransform: ( typeof block.attributes.textTransformDesktop !== 'undefined' ) ? block.attributes.textTransformDesktop : null,
+        textTransformTablet: ( typeof block.attributes.textTransformTablet !== 'undefined' ) ? block.attributes.textTransformTablet : null,
+        textTransformMobile: ( typeof block.attributes.textTransformMobile !== 'undefined' ) ? block.attributes.textTransformMobile : null,
+      }
+
+      const fontStyle = {
+        fontStyle: ( typeof block.attributes.fontStyleDesktop !== 'undefined' ) ? block.attributes.fontStyleDesktop : null,
+        fontStyleTablet: ( typeof block.attributes.fontStyleTablet !== 'undefined' ) ? block.attributes.fontStyleTablet : null,
+        fontStyleMobile: ( typeof block.attributes.fontStyleMobile !== 'undefined' ) ? block.attributes.fontStyleMobile : null,
+      }
+
+      const textDecoration = {
+        textDecoration: ( typeof block.attributes.textDecorationDesktop !== 'undefined' ) ? block.attributes.textDecorationDesktop : null,
+        textDecorationTablet: ( typeof block.attributes.textDecorationTablet !== 'undefined' ) ? block.attributes.textDecorationTablet : null,
+        textDecorationMobile: ( typeof block.attributes.textDecorationMobile !== 'undefined' ) ? block.attributes.textDecorationMobile : null,
+      }
+
+      if ( typeof meta === 'undefined' || typeof meta._gx_dimensions === 'undefined' || ( typeof meta._gx_dimensions !== 'undefined' && meta._gx_dimensions === '' ) ) {
+				dimensions = {};
+			} else {
+				dimensions = JSON.parse( meta._gx_dimensions );
+			}
+
+			if ( typeof dimensions[ id ] === 'undefined' ) {
+				dimensions[ id ] = {};
+				dimensions[ id ][ props.type ] = {};
+			} else {
+				if ( typeof dimensions[ id ][ props.type ] === 'undefined' ) {
+					dimensions[ id ][ props.type ] = {};
+				}
+			}
+      // Save values to metadata.
+			wp.data.dispatch( 'core/editor' ).editPost( {
+				meta: {
+					_gx_dimensions: JSON.stringify( dimensions ),
+				},
+			} );
+
       const style = document.createElement( 'style' );
       let responsiveCss = '';
       style.type = 'text/css';
       //add responsive styling
         responsiveCss += '@media only screen and (max-width: 768px) {';
-        responsiveCss += '.gx-image-box-title{';
+        responsiveCss += '.gx-image-box-text h2{';
         if(typeof fontSizeTitleTabletValue !== 'undefined'){
         responsiveCss += 'font-size: ' + fontSizeTitleTabletValue + fontSizeTitleUnit + ' !important;';
         }
@@ -619,7 +1023,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
         responsiveCss += '}';
 
         responsiveCss += '@media only screen and (max-width: 514px) {';
-        responsiveCss += '.gx-image-box-title{';
+        responsiveCss += '.gx-image-box-text h2{';
         if(typeof fontSizeTitleMobileValue !== 'undefined'){
         responsiveCss += 'font-size: ' + fontSizeTitleMobileValue + fontSizeTitleUnit + ' !important;';
         }
@@ -644,6 +1048,15 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
         responsiveCss += '}';
         responsiveCss += '}';
 
+      cssResponsive = responsiveCss;
+
+      // Setting Attribute
+      props.setAttributes({customCss: cssResponsive});
+      wp.data.dispatch( 'core/editor' ).editPost( {
+				responsiveStyles: {
+					style: cssResponsive,
+				},
+			} );
       if ( style.styleSheet ) {
         style.innerHTML = responsiveCss;
       } else {
@@ -796,6 +1209,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 			className={ 'gx-block ' + blockStyle+ ' gx-image-box ' + className }
 			data-gx_initial_block_class = {defaultBlockStyle}
 			style={blockStyles}>
+      <style scoped>{customCss}</style>
 			<div className="gx-image-box-link" style={linkStyles}>
 				<div className="gx-image-box-image">
 					<MediaUpload
@@ -1071,7 +1485,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
                 <SelectControl
                    label="Transform"
                    className="gx-title-typography-setting"
-                   value={ textTransform }
+                   value={ textTransformTitle }
                    options={ [
                      { label: 'Default', value: 'none' },
                      { label: 'Capitilize', value: 'capitalize' },
@@ -1528,6 +1942,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
         lineHeightTablet,
         lineHeightMobile,
 				letterSpacing,
+        letterSpacingUnit,
         letterSpacingDesktop,
         letterSpacingMobile,
         letterSpacingTablet,
@@ -1588,7 +2003,8 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 				backgroundGradient,
 				blockStyle,
 				defaultBlockStyle,
-				deviceTypography
+				deviceTypography,
+        customCss
 			},
 		} = props;
 
@@ -1698,9 +2114,13 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 
 		const titleStyles = {
 			color: titleColor ? titleColor : undefined,
-			fontSize: fontSizeTitleDesktopValue ? (fontSizeTitleDesktopValue + fontSizeTitleUnit) : undefined,
+			fontSize: fontSizeTitleDesktop ? (fontSizeTitleDesktop + fontSizeTitleUnit) : undefined,
       lineHeight: lineHeightDesktop ? (lineHeightDesktop + lineHeightUnit) : undefined,
-      letterSpacing: letterSpacingDesktop ? (letterSpacingDesktop + letterSpacingUnit) : undefined
+      fontWeight: fontWeightDesktop ? fontWeightDesktop : undefined,
+      textTransform: textTransformDesktop ? textTransformDesktop : undefined,
+      fontStyle: fontStyleDesktop ? fontStyleDesktop : undefined,
+      letterSpacing: letterSpacingDesktop ? (letterSpacingDesktop + letterSpacingUnit) : undefined,
+      textDecoration: textDecorationDesktop ? textDecorationDesktop : undefined,
 		}
 
 		const subTitleStyles = {
@@ -1731,28 +2151,29 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 			height: blockHeight ? (blockHeight + heightUnite) : undefined,
 			maxHeight: maxHeight ? (maxHeight + maxHeightUnit) : undefined,
 			minHeight: minHeight ? (minHeight + minHeightUnit) : undefined,
-			textTransform: textTransformDesktop ? textTransformDesktop : undefined,
-      textDecoration: textDecorationDesktop ? textDecorationDesktop : undefined,
-      fontWeight: fontWeight ? fontWeight: undefined,
-      fontStyle: fontStyle ? fontStyle: undefined,
-			// paddingTop: paddingTop ? (paddingTop + paddingUnit) : undefined,
-			// paddingRight: paddingRight ? (paddingRight + paddingUnit) : undefined,
-			// paddingBottom: paddingBottom ? (paddingBottom + paddingUnit) : undefined,
-			// paddingLeft: paddingLeft ? (paddingLeft + paddingUnit) : undefined,
-			// marginTop: marginTop ? (marginTop + marginUnit) : undefined,
-			// marginRight: marginRight ? (marginRight + marginUnit) : undefined,
-			// marginBottom: marginBottom ? (marginBottom + marginUnit) : undefined,
-			// marginLeft: marginLeft ? (marginLeft + marginUnit) : undefined,
-			// borderTopLeftRadius: borderRadiusTopLeft ? (borderRadiusTopLeft + borderRadiusUnit) : undefined,
-			// borderTopRightRadius: borderRadiusTopRight ? (borderRadiusTopRight + borderRadiusUnit) : undefined,
-			// borderBottomRightRadius: borderRadiusBottomRight ? (borderRadiusBottomRight + borderRadiusUnit) : undefined,
-			// borderBottomLeftRadius: borderRadiusBottomLeft ? (borderRadiusBottomLeft + borderRadiusUnit) : undefined,
+			paddingTop: paddingTop ? (paddingTop + paddingUnit) : undefined,
+			paddingRight: paddingRight ? (paddingRight + paddingUnit) : undefined,
+			paddingBottom: paddingBottom ? (paddingBottom + paddingUnit) : undefined,
+			paddingLeft: paddingLeft ? (paddingLeft + paddingUnit) : undefined,
+			marginTop: marginTop ? (marginTop + marginUnit) : undefined,
+			marginRight: marginRight ? (marginRight + marginUnit) : undefined,
+			marginBottom: marginBottom ? (marginBottom + marginUnit) : undefined,
+			marginLeft: marginLeft ? (marginLeft + marginUnit) : undefined,
+			borderTopLeftRadius: borderRadiusTopLeft ? (borderRadiusTopLeft + borderRadiusUnit) : undefined,
+			borderTopRightRadius: borderRadiusTopRight ? (borderRadiusTopRight + borderRadiusUnit) : undefined,
+			borderBottomRightRadius: borderRadiusBottomRight ? (borderRadiusBottomRight + borderRadiusUnit) : undefined,
+			borderBottomLeftRadius: borderRadiusBottomLeft ? (borderRadiusBottomLeft + borderRadiusUnit) : undefined,
+      borderTopWidth: borderWidthTop ? (borderWidthTop + borderWidthUnit) : undefined,
+			borderRightWidth: borderWidthRight ? (borderWidthRight + borderWidthUnit) : undefined,
+			borderBottomWidth: borderWidthBottom ? (borderWidthBottom + borderWidthUnit) : undefined,
+			borderLeftWidth: borderWidthLeft ? (borderWidthLeft + borderWidthUnit) : undefined,
 		};
 		return (
 			<div
 			className= { 'gx-block ' + blockStyle+ ' gx-image-box ' + className }
 			data-gx_initial_block_class = {defaultBlockStyle}
 			style={blockStyles}>
+      <style scoped>{customCss}</style>
 				<a className="gx-image-box-link"
 					style={linkStyles}
 					href={ readMoreLink}

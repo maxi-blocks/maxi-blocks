@@ -113,7 +113,7 @@ class DimensionsControl extends Component {
 	}
 
 	onChangeSize( value, size ) {
-		
+
 		if ( this.props.type === 'padding' ) {
 			this.props.setAttributes( { paddingSyncUnits: true } );
 			this.props.setAttributes( { paddingSize: value } );
@@ -171,7 +171,6 @@ class DimensionsControl extends Component {
 		const meta = wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' );
 		const block = wp.data.select( 'core/block-editor' ).getBlock( this.props.clientId );
 		let dimensions = {};
-
 		if ( typeof this.props.attributes.gx !== 'undefined' && typeof this.props.attributes.gx.id !== 'undefined' ) {
 			const id = this.props.name.split( '/' ).join( '-' ) + '-' + this.props.attributes.gx.id;
 			const paddingUnit = block.attributes.paddingUnit;
@@ -263,7 +262,7 @@ class DimensionsControl extends Component {
 						dimensions[ id ][ this.props.type ] = borderWidth;
 					default: dimensions[ id ][ this.props.type ] = undefined;
 				}
-			}	
+			}
 			// Save values to metadata.
 			wp.data.dispatch( 'core/editor' ).editPost( {
 				meta: {
@@ -865,7 +864,7 @@ class DimensionsControl extends Component {
 								<span className="components-gx-dimensions-control__number-label">{ __( 'Left', 'gx' ) }</span>
 								<span className="components-gx-dimensions-control__number-label-blank"></span>
 							</div>
-						</Fragment>						
+						</Fragment>
 				</div>
 			</Fragment>
 		);

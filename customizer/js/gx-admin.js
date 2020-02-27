@@ -1,4 +1,80 @@
 jQuery(function($) {
+    /**
+     * make modal for showing title like information
+     * @param modal_content
+     * @return modal
+     */
+    function modalTitle(modal_content, tooltipElement, event, showToolTipDirection = 'middle') {
+        // var topPos = +(event.clientY);
+        // var leftPos = +(event.clientX);
+        $('.tooltiptext, #tooltiptextCss').remove();
+
+        var topPos = 0;
+        var leftPos = 0;
+
+        var $modal = `<div class="tooltiptext ${showToolTipDirection}">
+                        ${modal_content}
+                      </div>`;
+
+        var tooltipElementClass = (tooltipElement.className).replace(/\s/g, '.');
+
+        $('head').append(`<style id="tooltiptextCss"> .${tooltipElementClass} {position: relative;} </style>`);
+        $(tooltipElement).append($modal);
+
+        var modalHeight = $('.tooltiptext')[0].getBoundingClientRect().height;
+        var modalWidth = $('.tooltiptext')[0].getBoundingClientRect().width;
+
+        topPos = (+topPos - modalHeight-20);
+        if (showToolTipDirection === 'middle'){
+            leftPos = (+leftPos - modalWidth/2);
+        }
+        else if (showToolTipDirection === 'right'){
+            leftPos = (+leftPos + +(modalWidth/4));
+        }
+
+        $('#tooltiptextCss').append('.tooltiptext{visibility: visible !important; opacity: 1!important;}');
+
+    }
+
+    /**
+     * Setup sections as labels
+     */
+    $('#accordion-section-globalBlockStyles, #accordion-section-themeOptions').removeClass();
+    $('#accordion-section-globalBlockStyles').html('<h2 class="accordion-section-title">Global Block Styles<span class="dashicons dashicons-info showTooltip" data-title="Adjust default styles of all GutenbergExtra blocks, anywehere they are used" style="pointer-events: painted;"> </span></h2>');
+    $('#accordion-section-themeOptions').html('<h2 class="accordion-section-title">Theme Options<span class="dashicons dashicons-info showTooltip" data-title="Adjust default styles of all GutenbergExtra blocks, anywehere they are used" style="pointer-events: painted;"> </span></h2>');
+
+
+    /**
+     * when hover on element included tooltips, show
+     */
+    $(document).on('hover', '.showTooltip', function (e) {
+        var modal_content = $(this).attr('data-title') ? $(this).attr('data-title') : 'test';
+        var tooltipElement = this;
+        var direction = "middle";
+        // left side bar
+        if( ($(this).attr("class")).includes('gx-sec-') ){
+            direction = "right";
+        }
+        modalTitle(modal_content, tooltipElement, e, direction);
+    })
+    $(document).on('mouseleave', '.showTooltip, .wp-picker-container, .customize-control-color .customize-control-title', function () {
+        $('.tooltiptext, #tooltiptextCss').remove();
+    })
+    $(document).on('hover', `li[id*="-color-"] .customize-control-title`, function (e) {
+        var modal_content = ($(this).text()).trim();
+        var tooltipElement = this;
+        var direction = "middle";
+        $('.tooltiptext, #tooltiptextCss').remove();
+
+        if(modal_content !== '')
+        modalTitle(modal_content, tooltipElement, e, direction);
+    })
+
+
+    /**
+     * Setup loader while page gets ready
+     * @param setup
+     */
     function loaderSetUp(setup = "add"){
 
         $('#page-loader').remove();
@@ -9,10 +85,9 @@ jQuery(function($) {
 
         var loader = '<div class="wrap-loader" id="page-loader">' +
                         '<div class="loading">' +
-                        '<div class="bounceball"></div>' +
-                        '<div class="text">NOW LOADING</div>' +
-                    '</div>'+
-                '</div>';
+                            '<div class="text"><img src="/wp-content/plugins/gutenberg-extra/img/loader.svg"></div>' +
+                        '</div>'+
+                    '</div>';
         $('body').append(loader);
 
     }
@@ -293,11 +368,11 @@ jQuery(function($) {
     }
 
     function initLeftSide() {
-        let html = `<div class="gx-sec-globalStyling active" data-left-section="globalStyling" title="Global Styling
+        let html = `<div class="gx-sec-globalStyling active showTooltip" data-left-section="globalStyling" data-title="Typography & Colours
 ">
                         <img src="/wp-content/plugins/gutenberg-extra/img/icons/gs-icon.png" />
                     </div>
-                    <div class="gx-sec-test" data-left-section="test" title="Placeholder Tab">
+                    <div class="gx-sec-test showTooltip" data-left-section="test" data-title="Placeholder Tab">
                         <img src="/wp-content/plugins/gutenberg-extra/img/icons/xx-icon.png" />
                     </div>`;
         $('#customize-control-leftSide').html(html);
@@ -313,29 +388,43 @@ jQuery(function($) {
         var $themes = ['Default', 'Mint', 'Elegance', 'Candy', 'Bumblebee'];
         $.each($themes, function( key, theme ) {
 
-            $(`#customize-control-body_background_color${theme}-color-dark .customize-control-title`).html('<img class="icon-color" title="Background" src="/wp-content/plugins/gutenberg-extra/img/icons/fill-light.png" />')
-            $(`#customize-control-p_color${theme}-color-dark .customize-control-title`).html('<img class="icon-color" title="Text" src="/wp-content/plugins/gutenberg-extra/img/icons/edit-tool-light.png" />')
-            $(`#customize-control-a_color${theme}-color-dark .customize-control-title`).html('<img class="icon-color" title="Link" src="/wp-content/plugins/gutenberg-extra/img/icons/broken-link-light.png" />')
-            $(`#customize-control-highlight${theme}-color-dark .customize-control-title`).html('<img class="icon-color" title="Highlight" src="/wp-content/plugins/gutenberg-extra/img/icons/permanent-light.png" />')
-            $(`#customize-control-hover${theme}-color-dark .customize-control-title`).html('<img class="icon-color" title="Hover" src="/wp-content/plugins/gutenberg-extra/img/icons/cursor-light.png" />')
+            $(`#customize-control-body_background_color${theme}-color-dark .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Background" src="/wp-content/plugins/gutenberg-extra/img/icons/fill-light.png" />')
+            $(`#customize-control-p_color${theme}-color-dark .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Text" src="/wp-content/plugins/gutenberg-extra/img/icons/edit-tool-light.png" />')
+            $(`#customize-control-a_color${theme}-color-dark .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Link" src="/wp-content/plugins/gutenberg-extra/img/icons/broken-link-light.png" />')
+            $(`#customize-control-highlight${theme}-color-dark .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Highlight" src="/wp-content/plugins/gutenberg-extra/img/icons/permanent-light.png" />')
+            $(`#customize-control-hover${theme}-color-dark .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Hover" src="/wp-content/plugins/gutenberg-extra/img/icons/cursor-light.png" />')
 
-            $(`#customize-control-body_background_color${theme}-color-light .customize-control-title`).html('<img class="icon-color" title="Background" src="/wp-content/plugins/gutenberg-extra/img/icons/fill-dark.png" />')
-            $(`#customize-control-p_color${theme}-color-light .customize-control-title`).html('<img class="icon-color" title="Text" src="/wp-content/plugins/gutenberg-extra/img/icons/edit-tool-dark.png" />')
-            $(`#customize-control-a_color${theme}-color-light .customize-control-title`).html('<img class="icon-color" title="Link" src="/wp-content/plugins/gutenberg-extra/img/icons/broken-link-dark.png" />')
-            $(`#customize-control-highlight${theme}-color-light .customize-control-title`).html('<img class="icon-color" title="Highlight" src="/wp-content/plugins/gutenberg-extra/img/icons/permanent-dark.png" />')
-            $(`#customize-control-hover${theme}-color-light .customize-control-title`).html('<img class="icon-color" title="Hover" src="/wp-content/plugins/gutenberg-extra/img/icons/cursor-dark.png" />')
+            $(`#customize-control-body_background_color${theme}-color-light .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Background" src="/wp-content/plugins/gutenberg-extra/img/icons/fill-dark.png" />')
+            $(`#customize-control-p_color${theme}-color-light .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Text" src="/wp-content/plugins/gutenberg-extra/img/icons/edit-tool-dark.png" />')
+            $(`#customize-control-a_color${theme}-color-light .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Link" src="/wp-content/plugins/gutenberg-extra/img/icons/broken-link-dark.png" />')
+            $(`#customize-control-highlight${theme}-color-light .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Highlight" src="/wp-content/plugins/gutenberg-extra/img/icons/permanent-dark.png" />')
+            $(`#customize-control-hover${theme}-color-light .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Hover" src="/wp-content/plugins/gutenberg-extra/img/icons/cursor-dark.png" />')
 
         })
     }
 
     // make titles for color
-   $(document).on('hover', '.wp-picker-container', function () {
+   $(document).on('hover', '.wp-picker-container', function (e) {
+       $('.tooltiptext, #tooltiptextCss').remove();
 
-       if ($(this).parents('.customize-control-color').find('.icon-color').attr('title'))
-            $(this).attr('title', $(this).parents('.customize-control-color').find('.icon-color').attr('title'))
-       else
-           if ($(this).parents('.customize-control-color').find('.customize-control-title').text())
-               $(this).attr('title', $(this).parents('.customize-control-color').find('.customize-control-title').text())
+       var title = $(this).parents('.customize-control-color').find('.icon-color').attr('data-title');
+       var text = $(this).parent().parent().find('.customize-control-title').text();
+
+       if (title) {
+           title = title.trim();
+           if (title !== '')
+           modalTitle(title, this, e);
+           $('#tooltiptextCss').append('.tooltiptext{visibility: visible !important; opacity: 1!important;}');
+       }
+       else {
+           if (text) {
+               text = text.trim();
+               if (text !== '')
+               modalTitle(text, this, e);
+               $('#tooltiptextCss').append('.tooltiptext{visibility: visible !important; opacity: 1!important;}');
+           }
+       }
+
    })
 
     function initHeadingBlocksBGColors() {
@@ -458,6 +547,9 @@ jQuery(function($) {
         $('#customize-control-leftSide').on('click','div',function (e) {
             setActiveSection(this);
         });
+        // $(document).on('click','#accordion-section-test',function (e) {
+        //     setActiveSection($('#sub-accordion-section-test .gx-sec-test'))
+        // })
         $('#customize-control-leftSideTest').on('click','div',function (e) {
             setActiveSection(this);
         })
@@ -690,24 +782,30 @@ jQuery(function($) {
                 loaderSetUp();
             })
             if (typeof wp.customize.panel == 'function') {
-                // remove intermediate step and open GLOBAL STYLE section
+                // remove intermediate step and open TYPHOGRAPHY & COLOURS section
                 wp.customize.panel('GutenbergExtra', function (panel) {
                     panel.expanded.bind(function (isExpanded) {
                         if (isExpanded) {
-                            $('#customize-control-leftSideTest, #customize-control-leftSide').find('div').removeClass('active');
-                            $(`.gx-sec-globalStyling`).addClass("active");
-                            wp.customize.section('globalStyling').focus();
+                            // $('#customize-control-leftSideTest, #customize-control-leftSide').find('div').removeClass('active');
+                            // $(`.gx-sec-globalStyling`).addClass("active");
+                            // wp.customize.section('globalStyling').focus();
                         }
                     })
                 })
             }
             // remove intermediate step when going to back
             $(document).on('click', '#sub-accordion-section-globalStyling .customize-section-back, #sub-accordion-section-test .customize-section-back', function () {
-                $('#sub-accordion-panel-GutenbergExtra').find('.customize-panel-back').trigger( "click" );
+                // $('#sub-accordion-panel-GutenbergExtra').find('.customize-panel-back').trigger( "click" );
             })
 
-            $(document).on('hover', '.customize-section-back', function () {
-                $(this).attr('title', 'Back');
+            $(document).on('hover', '.customize-section-back', function (e) {
+                $(this).attr('data-title', 'Back');
+                var modal_content = $(this).attr('data-title');
+                var tooltipElement = this;
+                var direction = "right";
+                modalTitle(modal_content, tooltipElement, e, direction);
+
+
             })
 
             // heading-pop-up

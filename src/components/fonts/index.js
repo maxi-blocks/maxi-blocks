@@ -5,18 +5,21 @@
  */
 
 /**
+ * Styles
+ */
+
+import './editor.scss';
+
+/**
  * WordPress dependencies
  */
 
-const { __ } = wp.i18n;
 const { 
     BaseControl, 
-    Popover, 
     Button,
     RadioControl,
     RangeControl,
     Dropdown,
-    DropdownMenu
 } = wp.components;
 const { withState } = wp.compose;
 const { Fragment } = wp.element;
@@ -25,23 +28,19 @@ const { Fragment } = wp.element;
  * External dependencies
  */
 
-import { FontFamilySelector } from '../../components/fontfamilyselector/index';
+import { FontFamilySelector } from './fontfamilyselector/index';
 
 /**
  * Component
  */
 
-export const FontPopover = ( props ) => {
-    const FontPopover = withState( {
-        isVisible: false,
-        device: 'desktop',
-        props: props
-    })(( { props, isVisible, device, setState } ) => {
+export const FontPopover = props => {
 
         const {
             classNameBaseControl,
             title,
             buttonText,
+            classNameDropdown,
             classNamePopover,
             classNameFontFamilySelector,
             font,
@@ -54,31 +53,35 @@ export const FontPopover = ( props ) => {
             fontSize,
             onFontSizeChange
         } = props;
-        
-        const onPopoverToggle = ( ) => {
-            setState( (state) => (
-                { 
-                    isVisible: ! state.isVisible 
+
+        const DeviceControl = () => {
+            const DeviceControl = withState( {
+                device: 'desktop',
+            })(( {device, setState} ) => {
+
+                const onDeviceChange = (value) => {
+                    setState( {
+                        device: value
+                    } )
                 }
-            ))
-        };
 
-        const onPropChange = ( ) => {
-            setTimeout(() => {
-                setState( ( state ) => ( 
-                    console.log (state)
-                ) )
-            }, 1)
-        }
+                return (
+                    <RadioControl
+                        className={ classNameDevice ? classNameDevice : 'gx-device-control' }
+                        selected={device}
+                        options={ [
+                            { label: '', value: 'desktop' },
+                            { label: '', value: 'tablet' },
+                            { label: '', value: 'mobile' },
+                        ] }
+                        onChange={ onDeviceChange }
+                    />
+                )
+            })
 
-        const onDeviceChange = (value) => {
-            setState( {
-                device: value
-            } )
-        }
-
-        const onFocusOutside = (e) => {
-            console.log ( e )
+            return (
+                <DeviceControl />
+            )
         }
 
         return (
@@ -89,66 +92,58 @@ export const FontPopover = ( props ) => {
                     <BaseControl.VisualLabel>
                         { title }
                     </BaseControl.VisualLabel>
-                    <Button 
-                        isSecondary
-                        onClick={ onPopoverToggle }
+                    <Dropdown
+                        className={ classNameDropdown ? classNameDropdown : 'gx-fontdropdown' }
+                        contentClassName="gx-font-family-selector-popover"
+                        renderToggle={({ isOpen, onToggle }) => (
+                            <Button
+                                isSecundary
+                                onClick={onToggle}
+                                aria-expanded={isOpen}
+                            >
+                                { buttonText ? buttonText : 'Typography' }
+                            </Button>
+                        )}
+                        popoverProps={
+                            {                           
+                                className: classNamePopover ? classNamePopover : "gx-popover gx-fontpopover",
+                                noArrow: true,
+                                position: "center"
+                            }
+                        }
+                        renderContent={() => (
+                        <Fragment>
+                            <FontFamilySelector
+                                className={ classNameFontFamilySelector ? classNameFontFamilySelector : 'gx-font-family-selector' }
+                                font={font}
+                                onChange={onFontFamilyChange }
+                            />
+                            <DeviceControl />
+                            <RadioControl
+                                className={ classNameFontUnit ? classNameFontUnit : 'gx-unit-control' }
+                                selected={ fontSizeUnit }
+                                options={ [
+                                    { label: 'PX', value: 'px' },
+                                    { label: 'EM', value: 'em' },
+                                    { label: 'VW', value: 'vw' },
+                                    { label: '%', value: '%' },
+                                ] }
+                                onChange={onFontSizeUnitChange }
+                            />
+                            <RangeControl
+                                label="Size"
+                                className={ classNameFontSize ? classNameFontSize : 'gx-with-unit-control' }
+                                value={fontSize}
+                                onChange={ onFontSizeChange }
+                                min={ 0 }
+                                step={0.1}
+                                allowReset = {true}
+                            />
+                        </Fragment>
+                        )}
                     >
-                        { buttonText ? buttonText : 'Typography' }
-                    </Button>
+                    </Dropdown>
                 </BaseControl>
-                { isVisible && (
-                    <Popover
-                        className={ classNamePopover ? classNamePopover : "gx-popover" }
-                        onFocusOutside = { onFocusOutside }
-                        noArrow = {true}
-                    >
-                        <FontFamilySelector
-                            className={ classNameFontFamilySelector ? classNameFontFamilySelector : 'gx-font-family-selector' }
-                            font={font}
-                            onChange={onFontFamilyChange, onPropChange }
-                        />
-                        <RadioControl
-                            className={ classNameDevice ? classNameDevice : 'gx-device-control' }
-                            selected={device}
-                            options={ [
-                                { label: '', value: 'desktop' },
-                                { label: '', value: 'tablet' },
-                                { label: '', value: 'mobile' },
-                            ] }
-                            onChange={ ( value ) => onDeviceChange(value) }
-                        />
-                        <RadioControl
-                            className={ classNameFontUnit ? classNameFontUnit : 'gx-unit-control' }
-                            selected={ fontSizeUnit }
-                            options={ [
-                                { label: 'PX', value: 'px' },
-                                { label: 'EM', value: 'em' },
-                                { label: 'VW', value: 'vw' },
-                                { label: '%', value: '%' },
-                            ] }
-                            onChange={onFontSizeUnitChange, onPropChange }
-                        />
-                        <RangeControl
-                            label="Size"
-                            className={ classNameFontSize ? classNameFontSize : 'gx-with-unit-control' }
-                            value={fontSize}
-                            onChange={ ( value ) => {
-                                onFontSizeChange ( value );
-                                setTimeout(() => {
-                                    onPropChange();
-                                }, 1000);
-                            } }
-                            min={ 0 }
-                            step={0.1}
-                            allowReset = {true}
-                        />
-                    </Popover>
-                ) }
             </Fragment>
-        );
-    } );
-
-    return (
-        <FontPopover />
-    )
+        )       
 }

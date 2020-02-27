@@ -91,37 +91,80 @@ function gx_customizer_init( WP_Customize_Manager $wp_customize ){
             'priority' => 1
         ));
 
+        $wp_customize->add_section('themeOptions', [
+            'title' => __('Theme Options', 'gutenberg-extra'),
+//            'priority' => 10,
+            'panel' => 'GutenbergExtra'
+        ]);
+
+        $wp_customize->add_section('ipsum', [
+            'title' => __('Ipsum', 'gutenberg-extra'),
+//            'priority' => 10,
+            'panel' => 'GutenbergExtra'
+        ]);
+
+        $wp_customize->add_section('globalBlockStyles', [
+            'title' => __('Global Block Styles', 'gutenberg-extra'),
+//            'priority' => 10,
+            'panel' => 'GutenbergExtra'
+        ]);
+
         $section = 'globalStyling';
-
         $wp_customize->add_section($section, [
-            'title' => 'Global Styling',
-            'priority' => 10,
+            'title' => __('Typography & Colours', 'gutenberg-extra'),
+//            'priority' => 10,
             'panel' => 'GutenbergExtra'
         ]);
-        $wp_customize->add_section('test', [
-            'title' => 'Test',
-            'priority' => 10,
+//        $wp_customize->add_section('test', [
+//            'title' => 'Test',
+////            'priority' => 10,
+//            'panel' => 'GutenbergExtra'
+//        ]);
+        $wp_customize->add_section('buttons', [
+            'title' => 'Buttons',
+//            'priority' => 10,
             'panel' => 'GutenbergExtra'
         ]);
-        $wp_customize->add_setting('tt', [
-            'default' => 'Default',
-            'transport' => $transport
+        $wp_customize->add_section('formFields', [
+            'title' => 'Form Fields',
+//            'priority' => 10,
+            'panel' => 'GutenbergExtra'
+        ]);
+        $wp_customize->add_section('images', [
+            'title' => 'Images',
+//            'priority' => 10,
+            'panel' => 'GutenbergExtra'
+        ]);
+        $wp_customize->add_section('icons', [
+            'title' => 'Icons',
+//            'priority' => 10,
+            'panel' => 'GutenbergExtra'
+        ]);
+        $wp_customize->add_section('backToTopButton', [
+            'title' => 'Back-to-top Button',
+//            'priority' => 10,
+            'panel' => 'GutenbergExtra'
         ]);
 
-        $wp_customize->add_control('tt', [
-            'section' => 'test',
-            'type' => 'text',
-        ]);
+//        $wp_customize->add_setting('tt', [
+//            'default' => 'Default',
+//            'transport' => $transport
+//        ]);
+//
+//        $wp_customize->add_control('tt', [
+//            'section' => 'test',
+//            'type' => 'text',
+//        ]);
 
-        $wp_customize->add_setting('leftSideTest', [
-            'default' => 'leftTestPanel',
-            'transport' => $transport
-        ]);
+//        $wp_customize->add_setting('leftSideTest', [
+//            'default' => 'leftTestPanel',
+//            'transport' => $transport
+//        ]);
 
-        $wp_customize->add_control('leftSideTest', [
-            'section' => 'test',
-            'type' => 'text',
-        ]);
+//        $wp_customize->add_control('leftSideTest', [
+//            'section' => 'test',
+//            'type' => 'text',
+//        ]);
 
         // Sections
         if ($section == 'globalStyling') {

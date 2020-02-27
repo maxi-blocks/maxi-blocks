@@ -1,0 +1,1 @@
+{"version":3,"sources":["@wordpress/compose/src/hooks/use-keyboard-shortcut/index.native.js"],"names":["useKeyboardShortcut"],"mappings":"AAAA,IAAMA,mBAAmB,GAAG,SAAtBA,mBAAsB;AAAA,SAAM,IAAN;AAAA,CAA5B;;AACA,eAAeA,mBAAf","sourcesContent":["const useKeyboardShortcut = () => null;\nexport default useKeyboardShortcut;\n"]}

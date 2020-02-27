@@ -260,7 +260,243 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 		titleFontFamily: {
 			type: 'string',
 			default: 'inherit'
-		}
+		},
+		paddingTop: {
+		type: 'number',
+		},
+		paddingRight: {
+			type: 'number',
+		},
+		paddingBottom: {
+			type: 'number',
+		},
+		paddingLeft: {
+			type: 'number',
+		},
+		paddingTopTablet: {
+			type: 'number',
+		},
+		paddingRightTablet: {
+			type: 'number',
+		},
+		paddingBottomTablet: {
+			type: 'number',
+		},
+		paddingLeftTablet: {
+			type: 'number',
+		},
+		paddingTopMobile: {
+			type: 'number',
+		},
+		paddingRightMobile: {
+			type: 'number',
+		},
+		paddingBottomMobile: {
+			type: 'number',
+		},
+		paddingLeftMobile: {
+			type: 'number',
+		},
+		paddingUnit: {
+			type: 'string',
+			default: 'px',
+		},
+		paddingSize: {
+			type: 'string',
+			default: 'advanced',
+		},
+		paddingSyncUnits: {
+			type: 'boolean',
+			default: false,
+		},
+		paddingSyncUnitsTablet: {
+			type: 'boolean',
+			default: true,
+		},
+		paddingSyncUnitsMobile: {
+			type: 'boolean',
+			default: true,
+		},
+		marginTop: {
+			type: 'number',
+		},
+		marginRight: {
+			type: 'number',
+		},
+		marginBottom: {
+			type: 'number',
+		},
+		marginLeft: {
+			type: 'number',
+		},
+		marginTopTablet: {
+			type: 'number',
+		},
+		marginRightTablet: {
+			type: 'number',
+		},
+		marginBottomTablet: {
+			type: 'number',
+		},
+		marginLeftTablet: {
+			type: 'number',
+		},
+		marginTopMobile: {
+			type: 'number',
+		},
+		marginRightMobile: {
+			type: 'number',
+		},
+		marginBottomMobile: {
+			type: 'number',
+		},
+		marginLeftMobile: {
+			type: 'number',
+		},
+		marginUnit: {
+			type: 'string',
+			default: 'px',
+		},
+		marginSize: {
+			type: 'string',
+			default: 'no',
+		},
+		marginSyncUnits: {
+			type: 'boolean',
+			default: false,
+		},
+		marginSyncUnitsTablet: {
+			type: 'boolean',
+			default: false,
+		},
+		marginSyncUnitsMobile: {
+			type: 'boolean',
+			default: false,
+		},
+		hasMarginControl: {
+			type: 'boolean',
+			default: true,
+		},
+		hasAlignmentControls: {
+			type: 'boolean',
+			default: true,
+		},
+		hasStackedControl: {
+			type: 'boolean',
+			default: true,
+		},
+		borderRadiusTopLeft: {
+			type: 'number',
+		},
+		borderRadiusTopRight: {
+			type: 'number',
+		},
+		borderRadiusBottomLeft: {
+			type: 'number',
+		},
+		borderRadiusBottomRight: {
+			type: 'number',
+		},
+		borderRadiusTopLeftTablet: {
+			type: 'number',
+		},
+		borderRadiusTopRightTablet: {
+			type: 'number',
+		},
+		borderRadiusBottomLeftTablet: {
+			type: 'number',
+		},
+		borderRadiusBottomRightTablet: {
+			type: 'number',
+		},
+		borderRadiusTopLeftMobile: {
+			type: 'number',
+		},
+		borderRadiusTopRightMobile: {
+			type: 'number',
+		},
+		borderRadiusBottomLeftMobile: {
+			type: 'number',
+		},
+		borderRadiusBottomRightMobile: {
+			type: 'number',
+		},
+		borderRadiusUnit: {
+			type: 'string',
+			default: 'px',
+		},
+		borderRadiusSize: {
+			type: 'string',
+			default: 'advanced',
+		},
+		borderRadiusSyncUnits: {
+			type: 'boolean',
+			default: false,
+		},
+		borderRadiusSyncUnitsTablet: {
+			type: 'boolean',
+			default: true,
+		},
+		borderRadiusSyncUnitsMobile: {
+			type: 'boolean',
+			default: true,
+		},
+		borderWidthRight: {
+			type: 'number',
+		},
+		borderWidthTop: {
+			type: 'number',
+		},
+		borderWidthLeft: {
+			type: 'number',
+		},
+		borderWidthBottom: {
+			type: 'number',
+		},
+		borderWidthRightTablet: {
+			type: 'number',
+		},
+		borderWidthTopTablet: {
+			type: 'number',
+		},
+		borderWidthLeftTablet: {
+			type: 'number',
+		},
+		borderWidthBottomTablet: {
+			type: 'number',
+		},
+		borderWidthRightMobile: {
+			type: 'number',
+		},
+		borderWidthTopMobile: {
+			type: 'number',
+		},
+		borderWidthLeftMobile: {
+			type: 'number',
+		},
+		borderWidthBottomMobile: {
+			type: 'number',
+		},
+		borderWidthUnit: {
+			type: 'string',
+			default: 'px',
+		},
+		borderWidthSize: {
+			type: 'string',
+			default: 'advanced',
+		},
+		borderWidthSyncUnits: {
+			type: 'boolean',
+			default: false,
+		},
+		borderWidthSyncUnitsTablet: {
+			type: 'boolean',
+			default: true,
+		},
+		borderWidthSyncUnitsMobile: {
+			type: 'boolean',
+			default: true,
+		},
 	},
 	edit: ( props ) => {
 		const {
@@ -477,18 +713,22 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 			maxHeight: maxHeight ? (maxHeight + maxHeightUnit) : undefined,
 			minHeight: minHeight ? (minHeight + minHeightUnit) : undefined,
 			textTransform: textTransform ? textTransform: undefined,
-			// paddingTop: paddingTop ? (paddingTop + paddingUnit) : undefined,
-			// paddingRight: paddingRight ? (paddingRight + paddingUnit) : undefined,
-			// paddingBottom: paddingBottom ? (paddingBottom + paddingUnit) : undefined,
-			// paddingLeft: paddingLeft ? (paddingLeft + paddingUnit) : undefined,
-			// marginTop: marginTop ? (marginTop + marginUnit) : undefined,
-			// marginRight: marginRight ? (marginRight + marginUnit) : undefined,
-			// marginBottom: marginBottom ? (marginBottom + marginUnit) : undefined,
-			// marginLeft: marginLeft ? (marginLeft + marginUnit) : undefined,
-			// borderTopLeftRadius: borderRadiusTopLeft ? (borderRadiusTopLeft + borderRadiusUnit) : undefined,
-			// borderTopRightRadius: borderRadiusTopRight ? (borderRadiusTopRight + borderRadiusUnit) : undefined,
-			// borderBottomRightRadius: borderRadiusBottomRight ? (borderRadiusBottomRight + borderRadiusUnit) : undefined,
-			// borderBottomLeftRadius: borderRadiusBottomLeft ? (borderRadiusBottomLeft + borderRadiusUnit) : undefined,
+			paddingTop: paddingTop ? (paddingTop + paddingUnit) : undefined,
+			paddingRight: paddingRight ? (paddingRight + paddingUnit) : undefined,
+			paddingBottom: paddingBottom ? (paddingBottom + paddingUnit) : undefined,
+			paddingLeft: paddingLeft ? (paddingLeft + paddingUnit) : undefined,
+			marginTop: marginTop ? (marginTop + marginUnit) : undefined,
+			marginRight: marginRight ? (marginRight + marginUnit) : undefined,
+			marginBottom: marginBottom ? (marginBottom + marginUnit) : undefined,
+			marginLeft: marginLeft ? (marginLeft + marginUnit) : undefined,
+			borderTopLeftRadius: borderRadiusTopLeft ? (borderRadiusTopLeft + borderRadiusUnit) : undefined,
+			borderTopRightRadius: borderRadiusTopRight ? (borderRadiusTopRight + borderRadiusUnit) : undefined,
+			borderBottomRightRadius: borderRadiusBottomRight ? (borderRadiusBottomRight + borderRadiusUnit) : undefined,
+			borderBottomLeftRadius: borderRadiusBottomLeft ? (borderRadiusBottomLeft + borderRadiusUnit) : undefined,
+			borderTopWidth: borderWidthTop ? (borderWidthTop + borderWidthUnit) : undefined,
+			borderRightWidth: borderWidthRight ? (borderWidthRight + borderWidthUnit) : undefined,
+			borderBottomWidth: borderWidthBottom ? (borderWidthBottom + borderWidthUnit) : undefined,
+			borderLeftWidth: borderWidthLeft ? (borderWidthLeft + borderWidthUnit) : undefined,
 		};
 
 		const onSelectImage = ( media ) => {
@@ -1308,18 +1548,22 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 			maxHeight: maxHeight ? (maxHeight + maxHeightUnit) : undefined,
 			minHeight: minHeight ? (minHeight + minHeightUnit) : undefined,
 			textTransform: textTransform ? textTransform: undefined,
-			// paddingTop: paddingTop ? (paddingTop + paddingUnit) : undefined,
-			// paddingRight: paddingRight ? (paddingRight + paddingUnit) : undefined,
-			// paddingBottom: paddingBottom ? (paddingBottom + paddingUnit) : undefined,
-			// paddingLeft: paddingLeft ? (paddingLeft + paddingUnit) : undefined,
-			// marginTop: marginTop ? (marginTop + marginUnit) : undefined,
-			// marginRight: marginRight ? (marginRight + marginUnit) : undefined,
-			// marginBottom: marginBottom ? (marginBottom + marginUnit) : undefined,
-			// marginLeft: marginLeft ? (marginLeft + marginUnit) : undefined,
-			// borderTopLeftRadius: borderRadiusTopLeft ? (borderRadiusTopLeft + borderRadiusUnit) : undefined,
-			// borderTopRightRadius: borderRadiusTopRight ? (borderRadiusTopRight + borderRadiusUnit) : undefined,
-			// borderBottomRightRadius: borderRadiusBottomRight ? (borderRadiusBottomRight + borderRadiusUnit) : undefined,
-			// borderBottomLeftRadius: borderRadiusBottomLeft ? (borderRadiusBottomLeft + borderRadiusUnit) : undefined,
+			paddingTop: paddingTop ? (paddingTop + paddingUnit) : undefined,
+			paddingRight: paddingRight ? (paddingRight + paddingUnit) : undefined,
+			paddingBottom: paddingBottom ? (paddingBottom + paddingUnit) : undefined,
+			paddingLeft: paddingLeft ? (paddingLeft + paddingUnit) : undefined,
+			marginTop: marginTop ? (marginTop + marginUnit) : undefined,
+			marginRight: marginRight ? (marginRight + marginUnit) : undefined,
+			marginBottom: marginBottom ? (marginBottom + marginUnit) : undefined,
+			marginLeft: marginLeft ? (marginLeft + marginUnit) : undefined,
+			borderTopLeftRadius: borderRadiusTopLeft ? (borderRadiusTopLeft + borderRadiusUnit) : undefined,
+			borderTopRightRadius: borderRadiusTopRight ? (borderRadiusTopRight + borderRadiusUnit) : undefined,
+			borderBottomRightRadius: borderRadiusBottomRight ? (borderRadiusBottomRight + borderRadiusUnit) : undefined,
+			borderBottomLeftRadius: borderRadiusBottomLeft ? (borderRadiusBottomLeft + borderRadiusUnit) : undefined,
+			borderTopWidth: borderWidthTop ? (borderWidthTop + borderWidthUnit) : undefined,
+			borderRightWidth: borderWidthRight ? (borderWidthRight + borderWidthUnit) : undefined,
+			borderBottomWidth: borderWidthBottom ? (borderWidthBottom + borderWidthUnit) : undefined,
+			borderLeftWidth: borderWidthLeft ? (borderWidthLeft + borderWidthUnit) : undefined,
 		};
 		return (
 			<div 

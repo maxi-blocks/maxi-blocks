@@ -24,20 +24,12 @@ const {
 	RadioControl, 
 	RangeControl, 
 	SelectControl, 
-	TextareaControl, 
-	ColourPicker, 
-	ColourIndicator, 
-	GradientPicker, 
-	BaseControl, 
-	Text, 
-	Popover 
+	TextareaControl,
 } = wp.components;
 const {
 	PanelColorSettings, 
 	PanelColorGradientSettings
 } = wp.blockEditor;
-const { withState } = wp.compose;
-const { useSelect } = wp.data;
 
 /**
  * External dependencies
@@ -69,7 +61,7 @@ const edit = (props) => {
             line,
             readMore,
             counter,
-            borderColor,
+            blockBorderColor,
             borderHoverColor,
             linkTitle,
             opensInNewWindow,
@@ -113,93 +105,86 @@ const edit = (props) => {
             backgroundGradient,
             blockStyle,
             defaultBlockStyle,
+            paddingBottom,
+            paddingLeft,
+            paddingRight,
+            paddingSize,
+            paddingTop,
+            paddingBottomTablet,
+            paddingLeftTablet,
+            paddingRightTablet,
+            paddingTopTablet,
+            paddingBottomMobile,
+            paddingLeftMobile,
+            paddingRightMobile,
+            paddingTopMobile,
+            paddingSyncUnits,
+            paddingSyncUnitsTablet,
+            paddingSyncUnitsMobile,
+            paddingUnit,
+            marginBottom,
+            marginLeft,
+            marginRight,
+            marginSize,
+            marginTop,
+            marginBottomTablet,
+            marginLeftTablet,
+            marginRightTablet,
+            marginTopTablet,
+            marginBottomMobile,
+            marginLeftMobile,
+            marginRightMobile,
+            marginTopMobile,
+            marginSyncUnits,
+            marginSyncUnitsTablet,
+            marginSyncUnitsMobile,
+            marginUnit,
+            borderRadiusBottomRight,
+            borderRadiusBottomLeft,
+            borderRadiusTopRight,
+            borderRadiusSize,
+            borderRadiusTopLeft,
+            borderRadiusBottomRightTablet,
+            borderRadiusBottomLeftTablet,
+            borderRadiusTopRightTablet,
+            borderRadiusTopLeftTablet,
+            borderRadiusBottomRightMobile,
+            borderRadiusBottomLeftMobile,
+            borderRadiusTopRightMobile,
+            borderRadiusTopLeftMobile,
+            borderRadiusSyncUnits,
+            borderRadiusSyncUnitsTablet,
+            borderRadiusSyncUnitsMobile,
+            borderRadiusUnit,
+            borderWidthBottom,
+            borderWidthLeft,
+            borderWidthRight,
+            borderWidthSize,
+            borderWidthTop,
+            borderWidthBottomTablet,
+            borderWidthLeftTablet,
+            borderWidthRightTablet,
+            borderWidthTopTablet,
+            borderWidthBottomMobile,
+            borderWidthLeftMobile,
+            borderWidthRightMobile,
+            borderWidthTopMobile,
+            borderWidthSyncUnits,
+            borderWidthSyncUnitsTablet,
+            borderWidthSyncUnitsMobile,
+            borderWidthUnit,
+            extraStyles,
+            extraClassName,
+            extraHoverStyles,
+            extraBeforeStyles,
+            extraAfterStyles,
+            extraHoverBeforeStyles,
+            extraHoverAfterStyles,
+            titlePopUpisVisible,
+            titleFontFamily
         },
         setAttributes,
     } = props;
-
-    const {
-        attributes,
-    } = props;
-
-    const {
-        paddingBottom,
-        paddingLeft,
-        paddingRight,
-        paddingSize,
-        paddingTop,
-        paddingBottomTablet,
-        paddingLeftTablet,
-        paddingRightTablet,
-        paddingTopTablet,
-        paddingBottomMobile,
-        paddingLeftMobile,
-        paddingRightMobile,
-        paddingTopMobile,
-        paddingSyncUnits,
-        paddingSyncUnitsTablet,
-        paddingSyncUnitsMobile,
-        paddingUnit,
-        marginBottom,
-        marginLeft,
-        marginRight,
-        marginSize,
-        marginTop,
-        marginBottomTablet,
-        marginLeftTablet,
-        marginRightTablet,
-        marginTopTablet,
-        marginBottomMobile,
-        marginLeftMobile,
-        marginRightMobile,
-        marginTopMobile,
-        marginSyncUnits,
-        marginSyncUnitsTablet,
-        marginSyncUnitsMobile,
-        marginUnit,
-        borderRadiusBottomRight,
-        borderRadiusBottomLeft,
-        borderRadiusTopRight,
-        borderRadiusSize,
-        borderRadiusTopLeft,
-        borderRadiusBottomRightTablet,
-        borderRadiusBottomLeftTablet,
-        borderRadiusTopRightTablet,
-        borderRadiusTopLeftTablet,
-        borderRadiusBottomRightMobile,
-        borderRadiusBottomLeftMobile,
-        borderRadiusTopRightMobile,
-        borderRadiusTopLeftMobile,
-        borderRadiusSyncUnits,
-        borderRadiusSyncUnitsTablet,
-        borderRadiusSyncUnitsMobile,
-        borderRadiusUnit,
-        borderWidthBottom,
-        borderWidthLeft,
-        borderWidthRight,
-        borderWidthSize,
-        borderWidthTop,
-        borderWidthBottomTablet,
-        borderWidthLeftTablet,
-        borderWidthRightTablet,
-        borderWidthTopTablet,
-        borderWidthBottomMobile,
-        borderWidthLeftMobile,
-        borderWidthRightMobile,
-        borderWidthTopMobile,
-        borderWidthSyncUnits,
-        borderWidthSyncUnitsTablet,
-        borderWidthSyncUnitsMobile,
-        borderWidthUnit,
-        extraStyles,
-        extraClassName,
-        extraHoverStyles,
-        extraBeforeStyles,
-        extraAfterStyles,
-        extraHoverBeforeStyles,
-        extraHoverAfterStyles,
-        titlePopUpisVisible,
-        titleFontFamily
-    } = attributes;
 
     const linkStyles = setLinkStyles ( props );
     const titleStyles = setTitleStyles ( props );
@@ -236,7 +221,7 @@ const edit = (props) => {
                         { label: 'Dark', value: 'gx-dark' },
                         { label: 'Light', value: 'gx-light' },
                     ]}
-                    onChange={(value) => props.setAttributes({ blockStyle: value })}
+                    onChange={(value) => setAttributes({ blockStyle: value })}
                 />
                 <SelectControl
                     label="Default Block Style"
@@ -246,7 +231,7 @@ const edit = (props) => {
                         { label: 'Dark', value: 'gx-def-dark' },
                         { label: 'Light', value: 'gx-def-light' },
                     ]}
-                    onChange={(value) => props.setAttributes({ defaultBlockStyle: value })}
+                    onChange={(value) => setAttributes({ defaultBlockStyle: value })}
                 />
                 <SelectControl
                     label="Image Position"
@@ -258,7 +243,7 @@ const edit = (props) => {
                         { label: 'Left', value: 'left' },
                         { label: 'Right', value: 'right' },
                     ]}
-                    onChange={(value) => props.setAttributes({ imagePosition: value })}
+                    onChange={(value) => setAttributes({ imagePosition: value })}
                 />
             </PanelBody>
             <PanelBody className="gx-panel gx-text-setting gx-content-tab-setting" initialOpen={true} title={__('Text settings')}>
@@ -274,7 +259,7 @@ const edit = (props) => {
                         { label: 'H5', value: 'h5' },
                         { label: 'H6', value: 'h6' },
                     ]}
-                    onChange={(value) => props.setAttributes({ titleLevel: value })}
+                    onChange={(value) => setAttributes({ titleLevel: value })}
                 />
             </PanelBody>
             <PanelBody className="gx-panel gx-link-setting gx-content-tab-setting" initialOpen={true} title={__('Link Settings')}>
@@ -338,7 +323,7 @@ const edit = (props) => {
                     colorSettings={[
                         {
                             value: backgroundColor,
-                            onChange: (value) => props.setAttributes({ backgroundColor: value }),
+                            onChange: (value) => setAttributes({ backgroundColor: value }),
                             label: __('Background Colour'),
                         },
                     ]}
@@ -348,7 +333,7 @@ const edit = (props) => {
                     colorSettings={[
                         {
                             value: titleColor,
-                            onChange: (value) => props.setAttributes({ titleColor: value }),
+                            onChange: (value) => setAttributes({ titleColor: value }),
                             label: __('Title Colour'),
                         },
                     ]}
@@ -358,7 +343,7 @@ const edit = (props) => {
                     colorSettings={[
                         {
                             value: subTitleColor,
-                            onChange: (value) => props.setAttributes({ subTitleColor: value }),
+                            onChange: (value) => setAttributes({ subTitleColor: value }),
                             label: __('Sub-title Colour'),
                         },
                     ]}
@@ -368,7 +353,7 @@ const edit = (props) => {
                     colorSettings={[
                         {
                             value: descriptionColor,
-                            onChange: (value) => props.setAttributes({ descriptionColor: value }),
+                            onChange: (value) => setAttributes({ descriptionColor: value }),
                             label: __('Description  Colour'),
                         },
                     ]}
@@ -378,7 +363,7 @@ const edit = (props) => {
                     colorSettings={[
                         {
                             value: buttonColor,
-                            onChange: (value) => props.setAttributes({ buttonColor: value }),
+                            onChange: (value) => setAttributes({ buttonColor: value }),
                             label: __('Button Text Colour'),
                         },
                     ]}
@@ -388,7 +373,7 @@ const edit = (props) => {
                     colorSettings={[
                         {
                             value: buttonBgColor,
-                            onChange: (value) => props.setAttributes({ buttonBgColor: value }),
+                            onChange: (value) => setAttributes({ buttonBgColor: value }),
                             label: __('Button Background Colour'),
                         },
                     ]}
@@ -399,8 +384,8 @@ const edit = (props) => {
                     title={__('Color Settings')}
                     colorSettings={[
                         {
-                            value: borderColor,
-                            onChange: (value) => props.setAttributes({ borderColor: value }),
+                            value: blockBorderColor,
+                            onChange: (value) => setAttributes({ blockBorderColor: value }),
                             label: __('Border Colour'),
                         },
                     ]}
@@ -420,7 +405,7 @@ const edit = (props) => {
                         { label: 'Inset', value: 'inset' },
                         { label: 'Outset', value: 'outset' },
                     ]}
-                    onChange={(value) => props.setAttributes({ borderType: value })}
+                    onChange={(value) => setAttributes({ borderType: value })}
                 />
                 <DimensionsControl {...props}
                     type={'borderRadius'}
@@ -477,13 +462,13 @@ const edit = (props) => {
                         { label: 'VW', value: 'vw' },
                         { label: '%', value: '%' },
                     ]}
-                    onChange={(value) => props.setAttributes({ maxWidthUnit: value })}
+                    onChange={(value) => setAttributes({ maxWidthUnit: value })}
                 />
                 <RangeControl
                     label="Max Width"
                     className={'gx-with-unit-control'}
                     value={maxWidth}
-                    onChange={(value) => props.setAttributes({ maxWidth: value })}
+                    onChange={(value) => setAttributes({ maxWidth: value })}
                     min={0}
                     allowReset={true}
                     initialPosition={0}
@@ -497,13 +482,13 @@ const edit = (props) => {
                         { label: 'VW', value: 'vw' },
                         { label: '%', value: '%' },
                     ]}
-                    onChange={(value) => props.setAttributes({ widthUnit: value })}
+                    onChange={(value) => setAttributes({ widthUnit: value })}
                 />
                 <RangeControl
                     label="Width"
                     className={'gx-with-unit-control'}
                     value={blockWidth}
-                    onChange={(value) => props.setAttributes({ blockWidth: value })}
+                    onChange={(value) => setAttributes({ blockWidth: value })}
                     min={0}
                     allowReset={true}
                 />
@@ -516,13 +501,13 @@ const edit = (props) => {
                         { label: 'VW', value: 'vw' },
                         { label: '%', value: '%' },
                     ]}
-                    onChange={(value) => props.setAttributes({ minWidthUnit: value })}
+                    onChange={(value) => setAttributes({ minWidthUnit: value })}
                 />
                 <RangeControl
                     label="Min Width"
                     className={'gx-with-unit-control'}
                     value={minWidth}
-                    onChange={(value) => props.setAttributes({ minWidth: value })}
+                    onChange={(value) => setAttributes({ minWidth: value })}
                     min={0}
                     allowReset={true}
                 />
@@ -535,13 +520,13 @@ const edit = (props) => {
                         { label: 'VH', value: 'vh' },
                         { label: '%', value: '%' },
                     ]}
-                    onChange={(value) => props.setAttributes({ maxHeightUnit: value })}
+                    onChange={(value) => setAttributes({ maxHeightUnit: value })}
                 />
                 <RangeControl
                     label="Max Height"
                     className={'gx-with-unit-control'}
                     value={maxHeight}
-                    onChange={(value) => props.setAttributes({ maxHeight: value })}
+                    onChange={(value) => setAttributes({ maxHeight: value })}
                     min={0}
                     allowReset={true}
                 />
@@ -554,13 +539,13 @@ const edit = (props) => {
                         { label: 'VH', value: 'vh' },
                         { label: '%', value: '%' },
                     ]}
-                    onChange={(value) => props.setAttributes({ heightUnit: value })}
+                    onChange={(value) => setAttributes({ heightUnit: value })}
                 />
                 <RangeControl
                     label="Height"
                     className={'gx-with-unit-control'}
                     value={blockHeight}
-                    onChange={(value) => props.setAttributes({ blockHeight: value })}
+                    onChange={(value) => setAttributes({ blockHeight: value })}
                     allowReset={true}
                 />
                 <RadioControl
@@ -572,13 +557,13 @@ const edit = (props) => {
                         { label: 'VH', value: 'vh' },
                         { label: '%', value: '%' },
                     ]}
-                    onChange={(value) => props.setAttributes({ minHeightUnit: value })}
+                    onChange={(value) => setAttributes({ minHeightUnit: value })}
                 />
                 <RangeControl
                     label="Min Height"
                     className={'gx-with-unit-control'}
                     value={minHeight}
-                    onChange={(value) => props.setAttributes({ minHeight: value })}
+                    onChange={(value) => setAttributes({ minHeight: value })}
                     min={0}
                     allowReset={true}
                 />
@@ -637,7 +622,7 @@ const edit = (props) => {
                         { label: 'None', value: 'none' },
                         { label: 'Other', value: 'other' },
                     ]}
-                    onChange={(value) => props.setAttributes({ hoverAnimation: value })}
+                    onChange={(value) => setAttributes({ hoverAnimation: value })}
                 />
                 <SelectControl
                     label="Animation Duration"
@@ -651,7 +636,7 @@ const edit = (props) => {
                         { label: 'Longer', value: 'longer' },
 
                     ]}
-                    onChange={(value) => props.setAttributes({ hoverAnimationDuration: value })}
+                    onChange={(value) => setAttributes({ hoverAnimationDuration: value })}
                 />
                 <TextControl
                     label={__('Additional CSS Classes')}

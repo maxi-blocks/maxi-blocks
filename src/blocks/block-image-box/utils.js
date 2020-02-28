@@ -16,7 +16,7 @@ function renderImagePosition(param) {
 export const setLinkStyles = ( props ) => {
     const {
         imagePosition
-    } = props;
+    } = props.attributes;
 
     return {
         flexDirection: renderImagePosition(imagePosition),
@@ -41,7 +41,7 @@ export const setTitleStyles = ( props ) => {
 export const setSubTitleStyles = ( props ) => {
     const {
         subTitleColor
-    } = props;
+    } = props.attributes;
 
     return {
         color: subTitleColor ? subTitleColor : undefined,
@@ -51,7 +51,7 @@ export const setSubTitleStyles = ( props ) => {
 export const setDescriptionStyles = ( props ) => {
     const {
         descriptionColor
-    } = props;
+    } = props.attributes;
 
     return {
         color: descriptionColor ? descriptionColor : undefined,
@@ -62,7 +62,7 @@ export const setButtonStyles = ( props ) => {
     const {
         buttonColor,
         buttonBgColor
-    } = props;
+    } = props.attributes;
 
     return {
         color: buttonColor ? buttonColor : undefined,
@@ -75,7 +75,7 @@ export const setBlockStyles = ( props ) => {
         backgroundColor,
         borderWidth,
         borderRadius,
-        borderColor,
+        blockBorderColor,
         borderType,
         lineHeight,
         letterSpacing,
@@ -86,13 +86,13 @@ export const setBlockStyles = ( props ) => {
         maxHeight,
         minHeight,
         textTransform
-    } = props;
+    } = props.attributes;
 
     return {
         backgroundColor: backgroundColor ? backgroundColor : undefined,
         borderWidth: borderWidth ? borderWidth + 'px' : undefined,
         borderRadius: borderRadius ? borderRadius + 'px' : undefined,
-        borderColor: borderColor ? borderColor : undefined,
+        borderColor: blockBorderColor ? blockBorderColor : undefined,
         borderStyle: borderType ? borderType : undefined,
         lineHeight: lineHeight ? lineHeight + '%' : undefined,
         letterSpacing: letterSpacing ? letterSpacing + 'px' : undefined,

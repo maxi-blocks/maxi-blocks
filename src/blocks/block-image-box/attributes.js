@@ -51,7 +51,7 @@ const attributes = {
         source: 'children',
         selector: '.gx-image-box-counter',
     },
-    borderColor: {
+    blockBorderColor: {
         type: 'string',
         default: "",
     },

@@ -21,8 +21,10 @@ const {
     RangeControl,
     Dropdown,
 } = wp.components;
-const { withState } = wp.compose;
-const { Fragment } = wp.element;
+const { 
+    Fragment, 
+    Component 
+} = wp.element;
 
 /**
  * External dependencies
@@ -34,8 +36,25 @@ import { FontFamilySelector } from './fontfamilyselector/index';
  * Component
  */
 
-export const FontPopover = props => {
+export default class FontPopover extends Component {
 
+    constructor ( ) {
+        super(...arguments);
+        this.onDeviceChange = this.onDeviceChange.bind( this );
+    }
+
+    state = {
+        device: 'desktop'
+    }
+
+    onDeviceChange ( value ) {
+        this.setState (
+            {device: value}
+        )
+    }
+
+    render () {
+        
         const {
             classNameBaseControl,
             title,
@@ -52,37 +71,7 @@ export const FontPopover = props => {
             classNameFontSize,
             fontSize,
             onFontSizeChange
-        } = props;
-
-        const DeviceControl = () => {
-            const DeviceControl = withState( {
-                device: 'desktop',
-            })(( {device, setState} ) => {
-
-                const onDeviceChange = (value) => {
-                    setState( {
-                        device: value
-                    } )
-                }
-
-                return (
-                    <RadioControl
-                        className={ classNameDevice ? classNameDevice : 'gx-device-control' }
-                        selected={device}
-                        options={ [
-                            { label: '', value: 'desktop' },
-                            { label: '', value: 'tablet' },
-                            { label: '', value: 'mobile' },
-                        ] }
-                        onChange={ onDeviceChange }
-                    />
-                )
-            })
-
-            return (
-                <DeviceControl />
-            )
-        }
+        } = this.props;
 
         return (
             <Fragment>
@@ -116,9 +105,18 @@ export const FontPopover = props => {
                             <FontFamilySelector
                                 className={ classNameFontFamilySelector ? classNameFontFamilySelector : 'gx-font-family-selector' }
                                 font={font}
-                                onChange={onFontFamilyChange }
+                                onChange={ onFontFamilyChange }
                             />
-                            <DeviceControl />
+                            <RadioControl
+                                className={ classNameDevice ? classNameDevice : 'gx-device-control' }
+                                selected={this.state.device}
+                                options={ [
+                                    { label: '', value: 'desktop' },
+                                    { label: '', value: 'tablet' },
+                                    { label: '', value: 'mobile' },
+                                ] }
+                                onChange={ this.onDeviceChange }
+                            />
                             <RadioControl
                                 className={ classNameFontUnit ? classNameFontUnit : 'gx-unit-control' }
                                 selected={ fontSizeUnit }
@@ -128,7 +126,7 @@ export const FontPopover = props => {
                                     { label: 'VW', value: 'vw' },
                                     { label: '%', value: '%' },
                                 ] }
-                                onChange={onFontSizeUnitChange }
+                                onChange={ onFontSizeUnitChange }
                             />
                             <RangeControl
                                 label="Size"
@@ -145,5 +143,6 @@ export const FontPopover = props => {
                     </Dropdown>
                 </BaseControl>
             </Fragment>
-        )       
+        )
+    }
 }

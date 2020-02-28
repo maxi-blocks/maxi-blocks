@@ -30,7 +30,7 @@ const {
  * External dependencies
  */
 
-import { FontFamilySelector } from './fontfamilyselector/index';
+import FontFamilySelector from '../font-family-selector/index';
 
 /**
  * Component

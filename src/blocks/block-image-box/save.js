@@ -5,7 +5,7 @@
 const { __ } = wp.i18n; 
 const {
 	RichText,
-} = wp.editor;
+} = wp.blockEditor;
 
 /**
  * External dependencies
@@ -18,7 +18,7 @@ import {
     setDescriptionStyles,
     setButtonStyles,
     setBlockStyles,
-} from './utils';
+} from './data';
 
 const save = ( props ) => {
     const {

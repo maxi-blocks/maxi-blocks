@@ -1,3 +1,10 @@
+import { blockStyleAttributes } from '../../components/block-styles/index';
+import { imagePositionAttributes } from '../../components/imageposition/index';
+import { blockBorderAttributes } from '../../components/block-border/index';
+import { sizeControlAttributes } from '../../components/size-control/index';
+import { hoverAnimationAttributes } from '../../components/hover-animation/index';
+import { customCSSAtributes } from '../../components/custom-css/index';
+
 const attributes = {
     title: {
         type: 'array',
@@ -51,10 +58,6 @@ const attributes = {
         source: 'children',
         selector: '.gx-image-box-counter',
     },
-    blockBorderColor: {
-        type: 'string',
-        default: "",
-    },
     borderHoverColor: {
         type: 'string',
         default: "",
@@ -79,18 +82,6 @@ const attributes = {
         type: 'string',
         default: "",
     },
-    borderType: {
-        type: 'string',
-        default: 'none',
-    },
-    hoverAnimation: {
-        type: 'string',
-        default: 'none',
-    },
-    hoverAnimationDuration: {
-        type: 'string',
-        default: 'normal',
-    },
     buttonColor: {
         type: 'string',
         default: "",
@@ -98,14 +89,6 @@ const attributes = {
     buttonBgColor: {
         type: 'string',
         default: "",
-    },
-    borderWidth: {
-        type: 'number',
-        default: 0,
-    },
-    borderRadius: {
-        type: 'number',
-        default: 0,
     },
     linkTitle: {
         type: 'string',
@@ -138,42 +121,6 @@ const attributes = {
         type: 'boolean',
         default: false,
     },
-    blockWidth: {
-        type: 'number',
-    },
-    minWidth: {
-        type: 'number',
-    },
-    maxWidth: {
-        type: 'number',
-    },
-    maxWidthUnit: {
-        type: 'string',
-        default: 'px',
-    },
-    maxHeight: {
-        type: 'number',
-    },
-    maxHeightUnit: {
-        type: 'string',
-        default: 'px',
-    },
-    minWidthUnit: {
-        type: 'string',
-        default: 'px',
-    },
-    widthUnit: {
-        type: 'string',
-        default: '%',
-    },
-    heightUnit: {
-        type: 'string',
-        default: '%',
-    },
-    minHeightUnit: {
-        type: 'string',
-        default: 'px',
-    },
     fontSizeTitleUnit: {
         type: 'string',
         default: 'px',
@@ -181,53 +128,20 @@ const attributes = {
     fontSizeTitle: {
         type: 'number',
     },
-    blockHeight: {
-        type: 'number',
-    },
-    minHeight: {
-        type: 'number',
-    },
-    extraClassName: {
-        type: 'string',
-    },
-    extraStyles: {
-        type: 'string',
-    },
-    extraHoverStyles: {
-        type: 'string',
-    },
-    extraBeforeStyles: {
-        type: 'string',
-    },
-    extraAfterStyles: {
-        type: 'string',
-    },
-    extraHoverBeforeStyles: {
-        type: 'string',
-    },
-    extraHoverAfterStyles: {
-        type: 'string',
-    },
-    imagePosition: {
-        type: 'string',
-        default: 'top',
-    },
     titleLevel: {
         type: 'string',
         default: 'h2'
     },
-    blockStyle: {
-        type: 'string',
-        default: 'gx-global'
-    },
-    defaultBlockStyle: {
-        type: 'string',
-        default: 'gx-def-light'
-    },
     titleFontFamily: {
         type: 'string',
         default: 'inherit'
-    }
+    },
+    ...blockStyleAttributes,
+    ...imagePositionAttributes,
+    ...blockBorderAttributes,
+    ...sizeControlAttributes,
+    ...hoverAnimationAttributes,
+    ...customCSSAtributes
 }
 
 export default attributes;

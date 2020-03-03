@@ -24,9 +24,9 @@ const Divider = () => (
 // Declaring placeholder variables because attributes are not async when setting them
 let cssResponsive = '';
 let textDecorationTitleValue;
-let textDecorationTabletValue;
-let textDecorationMobileValue;
-let textDecorationDesktopValue;
+let textDecorationTitleTabletValue;
+let textDecorationTitleMobileValue;
+let textDecorationTitleDesktopValue;
 let fontSizeTitleValue;
 let fontSizeTitleTabletValue;
 let fontSizeTitleMobileValue;
@@ -43,17 +43,50 @@ let letterSpacingTitleDesktopValue;
 let letterSpacingTitleTabletValue;
 let letterSpacingTitleMobileValue;
 let fontWeightTitleValue;
-let fontWeightTabletValue;
-let fontWeightMobileValue;
-let fontWeightDesktopValue;
+let fontWeightTitleTabletValue;
+let fontWeightTitleMobileValue;
+let fontWeightTitleDesktopValue;
 let textTransformTitleValue;
-let textTransformDesktopValue;
-let textTransformTabletValue;
-let textTransformMobileValue;
+let textTransformTitleDesktopValue;
+let textTransformTitleTabletValue;
+let textTransformTitleMobileValue;
 let fontStyleTitleValue;
-let fontStyleDesktopValue;
-let fontStyleTabletValue;
-let fontStyleMobileValue;
+let fontStyleTitleDesktopValue;
+let fontStyleTitleTabletValue;
+let fontStyleTitleMobileValue;
+
+// Subtitle placeholders
+let textDecorationSubtitleValue;
+let textDecorationSubtitleTabletValue;
+let textDecorationSubtitleMobileValue;
+let textDecorationSubtitleDesktopValue;
+let fontSizeSubtitleValue;
+let fontSizeSubtitleTabletValue;
+let fontSizeSubtitleMobileValue;
+let fontSizeSubtitleDesktopValue;
+let fontSizeSubtitleUnitValue;
+let lineHeightSubtitleDesktopValue;
+let lineHeightSubtitleValue;
+let lineHeightSubtitleTabletValue;
+let lineHeightSubtitleMobileValue;
+let lineHeightSubtitleUnitValue;
+let letterSpacingSubtitleUnitValue;
+let letterSpacingSubtitleValue;
+let letterSpacingSubtitleDesktopValue;
+let letterSpacingSubtitleTabletValue;
+let letterSpacingSubtitleMobileValue;
+let fontWeightSubtitleValue;
+let fontWeightSubtitleTabletValue;
+let fontWeightSubtitleMobileValue;
+let fontWeightSubtitleDesktopValue;
+let textTransformSubtitleValue;
+let textTransformSubtitleDesktopValue;
+let textTransformSubtitleTabletValue;
+let textTransformSubtitleMobileValue;
+let fontStyleSubtitleValue;
+let fontStyleSubtitleDesktopValue;
+let fontStyleSubtitleTabletValue;
+let fontStyleSubtitleMobileValue;
 
 
 class Typography extends Component {
@@ -137,76 +170,101 @@ class Typography extends Component {
   }
 
   changeWeight(value, device){
-    if(this.props.target == 'title'){
-      this.props.setAttributes({ fontWeightTitle: value });
-      fontWeightTitleValue = value;
-      if(device == 'tablet'){
-        this.props.setAttributes({fontWeightTablet : value});
-        fontWeightTabletValue = value;
-      }else if(device == 'desktop'){
-        this.props.setAttributes({fontWeightDesktop : value});
-        fontWeightDesktopValue = value;
-      }else if(device == 'mobile'){
-        this.props.setAttributes({fontWeightMobile : value})
-        fontWeightMobileValue = value;
-      }
-      this.saveMeta();
+    this.props.setAttributes({ ['fontWeight' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1)]: value });
+    let varname = 'fontWeight' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'Value';
+    eval(varname + '=' + value);
+    // fontWeightTitleValue = value;
+    if(device == 'tablet'){
+      this.props.setAttributes({['fontWeight' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'Tablet'] : value});
+      let varname = 'fontWeight' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'TabletValue';
+      eval(varname + '=' + value);
+      // fontWeightTitleTabletValue = value;
+    }else if(device == 'desktop'){
+      this.props.setAttributes({['fontWeight' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'Desktop'] : value});
+      let varname = 'fontWeight' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'DesktopValue';
+      eval(varname + '=' + value);
+      // fontWeightTitleDesktopValue = value;
+    }else if(device == 'mobile'){
+      this.props.setAttributes({['fontWeight' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'Mobile'] : value})
+      let varname = 'fontWeight' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'MobileValue';
+      eval(varname + '=' + value);
+      // fontWeightTitleMobileValue = value;
     }
+    this.saveMeta();
   }
 
   changeTextTransform(value,device){
-    if(this.props.target == 'title'){
-      this.props.setAttributes({ textTransformTitle: value });
-      textTransformTitleValue = value;
-      if(device == 'tablet'){
-        this.props.setAttributes({textTransformTablet : value});
-        textTransformTabletValue = value;
-      }else if(device == 'desktop'){
-        this.props.setAttributes({textTransformDesktop : value});
-        textTransformDesktopValue = value;
-      }else if(device == 'mobile'){
-        this.props.setAttributes({textTransformMobile : value})
-        textTransformMobileValue = value;
-      }
-      this.saveMeta();
+    this.props.setAttributes({ ['textTransform' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1)]: value });
+    let varname = 'textTransform' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'Value';
+    eval(varname + '= "' + value + '";');
+    // textTransformTitleValue = value;
+    if(device == 'tablet'){
+      this.props.setAttributes({['textTransform' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) +  'Tablet'] : value});
+      let varname = 'textTransform' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'TabletValue';
+      eval(varname + '= "' + value + '";');
+      // textTransformTabletValue = value;
+    }else if(device == 'desktop'){
+      this.props.setAttributes({['textTransform' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) +  'Desktop'] : value});
+      let varname = 'textTransform' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'DesktopValue';
+      eval(varname + '= "' + value + '";');
+      // textTransformDesktopValue = value;
+    }else if(device == 'mobile'){
+      this.props.setAttributes({['textTransform' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) +  'Mobile'] : value})
+      let varname = 'textTransform' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'MobileValue';
+      eval(varname + '= "' + value + '";');
+      // textTransformMobileValue = value;
     }
+    this.saveMeta();
   }
 
 
   changeFontStyle(value,device){
-    if(this.props.target == 'title'){
-      this.props.setAttributes({ fontStyle: value });
-      fontStyleTitleValue = value;
+      this.props.setAttributes({ ['fontStyle' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1)]: value });
+      let varname = 'fontStyle' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'Value';
+      eval(varname + '="' + value + '";');
+      // fontStyleTitleValue = value;
       if(device == 'tablet'){
-        this.props.setAttributes({fontStyleTablet : value});
-        fontStyleTabletValue = value;
+        this.props.setAttributes({['fontStyle' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'Tablet'] : value});
+        let varname = 'fontStyle' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'TabletValue';
+        eval(varname + '="' + value + '";');
+        // fontStyleTabletValue = value
       }else if(device == 'desktop'){
-        this.props.setAttributes({fontStyleDesktop : value});
-        fontStyleDesktopValue = value;
+        this.props.setAttributes({['fontStyle' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'Desktop'] : value});
+        let varname = 'fontStyle' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'DesktopValue';
+        eval(varname + '="' + value + '";');
+        // fontStyleDesktopValue = value;
       }else if(device == 'mobile'){
-        this.props.setAttributes({fontStyleMobile : value})
-        fontStyleMobileValue = value;
+        this.props.setAttributes({['fontStyle' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'Mobile'] : value})
+        let varname = 'fontStyle' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'MobileValue';
+        eval(varname + '="' + value + '";');
+        // fontStyleMobileValue = value;
       }
       this.saveMeta();
-    }
   }
 
   changeTextDecoration(value, device){
-    if(this.props.target == 'title'){
-      this.props.setAttributes({ textDecorationTitle: value });
-      textDecorationTitleValue = value;
-      if(device == 'tablet'){
-        this.props.setAttributes({textDecorationTablet : value});
-        textDecorationTabletValue = value;
-      }else if(device == 'desktop'){
-        this.props.setAttributes({textDecorationDesktop : value});
-        textDecorationDesktopValue = value;
-      }else if(device == 'mobile'){
-        this.props.setAttributes({textDecorationMobile : value})
-        textDecorationMobileValue = value;
-      }
-      this.saveMeta();
+
+    this.props.setAttributes({ ['textDecoration' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1)]: value });
+    let varname = 'textDecoration' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'Value';
+    eval(varname + '= "' + value + '";');
+    // textDecorationTitleValue = value;
+    if(device == 'tablet'){
+      this.props.setAttributes({['textDecoration' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'Tablet'] : value});
+      let varname = 'textDecoration' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'TabletValue';
+      eval(varname + '= "' + value + '";');
+      // textDecorationTabletValue = value;
+    }else if(device == 'desktop'){
+      this.props.setAttributes({['textDecoration' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'Desktop'] : value});
+      let varname = 'textDecoration' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'DesktopValue';
+      eval(varname + '= "' + value + '";');
+      // textDecorationDesktopValue = value;
+    }else if(device == 'mobile'){
+      this.props.setAttributes({['textDecoration' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'Mobile'] : value})
+      let varname = 'textDecoration' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'MobileValue';
+      eval(varname + '= "' + value + '";');
+      // textDecorationMobileValue = value;
     }
+    this.saveMeta();
   }
 
   // General function to create responsive css
@@ -230,6 +288,10 @@ class Typography extends Component {
       fontSizeTitleUnitValue = this.props.attributes.fontSizeTitleUnit;
     }
 
+    if(typeof letterSpacingTitleUnitValue == 'undefined'){
+      letterSpacingTitleUnitValue = this.props.attributes.letterSpacingTitleUnit;
+    }
+
     const fontSize = {
       fontSize: ( typeof block.attributes.fontSizeTitleDesktop !== 'undefined' ) ? block.attributes.fontSizeTitleDesktop + block.attributes.fontSizeTitleUnit : null,
       fontSizeTitleTablet: ( typeof block.attributes.fontSizeTitleTablet !== 'undefined' ) ? block.attributes.fontSizeTitleTablet + block.attributes.fontSizeTitleUnit : null,
@@ -243,14 +305,14 @@ class Typography extends Component {
     }
 
     const letterSpacing = {
-      letterSpacing: ( typeof block.attributes.letterSpacingDesktop !== 'undefined' ) ? block.attributes.letterSpacingDesktop + block.attributes.letterSpacingTitleUnit : null,
-      letterSpacingTablet: ( typeof block.attributes.letterSpacingTablet !== 'undefined' ) ? block.attributes.letterSpacingTablet + block.attributes.letterSpacingTitleUnit : null,
-      letterSpacingMobile: ( typeof block.attributes.letterSpacingMobile !== 'undefined' ) ? block.attributes.letterSpacingMobile + block.attributes.letterSpacingTitleUnit : null,
+      letterSpacing: ( typeof block.attributes.letterSpacingTitleDesktop !== 'undefined' ) ? block.attributes.letterSpacingTitleDesktop + block.attributes.letterSpacingTitleUnit : null,
+      letterSpacingTitleTablet: ( typeof block.attributes.letterSpacingTitleTablet !== 'undefined' ) ? block.attributes.letterSpacingTitleTablet + block.attributes.letterSpacingTitleUnit : null,
+      letterSpacingTitleMobile: ( typeof block.attributes.letterSpacingTitleMobile !== 'undefined' ) ? block.attributes.letterSpacingTitleMobile + block.attributes.letterSpacingTitleUnit : null,
     }
 
     const fontWeight = {
-      fontWeight: ( typeof block.attributes.fontWeightDesktop !== 'undefined' ) ? block.attributes.fontWeightDesktop : null,
-      fontWeightTablet: ( typeof block.attributes.fontWeightTablet !== 'undefined' ) ? block.attributes.fontWeightTablet : null,
+      fontWeight: ( typeof block.attributes.fontWeightTitleDesktop !== 'undefined' ) ? block.attributes.fontWeightTitleDesktop : null,
+      fontWeightTitleTablet: ( typeof block.attributes.fontWeightTitleTablet !== 'undefined' ) ? block.attributes.fontWeightTitleTablet : null,
       fontWeightMobile: ( typeof block.attributes.fontWeightMobile !== 'undefined' ) ? block.attributes.fontWeightMobile : null,
     }
 
@@ -261,74 +323,75 @@ class Typography extends Component {
     }
 
     const fontStyle = {
-      fontStyle: ( typeof block.attributes.fontStyleDesktop !== 'undefined' ) ? block.attributes.fontStyleDesktop : null,
-      fontStyleTablet: ( typeof block.attributes.fontStyleTablet !== 'undefined' ) ? block.attributes.fontStyleTablet : null,
-      fontStyleMobile: ( typeof block.attributes.fontStyleMobile !== 'undefined' ) ? block.attributes.fontStyleMobile : null,
+      fontStyle: ( typeof block.attributes.fontStyleTitleDesktop !== 'undefined' ) ? block.attributes.fontStyleTitleDesktop : null,
+      fontStyleTitleTablet: ( typeof block.attributes.fontStyleTitleTablet !== 'undefined' ) ? block.attributes.fontStyleTitleTablet : null,
+      fontStyleTitleMobile: ( typeof block.attributes.fontStyleTitleMobile !== 'undefined' ) ? block.attributes.fontStyleTitleMobile : null,
     }
 
     const textDecoration = {
-      textDecoration: ( typeof block.attributes.textDecorationDesktop !== 'undefined' ) ? block.attributes.textDecorationDesktop : null,
-      textDecorationTablet: ( typeof block.attributes.textDecorationTablet !== 'undefined' ) ? block.attributes.textDecorationTablet : null,
-      textDecorationMobile: ( typeof block.attributes.textDecorationMobile !== 'undefined' ) ? block.attributes.textDecorationMobile : null,
+      textDecoration: ( typeof block.attributes.textDecorationTitleDesktop !== 'undefined' ) ? block.attributes.textDecorationTitleDesktop : null,
+      textDecorationTitleTablet: ( typeof block.attributes.textDecorationTitleTablet !== 'undefined' ) ? block.attributes.textDecorationTitleTablet : null,
+      textDecorationTitleMobile: ( typeof block.attributes.textDecorationTitleMobile !== 'undefined' ) ? block.attributes.textDecorationTitleMobile : null,
     }
 
     const style = document.createElement( 'style' );
     let responsiveCss = '';
     style.type = 'text/css';
-    if(this.props.target == 'title'){
     //add responsive styling
       responsiveCss += '@media only screen and (max-width: 768px) {';
       responsiveCss += '.gx-image-box-text h2{';
-      if(typeof fontSizeTitleTabletValue !== 'undefined'){
-      responsiveCss += 'font-size: ' + fontSizeTitleTabletValue + fontSizeTitleUnitValue + ' !important;';
+      // if(typeof fontSizeTitleTabletValue !== 'undefined'){
+      if(typeof eval('fontSize' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'TabletValue') !== 'undefined'){
+      // responsiveCss += 'font-size: ' + fontSizeTitleTabletValue + fontSizeTitleUnitValue + ' !important;';
+      responsiveCss += 'font-size: ' + eval('fontSize' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'TabletValue') + eval('fontSize' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'UnitValue') + ' !important;';
       }
-      if(typeof lineHeightTitleTabletValue !== 'undefined'){
-        responsiveCss += 'line-height: ' + lineHeightTitleTabletValue + lineHeightTitleUnitValue + ' !important;';
+      // if(typeof lineHeightTitleTabletValue !== 'undefined'){
+      if(typeof eval('lineHeight' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'TabletValue') !== 'undefined'){
+        responsiveCss += 'line-height: ' + eval('lineHeight' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'TabletValue') + eval('lineHeight'+ this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'UnitValue') + ' !important;';
       }
-      if(typeof letterSpacingTabletValue !== 'undefined'){
-        responsiveCss += 'letter-spacing: ' + letterSpacingTitleTabletValue + this.props.attributes.letterSpacingTitleUnit + ' !important;';
+      if(typeof eval('letterSpacing' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'TabletValue') !== 'undefined'){
+        responsiveCss += 'letter-spacing: ' + eval('letterSpacing'+ this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) +'TabletValue') + eval('letterSpacing'+ this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'UnitValue') + ' !important;';
       }
-      if(typeof fontWeightTabletValue !== 'undefined'){
-        responsiveCss += 'font-weight: ' + fontWeightTabletValue + ' !important;';
+      if(typeof eval('fontWeight'+ this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'TabletValue') !== 'undefined'){
+        responsiveCss += 'font-weight: ' + eval('fontWeight'+ this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'TabletValue') + ' !important;';
       }
-      if(typeof textTransformTabletValue !== 'undefined'){
-        responsiveCss += 'text-transform: ' + textTransformTabletValue + ' !important;';
+      if(typeof eval('textTransform'+ this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'TabletValue') !== 'undefined'){
+        responsiveCss += 'text-transform: ' + eval('textTransform'+ this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) +'TabletValue') + ' !important;';
       }
-      if(typeof fontStyleTabletValue !== 'undefined'){
-        responsiveCss += 'font-style: ' + fontStyleTabletValue + ' !important;';
+      if(typeof eval('fontStyle'+ this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'TabletValue') !== 'undefined'){
+        responsiveCss += 'font-style: ' + eval('fontStyle'+ this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) +'TabletValue') + ' !important;';
       }
-      if(typeof textDecorationTabletValue !== 'undefined'){
-        responsiveCss += 'text-decoration: ' + textDecorationTabletValue + ' !important;';
+      if(typeof eval('textDecoration'+ this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) +'TabletValue') !== 'undefined'){
+        responsiveCss += 'text-decoration: ' + eval('textDecoration' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'TabletValue') + ' !important;';
       }
       responsiveCss += '}';
       responsiveCss += '}';
 
       responsiveCss += '@media only screen and (max-width: 514px) {';
       responsiveCss += '.gx-image-box-text h2{';
-      if(typeof fontSizeTitleMobileValue !== 'undefined'){
-      responsiveCss += 'font-size: ' + fontSizeTitleMobileValue + fontSizeTitleUnitValue + ' !important;';
+      if(typeof eval('fontSize'+ this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'MobileValue') !== 'undefined'){
+      responsiveCss += 'font-size: ' + eval('fontSize'+ this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) +'MobileValue') + eval('fontSize' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'UnitValue') + ' !important;';
       }
-      if(typeof lineHeightTitleMobileValue !== 'undefined'){
-        responsiveCss += 'line-height: ' + lineHeightTitleMobileValue + lineHeightTitleUnitValue + ' !important;';
+      if(typeof eval('lineHeight' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'MobileValue') !== 'undefined'){
+        responsiveCss += 'line-height: ' + eval('lineHeight'+ this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) +'MobileValue') + eval('lineHeight'+ this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) +'UnitValue') + ' !important;';
       }
-      if(typeof letterSpacingMobileValue !== 'undefined'){
-        responsiveCss += 'letter-spacing: ' + letterSpacingTitleMobileValue + this.props.attributes.letterSpacingTitleUnit + ' !important;';
+      if(typeof eval('letterSpacing'+ this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'MobileValue') !== 'undefined'){
+        responsiveCss += 'letter-spacing: ' + eval('letterSpacing'+ this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'MobileValue') + eval('letterSpacing'+ this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'UnitValue') + ' !important;';
       }
-      if(typeof fontWeightMobileValue !== 'undefined'){
-        responsiveCss += 'font-weight: ' + fontWeightMobileValue + ' !important;';
+      if(typeof eval('fontWeight'+ this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) +'MobileValue') !== 'undefined'){
+        responsiveCss += 'font-weight: ' + eval('fontWeight'+ this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) +'MobileValue') + ' !important;';
       }
-      if(typeof textTransformMobileValue !== 'undefined'){
-        responsiveCss += 'text-transform:  ' + textTransformMobileValue + ' !important;';
+      if(typeof eval('textTransform'+ this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) +'MobileValue') !== 'undefined'){
+        responsiveCss += 'text-transform:  ' + eval('textTransform' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'MobileValue') + ' !important;';
       }
-      if(typeof fontStyleMobileValue !== 'undefined'){
-        responsiveCss += 'font-style: ' + fontStyleMobileValue + ' !important;';
+      if(typeof eval('fontStyle'+ this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) +'MobileValue') !== 'undefined'){
+        responsiveCss += 'font-style: ' + eval('fontStyle'+ this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) +'MobileValue') + ' !important;';
       }
-      if(typeof textDecorationMobileValue !== 'undefined'){
-        responsiveCss += 'text-decoration: ' + textDecorationMobileValue + ' !important;';
+      if(typeof eval('textDecoration' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'MobileValue') !== 'undefined'){
+        responsiveCss += 'text-decoration: ' + eval('textDecoration'+ this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) +'MobileValue') + ' !important;';
       }
       responsiveCss += '}';
       responsiveCss += '}';
-    }
     cssResponsive = responsiveCss;
 
     // Setting Attribute
@@ -359,13 +422,12 @@ class Typography extends Component {
       fontWeightTitle,
       textDecorationTitle,
       textTransformTitle,
-      fontStyle
 		} = this.props;
     const {
       deviceTypography,
       letterSpacingTitle,
-      fontSizeTitleUnit,
       fontSizeTitle,
+      fontSizeTitleUnit,
       fontSizeTitleMobile,
       fontSizeTitleTablet,
       fontSizeTitleDesktop,
@@ -374,6 +436,21 @@ class Typography extends Component {
       lineHeightTitleTablet,
       lineHeightTitleMobile,
       lineHeightTitle,
+      fontStyleTitle,
+      fontStyleTitleDesktop,
+      fontStyleTitleTablet,
+      fontStyleTitleMobile,
+      textDecorationTitleDesktop,
+      textDecorationTitleTablet,
+      textDecorationTitleMobile,
+      // Subtitle attributes
+      textTransformSubtitle,
+      fontSizeSubtitle,
+      lineHeightSubtitle,
+      fontStyleSubtitle,
+      textDecorationSubtitle,
+      letterSpacingSubtitle,
+      fontWeightSubtitle,
      } = this.props.attributes;
 
     // When device is changed
@@ -385,16 +462,8 @@ class Typography extends Component {
     // When font size unit is changed
     const onChangeFontSizeUnit = (value) => {
       this.props.setAttributes({ ['fontSize' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1) + 'Unit']:value });
-      if(value == 'px'){
-        eval('fontSize' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1).toString() + 'UnitValue' + '= "px"');
-      }else if(value == 'em'){
-        eval('fontSize' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1).toString() + 'UnitValue' + '= "em"');
-      }else if(value == 'vw'){
-        eval('fontSize' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1).toString() + 'UnitValue' + '= "vw"');
-      }else{
-        eval('fontSize' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1).toString() + 'UnitValue' + '= "%"');
-      }
-
+      let varname = "fontSize" + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1).toString() + 'UnitValue';
+      eval(varname + "= '" + value + "';");
       this.saveMeta();
     }
 
@@ -411,15 +480,8 @@ class Typography extends Component {
     //  When line height unit is changed
     const onChangelineHeightUnit = (value) => {
       this.props.setAttributes({['lineHeight' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1).toString() + 'Unit']:value });
-      if(value == 'px'){
-        eval('lineHeight' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1).toString() + 'UnitValue' + '= "px"');
-      }else if(value == 'em'){
-        eval('lineHeight' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1).toString() + 'UnitValue' + '= "em"');
-      }else if(value == 'vw'){
-        eval('lineHeight' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1).toString() + 'UnitValue' + '= "vw"');
-      }else{
-        eval('lineHeight' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1).toString() + 'UnitValue' + '= "%"');
-      }
+      let varname = "lineHeight" + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1).toString() + 'UnitValue';
+      eval(varname + "= '" + value + "';");
       this.saveMeta();
     }
 
@@ -467,7 +529,7 @@ class Typography extends Component {
     return(
     <div>
       <SelectControl
-        label="Family"
+        label={ __( 'Family', 'gutenber-extra' ) }
         className="gx-title-typography-setting"
         value={ titleFontFamily }
         options={ [
@@ -498,7 +560,7 @@ class Typography extends Component {
          onChange={ onChangeFontSizeUnit}
      />
      <RangeControl
-     label="Size"
+     label={ __( 'Size', 'gutenberg-extra' ) }
      className={'gx-with-unit-control'}
      value={eval('fontSize' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1))}
      onChange={ onChangeFontSize }
@@ -519,7 +581,7 @@ class Typography extends Component {
          onChange={ onChangelineHeightUnit }
      />
      <RangeControl
-     label="Line Height"
+     label={ __( 'Line Height', 'gutenberg-extra' ) }
      className={'gx-with-unit-control'}
      value={eval('lineHeight' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1))}
      onChange={ onChangeLineHeight }
@@ -540,7 +602,7 @@ class Typography extends Component {
            onChange={ onChangeletterSpacingTitleUnit }
        />
      <RangeControl
-     label="Letter Spacing"
+     label={ __( 'Letter Spacing', 'gutenberg-extra' ) }
      className={'gx-with-unit-control'}
      value={eval('letterSpacing' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1))}
      onChange={ onChangeLetterSpacing }
@@ -550,59 +612,59 @@ class Typography extends Component {
                />
      <Divider/>
      <SelectControl
-        label="Weight"
+        label={ __( 'Weight', 'gutenberg-extra' ) }
         className="gx-title-typography-setting"
-        value={ fontWeightTitle }
+        value={ eval('fontWeight' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1))}
         options={ [
-          { label: 'Thin (Hairline)', value: 100 },
-          { label: 'Extra Light (Ultra Light)', value: 200 },
-          { label: 'Light', value: 300 },
-          { label: 'Normal (Regular)', value: 400 },
-          { label: 'Medium', value: 500 },
-          { label: 'Semi Bold (Demi Bold)', value: 600 },
-          { label: 'Bold', value: 700 },
-          { label: 'Extra Bold (Ultra Bold)', value: 800 },
-          { label: 'Black (Heavy)', value: 900 },
-          { label: 'Extra Black (Ultra Black)', value: 950 },
+          { label: __('Thin (Hairline)', 'gutenberg-extra'), value: 100 },
+          { label: __('Extra Light (Ultra Light)', 'gutenberg-extra'), value: 200 },
+          { label: __('Light', 'gutenberg-extra'), value: 300 },
+          { label: __('Normal (Regular)', 'gutenberg-extra'), value: 400 },
+          { label: __('Medium', 'gutenberg-extra'), value: 500 },
+          { label: __('Semi Bold (Demi Bold)', 'gutenberg-extra'), value: 600 },
+          { label: __('Bold', 'gutenberg-extra'), value: 700 },
+          { label: __('Extra Bold (Ultra Bold)', 'gutenberg-extra'), value: 800 },
+          { label: __('Black (Heavy)', 'gutenberg-extra'), value: 900 },
+          { label: __('Extra Black (Ultra Black)', 'gutenberg-extra'), value: 950 },
         ] }
         onChange={ onChangeWeight }
      />
      <SelectControl
-        label="Transform"
+        label={__('Transform', 'gutenberg-extra')}
         className="gx-title-typography-setting"
-        value={ textTransformTitle }
+        value={ eval('textTransform' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1))}
         options={ [
-          { label: 'Default', value: 'none' },
-          { label: 'Capitilize', value: 'capitalize' },
-          { label: 'Uppercase', value: 'uppercase' },
-          { label: 'Lowercase', value: 'lowercase' },
-          { label: 'Full Width', value: 'full-width' },
-          { label: 'Full Size Kana', value: 'full-size-kana' },
+          { label: __('Default', 'gutenberg-extra'), value: 'none' },
+          { label: __('Capitilize', 'gutenberg-extra'), value: 'capitalize' },
+          { label: __('Uppercase', 'gutenberg-extra'), value: 'uppercase' },
+          { label: __('Lowercase', 'gutenberg-extra'), value: 'lowercase' },
+          { label: __('Full Width', 'gutenberg-extra'), value: 'full-width' },
+          { label: __('Full Size Kana', 'gutenberg-extra'), value: 'full-size-kana' },
         ] }
         onChange={ onChangeTextTransform }
      />
      <SelectControl
-        label="Style"
+        label={__('Style', 'gutenberg-extra')}
         className="gx-title-typography-setting"
-        value={ fontStyle }
+        value={ eval('fontStyle' + this.props.target.charAt(0).toUpperCase() + this.props.target.slice(1)) }
         options={ [
-          { label: 'Default', value: 'normal' },
-          { label: 'Italic', value: 'italic' },
-          { label: 'Oblique', value: 'oblique' },
-          { label: 'Oblique (40 deg)', value: 'oblique 40deg' },
+          { label: __('Default', 'gutenberg-extra'), value: 'normal' },
+          { label: __('Italic', 'gutenberg-extra'), value: 'italic' },
+          { label: __('Oblique', 'gutenberg-extra'), value: 'oblique' },
+          { label: __('Oblique (40 deg)'), value: 'oblique 40deg' },
         ] }
         onChange={ onChangeFontStyle }
      />
      <SelectControl
-        label="Decoration"
+        label={__('Decoration', 'gutenberg-extra')}
         className="gx-title-typography-setting"
         value={ textDecorationTitle }
         options={ [
-          { label: 'Default', value: 'none' },
-          { label: 'Overline', value: 'overline' },
-          { label: 'Line Through ', value: 'line-through' },
-          { label: 'Underline ', value: 'underline' },
-          { label: 'Underline Overline ', value: 'underline overline' },
+          { label: __('Default', 'gutenberg-extra'), value: 'none' },
+          { label: __('Overline', 'gutenberg-extra'), value: 'overline' },
+          { label: __('Line Through', 'gutenberg-extra'), value: 'line-through' },
+          { label: __('Underline', 'gutenberg-extra'), value: 'underline' },
+          { label: __('Underline Overline', 'gutenberg-extra'), value: 'underline overline' },
         ] }
         onChange={ onChangeTextDecoration }
      />

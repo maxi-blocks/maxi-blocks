@@ -264,13 +264,13 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
     fontWeight:{
       type: 'string',
     },
-    fontWeightDesktop:{
+    fontWeightTitleDesktop:{
       type: 'string',
     },
-    fontWeightTablet:{
+    fontWeightTitleTablet:{
       type: 'string',
     },
-    fontWeightMobile:{
+    fontWeightTitleMobile:{
       type: 'string',
     },
     textTransform:{
@@ -279,13 +279,13 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
     textTransformTitle:{
       type: 'string',
     },
-    textTransformTablet:{
+    textTransformTitleTablet:{
       type: 'string',
     },
-    textTransformDesktop:{
+    textTransformTitleDesktop:{
       type: 'string',
     },
-    textTransformMobile:{
+    textTransformTitleMobile:{
       type: 'string',
     },
     minHeight: {
@@ -583,28 +583,28 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
       fontStyle: {
         type: 'string',
       },
-      fontStyleMobile:{
+      fontStyleTitleMobile:{
         type: 'string',
       },
       fontStyleTitle:{
         type: 'string',
       },
-      fontStyleTablet:{
+      fontStyleTitleTablet:{
         type: 'string',
       },
-      fontStyleDesktop:{
+      fontStyleTitleDesktop:{
         type: 'string',
       },
       textDecorationTitle:{
         type: 'string',
       },
-      textDecorationMobile:{
+      textDecorationTitleMobile:{
         type: 'string',
       },
-      textDecorationTablet:{
+      textDecorationTitleTablet:{
         type: 'string',
       },
-      textDecorationDesktop:{
+      textDecorationTitleDesktop:{
         type: 'string',
       },
       textDecoration:{
@@ -612,7 +612,23 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
       },
       customCss:{
         type: 'string'
-      }
+      },
+      // Subtitle attributes
+      textTransform:{
+        type: 'string',
+      },
+      textTransformSubtitle:{
+        type: 'string',
+      },
+      textTransformSubtitleTablet:{
+        type: 'string',
+      },
+      textTransformSubtitleDesktop:{
+        type: 'string',
+      },
+      textTransformSubtitleMobile:{
+        type: 'string',
+      },
 	},
 	edit: ( props ) => {
 		const {
@@ -635,9 +651,9 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 				addUgc,
         fontWeight,
         fontWeightTitle,
-        fontWeightMobile,
-        fontWeightTablet,
-        fontWeightDesktop,
+        fontWeightTitleMobile,
+        fontWeightTitleTablet,
+        fontWeightTitleDesktop,
 				addSponsored,
 				addNoreferrer,
 				addNofollow,
@@ -674,19 +690,19 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 				blockHeight,
 				textTransform,
         textTransformTitle,
-        textTransformDesktop,
-        textTransformMobile,
-        textTransformTablet,
+        textTransformTitleDesktop,
+        textTransformTitleMobile,
+        textTransformTitleTablet,
         textDecoration,
         textDecorationTitle,
-        textDecorationDesktop,
-        textDecorationTablet,
-        textDecorationMobile,
+        textDecorationTitleDesktop,
+        textDecorationTitleTablet,
+        textDecorationTitleMobile,
         fontStyle,
         fontStyleTitle,
-        fontStyleDesktop,
-        fontStyleMobile,
-        fontStyleTablet,
+        fontStyleTitleDesktop,
+        fontStyleTitleMobile,
+        fontStyleTitleTablet,
 				borderWidth,
 				borderRadius,
 				borderType,
@@ -706,7 +722,12 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 				blockStyle,
 				defaultBlockStyle,
 				deviceTypography,
-        customCss
+        customCss,
+        // Subtitle props
+        textTransformSubtitle,
+        textTransformSubtitleDesktop,
+        textTransformSubtitleTablet,
+        textTransformSubtitleMobile,
 			},
 			setAttributes,
 		} = props;
@@ -835,16 +856,17 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 			color: titleColor ? titleColor : undefined,
 			fontSize: fontSizeTitleDesktop ? (fontSizeTitleDesktop + fontSizeTitleUnit) : undefined,
       lineHeight: lineHeightTitleDesktop ? (lineHeightTitleDesktop + lineHeightTitleUnit) : undefined,
-      fontWeight: fontWeightDesktop ? fontWeightDesktop : undefined,
-      textTransform: textTransformDesktop ? textTransformDesktop : undefined,
-      fontStyle: fontStyleDesktop ? fontStyleDesktop : undefined,
-      textDecoration: textDecorationDesktop ? textDecorationDesktop : undefined,
+      fontWeight: fontWeightTitleDesktop ? fontWeightTitleDesktop : undefined,
+      textTransform: textTransformTitleDesktop ? textTransformTitleDesktop : undefined,
+      fontStyle: fontStyleTitleDesktop ? fontStyleTitleDesktop : undefined,
+      textDecoration: textDecorationTitleDesktop ? textDecorationTitleDesktop : undefined,
       letterSpacing: letterSpacingTitleDesktop ? (letterSpacingTitleDesktop + letterSpacingTitleUnit) : undefined
 		}
 
 
 		const subTitleStyles = {
 			color: subTitleColor ? subTitleColor : undefined,
+      textTransform: textTransformSubtitleDesktop ? textTransformSubtitleDesktop : undefined,
 		}
 
 		const descriptionStyles = {
@@ -1100,7 +1122,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
             noArrow = {true}
             >
             <Typography
-            target={"title"}
+            target={"subtitle"}
             { ...props }
             />
 
@@ -1549,24 +1571,24 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 				blockHeight,
 				textTransform,
         textTransformTitle,
-        textTransformDesktop,
-        textTransformTablet,
-        textTransformMobile,
+        textTransformTitleDesktop,
+        textTransformTitleTablet,
+        textTransformTitleMobile,
         textDecoration,
         textDecorationTitle,
-        textDecorationDesktop,
-        textDecorationTablet,
-        textDecorationMobile,
+        textDecorationTitleDesktop,
+        textDecorationTitleTablet,
+        textDecorationTitleMobile,
         fontWeight,
         fontWeightTitle,
-        fontWeightDesktop,
-        fontWeightMobile,
-        fontWeightTablet,
+        fontWeightTitleDesktop,
+        fontWeightTitleMobile,
+        fontWeightTitleTablet,
         fontStyle,
         fontStyleTitle,
-        fontStyleDesktop,
-        fontStyleMobile,
-        fontStyleTablet,
+        fontStyleTitleDesktop,
+        fontStyleTitleMobile,
+        fontStyleTitleTablet,
 				borderWidth,
 				borderRadius,
 				borderType,
@@ -1586,7 +1608,12 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 				blockStyle,
 				defaultBlockStyle,
 				deviceTypography,
-        customCss
+        customCss,
+        // Subtitle props
+        textTransformSubtitle,
+        textTransformSubtitleDesktop,
+        textTransformSubtitleTablet,
+        textTransformSubtitleMobile,
 			},
 		} = props;
 
@@ -1699,15 +1726,16 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 			color: titleColor ? titleColor : undefined,
 			fontSize: fontSizeTitleDesktop ? (fontSizeTitleDesktop + fontSizeTitleUnit) : undefined,
       lineHeight: lineHeightTitleDesktop ? (lineHeightTitleDesktop + lineHeightTitleUnit) : undefined,
-      fontWeight: fontWeightDesktop ? fontWeightDesktop : undefined,
-      textTransform: textTransformDesktop ? textTransformDesktop : undefined,
-      fontStyle: fontStyleDesktop ? fontStyleDesktop : undefined,
+      fontWeight: fontWeightTitleDesktop ? fontWeightTitleDesktop : undefined,
+      textTransform: textTransformTitleDesktop ? textTransformTitleDesktop : undefined,
+      fontStyle: fontStyleTitleDesktop ? fontStyleTitleDesktop : undefined,
       letterSpacing: letterSpacingTitleDesktop ? (letterSpacingTitleDesktop + letterSpacingTitleUnit) : undefined,
-      textDecoration: textDecorationDesktop ? textDecorationDesktop : undefined,
+      textDecoration: textDecorationTitleDesktop ? textDecorationTitleDesktop : undefined,
 		}
 
 		const subTitleStyles = {
 			color: subTitleColor ? subTitleColor : undefined,
+      textTransform: textTransformSubtitleDesktop ? textTransformSubtitleDesktop : undefined,
 		}
 
 		const descriptionStyles = {

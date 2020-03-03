@@ -1,5 +1,5 @@
 /**
- * BLOCK: GX Layout
+ * BLOCK: GE Library
  * A block to import other blocks or layotus directly from the online library
  */
 
@@ -8,6 +8,7 @@
  */
 import Edit from './../components/edit';
 import LayoutsProvider from './../components/layouts-provider';
+import iconsBlocks from '../../components/icons/icons-blocks.js';
 import './style.scss';
 import './editor.scss';
 
@@ -21,9 +22,9 @@ const { registerBlockType } = wp.blocks;
  * Register the Layout block
  */
 registerBlockType( 'gutenberg-extra/gx-layout', {
-	title: __( 'GX Layout'),
+	title: __( 'Library Extra'),
 	description: __( 'Add a pre-made block or layout.'),
-	icon: 'layout',
+	icon: iconsBlocks.library,
 	category: 'gutenberg-extra-blocks',
 	keywords: [
 		__( 'layout', 'gutenberg-extra-blocks' ),
@@ -42,7 +43,7 @@ registerBlockType( 'gutenberg-extra/gx-layout', {
 } );
 
 /**
- * Add a GX Layout button to the toolbar.
+ * Add a GE Library button to the toolbar.
  */
 document.addEventListener( 'DOMContentLoaded', addGXLayoutButton );
 
@@ -56,8 +57,10 @@ function addGXLayoutButton() {
 	}
 	let buttonDiv = document.createElement( 'div' );
 	let html = '<div class="gx-toolbar-layout">';
-	html += `<button id="gxAddLayoutButton" class="components-button components-icon-button" aria-label="${ __( 'Add Layout' ) }">\
-	</i><img src="/wp-content/plugins/gutenberg-extra/img/gx-icon.png" /> ${ __( 'GX Library') }</button>`;
+	html += `<a type="button" id="gxAddLayoutButton" class="button components-button components-icon-button" aria-label="${ __( 'GutenbergExtra Library', 'gutenberg-extra' ) }">\
+	</i><img src="/wp-content/plugins/gutenberg-extra/img/gx-icon.png" /> ${ __( 'GutenbergExtra Library', 'gutenberg-extra') }</a>`;
+	html += `<a type="button"  href="/wp-admin/customize.php" target="_blank" id="gxGoToCustomizerButton" class="button components-button components-icon-button" aria-label="${ __( 'Global Styles', 'gutenberg-extra' ) }">\
+	</i><img src="/wp-content/plugins/gutenberg-extra/img/gx-icon.png" /> ${ __( 'Global Styles', 'gutenberg-extra') }</a>`;
 	html += '</div>';
 	buttonDiv.innerHTML = html;
 	toolbar.appendChild( buttonDiv );
@@ -65,7 +68,7 @@ function addGXLayoutButton() {
 }
 
 /**
- * Add the GX Layout block on click.
+ * Add the GE Library block on click.
  */
 function abInsertLayout() {
 	let block = wp.blocks.createBlock( 'gutenberg-extra/gx-layout' );

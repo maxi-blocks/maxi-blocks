@@ -1,3 +1,4 @@
+const { __ } = wp.i18n;
 const { Fragment } = wp.element;
 const {	
     RadioControl, 
@@ -82,7 +83,7 @@ export const SizeControl = ( props ) => {
                 onChange={(value) => setAttributes({ maxWidthUnit: value })}
             />
             <RangeControl
-                label="Max Width"
+                label={__("Max Width", 'gutenberg-extra')}
                 className={'gx-with-unit-control'}
                 value={maxWidth}
                 onChange={(value) => setAttributes({ maxWidth: value })}
@@ -102,7 +103,7 @@ export const SizeControl = ( props ) => {
                 onChange={(value) => setAttributes({ widthUnit: value })}
             />
             <RangeControl
-                label="Width"
+                label={__("Width", 'gutenberg-extra')}
                 className={'gx-with-unit-control'}
                 value={blockWidth}
                 onChange={(value) => setAttributes({ blockWidth: value })}
@@ -121,7 +122,7 @@ export const SizeControl = ( props ) => {
                 onChange={(value) => setAttributes({ minWidthUnit: value })}
             />
             <RangeControl
-                label="Min Width"
+                label={__("Min Width", 'gutenberg-extra')}
                 className={'gx-with-unit-control'}
                 value={minWidth}
                 onChange={(value) => setAttributes({ minWidth: value })}
@@ -140,7 +141,7 @@ export const SizeControl = ( props ) => {
                 onChange={(value) => setAttributes({ maxHeightUnit: value })}
             />
             <RangeControl
-                label="Max Height"
+                label={__("Max Height", 'gutenberg-extra')}
                 className={'gx-with-unit-control'}
                 value={maxHeight}
                 onChange={(value) => setAttributes({ maxHeight: value })}
@@ -159,7 +160,7 @@ export const SizeControl = ( props ) => {
                 onChange={(value) => setAttributes({ heightUnit: value })}
             />
             <RangeControl
-                label="Height"
+                label={__("Height", 'gutenberg-extra')}
                 className={'gx-with-unit-control'}
                 value={blockHeight}
                 onChange={(value) => setAttributes({ blockHeight: value })}
@@ -177,7 +178,7 @@ export const SizeControl = ( props ) => {
                 onChange={(value) => setAttributes({ minHeightUnit: value })}
             />
             <RangeControl
-                label="Min Height"
+                label={__("Min Height", 'gutenberg-extra')}
                 className={'gx-with-unit-control'}
                 value={minHeight}
                 onChange={(value) => setAttributes({ minHeight: value })}

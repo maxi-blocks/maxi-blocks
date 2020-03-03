@@ -230,7 +230,7 @@ export const BlockBorder = (props) => {
             <DimensionsControl {...props}
                 type={'borderRadius'}
                 className={'gx-border-radius-control'}
-                label={__('Border Radius', 'gx')}
+                label={__('Border Radius', 'gutenberg-extra')}
                 valueTop={borderRadiusTopLeft}
                 valueRight={borderRadiusTopRight}
                 valueBottom={borderRadiusBottomRight}
@@ -252,7 +252,7 @@ export const BlockBorder = (props) => {
             <DimensionsControl {...props}
                 type={'borderWidth'}
                 className={'gx-border-width-control'}
-                label={__('Border Width', 'gx')}
+                label={__('Border Width', 'gutenberg-extra')}
                 valueTop={borderWidthTop}
                 valueRight={borderWidthRight}
                 valueBottom={borderWidthBottom}

@@ -102,7 +102,7 @@ export default class FontFamilySelector extends Component {
                                     loadFonts(newFont.value, newFont.files);
                                 }}
                                 options={getFontFamilyOptions(fonts)}
-                                placeholder="Search..."
+                                placeholder={__("Search...", 'gutenberg-extra')}
                                 styles={selectFontFamilyStyles}
                                 tabSelectsValue={false}
                                 value={font}

@@ -33,7 +33,7 @@ import save from './save';
  */
 
 registerBlockType( 'gutenberg-extra/block-image-box', {
-	title: 'GX Image Box',
+	title: __('Image Box Extra', 'gutenberg-extra'),
 	icon: icon,
 	category: 'gutenberg-extra-blocks',
 	supports: { 

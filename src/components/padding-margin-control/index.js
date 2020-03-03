@@ -46,7 +46,7 @@ export const PaddingMarginControl = ( props ) => {
         <Fragment>
             <DimensionsControl {...props}
                 type={'padding'}
-                label={__('Padding', 'gx')}
+                label={__('Padding', 'gutenberg-extra')}
                 valueTop={paddingTop}
                 valueRight={paddingRight}
                 valueBottom={paddingBottom}
@@ -67,7 +67,7 @@ export const PaddingMarginControl = ( props ) => {
             />
             <DimensionsControl {...props}
                 type={'margin'}
-                label={__('Margin', 'gx')}
+                label={__('Margin', 'gutenberg-extra')}
                 valueTop={marginTop}
                 valueRight={marginRight}
                 valueBottom={marginBottom}

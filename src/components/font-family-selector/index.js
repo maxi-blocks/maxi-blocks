@@ -10,8 +10,7 @@
 
 const { __ } = wp.i18n;
 const { Button, Popover } = wp.components;
-const { Component } = wp.element;
-
+const { Fragment, Component } = wp.element;
 
 /**
  * External dependencies
@@ -77,41 +76,43 @@ export default class FontFamilySelector extends Component {
         };
 
         return (
-            <Button
-                className='gx-font-family-selector-button'
-                onClick={this.onToggle}
-                aria-expanded={this.state.isVisible}
-            >
-                { font }
-                <ChevronDown />
-                { this.state.isVisible && (
-                    <Popover
+            <div className={className}>
+                <Button
+                    className='gx-font-family-selector-button'
+                    onClick={this.onToggle}
+                    aria-expanded={this.state.isVisible}
+                    >
+                    { font }
+                    <ChevronDown />
+                    { this.state.isVisible && (
+                        <Popover
                         className="gx-font-family-selector-popover"
                         noArrow={true}
-                    >
-                        <div className="gx-font-family-selector-content">
-                            <Select
-                                autoFocus
-                                backspaceRemovesValue={false}
-                                controlShouldRenderValue={false}
-                                hideSelectedOptions={false}
-                                isClearable={false}
-                                menuIsOpen
-                                onChange={newFont => {
-                                    onChange(newFont.value);
-                                    loadFonts(newFont.value, newFont.files);
-                                }}
-                                options={getFontFamilyOptions(fonts)}
-                                placeholder={__("Search...", 'gutenberg-extra')}
-                                styles={selectFontFamilyStyles}
-                                tabSelectsValue={false}
-                                value={font}
-                                closeMenuOnSelect={true}
-                            />
-                        </div>
-                    </Popover>
-                ) }
-            </Button>
+                        >
+                            <div className="gx-font-family-selector-content">
+                                <Select
+                                    autoFocus
+                                    backspaceRemovesValue={false}
+                                    controlShouldRenderValue={false}
+                                    hideSelectedOptions={false}
+                                    isClearable={false}
+                                    menuIsOpen
+                                    onChange={newFont => {
+                                        onChange(newFont.value);
+                                        loadFonts(newFont.value, newFont.files);
+                                    }}
+                                    options={getFontFamilyOptions(fonts)}
+                                    placeholder={__("Search...", 'gutenberg-extra')}
+                                    styles={selectFontFamilyStyles}
+                                    tabSelectsValue={false}
+                                    value={font}
+                                    closeMenuOnSelect={true}
+                                    />
+                            </div>
+                        </Popover>
+                    ) }
+                </Button>
+            </div>
         )
     }
 }

@@ -28,8 +28,8 @@ const {
 import { fontFamilyinit } from '../../includes/utils/utils';
 import FontPopover from '../../components/font-popover/index';
 import { BlockStyles } from '../../components/block-styles/index';
-import { ImagePosition } from '../../components/imageposition/index';
-import { FontLevel } from '../../components/fontlevel/index';
+import { ImagePosition } from '../../components/image-position/index';
+import { FontLevel } from '../../components/font-level/index';
 import { LinkOptions } from '../../components/link-options/index';
 import { BlockBorder } from '../../components/block-border/index';
 import { SizeControl } from '../../components/size-control/index';
@@ -137,13 +137,14 @@ const edit = (props) => {
             </PanelBody>
             <PanelBody className="gx-panel gx-color-setting gx-style-tab-setting" initialOpen={true} title={__('Colour settings', 'gutenberg-extra')}>
                 <FontPopover
-                    title='Title Typography'
+                    title={__('Title Typography', 'gutenberg-extra')}
                     font={titleFontFamily}
                     onFontFamilyChange={value => { setAttributes({ titleFontFamily: value }); }}
                     fontSizeUnit={fontSizeTitleUnit}
                     onFontSizeUnitChange={value => setAttributes({ fontSizeTitleUnit: value })}
                     fontSize={fontSizeTitle}
                     onFontSizeChange={value => setAttributes({ fontSizeTitle: value })}
+                    classNamePopover={'gx-font-family-selector-popover'}
                 />
                 <PanelColorSettings
                     title={__('Background Colour Settings', 'gutenberg-extra' )}

@@ -10,6 +10,7 @@ import './style.scss';
 import './editor.scss';
 import { withState } from '@wordpress/compose';
 import DimensionsControl from '../../components/dimensions-control/';
+import Typography from '../../components/typography/';
 import { useSelect } from '@wordpress/data';
 
 const { __ } = wp.i18n; // Import __() from wp.i18n
@@ -20,40 +21,6 @@ const {RichText,MediaUpload,InspectorControls, URLInput} = wp.editor;
 const {PanelBody, PanelRow, Button, TextControl, ToggleControl, RadioControl, RangeControl, SelectControl, TextareaControl, ColourPicker, ColourIndicator, GradientPicker, BaseControl, Text, Popover } = wp.components;
 const {PanelColorSettings, PanelColorGradientSettings} = wp.blockEditor;
 
-// Declaring placeholder variables because attributes are not async when setting them
-let cssResponsive = '';
-let textDecorationTitleValue;
-let textDecorationTabletValue;
-let textDecorationMobileValue;
-let textDecorationDesktopValue;
-let fontSizeTitleValue;
-let fontSizeTitleTabletValue;
-let fontSizeTitleMobileValue;
-let fontSizeTitleDesktopValue;
-let lineHeightDesktopValue;
-let lineHeightTitleValue;
-let lineHeightTabletValue;
-let lineHeightMobileValue;
-let letterSpacingTitleValue;
-let letterSpacingDesktopValue;
-let letterSpacingTabletValue;
-let letterSpacingMobileValue;
-let fontWeightTitleValue;
-let fontWeightTabletValue;
-let fontWeightMobileValue;
-let fontWeightDesktopValue;
-let textTransformTitleValue;
-let textTransformDesktopValue;
-let textTransformTabletValue;
-let textTransformMobileValue;
-let fontStyleTitleValue;
-let fontStyleDesktopValue;
-let fontStyleTabletValue;
-let fontStyleMobileValue;
-
-const Divider = () => (
-    <hr style={{marginBottom: '15px',}} />
-);
 
 registerBlockType( 'gutenberg-extra/block-image-box', {
 	title: ( 'GX Image Box'), // Block title.
@@ -202,6 +169,10 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 			type: 'boolean',
 			default: false,
 		},
+    subHeaderPupUpIsVisible:{
+      type: 'boolean',
+      default: false,
+    },
     blockWidth: {
       type: 'number',
     },
@@ -246,17 +217,17 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
       type: 'string',
       default: 'px',
     },
-    letterSpacingUnit:{
+    letterSpacingTitleUnit:{
       type: 'string',
       default: '%',
     },
-    letterSpacingDesktop:{
+    letterSpacingTitleDesktop:{
       type: 'number',
     },
-    letterSpacingTablet:{
+    letterSpacingTitleTablet:{
       type: 'number',
     },
-    letterSpacingMobile:{
+    letterSpacingTitleMobile:{
       type: 'number',
     },
     letterSpacingTitle:{
@@ -274,7 +245,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
     fontSizeTitleMobile: {
 			type: 'number',
 		},
-    letterSpacingUnit:{
+    letterSpacingTitleUnit:{
       type: 'string',
       default: 'px'
     },
@@ -323,7 +294,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
     extraClassName: {
 		  type: 'string',
 		},
-    lineHeightUnit:{
+    lineHeightTitleUnit:{
       type: 'string',
       default: 'px'
     },
@@ -678,15 +649,15 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
         fontSizeTitleMobile,
 				lineHeight,
         lineHeightTitle,
-        lineHeightDesktop,
-        lineHeightTablet,
-        lineHeightMobile,
+        lineHeightTitleDesktop,
+        lineHeightTitleTablet,
+        lineHeightTitleMobile,
 				letterSpacing,
         letterSpacingTitle,
-        letterSpacingDesktop,
-        letterSpacingTablet,
-        letterSpacingMobile,
-        letterSpacingUnit,
+        letterSpacingTitleDesktop,
+        letterSpacingTitleTablet,
+        letterSpacingTitleMobile,
+        letterSpacingTitleUnit,
 				maxWidth,
 				maxWidthUnit,
 				minWidth,
@@ -699,7 +670,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 				minHeightUnit,
 				minHeight,
 				fontSizeTitleUnit,
-        lineHeightUnit,
+        lineHeightTitleUnit,
 				blockHeight,
 				textTransform,
         textTransformTitle,
@@ -821,6 +792,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 			extraHoverBeforeStyles,
 			extraHoverAfterStyles,
 			titlePopUpisVisible,
+      subHeaderPupUpIsVisible,
 			titleFontFamily
 
 		} = attributes;
@@ -862,12 +834,12 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
     const titleStyles = {
 			color: titleColor ? titleColor : undefined,
 			fontSize: fontSizeTitleDesktop ? (fontSizeTitleDesktop + fontSizeTitleUnit) : undefined,
-      lineHeight: lineHeightDesktop ? (lineHeightDesktop + lineHeightUnit) : undefined,
+      lineHeight: lineHeightTitleDesktop ? (lineHeightTitleDesktop + lineHeightTitleUnit) : undefined,
       fontWeight: fontWeightDesktop ? fontWeightDesktop : undefined,
       textTransform: textTransformDesktop ? textTransformDesktop : undefined,
       fontStyle: fontStyleDesktop ? fontStyleDesktop : undefined,
       textDecoration: textDecorationDesktop ? textDecorationDesktop : undefined,
-      letterSpacing: letterSpacingDesktop ? (letterSpacingDesktop + letterSpacingUnit) : undefined
+      letterSpacing: letterSpacingTitleDesktop ? (letterSpacingTitleDesktop + letterSpacingTitleUnit) : undefined
 		}
 
 
@@ -915,283 +887,6 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 			borderBottomWidth: borderWidthBottom ? (borderWidthBottom + borderWidthUnit) : undefined,
 			borderLeftWidth: borderWidthLeft ? (borderWidthLeft + borderWidthUnit) : undefined,
 		};
-
-
-// General function to create responsive css
-
-    const saveMeta = () => {
-      const head = document.head || document.getElementsByTagName( 'head' )[ 0 ];
-      const meta = wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' );
-      const block = wp.data.select( 'core/block-editor' ).getBlock( props.clientId );
-      let dimensions = {};
-			const id = props.name.split( '/' ).join( '-' );
-      // Truncating head tag
-      while (head.firstChild) {
-        head.removeChild(head.lastChild);
-      }
-      const fontSize = {
-      	fontSize: ( typeof block.attributes.fontSizeTitleDesktop !== 'undefined' ) ? block.attributes.fontSizeTitleDesktop + block.attributes.fontSizeTitleUnit : null,
-      	fontSizeTitleTablet: ( typeof block.attributes.fontSizeTitleTablet !== 'undefined' ) ? block.attributes.fontSizeTitleTablet + block.attributes.fontSizeTitleUnit : null,
-      	fontSizeTitleMobile: ( typeof block.attributes.fontSizeTitleMobile !== 'undefined' ) ? block.attributes.fontSizeTitleMobile + block.attributes.fontSizeTitleUnit : null,
-      };
-
-      const lineHeight = {
-        lineHeight: ( typeof block.attributes.lineHeightDesktop !== 'undefined' ) ? block.attributes.lineHeightDesktop + block.attributes.lineHeightUnit : null,
-      	lineHeightTablet: ( typeof block.attributes.lineHeightTablet !== 'undefined' ) ? block.attributes.lineHeightTablet + block.attributes.lineHeightUnit : null,
-      	lineHeightMobile: ( typeof block.attributes.lineHeightMobile !== 'undefined' ) ? block.attributes.lineHeightMobile + block.attributes.lineHeightUnit : null,
-      }
-
-      const letterSpacing = {
-        letterSpacing: ( typeof block.attributes.letterSpacingDesktop !== 'undefined' ) ? block.attributes.letterSpacingDesktop + block.attributes.letterSpacingUnit : null,
-        letterSpacingTablet: ( typeof block.attributes.letterSpacingTablet !== 'undefined' ) ? block.attributes.letterSpacingTablet + block.attributes.letterSpacingUnit : null,
-        letterSpacingMobile: ( typeof block.attributes.letterSpacingMobile !== 'undefined' ) ? block.attributes.letterSpacingMobile + block.attributes.letterSpacingUnit : null,
-      }
-
-      const fontWeight = {
-        fontWeight: ( typeof block.attributes.fontWeightDesktop !== 'undefined' ) ? block.attributes.fontWeightDesktop : null,
-        fontWeightTablet: ( typeof block.attributes.fontWeightTablet !== 'undefined' ) ? block.attributes.fontWeightTablet : null,
-        fontWeightMobile: ( typeof block.attributes.fontWeightMobile !== 'undefined' ) ? block.attributes.fontWeightMobile : null,
-      }
-
-      const textTransform = {
-        textTransform: ( typeof block.attributes.textTransformDesktop !== 'undefined' ) ? block.attributes.textTransformDesktop : null,
-        textTransformTablet: ( typeof block.attributes.textTransformTablet !== 'undefined' ) ? block.attributes.textTransformTablet : null,
-        textTransformMobile: ( typeof block.attributes.textTransformMobile !== 'undefined' ) ? block.attributes.textTransformMobile : null,
-      }
-
-      const fontStyle = {
-        fontStyle: ( typeof block.attributes.fontStyleDesktop !== 'undefined' ) ? block.attributes.fontStyleDesktop : null,
-        fontStyleTablet: ( typeof block.attributes.fontStyleTablet !== 'undefined' ) ? block.attributes.fontStyleTablet : null,
-        fontStyleMobile: ( typeof block.attributes.fontStyleMobile !== 'undefined' ) ? block.attributes.fontStyleMobile : null,
-      }
-
-      const textDecoration = {
-        textDecoration: ( typeof block.attributes.textDecorationDesktop !== 'undefined' ) ? block.attributes.textDecorationDesktop : null,
-        textDecorationTablet: ( typeof block.attributes.textDecorationTablet !== 'undefined' ) ? block.attributes.textDecorationTablet : null,
-        textDecorationMobile: ( typeof block.attributes.textDecorationMobile !== 'undefined' ) ? block.attributes.textDecorationMobile : null,
-      }
-
-      if ( typeof meta === 'undefined' || typeof meta._gx_dimensions === 'undefined' || ( typeof meta._gx_dimensions !== 'undefined' && meta._gx_dimensions === '' ) ) {
-				dimensions = {};
-			} else {
-				dimensions = JSON.parse( meta._gx_dimensions );
-			}
-
-			if ( typeof dimensions[ id ] === 'undefined' ) {
-				dimensions[ id ] = {};
-				dimensions[ id ][ props.type ] = {};
-			} else {
-				if ( typeof dimensions[ id ][ props.type ] === 'undefined' ) {
-					dimensions[ id ][ props.type ] = {};
-				}
-			}
-      // Save values to metadata.
-			wp.data.dispatch( 'core/editor' ).editPost( {
-				meta: {
-					_gx_dimensions: JSON.stringify( dimensions ),
-				},
-			} );
-
-      const style = document.createElement( 'style' );
-      let responsiveCss = '';
-      style.type = 'text/css';
-      //add responsive styling
-        responsiveCss += '@media only screen and (max-width: 768px) {';
-        responsiveCss += '.gx-image-box-text h2{';
-        if(typeof fontSizeTitleTabletValue !== 'undefined'){
-        responsiveCss += 'font-size: ' + fontSizeTitleTabletValue + fontSizeTitleUnit + ' !important;';
-        }
-        if(typeof lineHeightTabletValue !== 'undefined'){
-          responsiveCss += 'line-height: ' + lineHeightTabletValue + lineHeightUnit + ' !important;';
-        }
-        if(typeof letterSpacingTabletValue !== 'undefined'){
-          responsiveCss += 'letter-spacing: ' + letterSpacingTabletValue + letterSpacingUnit + ' !important;';
-        }
-        if(typeof fontWeightTabletValue !== 'undefined'){
-          responsiveCss += 'font-weight: ' + fontWeightTabletValue + ' !important;';
-        }
-        if(typeof textTransformTabletValue !== 'undefined'){
-          responsiveCss += 'text-transform: ' + textTransformTabletValue + ' !important;';
-        }
-        if(typeof fontStyleTabletValue !== 'undefined'){
-          responsiveCss += 'font-style: ' + fontStyleTabletValue + ' !important;';
-        }
-        if(typeof textDecorationTabletValue !== 'undefined'){
-          responsiveCss += 'text-decoration: ' + textDecorationTabletValue + ' !important;';
-        }
-        responsiveCss += '}';
-        responsiveCss += '}';
-
-        responsiveCss += '@media only screen and (max-width: 514px) {';
-        responsiveCss += '.gx-image-box-text h2{';
-        if(typeof fontSizeTitleMobileValue !== 'undefined'){
-        responsiveCss += 'font-size: ' + fontSizeTitleMobileValue + fontSizeTitleUnit + ' !important;';
-        }
-        if(typeof lineHeightMobileValue !== 'undefined'){
-          responsiveCss += 'line-height: ' + lineHeightMobileValue + lineHeightUnit + ' !important;';
-        }
-        if(typeof letterSpacingMobileValue !== 'undefined'){
-          responsiveCss += 'letter-spacing: ' + letterSpacingMobileValue + letterSpacingUnit + ' !important;';
-        }
-        if(typeof fontWeightMobileValue !== 'undefined'){
-          responsiveCss += 'font-weight: ' + fontWeightMobileValue + ' !important;';
-        }
-        if(typeof textTransformMobileValue !== 'undefined'){
-          responsiveCss += 'text-transform:  ' + textTransformMobileValue + ' !important;';
-        }
-        if(typeof fontStyleMobileValue !== 'undefined'){
-          responsiveCss += 'font-style: ' + fontStyleMobileValue + ' !important;';
-        }
-        if(typeof textDecorationMobileValue !== 'undefined'){
-          responsiveCss += 'text-decoration: ' + textDecorationMobileValue + ' !important;';
-        }
-        responsiveCss += '}';
-        responsiveCss += '}';
-
-      cssResponsive = responsiveCss;
-
-      // Setting Attribute
-      props.setAttributes({customCss: cssResponsive});
-      wp.data.dispatch( 'core/editor' ).editPost( {
-				responsiveStyles: {
-					style: cssResponsive,
-				},
-			} );
-      if ( style.styleSheet ) {
-        style.innerHTML = responsiveCss;
-      } else {
-        style.appendChild( document.createTextNode( responsiveCss ) );
-      }
-      head.appendChild( style );
-    };
-
-// When font size is changed
-    const onChangeFontSize = (value) => {
-      props.setAttributes({fontSizeTitle: value });
-      fontSizeTitleValue = value;
-      if(deviceTypography == 'tablet'){
-        props.setAttributes({fontSizeTitleTablet: value});
-        fontSizeTitleTabletValue = value;
-      }else if(deviceTypography == 'desktop'){
-        props.setAttributes({fontSizeTitleDesktop: value});
-        fontSizeTitleDesktopValue = value;
-      }else if(deviceTypography == 'mobile'){
-        props.setAttributes({fontSizeTitleMobile: value});
-        fontSizeTitleMobileValue = value;
-      }
-      saveMeta();
-    }
-
-// When line height is changed
-    const onChangeLineHeight = (value) => {
-      props.setAttributes({ lineHeightTitle: value });
-      lineHeightTitleValue = value;
-      if(deviceTypography == 'tablet'){
-        props.setAttributes({lineHeightTablet : value});
-        lineHeightTabletValue = value;
-      }else if(deviceTypography == 'desktop'){
-        props.setAttributes({lineHeightDesktop : value});
-        lineHeightDesktopValue = value;
-      }else if(deviceTypography == 'mobile'){
-        props.setAttributes({lineHeightMobile : value})
-        lineHeightMobileValue = value;
-      }
-      saveMeta();
-    }
-
-// When letter spacing is changed
-    const onChangeLetterSpacing = (value) => {
-      props.setAttributes({ letterSpacingTitle: value });
-      letterSpacingTitleValue = value;
-      if(deviceTypography == 'tablet'){
-        props.setAttributes({letterSpacingTablet : value});
-        letterSpacingTabletValue = value;
-      }else if(deviceTypography == 'desktop'){
-        props.setAttributes({letterSpacingDesktop : value});
-        letterSpacingDesktopValue = value;
-      }else if(deviceTypography == 'mobile'){
-        props.setAttributes({letterSpacingMobile : value})
-        letterSpacingMobileValue = value;
-      }
-      saveMeta();
-    }
-
-  // When weight is changed
-  const onChangeWeight = (value) => {
-    props.setAttributes({ fontWeightTitle: value });
-    fontWeightTitleValue = value;
-    if(deviceTypography == 'tablet'){
-      props.setAttributes({fontWeightTablet : value});
-      fontWeightTabletValue = value;
-    }else if(deviceTypography == 'desktop'){
-      props.setAttributes({fontWeightDesktop : value});
-      fontWeightDesktopValue = value;
-    }else if(deviceTypography == 'mobile'){
-      props.setAttributes({fontWeightMobile : value})
-      fontWeightMobileValue = value;
-    }
-    saveMeta();
-  }
-
-// When text transform is changed
-  const onChangeTextTransform = (value) => {
-    props.setAttributes({ textTransformTitle: value });
-    textTransformTitleValue = value;
-    if(deviceTypography == 'tablet'){
-      props.setAttributes({textTransformTablet : value});
-      textTransformTabletValue = value;
-    }else if(deviceTypography == 'desktop'){
-      props.setAttributes({textTransformDesktop : value});
-      textTransformDesktopValue = value;
-    }else if(deviceTypography == 'mobile'){
-      props.setAttributes({textTransformMobile : value})
-      textTransformMobileValue = value;
-    }
-    saveMeta();
-  }
-
-// When text style is changed
-  const onChangeFontStyle = (value) => {
-    props.setAttributes({ fontStyle: value });
-    fontStyleTitleValue = value;
-    if(deviceTypography == 'tablet'){
-      props.setAttributes({fontStyleTablet : value});
-      fontStyleTabletValue = value;
-    }else if(deviceTypography == 'desktop'){
-      props.setAttributes({fontStyleDesktop : value});
-      fontStyleDesktopValue = value;
-    }else if(deviceTypography == 'mobile'){
-      props.setAttributes({fontStyleMobile : value})
-      fontStyleMobileValue = value;
-    }
-    saveMeta();
-  }
-
-// When Text Decoration is changed
-
-
-  const onChangeTextDecoration = (value) => {
-    props.setAttributes({ textDecorationTitle: value });
-    textDecorationTitleValue = value;
-    if(deviceTypography == 'tablet'){
-      props.setAttributes({textDecorationTablet : value});
-      textDecorationTabletValue = value;
-    }else if(deviceTypography == 'desktop'){
-      props.setAttributes({textDecorationDesktop : value});
-      textDecorationDesktopValue = value;
-    }else if(deviceTypography == 'mobile'){
-      props.setAttributes({textDecorationMobile : value})
-      textDecorationMobileValue = value;
-    }
-    saveMeta();
-  }
-
-
-// When device is changed
-    const onChangeDevice = (value) => {
-      props.setAttributes({ deviceTypography: value });
-    }
-
 
 		const onSelectImage = ( media ) => {
 			setAttributes( {
@@ -1381,149 +1076,36 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 					    onFocusOutside = {() => { setAttributes({  titlePopUpisVisible: ! titlePopUpisVisible }) }}
 					    noArrow = {true}
 					    >
-					       <SelectControl
-						        label="Family"
-						        className="gx-title-typography-setting"
-						        value={ titleFontFamily }
-						        options={ [
-						        	{ label: 'Default', value: 'inherit' },
-						        	{ label: 'Placeholder', value: 'inherit' },
-						        ] }
-						        onChange={ ( value ) => props.setAttributes({ titleFontFamily: value }) }
-							/>
-							<RadioControl
-								className={'gx-device-control'}
-						        selected={deviceTypography }
-						        options={ [
-						            { label: '', value: 'desktop' },
-						            { label: '', value: 'tablet' },
-						            { label: '', value: 'mobile' },
-						        ] }
-						        onChange={ onChangeDevice }
-						    />
-							<RadioControl
-								className={'gx-unit-control'}
-						        selected={fontSizeTitleUnit }
-						        options={ [
-						            { label: 'PX', value: 'px' },
-						            { label: 'EM', value: 'em' },
-						            { label: 'VW', value: 'vw' },
-						            { label: '%', value: '%' },
-						        ] }
-						        onChange={ ( value ) => props.setAttributes({ fontSizeTitleUnit: value }) }
-						    />
-						    <RangeControl
-                label="Size"
-                className={'gx-with-unit-control'}
-                value={fontSizeTitle}
-                onChange={ onChangeFontSize }
-                id={'size-control'}
-								min={ 0 }
-								step={0.1}
-								allowReset = {true}
-                        	/>
-              <RadioControl
-  							className={'gx-unit-control'}
-  					        selected={lineHeightUnit }
-  					        options={ [
-  					            { label: 'PX', value: 'px' },
-  					            { label: 'EM', value: 'em' },
-  					            { label: 'VW', value: 'vw' },
-  					            { label: '%', value: '%' },
-  					        ] }
-  					        onChange={ ( value ) => props.setAttributes({ lineHeightUnit: value }) }
-  					    />
-                <RangeControl
-                label="Line Height"
-                className={'gx-with-unit-control'}
-                value={lineHeightTitle}
-                onChange={ onChangeLineHeight }
-								min={ 0 }
-								step={0.1}
-								allowReset = {true}
-                        	/>
-
-                <RadioControl
-    							className={'gx-unit-control'}
-    					        selected={letterSpacingUnit }
-    					        options={ [
-    					            { label: 'PX', value: 'px' },
-    					            { label: 'EM', value: 'em' },
-    					            { label: 'VW', value: 'vw' },
-    					            { label: '%', value: '%' },
-    					        ] }
-    					        onChange={ ( value ) => props.setAttributes({ letterSpacingUnit: value }) }
-    					    />
-                <RangeControl
-                label="Letter Spacing"
-                className={'gx-with-unit-control'}
-                value={letterSpacingTitle}
-                onChange={ onChangeLetterSpacing }
-  							min={ 0 }
-  							step={0.1}
-  							allowReset = {true}
-                        	/>
-                <Divider/>
-                <SelectControl
-                   label="Weight"
-                   className="gx-title-typography-setting"
-                   value={ fontWeightTitle }
-                   options={ [
-                     { label: 'Thin (Hairline)', value: 100 },
-                     { label: 'Extra Light (Ultra Light)', value: 200 },
-                     { label: 'Light', value: 300 },
-                     { label: 'Normal (Regular)', value: 400 },
-                     { label: 'Medium', value: 500 },
-                     { label: 'Semi Bold (Demi Bold)', value: 600 },
-                     { label: 'Bold', value: 700 },
-                     { label: 'Extra Bold (Ultra Bold)', value: 800 },
-                     { label: 'Black (Heavy)', value: 900 },
-                     { label: 'Extra Black (Ultra Black)', value: 950 },
-                   ] }
-                   onChange={ onChangeWeight }
-                />
-                <SelectControl
-                   label="Transform"
-                   className="gx-title-typography-setting"
-                   value={ textTransformTitle }
-                   options={ [
-                     { label: 'Default', value: 'none' },
-                     { label: 'Capitilize', value: 'capitalize' },
-                     { label: 'Uppercase', value: 'uppercase' },
-                     { label: 'Lowercase', value: 'lowercase' },
-                     { label: 'Full Width', value: 'full-width' },
-                     { label: 'Full Size Kana', value: 'full-size-kana' },
-                   ] }
-                   onChange={ onChangeTextTransform }
-                />
-                <SelectControl
-                   label="Style"
-                   className="gx-title-typography-setting"
-                   value={ fontStyle }
-                   options={ [
-                     { label: 'Default', value: 'normal' },
-                     { label: 'Italic', value: 'italic' },
-                     { label: 'Oblique', value: 'oblique' },
-                     { label: 'Oblique (40 deg)', value: 'oblique 40deg' },
-                   ] }
-                   onChange={ onChangeFontStyle }
-                />
-                <SelectControl
-                   label="Decoration"
-                   className="gx-title-typography-setting"
-                   value={ textDecorationTitle }
-                   options={ [
-                     { label: 'Default', value: 'none' },
-                     { label: 'Overline', value: 'overline' },
-                     { label: 'Line Through ', value: 'line-through' },
-                     { label: 'Underline ', value: 'underline' },
-                     { label: 'Underline Overline ', value: 'underline overline' },
-                   ] }
-                   onChange={ onChangeTextDecoration }
-                />
+              <Typography
+              target={"title"}
+              { ...props }
+              />
 
 					     </Popover>
 					) }
+          <BaseControl
+          className={"gx-settings-button"}
+          >
+          <BaseControl.VisualLabel>Sub-Header Typography</BaseControl.VisualLabel>
+          <Button
+          isSecondary
+          onClick={() => { setAttributes({  subHeaderPupUpIsVisible: ! subHeaderPupUpIsVisible }) }}
+          >
+          Typography</Button>
+        </BaseControl>
+        { subHeaderPupUpIsVisible && (
+            <Popover
+            className="gx-popover"
+            onFocusOutside = {() => { setAttributes({  subHeaderPupUpIsVisible: ! subHeaderPupUpIsVisible }) }}
+            noArrow = {true}
+            >
+            <Typography
+            target={"title"}
+            { ...props }
+            />
+
+             </Popover>
+        ) }
 
 					<PanelColorSettings
 							title={ __( 'Background Colour Settings' ) }
@@ -1938,14 +1520,15 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 				readMore,
 				counter,
 				lineHeight,
-        lineHeightDesktop,
-        lineHeightTablet,
+        lineHeightTitle,
+        lineHeightTitleDesktop,
+        lineHeightTitleTablet,
         lineHeightMobile,
 				letterSpacing,
-        letterSpacingUnit,
-        letterSpacingDesktop,
-        letterSpacingMobile,
-        letterSpacingTablet,
+        letterSpacingTitleUnit,
+        letterSpacingTitleDesktop,
+        letterSpacingTitleMobile,
+        letterSpacingTitleTablet,
         letterSpacingTitle,
 				maxWidth,
 				maxWidthUnit,
@@ -1963,7 +1546,6 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
         fontSizeTitleTablet,
         fontSizeTitleDesktop,
         fontSizeTitleMobile,
-        lineHeightTitle,
 				blockHeight,
 				textTransform,
         textTransformTitle,
@@ -2090,6 +1672,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 			extraHoverBeforeStyles,
 			extraHoverAfterStyles,
 			titlePopUpisVisible,
+      subHeaderPupUpIsVisible,
 			titleFontFamily,
 		} = attributes;
 
@@ -2115,11 +1698,11 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 		const titleStyles = {
 			color: titleColor ? titleColor : undefined,
 			fontSize: fontSizeTitleDesktop ? (fontSizeTitleDesktop + fontSizeTitleUnit) : undefined,
-      lineHeight: lineHeightDesktop ? (lineHeightDesktop + lineHeightUnit) : undefined,
+      lineHeight: lineHeightTitleDesktop ? (lineHeightTitleDesktop + lineHeightTitleUnit) : undefined,
       fontWeight: fontWeightDesktop ? fontWeightDesktop : undefined,
       textTransform: textTransformDesktop ? textTransformDesktop : undefined,
       fontStyle: fontStyleDesktop ? fontStyleDesktop : undefined,
-      letterSpacing: letterSpacingDesktop ? (letterSpacingDesktop + letterSpacingUnit) : undefined,
+      letterSpacing: letterSpacingTitleDesktop ? (letterSpacingTitleDesktop + letterSpacingTitleUnit) : undefined,
       textDecoration: textDecorationDesktop ? textDecorationDesktop : undefined,
 		}
 

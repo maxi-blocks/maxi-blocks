@@ -40,7 +40,7 @@ function gx_customizer_init( WP_Customize_Manager $wp_customize ){
 
 
         $transport = 'postMessage';
-        $contentColorsData = [
+        $contentColorsData = array_reverse([
             'body_background_color' => 'icon',
             'p_color'   => 'icon',
             'a_color'   => 'icon',
@@ -52,7 +52,7 @@ function gx_customizer_init( WP_Customize_Manager $wp_customize ){
             'h6_color'  => 'H6',
             'highlight' => 'icon',
             'hover'     => 'icon',
-        ];
+        ]);
         $headingSections = [
             'pDark' => 'Paragraph Dark',
             'pLight' => 'Paragraph Light',
@@ -633,7 +633,7 @@ function gx_admin_js_file() {
     if (is_customize_preview()) {
         $list = [];
         $font_info = [];
-        $fonts_list =  file_get_contents(plugin_dir_url( __FILE__ ) . 'dist/fonts.json');
+        $fonts_list =  file_get_contents(plugin_dir_url(__FILE__) . 'dist/fonts.json');
         $fonts_list = json_decode($fonts_list,true);
 
         $fonts_listCount = count($fonts_list['items']);

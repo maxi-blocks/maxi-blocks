@@ -208,7 +208,7 @@ export const name = 'gutenberg-extra/block-button';
 
 const settings = {
 
-	title: __( 'GX Button' ),
+	title: __( 'Button Extra' ),
 
 	description: __( '' ),
 

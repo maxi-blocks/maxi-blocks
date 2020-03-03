@@ -29,11 +29,11 @@ export const blockBorderAttributes = {
         type: 'number',
         default: 0
     },
-    borderRadiusSize: {
+    borderRadiusTopLeft: {
         type: 'number',
         default: 0
     },
-    borderRadiusTopLeft: {
+    borderRadiusSize: {
         type: 'number',
         default: 0
     },

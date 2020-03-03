@@ -4,13 +4,14 @@ export const FontLevel = ( props ) => {
     const {
         label,
         value,
-        onChange
+        onChange,
+        className
     } = props;
 
     return (
         <SelectControl
             label={label}
-            className="gx-title-level"
+            className={className + " gx-title-level"}
             value={value}
             options={[
                 { label: 'H1', value: 'h1' },

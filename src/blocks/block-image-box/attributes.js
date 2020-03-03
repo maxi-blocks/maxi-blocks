@@ -1,5 +1,5 @@
 import { blockStyleAttributes } from '../../components/block-styles/index';
-import { imagePositionAttributes } from '../../components/imageposition/index';
+import { imagePositionAttributes } from '../../components/image-position/index';
 import { blockBorderAttributes } from '../../components/block-border/index';
 import { sizeControlAttributes } from '../../components/size-control/index';
 import { hoverAnimationAttributes } from '../../components/hover-animation/index';

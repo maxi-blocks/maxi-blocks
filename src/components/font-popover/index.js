@@ -14,6 +14,7 @@ import './editor.scss';
  * WordPress dependencies
  */
 
+const { __ } = wp.i18n;
 const { 
     BaseControl, 
     Button,
@@ -56,46 +57,40 @@ export default class FontPopover extends Component {
     render () {
         
         const {
-            classNameBaseControl,
+            className,
+            classNamePopover,
             title,
             buttonText,
-            classNameDropdown,
-            classNamePopover,
-            classNameFontFamilySelector,
             font,
             onFontFamilyChange,
-            classNameDevice,
-            classNameFontUnit,
             fontSizeUnit,
             onFontSizeUnitChange,
-            classNameFontSize,
             fontSize,
             onFontSizeChange
         } = this.props;
 
         return (
-            <Fragment>
+            <div className={className}>
                 <BaseControl
-                    className={classNameBaseControl ? classNameBaseControl : "gx-settings-button"}
+                    className={"gx-settings-button"}
                 >
                     <BaseControl.VisualLabel>
                         { title }
                     </BaseControl.VisualLabel>
                     <Dropdown
-                        className={ classNameDropdown ? classNameDropdown : 'gx-fontdropdown' }
-                        contentClassName="gx-font-family-selector-popover"
+                        className={ 'gx-fontdropdown' }
                         renderToggle={({ isOpen, onToggle }) => (
                             <Button
                                 isSecundary
                                 onClick={onToggle}
                                 aria-expanded={isOpen}
                             >
-                                { buttonText ? buttonText : 'Typography' }
+                                { buttonText ? buttonText : __('Typography', 'gutenberg-extra') }
                             </Button>
                         )}
                         popoverProps={
                             {                           
-                                className: classNamePopover ? classNamePopover : "gx-popover gx-fontpopover",
+                                className: classNamePopover + " gx-popover gx-fontpopover",
                                 noArrow: true,
                                 position: "center"
                             }
@@ -103,12 +98,12 @@ export default class FontPopover extends Component {
                         renderContent={() => (
                         <Fragment>
                             <FontFamilySelector
-                                className={ classNameFontFamilySelector ? classNameFontFamilySelector : 'gx-font-family-selector' }
+                                className={'gx-font-family-selector' }
                                 font={font}
                                 onChange={ onFontFamilyChange }
                             />
                             <RadioControl
-                                className={ classNameDevice ? classNameDevice : 'gx-device-control' }
+                                className={ 'gx-device-control' }
                                 selected={this.state.device}
                                 options={ [
                                     { label: '', value: 'desktop' },
@@ -118,7 +113,7 @@ export default class FontPopover extends Component {
                                 onChange={ this.onDeviceChange }
                             />
                             <RadioControl
-                                className={ classNameFontUnit ? classNameFontUnit : 'gx-unit-control' }
+                                className={ 'gx-unit-control' }
                                 selected={ fontSizeUnit }
                                 options={ [
                                     { label: 'PX', value: 'px' },
@@ -130,7 +125,7 @@ export default class FontPopover extends Component {
                             />
                             <RangeControl
                                 label="Size"
-                                className={ classNameFontSize ? classNameFontSize : 'gx-with-unit-control' }
+                                className={ 'gx-with-unit-control' }
                                 value={fontSize}
                                 onChange={ onFontSizeChange }
                                 min={ 0 }
@@ -142,7 +137,7 @@ export default class FontPopover extends Component {
                     >
                     </Dropdown>
                 </BaseControl>
-            </Fragment>
+            </div>
         )
     }
 }

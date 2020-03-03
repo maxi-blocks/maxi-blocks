@@ -8,23 +8,65 @@
 //  Import CSS.
 import './style.scss';
 import './editor.scss';
+// import React, { Component } from 'react';
 import { withState } from '@wordpress/compose';
 import DimensionsControl from '../../components/dimensions-control/';
+import { fontFamilyinit } from '../../components/fonts/fontfamilyselector/index';
+import iconsBlocks from '../../components/icons/icons-blocks.js';
+import { FontPopover } from '../../components/fonts/index.js';
 import { useSelect } from '@wordpress/data';
+
 
 const { __ } = wp.i18n; // Import __() from wp.i18n
 const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
 
 
 const {RichText,MediaUpload,InspectorControls, URLInput} = wp.editor;
-const {PanelBody, PanelRow, Button, TextControl, ToggleControl, RadioControl, RangeControl, SelectControl, TextareaControl, ColourPicker, ColourIndicator, GradientPicker, BaseControl, Text, Popover } = wp.components;
+const {PanelBody, PanelRow, Button, TextControl, ToggleControl, RadioControl, RangeControl, SelectControl, TextareaControl, ColourPicker, ColourIndicator, GradientPicker, BaseControl, Text, Popover, IconButton } = wp.components;
 const {PanelColorSettings, PanelColorGradientSettings} = wp.blockEditor;
 
+//let gxPlaceholder = ;
+
+// Declaring placeholder variables because attributes are not async when setting them
+let cssResponsive = '';
+let textDecorationTitleValue;
+let textDecorationTabletValue;
+let textDecorationMobileValue;
+let textDecorationDesktopValue;
+let fontSizeTitleValue;
+let fontSizeTitleTabletValue;
+let fontSizeTitleMobileValue;
+let fontSizeTitleDesktopValue;
+let lineHeightDesktopValue;
+let lineHeightTitleValue;
+let lineHeightTabletValue;
+let lineHeightMobileValue;
+let letterSpacingTitleValue;
+let letterSpacingDesktopValue;
+let letterSpacingTabletValue;
+let letterSpacingMobileValue;
+let fontWeightTitleValue;
+let fontWeightTabletValue;
+let fontWeightMobileValue;
+let fontWeightDesktopValue;
+let textTransformTitleValue;
+let textTransformDesktopValue;
+let textTransformTabletValue;
+let textTransformMobileValue;
+let fontStyleTitleValue;
+let fontStyleDesktopValue;
+let fontStyleTabletValue;
+let fontStyleMobileValue;
+const Divider = () => (
+    <hr style={{marginBottom: '15px',}} />
+);
+
+
 registerBlockType( 'gutenberg-extra/block-image-box', {
-	title: ( 'GX Image Box'), // Block title.
-	icon: <svg preserveAspectRatio="none" x="0px" y="0px" width="24px" height="24px" viewBox="0 0 24 24"><defs><path id="Layer2_0_1_STROKES" stroke="#00CCFF" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" fill="none" d="M 21.6 20.85 L 21.6 21.6 2.45 21.6 2.45 21.5 2.45 2.45 21.6 2.45 21.6 20.85 14.7 14.25 10.5 17.25 8.25 9.05 2.45 21.5 M 18 8.4 Q 18 9.4 17.25 10.15 16.55 10.9 15.5 10.9 14.55 10.9 13.8 10.15 13 9.4 13 8.4 13 7.4 13.8 6.65 14.55 5.95 15.5 5.95 16.55 5.95 17.25 6.65 18 7.4 18 8.4 Z"/></defs><g transform="matrix( 1, 0, 0, 1, 0,0) "><use href="#Layer2_0_1_STROKES"/></g></svg>,
-	category: 'gutenberg-extra-blocks', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
-	supports: { 
+	title: ( 'Image Box Extra'), // Block title.
+	icon: iconsBlocks.iconBox,
+	 	category: 'gutenberg-extra-blocks', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
+	supports: {
         align: true,
     },
 	attributes: {
@@ -537,7 +579,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 				minHeight,
 				fontSizeTitleUnit,
 				blockHeight,
-				textTransform, 
+				textTransform,
 				borderWidth,
 				borderRadius,
 				borderType,
@@ -682,6 +724,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 
 		const titleStyles = {
 			color: titleColor ? titleColor : undefined,
+			fontFamily: titleFontFamily,
 			fontSize: fontSizeTitle ? (fontSizeTitle + fontSizeTitleUnit) : undefined,
 		}
 
@@ -741,9 +784,15 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 		const gradients = "";
 		const disableCustomGradients = false;
 
+		// Init the saved fonts
+		const blockFonts = [
+			titleFontFamily
+		];
+		fontFamilyinit( blockFonts );
+
 
 		return (
-			<div 
+			<div
 			className={ 'gx-block ' + blockStyle+ ' gx-image-box ' + className }
 			data-gx_initial_block_class = {defaultBlockStyle}
 			style={blockStyles}>
@@ -753,11 +802,16 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 						onSelect={ onSelectImage }
 						allowedTypes="image"
 						value={ mediaID }
-						render={ ( { open } ) => (
-							<Button className={ mediaID ? 'image-button' : 'button button-large' } onClick={ open }>
-								{ ! mediaID ? __( 'Upload Image', 'gutenberg-extra' ) : <img src={ mediaURL } alt={ __( 'Upload Image', 'gutenberg-extra' ) } /> }
-							</Button>
-						) }
+						render={({ open }) => (
+			              <IconButton
+			                className={ mediaID + ' gx-upload-button'}
+			                icon = {<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none" x="0px" y="0px" width="600px" height="400px" viewBox="0 0 600 400"><defs><g id="Layer0_0_FILL"><path fill="#F2F2F2" stroke="none" d="M 50.75 50.95L 48.3 51.8 46.05 399.5 553.15 399.5 553.15 47.95 297.4 250.7 50.75 50.95M 320.25 118.7Q 311.7 110.1 299.6 110.1 292.1 110.1 286 113.35 282.2 115.4 278.9 118.7 270.35 127.25 270.35 139.35 270.35 151.45 278.9 160.05 282.2 163.35 286 165.35 292.1 168.6 299.6 168.6 311.7 168.6 320.25 160.05 328.85 151.45 328.85 139.35 328.85 127.25 320.25 118.7 Z"/><path fill="#FFFFFF" stroke="none" d="M -0.45 0.05L -0.45 399.5 46.05 399.5 48.3 51.8 50.75 50.95 297.4 250.7 553.15 47.95 553.15 399.5 600.5 399.5 600.5 0.05 -0.45 0.05M 299.6 110.1Q 311.7 110.1 320.25 118.7 328.85 127.25 328.85 139.35 328.85 151.45 320.25 160.05 311.7 168.6 299.6 168.6 292.1 168.6 286 165.35 282.2 163.35 278.9 160.05 270.35 151.45 270.35 139.35 270.35 127.25 278.9 118.7 282.2 115.4 286 113.35 292.1 110.1 299.6 110.1 Z"/></g></defs><g transform="matrix( 1, 0, 0, 1, 0,0) "><use href="#Layer0_0_FILL"/></g></svg>}
+			                showTooltip="true"
+			                label={__("Upload image.", "gx")}
+			                onClick={ open }>
+			                { ! mediaID ? __( 'Upload Image', 'gutenberg-extra' ) : <img src={ mediaURL } alt={ __( 'Upload Image', 'gutenberg-extra' ) } /> }
+			              </IconButton>
+			            )}
 					/>
 				</div>
 				<div class='gx-image-box-text'>
@@ -875,43 +929,42 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 						label={ __( 'Add "nofollow" attribute' ) }
 						checked={ addNofollow }
 						onChange={ () => setAttributes( { addNofollow: ! addNofollow } ) }
-						/>  
+						/>
 
 					<ToggleControl
 						label={ __( 'Add "noopener" attribute' ) }
 						checked={ addNoopener }
 						onChange={ () => setAttributes( { addNoopener : ! addNoopener  } ) }
-						/>  
+						/>
 
 					<ToggleControl
 						label={ __( 'Add "noreferrer" attribute' ) }
 						checked={ addNoreferrer  }
 						onChange={ () => setAttributes( {addNoreferrer: ! addNoreferrer } ) }
-						/> 
+						/>
 
 					<ToggleControl
 						label={ __( 'Add "sponsored" attribute' ) }
 						checked={ addSponsored }
 						onChange={ () => setAttributes( { addSponsored: ! addSponsored } ) }
-						/>  
+						/>
 
 					<ToggleControl
 						label={ __( 'Add "ugc" attribute' ) }
 						checked={ addUgc }
 						onChange={ () => setAttributes( { addUgc: ! addUgc } ) }
-						/>          
+						/>
 				</PanelBody>
 				<PanelBody className="gx-panel gx-color-setting gx-style-tab-setting" initialOpen={ true } title={ __( 'Colour settings' ) }>
-					<BaseControl
-					className={"gx-settings-button"}
-					>
-						<BaseControl.VisualLabel>Title Typography</BaseControl.VisualLabel>
-						<Button 
-						isSecondary
-						onClick={() => { setAttributes({  titlePopUpisVisible: ! titlePopUpisVisible }) }}
-						>
-						Typography</Button>
-					</BaseControl>
+					<FontPopover
+						title='Title Typography'
+						font={titleFontFamily}
+						onFontFamilyChange={value => { setAttributes ({ titleFontFamily: value }); }}
+						fontSizeUnit={fontSizeTitleUnit}
+						onFontSizeUnitChange={( value ) => setAttributes({ fontSizeTitleUnit: value })}
+						fontSize={fontSizeTitle}
+						onFontSizeChange={( value ) => setAttributes({ fontSizeTitle: value })}
+					/>
 					{ titlePopUpisVisible && (
 					    <Popover
 					    className="gx-popover"
@@ -960,7 +1013,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
                         	/>
 					     </Popover>
 					) }
-					
+
 					<PanelColorSettings
 							title={ __( 'Background Colour Settings' ) }
 							colorSettings={ [
@@ -1254,7 +1307,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 							syncUnitsMobile={ marginSyncUnitsMobile }
 							dimensionSize={ marginSize }
 						/>
-						
+
 					</PanelBody>
 					<PanelBody initialOpen={ true } className="gx-panel gx-advanced-setting gx-advanced-tab-setting"  title={ __( 'Advanced Settings' ) }>
 							<SelectControl
@@ -1277,7 +1330,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 					        	{ label: 'Normal', value: 'normal' },
 					        	{ label: 'Long', value: 'long' },
 					        	{ label: 'Longer', value: 'longer' },
-					           
+
 					        ] }
 					        onChange={ ( value ) => props.setAttributes({ hoverAnimationDuration: value }) }
 							/>
@@ -1388,7 +1441,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 				fontSizeTitle,
 				fontSizeTitleUnit,
 				blockHeight,
-				textTransform, 
+				textTransform,
 				borderWidth,
 				borderRadius,
 				borderType,
@@ -1516,6 +1569,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 
 		const titleStyles = {
 			color: titleColor ? titleColor : undefined,
+			fontFamily: titleFontFamily,
 			fontSize: fontSizeTitle ? (fontSizeTitle + fontSizeTitleUnit) : undefined,
 		}
 
@@ -1566,7 +1620,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 			borderLeftWidth: borderWidthLeft ? (borderWidthLeft + borderWidthUnit) : undefined,
 		};
 		return (
-			<div 
+			<div
 			className= { 'gx-block ' + blockStyle+ ' gx-image-box ' + className }
 			data-gx_initial_block_class = {defaultBlockStyle}
 			style={blockStyles}>
@@ -1586,7 +1640,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 
 				<div class='gx-image-box-text'>
 
-				<RichText.Content tagName={titleLevel} style={ titleStyles } className="gx-image-box-title" value={ title } />
+				<RichText.Content tagName={titleLevel} style={ titleStyles } className="gx-image-box-title" value={ title } font={titleFontFamily}/>
 
 				<RichText.Content tagName="p" style={ subTitleStyles } className="gx-image-box-subtitle" value={ additionalText } />
 

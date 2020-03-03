@@ -388,11 +388,11 @@ jQuery(function($) {
         var $themes = ['Default', 'Mint', 'Elegance', 'Candy', 'Bumblebee'];
         $.each($themes, function( key, theme ) {
 
-            $(`#customize-control-body_background_color${theme}-color-dark .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Background" src="/wp-content/plugins/gutenberg-extra/img/icons/fill-light.png" />')
-            $(`#customize-control-p_color${theme}-color-dark .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Text" src="/wp-content/plugins/gutenberg-extra/img/icons/edit-tool-light.png" />')
-            $(`#customize-control-a_color${theme}-color-dark .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Link" src="/wp-content/plugins/gutenberg-extra/img/icons/broken-link-light.png" />')
-            $(`#customize-control-highlight${theme}-color-dark .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Highlight" src="/wp-content/plugins/gutenberg-extra/img/icons/permanent-light.png" />')
-            $(`#customize-control-hover${theme}-color-dark .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Hover" src="/wp-content/plugins/gutenberg-extra/img/icons/cursor-light.png" />')
+            $(`#customize-control-body_background_color${theme}-color-dark .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Background" src="/wp-content/plugins/gutenberg-extra/img/icons/fill-dark.png" />')
+            $(`#customize-control-p_color${theme}-color-dark .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Text" src="/wp-content/plugins/gutenberg-extra/img/icons/edit-tool-dark.png" />')
+            $(`#customize-control-a_color${theme}-color-dark .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Link" src="/wp-content/plugins/gutenberg-extra/img/icons/broken-link-dark.png" />')
+            $(`#customize-control-highlight${theme}-color-dark .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Highlight" src="/wp-content/plugins/gutenberg-extra/img/icons/permanent-dark.png" />')
+            $(`#customize-control-hover${theme}-color-dark .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Hover" src="/wp-content/plugins/gutenberg-extra/img/icons/cursor-dark.png" />')
 
             $(`#customize-control-body_background_color${theme}-color-light .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Background" src="/wp-content/plugins/gutenberg-extra/img/icons/fill-dark.png" />')
             $(`#customize-control-p_color${theme}-color-light .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Text" src="/wp-content/plugins/gutenberg-extra/img/icons/edit-tool-dark.png" />')
@@ -404,11 +404,11 @@ jQuery(function($) {
     }
 
     // make titles for color
-   $(document).on('hover', '.wp-picker-container', function (e) {
+   $(document).on('hover', '.wp-picker-container .wp-color-result', function (e) {
        $('.tooltiptext, #tooltiptextCss').remove();
 
        var title = $(this).parents('.customize-control-color').find('.icon-color').attr('data-title');
-       var text = $(this).parent().parent().find('.customize-control-title').text();
+       var text = $(this).parents('li[id*="-color-"]').find('.customize-control-title').text();
 
        if (title) {
            title = title.trim();
@@ -794,6 +794,8 @@ jQuery(function($) {
                 })
             }
             // remove intermediate step when going to back
+            $(`#sub-accordion-section-globalStyling .customize-section-back`).html('<img class="back-icon" data-title="Hover" src="/wp-content/plugins/gutenberg-extra/img/gx-new-logo.jpg" />')
+
             $(document).on('click', '#sub-accordion-section-globalStyling .customize-section-back, #sub-accordion-section-test .customize-section-back', function () {
                 // $('#sub-accordion-panel-GutenbergExtra').find('.customize-panel-back').trigger( "click" );
             })

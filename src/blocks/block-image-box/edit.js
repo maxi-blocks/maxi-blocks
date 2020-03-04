@@ -30,7 +30,7 @@ import FontPopover from '../../components/font-popover/index';
 import { BlockStyles } from '../../components/block-styles/index';
 import { ImagePosition } from '../../components/image-position/index';
 import { FontLevel } from '../../components/font-level/index';
-import { LinkOptions } from '../../components/link-options/index';
+import { LinkOptions, linkOptionsAttributes } from '../../components/link-options/index';
 import { BlockBorder } from '../../components/block-border/index';
 import { SizeControl } from '../../components/size-control/index';
 import { PaddingMarginControl } from '../../components/padding-margin-control/index';
@@ -76,6 +76,7 @@ const edit = (props) => {
             blockStyle,
             defaultBlockStyle,
             titleFontFamily,
+            linkOptions
         },
         setAttributes,
     } = props;
@@ -121,18 +122,21 @@ const edit = (props) => {
                     label={__("Link's Title", 'gutenberg-extra')}
                     value={linkTitle}
                     onChangeLink={value => setAttributes({ linkTitle: value })}
-                    opensInNewWindow={opensInNewWindow}
-                    onChangeOpensInNewWindow={value => setAttributes({ opensInNewWindow: value })}
-                    addNofollow={addNofollow}
-                    onChangeAddNofollow={value => setAttributes({ addNofollow: value })}
-                    addNoopener={addNoopener}
-                    onChangeAddNoopener={value => setAttributes({ addNoopener: value })}
-                    addNoreferrer={addNoreferrer}
-                    onChangeAddNoreferrer={value => setAttributes({ addNoreferrer: value })}
-                    addSponsored={addSponsored}
-                    onChangeAddSponsored={value => setAttributes({ addSponsored: value })}
-                    addUgc={addUgc}
-                    onChangeAddUgc={value => setAttributes({ addUgc: value })}
+                    // opensInNewWindow={opensInNewWindow}
+                    // onChangeOpensInNewWindow={value => setAttributes({ opensInNewWindow: value })}
+                    // addNofollow={addNofollow}
+                    // onChangeAddNofollow={value => setAttributes({ addNofollow: value })}
+                    // addNoopener={addNoopener}
+                    // onChangeAddNoopener={value => setAttributes({ addNoopener: value })}
+                    // addNoreferrer={addNoreferrer}
+                    // onChangeAddNoreferrer={value => setAttributes({ addNoreferrer: value })}
+                    // addSponsored={addSponsored}
+                    // onChangeAddSponsored={value => setAttributes({ addSponsored: value })}
+                    // addUgc={addUgc}
+                    // onChangeAddUgc={value => setAttributes({ addUgc: value })}
+                    linkOptions={linkOptions}
+                    onChangeOptions={value => { setAttributes({ linkOptions: value }); }}
+                    {...props}
                 />
             </PanelBody>
             <PanelBody className="gx-panel gx-color-setting gx-style-tab-setting" initialOpen={true} title={__('Colour settings', 'gutenberg-extra')}>

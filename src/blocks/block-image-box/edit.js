@@ -57,12 +57,6 @@ const edit = (props) => {
             readMoreText,
             readMoreLink,
             linkTitle,
-            opensInNewWindow,
-            addUgc,
-            addSponsored,
-            addNoreferrer,
-            addNofollow,
-            addNoopener,
             fontSizeTitle,
             fontSizeTitleUnit,
             titleColor,
@@ -76,10 +70,11 @@ const edit = (props) => {
             blockStyle,
             defaultBlockStyle,
             titleFontFamily,
-            linkOptions
         },
         setAttributes,
     } = props;
+
+    const linkOptions = JSON.parse(props.attributes.linkOptions)
 
     const linkStyles = setLinkStyles(props);
     const titleStyles = setTitleStyles(props);
@@ -122,21 +117,8 @@ const edit = (props) => {
                     label={__("Link's Title", 'gutenberg-extra')}
                     value={linkTitle}
                     onChangeLink={value => setAttributes({ linkTitle: value })}
-                    // opensInNewWindow={opensInNewWindow}
-                    // onChangeOpensInNewWindow={value => setAttributes({ opensInNewWindow: value })}
-                    // addNofollow={addNofollow}
-                    // onChangeAddNofollow={value => setAttributes({ addNofollow: value })}
-                    // addNoopener={addNoopener}
-                    // onChangeAddNoopener={value => setAttributes({ addNoopener: value })}
-                    // addNoreferrer={addNoreferrer}
-                    // onChangeAddNoreferrer={value => setAttributes({ addNoreferrer: value })}
-                    // addSponsored={addSponsored}
-                    // onChangeAddSponsored={value => setAttributes({ addSponsored: value })}
-                    // addUgc={addUgc}
-                    // onChangeAddUgc={value => setAttributes({ addUgc: value })}
                     linkOptions={linkOptions}
                     onChangeOptions={value => { setAttributes({ linkOptions: value }); }}
-                    {...props}
                 />
             </PanelBody>
             <PanelBody className="gx-panel gx-color-setting gx-style-tab-setting" initialOpen={true} title={__('Colour settings', 'gutenberg-extra')}>

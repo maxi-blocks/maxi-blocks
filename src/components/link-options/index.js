@@ -10,12 +10,11 @@ export const linkOptionsAttributes = {
 }
 
 export const LinkOptions = (props) => {
-    let linkOptions = JSON.parse(props.linkOptions);
-
     const {
         label,
         value,
         onChangeLink,
+        linkOptions,
         onChangeOptions,
     } = props;
 

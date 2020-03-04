@@ -55,7 +55,6 @@ export default class FontPopover extends Component {
     }
 
     render () {
-        
         const {
             className,
             classNamePopover,

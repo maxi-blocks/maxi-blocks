@@ -4,6 +4,7 @@ import { blockBorderAttributes } from '../../components/block-border/index';
 import { sizeControlAttributes } from '../../components/size-control/index';
 import { hoverAnimationAttributes } from '../../components/hover-animation/index';
 import { customCSSAtributes } from '../../components/custom-css/index';
+import { linkOptionsAttributes } from '../../components/link-options/index';
 
 const attributes = {
     title: {
@@ -141,7 +142,8 @@ const attributes = {
     ...blockBorderAttributes,
     ...sizeControlAttributes,
     ...hoverAnimationAttributes,
-    ...customCSSAtributes
+    ...customCSSAtributes,
+    ...linkOptionsAttributes
 }
 
 export default attributes;

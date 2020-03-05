@@ -110,10 +110,10 @@ export default class FontFamilySelector extends Component {
                                         menuIsOpen
                                         onChange={newFont => {
                                             onChange(newFont.value);
-                                            loadFonts(newFont.value, newFont.files);
+                                            this.fonts.loadFonts(newFont.value, newFont.files);
                                         }}
                                         options={
-                                            this.fonts.loadFonts(newFont.value, newFont.files)
+                                            this.state.options
                                         }
                                         placeholder={__("Search...", 'gutenberg-extra')}
                                         styles={selectFontFamilyStyles}

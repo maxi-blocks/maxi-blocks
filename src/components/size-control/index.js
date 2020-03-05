@@ -50,6 +50,61 @@ export const sizeControlAttributes = {
     },
 }
 
+// widthUnit: {
+//     type: 'string',
+//     default: '%',
+// },
+// blockWidth: {
+//     type: 'number',
+// },
+// maxWidthUnit: {
+//     type: 'string',
+//     default: 'px',
+// },
+// maxWidth: {
+//     type: 'number',
+// },
+// minWidthUnit: {
+//     type: 'string',
+//     default: 'px',
+// },
+// minWidth: {
+//     type: 'number',
+// },
+// heightUnit: {
+//     type: 'string',
+//     default: '%',
+// },
+// blockHeight: {
+//     type: 'number',
+// },
+// maxHeightUnit: {
+//     type: 'string',
+//     default: 'px',
+// },
+// maxHeight: {
+//     type: 'number',
+// },
+// minHeightUnit: {
+//     type: 'string',
+//     default: 'px',
+// },
+// minHeight: {
+//     type: 'number',
+// },
+// marginSyncUnits: {
+//     type: 'boolean',
+//     default: false,
+// },
+// marginSyncUnitsTablet: {
+//     type: 'boolean',
+//     default: false,
+// },
+// marginSyncUnitsMobile: {
+//     type: 'boolean',
+//     default: false,
+// },
+
 export const SizeControl = ( props ) => {
     const {
         attributes: {

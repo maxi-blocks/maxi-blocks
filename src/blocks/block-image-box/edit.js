@@ -1,10 +1,4 @@
 /**
- * Styles and icons
- */
-
-import fonts from '../../../customizer/dist/fonts.json';
-
-/**
  * WordPress dependencies
  */
 
@@ -25,12 +19,11 @@ const {
  * External dependencies
  */
 
-import { fontFamilyinit } from '../../includes/utils/utils';
 import FontPopover from '../../components/font-popover/index';
 import { BlockStyles } from '../../components/block-styles/index';
 import { ImagePosition } from '../../components/image-position/index';
 import { FontLevel } from '../../components/font-level/index';
-import { LinkOptions, linkOptionsAttributes } from '../../components/link-options/index';
+import { LinkOptions } from '../../components/link-options/index';
 import { BlockBorder } from '../../components/block-border/index';
 import { SizeControl } from '../../components/size-control/index';
 import { PaddingMarginControl } from '../../components/padding-margin-control/index';
@@ -92,12 +85,6 @@ const edit = (props) => {
 
     const gradients = "";
     const disableCustomGradients = false;
-
-    // Init the saved fonts
-    const blockFonts = [
-        titleFontFamily
-    ];
-    //fontFamilyinit(blockFonts, fonts);
 
     return [
         <InspectorControls>

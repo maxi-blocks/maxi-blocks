@@ -9,149 +9,133 @@ export const blockBorderAttributes = {
         type: 'string',
         default: "",
     },
+    borderHoverColor: {
+        type: 'string',
+        default: "",
+    },
     borderType: {
         type: 'string',
         default: 'none',
+    },
+    borderWidth: {
+        type: 'number',
+        default: 0,
     },
     borderRadius: {
         type: 'number',
         default: 0,
     },
-    borderRadiusBottomRight: {
+    borderRadiusTopLeft: {
         type: 'number',
-        default: 0
-    },
-    borderRadiusBottomLeft: {
-        type: 'number',
-        default: 0
     },
     borderRadiusTopRight: {
         type: 'number',
-        default: 0
     },
-    borderRadiusTopLeft: {
+    borderRadiusBottomLeft: {
         type: 'number',
-        default: 0
     },
-    borderRadiusSize: {
+    borderRadiusBottomRight: {
         type: 'number',
-        default: 0
-    },
-    borderRadiusBottomRightTablet: {
-        type: 'number',
-        default: 0
-    },
-    borderRadiusBottomLeftTablet: {
-        type: 'number',
-        default: 0
-    },
-    borderRadiusTopRightTablet: {
-        type: 'number',
-        default: 0
     },
     borderRadiusTopLeftTablet: {
         type: 'number',
-        default: 0
     },
-    borderRadiusBottomRightMobile: {
+    borderRadiusTopRightTablet: {
         type: 'number',
-        default: 0
     },
-    borderRadiusBottomLeftMobile: {
+    borderRadiusBottomLeftTablet: {
         type: 'number',
-        default: 0
     },
-    borderRadiusTopRightMobile: {
+    borderRadiusBottomRightTablet: {
         type: 'number',
-        default: 0
     },
     borderRadiusTopLeftMobile: {
         type: 'number',
-        default: 0
     },
-    borderRadiusSyncUnits: {
+    borderRadiusTopRightMobile: {
         type: 'number',
-        default: 0
     },
-    borderRadiusSyncUnitsTablet: {
+    borderRadiusBottomLeftMobile: {
         type: 'number',
-        default: 0
     },
-    borderRadiusSyncUnitsMobile: {
+    borderRadiusBottomRightMobile: {
         type: 'number',
-        default: 0
     },
     borderRadiusUnit: {
-        type: 'number',
-        default: 0
+        type: 'string',
+        default: 'px',
     },
-    borderWidthBottom: {
-        type: 'number',
-        default: 0
+    borderRadiusSize: {
+        type: 'string',
+        default: 'advanced',
     },
-    borderWidthLeft: {
-        type: 'number',
-        default: 0
+    borderRadiusSyncUnits: {
+        type: 'boolean',
+        default: false,
+    },
+    borderRadiusSyncUnitsTablet: {
+        type: 'boolean',
+        default: true,
+    },
+    borderRadiusSyncUnitsMobile: {
+        type: 'boolean',
+        default: true,
     },
     borderWidthRight: {
         type: 'number',
-        default: 0
-    },
-    borderWidthSize: {
-        type: 'number',
-        default: 0
     },
     borderWidthTop: {
         type: 'number',
-        default: 0
     },
-    borderWidthBottomTablet: {
+    borderWidthLeft: {
         type: 'number',
-        default: 0
     },
-    borderWidthLeftTablet: {
+    borderWidthBottom: {
         type: 'number',
-        default: 0
     },
     borderWidthRightTablet: {
         type: 'number',
-        default: 0
     },
     borderWidthTopTablet: {
         type: 'number',
-        default: 0
     },
-    borderWidthBottomMobile: {
+    borderWidthLeftTablet: {
         type: 'number',
-        default: 0
     },
-    borderWidthLeftMobile: {
+    borderWidthBottomTablet: {
         type: 'number',
-        default: 0
     },
     borderWidthRightMobile: {
         type: 'number',
-        default: 0
     },
     borderWidthTopMobile: {
         type: 'number',
-        default: 0
     },
-    borderWidthSyncUnits: {
+    borderWidthLeftMobile: {
         type: 'number',
-        default: 0
     },
-    borderWidthSyncUnitsTablet: {
+    borderWidthBottomMobile: {
         type: 'number',
-        default: 0
-    },
-    borderWidthSyncUnitsMobile: {
-        type: 'number',
-        default: 0
     },
     borderWidthUnit: {
-        type: 'number',
-        default: 0
+        type: 'string',
+        default: 'px',
+    },
+    borderWidthSize: {
+        type: 'string',
+        default: 'advanced',
+    },
+    borderWidthSyncUnits: {
+        type: 'boolean',
+        default: false,
+    },
+    borderWidthSyncUnitsTablet: {
+        type: 'boolean',
+        default: true,
+    },
+    borderWidthSyncUnitsMobile: {
+        type: 'boolean',
+        default: true,
     },
 }
 

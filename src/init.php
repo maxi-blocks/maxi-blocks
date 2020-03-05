@@ -202,3 +202,4 @@ function gutenberg_scripts () {
 	);
 };
 add_action('wp_enqueue_scripts', 'gutenberg_scripts');
+add_action('admin_enqueue_scripts', 'gutenberg_scripts');

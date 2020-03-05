@@ -6,6 +6,8 @@
         define( 'WP_DEBUG_DISPLAY', false );
     if( !defined( 'WP_DEBUG_LOG' ) )
         define( 'WP_DEBUG_LOG', true );
+    if ( !defined( 'SCRIPT_DEBUG' ) )
+        define( 'SCRIPT_DEBUG', true );
 
 /**
  * Plugin Name: Gutenberg Extra

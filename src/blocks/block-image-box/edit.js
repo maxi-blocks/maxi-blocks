@@ -97,7 +97,7 @@ const edit = (props) => {
     const blockFonts = [
         titleFontFamily
     ];
-    fontFamilyinit(blockFonts, fonts);
+    //fontFamilyinit(blockFonts, fonts);
 
     return [
         <InspectorControls>

@@ -107,6 +107,7 @@ export const setBlockStyles = ( props ) => {
         borderRadiusTopRight,
         borderRadiusBottomRight,
         borderRadiusBottomLeft,
+        borderWidthUnit,
         borderWidthTop,
         borderWidthRight,
         borderWidthBottom,

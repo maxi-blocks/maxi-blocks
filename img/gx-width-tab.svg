@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none" x="0px" y="0px" width="34px" height="35px" viewBox="0 0 24 24">
+<defs>
+<path id="gx-width-tab0_0_1_STROKES" stroke="#464a53" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" fill="none" d="
+M 18.7 5.7
+L 13.55 10.75
+M 22.15 7.45
+L 22.15 2 17.35 2
+M 22.15 16.95
+L 22.15 22.4 17.35 22.4
+M 2.25 7.45
+L 2.25 2 7.05 2
+M 2.25 16.95
+L 2.25 22.4 7.05 22.4
+M 6.05 18.15
+L 10.85 13.45"/>
+
+<path id="gx-width-tab0_1_MEMBER_0_MEMBER_0_1_STROKES" stroke="#464a53" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" fill="none" d="
+M 18.5314208984375 5.456368255615233
+L 16.339412689208984 5.597811889648439
+M 18.63751220703125 7.895861816406251
+L 18.743553161621094 5.668495941162108"/>
+
+<path id="gx-width-tab0_2_MEMBER_0_MEMBER_0_1_STROKES" stroke="#464a53" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" fill="none" d="
+M 5.762292480468751 16.305993652343748
+L 5.656260681152345 18.5331672668457
+M 5.868374633789063 18.7452766418457
+L 8.060193634033205 18.603845214843748"/>
+</defs>
+
+<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+<use xlink:href="#gx-width-tab0_0_1_STROKES"/>
+</g>
+
+<g transform="matrix( 0.7071075439453125, 0.70709228515625, -0.70709228515625, 0.7071075439453125, 20.9,-13.6) ">
+<use xlink:href="#gx-width-tab0_1_MEMBER_0_MEMBER_0_1_STROKES" transform="matrix( 0.7071075439453125, -0.70709228515625, 0.70709228515625, 0.7071075439453125, -5.15,24.35) "/>
+</g>
+
+<g transform="matrix( -0.7070465087890625, -0.70703125, 0.70703125, -0.7070465087890625, 3.5,37.8) ">
+<use xlink:href="#gx-width-tab0_2_MEMBER_0_MEMBER_0_1_STROKES" transform="matrix( -0.7071685791015625, 0.7071533203125, -0.7071533203125, -0.7071685791015625, 29.2,24.25) "/>
+</g>
+</svg>

@@ -1,0 +1,26 @@
+{
+  "name": "gutenberg-extra",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "cgb-scripts start",
+    "build": "cgb-scripts build",
+    "eject": "cgb-scripts eject"
+  },
+  "dependencies": {
+    "@wordpress/compose": "^3.4.0",
+    "cgb-scripts": "1.18.1",
+    "classnames": "^2.2.6",
+    "react-accessible-accordion": "^3.0.1",
+    "react-iframe": "^1.8.0",
+    "react-lazy-load": "^3.0.13",
+    "react-select": "^3.0.8",
+    "react-tabs": "^3.1.0"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.8.3"
+  },
+  "plugins": [
+    "@babel/plugin-proposal-class-properties"
+  ]
+}

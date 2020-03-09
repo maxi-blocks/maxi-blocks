@@ -295,6 +295,11 @@ body div.gx-sidebar .components-panel__body > .components-panel__body-title {
     padding: 20px 16px;
 }
 
+
+.gx-sidebar .components-panel__body.is-opened.edit-post-settings-sidebar__panel-block {
+    padding: 0;
+}
+
 .gx-sidebar .components-base-control .components-base-control__field {
     display: flex;
     align-items: center;
@@ -468,7 +473,8 @@ body div.gx-sidebar .components-panel__body > .components-panel__body-title {
     text-align: center;
 }
 
-.gx-sidebar .block-editor-color-gradient-control .components-base-control__field {
+.gx-sidebar .block-editor-color-gradient-control .components-base-control__field,
+.gx-sidebar .block-editor-color-palette-control .components-base-control__field {
     justify-content: space-between;
 }
 
@@ -513,6 +519,13 @@ body div.gx-sidebar .components-panel__body > .components-panel__body-title {
 .edit-post-settings-sidebar__panel-block .components-panel__body.gx-panel,
 .edit-post-settings-sidebar__panel-block .components-panel__body.gx-panel .components-panel__body {
     border-top: none;
+}
+
+.edit-post-settings-sidebar__panel-block .components-panel__body.gx-panel,
+.gx-sidebar .components-panel__body.is-opened {
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .gx-sidebar .block-editor-color-gradient-control__color-palette {
@@ -599,7 +612,8 @@ body .gx-panel-body-inserter h2 button:focus {
     margin-left: 40px;
 }
 
-.gx-sidebar .block-editor-block-inspector.gx-controls .block-editor-block-card {
+.gx-sidebar .block-editor-block-inspector.gx-controls .block-editor-block-card,
+.gx-sidebar .edit-post-settings-sidebar__panel-block.gx-controls .block-editor-block-card {
     padding: 16px 16px 20px;
 }
 
@@ -739,6 +753,62 @@ button[class*="gutenberg-extra"] span.block-editor-block-types-list__item-title 
     right: 40px;
 }
 
+/* old palette settings */
+
+.gx-sidebar .block-editor-color-palette-control__color-palette {
+    margin-top: 0 !important;
+}
+
+.gx-sidebar button.components-range-control__reset:before,
+.gx-sidebar button.components-color-palette__clear:before,
+.gx-popover button.components-range-control__reset:before {
+    content: url("../img/reset.svg") !important;
+}
+
+.gx-sidebar button.components-range-control__reset,
+.gx-sidebar button.components-color-palette__clear,
+.gx-popover button.components-range-control__reset {
+    font-size: 0 !important;
+    background: transparent !important;
+    border: none !important;
+}
+
+.gx-style-tab-setting .components-color-palette__item-wrapper {
+    display: none;
+}
+
+.gx-style-tab-setting .components-color-palette {
+    width: auto;
+}
+
+.gx-sidebar .components-color-palette__custom-color button:before {
+    content: url(../img/gx-color-icon.png) !important;
+    margin: 6px auto;
+    background-color: rgba(33, 141, 250, 0) !important;
+}
+
+.gx-sidebar .components-color-palette__custom-color button,
+.gx-sidebar .gx-settings-button button {
+    width: 67px;
+    height: 46px;
+    color: transparent;
+    border-radius: 5px;
+    background-color: rgba(33, 141, 250, 0) !important;
+    border: 2px solid #dddfe1;
+    font-size: 0px;
+    text-align: center;
+}
+
+.gx-sidebar .block-editor-color-palette-control .components-base-control__field {
+    justify-content: space-between;
+}
+
+.gx-sidebar .components-color-palette .components-color-palette__custom-clear-wrapper {
+    justify-content: flex-start;
+    flex-direction: row-reverse;
+    align-items: center;
+    width: 100%;
+}
 
 @media screen and (max-width: 2000px) {
 

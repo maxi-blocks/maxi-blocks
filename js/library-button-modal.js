@@ -185,8 +185,9 @@ function abInsertLayoutAdmin() {
        //console.log('tabs');
         if ($('.gx-panel').length > 0) {
             $('.components-panel__body').each(function() {
-                if ($(this).hasClass('gx-panel') && !$(this).parents('.block-editor-block-inspector').hasClass('gx-controls')) {
+                if ($(this).hasClass('gx-panel') && !$(this).parents('.block-editor-block-inspector').hasClass('gx-controls') && !$(this).parents('.edit-post-settings-sidebar__panel-block').hasClass('gx-controls')) {
                     $(this).parents('.block-editor-block-inspector').addClass('gx-controls');
+                    $(this).parents('.edit-post-settings-sidebar__panel-block').addClass('gx-controls');
                     $(this).parents('div.edit-post-sidebar').addClass('gx-sidebar');
                     $(gx_tab_labels).insertAfter($('div.gx-controls .block-editor-block-card'));
                     gx_hide_tabs_settings();

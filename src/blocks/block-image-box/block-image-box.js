@@ -11,9 +11,8 @@ import './editor.scss';
 import { withState } from '@wordpress/compose';
 import DimensionsControl from '../../components/dimensions-control/';
 import Typography from '../../components/typography/';
-import typographyAttributes from '../../components/typography'
+import {typographyAttributes} from '../../components/typography'
 import { useSelect } from '@wordpress/data';
-
 const { __ } = wp.i18n; // Import __() from wp.i18n
 const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
 
@@ -505,7 +504,7 @@ registerBlockType( 'gutenberg-extra/block-image-box', {
 				type: 'boolean',
 				default: true,
 			},
-
+      ...typographyAttributes
 	},
 	edit: ( props ) => {
 		const {

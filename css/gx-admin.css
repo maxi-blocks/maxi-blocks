@@ -131,9 +131,11 @@ body .gx-hidden {
 .edit-post-layout.is-sidebar-opened .edit-post-plugin-sidebar__sidebar-layout.gx-sidebar,
 .edit-post-layout.is-sidebar-opened .edit-post-sidebar.gx-sidebar {
     width: 460px;
+    background: #f2f2f2;
 }
 
-.gx-controls, .gx-controls > div:nth-child(3) {
+.gx-controls,
+.gx-controls>div:nth-child(3) {
     background: #f2f2f2;
 }
 
@@ -240,12 +242,16 @@ body .gx-hidden {
     margin-bottom: 10px
 }
 
-.gx-panel .components-panel__body-title {
+body div.gx-sidebar .components-panel__body > .components-panel__body-title {
     display: none !important;
 }
 
 .edit-post-settings-sidebar__panel-block .components-panel__body.gx-panel:first-child {
     margin-top: 0 !important;
+}
+
+.gx-sidebar .components-panel__body.is-opened {
+    margin-bottom: 10px;
 }
 
 .gx-popover .components-popover__content {
@@ -279,11 +285,14 @@ body .gx-hidden {
     font-weight: 500;
 }
 
-.gx-panel select, .gx-popover select {padding: 0 24px 0 16px;}
+.gx-panel select,
+.gx-popover select {
+    padding: 0 24px 0 16px;
+}
 
 .gx-sidebar .components-panel__body.is-opened,
 .gx-popover .components-popover__content {
-    padding: 18px 23px 1px 23px;
+    padding: 20px 16px;
 }
 
 .gx-sidebar .components-base-control .components-base-control__field {
@@ -302,8 +311,9 @@ body .gx-hidden {
 .gx-sidebar button.components-range-control__reset:before,
 .gx-sidebar button.components-circular-option-picker__clear:before,
 .gx-popover button.components-range-control__reset:before {
-    content: url("../img/gx-reset.svg") !important;
-    transform: scale(.75);
+    content: url("../img/reset.svg") !important;
+    width: 17px;
+    height: 16px;
 }
 
 .gx-sidebar button.components-range-control__reset:disabled,
@@ -412,6 +422,20 @@ body .gx-hidden {
     display: none;
 }
 
+/* Color Setting */
+
+.gx-sidebar .components-circular-option-picker .components-circular-option-picker__custom-clear-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row-reverse;
+    margin-top: -45px;
+    align-items: baseline;
+}
+
+.gx-sidebar .components-circular-option-picker__dropdown-link-action {
+    margin-right: 0;
+}
+
 .gx-style-tab-setting .components-color-palette {
     width: auto;
 }
@@ -464,9 +488,13 @@ body .gx-hidden {
     flex: 36%;
 }
 
-.gx-link-setting .components-base-control { margin-bottom: 20px;}
+.gx-link-setting .components-base-control {
+    margin-bottom: 20px;
+}
 
-.gx-link-setting  .components-toggle-control .components-base-control__field {    margin-bottom: 15px;}
+.gx-link-setting .components-toggle-control .components-base-control__field {
+    margin-bottom: 15px;
+}
 
 .gx-sidebar .component-color-indicator {
     vertical-align: middle;
@@ -571,6 +599,24 @@ body .gx-panel-body-inserter h2 button:focus {
     margin-left: 40px;
 }
 
+.gx-sidebar .block-editor-block-inspector.gx-controls .block-editor-block-card {
+    padding: 16px 16px 20px;
+}
+
+.gx-sidebar .block-editor-block-card__content {
+    min-width: 87%;
+}
+
+.gx-sidebar .block-editor-block-card__description {
+    padding-top: 8px;
+    text-align: justify;
+}
+
+.gx-sidebar .components-panel {
+    border: none !important;
+    background: #f2f2f2;
+}
+
 /* Extra Block Styles in the Block Inserter */
 
 button[class*="gutenberg-extra"] {
@@ -635,9 +681,9 @@ button[class*="gutenberg-extra"] span.block-editor-block-types-list__item-title 
     margin: 15px;
 }
 
-.gx-controls .gx-accordion-tab > .components-base-control__label {
+.gx-controls .gx-accordion-tab>.components-base-control__label {
     margin-bottom: 10px;
-    filter: drop-shadow(0px 5px 7.5px rgba(119,119,119,0.1));
+    filter: drop-shadow(0px 5px 7.5px rgba(119, 119, 119, 0.1));
     border-radius: 5px;
     background: #fff;
     padding: 11px 17px;
@@ -677,6 +723,20 @@ button[class*="gutenberg-extra"] span.block-editor-block-types-list__item-title 
 
 .gx-controls .gx-accordion .components-base-control__label:hover {
     cursor: pointer;
+}
+
+.gx-controls .gx-accordion .components-base-control__label[aria-expanded="false"]:after {
+    content: url(../img/arrow-right.svg);
+    width: 9px;
+    position: absolute;
+    right: 27px;
+}
+
+.gx-controls .gx-accordion .components-base-control__label[aria-expanded="true"]:after {
+    content: url(../img/arrow-down.svg);
+    width: 14px;
+    position: absolute;
+    right: 40px;
 }
 
 

@@ -173,37 +173,6 @@ const edit = (props) => {
                                 onFontSizeChange={value => setAttributes({ fontSizeTitle: value })}
                                 classNamePopover={'gx-font-family-selector-popover'}
                             />
-                            <PanelColorSettings
-                                title={__('Title Colour Settings', 'gutenberg-extra' )}
-                                colorSettings={[
-                                    {
-                                        value: titleColor,
-                                        onChange: (value) => setAttributes({ titleColor: value }),
-                                        label: __('Title Colour', 'gutenberg-extra' ),
-                                    },
-                                ]}
-                            />
-                            <PanelColorSettings
-                                title={__('Sub-title Colour Settings', 'gutenberg-extra' )}
-                                colorSettings={[
-                                    {
-                                        value: subTitleColor,
-                                        onChange: (value) => setAttributes({ subTitleColor: value }),
-                                        label: __('Sub-title Colour', 'gutenberg-extra' ),
-                                    },
-                                ]}
-                            />
-                            <PanelColorSettings
-                                title={__('Description Colour Settings', 'gutenberg-extra' )}
-                                colorSettings={[
-                                    {
-                                        value: descriptionColor,
-                                        onChange: (value) => setAttributes({ descriptionColor: value }),
-                                        label: __('Description  Colour', 'gutenberg-extra' ),
-                                    },
-                                ]}
-                            />
-
                         </PanelBody>
 
                     </AccordionItemPanel>
@@ -222,7 +191,7 @@ const edit = (props) => {
                                     {
                                         value: buttonColor,
                                         onChange: (value) => setAttributes({ buttonColor: value }),
-                                        label: __('Button Text Colour', 'gutenberg-extra' ),
+                                        label: __('Text Colour', 'gutenberg-extra' ),
                                     },
                                 ]}
                             />
@@ -232,7 +201,7 @@ const edit = (props) => {
                                     {
                                         value: buttonBgColor,
                                         onChange: (value) => setAttributes({ buttonBgColor: value }),
-                                        label: __('Button Background Colour', 'gutenberg-extra' ),
+                                        label: __('Background Colour', 'gutenberg-extra' ),
                                     },
                                 ]}
                             />

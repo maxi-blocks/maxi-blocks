@@ -207,6 +207,12 @@
  * Can include things like variables and mixins
  * that are used across the project.
 */
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
 body .entry .entry-content .wp-block-gx-animation-button a {
   text-decoration: none !important; }
 

@@ -89,6 +89,7 @@ const edit = (props) => {
     return [
         <InspectorControls>
             <PanelBody className="gx-panel gx-image-setting gx-content-tab-setting" initialOpen={true} title={__('Image Settings', 'gutenberg-extra')}>
+                <PaddingMarginControl {...props} />
                 <BlockStyles {...props} />
                 <ImagePosition {...props} />
             </PanelBody>
@@ -180,7 +181,7 @@ const edit = (props) => {
                     ]}
                 />
             </PanelBody>
-            <PanelBody className="gx-panel gx-border-setting gx-style-tab-setting" initialOpen={true} title={__('Border settings', 'gutenberg-extra' )}>
+            {/* <PanelBody className="gx-panel gx-border-setting gx-style-tab-setting" initialOpen={true} title={__('Border settings', 'gutenberg-extra' )}>
                 <BlockBorder {...props}/>
             </PanelBody>
             <PanelBody className="gx-panel gx-size-setting gx-style-tab-setting" initialOpen={true} title={__('Size Settings', 'gutenberg-extra')}>
@@ -192,7 +193,7 @@ const edit = (props) => {
             <PanelBody initialOpen={true} className="gx-panel gx-advanced-setting gx-advanced-tab-setting" title={__('Advanced Settings', 'gutenberg-extra')}>
                 <HoverAnimation {...props} />
                 <CustomCSS {...props} />
-            </PanelBody>
+            </PanelBody> */}
         </InspectorControls>,
         <div
             className={'gx-block ' + blockStyle + ' gx-image-box ' + className}

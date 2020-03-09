@@ -1,5 +1,5 @@
 {
-  "name": "gutenberg-extra-cgb-guten-block",
+  "name": "gutenberg-extra",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -12,6 +12,7 @@
     "cgb-scripts": "1.18.1",
     "classnames": "^2.2.6",
     "react-iframe": "^1.8.0",
-    "react-lazy-load": "^3.0.13"
+    "react-lazy-load": "^3.0.13",
+    "react-select": "^3.0.8"
   }
 }

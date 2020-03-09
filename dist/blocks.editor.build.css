@@ -410,6 +410,54 @@
  * Can include things like variables and mixins
  * that are used across the project.
 */
+.gx-fontpopover .components-popover__content {
+  margin-right: -48px !important; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
+.gx-font-family-selector-button {
+  height: 45px;
+  border-radius: 5px;
+  background-color: rgba(33, 141, 250, 0);
+  border: 2px solid #dddfe1;
+  font-size: 20px;
+  color: #464a53;
+  font-weight: 500;
+  width: 100%;
+  margin-bottom: 8px; }
+
+.gx-font-family-selector-icon {
+  margin: auto;
+  margin-right: 0;
+  -webkit-transition: .2s all ease;
+  -o-transition: .2s all ease;
+  transition: .2s all ease; }
+
+.gx-font-family-selector-button[aria-expanded="true"] .gx-font-family-selector-icon {
+  -webkit-transform: rotate(90deg);
+      -ms-transform: rotate(90deg);
+          transform: rotate(90deg); }
+
+.gx-font-family-selector-popover .components-popover__content {
+  border-radius: 5px;
+  margin-top: 2px;
+  max-height: none !important; }
+
+.gx-font-family-selector-content {
+  min-width: 370px; }
+
+.gx-font-family-selector-content input {
+  -webkit-box-shadow: none !important;
+          box-shadow: none !important; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
 /**
  * #.# Common SCSS
  *

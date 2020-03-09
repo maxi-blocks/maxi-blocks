@@ -191,3 +191,15 @@ require_once plugin_dir_path( __FILE__ ) . 'includes/layout/layout-functions.php
 require_once plugin_dir_path( __FILE__ ) . 'includes/layout/class-component-registry.php';
 require_once plugin_dir_path( __FILE__ ) . 'includes/layout/register-layout-components.php';
 require_once plugin_dir_path( __FILE__ ) . 'includes/gx-wp-dashboard.php';
+
+// Maybe this is not the best place, but for the moment...
+function gutenberg_scripts () {
+	wp_enqueue_script(
+		'gutenberg_scripts',
+		plugins_url( '../js/gutenberg_scripts.js', __FILE__ ),
+		[],
+		0.1
+	);
+};
+add_action('wp_enqueue_scripts', 'gutenberg_scripts');
+add_action('admin_enqueue_scripts', 'gutenberg_scripts');

@@ -26,23 +26,23 @@ const { registerBlockType } = wp.blocks;
 
 import attributes from './attributes';
 import edit from './edit';
-import save from './save';
+// import save from './save';
 
 /**
  * Block
  */
 
 
-registerBlockType( 'gutenberg-extra/block-image-box', {
-	title: __('Image Box Extra', 'gutenberg-extra'),
+registerBlockType( 'gutenberg-extra/block-title-extra', {
+	title: __('GX Title Extra', 'gutenberg-extra'),
 	icon: icon,
 	category: 'gutenberg-extra-blocks',
 	supports: {
         align: true,
     },
 	attributes: {
-		...attributes
+		...attributes,
 	},
 	edit,
-	save
+	// save
 } );

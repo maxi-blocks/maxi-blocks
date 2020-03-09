@@ -1,6 +1,6 @@
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
-import DimensionsControl from '../dimensions-control/index';
+import { DimensionsControl } from '../dimensions-control/index';
 
 export const paddingMarginControlAttributes = {
     paddingUnit: {
@@ -154,7 +154,9 @@ export const PaddingMarginControl = ( props ) => {
             marginSyncUnitsTablet,
             marginSyncUnitsMobile,
             marginSize,
-        }
+            dimConEx
+        },
+        setAttributes
     } = props;
 
     return (
@@ -179,6 +181,7 @@ export const PaddingMarginControl = ( props ) => {
                 syncUnitsTablet={paddingSyncUnitsTablet}
                 syncUnitsMobile={paddingSyncUnitsMobile}
                 dimensionSize={paddingSize}
+                onChange={value => setAttributes({dimConEx: value})}
             />
             <DimensionsControl {...props}
                 type={'margin'}

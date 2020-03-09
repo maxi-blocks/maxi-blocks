@@ -6,6 +6,7 @@ import { hoverAnimationAttributes } from '../../components/hover-animation/index
 import { customCSSAtributes } from '../../components/custom-css/index';
 import { linkOptionsAttributes } from '../../components/link-options/index';
 import { paddingMarginControlAttributes } from '../../components/padding-margin-control/index';
+import { dimensionsControlAttributes } from '../../components/dimensions-control/attributes';
 
 const attributes = {
     title: {
@@ -145,7 +146,8 @@ const attributes = {
     ...hoverAnimationAttributes,
     ...customCSSAtributes,
     ...linkOptionsAttributes,
-    ...paddingMarginControlAttributes
+    ...paddingMarginControlAttributes,
+    ...dimensionsControlAttributes
 }
 
 export default attributes;

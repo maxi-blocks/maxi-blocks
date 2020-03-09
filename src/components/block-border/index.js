@@ -2,7 +2,7 @@ const { __ } = wp.i18n;
 const { Fragment } = wp.element;
 const { PanelColorSettings } = wp.blockEditor;
 const { SelectControl } = wp.components;
-import DimensionsControl from '../dimensions-control/index';
+import { DimensionsControl } from '../dimensions-control/index';
 
 export const blockBorderAttributes = {
     blockBorderColor: {

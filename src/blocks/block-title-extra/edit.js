@@ -105,7 +105,7 @@ const edit = (props) => {
 
   const subTitleStyles = {textAlign: 'center', fontFamily: 'roboto',fontSize:'12pt', color:subTitleColor};
   const titleStyles = {textAlign: 'center', fontFamily: 'roboto', color:titleColor};
-
+  const containerStyles = {display: 'flex', flexDirection: 'column'};
   const textStyles = {textAlign: 'center', fontFamily: 'roboto',fontSize:'12pt', color:descriptionColor}
 
   const gradients = "";
@@ -190,7 +190,7 @@ const edit = (props) => {
                 className="gx-block-style"
                 value={dividerPosition}
                 options={[
-                    { label: __('After Title'), value: 'gx-divider-after-title' },
+                    { label: __('After Title'), value: 0 },
                     { label: __('Before Title'), value: 'gx-divider-before-title' },
                     { label: __('After Subtitle'), value: 'gx-divider-after-subtitle' },
                     { label: __('Before Subtitle'), value: 'gx-divider-before-subtitle' },
@@ -289,7 +289,7 @@ const edit = (props) => {
 
     <div
       className={'gx-block gx-title-extra'}
-      style={blockStyles}
+      style={containerStyles}
       >
       <RichText
           tagName="p"

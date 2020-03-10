@@ -56,11 +56,9 @@ class Divider extends Component {
      }
 
     return (
-      <div>
         <div
         style={dividerStyles}
         />
-      </div>
     )
   }
 }

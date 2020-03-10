@@ -1,6 +1,7 @@
 import { blockStyleAttributes } from '../../components/block-styles/index';
 import { paddingMarginControlAttributes } from '../../components/padding-margin-control/index';
 import { linkOptionsAttributes } from '../../components/link-options/index';
+import { dividerAttributes } from '../../components/divider/index';
 
 const attributes = {
   title: {
@@ -14,7 +15,8 @@ const attributes = {
       selector: '.gx-title-extra-title',
   },
   ...blockStyleAttributes,
-  ...linkOptionsAttributes
+  ...linkOptionsAttributes,
+  ...dividerAttributes
 };
 
 export default attributes;

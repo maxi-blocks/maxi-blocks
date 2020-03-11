@@ -40,9 +40,9 @@ function gutenberg_den_cgb_block_assets() { // phpcs:ignore
 	wp_register_script(
 		'gutenberg_den-cgb-block-js', // Handle.
 		plugins_url( '/dist/blocks.build.js', dirname( __FILE__ ) ), // Block.build.js: We register the block here. Built with Webpack.
-		array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ), // Dependencies, defined above.
+		array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-plugins', 'wp-components', 'wp-edit-post', 'wp-api', 'wp-rich-text', 'wp-editor' ), // Dependencies, defined above.
 		null, // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.build.js' ), // Version: filemtime — Gets file modification time.
-		true // Enqueue the script in the footer.
+		false // Enqueue the script in the footer.
 	);
 
 	// Register block editor styles for backend.
@@ -76,7 +76,7 @@ function gutenberg_den_cgb_block_assets() { // phpcs:ignore
 }
 
 // Hook: Block assets.
-add_action( 'init', 'gutenberg_den_cgb_block_assets' );
+add_action( 'init', 'gutenberg_den_cgb_block_assets', 99 );
 
 
 function gutenberg_den_cgb_load_custom_wp_admin_script() {
@@ -203,3 +203,7 @@ function gutenberg_scripts () {
 };
 add_action('wp_enqueue_scripts', 'gutenberg_scripts');
 add_action('admin_enqueue_scripts', 'gutenberg_scripts');
+
+// Post Meta register
+require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-post-meta.php';
+require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-responsive-frontend-block-styles.php';

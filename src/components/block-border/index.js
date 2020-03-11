@@ -17,126 +17,14 @@ export const blockBorderAttributes = {
         type: 'string',
         default: 'none',
     },
+	borderRadius: {
+        type: 'string',
+        default: '{"label":"Border radius","unit":"px","max":"1000","desktop":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"tablet":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"mobile":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true}}'
+    },
     borderWidth: {
-        type: 'number',
-        default: 0,
-    },
-    borderRadius: {
-        type: 'number',
-        default: 0,
-    },
-    borderRadiusTopLeft: {
-        type: 'number',
-    },
-    borderRadiusTopRight: {
-        type: 'number',
-    },
-    borderRadiusBottomLeft: {
-        type: 'number',
-    },
-    borderRadiusBottomRight: {
-        type: 'number',
-    },
-    borderRadiusTopLeftTablet: {
-        type: 'number',
-    },
-    borderRadiusTopRightTablet: {
-        type: 'number',
-    },
-    borderRadiusBottomLeftTablet: {
-        type: 'number',
-    },
-    borderRadiusBottomRightTablet: {
-        type: 'number',
-    },
-    borderRadiusTopLeftMobile: {
-        type: 'number',
-    },
-    borderRadiusTopRightMobile: {
-        type: 'number',
-    },
-    borderRadiusBottomLeftMobile: {
-        type: 'number',
-    },
-    borderRadiusBottomRightMobile: {
-        type: 'number',
-    },
-    borderRadiusUnit: {
         type: 'string',
-        default: 'px',
-    },
-    borderRadiusSize: {
-        type: 'string',
-        default: 'advanced',
-    },
-    borderRadiusSyncUnits: {
-        type: 'boolean',
-        default: false,
-    },
-    borderRadiusSyncUnitsTablet: {
-        type: 'boolean',
-        default: true,
-    },
-    borderRadiusSyncUnitsMobile: {
-        type: 'boolean',
-        default: true,
-    },
-    borderWidthRight: {
-        type: 'number',
-    },
-    borderWidthTop: {
-        type: 'number',
-    },
-    borderWidthLeft: {
-        type: 'number',
-    },
-    borderWidthBottom: {
-        type: 'number',
-    },
-    borderWidthRightTablet: {
-        type: 'number',
-    },
-    borderWidthTopTablet: {
-        type: 'number',
-    },
-    borderWidthLeftTablet: {
-        type: 'number',
-    },
-    borderWidthBottomTablet: {
-        type: 'number',
-    },
-    borderWidthRightMobile: {
-        type: 'number',
-    },
-    borderWidthTopMobile: {
-        type: 'number',
-    },
-    borderWidthLeftMobile: {
-        type: 'number',
-    },
-    borderWidthBottomMobile: {
-        type: 'number',
-    },
-    borderWidthUnit: {
-        type: 'string',
-        default: 'px',
-    },
-    borderWidthSize: {
-        type: 'string',
-        default: 'advanced',
-    },
-    borderWidthSyncUnits: {
-        type: 'boolean',
-        default: false,
-    },
-    borderWidthSyncUnitsTablet: {
-        type: 'boolean',
-        default: true,
-    },
-    borderWidthSyncUnitsMobile: {
-        type: 'boolean',
-        default: true,
-    },
+        default: '{"label":"Border width","unit":"px","max":"1000","desktop":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"tablet":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"mobile":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true}}'
+    }
 }
 
 export const BlockBorder = (props) => {

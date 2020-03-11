@@ -28,7 +28,6 @@ import { FontLevel } from '../../components/font-level/index';
 import { LinkOptions } from '../../components/link-options/index';
 import { BlockBorder } from '../../components/block-border/index';
 import { SizeControl } from '../../components/size-control/index';
-import { PaddingMarginControl } from '../../components/padding-margin-control/index';
 import { HoverAnimation } from '../../components/hover-animation/index';
 import { CustomCSS } from '../../components/custom-css/index';
 import {

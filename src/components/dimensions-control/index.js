@@ -28,9 +28,9 @@ const {
 	Tooltip,
 	TabPanel
 } = wp.components;
-const { 
+const {
 	dispatch,
-	select 
+	select
 } = wp.data;
 
 export default class DimensionsControl extends Component {
@@ -52,8 +52,7 @@ export default class DimensionsControl extends Component {
 
 		const classes = classnames(
 			'components-gx-dimensions-control',
-			`gx-${this.values.label}-dimensions-control`, 
-			{}
+			`gx-${this.values.label}-dimensions-control`
 		);
 
 		const unitSizes = [
@@ -100,17 +99,17 @@ export default class DimensionsControl extends Component {
 			}
 		};
 
-		const getKey = ( obj, target ) => {
+		const getKey = (obj, target) => {
 			return Object.keys(obj)[target];
 		}
 
-		const onChangeUnit = ( value ) => {
+		const onChangeUnit = (value) => {
 			this.values.unit = value;
 			saveAndSend();
 		}
 
-		const onChangeValue = ( e ) => {
-			if ( e.target.getAttribute('action') == 'reset' ) {
+		const onChangeValue = (e) => {
+			if (e.target.getAttribute('action') == 'reset') {
 				for (let [key, value] of Object.entries(this.values[device])) {
 					isNumber(value) ?
 						this.values[device][key] = 0 :
@@ -120,40 +119,53 @@ export default class DimensionsControl extends Component {
 			else {
 				const newValue = Number(e.target.value);
 				const target = Number(e.target.getAttribute('action'));
-				if ( this.values[device].sync === true ) {
+				if (this.values[device].sync === true) {
 					for (let [key, value] of Object.entries(this.values[device])) {
 						isNumber(value) ?
 							this.values[device][key] = newValue :
 							null
-					  }
+					}
 				}
 				else {
-					this.values[device][getKey( this.values[device], target )] = newValue;
+					this.values[device][getKey(this.values[device], target)] = newValue;
 				}
 			}
 			saveAndSend();
 		}
 
-		const onChangeSync = ( e ) => {
+		const onChangeSync = (e) => {
 			this.values[device].sync = !this.values[device].sync;
 			saveAndSend();
 		}
 
+		/**
+		* Retrieves the old meta data
+		*/
 		const getMeta = () => {
 			let meta = select('core/editor').getEditedPostAttribute('meta')._gutenberg_extra_responsive_styles;
 			return meta ? JSON.parse(meta) : {};
 		}
 
+		/**
+		* Creates a new object that 
+		*
+		* @param {string} target	Block attribute: uniqueID
+		* @param {obj} meta		Old and saved metadate
+		* @param {obj} this.values	New values to add
+		*/
 		const metaValue = () => {
 			const meta = getMeta();
-			const target = select( 'core/block-editor' ).getBlockAttributes(select( 'core/block-editor' ).getSelectedBlockClientId()).uniqueID;
-			const responsiveStyle = new ResponsiveStylesResolver( target, meta, this.values );
+			const target = select('core/block-editor').getBlockAttributes(select('core/block-editor').getSelectedBlockClientId()).uniqueID;
+			const responsiveStyle = new ResponsiveStylesResolver(target, meta, this.values);
 			const response = JSON.stringify(responsiveStyle.getNewValue);
 			return response;
 		}
 
+		/**
+		* Saves and send the data. Also refresh the styles on Editor
+		*/
 		const saveAndSend = () => {
-			onChange( JSON.stringify(this.values) );
+			onChange(JSON.stringify(this.values));
 			dispatch('core/editor').editPost({
 				meta: {
 					_gutenberg_extra_responsive_styles: metaValue(),
@@ -234,7 +246,7 @@ export default class DimensionsControl extends Component {
 								},
 							]}>
 							{
-								( ) => {
+								() => {
 									return (
 										<Fragment>
 											<div className="components-gx-dimensions-control__inputs">
@@ -247,7 +259,7 @@ export default class DimensionsControl extends Component {
 														__('%s Top', 'gutenberg-extra'),
 														this.values.label
 													)}
-													value={this.values[device][getKey( this.values[device], 0 )]}
+													value={this.values[device][getKey(this.values[device], 0)]}
 													min={0}
 													max={this.values.max ? this.values.max : 0}
 													data-device-type={device}
@@ -262,7 +274,7 @@ export default class DimensionsControl extends Component {
 														__('%s Right', 'gutenberg-extra'),
 														this.values.label
 													)}
-													value={this.values[device][getKey( this.values[device], 1 )]}
+													value={this.values[device][getKey(this.values[device], 1)]}
 													min={0}
 													max={this.values.max ? this.values.max : 0}
 													data-device-type={device}
@@ -277,7 +289,7 @@ export default class DimensionsControl extends Component {
 														__('%s Bottom', 'gutenberg-extra'),
 														this.values.label
 													)}
-													value={this.values[device][getKey( this.values[device], 2 )]}
+													value={this.values[device][getKey(this.values[device], 2)]}
 													min={0}
 													max={this.values.max ? this.values.max : 0}
 													data-device-type={device}
@@ -292,7 +304,7 @@ export default class DimensionsControl extends Component {
 														__('%s Left', 'gutenberg-extra'),
 														this.values.label
 													)}
-													value={this.values[device][getKey( this.values[device], 3 )]}
+													value={this.values[device][getKey(this.values[device], 3)]}
 													min={0}
 													max={this.values.max ? this.values.max : 0}
 													data-device-type={device}

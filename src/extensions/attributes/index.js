@@ -27,9 +27,6 @@ function addAttributes( settings ) {
 			uniqueID: { 
 				type: 'string',
 			},
-			// uniqueData: {
-			// 	type: 'object'
-			// }
 		} );
 	}
 

@@ -83,7 +83,12 @@ const edit = (props) => {
       dividerWidth,
       dividerWidthUnit,
       dividerHeightUnit,
-      dividerPosition
+      dividerOrder,
+      dividerPosition,
+      subtitleTextAlign,
+      titleTextAlign,
+      descriptionTextAlign,
+      subtitleBackgroundColor
     },
     setAttributes,
   } = props;
@@ -103,10 +108,10 @@ const edit = (props) => {
     });
   };
 
-  const subTitleStyles = {textAlign: 'center', fontFamily: 'roboto',fontSize:'12pt', color:subTitleColor};
-  const titleStyles = {textAlign: 'center', fontFamily: 'roboto', color:titleColor};
+  const subTitleStyles = {textAlign: subtitleTextAlign, fontFamily: 'roboto',fontSize:'12pt', color:subTitleColor, backgroundColor: subtitleBackgroundColor};
+  const titleStyles = {textAlign: titleTextAlign, fontFamily: 'roboto', color:titleColor};
   const containerStyles = {display: 'flex', flexDirection: 'column'};
-  const textStyles = {textAlign: 'center', fontFamily: 'roboto',fontSize:'12pt', color:descriptionColor}
+  const textStyles = {textAlign: descriptionTextAlign, fontFamily: 'roboto',fontSize:'12pt', color:descriptionColor}
 
   const gradients = "";
   const disableCustomGradients = false;
@@ -176,6 +181,16 @@ const edit = (props) => {
                 ]}
             />
             <PanelColorSettings
+                title={__('Sub-title Background Colour Settings', 'gutenberg-extra' )}
+                colorSettings={[
+                    {
+                        value: subtitleBackgroundColor,
+                        onChange: (value) => setAttributes({ subtitleBackgroundColor: value }),
+                        label: __('Sub-title Background Colour', 'gutenberg-extra' ),
+                    },
+                ]}
+            />
+            <PanelColorSettings
                 title={__('Description Colour Settings', 'gutenberg-extra' )}
                 colorSettings={[
                     {
@@ -186,18 +201,53 @@ const edit = (props) => {
                 ]}
             />
             <SelectControl
+                label={__('Subtitle Align', 'gutenberg-extra')}
+                className="gx-block-style"
+                value={subtitleTextAlign}
+                options={[
+                    { label: __('Left'), value: 'left' },
+                    { label: __('Center'), value: 'center' },
+                    { label: __('Right'), value: 'right' },
+                ]}
+                onChange={(value) => setAttributes({ subtitleTextAlign: value })}
+            />
+
+            <SelectControl
+                label={__('Title Align', 'gutenberg-extra')}
+                className="gx-block-style"
+                value={titleTextAlign}
+                options={[
+                    { label: __('Left'), value: 'left' },
+                    { label: __('Center'), value: 'center' },
+                    { label: __('Right'), value: 'right' },
+                ]}
+                onChange={(value) => setAttributes({ titleTextAlign: value })}
+            />
+
+            <SelectControl
+                label={__('Description Align', 'gutenberg-extra')}
+                className="gx-block-style"
+                value={descriptionTextAlign}
+                options={[
+                    { label: __('Left'), value: 'left' },
+                    { label: __('Center'), value: 'center' },
+                    { label: __('Right'), value: 'right' },
+                ]}
+                onChange={(value) => setAttributes({ descriptionTextAlign: value })}
+            />
+            <SelectControl
                 label={__('Divider Position', 'gutenberg-extra')}
                 className="gx-block-style"
-                value={dividerPosition}
+                value={dividerOrder}
                 options={[
-                    { label: __('After Title'), value: 0 },
-                    { label: __('Before Title'), value: 'gx-divider-before-title' },
-                    { label: __('After Subtitle'), value: 'gx-divider-after-subtitle' },
-                    { label: __('Before Subtitle'), value: 'gx-divider-before-subtitle' },
-                    { label: __('After Description'), value: 'gx-divider-after-description' },
-                    { label: __('Before Description'), value: 'gx-divider-before-description' },
+                    { label: __('After Title'), value: 1 },
+                    { label: __('Before Title'), value: 0 },
+                    { label: __('After Subtitle'), value: 0 },
+                    { label: __('Before Subtitle'), value: -1 },
+                    { label: __('After Description'), value: 4 },
+                    { label: __('Before Description'), value: 1 },
                 ]}
-                onChange={(value) => setAttributes({ dividerPosition: value })}
+                onChange={(value) => setAttributes({ dividerOrder: value })}
             />
               <RadioControl
   							className={'gx-unit-control'}
@@ -291,6 +341,7 @@ const edit = (props) => {
       className={'gx-block gx-title-extra'}
       style={containerStyles}
       >
+      <div style={{order:0}}>
       <RichText
           tagName="p"
           style={ {textAlign: 'center'},subTitleStyles}
@@ -299,7 +350,9 @@ const edit = (props) => {
           onChange={(value) => setAttributes({ subtitle: value })}
           className="gx-title-extra-subtitle"
       />
+      </div>
 
+      <div style={{order:1}}>
       <RichText
         style={titleStyles}
         placeholder={__('Write title…', 'gutenberg-extra')}
@@ -307,16 +360,19 @@ const edit = (props) => {
         onChange={(value) => setAttributes({ title: value })}
         className="gx-title-extra-title"
       />
+      </div>
         <Divider
         {...props}
         />
-      <RichText
-        style={textStyles}
-        placeholder={__('Write text…', 'gutenberg-extra')}
-        value={text}
-        onChange={(value) => setAttributes({ text: value })}
-        className="gx-title-extra-text"
-      />
+        <div style={{order:3}}>
+        <RichText
+          style={textStyles}
+          placeholder={__('Write text…', 'gutenberg-extra')}
+          value={text}
+          onChange={(value) => setAttributes({ text: value })}
+          className="gx-title-extra-text"
+        />
+      </div>
       </div>
     </div>
   )

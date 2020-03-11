@@ -8,8 +8,6 @@ import { linkOptionsAttributes } from '../../components/link-options/index';
 import { 
     dimensionsControlAttributesMargin,
     dimensionsControlAttributesPadding,
-    dimensionsControlAttributesBorderRadius,
-    dimensionsControlAttributesBorderWidth
 } from '../../components/dimensions-control/attributes';
 
 const attributes = {
@@ -152,8 +150,6 @@ const attributes = {
     ...linkOptionsAttributes,
     ...dimensionsControlAttributesMargin,
     ...dimensionsControlAttributesPadding,
-    ...dimensionsControlAttributesBorderRadius,
-    ...dimensionsControlAttributesBorderWidth
 }
 
 export default attributes;

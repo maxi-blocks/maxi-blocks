@@ -193,3 +193,115 @@ document.onreadystatechange = function () {
         new FontFamilyResolver;
     }
 }
+
+/**
+ * Responsive Frontend Styles resolver
+ * Creates a new object ready to deliver responsive styles on frontend
+ * 
+ * @todo    Comment and extend documentation
+ * @todo    Clean deleted blocks on meta
+ * @todo    Clean objecto on meta (don't need sync, or max, etc...)
+ * @version 0.1
+ */
+
+class ResponsiveStylesResolver {
+    constructor (target, meta, object) {
+        this.target = target;
+        this.meta = meta;
+        this.object = object;
+        this.initEvents();
+    }
+
+    initEvents() {
+        if ( Object.entries(this.meta).length > 0 || this.meta.hasOwnProperty(this.target) ) {
+            this.hasTarget()
+        } else {
+            this.noHasTarget()
+        }     
+    }
+
+    hasTarget () {
+        this.meta['block-image-box-1'][this.object.label] = this.object;
+    }
+
+    noHasTarget () {
+        const newEntry = {
+            [this.target] : {
+                [this.object.label] : this.object
+            }
+        };
+
+        this.meta = Object.assign (this.meta, newEntry);
+    }
+
+    get getNewValue() {
+        return this.meta;
+    }
+}
+
+/**
+ * Adds responsive styles on backend
+ * 
+ * @todo    Comments and documentation
+ * @version 0.1
+ */
+
+class BackEndResponsiveStyles {
+    constructor (meta) {
+        this.meta = meta;
+        // Uses serverside loaded inline css
+        this.target = document.getElementById ('gutenberg-extra-inline-css');
+        typeof this.meta != 'undefined' ?
+            this.initEvents() :
+            null;
+    }
+
+    initEvents () {
+        this.target == null ?
+            this.createElement() :
+            this.addValues();
+    }
+
+    createElement () {
+        const style = document.createElement ( 'style' );
+        style.id = 'gutenberg-extra-inline-css';
+        document.body.appendChild (style);
+        this.target = style;
+        this.addValues();
+    }
+
+    addValues () {
+        const content = this.createContent();
+        this.target.innerHTML = content;
+    }
+
+    createContent () {
+        let content = '';
+        for (let [target, prop] of Object.entries(this.meta)) {
+            for (let [key, value] of Object.entries(prop)) {
+                const unit = value.unit;
+                content += `.${target}{`;
+                    content += this.getResponsiveStyles(value.desktop, unit);
+                content += '}';
+                content += `@media only screen and (max-width: 768px){.${key}{`;
+                    content += this.getResponsiveStyles(value.tablet, unit);
+                content += '}}';
+                content += `@media only screen and (max-width: 768px){.${key}{`;
+                    content += this.getResponsiveStyles(value.mobile, unit);
+                content += '}}';
+            }
+        }
+        return content;
+    }
+
+    getResponsiveStyles (styles, unit) {
+        let responsiveStyles = '';
+        for (let [key, value] of Object.entries(styles)) {
+            key != 'sync' ?
+                responsiveStyles += ` ${key}: ${value}${unit} !important;`:
+                null;
+        }
+        return responsiveStyles;
+    }
+    
+}

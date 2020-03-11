@@ -2,7 +2,7 @@ const { __ } = wp.i18n;
 const { Fragment } = wp.element;
 const { PanelColorSettings } = wp.blockEditor;
 const { SelectControl } = wp.components;
-import { DimensionsControl } from '../dimensions-control/index';
+import DimensionsControl from '../dimensions-control/index';
 
 export const blockBorderAttributes = {
     blockBorderColor: {
@@ -144,40 +144,8 @@ export const BlockBorder = (props) => {
         attributes: {
             blockBorderColor,
             borderType,
-            borderRadiusTopLeft,
-            borderRadiusTopRight,
-            borderRadiusBottomRight,
-            borderRadiusBottomLeft,
-            borderRadiusTopLeftTablet,
-            borderRadiusTopRightTablet,
-            borderRadiusBottomRightTablet,
-            borderRadiusBottomLeftTablet,
-            borderRadiusTopLeftMobile,
-            borderRadiusTopRightMobile,
-            borderRadiusBottomRightMobile,
-            borderRadiusBottomLeftMobile,
-            borderRadiusUnit,
-            borderRadiusSyncUnits,
-            borderRadiusSyncUnitsTablet,
-            borderRadiusSyncUnitsMobile,
-            borderRadiusSize,
-            borderWidthTop,
-            borderWidthRight,
-            borderWidthBottom,
-            borderWidthLeft,
-            borderWidthTopTablet,
-            borderWidthRightTablet,
-            borderWidthBottomTablet,
-            borderWidthLeftTablet,
-            borderWidthTopMobile,
-            borderWidthRightMobile,
-            borderWidthBottomMobile,
-            borderWidthLeftMobile,
-            borderWidthUnit,
-            borderWidthSyncUnits,
-            borderWidthSyncUnitsTablet,
-            borderWidthSyncUnitsMobile,
-            borderWidthSize
+            borderRadius,
+            borderWidth
         },
         setAttributes
     } = props;
@@ -211,49 +179,13 @@ export const BlockBorder = (props) => {
                 ]}
                 onChange={(value) => setAttributes({ borderType: value })}
             />
-            <DimensionsControl {...props}
-                type={'borderRadius'}
-                className={'gx-border-radius-control'}
-                label={__('Border Radius', 'gutenberg-extra')}
-                valueTop={borderRadiusTopLeft}
-                valueRight={borderRadiusTopRight}
-                valueBottom={borderRadiusBottomRight}
-                valueLeft={borderRadiusBottomLeft}
-                valueTopTablet={borderRadiusTopLeftTablet}
-                valueRightTablet={borderRadiusTopRightTablet}
-                valueBottomTablet={borderRadiusBottomRightTablet}
-                valueLeftTablet={borderRadiusBottomLeftTablet}
-                valueTopMobile={borderRadiusTopLeftMobile}
-                valueRightMobile={borderRadiusTopRightMobile}
-                valueBottomMobile={borderRadiusBottomRightMobile}
-                valueLeftMobile={borderRadiusBottomLeftMobile}
-                unit={borderRadiusUnit}
-                syncUnits={borderRadiusSyncUnits}
-                syncUnitsTablet={borderRadiusSyncUnitsTablet}
-                syncUnitsMobile={borderRadiusSyncUnitsMobile}
-                dimensionSize={borderRadiusSize}
+            <DimensionsControl
+                value={borderRadius}
+                onChange={value => setAttributes({borderRadius: value})}
             />
-            <DimensionsControl {...props}
-                type={'borderWidth'}
-                className={'gx-border-width-control'}
-                label={__('Border Width', 'gutenberg-extra')}
-                valueTop={borderWidthTop}
-                valueRight={borderWidthRight}
-                valueBottom={borderWidthBottom}
-                valueLeft={borderWidthLeft}
-                valueTopTablet={borderWidthTopTablet}
-                valueRightTablet={borderWidthRightTablet}
-                valueBottomTablet={borderWidthBottomTablet}
-                valueLeftTablet={borderWidthLeftTablet}
-                valueTopMobile={borderWidthTopMobile}
-                valueRightMobile={borderWidthRightMobile}
-                valueBottomMobile={borderWidthBottomMobile}
-                valueLeftMobile={borderWidthLeftMobile}
-                unit={borderWidthUnit}
-                syncUnits={borderWidthSyncUnits}
-                syncUnitsTablet={borderWidthSyncUnitsTablet}
-                syncUnitsMobile={borderWidthSyncUnitsMobile}
-                dimensionSize={borderWidthSize}
+            <DimensionsControl
+                value={borderWidth}
+                onChange={value => setAttributes({borderWidth: value})}
             />
         </Fragment>
     )

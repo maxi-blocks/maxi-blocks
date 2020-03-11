@@ -19,6 +19,8 @@ const {
  * External dependencies
  */
 
+import classnames from 'classnames';
+import DimensionsControl from '../../components/dimensions-control/index';
 import FontPopover from '../../components/font-popover/index';
 import { BlockStyles } from '../../components/block-styles/index';
 import { ImagePosition } from '../../components/image-position/index';
@@ -37,6 +39,7 @@ import {
     setButtonStyles,
     setBlockStyles,
 } from './data';
+//import { borderRadius } from 'react-select/src/theme';
 
 const edit = (props) => {
     const {
@@ -63,9 +66,17 @@ const edit = (props) => {
             blockStyle,
             defaultBlockStyle,
             titleFontFamily,
+            uniqueID,
+            padding,
+            margin,
         },
         setAttributes,
     } = props;
+
+    let classes = classnames( className );
+    if ( className.indexOf(uniqueID) === -1 ) {
+        classes = classnames( classes, uniqueID )
+    }
 
     const linkOptions = JSON.parse(props.attributes.linkOptions)
 
@@ -89,7 +100,6 @@ const edit = (props) => {
     return [
         <InspectorControls>
             <PanelBody className="gx-panel gx-image-setting gx-content-tab-setting" initialOpen={true} title={__('Image Settings', 'gutenberg-extra')}>
-                <PaddingMarginControl {...props} />
                 <BlockStyles {...props} />
                 <ImagePosition {...props} />
             </PanelBody>
@@ -181,22 +191,29 @@ const edit = (props) => {
                     ]}
                 />
             </PanelBody>
-            {/* <PanelBody className="gx-panel gx-border-setting gx-style-tab-setting" initialOpen={true} title={__('Border settings', 'gutenberg-extra' )}>
+            <PanelBody className="gx-panel gx-border-setting gx-style-tab-setting" initialOpen={true} title={__('Border settings', 'gutenberg-extra' )}>
                 <BlockBorder {...props}/>
             </PanelBody>
             <PanelBody className="gx-panel gx-size-setting gx-style-tab-setting" initialOpen={true} title={__('Size Settings', 'gutenberg-extra')}>
                 <SizeControl {...props} />
             </PanelBody>
             <PanelBody className="gx-panel gx-space-setting gx-style-tab-setting" initialOpen={true} title={__('Space Settings', 'gutenberg-extra')}>
-                <PaddingMarginControl {...props} />
+                <DimensionsControl
+                    value={padding}
+                    onChange={value => setAttributes({padding: value})}
+                />
+                <DimensionsControl
+                    value={margin}
+                    onChange={value => setAttributes({margin: value})}
+                />
             </PanelBody>
             <PanelBody initialOpen={true} className="gx-panel gx-advanced-setting gx-advanced-tab-setting" title={__('Advanced Settings', 'gutenberg-extra')}>
                 <HoverAnimation {...props} />
                 <CustomCSS {...props} />
-            </PanelBody> */}
+            </PanelBody>
         </InspectorControls>,
         <div
-            className={'gx-block ' + blockStyle + ' gx-image-box ' + className}
+            className={'gx-block ' + blockStyle + ' gx-image-box ' + classes}
             data-gx_initial_block_class={defaultBlockStyle}
             style={blockStyles}
         >

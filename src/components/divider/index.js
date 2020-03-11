@@ -24,6 +24,25 @@ export const dividerAttributes = {
   dividerPosition:{
     type: 'string',
     default: ''
+  },
+  dividerOrder:{
+    type: 'number',
+    default: 0
+  },
+  titleTextAlign:{
+    type: 'string',
+    default: 'center'
+  },
+  subtitleTextAlign:{
+    type: 'string',
+    default: 'center'
+  },
+  descriptionTextAlign:{
+    type: 'string',
+    default: 'center'
+  },
+  subtitleBackgroundColor:{
+    type: 'string'
   }
 }
 
@@ -45,6 +64,7 @@ class Divider extends Component {
       dividerHeight,
       dividerWidthUnit,
       dividerHeightUnit,
+      dividerOrder
      } = this.props.attributes;
 
      const dividerStyles =  {
@@ -53,6 +73,7 @@ class Divider extends Component {
          borderColor: dividerColor,
          height: dividerHeight ? dividerHeight + dividerHeightUnit : undefined,
          width: dividerWidth ? dividerWidth + dividerWidthUnit : undefined,
+         order: dividerOrder,
      }
 
     return (

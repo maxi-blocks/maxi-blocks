@@ -14,16 +14,12 @@ export const dividerAttributes = {
   dividerColor:{
     type: 'string'
   },
-  dividerStyles:{
-    type: 'string'
-  },
   dividerHeightUnit:{
     type: 'string',
     default: 'px'
   },
   dividerPosition:{
     type: 'string',
-    default: ''
   },
   dividerOrder:{
     type: 'number',

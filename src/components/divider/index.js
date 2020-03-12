@@ -55,6 +55,10 @@ export const dividerAttributes = {
   isHidden:{
     type: 'boolean',
     default: false
+  },
+  dividerAlignment:{
+    type: 'string',
+    default: 'auto'
   }
 }
 
@@ -78,6 +82,7 @@ class Divider extends Component {
       dividerWidthUnit,
       dividerHeightUnit,
       dividerOrder,
+      dividerAlignment,
       dividerThickness,
       dividerThicknessUnit,
       isVertical,
@@ -86,7 +91,7 @@ class Divider extends Component {
 
      const dividerStyles =  {
          border: '1px solid rgb(152, 152, 152)',
-         margin: 'auto',
+         margin: dividerAlignment,
          borderColor: dividerColor,
          height: dividerHeight ? dividerHeight + dividerHeightUnit : undefined,
          width: dividerWidth ? dividerWidth + dividerWidthUnit : undefined,
@@ -139,6 +144,17 @@ class Divider extends Component {
           id='gx-block-style'
           checked={isVertical}
           onChange={onChangeDirection}
+      />
+      <SelectControl
+          label={__('Divider Alignment', 'gutenberg-extra')}
+          className="gx-block-style"
+          value={dividerAlignment}
+          options={[
+              { label: __('Left'), value: '0 auto 0 0' },
+              { label: __('Center'), value: 'auto' },
+              { label: __('Right'), value: '0 0 0 auto' },
+          ]}
+          onChange={(value) => setAttributes({ dividerAlignment: value })}
       />
       <SelectControl
           label={__('Divider Position', 'gutenberg-extra')}

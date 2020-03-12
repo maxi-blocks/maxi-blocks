@@ -25,7 +25,7 @@ const attributes = {
   },
   subtitleTextAlign:{
     type: 'string',
-    default: 'auto'
+    default: '5px auto'
   },
   descriptionTextAlign:{
     type: 'string',
@@ -35,6 +35,9 @@ const attributes = {
     type: 'string',
   },
   subtitleBackgroundColor:{
+    type: 'string'
+  },
+  subtitleColor:{
     type: 'string'
   },
   ...blockStyleAttributes,

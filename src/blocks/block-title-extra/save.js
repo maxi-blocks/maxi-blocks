@@ -66,7 +66,7 @@ const save = (props) => {
       fontSizeTitle,
       fontSizeTitleUnit,
       titleColor,
-      subTitleColor,
+      subtitleColor,
       descriptionColor,
       buttonColor,
       buttonBgColor,
@@ -93,8 +93,6 @@ const save = (props) => {
   const linkOptions = JSON.parse(props.attributes.linkOptions)
 
   const linkStyles = setLinkStyles(props);
-  // const titleStyles = setTitleStyles(props);
-  // const subTitleStyles = setSubTitleStyles(props);
   const descriptionStyles = setDescriptionStyles(props);
   const buttonStyles = setButtonStyles(props);
   const blockStyles = setBlockStyles(props);
@@ -105,7 +103,7 @@ const save = (props) => {
     });
   };
 
-  const subTitleStyles = {textAlign: subtitleTextAlign, fontFamily: 'roboto',fontSize:'12pt', color:subTitleColor, backgroundColor: subtitleBackgroundColor, width:'max-content', padding:'5px'};
+  const subtitleStyles = {borderRadius: '5px', margin: subtitleTextAlign, fontFamily: 'roboto',fontSize:'12pt', color:subtitleColor, backgroundColor: subtitleBackgroundColor, width:'max-content', padding:'5px'};
   const titleStyles = {textAlign: titleTextAlign, fontFamily: 'roboto', color:titleColor};
   const containerStyles = {display: 'flex', flexDirection: 'column'};
   const textStyles = {textAlign: descriptionTextAlign, fontFamily: 'roboto',fontSize:'12pt', color:descriptionColor}
@@ -120,7 +118,7 @@ const save = (props) => {
       <div style={{order:0}}>
       <RichText.Content
           tagName="p"
-          style={subTitleStyles}
+          style={subtitleStyles}
           value={subtitle}
           className="gx-title-extra-subtitle"
       />

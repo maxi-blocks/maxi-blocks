@@ -68,7 +68,7 @@ const edit = (props) => {
       fontSizeTitle,
       fontSizeTitleUnit,
       titleColor,
-      subTitleColor,
+      subtitleColor,
       descriptionColor,
       buttonColor,
       buttonBgColor,
@@ -96,8 +96,6 @@ const edit = (props) => {
   const linkOptions = JSON.parse(props.attributes.linkOptions)
 
   const linkStyles = setLinkStyles(props);
-  // const titleStyles = setTitleStyles(props);
-  // const subTitleStyles = setSubTitleStyles(props);
   const descriptionStyles = setDescriptionStyles(props);
   const buttonStyles = setButtonStyles(props);
   const blockStyles = setBlockStyles(props);
@@ -108,7 +106,7 @@ const edit = (props) => {
     });
   };
 
-  const subTitleStyles = {margin: subtitleTextAlign, fontFamily: 'roboto',fontSize:'12pt', color:subTitleColor, backgroundColor: subtitleBackgroundColor, width:'max-content', padding:'5px'};
+  const subtitleStyles = {borderRadius: '5px', margin: subtitleTextAlign, fontFamily: 'roboto',fontSize:'12pt', color:subtitleColor, backgroundColor: subtitleBackgroundColor, width:'max-content', padding:'5px'};
   const titleStyles = {textAlign: titleTextAlign, fontFamily: 'roboto', color:titleColor};
   const containerStyles = {display: 'flex', flexDirection: 'column'};
   const textStyles = {textAlign: descriptionTextAlign, fontFamily: 'roboto',fontSize:'12pt', color:descriptionColor}
@@ -154,8 +152,8 @@ const edit = (props) => {
                 title={__('Sub-title Colour Settings', 'gutenberg-extra' )}
                 colorSettings={[
                     {
-                        value: subTitleColor,
-                        onChange: (value) => setAttributes({ subTitleColor: value }),
+                        value: subtitleColor,
+                        onChange: (value) => setAttributes({ subtitleColor: value }),
                         label: __('Sub-title Colour', 'gutenberg-extra' ),
                     },
                 ]}
@@ -185,9 +183,9 @@ const edit = (props) => {
                 className="gx-block-style"
                 value={subtitleTextAlign}
                 options={[
-                    { label: __('Left'), value: '0 auto 0 0' },
-                    { label: __('Center'), value: 'auto' },
-                    { label: __('Right'), value: '0 0 0 auto' },
+                    { label: __('Left'), value: '5px auto 5px 0' },
+                    { label: __('Center'), value: '5px auto' },
+                    { label: __('Right'), value: '5px 0 5px auto' },
                 ]}
                 onChange={(value) => setAttributes({ subtitleTextAlign: value })}
             />
@@ -257,7 +255,7 @@ const edit = (props) => {
       <div style={{order:0}}>
       <RichText
           tagName="p"
-          style={subTitleStyles}
+          style={subtitleStyles}
           placeholder={__('Write sub-title…', 'gutenberg-extra')}
           value={subtitle}
           onChange={(value) => setAttributes({ subtitle: value })}

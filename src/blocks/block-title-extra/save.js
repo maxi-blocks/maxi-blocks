@@ -128,6 +128,7 @@ const save = (props) => {
 
         <div style={{order:1}}>
           <RichText.Content
+          tagName="p"
             style={titleStyles}
             value={title}
             className="gx-title-extra-title"
@@ -138,6 +139,7 @@ const save = (props) => {
         />
       <div style={{order:3}}>
         <RichText.Content
+        tagName="p"
           style={textStyles}
           value={text}
           className="gx-title-extra-text"

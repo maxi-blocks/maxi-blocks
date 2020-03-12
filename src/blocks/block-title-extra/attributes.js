@@ -14,6 +14,11 @@ const attributes = {
       source: 'children',
       selector: '.gx-title-extra-subtitle',
   },
+  text: {
+      type: 'array',
+      source: 'children',
+      selector: '.gx-title-extra-text',
+  },
   titleTextAlign:{
     type: 'string',
     default: 'center'
@@ -25,6 +30,9 @@ const attributes = {
   descriptionTextAlign:{
     type: 'string',
     default: 'center'
+  },
+  descriptionColor:{
+    type: 'string',
   },
   subtitleBackgroundColor:{
     type: 'string'

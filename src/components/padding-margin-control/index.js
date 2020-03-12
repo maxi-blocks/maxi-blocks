@@ -1,5 +1,5 @@
 /**
- * DEPECRATED
+ * DEPRECATED
  */
 
 const { __ } = wp.i18n;

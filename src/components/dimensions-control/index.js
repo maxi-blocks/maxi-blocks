@@ -43,7 +43,8 @@ export default class DimensionsControl extends Component {
 
 	render() {
 		const {
-			onChange
+			onChange,
+			target = '',
 		} = this.props;
 
 		const {
@@ -147,6 +148,15 @@ export default class DimensionsControl extends Component {
 		}
 
 		/**
+		 * Retrieve the target for responsive CSS
+		 */
+		const getTarget = () => {
+			let styleTarget = select('core/block-editor').getBlockAttributes(select('core/block-editor').getSelectedBlockClientId()).uniqueID;
+			styleTarget = `${styleTarget}${target.length > 0 ? `__$${target}` : '' }`;
+			return styleTarget;
+		}
+
+		/**
 		* Creates a new object that 
 		*
 		* @param {string} target	Block attribute: uniqueID
@@ -155,8 +165,8 @@ export default class DimensionsControl extends Component {
 		*/
 		const metaValue = () => {
 			const meta = getMeta();
-			const target = select('core/block-editor').getBlockAttributes(select('core/block-editor').getSelectedBlockClientId()).uniqueID;
-			const responsiveStyle = new ResponsiveStylesResolver(target, meta, this.values);
+			const styleTarget = getTarget();
+			const responsiveStyle = new ResponsiveStylesResolver(styleTarget, meta, this.values);
 			const response = JSON.stringify(responsiveStyle.getNewValue);
 			return response;
 		}

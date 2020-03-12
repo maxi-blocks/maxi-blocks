@@ -48,6 +48,7 @@ class ResponsiveFrontendStyles {
         $response = '';
         
         foreach ( $meta as $target => $prop ) {
+            $target = str_replace( '__$', ' .', $target );
             foreach ( $prop as $className => $styles ) {
                 $unit = $styles->unit;
                 $response .= ".{$target}{";

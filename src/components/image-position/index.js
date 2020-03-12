@@ -10,24 +10,25 @@ export const imagePositionAttributes = {
 
 export const ImagePosition = (props) => {
     const {
-        attributes: {
-            imagePosition
-        },
+        label = __("Image Position", 'gutenberg-extra'),
+        alternativeClassName = "gx-image-position",
+        value = props.attributes.imagePosition,
+        options = [
+            { label: __('Before', 'gutenbgerg-extra'), value: 'top' },
+            { label: __('After', 'gutenbgerg-extra'), value: 'bottom' },
+            { label: __('Left', 'gutenbgerg-extra'), value: 'left' },
+            { label: __('Right', 'gutenbgerg-extra'), value: 'right' },
+        ],
         setAttributes
     } = props;
 
     return (
         <SelectControl
-            label={__("Image Position", 'gutenberg-extra')}
-            className="gx-image-position"
-            value={imagePosition}
-            options={[
-                { label: __('Before', 'gutenbgerg-extra'), value: 'top' },
-                { label: __('After', 'gutenbgerg-extra'), value: 'bottom' },
-                { label: __('Left', 'gutenbgerg-extra'), value: 'left' },
-                { label: __('Right', 'gutenbgerg-extra'), value: 'right' },
-            ]}
-            onChange={(value) => setAttributes({ imagePosition: value })}
+            label={label}
+            className={alternativeClassName}
+            value={value}
+            options={options}
+            onChange={(value) => setAttributes({ value })}
         />
     )
 }

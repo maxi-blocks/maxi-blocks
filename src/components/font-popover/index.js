@@ -57,9 +57,9 @@ export default class FontPopover extends Component {
     render () {
         const {
             className,
-            classNamePopover,
+            classNamePopover = "gx-popover gx-fontpopover",
             title,
-            buttonText,
+            buttonText = __('Typography', 'gutenberg-extra'),
             font,
             onFontFamilyChange,
             fontSizeUnit,
@@ -84,12 +84,12 @@ export default class FontPopover extends Component {
                                 onClick={onToggle}
                                 aria-expanded={isOpen}
                             >
-                                { buttonText ? buttonText : __('Typography', 'gutenberg-extra') }
+                                { buttonText }
                             </Button>
                         )}
                         popoverProps={
                             {                           
-                                className: classNamePopover + " gx-popover gx-fontpopover",
+                                className: classNamePopover,
                                 noArrow: true,
                                 position: "center"
                             }

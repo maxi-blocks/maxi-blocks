@@ -31,7 +31,6 @@ export const HoverAnimation = ( props ) => {
             { label: __('Normal', 'gutenberg-extra'), value: 'normal' },
             { label: __('Long', 'gutenberg-extra'), value: 'long' },
             { label: __('Longer', 'gutenberg-extra'), value: 'longer' },
-
         ],
         setAttributes
     } = props;

@@ -119,26 +119,6 @@ const edit = (props) => {
   return (
     <div>
     <InspectorControls>
-        <PanelBody className="gx-panel gx-image-setting gx-content-tab-setting" initialOpen={true} title={__('Image Settings', 'gutenberg-extra')}>
-            <BlockStyles {...props} />
-            <ImagePosition {...props} />
-        </PanelBody>
-        <PanelBody className="gx-panel gx-text-setting gx-content-tab-setting" initialOpen={true} title={__('Text settings', 'gutenberg-extra')}>
-            <FontLevel
-                label={__('Title level', 'gutenberg-extra')}
-                value={titleLevel}
-                onChange={value => setAttributes({ titleLevel: value })}
-            />
-        </PanelBody>
-        <PanelBody className="gx-panel gx-link-setting gx-content-tab-setting" initialOpen={true} title={__('Link Settings', 'gutenberg-extra')}>
-            <LinkOptions
-                label={__("Link's Title", 'gutenberg-extra')}
-                value={linkTitle}
-                onChangeLink={value => setAttributes({ linkTitle: value })}
-                linkOptions={linkOptions}
-                onChangeOptions={value => { setAttributes({ linkOptions: value }); }}
-            />
-        </PanelBody>
         <PanelBody className="gx-panel gx-color-setting gx-style-tab-setting" initialOpen={true} title={__('Colour settings', 'gutenberg-extra')}>
             <FontPopover
                 title={__('Title Typography', 'gutenberg-extra')}
@@ -266,10 +246,6 @@ const edit = (props) => {
         </PanelBody>
         <PanelBody className="gx-panel gx-space-setting gx-style-tab-setting" initialOpen={true} title={__('Space Settings', 'gutenberg-extra')}>
             <PaddingMarginControl {...props} />
-        </PanelBody>
-        <PanelBody initialOpen={true} className="gx-panel gx-advanced-setting gx-advanced-tab-setting" title={__('Advanced Settings', 'gutenberg-extra')}>
-            <HoverAnimation {...props} />
-            <CustomCSS {...props} />
         </PanelBody>
     </InspectorControls>
 

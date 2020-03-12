@@ -25,6 +25,10 @@ export const dividerAttributes = {
     type: 'number',
     default: 0
   },
+  dividerHeight:{
+    type: 'number',
+    default: 0
+  },
   dividerWidthUnit:{
     type: 'string',
     default: 'px'
@@ -37,8 +41,7 @@ export const dividerAttributes = {
     default: 'px'
   },
   dividerOrder:{
-    type: 'number',
-    default: 0
+    type: 'string',
   },
   dividerThicknessUnit:{
     type: 'string',
@@ -90,7 +93,7 @@ class Divider extends Component {
      } = this.props.attributes;
 
      const dividerStyles =  {
-         border: '1px solid rgb(152, 152, 152)',
+         border: dividerColor ? '1px solid ' + dividerColor : '1px solid rgb(152, 152, 152)',
          margin: dividerAlignment,
          borderColor: dividerColor,
          height: dividerHeight ? dividerHeight + dividerHeightUnit : undefined,

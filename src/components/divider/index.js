@@ -2,6 +2,23 @@ const { __ } = wp.i18n;
 import { Component } from '@wordpress/element';
 import { withInstanceId } from '@wordpress/compose';
 
+const {
+  InspectorControls,
+  PanelColorSettings,
+  URLInput,
+  RichText,
+  MediaUpload,
+} = wp.blockEditor;
+
+const {
+  PanelBody,
+  Button,
+  RangeControl,
+  RadioControl,
+  CheckboxControl,
+  SelectControl
+} = wp.components;
+
 export const dividerAttributes = {
   dividerWidth:{
     type: 'number',
@@ -18,27 +35,21 @@ export const dividerAttributes = {
     type: 'string',
     default: 'px'
   },
-  dividerPosition:{
-    type: 'string',
-  },
   dividerOrder:{
     type: 'number',
     default: 0
   },
-  titleTextAlign:{
+  dividerThicknessUnit:{
     type: 'string',
-    default: 'center'
+    default: 'px'
   },
-  subtitleTextAlign:{
-    type: 'string',
-    default: 'center'
+  dividerThickness:{
+    type: 'number',
+    default: 1
   },
-  descriptionTextAlign:{
-    type: 'string',
-    default: 'center'
-  },
-  subtitleBackgroundColor:{
-    type: 'string'
+  isVertical:{
+    type: 'boolean',
+    default: false
   }
 }
 
@@ -53,6 +64,7 @@ class Divider extends Component {
 			instanceId,
 			label = __( 'Margin', 'gx' ),
 			type = 'margin',
+      setAttributes,
 		} = this.props;
     const {
       dividerColor,
@@ -60,7 +72,10 @@ class Divider extends Component {
       dividerHeight,
       dividerWidthUnit,
       dividerHeightUnit,
-      dividerOrder
+      dividerOrder,
+      dividerThickness,
+      dividerThicknessUnit,
+      isVertical,
      } = this.props.attributes;
 
      const dividerStyles =  {
@@ -69,13 +84,112 @@ class Divider extends Component {
          borderColor: dividerColor,
          height: dividerHeight ? dividerHeight + dividerHeightUnit : undefined,
          width: dividerWidth ? dividerWidth + dividerWidthUnit : undefined,
-         order: dividerOrder,
+         borderWidth: dividerThickness ? dividerThickness + dividerThicknessUnit : undefined,
+     };
+
+     const dividerWrapperStyles = {
+       order: dividerOrder,
+     }
+
+     const onChangeDirection = (value) =>{
+       setAttributes({isVertical: value});
+     }
+
+     const onChangeDividerWidth = ( value ) => {
+       if(isVertical){
+         setAttributes({dividerThickness: value});
+       }else{
+         setAttributes({ dividerWidth: value, dividerHeight: 0 });
+       }
+     }
+
+     const onChangeDividerHeight = ( value ) => {
+       if(isVertical){
+        setAttributes({ dividerHeight: value, dividerWidth: 1 });
+       }else{
+        setAttributes({dividerThickness: value})
+       }
      }
 
     return (
-        <div
-        style={dividerStyles}
+      <div
+      style={dividerWrapperStyles}
+      >
+      <InspectorControls>
+      <CheckboxControl
+        label={__('Vertical Divider', 'gutenberg-extra')}
+        className="gx-block-style"
+        value={isVertical}
+        onChange = { onChangeDirection }
+      />
+      <SelectControl
+          label={__('Divider Position', 'gutenberg-extra')}
+          className="gx-block-style"
+          value={dividerOrder}
+          options={[
+              { label: __('After Title'), value: 1 },
+              { label: __('Before Title'), value: 0 },
+              { label: __('Before Subtitle'), value: -1 },
+              { label: __('After Description'), value: 4 },
+          ]}
+          onChange={(value) => setAttributes({ dividerOrder: value })}
+      />
+        <RadioControl
+          className={'gx-unit-control'}
+          selected={ dividerWidthUnit }
+          options={ [
+              { label: 'PX', value: 'px' },
+              { label: 'EM', value: 'em' },
+              { label: 'VW', value: 'vw' },
+              { label: '%', value: '%' },
+          ] }
+          onChange={ ( value ) => setAttributes({ dividerWidthUnit: value }) }
         />
+        <RangeControl
+          label={__('Divider Width', 'gutenberg-extra')}
+          className={'gx-with-unit-control'}
+          value={isVertical ? dividerThickness : dividerWidth}
+          onChange={ onChangeDividerWidth }
+          min={ 0 }
+          allowReset = {true}
+          initialPosition = { 0 }
+        />
+        <RadioControl
+          className={'gx-unit-control'}
+          selected={ dividerHeightUnit }
+          options={ [
+              { label: 'PX', value: 'px' },
+              { label: 'EM', value: 'em' },
+              { label: 'VW', value: 'vw' },
+              { label: '%', value: '%' },
+          ] }
+          onChange={ ( value ) => setAttributes({ dividerHeightUnit: value }) }
+        />
+        <RangeControl
+          label={__('Divider Height', 'gutenberg-extra')}
+          className={'gx-with-unit-control'}
+          value={isVertical ? dividerHeight : dividerThickness}
+          onChange={ onChangeDividerHeight }
+          min={ 0 }
+          allowReset = {true}
+          initialPosition = { 0 }
+        />
+
+      <PanelColorSettings
+        title={__('Divider Colour', 'gutenberg-extra' )}
+        colorSettings={[
+          {
+            value: dividerColor,
+            onChange: (value) => setAttributes({ dividerColor: value }),
+            label: __('Divider Colour', 'gutenberg-extra' ),
+          },
+        ]}
+      />
+      </InspectorControls>
+      <div
+      style={dividerStyles}
+      />
+      </div>
     )
   }
 }

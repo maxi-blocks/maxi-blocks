@@ -10,7 +10,7 @@ const {
   Button,
   RangeControl,
   RadioControl,
-  SelectControl
+  SelectControl,
 } = wp.components;
 const {
   InspectorControls,
@@ -108,7 +108,7 @@ const edit = (props) => {
     });
   };
 
-  const subTitleStyles = {textAlign: subtitleTextAlign, fontFamily: 'roboto',fontSize:'12pt', color:subTitleColor, backgroundColor: subtitleBackgroundColor};
+  const subTitleStyles = {margin: subtitleTextAlign, fontFamily: 'roboto',fontSize:'12pt', color:subTitleColor, backgroundColor: subtitleBackgroundColor, width:'max-content', padding:'5px'};
   const titleStyles = {textAlign: titleTextAlign, fontFamily: 'roboto', color:titleColor};
   const containerStyles = {display: 'flex', flexDirection: 'column'};
   const textStyles = {textAlign: descriptionTextAlign, fontFamily: 'roboto',fontSize:'12pt', color:descriptionColor}
@@ -205,9 +205,9 @@ const edit = (props) => {
                 className="gx-block-style"
                 value={subtitleTextAlign}
                 options={[
-                    { label: __('Left'), value: 'left' },
-                    { label: __('Center'), value: 'center' },
-                    { label: __('Right'), value: 'right' },
+                    { label: __('Left'), value: '0 auto 0 0' },
+                    { label: __('Center'), value: 'auto' },
+                    { label: __('Right'), value: '0 0 0 auto' },
                 ]}
                 onChange={(value) => setAttributes({ subtitleTextAlign: value })}
             />
@@ -235,70 +235,7 @@ const edit = (props) => {
                 ]}
                 onChange={(value) => setAttributes({ descriptionTextAlign: value })}
             />
-            <SelectControl
-                label={__('Divider Position', 'gutenberg-extra')}
-                className="gx-block-style"
-                value={dividerOrder}
-                options={[
-                    { label: __('After Title'), value: 1 },
-                    { label: __('Before Title'), value: 0 },
-                    { label: __('After Subtitle'), value: 0 },
-                    { label: __('Before Subtitle'), value: -1 },
-                    { label: __('After Description'), value: 4 },
-                    { label: __('Before Description'), value: 1 },
-                ]}
-                onChange={(value) => setAttributes({ dividerOrder: value })}
-            />
-              <RadioControl
-  							className={'gx-unit-control'}
-  			        selected={ dividerWidthUnit }
-  			        options={ [
-  			            { label: 'PX', value: 'px' },
-  			            { label: 'EM', value: 'em' },
-  			            { label: 'VW', value: 'vw' },
-  			            { label: '%', value: '%' },
-  			        ] }
-  			        onChange={ ( value ) => props.setAttributes({ dividerWidthUnit: value }) }
-					    />
-					    <RangeControl
-                label={__('Divider Width', 'gutenberg-extra')}
-                className={'gx-with-unit-control'}
-                value={dividerWidth}
-                onChange={ ( value ) => props.setAttributes({ dividerWidth: value, dividerHeight: 1 }) }
-  							min={ 0 }
-  							allowReset = {true}
-  							initialPosition = { 0 }
-            	/>
-              <RadioControl
-  							className={'gx-unit-control'}
-  			        selected={ dividerHeightUnit }
-  			        options={ [
-  			            { label: 'PX', value: 'px' },
-  			            { label: 'EM', value: 'em' },
-  			            { label: 'VW', value: 'vw' },
-  			            { label: '%', value: '%' },
-  			        ] }
-  			        onChange={ ( value ) => props.setAttributes({ dividerHeightUnit: value }) }
-					    />
-              <RangeControl
-                label={__('Divider Height', 'gutenberg-extra')}
-                className={'gx-with-unit-control'}
-                value={dividerHeight}
-                onChange={ ( value ) => props.setAttributes({ dividerHeight: value, dividerWidth: 1 }) }
-  							min={ 0 }
-  							allowReset = {true}
-  							initialPosition = { 0 }
-            	/>
-            <PanelColorSettings
-              title={__('Divider Colour', 'gutenberg-extra' )}
-              colorSettings={[
-                {
-                  value: dividerColor,
-                  onChange: (value) => setAttributes({ dividerColor: value }),
-                  label: __('Divider Colour', 'gutenberg-extra' ),
-                },
-              ]}
-            />
+
 
             <PanelColorSettings
               title={__('Button Settings', 'gutenberg-extra' )}
@@ -344,7 +281,7 @@ const edit = (props) => {
       <div style={{order:0}}>
       <RichText
           tagName="p"
-          style={ {textAlign: 'center'},subTitleStyles}
+          style={subTitleStyles}
           placeholder={__('Write sub-title…', 'gutenberg-extra')}
           value={subtitle}
           onChange={(value) => setAttributes({ subtitle: value })}
@@ -354,6 +291,7 @@ const edit = (props) => {
 
       <div style={{order:1}}>
       <RichText
+        tagName="p"
         style={titleStyles}
         placeholder={__('Write title…', 'gutenberg-extra')}
         value={title}
@@ -366,6 +304,7 @@ const edit = (props) => {
         />
         <div style={{order:3}}>
         <RichText
+          tagName="p"
           style={textStyles}
           placeholder={__('Write text…', 'gutenberg-extra')}
           value={text}

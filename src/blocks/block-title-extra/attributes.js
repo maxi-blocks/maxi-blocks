@@ -12,7 +12,22 @@ const attributes = {
   subtitle: {
       type: 'array',
       source: 'children',
-      selector: '.gx-title-extra-title',
+      selector: '.gx-title-extra-subtitle',
+  },
+  titleTextAlign:{
+    type: 'string',
+    default: 'center'
+  },
+  subtitleTextAlign:{
+    type: 'string',
+    default: 'auto'
+  },
+  descriptionTextAlign:{
+    type: 'string',
+    default: 'center'
+  },
+  subtitleBackgroundColor:{
+    type: 'string'
   },
   ...blockStyleAttributes,
   ...linkOptionsAttributes,

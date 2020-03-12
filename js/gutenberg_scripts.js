@@ -213,7 +213,7 @@ class ResponsiveStylesResolver {
     }
 
     initEvents() {
-        if ( Object.entries(this.meta).length > 0 || this.meta.hasOwnProperty(this.target) ) {
+        if ( Object.entries(this.meta).length > 0 && this.meta.hasOwnProperty(this.target) ) {
             this.hasTarget()
         } else {
             this.noHasTarget()
@@ -221,7 +221,7 @@ class ResponsiveStylesResolver {
     }
 
     hasTarget () {
-        this.meta['block-image-box-1'][this.object.label] = this.object;
+        this.meta[this.target][this.object.label] = this.object;
     }
 
     noHasTarget () {
@@ -278,6 +278,7 @@ class BackEndResponsiveStyles {
     createContent () {
         let content = '';
         for (let [target, prop] of Object.entries(this.meta)) {
+            target = target.replace( '__$', ' .' );
             for (let [key, value] of Object.entries(prop)) {
                 const unit = value.unit;
                 content += `.${target}{`;

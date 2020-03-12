@@ -50,77 +50,20 @@ export const sizeControlAttributes = {
     },
 }
 
-// widthUnit: {
-//     type: 'string',
-//     default: '%',
-// },
-// blockWidth: {
-//     type: 'number',
-// },
-// maxWidthUnit: {
-//     type: 'string',
-//     default: 'px',
-// },
-// maxWidth: {
-//     type: 'number',
-// },
-// minWidthUnit: {
-//     type: 'string',
-//     default: 'px',
-// },
-// minWidth: {
-//     type: 'number',
-// },
-// heightUnit: {
-//     type: 'string',
-//     default: '%',
-// },
-// blockHeight: {
-//     type: 'number',
-// },
-// maxHeightUnit: {
-//     type: 'string',
-//     default: 'px',
-// },
-// maxHeight: {
-//     type: 'number',
-// },
-// minHeightUnit: {
-//     type: 'string',
-//     default: 'px',
-// },
-// minHeight: {
-//     type: 'number',
-// },
-// marginSyncUnits: {
-//     type: 'boolean',
-//     default: false,
-// },
-// marginSyncUnitsTablet: {
-//     type: 'boolean',
-//     default: false,
-// },
-// marginSyncUnitsMobile: {
-//     type: 'boolean',
-//     default: false,
-// },
-
 export const SizeControl = ( props ) => {
     const {
-        attributes: {
-            maxWidthUnit,
-            maxWidth,
-            widthUnit,
-            blockWidth,
-            minWidthUnit,
-            minWidth,
-            maxHeightUnit,
-            maxHeight,
-            heightUnit,
-            blockHeight,
-            minHeightUnit,
-            minHeight
-        },
+        maxWidthUnit = props.attributes.maxWidthUnit,
+        maxWidth = props.attributes.maxWidth,
+        widthUnit = props.attributes.widthUnit,
+        blockWidth = props.attributes.blockWidth,
+        minWidthUnit = props.attributes.minWidthUnit,
+        minWidth = props.attributes.minWidth,
+        maxHeightUnit = props.attributes.maxHeightUnit,
+        maxHeight = props.attributes.maxHeight,
+        heightUnit = props.attributes.heightUnit,
+        blockHeight = props.attributes.blockHeight,
+        minHeightUnit = props.attributes.minHeightUnit,
+        minHeight = props.attributes.minHeight,
         setAttributes,
     } = props;
 

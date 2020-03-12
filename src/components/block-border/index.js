@@ -29,51 +29,58 @@ export const blockBorderAttributes = {
 
 export const BlockBorder = (props) => {
     const {
-        attributes: {
-            blockBorderColor,
-            borderType,
-            borderRadius,
-            borderWidth
-        },
+        colorTitle = __('Color Settings', 'gutenberg-extra'),
+        blockBorderColor = props.attributes.blockBorderColor,
+        colorLabel = __('Border Colour', 'gutenberg-extra'),
+        borderTypeLabel = "Border Type",
+        borderTypeClassName = "gx-border-type",
+        borderType = props.attributes.borderType,
+        borderTypeOptions = [
+            { label: 'None', value: 'none' },
+            { label: 'Dotted', value: 'dotted' },
+            { label: 'Dashed', value: 'dashed' },
+            { label: 'Solid', value: 'solid' },
+            { label: 'Double', value: 'double' },
+            { label: 'Groove', value: 'groove' },
+            { label: 'Ridge', value: 'ridge' },
+            { label: 'Inset', value: 'inset' },
+            { label: 'Outset', value: 'outset' },
+        ],
+        borderRadius = props.attributes.borderRadius,
+        borderWidth = props.attributes.borderWidth,
+        borderRadiusTarget = '',
+        borderWidthTarget = '',
         setAttributes
     } = props;
 
     return (
         <Fragment>
             <PanelColorSettings
-                title={__('Color Settings', 'gutenberg-extra')}
+                title={colorTitle}
                 colorSettings={[
                     {
                         value: blockBorderColor,
                         onChange: (value) => setAttributes({ blockBorderColor: value }),
-                        label: __('Border Colour', 'gutenberg-extra'),
+                        label: colorLabel,
                     },
                 ]}
             />
             <SelectControl
-                label="Border Type"
-                className="gx-border-type"
+                label={borderTypeLabel}
+                className={borderTypeClassName}
                 value={borderType}
-                options={[
-                    { label: 'None', value: 'none' },
-                    { label: 'Dotted', value: 'dotted' },
-                    { label: 'Dashed', value: 'dashed' },
-                    { label: 'Solid', value: 'solid' },
-                    { label: 'Double', value: 'double' },
-                    { label: 'Groove', value: 'groove' },
-                    { label: 'Ridge', value: 'ridge' },
-                    { label: 'Inset', value: 'inset' },
-                    { label: 'Outset', value: 'outset' },
-                ]}
+                options={borderTypeOptions}
                 onChange={(value) => setAttributes({ borderType: value })}
             />
             <DimensionsControl
                 value={borderRadius}
                 onChange={value => setAttributes({borderRadius: value})}
+                target={borderRadiusTarget}
             />
             <DimensionsControl
                 value={borderWidth}
                 onChange={value => setAttributes({borderWidth: value})}
+                target={borderWidthTarget}
             />
         </Fragment>
     )

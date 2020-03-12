@@ -9,6 +9,7 @@ import {
     dimensionsControlAttributesMargin,
     dimensionsControlAttributesPadding,
 } from '../../components/dimensions-control/attributes';
+import {typographyAttributes} from '../../components/typography'
 
 const attributes = {
     title: {
@@ -30,7 +31,6 @@ const attributes = {
         attribute: 'src',
     },
     description: {
-        type: 'array',
         source: 'children',
         selector: '.gx-image-box-description',
     },
@@ -48,9 +48,10 @@ const attributes = {
         selector: '.gx-image-box-counter',
     },
     readMoreText: {
-        type: 'array',
-        source: 'children',
-        selector: '.gx-image-box-read-more-text',
+        type: 'string',
+        source: 'attribute',
+        selector: 'a.gx-image-box-link',
+        attribute: 'href',
     },
     readMoreLink: {
         type: 'string',
@@ -150,6 +151,15 @@ const attributes = {
     ...linkOptionsAttributes,
     ...dimensionsControlAttributesMargin,
     ...dimensionsControlAttributesPadding,
+    ...typographyAttributes,
+    titlePopUpisVisible: {
+        type: 'boolean',
+        default: false,
+    },
+    paddingTitle: {
+        type: 'string',
+            default: '{"label":"Padding","unit":"px","max":"1000","desktop":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true},"tablet":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true},"mobile":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true}}'
+    }
 }
 
 export default attributes;

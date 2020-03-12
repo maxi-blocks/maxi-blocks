@@ -1,6 +1,6 @@
 import { blockStyleAttributes } from '../../components/block-styles/index';
 import { imagePositionAttributes } from '../../components/image-position/index';
-import { blockBorderAttributes } from '../../components/block-border/index';
+import { borderAttributes } from '../../components/block-border/index';
 import { sizeControlAttributes } from '../../components/size-control/index';
 import { hoverAnimationAttributes } from '../../components/hover-animation/index';
 import { customCSSAtributes } from '../../components/custom-css/index';
@@ -127,6 +127,10 @@ const attributes = {
         type: 'boolean',
         default: false,
     },
+    titleFontFamily: {
+        type: 'string',
+        default: 'default'
+    },
     fontSizeTitleUnit: {
         type: 'string',
         default: 'px',
@@ -138,13 +142,9 @@ const attributes = {
         type: 'string',
         default: 'h2'
     },
-    titleFontFamily: {
-        type: 'string',
-        default: 'inherit'
-    },
     ...blockStyleAttributes,
     ...imagePositionAttributes,
-    ...blockBorderAttributes,
+    ...borderAttributes,
     ...sizeControlAttributes,
     ...hoverAnimationAttributes,
     ...customCSSAtributes,
@@ -156,10 +156,6 @@ const attributes = {
         type: 'boolean',
         default: false,
     },
-    paddingTitle: {
-        type: 'string',
-            default: '{"label":"Padding","unit":"px","max":"1000","desktop":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true},"tablet":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true},"mobile":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true}}'
-    }
 }
 
 export default attributes;

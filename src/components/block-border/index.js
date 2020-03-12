@@ -4,8 +4,8 @@ const { PanelColorSettings } = wp.blockEditor;
 const { SelectControl } = wp.components;
 import DimensionsControl from '../dimensions-control/index';
 
-export const blockBorderAttributes = {
-    blockBorderColor: {
+export const borderAttributes = {
+    borderColor: {
         type: 'string',
         default: "",
     },
@@ -30,9 +30,9 @@ export const blockBorderAttributes = {
 export const BlockBorder = (props) => {
     const {
         colorTitle = __('Color Settings', 'gutenberg-extra'),
-        blockBorderColor = props.attributes.blockBorderColor,
+        borderColor = props.attributes.borderColor,
         colorLabel = __('Border Colour', 'gutenberg-extra'),
-        borderTypeLabel = "Border Type",
+        borderTypeLabel = __("Border Type", 'gutenberg-extra'),
         borderTypeClassName = "gx-border-type",
         borderType = props.attributes.borderType,
         borderTypeOptions = [
@@ -53,14 +53,16 @@ export const BlockBorder = (props) => {
         setAttributes
     } = props;
 
+    console.log (props)
+
     return (
         <Fragment>
             <PanelColorSettings
                 title={colorTitle}
                 colorSettings={[
                     {
-                        value: blockBorderColor,
-                        onChange: (value) => setAttributes({ blockBorderColor: value }),
+                        value: borderColor,
+                        onChange: (value) => setAttributes({ borderColor: value }),
                         label: colorLabel,
                     },
                 ]}
@@ -75,12 +77,12 @@ export const BlockBorder = (props) => {
             <DimensionsControl
                 value={borderRadius}
                 onChange={value => setAttributes({borderRadius: value})}
-                target={borderRadiusTarget}
+                //target={borderRadiusTarget}
             />
             <DimensionsControl
                 value={borderWidth}
                 onChange={value => setAttributes({borderWidth: value})}
-                target={borderWidthTarget}
+                //target={borderWidthTarget}
             />
         </Fragment>
     )

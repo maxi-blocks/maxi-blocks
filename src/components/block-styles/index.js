@@ -17,6 +17,7 @@ export const BlockStyles = ( props ) => {
     const {
         firstSelectorLabel = __( 'Block Style', 'gutenberg-extra'),
         firstSelectorClassName = 'gx-block-style',
+        blockStyle = props.attributes.blockStyle,
         firstSelectorOptions = [
             { label: __('Global', 'gutenberg-extra'), value: 'gx-global' },
             { label: __('Dark', 'gutenberg-extra'), value: 'gx-dark' },
@@ -24,12 +25,11 @@ export const BlockStyles = ( props ) => {
         ],
         secondSelectorLabel = __( 'Default Block Style', 'gutenberg-extra'),
         secondSelectorClassName = 'gx--default-block-style',
+        defaultBlockStyle = props.attributes.defaultBlockStyle,
         secondSelectorOptions = [
             { label: __('Dark', 'gutenberg-extra'), value: 'gx-def-dark' },
             { label: __('Light', 'gutenberg-extra'), value: 'gx-def-light' },
         ],
-        blockStyle = props.attributes.blockStyle,
-        defaultBlockStyle = props.attributes.defaultBlockStyle,
         setAttributes
     } = props;
 

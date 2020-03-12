@@ -26,7 +26,7 @@ const { registerBlockType } = wp.blocks;
 
 import attributes from './attributes';
 import edit from './edit';
-// import save from './save';
+import save from './save';
 
 /**
  * Block
@@ -34,7 +34,7 @@ import edit from './edit';
 
 
 registerBlockType( 'gutenberg-extra/block-title-extra', {
-	title: __('GX Title Extra', 'gutenberg-extra'),
+	title: __('Title Extra', 'gutenberg-extra'),
 	icon: icon,
 	category: 'gutenberg-extra-blocks',
 	supports: {
@@ -44,5 +44,5 @@ registerBlockType( 'gutenberg-extra/block-title-extra', {
 		...attributes,
 	},
 	edit,
-	// save
+	save
 } );

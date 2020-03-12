@@ -16,7 +16,8 @@ const {
   RangeControl,
   RadioControl,
   CheckboxControl,
-  SelectControl
+  SelectControl,
+  ToggleControl
 } = wp.components;
 
 export const dividerAttributes = {
@@ -50,6 +51,10 @@ export const dividerAttributes = {
   isVertical:{
     type: 'boolean',
     default: false
+  },
+  isHidden:{
+    type: 'boolean',
+    default: false
   }
 }
 
@@ -76,6 +81,7 @@ class Divider extends Component {
       dividerThickness,
       dividerThicknessUnit,
       isVertical,
+      isHidden
      } = this.props.attributes;
 
      const dividerStyles =  {
@@ -85,6 +91,7 @@ class Divider extends Component {
          height: dividerHeight ? dividerHeight + dividerHeightUnit : undefined,
          width: dividerWidth ? dividerWidth + dividerWidthUnit : undefined,
          borderWidth: dividerThickness ? dividerThickness + dividerThicknessUnit : undefined,
+         display: isHidden ? 'none' : undefined
      };
 
      const dividerWrapperStyles = {
@@ -93,6 +100,11 @@ class Divider extends Component {
 
      const onChangeDirection = (value) =>{
        setAttributes({isVertical: value});
+       if(value){
+         setAttributes({ dividerHeight: dividerWidth, dividerWidth: 1 });
+       }else{
+         setAttributes({ dividerWidth: dividerHeight, dividerHeight: 0 });
+       }
      }
 
      const onChangeDividerWidth = ( value ) => {
@@ -116,11 +128,17 @@ class Divider extends Component {
       style={dividerWrapperStyles}
       >
       <InspectorControls>
-      <CheckboxControl
-        label={__('Vertical Divider', 'gutenberg-extra')}
-        className="gx-block-style"
-        value={isVertical}
-        onChange = { onChangeDirection }
+      <ToggleControl
+          label={__('Hide Divider', 'gutenberg-extra')}
+          id='gx-block-style'
+          checked={isHidden}
+          onChange={(value) => setAttributes({isHidden: value})}
+      />
+      <ToggleControl
+          label={__('Vertical Divider', 'gutenberg-extra')}
+          id='gx-block-style'
+          checked={isVertical}
+          onChange={onChangeDirection}
       />
       <SelectControl
           label={__('Divider Position', 'gutenberg-extra')}

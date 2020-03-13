@@ -53,8 +53,6 @@ export const BlockBorder = (props) => {
         setAttributes
     } = props;
 
-    console.log (props)
-
     return (
         <Fragment>
             <PanelColorSettings
@@ -77,12 +75,12 @@ export const BlockBorder = (props) => {
             <DimensionsControl
                 value={borderRadius}
                 onChange={value => setAttributes({borderRadius: value})}
-                //target={borderRadiusTarget}
+                target={borderRadiusTarget}
             />
             <DimensionsControl
                 value={borderWidth}
                 onChange={value => setAttributes({borderWidth: value})}
-                //target={borderWidthTarget}
+                target={borderWidthTarget}
             />
         </Fragment>
     )

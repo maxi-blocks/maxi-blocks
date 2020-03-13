@@ -4,34 +4,6 @@
  * CSS for both Frontend+Backend.
  */
 
-
- /** TESTING ***/
-
- .block-image-box-1>.gx-image-box-title {
-	padding-top: 100px;
-	padding-right: 100px;
-	padding-bottom: 100px;
-	padding-left: 100px;
-}
-
-@media only screen and (max-width: 768px) {
-	.block-image-box-1>.gx-image-box-title {
-		padding-top: 100px;
-		padding-right: 100px;
-		padding-bottom: 100px;
-		padding-left: 100px;
-	}
-}
-
-@media only screen and (max-width: 480px) {
-	.block-image-box-1>.gx-image-box-title {
-		padding-top: 100px;
-		padding-right: 100px;
-		padding-bottom: 100px;
-		padding-left: 100px;
-	}
-}
-
 .gx-image-box-link {
 	display: flex;
 }

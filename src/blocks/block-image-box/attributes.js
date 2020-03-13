@@ -9,7 +9,7 @@ import {
     dimensionsControlAttributesMargin,
     dimensionsControlAttributesPadding,
 } from '../../components/dimensions-control/attributes';
-import {typographyAttributes} from '../../components/typography'
+import {typographyAttributes} from '../../components/typography';
 
 const attributes = {
     title: {
@@ -152,10 +152,6 @@ const attributes = {
     ...dimensionsControlAttributesMargin,
     ...dimensionsControlAttributesPadding,
     ...typographyAttributes,
-    titlePopUpisVisible: {
-        type: 'boolean',
-        default: false,
-    },
 }
 
 export default attributes;

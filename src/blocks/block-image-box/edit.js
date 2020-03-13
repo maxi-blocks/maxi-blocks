@@ -70,7 +70,7 @@ const edit = (props) => {
             uniqueID,
             padding,
             margin,
-            titlePopUpisVisible
+            fontExample
         },
         setAttributes,
     } = props;
@@ -101,30 +101,6 @@ const edit = (props) => {
 
     return [
         <InspectorControls>
-            {/* <PanelBody className="gx-panel gx-color-setting gx-style-tab-setting" initialOpen={true} title={__('Colour settings')}>
-                <BaseControl
-                    className={"gx-settings-button"}
-                >
-                    <BaseControl.VisualLabel>Title Typography</BaseControl.VisualLabel>
-                    <Button
-                        isSecondary
-                        onClick={() => { setAttributes({ titlePopUpisVisible: !titlePopUpisVisible }) }}
-                    >
-                        Typography</Button>
-                </BaseControl>
-                {titlePopUpisVisible && (
-                    <Popover
-                        className="gx-popover"
-                        onFocusOutside={() => { setAttributes({ titlePopUpisVisible: !titlePopUpisVisible }) }}
-                        noArrow={true}
-                    >
-                        <Typography
-                            target={"title"}
-                            {...props}
-                        />
-                    </Popover>
-                )}
-            </PanelBody> */}
             <PanelBody className="gx-panel gx-image-setting gx-content-tab-setting" initialOpen={true} title={__('Image Settings', 'gutenberg-extra')}>
                 <BlockStyles {...props} />
                 <ImagePosition {...props} />
@@ -146,15 +122,10 @@ const edit = (props) => {
                 />
             </PanelBody>
             <PanelBody className="gx-panel gx-color-setting gx-style-tab-setting" initialOpen={true} title={__('Colour settings', 'gutenberg-extra')}>
-                <FontPopover
-                    title={__('Title Typography', 'gutenberg-extra')}
-                    font={titleFontFamily}
-                    onFontFamilyChange={value => { setAttributes({ titleFontFamily: value }); }}
-                    fontSizeUnit={fontSizeTitleUnit}
-                    onFontSizeUnitChange={value => setAttributes({ fontSizeTitleUnit: value })}
-                    fontSize={fontSizeTitle}
-                    onFontSizeChange={value => setAttributes({ fontSizeTitle: value })}
-                    classNamePopover={'gx-font-family-selector-popover'}
+                <Typography
+                    fontOptions={fontExample}
+                    onChange={value => { setAttributes({ fontExample: value})}}
+                    target="gx-image-box-title"
                 />
                 <PanelColorSettings
                     title={__('Background Colour Settings', 'gutenberg-extra')}

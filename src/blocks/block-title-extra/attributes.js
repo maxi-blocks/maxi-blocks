@@ -5,19 +5,19 @@ import { dividerAttributes } from '../../components/divider/index';
 
 const attributes = {
   title: {
-      type: 'array',
-      source: 'children',
-      selector: '.gx-title-extra-title',
+    type: 'array',
+    source: 'children',
+    selector: '.gx-title-extra-title',
   },
   subtitle: {
-      type: 'array',
-      source: 'children',
-      selector: '.gx-title-extra-subtitle',
+    type: 'array',
+    source: 'children',
+    selector: '.gx-title-extra-subtitle',
   },
   text: {
-      type: 'array',
-      source: 'children',
-      selector: '.gx-title-extra-text',
+    type: 'array',
+    source: 'children',
+    selector: '.gx-title-extra-text',
   },
   titleTextAlign:{
     type: 'string',
@@ -33,12 +33,34 @@ const attributes = {
   },
   descriptionColor:{
     type: 'string',
+    default: 'rgb(152,152,152)'
   },
   subtitleBackgroundColor:{
-    type: 'string'
+    type: 'string',
   },
   subtitleColor:{
-    type: 'string'
+    type: 'string',
+    default: 'rgb(152,152,152)'
+  },
+  additionalDivider:{
+    type: 'string',
+    default : ''
+  },
+  hideTitle:{
+    type: 'boolean',
+    default:false
+  },
+  hideSubtitle:{
+    type: 'booelan',
+    default:false
+  },
+  hideDescription:{
+    type: 'boolean',
+    default:false
+  },
+  isBehindTheSubtitle:{
+    type: 'boolean',
+    default: false
   },
   ...blockStyleAttributes,
   ...linkOptionsAttributes,

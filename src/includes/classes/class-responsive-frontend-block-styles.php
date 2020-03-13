@@ -50,16 +50,24 @@ class ResponsiveFrontendStyles {
         foreach ( $meta as $target => $prop ) {
             $target = str_replace( '__$', ' .', $target );
             foreach ( $prop as $className => $styles ) {
-                $unit = $styles->unit;
-                $response .= ".{$target}{";
-                    $response .= self::getResponsiveStyles($styles->desktop, $unit);
-                $response .= '}';
-                $response .= "@media only screen and (max-width: 768px) {.{$target}{";
-                    $response .= self::getResponsiveStyles($styles->tablet, $unit);
-                $response .= '}}';
-                $response .= "@media only screen and (max-width: 480px) {.{$target}{";
-                    $response .= self::getResponsiveStyles($styles->mobile, $unit);
-                $response .= '}}';
+                if ( ! empty ((array)$styles->desktop) || property_exists($styles, 'font') ) {
+                    $response .= ".{$target}{";
+                        $response .= self::getResponsiveStyles($styles->desktop);
+                        if ( property_exists($styles, 'font') ) {
+                            $response .= "font-family: {$styles->font};";
+                        }
+                    $response .= '}';
+                }
+                if ( ! empty ((array)$styles->tablet) ) {
+                    $response .= "@media only screen and (max-width: 768px) {.{$target}{";
+                        $response .= self::getResponsiveStyles($styles->tablet);
+                    $response .= '}}';
+                }
+                if ( ! empty ((array)$styles->mobile) ) {
+                    $response .= "@media only screen and (max-width: 480px) {.{$target}{";
+                        $response .= self::getResponsiveStyles($styles->mobile);
+                    $response .= '}}';
+                }
             }
         }
 
@@ -70,12 +78,12 @@ class ResponsiveFrontendStyles {
      * Responsive styles
      */
 
-    public function getResponsiveStyles($styles, $unit) {
+    public function getResponsiveStyles($styles) {
         $response = '';
         $important = is_admin() ? ' !important' : '';
         foreach ( $styles as $property => $value ) {
             $property != 'sync' ?
-                $response .= "{$property}: {$value}{$unit}{$important};" :
+                $response .= "{$property}: {$value}{$important};" :
                 null;
         }
         return $response;

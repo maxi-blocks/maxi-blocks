@@ -200,7 +200,6 @@ document.onreadystatechange = function () {
  * 
  * @todo    Comment and extend documentation
  * @todo    Clean deleted blocks on meta
- * @todo    Clean objecto on meta (don't need sync, or max, etc...)
  * @version 0.1
  */
 
@@ -209,6 +208,7 @@ class ResponsiveStylesResolver {
         this.target = target;
         this.meta = meta;
         this.object = object;
+        this.newObject = this.objectManipulator();
         this.initEvents();
     }
 
@@ -221,17 +221,60 @@ class ResponsiveStylesResolver {
     }
 
     hasTarget () {
-        this.meta[this.target][this.object.label] = this.object;
+        this.meta[this.target][this.object.label] = this.newObject;
     }
 
     noHasTarget () {
         const newEntry = {
             [this.target] : {
-                [this.object.label] : this.object
+                [this.object.label] : this.newObject
             }
         };
 
         this.meta = Object.assign (this.meta, newEntry);
+    }
+
+    objectManipulator () {
+        let newObject = {};
+
+        // On Dimension Control component object
+        if ( this.object.unit ) {
+            newObject.label = this.object.label;
+            newObject = this.devicesObjectManipulator(newObject, 'desktop');
+            newObject = this.devicesObjectManipulator(newObject, 'tablet');
+            newObject = this.devicesObjectManipulator(newObject, 'mobile');
+        }
+        // On Typography component object
+        if ( this.object.font ) {
+            newObject.label = this.object.label;
+            newObject.font = this.object.font;
+            newObject = this.devicesObjectManipulator(newObject, 'desktop');
+            newObject = this.devicesObjectManipulator(newObject, 'tablet');
+            newObject = this.devicesObjectManipulator(newObject, 'mobile');
+        }
+
+        return newObject;
+    }
+
+    devicesObjectManipulator (newObject, device) {
+        newObject[device] = {};
+        let unitChecker = '';
+        let unit = this.object.unit ? this.object.unit : '';
+        for (let [target, prop] of Object.entries(this.object[device])) {
+            // values with dimensions
+            if (target != 'sync' && prop > 0 || unitChecker.indexOf(target) == 0 && prop > 0)   
+                newObject[device][target] = prop + unit;
+            // avoid numbers with no related metric
+            if (unitChecker.indexOf(target) == 0)
+                unit = '';
+            // values with metrics
+            if (prop.length <= 2 )                                                  
+                unitChecker = target, unit = prop;
+            // values with strings
+            if ( prop.length > 2 )                                                  
+                newObject[device][target] = prop;
+        }
+        return newObject;
     }
 
     get getNewValue() {
@@ -279,27 +322,36 @@ class BackEndResponsiveStyles {
         let content = '';
         for (let [target, prop] of Object.entries(this.meta)) {
             target = target.replace( '__$', ' .' );
+            console.log (target)
             for (let [key, value] of Object.entries(prop)) {
-                const unit = value.unit;
-                content += `.${target}{`;
-                    content += this.getResponsiveStyles(value.desktop, unit);
-                content += '}';
-                content += `@media only screen and (max-width: 768px){.${key}{`;
-                    content += this.getResponsiveStyles(value.tablet, unit);
-                content += '}}';
-                content += `@media only screen and (max-width: 768px){.${key}{`;
-                    content += this.getResponsiveStyles(value.mobile, unit);
-                content += '}}';
+                if (Object.entries(value.desktop).length != 0 || value.hasOwnProperty('font' )) {
+                    content += `.${target}{`;
+                        content += this.getResponsiveStyles(value.desktop);
+                        if (value.hasOwnProperty('font' )) {
+                            content += `font-family: ${value.font}!important`;
+                        }
+                    content += '}';
+                }
+                if (Object.entries(value.tablet).length != 0) {
+                    content += `@media only screen and (max-width: 768px){.${target}{`;
+                        content += this.getResponsiveStyles(value.tablet);
+                    content += '}}';
+                }
+                if (Object.entries(value.mobile).length != 0) {
+                    content += `@media only screen and (max-width: 768px){.${target}{`;
+                        content += this.getResponsiveStyles(value.mobile);
+                    content += '}}';
+                }
             }
         }
         return content;
     }
 
-    getResponsiveStyles (styles, unit) {
+    getResponsiveStyles (styles) {
         let responsiveStyles = '';
         for (let [key, value] of Object.entries(styles)) {
             key != 'sync' ?
-                responsiveStyles += ` ${key}: ${value}${unit} !important;`:
+                responsiveStyles += ` ${key}: ${value} !important;`:
                 null;
         }
         return responsiveStyles;

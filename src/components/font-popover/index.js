@@ -1,4 +1,8 @@
 /**
+ * DEPRECATED
+ */
+
+/**
  * Font Popover component
  *  
  * @version 0.1

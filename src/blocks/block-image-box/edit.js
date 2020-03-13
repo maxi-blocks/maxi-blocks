@@ -70,7 +70,7 @@ const edit = (props) => {
             uniqueID,
             padding,
             margin,
-            fontExample
+            fontOptions
         },
         setAttributes,
     } = props;
@@ -123,8 +123,8 @@ const edit = (props) => {
             </PanelBody>
             <PanelBody className="gx-panel gx-color-setting gx-style-tab-setting" initialOpen={true} title={__('Colour settings', 'gutenberg-extra')}>
                 <Typography
-                    fontOptions={fontExample}
-                    onChange={value => { setAttributes({ fontExample: value})}}
+                    fontOptions={fontOptions}
+                    onChange={value => { setAttributes({ fontOptions: value})}}
                     target="gx-image-box-title"
                 />
                 <PanelColorSettings

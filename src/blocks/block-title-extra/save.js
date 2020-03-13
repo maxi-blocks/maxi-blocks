@@ -85,8 +85,12 @@ const save = (props) => {
       dividerPosition,
       subtitleTextAlign,
       titleTextAlign,
+      additionalDivider,
       descriptionTextAlign,
-      subtitleBackgroundColor
+      subtitleBackgroundColor,
+      hideTitle,
+      hideSubtitle,
+      hideDescription
     },
   } = props;
 
@@ -103,10 +107,11 @@ const save = (props) => {
     });
   };
 
-  const subtitleStyles = {borderRadius: '5px', margin: subtitleTextAlign, fontFamily: 'roboto',fontSize:'12pt', color:subtitleColor, backgroundColor: subtitleBackgroundColor, width:'max-content', padding:'5px'};
-  const titleStyles = {textAlign: titleTextAlign, fontFamily: 'roboto', color:titleColor};
+  const subtitleStyles = {display: hideSubtitle ? 'none' : undefined, borderRadius: '5px', margin: subtitleTextAlign, fontFamily: 'roboto',fontSize:'12pt', color:subtitleColor, backgroundColor: subtitleBackgroundColor, width:'max-content', padding:'5px'};
+  const titleStyles = {display: hideTitle ? 'none' : undefined, textAlign: titleTextAlign, fontFamily: 'roboto', color:titleColor};
   const containerStyles = {display: 'flex', flexDirection: 'column'};
-  const textStyles = {textAlign: descriptionTextAlign, fontFamily: 'roboto',fontSize:'12pt', color:descriptionColor}
+  const textStyles = {display: hideDescription ? 'none' : undefined, textAlign: descriptionTextAlign, fontFamily: 'roboto',fontSize:'12pt', color:descriptionColor}
+
 
   const gradients = "";
   const disableCustomGradients = false;
@@ -123,7 +128,7 @@ const save = (props) => {
           className="gx-title-extra-subtitle"
       />
       </div>
-
+      <div style={{order:3}} dangerouslySetInnerHTML={{ __html: additionalDivider}}/>
         <div style={{order:1}}>
           <RichText.Content
           tagName="p"

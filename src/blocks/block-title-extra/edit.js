@@ -11,6 +11,7 @@ const {
   RangeControl,
   RadioControl,
   SelectControl,
+  ToggleControl
 } = wp.components;
 const {
   InspectorControls,
@@ -87,8 +88,13 @@ const edit = (props) => {
       dividerPosition,
       subtitleTextAlign,
       titleTextAlign,
+      additionalDivider,
       descriptionTextAlign,
-      subtitleBackgroundColor
+      subtitleBackgroundColor,
+      hideTitle,
+      hideSubtitle,
+      hideDescription,
+      isBehindTheSubtitle
     },
     setAttributes,
   } = props;
@@ -106,10 +112,14 @@ const edit = (props) => {
     });
   };
 
-  const subtitleStyles = {borderRadius: '5px', margin: subtitleTextAlign, fontFamily: 'roboto',fontSize:'12pt', color:subtitleColor, backgroundColor: subtitleBackgroundColor, width:'max-content', padding:'5px'};
-  const titleStyles = {textAlign: titleTextAlign, fontFamily: 'roboto', color:titleColor};
+  const onChangeSubtitleAlign = (value) => {
+    setAttributes({ subtitleTextAlign: value });
+  }
+
+  const subtitleStyles = {display: hideSubtitle ? 'none' : undefined, borderRadius: '5px', margin: subtitleTextAlign, fontFamily: 'roboto',fontSize:'12pt', color:subtitleColor, backgroundColor: subtitleBackgroundColor, width:'max-content', padding:'5px'};
+  const titleStyles = {display: hideTitle ? 'none' : undefined, textAlign: titleTextAlign, fontFamily: 'roboto', color:titleColor};
   const containerStyles = {display: 'flex', flexDirection: 'column'};
-  const textStyles = {textAlign: descriptionTextAlign, fontFamily: 'roboto',fontSize:'12pt', color:descriptionColor}
+  const textStyles = {display: hideDescription ? 'none' : undefined, textAlign: descriptionTextAlign, fontFamily: 'roboto',fontSize:'12pt', color:descriptionColor}
 
   const gradients = "";
   const disableCustomGradients = false;
@@ -118,6 +128,24 @@ const edit = (props) => {
     <div>
     <InspectorControls>
         <PanelBody className="gx-panel gx-color-setting gx-style-tab-setting" initialOpen={true} title={__('Colour settings', 'gutenberg-extra')}>
+            <ToggleControl
+                label={__('Hide Title', 'gutenberg-extra')}
+                id='gx-block-style'
+                checked={hideTitle}
+                onChange={(value) => {setAttributes({hideTitle: value})}}
+            />
+            <ToggleControl
+                label={__('Hide Subtitle', 'gutenberg-extra')}
+                id='gx-block-style'
+                checked={hideSubtitle}
+                onChange={(value) => {setAttributes({hideSubtitle: value})}}
+            />
+            <ToggleControl
+                label={__('Hide Description', 'gutenberg-extra')}
+                id='gx-block-style'
+                checked={hideDescription}
+                onChange={(value) => {setAttributes({hideDescription: value})}}
+            />
             <FontPopover
                 title={__('Title Typography', 'gutenberg-extra')}
                 font={titleFontFamily}
@@ -187,7 +215,7 @@ const edit = (props) => {
                     { label: __('Center'), value: '5px auto' },
                     { label: __('Right'), value: '5px 0 5px auto' },
                 ]}
-                onChange={(value) => setAttributes({ subtitleTextAlign: value })}
+                onChange={ onChangeSubtitleAlign }
             />
 
             <SelectControl
@@ -262,7 +290,7 @@ const edit = (props) => {
           className="gx-title-extra-subtitle"
       />
       </div>
-
+      <div style={{order:3}} dangerouslySetInnerHTML={{ __html: additionalDivider}}/>
       <div style={{order:1}}>
       <RichText
         tagName="p"
@@ -273,9 +301,9 @@ const edit = (props) => {
         className="gx-title-extra-title"
       />
       </div>
-        <Divider
-        {...props}
-        />
+      <Divider
+      {...props}
+      />
         <div style={{order:3}}>
         <RichText
           tagName="p"
@@ -286,6 +314,7 @@ const edit = (props) => {
           className="gx-title-extra-text"
         />
       </div>
+
       </div>
     </div>
   )

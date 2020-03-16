@@ -6,6 +6,8 @@ const { __ } = wp.i18n;
 const {
     PanelBody,
     Button,
+    Popover,
+    BaseControl
 } = wp.components;
 const {
     InspectorControls,
@@ -19,6 +21,8 @@ const {
  * External dependencies
  */
 
+import classnames from 'classnames';
+import DimensionsControl from '../../components/dimensions-control/index';
 import FontPopover from '../../components/font-popover/index';
 import { BlockStyles } from '../../components/block-styles/index';
 import { ImagePosition } from '../../components/image-position/index';
@@ -26,7 +30,6 @@ import { FontLevel } from '../../components/font-level/index';
 import { LinkOptions } from '../../components/link-options/index';
 import { BlockBorder } from '../../components/block-border/index';
 import { SizeControl } from '../../components/size-control/index';
-import { PaddingMarginControl } from '../../components/padding-margin-control/index';
 import { HoverAnimation } from '../../components/hover-animation/index';
 import { CustomCSS } from '../../components/custom-css/index';
 import {
@@ -37,6 +40,7 @@ import {
     setButtonStyles,
     setBlockStyles,
 } from './data';
+import Typography from '../../components/typography/';
 
 const edit = (props) => {
     const {
@@ -63,9 +67,18 @@ const edit = (props) => {
             blockStyle,
             defaultBlockStyle,
             titleFontFamily,
+            uniqueID,
+            padding,
+            margin,
+            fontOptions
         },
         setAttributes,
     } = props;
+
+    let classes = classnames(className);
+    if (className.indexOf(uniqueID) === -1) {
+        classes = classnames(classes, uniqueID)
+    }
 
     const linkOptions = JSON.parse(props.attributes.linkOptions)
 
@@ -109,85 +122,91 @@ const edit = (props) => {
                 />
             </PanelBody>
             <PanelBody className="gx-panel gx-color-setting gx-style-tab-setting" initialOpen={true} title={__('Colour settings', 'gutenberg-extra')}>
-                <FontPopover
-                    title={__('Title Typography', 'gutenberg-extra')}
-                    font={titleFontFamily}
-                    onFontFamilyChange={value => { setAttributes({ titleFontFamily: value }); }}
-                    fontSizeUnit={fontSizeTitleUnit}
-                    onFontSizeUnitChange={value => setAttributes({ fontSizeTitleUnit: value })}
-                    fontSize={fontSizeTitle}
-                    onFontSizeChange={value => setAttributes({ fontSizeTitle: value })}
-                    classNamePopover={'gx-font-family-selector-popover'}
+                <Typography
+                    fontOptions={fontOptions}
+                    onChange={value => { setAttributes({ fontOptions: value})}}
+                    target="gx-image-box-title"
                 />
                 <PanelColorSettings
-                    title={__('Background Colour Settings', 'gutenberg-extra' )}
+                    title={__('Background Colour Settings', 'gutenberg-extra')}
                     colorSettings={[
                         {
                             value: backgroundColor,
                             onChange: (value) => setAttributes({ backgroundColor: value }),
-                            label: __('Background Colour', 'gutenberg-extra' ),
+                            label: __('Background Colour', 'gutenberg-extra'),
                         },
                     ]}
                 />
                 <PanelColorSettings
-                    title={__('Title Colour Settings', 'gutenberg-extra' )}
+                    title={__('Title Colour Settings', 'gutenberg-extra')}
                     colorSettings={[
                         {
                             value: titleColor,
                             onChange: (value) => setAttributes({ titleColor: value }),
-                            label: __('Title Colour', 'gutenberg-extra' ),
+                            label: __('Title Colour', 'gutenberg-extra'),
                         },
                     ]}
                 />
                 <PanelColorSettings
-                    title={__('Sub-title Colour Settings', 'gutenberg-extra' )}
+                    title={__('Sub-title Colour Settings', 'gutenberg-extra')}
                     colorSettings={[
                         {
                             value: subTitleColor,
                             onChange: (value) => setAttributes({ subTitleColor: value }),
-                            label: __('Sub-title Colour', 'gutenberg-extra' ),
+                            label: __('Sub-title Colour', 'gutenberg-extra'),
                         },
                     ]}
                 />
                 <PanelColorSettings
-                    title={__('Description Colour Settings', 'gutenberg-extra' )}
+                    title={__('Description Colour Settings', 'gutenberg-extra')}
                     colorSettings={[
                         {
                             value: descriptionColor,
                             onChange: (value) => setAttributes({ descriptionColor: value }),
-                            label: __('Description  Colour', 'gutenberg-extra' ),
+                            label: __('Description  Colour', 'gutenberg-extra'),
                         },
                     ]}
                 />
                 <PanelColorSettings
-                    title={__('Button Settings', 'gutenberg-extra' )}
+                    title={__('Button Settings', 'gutenberg-extra')}
                     colorSettings={[
                         {
                             value: buttonColor,
                             onChange: (value) => setAttributes({ buttonColor: value }),
-                            label: __('Button Text Colour', 'gutenberg-extra' ),
+                            label: __('Button Text Colour', 'gutenberg-extra'),
                         },
                     ]}
                 />
                 <PanelColorSettings
-                    title={__('Button Settings', 'gutenberg-extra' )}
+                    title={__('Button Settings', 'gutenberg-extra')}
                     colorSettings={[
                         {
                             value: buttonBgColor,
                             onChange: (value) => setAttributes({ buttonBgColor: value }),
-                            label: __('Button Background Colour', 'gutenberg-extra' ),
+                            label: __('Button Background Colour', 'gutenberg-extra'),
                         },
                     ]}
                 />
             </PanelBody>
-            <PanelBody className="gx-panel gx-border-setting gx-style-tab-setting" initialOpen={true} title={__('Border settings', 'gutenberg-extra' )}>
-                <BlockBorder {...props}/>
+            <PanelBody className="gx-panel gx-border-setting gx-style-tab-setting" initialOpen={true} title={__('Border settings', 'gutenberg-extra')}>
+                <BlockBorder 
+                    {...props} 
+                />
             </PanelBody>
             <PanelBody className="gx-panel gx-size-setting gx-style-tab-setting" initialOpen={true} title={__('Size Settings', 'gutenberg-extra')}>
-                <SizeControl {...props} />
+                <SizeControl 
+                    {...props}
+                />
             </PanelBody>
             <PanelBody className="gx-panel gx-space-setting gx-style-tab-setting" initialOpen={true} title={__('Space Settings', 'gutenberg-extra')}>
-                <PaddingMarginControl {...props} />
+                <DimensionsControl
+                    value={padding}
+                    onChange={value => setAttributes({ padding: value })}
+                />
+                <DimensionsControl
+                    value={margin}
+                    onChange={value => setAttributes({ margin: value })}
+                />
             </PanelBody>
             <PanelBody initialOpen={true} className="gx-panel gx-advanced-setting gx-advanced-tab-setting" title={__('Advanced Settings', 'gutenberg-extra')}>
                 <HoverAnimation {...props} />
@@ -195,7 +214,7 @@ const edit = (props) => {
             </PanelBody>
         </InspectorControls>,
         <div
-            className={'gx-block ' + blockStyle + ' gx-image-box ' + className}
+            className={'gx-block ' + blockStyle + ' gx-image-box ' + classes}
             data-gx_initial_block_class={defaultBlockStyle}
             style={blockStyles}
         >

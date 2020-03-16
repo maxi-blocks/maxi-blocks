@@ -96,7 +96,9 @@ const edit = (props) => {
       hideDescription,
       isBehindTheSubtitle,
       isPreappendedToSubtitle,
-      isAppendedToSubtitle
+      isAppendedToSubtitle,
+      twoColumnDesc,
+      contentDirection
     },
     setAttributes,
   } = props;
@@ -127,7 +129,7 @@ const edit = (props) => {
     color:subtitleColor,
     backgroundColor: subtitleBackgroundColor,
     width:'max-content',
-    padding:'5px'
+    padding:'5px',
   };
 
   const titleStyles = {
@@ -139,7 +141,7 @@ const edit = (props) => {
 
   const containerStyles = {
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: contentDirection
   };
 
   const textStyles = {
@@ -147,63 +149,86 @@ const edit = (props) => {
     textAlign: descriptionTextAlign,
     fontFamily: 'roboto',
     fontSize:'12pt',
+    columnCount: twoColumnDesc ? '2' : undefined,
     color:descriptionColor
   }
 
   const gradients = "";
   const disableCustomGradients = false;
 
+  const onChangeContentDirection = (value) => {
+    setAttributes({contentDirection: value});
+  }
+
   return (
     <div>
     <InspectorControls>
         <PanelBody className="gx-panel gx-color-setting gx-style-tab-setting" initialOpen={true} title={__('Colour settings', 'gutenberg-extra')}>
             <ToggleControl
-                label={__('Hide Title', 'gutenberg-extra')}
-                id='gx-block-style'
-                checked={hideTitle}
-                onChange={(value) => {setAttributes({hideTitle: value})}}
+              label={__('Hide Title', 'gutenberg-extra')}
+              id='gx-block-style'
+              checked={hideTitle}
+              onChange={(value) => {setAttributes({hideTitle: value})}}
             />
             <ToggleControl
-                label={__('Hide Subtitle', 'gutenberg-extra')}
-                id='gx-block-style'
-                checked={hideSubtitle}
-                onChange={(value) => {setAttributes({hideSubtitle: value})}}
+              label={__('Hide Subtitle', 'gutenberg-extra')}
+              id='gx-block-style'
+              checked={hideSubtitle}
+              onChange={(value) => {setAttributes({hideSubtitle: value})}}
             />
             <ToggleControl
-                label={__('Hide Description', 'gutenberg-extra')}
-                id='gx-block-style'
-                checked={hideDescription}
-                onChange={(value) => {setAttributes({hideDescription: value})}}
+              label={__('Hide Description', 'gutenberg-extra')}
+              id='gx-block-style'
+              checked={hideDescription}
+              onChange={(value) => {setAttributes({hideDescription: value})}}
+            />
+            <ToggleControl
+              label={__('Two Column Description Layout', 'gutenberg-extra')}
+              id='gx-block-style'
+              checked={twoColumnDesc}
+              onChange={(value) => {setAttributes({twoColumnDesc: value})}}
             />
             <FontPopover
-                title={__('Title Typography', 'gutenberg-extra')}
-                font={titleFontFamily}
-                onFontFamilyChange={value => { setAttributes({ titleFontFamily: value }); }}
-                fontSizeUnit={fontSizeTitleUnit}
-                onFontSizeUnitChange={value => setAttributes({ fontSizeTitleUnit: value })}
-                fontSize={fontSizeTitle}
-                onFontSizeChange={value => setAttributes({ fontSizeTitle: value })}
-                classNamePopover={'gx-font-family-selector-popover'}
+              title={__('Title Typography', 'gutenberg-extra')}
+              font={titleFontFamily}
+              onFontFamilyChange={value => { setAttributes({ titleFontFamily: value }); }}
+              fontSizeUnit={fontSizeTitleUnit}
+              onFontSizeUnitChange={value => setAttributes({ fontSizeTitleUnit: value })}
+              fontSize={fontSizeTitle}
+              onFontSizeChange={value => setAttributes({ fontSizeTitle: value })}
+              classNamePopover={'gx-font-family-selector-popover'}
             />
             <PanelColorSettings
-                title={__('Background Colour Settings', 'gutenberg-extra' )}
-                colorSettings={[
-                  {
-                    value: backgroundColor,
-                    onChange: (value) => setAttributes({ backgroundColor: value }),
-                    label: __('Background Colour', 'gutenberg-extra' ),
-                  },
+              title={__('Background Colour Settings', 'gutenberg-extra' )}
+              colorSettings={[
+                {
+                  value: backgroundColor,
+                  onChange: (value) => setAttributes({ backgroundColor: value }),
+                  label: __('Background Colour', 'gutenberg-extra' ),
+                },
+              ]}
+            />
+            <SelectControl
+                label={__('Content Direction', 'gutenberg-extra')}
+                className="gx-block-style"
+                value={contentDirection}
+                options={[
+                    { label: __('From Left To Right'), value: 'row' },
+                    { label: __('From Right To Left'), value: 'row-reverse' },
+                    { label: __('From Top To Bottom'), value: 'column' },
+                    { label: __('From Bottom To Top'), value: 'column-reverse' },
                 ]}
+                onChange={ onChangeContentDirection }
             />
             <PanelColorSettings
-                title={__('Title Colour Settings', 'gutenberg-extra' )}
-                colorSettings={[
-                  {
-                    value: titleColor,
-                    onChange: (value) => setAttributes({ titleColor: value }),
-                    label: __('Title Colour', 'gutenberg-extra' ),
-                  },
-                ]}
+              title={__('Title Colour Settings', 'gutenberg-extra' )}
+              colorSettings={[
+                {
+                  value: titleColor,
+                  onChange: (value) => setAttributes({ titleColor: value }),
+                  label: __('Title Colour', 'gutenberg-extra' ),
+                },
+              ]}
             />
             <PanelColorSettings
                 title={__('Sub-title Colour Settings', 'gutenberg-extra' )}
@@ -292,15 +317,6 @@ const edit = (props) => {
                     },
                 ]}
             />
-        </PanelBody>
-        <PanelBody className="gx-panel gx-border-setting gx-style-tab-setting" initialOpen={true} title={__('Border settings', 'gutenberg-extra' )}>
-            <BlockBorder {...props}/>
-        </PanelBody>
-        <PanelBody className="gx-panel gx-size-setting gx-style-tab-setting" initialOpen={true} title={__('Size Settings', 'gutenberg-extra')}>
-            <SizeControl {...props} />
-        </PanelBody>
-        <PanelBody className="gx-panel gx-space-setting gx-style-tab-setting" initialOpen={true} title={__('Space Settings', 'gutenberg-extra')}>
-            <PaddingMarginControl {...props} />
         </PanelBody>
     </InspectorControls>
 

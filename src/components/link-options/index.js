@@ -12,7 +12,7 @@ export const linkOptionsAttributes = {
 export const LinkOptions = (props) => {
     const {
         label,
-        value,
+        value = '',
         onChangeLink,
         linkOptions,
         onChangeOptions,
@@ -27,7 +27,7 @@ export const LinkOptions = (props) => {
         <Fragment>
             <TextareaControl
                 label={label}
-                value={value || ''}
+                value={value}
                 onChange={onChangeLink}
             />
             <ToggleControl

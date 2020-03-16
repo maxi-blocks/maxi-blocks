@@ -9,6 +9,9 @@
  * Webpack is compiling as the input file.
  */
 
+// Extensions
+import './extensions/attributes';
+
 import './blocks/block-layout/block-layout.js';
 import './blocks/block-container/block-container.js';
 import './blocks/block-image-box/block-image-box.js';

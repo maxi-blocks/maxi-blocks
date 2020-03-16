@@ -1,11 +1,15 @@
 import { blockStyleAttributes } from '../../components/block-styles/index';
 import { imagePositionAttributes } from '../../components/image-position/index';
-import { blockBorderAttributes } from '../../components/block-border/index';
+import { borderAttributes } from '../../components/block-border/index';
 import { sizeControlAttributes } from '../../components/size-control/index';
 import { hoverAnimationAttributes } from '../../components/hover-animation/index';
 import { customCSSAtributes } from '../../components/custom-css/index';
 import { linkOptionsAttributes } from '../../components/link-options/index';
-import { paddingMarginControlAttributes } from '../../components/padding-margin-control/index';
+import { 
+    dimensionsControlAttributesMargin,
+    dimensionsControlAttributesPadding,
+} from '../../components/dimensions-control/attributes';
+import {typographyAttributes} from '../../components/typography';
 
 const attributes = {
     title: {
@@ -27,7 +31,6 @@ const attributes = {
         attribute: 'src',
     },
     description: {
-        type: 'array',
         source: 'children',
         selector: '.gx-image-box-description',
     },
@@ -45,9 +48,10 @@ const attributes = {
         selector: '.gx-image-box-counter',
     },
     readMoreText: {
-        type: 'array',
-        source: 'children',
-        selector: '.gx-image-box-read-more-text',
+        type: 'string',
+        source: 'attribute',
+        selector: 'a.gx-image-box-link',
+        attribute: 'href',
     },
     readMoreLink: {
         type: 'string',
@@ -123,6 +127,10 @@ const attributes = {
         type: 'boolean',
         default: false,
     },
+    titleFontFamily: {
+        type: 'string',
+        default: 'default'
+    },
     fontSizeTitleUnit: {
         type: 'string',
         default: 'px',
@@ -134,18 +142,16 @@ const attributes = {
         type: 'string',
         default: 'h2'
     },
-    titleFontFamily: {
-        type: 'string',
-        default: 'inherit'
-    },
     ...blockStyleAttributes,
     ...imagePositionAttributes,
-    ...blockBorderAttributes,
+    ...borderAttributes,
     ...sizeControlAttributes,
     ...hoverAnimationAttributes,
     ...customCSSAtributes,
     ...linkOptionsAttributes,
-    ...paddingMarginControlAttributes
+    ...dimensionsControlAttributesMargin,
+    ...dimensionsControlAttributesPadding,
+    ...typographyAttributes,
 }
 
 export default attributes;

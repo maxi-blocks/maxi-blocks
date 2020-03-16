@@ -16,7 +16,6 @@ import icon from './icon';
 /**
  * WordPress dependencies
  */
-
 const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
 
@@ -31,7 +30,6 @@ import save from './save';
 /**
  * Block
  */
-
 
 registerBlockType( 'gutenberg-extra/block-image-box', {
 	title: __('Image Box Extra', 'gutenberg-extra'),

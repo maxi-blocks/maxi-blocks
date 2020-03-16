@@ -1,3 +1,4 @@
+import classnames from 'classnames';
 /**
  * WordPress dependencies
  */
@@ -39,7 +40,8 @@ const save = (props) => {
             titleLevel,
             blockStyle,
             defaultBlockStyle,
-            titleFontFamily
+            titleFontFamily,
+            uniqueID
         },
     } = props;
 
@@ -50,9 +52,14 @@ const save = (props) => {
     const buttonStyles = setButtonStyles(props);
     const blockStyles = setBlockStyles(props);
 
+    let classes = classnames( className );
+    if ( uniqueID && (typeof uniqueID !== 'undefined') ) {
+        classes = classnames( classes, uniqueID )
+    }
+
     return (
         <div
-            className={'gx-block ' + blockStyle + ' gx-image-box ' + className}
+            className={'gx-block ' + blockStyle + ' gx-image-box ' + classes}
             data-gx_initial_block_class={defaultBlockStyle}
             style={blockStyles}
         >

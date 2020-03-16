@@ -62,6 +62,14 @@ const attributes = {
     type: 'boolean',
     default: false
   },
+  twoColumnDesc:{
+    type: 'boolean',
+    default: false
+  },
+  contentDirection:{
+    type: 'string',
+    default: 'column'
+  },
   ...blockStyleAttributes,
   ...linkOptionsAttributes,
   ...dividerAttributes

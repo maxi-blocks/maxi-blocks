@@ -193,3 +193,168 @@ document.onreadystatechange = function () {
         new FontFamilyResolver;
     }
 }
+
+/**
+ * Responsive Frontend Styles resolver
+ * Creates a new object ready to deliver responsive styles on frontend
+ * 
+ * @todo    Comment and extend documentation
+ * @todo    Clean deleted blocks on meta
+ * @version 0.1
+ */
+
+class ResponsiveStylesResolver {
+    constructor (target, meta, object) {
+        this.target = target;
+        this.meta = meta;
+        this.object = object;
+        this.newObject = this.objectManipulator();
+        this.initEvents();
+    }
+
+    initEvents() {
+        if ( Object.entries(this.meta).length > 0 && this.meta.hasOwnProperty(this.target) ) {
+            this.hasTarget()
+        } else {
+            this.noHasTarget()
+        }     
+    }
+
+    hasTarget () {
+        this.meta[this.target][this.object.label] = this.newObject;
+    }
+
+    noHasTarget () {
+        const newEntry = {
+            [this.target] : {
+                [this.object.label] : this.newObject
+            }
+        };
+
+        this.meta = Object.assign (this.meta, newEntry);
+    }
+
+    objectManipulator () {
+        let newObject = {};
+
+        // On Dimension Control component object
+        if ( this.object.unit ) {
+            newObject.label = this.object.label;
+            newObject = this.devicesObjectManipulator(newObject, 'desktop');
+            newObject = this.devicesObjectManipulator(newObject, 'tablet');
+            newObject = this.devicesObjectManipulator(newObject, 'mobile');
+        }
+        // On Typography component object
+        if ( this.object.font ) {
+            newObject.label = this.object.label;
+            newObject.font = this.object.font;
+            newObject = this.devicesObjectManipulator(newObject, 'desktop');
+            newObject = this.devicesObjectManipulator(newObject, 'tablet');
+            newObject = this.devicesObjectManipulator(newObject, 'mobile');
+        }
+
+        return newObject;
+    }
+
+    devicesObjectManipulator (newObject, device) {
+        newObject[device] = {};
+        let unitChecker = '';
+        let unit = this.object.unit ? this.object.unit : '';
+        for (let [target, prop] of Object.entries(this.object[device])) {
+            // values with dimensions
+            if (target != 'sync' && prop > 0 || unitChecker.indexOf(target) == 0 && prop > 0)   
+                newObject[device][target] = prop + unit;
+            // avoid numbers with no related metric
+            if (unitChecker.indexOf(target) == 0)
+                unit = '';
+            // values with metrics
+            if (prop.length <= 2 )                                                  
+                unitChecker = target, unit = prop;
+            // values with strings
+            if ( prop.length > 2 )                                                  
+                newObject[device][target] = prop;
+        }
+        return newObject;
+    }
+
+    get getNewValue() {
+        return this.meta;
+    }
+}
+
+/**
+ * Adds responsive styles on backend
+ * 
+ * @todo    Comments and documentation
+ * @version 0.1
+ */
+
+class BackEndResponsiveStyles {
+    constructor (meta) {
+        this.meta = meta;
+        // Uses serverside loaded inline css
+        this.target = document.getElementById ('gutenberg-extra-inline-css');
+        typeof this.meta != 'undefined' ?
+            this.initEvents() :
+            null;
+    }
+
+    initEvents () {
+        this.target == null ?
+            this.createElement() :
+            this.addValues();
+    }
+
+    createElement () {
+        const style = document.createElement ( 'style' );
+        style.id = 'gutenberg-extra-inline-css';
+        document.body.appendChild (style);
+        this.target = style;
+        this.addValues();
+    }
+
+    addValues () {
+        const content = this.createContent();
+        this.target.innerHTML = content;
+    }
+
+    createContent () {
+        let content = '';
+        for (let [target, prop] of Object.entries(this.meta)) {
+            target = target.replace( '__$', ' .' );
+            console.log (target)
+            for (let [key, value] of Object.entries(prop)) {
+                if (Object.entries(value.desktop).length != 0 || value.hasOwnProperty('font' )) {
+                    content += `.${target}{`;
+                        content += this.getResponsiveStyles(value.desktop);
+                        if (value.hasOwnProperty('font' )) {
+                            content += `font-family: ${value.font}!important`;
+                        }
+                    content += '}';
+                }
+                if (Object.entries(value.tablet).length != 0) {
+                    content += `@media only screen and (max-width: 768px){.${target}{`;
+                        content += this.getResponsiveStyles(value.tablet);
+                    content += '}}';
+                }
+                if (Object.entries(value.mobile).length != 0) {
+                    content += `@media only screen and (max-width: 768px){.${target}{`;
+                        content += this.getResponsiveStyles(value.mobile);
+                    content += '}}';
+                }
+            }
+        }
+        return content;
+    }
+
+    getResponsiveStyles (styles) {
+        let responsiveStyles = '';
+        for (let [key, value] of Object.entries(styles)) {
+            key != 'sync' ?
+                responsiveStyles += ` ${key}: ${value} !important;`:
+                null;
+        }
+        return responsiveStyles;
+    }
+    
+}

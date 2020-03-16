@@ -171,6 +171,18 @@ const edit = (props) => {
   return (
     <div>
     <InspectorControls>
+    <Accordion
+        className = {'gx-style-tab-setting gx-accordion'}
+        allowMultipleExpanded = {true}
+        allowZeroExpanded = {true}
+    >
+    <AccordionItem>
+        <AccordionItemHeading className={'gx-accordion-tab gx-typography-tab'}>
+            <AccordionItemButton className='components-base-control__label'>
+                {__('Typography', 'gutenberg-extra' )}
+            </AccordionItemButton>
+        </AccordionItemHeading>
+      <AccordionItemPanel>
         <PanelBody className="gx-panel gx-color-setting gx-style-tab-setting" initialOpen={true} title={__('Colour settings', 'gutenberg-extra')}>
             <ToggleControl
               label={__('Hide Title', 'gutenberg-extra')}
@@ -303,29 +315,10 @@ const edit = (props) => {
                 ]}
                 onChange={(value) => setAttributes({ descriptionTextAlign: value })}
             />
-
-
-            <PanelColorSettings
-              title={__('Button Settings', 'gutenberg-extra' )}
-              colorSettings={[
-                {
-                  value: buttonColor,
-                  onChange: (value) => setAttributes({ buttonColor: value }),
-                  label: __('Button Text Colour', 'gutenberg-extra' ),
-                },
-              ]}
-            />
-            <PanelColorSettings
-                title={__('Button Settings', 'gutenberg-extra' )}
-                colorSettings={[
-                    {
-                        value: buttonBgColor,
-                        onChange: (value) => setAttributes({ buttonBgColor: value }),
-                        label: __('Button Background Colour', 'gutenberg-extra' ),
-                    },
-                ]}
-            />
         </PanelBody>
+        </AccordionItemPanel>
+        </AccordionItem>
+        </Accordion>
     </InspectorControls>
 
 

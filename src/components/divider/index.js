@@ -285,6 +285,7 @@ class Divider extends Component {
               </AccordionItemButton>
           </AccordionItemHeading>
         <AccordionItemPanel>
+        <PanelBody>
           <ToggleControl
               label={__('Hide Divider', 'gutenberg-extra')}
               id='gx-block-style'
@@ -386,6 +387,7 @@ class Divider extends Component {
               },
             ]}
           />
+          </PanelBody>
         </AccordionItemPanel>
 
       </AccordionItem>

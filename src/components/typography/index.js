@@ -83,7 +83,8 @@ export default class Typography extends Component {
 
         const onChangeValue = (newValue, target) => {
             if (target == 'font') {
-                value.font = newValue;
+                value.font = newValue.value;
+                value.options = newValue.files;
             }
             else {
                 value[device][getKey(value[device], target)] = newValue;

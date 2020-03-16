@@ -1,7 +1,5 @@
 /**
  * Font Family Selector component
- *  
- * @version 0.1
  */
 
 /**
@@ -9,8 +7,16 @@
  */
 
 const { __ } = wp.i18n;
-const { Button, Popover, Spinner } = wp.components;
 const { Component } = wp.element;
+const { 
+    Button, 
+    Popover, 
+    Spinner
+} = wp.components;
+const {
+	dispatch,
+	select
+} = wp.data;
 
 
 /**
@@ -28,30 +34,11 @@ import { isNil } from 'lodash';
 
 export default class FontFamilySelector extends Component {
 
-    constructor ( ) {
-        super(...arguments);
-        this.onToggle = this.onToggle.bind ( this );
-        this.fonts = new FontFamilyResolver();
-    }
+    fonts = new FontFamilyResolver();
 
     state = {
         isVisible: false,
-        options: ''
-    }
-
-    onToggle () {
-        this.setState ( (state) => ({
-            isVisible: ! state.isVisible,
-            options: this.fonts.optionsGetter
-        }))
-    }
-
-    checkout () {
-        setTimeout(() => {
-            this.setState ( {
-                options: this.fonts.optionsGetter
-            })
-        }, 500);
+        options: this.fonts.optionsGetter
     }
 
     render () {
@@ -85,11 +72,31 @@ export default class FontFamilySelector extends Component {
             })
         };
 
+        const onToggle = () => {
+            this.setState ( (state) => ({
+                isVisible: ! state.isVisible,
+            }))
+        }
+    
+        const checkout = () => {
+            setTimeout(() => {
+                this.setState ( {
+                    options: this.fonts.optionsGetter
+                })
+            }, 2500);
+        }
+
+        const onFontChange = ( newFont ) => {
+            console.log(newFont)
+            onChange(newFont);
+            this.fonts.loadFonts(newFont.value, newFont.files);
+        }
+
         return (
             <div className={className}>
                 <Button
                     className='gx-font-family-selector-button'
-                    onClick={this.onToggle}
+                    onClick={onToggle}
                     aria-expanded={this.state.isVisible}
                     >
                     { font }
@@ -108,13 +115,8 @@ export default class FontFamilySelector extends Component {
                                         hideSelectedOptions={false}
                                         isClearable={false}
                                         menuIsOpen
-                                        onChange={newFont => {
-                                            onChange(newFont.value);
-                                            this.fonts.loadFonts(newFont.value, newFont.files);
-                                        }}
-                                        options={
-                                            this.state.options
-                                        }
+                                        onChange={onFontChange}
+                                        options={this.state.options}
                                         placeholder={__("Search...", 'gutenberg-extra')}
                                         styles={selectFontFamilyStyles}
                                         tabSelectsValue={false}
@@ -123,7 +125,7 @@ export default class FontFamilySelector extends Component {
                                     />
                                 }
                                 { isNil (this.state.options )
-                                    && this.checkout()
+                                    && checkout()
                                 }
                                 { isNil (this.state.options) &&
                                     <Spinner />

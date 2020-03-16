@@ -184,8 +184,6 @@ export default class DimensionsControl extends Component {
 			new BackEndResponsiveStyles(getMeta());
 		}
 
-		saveAndSend();
-
 		return (
 			<Fragment>
 				<div className={classes}>

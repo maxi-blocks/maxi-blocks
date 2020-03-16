@@ -26,18 +26,27 @@ class ResponsiveFrontendStyles {
     }
 
     /**
-     * Footer Styling
+     * Enqueuing styles
      */
     public function enqueue_styles() {
+        // Inline styles
         wp_register_style( 'gutenberg-extra', false );
         wp_enqueue_style( 'gutenberg-extra' );
         wp_add_inline_style('gutenberg-extra', $this->styles());
+
+        // Inline fonts
+        // wp_register_script( 'gutenberg-extra-fonts', false );
+        // wp_enqueue_script( 'gutenberg-extra-fonts' );
+        // wp_add_inline_script(
+        //     'gutenberg-extra-fonts',
+        //     $this->fonts()
+        // );
     }
 
     /**
-     * Create styles
+     * Gets meta content
      */
-    public function styles() {
+    public function getMeta () {
         global $post;
         if (!$post || !isset($post->ID))
             return;
@@ -45,8 +54,18 @@ class ResponsiveFrontendStyles {
         if (empty($meta))
             return;
         $meta = json_decode( $meta );
+        return $meta;
+    }
+
+    /**
+     * Create styles
+     */
+    public function styles() {
+        $meta = $this->getMeta();
+        if ( empty( $meta ) )
+            return;
         $response = '';
-        
+
         foreach ( $meta as $target => $prop ) {
             $target = str_replace( '__$', ' .', $target );
             foreach ( $prop as $className => $styles ) {
@@ -87,6 +106,26 @@ class ResponsiveFrontendStyles {
                 null;
         }
         return $response;
+    }
+
+    /**
+     * Post fonts
+     */
+
+    public function fonts() {
+        $meta = $this->getMeta();
+        if ( empty( $meta ) )
+            return;
+        $response = [];
+        foreach ( $meta as $target ) {
+            if (property_exists($target, 'Typography')) {
+                var_dump($target->label);
+                $element = [$target->label = $target->options];
+                var_dump($element);
+                // array_push($response, $element);
+            }
+        }
+        var_dump($response);
     }
 }
 

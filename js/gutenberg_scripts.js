@@ -4,20 +4,25 @@
  * @version 0.1
  * 
  * 1 - Font Family resolver
+ * 2 - Responsive Frontend Styles resolver
+ * 3 - Responsive Backend Styles resolver
  */
 
 /**
  * Font Family resolver
- * Resolves the font source loading from Gutenberg blocks on frontend
+ * Resolves the font source loading from Gutenberg blocks on backend andfrontend
  * 
- * @version 0.1
+ * @version 0.2
  */
 
 class FontFamilyResolver {
 
     constructor() {
         this.elements = this.elemensGetter;
-        this.getJSON();
+        document.body.classList.contains ( 'block-editor-page' ) && 
+        ! document.getElementById( 'fontOptions' ) ?   // WP editor
+            this.getJSON() :
+            this.onLoadPage();
     }
 
     /**
@@ -75,8 +80,8 @@ class FontFamilyResolver {
             mode: 'cors',
             header: {
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            }
+                'Access-Control-Allow-Origin': '*',                
+            },
         }
         fetch(fontsUrl, options)
             .then((result) => {
@@ -84,9 +89,38 @@ class FontFamilyResolver {
             })
             .then((data) => {
                 this.options = this.getFontFamilyOptions(data);
-                document.body.classList.contains ( 'block-editor-page' ) ?   // WP
-                    this.stampOptions():
-                    null;
+                this.stampOptions();
+                this.onLoadPage();
+            })
+            .catch(() => {
+                console.log(
+                    "%cAdvertise: If you are on local, allow CORS on your browser for a better and faster experience",
+                    'color: green; background: #222;'
+                );
+                this.localhostGetJSON()
+            });
+    }
+
+    /**
+     * In case that browser refuses JSON due to CORS, get it from proxy. Slowe process
+     */
+    localhostGetJSON() {
+        const fontsUrl = 'https://cors-anywhere.herokuapp.com/https://ddlicensed.s3-eu-west-1.amazonaws.com/gutenberg-extra/fonts.json';
+        const options = {
+            method: 'GET',
+            mode: 'cors',
+            header: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',                
+            },
+        }
+        fetch(fontsUrl, options)
+            .then((result) => {
+                return result.json();
+            })
+            .then((data) => {
+                this.options = this.getFontFamilyOptions(data);
+                this.stampOptions();
                 this.onLoadPage();
             })
             .catch((err) => {
@@ -110,14 +144,25 @@ class FontFamilyResolver {
      */
 
     onLoadPage() {
-        const fontsToLoad = Array.from(this.DOMFontList);
-        fontsToLoad.map( font => {
-            this.options.forEach(e => {
-                if (e.label === font) {
-                    this.loadFonts(e.label, e.files);
-                }
-            })
-        })
+        const postMetaStyle = this.getMeta;
+        for( let target of Object.keys(postMetaStyle) ) {
+            if ( postMetaStyle[target].hasOwnProperty('Typography') ) {
+                const font = postMetaStyle[target]['Typography'].font;
+                const options = postMetaStyle[target]['Typography'].options;
+                this.loadFonts(font, options)
+            }
+        }
+    }
+
+    get getMeta () {        
+        let response = {};
+        if ( typeof wp.data != 'undefined' ) {
+            response = JSON.parse(wp.data.select('core/editor').getEditedPostAttribute('meta')._gutenberg_extra_responsive_styles);
+        }
+        else {
+            
+        }
+        return response;
     }
 
     /**
@@ -150,7 +195,7 @@ class FontFamilyResolver {
      */
 
     loadFonts = (font, files) => {
-        if (document.fonts && document.fonts.check(`12px ${font}`) ) {   // FontFace API
+        if (document.fonts && ! document.fonts.check(`12px ${font}`) ) {   // FontFace API
             Object.entries(files).map(variant => {
                 const style = this.getFontStyle(variant[0]);
                 const fontLoad = new FontFace(font, `url(${variant[1]})`, style);
@@ -248,6 +293,7 @@ class ResponsiveStylesResolver {
         if ( this.object.font ) {
             newObject.label = this.object.label;
             newObject.font = this.object.font;
+            newObject.options = this.object.options;
             newObject = this.devicesObjectManipulator(newObject, 'desktop');
             newObject = this.devicesObjectManipulator(newObject, 'tablet');
             newObject = this.devicesObjectManipulator(newObject, 'mobile');
@@ -283,10 +329,9 @@ class ResponsiveStylesResolver {
 }
 
 /**
- * Adds responsive styles on backend
+ * Responsive Backend Styles resolver
  * 
- * @todo    Comments and documentation
- * @version 0.1
+ * @version 0.2
  */
 
 class BackEndResponsiveStyles {
@@ -305,6 +350,9 @@ class BackEndResponsiveStyles {
             this.addValues();
     }
 
+    /**
+     * Creates inline style element on DOM if server-side didn't created before
+     */
     createElement () {
         const style = document.createElement ( 'style' );
         style.id = 'gutenberg-extra-inline-css';
@@ -313,17 +361,22 @@ class BackEndResponsiveStyles {
         this.addValues();
     }
 
+    /**
+     * Adds values on the inline style element on DOM
+     */
     addValues () {
         const content = this.createContent();
         this.target.innerHTML = content;
     }
 
+    /**
+     * Creates the content to append on the inline style element on DOM
+     */
     createContent () {
         let content = '';
         for (let [target, prop] of Object.entries(this.meta)) {
             target = target.replace( '__$', ' .' );
-            console.log (target)
-            for (let [key, value] of Object.entries(prop)) {
+            for (let value of Object.values(prop)) {
                 if (Object.entries(value.desktop).length != 0 || value.hasOwnProperty('font' )) {
                     content += `.${target}{`;
                         content += this.getResponsiveStyles(value.desktop);
@@ -347,12 +400,15 @@ class BackEndResponsiveStyles {
         return content;
     }
 
+    /**
+     * Retrieve each one of the styles CSS props
+     * 
+     * @param {obj} styles responsive styles device
+     */
     getResponsiveStyles (styles) {
         let responsiveStyles = '';
         for (let [key, value] of Object.entries(styles)) {
-            key != 'sync' ?
-                responsiveStyles += ` ${key}: ${value} !important;`:
-                null;
+            responsiveStyles += ` ${key}: ${value} !important;`;
         }
         return responsiveStyles;
     }

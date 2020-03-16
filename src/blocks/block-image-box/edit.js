@@ -231,7 +231,7 @@ const edit = (props) => {
                         )}
                     />
                 </div>
-                <div class='gx-image-box-text'>
+                <div className='gx-image-box-text'>
                     <RichText
                         tagName={titleLevel}
                         style={titleStyles}

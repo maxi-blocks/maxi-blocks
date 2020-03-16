@@ -51,6 +51,14 @@ import {
   setBlockStyles,
 } from '../block-image-box/data';
 
+import {
+    Accordion,
+    AccordionItem,
+    AccordionItemHeading,
+    AccordionItemButton,
+    AccordionItemPanel,
+} from 'react-accessible-accordion';
+
 const edit = (props) => {
 
   const {

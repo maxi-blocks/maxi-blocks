@@ -2,6 +2,14 @@ const { __ } = wp.i18n;
 import { Component } from '@wordpress/element';
 import { withInstanceId } from '@wordpress/compose';
 
+import {
+    Accordion,
+    AccordionItem,
+    AccordionItemHeading,
+    AccordionItemButton,
+    AccordionItemPanel,
+} from 'react-accessible-accordion';
+
 const {
   InspectorControls,
   PanelColorSettings,
@@ -265,107 +273,124 @@ class Divider extends Component {
       style={dividerWrapperStyles}
       >
       <InspectorControls>
-      <ToggleControl
-          label={__('Hide Divider', 'gutenberg-extra')}
-          id='gx-block-style'
-          checked={isHidden}
-          onChange={(value) => setAttributes({isHidden: value})}
-      />
-      <ToggleControl
-          label={__('Vertical Divider', 'gutenberg-extra')}
-          id='gx-block-style'
-          checked={isVertical}
-          onChange={onChangeDirection}
-      />
-      <ToggleControl
-          label={__('Rounded Divider', 'gutenberg-extra')}
-          id='gx-block-style'
-          checked={isRounded}
-          onChange={(value) => setAttributes({isRounded: value})}
-      />
-      <ToggleControl
-          label={__('Additional Divider', 'gutenberg-extra')}
-          id='gx-block-style'
-          checked={isMultiple}
-          onChange={ onChangeAdditional }
-      />
-      <SelectControl
-          label={__('Divider Alignment', 'gutenberg-extra')}
-          className="gx-block-style"
-          value={dividerAlignment}
-          options={[
-              { label: __('Left'), value: '0 auto 0 0' },
-              { label: __('Center'), value: 'auto' },
-              { label: __('Right'), value: '0 0 0 auto' },
-          ]}
-          onChange={ onChangeDividerAlignment }
-      />
-      <SelectControl
-          label={__('Divider Position', 'gutenberg-extra')}
-          className="gx-block-style"
-          value={dividerOrder}
-          options={[
-              { label: __('After Title'), value: 1 },
-              { label: __('Before Title'), value: 0 },
-              { label: __('Before Subtitle'), value: -1 },
-              { label: __('After Description'), value: 4 },
-              { label: __('Behind Subtitle'), value: 'behind-subtitle' },
-              { label: __('Preappended to Subtitle'), value: 'preappend-subtitle' },
-              { label: __('Appended to Subtitle'), value: 'appended-subtitle' },
-          ]}
-          onChange={ onChangeDividerPosition }
-      />
-        <RadioControl
-          className={'gx-unit-control'}
-          selected={ dividerWidthUnit }
-          options={ [
-              { label: 'PX', value: 'px' },
-              { label: 'EM', value: 'em' },
-              { label: 'VW', value: 'vw' },
-              { label: '%', value: '%' },
-          ] }
-          onChange={ onChangeDividerWidthUnit }
-        />
-        <RangeControl
-          label={__('Divider Width', 'gutenberg-extra')}
-          className={'gx-with-unit-control'}
-          value={isVertical ? dividerThickness : dividerWidth}
-          onChange={ onChangeDividerWidth }
-          min={ 0 }
-          allowReset = {true}
-          initialPosition = { 0 }
-        />
-        <RadioControl
-          className={'gx-unit-control'}
-          selected={ dividerHeightUnit }
-          options={ [
-              { label: 'PX', value: 'px' },
-              { label: 'EM', value: 'em' },
-              { label: 'VW', value: 'vw' },
-              { label: '%', value: '%' },
-          ] }
-          onChange={ onChangeDividerHeightValue }
-        />
-        <RangeControl
-          label={__('Divider Height', 'gutenberg-extra')}
-          className={'gx-with-unit-control'}
-          value={isVertical ? dividerHeight : dividerThickness}
-          onChange={ onChangeDividerHeight }
-          min={ 0 }
-          allowReset = {true}
-          initialPosition = { 0 }
-        />
+      <Accordion
+          className = {'gx-style-tab-setting gx-accordion'}
+          allowMultipleExpanded = {true}
+          allowZeroExpanded = {true}
+      >
+      <AccordionItem>
+          <AccordionItemHeading className={'gx-accordion-tab gx-typography-tab'}>
+              <AccordionItemButton className='components-base-control__label'>
+                  {__('Divider', 'gutenberg-extra' )}
+              </AccordionItemButton>
+          </AccordionItemHeading>
+        <AccordionItemPanel>
+          <ToggleControl
+              label={__('Hide Divider', 'gutenberg-extra')}
+              id='gx-block-style'
+              checked={isHidden}
+              onChange={(value) => setAttributes({isHidden: value})}
+          />
+          <ToggleControl
+              label={__('Vertical Divider', 'gutenberg-extra')}
+              id='gx-block-style'
+              checked={isVertical}
+              onChange={onChangeDirection}
+          />
+          <ToggleControl
+              label={__('Rounded Divider', 'gutenberg-extra')}
+              id='gx-block-style'
+              checked={isRounded}
+              onChange={(value) => setAttributes({isRounded: value})}
+          />
+          <ToggleControl
+              label={__('Additional Divider', 'gutenberg-extra')}
+              id='gx-block-style'
+              checked={isMultiple}
+              onChange={ onChangeAdditional }
+          />
+          <SelectControl
+              label={__('Divider Alignment', 'gutenberg-extra')}
+              className="gx-block-style"
+              value={dividerAlignment}
+              options={[
+                  { label: __('Left'), value: '0 auto 0 0' },
+                  { label: __('Center'), value: 'auto' },
+                  { label: __('Right'), value: '0 0 0 auto' },
+              ]}
+              onChange={ onChangeDividerAlignment }
+          />
+          <SelectControl
+              label={__('Divider Position', 'gutenberg-extra')}
+              className="gx-block-style"
+              value={dividerOrder}
+              options={[
+                  { label: __('After Title'), value: 1 },
+                  { label: __('Before Title'), value: 0 },
+                  { label: __('Before Subtitle'), value: -1 },
+                  { label: __('After Description'), value: 4 },
+                  { label: __('Behind Subtitle'), value: 'behind-subtitle' },
+                  { label: __('Preappended to Subtitle'), value: 'preappend-subtitle' },
+                  { label: __('Appended to Subtitle'), value: 'appended-subtitle' },
+              ]}
+              onChange={ onChangeDividerPosition }
+          />
+            <RadioControl
+              className={'gx-unit-control'}
+              selected={ dividerWidthUnit }
+              options={ [
+                  { label: 'PX', value: 'px' },
+                  { label: 'EM', value: 'em' },
+                  { label: 'VW', value: 'vw' },
+                  { label: '%', value: '%' },
+              ] }
+              onChange={ onChangeDividerWidthUnit }
+            />
+            <RangeControl
+              label={__('Divider Width', 'gutenberg-extra')}
+              className={'gx-with-unit-control'}
+              value={isVertical ? dividerThickness : dividerWidth}
+              onChange={ onChangeDividerWidth }
+              min={ 0 }
+              allowReset = {true}
+              initialPosition = { 0 }
+            />
+            <RadioControl
+              className={'gx-unit-control'}
+              selected={ dividerHeightUnit }
+              options={ [
+                  { label: 'PX', value: 'px' },
+                  { label: 'EM', value: 'em' },
+                  { label: 'VW', value: 'vw' },
+                  { label: '%', value: '%' },
+              ] }
+              onChange={ onChangeDividerHeightValue }
+            />
+            <RangeControl
+              label={__('Divider Height', 'gutenberg-extra')}
+              className={'gx-with-unit-control'}
+              value={isVertical ? dividerHeight : dividerThickness}
+              onChange={ onChangeDividerHeight }
+              min={ 0 }
+              allowReset = {true}
+              initialPosition = { 0 }
+            />
 
-      <PanelColorSettings
-        title={__('Divider Colour', 'gutenberg-extra' )}
-        colorSettings={[
-          {
-            value: dividerColor,
-            onChange: {onChangeDividerColor},
-            label: __('Divider Colour', 'gutenberg-extra' ),
-          },
-        ]}
-      />
+          <PanelColorSettings
+            title={__('Divider Colour', 'gutenberg-extra' )}
+            colorSettings={[
+              {
+                value: dividerColor,
+                onChange: {onChangeDividerColor},
+                label: __('Divider Colour', 'gutenberg-extra' ),
+              },
+            ]}
+          />
+        </AccordionItemPanel>
+
+      </AccordionItem>
+      </Accordion>
+
       </InspectorControls>
       <div
       className={'gx-divider'}

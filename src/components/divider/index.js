@@ -113,6 +113,8 @@ class Divider extends Component {
       isRounded,
       isMultiple,
       isBehindTheSubtitle,
+      isPreappendedToSubtitle,
+      isAppendedToSubtitle,
       subtitleTextAlign
      } = this.props.attributes;
      dividerColorValue = this.props.attributes.dividerColor;
@@ -136,8 +138,8 @@ class Divider extends Component {
          borderRadius: isRounded ? '2rem' : undefined,
          position: isBehindTheSubtitle ? 'absolute' : undefined,
          top: isBehindTheSubtitle ? '1.5rem' : undefined,
-         left: isBehindTheSubtitle ? dividerAlignment == 'auto' ? '0' : undefined  : undefined,
-         right: isBehindTheSubtitle ? dividerAlignment == 'auto' ? '0' : undefined : undefined,
+         left: isBehindTheSubtitle ? dividerAlignment == 'auto' ? '0' : dividerAlignment == '0 auto 0 0' ? '0' : undefined  : undefined,
+         right: isBehindTheSubtitle ? dividerAlignment == 'auto' ? '0' : dividerAlignment == '0 0 0 auto' ? '0' : undefined : undefined,
          zIndex: isBehindTheSubtitle ? -1 : undefined,
      };
 
@@ -232,7 +234,25 @@ class Divider extends Component {
        setAttributes({ dividerOrder: value });
        if(value !== 'behind-subtitle'){
          setAttributes({ isBehindTheSubtitle: false });
-       }else{
+         setAttributes({isAppendedToSubtitle: false});
+         setAttributes({isPreappendedToSubtitle: false});
+       }
+       if(value == 'preappend-subtitle'){
+         setAttributes({ dividerAlignment: '0 auto 0 0' });
+         setAttributes({ isBehindTheSubtitle: true });
+         setAttributes({isAppendedToSubtitle: false});
+         setAttributes({isPreappendedToSubtitle: true});
+         setAttributes({subtitleBackgroundColor: 'white'});
+       }
+       if(value == 'appended-subtitle'){
+         setAttributes({ dividerAlignment: '0 0 0 auto' });
+         setAttributes({ isBehindTheSubtitle: true });
+         setAttributes({isPreappendedToSubtitle: false});
+         setAttributes({isAppendedToSubtitle: true});
+         setAttributes({subtitleBackgroundColor: 'white'});
+       }
+
+       if(value == 'behind-subtitle'){
          setAttributes({ isBehindTheSubtitle: true });
          setAttributes({subtitleBackgroundColor: 'white'});
        }
@@ -289,6 +309,8 @@ class Divider extends Component {
               { label: __('Before Subtitle'), value: -1 },
               { label: __('After Description'), value: 4 },
               { label: __('Behind Subtitle'), value: 'behind-subtitle' },
+              { label: __('Preappended to Subtitle'), value: 'preappend-subtitle' },
+              { label: __('Appended to Subtitle'), value: 'appended-subtitle' },
           ]}
           onChange={ onChangeDividerPosition }
       />

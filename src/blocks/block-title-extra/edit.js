@@ -94,7 +94,9 @@ const edit = (props) => {
       hideTitle,
       hideSubtitle,
       hideDescription,
-      isBehindTheSubtitle
+      isBehindTheSubtitle,
+      isPreappendedToSubtitle,
+      isAppendedToSubtitle
     },
     setAttributes,
   } = props;
@@ -116,10 +118,37 @@ const edit = (props) => {
     setAttributes({ subtitleTextAlign: value });
   }
 
-  const subtitleStyles = {display: hideSubtitle ? 'none' : undefined, borderRadius: '5px', margin: subtitleTextAlign, fontFamily: 'roboto',fontSize:'12pt', color:subtitleColor, backgroundColor: subtitleBackgroundColor, width:'max-content', padding:'5px'};
-  const titleStyles = {display: hideTitle ? 'none' : undefined, textAlign: titleTextAlign, fontFamily: 'roboto', color:titleColor};
-  const containerStyles = {display: 'flex', flexDirection: 'column'};
-  const textStyles = {display: hideDescription ? 'none' : undefined, textAlign: descriptionTextAlign, fontFamily: 'roboto',fontSize:'12pt', color:descriptionColor}
+  const subtitleStyles = {
+    display: hideSubtitle ? 'none' : undefined,
+    borderRadius: '5px',
+    margin: isPreappendedToSubtitle ? '5px auto 5px ' + dividerWidth + dividerWidthUnit : isAppendedToSubtitle ? '5px '+ dividerWidth + dividerWidthUnit +' 5px auto'  : subtitleTextAlign,
+    fontFamily: 'roboto',
+    fontSize:'12pt',
+    color:subtitleColor,
+    backgroundColor: subtitleBackgroundColor,
+    width:'max-content',
+    padding:'5px'
+  };
+
+  const titleStyles = {
+    display: hideTitle ? 'none' : undefined,
+    textAlign: titleTextAlign,
+    fontFamily: 'roboto',
+    color:titleColor
+  };
+
+  const containerStyles = {
+    display: 'flex',
+    flexDirection: 'column'
+  };
+
+  const textStyles = {
+    display: hideDescription ? 'none' : undefined,
+    textAlign: descriptionTextAlign,
+    fontFamily: 'roboto',
+    fontSize:'12pt',
+    color:descriptionColor
+  }
 
   const gradients = "";
   const disableCustomGradients = false;

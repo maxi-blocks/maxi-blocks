@@ -1,6 +1,10 @@
 /**
+ * DEPRECATED
+ */
+
+/**
  * Font Popover component
- *
+ *  
  * @version 0.1
  */
 
@@ -15,20 +19,17 @@ import './editor.scss';
  */
 
 const { __ } = wp.i18n;
-const {
-    BaseControl,
+const { 
+    BaseControl, 
     Button,
     RadioControl,
     RangeControl,
     Dropdown,
 } = wp.components;
-const {
-    Fragment,
-    Component
+const { 
+    Fragment, 
+    Component 
 } = wp.element;
-const {
-    PanelColorSettings,
-} = wp.blockEditor;
 
 /**
  * External dependencies
@@ -60,16 +61,15 @@ export default class FontPopover extends Component {
     render () {
         const {
             className,
-            classNamePopover,
+            classNamePopover = "gx-popover gx-fontpopover",
             title,
-            buttonText,
+            buttonText = __('Typography', 'gutenberg-extra'),
             font,
             onFontFamilyChange,
             fontSizeUnit,
             onFontSizeUnitChange,
             fontSize,
-            onFontSizeChange,
-            titleColor
+            onFontSizeChange
         } = this.props;
 
         return (
@@ -88,27 +88,18 @@ export default class FontPopover extends Component {
                                 onClick={onToggle}
                                 aria-expanded={isOpen}
                             >
-                                { buttonText ? buttonText : __('Typography', 'gutenberg-extra') }
+                                { buttonText }
                             </Button>
                         )}
                         popoverProps={
-                            {
-                                className: classNamePopover + " gx-popover gx-fontpopover",
+                            {                           
+                                className: classNamePopover,
                                 noArrow: true,
                                 position: "center"
                             }
                         }
                         renderContent={() => (
                         <Fragment>
-                            <PanelColorSettings
-                                colorSettings={[
-                                    {
-                                        value: titleColor,
-                                        onChange: (value) => setAttributes({ titleColor: value }),
-                                        label: __('Text Colour', 'gutenberg-extra' ),
-                                    },
-                                ]}
-                            />
                             <FontFamilySelector
                                 className={'gx-font-family-selector' }
                                 font={font}
@@ -136,7 +127,7 @@ export default class FontPopover extends Component {
                                 onChange={ onFontSizeUnitChange }
                             />
                             <RangeControl
-                                label= {__('Text Size', 'gutenberg-extra' )}
+                                label="Size"
                                 className={ 'gx-with-unit-control' }
                                 value={fontSize}
                                 onChange={ onFontSizeChange }

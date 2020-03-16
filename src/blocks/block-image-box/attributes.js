@@ -1,10 +1,17 @@
 import { blockStyleAttributes } from '../../components/block-styles/index';
+import { borderAttributes } from '../../components/block-border/index';
 import { imagePositionAttributes } from '../../components/image-position/index';
-import { blockBorderAttributes } from '../../components/block-border/index';
 import { sizeControlAttributes } from '../../components/size-control/index';
 import { hoverAnimationAttributes } from '../../components/hover-animation/index';
 import { customCSSAtributes } from '../../components/custom-css/index';
 import { linkOptionsAttributes } from '../../components/link-options/index';
+import { dividerAttributes} from '../../components/divider/index';
+import { buttonStyleAttributes } from '../../components/button-styles/index';
+import {
+    dimensionsControlAttributesMargin,
+    dimensionsControlAttributesPadding,
+} from '../../components/dimensions-control/attributes';
+import {typographyAttributes} from '../../components/typography';
 
 const attributes = {
     title: {
@@ -26,7 +33,6 @@ const attributes = {
         attribute: 'src',
     },
     description: {
-        type: 'array',
         source: 'children',
         selector: '.gx-image-box-description',
     },
@@ -44,9 +50,10 @@ const attributes = {
         selector: '.gx-image-box-counter',
     },
     readMoreText: {
-        type: 'array',
-        source: 'children',
-        selector: '.gx-image-box-read-more-text',
+        type: 'string',
+        source: 'attribute',
+        selector: 'a.gx-image-box-link',
+        attribute: 'href',
     },
     readMoreLink: {
         type: 'string',
@@ -80,14 +87,6 @@ const attributes = {
         default: "",
     },
     descriptionColor: {
-        type: 'string',
-        default: "",
-    },
-    buttonColor: {
-        type: 'string',
-        default: "",
-    },
-    buttonBgColor: {
         type: 'string',
         default: "",
     },
@@ -137,13 +136,36 @@ const attributes = {
         type: 'string',
         default: 'inherit'
     },
+    backgroundGradient: {
+            type: 'array',
+            default: [],
+        },
+    defaultPalette: {
+        type: 'array',
+        default: [
+            { offset: '0.00', color: 'rgba(238, 55, 11, 1)' },
+            { offset: '1.00', color: 'rgba(126, 32, 34, 1)' }
+        ]
+    },
     ...blockStyleAttributes,
     ...imagePositionAttributes,
-    ...blockBorderAttributes,
+    ...borderAttributes,
     ...sizeControlAttributes,
     ...hoverAnimationAttributes,
     ...customCSSAtributes,
-    ...linkOptionsAttributes
+    ...linkOptionsAttributes,
+    ...dimensionsControlAttributesMargin,
+    ...dimensionsControlAttributesPadding,
+    ...buttonStyleAttributes,
+    ...typographyAttributes,
+    titlePopUpisVisible: {
+        type: 'boolean',
+        default: false,
+    },
+    paddingTitle: {
+        type: 'string',
+            default: '{"label":"Padding","unit":"px","max":"1000","desktop":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true},"tablet":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true},"mobile":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true}}'
+    }
 }
 
 export default attributes;

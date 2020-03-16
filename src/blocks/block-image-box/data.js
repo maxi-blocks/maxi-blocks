@@ -28,13 +28,26 @@ export const setTitleStyles = ( props ) => {
         titleColor,
         titleFontFamily,
         fontSizeTitle,
-        fontSizeTitleUnit
+        fontSizeTitleUnit,
+        lineHeightTitleDesktop,
+        lineHeightTitleUnit,
+        fontWeightTitleDesktop,
+        textTransformTitleDesktop,
+        fontStyleTitleDesktop,
+        textDecorationTitleDesktop,
+        letterSpacingTitleDesktop,
     } = props.attributes;
 
     return {
         color: titleColor ? titleColor : undefined,
         fontFamily: titleFontFamily,
         fontSize: fontSizeTitle ? (fontSizeTitle + fontSizeTitleUnit) : undefined,
+        lineHeight: lineHeightTitleDesktop ? (lineHeightTitleDesktop + lineHeightTitleUnit) : undefined,
+        fontWeight: fontWeightTitleDesktop ? fontWeightTitleDesktop : undefined,
+        textTransform: textTransformTitleDesktop ? textTransformTitleDesktop : undefined,
+        fontStyle: fontStyleTitleDesktop ? fontStyleTitleDesktop : undefined,
+        textDecoration: textDecorationTitleDesktop ? textDecorationTitleDesktop : undefined,
+        letterSpacing: letterSpacingTitleDesktop ? (letterSpacingTitleDesktop + letterSpacingTitleUnit) : undefined,
     }
 }
 
@@ -73,26 +86,29 @@ export const setButtonStyles = ( props ) => {
 export const setBlockStyles = ( props ) => {
     const {
         backgroundColor,
-        borderWidth,
-        borderRadius,
+        // borderWidth,
+        // borderRadius,
         blockBorderColor,
         borderType,
         lineHeight,
         letterSpacing,
         blockWidth,
+        widthUnit,
+        maxWidthUnit,
         maxWidth,
         minWidth,
+        minWidthUnit,
         heightUnit,
         blockHeight,
         maxHeight,
         minHeight,
+        maxHeightUnit,
+        minHeightUnit,
         textTransform
     } = props.attributes;
 
     return {
         backgroundColor: backgroundColor ? backgroundColor : undefined,
-        borderWidth: borderWidth ? borderWidth + 'px' : undefined,
-        borderRadius: borderRadius ? borderRadius + 'px' : undefined,
         borderColor: blockBorderColor ? blockBorderColor : undefined,
         borderStyle: borderType ? borderType : undefined,
         lineHeight: lineHeight ? lineHeight + '%' : undefined,
@@ -104,18 +120,6 @@ export const setBlockStyles = ( props ) => {
         maxHeight: maxHeight ? (maxHeight + maxHeightUnit) : undefined,
         minHeight: minHeight ? (minHeight + minHeightUnit) : undefined,
         textTransform: textTransform ? textTransform : undefined,
-        // paddingTop: paddingTop ? (paddingTop + paddingUnit) : undefined,
-        // paddingRight: paddingRight ? (paddingRight + paddingUnit) : undefined,
-        // paddingBottom: paddingBottom ? (paddingBottom + paddingUnit) : undefined,
-        // paddingLeft: paddingLeft ? (paddingLeft + paddingUnit) : undefined,
-        // marginTop: marginTop ? (marginTop + marginUnit) : undefined,
-        // marginRight: marginRight ? (marginRight + marginUnit) : undefined,
-        // marginBottom: marginBottom ? (marginBottom + marginUnit) : undefined,
-        // marginLeft: marginLeft ? (marginLeft + marginUnit) : undefined,
-        // borderTopLeftRadius: borderRadiusTopLeft ? (borderRadiusTopLeft + borderRadiusUnit) : undefined,
-        // borderTopRightRadius: borderRadiusTopRight ? (borderRadiusTopRight + borderRadiusUnit) : undefined,
-        // borderBottomRightRadius: borderRadiusBottomRight ? (borderRadiusBottomRight + borderRadiusUnit) : undefined,
-        // borderBottomLeftRadius: borderRadiusBottomLeft ? (borderRadiusBottomLeft + borderRadiusUnit) : undefined,
     }
 
 };

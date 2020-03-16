@@ -1,8 +1,10 @@
+import classnames from 'classnames';
+
 /**
  * WordPress dependencies
  */
 
-const { __ } = wp.i18n; 
+const { __ } = wp.i18n;
 const {
 	RichText,
 } = wp.blockEditor;
@@ -11,7 +13,7 @@ const {
  * External dependencies
  */
 
-import { 
+import {
     setLinkStyles,
     setTitleStyles,
     setSubTitleStyles,
@@ -39,7 +41,10 @@ const save = ( props ) => {
             titleLevel,
             blockStyle,
             defaultBlockStyle,
-            titleFontFamily
+            titleFontFamily,
+            uniqueID,
+            backgroundImage,
+            backgroundGradient,
         },
     } = props;
 
@@ -49,10 +54,15 @@ const save = ( props ) => {
     const descriptionStyles = setDescriptionStyles ( props );
     const buttonStyles = setButtonStyles ( props );
     const blockStyles = setBlockStyles ( props );
-    
+
+    let classes = classnames( className );
+   if ( uniqueID && (typeof uniqueID !== 'undefined') ) {
+       classes = classnames( classes, uniqueID )
+   }
+
     return (
-        <div 
-        className= { 'gx-block ' + blockStyle+ ' gx-image-box ' + className }
+        <div
+        className= { 'gx-block ' + blockStyle+ ' gx-image-box ' + classes }
         data-gx_initial_block_class = {defaultBlockStyle}
         style={blockStyles}>
             <a className="gx-image-box-link"

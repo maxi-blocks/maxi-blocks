@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import { omit, pick } from 'lodash';
 import { withState } from '@wordpress/compose';
 import { RangeControl } from '@wordpress/components';
-import { DimensionControl } from '@wordpress/components';
+import DimensionsControl from '../../components/dimensions-control/index';
 import iconsBlocks from '../../components/icons/icons-blocks.js';
 
 /**

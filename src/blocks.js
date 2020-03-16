@@ -8,10 +8,12 @@
  * All blocks should be included here since this is the file that
  * Webpack is compiling as the input file.
  */
+import './extensions/attributes';
 
 import './blocks/block-layout/block-layout.js';
 import './blocks/block-container/block-container.js';
 import './blocks/block-image-box/block-image-box.js';
+//import './blocks/block-title-extra/block-title-extra.js';
 // import './blocks/block-single-testimonial/block-single-testimonial.js';
 
 import './blocks/block-button/block.js';

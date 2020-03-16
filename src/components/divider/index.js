@@ -115,7 +115,8 @@ class Divider extends Component {
       isBehindTheSubtitle,
       isPreappendedToSubtitle,
       isAppendedToSubtitle,
-      subtitleTextAlign
+      subtitleTextAlign,
+      contentDirection
      } = this.props.attributes;
      dividerColorValue = this.props.attributes.dividerColor;
      dividerAlignmentValue = this.props.attributes.dividerAlignment;
@@ -126,7 +127,6 @@ class Divider extends Component {
      dividerThicknessValue = this.props.attributes.dividerThickness;
      dividerThicknessUnitValue = this.props.attributes.dividerThicknessUnit;
 
-
      const dividerStyles =  {
          border: dividerColor ? '1px solid ' + dividerColor : '1px solid rgb(152, 152, 152)',
          margin: dividerAlignment,
@@ -136,10 +136,11 @@ class Divider extends Component {
          borderWidth: dividerThickness ? dividerThickness + dividerThicknessUnit : undefined,
          display: isHidden ? 'none' : undefined,
          borderRadius: isRounded ? '2rem' : undefined,
-         position: isBehindTheSubtitle ? 'absolute' : undefined,
+         position: isBehindTheSubtitle || contentDirection == 'row' ? 'absolute' : undefined,
          top: isBehindTheSubtitle ? '1.5rem' : undefined,
          left: isBehindTheSubtitle ? dividerAlignment == 'auto' ? '0' : dividerAlignment == '0 auto 0 0' ? '0' : undefined  : undefined,
          right: isBehindTheSubtitle ? dividerAlignment == 'auto' ? '0' : dividerAlignment == '0 0 0 auto' ? '0' : undefined : undefined,
+         bottom: contentDirection == 'row' ? '0' : undefined,
          zIndex: isBehindTheSubtitle ? -1 : undefined,
      };
 

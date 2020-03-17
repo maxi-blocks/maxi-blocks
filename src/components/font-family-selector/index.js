@@ -88,7 +88,7 @@ export default class FontFamilySelector extends Component {
 
         const onFontChange = ( newFont ) => {
             onChange(newFont);
-            this.fonts.loadFonts(newFont.value, newFont.files);
+            //this.fonts.loadFonts(newFont.value, newFont.files);
         }
 
         return (

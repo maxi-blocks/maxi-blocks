@@ -142,8 +142,10 @@ class FontFamilyResolver {
      * Loads the non-loaded fonts on backend and frontend
      */
     onLoadPage() {
-        for (let [fontName, fontOptions] of Object.entries(fontsToLoad)) {
-            this.loadFonts(fontName, fontOptions)
+        if (typeof fontsToLoad != 'undefined') {
+            for (let [fontName, fontOptions] of Object.entries(fontsToLoad)) {
+                this.loadFonts(fontName, fontOptions)
+            }
         }
     }
 

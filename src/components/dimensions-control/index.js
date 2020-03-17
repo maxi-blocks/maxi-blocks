@@ -269,7 +269,7 @@ export default class DimensionsControl extends Component {
 													)}
 													value={this.values[device][getKey(this.values[device], 0)]}
 													min={this.values.min ? this.values.min : 0}
-													max={this.values.max ? this.values.max : 99999}
+													max={this.values.max ? this.values.max : 'none'}
 													data-device-type={device}
 													action="0"
 												/>
@@ -284,7 +284,7 @@ export default class DimensionsControl extends Component {
 													)}
 													value={this.values[device][getKey(this.values[device], 1)]}
 													min={this.values.min ? this.values.min : 0}
-													max={this.values.max ? this.values.max : 99999}
+													max={this.values.max ? this.values.max : 'none'}
 													data-device-type={device}
 													action="1"
 												/>
@@ -299,7 +299,7 @@ export default class DimensionsControl extends Component {
 													)}
 													value={this.values[device][getKey(this.values[device], 2)]}
 													min={this.values.min ? this.values.min : 0}
-													max={this.values.max ? this.values.max : 99999}
+													max={this.values.max ? this.values.max : 'none'}
 													data-device-type={device}
 													action="2"
 												/>
@@ -314,7 +314,7 @@ export default class DimensionsControl extends Component {
 													)}
 													value={this.values[device][getKey(this.values[device], 3)]}
 													min={this.values.min ? this.values.min : 0}
-													max={this.values.max ? this.values.max : 99999}
+													max={this.values.max ? this.values.max : 'none'}
 													data-device-type={device}
 													action="3"
 												/>

@@ -35,12 +35,12 @@ class ResponsiveFrontendStyles {
         wp_add_inline_style('gutenberg-extra', $this->styles());
 
         // Inline fonts
-        // wp_register_script( 'gutenberg-extra-fonts', false );
-        // wp_enqueue_script( 'gutenberg-extra-fonts' );
-        // wp_add_inline_script(
-        //     'gutenberg-extra-fonts',
-        //     $this->fonts()
-        // );
+        wp_register_script( 'gutenberg-extra-fonts', false );
+        wp_enqueue_script( 'gutenberg-extra-fonts' );
+        wp_add_inline_script(
+            'gutenberg-extra-fonts',
+            $this->fonts()
+        );
     }
 
     /**
@@ -110,22 +110,26 @@ class ResponsiveFrontendStyles {
 
     /**
      * Post fonts
+     * 
+     * @return object   Font name with font options
      */
 
     public function fonts() {
         $meta = $this->getMeta();
         if ( empty( $meta ) )
             return;
+        //$response = new ArrayObject();
         $response = [];
         foreach ( $meta as $target ) {
             if (property_exists($target, 'Typography')) {
-                var_dump($target->label);
-                $element = [$target->label = $target->options];
-                var_dump($element);
-                // array_push($response, $element);
+                //$element = (object)[$target->Typography->font => $target->Typography->options];
+                //array_push($response, $element);
+                // $response->append($element)
+                $response[$target->Typography->font] = $target->Typography->options;
             }
         }
-        var_dump($response);
+        $obj = json_encode((object)$response);
+        return "var fontsToLoad = $obj";
     }
 }
 

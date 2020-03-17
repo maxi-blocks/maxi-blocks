@@ -41,13 +41,6 @@ class PostMeta {
 			'_gutenberg_extra_responsive_styles',
 			$args
 		);
-
-		// Fonts
-		register_meta(
-			'post',
-			'_gutenberg_extra_fonts',
-			$args
-		);
     }
 
     /**

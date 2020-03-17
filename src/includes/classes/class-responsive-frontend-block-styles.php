@@ -101,9 +101,7 @@ class ResponsiveFrontendStyles {
         $response = '';
         $important = is_admin() ? ' !important' : '';
         foreach ( $styles as $property => $value ) {
-            $property != 'sync' ?
-                $response .= "{$property}: {$value}{$important};" :
-                null;
+            $response .= "{$property}: {$value}{$important};";
         }
         return $response;
     }
@@ -122,9 +120,6 @@ class ResponsiveFrontendStyles {
         $response = [];
         foreach ( $meta as $target ) {
             if (property_exists($target, 'Typography')) {
-                //$element = (object)[$target->Typography->font => $target->Typography->options];
-                //array_push($response, $element);
-                // $response->append($element)
                 $response[$target->Typography->font] = $target->Typography->options;
             }
         }

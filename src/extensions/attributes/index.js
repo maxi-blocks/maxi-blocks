@@ -7,7 +7,11 @@ const { createHigherOrderComponent } = wp.compose;
 /**
  * External Dependencies
  */
-import { uniqueId } from 'lodash';
+import { 
+	uniqueId,
+	isEmpty,
+	isNil,
+} from 'lodash';
 
 /**
  * General
@@ -47,7 +51,9 @@ const withAttributes = createHigherOrderComponent(
 			props.attributes.uniqueID = props.attributes.uniqueID || '';
 
 			if ( props.attributes.uniqueID === '' ) {
-				const newID = uniqueId(blockName.replace('gutenberg-extra/','') + '-');
+				let newID = uniqueId(blockName.replace('gutenberg-extra/','') + '-');
+				if ( !isEmpty(document.getElementsByClassName(newID)) || !isNil(document.getElementById(newID)) )
+					newID = uniqueId(blockName.replace('gutenberg-extra/','') + '-');
 				props.attributes.uniqueID = newID;
 			}
 		}

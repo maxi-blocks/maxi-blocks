@@ -8,10 +8,6 @@ const {
 const {
   PanelBody,
   Button,
-  RangeControl,
-  RadioControl,
-  SelectControl,
-  ToggleControl
 } = wp.components;
 const {
   InspectorControls,
@@ -25,7 +21,6 @@ const {
  * External dependencies
  */
 
-import FontPopover from '../../components/font-popover/index';
 import {
   BlockStyles
 } from '../../components/block-styles/index';
@@ -34,12 +29,8 @@ import { FontLevel } from '../../components/font-level/index';
 import { LinkOptions } from '../../components/link-options/index';
 import { BlockBorder } from '../../components/block-border/index';
 import Divider from '../../components/divider/index';
-import {
-  SizeControl
-} from '../../components/size-control/index';
-import {
-  PaddingMarginControl
-} from '../../components/padding-margin-control/index';
+import { SizeControl } from '../../components/size-control/index';
+import { PaddingMarginControl } from '../../components/padding-margin-control/index';
 import { HoverAnimation } from '../../components/hover-animation/index';
 import { CustomCSS } from '../../components/custom-css/index';
 import {
@@ -58,6 +49,20 @@ import {
     AccordionItemButton,
     AccordionItemPanel,
 } from 'react-accessible-accordion';
+
+import { HideTitle } from '../../components/title-extra/hide-title/index';
+import { HideSubtitle } from '../../components/title-extra/hide-subtitle/index';
+import { HideDescription } from '../../components/title-extra/hide-description/index';
+import { TwoColumn } from '../../components/title-extra/two-column-description/index';
+import { TitleTypography } from '../../components/title-extra/title-typography/index';
+import { ContentDirection } from '../../components/title-extra/content-direction/index';
+import { TitleColor } from '../../components/title-extra/title-color/index';
+import { SubtitleColor } from '../../components/title-extra/subtitle-color/index';
+import { SubtitleBackgroundColor } from '../../components/title-extra/subtitle-background-color/index';
+import { DescriptionColor } from '../../components/title-extra/description-color/index';
+import { SubtitleAlign } from '../../components/title-extra/subtitle-align/index';
+import { TitleAlign } from '../../components/title-extra/title-align/index';
+import { DescriptionAlign } from '../../components/title-extra/description-align/index';
 
 const edit = (props) => {
 
@@ -112,7 +117,6 @@ const edit = (props) => {
   } = props;
 
   const linkOptions = JSON.parse(props.attributes.linkOptions)
-
   const linkStyles = setLinkStyles(props);
   const descriptionStyles = setDescriptionStyles(props);
   const buttonStyles = setButtonStyles(props);
@@ -123,10 +127,6 @@ const edit = (props) => {
       mediaID: media.id,
     });
   };
-
-  const onChangeSubtitleAlign = (value) => {
-    setAttributes({ subtitleTextAlign: value });
-  }
 
   const subtitleStyles = {
     display: hideSubtitle ? 'none' : undefined,
@@ -164,164 +164,42 @@ const edit = (props) => {
   const gradients = "";
   const disableCustomGradients = false;
 
-  const onChangeContentDirection = (value) => {
-    setAttributes({contentDirection: value});
-  }
+
 
   return (
     <div>
     <InspectorControls>
-    <Accordion
-        className = {'gx-style-tab-setting gx-accordion'}
-        allowMultipleExpanded = {true}
-        allowZeroExpanded = {true}
-    >
-    <AccordionItem>
+      <Accordion
+          className = {'gx-style-tab-setting gx-accordion'}
+          allowMultipleExpanded = {true}
+          allowZeroExpanded = {true}
+      >
+      <AccordionItem>
         <AccordionItemHeading className={'gx-accordion-tab gx-typography-tab'}>
-            <AccordionItemButton className='components-base-control__label'>
-                {__('Typography', 'gutenberg-extra' )}
-            </AccordionItemButton>
+          <AccordionItemButton className='components-base-control__label'>
+            {__('Typography', 'gutenberg-extra' )}
+          </AccordionItemButton>
         </AccordionItemHeading>
-      <AccordionItemPanel>
-        <PanelBody className="gx-panel gx-color-setting gx-style-tab-setting" initialOpen={true} title={__('Colour settings', 'gutenberg-extra')}>
-            <ToggleControl
-              label={__('Hide Title', 'gutenberg-extra')}
-              id='gx-block-style'
-              checked={hideTitle}
-              onChange={(value) => {setAttributes({hideTitle: value})}}
-            />
-            <ToggleControl
-              label={__('Hide Subtitle', 'gutenberg-extra')}
-              id='gx-block-style'
-              checked={hideSubtitle}
-              onChange={(value) => {setAttributes({hideSubtitle: value})}}
-            />
-            <ToggleControl
-              label={__('Hide Description', 'gutenberg-extra')}
-              id='gx-block-style'
-              checked={hideDescription}
-              onChange={(value) => {setAttributes({hideDescription: value})}}
-            />
-            <ToggleControl
-              label={__('Two Column Description Layout', 'gutenberg-extra')}
-              id='gx-block-style'
-              checked={twoColumnDesc}
-              onChange={(value) => {setAttributes({twoColumnDesc: value})}}
-            />
-            <FontPopover
-              title={__('Title Typography', 'gutenberg-extra')}
-              font={titleFontFamily}
-              onFontFamilyChange={value => { setAttributes({ titleFontFamily: value }); }}
-              fontSizeUnit={fontSizeTitleUnit}
-              onFontSizeUnitChange={value => setAttributes({ fontSizeTitleUnit: value })}
-              fontSize={fontSizeTitle}
-              onFontSizeChange={value => setAttributes({ fontSizeTitle: value })}
-              classNamePopover={'gx-font-family-selector-popover'}
-            />
-            <PanelColorSettings
-              title={__('Background Colour Settings', 'gutenberg-extra' )}
-              colorSettings={[
-                {
-                  value: backgroundColor,
-                  onChange: (value) => setAttributes({ backgroundColor: value }),
-                  label: __('Background Colour', 'gutenberg-extra' ),
-                },
-              ]}
-            />
-            <SelectControl
-                label={__('Content Direction', 'gutenberg-extra')}
-                className="gx-block-style"
-                value={contentDirection}
-                options={[
-                    { label: __('From Left To Right'), value: 'row' },
-                    { label: __('From Right To Left'), value: 'row-reverse' },
-                    { label: __('From Top To Bottom'), value: 'column' },
-                    { label: __('From Bottom To Top'), value: 'column-reverse' },
-                ]}
-                onChange={ onChangeContentDirection }
-            />
-            <PanelColorSettings
-              title={__('Title Colour Settings', 'gutenberg-extra' )}
-              colorSettings={[
-                {
-                  value: titleColor,
-                  onChange: (value) => setAttributes({ titleColor: value }),
-                  label: __('Title Colour', 'gutenberg-extra' ),
-                },
-              ]}
-            />
-            <PanelColorSettings
-                title={__('Sub-title Colour Settings', 'gutenberg-extra' )}
-                colorSettings={[
-                    {
-                        value: subtitleColor,
-                        onChange: (value) => setAttributes({ subtitleColor: value }),
-                        label: __('Sub-title Colour', 'gutenberg-extra' ),
-                    },
-                ]}
-            />
-            <PanelColorSettings
-                title={__('Sub-title Background Colour Settings', 'gutenberg-extra' )}
-                colorSettings={[
-                    {
-                        value: subtitleBackgroundColor,
-                        onChange: (value) => setAttributes({ subtitleBackgroundColor: value }),
-                        label: __('Sub-title Background Colour', 'gutenberg-extra' ),
-                    },
-                ]}
-            />
-            <PanelColorSettings
-                title={__('Description Colour Settings', 'gutenberg-extra' )}
-                colorSettings={[
-                    {
-                        value: descriptionColor,
-                        onChange: (value) => setAttributes({ descriptionColor: value }),
-                        label: __('Description  Colour', 'gutenberg-extra' ),
-                    },
-                ]}
-            />
-            <SelectControl
-                label={__('Subtitle Align', 'gutenberg-extra')}
-                className="gx-block-style"
-                value={subtitleTextAlign}
-                options={[
-                    { label: __('Left'), value: '5px auto 5px 0' },
-                    { label: __('Center'), value: '5px auto' },
-                    { label: __('Right'), value: '5px 0 5px auto' },
-                ]}
-                onChange={ onChangeSubtitleAlign }
-            />
-
-            <SelectControl
-                label={__('Title Align', 'gutenberg-extra')}
-                className="gx-block-style"
-                value={titleTextAlign}
-                options={[
-                    { label: __('Left'), value: 'left' },
-                    { label: __('Center'), value: 'center' },
-                    { label: __('Right'), value: 'right' },
-                ]}
-                onChange={(value) => setAttributes({ titleTextAlign: value })}
-            />
-
-            <SelectControl
-                label={__('Description Align', 'gutenberg-extra')}
-                className="gx-block-style"
-                value={descriptionTextAlign}
-                options={[
-                    { label: __('Left'), value: 'left' },
-                    { label: __('Center'), value: 'center' },
-                    { label: __('Right'), value: 'right' },
-                ]}
-                onChange={(value) => setAttributes({ descriptionTextAlign: value })}
-            />
-        </PanelBody>
-        </AccordionItemPanel>
+        <AccordionItemPanel>
+            <PanelBody className="gx-panel gx-color-setting gx-style-tab-setting" initialOpen={true} title={__('Colour settings', 'gutenberg-extra')}>
+              <HideTitle {...props}/>
+              <HideSubtitle {...props}/>
+              <HideDescription {...props}/>
+              <TwoColumn {...props}/>
+              <TitleTypography {...props}/>
+              <ContentDirection {...props}/>
+              <TitleColor {...props}/>
+              <SubtitleColor {...props}/>
+              <SubtitleBackgroundColor {...props}/>
+              <DescriptionColor {...props}/>
+              <SubtitleAlign {...props}/>
+              <TitleAlign {...props}/>
+              <DescriptionAlign {...props}/>
+            </PanelBody>
+          </AccordionItemPanel>
         </AccordionItem>
-        </Accordion>
+      </Accordion>
     </InspectorControls>
-
-
     <div
       className={'gx-block gx-title-extra'}
       style={containerStyles}
@@ -347,10 +225,8 @@ const edit = (props) => {
         className="gx-title-extra-title"
       />
       </div>
-      <Divider
-      {...props}
-      />
-        <div style={{order:3}}>
+      <Divider {...props}/>
+      <div style={{order:3}}>
         <RichText
           tagName="p"
           style={textStyles}
@@ -360,9 +236,8 @@ const edit = (props) => {
           className="gx-title-extra-text"
         />
       </div>
-
-      </div>
     </div>
+  </div>
   )
 }
 

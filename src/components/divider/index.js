@@ -2,6 +2,14 @@ const { __ } = wp.i18n;
 import { Component } from '@wordpress/element';
 import { withInstanceId } from '@wordpress/compose';
 
+import {
+    Accordion,
+    AccordionItem,
+    AccordionItemHeading,
+    AccordionItemButton,
+    AccordionItemPanel,
+} from 'react-accessible-accordion';
+
 const {
   InspectorControls,
   PanelColorSettings,
@@ -20,26 +28,27 @@ const {
   ToggleControl
 } = wp.components;
 
+import { HideDivider } from '../divider-settings/hide-divider/index';
+import { VerticalDivider } from '../divider-settings/vertical-divider/index';
+import { RoundedDivider } from '../divider-settings/rounded-divider/index';
+import { AdditionalDivider } from '../divider-settings/additional-divider/index';
+import { AlignDivider } from '../divider-settings/align-divider/index';
+import { DividerPosition } from '../divider-settings/divider-position/index';
+import { DividerWidth } from '../divider-settings/divider-width/index';
+import { DividerHeight } from '../divider-settings/divider-height/index';
+import { DividerColor } from '../divider-settings/divider-color/index';
+
+import { hideDividerAttributes } from '../divider-settings/hide-divider/index';
+import { verticalDividerAttributes } from '../divider-settings/vertical-divider/index';
+import { roundedDividerAttributes } from '../divider-settings/rounded-divider/index';
+import { additionalDividerAttributes} from '../divider-settings/additional-divider/index';
+import { alignDividerAttributes } from '../divider-settings/align-divider/index';
+import { dividerPositionAttributes } from '../divider-settings/divider-position/index';
+import { dividerWidthAttributes } from '../divider-settings/divider-width/index';
+import { dividerHeightAttributes } from '../divider-settings/divider-height/index';
+import { dividerColorAttributes } from '../divider-settings/divider-color/index';
+
 export const dividerAttributes = {
-  dividerWidth:{
-    type: 'number',
-    default: 0
-  },
-  dividerWidthUnit:{
-    type: 'string',
-    default: 'px'
-  },
-  dividerColor:{
-    type: 'string'
-  },
-  dividerHeightUnit:{
-    type: 'string',
-    default: 'px'
-  },
-  dividerOrder:{
-    type: 'number',
-    default: 0
-  },
   dividerThicknessUnit:{
     type: 'string',
     default: 'px'
@@ -48,33 +57,46 @@ export const dividerAttributes = {
     type: 'number',
     default: 1
   },
-  isVertical:{
+  isMultiple:{
     type: 'boolean',
     default: false
   },
-  isHidden:{
-    type: 'boolean',
-    default: false
-  },
-  dividerAlignment:{
-    type: 'string',
-    default: 'auto'
-  }
+  ...hideDividerAttributes,
+  ...verticalDividerAttributes,
+  ...roundedDividerAttributes,
+  ...additionalDividerAttributes,
+  ...alignDividerAttributes,
+  ...dividerPositionAttributes,
+  ...dividerWidthAttributes,
+  ...dividerHeightAttributes,
+  ...dividerColorAttributes
 }
+
+
 
 class Divider extends Component {
   constructor( props ) {
-    super( ...arguments );
+		super( ...arguments );
   }
 
   render() {
+    // Declaring placeholder variables
+    let dividerColorValue;
+    let dividerAlignmentValue;
+    let dividerHeightValue;
+    let dividerWidthValue;
+    let dividerHeightUnitValue;
+    let dividerWidthUnitValue;
+    let dividerThicknessValue;
+    let dividerThicknessUnitValue;
+    let isMultipleValue;
     const {
-      help,
-      instanceId,
-      label = __( 'Margin', 'gx' ),
-      type = 'margin',
+			help,
+			instanceId,
+			label = __( 'Margin', 'gx' ),
+			type = 'margin',
       setAttributes,
-    } = this.props;
+		} = this.props;
     const {
       dividerColor,
       dividerWidth,
@@ -86,141 +108,112 @@ class Divider extends Component {
       dividerThickness,
       dividerThicknessUnit,
       isVertical,
-      isHidden
+      isHidden,
+      isRounded,
+      isMultiple,
+      isBehindTheSubtitle,
+      isPreappendedToSubtitle,
+      isAppendedToSubtitle,
+      subtitleTextAlign,
+      contentDirection
      } = this.props.attributes;
+     dividerColorValue = this.props.attributes.dividerColor;
+     dividerAlignmentValue = this.props.attributes.dividerAlignment;
+     dividerHeightValue = this.props.attributes.dividerHeight;
+     dividerWidthValue = this.props.attributes.dividerWidth;
+     dividerHeightUnitValue = this.props.attributes.dividerHeightUnit;
+     dividerWidthUnitValue = this.props.attributes.dividerWidthUnit;
+     dividerThicknessValue = this.props.attributes.dividerThickness;
+     dividerThicknessUnitValue = this.props.attributes.dividerThicknessUnit;
 
      const dividerStyles =  {
-         border: '1px solid rgb(152, 152, 152)',
-         margin: dividerAlignment,
-         borderColor: dividerColor,
-         height: dividerHeight ? dividerHeight + dividerHeightUnit : undefined,
-         width: dividerWidth ? dividerWidth + dividerWidthUnit : undefined,
-         borderWidth: dividerThickness ? dividerThickness + dividerThicknessUnit : undefined,
-         display: isHidden ? 'none' : undefined
+       border: dividerColor ? dividerThickness ? dividerThickness + dividerThicknessUnit + ' solid ' + dividerColor : '1px solid ' + dividerColor : '1px solid rgb(152, 152, 152)',
+       margin: dividerAlignment,
+       borderColor: dividerColor,
+       height: dividerHeight ? dividerHeight + dividerHeightUnit : undefined,
+       width: dividerWidth ? dividerWidth + dividerWidthUnit : undefined,
+       borderWidth: dividerThickness ? dividerThickness + dividerThicknessUnit : '1px',
+       display: isHidden ? 'none' : undefined,
+       borderRadius: isRounded ? '2rem' : undefined,
+       position: isBehindTheSubtitle || contentDirection == 'row' ? 'absolute' : undefined,
+       top: isBehindTheSubtitle ? '1.5rem' : undefined,
+       left: isBehindTheSubtitle ? dividerAlignment == 'auto' ? '0' : dividerAlignment == '0 auto 0 0' ? '0' : undefined  : undefined,
+       right: isBehindTheSubtitle ? dividerAlignment == 'auto' ? '0' : dividerAlignment == '0 0 0 auto' ? '0' : undefined : undefined,
+       bottom: contentDirection == 'row' ? '0' : undefined,
+       zIndex: isBehindTheSubtitle ? -1 : undefined,
      };
 
      const dividerWrapperStyles = {
        order: dividerOrder,
      }
 
-     const onChangeDirection = (value) =>{
-       setAttributes({isVertical: value});
-       if(value){
-         setAttributes({ dividerHeight: dividerWidth, dividerWidth: 1 });
-       }else{
-         setAttributes({ dividerWidth: dividerHeight, dividerHeight: 0 });
-       }
+     const buildDivider = (
+     /*1*/a = isMultiple,
+     /*2*/align = dividerAlignment,
+     /*3*/rounded = isRounded,
+     /*4*/widthUnit = dividerWidthUnit,
+     /*5*/width = dividerWidth,
+     /*6*/thickness = dividerThickness,
+     /*7*/thicknessUnit = dividerThicknessUnit,
+     /*8*/height = dividerHeight,
+     /*9*/heightUnit = dividerHeightUnit,
+     /*10*/colour = dividerColor
+      ) => {
+       if(a){
+         let div = `<div class="test"
+         style="border:${colour ? '1px solid ' + colour : '1px solid rgb(152,152,152)'};
+         margin:${align};
+         border-color:${colour};
+         height:${height ? height + dividerHeightUnitValue : ''};
+         width:${widthUnit ? width != 0 ? width + widthUnit : '' : ''};
+         border-width:${thickness ? thickness + dividerThicknessUnitValue : ''};
+         border-radius:${rounded ? '2rem' : '' };
+         display:${isHidden ? 'none' : ''};
+         ">`;
+         setAttributes({additionalDivider: div });
+         return div;
+      }else{
+        setAttributes({additionalDivider: '' });
+      }
      }
 
-     const onChangeDividerWidth = ( value ) => {
-       if(isVertical){
-         setAttributes({dividerThickness: value});
-       }else{
-         setAttributes({ dividerWidth: value, dividerHeight: 0 });
-       }
-     }
-
-     const onChangeDividerHeight = ( value ) => {
-       if(isVertical){
-        setAttributes({ dividerHeight: value, dividerWidth: 1 });
-       }else{
-        setAttributes({dividerThickness: value})
-       }
-     }
 
     return (
       <div
       style={dividerWrapperStyles}
       >
       <InspectorControls>
-      <ToggleControl
-          label={__('Hide Divider', 'gutenberg-extra')}
-          id='gx-block-style'
-          checked={isHidden}
-          onChange={(value) => setAttributes({isHidden: value})}
-      />
-      <ToggleControl
-          label={__('Vertical Divider', 'gutenberg-extra')}
-          id='gx-block-style'
-          checked={isVertical}
-          onChange={onChangeDirection}
-      />
-      <SelectControl
-          label={__('Divider Alignment', 'gutenberg-extra')}
-          className="gx-block-style"
-          value={dividerAlignment}
-          options={[
-              { label: __('Left'), value: '0 auto 0 0' },
-              { label: __('Center'), value: 'auto' },
-              { label: __('Right'), value: '0 0 0 auto' },
-          ]}
-          onChange={(value) => setAttributes({ dividerAlignment: value })}
-      />
-      <SelectControl
-          label={__('Divider Position', 'gutenberg-extra')}
-          className="gx-block-style"
-          value={dividerOrder}
-          options={[
-              { label: __('After Title'), value: 1 },
-              { label: __('Before Title'), value: 0 },
-              { label: __('Before Subtitle'), value: -1 },
-              { label: __('After Description'), value: 4 },
-          ]}
-          onChange={(value) => setAttributes({ dividerOrder: value })}
-      />
-        <RadioControl
-          className={'gx-unit-control'}
-          selected={ dividerWidthUnit }
-          options={ [
-              { label: 'PX', value: 'px' },
-              { label: 'EM', value: 'em' },
-              { label: 'VW', value: 'vw' },
-              { label: '%', value: '%' },
-          ] }
-          onChange={ ( value ) => setAttributes({ dividerWidthUnit: value }) }
-        />
-        <RangeControl
-          label={__('Divider Width', 'gutenberg-extra')}
-          className={'gx-with-unit-control'}
-          value={isVertical ? dividerThickness : dividerWidth}
-          onChange={ onChangeDividerWidth }
-          min={ 0 }
-          allowReset = {true}
-          initialPosition = { 0 }
-        />
-        <RadioControl
-          className={'gx-unit-control'}
-          selected={ dividerHeightUnit }
-          options={ [
-              { label: 'PX', value: 'px' },
-              { label: 'EM', value: 'em' },
-              { label: 'VW', value: 'vw' },
-              { label: '%', value: '%' },
-          ] }
-          onChange={ ( value ) => setAttributes({ dividerHeightUnit: value }) }
-        />
-        <RangeControl
-          label={__('Divider Height', 'gutenberg-extra')}
-          className={'gx-with-unit-control'}
-          value={isVertical ? dividerHeight : dividerThickness}
-          onChange={ onChangeDividerHeight }
-          min={ 0 }
-          allowReset = {true}
-          initialPosition = { 0 }
-        />
+      <Accordion
+          className = {'gx-style-tab-setting gx-accordion'}
+          allowMultipleExpanded = {true}
+          allowZeroExpanded = {true}
+      >
+      <AccordionItem>
+          <AccordionItemHeading className={'gx-accordion-tab gx-typography-tab'}>
+            <AccordionItemButton className='components-base-control__label'>
+              {__('Divider', 'gutenberg-extra' )}
+            </AccordionItemButton>
+          </AccordionItemHeading>
+        <AccordionItemPanel>
+        <PanelBody>
+          <HideDivider {...this.props}/>
+          <VerticalDivider {...this.props} buildDivider={buildDivider}/>
+          <RoundedDivider {...this.props} buildDivider={buildDivider}/>
+          <AdditionalDivider {...this.props} buildDivider={buildDivider}/>
+          <AlignDivider {...this.props} buildDivider={buildDivider}/>
+          <DividerPosition {...this.props}/>
+          <DividerWidth {...this.props} buildDivider={buildDivider}/>
+          <DividerHeight {...this.props} buildDivider={buildDivider}/>
+          <DividerColor {...this.props} buildDivider={buildDivider}/>
+          </PanelBody>
+        </AccordionItemPanel>
 
-      <PanelColorSettings
-        title={__('Divider Colour', 'gutenberg-extra' )}
-        colorSettings={[
-          {
-            value: dividerColor,
-            onChange: (value) => setAttributes({ dividerColor: value }),
-            label: __('Divider Colour', 'gutenberg-extra' ),
-          },
-        ]}
-      />
+      </AccordionItem>
+      </Accordion>
+
       </InspectorControls>
       <div
+      className={'gx-divider'}
       style={dividerStyles}
       />
       </div>

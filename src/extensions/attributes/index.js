@@ -16,7 +16,10 @@ import {
 /**
  * General
  */
-const allowedBlocks = [ 'gutenberg-extra/block-image-box' ];
+const allowedBlocks = [
+'gutenberg-extra/block-image-box',
+'gutenberg-extra/testimonials-slider-block'
+];
 
 /**
  * Filters registered block settings, extending attributes with settings

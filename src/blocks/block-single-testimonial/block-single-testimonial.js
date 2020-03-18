@@ -8,8 +8,6 @@
 //  Import CSS.
 import './style.scss';
 import './editor.scss';
-
-
 import { registerBlockType } from '@wordpress/blocks';
 import { InnerBlocks } from '@wordpress/editor';
 import { RangeControl } from '@wordpress/components';
@@ -20,7 +18,6 @@ import { Fragment } from '@wordpress/element';
 import { DropdownMenu, MenuGroup, MenuItem } from '@wordpress/components';
 import { SelectControl } from '@wordpress/components';
 import iconsBlocks from '../../components/icons/icons-blocks.js';
-
 // import { withState } from '@wordpress/compose';
 const { __ } = wp.i18n;
 
@@ -166,7 +163,6 @@ registerBlockType( 'gutenberg-extra/block-single-testimonial', {
             backgroundColor,
             setAttributes
         } = props;
-
         const onChangeContent = ( newContent ) => {
             props.setAttributes( { content: newContent } );
         };
@@ -377,7 +373,6 @@ registerBlockType( 'gutenberg-extra/block-single-testimonial', {
                             value={ paddingBottom }
                             onChange={ onChangePaddingBottom }
                         />
-
                     </PanelBody>
 
                      <PanelBody
@@ -505,7 +500,6 @@ registerBlockType( 'gutenberg-extra/block-single-testimonial', {
                 className="gx-single-testimonial-title"
                 value={ title }
                 />
-
 				{
 					mediaURL && (
 						<img className="gx-single-testimonial-image" src={ mediaURL } alt={ __( 'Person Image', 'gutenberg-extra' ) } />
@@ -527,8 +521,6 @@ registerBlockType( 'gutenberg-extra/block-single-testimonial', {
                 className="gx-single-testimonial-position"
                 value={ position }
                  />
-
-
             </div>
         );
     },

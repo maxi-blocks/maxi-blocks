@@ -38,7 +38,7 @@ import { BlockStyles } from '../../components/block-styles/index';
 import { ButtonStyles } from '../../components/button-styles/index';
 import { ImagePosition } from '../../components/image-position/index';
 import { FontLevel } from '../../components/font-level/index';
-import { LinkOptions, linkOptionsAttributes } from '../../components/link-options/index';
+import { LinkOptions} from '../../components/link-options/index';
 import { BlockBorder } from '../../components/block-border/index';
 import { SizeControl } from '../../components/size-control/index';
 import GradientPickerPopover from '../../components/gradient-picker/';

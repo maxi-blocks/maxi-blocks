@@ -54,7 +54,44 @@ class ResponsiveFrontendStyles {
         if (empty($meta))
             return;
         $meta = json_decode( $meta );
-        return $meta;
+        return $this->organizeMeta($meta);
+    }
+
+    /**
+     * Organizes meta in order to avoid duplicate selectors on style element
+     */
+    public function organizeMeta($meta) {
+        $response = [];
+        foreach ( $meta as $target => $fields ) {
+            $response[$target] = [];
+            foreach( $fields as $field => $props) {
+                if ( $field === 'Typography' ) :
+                    $response[$target]['font'] = $props->font;
+                    $response[$target]['options'] = $props->options;
+                endif;
+                foreach( $props->desktop as $prop => $value ) {
+                    $response[$target]['desktop'][$prop] = $value;
+                }
+                foreach( $props->tablet as $prop => $value ) {
+                    $response[$target]['tablet'][$prop] = $value;
+                }
+                foreach( $props->tablet as $prop => $value ) {
+                    $response[$target]['tablet'][$prop] = $value;
+                }
+            }
+        }
+        return $response;
+    }
+
+    /**
+     * Retrieve meta values for each device
+     */
+    public function organizeResponsiveMeta($target, $deviceProps) {
+        $response = [];
+        foreach( $deviceProps as $prop => $value ) {
+            $response[$target]['desktop'][$prop] = $value;
+        }
+        return $response;
     }
 
     /**
@@ -68,25 +105,23 @@ class ResponsiveFrontendStyles {
 
         foreach ( $meta as $target => $prop ) {
             $target = str_replace( '__$', ' .', $target );
-            foreach ( $prop as $className => $styles ) {
-                if ( ! empty ((array)$styles->desktop) || property_exists($styles, 'font') ) {
-                    $response .= ".{$target}{";
-                        $response .= self::getResponsiveStyles($styles->desktop);
-                        if ( property_exists($styles, 'font') ) {
-                            $response .= "font-family: {$styles->font};";
-                        }
-                    $response .= '}';
-                }
-                if ( ! empty ((array)$styles->tablet) ) {
-                    $response .= "@media only screen and (max-width: 768px) {.{$target}{";
-                        $response .= self::getResponsiveStyles($styles->tablet);
-                    $response .= '}}';
-                }
-                if ( ! empty ((array)$styles->mobile) ) {
-                    $response .= "@media only screen and (max-width: 480px) {.{$target}{";
-                        $response .= self::getResponsiveStyles($styles->mobile);
-                    $response .= '}}';
-                }
+            if ( ! empty ($prop['desktop']) || ! isset($prop['font']) ) {
+                $response .= ".{$target}{";
+                    if ( isset($prop['font']) ) {
+                        $response .= "font-family: {$prop['font']};";
+                    }
+                    $response .= self::getResponsiveStyles($prop['desktop']);
+                $response .= '}';
+            };
+            if ( ! empty ($prop['tablet']) ) {
+                $response .= "@media only screen and (max-width: 768px) {.{$target}{";
+                    $response .= self::getResponsiveStyles($prop['tablet']);
+                $response .= '}}';
+            }
+            if ( ! empty ($prop['mobile']) ) {
+                $response .= "@media only screen and (max-width: 480px) {.{$target}{";
+                    $response .= self::getResponsiveStyles($prop['mobile']);
+                $response .= '}}';
             }
         }
 
@@ -96,14 +131,11 @@ class ResponsiveFrontendStyles {
     /**
      * Responsive styles
      */
-
     public function getResponsiveStyles($styles) {
         $response = '';
         $important = is_admin() ? ' !important' : '';
         foreach ( $styles as $property => $value ) {
-            $property != 'sync' ?
-                $response .= "{$property}: {$value}{$important};" :
-                null;
+            $response .= "{$property}: {$value}{$important};";
         }
         return $response;
     }
@@ -118,14 +150,10 @@ class ResponsiveFrontendStyles {
         $meta = $this->getMeta();
         if ( empty( $meta ) )
             return;
-        //$response = new ArrayObject();
         $response = [];
         foreach ( $meta as $target ) {
-            if (property_exists($target, 'Typography')) {
-                //$element = (object)[$target->Typography->font => $target->Typography->options];
-                //array_push($response, $element);
-                // $response->append($element)
-                $response[$target->Typography->font] = $target->Typography->options;
+            if (isset($target['font'])) {
+                $response[$target['font']] = $target['options'];
             }
         }
         $obj = json_encode((object)$response);

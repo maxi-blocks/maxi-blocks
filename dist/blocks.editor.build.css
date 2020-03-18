@@ -467,6 +467,176 @@
  * Can include things like variables and mixins
  * that are used across the project.
 */
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
+/**
+ * #.# Editor Styles
+ *
+ * CSS for just Backend enqueued after style.scss
+ * which makes it higher in priority.
+ */
+.gutenberg-extra-testimonial-block {
+  background: #fafafa;
+  border-radius: 5px;
+  border: 1px solid #cacaca; }
+
+.content-plain-text {
+  min-height: 58px !important; }
+
+.wp-block-quote {
+  margin-bottom: 0.5em; }
+
+button.gx-add-more-testimonial {
+  height: 55px;
+  width: 55px;
+  background: #939393;
+  border-radius: 50%;
+  position: relative;
+  border: none;
+  font-size: 2em;
+  color: white;
+  line-height: 1; }
+
+span.remove-testimonial {
+  cursor: pointer;
+  right: 30px;
+  position: absolute; }
+
+textarea.editor-plain-text.content-plain-text,
+textarea.editor-plain-text.title-plain-text,
+textarea.editor-plain-text.link-plain-text {
+  background: #fafafa;
+  border: 1px solid #dadada;
+  border-radius: 5px; }
+
+.gutenberg-extra__picture {
+  position: relative; }
+  .gutenberg-extra__picture a {
+    cursor: pointer; }
+  .gutenberg-extra__picture .gutenberg-extra__picture__actions {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column-reverse;
+        flex-direction: column-reverse;
+    margin-bottom: 20px; }
+
+.gutenberg-extra__picture__image {
+  display: block;
+  cursor: pointer;
+  line-height: 100px;
+  text-align: center; }
+
+.gx-testimonial-sidebar-group .components-base-control__field {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: justify;
+      justify-content: space-between;
+  -ms-flex-align: center;
+      align-items: center; }
+
+.gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+      align-items: center;
+  -ms-flex-pack: justify;
+      justify-content: space-between;
+  margin-bottom: 0 !important; }
+  .gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .components-base-control__field {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: end;
+        justify-content: flex-end;
+    -ms-flex-align: center;
+        align-items: center;
+    margin: 0; }
+    .gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .components-base-control__field .components-base-control__label {
+      display: -ms-flexbox;
+      display: flex;
+      margin: 0;
+      -ms-flex-align: center;
+          align-items: center;
+      -ms-flex-pack: end;
+          justify-content: flex-end; }
+  .gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .components-base-control__label {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+        align-items: center;
+    -ms-flex-pack: justify;
+        justify-content: space-between;
+    -ms-flex-direction: row-reverse;
+        flex-direction: row-reverse; }
+  .gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .components-base-control__label .component-color-indicator {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #e2e3e5;
+    margin-right: .3rem;
+    margin-left: 0; }
+  .gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .components-panel__body {
+    width: 100%;
+    margin-top: 0 !important; }
+  .gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .components-base-control__field {
+    display: -ms-flexbox;
+    display: flex;
+    width: 100%;
+    -ms-flex-pack: justify;
+        justify-content: space-between; }
+  .gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .components-button {
+    width: 45px;
+    height: 40px; }
+  .gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .gpw {
+    padding: 0;
+    margin-top: 3px; }
+    .gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .gpw .trigger {
+      width: 57px;
+      height: 40px;
+      color: transparent;
+      border-radius: 5px;
+      background-color: rgba(33, 141, 250, 0) !important;
+      border: 2px solid #dddfe1;
+      font-size: 0px;
+      text-align: center;
+      line-height: 22px; }
+  .gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .gpw {
+    padding: 0; }
+    .gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .gpw .trigger {
+      width: 57px;
+      height: 40px;
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-pack: center;
+          justify-content: center;
+      -ms-flex-align: center;
+          align-items: center;
+      border-radius: 5px;
+      background-image: url(../img/icons/gx-gradient.svg) !important;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 50%;
+      border: 2px solid #dddfe1;
+      text-align: center;
+      line-height: 22px; }
+      .gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .gpw .trigger .inner {
+        display: none !important; }
+
+.gx-testimonial-sidebar-group .gx-background-setting-panel .gx-settings-button .components-base-control__field {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: justify;
+      justify-content: space-between;
+  -ms-flex-align: center;
+      align-items: center; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
 .editor-block-list__block[data-type="core/button"][data-align="center"] {
   text-align: center; }
 

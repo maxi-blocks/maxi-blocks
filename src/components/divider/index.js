@@ -127,12 +127,12 @@ class Divider extends Component {
      dividerThicknessUnitValue = this.props.attributes.dividerThicknessUnit;
 
      const dividerStyles =  {
-       border: dividerColor ? '1px solid ' + dividerColor : '1px solid rgb(152, 152, 152)',
+       border: dividerColor ? dividerThickness ? dividerThickness + dividerThicknessUnit + ' solid ' + dividerColor : '1px solid ' + dividerColor : '1px solid rgb(152, 152, 152)',
        margin: dividerAlignment,
        borderColor: dividerColor,
        height: dividerHeight ? dividerHeight + dividerHeightUnit : undefined,
        width: dividerWidth ? dividerWidth + dividerWidthUnit : undefined,
-       borderWidth: dividerThickness ? dividerThickness + dividerThicknessUnit : undefined,
+       borderWidth: dividerThickness ? dividerThickness + dividerThicknessUnit : '1px',
        display: isHidden ? 'none' : undefined,
        borderRadius: isRounded ? '2rem' : undefined,
        position: isBehindTheSubtitle || contentDirection == 'row' ? 'absolute' : undefined,
@@ -147,25 +147,30 @@ class Divider extends Component {
        order: dividerOrder,
      }
 
-     console.log(this.isMultipleValue);
-     const buildDivider = () => {
-       console.log('from buildDivider', this.props);
-       console.log('inside buildDivider');
-       console.log(this.props.attributes.isMultiple);
-       if(isMultiple){
-         console.log('building divider');
+     const buildDivider = (
+     /*1*/a = isMultiple,
+     /*2*/align = dividerAlignment,
+     /*3*/rounded = isRounded,
+     /*4*/widthUnit = dividerWidthUnit,
+     /*5*/width = dividerWidth,
+     /*6*/thickness = dividerThickness,
+     /*7*/thicknessUnit = dividerThicknessUnit,
+     /*8*/height = dividerHeight,
+     /*9*/heightUnit = dividerHeightUnit,
+     /*10*/colour = dividerColor
+      ) => {
+       if(a){
          let div = `<div class="test"
-         style="border:${dividerColorValue ? '1px solid ' + dividerColorValue : '1px solid rgb(152,152,152)'};
-         margin:${dividerAlignmentValue};
-         border-color:${dividerColorValue};
-         height:${dividerHeightValue ? dividerHeightValue + dividerHeightUnitValue : ''};
-         width:${dividerWidthUnitValue ? dividerWidthValue != 0 ? dividerWidthValue + dividerWidthUnitValue : '' : ''};
-         border-width:${dividerThicknessValue ? dividerThicknessValue + dividerThicknessUnitValue : ''};
+         style="border:${colour ? '1px solid ' + colour : '1px solid rgb(152,152,152)'};
+         margin:${align};
+         border-color:${colour};
+         height:${height ? height + dividerHeightUnitValue : ''};
+         width:${widthUnit ? width != 0 ? width + widthUnit : '' : ''};
+         border-width:${thickness ? thickness + dividerThicknessUnitValue : ''};
+         border-radius:${rounded ? '2rem' : '' };
          display:${isHidden ? 'none' : ''};
-         border-radius:${isRounded ? '2rem' : ''};
          ">`;
          setAttributes({additionalDivider: div });
-         console.log('done building the divider');
          return div;
       }else{
         setAttributes({additionalDivider: '' });
@@ -192,14 +197,14 @@ class Divider extends Component {
         <AccordionItemPanel>
         <PanelBody>
           <HideDivider {...this.props}/>
-          <VerticalDivider {...this.props}/>
-          <RoundedDivider {...this.props}/>
-          <AlignDivider {...this.props}/>
+          <VerticalDivider {...this.props} buildDivider={buildDivider}/>
+          <RoundedDivider {...this.props} buildDivider={buildDivider}/>
+          <AdditionalDivider {...this.props} buildDivider={buildDivider}/>
+          <AlignDivider {...this.props} buildDivider={buildDivider}/>
           <DividerPosition {...this.props}/>
           <DividerWidth {...this.props} buildDivider={buildDivider}/>
-          <DividerHeight {...this.props}/>
-          <DividerColor {...this.props}/>
-          <AdditionalDivider {...this.props} buildDivider={buildDivider}/>
+          <DividerHeight {...this.props} buildDivider={buildDivider}/>
+          <DividerColor {...this.props} buildDivider={buildDivider}/>
           </PanelBody>
         </AccordionItemPanel>
 

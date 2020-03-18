@@ -22,10 +22,11 @@ export const VerticalDivider = ( props ) => {
       setAttributes({isVertical: value});
       if (value) {
         setAttributes({dividerHeight: dividerWidth, dividerWidth: 1});
+        props.buildDivider(undefined,undefined,undefined,undefined,1,undefined,undefined,dividerWidth)
       } else {
         setAttributes({dividerWidth: dividerHeight, dividerHeight: 0});
+        props.buildDivider(undefined,undefined,undefined,undefined,dividerHeight,undefined,undefined,0)
       }
-      this.buildDivider;
     }
 
     return (<ToggleControl label={__('Vertical Divider', 'gutenberg-extra')} id='gx-block-style' checked={isVertical} onChange={onChangeDirection}/>)

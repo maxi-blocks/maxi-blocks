@@ -19,12 +19,16 @@ export const RoundedDivider = ( props ) => {
       setAttributes,
   } = props;
 
+  const onChangeRounded = (value) => {
+    setAttributes({isRounded: value});
+    props.buildDivider(undefined,undefined,value);
+  }
   return (
     <ToggleControl
       label={__('Rounded Divider', 'gutenberg-extra')}
       id='gx-block-style'
       checked={isRounded}
-      onChange={(value) => setAttributes({isRounded: value})}
+      onChange={ onChangeRounded }
     />
   )
 }

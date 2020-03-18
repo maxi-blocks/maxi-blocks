@@ -22,7 +22,7 @@ export const DividerColor = ( props ) => {
    const onChangeDividerColor = (value) => {
     setAttributes({ dividerColor: value });
     this.dividerColorValue = value;
-    this.buildDivider;
+    props.buildDivider(undefined,undefined,undefined,undefined,undefined,undefined,undefined, undefined, undefined,value);
    }
 
   return (

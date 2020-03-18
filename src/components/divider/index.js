@@ -189,7 +189,7 @@ class Divider extends Component {
           allowZeroExpanded = {true}
       >
       <AccordionItem>
-          <AccordionItemHeading className={'gx-accordion-tab gx-typography-tab'}>
+          <AccordionItemHeading className={'gx-accordion-tab gx-divider-tab'}>
             <AccordionItemButton className='components-base-control__label'>
               {__('Divider', 'gutenberg-extra' )}
             </AccordionItemButton>

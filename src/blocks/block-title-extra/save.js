@@ -21,6 +21,7 @@ const {
 /**
  * External dependencies
  */
+ import classnames from 'classnames';
 
 import FontPopover from '../../components/font-popover/index';
 import {
@@ -94,12 +95,16 @@ const save = (props) => {
       isPreappendedToSubtitle,
       isAppendedToSubtitle,
       twoColumnDesc,
+      uniqueID,
       contentDirection
     },
   } = props;
 
   const linkOptions = JSON.parse(props.attributes.linkOptions)
-
+  let classes = classnames( className );
+      if ( uniqueID && (typeof uniqueID !== 'undefined') ) {
+          classes = classnames( classes, uniqueID )
+      }
   const linkStyles = setLinkStyles(props);
   const descriptionStyles = setDescriptionStyles(props);
   const buttonStyles = setButtonStyles(props);
@@ -132,7 +137,7 @@ const save = (props) => {
 
   const containerStyles = {
     display: 'flex',
-    flexDirection: contentDirection 
+    flexDirection: contentDirection
   };
 
   const textStyles = {

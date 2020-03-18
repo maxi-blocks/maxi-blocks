@@ -184,8 +184,6 @@ export default class DimensionsControl extends Component {
 			new BackEndResponsiveStyles(getMeta());
 		}
 
-		saveAndSend();
-
 		return (
 			<Fragment>
 				<div className={classes}>
@@ -330,7 +328,7 @@ export default class DimensionsControl extends Component {
 														data-device-type={device}
 														isSmall
 													>
-														{!!this.values[device].sync ? icons.sync : icons.notsync}
+														{!!this.values[device].sync ? icons.sync : icons.sync}
 													</Button>
 												</Tooltip>
 											</div>

@@ -25,8 +25,8 @@ const {
     Dropdown,
 } = wp.components;
 const {
-	dispatch,
-	select
+    dispatch,
+    select
 } = wp.data;
 
 export const typographyAttributes = {
@@ -78,12 +78,13 @@ export default class Typography extends Component {
         };
 
         const getKey = (obj, target) => {
-			return Object.keys(obj)[target];
-		}
+            return Object.keys(obj)[target];
+        }
 
         const onChangeValue = (newValue, target) => {
             if (target == 'font') {
-                value.font = newValue;
+                value.font = newValue.value;
+                value.options = newValue.files;
             }
             else {
                 value[device][getKey(value[device], target)] = newValue;
@@ -92,46 +93,46 @@ export default class Typography extends Component {
         }
 
         /**
-		* Retrieves the old meta data
-		*/
-		const getMeta = () => {
-			let meta = select('core/editor').getEditedPostAttribute('meta')._gutenberg_extra_responsive_styles;
-			return meta ? JSON.parse(meta) : {};
-		}
+        * Retrieves the old meta data
+        */
+        const getMeta = () => {
+            let meta = select('core/editor').getEditedPostAttribute('meta')._gutenberg_extra_responsive_styles;
+            return meta ? JSON.parse(meta) : {};
+        }
 
-		/**
-		 * Retrieve the target for responsive CSS
-		 */
-		const getTarget = () => {
-			let styleTarget = select('core/block-editor').getBlockAttributes(select('core/block-editor').getSelectedBlockClientId()).uniqueID;
-			styleTarget = `${styleTarget}${target.length > 0 ? `__$${target}` : '' }`;
-			return styleTarget;
-		}
+        /**
+         * Retrieve the target for responsive CSS
+         */
+        const getTarget = () => {
+            let styleTarget = select('core/block-editor').getBlockAttributes(select('core/block-editor').getSelectedBlockClientId()).uniqueID;
+            styleTarget = `${styleTarget}${target.length > 0 ? `__$${target}` : '' }`;
+            return styleTarget;
+        }
 
-		/**
-		* Creates a new object that 
-		*
-		* @param {string} target	Block attribute: uniqueID
-		* @param {obj} meta		Old and saved metadate
-		* @param {obj} value	New values to add
-		*/
-		const metaValue = () => {
-			const meta = getMeta();
-			const styleTarget = getTarget();
-			const responsiveStyle = new ResponsiveStylesResolver(styleTarget, meta, value);
-			const response = JSON.stringify(responsiveStyle.getNewValue);
+        /**
+        * Creates a new object that
+        *
+        * @param {string} target    Block attribute: uniqueID
+        * @param {obj} meta     Old and saved metadate
+        * @param {obj} value    New values to add
+        */
+        const metaValue = () => {
+            const meta = getMeta();
+            const styleTarget = getTarget();
+            const responsiveStyle = new ResponsiveStylesResolver(styleTarget, meta, value);
+            const response = JSON.stringify(responsiveStyle.getNewValue);
             return response;
-		}
+        }
 
-		/**
-		* Saves and send the data. Also refresh the styles on Editor
-		*/
+        /**
+        * Saves and send the data. Also refresh the styles on Editor
+        */
         const saveAndSend = () => {
             onChange(JSON.stringify(value));
             dispatch('core/editor').editPost({
-				meta: {
-					_gutenberg_extra_responsive_styles: metaValue(),
-				},
+                meta: {
+                    _gutenberg_extra_responsive_styles: metaValue(),
+                },
             });
         new BackEndResponsiveStyles(getMeta());
         }

@@ -5,6 +5,7 @@ $base-blue-color: #00ccff;
 .components-panel__body {
 	.components-gx-dimensions-control {
 		position: relative;
+		margin-bottom: 20px;
 
 		&__mobile-controls-item {
 			border-radius: 3px 0 0 3px;
@@ -19,7 +20,7 @@ $base-blue-color: #00ccff;
 			position: absolute;
 			text-align: center;
 			text-shadow: none;
-			top: 45px;
+			top: 35px;
 			width: 26px;
 			z-index: 1;
 
@@ -53,7 +54,12 @@ $base-blue-color: #00ccff;
 			}
 		}
 
-		.components-button.is-default {
+		.components-gx-dimensions-control__header {
+			margin-bottom: 5px;
+		}
+
+		.components-button.is-default,
+		.components-button.is-small {
 			color: $base-color !important;
 			border-color:$base-bg-color!important;
 			font-size: 16px;

@@ -4,7 +4,7 @@
 
 /**
  * Font Popover component
- *  
+ *
  * @version 0.1
  */
 
@@ -19,16 +19,16 @@ import './editor.scss';
  */
 
 const { __ } = wp.i18n;
-const { 
-    BaseControl, 
+const {
+    BaseControl,
     Button,
     RadioControl,
     RangeControl,
     Dropdown,
 } = wp.components;
-const { 
-    Fragment, 
-    Component 
+const {
+    Fragment,
+    Component
 } = wp.element;
 
 /**
@@ -92,7 +92,7 @@ export default class FontPopover extends Component {
                             </Button>
                         )}
                         popoverProps={
-                            {                           
+                            {
                                 className: classNamePopover,
                                 noArrow: true,
                                 position: "center"

@@ -7,7 +7,11 @@ const { createHigherOrderComponent } = wp.compose;
 /**
  * External Dependencies
  */
-import { uniqueId } from 'lodash';
+import {
+	uniqueId,
+	isEmpty,
+	isNil,
+} from 'lodash';
 
 /**
  * General
@@ -24,7 +28,7 @@ function addAttributes( settings ) {
 	// Add custom selector/id
 	if ( allowedBlocks.includes( settings.name ) && typeof settings.attributes !== 'undefined' ) {
 		settings.attributes = Object.assign( settings.attributes, {
-			uniqueID: { 
+			uniqueID: {
 				type: 'string',
 			},
 		} );
@@ -42,12 +46,14 @@ function addAttributes( settings ) {
 const withAttributes = createHigherOrderComponent(
 	BlockEdit => props => {
 		const { name: blockName } = props;
-		
+
 		if ( allowedBlocks.includes( blockName ) ) {
 			props.attributes.uniqueID = props.attributes.uniqueID || '';
 
 			if ( props.attributes.uniqueID === '' ) {
-				const newID = uniqueId(blockName.replace('gutenberg-extra/','') + '-');
+				let newID = uniqueId(blockName.replace('gutenberg-extra/','') + '-');
+				if ( !isEmpty(document.getElementsByClassName(newID)) || !isNil(document.getElementById(newID)) )
+					newID = uniqueId(blockName.replace('gutenberg-extra/','') + '-');
 				props.attributes.uniqueID = newID;
 			}
 		}

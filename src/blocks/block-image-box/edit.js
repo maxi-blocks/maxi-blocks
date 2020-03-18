@@ -14,7 +14,9 @@ const {
     Button,
     IconButton,
     Popover,
-    BaseControl
+    BaseControl,
+    RadioControl,
+    Text
 } = wp.components;
 const {
     InspectorControls,

@@ -205,7 +205,7 @@ function abInsertLayoutAdmin() {
                 } //f (!$(this).parents('div.components-panel__body').hasClass('gx-controls'))
              });//$('.components-panel__body').each(function()
 
-            $('.gx-borderRadius-dimensions-control:not(.gx-chaged)').each(function() {
+            $('.components-gx-dimensions-control.gx-Border:not(.gx-chaged)').each(function() {
                 $(this).find('.components-gx-dimensions-control__number-label:first-child').text('Top Left');
                 $(this).find('.components-gx-dimensions-control__number-label:nth-child(2)').text('Top Right');
                 $(this).find('.components-gx-dimensions-control__number-label:nth-child(3)').text('Bottom Right');

@@ -27,7 +27,7 @@ import FontPopover from '../../components/font-popover/index';
 import { BlockStyles } from '../../components/block-styles/index';
 import { ImagePosition } from '../../components/image-position/index';
 import { FontLevel } from '../../components/font-level/index';
-import { LinkOptions } from '../../components/link-options/index';
+import { LinkOptions, Link } from '../../components/link-options/index';
 import { BlockBorder } from '../../components/block-border/index';
 import { SizeControl } from '../../components/size-control/index';
 import { HoverAnimation } from '../../components/hover-animation/index';
@@ -70,7 +70,8 @@ const edit = (props) => {
             uniqueID,
             padding,
             margin,
-            fontOptions
+            fontOptions,
+            linkOptions
         },
         setAttributes,
     } = props;
@@ -80,7 +81,7 @@ const edit = (props) => {
         classes = classnames(classes, uniqueID)
     }
 
-    const linkOptions = JSON.parse(props.attributes.linkOptions)
+    //const linkOptions = JSON.parse(props.attributes.linkOptions)
 
     const linkStyles = setLinkStyles(props);
     const titleStyles = setTitleStyles(props);

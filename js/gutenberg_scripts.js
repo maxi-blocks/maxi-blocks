@@ -265,30 +265,41 @@ class ResponsiveStylesResolver {
     objectManipulator() {
         let newObject = {};
 
-        // On Dimension Control component object
-        if (this.object.unit) {
-            newObject.label = this.object.label;
-            newObject = this.devicesObjectManipulator(newObject, 'desktop');
-            newObject = this.devicesObjectManipulator(newObject, 'tablet');
-            newObject = this.devicesObjectManipulator(newObject, 'mobile');
-        }
+        newObject.label = this.object.label;
+        newObject = this.generalObjectManipulator(newObject, 'general');
+        newObject = this.devicesObjectManipulator(newObject, 'desktop');
+        newObject = this.devicesObjectManipulator(newObject, 'tablet');
+        newObject = this.devicesObjectManipulator(newObject, 'mobile');
         // On Typography component object
         if (this.object.font) {
-            newObject.label = this.object.label;
             newObject.font = this.object.font;
             newObject.options = this.object.options;
-            newObject = this.devicesObjectManipulator(newObject, 'desktop');
-            newObject = this.devicesObjectManipulator(newObject, 'tablet');
-            newObject = this.devicesObjectManipulator(newObject, 'mobile');
+        }
+
+        return newObject;
+    }
+
+    generalObjectManipulator(newObject, value) {
+        if (typeof this.object[value] === 'undefined') {
+            return newObject;
+        }
+        newObject['desktop'] = {};
+        for (let [target, prop] of Object.entries(this.object[value])) {
+            newObject['desktop'][target] = prop;
         }
 
         return newObject;
     }
 
     devicesObjectManipulator(newObject, device) {
-        newObject[device] = {};
+        if (typeof this.object[device] === 'undefined') {
+            return newObject;
+        }
+        if (typeof newObject[device] === 'undefined' )
+            newObject[device] = {};
         let unitChecker = '';
         let unit = this.object.unit ? this.object.unit : '';
+
         for (let [target, prop] of Object.entries(this.object[device])) {
             // values with dimensions
             if (target != 'sync' && prop != 0 || unitChecker.indexOf(target) == 0 && prop != 0)
@@ -303,6 +314,7 @@ class ResponsiveStylesResolver {
             if (prop.length > 2)
                 newObject[device][target] = prop;
         }
+
         return newObject;
     }
 
@@ -360,7 +372,7 @@ class BackEndResponsiveStyles {
         for (let [target, prop] of Object.entries(this.meta)) {
             target = target.replace('__$', ' .');
             for (let value of Object.values(prop)) {
-                if (Object.entries(value.desktop).length != 0 || value.hasOwnProperty('font')) {
+                if ((typeof value.desktop != 'undefined' && Object.entries(value.desktop).length != 0) || value.hasOwnProperty('font')) {
                     content += `.${target}{`;
                     content += this.getResponsiveStyles(value.desktop);
                     if (value.hasOwnProperty('font')) {
@@ -368,12 +380,12 @@ class BackEndResponsiveStyles {
                     }
                     content += '}';
                 }
-                if (Object.entries(value.tablet).length != 0) {
+                if (typeof value.tablet != 'undefined' && Object.entries(value.tablet).length != 0) {
                     content += `@media only screen and (max-width: 768px){.${target}{`;
                     content += this.getResponsiveStyles(value.tablet);
                     content += '}}';
                 }
-                if (Object.entries(value.mobile).length != 0) {
+                if (typeof value.mobile != 'undefined' && Object.entries(value.mobile).length != 0) {
                     content += `@media only screen and (max-width: 768px){.${target}{`;
                     content += this.getResponsiveStyles(value.mobile);
                     content += '}}';

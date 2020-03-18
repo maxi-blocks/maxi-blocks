@@ -12,7 +12,7 @@ import { uniqueId } from 'lodash';
 /**
  * General
  */
-const allowedBlocks = [ 'gutenberg-extra/block-image-box' ];
+const allowedBlocks = [ 'gutenberg-extra/block-image-box', 'gutenberg-extra/block-title-extra' ];
 
 /**
  * Filters registered block settings, extending attributes with settings
@@ -24,7 +24,7 @@ function addAttributes( settings ) {
 	// Add custom selector/id
 	if ( allowedBlocks.includes( settings.name ) && typeof settings.attributes !== 'undefined' ) {
 		settings.attributes = Object.assign( settings.attributes, {
-			uniqueID: { 
+			uniqueID: {
 				type: 'string',
 			},
 		} );
@@ -42,7 +42,7 @@ function addAttributes( settings ) {
 const withAttributes = createHigherOrderComponent(
 	BlockEdit => props => {
 		const { name: blockName } = props;
-		
+
 		if ( allowedBlocks.includes( blockName ) ) {
 			props.attributes.uniqueID = props.attributes.uniqueID || '';
 

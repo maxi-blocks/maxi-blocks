@@ -20,7 +20,8 @@ const {
 /**
  * External dependencies
  */
-
+import classnames from 'classnames';
+import typographyIcon from './icon';
 import {
   BlockStyles
 } from '../../components/block-styles/index';
@@ -63,6 +64,7 @@ import { DescriptionColor } from '../../components/title-extra/description-color
 import { SubtitleAlign } from '../../components/title-extra/subtitle-align/index';
 import { TitleAlign } from '../../components/title-extra/title-align/index';
 import { DescriptionAlign } from '../../components/title-extra/description-align/index';
+import Typography from '../../components/typography/index';
 
 const edit = (props) => {
 
@@ -87,6 +89,7 @@ const edit = (props) => {
       buttonColor,
       buttonBgColor,
       titleLevel,
+      subtitleLevel,
       backgroundColor,
       backgroundGradient,
       blockStyle,
@@ -111,11 +114,18 @@ const edit = (props) => {
       isPreappendedToSubtitle,
       isAppendedToSubtitle,
       twoColumnDesc,
-      contentDirection
+      contentDirection,
+      uniqueID,
+      fontOptions
     },
     setAttributes,
   } = props;
-
+  console.log(fontOptions);
+    let classes = classnames(className);
+    if (className.indexOf(uniqueID) === -1) {
+        classes = classnames(classes, uniqueID)
+    }
+console.log(uniqueID);
   const linkOptions = JSON.parse(props.attributes.linkOptions)
   const linkStyles = setLinkStyles(props);
   const descriptionStyles = setDescriptionStyles(props);
@@ -133,7 +143,6 @@ const edit = (props) => {
     borderRadius: '5px',
     margin: isPreappendedToSubtitle ? '5px auto 5px ' + dividerWidth + dividerWidthUnit : isAppendedToSubtitle ? '5px '+ dividerWidth + dividerWidthUnit +' 5px auto'  : subtitleTextAlign,
     fontFamily: 'roboto',
-    fontSize:'12pt',
     color:subtitleColor,
     backgroundColor: subtitleBackgroundColor,
     width:'max-content',
@@ -164,11 +173,41 @@ const edit = (props) => {
   const gradients = "";
   const disableCustomGradients = false;
 
-
+  const Line = () => (
+    <hr
+        style={{
+        }}
+    />
+);
 
   return (
     <div>
     <InspectorControls>
+      <PanelBody className="gx-panel gx-image-setting gx-content-tab-setting" initialOpen={true} title={__('Image Settings', 'gutenberg-extra')}>
+          <BlockStyles {...props} />
+          <FontLevel
+              label={__('Title level', 'gutenberg-extra')}
+              value={titleLevel}
+              onChange={value => setAttributes({ titleLevel: value })}
+          />
+          <FontLevel
+              label={__('Subtitle level', 'gutenberg-extra')}
+              value={subtitleLevel}
+              onChange={value => setAttributes({ subtitleLevel: value })}
+          />
+      </PanelBody>
+
+      <PanelBody className="gx-panel gx-image-setting gx-content-tab-setting" initialOpen={true} title={__('Image Settings', 'gutenberg-extra')}>
+        <HideTitle {...props}/>
+        <HideSubtitle {...props}/>
+        <HideDescription {...props}/>
+        <TwoColumn {...props}/>
+        <Line/>
+        <ContentDirection {...props}/>
+        <SubtitleAlign {...props}/>
+        <TitleAlign {...props}/>
+        <DescriptionAlign {...props}/>
+      </PanelBody>
       <Accordion
           className = {'gx-style-tab-setting gx-accordion'}
           allowMultipleExpanded = {true}
@@ -177,24 +216,20 @@ const edit = (props) => {
       <AccordionItem>
         <AccordionItemHeading className={'gx-accordion-tab gx-typography-tab'}>
           <AccordionItemButton className='components-base-control__label'>
-            {__('Typography', 'gutenberg-extra' )}
+           {__('Typography', 'gutenberg-extra' )}
           </AccordionItemButton>
         </AccordionItemHeading>
         <AccordionItemPanel>
             <PanelBody className="gx-panel gx-color-setting gx-style-tab-setting" initialOpen={true} title={__('Colour settings', 'gutenberg-extra')}>
-              <HideTitle {...props}/>
-              <HideSubtitle {...props}/>
-              <HideDescription {...props}/>
-              <TwoColumn {...props}/>
-              <TitleTypography {...props}/>
-              <ContentDirection {...props}/>
+              <Typography
+                fontOptions={props.attributes.fontOptions}
+                onChange={value => { setAttributes({ fontOptions: value})}}
+                target="gx-title-extra-title"
+                  />
               <TitleColor {...props}/>
               <SubtitleColor {...props}/>
               <SubtitleBackgroundColor {...props}/>
               <DescriptionColor {...props}/>
-              <SubtitleAlign {...props}/>
-              <TitleAlign {...props}/>
-              <DescriptionAlign {...props}/>
             </PanelBody>
           </AccordionItemPanel>
         </AccordionItem>
@@ -206,18 +241,18 @@ const edit = (props) => {
       >
       <div style={{order:0}}>
       <RichText
-          tagName="p"
-          style={subtitleStyles}
-          placeholder={__('Write sub-title…', 'gutenberg-extra')}
-          value={subtitle}
-          onChange={(value) => setAttributes({ subtitle: value })}
-          className="gx-title-extra-subtitle"
+        tagName={subtitleLevel}
+        style={subtitleStyles}
+        placeholder={__('Write sub-title…', 'gutenberg-extra')}
+        value={subtitle}
+        onChange={(value) => setAttributes({ subtitle: value })}
+        className="gx-title-extra-subtitle"
       />
       </div>
       <div style={{order:3}} dangerouslySetInnerHTML={{ __html: additionalDivider}}/>
       <div style={{order:1}}>
       <RichText
-        tagName="p"
+        tagName={titleLevel}
         style={titleStyles}
         placeholder={__('Write title…', 'gutenberg-extra')}
         value={title}

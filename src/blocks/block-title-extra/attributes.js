@@ -15,6 +15,7 @@ import { descriptionColorAttributes } from '../../components/title-extra/descrip
 import { subtitleAlignAttributes } from '../../components/title-extra/subtitle-align/index';
 import { titleAlignAttributes } from '../../components/title-extra/title-align/index';
 import { descriptionAlignAttributes } from '../../components/title-extra/description-align/index';
+import { typographyAttributes } from '../../components/typography/index';
 
 const attributes = {
   title: {
@@ -40,6 +41,14 @@ const attributes = {
     type: 'boolean',
     default: false
   },
+  titleLevel: {
+      type: 'string',
+      default: 'h2'
+  },
+  subtitleLevel: {
+      type: 'string',
+      default: 'h6'
+  },
   ...blockStyleAttributes,
   ...linkOptionsAttributes,
   ...dividerAttributes,
@@ -55,7 +64,8 @@ const attributes = {
   ...subtitleBackgroundColorAttributes,
   ...subtitleAlignAttributes,
   ...titleAlignAttributes,
-  ...descriptionAlignAttributes
+  ...descriptionAlignAttributes,
+  ...typographyAttributes
 };
 
 export default attributes;

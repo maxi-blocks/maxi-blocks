@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 
+import icon from './icon';
 const { __ } = wp.i18n;
 const {
     PanelBody,
@@ -189,12 +190,12 @@ const edit = (props) => {
                 />
             </PanelBody>
             <PanelBody className="gx-panel gx-border-setting gx-style-tab-setting" initialOpen={true} title={__('Border settings', 'gutenberg-extra')}>
-                <BlockBorder 
-                    {...props} 
+                <BlockBorder
+                    {...props}
                 />
             </PanelBody>
             <PanelBody className="gx-panel gx-size-setting gx-style-tab-setting" initialOpen={true} title={__('Size Settings', 'gutenberg-extra')}>
-                <SizeControl 
+                <SizeControl
                     {...props}
                 />
             </PanelBody>

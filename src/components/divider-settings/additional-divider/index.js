@@ -15,28 +15,24 @@ export const additionalDividerAttributes = {
 
 export const AdditionalDivider = ( props ) => {
   const {
-    // isMultiple = props.attributes.isMultiple,
-    setAttributes,
+    isMultiple = props.attributes.isMultiple,
+    setAttributes
   } = props;
 
   const onChangeAdditional = (value) => {
-    console.log('from AdditionalDivider', props);
-    console.log(value);
-    props.isMultipleValue = value;
    setAttributes({isMultiple: value});
    if(value){
-     console.log('calling buildDivider');
+    props.buildDivider(value);
    }else{
     setAttributes({additionalDivider: ''});
    }
-   props.buildDivider();
   }
 
   return (
     <ToggleControl
       label={__('Additional Divider', 'gutenberg-extra')}
       id='gx-block-style'
-      checked={props.attributes.isMultiple}
+      checked={isMultiple}
       onChange={ onChangeAdditional }
     />
   )

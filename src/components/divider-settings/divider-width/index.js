@@ -26,26 +26,26 @@ export const DividerWidth = ( props ) => {
     dividerWidth = props.attributes.dividerWidth,
     isVertical = props.attributes.isVertical,
     dividerThickness = props.attributes.dividerThickness,
-    buildDivider = props.buildDivider,
     setAttributes,
   } = props;
 
    const onChangeDividerWidthUnit = (value) => {
       setAttributes({ dividerWidthUnit: value });
       this.dividerWidthUnitValue = value;
-      props.buildDivider();
+      props.buildDivider(undefined,undefined,undefined,value);
    }
 
    const onChangeDividerWidth = ( value ) => {
      if(isVertical){
        setAttributes({dividerThickness: value});
        this.dividerThicknessValue = value;
+       props.buildDivider(undefined,undefined,undefined,undefined,undefined,value);
      }else{
        setAttributes({ dividerWidth: value, dividerHeight: 0 });
        this.dividerWidthValue = value;
        this.dividerHeightValue = 0;
+       props.buildDivider(undefined,undefined,undefined,undefined,value,undefined,undefined,0);
      }
-     props.buildDivider();
    }
 
   return (

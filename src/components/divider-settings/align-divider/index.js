@@ -22,7 +22,7 @@ export const AlignDivider = ( props ) => {
   const onChangeDividerAlignment = (value) => {
      setAttributes({ dividerAlignment: value });
      this.dividerAlignmentValue = value;
-     this.buildDivider;
+     props.buildDivider(undefined, value);
   }
 
   return (

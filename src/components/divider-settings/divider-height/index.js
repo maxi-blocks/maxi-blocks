@@ -30,7 +30,7 @@ export const DividerHeight = ( props ) => {
   const onChangeDividerHeightValue = (value) => {
     setAttributes({dividerHeightUnit : value});
     this.dividerHeightUnitValue = value;
-    this.buildDivider;
+    props.buildDivider(undefined,undefined,undefined,undefined,undefined,undefined,undefined, undefined, value);
   }
 
   const onChangeDividerHeight = ( value ) => {
@@ -38,11 +38,12 @@ export const DividerHeight = ( props ) => {
      setAttributes({ dividerHeight: value, dividerWidth: 1 });
      this.dividerHeightValue = value;
      this.dividerWidthValue = 1;
+     props.buildDivider(undefined,undefined,undefined,undefined,1,undefined,undefined, value, undefined);
     }else{
      this.dividerThicknessValue = value;
      setAttributes({dividerThickness: value})
+     props.buildDivider(undefined,undefined,undefined,undefined,undefined,value,undefined, undefined, undefined);
     }
-    this.buildDivider;
   }
 
   return (

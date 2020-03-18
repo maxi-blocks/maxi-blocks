@@ -11,7 +11,7 @@ const {
 /**
  * External dependencies
  */
-
+import { Link } from '../../components/link-options/index';
 import {
     setLinkStyles,
     setTitleStyles,
@@ -41,7 +41,9 @@ const save = (props) => {
             blockStyle,
             defaultBlockStyle,
             titleFontFamily,
-            uniqueID
+            uniqueID,
+            linkOptions,
+            linkTitle
         },
     } = props;
 

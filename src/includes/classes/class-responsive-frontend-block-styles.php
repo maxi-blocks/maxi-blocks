@@ -69,17 +69,24 @@ class ResponsiveFrontendStyles {
                     $response[$target]['font'] = $props->font;
                     $response[$target]['options'] = $props->options;
                 endif;
-                foreach( $props->desktop as $prop => $value ) {
-                    $response[$target]['desktop'][$prop] = $value;
+                if (isset($props->desktop)) {
+                    foreach( $props->desktop as $prop => $value ) {
+                        $response[$target]['desktop'][$prop] = $value;
+                    }
                 }
-                foreach( $props->tablet as $prop => $value ) {
-                    $response[$target]['tablet'][$prop] = $value;
+                if (isset($props->tablet)) {
+                    foreach( $props->tablet as $prop => $value ) {
+                        $response[$target]['tablet'][$prop] = $value;
+                    }
                 }
-                foreach( $props->tablet as $prop => $value ) {
-                    $response[$target]['tablet'][$prop] = $value;
+                if (isset($props->mobile)) {
+                    foreach( $props->mobile as $prop => $value ) {
+                        $response[$target]['mobile'][$prop] = $value;
+                    }
                 }
             }
         }
+
         return $response;
     }
 
@@ -105,22 +112,22 @@ class ResponsiveFrontendStyles {
 
         foreach ( $meta as $target => $prop ) {
             $target = str_replace( '__$', ' .', $target );
-            if ( ! empty ($prop['desktop']) || ! isset($prop['font']) ) {
+            if ( isset($prop['desktop']) && !empty ($prop['desktop']) || ! isset($prop['font']) ) {
                 $response .= ".{$target}{";
-                    if ( isset($prop['font']) ) {
+                    if ( isset($prop['font']) )
                         $response .= "font-family: {$prop['font']};";
-                    }
-                    $response .= self::getResponsiveStyles($prop['desktop']);
+                    if (isset($prop['desktop']) && !empty ($prop['desktop']))
+                        $response .= self::getStyles($prop['desktop']);
                 $response .= '}';
             };
-            if ( ! empty ($prop['tablet']) ) {
+            if ( isset($prop['tablet']) && ! empty ($prop['tablet']) ) {
                 $response .= "@media only screen and (max-width: 768px) {.{$target}{";
-                    $response .= self::getResponsiveStyles($prop['tablet']);
+                    $response .= self::getStyles($prop['tablet']);
                 $response .= '}}';
             }
-            if ( ! empty ($prop['mobile']) ) {
+            if ( isset($prop['mobile']) && ! empty ($prop['mobile']) ) {
                 $response .= "@media only screen and (max-width: 480px) {.{$target}{";
-                    $response .= self::getResponsiveStyles($prop['mobile']);
+                    $response .= self::getStyles($prop['mobile']);
                 $response .= '}}';
             }
         }
@@ -131,7 +138,7 @@ class ResponsiveFrontendStyles {
     /**
      * Responsive styles
      */
-    public function getResponsiveStyles($styles) {
+    public function getStyles($styles) {
         $response = '';
         $important = is_admin() ? ' !important' : '';
         foreach ( $styles as $property => $value ) {

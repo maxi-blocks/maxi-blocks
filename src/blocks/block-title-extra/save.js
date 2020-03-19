@@ -154,7 +154,7 @@ const save = (props) => {
   const disableCustomGradients = false;
   return (
     <div
-      className={'gx-block gx-title-extra'}
+      className={'gx-block gx-title-extra ' + classes}
       style={containerStyles}
       >
       <div style={{order:0}}>

@@ -48,6 +48,11 @@ import { dividerWidthAttributes } from '../divider-settings/divider-width/index'
 import { dividerHeightAttributes } from '../divider-settings/divider-height/index';
 import { dividerColorAttributes } from '../divider-settings/divider-color/index';
 
+const Line = () => (
+  <hr/>
+);
+
+
 export const dividerAttributes = {
   dividerThicknessUnit:{
     type: 'string',
@@ -200,11 +205,14 @@ class Divider extends Component {
           <VerticalDivider {...this.props} buildDivider={buildDivider}/>
           <RoundedDivider {...this.props} buildDivider={buildDivider}/>
           <AdditionalDivider {...this.props} buildDivider={buildDivider}/>
+          <Line/>
           <AlignDivider {...this.props} buildDivider={buildDivider}/>
           <DividerPosition {...this.props}/>
+          <Line/>
+          <DividerColor {...this.props} buildDivider={buildDivider}/>
+          <Line/>
           <DividerWidth {...this.props} buildDivider={buildDivider}/>
           <DividerHeight {...this.props} buildDivider={buildDivider}/>
-          <DividerColor {...this.props} buildDivider={buildDivider}/>
           </PanelBody>
         </AccordionItemPanel>
 

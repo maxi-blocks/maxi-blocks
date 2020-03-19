@@ -48,7 +48,8 @@ export default class Typography extends Component {
             buttonText = __('Typography', 'gutenberg-extra'),
             fontOptions,
             onChange,
-            target = ''
+            target = '',
+            label
         } = this.props;
 
         const {
@@ -143,8 +144,9 @@ export default class Typography extends Component {
                     className={"gx-settings-button"}
                 >
                     <BaseControl.VisualLabel>
-                        {value.label}
+                        {label}
                     </BaseControl.VisualLabel>
+
                     <Dropdown
                         className={'gx-fontdropdown'}
                         renderToggle={({ isOpen, onToggle }) => (
@@ -167,6 +169,7 @@ export default class Typography extends Component {
                             <Fragment>
                                 <FontFamilySelector
                                     className={'gx-font-family-selector'}
+                                    label={__('Family', 'gutenberg-extra')}
                                     font={value.font}
                                     onChange={(value) => onChangeValue(value, 'font')}
                                 />
@@ -193,7 +196,7 @@ export default class Typography extends Component {
                                 />
                                 <RangeControl
                                     label={__('Size', 'gutenberg-extra')}
-                                    className={'gx-with-unit-control'}
+                                    className={'gx-with-unit-control gx-typography-control'}
                                     value={value[device][getKey(value[device], 1)]}
                                     onChange={value => onChangeValue(value, 1)}
                                     id={'size-control'}
@@ -214,7 +217,7 @@ export default class Typography extends Component {
                                 />
                                 <RangeControl
                                     label={__('Line Height', 'gutenberg-extra')}
-                                    className={'gx-with-unit-control'}
+                                    className={'gx-with-unit-control gx-typography-control'}
                                     value={value[device][getKey(value[device], 3)]}
                                     onChange={value => onChangeValue(value, 3)}
                                     min={0}
@@ -234,7 +237,7 @@ export default class Typography extends Component {
                                 />
                                 <RangeControl
                                     label={__('Letter Spacing', 'gutenberg-extra')}
-                                    className={'gx-with-unit-control'}
+                                    className={'gx-with-unit-control gx-typography-control'}
                                     value={value[device][getKey(value[device], 5)]}
                                     onChange={value => onChangeValue(value, 5)}
                                     min={0}

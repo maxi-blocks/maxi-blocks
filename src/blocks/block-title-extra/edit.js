@@ -41,7 +41,7 @@ import {
   setDescriptionStyles,
   setButtonStyles,
   setBlockStyles,
-} from '../block-image-box/data';
+} from '../block-title-extra/data';
 
 import {
     Accordion,
@@ -51,19 +51,18 @@ import {
     AccordionItemPanel,
 } from 'react-accessible-accordion';
 
-import { HideTitle } from '../../components/title-extra/hide-title/index';
-import { HideSubtitle } from '../../components/title-extra/hide-subtitle/index';
-import { HideDescription } from '../../components/title-extra/hide-description/index';
-import { TwoColumn } from '../../components/title-extra/two-column-description/index';
-import { TitleTypography } from '../../components/title-extra/title-typography/index';
-import { ContentDirection } from '../../components/title-extra/content-direction/index';
-import { TitleColor } from '../../components/title-extra/title-color/index';
-import { SubtitleColor } from '../../components/title-extra/subtitle-color/index';
-import { SubtitleBackgroundColor } from '../../components/title-extra/subtitle-background-color/index';
-import { DescriptionColor } from '../../components/title-extra/description-color/index';
-import { SubtitleAlign } from '../../components/title-extra/subtitle-align/index';
-import { TitleAlign } from '../../components/title-extra/title-align/index';
-import { DescriptionAlign } from '../../components/title-extra/description-align/index';
+import { HideTitle } from '../../components/hide-title/index';
+import { HideSubtitle } from '../../components/hide-subtitle/index';
+import { HideDescription } from '../../components/hide-description/index';
+import { TwoColumn } from '../../components/two-column-description/index';
+import { ContentDirection } from '../../components/content-direction/index';
+import { TitleColor } from '../../components/title-color/index';
+import { SubtitleColor } from '../../components/subtitle-color/index';
+import { SubtitleBackgroundColor } from '../../components/subtitle-background-color/index';
+import { DescriptionColor } from '../../components/description-color/index';
+import { SubtitleAlign } from '../../components/subtitle-align/index';
+import { TitleAlign } from '../../components/title-align/index';
+import { DescriptionAlign } from '../../components/description-align/index';
 import Typography from '../../components/typography/index';
 
 const edit = (props) => {
@@ -120,17 +119,17 @@ const edit = (props) => {
     },
     setAttributes,
   } = props;
-  console.log(fontOptions);
-    let classes = classnames(className);
-    if (className.indexOf(uniqueID) === -1) {
-        classes = classnames(classes, uniqueID)
-    }
-console.log(uniqueID);
+
+  let classes = classnames(className);
+  if (className.indexOf(uniqueID) === -1) {
+      classes = classnames(classes, uniqueID)
+  }
+
   const linkOptions = JSON.parse(props.attributes.linkOptions)
   const linkStyles = setLinkStyles(props);
   const descriptionStyles = setDescriptionStyles(props);
   const buttonStyles = setButtonStyles(props);
-  const blockStyles = setBlockStyles(props);
+
   const onSelectImage = (media) => {
     setAttributes({
       mediaURL: media.url,
@@ -174,10 +173,7 @@ console.log(uniqueID);
   const disableCustomGradients = false;
 
   const Line = () => (
-    <hr
-        style={{
-        }}
-    />
+    <hr/>
 );
 
   return (
@@ -224,7 +220,23 @@ console.log(uniqueID);
               <Typography
                 fontOptions={props.attributes.fontOptions}
                 onChange={value => { setAttributes({ fontOptions: value})}}
+                label={__('Title', 'gutenberg-extra')}
+                className="components-panel__body editor-panel-color-settings block-editor-panel-color-settings is-opened"
                 target="gx-title-extra-title"
+                  />
+              <Typography
+                fontOptions={props.attributes.fontOptions}
+                onChange={value => { setAttributes({ fontOptions: value})}}
+                label={__('Subtitle', 'gutenberg-extra')}
+                className="components-panel__body editor-panel-color-settings block-editor-panel-color-settings is-opened"
+                target="gx-title-extra-subtitle"
+                  />
+              <Typography
+                fontOptions={props.attributes.fontOptions}
+                onChange={value => { setAttributes({ fontOptions: value})}}
+                label={__('Description', 'gutenberg-extra')}
+                className="components-panel__body editor-panel-color-settings block-editor-panel-color-settings is-opened"
+                target="gx-title-extra-text"
                   />
               <TitleColor {...props}/>
               <SubtitleColor {...props}/>
@@ -236,7 +248,7 @@ console.log(uniqueID);
       </Accordion>
     </InspectorControls>
     <div
-      className={'gx-block gx-title-extra'}
+      className={'gx-block gx-title-extra ' + classes}
       style={containerStyles}
       >
       <div style={{order:0}}>

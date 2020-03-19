@@ -1,6 +1,6 @@
 /**
  * Font Family Selector component
- *  
+ *
  * @version 0.1
  */
 
@@ -9,7 +9,7 @@
  */
 
 const { __ } = wp.i18n;
-const { Button, Popover, Spinner } = wp.components;
+const { BaseControl, Button, Popover, Spinner } = wp.components;
 const { Component } = wp.element;
 
 
@@ -58,7 +58,8 @@ export default class FontFamilySelector extends Component {
         const {
             font,
             onChange,
-            className
+            className,
+            label,
         } = this.props;
 
         const selectFontFamilyStyles = {
@@ -70,8 +71,8 @@ export default class FontFamilySelector extends Component {
             indicatorsContainer: () => ({
                 display: 'none'
             }),
-            menu: () => ({ 
-                boxShadow: 'inset 0 1px 0 rgba(0, 0, 0, 0.1)' 
+            menu: () => ({
+                boxShadow: 'inset 0 1px 0 rgba(0, 0, 0, 0.1)'
             }),
             menuList: () => ({
                 maxHeight: '300px',
@@ -87,12 +88,23 @@ export default class FontFamilySelector extends Component {
 
         return (
             <div className={className}>
+                <BaseControl.VisualLabel>
+                    {label}
+                </BaseControl.VisualLabel>
+                <Button
+                  className="gx-font-family-reset-button components-button components-range-control__reset is-button is-default is-small"
+                  onClick={newFont => {
+                      onClick(newFont.default);
+                  }}
+                />
                 <Button
                     className='gx-font-family-selector-button'
                     onClick={this.onToggle}
                     aria-expanded={this.state.isVisible}
                     >
+                    <BaseControl.VisualLabel>
                     { font }
+                    </BaseControl.VisualLabel>
                     <ChevronDown />
                     { this.state.isVisible && (
                         <Popover
@@ -100,7 +112,7 @@ export default class FontFamilySelector extends Component {
                         noArrow={true}
                         >
                             <div className="gx-font-family-selector-content">
-                                { ! isNil (this.state.options ) && 
+                                { ! isNil (this.state.options ) &&
                                     <Select
                                         autoFocus
                                         backspaceRemovesValue={false}

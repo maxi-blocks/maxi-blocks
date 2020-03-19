@@ -1,12 +1,12 @@
 .gx-font-family-selector-button {
-    height: 45px;
+    height: 2.2rem;
     border-radius: 5px;
     background-color: rgba(33,141,250,0);
     border: 2px solid #dddfe1;
-    font-size: 20px;
+    font-size: 11pt;
     color: #464a53;
     font-weight: 500;
-    width: 100%;
+    width: 50%;
     margin-bottom: 8px;
 }
 
@@ -32,4 +32,30 @@
 
 .gx-font-family-selector-content input {
     box-shadow: none !important;
+}
+
+.gx-font-family-selector .components-base-control__label:not(span){
+  padding:10px;
+}
+
+.gx-font-family-selector span{
+  padding-top:6px;
+}
+
+
+.gx-font-family-selector{
+  display: flex;
+  justify-content: space-between;
+}
+
+.gx-font-family-reset-button{
+  margin:auto 5px 13px auto;
+}
+
+.components-button {
+  .gx-font-family-selector-button{
+    .components-base-control__label{
+      padding:0;
+    }
+  }
 }

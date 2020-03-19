@@ -1,0 +1,17 @@
+.gx-typography-control {
+  .components-base-control__field {
+    .components-button {
+      left: 51% !important;
+      top: -2px !important;
+    }
+  }
+}
+
+.gx-title-typography-setting .components-select-control__input{
+  max-width:100%;
+  width: 100%;
+}
+
+.gx-title-typography-setting .components-base-control__label{
+  width: 40%;
+}

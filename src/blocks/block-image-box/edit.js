@@ -38,7 +38,7 @@ import { BlockStyles } from '../../components/block-styles/index';
 import { ButtonStyles } from '../../components/button-styles/index';
 import { ImagePosition } from '../../components/image-position/index';
 import { FontLevel } from '../../components/font-level/index';
-import { LinkOptions} from '../../components/link-options/index';
+import { LinkOptions, Link } from '../../components/link-options/index';
 import { BlockBorder } from '../../components/block-border/index';
 import { SizeControl } from '../../components/size-control/index';
 import GradientPickerPopover from '../../components/gradient-picker/';
@@ -102,7 +102,8 @@ const edit = (props) => {
             isGradient,
             backgroundImage,
             defaultPalette,
-            fontOptions
+            fontOptions,
+            linkOptions
         },
         setAttributes,
     } = props;
@@ -112,7 +113,7 @@ const edit = (props) => {
         classes = classnames( classes, uniqueID )
     }
 
-    const linkOptions = JSON.parse(props.attributes.linkOptions);
+   // const linkOptions = JSON.parse(props.attributes.linkOptions);
 
     const linkStyles = setLinkStyles(props);
     const titleStyles = setTitleStyles(props);
@@ -158,12 +159,12 @@ const edit = (props) => {
             </PanelBody>
             <PanelBody className="gx-panel gx-link-setting gx-content-tab-setting" initialOpen={true} title={__('Link Settings', 'gutenberg-extra')}>
                 <LinkOptions
-                    label={__("Link's Title", 'gutenberg-extra')}
-                    value={linkTitle}
-                    onChangeLink={value => setAttributes({ linkTitle: value })}
-                    linkOptions={linkOptions}
-                    onChangeOptions={value => { setAttributes({ linkOptions: value }); }}
-                />
+                   label={__("Link's Title", 'gutenberg-extra')}
+                   value={linkTitle}
+                   onChangeLink={value => setAttributes({ linkTitle: value })}
+                   linkOptions={linkOptions}
+                   onChangeOptions={value => { setAttributes({ linkOptions: value }); }}
+               />
             </PanelBody>
             <Accordion
                 className = {'gx-style-tab-setting gx-accordion'}

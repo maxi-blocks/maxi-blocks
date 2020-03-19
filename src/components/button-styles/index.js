@@ -4,10 +4,11 @@ const {
     PanelColorSettings
 } = wp.blockEditor;
 
-import { RadioControl } from '@wordpress/components';
+import { RadioControl, SelectControl } from '@wordpress/components';
 import DimensionsControl from '../dimensions-control/index';
 import { dimensionsControlAttributesPadding } from '../dimensions-control/attributes';
 import { dimensionsControlAttributesMargin } from '../dimensions-control/attributes';
+import { BoxShadow } from '../box-shadow/index';
 
 export const buttonStyleAttributes = {
     buttonColor: {
@@ -30,6 +31,14 @@ export const buttonStyleAttributes = {
         type: 'string',
         default: 'normal',
     },
+    buttonBorderColor: {
+        type: 'string',
+        default: "",
+    },
+    buttonHoverBorderColor: {
+        type: 'string',
+        default: "",
+    },
     buttonPadding: {
         type: 'string',
         default: '{"label":"Padding","unit":"px","max":"1000","desktop":{"padding-top":10px,"padding-right":10px,"padding-bottom":10px,"padding-left":10px,"sync":true},"tablet":{"padding-top":10px,"padding-right":10px,"padding-bottom":10px,"padding-left":10px,"sync":true},"mobile":{"padding-top":10px,"padding-right":10px,"padding-bottom":10px,"padding-left":10px,"sync":true}}'
@@ -45,23 +54,57 @@ export const buttonStyleAttributes = {
     buttonHoverMargin: {
         type: 'string',
         default: '{"label":"Margin","unit":"px","max":"1000","desktop":{"margin-top":0,"margin-right":0,"margin-bottom":0,"margin-left":0,"sync":true},"tablet":{"margin-top":0,"margin-right":0,"margin-bottom":0,"margin-left":0,"sync":true},"mobile":{"margin-top":0,"margin-right":0,"margin-bottom":0,"margin-left":0,"sync":true}}'
+    },
+    buttonBorderType: {
+        type: 'string',
+        default: 'none',
+    },
+    buttonBorderRadius: {
+        type: 'string',
+        default: '{"label":"Border radius","unit":"px","max":"1000","desktop":{"button-top-left-radius":0,"button-top-right-radius":0,"button-bottom-right-radius":0,"button-bottom-left-radius":0,"sync":true},"tablet":{"button-top-left-radius":0,"button-top-right-radius":0,"button-bottom-right-radius":0,"button-bottom-left-radius":0,"sync":true},"mobile":{"button-top-left-radius":0,"button-top-right-radius":0,"button-bottom-right-radius":0,"button-bottom-left-radius":0,"sync":true}}'
+    },
+    buttonBorderWidth: {
+        type: 'string',
+        default: '{"label":"Border width","unit":"px","max":"1000","desktop":{"button-top-width":0,"button-right-width":0,"button-bottom-width":0,"button-left-width":0,"sync":true},"tablet":{"button-top-width":0,"button-right-width":0,"button-bottom-width":0,"button-left-width":0,"sync":true},"mobile":{"button-top-width":0,"button-right-width":0,"button-bottom-width":0,"button-left-width":0,"sync":true}}'
     }
 }
 
 export const ButtonStyles = ( props ) => {
-    const {
-           className,
-           attributes: {
-               buttonColor,
-               buttonBgColor,
-               normalHoverOption,
-               buttonMargin,
-               buttonPadding,
-               buttonHoverColor,
-               buttonHoverBgColor,
-           },
-           setAttributes,
-       } = props;
+   const {
+       buttonTextColorLabel = __('Text Colour', 'gutenberg-extra' ),
+       buttonColor = props.attributes.buttonColor,
+       buttonColorLabel = __('Border Colour', 'gutenberg-extra'),
+       buttonBorderTypeLabel = __("Border Type", 'gutenberg-extra'),
+       buttonBgColorLabel = __('Background Colour', 'gutenberg-extra' ),
+       buttonBorderTypeClassName = "gx-button--buttonBorder-type",
+       buttonBorderType = props.attributes.buttonBorderType,
+       buttonBorderTypeOptions = [
+           { label: 'None', value: 'none' },
+           { label: 'Dotted', value: 'dotted' },
+           { label: 'Dashed', value: 'dashed' },
+           { label: 'Solid', value: 'solid' },
+           { label: 'Double', value: 'double' },
+           { label: 'Groove', value: 'groove' },
+           { label: 'Ridge', value: 'ridge' },
+           { label: 'Inset', value: 'inset' },
+           { label: 'Outset', value: 'outset' },
+       ],
+       buttonBorderRadius = props.attributes.buttonBorderRadius,
+       buttonBorderWidth = props.attributes.buttonBorderWidth,
+       buttonBorderRadiusTarget = '',
+       buttonBorderWidthTarget = '',
+       buttonBgColor,
+       buttonMargin,
+       buttonPadding,
+       buttonHoverColor,
+       buttonHoverBgColor,
+       buttonBorderColor,
+       buttonHoverBorderColor,
+       setAttributes,
+       attributes: {
+        normalHoverOption,
+        }
+   } = props;
 
 
     const onSelectState = (value) => setAttributes({ normalHoverOption: value })
@@ -78,69 +121,90 @@ export const ButtonStyles = ( props ) => {
             onChange={value => setAttributes({ normalHoverOption: value })}
         />
         { normalHoverOption === 'normal' &&
+        <Fragment>
             <PanelColorSettings
-                title={__('Button Settings', 'gutenberg-extra' )}
                 className = 'gx-normal-hover-setting-normal'
                 colorSettings={[
                     {
                         value: buttonColor,
                         onChange: (value) => setAttributes({ buttonColor: value }),
-                        label: __('Text Colour', 'gutenberg-extra' ),
+                        label: buttonTextColorLabel,
                     },
                 ]}
             />
-        }
-        { normalHoverOption === 'normal' &&
             <PanelColorSettings
-                title={__('Button Settings', 'gutenberg-extra' )}
                 className = 'gx-normal-hover-setting-normal'
                 colorSettings={[
                     {
                         value: buttonBgColor,
                         onChange: (value) => setAttributes({ buttonBgColor: value }),
-                        label: __('Background Colour', 'gutenberg-extra' ),
+                        label: buttonBgColorLabel,
                     },
                 ]}
             />
-        }
-     {/*<DimensionsControl
-            value={buttonPadding}
-            onChange={value => setAttributes({ buttonPadding: value })}
-            target='.gx-image-box-read-more-text'
-        />
-        <DimensionsControl
-            value={buttonMargin}
-            onChange={value => setAttributes({ buttonMargin: value })}
-            target='.gx-image-box-read-more-text'
-        />
-    */}
-
-        { normalHoverOption === 'hover' &&
             <PanelColorSettings
-                title={__('Button Hover Settings', 'gutenberg-extra' )}
+                className = 'gx-normal-hover-setting-normal'
+                colorSettings={[
+                    {
+                        value: buttonBorderColor,
+                        onChange: (value) => setAttributes({ buttonBorderColor: value }),
+                        label: buttonColorLabel,
+                    },
+                ]}
+            />
+            </Fragment>
+        }
+        { normalHoverOption === 'hover' &&
+        <Fragment>
+            <PanelColorSettings
                 className = 'gx-normal-hover-setting-hover'
                 colorSettings={[
                     {
                         value: buttonHoverColor,
                         onChange: (value) => setAttributes({ buttonHoverColor: value }),
-                        label: __('Text Colour', 'gutenberg-extra' ),
+                        label: buttonTextColorLabel,
                     },
                 ]}
             />
-        }
-        { normalHoverOption === 'hover' &&
             <PanelColorSettings
-                title={__('Button Hover Settings', 'gutenberg-extra' )}
                 className = 'gx-normal-hover-setting-hover'
                 colorSettings={[
                     {
                         value: buttonHoverBgColor,
                         onChange: (value) => setAttributes({ buttonHoverBgColor: value }),
-                        label: __('Background Colour', 'gutenberg-extra' ),
+                        label: buttonBgColorLabel,
                     },
                 ]}
             />
+            <PanelColorSettings
+                className = 'gx-normal-hover-setting-hover'
+                colorSettings={[
+                    {
+                        value: buttonHoverBorderColor,
+                        onChange: (value) => setAttributes({ buttonHoverBorderColor: value }),
+                        label: buttonColorLabel,
+                    },
+                ]}
+            />
+            </Fragment>
         }
+        <SelectControl
+            label={buttonBorderTypeLabel}
+            className={buttonBorderTypeClassName}
+            value={buttonBorderType}
+            options={buttonBorderTypeOptions}
+            onChange={(value) => setAttributes({ buttonBorderType: value })}
+        />
+        <DimensionsControl
+            value={buttonBorderRadius}
+            onChange={value => setAttributes({buttonBorderRadius: value})}
+            target={buttonBorderRadiusTarget}
+        />
+        <DimensionsControl
+            value={buttonBorderWidth}
+            onChange={value => setAttributes({buttonBorderWidth: value})}
+            target={buttonBorderWidthTarget}
+        />
         </Fragment>
 
     )

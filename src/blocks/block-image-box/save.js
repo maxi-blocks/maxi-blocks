@@ -12,7 +12,7 @@ const {
 /**
  * External dependencies
  */
-
+ import { Link } from '../../components/link-options/index';
 import {
     setLinkStyles,
     setTitleStyles,
@@ -45,6 +45,8 @@ const save = ( props ) => {
             uniqueID,
             backgroundImage,
             backgroundGradient,
+            linkOptions,
+            linkTitle
         },
     } = props;
 
@@ -65,12 +67,11 @@ const save = ( props ) => {
         className= { 'gx-block ' + blockStyle+ ' gx-image-box ' + classes }
         data-gx_initial_block_class = {defaultBlockStyle}
         style={blockStyles}>
-            <a className="gx-image-box-link"
+            <Link value={readMoreLink}
+                linkOptions={linkOptions}
+                className="gx-image-box-link"
                 style={linkStyles}
-                href={ readMoreLink}
-                title={ title }
-                target={ opensInNewWindow ? '_blank' : '_self' }
-                rel= { (addNofollow ? 'nofollow ' : '') + (addNoreferrer ? 'noreferrer ' : '')  + (addNoopener ? 'noopener ' : '') + (addSponsored ? 'sponsored ' : '') + (addUgc ? 'ugc' : '')}
+                title={linkTitle}
             >
 
             {
@@ -94,7 +95,7 @@ const save = ( props ) => {
                 value={ readMoreText }
             />
             </div>
-            </a>
+            </Link>
 
         </div>
     );

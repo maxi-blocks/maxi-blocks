@@ -51,15 +51,12 @@ const attributes = {
     },
     readMoreText: {
         type: 'string',
-        source: 'attribute',
-        selector: 'a.gx-image-box-link',
-        attribute: 'href',
+        selector: 'span.gx-image-box-read-more-text',
     },
     readMoreLink: {
         type: 'string',
-        source: 'attribute',
         selector: 'a.gx-image-box-link',
-        attribute: 'href',
+        attribute: 'href'
     },
     counter: {
         type: 'bool',

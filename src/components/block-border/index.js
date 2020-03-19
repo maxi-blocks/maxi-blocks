@@ -31,10 +31,12 @@ export const BlockBorder = (props) => {
     const {
         colorTitle = __('Color Settings', 'gutenberg-extra'),
         borderColor = props.attributes.borderColor,
+        onChangeBorderColor = undefined,
         colorLabel = __('Border Colour', 'gutenberg-extra'),
         borderTypeLabel = __("Border Type", 'gutenberg-extra'),
         borderTypeClassName = "gx-border-type",
         borderType = props.attributes.borderType,
+        onChangeBorderType = undefined,
         borderTypeOptions = [
             { label: 'None', value: 'none' },
             { label: 'Dotted', value: 'dotted' },
@@ -47,11 +49,49 @@ export const BlockBorder = (props) => {
             { label: 'Outset', value: 'outset' },
         ],
         borderRadius = props.attributes.borderRadius,
+        onChangeBorderRadius = undefined,
         borderWidth = props.attributes.borderWidth,
+        onChangeBorderWidth = undefined,
         borderRadiusTarget = '',
         borderWidthTarget = '',
-        setAttributes
+        setAttributes,
     } = props;
+
+    const onBorderColorChange = value => {
+        if (typeof onChangeBorderColor != 'undefined' ) {
+            onChangeBorderColor(value);
+        }
+        else {
+            setAttributes({borderColor: value})
+        }
+    }
+
+    const onBorderTypeChange = value => {
+        if (typeof onChangeBorderType != 'undefined' ) {
+            onChangeBorderType(value);
+        }
+        else {
+            setAttributes({borderType: value})
+        }
+    }
+
+    const onBorderRadiusChange = value => {
+        if (typeof onChangeBorderRadius != 'undefined' ) {
+            onChangeBorderRadius(value);
+        }
+        else {
+            setAttributes({borderRadius: value})
+        }
+    }
+
+    const onBorderWidthChange = value => {
+        if (typeof onChangeBorderWidth != 'undefined' ) {
+            onChangeBorderWidth(value);
+        }
+        else {
+            setAttributes({borderWidth: value})
+        }
+    }
 
     return (
         <Fragment>
@@ -60,7 +100,7 @@ export const BlockBorder = (props) => {
                 colorSettings={[
                     {
                         value: borderColor,
-                        onChange: (value) => setAttributes({ borderColor: value }),
+                        onChange: value => onBorderColorChange(value),
                         label: colorLabel,
                     },
                 ]}
@@ -70,16 +110,16 @@ export const BlockBorder = (props) => {
                 className={borderTypeClassName}
                 value={borderType}
                 options={borderTypeOptions}
-                onChange={(value) => setAttributes({ borderType: value })}
+                onChange={value => onBorderTypeChange(value)}
             />
             <DimensionsControl
                 value={borderRadius}
-                onChange={value => setAttributes({borderRadius: value})}
+                onChange={value => onBorderRadiusChange(value)}
                 target={borderRadiusTarget}
             />
             <DimensionsControl
                 value={borderWidth}
-                onChange={value => setAttributes({borderWidth: value})}
+                onChange={value => onBorderWidthChange(value)}
                 target={borderWidthTarget}
             />
         </Fragment>

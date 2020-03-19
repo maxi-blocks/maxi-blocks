@@ -10,6 +10,7 @@ import {
     dimensionsControlAttributesPadding,
 } from '../../components/dimensions-control/attributes';
 import {typographyAttributes} from '../../components/typography';
+import {imageSettingsAttributes} from '../../components/image-settings';
 
 const attributes = {
     title: {
@@ -152,6 +153,7 @@ const attributes = {
     ...dimensionsControlAttributesMargin,
     ...dimensionsControlAttributesPadding,
     ...typographyAttributes,
+    ...imageSettingsAttributes
 }
 
 export default attributes;

@@ -53,19 +53,156 @@ export const sizeControlAttributes = {
 export const SizeControl = ( props ) => {
     const {
         maxWidthUnit = props.attributes.maxWidthUnit,
+        onChangeMaxWidthUnit = undefined,
         maxWidth = props.attributes.maxWidth,
+        onChangeMaxWidth = undefined,
         widthUnit = props.attributes.widthUnit,
+        onChangeWidthUnit = undefined,
         blockWidth = props.attributes.blockWidth,
+        onChangeBlockWidth = undefined,
         minWidthUnit = props.attributes.minWidthUnit,
+        onChangeMinWidthUnit = undefined,
         minWidth = props.attributes.minWidth,
+        onChangeMinWidth = undefined,
         maxHeightUnit = props.attributes.maxHeightUnit,
+        onChangeMaxHeightUnit = undefined,
         maxHeight = props.attributes.maxHeight,
+        onChangeMaxHeight = undefined,
         heightUnit = props.attributes.heightUnit,
+        onChangeHeightUnit = undefined,
         blockHeight = props.attributes.blockHeight,
+        onChangeBlockHeight = undefined,
         minHeightUnit = props.attributes.minHeightUnit,
+        onChangeMinHeightUnit = undefined,
         minHeight = props.attributes.minHeight,
+        onChangeMinHeight = undefined,
         setAttributes,
     } = props;
+
+    const onMaxWidthUnitChange = value => {
+        console.log(value)
+        if (typeof onChangeMaxWidthUnit != 'undefined' ) {
+            onChangeMaxWidthUnit(value);
+        }
+        else {
+            setAttributes({maxWidthUnit: value})
+        }
+    }
+
+    const onMaxWidthChange = value => {
+        if (typeof onChangeMaxWidth != 'undefined' ) {
+            onChangeMaxWidth(value);
+        }
+        else {
+            setAttributes({maxWidth: value})
+        }
+    }
+
+    const onWidthUnitChange = value => {
+        if (typeof onChangeWidthUnit != 'undefined' ) {
+            onChangeWidthUnit(value);
+        }
+        else {
+            setAttributes({widthUnit: value})
+        }
+    }
+
+    const onWidthChange = value => {
+        if (typeof onChangeWidth != 'undefined' ) {
+            onChangeWidth(value);
+        }
+        else {
+            setAttributes({width: value})
+        }
+    }
+
+    const onBlockWidthChange = value => {
+        if (typeof onChangeBlockWidth != 'undefined' ) {
+            onChangeBlockWidth(value);
+        }
+        else {
+            setAttributes({blockWidth: value})
+        }
+    }
+
+    const onMinWidthUnitChange = value => {
+        if (typeof onChangeMinWidthUnit != 'undefined' ) {
+            onChangeMinWidthUnit(value);
+        }
+        else {
+            setAttributes({minWidthUnit: value})
+        }
+    }
+
+
+    const onMinWidthChange = value => {
+        if (typeof onChangeMinWidth != 'undefined' ) {
+            onChangeMinWidth(value);
+        }
+        else {
+            setAttributes({minWidth: value})
+        }
+    }
+
+
+    const onMaxHeightUnitChange = value => {
+        if (typeof onChangeMaxHeightUnit != 'undefined' ) {
+            onChangeMaxHeightUnit(value);
+        }
+        else {
+            setAttributes({maxHeightUnit: value})
+        }
+    }
+
+
+    const onMaxHeightChange = value => {
+        if (typeof onChangeMaxHeight != 'undefined' ) {
+            onChangeMaxHeight(value);
+        }
+        else {
+            setAttributes({maxHeight: value})
+        }
+    }
+
+
+    const onHeightUnitChange = value => {
+        if (typeof onChangeHeightUnit != 'undefined' ) {
+            onChangeHeightUnit(value);
+        }
+        else {
+            setAttributes({heightUnit: value})
+        }
+    }
+
+
+    const onBlockHeightChange = value => {
+        if (typeof onChangeBlockHeight != 'undefined' ) {
+            onChangeBlockHeight(value);
+        }
+        else {
+            setAttributes({blockHeight: value})
+        }
+    }
+
+
+    const onMinHeightUnitChange = value => {
+        if (typeof onChangeMinHeightUnit != 'undefined' ) {
+            onChangeMinHeightUnit(value);
+        }
+        else {
+            setAttributes({minHeightUnit: value})
+        }
+    }
+
+
+    const onMinHeightChange = value => {
+        if (typeof onChangeMinHeight != 'undefined' ) {
+            onChangeMinHeight(value);
+        }
+        else {
+            setAttributes({minHeight: value})
+        }
+    }
 
     return (
         <Fragment>
@@ -78,13 +215,13 @@ export const SizeControl = ( props ) => {
                     { label: 'VW', value: 'vw' },
                     { label: '%', value: '%' },
                 ]}
-                onChange={(value) => setAttributes({ maxWidthUnit: value })}
+                onChange={value => onMaxWidthUnitChange(value)}
             />
             <RangeControl
                 label={__("Max Width", 'gutenberg-extra')}
                 className={'gx-with-unit-control'}
                 value={maxWidth}
-                onChange={(value) => setAttributes({ maxWidth: value })}
+                onChange={value => onMaxWidthChange(value)}
                 min={0}
                 allowReset={true}
                 initialPosition={0}
@@ -98,13 +235,13 @@ export const SizeControl = ( props ) => {
                     { label: 'VW', value: 'vw' },
                     { label: '%', value: '%' },
                 ]}
-                onChange={(value) => setAttributes({ widthUnit: value })}
+                onChange={value => onWidthUnitChange(value)}
             />
             <RangeControl
                 label={__("Width", 'gutenberg-extra')}
                 className={'gx-with-unit-control'}
                 value={blockWidth}
-                onChange={(value) => setAttributes({ blockWidth: value })}
+                onChange={value => onBlockWidthChange(value)}
                 min={0}
                 allowReset={true}
             />
@@ -117,13 +254,13 @@ export const SizeControl = ( props ) => {
                     { label: 'VW', value: 'vw' },
                     { label: '%', value: '%' },
                 ]}
-                onChange={(value) => setAttributes({ minWidthUnit: value })}
+                onChange={value => onMinWidthUnitChange(value)}
             />
             <RangeControl
                 label={__("Min Width", 'gutenberg-extra')}
                 className={'gx-with-unit-control'}
                 value={minWidth}
-                onChange={(value) => setAttributes({ minWidth: value })}
+                onChange={value => onMinWidthChange(value)}
                 min={0}
                 allowReset={true}
             />
@@ -136,13 +273,13 @@ export const SizeControl = ( props ) => {
                     { label: 'VH', value: 'vh' },
                     { label: '%', value: '%' },
                 ]}
-                onChange={(value) => setAttributes({ maxHeightUnit: value })}
+                onChange={value => onMaxHeightUnitChange(value)}
             />
             <RangeControl
                 label={__("Max Height", 'gutenberg-extra')}
                 className={'gx-with-unit-control'}
                 value={maxHeight}
-                onChange={(value) => setAttributes({ maxHeight: value })}
+                onChange={value => onMaxHeightChange(value)}
                 min={0}
                 allowReset={true}
             />
@@ -155,13 +292,13 @@ export const SizeControl = ( props ) => {
                     { label: 'VH', value: 'vh' },
                     { label: '%', value: '%' },
                 ]}
-                onChange={(value) => setAttributes({ heightUnit: value })}
+                onChange={value => onHeightUnitChange(value)}
             />
             <RangeControl
                 label={__("Height", 'gutenberg-extra')}
                 className={'gx-with-unit-control'}
                 value={blockHeight}
-                onChange={(value) => setAttributes({ blockHeight: value })}
+                onChange={value => onBlockHeightChange(value)}
                 allowReset={true}
             />
             <RadioControl
@@ -173,13 +310,13 @@ export const SizeControl = ( props ) => {
                     { label: 'VH', value: 'vh' },
                     { label: '%', value: '%' },
                 ]}
-                onChange={(value) => setAttributes({ minHeightUnit: value })}
+                onChange={value => onMinHeightUnitChange(value)}
             />
             <RangeControl
                 label={__("Min Height", 'gutenberg-extra')}
                 className={'gx-with-unit-control'}
                 value={minHeight}
-                onChange={(value) => setAttributes({ minHeight: value })}
+                onChange={value => onMinHeightChange(value)}
                 min={0}
                 allowReset={true}
             />

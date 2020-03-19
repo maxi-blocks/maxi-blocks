@@ -41,6 +41,7 @@ import {
     setBlockStyles,
 } from './data';
 import Typography from '../../components/typography/';
+import { ImageSettings } from '../../components/image-settings/';
 
 const edit = (props) => {
     const {
@@ -71,7 +72,8 @@ const edit = (props) => {
             padding,
             margin,
             fontOptions,
-            linkOptions
+            linkOptions,
+            imageSettings
         },
         setAttributes,
     } = props;
@@ -103,6 +105,9 @@ const edit = (props) => {
     return [
         <InspectorControls>
             <PanelBody className="gx-panel gx-image-setting gx-content-tab-setting" initialOpen={true} title={__('Image Settings', 'gutenberg-extra')}>
+                <ImageSettings 
+                    imageSettings={imageSettings}
+                />
                 <BlockStyles {...props} />
                 <ImagePosition {...props} />
             </PanelBody>
@@ -191,7 +196,7 @@ const edit = (props) => {
             </PanelBody>
             <PanelBody className="gx-panel gx-border-setting gx-style-tab-setting" initialOpen={true} title={__('Border settings', 'gutenberg-extra')}>
                 <BlockBorder 
-                    {...props} 
+                    {...props}
                 />
             </PanelBody>
             <PanelBody className="gx-panel gx-size-setting gx-style-tab-setting" initialOpen={true} title={__('Size Settings', 'gutenberg-extra')}>

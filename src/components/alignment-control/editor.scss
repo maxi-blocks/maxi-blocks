@@ -1,0 +1,45 @@
+.gx-sidebar div.gx-alignmentcontrol-control .components-base-control__label{
+    flex: 40%;
+}
+
+.gx-alignmentcontrol-control .components-button-group {
+    border: none;
+}
+
+.gx-alignmentcontrol-control .components-button svg {
+    fill: #464a53;
+}
+
+.components-button-group button.gx-alignmentcontrol-button {
+    height: 45px;
+    background-color: rgba(33,141,250,0);
+    border: 2px solid #dddfe1;
+    border-right-width: 1px;
+    font-size: 20px;
+    color: #464a53;
+    font-weight: 500;
+}
+
+button.gx-alignmentcontrol-button:first-of-type {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+button.gx-alignmentcontrol-button:last-of-type {
+    border-right-width: 2px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.components-button-group button.gx-alignmentcontrol-button.selected {
+    box-shadow: 0 0 0 2px #007cba;
+    outline: 1px solid transparent;
+    position: relative;
+    z-index: 1;
+}
+
+.components-button-group button.gx-alignmentcontrol-button:focus {
+    box-shadow: none;
+    outline: none;
+    z-index: 0;
+}

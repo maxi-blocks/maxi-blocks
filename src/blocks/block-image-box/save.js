@@ -65,12 +65,12 @@ const save = (props) => {
             data-gx_initial_block_class={defaultBlockStyle}
             style={blockStyles}
         >
-            <a className="gx-image-box-link"
+            <Link 
+                value={linkTitle}
+                linkOptions={linkOptions}
+                className="gx-image-box-link"
                 style={linkStyles}
-                href={readMoreLink}
                 title={title}
-                target={opensInNewWindow ? '_blank' : '_self'}
-                rel={(addNofollow ? 'nofollow ' : '') + (addNoreferrer ? 'noreferrer ' : '') + (addNoopener ? 'noopener ' : '') + (addSponsored ? 'sponsored ' : '') + (addUgc ? 'ugc' : '')}
             >
                 {mediaURL &&
                     <img
@@ -105,7 +105,7 @@ const save = (props) => {
                         value={readMoreText}
                     />
                 </div>
-            </a>
+            </Link>
         </div>
     );
 }

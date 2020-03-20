@@ -72,6 +72,7 @@ const save = (props) => {
       buttonColor,
       buttonBgColor,
       titleLevel,
+      subtitleLevel,
       backgroundColor,
       backgroundGradient,
       blockStyle,
@@ -163,7 +164,7 @@ const save = (props) => {
       >
       <div style={{order:0}}>
       <RichText.Content
-          tagName="p"
+          tagName={subtitleLevel}
           style={subtitleStyles}
           value={subtitle}
           className="gx-title-extra-subtitle"
@@ -172,7 +173,7 @@ const save = (props) => {
       <div style={{order:3}} dangerouslySetInnerHTML={{ __html: additionalDivider}}/>
         <div style={{order:1}}>
           <RichText.Content
-          tagName="p"
+            tagName={titleLevel}
             style={titleStyles}
             value={title}
             className="gx-title-extra-title"
@@ -183,7 +184,7 @@ const save = (props) => {
         />
       <div style={{order:3}}>
         <RichText.Content
-        tagName="p"
+          tagName="p"
           style={textStyles}
           value={text}
           className="gx-title-extra-text"

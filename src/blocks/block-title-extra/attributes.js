@@ -46,7 +46,7 @@ const attributes = {
   },
   subtitleLevel: {
       type: 'string',
-      default: 'h6'
+      default: 'h3'
   },
   ...blockStyleAttributes,
   ...linkOptionsAttributes,

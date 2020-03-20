@@ -152,7 +152,8 @@ const edit = (props) => {
     display: hideTitle ? 'none' : undefined,
     textAlign: titleTextAlign,
     fontFamily: 'roboto',
-    color:titleColor
+    color:titleColor,
+    minWidth: contentDirection == 'row' || contentDirection == 'row-reverse' ? '290px' : undefined
   };
 
   const containerStyles = {
@@ -166,7 +167,9 @@ const edit = (props) => {
     fontFamily: 'roboto',
     fontSize:'12pt',
     columnCount: twoColumnDesc ? '2' : undefined,
-    color:descriptionColor
+    color:descriptionColor,
+    marginTop: contentDirection == 'row' ? '48px' : undefined,
+    marginLeft: contentDirection == 'row' ? '20px' : undefined,
   }
 
   const gradients = "";
@@ -255,7 +258,7 @@ const edit = (props) => {
       <RichText
         tagName={subtitleLevel}
         style={subtitleStyles}
-        placeholder={__('Write sub-title…', 'gutenberg-extra')}
+        placeholder={__('Add a snappy sub heading', 'gutenberg-extra')}
         value={subtitle}
         onChange={(value) => setAttributes({ subtitle: value })}
         className="gx-title-extra-subtitle"
@@ -266,7 +269,7 @@ const edit = (props) => {
       <RichText
         tagName={titleLevel}
         style={titleStyles}
-        placeholder={__('Write title…', 'gutenberg-extra')}
+        placeholder={__('This is your aweseome title here...', 'gutenberg-extra')}
         value={title}
         onChange={(value) => setAttributes({ title: value })}
         className="gx-title-extra-title"
@@ -277,7 +280,7 @@ const edit = (props) => {
         <RichText
           tagName="p"
           style={textStyles}
-          placeholder={__('Write text…', 'gutenberg-extra')}
+          placeholder={__('Lorem ipsum..', 'gutenberg-extra')}
           value={text}
           onChange={(value) => setAttributes({ text: value })}
           className="gx-title-extra-text"

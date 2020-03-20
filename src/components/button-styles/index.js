@@ -8,7 +8,7 @@ import { RadioControl, SelectControl } from '@wordpress/components';
 import DimensionsControl from '../dimensions-control/index';
 import { dimensionsControlAttributesPadding } from '../dimensions-control/attributes';
 import { dimensionsControlAttributesMargin } from '../dimensions-control/attributes';
-import { BoxShadow } from '../box-shadow/index';
+import { BoxShadowOptions, BoxShadow } from '../box-shadow/index';
 
 export const buttonStyleAttributes = {
     buttonColor: {
@@ -66,6 +66,10 @@ export const buttonStyleAttributes = {
     buttonBorderWidth: {
         type: 'string',
         default: '{"label":"Border width","unit":"px","max":"1000","desktop":{"button-top-width":0,"button-right-width":0,"button-bottom-width":0,"button-left-width":0,"sync":true},"tablet":{"button-top-width":0,"button-right-width":0,"button-bottom-width":0,"button-left-width":0,"sync":true},"mobile":{"button-top-width":0,"button-right-width":0,"button-bottom-width":0,"button-left-width":0,"sync":true}}'
+    },
+    boxShadowOptions: {
+        type: 'string',
+        default: '{"shadowColor": "inherit", "shadowHorizontal": "0", "shadowVertical": "0", "shadowBlur": "0", "shadowSpread": "0"}',
     }
 }
 
@@ -107,7 +111,8 @@ export const ButtonStyles = ( props ) => {
    } = props;
 
 
-    const onSelectState = (value) => setAttributes({ normalHoverOption: value })
+    const onSelectState = (value) => setAttributes({ normalHoverOption: value });
+    const boxShadowOptions = JSON.parse(props.attributes.boxShadowOptions);
 
     return (
         <Fragment>
@@ -151,6 +156,10 @@ export const ButtonStyles = ( props ) => {
                         label: buttonColorLabel,
                     },
                 ]}
+            />
+             <BoxShadowOptions
+                boxShadowOptions={boxShadowOptions}
+                onChangeOptions={value => { setAttributes({ boxShadowOptions: value }); }}
             />
             </Fragment>
         }

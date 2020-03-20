@@ -1,137 +1,132 @@
 /**
- * Font Family Selector component
+ * Wordpress dependencies
  */
-
-/**
- * WordPress dependencies
- */
-
 const { __ } = wp.i18n;
-const { Component } = wp.element;
+const { Fragment } = wp.element;
+
 const {
-    Button,
-    Popover,
-    Spinner
-} = wp.components;
-const {
-    dispatch,
-    select
-} = wp.data;
+    PanelColorSettings
+} = wp.blockEditor;
+
+import { RangeControl } from '@wordpress/components';
+
+import {
+    setBoxShadowStyles
+} from './data';
+
+export const boxShadowOptionsAttributes = {
+    shadowColor: {
+        type: 'string',
+        default: 'inherit',
+    },
+    shadowHorizontal: {
+        type: 0,
+        default: 'inherit',
+    },
+    shadowVertical: {
+        type: 'number',
+        default: 0,
+    },
+    shadowBlur: {
+        type: 'number',
+        default: 0,
+    },
+    shadowSpread: {
+        type: 'number',
+        default: 0,
+    },
+}
+
+export const BoxShadowOptions = (props) => {
+    const {
+        value,
+        onChangeLink,
+        shadowSpread,
+        shadowColor,
+        shadowBlur,
+        shadowHorizontal,
+        shadowVertical,
+        onChangeOptions,
+        setAttributes,
+    } = props;
 
 
-/**
- * External dependencies
- */
+    return (
+        <Fragment>
+            <PanelColorSettings
+                className = 'gx-shadow-color'
+                colorSettings={[
+                    {
+                        value: shadowColor,
+                        onChange: (value) => setAttributes({ shadowColor: value }),
+                        label: __('Colour', 'gutenberg-extra'),
+                    },
+                ]}
+            />
+            <RangeControl
+                label={__('Horizontal', 'gutenberg-extra')}
+                className={'gx-shadow-horizontal-control'}
+                value={shadowHorizontal}
+                onChange={value => { setAttributes({ shadowHorizontal: value})}}
+                min={-100}
+                max={100}
+                allowReset={true}
+                initialPosition={0}
+            />
+            <RangeControl
+                label={__('Vertical', 'gutenberg-extra')}
+                className={'gx-shadow-vertical-control'}
+                value={shadowVertical}
+                onChange={value => { setAttributes({ shadowVertical: value})}}
+                min={-100}
+                max={100}
+                allowReset={true}
+                initialPosition={0}
+            />
+            <RangeControl
+                label={__('Blur', 'gutenberg-extra')}
+                className={'gx-shadow-blur-control'}
+                value={shadowBlur}
+                onChange={value => { setAttributes({ shadowBlur: value})}}
+                min={-100}
+                max={100}
+                allowReset={true}
+                initialPosition={0}
+            />
+            <RangeControl
+                label={__('Spread', 'gutenberg-extra')}
+                className={'gx-shadow-spread-control'}
+                value={shadowSpread}
+                onChange={value => { setAttributes({ shadowSpread: value})}}
+                min={-100}
+                max={100}
+                allowReset={true}
+                initialPosition={0}
+            />
+        </Fragment>
+    )
+}
 
-import Select from 'react-select';
-import { isNil } from 'lodash';
+export const BoxShadow = ({
+    value,
+    boxShadowOptions,
+    ...props
+}) => {
 
-/**
- * Component
- */
+    const values = JSON.parse(boxShadowOptions);
 
-export default class BoxShadow extends Component {
+    const getShadow = () => {
+        let response = 'boxShadow: ';
+        values.shadowColor ? response +=  (values.shadowColor + 'px') : null;
+        values.shadowHorizontal ? response += (values.shadowHorizontal + 'px') : null;
+        values.shadowVertical ? response += (values.shadowVertical + 'px') : null;
+        values.shadowBlur ? response += (values.shadowBlur + 'px'): null;
+        values.shadowSpread ? response += (values.shadowSpread + 'px'): null;
 
-   fonts = new FontFamilyResolver();
-
-    state = {
-        isVisible: false,
-        options: this.fonts.optionsGetter
+        return response.trim();
     }
 
-    render () {
-        const {
-            font,
-            onChange,
-            className
-        } = this.props;
-
-        const selectFontFamilyStyles = {
-            control: provided => ({
-                ...provided,
-                minWidth: 240,
-                margin: 8,
-            }),
-            indicatorsContainer: () => ({
-                display: 'none'
-            }),
-            menu: () => ({
-                boxShadow: 'inset 0 1px 0 rgba(0, 0, 0, 0.1)'
-            }),
-            menuList: () => ({
-                maxHeight: '300px',
-                overflowY: 'auto',
-                paddingBottom: '4px',
-                paddingTop: '4px',
-                position: 'relative',
-                webkitOverflowScrolling: 'touch',
-                boxSizing: 'border-box',
-                overflowX: 'hidden',
-            })
-        };
-
-        const onToggle = () => {
-            this.setState ( (state) => ({
-                isVisible: ! state.isVisible,
-            }))
-        }
-
-        const checkout = () => {
-            setTimeout(() => {
-                this.setState ( {
-                    options: this.fonts.optionsGetter
-                })
-            }, 2500);
-        }
-
-        const onFontChange = ( newFont ) => {
-            onChange(newFont);
-            this.fonts.loadFonts(newFont.value, newFont.files);
-        }
-
-        return (
-            <div className={className}>
-                <Button
-                    className='gx-font-family-selector-button'
-                    onClick={onToggle}
-                    aria-expanded={this.state.isVisible}
-                    >
-                    { font }
-                    <ChevronDown />
-                    { this.state.isVisible && (
-                        <Popover
-                        className="gx-shadow-selector-popover"
-                        noArrow={true}
-                        >
-                            <div className="gx-shadow-selector-content">
-                                { ! isNil (this.state.options ) &&
-                                    <Select
-                                        autoFocus
-                                        backspaceRemovesValue={false}
-                                        controlShouldRenderValue={false}
-                                        hideSelectedOptions={false}
-                                        isClearable={false}
-                                        menuIsOpen
-                                        onChange={onFontChange}
-                                        options={this.state.options}
-                                        placeholder={__("Search...", 'gutenberg-extra')}
-                                        styles={selectFontFamilyStyles}
-                                        tabSelectsValue={false}
-                                        value={font}
-                                        closeMenuOnSelect={true}
-                                    />
-                                }
-                                { isNil (this.state.options )
-                                    && checkout()
-                                }
-                                { isNil (this.state.options) &&
-                                    <Spinner />
-                                }
-                            </div>
-                        </Popover>
-                    ) }
-                </Button>
-            </div>
-        )
-    }
+    return(
+        getShadow()
+    )
 }

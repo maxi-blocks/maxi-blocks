@@ -28,25 +28,30 @@ const {
   ToggleControl
 } = wp.components;
 
-import { HideDivider } from '../divider-settings/hide-divider/index';
-import { VerticalDivider } from '../divider-settings/vertical-divider/index';
-import { RoundedDivider } from '../divider-settings/rounded-divider/index';
-import { AdditionalDivider } from '../divider-settings/additional-divider/index';
-import { AlignDivider } from '../divider-settings/align-divider/index';
-import { DividerPosition } from '../divider-settings/divider-position/index';
-import { DividerWidth } from '../divider-settings/divider-width/index';
-import { DividerHeight } from '../divider-settings/divider-height/index';
-import { DividerColor } from '../divider-settings/divider-color/index';
+import { HideDivider } from '../hide-divider/index';
+import { VerticalDivider } from '../vertical-divider/index';
+import { RoundedDivider } from '../rounded-divider/index';
+import { AdditionalDivider } from '../additional-divider/index';
+import { AlignDivider } from '../align-divider/index';
+import { DividerPosition } from '../divider-position/index';
+import { DividerWidth } from '../divider-width/index';
+import { DividerHeight } from '../divider-height/index';
+import { DividerColor } from '../divider-color/index';
 
-import { hideDividerAttributes } from '../divider-settings/hide-divider/index';
-import { verticalDividerAttributes } from '../divider-settings/vertical-divider/index';
-import { roundedDividerAttributes } from '../divider-settings/rounded-divider/index';
-import { additionalDividerAttributes} from '../divider-settings/additional-divider/index';
-import { alignDividerAttributes } from '../divider-settings/align-divider/index';
-import { dividerPositionAttributes } from '../divider-settings/divider-position/index';
-import { dividerWidthAttributes } from '../divider-settings/divider-width/index';
-import { dividerHeightAttributes } from '../divider-settings/divider-height/index';
-import { dividerColorAttributes } from '../divider-settings/divider-color/index';
+import { hideDividerAttributes } from '../hide-divider/index';
+import { verticalDividerAttributes } from '../vertical-divider/index';
+import { roundedDividerAttributes } from '../rounded-divider/index';
+import { additionalDividerAttributes} from '../additional-divider/index';
+import { alignDividerAttributes } from '../align-divider/index';
+import { dividerPositionAttributes } from '../divider-position/index';
+import { dividerWidthAttributes } from '../divider-width/index';
+import { dividerHeightAttributes } from '../divider-height/index';
+import { dividerColorAttributes } from '../divider-color/index';
+
+const Line = () => (
+  <hr/>
+);
+
 
 export const dividerAttributes = {
   dividerThicknessUnit:{
@@ -139,12 +144,14 @@ class Divider extends Component {
        top: isBehindTheSubtitle ? '1.5rem' : undefined,
        left: isBehindTheSubtitle ? dividerAlignment == 'auto' ? '0' : dividerAlignment == '0 auto 0 0' ? '0' : undefined  : undefined,
        right: isBehindTheSubtitle ? dividerAlignment == 'auto' ? '0' : dividerAlignment == '0 0 0 auto' ? '0' : undefined : undefined,
-       bottom: contentDirection == 'row' ? '0' : undefined,
+       bottom: contentDirection == 'row' || contentDirection == 'row-reverse' ? '10px' : undefined,
+       left: contentDirection == 'row' ? isVertical ? '300px' : undefined : undefined,
        zIndex: isBehindTheSubtitle ? -1 : undefined,
      };
 
      const dividerWrapperStyles = {
        order: dividerOrder,
+       position: contentDirection == 'row' || contentDirection == 'row-reverse' ? 'relative' : undefined
      }
 
      const buildDivider = (
@@ -189,7 +196,7 @@ class Divider extends Component {
           allowZeroExpanded = {true}
       >
       <AccordionItem>
-          <AccordionItemHeading className={'gx-accordion-tab gx-typography-tab'}>
+          <AccordionItemHeading className={'gx-accordion-tab gx-divider-tab'}>
             <AccordionItemButton className='components-base-control__label'>
               {__('Divider', 'gutenberg-extra' )}
             </AccordionItemButton>
@@ -200,11 +207,14 @@ class Divider extends Component {
           <VerticalDivider {...this.props} buildDivider={buildDivider}/>
           <RoundedDivider {...this.props} buildDivider={buildDivider}/>
           <AdditionalDivider {...this.props} buildDivider={buildDivider}/>
+          <Line/>
           <AlignDivider {...this.props} buildDivider={buildDivider}/>
           <DividerPosition {...this.props}/>
+          <Line/>
+          <DividerColor {...this.props} buildDivider={buildDivider}/>
+          <Line/>
           <DividerWidth {...this.props} buildDivider={buildDivider}/>
           <DividerHeight {...this.props} buildDivider={buildDivider}/>
-          <DividerColor {...this.props} buildDivider={buildDivider}/>
           </PanelBody>
         </AccordionItemPanel>
 

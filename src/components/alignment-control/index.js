@@ -2,11 +2,7 @@
  * Wordpress dependencies
  */
 const { __ } = wp.i18n;
-const { 
-    Button, 
-    ButtonGroup,
-    BaseControl,
-} = wp.components;
+const { RadioControl } = wp.components;
 
 /**
  * Styles and Icons
@@ -31,9 +27,6 @@ const AlignmentControl = props => {
     // } = props;
 
     const value = 'alignLeft';
-    const onChange = e => {
-        console.log (e)
-    }
 
     const getClassName = align => {
         let response = "gx-alignmentcontrol-button";
@@ -43,47 +36,19 @@ const AlignmentControl = props => {
         return response;
     }
 
-    const onClick = e => {
-        const value = e.target.value;
-        onChange(value);
-    }
-
     return (
-        <BaseControl
+        <RadioControl
             label={__('Alignment', 'gutenberg-extra')}
-            className="gx-alignmentcontrol-control"
-        >
-            <ButtonGroup>
-                <Button 
-                    className={getClassName('alignLeft')}
-                    value='alignLeft'
-                    onClick={onClick}
-                    >
-                    <Icon icon={alignLeft} />
-                </Button>
-                <Button 
-                    className={getClassName('alignCeter')}
-                    value='alignCenter'
-                    onClick={onClick}
-                    >
-                    <Icon icon={alignCenter} />
-                </Button>
-                <Button 
-                    className={getClassName('alignRight')}
-                    value='alignRight'
-                    onClick={onClick}
-                    >
-                    <Icon icon={alignRight} />
-                </Button>
-                <Button 
-                    className={getClassName('alignJustify')}
-                    value='alignLeft'
-                    onClick={onClick}
-                    >
-                    <Icon icon={alignJustify} />
-                </Button>
-            </ButtonGroup>
-        </BaseControl>
+            className={'gx-alignmentcontrol-control'}
+            selected={value}
+            options={[
+                { label: <Icon icon={alignLeft} />, value: 'alignLeft' },
+                { label: <Icon icon={alignCenter} />, value: 'alignCenter' },
+                { label: <Icon icon={alignRight} />, value: 'alignRight' },
+                { label: <Icon icon={alignJustify} />, value: 'alignJustify' },
+            ]}
+            onChange={(e) => console.log(e)}
+        />
     )
 }
 

@@ -1,9 +1,17 @@
+/**
+ * WordPress dependencies
+ */
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
 const {	
     RadioControl, 
     RangeControl 
 } = wp.components;
+
+/**
+ * External dependencies
+ */
+import MiniSizeControl from '../mini-size-control';
 
 export const sizeControlAttributes = {
     maxWidthUnit: {
@@ -15,9 +23,9 @@ export const sizeControlAttributes = {
     },
     widthUnit: {
         type: 'string',
-        default: '%',
+        default: 'px',
     },
-    blockWidth: {
+    width: {
         type: 'number',
     },
     minWidthUnit: {
@@ -38,7 +46,7 @@ export const sizeControlAttributes = {
         type: 'string',
         default: '%',
     },
-    blockHeight: {
+    height: {
         type: 'number',
     },
     minHeightUnit: {
@@ -58,8 +66,8 @@ export const SizeControl = ( props ) => {
         onChangeMaxWidth = undefined,
         widthUnit = props.attributes.widthUnit,
         onChangeWidthUnit = undefined,
-        blockWidth = props.attributes.blockWidth,
-        onChangeBlockWidth = undefined,
+        width = props.attributes.width,
+        onChangeWidth = undefined,
         minWidthUnit = props.attributes.minWidthUnit,
         onChangeMinWidthUnit = undefined,
         minWidth = props.attributes.minWidth,
@@ -70,8 +78,8 @@ export const SizeControl = ( props ) => {
         onChangeMaxHeight = undefined,
         heightUnit = props.attributes.heightUnit,
         onChangeHeightUnit = undefined,
-        blockHeight = props.attributes.blockHeight,
-        onChangeBlockHeight = undefined,
+        height = props.attributes.height,
+        onChangeHeight = undefined,
         minHeightUnit = props.attributes.minHeightUnit,
         onChangeMinHeightUnit = undefined,
         minHeight = props.attributes.minHeight,
@@ -79,246 +87,58 @@ export const SizeControl = ( props ) => {
         setAttributes,
     } = props;
 
-    const onMaxWidthUnitChange = value => {
-        console.log(value)
-        if (typeof onChangeMaxWidthUnit != 'undefined' ) {
-            onChangeMaxWidthUnit(value);
+    const onChangeValue = (target, value, callback) => {
+        if (typeof callback != 'undefined' ) {
+            callback(value);
         }
         else {
-            setAttributes({maxWidthUnit: value})
-        }
-    }
-
-    const onMaxWidthChange = value => {
-        if (typeof onChangeMaxWidth != 'undefined' ) {
-            onChangeMaxWidth(value);
-        }
-        else {
-            setAttributes({maxWidth: value})
-        }
-    }
-
-    const onWidthUnitChange = value => {
-        if (typeof onChangeWidthUnit != 'undefined' ) {
-            onChangeWidthUnit(value);
-        }
-        else {
-            setAttributes({widthUnit: value})
-        }
-    }
-
-    const onWidthChange = value => {
-        if (typeof onChangeWidth != 'undefined' ) {
-            onChangeWidth(value);
-        }
-        else {
-            setAttributes({width: value})
-        }
-    }
-
-    const onBlockWidthChange = value => {
-        if (typeof onChangeBlockWidth != 'undefined' ) {
-            onChangeBlockWidth(value);
-        }
-        else {
-            setAttributes({blockWidth: value})
-        }
-    }
-
-    const onMinWidthUnitChange = value => {
-        if (typeof onChangeMinWidthUnit != 'undefined' ) {
-            onChangeMinWidthUnit(value);
-        }
-        else {
-            setAttributes({minWidthUnit: value})
-        }
-    }
-
-
-    const onMinWidthChange = value => {
-        if (typeof onChangeMinWidth != 'undefined' ) {
-            onChangeMinWidth(value);
-        }
-        else {
-            setAttributes({minWidth: value})
-        }
-    }
-
-
-    const onMaxHeightUnitChange = value => {
-        if (typeof onChangeMaxHeightUnit != 'undefined' ) {
-            onChangeMaxHeightUnit(value);
-        }
-        else {
-            setAttributes({maxHeightUnit: value})
-        }
-    }
-
-
-    const onMaxHeightChange = value => {
-        if (typeof onChangeMaxHeight != 'undefined' ) {
-            onChangeMaxHeight(value);
-        }
-        else {
-            setAttributes({maxHeight: value})
-        }
-    }
-
-
-    const onHeightUnitChange = value => {
-        if (typeof onChangeHeightUnit != 'undefined' ) {
-            onChangeHeightUnit(value);
-        }
-        else {
-            setAttributes({heightUnit: value})
-        }
-    }
-
-
-    const onBlockHeightChange = value => {
-        if (typeof onChangeBlockHeight != 'undefined' ) {
-            onChangeBlockHeight(value);
-        }
-        else {
-            setAttributes({blockHeight: value})
-        }
-    }
-
-
-    const onMinHeightUnitChange = value => {
-        if (typeof onChangeMinHeightUnit != 'undefined' ) {
-            onChangeMinHeightUnit(value);
-        }
-        else {
-            setAttributes({minHeightUnit: value})
-        }
-    }
-
-
-    const onMinHeightChange = value => {
-        if (typeof onChangeMinHeight != 'undefined' ) {
-            onChangeMinHeight(value);
-        }
-        else {
-            setAttributes({minHeight: value})
+            setAttributes({[target]: value})
         }
     }
 
     return (
         <Fragment>
-            <RadioControl
-                className={'gx-unit-control'}
-                selected={maxWidthUnit}
-                options={[
-                    { label: 'PX', value: 'px' },
-                    { label: 'EM', value: 'em' },
-                    { label: 'VW', value: 'vw' },
-                    { label: '%', value: '%' },
-                ]}
-                onChange={value => onMaxWidthUnitChange(value)}
-            />
-            <RangeControl
+            <MiniSizeControl 
                 label={__("Max Width", 'gutenberg-extra')}
-                className={'gx-with-unit-control'}
+                unit={maxWidthUnit}
+                onChangeUnit={value => onChangeValue('maxWidthUnit', value, onChangeMaxWidthUnit)}
                 value={maxWidth}
-                onChange={value => onMaxWidthChange(value)}
-                min={0}
-                allowReset={true}
-                initialPosition={0}
+                onChangeValue={value => onChangeValue('maxWidth', value, onChangeMaxWidth)}
             />
-            <RadioControl
-                className={'gx-unit-control'}
-                selected={widthUnit}
-                options={[
-                    { label: 'PX', value: 'px' },
-                    { label: 'EM', value: 'em' },
-                    { label: 'VW', value: 'vw' },
-                    { label: '%', value: '%' },
-                ]}
-                onChange={value => onWidthUnitChange(value)}
-            />
-            <RangeControl
+            <MiniSizeControl 
                 label={__("Width", 'gutenberg-extra')}
-                className={'gx-with-unit-control'}
-                value={blockWidth}
-                onChange={value => onBlockWidthChange(value)}
-                min={0}
-                allowReset={true}
+                unit={widthUnit}
+                onChangeUnit={value => onChangeValue('widthUnit', value, onChangeWidthUnit)}
+                value={width}
+                onChangeValue={value => onChangeValue('width', value, onChangeWidth)}
             />
-            <RadioControl
-                className={'gx-unit-control'}
-                selected={minWidthUnit}
-                options={[
-                    { label: 'PX', value: 'px' },
-                    { label: 'EM', value: 'em' },
-                    { label: 'VW', value: 'vw' },
-                    { label: '%', value: '%' },
-                ]}
-                onChange={value => onMinWidthUnitChange(value)}
-            />
-            <RangeControl
+            <MiniSizeControl 
                 label={__("Min Width", 'gutenberg-extra')}
-                className={'gx-with-unit-control'}
+                unit={minWidthUnit}
+                onChangeUnit={value => onChangeValue('minWidthUnit', value, onChangeMinWidthUnit)}
                 value={minWidth}
-                onChange={value => onMinWidthChange(value)}
-                min={0}
-                allowReset={true}
+                onChangeValue={value => onChangeValue('minWidth', value, onChangeMinWidth)}
             />
-            <RadioControl
-                className={'gx-unit-control'}
-                selected={maxHeightUnit}
-                options={[
-                    { label: 'PX', value: 'px' },
-                    { label: 'EM', value: 'em' },
-                    { label: 'VH', value: 'vh' },
-                    { label: '%', value: '%' },
-                ]}
-                onChange={value => onMaxHeightUnitChange(value)}
-            />
-            <RangeControl
+            <MiniSizeControl 
                 label={__("Max Height", 'gutenberg-extra')}
-                className={'gx-with-unit-control'}
+                unit={maxHeightUnit}
+                onChangeUnit={value => onChangeValue('maxHeightUnit', value, onChangeMaxHeightUnit)}
                 value={maxHeight}
-                onChange={value => onMaxHeightChange(value)}
-                min={0}
-                allowReset={true}
+                onChangeValue={value => onChangeValue('maxHeight', value, onChangeMaxHeight)}
             />
-            <RadioControl
-                className={'gx-unit-control'}
-                selected={heightUnit}
-                options={[
-                    { label: 'PX', value: 'px' },
-                    { label: 'EM', value: 'em' },
-                    { label: 'VH', value: 'vh' },
-                    { label: '%', value: '%' },
-                ]}
-                onChange={value => onHeightUnitChange(value)}
-            />
-            <RangeControl
+            <MiniSizeControl 
                 label={__("Height", 'gutenberg-extra')}
-                className={'gx-with-unit-control'}
-                value={blockHeight}
-                onChange={value => onBlockHeightChange(value)}
-                allowReset={true}
+                unit={heightUnit}
+                onChangeUnit={value => onChangeValue('heightUnit', value, onChangeHeightUnit)}
+                value={height}
+                onChangeValue={value => onChangeValue('height', value, onChangeHeight)}
             />
-            <RadioControl
-                className={'gx-unit-control'}
-                selected={minHeightUnit}
-                options={[
-                    { label: 'PX', value: 'px' },
-                    { label: 'EM', value: 'em' },
-                    { label: 'VH', value: 'vh' },
-                    { label: '%', value: '%' },
-                ]}
-                onChange={value => onMinHeightUnitChange(value)}
-            />
-            <RangeControl
+            <MiniSizeControl 
                 label={__("Min Height", 'gutenberg-extra')}
-                className={'gx-with-unit-control'}
+                unit={minHeightUnit}
+                onChangeUnit={value => onChangeValue('minHeightUnit', value, onChangeMinHeightUnit)}
                 value={minHeight}
-                onChange={value => onMinHeightChange(value)}
-                min={0}
-                allowReset={true}
+                onChangeValue={value => onChangeValue('minHeight', value, onChangeMinHeight)}
             />
         </Fragment>
     )

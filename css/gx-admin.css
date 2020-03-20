@@ -1062,3 +1062,7 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
   right: 12px;
   top: 11px;
 }
+
+.editor-styles-wrapper h2{
+  font-size: unset !important;
+}

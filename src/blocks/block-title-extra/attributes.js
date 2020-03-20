@@ -18,7 +18,7 @@ import { typographyAttributes } from '../../components/typography/index';
 
 const attributes = {
   title: {
-    type: 'string',
+    type: 'array',
     source: 'children',
     selector: '.gx-title-extra-title',
   },

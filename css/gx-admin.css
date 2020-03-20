@@ -214,7 +214,7 @@ body .gx-hidden {
 
 .gx-panel .components-base-control.gx-title-level,
 .gx-panel .components-base-control.gx-title-level .components-base-control__field,
-.gx-panel .components-base-control {
+.components-base-control {
   margin-bottom: 11px !important;
 }
 

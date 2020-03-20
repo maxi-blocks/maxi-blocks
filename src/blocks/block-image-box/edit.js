@@ -41,7 +41,7 @@ import {
     setBlockStyles,
 } from './data';
 import Typography from '../../components/typography/';
-import { ImageSettings } from '../../components/image-settings/';
+import ImageSettings from '../../components/image-settings/';
 
 const edit = (props) => {
     const {
@@ -107,6 +107,7 @@ const edit = (props) => {
             <PanelBody className="gx-panel gx-image-setting gx-content-tab-setting" initialOpen={true} title={__('Image Settings', 'gutenberg-extra')}>
                 <ImageSettings 
                     imageSettings={imageSettings}
+                    onChange={value => setAttributes({ imageSettings: value })}
                 />
                 <BlockStyles {...props} />
                 <ImagePosition {...props} />

@@ -57,39 +57,12 @@ export const BlockBorder = (props) => {
         setAttributes,
     } = props;
 
-    const onBorderColorChange = value => {
-        if (typeof onChangeBorderColor != 'undefined' ) {
-            onChangeBorderColor(value);
+    const onChangeValue = (target, value, callback) => {
+        if (typeof callback != 'undefined' ) {
+            callback(value);
         }
         else {
-            setAttributes({borderColor: value})
-        }
-    }
-
-    const onBorderTypeChange = value => {
-        if (typeof onChangeBorderType != 'undefined' ) {
-            onChangeBorderType(value);
-        }
-        else {
-            setAttributes({borderType: value})
-        }
-    }
-
-    const onBorderRadiusChange = value => {
-        if (typeof onChangeBorderRadius != 'undefined' ) {
-            onChangeBorderRadius(value);
-        }
-        else {
-            setAttributes({borderRadius: value})
-        }
-    }
-
-    const onBorderWidthChange = value => {
-        if (typeof onChangeBorderWidth != 'undefined' ) {
-            onChangeBorderWidth(value);
-        }
-        else {
-            setAttributes({borderWidth: value})
+            setAttributes({[target]: value})
         }
     }
 
@@ -100,7 +73,7 @@ export const BlockBorder = (props) => {
                 colorSettings={[
                     {
                         value: borderColor,
-                        onChange: value => onBorderColorChange(value),
+                        onChange: value => onChangeValue('borderColor', value, onChangeBorderColor),
                         label: colorLabel,
                     },
                 ]}
@@ -110,16 +83,16 @@ export const BlockBorder = (props) => {
                 className={borderTypeClassName}
                 value={borderType}
                 options={borderTypeOptions}
-                onChange={value => onBorderTypeChange(value)}
+                onChange={value => onChangeValue('borderType', value, onChangeBorderType)}
             />
             <DimensionsControl
                 value={borderRadius}
-                onChange={value => onBorderRadiusChange(value)}
+                onChange={value => onChangeValue('borderRadius', value, onChangeBorderRadius)}
                 target={borderRadiusTarget}
             />
             <DimensionsControl
                 value={borderWidth}
-                onChange={value => onBorderWidthChange(value)}
+                onChange={value => onChangeValue('borderWidth', value, onChangeBorderWidth)}
                 target={borderWidthTarget}
             />
         </Fragment>

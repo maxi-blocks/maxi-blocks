@@ -144,12 +144,14 @@ class Divider extends Component {
        top: isBehindTheSubtitle ? '1.5rem' : undefined,
        left: isBehindTheSubtitle ? dividerAlignment == 'auto' ? '0' : dividerAlignment == '0 auto 0 0' ? '0' : undefined  : undefined,
        right: isBehindTheSubtitle ? dividerAlignment == 'auto' ? '0' : dividerAlignment == '0 0 0 auto' ? '0' : undefined : undefined,
-       bottom: contentDirection == 'row' ? '0' : undefined,
+       bottom: contentDirection == 'row' ? '10px' : undefined,
+       left: contentDirection == 'row' ? isVertical ? '300px' : undefined : undefined,
        zIndex: isBehindTheSubtitle ? -1 : undefined,
      };
 
      const dividerWrapperStyles = {
        order: dividerOrder,
+       position: contentDirection == 'row' || contentDirection == 'row-reverse' ? 'relative' : undefined
      }
 
      const buildDivider = (

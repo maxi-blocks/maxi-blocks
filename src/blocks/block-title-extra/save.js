@@ -121,7 +121,6 @@ const save = (props) => {
     borderRadius: '5px',
     margin: isPreappendedToSubtitle ? '5px auto 5px ' + dividerWidth + dividerWidthUnit : isAppendedToSubtitle ? '5px '+ dividerWidth + dividerWidthUnit +' 5px auto'  : subtitleTextAlign,
     fontFamily: 'roboto',
-    fontSize:'12pt',
     color:subtitleColor,
     backgroundColor: subtitleBackgroundColor,
     width:'max-content',
@@ -132,7 +131,8 @@ const save = (props) => {
     display: hideTitle ? 'none' : undefined,
     textAlign: titleTextAlign,
     fontFamily: 'roboto',
-    color:titleColor
+    color:titleColor,
+    minWidth: contentDirection == 'row' || contentDirection == 'row-reverse' ? '290px' : undefined
   };
 
   const containerStyles = {
@@ -146,7 +146,9 @@ const save = (props) => {
     fontFamily: 'roboto',
     fontSize:'12pt',
     columnCount: twoColumnDesc ? '2' : undefined,
-    color:descriptionColor
+    color:descriptionColor,
+    marginTop: contentDirection == 'row' ? '30px' : undefined,
+    marginLeft: contentDirection == 'row' ? '20px' : undefined,
   }
 
 

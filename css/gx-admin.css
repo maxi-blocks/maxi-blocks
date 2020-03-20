@@ -350,6 +350,7 @@ body div.gx-sidebar .components-panel__body>.components-panel__body-title {
   margin: auto;
   width: 17px;
   height: 16px;
+  padding-bottom: 5px !important;
 }
 
 .gx-sidebar button.components-range-control__reset:disabled,
@@ -363,6 +364,7 @@ body div.gx-sidebar .components-panel__body>.components-panel__body-title {
   font-size: 0 !important;
   background: transparent !important;
   border: none !important;
+  margin:auto;
 }
 
 /* Toggle control */
@@ -462,6 +464,7 @@ body div.gx-sidebar .components-panel__body>.components-panel__body-title {
   flex-direction: row-reverse;
   margin-top: -45px;
   align-items: baseline;
+  width:max-content;
 }
 
 .gx-sidebar .components-circular-option-picker__dropdown-link-action {
@@ -474,7 +477,8 @@ body div.gx-sidebar .components-panel__body>.components-panel__body-title {
 
 .gx-sidebar .components-circular-option-picker__custom-clear-wrapper button:not(.components-circular-option-picker__clear):before {
   content: url(../img/gx-colour-wheel.svg) !important;
-  margin: 6px auto;
+  width: 21px;
+  margin: auto;
   background-color: rgba(33, 141, 250, 0) !important;
 }
 
@@ -491,8 +495,8 @@ body div.gx-sidebar .components-panel__body>.components-panel__body-title {
 
 .gx-sidebar .components-circular-option-picker__custom-clear-wrapper button:not(.components-circular-option-picker__clear),
 .gx-sidebar .gx-settings-button button {
-  width: 67px;
-  height: 46px;
+  width: 30px;
+  height: 30px;
   color: transparent;
   border-radius: 5px;
   background-color: rgba(33, 141, 250, 0) !important;
@@ -673,7 +677,7 @@ button[class*="gutenberg-extra"] {
   margin: 0 auto;
 }
 
-button[class*="gutenberg-extra"] .editor-block-types-list__item-icon.block-editor-block-types-list__item-icon{
+button[class*="gutenberg-extra"] .block-editor-block-types-list__item-icon{
   background:black;
   border-radius: 10rem;
   margin:auto;
@@ -682,8 +686,8 @@ button[class*="gutenberg-extra"] .editor-block-types-list__item-icon.block-edito
   width:50px;
 }
 
-button[class*="gutenberg-extra"] .editor-block-types-list__item-icon.block-editor-block-types-list__item-icon .editor-block-icon {
-  margin:13px auto;
+button[class*="gutenberg-extra"] .block-editor-block-types-list__item-icon .block-editor-block-icon  {
+  margin:13px auto !important;
 }
 
 /*
@@ -1065,4 +1069,12 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
 
 .editor-styles-wrapper h2{
   font-size: unset !important;
+}
+
+.components-circular-option-picker{
+  width:max-content;
+}
+
+.components-panel__body.block-editor-panel-color-gradient-settings.is-opened{
+  padding:0;
 }

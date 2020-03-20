@@ -121,6 +121,7 @@ const save = (props) => {
     borderRadius: '5px',
     margin: isPreappendedToSubtitle ? '5px auto 5px ' + dividerWidth + dividerWidthUnit : isAppendedToSubtitle ? '5px '+ dividerWidth + dividerWidthUnit +' 5px auto'  : subtitleTextAlign,
     fontFamily: 'roboto',
+    fontWeight: '400',
     color:subtitleColor,
     backgroundColor: subtitleBackgroundColor,
     width:'max-content',
@@ -131,6 +132,7 @@ const save = (props) => {
     display: hideTitle ? 'none' : undefined,
     textAlign: titleTextAlign,
     fontFamily: 'roboto',
+    fontWeight: '400',
     color:titleColor,
     minWidth: contentDirection == 'row' || contentDirection == 'row-reverse' ? '290px' : undefined
   };
@@ -145,18 +147,18 @@ const save = (props) => {
     textAlign: descriptionTextAlign,
     fontFamily: 'roboto',
     fontSize:'12pt',
+    fontWeight: '400',
     columnCount: twoColumnDesc ? '2' : undefined,
     color:descriptionColor,
-    marginTop: contentDirection == 'row' ? '30px' : undefined,
+    marginTop: contentDirection == 'row' ? '48px' : '0px',
     marginLeft: contentDirection == 'row' ? '20px' : undefined,
   }
-
 
   const gradients = "";
   const disableCustomGradients = false;
   return (
     <div
-      className={'gx-block gx-title-extra ' + classes}
+      className={blockStyle + ' gx-block gx-title-extra ' + classes}
       style={containerStyles}
       >
       <div style={{order:0}}>

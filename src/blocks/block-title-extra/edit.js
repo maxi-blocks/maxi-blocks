@@ -142,6 +142,7 @@ const edit = (props) => {
     borderRadius: '5px',
     margin: isPreappendedToSubtitle ? '5px auto 5px ' + dividerWidth + dividerWidthUnit : isAppendedToSubtitle ? '5px '+ dividerWidth + dividerWidthUnit +' 5px auto'  : subtitleTextAlign,
     fontFamily: 'roboto',
+    fontWeight: '400',
     color:subtitleColor,
     backgroundColor: subtitleBackgroundColor,
     width:'max-content',
@@ -152,6 +153,7 @@ const edit = (props) => {
     display: hideTitle ? 'none' : undefined,
     textAlign: titleTextAlign,
     fontFamily: 'roboto',
+    fontWeight: '400',
     color:titleColor,
     minWidth: contentDirection == 'row' || contentDirection == 'row-reverse' ? '290px' : undefined
   };
@@ -166,9 +168,10 @@ const edit = (props) => {
     textAlign: descriptionTextAlign,
     fontFamily: 'roboto',
     fontSize:'12pt',
+    fontWeight: '400',
     columnCount: twoColumnDesc ? '2' : undefined,
     color:descriptionColor,
-    marginTop: contentDirection == 'row' ? '48px' : undefined,
+    marginTop: contentDirection == 'row' ? '48px' : '0px',
     marginLeft: contentDirection == 'row' ? '20px' : undefined,
   }
 
@@ -251,7 +254,7 @@ const edit = (props) => {
       </Accordion>
     </InspectorControls>
     <div
-      className={'gx-block gx-title-extra ' + classes}
+      className={blockStyle + ' gx-block gx-title-extra ' + classes}
       style={containerStyles}
       >
       <div style={{order:0}}>
@@ -269,7 +272,7 @@ const edit = (props) => {
       <RichText
         tagName={titleLevel}
         style={titleStyles}
-        placeholder={__('This is your aweseome title here...', 'gutenberg-extra')}
+        placeholder={__('This is your awesome title here...', 'gutenberg-extra')}
         value={title}
         onChange={(value) => setAttributes({ title: value })}
         className="gx-title-extra-title"
@@ -280,7 +283,7 @@ const edit = (props) => {
         <RichText
           tagName="p"
           style={textStyles}
-          placeholder={__('Lorem ipsum..', 'gutenberg-extra')}
+          placeholder={__('Excepteur sint occaecat cupidatat non proident, sunt in culpa q...', 'gutenberg-extra')}
           value={text}
           onChange={(value) => setAttributes({ text: value })}
           className="gx-title-extra-text"

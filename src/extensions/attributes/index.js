@@ -7,7 +7,7 @@ const { createHigherOrderComponent } = wp.compose;
 /**
  * External Dependencies
  */
-import { 
+import {
 	uniqueId,
 	isEmpty,
 	isNil,
@@ -16,7 +16,10 @@ import {
 /**
  * General
  */
-const allowedBlocks = [ 'gutenberg-extra/block-image-box' ];
+const allowedBlocks = [
+	'gutenberg-extra/block-image-box',
+	'gutenberg-extra/testimonials-slider-block'
+];
 
 /**
  * Filters registered block settings, extending attributes with settings
@@ -28,7 +31,7 @@ function addAttributes( settings ) {
 	// Add custom selector/id
 	if ( allowedBlocks.includes( settings.name ) && typeof settings.attributes !== 'undefined' ) {
 		settings.attributes = Object.assign( settings.attributes, {
-			uniqueID: { 
+			uniqueID: {
 				type: 'string',
 			},
 		} );

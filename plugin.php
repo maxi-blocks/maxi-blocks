@@ -1,25 +1,14 @@
 <?php
-
-    if( !defined( 'WP_DEBUG' ) )
-        define( 'WP_DEBUG', true );
-    if( !defined( 'WP_DEBUG_DISPLAY' ) )
-        define( 'WP_DEBUG_DISPLAY', false );
-    if( !defined( 'WP_DEBUG_LOG' ) )
-        define( 'WP_DEBUG_LOG', true );
-    if ( !defined( 'SCRIPT_DEBUG' ) )
-        define( 'SCRIPT_DEBUG', true );
-
 /**
- * Plugin Name: Gutenberg Extra
+ * Plugin Name: GutenbergExtra
  * Plugin URI:
- * Description: gutenberg-extra — is a Gutenberg plugin created via create-guten-block.
+ * Description: GutenbergExtra — is a Gutenberg plugin created via create-guten-block.
  * Author: Gutenberg Den
  * Author URI:
- * Version: 1.0.0
+ * Version: 1.0.3
  * License: GPL2+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  *
- * @package CGB
  */
 
 // Exit if accessed directly.
@@ -33,13 +22,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 require_once plugin_dir_path( __FILE__ ) . 'src/init.php';
 
 
-
 //======================================================================
 // AUTOUPDATE
 //======================================================================
 
-require plugin_dir_path( __FILE__ ) .'gx-plugin-update-checker/plugin-update-checker.php';
-$gxUpdateChecker = Puc_v4_Factory::buildUpdateChecker('https://s3-eu-west-1.amazonaws.com/gx/gxfree/gx-update/gx-plugin-update.json', __FILE__, 'gxfree');
+// require plugin_dir_path( __FILE__ ) .'gx-plugin-update-checker/plugin-update-checker.php';
+// $gxUpdateChecker = Puc_v4_Factory::buildUpdateChecker('https://s3-eu-west-1.amazonaws.com/gutenberg-extra/gutenberg-extra-free/gutenberg-extra-update/gutenberg-extra-plugin-update.json', __FILE__, 'gutenberg-extra');
 
 
 //======================================================================

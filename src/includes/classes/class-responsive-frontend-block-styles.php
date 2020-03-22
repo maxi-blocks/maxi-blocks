@@ -149,7 +149,7 @@ class ResponsiveFrontendStyles {
 
     /**
      * Post fonts
-     * 
+     *
      * @return object   Font name with font options
      */
 

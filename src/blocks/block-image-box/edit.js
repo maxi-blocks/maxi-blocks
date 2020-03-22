@@ -6,8 +6,11 @@ const { __ } = wp.i18n;
 const {
     PanelBody,
     Button,
+    IconButton,
     Popover,
-    BaseControl
+    BaseControl,
+    RadioControl,
+    Text
 } = wp.components;
 const {
     InspectorControls,
@@ -22,14 +25,17 @@ const {
  */
 
 import classnames from 'classnames';
+import React from 'react';
 import DimensionsControl from '../../components/dimensions-control/index';
 import FontPopover from '../../components/font-popover/index';
 import { BlockStyles } from '../../components/block-styles/index';
+import { ButtonStyles } from '../../components/button-styles/index';
 import { ImagePosition } from '../../components/image-position/index';
 import { FontLevel } from '../../components/font-level/index';
 import { LinkOptions, Link } from '../../components/link-options/index';
 import { BlockBorder } from '../../components/block-border/index';
 import { SizeControl } from '../../components/size-control/index';
+import GradientPickerPopover from '../../components/gradient-picker/';
 import { HoverAnimation } from '../../components/hover-animation/index';
 import { CustomCSS } from '../../components/custom-css/index';
 import {
@@ -42,6 +48,16 @@ import {
 } from './data';
 import Typography from '../../components/typography/';
 import ImageSettings from '../../components/image-settings/';
+import { Icon } from '@wordpress/components';
+import iconsSettings from '../../components/icons/icons-settings.js';
+
+import {
+    Accordion,
+    AccordionItem,
+    AccordionItemHeading,
+    AccordionItemButton,
+    AccordionItemPanel,
+} from 'react-accessible-accordion';
 
 const edit = (props) => {
     const {
@@ -55,6 +71,12 @@ const edit = (props) => {
             readMoreText,
             readMoreLink,
             linkTitle,
+            opensInNewWindow,
+            addUgc,
+            addSponsored,
+            addNoreferrer,
+            addNofollow,
+            addNoopener,
             fontSizeTitle,
             fontSizeTitleUnit,
             titleColor,
@@ -71,19 +93,23 @@ const edit = (props) => {
             uniqueID,
             padding,
             margin,
+            titlePopUpisVisible,
+            isGradient,
+            backgroundImage,
+            defaultPalette,
             fontOptions,
             linkOptions,
-            imageSettings
+            imageSettings,
         },
         setAttributes,
     } = props;
 
-    let classes = classnames(className);
-    if (className.indexOf(uniqueID) === -1) {
-        classes = classnames(classes, uniqueID)
+    let classes = classnames( className );
+    if ( className.indexOf(uniqueID) === -1 ) {
+        classes = classnames( classes, uniqueID )
     }
 
-    //const linkOptions = JSON.parse(props.attributes.linkOptions)
+   // const linkOptions = JSON.parse(props.attributes.linkOptions);
 
     const linkStyles = setLinkStyles(props);
     const titleStyles = setTitleStyles(props);
@@ -102,17 +128,25 @@ const edit = (props) => {
     const gradients = "";
     const disableCustomGradients = false;
 
+
+    let backgroundImageWithGradient = backgroundGradient.length
+            ? `linear-gradient(to left, ${backgroundGradient[0]},${backgroundGradient[1]})`
+            : '';
+
+    if (backgroundImage) {
+        backgroundImageWithGradient += backgroundGradient.length
+            ? `, url(${backgroundImage})`
+            : `url(${backgroundImage})`
+    }
+
+    blockStyles.backgroundColor = backgroundColor ? backgroundColor : undefined;
+    blockStyles.backgroundImage = backgroundImageWithGradient ? backgroundImageWithGradient : undefined ;
+
     return [
         <InspectorControls>
             <PanelBody className="gx-panel gx-image-setting gx-content-tab-setting" initialOpen={true} title={__('Image Settings', 'gutenberg-extra')}>
-                <ImageSettings 
-                    imageSettings={imageSettings}
-                    onChange={value => setAttributes({ imageSettings: value })}
-                />
                 <BlockStyles {...props} />
                 <ImagePosition {...props} />
-            </PanelBody>
-            <PanelBody className="gx-panel gx-text-setting gx-content-tab-setting" initialOpen={true} title={__('Text settings', 'gutenberg-extra')}>
                 <FontLevel
                     label={__('Title level', 'gutenberg-extra')}
                     value={titleLevel}
@@ -121,100 +155,160 @@ const edit = (props) => {
             </PanelBody>
             <PanelBody className="gx-panel gx-link-setting gx-content-tab-setting" initialOpen={true} title={__('Link Settings', 'gutenberg-extra')}>
                 <LinkOptions
-                    label={__("Link's Title", 'gutenberg-extra')}
-                    value={linkTitle}
-                    onChangeLink={value => setAttributes({ linkTitle: value })}
-                    linkOptions={linkOptions}
-                    onChangeOptions={value => { setAttributes({ linkOptions: value }); }}
-                />
+                   label={__("Link's Title", 'gutenberg-extra')}
+                   value={linkTitle}
+                   onChangeLink={value => setAttributes({ linkTitle: value })}
+                   linkOptions={linkOptions}
+                   onChangeOptions={value => { setAttributes({ linkOptions: value }); }}
+               />
             </PanelBody>
-            <PanelBody className="gx-panel gx-color-setting gx-style-tab-setting" initialOpen={true} title={__('Colour settings', 'gutenberg-extra')}>
-                <Typography
-                    fontOptions={fontOptions}
-                    onChange={value => { setAttributes({ fontOptions: value})}}
-                    target="gx-image-box-title"
-                />
-                <PanelColorSettings
-                    title={__('Background Colour Settings', 'gutenberg-extra')}
-                    colorSettings={[
-                        {
-                            value: backgroundColor,
-                            onChange: (value) => setAttributes({ backgroundColor: value }),
-                            label: __('Background Colour', 'gutenberg-extra'),
-                        },
-                    ]}
-                />
-                <PanelColorSettings
-                    title={__('Title Colour Settings', 'gutenberg-extra')}
-                    colorSettings={[
-                        {
-                            value: titleColor,
-                            onChange: (value) => setAttributes({ titleColor: value }),
-                            label: __('Title Colour', 'gutenberg-extra'),
-                        },
-                    ]}
-                />
-                <PanelColorSettings
-                    title={__('Sub-title Colour Settings', 'gutenberg-extra')}
-                    colorSettings={[
-                        {
-                            value: subTitleColor,
-                            onChange: (value) => setAttributes({ subTitleColor: value }),
-                            label: __('Sub-title Colour', 'gutenberg-extra'),
-                        },
-                    ]}
-                />
-                <PanelColorSettings
-                    title={__('Description Colour Settings', 'gutenberg-extra')}
-                    colorSettings={[
-                        {
-                            value: descriptionColor,
-                            onChange: (value) => setAttributes({ descriptionColor: value }),
-                            label: __('Description  Colour', 'gutenberg-extra'),
-                        },
-                    ]}
-                />
-                <PanelColorSettings
-                    title={__('Button Settings', 'gutenberg-extra')}
-                    colorSettings={[
-                        {
-                            value: buttonColor,
-                            onChange: (value) => setAttributes({ buttonColor: value }),
-                            label: __('Button Text Colour', 'gutenberg-extra'),
-                        },
-                    ]}
-                />
-                <PanelColorSettings
-                    title={__('Button Settings', 'gutenberg-extra')}
-                    colorSettings={[
-                        {
-                            value: buttonBgColor,
-                            onChange: (value) => setAttributes({ buttonBgColor: value }),
-                            label: __('Button Background Colour', 'gutenberg-extra'),
-                        },
-                    ]}
-                />
-            </PanelBody>
-            <PanelBody className="gx-panel gx-border-setting gx-style-tab-setting" initialOpen={true} title={__('Border settings', 'gutenberg-extra')}>
-                <BlockBorder 
-                    {...props}
-                />
-            </PanelBody>
-            <PanelBody className="gx-panel gx-size-setting gx-style-tab-setting" initialOpen={true} title={__('Size Settings', 'gutenberg-extra')}>
-                <SizeControl 
-                    {...props}
-                />
-            </PanelBody>
-            <PanelBody className="gx-panel gx-space-setting gx-style-tab-setting" initialOpen={true} title={__('Space Settings', 'gutenberg-extra')}>
-                <DimensionsControl
-                    value={padding}
-                    onChange={value => setAttributes({ padding: value })}
-                />
-                <DimensionsControl
-                    value={margin}
-                    onChange={value => setAttributes({ margin: value })}
-                />
-            </PanelBody>
+            <Accordion
+                className = {'gx-style-tab-setting gx-accordion'}
+                allowMultipleExpanded = {true}
+                allowZeroExpanded = {true}
+            >
+                <AccordionItem>
+                    <AccordionItemHeading className={'gx-accordion-tab gx-typography-tab'}>
+                        <AccordionItemButton className='components-base-control__label'>
+                            {__('Typography & Colours', 'gutenberg-extra' )}
+                        </AccordionItemButton>
+                    </AccordionItemHeading>
+                    <AccordionItemPanel>
+                        <PanelBody className="gx-panel gx-color-setting gx-style-tab-setting" initialOpen={true} title={__('Colour settings', 'gutenberg-extra')}>
+                            <Typography
+                            fontOptions={fontOptions}
+                            onChange={value => { setAttributes({ fontOptions: value})}}
+                            target="gx-image-box-title"
+                        />
+                        </PanelBody>
+
+                    </AccordionItemPanel>
+                </AccordionItem>
+                <AccordionItem>
+                    <AccordionItemHeading className={'gx-accordion-tab gx-button-tab'}>
+                        <AccordionItemButton className="components-base-control__label">
+                           {__('Button', 'gutenberg-extra' )}
+                        </AccordionItemButton>
+                    </AccordionItemHeading>
+                    <AccordionItemPanel>
+                        <PanelBody>
+                            <ButtonStyles {...props} />
+                        </PanelBody>
+                    </AccordionItemPanel>
+                </AccordionItem>
+                <AccordionItem>
+                    <AccordionItemHeading className={'gx-accordion-tab gx-box-settings-tab'}>
+                        <AccordionItemButton className="components-base-control__label">
+                           {__('Box Settings', 'gutenberg-extra' )}
+                        </AccordionItemButton>
+                    </AccordionItemHeading>
+                    <AccordionItemPanel>
+                        <BaseControl
+                            className={"bg-color-parent gx-settings-button background-gradient "}
+                        >
+                        <PanelColorSettings
+                            title={ __( 'Background Colour', "gutenberg-extra" ) }
+                            colorSettings={ [
+                                {
+                                    onChange: ( value ) => {
+                                        if (!value) {
+                                            props.setAttributes({ backgroundColor: undefined });
+                                            props.setAttributes({ backgroundGradient: [] });
+                                            return;
+                                        }
+                                        props.setAttributes({ backgroundColor: value });
+                                        props.setAttributes({ backgroundImage: null });
+                                    },
+                                    label: __( 'Background Colour', "gutenberg-extra" ),
+                                    value: backgroundColor
+                                },
+                            ] }
+                        />
+                            <div className={'gradient'}>
+                                <GradientPickerPopover
+                                    palette={defaultPalette}
+                                    onPaletteChange={ ( value ) => {
+                                        props.setAttributes({ defaultPalette: value });
+
+                                        let colors = [];
+                                        Object.values(value).map(key => {
+                                                const { color } = key;
+                                                return colors.push(color)
+                                        });
+
+                                        props.setAttributes({ backgroundGradient: colors });
+
+                                    } }
+                                />
+                            </div>
+                        </BaseControl>
+                        <BaseControl
+                            className={"gx-settings-button background-image"}
+                        >
+                            <BaseControl.VisualLabel>{__("Background Image", "gutenberg-extra")}</BaseControl.VisualLabel>
+                            <div className={"image-form-and-reset"}>
+                                {backgroundImage ?
+                                    (<Button className={'background-custom-reset-option reset-background-image'}
+                                             onClick={() => {
+                                                props.setAttributes({ backgroundImage: null })
+                                             }}>
+                                    </Button>) : ''
+                                }
+                                <MediaUpload
+                                    className={"background-image-form"}
+                                    label={__("Upload", "gutenberg-extra")}
+                                    type="image/*"
+                                    render={ ({open}) => (
+                                        <Button
+                                            onClick={ open }
+                                            className={"dashicons dashicons-format-image"}
+                                        >
+                                        </Button>
+                                    )}
+                                    onSelect={(file) => {
+                                        props.setAttributes({ backgroundColor: undefined });
+                                        props.setAttributes({ backgroundImage: file.sizes.thumbnail.url })
+                                    } }
+                                />
+                            </div>
+                        </BaseControl>
+                        <PanelBody className="gx-panel gx-border-setting gx-style-tab-setting" initialOpen={true} title={__('Border settings', 'gutenberg-extra' )}>
+                            <BlockBorder {...props}/>
+                        </PanelBody>
+                    </AccordionItemPanel>
+                </AccordionItem>
+                <AccordionItem>
+                    <AccordionItemHeading className={'gx-accordion-tab gx-width-tab'}>
+                        <AccordionItemButton className="components-base-control__label">
+                          {__(' Width & Height', 'gutenberg-extra' )}
+                        </AccordionItemButton>
+                    </AccordionItemHeading>
+                    <AccordionItemPanel>
+                        <PanelBody className="gx-panel gx-size-setting gx-style-tab-setting" initialOpen={true} title={__('Size Settings', 'gutenberg-extra')}>
+                            <SizeControl {...props} />
+                        </PanelBody>
+                    </AccordionItemPanel>
+                </AccordionItem>
+                <AccordionItem>
+                    <AccordionItemHeading className={'gx-accordion-tab gx-padding-tab'}>
+                        <AccordionItemButton className="components-base-control__label">
+                           {__('Padding & Margin', 'gutenberg-extra' )}
+                        </AccordionItemButton>
+                    </AccordionItemHeading>
+                    <AccordionItemPanel>
+                        <PanelBody className="gx-panel gx-space-setting gx-style-tab-setting" initialOpen={true} title={__('Space Settings', 'gutenberg-extra')}>
+                            <DimensionsControl
+                            value={padding}
+                            onChange={value => setAttributes({ padding: value })}
+                            />
+                            <DimensionsControl
+                                value={margin}
+                                onChange={value => setAttributes({ margin: value })}
+                            />
+                        </PanelBody>
+                    </AccordionItemPanel>
+                </AccordionItem>
+            </Accordion>
             <PanelBody initialOpen={true} className="gx-panel gx-advanced-setting gx-advanced-tab-setting" title={__('Advanced Settings', 'gutenberg-extra')}>
                 <HoverAnimation {...props} />
                 <CustomCSS {...props} />
@@ -232,13 +326,16 @@ const edit = (props) => {
                         allowedTypes="image"
                         value={mediaID}
                         render={({ open }) => (
-                            <Button className={mediaID ? 'image-button' : 'button button-large'} onClick={open}>
-                                {!mediaID ? __('Upload Image', 'gutenberg-extra') : <img src={mediaURL} alt={__('Upload Image', 'gutenberg-extra')} />}
-                            </Button>
+                            <IconButton
+                                className={ mediaID + ' gx-upload-button'}
+                                showTooltip="true"
+                                onClick={ open }>
+                                { ! mediaID ? iconsSettings.placeholderImage : <img src={ mediaURL } alt={ __( 'Upload Image', 'gutenberg-extra' ) } /> }
+                          </IconButton>
                         )}
                     />
                 </div>
-                <div className='gx-image-box-text'>
+                <div class='gx-image-box-text'>
                     <RichText
                         tagName={titleLevel}
                         style={titleStyles}

@@ -8,14 +8,14 @@
 
 const { __ } = wp.i18n;
 const { Component } = wp.element;
-const { 
-    Button, 
-    Popover, 
+const {
+    Button,
+    Popover,
     Spinner
 } = wp.components;
 const {
-	dispatch,
-	select
+    dispatch,
+    select
 } = wp.data;
 
 
@@ -57,8 +57,8 @@ export default class FontFamilySelector extends Component {
             indicatorsContainer: () => ({
                 display: 'none'
             }),
-            menu: () => ({ 
-                boxShadow: 'inset 0 1px 0 rgba(0, 0, 0, 0.1)' 
+            menu: () => ({
+                boxShadow: 'inset 0 1px 0 rgba(0, 0, 0, 0.1)'
             }),
             menuList: () => ({
                 maxHeight: '300px',
@@ -77,7 +77,6 @@ export default class FontFamilySelector extends Component {
                 isVisible: ! state.isVisible,
             }))
         }
-    
         const checkout = () => {
             setTimeout(() => {
                 this.setState ( {
@@ -106,7 +105,7 @@ export default class FontFamilySelector extends Component {
                         noArrow={true}
                         >
                             <div className="gx-font-family-selector-content">
-                                { ! isNil (this.state.options ) && 
+                                { ! isNil (this.state.options ) &&
                                     <Select
                                         autoFocus
                                         backspaceRemovesValue={false}

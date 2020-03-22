@@ -30,7 +30,6 @@ class FontFamilyResolver {
      * 
      * @return {array} elements with font-family on inline style
      */
-
     get elemensGetter() {
         return Array.from(document.querySelectorAll('[style]')).filter(e => {
             return typeof window.getComputedStyle(e).getPropertyValue('font-family') !== '';
@@ -42,7 +41,6 @@ class FontFamilyResolver {
      * 
      * @return {set} List of font families on the DOM
      */
-
     get DOMFontList() {
         let list = new Set();
         this.elements.map(e => {
@@ -56,11 +54,10 @@ class FontFamilyResolver {
 
     /**
      * Retrieve an object with all the GFonts options
-     * 
+     *
      * @returns {object} GFonts options
-     * @returns {null} 
+     * @returns {null}
      */
-
     get optionsGetter() {
         if (document.getElementById('fontOptions')) {
             return JSON.parse(document.getElementById('fontOptions').innerHTML);
@@ -72,7 +69,6 @@ class FontFamilyResolver {
     /**
      * Fetchs the JSON file with all the GFonts options
      */
-
     getJSON() {
         const fontsUrl = 'https://ddlicensed.s3-eu-west-1.amazonaws.com/gutenberg-extra/fonts.json';
         const options = {
@@ -155,7 +151,6 @@ class FontFamilyResolver {
      * @param {JSON} data Recibes JSON data with the fonts variants and properties
      * @returns {array} Options ready for React-Select 
      */
-
     getFontFamilyOptions(data) {
         let options = [];
         let items = data.items;
@@ -177,7 +172,6 @@ class FontFamilyResolver {
      * @param {string} font Name of the selected font
      * @param {obj} files Different variations of the font
      */
-
     loadFonts = (font, files) => {
         if (document.fonts && !document.fonts.check(`12px ${font}`)) {   // FontFace API
             Object.entries(files).map(variant => {
@@ -198,7 +192,6 @@ class FontFamilyResolver {
      * @param {obj} variant Concrete variant of the font with name and url
      * @returns {obj} Styles options for load the font on FontFace API
      */
-
     getFontStyle = (variant) => {
         const styles = variant.split(/([0-9]+)/).filter(Boolean);
         if (styles.length > 1) {
@@ -228,7 +221,7 @@ document.onreadystatechange = function () {
  * Creates a new object ready to deliver responsive styles on frontend
  * 
  * @todo    Comment and extend documentation
- * @version 0.1
+ * @version 0.2
  */
 
 class ResponsiveStylesResolver {
@@ -239,7 +232,6 @@ class ResponsiveStylesResolver {
         this.newObject = this.objectManipulator();
         this.initEvents();
     }
-
     initEvents() {
         if (Object.entries(this.meta).length > 0 && this.meta.hasOwnProperty(this.target)) {
             this.hasTarget()
@@ -295,7 +287,7 @@ class ResponsiveStylesResolver {
         if (typeof this.object[device] === 'undefined') {
             return newObject;
         }
-        if (typeof newObject[device] === 'undefined' )
+        if (typeof newObject[device] === 'undefined')
             newObject[device] = {};
         let unitChecker = '';
         let unit = this.object.unit ? this.object.unit : '';
@@ -314,10 +306,8 @@ class ResponsiveStylesResolver {
             if (prop.length > 2)
                 newObject[device][target] = prop;
         }
-
         return newObject;
     }
-
     get getNewValue() {
         return this.meta;
     }

@@ -99,12 +99,12 @@ export const Link = ({
     }
 
     return(
-        <a 
+        <a
             href={value}
             target={values.opensInNewWindow ? '_blank' : ''}
             rel={getRel()}
             {...props}
         >
-        </a>    
+        </a>
     )
 }

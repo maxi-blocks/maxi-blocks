@@ -25,8 +25,8 @@ const {
     Dropdown,
 } = wp.components;
 const {
-	dispatch,
-	select
+    dispatch,
+    select
 } = wp.data;
 
 export const typographyAttributes = {
@@ -78,8 +78,8 @@ export default class Typography extends Component {
         };
 
         const getKey = (obj, target) => {
-			return Object.keys(obj)[target];
-		}
+            return Object.keys(obj)[target];
+        }
 
         const onChangeValue = (newValue, target) => {
             if (target == 'font') {

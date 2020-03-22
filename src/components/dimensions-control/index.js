@@ -157,7 +157,7 @@ export default class DimensionsControl extends Component {
 		}
 
 		/**
-		* Creates a new object that 
+		* Creates a new object that
 		*
 		* @param {string} target	Block attribute: uniqueID
 		* @param {obj} meta		Old and saved metadate

@@ -1,11 +1,13 @@
 import { blockStyleAttributes } from '../../components/block-styles/index';
-import { imagePositionAttributes } from '../../components/image-position/index';
 import { borderAttributes } from '../../components/block-border/index';
+import { imagePositionAttributes } from '../../components/image-position/index';
 import { sizeControlAttributes } from '../../components/size-control/index';
 import { hoverAnimationAttributes } from '../../components/hover-animation/index';
 import { customCSSAtributes } from '../../components/custom-css/index';
 import { linkOptionsAttributes } from '../../components/link-options/index';
-import { 
+import { dividerAttributes} from '../../components/divider/index';
+import { buttonStyleAttributes } from '../../components/button-styles/index';
+import {
     dimensionsControlAttributesMargin,
     dimensionsControlAttributesPadding,
 } from '../../components/dimensions-control/attributes';
@@ -50,15 +52,12 @@ const attributes = {
     },
     readMoreText: {
         type: 'string',
-        source: 'attribute',
-        selector: 'a.gx-image-box-link',
-        attribute: 'href',
+        selector: 'span.gx-image-box-read-more-text',
     },
     readMoreLink: {
         type: 'string',
-        source: 'attribute',
         selector: 'a.gx-image-box-link',
-        attribute: 'href',
+        attribute: 'href'
     },
     counter: {
         type: 'bool',
@@ -86,14 +85,6 @@ const attributes = {
         default: "",
     },
     descriptionColor: {
-        type: 'string',
-        default: "",
-    },
-    buttonColor: {
-        type: 'string',
-        default: "",
-    },
-    buttonBgColor: {
         type: 'string',
         default: "",
     },
@@ -128,10 +119,6 @@ const attributes = {
         type: 'boolean',
         default: false,
     },
-    titleFontFamily: {
-        type: 'string',
-        default: 'default'
-    },
     fontSizeTitleUnit: {
         type: 'string',
         default: 'px',
@@ -143,6 +130,21 @@ const attributes = {
         type: 'string',
         default: 'h2'
     },
+    titleFontFamily: {
+        type: 'string',
+        default: 'inherit'
+    },
+    backgroundGradient: {
+            type: 'array',
+            default: [],
+        },
+    defaultPalette: {
+        type: 'array',
+        default: [
+            { offset: '0.00', color: 'rgba(238, 55, 11, 1)' },
+            { offset: '1.00', color: 'rgba(126, 32, 34, 1)' }
+        ]
+    },
     ...blockStyleAttributes,
     ...imagePositionAttributes,
     ...borderAttributes,
@@ -152,8 +154,17 @@ const attributes = {
     ...linkOptionsAttributes,
     ...dimensionsControlAttributesMargin,
     ...dimensionsControlAttributesPadding,
+    ...imageSettingsAttributes,
+    ...buttonStyleAttributes,
     ...typographyAttributes,
-    ...imageSettingsAttributes
+    titlePopUpisVisible: {
+        type: 'boolean',
+        default: false,
+    },
+    paddingTitle: {
+        type: 'string',
+            default: '{"label":"Padding","unit":"px","max":"1000","desktop":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true},"tablet":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true},"mobile":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true}}'
+    }
 }
 
 export default attributes;

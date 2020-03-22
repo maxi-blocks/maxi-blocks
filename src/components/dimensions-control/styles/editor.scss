@@ -5,6 +5,7 @@ $base-blue-color: #00ccff;
 .components-panel__body {
 	.components-gx-dimensions-control {
 		position: relative;
+		margin-bottom: 20px;
 
 		&__mobile-controls-item {
 			border-radius: 3px 0 0 3px;
@@ -19,7 +20,7 @@ $base-blue-color: #00ccff;
 			position: absolute;
 			text-align: center;
 			text-shadow: none;
-			top: 45px;
+			top: 35px;
 			width: 26px;
 			z-index: 1;
 
@@ -28,11 +29,11 @@ $base-blue-color: #00ccff;
 			}
 
 			&:focus:enabled {
-				
 			}
 
 			svg {
 				position: relative;
+				max-width: 28px;
 			}
 
 			&--default svg {
@@ -52,10 +53,15 @@ $base-blue-color: #00ccff;
 			}
 		}
 
-		.components-button.is-default {
+		.components-gx-dimensions-control__header {
+			margin-bottom: 5px;
+		}
+
+		.components-button.is-default,
+		.components-button.is-small {
 			color: $base-color !important;
 			border-color:$base-bg-color!important;
-			font-size: 20px;
+			font-size: 16px;
 			background-color: rgba(33,141,250,0);
 			border-width: 2px !important;
 			width: 41px !important;
@@ -64,12 +70,10 @@ $base-blue-color: #00ccff;
 		}
 
 		.components-button.is-primary {
-			color: #fff !important;
-			border-color: $base-blue-color!important;
-			background: $base-blue-color;
-			width: 46px !important;
+			background: #fff;
+			width: 41px !important;
 			font-weight: 500;
-			font-size: 20px;
+			font-size: 16px;
 		}
 
 		.edit-post-settings-sidebar__panel-block & {
@@ -130,7 +134,7 @@ $base-blue-color: #00ccff;
 
 		&__label {
 			margin-bottom: 0;
-			font-size: 20px !important;
+			font-size: 16px !important;
 			color: $base-color !important;
 			font-weight: 500 !important;
 		}
@@ -218,7 +222,7 @@ $base-blue-color: #00ccff;
 	}
 
 	&.is-medium-size {
-		font-size: 20px;
+		font-size: 16px;
 	}
 
 	&.is-large-size {
@@ -242,7 +246,6 @@ $base-blue-color: #00ccff;
 		.components-font-size-picker__controls {
 			display: flex;
 			justify-content: space-between;
-			
 		}
 
 		.components-font-size-picker__select .components-base-control__label {

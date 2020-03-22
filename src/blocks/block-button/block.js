@@ -5,7 +5,8 @@ import classnames from 'classnames';
 import { omit, pick } from 'lodash';
 import { withState } from '@wordpress/compose';
 import { RangeControl } from '@wordpress/components';
-import { DimensionControl } from '@wordpress/components';
+import DimensionsControl from '../../components/dimensions-control/index';
+import iconsBlocks from '../../components/icons/icons-blocks.js';
 
 /**
  * WordPress dependencies
@@ -208,11 +209,10 @@ export const name = 'gutenberg-extra/block-button';
 
 const settings = {
 
-	title: __( 'GX Button' ),
+	title: __( 'Button Extra' ),
 
 	description: __( '' ),
-
-	icon: <svg preserveAspectRatio="none" x="0px" y="0px" width="24px" height="24px" viewBox="0 0 24 24"><defs><path id="GX_button1_STROKES" stroke="#00CCFF" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" fill="none" d="M 2.45 12.5 L 2.45 2.45 21.6 2.45 21.6 12.55 M 15.5 13.45 Q 15.25 13.45 15 13.55 14.9 13.2 14.6 12.95 14.3 12.75 13.95 12.75 13.65 12.75 13.35 12.9 13.25 12.6 12.95 12.4 12.65 12.25 12.3 12.25 12.1 12.25 11.9 12.3 L 11.9 10.95 Q 11.9 10.45 11.55 10.1 11.2 9.7 10.7 9.7 10.2 9.7 9.85 10.1 9.5 10.45 9.5 10.95 L 9.5 15.8 8.6 14.8 Q 8.4 14.6 8.2 14.5 8 14.4 7.75 14.4 7.5 14.4 7.25 14.5 7.05 14.6 6.9 14.75 6.55 15.05 6.55 15.5 6.5 15.9 6.8 16.4 7.15 16.95 7.55 17.6 7.75 17.95 8.2 18.7 8.85 19.7 9.1 20.05 9.3 20.4 9.85 21.5 9.9 21.65 9.95 21.65 10.1 21.75 10.2 21.75 L 15.4 21.75 Q 15.5 21.75 15.65 21.65 15.75 21.6 15.8 21.45 16.1 20.6 16.3 19.75 16.7 18.1 16.7 17.45 L 16.7 14.65 Q 16.7 14.15 16.35 13.8 16.05 13.45 15.5 13.45 Z M 2.45 12.95 L 6.6 12.85 M 17.95 13 L 21.6 12.95"/></defs><g transform="matrix( 1, 0, 0, 1, 0,0) "><use href="#GX_button1_STROKES"/></g></svg>,
+	icon: iconsBlocks.button,
 	category: 'gutenberg-extra-blocks',
 
 	attributes: blockAttributes,
@@ -278,7 +278,7 @@ const settings = {
 			marginRight,
 			marginBottom,
 			buttonHeight,
-			textTransform, 
+			textTransform,
 			borderWidth,
 			borderRadius,
 			borderStyle,
@@ -337,7 +337,7 @@ const settings = {
 			<div>
 				{ hoverClass && <style dangerouslySetInnerHTML={{__html: `.hover-${hoverClass}:hover{${hoverStyles}}` }} /> }
 				{ uniqueClass && <style dangerouslySetInnerHTML={{__html: `.${uniqueClass}{${extraStyles}}` }} /> }
-				{ uniqueHoverClass && <style dangerouslySetInnerHTML={{__html: `.${uniqueHoverClass} .wp-block-button__link:hover{${extraHoverStyles}} 
+				{ uniqueHoverClass && <style dangerouslySetInnerHTML={{__html: `.${uniqueHoverClass} .wp-block-button__link:hover{${extraHoverStyles}}
 					 .wp-block-button__link:after{${extraAfterStyles}}` }} /> }
 				{ extraBeforeStyles && <style dangerouslySetInnerHTML={{__html: `.wp-block-button__link:before{${extraBeforeStyles}}` }} /> }
 				{ extraAfterStyles && <style dangerouslySetInnerHTML={{__html: `.wp-block-button__link:after{${extraAfterStyles}}` }} /> }

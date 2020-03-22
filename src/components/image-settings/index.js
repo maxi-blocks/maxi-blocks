@@ -15,8 +15,8 @@ const {
  */
 import { BlockBorder } from '../block-border/index';
 import AlignmentControl from '../alignment-control/index';
-import image from '@wordpress/icons/build/library/image';
 import MiniSizeControl from '../mini-size-control';
+import { BoxShadowOptions } from '../box-shadow';
 
 /**
  * Styles
@@ -27,6 +27,85 @@ import './editor.scss';
  * Default attributes
  */
 export const imageSettingsAttributes = {
+    imageSize: {
+        type: 'string',
+        default: 'full'
+    },
+    imageAlignment: {
+        type: 'string'
+    },
+    imageCaption: {
+        type: 'string',
+        default: 'none'
+    },
+    imageMaxWidthUnit: {
+        type: 'string',
+        default: 'px'
+    },
+    imageMaxWidth: {
+        type: 'number'
+    },
+    imageWidthUnit: {
+        type: 'string',
+        default: 'px'
+    },
+    imageWidth: {
+        type: 'number'
+    },
+    imageOpacity: {
+        type: 'number'
+    },
+    imageBackgroundColor: {
+        type: 'string',
+        default: ''
+    },
+    imageBoxShadow: {
+        type: 'string',
+        default: '{"label": "Box shadow","shadowColor": "", "shadowHorizontal": "0", "shadowVertical": "0", "shadowBlur": "0", "shadowSpread": "0"}',
+    },
+    imageBorderColor: {
+        type: 'string',
+        default: ''
+    },
+    imageBorderType: {
+        type: 'string',
+        default: 'none'
+    },
+    imageBorderRadius: {
+        type: 'string',
+        default: '{"label":"Padding","unit":"px","desktop":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true},"tablet":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true},"mobile":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true}}'
+    },
+    imageBorderWidth: {
+        type: 'string',
+        default: '{"label":"Margin","min":"none","unit":"px","desktop":{"margin-top":0,"margin-right":0,"margin-bottom":0,"margin-left":0,"sync":true},"tablet":{"margin-top":0,"margin-right":0,"margin-bottom":0,"margin-left":0,"sync":true},"mobile":{"margin-top":0,"margin-right":0,"margin-bottom":0,"margin-left":0,"sync":true}}'
+    },
+    imageOpacityHover: {
+        type: 'number'
+    },
+    imageBackgroundColorHover: {
+        type: 'string',
+        default: ''
+    },
+    imageBoxShadowHover: {
+        type: 'string',
+        default: '{"label": "Box shadow","shadowColor": "", "shadowHorizontal": "0", "shadowVertical": "0", "shadowBlur": "0", "shadowSpread": "0"}',
+    },
+    imageBorderColorHover: {
+        type: 'string',
+        default: ''
+    },
+    imageBorderTypeHover: {
+        type: 'string',
+        default: 'none'
+    },
+    imageBorderRadiusHover: {
+        type: 'string',
+        default: '{"label":"Padding","unit":"px","desktop":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true},"tablet":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true},"mobile":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true}}'
+    },
+    imageBorderWidthHover: {
+        type: 'string',
+        default: '{"label":"Margin","min":"none","unit":"px","desktop":{"margin-top":0,"margin-right":0,"margin-bottom":0,"margin-left":0,"sync":true},"tablet":{"margin-top":0,"margin-right":0,"margin-bottom":0,"margin-left":0,"sync":true},"mobile":{"margin-top":0,"margin-right":0,"margin-bottom":0,"margin-left":0,"sync":true}}'
+    },
     imageSettings: {
         type: 'string',
         default: '{"label":"Image Settings","isize":"full","alignment":"","caption":"none","maxWidth":"","width":"","sizeSettings":{"maxWidthUnit":"px","maxWidth":"","widthUnit":"px","width":""},"normal":{"opacity":"","backgroundColor":"","boxShadow":"","borderSettings":{"borderColor":"","borderType":"none","borderRadius":{"label":"Border radius","unit":"px","max":"1000","desktop":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"tablet":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"mobile":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true}},"borderWidth":{"label":"Border width","unit":"px","max":"1000","desktop":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"tablet":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"mobile":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true}}}},"hover":{"opacity":"","backgroundColor":"","boxShadow":"","borderSettings":{"borderColor":"","borderType":"none","borderRadius":{"label":"Border radius","unit":"px","max":"1000","desktop":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"tablet":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"mobile":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true}},"borderWidth":{"label":"Border width","unit":"px","max":"1000","desktop":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"tablet":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"mobile":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true}}}}}',
@@ -40,86 +119,108 @@ export default class ImageSettings extends Component {
 
     state = {
         selector: 'normal',
-        borderRadius: () => {
-            return JSON.parse(this.props.imageSettings)[this.state.selector].borderSettings.borderRadius
-        },
     }
 
     render() {
         const {
-            imageSettings,
-            onChange
+            imageSize = this.props.attributes.imageSize,
+            onChangeImageSize = undefined,
+            imageAlignment = this.props.attributes.imageAlignment,
+            onChangeImageAlignment = undefined,
+            imageCaption = this.props.attributes.imageCaption,
+            onChangeImageCaption = undefined,
+            imageMaxWidthUnit = this.props.attributes.imageMaxWidthUnit,
+            onChangeImageMaxWidthUnit = undefined,
+            imageMaxWidth = this.props.attributes.imageMaxWidth,
+            onChangeImageMaxWidth = undefined,
+            imageWidthUnit = this.props.attributes.imageWidthUnit,
+            onChangeImageWidthUnit = undefined,
+            imageWidth = this.props.attributes.imageWidth,
+            onChangeImageWidth = undefined,
+            imageOpacity = this.props.attributes.imageOpacity,
+            onChangeImageOpacity = undefined,
+            imageBackgroundColor = this.props.attributes.imageBackgroundColor,
+            onChangeImageBackgroundColor = undefined,
+            imageBoxShadow = this.props.attributes.imageBoxShadow,
+            onChangeImageBoxShadow = undefined,
+            imageBorderColor = this.props.attributes.imageBorderColor,
+            onChangeImageBorderColor = undefined,
+            imageBorderType = this.props.attributes.imageBorderType,
+            onChangeImageBorderType = undefined,
+            imageBorderRadius = this.props.attributes.imageBorderRadius,
+            onChangeImageBorderRadius = undefined,
+            imageBorderWidth = this.props.attributes.imageBorderWidth,
+            onChangeImageBorderWidth = undefined,
+            imageOpacityHover = this.props.attributes.imageOpacityHover,
+            onChangeImageOpacityHover = undefined,
+            imageBackgroundColorHover = this.props.attributes.imageBackgroundColorHover,
+            onChangeImageBackgroundColorHover = undefined,
+            imageBoxShadowHover = this.props.attributes.imageBoxShadowHover,
+            onChangeImageBoxShadowHover = undefined,
+            imageBorderColorHover = this.props.attributes.imageBorderColorHover,
+            onChangeImageBorderColorHover = undefined,
+            imageBorderTypeHover = this.props.attributes.imageBorderTypeHover,
+            onChangeImageBorderTypeHover = undefined,
+            imageBorderRadiusHover = this.props.attributes.imageBorderRadiusHover,
+            onChangeImageBorderRadiusHover = undefined,
+            imageBorderWidthHover = this.props.attributes.imageBorderWidthHover,
+            onChangeImageBorderWidthHover = undefined,
+            target = '',
+            setAttributes = props.setAttributes,
         } = this.props;
 
         const {
             selector,
-            borderRadius
         } = this.state;
 
-        const value = JSON.parse(imageSettings);
-
-        const onChangeValue = (target, newValue, obj = value) => {
-            let parts = target.split(".");
-            if (parts.length == 1) {
-                obj[parts[0]] = newValue;
-                saveAndSend();
-                return;
+        const onChangeValue = (target, value, callback) => {
+            if (typeof callback != 'undefined' ) {
+                callback(value);
             }
-            return onChangeValue(parts.slice(1).join("."), newValue, obj[parts[0]]);
-        }
-
-        /**
-		* Saves and send the data. Also refresh the styles on Editor
-		*/
-        const saveAndSend = () => {
-            onChange(JSON.stringify(value));
-            //     dispatch('core/editor').editPost({
-            // 		meta: {
-            // 			_gutenberg_extra_responsive_styles: metaValue(),
-            // 		},
-            //     });
-            // new BackEndResponsiveStyles(getMeta());
+            else {
+                setAttributes({[target]: value})
+            }
         }
 
         return (
             <div className="gx-imagesettings-control">
                 <SelectControl
                     label={__('Image Size', 'gutenberg-extra')}
-                    value={value.size}
+                    value={imageSize}
                     options={[
                         { label: 'None', value: 'none' },
                         { label: 'Medium', value: '50%' },
                         { label: 'Small', value: '25%' },
                     ]}
-                    onChange={value => onChangeValue('size', value)}
+                    onChange={value => onChangeValue('imageSize', value, onChangeImageSize)}
                 />
                 <AlignmentControl
-                // value={value.alignment}
-                // onChange={}
+                    value={imageAlignment}
+                    onChange={value => onChangeValue('imageAlignment', value, onChangeImageAlignment)}
                 />
                 <SelectControl
                     label={__('Caption', 'gutenberg-extra')}
-                    value={value.caption}
+                    value={imageCaption}
                     options={[
                         { label: 'Big', value: '100%' },
                         { label: 'Medium', value: '50%' },
                         { label: 'Small', value: '25%' },
                     ]}
-                    onChange={value => onChangeValue('caption', value)}
+                    onChange={value => onChangeValue('imageCaption', value, onChangeImageCaption)}
                 />
                 <MiniSizeControl
                     label={__('Max Width', 'gutenberg-extra')}
-                    unit={value.sizeSettings.maxWidthUnit}
-                    onChangeUnit={value => onChangeValue('sizeSettings.maxWidthUnit', value)}
-                    value={value.sizeSettings.maxWidth}
-                    onChangeValue={value => onChangeValue('sizeSettings.maxWidth', value)}
+                    unit={imageMaxWidthUnit}
+                    onChangeUnit={value => onChangeValue('imageMaxWidthUnit', value, onChangeImageMaxWidthUnit)}
+                    value={imageMaxWidth}
+                    onChangeValue={value => onChangeValue('imageMaxWidth', value, onChangeImageMaxWidth)}
                 />
                 <MiniSizeControl
                     label={__('Width', 'gutenberg-extra')}
-                    unit={value.sizeSettings.widthUnit}
-                    onChangeUnit={value => onChangeValue('sizeSettings.widthUnit', value)}
-                    value={value.sizeSettings.width}
-                    onChangeValue={value => onChangeValue('sizeSettings.width', value)}
+                    unit={imageWidthUnit}
+                    onChangeUnit={value => onChangeValue('imageWidthUnit', value, onChangeImageWidthUnit)}
+                    value={imageWidth}
+                    onChangeValue={value => onChangeValue('imageWidth', value, onChangeImageWidth)}
                 />
                 <RadioControl
                     className="gx-imagesettings-selector-control"
@@ -130,36 +231,108 @@ export default class ImageSettings extends Component {
                     ]}
                     onChange={(selector) => { 
                         this.setState({ selector });
-                        console.log(value[selector])
                     }}
                 />
                 <RangeControl
                     label={__('Opacity', 'gutenberg-extra')}
-                    value={value[selector].opacity}
+                    value={
+                        selector != 'hover' ?
+                            imageOpacity :
+                            imageOpacityHover
+                    }
                     min={0}
                     max={1}
                     step={0.1}
-                    onChange={value => onChangeValue(`${selector}.opacity`, value)}
+                    onChange={
+                        selector != 'hover' ?
+                            value => onChangeValue('imageOpacity', value, onChangeImageOpacity) :
+                            value => onChangeValue('imageOpacityHover', value, onChangeImageOpacityHover)
+                    }
                 />
                 <PanelColorSettings
                     title={__('Background Colour Settings', 'gutenberg-extra')}
                     colorSettings={[
                         {
-                            value: value[selector].backgroundColor,
-                            onChange: value => onChangeValue(`${selector}.backgroundColor`, value),
+                            value: 
+                                selector != 'hover' ?
+                                    imageBackgroundColor :
+                                    imageBackgroundColorHover,
+                            onChange: 
+                                selector != 'hover' ?
+                                    value => onChangeValue('imageBackgroundColor', value, onChangeImageBackgroundColor) :
+                                    value => onChangeValue('imageBackgroundColorHover', value, onChangeImageBackgroundColorHover),
                             label: __('Background Colour', 'gutenberg-extra'),
                         },
                     ]}
                 />
+                <BoxShadowOptions 
+                    boxShadowOptions={
+                        selector != 'hover' ?
+                            imageBoxShadow :
+                            imageBoxShadowHover
+                    }
+                    onChange={
+                        selector != 'hover' ?
+                            value => onChangeValue('imageBoxShadow', value, onChangeImageBoxShadow):
+                            value => onChangeValue('imageBoxShadowHover', value, onChangeImageBoxShadowHover)
+                        }
+                    target={
+                        selector != 'hover' ?
+                            target : 
+                            `${target}:hover`
+                    }
+                />
                 <BlockBorder
-                    borderColor={value[selector].borderSettings.borderColor}
-                    onChangeBorderColor={value => onChangeValue(`${selector}.borderSettings.borderColor`, value)}
-                    borderType={value[selector].borderSettings.borderType}
-                    onChangeBorderType={value => onChangeValue(`${selector}.borderSettings.borderType`, value)}
-                    borderRadius={JSON.stringify(borderRadius())}
-                    onChangeBorderRadius={value => onChangeValue(`${selector}.borderSettings.borderRadius`, JSON.parse(value))}
-                    borderWidth={JSON.stringify(value[selector].borderSettings.borderWidth)}
-                    onChangeBorderWidth={value => onChangeValue(`${selector}.borderSettings.borderWidth`, JSON.parse(value))}
+                    borderColor={
+                        selector != 'hover' ?
+                            imageBorderColor :
+                            imageBorderColorHover
+                    }
+                    onChangeBorderColor={
+                        selector != 'hover' ?
+                            value => onChangeValue('imageBorderColor', value, onChangeImageBorderColor) :
+                            value => onChangeValue('imageBorderColorHover', value, onChangeImageBorderColorHover)
+                    }
+                    borderType={
+                        selector != 'hover' ?
+                            imageBorderType :
+                            imageBorderTypeHover
+                    }
+                    onChangeBorderType={
+                        selector != 'hover' ?
+                            value => onChangeValue('imageBorderType', value, onChangeImageBorderType) :
+                            value => onChangeValue('imageBorderTypeHover', value, onChangeImageBorderTypeHover)
+                    }
+                    borderRadius={
+                        selector != 'hover' ?
+                            imageBorderRadius :
+                            imageBorderRadiusHover
+                    }
+                    onChangeBorderRadius={
+                        selector != 'hover' ?
+                            value => onChangeValue('imageBorderRadius', value, onChangeImageBorderRadius) :
+                            value => onChangeValue('imageBorderRadiusHover', value, onChangeImageBorderRadiusHover)
+                    }
+                    borderWidth={
+                        selector != 'hover' ?
+                            imageBorderWidth :
+                            imageBorderWidthHover
+                    }
+                    onChangeBorderWidth={
+                        selector != 'hover' ?
+                            value => onChangeValue('imageBorderWidth', value, onChangeImageBorderWidth) :
+                            value => onChangeValue('imageBorderWidthHover', value, onChangeImageBorderWidthHover)
+                    }
+                    borderRadiusTarget={
+                        selector != 'hover' ?
+                            target : 
+                            `${target}:hover`
+                    }
+                    borderWidthTarget={
+                        selector != 'hover' ?
+                            target : 
+                            `${target}:hover`
+                    }
                 />
             </div>
         )

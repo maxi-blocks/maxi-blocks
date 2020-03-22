@@ -13,6 +13,7 @@ import {
 } from '../../components/dimensions-control/attributes';
 import {typographyAttributes} from '../../components/typography';
 import {imageSettingsAttributes} from '../../components/image-settings';
+import {boxShadowOptionsAttributes} from '../../components/box-shadow';
 
 const attributes = {
     title: {
@@ -164,7 +165,8 @@ const attributes = {
     paddingTitle: {
         type: 'string',
             default: '{"label":"Padding","unit":"px","max":"1000","desktop":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true},"tablet":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true},"mobile":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true}}'
-    }
+    },
+    ...boxShadowOptionsAttributes,
 }
 
 export default attributes;

@@ -176,12 +176,28 @@ const edit = (props) => {
                     <AccordionItemPanel>
                         <PanelBody className="gx-panel gx-color-setting gx-style-tab-setting" initialOpen={true} title={__('Colour settings', 'gutenberg-extra')}>
                             <Typography
-                            fontOptions={fontOptions}
-                            onChange={value => { setAttributes({ fontOptions: value})}}
-                            target="gx-image-box-title"
-                        />
+                                fontOptions={fontOptions}
+                                onChange={value => { setAttributes({ fontOptions: value})}}
+                                target="gx-image-box-title"
+                            />
                         </PanelBody>
-
+                    </AccordionItemPanel>
+                </AccordionItem>
+                <AccordionItem>
+                    <AccordionItemHeading className={'gx-accordion-tab gx-imagesettings-tab'}>
+                        <AccordionItemButton className='components-base-control__label'>
+                            {__('Image', 'gutenberg-extra' )}
+                        </AccordionItemButton>
+                    </AccordionItemHeading>
+                    <AccordionItemPanel>
+                        <PanelBody className="gx-panel gx-color-setting gx-style-tab-setting" initialOpen={true} title={__('Immage settings', 'gutenberg-extra')}>
+                            <ImageSettings
+                                imageSettings={imageSettings}
+                                onChange={value => setAttributes({ imageSettings: value })}
+                                target="gx-image-box-image"
+                                {...props}
+                            />
+                        </PanelBody>
                     </AccordionItemPanel>
                 </AccordionItem>
                 <AccordionItem>

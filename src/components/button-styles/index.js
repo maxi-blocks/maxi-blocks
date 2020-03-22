@@ -73,147 +73,146 @@ export const buttonStyleAttributes = {
     }
 }
 
-export const ButtonStyles = ( props ) => {
-   const {
-       buttonTextColorLabel = __('Text Colour', 'gutenberg-extra' ),
-       buttonColor = props.attributes.buttonColor,
-       buttonColorLabel = __('Border Colour', 'gutenberg-extra'),
-       buttonBorderTypeLabel = __("Border Type", 'gutenberg-extra'),
-       buttonBgColorLabel = __('Background Colour', 'gutenberg-extra' ),
-       buttonBorderTypeClassName = "gx-button--buttonBorder-type",
-       buttonBorderType = props.attributes.buttonBorderType,
-       buttonBorderTypeOptions = [
-           { label: 'None', value: 'none' },
-           { label: 'Dotted', value: 'dotted' },
-           { label: 'Dashed', value: 'dashed' },
-           { label: 'Solid', value: 'solid' },
-           { label: 'Double', value: 'double' },
-           { label: 'Groove', value: 'groove' },
-           { label: 'Ridge', value: 'ridge' },
-           { label: 'Inset', value: 'inset' },
-           { label: 'Outset', value: 'outset' },
-       ],
-       buttonBorderRadius = props.attributes.buttonBorderRadius,
-       buttonBorderWidth = props.attributes.buttonBorderWidth,
-       buttonBorderRadiusTarget = '',
-       buttonBorderWidthTarget = '',
-       buttonBgColor,
-       buttonMargin,
-       buttonPadding,
-       buttonHoverColor,
-       buttonHoverBgColor,
-       buttonBorderColor,
-       buttonHoverBorderColor,
-       setAttributes,
-       attributes: {
-        normalHoverOption,
-        }
-   } = props;
-
+export const ButtonStyles = (props) => {
+    const {
+        buttonTextColorLabel = __('Text Colour', 'gutenberg-extra'),
+        buttonColor = props.attributes.buttonColor,
+        buttonColorLabel = __('Border Colour', 'gutenberg-extra'),
+        buttonBorderTypeLabel = __("Border Type", 'gutenberg-extra'),
+        buttonBgColorLabel = __('Background Colour', 'gutenberg-extra'),
+        buttonBorderTypeClassName = "gx-button--buttonBorder-type",
+        buttonBorderType = props.attributes.buttonBorderType,
+        buttonBorderTypeOptions = [
+            { label: 'None', value: 'none' },
+            { label: 'Dotted', value: 'dotted' },
+            { label: 'Dashed', value: 'dashed' },
+            { label: 'Solid', value: 'solid' },
+            { label: 'Double', value: 'double' },
+            { label: 'Groove', value: 'groove' },
+            { label: 'Ridge', value: 'ridge' },
+            { label: 'Inset', value: 'inset' },
+            { label: 'Outset', value: 'outset' },
+        ],
+        buttonBorderRadius = props.attributes.buttonBorderRadius,
+        buttonBorderWidth = props.attributes.buttonBorderWidth,
+        buttonBorderRadiusTarget = '',
+        buttonBorderWidthTarget = '',
+        buttonBgColor,
+        buttonMargin,
+        buttonPadding,
+        buttonHoverColor,
+        buttonHoverBgColor,
+        buttonBorderColor,
+        buttonHoverBorderColor,
+        setAttributes,
+        attributes: {
+            normalHoverOption,
+        },
+        boxShadowOptions
+    } = props;
 
     const onSelectState = (value) => setAttributes({ normalHoverOption: value });
-    const boxShadowOptions = JSON.parse(props.attributes.boxShadowOptions);
 
     return (
         <Fragment>
-        <RadioControl
-            className = 'gx-normal-hover-setting'
-            selected={ normalHoverOption }
-            options={ [
-                { label: __('Normal', 'gutenberg-extra' ), value: 'normal' },
-                { label: __('Hover', 'gutenberg-extra' ), value: 'hover' },
-            ] }
-            onChange={value => setAttributes({ normalHoverOption: value })}
-        />
-        { normalHoverOption === 'normal' &&
-        <Fragment>
-            <PanelColorSettings
-                className = 'gx-normal-hover-setting-normal'
-                colorSettings={[
-                    {
-                        value: buttonColor,
-                        onChange: (value) => setAttributes({ buttonColor: value }),
-                        label: buttonTextColorLabel,
-                    },
+            <RadioControl
+                className='gx-normal-hover-setting'
+                selected={normalHoverOption}
+                options={[
+                    { label: __('Normal', 'gutenberg-extra'), value: 'normal' },
+                    { label: __('Hover', 'gutenberg-extra'), value: 'hover' },
                 ]}
+                onChange={value => setAttributes({ normalHoverOption: value })}
             />
-            <PanelColorSettings
-                className = 'gx-normal-hover-setting-normal'
-                colorSettings={[
-                    {
-                        value: buttonBgColor,
-                        onChange: (value) => setAttributes({ buttonBgColor: value }),
-                        label: buttonBgColorLabel,
-                    },
-                ]}
+            {normalHoverOption === 'normal' &&
+                <Fragment>
+                    <PanelColorSettings
+                        className='gx-normal-hover-setting-normal'
+                        colorSettings={[
+                            {
+                                value: buttonColor,
+                                onChange: (value) => setAttributes({ buttonColor: value }),
+                                label: buttonTextColorLabel,
+                            },
+                        ]}
+                    />
+                    <PanelColorSettings
+                        className='gx-normal-hover-setting-normal'
+                        colorSettings={[
+                            {
+                                value: buttonBgColor,
+                                onChange: (value) => setAttributes({ buttonBgColor: value }),
+                                label: buttonBgColorLabel,
+                            },
+                        ]}
+                    />
+                    <PanelColorSettings
+                        className='gx-normal-hover-setting-normal'
+                        colorSettings={[
+                            {
+                                value: buttonBorderColor,
+                                onChange: (value) => setAttributes({ buttonBorderColor: value }),
+                                label: buttonColorLabel,
+                            },
+                        ]}
+                    />
+                    {/* <BoxShadowOptions
+                        boxShadowOptions={boxShadowOptions}
+                        onChangeOptions={value => { setAttributes({ boxShadowOptions: value }); }}
+                    /> */}
+                </Fragment>
+            }
+            {normalHoverOption === 'hover' &&
+                <Fragment>
+                    <PanelColorSettings
+                        className='gx-normal-hover-setting-hover'
+                        colorSettings={[
+                            {
+                                value: buttonHoverColor,
+                                onChange: (value) => setAttributes({ buttonHoverColor: value }),
+                                label: buttonTextColorLabel,
+                            },
+                        ]}
+                    />
+                    <PanelColorSettings
+                        className='gx-normal-hover-setting-hover'
+                        colorSettings={[
+                            {
+                                value: buttonHoverBgColor,
+                                onChange: (value) => setAttributes({ buttonHoverBgColor: value }),
+                                label: buttonBgColorLabel,
+                            },
+                        ]}
+                    />
+                    <PanelColorSettings
+                        className='gx-normal-hover-setting-hover'
+                        colorSettings={[
+                            {
+                                value: buttonHoverBorderColor,
+                                onChange: (value) => setAttributes({ buttonHoverBorderColor: value }),
+                                label: buttonColorLabel,
+                            },
+                        ]}
+                    />
+                </Fragment>
+            }
+            <SelectControl
+                label={buttonBorderTypeLabel}
+                className={buttonBorderTypeClassName}
+                value={buttonBorderType}
+                options={buttonBorderTypeOptions}
+                onChange={(value) => setAttributes({ buttonBorderType: value })}
             />
-            <PanelColorSettings
-                className = 'gx-normal-hover-setting-normal'
-                colorSettings={[
-                    {
-                        value: buttonBorderColor,
-                        onChange: (value) => setAttributes({ buttonBorderColor: value }),
-                        label: buttonColorLabel,
-                    },
-                ]}
+            <DimensionsControl
+                value={buttonBorderRadius}
+                onChange={value => setAttributes({ buttonBorderRadius: value })}
+                target={buttonBorderRadiusTarget}
             />
-             <BoxShadowOptions
-                boxShadowOptions={boxShadowOptions}
-                onChangeOptions={value => { setAttributes({ boxShadowOptions: value }); }}
+            <DimensionsControl
+                value={buttonBorderWidth}
+                onChange={value => setAttributes({ buttonBorderWidth: value })}
+                target={buttonBorderWidthTarget}
             />
-            </Fragment>
-        }
-        { normalHoverOption === 'hover' &&
-        <Fragment>
-            <PanelColorSettings
-                className = 'gx-normal-hover-setting-hover'
-                colorSettings={[
-                    {
-                        value: buttonHoverColor,
-                        onChange: (value) => setAttributes({ buttonHoverColor: value }),
-                        label: buttonTextColorLabel,
-                    },
-                ]}
-            />
-            <PanelColorSettings
-                className = 'gx-normal-hover-setting-hover'
-                colorSettings={[
-                    {
-                        value: buttonHoverBgColor,
-                        onChange: (value) => setAttributes({ buttonHoverBgColor: value }),
-                        label: buttonBgColorLabel,
-                    },
-                ]}
-            />
-            <PanelColorSettings
-                className = 'gx-normal-hover-setting-hover'
-                colorSettings={[
-                    {
-                        value: buttonHoverBorderColor,
-                        onChange: (value) => setAttributes({ buttonHoverBorderColor: value }),
-                        label: buttonColorLabel,
-                    },
-                ]}
-            />
-            </Fragment>
-        }
-        <SelectControl
-            label={buttonBorderTypeLabel}
-            className={buttonBorderTypeClassName}
-            value={buttonBorderType}
-            options={buttonBorderTypeOptions}
-            onChange={(value) => setAttributes({ buttonBorderType: value })}
-        />
-        <DimensionsControl
-            value={buttonBorderRadius}
-            onChange={value => setAttributes({buttonBorderRadius: value})}
-            target={buttonBorderRadiusTarget}
-        />
-        <DimensionsControl
-            value={buttonBorderWidth}
-            onChange={value => setAttributes({buttonBorderWidth: value})}
-            target={buttonBorderWidthTarget}
-        />
         </Fragment>
 
     )

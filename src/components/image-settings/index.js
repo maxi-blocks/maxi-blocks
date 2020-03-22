@@ -16,6 +16,7 @@ const {
 import { BlockBorder } from '../block-border/index';
 import AlignmentControl from '../alignment-control/index';
 import MiniSizeControl from '../mini-size-control';
+import { Popover } from '../popover';
 import { BoxShadowOptions } from '../box-shadow';
 
 /**
@@ -265,21 +266,26 @@ export default class ImageSettings extends Component {
                         },
                     ]}
                 />
-                <BoxShadowOptions 
-                    boxShadowOptions={
-                        selector != 'hover' ?
-                            imageBoxShadow :
-                            imageBoxShadowHover
-                    }
-                    onChange={
-                        selector != 'hover' ?
-                            value => onChangeValue('imageBoxShadow', value, onChangeImageBoxShadow):
-                            value => onChangeValue('imageBoxShadowHover', value, onChangeImageBoxShadowHover)
-                        }
-                    target={
-                        selector != 'hover' ?
-                            target : 
-                            `${target}:hover`
+                <Popover 
+                    label={__('Box shadow', 'gutenberg-extra')}
+                    content={
+                        <BoxShadowOptions 
+                            boxShadowOptions={
+                                selector != 'hover' ?
+                                    imageBoxShadow :
+                                    imageBoxShadowHover
+                            }
+                            onChange={
+                                selector != 'hover' ?
+                                    value => onChangeValue('imageBoxShadow', value, onChangeImageBoxShadow):
+                                    value => onChangeValue('imageBoxShadowHover', value, onChangeImageBoxShadowHover)
+                                }
+                            target={
+                                selector != 'hover' ?
+                                    target : 
+                                    `${target}:hover`
+                            }
+                        />
                     }
                 />
                 <BlockBorder

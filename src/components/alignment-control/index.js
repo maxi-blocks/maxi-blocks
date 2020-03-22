@@ -21,12 +21,10 @@ import {
  */
 const AlignmentControl = props => {
 
-    // const {
-    //     value,
-    //     onChange
-    // } = props;
-
-    const value = 'alignLeft';
+    const {
+        value,
+        onChange
+    } = props;
 
     const getClassName = align => {
         let response = "gx-alignmentcontrol-button";
@@ -47,7 +45,7 @@ const AlignmentControl = props => {
                 { label: <Icon icon={alignRight} />, value: 'alignRight' },
                 { label: <Icon icon={alignJustify} />, value: 'alignJustify' },
             ]}
-            onChange={(e) => console.log(e)}
+            onChange={value => onChange(value)}
         />
     )
 }

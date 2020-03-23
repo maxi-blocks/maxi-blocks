@@ -7,7 +7,8 @@ const { Component } = wp.element;
 const {
     SelectControl,
     RadioControl,
-    RangeControl
+    RangeControl,
+    TextControl,
 } = wp.components;
 
 /**
@@ -16,8 +17,8 @@ const {
 import { BlockBorder } from '../block-border/index';
 import AlignmentControl from '../alignment-control/index';
 import MiniSizeControl from '../mini-size-control';
-import { Popover } from '../popover';
-import { BoxShadowOptions } from '../box-shadow';
+import { PopoverControl } from '../popover';
+import { BoxShadow } from '../box-shadow';
 
 /**
  * Styles
@@ -38,6 +39,9 @@ export const imageSettingsAttributes = {
     imageCaption: {
         type: 'string',
         default: 'none'
+    },
+    imageCustomCaption: {
+        type: 'string'
     },
     imageMaxWidthUnit: {
         type: 'string',
@@ -130,6 +134,8 @@ export default class ImageSettings extends Component {
             onChangeImageAlignment = undefined,
             imageCaption = this.props.attributes.imageCaption,
             onChangeImageCaption = undefined,
+            imageCustomCaption = this.props.attributes.imageCustomCaption,
+            onChangeImageCustomCaption = undefined,
             imageMaxWidthUnit = this.props.attributes.imageMaxWidthUnit,
             onChangeImageMaxWidthUnit = undefined,
             imageMaxWidth = this.props.attributes.imageMaxWidth,
@@ -203,12 +209,20 @@ export default class ImageSettings extends Component {
                     label={__('Caption', 'gutenberg-extra')}
                     value={imageCaption}
                     options={[
-                        { label: 'Big', value: '100%' },
-                        { label: 'Medium', value: '50%' },
-                        { label: 'Small', value: '25%' },
+                        { label: 'None', value: 'none' },
+                        { label: 'Attachment Caption', value: 'attachment' },
+                        { label: 'Custom Caption', value: 'custom' },
                     ]}
                     onChange={value => onChangeValue('imageCaption', value, onChangeImageCaption)}
                 />
+                { imageCaption === 'custom' &&
+                    <TextControl
+                        label={__('Custom Caption', 'gutenberg-extra')}
+                        className="gx-custom-caption"
+                        value={imageCustomCaption}
+                        onChange={value => onChangeValue('imageCustomCaption', value, onChangeImageCustomCaption)}
+                    />
+                }
                 <MiniSizeControl
                     label={__('Max Width', 'gutenberg-extra')}
                     unit={imageMaxWidthUnit}
@@ -266,10 +280,10 @@ export default class ImageSettings extends Component {
                         },
                     ]}
                 />
-                <Popover 
+                <PopoverControl 
                     label={__('Box shadow', 'gutenberg-extra')}
                     content={
-                        <BoxShadowOptions 
+                        <BoxShadow 
                             boxShadowOptions={
                                 selector != 'hover' ?
                                     imageBoxShadow :
@@ -288,6 +302,7 @@ export default class ImageSettings extends Component {
                         />
                     }
                 />
+                <hr style={{ borderTop: '1px solid #ddd' }} />
                 <BlockBorder
                     borderColor={
                         selector != 'hover' ?

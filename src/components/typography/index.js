@@ -7,12 +7,9 @@ const {
     Fragment
 } = wp.element;
 const {
-    BaseControl,
-    Button,
     SelectControl,
     RadioControl,
     RangeControl,
-    Dropdown,
 } = wp.components;
 const {
     dispatch,
@@ -23,7 +20,7 @@ const {
  * External dependencies
  */
 import FontFamilySelector from '../font-family-selector/index';
-import { Popover } from '../popover';
+import { PopoverControl } from '../popover';
 
 /**
  * Internal dependencies
@@ -143,7 +140,7 @@ export default class Typography extends Component {
         }
 
         return (
-            <Popover
+            <PopoverControl
                 label={value.label}
                 className={className}
                 buttonText={__('Typography', 'gutenberg-extra')}

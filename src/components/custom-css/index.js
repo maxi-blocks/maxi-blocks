@@ -31,38 +31,39 @@ export const customCSSAtributes = {
 
 export const CustomCSS = (props) => {
     const {
-        attributes: {
-            extraClassName,
-            extraStyles
-        },
+        extraClassName = props.attributes.extraClassName,
+        onChangeExtraClassName = undefined,
+        extraStyles = props.attributes.extraStyles, 
+        onChangeExtraStyles = undefined,
         setAttributes
     } = props;
+
+    const onChangeValue = (target, value, callback) => {
+        if (typeof callback != 'undefined' ) {
+            callback(value);
+        }
+        else {
+            setAttributes({[target]: value})
+        }
+    }
 
     return (
         <Fragment>
             <TextControl
                 label={__('Additional CSS Classes', 'gutenberg-extra')}
                 className="gx-additional-css"
-                value={extraClassName || ''}
-                onChange={(e) => {
-                    setAttributes({
-                        extraClassName: e,
-                    });
-                }}
+                value={extraClassName}
+                onChange={value => onChangeValue('extraClassName', value, onChangeExtraClassName)}
             />
             <TextareaControl
                 label={__('Additional CSS Styles', 'gutenberg-extra')}
                 className="gx-additional-css"
-                value={extraStyles || ''}
-                onChange={(e) => {
-                    setAttributes({
-                        extraStyles: e,
-                    });
-                }}
+                value={extraStyles}
+                onChange={value => onChangeValue('extraStyles', value, onChangeExtraStyles)}
             />
             {/*<TextareaControl
                 label={ __( 'Additional CSS Hover Styles', 'gutenber-extra' ) }
-                value={ extraHoverStyles || '' }
+                value={ extraHoverStyles }
                 onChange={ (e) => {
                     setAttributes( {
                         extraHoverStyles: e,
@@ -71,7 +72,7 @@ export const CustomCSS = (props) => {
             />
             <TextareaControl
                 label={ __( 'Additional CSS Before Styles', 'gutenber-extra' ) }
-                value={ extraBeforeStyles || '' }
+                value={ extraBeforeStyles }
                 onChange={ (e) => {
                     setAttributes( {
                         extraBeforeStyles: e,
@@ -80,7 +81,7 @@ export const CustomCSS = (props) => {
             />
             <TextareaControl
                 label={ __( 'Additional CSS After Styles', 'gutenber-extra' ) }
-                value={ extraAfterStyles || '' }
+                value={ extraAfterStyles }
                 onChange={ (e) => {
                     setAttributes( {
                         extraAfterStyles: e,
@@ -89,7 +90,7 @@ export const CustomCSS = (props) => {
             />
             <TextareaControl
                 label={ __( 'Additional CSS Hover Before Styles', 'gutenber-extra' ) }
-                value={ extraHoverBeforeStyles || '' }
+                value={ extraHoverBeforeStyles }
                 onChange={ (e) => {
                     setAttributes( {
                         extraHoverBeforeStyles: e,
@@ -98,7 +99,7 @@ export const CustomCSS = (props) => {
             />
             <TextareaControl
                 label={ __( 'Additional CSS Hover After Styles', 'gutenber-extra' ) }
-                value={ extraHoverAfterStyles || '' }
+                value={ extraHoverAfterStyles }
                 onChange={ (e) => {
                     setAttributes( {
                         extraHoverAfterStyles: e,

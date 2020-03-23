@@ -18,38 +18,38 @@ const {
 
 import { RangeControl } from '@wordpress/components';
 
-import {
-    setBoxShadowStyles
-} from './data';
+// import {
+//     setBoxShadowStyles
+// } from './data';
 
 export const boxShadowOptionsAttributes = {
-    shadowColor: {
-        type: 'string',
-        default: 'inherit',
-    },
-    shadowHorizontal: {
-        type: 0,
-        default: 'inherit',
-    },
-    shadowVertical: {
-        type: 'number',
-        default: 0,
-    },
-    shadowBlur: {
-        type: 'number',
-        default: 0,
-    },
-    shadowSpread: {
-        type: 'number',
-        default: 0,
-    },
+    // shadowColor: {
+    //     type: 'string',
+    //     default: 'inherit',
+    // },
+    // shadowHorizontal: {
+    //     type: 0,
+    //     default: 'inherit',
+    // },
+    // shadowVertical: {
+    //     type: 'number',
+    //     default: 0,
+    // },
+    // shadowBlur: {
+    //     type: 'number',
+    //     default: 0,
+    // },
+    // shadowSpread: {
+    //     type: 'number',
+    //     default: 0,
+    // },
     boxShadowOptions: {
         type: 'string',
         default: '{"label":"Box Shadow","shadowColor": "", "shadowHorizontal": "0", "shadowVertical": "0", "shadowBlur": "0", "shadowSpread": "0"}',
     }
 }
 
-export const BoxShadowOptions = (props) => {
+export const BoxShadow = (props) => {
 
     const {
         boxShadowOptions = props.attributes.boxShadowOptions,
@@ -188,26 +188,26 @@ export const BoxShadowOptions = (props) => {
     )
 }
 
-export const BoxShadow = ({
-    value,
-    boxShadowOptions,
-    ...props
-}) => {
+// export const BoxShadow = ({
+//     value,
+//     boxShadowOptions,
+//     ...props
+// }) => {
 
-    const values = JSON.parse(boxShadowOptions);
+//     const values = JSON.parse(boxShadowOptions);
 
-    const getShadow = () => {
-        let response = 'boxShadow: ';
-        values.shadowColor ? response += (values.shadowColor + 'px') : null;
-        values.shadowHorizontal ? response += (values.shadowHorizontal + 'px') : null;
-        values.shadowVertical ? response += (values.shadowVertical + 'px') : null;
-        values.shadowBlur ? response += (values.shadowBlur + 'px') : null;
-        values.shadowSpread ? response += (values.shadowSpread + 'px') : null;
+//     const getShadow = () => {
+//         let response = 'boxShadow: ';
+//         values.shadowColor ? response += (values.shadowColor + 'px') : null;
+//         values.shadowHorizontal ? response += (values.shadowHorizontal + 'px') : null;
+//         values.shadowVertical ? response += (values.shadowVertical + 'px') : null;
+//         values.shadowBlur ? response += (values.shadowBlur + 'px') : null;
+//         values.shadowSpread ? response += (values.shadowSpread + 'px') : null;
 
-        return response.trim();
-    }
+//         return response.trim();
+//     }
 
-    return (
-        getShadow()
-    )
-}
+//     return (
+//         getShadow()
+//     )
+// }

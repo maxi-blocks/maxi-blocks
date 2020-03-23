@@ -7,19 +7,19 @@ const {
     Dropdown,
 } = wp.components;
 
-export const Popover = props => {
+export const PopoverControl = props => {
     const {
-        className = '',
         label,
+        className = '',
         buttonText = '',
-        classNamePopover = "gx-popover gx-fontpopover",
+        classNamePopover = 'gx-popover',
         content
     } = props;
 
     return (
         <div className={className}>
             <BaseControl
-                className={"gx-settings-button"}
+                className={'gx-settings-button'}
             >
                 <BaseControl.VisualLabel>
                     {label}
@@ -39,7 +39,7 @@ export const Popover = props => {
                         {
                             className: classNamePopover,
                             noArrow: true,
-                            position: "center"
+                            position: 'center'
                         }
                     }
                     renderContent={

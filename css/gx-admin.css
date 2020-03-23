@@ -350,6 +350,7 @@ body div.gx-sidebar .components-panel__body>.components-panel__body-title {
   margin: auto;
   width: 17px;
   height: 16px;
+  margin-left:auto;
   padding-bottom: 5px !important;
 }
 
@@ -364,7 +365,7 @@ body div.gx-sidebar .components-panel__body>.components-panel__body-title {
   font-size: 0 !important;
   background: transparent !important;
   border: none !important;
-  margin:auto;
+  /* margin:auto; */
 }
 
 /* Toggle control */
@@ -464,7 +465,7 @@ body div.gx-sidebar .components-panel__body>.components-panel__body-title {
   flex-direction: row-reverse;
   margin-top: -45px;
   align-items: baseline;
-  width:max-content;
+  background:none !important;
 }
 
 .gx-sidebar .components-circular-option-picker__dropdown-link-action {
@@ -653,6 +654,7 @@ body .gx-panel-body-inserter h2 button:focus {
 .gx-sidebar .block-editor-block-inspector.gx-controls .block-editor-block-card,
 .gx-sidebar .edit-post-settings-sidebar__panel-block.gx-controls .block-editor-block-card {
   padding: 16px 16px 20px;
+  padding-bottom:10px;
 }
 
 .gx-sidebar .block-editor-block-card__content {
@@ -668,6 +670,11 @@ body .gx-panel-body-inserter h2 button:focus {
 .gx-sidebar .components-panel {
   border: none !important;
   background: #f2f2f2;
+}
+
+.components-select-control__input {
+	background: #fff url(../img/arrow-down.svg) no-repeat right 10px top 55% !important;
+	background-size: 13px 13px !important;
 }
 
 /* Extra Block Styles in the Block Inserter */
@@ -930,7 +937,40 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
   margin-bottom: 0 !important;
 }
 
+.gx-tab.gx-content-tab-label::before, .gx-tab.gx-style-tab-label::before, .gx-tab.gx-advanced-tab-label::before {
+	min-height: auto;
+	margin-bottom: 0;
+	padding-bottom: 0;
+	width: 2rem;
+	height: 4rem;
+	margin: auto;
+}
+
+.gx-tab.gx-advanced-tab-label::before {
+	min-height: 37px;
+	width: 2.7rem;
+	padding-bottom: 7px;
+	padding-top: 10px;
+}
+
+.gx-tab.gx-content-tab-label::before{
+  padding-top: 16px;
+}
+
+.gx-tab.gx-style-tab-label::before{
+  width: 1.7rem;
+  padding-top: 10px;
+}
+
 @media all and (max-width: 2000px) {
+
+  .block-editor-block-card::after {
+  	position: absolute;
+  	content: url('../img/gx-logo.svg');
+    width: 1.5rem !important;
+    right: 30px;
+    top: 13px;
+  }
 
   .edit-post-layout.is-sidebar-opened .edit-post-plugin-sidebar__sidebar-layout.gx-sidebar,
   .edit-post-layout.is-sidebar-opened .edit-post-sidebar.gx-sidebar {
@@ -1062,21 +1102,18 @@ h2::before{
   font-weight: 600 !important;
 }
 
-.block-editor-block-card:after{
-  position: absolute;
-  content: url('../img/gx-logo.svg');
-  width: 24px;
-  right: 12px;
-  top: 11px;
+.block-editor-block-card::after {
+	position: absolute;
+	content: url('../img/gx-logo.svg');
+  width: 1.9rem;
+  right: 30px;
+  top: 13px;
 }
 
 .editor-styles-wrapper h2{
   font-size: unset !important;
 }
 
-.components-circular-option-picker{
-  width:max-content;
-}
 
 .components-panel__body.block-editor-panel-color-gradient-settings.is-opened{
   padding:0;

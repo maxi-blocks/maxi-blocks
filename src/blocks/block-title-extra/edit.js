@@ -261,7 +261,7 @@ const edit = (props) => {
       </PanelBody>
     </InspectorControls>
     <div
-      className={blockStyle + ' gx-block gx-title-extra ' + classes}
+      className={blockStyle + ' gx-block gx-title-extra ' + classes + ' ' + extraClassName}
       data-gx_initial_block_class = {defaultBlockStyle}
       style={containerStyles}
       >
@@ -276,7 +276,9 @@ const edit = (props) => {
         className="gx-title-extra-subtitle"
       />
       </div>
+
       <div style={{order:3}} dangerouslySetInnerHTML={{ __html: additionalDivider}}/>
+
       <div style={{order:1}}>
       <RichText
         tagName={titleLevel}
@@ -287,7 +289,9 @@ const edit = (props) => {
         className="gx-title-extra-title"
       />
       </div>
+
       <Divider {...props}/>
+
       <div style={{order:3}}>
         <RichText
           tagName="p"
@@ -298,6 +302,7 @@ const edit = (props) => {
           className="gx-title-extra-text"
         />
       </div>
+
     </div>
   </div>
   )

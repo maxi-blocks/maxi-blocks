@@ -161,7 +161,7 @@ const save = (props) => {
   const disableCustomGradients = false;
   return (
     <div
-      className={blockStyle + ' gx-block gx-title-extra ' + classes}
+      className={blockStyle + ' gx-block gx-title-extra ' + classes + ' ' + extraClassName}
       data-gx_initial_block_class = {defaultBlockStyle}
       style={containerStyles}
       >

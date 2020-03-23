@@ -1,15 +1,15 @@
 /**
  * Gutenberg Frontend Scripts
- * 
+ *
  * @version 0.1
- * 
+ *
  * 1 - Font Family resolver
  */
 
 /**
  * Font Family resolver
  * Resolves the font source loading from Gutenberg blocks on frontend
- * 
+ *
  * @version 0.1
  */
 
@@ -22,7 +22,7 @@ class FontFamilyResolver {
 
     /**
      * Returns an array with all the elements with a font-family CSS style option
-     * 
+     *
      * @return {array} elements with font-family on inline style
      */
 
@@ -34,7 +34,7 @@ class FontFamilyResolver {
 
     /**
      * Returns a non-repeated element list of the family fonts founded on the DOM
-     * 
+     *
      * @return {set} List of font families on the DOM
      */
 
@@ -51,9 +51,9 @@ class FontFamilyResolver {
 
     /**
      * Retrieve an object with all the GFonts options
-     * 
+     *
      * @returns {object} GFonts options
-     * @returns {null} 
+     * @returns {null}
      */
 
     get optionsGetter () {
@@ -67,7 +67,7 @@ class FontFamilyResolver {
     /**
      * Fetchs the JSON file with all the GFonts options
      */
- 
+
     getJSON() {
         const fontsUrl = 'https://ddlicensed.s3-eu-west-1.amazonaws.com/gutenberg-extra/fonts.json';
         const options = {
@@ -122,9 +122,9 @@ class FontFamilyResolver {
 
     /**
      * Get font families from GFonts JSON file
-     * 
+     *
      * @param {JSON} data Recibes JSON data with the fonts variants and properties
-     * @returns {array} Options ready for React-Select 
+     * @returns {array} Options ready for React-Select
      */
 
     getFontFamilyOptions(data) {
@@ -144,7 +144,7 @@ class FontFamilyResolver {
      * Loads the font on background using JS FontFace API
      * FontFaceSet API uses check() to check if a font exists, but needs to compare with some exact value:
      * in this case is used '12px' as a standard that returns if the font has been loaded.
-     * 
+     *
      * @param {string} font Name of the selected font
      * @param {obj} files Different variations of the font
      */
@@ -165,7 +165,7 @@ class FontFamilyResolver {
 
     /**
      * Prepares the styles to be ready for JS FontFace API
-     * 
+     *
      * @param {obj} variant Concrete variant of the font with name and url
      * @returns {obj} Styles options for load the font on FontFace API
      */
@@ -197,7 +197,7 @@ document.onreadystatechange = function () {
 /**
  * Responsive Frontend Styles resolver
  * Creates a new object ready to deliver responsive styles on frontend
- * 
+ *
  * @todo    Comment and extend documentation
  * @todo    Clean deleted blocks on meta
  * @version 0.1
@@ -217,7 +217,7 @@ class ResponsiveStylesResolver {
             this.hasTarget()
         } else {
             this.noHasTarget()
-        }     
+        }
     }
 
     hasTarget () {
@@ -262,16 +262,16 @@ class ResponsiveStylesResolver {
         let unit = this.object.unit ? this.object.unit : '';
         for (let [target, prop] of Object.entries(this.object[device])) {
             // values with dimensions
-            if (target != 'sync' && prop > 0 || unitChecker.indexOf(target) == 0 && prop > 0)   
+            if (target != 'sync' && prop > 0 || unitChecker.indexOf(target) == 0 && prop > 0)
                 newObject[device][target] = prop + unit;
             // avoid numbers with no related metric
             if (unitChecker.indexOf(target) == 0)
                 unit = '';
             // values with metrics
-            if (prop.length <= 2 )                                                  
+            if (prop.length <= 2 )
                 unitChecker = target, unit = prop;
             // values with strings
-            if ( prop.length > 2 )                                                  
+            if ( prop.length > 2 )
                 newObject[device][target] = prop;
         }
         return newObject;
@@ -284,7 +284,7 @@ class ResponsiveStylesResolver {
 
 /**
  * Adds responsive styles on backend
- * 
+ *
  * @todo    Comments and documentation
  * @version 0.1
  */
@@ -356,5 +356,5 @@ class BackEndResponsiveStyles {
         }
         return responsiveStyles;
     }
-    
+
 }

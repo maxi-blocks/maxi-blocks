@@ -11,7 +11,7 @@ import {
     dimensionsControlAttributesMargin,
     dimensionsControlAttributesPadding,
 } from '../../components/dimensions-control/attributes';
-import {typographyAttributes} from '../../components/typography';
+import {defaultTypographyAttributes} from '../../components/typography/attributes';
 import {imageSettingsAttributes} from '../../components/image-settings';
 import {boxShadowOptionsAttributes} from '../../components/box-shadow';
 
@@ -157,7 +157,7 @@ const attributes = {
     ...dimensionsControlAttributesPadding,
     ...imageSettingsAttributes,
     ...buttonStyleAttributes,
-    ...typographyAttributes,
+    ...defaultTypographyAttributes,
     titlePopUpisVisible: {
         type: 'boolean',
         default: false,

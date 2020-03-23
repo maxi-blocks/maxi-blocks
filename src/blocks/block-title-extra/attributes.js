@@ -15,6 +15,7 @@ import { subtitleAlignAttributes } from '../../components/subtitle-align/index';
 import { titleAlignAttributes } from '../../components/title-align/index';
 import { descriptionAlignAttributes } from '../../components/description-align/index';
 import { typographyAttributes } from '../../components/typography/index';
+import { customCSSAtributes } from '../../components/custom-css/index';
 
 const attributes = {
   title: {
@@ -48,6 +49,9 @@ const attributes = {
       type: 'string',
       default: 'h3'
   },
+  classes:{
+    type: 'string'
+  },
   ...blockStyleAttributes,
   ...linkOptionsAttributes,
   ...dividerAttributes,
@@ -63,7 +67,8 @@ const attributes = {
   ...subtitleAlignAttributes,
   ...titleAlignAttributes,
   ...descriptionAlignAttributes,
-  ...typographyAttributes
+  ...typographyAttributes,
+  ...customCSSAtributes
 };
 
 export default attributes;

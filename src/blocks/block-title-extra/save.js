@@ -97,6 +97,8 @@ const save = (props) => {
       isAppendedToSubtitle,
       twoColumnDesc,
       uniqueID,
+      extraClassName,
+      extraStyles,
       contentDirection
     },
   } = props;
@@ -160,6 +162,7 @@ const save = (props) => {
   return (
     <div
       className={blockStyle + ' gx-block gx-title-extra ' + classes}
+      data-gx_initial_block_class = {defaultBlockStyle}
       style={containerStyles}
       >
       <div style={{order:0}}>

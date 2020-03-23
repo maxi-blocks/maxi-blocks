@@ -115,7 +115,9 @@ const edit = (props) => {
       twoColumnDesc,
       contentDirection,
       uniqueID,
-      fontOptions
+      fontOptions,
+      extraClassName,
+      extraStyles
     },
     setAttributes,
   } = props;
@@ -155,7 +157,7 @@ const edit = (props) => {
     fontFamily: 'roboto',
     fontWeight: '400',
     color:titleColor,
-    minWidth: contentDirection == 'row' || contentDirection == 'row-reverse' ? '290px' : undefined
+    minWidth: contentDirection == 'row' || contentDirection == 'row-reverse' ? '290px' : undefined,
   };
 
   const containerStyles = {
@@ -181,6 +183,7 @@ const edit = (props) => {
   const Line = () => (
     <hr/>
 );
+
 
   return (
     <div>
@@ -252,11 +255,17 @@ const edit = (props) => {
           </AccordionItemPanel>
         </AccordionItem>
       </Accordion>
+      <PanelBody initialOpen={true} className="gx-panel gx-advanced-setting gx-advanced-tab-setting" title={__('Advanced Settings', 'gutenberg-extra')}>
+          <HoverAnimation {...props} />
+          <CustomCSS {...props} />
+      </PanelBody>
     </InspectorControls>
     <div
       className={blockStyle + ' gx-block gx-title-extra ' + classes}
+      data-gx_initial_block_class = {defaultBlockStyle}
       style={containerStyles}
       >
+
       <div style={{order:0}}>
       <RichText
         tagName={subtitleLevel}

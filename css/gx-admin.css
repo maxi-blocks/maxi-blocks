@@ -1043,9 +1043,12 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
 }
 
 .editor-styles-wrapper h1::before,
- .editor-styles-wrapper h2::before{
+.editor-styles-wrapper h2::before,
+h2::before{
     display: none !important;
+    background:white !important;
 }
+
 
 .components-base-control__field select{
   max-width: 8.4rem;

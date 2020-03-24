@@ -65,7 +65,7 @@ class ResponsiveFrontendStyles {
         foreach ( $meta as $target => $fields ) {
             $response[$target] = [];
             foreach( $fields as $field => $props) {
-                if ( $field === 'Typography' ) :
+                if ( property_exists($props, 'font') ) :
                     $response[$target]['font'] = $props->font;
                     $response[$target]['options'] = $props->options;
                 endif;
@@ -155,6 +155,7 @@ class ResponsiveFrontendStyles {
 
     public function fonts() {
         $meta = $this->getMeta();
+        var_dump($meta);
         if ( empty( $meta ) )
             return;
         $response = [];

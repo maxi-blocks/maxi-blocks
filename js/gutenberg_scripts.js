@@ -294,7 +294,7 @@ class ResponsiveStylesResolver {
 
         for (let [target, prop] of Object.entries(this.object[device])) {
             // values with dimensions
-            if (target != 'sync' && prop != 0 || unitChecker.indexOf(target) == 0 && prop != 0)
+            if (target != 'sync' && prop != 0 && typeof prop === 'number' || unitChecker.indexOf(target) == 0 && prop != 0)
                 newObject[device][target] = prop + unit;
             // avoid numbers with no related metric
             if (unitChecker.indexOf(target) == 0)

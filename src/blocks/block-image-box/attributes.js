@@ -22,15 +22,61 @@ import {
  * Attributes
  */
 const attributes = {
-    title: {
-        type: 'array',
-        source: 'children',
-        selector: '.gx-image-box-title',
-    },
-    className: {
+    ...blockStyleAttributes,
+    ...imagePositionAttributes,
+    titleLevel: {
         type: 'string',
-        default: '',
+        default: 'h2'
     },
+    linkTitle: {
+        type: 'string',
+    },
+    ...linkOptionsAttributes,
+    titleFontOptions: {
+        type: 'string',
+        default: '{"label":"Title","font":"Default","options":{},"desktop":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"},"tablet":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"},"mobile":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"}}',
+    },
+    subtitleFontOptions: {
+        type: 'string',
+        default: '{"label":"Subtitle","font":"Default","options":{},"desktop":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"},"tablet":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"},"mobile":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"}}',
+    },
+    descriptionFontOptions: {
+        type: 'string',
+        default: '{"label":"Description","font":"Default","options":{},"desktop":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"},"tablet":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"},"mobile":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"}}',
+    },
+    ...imageSettingsAttributes,
+    ...buttonStyleAttributes,
+    backgroundColor: {
+        type: 'string',
+        default: "",
+    },
+    backgroundGradient: {   // !!!!!!
+        type: 'string',
+        default: "",
+    },
+    backgroundGradient: {   // !!!!!!
+        type: 'array',
+        default: [],
+    },
+    defaultPalette: {
+        type: 'array',
+        default: [
+            { offset: '0.00', color: 'rgba(238, 55, 11, 1)' },
+            { offset: '1.00', color: 'rgba(126, 32, 34, 1)' }
+        ]
+    },
+    // BackgroundImage???
+    boxShadow: {
+        type: 'string',
+        default: '{"label":"Box Shadow","shadowColor": "", "shadowHorizontal": "0", "shadowVertical": "0", "shadowBlur": "0", "shadowSpread": "0"}'
+    },
+    ...borderAttributes,
+    ...sizeControlAttributes,
+    ...dimensionsControlAttributesMargin,
+    ...dimensionsControlAttributesPadding,
+    ...hoverAnimationAttributes,
+    ...customCSSAtributes,
+    // BlockStyle ????
     mediaID: {
         type: 'number',
     },
@@ -40,14 +86,19 @@ const attributes = {
         selector: '.gx-image-box-image',
         attribute: 'src',
     },
-    description: {
+    title: {
+        type: 'array',
         source: 'children',
-        selector: '.gx-image-box-description',
+        selector: '.gx-image-box-title',
     },
     additionalText: {
         type: 'array',
         source: 'children',
         selector: '.gx-image-box-subtitle',
+    },
+    description: {
+        source: 'children',
+        selector: '.gx-image-box-description',
     },
     readMoreText: {
         type: 'string',
@@ -58,117 +109,14 @@ const attributes = {
         selector: 'a.gx-image-box-read-more-link',
         attribute: 'href'
     },
+    // Testing
+    readMoreTextTest: {
+        type: 'string',
+    },
     readMoreLinkTest: {
         type: 'string',
         default: '{}'
     },
-    counter: {
-        type: 'bool',
-        source: 'children',
-        selector: '.gx-image-box-counter',
-    },
-    borderHoverColor: {
-        type: 'string',
-        default: "",
-    },
-    titleColor: {
-        type: 'string',
-        default: "",
-    },
-    backgroundColor: {
-        type: 'string',
-        default: "",
-    },
-    backgroundGradient: {
-        type: 'string',
-        default: "",
-    },
-    subTitleColor: {
-        type: 'string',
-        default: "",
-    },
-    descriptionColor: {
-        type: 'string',
-        default: "",
-    },
-    linkTitle: {
-        type: 'string',
-    },
-    opensInNewWindow: {
-        type: 'boolean',
-        default: false,
-    },
-    addNofollow: {
-        type: 'boolean',
-        default: false,
-    },
-    addNoopener: {
-        type: 'boolean',
-        default: false,
-    },
-    addNoreferrer: {
-        type: 'boolean',
-        default: false,
-    },
-    addSponsored: {
-        type: 'boolean',
-        default: false,
-    },
-    addUgc: {
-        type: 'boolean',
-        default: false,
-    },
-    titlePopUpisVisible: {
-        type: 'boolean',
-        default: false,
-    },
-    fontSizeTitleUnit: {
-        type: 'string',
-        default: 'px',
-    },
-    fontSizeTitle: {
-        type: 'number',
-    },
-    titleLevel: {
-        type: 'string',
-        default: 'h2'
-    },
-    titleFontFamily: {
-        type: 'string',
-        default: 'inherit'
-    },
-    backgroundGradient: {
-            type: 'array',
-            default: [],
-        },
-    defaultPalette: {
-        type: 'array',
-        default: [
-            { offset: '0.00', color: 'rgba(238, 55, 11, 1)' },
-            { offset: '1.00', color: 'rgba(126, 32, 34, 1)' }
-        ]
-    },
-    ...blockStyleAttributes,
-    ...imagePositionAttributes,
-    ...borderAttributes,
-    ...sizeControlAttributes,
-    ...hoverAnimationAttributes,
-    ...customCSSAtributes,
-    ...linkOptionsAttributes,
-    ...dimensionsControlAttributesMargin,
-    ...dimensionsControlAttributesPadding,
-    ...imageSettingsAttributes,
-    ...buttonStyleAttributes,
-    ...defaultTypographyAttributes,
-    titlePopUpisVisible: {
-        type: 'boolean',
-        default: false,
-    },
-    paddingTitle: {
-        type: 'string',
-            default: '{"label":"Padding","unit":"px","max":"1000","desktop":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true},"tablet":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true},"mobile":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true}}'
-    },
-    ...boxShadowOptionsAttributes,
 }
 
 export default attributes;

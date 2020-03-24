@@ -1,4 +1,8 @@
 /**
+ * Some different options for the component
+ */
+
+/**
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
@@ -7,14 +11,15 @@ const { __experimentalLinkControl } = wp.blockEditor;
 /**
  * External dependencies
  */
-import { PopoverControl } from '../popover/';
+import { PopoverControl } from '../../popover/';
 
 /**
  * Block
  */
-const ExternalLink = props => {
+const LinkedText = props => {
     const {
-        label = '',
+        content = undefined,
+        label = __('External link', 'gutenberg-extra'),
         className = 'gx-externallink-control',
         externalLink,
         onChange,
@@ -24,6 +29,9 @@ const ExternalLink = props => {
     const value = JSON.parse(externalLink);
 
     const getLabel = () => {
+        if (typeof content != 'undefined' ) {
+            return content;
+        }
         if (typeof value.title != 'undefined' && value.title.length > 3) {
             return value.title;
         }
@@ -48,4 +56,4 @@ const ExternalLink = props => {
     )
 }
 
-export default ExternalLink;
+export default LinkedText;

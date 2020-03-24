@@ -143,7 +143,6 @@ const edit = (props) => {
     display: hideSubtitle ? 'none' : undefined,
     borderRadius: '5px',
     margin: isPreappendedToSubtitle ? '5px auto 5px ' + dividerWidth + dividerWidthUnit : isAppendedToSubtitle ? '5px '+ dividerWidth + dividerWidthUnit +' 5px auto'  : subtitleTextAlign,
-    fontFamily: 'roboto',
     fontWeight: '400',
     color:subtitleColor,
     backgroundColor: subtitleBackgroundColor,
@@ -154,7 +153,6 @@ const edit = (props) => {
   const titleStyles = {
     display: hideTitle ? 'none' : undefined,
     textAlign: titleTextAlign,
-    fontFamily: 'roboto',
     fontWeight: '400',
     color:titleColor,
     minWidth: contentDirection == 'row' || contentDirection == 'row-reverse' ? '290px' : undefined,
@@ -163,13 +161,11 @@ const edit = (props) => {
   const containerStyles = {
     display: 'flex',
     flexDirection: contentDirection,
-    fontFamily: 'roboto',
   };
 
   const textStyles = {
     display: hideDescription ? 'none' : undefined,
     textAlign: descriptionTextAlign,
-    fontFamily: 'roboto',
     fontSize:'12pt',
     fontWeight: '400',
     columnCount: twoColumnDesc ? '2' : undefined,
@@ -295,7 +291,7 @@ const edit = (props) => {
 
       <div style={{order:3}}>
         <RichText
-          tagName="p"
+          tagName="h6"
           style={textStyles}
           placeholder={__('Excepteur sint occaecat cupidatat non proident, sunt in culpa q...', 'gutenberg-extra')}
           value={text}

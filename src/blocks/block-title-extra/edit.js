@@ -138,7 +138,7 @@ const edit = (props) => {
       mediaID: media.id,
     });
   };
-  console.log(fontOptions);
+
   const subtitleStyles = {
     display: hideSubtitle ? 'none' : undefined,
     borderRadius: '5px',

@@ -498,6 +498,15 @@
  * Can include things like variables and mixins
  * that are used across the project.
 */
+.content-direction select {
+  font-size: 8pt !important;
+  padding-left: 0 !important; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
 .editor-block-list__block[data-type="core/button"][data-align="center"] {
   text-align: center; }
 

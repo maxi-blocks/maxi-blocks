@@ -1,16 +1,12 @@
 /**
  * WordPress dependencies
  */
-
 const { __ } = wp.i18n;
 const {
     PanelBody,
     Button,
     IconButton,
-    Popover,
     BaseControl,
-    RadioControl,
-    Text
 } = wp.components;
 const {
     InspectorControls,
@@ -18,21 +14,20 @@ const {
     URLInput,
     RichText,
     MediaUpload,
+    __experimentalLinkControl
 } = wp.blockEditor;
 
 /**
  * External dependencies
  */
-
 import classnames from 'classnames';
 import React from 'react';
 import DimensionsControl from '../../components/dimensions-control/index';
-import FontPopover from '../../components/font-popover/index';
 import { BlockStyles } from '../../components/block-styles/index';
 import { ButtonStyles } from '../../components/button-styles/index';
 import { ImagePosition } from '../../components/image-position/index';
 import { FontLevel } from '../../components/font-level/index';
-import { LinkOptions, Link } from '../../components/link-options/index';
+import { LinkOptions } from '../../components/link-options/index';
 import { BlockBorder } from '../../components/block-border/index';
 import { SizeControl } from '../../components/size-control/index';
 import GradientPickerPopover from '../../components/gradient-picker/';
@@ -48,9 +43,7 @@ import {
 } from './data';
 import Typography from '../../components/typography/';
 import ImageSettings from '../../components/image-settings/';
-import { Icon } from '@wordpress/components';
 import iconsSettings from '../../components/icons/icons-settings.js';
-
 import {
     Accordion,
     AccordionItem,
@@ -58,8 +51,12 @@ import {
     AccordionItemButton,
     AccordionItemPanel,
 } from 'react-accessible-accordion';
+import ExternalLink from '../../components/external-link';
 
-const edit = (props) => {
+/**
+ * Content
+ */
+const edit = props => {
     const {
         className,
         attributes: {
@@ -71,12 +68,6 @@ const edit = (props) => {
             readMoreText,
             readMoreLink,
             linkTitle,
-            opensInNewWindow,
-            addUgc,
-            addSponsored,
-            addNoreferrer,
-            addNofollow,
-            addNoopener,
             fontSizeTitle,
             fontSizeTitleUnit,
             titleColor,
@@ -100,6 +91,7 @@ const edit = (props) => {
             fontOptions,
             linkOptions,
             imageSettings,
+            readMoreLinkTest
         },
         setAttributes,
     } = props;
@@ -264,7 +256,7 @@ const edit = (props) => {
                                 title={__('Background Colour', "gutenberg-extra")}
                                 colorSettings={[
                                     {
-                                        onChange: (value) => {
+                                        onChange: value => {
                                             if (!value) {
                                                 props.setAttributes({ backgroundColor: undefined });
                                                 props.setAttributes({ backgroundGradient: [] });
@@ -281,11 +273,11 @@ const edit = (props) => {
                             <div className={'gradient'}>
                                 <GradientPickerPopover
                                     palette={defaultPalette}
-                                    onPaletteChange={(value) => {
+                                    onPaletteChange={value => {
                                         props.setAttributes({ defaultPalette: value });
 
                                         let colors = [];
-                                        Object.values(value).map(key => {
+                                        Object.valuesvalue.map(key => {
                                             const { color } = key;
                                             return colors.push(color)
                                         });
@@ -426,7 +418,7 @@ const edit = (props) => {
                         style={titleStyles}
                         placeholder={__('Write title…', 'gutenberg-extra')}
                         value={title}
-                        onChange={(value) => setAttributes({ title: value })}
+                        onChange={value => setAttributes({ title: value })}
                         className="gx-image-box-title"
                     />
                     <RichText
@@ -434,7 +426,7 @@ const edit = (props) => {
                         style={subTitleStyles}
                         placeholder={__('Write sub-title…', 'gutenberg-extra')}
                         value={additionalText}
-                        onChange={(value) => setAttributes({ additionalText: value })}
+                        onChange={value => setAttributes({ additionalText: value })}
                         className="gx-image-box-subtitle"
                     />
                     <RichText
@@ -443,7 +435,7 @@ const edit = (props) => {
                         multiline="br"
                         placeholder={__('Write some text…', 'gutenberg-extra')}
                         value={description}
-                        onChange={(value) => setAttributes({ description: value })}
+                        onChange={value => setAttributes({ description: value })}
                         className="gx-image-box-description"
                     />
                     <RichText
@@ -451,14 +443,75 @@ const edit = (props) => {
                         style={buttonStyles}
                         placeholder={__('Read more text…', 'gutenberg-extra')}
                         value={readMoreText}
-                        onChange={(value) => setAttributes({ readMoreText: value })}
+                        onChange={value => setAttributes({ readMoreText: value })}
                         className="gx-image-box-read-more-text"
                     />
                     <URLInput
                         value={readMoreLink}
                         placeholder={__('Read more link…', 'gutenberg-extra')}
-                        onChange={(value) => setAttributes({ readMoreLink: value })}
+                        onChange={value => setAttributes({ readMoreLink: value })}
                         className="gx-image-box-read-more-link"
+                    />
+                    {/* <__experimentalLinkControl
+                        className="gx-image-box-read-more-link"
+                        value={JSON.parse(readMoreLinkTest)}
+                        onChange={value => setAttributes({readMoreLinkTest: JSON.stringify(value)})}
+                        // settings={
+                        //     [
+                        //         {
+                        //             id: 'opensInNewTab',
+                        //             title: 'Open in new tab',
+                        //         },
+                        //         {
+                        //             id: 'Can add as much options as we want',
+                        //             title: 'lerele'
+                        //         }
+                        //     ]
+                        // }
+                        settings={[]}
+                    /> */}
+                    <ExternalLink 
+                        label={                    
+                            <RichText
+                                tagName="span"
+                                style={buttonStyles}
+                                placeholder={__('Read more text…', 'gutenberg-extra')}
+                                value={readMoreText}
+                                onChange={value => setAttributes({ readMoreText: value })}
+                                className="gx-image-box-read-more-text"
+                            />
+                        }
+                        externalLink={readMoreLinkTest}
+                        onChange={value => setAttributes({readMoreLinkTest: JSON.stringify(value)})}
+                        settings={
+                            [
+                                {
+                                    id: 'opensInNewTab',
+                                    title: 'Open in new tab',
+                                },
+                                {
+                                    id: 'We can add as much options as we want',
+                                    title: 'lerele'
+                                }
+                            ]
+                        }
+                    />
+                    <ExternalLink 
+                        label={__('Read more link…', 'gutenberg-extra')}
+                        externalLink={readMoreLinkTest}
+                        onChange={value => setAttributes({readMoreLinkTest: JSON.stringify(value)})}
+                        settings={
+                            [
+                                {
+                                    id: 'opensInNewTab',
+                                    title: 'Open in new tab',
+                                },
+                                {
+                                    id: 'We can add as much options as we want',
+                                    title: 'lerele'
+                                }
+                            ]
+                        }
                     />
                 </div>
             </div>

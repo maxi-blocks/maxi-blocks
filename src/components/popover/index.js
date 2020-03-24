@@ -25,7 +25,7 @@ export const PopoverControl = props => {
                     {label}
                 </BaseControl.VisualLabel>
                 <Dropdown
-                    className={'gx-fontdropdown'}
+                    className={'gx-popover-dropdown'}
                     renderToggle={({ isOpen, onToggle }) => (
                         <Button
                             isSecondary

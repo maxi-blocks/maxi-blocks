@@ -69,6 +69,49 @@ export default class Typography extends Component {
             }
         };
 
+        const getWeightOptions = () => {
+            const fontOptions = Object.keys(value.options);
+            if ( fontOptions.length === 0 ) {
+                return [
+                    { label: __('Thin (Hairline)', 'gutenberg-extra'), value: 100 },
+                    { label: __('Extra Light (Ultra Light)', 'gutenberg-extra'), value: 200 },
+                    { label: __('Light', 'gutenberg-extra'), value: 300 },
+                    { label: __('Normal (Regular)', 'gutenberg-extra'), value: 400 },
+                    { label: __('Medium', 'gutenberg-extra'), value: 500 },
+                    { label: __('Semi Bold (Demi Bold)', 'gutenberg-extra'), value: 600 },
+                    { label: __('Bold', 'gutenberg-extra'), value: 700 },
+                    { label: __('Extra Bold (Ultra Bold)', 'gutenberg-extra'), value: 800 },
+                    { label: __('Black (Heavy)', 'gutenberg-extra'), value: 900 },
+                    { label: __('Extra Black (Ultra Black)', 'gutenberg-extra'), value: 950 },
+                ]
+            }
+            const weightOptions = {
+                100: 'Thin (Hairline)',
+                200: 'Extra Light (Ultra Light)',
+                300: 'Light',
+                400: 'Normal (Regular)',
+                500: 'Medium',
+                600: 'Semi Bold (Demi Bold)',
+                700: 'Bold',
+                800: 'Extra Bold (Ultra Bold)',
+                900: 'Black (Heavy)',
+                950: 'Extra Black (Ultra Black)',
+            }
+            let response = [];
+            if (!fontOptions.includes("900")) {
+                fontOptions.push("900")
+            }
+            fontOptions.map(weight => {
+                let weightOption = {};
+                if (weightOptions[weight]) {
+                    weightOption.label = __(weightOptions[weight], 'gutenberg-extra');
+                    weightOption.value = weight;
+                    response.push(weightOption);
+                }
+            })
+            return response;
+        }
+
         const getKey = (obj, target) => {
             return Object.keys(obj)[target];
         }
@@ -217,18 +260,7 @@ export default class Typography extends Component {
                             label={__('Weight', 'gutenberg-extra')}
                             className="gx-title-typography-setting"
                             value={value[device][getKey(value[device], 6)]}
-                            options={[
-                                { label: __('Thin (Hairline)', 'gutenberg-extra'), value: 100 },
-                                { label: __('Extra Light (Ultra Light)', 'gutenberg-extra'), value: 200 },
-                                { label: __('Light', 'gutenberg-extra'), value: 300 },
-                                { label: __('Normal (Regular)', 'gutenberg-extra'), value: 400 },
-                                { label: __('Medium', 'gutenberg-extra'), value: 500 },
-                                { label: __('Semi Bold (Demi Bold)', 'gutenberg-extra'), value: 600 },
-                                { label: __('Bold', 'gutenberg-extra'), value: 700 },
-                                { label: __('Extra Bold (Ultra Bold)', 'gutenberg-extra'), value: 800 },
-                                { label: __('Black (Heavy)', 'gutenberg-extra'), value: 900 },
-                                { label: __('Extra Black (Ultra Black)', 'gutenberg-extra'), value: 950 },
-                            ]}
+                            options={getWeightOptions()}
                             onChange={value => onChangeValue(value, 6)}
                         />
                         <SelectControl

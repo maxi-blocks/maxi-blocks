@@ -19,10 +19,11 @@ class FontFamilyResolver {
 
     constructor() {
         this.elements = this.elemensGetter;
+        this.onLoadPage();
         document.body.classList.contains('block-editor-page') &&
             !document.getElementById('fontOptions') ?   // WP editor
             this.getJSON() :
-            this.onLoadPage();
+            null;
     }
 
     /**

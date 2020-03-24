@@ -38,7 +38,7 @@ export const ImagePosition = (props) => {
             className={alternativeClassName}
             value={value}
             options={options}
-            onChange={value => onChangeValue( 'value', value, onChange )}
+            onChange={value => onChangeValue( 'imagePosition', value, onChange )}
         />
     )
 }

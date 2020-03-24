@@ -187,7 +187,7 @@ const save = (props) => {
         />
       <div style={{order:3}}>
         <RichText.Content
-          tagName="p"
+          tagName="h6"
           style={textStyles}
           value={text}
           className="gx-title-extra-text"

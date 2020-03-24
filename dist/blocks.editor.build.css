@@ -492,8 +492,6 @@
  * Can include things like variables and mixins
  * that are used across the project.
 */
-.gx-title-extra {
-  font-family: 'Roboto', sans-serif; }
 /**
  * #.# Common SCSS
  *

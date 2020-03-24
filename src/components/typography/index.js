@@ -170,7 +170,6 @@ export default class Typography extends Component {
                                 <FontFamilySelector
                                     className={'gx-font-family-selector'}
                                     label={__('Family', 'gutenberg-extra')}
-                                    font={value.font}
                                     onChange={(value) => onChangeValue(value, 'font')}
                                 />
                                 <RadioControl

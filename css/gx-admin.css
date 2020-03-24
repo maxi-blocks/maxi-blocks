@@ -680,6 +680,7 @@ body .gx-panel-body-inserter h2 button:focus {
 /* Extra Block Styles in the Block Inserter */
 button[class*="gutenberg-extra"] {
   border-radius: 10px;
+  padding-top:10px !important;
   max-width: 95%;
   margin: 0 auto;
 }
@@ -689,12 +690,12 @@ button[class*="gutenberg-extra"] .block-editor-block-types-list__item-icon{
   border-radius: 10rem;
   margin:auto;
   padding:0;
-  height: 50px;
-  width:50px;
+  height: 37px;
+  width:37px;
 }
 
 button[class*="gutenberg-extra"] .block-editor-block-types-list__item-icon .block-editor-block-icon  {
-  margin:13px auto !important;
+  margin:6.5px auto !important;
 }
 
 /*

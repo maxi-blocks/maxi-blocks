@@ -155,7 +155,6 @@ class ResponsiveFrontendStyles {
 
     public function fonts() {
         $meta = $this->getMeta();
-        var_dump($meta);
         if ( empty( $meta ) )
             return;
         $response = [];

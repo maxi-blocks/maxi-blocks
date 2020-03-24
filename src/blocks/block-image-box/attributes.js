@@ -1,3 +1,6 @@
+/**
+ * Imports
+ */
 import { blockStyleAttributes } from '../../components/block-styles/index';
 import { borderAttributes } from '../../components/block-border/index';
 import { imagePositionAttributes } from '../../components/image-position/index';
@@ -7,14 +10,17 @@ import { customCSSAtributes } from '../../components/custom-css/index';
 import { linkOptionsAttributes } from '../../components/link-options/index';
 import { dividerAttributes} from '../../components/divider/index';
 import { buttonStyleAttributes } from '../../components/button-styles/index';
+import {defaultTypographyAttributes} from '../../components/typography/attributes';
+import {imageSettingsAttributes} from '../../components/image-settings';
+import {boxShadowOptionsAttributes} from '../../components/box-shadow';
 import {
     dimensionsControlAttributesMargin,
     dimensionsControlAttributesPadding,
 } from '../../components/dimensions-control/attributes';
-import {defaultTypographyAttributes} from '../../components/typography/attributes';
-import {imageSettingsAttributes} from '../../components/image-settings';
-import {boxShadowOptionsAttributes} from '../../components/box-shadow';
 
+/**
+ * Attributes
+ */
 const attributes = {
     title: {
         type: 'array',
@@ -43,22 +49,18 @@ const attributes = {
         source: 'children',
         selector: '.gx-image-box-subtitle',
     },
-    line: {
-        type: 'bool',
-        selector: '.gx-image-box-line',
-    },
-    counter: {
-        type: 'bool',
-        selector: '.gx-image-box-counter',
-    },
     readMoreText: {
         type: 'string',
         selector: 'span.gx-image-box-read-more-text',
     },
     readMoreLink: {
         type: 'string',
-        selector: 'a.gx-image-box-link',
+        selector: 'a.gx-image-box-read-more-link',
         attribute: 'href'
+    },
+    readMoreLinkTest: {
+        type: 'string',
+        default: '{}'
     },
     counter: {
         type: 'bool',

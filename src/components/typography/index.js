@@ -117,6 +117,9 @@ export default class Typography extends Component {
         }
 
         const onChangeValue = (newValue, target) => {
+            if (typeof newValue === 'undefined' ) {
+                newValue = '';
+            }
             if (target == 'font') {
                 value.font = newValue.value;
                 value.options = newValue.files;

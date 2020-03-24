@@ -800,6 +800,11 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
   width: 1.5rem;
 }
 
+.gx-controls .gx-accordion .gx-icon-tab .components-base-control__label:before {
+  content: url(../img/gx-icon-tab.svg);
+  width: 1.5rem;
+}
+
 .gx-controls .gx-accordion .gx-divider-tab .components-base-control__label:before {
   content: url(../img/gx-divider-tab.svg);
   width: 1.5rem;

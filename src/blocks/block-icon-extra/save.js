@@ -18,12 +18,27 @@ const save = (props) => {
     const {
         className,
         attributes: {
-            title,
-            defaultBlockStyle
+          title,
+          subtitle,
+          titleLevel,
+          subtitleLevel,
+          hideTitle,
+          hideSubtitle,
+          titleTextAlign,
+          subtitleAlign,
+          defaultBlockStyle
         },
     } = props;
 
-    const titleStyles = {};
+    const titleStyles = {
+      display: hideTitle ? 'none' : undefined,
+      textAlign: titleTextAlign,
+    };
+
+    const subtitleStyles = {
+      display: hideSubtitle ? 'none' : undefined,
+      textAlign: subtitleAlign,
+    };
 
     return (
       <div
@@ -32,14 +47,24 @@ const save = (props) => {
       >
       <div class='gx-icon-extra-icon'>
       </div>
-        <div class='gx-icon-extra-text'>
+        <div class='gx-icon-extra-title'>
             <RichText.Content
-                tagName='p'
+                tagName={titleLevel}
                 style={titleStyles}
                 placeholder={__('Write title…', 'gutenberg-extra')}
                 value={title}
                 onChange={(value) => setAttributes({ title: value })}
                 className="gx-icon-extra-title"
+            />
+        </div>
+        <div class='gx-icon-extra-subtitle'>
+            <RichText.Content
+                tagName={subtitleLevel}
+                style={subtitleStyles}
+                placeholder={__('Write title…', 'gutenberg-extra')}
+                value={subtitle}
+                onChange={(value) => setAttributes({ subtitle: value })}
+                className="gx-icon-extra-subtitle"
             />
         </div>
       </div>

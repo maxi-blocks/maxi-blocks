@@ -801,7 +801,7 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
 }
 
 .gx-controls .gx-accordion .gx-icon-tab .components-base-control__label:before {
-  content: url(../img/gx-icon-tab.svg);
+  content: url(../img/gx-icon-black.svg);
   width: 1.5rem;
 }
 
@@ -965,7 +965,6 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
 
 .gx-tab.gx-style-tab-label::before{
   width: 1.7rem;
-  padding-top: 10px;
 }
 
 @media all and (max-width: 2000px) {
@@ -1079,7 +1078,7 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
 }
 
 .gx-tab.gx-style-tab-label::before{
-    transform: scale(0.3);
+    transform: scale(0.33);
   }
 
   .gx-tabs {

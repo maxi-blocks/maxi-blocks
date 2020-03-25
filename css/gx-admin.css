@@ -136,6 +136,7 @@ body .gx-hidden {
 }
 
 .gx-controls * {
+  overflow-x:none;
   background: #fff;
 }
 
@@ -277,7 +278,7 @@ body div.gx-sidebar .components-panel__body>.components-panel__body-title {
   font-size: 16px;
   color: #464a53;
   font-weight: 500;
-  letter-spacing: -0.5px;
+  /* letter-spacing: -0.5px; */
 }
 
 .gx-panel input[type=text],
@@ -653,8 +654,8 @@ body .gx-panel-body-inserter h2 button:focus {
 
 .gx-sidebar .block-editor-block-inspector.gx-controls .block-editor-block-card,
 .gx-sidebar .edit-post-settings-sidebar__panel-block.gx-controls .block-editor-block-card {
-  padding: 16px 16px 20px;
-  padding-bottom:10px;
+  padding: 10px 17px 20px;
+  padding-bottom: 6px;
 }
 
 .gx-sidebar .block-editor-block-card__content {
@@ -740,7 +741,7 @@ button[class*="gutenberg-extra"] span.block-editor-block-types-list__item-title 
 }
 
 .gx-sidebar .block-editor-block-icon svg {
-  transform: scale(1.4);
+  transform: scale(1.63);
 }
 
 /* Accordion Tabs */
@@ -798,37 +799,45 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
 .gx-controls .gx-accordion .gx-typography-tab .components-base-control__label:before {
   content: url(../img/gx-typography-tab.svg);
   width: 1.5rem;
+  padding-top: 2px;
 }
 
 .gx-controls .gx-accordion .gx-icon-tab .components-base-control__label:before {
   content: url(../img/gx-icon-black.svg);
   width: 1.5rem;
+  padding-top: 2px;
 }
 
 .gx-controls .gx-accordion .gx-divider-tab .components-base-control__label:before {
   content: url(../img/gx-divider-tab.svg);
   width: 1.5rem;
+  padding-top: 2px;
 }
 
 .components-button.components-color-palette__clear.is-button.is-default.is-small:before{
   content: url(../img/gx-reset.svg);
   width: 1rem;
+  padding-top: 2px;
 }
 
 .gx-controls .gx-accordion .gx-button-tab .components-base-control__label:before {
   content: url(../img/gx-button-tab.svg);
+  padding-top: 2px;
 }
 
 .gx-controls .gx-accordion .gx-box-settings-tab .components-base-control__label:before {
   content: url(../img/gx-box-settings-tab.svg);
+  padding-top: 2px;
 }
 
 .gx-controls .gx-accordion .gx-width-tab .components-base-control__label:before {
   content: url(../img/gx-width-tab.svg);
+  padding-top: 2px;
 }
 
 .gx-controls .gx-accordion .gx-padding-tab .components-base-control__label:before {
   content: url(../img/gx-padding-tab.svg);
+  padding-top: 2px;
 }
 
 .gx-controls .gx-accordion .components-base-control__label:hover {

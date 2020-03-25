@@ -5,13 +5,10 @@ import { contentDirectionAttributes } from '../../components/content-direction/i
 import { subtitleAlignAttributes } from '../../components/icon-extra-subtitle-align/index';
 import { titleAlignAttributes } from '../../components/title-align/index';
 import { descriptionAlignAttributes } from '../../components/description-align/index';
-import { iconColorAttributes } from '../../components/icon-color/index';
-import { iconBackgroundColorAttributes } from '../../components/icon-background-color/index';
-import { iconSizeAttributes } from '../../components/icon-size/index';
-import { iconRotateAttributes } from '../../components/icon-rotate/index';
-import { typographyAttributes } from '../../components/typography/index';
 import { customCSSAtributes } from '../../components/custom-css/index';
 import { dividerAttributes } from '../../components/divider/index';
+import { imageSettingsAttributes } from '../../components/icon-settings/index';
+import { typographyAttributes } from '../../components/typography/attributes';
 
 const attributes = {
   title: {
@@ -47,13 +44,10 @@ const attributes = {
   ...subtitleAlignAttributes,
   ...titleAlignAttributes,
   ...descriptionAlignAttributes,
-  ...iconColorAttributes,
-  ...iconBackgroundColorAttributes,
-  ...iconSizeAttributes,
-  ...iconRotateAttributes,
   ...customCSSAtributes,
   ...typographyAttributes,
   ...dividerAttributes,
+  ...imageSettingsAttributes,
   isHidden:{
     type: 'boolean',
     default: true,

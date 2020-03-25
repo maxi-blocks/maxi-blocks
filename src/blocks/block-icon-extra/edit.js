@@ -42,12 +42,9 @@ import { ContentDirection } from '../../components/content-direction/index';
 import { SubtitleAlign } from '../../components/icon-extra-subtitle-align/index';
 import { TitleAlign } from '../../components/title-align/index';
 import { DescriptionAlign } from '../../components/description-align/index';
-import { IconColor } from '../../components/icon-color/index';
-import { IconBackgroundColor } from '../../components/icon-background-color/index';
-import { IconSize } from '../../components/icon-size/index';
-import { IconRotate } from '../../components/icon-rotate/index';
 import Divider from '../../components/divider/index';
 import Typography from '../../components/typography/index';
+import IconSettings from '../../components/icon-settings/index';
 const Line = () => (
   <hr/>
 );
@@ -80,6 +77,14 @@ const edit = (props) => {
         },
         setAttributes,
     } = props;
+
+    const state = {
+      selector: 'normal',
+    }
+
+    const {
+      selector,
+    } = this.state;
 
     const titleStyles = {
       display: hideTitle ? 'none' : undefined,
@@ -143,10 +148,7 @@ const edit = (props) => {
             </AccordionItemHeading>
             <AccordionItemPanel>
                 <PanelBody className="gx-panel gx-color-setting gx-style-tab-setting" initialOpen={true} title={__('Colour settings', 'gutenberg-extra')}>
-                <IconColor {...props}/>
-                <IconBackgroundColor {...props}/>
-                <IconSize {...props}/>
-                <IconRotate {...props}/>
+                  <IconSettings/>
                 </PanelBody>
               </AccordionItemPanel>
             </AccordionItem>

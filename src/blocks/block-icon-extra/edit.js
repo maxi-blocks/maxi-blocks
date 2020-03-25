@@ -3,16 +3,20 @@
  */
 
 import icon from './icon';
+import classnames from 'classnames';
 const { __ } = wp.i18n;
 
 const {
   InspectorControls,
+  PanelColorSettings,
   RichText,
 } = wp.blockEditor;
 const {
     PanelBody,
     Button,
     Popover,
+    RangeControl,
+    RadioControl,
     BaseControl
 } = wp.components;
 /**
@@ -38,6 +42,12 @@ import { ContentDirection } from '../../components/content-direction/index';
 import { SubtitleAlign } from '../../components/icon-extra-subtitle-align/index';
 import { TitleAlign } from '../../components/title-align/index';
 import { DescriptionAlign } from '../../components/description-align/index';
+import { IconColor } from '../../components/icon-color/index';
+import { IconBackgroundColor } from '../../components/icon-background-color/index';
+import { IconSize } from '../../components/icon-size/index';
+import { IconRotate } from '../../components/icon-rotate/index';
+import Divider from '../../components/divider/index';
+import Typography from '../../components/typography/index';
 const Line = () => (
   <hr/>
 );
@@ -48,27 +58,53 @@ const edit = (props) => {
         attributes: {
           title,
           subtitle,
+          description,
           titleLevel,
           subtitleLevel,
           hideTitle,
           hideSubtitle,
           titleTextAlign,
+          iconColor,
           subtitleAlign,
-          defaultBlockStyle
+          iconBackgroundColor,
+          iconSizeUnit,
+          iconSize,
+          iconRotationUnit,
+          iconRotate,
+          fontOptions,
+          hideDescription,
+          descriptionTextAlign,
+          defaultBlockStyle,
+          extraClassName,
+          uniqueID
         },
         setAttributes,
     } = props;
 
     const titleStyles = {
       display: hideTitle ? 'none' : undefined,
+      fontWeight: '400',
       textAlign: titleTextAlign,
     };
 
     const subtitleStyles = {
       display: hideSubtitle ? 'none' : undefined,
+      fontWeight: '400',
       textAlign: subtitleAlign,
     };
 
+    const descriptionStyles = {
+      display: hideDescription ? 'none' : undefined,
+      fontWeight: '400',
+      textAlign: descriptionTextAlign,
+    };
+
+    const blockStyle = {};
+
+    let classes = classnames( className );
+    if ( className.indexOf(uniqueID) === -1 ) {
+        classes = classnames( classes, uniqueID )
+    }
 
     return [
       <div>
@@ -87,10 +123,12 @@ const edit = (props) => {
             />
             <HideTitle {...props}/>
             <HideSubtitle {...props}/>
+            <HideDescription {...props}/>
             <Line/>
             <ContentDirection {...props}/>
             <TitleAlign {...props}/>
             <SubtitleAlign {...props}/>
+            <DescriptionAlign {...props}/>
           </PanelBody>
           <Accordion
               className = {'gx-style-tab-setting gx-accordion'}
@@ -105,21 +143,62 @@ const edit = (props) => {
             </AccordionItemHeading>
             <AccordionItemPanel>
                 <PanelBody className="gx-panel gx-color-setting gx-style-tab-setting" initialOpen={true} title={__('Colour settings', 'gutenberg-extra')}>
-                  <IconPopover/>
+                <IconColor {...props}/>
+                <IconBackgroundColor {...props}/>
+                <IconSize {...props}/>
+                <IconRotate {...props}/>
                 </PanelBody>
               </AccordionItemPanel>
             </AccordionItem>
           </Accordion>
-          <PanelBody className="gx-panel gx-text-advanced gx-advanced-tab-setting" initialOpen={true} title={__('Text settings', 'gutenberg-extra')}>
-          </PanelBody>
+          <Accordion
+              className = {'gx-style-tab-setting gx-accordion'}
+              allowMultipleExpanded = {true}
+              allowZeroExpanded = {true}
+          >
+          <AccordionItem>
+            <AccordionItemHeading className={'gx-accordion-tab gx-typography-tab'}>
+              <AccordionItemButton className='components-base-control__label'>
+               {__('Typography', 'gutenberg-extra' )}
+              </AccordionItemButton>
+            </AccordionItemHeading>
+            <AccordionItemPanel>
+            <PanelBody className="gx-panel gx-color-setting gx-style-tab-setting" initialOpen={true} title={__('Colour settings', 'gutenberg-extra')}>
+            <Typography
+              fontOptions={props.attributes.fontOptions}
+              onChange={value => { setAttributes({ fontOptions: value})}}
+              label={__('Title', 'gutenberg-extra')}
+              className="components-panel__body editor-panel-color-settings block-editor-panel-color-settings is-opened"
+              target="gx-icon-extra-title"
+                />
+            <Typography
+              fontOptions={props.attributes.fontOptions}
+              onChange={value => { setAttributes({ fontOptions: value})}}
+              label={__('Subtitle', 'gutenberg-extra')}
+              className="components-panel__body editor-panel-color-settings block-editor-panel-color-settings is-opened"
+              target="gx-icon-extra-subtitle"
+                />
+            <Typography
+              fontOptions={props.attributes.fontOptions}
+              onChange={value => { setAttributes({ fontOptions: value})}}
+              label={__('Description', 'gutenberg-extra')}
+              className="components-panel__body editor-panel-color-settings block-editor-panel-color-settings is-opened"
+              target="gx-icon-extra-description"
+                />
+              </PanelBody>
+            </AccordionItemPanel>
+          </AccordionItem>
+        </Accordion>
+        <PanelBody className="gx-panel gx-text-advanced gx-advanced-tab-setting" initialOpen={true} title={__('Text settings', 'gutenberg-extra')}>
+        </PanelBody>
         </InspectorControls>
         <div
-          className={'gx-block gx-icon-extra'}
+          className={blockStyle + ' gx-block gx-icon-extra ' + classes + ' ' + extraClassName}
           data-gx_initial_block_class={defaultBlockStyle}
         >
         <div class='gx-icon-extra-icon'>
         </div>
-          <div class='gx-icon-extra-title'>
+          <div class='gx-icon-extra-title-wrapper'>
               <RichText
                   tagName={titleLevel}
                   style={titleStyles}
@@ -129,14 +208,25 @@ const edit = (props) => {
                   className="gx-icon-extra-title"
               />
           </div>
-          <div class='gx-icon-extra-subtitle'>
+          <div class='gx-icon-extra-subtitle-wrapper'>
               <RichText
                   tagName={subtitleLevel}
                   style={subtitleStyles}
-                  placeholder={__('Write title…', 'gutenberg-extra')}
+                  placeholder={__('Write subtitle…', 'gutenberg-extra')}
                   value={subtitle}
                   onChange={(value) => setAttributes({ subtitle: value })}
                   className="gx-icon-extra-subtitle"
+              />
+          </div>
+          <Divider {...props}/>
+          <div class='gx-icon-extra-description-wrapper'>
+              <RichText
+                  tagName='h6'
+                  style={descriptionStyles}
+                  placeholder={__('Write description…', 'gutenberg-extra')}
+                  value={description}
+                  onChange={(value) => setAttributes({ description: value })}
+                  className="gx-icon-extra-description"
               />
           </div>
         </div>

@@ -8,7 +8,7 @@ import { descriptionAlignAttributes } from '../../components/description-align/i
 import { customCSSAtributes } from '../../components/custom-css/index';
 import { dividerAttributes } from '../../components/divider/index';
 import { imageSettingsAttributes } from '../../components/icon-settings/index';
-import { typographyAttributes } from '../../components/typography/attributes';
+import { defaultTypographyAttributes } from '../../components/typography/attributes';
 
 const attributes = {
   title: {
@@ -45,7 +45,7 @@ const attributes = {
   ...titleAlignAttributes,
   ...descriptionAlignAttributes,
   ...customCSSAtributes,
-  ...typographyAttributes,
+  ...defaultTypographyAttributes,
   ...dividerAttributes,
   ...imageSettingsAttributes,
   isHidden:{

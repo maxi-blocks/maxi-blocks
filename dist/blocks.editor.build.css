@@ -473,8 +473,9 @@
   top: -2px !important; }
 
 .gx-title-typography-setting .components-select-control__input {
-  max-width: 100%;
-  width: 100%; }
+  max-width: 61%;
+  width: 100%;
+  margin-left: 5px; }
 
 .gx-title-typography-setting .components-base-control__label {
   width: 40%; }

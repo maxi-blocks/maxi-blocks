@@ -17,6 +17,8 @@ import {
     dimensionsControlAttributesMargin,
     dimensionsControlAttributesPadding,
 } from '../../components/dimensions-control/attributes';
+// Testing
+import { imageSettingsAttributesTest } from '../../components/image-settings/test';
 
 /**
  * Attributes
@@ -117,6 +119,7 @@ const attributes = {
         type: 'string',
         default: '{}'
     },
+    ...imageSettingsAttributesTest,
 }
 
 export default attributes;

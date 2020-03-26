@@ -45,7 +45,7 @@ export default class DimensionsControl extends Component {
 			target = '',
 		} = this.props;
 
-		let value = JSON.parse(this.props.value);
+		let value = typeof this.props.value === 'object' ? this.props.value : JSON.parse(this.props.value);
 
 		const {
 			device,

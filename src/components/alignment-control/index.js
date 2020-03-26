@@ -40,10 +40,10 @@ const AlignmentControl = props => {
             className={'gx-alignmentcontrol-control'}
             selected={value}
             options={[
-                { label: <Icon icon={alignLeft} />, value: 'alignLeft' },
-                { label: <Icon icon={alignCenter} />, value: 'alignCenter' },
-                { label: <Icon icon={alignRight} />, value: 'alignRight' },
-                { label: <Icon icon={alignJustify} />, value: 'alignJustify' },
+                { label: <Icon icon={alignLeft} />, value: 'left' },
+                { label: <Icon icon={alignCenter} />, value: 'center' },
+                { label: <Icon icon={alignRight} />, value: 'right' },
+                { label: <Icon icon={alignJustify} />, value: 'justify' },
             ]}
             onChange={value => onChange(value)}
         />

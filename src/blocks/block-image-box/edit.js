@@ -41,7 +41,7 @@ import {
     setBlockStyles,
 } from './data';
 import Typography from '../../components/typography/';
-import ImageSettings from '../../components/image-settings/';
+//import ImageSettings from '../../components/image-settings/';
 import iconsSettings from '../../components/icons/icons-settings.js';
 import {
     Accordion,
@@ -50,10 +50,15 @@ import {
     AccordionItemButton,
     AccordionItemPanel,
 } from 'react-accessible-accordion';
-import ExternalLink from '../../components/external-link';
-import LinkedText from '../../components/external-link/test';
+// import ExternalLink from '../../components/external-link';
+// import LinkedText from '../../components/external-link/test';
 import { PopoverControl } from '../../components/popover';
 import { BoxShadow } from '../../components/box-shadow';
+// Testing
+import { 
+    ImageSettings,
+    ImageUpload
+} from '../../components/image-settings/test';
 
 /**
  * Content
@@ -88,6 +93,7 @@ const edit = props => {
             // Testing
             readMoreTextTest,
             readMoreLinkTest,
+            imageSettingsTest
         },
         setAttributes,
     } = props;
@@ -217,7 +223,9 @@ const edit = props => {
                         >
                             <ImageSettings
                                 target="gx-image-box-image"
-                                {...props}
+                                imageSettings={imageSettingsTest}
+                                onChange={value => setAttributes({imageSettingsTest: value})}
+                                mediaID={mediaID}
                             />
                         </PanelBody>
                     </AccordionItemPanel>
@@ -416,7 +424,12 @@ const edit = props => {
                 style={linkStyles}
             >
                 <div className="gx-image-box-image">
-                    <MediaUpload
+                    <ImageUpload 
+                        onSelect={onSelectImage}
+                        mediaID={mediaID}
+                        imageSettings={imageSettingsTest}
+                    />
+                    {/* <MediaUpload
                         onSelect={onSelectImage}
                         allowedTypes="image"
                         value={mediaID}
@@ -428,7 +441,7 @@ const edit = props => {
                                 {!mediaID ? iconsSettings.placeholderImage : <img src={mediaURL} alt={__('Upload Image', 'gutenberg-extra')} />}
                             </IconButton>
                         )}
-                    />
+                    /> */}
                 </div>
                 <div class='gx-image-box-text'>
                     <RichText

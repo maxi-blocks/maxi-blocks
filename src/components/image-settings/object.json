@@ -138,9 +138,51 @@
 
 {
     "label": "Image Settings",
-    "isize": "full",
+    "size": "",
     "alignment": "",
+    "captionType": "none",
     "caption": "none",
+    "captionTypography": {
+        "label": "Caption",
+        "font": "Default",
+        "options": {},
+        "desktop": {
+            "font-sizeUnit": "px",
+            "font-size": 0,
+            "line-heightUnit": "px",
+            "line-height": 0,
+            "letter-spacingUnit": "px",
+            "letter-spacing": 0,
+            "font-weight": 400,
+            "text-transform": "none",
+            "font-style": "normal",
+            "text-decoration": "none"
+        },
+        "tablet": {
+            "font-sizeUnit": "px",
+            "font-size": 0,
+            "line-heightUnit": "px",
+            "line-height": 0,
+            "letter-spacingUnit": "px",
+            "letter-spacing": 0,
+            "font-weight": 400,
+            "text-transform": "none",
+            "font-style": "normal",
+            "text-decoration": "none"
+        },
+        "mobile": {
+            "font-sizeUnit": "px",
+            "font-size": 0,
+            "line-heightUnit": "px",
+            "line-height": 0,
+            "letter-spacingUnit": "px",
+            "letter-spacing": 0,
+            "font-weight": 400,
+            "text-transform": "none",
+            "font-style": "normal",
+            "text-decoration": "none"
+        }
+    },
     "sizeSettings": {
         "maxWidthUnit": "px",
         "maxWidth": "",
@@ -150,7 +192,14 @@
     "normal": {
         "opacity": "",
         "backgroundColor": "",
-        "boxShadow": "",
+        "boxShadow": {
+            "label": "Box Shadow",
+            "shadowColor": "",
+            "shadowHorizontal": "0",
+            "shadowVertical": "0",
+            "shadowBlur": "0",
+            "shadowSpread": "0"
+        },
         "borderSettings": {
             "borderColor": "",
             "borderType": "none",

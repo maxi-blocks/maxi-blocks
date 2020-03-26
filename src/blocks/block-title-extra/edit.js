@@ -218,7 +218,7 @@ const edit = (props) => {
       <AccordionItem>
         <AccordionItemHeading className={'gx-accordion-tab gx-typography-tab'}>
           <AccordionItemButton className='components-base-control__label'>
-           {__('Typography', 'gutenberg-extra' )}
+           {__('Typography & Colours', 'gutenberg-extra' )}
           </AccordionItemButton>
         </AccordionItemHeading>
         <AccordionItemPanel>

@@ -52,8 +52,13 @@ export default class IconSettings extends Component {
   }
 
 render() {
-    const {
-
+  const {
+    iconColor,
+    iconBackgroundColor,
+    iconSizeUnit,
+    iconSize,
+    iconRotationUnit,
+    iconRotate,
   } = this.props;
 
  const {
@@ -63,7 +68,7 @@ render() {
    return (
      <div className={'gx-icon-tab'}>
      <RadioControl
-         className="gx-imagesettings-selector-control"
+         className="gx-image settings-selector-control"
          selected={selector}
          options={[
              { label: 'Normal', value: 'normal' },
@@ -73,10 +78,10 @@ render() {
              this.setState({ selector });
          }}
      />
-     <IconColor {...props}/>
-     <IconBackgroundColor {...props}/>
-     <IconSize {...props}/>
-     <IconRotate {...props}/>
+     <IconColor {...this.props}/>
+     <IconBackgroundColor {...this.props}/>
+     <IconSize {...this.props}/>
+     <IconRotate {...this.props}/>
      </div>
    )
   }

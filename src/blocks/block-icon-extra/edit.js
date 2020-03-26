@@ -78,7 +78,7 @@ const edit = (props) => {
         setAttributes,
     } = props;
 
-    const state = {
+    this.state = {
       selector: 'normal',
     }
 
@@ -148,7 +148,7 @@ const edit = (props) => {
             </AccordionItemHeading>
             <AccordionItemPanel>
                 <PanelBody className="gx-panel gx-color-setting gx-style-tab-setting" initialOpen={true} title={__('Colour settings', 'gutenberg-extra')}>
-                  <IconSettings/>
+                  <IconSettings {...props}/>
                 </PanelBody>
               </AccordionItemPanel>
             </AccordionItem>

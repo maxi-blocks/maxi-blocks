@@ -34,7 +34,6 @@ const {
 import { FontLevel } from '../../components/font-level/index';
 import Icon from '../../components/icon/index';
 import { BlockStyles } from '../../components/block-styles/index';
-import IconPopover from '../../components/icon-popover/index';
 import { HideTitle } from '../../components/hide-title/index';
 import { HideSubtitle } from '../../components/hide-subtitle/index';
 import { HideDescription } from '../../components/hide-description/index';
@@ -126,6 +125,9 @@ const edit = (props) => {
               value={subtitleLevel}
               onChange={value => setAttributes({ subtitleLevel: value })}
             />
+          </PanelBody>
+          <Icon {...props}/>
+          <PanelBody className="gx-panel gx-image-setting gx-content-tab-setting" initialOpen={true} title={__('Icons', 'gutenberg-extra')}>
             <HideTitle {...props}/>
             <HideSubtitle {...props}/>
             <HideDescription {...props}/>
@@ -136,7 +138,7 @@ const edit = (props) => {
             <DescriptionAlign {...props}/>
           </PanelBody>
           <Accordion
-              className = {'gx-style-tab-setting gx-accordion'}
+              className = {'gx-style-tab-setting gx-accordion gx-icon-accordion'}
               allowMultipleExpanded = {true}
               allowZeroExpanded = {true}
           >

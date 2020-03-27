@@ -593,9 +593,70 @@
  * Can include things like variables and mixins
  * that are used across the project.
 */
+.gx-icon-settings .state .components-radio-control__option {
+  width: 100%;
+  text-align: center;
+  margin: 0; }
+  .gx-icon-settings .state .components-radio-control__option label {
+    width: 100%;
+    display: block;
+    height: 35px;
+    border: 1px solid #dde0e2;
+    line-height: 36px; }
+  .gx-icon-settings .state .components-radio-control__option .components-radio-control__input {
+    display: none; }
+    .gx-icon-settings .state .components-radio-control__option .components-radio-control__input:checked + label {
+      color: white;
+      background-color: #00ccff; }
+
+.gx-icon-settings .hover-animation select {
+  margin-left: auto;
+  margin-right: 0 !important;
+  height: 30px !important; }
 /**
  * #.# Common SCSS
  *
  * Can include things like variables and mixins
  * that are used across the project.
 */
+.gx-icon-lib {
+  padding-left: 15px !important;
+  padding-top: 12px !important; }
+
+.gx-icon-library {
+  width: 87px; }
+  .gx-icon-library .components-button {
+    border: none;
+    color: white;
+    background-color: #464a53 !important;
+    height: 31px; }
+    .gx-icon-library .components-button:hover {
+      color: white !important; }
+    .gx-icon-library .components-button:focus {
+      color: white !important;
+      -webkit-box-shadow: none !important;
+              box-shadow: none !important; }
+
+.gx-library-popover {
+  width: 93%;
+  height: 90%;
+  min-height: 20px !important; }
+  .gx-library-popover .components-popover__content {
+    width: 100% !important;
+    height: 100%;
+    max-height: 100% !important; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
+.gx-icon-smiley {
+  font-size: 19pt;
+  color: black; }
+
+.library-wrapper {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: justify;
+      justify-content: space-between; }

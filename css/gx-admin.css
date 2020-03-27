@@ -800,6 +800,7 @@ button[class*="gutenberg-extra"] span.block-editor-block-types-list__item-title 
 
 .gx-sidebar .block-editor-block-card {
   font-size: 20px;
+  margin-left: 0 !important;
   letter-spacing: 0px;
   color: #fff;
   font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen-Sans, Ubuntu, Cantarell, Helvetica Neue, sans-serif;
@@ -860,6 +861,10 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
   margin-top: 20px !important;
 }
 
+.gx-icon-accordion .gx-panel {
+  padding: 6px 19px !important;
+}
+
 .gx-controls .accordion__panel[aria-hidden="false"] {
   margin-top: -30px;
   width: 109% !important;
@@ -914,8 +919,18 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
 
 .gx-controls .gx-accordion .gx-icon-tab .components-base-control__label:before {
   content: url(../img/gx-icon-black.svg);
-  width: 1.5rem;
-  padding-top: 2px;
+  width: 1.41rem;
+  margin-right:13px;
+  margin-left: 2px;
+}
+
+.gx-controls .gx-accordion .gx-icon-tab .components-base-control__label[aria-expanded="true"]::after{
+  right:18px !important;
+}
+
+.gx-controls .gx-accordion .gx-icon-tab .components-base-control__label {
+  padding:10px 12px;
+  margin-bottom: 5px;
 }
 
 .gx-controls .gx-accordion .gx-divider-tab .components-base-control__label:before {
@@ -1094,7 +1109,7 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
   	content: url('../img/gx-logo.svg');
     width: 1.4rem !important;
     right: 30px;
-    top: 9px !important;
+    top: 8px !important;
   }
 
   .gx-sidebar .components-panel__body.is-opened,
@@ -1210,7 +1225,7 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
 
   .gx-tabs {
     padding-top: 0;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
   }
 }
 

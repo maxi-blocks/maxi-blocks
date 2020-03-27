@@ -9,6 +9,7 @@ import { customCSSAtributes } from '../../components/custom-css/index';
 import { dividerAttributes } from '../../components/divider/index';
 import { imageSettingsAttributes } from '../../components/icon-settings/index';
 import { defaultTypographyAttributes } from '../../components/typography/attributes';
+import { iconAttributes } from '../../components/icon/index';
 
 const attributes = {
   title: {
@@ -48,6 +49,7 @@ const attributes = {
   ...defaultTypographyAttributes,
   ...dividerAttributes,
   ...imageSettingsAttributes,
+  ...iconAttributes,
   isHidden:{
     type: 'boolean',
     default: true,

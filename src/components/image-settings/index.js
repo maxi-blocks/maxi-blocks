@@ -2,16 +2,24 @@
  * Wordpress dependencies
  */
 const { __ } = wp.i18n;
-const { PanelColorSettings } = wp.blockEditor;
-const { Component } = wp.element;
-const { withSelect } = wp.data;
+const {
+    Component,
+    Fragment
+} = wp.element;
+const {
+    withSelect,
+    dispatch,
+    select
+} = wp.data;
 const {
     SelectControl,
     RadioControl,
     RangeControl,
     TextControl,
+    IconButton,
+    Spinner,
 } = wp.components;
-
+const { MediaUpload } = wp.blockEditor;
 
 /**
  * External dependencies
@@ -21,12 +29,15 @@ import AlignmentControl from '../alignment-control/index';
 import MiniSizeControl from '../mini-size-control';
 import { PopoverControl } from '../popover';
 import { BoxShadow } from '../box-shadow';
-import Typography from '../../components/typography/';
-import { 
+import Typography from '../typography/';
+import iconsSettings from '../icons/icons-settings.js';
+import ColorControl from '../color-control/';
+import {
     capitalize,
-    isEmpty
+    isEmpty,
+    isNil,
+    isNumber,
 } from 'lodash';
-
 
 /**
  * Styles
@@ -37,259 +48,354 @@ import './editor.scss';
  * Default attributes
  */
 export const imageSettingsAttributes = {
-    imageSize: {
-        type: 'string',
-        default: 'full'
-    },
-    imageAlignment: {
-        type: 'string'
-    },
-    imageCaptionType: {
-        type: 'string',
-        default: 'none'
-    },
-    imageCaption: {
-        type: 'string'
-    },
-    imageCaptionTypography: {
-        type: 'string',
-        default: '{"label":"Caption","font":"Default","options":{},"desktop":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"},"tablet":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"},"mobile":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"}}',
-    },
-    imageMaxWidthUnit: {
-        type: 'string',
-        default: 'px'
-    },
-    imageMaxWidth: {
-        type: 'number'
-    },
-    imageWidthUnit: {
-        type: 'string',
-        default: 'px'
-    },
-    imageWidth: {
-        type: 'number'
-    },
-    imageOpacity: {
-        type: 'number'
-    },
-    imageBackgroundColor: {
-        type: 'string',
-        default: ''
-    },
-    imageBoxShadow: {
-        type: 'string',
-        default: '{"label": "Box shadow","shadowColor": "", "shadowHorizontal": "0", "shadowVertical": "0", "shadowBlur": "0", "shadowSpread": "0"}',
-    },
-    imageBorderColor: {
-        type: 'string',
-        default: ''
-    },
-    imageBorderType: {
-        type: 'string',
-        default: 'none'
-    },
-    imageBorderRadius: {
-        type: 'string',
-        default: '{"label":"Padding","unit":"px","desktop":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true},"tablet":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true},"mobile":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true}}'
-    },
-    imageBorderWidth: {
-        type: 'string',
-        default: '{"label":"Margin","min":"none","unit":"px","desktop":{"margin-top":0,"margin-right":0,"margin-bottom":0,"margin-left":0,"sync":true},"tablet":{"margin-top":0,"margin-right":0,"margin-bottom":0,"margin-left":0,"sync":true},"mobile":{"margin-top":0,"margin-right":0,"margin-bottom":0,"margin-left":0,"sync":true}}'
-    },
-    imageOpacityHover: {
-        type: 'number'
-    },
-    imageBackgroundColorHover: {
-        type: 'string',
-        default: ''
-    },
-    imageBoxShadowHover: {
-        type: 'string',
-        default: '{"label": "Box shadow","shadowColor": "", "shadowHorizontal": "0", "shadowVertical": "0", "shadowBlur": "0", "shadowSpread": "0"}',
-    },
-    imageBorderColorHover: {
-        type: 'string',
-        default: ''
-    },
-    imageBorderTypeHover: {
-        type: 'string',
-        default: 'none'
-    },
-    imageBorderRadiusHover: {
-        type: 'string',
-        default: '{"label":"Padding","unit":"px","desktop":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true},"tablet":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true},"mobile":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true}}'
-    },
-    imageBorderWidthHover: {
-        type: 'string',
-        default: '{"label":"Margin","min":"none","unit":"px","desktop":{"margin-top":0,"margin-right":0,"margin-bottom":0,"margin-left":0,"sync":true},"tablet":{"margin-top":0,"margin-right":0,"margin-bottom":0,"margin-left":0,"sync":true},"mobile":{"margin-top":0,"margin-right":0,"margin-bottom":0,"margin-left":0,"sync":true}}'
-    },
     imageSettings: {
         type: 'string',
-        default: '{"label":"Image Settings","isize":"full","alignment":"","caption":"none","maxWidth":"","width":"","sizeSettings":{"maxWidthUnit":"px","maxWidth":"","widthUnit":"px","width":""},"normal":{"opacity":"","backgroundColor":"","boxShadow":"","borderSettings":{"borderColor":"","borderType":"none","borderRadius":{"label":"Border radius","unit":"px","max":"1000","desktop":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"tablet":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"mobile":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true}},"borderWidth":{"label":"Border width","unit":"px","max":"1000","desktop":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"tablet":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"mobile":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true}}}},"hover":{"opacity":"","backgroundColor":"","boxShadow":"","borderSettings":{"borderColor":"","borderType":"none","borderRadius":{"label":"Border radius","unit":"px","max":"1000","desktop":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"tablet":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"mobile":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true}},"borderWidth":{"label":"Border width","unit":"px","max":"1000","desktop":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"tablet":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"mobile":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true}}}}}',
-    },
+        default: '{"label":"Image Settings","size":"","imageSize":{"options":{},"widthUnit":"px","width":"","heightUnit":"px","height":""},"alt":"","alignment":"","captionType":"none","caption":"none","captionTypography":{"label":"Caption","font":"Default","options":{},"desktop":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"},"tablet":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"},"mobile":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"}},"sizeSettings":{"maxWidthUnit":"px","maxWidth":"","widthUnit":"px","width":""},"normal":{"opacity":"","backgroundColor":"","boxShadow":{"label":"Box Shadow","shadowColor":"","shadowHorizontal":"0","shadowVertical":"0","shadowBlur":"0","shadowSpread":"0"},"borderSettings":{"borderColor":"","borderType":"","borderRadius":{"label":"Border radius","unit":"px","max":"1000","desktop":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"tablet":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"mobile":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true}},"borderWidth":{"label":"Border width","unit":"px","max":"1000","desktop":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"tablet":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"mobile":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true}}}},"hover":{"opacity":"","backgroundColor":"","boxShadow":{"label":"Box Shadow","shadowColor":"","shadowHorizontal":"0","shadowVertical":"0","shadowBlur":"0","shadowSpread":"0"},"borderSettings":{"borderColor":"","borderType":"","borderRadius":{"label":"Border radius","unit":"px","max":"1000","desktop":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"tablet":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"mobile":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true}},"borderWidth":{"label":"Border width","unit":"px","max":"1000","desktop":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"tablet":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"mobile":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true}}}}}'
+    }
 }
 
 /**
  * Block
  */
-class ImageSettings extends Component {
+class ImageSettingsOptions extends Component {
 
     state = {
         selector: 'normal',
     }
 
+    test = typeof this.props.imageSettings === 'object' ? this.props.imageSettings : JSON.parse(this.props.imageSettings);
+
     render() {
         const {
             imageData,
-            imageSize = this.props.attributes.imageSize,
-            onChangeImageSize = undefined,
-            imageAlignment = this.props.attributes.imageAlignment,
-            onChangeImageAlignment = undefined,
-            imageCaptionType = this.props.attributes.imageCaptionType,
-            onChangeImageCaptionType = undefined,
-            imageCaption = this.props.attributes.imageCaption,
-            onChangeImageCaption = undefined,
-            imageCaptionTypography = this.props.attributes.imageCaptionTypography,
-            onChangeImageCaptionTypography = undefined,
-            imageMaxWidthUnit = this.props.attributes.imageMaxWidthUnit,
-            onChangeImageMaxWidthUnit = undefined,
-            imageMaxWidth = this.props.attributes.imageMaxWidth,
-            onChangeImageMaxWidth = undefined,
-            imageWidthUnit = this.props.attributes.imageWidthUnit,
-            onChangeImageWidthUnit = undefined,
-            imageWidth = this.props.attributes.imageWidth,
-            onChangeImageWidth = undefined,
-            imageOpacity = this.props.attributes.imageOpacity,
-            onChangeImageOpacity = undefined,
-            imageBackgroundColor = this.props.attributes.imageBackgroundColor,
-            onChangeImageBackgroundColor = undefined,
-            imageBoxShadow = this.props.attributes.imageBoxShadow,
-            onChangeImageBoxShadow = undefined,
-            imageBorderColor = this.props.attributes.imageBorderColor,
-            onChangeImageBorderColor = undefined,
-            imageBorderType = this.props.attributes.imageBorderType,
-            onChangeImageBorderType = undefined,
-            imageBorderRadius = this.props.attributes.imageBorderRadius,
-            onChangeImageBorderRadius = undefined,
-            imageBorderWidth = this.props.attributes.imageBorderWidth,
-            onChangeImageBorderWidth = undefined,
-            imageOpacityHover = this.props.attributes.imageOpacityHover,
-            onChangeImageOpacityHover = undefined,
-            imageBackgroundColorHover = this.props.attributes.imageBackgroundColorHover,
-            onChangeImageBackgroundColorHover = undefined,
-            imageBoxShadowHover = this.props.attributes.imageBoxShadowHover,
-            onChangeImageBoxShadowHover = undefined,
-            imageBorderColorHover = this.props.attributes.imageBorderColorHover,
-            onChangeImageBorderColorHover = undefined,
-            imageBorderTypeHover = this.props.attributes.imageBorderTypeHover,
-            onChangeImageBorderTypeHover = undefined,
-            imageBorderRadiusHover = this.props.attributes.imageBorderRadiusHover,
-            onChangeImageBorderRadiusHover = undefined,
-            imageBorderWidthHover = this.props.attributes.imageBorderWidthHover,
-            onChangeImageBorderWidthHover = undefined,
+            imageSettings = this.props.attributes.imageSettings,
+            onChange,
             target = '',
-            setAttributes = props.setAttributes,
         } = this.props;
 
         const {
             selector,
         } = this.state;
 
+        let value = typeof imageSettings === 'object' ? imageSettings : JSON.parse(imageSettings);
+
         const getSizeOptions = () => {
-            if ( !imageData ) {
-                return;
-            }
             let response = [];
-            let sizes = imageData.media_details.sizes;
-            sizes = Object.entries(sizes).sort((a,b) => {
-                return a[1].width - b[1].width;
-            })
-            sizes.map( size => {
-                const name = capitalize(size[0]);
-                const val = size[1];
-                response.push({
-                    label: `${name} - ${val.width}x${val.height}`,
-                    value: val.source_url
+            if (imageData) {
+                let sizes = imageData.media_details.sizes;
+                sizes = Object.entries(sizes).sort((a, b) => {
+                    return a[1].width - b[1].width;
                 })
-            })
+                sizes.map(size => {
+                    const name = capitalize(size[0]);
+                    const val = size[1];
+                    response.push({
+                        label: `${name} - ${val.width}x${val.height}`,
+                        value: size[0]
+                    })
+                })
+            }
+            response.push({
+                label: 'Custom', value: 'custom'
+            });
             return response;
         }
 
         const getCaptionOptions = () => {
-            if ( !imageData ) {
-                return;
-            }
             let response = [
                 { label: 'None', value: 'none' },
                 { label: 'Custom Caption', value: 'custom' },
             ];
-            if ( ! isEmpty(imageData.caption.rendered) ) {
+            if (imageData && !isEmpty(imageData.caption.rendered)) {
                 const newCaption = { label: 'Attachment Caption', value: 'attachment' };
                 response.splice(1, 0, newCaption)
             }
             return response;
         }
 
-        const onChangeValue = (target, value, callback) => {
-            if (typeof callback != 'undefined' ) {
-                callback(value);
-            }
-            else {
-                setAttributes({[target]: value})
-            }
+        /**
+		* Retrieves the old meta data
+		*/
+        const getMeta = () => {
+            let meta = select('core/editor').getEditedPostAttribute('meta')._gutenberg_extra_responsive_styles;
+            return meta ? JSON.parse(meta) : {};
         }
+
+		/**
+		 * Retrieve the target for responsive CSS
+		 */
+        const getTarget = (adition = '') => {
+            let styleTarget = select('core/block-editor').getBlockAttributes(select('core/block-editor').getSelectedBlockClientId()).uniqueID;
+            styleTarget = `${styleTarget}${target.length > 0 || adition.length > 0 ? `__$${target}${adition}` : ''}`;
+            return styleTarget;
+        }
+
+        /**
+         * Creates a new object for being joined with the rest of the values on meta
+         */
+        const getNormalStylesObject = () => {
+            const response = {
+                label: value.label,
+                general: {}
+            }
+            if (!isNil(value.alignment)) {
+                switch (value.alignment) {
+                    case 'left':
+                        response.general['margin-right'] = 'auto';
+                        break;
+                    case 'center':
+                    case 'justify':
+                        response.general['margin-right'] = 'auto';
+                        response.general['margin-left'] = 'auto';
+                        break;
+                    case 'right':
+                        response.general['margin-left'] = 'auto';
+                        break;
+                }
+            }
+            if (isNumber(value.sizeSettings.maxWidth)) {
+                response.general['max-width'] = value.sizeSettings.maxWidth + value.sizeSettings.maxWidthUnit;
+            }
+            if (isNumber(value.sizeSettings.width)) {
+                response.general['width'] = value.sizeSettings.width + value.sizeSettings.widthUnit;
+            }
+            if (isNumber(value.normal.opacity)) {
+                response.general['opacity'] = value.normal.opacity;
+            }
+            if (!isEmpty(value.normal.backgroundColor)) {
+                response.general['background-color'] = value.normal.backgroundColor;
+            }
+            if (!isEmpty(value.normal.borderSettings.borderColor)) {
+                response.general['border-color'] = value.normal.borderSettings.borderColor;
+            }
+            if (!isEmpty(value.normal.borderSettings.borderType)) {
+                response.general['border-style'] = value.normal.borderSettings.borderType;
+            }
+            return response;
+        }
+
+        /**
+         * Creates a new object for being joined with the rest of the values on meta
+         */
+        const getHoverStylesObject = () => {
+            const response = {
+                label: value.label,
+                general: {}
+            }
+            if (isNumber(value.hover.opacity)) {
+                response.general['opacity'] = value.hover.opacity;
+            }
+            if (!isEmpty(value.hover.backgroundColor)) {
+                response.general['background-color'] = value.hover.backgroundColor;
+            }
+            if (!isEmpty(value.hover.borderSettings.borderColor)) {
+                response.general['border-color'] = value.hover.borderSettings.borderColor;
+            }
+            if (!isEmpty(value.hover.borderSettings.borderType)) {
+                response.general['border-style'] = value.hover.borderSettings.borderType;
+            }
+            return response;
+        }
+
+        /**
+         * Creates a new object for being joined with the rest of the values on meta
+         */
+        const getImgStylesObject = () => {
+            const response = {
+                label: value.label,
+                general: {}
+            }
+            if (isNumber(value.imageSize.width)) {
+                response.general['width'] = value.imageSize.width + value.imageSize.widthUnit;
+            }
+            if (isNumber(value.imageSize.height)) {
+                response.general['height'] = value.imageSize.height + value.imageSize.heightUnit;
+            }
+
+            return response;
+        }
+
+		/**
+		* Creates a new object that
+		*
+		* @param {string} target	Block attribute: uniqueID
+		* @param {obj} meta		Old and saved metadate
+		* @param {obj} value	New values to add
+		*/
+        const metaValue = (type) => {
+            const meta = getMeta();
+            let styleTarget = '';
+            switch (type) {
+                case 'normal':
+                    styleTarget = getTarget();
+                    break;
+                case 'hover':
+                    styleTarget = getTarget(':hover');
+                    break;
+                case 'img':
+                    styleTarget = getTarget(' img');
+                    break;
+            }
+            let obj = {};
+            switch (type) {
+                case 'normal':
+                    obj = getNormalStylesObject();
+                    break;
+                case 'hover':
+                    obj = getHoverStylesObject();
+                    break;
+                case 'img':
+                    obj = getImgStylesObject();
+                    break;
+            }
+            const responsiveStyle = new ResponsiveStylesResolver(styleTarget, meta, obj);
+            const response = JSON.stringify(responsiveStyle.getNewValue);
+            return response;
+        }
+
+		/**
+		* Saves and send the data. Also refresh the styles on Editor
+		*/
+        const saveAndSend = () => {
+            save();
+            saveMeta('normal');
+            saveMeta('hover');
+            saveMeta('img');
+            new BackEndResponsiveStyles(getMeta());
+        }
+
+        const save = () => {
+            onChange(JSON.stringify(value));
+        }
+
+        const saveMeta = (type) => {
+            dispatch('core/editor').editPost({
+                meta: {
+                    _gutenberg_extra_responsive_styles: metaValue(type),
+                },
+            });
+        }
+
+        const getValues = () => {
+            value.alt = imageData.alt_text;
+            value.imageSize.options = imageData.media_details.sizes;
+            value.src = imageData.source_url;
+            save();
+        }
+
+        imageData && ( 
+            value.alt != imageData.alt_text || 
+            value.imageSize.options.full != imageData.source_url 
+        ) ?
+            getValues() :
+            null;
 
         return (
             <div className="gx-imagesettings-control">
                 <SelectControl
                     label={__('Image Size', 'gutenberg-extra')}
-                    value={imageSize}
+                    value={value.imageSize.options[value.size] || value.size === 'custom' ? value.size : 'full'}
                     options={getSizeOptions()}
-                    onChange={value => onChangeValue('imageSize', value, onChangeImageSize)}
+                    onChange={val => {
+                        value.size = val;
+                        saveAndSend()
+                    }}
                 />
+                {value.size === 'custom' &&
+                    <Fragment>
+                        <MiniSizeControl
+                            label={__('Width', 'gutenberg-extra')}
+                            unit={value.imageSize.widthUnit}
+                            onChangeUnit={val => {
+                                value.imageSize.widthUnit = val;
+                                saveAndSend();
+                            }}
+                            value={value.imageSize.width}
+                            onChangeValue={val => {
+                                value.imageSize.width = val;
+                                saveAndSend();
+                            }}
+                        />
+                        <MiniSizeControl
+                            label={__('Height', 'gutenberg-extra')}
+                            unit={value.imageSize.heightUnit}
+                            onChangeUnit={val => {
+                                value.imageSize.heightUnit = val;
+                                saveAndSend();
+                            }}
+                            value={value.imageSize.height}
+                            onChangeValue={val => {
+                                value.imageSize.height = val;
+                                saveAndSend();
+                            }}
+                        />
+                    </Fragment>
+                }
                 <AlignmentControl
-                    value={imageAlignment}
-                    onChange={value => onChangeValue('imageAlignment', value, onChangeImageAlignment)}
+                    value={value.alignment}
+                    onChange={val => {
+                        value.alignment = val;
+                        saveAndSend()
+                    }}
                 />
                 <SelectControl
                     label={__('Caption', 'gutenberg-extra')}
-                    value={imageCaptionType}
+                    value={value.captionType}
                     options={getCaptionOptions()}
-                    onChange={value => {
-                        onChangeValue('imageCaptionType', value, onChangeImageCaptionType);
-                        value === 'attachment' ?
-                            onChangeValue('imageCaption', imageData.caption.rendered, onChangeImageCaption) :
-                            onChangeValue('imageCaption', '', onChangeImageCaption);
+                    onChange={val => {
+                        value.captionType = val;
+                        val === 'attachment' ?
+                            value.caption = imageData.caption.raw :
+                            value.caption = '';
+                        saveAndSend();
                     }}
                 />
-                { imageCaptionType === 'custom' &&
+                {value.captionType === 'custom' &&
                     <TextControl
                         label={__('Custom Caption', 'gutenberg-extra')}
                         className="gx-custom-caption"
-                        value={imageCaption}
-                        onChange={value => onChangeValue('imageCaption', value, onChangeImageCaption)}
+                        value={value.caption}
+                        onChange={val => {
+                            value.caption = val;
+                            saveAndSend();
+                        }}
                     />
                 }
-                { imageCaptionType != 'none' &&
+                {value.captionType != 'none' &&
                     <Typography
-                        fontOptions={imageCaptionTypography}
-                        onChange={value => { onChangeValue('imageCaptionTypography', value, onChangeImageCaptionTypography) }}
-                        target="needs-target!!!!"   //!!!!!
+                        fontOptions={value.captionTypography}
+                        onChange={val => {
+                            value.captionTypography = val;
+                            saveAndSend();
+                        }}
+                        target={target + ' figcaption'}
                     />
                 }
                 <MiniSizeControl
                     label={__('Max Width', 'gutenberg-extra')}
-                    unit={imageMaxWidthUnit}
-                    onChangeUnit={value => onChangeValue('imageMaxWidthUnit', value, onChangeImageMaxWidthUnit)}
-                    value={imageMaxWidth}
-                    onChangeValue={value => onChangeValue('imageMaxWidth', value, onChangeImageMaxWidth)}
+                    unit={value.sizeSettings.maxWidthUnit}
+                    onChangeUnit={val => {
+                        value.sizeSettings.maxWidthUnit = val;
+                        saveAndSend();
+                    }}
+                    value={value.sizeSettings.maxWidth}
+                    onChangeValue={val => {
+                        value.sizeSettings.maxWidth = val;
+                        saveAndSend();
+                    }}
                 />
                 <MiniSizeControl
                     label={__('Width', 'gutenberg-extra')}
-                    unit={imageWidthUnit}
-                    onChangeUnit={value => onChangeValue('imageWidthUnit', value, onChangeImageWidthUnit)}
-                    value={imageWidth}
-                    onChangeValue={value => onChangeValue('imageWidth', value, onChangeImageWidth)}
+                    unit={value.sizeSettings.widthUnit}
+                    onChangeUnit={val => {
+                        value.sizeSettings.widthUnit = val;
+                        saveAndSend();
+                    }}
+                    value={value.sizeSettings.width}
+                    onChangeValue={val => {
+                        value.sizeSettings.width = val;
+                        saveAndSend();
+                    }}
                 />
                 <RadioControl
                     className="gx-imagesettings-selector-control"
@@ -298,114 +404,77 @@ class ImageSettings extends Component {
                         { label: 'Normal', value: 'normal' },
                         { label: 'Hover', value: 'hover' },
                     ]}
-                    onChange={(selector) => { 
+                    onChange={(selector) => {
                         this.setState({ selector });
                     }}
                 />
                 <RangeControl
                     label={__('Opacity', 'gutenberg-extra')}
-                    value={
-                        selector != 'hover' ?
-                            imageOpacity :
-                            imageOpacityHover
-                    }
+                    value={value[selector].opacity}
                     min={0}
                     max={1}
                     step={0.1}
-                    onChange={
-                        selector != 'hover' ?
-                            value => onChangeValue('imageOpacity', value, onChangeImageOpacity) :
-                            value => onChangeValue('imageOpacityHover', value, onChangeImageOpacityHover)
-                    }
+                    onChange={val => {
+                        value[selector].opacity = val;
+                        saveAndSend()
+                    }}
                 />
-                <PanelColorSettings
-                    title={__('Background Colour Settings', 'gutenberg-extra')}
-                    colorSettings={[
-                        {
-                            value: 
-                                selector != 'hover' ?
-                                    imageBackgroundColor :
-                                    imageBackgroundColorHover,
-                            onChange: 
-                                selector != 'hover' ?
-                                    value => onChangeValue('imageBackgroundColor', value, onChangeImageBackgroundColor) :
-                                    value => onChangeValue('imageBackgroundColorHover', value, onChangeImageBackgroundColorHover),
-                            label: __('Background Colour', 'gutenberg-extra'),
-                        },
-                    ]}
+                <ColorControl 
+                    label={__('Background Colour', 'gutenberg-extra')}
+                    color={value[selector].backgroundColor}
+                    onChange={val => {
+                        value[selector].backgroundColor = val;
+                        saveAndSend()
+                    }}
                 />
-                <PopoverControl 
+                <PopoverControl
                     label={__('Box shadow', 'gutenberg-extra')}
                     content={
-                        <BoxShadow 
-                            boxShadowOptions={
-                                selector != 'hover' ?
-                                    imageBoxShadow :
-                                    imageBoxShadowHover
-                            }
-                            onChange={
-                                selector != 'hover' ?
-                                    value => onChangeValue('imageBoxShadow', value, onChangeImageBoxShadow):
-                                    value => onChangeValue('imageBoxShadowHover', value, onChangeImageBoxShadowHover)
-                                }
+                        <BoxShadow
+                            boxShadowOptions={value[selector].boxShadow}
+                            onChange={val => {
+                                value[selector].boxShadow = JSON.parse(val);
+                                saveAndSend()
+                            }}
                             target={
                                 selector != 'hover' ?
-                                    target : 
-                                    `${target}:hover`
+                                    `${target} img` :
+                                    `${target} img:hover`
                             }
                         />
                     }
                 />
                 <hr style={{ borderTop: '1px solid #ddd' }} />
                 <BlockBorder
-                    borderColor={
-                        selector != 'hover' ?
-                            imageBorderColor :
-                            imageBorderColorHover
-                    }
-                    onChangeBorderColor={
-                        selector != 'hover' ?
-                            value => onChangeValue('imageBorderColor', value, onChangeImageBorderColor) :
-                            value => onChangeValue('imageBorderColorHover', value, onChangeImageBorderColorHover)
-                    }
-                    borderType={
-                        selector != 'hover' ?
-                            imageBorderType :
-                            imageBorderTypeHover
-                    }
-                    onChangeBorderType={
-                        selector != 'hover' ?
-                            value => onChangeValue('imageBorderType', value, onChangeImageBorderType) :
-                            value => onChangeValue('imageBorderTypeHover', value, onChangeImageBorderTypeHover)
-                    }
-                    borderRadius={
-                        selector != 'hover' ?
-                            imageBorderRadius :
-                            imageBorderRadiusHover
-                    }
-                    onChangeBorderRadius={
-                        selector != 'hover' ?
-                            value => onChangeValue('imageBorderRadius', value, onChangeImageBorderRadius) :
-                            value => onChangeValue('imageBorderRadiusHover', value, onChangeImageBorderRadiusHover)
-                    }
-                    borderWidth={
-                        selector != 'hover' ?
-                            imageBorderWidth :
-                            imageBorderWidthHover
-                    }
-                    onChangeBorderWidth={
-                        selector != 'hover' ?
-                            value => onChangeValue('imageBorderWidth', value, onChangeImageBorderWidth) :
-                            value => onChangeValue('imageBorderWidthHover', value, onChangeImageBorderWidthHover)
-                    }
+                    borderColor={value[selector].borderSettings.borderColor}
+                    onChangeBorderColor={val => {
+                        console.log(value[selector].borderSettings.borderColor);
+                        value[selector].borderSettings.borderColor = val;
+                        saveAndSend();
+                    }}
+                    borderType={value[selector].borderSettings.borderType}
+                    onChangeBorderType={val => {
+                        value[selector].borderSettings.borderType = val;
+                        saveAndSend();
+                    }}
+                    borderRadius={value[selector].borderSettings.borderRadius}
+                    onChangeBorderRadius={val => {
+                        value[selector].borderSettings.borderRadius = val;
+                        saveAndSend();
+                    }}
+                    borderWidth={value[selector].borderSettings.borderWidth}
+                    onChangeBorderWidth={val => {
+                        value[selector].borderSettings.borderWidth = val;
+                        saveAndSend();
+                    }}
                     borderRadiusTarget={
                         selector != 'hover' ?
-                            target : 
+                            target :
                             `${target}:hover`
                     }
                     borderWidthTarget={
                         selector != 'hover' ?
-                            target : 
+                            target :
                             `${target}:hover`
                     }
                 />
@@ -414,12 +483,94 @@ class ImageSettings extends Component {
     }
 }
 
-export default withSelect( (select, ownProps ) => {
+export const ImageSettings = withSelect((select, ownProps) => {
     const {
-        imageID = ownProps.attributes.mediaID
+        mediaID = ownProps.mediaID
     } = ownProps;
-    const imageData = select('core').getMedia(imageID);
+    const imageData = select('core').getMedia(mediaID);
     return {
         imageData
     }
-})(ImageSettings)
+})(ImageSettingsOptions)
+
+/**
+ * Frontend block
+ */
+export const Image = props => {
+
+    const {
+        className = '',
+        mediaID,
+        imageSettings
+    } = props;
+
+    const value = typeof imageSettings === 'object' ? imageSettings : JSON.parse(imageSettings);
+    const image = value.imageSize.options[value.size] ? value.imageSize.options[value.size] : value.imageSize.options.full;
+    const width = value.size != 'custom' ? image.width : value.imageSize.width + value.imageSize.widthUnit;
+    const height = value.size != 'custom' ? image.height : value.imageSize.height + value.imageSize.heightUnit;
+
+    return (
+        <figure
+            className={className}
+        >
+            <img
+                className={"wp-image-" + mediaID}
+                src={image.source_url}
+                alt={value.alt}
+                width={width}
+                height={height}
+            />
+            {value.captionType !== 'none' &&
+                <figcaption>
+                    {value.caption}
+                </figcaption>
+            }
+        </figure>
+    )
+}
+
+/**
+ * Bakcend upload block
+ */
+export const ImageUpload = props => {
+    const {
+        className = '',
+        mediaID,
+        onSelect,
+        imageSettings
+    } = props;
+
+    const value = typeof imageSettings === 'object' ? imageSettings : JSON.parse(imageSettings);
+
+    return (
+        <MediaUpload
+            onSelect={onSelect}
+            allowedTypes="image"
+            value={mediaID}
+            render={({ open }) => (
+                <IconButton
+                    className='gx-imageupload-button'
+                    showTooltip="true"
+                    onClick={open}>
+                    { mediaID && !isEmpty(value.imageSize.options) ?
+                        <Image 
+                            className={className}
+                            imageSettings={imageSettings}
+                            mediaID={mediaID}
+                        /> :
+                            mediaID ?
+                            (
+                                <Fragment>
+                                    <Spinner />
+                                    <p>
+                                        {__('Loading...', 'gutenberg-extra')}
+                                    </p>
+                                </Fragment>
+                            ) :
+                            iconsSettings.placeholderImage
+                    }
+                </IconButton>
+            )}
+        />
+    )
+}

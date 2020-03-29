@@ -5,7 +5,6 @@ const { __ } = wp.i18n;
 const {
     PanelBody,
     Button,
-    IconButton,
     BaseControl,
 } = wp.components;
 const {
@@ -41,7 +40,6 @@ import {
     setBlockStyles,
 } from './data';
 import Typography from '../../components/typography/';
-//import ImageSettings from '../../components/image-settings/';
 import iconsSettings from '../../components/icons/icons-settings.js';
 import {
     Accordion,
@@ -58,7 +56,7 @@ import { BoxShadow } from '../../components/box-shadow';
 import { 
     ImageSettings,
     ImageUpload
-} from '../../components/image-settings/test';
+} from '../../components/image-settings/';
 
 /**
  * Content
@@ -74,6 +72,7 @@ const edit = props => {
             titleFontOptions,
             subtitleFontOptions,
             descriptionFontOptions,
+            imageSettings,
             backgroundColor,
             backgroundGradient,
             defaultPalette,
@@ -81,7 +80,6 @@ const edit = props => {
             margin,
             padding,
             mediaID,
-            mediaURL,
             title,
             additionalText,
             description,
@@ -93,7 +91,6 @@ const edit = props => {
             // Testing
             readMoreTextTest,
             readMoreLinkTest,
-            imageSettingsTest
         },
         setAttributes,
     } = props;
@@ -223,8 +220,8 @@ const edit = props => {
                         >
                             <ImageSettings
                                 target="gx-image-box-image"
-                                imageSettings={imageSettingsTest}
-                                onChange={value => setAttributes({imageSettingsTest: value})}
+                                imageSettings={imageSettings}
+                                onChange={value => setAttributes({imageSettings: value})}
                                 mediaID={mediaID}
                             />
                         </PanelBody>
@@ -423,27 +420,12 @@ const edit = props => {
                 className="gx-image-box-link" 
                 style={linkStyles}
             >
-                {/* <div className="gx-image-box-image"> */}
                     <ImageUpload 
                         className="gx-image-box-image"
-                        imageSettings={imageSettingsTest}
+                        imageSettings={imageSettings}
                         mediaID={mediaID}
                         onSelect={onSelectImage}
                     />
-                    {/* <MediaUpload
-                        onSelect={onSelectImage}
-                        allowedTypes="image"
-                        value={mediaID}
-                        render={({ open }) => (
-                            <IconButton
-                                className={mediaID + ' gx-upload-button'}
-                                showTooltip="true"
-                                onClick={open}>
-                                {!mediaID ? iconsSettings.placeholderImage : <img src={mediaURL} alt={__('Upload Image', 'gutenberg-extra')} />}
-                            </IconButton>
-                        )}
-                    /> */}
-                {/* </div> */}
                 <div class='gx-image-box-text'>
                     <RichText
                         tagName={titleLevel}

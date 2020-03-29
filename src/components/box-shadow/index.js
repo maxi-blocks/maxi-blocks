@@ -33,7 +33,6 @@ export const BoxShadow = (props) => {
         target = ''
     } = props;
 
-    console.log (typeof boxShadowOptions)
     let value = typeof boxShadowOptions === 'object' ? boxShadowOptions : JSON.parse(boxShadowOptions);
 
     const onChangeValue = (target, val) => {

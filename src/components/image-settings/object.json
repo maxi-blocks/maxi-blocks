@@ -1,144 +1,14 @@
 {
     "label": "Image Settings",
-    "normal": {
-        "size": "full",
-        "alignment": "",
-        "caption": "none",
-        "maxWidth": "",
-        "width": "",
-        "sizeSettings": {
-            "maxWidthUnit": "px",
-            "maxWidth": "",
-            "widthUnit": "px",
-            "width": ""
-        },
-        "opacity": "",
-        "backgroundColor": "",
-        "boxShadow": "",
-        "borderSettings": {
-            "borderColor": "",
-            "borderType": "none",
-            "borderRadius": {
-                "label": "Border radius",
-                "unit": "px",
-                "max": "1000",
-                "desktop": {
-                    "border-top-left-radius": 0,
-                    "border-top-right-radius": 0,
-                    "border-bottom-right-radius": 0,
-                    "border-bottom-left-radius": 0,
-                    "sync": true
-                },
-                "tablet": {
-                    "border-top-left-radius": 0,
-                    "border-top-right-radius": 0,
-                    "border-bottom-right-radius": 0,
-                    "border-bottom-left-radius": 0,
-                    "sync": true
-                },
-                "mobile": {
-                    "border-top-left-radius": 0,
-                    "border-top-right-radius": 0,
-                    "border-bottom-right-radius": 0,
-                    "border-bottom-left-radius": 0,
-                    "sync": true
-                }
-            },
-            "borderWidth": {
-                "label": "Border width",
-                "unit": "px",
-                "max": "1000",
-                "desktop": {
-                    "border-top-width": 0,
-                    "border-right-width": 0,
-                    "border-bottom-width": 0,
-                    "border-left-width": 0,
-                    "sync": true
-                },
-                "tablet": {
-                    "border-top-width": 0,
-                    "border-right-width": 0,
-                    "border-bottom-width": 0,
-                    "border-left-width": 0,
-                    "sync": true
-                },
-                "mobile": {
-                    "border-top-width": 0,
-                    "border-right-width": 0,
-                    "border-bottom-width": 0,
-                    "border-left-width": 0,
-                    "sync": true
-                }
-            }
-        }
-    },
-    "hover": {
-        "opacity": "",
-        "backgroundColor": "",
-        "boxShadow": "",
-        "borderSettings": {
-            "borderColor": "",
-            "borderType": "none",
-            "borderRadius": {
-                "label": "Border radius",
-                "unit": "px",
-                "max": "1000",
-                "desktop": {
-                    "border-top-left-radius": 0,
-                    "border-top-right-radius": 0,
-                    "border-bottom-right-radius": 0,
-                    "border-bottom-left-radius": 0,
-                    "sync": true
-                },
-                "tablet": {
-                    "border-top-left-radius": 0,
-                    "border-top-right-radius": 0,
-                    "border-bottom-right-radius": 0,
-                    "border-bottom-left-radius": 0,
-                    "sync": true
-                },
-                "mobile": {
-                    "border-top-left-radius": 0,
-                    "border-top-right-radius": 0,
-                    "border-bottom-right-radius": 0,
-                    "border-bottom-left-radius": 0,
-                    "sync": true
-                }
-            },
-            "borderWidth": {
-                "label": "Border width",
-                "unit": "px",
-                "max": "1000",
-                "desktop": {
-                    "border-top-width": 0,
-                    "border-right-width": 0,
-                    "border-bottom-width": 0,
-                    "border-left-width": 0,
-                    "sync": true
-                },
-                "tablet": {
-                    "border-top-width": 0,
-                    "border-right-width": 0,
-                    "border-bottom-width": 0,
-                    "border-left-width": 0,
-                    "sync": true
-                },
-                "mobile": {
-                    "border-top-width": 0,
-                    "border-right-width": 0,
-                    "border-bottom-width": 0,
-                    "border-left-width": 0,
-                    "sync": true
-                }
-            }
-        }
-    }
-}
-
-
-{
-    "label": "Image Settings",
     "size": "",
+    "imageSize": {
+        "options": {},
+        "widthUnit": "px",
+        "width": "",
+        "heightUnit": "px",
+        "height": ""
+    },
+    "alt": "",
     "alignment": "",
     "captionType": "none",
     "caption": "none",
@@ -202,7 +72,7 @@
         },
         "borderSettings": {
             "borderColor": "",
-            "borderType": "none",
+            "borderType": "",
             "borderRadius": {
                 "label": "Border radius",
                 "unit": "px",
@@ -263,7 +133,7 @@
         "boxShadow": "",
         "borderSettings": {
             "borderColor": "",
-            "borderType": "none",
+            "borderType": "",
             "borderRadius": {
                 "label": "Border radius",
                 "unit": "px",

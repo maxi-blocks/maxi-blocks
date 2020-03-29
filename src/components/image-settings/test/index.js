@@ -2,8 +2,11 @@
  * Wordpress dependencies
  */
 const { __ } = wp.i18n;
-const { Component } = wp.element;
-const { 
+const {
+    Component,
+    Fragment
+} = wp.element;
+const {
     withSelect,
     dispatch,
     select
@@ -14,11 +17,9 @@ const {
     RangeControl,
     TextControl,
     IconButton,
+    Spinner,
 } = wp.components;
-const {
-    PanelColorSettings,
-    MediaUpload,
-} = wp.blockEditor;
+const { MediaUpload } = wp.blockEditor;
 
 /**
  * External dependencies
@@ -28,13 +29,15 @@ import AlignmentControl from '../../alignment-control/index';
 import MiniSizeControl from '../../mini-size-control';
 import { PopoverControl } from '../../popover';
 import { BoxShadow } from '../../box-shadow';
-import Typography from '../../../components/typography/';
-import iconsSettings from '../../../components/icons/icons-settings.js';
+import Typography from '../../typography/';
+import iconsSettings from '../../icons/icons-settings.js';
+import ColorControl from '../../color-control/';
 import {
     capitalize,
     isEmpty,
+    isNil,
+    isNumber,
 } from 'lodash';
-
 
 /**
  * Styles
@@ -47,7 +50,7 @@ import '../editor.scss';
 export const imageSettingsAttributesTest = {
     imageSettingsTest: {
         type: 'string',
-        default: '{"label":"Image Settings","size":"","alignment":"","captionType":"none","caption":"none","captionTypography":{"label":"Caption","font":"Default","options":{},"desktop":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"},"tablet":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"},"mobile":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"}},"sizeSettings":{"maxWidthUnit":"px","maxWidth":"","widthUnit":"px","width":""},"normal":{"opacity":"","backgroundColor":"","boxShadow":{"label":"Box Shadow","shadowColor":"","shadowHorizontal":"0","shadowVertical":"0","shadowBlur":"0","shadowSpread":"0"},"borderSettings":{"borderColor":"","borderType":"none","borderRadius":{"label":"Border radius","unit":"px","max":"1000","desktop":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"tablet":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"mobile":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true}},"borderWidth":{"label":"Border width","unit":"px","max":"1000","desktop":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"tablet":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"mobile":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true}}}},"hover":{"opacity":"","backgroundColor":"","boxShadow":"","borderSettings":{"borderColor":"","borderType":"none","borderRadius":{"label":"Border radius","unit":"px","max":"1000","desktop":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"tablet":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"mobile":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true}},"borderWidth":{"label":"Border width","unit":"px","max":"1000","desktop":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"tablet":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"mobile":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true}}}}}'
+        default: '{"label":"Image Settings","size":"","src":"","imageSize":{"options":{},"widthUnit":"px","width":"","heightUnit":"px","height":""},"alt":"","alignment":"","captionType":"none","caption":"none","captionTypography":{"label":"Caption","font":"Default","options":{},"desktop":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"},"tablet":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"},"mobile":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"}},"sizeSettings":{"maxWidthUnit":"px","maxWidth":"","widthUnit":"px","width":""},"normal":{"opacity":"","backgroundColor":"","boxShadow":{"label":"Box Shadow","shadowColor":"","shadowHorizontal":"0","shadowVertical":"0","shadowBlur":"0","shadowSpread":"0"},"borderSettings":{"borderColor":"","borderType":"","borderRadius":{"label":"Border radius","unit":"px","max":"1000","desktop":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"tablet":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"mobile":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true}},"borderWidth":{"label":"Border width","unit":"px","max":"1000","desktop":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"tablet":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"mobile":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true}}}},"hover":{"opacity":"","backgroundColor":"","boxShadow":"","borderSettings":{"borderColor":"","borderType":"","borderRadius":{"label":"Border radius","unit":"px","max":"1000","desktop":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"tablet":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"mobile":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true}},"borderWidth":{"label":"Border width","unit":"px","max":"1000","desktop":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"tablet":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"mobile":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true}}}}}'
     }
 }
 
@@ -60,13 +63,14 @@ class ImageSettingsOptions extends Component {
         selector: 'normal',
     }
 
+    test = typeof this.props.imageSettings === 'object' ? this.props.imageSettings : JSON.parse(this.props.imageSettings);
+
     render() {
         const {
             imageData,
             imageSettings = this.props.attributes.imageSettings,
             onChange,
             target = '',
-            setAttributes = this.props.setAttributes,
         } = this.props;
 
         const {
@@ -87,10 +91,13 @@ class ImageSettingsOptions extends Component {
                     const val = size[1];
                     response.push({
                         label: `${name} - ${val.width}x${val.height}`,
-                        value: val.source_url
+                        value: size[0]
                     })
                 })
             }
+            response.push({
+                label: 'Custom', value: 'custom'
+            });
             return response;
         }
 
@@ -119,7 +126,7 @@ class ImageSettingsOptions extends Component {
 		 */
         const getTarget = (adition = '') => {
             let styleTarget = select('core/block-editor').getBlockAttributes(select('core/block-editor').getSelectedBlockClientId()).uniqueID;
-            styleTarget = `${styleTarget}${target.length > 0 ? `__$${target}${adition}` : ''} img`;
+            styleTarget = `${styleTarget}${target.length > 0 || adition.length > 0 ? `__$${target}${adition}` : ''}`;
             return styleTarget;
         }
 
@@ -129,15 +136,41 @@ class ImageSettingsOptions extends Component {
         const getNormalStylesObject = () => {
             const response = {
                 label: value.label,
-                general: {
-                    'text-align': value.alignment ? value.alignment : '',
-                    'max-width': value.sizeSettings.maxWidth ? value.sizeSettings.maxWidth + value.sizeSettings.maxWidthUnit : '',
-                    'width': value.sizeSettings.width ? value.sizeSettings.width + value.sizeSettings.widthUnit : '',
-                    'opacity': value.normal.opacity ? value.normal.opacity : '',
-                    'background-color': value.normal.backgroundColor ? value.normal.backgroundColor : ''
+                general: {}
+            }
+            if (!isNil(value.alignment)) {
+                switch (value.alignment) {
+                    case 'left':
+                        response.general['margin-right'] = 'auto';
+                        break;
+                    case 'center':
+                    case 'justify':
+                        response.general['margin-right'] = 'auto';
+                        response.general['margin-left'] = 'auto';
+                        break;
+                    case 'right':
+                        response.general['margin-left'] = 'auto';
+                        break;
                 }
             }
-
+            if (isNumber(value.sizeSettings.maxWidth)) {
+                response.general['max-width'] = value.sizeSettings.maxWidth + value.sizeSettings.maxWidthUnit;
+            }
+            if (isNumber(value.sizeSettings.width)) {
+                response.general['width'] = value.sizeSettings.width + value.sizeSettings.widthUnit;
+            }
+            if (isNumber(value.normal.opacity)) {
+                response.general['opacity'] = value.normal.opacity;
+            }
+            if (!isEmpty(value.normal.backgroundColor)) {
+                response.general['background-color'] = value.normal.backgroundColor;
+            }
+            if (!isEmpty(value.normal.borderSettings.borderColor)) {
+                response.general['border-color'] = value.normal.borderSettings.borderColor;
+            }
+            if (!isEmpty(value.normal.borderSettings.borderType)) {
+                response.general['border-style'] = value.normal.borderSettings.borderType;
+            }
             return response;
         }
 
@@ -147,10 +180,36 @@ class ImageSettingsOptions extends Component {
         const getHoverStylesObject = () => {
             const response = {
                 label: value.label,
-                general: {
-                    'opacity': value.hover.opacity ? value.hover.opacity : '',
-                    'background-color': value.hover.backgroundColor ? value.hover.backgroundColor : ''
-                }
+                general: {}
+            }
+            if (isNumber(value.hover.opacity)) {
+                response.general['opacity'] = value.hover.opacity;
+            }
+            if (!isEmpty(value.hover.backgroundColor)) {
+                response.general['background-color'] = value.hover.backgroundColor;
+            }
+            if (!isEmpty(value.hover.borderSettings.borderColor)) {
+                response.general['border-color'] = value.hover.borderSettings.borderColor;
+            }
+            if (!isEmpty(value.hover.borderSettings.borderType)) {
+                response.general['border-style'] = value.hover.borderSettings.borderType;
+            }
+            return response;
+        }
+
+        /**
+         * Creates a new object for being joined with the rest of the values on meta
+         */
+        const getImgStylesObject = () => {
+            const response = {
+                label: value.label,
+                general: {}
+            }
+            if (isNumber(value.imageSize.width)) {
+                response.general['width'] = value.imageSize.width + value.imageSize.widthUnit;
+            }
+            if (isNumber(value.imageSize.height)) {
+                response.general['height'] = value.imageSize.height + value.imageSize.heightUnit;
             }
 
             return response;
@@ -163,7 +222,7 @@ class ImageSettingsOptions extends Component {
 		* @param {obj} meta		Old and saved metadate
 		* @param {obj} value	New values to add
 		*/
-        const metaValue = (type, target) => {
+        const metaValue = (type) => {
             const meta = getMeta();
             let styleTarget = '';
             switch (type) {
@@ -173,6 +232,9 @@ class ImageSettingsOptions extends Component {
                 case 'hover':
                     styleTarget = getTarget(':hover');
                     break;
+                case 'img':
+                    styleTarget = getTarget(' img');
+                    break;
             }
             let obj = {};
             switch (type) {
@@ -181,6 +243,9 @@ class ImageSettingsOptions extends Component {
                     break;
                 case 'hover':
                     obj = getHoverStylesObject();
+                    break;
+                case 'img':
+                    obj = getImgStylesObject();
                     break;
             }
             const responsiveStyle = new ResponsiveStylesResolver(styleTarget, meta, obj);
@@ -192,31 +257,80 @@ class ImageSettingsOptions extends Component {
 		* Saves and send the data. Also refresh the styles on Editor
 		*/
         const saveAndSend = () => {
-            onChange(JSON.stringify(value))
+            save();
             saveMeta('normal');
             saveMeta('hover');
+            saveMeta('img');
             new BackEndResponsiveStyles(getMeta());
         }
 
-        const saveMeta = (type, target = '') => {
+        const save = () => {
+            onChange(JSON.stringify(value));
+        }
+
+        const saveMeta = (type) => {
             dispatch('core/editor').editPost({
                 meta: {
-                    _gutenberg_extra_responsive_styles: metaValue(type, target),
+                    _gutenberg_extra_responsive_styles: metaValue(type),
                 },
             });
         }
+
+        const getValues = () => {
+            value.alt = imageData.alt_text;
+            value.imageSize.options = imageData.media_details.sizes;
+            value.src = imageData.source_url;
+            save();
+        }
+
+        imageData && ( 
+            value.alt != imageData.alt_text || 
+            value.imageSize.options.full != imageData.source_url 
+        ) ?
+            getValues() :
+            null;
 
         return (
             <div className="gx-imagesettings-control">
                 <SelectControl
                     label={__('Image Size', 'gutenberg-extra')}
-                    value={value.size}
+                    value={value.imageSize.options[value.size] ? value.size : 'full'}
                     options={getSizeOptions()}
                     onChange={val => {
                         value.size = val;
                         saveAndSend()
                     }}
                 />
+                {value.size === 'custom' &&
+                    <Fragment>
+                        <MiniSizeControl
+                            label={__('Width', 'gutenberg-extra')}
+                            unit={value.imageSize.widthUnit}
+                            onChangeUnit={val => {
+                                value.imageSize.widthUnit = val;
+                                saveAndSend();
+                            }}
+                            value={value.imageSize.width}
+                            onChangeValue={val => {
+                                value.imageSize.width = val;
+                                saveAndSend();
+                            }}
+                        />
+                        <MiniSizeControl
+                            label={__('Height', 'gutenberg-extra')}
+                            unit={value.imageSize.heightUnit}
+                            onChangeUnit={val => {
+                                value.imageSize.heightUnit = val;
+                                saveAndSend();
+                            }}
+                            value={value.imageSize.height}
+                            onChangeValue={val => {
+                                value.imageSize.height = val;
+                                saveAndSend();
+                            }}
+                        />
+                    </Fragment>
+                }
                 <AlignmentControl
                     value={value.alignment}
                     onChange={val => {
@@ -231,7 +345,7 @@ class ImageSettingsOptions extends Component {
                     onChange={val => {
                         value.captionType = val;
                         val === 'attachment' ?
-                            value.caption = imageData :
+                            value.caption = imageData.caption.raw :
                             value.caption = '';
                         saveAndSend();
                     }}
@@ -249,9 +363,12 @@ class ImageSettingsOptions extends Component {
                 }
                 {value.captionType != 'none' &&
                     <Typography
-                        fontOptions={JSON.stringify(value.captionTypography)}
-                        onChange={value => { onChangeValue('imageCaptionTypography', value, onChangeImageCaptionTypography) }}
-                        target={target + ' figcaption'}   //!!!!!
+                        fontOptions={value.captionTypography}
+                        onChange={val => {
+                            value.captionTypography = val;
+                            saveAndSend();
+                        }}
+                        target={target + ' figcaption'}
                     />
                 }
                 <MiniSizeControl
@@ -291,7 +408,6 @@ class ImageSettingsOptions extends Component {
                         this.setState({ selector });
                     }}
                 />
-                {console.log(value[selector].opacity)}
                 <RangeControl
                     label={__('Opacity', 'gutenberg-extra')}
                     value={value[selector].opacity}
@@ -303,18 +419,13 @@ class ImageSettingsOptions extends Component {
                         saveAndSend()
                     }}
                 />
-                <PanelColorSettings
-                    title={__('Background Colour Settings', 'gutenberg-extra')}
-                    colorSettings={[
-                        {
-                            value: value[selector].backgroundColor,
-                            onChange: (val => {
-                                value[selector].backgroundColor = val;
-                                saveAndSend()
-                            }),
-                            label: __('Background Colour', 'gutenberg-extra'),
-                        },
-                    ]}
+                <ColorControl 
+                    label={__('Background Colour', 'gutenberg-extra')}
+                    color={value[selector].backgroundColor}
+                    onChange={val => {
+                        value[selector].backgroundColor = val;
+                        saveAndSend()
+                    }}
                 />
                 <PopoverControl
                     label={__('Box shadow', 'gutenberg-extra')}
@@ -337,6 +448,7 @@ class ImageSettingsOptions extends Component {
                 <BlockBorder
                     borderColor={value[selector].borderSettings.borderColor}
                     onChangeBorderColor={val => {
+                        console.log(value[selector].borderSettings.borderColor);
                         value[selector].borderSettings.borderColor = val;
                         saveAndSend();
                     }}
@@ -381,15 +493,54 @@ export const ImageSettings = withSelect((select, ownProps) => {
     }
 })(ImageSettingsOptions)
 
-const ImageUploadEditor = props => {
+/**
+ * Frontend block
+ */
+export const Image = props => {
+
     const {
-        imageData,
+        className = '',
+        mediaID,
+        imageSettings
+    } = props;
+
+    const value = typeof imageSettings === 'object' ? imageSettings : JSON.parse(imageSettings);
+    const image = value.imageSize.options[value.size] ? value.imageSize.options[value.size] : value.imageSize.options.full;
+    const width = value.size != 'custom' ? image.width : value.imageSize.width + value.imageSize.widthUnit;
+    const height = value.size != 'custom' ? image.height : value.imageSize.height + value.imageSize.heightUnit;
+
+    return (
+        <figure
+            className={className}
+        >
+            <img
+                className={"wp-image-" + mediaID}
+                src={image.source_url}
+                alt={value.alt}
+                width={width}
+                height={height}
+            />
+            {value.captionType !== 'none' &&
+                <figcaption>
+                    {value.caption}
+                </figcaption>
+            }
+        </figure>
+    )
+}
+
+/**
+ * Bakcend upload block
+ */
+export const ImageUpload = props => {
+    const {
+        className = '',
         mediaID,
         onSelect,
         imageSettings
     } = props;
 
-    const value = JSON.parse(imageSettings);
+    const value = typeof imageSettings === 'object' ? imageSettings : JSON.parse(imageSettings);
 
     return (
         <MediaUpload
@@ -398,35 +549,28 @@ const ImageUploadEditor = props => {
             value={mediaID}
             render={({ open }) => (
                 <IconButton
-                    className={mediaID + ' gx-upload-button'}
+                    className='gx-imageupload-button'
                     showTooltip="true"
                     onClick={open}>
-                    {!mediaID ?
-                        iconsSettings.placeholderImage :
-                        <figure>
-                            <img 
-                                src={value.size ? value.size : imageData.source_url}
-                                alt={__('Upload Image', 'gutenberg-extra')}
-                            />
-                            {value.captionType !== 'none' &&
-                                <figcaption>
-                                    {value.caption}
-                                </figcaption>
-                            }
-                        </figure>
+                    { mediaID && !isEmpty(value.imageSize.options) ?
+                        <Image 
+                            className={className}
+                            imageSettings={imageSettings}
+                            mediaID={mediaID}
+                        /> :
+                            mediaID ?
+                            (
+                                <Fragment>
+                                    <Spinner />
+                                    <p>
+                                        {__('Loading...', 'gutenberg-extra')}
+                                    </p>
+                                </Fragment>
+                            ) :
+                            iconsSettings.placeholderImage
                     }
                 </IconButton>
             )}
         />
     )
 }
-
-export const ImageUpload = withSelect((select, ownProps) => {
-    const {
-        mediaID = ownProps.mediaID
-    } = ownProps;
-    const imageData = select('core').getMedia(mediaID);
-    return {
-        imageData
-    }
-})(ImageUploadEditor)

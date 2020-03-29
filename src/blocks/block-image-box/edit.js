@@ -423,11 +423,12 @@ const edit = props => {
                 className="gx-image-box-link" 
                 style={linkStyles}
             >
-                <div className="gx-image-box-image">
+                {/* <div className="gx-image-box-image"> */}
                     <ImageUpload 
-                        onSelect={onSelectImage}
-                        mediaID={mediaID}
+                        className="gx-image-box-image"
                         imageSettings={imageSettingsTest}
+                        mediaID={mediaID}
+                        onSelect={onSelectImage}
                     />
                     {/* <MediaUpload
                         onSelect={onSelectImage}
@@ -442,7 +443,7 @@ const edit = props => {
                             </IconButton>
                         )}
                     /> */}
-                </div>
+                {/* </div> */}
                 <div class='gx-image-box-text'>
                     <RichText
                         tagName={titleLevel}

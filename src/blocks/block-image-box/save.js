@@ -11,6 +11,7 @@ const {
  */
 import classnames from 'classnames';
 import { Link } from '../../components/link-options/index';
+import { Image } from '../../components/image-settings/test';
 import {
     setLinkStyles,
     setTitleStyles,
@@ -25,7 +26,8 @@ const save = (props) => {
         className,
         attributes: {
             title,
-            mediaURL,
+            mediaID,
+            imageSettingsTest,
             description,
             additionalText,
             readMoreText,
@@ -65,14 +67,12 @@ const save = (props) => {
                 className="gx-image-box-link"
                 style={linkStyles}
             >
-                {
-                    mediaURL && (
-                        <img 
-                            className="gx-image-box-image" 
-                            src={mediaURL} 
-                            alt={title + __(' Image', 'gutenberg-extra')} 
-                        />
-                    )
+                { mediaID &&
+                    <Image 
+                        className="gx-image-box-image"
+                        imageSettings={imageSettingsTest}
+                        mediaID={mediaID}
+                    />
                 }
                 <div class='gx-image-box-text'>
                     <RichText.Content 

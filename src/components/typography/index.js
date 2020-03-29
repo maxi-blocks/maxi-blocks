@@ -47,7 +47,7 @@ export default class Typography extends Component {
             device
         } = this.state;
 
-        const value = JSON.parse(fontOptions);
+        const value = typeof fontOptions === 'object' ? fontOptions : JSON.parse(fontOptions);
 
         const Divider = () => (
             <hr style={{ marginBottom: '15px', }} />

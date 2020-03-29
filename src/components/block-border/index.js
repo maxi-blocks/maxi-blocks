@@ -58,11 +58,12 @@ export const BlockBorder = (props) => {
     } = props;
 
     const onChangeValue = (target, value, callback) => {
+        const newValue = typeof value != 'undefined' ? value : '';
         if (typeof callback != 'undefined' ) {
-            callback(value);
+            callback(newValue);
         }
         else {
-            setAttributes({[target]: value})
+            setAttributes({[target]: newValue})
         }
     }
 

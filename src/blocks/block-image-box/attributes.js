@@ -17,8 +17,6 @@ import {
     dimensionsControlAttributesMargin,
     dimensionsControlAttributesPadding,
 } from '../../components/dimensions-control/attributes';
-// Testing
-import { imageSettingsAttributesTest } from '../../components/image-settings/test';
 
 /**
  * Attributes
@@ -82,12 +80,6 @@ const attributes = {
     mediaID: {
         type: 'number',
     },
-    mediaURL: {
-        type: 'string',
-        source: 'attribute',
-        selector: '.gx-image-box-image',
-        attribute: 'src',
-    },
     title: {
         type: 'array',
         source: 'children',
@@ -119,7 +111,6 @@ const attributes = {
         type: 'string',
         default: '{}'
     },
-    ...imageSettingsAttributesTest,
 }
 
 export default attributes;

@@ -11,7 +11,7 @@ const {
  */
 import classnames from 'classnames';
 import { Link } from '../../components/link-options/index';
-import { Image } from '../../components/image-settings/test';
+import { Image } from '../../components/image-settings';
 import {
     setLinkStyles,
     setTitleStyles,
@@ -27,7 +27,7 @@ const save = (props) => {
         attributes: {
             title,
             mediaID,
-            imageSettingsTest,
+            imageSettings,
             description,
             additionalText,
             readMoreText,
@@ -70,7 +70,7 @@ const save = (props) => {
                 { mediaID &&
                     <Image 
                         className="gx-image-box-image"
-                        imageSettings={imageSettingsTest}
+                        imageSettings={imageSettings}
                         mediaID={mediaID}
                     />
                 }

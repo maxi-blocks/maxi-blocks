@@ -18,6 +18,7 @@ import { defaultTypographyAttributes } from '../../components/typography/attribu
 import { customCSSAtributes } from '../../components/custom-css/index';
 import { boxShadowOptionsAttributes } from '../../components/box-shadow';
 import { borderAttributes } from '../../components/block-border/index';
+import { typographyAttributes } from '../../components/typography/index';
 import {
     dimensionsControlAttributesMargin,
     dimensionsControlAttributesPadding,

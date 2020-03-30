@@ -35,8 +35,6 @@ const {
 
 export default class DimensionsControl extends Component {
 
-	values = JSON.parse(this.props.value);
-
 	state = {
 		device: 'desktop'
 	}
@@ -47,13 +45,15 @@ export default class DimensionsControl extends Component {
 			target = '',
 		} = this.props;
 
+		let value = typeof this.props.value === 'object' ? this.props.value : JSON.parse(this.props.value);
+
 		const {
 			device,
 		} = this.state;
 
 		const classes = classnames(
 			'components-gx-dimensions-control',
-			`gx-${this.values.label}-dimensions-control`
+			`gx-${value.label}-dimensions-control`
 		);
 
 		const unitSizes = [
@@ -104,38 +104,29 @@ export default class DimensionsControl extends Component {
 			return Object.keys(obj)[target];
 		}
 
-		const onChangeUnit = (value) => {
-			this.values.unit = value;
+		const onChangeUnit = (unit) => {
+			value.unit = unit;
 			saveAndSend();
 		}
 
 		const onChangeValue = (e) => {
-			if (e.target.getAttribute('action') == 'reset') {
-				for (let [key, value] of Object.entries(this.values[device])) {
-					isNumber(value) ?
-						this.values[device][key] = 0 :
+			const newValue = Number(e.target.value);
+			const target = Number(e.target.getAttribute('action'));
+			if (value[device].sync === true || isNaN(newValue)) {
+				for (let [key, val] of Object.entries(value[device])) {
+					isNumber(val) ?
+						value[device][key] = !isNaN(newValue) ? newValue : 0 :
 						null
 				}
 			}
 			else {
-				const newValue = Number(e.target.value);
-				const target = Number(e.target.getAttribute('action'));
-				if (this.values[device].sync === true) {
-					for (let [key, value] of Object.entries(this.values[device])) {
-						isNumber(value) ?
-							this.values[device][key] = newValue :
-							null
-					}
-				}
-				else {
-					this.values[device][getKey(this.values[device], target)] = newValue;
-				}
+				value[device][getKey(value[device], target)] = newValue;
 			}
 			saveAndSend();
 		}
 
-		const onChangeSync = (e) => {
-			this.values[device].sync = !this.values[device].sync;
+		const onChangeSync = () => {
+			value[device].sync = !value[device].sync;
 			saveAndSend();
 		}
 
@@ -161,12 +152,12 @@ export default class DimensionsControl extends Component {
 		*
 		* @param {string} target	Block attribute: uniqueID
 		* @param {obj} meta		Old and saved metadate
-		* @param {obj} this.values	New values to add
+		* @param {obj} value	New values to add
 		*/
 		const metaValue = () => {
 			const meta = getMeta();
 			const styleTarget = getTarget();
-			const responsiveStyle = new ResponsiveStylesResolver(styleTarget, meta, this.values);
+			const responsiveStyle = new ResponsiveStylesResolver(styleTarget, meta, value);
 			const response = JSON.stringify(responsiveStyle.getNewValue);
 			return response;
 		}
@@ -175,7 +166,7 @@ export default class DimensionsControl extends Component {
 		* Saves and send the data. Also refresh the styles on Editor
 		*/
 		const saveAndSend = () => {
-			onChange(JSON.stringify(this.values));
+			onChange(JSON.stringify(value));
 			dispatch('core/editor').editPost({
 				meta: {
 					_gutenberg_extra_responsive_styles: metaValue(),
@@ -184,14 +175,12 @@ export default class DimensionsControl extends Component {
 			new BackEndResponsiveStyles(getMeta());
 		}
 
-		saveAndSend();
-
 		return (
 			<Fragment>
 				<div className={classes}>
 					<Fragment>
 						<div className="components-gx-dimensions-control__header">
-							{this.values.label && <p className={'components-gx-dimensions-control__label'}>{this.values.label}</p>}
+							{value.label && <p className={'components-gx-dimensions-control__label'}>{value.label}</p>}
 							<Button
 								className="components-color-palette__clear"
 								onClick={onChangeValue}
@@ -199,7 +188,7 @@ export default class DimensionsControl extends Component {
 								aria-label={sprintf(
 									/* translators: %s: a texual label  */
 									__('Reset %s settings', 'gutenberg-extra'),
-									this.values.label.toLowerCase()
+									value.label.toLowerCase()
 								)}
 								action="reset"
 							>
@@ -217,8 +206,8 @@ export default class DimensionsControl extends Component {
 												key={unitValue}
 												className={'components-gx-dimensions-control__units--' + name}
 												isSmall
-												isPrimary={this.values.unit === unitValue}
-												aria-pressed={this.values.unit === unitValue}
+												isPrimary={value.unit === unitValue}
+												aria-pressed={value.unit === unitValue}
 												aria-label={sprintf(
 													/* translators: %s: values associated with CSS syntax, 'Pixel', 'Em', 'Percentage' */
 													__('%s Units', 'gutenberg-extra'),
@@ -267,11 +256,11 @@ export default class DimensionsControl extends Component {
 													aria-label={sprintf(
 														/* translators: %s: values associated with CSS syntax, 'Margin', 'Padding' */
 														__('%s Top', 'gutenberg-extra'),
-														this.values.label
+														value.label
 													)}
-													value={this.values[device][getKey(this.values[device], 0)]}
-													min={0}
-													max={this.values.max ? this.values.max : 0}
+													value={value[device][getKey(value[device], 0)]}
+													min={value.min ? value.min : 0}
+													max={value.max ? value.max : 'none'}
 													data-device-type={device}
 													action="0"
 												/>
@@ -282,11 +271,11 @@ export default class DimensionsControl extends Component {
 													aria-label={sprintf(
 														/* translators: %s: values associated with CSS syntax, 'Margin', 'Padding' */
 														__('%s Right', 'gutenberg-extra'),
-														this.values.label
+														value.label
 													)}
-													value={this.values[device][getKey(this.values[device], 1)]}
-													min={0}
-													max={this.values.max ? this.values.max : 0}
+													value={value[device][getKey(value[device], 1)]}
+													min={value.min ? value.min : 0}
+													max={value.max ? value.max : 'none'}
 													data-device-type={device}
 													action="1"
 												/>
@@ -297,11 +286,11 @@ export default class DimensionsControl extends Component {
 													aria-label={sprintf(
 														/* translators: %s: values associated with CSS syntax, 'Margin', 'Padding' */
 														__('%s Bottom', 'gutenberg-extra'),
-														this.values.label
+														value.label
 													)}
-													value={this.values[device][getKey(this.values[device], 2)]}
-													min={0}
-													max={this.values.max ? this.values.max : 0}
+													value={value[device][getKey(value[device], 2)]}
+													min={value.min ? value.min : 0}
+													max={value.max ? value.max : 'none'}
 													data-device-type={device}
 													action="2"
 												/>
@@ -312,25 +301,25 @@ export default class DimensionsControl extends Component {
 													aria-label={sprintf(
 														/* translators: %s: values associated with CSS syntax, 'Margin', 'Padding' */
 														__('%s Left', 'gutenberg-extra'),
-														this.values.label
+														value.label
 													)}
-													value={this.values[device][getKey(this.values[device], 3)]}
-													min={0}
-													max={this.values.max ? this.values.max : 0}
+													value={value[device][getKey(value[device], 3)]}
+													min={value.min ? value.min : 0}
+													max={value.max ? value.max : 'none'}
 													data-device-type={device}
 													action="3"
 												/>
-												<Tooltip text={!!this.values[device].sync ? __('Unsync', 'gutenberg-extra') : __('Sync', 'gutenberg-extra')} >
+												<Tooltip text={!!value[device].sync ? __('Unsync', 'gutenberg-extra') : __('Sync', 'gutenberg-extra')} >
 													<Button
 														className="components-gx-dimensions-control_sync"
 														aria-label={__('Sync Units', 'gutenberg-extra')}
-														isPrimary={this.values[device].sync ? this.values[device].sync : false}
-														aria-pressed={this.values[device].sync ? this.values[device].sync : false}
+														isPrimary={value[device].sync ? value[device].sync : false}
+														aria-pressed={value[device].sync ? value[device].sync : false}
 														onClick={onChangeSync}
 														data-device-type={device}
 														isSmall
 													>
-														{!!this.values[device].sync ? icons.sync : icons.sync}
+														{!!value[device].sync ? icons.sync : icons.sync}
 													</Button>
 												</Tooltip>
 											</div>

@@ -151,7 +151,7 @@ export default class Typography extends Component {
                         className={'gx-fontdropdown'}
                         renderToggle={({ isOpen, onToggle }) => (
                             <Button
-                                isSecundary
+                                isSecondary
                                 onClick={onToggle}
                                 aria-expanded={isOpen}
                             >

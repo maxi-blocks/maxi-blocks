@@ -16,6 +16,12 @@ import { titleAlignAttributes } from '../../components/title-align/index';
 import { descriptionAlignAttributes } from '../../components/description-align/index';
 import { typographyAttributes } from '../../components/typography/index';
 import { customCSSAtributes } from '../../components/custom-css/index';
+import { boxShadowOptionsAttributes } from '../../components/box-shadow';
+import { borderAttributes } from '../../components/block-border/index';
+import {
+    dimensionsControlAttributesMargin,
+    dimensionsControlAttributesPadding,
+} from '../../components/dimensions-control/attributes';
 
 const attributes = {
   title: {
@@ -52,6 +58,29 @@ const attributes = {
   classes:{
     type: 'string'
   },
+  backgroundColor: {
+       type: 'string',
+       default: "",
+   },
+   backgroundGradient: {
+       type: 'string',
+       default: "",
+   },
+   backgroundGradient: {
+       type: 'array',
+       default: [],
+   },
+   defaultPalette: {
+       type: 'array',
+       default: [
+           { offset: '0.00', color: 'rgba(238, 55, 11, 1)' },
+           { offset: '1.00', color: 'rgba(126, 32, 34, 1)' }
+       ]
+   },
+   boxShadow: {
+       type: 'string',
+       default: '{"label":"Box Shadow","shadowColor": "", "shadowHorizontal": "0", "shadowVertical": "0", "shadowBlur": "0", "shadowSpread": "0"}'
+   },
   ...blockStyleAttributes,
   ...linkOptionsAttributes,
   ...dividerAttributes,
@@ -68,7 +97,11 @@ const attributes = {
   ...titleAlignAttributes,
   ...descriptionAlignAttributes,
   ...typographyAttributes,
-  ...customCSSAtributes
+  ...customCSSAtributes,
+  ...boxShadowOptionsAttributes,
+  ...dimensionsControlAttributesMargin,
+  ...dimensionsControlAttributesPadding,
+  ...borderAttributes
 };
 
 export default attributes;

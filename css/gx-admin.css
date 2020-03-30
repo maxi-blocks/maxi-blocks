@@ -126,6 +126,7 @@ body .gx-hidden {
 /* Gutenberg Panel */
 .edit-post-layout.is-sidebar-opened .edit-post-plugin-sidebar__sidebar-layout.gx-sidebar,
 .edit-post-layout.is-sidebar-opened .edit-post-sidebar.gx-sidebar {
+  overflow-x: hidden;
   width: 385px;
   background: #f2f2f2;
 }
@@ -948,6 +949,10 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
 .gx-controls .gx-accordion .gx-button-tab .components-base-control__label:before {
   content: url(../img/gx-button-tab.svg);
   padding-top: 2px;
+}
+
+.gx-box-settings-item{
+  background: none;
 }
 
 .gx-controls .gx-accordion .gx-box-settings-tab .components-base-control__label:before {

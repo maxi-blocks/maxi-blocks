@@ -197,7 +197,7 @@ export default class DimensionsControl extends Component {
 							<div className="components-gx-dimensions-control__actions">
 								<ButtonGroup className="components-gx-dimensions-control__units" aria-label={__('Select Units', 'gutenberg-extra')}>
 									{map(unitSizes, ({ unitValue, name }) => (
-										<Tooltip text={sprintf(
+										<Tooltip  key={name} text={sprintf(
 											/* translators: %s: values associated with CSS syntax, 'Pixel', 'Em', 'Percentage' */
 											__('%s Units', 'gutenberg-extra'),
 											name
@@ -309,7 +309,7 @@ export default class DimensionsControl extends Component {
 													data-device-type={device}
 													action="3"
 												/>
-												<Tooltip text={!!value[device].sync ? __('Unsync', 'gutenberg-extra') : __('Sync', 'gutenberg-extra')} >
+												<Tooltip text={!!value[device].sync ? __('Unsync', 'gutenberg-extra') : __('Sync', 'gutenberg-extra')} key={device}>
 													<Button
 														className="components-gx-dimensions-control_sync"
 														aria-label={__('Sync Units', 'gutenberg-extra')}

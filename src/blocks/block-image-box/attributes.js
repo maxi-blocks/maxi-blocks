@@ -19,6 +19,7 @@ import {
 } from '../../components/dimensions-control/attributes';
 // Testing
 import { buttonStyleAttributesTest } from '../../components/button-styles/test/';
+import { colorControlAttributesTest } from '../../components/color-control/';
 
 /**
  * Attributes
@@ -113,7 +114,8 @@ const attributes = {
         type: 'string',
         default: '{}'
     },
-    ...buttonStyleAttributesTest
+    ...buttonStyleAttributesTest,
+    ...colorControlAttributesTest
 }
 
 export default attributes;

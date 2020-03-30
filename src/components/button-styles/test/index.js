@@ -6,7 +6,7 @@ const { Fragment } = wp.element;
 const { Component } = wp.element;
 const {
     RadioControl,
-    RangeControl
+    Button
 } = wp.components;
 const {
     dispatch,
@@ -209,20 +209,24 @@ export class ButtonStyles extends Component {
                 />
                 <PopoverControl
                     label={__('Box shadow', 'gutenberg-extra')}
-                    content={
-                        <BoxShadow
-                            boxShadowOptions={value[selector].boxShadow}
-                            onChange={val => {
-                                value[selector].boxShadow = JSON.parse(val);
-                                saveAndSend()
-                            }}
-                            target={
-                                selector != 'hover' ?
-                                    `${target}` :
-                                    `${target}:hover`
-                            }
-                        />
-                    }
+                    popovers={[
+                        {
+                            content:(
+                                <BoxShadow
+                                    boxShadowOptions={value[selector].boxShadow}
+                                    onChange={val => {
+                                        value[selector].boxShadow = JSON.parse(val);
+                                        saveAndSend()
+                                    }}
+                                    target={
+                                        selector != 'hover' ?
+                                            `${target}` :
+                                            `${target}:hover`
+                                    }
+                                />
+                            )
+                        }
+                    ]}
                 />
                 <hr style={{ borderTop: '1px solid #ddd' }} />
                 <BlockBorder

@@ -57,7 +57,11 @@ import {
 } from '../../components/image-settings/';
 // import ExternalLink from '../../components/external-link';
 // import LinkedText from '../../components/external-link/test';
-import { ButtonStyles } from '../../components/button-styles/test';
+import { 
+    ButtonStyles,
+    ButtonEditor
+} from '../../components/button-styles/test';
+import ColorControl from '../../components/color-control/';
 
 /**
  * Content
@@ -92,7 +96,8 @@ const edit = props => {
             // Testing
             readMoreTextTest,
             readMoreLinkTest,
-            buttonStylesTest
+            buttonStylesTest,
+            gradientTest
         },
         setAttributes,
     } = props;
@@ -140,6 +145,15 @@ const edit = props => {
                 initialOpen={true}
                 title={__('Image Settings', 'gutenberg-extra')}
             >
+                <ColorControl 
+                    label={__('Background Colour', 'gutenberg-extra')}
+                    showColor
+                    color={''}
+                    onColorChange={val => 1+1}
+                    showGradient
+                    gradient={gradientTest}
+                    onGradientChange={value => setAttributes({gradientTest: value})}
+                />
                 <BlockStyles
                     {...props}
                 />
@@ -334,12 +348,16 @@ const edit = props => {
                         </BaseControl>
                         <PopoverControl
                             label={__('Box shadow', 'gutenberg-extra')}
-                            content={
-                                <BoxShadow
-                                    boxShadowOptions={boxShadow}
-                                    onChange={value => setAttributes({ boxShadow: value })}
-                                />
-                            }
+                            popovers={[
+                                {
+                                    content: (
+                                        <BoxShadow
+                                            boxShadowOptions={boxShadow}
+                                            onChange={value => setAttributes({ boxShadow: value })}
+                                        />
+                                    )
+                                }
+                            ]}
                         />
                         <PanelBody
                             className="gx-panel gx-border-setting gx-style-tab-setting"
@@ -470,6 +488,11 @@ const edit = props => {
                         onChange={value => setAttributes({ readMoreLink: value })}
                         className="gx-image-box-read-more-link"
                     />
+                    {/* <ButtonEditor 
+                        buttonSettings={buttonStylesTest}
+                        onChange={value => setAttributes({buttonStylesTest: value})}
+                        className="gx-image-box-read-more-text"
+                    /> */}
                     {/* <LinkedText 
                         label="If there's a link, I'll dissapear..."
                         externalLink={readMoreLinkTest}

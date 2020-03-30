@@ -22,7 +22,7 @@ import classnames from 'classnames';
 import React from 'react';
 import DimensionsControl from '../../components/dimensions-control/index';
 import { BlockStyles } from '../../components/block-styles/index';
-import { ButtonStyles } from '../../components/button-styles/index';
+//import { ButtonStyles } from '../../components/button-styles/index';
 import { ImagePosition } from '../../components/image-position/index';
 import { FontLevel } from '../../components/font-level/index';
 import { LinkOptions } from '../../components/link-options/index';
@@ -48,8 +48,6 @@ import {
     AccordionItemButton,
     AccordionItemPanel,
 } from 'react-accessible-accordion';
-// import ExternalLink from '../../components/external-link';
-// import LinkedText from '../../components/external-link/test';
 import { PopoverControl } from '../../components/popover';
 import { BoxShadow } from '../../components/box-shadow';
 // Testing
@@ -57,6 +55,9 @@ import {
     ImageSettings,
     ImageUpload
 } from '../../components/image-settings/';
+// import ExternalLink from '../../components/external-link';
+// import LinkedText from '../../components/external-link/test';
+import { ButtonStyles } from '../../components/button-styles/test';
 
 /**
  * Content
@@ -91,6 +92,7 @@ const edit = props => {
             // Testing
             readMoreTextTest,
             readMoreLinkTest,
+            buttonStylesTest
         },
         setAttributes,
     } = props;
@@ -240,7 +242,9 @@ const edit = props => {
                     <AccordionItemPanel>
                         <PanelBody>
                             <ButtonStyles
-                                {...props}
+                                buttonSettings={buttonStylesTest}
+                                onChange={value => setAttributes({buttonStylesTest: value})}
+                                target="gx-image-box-read-more-text"
                             />
                         </PanelBody>
                     </AccordionItemPanel>

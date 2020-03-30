@@ -9,7 +9,7 @@ import { hoverAnimationAttributes } from '../../components/hover-animation/index
 import { customCSSAtributes } from '../../components/custom-css/index';
 import { linkOptionsAttributes } from '../../components/link-options/index';
 import { dividerAttributes} from '../../components/divider/index';
-import { buttonStyleAttributes } from '../../components/button-styles/index';
+// import { buttonStyleAttributes } from '../../components/button-styles/index';
 import {defaultTypographyAttributes} from '../../components/typography/attributes';
 import {imageSettingsAttributes} from '../../components/image-settings';
 import {boxShadowOptionsAttributes} from '../../components/box-shadow';
@@ -17,6 +17,8 @@ import {
     dimensionsControlAttributesMargin,
     dimensionsControlAttributesPadding,
 } from '../../components/dimensions-control/attributes';
+// Testing
+import { buttonStyleAttributesTest } from '../../components/button-styles/test/';
 
 /**
  * Attributes
@@ -45,7 +47,7 @@ const attributes = {
         default: '{"label":"Description","font":"Default","options":{},"desktop":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"},"tablet":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"},"mobile":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"}}',
     },
     ...imageSettingsAttributes,
-    ...buttonStyleAttributes,
+    //...buttonStyleAttributes,
     backgroundColor: {
         type: 'string',
         default: "",
@@ -111,6 +113,7 @@ const attributes = {
         type: 'string',
         default: '{}'
     },
+    ...buttonStyleAttributesTest
 }
 
 export default attributes;

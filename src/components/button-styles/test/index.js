@@ -6,17 +6,28 @@ const { Fragment } = wp.element;
 const { Component } = wp.element;
 const {
     RadioControl,
-    SelectControl
+    RangeControl
 } = wp.components;
+const {
+    dispatch,
+    select
+} = wp.data;
 
 /**
  * External dependencies
  */
+import AlignmentControl from '../../alignment-control/';
 import { BlockBorder } from '../../block-border/';
 import DimensionsControl from '../../dimensions-control/index';
 import ColorControl from '../../color-control/';
 import { PopoverControl } from '../../popover/';
 import { BoxShadow } from '../../box-shadow/index';
+import { LinkedText } from '../../external-link/test/';
+import {
+    isEmpty,
+    isNil,
+    isNumber,
+} from 'lodash';
 
 /**
  * Styles
@@ -29,7 +40,7 @@ import './editor.scss';
 export const buttonStyleAttributesTest = {
     buttonStylesTest: {
         type: 'string',
-        default: '{"label":"Button Styles","alignment":"","borderSettings":{"borderColor":"","borderType":"","borderRadius":{"label":"Border radius","unit":"px","max":"1000","desktop":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"tablet":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"mobile":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true}},"borderWidth":{"label":"Border width","unit":"px","max":"1000","desktop":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"tablet":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"mobile":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true}}},"normal":{"color":"","opacity":"","backgroundColor":"","padding":"","margin":"","boxShadow":{"label":"Box Shadow","shadowColor":"","shadowHorizontal":"0","shadowVertical":"0","shadowBlur":"0","shadowSpread":"0"}},"hover":{"color":"","opacity":"","backgroundColor":"","padding":"","margin":"","boxShadow":{"label":"Box Shadow","shadowColor":"","shadowHorizontal":"0","shadowVertical":"0","shadowBlur":"0","shadowSpread":"0"}}}'
+        default: '{"label":"Button Styles","linkOptions":{},"alignment":"","borderSettings":{"borderColor":"","borderType":"","borderRadius":{"label":"Border radius","unit":"px","max":"1000","desktop":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"tablet":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"mobile":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true}},"borderWidth":{"label":"Border width","unit":"px","max":"1000","desktop":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"tablet":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"mobile":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true}}},"normal":{"color":"","opacity":"","backgroundColor":"","padding":"","margin":"","boxShadow":{"label":"Box Shadow","shadowColor":"","shadowHorizontal":"0","shadowVertical":"0","shadowBlur":"0","shadowSpread":"0"}},"hover":{"color":"","opacity":"","backgroundColor":"","padding":"","margin":"","boxShadow":{"label":"Box Shadow","shadowColor":"","shadowHorizontal":"0","shadowVertical":"0","shadowBlur":"0","shadowSpread":"0"}}}'
     }
 }
 
@@ -44,6 +55,7 @@ export class ButtonStyles extends Component {
 
     render() {
         const {
+            className = 'gx-buttonstyles-control',
             buttonSettings,
             onChange,
             target = ''
@@ -55,9 +67,9 @@ export class ButtonStyles extends Component {
 
         const value = typeof buttonSettings === 'object' ? buttonSettings : JSON.parse(buttonSettings);
 
- /**
-		* Retrieves the old meta data
-		*/
+        /**
+               * Retrieves the old meta data
+               */
         const getMeta = () => {
             let meta = select('core/editor').getEditedPostAttribute('meta')._gutenberg_extra_responsive_styles;
             return meta ? JSON.parse(meta) : {};
@@ -80,38 +92,17 @@ export class ButtonStyles extends Component {
                 label: value.label,
                 general: {}
             }
-            if (!isNil(value.alignment)) {
-                switch (value.alignment) {
-                    case 'left':
-                        response.general['margin-right'] = 'auto';
-                        break;
-                    case 'center':
-                    case 'justify':
-                        response.general['margin-right'] = 'auto';
-                        response.general['margin-left'] = 'auto';
-                        break;
-                    case 'right':
-                        response.general['margin-left'] = 'auto';
-                        break;
-                }
-            }
-            if (isNumber(value.sizeSettings.maxWidth)) {
-                response.general['max-width'] = value.sizeSettings.maxWidth + value.sizeSettings.maxWidthUnit;
-            }
-            if (isNumber(value.sizeSettings.width)) {
-                response.general['width'] = value.sizeSettings.width + value.sizeSettings.widthUnit;
-            }
-            if (isNumber(value.normal.opacity)) {
-                response.general['opacity'] = value.normal.opacity;
+            if (!isEmpty(value.normal.color)) {
+                response.general['color'] = value.normal.color;
             }
             if (!isEmpty(value.normal.backgroundColor)) {
                 response.general['background-color'] = value.normal.backgroundColor;
             }
-            if (!isEmpty(value.normal.borderSettings.borderColor)) {
-                response.general['border-color'] = value.normal.borderSettings.borderColor;
+            if (!isEmpty(value.borderSettings.borderColor)) {
+                response.general['border-color'] = value.borderSettings.borderColor;
             }
-            if (!isEmpty(value.normal.borderSettings.borderType)) {
-                response.general['border-style'] = value.normal.borderSettings.borderType;
+            if (!isEmpty(value.borderSettings.borderType)) {
+                response.general['border-style'] = value.borderSettings.borderType;
             }
             return response;
         }
@@ -124,17 +115,11 @@ export class ButtonStyles extends Component {
                 label: value.label,
                 general: {}
             }
-            if (isNumber(value.hover.opacity)) {
-                response.general['opacity'] = value.hover.opacity;
+            if (!isEmpty(value.hover.color)) {
+                response.general['color'] = value.hover.color;
             }
             if (!isEmpty(value.hover.backgroundColor)) {
                 response.general['background-color'] = value.hover.backgroundColor;
-            }
-            if (!isEmpty(value.hover.borderSettings.borderColor)) {
-                response.general['border-color'] = value.hover.borderSettings.borderColor;
-            }
-            if (!isEmpty(value.hover.borderSettings.borderType)) {
-                response.general['border-style'] = value.hover.borderSettings.borderType;
             }
             return response;
         }
@@ -176,9 +161,9 @@ export class ButtonStyles extends Component {
 		*/
         const saveAndSend = () => {
             save();
-            // saveMeta('normal');
-            // saveMeta('hover');
-            // new BackEndResponsiveStyles(getMeta());
+            saveMeta('normal');
+            saveMeta('hover');
+            new BackEndResponsiveStyles(getMeta());
         }
 
         const save = () => {
@@ -194,7 +179,7 @@ export class ButtonStyles extends Component {
         }
 
         return (
-            <div className="gx-buttonstyles-control">
+            <div className={className}>
                 <RadioControl
                     className="gx-buttonstyles-selector-control"
                     selected={selector}
@@ -233,8 +218,8 @@ export class ButtonStyles extends Component {
                             }}
                             target={
                                 selector != 'hover' ?
-                                    `${target} img` :
-                                    `${target} img:hover`
+                                    `${target}` :
+                                    `${target}:hover`
                             }
                         />
                     }
@@ -268,3 +253,36 @@ export class ButtonStyles extends Component {
         )
     }
 }
+
+/**
+ * Backend editor
+ */
+
+export const ButtonEditor = props => {
+    const {
+        className = 'gx-buttonstyles-control',
+        buttonSettings,
+        onChange,
+    } = props;
+
+    const value = typeof buttonSettings === 'object' ? buttonSettings : JSON.parse(buttonSettings);
+
+    return (
+        <Button
+            className={className}
+        >
+            <LinkedText 
+                label={__('Read more text...', 'gutenberg-extra')}
+                value={value.linkOptions}
+                onChange={val => {
+                    value.linkOptions = val;
+                    onChange(JSON.stringify(value));
+                }}
+            />
+        </Button>
+    )
+}
+
+/**
+ * FrontEnd
+ */

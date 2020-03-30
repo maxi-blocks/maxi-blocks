@@ -1,57 +1,59 @@
 /**
  * WordPress dependencies
  */
+const { Component } = wp.element;
 const {
     BaseControl,
     Button,
-    Dropdown,
+    Modal
 } = wp.components;
 
-import './editor.scss';
+class IconLibrary extends Component {
 
-export const IconLibrary = props => {
-    const {
-        label,
-        className = '',
-        buttonText = '',
-        classNamePopover = 'gx-library-popover',
-        content
-    } = props;
+    state = {
+        isOpen: false
+    }
 
-    return (
-        <div className={className}>
-            <BaseControl
-                className={'gx-library-button'}
-            >
-                <BaseControl.VisualLabel>
-                    {label}
-                </BaseControl.VisualLabel>
-                <Dropdown
-                    className={'gx-library-popover-dropdown'}
-                    renderToggle={({ isOpen, onToggle }) => (
-                        <Button
-                            isSecondary
-                            onClick={onToggle}
-                            aria-expanded={isOpen}
-                        >
-                            {buttonText}
-                        </Button>
-                    )}
-                    popoverProps={
-                        {
-                            className: classNamePopover,
-                            noArrow: true,
-                            position: 'bottom left'
-                        }
-                    }
-                    renderContent={
-                        () => (
-                            content
-                        )
-                    }
+    render() {
+        const {
+            className = ''
+        } = this.props;
+
+        const {
+            isOpen
+        } = this.state;
+
+        const onClick = () => {
+            this.setState({ isOpen: !this.state.isOpen })
+        }
+
+        return (
+            <div className={className}>
+                <BaseControl
+                    className={'gx-settings-button'}
                 >
-                </Dropdown>
-            </BaseControl>
-        </div>
-    )
+                    <BaseControl.VisualLabel>
+                        Modal Test
+                    </BaseControl.VisualLabel>
+                    <Button
+                        isSecondary
+                        onClick={onClick}
+                    >
+                        Open Modal
+                    </Button>
+                    {isOpen &&
+                        <Modal
+                            title="This is my modal"
+                            onRequestClose={onClick}>
+                            <Button isSecondary onClick={onClick}>
+                                My custom close button
+                            </Button>
+                        </Modal>
+                    }
+                </BaseControl>
+            </div>
+        )
+    }
 }
+
+export default IconLibrary; 

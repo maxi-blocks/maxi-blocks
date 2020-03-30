@@ -12,7 +12,7 @@ import { uniqueId } from 'lodash';
 /**
  * General
  */
-const allowedBlocks = [ 'gutenberg-extra/block-image-box', 'gutenberg-extra/block-title-extra' ];
+const allowedBlocks = [ 'gutenberg-extra/block-image-box', 'gutenberg-extra/block-title-extra', 'gutenberg-extra/block-icon-extra' ];
 
 /**
  * Filters registered block settings, extending attributes with settings

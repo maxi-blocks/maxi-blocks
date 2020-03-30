@@ -28,6 +28,7 @@ export const DividerColor = ( props ) => {
   return (
     <PanelColorSettings
     title={__('Divider Colour', 'gutenberg-extra' )}
+    className={'divider-color'}
     colorSettings={[
       {
         value: dividerColor,

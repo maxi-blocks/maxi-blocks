@@ -53,7 +53,7 @@ import {
 import { PopoverControl } from '../../components/popover';
 import { BoxShadow } from '../../components/box-shadow';
 // Testing
-import { 
+import {
     ImageSettings,
     ImageUpload
 } from '../../components/image-settings/';
@@ -151,8 +151,8 @@ const edit = props => {
                 />
             </PanelBody>
             <PanelBody
-                className="gx-panel gx-link-setting gx-content-tab-setting" 
-                initialOpen={true} 
+                className="gx-panel gx-link-setting gx-content-tab-setting"
+                initialOpen={true}
                 title={__('Link Settings', 'gutenberg-extra')}
             >
                 <LinkOptions
@@ -169,19 +169,19 @@ const edit = props => {
                 allowZeroExpanded={true}
             >
                 <AccordionItem>
-                    <AccordionItemHeading 
+                    <AccordionItemHeading
                         className={'gx-accordion-tab gx-typography-tab'}
                     >
-                        <AccordionItemButton 
+                        <AccordionItemButton
                             className='components-base-control__label'
                         >
                             {__('Typography & Colours', 'gutenberg-extra')}
                         </AccordionItemButton>
                     </AccordionItemHeading>
                     <AccordionItemPanel>
-                        <PanelBody 
-                            className="gx-panel gx-color-setting gx-style-tab-setting" 
-                            initialOpen={true} 
+                        <PanelBody
+                            className="gx-panel gx-color-setting gx-style-tab-setting"
+                            initialOpen={true}
                             title={__('Colour settings', 'gutenberg-extra')}
                         >
                             <Typography
@@ -203,35 +203,35 @@ const edit = props => {
                     </AccordionItemPanel>
                 </AccordionItem>
                 <AccordionItem>
-                    <AccordionItemHeading 
+                    <AccordionItemHeading
                         className={'gx-accordion-tab gx-imagesettings-tab'}
                     >
-                        <AccordionItemButton 
+                        <AccordionItemButton
                             className='components-base-control__label'
                         >
                             {__('Image', 'gutenberg-extra')}
                         </AccordionItemButton>
                     </AccordionItemHeading>
                     <AccordionItemPanel>
-                        <PanelBody 
-                            className="gx-panel gx-color-setting gx-style-tab-setting" 
-                            initialOpen={true} 
+                        <PanelBody
+                            className="gx-panel gx-color-setting gx-style-tab-setting"
+                            initialOpen={true}
                             title={__('Immage settings', 'gutenberg-extra')}
                         >
                             <ImageSettings
                                 target="gx-image-box-image"
                                 imageSettings={imageSettings}
-                                onChange={value => setAttributes({imageSettings: value})}
+                                onChange={value => setAttributes({ imageSettings: value })}
                                 mediaID={mediaID}
                             />
                         </PanelBody>
                     </AccordionItemPanel>
                 </AccordionItem>
                 <AccordionItem>
-                    <AccordionItemHeading 
+                    <AccordionItemHeading
                         className={'gx-accordion-tab gx-button-tab'}
                     >
-                        <AccordionItemButton 
+                        <AccordionItemButton
                             className="components-base-control__label"
                         >
                             {__('Button', 'gutenberg-extra')}
@@ -239,17 +239,17 @@ const edit = props => {
                     </AccordionItemHeading>
                     <AccordionItemPanel>
                         <PanelBody>
-                            <ButtonStyles 
-                                {...props} 
+                            <ButtonStyles
+                                {...props}
                             />
                         </PanelBody>
                     </AccordionItemPanel>
                 </AccordionItem>
                 <AccordionItem>
-                    <AccordionItemHeading 
+                    <AccordionItemHeading
                         className={'gx-accordion-tab gx-box-settings-tab'}
                     >
-                        <AccordionItemButton 
+                        <AccordionItemButton
                             className="components-base-control__label"
                         >
                             {__('Box Settings', 'gutenberg-extra')}
@@ -303,7 +303,7 @@ const edit = props => {
                             </BaseControl.VisualLabel>
                             <div className={"image-form-and-reset"}>
                                 {backgroundImage ?
-                                    (<Button 
+                                    (<Button
                                         className={'background-custom-reset-option reset-background-image'}
                                         onClick={() => {
                                             props.setAttributes({ backgroundImage: null })
@@ -328,62 +328,62 @@ const edit = props => {
                                 />
                             </div>
                         </BaseControl>
-                        <PopoverControl 
+                        <PopoverControl
                             label={__('Box shadow', 'gutenberg-extra')}
                             content={
-                                <BoxShadow 
+                                <BoxShadow
                                     boxShadowOptions={boxShadow}
                                     onChange={value => setAttributes({ boxShadow: value })}
                                 />
                             }
                         />
-                        <PanelBody 
-                            className="gx-panel gx-border-setting gx-style-tab-setting" 
-                            initialOpen={true} 
+                        <PanelBody
+                            className="gx-panel gx-border-setting gx-style-tab-setting"
+                            initialOpen={true}
                             title={__('Border settings', 'gutenberg-extra')}
                         >
-                            <BlockBorder 
-                                {...props} 
+                            <BlockBorder
+                                {...props}
                             />
                         </PanelBody>
                     </AccordionItemPanel>
                 </AccordionItem>
                 <AccordionItem>
-                    <AccordionItemHeading 
+                    <AccordionItemHeading
                         className={'gx-accordion-tab gx-width-tab'}
                     >
-                        <AccordionItemButton 
+                        <AccordionItemButton
                             className="components-base-control__label"
                         >
                             {__(' Width & Height', 'gutenberg-extra')}
                         </AccordionItemButton>
                     </AccordionItemHeading>
                     <AccordionItemPanel>
-                        <PanelBody 
-                            className="gx-panel gx-size-setting gx-style-tab-setting" 
-                            initialOpen={true} 
+                        <PanelBody
+                            className="gx-panel gx-size-setting gx-style-tab-setting"
+                            initialOpen={true}
                             title={__('Size Settings', 'gutenberg-extra')}
                         >
-                            <SizeControl 
-                                {...props} 
+                            <SizeControl
+                                {...props}
                             />
                         </PanelBody>
                     </AccordionItemPanel>
                 </AccordionItem>
                 <AccordionItem>
-                    <AccordionItemHeading 
+                    <AccordionItemHeading
                         className={'gx-accordion-tab gx-padding-tab'}
                     >
-                        <AccordionItemButton 
+                        <AccordionItemButton
                             className="components-base-control__label"
                         >
                             {__('Padding & Margin', 'gutenberg-extra')}
                         </AccordionItemButton>
                     </AccordionItemHeading>
                     <AccordionItemPanel>
-                        <PanelBody 
-                            className="gx-panel gx-space-setting gx-style-tab-setting" 
-                            initialOpen={true} 
+                        <PanelBody
+                            className="gx-panel gx-space-setting gx-style-tab-setting"
+                            initialOpen={true}
                             title={__('Space Settings', 'gutenberg-extra')}
                         >
                             <DimensionsControl
@@ -398,34 +398,34 @@ const edit = props => {
                     </AccordionItemPanel>
                 </AccordionItem>
             </Accordion>
-            <PanelBody 
-                initialOpen={true} 
-                className="gx-panel gx-advanced-setting gx-advanced-tab-setting" 
+            <PanelBody
+                initialOpen={true}
+                className="gx-panel gx-advanced-setting gx-advanced-tab-setting"
                 title={__('Advanced Settings', 'gutenberg-extra')}
             >
-                <HoverAnimation 
-                    {...props} 
+                <HoverAnimation
+                    {...props}
                 />
-                <CustomCSS 
-                    {...props} 
+                <CustomCSS
+                    {...props}
                 />
             </PanelBody>
         </InspectorControls>,
         <div
-/*???*/     className={'gx-block ' + blockStyle + ' gx-image-box ' + classes}
+/*???*/ className={'gx-block ' + blockStyle + ' gx-image-box ' + classes}
             data-gx_initial_block_class={defaultBlockStyle}
             style={blockStyles}
         >
-            <div 
-                className="gx-image-box-link" 
+            <div
+                className="gx-image-box-link"
                 style={linkStyles}
             >
-                    <ImageUpload 
-                        className="gx-image-box-image"
-                        imageSettings={imageSettings}
-                        mediaID={mediaID}
-                        onSelect={onSelectImage}
-                    />
+                <ImageUpload
+                    className="gx-image-box-image"
+                    imageSettings={imageSettings}
+                    mediaID={mediaID}
+                    onSelect={onSelectImage}
+                />
                 <div class='gx-image-box-text'>
                     <RichText
                         tagName={titleLevel}

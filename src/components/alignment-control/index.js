@@ -26,14 +26,6 @@ const AlignmentControl = props => {
         onChange
     } = props;
 
-    const getClassName = align => {
-        let response = "gx-alignmentcontrol-button";
-        if ( align === value ) {
-            response += ' selected';
-        }
-        return response;
-    }
-
     return (
         <RadioControl
             label={__('Alignment', 'gutenberg-extra')}

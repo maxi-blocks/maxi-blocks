@@ -58,6 +58,7 @@ import {
 // import ExternalLink from '../../components/external-link';
 // import LinkedText from '../../components/external-link/test';
 import { ButtonStyles } from '../../components/button-styles/test';
+import ModalControl from '../../components/modal-control/';
 
 /**
  * Content
@@ -140,6 +141,7 @@ const edit = props => {
                 initialOpen={true}
                 title={__('Image Settings', 'gutenberg-extra')}
             >
+                <ModalControl />
                 <BlockStyles
                     {...props}
                 />

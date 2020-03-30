@@ -20,12 +20,11 @@ export const PopoverControl = props => {
     const {
         label,
         className = '',
-        buttonText = '',
         classNamePopover = 'gx-popover',
         icon = iconsSettings.advanced,
-        content,
         showReset = undefined,
         onReset,
+        popovers
     } = props;
 
     return (
@@ -36,45 +35,52 @@ export const PopoverControl = props => {
                 <BaseControl.VisualLabel>
                     {label}
                 </BaseControl.VisualLabel>
-                {showReset && 
-                    <Button 
+                {showReset &&
+                    <Button
                         isSecondary
                         onClick={onReset}
-                        action="reset"
+                        type="reset"
                     >
                         {
-                            <Icon 
+                            <Icon
                                 icon={iconsSettings.reset}
                             />
                         }
                     </Button>
                 }
-                <Dropdown
-                    className={'gx-popover-dropdown'}
-                    renderToggle={({ isOpen, onToggle }) => (
-                        <Button
-                            isSecondary
-                            onClick={onToggle}
-                            aria-expanded={isOpen}
-                            action="popup"
+                {popovers.map(popover => {
+                    if (!popover) {
+                        return;
+                    }
+                    return (
+                        <Dropdown
+                            className={'gx-popover-dropdown'}
+                            renderToggle={({ isOpen, onToggle }) => (
+                                <Button
+                                    isSecondary
+                                    onClick={onToggle}
+                                    aria-expanded={isOpen}
+                                    action="popup"
+                                >
+                                    {popover.icon ? popover.icon : icon}
+                                </Button>
+                            )}
+                            popoverProps={
+                                {
+                                    className: popover.classNamePopover ? popover.classNamePopover : classNamePopover,
+                                    noArrow: true,
+                                    position: 'center'
+                                }
+                            }
+                            renderContent={
+                                () => (
+                                    popover.content
+                                )
+                            }
                         >
-                            {icon}
-                        </Button>
-                    )}
-                    popoverProps={
-                        {
-                            className: classNamePopover,
-                            noArrow: true,
-                            position: 'center'
-                        }
-                    }
-                    renderContent={
-                        () => (
-                            content
-                        )
-                    }
-                >
-                </Dropdown>
+                        </Dropdown>
+                    )
+                })}
             </BaseControl>
         </div>
     )

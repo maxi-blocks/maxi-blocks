@@ -36,14 +36,18 @@ const ExternalLink = props => {
         <PopoverControl 
             label={getLabel()}
             className={className}
-            content={
-                <__experimentalLinkControl
-                    className="gx-image-box-read-more-link"
-                    value={value}
-                    onChange={onChange}
-                    settings={settings}
-                />
-            }
+            popovers={[
+                {
+                    content:(
+                        <__experimentalLinkControl
+                            className="gx-image-box-read-more-link"
+                            value={value}
+                            onChange={onChange}
+                            settings={settings}
+                        />
+                    )
+                }
+            ]}
         />
     )
 }

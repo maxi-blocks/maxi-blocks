@@ -419,28 +419,39 @@ class ImageSettingsOptions extends Component {
                 />
                 <ColorControl 
                     label={__('Background Colour', 'gutenberg-extra')}
+                    showColor
                     color={value[selector].backgroundColor}
-                    onChange={val => {
+                    onColorChange={val => {
                         value[selector].backgroundColor = val;
                         saveAndSend()
                     }}
+                    showGradient
+                    gradient={[
+                        { offset: '0.00', color: 'rgba(238, 55, 11, 1)' },
+                        { offset: '1.00', color: 'rgba(126, 32, 34, 1)' }
+                    ]}
+                    onGradientChange={e => 1+1 }
                 />
                 <PopoverControl
                     label={__('Box shadow', 'gutenberg-extra')}
-                    content={
-                        <BoxShadow
-                            boxShadowOptions={value[selector].boxShadow}
-                            onChange={val => {
-                                value[selector].boxShadow = JSON.parse(val);
-                                saveAndSend()
-                            }}
-                            target={
-                                selector != 'hover' ?
-                                    `${target} img` :
-                                    `${target} img:hover`
-                            }
-                        />
-                    }
+                    popovers={[
+                        {
+                            content: (
+                                <BoxShadow
+                                    boxShadowOptions={value[selector].boxShadow}
+                                    onChange={val => {
+                                        value[selector].boxShadow = JSON.parse(val);
+                                        saveAndSend()
+                                    }}
+                                    target={
+                                        selector != 'hover' ?
+                                            `${target} img` :
+                                            `${target} img:hover`
+                                    }
+                                />
+                            )
+                        }
+                    ]}
                 />
                 <hr style={{ borderTop: '1px solid #ddd' }} />
                 <BlockBorder

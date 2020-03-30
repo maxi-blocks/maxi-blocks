@@ -494,7 +494,6 @@ export const ImageSettings = withSelect((select, ownProps) => {
  * Frontend block
  */
 export const Image = props => {
-
     const {
         className = '',
         mediaID,
@@ -503,8 +502,18 @@ export const Image = props => {
 
     const value = typeof imageSettings === 'object' ? imageSettings : JSON.parse(imageSettings);
     const image = value.imageSize.options[value.size] ? value.imageSize.options[value.size] : value.imageSize.options.full;
-    const width = value.size != 'custom' ? image.width : value.imageSize.width + value.imageSize.widthUnit;
-    const height = value.size != 'custom' ? image.height : value.imageSize.height + value.imageSize.heightUnit;
+    let width = '', height = '', src='';
+    if ( !isNil(image) ) {
+        src = image.source_url;
+    }
+    if ( !isNil(image) && value.size != 'custom' ) {
+        width = image.width;
+        height = image.height;
+    }
+    else if ( !isNil(value) ) {
+        width = value.imageSize.width + value.imageSize.widthUnit;
+        height = value.imageSize.height + value.imageSize.heightUnit;
+    }
 
     return (
         <figure
@@ -512,7 +521,7 @@ export const Image = props => {
         >
             <img
                 className={"wp-image-" + mediaID}
-                src={image.source_url}
+                src={src}
                 alt={value.alt}
                 width={width}
                 height={height}

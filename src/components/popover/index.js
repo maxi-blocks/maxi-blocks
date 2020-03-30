@@ -5,15 +5,27 @@ const {
     BaseControl,
     Button,
     Dropdown,
+    Icon
 } = wp.components;
 
+/**
+ * External dependencies
+ */
+import iconsSettings from '../icons/icons-settings.js';
+
+/**
+ * Block
+ */
 export const PopoverControl = props => {
     const {
         label,
         className = '',
         buttonText = '',
         classNamePopover = 'gx-popover',
-        content
+        icon = iconsSettings.advanced,
+        content,
+        showReset = undefined,
+        onReset,
     } = props;
 
     return (
@@ -24,6 +36,19 @@ export const PopoverControl = props => {
                 <BaseControl.VisualLabel>
                     {label}
                 </BaseControl.VisualLabel>
+                {showReset && 
+                    <Button 
+                        isSecondary
+                        onClick={onReset}
+                        action="reset"
+                    >
+                        {
+                            <Icon 
+                                icon={iconsSettings.reset}
+                            />
+                        }
+                    </Button>
+                }
                 <Dropdown
                     className={'gx-popover-dropdown'}
                     renderToggle={({ isOpen, onToggle }) => (
@@ -31,8 +56,9 @@ export const PopoverControl = props => {
                             isSecondary
                             onClick={onToggle}
                             aria-expanded={isOpen}
+                            action="popup"
                         >
-                            {buttonText}
+                            {icon}
                         </Button>
                     )}
                     popoverProps={

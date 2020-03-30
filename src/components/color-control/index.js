@@ -31,6 +31,7 @@ const ColorControl = props => {
                     onChangeComplete={val => onChange(returnColor(val))}
                 />
             }
+            showReset
         />
     )
 }

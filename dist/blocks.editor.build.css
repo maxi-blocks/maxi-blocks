@@ -473,8 +473,9 @@
   top: -2px !important; }
 
 .gx-title-typography-setting .components-select-control__input {
-  max-width: 100%;
-  width: 100%; }
+  max-width: 61%;
+  width: 100%;
+  margin-left: 5px; }
 
 .gx-title-typography-setting .components-base-control__label {
   width: 40%; }
@@ -580,3 +581,50 @@
 
 .wp-block-button.is-style-squared .wp-block-button__link {
   border-radius: 0; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
+.gx-icon-settings .state .components-radio-control__option {
+  width: 100%;
+  text-align: center;
+  margin: 0; }
+  .gx-icon-settings .state .components-radio-control__option label {
+    width: 100%;
+    display: block;
+    height: 35px;
+    border: 1px solid #dde0e2;
+    line-height: 36px; }
+  .gx-icon-settings .state .components-radio-control__option .components-radio-control__input {
+    display: none; }
+    .gx-icon-settings .state .components-radio-control__option .components-radio-control__input:checked + label {
+      color: white;
+      background-color: #00ccff; }
+
+.gx-icon-settings .hover-animation select {
+  margin-left: auto;
+  margin-right: 0 !important;
+  height: 30px !important; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
+.gx-icon-smiley {
+  font-size: 19pt;
+  color: black; }
+
+.library-wrapper {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: justify;
+      justify-content: space-between; }

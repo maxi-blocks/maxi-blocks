@@ -49,7 +49,7 @@ import { dividerHeightAttributes } from '../divider-height/index';
 import { dividerColorAttributes } from '../divider-color/index';
 
 const Line = () => (
-  <hr/>
+  <hr className={'divider-line'}/>
 );
 
 
@@ -197,7 +197,7 @@ class Divider extends Component {
       >
       <AccordionItem>
           <AccordionItemHeading className={'gx-accordion-tab gx-divider-tab'}>
-            <AccordionItemButton className='components-base-control__label'>
+            <AccordionItemButton className='components-base-control__label divider-accordion-tab'>
               {__('Divider', 'gutenberg-extra' )}
             </AccordionItemButton>
           </AccordionItemHeading>
@@ -210,7 +210,6 @@ class Divider extends Component {
           <Line/>
           <AlignDivider {...this.props} buildDivider={buildDivider}/>
           <DividerPosition {...this.props}/>
-          <Line/>
           <DividerColor {...this.props} buildDivider={buildDivider}/>
           <Line/>
           <DividerWidth {...this.props} buildDivider={buildDivider}/>

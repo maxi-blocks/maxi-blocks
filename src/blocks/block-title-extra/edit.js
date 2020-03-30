@@ -210,14 +210,18 @@ const edit = (props) => {
         <TitleAlign {...props}/>
         <DescriptionAlign {...props}/>
       </PanelBody>
-      <Accordion className={'gx-style-tab-setting gx-accordion'} allowMultipleExpanded={true} allowZeroExpanded={true}>
-        <AccordionItem>
-          <AccordionItemHeading className={'gx-accordion-tab gx-typography-tab'}>
-            <AccordionItemButton className='components-base-control__label'>
-              {__('Typography', 'gutenberg-extra')}
-            </AccordionItemButton>
-          </AccordionItemHeading>
-          <AccordionItemPanel>
+      <Accordion
+          className = {'gx-style-tab-setting gx-accordion'}
+          allowMultipleExpanded = {true}
+          allowZeroExpanded = {true}
+      >
+      <AccordionItem>
+        <AccordionItemHeading className={'gx-accordion-tab gx-typography-tab'}>
+          <AccordionItemButton className='components-base-control__label'>
+           {__('Typography & Colours', 'gutenberg-extra' )}
+          </AccordionItemButton>
+        </AccordionItemHeading>
+        <AccordionItemPanel>
             <PanelBody className="gx-panel gx-color-setting gx-style-tab-setting" initialOpen={true} title={__('Colour settings', 'gutenberg-extra')}>
               <Typography fontOptions={props.attributes.fontOptions} onChange={value => {
                   setAttributes({fontOptions: value})

@@ -319,3 +319,9 @@ body .entry .entry-content .wp-block-gx-animation-button a {
   color: #fff; }
   .wp-block-button__link:not(.has-text-color):hover, .wp-block-button__link:not(.has-text-color):focus, .wp-block-button__link:not(.has-text-color):active {
     color: #fff; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/

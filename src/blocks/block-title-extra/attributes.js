@@ -14,7 +14,7 @@ import { descriptionColorAttributes } from '../../components/description-color/i
 import { subtitleAlignAttributes } from '../../components/subtitle-align/index';
 import { titleAlignAttributes } from '../../components/title-align/index';
 import { descriptionAlignAttributes } from '../../components/description-align/index';
-import { typographyAttributes } from '../../components/typography/index';
+import { defaultTypographyAttributes } from '../../components/typography/attributes';
 import { customCSSAtributes } from '../../components/custom-css/index';
 import { boxShadowOptionsAttributes } from '../../components/box-shadow';
 import { borderAttributes } from '../../components/block-border/index';

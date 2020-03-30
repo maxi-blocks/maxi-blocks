@@ -63,8 +63,6 @@ class ImageSettingsOptions extends Component {
         selector: 'normal',
     }
 
-    test = typeof this.props.imageSettings === 'object' ? this.props.imageSettings : JSON.parse(this.props.imageSettings);
-
     render() {
         const {
             imageData,
@@ -448,7 +446,6 @@ class ImageSettingsOptions extends Component {
                 <BlockBorder
                     borderColor={value[selector].borderSettings.borderColor}
                     onChangeBorderColor={val => {
-                        console.log(value[selector].borderSettings.borderColor);
                         value[selector].borderSettings.borderColor = val;
                         saveAndSend();
                     }}

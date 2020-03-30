@@ -1,0 +1,90 @@
+{
+    "label": "Button Styles",
+    "alignment": "",
+    "borderSettings": {
+        "borderColor": "",
+        "borderType": "",
+        "borderRadius": {
+            "label": "Border radius",
+            "unit": "px",
+            "max": "1000",
+            "desktop": {
+                "border-top-left-radius": 0,
+                "border-top-right-radius": 0,
+                "border-bottom-right-radius": 0,
+                "border-bottom-left-radius": 0,
+                "sync": true
+            },
+            "tablet": {
+                "border-top-left-radius": 0,
+                "border-top-right-radius": 0,
+                "border-bottom-right-radius": 0,
+                "border-bottom-left-radius": 0,
+                "sync": true
+            },
+            "mobile": {
+                "border-top-left-radius": 0,
+                "border-top-right-radius": 0,
+                "border-bottom-right-radius": 0,
+                "border-bottom-left-radius": 0,
+                "sync": true
+            }
+        },
+        "borderWidth": {
+            "label": "Border width",
+            "unit": "px",
+            "max": "1000",
+            "desktop": {
+                "border-top-width": 0,
+                "border-right-width": 0,
+                "border-bottom-width": 0,
+                "border-left-width": 0,
+                "sync": true
+            },
+            "tablet": {
+                "border-top-width": 0,
+                "border-right-width": 0,
+                "border-bottom-width": 0,
+                "border-left-width": 0,
+                "sync": true
+            },
+            "mobile": {
+                "border-top-width": 0,
+                "border-right-width": 0,
+                "border-bottom-width": 0,
+                "border-left-width": 0,
+                "sync": true
+            }
+        }
+    },
+    "normal": {
+        "color": "",
+        "opacity": "",
+        "backgroundColor": "",
+        "padding": "",
+        "margin": "",
+        "boxShadow": {
+            "label": "Box Shadow",
+            "shadowColor": "",
+            "shadowHorizontal": "0",
+            "shadowVertical": "0",
+            "shadowBlur": "0",
+            "shadowSpread": "0"
+        }
+    },
+    "hover": {
+        "color": "",
+        "opacity": "",
+        "backgroundColor": "",
+        "padding": "",
+        "margin": "",
+        "boxShadow": {
+            "label": "Box Shadow",
+            "shadowColor": "",
+            "shadowHorizontal": "0",
+            "shadowVertical": "0",
+            "shadowBlur": "0",
+            "shadowSpread": "0"
+        }
+    }
+}

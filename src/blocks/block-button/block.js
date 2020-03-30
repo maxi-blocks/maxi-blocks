@@ -278,7 +278,7 @@ const settings = {
 			marginRight,
 			marginBottom,
 			buttonHeight,
-			textTransform, 
+			textTransform,
 			borderWidth,
 			borderRadius,
 			borderStyle,
@@ -337,7 +337,7 @@ const settings = {
 			<div>
 				{ hoverClass && <style dangerouslySetInnerHTML={{__html: `.hover-${hoverClass}:hover{${hoverStyles}}` }} /> }
 				{ uniqueClass && <style dangerouslySetInnerHTML={{__html: `.${uniqueClass}{${extraStyles}}` }} /> }
-				{ uniqueHoverClass && <style dangerouslySetInnerHTML={{__html: `.${uniqueHoverClass} .wp-block-button__link:hover{${extraHoverStyles}} 
+				{ uniqueHoverClass && <style dangerouslySetInnerHTML={{__html: `.${uniqueHoverClass} .wp-block-button__link:hover{${extraHoverStyles}}
 					 .wp-block-button__link:after{${extraAfterStyles}}` }} /> }
 				{ extraBeforeStyles && <style dangerouslySetInnerHTML={{__html: `.wp-block-button__link:before{${extraBeforeStyles}}` }} /> }
 				{ extraAfterStyles && <style dangerouslySetInnerHTML={{__html: `.wp-block-button__link:after{${extraAfterStyles}}` }} /> }

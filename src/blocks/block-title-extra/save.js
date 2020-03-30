@@ -58,6 +58,7 @@ const save = (props) => {
       title,
       text,
       mediaID,
+      backgroundImage,
       mediaURL,
       description,
       additionalText,
@@ -140,10 +141,6 @@ const save = (props) => {
     minWidth: contentDirection == 'row' || contentDirection == 'row-reverse' ? '290px' : undefined
   };
 
-  const containerStyles = {
-    display: 'flex',
-    flexDirection: contentDirection
-  };
 
   const textStyles = {
     display: hideDescription ? 'none' : undefined,
@@ -156,14 +153,25 @@ const save = (props) => {
     marginTop: contentDirection == 'row' ? '48px' : '0px',
     marginLeft: contentDirection == 'row' ? '20px' : undefined,
   }
+  let backgroundImageWithGradient = backgroundGradient.length
+        ? `linear-gradient(to left, ${backgroundGradient[0]},${backgroundGradient[1]})`
+        : '';
 
+  if (backgroundImage) {
+      backgroundImageWithGradient += backgroundGradient.length
+          ? `, url(${backgroundImage})`
+          : `url(${backgroundImage})`
+  }
   const gradients = "";
   const disableCustomGradients = false;
+  blockStyles.display = 'flex';
+  blockStyles.flexDirection = contentDirection;
+  blockStyles.backgroundColor = backgroundColor ? backgroundColor : undefined;
+  blockStyles.backgroundImage = backgroundImageWithGradient ? backgroundImageWithGradient : undefined;
   return (
     <div
       className={blockStyle + ' gx-block gx-title-extra ' + classes + ' ' + extraClassName}
       data-gx_initial_block_class = {defaultBlockStyle}
-      style={containerStyles}
       >
       <div style={{order:0}}>
       <RichText.Content

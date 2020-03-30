@@ -816,6 +816,7 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
 
 .gx-controls .gx-accordion .gx-box-settings-tab .components-base-control__label:before {
   content: url(../img/gx-box-settings-tab.svg);
+  width: 1.5rem
 }
 
 .gx-controls .gx-accordion .gx-width-tab .components-base-control__label:before {
@@ -847,6 +848,27 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
 /* old palette settings */
 .gx-sidebar .block-editor-color-palette-control__color-palette {
   margin-top: 0 !important;
+}
+
+.gx-box-settings-item .block-editor-panel-color-gradient-settings {
+  width: 200px !important;
+  margin: 0 !important;
+  margin-left: 11px !important;
+  padding-top: 15px !important;
+}
+
+.gx-box-settings-item .gpw{
+  padding-top:5px;
+}
+
+.gx-box-settings-item .background-image {
+  margin-left:10px;
+  margin-right: 10px;
+}
+
+.gx-box-settings-item .gx-reset-button button{
+  width: 27px;
+  margin: auto 0 auto auto;
 }
 
 .gx-sidebar button.components-range-control__reset:before,

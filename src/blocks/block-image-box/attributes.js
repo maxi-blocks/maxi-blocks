@@ -20,6 +20,7 @@ import {
 // Testing
 import { buttonStyleAttributesTest } from '../../components/button-styles/test/';
 import { colorControlAttributesTest } from '../../components/color-control/test/';
+import { sizeControlAttributesTest } from '../../components/size-control/test/';
 
 /**
  * Attributes
@@ -115,7 +116,8 @@ const attributes = {
         default: '{}'
     },
     ...buttonStyleAttributesTest,
-    ...colorControlAttributesTest
+    ...colorControlAttributesTest,
+    ...sizeControlAttributesTest
 }
 
 export default attributes;

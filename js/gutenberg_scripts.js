@@ -259,10 +259,10 @@ class ResponsiveStylesResolver {
         let newObject = {};
 
         newObject.label = this.object.label;
-        newObject = this.generalObjectManipulator(newObject, 'general');
-        newObject = this.devicesObjectManipulator(newObject, 'desktop');
-        newObject = this.devicesObjectManipulator(newObject, 'tablet');
-        newObject = this.devicesObjectManipulator(newObject, 'mobile');
+        newObject = this.propsObjectManipulator(newObject, 'general');
+        newObject = this.propsObjectManipulator(newObject, 'desktop');
+        newObject = this.propsObjectManipulator(newObject, 'tablet');
+        newObject = this.propsObjectManipulator(newObject, 'mobile');
         // On Typography component object
         if (this.object.font) {
             newObject.font = this.object.font;
@@ -272,28 +272,19 @@ class ResponsiveStylesResolver {
         return newObject;
     }
 
-    generalObjectManipulator(newObject, value) {
-        if (typeof this.object[value] === 'undefined') {
-            return newObject;
-        }
-        newObject['desktop'] = {};
-        for (let [target, prop] of Object.entries(this.object[value])) {
-            newObject['desktop'][target] = prop;
-        }
-
-        return newObject;
-    }
-
-    devicesObjectManipulator(newObject, device) {
+    propsObjectManipulator(newObject, device) {
         if (typeof this.object[device] === 'undefined') {
             return newObject;
         }
+        const object = this.object[device];
+        if ( device === 'general' )
+            device = 'desktop'
         if (typeof newObject[device] === 'undefined')
             newObject[device] = {};
         let unitChecker = '';
         let unit = this.object.unit ? this.object.unit : '';
 
-        for (let [target, prop] of Object.entries(this.object[device])) {
+        for (let [target, prop] of Object.entries(object)) {
             // values with dimensions
             if (target != 'sync' && prop != 0 && typeof prop === 'number' || unitChecker.indexOf(target) == 0 && prop != 0)
                 newObject[device][target] = prop + unit;

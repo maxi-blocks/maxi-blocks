@@ -66,6 +66,7 @@ import {
     ColorControlTest1,
     ColorControlTest2
 } from '../../components/color-control/test/';
+import { SizeControlTest } from '../../components/size-control/test';
 
 /**
  * Content
@@ -102,7 +103,8 @@ const edit = props => {
             readMoreLinkTest,
             buttonStylesTest,
             colorTest,
-            gradientTest
+            gradientTest,
+            sizeTest,
         },
         setAttributes,
     } = props;
@@ -150,6 +152,10 @@ const edit = props => {
                 initialOpen={true}
                 title={__('Image Settings', 'gutenberg-extra')}
             >
+                <SizeControlTest 
+                    sizeSettings={sizeTest}
+                    onChange={value => setAttributes({sizeTest: value})}
+                />
                 <ColorControlTest1
                     label={__('Color Test 1', 'gutenberg-extra')}
                     showColor

@@ -19,7 +19,7 @@ import {
 } from '../../components/dimensions-control/attributes';
 // Testing
 import { buttonStyleAttributesTest } from '../../components/button-styles/test/';
-import { colorControlAttributesTest } from '../../components/color-control/';
+import { colorControlAttributesTest } from '../../components/color-control/test/';
 
 /**
  * Attributes

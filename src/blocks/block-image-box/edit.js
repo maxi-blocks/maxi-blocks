@@ -50,18 +50,22 @@ import {
 } from 'react-accessible-accordion';
 import { PopoverControl } from '../../components/popover';
 import { BoxShadow } from '../../components/box-shadow';
-// Testing
 import {
     ImageSettings,
     ImageUpload
 } from '../../components/image-settings/';
+// Testing
 // import ExternalLink from '../../components/external-link';
 // import LinkedText from '../../components/external-link/test';
 import { 
     ButtonStyles,
     ButtonEditor
 } from '../../components/button-styles/test';
-import ColorControl from '../../components/color-control/';
+//import ColorControl from '../../components/color-control/';
+import {
+    ColorControlTest1,
+    ColorControlTest2
+} from '../../components/color-control/test/';
 
 /**
  * Content
@@ -97,6 +101,7 @@ const edit = props => {
             readMoreTextTest,
             readMoreLinkTest,
             buttonStylesTest,
+            colorTest,
             gradientTest
         },
         setAttributes,
@@ -145,11 +150,20 @@ const edit = props => {
                 initialOpen={true}
                 title={__('Image Settings', 'gutenberg-extra')}
             >
-                <ColorControl 
-                    label={__('Background Colour', 'gutenberg-extra')}
+                <ColorControlTest1
+                    label={__('Color Test 1', 'gutenberg-extra')}
                     showColor
-                    color={''}
-                    onColorChange={val => 1+1}
+                    color={colorTest}
+                    onColorChange={value => setAttributes({colorTest: value})}
+                    showGradient
+                    gradient={gradientTest}
+                    onGradientChange={value => setAttributes({gradientTest: value})}
+                />
+                <ColorControlTest2
+                    label={__('Color Test 2', 'gutenberg-extra')}
+                    showColor
+                    color={colorTest}
+                    onColorChange={value => setAttributes({colorTest: value})}
                     showGradient
                     gradient={gradientTest}
                     onGradientChange={value => setAttributes({gradientTest: value})}

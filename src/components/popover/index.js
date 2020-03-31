@@ -14,12 +14,17 @@ const {
 import iconsSettings from '../icons/icons-settings.js';
 
 /**
+ * Styles
+ */
+import './editor.scss';
+
+/**
  * Block
  */
 export const PopoverControl = props => {
     const {
         label,
-        className = '',
+        className = 'gx-popover-control',
         classNamePopover = 'gx-popover',
         icon = iconsSettings.advanced,
         showReset = undefined,

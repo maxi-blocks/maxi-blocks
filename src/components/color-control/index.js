@@ -1,14 +1,15 @@
 /**
  * WordPress dependencies
  */
-const { ColorPicker } = wp.components;
+const {
+    ColorPicker,
+    __experimentalGradientPicker
+} = wp.components;
 
 /**
  * External dependencies
  */
 import { PopoverControl } from '../popover/';
-import GradientPickerPopover from '../gradient-picker/test';
-import { WrappedSketchPicker } from '../gradient-picker/test';
 import { isNil } from 'lodash';
 
 /**
@@ -49,7 +50,7 @@ const ColorControl = props => {
             response.push(
                 {
                     content: (
-                        <ColorPicker 
+                        <ColorPicker
                             color={color}
                             onChangeComplete={val => onColorChange(returnColor(val))}
                         />
@@ -61,26 +62,14 @@ const ColorControl = props => {
             response.push(
                 {
                     content: (
-                        <GradientPickerPopover
-                            palette={gradient}
-                            onPaletteChange={val => onGradientChange(val)}
+                        <__experimentalGradientPicker
+                            value={gradient}
+                            onChange={val => onGradientChange(val)}
                         />
                     )
                 }
             )
         }
-
-        // TESTING
-        response.push(
-            {
-                content: (
-                    <WrappedSketchPicker 
-                        rest={gradient}
-                    />
-                )
-            }
-        )
-
 
         return response;
     }

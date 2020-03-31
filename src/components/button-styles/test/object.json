@@ -2,6 +2,10 @@
     "label": "Button Styles",
     "linkOptions": {},
     "alignment": "",
+    "width": "",
+    "height": "",
+    "maxWidth": "",
+    "maxHeight": "",
     "borderSettings": {
         "borderColor": "",
         "borderType": "",

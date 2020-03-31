@@ -48,7 +48,6 @@ export const buttonStyleAttributesTest = {
  * Block
  */
 export class ButtonStyles extends Component {
-
     state = {
         selector: 'normal',
     }

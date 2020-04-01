@@ -12,7 +12,7 @@ const {
 import classnames from 'classnames';
 import { Link } from '../../components/link-options/index';
 import { Image } from '../../components/image-settings';
-import { ButtonSaver } from '../../components/button-styles/test';
+import { ButtonSaver } from '../../components/button-styles/';
 import {
     setLinkStyles,
     setTitleStyles,
@@ -42,8 +42,7 @@ const save = (props) => {
             backgroundGradient,
             linkOptions,
             linkTitle,
-            //Test
-            buttonStylesTest,
+            buttonStyles,
         },
     } = props;
 
@@ -51,7 +50,7 @@ const save = (props) => {
     const titleStyles = setTitleStyles(props);
     const subTitleStyles = setSubTitleStyles(props);
     const descriptionStyles = setDescriptionStyles(props);
-    const buttonStyles = setButtonStyles(props);
+    //const buttonStyles = setButtonStyles(props);
     const blockStyles = setBlockStyles(props);
 
     let classes = classnames(className);
@@ -97,7 +96,7 @@ const save = (props) => {
                         value={description} 
                     />
                     <ButtonSaver 
-                        buttonSettings={buttonStylesTest}
+                        buttonSettings={buttonStyles}
                     />
                 </div>
             </Link>

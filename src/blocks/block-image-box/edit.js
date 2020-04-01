@@ -22,7 +22,10 @@ import classnames from 'classnames';
 import React from 'react';
 import DimensionsControl from '../../components/dimensions-control/index';
 import { BlockStyles } from '../../components/block-styles/index';
-//import { ButtonStyles } from '../../components/button-styles/index';
+import { 
+    ButtonStyles,
+    ButtonEditor
+} from '../../components/button-styles/index';
 import { ImagePosition } from '../../components/image-position/index';
 import { FontLevel } from '../../components/font-level/index';
 import { LinkOptions } from '../../components/link-options/index';
@@ -55,10 +58,6 @@ import {
     ImageUpload
 } from '../../components/image-settings/';
 // Testing
-import { 
-    ButtonStyles,
-    ButtonEditor
-} from '../../components/button-styles/test';
 //import ColorControl from '../../components/color-control/';
 import {
     ColorControlTest1,
@@ -99,7 +98,7 @@ const edit = props => {
             // Testing
             readMoreTextTest,
             readMoreLinkTest,
-            buttonStylesTest,
+            buttonStyles,
             colorTest,
             gradientTest,
             sizeTest,
@@ -116,7 +115,7 @@ const edit = props => {
     const titleStyles = setTitleStyles(props);
     const subTitleStyles = setSubTitleStyles(props);
     const descriptionStyles = setDescriptionStyles(props);
-    const buttonStyles = setButtonStyles(props);
+    //const buttonStyles = setButtonStyles(props);
     const blockStyles = setBlockStyles(props);
 
     const onSelectImage = (media) => {
@@ -274,8 +273,8 @@ const edit = props => {
                     <AccordionItemPanel>
                         <PanelBody>
                             <ButtonStyles
-                                buttonSettings={buttonStylesTest}
-                                onChange={value => setAttributes({buttonStylesTest: value})}
+                                buttonSettings={buttonStyles}
+                                onChange={value => setAttributes({buttonStyles: value})}
                             />
                         </PanelBody>
                     </AccordionItemPanel>
@@ -492,8 +491,8 @@ const edit = props => {
                         className="gx-image-box-description"
                     />
                     <ButtonEditor 
-                        buttonSettings={buttonStylesTest}
-                        onChange={value => setAttributes({buttonStylesTest: value})}
+                        buttonSettings={buttonStyles}
+                        onChange={value => setAttributes({buttonStyles: value})}
                         buttonText={readMoreTextTest}
                     />
                 </div>

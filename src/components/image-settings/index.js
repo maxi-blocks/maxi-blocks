@@ -65,6 +65,7 @@ class ImageSettingsOptions extends Component {
 
     render() {
         const {
+            className = "gx-imagesettings-control",
             imageData,
             imageSettings = this.props.attributes.imageSettings,
             onChange,
@@ -289,7 +290,7 @@ class ImageSettingsOptions extends Component {
             null;
 
         return (
-            <div className="gx-imagesettings-control">
+            <div className={className}>
                 <SelectControl
                     label={__('Image Size', 'gutenberg-extra')}
                     value={value.imageSize.options[value.size] || value.size === 'custom' ? value.size : 'full'}

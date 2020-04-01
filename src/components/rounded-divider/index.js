@@ -8,8 +8,7 @@ const {
 
 export const roudnedDividerAttributes = {
   isRounded:{
-    type: 'boolean',
-    default: false
+    type: 'boolean'
   },
 }
 

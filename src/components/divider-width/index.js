@@ -49,7 +49,7 @@ export const DividerWidth = ( props ) => {
    }
 
   return (
-    <div>
+    <div className={'divider-dimension'}>
       <RadioControl
         className={'gx-unit-control divider-unit-control'}
         selected={ dividerWidthUnit }

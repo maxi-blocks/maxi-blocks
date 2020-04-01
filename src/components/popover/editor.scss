@@ -1,0 +1,28 @@
+// This CSS is used to clean the global CSS that is affecting it
+.gx-sidebar .gx-popover-control .gx-settings-button button:before {
+  content: none !important;
+}
+
+.gx-popover-dropdown button::before {
+  content: none !important;
+}
+
+.gx-popover-dropdown button svg{
+  margin: auto;
+  width: 0.98rem;
+  height: 0.98rem;
+}
+
+.gx-sidebar .gx-popover-control .gx-settings-button button svg {
+  fill: #000;
+}
+
+.gx-sidebar .gx-popover-control .gx-settings-button .gx-popover-dropdown {
+  display: inherit;
+}
+
+// Component CSS
+.gx-sidebar .gx-popover-control .gx-settings-button button[type="reset"] {
+  border: none;
+  box-shadow: none;
+}

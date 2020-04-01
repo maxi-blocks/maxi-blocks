@@ -21,6 +21,7 @@ const {
  */
 import FontFamilySelector from '../font-family-selector/index';
 import { PopoverControl } from '../popover';
+import { ColorControlTest1 } from '../color-control/test';
 
 /**
  * Internal dependencies
@@ -124,9 +125,13 @@ export default class Typography extends Component {
                 value.font = newValue.value;
                 value.options = newValue.files;
             }
+            if (target == 'color') {
+                value.general.color = newValue;
+            }
             else {
                 value[device][getKey(value[device], target)] = newValue;
             }
+            console.log(value)
             saveAndSend();
         }
 
@@ -188,6 +193,12 @@ export default class Typography extends Component {
                                     className={'gx-font-family-selector'}
                                     font={value.font}
                                     onChange={(value) => onChangeValue(value, 'font')}
+                                />
+                                <ColorControlTest1 
+                                    label={__('Font Color', 'gutenberg-extra')}
+                                    showColor
+                                    color={value.general.color}
+                                    onColorChange={value => onChangeValue(value, 'color')}
                                 />
                                 <RadioControl
                                     className={'gx-device-control'}

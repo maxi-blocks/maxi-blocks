@@ -17,7 +17,7 @@ export const borderAttributes = {
         type: 'string',
         default: 'none',
     },
-	borderRadius: {
+    borderRadius: {
         type: 'string',
         default: '{"label":"Border radius","unit":"px","max":"1000","desktop":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"tablet":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"mobile":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true}}'
     },
@@ -59,11 +59,11 @@ export const BlockBorder = (props) => {
 
     const onChangeValue = (target, value, callback) => {
         const newValue = typeof value != 'undefined' ? value : '';
-        if (typeof callback != 'undefined' ) {
+        if (typeof callback != 'undefined') {
             callback(newValue);
         }
         else {
-            setAttributes({[target]: newValue})
+            setAttributes({ [target]: newValue })
         }
     }
 
@@ -87,14 +87,14 @@ export const BlockBorder = (props) => {
                 onChange={value => onChangeValue('borderType', value, onChangeBorderType)}
             />
             <DimensionsControl
-                value={borderRadius}
-                onChange={value => onChangeValue('borderRadius', value, onChangeBorderRadius)}
-                target={borderRadiusTarget}
-            />
-            <DimensionsControl
                 value={borderWidth}
                 onChange={value => onChangeValue('borderWidth', value, onChangeBorderWidth)}
                 target={borderWidthTarget}
+            />
+            <DimensionsControl
+                value={borderRadius}
+                onChange={value => onChangeValue('borderRadius', value, onChangeBorderRadius)}
+                target={borderRadiusTarget}
             />
         </Fragment>
     )

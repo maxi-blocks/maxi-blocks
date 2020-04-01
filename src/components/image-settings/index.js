@@ -32,6 +32,7 @@ import { BoxShadow } from '../box-shadow';
 import Typography from '../typography/';
 import iconsSettings from '../icons/icons-settings.js';
 import ColorControl from '../color-control/';
+import ImageCrop from '../image-crop/';
 import {
     capitalize,
     isEmpty,
@@ -50,7 +51,7 @@ import './editor.scss';
 export const imageSettingsAttributes = {
     imageSettings: {
         type: 'string',
-        default: '{"label":"Image Settings","size":"","imageSize":{"options":{},"widthUnit":"px","width":"","heightUnit":"px","height":""},"alt":"","alignment":"","captionType":"none","caption":"none","captionTypography":{"label":"Caption","font":"Default","options":{},"desktop":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"},"tablet":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"},"mobile":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"}},"sizeSettings":{"maxWidthUnit":"px","maxWidth":"","widthUnit":"px","width":""},"normal":{"opacity":"","backgroundColor":"","boxShadow":{"label":"Box Shadow","shadowColor":"","shadowHorizontal":"0","shadowVertical":"0","shadowBlur":"0","shadowSpread":"0"},"borderSettings":{"borderColor":"","borderType":"","borderRadius":{"label":"Border radius","unit":"px","max":"1000","desktop":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"tablet":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"mobile":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true}},"borderWidth":{"label":"Border width","unit":"px","max":"1000","desktop":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"tablet":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"mobile":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true}}}},"hover":{"opacity":"","backgroundColor":"","boxShadow":{"label":"Box Shadow","shadowColor":"","shadowHorizontal":"0","shadowVertical":"0","shadowBlur":"0","shadowSpread":"0"},"borderSettings":{"borderColor":"","borderType":"","borderRadius":{"label":"Border radius","unit":"px","max":"1000","desktop":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"tablet":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"mobile":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true}},"borderWidth":{"label":"Border width","unit":"px","max":"1000","desktop":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"tablet":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"mobile":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true}}}}}'
+        default: '{"label":"Image Settings","size":"","imageSize":{"options":{},"cropOptions":{"url":"","dimension":{"width":"","height":""},"focalPoint":{"x":"","y":""}},"widthUnit":"%","width":"","heightUnit":"%","height":""},"alt":"","alignment":"","captionType":"none","caption":"none","captionTypography":{"label":"Caption","font":"Default","options":{},"general":{"color":""},"desktop":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"},"tablet":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"},"mobile":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"}},"sizeSettings":{"maxWidthUnit":"%","maxWidth":"","widthUnit":"%","width":""},"normal":{"opacity":"","backgroundColor":"","boxShadow":{"label":"Box Shadow","shadowColor":"","shadowHorizontal":"0","shadowVertical":"0","shadowBlur":"0","shadowSpread":"0"},"borderSettings":{"borderColor":"","borderType":"","borderRadius":{"label":"Border radius","unit":"px","max":"1000","desktop":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"tablet":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"mobile":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true}},"borderWidth":{"label":"Border width","unit":"px","max":"1000","desktop":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"tablet":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"mobile":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true}}}},"hover":{"opacity":"","backgroundColor":"","boxShadow":{"label":"Box Shadow","shadowColor":"","shadowHorizontal":"0","shadowVertical":"0","shadowBlur":"0","shadowSpread":"0"},"borderSettings":{"borderColor":"","borderType":"","borderRadius":{"label":"Border radius","unit":"px","max":"1000","desktop":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"tablet":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"mobile":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true}},"borderWidth":{"label":"Border width","unit":"px","max":"1000","desktop":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"tablet":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"mobile":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true}}}}}'
     }
 }
 
@@ -276,9 +277,11 @@ class ImageSettingsOptions extends Component {
         }
 
         const getValues = () => {
+            console.log(value)
             value.alt = imageData.alt_text;
-            value.imageSize.options = imageData.media_details.sizes;
             value.src = imageData.source_url;
+            value.imageSize.options = imageData.media_details.sizes;
+            value.imageSize.cropOptions.url = imageData.source_url;
             save();
         }
 
@@ -301,34 +304,41 @@ class ImageSettingsOptions extends Component {
                     }}
                 />
                 {value.size === 'custom' &&
-                    <Fragment>
-                        <MiniSizeControl
-                            label={__('Width', 'gutenberg-extra')}
-                            unit={value.imageSize.widthUnit}
-                            onChangeUnit={val => {
-                                value.imageSize.widthUnit = val;
-                                saveAndSend();
-                            }}
-                            value={value.imageSize.width}
-                            onChangeValue={val => {
-                                value.imageSize.width = val;
-                                saveAndSend();
-                            }}
-                        />
-                        <MiniSizeControl
-                            label={__('Height', 'gutenberg-extra')}
-                            unit={value.imageSize.heightUnit}
-                            onChangeUnit={val => {
-                                value.imageSize.heightUnit = val;
-                                saveAndSend();
-                            }}
-                            value={value.imageSize.height}
-                            onChangeValue={val => {
-                                value.imageSize.height = val;
-                                saveAndSend();
-                            }}
-                        />
-                    </Fragment>
+                    <ImageCrop 
+                        imageOptions={value.imageSize.cropOptions}
+                        onChange={val => {
+                            value.imageSize.cropOptions = val;
+                            saveAndSend();
+                        }}
+                    />
+                    // <Fragment>
+                    //     <MiniSizeControl
+                    //         label={__('Width', 'gutenberg-extra')}
+                    //         unit={value.imageSize.widthUnit}
+                    //         onChangeUnit={val => {
+                    //             value.imageSize.widthUnit = val;
+                    //             saveAndSend();
+                    //         }}
+                    //         value={value.imageSize.width}
+                    //         onChangeValue={val => {
+                    //             value.imageSize.width = val;
+                    //             saveAndSend();
+                    //         }}
+                    //     />
+                    //     <MiniSizeControl
+                    //         label={__('Height', 'gutenberg-extra')}
+                    //         unit={value.imageSize.heightUnit}
+                    //         onChangeUnit={val => {
+                    //             value.imageSize.heightUnit = val;
+                    //             saveAndSend();
+                    //         }}
+                    //         value={value.imageSize.height}
+                    //         onChangeValue={val => {
+                    //             value.imageSize.height = val;
+                    //             saveAndSend();
+                    //         }}
+                    //     />
+                    // </Fragment>
                 }
                 <AlignmentControl
                     value={value.alignment}

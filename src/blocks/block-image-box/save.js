@@ -12,6 +12,7 @@ const {
 import classnames from 'classnames';
 import { Link } from '../../components/link-options/index';
 import { Image } from '../../components/image-settings';
+import { ButtonSaver } from '../../components/button-styles/test';
 import {
     setLinkStyles,
     setTitleStyles,
@@ -40,7 +41,9 @@ const save = (props) => {
             backgroundImage,
             backgroundGradient,
             linkOptions,
-            linkTitle
+            linkTitle,
+            //Test
+            buttonStylesTest,
         },
     } = props;
 
@@ -93,11 +96,8 @@ const save = (props) => {
                         className="gx-image-box-description" 
                         value={description} 
                     />
-                    <RichText.Content
-                        className="gx-image-box-read-more-text gx-image-box-read-more-link"
-                        style={buttonStyles}
-                        tagName="span"
-                        value={readMoreText}
+                    <ButtonSaver 
+                        buttonSettings={buttonStylesTest}
                     />
                 </div>
             </Link>

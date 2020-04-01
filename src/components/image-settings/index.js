@@ -547,7 +547,7 @@ export const Image = props => {
 }
 
 /**
- * Bakcend upload block
+ * Backend upload block
  */
 export const ImageUpload = props => {
     const {

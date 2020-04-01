@@ -6,6 +6,7 @@
  * 1 - Font Family resolver
  * 2 - Responsive Frontend Styles resolver
  * 3 - Responsive Backend Styles resolver
+ * 4 - Fix object follower
  */
 
 /**
@@ -277,7 +278,7 @@ class ResponsiveStylesResolver {
             return newObject;
         }
         const object = this.object[device];
-        if ( device === 'general' )
+        if (device === 'general')
             device = 'desktop'
         if (typeof newObject[device] === 'undefined')
             newObject[device] = {};
@@ -390,4 +391,50 @@ class BackEndResponsiveStyles {
         return responsiveStyles;
     }
 
+}
+
+/**
+ * Fix Object Follower
+ * Returns top and left constant position relative to scroll container for fixed elements
+ * 
+ * @param {node} target     Element to be fixed
+ * @param {node} reference  Element to be followed
+ * @param {node} scrollEl   Element container with scroll attach
+ */
+
+class FixObjectFollower {
+    constructor(target, reference, scrollEl) {
+        this.target = target;
+        this.reference = reference;
+        this.scrollEl = scrollEl || document;
+        this.initEvents();
+    }
+
+    initEvents() {
+        this.setPosition();
+        this.scrollEl.addEventListener(
+            'scroll',
+            this.setPosition.bind(this)
+        )
+        this.scrollEl.addEventListener(
+            'resize',
+            this.setPosition.bind(this)
+        )
+        this.scrollEl.addEventListener(
+            'onchange',
+            this.setPosition.bind(this)
+        )
+        window.addEventListener(
+            'resize',
+            this.setPosition.bind(this)
+        )
+    }
+
+    setPosition() {
+        const position = this.reference.getBoundingClientRect();
+        const posTop = position.top;
+        const posLeft = position.left + position.width;
+        this.target.style.top = posTop + 'px';
+        this.target.style.left = posLeft + 'px';
+    }
 }

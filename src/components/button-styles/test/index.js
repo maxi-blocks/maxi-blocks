@@ -2,8 +2,8 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { Fragment } = wp.element;
 const { Component } = wp.element;
+const { RichText } = wp.blockEditor;
 const {
     RadioControl,
     Button
@@ -17,12 +17,14 @@ const {
  * External dependencies
  */
 import AlignmentControl from '../../alignment-control/';
-import { BlockBorder } from '../../block-border/';
-import DimensionsControl from '../../dimensions-control/index';
-import ColorControl from '../../color-control/';
+import SizeControlTest from '../../size-control/test/';
+import { ColorControlTest1 } from '../../color-control/test/';
 import { PopoverControl } from '../../popover/';
 import { BoxShadow } from '../../box-shadow/index';
-import { LinkedText } from '../../external-link/test/';
+import Typography from '../../typography/';
+import { BlockBorder } from '../../block-border/';
+import DimensionsControl from '../../dimensions-control/index';
+import { LinkedButton } from '../../external-link/test/';
 import {
     isEmpty,
     isNil,
@@ -40,7 +42,7 @@ import './editor.scss';
 export const buttonStyleAttributesTest = {
     buttonStylesTest: {
         type: 'string',
-        default: '{"label":"Button Styles","linkOptions":{},"alignment":"","borderSettings":{"borderColor":"","borderType":"","borderRadius":{"label":"Border radius","unit":"px","max":"1000","desktop":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"tablet":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"mobile":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true}},"borderWidth":{"label":"Border width","unit":"px","max":"1000","desktop":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"tablet":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"mobile":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true}}},"normal":{"color":"","opacity":"","backgroundColor":"","padding":"","margin":"","boxShadow":{"label":"Box Shadow","shadowColor":"","shadowHorizontal":"0","shadowVertical":"0","shadowBlur":"0","shadowSpread":"0"}},"hover":{"color":"","opacity":"","backgroundColor":"","padding":"","margin":"","boxShadow":{"label":"Box Shadow","shadowColor":"","shadowHorizontal":"0","shadowVertical":"0","shadowBlur":"0","shadowSpread":"0"}}}'
+        default: '{"label":"Button Styles","buttonText": "","linkOptions":{},"alignment":"","size":{"label":"Size","general":{"max-widthUnit":"px","max-width":"","widthUnit":"px","width":"","min-widthUnit":"px","min-width":"","max-heightUnit":"px","max-height":"","heightUnit":"px","height":"","minHeightUnit":"px","minHeight":""}},"normal":{"color":"","backgroundColor":"","boxShadow":{"label":"Box Shadow","shadowColor":"","shadowHorizontal":"0","shadowVertical":"0","shadowBlur":"0","shadowSpread":"0"},"typography":{"label":"Typography","font":"Default","options":{},"desktop":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"},"tablet":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"},"mobile":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"}},"borderSettings":{"borderColor":"","borderType":"","borderRadius":{"label":"Border radius","unit":"px","max":"1000","desktop":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"tablet":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"mobile":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true}},"borderWidth":{"label":"Border width","unit":"px","max":"1000","desktop":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"tablet":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"mobile":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true}}},"padding":{"label":"Padding","unit":"px","desktop":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true},"tablet":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true},"mobile":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true}},"margin":{"label":"Margin","min":"none","unit":"px","desktop":{"margin-top":0,"margin-right":0,"margin-bottom":0,"margin-left":0,"sync":true},"tablet":{"margin-top":0,"margin-right":0,"margin-bottom":0,"margin-left":0,"sync":true},"mobile":{"margin-top":0,"margin-right":0,"margin-bottom":0,"margin-left":0,"sync":true}},"opacity":""},"hover":{"color":"","backgroundColor":"","boxShadow":{"label":"Box Shadow","shadowColor":"","shadowHorizontal":"0","shadowVertical":"0","shadowBlur":"0","shadowSpread":"0"},"typography":{"label":"Typography","font":"Default","options":{},"desktop":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"},"tablet":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"},"mobile":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"}},"borderSettings":{"borderColor":"","borderType":"","borderRadius":{"label":"Border radius","unit":"px","max":"1000","desktop":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"tablet":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"mobile":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true}},"borderWidth":{"label":"Border width","unit":"px","max":"1000","desktop":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"tablet":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"mobile":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true}}},"padding":{"label":"Padding","unit":"px","desktop":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true},"tablet":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true},"mobile":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true}},"margin":{"label":"Margin","min":"none","unit":"px","desktop":{"margin-top":0,"margin-right":0,"margin-bottom":0,"margin-left":0,"sync":true},"tablet":{"margin-top":0,"margin-right":0,"margin-bottom":0,"margin-left":0,"sync":true},"mobile":{"margin-top":0,"margin-right":0,"margin-bottom":0,"margin-left":0,"sync":true}},"opacity":""}}'
     }
 }
 
@@ -57,7 +59,7 @@ export class ButtonStyles extends Component {
             className = 'gx-buttonstyles-control',
             buttonSettings,
             onChange,
-            target = ''
+            target = 'gx-buttoneditor-button'
         } = this.props;
 
         const {
@@ -91,17 +93,32 @@ export class ButtonStyles extends Component {
                 label: value.label,
                 general: {}
             }
+            if (!isNil(value.alignment)) {
+                switch (value.alignment) {
+                    case 'left':
+                        response.general['margin-right'] = 'auto';
+                        break;
+                    case 'center':
+                    case 'justify':
+                        response.general['margin-right'] = 'auto';
+                        response.general['margin-left'] = 'auto';
+                        break;
+                    case 'right':
+                        response.general['margin-left'] = 'auto';
+                        break;
+                }
+            }
             if (!isEmpty(value.normal.color)) {
                 response.general['color'] = value.normal.color;
             }
             if (!isEmpty(value.normal.backgroundColor)) {
                 response.general['background-color'] = value.normal.backgroundColor;
             }
-            if (!isEmpty(value.borderSettings.borderColor)) {
-                response.general['border-color'] = value.borderSettings.borderColor;
+            if (!isEmpty(value.normal.borderSettings.borderColor)) {
+                response.general['border-color'] = value.normal.borderSettings.borderColor;
             }
-            if (!isEmpty(value.borderSettings.borderType)) {
-                response.general['border-style'] = value.borderSettings.borderType;
+            if (!isEmpty(value.normal.borderSettings.borderType)) {
+                response.general['border-style'] = value.normal.borderSettings.borderType;
             }
             return response;
         }
@@ -119,6 +136,12 @@ export class ButtonStyles extends Component {
             }
             if (!isEmpty(value.hover.backgroundColor)) {
                 response.general['background-color'] = value.hover.backgroundColor;
+            }
+            if (!isEmpty(value.hover.borderSettings.borderColor)) {
+                response.general['border-color'] = value.hover.borderSettings.borderColor;
+            }
+            if (!isEmpty(value.hover.borderSettings.borderType)) {
+                response.general['border-style'] = value.hover.borderSettings.borderType;
             }
             return response;
         }
@@ -179,6 +202,22 @@ export class ButtonStyles extends Component {
 
         return (
             <div className={className}>
+                <AlignmentControl
+                    value={value.alignment}
+                    onChange={val => {
+                        value.alignment = val;
+                        saveAndSend()
+                    }}
+                />
+                <SizeControlTest
+                    sizeSettings={value.size}
+                    onChange={val => {
+                        value.size = val;
+                        saveAndSend();
+                    }}
+                    target={target}
+                />
+                <hr style={{ borderTop: '1px solid #ddd' }} />
                 <RadioControl
                     className="gx-buttonstyles-selector-control"
                     selected={selector}
@@ -190,18 +229,20 @@ export class ButtonStyles extends Component {
                         this.setState({ selector });
                     }}
                 />
-                <ColorControl
+                <ColorControlTest1
+                    showColor
                     label={__('Text Colour', 'gutenberg-extra')}
                     color={value[selector].color}
-                    onChange={val => {
+                    onColorChange={val => {
                         value[selector].color = val;
                         saveAndSend();
                     }}
                 />
-                <ColorControl
+                <ColorControlTest1
+                    showColor
                     label={__('Background Colour', 'gutenberg-extra')}
                     color={value[selector].backgroundColor}
-                    onChange={val => {
+                    onColorChange={val => {
                         value[selector].backgroundColor = val;
                         saveAndSend();
                     }}
@@ -210,7 +251,7 @@ export class ButtonStyles extends Component {
                     label={__('Box shadow', 'gutenberg-extra')}
                     popovers={[
                         {
-                            content:(
+                            content: (
                                 <BoxShadow
                                     boxShadowOptions={value[selector].boxShadow}
                                     onChange={val => {
@@ -227,30 +268,53 @@ export class ButtonStyles extends Component {
                         }
                     ]}
                 />
-                <hr style={{ borderTop: '1px solid #ddd' }} />
+                <Typography
+                    fontOptions={value[selector].typography}
+                    onChange={val => {
+                        value[selector].typography = val;
+                        saveAndSend();
+                    }}
+                    target={target}
+                />
                 <BlockBorder
-                    borderColor={value.borderSettings.borderColor}
+                    borderColor={value[selector].borderSettings.borderColor}
                     onChangeBorderColor={val => {
-                        value.borderSettings.borderColor = val;
+                        value[selector].borderSettings.borderColor = val;
                         saveAndSend();
                     }}
-                    borderType={value.borderSettings.borderType}
+                    borderType={value[selector].borderSettings.borderType}
                     onChangeBorderType={val => {
-                        value.borderSettings.borderType = val;
+                        value[selector].borderSettings.borderType = val;
                         saveAndSend();
                     }}
-                    borderRadius={value.borderSettings.borderRadius}
+                    borderRadius={value[selector].borderSettings.borderRadius}
                     onChangeBorderRadius={val => {
-                        value.borderSettings.borderRadius = val;
+                        value[selector].borderSettings.borderRadius = val;
                         saveAndSend();
                     }}
-                    borderWidth={value.borderSettings.borderWidth}
+                    borderWidth={value[selector].borderSettings.borderWidth}
                     onChangeBorderWidth={val => {
-                        value.borderSettings.borderWidth = val;
+                        value[selector].borderSettings.borderWidth = val;
                         saveAndSend();
                     }}
                     borderRadiusTarget={target}
                     borderWidthTarget={target}
+                />
+                <DimensionsControl
+                    value={value[selector].padding}
+                    onChange={val => {
+                        value[selector].padding = val;
+                        saveAndSend()
+                    }}
+                    target={target}
+                />
+                <DimensionsControl
+                    value={value[selector].margin}
+                    onChange={val => {
+                        value[selector].margin = val;
+                        saveAndSend()
+                    }}
+                    target={target}
                 />
             </div>
         )
@@ -263,7 +327,7 @@ export class ButtonStyles extends Component {
 
 export const ButtonEditor = props => {
     const {
-        className = 'gx-buttonstyles-control',
+        className = 'gx-buttoneditor-button',
         buttonSettings,
         onChange,
     } = props;
@@ -271,21 +335,40 @@ export const ButtonEditor = props => {
     const value = typeof buttonSettings === 'object' ? buttonSettings : JSON.parse(buttonSettings);
 
     return (
-        <Button
+        <LinkedButton
             className={className}
-        >
-            <LinkedText 
-                label={__('Read more text...', 'gutenberg-extra')}
-                value={value.linkOptions}
-                onChange={val => {
-                    value.linkOptions = val;
-                    onChange(JSON.stringify(value));
-                }}
-            />
-        </Button>
+            placeholder={__('Read more text...', 'gutenberg-extra')}
+            buttonText={value.buttonText}
+            onTextChange={val => {
+                value.buttonText = val;
+                onChange(JSON.stringify(value));
+            }}
+            externalLink={value.linkOptions}
+            onLinkChange={val => {
+                value.linkOptions = val;
+                onChange(JSON.stringify(value));
+            }}
+        />
     )
 }
 
 /**
  * FrontEnd
  */
+export const ButtonSaver = props => {
+    const {
+        className = 'gx-buttoneditor-button',
+        buttonSettings,
+    } = props;
+
+    const value = typeof buttonSettings === 'object' ? buttonSettings : JSON.parse(buttonSettings);
+
+    return (
+        <Button 
+            className={className}
+            href={value.linkOptions.url}
+        >
+            {value.buttonText}
+        </Button>
+    )
+}

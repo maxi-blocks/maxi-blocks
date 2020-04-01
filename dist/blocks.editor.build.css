@@ -583,6 +583,28 @@ input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before {
  * Can include things like variables and mixins
  * that are used across the project.
 */
+.gx-buttoneditor-button {
+  display: block; }
+
+.gx-externalbutton-popover {
+  position: fixed; }
+
+.gx-externalbutton-popover button {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  opacity: 0;
+  -webkit-transition: opacity .3s ease-in-out;
+  -o-transition: opacity .3s ease-in-out;
+  transition: opacity .3s ease-in-out; }
+
+.gx-buttoneditor-button:hover .gx-externalbutton-popover button {
+  opacity: 1; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
 .gx-sidebar .gx-buttonstyles-control .gx-buttonstyles-selector-control .components-base-control__field {
   display: grid;
   grid-template-columns: 1fr 1fr; }
@@ -607,6 +629,10 @@ input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before {
 .gx-buttonstyles-control .gx-buttonstyles-selector-control input:checked ~ label {
   color: #fff;
   background-color: #00ccff; }
+
+.gx-buttoneditor-control {
+  width: auto;
+  height: auto; }
 /**
  * #.# Common SCSS
  *

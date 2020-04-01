@@ -55,8 +55,6 @@ import {
     ImageUpload
 } from '../../components/image-settings/';
 // Testing
-// import ExternalLink from '../../components/external-link';
-// import LinkedText from '../../components/external-link/test';
 import { 
     ButtonStyles,
     ButtonEditor
@@ -66,7 +64,7 @@ import {
     ColorControlTest1,
     ColorControlTest2
 } from '../../components/color-control/test/';
-import { SizeControlTest } from '../../components/size-control/test';
+import SizeControlTest from '../../components/size-control/test';
 
 /**
  * Content
@@ -152,10 +150,10 @@ const edit = props => {
                 initialOpen={true}
                 title={__('Image Settings', 'gutenberg-extra')}
             >
-                <SizeControlTest 
+                {/* <SizeControlTest 
                     sizeSettings={sizeTest}
                     onChange={value => setAttributes({sizeTest: value})}
-                />
+                /> */}
                 <ColorControlTest1
                     label={__('Color Test 1', 'gutenberg-extra')}
                     showColor
@@ -278,7 +276,6 @@ const edit = props => {
                             <ButtonStyles
                                 buttonSettings={buttonStylesTest}
                                 onChange={value => setAttributes({buttonStylesTest: value})}
-                                target="gx-image-box-read-more-text"
                             />
                         </PanelBody>
                     </AccordionItemPanel>
@@ -494,64 +491,11 @@ const edit = props => {
                         onChange={value => setAttributes({ description: value })}
                         className="gx-image-box-description"
                     />
-                    <RichText
-                        tagName="span"
-                        style={buttonStyles}
-                        placeholder={__('Read more text…', 'gutenberg-extra')}
-                        value={readMoreText}
-                        onChange={value => setAttributes({ readMoreText: value })}
-                        className="gx-image-box-read-more-text"
-                    />
-                    <URLInput
-                        value={readMoreLink}
-                        placeholder={__('Read more link…', 'gutenberg-extra')}
-                        onChange={value => setAttributes({ readMoreLink: value })}
-                        className="gx-image-box-read-more-link"
-                    />
-                    {/* <ButtonEditor 
+                    <ButtonEditor 
                         buttonSettings={buttonStylesTest}
                         onChange={value => setAttributes({buttonStylesTest: value})}
-                        className="gx-image-box-read-more-text"
-                    /> */}
-                    {/* <LinkedText 
-                        label="If there's a link, I'll dissapear..."
-                        externalLink={readMoreLinkTest}
-                        settings={[
-                            {
-                                id: 'opensInNewTab',
-                                title: 'Open in new tab',
-                            },
-                            {
-                                id: 'oleee',
-                                title: 'Here we can put as many options we want',
-                            },
-                        ]}
-                        onChange={value => setAttributes({ readMoreLinkTest: JSON.stringify(value) })}
-                    /> */}
-                    {/* <LinkedText 
-                        content={
-                            <RichText
-                                tagName="span"
-                                style={buttonStyles}
-                                placeholder={__('Read more text…', 'gutenberg-extra')}
-                                value={readMoreTextTest}
-                                onChange={value => setAttributes({ readMoreTextTest: value })}
-                                className="gx-image-box-read-more-text"
-                            />
-                        }
-                        externalLink={readMoreLinkTest}
-                        settings={[
-                            {
-                                id: 'opensInNewTab',
-                                title: 'Open in new tab',
-                            },
-                            {
-                                id: 'oleee',
-                                title: 'Here we can put as many options we want',
-                            },
-                        ]}
-                        onChange={value => setAttributes({ readMoreLinkTest: JSON.stringify(value) })}
-                    /> */}
+                        buttonText={readMoreTextTest}
+                    />
                 </div>
             </div>
         </div>

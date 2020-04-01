@@ -23,7 +23,7 @@ export const sizeControlAttributesTest = {
 /**
  * Block
  */
-export const SizeControlTest = (props) => {
+const SizeControlTest = (props) => {
     const {
         sizeSettings,
         onChange,
@@ -131,3 +131,5 @@ export const SizeControlTest = (props) => {
         </Fragment>
     )
 }
+
+export default SizeControlTest;

@@ -1,3 +1,4 @@
+// ButtonStyles
 .gx-sidebar .gx-buttonstyles-control .gx-buttonstyles-selector-control .components-base-control__field {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -27,4 +28,10 @@
 .gx-buttonstyles-control .gx-buttonstyles-selector-control input:checked ~ label {
     color: #fff;
     background-color: #00ccff;
+}
+
+// ButtonEditor
+.gx-buttoneditor-control {
+    width: auto;
+    height: auto;
 }

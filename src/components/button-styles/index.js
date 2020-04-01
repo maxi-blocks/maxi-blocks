@@ -1,219 +1,371 @@
+/**
+ * WordPress dependencies
+ */
 const { __ } = wp.i18n;
-const { Fragment } = wp.element;
+const { Component } = wp.element;
 const {
-    PanelColorSettings
-} = wp.blockEditor;
+    RadioControl,
+    Button
+} = wp.components;
+const {
+    dispatch,
+    select
+} = wp.data;
 
-import { RadioControl, SelectControl } from '@wordpress/components';
+/**
+ * External dependencies
+ */
+import AlignmentControl from '../alignment-control/';
+import SizeControlTest from '../size-control/test/';
+import { ColorControlTest1 } from '../color-control/test/';
+import { PopoverControl } from '../popover/';
+import { BoxShadow } from '../box-shadow/index';
+import Typography from '../typography/';
+import { BlockBorder } from '../block-border/';
 import DimensionsControl from '../dimensions-control/index';
-import { dimensionsControlAttributesPadding } from '../dimensions-control/attributes';
-import { dimensionsControlAttributesMargin } from '../dimensions-control/attributes';
-import { BoxShadowOptions, BoxShadow } from '../box-shadow/index';
+import { LinkedButton } from '../external-link/test/';
+import {
+    isEmpty,
+    isNil,
+} from 'lodash';
 
+/**
+ * Styles
+ */
+import './editor.scss';
+
+/**
+ * Attributes
+ */
 export const buttonStyleAttributes = {
-    buttonColor: {
+    buttonStyles: {
         type: 'string',
-        default: "",
-    },
-    buttonBgColor: {
-        type: 'string',
-        default: "",
-    },
-    buttonHoverColor: {
-        type: 'string',
-        default: "",
-    },
-    buttonHoverBgColor: {
-        type: 'string',
-        default: "",
-    },
-    normalHoverOption: {
-        type: 'string',
-        default: 'normal',
-    },
-    buttonBorderColor: {
-        type: 'string',
-        default: "",
-    },
-    buttonHoverBorderColor: {
-        type: 'string',
-        default: "",
-    },
-    buttonPadding: {
-        type: 'string',
-        default: '{"label":"Padding","unit":"px","max":"1000","desktop":{"padding-top":10px,"padding-right":10px,"padding-bottom":10px,"padding-left":10px,"sync":true},"tablet":{"padding-top":10px,"padding-right":10px,"padding-bottom":10px,"padding-left":10px,"sync":true},"mobile":{"padding-top":10px,"padding-right":10px,"padding-bottom":10px,"padding-left":10px,"sync":true}}'
-    },
-    buttonMargin: {
-        type: 'string',
-        default: '{"label":"Margin","unit":"px","max":"1000","desktop":{"margin-top":0,"margin-right":0,"margin-bottom":0,"margin-left":0,"sync":true},"tablet":{"margin-top":0,"margin-right":0,"margin-bottom":0,"margin-left":0,"sync":true},"mobile":{"margin-top":0,"margin-right":0,"margin-bottom":0,"margin-left":0,"sync":true}}'
-    },
-    buttonHoverPadding: {
-        type: 'string',
-        default: '{"label":"Padding","unit":"px","max":"1000","desktop":{"padding-top":10px,"padding-right":10px,"padding-bottom":10px,"padding-left":10px,"sync":true},"tablet":{"padding-top":10px,"padding-right":10px,"padding-bottom":10px,"padding-left":10px,"sync":true},"mobile":{"padding-top":10px,"padding-right":10px,"padding-bottom":10px,"padding-left":10px,"sync":true}}'
-    },
-    buttonHoverMargin: {
-        type: 'string',
-        default: '{"label":"Margin","unit":"px","max":"1000","desktop":{"margin-top":0,"margin-right":0,"margin-bottom":0,"margin-left":0,"sync":true},"tablet":{"margin-top":0,"margin-right":0,"margin-bottom":0,"margin-left":0,"sync":true},"mobile":{"margin-top":0,"margin-right":0,"margin-bottom":0,"margin-left":0,"sync":true}}'
-    },
-    buttonBorderType: {
-        type: 'string',
-        default: 'none',
-    },
-    buttonBorderRadius: {
-        type: 'string',
-        default: '{"label":"Border radius","unit":"px","max":"1000","desktop":{"button-top-left-radius":0,"button-top-right-radius":0,"button-bottom-right-radius":0,"button-bottom-left-radius":0,"sync":true},"tablet":{"button-top-left-radius":0,"button-top-right-radius":0,"button-bottom-right-radius":0,"button-bottom-left-radius":0,"sync":true},"mobile":{"button-top-left-radius":0,"button-top-right-radius":0,"button-bottom-right-radius":0,"button-bottom-left-radius":0,"sync":true}}'
-    },
-    buttonBorderWidth: {
-        type: 'string',
-        default: '{"label":"Border width","unit":"px","max":"1000","desktop":{"button-top-width":0,"button-right-width":0,"button-bottom-width":0,"button-left-width":0,"sync":true},"tablet":{"button-top-width":0,"button-right-width":0,"button-bottom-width":0,"button-left-width":0,"sync":true},"mobile":{"button-top-width":0,"button-right-width":0,"button-bottom-width":0,"button-left-width":0,"sync":true}}'
-    },
-    boxShadowOptions: {
-        type: 'string',
-        default: '{"shadowColor": "inherit", "shadowHorizontal": "0", "shadowVertical": "0", "shadowBlur": "0", "shadowSpread": "0"}',
+        default: '{"label":"Button Styles","buttonText": "","linkOptions":{},"alignment":"","size":{"label":"Size","general":{"max-widthUnit":"px","max-width":"","widthUnit":"px","width":"","min-widthUnit":"px","min-width":"","max-heightUnit":"px","max-height":"","heightUnit":"px","height":"","minHeightUnit":"px","minHeight":""}},"normal":{"color":"","backgroundColor":"","boxShadow":{"label":"Box Shadow","shadowColor":"","shadowHorizontal":"0","shadowVertical":"0","shadowBlur":"0","shadowSpread":"0"},"typography":{"label":"Typography","font":"Default","options":{},"desktop":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"},"tablet":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"},"mobile":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"}},"borderSettings":{"borderColor":"","borderType":"","borderRadius":{"label":"Border radius","unit":"px","max":"1000","desktop":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"tablet":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"mobile":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true}},"borderWidth":{"label":"Border width","unit":"px","max":"1000","desktop":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"tablet":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"mobile":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true}}},"padding":{"label":"Padding","unit":"px","desktop":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true},"tablet":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true},"mobile":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true}},"margin":{"label":"Margin","min":"none","unit":"px","desktop":{"margin-top":0,"margin-right":0,"margin-bottom":0,"margin-left":0,"sync":true},"tablet":{"margin-top":0,"margin-right":0,"margin-bottom":0,"margin-left":0,"sync":true},"mobile":{"margin-top":0,"margin-right":0,"margin-bottom":0,"margin-left":0,"sync":true}},"opacity":""},"hover":{"color":"","backgroundColor":"","boxShadow":{"label":"Box Shadow","shadowColor":"","shadowHorizontal":"0","shadowVertical":"0","shadowBlur":"0","shadowSpread":"0"},"typography":{"label":"Typography","font":"Default","options":{},"desktop":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"},"tablet":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"},"mobile":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"}},"borderSettings":{"borderColor":"","borderType":"","borderRadius":{"label":"Border radius","unit":"px","max":"1000","desktop":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"tablet":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"mobile":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true}},"borderWidth":{"label":"Border width","unit":"px","max":"1000","desktop":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"tablet":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"mobile":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true}}},"padding":{"label":"Padding","unit":"px","desktop":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true},"tablet":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true},"mobile":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true}},"margin":{"label":"Margin","min":"none","unit":"px","desktop":{"margin-top":0,"margin-right":0,"margin-bottom":0,"margin-left":0,"sync":true},"tablet":{"margin-top":0,"margin-right":0,"margin-bottom":0,"margin-left":0,"sync":true},"mobile":{"margin-top":0,"margin-right":0,"margin-bottom":0,"margin-left":0,"sync":true}},"opacity":""}}'
     }
 }
 
-export const ButtonStyles = (props) => {
+/**
+ * Block
+ */
+export class ButtonStyles extends Component {
+    state = {
+        selector: 'normal',
+    }
+
+    render() {
+        const {
+            className = 'gx-buttonstyles-control',
+            buttonSettings,
+            onChange,
+            target = 'gx-buttoneditor-button'
+        } = this.props;
+
+        const {
+            selector
+        } = this.state;
+
+        const value = typeof buttonSettings === 'object' ? buttonSettings : JSON.parse(buttonSettings);
+
+        /**
+               * Retrieves the old meta data
+               */
+        const getMeta = () => {
+            let meta = select('core/editor').getEditedPostAttribute('meta')._gutenberg_extra_responsive_styles;
+            return meta ? JSON.parse(meta) : {};
+        }
+
+		/**
+		 * Retrieve the target for responsive CSS
+		 */
+        const getTarget = (adition = '') => {
+            let styleTarget = select('core/block-editor').getBlockAttributes(select('core/block-editor').getSelectedBlockClientId()).uniqueID;
+            styleTarget = `${styleTarget}${target.length > 0 || adition.length > 0 ? `__$${target}${adition}` : ''}`;
+            return styleTarget;
+        }
+
+        /**
+         * Creates a new object for being joined with the rest of the values on meta
+         */
+        const getNormalStylesObject = () => {
+            const response = {
+                label: value.label,
+                general: {}
+            }
+            if (!isNil(value.alignment)) {
+                switch (value.alignment) {
+                    case 'left':
+                        response.general['margin-right'] = 'auto';
+                        break;
+                    case 'center':
+                    case 'justify':
+                        response.general['margin-right'] = 'auto';
+                        response.general['margin-left'] = 'auto';
+                        break;
+                    case 'right':
+                        response.general['margin-left'] = 'auto';
+                        break;
+                }
+            }
+            if (!isEmpty(value.normal.color)) {
+                response.general['color'] = value.normal.color;
+            }
+            if (!isEmpty(value.normal.backgroundColor)) {
+                response.general['background-color'] = value.normal.backgroundColor;
+            }
+            if (!isEmpty(value.normal.borderSettings.borderColor)) {
+                response.general['border-color'] = value.normal.borderSettings.borderColor;
+            }
+            if (!isEmpty(value.normal.borderSettings.borderType)) {
+                response.general['border-style'] = value.normal.borderSettings.borderType;
+            }
+            return response;
+        }
+
+        /**
+         * Creates a new object for being joined with the rest of the values on meta
+         */
+        const getHoverStylesObject = () => {
+            const response = {
+                label: value.label,
+                general: {}
+            }
+            if (!isEmpty(value.hover.color)) {
+                response.general['color'] = value.hover.color;
+            }
+            if (!isEmpty(value.hover.backgroundColor)) {
+                response.general['background-color'] = value.hover.backgroundColor;
+            }
+            if (!isEmpty(value.hover.borderSettings.borderColor)) {
+                response.general['border-color'] = value.hover.borderSettings.borderColor;
+            }
+            if (!isEmpty(value.hover.borderSettings.borderType)) {
+                response.general['border-style'] = value.hover.borderSettings.borderType;
+            }
+            return response;
+        }
+
+		/**
+		* Creates a new object that
+		*
+		* @param {string} target	Block attribute: uniqueID
+		* @param {obj} meta		Old and saved metadate
+		* @param {obj} value	New values to add
+		*/
+        const metaValue = (type) => {
+            const meta = getMeta();
+            let styleTarget = '';
+            switch (type) {
+                case 'normal':
+                    styleTarget = getTarget();
+                    break;
+                case 'hover':
+                    styleTarget = getTarget(':hover');
+                    break;
+            }
+            let obj = {};
+            switch (type) {
+                case 'normal':
+                    obj = getNormalStylesObject();
+                    break;
+                case 'hover':
+                    obj = getHoverStylesObject();
+                    break;
+            }
+            const responsiveStyle = new ResponsiveStylesResolver(styleTarget, meta, obj);
+            const response = JSON.stringify(responsiveStyle.getNewValue);
+            return response;
+        }
+
+		/**
+		* Saves and send the data. Also refresh the styles on Editor
+		*/
+        const saveAndSend = () => {
+            save();
+            saveMeta('normal');
+            saveMeta('hover');
+            new BackEndResponsiveStyles(getMeta());
+        }
+
+        const save = () => {
+            onChange(JSON.stringify(value));
+        }
+
+        const saveMeta = (type) => {
+            dispatch('core/editor').editPost({
+                meta: {
+                    _gutenberg_extra_responsive_styles: metaValue(type),
+                },
+            });
+        }
+
+        return (
+            <div className={className}>
+                <AlignmentControl
+                    value={value.alignment}
+                    onChange={val => {
+                        value.alignment = val;
+                        saveAndSend()
+                    }}
+                />
+                <SizeControlTest
+                    sizeSettings={value.size}
+                    onChange={val => {
+                        value.size = val;
+                        saveAndSend();
+                    }}
+                    target={target}
+                />
+                <hr style={{ borderTop: '1px solid #ddd' }} />
+                <RadioControl
+                    className="gx-buttonstyles-selector-control"
+                    selected={selector}
+                    options={[
+                        { label: 'Normal', value: 'normal' },
+                        { label: 'Hover', value: 'hover' },
+                    ]}
+                    onChange={selector => {
+                        this.setState({ selector });
+                    }}
+                />
+                <ColorControlTest1
+                    showColor
+                    label={__('Text Colour', 'gutenberg-extra')}
+                    color={value[selector].color}
+                    onColorChange={val => {
+                        value[selector].color = val;
+                        saveAndSend();
+                    }}
+                />
+                <ColorControlTest1
+                    showColor
+                    label={__('Background Colour', 'gutenberg-extra')}
+                    color={value[selector].backgroundColor}
+                    onColorChange={val => {
+                        value[selector].backgroundColor = val;
+                        saveAndSend();
+                    }}
+                />
+                <PopoverControl
+                    label={__('Box shadow', 'gutenberg-extra')}
+                    popovers={[
+                        {
+                            content: (
+                                <BoxShadow
+                                    boxShadowOptions={value[selector].boxShadow}
+                                    onChange={val => {
+                                        value[selector].boxShadow = JSON.parse(val);
+                                        saveAndSend()
+                                    }}
+                                    target={
+                                        selector != 'hover' ?
+                                            `${target}` :
+                                            `${target}:hover`
+                                    }
+                                />
+                            )
+                        }
+                    ]}
+                />
+                <Typography
+                    fontOptions={value[selector].typography}
+                    onChange={val => {
+                        value[selector].typography = val;
+                        saveAndSend();
+                    }}
+                    target={target}
+                />
+                <BlockBorder
+                    borderColor={value[selector].borderSettings.borderColor}
+                    onChangeBorderColor={val => {
+                        value[selector].borderSettings.borderColor = val;
+                        saveAndSend();
+                    }}
+                    borderType={value[selector].borderSettings.borderType}
+                    onChangeBorderType={val => {
+                        value[selector].borderSettings.borderType = val;
+                        saveAndSend();
+                    }}
+                    borderRadius={value[selector].borderSettings.borderRadius}
+                    onChangeBorderRadius={val => {
+                        value[selector].borderSettings.borderRadius = val;
+                        saveAndSend();
+                    }}
+                    borderWidth={value[selector].borderSettings.borderWidth}
+                    onChangeBorderWidth={val => {
+                        value[selector].borderSettings.borderWidth = val;
+                        saveAndSend();
+                    }}
+                    borderRadiusTarget={target}
+                    borderWidthTarget={target}
+                />
+                <DimensionsControl
+                    value={value[selector].padding}
+                    onChange={val => {
+                        value[selector].padding = val;
+                        saveAndSend()
+                    }}
+                    target={target}
+                />
+                <DimensionsControl
+                    value={value[selector].margin}
+                    onChange={val => {
+                        value[selector].margin = val;
+                        saveAndSend()
+                    }}
+                    target={target}
+                />
+            </div>
+        )
+    }
+}
+
+/**
+ * Backend editor
+ */
+export const ButtonEditor = props => {
     const {
-        buttonTextColorLabel = __('Text Colour', 'gutenberg-extra'),
-        buttonColor = props.attributes.buttonColor,
-        buttonColorLabel = __('Border Colour', 'gutenberg-extra'),
-        buttonBorderTypeLabel = __("Border Type", 'gutenberg-extra'),
-        buttonBgColorLabel = __('Background Colour', 'gutenberg-extra'),
-        buttonBorderTypeClassName = "gx-button--buttonBorder-type",
-        buttonBorderType = props.attributes.buttonBorderType,
-        buttonBorderTypeOptions = [
-            { label: 'None', value: 'none' },
-            { label: 'Dotted', value: 'dotted' },
-            { label: 'Dashed', value: 'dashed' },
-            { label: 'Solid', value: 'solid' },
-            { label: 'Double', value: 'double' },
-            { label: 'Groove', value: 'groove' },
-            { label: 'Ridge', value: 'ridge' },
-            { label: 'Inset', value: 'inset' },
-            { label: 'Outset', value: 'outset' },
-        ],
-        buttonBorderRadius = props.attributes.buttonBorderRadius,
-        buttonBorderWidth = props.attributes.buttonBorderWidth,
-        buttonBorderRadiusTarget = '',
-        buttonBorderWidthTarget = '',
-        buttonBgColor,
-        buttonMargin,
-        buttonPadding,
-        buttonHoverColor,
-        buttonHoverBgColor,
-        buttonBorderColor,
-        buttonHoverBorderColor,
-        setAttributes,
-        attributes: {
-            normalHoverOption,
-        },
-        boxShadowOptions
+        className = 'gx-buttoneditor-button',
+        buttonSettings,
+        onChange,
     } = props;
 
-    const onSelectState = (value) => setAttributes({ normalHoverOption: value });
+    const value = typeof buttonSettings === 'object' ? buttonSettings : JSON.parse(buttonSettings);
 
     return (
-        <Fragment>
-            <RadioControl
-                className='gx-normal-hover-setting'
-                selected={normalHoverOption}
-                options={[
-                    { label: __('Normal', 'gutenberg-extra'), value: 'normal' },
-                    { label: __('Hover', 'gutenberg-extra'), value: 'hover' },
-                ]}
-                onChange={value => setAttributes({ normalHoverOption: value })}
-            />
-            {normalHoverOption === 'normal' &&
-                <Fragment>
-                    <PanelColorSettings
-                        className='gx-normal-hover-setting-normal'
-                        colorSettings={[
-                            {
-                                value: buttonColor,
-                                onChange: (value) => setAttributes({ buttonColor: value }),
-                                label: buttonTextColorLabel,
-                            },
-                        ]}
-                    />
-                    <PanelColorSettings
-                        className='gx-normal-hover-setting-normal'
-                        colorSettings={[
-                            {
-                                value: buttonBgColor,
-                                onChange: (value) => setAttributes({ buttonBgColor: value }),
-                                label: buttonBgColorLabel,
-                            },
-                        ]}
-                    />
-                    <PanelColorSettings
-                        className='gx-normal-hover-setting-normal'
-                        colorSettings={[
-                            {
-                                value: buttonBorderColor,
-                                onChange: (value) => setAttributes({ buttonBorderColor: value }),
-                                label: buttonColorLabel,
-                            },
-                        ]}
-                    />
-                    {/* <BoxShadowOptions
-                        boxShadowOptions={boxShadowOptions}
-                        onChangeOptions={value => { setAttributes({ boxShadowOptions: value }); }}
-                    /> */}
-                </Fragment>
-            }
-            {normalHoverOption === 'hover' &&
-                <Fragment>
-                    <PanelColorSettings
-                        className='gx-normal-hover-setting-hover'
-                        colorSettings={[
-                            {
-                                value: buttonHoverColor,
-                                onChange: (value) => setAttributes({ buttonHoverColor: value }),
-                                label: buttonTextColorLabel,
-                            },
-                        ]}
-                    />
-                    <PanelColorSettings
-                        className='gx-normal-hover-setting-hover'
-                        colorSettings={[
-                            {
-                                value: buttonHoverBgColor,
-                                onChange: (value) => setAttributes({ buttonHoverBgColor: value }),
-                                label: buttonBgColorLabel,
-                            },
-                        ]}
-                    />
-                    <PanelColorSettings
-                        className='gx-normal-hover-setting-hover'
-                        colorSettings={[
-                            {
-                                value: buttonHoverBorderColor,
-                                onChange: (value) => setAttributes({ buttonHoverBorderColor: value }),
-                                label: buttonColorLabel,
-                            },
-                        ]}
-                    />
-                </Fragment>
-            }
-            <SelectControl
-                label={buttonBorderTypeLabel}
-                className={buttonBorderTypeClassName}
-                value={buttonBorderType}
-                options={buttonBorderTypeOptions}
-                onChange={(value) => setAttributes({ buttonBorderType: value })}
-            />
-            <DimensionsControl
-                value={buttonBorderRadius}
-                onChange={value => setAttributes({ buttonBorderRadius: value })}
-                target={buttonBorderRadiusTarget}
-            />
-            <DimensionsControl
-                value={buttonBorderWidth}
-                onChange={value => setAttributes({ buttonBorderWidth: value })}
-                target={buttonBorderWidthTarget}
-            />
-        </Fragment>
+        <LinkedButton
+            className={className}
+            placeholder={__('Read more text...', 'gutenberg-extra')}
+            buttonText={value.buttonText}
+            onTextChange={val => {
+                value.buttonText = val;
+                onChange(JSON.stringify(value));
+            }}
+            externalLink={value.linkOptions}
+            onLinkChange={val => {
+                value.linkOptions = val;
+                onChange(JSON.stringify(value));
+            }}
+        />
+    )
+}
 
+/**
+ * FrontEnd
+ */
+export const ButtonSaver = props => {
+    const {
+        className = 'gx-buttoneditor-button',
+        buttonSettings,
+    } = props;
+
+    const value = typeof buttonSettings === 'object' ? buttonSettings : JSON.parse(buttonSettings);
+
+    return (
+        <Button 
+            className={className}
+            href={value.linkOptions.url}
+        >
+            {value.buttonText}
+        </Button>
     )
 }

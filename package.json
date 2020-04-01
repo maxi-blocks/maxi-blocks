@@ -12,6 +12,7 @@
     "cgb-scripts": "1.18.1",
     "classnames": "^2.2.6",
     "react-accessible-accordion": "^3.0.1",
+    "react-color": "^2.18.0",
     "react-icons": "^3.9.0",
     "react-iframe": "^1.8.0",
     "react-lazy-load": "^3.0.13",

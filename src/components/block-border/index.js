@@ -7,7 +7,7 @@ import DimensionsControl from '../dimensions-control/index';
 export const borderAttributes = {
     borderColor: {
         type: 'string',
-        default: "",
+        default: "#e8e8e8",
     },
     borderHoverColor: {
         type: 'string',
@@ -19,11 +19,11 @@ export const borderAttributes = {
     },
 	borderRadius: {
         type: 'string',
-        default: '{"label":"Border radius","unit":"px","max":"1000","desktop":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"tablet":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"mobile":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true}}'
+        default: '{"label":"Border Radius","unit":"px","max":"1000","desktop":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"tablet":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"mobile":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true}}'
     },
     borderWidth: {
         type: 'string',
-        default: '{"label":"Border width","unit":"px","max":"1000","desktop":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"tablet":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"mobile":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true}}'
+        default: '{"label":"Border Width","unit":"px","max":"1000","desktop":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"tablet":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"mobile":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true}}'
     }
 }
 
@@ -71,6 +71,7 @@ export const BlockBorder = (props) => {
         <Fragment>
             <PanelColorSettings
                 title={colorTitle}
+                className={'border-color'}
                 colorSettings={[
                     {
                         value: borderColor,

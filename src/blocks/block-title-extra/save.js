@@ -162,6 +162,7 @@ const save = (props) => {
           ? `, url(${backgroundImage})`
           : `url(${backgroundImage})`
   }
+  
   const gradients = "";
   const disableCustomGradients = false;
   blockStyles.display = 'flex';

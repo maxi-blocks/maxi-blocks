@@ -239,7 +239,6 @@
             box-shadow: none;
     display: none;
     font-size: 10px;
-    height: 45px;
     -ms-flex-pack: center;
         justify-content: center;
     left: 0;
@@ -248,25 +247,20 @@
     position: absolute;
     text-align: center;
     text-shadow: none;
-    top: 45px;
+    top: 28px;
     width: 26px;
-    z-index: 1; }
+    z-index: 1;
+    height: 1.87rem;
+    border: 2px solid; }
     .components-panel__body .components-gx-dimensions-control__mobile-controls-item.is-active {
       display: block; }
     .components-panel__body .components-gx-dimensions-control__mobile-controls-item svg {
-      position: relative; }
-    .components-panel__body .components-gx-dimensions-control__mobile-controls-item--default svg {
-      top: 3px; }
-    .components-panel__body .components-gx-dimensions-control__mobile-controls-item--desktop svg {
-      top: 3px; }
-    .components-panel__body .components-gx-dimensions-control__mobile-controls-item--tablet svg {
-      top: 3px; }
-    .components-panel__body .components-gx-dimensions-control__mobile-controls-item--mobile svg {
-      top: 3px; }
+      position: relative;
+      width: 1rem; }
   .components-panel__body .components-gx-dimensions-control .components-button.is-default {
     color: #464a53 !important;
     border-color: #dddfe1 !important;
-    font-size: 20px;
+    font-size: 14px;
     background-color: rgba(33, 141, 250, 0);
     border-width: 2px !important;
     width: 41px !important;
@@ -276,9 +270,8 @@
     color: #fff !important;
     border-color: #00ccff !important;
     background: #00ccff;
-    width: 46px !important;
-    font-weight: 500;
-    font-size: 20px; }
+    width: 20px;
+    font-weight: 500; }
   .edit-post-settings-sidebar__panel-block .components-panel__body .components-gx-dimensions-control {
     margin-bottom: 1.5em; }
   .components-panel__body .components-gx-dimensions-control .components-base-control__label {
@@ -294,10 +287,10 @@
     border-radius: 0;
     -webkit-box-shadow: none !important;
             box-shadow: none !important;
-    height: 45px;
+    height: 30px;
     margin: 0 -2px 0 0;
     padding-right: 1px;
-    width: 25%; }
+    width: 23%; }
     .components-panel__body .components-gx-dimensions-control input[type="number"].components-gx-dimensions-control__number:focus {
       z-index: 1; }
   .components-panel__body .components-gx-dimensions-control__input-labels {
@@ -312,38 +305,41 @@
         width: 30px; }
   .components-panel__body .components-gx-dimensions-control__number-label {
     display: block;
-    font-size: 11px;
+    font-size: 9px;
     margin-bottom: 1px;
-    margin-top: 3px; }
+    margin-top: 3px;
+    white-space: nowrap;
+    padding-left: 2px; }
   .components-panel__body .components-gx-dimensions-control__label {
     margin-bottom: 0;
-    font-size: 20px !important;
+    font-size: 14px !important;
     color: #464a53 !important;
     font-weight: 500 !important; }
   .components-panel__body .components-gx-dimensions-control__header {
     -ms-flex-pack: justify;
         justify-content: space-between;
-    margin-bottom: 15px; }
+    margin-bottom: 2px; }
   .components-panel__body .components-gx-dimensions-control__actions {
     position: relative;
     top: -2px; }
   .components-panel__body .components-gx-dimensions-control .components-gx-dimensions-control__header .components-color-palette__clear {
     position: relative;
-    top: -1px;
+    top: -4px;
     border: none !important;
     padding: 0;
     width: 24px !important;
-    margin-left: 0;
+    margin-left: auto;
     margin-top: 2px; }
     .components-panel__body .components-gx-dimensions-control .components-gx-dimensions-control__header .components-color-palette__clear svg {
-      max-width: 20px; }
+      max-width: 12px;
+      margin: auto; }
   .components-panel__body .components-gx-dimensions-control__units .components-button {
-    font-size: 10px;
-    height: 30px;
+    font-size: 13px;
+    height: 20px;
     -ms-flex-pack: center;
         justify-content: center;
     line-height: 20px;
-    padding: 0;
+    padding: 1px 14px;
     position: relative;
     text-align: center;
     text-shadow: none;
@@ -351,7 +347,7 @@
     top: -1px;
     width: 24px;
     color: #464a53 !important;
-    border-color: #464a53 !important; }
+    border: 1px solid #dddfe1; }
   .components-panel__body .components-gx-dimensions-control_sync.components-button.is-small {
     border-radius: 0;
     border-bottom-right-radius: 3px;
@@ -364,8 +360,10 @@
     padding: 0;
     text-align: center;
     text-shadow: none;
-    width: 30px; }
+    width: 30px;
+    border: 2px solid #dddfe1; }
     .components-panel__body .components-gx-dimensions-control_sync.components-button.is-small svg {
+      background: none;
       fill: currentColor;
       height: 18px;
       width: 18px; }
@@ -462,6 +460,33 @@
 
 .components-button .gx-font-family-selector-button .components-base-control__label {
   padding: 0; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
+.gx-sidebar .gx-popover-control .gx-settings-button button:before {
+  content: none !important; }
+
+.gx-popover-dropdown button::before {
+  content: none !important; }
+
+.gx-popover-dropdown button svg {
+  margin: auto;
+  width: 0.98rem;
+  height: 0.98rem; }
+
+.gx-sidebar .gx-popover-control .gx-settings-button button svg {
+  fill: #000; }
+
+.gx-sidebar .gx-popover-control .gx-settings-button .gx-popover-dropdown {
+  display: inherit; }
+
+.gx-sidebar .gx-popover-control .gx-settings-button button[type="reset"] {
+  border: none;
+  -webkit-box-shadow: none;
+          box-shadow: none; }
 /**
  * #.# Common SCSS
  *

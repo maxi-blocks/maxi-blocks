@@ -14,18 +14,22 @@ const {
 import iconsSettings from '../icons/icons-settings.js';
 
 /**
+ * Styles
+ */
+import './editor.scss';
+
+/**
  * Block
  */
 export const PopoverControl = props => {
     const {
         label,
-        className = '',
-        buttonText = '',
+        className = 'gx-popover-control',
         classNamePopover = 'gx-popover',
         icon = iconsSettings.advanced,
-        content,
         showReset = undefined,
         onReset,
+        popovers
     } = props;
 
     return (
@@ -40,7 +44,7 @@ export const PopoverControl = props => {
                     <Button
                         isSecondary
                         onClick={onReset}
-                        action="reset"
+                        type="reset"
                     >
                         {
                             <Icon
@@ -49,32 +53,39 @@ export const PopoverControl = props => {
                         }
                     </Button>
                 }
-                <Dropdown
-                    className={'gx-popover-dropdown'}
-                    renderToggle={({ isOpen, onToggle }) => (
-                        <Button
-                            isSecondary
-                            onClick={onToggle}
-                            aria-expanded={isOpen}
-                            action="popup"
+                {popovers.map(popover => {
+                    if (!popover) {
+                        return;
+                    }
+                    return (
+                        <Dropdown key={popover}
+                            className={'gx-popover-dropdown'}
+                            renderToggle={({ isOpen, onToggle }) => (
+                                <Button
+                                    isSecondary
+                                    onClick={onToggle}
+                                    aria-expanded={isOpen}
+                                    action="popup"
+                                >
+                                    {popover.icon ? popover.icon : icon}
+                                </Button>
+                            )}
+                            popoverProps={
+                                {
+                                    className: popover.classNamePopover ? popover.classNamePopover : classNamePopover,
+                                    noArrow: true,
+                                    position: 'center'
+                                }
+                            }
+                            renderContent={
+                                () => (
+                                    popover.content
+                                )
+                            }
                         >
-                            {icon}
-                        </Button>
-                    )}
-                    popoverProps={
-                        {
-                            className: classNamePopover,
-                            noArrow: true,
-                            position: 'center'
-                        }
-                    }
-                    renderContent={
-                        () => (
-                            content
-                        )
-                    }
-                >
-                </Dropdown>
+                        </Dropdown>
+                    )
+                })}
             </BaseControl>
         </div>
     )

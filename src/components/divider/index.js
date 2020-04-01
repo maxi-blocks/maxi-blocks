@@ -195,7 +195,7 @@ class Divider extends Component {
           allowMultipleExpanded = {true}
           allowZeroExpanded = {true}
       >
-      <AccordionItem>
+       <AccordionItem className={"accordion-item gx-divider-item"}>
           <AccordionItemHeading className={'gx-accordion-tab gx-divider-tab'}>
             <AccordionItemButton className='components-base-control__label divider-accordion-tab'>
               {__('Divider', 'gutenberg-extra' )}

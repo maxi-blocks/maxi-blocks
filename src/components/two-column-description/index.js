@@ -23,6 +23,7 @@ export const TwoColumn = ( props ) => {
     <ToggleControl
       label={__('Two Column Description Layout', 'gutenberg-extra')}
       id='gx-block-style'
+      className={'two-column-description'}
       checked={twoColumnDesc}
       onChange={(value) => {setAttributes({twoColumnDesc: value})}}
     />

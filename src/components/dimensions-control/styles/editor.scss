@@ -3,255 +3,259 @@ $base-bg-color: #dddfe1;
 $base-blue-color: #00ccff;
 
 .components-panel__body {
-	.components-gx-dimensions-control {
-		position: relative;
+  .components-gx-dimensions-control {
+    position: relative;
 
-		&__mobile-controls-item {
-			border-radius: 3px 0 0 3px;
-			box-shadow: none;
-			display: none;
-			font-size: 10px;
-			height: 45px;
-			justify-content: center;
-			left: 0;
-			line-height: 20px;
-			padding: 0;
-			position: absolute;
-			text-align: center;
-			text-shadow: none;
-			top: 45px;
-			width: 26px;
-			z-index: 1;
+    &__mobile-controls-item {
+      border-radius: 3px 0 0 3px;
+      box-shadow: none;
+      display: none;
+      font-size: 10px;
+      // height: 45px;
+      justify-content: center;
+      left: 0;
+      line-height: 20px;
+      padding: 0;
+      position: absolute;
+      text-align: center;
+      text-shadow: none;
+      top: 28px;
+      width: 26px;
+      z-index: 1;
+      height: 1.87rem;
+      border: 2px solid;
 
-			&.is-active {
-				display: block;
-			}
+      &.is-active {
+        display: block;
+      }
 
-			&:focus:enabled {
-				
-			}
+      &:focus:enabled {
+      }
 
-			svg {
-				position: relative;
-			}
+      svg {
+        position: relative;
+        width: 1rem;
+      }
 
-			&--default svg {
-				top: 3px;
-			}
+      &--default svg {
+        // top: 3px;
+      }
 
-			&--desktop svg {
-				top: 3px;
-			}
+      &--desktop svg {
+        // top: 3px;
+      }
 
-			&--tablet svg {
-				top: 3px;
-			}
+      &--tablet svg {
+        // top: 3px;
+      }
 
-			&--mobile svg {
-				top: 3px;
-			}
-		}
+      &--mobile svg {
+        // top: 3px;
+      }
+    }
 
-		.components-button.is-default {
-			color: $base-color !important;
-			border-color:$base-bg-color!important;
-			font-size: 20px;
-			background-color: rgba(33,141,250,0);
-			border-width: 2px !important;
-			width: 41px !important;
-			font-weight: 500;
-			margin-right: -1px;
-		}
+    .components-button.is-default {
+      color: $base-color !important;
+      border-color: $base-bg-color !important;
+      font-size: 14px;
+      background-color: rgba(33, 141, 250, 0);
+      border-width: 2px !important;
+      width: 41px !important;
+      font-weight: 500;
+      margin-right: -1px;
+    }
 
-		.components-button.is-primary {
-			color: #fff !important;
-			border-color: $base-blue-color!important;
-			background: $base-blue-color;
-			width: 46px !important;
-			font-weight: 500;
-			font-size: 20px;
-		}
+    .components-button.is-primary {
+      color: #fff !important;
+      border-color: $base-blue-color !important;
+      background: $base-blue-color;
+      width: 20px;
+      font-weight: 500;
+    }
 
-		.edit-post-settings-sidebar__panel-block & {
-			margin-bottom: 1.5em;
-		}
+    .edit-post-settings-sidebar__panel-block & {
+      margin-bottom: 1.5em;
+    }
 
-		.components-base-control__label {
-			margin-bottom: 5px;
-		}
+    .components-base-control__label {
+      margin-bottom: 5px;
+    }
 
-		.components-base-control__help {
-			margin-top: -8px;
-		}
+    .components-base-control__help {
+      margin-top: -8px;
+    }
 
-		&__header,
-		&__inputs {
-			display: flex;
-		}
+    &__header,
+    &__inputs {
+      display: flex;
+    }
 
-		&__inputs {
-			margin-left: 39px;
-		}
+    &__inputs {
+      margin-left: 39px;
+    }
 
-		input[type="number"].components-gx-dimensions-control__number {
-			border-radius: 0;
-			box-shadow: none !important;
-			height: 45px;
-			margin: 0 -2px 0 0;
-			padding-right: 1px;
-			width: 25%;
+    input[type="number"].components-gx-dimensions-control__number {
+      border-radius: 0;
+      box-shadow: none !important;
+      height: 30px;
+      margin: 0 -2px 0 0;
+      padding-right: 1px;
+      width: 23%;
 
-			&:focus {
-				z-index: 1;
-			}
-		}
+      &:focus {
+        z-index: 1;
+      }
+    }
 
-		&__input-labels {
-			display: flex;
-			margin-bottom: -3px;
-			margin-left: 40px; // Same value as &__inputs + 1
+    &__input-labels {
+      display: flex;
+      margin-bottom: -3px;
+      margin-left: 40px; // Same value as &__inputs + 1
 
-			span {
-				text-align: center;
-				width: 25%;
+      span {
+        text-align: center;
+        width: 25%;
 
-				&:last-of-type {
-					width: 30px;
-				}
-			}
-		}
+        &:last-of-type {
+          width: 30px;
+        }
+      }
+    }
 
-		&__number-label {
-			display: block;
-			font-size: 11px;
-			margin-bottom: 1px;
-			margin-top: 3px;
-		}
+    &__number-label {
+      display: block;
+      font-size: 9px;
+      margin-bottom: 1px;
+      margin-top: 3px;
+      white-space: nowrap;
+      padding-left: 2px;
+    }
 
-		&__label {
-			margin-bottom: 0;
-			font-size: 20px !important;
-			color: $base-color !important;
-			font-weight: 500 !important;
-		}
+    &__label {
+      margin-bottom: 0;
+      font-size: 14px !important;
+      color: $base-color !important;
+      font-weight: 500 !important;
+    }
 
-		&__header {
-			justify-content: space-between;
-			margin-bottom: 15px;
-		}
+    &__header {
+      justify-content: space-between;
+      margin-bottom: 2px;
+    }
 
-		&__actions {
-			position: relative;
-			top: -2px;
-		}
+    &__actions {
+      position: relative;
+      top: -2px;
+    }
 
-		.components-gx-dimensions-control__header .components-color-palette__clear {
-			position: relative;
-			top: -1px;
-			border: none !important;
-			padding: 0;
-		    width: 24px !important;
-		    margin-left: 0;
-		    margin-top: 2px;
-			svg {
-				max-width: 20px;
-			}
-		}
+    .components-gx-dimensions-control__header .components-color-palette__clear {
+      position: relative;
+      top: -4px;
+      border: none !important;
+      padding: 0;
+      width: 24px !important;
+      margin-left: auto;
+      margin-top: 2px;
+      svg {
+        max-width: 12px;
+        margin: auto;
+      }
+    }
 
-		&__units {
-			.components-button {
-				font-size: 10px;
-				height: 30px;
-				justify-content: center;
-				line-height: 20px;
-				padding: 0;
-				position: relative;
-				text-align: center;
-				text-shadow: none;
-				text-transform: uppercase;
-				top: -1px;
-				width: 24px;
-				color: $base-color !important;
-				border-color: $base-color !important;
-			}
-		}
+    &__units {
+      .components-button {
+        font-size: 13px;
+        height: 20px;
+        justify-content: center;
+        line-height: 20px;
+        padding: 1px 14px;
+        position: relative;
+        text-align: center;
+        text-shadow: none;
+        text-transform: uppercase;
+        top: -1px;
+        width: 24px;
+        color: $base-color !important;
+        border: 1px solid #dddfe1;
+      }
+    }
 
-		&_sync.components-button.is-small {
-			border-radius: 0;
-			border-bottom-right-radius: 3px;
-			border-top-right-radius: 3px;
-			box-shadow: none;
-			height: auto;
-			justify-content: center;
-			padding: 0;
-			text-align: center;
-			text-shadow: none;
-			width: 30px;
+    &_sync.components-button.is-small {
+      border-radius: 0;
+      border-bottom-right-radius: 3px;
+      border-top-right-radius: 3px;
+      box-shadow: none;
+      height: auto;
+      justify-content: center;
+      padding: 0;
+      text-align: center;
+      text-shadow: none;
+      width: 30px;
+      border: 2px solid #dddfe1;
+      svg {
+        background: none;
+        fill: currentColor;
+        height: 18px;
+        width: 18px;
+      }
+    }
 
-			svg {
-				fill: currentColor;
-				height: 18px;
-				width: 18px;
-			}
-		}
+    .components-font-size-picker__controls {
+      margin-bottom: 0;
+    }
 
-		.components-font-size-picker__controls {
-			margin-bottom: 0;
-		}
-
-		.components-gx-dimensions-control_sync {
-			margin-left: 0 !important;
-		}
-	}
+    .components-gx-dimensions-control_sync {
+      margin-left: 0 !important;
+    }
+  }
 }
 
 .components-gx-dimensions-control__dropdown-content .components-button {
-	padding-bottom: 8px;
-	padding-top: 8px;
+  padding-bottom: 8px;
+  padding-top: 8px;
 
-	&.is-no-size {
-		font-size: 12px;
-	}
+  &.is-no-size {
+    font-size: 12px;
+  }
 
-	&.is-small-size {
-		font-size: 14px;
-	}
+  &.is-small-size {
+    font-size: 14px;
+  }
 
-	&.is-medium-size {
-		font-size: 20px;
-	}
+  &.is-medium-size {
+    font-size: 20px;
+  }
 
-	&.is-large-size {
-		font-size: 26px;
-	}
+  &.is-large-size {
+    font-size: 26px;
+  }
 
-	&.is-huge-size {
-		font-size: 34px;
-	}
+  &.is-huge-size {
+    font-size: 34px;
+  }
 }
 
 // Styles to handle Gutenberg < V6.2.0.
 // Should be able to deprecate when Gutenberg 6.2.0 is merged into WP core.
 .components-panel__body {
-	.components-gx-dimensions-control {
-		.components-font-size-picker__select {
-			width: 115px;
-			margin-bottom: 0 !important;
-		}
+  .components-gx-dimensions-control {
+    .components-font-size-picker__select {
+      width: 115px;
+      margin-bottom: 0 !important;
+    }
 
-		.components-font-size-picker__controls {
-			display: flex;
-			justify-content: space-between;
-			
-		}
+    .components-font-size-picker__controls {
+      display: flex;
+      justify-content: space-between;
+    }
 
-		.components-font-size-picker__select .components-base-control__label {
-			margin-bottom: 5px;
-		}
+    .components-font-size-picker__select .components-base-control__label {
+      margin-bottom: 5px;
+    }
 
-		.components-font-size-picker__select .components-base-control__label {
-			display: none;
-			visibility: hidden;
-		}
-	}
+    .components-font-size-picker__select .components-base-control__label {
+      display: none;
+      visibility: hidden;
+    }
+  }
 }

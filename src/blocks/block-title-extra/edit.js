@@ -19,9 +19,7 @@ import { BoxShadow } from "../../components/box-shadow";
 import classnames from "classnames";
 import typographyIcon from "./icon";
 import { BlockStyles } from "../../components/block-styles/index";
-import { ImagePosition } from "../../components/image-position/index";
 import { FontLevel } from "../../components/font-level/index";
-import { LinkOptions } from "../../components/link-options/index";
 import { BlockBorder } from "../../components/block-border/index";
 import Divider from "../../components/divider/index";
 import { SizeControl } from "../../components/size-control/index";
@@ -51,14 +49,21 @@ import { HideSubtitle } from "../../components/hide-subtitle/index";
 import { HideDescription } from "../../components/hide-description/index";
 import { TwoColumn } from "../../components/two-column-description/index";
 import { ContentDirection } from "../../components/content-direction/index";
-import { TitleColor } from "../../components/title-color/index";
-import { SubtitleColor } from "../../components/subtitle-color/index";
 import { SubtitleBackgroundColor } from "../../components/subtitle-background-color/index";
-import { DescriptionColor } from "../../components/description-color/index";
 import { SubtitleAlign } from "../../components/subtitle-align/index";
 import { TitleAlign } from "../../components/title-align/index";
 import { DescriptionAlign } from "../../components/description-align/index";
 import Typography from "../../components/typography/index";
+
+import { HideDivider } from '../../components/hide-divider/index';
+import { VerticalDivider } from '../../components/vertical-divider/index';
+import { RoundedDivider } from '../../components/rounded-divider/index';
+import { AdditionalDivider } from '../../components/additional-divider/index';
+import { AlignDivider } from '../../components/align-divider/index';
+import { DividerPosition } from '../../components/divider-position/index';
+import { DividerWidth } from '../../components/divider-width/index';
+import { DividerHeight } from '../../components/divider-height/index';
+import { DividerColor } from '../../components/divider-color/index';
 
 const edit = props => {
   const {
@@ -114,7 +119,12 @@ const edit = props => {
       fontOptions,
       extraClassName,
       boxShadow,
-      extraStyles
+      extraStyles,
+      dividerAlignment,
+      isMultiple,
+      isRounded,
+      dividerThickness,
+      dividerThicknessUnit
     },
     setAttributes
   } = props;
@@ -173,7 +183,7 @@ const edit = props => {
   const gradients = "";
   const disableCustomGradients = false;
 
-  const Line = () => <hr />;
+  const Line = () => <hr style={{marginTop: '28px'}}/>;
 
   let backgroundImageWithGradient = backgroundGradient.length
     ? `linear-gradient(to left, ${backgroundGradient[0]},${backgroundGradient[1]})`
@@ -191,6 +201,38 @@ const edit = props => {
   blockStyles.backgroundImage = backgroundImageWithGradient
     ? backgroundImageWithGradient
     : undefined;
+
+    
+    const buildDivider = (
+      /*1*/a = isMultiple,
+      /*2*/align = dividerAlignment,
+      /*3*/rounded = isRounded,
+      /*4*/widthUnit = dividerWidthUnit,
+      /*5*/width = dividerWidth,
+      /*6*/thickness = dividerThickness,
+      /*7*/thicknessUnit = dividerThicknessUnit,
+      /*8*/height = dividerHeight,
+      /*9*/heightUnit = dividerHeightUnit,
+      /*10*/colour = dividerColor
+       ) => {
+        if(a){
+          let div = `<div class="test"
+          style="border:${colour ? '1px solid ' + colour : '1px solid rgb(152,152,152)'};
+          margin:${align};
+          border-color:${colour};
+          height:${height ? height + dividerHeightUnitValue : ''};
+          width:${widthUnit ? width != 0 ? width + widthUnit : '' : ''};
+          border-width:${thickness ? thickness + dividerThicknessUnitValue : ''};
+          border-radius:${rounded ? '2rem' : '' };
+          display:${isHidden ? 'none' : ''};
+          ">`;
+          setAttributes({additionalDivider: div });
+          return div;
+       }else{
+         setAttributes({additionalDivider: '' });
+       }
+      }
+
   return (
     <div>
       <InspectorControls>
@@ -229,7 +271,6 @@ const edit = props => {
         </PanelBody>
         <Accordion
           className={"gx-style-tab-setting gx-accordion"}
-          allowMultipleExpanded={true}
           allowZeroExpanded={true}
         >
           <AccordionItem className={"accordion-item gx-typography-item"}>
@@ -252,7 +293,7 @@ const edit = props => {
                     setAttributes({ fontOptions: value });
                   }}
                   label={__("Title", "gutenberg-extra")}
-                  className="components-panel__body editor-panel-color-settings block-editor-panel-color-settings is-opened"
+                  className="components-panel__body editor-panel-color-settings block-editor-panel-color-settings is-opened typography"
                   target="gx-title-extra-title"
                 />
                 <Typography
@@ -261,7 +302,7 @@ const edit = props => {
                     setAttributes({ fontOptions: value });
                   }}
                   label={__("Subtitle", "gutenberg-extra")}
-                  className="components-panel__body editor-panel-color-settings block-editor-panel-color-settings is-opened"
+                  className="components-panel__body editor-panel-color-settings block-editor-panel-color-settings is-opened typography"
                   target="gx-title-extra-subtitle"
                 />
                 <Typography
@@ -270,13 +311,35 @@ const edit = props => {
                     setAttributes({ fontOptions: value });
                   }}
                   label={__("Description", "gutenberg-extra")}
-                  className="components-panel__body editor-panel-color-settings block-editor-panel-color-settings is-opened"
+                  className="components-panel__body editor-panel-color-settings block-editor-panel-color-settings is-opened typography"
                   target="gx-title-extra-text"
                 />
-                <TitleColor {...props} />
-                <SubtitleColor {...props} />
                 <SubtitleBackgroundColor {...props} />
-                <DescriptionColor {...props} />
+              </PanelBody>
+            </AccordionItemPanel>
+          </AccordionItem>
+          <AccordionItem className={"accordion-item gx-divider-item"}>
+            <AccordionItemHeading className={"gx-accordion-tab gx-divider-tab"}>
+              <AccordionItemButton className="components-base-control__label divider-accordion-tab">
+                {__("Divider", "gutenberg-extra")}
+              </AccordionItemButton>
+            </AccordionItemHeading>
+            <AccordionItemPanel>
+              <PanelBody>
+                <HideDivider {...props} />
+                <VerticalDivider {...props} buildDivider={buildDivider} />
+                <RoundedDivider {...props} buildDivider={buildDivider} />
+                <AdditionalDivider
+                  {...props}
+                  buildDivider={buildDivider}
+                />
+                <Line />
+                <AlignDivider {...props} buildDivider={buildDivider} />
+                <DividerPosition {...props} />
+                <DividerColor {...props} buildDivider={buildDivider} />
+                <Line />
+                <DividerWidth {...props} buildDivider={buildDivider} />
+                <DividerHeight {...props} buildDivider={buildDivider} />
               </PanelBody>
             </AccordionItemPanel>
           </AccordionItem>
@@ -388,7 +451,6 @@ const edit = props => {
               </PanelBody>
             </AccordionItemPanel>
           </AccordionItem>
-          
         </Accordion>
         <PanelBody
           initialOpen={true}

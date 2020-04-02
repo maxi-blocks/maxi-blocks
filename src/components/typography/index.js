@@ -189,9 +189,11 @@ export default class Typography extends Component {
           <BaseControl.VisualLabel>{label}</BaseControl.VisualLabel>
           <PopoverControl
             className={className}
+            classNamePopover = {'gx-typography-popover gx-popover'}
             buttonText={__("Typography", "gutenberg-extra")}
             popovers={[
               {
+                className: 'gx-typography-popover',
                 content: (
                   <Fragment>
                     <FontFamilySelector

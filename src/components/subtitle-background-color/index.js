@@ -9,7 +9,7 @@ const {
 export const subtitleBackgroundColorAttributes = {
   subtitleBackgroundColor:{
     type: 'string',
-    default: 'rgba(255, 255, 255, 0)'
+    default: 'white'
   },
 }
 
@@ -21,12 +21,12 @@ export const SubtitleBackgroundColor = ( props ) => {
 
   return (
     <PanelColorSettings
-      title={__('Sub-title Background Colour Settings', 'gutenberg-extra' )}
+      title={__('Subtitle Background Settings', 'gutenberg-extra' )}
       colorSettings={[
         {
           value: subtitleBackgroundColor,
           onChange: (value) => setAttributes({ subtitleBackgroundColor: value }),
-          label: __('Sub-title Background Colour', 'gutenberg-extra' ),
+          label: __('Subtitle Background', 'gutenberg-extra' ),
         },
       ]}
     />

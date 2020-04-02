@@ -7,10 +7,7 @@ import { hideDescriptionAttributes } from "../../components/hide-description/ind
 import { hideSubtitleAttributes } from "../../components/hide-subtitle/index";
 import { twoColumnAttributes } from "../../components/two-column-description/index";
 import { contentDirectionAttributes } from "../../components/content-direction/index";
-import { titleColorAttributes } from "../../components/title-color/index";
-import { subtitleColorAttributes } from "../../components/subtitle-color/index";
 import { subtitleBackgroundColorAttributes } from "../../components/subtitle-background-color/index";
-import { descriptionColorAttributes } from "../../components/description-color/index";
 import { subtitleAlignAttributes } from "../../components/subtitle-align/index";
 import { titleAlignAttributes } from "../../components/title-align/index";
 import { descriptionAlignAttributes } from "../../components/description-align/index";
@@ -100,9 +97,6 @@ const attributes = {
   ...hideSubtitleAttributes,
   ...twoColumnAttributes,
   ...contentDirectionAttributes,
-  ...titleColorAttributes,
-  ...subtitleColorAttributes,
-  ...descriptionColorAttributes,
   ...subtitleBackgroundColorAttributes,
   ...subtitleAlignAttributes,
   ...titleAlignAttributes,

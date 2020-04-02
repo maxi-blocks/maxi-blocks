@@ -55,6 +55,7 @@ export const ColorControlTest1 = props => {
                   content: (
                       <ColorPicker
                           color={color}
+                          className={'components-button components-range-control__reset is-secondary is-small'}
                           onChangeComplete={val => onColorChange(returnColor(val))}
                       />
                   )

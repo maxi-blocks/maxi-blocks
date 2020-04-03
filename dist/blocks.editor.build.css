@@ -247,7 +247,6 @@
     position: absolute;
     text-align: center;
     text-shadow: none;
-    top: 28px;
     width: 26px;
     z-index: 1;
     height: 1.87rem;
@@ -267,10 +266,8 @@
     font-weight: 500;
     margin-right: -1px; }
   .components-panel__body .components-gx-dimensions-control .components-button.is-primary {
-    color: #fff !important;
-    border-color: #00ccff !important;
-    background: #00ccff;
-    width: 20px;
+    color: #464a53 !important;
+    background: #f2f2f2;
     font-weight: 500; }
   .edit-post-settings-sidebar__panel-block .components-panel__body .components-gx-dimensions-control {
     margin-bottom: 1.5em; }
@@ -333,21 +330,34 @@
     .components-panel__body .components-gx-dimensions-control .components-gx-dimensions-control__header .components-color-palette__clear svg {
       max-width: 12px;
       margin: auto; }
-  .components-panel__body .components-gx-dimensions-control__units .components-button {
+  .components-panel__body .components-gx-dimensions-control__units .components-button-radio {
     font-size: 13px;
-    height: 20px;
+    min-width: 33px;
+    display: block;
+    text-align: center;
+    height: 26px;
+    line-height: 24px;
+    margin-right: -2px;
+    font-size: 9pt;
     -ms-flex-pack: center;
         justify-content: center;
     line-height: 20px;
-    padding: 1px 14px;
+    border: 2px solid #dddfe1 !important;
     position: relative;
     text-align: center;
     text-shadow: none;
     text-transform: uppercase;
     top: -1px;
-    width: 24px;
-    color: #464a53 !important;
-    border: 1px solid #dddfe1; }
+    color: #464a53 !important; }
+    .components-panel__body .components-gx-dimensions-control__units .components-button-radio:hover {
+      background-color: white !important;
+      -webkit-box-shadow: none !important;
+              box-shadow: none !important; }
+    .components-panel__body .components-gx-dimensions-control__units .components-button-radio:focus {
+      border: none; }
+      .components-panel__body .components-gx-dimensions-control__units .components-button-radio:focus:enabled {
+        -webkit-box-shadow: none !important;
+                box-shadow: none !important; }
   .components-panel__body .components-gx-dimensions-control_sync.components-button.is-small {
     border-radius: 0;
     border-bottom-right-radius: 3px;
@@ -370,7 +380,14 @@
   .components-panel__body .components-gx-dimensions-control .components-font-size-picker__controls {
     margin-bottom: 0; }
   .components-panel__body .components-gx-dimensions-control .components-gx-dimensions-control_sync {
-    margin-left: 0 !important; }
+    margin-left: 0 !important;
+    border: 2px solid #dddfe1 !important; }
+    .components-panel__body .components-gx-dimensions-control .components-gx-dimensions-control_sync:hover {
+      background-color: white !important; }
+    .components-panel__body .components-gx-dimensions-control .components-gx-dimensions-control_sync:focus:enabled {
+      border: 2px solid #c5c5c5 !important;
+      -webkit-box-shadow: none !important;
+              box-shadow: none !important; }
 
 .components-gx-dimensions-control__dropdown-content .components-button {
   padding-bottom: 8px;

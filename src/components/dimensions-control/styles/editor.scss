@@ -19,7 +19,6 @@ $base-blue-color: #00ccff;
       position: absolute;
       text-align: center;
       text-shadow: none;
-      top: 28px;
       width: 26px;
       z-index: 1;
       height: 1.87rem;
@@ -66,10 +65,8 @@ $base-blue-color: #00ccff;
     }
 
     .components-button.is-primary {
-      color: #fff !important;
-      border-color: $base-blue-color !important;
-      background: $base-blue-color;
-      width: 20px;
+      color: #464a53 !important;
+      background: #f2f2f2;
       font-weight: 500;
     }
 
@@ -163,20 +160,34 @@ $base-blue-color: #00ccff;
     }
 
     &__units {
-      .components-button {
+      .components-button-radio {
         font-size: 13px;
-        height: 20px;
+        min-width: 33px;
+        display: block;
+        text-align: center;
+        height: 26px;
+        line-height: 24px;
+        margin-right: -2px;
+        font-size: 9pt;
         justify-content: center;
         line-height: 20px;
-        padding: 1px 14px;
+        border: 2px solid #dddfe1 !important;
         position: relative;
         text-align: center;
         text-shadow: none;
         text-transform: uppercase;
         top: -1px;
-        width: 24px;
         color: $base-color !important;
-        border: 1px solid #dddfe1;
+        &:hover {
+          background-color: white !important;
+          box-shadow: none !important;
+        }
+        &:focus {
+          border: none;
+          &:enabled {
+            box-shadow: none !important;
+          }
+        }
       }
     }
 
@@ -206,6 +217,16 @@ $base-blue-color: #00ccff;
 
     .components-gx-dimensions-control_sync {
       margin-left: 0 !important;
+      border: 2px solid #dddfe1 !important;
+      &:hover {
+        background-color: white !important;
+      }
+      &:focus {
+        &:enabled {
+          border: 2px solid #c5c5c5 !important;
+          box-shadow: none !important;
+        }
+      }
     }
   }
 }

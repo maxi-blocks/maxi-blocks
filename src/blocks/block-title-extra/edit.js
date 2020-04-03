@@ -55,15 +55,25 @@ import { TitleAlign } from "../../components/title-align/index";
 import { DescriptionAlign } from "../../components/description-align/index";
 import Typography from "../../components/typography/index";
 
-import { HideDivider } from '../../components/hide-divider/index';
-import { VerticalDivider } from '../../components/vertical-divider/index';
-import { RoundedDivider } from '../../components/rounded-divider/index';
-import { AdditionalDivider } from '../../components/additional-divider/index';
-import { AlignDivider } from '../../components/align-divider/index';
-import { DividerPosition } from '../../components/divider-position/index';
-import { DividerWidth } from '../../components/divider-width/index';
-import { DividerHeight } from '../../components/divider-height/index';
-import { DividerColor } from '../../components/divider-color/index';
+import { HideDivider } from "../../components/hide-divider/index";
+import { VerticalDivider } from "../../components/vertical-divider/index";
+import { RoundedDivider } from "../../components/rounded-divider/index";
+import { AdditionalDivider } from "../../components/additional-divider/index";
+import { AlignDivider } from "../../components/align-divider/index";
+import { DividerPosition } from "../../components/divider-position/index";
+import { DividerWidth } from "../../components/divider-width/index";
+import { DividerHeight } from "../../components/divider-height/index";
+import { DividerColor } from "../../components/divider-color/index";
+
+let dividerColorValue;
+let dividerAlignmentValue;
+let dividerHeightValue;
+let dividerWidthValue;
+let dividerHeightUnitValue;
+let dividerWidthUnitValue;
+let dividerThicknessValue;
+let dividerThicknessUnitValue;
+let isMultipleValue;
 
 const edit = props => {
   const {
@@ -122,6 +132,7 @@ const edit = props => {
       extraStyles,
       dividerAlignment,
       isMultiple,
+      isHidden,
       isRounded,
       dividerThickness,
       dividerThicknessUnit
@@ -180,10 +191,38 @@ const edit = props => {
     marginLeft: contentDirection == "row" ? "20px" : undefined
   };
 
+  const handleClick = (e) => {
+    if(e.target.previousSibling.style.display == '' || e.target.previousSibling.style.display == 'none'){
+      e.target.previousSibling.style.display = 'block';
+    }else{
+      e.target.previousSibling.style.display = '';
+    }
+  }
+
+  const hideAll = e => {
+    let sliders = document.querySelectorAll(
+      ".components-range-control__slider"
+    );
+    let isClickInside;
+
+    for (var i = 0, len = sliders.length; i < len; i++) {
+      isClickInside = sliders[i].contains(e.target);
+      if (isClickInside === true) {
+        break;
+      }
+    }
+
+    if (!isClickInside) {
+      for (var i = 0, len = sliders.length; i < len; i++) {
+        sliders[i].style.display = "none";
+      }
+    }
+  };
+
   const gradients = "";
   const disableCustomGradients = false;
 
-  const Line = () => <hr style={{marginTop: '28px'}}/>;
+  const Line = () => <hr style={{ marginTop: "28px" }} />;
 
   let backgroundImageWithGradient = backgroundGradient.length
     ? `linear-gradient(to left, ${backgroundGradient[0]},${backgroundGradient[1]})`
@@ -202,36 +241,47 @@ const edit = props => {
     ? backgroundImageWithGradient
     : undefined;
 
-    
-    const buildDivider = (
-      /*1*/a = isMultiple,
-      /*2*/align = dividerAlignment,
-      /*3*/rounded = isRounded,
-      /*4*/widthUnit = dividerWidthUnit,
-      /*5*/width = dividerWidth,
-      /*6*/thickness = dividerThickness,
-      /*7*/thicknessUnit = dividerThicknessUnit,
-      /*8*/height = dividerHeight,
-      /*9*/heightUnit = dividerHeightUnit,
-      /*10*/colour = dividerColor
-       ) => {
-        if(a){
-          let div = `<div class="test"
-          style="border:${colour ? '1px solid ' + colour : '1px solid rgb(152,152,152)'};
+  dividerColorValue = props.attributes.dividerColor;
+  dividerAlignmentValue = props.attributes.dividerAlignment;
+  dividerHeightValue = props.attributes.dividerHeight;
+  dividerWidthValue = props.attributes.dividerWidth;
+  dividerHeightUnitValue = props.attributes.dividerHeightUnit;
+  dividerWidthUnitValue = props.attributes.dividerWidthUnit;
+  dividerThicknessValue = props.attributes.dividerThickness;
+  dividerThicknessUnitValue = props.attributes.dividerThicknessUnit;
+  const buildDivider = (
+    /*1*/ a = isMultiple,
+    /*2*/ align = dividerAlignment,
+    /*3*/ rounded = isRounded,
+    /*4*/ widthUnit = dividerWidthUnit,
+    /*5*/ width = dividerWidth,
+    /*6*/ thickness = dividerThickness,
+    /*7*/ thicknessUnit = dividerThicknessUnit,
+    /*8*/ height = dividerHeight,
+    /*9*/ heightUnit = dividerHeightUnit,
+    /*10*/ colour = dividerColor
+  ) => {
+    if (a) {
+      let div = `<div class="test"
+          style="border:${
+            colour ? "1px solid " + colour : "1px solid rgb(152,152,152)"
+          };
           margin:${align};
           border-color:${colour};
-          height:${height ? height + dividerHeightUnitValue : ''};
-          width:${widthUnit ? width != 0 ? width + widthUnit : '' : ''};
-          border-width:${thickness ? thickness + dividerThicknessUnitValue : ''};
-          border-radius:${rounded ? '2rem' : '' };
-          display:${isHidden ? 'none' : ''};
+          height:${height ? height + dividerHeightUnitValue : ""};
+          width:${widthUnit ? (width != 0 ? width + widthUnit : "") : ""};
+          border-width:${
+            thickness ? thickness + dividerThicknessUnitValue : ""
+          };
+          border-radius:${rounded ? "2rem" : ""};
+          display:${isHidden ? "none" : ""};
           ">`;
-          setAttributes({additionalDivider: div });
-          return div;
-       }else{
-         setAttributes({additionalDivider: '' });
-       }
-      }
+      setAttributes({ additionalDivider: div });
+      return div;
+    } else {
+      setAttributes({ additionalDivider: "" });
+    }
+  };
 
   return (
     <div>
@@ -329,17 +379,14 @@ const edit = props => {
                 <HideDivider {...props} />
                 <VerticalDivider {...props} buildDivider={buildDivider} />
                 <RoundedDivider {...props} buildDivider={buildDivider} />
-                <AdditionalDivider
-                  {...props}
-                  buildDivider={buildDivider}
-                />
+                <AdditionalDivider {...props} buildDivider={buildDivider} />
                 <Line />
                 <AlignDivider {...props} buildDivider={buildDivider} />
                 <DividerPosition {...props} />
                 <DividerColor {...props} buildDivider={buildDivider} />
                 <Line />
-                <DividerWidth {...props} buildDivider={buildDivider} />
-                <DividerHeight {...props} buildDivider={buildDivider} />
+                <DividerWidth {...props} buildDivider={buildDivider} hideAll={hideAll}/>
+                <DividerHeight {...props} buildDivider={buildDivider} hideAll={hideAll}/>
               </PanelBody>
             </AccordionItemPanel>
           </AccordionItem>

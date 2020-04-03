@@ -204,7 +204,7 @@ export default class DimensionsControl extends Component {
 										)}>
 											<Button
 												key={unitValue}
-												className={'components-gx-dimensions-control__units--' + name}
+												className={'components-button-radio components-gx-dimensions-control__units--' + name}
 												isSmall
 												isPrimary={value.unit === unitValue}
 												aria-pressed={value.unit === unitValue}

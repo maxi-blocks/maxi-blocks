@@ -321,6 +321,7 @@ class ImageSettingsOptions extends Component {
                         value.alignment = val;
                         saveAndSend()
                     }}
+                    disableJustify
                 />
                 <SelectControl
                     label={__('Caption', 'gutenberg-extra')}

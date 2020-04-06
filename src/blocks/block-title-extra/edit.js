@@ -9,7 +9,7 @@ const {
   PanelColorSettings,
   URLInput,
   RichText,
-  MediaUpload
+  MediaUpload,
 } = wp.blockEditor;
 /**
  * External dependencies
@@ -33,7 +33,7 @@ import {
   setSubTitleStyles,
   setDescriptionStyles,
   setButtonStyles,
-  setBlockStyles
+  setBlockStyles,
 } from "../block-title-extra/data";
 
 import {
@@ -41,7 +41,7 @@ import {
   AccordionItem,
   AccordionItemHeading,
   AccordionItemButton,
-  AccordionItemPanel
+  AccordionItemPanel,
 } from "react-accessible-accordion";
 
 import { HideTitle } from "../../components/hide-title/index";
@@ -75,7 +75,7 @@ let dividerThicknessValue;
 let dividerThicknessUnitValue;
 let isMultipleValue;
 
-const edit = props => {
+const edit = (props) => {
   const {
     className,
     attributes: {
@@ -135,9 +135,9 @@ const edit = props => {
       isHidden,
       isRounded,
       dividerThickness,
-      dividerThicknessUnit
+      dividerThicknessUnit,
     },
-    setAttributes
+    setAttributes,
   } = props;
 
   let classes = classnames(className);
@@ -150,7 +150,7 @@ const edit = props => {
   const descriptionStyles = setDescriptionStyles(props);
   const buttonStyles = setButtonStyles(props);
   const blockStyles = setBlockStyles(props);
-  const onSelectImage = media => {
+  const onSelectImage = (media) => {
     setAttributes({ mediaURL: media.url, mediaID: media.id });
   };
 
@@ -166,7 +166,7 @@ const edit = props => {
     color: subtitleColor,
     backgroundColor: subtitleBackgroundColor,
     width: "max-content",
-    padding: "5px"
+    padding: "5px",
   };
 
   const titleStyles = {
@@ -177,7 +177,7 @@ const edit = props => {
     minWidth:
       contentDirection == "row" || contentDirection == "row-reverse"
         ? "290px"
-        : undefined
+        : undefined,
   };
 
   const textStyles = {
@@ -188,18 +188,21 @@ const edit = props => {
     columnCount: twoColumnDesc ? "2" : undefined,
     color: descriptionColor,
     marginTop: contentDirection == "row" ? "48px" : "0px",
-    marginLeft: contentDirection == "row" ? "20px" : undefined
+    marginLeft: contentDirection == "row" ? "20px" : undefined,
   };
 
   const handleClick = (e) => {
-    if(e.target.previousSibling.style.display == '' || e.target.previousSibling.style.display == 'none'){
-      e.target.previousSibling.style.display = 'block';
-    }else{
-      e.target.previousSibling.style.display = '';
+    if (
+      e.target.previousSibling.style.display == "" ||
+      e.target.previousSibling.style.display == "none"
+    ) {
+      e.target.previousSibling.style.display = "block";
+    } else {
+      e.target.previousSibling.style.display = "";
     }
-  }
+  };
 
-  const hideAll = e => {
+  const hideAll = (e) => {
     let sliders = document.querySelectorAll(
       ".components-range-control__slider"
     );
@@ -295,12 +298,12 @@ const edit = props => {
           <FontLevel
             label={__("Title level", "gutenberg-extra")}
             value={titleLevel}
-            onChange={value => setAttributes({ titleLevel: value })}
+            onChange={(value) => setAttributes({ titleLevel: value })}
           />
           <FontLevel
             label={__("Subtitle level", "gutenberg-extra")}
             value={subtitleLevel}
-            onChange={value => setAttributes({ subtitleLevel: value })}
+            onChange={(value) => setAttributes({ subtitleLevel: value })}
           />
         </PanelBody>
 
@@ -339,7 +342,7 @@ const edit = props => {
               >
                 <Typography
                   fontOptions={props.attributes.fontOptions}
-                  onChange={value => {
+                  onChange={(value) => {
                     setAttributes({ fontOptions: value });
                   }}
                   label={__("Title", "gutenberg-extra")}
@@ -348,7 +351,7 @@ const edit = props => {
                 />
                 <Typography
                   fontOptions={props.attributes.fontOptions}
-                  onChange={value => {
+                  onChange={(value) => {
                     setAttributes({ fontOptions: value });
                   }}
                   label={__("Subtitle", "gutenberg-extra")}
@@ -357,7 +360,7 @@ const edit = props => {
                 />
                 <Typography
                   fontOptions={props.attributes.fontOptions}
-                  onChange={value => {
+                  onChange={(value) => {
                     setAttributes({ fontOptions: value });
                   }}
                   label={__("Description", "gutenberg-extra")}
@@ -385,8 +388,16 @@ const edit = props => {
                 <DividerPosition {...props} />
                 <DividerColor {...props} buildDivider={buildDivider} />
                 <Line />
-                <DividerWidth {...props} buildDivider={buildDivider} hideAll={hideAll}/>
-                <DividerHeight {...props} buildDivider={buildDivider} hideAll={hideAll}/>
+                <DividerWidth
+                  {...props}
+                  buildDivider={buildDivider}
+                  hideAll={hideAll}
+                />
+                <DividerHeight
+                  {...props}
+                  buildDivider={buildDivider}
+                  hideAll={hideAll}
+                />
               </PanelBody>
             </AccordionItemPanel>
           </AccordionItem>
@@ -408,7 +419,7 @@ const edit = props => {
                   title={__("Background Colour", "gutenberg-extra")}
                   colorSettings={[
                     {
-                      onChange: value => {
+                      onChange: (value) => {
                         if (!value) {
                           props.setAttributes({ backgroundColor: undefined });
                           props.setAttributes({ backgroundGradient: [] });
@@ -418,18 +429,18 @@ const edit = props => {
                         props.setAttributes({ backgroundImage: null });
                       },
                       label: __("Background Colour", "gutenberg-extra"),
-                      value: backgroundColor
-                    }
+                      value: backgroundColor,
+                    },
                   ]}
                 />
                 <div className={"gradient"}>
                   <GradientPickerPopover
                     palette={defaultPalette}
-                    onPaletteChange={value => {
+                    onPaletteChange={(value) => {
                       props.setAttributes({ defaultPalette: value });
 
                       let colors = [];
-                      Object.valuesvalue.map(key => {
+                      Object.valuesvalue.map((key) => {
                         const { color } = key;
                         return colors.push(color);
                       });
@@ -466,10 +477,10 @@ const edit = props => {
                         className={"dashicons dashicons-format-image"}
                       ></Button>
                     )}
-                    onSelect={file => {
+                    onSelect={(file) => {
                       props.setAttributes({ backgroundColor: undefined });
                       props.setAttributes({
-                        backgroundImage: file.sizes.thumbnail.url
+                        backgroundImage: file.sizes.thumbnail.url,
                       });
                     }}
                   />
@@ -483,10 +494,12 @@ const edit = props => {
                     content: (
                       <BoxShadow
                         boxShadowOptions={boxShadow}
-                        onChange={value => setAttributes({ boxShadow: value })}
+                        onChange={(value) =>
+                          setAttributes({ boxShadow: value })
+                        }
                       />
-                    )
-                  }
+                    ),
+                  },
                 ]}
               />
               <PanelBody
@@ -494,7 +507,26 @@ const edit = props => {
                 initialOpen={true}
                 title={__("Border settings", "gutenberg-extra")}
               >
+                <Line />
                 <BlockBorder {...props} />
+              </PanelBody>
+            </AccordionItemPanel>
+          </AccordionItem>
+          <AccordionItem
+          className={'gx-width-item'}
+          >
+            <AccordionItemHeading className={"gx-accordion-tab gx-width-tab"}>
+              <AccordionItemButton className="components-base-control__label">
+                {__(" Width & Height", "gutenberg-extra")}
+              </AccordionItemButton>
+            </AccordionItemHeading>
+            <AccordionItemPanel>
+              <PanelBody
+                className="gx-panel gx-size-setting gx-style-tab-setting"
+                initialOpen={true}
+                title={__("Size Settings", "gutenberg-extra")}
+              >
+                <SizeControl {...props} />
               </PanelBody>
             </AccordionItemPanel>
           </AccordionItem>
@@ -521,7 +553,7 @@ const edit = props => {
       >
         <div
           style={{
-            order: 0
+            order: 0,
           }}
         >
           <RichText
@@ -529,23 +561,23 @@ const edit = props => {
             style={subtitleStyles}
             placeholder={__("Add a snappy sub heading", "gutenberg-extra")}
             value={subtitle}
-            onChange={value => setAttributes({ subtitle: value })}
+            onChange={(value) => setAttributes({ subtitle: value })}
             className="gx-title-extra-subtitle"
           />
         </div>
 
         <div
           style={{
-            order: 3
+            order: 3,
           }}
           dangerouslySetInnerHTML={{
-            __html: additionalDivider
+            __html: additionalDivider,
           }}
         />
 
         <div
           style={{
-            order: 1
+            order: 1,
           }}
         >
           <RichText
@@ -556,7 +588,7 @@ const edit = props => {
               "gutenberg-extra"
             )}
             value={title}
-            onChange={value => setAttributes({ title: value })}
+            onChange={(value) => setAttributes({ title: value })}
             className="gx-title-extra-title"
           />
         </div>
@@ -565,7 +597,7 @@ const edit = props => {
 
         <div
           style={{
-            order: 3
+            order: 3,
           }}
         >
           <RichText
@@ -576,7 +608,7 @@ const edit = props => {
               "gutenberg-extra"
             )}
             value={text}
-            onChange={value => setAttributes({ text: value })}
+            onChange={(value) => setAttributes({ text: value })}
             className="gx-title-extra-text"
           />
         </div>

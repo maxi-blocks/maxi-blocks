@@ -206,6 +206,7 @@ export class ButtonStyles extends Component {
                         value.alignment = val;
                         saveAndSend()
                     }}
+                    disableJustify
                 />
                 <SizeControlTest
                     sizeSettings={value.size}

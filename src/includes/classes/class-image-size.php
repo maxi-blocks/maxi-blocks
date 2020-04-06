@@ -66,13 +66,14 @@ class ImageSize
             'test_type' => false,
         );
 
-        $movefile = wp_handle_upload($media_file, $upload_overrides);
+        $upload_file = wp_handle_upload($media_file, $upload_overrides);
 
-        if ($movefile && !isset($movefile['error'])) {
-            echo __('File is valid, and was successfully uploaded.', 'gutenberg-extra') . "\n";
+        if ($upload_file && !isset($upload_file['error'])) {
+            //echo __('File is valid, and was successfully uploaded.', 'gutenberg-extra') . "\n";
+            echo json_encode($upload_file);
             self::register_new_size($media);
         } else {
-            echo $movefile['error'];
+            echo $upload_file['error'];
         }
     }
 

@@ -62,6 +62,8 @@ $base-blue-color: #00ccff;
       width: 41px !important;
       font-weight: 500;
       margin-right: -1px;
+      height: 36px !important;
+      padding-top: 5px !important;
     }
 
     .components-button.is-primary {
@@ -94,7 +96,7 @@ $base-blue-color: #00ccff;
     input[type="number"].components-gx-dimensions-control__number {
       border-radius: 0;
       box-shadow: none !important;
-      height: 30px;
+      height: 36px !important;
       margin: 0 -2px 0 0;
       padding-right: 1px;
       width: 23%;
@@ -143,6 +145,8 @@ $base-blue-color: #00ccff;
     &__actions {
       position: relative;
       top: -2px;
+      margin: 0 !important;
+      margin-left: auto !important;
     }
 
     .components-gx-dimensions-control__header .components-color-palette__clear {
@@ -151,8 +155,11 @@ $base-blue-color: #00ccff;
       border: none !important;
       padding: 0;
       width: 24px !important;
-      margin-left: auto;
-      margin-top: 2px;
+      height: 30px !important;
+      margin-top: 1px;
+      margin-left: 5px;
+      border: 2px solid #dddfe1 !important;
+      order: 1;
       svg {
         max-width: 12px;
         margin: auto;
@@ -165,7 +172,6 @@ $base-blue-color: #00ccff;
         min-width: 33px;
         display: block;
         text-align: center;
-        height: 26px;
         line-height: 24px;
         margin-right: -2px;
         font-size: 9pt;
@@ -176,7 +182,9 @@ $base-blue-color: #00ccff;
         text-align: center;
         text-shadow: none;
         text-transform: uppercase;
+        height: 32px !important;
         top: -1px;
+        height: 30px !important;
         color: $base-color !important;
         &:hover {
           background-color: white !important;

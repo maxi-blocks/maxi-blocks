@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Todo: comment all functions and class
+ */
+
 class ImageSize
 {
 
@@ -42,7 +46,8 @@ class ImageSize
             'name'      => $_POST['name'],
             'width'     => $_POST['width'],
             'height'    => $_POST['height'],
-            'mime_type' => $_POST['mime_type']
+            'mime_type' => $_POST['mime_type'],
+            'folder'    => $_POST['folder']
         ];
         $old_media = $_POST['old_media_src'];
         $media_file = $_FILES['file'];
@@ -69,11 +74,26 @@ class ImageSize
         $upload_file = wp_handle_upload($media_file, $upload_overrides);
 
         if ($upload_file && !isset($upload_file['error'])) {
-            //echo __('File is valid, and was successfully uploaded.', 'gutenberg-extra') . "\n";
-            echo json_encode($upload_file);
+            self::check_image_folder($media, $upload_file);
             self::register_new_size($media);
         } else {
             echo $upload_file['error'];
+        }
+    }
+
+    private function check_image_folder($media, $upload_file) {
+        if (strpos($upload_file['url'], $media['folder']))
+            echo json_encode($upload_file['url']);
+        else {
+            $destination = ABSPATH . str_replace(get_site_url() . '/', '', $media['folder']) . '/' . $media['name'];
+            global $wp_filesystem;
+            WP_Filesystem();
+            $wp_filesystem->move(
+                $upload_file['file'],
+                $destination
+            );
+            $newUrl = $media['folder'] . '/' . $media['name'];
+            echo json_encode($newUrl);            
         }
     }
 
@@ -98,12 +118,9 @@ class ImageSize
     public function gx_remove_custom_image_size()
     {
         $id = $_POST['id'];
-        var_dump($id);
         $post_meta = get_post_meta($id, '_wp_attachment_metadata', true);
-        var_dump($post_meta);
         $post_meta['sizes']['custom'] = [];
         wp_update_attachment_metadata($id, $post_meta);
-        var_dump(get_post_meta($id, '_wp_attachment_metadata', true));
         die();
     }
 }

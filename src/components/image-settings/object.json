@@ -3,17 +3,6 @@
     "size": "",
     "imageSize": {
         "options": {},
-        "cropOptions": {
-            "url": "",
-            "dimension": {
-                "width": "",
-                "height": ""
-            },
-            "focalPoint": {
-                "x": "",
-                "y": ""
-            }
-        },
         "widthUnit": "%",
         "width": "",
         "heightUnit": "%",

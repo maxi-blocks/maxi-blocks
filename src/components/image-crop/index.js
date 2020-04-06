@@ -110,6 +110,18 @@ class ImageCrop extends Component {
         return this.originalImageData.mime_type;
     }
 
+    get getFileDate() {
+        const date = new Date(Date.now());
+        let response = 
+            date.getDate().toString() +
+            date.getMonth().toString() +
+            date.getFullYear().toString() +
+            date.getHours().toString() +
+            date.getMinutes().toString() +
+            date.getSeconds().toString();
+        return response;                        
+    }
+
     get getFileType() {
         let extension = this.originalImageData.file;
         extension = extension.substr(extension.lastIndexOf('.') + 1);
@@ -119,7 +131,7 @@ class ImageCrop extends Component {
     get getFileName() {
         let name = this.originalImageData.file;
         name = name.substr(0, name.lastIndexOf('.'));
-        name = `${name}-crop-${(this.getWidth * this.getScale).toFixed(0)}-${(this.getHeight * this.getScale).toFixed(0)}-${Date.now()}.${this.getFileType}`;
+        name = `${name}-crop-${(this.getWidth * this.getScale).toFixed(0)}-${(this.getHeight * this.getScale).toFixed(0)}-${this.getFileDate}.${this.getFileType}`;
         return name;
     }
 

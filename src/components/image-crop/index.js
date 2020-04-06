@@ -232,13 +232,17 @@ class ImageCrop extends Component {
                     data: data,
                     body: data
                 }
-            ).then(() => {
+            )
+            .then(data => {
+                return data.json();
+            })
+            .then(res => {
                 this.imageData.media_details.sizes.custom = {
                     file: this.getFileName,
                     width: this.getWidth,
                     height: this.getHeight,
                     mime_type: this.getMimeType,
-                    source_url: this.getFilePath + this.getFileName,
+                    source_url: res.url,
                 }
                 this.saveMedia(this.imageData);
             }).catch(err => {

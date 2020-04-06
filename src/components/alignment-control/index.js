@@ -23,20 +23,33 @@ const AlignmentControl = props => {
 
     const {
         value,
-        onChange
+        onChange,
+        disableLeft = false,
+        disableCenter = false,
+        disableRight = false,
+        disableJustify = false,
     } = props;
+
+    const getOptions = () => {
+        let options = [];
+        if(!disableLeft)
+            options.push({ label: <Icon icon={alignLeft} />, value: 'left' });
+        if(!disableCenter)
+            options.push({ label: <Icon icon={alignCenter} />, value: 'center' });
+        if(!disableRight)
+            options.push({ label: <Icon icon={alignRight} />, value: 'right' });
+        if(!disableJustify)
+            options.push({ label: <Icon icon={alignJustify} />, value: 'justify' })
+
+        return options;
+    }
 
     return (
         <RadioControl
             label={__('Alignment', 'gutenberg-extra')}
             className={'gx-alignmentcontrol-control'}
             selected={value}
-            options={[
-                { label: <Icon icon={alignLeft} />, value: 'left' },
-                { label: <Icon icon={alignCenter} />, value: 'center' },
-                { label: <Icon icon={alignRight} />, value: 'right' },
-                { label: <Icon icon={alignJustify} />, value: 'justify' },
-            ]}
+            options={getOptions()}
             onChange={value => onChange(value)}
         />
     )

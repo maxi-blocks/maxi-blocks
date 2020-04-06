@@ -51,7 +51,7 @@ import './editor.scss';
 export const imageSettingsAttributes = {
     imageSettings: {
         type: 'string',
-        default: '{"label":"Image Settings","size":"","imageSize":{"options":{},"cropOptions":{"url":"","dimension":{"width":"","height":""},"focalPoint":{"x":"","y":""}},"widthUnit":"%","width":"","heightUnit":"%","height":""},"alt":"","alignment":"","captionType":"none","caption":"none","captionTypography":{"label":"Caption","font":"Default","options":{},"general":{"color":""},"desktop":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"},"tablet":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"},"mobile":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"}},"sizeSettings":{"maxWidthUnit":"%","maxWidth":"","widthUnit":"%","width":""},"normal":{"opacity":"","backgroundColor":"","boxShadow":{"label":"Box Shadow","shadowColor":"","shadowHorizontal":"0","shadowVertical":"0","shadowBlur":"0","shadowSpread":"0"},"borderSettings":{"borderColor":"","borderType":"","borderRadius":{"label":"Border radius","unit":"px","max":"1000","desktop":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"tablet":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"mobile":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true}},"borderWidth":{"label":"Border width","unit":"px","max":"1000","desktop":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"tablet":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"mobile":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true}}}},"hover":{"opacity":"","backgroundColor":"","boxShadow":{"label":"Box Shadow","shadowColor":"","shadowHorizontal":"0","shadowVertical":"0","shadowBlur":"0","shadowSpread":"0"},"borderSettings":{"borderColor":"","borderType":"","borderRadius":{"label":"Border radius","unit":"px","max":"1000","desktop":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"tablet":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"mobile":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true}},"borderWidth":{"label":"Border width","unit":"px","max":"1000","desktop":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"tablet":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"mobile":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true}}}}}'
+        default: '{"label":"Image Settings","size":"","imageSize":{"options":{},"widthUnit":"%","width":"","heightUnit":"%","height":""},"alt":"","alignment":"","captionType":"none","caption":"none","captionTypography":{"label":"Caption","font":"Default","options":{},"general":{"color":""},"desktop":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"},"tablet":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"},"mobile":{"font-sizeUnit":"px","font-size":0,"line-heightUnit":"px","line-height":0,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"}},"sizeSettings":{"maxWidthUnit":"%","maxWidth":"","widthUnit":"%","width":""},"normal":{"opacity":"","backgroundColor":"","boxShadow":{"label":"Box Shadow","shadowColor":"","shadowHorizontal":"0","shadowVertical":"0","shadowBlur":"0","shadowSpread":"0"},"borderSettings":{"borderColor":"","borderType":"","borderRadius":{"label":"Border radius","unit":"px","max":"1000","desktop":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"tablet":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"mobile":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true}},"borderWidth":{"label":"Border width","unit":"px","max":"1000","desktop":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"tablet":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"mobile":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true}}}},"hover":{"opacity":"","backgroundColor":"","boxShadow":{"label":"Box Shadow","shadowColor":"","shadowHorizontal":"0","shadowVertical":"0","shadowBlur":"0","shadowSpread":"0"},"borderSettings":{"borderColor":"","borderType":"","borderRadius":{"label":"Border radius","unit":"px","max":"1000","desktop":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"tablet":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"mobile":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true}},"borderWidth":{"label":"Border width","unit":"px","max":"1000","desktop":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"tablet":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"mobile":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true}}}}}'
     }
 }
 
@@ -66,6 +66,7 @@ class ImageSettingsOptions extends Component {
 
     render() {
         const {
+            mediaID,
             className = "gx-imagesettings-control",
             imageData,
             imageSettings = this.props.attributes.imageSettings,
@@ -87,6 +88,8 @@ class ImageSettingsOptions extends Component {
                     return a[1].width - b[1].width;
                 })
                 sizes.map(size => {
+                    if ( size[0] === 'custom' ) 
+                        return;
                     const name = capitalize(size[0]);
                     const val = size[1];
                     response.push({
@@ -96,7 +99,7 @@ class ImageSettingsOptions extends Component {
                 })
             }
             response.push({
-                label: 'Custom', value: 'custom'
+                label: 'Custom', value: 'gx-custom'
             });
             return response;
         }
@@ -277,11 +280,9 @@ class ImageSettingsOptions extends Component {
         }
 
         const getValues = () => {
-            console.log(value)
             value.alt = imageData.alt_text;
             value.src = imageData.source_url;
             value.imageSize.options = imageData.media_details.sizes;
-            value.imageSize.cropOptions.url = imageData.source_url;
             save();
         }
 
@@ -296,49 +297,23 @@ class ImageSettingsOptions extends Component {
             <div className={className}>
                 <SelectControl
                     label={__('Image Size', 'gutenberg-extra')}
-                    value={value.imageSize.options[value.size] || value.size === 'custom' ? value.size : 'full'}
+                    value={value.imageSize.options[value.size] || value.size === 'gx-custom' ? value.size : 'full'}
                     options={getSizeOptions()}
                     onChange={val => {
                         value.size = val;
                         saveAndSend()
                     }}
                 />
-                {value.size === 'custom' &&
+                {value.size === 'gx-custom' &&
                     <ImageCrop 
-                        imageOptions={value.imageSize.cropOptions}
-                        onChange={val => {
-                            value.imageSize.cropOptions = val;
+                        mediaID={mediaID}
+                        cropOptions={value.imageSize.cropOptions} 
+                        onChange={(val, crop) => {
+                            value.imageSize.options = val.media_details.sizes;
+                            value.imageSize.cropOptions = crop;
                             saveAndSend();
                         }}
                     />
-                    // <Fragment>
-                    //     <MiniSizeControl
-                    //         label={__('Width', 'gutenberg-extra')}
-                    //         unit={value.imageSize.widthUnit}
-                    //         onChangeUnit={val => {
-                    //             value.imageSize.widthUnit = val;
-                    //             saveAndSend();
-                    //         }}
-                    //         value={value.imageSize.width}
-                    //         onChangeValue={val => {
-                    //             value.imageSize.width = val;
-                    //             saveAndSend();
-                    //         }}
-                    //     />
-                    //     <MiniSizeControl
-                    //         label={__('Height', 'gutenberg-extra')}
-                    //         unit={value.imageSize.heightUnit}
-                    //         onChangeUnit={val => {
-                    //             value.imageSize.heightUnit = val;
-                    //             saveAndSend();
-                    //         }}
-                    //         value={value.imageSize.height}
-                    //         onChangeValue={val => {
-                    //             value.imageSize.height = val;
-                    //             saveAndSend();
-                    //         }}
-                    //     />
-                    // </Fragment>
                 }
                 <AlignmentControl
                     value={value.alignment}
@@ -523,12 +498,13 @@ export const Image = props => {
     } = props;
 
     const value = typeof imageSettings === 'object' ? imageSettings : JSON.parse(imageSettings);
-    const image = value.imageSize.options[value.size] ? value.imageSize.options[value.size] : value.imageSize.options.full;
+    const size = value.size != 'gx-custom' ? value.size : 'custom';
+    const image = value.imageSize.options[size] ? value.imageSize.options[size] : value.imageSize.options.full;
     let width = '', height = '', src='';
     if ( !isNil(image) ) {
         src = image.source_url;
     }
-    if ( !isNil(image) && value.size != 'custom' ) {
+    if ( !isNil(image) && size != 'custom' ) {
         width = image.width;
         height = image.height;
     }

@@ -208,3 +208,6 @@ add_action('admin_enqueue_scripts', 'gutenberg_scripts');
 // Post Meta register
 require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-post-meta.php';
 require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-responsive-frontend-block-styles.php';
+
+// Image crop and image sizes
+require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-image-size.php';

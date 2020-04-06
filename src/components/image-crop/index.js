@@ -222,8 +222,9 @@ class ImageCrop extends Component {
             data.append('width', this.getWidth);
             data.append('height', this.getHeight);
             data.append('mime_type', this.getMimeType);
+            data.append('folder', this.getFilePath);
             data.append('file', newImage);
-            data.append('old_media_src', this.getOldFileName)
+            data.append('old_media_src', this.getOldFileName);
 
             fetch(
                 window.location.origin + ajaxurl + '?action=gx_add_custom_image_size',
@@ -242,7 +243,7 @@ class ImageCrop extends Component {
                     width: this.getWidth,
                     height: this.getHeight,
                     mime_type: this.getMimeType,
-                    source_url: res.url,
+                    source_url: res,
                 }
                 this.saveMedia(this.imageData);
             }).catch(err => {

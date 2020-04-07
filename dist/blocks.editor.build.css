@@ -588,6 +588,71 @@
  * Can include things like variables and mixins
  * that are used across the project.
 */
+input[type="checkbox"].gutenberg-extra-checkbox-input {
+  position: relative;
+  width: 35px;
+  height: 35px; }
+
+input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before {
+  content: url("../src/components/checkbox/check-box.svg");
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  margin: auto; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
+.gx-colorcontrol-control {
+  display: -ms-flexbox;
+  display: flex; }
+
+.gx-colorcontrol-control .gx-colorcontrol-color-display span {
+  display: block;
+  width: 24px;
+  height: 24px;
+  border: 1px solid black;
+  margin: auto; }
+
+.gx-colorcontrol-control .gx-popover-control {
+  width: 100%; }
+
+.gx-colorcontrol-gradient-popover .components-custom-gradient-picker__gradient-bar {
+  border-radius: 0; }
+
+.gx-colorcontrol-gradient-popover .components-custom-gradient-picker__ui-line {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+      flex-direction: column; }
+
+.gx-colorcontrol-gradient-popover .components-custom-gradient-picker__ui-line .components-base-control__field {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: justify;
+      justify-content: space-between; }
+
+.gx-colorcontrol-gradient-popover .components-custom-gradient-picker__ui-line .components-base-control__label {
+  margin: auto;
+  margin-left: 0; }
+
+.gx-colorcontrol-gradient-popover .components-custom-gradient-picker__ui-line .components-angle-picker-control {
+  width: 100%; }
+
+.gx-colorcontrol-gradient-popover .components-custom-gradient-picker__ui-line .components-angle-picker-control__angle-circle {
+  margin: auto;
+  margin-right: 0; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
 .gx-buttoneditor-button {
   display: block; }
 

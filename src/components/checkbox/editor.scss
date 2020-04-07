@@ -1,0 +1,14 @@
+input[type="checkbox"].gutenberg-extra-checkbox-input {
+  position: relative;
+  width: 35px;
+  height: 35px;
+}
+
+input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before {
+  content: url('../src/components/checkbox/check-box.svg');
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  margin: auto;
+}

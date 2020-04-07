@@ -1,0 +1,43 @@
+.gx-colorcontrol-control {
+  display: flex;
+}
+
+.gx-colorcontrol-control .gx-colorcontrol-color-display span{
+  display: block;
+  width: 24px;
+  height: 24px;
+  border: 1px solid black;
+  margin: auto;
+}
+
+.gx-colorcontrol-control .gx-popover-control {
+  width: 100%;
+}
+
+.gx-colorcontrol-gradient-popover .components-custom-gradient-picker__gradient-bar {
+  border-radius: 0;
+}
+
+.gx-colorcontrol-gradient-popover .components-custom-gradient-picker__ui-line {
+  display: flex;
+  flex-direction: column;
+}
+
+.gx-colorcontrol-gradient-popover .components-custom-gradient-picker__ui-line .components-base-control__field {
+  display: flex;
+  justify-content: space-between;
+}
+
+.gx-colorcontrol-gradient-popover .components-custom-gradient-picker__ui-line .components-base-control__label {
+  margin: auto;
+  margin-left: 0;
+}
+
+.gx-colorcontrol-gradient-popover .components-custom-gradient-picker__ui-line .components-angle-picker-control {
+  width: 100%
+}
+
+.gx-colorcontrol-gradient-popover .components-custom-gradient-picker__ui-line .components-angle-picker-control__angle-circle {
+  margin: auto;
+  margin-right: 0;
+}

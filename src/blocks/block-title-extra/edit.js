@@ -3,7 +3,13 @@
  */
 
 const { __ } = wp.i18n;
-const { PanelBody, Button, BaseControl } = wp.components;
+const {
+  PanelBody,
+  Button,
+  BaseControl,
+  __experimentalGradientPicker,
+} = wp.components;
+const { Fragment } = wp.element;
 const {
   InspectorControls,
   PanelColorSettings,
@@ -55,6 +61,7 @@ import { SubtitleAlign } from "../../components/subtitle-align/index";
 import { TitleAlign } from "../../components/title-align/index";
 import { DescriptionAlign } from "../../components/description-align/index";
 import Typography from "../../components/typography/index";
+import iconsSettings from '../../components/icons/icons-settings.js';
 
 import { HideDivider } from "../../components/hide-divider/index";
 import { VerticalDivider } from "../../components/vertical-divider/index";
@@ -62,6 +69,7 @@ import { RoundedDivider } from "../../components/rounded-divider/index";
 import { AdditionalDivider } from "../../components/additional-divider/index";
 import { AlignDivider } from "../../components/align-divider/index";
 import { DividerPosition } from "../../components/divider-position/index";
+import ColorControl from "../../components/color-control";
 import { DividerWidth } from "../../components/divider-width/index";
 import { DividerHeight } from "../../components/divider-height/index";
 import { DividerColor } from "../../components/divider-color/index";
@@ -85,6 +93,7 @@ const edit = (props) => {
       text,
       mediaID,
       defaultPalette,
+      gradientIcon = iconsSettings.gradient,
       backgroundImage,
       mediaURL,
       description,
@@ -205,25 +214,25 @@ const edit = (props) => {
     }
   };
 
-  const hideAll = (e) => {
-    let sliders = document.querySelectorAll(
-      ".components-range-control__slider"
-    );
-    let isClickInside;
+  // const hideAll = (e) => {
+  //   let sliders = document.querySelectorAll(
+  //     ".components-range-control__slider",
+  //   );
+  //   let isClickInside;
 
-    for (var i = 0, len = sliders.length; i < len; i++) {
-      isClickInside = sliders[i].contains(e.target);
-      if (isClickInside === true) {
-        break;
-      }
-    }
+  //   for (var i = 0, len = sliders.length; i < len; i++) {
+  //     isClickInside = sliders[i].contains(e.target);
+  //     if (isClickInside === true) {
+  //       break;
+  //     }
+  //   }
 
-    if (!isClickInside) {
-      for (var i = 0, len = sliders.length; i < len; i++) {
-        sliders[i].style.display = "none";
-      }
-    }
-  };
+  //   if (!isClickInside) {
+  //     for (var i = 0, len = sliders.length; i < len; i++) {
+  //       sliders[i].style.display = "none";
+  //     }
+  //   }
+  // };
 
   const gradients = "";
   const disableCustomGradients = false;
@@ -394,12 +403,12 @@ const edit = (props) => {
                 <DividerWidth
                   {...props}
                   buildDivider={buildDivider}
-                  hideAll={hideAll}
+                  // hideAll={hideAll}
                 />
                 <DividerHeight
                   {...props}
                   buildDivider={buildDivider}
-                  hideAll={hideAll}
+                  // hideAll={hideAll}
                 />
               </PanelBody>
             </AccordionItemPanel>
@@ -418,7 +427,14 @@ const edit = (props) => {
                   "bg-color-parent gx-reset-button background-gradient "
                 }
               >
-                <PanelColorSettings
+                <ColorControl 
+                  label={__('Background Color', 'gutenberg-extra')}
+                  color={backgroundColor}
+                  onGradientChange={value => {console.log(value)}}
+                  // onColorChange={}
+                  // disableGradient
+                />
+                {/* <PanelColorSettings
                   title={__("Background Colour", "gutenberg-extra")}
                   colorSettings={[
                     {
@@ -435,9 +451,8 @@ const edit = (props) => {
                       value: backgroundColor,
                     },
                   ]}
-                />
-                <div className={"gradient"}>
-                  <GradientPickerPopover
+                /> */}
+                  {/* <GradientPickerPopover
                     palette={defaultPalette}
                     onPaletteChange={(value) => {
                       props.setAttributes({ defaultPalette: value });
@@ -450,8 +465,7 @@ const edit = (props) => {
 
                       props.setAttributes({ backgroundGradient: colors });
                     }}
-                  />
-                </div>
+                  /> */}
               </BaseControl>
               <BaseControl className={"gx-settings-button background-image"}>
                 <BaseControl.VisualLabel>

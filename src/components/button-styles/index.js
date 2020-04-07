@@ -17,7 +17,7 @@ const {
  */
 import AlignmentControl from '../alignment-control/';
 import SizeControlTest from '../size-control/test/';
-import { ColorControlTest1 } from '../color-control/test/';
+import ColorControl from '../color-control/';
 import { PopoverControl } from '../popover/';
 import { BoxShadow } from '../box-shadow/index';
 import Typography from '../typography/';
@@ -228,23 +228,23 @@ export class ButtonStyles extends Component {
                         this.setState({ selector });
                     }}
                 />
-                <ColorControlTest1
-                    showColor
+                <ColorControl
                     label={__('Text Colour', 'gutenberg-extra')}
                     color={value[selector].color}
                     onColorChange={val => {
                         value[selector].color = val;
                         saveAndSend();
                     }}
+                    disableGradient
                 />
-                <ColorControlTest1
-                    showColor
+                <ColorControl
                     label={__('Background Colour', 'gutenberg-extra')}
                     color={value[selector].backgroundColor}
                     onColorChange={val => {
                         value[selector].backgroundColor = val;
                         saveAndSend();
                     }}
+                    disableGradient
                 />
                 <PopoverControl
                     label={__('Box shadow', 'gutenberg-extra')}

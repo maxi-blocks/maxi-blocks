@@ -18,7 +18,7 @@ import {
     dimensionsControlAttributesPadding,
 } from '../../components/dimensions-control/attributes';
 // Testing
-import { colorControlAttributesTest } from '../../components/color-control/test/';
+import { colorControlAttributes } from '../../components/color-control/';
 import { sizeControlAttributesTest } from '../../components/size-control/test/';
 
 /**
@@ -51,27 +51,18 @@ const attributes = {
     ...buttonStyleAttributes,
     backgroundColor: {
         type: 'string',
-        default: "",
     },
-    backgroundGradient: {   // !!!!!!
+    backgroundGradient: {
         type: 'string',
-        default: "",
     },
-    backgroundGradient: {   // !!!!!!
-        type: 'array',
-        default: [],
-    },
-    defaultPalette: {
-        type: 'array',
-        default: [
-            { offset: '0.00', color: 'rgba(238, 55, 11, 1)' },
-            { offset: '1.00', color: 'rgba(126, 32, 34, 1)' }
-        ]
+    backgroundGradientAboveBackground: {
+        type: 'boolean',
+        default: false
     },
     // BackgroundImage???
     boxShadow: {
         type: 'string',
-        default: '{"label":"Box Shadow","shadowColor": "", "shadowHorizontal": "0", "shadowVertical": "0", "shadowBlur": "0", "shadowSpread": "0"}'
+        default: '{"label":"Box Shadow","shadowColor": "", "shadowGradient": "", "shadowHorizontal": "0", "shadowVertical": "0", "shadowBlur": "0", "shadowSpread": "0"}'
     },
     ...borderAttributes,
     ...sizeControlAttributes,
@@ -114,7 +105,6 @@ const attributes = {
         type: 'string',
         default: '{}'
     },
-    ...colorControlAttributesTest,
     ...sizeControlAttributesTest
 }
 

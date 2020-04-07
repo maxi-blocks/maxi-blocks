@@ -9,8 +9,6 @@ const {
 } = wp.components;
 const {
     InspectorControls,
-    PanelColorSettings,
-    URLInput,
     RichText,
     MediaUpload,
 } = wp.blockEditor;
@@ -22,7 +20,7 @@ import classnames from 'classnames';
 import React from 'react';
 import DimensionsControl from '../../components/dimensions-control/index';
 import { BlockStyles } from '../../components/block-styles/index';
-import { 
+import {
     ButtonStyles,
     ButtonEditor
 } from '../../components/button-styles/index';
@@ -31,7 +29,6 @@ import { FontLevel } from '../../components/font-level/index';
 import { LinkOptions } from '../../components/link-options/index';
 import { BlockBorder } from '../../components/block-border/index';
 import { SizeControl } from '../../components/size-control/index';
-import GradientPickerPopover from '../../components/gradient-picker/';
 import { HoverAnimation } from '../../components/hover-animation/index';
 import { CustomCSS } from '../../components/custom-css/index';
 import {
@@ -58,11 +55,7 @@ import {
     ImageUpload
 } from '../../components/image-settings/';
 // Testing
-//import ColorControl from '../../components/color-control/';
-import {
-    ColorControlTest1,
-    ColorControlTest2
-} from '../../components/color-control/test/';
+import ColorControl from '../../components/color-control/';
 import SizeControlTest from '../../components/size-control/test';
 
 /**
@@ -82,7 +75,7 @@ const edit = props => {
             imageSettings,
             backgroundColor,
             backgroundGradient,
-            defaultPalette,
+            backgroundGradientAboveBackground,
             boxShadow,
             margin,
             padding,
@@ -99,8 +92,6 @@ const edit = props => {
             readMoreTextTest,
             readMoreLinkTest,
             buttonStyles,
-            colorTest,
-            gradientTest,
             sizeTest,
         },
         setAttributes,
@@ -115,7 +106,6 @@ const edit = props => {
     const titleStyles = setTitleStyles(props);
     const subTitleStyles = setSubTitleStyles(props);
     const descriptionStyles = setDescriptionStyles(props);
-    //const buttonStyles = setButtonStyles(props);
     const blockStyles = setBlockStyles(props);
 
     const onSelectImage = (media) => {
@@ -125,22 +115,18 @@ const edit = props => {
         });
     };
 
-    const gradients = "";
-    const disableCustomGradients = false;
+    // let backgroundImageWithGradient = backgroundGradient.length
+    //     ? `linear-gradient(to left, ${backgroundGradient[0]},${backgroundGradient[1]})`
+    //     : '';
 
+    // if (backgroundImage) {
+    //     backgroundImageWithGradient += backgroundGradient.length
+    //         ? `, url(${backgroundImage})`
+    //         : `url(${backgroundImage})`
+    // }
 
-    let backgroundImageWithGradient = backgroundGradient.length
-        ? `linear-gradient(to left, ${backgroundGradient[0]},${backgroundGradient[1]})`
-        : '';
-
-    if (backgroundImage) {
-        backgroundImageWithGradient += backgroundGradient.length
-            ? `, url(${backgroundImage})`
-            : `url(${backgroundImage})`
-    }
-
-    blockStyles.backgroundColor = backgroundColor ? backgroundColor : undefined;
-    blockStyles.backgroundImage = backgroundImageWithGradient ? backgroundImageWithGradient : undefined;
+    // blockStyles.backgroundColor = backgroundColor ? backgroundColor : undefined;
+    // blockStyles.backgroundImage = backgroundImageWithGradient ? backgroundImageWithGradient : undefined;
 
     return [
         <InspectorControls>
@@ -153,24 +139,6 @@ const edit = props => {
                     sizeSettings={sizeTest}
                     onChange={value => setAttributes({sizeTest: value})}
                 /> */}
-                <ColorControlTest1
-                    label={__('Color Test 1', 'gutenberg-extra')}
-                    showColor
-                    color={colorTest}
-                    onColorChange={value => setAttributes({colorTest: value})}
-                    showGradient
-                    gradient={gradientTest}
-                    onGradientChange={value => setAttributes({gradientTest: value})}
-                />
-                <ColorControlTest2
-                    label={__('Color Test 2', 'gutenberg-extra')}
-                    showColor
-                    color={colorTest}
-                    onColorChange={value => setAttributes({colorTest: value})}
-                    showGradient
-                    gradient={gradientTest}
-                    onGradientChange={value => setAttributes({gradientTest: value})}
-                />
                 <BlockStyles
                     {...props}
                 />
@@ -274,7 +242,7 @@ const edit = props => {
                         <PanelBody>
                             <ButtonStyles
                                 buttonSettings={buttonStyles}
-                                onChange={value => setAttributes({buttonStyles: value})}
+                                onChange={value => setAttributes({ buttonStyles: value })}
                             />
                         </PanelBody>
                     </AccordionItemPanel>
@@ -293,41 +261,15 @@ const edit = props => {
                         <BaseControl
                             className={"bg-color-parent gx-settings-button background-gradient "}
                         >
-                            <PanelColorSettings
-                                title={__('Background Colour', "gutenberg-extra")}
-                                colorSettings={[
-                                    {
-                                        onChange: value => {
-                                            if (!value) {
-                                                props.setAttributes({ backgroundColor: undefined });
-                                                props.setAttributes({ backgroundGradient: [] });
-                                                return;
-                                            }
-                                            props.setAttributes({ backgroundColor: value });
-/* ??? */                                   props.setAttributes({ backgroundImage: null });
-                                        },
-                                        label: __('Background Colour', "gutenberg-extra"),
-                                        value: backgroundColor
-                                    },
-                                ]}
+                            <ColorControl
+                                label={__('Background', 'gutenberg-extra')}
+                                color={backgroundColor}
+                                onColorChange={value => setAttributes({ backgroundColor: value })}
+                                gradient={backgroundGradient}
+                                onGradientChange={value => setAttributes({ backgroundGradient: value })}
+                                gradientAboveBackground={backgroundGradientAboveBackground}
+                                onGradientAboveBackgroundChange={value => setAttributes({ backgroundGradientAboveBackground: value })}
                             />
-                            <div className={'gradient'}>
-                                <GradientPickerPopover
-                                    palette={defaultPalette}
-                                    onPaletteChange={value => {
-                                        props.setAttributes({ defaultPalette: value });
-
-                                        let colors = [];
-                                        Object.valuesvalue.map(key => {
-                                            const { color } = key;
-                                            return colors.push(color)
-                                        });
-
-                                        props.setAttributes({ backgroundGradient: colors });
-
-                                    }}
-                                />
-                            </div>
                         </BaseControl>
                         <BaseControl
                             className={"gx-settings-button background-image"}
@@ -490,9 +432,9 @@ const edit = props => {
                         onChange={value => setAttributes({ description: value })}
                         className="gx-image-box-description"
                     />
-                    <ButtonEditor 
+                    <ButtonEditor
                         buttonSettings={buttonStyles}
-                        onChange={value => setAttributes({buttonStyles: value})}
+                        onChange={value => setAttributes({ buttonStyles: value })}
                         buttonText={readMoreTextTest}
                     />
                 </div>

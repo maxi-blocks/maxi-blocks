@@ -1,13 +1,22 @@
+/**
+ * WordPress dependencies
+ */
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
-const { PanelColorSettings } = wp.blockEditor;
 const { SelectControl } = wp.components;
-import DimensionsControl from '../dimensions-control/index';
 
+/**
+ * External dependencies
+ */
+import DimensionsControl from '../dimensions-control/index';
+import ColorControl from '../color-control';
+
+/**
+ * Attributes
+ */
 export const borderAttributes = {
     borderColor: {
         type: 'string',
-        default: "",
     },
     borderHoverColor: {
         type: 'string',
@@ -27,6 +36,9 @@ export const borderAttributes = {
     }
 }
 
+/**
+ * Block
+ */
 export const BlockBorder = (props) => {
     const {
         colorTitle = __('Color Settings', 'gutenberg-extra'),
@@ -69,15 +81,12 @@ export const BlockBorder = (props) => {
 
     return (
         <Fragment>
-            <PanelColorSettings
-                title={colorTitle}
-                colorSettings={[
-                    {
-                        value: borderColor,
-                        onChange: value => onChangeValue('borderColor', value, onChangeBorderColor),
-                        label: colorLabel,
-                    },
-                ]}
+            <ColorControl 
+                label={colorTitle}
+                color={borderColor}
+                onColorChange={value => onChangeValue('borderColor', value, onChangeBorderColor)}
+                disableGradient
+                disableGradientAboveBackground
             />
             <SelectControl
                 label={borderTypeLabel}

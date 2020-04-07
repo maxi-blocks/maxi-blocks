@@ -67,7 +67,9 @@ export const PopoverControl = props => {
                                     aria-expanded={isOpen}
                                     action="popup"
                                 >
-                                    {popover.icon ? popover.icon : icon}
+                                    <Icon 
+                                        icon={popover.icon ? popover.icon : icon}
+                                    />
                                 </Button>
                             )}
                             popoverProps={

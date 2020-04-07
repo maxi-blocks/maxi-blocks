@@ -17,7 +17,7 @@ const {
 /**
  * External dependencies
  */
-import { PopoverControl } from '../../popover/';
+import { PopoverControl } from '../popover';
 import { isNil } from 'lodash';
 
 /**
@@ -28,7 +28,7 @@ import './editor.scss';
 /**
  * Block
  */
-export const LinkedButton = props => {
+const LinkedButton = props => {
     const {
         className = 'gx-externalbutton-control',
         placeholder = __('External link', 'gutenberg-extra'),
@@ -86,49 +86,4 @@ export const LinkedButton = props => {
     )
 }
 
-
-// const LinkedText = props => {
-//     const {
-//         content = undefined,
-//         label = __('External link', 'gutenberg-extra'),
-//         className = 'gx-externallink-control',
-//         externalLink,
-//         onChange,
-//         settings = [],
-//     } = props;
-
-//     const value = typeof externalLink === 'object' ? externalLink : JSON.parse(externalLink);
-
-//     const getLabel = () => {
-//         if (typeof content != 'undefined' ) {
-//             return content;
-//         }
-//         if (typeof value.title != 'undefined' && value.title.length > 3) {
-//             return value.title;
-//         }
-//         else {
-//             return label;
-//         }
-//     }
-
-//     return (
-//         <PopoverControl 
-//             label={getLabel()}
-//             className={className}
-//             popovers={[
-//                 {
-//                     content:(
-//                         <__experimentalLinkControl
-//                             className="gx-image-box-read-more-link"
-//                             value={value}
-//                             onChange={onChange}
-//                             settings={settings}
-//                         />
-//                     )
-//                 }
-//             ]}
-//         />
-//     )
-// }
-
-// export default LinkedText;
+export default LinkedButton;

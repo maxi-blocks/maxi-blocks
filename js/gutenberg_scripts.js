@@ -286,7 +286,6 @@ class ResponsiveStylesResolver {
         let unit = this.object.unit ? this.object.unit : '';
 
         for (let [target, prop] of Object.entries(object)) {
-            console.log(prop)
             // values with dimensions
             if (target != 'sync' && prop != 0 && typeof prop === 'number' || unitChecker.indexOf(target) == 0 && prop != 0)
                 newObject[device][target] = prop + unit;
@@ -408,6 +407,9 @@ class FixObjectFollower {
         this.target = target;
         this.reference = reference;
         this.scrollEl = scrollEl || document;
+        console.log(this.target)
+        console.log(this.reference)
+        console.log(this.scrollEl)
         this.initEvents();
     }
 

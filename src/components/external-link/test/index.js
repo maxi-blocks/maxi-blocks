@@ -8,6 +8,7 @@
 const { __ } = wp.i18n;
 const { getScrollContainer } = wp.dom;
 const { Button } = wp.components;
+const { select } = wp.data;
 const { 
     RichText,
     __experimentalLinkControl 
@@ -39,18 +40,21 @@ export const LinkedButton = props => {
     } = props;
 
     const value = typeof externalLink === 'object' ? externalLink : JSON.parse(externalLink);
+    const attributes = select('core/block-editor').getBlockAttributes(select('core/block-editor').getSelectedBlockClientId());
 
-    const popoverPosition = () => {
-        const target = document.querySelector(`.${className} .gx-externalbutton-popover`);
+    const popoverPosition = (uniqueID) => {
+        const target = document.querySelector(`.${uniqueID} .${className} .gx-externalbutton-popover`);
         const reference = document.querySelector(`button.${className}`);
-        const scrollEl = getScrollContainer(target)
+        const scrollEl = getScrollContainer(target);
         if(isNil(target) || isNil(reference)) {
             return;
         }
         new FixObjectFollower (target, reference, scrollEl);
     }
 
-    popoverPosition()
+    if (!isNil(attributes)) {
+        popoverPosition(attributes.uniqueID)
+    }
 
     return (
         <Button
@@ -58,6 +62,7 @@ export const LinkedButton = props => {
         >
             <RichText
                 tagName="span"
+                className="gx-externalbutton-richtext"
                 placeholder={placeholder}
                 value={buttonText}
                 onChange={val => onTextChange(val)}

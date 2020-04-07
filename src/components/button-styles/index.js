@@ -2,7 +2,10 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { Component } = wp.element;
+const { 
+    Component,
+    Fragment
+} = wp.element;
 const {
     RadioControl,
     Button
@@ -362,11 +365,15 @@ export const ButtonSaver = props => {
     const value = typeof buttonSettings === 'object' ? buttonSettings : JSON.parse(buttonSettings);
 
     return (
-        <Button 
-            className={className}
-            href={value.linkOptions.url}
-        >
-            {value.buttonText}
-        </Button>
+        <Fragment>
+            {value.buttonText &&
+                <Button
+                    className={className}
+                    href={value.linkOptions.url}
+                >
+                    {value.buttonText}
+                </Button>
+            }
+        </Fragment>
     )
 }

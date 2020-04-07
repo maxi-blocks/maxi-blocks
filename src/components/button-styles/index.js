@@ -26,7 +26,7 @@ import { BoxShadow } from '../box-shadow/index';
 import Typography from '../typography/';
 import { BlockBorder } from '../block-border/';
 import DimensionsControl from '../dimensions-control/index';
-import { LinkedButton } from '../external-link/test/';
+import LinkedButton from '../linked-button';
 import {
     isEmpty,
     isNil,

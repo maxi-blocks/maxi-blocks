@@ -21,6 +21,7 @@ import typographyIcon from "./icon";
 import { BlockStyles } from "../../components/block-styles/index";
 import { FontLevel } from "../../components/font-level/index";
 import { BlockBorder } from "../../components/block-border/index";
+import DimensionsControl from "../../components/dimensions-control/index";
 import Divider from "../../components/divider/index";
 import { SizeControl } from "../../components/size-control/index";
 import { PaddingMarginControl } from "../../components/padding-margin-control/index";
@@ -132,6 +133,8 @@ const edit = (props) => {
       extraStyles,
       dividerAlignment,
       isMultiple,
+      padding,
+      margin,
       isHidden,
       isRounded,
       dividerThickness,
@@ -492,12 +495,14 @@ const edit = (props) => {
                 popovers={[
                   {
                     content: (
-                      <BoxShadow
-                        boxShadowOptions={boxShadow}
-                        onChange={(value) =>
-                          setAttributes({ boxShadow: value })
-                        }
-                      />
+                      <div className={"gx-box-shadow"}>
+                        <BoxShadow
+                          boxShadowOptions={boxShadow}
+                          onChange={(value) =>
+                            setAttributes({ boxShadow: value })
+                          }
+                        />
+                      </div>
                     ),
                   },
                 ]}
@@ -512,9 +517,7 @@ const edit = (props) => {
               </PanelBody>
             </AccordionItemPanel>
           </AccordionItem>
-          <AccordionItem
-          className={'gx-width-item'}
-          >
+          <AccordionItem className={"gx-width-item"}>
             <AccordionItemHeading className={"gx-accordion-tab gx-width-tab"}>
               <AccordionItemButton className="components-base-control__label">
                 {__(" Width & Height", "gutenberg-extra")}
@@ -527,6 +530,29 @@ const edit = (props) => {
                 title={__("Size Settings", "gutenberg-extra")}
               >
                 <SizeControl {...props} />
+              </PanelBody>
+            </AccordionItemPanel>
+          </AccordionItem>
+          <AccordionItem className={"gx-padding-margin-item"}>
+            <AccordionItemHeading className={"gx-accordion-tab gx-padding-tab"}>
+              <AccordionItemButton className="components-base-control__label">
+                {__("Padding & Margin", "gutenberg-extra")}
+              </AccordionItemButton>
+            </AccordionItemHeading>
+            <AccordionItemPanel>
+              <PanelBody
+                className="gx-panel gx-space-setting gx-style-tab-setting"
+                initialOpen={true}
+                title={__("Space Settings", "gutenberg-extra")}
+              >
+                <DimensionsControl
+                  value={padding}
+                  onChange={(value) => setAttributes({ padding: value })}
+                />
+                <DimensionsControl
+                  value={margin}
+                  onChange={(value) => setAttributes({ margin: value })}
+                />
               </PanelBody>
             </AccordionItemPanel>
           </AccordionItem>

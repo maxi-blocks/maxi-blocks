@@ -596,6 +596,13 @@ input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before {
  * that are used across the project.
 */
 .gx-buttoneditor-button {
+  display: block;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  border: 1px solid black; }
+
+.gx-buttoneditor-button .gx-externalbutton-richtext {
   display: block; }
 
 .gx-externalbutton-popover {

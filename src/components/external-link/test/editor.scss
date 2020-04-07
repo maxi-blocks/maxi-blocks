@@ -1,5 +1,11 @@
 .gx-buttoneditor-button {
     display: block;
+    width: max-content;
+    border: 1px solid black;
+}
+
+.gx-buttoneditor-button .gx-externalbutton-richtext {
+    display: block;
 }
 
 .gx-externalbutton-popover {
@@ -15,4 +21,3 @@
 .gx-buttoneditor-button:hover .gx-externalbutton-popover button {
     opacity: 1;
 }
-

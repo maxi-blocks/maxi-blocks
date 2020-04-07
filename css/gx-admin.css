@@ -1477,12 +1477,19 @@ body
   margin-bottom: 7px;
 }
 
+.gx-sidebar .gx-box-settings-item .components-base-control.gx-border-type .components-base-control__field {
+	margin-bottom: 18px !important;
+}
+
 .gx-box-settings-item .border-color {
-  margin-bottom: 13px !important;
+  margin-bottom: 16px !important;
+}
+
+.gx-box-settings-item .gx-Border button.components-color-palette__clear{
+  margin-right: 0 !important;
 }
 
 .gx-box-settings-item .gx-border-type select {
-  margin-right: -4px;
   border-radius: 4px !important;
   height: 100%;
 }
@@ -1688,6 +1695,20 @@ body
 
 @media all and (max-width: 2000px) {
 
+  .gx-width-item .components-radio-control__option label{
+    height: 30px !important;
+    line-height: 28px;
+    width: 27px !important;
+    left: -31px !important;
+    position: relative;
+  }
+
+  .gx-width-item .components-range-control__number {
+    top: -9px;
+    height: 31px !important;
+    left: 165px;
+  }
+
   .gx-width-item .gx-unit-control .components-base-control__field{
     left:30px;
     position: relative;
@@ -1740,13 +1761,13 @@ body
   }
 
   .gx-box-settings-item .bg-color-parent .components-button.is-link {
-    top: -8.4px !important;
+    top: -12.4px !important;
   }
 
   .gx-box-settings-item
     .bg-color-parent
     .components-circular-option-picker__clear {
-    top: -12.4px !important;
+    top: -16.4px !important;
   }
 
   .gx-with-unit-control .components-range-control__reset {
@@ -1836,7 +1857,7 @@ body
   }
 
   .edit-post-sidebar hr {
-    border: 0;
+    border-top: none;
     border-top: 2px solid #dddfe1;
     margin-top: 10px;
   }

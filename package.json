@@ -9,12 +9,14 @@
   },
   "dependencies": {
     "@wordpress/compose": "^3.4.0",
+    "@wordpress/icons": "^1.2.0",
     "cgb-scripts": "1.18.1",
     "classnames": "^2.2.6",
     "react-accessible-accordion": "^3.0.1",
     "react-color": "^2.18.0",
     "react-icons": "^3.9.0",
     "react-iframe": "^1.8.0",
+    "react-image-crop": "^8.6.1",
     "react-lazy-load": "^3.0.13",
     "react-linear-gradient-picker": "^1.0.8",
     "react-select": "^3.0.8"

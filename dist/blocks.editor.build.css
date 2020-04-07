@@ -1,16 +1,1153 @@
-.gx-layout-modal{width:1500px;min-height:90%;max-width:90%}.gx-layout-modal .components-modal__content{background:#f2f2f2;padding:0;overflow-x:hidden;min-height:100%;position:absolute;width:100%}.gx-layout-modal .components-modal__header{margin-bottom:25px;padding-left:50px;padding-right:25px}.gx-layout-modal .components-modal__header h1{font-weight:bold;font-size:1rem}.gx-layout-modal .components-tab-panel__tab-content{background:#fff;padding:35px;border-top:1px solid #e2e4e7}.gx-layout-modal .components-tab-panel__tabs{padding:0 35px;margin-bottom:-1px}.gx-layout-modal .components-tab-panel__tabs button{padding:15px 20px;background:none;border:none;font-size:16px}.gx-layout-modal .components-tab-panel__tabs button:hover{background:#fff;cursor:pointer}.gx-layout-modal .components-tab-panel__tabs .gx-layout-modal-active-tab{font-weight:600;background:#fff;border:1px solid #e2e4e7;border-bottom:none}.gx-layout-modal .components-base-control{display:inline-block}.gx-layout-modal .components-base-control:last-child{float:right}.gx-layout-modal .gx-layout-modal-header{background:#f2f2f2;padding:20px;margin-bottom:20px;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr;grid-gap:0 5em}.gx-layout-modal .gx-layout-modal-header .components-base-control:last-child{-ms-flex-item-align:end;align-self:flex-end;margin:0}.gx-layout-modal .gx-layout-modal-header .components-base-control__field{margin-bottom:0}.gx-layout-modal .gx-layout-modal-header select,.gx-layout-modal .gx-layout-modal-header input{font-size:16px;height:34px;width:100%}.gx-layout-modal .gx-layout-choices{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr;grid-gap:0 2em}.gx-layout-modal .gx-layout-view-full{grid-template-columns:1fr}.gx-layout-modal .gx-layout-view{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr;grid-gap:0 2em;margin-bottom:20px}.gx-layout-modal .gx-layout-view-left p{margin:0;line-height:2.2em}.gx-layout-modal .gx-layout-view-right{text-align:right}.gx-layout-modal .gx-layout-view-right button{margin-left:5px;height:auto;padding:5px}.gx-layout-modal .gx-layout-design{text-align:center;margin-bottom:40px;position:relative}.gx-layout-modal .gx-layout-design img{max-width:100%;display:block}.gx-layout-modal .gx-layout-design .gx-layout-insert-button{height:auto;background:none;border:none;-webkit-box-shadow:none;box-shadow:none;border-bottom:none;padding:0;z-index:5;position:relative}.gx-layout-modal .gx-layout-design-inside{-webkit-transition:.2s ease;-o-transition:.2s ease;transition:.2s ease;border:solid 1px #cccccc}.gx-layout-modal .gx-layout-design-inside:hover{-webkit-box-shadow:0px 0px 0px 8px #ececec;box-shadow:0px 0px 0px 8px #ececec}.gx-layout-modal .gx-layout-design-info{background:#fff;border-top:solid 1px #ccc;text-align:left;position:relative;padding:12px}.gx-layout-modal .gx-layout-design-info button:active{vertical-align:middle !important}.gx-layout-modal .gx-layout-design-title{font-weight:bold}.gx-layout-modal button.gx-layout-favorite-button{background:none;border:none;-webkit-box-shadow:none;box-shadow:none;float:right;border-radius:3px;margin-top:-3px}.gx-layout-modal .components-button-group .components-button.gx-layout-favorite-button{border-radius:3px;padding:0 8px 0px}.gx-layout-modal button.gx-layout-favorite-button:hover{background:#fff;border:none;-webkit-box-shadow:inset 0 0 0 1px #e2e4e7,inset 0 0 0 2px #fff,0 1px 1px rgba(25,30,35,0.2);box-shadow:inset 0 0 0 1px #e2e4e7,inset 0 0 0 2px #fff,0 1px 1px rgba(25,30,35,0.2)}.gx-layout-modal .components-button-group .components-button.gx-layout-favorite-button:focus{-webkit-box-shadow:inset 0 0 0 1px #e2e4e7,inset 0 0 0 2px #fff,0 1px 1px rgba(25,30,35,0.2);box-shadow:inset 0 0 0 1px #e2e4e7,inset 0 0 0 2px #fff,0 1px 1px rgba(25,30,35,0.2);background:#fff}.gx-layout-modal button.components-button.is-default:active:enabled{-webkit-box-shadow:inset 0 0 0 1px #ccd0d4, inset 0 0 0 2px #fff;box-shadow:inset 0 0 0 1px #ccd0d4, inset 0 0 0 2px #fff}.gx-layout-modal .gx-layout-icon-favorite{fill:#888}.gx-layout-modal .gx-layout-icon-favorite-active{fill:#f9569b}.gx-layout-modal .gx-layout-zoom-button{position:absolute;top:15px;right:15px;background:#fff;border-radius:5px !important;-webkit-transition:.2s ease;-o-transition:.2s ease;transition:.2s ease;z-index:10;border-radius:5px;padding:5px;height:auto;opacity:0;display:none}.gx-layout-modal .gx-layout-design:hover .gx-layout-zoom-button{opacity:1}.gx-layout-modal .gx-layout-zoom-layout{grid-column:1 / -1}.gx-layout-selector-placeholder .components-placeholder__instructions{margin-bottom:1.4em}.gx-layout-selector-placeholder button.gx-layout-modal-button{font-size:16px;height:auto;padding:6px 18px}[data-type="gx-blocks/gx-layouts"]{-webkit-animation:2s ease 0s normal forwards 1 fadein;animation:2s ease 0s normal forwards 1 fadein}@keyframes fadein{0%{opacity:0}66%{opacity:0}100%{opacity:1}}@-webkit-keyframes fadein{0%{opacity:0}66%{opacity:0}100%{opacity:1}}
-.wp-block-gutenberg-extra-container{border:2px solid #000}
-.components-panel__body .components-gx-dimensions-control{position:relative;margin-bottom:20px}.components-panel__body .components-gx-dimensions-control__mobile-controls-item{border-radius:3px 0 0 3px;-webkit-box-shadow:none;box-shadow:none;display:none;font-size:10px;height:45px;-ms-flex-pack:center;justify-content:center;left:0;line-height:20px;padding:0;position:absolute;text-align:center;text-shadow:none;top:35px;width:26px;z-index:1}.components-panel__body .components-gx-dimensions-control__mobile-controls-item.is-active{display:block}.components-panel__body .components-gx-dimensions-control__mobile-controls-item svg{position:relative;max-width:28px}.components-panel__body .components-gx-dimensions-control__mobile-controls-item--default svg{top:3px}.components-panel__body .components-gx-dimensions-control__mobile-controls-item--desktop svg{top:3px}.components-panel__body .components-gx-dimensions-control__mobile-controls-item--tablet svg{top:3px}.components-panel__body .components-gx-dimensions-control__mobile-controls-item--mobile svg{top:3px}.components-panel__body .components-gx-dimensions-control .components-gx-dimensions-control__header{margin-bottom:5px}.components-panel__body .components-gx-dimensions-control .components-button.is-default,.components-panel__body .components-gx-dimensions-control .components-button.is-small{color:#464a53 !important;border-color:#dddfe1 !important;font-size:16px;background-color:rgba(33,141,250,0);border-width:2px !important;width:41px !important;font-weight:500;margin-right:-1px}.components-panel__body .components-gx-dimensions-control .components-button.is-primary{background:#fff;width:41px !important;font-weight:500;font-size:16px}.edit-post-settings-sidebar__panel-block .components-panel__body .components-gx-dimensions-control{margin-bottom:1.5em}.components-panel__body .components-gx-dimensions-control .components-base-control__label{margin-bottom:5px}.components-panel__body .components-gx-dimensions-control .components-base-control__help{margin-top:-8px}.components-panel__body .components-gx-dimensions-control__header,.components-panel__body .components-gx-dimensions-control__inputs{display:-ms-flexbox;display:flex}.components-panel__body .components-gx-dimensions-control__inputs{margin-left:39px}.components-panel__body .components-gx-dimensions-control input[type="number"].components-gx-dimensions-control__number{border-radius:0;-webkit-box-shadow:none !important;box-shadow:none !important;height:45px;margin:0 -2px 0 0;padding-right:1px;width:25%}.components-panel__body .components-gx-dimensions-control input[type="number"].components-gx-dimensions-control__number:focus{z-index:1}.components-panel__body .components-gx-dimensions-control__input-labels{display:-ms-flexbox;display:flex;margin-bottom:-3px;margin-left:40px}.components-panel__body .components-gx-dimensions-control__input-labels span{text-align:center;width:25%}.components-panel__body .components-gx-dimensions-control__input-labels span:last-of-type{width:30px}.components-panel__body .components-gx-dimensions-control__number-label{display:block;font-size:11px;margin-bottom:1px;margin-top:3px}.components-panel__body .components-gx-dimensions-control__label{margin-bottom:0;font-size:16px !important;color:#464a53 !important;font-weight:500 !important}.components-panel__body .components-gx-dimensions-control__header{-ms-flex-pack:justify;justify-content:space-between;margin-bottom:15px}.components-panel__body .components-gx-dimensions-control__actions{position:relative;top:-2px}.components-panel__body .components-gx-dimensions-control .components-gx-dimensions-control__header .components-color-palette__clear{position:relative;top:-1px;border:none !important;padding:0;width:24px !important;margin-left:0;margin-top:2px}.components-panel__body .components-gx-dimensions-control .components-gx-dimensions-control__header .components-color-palette__clear svg{max-width:20px}.components-panel__body .components-gx-dimensions-control__units .components-button{font-size:10px;height:30px;-ms-flex-pack:center;justify-content:center;line-height:20px;padding:0;position:relative;text-align:center;text-shadow:none;text-transform:uppercase;top:-1px;width:24px;color:#464a53 !important;border-color:#464a53 !important}.components-panel__body .components-gx-dimensions-control_sync.components-button.is-small{border-radius:0;border-bottom-right-radius:3px;border-top-right-radius:3px;-webkit-box-shadow:none;box-shadow:none;height:auto;-ms-flex-pack:center;justify-content:center;padding:0;text-align:center;text-shadow:none;width:30px}.components-panel__body .components-gx-dimensions-control_sync.components-button.is-small svg{fill:currentColor;height:18px;width:18px}.components-panel__body .components-gx-dimensions-control .components-font-size-picker__controls{margin-bottom:0}.components-panel__body .components-gx-dimensions-control .components-gx-dimensions-control_sync{margin-left:0 !important}.components-gx-dimensions-control__dropdown-content .components-button{padding-bottom:8px;padding-top:8px}.components-gx-dimensions-control__dropdown-content .components-button.is-no-size{font-size:12px}.components-gx-dimensions-control__dropdown-content .components-button.is-small-size{font-size:14px}.components-gx-dimensions-control__dropdown-content .components-button.is-medium-size{font-size:16px}.components-gx-dimensions-control__dropdown-content .components-button.is-large-size{font-size:26px}.components-gx-dimensions-control__dropdown-content .components-button.is-huge-size{font-size:34px}.components-panel__body .components-gx-dimensions-control .components-font-size-picker__select{width:115px;margin-bottom:0 !important}.components-panel__body .components-gx-dimensions-control .components-font-size-picker__controls{display:-ms-flexbox;display:flex;-ms-flex-pack:justify;justify-content:space-between}.components-panel__body .components-gx-dimensions-control .components-font-size-picker__select .components-base-control__label{margin-bottom:5px}.components-panel__body .components-gx-dimensions-control .components-font-size-picker__select .components-base-control__label{display:none;visibility:hidden}
-.gx-sidebar .gx-popover-control .gx-settings-button button:before{content:none !important}.gx-sidebar .gx-popover-control .gx-settings-button button svg{fill:#000}.gx-sidebar .gx-popover-control .gx-settings-button .gx-popover-dropdown{display:inherit}.gx-sidebar .gx-popover-control .gx-settings-button button[type=reset]{border:none;-webkit-box-shadow:none;box-shadow:none}
-input[type="checkbox"].gutenberg-extra-checkbox-input{position:relative;width:35px;height:35px}input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before{content:url("../src/components/checkbox/check-box.svg");position:absolute;top:50%;left:50%;-webkit-transform:translate(-50%, -50%);-ms-transform:translate(-50%, -50%);transform:translate(-50%, -50%);margin:auto}
-.gx-colorcontrol-control{display:-ms-flexbox;display:flex}.gx-colorcontrol-control .gx-colorcontrol-color-display span{display:block;width:24px;height:24px;border:1px solid black;margin:auto}.gx-colorcontrol-control .gx-popover-control{width:100%}.gx-colorcontrol-gradient-popover .components-custom-gradient-picker__gradient-bar{border-radius:0}.gx-colorcontrol-gradient-popover .components-custom-gradient-picker__ui-line{display:-ms-flexbox;display:flex;-ms-flex-direction:column;flex-direction:column}.gx-colorcontrol-gradient-popover .components-custom-gradient-picker__ui-line .components-base-control__field{display:-ms-flexbox;display:flex;-ms-flex-pack:justify;justify-content:space-between}.gx-colorcontrol-gradient-popover .components-custom-gradient-picker__ui-line .components-base-control__label{margin:auto;margin-left:0}.gx-colorcontrol-gradient-popover .components-custom-gradient-picker__ui-line .components-angle-picker-control{width:100%}.gx-colorcontrol-gradient-popover .components-custom-gradient-picker__ui-line .components-angle-picker-control__angle-circle{margin:auto;margin-right:0}
-.gx-sidebar div.gx-alignmentcontrol-control .components-base-control__label{margin:auto;-ms-flex:40%;flex:40%}.gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option input{display:none}.gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option{width:45px;height:45px;background-color:rgba(33,141,250,0);border:2px solid #dddfe1;border-right-width:0;font-size:20px;color:#464a53;font-weight:500;margin:auto}.gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option label{display:block;height:100%}.gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option svg{display:block;height:100%;margin:auto;fill:#464a53}.gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option:first-of-type,.gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option:first-of-type label{border-top-left-radius:5px;border-bottom-left-radius:5px}.gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option:last-of-type,.gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option:last-of-type label{border-right-width:2px;border-top-right-radius:5px;border-bottom-right-radius:5px}.gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option input:checked ~ label{-webkit-box-shadow:0 0 0 2px #007cba;box-shadow:0 0 0 2px #007cba;outline:1px solid transparent;position:relative;z-index:1}
-.gx-font-family-selector-button{height:45px;border-radius:5px;background-color:rgba(33,141,250,0);border:2px solid #dddfe1;font-size:20px;color:#464a53;font-weight:500;width:100%;margin-bottom:8px}.gx-font-family-selector-icon{margin:auto;margin-right:0;-webkit-transition:.2s all ease;-o-transition:.2s all ease;transition:.2s all ease}.gx-font-family-selector-button[aria-expanded="true"] .gx-font-family-selector-icon{-webkit-transform:rotate(90deg);-ms-transform:rotate(90deg);transform:rotate(90deg)}.gx-font-family-selector-popover .components-popover__content{border-radius:5px;margin-top:2px;max-height:none !important}.gx-font-family-selector-content{min-width:370px}.gx-font-family-selector-content input{-webkit-box-shadow:none !important;box-shadow:none !important}
-.gx-buttoneditor-button{display:block}.gx-externalbutton-popover{position:fixed}.gx-externalbutton-popover button{-webkit-box-shadow:none;box-shadow:none;opacity:0;-webkit-transition:opacity .3s ease-in-out;-o-transition:opacity .3s ease-in-out;transition:opacity .3s ease-in-out}.gx-buttoneditor-button:hover .gx-externalbutton-popover button{opacity:1}
-.gx-sidebar .gx-buttonstyles-control .gx-buttonstyles-selector-control .components-base-control__field{display:grid;grid-template-columns:1fr 1fr}.gx-sidebar .gx-buttonstyles-control .gx-buttonstyles-selector-control .components-base-control__field .components-radio-control__option{height:50px;border:2px solid #dddfe1;border-right-width:0;margin:0}.gx-sidebar .gx-buttonstyles-control .gx-buttonstyles-selector-control .components-base-control__field .components-radio-control__option:last-of-type{border-right-width:2px}.gx-buttonstyles-control .gx-buttonstyles-selector-control input{display:none}.gx-buttonstyles-control .gx-buttonstyles-selector-control label{display:block;text-align:center;line-height:46px}.gx-buttonstyles-control .gx-buttonstyles-selector-control input:checked ~ label{color:#fff;background-color:#00ccff}.gx-buttoneditor-control{width:auto;height:auto}
-.ReactCrop{position:relative;display:inline-block;cursor:crosshair;overflow:hidden;max-width:100%}.ReactCrop:focus{outline:none}.ReactCrop--disabled,.ReactCrop--locked{cursor:inherit}.ReactCrop__image{display:block;max-width:100%;-ms-touch-action:manipulation;touch-action:manipulation}.ReactCrop__crop-selection{position:absolute;top:0;left:0;-webkit-transform:translate3d(0, 0, 0);transform:translate3d(0, 0, 0);-webkit-box-sizing:border-box;box-sizing:border-box;cursor:move;-webkit-box-shadow:0 0 0 9999em rgba(0,0,0,0.5);box-shadow:0 0 0 9999em rgba(0,0,0,0.5);-ms-touch-action:manipulation;touch-action:manipulation;border:1px solid;border-image-source:url("data:image/gif;base64,R0lGODlhCgAKAJECAAAAAP///////wAAACH/C05FVFNDQVBFMi4wAwEAAAAh/wtYTVAgRGF0YVhNUDw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OEI5RDc5MTFDNkE2MTFFM0JCMDZEODI2QTI4MzJBOTIiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OEI5RDc5MTBDNkE2MTFFM0JCMDZEODI2QTI4MzJBOTIiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuZGlkOjAyODAxMTc0MDcyMDY4MTE4MDgzQzNDMjA5MzREQ0ZDIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjAyODAxMTc0MDcyMDY4MTE4MDgzQzNDMjA5MzREQ0ZDIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+Af/+/fz7+vn49/b19PPy8fDv7u3s6+rp6Ofm5eTj4uHg397d3Nva2djX1tXU09LR0M/OzczLysnIx8bFxMPCwcC/vr28u7q5uLe2tbSzsrGwr66trKuqqainpqWko6KhoJ+enZybmpmYl5aVlJOSkZCPjo2Mi4qJiIeGhYSDgoGAf359fHt6eXh3dnV0c3JxcG9ubWxramloZ2ZlZGNiYWBfXl1cW1pZWFdWVVRTUlFQT05NTEtKSUhHRkVEQ0JBQD8+PTw7Ojk4NzY1NDMyMTAvLi0sKyopKCcmJSQjIiEgHx4dHBsaGRgXFhUUExIREA8ODQwLCgkIBwYFBAMCAQAAIfkEBQoAAgAsAAAAAAoACgAAAhWEERkn7W3ei7KlagMWF/dKgYeyGAUAIfkEBQoAAgAsAAAAAAoACgAAAg+UYwLJ7RnQm7QmsCyVKhUAIfkEBQoAAgAsAAAAAAoACgAAAhCUYgLJHdiinNSAVfOEKoUCACH5BAUKAAIALAAAAAAKAAoAAAIRVISAdusPo3RAzYtjaMIaUQAAIfkEBQoAAgAsAAAAAAoACgAAAg+MDiem7Q8bSLFaG5il6xQAIfkEBQoAAgAsAAAAAAoACgAAAg+UYRLJ7QnQm7SmsCyVKhUAIfkEBQoAAgAsAAAAAAoACgAAAhCUYBLJDdiinNSEVfOEKoECACH5BAUKAAIALAAAAAAKAAoAAAIRFISBdusPo3RBzYsjaMIaUQAAOw==");border-image-slice:1;border-image-repeat:repeat}.ReactCrop--disabled .ReactCrop__crop-selection{cursor:inherit}.ReactCrop--circular-crop .ReactCrop__crop-selection{border-radius:50%;-webkit-box-shadow:0px 0px 1px 1px white,0 0 0 9999em rgba(0,0,0,0.5);box-shadow:0px 0px 1px 1px white,0 0 0 9999em rgba(0,0,0,0.5)}.ReactCrop--invisible-crop .ReactCrop__crop-selection{display:none}.ReactCrop__rule-of-thirds-vt::before,.ReactCrop__rule-of-thirds-vt::after,.ReactCrop__rule-of-thirds-hz::before,.ReactCrop__rule-of-thirds-hz::after{content:'';display:block;position:absolute;background-color:rgba(255,255,255,0.4)}.ReactCrop__rule-of-thirds-vt::before,.ReactCrop__rule-of-thirds-vt::after{width:1px;height:100%}.ReactCrop__rule-of-thirds-vt::before{left:33.3333%;left:calc(100% / 3)}.ReactCrop__rule-of-thirds-vt::after{left:66.6666%;left:calc(100% / 3 * 2)}.ReactCrop__rule-of-thirds-hz::before,.ReactCrop__rule-of-thirds-hz::after{width:100%;height:1px}.ReactCrop__rule-of-thirds-hz::before{top:33.3333%;top:calc(100% / 3)}.ReactCrop__rule-of-thirds-hz::after{top:66.6666%;top:calc(100% / 3 * 2)}.ReactCrop__drag-handle{position:absolute}.ReactCrop__drag-handle::after{position:absolute;content:'';display:block;width:10px;height:10px;background-color:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.7);-webkit-box-sizing:border-box;box-sizing:border-box;outline:1px solid transparent}.ReactCrop .ord-nw{top:0;left:0;margin-top:-5px;margin-left:-5px;cursor:nw-resize}.ReactCrop .ord-nw::after{top:0;left:0}.ReactCrop .ord-n{top:0;left:50%;margin-top:-5px;margin-left:-5px;cursor:n-resize}.ReactCrop .ord-n::after{top:0}.ReactCrop .ord-ne{top:0;right:0;margin-top:-5px;margin-right:-5px;cursor:ne-resize}.ReactCrop .ord-ne::after{top:0;right:0}.ReactCrop .ord-e{top:50%;right:0;margin-top:-5px;margin-right:-5px;cursor:e-resize}.ReactCrop .ord-e::after{right:0}.ReactCrop .ord-se{bottom:0;right:0;margin-bottom:-5px;margin-right:-5px;cursor:se-resize}.ReactCrop .ord-se::after{bottom:0;right:0}.ReactCrop .ord-s{bottom:0;left:50%;margin-bottom:-5px;margin-left:-5px;cursor:s-resize}.ReactCrop .ord-s::after{bottom:0}.ReactCrop .ord-sw{bottom:0;left:0;margin-bottom:-5px;margin-left:-5px;cursor:sw-resize}.ReactCrop .ord-sw::after{bottom:0;left:0}.ReactCrop .ord-w{top:50%;left:0;margin-top:-5px;margin-left:-5px;cursor:w-resize}.ReactCrop .ord-w::after{left:0}.ReactCrop__disabled .ReactCrop__drag-handle{cursor:inherit}.ReactCrop__drag-bar{position:absolute}.ReactCrop__drag-bar.ord-n{top:0;left:0;width:100%;height:6px;margin-top:-3px}.ReactCrop__drag-bar.ord-e{right:0;top:0;width:6px;height:100%;margin-right:-3px}.ReactCrop__drag-bar.ord-s{bottom:0;left:0;width:100%;height:6px;margin-bottom:-3px}.ReactCrop__drag-bar.ord-w{top:0;left:0;width:6px;height:100%;margin-left:-3px}.ReactCrop--new-crop .ReactCrop__drag-bar,.ReactCrop--new-crop .ReactCrop__drag-handle,.ReactCrop--fixed-aspect .ReactCrop__drag-bar{display:none}.ReactCrop--fixed-aspect .ReactCrop__drag-handle.ord-n,.ReactCrop--fixed-aspect .ReactCrop__drag-handle.ord-e,.ReactCrop--fixed-aspect .ReactCrop__drag-handle.ord-s,.ReactCrop--fixed-aspect .ReactCrop__drag-handle.ord-w{display:none}@media (pointer: coarse){.ReactCrop .ord-n,.ReactCrop .ord-e,.ReactCrop .ord-s,.ReactCrop .ord-w{display:none}.ReactCrop__drag-handle{width:24px;height:24px}}.gx-imagecrop-control{margin-bottom:8px}.gx-imagecrop-control .ReactCrop__crop-selection{background:transparent}.gx-imagecrop-control .gx-imagecrop-option-controls{display:-ms-flexbox;display:flex;-ms-flex-direction:column;flex-direction:column}.gx-imagecrop-control .gx-imagecrop-option-controls label{display:-ms-flexbox;display:flex;-ms-flex-pack:justify;justify-content:space-between}
-.gx-sidebar .gx-imagesettings-control .gx-imagesettings-selector-control .components-base-control__field{display:grid;grid-template-columns:1fr 1fr}.gx-sidebar .gx-imagesettings-control .gx-imagesettings-selector-control .components-base-control__field .components-radio-control__option{height:50px;border:2px solid #dddfe1;border-right-width:0;margin:0}.gx-sidebar .gx-imagesettings-control .gx-imagesettings-selector-control .components-base-control__field .components-radio-control__option:last-of-type{border-right-width:2px}.gx-imagesettings-control .gx-imagesettings-selector-control input{display:none}.gx-imagesettings-control .gx-imagesettings-selector-control label{display:block;text-align:center;line-height:46px}.gx-imagesettings-control .gx-imagesettings-selector-control input:checked ~ label{color:#fff;background-color:#00ccff}.gx-block .gx-imageupload-button{height:auto}
-.gx-title-extra{font-family:'Roboto', sans-serif}
-.gx-fontpopover .components-popover__content{margin-right:-48px !important}
-.gutenberg-extra-testimonial-block{background:#fafafa;border-radius:5px;border:1px solid #cacaca}.content-plain-text{min-height:58px !important}.wp-block-quote{margin-bottom:0.5em}button.gx-add-more-testimonial{height:55px;width:55px;background:#939393;border-radius:50%;position:relative;border:none;font-size:2em;color:white;line-height:1}span.remove-testimonial{cursor:pointer;right:30px;position:absolute}textarea.editor-plain-text.content-plain-text,textarea.editor-plain-text.title-plain-text,textarea.editor-plain-text.link-plain-text{background:#fafafa;border:1px solid #dadada;border-radius:5px}.gutenberg-extra__picture{position:relative}.gutenberg-extra__picture a{cursor:pointer}.gutenberg-extra__picture .gutenberg-extra__picture__actions{display:-ms-flexbox;display:flex;-ms-flex-direction:column-reverse;flex-direction:column-reverse;margin-bottom:20px}.gutenberg-extra__picture__image{display:block;cursor:pointer;line-height:100px;text-align:center}.gx-testimonial-sidebar-group .components-base-control__field{display:-ms-flexbox;display:flex;-ms-flex-pack:justify;justify-content:space-between;-ms-flex-align:center;align-items:center}.gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent{display:-ms-flexbox;display:flex;-ms-flex-align:center;align-items:center;-ms-flex-pack:justify;justify-content:space-between;margin-bottom:0 !important}.gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .components-base-control__field{display:-ms-flexbox;display:flex;-ms-flex-pack:end;justify-content:flex-end;-ms-flex-align:center;align-items:center;margin:0}.gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .components-base-control__field .components-base-control__label{display:-ms-flexbox;display:flex;margin:0;-ms-flex-align:center;align-items:center;-ms-flex-pack:end;justify-content:flex-end}.gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .components-base-control__label{display:-ms-flexbox;display:flex;-ms-flex-align:center;align-items:center;-ms-flex-pack:justify;justify-content:space-between;-ms-flex-direction:row-reverse;flex-direction:row-reverse}.gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .components-base-control__label .component-color-indicator{width:20px;height:20px;border:1px solid #e2e3e5;margin-right:.3rem;margin-left:0}.gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .components-panel__body{width:100%;margin-top:0 !important}.gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .components-base-control__field{display:-ms-flexbox;display:flex;width:100%;-ms-flex-pack:justify;justify-content:space-between}.gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .components-button{width:45px;height:40px}.gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .gpw{padding:0;margin-top:3px}.gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .gpw .trigger{width:57px;height:40px;color:transparent;border-radius:5px;background-color:rgba(33,141,250,0) !important;border:2px solid #dddfe1;font-size:0px;text-align:center;line-height:22px}.gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .gpw{padding:0}.gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .gpw .trigger{width:57px;height:40px;display:-ms-flexbox;display:flex;-ms-flex-pack:center;justify-content:center;-ms-flex-align:center;align-items:center;border-radius:5px;background-image:url(../img/icons/gx-gradient.svg) !important;background-position:center;background-repeat:no-repeat;background-size:50%;border:2px solid #dddfe1;text-align:center;line-height:22px}.gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .gpw .trigger .inner{display:none !important}.gx-testimonial-sidebar-group .gx-background-setting-panel .gx-settings-button .components-base-control__field{display:-ms-flexbox;display:flex;-ms-flex-pack:justify;justify-content:space-between;-ms-flex-align:center;align-items:center}
-.editor-block-list__block[data-type="core/button"][data-align="center"]{text-align:center}.editor-block-list__block[data-type="core/button"][data-align="right"]{/*!rtl:ignore*/text-align:right}.wp-block-gx-animation-button{display:inline-block;margin-bottom:0;position:relative}.wp-block-gx-animation-button .editor-rich-text__tinymce{cursor:text;line-height:1}.wp-block-gx-animation-button:not(.has-text-color) .editor-rich-text__tinymce[data-is-placeholder-visible="true"]+.editor-rich-text__tinymce{color:#fff;opacity:0.8}.block-library-button__inline-link{background:#fff;display:-ms-flexbox;display:flex;-ms-flex-wrap:wrap;flex-wrap:wrap;-ms-flex-align:center;align-items:center;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;font-size:13px;line-height:1.4;width:280px}.block-library-button__inline-link .editor-url-input{width:auto}.block-library-button__inline-link .editor-url-input__suggestions{width:208px;z-index:z-index(".block-library-button__inline-link .editor-url-input__suggestions")}.block-library-button__inline-link>.dashicon{width:36px}.block-library-button__inline-link .dashicon{color:#8f98a1}.block-library-button__inline-link .editor-url-input input[type="text"]::-webkit-input-placeholder{color:#8f98a1}.block-library-button__inline-link .editor-url-input input[type="text"]::-moz-placeholder{color:#8f98a1}.block-library-button__inline-link .editor-url-input input[type="text"]::-ms-input-placeholder{color:#8f98a1}.block-library-button__inline-link .editor-url-input input[type="text"]::placeholder{color:#8f98a1}[data-align="center"] .block-library-button__inline-link{margin-left:auto;margin-right:auto}[data-align="right"] .block-library-button__inline-link{margin-left:auto;margin-right:0}.gx-button{width:calc( 50% - 20px);text-align:center;display:inline-block;margin:5px;font-size:9px;cursor:pointer;border-radius:30px;-webkit-box-shadow:0px 0 1px 1px rgba(0,0,0,0.2);box-shadow:0px 0 1px 1px rgba(0,0,0,0.2);vertical-align:middle;text-decoration:none !important}.gx-button.active{-webkit-box-shadow:0px 0 1px 1px rgba(0,0,0,0.5);box-shadow:0px 0 1px 1px rgba(0,0,0,0.5)}.wp-block-button.is-style-squared .wp-block-button__link{border-radius:0}
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
+/**
+ * Editor styles for the admin
+ */
+.gx-layout-modal {
+  width: 1500px;
+  min-height: 90%;
+  max-width: 90%; }
+  .gx-layout-modal .components-modal__content {
+    background: #f2f2f2;
+    padding: 0;
+    overflow-x: hidden;
+    min-height: 100%;
+    position: absolute;
+    width: 100%; }
+  .gx-layout-modal .components-modal__header {
+    margin-bottom: 25px;
+    padding-left: 50px;
+    padding-right: 25px; }
+    .gx-layout-modal .components-modal__header h1 {
+      font-weight: bold;
+      font-size: 1rem; }
+  .gx-layout-modal .components-tab-panel__tab-content {
+    background: #fff;
+    padding: 35px;
+    border-top: 1px solid #e2e4e7; }
+  .gx-layout-modal .components-tab-panel__tabs {
+    padding: 0 35px;
+    margin-bottom: -1px; }
+    .gx-layout-modal .components-tab-panel__tabs button {
+      padding: 15px 20px;
+      background: none;
+      border: none;
+      font-size: 16px; }
+      .gx-layout-modal .components-tab-panel__tabs button:hover {
+        background: #fff;
+        cursor: pointer; }
+  .gx-layout-modal .components-tab-panel__tabs .gx-layout-modal-active-tab {
+    font-weight: 600;
+    background: #fff;
+    border: 1px solid #e2e4e7;
+    border-bottom: none; }
+  .gx-layout-modal .components-base-control {
+    display: inline-block; }
+  .gx-layout-modal .components-base-control:last-child {
+    float: right; }
+  .gx-layout-modal .gx-layout-modal-header {
+    background: #f2f2f2;
+    padding: 20px;
+    margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    grid-gap: 0 5em; }
+    .gx-layout-modal .gx-layout-modal-header .components-base-control:last-child {
+      -ms-flex-item-align: end;
+          align-self: flex-end;
+      margin: 0; }
+    .gx-layout-modal .gx-layout-modal-header .components-base-control__field {
+      margin-bottom: 0; }
+    .gx-layout-modal .gx-layout-modal-header select,
+    .gx-layout-modal .gx-layout-modal-header input {
+      font-size: 16px;
+      height: 34px;
+      width: 100%; }
+  .gx-layout-modal .gx-layout-choices {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    grid-gap: 0 2em; }
+  .gx-layout-modal .gx-layout-view-full {
+    grid-template-columns: 1fr; }
+  .gx-layout-modal .gx-layout-view {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    grid-gap: 0 2em;
+    margin-bottom: 20px; }
+  .gx-layout-modal .gx-layout-view-left p {
+    margin: 0;
+    line-height: 2.2em; }
+  .gx-layout-modal .gx-layout-view-right {
+    text-align: right; }
+    .gx-layout-modal .gx-layout-view-right button {
+      margin-left: 5px;
+      height: auto;
+      padding: 5px; }
+  .gx-layout-modal .gx-layout-design {
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative; }
+    .gx-layout-modal .gx-layout-design img {
+      max-width: 100%;
+      display: block; }
+    .gx-layout-modal .gx-layout-design .gx-layout-insert-button {
+      height: auto;
+      background: none;
+      border: none;
+      -webkit-box-shadow: none;
+              box-shadow: none;
+      border-bottom: none;
+      padding: 0;
+      z-index: 5;
+      position: relative; }
+  .gx-layout-modal .gx-layout-design-inside {
+    -webkit-transition: .2s ease;
+    -o-transition: .2s ease;
+    transition: .2s ease;
+    border: solid 1px #cccccc; }
+    .gx-layout-modal .gx-layout-design-inside:hover {
+      -webkit-box-shadow: 0px 0px 0px 8px #ececec;
+              box-shadow: 0px 0px 0px 8px #ececec; }
+  .gx-layout-modal .gx-layout-design-info {
+    background: #fff;
+    border-top: solid 1px #ccc;
+    text-align: left;
+    position: relative;
+    padding: 12px; }
+    .gx-layout-modal .gx-layout-design-info button:active {
+      vertical-align: middle !important; }
+  .gx-layout-modal .gx-layout-design-title {
+    font-weight: bold; }
+  .gx-layout-modal button.gx-layout-favorite-button {
+    background: none;
+    border: none;
+    -webkit-box-shadow: none;
+            box-shadow: none;
+    float: right;
+    border-radius: 3px;
+    margin-top: -3px; }
+  .gx-layout-modal .components-button-group .components-button.gx-layout-favorite-button {
+    border-radius: 3px;
+    padding: 0 8px 0px; }
+  .gx-layout-modal button.gx-layout-favorite-button:hover {
+    background: #fff;
+    border: none;
+    -webkit-box-shadow: inset 0 0 0 1px #e2e4e7, inset 0 0 0 2px #fff, 0 1px 1px rgba(25, 30, 35, 0.2);
+            box-shadow: inset 0 0 0 1px #e2e4e7, inset 0 0 0 2px #fff, 0 1px 1px rgba(25, 30, 35, 0.2); }
+  .gx-layout-modal .components-button-group .components-button.gx-layout-favorite-button:focus {
+    -webkit-box-shadow: inset 0 0 0 1px #e2e4e7, inset 0 0 0 2px #fff, 0 1px 1px rgba(25, 30, 35, 0.2);
+            box-shadow: inset 0 0 0 1px #e2e4e7, inset 0 0 0 2px #fff, 0 1px 1px rgba(25, 30, 35, 0.2);
+    background: #fff; }
+  .gx-layout-modal button.components-button.is-default:active:enabled {
+    -webkit-box-shadow: inset 0 0 0 1px #ccd0d4, inset 0 0 0 2px #fff;
+            box-shadow: inset 0 0 0 1px #ccd0d4, inset 0 0 0 2px #fff; }
+  .gx-layout-modal .gx-layout-icon-favorite {
+    fill: #888; }
+  .gx-layout-modal .gx-layout-icon-favorite-active {
+    fill: #f9569b; }
+  .gx-layout-modal .gx-layout-zoom-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #fff;
+    border-radius: 5px !important;
+    -webkit-transition: .2s ease;
+    -o-transition: .2s ease;
+    transition: .2s ease;
+    z-index: 10;
+    border-radius: 5px;
+    padding: 5px;
+    height: auto;
+    opacity: 0;
+    display: none; }
+  .gx-layout-modal .gx-layout-design:hover .gx-layout-zoom-button {
+    opacity: 1; }
+  .gx-layout-modal .gx-layout-zoom-layout {
+    grid-column: 1 / -1; }
+
+.gx-layout-selector-placeholder .components-placeholder__instructions {
+  margin-bottom: 1.4em; }
+
+.gx-layout-selector-placeholder button.gx-layout-modal-button {
+  font-size: 16px;
+  height: auto;
+  padding: 6px 18px; }
+
+[data-type="gx-blocks/gx-layouts"] {
+  -webkit-animation: 2s ease 0s normal forwards 1 fadein;
+  animation: 2s ease 0s normal forwards 1 fadein; }
+
+@keyframes fadein {
+  0% {
+    opacity: 0; }
+  66% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+
+@-webkit-keyframes fadein {
+  0% {
+    opacity: 0; }
+  66% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
+/**
+ * #.# Editor Styles
+ *
+ * CSS for just Backend enqueued after style.scss
+ * which makes it higher in priority.
+ */
+.wp-block-gutenberg-extra-container {
+  border: 2px solid #000; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
+/**
+ * #.# Editor Styles
+ *
+ * CSS for just Backend enqueued after style.scss
+ * which makes it higher in priority.
+ */
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
+.components-panel__body .components-gx-dimensions-control {
+  position: relative;
+  margin-bottom: 20px; }
+  .components-panel__body .components-gx-dimensions-control__mobile-controls-item {
+    border-radius: 3px 0 0 3px;
+    -webkit-box-shadow: none;
+            box-shadow: none;
+    display: none;
+    font-size: 10px;
+    height: 45px;
+    -ms-flex-pack: center;
+        justify-content: center;
+    left: 0;
+    line-height: 20px;
+    padding: 0;
+    position: absolute;
+    text-align: center;
+    text-shadow: none;
+    top: 35px;
+    width: 26px;
+    z-index: 1; }
+    .components-panel__body .components-gx-dimensions-control__mobile-controls-item.is-active {
+      display: block; }
+    .components-panel__body .components-gx-dimensions-control__mobile-controls-item svg {
+      position: relative;
+      max-width: 28px; }
+    .components-panel__body .components-gx-dimensions-control__mobile-controls-item--default svg {
+      top: 3px; }
+    .components-panel__body .components-gx-dimensions-control__mobile-controls-item--desktop svg {
+      top: 3px; }
+    .components-panel__body .components-gx-dimensions-control__mobile-controls-item--tablet svg {
+      top: 3px; }
+    .components-panel__body .components-gx-dimensions-control__mobile-controls-item--mobile svg {
+      top: 3px; }
+  .components-panel__body .components-gx-dimensions-control .components-gx-dimensions-control__header {
+    margin-bottom: 5px; }
+  .components-panel__body .components-gx-dimensions-control .components-button.is-default,
+  .components-panel__body .components-gx-dimensions-control .components-button.is-small {
+    color: #464a53 !important;
+    border-color: #dddfe1 !important;
+    font-size: 16px;
+    background-color: rgba(33, 141, 250, 0);
+    border-width: 2px !important;
+    width: 41px !important;
+    font-weight: 500;
+    margin-right: -1px; }
+  .components-panel__body .components-gx-dimensions-control .components-button.is-primary {
+    background: #fff;
+    width: 41px !important;
+    font-weight: 500;
+    font-size: 16px; }
+  .edit-post-settings-sidebar__panel-block .components-panel__body .components-gx-dimensions-control {
+    margin-bottom: 1.5em; }
+  .components-panel__body .components-gx-dimensions-control .components-base-control__label {
+    margin-bottom: 5px; }
+  .components-panel__body .components-gx-dimensions-control .components-base-control__help {
+    margin-top: -8px; }
+  .components-panel__body .components-gx-dimensions-control__header, .components-panel__body .components-gx-dimensions-control__inputs {
+    display: -ms-flexbox;
+    display: flex; }
+  .components-panel__body .components-gx-dimensions-control__inputs {
+    margin-left: 39px; }
+  .components-panel__body .components-gx-dimensions-control input[type="number"].components-gx-dimensions-control__number {
+    border-radius: 0;
+    -webkit-box-shadow: none !important;
+            box-shadow: none !important;
+    height: 45px;
+    margin: 0 -2px 0 0;
+    padding-right: 1px;
+    width: 25%; }
+    .components-panel__body .components-gx-dimensions-control input[type="number"].components-gx-dimensions-control__number:focus {
+      z-index: 1; }
+  .components-panel__body .components-gx-dimensions-control__input-labels {
+    display: -ms-flexbox;
+    display: flex;
+    margin-bottom: -3px;
+    margin-left: 40px; }
+    .components-panel__body .components-gx-dimensions-control__input-labels span {
+      text-align: center;
+      width: 25%; }
+      .components-panel__body .components-gx-dimensions-control__input-labels span:last-of-type {
+        width: 30px; }
+  .components-panel__body .components-gx-dimensions-control__number-label {
+    display: block;
+    font-size: 11px;
+    margin-bottom: 1px;
+    margin-top: 3px; }
+  .components-panel__body .components-gx-dimensions-control__label {
+    margin-bottom: 0;
+    font-size: 16px !important;
+    color: #464a53 !important;
+    font-weight: 500 !important; }
+  .components-panel__body .components-gx-dimensions-control__header {
+    -ms-flex-pack: justify;
+        justify-content: space-between;
+    margin-bottom: 15px; }
+  .components-panel__body .components-gx-dimensions-control__actions {
+    position: relative;
+    top: -2px; }
+  .components-panel__body .components-gx-dimensions-control .components-gx-dimensions-control__header .components-color-palette__clear {
+    position: relative;
+    top: -1px;
+    border: none !important;
+    padding: 0;
+    width: 24px !important;
+    margin-left: 0;
+    margin-top: 2px; }
+    .components-panel__body .components-gx-dimensions-control .components-gx-dimensions-control__header .components-color-palette__clear svg {
+      max-width: 20px; }
+  .components-panel__body .components-gx-dimensions-control__units .components-button {
+    font-size: 10px;
+    height: 30px;
+    -ms-flex-pack: center;
+        justify-content: center;
+    line-height: 20px;
+    padding: 0;
+    position: relative;
+    text-align: center;
+    text-shadow: none;
+    text-transform: uppercase;
+    top: -1px;
+    width: 24px;
+    color: #464a53 !important;
+    border-color: #464a53 !important; }
+  .components-panel__body .components-gx-dimensions-control_sync.components-button.is-small {
+    border-radius: 0;
+    border-bottom-right-radius: 3px;
+    border-top-right-radius: 3px;
+    -webkit-box-shadow: none;
+            box-shadow: none;
+    height: auto;
+    -ms-flex-pack: center;
+        justify-content: center;
+    padding: 0;
+    text-align: center;
+    text-shadow: none;
+    width: 30px; }
+    .components-panel__body .components-gx-dimensions-control_sync.components-button.is-small svg {
+      fill: currentColor;
+      height: 18px;
+      width: 18px; }
+  .components-panel__body .components-gx-dimensions-control .components-font-size-picker__controls {
+    margin-bottom: 0; }
+  .components-panel__body .components-gx-dimensions-control .components-gx-dimensions-control_sync {
+    margin-left: 0 !important; }
+
+.components-gx-dimensions-control__dropdown-content .components-button {
+  padding-bottom: 8px;
+  padding-top: 8px; }
+  .components-gx-dimensions-control__dropdown-content .components-button.is-no-size {
+    font-size: 12px; }
+  .components-gx-dimensions-control__dropdown-content .components-button.is-small-size {
+    font-size: 14px; }
+  .components-gx-dimensions-control__dropdown-content .components-button.is-medium-size {
+    font-size: 16px; }
+  .components-gx-dimensions-control__dropdown-content .components-button.is-large-size {
+    font-size: 26px; }
+  .components-gx-dimensions-control__dropdown-content .components-button.is-huge-size {
+    font-size: 34px; }
+
+.components-panel__body .components-gx-dimensions-control .components-font-size-picker__select {
+  width: 115px;
+  margin-bottom: 0 !important; }
+
+.components-panel__body .components-gx-dimensions-control .components-font-size-picker__controls {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: justify;
+      justify-content: space-between; }
+
+.components-panel__body .components-gx-dimensions-control .components-font-size-picker__select .components-base-control__label {
+  margin-bottom: 5px; }
+
+.components-panel__body .components-gx-dimensions-control .components-font-size-picker__select .components-base-control__label {
+  display: none;
+  visibility: hidden; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
+.gx-sidebar .gx-popover-control .gx-settings-button button:before {
+  content: none !important; }
+
+.gx-sidebar .gx-popover-control .gx-settings-button button svg {
+  fill: #000; }
+
+.gx-sidebar .gx-popover-control .gx-settings-button .gx-popover-dropdown {
+  display: inherit; }
+
+.gx-sidebar .gx-popover-control .gx-settings-button button[type=reset] {
+  border: none;
+  -webkit-box-shadow: none;
+          box-shadow: none; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
+input[type="checkbox"].gutenberg-extra-checkbox-input {
+  position: relative;
+  width: 35px;
+  height: 35px; }
+
+input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before {
+  content: url("../src/components/checkbox/check-box.svg");
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  margin: auto; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
+.gx-colorcontrol-control {
+  display: -ms-flexbox;
+  display: flex; }
+
+.gx-colorcontrol-control .gx-colorcontrol-color-display span {
+  display: block;
+  width: 24px;
+  height: 24px;
+  border: 1px solid black;
+  margin: auto; }
+
+.gx-colorcontrol-control .gx-popover-control {
+  width: 100%; }
+
+.gx-colorcontrol-gradient-popover .components-custom-gradient-picker__gradient-bar {
+  border-radius: 0; }
+
+.gx-colorcontrol-gradient-popover .components-custom-gradient-picker__ui-line {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+      flex-direction: column; }
+
+.gx-colorcontrol-gradient-popover .components-custom-gradient-picker__ui-line .components-base-control__field {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: justify;
+      justify-content: space-between; }
+
+.gx-colorcontrol-gradient-popover .components-custom-gradient-picker__ui-line .components-base-control__label {
+  margin: auto;
+  margin-left: 0; }
+
+.gx-colorcontrol-gradient-popover .components-custom-gradient-picker__ui-line .components-angle-picker-control {
+  width: 100%; }
+
+.gx-colorcontrol-gradient-popover .components-custom-gradient-picker__ui-line .components-angle-picker-control__angle-circle {
+  margin: auto;
+  margin-right: 0; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
+.gx-sidebar div.gx-alignmentcontrol-control .components-base-control__label {
+  margin: auto;
+  -ms-flex: 40%;
+      flex: 40%; }
+
+.gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option input {
+  display: none; }
+
+.gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option {
+  width: 45px;
+  height: 45px;
+  background-color: rgba(33, 141, 250, 0);
+  border: 2px solid #dddfe1;
+  border-right-width: 0;
+  font-size: 20px;
+  color: #464a53;
+  font-weight: 500;
+  margin: auto; }
+
+.gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option label {
+  display: block;
+  height: 100%; }
+
+.gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option svg {
+  display: block;
+  height: 100%;
+  margin: auto;
+  fill: #464a53; }
+
+.gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option:first-of-type,
+.gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option:first-of-type label {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px; }
+
+.gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option:last-of-type,
+.gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option:last-of-type label {
+  border-right-width: 2px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px; }
+
+.gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option input:checked ~ label {
+  -webkit-box-shadow: 0 0 0 2px #007cba;
+          box-shadow: 0 0 0 2px #007cba;
+  outline: 1px solid transparent;
+  position: relative;
+  z-index: 1; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
+.gx-font-family-selector-button {
+  height: 45px;
+  border-radius: 5px;
+  background-color: rgba(33, 141, 250, 0);
+  border: 2px solid #dddfe1;
+  font-size: 20px;
+  color: #464a53;
+  font-weight: 500;
+  width: 100%;
+  margin-bottom: 8px; }
+
+.gx-font-family-selector-icon {
+  margin: auto;
+  margin-right: 0;
+  -webkit-transition: .2s all ease;
+  -o-transition: .2s all ease;
+  transition: .2s all ease; }
+
+.gx-font-family-selector-button[aria-expanded="true"] .gx-font-family-selector-icon {
+  -webkit-transform: rotate(90deg);
+      -ms-transform: rotate(90deg);
+          transform: rotate(90deg); }
+
+.gx-font-family-selector-popover .components-popover__content {
+  border-radius: 5px;
+  margin-top: 2px;
+  max-height: none !important; }
+
+.gx-font-family-selector-content {
+  min-width: 370px; }
+
+.gx-font-family-selector-content input {
+  -webkit-box-shadow: none !important;
+          box-shadow: none !important; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
+.gx-buttoneditor-button {
+  display: block; }
+
+.gx-externalbutton-popover {
+  position: fixed; }
+
+.gx-externalbutton-popover button {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  opacity: 0;
+  -webkit-transition: opacity .3s ease-in-out;
+  -o-transition: opacity .3s ease-in-out;
+  transition: opacity .3s ease-in-out; }
+
+.gx-buttoneditor-button:hover .gx-externalbutton-popover button {
+  opacity: 1; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
+.gx-sidebar .gx-buttonstyles-control .gx-buttonstyles-selector-control .components-base-control__field {
+  display: grid;
+  grid-template-columns: 1fr 1fr; }
+
+.gx-sidebar .gx-buttonstyles-control .gx-buttonstyles-selector-control .components-base-control__field .components-radio-control__option {
+  height: 50px;
+  border: 2px solid #dddfe1;
+  border-right-width: 0;
+  margin: 0; }
+
+.gx-sidebar .gx-buttonstyles-control .gx-buttonstyles-selector-control .components-base-control__field .components-radio-control__option:last-of-type {
+  border-right-width: 2px; }
+
+.gx-buttonstyles-control .gx-buttonstyles-selector-control input {
+  display: none; }
+
+.gx-buttonstyles-control .gx-buttonstyles-selector-control label {
+  display: block;
+  text-align: center;
+  line-height: 46px; }
+
+.gx-buttonstyles-control .gx-buttonstyles-selector-control input:checked ~ label {
+  color: #fff;
+  background-color: #00ccff; }
+
+.gx-buttoneditor-control {
+  width: auto;
+  height: auto; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
+.ReactCrop {
+  position: relative;
+  display: inline-block;
+  cursor: crosshair;
+  overflow: hidden;
+  max-width: 100%; }
+  .ReactCrop:focus {
+    outline: none; }
+  .ReactCrop--disabled, .ReactCrop--locked {
+    cursor: inherit; }
+  .ReactCrop__image {
+    display: block;
+    max-width: 100%;
+    -ms-touch-action: manipulation;
+        touch-action: manipulation; }
+  .ReactCrop__crop-selection {
+    position: absolute;
+    top: 0;
+    left: 0;
+    -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+    cursor: move;
+    -webkit-box-shadow: 0 0 0 9999em rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 0 9999em rgba(0, 0, 0, 0.5);
+    -ms-touch-action: manipulation;
+        touch-action: manipulation;
+    border: 1px solid;
+    border-image-source: url("data:image/gif;base64,R0lGODlhCgAKAJECAAAAAP///////wAAACH/C05FVFNDQVBFMi4wAwEAAAAh/wtYTVAgRGF0YVhNUDw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OEI5RDc5MTFDNkE2MTFFM0JCMDZEODI2QTI4MzJBOTIiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OEI5RDc5MTBDNkE2MTFFM0JCMDZEODI2QTI4MzJBOTIiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuZGlkOjAyODAxMTc0MDcyMDY4MTE4MDgzQzNDMjA5MzREQ0ZDIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjAyODAxMTc0MDcyMDY4MTE4MDgzQzNDMjA5MzREQ0ZDIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+Af/+/fz7+vn49/b19PPy8fDv7u3s6+rp6Ofm5eTj4uHg397d3Nva2djX1tXU09LR0M/OzczLysnIx8bFxMPCwcC/vr28u7q5uLe2tbSzsrGwr66trKuqqainpqWko6KhoJ+enZybmpmYl5aVlJOSkZCPjo2Mi4qJiIeGhYSDgoGAf359fHt6eXh3dnV0c3JxcG9ubWxramloZ2ZlZGNiYWBfXl1cW1pZWFdWVVRTUlFQT05NTEtKSUhHRkVEQ0JBQD8+PTw7Ojk4NzY1NDMyMTAvLi0sKyopKCcmJSQjIiEgHx4dHBsaGRgXFhUUExIREA8ODQwLCgkIBwYFBAMCAQAAIfkEBQoAAgAsAAAAAAoACgAAAhWEERkn7W3ei7KlagMWF/dKgYeyGAUAIfkEBQoAAgAsAAAAAAoACgAAAg+UYwLJ7RnQm7QmsCyVKhUAIfkEBQoAAgAsAAAAAAoACgAAAhCUYgLJHdiinNSAVfOEKoUCACH5BAUKAAIALAAAAAAKAAoAAAIRVISAdusPo3RAzYtjaMIaUQAAIfkEBQoAAgAsAAAAAAoACgAAAg+MDiem7Q8bSLFaG5il6xQAIfkEBQoAAgAsAAAAAAoACgAAAg+UYRLJ7QnQm7SmsCyVKhUAIfkEBQoAAgAsAAAAAAoACgAAAhCUYBLJDdiinNSEVfOEKoECACH5BAUKAAIALAAAAAAKAAoAAAIRFISBdusPo3RBzYsjaMIaUQAAOw==");
+    border-image-slice: 1;
+    border-image-repeat: repeat; }
+    .ReactCrop--disabled .ReactCrop__crop-selection {
+      cursor: inherit; }
+    .ReactCrop--circular-crop .ReactCrop__crop-selection {
+      border-radius: 50%;
+      -webkit-box-shadow: 0px 0px 1px 1px white, 0 0 0 9999em rgba(0, 0, 0, 0.5);
+              box-shadow: 0px 0px 1px 1px white, 0 0 0 9999em rgba(0, 0, 0, 0.5); }
+  .ReactCrop--invisible-crop .ReactCrop__crop-selection {
+    display: none; }
+  .ReactCrop__rule-of-thirds-vt::before, .ReactCrop__rule-of-thirds-vt::after, .ReactCrop__rule-of-thirds-hz::before, .ReactCrop__rule-of-thirds-hz::after {
+    content: '';
+    display: block;
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.4); }
+  .ReactCrop__rule-of-thirds-vt::before, .ReactCrop__rule-of-thirds-vt::after {
+    width: 1px;
+    height: 100%; }
+  .ReactCrop__rule-of-thirds-vt::before {
+    left: 33.3333%;
+    left: calc(100% / 3); }
+  .ReactCrop__rule-of-thirds-vt::after {
+    left: 66.6666%;
+    left: calc(100% / 3 * 2); }
+  .ReactCrop__rule-of-thirds-hz::before, .ReactCrop__rule-of-thirds-hz::after {
+    width: 100%;
+    height: 1px; }
+  .ReactCrop__rule-of-thirds-hz::before {
+    top: 33.3333%;
+    top: calc(100% / 3); }
+  .ReactCrop__rule-of-thirds-hz::after {
+    top: 66.6666%;
+    top: calc(100% / 3 * 2); }
+  .ReactCrop__drag-handle {
+    position: absolute; }
+    .ReactCrop__drag-handle::after {
+      position: absolute;
+      content: '';
+      display: block;
+      width: 10px;
+      height: 10px;
+      background-color: rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      -webkit-box-sizing: border-box;
+              box-sizing: border-box;
+      outline: 1px solid transparent; }
+  .ReactCrop .ord-nw {
+    top: 0;
+    left: 0;
+    margin-top: -5px;
+    margin-left: -5px;
+    cursor: nw-resize; }
+    .ReactCrop .ord-nw::after {
+      top: 0;
+      left: 0; }
+  .ReactCrop .ord-n {
+    top: 0;
+    left: 50%;
+    margin-top: -5px;
+    margin-left: -5px;
+    cursor: n-resize; }
+    .ReactCrop .ord-n::after {
+      top: 0; }
+  .ReactCrop .ord-ne {
+    top: 0;
+    right: 0;
+    margin-top: -5px;
+    margin-right: -5px;
+    cursor: ne-resize; }
+    .ReactCrop .ord-ne::after {
+      top: 0;
+      right: 0; }
+  .ReactCrop .ord-e {
+    top: 50%;
+    right: 0;
+    margin-top: -5px;
+    margin-right: -5px;
+    cursor: e-resize; }
+    .ReactCrop .ord-e::after {
+      right: 0; }
+  .ReactCrop .ord-se {
+    bottom: 0;
+    right: 0;
+    margin-bottom: -5px;
+    margin-right: -5px;
+    cursor: se-resize; }
+    .ReactCrop .ord-se::after {
+      bottom: 0;
+      right: 0; }
+  .ReactCrop .ord-s {
+    bottom: 0;
+    left: 50%;
+    margin-bottom: -5px;
+    margin-left: -5px;
+    cursor: s-resize; }
+    .ReactCrop .ord-s::after {
+      bottom: 0; }
+  .ReactCrop .ord-sw {
+    bottom: 0;
+    left: 0;
+    margin-bottom: -5px;
+    margin-left: -5px;
+    cursor: sw-resize; }
+    .ReactCrop .ord-sw::after {
+      bottom: 0;
+      left: 0; }
+  .ReactCrop .ord-w {
+    top: 50%;
+    left: 0;
+    margin-top: -5px;
+    margin-left: -5px;
+    cursor: w-resize; }
+    .ReactCrop .ord-w::after {
+      left: 0; }
+  .ReactCrop__disabled .ReactCrop__drag-handle {
+    cursor: inherit; }
+  .ReactCrop__drag-bar {
+    position: absolute; }
+    .ReactCrop__drag-bar.ord-n {
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      margin-top: -3px; }
+    .ReactCrop__drag-bar.ord-e {
+      right: 0;
+      top: 0;
+      width: 6px;
+      height: 100%;
+      margin-right: -3px; }
+    .ReactCrop__drag-bar.ord-s {
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      margin-bottom: -3px; }
+    .ReactCrop__drag-bar.ord-w {
+      top: 0;
+      left: 0;
+      width: 6px;
+      height: 100%;
+      margin-left: -3px; }
+  .ReactCrop--new-crop .ReactCrop__drag-bar,
+  .ReactCrop--new-crop .ReactCrop__drag-handle,
+  .ReactCrop--fixed-aspect .ReactCrop__drag-bar {
+    display: none; }
+  .ReactCrop--fixed-aspect .ReactCrop__drag-handle.ord-n,
+  .ReactCrop--fixed-aspect .ReactCrop__drag-handle.ord-e,
+  .ReactCrop--fixed-aspect .ReactCrop__drag-handle.ord-s,
+  .ReactCrop--fixed-aspect .ReactCrop__drag-handle.ord-w {
+    display: none; }
+  @media (pointer: coarse) {
+    .ReactCrop .ord-n,
+    .ReactCrop .ord-e,
+    .ReactCrop .ord-s,
+    .ReactCrop .ord-w {
+      display: none; }
+    .ReactCrop__drag-handle {
+      width: 24px;
+      height: 24px; } }
+
+.gx-imagecrop-control {
+  margin-bottom: 8px; }
+
+.gx-imagecrop-control .ReactCrop__crop-selection {
+  background: transparent; }
+
+.gx-imagecrop-control .gx-imagecrop-option-controls {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+      flex-direction: column; }
+
+.gx-imagecrop-control .gx-imagecrop-option-controls label {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: justify;
+      justify-content: space-between; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
+.gx-sidebar .gx-imagesettings-control .gx-imagesettings-selector-control .components-base-control__field {
+  display: grid;
+  grid-template-columns: 1fr 1fr; }
+
+.gx-sidebar .gx-imagesettings-control .gx-imagesettings-selector-control .components-base-control__field .components-radio-control__option {
+  height: 50px;
+  border: 2px solid #dddfe1;
+  border-right-width: 0;
+  margin: 0; }
+
+.gx-sidebar .gx-imagesettings-control .gx-imagesettings-selector-control .components-base-control__field .components-radio-control__option:last-of-type {
+  border-right-width: 2px; }
+
+.gx-imagesettings-control .gx-imagesettings-selector-control input {
+  display: none; }
+
+.gx-imagesettings-control .gx-imagesettings-selector-control label {
+  display: block;
+  text-align: center;
+  line-height: 46px; }
+
+.gx-imagesettings-control .gx-imagesettings-selector-control input:checked ~ label {
+  color: #fff;
+  background-color: #00ccff; }
+
+.gx-block .gx-imageupload-button {
+  height: auto; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
+.gx-title-extra {
+  font-family: 'Roboto', sans-serif; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
+.gx-fontpopover .components-popover__content {
+  margin-right: -48px !important; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
+/**
+ * #.# Editor Styles
+ *
+ * CSS for just Backend enqueued after style.scss
+ * which makes it higher in priority.
+ */
+.gutenberg-extra-testimonial-block {
+  background: #fafafa;
+  border-radius: 5px;
+  border: 1px solid #cacaca; }
+
+.content-plain-text {
+  min-height: 58px !important; }
+
+.wp-block-quote {
+  margin-bottom: 0.5em; }
+
+button.gx-add-more-testimonial {
+  height: 55px;
+  width: 55px;
+  background: #939393;
+  border-radius: 50%;
+  position: relative;
+  border: none;
+  font-size: 2em;
+  color: white;
+  line-height: 1; }
+
+span.remove-testimonial {
+  cursor: pointer;
+  right: 30px;
+  position: absolute; }
+
+textarea.editor-plain-text.content-plain-text,
+textarea.editor-plain-text.title-plain-text,
+textarea.editor-plain-text.link-plain-text {
+  background: #fafafa;
+  border: 1px solid #dadada;
+  border-radius: 5px; }
+
+.gutenberg-extra__picture {
+  position: relative; }
+  .gutenberg-extra__picture a {
+    cursor: pointer; }
+  .gutenberg-extra__picture .gutenberg-extra__picture__actions {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column-reverse;
+        flex-direction: column-reverse;
+    margin-bottom: 20px; }
+
+.gutenberg-extra__picture__image {
+  display: block;
+  cursor: pointer;
+  line-height: 100px;
+  text-align: center; }
+
+.gx-testimonial-sidebar-group .components-base-control__field {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: justify;
+      justify-content: space-between;
+  -ms-flex-align: center;
+      align-items: center; }
+
+.gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+      align-items: center;
+  -ms-flex-pack: justify;
+      justify-content: space-between;
+  margin-bottom: 0 !important; }
+  .gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .components-base-control__field {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: end;
+        justify-content: flex-end;
+    -ms-flex-align: center;
+        align-items: center;
+    margin: 0; }
+    .gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .components-base-control__field .components-base-control__label {
+      display: -ms-flexbox;
+      display: flex;
+      margin: 0;
+      -ms-flex-align: center;
+          align-items: center;
+      -ms-flex-pack: end;
+          justify-content: flex-end; }
+  .gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .components-base-control__label {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+        align-items: center;
+    -ms-flex-pack: justify;
+        justify-content: space-between;
+    -ms-flex-direction: row-reverse;
+        flex-direction: row-reverse; }
+  .gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .components-base-control__label .component-color-indicator {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #e2e3e5;
+    margin-right: .3rem;
+    margin-left: 0; }
+  .gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .components-panel__body {
+    width: 100%;
+    margin-top: 0 !important; }
+  .gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .components-base-control__field {
+    display: -ms-flexbox;
+    display: flex;
+    width: 100%;
+    -ms-flex-pack: justify;
+        justify-content: space-between; }
+  .gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .components-button {
+    width: 45px;
+    height: 40px; }
+  .gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .gpw {
+    padding: 0;
+    margin-top: 3px; }
+    .gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .gpw .trigger {
+      width: 57px;
+      height: 40px;
+      color: transparent;
+      border-radius: 5px;
+      background-color: rgba(33, 141, 250, 0) !important;
+      border: 2px solid #dddfe1;
+      font-size: 0px;
+      text-align: center;
+      line-height: 22px; }
+  .gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .gpw {
+    padding: 0; }
+    .gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .gpw .trigger {
+      width: 57px;
+      height: 40px;
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-pack: center;
+          justify-content: center;
+      -ms-flex-align: center;
+          align-items: center;
+      border-radius: 5px;
+      background-image: url(../img/icons/gx-gradient.svg) !important;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 50%;
+      border: 2px solid #dddfe1;
+      text-align: center;
+      line-height: 22px; }
+      .gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .gpw .trigger .inner {
+        display: none !important; }
+
+.gx-testimonial-sidebar-group .gx-background-setting-panel .gx-settings-button .components-base-control__field {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: justify;
+      justify-content: space-between;
+  -ms-flex-align: center;
+      align-items: center; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
+.editor-block-list__block[data-type="core/button"][data-align="center"] {
+  text-align: center; }
+
+.editor-block-list__block[data-type="core/button"][data-align="right"] {
+  /*!rtl:ignore*/
+  text-align: right; }
+
+.wp-block-gx-animation-button {
+  display: inline-block;
+  margin-bottom: 0;
+  position: relative; }
+  .wp-block-gx-animation-button .editor-rich-text__tinymce {
+    cursor: text;
+    line-height: 1; }
+  .wp-block-gx-animation-button:not(.has-text-color) .editor-rich-text__tinymce[data-is-placeholder-visible="true"] + .editor-rich-text__tinymce {
+    color: #fff;
+    opacity: 0.8; }
+
+.block-library-button__inline-link {
+  background: #fff;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -ms-flex-align: center;
+      align-items: center;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  font-size: 13px;
+  line-height: 1.4;
+  width: 280px; }
+  .block-library-button__inline-link .editor-url-input {
+    width: auto; }
+  .block-library-button__inline-link .editor-url-input__suggestions {
+    width: 208px;
+    z-index: z-index(".block-library-button__inline-link .editor-url-input__suggestions"); }
+  .block-library-button__inline-link > .dashicon {
+    width: 36px; }
+  .block-library-button__inline-link .dashicon {
+    color: #8f98a1; }
+  .block-library-button__inline-link .editor-url-input input[type="text"]::-webkit-input-placeholder {
+    color: #8f98a1; }
+  .block-library-button__inline-link .editor-url-input input[type="text"]::-moz-placeholder {
+    color: #8f98a1; }
+  .block-library-button__inline-link .editor-url-input input[type="text"]::-ms-input-placeholder {
+    color: #8f98a1; }
+  .block-library-button__inline-link .editor-url-input input[type="text"]::placeholder {
+    color: #8f98a1; }
+  [data-align="center"] .block-library-button__inline-link {
+    margin-left: auto;
+    margin-right: auto; }
+  [data-align="right"] .block-library-button__inline-link {
+    margin-left: auto;
+    margin-right: 0; }
+
+.gx-button {
+  width: calc( 50% - 20px);
+  text-align: center;
+  display: inline-block;
+  margin: 5px;
+  font-size: 9px;
+  cursor: pointer;
+  border-radius: 30px;
+  -webkit-box-shadow: 0px 0 1px 1px rgba(0, 0, 0, 0.2);
+          box-shadow: 0px 0 1px 1px rgba(0, 0, 0, 0.2);
+  vertical-align: middle;
+  text-decoration: none !important; }
+
+.gx-button.active {
+  -webkit-box-shadow: 0px 0 1px 1px rgba(0, 0, 0, 0.5);
+          box-shadow: 0px 0 1px 1px rgba(0, 0, 0, 0.5); }
+
+.wp-block-button.is-style-squared .wp-block-button__link {
+  border-radius: 0; }

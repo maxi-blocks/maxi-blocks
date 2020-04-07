@@ -16,6 +16,9 @@
         "label": "Caption",
         "font": "Default",
         "options": {},
+        "general": {
+            "color": ""
+        },
         "desktop": {
             "font-sizeUnit": "px",
             "font-size": 0,

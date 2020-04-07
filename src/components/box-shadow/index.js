@@ -3,28 +3,31 @@
  */
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
-
-const {
-    PanelColorSettings
-} = wp.blockEditor;
-
-/**
- * External dependencies
- */
 const {
     dispatch,
     select
 } = wp.data;
-
 import { RangeControl } from '@wordpress/components';
 
+
+/**
+ * External dependencies
+ */
+import ColorControl from '../color-control';
+
+/**
+ * Attributes
+ */
 export const boxShadowOptionsAttributes = {
     boxShadowOptions: {
         type: 'string',
-        default: '{"label":"Box Shadow","shadowColor": "", "shadowHorizontal": "0", "shadowVertical": "0", "shadowBlur": "0", "shadowSpread": "0"}',
+        default: '{"label":"Box Shadow","shadowColor":"","shadowGradient":"","shadowHorizontal":"0","shadowVertical":"0","shadowBlur":"0","shadowSpread":"0"}',
     }
 }
 
+/**
+ * Block
+ */
 export const BoxShadow = (props) => {
 
     const {
@@ -110,15 +113,13 @@ export const BoxShadow = (props) => {
 
     return (
         <Fragment>
-            <PanelColorSettings
-                className='gx-shadow-color'
-                colorSettings={[
-                    {
-                        value: value.shadowColor,
-                        onChange: value => onChangeValue('shadowColor', value),
-                        label: __('Colour', 'gutenberg-extra'),
-                    },
-                ]}
+            <ColorControl 
+                label={__('Color', 'gutenberg-extra')}
+                color={value.shadowColor}
+                onColorChange={value => onChangeValue('shadowColor', value)}
+                gradient={value.shadowGradient}
+                onGradientChange={value => onChangeValue('shadowGradient', value)}
+                disableGradientAboveBackground
             />
             <RangeControl
                 label={__('Horizontal', 'gutenberg-extra')}

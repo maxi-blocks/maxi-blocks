@@ -71,23 +71,6 @@ export const setDescriptionStyles = ( props ) => {
     }
 }
 
-export const setButtonStyles = ( props ) => {
-    const {
-        buttonColor,
-        buttonBgColor,
-        normalHoverOption,
-        buttonPadding,
-        buttonMargin,
-        buttonHoverColor,
-        buttonHoverBgColor,
-    } = props.attributes;
-
-    return {
-        color: buttonColor ? buttonColor : undefined,
-        backgroundColor: buttonBgColor ? buttonBgColor : undefined,
-    }
-}
-
 export const setButtonHoverStyles = ( props ) => {
     const {
         buttonHoverColor,
@@ -103,6 +86,7 @@ export const setButtonHoverStyles = ( props ) => {
 export const setBlockStyles = ( props ) => {
     const {
         backgroundColor,
+        backgroundGradient,
         // borderWidth,
         // borderRadius,
         blockBorderColor,
@@ -125,7 +109,10 @@ export const setBlockStyles = ( props ) => {
     } = props.attributes;
 
     return {
-        backgroundColor: backgroundColor ? backgroundColor : undefined,
+        background: backgroundGradient ? 
+            backgroundGradient : 
+            backgroundColor ? 
+                backgroundColor : undefined,
         borderColor: blockBorderColor ? blockBorderColor : undefined,
         borderStyle: borderType ? borderType : undefined,
         lineHeight: lineHeight ? lineHeight + '%' : undefined,

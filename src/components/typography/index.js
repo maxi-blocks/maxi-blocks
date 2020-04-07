@@ -21,7 +21,7 @@ const {
  */
 import FontFamilySelector from '../font-family-selector/index';
 import { PopoverControl } from '../popover';
-import { ColorControlTest1 } from '../color-control/test';
+import ColorControl from '../color-control';
 
 /**
  * Internal dependencies
@@ -194,11 +194,12 @@ export default class Typography extends Component {
                                     font={value.font}
                                     onChange={(value) => onChangeValue(value, 'font')}
                                 />
-                                <ColorControlTest1 
+                                <ColorControl 
                                     label={__('Font Color', 'gutenberg-extra')}
-                                    showColor
                                     color={value.general.color}
                                     onColorChange={value => onChangeValue(value, 'color')}
+                                    disableGradient
+                                    disableGradientAboveBackground
                                 />
                                 <RadioControl
                                     className={'gx-device-control'}

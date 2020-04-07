@@ -26,6 +26,7 @@
         "boxShadow": {
             "label": "Box Shadow",
             "shadowColor": "",
+            "shadowGradient": "",
             "shadowHorizontal": "0",
             "shadowVertical": "0",
             "shadowBlur": "0",
@@ -187,6 +188,7 @@
         "boxShadow": {
             "label": "Box Shadow",
             "shadowColor": "",
+            "shadowGradient": "",
             "shadowHorizontal": "0",
             "shadowVertical": "0",
             "shadowBlur": "0",

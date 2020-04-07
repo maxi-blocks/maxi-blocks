@@ -62,9 +62,12 @@
     "normal": {
         "opacity": "",
         "backgroundColor": "",
+        "backgroundGradient": "",
+        "backgroundGradientAboveBackground": false,
         "boxShadow": {
             "label": "Box Shadow",
             "shadowColor": "",
+            "shadowGradient": "",
             "shadowHorizontal": "0",
             "shadowVertical": "0",
             "shadowBlur": "0",
@@ -130,9 +133,12 @@
     "hover": {
         "opacity": "",
         "backgroundColor": "",
+        "backgroundGradient": "",
+        "backgroundGradientAboveBackground": false,
         "boxShadow": {
             "label": "Box Shadow",
             "shadowColor": "",
+            "shadowGradient": "",
             "shadowHorizontal": "0",
             "shadowVertical": "0",
             "shadowBlur": "0",

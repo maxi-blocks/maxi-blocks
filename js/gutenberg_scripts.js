@@ -286,6 +286,7 @@ class ResponsiveStylesResolver {
         let unit = this.object.unit ? this.object.unit : '';
 
         for (let [target, prop] of Object.entries(object)) {
+            console.log(prop)
             // values with dimensions
             if (target != 'sync' && prop != 0 && typeof prop === 'number' || unitChecker.indexOf(target) == 0 && prop != 0)
                 newObject[device][target] = prop + unit;

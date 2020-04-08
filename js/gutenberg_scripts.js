@@ -407,9 +407,6 @@ class FixObjectFollower {
         this.target = target;
         this.reference = reference;
         this.scrollEl = scrollEl || document;
-        console.log(this.target)
-        console.log(this.reference)
-        console.log(this.scrollEl)
         this.initEvents();
     }
 

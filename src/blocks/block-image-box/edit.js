@@ -54,9 +54,10 @@ import {
     ImageSettings,
     ImageUpload
 } from '../../components/image-settings/';
-// Testing
 import ColorControl from '../../components/color-control/';
+// Testing
 import SizeControlTest from '../../components/size-control/test';
+import BackgroundControl from '../../components/background-control';
 
 /**
  * Content
@@ -93,6 +94,7 @@ const edit = props => {
             readMoreLinkTest,
             buttonStyles,
             sizeTest,
+            backgroundOptions
         },
         setAttributes,
     } = props;
@@ -135,6 +137,13 @@ const edit = props => {
                 initialOpen={true}
                 title={__('Image Settings', 'gutenberg-extra')}
             >
+                <BackgroundControl 
+                    backgroundOptions={backgroundOptions}
+                    onChange={value => {
+                        console.log(value)
+                        setAttributes({ backgroundOptions: value})
+                    }}
+                />
                 {/* <SizeControlTest 
                     sizeSettings={sizeTest}
                     onChange={value => setAttributes({sizeTest: value})}

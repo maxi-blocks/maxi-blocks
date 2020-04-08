@@ -18,8 +18,8 @@ import {
     dimensionsControlAttributesPadding,
 } from '../../components/dimensions-control/attributes';
 // Testing
-import { colorControlAttributes } from '../../components/color-control/';
 import { sizeControlAttributesTest } from '../../components/size-control/test/';
+import { backgroundControlAttributes } from '../../components/background-control/';
 
 /**
  * Attributes
@@ -105,7 +105,8 @@ const attributes = {
         type: 'string',
         default: '{}'
     },
-    ...sizeControlAttributesTest
+    ...sizeControlAttributesTest,
+    ...backgroundControlAttributes
 }
 
 export default attributes;

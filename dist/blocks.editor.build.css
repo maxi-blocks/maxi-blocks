@@ -905,8 +905,8 @@ input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before {
  * Can include things like variables and mixins
  * that are used across the project.
 */
-.gx-backgroundoptions-mediauploader {
-  z-index: 99999999999999; }
+.gx-background-popover-hide {
+  z-index: -1; }
 /**
  * #.# Common SCSS
  *

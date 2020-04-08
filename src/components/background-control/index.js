@@ -70,33 +70,28 @@ class BackgroundOptions extends Component {
         const onAddBackground = () => {
             backgroundOptions.push(
                 {
-                    colorOptions: {
-                        color: '',
-                        gradient: '',
-                        gradientAboveBackground: false
-                    },
                     imageOptions: {
-                        mediaID: '',
-                        mediaURL: ''
+                        mediaID: "",
+                        mediaURL: ""
                     },
                     sizeOptions: {
-                        size: 'auto',
-                        widthUnit: '%',
-                        width: '',
-                        heightUnit: '%',
-                        height: ''
+                        size: "auto",
+                        widthUnit: "%",
+                        width: 100,
+                        heightUnit: "%",
+                        height: 100
                     },
-                    clip: 'border-box',
-                    repeat: 'repeat',
-                    attachment: 'scroll',
-                    origin: 'padding-box',
+                    repeat: "repeat",
                     positionOptions: {
-                        position: 'center center',
-                        widthUnit: '%',
-                        width: '',
-                        heightUnit: '%',
-                        height: ''
-                    }
+                        position: "center center",
+                        widthUnit: "%",
+                        width: 0,
+                        heightUnit: "%",
+                        height: 0
+                    },
+                    origin: "padding-box",
+                    clip: "border-box",
+                    attachment: "scroll"
                 }
             );
             saveAndSend();
@@ -361,8 +356,11 @@ class BackgroundControl extends Component {
             }
 
             value.backgroundOptions.map(option => {
+                if(isNil(option))
+                    return;
+                console.log(option)
                 // Image
-                if (option.imageOptions.mediaURL) {
+                if (!isNil(option.imageOptions.mediaURL)) {
                     if (!isNil(response.general['background-image']))
                         response.general['background-image'] = `${response.general['background-image']}, url('${option.imageOptions.mediaURL}')`;
                     else

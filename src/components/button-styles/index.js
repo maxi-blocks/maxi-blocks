@@ -81,8 +81,8 @@ export class ButtonStyles extends Component {
         const value = typeof buttonSettings === 'object' ? buttonSettings : JSON.parse(buttonSettings);
 
         /**
-               * Retrieves the old meta data
-               */
+         * Retrieves the old meta data
+         */
         const getMeta = () => {
             let meta = select('core/editor').getEditedPostAttribute('meta')._gutenberg_extra_responsive_styles;
             return meta ? JSON.parse(meta) : {};

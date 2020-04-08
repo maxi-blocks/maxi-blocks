@@ -408,6 +408,7 @@ class FixObjectFollower {
         this.reference = reference;
         this.scrollEl = scrollEl || document;
         this.initEvents();
+        this.referenceEvents();
     }
 
     initEvents() {
@@ -428,6 +429,15 @@ class FixObjectFollower {
             'resize',
             this.setPosition.bind(this)
         )
+    }
+
+    referenceEvents() {
+        Array.from(this.reference.childNodes).map(child => {
+            child.addEventListener(
+                'onchange',
+                this.setPosition.bind(this)
+            )
+        })
     }
 
     setPosition() {

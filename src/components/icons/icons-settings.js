@@ -319,7 +319,7 @@ iconsSettings.gradient = (
   <svg data-name="Layer 1" viewBox="0 0 23.4 23.4">
     <defs>
       <linearGradient
-        id="a"
+        id="prefix__a"
         x1={0.3}
         y1={14}
         x2={23.67}
@@ -331,7 +331,8 @@ iconsSettings.gradient = (
         <stop offset={1} />
       </linearGradient>
     </defs>
-    <circle cx={11.7} cy={11.7} r={11.7} fill="url(#a)" />
+    <title>{"gradient"}</title>
+    <circle cx={11.7} cy={11.7} r={11.7} fill="url(#prefix__a)" />
   </svg>
 );
 

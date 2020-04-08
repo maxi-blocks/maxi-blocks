@@ -920,9 +920,18 @@ body div.gx-sidebar .components-panel__body > .components-panel__body-title {
   margin: 0px !important;
 }
 .gx-box-settings-item
+  .gx-colorcontrol-control
   .components-base-control__field
   .gx-popover-dropdown:nth-of-type(1) {
-  margin-left: 82px !important;
+  margin-left: auto;
+  margin-right: 5px;
+}
+
+.gx-box-settings-item
+  .gx-colorcontrol-control
+  .components-base-control__field
+  .gx-popover-dropdown:nth-of-type(2) {
+  margin-right: 5px;
 }
 
 .gx-box-settings-item
@@ -1927,7 +1936,7 @@ body
   }
 
   .gx-box-settings-item .bg-color-parent {
-    margin-left: 12px;
+    margin-left: 20px;
     margin-right: 22px;
   }
 
@@ -2120,6 +2129,30 @@ h2::before {
   width: 1.9rem;
   right: 10px;
   top: 11px;
+}
+
+.editor-styles-wrapper h1 {
+  font-size: 2em !important;
+}
+
+.editor-styles-wrapper h2 {
+  font-size: 1.5em !important;
+}
+
+.editor-styles-wrapper h3 {
+  font-size: 1.17em !important;
+}
+
+.editor-styles-wrapper h4 {
+  font-size: 1em !important;
+}
+
+.editor-styles-wrapper h5 {
+  font-size: 0.83em !important;
+}
+
+.editor-styles-wrapper h6 {
+  font-size: 0.67em !important;
 }
 
 .editor-styles-wrapper h2 {

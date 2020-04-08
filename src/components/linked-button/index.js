@@ -44,7 +44,7 @@ const LinkedButton = props => {
 
     const popoverPosition = (uniqueID) => {
         const target = document.querySelector(`.${uniqueID} .${className} .gx-externalbutton-popover`);
-        const reference = document.querySelector(`button.${className}`);
+        const reference = document.querySelector(`.${uniqueID} button.${className}`);
         const scrollEl = getScrollContainer(target);
         if(isNil(target) || isNil(reference)) {
             return;

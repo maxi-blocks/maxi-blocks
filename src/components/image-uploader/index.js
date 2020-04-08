@@ -15,27 +15,30 @@ const {
 } = wp.components;
 
 /**
- * External dependencies
- */
-import { isNil } from 'lodash';
-
-/**
  * Block
  */
 const MediaUploader = props => {
 
     const {
         label = '',
+        className = 'gx-mediauploader-control',
         mediaID,
         onSelectImage,
         onRemoveImage,
         imageData,
-        modalClass = ''
+        onOpen,
+        onClose
     } = props;
+
+    const onOpenImageModal = () => {
+        typeof onOpenImageModal != 'undefined' ?
+            onOpen() :
+            null
+    }
 
     return (
         <BaseControl
-            className="gx-mediauploader-control"
+            className={className}
             label={label}
         >
             <MediaUploadCheck
@@ -50,11 +53,14 @@ const MediaUploader = props => {
                     onSelect={onSelectImage}
                     allowedTypes={['image']}
                     value={mediaID}
-                    modalClass={modalClass}
+                    onClose={onClose}
                     render={({ open }) => (
                         <Button
                             className={!mediaID ? 'editor-post-featured-image__toggle' : 'editor-post-featured-image__preview'}
-                            onClick={open}>
+                            onClick={() => {
+                                open();
+                                onOpenImageModal();
+                            }}>
                             {
                                 !mediaID &&
                                 (__('Set image', 'gutenberg-extra'))

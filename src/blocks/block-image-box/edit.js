@@ -139,10 +139,7 @@ const edit = props => {
             >
                 <BackgroundControl 
                     backgroundOptions={backgroundOptions}
-                    onChange={value => {
-                        console.log(value)
-                        setAttributes({ backgroundOptions: value})
-                    }}
+                    onChange={value => setAttributes({ backgroundOptions: value})}
                 />
                 {/* <SizeControlTest 
                     sizeSettings={sizeTest}

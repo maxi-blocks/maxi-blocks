@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { 
+const {
     Component,
     Fragment
 } = wp.element;
@@ -31,6 +31,13 @@ import {
     isEmpty,
     isNil,
 } from 'lodash';
+import {
+    Accordion,
+    AccordionItem,
+    AccordionItemHeading,
+    AccordionItemButton,
+    AccordionItemPanel,
+} from 'react-accessible-accordion';
 
 /**
  * Styles
@@ -52,7 +59,9 @@ export const buttonStyleAttributes = {
  */
 export class ButtonStyles extends Component {
     state = {
-        selector: 'normal',
+        selector1: 'normal',
+        selector2: 'normal',
+        selector3: 'normal',
     }
 
     render() {
@@ -64,7 +73,9 @@ export class ButtonStyles extends Component {
         } = this.props;
 
         const {
-            selector
+            selector1,
+            selector2,
+            selector3
         } = this.state;
 
         const value = typeof buttonSettings === 'object' ? buttonSettings : JSON.parse(buttonSettings);
@@ -203,121 +214,200 @@ export class ButtonStyles extends Component {
 
         return (
             <div className={className}>
-                <AlignmentControl
-                    value={value.alignment}
-                    onChange={val => {
-                        value.alignment = val;
-                        saveAndSend()
-                    }}
-                    disableJustify
-                />
-                <SizeControlTest
-                    sizeSettings={value.size}
-                    onChange={val => {
-                        value.size = val;
-                        saveAndSend();
-                    }}
-                    target={target}
-                />
-                <hr style={{ borderTop: '1px solid #ddd' }} />
-                <RadioControl
-                    className="gx-buttonstyles-selector-control"
-                    selected={selector}
-                    options={[
-                        { label: 'Normal', value: 'normal' },
-                        { label: 'Hover', value: 'hover' },
-                    ]}
-                    onChange={selector => {
-                        this.setState({ selector });
-                    }}
-                />
-                <ColorControl
-                    label={__('Text Colour', 'gutenberg-extra')}
-                    color={value[selector].color}
-                    onColorChange={val => {
-                        value[selector].color = val;
-                        saveAndSend();
-                    }}
-                    disableGradient
-                />
-                <ColorControl
-                    label={__('Background Colour', 'gutenberg-extra')}
-                    color={value[selector].backgroundColor}
-                    onColorChange={val => {
-                        value[selector].backgroundColor = val;
-                        saveAndSend();
-                    }}
-                    disableGradient
-                />
-                <PopoverControl
-                    label={__('Box shadow', 'gutenberg-extra')}
-                    popovers={[
-                        {
-                            content: (
-                                <BoxShadow
-                                    boxShadowOptions={value[selector].boxShadow}
-                                    onChange={val => {
-                                        value[selector].boxShadow = JSON.parse(val);
-                                        saveAndSend()
-                                    }}
-                                    target={
-                                        selector != 'hover' ?
-                                            `${target}` :
-                                            `${target}:hover`
+                <Accordion
+                    className={'gx-style-tab-setting gx-accordion'}
+                    allowMultipleExpanded={true}
+                    allowZeroExpanded={true}
+                >
+                    <AccordionItem>
+                        <AccordionItemHeading
+                            className={'gx-accordion-tab gx-typography-tab'}
+                        >
+                            <AccordionItemButton
+                                className='components-base-control__label'
+                            >
+                                {__('Typography & Colors', 'gutenberg-extra')}
+                            </AccordionItemButton>
+                        </AccordionItemHeading>
+                        <AccordionItemPanel>
+                            <RadioControl
+                                className="gx-buttonstyles-selector-control"
+                                selected={selector1}
+                                options={[
+                                    { label: 'Normal', value: 'normal' },
+                                    { label: 'Hover', value: 'hover' },
+                                ]}
+                                onChange={selector1 => {
+                                    this.setState({ selector1 });
+                                }}
+                            />
+                            <Typography
+                                fontOptions={value[selector1].typography}
+                                onChange={val => {
+                                    value[selector1].typography = val;
+                                    saveAndSend();
+                                }}
+                                target={target}
+                            />
+                            {/* <ColorControl
+                                label={__('Text Colour', 'gutenberg-extra')}
+                                color={value[selector].color}
+                                onColorChange={val => {
+                                    value[selector].color = val;
+                                    saveAndSend();
+                                }}
+                                disableGradient
+                            /> */}
+                            <ColorControl
+                                label={__('Background Colour', 'gutenberg-extra')}
+                                color={value[selector1].backgroundColor}
+                                onColorChange={val => {
+                                    value[selector1].backgroundColor = val;
+                                    saveAndSend();
+                                }}
+                                disableGradient
+                            />
+                        </AccordionItemPanel>
+                    </AccordionItem>
+                    <AccordionItem>
+                        <AccordionItemHeading
+                            className={'gx-accordion-tab gx-typography-tab'}
+                        >
+                            <AccordionItemButton
+                                className='components-base-control__label'
+                            >
+                                {__('Box Settings', 'gutenberg-extra')}
+                            </AccordionItemButton>
+                        </AccordionItemHeading>
+                        <AccordionItemPanel>
+                            <AlignmentControl
+                                value={value.alignment}
+                                onChange={val => {
+                                    value.alignment = val;
+                                    saveAndSend()
+                                }}
+                                disableJustify
+                            />
+                            <RadioControl
+                                className="gx-buttonstyles-selector-control"
+                                selected={selector2}
+                                options={[
+                                    { label: 'Normal', value: 'normal' },
+                                    { label: 'Hover', value: 'hover' },
+                                ]}
+                                onChange={selector2 => {
+                                    this.setState({ selector2 });
+                                }}
+                            />
+                            <PopoverControl
+                                label={__('Box shadow', 'gutenberg-extra')}
+                                popovers={[
+                                    {
+                                        content: (
+                                            <BoxShadow
+                                                boxShadowOptions={value[selector2].boxShadow}
+                                                onChange={val => {
+                                                    value[selector2].boxShadow = JSON.parse(val);
+                                                    saveAndSend()
+                                                }}
+                                                target={
+                                                    selector2 != 'hover' ?
+                                                        `${target}` :
+                                                        `${target}:hover`
+                                                }
+                                            />
+                                        )
                                     }
-                                />
-                            )
-                        }
-                    ]}
-                />
-                <Typography
-                    fontOptions={value[selector].typography}
-                    onChange={val => {
-                        value[selector].typography = val;
-                        saveAndSend();
-                    }}
-                    target={target}
-                />
-                <BlockBorder
-                    borderColor={value[selector].borderSettings.borderColor}
-                    onChangeBorderColor={val => {
-                        value[selector].borderSettings.borderColor = val;
-                        saveAndSend();
-                    }}
-                    borderType={value[selector].borderSettings.borderType}
-                    onChangeBorderType={val => {
-                        value[selector].borderSettings.borderType = val;
-                        saveAndSend();
-                    }}
-                    borderRadius={value[selector].borderSettings.borderRadius}
-                    onChangeBorderRadius={val => {
-                        value[selector].borderSettings.borderRadius = val;
-                        saveAndSend();
-                    }}
-                    borderWidth={value[selector].borderSettings.borderWidth}
-                    onChangeBorderWidth={val => {
-                        value[selector].borderSettings.borderWidth = val;
-                        saveAndSend();
-                    }}
-                    borderRadiusTarget={target}
-                    borderWidthTarget={target}
-                />
-                <DimensionsControl
-                    value={value[selector].padding}
-                    onChange={val => {
-                        value[selector].padding = val;
-                        saveAndSend()
-                    }}
-                    target={target}
-                />
-                <DimensionsControl
-                    value={value[selector].margin}
-                    onChange={val => {
-                        value[selector].margin = val;
-                        saveAndSend()
-                    }}
-                    target={target}
-                />
+                                ]}
+                            />
+                            <BlockBorder
+                                borderColor={value[selector2].borderSettings.borderColor}
+                                onChangeBorderColor={val => {
+                                    value[selector2].borderSettings.borderColor = val;
+                                    saveAndSend();
+                                }}
+                                borderType={value[selector2].borderSettings.borderType}
+                                onChangeBorderType={val => {
+                                    value[selector2].borderSettings.borderType = val;
+                                    saveAndSend();
+                                }}
+                                borderRadius={value[selector2].borderSettings.borderRadius}
+                                onChangeBorderRadius={val => {
+                                    value[selector2].borderSettings.borderRadius = val;
+                                    saveAndSend();
+                                }}
+                                borderWidth={value[selector2].borderSettings.borderWidth}
+                                onChangeBorderWidth={val => {
+                                    value[selector2].borderSettings.borderWidth = val;
+                                    saveAndSend();
+                                }}
+                                borderRadiusTarget={target}
+                                borderWidthTarget={target}
+                            />
+                        </AccordionItemPanel>
+                    </AccordionItem>
+                    <AccordionItem>
+                        <AccordionItemHeading
+                            className={'gx-accordion-tab gx-typography-tab'}
+                        >
+                            <AccordionItemButton
+                                className='components-base-control__label'
+                            >
+                                {__('Width and Height', 'gutenberg-extra')}
+                            </AccordionItemButton>
+                        </AccordionItemHeading>
+                        <AccordionItemPanel>
+                            <SizeControlTest
+                                sizeSettings={value.size}
+                                onChange={val => {
+                                    value.size = val;
+                                    saveAndSend();
+                                }}
+                                target={target}
+                            />
+                        </AccordionItemPanel>
+                    </AccordionItem>
+                    <AccordionItem>
+                        <AccordionItemHeading
+                            className={'gx-accordion-tab gx-typography-tab'}
+                        >
+                            <AccordionItemButton
+                                className='components-base-control__label'
+                            >
+                                {__('Padding and Margin', 'gutenberg-extra')}
+                            </AccordionItemButton>
+                        </AccordionItemHeading>
+                        <AccordionItemPanel>
+                            <RadioControl
+                                className="gx-buttonstyles-selector-control"
+                                selected={selector3}
+                                options={[
+                                    { label: 'Normal', value: 'normal' },
+                                    { label: 'Hover', value: 'hover' },
+                                ]}
+                                onChange={selector3 => {
+                                    this.setState({ selector3 });
+                                }}
+                            />
+                            <DimensionsControl
+                                value={value[selector3].padding}
+                                onChange={val => {
+                                    value[selector3].padding = val;
+                                    saveAndSend()
+                                }}
+                                target={target}
+                            />
+                            <DimensionsControl
+                                value={value[selector3].margin}
+                                onChange={val => {
+                                    value[selector3].margin = val;
+                                    saveAndSend()
+                                }}
+                                target={target}
+                            />
+                        </AccordionItemPanel>
+                    </AccordionItem>
+                </Accordion>
             </div>
         )
     }

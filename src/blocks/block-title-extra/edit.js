@@ -219,25 +219,6 @@ const edit = (props) => {
     }
   };
 
-  const hideAll = (e) => {
-    let sliders = document.querySelectorAll(
-      ".components-range-control__slider",
-    );
-    let isClickInside;
-      console.log(e);
-    for (var i = 0, len = sliders.length; i < len; i++) {
-      isClickInside = sliders[i].contains(e.target);
-      if (isClickInside === true) {
-        break;
-      }
-    }
-
-    if (!isClickInside) {
-      for (var i = 0, len = sliders.length; i < len; i++) {
-        sliders[i].style.display = "none";
-      }
-    }
-  };
 
   const gradients = "";
   const disableCustomGradients = false;
@@ -408,12 +389,10 @@ const edit = (props) => {
                 <DividerWidth
                   {...props}
                   buildDivider={buildDivider}
-                  hideAll={hideAll}
                 />
                 <DividerHeight
                   {...props}
                   buildDivider={buildDivider}
-                  hideAll={hideAll}
                 />
               </PanelBody>
             </AccordionItemPanel>

@@ -20,7 +20,7 @@ export class DividerWidth extends Component {
   
   
   componentDidMount() {
-    document.body.addEventListener("click", this.props.hideAll);
+    document.body.addEventListener("click", window.gutenberg_extra_hideAll);
   }
 
   render() {

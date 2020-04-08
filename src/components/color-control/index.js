@@ -78,20 +78,7 @@ const ColorControl = props => {
                         </Fragment>
                     ),
                     classNamePopover: "gx-colorcontrol-gradient-popover gx-popover",
-                    icon: <svg x="0px" y="0px" viewBox="0 0 24 24" xmlSpace="preserve">
-                    <linearGradient
-                      id="a"
-                      gradientUnits="userSpaceOnUse"
-                      x1={0.3129}
-                      y1={12}
-                      x2={23.687}
-                      y2={12}
-                    >
-                      <stop offset={0} stopColor="#fff" />
-                      <stop offset={1} />
-                    </linearGradient>
-                    <circle cx={12} cy={12} r={11.7} fill="url(#a)" />
-                  </svg>
+                    icon: gradientIcon
                 }
             )
         }

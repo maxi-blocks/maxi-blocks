@@ -106,7 +106,7 @@ export const setBlockStyles = ( props ) => {
     } = props.attributes;
 
     return {
-        backgroundColor: backgroundColor ? backgroundColor : undefined,
+        background: backgroundColor ? backgroundColor : undefined,
         borderColor: blockBorderColor ? blockBorderColor : undefined,
         borderStyle: borderType ? borderType : undefined,
         lineHeight: lineHeight ? lineHeight + '%' : undefined,

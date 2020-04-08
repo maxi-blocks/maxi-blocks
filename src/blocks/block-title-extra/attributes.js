@@ -16,78 +16,86 @@ import { customCSSAtributes } from "../../components/custom-css/index";
 import { boxShadowOptionsAttributes } from "../../components/box-shadow";
 import { borderAttributes } from "../../components/block-border/index";
 import { typographyAttributes } from "../../components/typography/index";
-import { hideDividerAttributes } from '../../components/hide-divider/index';
-import { verticalDividerAttributes } from '../../components/vertical-divider/index';
-import { roundedDividerAttributes } from '../../components/rounded-divider/index';
-import { additionalDividerAttributes} from '../../components/additional-divider/index';
-import { alignDividerAttributes } from '../../components/align-divider/index';
-import { dividerPositionAttributes } from '../../components/divider-position/index';
-import { dividerWidthAttributes } from '../../components/divider-width/index';
-import { dividerHeightAttributes } from '../../components/divider-height/index';
-import { dividerColorAttributes } from '../../components/divider-color/index';
+import { hideDividerAttributes } from "../../components/hide-divider/index";
+import { verticalDividerAttributes } from "../../components/vertical-divider/index";
+import { roundedDividerAttributes } from "../../components/rounded-divider/index";
+import { additionalDividerAttributes } from "../../components/additional-divider/index";
+import { alignDividerAttributes } from "../../components/align-divider/index";
+import { dividerPositionAttributes } from "../../components/divider-position/index";
+import { dividerWidthAttributes } from "../../components/divider-width/index";
+import { dividerHeightAttributes } from "../../components/divider-height/index";
+import { dividerColorAttributes } from "../../components/divider-color/index";
 import {
   dimensionsControlAttributesMargin,
-  dimensionsControlAttributesPadding
+  dimensionsControlAttributesPadding,
 } from "../../components/dimensions-control/attributes";
 
 const attributes = {
   title: {
     type: "array",
     source: "children",
-    selector: ".gx-title-extra-title"
+    selector: ".gx-title-extra-title",
   },
   subtitle: {
     type: "array",
     source: "children",
-    selector: ".gx-title-extra-subtitle"
+    selector: ".gx-title-extra-subtitle",
   },
   text: {
     type: "array",
     source: "children",
-    selector: ".gx-title-extra-text"
+    selector: ".gx-title-extra-text",
   },
   additionalDivider: {
     type: "string",
-    default: ""
+    default: "",
   },
   isBehindTheSubtitle: {
     type: "boolean",
-    default: false
+    default: false,
   },
   titleLevel: {
     type: "string",
-    default: "h2"
+    default: "h1",
   },
   subtitleLevel: {
     type: "string",
-    default: "h3"
+    default: "h3",
   },
   classes: {
-    type: "string"
+    type: "string",
   },
   backgroundColor: {
     type: "string",
-    default: "white"
+    default: "white",
   },
   backgroundGradient: {
     type: "string",
-    default: ""
+    default: "",
   },
-  backgroundGradient: {
-    type: "array",
-    default: []
+  titleColor: {
+    type: "string",
+    default: "black",
+  },
+  subtitleColor: {
+    type: "string",
+    default: "#9b9b9b",
+  },
+  descriptionColor: {
+    type: "string",
+    default: "#9b9b9b",
   },
   defaultPalette: {
     type: "array",
     default: [
       { offset: "0.00", color: "rgba(238, 55, 11, 1)" },
-      { offset: "1.00", color: "rgba(126, 32, 34, 1)" }
-    ]
+      { offset: "1.00", color: "rgba(126, 32, 34, 1)" },
+    ],
   },
   boxShadow: {
     type: "string",
     default:
-      '{"label":"Box Shadow","shadowColor": "", "shadowHorizontal": "0", "shadowVertical": "0", "shadowBlur": "0", "shadowSpread": "0"}'
+      '{"label":"Box Shadow","shadowColor": "", "shadowHorizontal": "0", "shadowVertical": "0", "shadowBlur": "0", "shadowSpread": "0"}',
   },
   ...blockStyleAttributes,
   ...linkOptionsAttributes,
@@ -116,7 +124,7 @@ const attributes = {
   ...dividerWidthAttributes,
   ...dividerHeightAttributes,
   ...dividerColorAttributes,
-  ...defaultTypographyAttributes
+  ...defaultTypographyAttributes,
 };
 
 export default attributes;

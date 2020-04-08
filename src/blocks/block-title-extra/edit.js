@@ -61,7 +61,7 @@ import { SubtitleAlign } from "../../components/subtitle-align/index";
 import { TitleAlign } from "../../components/title-align/index";
 import { DescriptionAlign } from "../../components/description-align/index";
 import Typography from "../../components/typography/index";
-import iconsSettings from '../../components/icons/icons-settings.js';
+import iconsSettings from "../../components/icons/icons-settings.js";
 
 import { HideDivider } from "../../components/hide-divider/index";
 import { VerticalDivider } from "../../components/vertical-divider/index";
@@ -179,13 +179,16 @@ const edit = (props) => {
     backgroundColor: subtitleBackgroundColor,
     width: "max-content",
     padding: "5px",
+    fontSize: 'unset',
   };
 
   const titleStyles = {
     display: hideTitle ? "none" : undefined,
     textAlign: titleTextAlign,
     fontWeight: "400",
+    margin: '5px auto 30px',
     color: titleColor,
+    fontSize: 'inherit',
     minWidth:
       contentDirection == "row" || contentDirection == "row-reverse"
         ? "290px"
@@ -199,8 +202,10 @@ const edit = (props) => {
     fontWeight: "400",
     columnCount: twoColumnDesc ? "2" : undefined,
     color: descriptionColor,
-    marginTop: contentDirection == "row" ? "48px" : "0px",
+    marginTop: contentDirection == "row" ? "48px" : "20px",
     marginLeft: contentDirection == "row" ? "20px" : undefined,
+    textTransform: 'none',
+    letterSpacing: 'initial'
   };
 
   const handleClick = (e) => {
@@ -214,47 +219,47 @@ const edit = (props) => {
     }
   };
 
-  // const hideAll = (e) => {
-  //   let sliders = document.querySelectorAll(
-  //     ".components-range-control__slider",
-  //   );
-  //   let isClickInside;
+  const hideAll = (e) => {
+    let sliders = document.querySelectorAll(
+      ".components-range-control__slider",
+    );
+    let isClickInside;
+      console.log(e);
+    for (var i = 0, len = sliders.length; i < len; i++) {
+      isClickInside = sliders[i].contains(e.target);
+      if (isClickInside === true) {
+        break;
+      }
+    }
 
-  //   for (var i = 0, len = sliders.length; i < len; i++) {
-  //     isClickInside = sliders[i].contains(e.target);
-  //     if (isClickInside === true) {
-  //       break;
-  //     }
-  //   }
-
-  //   if (!isClickInside) {
-  //     for (var i = 0, len = sliders.length; i < len; i++) {
-  //       sliders[i].style.display = "none";
-  //     }
-  //   }
-  // };
+    if (!isClickInside) {
+      for (var i = 0, len = sliders.length; i < len; i++) {
+        sliders[i].style.display = "none";
+      }
+    }
+  };
 
   const gradients = "";
   const disableCustomGradients = false;
 
   const Line = () => <hr style={{ marginTop: "28px" }} />;
 
-  let backgroundImageWithGradient = backgroundGradient.length
-    ? `linear-gradient(to left, ${backgroundGradient[0]},${backgroundGradient[1]})`
-    : "";
+  // let backgroundImageWithGradient = backgroundGradient.length
+  //   ? `linear-gradient(to left, ${backgroundGradient[0]},${backgroundGradient[1]})`
+  //   : "";
 
-  if (backgroundImage) {
-    backgroundImageWithGradient += backgroundGradient.length
-      ? `, url(${backgroundImage})`
-      : `url(${backgroundImage})`;
-  }
+  // if (backgroundImage) {
+  //   backgroundImageWithGradient += backgroundGradient.length
+  //     ? `, url(${backgroundImage})`
+  //     : `url(${backgroundImage})`;
+  // }
 
   blockStyles.display = "flex";
   blockStyles.flexDirection = contentDirection;
   blockStyles.backgroundColor = backgroundColor ? backgroundColor : undefined;
-  blockStyles.backgroundImage = backgroundImageWithGradient
-    ? backgroundImageWithGradient
-    : undefined;
+  // blockStyles.backgroundImage = backgroundImageWithGradient
+  //   ? backgroundImageWithGradient
+  //   : undefined;
 
   dividerColorValue = props.attributes.dividerColor;
   dividerAlignmentValue = props.attributes.dividerAlignment;
@@ -403,12 +408,12 @@ const edit = (props) => {
                 <DividerWidth
                   {...props}
                   buildDivider={buildDivider}
-                  // hideAll={hideAll}
+                  hideAll={hideAll}
                 />
                 <DividerHeight
                   {...props}
                   buildDivider={buildDivider}
-                  // hideAll={hideAll}
+                  hideAll={hideAll}
                 />
               </PanelBody>
             </AccordionItemPanel>
@@ -427,10 +432,17 @@ const edit = (props) => {
                   "bg-color-parent gx-reset-button background-gradient "
                 }
               >
-                <ColorControl 
-                  label={__('Background Color', 'gutenberg-extra')}
+                <ColorControl
+                  label={__("Background Color", "gutenberg-extra")}
                   color={backgroundColor}
-                  onGradientChange={value => {console.log(value)}}
+                  gradient={props.attributes.backgroundGradient}
+                  onGradientChange={(value) => {
+                    props.setAttributes({
+                      backgroundGradient: value,
+                      backgroundColor: value,
+                    });
+                    setBlockStyles(props);
+                  }}
                   // onColorChange={}
                   // disableGradient
                 />
@@ -452,7 +464,7 @@ const edit = (props) => {
                     },
                   ]}
                 /> */}
-                  {/* <GradientPickerPopover
+                {/* <GradientPickerPopover
                     palette={defaultPalette}
                     onPaletteChange={(value) => {
                       props.setAttributes({ defaultPalette: value });
@@ -599,7 +611,7 @@ const edit = (props) => {
           <RichText
             tagName={subtitleLevel}
             style={subtitleStyles}
-            placeholder={__("Add a snappy sub heading", "gutenberg-extra")}
+            placeholder={__("Get more out of now", "gutenberg-extra")}
             value={subtitle}
             onChange={(value) => setAttributes({ subtitle: value })}
             className="gx-title-extra-subtitle"
@@ -624,7 +636,7 @@ const edit = (props) => {
             tagName={titleLevel}
             style={titleStyles}
             placeholder={__(
-              "This is your awesome title here...",
+              "Empowered by innovation",
               "gutenberg-extra"
             )}
             value={title}
@@ -644,7 +656,7 @@ const edit = (props) => {
             tagName="h6"
             style={textStyles}
             placeholder={__(
-              "Excepteur sint occaecat cupidatat non proident, sunt in culpa q...",
+              "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque malesuada volutpat mattis eros.",
               "gutenberg-extra"
             )}
             value={text}

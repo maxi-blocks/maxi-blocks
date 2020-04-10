@@ -1,8 +1,4 @@
 /**
- * Some different options for the component
- */
-
-/**
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
@@ -15,15 +11,20 @@ const {
 } = wp.blockEditor;
 
 /**
- * External dependencies
+ * Internal dependencies
  */
 import { PopoverControl } from '../popover';
+
+/**
+ * External dependencies
+ */
 import { isNil } from 'lodash';
 
 /**
  * Styles
  */
 import './editor.scss';
+import './style.scss';
 
 /**
  * Block

@@ -848,11 +848,11 @@ input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before {
  * that are used across the project.
 */
 .gx-buttoneditor-button {
-  display: block;
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
-  border: 1px solid black; }
+  border: 1px solid black;
+  border-radius: 0; }
 
 .gx-buttoneditor-button .gx-externalbutton-richtext {
   display: block; }
@@ -904,9 +904,6 @@ input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before {
 .gx-buttoneditor-control {
   width: auto;
   height: auto; }
-
-.gx-buttoneditor-button {
-  border-radius: 0; }
 /**
  * #.# Common SCSS
  *

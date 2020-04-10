@@ -421,6 +421,7 @@ export const ButtonEditor = props => {
         className = 'gx-buttoneditor-button',
         buttonSettings,
         onChange,
+        placeholder = __('Read more text...', 'gutenberg-extra')
     } = props;
 
     const value = typeof buttonSettings === 'object' ? buttonSettings : JSON.parse(buttonSettings);
@@ -428,7 +429,7 @@ export const ButtonEditor = props => {
     return (
         <LinkedButton
             className={className}
-            placeholder={__('Read more text...', 'gutenberg-extra')}
+            placeholder={placeholder}
             buttonText={value.buttonText}
             onTextChange={val => {
                 value.buttonText = val;

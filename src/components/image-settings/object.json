@@ -91,7 +91,7 @@
         },
         "borderSettings": {
             "borderColor": "",
-            "borderType": "",
+            "borderType": "solid",
             "borderRadius": {
                 "label": "Border radius",
                 "unit": "px",
@@ -162,7 +162,7 @@
         },
         "borderSettings": {
             "borderColor": "",
-            "borderType": "",
+            "borderType": "solid",
             "borderRadius": {
                 "label": "Border radius",
                 "unit": "px",

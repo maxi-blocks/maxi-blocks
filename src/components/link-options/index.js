@@ -6,9 +6,14 @@ const { Fragment } = wp.element;
 const { TextareaControl } = wp.components;
 
 /**
- * External dependencies
+ * Internal dependencies
  */
 import Checkbox from '../checkbox/index';
+
+/**
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
 
 export const linkOptionsAttributes = {
     linkOptions: {
@@ -20,91 +25,101 @@ export const linkOptionsAttributes = {
 export const LinkOptions = (props) => {
     const {
         label,
-        value,
+        link,
         onChangeLink,
         linkOptions,
         onChangeOptions,
     } = props;
 
-    const values = JSON.parse(linkOptions);
+    let value = typeof linkOptions === 'object' ? linkOptions : JSON.parse(linkOptions);
 
-    const onChangeValue = (target, value) => {
-        values[target] = value;
-        onChangeOptions(JSON.stringify(values));
+    const onChangeValue = (target, val) => {
+        value[target] = val;
+        onChangeOptions(JSON.stringify(value));
     }
 
     return (
         <Fragment>
             <TextareaControl
                 label={label}
-                value={value}
+                value={link}
                 onChange={onChangeLink}
             />
             <Checkbox
                 label={__('Open in New Window', 'gutenberg-extra')}
                 id='gx-new-window'
-                checked={values.opensInNewWindow}
-                onChange={(newValue) => onChangeValue('opensInNewWindow', newValue)}
+                checked={value.opensInNewWindow}
+                onChange={newValue => onChangeValue('opensInNewWindow', newValue)}
             />
             <Checkbox
                 label={__('Add "nofollow" attribute', 'gutenberg-extra')}
-                checked={values.addNofollow}
-                onChange={( newValue) => onChangeValue ( 'addNofollow', newValue )}
+                checked={value.addNofollow}
+                onChange={newValue => onChangeValue('addNofollow', newValue)}
             />
 
             <Checkbox
                 label={__('Add "noopener" attribute', 'gutenberg-extra')}
-                checked={values.addNoopener}
-                onChange={( newValue) => onChangeValue ( 'addNoopener', newValue )}
+                checked={value.addNoopener}
+                onChange={newValue => onChangeValue('addNoopener', newValue)}
             />
 
             <Checkbox
                 label={__('Add "noreferrer" attribute', 'gutenberg-extra')}
-                checked={values.addNoreferrer}
-                onChange={( newValue) => onChangeValue ( 'addNoreferrer', newValue )}
+                checked={value.addNoreferrer}
+                onChange={newValue => onChangeValue('addNoreferrer', newValue)}
             />
 
             <Checkbox
                 label={__('Add "sponsored" attribute', 'gutenberg-extra')}
-                checked={values.addSponsored}
-                onChange={( newValue) => onChangeValue ( 'addSponsored', newValue )}
+                checked={value.addSponsored}
+                onChange={newValue => onChangeValue('addSponsored', newValue)}
             />
 
             <Checkbox
                 label={__('Add "ugc" attribute', 'gutenberg-extra')}
-                checked={values.addUgc}
-                onChange={( newValue) => onChangeValue ( 'addUgc', newValue )}
+                checked={value.addUgc}
+                onChange={newValue => onChangeValue('addUgc', newValue)}
             />
         </Fragment>
     )
 }
 
 export const Link = ({
-    value,
+    link,
     linkOptions,
     ...props
 }) => {
 
-    const values = JSON.parse(linkOptions);
+    let value = typeof linkOptions === 'object' ? linkOptions : JSON.parse(linkOptions);
 
     const getRel = () => {
         let response = '';
-        values.addNofollow ? response += 'nofollow ' : null;
-        values.addNoopener ? response += 'noopener ' : null;
-        values.addNoreferrer ? response += 'noreferrer ' : null;
-        values.addSponsored ? response += 'sponsored ' : null;
-        values.addUgc ? response += 'ugc ' : null;
+        value.addNofollow ? response += 'nofollow ' : null;
+        value.addNoopener ? response += 'noopener ' : null;
+        value.addNoreferrer ? response += 'noreferrer ' : null;
+        value.addSponsored ? response += 'sponsored ' : null;
+        value.addUgc ? response += 'ugc ' : null;
 
         return response.trim();
     }
 
-    return(
-        <a
-            href={value}
-            target={values.opensInNewWindow ? '_blank' : ''}
-            rel={getRel()}
-            {...props}
-        >
-        </a>
+    return (
+        <Fragment>
+            {
+                !isEmpty(link) &&
+                <a
+                    href={link}
+                    target={value.opensInNewWindow ? '_blank' : ''}
+                    rel={getRel()}
+                    {...props}
+                >
+                </a>
+            }
+            {
+                isEmpty(link) &&
+                <div {...props}>
+                </div>
+            }
+        </Fragment>
     )
 }

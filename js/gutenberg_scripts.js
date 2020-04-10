@@ -429,15 +429,24 @@ class FixObjectFollower {
             'resize',
             this.setPosition.bind(this)
         )
+        document.addEventListener(
+            'click',
+            this.setPosition.bind(this)
+        )
     }
 
     referenceEvents() {
-        Array.from(this.reference.childNodes).map(child => {
-            child.addEventListener(
-                'onchange',
+        const config = { attributes: true, childList: true, subtree: true };
+        const observer = new MutationObserver(this.mutationCallback);
+        observer.observe(this.reference, config);
+    }
+
+    mutationCallback(mutationsList, observer){
+        for(let mutation of mutationsList) {
+            if (mutation.type != 'attributes') {
                 this.setPosition.bind(this)
-            )
-        })
+            }
+        }
     }
 
     setPosition() {

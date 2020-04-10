@@ -220,11 +220,25 @@
  * that are used across the project.
 */
 /**
- * #.# Editor Styles
+ * #.# Common SCSS
  *
- * CSS for just Backend enqueued after style.scss
- * which makes it higher in priority.
- */
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
+input[type="checkbox"].gutenberg-extra-checkbox-input {
+  position: relative;
+  width: 35px;
+  height: 35px; }
+
+input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before {
+  content: url("../src/components/checkbox/check-box.svg");
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  margin: auto; }
 /**
  * #.# Common SCSS
  *
@@ -432,26 +446,6 @@
  * Can include things like variables and mixins
  * that are used across the project.
 */
-input[type="checkbox"].gutenberg-extra-checkbox-input {
-  position: relative;
-  width: 35px;
-  height: 35px; }
-
-input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before {
-  content: url("../src/components/checkbox/check-box.svg");
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-      -ms-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
-  margin: auto; }
-/**
- * #.# Common SCSS
- *
- * Can include things like variables and mixins
- * that are used across the project.
-*/
 .gx-colorcontrol-control {
   display: -ms-flexbox;
   display: flex; }
@@ -589,69 +583,6 @@ input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before {
  * Can include things like variables and mixins
  * that are used across the project.
 */
-/**
- * #.# Common SCSS
- *
- * Can include things like variables and mixins
- * that are used across the project.
-*/
-.gx-buttoneditor-button {
-  display: block;
-  width: -webkit-max-content;
-  width: -moz-max-content;
-  width: max-content;
-  border: 1px solid black; }
-
-.gx-buttoneditor-button .gx-externalbutton-richtext {
-  display: block; }
-
-.gx-externalbutton-popover {
-  position: fixed; }
-
-.gx-externalbutton-popover button {
-  -webkit-box-shadow: none;
-          box-shadow: none;
-  opacity: 0;
-  -webkit-transition: opacity .3s ease-in-out;
-  -o-transition: opacity .3s ease-in-out;
-  transition: opacity .3s ease-in-out; }
-
-.gx-buttoneditor-button:hover .gx-externalbutton-popover button {
-  opacity: 1; }
-/**
- * #.# Common SCSS
- *
- * Can include things like variables and mixins
- * that are used across the project.
-*/
-.gx-sidebar .gx-buttonstyles-control .gx-buttonstyles-selector-control .components-base-control__field {
-  display: grid;
-  grid-template-columns: 1fr 1fr; }
-
-.gx-sidebar .gx-buttonstyles-control .gx-buttonstyles-selector-control .components-base-control__field .components-radio-control__option {
-  height: 50px;
-  border: 2px solid #dddfe1;
-  border-right-width: 0;
-  margin: 0; }
-
-.gx-sidebar .gx-buttonstyles-control .gx-buttonstyles-selector-control .components-base-control__field .components-radio-control__option:last-of-type {
-  border-right-width: 2px; }
-
-.gx-buttonstyles-control .gx-buttonstyles-selector-control input {
-  display: none; }
-
-.gx-buttonstyles-control .gx-buttonstyles-selector-control label {
-  display: block;
-  text-align: center;
-  line-height: 46px; }
-
-.gx-buttonstyles-control .gx-buttonstyles-selector-control input:checked ~ label {
-  color: #fff;
-  background-color: #00ccff; }
-
-.gx-buttoneditor-control {
-  width: auto;
-  height: auto; }
 /**
  * #.# Common SCSS
  *
@@ -897,8 +828,75 @@ input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before {
   color: #fff;
   background-color: #00ccff; }
 
-.gx-block .gx-imageupload-button {
+.gx-block .gx-imageupload-button,
+.gx-block .gx-imageupload-button svg {
   height: auto; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
+.gx-buttoneditor-button {
+  display: block;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  border: 1px solid black; }
+
+.gx-buttoneditor-button .gx-externalbutton-richtext {
+  display: block; }
+
+.gx-externalbutton-popover {
+  position: fixed; }
+
+.gx-externalbutton-popover button {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  opacity: 0;
+  -webkit-transition: opacity .3s ease-in-out;
+  -o-transition: opacity .3s ease-in-out;
+  transition: opacity .3s ease-in-out; }
+
+.gx-buttoneditor-button:hover .gx-externalbutton-popover button {
+  opacity: 1; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
+.gx-sidebar .gx-buttonstyles-control .gx-buttonstyles-selector-control .components-base-control__field {
+  display: grid;
+  grid-template-columns: 1fr 1fr; }
+
+.gx-sidebar .gx-buttonstyles-control .gx-buttonstyles-selector-control .components-base-control__field .components-radio-control__option {
+  height: 50px;
+  border: 2px solid #dddfe1;
+  border-right-width: 0;
+  margin: 0; }
+
+.gx-sidebar .gx-buttonstyles-control .gx-buttonstyles-selector-control .components-base-control__field .components-radio-control__option:last-of-type {
+  border-right-width: 2px; }
+
+.gx-buttonstyles-control .gx-buttonstyles-selector-control input {
+  display: none; }
+
+.gx-buttonstyles-control .gx-buttonstyles-selector-control label {
+  display: block;
+  text-align: center;
+  line-height: 46px; }
+
+.gx-buttonstyles-control .gx-buttonstyles-selector-control input:checked ~ label {
+  color: #fff;
+  background-color: #00ccff; }
+
+.gx-buttoneditor-control {
+  width: auto;
+  height: auto; }
+
+.gx-buttoneditor-button {
+  border-radius: 0; }
 /**
  * #.# Common SCSS
  *

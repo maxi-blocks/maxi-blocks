@@ -131,7 +131,6 @@ export default class Typography extends Component {
             else {
                 value[device][getKey(value[device], target)] = newValue;
             }
-            console.log(value)
             saveAndSend();
         }
 

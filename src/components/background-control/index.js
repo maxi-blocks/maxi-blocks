@@ -109,7 +109,6 @@ class BackgroundOptions extends Component {
             onChange(backgroundOptions)
         }
 
-        console.log(backgroundOptions)
         return (
             <Fragment>
                 <div className="gx-backgroundoptions-tabs">
@@ -340,7 +339,6 @@ class BackgroundControl extends Component {
 
         let value = typeof backgroundOptions === 'object' ? backgroundOptions : JSON.parse(backgroundOptions);
 
-        console.log(value)
         const classNamePopover = `gx-background-popover gx-popover ${modalIsOpen ? ' gx-background-popover-hide' : ''}`;
 
         /**

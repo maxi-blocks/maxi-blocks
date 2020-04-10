@@ -2,45 +2,41 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const {
-    PanelBody,
-    Button,
-    BaseControl,
-} = wp.components;
+const { PanelBody } = wp.components;
 const {
     InspectorControls,
     RichText,
-    MediaUpload,
 } = wp.blockEditor;
+
+/**
+ * Internal dependencies
+ */
+import { BlockStyles } from '../../components/block-styles/index';
+import { ImagePosition } from '../../components/image-position/index';
+import { FontLevel } from '../../components/font-level/index';
+import { LinkOptions } from '../../components/link-options/index';
+import Typography from '../../components/typography/';
+import {
+    ImageSettings,
+    ImageUpload
+} from '../../components/image-settings/';
+import {
+    ButtonStyles,
+    ButtonEditor
+} from '../../components/button-styles/index';
+import BackgroundControl from '../../components/background-control';
+import { PopoverControl } from '../../components/popover';
+import { BoxShadow } from '../../components/box-shadow';
+//import { BlockBorder } from '../../components/block-border/index';
+//import { SizeControl } from '../../components/size-control/index';
+import DimensionsControl from '../../components/dimensions-control/index';
+import { HoverAnimation } from '../../components/hover-animation/index';
+import { CustomCSS } from '../../components/custom-css/index';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import React from 'react';
-import DimensionsControl from '../../components/dimensions-control/index';
-import { BlockStyles } from '../../components/block-styles/index';
-import {
-    ButtonStyles,
-    ButtonEditor
-} from '../../components/button-styles/index';
-import { ImagePosition } from '../../components/image-position/index';
-import { FontLevel } from '../../components/font-level/index';
-import { LinkOptions } from '../../components/link-options/index';
-import { BlockBorder } from '../../components/block-border/index';
-import { SizeControl } from '../../components/size-control/index';
-import { HoverAnimation } from '../../components/hover-animation/index';
-import { CustomCSS } from '../../components/custom-css/index';
-import {
-    setLinkStyles,
-    setTitleStyles,
-    setSubTitleStyles,
-    setDescriptionStyles,
-    setButtonStyles,
-    setBlockStyles,
-} from './data';
-import Typography from '../../components/typography/';
-import iconsSettings from '../../components/icons/icons-settings.js';
 import {
     Accordion,
     AccordionItem,
@@ -48,16 +44,13 @@ import {
     AccordionItemButton,
     AccordionItemPanel,
 } from 'react-accessible-accordion';
-import { PopoverControl } from '../../components/popover';
-import { BoxShadow } from '../../components/box-shadow';
 import {
-    ImageSettings,
-    ImageUpload
-} from '../../components/image-settings/';
-import ColorControl from '../../components/color-control/';
+    setLinkStyles,
+} from './data';
+
 // Testing
 import SizeControlTest from '../../components/size-control/test';
-import BackgroundControl from '../../components/background-control';
+import BlockBorderTest from '../../components/block-border/test';
 
 /**
  * Content
@@ -67,6 +60,8 @@ const edit = props => {
         className,
         attributes: {
             uniqueID,
+            blockStyle,
+            defaultBlockStyle,
             titleLevel,
             linkTitle,
             linkOptions,
@@ -74,9 +69,8 @@ const edit = props => {
             subtitleFontOptions,
             descriptionFontOptions,
             imageSettings,
-            backgroundColor,
-            backgroundGradient,
-            backgroundGradientAboveBackground,
+            buttonStyles,
+            backgroundOptions,
             boxShadow,
             margin,
             padding,
@@ -84,17 +78,9 @@ const edit = props => {
             title,
             additionalText,
             description,
-            readMoreText,
-            readMoreLink,
-            backgroundImage, //???
-            blockStyle, //???
-            defaultBlockStyle, //???
-            // Testing
-            readMoreTextTest,
-            readMoreLinkTest,
-            buttonStyles,
+            // Test
             sizeTest,
-            backgroundOptions
+            borderTest,
         },
         setAttributes,
     } = props;
@@ -105,30 +91,6 @@ const edit = props => {
     }
 
     const linkStyles = setLinkStyles(props);
-    const titleStyles = setTitleStyles(props);
-    const subTitleStyles = setSubTitleStyles(props);
-    const descriptionStyles = setDescriptionStyles(props);
-    const blockStyles = setBlockStyles(props);
-
-    const onSelectImage = (media) => {
-        setAttributes({
-            mediaURL: media.url,
-            mediaID: media.id,
-        });
-    };
-
-    // let backgroundImageWithGradient = backgroundGradient.length
-    //     ? `linear-gradient(to left, ${backgroundGradient[0]},${backgroundGradient[1]})`
-    //     : '';
-
-    // if (backgroundImage) {
-    //     backgroundImageWithGradient += backgroundGradient.length
-    //         ? `, url(${backgroundImage})`
-    //         : `url(${backgroundImage})`
-    // }
-
-    // blockStyles.backgroundColor = backgroundColor ? backgroundColor : undefined;
-    // blockStyles.backgroundImage = backgroundImageWithGradient ? backgroundImageWithGradient : undefined;
 
     return [
         <InspectorControls>
@@ -137,14 +99,6 @@ const edit = props => {
                 initialOpen={true}
                 title={__('Image Settings', 'gutenberg-extra')}
             >
-                <BackgroundControl 
-                    backgroundOptions={backgroundOptions}
-                    onChange={value => setAttributes({ backgroundOptions: value})}
-                />
-                {/* <SizeControlTest 
-                    sizeSettings={sizeTest}
-                    onChange={value => setAttributes({sizeTest: value})}
-                /> */}
                 <BlockStyles
                     {...props}
                 />
@@ -164,7 +118,7 @@ const edit = props => {
             >
                 <LinkOptions
                     label={__("Link's Title", 'gutenberg-extra')}
-                    value={linkTitle}
+                    link={linkTitle}
                     onChangeLink={value => setAttributes({ linkTitle: value })}
                     linkOptions={linkOptions}
                     onChangeOptions={value => { setAttributes({ linkOptions: value }); }}
@@ -264,52 +218,10 @@ const edit = props => {
                         </AccordionItemButton>
                     </AccordionItemHeading>
                     <AccordionItemPanel>
-                        <BaseControl
-                            className={"bg-color-parent gx-settings-button background-gradient "}
-                        >
-                            <ColorControl
-                                label={__('Background', 'gutenberg-extra')}
-                                color={backgroundColor}
-                                onColorChange={value => setAttributes({ backgroundColor: value })}
-                                gradient={backgroundGradient}
-                                onGradientChange={value => setAttributes({ backgroundGradient: value })}
-                                gradientAboveBackground={backgroundGradientAboveBackground}
-                                onGradientAboveBackgroundChange={value => setAttributes({ backgroundGradientAboveBackground: value })}
-                            />
-                        </BaseControl>
-                        <BaseControl
-                            className={"gx-settings-button background-image"}
-                        >
-                            <BaseControl.VisualLabel>
-                                {__("Background Image", "gutenberg-extra")}
-                            </BaseControl.VisualLabel>
-                            <div className={"image-form-and-reset"}>
-                                {backgroundImage ?
-                                    (<Button
-                                        className={'background-custom-reset-option reset-background-image'}
-                                        onClick={() => {
-                                            props.setAttributes({ backgroundImage: null })
-                                        }}>
-                                    </Button>) : ''
-                                }
-                                <MediaUpload
-                                    className={"background-image-form"}
-                                    label={__("Upload", "gutenberg-extra")}
-                                    type="image/*"
-                                    render={({ open }) => (
-                                        <Button
-                                            onClick={open}
-                                            className={"dashicons dashicons-format-image"}
-                                        >
-                                        </Button>
-                                    )}
-                                    onSelect={(file) => {
-                                        props.setAttributes({ backgroundColor: undefined });
-                                        props.setAttributes({ backgroundImage: file.sizes.thumbnail.url })
-                                    }}
-                                />
-                            </div>
-                        </BaseControl>
+                        <BackgroundControl 
+                            backgroundOptions={backgroundOptions}
+                            onChange={value => setAttributes({ backgroundOptions: value })}
+                        />
                         <PopoverControl
                             label={__('Box shadow', 'gutenberg-extra')}
                             popovers={[
@@ -328,8 +240,12 @@ const edit = props => {
                             initialOpen={true}
                             title={__('Border settings', 'gutenberg-extra')}
                         >
-                            <BlockBorder
+                            {/* <BlockBorder
                                 {...props}
+                            /> */}
+                            <BlockBorderTest 
+                                borderOptions={borderTest}
+                                onChange={value => setAttributes({ borderTest: value })}
                             />
                         </PanelBody>
                     </AccordionItemPanel>
@@ -350,8 +266,9 @@ const edit = props => {
                             initialOpen={true}
                             title={__('Size Settings', 'gutenberg-extra')}
                         >
-                            <SizeControl
-                                {...props}
+                            <SizeControlTest
+                                sizeSettings={sizeTest}
+                                onChange={value => setAttributes({ sizeTest: value })}
                             />
                         </PanelBody>
                     </AccordionItemPanel>
@@ -398,9 +315,8 @@ const edit = props => {
             </PanelBody>
         </InspectorControls>,
         <div
-/*???*/ className={'gx-block ' + blockStyle + ' gx-image-box ' + classes}
+            className={'gx-block ' + blockStyle + ' gx-image-box ' + classes}
             data-gx_initial_block_class={defaultBlockStyle}
-            style={blockStyles}
         >
             <div
                 className="gx-image-box-link"
@@ -410,12 +326,11 @@ const edit = props => {
                     className="gx-image-box-image"
                     imageSettings={imageSettings}
                     mediaID={mediaID}
-                    onSelect={onSelectImage}
+                    onSelect={media => setAttributes({ mediaID: media.id })}
                 />
-                <div class='gx-image-box-text'>
+                <div className='gx-image-box-text'>
                     <RichText
                         tagName={titleLevel}
-                        style={titleStyles}
                         placeholder={__('Write title…', 'gutenberg-extra')}
                         value={title}
                         onChange={value => setAttributes({ title: value })}
@@ -423,7 +338,6 @@ const edit = props => {
                     />
                     <RichText
                         tagName="p"
-                        style={subTitleStyles}
                         placeholder={__('Write sub-title…', 'gutenberg-extra')}
                         value={additionalText}
                         onChange={value => setAttributes({ additionalText: value })}
@@ -431,7 +345,6 @@ const edit = props => {
                     />
                     <RichText
                         tagName="p"
-                        style={descriptionStyles}
                         multiline="br"
                         placeholder={__('Write some text…', 'gutenberg-extra')}
                         value={description}
@@ -441,7 +354,6 @@ const edit = props => {
                     <ButtonEditor
                         buttonSettings={buttonStyles}
                         onChange={value => setAttributes({ buttonStyles: value })}
-                        buttonText={readMoreTextTest}
                     />
                 </div>
             </div>

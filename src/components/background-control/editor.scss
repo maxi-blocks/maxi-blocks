@@ -1,3 +1,7 @@
 .gx-background-popover-hide {
     z-index: -1;
 }
+
+.gx-background-popover-reduce .components-popover__content {
+    max-height: 70vh;
+}

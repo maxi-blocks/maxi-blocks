@@ -9,7 +9,7 @@ const {
 const {
     SelectControl,
     ButtonGroup,
-    Button
+    Button,
 } = wp.components;
 const {
     dispatch,
@@ -17,12 +17,16 @@ const {
 } = wp.data;
 
 /**
- * External dependencies
+ * Internal dependencies
  */
 import { PopoverControl } from '../popover';
 import ColorControl from '../color-control';
 import ImageControl from '../image-uploader';
 import MiniSizeControl from '../mini-size-control/';
+
+/**
+ * External dependencies
+ */
 import {
     isEmpty,
     isNil,
@@ -339,7 +343,14 @@ class BackgroundControl extends Component {
 
         let value = typeof backgroundOptions === 'object' ? backgroundOptions : JSON.parse(backgroundOptions);
 
-        const classNamePopover = `gx-background-popover gx-popover ${modalIsOpen ? ' gx-background-popover-hide' : ''}`;
+        const popoverBox = document.querySelector('.gx-background-popover .components-popover__content');
+        let classNamePopover = `gx-background-popover gx-popover ${modalIsOpen ? ' gx-background-popover-hide' : ''}`;
+        if (!isNil(popoverBox) && isEmpty(popoverBox.style.maxHeight))
+            classNamePopover = classNamePopover + ' gx-background-popover-reduce';
+
+            console.log('popoverBox', !isNil(popoverBox) && isEmpty(popoverBox.style.maxHeight))
+            console.log('modalIsOpen', this.state.modalIsOpen)
+
 
         /**
 		* Retrieves the old meta data

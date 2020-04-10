@@ -444,7 +444,7 @@ class FixObjectFollower {
     mutationCallback(mutationsList, observer){
         for(let mutation of mutationsList) {
             if (mutation.type != 'attributes') {
-                this.setPosition.bind(this)
+                this.setPosition()
             }
         }
     }

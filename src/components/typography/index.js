@@ -206,7 +206,7 @@ export default class Typography extends Component {
                                         label={__('Font Color', 'gutenberg-extra')}
                                         color={value.general.color}
                                         onColorChange={value => onChangeValue(value, 'color')}
-                                        onColorReset={onChangeValue(defaultColor, 'color')}
+                                        onColorReset={() => onChangeValue(defaultColor, 'color')}
                                         disableGradient
                                         disableGradientAboveBackground
                                     />

@@ -9,11 +9,16 @@ const {
 } = wp.components;
 
 /**
- * External dependencies
+ * Internal dependencies
  */
 import { PopoverControl } from '../popover/';
 import CheckBox from '../checkbox/';
 import iconsSettings from '../icons/icons-settings.js';
+
+/**
+ * External dependencies
+ */
+import { isNil } from 'lodash';
 
 /**
  * Styles
@@ -29,10 +34,12 @@ const ColorControl = props => {
         disableColor = false,
         color,
         onColorChange,
+        onColorReset = undefined,
         colorIcon = iconsSettings.colorWheel,
         disableGradient = false,
         gradient,
         onGradientChange,
+        onGradientReset = undefined,
         gradientIcon = iconsSettings.gradient,
         disableGradientAboveBackground = false,
         gradientAboveBackground,
@@ -86,6 +93,22 @@ const ColorControl = props => {
         return response;
     }
 
+    const onReset = () => {
+        if (!isNil(onColorReset)) {
+            onColorReset();
+        }
+        else {
+            onColorChange('');
+        }
+        if (!isNil(onGradientReset)) {
+            onGradientReset();
+        }
+        else {
+            onGradientChange('');
+        }
+        onGradientAboveBackgroundChange(false);
+    }
+
     return (
         <div className="gx-colorcontrol-control">
             <div className="gx-colorcontrol-color-display">
@@ -98,11 +121,7 @@ const ColorControl = props => {
             <PopoverControl
                 label={label}
                 showReset
-                onReset={() => {
-                    onColorChange('');
-                    onGradientChange('');
-                    onGradientAboveBackgroundChange(false);
-                }}
+                onReset={onReset}
                 popovers={getPopovers()}
             />
         </div>

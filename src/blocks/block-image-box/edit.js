@@ -331,14 +331,14 @@ const edit = props => {
                 <div className='gx-image-box-text'>
                     <RichText
                         tagName={titleLevel}
-                        placeholder={__('Write title…', 'gutenberg-extra')}
+                        placeholder={__('This is your awesome title here', 'gutenberg-extra')}
                         value={title}
                         onChange={value => setAttributes({ title: value })}
                         className="gx-image-box-title"
                     />
                     <RichText
                         tagName="p"
-                        placeholder={__('Write sub-title…', 'gutenberg-extra')}
+                        placeholder={__('Add a snappy sub heading', 'gutenberg-extra')}
                         value={additionalText}
                         onChange={value => setAttributes({ additionalText: value })}
                         className="gx-image-box-subtitle"
@@ -346,7 +346,7 @@ const edit = props => {
                     <RichText
                         tagName="p"
                         multiline="br"
-                        placeholder={__('Write some text…', 'gutenberg-extra')}
+                        placeholder={__('Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis architect beatae unde omnis iste natus.', 'gutenberg-extra')}
                         value={description}
                         onChange={value => setAttributes({ description: value })}
                         className="gx-image-box-description"
@@ -354,6 +354,7 @@ const edit = props => {
                     <ButtonEditor
                         buttonSettings={buttonStyles}
                         onChange={value => setAttributes({ buttonStyles: value })}
+                        placeholder={__('Click me', 'gutenberg-extra')}
                     />
                 </div>
             </div>

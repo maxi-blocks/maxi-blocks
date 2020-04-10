@@ -219,6 +219,10 @@
  * Can include things like variables and mixins
  * that are used across the project.
 */
+.gx-image-box .gx-buttoneditor-button {
+  width: 10rem;
+  height: 3rem;
+  background-color: #00ccff; }
 /**
  * #.# Common SCSS
  *
@@ -851,7 +855,6 @@ input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before {
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
-  border: 1px solid black;
   border-radius: 0; }
 
 .gx-buttoneditor-button .gx-externalbutton-richtext {
@@ -882,7 +885,6 @@ input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before {
 
 .gx-sidebar .gx-buttonstyles-control .gx-buttonstyles-selector-control .components-base-control__field .components-radio-control__option {
   height: 50px;
-  border: 2px solid #dddfe1;
   border-right-width: 0;
   margin: 0; }
 

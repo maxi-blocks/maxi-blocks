@@ -148,6 +148,7 @@ const edit = props => {
                                 fontOptions={titleFontOptions}
                                 onChange={value => { setAttributes({ titleFontOptions: value }) }}
                                 target="gx-image-box-title"
+                                defaultColor="#000000"
                             />
                             <Typography
                                 fontOptions={subtitleFontOptions}

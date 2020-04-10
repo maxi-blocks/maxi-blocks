@@ -583,6 +583,16 @@ input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before {
  * Can include things like variables and mixins
  * that are used across the project.
 */
+.gx-typography-control {
+  display: -ms-flexbox;
+  display: flex; }
+
+.gx-typography-control .gx-typography-color-display span {
+  display: block;
+  width: 24px;
+  height: 24px;
+  border: 1px solid black;
+  margin: auto; }
 /**
  * #.# Common SCSS
  *

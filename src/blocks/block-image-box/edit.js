@@ -86,9 +86,8 @@ const edit = props => {
     } = props;
 
     let classes = classnames(className);
-    if (className.indexOf(uniqueID) === -1) {
-        classes = classnames(classes, uniqueID)
-    }
+    if (className.indexOf(uniqueID) === -1) 
+        classes = classnames(classes, uniqueID);
 
     const linkStyles = setLinkStyles(props);
 

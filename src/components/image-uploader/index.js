@@ -15,6 +15,11 @@ const {
 } = wp.components;
 
 /**
+ * External dependencies
+ */
+import { isNil } from 'lodash';
+
+/**
  * Block
  */
 const MediaUploader = props => {
@@ -26,12 +31,16 @@ const MediaUploader = props => {
         onSelectImage,
         onRemoveImage,
         imageData,
-        onOpen,
-        onClose
+        onOpen = undefined,
+        onClose = undefined,
+        placeholder = __('Set image', 'gutenberg-extra'),
+        extendSelector,
+        replaceButton = __('Replace image', 'gutenberg-extra'),
+        removeButton = __('Remove image', 'gutenberg-extra')
     } = props;
 
     const onOpenImageModal = () => {
-        typeof onOpenImageModal != 'undefined' ?
+        !isNil(onOpenImageModal) && !isNil(onOpen) ?
             onOpen() :
             null
     }
@@ -53,7 +62,7 @@ const MediaUploader = props => {
                     onSelect={onSelectImage}
                     allowedTypes={['image']}
                     value={mediaID}
-                    onClose={onClose}
+                    onClose={!isNil(onClose) ? onClose : null}
                     render={({ open }) => (
                         <Button
                             className={!mediaID ? 'editor-post-featured-image__toggle' : 'editor-post-featured-image__preview'}
@@ -63,7 +72,7 @@ const MediaUploader = props => {
                             }}>
                             {
                                 !mediaID &&
-                                (__('Set image', 'gutenberg-extra'))
+                                placeholder
                             }
                             {
                                 !!mediaID &&
@@ -76,6 +85,7 @@ const MediaUploader = props => {
                                 <ResponsiveWrapper
                                     naturalWidth={imageData.media_details.width}
                                     naturalHeight={imageData.media_details.height}
+                                    className="gx-imageuploader-control-wrapper"
                                 >
                                     <img
                                         src={imageData.source_url}
@@ -101,8 +111,9 @@ const MediaUploader = props => {
                                 onClick={open}
                                 isDefault
                                 isLarge
+                                className='gx-imageuploader-control-replace'
                             >
-                                {__('Replace image', 'gutenberg-extra')}
+                                {replaceButton}
                             </Button>
                         )}
                     />
@@ -115,10 +126,14 @@ const MediaUploader = props => {
                         onClick={onRemoveImage}
                         isLink
                         isDestructive
+                        className='gx-imageuploader-control-remove'
                     >
-                        {__('Remove image', 'gutenberg-extra')}
+                        {removeButton}
                     </Button>
                 </MediaUploadCheck>
+            }
+            {
+                extendSelector
             }
         </BaseControl>
     )

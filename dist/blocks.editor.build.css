@@ -923,6 +923,30 @@ input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before {
  * Can include things like variables and mixins
  * that are used across the project.
 */
+.gx-sidebar .gx-background-control .gx-mediauploader-control .gx-imageuploader-control-replace,
+.gx-sidebar .gx-background-control .gx-mediauploader-control .gx-imageuploader-control-remove {
+  display: none; }
+
+.gx-sidebar .gx-background-control .gx-mediauploader-control .components-base-control__field {
+  position: relative; }
+
+.gx-sidebar .gx-background-control .gx-mediauploader-control .gx-background-control-edit-image {
+  position: absolute;
+  top: 70%;
+  left: 60%; }
+
+.gx-sidebar .gx-background-control-open .gx-mediauploader-control .gx-imageuploader-control-replace,
+.gx-sidebar .gx-background-control-open .gx-mediauploader-control .gx-imageuploader-control-remove {
+  display: initial; }
+
+.gx-sidebar .gx-background-control-open .gx-mediauploader-control .components-base-control__field {
+  display: inline-block; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
 .gx-title-extra {
   font-family: 'Roboto', sans-serif; }
 /**

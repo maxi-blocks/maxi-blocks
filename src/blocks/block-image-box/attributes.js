@@ -18,6 +18,7 @@ import { customCSSAtributes } from '../../components/custom-css/index';
 // Testing
 import { sizeControlAttributesTest } from '../../components/size-control/test/';
 import { borderAttributesTest } from '../../components/block-border/test';
+import { backgroundControlAttributesTest } from '../../components/background-control/test';
 
 /**
  * Attributes
@@ -77,7 +78,8 @@ const attributes = {
     },
     // Testing
     ...sizeControlAttributesTest,
-    ...borderAttributesTest
+    ...borderAttributesTest,
+    ...backgroundControlAttributesTest
 }
 
 export default attributes;

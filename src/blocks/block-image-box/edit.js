@@ -34,6 +34,7 @@ import { HoverAnimation } from '../../components/hover-animation/index';
 import { CustomCSS } from '../../components/custom-css/index';
 // Test
 import TypographyTest from '../../components/typography/test';
+import BackgroundControlTest from '../../components/background-control/test';
 
 /**
  * External dependencies
@@ -83,6 +84,7 @@ const edit = props => {
             // Test
             sizeTest,
             borderTest,
+            backgroundOptionsTest
         },
         setAttributes,
     } = props;
@@ -100,6 +102,10 @@ const edit = props => {
                 initialOpen={true}
                 title={__('Image Settings', 'gutenberg-extra')}
             >
+                <BackgroundControlTest 
+                    backgroundOptions={backgroundOptionsTest}
+                    onChange={value => setAttributes({backgroundOptionsTest: value})}
+                />
                 <BlockStyles
                     {...props}
                 />

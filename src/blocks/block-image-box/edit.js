@@ -32,6 +32,8 @@ import { BoxShadow } from '../../components/box-shadow';
 import DimensionsControl from '../../components/dimensions-control/index';
 import { HoverAnimation } from '../../components/hover-animation/index';
 import { CustomCSS } from '../../components/custom-css/index';
+// Test
+import TypographyTest from '../../components/typography/test';
 
 /**
  * External dependencies
@@ -144,7 +146,7 @@ const edit = props => {
                             initialOpen={true}
                             title={__('Colour settings', 'gutenberg-extra')}
                         >
-                            <Typography
+                            <TypographyTest
                                 fontOptions={titleFontOptions}
                                 onChange={value => { setAttributes({ titleFontOptions: value }) }}
                                 target="gx-image-box-title"

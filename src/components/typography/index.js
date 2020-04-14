@@ -22,6 +22,7 @@ const {
 import FontFamilySelector from '../font-family-selector';
 import { PopoverControl } from '../popover';
 import ColorControl from '../color-control';
+import TextShadowControl from '../text-shadow';
 
 /**
  * Internal dependencies
@@ -129,6 +130,9 @@ export default class Typography extends Component {
             if (target == 'color') {
                 value.general.color = newValue;
             }
+            if (target == 'text-shadow') {
+                value.general['text-shadow'] = newValue;
+            }
             else {
                 value[device][getKey(value[device], target)] = newValue;
             }
@@ -209,6 +213,11 @@ export default class Typography extends Component {
                                         onColorReset={() => onChangeValue(defaultColor, 'color')}
                                         disableGradient
                                         disableGradientAboveBackground
+                                    />
+                                    <TextShadowControl 
+                                        value={value.general['text-shadow']}
+                                        onChange={val => onChangeValue(val, 'text-shadow')}
+                                        defaultColor={defaultColor}
                                     />
                                     <RadioControl
                                         className={'gx-device-control'}

@@ -47,7 +47,7 @@ const ColorControl = props => {
     } = props;
 
     const returnColor = val => {
-        return `rgba(${val.rgb.r}, ${val.rgb.g}, ${val.rgb.b}, ${val.rgb.a})`;
+        return `rgba(${val.rgb.r},${val.rgb.g},${val.rgb.b},${val.rgb.a})`;
     }
 
     const getPopovers = () => {
@@ -97,16 +97,17 @@ const ColorControl = props => {
         if (!isNil(onColorReset)) {
             onColorReset();
         }
-        else {
+        if (!isNil(onColorChange)) {
             onColorChange('');
         }
         if (!isNil(onGradientReset)) {
             onGradientReset();
         }
-        else {
+        if (!isNil(onGradientChange)) {
             onGradientChange('');
         }
-        onGradientAboveBackgroundChange(false);
+        if (!isNil(onGradientAboveBackgroundChange))
+            onGradientAboveBackgroundChange(false);
     }
 
     return (

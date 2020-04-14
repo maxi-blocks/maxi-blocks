@@ -348,10 +348,6 @@ class BackgroundControl extends Component {
         if (!isNil(popoverBox) && isEmpty(popoverBox.style.maxHeight))
             classNamePopover = classNamePopover + ' gx-background-popover-reduce';
 
-            console.log('popoverBox', !isNil(popoverBox) && isEmpty(popoverBox.style.maxHeight))
-            console.log('modalIsOpen', this.state.modalIsOpen)
-
-
         /**
 		* Retrieves the old meta data
 		*/

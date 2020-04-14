@@ -16,7 +16,8 @@
         "900italic": "http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TLBBc9AMX6lJBP.ttf"
       },
     "general": {
-        "color": "#9b9b9b"
+        "color": "#9b9b9b",
+        "text-shadow": "none"
     },
     "desktop": {
         "font-sizeUnit": "px",

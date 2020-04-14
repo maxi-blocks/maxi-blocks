@@ -17,9 +17,27 @@ const MiniSizeControl = props => {
         unit,
         onChangeUnit,
         value,
-        onChangeValue
+        onChangeValue,
+        minMaxSettings = {
+            'px': {
+                min: 0,
+                max: 999
+            },
+            'em': {
+                min: 0,
+                max: 999
+            },
+            'vw': {
+                min: 0,
+                max: 999
+            },
+            '%': {
+                min: 0,
+                max: 999
+            }
+        }
     } = props;
-
+    
     return (
         <div className={className}>
             <RadioControl
@@ -38,7 +56,8 @@ const MiniSizeControl = props => {
                 className={'gx-with-unit-control'}
                 value={value}
                 onChange={onChangeValue}
-                min={0}
+                min={minMaxSettings[unit].min}
+                max={minMaxSettings[unit].max}
                 allowReset={true}
                 initialPosition={0}
             />

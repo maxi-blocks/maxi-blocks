@@ -11,7 +11,7 @@
         "max-height": "",
         "heightUnit": "px",
         "height": "",
-        "minHeightUnit": "px",
-        "minHeight": ""
+        "min-heightUnit": "px",
+        "min-height": ""
     }
 }

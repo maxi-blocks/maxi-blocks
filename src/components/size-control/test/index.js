@@ -16,7 +16,7 @@ import MiniSizeControl from '../../mini-size-control';
 export const sizeControlAttributesTest = {
     sizeTest: {
         type: 'string',
-        default: '{"label":"Size","general":{"max-widthUnit":"px","max-width":"","widthUnit":"px","width":"","min-widthUnit":"px","min-width":"","max-heightUnit":"px","max-height":"","heightUnit":"px","height":"","minHeightUnit":"px","minHeight":""}}'
+        default: '{"label":"Size","general":{"max-widthUnit":"px","max-width":"","widthUnit":"px","width":"","min-widthUnit":"px","min-width":"","max-heightUnit":"px","max-height":"","heightUnit":"px","height":"","min-heightUnit":"px","min-height":""}}'
     }
 }
 

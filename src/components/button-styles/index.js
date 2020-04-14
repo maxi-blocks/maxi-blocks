@@ -39,8 +39,387 @@ import "./editor.scss";
 export const buttonStyleAttributes = {
   buttonStyles: {
     type: "string",
-    default:
-      '{"label":"Button Styles","buttonText":"","linkOptions":{},"alignment":"","size":{"label":"Size","general":{"max-widthUnit":"px","max-width":"","widthUnit":"px","width":"","min-widthUnit":"px","min-width":"","max-heightUnit":"px","max-height":"","heightUnit":"px","height":"","minHeightUnit":"px","minHeight":""}},"normal":{"color":"","backgroundColor":"","boxShadow":{"label":"Box Shadow","shadowColor":"","shadowGradient":"","shadowHorizontal":"0","shadowVertical":"0","shadowBlur":"0","shadowSpread":"0"},"typography":{"label":"Button Text","font":"Roboto","options":{"100":"http://fonts.gstatic.com/s/roboto/v20/KFOkCnqEu92Fr1MmgWxPKTM1K9nz.ttf","300":"http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmSU5vAx05IsDqlA.ttf","400":"http://fonts.gstatic.com/s/roboto/v20/KFOmCnqEu92Fr1Me5WZLCzYlKw.ttf","500":"http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmEU9vAx05IsDqlA.ttf","700":"http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmWUlvAx05IsDqlA.ttf","900":"http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmYUtvAx05IsDqlA.ttf","100italic":"http://fonts.gstatic.com/s/roboto/v20/KFOiCnqEu92Fr1Mu51QrIzcXLsnzjYk.ttf","300italic":"http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TjARc9AMX6lJBP.ttf","italic":"http://fonts.gstatic.com/s/roboto/v20/KFOkCnqEu92Fr1Mu52xPKTM1K9nz.ttf","500italic":"http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51S7ABc9AMX6lJBP.ttf","700italic":"http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TzBhc9AMX6lJBP.ttf","900italic":"http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TLBBc9AMX6lJBP.ttf"},"general":{"color":"#9b9b9b"},"desktop":{"font-sizeUnit":"px","font-size":16,"line-heightUnit":"px","line-height":26,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"},"tablet":{"font-sizeUnit":"px","font-size":16,"line-heightUnit":"px","line-height":26,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"},"mobile":{"font-sizeUnit":"px","font-size":26,"line-heightUnit":"px","line-height":26,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"}},"borderSettings":{"borderColor":"","borderType":"solid","borderRadius":{"label":"Border radius","unit":"px","max":"1000","desktop":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"tablet":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"mobile":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true}},"borderWidth":{"label":"Border width","unit":"px","max":"1000","desktop":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"tablet":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"mobile":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true}}},"padding":{"label":"Padding","unit":"px","desktop":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true},"tablet":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true},"mobile":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true}},"margin":{"label":"Margin","min":"none","unit":"px","desktop":{"margin-top":0,"margin-right":0,"margin-bottom":0,"margin-left":0,"sync":true},"tablet":{"margin-top":0,"margin-right":0,"margin-bottom":0,"margin-left":0,"sync":true},"mobile":{"margin-top":0,"margin-right":0,"margin-bottom":0,"margin-left":0,"sync":true}},"opacity":""},"hover":{"color":"","backgroundColor":"","boxShadow":{"label":"Box Shadow","shadowColor":"","shadowGradient":"","shadowHorizontal":"0","shadowVertical":"0","shadowBlur":"0","shadowSpread":"0"},"typography":{"label":"Typography","font":"Roboto","options":{"100":"http://fonts.gstatic.com/s/roboto/v20/KFOkCnqEu92Fr1MmgWxPKTM1K9nz.ttf","300":"http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmSU5vAx05IsDqlA.ttf","400":"http://fonts.gstatic.com/s/roboto/v20/KFOmCnqEu92Fr1Me5WZLCzYlKw.ttf","500":"http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmEU9vAx05IsDqlA.ttf","700":"http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmWUlvAx05IsDqlA.ttf","900":"http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmYUtvAx05IsDqlA.ttf","100italic":"http://fonts.gstatic.com/s/roboto/v20/KFOiCnqEu92Fr1Mu51QrIzcXLsnzjYk.ttf","300italic":"http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TjARc9AMX6lJBP.ttf","italic":"http://fonts.gstatic.com/s/roboto/v20/KFOkCnqEu92Fr1Mu52xPKTM1K9nz.ttf","500italic":"http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51S7ABc9AMX6lJBP.ttf","700italic":"http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TzBhc9AMX6lJBP.ttf","900italic":"http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TLBBc9AMX6lJBP.ttf"},"general":{"color":"#9b9b9b"},"desktop":{"font-sizeUnit":"px","font-size":16,"line-heightUnit":"px","line-height":26,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"},"tablet":{"font-sizeUnit":"px","font-size":16,"line-heightUnit":"px","line-height":26,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"},"mobile":{"font-sizeUnit":"px","font-size":26,"line-heightUnit":"px","line-height":26,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"}},"borderSettings":{"borderColor":"","borderType":"solid","borderRadius":{"label":"Border radius","unit":"px","max":"1000","desktop":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"tablet":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"mobile":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true}},"borderWidth":{"label":"Border width","unit":"px","max":"1000","desktop":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"tablet":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"mobile":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true}}},"padding":{"label":"Padding","unit":"px","desktop":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true},"tablet":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true},"mobile":{"padding-top":0,"padding-right":0,"padding-bottom":0,"padding-left":0,"sync":true}},"margin":{"label":"Margin","min":"none","unit":"px","desktop":{"margin-top":0,"margin-right":0,"margin-bottom":0,"margin-left":0,"sync":true},"tablet":{"margin-top":0,"margin-right":0,"margin-bottom":0,"margin-left":0,"sync":true},"mobile":{"margin-top":0,"margin-right":0,"margin-bottom":0,"margin-left":0,"sync":true}},"opacity":""}}',
+    default: `{
+      "label": "Button Styles",
+      "buttonText": "",
+      "linkOptions": {},
+      "alignment": "",
+      "size": {
+        "label": "Size",
+        "general": {
+          "max-widthUnit": "px",
+          "max-width": "",
+          "widthUnit": "px",
+          "width": "",
+          "min-widthUnit": "px",
+          "min-width": "",
+          "max-heightUnit": "px",
+          "max-height": "",
+          "heightUnit": "px",
+          "height": "",
+          "minHeightUnit": "px",
+          "minHeight": ""
+        }
+      },
+      "normal": {
+        "color": "",
+        "background": "",
+        "backgroundColor": "",
+        "boxShadow": {
+          "label": "Box Shadow",
+          "shadowColor": "",
+          "shadowGradient": "",
+          "shadowHorizontal": "0",
+          "shadowVertical": "0",
+          "shadowBlur": "0",
+          "shadowSpread": "0"
+        },
+        "typography": {
+          "label": "Button Text",
+          "font": "Roboto",
+          "options": {
+            "100": "http://fonts.gstatic.com/s/roboto/v20/KFOkCnqEu92Fr1MmgWxPKTM1K9nz.ttf",
+            "300": "http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmSU5vAx05IsDqlA.ttf",
+            "400": "http://fonts.gstatic.com/s/roboto/v20/KFOmCnqEu92Fr1Me5WZLCzYlKw.ttf",
+            "500": "http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmEU9vAx05IsDqlA.ttf",
+            "700": "http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmWUlvAx05IsDqlA.ttf",
+            "900": "http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmYUtvAx05IsDqlA.ttf",
+            "100italic": "http://fonts.gstatic.com/s/roboto/v20/KFOiCnqEu92Fr1Mu51QrIzcXLsnzjYk.ttf",
+            "300italic": "http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TjARc9AMX6lJBP.ttf",
+            "italic": "http://fonts.gstatic.com/s/roboto/v20/KFOkCnqEu92Fr1Mu52xPKTM1K9nz.ttf",
+            "500italic": "http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51S7ABc9AMX6lJBP.ttf",
+            "700italic": "http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TzBhc9AMX6lJBP.ttf",
+            "900italic": "http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TLBBc9AMX6lJBP.ttf"
+          },
+          "general": {
+            "color": "#9b9b9b"
+          },
+          "desktop": {
+            "font-sizeUnit": "px",
+            "font-size": 16,
+            "line-heightUnit": "px",
+            "line-height": 26,
+            "letter-spacingUnit": "px",
+            "letter-spacing": 0,
+            "font-weight": 400,
+            "text-transform": "none",
+            "font-style": "normal",
+            "text-decoration": "none"
+          },
+          "tablet": {
+            "font-sizeUnit": "px",
+            "font-size": 16,
+            "line-heightUnit": "px",
+            "line-height": 26,
+            "letter-spacingUnit": "px",
+            "letter-spacing": 0,
+            "font-weight": 400,
+            "text-transform": "none",
+            "font-style": "normal",
+            "text-decoration": "none"
+          },
+          "mobile": {
+            "font-sizeUnit": "px",
+            "font-size": 26,
+            "line-heightUnit": "px",
+            "line-height": 26,
+            "letter-spacingUnit": "px",
+            "letter-spacing": 0,
+            "font-weight": 400,
+            "text-transform": "none",
+            "font-style": "normal",
+            "text-decoration": "none"
+          }
+        },
+        "borderSettings": {
+          "borderColor": "",
+          "borderType": "solid",
+          "borderRadius": {
+            "label": "Border radius",
+            "unit": "px",
+            "max": "1000",
+            "desktop": {
+              "border-top-left-radius": 0,
+              "border-top-right-radius": 0,
+              "border-bottom-right-radius": 0,
+              "border-bottom-left-radius": 0,
+              "sync": true
+            },
+            "tablet": {
+              "border-top-left-radius": 0,
+              "border-top-right-radius": 0,
+              "border-bottom-right-radius": 0,
+              "border-bottom-left-radius": 0,
+              "sync": true
+            },
+            "mobile": {
+              "border-top-left-radius": 0,
+              "border-top-right-radius": 0,
+              "border-bottom-right-radius": 0,
+              "border-bottom-left-radius": 0,
+              "sync": true
+            }
+          },
+          "borderWidth": {
+            "label": "Border width",
+            "unit": "px",
+            "max": "1000",
+            "desktop": {
+              "border-top-width": 0,
+              "border-right-width": 0,
+              "border-bottom-width": 0,
+              "border-left-width": 0,
+              "sync": true
+            },
+            "tablet": {
+              "border-top-width": 0,
+              "border-right-width": 0,
+              "border-bottom-width": 0,
+              "border-left-width": 0,
+              "sync": true
+            },
+            "mobile": {
+              "border-top-width": 0,
+              "border-right-width": 0,
+              "border-bottom-width": 0,
+              "border-left-width": 0,
+              "sync": true
+            }
+          }
+        },
+        "padding": {
+          "label": "Padding",
+          "unit": "px",
+          "desktop": {
+            "padding-top": 0,
+            "padding-right": 0,
+            "padding-bottom": 0,
+            "padding-left": 0,
+            "sync": true
+          },
+          "tablet": {
+            "padding-top": 0,
+            "padding-right": 0,
+            "padding-bottom": 0,
+            "padding-left": 0,
+            "sync": true
+          },
+          "mobile": {
+            "padding-top": 0,
+            "padding-right": 0,
+            "padding-bottom": 0,
+            "padding-left": 0,
+            "sync": true
+          }
+        },
+        "margin": {
+          "label": "Margin",
+          "min": "none",
+          "unit": "px",
+          "desktop": {
+            "margin-top": 0,
+            "margin-right": 0,
+            "margin-bottom": 0,
+            "margin-left": 0,
+            "sync": true
+          },
+          "tablet": {
+            "margin-top": 0,
+            "margin-right": 0,
+            "margin-bottom": 0,
+            "margin-left": 0,
+            "sync": true
+          },
+          "mobile": {
+            "margin-top": 0,
+            "margin-right": 0,
+            "margin-bottom": 0,
+            "margin-left": 0,
+            "sync": true
+          }
+        },
+        "opacity": ""
+      },
+      "hover": {
+        "color": "",
+        "background": "",
+        "backgroundColor": "",
+        "boxShadow": {
+          "label": "Box Shadow",
+          "shadowColor": "",
+          "shadowGradient": "",
+          "shadowHorizontal": "0",
+          "shadowVertical": "0",
+          "shadowBlur": "0",
+          "shadowSpread": "0"
+        },
+        "typography": {
+          "label": "Typography",
+          "font": "Roboto",
+          "options": {
+            "100": "http://fonts.gstatic.com/s/roboto/v20/KFOkCnqEu92Fr1MmgWxPKTM1K9nz.ttf",
+            "300": "http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmSU5vAx05IsDqlA.ttf",
+            "400": "http://fonts.gstatic.com/s/roboto/v20/KFOmCnqEu92Fr1Me5WZLCzYlKw.ttf",
+            "500": "http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmEU9vAx05IsDqlA.ttf",
+            "700": "http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmWUlvAx05IsDqlA.ttf",
+            "900": "http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmYUtvAx05IsDqlA.ttf",
+            "100italic": "http://fonts.gstatic.com/s/roboto/v20/KFOiCnqEu92Fr1Mu51QrIzcXLsnzjYk.ttf",
+            "300italic": "http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TjARc9AMX6lJBP.ttf",
+            "italic": "http://fonts.gstatic.com/s/roboto/v20/KFOkCnqEu92Fr1Mu52xPKTM1K9nz.ttf",
+            "500italic": "http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51S7ABc9AMX6lJBP.ttf",
+            "700italic": "http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TzBhc9AMX6lJBP.ttf",
+            "900italic": "http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TLBBc9AMX6lJBP.ttf"
+          },
+          "general": {
+            "color": "#9b9b9b"
+          },
+          "desktop": {
+            "font-sizeUnit": "px",
+            "font-size": 16,
+            "line-heightUnit": "px",
+            "line-height": 26,
+            "letter-spacingUnit": "px",
+            "letter-spacing": 0,
+            "font-weight": 400,
+            "text-transform": "none",
+            "font-style": "normal",
+            "text-decoration": "none"
+          },
+          "tablet": {
+            "font-sizeUnit": "px",
+            "font-size": 16,
+            "line-heightUnit": "px",
+            "line-height": 26,
+            "letter-spacingUnit": "px",
+            "letter-spacing": 0,
+            "font-weight": 400,
+            "text-transform": "none",
+            "font-style": "normal",
+            "text-decoration": "none"
+          },
+          "mobile": {
+            "font-sizeUnit": "px",
+            "font-size": 26,
+            "line-heightUnit": "px",
+            "line-height": 26,
+            "letter-spacingUnit": "px",
+            "letter-spacing": 0,
+            "font-weight": 400,
+            "text-transform": "none",
+            "font-style": "normal",
+            "text-decoration": "none"
+          }
+        },
+        "borderSettings": {
+          "borderColor": "",
+          "borderType": "solid",
+          "borderRadius": {
+            "label": "Border radius",
+            "unit": "px",
+            "max": "1000",
+            "desktop": {
+              "border-top-left-radius": 0,
+              "border-top-right-radius": 0,
+              "border-bottom-right-radius": 0,
+              "border-bottom-left-radius": 0,
+              "sync": true
+            },
+            "tablet": {
+              "border-top-left-radius": 0,
+              "border-top-right-radius": 0,
+              "border-bottom-right-radius": 0,
+              "border-bottom-left-radius": 0,
+              "sync": true
+            },
+            "mobile": {
+              "border-top-left-radius": 0,
+              "border-top-right-radius": 0,
+              "border-bottom-right-radius": 0,
+              "border-bottom-left-radius": 0,
+              "sync": true
+            }
+          },
+          "borderWidth": {
+            "label": "Border width",
+            "unit": "px",
+            "max": "1000",
+            "desktop": {
+              "border-top-width": 0,
+              "border-right-width": 0,
+              "border-bottom-width": 0,
+              "border-left-width": 0,
+              "sync": true
+            },
+            "tablet": {
+              "border-top-width": 0,
+              "border-right-width": 0,
+              "border-bottom-width": 0,
+              "border-left-width": 0,
+              "sync": true
+            },
+            "mobile": {
+              "border-top-width": 0,
+              "border-right-width": 0,
+              "border-bottom-width": 0,
+              "border-left-width": 0,
+              "sync": true
+            }
+          }
+        },
+        "padding": {
+          "label": "Padding",
+          "unit": "px",
+          "desktop": {
+            "padding-top": 0,
+            "padding-right": 0,
+            "padding-bottom": 0,
+            "padding-left": 0,
+            "sync": true
+          },
+          "tablet": {
+            "padding-top": 0,
+            "padding-right": 0,
+            "padding-bottom": 0,
+            "padding-left": 0,
+            "sync": true
+          },
+          "mobile": {
+            "padding-top": 0,
+            "padding-right": 0,
+            "padding-bottom": 0,
+            "padding-left": 0,
+            "sync": true
+          }
+        },
+        "margin": {
+          "label": "Margin",
+          "min": "none",
+          "unit": "px",
+          "desktop": {
+            "margin-top": 0,
+            "margin-right": 0,
+            "margin-bottom": 0,
+            "margin-left": 0,
+            "sync": true
+          },
+          "tablet": {
+            "margin-top": 0,
+            "margin-right": 0,
+            "margin-bottom": 0,
+            "margin-left": 0,
+            "sync": true
+          },
+          "mobile": {
+            "margin-top": 0,
+            "margin-right": 0,
+            "margin-bottom": 0,
+            "margin-left": 0,
+            "sync": true
+          }
+        },
+        "opacity": ""
+      }
+    }`,
   },
 };
 
@@ -120,6 +499,12 @@ export class ButtonStyles extends Component {
       if (!isEmpty(value.normal.backgroundColor)) {
         response.general["background-color"] = value.normal.backgroundColor;
       }
+      if (!isEmpty(value.normal.background)) {
+        response.general["background"] = value.normal.background;
+      }
+      if (!isEmpty(value.normal.opacity)) {
+        response.general["opacity"] = value.normal.opacity;
+      }
       if (!isEmpty(value.normal.borderSettings.borderColor)) {
         response.general["border-color"] =
           value.normal.borderSettings.borderColor;
@@ -144,6 +529,12 @@ export class ButtonStyles extends Component {
       }
       if (!isEmpty(value.hover.backgroundColor)) {
         response.general["background-color"] = value.hover.backgroundColor;
+      }
+      if (!isEmpty(value.hover.background)) {
+        response.general["background"] = value.hover.background;
+      }
+      if (!isEmpty(value.hover.opacity)) {
+        response.general["opacity"] = value.hover.opacity;
       }
       if (!isEmpty(value.hover.borderSettings.borderColor)) {
         response.general["border-color"] =
@@ -243,8 +634,13 @@ export class ButtonStyles extends Component {
               <ColorControl
                 label={__("Background Colour", "gutenberg-extra")}
                 color={value[selector1].backgroundColor}
+                gradient={value[selector1].background}
+                onGradientChange={(val) => {
+                  value[selector1].background = val;
+                  saveAndSend();
+                }}
                 onColorChange={(val) => {
-                  value[selector1].backgroundColor = val;
+                  value[selector1].background = val;
                   saveAndSend();
                 }}
               />
@@ -286,21 +682,38 @@ export class ButtonStyles extends Component {
                   this.setState({ selector2 });
                 }}
               />
+              <RangeControl
+                  label={__('Opacity', 'gutenberg-extra')}
+                  className={'gx-opacity-control'}
+                  value={value[selector2].boxShadow}
+                  onChange={value => {
+                    value[selector2].opacity = val;
+                    saveAndSend();
+                  }}
+                  min={-100}
+                  max={100}
+                  allowReset={true}
+                  initialPosition={0}
+              />
               <PopoverControl
                 label={__("Box shadow", "gutenberg-extra")}
                 popovers={[
                   {
                     content: (
-                      <BoxShadow
-                        boxShadowOptions={value[selector2].boxShadow}
-                        onChange={(val) => {
-                          value[selector2].boxShadow = JSON.parse(val);
-                          saveAndSend();
-                        }}
-                        target={
-                          selector2 != "hover" ? `${target}` : `${target}:hover`
-                        }
-                      />
+                      <div className={"gx-box-shadow"}>
+                        <BoxShadow
+                          boxShadowOptions={value[selector2].boxShadow}
+                          onChange={(val) => {
+                            value[selector2].boxShadow = JSON.parse(val);
+                            saveAndSend();
+                          }}
+                          target={
+                            selector2 != "hover"
+                              ? `${target}`
+                              : `${target}:hover`
+                          }
+                        />
+                      </div>
                     ),
                   },
                 ]}
@@ -314,6 +727,17 @@ export class ButtonStyles extends Component {
               </AccordionItemButton>
             </AccordionItemHeading>
             <AccordionItemPanel>
+            <RadioControl
+                className="gx-buttonstyles-selector-control"
+                selected={selector2}
+                options={[
+                  { label: "Normal", value: "normal" },
+                  { label: "Hover", value: "hover" },
+                ]}
+                onChange={(selector2) => {
+                  this.setState({ selector2 });
+                }}
+              />
               <BlockBorder
                 borderColor={value[selector2].borderSettings.borderColor}
                 onChangeBorderColor={(val) => {

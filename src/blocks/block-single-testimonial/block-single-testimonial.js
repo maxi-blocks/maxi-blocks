@@ -8,8 +8,6 @@
 //  Import CSS.
 import './style.scss';
 import './editor.scss';
-
-
 import { registerBlockType } from '@wordpress/blocks';
 import { InnerBlocks } from '@wordpress/editor';
 import { RangeControl } from '@wordpress/components';
@@ -19,7 +17,7 @@ import { FormFileUpload } from '@wordpress/components';
 import { Fragment } from '@wordpress/element';
 import { DropdownMenu, MenuGroup, MenuItem } from '@wordpress/components';
 import { SelectControl } from '@wordpress/components';
-
+import iconsBlocks from '../../components/icons/icons-blocks.js';
 // import { withState } from '@wordpress/compose';
 const { __ } = wp.i18n;
 
@@ -43,7 +41,7 @@ const {
 
 registerBlockType( 'gutenberg-extra/block-single-testimonial', {
     title: __( 'GX Single Testimonial'),
-    icon: 'admin-comments',
+    icon: iconsBlocks.testimonial,
     category: 'gutenberg-extra-blocks',
     attributes: {
         alignment: {
@@ -165,7 +163,6 @@ registerBlockType( 'gutenberg-extra/block-single-testimonial', {
             backgroundColor,
             setAttributes
         } = props;
- 
         const onChangeContent = ( newContent ) => {
             props.setAttributes( { content: newContent } );
         };
@@ -192,7 +189,6 @@ registerBlockType( 'gutenberg-extra/block-single-testimonial', {
         const onChangePosition= ( newPosition ) => {
             props.setAttributes( { position: newPosition } );
         };
- 
         const onChangealignment = ( newalignment ) => {
             props.setAttributes( { alignment: newalignment === undefined ? 'none' : newalignment } );
         };
@@ -376,7 +372,6 @@ registerBlockType( 'gutenberg-extra/block-single-testimonial', {
                             value={ paddingBottom }
                             onChange={ onChangePaddingBottom }
                         />
-                                        
                     </PanelBody>
 
                      <PanelBody
@@ -499,35 +494,32 @@ registerBlockType( 'gutenberg-extra/block-single-testimonial', {
 
         return (
             <div  className={ props.className + " " + fullWidthClass + alignmentClass} style={ styles }>
-                <RichText.Content 
-                tagName="h2" 
+                <RichText.Content
+                tagName="h2"
                 className="gx-single-testimonial-title"
-                value={ title } 
+                value={ title }
                 />
-
 				{
 					mediaURL && (
 						<img className="gx-single-testimonial-image" src={ mediaURL } alt={ __( 'Person Image', 'gutenberg-extra' ) } />
 					)
 				}
 
-                <RichText.Content 
-                tagName="p" 
+                <RichText.Content
+                tagName="p"
                 className="gx-single-testimonial-text"
                 value={ testimonial }
                  />
-                 <RichText.Content 
-                tagName="p" 
+                 <RichText.Content
+                tagName="p"
                 className="gx-single-testimonial-name"
                 value={ name }
                  />
-                 <RichText.Content 
-                tagName="p" 
+                 <RichText.Content
+                tagName="p"
                 className="gx-single-testimonial-position"
                 value={ position }
                  />
-
-
             </div>
         );
     },

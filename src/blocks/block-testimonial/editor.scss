@@ -1,0 +1,184 @@
+/**
+ * #.# Editor Styles
+ *
+ * CSS for just Backend enqueued after style.scss
+ * which makes it higher in priority.
+ */
+
+.gutenberg-extra-testimonial-block {
+  background: #fafafa;
+  border-radius: 5px;
+  border: 1px solid #cacaca;
+}
+
+.content-plain-text {
+  min-height: 58px !important;
+}
+
+.wp-block-quote {
+  margin-bottom: 0.5em;
+}
+
+button.gx-add-more-testimonial {
+  height: 55px;
+  width: 55px;
+  background: #939393;
+  border-radius: 50%;
+  position: relative;
+  border: none;
+  font-size: 2em;
+  color: white;
+  line-height: 1;
+}
+
+span.remove-testimonial {
+  cursor: pointer;
+  right: 30px;
+  position: absolute;
+}
+
+textarea.editor-plain-text.content-plain-text,
+textarea.editor-plain-text.title-plain-text,
+textarea.editor-plain-text.link-plain-text {
+  background: #fafafa;
+  border: 1px solid #dadada;
+  border-radius: 5px;
+}
+
+.gutenberg-extra__picture {
+  position: relative;
+
+  a {
+    cursor: pointer;
+  }
+
+  .gutenberg-extra__picture__actions {
+    display: flex;
+    flex-direction: column-reverse;
+    margin-bottom: 20px;
+  }
+}
+
+
+  .gutenberg-extra__picture__image {
+    display: block;
+    cursor: pointer;
+    line-height: 100px;
+    text-align: center;
+  }
+
+.gx-testimonial-sidebar-group {
+
+  .components-base-control__field {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .gx-background-setting-panel {
+
+    .gx-bg-color-parent {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0 !important;
+
+      .components-base-control__field {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin: 0;
+
+        .components-base-control__label {
+          display: flex;
+          margin: 0;
+          align-items: center;
+          justify-content: flex-end;
+        }
+      }
+
+
+      .components-base-control__label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-direction: row-reverse;
+      }
+
+      .components-base-control__label .component-color-indicator {
+        width: 20px;
+        height: 20px;
+        border: 1px solid #e2e3e5;
+        margin-right: .3rem;
+        margin-left: 0;
+      }
+
+      .components-panel__body {
+        width: 100%;
+        margin-top: 0 !important;
+      }
+
+
+      .components-base-control__field {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .components-button {
+        width: 45px;
+        height: 40px;
+      }
+
+      .gpw {
+        padding: 0;
+        margin-top: 3px;
+
+        .trigger {
+          width: 57px;
+          height: 40px;
+          color: transparent;
+          border-radius: 5px;
+          background-color: rgba(33, 141, 250, 0) !important;
+          border: 2px solid #dddfe1;
+          font-size: 0px;
+          text-align: center;
+          line-height: 22px;
+        }
+      }
+
+      .gpw {
+        padding: 0;
+
+        .trigger {
+          width: 57px;
+          height: 40px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border-radius: 5px;
+          background-image: url(../img/icons/gx-gradient.svg) !important;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: 50%;
+          border: 2px solid #dddfe1;
+          text-align: center;
+          line-height: 22px;
+
+          .inner {
+            display: none !important;
+          }
+        }
+      }
+
+    }
+
+    .gx-settings-button {
+      .components-base-control__field {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+  }
+}

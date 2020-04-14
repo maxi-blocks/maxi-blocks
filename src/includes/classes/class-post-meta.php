@@ -35,14 +35,11 @@ class PostMeta {
             'auth_callback' => array( $this, 'auth_callback' ),
 		];
 
+		// Responsive styles
         register_meta(
 			'post',
 			'_gutenberg_extra_responsive_styles',
-			array(
-				'show_in_rest'  => true,
-				'single'        => true,
-				'auth_callback' => array( $this, 'auth_callback' ),
-			)
+			$args
 		);
     }
 

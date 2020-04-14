@@ -71,21 +71,24 @@ export const setDescriptionStyles = ( props ) => {
     }
 }
 
-export const setButtonStyles = ( props ) => {
+export const setButtonHoverStyles = ( props ) => {
     const {
-        buttonColor,
-        buttonBgColor
+        buttonHoverColor,
+        buttonHoverBgColor,
     } = props.attributes;
 
     return {
-        color: buttonColor ? buttonColor : undefined,
-        backgroundColor: buttonBgColor ? buttonBgColor : undefined,
+        color: buttonHoverColor ? buttonHoverColor : undefined,
+        backgroundColor: buttonHoverBgColor ? buttonHoverBgColor : undefined,
     }
 }
 
 export const setBlockStyles = ( props ) => {
     const {
         backgroundColor,
+        backgroundGradient,
+        // borderWidth,
+        // borderRadius,
         blockBorderColor,
         borderType,
         lineHeight,
@@ -94,19 +97,23 @@ export const setBlockStyles = ( props ) => {
         widthUnit,
         maxWidthUnit,
         maxWidth,
-        minWidthUnit,
         minWidth,
+        minWidthUnit,
         heightUnit,
         blockHeight,
-        maxHeightUnit,
         maxHeight,
-        minHeightUnit,
         minHeight,
-        textTransform,
+        maxHeightUnit,
+        minHeightUnit,
+        backgroundImage,
+        textTransform
     } = props.attributes;
 
     return {
-        backgroundColor: backgroundColor ? backgroundColor : undefined,
+        background: backgroundGradient ? 
+            backgroundGradient : 
+            backgroundColor ? 
+                backgroundColor : backgroundImage ? backgroundImage : undefined,
         borderColor: blockBorderColor ? blockBorderColor : undefined,
         borderStyle: borderType ? borderType : undefined,
         lineHeight: lineHeight ? lineHeight + '%' : undefined,

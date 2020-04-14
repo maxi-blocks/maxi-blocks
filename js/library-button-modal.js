@@ -162,7 +162,7 @@ function abInsertLayoutAdmin() {
 
 (function($) {
    // var gx_tab_labels = '<span class="gx-general-tab-label gx-enabled">General</span><span class="gx-hover-tab-label">Hover</span>';
-    var gx_tab_labels = '<div class="gx-tabs"><span class="gx-tab gx-content-tab-label gx-enabled"><div class="content-title title">Content</div></span><span class="gx-tab gx-style-tab-label"><div class="style-title title">Style</div></span><span class="gx-tab gx-advanced-tab-label"><div class="advanced-title title">Advanced</div></span></div>';
+    var gx_tab_labels = '<div class="gx-tabs"><span class="gx-tab gx-content-tab-label gx-enabled">Content</span><span class="gx-tab gx-style-tab-label">Style</span><span class="gx-tab gx-advanced-tab-label">Advanced</span></div>';
 
     function gx_hide_tabs_settings() {
         if($('.gx-tab.gx-content-tab-label').hasClass('gx-enabled')) {

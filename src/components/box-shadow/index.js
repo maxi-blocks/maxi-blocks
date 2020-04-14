@@ -21,7 +21,7 @@ import ColorControl from '../color-control';
 export const boxShadowOptionsAttributes = {
     boxShadowOptions: {
         type: 'string',
-        default: '{"label":"Box Shadow","shadowColor":"","shadowGradient":"","shadowHorizontal":"0","shadowVertical":"0","shadowBlur":"0","shadowSpread":"0"}',
+        default: '{"label":"Drop Shadow","shadowColor":"","shadowGradient":"","shadowHorizontal":"0","shadowVertical":"0","shadowBlur":"0","shadowSpread":"0"}',
     }
 }
 
@@ -117,7 +117,9 @@ export const BoxShadow = (props) => {
                 label={__('Color', 'gutenberg-extra')}
                 color={value.shadowColor}
                 onColorChange={value => onChangeValue('shadowColor', value)}
-                disableGradient
+                gradient={value.shadowGradient}
+                onGradientChange={value => onChangeValue('shadowGradient', value)}
+                disableGradientAboveBackground
             />
             <RangeControl
                 label={__('Horizontal', 'gutenberg-extra')}

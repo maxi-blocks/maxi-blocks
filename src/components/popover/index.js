@@ -58,7 +58,7 @@ export const PopoverControl = props => {
                         return;
                     }
                     return (
-                        <Dropdown key={popover}
+                        <Dropdown
                             className={'gx-popover-dropdown'}
                             renderToggle={({ isOpen, onToggle }) => (
                                 <Button
@@ -67,7 +67,9 @@ export const PopoverControl = props => {
                                     aria-expanded={isOpen}
                                     action="popup"
                                 >
-                                    {popover.icon ? popover.icon : icon}
+                                    <Icon 
+                                        icon={popover.icon ? popover.icon : icon}
+                                    />
                                 </Button>
                             )}
                             popoverProps={

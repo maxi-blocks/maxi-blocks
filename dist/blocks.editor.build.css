@@ -434,74 +434,8 @@
  * Can include things like variables and mixins
  * that are used across the project.
 */
-.gx-font-family-selector-button {
-  height: 2.2rem;
-  border-radius: 5px;
-  background-color: rgba(33, 141, 250, 0);
-  border: 2px solid #dddfe1;
-  font-size: 11pt;
-  color: #464a53;
-  font-weight: 500;
-  width: 50%;
-  margin-bottom: 8px; }
-
-.gx-font-family-selector-icon {
-  margin: auto;
-  margin-right: 0;
-  -webkit-transition: .2s all ease;
-  -o-transition: .2s all ease;
-  transition: .2s all ease; }
-
-.gx-font-family-selector-button[aria-expanded="true"] .gx-font-family-selector-icon {
-  -webkit-transform: rotate(90deg);
-      -ms-transform: rotate(90deg);
-          transform: rotate(90deg); }
-
-.gx-font-family-selector-popover .components-popover__content {
-  border-radius: 5px;
-  margin-top: 2px;
-  max-height: none !important; }
-
-.gx-font-family-selector-content {
-  min-width: 370px; }
-
-.gx-font-family-selector-content input {
-  -webkit-box-shadow: none !important;
-          box-shadow: none !important; }
-
-.gx-font-family-selector .components-base-control__label:not(span) {
-  padding: 10px; }
-
-.gx-font-family-selector span {
-  padding-top: 6px; }
-
-.gx-font-family-selector {
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-pack: justify;
-      justify-content: space-between; }
-
-.gx-font-family-reset-button {
-  margin: auto 5px 13px auto; }
-
-.components-button .gx-font-family-selector-button .components-base-control__label {
-  padding: 0; }
-/**
- * #.# Common SCSS
- *
- * Can include things like variables and mixins
- * that are used across the project.
-*/
 .gx-sidebar .gx-popover-control .gx-settings-button button:before {
   content: none !important; }
-
-.gx-popover-dropdown button::before {
-  content: none !important; }
-
-.gx-popover-dropdown button svg {
-  margin: auto;
-  width: 0.98rem;
-  height: 0.98rem; }
 
 .gx-sidebar .gx-popover-control .gx-settings-button button svg {
   fill: #000; }
@@ -509,7 +443,7 @@
 .gx-sidebar .gx-popover-control .gx-settings-button .gx-popover-dropdown {
   display: inherit; }
 
-.gx-sidebar .gx-popover-control .gx-settings-button button[type="reset"] {
+.gx-sidebar .gx-popover-control .gx-settings-button button[type=reset] {
   border: none;
   -webkit-box-shadow: none;
           box-shadow: none; }
@@ -519,17 +453,107 @@
  * Can include things like variables and mixins
  * that are used across the project.
 */
-.gx-typography-control .components-base-control__field .components-button {
-  left: 51% !important;
-  top: -2px !important; }
+input[type="checkbox"].gutenberg-extra-checkbox-input {
+  position: relative;
+  width: 35px;
+  height: 35px; }
 
-.gx-title-typography-setting .components-select-control__input {
-  max-width: 61%;
-  width: 100%;
-  margin-left: 5px; }
+input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before {
+  content: url("../src/components/checkbox/check-box.svg");
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  margin: auto; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
+.gx-colorcontrol-control {
+  display: -ms-flexbox;
+  display: flex; }
+  .gx-colorcontrol-control .gx-colorcontrol-color-display span {
+    display: block;
+    width: 24px;
+    height: 24px;
+    border: 1px solid black;
+    margin: auto; }
+  .gx-colorcontrol-control .gx-popover-control {
+    width: 100%; }
+    .gx-colorcontrol-control .gx-popover-control .components-base-control__field {
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+      width: 100%; }
+      .gx-colorcontrol-control .gx-popover-control .components-base-control__field .components-dropdown {
+        margin-right: 3px; }
+      .gx-colorcontrol-control .gx-popover-control .components-base-control__field .components-button {
+        height: 30px;
+        width: 30px;
+        border-radius: 5px;
+        border: 2px solid #dddfe1 !important;
+        background-color: white; }
+        .gx-colorcontrol-control .gx-popover-control .components-base-control__field .components-button:hover {
+          background-color: white !important;
+          border-color: #c5c5c5 !important; }
+        .gx-colorcontrol-control .gx-popover-control .components-base-control__field .components-button:focus {
+          -webkit-box-shadow: none !important;
+                  box-shadow: none !important; }
+        .gx-colorcontrol-control .gx-popover-control .components-base-control__field .components-button svg {
+          width: 20px;
+          height: 20px;
+          margin: auto; }
+        .gx-colorcontrol-control .gx-popover-control .components-base-control__field .components-button[type="reset"] {
+          color: black !important; }
+          .gx-colorcontrol-control .gx-popover-control .components-base-control__field .components-button[type="reset"] svg {
+            height: 12px;
+            width: 12px; }
 
-.gx-title-typography-setting .components-base-control__label {
-  width: 40%; }
+.gx-colorcontrol-gradient-popover
+.components-custom-gradient-picker__gradient-bar {
+  border-radius: 0; }
+
+.gx-colorcontrol-gradient-popover .components-custom-gradient-picker__ui-line {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+      flex-direction: column; }
+
+.gx-colorcontrol-gradient-popover
+.components-custom-gradient-picker__ui-line
+.components-base-control__field {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: justify;
+      justify-content: space-between; }
+
+.gx-colorcontrol-gradient-popover
+.components-custom-gradient-picker__ui-line
+.components-base-control__label {
+  margin: auto;
+  margin-left: 0; }
+
+.gx-colorcontrol-gradient-popover
+.components-custom-gradient-picker__ui-line
+.components-angle-picker-control {
+  width: 100%; }
+
+.gx-colorcontrol-gradient-popover
+.components-custom-gradient-picker__ui-line
+.components-angle-picker-control__angle-circle {
+  margin: auto;
+  margin-right: 0; }
+
+.gx-colorcontrol-control .gx-popover-control .components-base-control {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: justify;
+      justify-content: space-between; }
 /**
  * #.# Common SCSS
  *
@@ -545,8 +569,8 @@
   display: none; }
 
 .gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option {
-  width: 45px;
-  height: 45px;
+  width: 45.6px;
+  height: 35px;
   background-color: rgba(33, 141, 250, 0);
   border: 2px solid #dddfe1;
   border-right-width: 0;
@@ -588,65 +612,79 @@
  * Can include things like variables and mixins
  * that are used across the project.
 */
-input[type="checkbox"].gutenberg-extra-checkbox-input {
-  position: relative;
-  width: 35px;
-  height: 35px; }
+.gx-font-family-selector-button {
+  height: 45px;
+  border-radius: 5px;
+  background-color: rgba(33, 141, 250, 0);
+  border: 2px solid #dddfe1;
+  font-size: 20px;
+  color: #464a53;
+  font-weight: 500;
+  width: 100%;
+  margin-bottom: 8px; }
 
-input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before {
-  content: url("../src/components/checkbox/check-box.svg");
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-      -ms-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
-  margin: auto; }
+.gx-font-family-selector-icon {
+  margin: auto;
+  margin-right: 0;
+  -webkit-transition: .2s all ease;
+  -o-transition: .2s all ease;
+  transition: .2s all ease; }
+
+.gx-font-family-selector-button[aria-expanded="true"] .gx-font-family-selector-icon {
+  -webkit-transform: rotate(90deg);
+      -ms-transform: rotate(90deg);
+          transform: rotate(90deg); }
+
+.gx-font-family-selector-popover .components-popover__content {
+  border-radius: 5px;
+  margin-top: 2px;
+  max-height: none !important; }
+
+.gx-font-family-selector-content {
+  min-width: 370px; }
+
+.gx-font-family-selector-content input {
+  -webkit-box-shadow: none !important;
+          box-shadow: none !important; }
 /**
  * #.# Common SCSS
  *
  * Can include things like variables and mixins
  * that are used across the project.
 */
-.gx-colorcontrol-control {
-  display: -ms-flexbox;
-  display: flex; }
-
-.gx-colorcontrol-control .gx-colorcontrol-color-display span {
-  display: block;
-  width: 24px;
-  height: 24px;
-  border: 1px solid black;
-  margin: auto; }
-
-.gx-colorcontrol-control .gx-popover-control {
-  width: 100%; }
-
-.gx-colorcontrol-gradient-popover .components-custom-gradient-picker__gradient-bar {
-  border-radius: 0; }
-
-.gx-colorcontrol-gradient-popover .components-custom-gradient-picker__ui-line {
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-direction: column;
-      flex-direction: column; }
-
-.gx-colorcontrol-gradient-popover .components-custom-gradient-picker__ui-line .components-base-control__field {
-  display: -ms-flexbox;
-  display: flex;
+.gx-typography-control {
   -ms-flex-pack: justify;
-      justify-content: space-between; }
+      justify-content: space-between;
+  display: -ms-flexbox;
+  display: flex;
+  max-height: 28px;
+  margin-bottom: 5px; }
+  .gx-typography-control .gx-typography-color-display {
+    margin: auto 6px auto 0px;
+    width: 24px;
+    height: 24px; }
+    .gx-typography-control .gx-typography-color-display span {
+      width: 24px;
+      height: 24px;
+      border: 2px solid #dddfe1 !important;
+      border-radius: 5px;
+      display: block;
+      margin: auto; }
+  .gx-typography-control .gx-typography-popover {
+    width: 100%; }
+  .gx-typography-control .components-base-control__field .components-base-control__label {
+    margin-right: auto; }
+  .gx-typography-control .components-base-control__field .components-button {
+    left: 51% !important;
+    top: -2px !important; }
 
-.gx-colorcontrol-gradient-popover .components-custom-gradient-picker__ui-line .components-base-control__label {
-  margin: auto;
-  margin-left: 0; }
+.gx-title-typography-setting .components-select-control__input {
+  max-width: 61%;
+  width: 100%;
+  margin-left: 5px; }
 
-.gx-colorcontrol-gradient-popover .components-custom-gradient-picker__ui-line .components-angle-picker-control {
-  width: 100%; }
-
-.gx-colorcontrol-gradient-popover .components-custom-gradient-picker__ui-line .components-angle-picker-control__angle-circle {
-  margin: auto;
-  margin-right: 0; }
+.gx-title-typography-setting .components-base-control__label {
+  width: 40%; }
 /**
  * #.# Common SCSS
  *
@@ -654,6 +692,13 @@ input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before {
  * that are used across the project.
 */
 .gx-buttoneditor-button {
+  display: block;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  border: 1px solid black; }
+
+.gx-buttoneditor-button .gx-externalbutton-richtext {
   display: block; }
 
 .gx-externalbutton-popover {
@@ -680,7 +725,7 @@ input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before {
   grid-template-columns: 1fr 1fr; }
 
 .gx-sidebar .gx-buttonstyles-control .gx-buttonstyles-selector-control .components-base-control__field .components-radio-control__option {
-  height: 50px;
+  height: 40px;
   border: 2px solid #dddfe1;
   border-right-width: 0;
   margin: 0; }
@@ -694,7 +739,7 @@ input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before {
 .gx-buttonstyles-control .gx-buttonstyles-selector-control label {
   display: block;
   text-align: center;
-  line-height: 46px; }
+  line-height: 38px; }
 
 .gx-buttonstyles-control .gx-buttonstyles-selector-control input:checked ~ label {
   color: #fff;
@@ -956,6 +1001,16 @@ input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before {
  * Can include things like variables and mixins
  * that are used across the project.
 */
+.gx-background-popover-hide {
+  z-index: -1; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
+.gx-title-extra .block-editor-rich-text__editable [data-rich-text-placeholder]::after {
+  opacity: 1 !important; }
 /**
  * #.# Common SCSS
  *
@@ -973,6 +1028,170 @@ input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before {
 */
 .gx-fontpopover .components-popover__content {
   margin-right: -48px !important; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
+/**
+ * #.# Editor Styles
+ *
+ * CSS for just Backend enqueued after style.scss
+ * which makes it higher in priority.
+ */
+.gutenberg-extra-testimonial-block {
+  background: #fafafa;
+  border-radius: 5px;
+  border: 1px solid #cacaca; }
+
+.content-plain-text {
+  min-height: 58px !important; }
+
+.wp-block-quote {
+  margin-bottom: 0.5em; }
+
+button.gx-add-more-testimonial {
+  height: 55px;
+  width: 55px;
+  background: #939393;
+  border-radius: 50%;
+  position: relative;
+  border: none;
+  font-size: 2em;
+  color: white;
+  line-height: 1; }
+
+span.remove-testimonial {
+  cursor: pointer;
+  right: 30px;
+  position: absolute; }
+
+textarea.editor-plain-text.content-plain-text,
+textarea.editor-plain-text.title-plain-text,
+textarea.editor-plain-text.link-plain-text {
+  background: #fafafa;
+  border: 1px solid #dadada;
+  border-radius: 5px; }
+
+.gutenberg-extra__picture {
+  position: relative; }
+  .gutenberg-extra__picture a {
+    cursor: pointer; }
+  .gutenberg-extra__picture .gutenberg-extra__picture__actions {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column-reverse;
+        flex-direction: column-reverse;
+    margin-bottom: 20px; }
+
+.gutenberg-extra__picture__image {
+  display: block;
+  cursor: pointer;
+  line-height: 100px;
+  text-align: center; }
+
+.gx-testimonial-sidebar-group .components-base-control__field {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: justify;
+      justify-content: space-between;
+  -ms-flex-align: center;
+      align-items: center; }
+
+.gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+      align-items: center;
+  -ms-flex-pack: justify;
+      justify-content: space-between;
+  margin-bottom: 0 !important; }
+  .gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .components-base-control__field {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: end;
+        justify-content: flex-end;
+    -ms-flex-align: center;
+        align-items: center;
+    margin: 0; }
+    .gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .components-base-control__field .components-base-control__label {
+      display: -ms-flexbox;
+      display: flex;
+      margin: 0;
+      -ms-flex-align: center;
+          align-items: center;
+      -ms-flex-pack: end;
+          justify-content: flex-end; }
+  .gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .components-base-control__label {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+        align-items: center;
+    -ms-flex-pack: justify;
+        justify-content: space-between;
+    -ms-flex-direction: row-reverse;
+        flex-direction: row-reverse; }
+  .gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .components-base-control__label .component-color-indicator {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #e2e3e5;
+    margin-right: .3rem;
+    margin-left: 0; }
+  .gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .components-panel__body {
+    width: 100%;
+    margin-top: 0 !important; }
+  .gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .components-base-control__field {
+    display: -ms-flexbox;
+    display: flex;
+    width: 100%;
+    -ms-flex-pack: justify;
+        justify-content: space-between; }
+  .gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .components-button {
+    width: 45px;
+    height: 40px; }
+  .gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .gpw {
+    padding: 0;
+    margin-top: 3px; }
+    .gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .gpw .trigger {
+      width: 57px;
+      height: 40px;
+      color: transparent;
+      border-radius: 5px;
+      background-color: rgba(33, 141, 250, 0) !important;
+      border: 2px solid #dddfe1;
+      font-size: 0px;
+      text-align: center;
+      line-height: 22px; }
+  .gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .gpw {
+    padding: 0; }
+    .gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .gpw .trigger {
+      width: 57px;
+      height: 40px;
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-pack: center;
+          justify-content: center;
+      -ms-flex-align: center;
+          align-items: center;
+      border-radius: 5px;
+      background-image: url(../img/icons/gx-gradient.svg) !important;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 50%;
+      border: 2px solid #dddfe1;
+      text-align: center;
+      line-height: 22px; }
+      .gx-testimonial-sidebar-group .gx-background-setting-panel .gx-bg-color-parent .gpw .trigger .inner {
+        display: none !important; }
+
+.gx-testimonial-sidebar-group .gx-background-setting-panel .gx-settings-button .components-base-control__field {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: justify;
+      justify-content: space-between;
+  -ms-flex-align: center;
+      align-items: center; }
 /**
  * #.# Common SCSS
  *
@@ -1052,50 +1271,3 @@ input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before {
 
 .wp-block-button.is-style-squared .wp-block-button__link {
   border-radius: 0; }
-/**
- * #.# Common SCSS
- *
- * Can include things like variables and mixins
- * that are used across the project.
-*/
-/**
- * #.# Common SCSS
- *
- * Can include things like variables and mixins
- * that are used across the project.
-*/
-.gx-icon-settings .state .components-radio-control__option {
-  width: 100%;
-  text-align: center;
-  margin: 0; }
-  .gx-icon-settings .state .components-radio-control__option label {
-    width: 100%;
-    display: block;
-    height: 35px;
-    border: 1px solid #dde0e2;
-    line-height: 36px; }
-  .gx-icon-settings .state .components-radio-control__option .components-radio-control__input {
-    display: none; }
-    .gx-icon-settings .state .components-radio-control__option .components-radio-control__input:checked + label {
-      color: white;
-      background-color: #00ccff; }
-
-.gx-icon-settings .hover-animation select {
-  margin-left: auto;
-  margin-right: 0 !important;
-  height: 30px !important; }
-/**
- * #.# Common SCSS
- *
- * Can include things like variables and mixins
- * that are used across the project.
-*/
-.gx-icon-smiley {
-  font-size: 19pt;
-  color: black; }
-
-.library-wrapper {
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-pack: justify;
-      justify-content: space-between; }

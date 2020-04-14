@@ -1,52 +1,52 @@
 .gx-sidebar div.gx-alignmentcontrol-control .components-base-control__label{
-  margin: auto;
-  flex: 40%;
+    margin: auto;
+    flex: 40%;
 }
 
 .gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option input {
-  display: none;
+    display: none;
 }
 
 .gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option {
-  width: 45px;
-  height: 45px;
-  background-color: rgba(33,141,250,0);
-  border: 2px solid #dddfe1;
-  border-right-width: 0;
-  font-size: 20px;
-  color: #464a53;
-  font-weight: 500;
-  margin: auto;
+    width: 45.6px;
+    height: 35px;
+    background-color: rgba(33,141,250,0);
+    border: 2px solid #dddfe1;
+    border-right-width: 0;
+    font-size: 20px;
+    color: #464a53;
+    font-weight: 500;
+    margin: auto;
 }
 
 .gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option label {
-  display: block;
-  height: 100%;
+    display: block;
+    height: 100%;
 }
 
 .gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option svg {
-  display: block;
-  height: 100%;
-  margin: auto;
-  fill: #464a53;
+    display: block;
+    height: 100%;
+    margin: auto;
+    fill: #464a53;
 }
 
 .gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option:first-of-type,
 .gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option:first-of-type label {
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
 }
 
 .gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option:last-of-type,
 .gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option:last-of-type label {
-  border-right-width: 2px;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
+    border-right-width: 2px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
 .gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option input:checked ~ label {
-  box-shadow: 0 0 0 2px #007cba;
-  outline: 1px solid transparent;
-  position: relative;
-  z-index: 1;
+    box-shadow: 0 0 0 2px #007cba;
+    outline: 1px solid transparent;
+    position: relative;
+    z-index: 1;
 }

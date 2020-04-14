@@ -7,12 +7,20 @@ const { createHigherOrderComponent } = wp.compose;
 /**
  * External Dependencies
  */
-import { uniqueId } from 'lodash';
+import {
+	uniqueId,
+	isEmpty,
+	isNil,
+} from 'lodash';
 
 /**
  * General
  */
-const allowedBlocks = [ 'gutenberg-extra/block-image-box', 'gutenberg-extra/block-title-extra', 'gutenberg-extra/block-icon-extra' ];
+const allowedBlocks = [
+	'gutenberg-extra/block-image-box',
+	'gutenberg-extra/block-title-extra',
+	'gutenberg-extra/testimonials-slider-block'
+];
 
 /**
  * Filters registered block settings, extending attributes with settings
@@ -42,12 +50,14 @@ function addAttributes( settings ) {
 const withAttributes = createHigherOrderComponent(
 	BlockEdit => props => {
 		const { name: blockName } = props;
-
+		
 		if ( allowedBlocks.includes( blockName ) ) {
 			props.attributes.uniqueID = props.attributes.uniqueID || '';
 
 			if ( props.attributes.uniqueID === '' ) {
-				const newID = uniqueId(blockName.replace('gutenberg-extra/','') + '-');
+				let newID = uniqueId(blockName.replace('gutenberg-extra/','') + '-');
+				if ( !isEmpty(document.getElementsByClassName(newID)) || !isNil(document.getElementById(newID)) )
+					newID = uniqueId(blockName.replace('gutenberg-extra/','') + '-');
 				props.attributes.uniqueID = newID;
 			}
 		}

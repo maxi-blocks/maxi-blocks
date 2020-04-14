@@ -390,41 +390,43 @@ class BackgroundControl extends Component {
                 // Image
                 if (!isNil(option.imageOptions.mediaURL)) {
                     if (!isNil(response.general['background-image']))
-                        response.general['background-image'] = `${response.general['background-image']}, url('${option.imageOptions.mediaURL}')`;
+                        response.general['background-image'] = `${response.general['background-image']},url('${option.imageOptions.mediaURL}')`;
                     else
                         response.general['background-image'] = `url('${option.imageOptions.mediaURL}')`;
+                    if (!isEmpty(value.colorOptions.gradient))
+                        response.general['background-image'] = `${response.general['background-image']}, ${value.colorOptions.gradient}`;
                 }
                 // Size
                 if (option.sizeOptions.size != 'custom') {
                     if (!isNil(response.general['background-size']))
-                        response.general['background-size'] = `${response.general['background-size']}, ${option.sizeOptions.size}`;
+                        response.general['background-size'] = `${response.general['background-size']},${option.sizeOptions.size}`;
                     else
                         response.general['background-size'] = option.sizeOptions.size;
                 }
                 else {
                     if (!isNil(response.general['background-size']))
-                        response.general['background-size'] = `${response.general['background-size']}, ${option.sizeOptions.width + option.sizeOptions.widthUnit} ${option.sizeOptions.height + option.sizeOptions.heightUnit}`;
+                        response.general['background-size'] = `${response.general['background-size']},${option.sizeOptions.width + option.sizeOptions.widthUnit} ${option.sizeOptions.height + option.sizeOptions.heightUnit}`;
                     else
                         response.general['background-size'] = `${option.sizeOptions.width + option.sizeOptions.widthUnit} ${option.sizeOptions.height + option.sizeOptions.heightUnit}`;
                 }
                 // Repeat
                 if (option.repeat) {
                     if (!isNil(response.general['background-repeat']))
-                        response.general['background-repeat'] = `${response.general['background-repeat']}, ${option.repeat}`;
+                        response.general['background-repeat'] = `${response.general['background-repeat']},${option.repeat}`;
                     else
                         response.general['background-repeat'] = option.repeat;
                 }
                 // Position
                 if (option.positionOptions.position != 'custom') {
                     if (!isNil(response.general['background-position']))
-                        response.general['background-position'] = `${response.general['background-position']}, ${option.positionOptions.position}`;
+                        response.general['background-position'] = `${response.general['background-position']},${option.positionOptions.position}`;
                     else
                         response.general['background-position'] = option.positionOptions.position;
                 }
                 else {
                     if (!isNil(response.general['background-position']))
                         response.general['background-position'] = `
-                            ${response.general['background-position']}, 
+                            ${response.general['background-position']},
                             ${option.positionOptions.width + option.positionOptions.widthUnit} ${option.positionOptions.height + option.positionOptions.heightUnit}`;
                     else
                         response.general['background-position'] = `${option.positionOptions.width + option.positionOptions.widthUnit} ${option.positionOptions.height + option.positionOptions.heightUnit}`;
@@ -432,21 +434,21 @@ class BackgroundControl extends Component {
                 // Origin
                 if (option.origin) {
                     if (!isNil(response.general['background-origin']))
-                        response.general['background-origin'] = `${response.general['background-origin']}, ${option.origin}`;
+                        response.general['background-origin'] = `${response.general['background-origin']},${option.origin}`;
                     else
                         response.general['background-origin'] = option.origin;
                 }
                 // Clip
                 if (option.clip) {
                     if (!isNil(response.general['background-clip']))
-                        response.general['background-clip'] = `${response.general['background-clip']}, ${option.clip}`;
+                        response.general['background-clip'] = `${response.general['background-clip']},${option.clip}`;
                     else
                         response.general['background-clip'] = option.clip;
                 }
                 // Attachment
                 if (option.attachment) {
                     if (!isNil(response.general['background-attachment']))
-                        response.general['background-attachment'] = `${response.general['background-attachment']}, ${option.attachment}`;
+                        response.general['background-attachment'] = `${response.general['background-attachment']},${option.attachment}`;
                     else
                         response.general['background-attachment'] = option.attachment;
                 }

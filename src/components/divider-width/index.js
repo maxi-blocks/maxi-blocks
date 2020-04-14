@@ -12,7 +12,7 @@ export const dividerWidthAttributes = {
   },
   dividerWidth: {
     type: "number",
-    default: 100
+    default: 60
   }
 };
 

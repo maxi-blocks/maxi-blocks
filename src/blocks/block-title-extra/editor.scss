@@ -3,3 +3,6 @@
 // .gx-title-extra {
 //   font-family: 'Roboto', sans-serif;
 // }
+.gx-title-extra .block-editor-rich-text__editable [data-rich-text-placeholder]::after{
+  opacity: 1 !important;
+}

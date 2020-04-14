@@ -1,0 +1,46 @@
+.gx-typography-control {
+  justify-content: space-between;
+  display: flex;
+  max-height: 28px;
+  margin-bottom: 5px;
+  
+  .gx-typography-color-display {
+    margin: auto 6px auto 0px;
+    width: 24px;
+    height: 24px;
+
+    span {
+      width: 24px;
+      height: 24px;
+      border: 2px solid #dddfe1 !important;
+      border-radius: 5px;
+      display: block;
+      margin: auto;
+    }
+  }
+
+  .gx-typography-popover {
+    width: 100%;
+  }
+
+  .components-base-control__field {
+    .components-base-control__label {
+      margin-right: auto;
+    }
+
+    .components-button {
+      left: 51% !important;
+      top: -2px !important;
+    }
+  }
+}
+
+.gx-title-typography-setting .components-select-control__input {
+  max-width: 61%;
+  width: 100%;
+  margin-left: 5px;
+}
+
+.gx-title-typography-setting .components-base-control__label {
+  width: 40%;
+}

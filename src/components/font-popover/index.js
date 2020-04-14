@@ -84,7 +84,7 @@ export default class FontPopover extends Component {
                         className={ 'gx-fontdropdown' }
                         renderToggle={({ isOpen, onToggle }) => (
                             <Button
-                                isSecondary
+                                isSecundary
                                 onClick={onToggle}
                                 aria-expanded={isOpen}
                             >

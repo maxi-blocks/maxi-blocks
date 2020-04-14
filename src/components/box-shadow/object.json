@@ -1,9 +1,9 @@
 {
-  "label": "Box Shadow",
-  "shadowColor": "",
-  "shadowGradient": "",
-  "shadowHorizontal": "0",
-  "shadowVertical": "0",
-  "shadowBlur": "0",
-  "shadowSpread": "0"
+    "label": "Box Shadow",
+    "shadowColor": "",
+    "shadowGradient": "",
+    "shadowHorizontal": "0",
+    "shadowVertical": "0",
+    "shadowBlur": "0",
+    "shadowSpread": "0"
 }

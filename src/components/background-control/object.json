@@ -1,0 +1,35 @@
+{
+    "label": "Background",
+    "backgroundOptions": [
+        {
+            "imageOptions": {
+                "mediaID": "",
+                "mediaURL": ""
+            },
+            "sizeOptions": {
+                "size": "auto",
+                "widthUnit": "%",
+                "width": 100,
+                "heightUnit": "%",
+                "height": 100
+            },
+            "repeat": "repeat",
+            "positionOptions": {
+                "position": "center center",
+                "widthUnit": "%",
+                "width": 0,
+                "heightUnit": "%",
+                "height": 0
+            },
+            "origin": "padding-box",
+            "clip": "border-box",
+            "attachment": "scroll"
+        }
+    ],
+    "colorOptions": {
+        "color": "",
+        "gradient": "",
+        "gradientAboveBackground": false
+    },
+    "blendMode": "normal"
+}

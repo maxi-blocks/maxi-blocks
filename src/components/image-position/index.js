@@ -13,6 +13,7 @@ export const ImagePosition = (props) => {
         label = __("Image Position", 'gutenberg-extra'),
         alternativeClassName = "gx-image-position",
         value = props.attributes.imagePosition,
+        onChange = undefined,
         options = [
             { label: __('Before', 'gutenbgerg-extra'), value: 'top' },
             { label: __('After', 'gutenbgerg-extra'), value: 'bottom' },
@@ -22,13 +23,22 @@ export const ImagePosition = (props) => {
         setAttributes
     } = props;
 
+    const onChangeValue = (target, value, callback) => {
+        if (typeof callback != 'undefined' ) {
+            callback(value);
+        }
+        else {
+            setAttributes({[target]: value})
+        }
+    }
+
     return (
         <SelectControl
             label={label}
             className={alternativeClassName}
             value={value}
             options={options}
-            onChange={(value) => setAttributes({ value })}
+            onChange={value => onChangeValue( 'imagePosition', value, onChange )}
         />
     )
 }

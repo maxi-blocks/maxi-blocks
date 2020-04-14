@@ -1,6 +1,14 @@
+/**
+ * Wordpress dependencies
+ */
 const { __ } = wp.i18n;
-const { ToggleControl, TextareaControl } = wp.components;
 const { Fragment } = wp.element;
+const { TextareaControl } = wp.components;
+
+/**
+ * External dependencies
+ */
+import Checkbox from '../checkbox/index';
 
 export const linkOptionsAttributes = {
     linkOptions: {
@@ -12,15 +20,17 @@ export const linkOptionsAttributes = {
 export const LinkOptions = (props) => {
     const {
         label,
-        value = '',
+        value,
         onChangeLink,
         linkOptions,
         onChangeOptions,
     } = props;
 
+    const values = JSON.parse(linkOptions);
+
     const onChangeValue = (target, value) => {
-        linkOptions[target] = value;
-        onChangeOptions(JSON.stringify(linkOptions))
+        values[target] = value;
+        onChangeOptions(JSON.stringify(values));
     }
 
     return (
@@ -30,41 +40,71 @@ export const LinkOptions = (props) => {
                 value={value}
                 onChange={onChangeLink}
             />
-            <ToggleControl
+            <Checkbox
                 label={__('Open in New Window', 'gutenberg-extra')}
                 id='gx-new-window'
-                checked={linkOptions.opensInNewWindow}
+                checked={values.opensInNewWindow}
                 onChange={(newValue) => onChangeValue('opensInNewWindow', newValue)}
             />
-            <ToggleControl
+            <Checkbox
                 label={__('Add "nofollow" attribute', 'gutenberg-extra')}
-                checked={linkOptions.addNofollow}
+                checked={values.addNofollow}
                 onChange={( newValue) => onChangeValue ( 'addNofollow', newValue )}
             />
 
-            <ToggleControl
+            <Checkbox
                 label={__('Add "noopener" attribute', 'gutenberg-extra')}
-                checked={linkOptions.addNoopener}
+                checked={values.addNoopener}
                 onChange={( newValue) => onChangeValue ( 'addNoopener', newValue )}
             />
 
-            <ToggleControl
+            <Checkbox
                 label={__('Add "noreferrer" attribute', 'gutenberg-extra')}
-                checked={linkOptions.addNoreferrer}
+                checked={values.addNoreferrer}
                 onChange={( newValue) => onChangeValue ( 'addNoreferrer', newValue )}
             />
 
-            <ToggleControl
+            <Checkbox
                 label={__('Add "sponsored" attribute', 'gutenberg-extra')}
-                checked={linkOptions.addSponsored}
+                checked={values.addSponsored}
                 onChange={( newValue) => onChangeValue ( 'addSponsored', newValue )}
             />
 
-            <ToggleControl
+            <Checkbox
                 label={__('Add "ugc" attribute', 'gutenberg-extra')}
-                checked={linkOptions.addUgc}
+                checked={values.addUgc}
                 onChange={( newValue) => onChangeValue ( 'addUgc', newValue )}
             />
         </Fragment>
+    )
+}
+
+export const Link = ({
+    value,
+    linkOptions,
+    ...props
+}) => {
+
+    const values = JSON.parse(linkOptions);
+
+    const getRel = () => {
+        let response = '';
+        values.addNofollow ? response += 'nofollow ' : null;
+        values.addNoopener ? response += 'noopener ' : null;
+        values.addNoreferrer ? response += 'noreferrer ' : null;
+        values.addSponsored ? response += 'sponsored ' : null;
+        values.addUgc ? response += 'ugc ' : null;
+
+        return response.trim();
+    }
+
+    return(
+        <a
+            href={value}
+            target={values.opensInNewWindow ? '_blank' : ''}
+            rel={getRel()}
+            {...props}
+        >
+        </a>
     )
 }

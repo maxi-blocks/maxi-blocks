@@ -1,11 +1,11 @@
 {
-  "url": "",
-  "dimension": {
-      "width": "",
-      "height": ""
-  },
-  "focalPoint": {
-      "x": "",
-      "y": ""
-  }
+    "url": "",
+    "dimension": {
+        "width": "",
+        "height": ""
+    },
+    "focalPoint": {
+        "x": "",
+        "y": ""
+    }
 }

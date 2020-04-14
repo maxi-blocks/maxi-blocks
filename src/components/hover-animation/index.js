@@ -18,6 +18,7 @@ export const HoverAnimation = ( props ) => {
         hoverAnimationLabel = __("Hover Animation", 'gutenberg-extra' ),
         hoverAnimationClassName = "gx-hover-animation",
         hoverAnimation = props.attributes.hoverAnimation,
+        onChangeHoverAnimation = undefined,
         hoverAnimationOptions = [
             { label: __('None', 'gutenberg-extra'), value: 'none' },
             { label: __('Other', 'gutenberg-extra'), value: 'other' },
@@ -25,6 +26,7 @@ export const HoverAnimation = ( props ) => {
         animationDurationLabel = __("Animation Duration", 'gutenberg-extra'),
         animationDurationClassName = "gx-hover-animation-duration",
         hoverAnimationDuration = props.attributes.hoverAnimationDuration,
+        onChangeHoverAnimationDuration = undefined,
         animationDurationOptions = [
             { label: __('Shorter', 'gutenberg-extra'), value: 'shorter' },
             { label: __('Short', 'gutenberg-extra'), value: 'short' },
@@ -35,6 +37,15 @@ export const HoverAnimation = ( props ) => {
         setAttributes
     } = props;
 
+    const onChangeValue = (target, value, callback) => {
+        if (typeof callback != 'undefined' ) {
+            callback(value);
+        }
+        else {
+            setAttributes({[target]: value})
+        }
+    }
+
     return (
         <Fragment>
             <SelectControl
@@ -42,14 +53,14 @@ export const HoverAnimation = ( props ) => {
                 className={hoverAnimationClassName}
                 value={hoverAnimation}
                 options={hoverAnimationOptions}
-                onChange={(value) => setAttributes({ hoverAnimation: value })}
+                onChange={value => onChangeValue( 'hoverAnimation', value, onChangeHoverAnimation)}
             />
             <SelectControl
                 label={animationDurationLabel}
                 className={animationDurationClassName}
                 value={hoverAnimationDuration}
                 options={animationDurationOptions}
-                onChange={(value) => setAttributes({ hoverAnimationDuration: value })}
+                onChange={value => onChangeValue( 'hoverAnimationDuration', value, onChangeHoverAnimationDuration)}
             />
         </Fragment>
     )

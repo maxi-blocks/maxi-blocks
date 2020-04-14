@@ -39,7 +39,6 @@ import {
   setTitleStyles,
   setSubTitleStyles,
   setDescriptionStyles,
-  setButtonStyles,
   setBlockStyles,
 } from "../block-title-extra/data";
 
@@ -142,6 +141,9 @@ const edit = (props) => {
       extraStyles,
       dividerAlignment,
       isMultiple,
+      FontTitleOptions,
+      FontSubtitleOptions,
+      FontDescriptionOptions,
       padding,
       margin,
       isHidden,
@@ -160,7 +162,7 @@ const edit = (props) => {
   const linkOptions = JSON.parse(props.attributes.linkOptions);
   const linkStyles = setLinkStyles(props);
   const descriptionStyles = setDescriptionStyles(props);
-  const buttonStyles = setButtonStyles(props);
+  // const buttonStyles = setButtonStyles(props);
   const blockStyles = setBlockStyles(props);
   const onSelectImage = (media) => {
     setAttributes({ mediaURL: media.url, mediaID: media.id });
@@ -179,16 +181,16 @@ const edit = (props) => {
     backgroundColor: subtitleBackgroundColor,
     width: "max-content",
     padding: "5px",
-    fontSize: 'unset',
+    fontSize: "unset",
   };
 
   const titleStyles = {
     display: hideTitle ? "none" : undefined,
     textAlign: titleTextAlign,
     fontWeight: "400",
-    margin: '5px auto 30px',
+    margin: "5px auto 17px",
     color: titleColor,
-    fontSize: 'inherit',
+    fontSize: "inherit",
     minWidth:
       contentDirection == "row" || contentDirection == "row-reverse"
         ? "290px"
@@ -204,8 +206,8 @@ const edit = (props) => {
     color: descriptionColor,
     marginTop: contentDirection == "row" ? "48px" : "20px",
     marginLeft: contentDirection == "row" ? "20px" : undefined,
-    textTransform: 'none',
-    letterSpacing: 'initial'
+    textTransform: "none",
+    letterSpacing: "initial",
   };
 
   const handleClick = (e) => {
@@ -218,7 +220,6 @@ const edit = (props) => {
       e.target.previousSibling.style.display = "";
     }
   };
-
 
   const gradients = "";
   const disableCustomGradients = false;
@@ -339,30 +340,27 @@ const edit = (props) => {
                 title={__("Colour settings", "gutenberg-extra")}
               >
                 <Typography
-                  fontOptions={props.attributes.fontOptions}
+                  fontOptions={FontTitleOptions}
                   onChange={(value) => {
-                    setAttributes({ fontOptions: value });
+                    setAttributes({ FontTitleOptions: value });
                   }}
-                  label={__("Title", "gutenberg-extra")}
-                  className="components-panel__body editor-panel-color-settings block-editor-panel-color-settings is-opened typography"
+                  className="components-panel__body editor-panel-color-settings block-editor-panel-color-settings is-opened typography gx-typography-control"
                   target="gx-title-extra-title"
                 />
                 <Typography
-                  fontOptions={props.attributes.fontOptions}
+                  fontOptions={FontSubtitleOptions}
                   onChange={(value) => {
-                    setAttributes({ fontOptions: value });
+                    setAttributes({ FontSubtitleOptions: value });
                   }}
-                  label={__("Subtitle", "gutenberg-extra")}
-                  className="components-panel__body editor-panel-color-settings block-editor-panel-color-settings is-opened typography"
+                  className="components-panel__body editor-panel-color-settings block-editor-panel-color-settings is-opened typography gx-typography-control"
                   target="gx-title-extra-subtitle"
                 />
                 <Typography
-                  fontOptions={props.attributes.fontOptions}
+                  fontOptions={FontDescriptionOptions}
                   onChange={(value) => {
-                    setAttributes({ fontOptions: value });
+                    setAttributes({ FontDescriptionOptions: value });
                   }}
-                  label={__("Description", "gutenberg-extra")}
-                  className="components-panel__body editor-panel-color-settings block-editor-panel-color-settings is-opened typography"
+                  className="components-panel__body editor-panel-color-settings block-editor-panel-color-settings is-opened typography gx-typography-control"
                   target="gx-title-extra-text"
                 />
                 <SubtitleBackgroundColor {...props} />
@@ -384,16 +382,10 @@ const edit = (props) => {
                 <Line />
                 <AlignDivider {...props} buildDivider={buildDivider} />
                 <DividerPosition {...props} />
-                <DividerColor {...props} buildDivider={buildDivider} />
                 <Line />
-                <DividerWidth
-                  {...props}
-                  buildDivider={buildDivider}
-                />
-                <DividerHeight
-                  {...props}
-                  buildDivider={buildDivider}
-                />
+                <DividerColor {...props} buildDivider={buildDivider} />
+                <DividerWidth {...props} buildDivider={buildDivider} />
+                <DividerHeight {...props} buildDivider={buildDivider} />
               </PanelBody>
             </AccordionItemPanel>
           </AccordionItem>
@@ -425,38 +417,6 @@ const edit = (props) => {
                   // onColorChange={}
                   // disableGradient
                 />
-                {/* <PanelColorSettings
-                  title={__("Background Colour", "gutenberg-extra")}
-                  colorSettings={[
-                    {
-                      onChange: (value) => {
-                        if (!value) {
-                          props.setAttributes({ backgroundColor: undefined });
-                          props.setAttributes({ backgroundGradient: [] });
-                          return;
-                        }
-                        props.setAttributes({ backgroundColor: value });
-                        props.setAttributes({ backgroundImage: null });
-                      },
-                      label: __("Background Colour", "gutenberg-extra"),
-                      value: backgroundColor,
-                    },
-                  ]}
-                /> */}
-                {/* <GradientPickerPopover
-                    palette={defaultPalette}
-                    onPaletteChange={(value) => {
-                      props.setAttributes({ defaultPalette: value });
-
-                      let colors = [];
-                      Object.valuesvalue.map((key) => {
-                        const { color } = key;
-                        return colors.push(color);
-                      });
-
-                      props.setAttributes({ backgroundGradient: colors });
-                    }}
-                  /> */}
               </BaseControl>
               <BaseControl className={"gx-settings-button background-image"}>
                 <BaseControl.VisualLabel>
@@ -482,7 +442,8 @@ const edit = (props) => {
                     render={({ open }) => (
                       <Button
                         onClick={open}
-                        className={"dashicons dashicons-format-image"}
+                        className={"image-upload"}
+                        icon={iconsSettings.advanced}
                       ></Button>
                     )}
                     onSelect={(file) => {
@@ -614,10 +575,7 @@ const edit = (props) => {
           <RichText
             tagName={titleLevel}
             style={titleStyles}
-            placeholder={__(
-              "Empowered by innovation",
-              "gutenberg-extra"
-            )}
+            placeholder={__("Empowered by innovation", "gutenberg-extra")}
             value={title}
             onChange={(value) => setAttributes({ title: value })}
             className="gx-title-extra-title"

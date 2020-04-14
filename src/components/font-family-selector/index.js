@@ -19,7 +19,6 @@ const {
 } = wp.data;
 
 
-
 /**
  * External dependencies
  */

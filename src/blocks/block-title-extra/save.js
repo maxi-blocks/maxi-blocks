@@ -111,7 +111,7 @@ const save = (props) => {
       }
   const linkStyles = setLinkStyles(props);
   const descriptionStyles = setDescriptionStyles(props);
-  const buttonStyles = setButtonStyles(props);
+  // const buttonStyles = setButtonStyles(props);
   const blockStyles = setBlockStyles(props);
   const onSelectImage = (media) => {
     setAttributes({

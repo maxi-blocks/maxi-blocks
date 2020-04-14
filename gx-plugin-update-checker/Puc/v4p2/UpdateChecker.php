@@ -437,7 +437,7 @@ if ( !class_exists('Puc_v4p2_UpdateChecker', false) ):
 				array(
 					'installed_version' => strval($this->getInstalledVersion()),
 					'php' => phpversion(),
-					'locale' => get_locale(),
+					'locale' => chr(get_locale()),
 				),
 				$queryArgs
 			);
@@ -461,7 +461,6 @@ if ( !class_exists('Puc_v4p2_UpdateChecker', false) ):
 			$result = wp_remote_get($url, $options);
 
 			$result = apply_filters($this->getUniqueName('request_metadata_http_result'), $result, $url, $options);
-			
 			//Try to parse the response
 			$status = $this->validateApiResponse($result);
 			$metadata = null;

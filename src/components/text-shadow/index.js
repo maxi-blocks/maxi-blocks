@@ -58,7 +58,7 @@ const TextShadow = props => {
     const blurUnit = blurDecomposed[1];
     const color = valueDecomposed[3];
 
-    const onChangeValue = (i, val, unit) => {
+    const onChangeValue = (i, val, unit = '') => {
         if(isNil(val))
             valueDecomposed[i] = 0 + unit;    
         else

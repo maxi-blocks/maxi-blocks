@@ -51,7 +51,7 @@ const attributes = {
     ...backgroundControlAttributes,
     boxShadow: {
         type: 'string',
-        default: '{"label":"Box Shadow","shadowColor": "", "shadowGradient": "", "shadowHorizontal": "0", "shadowVertical": "0", "shadowBlur": "0", "shadowSpread": "0"}'
+        default: '{"label":"Box Shadow","shadowColor": "", "shadowHorizontal": "0", "shadowVertical": "0", "shadowBlur": "0", "shadowSpread": "0"}'
     },
     ...borderAttributes,
     ...sizeControlAttributes,

@@ -17,14 +17,25 @@ import DefaultTypography from '../../../extensions/defaults/typography';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
+import { 
+    isNil,
+    isEmpty
+} from 'lodash';
 
 /**
  * Block
  */
 export default class FontLevelTest extends Component {
     state = {
-        target: this.props.target ? this.props.target : ''
+        target: this.props.target ? this.props.target : '',
+        lastLevel: this.props.value,
+        p: {},
+        h1: {},
+        h2: {},
+        h3: {},
+        h4: {},
+        h5: {},
+        h6: {}
     }
 
     /**
@@ -87,6 +98,10 @@ export default class FontLevelTest extends Component {
                 disableH5 = false,
                 disableH6 = false,
             } = this.props;
+
+            const {
+                lastLevel
+            } = this.state;
         
             let classes = classnames('gx-title-level');
             if(className)
@@ -111,8 +126,11 @@ export default class FontLevelTest extends Component {
                 return response;
             }
             const onChangeValue = value => {
+                saveOldTypography(value);
                 let fontOptResponse = {};
-                if(!isNil(fontOptions)) {
+                if(!isEmpty(this.state[value]))
+                    fontOptResponse = this.state[value];
+                else if(!isNil(fontOptions)) {
                     const devices = ['desktop', 'tablet', 'mobile'];
                     fontOptResponse = typeof fontOptions === 'object' ? fontOptions : JSON.parse(fontOptions);
                     fontOptResponse.general.color = DefaultTypography[value].color;
@@ -130,6 +148,13 @@ export default class FontLevelTest extends Component {
                     })
                 }
                 this.saveAndSend(value, fontOptResponse)
+            }
+
+            const saveOldTypography = value => {
+                this.setState({
+                    [lastLevel]: typeof fontOptions === 'object' ? fontOptions : JSON.parse(fontOptions),
+                    lastLevel: value
+                })
             }
         
             return (

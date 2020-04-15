@@ -44,6 +44,7 @@ import BlockBorderTest from '../../components/block-border/test';
 import TypographyTest from '../../components/typography/test';
 import BackgroundControlTest from '../../components/background-control/test';
 import AccordionControl from '../../components/accordion-control';
+import FontLevelTest from '../../components/font-level/test';
 
 /**
  * Content
@@ -98,10 +99,23 @@ const edit = props => {
                 <ImagePosition
                     {...props}
                 />
-                <FontLevel
+                {/* <FontLevel
                     label={__('Title level', 'gutenberg-extra')}
                     value={titleLevel}
                     onChange={value => setAttributes({ titleLevel: value })}
+                /> */}
+                <FontLevelTest
+                    label={__('Title level', 'gutenberg-extra')}
+                    value={titleLevel}
+                    onChange={
+                        (level, fontOptions) => 
+                            setAttributes({ 
+                                titleLevel: level,
+                                titleFontOptions: fontOptions
+                            })
+                    }
+                    fontOptions={titleFontOptions}
+                    target='gx-image-box-title'
                 />
             </PanelBody>
             <PanelBody

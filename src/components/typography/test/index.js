@@ -23,6 +23,7 @@ import FontFamilySelector from '../../font-family-selector';
 import { PopoverControl } from '../../popover';
 import ColorControl from '../../color-control';
 import TextShadowControl from '../../text-shadow';
+import AlignmentControl from '../../alignment-control';
 
 /**
  * Styles
@@ -185,6 +186,9 @@ export default class TypographyTest extends Component {
             if (target == 'text-shadow') {
                 value.general['text-shadow'] = newValue;
             }
+            if (target == 'text-align') {
+                value.general['text-align'] = newValue;
+            }
             else {
                 value[device][getKey(value[device], target)] = newValue;
             }
@@ -225,6 +229,10 @@ export default class TypographyTest extends Component {
                                         value={value.general['text-shadow']}
                                         onChange={val => onChangeValue(val, 'text-shadow')}
                                         defaultColor={defaultColor}
+                                    />
+                                    <AlignmentControl 
+                                        value={value.general['text-align']}
+                                        onChange={val => onChangeValue(val, 'text-align')}
                                     />
                                     <DeviceSelector 
                                         device={device}

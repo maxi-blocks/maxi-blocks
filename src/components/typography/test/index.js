@@ -17,7 +17,7 @@ const {
 } = wp.data;
 
 /**
- * External dependencies
+ * Internal dependencies
  */
 import FontFamilySelector from '../../font-family-selector';
 import { PopoverControl } from '../../popover';
@@ -25,9 +25,12 @@ import ColorControl from '../../color-control';
 import TextShadowControl from '../../text-shadow';
 
 /**
- * Internal dependencies
+ * Styles
  */
 import '../editor.scss';
+
+// TESTING
+import DeviceSelector from '../../device-selector/';
 
 /**
  * Block
@@ -222,6 +225,10 @@ export default class TypographyTest extends Component {
                                         value={value.general['text-shadow']}
                                         onChange={val => onChangeValue(val, 'text-shadow')}
                                         defaultColor={defaultColor}
+                                    />
+                                    <DeviceSelector 
+                                        device={device}
+                                        onChange={onSelect}
                                     />
                                     <RadioControl
                                         className={'gx-device-control'}

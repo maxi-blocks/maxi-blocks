@@ -176,21 +176,21 @@ export default class TypographyTest extends Component {
             if (typeof newValue === 'undefined') {
                 newValue = '';
             }
-            if (target == 'font') {
-                value.font = newValue.value;
-                value.options = newValue.files;
-            }
-            if (target == 'color') {
-                value.general.color = newValue;
-            }
-            if (target == 'text-shadow') {
-                value.general['text-shadow'] = newValue;
-            }
-            if (target == 'text-align') {
-                value.general['text-align'] = newValue;
-            }
-            else {
-                value[device][getKey(value[device], target)] = newValue;
+            switch(target){
+                case 'font':
+                    value.font = newValue.value;
+                    value.options = newValue.files;
+                    break;
+                case 'color':
+                    value.general.color = newValue;
+                    break;
+                case 'text-shadow':
+                    value.general['text-shadow'] = newValue;
+                    break;
+                case 'text-align':
+                    value.general['text-align'] = newValue;
+                default:
+                    value[device][getKey(value[device], target)] = newValue;
             }
             this.saveAndSend(value);
         }

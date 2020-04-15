@@ -1,9 +1,34 @@
 {
     "label": "Background",
-    "backgroundOptions": [],
+    "backgroundOptions": [
+      {
+        "imageOptions": {
+          "mediaID": "",
+          "mediaURL": ""
+        },
+        "sizeOptions": {
+          "size": "cover",
+          "widthUnit": "%",
+          "width": 100,
+          "heightUnit": "%",
+          "height": 100
+        },
+        "repeat": "no-repeat",
+        "positionOptions": {
+          "position": "center center",
+          "widthUnit": "%",
+          "width": 0,
+          "heightUnit": "%",
+          "height": 0
+        },
+        "origin": "padding-box",
+        "clip": "border-box",
+        "attachment": "scroll"
+      }
+    ],
     "colorOptions": {
-        "color": "",
-        "gradient": "",
-        "gradientAboveBackground": false
+      "color": "",
+      "gradient": "",
+      "gradientAboveBackground": false
     }
-}
+  }

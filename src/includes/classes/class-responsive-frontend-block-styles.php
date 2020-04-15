@@ -112,10 +112,11 @@ class ResponsiveFrontendStyles {
 
         foreach ( $meta as $target => $prop ) {
             $target = str_replace( '__$', ' .', $target );
+            $important = is_admin() ? ' !important' : '';
             if ( isset($prop['desktop']) && !empty ($prop['desktop']) || ! isset($prop['font']) ) {
                 $response .= ".{$target}{";
                     if ( isset($prop['font']) )
-                        $response .= "font-family: {$prop['font']};";
+                        $response .= "font-family: {$prop['font']}{$important};";
                     if (isset($prop['desktop']) && !empty ($prop['desktop']))
                         $response .= self::getStyles($prop['desktop']);
                 $response .= '}';

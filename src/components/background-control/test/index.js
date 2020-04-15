@@ -44,7 +44,7 @@ import './editor.scss'
 export const backgroundControlAttributesTest = {
     backgroundOptionsTest: {
         type: 'string',
-        default: '{"label":"Background","backgroundOptions":[{"imageOptions":{"mediaID":"","mediaURL":""},"sizeOptions":{"size":"auto","widthUnit":"%","width":100,"heightUnit":"%","height":100},"repeat":"repeat","positionOptions":{"position":"center center","widthUnit":"%","width":0,"heightUnit":"%","height":0},"origin":"padding-box","clip":"border-box","attachment":"scroll"}],"colorOptions":{"color":"","gradient":"","gradientAboveBackground":false},"blendMode":"normal"}'
+        default: '{"label":"Background","backgroundOptions":[{"imageOptions":{"mediaID":"","mediaURL":""},"sizeOptions":{"size":"cover","widthUnit":"%","width":100,"heightUnit":"%","height":100},"repeat":"no-repeat","positionOptions":{"position":"center center","widthUnit":"%","width":0,"heightUnit":"%","height":0},"origin":"padding-box","clip":"border-box","attachment":"scroll"}],"colorOptions":{"color":"","gradient":"","gradientAboveBackground":false},"blendMode":"normal"}'
     }
 }
 
@@ -81,13 +81,13 @@ export default class BackgroundControlTest extends Component {
                         mediaURL: ""
                     },
                     sizeOptions: {
-                        size: "auto",
+                        size: "cover",
                         widthUnit: "%",
                         width: 100,
                         heightUnit: "%",
                         height: 100
                     },
-                    repeat: "repeat",
+                    repeat: "no-repeat",
                     positionOptions: {
                         position: "center center",
                         widthUnit: "%",
@@ -161,7 +161,7 @@ export default class BackgroundControlTest extends Component {
             }
 
             value.backgroundOptions.map(option => {
-                if (isNil(option))
+                if (isNil(option) || isEmpty(option.imageOptions.mediaURL))
                     return;
                 // Image
                 if (!isNil(option.imageOptions.mediaURL)) {

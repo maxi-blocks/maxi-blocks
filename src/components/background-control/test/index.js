@@ -29,6 +29,7 @@ import AccordionControl from '../../accordion-control/';
 import {
     isEmpty,
     isNil,
+    isNumber,
     pullAt
 } from 'lodash';
 
@@ -273,9 +274,10 @@ export default class BackgroundControlTest extends Component {
                                         <ImageControl
                                             mediaID={value.backgroundOptions[i].imageOptions.mediaID}
                                             onSelectImage={imageData => {
+                                                if(!isNumber(value.backgroundOptions[i].imageOptions.mediaID))
+                                                    onAddBackground()
                                                 value.backgroundOptions[i].imageOptions.mediaID = imageData.id;
                                                 value.backgroundOptions[i].imageOptions.mediaURL = imageData.url;
-                                                onAddBackground();
                                                 saveAndSend();
                                             }}
                                             placeholder={value.backgroundOptions.length - 1 === 0 ? __('Set image', 'gutenberg-extra') : __('Add Another Image', 'gutenberg-extra')}
@@ -317,6 +319,7 @@ export default class BackgroundControlTest extends Component {
                 {
                     isOpen &&
                     <AccordionControl
+                        isSecondary
                         allowMultipleExpanded={false}
                         preExpanded={['gx-background-control-image-tab']}
                         items={[

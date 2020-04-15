@@ -1,12 +1,13 @@
 /**
  * WordPress dependencies
  */
-const { __ } = wp.i18n;
 const { Icon } = wp.components;
+const { Component } = wp.element;
 
 /**
  * External dependencies
  */
+import classnames from 'classnames';
 import {
     Accordion,
     AccordionItem,
@@ -16,57 +17,83 @@ import {
 } from 'react-accessible-accordion';
 
 /**
+ * Styles
+ */
+import './editor.scss';
+
+/**
  * Block
  */
-const AccordionControl = props => {
-    const {
-        className,
-        allowMultipleExpanded = true,
-        allowZeroExpanded = true,
-        preExpanded = [],
-        items,
-        isPrimary = false,
-        isSecondary = false
-    } = props;
+export default class AccordionControl extends Component {
+    state = {
+        currentOpen: this.props.preExpanded ? this.props.preExpanded : []
+    }
 
-    const classes = `gx-style-tab-setting gx-accordion ${className ? className : ''} ${isPrimary ? 'is-primary' : ''} ${isSecondary ? 'is-secondary' : ''}`;
+    render() {
+        const {
+            className,
+            allowMultipleExpanded = true,
+            allowZeroExpanded = true,
+            items,
+            isPrimary = false,
+            isSecondary = false,
+        } = this.props;
 
-    return (
-        <Accordion
-            className={classes}
-            allowMultipleExpanded={allowMultipleExpanded}
-            allowZeroExpanded={allowZeroExpanded}
-            preExpanded={preExpanded}
-        >
-            {
-                items.map(item => {
-                    const classes = `gx-accordion-tab ${item.className ? item.className : ''}`;
+        const { 
+            currentOpen
+        } = this.state;
+    
+        let classes = classnames('gx-style-tab-setting gx-accordion');
+        if(className)
+            classes = classnames(classes, className);
+        if(isPrimary)
+            classes = classnames(classes, 'is-primary');
+        if(isSecondary)
+            classes = classnames(classes, 'is-secondary');
 
-                    return (
-                        <AccordionItem
-                            uuid={item.uuid ? item.uuid : null}
-                        >
-                            <AccordionItemHeading
-                                className={classes}
+        const onOpen = value => {
+            this.setState({currentOpen: value})
+        }
+    
+        return (
+            <Accordion
+                className={classes}
+                allowMultipleExpanded={allowMultipleExpanded}
+                allowZeroExpanded={allowZeroExpanded}
+                preExpanded={currentOpen}
+                onChange={onOpen}
+            >
+                {
+                    items.map(item => {
+                        let classes = 'gx-accordion-tab';
+                        if(item.className)
+                            classes = classnames(classes, item.className)
+    
+                        return (
+                            <AccordionItem
+                                uuid={item.uuid ? item.uuid : undefined} 
                             >
-                                <AccordionItemButton
-                                    className='components-base-control__label'
+                                <AccordionItemHeading
+                                    className={classes}
                                 >
-                                    <Icon 
-                                        icon={item.icon}
-                                    />
-                                    {item.label}
-                                </AccordionItemButton>
-                            </AccordionItemHeading>
-                            <AccordionItemPanel>
-                                {item.content}
-                            </AccordionItemPanel>
-                        </AccordionItem>
-                    )
-                })
-            }
-        </Accordion>
-    )
+                                    <AccordionItemButton
+                                        className='components-base-control__label'
+                                    >
+                                        <Icon 
+                                            className='gx-accordion-icon'
+                                            icon={item.icon}
+                                        />
+                                        {item.label}
+                                    </AccordionItemButton>
+                                </AccordionItemHeading>
+                                <AccordionItemPanel>
+                                    {item.content}
+                                </AccordionItemPanel>
+                            </AccordionItem>
+                        )
+                    })
+                }
+            </Accordion>
+        )
+    }
 }
-
-export default AccordionControl;

@@ -923,6 +923,15 @@ input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before {
  * Can include things like variables and mixins
  * that are used across the project.
 */
+.gx-controls .gx-accordion .gx-accordion-icon {
+  max-width: 24px;
+  max-height: 24px; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
 .gx-sidebar .gx-background-control .gx-mediauploader-control .gx-imageuploader-control-replace,
 .gx-sidebar .gx-background-control .gx-mediauploader-control .gx-imageuploader-control-remove {
   display: none; }

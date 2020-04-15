@@ -1,17 +1,4 @@
 /**
- * External dependencies
- */
-import classnames from 'classnames';
-import map from 'lodash/map';
-import { isNumber } from 'lodash';
-
-/**
- * Internal dependencies
- */
-import icons from './icons';
-import './styles/editor.scss';
-
-/**
  * WordPress dependencies
  */
 const {
@@ -33,6 +20,26 @@ const {
 	select
 } = wp.data;
 
+/**
+ * Internal dependencies
+ */
+import iconsSettings from '../icons/icons-settings';
+
+/**
+ * External dependencies
+ */
+import classnames from 'classnames';
+import map from 'lodash/map';
+import { isNumber } from 'lodash';
+
+/**
+ * Styles
+ */
+import './styles/editor.scss';
+
+/**
+ * Block
+ */
 export default class DimensionsControl extends Component {
 
 	state = {
@@ -192,7 +199,7 @@ export default class DimensionsControl extends Component {
 								)}
 								action="reset"
 							>
-								{icons.reset}
+								{iconsSettings.reset}
 							</Button>
 							<div className="components-gx-dimensions-control__actions">
 								<ButtonGroup className="components-gx-dimensions-control__units" aria-label={__('Select Units', 'gutenberg-extra')}>
@@ -230,17 +237,17 @@ export default class DimensionsControl extends Component {
 							tabs={[
 								{
 									name: 'desktop',
-									title: icons.desktopChrome,
+									title: iconsSettings.desktopChrome,
 									className: `components-gx-dimensions-control__mobile-controls-item components-button is-button is-default components-gx-dimensions-control__mobile-controls-item--desktop components-gx-dimensions-control__mobile-controls-item--desktop ${device == 'desktop' ? 'is-active' : ''}`,
 								},
 								{
 									name: 'tablet',
-									title: icons.tablet,
+									title: iconsSettings.tablet,
 									className: `components-gx-dimensions-control__mobile-controls-item components-button is-button is-default components-gx-dimensions-control__mobile-controls-item--tablet components-gx-dimensions-control__mobile-controls-item--tablet ${device == 'tablet' ? 'is-active' : ''}`,
 								},
 								{
 									name: 'mobile',
-									title: icons.mobile,
+									title: iconsSettings.mobile,
 									className: `components-gx-dimensions-control__mobile-controls-item components-button is-button is-default components-gx-dimensions-control__mobile-controls-item--mobile components-gx-dimensions-control__mobile-controls-item--mobile ${device == 'mobile' ? 'is-active' : ''}`,
 								},
 							]}>
@@ -319,7 +326,7 @@ export default class DimensionsControl extends Component {
 														data-device-type={device}
 														isSmall
 													>
-														{!!value[device].sync ? icons.sync : icons.sync}
+														{!!value[device].sync ? iconsSettings.sync : iconsSettings.sync}
 													</Button>
 												</Tooltip>
 											</div>

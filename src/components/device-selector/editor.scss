@@ -1,0 +1,9 @@
+.gx-device-control .components-radio-control__option {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+}
+
+.gx-device-control .components-radio-control__option .components-radio-control__input {
+    margin: auto;
+}

@@ -31,6 +31,7 @@ import DimensionsControl from '../../components/dimensions-control/index';
 import { HoverAnimation } from '../../components/hover-animation/index';
 import { CustomCSS } from '../../components/custom-css/index';
 import { setLinkStyles } from './data';
+import iconsSettings from '../../components/icons/icons-settings';
 
 /**
  * External dependencies
@@ -40,7 +41,6 @@ import classnames from 'classnames';
 // Testing
 import SizeControlTest from '../../components/size-control/test';
 import BlockBorderTest from '../../components/block-border/test';
-import iconsSettings from '../../components/icons/icons-settings';
 import TypographyTest from '../../components/typography/test';
 import BackgroundControlTest from '../../components/background-control/test';
 import AccordionControl from '../../components/accordion-control';

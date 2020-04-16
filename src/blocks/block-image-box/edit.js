@@ -291,7 +291,13 @@ const edit = props => {
                     className="gx-image-box-image"
                     imageSettings={imageSettings}
                     mediaID={mediaID}
-                    onSelect={media => setAttributes({ mediaID: media.id })}
+                    // onSelect={media => setAttributes({ mediaID: media.id })}
+                    onSelect={
+                        (media, imageSettings) => setAttributes({ 
+                            mediaID: media.id,
+                            imageSettings
+                        })
+                    }
                 />
                 <div className='gx-image-box-text'>
                     <RichText

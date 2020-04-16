@@ -9,7 +9,6 @@ const {
 } = wp.element;
 const {
     withSelect,
-    dispatch,
     select
 } = wp.data;
 
@@ -20,7 +19,8 @@ import ReactCrop from 'react-image-crop';
 import {
     debounce,
     capitalize,
-    isNil
+    isNil,
+    isEmpty
 } from 'lodash';
 
 
@@ -61,21 +61,39 @@ class ImageCrop extends Component {
         this.blockId = select('core/block-editor').getSelectedBlockClientId();
     }
 
+    componentDidUpdate() {
+        if(this.state.imageID != this.props.mediaID) {
+            this.setState(
+                {
+                    imageID: this.props.mediaID,
+                    crop: {
+                        x: 0,
+                        y: 0,
+                        width: 0,
+                        height: 0
+                    },
+                    scale: 100
+                }
+            )
+        }
+    }
+
     componentWillUnmount() {
         if (isNil(select('core/block-editor').getBlocksByClientId(this.blockId)[0])) {
-            this.deleteFile(this.props.imageData);
+            this.deleteFile(this.props.cropOptions);
         }
     }
 
     state = {
+        imageID: this.props.mediaID,
         crop: {
             unit: 'px',
-            x: this.props.cropOptions ? this.props.cropOptions.crop.x : 0,
-            y: this.props.cropOptions ? this.props.cropOptions.crop.y : 0,
-            width: this.props.cropOptions ? this.props.cropOptions.crop.width : 0,
-            height: this.props.cropOptions ? this.props.cropOptions.crop.height : 0,
+            x: !isEmpty(this.props.cropOptions) ? this.props.cropOptions.crop.x : 0,
+            y: !isEmpty(this.props.cropOptions) ? this.props.cropOptions.crop.y : 0,
+            width: !isEmpty(this.props.cropOptions) ? this.props.cropOptions.crop.width : 0,
+            height: !isEmpty(this.props.cropOptions) ? this.props.cropOptions.crop.height : 0,
         },
-        scale: this.props.cropOptions ? this.props.cropOptions.scale : 100,
+        scale: !isEmpty(this.props.cropOptions) ? this.props.cropOptions.crop.scale : 100,
     }
 
     get getScale() {
@@ -112,14 +130,14 @@ class ImageCrop extends Component {
 
     get getFileDate() {
         const date = new Date(Date.now());
-        let response = 
+        let response =
             date.getDate().toString() +
             date.getMonth().toString() +
             date.getFullYear().toString() +
             date.getHours().toString() +
             date.getMinutes().toString() +
             date.getSeconds().toString();
-        return response;                        
+        return response;
     }
 
     get getFileType() {
@@ -140,15 +158,29 @@ class ImageCrop extends Component {
         return path;
     }
 
-    get getOldFileName() {
-        if(
-            !this.imageData.media_details.sizes.custom ||
-            !this.imageData.media_details.sizes.custom.source_url ||
-            this.imageData.media_details.sizes.custom.source_url === this.imageData.media_details.sizes.full.source_url
-        )
+    get getOldFile() {
+        if(isEmpty(this.props.cropOptions))
             return '';
         else
-            return this.imageData.media_details.sizes.custom.source_url; 
+            return this.props.cropOptions.image.source_url;
+    }
+
+    get getResponse() {
+        return {
+            image: {
+                url: "",
+                width: this.getWidth,
+                height: this.getHeight
+            },
+            crop: {
+                unit: this.state.crop.unit,
+                x: this.state.crop.x,
+                y: this.state.crop.y,
+                width: this.state.crop.width,
+                height: this.state.crop.height,
+                scale: this.state.scale
+            }
+        }
     }
 
     onImageLoad(image) {
@@ -159,7 +191,6 @@ class ImageCrop extends Component {
 
     onCropComplete() {
         this.setData();
-        this.props.onChange(this.imageData, this.state);
         this.createHiddenCanvas();
         this.cropper();
         this.uploadNewFile();
@@ -216,7 +247,7 @@ class ImageCrop extends Component {
                 }
             )
 
-            var data = new FormData();
+            let data = new FormData();
             data.append('id', this.mediaID);
             data.append('name', this.getFileName);
             data.append('width', this.getWidth);
@@ -224,7 +255,7 @@ class ImageCrop extends Component {
             data.append('mime_type', this.getMimeType);
             data.append('folder', this.getFilePath);
             data.append('file', newImage);
-            data.append('old_media_src', this.getOldFileName);
+            data.append('old_media_src', this.getOldFile);
 
             fetch(
                 window.location.origin + ajaxurl + '?action=gx_add_custom_image_size',
@@ -234,29 +265,22 @@ class ImageCrop extends Component {
                     body: data
                 }
             )
-            .then(data => {
-                return data.json();
-            })
-            .then(res => {
-                this.imageData.media_details.sizes.custom = {
-                    file: this.getFileName,
-                    width: this.getWidth,
-                    height: this.getHeight,
-                    mime_type: this.getMimeType,
-                    source_url: res,
-                }
-                this.saveMedia(this.imageData);
-            }).catch(err => {
-                console.log(__('Error croping the image: ' + err, 'gutenberg-extra'));
-            })
+                .then(data => {
+                    return data.json();
+                })
+                .then(res => {
+                    const response = this.getResponse;
+                    response.image.source_url = res.url;
+                    this.props.onChange(response)
+                }).catch(err => {
+                    console.log(__('Error croping the image: ' + err, 'gutenberg-extra'));
+                })
         })
     }
 
-    deleteFile(imageData) {
-        delete imageData.media_details.sizes.custom;
-
-        var data = new FormData();
-        data.append('id', imageData.id);
+    deleteFile() {
+        let data = new FormData();
+        data.append('old_media_src', this.getOldFile);
 
         fetch(
             window.location.origin + ajaxurl + '?action=gx_remove_custom_image_size',
@@ -265,16 +289,9 @@ class ImageCrop extends Component {
                 data: data,
                 body: data
             }
-        ).then(() => {
-            this.saveMedia(imageData);
-        }).catch(err => {
+        ).catch(err => {
             console.log(__('Error croping the image: ' + err, 'gutenberg-extra'));
         })
-    }
-
-    async saveMedia(imageData) {
-        imageData.status = 'publish';
-        dispatch('core').saveMedia(imageData)
     }
 
     render() {
@@ -328,7 +345,6 @@ class ImageCrop extends Component {
             </div>
         )
     }
-
 }
 
 export default ImageCrop = withSelect((select, ownProps) => {

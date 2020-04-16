@@ -1,11 +1,15 @@
 {
-    "url": "",
-    "dimension": {
+    "image": {
+        "source_url": "",
         "width": "",
         "height": ""
     },
-    "focalPoint": {
+    "crop": {
+        "unit": "",
         "x": "",
-        "y": ""
+        "y": "",
+        "width": "",
+        "height": "",
+        "scale": ""
     }
 }

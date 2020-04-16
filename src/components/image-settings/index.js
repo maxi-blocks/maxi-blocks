@@ -13,7 +13,6 @@ const {
 } = wp.data;
 const {
     SelectControl,
-    RadioControl,
     RangeControl,
     TextControl,
     IconButton,
@@ -93,8 +92,6 @@ class ImageSettingsOptions extends Component {
                     return a[1].width - b[1].width;
                 })
                 sizes.map(size => {
-                    if ( size[0] === 'custom' ) 
-                        return;
                     const name = capitalize(size[0]);
                     const val = size[1];
                     response.push({
@@ -104,7 +101,7 @@ class ImageSettingsOptions extends Component {
                 })
             }
             response.push({
-                label: 'Custom', value: 'gx-custom'
+                label: 'Custom', value: 'custom'
             });
             return response;
         }
@@ -303,9 +300,9 @@ class ImageSettingsOptions extends Component {
             save();
         }
 
-        imageData && ( 
-            value.alt != imageData.alt_text || 
-            value.imageSize.options.full != imageData.source_url 
+        imageData && (
+            value.alt != imageData.alt_text ||
+            value.imageSize.options.full != imageData.source_url
         ) ?
             getValues() :
             null;
@@ -314,20 +311,19 @@ class ImageSettingsOptions extends Component {
             <div className={className}>
                 <SelectControl
                     label={__('Image Size', 'gutenberg-extra')}
-                    value={value.imageSize.options[value.size] || value.size === 'gx-custom' ? value.size : 'full'}
+                    value={value.imageSize.options[value.size] || value.size == 'custom' ? value.size : 'full'}
                     options={getSizeOptions()}
                     onChange={val => {
                         value.size = val;
                         saveAndSend()
                     }}
                 />
-                {value.size === 'gx-custom' &&
-                    <ImageCrop 
+                {value.size === 'custom' &&
+                    <ImageCrop
                         mediaID={mediaID}
-                        cropOptions={value.imageSize.cropOptions} 
-                        onChange={(val, crop) => {
-                            value.imageSize.options = val.media_details.sizes;
-                            value.imageSize.cropOptions = crop;
+                        cropOptions={value.imageSize.cropOptions ? value.imageSize.cropOptions : {}}
+                        onChange={cropOptions => {
+                            value.imageSize.cropOptions = cropOptions;
                             saveAndSend();
                         }}
                     />
@@ -355,7 +351,7 @@ class ImageSettingsOptions extends Component {
                 {value.captionType === 'custom' &&
                     <TextControl
                         label={__('Custom Caption', 'gutenberg-extra')}
-                        className="gx-custom-caption"
+                        className="custom-caption"
                         value={value.caption}
                         onChange={val => {
                             value.caption = val;
@@ -415,7 +411,7 @@ class ImageSettingsOptions extends Component {
                         saveAndSend()
                     }}
                 />
-                <ColorControl 
+                <ColorControl
                     label={__('Background Colour', 'gutenberg-extra')}
                     color={value[selector].backgroundColor}
                     onColorChange={val => {
@@ -429,7 +425,7 @@ class ImageSettingsOptions extends Component {
                     }}
                     gradientAboveBackground={value[selector].gradientAboveBackground}
                     onGradientAboveBackgroundChange={val => {
-                        value[selector].gradientAboveBackground =val;
+                        value[selector].gradientAboveBackground = val;
                         saveAndSend()
                     }}
                 />
@@ -513,20 +509,21 @@ export const Image = props => {
     } = props;
 
     const value = typeof imageSettings === 'object' ? imageSettings : JSON.parse(imageSettings);
-    const size = value.size != 'gx-custom' ? value.size : 'custom';
-    const image = value.imageSize.options[size] ? value.imageSize.options[size] : value.imageSize.options.full;
-    let width = '', height = '', src='';
-    if ( !isNil(image) ) {
-        src = image.source_url;
+    const size = value.size;
+
+    const getImage = () => {
+        if (size === 'custom' && !isNil(value.imageSize.cropOptions))
+            return value.imageSize.cropOptions.image;
+        if (value.imageSize.options[size])
+            return value.imageSize.options[size];
+        else
+            return value.imageSize.options.full;
     }
-    if ( !isNil(image) && size != 'custom' ) {
-        width = image.width;
-        height = image.height;
-    }
-    else if ( !isNil(value) ) {
-        width = value.imageSize.width + value.imageSize.widthUnit;
-        height = value.imageSize.height + value.imageSize.heightUnit;
-    }
+
+    const image = getImage();
+    const src = image.source_url;
+    const width = image.width;
+    const height = image.height;
 
     return (
         <figure
@@ -536,8 +533,8 @@ export const Image = props => {
                 className={"wp-image-" + mediaID}
                 src={src}
                 alt={value.alt}
-                width={width}
-                height={height}
+                width={!isNil(width) ? width : ''}
+                height={!isNil(height) ? height : ''}
             />
             {value.captionType !== 'none' &&
                 <figcaption>
@@ -551,45 +548,86 @@ export const Image = props => {
 /**
  * Backend upload block
  */
-export const ImageUpload = props => {
-    const {
-        className = '',
-        mediaID,
-        onSelect,
-        imageSettings
-    } = props;
+export class ImageUpload extends Component {
 
-    const value = typeof imageSettings === 'object' ? imageSettings : JSON.parse(imageSettings);
+    componentDidUpdate() {
+        const value = typeof this.props.imageSettings === 'object' ? this.props.imageSettings : JSON.parse(this.props.imageSettings);
 
-    return (
-        <MediaUpload
-            onSelect={onSelect}
-            allowedTypes="image"
-            value={mediaID}
-            render={({ open }) => (
-                <IconButton
-                    className='gx-imageupload-button'
-                    showTooltip="true"
-                    onClick={open}>
-                    { mediaID && !isEmpty(value.imageSize.options) ?
-                        <Image 
-                            className={className}
-                            imageSettings={imageSettings}
-                            mediaID={mediaID}
-                        /> :
+        if(!isNil(value.imageSize.cropOptions) && this.state.url != value.imageSize.cropOptions.image.source_url)
+            this.setState({
+                url: value.imageSize.cropOptions.image.source_url
+            })
+    }
+
+    state = {
+        url: "",
+    }
+
+    render() {
+        const {
+            className = '',
+            mediaID,
+            onSelect,
+            imageSettings
+        } = this.props;
+
+        const value = typeof imageSettings === 'object' ? imageSettings : JSON.parse(imageSettings);
+
+        const onSelectValue = val => {
+            if (!isEmpty(value.imageSize.cropOptions) && !isNil(value.imageSize.cropOptions.image.url)) {
+                deleteImage(value.imageSize.cropOptions.image.url);
+                delete value.imageSize.cropOptions;
+            }
+            onSelect(val, JSON.stringify(value));
+        }
+
+        const deleteImage = () => {
+            let data = new FormData();
+            data.append('old_media_src', this.state.url);
+
+            fetch(
+                window.location.origin + ajaxurl + '?action=gx_remove_custom_image_size',
+                {
+                    method: 'POST',
+                    data: data,
+                    body: data
+                }
+            )
+                .catch(err => {
+                    console.log(__('Error croping the image: ' + err, 'gutenberg-extra'));
+                })
+        }
+
+        return (
+            <MediaUpload
+                onSelect={val => onSelectValue(val)}
+                allowedTypes="image"
+                value={mediaID}
+                render={({ open }) => (
+                    <IconButton
+                        className='gx-imageupload-button'
+                        showTooltip="true"
+                        onClick={open}>
+                        {mediaID && !isEmpty(value.imageSize.options) ?
+                            <Image
+                                className={className}
+                                imageSettings={imageSettings}
+                                mediaID={mediaID}
+                            /> :
                             mediaID ?
-                            (
-                                <Fragment>
-                                    <Spinner />
-                                    <p>
-                                        {__('Loading...', 'gutenberg-extra')}
-                                    </p>
-                                </Fragment>
-                            ) :
-                            iconsSettings.placeholderImage
-                    }
-                </IconButton>
-            )}
-        />
-    )
+                                (
+                                    <Fragment>
+                                        <Spinner />
+                                        <p>
+                                            {__('Loading...', 'gutenberg-extra')}
+                                        </p>
+                                    </Fragment>
+                                ) :
+                                iconsSettings.placeholderImage
+                        }
+                    </IconButton>
+                )}
+            />
+        )
+    }
 }

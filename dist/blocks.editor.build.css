@@ -845,7 +845,12 @@ div.gx-alignmentcontrol-control .components-radio-control__option input:checked 
 .gx-imagesettings-control .gx-imagesettings-selector-control input:checked ~ label {
   color: #fff;
   background-color: #00ccff; }
-
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
 .gx-block .gx-imageupload-button,
 .gx-block .gx-imageupload-button svg {
   height: auto; }

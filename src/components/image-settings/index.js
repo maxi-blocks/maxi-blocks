@@ -22,17 +22,22 @@ const {
 const { MediaUpload } = wp.blockEditor;
 
 /**
- * External dependencies
+ * Internal dependencies
  */
-import { BlockBorder } from '../block-border/index';
-import AlignmentControl from '../alignment-control/index';
+import { BlockBorder } from '../block-border';
+import AlignmentControl from '../alignment-control';
 import MiniSizeControl from '../mini-size-control';
 import { PopoverControl } from '../popover';
 import { BoxShadow } from '../box-shadow';
-import Typography from '../typography/';
+import Typography from '../typography';
 import iconsSettings from '../icons/icons-settings.js';
-import ColorControl from '../color-control/';
-import ImageCrop from '../image-crop/';
+import ColorControl from '../color-control';
+import ImageCrop from '../image-crop';
+import NormalHover from '../normal-hover';
+
+/**
+ * External dependencies
+ */
 import {
     capitalize,
     isEmpty,
@@ -394,14 +399,9 @@ class ImageSettingsOptions extends Component {
                         saveAndSend();
                     }}
                 />
-                <RadioControl
-                    className="gx-imagesettings-selector-control"
-                    selected={selector}
-                    options={[
-                        { label: 'Normal', value: 'normal' },
-                        { label: 'Hover', value: 'hover' },
-                    ]}
-                    onChange={(selector) => {
+                <NormalHover
+                    selector={selector}
+                    onChange={selector => {
                         this.setState({ selector });
                     }}
                 />

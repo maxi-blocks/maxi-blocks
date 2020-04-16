@@ -11,7 +11,7 @@ const {
 /**
  * Internal dependencies
  */
-import DefaultTypography from '../../../extensions/defaults/typography';
+import DefaultTypography from '../../../extensions/defaults/typography.js';
 
 /**
  * External dependencies
@@ -131,21 +131,9 @@ export default class FontLevelTest extends Component {
                 if(!isEmpty(this.state[value]))
                     fontOptResponse = this.state[value];
                 else if(!isNil(fontOptions)) {
-                    const devices = ['desktop', 'tablet', 'mobile'];
-                    fontOptResponse = typeof fontOptions === 'object' ? fontOptions : JSON.parse(fontOptions);
-                    fontOptResponse.general.color = DefaultTypography[value].color;
-                    devices.forEach(device => {
-                        fontOptResponse[device]['font-sizeUnit'] = DefaultTypography[value].sizeUnit;
-                        fontOptResponse[device]['font-size'] = DefaultTypography[value].size;
-                        fontOptResponse[device]['line-heightUnit'] = DefaultTypography[value].lineHeightUnit;
-                        fontOptResponse[device]['line-height'] = DefaultTypography[value].lineHeight;
-                        fontOptResponse[device]['letter-spacingUnit'] = DefaultTypography[value].letterSpacingUnit;
-                        fontOptResponse[device]['letter-spacing'] = DefaultTypography[value].letterSpacing;
-                        fontOptResponse[device]['font-weight'] = DefaultTypography[value].fontWeight;
-                        fontOptResponse[device]['text-transform'] = DefaultTypography[value].textTransform;
-                        fontOptResponse[device]['font-style'] = DefaultTypography[value].fontStyle;
-                        fontOptResponse[device]['text-decoration'] = DefaultTypography[value].textDecoration;
-                    })
+                    const oldFontOptions = typeof fontOptions === 'object' ? fontOptions : JSON.parse(fontOptions);
+                    fontOptResponse.label = oldFontOptions.label;
+                    Object.assign(fontOptResponse, DefaultTypography[value]);
                 }
                 this.saveAndSend(value, fontOptResponse)
             }

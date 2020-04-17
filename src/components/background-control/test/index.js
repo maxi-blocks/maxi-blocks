@@ -165,7 +165,6 @@ export default class BackgroundControlTest extends Component {
                 if (isNil(option) || isEmpty(option.imageOptions.mediaURL))
                     return;
                 // Image
-                console.log(option.imageOptions.cropOptions)
                 if (option.sizeOptions.size === 'custom' && !isNil(option.imageOptions.cropOptions)) {
                     if (!isNil(response.general['background-image']))
                         response.general['background-image'] = `${response.general['background-image']},url('${option.imageOptions.cropOptions.image.source_url}')`;
@@ -174,7 +173,7 @@ export default class BackgroundControlTest extends Component {
                     if (!isEmpty(value.colorOptions.gradient))
                         response.general['background-image'] = `${response.general['background-image']}, ${value.colorOptions.gradient}`;
                 }
-                else if (option.sizeOptions.size != 'custom' && !isNil(option.imageOptions.mediaURL)) {
+                else if (option.sizeOptions.size === 'custom' && isNil(option.imageOptions.cropOptions) || option.sizeOptions.size != 'custom' && !isNil(option.imageOptions.mediaURL)) {
                     if (!isNil(response.general['background-image']))
                         response.general['background-image'] = `${response.general['background-image']},url('${option.imageOptions.mediaURL}')`;
                     else
@@ -191,9 +190,9 @@ export default class BackgroundControlTest extends Component {
                 }
                 else {
                     if (!isNil(response.general['background-size']))
-                        response.general['background-size'] = `${response.general['background-size']},${option.sizeOptions.width + option.sizeOptions.widthUnit} ${option.sizeOptions.height + option.sizeOptions.heightUnit}`;
+                        response.general['background-size'] = `${response.general['background-size']},cover`;
                     else
-                        response.general['background-size'] = `${option.sizeOptions.width + option.sizeOptions.widthUnit} ${option.sizeOptions.height + option.sizeOptions.heightUnit}`;
+                        response.general['background-size'] = 'cover';
                 }
                 // Repeat
                 if (option.repeat) {
@@ -273,6 +272,10 @@ export default class BackgroundControlTest extends Component {
         }
 
         const getAlternativeImage = i => {
+            if(isNil(value.backgroundOptions[i].imageOptions.cropOptions))
+                return;
+            if(isEmpty(value.backgroundOptions[i].imageOptions.cropOptions.image.source_url))
+                return;
             return {
                 source_url: value.backgroundOptions[i].imageOptions.cropOptions.image.source_url,
                 width: value.backgroundOptions[i].imageOptions.cropOptions.image.width,
@@ -309,11 +312,7 @@ export default class BackgroundControlTest extends Component {
                                                     Edit image
                                                 </Button>
                                             }
-                                            alternativeImage={
-                                                !isNil(value.backgroundOptions[i].imageOptions.cropOptions) ?
-                                                    getAlternativeImage(i) :
-                                                    ''
-                                            }
+                                            alternativeImage={getAlternativeImage(i)}
                                         />
                                     </Fragment>
                                 )
@@ -375,11 +374,7 @@ export default class BackgroundControlTest extends Component {
                                         }
                                         replaceButton={__('Replace', 'gutenberg-extra')}
                                         removeButton={__('Delete', 'gutenberg-extra')}
-                                        alternativeImage={
-                                            value.backgroundOptions[selector].imageOptions.cropOptions.image.source_url ?
-                                                getAlternativeImage(selector) :
-                                                ''
-                                        }
+                                        alternativeImage={getAlternativeImage(selector)}
                                     />
                                 )
                             },

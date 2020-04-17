@@ -89,7 +89,7 @@ const MediaUploader = props => {
                                     className="gx-imageuploader-control-wrapper"
                                 >
                                     <img
-                                        src={alternativeImage? alternativeImage.source_url : imageData.source_url}
+                                        src={!isNil(alternativeImage) ? alternativeImage.source_url : imageData.source_url}
                                         alt={__('Image', 'gutenberg-extra')}
                                     />
                                 </ResponsiveWrapper>

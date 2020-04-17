@@ -435,7 +435,7 @@ class FixObjectFollower {
             this.setPosition.bind(this)
         )
         this.scrollEl.addEventListener(
-            'onchange',
+            'change',
             this.setPosition.bind(this)
         )
         window.addEventListener(
@@ -450,16 +450,8 @@ class FixObjectFollower {
 
     referenceEvents() {
         const config = { attributes: true, childList: true, subtree: true };
-        const observer = new MutationObserver(this.mutationCallback);
+        const observer = new MutationObserver(this.setPosition.bind(this));
         observer.observe(this.reference, config);
-    }
-
-    mutationCallback(mutationsList, observer){
-        for(let mutation of mutationsList) {
-            if (mutation.type != 'attributes') {
-                this.setPosition()
-            }
-        }
     }
 
     setPosition() {

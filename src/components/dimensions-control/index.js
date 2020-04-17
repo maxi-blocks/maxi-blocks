@@ -53,6 +53,7 @@ export default class DimensionsControl extends Component {
 
 		const classes = classnames(
 			'components-gx-dimensions-control',
+			'components-base-control',
 			`gx-${value.label}-dimensions-control`
 		);
 
@@ -179,7 +180,7 @@ export default class DimensionsControl extends Component {
 			<Fragment>
 				<div className={classes}>
 					<Fragment>
-						<div className="components-gx-dimensions-control__header">
+						<div className="components-gx-dimensions-control__header components-base-control">
 							{value.label && <p className={'components-gx-dimensions-control__label'}>{value.label}</p>}
 							<Button
 								className="components-color-palette__clear"

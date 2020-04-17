@@ -87,6 +87,7 @@ const SizeControlTest = (props) => {
     return (
         <Fragment>
             <MiniSizeControl
+                className={'components-base-control'}
                 label={__("Max Width", 'gutenberg-extra')}
                 unit={value.general['max-widthUnit']}
                 onChangeUnit={value => onChangeValue('max-widthUnit', value )}
@@ -94,6 +95,7 @@ const SizeControlTest = (props) => {
                 onChangeValue={value => onChangeValue('max-width', value )}
             />
             <MiniSizeControl
+                className={'components-base-control'}
                 label={__("Width", 'gutenberg-extra')}
                 unit={value.general.widthUnit}
                 onChangeUnit={value => onChangeValue('widthUnit', value )}
@@ -101,6 +103,7 @@ const SizeControlTest = (props) => {
                 onChangeValue={value => onChangeValue('width', value )}
             />
             <MiniSizeControl
+                className={'components-base-control'}
                 label={__("Min Width", 'gutenberg-extra')}
                 unit={value.general['min-widthUnit']}
                 onChangeUnit={value => onChangeValue('min-widthUnit', value )}
@@ -108,6 +111,7 @@ const SizeControlTest = (props) => {
                 onChangeValue={value => onChangeValue('min-width', value )}
             />
             <MiniSizeControl
+                className={'components-base-control'}
                 label={__("Max Height", 'gutenberg-extra')}
                 unit={value.general['max-heightUnit']}
                 onChangeUnit={value => onChangeValue('max-heightUnit', value )}
@@ -115,6 +119,7 @@ const SizeControlTest = (props) => {
                 onChangeValue={value => onChangeValue('max-height', value )}
             />
             <MiniSizeControl
+                className={'components-base-control'}
                 label={__("Height", 'gutenberg-extra')}
                 unit={value.general.heightUnit}
                 onChangeUnit={value => onChangeValue('heightUnit', value )}
@@ -122,6 +127,7 @@ const SizeControlTest = (props) => {
                 onChangeValue={value => onChangeValue('height', value )}
             />
             <MiniSizeControl
+                className={'components-base-control'}
                 label={__("Min Height", 'gutenberg-extra')}
                 unit={value.general['min-heightUnit']}
                 onChangeUnit={value => onChangeValue('min-heightUnit', value )}

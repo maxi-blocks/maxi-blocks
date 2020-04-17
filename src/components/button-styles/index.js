@@ -3,12 +3,13 @@
  */
 const { __ } = wp.i18n;
 const { Component, Fragment } = wp.element;
-const { RadioControl, Button } = wp.components;
+const { RadioControl, Button, RangeControl, PanelBody } = wp.components;
 const { dispatch, select } = wp.data;
 
 /**
  * External dependencies
  */
+import { capitalize, isEmpty, isNil, isNumber } from "lodash";
 import AlignmentControl from "../alignment-control/";
 import SizeControlTest from "../size-control/test/";
 import ColorControl from "../color-control/";
@@ -18,7 +19,6 @@ import Typography from "../typography/";
 import { BlockBorder } from "../block-border/";
 import DimensionsControl from "../dimensions-control/index";
 import LinkedButton from "../linked-button";
-import { isEmpty, isNil } from "lodash";
 import {
   Accordion,
   AccordionItem,
@@ -65,6 +65,7 @@ export const buttonStyleAttributes = {
         "color": "",
         "background": "",
         "backgroundColor": "",
+        "opacity": "",
         "boxShadow": {
           "label": "Box Shadow",
           "shadowColor": "",
@@ -237,12 +238,12 @@ export const buttonStyleAttributes = {
             "margin-left": 0,
             "sync": true
           }
-        },
-        "opacity": ""
+        }
       },
       "hover": {
         "color": "",
         "background": "",
+        "opacity": "",
         "backgroundColor": "",
         "boxShadow": {
           "label": "Box Shadow",
@@ -416,8 +417,7 @@ export const buttonStyleAttributes = {
             "margin-left": 0,
             "sync": true
           }
-        },
-        "opacity": ""
+        }
       }
     }`,
   },
@@ -502,7 +502,7 @@ export class ButtonStyles extends Component {
       if (!isEmpty(value.normal.background)) {
         response.general["background"] = value.normal.background;
       }
-      if (!isEmpty(value.normal.opacity)) {
+      if (isNumber(value.normal.opacity)) {
         response.general["opacity"] = value.normal.opacity;
       }
       if (!isEmpty(value.normal.borderSettings.borderColor)) {
@@ -533,7 +533,7 @@ export class ButtonStyles extends Component {
       if (!isEmpty(value.hover.background)) {
         response.general["background"] = value.hover.background;
       }
-      if (!isEmpty(value.hover.opacity)) {
+      if (isNumber(value.hover.opacity)) {
         response.general["opacity"] = value.hover.opacity;
       }
       if (!isEmpty(value.hover.borderSettings.borderColor)) {
@@ -620,46 +620,51 @@ export class ButtonStyles extends Component {
               </AccordionItemButton>
             </AccordionItemHeading>
             <AccordionItemPanel>
-              <RadioControl
-                className="gx-buttonstyles-selector-control"
-                selected={selector1}
-                options={[
-                  { label: "Normal", value: "normal" },
-                  { label: "Hover", value: "hover" },
-                ]}
-                onChange={(selector1) => {
-                  this.setState({ selector1 });
-                }}
-              />
-              <ColorControl
-                label={__("Background Colour", "gutenberg-extra")}
-                color={value[selector1].backgroundColor}
-                gradient={value[selector1].background}
-                onGradientChange={(val) => {
-                  value[selector1].background = val;
-                  saveAndSend();
-                }}
-                onColorChange={(val) => {
-                  value[selector1].background = val;
-                  saveAndSend();
-                }}
-              />
-              <Typography
-                fontOptions={value[selector1].typography}
-                onChange={(val) => {
-                  value[selector1].typography = val;
-                  saveAndSend();
-                }}
-                target={target}
-              />
-              <AlignmentControl
-                value={value.alignment}
-                onChange={(val) => {
-                  value.alignment = val;
-                  saveAndSend();
-                }}
-                disableJustify
-              />
+              <PanelBody className={"gx-panel"}>
+                <RadioControl
+                  className="gx-buttonstyles-selector-control"
+                  selected={selector1}
+                  options={[
+                    { label: "Normal", value: "normal" },
+                    { label: "Hover", value: "hover" },
+                  ]}
+                  onChange={(selector1) => {
+                    this.setState({ selector1 });
+                  }}
+                />
+                <ColorControl
+                  className={"components-base-control"}
+                  label={__("Background Colour", "gutenberg-extra")}
+                  color={value[selector1].backgroundColor}
+                  gradient={value[selector1].background}
+                  onGradientChange={(val) => {
+                    value[selector1].background = val;
+                    saveAndSend();
+                  }}
+                  onColorChange={(val) => {
+                    value[selector1].background = val;
+                    saveAndSend();
+                  }}
+                />
+                <Typography
+                  className={"components-base-control"}
+                  fontOptions={value[selector1].typography}
+                  onChange={(val) => {
+                    value[selector1].typography = val;
+                    saveAndSend();
+                  }}
+                  target={target}
+                />
+                <AlignmentControl
+                  className={"components-base-control"}
+                  value={value.alignment}
+                  onChange={(val) => {
+                    value.alignment = val;
+                    saveAndSend();
+                  }}
+                  disableJustify
+                />
+              </PanelBody>
             </AccordionItemPanel>
           </AccordionItem>
           <AccordionItem className={"gx-box-settings-item"}>
@@ -683,17 +688,18 @@ export class ButtonStyles extends Component {
                 }}
               />
               <RangeControl
-                  label={__('Opacity', 'gutenberg-extra')}
-                  className={'gx-opacity-control'}
-                  value={value[selector2].boxShadow}
-                  onChange={value => {
-                    value[selector2].opacity = val;
-                    saveAndSend();
-                  }}
-                  min={-100}
-                  max={100}
-                  allowReset={true}
-                  initialPosition={0}
+                label={__("Opacity", "gutenberg-extra")}
+                className={"gx-opacity-control"}
+                value={value[selector2].opacity}
+                onChange={(val) => {
+                  value[selector2].opacity = val;
+                  saveAndSend();
+                }}
+                min={0}
+                max={1}
+                step={0.1}
+                allowReset={true}
+                initialPosition={0}
               />
               <PopoverControl
                 label={__("Box shadow", "gutenberg-extra")}
@@ -727,7 +733,7 @@ export class ButtonStyles extends Component {
               </AccordionItemButton>
             </AccordionItemHeading>
             <AccordionItemPanel>
-            <RadioControl
+              <RadioControl
                 className="gx-buttonstyles-selector-control"
                 selected={selector2}
                 options={[
@@ -804,6 +810,7 @@ export class ButtonStyles extends Component {
                 }}
               />
               <DimensionsControl
+                className={"components-base-control"}
                 value={value[selector3].padding}
                 onChange={(val) => {
                   value[selector3].padding = val;
@@ -812,6 +819,7 @@ export class ButtonStyles extends Component {
                 target={target}
               />
               <DimensionsControl
+                className={"components-base-control"}
                 value={value[selector3].margin}
                 onChange={(val) => {
                   value[selector3].margin = val;

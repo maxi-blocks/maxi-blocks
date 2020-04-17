@@ -5,9 +5,10 @@ const { __ } = wp.i18n;
 const { getScrollContainer } = wp.dom;
 const { Button } = wp.components;
 const { select } = wp.data;
-const { 
+const { Component } = wp.element;
+const {
     RichText,
-    __experimentalLinkControl 
+    __experimentalLinkControl
 } = wp.blockEditor;
 
 /**
@@ -19,6 +20,7 @@ import { PopoverControl } from '../popover';
  * External dependencies
  */
 import { isNil } from 'lodash';
+import classnames from 'classnames';
 
 /**
  * Styles
@@ -29,62 +31,72 @@ import './style.scss';
 /**
  * Block
  */
-const LinkedButton = props => {
-    const {
-        className = 'gx-externalbutton-control',
-        placeholder = __('External link', 'gutenberg-extra'),
-        buttonText,
-        onTextChange,
-        externalLink,
-        onLinkChange,
-        settings = [],
-    } = props;
+export default class LinkedButton extends Component {
 
-    const value = typeof externalLink === 'object' ? externalLink : JSON.parse(externalLink);
-    const attributes = select('core/block-editor').getBlockAttributes(select('core/block-editor').getSelectedBlockClientId());
+    state= {
+        uniqueHash: (Math.random() * 10000).toFixed(0)
+    }
 
-    const popoverPosition = (uniqueID) => {
-        const target = document.querySelector(`.${uniqueID} .${className} .gx-externalbutton-popover`);
-        const reference = document.querySelector(`.${uniqueID} button.${className}`);
+    componentDidMount() {
+        this.popoverPosition();
+    }
+
+    popoverPosition() {
+        const target = document.querySelector(`.gx-externalbutton-unique-${this.state.uniqueHash} .gx-externalbutton-popover`);
+        const reference = document.querySelector(`button.gx-externalbutton-unique-${this.state.uniqueHash}`);
         const scrollEl = getScrollContainer(target);
-        if(isNil(target) || isNil(reference)) {
+        if (isNil(target) || isNil(reference)) {
             return;
         }
-        new FixObjectFollower (target, reference, scrollEl);
+        new FixObjectFollower(target, reference, scrollEl);
     }
 
-    if (!isNil(attributes)) {
-        popoverPosition(attributes.uniqueID)
-    }
+    render() {
+        const {
+            className,
+            placeholder = __('External link', 'gutenberg-extra'),
+            buttonText,
+            onTextChange,
+            externalLink,
+            onLinkChange,
+            settings = [],
+        } = this.props;
 
-    return (
-        <Button
-            className={className}
-        >
-            <RichText
-                tagName="span"
-                className="gx-externalbutton-richtext"
-                placeholder={placeholder}
-                value={buttonText}
-                onChange={val => onTextChange(val)}
-            />
-            <PopoverControl
-                className="gx-externalbutton-popover"
-                popovers={[
-                    {
-                        content: (
-                            <__experimentalLinkControl
-                                className="gx-image-box-read-more-link"
-                                value={value}
-                                onChange={val => onLinkChange(val)}
-                                settings={settings}
-                            />
-                        )
-                    }
-                ]}
-            />
-        </Button>
-    )
+        const { uniqueHash } = this.state;
+
+        const value = typeof externalLink === 'object' ? externalLink : JSON.parse(externalLink);
+
+        let classes = classnames(`gx-externalbutton-control gx-externalbutton-unique-${uniqueHash}`);
+        if(className)
+            classes = classnames(classes, className);
+
+        return (
+            <Button
+                className={classes}
+            >
+                <RichText
+                    tagName="span"
+                    className="gx-externalbutton-richtext"
+                    placeholder={placeholder}
+                    value={buttonText}
+                    onChange={val => onTextChange(val)}
+                />
+                <PopoverControl
+                    className="gx-externalbutton-popover"
+                    popovers={[
+                        {
+                            content: (
+                                <__experimentalLinkControl
+                                    className="gx-image-box-read-more-link"
+                                    value={value}
+                                    onChange={val => onLinkChange(val)}
+                                    settings={settings}
+                                />
+                            )
+                        }
+                    ]}
+                />
+            </Button>
+        )
+    }
 }
-
-export default LinkedButton;

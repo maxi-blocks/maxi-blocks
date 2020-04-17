@@ -227,10 +227,11 @@ document.onreadystatechange = function () {
  */
 
 class ResponsiveStylesResolver {
-    constructor(target, meta, object) {
+    constructor(target, meta, object, avoidZero = true) {
         this.target = target;
         this.meta = meta;
         this.object = object;
+        this.avoidZero = avoidZero;
         this.newObject = this.objectManipulator();
         this.initEvents();
     }
@@ -287,8 +288,20 @@ class ResponsiveStylesResolver {
 
         for (let [target, prop] of Object.entries(object)) {
             // values with dimensions
-            if (target != 'sync' && typeof prop === 'number' || unitChecker.indexOf(target) == 0)
-                newObject[device][target] = prop + unit;
+            if (this.avoidZero){
+                if (
+                    target != 'sync' && prop != 0 && typeof prop === 'number' || 
+                    unitChecker.indexOf(target) == 0 && prop != 0
+                )
+                    newObject[device][target] = prop + unit;
+            }
+            else{
+                if (
+                    target != 'sync' && typeof prop === 'number' || 
+                    unitChecker.indexOf(target) == 0
+                )
+                    newObject[device][target] = prop + unit;
+            }
             // avoid numbers with no related metric
             if (unitChecker.indexOf(target) == 0)
                 unit = '';

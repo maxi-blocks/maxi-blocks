@@ -50,6 +50,7 @@ export default class DimensionsControl extends Component {
 		const {
 			onChange,
 			target = '',
+			avoidZero = false
 		} = this.props;
 
 		let value = typeof this.props.value === 'object' ? this.props.value : JSON.parse(this.props.value);
@@ -164,7 +165,7 @@ export default class DimensionsControl extends Component {
 		const metaValue = () => {
 			const meta = getMeta();
 			const styleTarget = getTarget();
-			const responsiveStyle = new ResponsiveStylesResolver(styleTarget, meta, value);
+			const responsiveStyle = new ResponsiveStylesResolver(styleTarget, meta, value, !avoidZero);
 			const response = JSON.stringify(responsiveStyle.getNewValue);
 			return response;
 		}

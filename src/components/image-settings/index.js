@@ -512,7 +512,7 @@ export const Image = props => {
     const size = value.size;
 
     const getImage = () => {
-        if (size === 'custom' && !isNil(value.imageSize.cropOptions))
+        if (size === 'custom' && !isNil(value.imageSize.cropOptions) && !isEmpty(value.imageSize.cropOptions))
             return value.imageSize.cropOptions.image;
         if (value.imageSize.options[size])
             return value.imageSize.options[size];
@@ -548,86 +548,46 @@ export const Image = props => {
 /**
  * Backend upload block
  */
-export class ImageUpload extends Component {
+export const ImageUpload = props => {
+    const {
+        className = '',
+        mediaID,
+        onSelect,
+        imageSettings
+    } = props;
 
-    componentDidUpdate() {
-        const value = typeof this.props.imageSettings === 'object' ? this.props.imageSettings : JSON.parse(this.props.imageSettings);
+    const value = typeof imageSettings === 'object' ? imageSettings : JSON.parse(imageSettings);
 
-        if(!isNil(value.imageSize.cropOptions) && this.state.url != value.imageSize.cropOptions.image.source_url)
-            this.setState({
-                url: value.imageSize.cropOptions.image.source_url
-            })
-    }
-
-    state = {
-        url: "",
-    }
-
-    render() {
-        const {
-            className = '',
-            mediaID,
-            onSelect,
-            imageSettings
-        } = this.props;
-
-        const value = typeof imageSettings === 'object' ? imageSettings : JSON.parse(imageSettings);
-
-        const onSelectValue = val => {
-            if (!isEmpty(value.imageSize.cropOptions) && !isNil(value.imageSize.cropOptions.image.url)) {
-                deleteImage(value.imageSize.cropOptions.image.url);
-                delete value.imageSize.cropOptions;
-            }
-            onSelect(val, JSON.stringify(value));
-        }
-
-        const deleteImage = () => {
-            let data = new FormData();
-            data.append('old_media_src', this.state.url);
-
-            fetch(
-                window.location.origin + ajaxurl + '?action=gx_remove_custom_image_size',
-                {
-                    method: 'POST',
-                    data: data,
-                    body: data
-                }
-            )
-                .catch(err => {
-                    console.log(__('Error croping the image: ' + err, 'gutenberg-extra'));
-                })
-        }
-
-        return (
-            <MediaUpload
-                onSelect={val => onSelectValue(val)}
-                allowedTypes="image"
-                value={mediaID}
-                render={({ open }) => (
-                    <IconButton
-                        className='gx-imageupload-button'
-                        showTooltip="true"
-                        onClick={open}>
-                        {mediaID && !isEmpty(value.imageSize.options) ?
-                            <Image
-                                className={className}
-                                imageSettings={imageSettings}
-                                mediaID={mediaID}
-                            /> :
-                            mediaID ?
-                                (
-                                    <Fragment>
-                                        <Spinner />
-                                        <p>
-                                            {__('Loading...', 'gutenberg-extra')}
-                                        </p>
-                                    </Fragment>
-                                ) :
-                                iconsSettings.placeholderImage
-                        }
-                    </IconButton>
-                )}
-            />
-        )
-    }
+    return (
+        <MediaUpload
+            // onSelect={val => onSelectValue(val)}
+            onSelect={onSelect}
+            allowedTypes="image"
+            value={mediaID}
+            render={({ open }) => (
+                <IconButton
+                    className='gx-imageupload-button'
+                    showTooltip="true"
+                    onClick={open}>
+                    {mediaID && !isEmpty(value.imageSize.options) ?
+                        <Image
+                            className={className}
+                            imageSettings={imageSettings}
+                            mediaID={mediaID}
+                        /> :
+                        mediaID ?
+                            (
+                                <Fragment>
+                                    <Spinner />
+                                    <p>
+                                        {__('Loading...', 'gutenberg-extra')}
+                                    </p>
+                                </Fragment>
+                            ) :
+                            iconsSettings.placeholderImage
+                    }
+                </IconButton>
+            )}
+        />
+    )
 }

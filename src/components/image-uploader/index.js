@@ -36,7 +36,8 @@ const MediaUploader = props => {
         placeholder = __('Set image', 'gutenberg-extra'),
         extendSelector,
         replaceButton = __('Replace image', 'gutenberg-extra'),
-        removeButton = __('Remove image', 'gutenberg-extra')
+        removeButton = __('Remove image', 'gutenberg-extra'),
+        alternativeImage
     } = props;
 
     const onOpenImageModal = () => {
@@ -83,12 +84,12 @@ const MediaUploader = props => {
                                 !!mediaID &&
                                 imageData &&
                                 <ResponsiveWrapper
-                                    naturalWidth={imageData.media_details.width}
-                                    naturalHeight={imageData.media_details.height}
+                                    naturalWidth={alternativeImage? alternativeImage.width : imageData.media_details.width}
+                                    naturalHeight={alternativeImage? alternativeImage.height : imageData.media_details.height}
                                     className="gx-imageuploader-control-wrapper"
                                 >
                                     <img
-                                        src={imageData.source_url}
+                                        src={alternativeImage? alternativeImage.source_url : imageData.source_url}
                                         alt={__('Image', 'gutenberg-extra')}
                                     />
                                 </ResponsiveWrapper>

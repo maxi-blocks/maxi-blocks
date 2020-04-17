@@ -295,7 +295,7 @@ const edit = props => {
                     onSelect={
                         (media, imageSettings) => setAttributes({ 
                             mediaID: media.id,
-                            imageSettings
+                            // imageSettings
                         })
                     }
                 />

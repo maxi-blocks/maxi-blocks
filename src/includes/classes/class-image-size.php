@@ -35,14 +35,6 @@ class ImageSize
 
     public function gx_add_custom_image_size()
     {
-        $media = [
-            'id'        => $_POST['id'],
-            'name'      => $_POST['name'],
-            'width'     => $_POST['width'],
-            'height'    => $_POST['height'],
-            'mime_type' => $_POST['mime_type'],
-            'folder'    => $_POST['folder']
-        ];
         $old_media = $_POST['old_media_src'];
         $media_file = $_FILES['file'];
 

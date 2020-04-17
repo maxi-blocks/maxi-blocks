@@ -32,7 +32,6 @@ import './editor.scss';
 /**
  * Block
  */
-
 const GeneralInput = props => {
     const {
         target,
@@ -74,7 +73,9 @@ class ImageCrop extends Component {
                     },
                     scale: 100
                 }
-            )
+            );
+            this.deleteFile();
+            this.props.onChange({})
         }
     }
 
@@ -169,8 +170,8 @@ class ImageCrop extends Component {
         return {
             image: {
                 url: "",
-                width: this.getWidth,
-                height: this.getHeight
+                width: this.getWidth * this.getScale,
+                height: this.getHeight * this.getScale
             },
             crop: {
                 unit: this.state.crop.unit,
@@ -248,12 +249,6 @@ class ImageCrop extends Component {
             )
 
             let data = new FormData();
-            data.append('id', this.mediaID);
-            data.append('name', this.getFileName);
-            data.append('width', this.getWidth);
-            data.append('height', this.getHeight);
-            data.append('mime_type', this.getMimeType);
-            data.append('folder', this.getFilePath);
             data.append('file', newImage);
             data.append('old_media_src', this.getOldFile);
 

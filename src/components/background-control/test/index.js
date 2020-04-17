@@ -20,8 +20,9 @@ const {
  */
 import ColorControl from '../../color-control';
 import ImageControl from '../../image-uploader';
-import MiniSizeControl from '../../mini-size-control/';
-import AccordionControl from '../../accordion-control/';
+import MiniSizeControl from '../../mini-size-control';
+import AccordionControl from '../../accordion-control';
+import ImageCrop from '../../image-crop';
 
 /**
  * External dependencies
@@ -164,7 +165,16 @@ export default class BackgroundControlTest extends Component {
                 if (isNil(option) || isEmpty(option.imageOptions.mediaURL))
                     return;
                 // Image
-                if (!isNil(option.imageOptions.mediaURL)) {
+                console.log(option.imageOptions.cropOptions)
+                if (option.sizeOptions.size === 'custom' && !isNil(option.imageOptions.cropOptions)) {
+                    if (!isNil(response.general['background-image']))
+                        response.general['background-image'] = `${response.general['background-image']},url('${option.imageOptions.cropOptions.image.source_url}')`;
+                    else
+                        response.general['background-image'] = `url('${option.imageOptions.cropOptions.image.source_url}')`;
+                    if (!isEmpty(value.colorOptions.gradient))
+                        response.general['background-image'] = `${response.general['background-image']}, ${value.colorOptions.gradient}`;
+                }
+                else if (option.sizeOptions.size != 'custom' && !isNil(option.imageOptions.mediaURL)) {
                     if (!isNil(response.general['background-image']))
                         response.general['background-image'] = `${response.general['background-image']},url('${option.imageOptions.mediaURL}')`;
                     else
@@ -262,6 +272,14 @@ export default class BackgroundControlTest extends Component {
             new BackEndResponsiveStyles(getMeta());
         }
 
+        const getAlternativeImage = i => {
+            return {
+                source_url: value.backgroundOptions[i].imageOptions.cropOptions.image.source_url,
+                width: value.backgroundOptions[i].imageOptions.cropOptions.image.width,
+                height: value.backgroundOptions[i].imageOptions.cropOptions.image.height
+            }
+        }
+
         return (
             <div className={classes}>
                 {
@@ -274,7 +292,7 @@ export default class BackgroundControlTest extends Component {
                                         <ImageControl
                                             mediaID={value.backgroundOptions[i].imageOptions.mediaID}
                                             onSelectImage={imageData => {
-                                                if(!isNumber(value.backgroundOptions[i].imageOptions.mediaID))
+                                                if (!isNumber(value.backgroundOptions[i].imageOptions.mediaID))
                                                     onAddBackground()
                                                 value.backgroundOptions[i].imageOptions.mediaID = imageData.id;
                                                 value.backgroundOptions[i].imageOptions.mediaURL = imageData.url;
@@ -290,6 +308,11 @@ export default class BackgroundControlTest extends Component {
                                                 >
                                                     Edit image
                                                 </Button>
+                                            }
+                                            alternativeImage={
+                                                !isNil(value.backgroundOptions[i].imageOptions.cropOptions) ?
+                                                    getAlternativeImage(i) :
+                                                    ''
                                             }
                                         />
                                     </Fragment>
@@ -352,6 +375,11 @@ export default class BackgroundControlTest extends Component {
                                         }
                                         replaceButton={__('Replace', 'gutenberg-extra')}
                                         removeButton={__('Delete', 'gutenberg-extra')}
+                                        alternativeImage={
+                                            value.backgroundOptions[selector].imageOptions.cropOptions.image.source_url ?
+                                                getAlternativeImage(selector) :
+                                                ''
+                                        }
                                     />
                                 )
                             },
@@ -376,32 +404,14 @@ export default class BackgroundControlTest extends Component {
                                         />
                                         {
                                             value.backgroundOptions[selector].sizeOptions.size === 'custom' &&
-                                            <Fragment>
-                                                <MiniSizeControl
-                                                    unit={value.backgroundOptions[selector].sizeOptions.widthUnit}
-                                                    onChangeUnit={val => {
-                                                        value.backgroundOptions[selector].sizeOptions.widthUnit = val;
-                                                        saveAndSend();
-                                                    }}
-                                                    value={value.backgroundOptions[selector].sizeOptions.width}
-                                                    onChangeValue={val => {
-                                                        value.backgroundOptions[selector].sizeOptions.width = val;
-                                                        saveAndSend();
-                                                    }}
-                                                />
-                                                <MiniSizeControl
-                                                    unit={value.backgroundOptions[selector].sizeOptions.heightUnit}
-                                                    onChangeUnit={val => {
-                                                        value.backgroundOptions[selector].sizeOptions.heightUnit = val;
-                                                        saveAndSend();
-                                                    }}
-                                                    value={value.backgroundOptions[selector].sizeOptions.height}
-                                                    onChangeValue={val => {
-                                                        value.backgroundOptions[selector].sizeOptions.height = val;
-                                                        saveAndSend();
-                                                    }}
-                                                />
-                                            </Fragment>
+                                            <ImageCrop
+                                                mediaID={value.backgroundOptions[selector].imageOptions.mediaID}
+                                                cropOptions={value.backgroundOptions[selector].imageOptions.cropOptions ? value.backgroundOptions[selector].imageOptions.cropOptions : {}}
+                                                onChange={cropOptions => {
+                                                    value.backgroundOptions[selector].imageOptions.cropOptions = cropOptions;
+                                                    saveAndSend();
+                                                }}
+                                            />
                                         }
                                         <SelectControl
                                             label={__('Background repeat', 'gutenberg-extra')}

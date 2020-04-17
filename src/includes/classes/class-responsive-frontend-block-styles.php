@@ -111,7 +111,7 @@ class ResponsiveFrontendStyles {
         $response = '';
 
         foreach ( $meta as $target => $prop ) {
-            $target = str_replace( '__$', ' .', $target );
+            $target = self::getTarget($target);
             $important = is_admin() ? ' !important' : '';
             if ( isset($prop['desktop']) && !empty ($prop['desktop']) || ! isset($prop['font']) ) {
                 $response .= ".{$target}{";
@@ -134,6 +134,15 @@ class ResponsiveFrontendStyles {
         }
 
         return wp_strip_all_tags($response);
+    }
+
+    /**
+     * Retrieve a cleaned target
+     */
+    public function getTarget($target) {
+        if(strpos($target, '__$:')) 
+            return str_replace( '__$', '', $target );
+        return str_replace( '__$', ' .', $target );
     }
 
     /**

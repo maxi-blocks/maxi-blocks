@@ -366,7 +366,7 @@ class BackEndResponsiveStyles {
     createContent() {
         let content = '';
         for (let [target, prop] of Object.entries(this.meta)) {
-            target = target.replace('__$', ' .');
+            target = this.getTarget(target);
             for (let value of Object.values(prop)) {
                 if ((typeof value.desktop != 'undefined' && Object.entries(value.desktop).length != 0) || value.hasOwnProperty('font')) {
                     content += `.${target}{`;
@@ -389,6 +389,17 @@ class BackEndResponsiveStyles {
             }
         }
         return content;
+    }
+
+    /**
+     * Retrieve cleaned target
+     * 
+     * @param {string} target style target for scoping
+     */
+    getTarget(target) {
+        if(target.indexOf('__$:') != -1)
+            return target.replace('__$', '');
+        return target.replace('__$', ' .');
     }
 
     /**

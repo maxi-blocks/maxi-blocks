@@ -45,6 +45,8 @@ import TypographyTest from '../../components/typography/test';
 import BackgroundControlTest from '../../components/background-control/test';
 import AccordionControl from '../../components/accordion-control';
 import FontLevelTest from '../../components/font-level/test';
+import BoxShadowTest from '../../components/box-shadow/test';
+import { ButtonStylesTest } from '../../components/button-styles/test';
 
 /**
  * Content
@@ -179,7 +181,7 @@ const edit = props => {
                         className: 'gx-button-tab',
                         content: (
                             <PanelBody>
-                                <ButtonStyles
+                                <ButtonStylesTest
                                     buttonSettings={buttonStyles}
                                     onChange={value => setAttributes({ buttonStyles: value })}
                                 />
@@ -207,7 +209,7 @@ const edit = props => {
                                     popovers={[
                                         {
                                             content: (
-                                                <BoxShadow
+                                                <BoxShadowTest
                                                     boxShadowOptions={boxShadow}
                                                     onChange={value => setAttributes({ boxShadow: value })}
                                                 />

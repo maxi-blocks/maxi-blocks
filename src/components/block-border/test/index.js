@@ -64,7 +64,7 @@ const BlockBorderTest = (props) => {
     const metaValue = () => {
         const meta = getMeta();
         const styleTarget = getTarget();
-        const responsiveStyle = new ResponsiveStylesResolver(styleTarget, meta, value);
+        const responsiveStyle = new ResponsiveStylesResolver(styleTarget, meta, value, false);
         const response = JSON.stringify(responsiveStyle.getNewValue);
         return response;
     }
@@ -121,6 +121,7 @@ const BlockBorderTest = (props) => {
                     saveAndSend();
                 }}
                 target={target}
+                avoidZero
             />
             <DimensionsControl
                 value={value.borderRadius}
@@ -129,6 +130,7 @@ const BlockBorderTest = (props) => {
                     saveAndSend();
                 }}
                 target={target}
+                avoidZero
             />
         </Fragment>
     )

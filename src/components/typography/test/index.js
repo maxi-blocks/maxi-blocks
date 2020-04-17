@@ -19,6 +19,7 @@ const {
 /**
  * Internal dependencies
  */
+import GXComponent from '../../../extensions/gx-component';
 import FontFamilySelector from '../../font-family-selector';
 import { PopoverControl } from '../../popover';
 import ColorControl from '../../color-control';
@@ -36,60 +37,14 @@ import DeviceSelector from '../../device-selector/';
 /**
  * Block
  */
-export default class TypographyTest extends Component {
+export default class TypographyTest extends GXComponent {
     state = {
         device: 'desktop',
-        target: this.props.target ? this.props.target : ''
     }
 
     componentDidMount() {
         const value = typeof this.props.fontOptions === 'object' ? this.props.fontOptions : JSON.parse(this.props.fontOptions);
         this.saveAndSend(value)
-    }
-
-    /**
-    * Retrieves the old meta data
-    */
-    get getMeta() {
-        let meta = select('core/editor').getEditedPostAttribute('meta')._gutenberg_extra_responsive_styles;
-        return meta ? JSON.parse(meta) : {};
-    }
-
-    /**
-     * Retrieve the target for responsive CSS
-     */
-    get getTarget() {
-        let styleTarget = select('core/block-editor').getBlockAttributes(select('core/block-editor').getSelectedBlockClientId()).uniqueID;
-        styleTarget = `${styleTarget}${this.state.target.length > 0 ? `__$${this.state.target}` : ''}`;
-        return styleTarget;
-    }
-
-    /**
-    * Creates a new object that 
-    *
-    * @param {string} target	Block attribute: uniqueID
-    * @param {obj} meta		Old and saved metadate
-    * @param {obj} value	New values to add
-    */
-    metaValue(value) {
-        const meta = this.getMeta;
-        const styleTarget = this.getTarget;
-        const responsiveStyle = new ResponsiveStylesResolver(styleTarget, meta, value);
-        const response = JSON.stringify(responsiveStyle.getNewValue);
-        return response;
-    }
-
-    /**
-    * Saves and send the data. Also refresh the styles on Editor
-    */
-    saveAndSend(value) {
-        this.props.onChange(JSON.stringify(value));
-        dispatch('core/editor').editPost({
-            meta: {
-                _gutenberg_extra_responsive_styles: this.metaValue(value),
-            },
-        });
-        new BackEndResponsiveStyles(this.getMeta);
     }
 
     render() {

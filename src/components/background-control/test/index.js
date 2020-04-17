@@ -18,6 +18,7 @@ const {
 /**
  * Internal dependencies
  */
+import GXComponent from '../../../extensions/gx-component';
 import ColorControl from '../../color-control';
 import ImageControl from '../../image-uploader';
 import MiniSizeControl from '../../mini-size-control';
@@ -52,18 +53,116 @@ export const backgroundControlAttributesTest = {
 /**
  * Components
  */
-export default class BackgroundControlTest extends Component {
+export default class BackgroundControlTest extends GXComponent {
     state = {
         isOpen: false,
         selector: 0
+    }
+
+    /**
+     * Creates a new object for being joined with the rest of the values on meta
+     */
+    get getObject() {
+        const response = {
+            label: this.object.label,
+            general: {}
+        }
+
+        if (!isEmpty(this.object.colorOptions.color)) {
+            response.general['background-color'] = this.object.colorOptions.color;
+        }
+        if (!isEmpty(this.object.colorOptions.gradient)) {
+            response.general['background'] = this.object.colorOptions.gradient;
+        }
+        if (!isEmpty(this.object.blendMode)) {
+            response.general['background-blend-mode'] = this.object.blendMode;
+        }
+
+        this.object.backgroundOptions.map(option => {
+            if (isNil(option) || isEmpty(option.imageOptions.mediaURL))
+                return;
+            // Image
+            if (option.sizeOptions.size === 'custom' && !isNil(option.imageOptions.cropOptions)) {
+                if (!isNil(response.general['background-image']))
+                    response.general['background-image'] = `${response.general['background-image']},url('${option.imageOptions.cropOptions.image.source_url}')`;
+                else
+                    response.general['background-image'] = `url('${option.imageOptions.cropOptions.image.source_url}')`;
+                if (!isEmpty(this.object.colorOptions.gradient))
+                    response.general['background-image'] = `${response.general['background-image']}, ${this.object.colorOptions.gradient}`;
+            }
+            else if (option.sizeOptions.size === 'custom' && isNil(option.imageOptions.cropOptions) || option.sizeOptions.size != 'custom' && !isNil(option.imageOptions.mediaURL)) {
+                if (!isNil(response.general['background-image']))
+                    response.general['background-image'] = `${response.general['background-image']},url('${option.imageOptions.mediaURL}')`;
+                else
+                    response.general['background-image'] = `url('${option.imageOptions.mediaURL}')`;
+                if (!isEmpty(this.object.colorOptions.gradient))
+                    response.general['background-image'] = `${response.general['background-image']}, ${this.object.colorOptions.gradient}`;
+            }
+            // Size
+            if (option.sizeOptions.size != 'custom') {
+                if (!isNil(response.general['background-size']))
+                    response.general['background-size'] = `${response.general['background-size']},${option.sizeOptions.size}`;
+                else
+                    response.general['background-size'] = option.sizeOptions.size;
+            }
+            else {
+                if (!isNil(response.general['background-size']))
+                    response.general['background-size'] = `${response.general['background-size']},cover`;
+                else
+                    response.general['background-size'] = 'cover';
+            }
+            // Repeat
+            if (option.repeat) {
+                if (!isNil(response.general['background-repeat']))
+                    response.general['background-repeat'] = `${response.general['background-repeat']},${option.repeat}`;
+                else
+                    response.general['background-repeat'] = option.repeat;
+            }
+            // Position
+            if (option.positionOptions.position != 'custom') {
+                if (!isNil(response.general['background-position']))
+                    response.general['background-position'] = `${response.general['background-position']},${option.positionOptions.position}`;
+                else
+                    response.general['background-position'] = option.positionOptions.position;
+            }
+            else {
+                if (!isNil(response.general['background-position']))
+                    response.general['background-position'] = `
+                            ${response.general['background-position']},
+                            ${option.positionOptions.width + option.positionOptions.widthUnit} ${option.positionOptions.height + option.positionOptions.heightUnit}`;
+                else
+                    response.general['background-position'] = `${option.positionOptions.width + option.positionOptions.widthUnit} ${option.positionOptions.height + option.positionOptions.heightUnit}`;
+            }
+            // Origin
+            if (option.origin) {
+                if (!isNil(response.general['background-origin']))
+                    response.general['background-origin'] = `${response.general['background-origin']},${option.origin}`;
+                else
+                    response.general['background-origin'] = option.origin;
+            }
+            // Clip
+            if (option.clip) {
+                if (!isNil(response.general['background-clip']))
+                    response.general['background-clip'] = `${response.general['background-clip']},${option.clip}`;
+                else
+                    response.general['background-clip'] = option.clip;
+            }
+            // Attachment
+            if (option.attachment) {
+                if (!isNil(response.general['background-attachment']))
+                    response.general['background-attachment'] = `${response.general['background-attachment']},${option.attachment}`;
+                else
+                    response.general['background-attachment'] = option.attachment;
+            }
+        })
+
+        return response;
     }
 
     render() {
         const {
             className = 'gx-background-control',
             backgroundOptions,
-            onChange,
-            target = ''
         } = this.props;
 
         const {
@@ -114,7 +213,7 @@ export default class BackgroundControlTest extends Component {
 
         const onRemoveImage = () => {
             pullAt(value.backgroundOptions, selector);
-            saveAndSend();
+            this.saveAndSend(value);
             onDoneEdition();
         }
 
@@ -125,156 +224,10 @@ export default class BackgroundControlTest extends Component {
             })
         }
 
-        /**
-        * Retrieves the old meta data
-        */
-        const getMeta = () => {
-            let meta = select('core/editor').getEditedPostAttribute('meta')._gutenberg_extra_responsive_styles;
-            return meta ? JSON.parse(meta) : {};
-        }
-
-		/**
-		 * Retrieve the target for responsive CSS
-		 */
-        const getTarget = () => {
-            let styleTarget = select('core/block-editor').getBlockAttributes(select('core/block-editor').getSelectedBlockClientId()).uniqueID;
-            styleTarget = `${styleTarget}${target.length > 0 ? `__$${target}` : ''}`;
-            return styleTarget;
-        }
-
-        /**
-         * Creates a new object for being joined with the rest of the values on meta
-         */
-        const getBackgroundObject = () => {
-            const response = {
-                label: value.label,
-                general: {}
-            }
-
-            if (!isEmpty(value.colorOptions.color)) {
-                response.general['background-color'] = value.colorOptions.color;
-            }
-            if (!isEmpty(value.colorOptions.gradient)) {
-                response.general['background'] = value.colorOptions.gradient;
-            }
-            if (!isEmpty(value.blendMode)) {
-                response.general['background-blend-mode'] = value.blendMode;
-            }
-
-            value.backgroundOptions.map(option => {
-                if (isNil(option) || isEmpty(option.imageOptions.mediaURL))
-                    return;
-                // Image
-                if (option.sizeOptions.size === 'custom' && !isNil(option.imageOptions.cropOptions)) {
-                    if (!isNil(response.general['background-image']))
-                        response.general['background-image'] = `${response.general['background-image']},url('${option.imageOptions.cropOptions.image.source_url}')`;
-                    else
-                        response.general['background-image'] = `url('${option.imageOptions.cropOptions.image.source_url}')`;
-                    if (!isEmpty(value.colorOptions.gradient))
-                        response.general['background-image'] = `${response.general['background-image']}, ${value.colorOptions.gradient}`;
-                }
-                else if (option.sizeOptions.size === 'custom' && isNil(option.imageOptions.cropOptions) || option.sizeOptions.size != 'custom' && !isNil(option.imageOptions.mediaURL)) {
-                    if (!isNil(response.general['background-image']))
-                        response.general['background-image'] = `${response.general['background-image']},url('${option.imageOptions.mediaURL}')`;
-                    else
-                        response.general['background-image'] = `url('${option.imageOptions.mediaURL}')`;
-                    if (!isEmpty(value.colorOptions.gradient))
-                        response.general['background-image'] = `${response.general['background-image']}, ${value.colorOptions.gradient}`;
-                }
-                // Size
-                if (option.sizeOptions.size != 'custom') {
-                    if (!isNil(response.general['background-size']))
-                        response.general['background-size'] = `${response.general['background-size']},${option.sizeOptions.size}`;
-                    else
-                        response.general['background-size'] = option.sizeOptions.size;
-                }
-                else {
-                    if (!isNil(response.general['background-size']))
-                        response.general['background-size'] = `${response.general['background-size']},cover`;
-                    else
-                        response.general['background-size'] = 'cover';
-                }
-                // Repeat
-                if (option.repeat) {
-                    if (!isNil(response.general['background-repeat']))
-                        response.general['background-repeat'] = `${response.general['background-repeat']},${option.repeat}`;
-                    else
-                        response.general['background-repeat'] = option.repeat;
-                }
-                // Position
-                if (option.positionOptions.position != 'custom') {
-                    if (!isNil(response.general['background-position']))
-                        response.general['background-position'] = `${response.general['background-position']},${option.positionOptions.position}`;
-                    else
-                        response.general['background-position'] = option.positionOptions.position;
-                }
-                else {
-                    if (!isNil(response.general['background-position']))
-                        response.general['background-position'] = `
-                            ${response.general['background-position']},
-                            ${option.positionOptions.width + option.positionOptions.widthUnit} ${option.positionOptions.height + option.positionOptions.heightUnit}`;
-                    else
-                        response.general['background-position'] = `${option.positionOptions.width + option.positionOptions.widthUnit} ${option.positionOptions.height + option.positionOptions.heightUnit}`;
-                }
-                // Origin
-                if (option.origin) {
-                    if (!isNil(response.general['background-origin']))
-                        response.general['background-origin'] = `${response.general['background-origin']},${option.origin}`;
-                    else
-                        response.general['background-origin'] = option.origin;
-                }
-                // Clip
-                if (option.clip) {
-                    if (!isNil(response.general['background-clip']))
-                        response.general['background-clip'] = `${response.general['background-clip']},${option.clip}`;
-                    else
-                        response.general['background-clip'] = option.clip;
-                }
-                // Attachment
-                if (option.attachment) {
-                    if (!isNil(response.general['background-attachment']))
-                        response.general['background-attachment'] = `${response.general['background-attachment']},${option.attachment}`;
-                    else
-                        response.general['background-attachment'] = option.attachment;
-                }
-            })
-
-            return response;
-        }
-
-		/**
-		* Creates a new object that
-		*
-		* @param {string} target	Block attribute: uniqueID
-		* @param {obj} meta		Old and saved metadate
-		* @param {obj} value	New values to add
-		*/
-        const metaValue = () => {
-            const meta = getMeta();
-            let styleTarget = styleTarget = getTarget();
-            let obj = getBackgroundObject();
-            const responsiveStyle = new ResponsiveStylesResolver(styleTarget, meta, obj);
-            const response = JSON.stringify(responsiveStyle.getNewValue);
-            return response;
-        }
-
-		/**
-		* Saves and send the data. Also refresh the styles on Editor
-		*/
-        const saveAndSend = () => {
-            onChange(JSON.stringify(value));
-            dispatch('core/editor').editPost({
-                meta: {
-                    _gutenberg_extra_responsive_styles: metaValue(),
-                },
-            });
-            new BackEndResponsiveStyles(getMeta());
-        }
-
         const getAlternativeImage = i => {
-            if(isNil(value.backgroundOptions[i].imageOptions.cropOptions))
+            if (isNil(value.backgroundOptions[i].imageOptions.cropOptions))
                 return;
-            if(isEmpty(value.backgroundOptions[i].imageOptions.cropOptions.image.source_url))
+            if (isEmpty(value.backgroundOptions[i].imageOptions.cropOptions.image.source_url))
                 return;
             return {
                 source_url: value.backgroundOptions[i].imageOptions.cropOptions.image.source_url,
@@ -299,7 +252,7 @@ export default class BackgroundControlTest extends Component {
                                                     onAddBackground()
                                                 value.backgroundOptions[i].imageOptions.mediaID = imageData.id;
                                                 value.backgroundOptions[i].imageOptions.mediaURL = imageData.url;
-                                                saveAndSend();
+                                                this.saveAndSend(value);
                                             }}
                                             placeholder={value.backgroundOptions.length - 1 === 0 ? __('Set image', 'gutenberg-extra') : __('Add Another Image', 'gutenberg-extra')}
                                             extendSelector={
@@ -323,17 +276,17 @@ export default class BackgroundControlTest extends Component {
                             color={value.colorOptions.color}
                             onColorChange={val => {
                                 value.colorOptions.color = val;
-                                saveAndSend()
+                                this.saveAndSend(value)
                             }}
                             gradient={value.colorOptions.gradient}
                             onGradientChange={val => {
                                 value.colorOptions.gradient = val;
-                                saveAndSend()
+                                this.saveAndSend(value)
                             }}
                             gradientAboveBackground={value.colorOptions.gradientAboveBackground}
                             onGradientAboveBackgroundChange={val => {
                                 value.colorOptions.gradientAboveBackground = val;
-                                saveAndSend()
+                                this.saveAndSend(value)
                             }}
                         />
                     </Fragment>
@@ -355,13 +308,13 @@ export default class BackgroundControlTest extends Component {
                                         onSelectImage={imageData => {
                                             value.backgroundOptions[selector].imageOptions.mediaID = imageData.id;
                                             value.backgroundOptions[selector].imageOptions.mediaURL = imageData.url;
-                                            saveAndSend();
+                                            this.saveAndSend(value);
                                         }}
                                         onRemoveImage={() => {
                                             value.backgroundOptions[selector].imageOptions.mediaID = '';
                                             value.backgroundOptions[selector].imageOptions.mediaURL = '';
                                             onRemoveImage();
-                                            saveAndSend();
+                                            this.saveAndSend(value);
                                         }}
                                         extendSelector={
                                             <Button
@@ -394,7 +347,7 @@ export default class BackgroundControlTest extends Component {
                                             ]}
                                             onChange={val => {
                                                 value.backgroundOptions[selector].sizeOptions.size = val;
-                                                saveAndSend();
+                                                this.saveAndSend(value);
                                             }}
                                         />
                                         {
@@ -404,7 +357,7 @@ export default class BackgroundControlTest extends Component {
                                                 cropOptions={value.backgroundOptions[selector].imageOptions.cropOptions ? value.backgroundOptions[selector].imageOptions.cropOptions : {}}
                                                 onChange={cropOptions => {
                                                     value.backgroundOptions[selector].imageOptions.cropOptions = cropOptions;
-                                                    saveAndSend();
+                                                    this.saveAndSend(value);
                                                 }}
                                             />
                                         }
@@ -421,7 +374,7 @@ export default class BackgroundControlTest extends Component {
                                             ]}
                                             onChange={val => {
                                                 value.backgroundOptions[selector].repeat = val;
-                                                saveAndSend();
+                                                this.saveAndSend(value);
                                             }}
                                         />
                                         <SelectControl
@@ -441,7 +394,7 @@ export default class BackgroundControlTest extends Component {
                                             ]}
                                             onChange={val => {
                                                 value.backgroundOptions[selector].positionOptions.position = val;
-                                                saveAndSend();
+                                                this.saveAndSend(value);
                                             }}
                                         />
                                         {
@@ -451,24 +404,24 @@ export default class BackgroundControlTest extends Component {
                                                     unit={value.backgroundOptions[selector].positionOptions.widthUnit}
                                                     onChangeUnit={val => {
                                                         value.backgroundOptions[selector].positionOptions.widthUnit = val;
-                                                        saveAndSend();
+                                                        this.saveAndSend(value);
                                                     }}
                                                     value={value.backgroundOptions[selector].positionOptions.width}
                                                     onChangeValue={val => {
                                                         value.backgroundOptions[selector].positionOptions.width = val;
-                                                        saveAndSend();
+                                                        this.saveAndSend(value);
                                                     }}
                                                 />
                                                 <MiniSizeControl
                                                     unit={value.backgroundOptions[selector].positionOptions.heightUnit}
                                                     onChangeUnit={val => {
                                                         value.backgroundOptions[selector].positionOptions.heightUnit = val;
-                                                        saveAndSend();
+                                                        this.saveAndSend(value);
                                                     }}
                                                     value={value.backgroundOptions[selector].positionOptions.height}
                                                     onChangeValue={val => {
                                                         value.backgroundOptions[selector].positionOptions.height = val;
-                                                        saveAndSend();
+                                                        this.saveAndSend(value);
                                                     }}
                                                 />
                                             </Fragment>
@@ -483,7 +436,7 @@ export default class BackgroundControlTest extends Component {
                                             ]}
                                             onChange={val => {
                                                 value.backgroundOptions[selector].origin = val;
-                                                saveAndSend();
+                                                this.saveAndSend(value);
                                             }}
                                         />
                                         <SelectControl
@@ -496,7 +449,7 @@ export default class BackgroundControlTest extends Component {
                                             ]}
                                             onChange={val => {
                                                 value.backgroundOptions[selector].clip = val;
-                                                saveAndSend();
+                                                this.saveAndSend(value);
                                             }}
                                         />
                                         <SelectControl
@@ -509,7 +462,7 @@ export default class BackgroundControlTest extends Component {
                                             ]}
                                             onChange={val => {
                                                 value.backgroundOptions[selector].attachment = val;
-                                                saveAndSend();
+                                                this.saveAndSend(value);
                                             }}
                                         />
                                     </Fragment>

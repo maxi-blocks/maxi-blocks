@@ -5,13 +5,14 @@ const { __ } = wp.i18n;
 const { Fragment } = wp.element;
 const { SelectControl } = wp.components;
 const {
-	dispatch,
-	select
+    dispatch,
+    select
 } = wp.data;
 
 /**
  * Internal dependencies
  */
+import GXComponent from '../../../extensions/gx-component';
 import DimensionsControl from '../../dimensions-control/index';
 import ColorControl from '../../color-control';
 
@@ -28,112 +29,66 @@ export const borderAttributesTest = {
 /**
  * Block
  */
-const BlockBorderTest = (props) => {
-    const {
-        borderOptions,
-        onChange,
-        target = ''
-    } = props;
+export default class BlockBorderTest extends GXComponent {
+    render() {
+        const {
+            borderOptions,
+            target = ''
+        } = this.props;
 
-    let value = typeof borderOptions === 'object' ? borderOptions : JSON.parse(borderOptions);
+        let value = typeof borderOptions === 'object' ? borderOptions : JSON.parse(borderOptions);
 
-    /**
-    * Retrieves the old meta data
-    */
-    const getMeta = () => {
-        let meta = select('core/editor').getEditedPostAttribute('meta')._gutenberg_extra_responsive_styles;
-        return meta ? JSON.parse(meta) : {};
+        return (
+            <Fragment>
+                <ColorControl
+                    label={__('Color Color', 'gutenberg-extra')}
+                    color={value.general['border-color']}
+                    onColorChange={val => {
+                        value.general['border-color'] = val;
+                        this.saveAndSend(value, null, false);
+                    }}
+                    disableGradient
+                    disableGradientAboveBackground
+                />
+                <SelectControl
+                    label={__('Border Type', 'gutenberg-extra')}
+                    className="gx-border-type"
+                    value={value.general['border-style']}
+                    options={[
+                        { label: 'None', value: 'none' },
+                        { label: 'Dotted', value: 'dotted' },
+                        { label: 'Dashed', value: 'dashed' },
+                        { label: 'Solid', value: 'solid' },
+                        { label: 'Double', value: 'double' },
+                        { label: 'Groove', value: 'groove' },
+                        { label: 'Ridge', value: 'ridge' },
+                        { label: 'Inset', value: 'inset' },
+                        { label: 'Outset', value: 'outset' },
+                    ]}
+                    onChange={val => {
+                        value.general['border-style'] = val;
+                        this.saveAndSend(value, null, false);
+                    }}
+                />
+                <DimensionsControl
+                    value={value.borderWidth}
+                    onChange={val => {
+                        value.borderWidth = JSON.parse(val);
+                        this.saveAndSend(value, null, false);
+                    }}
+                    target={target}
+                    avoidZero
+                />
+                <DimensionsControl
+                    value={value.borderRadius}
+                    onChange={val => {
+                        value.borderRadius = JSON.parse(val);
+                        this.saveAndSend(value, null, false);
+                    }}
+                    target={target}
+                    avoidZero
+                />
+            </Fragment>
+        )
     }
-
-    /**
-     * Retrieve the target for responsive CSS
-     */
-    const getTarget = () => {
-        let styleTarget = select('core/block-editor').getBlockAttributes(select('core/block-editor').getSelectedBlockClientId()).uniqueID;
-        styleTarget = `${styleTarget}${target.length > 0 ? `__$${target}` : ''}`;
-        return styleTarget;
-    }
-
-    /**
-    * Creates a new object that
-    *
-    * @param {string} target	Block attribute: uniqueID
-    * @param {obj} meta		Old and saved metadate
-    * @param {obj} value	New values to add
-    */
-    const metaValue = () => {
-        const meta = getMeta();
-        const styleTarget = getTarget();
-        const responsiveStyle = new ResponsiveStylesResolver(styleTarget, meta, value, false);
-        const response = JSON.stringify(responsiveStyle.getNewValue);
-        return response;
-    }
-
-    /**
-    * Saves and send the data. Also refresh the styles on Editor
-    */
-    const saveAndSend = () => {
-        onChange(JSON.stringify(value));
-        dispatch('core/editor').editPost({
-            meta: {
-                _gutenberg_extra_responsive_styles: metaValue(),
-            },
-        });
-        new BackEndResponsiveStyles(getMeta());
-    }
-
-    return (
-        <Fragment>
-            <ColorControl
-                label={__('Color Color', 'gutenberg-extra')}
-                color={value.general['border-color']}
-                onColorChange={val => {
-                    value.general['border-color'] = val;
-                    saveAndSend();
-                }}
-                disableGradient
-                disableGradientAboveBackground
-            />
-            <SelectControl
-                label={__('Border Type', 'gutenberg-extra')}
-                className="gx-border-type"
-                value={value.general['border-style']}
-                options={[
-                    { label: 'None', value: 'none' },
-                    { label: 'Dotted', value: 'dotted' },
-                    { label: 'Dashed', value: 'dashed' },
-                    { label: 'Solid', value: 'solid' },
-                    { label: 'Double', value: 'double' },
-                    { label: 'Groove', value: 'groove' },
-                    { label: 'Ridge', value: 'ridge' },
-                    { label: 'Inset', value: 'inset' },
-                    { label: 'Outset', value: 'outset' },
-                ]}
-                onChange={val => {
-                    value.general['border-style'] = val;
-                    saveAndSend();
-                }}
-            />
-            <DimensionsControl
-                value={value.borderWidth}
-                onChange={val => {
-                    value.borderWidth = JSON.parse(val);
-                    saveAndSend();
-                }}
-                target={target}
-                avoidZero
-            />
-            <DimensionsControl
-                value={value.borderRadius}
-                onChange={val => {
-                    value.borderRadius = JSON.parse(val);
-                    saveAndSend();
-                }}
-                target={target}
-                avoidZero
-            />
-        </Fragment>
-    )
 }
-
-export default BlockBorderTest;

@@ -59,7 +59,12 @@ export default class LinkedButton extends Component {
             onTextChange,
             externalLink,
             onLinkChange,
-            settings = [],
+            settings = [
+                {
+                    id: 'opensInNewTab',
+                    title: __('Open in new tab', 'gutenberg-extra')
+                }
+            ],
         } = this.props;
 
         const { uniqueHash } = this.state;

@@ -13,7 +13,7 @@ const MiniSizeControl = props => {
 
     const {
         label,
-        className = '',
+        className = 'components-base-control',
         unit,
         onChangeUnit,
         value,

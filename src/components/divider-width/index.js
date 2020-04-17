@@ -78,7 +78,7 @@ export class DividerWidth extends Component {
     };
 
     return (
-      <div className={"divider-dimension"}>
+      <div className={"divider-dimension components-base-control"}>
         <RadioControl
           className={"gx-unit-control divider-unit-control"}
           selected={dividerWidthUnit}

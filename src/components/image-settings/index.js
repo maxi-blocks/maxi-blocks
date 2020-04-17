@@ -5,6 +5,7 @@ const { __ } = wp.i18n;
 const { Component, Fragment } = wp.element;
 const { withSelect, dispatch, select } = wp.data;
 const {
+  PanelBody,
   SelectControl,
   RadioControl,
   RangeControl,
@@ -27,7 +28,13 @@ import iconsSettings from "../icons/icons-settings.js";
 import ColorControl from "../color-control/";
 import ImageCrop from "../image-crop/";
 import { capitalize, isEmpty, isNil, isNumber } from "lodash";
-
+import {
+  Accordion,
+  AccordionItem,
+  AccordionItemHeading,
+  AccordionItemButton,
+  AccordionItemPanel,
+} from "react-accessible-accordion";
 /**
  * Styles
  */
@@ -55,7 +62,7 @@ class ImageSettingsOptions extends Component {
   render() {
     const {
       mediaID,
-      className = "gx-imagesettings-control",
+      className = "gx-imagesettings-control gx-buttonstyles-control",
       imageData,
       imageSettings = this.props.attributes.imageSettings,
       onChange,
@@ -310,189 +317,241 @@ class ImageSettingsOptions extends Component {
 
     return (
       <div className={className}>
-        <SelectControl
-          label={__("Image Size", "gutenberg-extra")}
-          value={
-            value.imageSize.options[value.size] || value.size === "gx-custom"
-              ? value.size
-              : "full"
-          }
-          options={getSizeOptions()}
-          onChange={(val) => {
-            value.size = val;
-            saveAndSend();
-          }}
-        />
-        {value.size === "gx-custom" && (
-          <ImageCrop
-            mediaID={mediaID}
-            cropOptions={value.imageSize.cropOptions}
-            onChange={(val, crop) => {
-              value.imageSize.options = val.media_details.sizes;
-              value.imageSize.cropOptions = crop;
-              saveAndSend();
-            }}
-          />
-        )}
-        <AlignmentControl
-          value={value.alignment}
-          onChange={(val) => {
-            value.alignment = val;
-            saveAndSend();
-          }}
-          disableJustify
-        />
-        <SelectControl
-          label={__("Caption", "gutenberg-extra")}
-          value={value.captionType}
-          options={getCaptionOptions()}
-          onChange={(val) => {
-            value.captionType = val;
-            val === "attachment"
-              ? (value.caption = imageData.caption.raw)
-              : (value.caption = "");
-            saveAndSend();
-          }}
-        />
-        {value.captionType === "custom" && (
-          <TextControl
-            label={__("Custom Caption", "gutenberg-extra")}
-            className="gx-custom-caption"
-            value={value.caption}
-            onChange={(val) => {
-              value.caption = val;
-              saveAndSend();
-            }}
-          />
-        )}
-        {value.captionType != "none" && (
-          <Typography
-            fontOptions={value.captionTypography}
-            onChange={(val) => {
-              value.captionTypography = val;
-              saveAndSend();
-            }}
-            target={target + " figcaption"}
-          />
-        )}
-        <MiniSizeControl
-          label={__("Max Width", "gutenberg-extra")}
-          className={'gx-image-max-width'}
-          unit={value.sizeSettings.maxWidthUnit}
-          onChangeUnit={(val) => {
-            value.sizeSettings.maxWidthUnit = val;
-            saveAndSend();
-          }}
-          value={value.sizeSettings.maxWidth}
-          onChangeValue={(val) => {
-            value.sizeSettings.maxWidth = val;
-            saveAndSend();
-          }}
-        />
-        <MiniSizeControl
-          className={'gx-image-width'}
-          label={__("Width", "gutenberg-extra")}
-          unit={value.sizeSettings.widthUnit}
-          onChangeUnit={(val) => {
-            value.sizeSettings.widthUnit = val;
-            saveAndSend();
-          }}
-          value={value.sizeSettings.width}
-          onChangeValue={(val) => {
-            value.sizeSettings.width = val;
-            saveAndSend();
-          }}
-        />
-        <RadioControl
-          className="gx-imagesettings-selector-control"
-          selected={selector}
-          options={[
-            { label: "Normal", value: "normal" },
-            { label: "Hover", value: "hover" },
-          ]}
-          onChange={(selector) => {
-            this.setState({ selector });
-          }}
-        />
-        <RangeControl
-          label={__("Opacity", "gutenberg-extra")}
-          className={'gx-imagesettings-opacity'}
-          value={value[selector].opacity}
-          min={0}
-          max={1}
-          step={0.1}
-          onChange={(val) => {
-            value[selector].opacity = val;
-            saveAndSend();
-          }}
-        />
-        <ColorControl
-          label={__("Background Colour", "gutenberg-extra")}
-          color={value[selector].backgroundColor}
-          onColorChange={(val) => {
-            value[selector].backgroundColor = val;
-            saveAndSend();
-          }}
-          gradient={value[selector].backgroundGradient}
-          onGradientChange={(val) => {
-            value[selector].backgroundGradient = val;
-            saveAndSend();
-          }}
-          gradientAboveBackground={value[selector].gradientAboveBackground}
-          onGradientAboveBackgroundChange={(val) => {
-            value[selector].gradientAboveBackground = val;
-            saveAndSend();
-          }}
-        />
-        <PopoverControl
-          className={"box-shadow"}
-          label={__("Box shadow", "gutenberg-extra")}
-          popovers={[
-            {
-              content: (
-                <div className={"gx-box-shadow"}>
-                  <BoxShadow
-                    boxShadowOptions={value[selector].boxShadow}
-                    onChange={(val) => {
-                      value[selector].boxShadow = JSON.parse(val);
-                      saveAndSend();
-                    }}
-                    target={
-                      selector != "hover"
-                        ? `${target} img`
-                        : `${target} img:hover`
-                    }
-                  />
-                </div>
-              ),
-            },
-          ]}
-        />
-        <hr style={{ borderTop: "1px solid #ddd" }} />
-        <BlockBorder
-          borderColor={value[selector].borderSettings.borderColor}
-          onChangeBorderColor={(val) => {
-            value[selector].borderSettings.borderColor = val;
-            saveAndSend();
-          }}
-          borderType={value[selector].borderSettings.borderType}
-          onChangeBorderType={(val) => {
-            value[selector].borderSettings.borderType = val;
-            saveAndSend();
-          }}
-          borderRadius={value[selector].borderSettings.borderRadius}
-          onChangeBorderRadius={(val) => {
-            value[selector].borderSettings.borderRadius = val;
-            saveAndSend();
-          }}
-          borderWidth={value[selector].borderSettings.borderWidth}
-          onChangeBorderWidth={(val) => {
-            value[selector].borderSettings.borderWidth = val;
-            saveAndSend();
-          }}
-          borderRadiusTarget={selector != "hover" ? target : `${target}:hover`}
-          borderWidthTarget={selector != "hover" ? target : `${target}:hover`}
-        />
+        <Accordion
+          className={"gx-style-tab-setting gx-accordion"}
+          allowZeroExpanded={true}
+        >
+          <AccordionItem className={"gx-image-item"}>
+            <AccordionItemHeading
+              className={"gx-accordion-tab gx-image-tab"}
+            >
+              <AccordionItemButton className="components-base-control__label">
+                {__("Image", "gutenberg-extra")}
+              </AccordionItemButton>
+            </AccordionItemHeading>
+            <AccordionItemPanel>
+            <PanelBody className={'gx-panel'}>
+              <SelectControl
+                label={__("Image Size", "gutenberg-extra")}
+                value={
+                  value.imageSize.options[value.size] ||
+                  value.size === "gx-custom"
+                    ? value.size
+                    : "full"
+                }
+                options={getSizeOptions()}
+                onChange={(val) => {
+                  value.size = val;
+                  saveAndSend();
+                }}
+              />
+              {value.size === "gx-custom" && (
+                <ImageCrop
+                  mediaID={mediaID}
+                  cropOptions={value.imageSize.cropOptions}
+                  onChange={(val, crop) => {
+                    value.imageSize.options = val.media_details.sizes;
+                    value.imageSize.cropOptions = crop;
+                    saveAndSend();
+                  }}
+                />
+              )}
+              <AlignmentControl
+                value={value.alignment}
+                onChange={(val) => {
+                  value.alignment = val;
+                  saveAndSend();
+                }}
+                disableJustify
+              />
+              <SelectControl
+                label={__("Caption", "gutenberg-extra")}
+                value={value.captionType}
+                options={getCaptionOptions()}
+                onChange={(val) => {
+                  value.captionType = val;
+                  val === "attachment"
+                    ? (value.caption = imageData.caption.raw)
+                    : (value.caption = "");
+                  saveAndSend();
+                }}
+              />
+              {value.captionType === "custom" && (
+                <TextControl
+                  label={__("Custom Caption", "gutenberg-extra")}
+                  className="gx-custom-caption"
+                  value={value.caption}
+                  onChange={(val) => {
+                    value.caption = val;
+                    saveAndSend();
+                  }}
+                />
+              )}
+              {value.captionType != "none" && (
+                <Typography
+                  fontOptions={value.captionTypography}
+                  onChange={(val) => {
+                    value.captionTypography = val;
+                    saveAndSend();
+                  }}
+                  target={target + " figcaption"}
+                />
+              )}
+              <MiniSizeControl
+                className={"gx-image-width"}
+                label={__("Width", "gutenberg-extra")}
+                unit={value.sizeSettings.widthUnit}
+                onChangeUnit={(val) => {
+                  value.sizeSettings.widthUnit = val;
+                  saveAndSend();
+                }}
+                value={value.sizeSettings.width}
+                onChangeValue={(val) => {
+                  value.sizeSettings.width = val;
+                  saveAndSend();
+                }}
+              />
+              <MiniSizeControl
+                label={__("Max Width", "gutenberg-extra")}
+                className={"gx-image-max-width"}
+                unit={value.sizeSettings.maxWidthUnit}
+                onChangeUnit={(val) => {
+                  value.sizeSettings.maxWidthUnit = val;
+                  saveAndSend();
+                }}
+                value={value.sizeSettings.maxWidth}
+                onChangeValue={(val) => {
+                  value.sizeSettings.maxWidth = val;
+                  saveAndSend();
+                }}
+              />
+              </PanelBody>
+            </AccordionItemPanel>
+          </AccordionItem>
+          <AccordionItem className={"gx-background-item"}>
+            <AccordionItemHeading
+              className={"gx-accordion-tab gx-background-tab"}
+            >
+              <AccordionItemButton className="components-base-control__label">
+                {__("Background", "gutenberg-extra")}
+              </AccordionItemButton>
+            </AccordionItemHeading>
+            <AccordionItemPanel>
+            <PanelBody className={'gx-panel'}>
+              <RadioControl
+                className="gx-buttonstyles-selector-control"
+                selected={selector}
+                options={[
+                  { label: "Normal", value: "normal" },
+                  { label: "Hover", value: "hover" },
+                ]}
+                onChange={(selector) => {
+                  this.setState({ selector });
+                }}
+              />
+              <ColorControl
+                className={'components-base-control'}
+                label={__("Background Colour", "gutenberg-extra")}
+                color={value[selector].backgroundColor}
+                onColorChange={(val) => {
+                  value[selector].backgroundColor = val;
+                  saveAndSend();
+                }}
+                gradient={value[selector].backgroundGradient}
+                onGradientChange={(val) => {
+                  value[selector].backgroundGradient = val;
+                  saveAndSend();
+                }}
+                gradientAboveBackground={
+                  value[selector].gradientAboveBackground
+                }
+                onGradientAboveBackgroundChange={(val) => {
+                  value[selector].gradientAboveBackground = val;
+                  saveAndSend();
+                }}
+              />
+              <RangeControl
+                label={__("Opacity", "gutenberg-extra")}
+                className={"gx-imagesettings-opacity"}
+                value={value[selector].opacity}
+                allowReset={true}
+                min={0}
+                max={1}
+                step={0.1}
+                onChange={(val) => {
+                  value[selector].opacity = val;
+                  saveAndSend();
+                }}
+              />
+              <PopoverControl
+                className={"box-shadow components-base-control"}
+                label={__("Box shadow", "gutenberg-extra")}
+                popovers={[
+                  {
+                    content: (
+                      <div className={"gx-box-shadow"}>
+                        <BoxShadow
+                          boxShadowOptions={value[selector].boxShadow}
+                          onChange={(val) => {
+                            value[selector].boxShadow = JSON.parse(val);
+                            saveAndSend();
+                          }}
+                          target={
+                            selector != "hover"
+                              ? `${target} img`
+                              : `${target} img:hover`
+                          }
+                        />
+                      </div>
+                    ),
+                  },
+                ]}
+              />
+              </PanelBody>
+            </AccordionItemPanel>
+          </AccordionItem>
+          <AccordionItem className={"gx-border-item"}>
+            <AccordionItemHeading
+              className={"gx-accordion-tab gx-border-tab"}
+            >
+              <AccordionItemButton className="components-base-control__label">
+                {__("Border", "gutenberg-extra")}
+              </AccordionItemButton>
+            </AccordionItemHeading>
+            <AccordionItemPanel>
+            <PanelBody className={'gx-panel'}>
+              <BlockBorder
+                borderColor={value[selector].borderSettings.borderColor}
+                onChangeBorderColor={(val) => {
+                  value[selector].borderSettings.borderColor = val;
+                  saveAndSend();
+                }}
+                borderType={value[selector].borderSettings.borderType}
+                onChangeBorderType={(val) => {
+                  value[selector].borderSettings.borderType = val;
+                  saveAndSend();
+                }}
+                borderRadius={value[selector].borderSettings.borderRadius}
+                onChangeBorderRadius={(val) => {
+                  value[selector].borderSettings.borderRadius = val;
+                  saveAndSend();
+                }}
+                borderWidth={value[selector].borderSettings.borderWidth}
+                onChangeBorderWidth={(val) => {
+                  value[selector].borderSettings.borderWidth = val;
+                  saveAndSend();
+                }}
+                borderRadiusTarget={
+                  selector != "hover" ? target : `${target}:hover`
+                }
+                borderWidthTarget={
+                  selector != "hover" ? target : `${target}:hover`
+                }
+              />
+              </PanelBody>
+            </AccordionItemPanel>
+          </AccordionItem>
+        </Accordion>
       </div>
     );
   }

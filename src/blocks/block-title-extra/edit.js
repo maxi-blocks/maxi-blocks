@@ -330,7 +330,7 @@ const edit = (props) => {
               className={"gx-accordion-tab gx-typography-tab"}
             >
               <AccordionItemButton className="components-base-control__label">
-                {__("Typography & Colours", "gutenberg-extra")}
+                {__("Typography / Colours", "gutenberg-extra")}
               </AccordionItemButton>
             </AccordionItemHeading>
             <AccordionItemPanel>
@@ -344,7 +344,7 @@ const edit = (props) => {
                   onChange={(value) => {
                     setAttributes({ FontTitleOptions: value });
                   }}
-                  className="components-panel__body editor-panel-color-settings block-editor-panel-color-settings is-opened typography gx-typography-control"
+                  className="components-panel__body components-base-control editor-panel-color-settings block-editor-panel-color-settings is-opened typography gx-typography-control"
                   target="gx-title-extra-title"
                 />
                 <Typography
@@ -352,7 +352,7 @@ const edit = (props) => {
                   onChange={(value) => {
                     setAttributes({ FontSubtitleOptions: value });
                   }}
-                  className="components-panel__body editor-panel-color-settings block-editor-panel-color-settings is-opened typography gx-typography-control"
+                  className="components-panel__body components-base-control editor-panel-color-settings block-editor-panel-color-settings is-opened typography gx-typography-control"
                   target="gx-title-extra-subtitle"
                 />
                 <Typography
@@ -360,7 +360,7 @@ const edit = (props) => {
                   onChange={(value) => {
                     setAttributes({ FontDescriptionOptions: value });
                   }}
-                  className="components-panel__body editor-panel-color-settings block-editor-panel-color-settings is-opened typography gx-typography-control"
+                  className="components-panel__body components-base-control editor-panel-color-settings block-editor-panel-color-settings is-opened typography gx-typography-control"
                   target="gx-title-extra-text"
                 />
                 <SubtitleBackgroundColor {...props} />
@@ -398,9 +398,10 @@ const edit = (props) => {
               </AccordionItemButton>
             </AccordionItemHeading>
             <AccordionItemPanel>
+            <PanelBody className={'gx-panel gx-color-setting gx-style-tab-setting'}>
               <BaseControl
                 className={
-                  "bg-color-parent gx-reset-button background-gradient "
+                  "bg-color-parent gx-reset-button background-gradient"
                 }
               >
                 <ColorControl
@@ -473,20 +474,21 @@ const edit = (props) => {
                   },
                 ]}
               />
-              <PanelBody
+              {/* <PanelBody
                 className="gx-panel gx-border-setting gx-style-tab-setting"
                 initialOpen={true}
                 title={__("Border settings", "gutenberg-extra")}
-              >
+              > */}
                 <Line />
                 <BlockBorder {...props} />
+              {/* </PanelBody> */}
               </PanelBody>
             </AccordionItemPanel>
           </AccordionItem>
           <AccordionItem className={"gx-width-item"}>
             <AccordionItemHeading className={"gx-accordion-tab gx-width-tab"}>
               <AccordionItemButton className="components-base-control__label">
-                {__(" Width & Height", "gutenberg-extra")}
+                {__(" Width / Height", "gutenberg-extra")}
               </AccordionItemButton>
             </AccordionItemHeading>
             <AccordionItemPanel>
@@ -502,7 +504,7 @@ const edit = (props) => {
           <AccordionItem className={"gx-padding-margin-item"}>
             <AccordionItemHeading className={"gx-accordion-tab gx-padding-tab"}>
               <AccordionItemButton className="components-base-control__label">
-                {__("Padding & Margin", "gutenberg-extra")}
+                {__("Padding / Margin", "gutenberg-extra")}
               </AccordionItemButton>
             </AccordionItemHeading>
             <AccordionItemPanel>

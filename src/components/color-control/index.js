@@ -28,6 +28,8 @@ const ColorControl = props => {
         label,
         disableColor = false,
         color,
+        className,
+        classes = className ? className + ' ' + 'gx-colorcontrol-control' : 'gx-colorcontrol-control',
         onColorChange,
         colorIcon = iconsSettings.colorWheel,
         disableGradient = false,
@@ -87,7 +89,7 @@ const ColorControl = props => {
     }
 
     return (
-        <div className="gx-colorcontrol-control">
+        <div className={classes}>
             <div className="gx-colorcontrol-color-display">
                 <span
                     style={{

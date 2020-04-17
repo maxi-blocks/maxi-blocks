@@ -3,7 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
-const { SelectControl } = wp.components;
+const { SelectControl,BaseControl } = wp.components;
 
 /**
  * External dependencies
@@ -81,6 +81,7 @@ export const BlockBorder = (props) => {
 
     return (
         <Fragment>
+            <BaseControl className={"gx-settings-button background-image"}>
             <ColorControl 
                 label={colorTitle}
                 color={borderColor}
@@ -88,6 +89,8 @@ export const BlockBorder = (props) => {
                 disableGradient
                 disableGradientAboveBackground
             />
+            </BaseControl>
+            <BaseControl className={"gx-settings-button background-image"}>
             <SelectControl
                 label={borderTypeLabel}
                 className={borderTypeClassName}
@@ -95,16 +98,21 @@ export const BlockBorder = (props) => {
                 options={borderTypeOptions}
                 onChange={value => onChangeValue('borderType', value, onChangeBorderType)}
             />
+            </BaseControl>
+            <BaseControl className={"gx-settings-button background-image"}>
             <DimensionsControl
                 value={borderWidth}
                 onChange={value => onChangeValue('borderWidth', value, onChangeBorderWidth)}
                 target={borderWidthTarget}
             />
+            </BaseControl>
+            <BaseControl className={"gx-settings-button background-image"}>
             <DimensionsControl
                 value={borderRadius}
                 onChange={value => onChangeValue('borderRadius', value, onChangeBorderRadius)}
                 target={borderRadiusTarget}
             />
+            </BaseControl>
         </Fragment>
     )
 }

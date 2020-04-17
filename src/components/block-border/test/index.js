@@ -10,7 +10,7 @@ const {
 } = wp.data;
 
 /**
- * External dependencies
+ * Internal dependencies
  */
 import DimensionsControl from '../../dimensions-control/index';
 import ColorControl from '../../color-control';
@@ -88,9 +88,7 @@ const BlockBorderTest = (props) => {
                 label={__('Color Color', 'gutenberg-extra')}
                 color={value.general['border-color']}
                 onColorChange={val => {
-                    console.log(val)
                     value.general['border-color'] = val;
-                    console.log(value)
                     saveAndSend();
                 }}
                 disableGradient

@@ -13,7 +13,7 @@ const {
  * Internal dependencies
  */
 import GXComponent from '../../../extensions/gx-component';
-import DimensionsControl from '../../dimensions-control/index';
+import DimensionsControlTest from '../../dimensions-control/test';
 import ColorControl from '../../color-control';
 
 /**
@@ -30,6 +30,12 @@ export const borderAttributesTest = {
  * Block
  */
 export default class BlockBorderTest extends GXComponent {
+
+    componentDidMount() {
+        const value = typeof this.props.borderOptions === 'object' ? this.props.borderOptions : JSON.parse(this.props.borderOptions);
+        this.saveAndSend(value)
+    }
+
     render() {
         const {
             borderOptions,
@@ -70,7 +76,7 @@ export default class BlockBorderTest extends GXComponent {
                         this.saveAndSend(value, null, false);
                     }}
                 />
-                <DimensionsControl
+                <DimensionsControlTest
                     value={value.borderWidth}
                     onChange={val => {
                         value.borderWidth = JSON.parse(val);
@@ -79,7 +85,7 @@ export default class BlockBorderTest extends GXComponent {
                     target={target}
                     avoidZero
                 />
-                <DimensionsControl
+                <DimensionsControlTest
                     value={value.borderRadius}
                     onChange={val => {
                         value.borderRadius = JSON.parse(val);

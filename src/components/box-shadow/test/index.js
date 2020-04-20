@@ -31,6 +31,11 @@ export const boxShadowOptionsAttributes = {
  */
 export default class BoxShadowTest extends GXComponent {
 
+    componentDidMount() {
+        const value = typeof this.props.boxShadowOptions === 'object' ? this.props.boxShadowOptions : JSON.parse(this.props.boxShadowOptions);
+        this.saveAndSend(value)
+    }
+
     /**
      * Creates a new object for being joined with the rest of the values on meta
      */

@@ -69,7 +69,7 @@ export default class GXComponent extends Component {
         this.props.onChange(JSON.stringify(value));
         dispatch('core/editor').editPost({
             meta: {
-                _gutenberg_extra_responsive_styles: this.metaValue(value, avoidZero),
+                _gutenberg_extra_responsive_styles: this.metaValue(value, null, avoidZero),
             },
         });
         new BackEndResponsiveStyles(this.getMeta);

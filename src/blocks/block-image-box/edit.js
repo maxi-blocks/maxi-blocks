@@ -47,6 +47,7 @@ import AccordionControl from '../../components/accordion-control';
 import FontLevelTest from '../../components/font-level/test';
 import BoxShadowTest from '../../components/box-shadow/test';
 import { ButtonStylesTest } from '../../components/button-styles/test';
+import { ImageSettingsTest } from '../../components/image-settings/test';
 
 /**
  * Content
@@ -168,12 +169,17 @@ const edit = props => {
                         label: __('Image', 'gutenberg-extra'),
                         className: 'gx-imagesettings-tab',
                         content: (
-                            <ImageSettings
-                                target="gx-image-box-image"
+                            <ImageSettingsTest
                                 imageSettings={imageSettings}
                                 onChange={value => setAttributes({ imageSettings: value })}
                                 mediaID={mediaID}
                             />
+                            // <ImageSettings
+                            //     target="gx-image-box-image"
+                            //     imageSettings={imageSettings}
+                            //     onChange={value => setAttributes({ imageSettings: value })}
+                            //     mediaID={mediaID}
+                            // />
                         ),
                     },
                     {

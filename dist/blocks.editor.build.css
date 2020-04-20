@@ -219,10 +219,6 @@
  * Can include things like variables and mixins
  * that are used across the project.
 */
-.gx-image-box .gx-buttoneditor-button {
-  width: 10rem;
-  height: 3rem;
-  background-color: #00ccff; }
 /**
  * #.# Common SCSS
  *
@@ -861,9 +857,8 @@ div.gx-alignmentcontrol-control .components-radio-control__option input:checked 
  * that are used across the project.
 */
 .gx-buttoneditor-button {
-  width: -webkit-max-content;
-  width: -moz-max-content;
-  width: max-content;
+  width: 10rem;
+  height: 3rem;
   border-radius: 0; }
 
 .gx-buttoneditor-button .gx-externalbutton-richtext {

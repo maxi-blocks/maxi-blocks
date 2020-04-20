@@ -66,6 +66,11 @@ export class ButtonStylesTest extends GXComponent {
         selector3: 'normal',
     }
 
+    componentDidMount() {
+        const value = typeof this.props.buttonSettings === 'object' ? this.props.buttonSettings : JSON.parse(this.props.buttonSettings);
+        this.saveAndSend(value)
+    }
+
     /**
      * Creates a new object for being joined with the rest of the values on meta
      */
@@ -75,7 +80,6 @@ export class ButtonStylesTest extends GXComponent {
         if (this.type === 'hover')
             return this.getHoverStylesObject;
     }
-
 
     get getNormalStylesObject() {
         const response = {

@@ -373,7 +373,7 @@ export class ButtonStylesTest extends GXComponent {
 /**
  * Backend editor
  */
-export const ButtonEditor = props => {
+export const ButtonEditorTest = props => {
     const {
         className = 'gx-buttoneditor-button',
         buttonSettings,
@@ -404,13 +404,17 @@ export const ButtonEditor = props => {
 /**
  * FrontEnd
  */
-export const ButtonSaver = props => {
+export const ButtonSaverTest = props => {
     const {
         className = 'gx-buttoneditor-button',
         buttonSettings,
     } = props;
 
     const value = typeof buttonSettings === 'object' ? buttonSettings : JSON.parse(buttonSettings);
+    const linkProps = {
+        href: value.linkOptions.url || '',
+        target: value.linkOptions.opensInNewTab ? '_blank' : '_self'
+    }
 
     return (
         <Fragment>
@@ -418,7 +422,9 @@ export const ButtonSaver = props => {
                 <Button
                     className={className}
                     href={value.linkOptions.url}
+                    {...linkProps}
                 >
+                    {value.opensInNewTab}
                     {value.buttonText}
                 </Button>
             }

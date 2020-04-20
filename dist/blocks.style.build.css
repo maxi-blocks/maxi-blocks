@@ -176,7 +176,10 @@
  * that are used across the project.
 */
 .gx-buttoneditor-button {
-  display: block; }
+  display: block;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content; }
 /**
  * #.# Common SCSS
  *

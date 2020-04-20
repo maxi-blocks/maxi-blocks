@@ -13,6 +13,9 @@ import { Link } from '../../components/link-options/index';
 import { Image } from '../../components/image-settings';
 import { ButtonSaver } from '../../components/button-styles/';
 
+// Testing
+import { ButtonSaverTest } from '../../components/button-styles/test';
+
 /**
  * External dependencies
  */
@@ -84,7 +87,7 @@ const save = (props) => {
                         className="gx-image-box-description"
                         value={description}
                     />
-                    <ButtonSaver
+                    <ButtonSaverTest
                         buttonSettings={buttonStyles}
                     />
                 </div>

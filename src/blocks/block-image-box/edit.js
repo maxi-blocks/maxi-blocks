@@ -46,7 +46,10 @@ import BackgroundControlTest from '../../components/background-control/test';
 import AccordionControl from '../../components/accordion-control';
 import FontLevelTest from '../../components/font-level/test';
 import BoxShadowTest from '../../components/box-shadow/test';
-import { ButtonStylesTest } from '../../components/button-styles/test';
+import { 
+    ButtonStylesTest,
+    ButtonEditorTest
+} from '../../components/button-styles/test';
 import { ImageSettingsTest } from '../../components/image-settings/test';
 
 /**
@@ -131,7 +134,7 @@ const edit = props => {
                     link={linkTitle}
                     onChangeLink={value => setAttributes({ linkTitle: value })}
                     linkOptions={linkOptions}
-                    onChangeOptions={value => { setAttributes({ linkOptions: value }); }}
+                    onChangeOptions={value => { console.log(value);setAttributes({ linkOptions: value }); }}
                 />
             </PanelBody>
             <AccordionControl
@@ -330,7 +333,7 @@ const edit = props => {
                         onChange={value => setAttributes({ description: value })}
                         className="gx-image-box-description"
                     />
-                    <ButtonEditor
+                    <ButtonEditorTest
                         buttonSettings={buttonStyles}
                         onChange={value => setAttributes({ buttonStyles: value })}
                         placeholder={__('Click me', 'gutenberg-extra')}

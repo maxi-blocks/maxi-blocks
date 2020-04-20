@@ -4,7 +4,6 @@
 const { __ } = wp.i18n;
 const { getScrollContainer } = wp.dom;
 const { Button } = wp.components;
-const { select } = wp.data;
 const { Component } = wp.element;
 const {
     RichText,
@@ -27,6 +26,7 @@ import classnames from 'classnames';
  */
 import './editor.scss';
 import './style.scss';
+import iconsSettings from '../icons/icons-settings';
 
 /**
  * Block
@@ -48,7 +48,7 @@ export default class LinkedButton extends Component {
         if (isNil(target) || isNil(reference)) {
             return;
         }
-        new FixObjectFollower(target, reference, scrollEl);
+        new FixObjectFollower(target, reference, scrollEl, 'down');
     }
 
     render() {
@@ -100,6 +100,7 @@ export default class LinkedButton extends Component {
                             )
                         }
                     ]}
+                    icon={iconsSettings.sync}
                 />
             </Button>
         )

@@ -427,49 +427,67 @@ class BackEndResponsiveStyles {
  */
 
 class FixObjectFollower {
-    constructor(target, reference, scrollEl) {
+    constructor(target, reference, scrollEl, position = 'top') {
         this.target = target;
         this.reference = reference;
         this.scrollEl = scrollEl || document;
+        this.position = position;
         this.initEvents();
-        this.referenceEvents();
     }
 
     initEvents() {
-        this.setPosition();
+        this.getPosition();
         this.scrollEl.addEventListener(
             'scroll',
-            this.setPosition.bind(this)
+            this.getPosition.bind(this)
         )
         this.scrollEl.addEventListener(
             'resize',
-            this.setPosition.bind(this)
+            this.getPosition.bind(this)
         )
         this.scrollEl.addEventListener(
             'change',
-            this.setPosition.bind(this)
+            this.getPosition.bind(this)
         )
         window.addEventListener(
             'resize',
-            this.setPosition.bind(this)
+            this.getPosition.bind(this)
         )
         document.addEventListener(
             'click',
-            this.setPosition.bind(this)
+            this.onClick.bind(this)
         )
     }
 
-    referenceEvents() {
-        const config = { attributes: true, childList: true, subtree: true };
-        const observer = new MutationObserver(this.setPosition.bind(this));
-        observer.observe(this.reference, config);
+    onClick() {
+        setTimeout(() => {
+            this.getPosition()
+        }, 500);
     }
 
-    setPosition() {
-        const position = this.reference.getBoundingClientRect();
-        const posTop = position.top;
-        const posLeft = position.left + position.width;
-        this.target.style.top = posTop + 'px';
-        this.target.style.left = posLeft + 'px';
+    getPosition() {
+        const posData = this.reference.getBoundingClientRect();
+        const position = {
+            top: this.getTop(posData),
+            left: posData.left + posData.width,
+        }
+
+        this.setPosition(position)
+    }
+
+    getTop(posData) {
+        switch(this.position){
+            case 'top':
+                return posData.top;
+            case 'middle':
+                return posData.top + (posData.height / 2) - (this.target.clientHeight / 2);
+            case 'down':
+                return posData.top + posData.height - this.target.clientHeight;
+        }
+    }
+
+    setPosition(position) {
+        this.target.style.top = position.top + 'px';
+        this.target.style.left = position.left + 'px';
     }
 }

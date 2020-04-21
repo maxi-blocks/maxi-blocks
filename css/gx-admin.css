@@ -335,7 +335,7 @@ body .gx-hidden {
 }
 
 .gx-box-settings-item .gx-border-setting {
-  padding-right:25px;
+  padding-right: 25px;
 }
 
 .gx-tabs {
@@ -381,7 +381,7 @@ body div.gx-sidebar .components-panel__body > .components-panel__body-title {
 }
 
 .gx-sidebar .components-button::before,
-.gx-sidebar .components-button svg{
+.gx-sidebar .components-button svg {
   width: 18px !important;
   height: 18px !important;
 }
@@ -422,7 +422,7 @@ body div.gx-sidebar .components-panel__body > .components-panel__body-title {
   margin-bottom: 15px !important;
 }
 
-.gx-sidebar .gx-colorcontrol-control{
+.gx-sidebar .gx-colorcontrol-control {
   width: 100%;
 }
 
@@ -431,7 +431,7 @@ body div.gx-sidebar .components-panel__body > .components-panel__body-title {
 }
 
 .gx-opacity-control .components-base-control__field .components-base-control__label,
-.gx-imagesettings-opacity .components-base-control__field .components-base-control__label{
+.gx-imagesettings-opacity .components-base-control__field .components-base-control__label {
   width: auto;
   margin-right: 10px;
 }
@@ -504,7 +504,7 @@ body div.gx-sidebar .components-panel__body > .components-panel__body-title {
 .components-select-control__input {
   min-height: unset;
   max-height: unset !important;
-  height: 30px !important;
+  /* height: 30px !important; */
   border-radius: 5px;
   background-color: rgba(33, 141, 250, 0);
   border: 2px solid #dddfe1;
@@ -513,7 +513,7 @@ body div.gx-sidebar .components-panel__body > .components-panel__body-title {
   font-weight: 500;
 }
 
-.components-select-control__input{ 
+.components-select-control__input {
   font-size: 10pt !important;
 }
 
@@ -660,7 +660,7 @@ body div.gx-sidebar .components-panel__body > .components-panel__body-title {
   content: url("../img/gx-reset.svg") !important;
   margin: auto;
   margin-left: auto;
-  color:#464a53;
+  color: #464a53;
   width: 18px;
   height: 18px;
 }
@@ -669,21 +669,21 @@ input[type="checkbox"].gutenberg-extra-checkbox-input {
   position: relative;
   width: 23px;
   height: 23px;
-  transition:0.3s;
+  transition: 0.3s;
 }
 
 input[type="checkbox"].gutenberg-extra-checkbox-input:focus {
   box-shadow: none !important;
 }
 
-input[type="checkbox"].gutenberg-extra-checkbox-input:checked{
+input[type="checkbox"].gutenberg-extra-checkbox-input:checked {
   background: #00cdff !important;
   border-color: #00cdff !important;
-  transition:0.3s;
+  transition: 0.3s;
 }
 
-input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before{
-  transition:0.3s;
+input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before {
+  transition: 0.3s;
   content: url("../src/components/checkbox/check-box.svg");
   position: absolute;
   top: 56%;
@@ -731,7 +731,6 @@ input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before{
   line-height: 20px;
 }
 
-
 .gx-sidebar button.components-range-control__reset:disabled,
 .gx-popover button.components-range-control__reset:disabled {
   opacity: 0.5;
@@ -752,13 +751,13 @@ input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before{
   border: 2px solid#dddfe1;
 }
 
-.gx-content-tab-setting .gx-background-color .components-button[type="reset"]{
+.gx-content-tab-setting .gx-background-color .components-button[type="reset"] {
   margin-left: auto;
   margin-right: 4px;
-  color:black;
+  color: black;
 }
 
-.gx-content-tab-setting .gx-background-color{
+.gx-content-tab-setting .gx-background-color {
   margin-bottom: 4px;
 }
 
@@ -869,9 +868,9 @@ input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before{
   z-index: 100;
 }
 
-.divider-dimension .gx-unit-control{
+.divider-dimension .gx-unit-control {
   position: relative;
-  top:1px;
+  top: 1px;
 }
 
 .gx-unit-control .components-base-control__field {
@@ -918,7 +917,6 @@ input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before{
   border-radius: 0px 4px 4px 0px;
   overflow: hidden;
 }
-
 
 .components-gx-dimensions-control__units button.is-primary,
 .gx-unit-control .components-radio-control__option input:checked + label {
@@ -1015,7 +1013,12 @@ input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before{
   margin-bottom: 4px;
 } */
 
-.gx-button-item .gx-typography-item .gx-colorcontrol-control .gx-popover-control .components-base-control__field .components-dropdown:nth-of-type(2){
+.gx-button-item
+  .gx-typography-item
+  .gx-colorcontrol-control
+  .gx-popover-control
+  .components-base-control__field
+  .components-dropdown:nth-of-type(2) {
   margin-left: 0 !important;
 }
 
@@ -1052,7 +1055,6 @@ input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before{
   top: 0 !important;
   left: 89% !important;
 }
-
 
 .components-circular-option-picker {
   margin-top: 0;
@@ -1110,8 +1112,8 @@ input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before{
   margin: auto;
 }
 
-.components-panel__body .components-gx-dimensions-control__label{
-  font-size:16px !important;
+.components-panel__body .components-gx-dimensions-control__label {
+  font-size: 16px !important;
 }
 
 .gx-box-settings-item .components-base-control__field .gx-popover-dropdown .components-button.is-secondary {
@@ -1322,10 +1324,8 @@ button[class*="gutenberg-extra"] .block-editor-block-types-list__item-icon .bloc
   margin-left: auto;
 }
 
-
-
-.gx-button-item .gx-typography-item .gx-colorcontrol-control{
-  margin-top:15px;
+.gx-button-item .gx-typography-item .gx-colorcontrol-control {
+  margin-top: 15px;
 }
 
 .gx-button-item .gx-typography-item .gx-alignmentcontrol-control {
@@ -1338,13 +1338,12 @@ button[class*="gutenberg-extra"] .block-editor-block-types-list__item-icon .bloc
   line-height: 20px;
   font-size: 10pt;
   margin-left: auto;
-  padding:0;
+  padding: 0;
 }
 
 .gx-button-item .gx-padding-margin-item .accordion__panel {
   padding-top: 40px !important;
 }
-
 
 .gx-image-item .gx-padding-margin-item .components-gx-dimensions-control__units,
 .gx-button-item .gx-padding-margin-item .components-gx-dimensions-control__units {
@@ -1355,11 +1354,7 @@ button[class*="gutenberg-extra"] .block-editor-block-types-list__item-icon .bloc
   margin-bottom: 20px !important;
 }
 
-
-.gx-image-item
-  .components-gx-dimensions-control
-  .components-gx-dimensions-control__header
-  button,
+.gx-image-item .components-gx-dimensions-control .components-gx-dimensions-control__header button,
 .gx-image-item .components-gx-dimensions-control .components-gx-dimensions-control__header button,
 .gx-button-item
   .gx-padding-margin-item
@@ -1367,20 +1362,25 @@ button[class*="gutenberg-extra"] .block-editor-block-types-list__item-icon .bloc
   .components-gx-dimensions-control__header
   button,
 .gx-button-item .gx-border-item .components-gx-dimensions-control .components-gx-dimensions-control__header button {
-  padding:0;
+  padding: 0;
 }
 
 .gx-image-item .gx-accordion,
-.gx-button-item .gx-accordion{
-  margin:0 !important;
+.gx-button-item .gx-accordion {
+  margin: 0 !important;
 }
 
-.gx-button-item .gx-accordion > div:first-child .gx-accordion-tab .components-base-control__label::after{
+.gx-button-item .gx-accordion > div:first-child .gx-accordion-tab .components-base-control__label::after {
   top: 7px !important;
 }
 
-.gx-button-item .gx-typography-item .gx-colorcontrol-control .components-base-control__field div.gx-popover-dropdown button{
-  position:absolute;
+.gx-button-item
+  .gx-typography-item
+  .gx-colorcontrol-control
+  .components-base-control__field
+  div.gx-popover-dropdown
+  button {
+  position: absolute;
 }
 
 .gx-image-item .gx-padding-margin-item .components-gx-dimensions-control__mobile-controls button[role="tab"] svg,
@@ -1449,11 +1449,10 @@ button[class*="gutenberg-extra"] .block-editor-block-types-list__item-icon .bloc
   display: none !important;
 }
 
-.gx-image-item .gx-colorcontrol-control .components-base-control__field > button{
+.gx-image-item .gx-colorcontrol-control .components-base-control__field > button {
   height: 30px !important;
   width: 30px !important;
 }
-
 
 .gx-button-item .gx-box-settings-item .gx-popover-control .gx-settings-button .components-base-control__field span {
   line-height: 23px;
@@ -1483,20 +1482,23 @@ button[class*="gutenberg-extra"] .block-editor-block-types-list__item-icon .bloc
   padding-top: 40px !important;
 }
 
-.gx-image-item .gx-imagesettings-selector-control .components-radio-control__option{
+.gx-image-item .gx-imagesettings-selector-control .components-radio-control__option {
   height: 40px !important;
 }
 
-.gx-image-item .gx-imagesettings-selector-control .components-radio-control__option label{
-  height:100% !important;
+.gx-image-item .gx-imagesettings-selector-control .components-radio-control__option label {
+  height: 100% !important;
   line-height: 37px;
 }
 
-.gx-button-item .gx-box-settings-item .gx-opacity-control .components-range-control__number{
+.gx-button-item .gx-box-settings-item .gx-opacity-control .components-range-control__number {
   height: 30px !important;
 }
 
-.components-panel__body .components-gx-dimensions-control .components-gx-dimensions-control__header .components-color-palette__clear,
+.components-panel__body
+  .components-gx-dimensions-control
+  .components-gx-dimensions-control__header
+  .components-color-palette__clear,
 .components-panel__body .components-gx-dimensions-control .components-button.is-default,
 .components-panel__body .components-gx-dimensions-control input[type="number"].components-gx-dimensions-control__number,
 .components-panel__body .components-gx-dimensions-control__units .components-button-radio,
@@ -1508,12 +1510,12 @@ button[class*="gutenberg-extra"] .block-editor-block-types-list__item-icon .bloc
 .gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option,
 .gx-controls select,
 .gx-panel select,
-.gx-sidebar button.components-range-control__reset, 
+.gx-sidebar button.components-range-control__reset,
 .components-panel__body .components-gx-dimensions-control .components-gx-dimensions-control_sync,
-.gx-sidebar button.components-color-palette__clear, 
+.gx-sidebar button.components-color-palette__clear,
 .gx-popover button.components-range-control__reset,
 .components-range-control__number:not(.gx-shadow-horizontal-control),
-.gx-unit-control .components-radio-control__option label{
+.gx-unit-control .components-radio-control__option label {
   border: 1px solid #dddfe1 !important;
   opacity: 1 !important;
 }
@@ -1561,7 +1563,6 @@ button[class*="gutenberg-extra"] .block-editor-block-types-list__item-icon .bloc
   /* width: 12px !important; */
   /* height: 12px !important; */
 }
-
 
 button[class*="gutenberg-extra"] span.block-editor-block-types-list__item-title {
   color: black !important;
@@ -1702,12 +1703,12 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
   margin: auto;
 }
 
-.box-shadow .components-base-control__field{
+.box-shadow .components-base-control__field {
   display: flex;
 }
 
 .gx-border-type,
-.box-shadow{
+.box-shadow {
   width: 100%;
 }
 
@@ -1723,11 +1724,11 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
   margin-right: auto;
   padding-top: 28px;
   padding-bottom: 10px;
-  border-top: 2px solid #E8EAEB;
+  border-top: 2px solid #e8eaeb;
 }
 
 .gx-controls .gx-box-settings-item .accordion__panel {
-  border-top: 2px solid #E8EAEB;
+  border-top: 2px solid #e8eaeb;
 }
 
 .accordion-item {
@@ -1843,8 +1844,8 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
   padding: 0px 3px 0px 4px;
 }
 
-.gx-box-settings-item .components-dropdown {
-  width: 30px !important;
+.components-gx-dimensions-control {
+  width: 100%;
 }
 
 .gx-box-settings-item .box-shadow button {
@@ -1921,8 +1922,8 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
   right: 10px;
   margin-bottom: 4px;
   top: 9px;
-  transform:rotate(0deg);
-  transition:transform 0.3s linear;
+  transform: rotate(0deg);
+  transition: transform 0.3s linear;
 }
 
 .gx-controls .gx-accordion .components-base-control__label[aria-expanded="true"]:after {
@@ -1932,8 +1933,8 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
   position: absolute;
   top: 10px;
   right: 12px;
-  transform:rotate(90deg);
-  transition:transform 0.3s linear;
+  transform: rotate(90deg);
+  transition: transform 0.3s linear;
 }
 
 .gx-popover .components-color-picker {
@@ -2044,8 +2045,8 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
   width: 27px;
 }
 
-.gx-controls .block-editor-block-card__content{
-  background:inherit !important;
+.gx-controls .block-editor-block-card__content {
+  background: inherit !important;
 }
 
 .gx-sidebar button.components-range-control__reset:before,
@@ -2149,12 +2150,7 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
 
 .gx-width-height-item .gx-size-setting .components-range-control__number {
   max-height: 30px !important;
-  /* margin-top: 1px !important; */
 }
-/* 
-.gx-subtitle-background-color .gx-popover-control .components-base-control__field button.components-button{
-  margin-right: 3px;
-} */
 
 .gx-tab.gx-content-tab-label::before,
 .gx-tab.gx-style-tab-label::before,
@@ -2195,7 +2191,6 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
   margin-top: 1px;
 }
 
-
 .block-editor-color-gradient-control .two-column-description {
   margin-bottom: 25px;
 }
@@ -2224,9 +2219,9 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
   padding: 20px 24px 20px 17px;
 }
 
-.components-popover__content .gx-typography-popover .components-base-control__field{
+.components-popover__content .gx-typography-popover .components-base-control__field {
   align-items: unset;
-  position:unset;
+  position: unset;
 }
 
 .gx-typography-popover .gx-device-control {
@@ -2268,7 +2263,12 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
   padding-top: 0px !important;
 }
 
-.gx-image-item .gx-background-item .gx-colorcontrol-control .components-base-control.gx-settings-button .components-base-control__field .components-dropdown:nth-of-type(2){
+.gx-image-item
+  .gx-background-item
+  .gx-colorcontrol-control
+  .components-base-control.gx-settings-button
+  .components-base-control__field
+  .components-dropdown:nth-of-type(2) {
   margin-left: 0 !important;
 }
 
@@ -2276,69 +2276,120 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
   margin-left: 3px !important;
 }
 
-
 .gx-sidebar .gx-settings-button button svg,
-.components-button[type="reset"] svg{
+.components-button[type="reset"] svg {
   color: #464a53 !important;
   fill: #464a53 !important;
 }
 
-@media all and (max-width: 2000px) {
-  
-   .components-panel__body .components-gx-dimensions-control__label{
-      font-size:13px !important;
-   }
+.gx-typography-popover .gx-unit-control {
+  position: relative;
+  top: 1px;
+}
 
-  .gx-image-item .gx-colorcontrol-control .components-base-control__field > button{
+.gx-sidebar .components-base-control.gutenberg-extra-checkbox-container{
+  min-height: 23px;
+}
+
+@media all and (max-width: 2000px) {
+  .gx-width-height-item .gx-unit-control > .components-base-control__field:nth-of-type(1){
+    position: relative !important;
+    top: -1px !important;
+  }
+  
+  .gx-width-height-item .gx-size-setting .components-range-control__number {
+    max-height: 26px !important;
+  }
+
+  .gx-sidebar input[type="number"].components-gx-dimensions-control__number{
+    height: 26px !important;
+  }
+
+  .gx-unit-control {
+    margin-right: 80px;
+  }
+  
+  .divider-dimension .gx-unit-control {
+    position: relative;
+    top: -1px;
+  }
+
+  .gx-sidebar button.components-button,
+  .gx-colorcontrol-control .components-base-control__field > button {
+    width: 26px !important;
+    height: 26px !important;
+    min-width: unset;
+    max-width: unset;
+  }
+  
+
+  .components-gx-dimensions-control__units button,
+  .gx-unit-control .components-radio-control__option label {
+    min-width: 27px;
+    line-height: 26px;
+    top: 1px;
+    height: 26px !important;
+  }
+
+  .components-popover__content .gx-typography-popover {
+    padding: 0px 0px 20px;
+  }
+
+  .components-panel__body .components-gx-dimensions-control__label {
+    font-size: 13px !important;
+  }
+
+  .gx-image-item .gx-colorcontrol-control .components-base-control__field > button {
     height: 24px !important;
     width: 24px !important;
   }
 
   .gx-button-item .accordion__panel,
-  .gx-image-item .accordion__panel{
+  .gx-image-item .accordion__panel {
     padding-left: 12px !important;
   }
 
   .gx-button-item
-  .gx-typography-item
-  .gx-colorcontrol-control
-  .gx-popover-control
-  .components-base-control__field
-  > *:not(span) {
+    .gx-typography-item
+    .gx-colorcontrol-control
+    .gx-popover-control
+    .components-base-control__field
+    > *:not(span) {
     width: 24px !important;
     height: 24px !important;
   }
 
   .gx-button-item
-  .gx-border-item
-  .accordion__panel
-  .gx-colorcontrol-control
-  .gx-popover-control
-  .components-base-control__field
-  svg {
+    .gx-border-item
+    .accordion__panel
+    .gx-colorcontrol-control
+    .gx-popover-control
+    .components-base-control__field
+    svg {
     width: 12px;
     height: 12px;
   }
-  
+
   .gx-button-item
-  .gx-border-item
-  .accordion__panel
-  .gx-colorcontrol-control
-  .gx-popover-control
-  .components-base-control__field
-  .components-button[type="reset"] {
+    .gx-border-item
+    .accordion__panel
+    .gx-colorcontrol-control
+    .gx-popover-control
+    .components-base-control__field
+    .components-button[type="reset"] {
     height: 24px !important;
   }
-
 
   .gx-button-item .gx-unit-control,
   .gx-image-item .gx-unit-control {
     margin-right: 84px !important;
   }
 
-  .gx-image-item .components-button:not(.components-gx-dimensions-control__mobile-controls-item):not(.components-gx-dimensions-control_sync):not(button.components-button-radio),
+  .gx-image-item
+    .components-button:not(.components-gx-dimensions-control__mobile-controls-item):not(.components-gx-dimensions-control_sync):not(button.components-button-radio),
   .gx-image-item .gx-popover-control .components-base-control__field > *:not(span) > *,
-  .gx-button-item .components-button:not(.components-gx-dimensions-control__mobile-controls-item):not(.components-gx-dimensions-control_sync),
+  .gx-button-item
+    .components-button:not(.components-gx-dimensions-control__mobile-controls-item):not(.components-gx-dimensions-control_sync),
   .gx-button-item .gx-typography-item .gx-popover-control .components-base-control__field > *:not(span) > * {
     width: 24px !important;
     height: 24px !important;
@@ -2354,10 +2405,11 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
     left: 168px;
   }
   .gx-width-height-item .components-radio-control__option label {
-    height: 30px !important;
-    line-height: 28px;
-    width: 27px !important;
+    height: 26px !important;
+    line-height: 26px;
+    width: 25px !important;
     left: -31px !important;
+    min-width: unset;
     position: relative;
   }
   .gx-width-height-item .components-range-control__number {
@@ -2387,7 +2439,7 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
     position: absolute;
     top: 10px;
     right: 10px;
-    transition:transform 0.3s;
+    transition: transform 0.3s;
   }
   .components-range-control__number {
     min-height: 26px !important;
@@ -2433,15 +2485,7 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
     padding-left: 5px !important;
     padding-top: 1px !important;
   }
-  .gx-box-settings-item .background-image,
-  .gx-box-settings-item .box-shadow {
-    margin-left: 22px;
-    margin-right: 22px;
-  }
-  .gx-box-settings-item .bg-color-parent {
-    margin-left: 20px;
-    margin-right: 22px;
-  }
+
   .gx-controls .gx-box-settings-item .accordion__panel[aria-hidden="false"] {
     margin-top: -30px;
     width: 109% !important;
@@ -2458,7 +2502,7 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
     margin-bottom: 20px;
     margin-left: -4%;
     margin-right: auto;
-    padding-top: 53px;
+    padding-top: 28px;
     padding-bottom: 24px;
     border-top: 2px solid #e8eaeb;
   }

@@ -181,7 +181,7 @@ const edit = (props) => {
             >
               <Typography
                 fontOptions={titleFontOptions}
-                className={'components-base-control'}
+                className="components-panel__body components-base-control editor-panel-color-settings block-editor-panel-color-settings is-opened typography gx-typography-control"
                 onChange={(value) => {
                   setAttributes({ titleFontOptions: value });
                 }}
@@ -189,7 +189,7 @@ const edit = (props) => {
               />
               <Typography
                 fontOptions={subtitleFontOptions}
-                className={'components-base-control'}
+                className="components-panel__body components-base-control editor-panel-color-settings block-editor-panel-color-settings is-opened typography gx-typography-control"
                 onChange={(value) => {
                   setAttributes({ subtitleFontOptions: value });
                 }}
@@ -197,7 +197,7 @@ const edit = (props) => {
               />
               <Typography
                 fontOptions={descriptionFontOptions}
-                className={'components-base-control'}
+                className="components-panel__body components-base-control editor-panel-color-settings block-editor-panel-color-settings is-opened typography gx-typography-control"
                 onChange={(value) => {
                   setAttributes({ descriptionFontOptions: value });
                 }}
@@ -208,7 +208,7 @@ const edit = (props) => {
         </AccordionItem>
         <AccordionItem className={"gx-image-item"}>
           <AccordionItemHeading
-            className={"gx-accordion-tab gx-imagesettings-tab"}
+            className={"gx-accordion-tab gx-image-tab"}
           >
             <AccordionItemButton className="components-base-control__label">
               {__("Image", "gutenberg-extra")}
@@ -336,7 +336,7 @@ const edit = (props) => {
           </AccordionItemPanel>
         </AccordionItem>
         <AccordionItem className={'gx-width-height-item'}>
-          <AccordionItemHeading className={"gx-accordion-tab gx-width-tab"}>
+          <AccordionItemHeading className={"gx-accordion-tab gx-width-height-tab"}>
             <AccordionItemButton className="components-base-control__label">
               {__(" Width / Height", "gutenberg-extra")}
             </AccordionItemButton>

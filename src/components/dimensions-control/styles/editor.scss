@@ -62,13 +62,13 @@ $base-blue-color: #00ccff;
       width: 41px !important;
       font-weight: 500;
       margin-right: -1px;
-      height: 36px;
-      padding-top: 5px;
+      height: 36px !important;
+      padding-top: 5px !important;
     }
 
     .components-button.is-primary {
       color: #464a53 !important;
-      background: #f2f2f2;
+      background: #f2f2f2 !important;
       font-weight: 500;
     }
 
@@ -96,7 +96,7 @@ $base-blue-color: #00ccff;
     input[type="number"].components-gx-dimensions-control__number {
       border-radius: 0;
       box-shadow: none !important;
-      height: 36px;
+      height: 36px !important;
       margin: 0 -2px 0 0;
       border: 2px solid #dddfe1;
       padding-right: 1px;
@@ -163,7 +163,6 @@ $base-blue-color: #00ccff;
       border: 2px solid #dddfe1 !important;
       order: 1;
       svg {
-        max-width: 12px;
         margin: auto;
       }
     }
@@ -190,7 +189,6 @@ $base-blue-color: #00ccff;
         background-color: white !important;
         color: $base-color !important;
         &:hover {
-          background-color: white !important;
           box-shadow: none !important;
         }
         &:focus {

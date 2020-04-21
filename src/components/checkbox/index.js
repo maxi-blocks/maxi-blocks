@@ -5,11 +5,6 @@ const { BaseControl } = wp.components;
 import { useInstanceId } from '@wordpress/compose';
 
 /**
- * Styles
- */
-import './editor.scss';
-
-/**
  * Block
  */
 export default function Checkbox (props) {

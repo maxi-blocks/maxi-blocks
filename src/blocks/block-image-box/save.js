@@ -9,40 +9,34 @@ const {
 /**
  * Internal dependencies
  */
-import { Link } from '../../components/link-options/index';
-import { Image } from '../../components/image-settings';
-import { ButtonSaver } from '../../components/button-styles/';
-
-// Testing
-import { ButtonSaverTest } from '../../components/button-styles/test';
+import {
+    ButtonSaver,
+    Image,
+    Link
+} from '../../components';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { setLinkStyles } from './data';
+import { setLinkStyles } from './utils';
 
-const save = (props) => {
+const save = props => {
     const {
         className,
         attributes: {
-            title,
-            mediaID,
-            imageSettings,
-            description,
-            additionalText,
-            readMoreText,
-            readMoreLink,
-            titleLevel,
+            uniqueID,
             blockStyle,
             defaultBlockStyle,
-            titleFontFamily,
-            uniqueID,
-            backgroundImage,
-            backgroundGradient,
-            linkOptions,
             linkTitle,
-            buttonStyles,
+            linkOptions,
+            imageSettings,
+            mediaID,
+            titleLevel,
+            title,
+            additionalText,
+            description,
+            buttonSettings,
         },
     } = props;
 
@@ -87,8 +81,8 @@ const save = (props) => {
                         className="gx-image-box-description"
                         value={description}
                     />
-                    <ButtonSaverTest
-                        buttonSettings={buttonStyles}
+                    <ButtonSaver
+                        buttonSettings={buttonSettings}
                     />
                 </div>
             </Link>

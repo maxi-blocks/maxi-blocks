@@ -62,7 +62,7 @@ $base-blue-color: #00ccff;
       width: 41px !important;
       font-weight: 500;
       margin-right: -1px;
-      height: 36px !important;
+      height: 36px;
       padding-top: 5px !important;
     }
 
@@ -96,7 +96,7 @@ $base-blue-color: #00ccff;
     input[type="number"].components-gx-dimensions-control__number {
       border-radius: 0;
       box-shadow: none !important;
-      height: 36px !important;
+      height: 36px;
       margin: 0 -2px 0 0;
       border: 2px solid #dddfe1;
       padding-right: 1px;
@@ -156,7 +156,7 @@ $base-blue-color: #00ccff;
       // top: -4px;
       border: none !important;
       padding: 0;
-      width: 24px !important;
+      width: 24px;
       height: 30px;
       // margin-top: 1px;
       margin-left: 5px;
@@ -183,9 +183,8 @@ $base-blue-color: #00ccff;
         text-align: center;
         text-shadow: none;
         text-transform: uppercase;
-        height: 32px !important;
         top: -1px;
-        height: 30px !important;
+        height: 30px;
         background-color: white !important;
         color: $base-color !important;
         &:hover {

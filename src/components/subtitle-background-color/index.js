@@ -23,7 +23,7 @@ export const SubtitleBackgroundColor = ( props ) => {
   return (
     <ColorControl
       className={'gx-subtitle-background-color'}
-      label={__("Subtitle Background Color", "gutenberg-extra")}
+      label={__("Subtitle Background", "gutenberg-extra")}
       color={subtitleBackgroundColor}
       gradient={props.attributes.backgroundGradient}
       onColorChange={(value) => {
@@ -33,16 +33,5 @@ export const SubtitleBackgroundColor = ( props ) => {
       }}
       disableGradient
     />
-    // <PanelColorSettings
-    //   className={'block-editor-panel-color-gradient-settings'}
-    //   title={__('Subtitle Background Settings', 'gutenberg-extra' )}
-    //   colorSettings={[
-    //     {
-    //       value: subtitleBackgroundColor,
-    //       onChange: (value) => setAttributes({ subtitleBackgroundColor: value }),
-    //       label: __('Subtitle Background', 'gutenberg-extra' ),
-    //     },
-    //   ]}
-    // />
   )
 }

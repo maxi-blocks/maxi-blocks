@@ -5,6 +5,7 @@ const {
 const {
   ToggleControl
 } = wp.components;
+import Checkbox from '../checkbox/index';
 
 export const hideTitleAttributes = {
   hideTitle:{
@@ -20,11 +21,11 @@ export const HideTitle = ( props ) => {
   } = props;
 
   return (
-  <ToggleControl
-    label={__('Hide Title', 'gutenberg-extra')}
-    id='gx-block-style'
-    checked={hideTitle}
-    onChange={(value) => {setAttributes({hideTitle: value})}}
-  />
+    <Checkbox
+      label={__('Hide Title', 'gutenberg-extra')}
+      id='gx-new-window'
+      checked={hideTitle}
+      onChange={(newValue) => setAttributes({hideTitle: newValue})}
+    />
   )
 }

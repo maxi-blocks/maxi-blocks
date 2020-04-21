@@ -5,6 +5,7 @@ const {
 const {
   ToggleControl
 } = wp.components;
+import Checkbox from '../checkbox/index';
 
 export const additionalDividerAttributes = {
   // isMultiple:{
@@ -29,11 +30,11 @@ export const AdditionalDivider = ( props ) => {
   }
 
   return (
-    <ToggleControl
+    <Checkbox
       label={__('Additional Divider', 'gutenberg-extra')}
-      id='gx-block-style'
+      id='gx-new-window'
       checked={isMultiple}
-      onChange={ onChangeAdditional }
+      onChange={onChangeAdditional}
     />
   )
 }

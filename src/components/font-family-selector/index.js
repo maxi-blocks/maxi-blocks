@@ -1,11 +1,6 @@
 /**
- * Font Family Selector component
- */
-
-/**
  * WordPress dependencies
  */
-
 const { __ } = wp.i18n;
 const { Component } = wp.element;
 const {
@@ -13,20 +8,18 @@ const {
     Popover,
     Spinner
 } = wp.components;
-const {
-    dispatch,
-    select
-} = wp.data;
-
 
 /**
  * External dependencies
  */
-
-import './editor.scss';
 import { ChevronDown } from './icons';
 import Select from 'react-select';
 import { isNil } from 'lodash';
+
+/**
+ * Styles
+ */
+import './editor.scss';
 
 /**
  * Component

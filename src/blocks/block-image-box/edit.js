@@ -12,45 +12,32 @@ const {
 /**
  * Internal dependencies
  */
-import { BlockStyles } from '../../components/block-styles/index';
-import { ImagePosition } from '../../components/image-position/index';
-import { FontLevel } from '../../components/font-level/index';
-import { LinkOptions } from '../../components/link-options/index';
-import Typography from '../../components/typography/';
 import {
+    AccordionControl,
+    BackgroundControl,
+    BorderControl,
+    BlockStylesControl,
+    BoxShadowControl,
+    ButtonSettings,
+    ButtonEditor,
+    CustomCSSControl,
+    DimensionsControl,
+    FontLevelControl,
+    HoverAnimationControl,
+    ImagePositionControl,
     ImageSettings,
-    ImageUpload
-} from '../../components/image-settings/';
-import {
-    ButtonStyles,
-    ButtonEditor
-} from '../../components/button-styles/index';
-import { PopoverControl } from '../../components/popover';
-import { BoxShadow } from '../../components/box-shadow';
-import DimensionsControl from '../../components/dimensions-control/index';
-import { HoverAnimation } from '../../components/hover-animation/index';
-import { CustomCSS } from '../../components/custom-css/index';
-import { setLinkStyles } from './data';
-import iconsSettings from '../../components/icons/icons-settings';
+    ImageUpload,
+    LinkOptionsControl,
+    FullSizeControl,
+    TypographyControl
+} from '../../components';
+import { setLinkStyles } from './utils';
+import { box } from '../../icons';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-
-// Testing
-import SizeControlTest from '../../components/size-control/test';
-import BlockBorderTest from '../../components/block-border/test';
-import TypographyTest from '../../components/typography/test';
-import BackgroundControlTest from '../../components/background-control/test';
-import AccordionControl from '../../components/accordion-control';
-import FontLevelTest from '../../components/font-level/test';
-import BoxShadowTest from '../../components/box-shadow/test';
-import { 
-    ButtonStylesTest,
-    ButtonEditorTest
-} from '../../components/button-styles/test';
-import { ImageSettingsTest } from '../../components/image-settings/test';
 
 /**
  * Content
@@ -62,6 +49,7 @@ const edit = props => {
             uniqueID,
             blockStyle,
             defaultBlockStyle,
+            imagePosition,
             titleLevel,
             linkTitle,
             linkOptions,
@@ -69,19 +57,21 @@ const edit = props => {
             subtitleFontOptions,
             descriptionFontOptions,
             imageSettings,
-            buttonStyles,
-            backgroundOptions,
+            buttonSettings,
+            background,
             boxShadow,
+            border,
+            size,
             margin,
             padding,
+            hoverAnimation,
+            hoverAnimationDuration,
+            extraClassName,
+            extraStyles,
             mediaID,
             title,
             additionalText,
             description,
-            // Test
-            sizeTest,
-            borderTest,
-            backgroundOptionsTest
         },
         setAttributes,
     } = props;
@@ -99,25 +89,24 @@ const edit = props => {
                 initialOpen={true}
                 title={__('Image Settings', 'gutenberg-extra')}
             >
-                <BlockStyles
-                    {...props}
+                <BlockStylesControl
+                    blockStyle={blockStyle}
+                    onChangeBlockStyle={blockStyle => setAttributes({ blockStyle })}
+                    defaultBlockStyle={defaultStatus}
+                    onChangeBlockStyle={defaultBlockStyle => setAttributes({ defaultBlockStyle })}
                 />
-                <ImagePosition
-                    {...props}
+                <ImagePositionControl
+                    value={imagePosition}
+                    onChange={imagePosition => setAttributes({ imagePosition })}
                 />
-                {/* <FontLevel
-                    label={__('Title level', 'gutenberg-extra')}
-                    value={titleLevel}
-                    onChange={value => setAttributes({ titleLevel: value })}
-                /> */}
-                <FontLevelTest
+                <FontLevelControl
                     label={__('Title level', 'gutenberg-extra')}
                     value={titleLevel}
                     onChange={
-                        (level, fontOptions) => 
-                            setAttributes({ 
-                                titleLevel: level,
-                                titleFontOptions: fontOptions
+                        (titleLevel, titleFontOptions) =>
+                            setAttributes({
+                                titleLevel,
+                                titleFontOptions
                             })
                     }
                     fontOptions={titleFontOptions}
@@ -129,12 +118,12 @@ const edit = props => {
                 initialOpen={true}
                 title={__('Link Settings', 'gutenberg-extra')}
             >
-                <LinkOptions
+                <LinkOptionsControl
                     label={__("Link's Title", 'gutenberg-extra')}
                     link={linkTitle}
-                    onChangeLink={value => setAttributes({ linkTitle: value })}
+                    onChangeLink={linkTitle => setAttributes({ linkTitle })}
                     linkOptions={linkOptions}
-                    onChangeOptions={value => { console.log(value);setAttributes({ linkOptions: value }); }}
+                    onChangeOptions={linkOptions=> setAttributes({ linkOptions })}
                 />
             </PanelBody>
             <AccordionControl
@@ -149,20 +138,20 @@ const edit = props => {
                                 initialOpen={true}
                                 title={__('Colour settings', 'gutenberg-extra')}
                             >
-                                <TypographyTest
+                                <TypographyControl
                                     fontOptions={titleFontOptions}
-                                    onChange={value => { setAttributes({ titleFontOptions: value }) }}
+                                    onChange={titleFontOptions => { setAttributes({ titleFontOptions }) }}
                                     target="gx-image-box-title"
                                     defaultColor="#000000"
                                 />
-                                <Typography
+                                <TypographyControl
                                     fontOptions={subtitleFontOptions}
-                                    onChange={value => { setAttributes({ subtitleFontOptions: value }) }}
+                                    onChange={subtitleFontOptions => { setAttributes({ subtitleFontOptions }) }}
                                     target="gx-image-box-subtitle"
                                 />
-                                <Typography
+                                <TypographyControl
                                     fontOptions={descriptionFontOptions}
-                                    onChange={value => { setAttributes({ descriptionFontOptions: value }) }}
+                                    onChange={descriptionFontOptions => { setAttributes({ descriptionFontOptions }) }}
                                     target="gx-image-box-description"
                                 />
                             </PanelBody>
@@ -172,17 +161,11 @@ const edit = props => {
                         label: __('Image', 'gutenberg-extra'),
                         className: 'gx-imagesettings-tab',
                         content: (
-                            <ImageSettingsTest
+                            <ImageSettings
                                 imageSettings={imageSettings}
-                                onChange={value => setAttributes({ imageSettings: value })}
+                                onChange={imageSettings => setAttributes({ imageSettings })}
                                 mediaID={mediaID}
                             />
-                            // <ImageSettings
-                            //     target="gx-image-box-image"
-                            //     imageSettings={imageSettings}
-                            //     onChange={value => setAttributes({ imageSettings: value })}
-                            //     mediaID={mediaID}
-                            // />
                         ),
                     },
                     {
@@ -190,9 +173,9 @@ const edit = props => {
                         className: 'gx-button-tab',
                         content: (
                             <PanelBody>
-                                <ButtonStylesTest
-                                    buttonSettings={buttonStyles}
-                                    onChange={value => setAttributes({ buttonStyles: value })}
+                                <ButtonSettings
+                                    buttonSettings={buttonSettings}
+                                    onChange={buttonSettings => setAttributes({ buttonSettings })}
                                 />
                             </PanelBody>
                         )
@@ -201,39 +184,30 @@ const edit = props => {
                         label: __('Background Image', 'gutenberg-extra'),
                         className: 'gx-backgroundsettings-tab',
                         content: (
-                            <BackgroundControlTest
-                                backgroundOptions={backgroundOptionsTest}
-                                onChange={value => setAttributes({ backgroundOptionsTest: value })}
+                            <BackgroundControl
+                                backgroundOptions={background}
+                                onChange={background => setAttributes({ background })}
                             />
                         ),
-                        icon: iconsSettings.box
+                        icon: box
                     },
                     {
                         label: __('Box Settings', 'gutenberg-extra'),
                         className: 'gx-box-settings-tab',
                         content: (
                             <Fragment>
-                                <PopoverControl
-                                    label={__('Box shadow', 'gutenberg-extra')}
-                                    popovers={[
-                                        {
-                                            content: (
-                                                <BoxShadowTest
-                                                    boxShadowOptions={boxShadow}
-                                                    onChange={value => setAttributes({ boxShadow: value })}
-                                                />
-                                            )
-                                        }
-                                    ]}
+                                <BoxShadowControl
+                                    boxShadowOptions={boxShadow}
+                                    onChange={boxShadow => setAttributes({ boxShadow })}
                                 />
                                 <PanelBody
                                     className="gx-panel gx-border-setting gx-style-tab-setting"
                                     initialOpen={true}
                                     title={__('Border settings', 'gutenberg-extra')}
                                 >
-                                    <BlockBorderTest
-                                        borderOptions={borderTest}
-                                        onChange={value => setAttributes({ borderTest: value })}
+                                    <BorderControl
+                                        borderOptions={border}
+                                        onChange={border => setAttributes({ border })}
                                     />
                                 </PanelBody>
                             </Fragment>
@@ -248,9 +222,9 @@ const edit = props => {
                                 initialOpen={true}
                                 title={__('Size Settings', 'gutenberg-extra')}
                             >
-                                <SizeControlTest
-                                    sizeSettings={sizeTest}
-                                    onChange={value => setAttributes({ sizeTest: value })}
+                                <FullSizeControl
+                                    sizeSettings={size}
+                                    onChange={size => setAttributes({ size })}
                                 />
                             </PanelBody>
                         ),
@@ -266,11 +240,11 @@ const edit = props => {
                             >
                                 <DimensionsControl
                                     value={padding}
-                                    onChange={value => setAttributes({ padding: value })}
+                                    onChange={padding => setAttributes({ padding })}
                                 />
                                 <DimensionsControl
                                     value={margin}
-                                    onChange={value => setAttributes({ margin: value })}
+                                    onChange={margin => setAttributes({ margin })}
                                 />
                             </PanelBody>
                         ),
@@ -282,11 +256,17 @@ const edit = props => {
                 className="gx-panel gx-advanced-setting gx-advanced-tab-setting"
                 title={__('Advanced Settings', 'gutenberg-extra')}
             >
-                <HoverAnimation
-                    {...props}
+                <HoverAnimationControl
+                    hoverAnimation={hoverAnimation}
+                    onChangeHoverAnimation={hoverAnimation => setAttributes({ hoverAnimation })}
+                    hoverAnimationDuration={hoverAnimationDuration}
+                    onChangeHoverAnimationDuration={hoverAnimationDuration => setAttributes({ hoverAnimationDuration })}
                 />
-                <CustomCSS
-                    {...props}
+                <CustomCSSControl
+                    extraClassName={extraClassName}
+                    onChangeExtraClassName={extraClassName => setAttributes({ extraClassName })}
+                    extraStyles={extraStyles}
+                    onChangeExtraStyles={extraStyles => setAttributes({ extraStyles })}
                 />
             </PanelBody>
         </InspectorControls >,
@@ -302,27 +282,21 @@ const edit = props => {
                     className="gx-image-box-image"
                     imageSettings={imageSettings}
                     mediaID={mediaID}
-                    // onSelect={media => setAttributes({ mediaID: media.id })}
-                    onSelect={
-                        (media, imageSettings) => setAttributes({ 
-                            mediaID: media.id,
-                            // imageSettings
-                        })
-                    }
+                    onSelect={media => setAttributes({ mediaID: media.id })}
                 />
                 <div className='gx-image-box-text'>
                     <RichText
                         tagName={titleLevel}
                         placeholder={__('This is your awesome title here', 'gutenberg-extra')}
                         value={title}
-                        onChange={value => setAttributes({ title: value })}
+                        onChange={title => setAttributes({ title })}
                         className="gx-image-box-title"
                     />
                     <RichText
                         tagName="p"
                         placeholder={__('Add a snappy sub heading', 'gutenberg-extra')}
                         value={additionalText}
-                        onChange={value => setAttributes({ additionalText: value })}
+                        onChange={additionalText => setAttributes({ additionalText })}
                         className="gx-image-box-subtitle"
                     />
                     <RichText
@@ -330,12 +304,12 @@ const edit = props => {
                         multiline="br"
                         placeholder={__('Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis architect beatae unde omnis iste natus.', 'gutenberg-extra')}
                         value={description}
-                        onChange={value => setAttributes({ description: value })}
+                        onChange={description => setAttributes({ description })}
                         className="gx-image-box-description"
                     />
-                    <ButtonEditorTest
-                        buttonSettings={buttonStyles}
-                        onChange={value => setAttributes({ buttonStyles: value })}
+                    <ButtonEditor
+                        buttonSettings={buttonSettings}
+                        onChange={buttonSettings => setAttributes({ buttonSettings })}
                         placeholder={__('Click me', 'gutenberg-extra')}
                     />
                 </div>

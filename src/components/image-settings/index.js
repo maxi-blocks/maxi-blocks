@@ -2,15 +2,8 @@
  * Wordpress dependencies
  */
 const { __ } = wp.i18n;
-const {
-    Component,
-    Fragment
-} = wp.element;
-const {
-    withSelect,
-    dispatch,
-    select
-} = wp.data;
+const { Fragment } = wp.element;
+const { MediaUpload } = wp.blockEditor;
 const {
     SelectControl,
     RangeControl,
@@ -18,21 +11,23 @@ const {
     IconButton,
     Spinner,
 } = wp.components;
-const { MediaUpload } = wp.blockEditor;
+const {
+    withSelect,
+    dispatch,
+} = wp.data;
 
 /**
  * Internal dependencies
  */
-import { BlockBorder } from '../block-border';
+import { GXComponent } from '../index';
 import AlignmentControl from '../alignment-control';
-import MiniSizeControl from '../mini-size-control';
-import { PopoverControl } from '../popover';
-import { BoxShadow } from '../box-shadow';
-import Typography from '../typography';
-import iconsSettings from '../icons/icons-settings.js';
+import BorderControl from '../border-control';
+import BoxShadowControl from '../box-shadow-control';
 import ColorControl from '../color-control';
-import ImageCrop from '../image-crop';
-import NormalHover from '../normal-hover';
+import ImageCropControl from '../image-crop-control';
+import NormalHoverControl from '../normal-hover-control';
+import SizeControl from '../size-control';
+import TypographyControl from '../typography-control';
 
 /**
  * External dependencies
@@ -45,27 +40,161 @@ import {
 } from 'lodash';
 
 /**
- * Styles
+ * Styles and icons
  */
 import './editor.scss';
-
-/**
- * Default attributes
- */
-export const imageSettingsAttributes = {
-    imageSettings: {
-        type: 'string',
-        default: '{"label":"Image Settings","size":"","imageSize":{"options":{},"widthUnit":"%","width":"","heightUnit":"%","height":""},"alt":"","alignment":"","captionType":"none","caption":"none","captionTypography":{"label":"Typography","font":"Roboto","options":{"100":"http://fonts.gstatic.com/s/roboto/v20/KFOkCnqEu92Fr1MmgWxPKTM1K9nz.ttf","300":"http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmSU5vAx05IsDqlA.ttf","400":"http://fonts.gstatic.com/s/roboto/v20/KFOmCnqEu92Fr1Me5WZLCzYlKw.ttf","500":"http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmEU9vAx05IsDqlA.ttf","700":"http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmWUlvAx05IsDqlA.ttf","900":"http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmYUtvAx05IsDqlA.ttf","100italic":"http://fonts.gstatic.com/s/roboto/v20/KFOiCnqEu92Fr1Mu51QrIzcXLsnzjYk.ttf","300italic":"http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TjARc9AMX6lJBP.ttf","italic":"http://fonts.gstatic.com/s/roboto/v20/KFOkCnqEu92Fr1Mu52xPKTM1K9nz.ttf","500italic":"http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51S7ABc9AMX6lJBP.ttf","700italic":"http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TzBhc9AMX6lJBP.ttf","900italic":"http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TLBBc9AMX6lJBP.ttf"},"general":{"color":"#9b9b9b"},"desktop":{"font-sizeUnit":"px","font-size":16,"line-heightUnit":"px","line-height":26,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"},"tablet":{"font-sizeUnit":"px","font-size":16,"line-heightUnit":"px","line-height":26,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"},"mobile":{"font-sizeUnit":"px","font-size":26,"line-heightUnit":"px","line-height":26,"letter-spacingUnit":"px","letter-spacing":0,"font-weight":400,"text-transform":"none","font-style":"normal","text-decoration":"none"}},"sizeSettings":{"maxWidthUnit":"%","maxWidth":"","widthUnit":"%","width":""},"normal":{"opacity":"","backgroundColor":"","backgroundGradient":"","backgroundGradientAboveBackground":false,"boxShadow":{"label":"Box Shadow","shadowColor":"","shadowHorizontal":"0","shadowVertical":"0","shadowBlur":"0","shadowSpread":"0"},"borderSettings":{"borderColor":"","borderType":"solid","borderRadius":{"label":"Border radius","unit":"px","max":"1000","desktop":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"tablet":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"mobile":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true}},"borderWidth":{"label":"Border width","unit":"px","max":"1000","desktop":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"tablet":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"mobile":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true}}}},"hover":{"opacity":"","backgroundColor":"","backgroundGradient":"","backgroundGradientAboveBackground":false,"boxShadow":{"label":"Box Shadow","shadowColor":"","shadowHorizontal":"0","shadowVertical":"0","shadowBlur":"0","shadowSpread":"0"},"borderSettings":{"borderColor":"","borderType":"solid","borderRadius":{"label":"Border radius","unit":"px","max":"1000","desktop":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"tablet":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true},"mobile":{"border-top-left-radius":0,"border-top-right-radius":0,"border-bottom-right-radius":0,"border-bottom-left-radius":0,"sync":true}},"borderWidth":{"label":"Border width","unit":"px","max":"1000","desktop":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"tablet":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true},"mobile":{"border-top-width":0,"border-right-width":0,"border-bottom-width":0,"border-left-width":0,"sync":true}}}}}'
-    }
-}
+import { placeholderImage } from '../../icons';
 
 /**
  * Block
  */
-class ImageSettingsOptions extends Component {
+class ImageSettingsComponent extends GXComponent {
+
+    target = this.props.target ? this.props.target : 'gx-image-box-image';
 
     state = {
         selector: 'normal',
+    }
+
+    componentDidMount() {
+        const value = typeof this.props.imageSettings === 'object' ? this.props.imageSettings : JSON.parse(this.props.imageSettings);
+        this.saveAndSend(value)
+    }
+
+    get getObject() {
+        if (this.type === 'normal')
+            return this.getNormalStylesObject;
+        if (this.type === 'hover')
+            return this.getHoverStylesObject;
+        if (this.type === 'img')
+            return this.getImgStylesObject;
+    }
+
+    /**
+     * Creates a new object for being joined with the rest of the values on meta
+     */
+    get getNormalStylesObject() {
+        const response = {
+            label: this.object.label,
+            general: {}
+        }
+        if (!isNil(this.object.alignment)) {
+            switch (this.object.alignment) {
+                case 'left':
+                    response.general['margin-right'] = 'auto';
+                    break;
+                case 'center':
+                case 'justify':
+                    response.general['margin-right'] = 'auto';
+                    response.general['margin-left'] = 'auto';
+                    break;
+                case 'right':
+                    response.general['margin-left'] = 'auto';
+                    break;
+            }
+        }
+        if (isNumber(this.object.sizeSettings.maxWidth)) {
+            response.general['max-widthUnit'] = this.object.sizeSettings.maxWidthUnit;
+        }
+        if (isNumber(this.object.sizeSettings.maxWidth)) {
+            response.general['max-width'] = this.object.sizeSettings.maxWidth;
+        }
+        if (isNumber(this.object.sizeSettings.width)) {
+            response.general['widthUnit'] = this.object.sizeSettings.widthUnit;
+        }
+        if (isNumber(this.object.sizeSettings.width)) {
+            response.general['width'] = this.object.sizeSettings.width;
+        }
+        if (isNumber(this.object.normal.opacity)) {
+            response.general['opacity'] = this.object.normal.opacity;
+        }
+        if (!isEmpty(this.object.normal.backgroundColor)) {
+            response.general['background-color'] = this.object.normal.backgroundColor;
+        }
+        if (!isEmpty(this.object.normal.backgroundGradient)) {
+            response.general['background'] = this.object.normal.backgroundGradient;
+        }
+        if (!isEmpty(this.object.normal.borderSettings.borderColor)) {
+            response.general['border-color'] = this.object.normal.borderSettings.borderColor;
+        }
+        if (!isEmpty(this.object.normal.borderSettings.borderType)) {
+            response.general['border-style'] = this.object.normal.borderSettings.borderType;
+        }
+        return response;
+    }
+
+    /**
+     * Creates a new object for being joined with the rest of the values on meta
+     */
+    get getHoverStylesObject() {
+        const response = {
+            label: this.object.label,
+            general: {}
+        }
+        if (isNumber(this.object.hover.opacity)) {
+            response.general['opacity'] = this.object.hover.opacity;
+        }
+        if (!isEmpty(this.object.hover.backgroundColor)) {
+            response.general['background-color'] = this.object.hover.backgroundColor;
+        }
+        if (!isEmpty(this.object.hover.borderSettings.borderColor)) {
+            response.general['border-color'] = this.object.hover.borderSettings.borderColor;
+        }
+        if (!isEmpty(this.object.hover.backgroundGradient)) {
+            response.general['background'] = this.object.hover.backgroundGradient;
+        }
+        if (!isEmpty(this.object.hover.borderSettings.borderType)) {
+            response.general['border-style'] = this.object.hover.borderSettings.borderType;
+        }
+        return response;
+    }
+
+    /**
+     * Creates a new object for being joined with the rest of the values on meta
+     */
+    get getImgStylesObject() {
+        const response = {
+            label: this.object.label,
+            general: {}
+        }
+        if (isNumber(this.object.imageSize.width)) {
+            response.general['width'] = this.object.imageSize.width + this.object.imageSize.widthUnit;
+        }
+        if (isNumber(this.object.imageSize.height)) {
+            response.general['height'] = this.object.imageSize.height + this.object.imageSize.heightUnit;
+        }
+
+        return response;
+    }
+
+    /**
+    * Saves and send the data. Also refresh the styles on Editor
+    */
+    saveAndSend(value) {
+        this.save(value);
+
+        this.target = this.props.target ? this.props.target : 'gx-image-box-image';
+        this.saveMeta(value, 'normal');
+
+        this.target = `${this.props.target ? this.props.target : 'gx-image-box-image'}:hover`;
+        this.saveMeta(value, 'hover');
+
+        this.target = `${this.props.target ? this.props.target : 'gx-image-box-image'} img`;
+        this.saveMeta(value, 'img');
+
+        new BackEndResponsiveStyles(this.getMeta);
+    }
+
+    save(value) {
+        this.props.onChange(JSON.stringify(value));
+    }
+
+    saveMeta(value, type) {
+        dispatch('core/editor').editPost({
+            meta: {
+                _gutenberg_extra_responsive_styles: this.metaValue(value, type),
+            },
+        });
     }
 
     render() {
@@ -73,9 +202,8 @@ class ImageSettingsOptions extends Component {
             mediaID,
             className = "gx-imagesettings-control",
             imageData,
-            imageSettings = this.props.attributes.imageSettings,
-            onChange,
-            target = '',
+            imageSettings,
+            target = 'gx-image-box-image',
         } = this.props;
 
         const {
@@ -118,186 +246,11 @@ class ImageSettingsOptions extends Component {
             return response;
         }
 
-        /**
-		* Retrieves the old meta data
-		*/
-        const getMeta = () => {
-            let meta = select('core/editor').getEditedPostAttribute('meta')._gutenberg_extra_responsive_styles;
-            return meta ? JSON.parse(meta) : {};
-        }
-
-		/**
-		 * Retrieve the target for responsive CSS
-		 */
-        const getTarget = (adition = '') => {
-            let styleTarget = select('core/block-editor').getBlockAttributes(select('core/block-editor').getSelectedBlockClientId()).uniqueID;
-            styleTarget = `${styleTarget}${target.length > 0 || adition.length > 0 ? `__$${target}${adition}` : ''}`;
-            return styleTarget;
-        }
-
-        /**
-         * Creates a new object for being joined with the rest of the values on meta
-         */
-        const getNormalStylesObject = () => {
-            const response = {
-                label: value.label,
-                general: {}
-            }
-            if (!isNil(value.alignment)) {
-                switch (value.alignment) {
-                    case 'left':
-                        response.general['margin-right'] = 'auto';
-                        break;
-                    case 'center':
-                    case 'justify':
-                        response.general['margin-right'] = 'auto';
-                        response.general['margin-left'] = 'auto';
-                        break;
-                    case 'right':
-                        response.general['margin-left'] = 'auto';
-                        break;
-                }
-            }
-            if (isNumber(value.sizeSettings.maxWidth)) {
-                response.general['max-widthUnit'] = value.sizeSettings.maxWidthUnit;
-            }
-            if (isNumber(value.sizeSettings.maxWidth)) {
-                response.general['max-width'] = value.sizeSettings.maxWidth;
-            }
-            if (isNumber(value.sizeSettings.width)) {
-                response.general['widthUnit'] = value.sizeSettings.widthUnit;
-            }
-            if (isNumber(value.sizeSettings.width)) {
-                response.general['width'] = value.sizeSettings.width;
-            }
-            if (isNumber(value.normal.opacity)) {
-                response.general['opacity'] = value.normal.opacity;
-            }
-            if (!isEmpty(value.normal.backgroundColor)) {
-                response.general['background-color'] = value.normal.backgroundColor;
-            }
-            if (!isEmpty(value.normal.backgroundGradient)) {
-                response.general['background'] = value.normal.backgroundGradient;
-            }
-            if (!isEmpty(value.normal.borderSettings.borderColor)) {
-                response.general['border-color'] = value.normal.borderSettings.borderColor;
-            }
-            if (!isEmpty(value.normal.borderSettings.borderType)) {
-                response.general['border-style'] = value.normal.borderSettings.borderType;
-            }
-            return response;
-        }
-
-        /**
-         * Creates a new object for being joined with the rest of the values on meta
-         */
-        const getHoverStylesObject = () => {
-            const response = {
-                label: value.label,
-                general: {}
-            }
-            if (isNumber(value.hover.opacity)) {
-                response.general['opacity'] = value.hover.opacity;
-            }
-            if (!isEmpty(value.hover.backgroundColor)) {
-                response.general['background-color'] = value.hover.backgroundColor;
-            }
-            if (!isEmpty(value.hover.borderSettings.borderColor)) {
-                response.general['border-color'] = value.hover.borderSettings.borderColor;
-            }
-            if (!isEmpty(value.hover.backgroundGradient)) {
-                response.general['background'] = value.hover.backgroundGradient;
-            }
-            if (!isEmpty(value.hover.borderSettings.borderType)) {
-                response.general['border-style'] = value.hover.borderSettings.borderType;
-            }
-            return response;
-        }
-
-        /**
-         * Creates a new object for being joined with the rest of the values on meta
-         */
-        const getImgStylesObject = () => {
-            const response = {
-                label: value.label,
-                general: {}
-            }
-            if (isNumber(value.imageSize.width)) {
-                response.general['width'] = value.imageSize.width + value.imageSize.widthUnit;
-            }
-            if (isNumber(value.imageSize.height)) {
-                response.general['height'] = value.imageSize.height + value.imageSize.heightUnit;
-            }
-
-            return response;
-        }
-
-		/**
-		* Creates a new object that
-		*
-		* @param {string} target	Block attribute: uniqueID
-		* @param {obj} meta		Old and saved metadate
-		* @param {obj} value	New values to add
-		*/
-        const metaValue = (type) => {
-            const meta = getMeta();
-            let styleTarget = '';
-            switch (type) {
-                case 'normal':
-                    styleTarget = getTarget();
-                    break;
-                case 'hover':
-                    styleTarget = getTarget(':hover');
-                    break;
-                case 'img':
-                    styleTarget = getTarget(' img');
-                    break;
-            }
-            let obj = {};
-            switch (type) {
-                case 'normal':
-                    obj = getNormalStylesObject();
-                    break;
-                case 'hover':
-                    obj = getHoverStylesObject();
-                    break;
-                case 'img':
-                    obj = getImgStylesObject();
-                    break;
-            }
-            const responsiveStyle = new ResponsiveStylesResolver(styleTarget, meta, obj);
-            const response = JSON.stringify(responsiveStyle.getNewValue);
-            return response;
-        }
-
-		/**
-		* Saves and send the data. Also refresh the styles on Editor
-		*/
-        const saveAndSend = () => {
-            save();
-            saveMeta('normal');
-            saveMeta('hover');
-            saveMeta('img');
-            new BackEndResponsiveStyles(getMeta());
-        }
-
-        const save = () => {
-            onChange(JSON.stringify(value));
-        }
-
-        const saveMeta = (type) => {
-            dispatch('core/editor').editPost({
-                meta: {
-                    _gutenberg_extra_responsive_styles: metaValue(type),
-                },
-            });
-        }
-
         const getValues = () => {
             value.alt = imageData.alt_text;
             value.src = imageData.source_url;
             value.imageSize.options = imageData.media_details.sizes;
-            save();
+            this.save(value);
         }
 
         imageData && (
@@ -315,16 +268,16 @@ class ImageSettingsOptions extends Component {
                     options={getSizeOptions()}
                     onChange={val => {
                         value.size = val;
-                        saveAndSend()
+                        this.saveAndSend(value)
                     }}
                 />
                 {value.size === 'custom' &&
-                    <ImageCrop
+                    <ImageCropControl
                         mediaID={mediaID}
                         cropOptions={value.imageSize.cropOptions ? value.imageSize.cropOptions : {}}
                         onChange={cropOptions => {
                             value.imageSize.cropOptions = cropOptions;
-                            saveAndSend();
+                            this.saveAndSend(value);
                         }}
                     />
                 }
@@ -332,7 +285,7 @@ class ImageSettingsOptions extends Component {
                     value={value.alignment}
                     onChange={val => {
                         value.alignment = val;
-                        saveAndSend()
+                        this.saveAndSend(value)
                     }}
                     disableJustify
                 />
@@ -345,7 +298,7 @@ class ImageSettingsOptions extends Component {
                         val === 'attachment' ?
                             value.caption = imageData.caption.raw :
                             value.caption = '';
-                        saveAndSend();
+                        this.saveAndSend(value);
                     }}
                 />
                 {value.captionType === 'custom' &&
@@ -355,47 +308,47 @@ class ImageSettingsOptions extends Component {
                         value={value.caption}
                         onChange={val => {
                             value.caption = val;
-                            saveAndSend();
+                            this.saveAndSend(value);
                         }}
                     />
                 }
                 {value.captionType != 'none' &&
-                    <Typography
+                    <TypographyControl
                         fontOptions={value.captionTypography}
                         onChange={val => {
                             value.captionTypography = val;
-                            saveAndSend();
+                            this.saveAndSend(value);
                         }}
                         target={target + ' figcaption'}
                     />
                 }
-                <MiniSizeControl
+                <SizeControl
                     label={__('Max Width', 'gutenberg-extra')}
                     unit={value.sizeSettings.maxWidthUnit}
                     onChangeUnit={val => {
                         value.sizeSettings.maxWidthUnit = val;
-                        saveAndSend();
+                        this.saveAndSend(value);
                     }}
                     value={value.sizeSettings.maxWidth}
                     onChangeValue={val => {
                         value.sizeSettings.maxWidth = val;
-                        saveAndSend();
+                        this.saveAndSend(value);
                     }}
                 />
-                <MiniSizeControl
+                <SizeControl
                     label={__('Width', 'gutenberg-extra')}
                     unit={value.sizeSettings.widthUnit}
                     onChangeUnit={val => {
                         value.sizeSettings.widthUnit = val;
-                        saveAndSend();
+                        this.saveAndSend(value);
                     }}
                     value={value.sizeSettings.width}
                     onChangeValue={val => {
                         value.sizeSettings.width = val;
-                        saveAndSend();
+                        this.saveAndSend(value);
                     }}
                 />
-                <NormalHover
+                <NormalHoverControl
                     selector={selector}
                     onChange={selector => {
                         this.setState({ selector });
@@ -403,12 +356,12 @@ class ImageSettingsOptions extends Component {
                 />
                 <RangeControl
                     label={__('Opacity', 'gutenberg-extra')}
-                    value={value[selector].opacity}
+                    value={value[selector].opacity * 100}
                     min={0}
                     max={100}
                     onChange={val => {
-                        value[selector].opacity = val;
-                        saveAndSend()
+                        value[selector].opacity = val / 100;
+                        this.saveAndSend(value)
                     }}
                 />
                 <ColorControl
@@ -416,61 +369,37 @@ class ImageSettingsOptions extends Component {
                     color={value[selector].backgroundColor}
                     onColorChange={val => {
                         value[selector].backgroundColor = val;
-                        saveAndSend()
+                        this.saveAndSend(value)
                     }}
                     gradient={value[selector].backgroundGradient}
                     onGradientChange={val => {
                         value[selector].backgroundGradient = val;
-                        saveAndSend()
+                        this.saveAndSend(value)
                     }}
                     gradientAboveBackground={value[selector].gradientAboveBackground}
                     onGradientAboveBackgroundChange={val => {
                         value[selector].gradientAboveBackground = val;
-                        saveAndSend()
+                        this.saveAndSend(value)
                     }}
                 />
-                <PopoverControl
-                    label={__('Box shadow', 'gutenberg-extra')}
-                    popovers={[
-                        {
-                            content: (
-                                <BoxShadow
-                                    boxShadowOptions={value[selector].boxShadow}
-                                    onChange={val => {
-                                        value[selector].boxShadow = JSON.parse(val);
-                                        saveAndSend()
-                                    }}
-                                    target={
-                                        selector != 'hover' ?
-                                            `${target} img` :
-                                            `${target} img:hover`
-                                    }
-                                />
-                            )
-                        }
-                    ]}
+                <BoxShadowControl
+                    boxShadowOptions={value[selector].boxShadow}
+                    onChange={val => {
+                        value[selector].boxShadow = JSON.parse(val);
+                        this.saveAndSend(value)
+                    }}
+                    target={
+                        selector != 'hover' ?
+                            `${target} img` :
+                            `${target} img:hover`
+                    }
                 />
                 <hr style={{ borderTop: '1px solid #ddd' }} />
-                <BlockBorder
-                    borderColor={value[selector].borderSettings.borderColor}
-                    onChangeBorderColor={val => {
-                        value[selector].borderSettings.borderColor = val;
-                        saveAndSend();
-                    }}
-                    borderType={value[selector].borderSettings.borderType}
-                    onChangeBorderType={val => {
-                        value[selector].borderSettings.borderType = val;
-                        saveAndSend();
-                    }}
-                    borderRadius={value[selector].borderSettings.borderRadius}
-                    onChangeBorderRadius={val => {
-                        value[selector].borderSettings.borderRadius = val;
-                        saveAndSend();
-                    }}
-                    borderWidth={value[selector].borderSettings.borderWidth}
-                    onChangeBorderWidth={val => {
-                        value[selector].borderSettings.borderWidth = val;
-                        saveAndSend();
+                <BorderControl
+                    borderOptions={value[selector].borderSettings}
+                    onChange={val => {
+                        value[selector].borderSettings = val;
+                        this.saveAndSend(value)
                     }}
                     borderRadiusTarget={
                         selector != 'hover' ?
@@ -496,7 +425,7 @@ export const ImageSettings = withSelect((select, ownProps) => {
     return {
         imageData
     }
-})(ImageSettingsOptions)
+})(ImageSettingsComponent)
 
 /**
  * Frontend block
@@ -584,7 +513,7 @@ export const ImageUpload = props => {
                                     </p>
                                 </Fragment>
                             ) :
-                            iconsSettings.placeholderImage
+                            placeholderImage
                     }
                 </IconButton>
             )}

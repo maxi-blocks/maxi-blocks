@@ -1,29 +1,22 @@
 /**
  * WordPress dependencies
  */
+const {	Fragment } = wp.element;
 const {
 	__,
 	sprintf
 } = wp.i18n;
-const {
-	Component,
-	Fragment
-} = wp.element;
 const {
 	ButtonGroup,
 	Button,
 	Tooltip,
 	TabPanel
 } = wp.components;
-const {
-	dispatch,
-	select
-} = wp.data;
 
 /**
  * Internal dependencies
  */
-import iconsSettings from '../icons/icons-settings';
+import { GXComponent } from '../index';
 
 /**
  * External dependencies
@@ -33,26 +26,33 @@ import map from 'lodash/map';
 import { isNumber } from 'lodash';
 
 /**
- * Styles
+ * Styles and icons
  */
-import './styles/editor.scss';
+import './editor.scss';
+import {
+	reset,
+	desktop,
+	tablet,
+	mobile,
+	sync,
+	
+} from '../../icons';
 
 /**
  * Block
  */
-export default class DimensionsControl extends Component {
+export default class DimensionsControl extends GXComponent {
 
 	state = {
 		device: 'desktop'
-	}
+    }
+    
+    componentDidMount() {
+        const value = typeof this.props.value === 'object' ? this.props.value : JSON.parse(this.props.value);
+        this.saveAndSend(value, false)
+    }
 
 	render() {
-		const {
-			onChange,
-			target = '',
-			avoidZero = false
-		} = this.props;
-
 		let value = typeof this.props.value === 'object' ? this.props.value : JSON.parse(this.props.value);
 
 		const {
@@ -114,7 +114,7 @@ export default class DimensionsControl extends Component {
 
 		const onChangeUnit = (unit) => {
 			value.unit = unit;
-			saveAndSend();
+			this.saveAndSend(value, false);
 		}
 
 		const onChangeValue = (e) => {
@@ -130,59 +130,14 @@ export default class DimensionsControl extends Component {
 			else {
 				value[device][getKey(value[device], target)] = newValue;
 			}
-			saveAndSend();
+			this.saveAndSend(value, false);
 		}
 
 		const onChangeSync = () => {
 			value[device].sync = !value[device].sync;
-			saveAndSend();
-		}
-
-		/**
-		* Retrieves the old meta data
-		*/
-		const getMeta = () => {
-			let meta = select('core/editor').getEditedPostAttribute('meta')._gutenberg_extra_responsive_styles;
-			return meta ? JSON.parse(meta) : {};
-		}
-
-		/**
-		 * Retrieve the target for responsive CSS
-		 */
-		const getTarget = () => {
-			let styleTarget = select('core/block-editor').getBlockAttributes(select('core/block-editor').getSelectedBlockClientId()).uniqueID;
-			styleTarget = `${styleTarget}${target.length > 0 ? `__$${target}` : '' }`;
-			return styleTarget;
-		}
-
-		/**
-		* Creates a new object that
-		*
-		* @param {string} target	Block attribute: uniqueID
-		* @param {obj} meta		Old and saved metadate
-		* @param {obj} value	New values to add
-		*/
-		const metaValue = () => {
-			const meta = getMeta();
-			const styleTarget = getTarget();
-			const responsiveStyle = new ResponsiveStylesResolver(styleTarget, meta, value, !avoidZero);
-			const response = JSON.stringify(responsiveStyle.getNewValue);
-			return response;
-		}
-
-		/**
-		* Saves and send the data. Also refresh the styles on Editor
-		*/
-		const saveAndSend = () => {
-			onChange(JSON.stringify(value));
-			dispatch('core/editor').editPost({
-				meta: {
-					_gutenberg_extra_responsive_styles: metaValue(),
-				},
-			});
-			new BackEndResponsiveStyles(getMeta());
-		}
-
+			this.saveAndSend(value, false);
+        }
+        
 		return (
 			<Fragment>
 				<div className={classes}>
@@ -200,7 +155,7 @@ export default class DimensionsControl extends Component {
 								)}
 								action="reset"
 							>
-								{iconsSettings.reset}
+								{reset}
 							</Button>
 							<div className="components-gx-dimensions-control__actions">
 								<ButtonGroup className="components-gx-dimensions-control__units" aria-label={__('Select Units', 'gutenberg-extra')}>
@@ -238,17 +193,17 @@ export default class DimensionsControl extends Component {
 							tabs={[
 								{
 									name: 'desktop',
-									title: iconsSettings.desktopChrome,
+									title: desktop,
 									className: `components-gx-dimensions-control__mobile-controls-item components-button is-button is-default components-gx-dimensions-control__mobile-controls-item--desktop components-gx-dimensions-control__mobile-controls-item--desktop ${device == 'desktop' ? 'is-active' : ''}`,
 								},
 								{
 									name: 'tablet',
-									title: iconsSettings.tablet,
+									title: tablet,
 									className: `components-gx-dimensions-control__mobile-controls-item components-button is-button is-default components-gx-dimensions-control__mobile-controls-item--tablet components-gx-dimensions-control__mobile-controls-item--tablet ${device == 'tablet' ? 'is-active' : ''}`,
 								},
 								{
 									name: 'mobile',
-									title: iconsSettings.mobile,
+									title: mobile,
 									className: `components-gx-dimensions-control__mobile-controls-item components-button is-button is-default components-gx-dimensions-control__mobile-controls-item--mobile components-gx-dimensions-control__mobile-controls-item--mobile ${device == 'mobile' ? 'is-active' : ''}`,
 								},
 							]}>
@@ -327,7 +282,7 @@ export default class DimensionsControl extends Component {
 														data-device-type={device}
 														isSmall
 													>
-														{!!value[device].sync ? iconsSettings.sync : iconsSettings.sync}
+														{sync}
 													</Button>
 												</Tooltip>
 											</div>

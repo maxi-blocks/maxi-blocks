@@ -13,7 +13,7 @@ const {
 /**
  * Internal dependencies
  */
-import { PopoverControl } from '../popover';
+import PopoverControl from '../popover-control';
 
 /**
  * External dependencies
@@ -22,11 +22,11 @@ import { isNil } from 'lodash';
 import classnames from 'classnames';
 
 /**
- * Styles
+ * Styles and icons
  */
 import './editor.scss';
 import './style.scss';
-import iconsSettings from '../icons/icons-settings';
+import { sync } from '../../icons';
 
 /**
  * Block
@@ -100,7 +100,7 @@ export default class LinkedButton extends Component {
                             )
                         }
                     ]}
-                    icon={iconsSettings.sync}
+                    icon={sync}
                 />
             </Button>
         )

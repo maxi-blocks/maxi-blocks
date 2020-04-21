@@ -11,9 +11,8 @@ const {
 /**
  * Internal dependencies
  */
-import { PopoverControl } from '../popover/';
-import CheckBox from '../checkbox/';
-import iconsSettings from '../icons/icons-settings.js';
+import { CheckBoxControl } from '../index';
+import PopoverControl from '../popover-control';
 
 /**
  * External dependencies
@@ -21,9 +20,13 @@ import iconsSettings from '../icons/icons-settings.js';
 import { isNil } from 'lodash';
 
 /**
- * Styles
+ * Styles and icons
  */
 import './editor.scss';
+import {
+    colorWheel,
+    gradient
+} from '../../icons';
 
 /**
  * Block
@@ -35,12 +38,12 @@ const ColorControl = props => {
         color,
         onColorChange,
         onColorReset = undefined,
-        colorIcon = iconsSettings.colorWheel,
+        colorIcon = colorWheel,
         disableGradient = false,
         gradient,
         onGradientChange,
         onGradientReset = undefined,
-        gradientIcon = iconsSettings.gradient,
+        gradientIcon = gradient,
         disableGradientAboveBackground = false,
         gradientAboveBackground,
         onGradientAboveBackgroundChange,
@@ -76,7 +79,7 @@ const ColorControl = props => {
                                 onChange={val => onGradientChange(val)}
                             />
                             {disableGradientAboveBackground &&
-                                <CheckBox
+                                <CheckBoxControl
                                     label={__('Above Background Image', 'gutenberg-extra')}
                                     checked={gradientAboveBackground}
                                     onChange={val => onGradientAboveBackgroundChange(val)}

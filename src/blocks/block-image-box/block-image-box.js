@@ -11,7 +11,7 @@
 
 import './style.scss';
 import './editor.scss';
-import iconsBlocks from '../../components/icons/icons-blocks.js';
+import { imageBox } from '../../icons';
 /**
  * WordPress dependencies
  */
@@ -33,7 +33,7 @@ import save from './save';
 
 registerBlockType( 'gutenberg-extra/block-image-box', {
 	title: __('Image Box Extra', 'gutenberg-extra'),
-	icon: iconsBlocks.imageBox,
+	icon: imageBox,
 	description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque sunt hic obcaecati alias rerum fugit, dolore, quis placeat aliquid at natus fugiat, repellendus facilis asperiores illum voluptatum aut officiis delectus?",
 	category: 'gutenberg-extra-blocks',
 	supports: {

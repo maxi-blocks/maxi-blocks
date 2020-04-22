@@ -23,6 +23,8 @@
     "normal": {
         "color": "",
         "backgroundColor": "",
+        "background": "",
+        "background": "",
         "boxShadow": {
             "label": "Box Shadow",
             "shadowColor": "",
@@ -204,6 +206,7 @@
     "hover": {
         "color": "",
         "backgroundColor": "",
+        "background": "",
         "boxShadow": {
             "label": "Box Shadow",
             "shadowColor": "",

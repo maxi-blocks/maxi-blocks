@@ -1,20 +1,15 @@
-div.gx-alignmentcontrol-control .components-base-control__label {
+.gx-sidebar div.gx-alignmentcontrol-control .components-base-control__label{
     margin: auto;
     flex: 40%;
 }
 
-div.gx-alignmentcontrol-control .components-base-control__field {
-    display: flex;
-}
-
-
-div.gx-alignmentcontrol-control .components-radio-control__option input {
+.gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option input {
     display: none;
 }
 
-div.gx-alignmentcontrol-control .components-radio-control__option {
-    width: 45px;
-    height: 45px;
+.gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option {
+    width: 45.6px;
+    height: 35px;
     background-color: rgba(33,141,250,0);
     border: 2px solid #dddfe1;
     border-right-width: 0;
@@ -24,32 +19,32 @@ div.gx-alignmentcontrol-control .components-radio-control__option {
     margin: auto;
 }
 
-div.gx-alignmentcontrol-control .components-radio-control__option label {
+.gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option label {
     display: block;
     height: 100%;
 }
 
-div.gx-alignmentcontrol-control .components-radio-control__option svg {
+.gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option svg {
     display: block;
     height: 100%;
     margin: auto;
     fill: #464a53;
 }
 
-div.gx-alignmentcontrol-control .components-radio-control__option:first-of-type,
-div.gx-alignmentcontrol-control .components-radio-control__option:first-of-type label {
+.gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option:first-of-type,
+.gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option:first-of-type label {
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
 }
 
-div.gx-alignmentcontrol-control .components-radio-control__option:last-of-type,
-div.gx-alignmentcontrol-control .components-radio-control__option:last-of-type label {
+.gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option:last-of-type,
+.gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option:last-of-type label {
     border-right-width: 2px;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
 }
 
-div.gx-alignmentcontrol-control .components-radio-control__option input:checked ~ label {
+.gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option input:checked ~ label {
     box-shadow: 0 0 0 2px #007cba;
     outline: 1px solid transparent;
     position: relative;

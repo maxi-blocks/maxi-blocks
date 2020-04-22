@@ -28,15 +28,6 @@ const {
   ToggleControl
 } = wp.components;
 
-import { HideDivider } from '../hide-divider/index';
-import { VerticalDivider } from '../vertical-divider/index';
-import { RoundedDivider } from '../rounded-divider/index';
-import { AdditionalDivider } from '../additional-divider/index';
-import { AlignDivider } from '../align-divider/index';
-import { DividerPosition } from '../divider-position/index';
-import { DividerWidth } from '../divider-width/index';
-import { DividerHeight } from '../divider-height/index';
-import { DividerColor } from '../divider-color/index';
 
 import { hideDividerAttributes } from '../hide-divider/index';
 import { verticalDividerAttributes } from '../vertical-divider/index';
@@ -49,7 +40,7 @@ import { dividerHeightAttributes } from '../divider-height/index';
 import { dividerColorAttributes } from '../divider-color/index';
 
 const Line = () => (
-  <hr/>
+  <hr className={'divider-line'}/>
 );
 
 
@@ -115,11 +106,7 @@ class Divider extends Component {
       isVertical,
       isHidden,
       isRounded,
-      isMultiple,
       isBehindTheSubtitle,
-      isPreappendedToSubtitle,
-      isAppendedToSubtitle,
-      subtitleTextAlign,
       contentDirection
      } = this.props.attributes;
      dividerColorValue = this.props.attributes.dividerColor;
@@ -154,74 +141,12 @@ class Divider extends Component {
        position: contentDirection == 'row' || contentDirection == 'row-reverse' ? 'relative' : undefined
      }
 
-     const buildDivider = (
-     /*1*/a = isMultiple,
-     /*2*/align = dividerAlignment,
-     /*3*/rounded = isRounded,
-     /*4*/widthUnit = dividerWidthUnit,
-     /*5*/width = dividerWidth,
-     /*6*/thickness = dividerThickness,
-     /*7*/thicknessUnit = dividerThicknessUnit,
-     /*8*/height = dividerHeight,
-     /*9*/heightUnit = dividerHeightUnit,
-     /*10*/colour = dividerColor
-      ) => {
-       if(a){
-         let div = `<div class="test"
-         style="border:${colour ? '1px solid ' + colour : '1px solid rgb(152,152,152)'};
-         margin:${align};
-         border-color:${colour};
-         height:${height ? height + dividerHeightUnitValue : ''};
-         width:${widthUnit ? width != 0 ? width + widthUnit : '' : ''};
-         border-width:${thickness ? thickness + dividerThicknessUnitValue : ''};
-         border-radius:${rounded ? '2rem' : '' };
-         display:${isHidden ? 'none' : ''};
-         ">`;
-         setAttributes({additionalDivider: div });
-         return div;
-      }else{
-        setAttributes({additionalDivider: '' });
-      }
-     }
 
 
     return (
       <div
       style={dividerWrapperStyles}
       >
-      <InspectorControls>
-      <Accordion
-          className = {'gx-style-tab-setting gx-accordion'}
-          allowMultipleExpanded = {true}
-          allowZeroExpanded = {true}
-      >
-      <AccordionItem>
-          <AccordionItemHeading className={'gx-accordion-tab gx-divider-tab'}>
-            <AccordionItemButton className='components-base-control__label'>
-              {__('Divider', 'gutenberg-extra' )}
-            </AccordionItemButton>
-          </AccordionItemHeading>
-        <AccordionItemPanel>
-        <PanelBody>
-          <HideDivider {...this.props}/>
-          <VerticalDivider {...this.props} buildDivider={buildDivider}/>
-          <RoundedDivider {...this.props} buildDivider={buildDivider}/>
-          <AdditionalDivider {...this.props} buildDivider={buildDivider}/>
-          <Line/>
-          <AlignDivider {...this.props} buildDivider={buildDivider}/>
-          <DividerPosition {...this.props}/>
-          <Line/>
-          <DividerColor {...this.props} buildDivider={buildDivider}/>
-          <Line/>
-          <DividerWidth {...this.props} buildDivider={buildDivider}/>
-          <DividerHeight {...this.props} buildDivider={buildDivider}/>
-          </PanelBody>
-        </AccordionItemPanel>
-
-      </AccordionItem>
-      </Accordion>
-
-      </InspectorControls>
       <div
       className={'gx-divider'}
       style={dividerStyles}

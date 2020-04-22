@@ -18,6 +18,7 @@ import {
  */
 const allowedBlocks = [
 	'gutenberg-extra/block-image-box',
+	'gutenberg-extra/block-title-extra',
 	'gutenberg-extra/testimonials-slider-block'
 ];
 

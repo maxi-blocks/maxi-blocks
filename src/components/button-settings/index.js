@@ -4,7 +4,7 @@
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
 const {
-    RadioControl,
+    RangeControl,
     Button
 } = wp.components;
 const { dispatch } = wp.data;
@@ -21,11 +21,13 @@ import ColorControl from '../color-control';
 import DimensionsControl from '../dimensions-control';
 import FullSizeControl from '../full-size-control';
 import LinkedButton from '../linked-button';
+import NormalHoverControl from '../normal-hover-control';
 import TypographyControl from '../typography-control';
 
 /**
  * External dependencies
  */
+import classnames from 'classnames';
 import {
     isEmpty,
     isNil,
@@ -45,9 +47,10 @@ export class ButtonSettings extends GXComponent {
     target = this.props.target ? this.props.target : 'gx-buttoneditor-button';
 
     state = {
-        selector1: 'normal',
-        selector2: 'normal',
-        selector3: 'normal',
+        selectorTypographyColors: 'normal',
+        selector2OpacityShadow: 'normal',
+        selectorPaddingMargin: 'normal',
+        selectorBorder: 'normal'
     }
 
     componentDidMount() {
@@ -155,9 +158,10 @@ export class ButtonSettings extends GXComponent {
         } = this.props;
 
         const {
-            selector1,
-            selector2,
-            selector3
+            selectorTypographyColors,
+            selector2OpacityShadow,
+            selectorPaddingMargin,
+            selectorBorder
         } = this.state;
 
         const value = typeof buttonSettings === 'object' ? buttonSettings : JSON.parse(buttonSettings);
@@ -168,45 +172,41 @@ export class ButtonSettings extends GXComponent {
                     items={[
                         {
                             label: __('Typography & Colors', 'gutenberg-extra'),
-                            className: "gx-buttonstyles-selector-control",
+                            className: "gx-typography-tab gx-typography-item",
                             icon: library,
                             content: (
                                 <Fragment>
-                                    <RadioControl
-                                        className="gx-typography-tab"
-                                        selected={selector1}
-                                        options={[
-                                            { label: 'Normal', value: 'normal' },
-                                            { label: 'Hover', value: 'hover' },
-                                        ]}
-                                        onChange={selector1 => {
-                                            this.setState({ selector1 });
+                                    <NormalHoverControl
+                                        /*not sure about vvv class => may should go on the component itself*/
+                                        className="gx-buttonstyles-selector-control"
+                                        selected={selectorTypographyColors}
+                                        onChange={selectorTypographyColors => {
+                                            this.setState({ selectorTypographyColors });
                                         }}
                                     />
+                                    <ColorControl
+                                        label={__('Background Colour', 'gutenberg-extra')}
+                                        color={value[selectorTypographyColors].backgroundColor}
+                                        onColorChange={val => {
+                                            value[selectorTypographyColors].backgroundColor = val;
+                                            this.saveAndSend(value);
+                                        }}
+                                        gradient={value[selectorTypographyColors].background}
+                                        onGradientChange={val => {
+                                            value[selectorTypographyColors].background = val;
+                                            saveAndSend();
+                                        }}
+                                        disableGradientOverBackground
+                                    />
                                     <TypographyControl
-                                        fontOptions={value[selector1].typography}
+                                        fontOptions={value[selectorTypographyColors].typography}
                                         onChange={val => {
-                                            value[selector1].typography = val;
+                                            value[selectorTypographyColors].typography = val;
                                             this.saveAndSend(value);
                                         }}
                                         target={target}
                                     />
-                                    <ColorControl
-                                        label={__('Background Colour', 'gutenberg-extra')}
-                                        color={value[selector1].backgroundColor}
-                                        onColorChange={val => {
-                                            value[selector1].backgroundColor = val;
-                                            this.saveAndSend(value);
-                                        }}
-                                        disableGradient
-                                    />
-                                </Fragment>
-                            )
-                        },
-                        {
-                            label: __('Box Settings', 'gutenberg-extra'),
-                            content: (
-                                <Fragment>
+                                    {/** Should alignment be under Normal/hover scope? */}
                                     <AlignmentControl
                                         value={value.alignment}
                                         onChange={val => {
@@ -215,33 +215,80 @@ export class ButtonSettings extends GXComponent {
                                         }}
                                         disableJustify
                                     />
-                                    <RadioControl
+                                </Fragment>
+                            )
+                        },
+                        {
+                            label: __('Opacity / Shadow', 'gutenberg-extra'),
+                            /** why gx-typography-tab if is Opacity/shadow settings? */
+                            className: "gx-typography-tab gx-box-settings-item",
+                            content: (
+                                <Fragment>
+                                    <NormalHoverControl
+                                        /*not sure about vvv class => may should go on the component itself*/
                                         className="gx-buttonstyles-selector-control"
-                                        selected={selector2}
-                                        options={[
-                                            { label: 'Normal', value: 'normal' },
-                                            { label: 'Hover', value: 'hover' },
-                                        ]}
-                                        onChange={selector2 => {
-                                            this.setState({ selector2 });
+                                        selected={selector2OpacityShadow}
+                                        onChange={selector2OpacityShadow => {
+                                            this.setState({ selector2OpacityShadow });
                                         }}
                                     />
-                                    <BoxShadowControl
-                                        boxShadowOptions={value[selector2].boxShadow}
+                                    <RangeControl
+                                        label={__("Opacity", "gutenberg-extra")}
+                                        className={"gx-opacity-control"}
+                                        value={value[selector2OpacityShadow].opacity * 100}
                                         onChange={val => {
-                                            value[selector2].boxShadow = JSON.parse(val);
+                                            value[selector2OpacityShadow].opacity = val / 100;
+                                            saveAndSend();
+                                        }}
+                                        min={0}
+                                        max={100}
+                                        allowReset={true}
+                                        initialPosition={0}
+                                    />
+                                    <BoxShadowControl
+                                        boxShadowOptions={value[selector2OpacityShadow].boxShadow}
+                                        onChange={val => {
+                                            value[selector2OpacityShadow].boxShadow = JSON.parse(val);
                                             this.saveAndSend(value)
                                         }}
                                         target={
-                                            selector2 != 'hover' ?
+                                            selector2OpacityShadow != 'hover' ?
                                                 `${target}` :
                                                 `${target}:hover`
                                         }
                                     />
-                                    <BorderControl
-                                        borderOptions={value[selector2].borderSettings}
+                                    <BoxShadowControl
+                                        boxShadowOptions={value[selectorBorder].boxShadow}
                                         onChange={val => {
-                                            value[selector2].borderSettings = val;
+                                            value[selectorBorder].boxShadow = JSON.parse(val);
+                                            this.saveAndSend(value)
+                                        }}
+                                        target={
+                                            selectorBorder != 'hover' ?
+                                                `${target}` :
+                                                `${target}:hover`
+                                        }
+                                    />
+                                </Fragment>
+                            )
+                        },
+                        {
+                            label: __("Border", "gutenberg-extra"),
+                            className: 'gx-border-tab gx-border-item',
+                            content: (
+                                <Fragment>
+                                    <NormalHoverControl
+                                        /*not sure about vvv class => may should go on the component itself*/
+                                        className="gx-buttonstyles-selector-control"
+                                        selected={selectorBorder}
+                                        onChange={selectorBorder => {
+                                            this.setState({ selectorBorder });
+                                        }}
+                                    />
+                                    <BorderControl
+                                        borderOptions={value[selector2OpacityShadow].borderSettings}
+                                        onChange={val => {
+                                            value[selector2OpacityShadow].borderSettings = val;
                                             this.saveAndSend(value)
                                         }}
                                         borderRadiusTarget={target}
@@ -251,7 +298,9 @@ export class ButtonSettings extends GXComponent {
                             )
                         },
                         {
-                            label: __('Width and Height', 'gutenberg-extra'),
+                            label: __('Width / Height', 'gutenberg-extra'),
+                            /** why gx-typography-tab if its width/height? */
+                            className: "gx-typography-tab gx-width-height-item",
                             content: (
                                 <Fragment>
                                     <FullSizeControl
@@ -266,32 +315,31 @@ export class ButtonSettings extends GXComponent {
                             )
                         },
                         {
-                            label: __('Padding and Margin', 'gutenberg-extra'),
+                            label: __('Padding / Margin', 'gutenberg-extra'),
+                            /** why gx-typography-tab if its width/height? */
+                            className: "gx-typography-tab gx-padding-margin-item",
                             content: (
                                 <Fragment>
-                                    <RadioControl
+                                    <NormalHoverControl
+                                        /*not sure about vvv class => may should go on the component itself*/
                                         className="gx-buttonstyles-selector-control"
-                                        selected={selector3}
-                                        options={[
-                                            { label: 'Normal', value: 'normal' },
-                                            { label: 'Hover', value: 'hover' },
-                                        ]}
-                                        onChange={selector3 => {
-                                            this.setState({ selector3 });
+                                        selected={selectorPaddingMargin}
+                                        onChange={selectorPaddingMargin => {
+                                            this.setState({ selectorPaddingMargin });
                                         }}
                                     />
                                     <DimensionsControl
-                                        value={value[selector3].padding}
+                                        value={value[selectorPaddingMargin].padding}
                                         onChange={val => {
-                                            value[selector3].padding = val;
+                                            value[selectorPaddingMargin].padding = val;
                                             this.saveAndSend(value)
                                         }}
                                         target={target}
                                     />
                                     <DimensionsControl
-                                        value={value[selector3].margin}
+                                        value={value[selectorPaddingMargin].margin}
                                         onChange={val => {
-                                            value[selector3].margin = val;
+                                            value[selectorPaddingMargin].margin = val;
                                             this.saveAndSend(value)
                                         }}
                                         target={target}
@@ -311,17 +359,18 @@ export class ButtonSettings extends GXComponent {
  */
 export const ButtonEditor = props => {
     const {
-        className = 'gx-buttoneditor-button',
+        className,
         buttonSettings,
         onChange,
         placeholder = __('Read more text...', 'gutenberg-extra')
     } = props;
 
     const value = typeof buttonSettings === 'object' ? buttonSettings : JSON.parse(buttonSettings);
+    const classes = classnames("gx-buttoneditor-button", className);
 
     return (
         <LinkedButton
-            className={className}
+            className={classes}
             placeholder={placeholder}
             buttonText={value.buttonText}
             onTextChange={val => {
@@ -342,7 +391,7 @@ export const ButtonEditor = props => {
  */
 export const ButtonSaver = props => {
     const {
-        className = 'gx-buttoneditor-button',
+        className,
         buttonSettings,
     } = props;
 
@@ -351,12 +400,13 @@ export const ButtonSaver = props => {
         href: value.linkOptions.url || '',
         target: value.linkOptions.opensInNewTab ? '_blank' : '_self'
     }
+    const classes = classnames("gx-buttoneditor-button", className)
 
     return (
         <Fragment>
             {value.buttonText &&
                 <Button
-                    className={className}
+                    className={classes}
                     href={value.linkOptions.url}
                     {...linkProps}
                 >

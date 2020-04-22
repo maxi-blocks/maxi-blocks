@@ -19,21 +19,17 @@
  * Can include things like variables and mixins
  * that are used across the project.
 */
-div.gx-alignmentcontrol-control .components-base-control__label {
+.gx-sidebar div.gx-alignmentcontrol-control .components-base-control__label {
   margin: auto;
   -ms-flex: 40%;
       flex: 40%; }
 
-div.gx-alignmentcontrol-control .components-base-control__field {
-  display: -ms-flexbox;
-  display: flex; }
-
-div.gx-alignmentcontrol-control .components-radio-control__option input {
+.gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option input {
   display: none; }
 
-div.gx-alignmentcontrol-control .components-radio-control__option {
-  width: 45px;
-  height: 45px;
+.gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option {
+  width: 45.6px;
+  height: 35px;
   background-color: rgba(33, 141, 250, 0);
   border: 2px solid #dddfe1;
   border-right-width: 0;
@@ -42,28 +38,28 @@ div.gx-alignmentcontrol-control .components-radio-control__option {
   font-weight: 500;
   margin: auto; }
 
-div.gx-alignmentcontrol-control .components-radio-control__option label {
+.gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option label {
   display: block;
   height: 100%; }
 
-div.gx-alignmentcontrol-control .components-radio-control__option svg {
+.gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option svg {
   display: block;
   height: 100%;
   margin: auto;
   fill: #464a53; }
 
-div.gx-alignmentcontrol-control .components-radio-control__option:first-of-type,
-div.gx-alignmentcontrol-control .components-radio-control__option:first-of-type label {
+.gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option:first-of-type,
+.gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option:first-of-type label {
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px; }
 
-div.gx-alignmentcontrol-control .components-radio-control__option:last-of-type,
-div.gx-alignmentcontrol-control .components-radio-control__option:last-of-type label {
+.gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option:last-of-type,
+.gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option:last-of-type label {
   border-right-width: 2px;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px; }
 
-div.gx-alignmentcontrol-control .components-radio-control__option input:checked ~ label {
+.gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option input:checked ~ label {
   -webkit-box-shadow: 0 0 0 2px #007cba;
           box-shadow: 0 0 0 2px #007cba;
   outline: 1px solid transparent;
@@ -97,18 +93,44 @@ div.gx-alignmentcontrol-control .components-radio-control__option input:checked 
 .gx-colorcontrol-control {
   display: -ms-flexbox;
   display: flex; }
+  .gx-colorcontrol-control .gx-colorcontrol-color-display span {
+    display: block;
+    width: 24px;
+    height: 24px;
+    border: 1px solid black;
+    margin: auto; }
+  .gx-colorcontrol-control .gx-popover-control {
+    width: 100%; }
+    .gx-colorcontrol-control .gx-popover-control .components-base-control__field {
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+      width: 100%; }
+      .gx-colorcontrol-control .gx-popover-control .components-base-control__field .components-dropdown {
+        margin-right: 3px; }
+      .gx-colorcontrol-control .gx-popover-control .components-base-control__field .components-button {
+        height: 30px;
+        width: 30px;
+        border-radius: 5px;
+        border: 2px solid #dddfe1 !important;
+        background-color: white; }
+        .gx-colorcontrol-control .gx-popover-control .components-base-control__field .components-button:hover {
+          background-color: white !important;
+          border-color: #c5c5c5 !important; }
+        .gx-colorcontrol-control .gx-popover-control .components-base-control__field .components-button:focus {
+          -webkit-box-shadow: none !important;
+                  box-shadow: none !important; }
+        .gx-colorcontrol-control .gx-popover-control .components-base-control__field .components-button svg {
+          margin: auto; }
+        .gx-colorcontrol-control .gx-popover-control .components-base-control__field .components-button[type="reset"] {
+          color: black !important; }
+          .gx-colorcontrol-control .gx-popover-control .components-base-control__field .components-button[type="reset"] svg {
+            height: 12px;
+            width: 12px; }
 
-.gx-colorcontrol-control .gx-colorcontrol-color-display span {
-  display: block;
-  width: 24px;
-  height: 24px;
-  border: 1px solid black;
-  margin: auto; }
-
-.gx-colorcontrol-control .gx-popover-control {
-  width: 100%; }
-
-.gx-colorcontrol-gradient-popover .components-custom-gradient-picker__gradient-bar {
+.gx-colorcontrol-gradient-popover
+.components-custom-gradient-picker__gradient-bar {
   border-radius: 0; }
 
 .gx-colorcontrol-gradient-popover .components-custom-gradient-picker__ui-line {
@@ -117,22 +139,36 @@ div.gx-alignmentcontrol-control .components-radio-control__option input:checked 
   -ms-flex-direction: column;
       flex-direction: column; }
 
-.gx-colorcontrol-gradient-popover .components-custom-gradient-picker__ui-line .components-base-control__field {
+.gx-colorcontrol-gradient-popover
+.components-custom-gradient-picker__ui-line
+.components-base-control__field {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-pack: justify;
       justify-content: space-between; }
 
-.gx-colorcontrol-gradient-popover .components-custom-gradient-picker__ui-line .components-base-control__label {
+.gx-colorcontrol-gradient-popover
+.components-custom-gradient-picker__ui-line
+.components-base-control__label {
   margin: auto;
   margin-left: 0; }
 
-.gx-colorcontrol-gradient-popover .components-custom-gradient-picker__ui-line .components-angle-picker-control {
+.gx-colorcontrol-gradient-popover
+.components-custom-gradient-picker__ui-line
+.components-angle-picker-control {
   width: 100%; }
 
-.gx-colorcontrol-gradient-popover .components-custom-gradient-picker__ui-line .components-angle-picker-control__angle-circle {
+.gx-colorcontrol-gradient-popover
+.components-custom-gradient-picker__ui-line
+.components-angle-picker-control__angle-circle {
   margin: auto;
   margin-right: 0; }
+
+.gx-colorcontrol-control .gx-popover-control .components-base-control {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: justify;
+      justify-content: space-between; }
 /**
  * #.# Common SCSS
  *
@@ -353,24 +389,8 @@ div.gx-alignmentcontrol-control .components-radio-control__option input:checked 
  * Can include things like variables and mixins
  * that are used across the project.
 */
-.gx-sidebar .gx-background-control .gx-mediauploader-control .gx-imageuploader-control-replace,
-.gx-sidebar .gx-background-control .gx-mediauploader-control .gx-imageuploader-control-remove {
-  display: none; }
-
-.gx-sidebar .gx-background-control .gx-mediauploader-control .components-base-control__field {
-  position: relative; }
-
-.gx-sidebar .gx-background-control .gx-mediauploader-control .gx-background-control-edit-image {
-  position: absolute;
-  top: 70%;
-  left: 60%; }
-
-.gx-sidebar .gx-background-control-open .gx-mediauploader-control .gx-imageuploader-control-replace,
-.gx-sidebar .gx-background-control-open .gx-mediauploader-control .gx-imageuploader-control-remove {
-  display: initial; }
-
-.gx-sidebar .gx-background-control-open .gx-mediauploader-control .components-base-control__field {
-  display: inline-block; }
+.gx-background-popover-hide {
+  z-index: -1; }
 /**
  * #.# Common SCSS
  *
@@ -378,15 +398,13 @@ div.gx-alignmentcontrol-control .components-radio-control__option input:checked 
  * that are used across the project.
 */
 .components-panel__body .components-gx-dimensions-control {
-  position: relative;
-  margin-bottom: 20px; }
+  position: relative; }
   .components-panel__body .components-gx-dimensions-control__mobile-controls-item {
     border-radius: 3px 0 0 3px;
     -webkit-box-shadow: none;
             box-shadow: none;
     display: none;
     font-size: 10px;
-    height: 45px;
     -ms-flex-pack: center;
         justify-content: center;
     left: 0;
@@ -395,39 +413,30 @@ div.gx-alignmentcontrol-control .components-radio-control__option input:checked 
     position: absolute;
     text-align: center;
     text-shadow: none;
-    top: 35px;
     width: 26px;
-    z-index: 1; }
+    z-index: 1;
+    height: 1.87rem;
+    border: 2px solid; }
     .components-panel__body .components-gx-dimensions-control__mobile-controls-item.is-active {
       display: block; }
     .components-panel__body .components-gx-dimensions-control__mobile-controls-item svg {
       position: relative;
-      max-width: 28px; }
-    .components-panel__body .components-gx-dimensions-control__mobile-controls-item--default svg {
-      top: 3px; }
-    .components-panel__body .components-gx-dimensions-control__mobile-controls-item--desktop svg {
-      top: 3px; }
-    .components-panel__body .components-gx-dimensions-control__mobile-controls-item--tablet svg {
-      top: 3px; }
-    .components-panel__body .components-gx-dimensions-control__mobile-controls-item--mobile svg {
-      top: 3px; }
-  .components-panel__body .components-gx-dimensions-control .components-gx-dimensions-control__header {
-    margin-bottom: 5px; }
-  .components-panel__body .components-gx-dimensions-control .components-button.is-default,
-  .components-panel__body .components-gx-dimensions-control .components-button.is-small {
+      width: 1rem; }
+  .components-panel__body .components-gx-dimensions-control .components-button.is-default {
     color: #464a53 !important;
     border-color: #dddfe1 !important;
-    font-size: 16px;
+    font-size: 14px;
     background-color: rgba(33, 141, 250, 0);
     border-width: 2px !important;
     width: 41px !important;
     font-weight: 500;
-    margin-right: -1px; }
+    margin-right: -1px;
+    height: 36px;
+    padding-top: 5px !important; }
   .components-panel__body .components-gx-dimensions-control .components-button.is-primary {
-    background: #fff;
-    width: 41px !important;
-    font-weight: 500;
-    font-size: 16px; }
+    color: #464a53 !important;
+    background: #f2f2f2 !important;
+    font-weight: 500; }
   .edit-post-settings-sidebar__panel-block .components-panel__body .components-gx-dimensions-control {
     margin-bottom: 1.5em; }
   .components-panel__body .components-gx-dimensions-control .components-base-control__label {
@@ -443,10 +452,11 @@ div.gx-alignmentcontrol-control .components-radio-control__option input:checked 
     border-radius: 0;
     -webkit-box-shadow: none !important;
             box-shadow: none !important;
-    height: 45px;
+    height: 36px;
     margin: 0 -2px 0 0;
+    border: 2px solid #dddfe1;
     padding-right: 1px;
-    width: 25%; }
+    width: 23%; }
     .components-panel__body .components-gx-dimensions-control input[type="number"].components-gx-dimensions-control__number:focus {
       z-index: 1; }
   .components-panel__body .components-gx-dimensions-control__input-labels {
@@ -461,46 +471,63 @@ div.gx-alignmentcontrol-control .components-radio-control__option input:checked 
         width: 30px; }
   .components-panel__body .components-gx-dimensions-control__number-label {
     display: block;
-    font-size: 11px;
+    font-size: 9px;
     margin-bottom: 1px;
-    margin-top: 3px; }
+    margin-top: 3px;
+    white-space: nowrap;
+    padding-left: 2px; }
   .components-panel__body .components-gx-dimensions-control__label {
     margin-bottom: 0;
-    font-size: 16px !important;
+    font-size: 14px !important;
     color: #464a53 !important;
     font-weight: 500 !important; }
   .components-panel__body .components-gx-dimensions-control__header {
     -ms-flex-pack: justify;
         justify-content: space-between;
-    margin-bottom: 15px; }
+    margin-bottom: 2px; }
   .components-panel__body .components-gx-dimensions-control__actions {
-    position: relative;
-    top: -2px; }
+    margin: 0 !important;
+    margin-left: auto !important;
+    margin-top: 1px !important; }
   .components-panel__body .components-gx-dimensions-control .components-gx-dimensions-control__header .components-color-palette__clear {
-    position: relative;
-    top: -1px;
     border: none !important;
     padding: 0;
-    width: 24px !important;
-    margin-left: 0;
-    margin-top: 2px; }
-    .components-panel__body .components-gx-dimensions-control .components-gx-dimensions-control__header .components-color-palette__clear svg {
-      max-width: 20px; }
-  .components-panel__body .components-gx-dimensions-control__units .components-button {
-    font-size: 10px;
+    width: 24px;
     height: 30px;
+    margin-left: 5px;
+    border: 2px solid #dddfe1 !important;
+    -ms-flex-order: 1;
+        order: 1; }
+    .components-panel__body .components-gx-dimensions-control .components-gx-dimensions-control__header .components-color-palette__clear svg {
+      margin: auto; }
+  .components-panel__body .components-gx-dimensions-control__units .components-button-radio {
+    font-size: 13px;
+    min-width: 33px;
+    display: block;
+    text-align: center;
+    line-height: 24px;
+    margin-right: -2px;
+    font-size: 9pt;
     -ms-flex-pack: center;
         justify-content: center;
     line-height: 20px;
-    padding: 0;
+    border: 2px solid #dddfe1 !important;
     position: relative;
     text-align: center;
     text-shadow: none;
     text-transform: uppercase;
     top: -1px;
-    width: 24px;
-    color: #464a53 !important;
-    border-color: #464a53 !important; }
+    height: 30px;
+    background-color: white !important;
+    color: #464a53 !important; }
+    .components-panel__body .components-gx-dimensions-control__units .components-button-radio:hover {
+      -webkit-box-shadow: none !important;
+              box-shadow: none !important; }
+    .components-panel__body .components-gx-dimensions-control__units .components-button-radio:focus {
+      border: none; }
+      .components-panel__body .components-gx-dimensions-control__units .components-button-radio:focus:enabled {
+        -webkit-box-shadow: none !important;
+                box-shadow: none !important; }
   .components-panel__body .components-gx-dimensions-control_sync.components-button.is-small {
     border-radius: 0;
     border-bottom-right-radius: 3px;
@@ -513,15 +540,24 @@ div.gx-alignmentcontrol-control .components-radio-control__option input:checked 
     padding: 0;
     text-align: center;
     text-shadow: none;
-    width: 30px; }
+    width: 30px;
+    border: 2px solid #dddfe1; }
     .components-panel__body .components-gx-dimensions-control_sync.components-button.is-small svg {
+      background: none;
       fill: currentColor;
       height: 18px;
       width: 18px; }
   .components-panel__body .components-gx-dimensions-control .components-font-size-picker__controls {
     margin-bottom: 0; }
   .components-panel__body .components-gx-dimensions-control .components-gx-dimensions-control_sync {
-    margin-left: 0 !important; }
+    margin-left: 0 !important;
+    border: 2px solid #dddfe1 !important; }
+    .components-panel__body .components-gx-dimensions-control .components-gx-dimensions-control_sync:hover {
+      background-color: white !important; }
+    .components-panel__body .components-gx-dimensions-control .components-gx-dimensions-control_sync:focus:enabled {
+      border: 2px solid #c5c5c5 !important;
+      -webkit-box-shadow: none !important;
+              box-shadow: none !important; }
 
 .components-gx-dimensions-control__dropdown-content .components-button {
   padding-bottom: 8px;
@@ -531,7 +567,7 @@ div.gx-alignmentcontrol-control .components-radio-control__option input:checked 
   .components-gx-dimensions-control__dropdown-content .components-button.is-small-size {
     font-size: 14px; }
   .components-gx-dimensions-control__dropdown-content .components-button.is-medium-size {
-    font-size: 16px; }
+    font-size: 20px; }
   .components-gx-dimensions-control__dropdown-content .components-button.is-large-size {
     font-size: 26px; }
   .components-gx-dimensions-control__dropdown-content .components-button.is-huge-size {
@@ -560,9 +596,11 @@ div.gx-alignmentcontrol-control .components-radio-control__option input:checked 
  * that are used across the project.
 */
 .gx-buttoneditor-button {
-  width: 10rem;
-  height: 3rem;
-  border-radius: 0; }
+  display: block;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  border: 1px solid black; }
 
 .gx-buttoneditor-button .gx-externalbutton-richtext {
   display: block; }
@@ -580,6 +618,36 @@ div.gx-alignmentcontrol-control .components-radio-control__option input:checked 
 
 .gx-buttoneditor-button:hover .gx-externalbutton-popover button {
   opacity: 1; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
+.gx-sidebar .gx-imagesettings-control .gx-imagesettings-selector-control .components-base-control__field {
+  display: grid;
+  grid-template-columns: 1fr 1fr; }
+
+.gx-sidebar .gx-imagesettings-control .gx-imagesettings-selector-control .components-base-control__field .components-radio-control__option {
+  height: 50px;
+  border: 2px solid #dddfe1;
+  border-right-width: 0;
+  margin: 0; }
+
+.gx-sidebar .gx-imagesettings-control .gx-imagesettings-selector-control .components-base-control__field .components-radio-control__option:last-of-type {
+  border-right-width: 2px; }
+
+.gx-imagesettings-control .gx-imagesettings-selector-control input {
+  display: none; }
+
+.gx-imagesettings-control .gx-imagesettings-selector-control label {
+  display: block;
+  text-align: center;
+  line-height: 46px; }
+
+.gx-imagesettings-control .gx-imagesettings-selector-control input:checked ~ label {
+  color: #fff;
+  background-color: #00ccff; }
 /**
  * #.# Common SCSS
  *
@@ -735,12 +803,6 @@ input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before {
 .gx-imagesettings-control .gx-imagesettings-selector-control input:checked ~ label {
   color: #fff;
   background-color: #00ccff; }
-/**
- * #.# Common SCSS
- *
- * Can include things like variables and mixins
- * that are used across the project.
-*/
-.gx-block .gx-imageupload-button,
-.gx-block .gx-imageupload-button svg {
+
+.gx-block .gx-imageupload-button {
   height: auto; }

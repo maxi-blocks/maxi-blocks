@@ -439,6 +439,8 @@ export const buttonSettings = {
     "normal": {
         "color": "",
         "backgroundColor": "",
+        "background": "",
+        "background": "",
         "boxShadow": {
             "label": "Box Shadow",
             "shadowColor": "",
@@ -620,6 +622,7 @@ export const buttonSettings = {
     "hover": {
         "color": "",
         "backgroundColor": "",
+        "background": "",
         "boxShadow": {
             "label": "Box Shadow",
             "shadowColor": "",

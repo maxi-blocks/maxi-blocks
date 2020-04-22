@@ -5,11 +5,12 @@ const {
 const {
   PanelColorSettings,
 } = wp.blockEditor;
+import ColorControl from "../../components/color-control";
 
 export const subtitleBackgroundColorAttributes = {
   subtitleBackgroundColor:{
     type: 'string',
-    default: 'rgba(255, 255, 255, 0)'
+    default: 'white'
   },
 }
 
@@ -20,15 +21,17 @@ export const SubtitleBackgroundColor = ( props ) => {
   } = props;
 
   return (
-    <PanelColorSettings
-      title={__('Sub-title Background Colour Settings', 'gutenberg-extra' )}
-      colorSettings={[
-        {
-          value: subtitleBackgroundColor,
-          onChange: (value) => setAttributes({ subtitleBackgroundColor: value }),
-          label: __('Sub-title Background Colour', 'gutenberg-extra' ),
-        },
-      ]}
+    <ColorControl
+      className={'gx-subtitle-background-color'}
+      label={__("Subtitle Background", "gutenberg-extra")}
+      color={subtitleBackgroundColor}
+      gradient={props.attributes.backgroundGradient}
+      onColorChange={(value) => {
+        setAttributes({
+          subtitleBackgroundColor: value,
+        });
+      }}
+      disableGradient
     />
   )
 }

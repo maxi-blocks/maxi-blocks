@@ -114,7 +114,7 @@ const ColorControl = props => {
     }
 
     return (
-        <div className="gx-colorcontrol-control">
+        <div className="components-base-control gx-colorcontrol-control">
             <div className="gx-colorcontrol-color-display">
                 <span
                     style={{

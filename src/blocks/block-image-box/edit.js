@@ -123,7 +123,7 @@ const edit = props => {
                     link={linkTitle}
                     onChangeLink={linkTitle => setAttributes({ linkTitle })}
                     linkOptions={linkOptions}
-                    onChangeOptions={linkOptions=> setAttributes({ linkOptions })}
+                    onChangeOptions={linkOptions => setAttributes({ linkOptions })}
                 />
             </PanelBody>
             <AccordionControl
@@ -159,7 +159,7 @@ const edit = props => {
                     },
                     {
                         label: __('Image', 'gutenberg-extra'),
-                        className: 'gx-imagesettings-tab',
+                        className: 'gx-image-tab',
                         content: (
                             <ImageSettings
                                 imageSettings={imageSettings}
@@ -170,9 +170,11 @@ const edit = props => {
                     },
                     {
                         label: __('Button', 'gutenberg-extra'),
-                        className: 'gx-button-tab',
+                        className: 'gx-button-tab gx-button-item',
                         content: (
-                            <PanelBody>
+                            <PanelBody
+                                className={'gx-panel gx-color-setting gx-style-tab-setting'}
+                            >
                                 <ButtonSettings
                                     buttonSettings={buttonSettings}
                                     onChange={buttonSettings => setAttributes({ buttonSettings })}
@@ -193,7 +195,7 @@ const edit = props => {
                     },
                     {
                         label: __('Box Settings', 'gutenberg-extra'),
-                        className: 'gx-box-settings-tab',
+                        className: 'gx-box-settings-tab gx-box-settings-item',
                         content: (
                             <Fragment>
                                 <BoxShadowControl
@@ -215,7 +217,7 @@ const edit = props => {
                     },
                     {
                         label: __(' Width / Height', 'gutenberg-extra'),
-                        className: 'gx-width-tab',
+                        className: 'gx-width-height-tab gx-width-height-items',
                         content: (
                             <PanelBody
                                 className="gx-panel gx-size-setting gx-style-tab-setting"
@@ -231,7 +233,7 @@ const edit = props => {
                     },
                     {
                         label: __('Padding & Margin', 'gutenberg-extra'),
-                        className: 'gx-padding-tab',
+                        className: 'gx-padding-tab gx-padding-margin-item',
                         content: (
                             <PanelBody
                                 className="gx-panel gx-space-setting gx-style-tab-setting"
@@ -316,6 +318,6 @@ const edit = props => {
             </div>
         </div>
     ];
-}
+};
 
 export default edit;

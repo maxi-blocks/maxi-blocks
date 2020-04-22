@@ -1,25 +1,3 @@
-// Close
-.gx-sidebar .gx-background-control .gx-mediauploader-control .gx-imageuploader-control-replace,
-.gx-sidebar .gx-background-control .gx-mediauploader-control .gx-imageuploader-control-remove {
-    display: none
-}
-
-.gx-sidebar .gx-background-control .gx-mediauploader-control .components-base-control__field {
-    position: relative;
-}
-
-.gx-sidebar .gx-background-control .gx-mediauploader-control .gx-background-control-edit-image {
-    position: absolute;
-    top: 70%;
-    left: 60%;
-}
-
-// Open
-.gx-sidebar .gx-background-control-open .gx-mediauploader-control .gx-imageuploader-control-replace,
-.gx-sidebar .gx-background-control-open .gx-mediauploader-control .gx-imageuploader-control-remove {
-    display: initial;
-}
-
-.gx-sidebar .gx-background-control-open .gx-mediauploader-control .components-base-control__field {
-    display: inline-block;
+.gx-background-popover-hide {
+    z-index: -1;
 }

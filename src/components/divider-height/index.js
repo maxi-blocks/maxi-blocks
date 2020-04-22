@@ -46,8 +46,17 @@ export const DividerHeight = ( props ) => {
     }
   }
 
+  const handleClick = (e) => {
+
+    if(e.target.previousSibling.style.display == '' || e.target.previousSibling.style.display == 'none'){
+      e.target.previousSibling.style.display = 'block';
+    }else{
+      e.target.previousSibling.style.display = '';
+    }
+  }
+
   return (
-    <div>
+    <div className={'divider-dimension components-base-control'}>
       <RadioControl
         className={'gx-unit-control divider-unit-control'}
         selected={ dividerHeightUnit }
@@ -60,9 +69,10 @@ export const DividerHeight = ( props ) => {
         onChange={ onChangeDividerHeightValue }
       />
       <RangeControl
-        label={__('Divider Height', 'gutenberg-extra')}
+        label={__('Height', 'gutenberg-extra')}
         className={'gx-with-unit-control divider-range-control'}
         value={isVertical ? dividerHeight : dividerThickness}
+        onClick={handleClick}
         onChange={ onChangeDividerHeight }
         min={ 0 }
         allowReset = {true}

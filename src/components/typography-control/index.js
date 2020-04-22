@@ -41,7 +41,7 @@ export default class Typography extends GXComponent {
 
     render() {
         const {
-            className = 'gx-typography-control',
+            className = 'components-panel__body components-base-control editor-panel-color-settings block-editor-panel-color-settings is-opened typography gx-typography-control',
             fontOptions,
             defaultColor = '#9b9b9b',
         } = this.props;

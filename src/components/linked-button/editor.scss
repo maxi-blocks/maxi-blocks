@@ -1,7 +1,7 @@
 .gx-buttoneditor-button {
-    width: 10rem;
-    height: 3rem;
-    border-radius: 0;
+    display: block;
+    width: max-content;
+    border: 1px solid black;
 }
 
 .gx-buttoneditor-button .gx-externalbutton-richtext {

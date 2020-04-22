@@ -5,6 +5,7 @@ const {
 const {
   PanelColorSettings
 } = wp.blockEditor;
+import ColorControl from "../../components/color-control";
 
 export const dividerColorAttributes = {
   dividerColor:{
@@ -26,15 +27,24 @@ export const DividerColor = ( props ) => {
    }
 
   return (
-    <PanelColorSettings
-    title={__('Divider Colour', 'gutenberg-extra' )}
-    colorSettings={[
-      {
-        value: dividerColor,
-        onChange: onChangeDividerColor,
-        label: __('Divider Colour', 'gutenberg-extra' ),
-      },
-    ]}
+    <ColorControl
+      label={__("Divider Colour", "gutenberg-extra")}
+      className={'components-base-control'}
+      color={dividerColor}
+      gradient={props.attributes.backgroundGradient}
+      onColorChange={(value) => {onChangeDividerColor}}
+      disableGradient
     />
+    // <PanelColorSettings
+    // title={__('Divider Colour', 'gutenberg-extra' )}
+    // className={'divider-color'}
+    // colorSettings={[
+    //   {
+    //     value: dividerColor,
+    //     onChange: onChangeDividerColor,
+    //     label: __('Divider Colour', 'gutenberg-extra' ),
+    //   },
+    // ]}
+    // />
   )
 }

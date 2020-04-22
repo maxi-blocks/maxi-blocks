@@ -1,5 +1,35 @@
+.gx-sidebar .gx-imagesettings-control .gx-imagesettings-selector-control .components-base-control__field {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.gx-sidebar .gx-imagesettings-control .gx-imagesettings-selector-control .components-base-control__field .components-radio-control__option {
+    height: 50px;
+    border: 2px solid #dddfe1;
+    border-right-width: 0;
+    margin: 0;
+}
+
+.gx-sidebar .gx-imagesettings-control .gx-imagesettings-selector-control .components-base-control__field .components-radio-control__option:last-of-type {
+    border-right-width: 2px;
+}
+
+.gx-imagesettings-control .gx-imagesettings-selector-control input {
+    display: none;
+}
+
+.gx-imagesettings-control .gx-imagesettings-selector-control label {
+    display: block;
+    text-align: center;
+    line-height: 46px;
+}
+
+.gx-imagesettings-control .gx-imagesettings-selector-control input:checked ~ label {
+    color: #fff;
+    background-color: #00ccff;
+}
+
 // ImageUpload
-.gx-block .gx-imageupload-button,
-.gx-block .gx-imageupload-button svg {
+.gx-block .gx-imageupload-button {
     height: auto;
 }

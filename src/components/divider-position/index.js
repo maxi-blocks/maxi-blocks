@@ -9,6 +9,7 @@ const {
 export const dividerPositionAttributes = {
   dividerOrder:{
     type: 'string',
+    default: '1'
   },
 }
 

@@ -5,6 +5,7 @@ const {
 const {
   ToggleControl
 } = wp.components;
+import Checkbox from '../checkbox/index';
 
 export const titleExtraHideSubtitle = {
   hideSubtitle:{
@@ -20,11 +21,11 @@ export const HideSubtitle = ( props ) => {
   } = props;
 
   return (
-    <ToggleControl
+    <Checkbox
       label={__('Hide Subtitle', 'gutenberg-extra')}
-      id='gx-block-style'
+      id='gx-new-window'
       checked={hideSubtitle}
-      onChange={(value) => {setAttributes({hideSubtitle: value})}}
+      onChange={(newValue) => setAttributes({hideSubtitle: newValue})}
     />
   )
 }

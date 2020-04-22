@@ -28,7 +28,7 @@ import ImageCropControl from '../image-crop-control';
 import NormalHoverControl from '../normal-hover-control';
 import SizeControl from '../size-control';
 import TypographyControl from '../typography-control';
-
+ 
 /**
  * External dependencies
  */

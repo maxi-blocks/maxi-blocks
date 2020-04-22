@@ -2,6 +2,8 @@ const {
   __
 } = wp.i18n;
 
+import './editor.scss';
+
 const {
   SelectControl,
 } = wp.components;
@@ -26,7 +28,7 @@ export const ContentDirection = ( props ) => {
   return (
     <SelectControl
         label={__('Content Direction', 'gutenberg-extra')}
-        className="gx-block-style"
+        className="gx-block-style content-direction"
         value={contentDirection}
         options={[
             { label: __('From Left To Right'), value: 'row' },

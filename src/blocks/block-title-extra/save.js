@@ -58,6 +58,7 @@ const save = (props) => {
       title,
       text,
       mediaID,
+      backgroundImage,
       mediaURL,
       description,
       additionalText,
@@ -72,6 +73,7 @@ const save = (props) => {
       buttonColor,
       buttonBgColor,
       titleLevel,
+      subtitleLevel,
       backgroundColor,
       backgroundGradient,
       blockStyle,
@@ -96,6 +98,8 @@ const save = (props) => {
       isAppendedToSubtitle,
       twoColumnDesc,
       uniqueID,
+      extraClassName,
+      extraStyles,
       contentDirection
     },
   } = props;
@@ -107,7 +111,7 @@ const save = (props) => {
       }
   const linkStyles = setLinkStyles(props);
   const descriptionStyles = setDescriptionStyles(props);
-  const buttonStyles = setButtonStyles(props);
+  // const buttonStyles = setButtonStyles(props);
   const blockStyles = setBlockStyles(props);
   const onSelectImage = (media) => {
     setAttributes({
@@ -137,10 +141,6 @@ const save = (props) => {
     minWidth: contentDirection == 'row' || contentDirection == 'row-reverse' ? '290px' : undefined
   };
 
-  const containerStyles = {
-    display: 'flex',
-    flexDirection: contentDirection
-  };
 
   const textStyles = {
     display: hideDescription ? 'none' : undefined,
@@ -153,17 +153,30 @@ const save = (props) => {
     marginTop: contentDirection == 'row' ? '48px' : '0px',
     marginLeft: contentDirection == 'row' ? '20px' : undefined,
   }
+  let backgroundImageWithGradient = backgroundGradient.length
+        ? `linear-gradient(to left, ${backgroundGradient[0]},${backgroundGradient[1]})`
+        : '';
 
+  if (backgroundImage) {
+      backgroundImageWithGradient += backgroundGradient.length
+          ? `, url(${backgroundImage})`
+          : `url(${backgroundImage})`
+  }
+  
   const gradients = "";
   const disableCustomGradients = false;
+  blockStyles.display = 'flex';
+  blockStyles.flexDirection = contentDirection;
+  blockStyles.backgroundColor = backgroundColor ? backgroundColor : undefined;
+  blockStyles.backgroundImage = backgroundImageWithGradient ? backgroundImageWithGradient : undefined;
   return (
     <div
-      className={blockStyle + ' gx-block gx-title-extra ' + classes}
-      style={containerStyles}
+      className={blockStyle + ' gx-block gx-title-extra ' + classes + ' ' + extraClassName}
+      data-gx_initial_block_class = {defaultBlockStyle}
       >
       <div style={{order:0}}>
       <RichText.Content
-          tagName="p"
+          tagName={subtitleLevel}
           style={subtitleStyles}
           value={subtitle}
           className="gx-title-extra-subtitle"
@@ -172,7 +185,7 @@ const save = (props) => {
       <div style={{order:3}} dangerouslySetInnerHTML={{ __html: additionalDivider}}/>
         <div style={{order:1}}>
           <RichText.Content
-          tagName="p"
+            tagName={titleLevel}
             style={titleStyles}
             value={title}
             className="gx-title-extra-title"
@@ -183,7 +196,7 @@ const save = (props) => {
         />
       <div style={{order:3}}>
         <RichText.Content
-        tagName="p"
+          tagName="h6"
           style={textStyles}
           value={text}
           className="gx-title-extra-text"

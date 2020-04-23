@@ -34,13 +34,12 @@ import {
 } from 'lodash';
 
 /**
- * Styles and icons
+ * Styles
  */
 import './editor.scss';
-import { library } from '../../icons';
 
 /**
- * Block
+ * Component
  */
 export class ButtonSettings extends GXComponent {
 
@@ -48,7 +47,7 @@ export class ButtonSettings extends GXComponent {
 
     state = {
         selectorTypographyColors: 'normal',
-        selector2OpacityShadow: 'normal',
+        selectorOpacityShadow: 'normal',
         selectorPaddingMargin: 'normal',
         selectorBorder: 'normal'
     }
@@ -152,28 +151,28 @@ export class ButtonSettings extends GXComponent {
 
     render() {
         const {
-            className = 'gx-buttonstyles-control',
+            className,
             buttonSettings,
-            target = 'gx-buttoneditor-button'
         } = this.props;
 
         const {
             selectorTypographyColors,
-            selector2OpacityShadow,
+            selectorOpacityShadow,
             selectorPaddingMargin,
             selectorBorder
         } = this.state;
 
         const value = typeof buttonSettings === 'object' ? buttonSettings : JSON.parse(buttonSettings);
+        const classes = classnames('gx-buttonsettings-control', className);
 
         return (
-            <div className={className}>
+            <div className={classes}>
                 <AccordionControl
+                    isSecondary
                     items={[
                         {
                             label: __('Typography & Colors', 'gutenberg-extra'),
                             className: "gx-typography-tab gx-typography-item",
-                            icon: library,
                             content: (
                                 <Fragment>
                                     <NormalHoverControl
@@ -194,7 +193,7 @@ export class ButtonSettings extends GXComponent {
                                         gradient={value[selectorTypographyColors].background}
                                         onGradientChange={val => {
                                             value[selectorTypographyColors].background = val;
-                                            saveAndSend();
+                                            this.saveAndSend(value);
                                         }}
                                         disableGradientOverBackground
                                     />
@@ -204,7 +203,7 @@ export class ButtonSettings extends GXComponent {
                                             value[selectorTypographyColors].typography = val;
                                             this.saveAndSend(value);
                                         }}
-                                        target={target}
+                                        target={this.target}
                                     />
                                     {/** Should alignment be under Normal/hover scope? */}
                                     <AlignmentControl
@@ -227,35 +226,23 @@ export class ButtonSettings extends GXComponent {
                                     <NormalHoverControl
                                         /*not sure about vvv class => may should go on the component itself*/
                                         className="gx-buttonstyles-selector-control"
-                                        selected={selector2OpacityShadow}
-                                        onChange={selector2OpacityShadow => {
-                                            this.setState({ selector2OpacityShadow });
+                                        selected={selectorOpacityShadow}
+                                        onChange={selectorOpacityShadow => {
+                                            this.setState({ selectorOpacityShadow });
                                         }}
                                     />
                                     <RangeControl
                                         label={__("Opacity", "gutenberg-extra")}
                                         className={"gx-opacity-control"}
-                                        value={value[selector2OpacityShadow].opacity * 100}
+                                        value={value[selectorOpacityShadow].opacity * 100}
                                         onChange={val => {
-                                            value[selector2OpacityShadow].opacity = val / 100;
-                                            saveAndSend();
+                                            value[selectorOpacityShadow].opacity = val / 100;
+                                            this.saveAndSend(value);
                                         }}
                                         min={0}
                                         max={100}
                                         allowReset={true}
                                         initialPosition={0}
-                                    />
-                                    <BoxShadowControl
-                                        boxShadowOptions={value[selector2OpacityShadow].boxShadow}
-                                        onChange={val => {
-                                            value[selector2OpacityShadow].boxShadow = JSON.parse(val);
-                                            this.saveAndSend(value)
-                                        }}
-                                        target={
-                                            selector2OpacityShadow != 'hover' ?
-                                                `${target}` :
-                                                `${target}:hover`
-                                        }
                                     />
                                     <BoxShadowControl
                                         boxShadowOptions={value[selectorBorder].boxShadow}
@@ -265,8 +252,8 @@ export class ButtonSettings extends GXComponent {
                                         }}
                                         target={
                                             selectorBorder != 'hover' ?
-                                                `${target}` :
-                                                `${target}:hover`
+                                                `${this.target}` :
+                                                `${this.target}:hover`
                                         }
                                     />
                                 </Fragment>
@@ -286,13 +273,12 @@ export class ButtonSettings extends GXComponent {
                                         }}
                                     />
                                     <BorderControl
-                                        borderOptions={value[selector2OpacityShadow].borderSettings}
+                                        borderOptions={value[selectorOpacityShadow].borderSettings}
                                         onChange={val => {
-                                            value[selector2OpacityShadow].borderSettings = val;
+                                            value[selectorOpacityShadow].borderSettings = val;
                                             this.saveAndSend(value)
                                         }}
-                                        borderRadiusTarget={target}
-                                        borderWidthTarget={target}
+                                        target={this.target}
                                     />
                                 </Fragment>
                             )
@@ -309,7 +295,7 @@ export class ButtonSettings extends GXComponent {
                                             value.size = val;
                                             this.saveAndSend(value);
                                         }}
-                                        target={target}
+                                        target={this.target}
                                     />
                                 </Fragment>
                             )
@@ -334,7 +320,7 @@ export class ButtonSettings extends GXComponent {
                                             value[selectorPaddingMargin].padding = val;
                                             this.saveAndSend(value)
                                         }}
-                                        target={target}
+                                        target={this.target}
                                     />
                                     <DimensionsControl
                                         value={value[selectorPaddingMargin].margin}
@@ -342,7 +328,7 @@ export class ButtonSettings extends GXComponent {
                                             value[selectorPaddingMargin].margin = val;
                                             this.saveAndSend(value)
                                         }}
-                                        target={target}
+                                        target={this.target}
                                     />
                                 </Fragment>
                             )

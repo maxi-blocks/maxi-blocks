@@ -2,17 +2,7 @@ const {
   __
 } = wp.i18n;
 
-const {
-  ToggleControl
-} = wp.components;
-import Checkbox from '../checkbox/index';
-
-export const additionalDividerAttributes = {
-  // isMultiple:{
-  //   type: 'boolean',
-  //   default: false
-  // },
-}
+import CheckBoxControl from '../../checkbox-control';
 
 export const AdditionalDivider = ( props ) => {
   const {
@@ -30,7 +20,7 @@ export const AdditionalDivider = ( props ) => {
   }
 
   return (
-    <Checkbox
+    <CheckBoxControl
       label={__('Additional Divider', 'gutenberg-extra')}
       id='gx-new-window'
       checked={isMultiple}

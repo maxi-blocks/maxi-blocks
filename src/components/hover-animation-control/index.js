@@ -6,22 +6,18 @@ const { Fragment } = wp.element;
 const { SelectControl } = wp.components;
 
 /**
- * Block
+ * Component
  */
 const HoverAnimationControl = ( props ) => {
     const {
-        hoverAnimationLabel = __("Hover Animation", 'gutenberg-extra' ),
-        hoverAnimationClassName = "gx-hover-animation",
-        hoverAnimation = props.attributes.hoverAnimation,
-        onChangeHoverAnimation = undefined,
+        hoverAnimation,
+        onChangeHoverAnimation,
         hoverAnimationOptions = [
             { label: __('None', 'gutenberg-extra'), value: 'none' },
             { label: __('Other', 'gutenberg-extra'), value: 'other' },
         ],
-        animationDurationLabel = __("Animation Duration", 'gutenberg-extra'),
-        animationDurationClassName = "gx-hover-animation-duration",
-        hoverAnimationDuration = props.attributes.hoverAnimationDuration,
-        onChangeHoverAnimationDuration = undefined,
+        hoverAnimationDuration,
+        onChangeHoverAnimationDuration,
         animationDurationOptions = [
             { label: __('Shorter', 'gutenberg-extra'), value: 'shorter' },
             { label: __('Short', 'gutenberg-extra'), value: 'short' },
@@ -29,33 +25,23 @@ const HoverAnimationControl = ( props ) => {
             { label: __('Long', 'gutenberg-extra'), value: 'long' },
             { label: __('Longer', 'gutenberg-extra'), value: 'longer' },
         ],
-        setAttributes
     } = props;
-
-    const onChangeValue = (target, value, callback) => {
-        if (typeof callback != 'undefined' ) {
-            callback(value);
-        }
-        else {
-            setAttributes({[target]: value})
-        }
-    }
 
     return (
         <Fragment>
             <SelectControl
-                label={hoverAnimationLabel}
-                className={hoverAnimationClassName}
+                label={__("Hover Animation", 'gutenberg-extra' )}
+                className={"gx-hover-animation"}
                 value={hoverAnimation}
                 options={hoverAnimationOptions}
-                onChange={value => onChangeValue( 'hoverAnimation', value, onChangeHoverAnimation)}
+                onChange={value => onChangeHoverAnimation( value )}
             />
             <SelectControl
-                label={animationDurationLabel}
-                className={animationDurationClassName}
+                label={__("Animation Duration", 'gutenberg-extra')}
+                className={"gx-hover-animation-duration"}
                 value={hoverAnimationDuration}
                 options={animationDurationOptions}
-                onChange={value => onChangeValue( 'hoverAnimationDuration', value, onChangeHoverAnimationDuration)}
+                onChange={value => onChangeHoverAnimationDuration( value )}
             />
         </Fragment>
     )

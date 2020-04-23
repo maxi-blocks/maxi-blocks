@@ -6,7 +6,7 @@
           "mediaID": "",
           "mediaURL": ""
         },
-        "sizeOptions": {
+        "sizeSettings": {
           "size": "cover",
           "widthUnit": "%",
           "width": 100,

@@ -5,19 +5,24 @@ const { BaseControl } = wp.components;
 const { useInstanceId } = wp.compose;
 
 /**
+ * External dependencies
+ */
+import classnames from 'classnames';
+
+/**
  * Styles
  */
 import './editor.scss';
 
 /**
- * Block
+ * Component
  */
 const CheckBoxControl = props => {
     const {
         id = '',
         title = '',
         help = '',
-        className = "gutenberg-extra-checkbox-container",
+        className,
         checked,
         label,
         onChange,
@@ -26,12 +31,14 @@ const CheckBoxControl = props => {
     const instanceId = useInstanceId( CheckBoxControl );
     const checkboxId = `gutenberg-extra-checkbox-${instanceId}`;
 
+    const classes = classnames('gutenberg-extra-checkbox-container', className);
+
     return (
         <BaseControl 
             id={id}
             label={title}
             help={help}
-            className={className}
+            className={classes}
         >
             <label 
                 for={checkboxId}

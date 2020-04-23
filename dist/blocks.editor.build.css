@@ -624,28 +624,28 @@
  * Can include things like variables and mixins
  * that are used across the project.
 */
-.gx-sidebar .gx-imagesettings-control .gx-imagesettings-selector-control .components-base-control__field {
+.gx-normalhover-control .components-base-control__field {
   display: grid;
   grid-template-columns: 1fr 1fr; }
 
-.gx-sidebar .gx-imagesettings-control .gx-imagesettings-selector-control .components-base-control__field .components-radio-control__option {
+.gx-normalhover-control .components-base-control__field .components-radio-control__option {
   height: 50px;
   border: 2px solid #dddfe1;
   border-right-width: 0;
   margin: 0; }
 
-.gx-sidebar .gx-imagesettings-control .gx-imagesettings-selector-control .components-base-control__field .components-radio-control__option:last-of-type {
+.gx-normalhover-control .components-base-control__field .components-radio-control__option:last-of-type {
   border-right-width: 2px; }
 
-.gx-imagesettings-control .gx-imagesettings-selector-control input {
+.gx-normalhover-control input {
   display: none; }
 
-.gx-imagesettings-control .gx-imagesettings-selector-control label {
+.gx-normalhover-control label {
   display: block;
   text-align: center;
   line-height: 46px; }
 
-.gx-imagesettings-control .gx-imagesettings-selector-control input:checked ~ label {
+.gx-normalhover-control input:checked ~ label {
   color: #fff;
   background-color: #00ccff; }
 /**
@@ -711,15 +711,38 @@
  * that are used across the project.
 */
 .gx-typography-control {
+  -ms-flex-pack: justify;
+      justify-content: space-between;
   display: -ms-flexbox;
-  display: flex; }
+  display: flex;
+  max-height: 28px;
+  margin-bottom: 5px; }
+  .gx-typography-control .gx-typography-color-display {
+    margin: auto 6px auto 0px;
+    width: 24px;
+    height: 24px; }
+    .gx-typography-control .gx-typography-color-display span {
+      width: 24px;
+      height: 24px;
+      border: 2px solid #dddfe1 !important;
+      border-radius: 5px;
+      display: block;
+      margin: auto; }
+  .gx-typography-control .gx-typography-popover {
+    width: 100%; }
+  .gx-typography-control .components-base-control__field .components-base-control__label {
+    margin-right: auto; }
+  .gx-typography-control .components-base-control__field .components-button {
+    left: 51% !important;
+    top: -2px !important; }
 
-.gx-typography-control .gx-typography-color-display span {
-  display: block;
-  width: 24px;
-  height: 24px;
-  border: 1px solid black;
-  margin: auto; }
+.gx-title-typography-setting .components-select-control__input {
+  max-width: 61%;
+  width: 100%;
+  margin-left: 5px; }
+
+.gx-title-typography-setting .components-base-control__label {
+  width: 40%; }
 /**
  * #.# Common SCSS
  *
@@ -765,7 +788,7 @@ input[type="checkbox"].gutenberg-extra-checkbox-input {
   height: 35px; }
 
 input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before {
-  content: url("../src/components/checkbox/check-box.svg");
+  content: url("../src/icons/setting-icons/checkbox/checkbox.svg");
   position: absolute;
   top: 50%;
   left: 50%;
@@ -806,3 +829,11 @@ input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before {
 
 .gx-block .gx-imageupload-button {
   height: auto; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
+.gx-title-extra .block-editor-rich-text__editable [data-rich-text-placeholder]::after {
+  opacity: 1 !important; }

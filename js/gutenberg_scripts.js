@@ -312,6 +312,7 @@ class ResponsiveStylesResolver {
             if (prop.length > 2)
                 newObject[device][target] = prop;
         }
+
         return newObject;
     }
     get getNewValue() {

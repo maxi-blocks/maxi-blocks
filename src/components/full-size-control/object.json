@@ -2,16 +2,16 @@
     "label": "Size",
     "general": {
         "max-widthUnit": "px",
-        "max-width": "",
+        "max-width": 0,
         "widthUnit": "px",
-        "width": "",
+        "width": 0,
         "min-widthUnit": "px",
-        "min-width": "",
+        "min-width": 0,
         "max-heightUnit": "px",
-        "max-height": "",
+        "max-height": 0,
         "heightUnit": "px",
-        "height": "",
+        "height": 0,
         "min-heightUnit": "px",
-        "min-height": ""
+        "min-height": 0
     }
 }

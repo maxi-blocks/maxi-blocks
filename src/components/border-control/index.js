@@ -13,7 +13,7 @@ import ColorControl from '../color-control';
 import DimensionsControl from '../dimensions-control/index';
 
 /**
- * Block
+ * Component
  */
 export default class BorderControl extends GXComponent {
 
@@ -33,7 +33,7 @@ export default class BorderControl extends GXComponent {
         return (
             <Fragment>
                 <ColorControl
-                    label={__('Color Color', 'gutenberg-extra')}
+                    label={__('Color', 'gutenberg-extra')}
                     color={value.general['border-color']}
                     onColorChange={val => {
                         value.general['border-color'] = val;

@@ -71,3 +71,17 @@
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
+.gx-divider {
+  border: none; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/

@@ -21,12 +21,17 @@ import PopoverControl from '../popover-control';
 import TextShadowControl from '../text-shadow-control';
 
 /**
+ * External dependencies
+ */
+import classnames from 'classnames';
+
+/**
  * Styles
  */
 import './editor.scss';
 
 /**
- * Block
+ * Component
  */
 export default class Typography extends GXComponent {
 
@@ -41,7 +46,7 @@ export default class Typography extends GXComponent {
 
     render() {
         const {
-            className = 'components-panel__body components-base-control editor-panel-color-settings block-editor-panel-color-settings is-opened typography gx-typography-control',
+            className,
             fontOptions,
             defaultColor = '#9b9b9b',
         } = this.props;
@@ -51,6 +56,10 @@ export default class Typography extends GXComponent {
         } = this.state;
 
         const value = typeof fontOptions === 'object' ? fontOptions : JSON.parse(fontOptions);
+        const classes = classnames(
+            'components-panel__body components-base-control editor-panel-color-settings block-editor-panel-color-settings is-opened typography gx-typography-control',
+            className
+        )
 
         const Divider = () => (
             <hr style={{ marginBottom: '15px', }} />
@@ -143,7 +152,7 @@ export default class Typography extends GXComponent {
         }
 
         return (
-            <div className={className}>
+            <div className={classes}>
                 <div className="gx-typography-color-display">
                     <span
                         style={{
@@ -183,16 +192,6 @@ export default class Typography extends GXComponent {
                                     />
                                     <DeviceSelectorControl 
                                         device={device}
-                                        onChange={onSelect}
-                                    />
-                                    <RadioControl
-                                        className={'gx-device-control'}
-                                        selected={device}
-                                        options={[
-                                            { label: '', value: 'desktop' },
-                                            { label: '', value: 'tablet' },
-                                            { label: '', value: 'mobile' },
-                                        ]}
                                         onChange={onSelect}
                                     />
                                     <RadioControl

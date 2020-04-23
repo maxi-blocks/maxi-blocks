@@ -7,7 +7,7 @@
     "borderWidth": {
         "label": "Border width",
         "unit": "px",
-        "max": "1000",
+        "max": 1000,
         "desktop": {
             "border-top-width": 0,
             "border-right-width": 0,
@@ -33,7 +33,7 @@
     "borderRadius": {
         "label": "Border radius",
         "unit": "px",
-        "max": "1000",
+        "max": 1000,
         "desktop": {
             "border-top-left-radius": 0,
             "border-top-right-radius": 0,

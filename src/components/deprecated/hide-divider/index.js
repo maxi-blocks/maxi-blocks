@@ -5,7 +5,7 @@ const {
 const {
   ToggleControl
 } = wp.components;
-import Checkbox from '../checkbox/index';
+import CheckBoxControl from '../../checkbox-control';
 
 export const hideDividerAttributes = {
   isHidden:{
@@ -21,7 +21,7 @@ export const HideDivider = ( props ) => {
   } = props;
 
   return (
-    <Checkbox
+    <CheckBoxControl
       label={__('Hide Divider', 'gutenberg-extra')}
       id='gx-new-window'
       checked={isHidden}

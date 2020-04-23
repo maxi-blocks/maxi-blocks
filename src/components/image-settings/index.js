@@ -20,6 +20,7 @@ const {
  * Internal dependencies
  */
 import { GXComponent } from '../index';
+import AccordionControl from '../accordion-control';
 import AlignmentControl from '../alignment-control';
 import BorderControl from '../border-control';
 import BoxShadowControl from '../box-shadow-control';
@@ -28,10 +29,11 @@ import ImageCropControl from '../image-crop-control';
 import NormalHoverControl from '../normal-hover-control';
 import SizeControl from '../size-control';
 import TypographyControl from '../typography-control';
- 
+
 /**
  * External dependencies
  */
+import classnames from 'classnames';
 import {
     capitalize,
     isEmpty,
@@ -46,7 +48,7 @@ import './editor.scss';
 import { placeholderImage } from '../../icons';
 
 /**
- * Block
+ * Component
  */
 class ImageSettingsComponent extends GXComponent {
 
@@ -200,7 +202,7 @@ class ImageSettingsComponent extends GXComponent {
     render() {
         const {
             mediaID,
-            className = "gx-imagesettings-control",
+            className,
             imageData,
             imageSettings,
             target = 'gx-image-box-image',
@@ -211,6 +213,7 @@ class ImageSettingsComponent extends GXComponent {
         } = this.state;
 
         let value = typeof imageSettings === 'object' ? imageSettings : JSON.parse(imageSettings);
+        const classes = classnames('gx-imagesettings-control', className);
 
         const getSizeOptions = () => {
             let response = [];
@@ -261,156 +264,178 @@ class ImageSettingsComponent extends GXComponent {
             null;
 
         return (
-            <div className={className}>
-                <SelectControl
-                    label={__('Image Size', 'gutenberg-extra')}
-                    value={value.imageSize.options[value.size] || value.size == 'custom' ? value.size : 'full'}
-                    options={getSizeOptions()}
-                    onChange={val => {
-                        value.size = val;
-                        this.saveAndSend(value)
-                    }}
-                />
-                {value.size === 'custom' &&
-                    <ImageCropControl
-                        mediaID={mediaID}
-                        cropOptions={value.imageSize.cropOptions ? value.imageSize.cropOptions : {}}
-                        onChange={cropOptions => {
-                            value.imageSize.cropOptions = cropOptions;
-                            this.saveAndSend(value);
-                        }}
-                    />
-                }
-                <AlignmentControl
-                    value={value.alignment}
-                    onChange={val => {
-                        value.alignment = val;
-                        this.saveAndSend(value)
-                    }}
-                    disableJustify
-                />
-                <SelectControl
-                    label={__('Caption', 'gutenberg-extra')}
-                    value={value.captionType}
-                    options={getCaptionOptions()}
-                    onChange={val => {
-                        value.captionType = val;
-                        val === 'attachment' ?
-                            value.caption = imageData.caption.raw :
-                            value.caption = '';
-                        this.saveAndSend(value);
-                    }}
-                />
-                {value.captionType === 'custom' &&
-                    <TextControl
-                        label={__('Custom Caption', 'gutenberg-extra')}
-                        className="custom-caption"
-                        value={value.caption}
-                        onChange={val => {
-                            value.caption = val;
-                            this.saveAndSend(value);
-                        }}
-                    />
-                }
-                {value.captionType != 'none' &&
-                    <TypographyControl
-                        fontOptions={value.captionTypography}
-                        onChange={val => {
-                            value.captionTypography = val;
-                            this.saveAndSend(value);
-                        }}
-                        target={target + ' figcaption'}
-                    />
-                }
-                <SizeControl
-                    label={__('Max Width', 'gutenberg-extra')}
-                    unit={value.sizeSettings.maxWidthUnit}
-                    onChangeUnit={val => {
-                        value.sizeSettings.maxWidthUnit = val;
-                        this.saveAndSend(value);
-                    }}
-                    value={value.sizeSettings.maxWidth}
-                    onChangeValue={val => {
-                        value.sizeSettings.maxWidth = val;
-                        this.saveAndSend(value);
-                    }}
-                />
-                <SizeControl
-                    label={__('Width', 'gutenberg-extra')}
-                    unit={value.sizeSettings.widthUnit}
-                    onChangeUnit={val => {
-                        value.sizeSettings.widthUnit = val;
-                        this.saveAndSend(value);
-                    }}
-                    value={value.sizeSettings.width}
-                    onChangeValue={val => {
-                        value.sizeSettings.width = val;
-                        this.saveAndSend(value);
-                    }}
-                />
-                <NormalHoverControl
-                    selector={selector}
-                    onChange={selector => {
-                        this.setState({ selector });
-                    }}
-                />
-                <RangeControl
-                    label={__('Opacity', 'gutenberg-extra')}
-                    value={value[selector].opacity * 100}
-                    min={0}
-                    max={100}
-                    onChange={val => {
-                        value[selector].opacity = val / 100;
-                        this.saveAndSend(value)
-                    }}
-                />
-                <ColorControl
-                    label={__('Background Colour', 'gutenberg-extra')}
-                    color={value[selector].backgroundColor}
-                    onColorChange={val => {
-                        value[selector].backgroundColor = val;
-                        this.saveAndSend(value)
-                    }}
-                    gradient={value[selector].backgroundGradient}
-                    onGradientChange={val => {
-                        value[selector].backgroundGradient = val;
-                        this.saveAndSend(value)
-                    }}
-                    gradientAboveBackground={value[selector].gradientAboveBackground}
-                    onGradientAboveBackgroundChange={val => {
-                        value[selector].gradientAboveBackground = val;
-                        this.saveAndSend(value)
-                    }}
-                />
-                <BoxShadowControl
-                    boxShadowOptions={value[selector].boxShadow}
-                    onChange={val => {
-                        value[selector].boxShadow = JSON.parse(val);
-                        this.saveAndSend(value)
-                    }}
-                    target={
-                        selector != 'hover' ?
-                            `${target} img` :
-                            `${target} img:hover`
-                    }
-                />
-                <hr style={{ borderTop: '1px solid #ddd' }} />
-                <BorderControl
-                    borderOptions={value[selector].borderSettings}
-                    onChange={val => {
-                        value[selector].borderSettings = val;
-                        this.saveAndSend(value)
-                    }}
-                    borderRadiusTarget={
-                        selector != 'hover' ?
-                            target :
-                            `${target}:hover`
-                    }
-                    borderWidthTarget={
-                        selector != 'hover' ?
-                            target :
-                            `${target}:hover`
-                    }
+            <div className={classes}>
+                <AccordionControl
+                    isSecondary
+                    items={[
+                        {
+                            label: __("Image", "gutenberg-extra"),
+                            className: "gx-image-tab gx-image-item",
+                            content: (
+                                <Fragment>
+                                    <SelectControl
+                                        label={__('Image Size', 'gutenberg-extra')}
+                                        value={value.imageSize.options[value.size] || value.size == 'custom' ? value.size : 'full'}
+                                        options={getSizeOptions()}
+                                        onChange={val => {
+                                            value.size = val;
+                                            this.saveAndSend(value)
+                                        }}
+                                    />
+                                    {value.size === 'custom' &&
+                                        <ImageCropControl
+                                            mediaID={mediaID}
+                                            cropOptions={value.imageSize.cropOptions ? value.imageSize.cropOptions : {}}
+                                            onChange={cropOptions => {
+                                                value.imageSize.cropOptions = cropOptions;
+                                                this.saveAndSend(value);
+                                            }}
+                                        />
+                                    }
+                                    <AlignmentControl
+                                        value={value.alignment}
+                                        onChange={val => {
+                                            value.alignment = val;
+                                            this.saveAndSend(value)
+                                        }}
+                                        disableJustify
+                                    />
+                                    <SelectControl
+                                        label={__('Caption', 'gutenberg-extra')}
+                                        value={value.captionType}
+                                        options={getCaptionOptions()}
+                                        onChange={val => {
+                                            value.captionType = val;
+                                            val === 'attachment' ?
+                                                value.caption = imageData.caption.raw :
+                                                value.caption = '';
+                                            this.saveAndSend(value);
+                                        }}
+                                    />
+                                    {value.captionType === 'custom' &&
+                                        <TextControl
+                                            label={__('Custom Caption', 'gutenberg-extra')}
+                                            className="custom-caption"
+                                            value={value.caption}
+                                            onChange={val => {
+                                                value.caption = val;
+                                                this.saveAndSend(value);
+                                            }}
+                                        />
+                                    }
+                                    {value.captionType != 'none' &&
+                                        <TypographyControl
+                                            fontOptions={value.captionTypography}
+                                            onChange={val => {
+                                                value.captionTypography = val;
+                                                this.saveAndSend(value);
+                                            }}
+                                            target={target + ' figcaption'}
+                                        />
+                                    }
+                                    <SizeControl
+                                        label={__('Max Width', 'gutenberg-extra')}
+                                        unit={value.sizeSettings.maxWidthUnit}
+                                        onChangeUnit={val => {
+                                            value.sizeSettings.maxWidthUnit = val;
+                                            this.saveAndSend(value);
+                                        }}
+                                        value={value.sizeSettings.maxWidth}
+                                        onChangeValue={val => {
+                                            value.sizeSettings.maxWidth = val;
+                                            this.saveAndSend(value);
+                                        }}
+                                    />
+                                    <SizeControl
+                                        label={__('Width', 'gutenberg-extra')}
+                                        unit={value.sizeSettings.widthUnit}
+                                        onChangeUnit={val => {
+                                            value.sizeSettings.widthUnit = val;
+                                            this.saveAndSend(value);
+                                        }}
+                                        value={value.sizeSettings.width}
+                                        onChangeValue={val => {
+                                            value.sizeSettings.width = val;
+                                            this.saveAndSend(value);
+                                        }}
+                                    />
+                                </Fragment>
+                            )
+                        },
+                        {
+                            label: __("Background", "gutenberg-extra"),
+                            className: "gx-background-tab gx-background-item",
+                            content: (
+                                <Fragment>
+                                    <NormalHoverControl
+                                        selector={selector}
+                                        onChange={selector => {
+                                            this.setState({ selector });
+                                        }}
+                                    />
+                                    <ColorControl
+                                        label={__('Background Colour', 'gutenberg-extra')}
+                                        color={value[selector].backgroundColor}
+                                        onColorChange={val => {
+                                            value[selector].backgroundColor = val;
+                                            this.saveAndSend(value)
+                                        }}
+                                        gradient={value[selector].backgroundGradient}
+                                        onGradientChange={val => {
+                                            value[selector].backgroundGradient = val;
+                                            this.saveAndSend(value)
+                                        }}
+                                        gradientAboveBackground={value[selector].gradientAboveBackground}
+                                        onGradientAboveBackgroundChange={val => {
+                                            value[selector].gradientAboveBackground = val;
+                                            this.saveAndSend(value)
+                                        }}
+                                    />
+                                    <RangeControl
+                                        label={__('Opacity', 'gutenberg-extra')}
+                                        value={value[selector].opacity * 100}
+                                        allowReset={true}
+                                        min={0}
+                                        max={100}
+                                        onChange={val => {
+                                            value[selector].opacity = val / 100;
+                                            this.saveAndSend(value)
+                                        }}
+                                    />
+                                    <BoxShadowControl
+                                        boxShadowOptions={value[selector].boxShadow}
+                                        onChange={val => {
+                                            value[selector].boxShadow = JSON.parse(val);
+                                            this.saveAndSend(value)
+                                        }}
+                                        target={
+                                            selector != 'hover' ?
+                                                `${target} img` :
+                                                `${target} img:hover`
+                                        }
+                                    />
+                                </Fragment>
+                            )
+                        },
+                        {
+                            label: __("Border", "gutenberg-extra"),
+                            className: "gx-border-tab gx-border-item",
+                            content: (
+                                <BorderControl
+                                    borderOptions={value[selector].borderSettings}
+                                    onChange={val => {
+                                        value[selector].borderSettings = val;
+                                        this.saveAndSend(value)
+                                    }}
+                                    target={
+                                        selector != 'hover' ?
+                                            target :
+                                            `${target}:hover`
+                                    }
+                                />
+                            )
+                        }
+                    ]}
                 />
             </div>
         )

@@ -193,16 +193,16 @@ export const imageSettings = {
     "imageSize": {
         "options": {},
         "widthUnit": "%",
-        "width": "",
+        "width": 0,
         "heightUnit": "%",
-        "height": ""
+        "height": 0
     },
     "alt": "",
     "alignment": "",
     "captionType": "none",
     "caption": "none",
     "captionTypography": {
-        "label": "Typography",
+        "label": "Caption",
         "font": "Roboto",
         "options": {
             "100": "http://fonts.gstatic.com/s/roboto/v20/KFOkCnqEu92Fr1MmgWxPKTM1K9nz.ttf",
@@ -260,12 +260,12 @@ export const imageSettings = {
     },
     "sizeSettings": {
         "maxWidthUnit": "%",
-        "maxWidth": "",
+        "maxWidth": 0,
         "widthUnit": "%",
-        "width": ""
+        "width": 0
     },
     "normal": {
-        "opacity": "",
+        "opacity": 100,
         "backgroundColor": "",
         "backgroundGradient": "",
         "backgroundGradientAboveBackground": false,
@@ -273,10 +273,10 @@ export const imageSettings = {
             "label": "Box Shadow",
             "shadowColor": "",
             "shadowGradient": "",
-            "shadowHorizontal": "0",
-            "shadowVertical": "0",
-            "shadowBlur": "0",
-            "shadowSpread": "0"
+            "shadowHorizontal": 0,
+            "shadowVertical": 0,
+            "shadowBlur": 0,
+            "shadowSpread": 0
         },
         "borderSettings": {
             "label": "Border",
@@ -287,7 +287,7 @@ export const imageSettings = {
             "borderWidth": {
                 "label": "Border width",
                 "unit": "px",
-                "max": "1000",
+                "max": 1000,
                 "desktop": {
                     "border-top-width": 0,
                     "border-right-width": 0,
@@ -313,7 +313,7 @@ export const imageSettings = {
             "borderRadius": {
                 "label": "Border radius",
                 "unit": "px",
-                "max": "1000",
+                "max": 1000,
                 "desktop": {
                     "border-top-left-radius": 0,
                     "border-top-right-radius": 0,
@@ -339,7 +339,7 @@ export const imageSettings = {
         }
     },
     "hover": {
-        "opacity": "",
+        "opacity": 100,
         "backgroundColor": "",
         "backgroundGradient": "",
         "backgroundGradientAboveBackground": false,
@@ -347,10 +347,10 @@ export const imageSettings = {
             "label": "Box Shadow",
             "shadowColor": "",
             "shadowGradient": "",
-            "shadowHorizontal": "0",
-            "shadowVertical": "0",
-            "shadowBlur": "0",
-            "shadowSpread": "0"
+            "shadowHorizontal": 0,
+            "shadowVertical": 0,
+            "shadowBlur": 0,
+            "shadowSpread": 0
         },
         "borderSettings": {
             "label": "Border",
@@ -361,7 +361,7 @@ export const imageSettings = {
             "borderWidth": {
                 "label": "Border width",
                 "unit": "px",
-                "max": "1000",
+                "max": 1000,
                 "desktop": {
                     "border-top-width": 0,
                     "border-right-width": 0,
@@ -387,7 +387,7 @@ export const imageSettings = {
             "borderRadius": {
                 "label": "Border radius",
                 "unit": "px",
-                "max": "1000",
+                "max": 1000,
                 "desktop": {
                     "border-top-left-radius": 0,
                     "border-top-right-radius": 0,
@@ -415,7 +415,7 @@ export const imageSettings = {
 }
 
 export const buttonSettings = {
-    "label": "Button Styles",
+    "label": "Button Settings",
     "buttonText": "",
     "linkOptions": {},
     "alignment": "",
@@ -423,35 +423,35 @@ export const buttonSettings = {
         "label": "Size",
         "general": {
             "max-widthUnit": "px",
-            "max-width": "",
-            "widthUnit": "px",
-            "width": "",
+            "max-width": 0,
+            "widthUnit": "em",
+            "width": 8,
             "min-widthUnit": "px",
-            "min-width": "",
+            "min-width": 0,
             "max-heightUnit": "px",
-            "max-height": "",
-            "heightUnit": "px",
-            "height": "",
+            "max-height": 0,
+            "heightUnit": "em",
+            "height": 3,
             "min-heightUnit": "px",
-            "min-height": ""
+            "min-height": 0
         }
     },
     "normal": {
         "color": "",
-        "backgroundColor": "",
+        "backgroundColor": "#00ccff",
         "background": "",
         "background": "",
         "boxShadow": {
             "label": "Box Shadow",
             "shadowColor": "",
             "shadowGradient": "",
-            "shadowHorizontal": "0",
-            "shadowVertical": "0",
-            "shadowBlur": "0",
-            "shadowSpread": "0"
+            "shadowHorizontal": 0,
+            "shadowVertical": 0,
+            "shadowBlur": 0,
+            "shadowSpread": 0
         },
         "typography": {
-            "label": "Typography",
+            "label": "Button text",
             "font": "Roboto",
             "options": {
                 "100": "http://fonts.gstatic.com/s/roboto/v20/KFOkCnqEu92Fr1MmgWxPKTM1K9nz.ttf",
@@ -468,7 +468,7 @@ export const buttonSettings = {
                 "900italic": "http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TLBBc9AMX6lJBP.ttf"
             },
             "general": {
-                "color": "#9b9b9b"
+                "color": "#ffffff"
             },
             "desktop": {
                 "font-sizeUnit": "px",
@@ -516,7 +516,7 @@ export const buttonSettings = {
             "borderWidth": {
                 "label": "Border width",
                 "unit": "px",
-                "max": "1000",
+                "max": 1000,
                 "desktop": {
                     "border-top-width": 0,
                     "border-right-width": 0,
@@ -542,7 +542,7 @@ export const buttonSettings = {
             "borderRadius": {
                 "label": "Border radius",
                 "unit": "px",
-                "max": "1000",
+                "max": 1000,
                 "desktop": {
                     "border-top-left-radius": 0,
                     "border-top-right-radius": 0,
@@ -617,20 +617,20 @@ export const buttonSettings = {
                 "sync": true
             }
         },
-        "opacity": ""
+        "opacity": 100
     },
     "hover": {
         "color": "",
-        "backgroundColor": "",
+        "backgroundColor": "#00ccff",
         "background": "",
         "boxShadow": {
             "label": "Box Shadow",
             "shadowColor": "",
             "shadowGradient": "",
-            "shadowHorizontal": "0",
-            "shadowVertical": "0",
-            "shadowBlur": "0",
-            "shadowSpread": "0"
+            "shadowHorizontal": 0,
+            "shadowVertical": 0,
+            "shadowBlur": 0,
+            "shadowSpread": 0
         },
         "typography": {
             "label": "Typography",
@@ -650,7 +650,7 @@ export const buttonSettings = {
                 "900italic": "http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TLBBc9AMX6lJBP.ttf"
             },
             "general": {
-                "color": "#9b9b9b"
+                "color": "#ffffff"
             },
             "desktop": {
                 "font-sizeUnit": "px",
@@ -698,7 +698,7 @@ export const buttonSettings = {
             "borderWidth": {
                 "label": "Border width",
                 "unit": "px",
-                "max": "1000",
+                "max": 1000,
                 "desktop": {
                     "border-top-width": 0,
                     "border-right-width": 0,
@@ -724,7 +724,7 @@ export const buttonSettings = {
             "borderRadius": {
                 "label": "Border radius",
                 "unit": "px",
-                "max": "1000",
+                "max": 1000,
                 "desktop": {
                     "border-top-left-radius": 0,
                     "border-top-right-radius": 0,
@@ -799,7 +799,7 @@ export const buttonSettings = {
                 "sync": true
             }
         },
-        "opacity": ""
+        "opacity": 100
     }
 }
 
@@ -811,7 +811,7 @@ export const background = {
                 "mediaID": "",
                 "mediaURL": ""
             },
-            "sizeOptions": {
+            "sizeSettings": {
                 "size": "cover",
                 "widthUnit": "%",
                 "width": 100,
@@ -841,10 +841,10 @@ export const background = {
 export const boxShadow = {
     "label": "Box Shadow",
     "shadowColor": "",
-    "shadowHorizontal": "0",
-    "shadowVertical": "0",
-    "shadowBlur": "0",
-    "shadowSpread": "0"
+    "shadowHorizontal": 0,
+    "shadowVertical": 0,
+    "shadowBlur": 0,
+    "shadowSpread": 0
 }
 
 export const border = {
@@ -856,7 +856,7 @@ export const border = {
     "borderWidth": {
         "label": "Border width",
         "unit": "px",
-        "max": "1000",
+        "max": 1000,
         "desktop": {
             "border-top-width": 0,
             "border-right-width": 0,
@@ -882,7 +882,7 @@ export const border = {
     "borderRadius": {
         "label": "Border radius",
         "unit": "px",
-        "max": "1000",
+        "max": 1000,
         "desktop": {
             "border-top-left-radius": 0,
             "border-top-right-radius": 0,
@@ -911,17 +911,17 @@ export const size = {
     "label": "Size",
     "general": {
         "max-widthUnit": "px",
-        "max-width": "",
+        "max-width": 0,
         "widthUnit": "px",
-        "width": "",
+        "width": 0,
         "min-widthUnit": "px",
-        "min-width": "",
+        "min-width": 0,
         "max-heightUnit": "px",
-        "max-height": "",
+        "max-height": 0,
         "heightUnit": "px",
-        "height": "",
+        "height": 0,
         "min-heightUnit": "px",
-        "min-height": ""
+        "min-height": 0
     }
 };
 

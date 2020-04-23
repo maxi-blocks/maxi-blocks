@@ -5,7 +5,7 @@ const {
 const {
   ToggleControl
 } = wp.components;
-import Checkbox from '../checkbox/index';
+import CheckBoxControl from '../../checkbox-control';
 
 export const twoColumnAttributes = {
   twoColumnDesc:{
@@ -21,7 +21,7 @@ export const TwoColumn = ( props ) => {
   } = props;
 
   return (
-    <Checkbox
+    <CheckBoxControl
       label={__('Two Column Description Layout', 'gutenberg-extra')}
       id='gx-new-window'
       checked={twoColumnDesc}

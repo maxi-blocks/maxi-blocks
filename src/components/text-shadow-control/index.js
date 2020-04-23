@@ -18,7 +18,7 @@ import PopoverControl from '../popover-control';
 import { isNil } from 'lodash';
 
 /**
- * Block
+ * Component
  */
 const TextShadow = props => {
     const {

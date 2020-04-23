@@ -11,7 +11,7 @@ import { GXComponent } from '../index';
 import SizeControl from '../size-control';
 
 /**
- * Block
+ * Component
  */
 export default class FullSizeControl extends GXComponent {
 

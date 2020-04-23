@@ -4,9 +4,9 @@
     "imageSize": {
         "options": {},
         "widthUnit": "%",
-        "width": "",
+        "width": 0,
         "heightUnit": "%",
-        "height": ""
+        "height": 0
     },
     "alt": "",
     "alignment": "",
@@ -71,12 +71,12 @@
     },
     "sizeSettings": {
         "maxWidthUnit": "%",
-        "maxWidth": "",
+        "maxWidth": 0,
         "widthUnit": "%",
-        "width": ""
+        "width": 0
     },
     "normal": {
-        "opacity": "",
+        "opacity": 100,
         "backgroundColor": "",
         "backgroundGradient": "",
         "backgroundGradientAboveBackground": false,
@@ -84,10 +84,10 @@
             "label": "Box Shadow",
             "shadowColor": "",
             "shadowGradient": "",
-            "shadowHorizontal": "0",
-            "shadowVertical": "0",
-            "shadowBlur": "0",
-            "shadowSpread": "0"
+            "shadowHorizontal": 0,
+            "shadowVertical": 0,
+            "shadowBlur": 0,
+            "shadowSpread": 0
         },
         "borderSettings": {
             "borderColor": "",
@@ -95,7 +95,7 @@
             "borderRadius": {
                 "label": "Border radius",
                 "unit": "px",
-                "max": "1000",
+                "max": 1000,
                 "desktop": {
                     "border-top-left-radius": 0,
                     "border-top-right-radius": 0,
@@ -121,7 +121,7 @@
             "borderWidth": {
                 "label": "Border width",
                 "unit": "px",
-                "max": "1000",
+                "max": 1000,
                 "desktop": {
                     "border-top-width": 0,
                     "border-right-width": 0,
@@ -147,7 +147,7 @@
         }
     },
     "hover": {
-        "opacity": "",
+        "opacity": 100,
         "backgroundColor": "",
         "backgroundGradient": "",
         "backgroundGradientAboveBackground": false,
@@ -155,10 +155,10 @@
             "label": "Box Shadow",
             "shadowColor": "",
             "shadowGradient": "",
-            "shadowHorizontal": "0",
-            "shadowVertical": "0",
-            "shadowBlur": "0",
-            "shadowSpread": "0"
+            "shadowHorizontal": 0,
+            "shadowVertical": 0,
+            "shadowBlur": 0,
+            "shadowSpread": 0
         },
         "borderSettings": {
             "label": "Border",
@@ -169,7 +169,7 @@
             "borderWidth": {
                 "label": "Border width",
                 "unit": "px",
-                "max": "1000",
+                "max": 1000,
                 "desktop": {
                     "border-top-width": 0,
                     "border-right-width": 0,
@@ -195,7 +195,7 @@
             "borderRadius": {
                 "label": "Border radius",
                 "unit": "px",
-                "max": "1000",
+                "max": 1000,
                 "desktop": {
                     "border-top-left-radius": 0,
                     "border-top-right-radius": 0,

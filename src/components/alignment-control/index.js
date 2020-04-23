@@ -17,7 +17,7 @@ import {
 } from '@wordpress/icons';
 
 /**
- * Block
+ * Component
  */
 const AlignmentControl = props => {
 

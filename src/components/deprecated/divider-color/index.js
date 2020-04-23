@@ -5,7 +5,7 @@ const {
 const {
   PanelColorSettings
 } = wp.blockEditor;
-import ColorControl from "../../components/color-control";
+import ColorControl from "../../color-control";
 
 export const dividerColorAttributes = {
   dividerColor:{

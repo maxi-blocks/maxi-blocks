@@ -5,7 +5,7 @@ const {
 const {
   ToggleControl
 } = wp.components;
-import Checkbox from '../checkbox/index';
+import CheckBoxControl from '../checkbox-control';
 
 export const roudnedDividerAttributes = {
   isRounded:{
@@ -25,7 +25,7 @@ export const RoundedDivider = ( props ) => {
     props.buildDivider(undefined,undefined,value);
   }
   return (
-    <Checkbox
+    <CheckBoxControl
       label={__('Rounded Divider', 'gutenberg-extra')}
       id='gx-new-window'
       checked={isRounded}

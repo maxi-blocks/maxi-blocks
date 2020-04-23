@@ -18,15 +18,16 @@ const {
  * External dependencies
  */
 import { isNil } from 'lodash';
+import classnames from 'classnames';
 
 /**
- * Block
+ * Component
  */
 const MediaUploader = props => {
 
     const {
         label = '',
-        className = 'gx-mediauploader-control',
+        className,
         mediaID,
         onSelectImage,
         onRemoveImage,
@@ -40,6 +41,8 @@ const MediaUploader = props => {
         alternativeImage
     } = props;
 
+    const classes = classnames('gx-mediauploader-control', className);
+
     const onOpenImageModal = () => {
         !isNil(onOpenImageModal) && !isNil(onOpen) ?
             onOpen() :
@@ -48,7 +51,7 @@ const MediaUploader = props => {
 
     return (
         <BaseControl
-            className={className}
+            className={classes}
             label={label}
         >
             <MediaUploadCheck

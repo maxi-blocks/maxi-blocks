@@ -3,7 +3,7 @@ const { __ } = wp.i18n;
 const { RangeControl, RadioControl } = wp.components;
 const { Component, Fragment } = wp.element;
 
-import { buildDivider } from "../divider/index";
+import { buildDivider } from "../../divider/index";
 
 export const dividerWidthAttributes = {
   dividerWidthUnit: {

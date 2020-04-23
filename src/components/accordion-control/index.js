@@ -22,7 +22,7 @@ import {
 import './editor.scss';
 
 /**
- * Block
+ * Component
  */
 export default class AccordionControl extends Component {
     state = {
@@ -32,7 +32,7 @@ export default class AccordionControl extends Component {
     render() {
         const {
             className,
-            allowMultipleExpanded = true,
+            allowMultipleExpanded = false,
             allowZeroExpanded = true,
             items,
             isPrimary = false,
@@ -43,9 +43,7 @@ export default class AccordionControl extends Component {
             currentOpen
         } = this.state;
     
-        let classes = classnames('gx-style-tab-setting gx-accordion');
-        if(className)
-            classes = classnames(classes, className);
+        let classes = classnames('gx-style-tab-setting gx-accordion', className);
         if(isPrimary)
             classes = classnames(classes, 'is-primary');
         if(isSecondary)
@@ -65,9 +63,7 @@ export default class AccordionControl extends Component {
             >
                 {
                     items.map(item => {
-                        let classes = 'gx-accordion-tab';
-                        if(item.className)
-                            classes = classnames(classes, item.className)
+                        const classes = classnames('gx-accordion-tab', item.className);
     
                         return (
                             <AccordionItem

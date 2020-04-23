@@ -17,6 +17,7 @@ export { default as ColorControl } from './color-control';
 export { default as CustomCSSControl } from './custom-css-control';
 export { default as DeviceSelectorControl } from './device-selector-control';
 export { default as DimensionsControl } from './dimensions-control';
+export * from './divider-settings';
 export { default as FontFamilySelector } from './font-family-selector';
 export { default as FontLevelControl } from './font-level-control';
 export { default as HoverAnimationControl } from './hover-animation-control';

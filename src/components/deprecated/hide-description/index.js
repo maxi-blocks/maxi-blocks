@@ -5,7 +5,7 @@ const {
 const {
   ToggleControl
 } = wp.components;
-import Checkbox from '../checkbox/index';
+import CheckBoxControl from '../checkbox-control';
 
 export const hideDescriptionAttributes = {
   hideDescription:{
@@ -21,7 +21,7 @@ export const HideDescription = ( props ) => {
   } = props;
 
   return (
-    <Checkbox
+    <CheckBoxControl
       label={__('Hide Description', 'gutenberg-extra')}
       id='gx-new-window'
       checked={hideDescription}

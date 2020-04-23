@@ -9,6 +9,11 @@ const {
 } = wp.components;
 
 /**
+ * External dependencies
+ */
+import classnames from 'classnames';
+
+/**
  * Styles and icons
  */
 import './editor.scss';
@@ -18,12 +23,12 @@ import {
 } from '../../icons';
 
 /**
- * Block
+ * Component
  */
 const PopoverControl = props => {
     const {
         label,
-        className = 'gx-popover-control',
+        className,
         classNamePopover = 'gx-popover',
         icon = advanced,
         showReset = undefined,
@@ -31,8 +36,10 @@ const PopoverControl = props => {
         popovers
     } = props;
 
+    const classes = classnames('gx-popover-control', className);
+
     return (
-        <div className={className}>
+        <div className={classes}>
             <BaseControl
                 className={'gx-settings-button'}
             >

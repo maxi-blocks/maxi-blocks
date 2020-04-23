@@ -14,7 +14,7 @@ import classnames from 'classnames';
 import './editor.scss';
 
 /**
- * Block
+ * Component
  */
 const NormalHoverControl = props => {
     const {
@@ -23,9 +23,7 @@ const NormalHoverControl = props => {
         onChange
     } = props;
 
-    let classes = classnames("gx-imagesettings-selector-control");
-    if(className)
-        classes = classnames(classes, className);
+    let classes = classnames('gx-normalhover-control', className);
 
     return (
         <RadioControl

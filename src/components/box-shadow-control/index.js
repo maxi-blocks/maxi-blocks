@@ -13,7 +13,12 @@ import ColorControl from '../color-control';
 import PopoverControl from '../popover-control';
 
 /**
- * Block
+ * External dependencies
+ */
+import classnames from 'classnames';
+
+/**
+ * Component
  */
 class BoxShadow extends GXComponent {
 
@@ -48,7 +53,6 @@ class BoxShadow extends GXComponent {
     }
 
     render() {
-
         const { boxShadowOptions } = this.props;
 
         let value = typeof boxShadowOptions === 'object' ? boxShadowOptions : JSON.parse(boxShadowOptions);
@@ -115,18 +119,22 @@ class BoxShadow extends GXComponent {
 const BoxShadowControl = props => {
 
     const {
-        boxShadow,
-        onChange
+        boxShadowOptions,
+        onChange,
+        className
     } = props;
+
+    const classes = classnames('gx-boxshadow-control', className);
 
     return (
         <PopoverControl
             label={__('Box shadow', 'gutenberg-extra')}
+            className={classes}
             popovers={[
                 {
                     content: (
                         <BoxShadow
-                            boxShadowOptions={boxShadow}
+                            boxShadowOptions={boxShadowOptions}
                             onChange={onChange}
                         />
                     )

@@ -6,54 +6,40 @@ const { Fragment } = wp.element;
 const {	SelectControl } = wp.components;
 
 /**
- * Block
+ * Component
  */
 const BlockStylesControl = ( props ) => {
     const {
-        firstSelectorLabel = __( 'Block Style', 'gutenberg-extra'),
-        firstSelectorClassName = 'gx-block-style',
-        blockStyle = props.attributes.blockStyle,
-        onChangeBlockStyle = undefined,
+        blockStyle,
+        onChangeBlockStyle,
         firstSelectorOptions = [
             { label: __('Global', 'gutenberg-extra'), value: 'gx-global' },
             { label: __('Dark', 'gutenberg-extra'), value: 'gx-dark' },
             { label: __('Light', 'gutenberg-extra'), value: 'gx-light' },
         ],
-        secondSelectorLabel = __( 'Default Block Style', 'gutenberg-extra'),
-        secondSelectorClassName = 'gx--default-block-style',
-        defaultBlockStyle = props.attributes.defaultBlockStyle,
-        onChangeDefaultBlockStyle = undefined,
+        defaultBlockStyle,
+        onChangeDefaultBlockStyle,
         secondSelectorOptions = [
             { label: __('Dark', 'gutenberg-extra'), value: 'gx-def-dark' },
             { label: __('Light', 'gutenberg-extra'), value: 'gx-def-light' },
         ],
-        setAttributes
     } = props;
-
-    const onChangeValue = (target, value, callback) => {
-        if (typeof callback != 'undefined' ) {
-            callback(value);
-        }
-        else {
-            setAttributes({[target]: value})
-        }
-    }
 
     return (
         <Fragment>
             <SelectControl
-                label={firstSelectorLabel}
-                className={firstSelectorClassName}
+                label={__( 'Block Style', 'gutenberg-extra')}
+                className={'gx-block-style'}
                 value={blockStyle}
                 options={firstSelectorOptions}
-                onChange={value => onChangeValue( 'blockStyle', value, onChangeBlockStyle )}
+                onChange={value => onChangeBlockStyle( value )}
             />
             <SelectControl
-                label={secondSelectorLabel}
-                className={secondSelectorClassName}
+                label={__( 'Default Block Style', 'gutenberg-extra')}
+                className={'gx--default-block-style'}
                 value={defaultBlockStyle}
                 options={secondSelectorOptions}
-                onChange={value => onChangeValue( 'defaultBlockStyle', value, onChangeDefaultBlockStyle )}
+                onChange={value => onChangeDefaultBlockStyle( value )}
             />
         </Fragment> 
     )

@@ -684,7 +684,7 @@ input[type="checkbox"].gutenberg-extra-checkbox-input:checked {
 
 input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before {
   transition: 0.3s;
-  content: url("../src/components/checkbox/check-box.svg");
+  content: url('../src/icons/setting-icons/checkbox/checkbox.svg');
   position: absolute;
   top: 56%;
   left: 50%;

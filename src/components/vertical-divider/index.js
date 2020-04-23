@@ -1,7 +1,7 @@
 const { __ } = wp.i18n;
 import { Component } from "@wordpress/element";
 
-import Checkbox from '../checkbox/index';
+import CheckBoxControl from '../checkbox-control';
 
 export const verticalDividerAttributes = {
   isVertical: {
@@ -48,7 +48,7 @@ export const VerticalDivider = (props) => {
   };
 
   return (
-    <Checkbox
+    <CheckBoxControl
       label={__('Vertical Divider', 'gutenberg-extra')}
       id='gx-new-window'
       checked={isVertical}

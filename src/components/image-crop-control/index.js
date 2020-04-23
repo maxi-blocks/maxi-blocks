@@ -16,6 +16,7 @@ const {
  * External dependencies
  */
 import ReactCrop from 'react-image-crop';
+import classnames from 'classnames';
 import {
     debounce,
     capitalize,
@@ -29,7 +30,7 @@ import {
 import './editor.scss';
 
 /**
- * Block
+ * Component
  */
 const GeneralInput = props => {
     const {
@@ -288,10 +289,15 @@ class ImageCropComponent extends Component {
     }
 
     render() {
-        const { imageData } = this.props;
+        const { 
+            imageData,
+            className
+        } = this.props;
+
+        const classes = classnames('gx-imagecrop-control', className);
 
         return (
-            <div className="gx-imagecrop-control">
+            <div className={classes}>
                 {imageData &&
                     <Fragment>
                         <ReactCrop

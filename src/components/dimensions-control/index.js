@@ -34,12 +34,11 @@ import {
 	desktop,
 	tablet,
 	mobile,
-	sync,
-	
+	sync
 } from '../../icons';
 
 /**
- * Block
+ * Component
  */
 export default class DimensionsControl extends GXComponent {
 
@@ -53,16 +52,16 @@ export default class DimensionsControl extends GXComponent {
     }
 
 	render() {
-		let value = typeof this.props.value === 'object' ? this.props.value : JSON.parse(this.props.value);
+		const { className } = this.props;
 
 		const {
 			device,
 		} = this.state;
 
-		const classes = classnames(
-			'components-gx-dimensions-control',
-			'components-base-control',
-			`gx-${value.label}-dimensions-control`
+		let value = typeof this.props.value === 'object' ? this.props.value : JSON.parse(this.props.value);
+		const classes = classnames( 
+			`components-gx-dimensions-control components-base-control gx-${value.label}-dimensions-control`,
+			className
 		);
 
 		const unitSizes = [

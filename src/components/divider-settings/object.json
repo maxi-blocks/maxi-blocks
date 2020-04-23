@@ -1,0 +1,17 @@
+{
+    "label": "Divider",
+    "isHidden": false,
+    "isVertical": false,
+    "isRounded": false,
+    "isMultiple": false,
+    "dividerAlignment": "center",
+    "dividerOrder": "1",
+    "dividerColor": "#00b2ff",
+    "sizeSettings": {
+        "label": "Size",
+        "widthUnit": "px",
+        "width": 150,
+        "heightUnit": "px",
+        "height": 3
+    }
+}

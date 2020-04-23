@@ -15,7 +15,7 @@ import './extensions/attributes';
 // import './blocks/block-layout/block-layout.js';
 // import './blocks/block-container/block-container.js';
 import './blocks/block-image-box/block-image-box.js';
-// import './blocks/block-title-extra/block-title-extra.js';
+import './blocks/block-title-extra/block-title-extra.js';
 // import './blocks/block-testimonial/block-single-testimonial';
 
 // import './blocks/block-button/block.js';

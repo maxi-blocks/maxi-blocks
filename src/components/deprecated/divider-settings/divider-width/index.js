@@ -7,7 +7,6 @@ const {
   RadioControl
 } = wp.components;
 
-import { buildDivider } from '../../divider/index';
 
 export const dividerWidthAttributes = {
   dividerWidthUnit:{

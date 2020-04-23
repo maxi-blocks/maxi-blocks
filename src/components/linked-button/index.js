@@ -29,7 +29,7 @@ import './style.scss';
 import { sync } from '../../icons';
 
 /**
- * Block
+ * Component
  */
 export default class LinkedButton extends Component {
 
@@ -71,9 +71,10 @@ export default class LinkedButton extends Component {
 
         const value = typeof externalLink === 'object' ? externalLink : JSON.parse(externalLink);
 
-        let classes = classnames(`gx-externalbutton-control gx-externalbutton-unique-${uniqueHash}`);
-        if(className)
-            classes = classnames(classes, className);
+        let classes = classnames(
+            `gx-externalbutton-control gx-externalbutton-unique-${uniqueHash}`, 
+            className
+        );
 
         return (
             <Button

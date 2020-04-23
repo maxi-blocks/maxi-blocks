@@ -76,17 +76,19 @@ const edit = props => {
         setAttributes,
     } = props;
 
-    let classes = classnames(className);
+    let classes = classnames('gx-block gx-image-box', blockStyle, extraClassName,className);
     if (className.indexOf(uniqueID) === -1)
         classes = classnames(classes, uniqueID);
 
     const linkStyles = setLinkStyles(props);
+    const Line = () => <hr style={{ marginTop: "28px" }} />;
 
     return [
         <InspectorControls>
             <PanelBody
                 className="gx-panel gx-image-setting gx-content-tab-setting"
                 initialOpen={true}
+                // why this vvvv title?
                 title={__('Image Settings', 'gutenberg-extra')}
             >
                 <BlockStylesControl
@@ -102,6 +104,7 @@ const edit = props => {
                 <FontLevelControl
                     label={__('Title level', 'gutenberg-extra')}
                     value={titleLevel}
+                    fontOptions={titleFontOptions}
                     onChange={
                         (titleLevel, titleFontOptions) =>
                             setAttributes({
@@ -109,13 +112,13 @@ const edit = props => {
                                 titleFontOptions
                             })
                     }
-                    fontOptions={titleFontOptions}
                     target='gx-image-box-title'
                 />
             </PanelBody>
             <PanelBody
                 className="gx-panel gx-link-setting gx-content-tab-setting"
                 initialOpen={true}
+                // why this vvvv title?
                 title={__('Link Settings', 'gutenberg-extra')}
             >
                 <LinkOptionsControl
@@ -136,6 +139,7 @@ const edit = props => {
                             <PanelBody
                                 className="gx-panel gx-color-setting gx-style-tab-setting"
                                 initialOpen={true}
+                                // why this vvvv title?
                                 title={__('Colour settings', 'gutenberg-extra')}
                             >
                                 <TypographyControl
@@ -207,6 +211,7 @@ const edit = props => {
                                     initialOpen={true}
                                     title={__('Border settings', 'gutenberg-extra')}
                                 >
+                                    <Line/>
                                     <BorderControl
                                         borderOptions={border}
                                         onChange={border => setAttributes({ border })}
@@ -219,6 +224,7 @@ const edit = props => {
                         label: __(' Width / Height', 'gutenberg-extra'),
                         className: 'gx-width-height-tab gx-width-height-items',
                         content: (
+                            // Is this vvv PanelBody element necessary?
                             <PanelBody
                                 className="gx-panel gx-size-setting gx-style-tab-setting"
                                 initialOpen={true}
@@ -238,6 +244,7 @@ const edit = props => {
                             <PanelBody
                                 className="gx-panel gx-space-setting gx-style-tab-setting"
                                 initialOpen={true}
+                                // why this vvvv title?
                                 title={__('Space Settings', 'gutenberg-extra')}
                             >
                                 <DimensionsControl
@@ -273,7 +280,7 @@ const edit = props => {
             </PanelBody>
         </InspectorControls >,
         <div
-            className={'gx-block ' + blockStyle + ' gx-image-box ' + classes}
+            className={classes}
             data-gx_initial_block_class={defaultBlockStyle}
         >
             <div

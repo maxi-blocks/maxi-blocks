@@ -5,7 +5,7 @@ input[type="checkbox"].gutenberg-extra-checkbox-input {
 }
 
 input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before {
-    content: url('../src/components/checkbox/check-box.svg');
+    content: url('../src/icons/setting-icons/checkbox/checkbox.svg');
     position: absolute;
     top: 50%;
     left: 50%;

@@ -3,7 +3,7 @@
  */
 const { SVG } = wp.primitives;
 
-const uniqueID = () => {
+const getUniqueID = () => {
     const d = new Date();
     const a = d.getMinutes();
     const b = d.getSeconds();
@@ -12,10 +12,12 @@ const uniqueID = () => {
     return `${a}${b}${c}`;
 }
 
+const uniqueID = 'gradient_' + getUniqueID();
+
 const gradient = (
     <SVG x="24px" y="24px" viewBox="0 0 24 24" xmlSpace="preserve">
         <linearGradient
-            id={`gradient_${uniqueID()}`}
+            id={uniqueID}
             gradientUnits="userSpaceOnUse"
             x1={0.3129}
             y1={12}

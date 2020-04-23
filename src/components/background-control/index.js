@@ -21,6 +21,7 @@ import SizeControl from '../size-control';
 /**
  * External dependencies
  */
+import classnames from 'classnames';
 import {
     isEmpty,
     isNil,
@@ -70,7 +71,7 @@ export default class BackgroundControl extends GXComponent {
             if (isNil(option) || isEmpty(option.imageOptions.mediaURL))
                 return;
             // Image
-            if (option.sizeOptions.size === 'custom' && !isNil(option.imageOptions.cropOptions)) {
+            if (option.sizeSettings.size === 'custom' && !isNil(option.imageOptions.cropOptions)) {
                 if (!isNil(response.general['background-image']))
                     response.general['background-image'] = `${response.general['background-image']},url('${option.imageOptions.cropOptions.image.source_url}')`;
                 else
@@ -78,7 +79,7 @@ export default class BackgroundControl extends GXComponent {
                 if (!isEmpty(this.object.colorOptions.gradient))
                     response.general['background-image'] = `${response.general['background-image']}, ${this.object.colorOptions.gradient}`;
             }
-            else if (option.sizeOptions.size === 'custom' && isNil(option.imageOptions.cropOptions) || option.sizeOptions.size != 'custom' && !isNil(option.imageOptions.mediaURL)) {
+            else if (option.sizeSettings.size === 'custom' && isNil(option.imageOptions.cropOptions) || option.sizeSettings.size != 'custom' && !isNil(option.imageOptions.mediaURL)) {
                 if (!isNil(response.general['background-image']))
                     response.general['background-image'] = `${response.general['background-image']},url('${option.imageOptions.mediaURL}')`;
                 else
@@ -87,11 +88,11 @@ export default class BackgroundControl extends GXComponent {
                     response.general['background-image'] = `${response.general['background-image']}, ${this.object.colorOptions.gradient}`;
             }
             // Size
-            if (option.sizeOptions.size != 'custom') {
+            if (option.sizeSettings.size != 'custom') {
                 if (!isNil(response.general['background-size']))
-                    response.general['background-size'] = `${response.general['background-size']},${option.sizeOptions.size}`;
+                    response.general['background-size'] = `${response.general['background-size']},${option.sizeSettings.size}`;
                 else
-                    response.general['background-size'] = option.sizeOptions.size;
+                    response.general['background-size'] = option.sizeSettings.size;
             }
             else {
                 if (!isNil(response.general['background-size']))
@@ -149,7 +150,7 @@ export default class BackgroundControl extends GXComponent {
 
     render() {
         const {
-            className = 'gx-background-control',
+            className,
             backgroundOptions,
         } = this.props;
 
@@ -159,7 +160,7 @@ export default class BackgroundControl extends GXComponent {
         } = this.state;
 
         let value = typeof backgroundOptions === 'object' ? backgroundOptions : JSON.parse(backgroundOptions);
-        const classes = className + (isOpen ? ' gx-background-control-open' : '');
+        const classes = classnames('gx-background-control', className) + (isOpen ? ' gx-background-control-open' : '');
 
         const onAddBackground = i => {
             value.backgroundOptions.push(
@@ -168,7 +169,7 @@ export default class BackgroundControl extends GXComponent {
                         mediaID: "",
                         mediaURL: ""
                     },
-                    sizeOptions: {
+                    sizeSettings: {
                         size: "cover",
                         widthUnit: "%",
                         width: 100,
@@ -283,7 +284,6 @@ export default class BackgroundControl extends GXComponent {
                     isOpen &&
                     <AccordionControl
                         isSecondary
-                        allowMultipleExpanded={false}
                         preExpanded={['gx-background-control-image-tab']}
                         items={[
                             {
@@ -326,7 +326,7 @@ export default class BackgroundControl extends GXComponent {
                                     <Fragment>
                                         <SelectControl
                                             label={__('Background size', 'gutenberg-extra')}
-                                            value={value.backgroundOptions[selector].sizeOptions.size}
+                                            value={value.backgroundOptions[selector].sizeSettings.size}
                                             options={[
                                                 { label: 'Auto', value: 'auto' },
                                                 { label: 'Cover', value: 'cover' },
@@ -334,12 +334,12 @@ export default class BackgroundControl extends GXComponent {
                                                 { label: 'Custom', value: 'custom' }
                                             ]}
                                             onChange={val => {
-                                                value.backgroundOptions[selector].sizeOptions.size = val;
+                                                value.backgroundOptions[selector].sizeSettings.size = val;
                                                 this.saveAndSend(value);
                                             }}
                                         />
                                         {
-                                            value.backgroundOptions[selector].sizeOptions.size === 'custom' &&
+                                            value.backgroundOptions[selector].sizeSettings.size === 'custom' &&
                                             <ImageCropControl
                                                 mediaID={value.backgroundOptions[selector].imageOptions.mediaID}
                                                 cropOptions={value.backgroundOptions[selector].imageOptions.cropOptions ? value.backgroundOptions[selector].imageOptions.cropOptions : {}}

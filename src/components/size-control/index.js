@@ -1,5 +1,5 @@
 /**
- * WordPress Dependencies
+ * WordPress dependencies
  */
 const {	
     RadioControl, 
@@ -7,13 +7,18 @@ const {
 } = wp.components;
 
 /**
- * Block
+ * External dependencies
+ */
+import classnames from 'classnames';
+
+/**
+ * Component
  */
 const SizeControl = props => {
 
     const {
         label,
-        className = '',
+        className,
         unit,
         onChangeUnit,
         value,
@@ -37,9 +42,11 @@ const SizeControl = props => {
             }
         }
     } = props;
+
+    const classes = classnames(className);
     
     return (
-        <div className={className}>
+        <div className={classes}>
             <RadioControl
                 className={'gx-unit-control'}
                 selected={unit}

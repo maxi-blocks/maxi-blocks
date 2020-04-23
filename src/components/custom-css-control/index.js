@@ -9,7 +9,7 @@ const {
 } = wp.components;
 
 /**
- * Block
+ * Component
  */
 const CustomCSS = props => {
     const {

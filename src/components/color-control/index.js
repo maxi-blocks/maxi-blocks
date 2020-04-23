@@ -18,6 +18,7 @@ import PopoverControl from '../popover-control';
  * External dependencies
  */
 import { isNil } from 'lodash';
+import classnames from 'classnames';
 
 /**
  * Styles and icons
@@ -25,15 +26,16 @@ import { isNil } from 'lodash';
 import './editor.scss';
 import {
     colorWheel,
-    gradient
+    gradient as iconGradient
 } from '../../icons';
 
 /**
- * Block
+ * Component
  */
 const ColorControl = props => {
     const {
         label,
+        className,
         disableColor = false,
         color,
         onColorChange,
@@ -43,11 +45,13 @@ const ColorControl = props => {
         gradient,
         onGradientChange,
         onGradientReset = undefined,
-        gradientIcon = gradient,
+        gradientIcon = iconGradient,
         disableGradientAboveBackground = false,
         gradientAboveBackground,
         onGradientAboveBackgroundChange,
     } = props;
+
+    const classes = classnames('components-base-control gx-colorcontrol-control', className);
 
     const returnColor = val => {
         return `rgba(${val.rgb.r},${val.rgb.g},${val.rgb.b},${val.rgb.a})`;
@@ -114,7 +118,7 @@ const ColorControl = props => {
     }
 
     return (
-        <div className="components-base-control gx-colorcontrol-control">
+        <div className={classes}>
             <div className="gx-colorcontrol-color-display">
                 <span
                     style={{

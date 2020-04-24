@@ -207,15 +207,18 @@ export const background = {
         }
     ],
     "colorOptions": {
-        "color": "",
-        "gradient": "",
-        "gradientAboveBackground": false
+      "color": "",
+      "defultColor": "",
+      "gradient": "",
+      "defaultGradient": "",
+      "gradientAboveBackground": false
     }
 };
 
 export const boxShadow = {
     "label": "Box Shadow",
-    "shadowColor": "",
+        "shadowColor": "#ffffff",
+    "defaultShadowColor": "#ffffff",
     "shadowHorizontal": 0,
     "shadowVertical": 0,
     "shadowBlur": 0,
@@ -224,8 +227,9 @@ export const boxShadow = {
 
 export const border = {
     "label": "Border",
+    "defaultBorderColor": "#ffffff",
     "general": {
-        "border-color": "",
+        "border-color": "#ffffff",
         "border-style": "solid"
     },
     "borderWidth": {
@@ -359,9 +363,10 @@ export const divider = {
     "isVertical": false,
     "isRounded": false,
     "isMultiple": false,
-    "dividerAlignment": "auto",
+    "dividerAlignment": "center",
     "dividerOrder": "1",
     "dividerColor": "#00b2ff",
+    "defaultDividerColor": "#00b2ff",
     "sizeSettings": {
         "label": "Size",
         "widthUnit": "px",

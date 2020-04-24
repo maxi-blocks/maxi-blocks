@@ -232,6 +232,7 @@ class ResponsiveStylesResolver {
         this.meta = meta;
         this.object = object;
         this.avoidZero = avoidZero;
+        // console.log(this.object.label, avoidZero)
         this.newObject = this.objectManipulator();
         this.initEvents();
     }

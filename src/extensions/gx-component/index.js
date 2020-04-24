@@ -48,7 +48,7 @@ export default class GXComponent extends Component {
     * @param {obj} meta		Old and saved metadate
     * @param {obj} value	New values to add
     */
-    metaValue(value, type = null, avoidZero) {
+    metaValue(value, type = null, avoidZero = true) {
         this.object = value;
         this.type = type || '';
 

@@ -20,6 +20,7 @@ import {
     isEmpty,
     isNumber
 } from 'lodash';
+import classnames from 'classnames';
 
 /**
  * Styles
@@ -217,6 +218,7 @@ export class DividerSettings extends GXComponent {
                 <ColorControl
                     label={__('Color', 'gutenberg-extra')}
                     color={value.dividerColor}
+                    defaultColor={value.defaultDividerColor}
                     onColorChange={val => {
                         value.dividerColor = val;
                         this.saveAndSend(value)
@@ -229,12 +231,20 @@ export class DividerSettings extends GXComponent {
 }
 
 export const Divider = props => {
-    const { dividerSettings } = props;
+    const { 
+        dividerSettings,
+        className
+    } = props;
 
-    let value = typeof dividerSettings === 'object' ? dividerSettings : JSON.parse(dividerSettings);
+    const value = typeof dividerSettings === 'object' ? dividerSettings : JSON.parse(dividerSettings);
+    let classes = classnames('gx-divider-wrapper', className);
+    if (value.isMultiple)
+        classes = classnames(classes, 'is-multiple');
+    if (value.isVertical)
+        classes = classnames(classes, 'is-vertical')
 
     return (
-        <Fragment>
+        <div className={classes}>
             <hr
                 className="gx-divider"
             />
@@ -245,6 +255,6 @@ export const Divider = props => {
                     /> :
                     null
             }
-        </Fragment>
+        </div>
     )
 }

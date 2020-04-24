@@ -267,11 +267,14 @@ export const imageSettings = {
     "normal": {
         "opacity": 100,
         "backgroundColor": "",
+        "defaultBackgroundColor": "",
         "backgroundGradient": "",
+        "defaultBackgroundGradient": "",
         "backgroundGradientAboveBackground": false,
         "boxShadow": {
             "label": "Box Shadow",
-            "shadowColor": "",
+                "shadowColor": "#ffffff",
+    "defaultShadowColor": "#ffffff",
             "shadowGradient": "",
             "shadowHorizontal": 0,
             "shadowVertical": 0,
@@ -280,8 +283,9 @@ export const imageSettings = {
         },
         "borderSettings": {
             "label": "Border",
+            "defaultBorderColor": "#ffffff",
             "general": {
-                "border-color": "",
+                "border-color": "#ffffff",
                 "border-style": "solid"
             },
             "borderWidth": {
@@ -341,11 +345,14 @@ export const imageSettings = {
     "hover": {
         "opacity": 100,
         "backgroundColor": "",
+        "defaultBackgroundColor": "",
         "backgroundGradient": "",
+        "defaultBackgroundGradient": "",
         "backgroundGradientAboveBackground": false,
         "boxShadow": {
             "label": "Box Shadow",
-            "shadowColor": "",
+                "shadowColor": "#ffffff",
+    "defaultShadowColor": "#ffffff",
             "shadowGradient": "",
             "shadowHorizontal": 0,
             "shadowVertical": 0,
@@ -354,8 +361,9 @@ export const imageSettings = {
         },
         "borderSettings": {
             "label": "Border",
+            "defaultBorderColor": "#ffffff",
             "general": {
-                "border-color": "",
+                "border-color": "#ffffff",
                 "border-style": "solid"
             },
             "borderWidth": {
@@ -443,7 +451,8 @@ export const buttonSettings = {
         "background": "",
         "boxShadow": {
             "label": "Box Shadow",
-            "shadowColor": "",
+                "shadowColor": "#ffffff",
+    "defaultShadowColor": "#ffffff",
             "shadowGradient": "",
             "shadowHorizontal": 0,
             "shadowVertical": 0,
@@ -509,8 +518,9 @@ export const buttonSettings = {
         },
         "borderSettings": {
             "label": "Border",
+            "defaultBorderColor": "#ffffff",
             "general": {
-                "border-color": "",
+                "border-color": "#ffffff",
                 "border-style": "solid"
             },
             "borderWidth": {
@@ -625,7 +635,8 @@ export const buttonSettings = {
         "background": "",
         "boxShadow": {
             "label": "Box Shadow",
-            "shadowColor": "",
+                "shadowColor": "#ffffff",
+    "defaultShadowColor": "#ffffff",
             "shadowGradient": "",
             "shadowHorizontal": 0,
             "shadowVertical": 0,
@@ -633,7 +644,7 @@ export const buttonSettings = {
             "shadowSpread": 0
         },
         "typography": {
-            "label": "Typography",
+            "label": "Button text",
             "font": "Roboto",
             "options": {
                 "100": "http://fonts.gstatic.com/s/roboto/v20/KFOkCnqEu92Fr1MmgWxPKTM1K9nz.ttf",
@@ -691,8 +702,9 @@ export const buttonSettings = {
         },
         "borderSettings": {
             "label": "Border",
+            "defaultBorderColor": "#ffffff",
             "general": {
-                "border-color": "",
+                "border-color": "#ffffff",
                 "border-style": "solid"
             },
             "borderWidth": {
@@ -832,15 +844,18 @@ export const background = {
         }
     ],
     "colorOptions": {
-        "color": "",
-        "gradient": "",
-        "gradientAboveBackground": false
+      "color": "",
+      "defultColor": "",
+      "gradient": "",
+      "defaultGradient": "",
+      "gradientAboveBackground": false
     }
 };
 
 export const boxShadow = {
     "label": "Box Shadow",
-    "shadowColor": "",
+        "shadowColor": "#ffffff",
+    "defaultShadowColor": "#ffffff",
     "shadowHorizontal": 0,
     "shadowVertical": 0,
     "shadowBlur": 0,
@@ -849,8 +864,9 @@ export const boxShadow = {
 
 export const border = {
     "label": "Border",
+    "defaultBorderColor": "#ffffff",
     "general": {
-        "border-color": "",
+        "border-color": "#ffffff",
         "border-style": "solid"
     },
     "borderWidth": {

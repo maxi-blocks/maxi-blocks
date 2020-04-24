@@ -1,3 +1,17 @@
+.gx-divider-wrapper.is-multiple.is-vertical {
+    .gx-divider:first-of-type {
+        margin-right: 0.5rem;
+    }
+
+    .gx-divider:last-of-type {
+        margin-left: 0.5rem;
+    }
+}
+
+.gx-divider-wrapper.is-vertical {
+    display: flex;
+}
+
 .gx-divider {
     border: none;
 }

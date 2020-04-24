@@ -14,22 +14,37 @@ const {
 } = wp.blockEditor;
 const {
 	PanelBody,
-	BaseControl
+	BaseControl,
+	Button,
+	SelectControl
 } = wp.components;
 
 /**
  * External dependencies
  */
+import {
+	AlignmentControl,
+	BlockStylesControl,
+	ColorControl,
+	DimensionsControl,
+	
+
+} from '../../components';
+
 import Typography from "../../components/typography";
-import React, { useEffect }from 'react'
-import { Button } from '@wordpress/components';
-import { SelectControl } from '@wordpress/components';
 import GradientPickerPopover from '../../components/gradient-picker/';
 import { BlockStyles } from '../../components/block-styles/index';
 import { SizeControl } from '../../components/size-control/index';
 import { PaddingMarginControl } from '../../components/padding-margin-control/index';
-import { setBlockStyles, setNameSurnameStyles } from './data';
 import { TextAlignment } from "../../components/text-alignment";
+
+import { setBlockStyles, setNameSurnameStyles } from './data';
+
+/**
+ * External dependencies
+ */
+import React, { useEffect }from 'react'
+
 
 /**
  * EDIT function

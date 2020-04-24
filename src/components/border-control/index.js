@@ -35,6 +35,7 @@ export default class BorderControl extends GXComponent {
                 <ColorControl
                     label={__('Color', 'gutenberg-extra')}
                     color={value.general['border-color']}
+                    defaultColor={value['defaultBorderColor']}
                     onColorChange={val => {
                         value.general['border-color'] = val;
                         this.saveAndSend(value, null, false);

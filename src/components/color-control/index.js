@@ -38,13 +38,13 @@ const ColorControl = props => {
         className,
         disableColor = false,
         color,
+        defaultColor = '',
         onColorChange,
-        onColorReset = undefined,
         colorIcon = colorWheel,
         disableGradient = false,
         gradient,
+        defaultGradient = '',
         onGradientChange,
-        onGradientReset = undefined,
         gradientIcon = iconGradient,
         disableGradientAboveBackground = false,
         gradientAboveBackground,
@@ -101,20 +101,12 @@ const ColorControl = props => {
     }
 
     const onReset = () => {
-        if (!isNil(onColorReset)) {
-            onColorReset();
-        }
-        if (!isNil(onColorChange)) {
-            onColorChange('');
-        }
-        if (!isNil(onGradientReset)) {
-            onGradientReset();
-        }
-        if (!isNil(onGradientChange)) {
-            onGradientChange('');
-        }
-        if (!isNil(onGradientAboveBackgroundChange))
-            onGradientAboveBackgroundChange(false);
+            if (!disableColor)
+                onColorChange(defaultColor);
+            if (!disableGradient)
+                onGradientChange(defaultGradient);
+            if (!disableGradient && !disableGradientAboveBackground)
+                onGradientAboveBackgroundChange(false);
     }
 
     return (

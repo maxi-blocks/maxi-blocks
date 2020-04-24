@@ -1,10 +1,8 @@
-.gx-buttoneditor-button {
-    display: block;
-    width: max-content;
+.gx-externalbutton-control {
     border: 1px solid black;
 }
 
-.gx-buttoneditor-button .gx-externalbutton-richtext {
+.gx-externalbutton-control .gx-externalbutton-richtext {
     display: block;
 }
 
@@ -16,8 +14,10 @@
     box-shadow: none;
     opacity: 0;
     transition: opacity .3s ease-in-out;
+    background-color: transparent !important;
+    max-width: 1.5rem;
 }
 
-.gx-buttoneditor-button:hover .gx-externalbutton-popover button {
+.gx-externalbutton-control:hover .gx-externalbutton-popover button {
     opacity: 1;
 }

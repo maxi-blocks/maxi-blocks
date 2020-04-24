@@ -1,24 +1,15 @@
 /**
- * BLOCK: gutenberg-extra/block-image-box
- *
- * Registering an image block with Gutenberg.
- * Shows an image and a description. A test block.
+ * WordPress dependencies
  */
+const { __ } = wp.i18n;
+const { registerBlockType } = wp.blocks;
 
 /**
  * Styles and icons
  */
-
 import './style.scss';
 import './editor.scss';
-import icon from './icon';
-
-/**
- * WordPress dependencies
- */
-
-const { __ } = wp.i18n;
-const { registerBlockType } = wp.blocks;
+import { titleExtra } from '../../icons';
 
 /**
  * Block dependencies
@@ -35,7 +26,7 @@ import save from './save';
 
 registerBlockType( 'gutenberg-extra/block-title-extra', {
 	title: __('Title Extra', 'gutenberg-extra'),
-	icon: icon,
+	icon: titleExtra,
 	category: 'gutenberg-extra-blocks',
 	supports: {
         align: true,

@@ -1,7 +1,8 @@
 {
     "label": "Border",
+    "defaultBorderColor": "#ffffff",
     "general": {
-        "border-color": "",
+        "border-color": "#ffffff",
         "border-style": "solid"
     },
     "borderWidth": {

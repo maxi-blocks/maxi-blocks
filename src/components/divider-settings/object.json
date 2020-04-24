@@ -7,6 +7,7 @@
     "dividerAlignment": "center",
     "dividerOrder": "1",
     "dividerColor": "#00b2ff",
+    "defaultDividerColor": "#00b2ff",
     "sizeSettings": {
         "label": "Size",
         "widthUnit": "px",

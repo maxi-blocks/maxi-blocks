@@ -176,10 +176,9 @@ export default class Typography extends GXComponent {
                                     <ColorControl
                                         label={__('Font Color', 'gutenberg-extra')}
                                         color={value.general.color}
+                                        defaultColor={defaultColor}
                                         onColorChange={value => onChangeValue(value, 'color')}
-                                        onColorReset={() => onChangeValue(defaultColor, 'color')}
                                         disableGradient
-                                        disableGradientAboveBackground
                                     />
                                     <TextShadowControl
                                         value={value.general['text-shadow']}

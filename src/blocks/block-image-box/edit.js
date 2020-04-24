@@ -32,7 +32,14 @@ import {
     TypographyControl
 } from '../../components';
 import { setLinkStyles } from './utils';
-import { box } from '../../icons';
+import { 
+    typography,
+    image,
+    button,
+    boxSettings,
+    width,
+    padding as iconPadding
+} from '../../icons';
 
 /**
  * External dependencies
@@ -94,8 +101,8 @@ const edit = props => {
                 <BlockStylesControl
                     blockStyle={blockStyle}
                     onChangeBlockStyle={blockStyle => setAttributes({ blockStyle })}
-                    defaultBlockStyle={defaultStatus}
-                    onChangeBlockStyle={defaultBlockStyle => setAttributes({ defaultBlockStyle })}
+                    defaultBlockStyle={defaultBlockStyle}
+                    onChangeDefaultBlockStyle={defaultBlockStyle => setAttributes({ defaultBlockStyle })}
                 />
                 <ImagePositionControl
                     value={imagePosition}
@@ -113,6 +120,7 @@ const edit = props => {
                             })
                     }
                     target='gx-image-box-title'
+                    disableP
                 />
             </PanelBody>
             <PanelBody
@@ -135,6 +143,7 @@ const edit = props => {
                     {
                         label: __('Typography & Colours', 'gutenberg-extra'),
                         className: 'gx-typography-tab',
+                        icon: typography,
                         content: (
                             <PanelBody
                                 className="gx-panel gx-color-setting gx-style-tab-setting"
@@ -164,6 +173,7 @@ const edit = props => {
                     {
                         label: __('Image', 'gutenberg-extra'),
                         className: 'gx-image-tab',
+                        icon: image,
                         content: (
                             <ImageSettings
                                 imageSettings={imageSettings}
@@ -175,6 +185,7 @@ const edit = props => {
                     {
                         label: __('Button', 'gutenberg-extra'),
                         className: 'gx-button-tab gx-button-item',
+                        icon: button,
                         content: (
                             <PanelBody
                                 className={'gx-panel gx-color-setting gx-style-tab-setting'}
@@ -189,17 +200,18 @@ const edit = props => {
                     {
                         label: __('Background Image', 'gutenberg-extra'),
                         className: 'gx-backgroundsettings-tab',
+                        icon: image,
                         content: (
                             <BackgroundControl
                                 backgroundOptions={background}
                                 onChange={background => setAttributes({ background })}
                             />
                         ),
-                        icon: box
                     },
                     {
                         label: __('Box Settings', 'gutenberg-extra'),
                         className: 'gx-box-settings-tab gx-box-settings-item',
+                        icon: boxSettings,
                         content: (
                             <Fragment>
                                 <BoxShadowControl
@@ -223,6 +235,7 @@ const edit = props => {
                     {
                         label: __(' Width / Height', 'gutenberg-extra'),
                         className: 'gx-width-height-tab gx-width-height-items',
+                        icon: width,
                         content: (
                             // Is this vvv PanelBody element necessary?
                             <PanelBody
@@ -240,6 +253,7 @@ const edit = props => {
                     {
                         label: __('Padding & Margin', 'gutenberg-extra'),
                         className: 'gx-padding-tab gx-padding-margin-item',
+                        icon: iconPadding,
                         content: (
                             <PanelBody
                                 className="gx-panel gx-space-setting gx-style-tab-setting"

@@ -5,7 +5,7 @@ const { __ } = wp.i18n;
 const { Fragment } = wp.element;
 const {
     RangeControl,
-    Button
+    Button,
 } = wp.components;
 const { dispatch } = wp.data;
 
@@ -182,7 +182,8 @@ export class ButtonSettings extends GXComponent {
                     items={[
                         {
                             label: __('Typography & Colors', 'gutenberg-extra'),
-                            className: "gx-typography-tab gx-typography-item",
+                            classNameItem: "gx-typography-item",
+                            classNameHeading: "gx-typography-tab",
                             content: (
                                 <Fragment>
                                     {/** Should alignment be under this section? */}
@@ -197,7 +198,7 @@ export class ButtonSettings extends GXComponent {
                                     <NormalHoverControl
                                         /*not sure about vvv class => may should go on the component itself*/
                                         className="gx-buttonstyles-selector-control"
-                                        selected={selectorTypographyColors}
+                                        selector={selectorTypographyColors}
                                         onChange={selectorTypographyColors => {
                                             this.setState({ selectorTypographyColors });
                                         }}
@@ -232,13 +233,14 @@ export class ButtonSettings extends GXComponent {
                         {
                             label: __('Opacity / Shadow', 'gutenberg-extra'),
                             /** why gx-typography-tab if is Opacity/shadow settings? */
-                            className: "gx-typography-tab gx-box-settings-item",
+                            classNameItem: "gx-box-settings-item",
+                            classNameHeading: "gx-typography-tab",
                             content: (
                                 <Fragment>
                                     <NormalHoverControl
                                         /*not sure about vvv class => may should go on the component itself*/
                                         className="gx-buttonstyles-selector-control"
-                                        selected={selectorOpacityShadow}
+                                        selector={selectorOpacityShadow}
                                         onChange={selectorOpacityShadow => {
                                             this.setState({ selectorOpacityShadow });
                                         }}
@@ -273,13 +275,14 @@ export class ButtonSettings extends GXComponent {
                         },
                         {
                             label: __("Border", "gutenberg-extra"),
-                            className: 'gx-border-tab gx-border-item',
+                            classNameItem: "gx-border-item",
+                            classNameHeading: 'gx-border-tab',
                             content: (
                                 <Fragment>
                                     <NormalHoverControl
                                         /*not sure about vvv class => may should go on the component itself*/
                                         className="gx-buttonstyles-selector-control"
-                                        selected={selectorBorder}
+                                        selector={selectorBorder}
                                         onChange={selectorBorder => {
                                             this.setState({ selectorBorder });
                                         }}
@@ -298,7 +301,8 @@ export class ButtonSettings extends GXComponent {
                         {
                             label: __('Width / Height', 'gutenberg-extra'),
                             /** why gx-typography-tab if its width/height? */
-                            className: "gx-typography-tab gx-width-height-item",
+                            classNameItem: "gx-width-height-item",
+                            classNameHeading: "gx-typography-tab",
                             content: (
                                 <Fragment>
                                     <FullSizeControl
@@ -315,13 +319,14 @@ export class ButtonSettings extends GXComponent {
                         {
                             label: __('Padding / Margin', 'gutenberg-extra'),
                             /** why gx-typography-tab if its width/height? */
-                            className: "gx-typography-tab gx-padding-margin-item",
+                            classNameItem: "gx-padding-margin-item",
+                            classNameHeading: "gx-typography-tab",
                             content: (
                                 <Fragment>
                                     <NormalHoverControl
                                         /*not sure about vvv class => may should go on the component itself*/
                                         className="gx-buttonstyles-selector-control"
-                                        selected={selectorPaddingMargin}
+                                        selector={selectorPaddingMargin}
                                         onChange={selectorPaddingMargin => {
                                             this.setState({ selectorPaddingMargin });
                                         }}

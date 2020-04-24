@@ -14,7 +14,7 @@ import classnames from 'classnames';
 import './editor.scss';
 
 /**
- * Component
+ * Block
  */
 const NormalHoverControl = props => {
     const {
@@ -23,7 +23,7 @@ const NormalHoverControl = props => {
         onChange
     } = props;
 
-    let classes = classnames('gx-normalhover-control', className);
+    let classes = classnames('gx-normalhover-control gx-buttonstyles-selector-control', className);
 
     return (
         <RadioControl

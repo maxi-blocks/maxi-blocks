@@ -1,30 +1,30 @@
-.gx-normalhover-control .components-base-control__field {
-    display: grid;
+.gx-sidebar .gx-normalhover-control .components-base-control__field {
+    display: grid !important;
     grid-template-columns: 1fr 1fr;
 }
 
-.gx-normalhover-control .components-base-control__field .components-radio-control__option {
-    height: 50px;
+.gx-sidebar .gx-normalhover-control .components-base-control__field .components-radio-control__option {
+    height: 40px;
     border: 2px solid #dddfe1;
     border-right-width: 0;
     margin: 0;
 }
 
-.gx-normalhover-control .components-base-control__field .components-radio-control__option:last-of-type {
+.gx-sidebar .gx-normalhover-control .components-base-control__field .components-radio-control__option:last-of-type {
     border-right-width: 2px;
 }
 
-.gx-normalhover-control input {
+.gx-sidebar .gx-normalhover-control input {
     display: none;
 }
 
-.gx-normalhover-control label {
+.gx-sidebar .gx-normalhover-control label {
     display: block;
     text-align: center;
-    line-height: 46px;
+    line-height: 38px;
 }
 
-.gx-normalhover-control input:checked ~ label {
+.gx-sidebar .gx-normalhover-control input:checked ~ label {
     color: #fff;
     background-color: #00ccff;
 }

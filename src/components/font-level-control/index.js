@@ -86,7 +86,7 @@ export default class FontLevelControl extends Component {
     render() {
         const {
             label,
-            className = 'gx-title-level',
+            className,
             value,
             fontOptions,
             disableP = false,

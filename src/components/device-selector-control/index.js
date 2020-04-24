@@ -39,24 +39,9 @@ const DeviceSelectorControl = props => {
             className={classes}
             selected={device}
             options={[
-                { label: (
-                    <Icon 
-                        className='gx-device-control-icon'
-                        icon={desktop}
-                    />
-                ), value: 'desktop' },
-                { label: (
-                    <Icon 
-                        className='gx-device-control-icon'
-                        icon={tablet}
-                    />
-                ), value: 'tablet' },
-                { label: (
-                    <Icon 
-                        className='gx-device-control-icon'
-                        icon={mobile}
-                    />
-                ), value: 'mobile' },
+                { label: "", value: 'desktop' },
+                { label: "", value: 'tablet' },
+                { label: "", value: 'mobile' },
             ]}
             onChange={value => onChange(value)}
         />

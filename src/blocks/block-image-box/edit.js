@@ -1,623 +1,363 @@
 /**
+ * WordPress dependencies
+ */
+const { __ } = wp.i18n;
+const { Fragment } = wp.element;
+const {
+    InspectorControls,
+    RichText,
+} = wp.blockEditor;
+const { 
+    PanelBody,
+    BaseControl
+} = wp.components;
+
+
+/**
+ * Internal dependencies
+ */
+import {
+    AccordionControl,
+    BackgroundControl,
+    BorderControl,
+    BlockStylesControl,
+    BoxShadowControl,
+    ButtonSettings,
+    ButtonEditor,
+    CustomCSSControl,
+    DimensionsControl,
+    FontLevelControl,
+    HoverAnimationControl,
+    ImagePositionControl,
+    ImageSettings,
+    ImageUpload,
+    LinkOptionsControl,
+    FullSizeControl,
+    TypographyControl
+} from '../../components';
+import { setLinkStyles } from './utils';
+import {
+    typography,
+    image,
+    button,
+    boxSettings,
+    width,
+    padding as iconPadding
+} from '../../icons';
+
+/**
  * External dependencies
  */
 import classnames from 'classnames';
-import { animationsClasses, transitionTypes, buttonShapes, buttonSizes } from './data';
-import { withState } from '@wordpress/compose';
-import { RangeControl } from '@wordpress/components';
-import { FontSizePicker } from '@wordpress/components';
 
 /**
- * WordPress dependencies
+ * Content
  */
+const edit = props => {
+    const {
+        className,
+        attributes: {
+            uniqueID,
+            blockStyle,
+            defaultBlockStyle,
+            imagePosition,
+            titleLevel,
+            linkTitle,
+            linkOptions,
+            titleFontOptions,
+            subtitleFontOptions,
+            descriptionFontOptions,
+            imageSettings,
+            buttonSettings,
+            background,
+            boxShadow,
+            border,
+            size,
+            margin,
+            padding,
+            hoverAnimation,
+            hoverAnimationDuration,
+            extraClassName,
+            extraStyles,
+            mediaID,
+            title,
+            additionalText,
+            description,
+        },
+        setAttributes,
+    } = props;
 
-const { __ } = wp.i18n;
-const {
-				Component,
-				Fragment,
-} = wp.element;
-const { compose } = wp.compose;
-const {
-				Dashicon,
-				IconButton,
-				withFallbackStyles,
-				TextControl,
-				TextareaControl,
-				SelectControl,
-				PanelBody,
-				ToggleControl,
-} = wp.components;
-const {
-				URLInput,
-				RichText,
-				ContrastChecker,
-				InspectorControls,
-				withColors,
-				PanelColorSettings,
-				AlignmentToolbar,
-    			BlockControls,
-} = wp.blockEditor;
+    let classes = classnames('gx-block gx-image-box', blockStyle, extraClassName, className);
+    if (className.indexOf(uniqueID) === -1)
+        classes = classnames(classes, uniqueID);
 
-const { getComputedStyle } = window;
+    const linkStyles = setLinkStyles(props);
+    const Line = () => <hr style={{ marginTop: "28px" }} />;
 
-const FallbackStyles = withFallbackStyles((node, ownProps) => {
+    return [
+        <InspectorControls>
+            <PanelBody
+                className="gx-panel gx-image-setting gx-content-tab-setting"
+                initialOpen={true}
+                // why this vvvv title?
+                title={__('Image Settings', 'gutenberg-extra')}
+            >
+                <BlockStylesControl
+                    blockStyle={blockStyle}
+                    onChangeBlockStyle={blockStyle => setAttributes({ blockStyle })}
+                    defaultBlockStyle={defaultBlockStyle}
+                    onChangeDefaultBlockStyle={defaultBlockStyle => setAttributes({ defaultBlockStyle })}
+                />
+                <ImagePositionControl
+                    value={imagePosition}
+                    onChange={imagePosition => setAttributes({ imagePosition })}
+                />
+                <FontLevelControl
+                    label={__('Title level', 'gutenberg-extra')}
+                    value={titleLevel}
+                    fontOptions={titleFontOptions}
+                    onChange={
+                        (titleLevel, titleFontOptions) =>
+                            setAttributes({
+                                titleLevel,
+                                titleFontOptions
+                            })
+                    }
+                    target='gx-image-box-title'
+                    disableP
+                />
+            </PanelBody>
+            <PanelBody
+                className="gx-panel gx-link-setting gx-content-tab-setting"
+                initialOpen={true}
+                // why this vvvv title?
+                title={__('Link Settings', 'gutenberg-extra')}
+            >
+                <LinkOptionsControl
+                    label={__("Link's Title", 'gutenberg-extra')}
+                    link={linkTitle}
+                    onChangeLink={linkTitle => setAttributes({ linkTitle })}
+                    linkOptions={linkOptions}
+                    onChangeOptions={linkOptions => setAttributes({ linkOptions })}
+                />
+            </PanelBody>
+            <AccordionControl
+                isPrimary
+                items={[
+                    {
+                        label: __('Typography & Colours', 'gutenberg-extra'),
+                        classNameHeading: 'gx-typography-tab',
+                        //icon: typography,
+                        content: (
+                            <PanelBody
+                                className="gx-panel gx-color-setting gx-style-tab-setting"
+                                initialOpen={true}
+                                // why this vvvv title?
+                                title={__('Colour settings', 'gutenberg-extra')}
+                            >
+                                <TypographyControl
+                                    fontOptions={titleFontOptions}
+                                    onChange={titleFontOptions => { setAttributes({ titleFontOptions }) }}
+                                    target="gx-image-box-title"
+                                    defaultColor="#000000"
+                                />
+                                <TypographyControl
+                                    fontOptions={subtitleFontOptions}
+                                    onChange={subtitleFontOptions => { setAttributes({ subtitleFontOptions }) }}
+                                    target="gx-image-box-subtitle"
+                                />
+                                <TypographyControl
+                                    fontOptions={descriptionFontOptions}
+                                    onChange={descriptionFontOptions => { setAttributes({ descriptionFontOptions }) }}
+                                    target="gx-image-box-description"
+                                />
+                            </PanelBody>
+                        ),
+                    },
+                    {
+                        label: __('Image', 'gutenberg-extra'),
+                        classNameItem: 'gx-image-item',
+                        classNameHeading: 'gx-image-tab',
+                        //icon: image,
+                        content: (
+                            <Fragment>
+                                <PanelBody
+                                    className="gx-panel gx-color-setting gx-style-tab-setting"
+                                    initialOpen={true}
+                                    title={__("Immage settings", "gutenberg-extra")}
+                                >
+                                    <ImageSettings
+                                        imageSettings={imageSettings}
+                                        onChange={imageSettings => setAttributes({ imageSettings })}
+                                        mediaID={mediaID}
+                                    />
+                                </PanelBody>
+                            </Fragment>
+                        ),
+                    },
+                    {
+                        label: __('Button', 'gutenberg-extra'),
+                        classNameItem: 'gx-button-item',
+                        classNameHeading: 'gx-button-tab',
+                        //icon: button,
+                        content: (
+                            <PanelBody
+                                className={'gx-panel gx-color-setting gx-style-tab-setting'}
+                            >
+                                <ButtonSettings
+                                    buttonSettings={buttonSettings}
+                                    onChange={buttonSettings => setAttributes({ buttonSettings })}
+                                />
+                            </PanelBody>
+                        )
+                    },
+                    {
+                        label: __('Background Image', 'gutenberg-extra'),
+                        classNameHeading: 'gx-backgroundsettings-tab',
+                        //icon: image,
+                        content: (
+                            <BackgroundControl
+                                backgroundOptions={background}
+                                onChange={background => setAttributes({ background })}
+                            />
+                        ),
+                    },
+                    {
+                        label: __('Box Settings', 'gutenberg-extra'),
+                        classNameItem: 'gx-box-settings-item',
+                        classNameHeading: 'gx-box-settings-tab',
+                        //icon: boxSettings,
+                        content: (
+                            <Fragment>
+                                <PanelBody
+                                    className={'gx-panel gx-color-setting gx-style-tab-setting'}
+                                >
+                                    <BaseControl
+                                        className={"bg-color-parent gx-reset-button background-gradient"}
+                                    >
+                                        <BoxShadowControl
+                                            boxShadowOptions={boxShadow}
+                                            onChange={boxShadow => setAttributes({ boxShadow })}
+                                        />
+                                    </BaseControl>
+                                    <Line />
+                                    <BorderControl
+                                        borderOptions={border}
+                                        onChange={border => setAttributes({ border })}
+                                    />
+                                </PanelBody>
+                            </Fragment>
+                        ),
+                    },
+                    {
+                        label: __(' Width / Height', 'gutenberg-extra'),
+                        classNameItem: 'gx-width-height-item',
+                        classNameHeading: 'gx-width-height-tab',
+                        //icon: width,
+                        content: (
+                            // Is this vvv PanelBody element necessary?
+                            <PanelBody
+                                className="gx-panel gx-size-setting gx-style-tab-setting"
+                                initialOpen={true}
+                                title={__('Size Settings', 'gutenberg-extra')}
+                            >
+                                <FullSizeControl
+                                    sizeSettings={size}
+                                    onChange={size => setAttributes({ size })}
+                                />
+                            </PanelBody>
+                        ),
+                    },
+                    {
+                        label: __('Padding & Margin', 'gutenberg-extra'),
+                        classNameItem: 'gx-padding-margin-item',
+                        classNameHeading: 'gx-padding-tab',
+                        //icon: iconPadding,
+                        content: (
+                            <PanelBody
+                                className="gx-panel gx-space-setting gx-style-tab-setting"
+                                initialOpen={true}
+                                // why this vvvv title?
+                                title={__('Space Settings', 'gutenberg-extra')}
+                            >
+                                <DimensionsControl
+                                    value={padding}
+                                    onChange={padding => setAttributes({ padding })}
+                                />
+                                <DimensionsControl
+                                    value={margin}
+                                    onChange={margin => setAttributes({ margin })}
+                                />
+                            </PanelBody>
+                        ),
+                    }
+                ]}
+            />
+            <PanelBody
+                initialOpen={true}
+                className="gx-panel gx-advanced-setting gx-advanced-tab-setting"
+                title={__('Advanced Settings', 'gutenberg-extra')}
+            >
+                <HoverAnimationControl
+                    hoverAnimation={hoverAnimation}
+                    onChangeHoverAnimation={hoverAnimation => setAttributes({ hoverAnimation })}
+                    hoverAnimationDuration={hoverAnimationDuration}
+                    onChangeHoverAnimationDuration={hoverAnimationDuration => setAttributes({ hoverAnimationDuration })}
+                />
+                <CustomCSSControl
+                    extraClassName={extraClassName}
+                    onChangeExtraClassName={extraClassName => setAttributes({ extraClassName })}
+                    extraStyles={extraStyles}
+                    onChangeExtraStyles={extraStyles => setAttributes({ extraStyles })}
+                />
+            </PanelBody>
+        </InspectorControls >,
+        <div
+            className={classes}
+            data-gx_initial_block_class={defaultBlockStyle}
+        >
+            <div
+                className="gx-image-box-link"
+                style={linkStyles}
+            >
+                <ImageUpload
+                    className="gx-image-box-image"
+                    imageSettings={imageSettings}
+                    mediaID={mediaID}
+                    onSelect={media => setAttributes({ mediaID: media.id })}
+                />
+                <div className='gx-image-box-text'>
+                    <RichText
+                        tagName={titleLevel}
+                        placeholder={__('This is your awesome title here', 'gutenberg-extra')}
+                        value={title}
+                        onChange={title => setAttributes({ title })}
+                        className="gx-image-box-title"
+                    />
+                    <RichText
+                        tagName="p"
+                        placeholder={__('Add a snappy sub heading', 'gutenberg-extra')}
+                        value={additionalText}
+                        onChange={additionalText => setAttributes({ additionalText })}
+                        className="gx-image-box-subtitle"
+                    />
+                    <RichText
+                        tagName="p"
+                        multiline="br"
+                        placeholder={__('Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis architect beatae unde omnis iste natus.', 'gutenberg-extra')}
+                        value={description}
+                        onChange={description => setAttributes({ description })}
+                        className="gx-image-box-description"
+                    />
+                    <ButtonEditor
+                        buttonSettings={buttonSettings}
+                        onChange={buttonSettings => setAttributes({ buttonSettings })}
+                        placeholder={__('Click me', 'gutenberg-extra')}
+                    />
+                </div>
+            </div>
+        </div>
+    ];
+};
 
-				const { textColor, backgroundColor, borderColor } = ownProps;
-
-				const backgroundColorValue = backgroundColor && backgroundColor.color;
-				const textColorValue = textColor && textColor.color;
-				const borderColorValue = borderColor && borderColor.color;
-
-				//avoid the use of querySelector if textColor color is known and verify if node is available.
-				const textNode = !textColorValue && node ? node.querySelector('[contenteditable="true"]') : null;
-
-				return {
-								fallbackBackgroundColor: backgroundColorValue || !node ? undefined : getComputedStyle(node).backgroundColor,
-								fallbackTextColor: textColorValue || !textNode ? undefined : getComputedStyle(textNode).color,
-								fallbackBorderColor: borderColorValue || !node ? undefined : getComputedStyle(node).color,
-				};
-
-});
-
-class AnimationButtonEdit extends Component {
-				constructor() {
-								super(...arguments);
-								this.nodeRef = null;
-								this.bindRef = this.bindRef.bind(this);
-				}
-
-				bindRef(node) {
-								if (!node) {
-												return;
-								}
-								this.nodeRef = node;
-				}
-
-				render() {
-
-								const {
-												attributes,
-												backgroundColor,
-												borderColor,
-												textColor,
-												setBackgroundColor,
-												setTextColor,
-												setBorderColor,
-												fallbackBorderColor,
-												fallbackBackgroundColor,
-												fallbackTextColor,
-												setAttributes,
-												isSelected,
-												className,
-								} = this.props;
-
-								const {
-												text,
-												url,
-												title,
-												animation,
-												backgroundHoverColor,
-												borderHoverColor,
-												textHoverColor,
-												transition,
-												transitionType,
-												extraClassName,
-												fontSize,
-												lineHeight,
-												letterSpacing,
-												linkTitle,
-												extraStyles,
-												extraHoverStyles,
-												extraBeforeStyles,
-												extraAfterStyles,
-												extraHoverBeforeStyles,
-												extraHoverAfterStyles,
-												opensInNewWindow,
-												addNofollow,
-												addNoopener,
-												addNoreferrer,
-												addSponsored,
-												addUgc,
-												buttonShape,
-												buttonSize,
-												paddingSize,
-												maxWidth,
-												borderWidth,
-												borderRadius,
-												borderStyle,
-												minWidth,
-												buttonWidth,
-												maxHeight,
-												minHeight,
-												paddingTop,
-												paddingLeft,
-												paddingRight,
-												paddingBottom,
-												marginTop,
-												marginLeft,
-												marginRight,
-												marginBottom,
-												buttonHeight,
-												textTransform,
-								} = attributes;
-
-
-								const fontSizes = [
-							        {
-							            name: __( 'Small' ),
-							            slug: 'small',
-							            shortName: 'S',
-							            size: 14,
-							        },
-							        {
-							            name: __( 'Default' ),
-							            slug: 'normal',
-							            shortName: 'M',
-							            size: 16,
-							        },
-							        {
-							            name: __( 'Large' ),
-							            slug: 'large',
-							            shortName: 'X',
-							            size: 20,
-							        },
-							        {
-							            name: __( 'X-Large' ),
-							            shortName: 'XL',
-							            slug: 'x-large',
-							            size: 26,
-							        },
-							        {
-							            name: __( 'XX-Large' ),
-							            shortName: 'XXL',
-							            slug: 'xx-large',
-							            size: 30,
-							        },
-							    ];
-								const fallbackFontSize = 16;
-
-								const hoverClass = (borderHoverColor ? borderHoverColor.replace('#', '') + '-' : '') + (backgroundHoverColor ? backgroundHoverColor.replace('#', '') + '-' : '') + (textHoverColor ? textHoverColor.replace('#', '') : '');
-								const hoverStyles = (borderHoverColor ? `border-color: #${borderHoverColor.replace( '#', '' )}!important;` : '') + (backgroundHoverColor ? `background-color: #${backgroundHoverColor.replace( '#', '' )}!important;` : '') + (textHoverColor ? `color: #${textHoverColor.replace( '#', '' )}!important;` : '');
-								const uniqueClass = extraStyles ? extraStyles.replace(/[^a-z0-9]/gi, '') : '';
-								const uniqueHoverClass = extraHoverStyles ? extraHoverStyles.replace(/[^a-z0-9]/gi, '') : '';
-								const uniqueBeforeClass = extraBeforeStyles ? extraBeforeStyles.replace(/[^a-z0-9]/gi, '') : '';
-								const uniqueAfterClass = extraAfterStyles ? extraAfterStyles.replace(/[^a-z0-9]/gi, '') : '';
-
-								let buttonStyles = {
-												backgroundColor: backgroundColor.color,
-												color: textColor.color,
-												borderColor: borderColor.color,
-												borderWidth: borderWidth + 'px',
-												borderRadius: borderRadius + 'px',
-												borderStyle: borderStyle,
-												fontSize: fontSize + 'px',
-												lineHeight: lineHeight + '%',
-												letterSpacing: letterSpacing + 'px',
-												width: buttonWidth + '%',
-												maxWidth: maxWidth+ 'px',
-												minWidth: minWidth + 'px',
-												height: buttonHeight + 'px',
-												maxHeight: maxHeight + 'px',
-												minHeight: minHeight + 'px',
-												textTransform: textTransform,
-												paddingTop: paddingTop + 'px',
-												paddingLeft: paddingLeft + 'px',
-												paddingRight: paddingRight + 'px',
-												paddingBottom: paddingBottom + 'px',
-												marginTop: marginTop + 'px',
-												marginLeft: marginLeft + 'px',
-												marginRight: marginRight + 'px',
-												marginBottom: marginBottom + 'px',
-												};
-
-								if (transition) {
-												buttonStyles.transition = `${transition}s ${transitionType ? transitionType : ''}`;
-								}
-
-								return (
-												<Fragment>
-				<div className={ classnames( className, extraClassName, uniqueClass, uniqueHoverClass, buttonSize, buttonShape ) } title={ title } ref={ this.bindRef }>
-					{ hoverClass && <style dangerouslySetInnerHTML={{__html: `.wp-block-gx-animation-button:hover .hover-${hoverClass}{${hoverStyles}}` }} /> }
-					{ uniqueClass && <style dangerouslySetInnerHTML={{__html: `.${uniqueClass} .wp-block-button__link{${extraStyles}}` }} /> }
-					{ uniqueHoverClass && <style dangerouslySetInnerHTML={{__html: `.${uniqueHoverClass} .wp-block-button__link:hover{${extraHoverStyles}}` }} /> }
-					{ extraBeforeStyles && <style dangerouslySetInnerHTML={{__html: `.wp-block-button__link:before{${extraBeforeStyles}}` }} /> }
-					{ extraAfterStyles && <style dangerouslySetInnerHTML={{__html: `.wp-block-button__link:after{${extraAfterStyles}}` }} /> }
-					{ extraHoverBeforeStyles && <style dangerouslySetInnerHTML={{__html: `.wp-block-button__link:hover:before{${extraHoverBeforeStyles}}` }} /> }
-					{ extraHoverAfterStyles && <style dangerouslySetInnerHTML={{__html: `.wp-block-button__link:hover:after{${extraHoverAfterStyles}}` }} /> }
-
-
-					<RichText
-						placeholder={ __( 'Add text…' ) }
-						value={ text }
-						onChange={ ( value ) => setAttributes( { text: value } ) }
-						// allowedFormats={ [ 'bold', 'italic', 'strikethrough' ] }
-						className={ classnames(
-							'wp-block-button__link', `hover-${hoverClass}`, {
-								'has-background': backgroundColor.color,
-								[ backgroundColor.class ]: backgroundColor.class,
-								'has-text-color': textColor.color,
-								[ textColor.class ]: textColor.class,
-								'has-border-color': borderColor.color,
-								[ borderColor.class ]: borderColor.class,
-							},
-							animation
-						) }
-						style={ buttonStyles }
-						keepPlaceholderOnFocus
-						title={ linkTitle }
-						target={ opensInNewWindow ? '_blank' : '_self' }
-						rel= { (addNofollow ? 'nofollow ' : '') + (addNoreferrer ? 'noreferrer ' : '')  + (addNoopener ? 'noopener ' : '') + (addSponsored ? 'sponsored ' : '') + (addUgc ? 'ugc' : '')}
-
-					/>
-					{/* Sidebar Settings */}
-					<InspectorControls>
-						<PanelColorSettings
-							title={ __( 'Color Settings' ) }
-							className='gx-general-tab'
-							colorSettings={ [
-								{
-									value: backgroundColor.color,
-									onChange: setBackgroundColor,
-									label: __( 'Background Color' ),
-								},
-								{
-									value: textColor.color,
-									onChange: setTextColor,
-									label: __( 'Text Color' ),
-								},
-							] }
-						>
-						<ContrastChecker
-							{ ...{
-								isLargeText: true,
-								textColor: textColor.color,
-								backgroundColor: backgroundColor.color,
-								fallbackBackgroundColor,
-								fallbackTextColor,
-							} }
-						/>
-					</PanelColorSettings>
-						<PanelColorSettings
-							title={ __( 'Hover' ) }
-							className='gx-hover-tab'
-							colorSettings={ [
-								{
-									value: backgroundHoverColor,
-									onChange: value => {
-										setAttributes({
-											backgroundHoverColor: value
-										});
-									},
-									label: __( 'Hover Background Color' ),
-								},
-								{
-									value: textHoverColor,
-									onChange: value => {
-										setAttributes({
-											textHoverColor: value
-										});
-									},
-									label: __( 'Hover Text Color' ),
-								},
-							] }
-						/>
-					<PanelBody initialOpen={ false } title={ __( 'Border settings' ) } className='gx-general-tab'>
-						<PanelColorSettings
-							title={ false }
-							className='gx-hidden-header'
-							colorSettings={ [
-								{
-									value: borderColor.color,
-									onChange: setBorderColor,
-									label: __( 'Border Color' ),
-								},
-							] }
-						/>
-					<RangeControl
-                            label="Border Width (px)"
-                            value={borderWidth}
-                            onChange={ ( value ) => this.props.setAttributes({ borderWidth: value }) }
-                            min={ 0 }
-                        />
-                        <SelectControl
-					        label="Border Style"
-					        value={ borderStyle }
-					        options={ [
-					        	{ label: 'None', value: 'none' },
-					            { label: 'Dotted', value: 'dotted' },
-					            { label: 'Dashed', value: 'dashed' },
-					            { label: 'Solid', value: 'solid' },
-					            { label: 'Double', value: 'double' },
-					            { label: 'Groove', value: 'groove' },
-					            { label: 'Ridge', value: 'ridge' },
-					            { label: 'Inset', value: 'inset' },
-					            { label: 'Outset', value: 'outset' },
-					        ] }
-					        onChange={ ( value ) => this.props.setAttributes({ borderStyle: value }) }
-						/>
-						<RangeControl
-                            label="Border Radius (px)"
-                            value={borderRadius}
-                            onChange={ ( value ) => this.props.setAttributes({ borderRadius: value }) }
-                            min={ 0 }
-                        />
-					</PanelBody>
-
-					<PanelBody initialOpen={ false } title={ __( 'Border on Hover' ) } className=''>
-						<PanelColorSettings
-							// title={ __( 'Hover' ) }
-							className='gx-hidden-header'
-							colorSettings={ [
-								{
-									value: borderHoverColor,
-									onChange: value => {
-										setAttributes({
-											borderHoverColor: value
-										});
-									},
-									label: __( 'Hover Border Color' ),
-								},
-							] }
-						/>
-						<RangeControl
-                            label="Border Hover Width"
-                            value={50}
-                            //onChange={ onChangeWidth }
-                            min={ 0 }
-                            max={ 100 }
-                        />
-                     </PanelBody>
-                     <PanelBody className="link-setting" initialOpen={ false } title={ __( 'Link Settings' ) }>
-                     <TextControl
-								label={ __( 'Link\'s Title' ) }
-								value={ linkTitle || '' }
-								onChange={ (e) => {
-									setAttributes( {
-										linkTitle: e,
-									} );
-								} }
-							/>
-                        <ToggleControl
-								label={ __( 'Open in New Window' ) }
-								id='gx-new-window'
-								checked={ opensInNewWindow }
-								onChange={ () => setAttributes( { opensInNewWindow: ! opensInNewWindow } ) }
-							/>
-						<ToggleControl
-								label={ __( 'Add "nofollow" attribute' ) }
-								checked={ addNofollow }
-								onChange={ () => setAttributes( { addNofollow: ! addNofollow } ) }
-							/>  
-
-						<ToggleControl
-								label={ __( 'Add "noopener" attribute' ) }
-								checked={ addNoopener }
-								onChange={ () => setAttributes( { addNoopener : ! addNoopener  } ) }
-							/>  
-
-						<ToggleControl
-								label={ __( 'Add "noreferrer" attribute' ) }
-								checked={ addNoreferrer  }
-								onChange={ () => setAttributes( {addNoreferrer: ! addNoreferrer } ) }
-							/> 
-
-						<ToggleControl
-								label={ __( 'Add "sponsored" attribute' ) }
-								checked={ addSponsored }
-								onChange={ () => setAttributes( { addSponsored: ! addSponsored } ) }
-							/>  
-
-						<ToggleControl
-								label={ __( 'Add "ugc" attribute' ) }
-								checked={ addUgc }
-								onChange={ () => setAttributes( { addUgc: ! addUgc } ) }
-							/>          
-					</PanelBody>
-					<PanelBody initialOpen={ false } title={ __( 'Text Settings' ) }>
-							<FontSizePicker
-								lebel={"Font Size"}
-					            fontSizes={ fontSizes }
-					            value={ fontSize }
-					            fallbackFontSize={ fallbackFontSize }
-					            withSlider = {true}
-					            onChange={ ( value ) => this.props.setAttributes({ fontSize: value }) }
-					        />
-					        <RangeControl
-                            label="Line height (%)"
-                            value={lineHeight}
-                            onChange={ ( value ) => this.props.setAttributes({ lineHeight: value }) }
-							allowReset = {true}
-                        	/>
-                        	<RangeControl
-                            label="Letter Spacing (px)"
-                            value={letterSpacing}
-                            step={0.1}
-                            onChange={ ( value ) => this.props.setAttributes({ letterSpacing: value }) }
-							allowReset = {true}
-                        	/>
-                        	<SelectControl
-					        label="Text Transform"
-					        value={ textTransform }
-					        options={ [
-					        	{ label: 'None', value: 'none' },
-					            { label: 'Uppercase', value: 'uppercase' },
-					            { label: 'Capitalize', value: 'capitalize' },
-					            { label: 'Lowercase', value: 'lowercase' },
-					        ] }
-					        onChange={ ( value ) => this.props.setAttributes({ textTransform: value }) }
-					    />
-					</PanelBody>
-					<PanelBody initialOpen={ false } title={ __( 'Size Settings' ) }>
-							<RangeControl
-                            label="Max Width (px)"
-                            value={maxWidth}
-                            onChange={ ( value ) => this.props.setAttributes({ maxWidth: value }) }
-							min={ 0 }
-							allowReset = {true}
-                        	/>
-                        	<RangeControl
-                            label="Width (%)"
-                            value={buttonWidth}
-                            onChange={ ( value ) => this.props.setAttributes({ buttonWidth: value }) }
-							min={ 0 }
-                            max={ 100 }
-                            allowReset = {true}
-                        	/>
-                        	<RangeControl
-                            label="Min Width (px)"
-                            value={minWidth}
-                            onChange={ ( value ) => this.props.setAttributes({ minWidth: value }) }
-							min={ 0 }
-							allowReset = {true}
-                        	/>
-                        	<RangeControl
-                            label="Max Height (px)"
-                            value={maxHeight}
-                            onChange={ ( value ) => this.props.setAttributes({ maxHeight: value }) }
-							min={ 0 }
-							allowReset = {true}
-                        	/>
-                        	<RangeControl
-                            label="Height (px)"
-                            value={buttonHeight}
-                            onChange={ ( value ) => this.props.setAttributes({ buttonHeight: value }) }
-                            allowReset = {true}
-                        	/>
-                        	<RangeControl
-                            label="Min Height (px)"
-                            value={minHeight}
-                            onChange={ ( value ) => this.props.setAttributes({ minHeight: value }) }
-							min={ 0 }
-							allowReset = {true}
-                        	/>
-					</PanelBody>
-					<PanelBody initialOpen={ false } title={ __( 'Space Settings' ) }>
-						<TextControl
-								label={ __( 'Padding Top (px)' ) }
-								value={ paddingTop }
-								onChange={ ( value ) => this.props.setAttributes({ paddingTop: value }) }
-							/>
-							<TextControl
-								label={ __( 'Padding Left (px)' ) }
-								value={ paddingLeft }
-								onChange={ ( value ) => this.props.setAttributes({ paddingLeft: value }) }
-							/>
-							<TextControl
-								label={ __( 'Padding Right (px)' ) }
-								value={ paddingRight }
-								onChange={ ( value ) => this.props.setAttributes({ paddingRight: value }) }
-							/>
-							<TextControl
-								label={ __( 'Padding Bottom (px)' ) }
-								value={ paddingBottom }
-								onChange={ ( value ) => this.props.setAttributes({ paddingBottom: value }) }
-							/>
-							<TextControl
-								label={ __( 'Margin Top (px)' ) }
-								value={ marginTop }
-								onChange={ ( value ) => this.props.setAttributes({ marginTop: value }) }
-							/>
-							<TextControl
-								label={ __( 'Margin Left (px)' ) }
-								value={ marginLeft }
-								onChange={ ( value ) => this.props.setAttributes({ marginLeft: value }) }
-							/>
-							<TextControl
-								label={ __( 'Margin Right (px)' ) }
-								value={ marginRight }
-								onChange={ ( value ) => this.props.setAttributes({ marginRight: value }) }
-							/>
-							<TextControl
-								label={ __( 'Margin Bottom (px)' ) }
-								value={ marginBottom }
-								onChange={ ( value ) => this.props.setAttributes({ marginBottom: value }) }
-							/>
-					</PanelBody>
-					<PanelBody initialOpen={ false } title={ __( 'Advanced Settings' ) }>
-							<TextControl
-								label={ __( 'Additional CSS Classes' ) }
-								value={ extraClassName || '' }
-								onChange={ (e) => {
-									setAttributes( {
-										extraClassName: e,
-									} );
-								} }
-							/>
-							<TextareaControl
-								label={ __( 'Additional CSS Styles' ) }
-								value={ extraStyles || '' }
-								onChange={ (e) => {
-									setAttributes( {
-										extraStyles: e,
-									} );
-								} }
-							/>
-							<TextareaControl
-								label={ __( 'Additional CSS Hover Styles' ) }
-								value={ extraHoverStyles || '' }
-								onChange={ (e) => {
-									setAttributes( {
-										extraHoverStyles: e,
-									} );
-								} }
-							/>
-							<TextareaControl
-								label={ __( 'Additional CSS Before Styles' ) }
-								value={ extraBeforeStyles || '' }
-								onChange={ (e) => {
-									setAttributes( {
-										extraBeforeStyles: e,
-									} );
-								} }
-							/>
-							<TextareaControl
-								label={ __( 'Additional CSS After Styles' ) }
-								value={ extraAfterStyles || '' }
-								onChange={ (e) => {
-									setAttributes( {
-										extraAfterStyles: e,
-									} );
-								} }
-							/>
-							<TextareaControl
-								label={ __( 'Additional CSS Hover Before Styles' ) }
-								value={ extraHoverBeforeStyles || '' }
-								onChange={ (e) => {
-									setAttributes( {
-										extraHoverBeforeStyles: e,
-									} );
-								} }
-							/>
-							<TextareaControl
-								label={ __( 'Additional CSS Hover After Styles' ) }
-								value={ extraHoverAfterStyles || '' }
-								onChange={ (e) => {
-									setAttributes( {
-										extraHoverAfterStyles: e,
-									} );
-								} }
-							/>
-						</PanelBody>
-					</InspectorControls>
-				</div>
-				{ isSelected && (
-					<form
-						className="block-library-button__inline-link"
-						onSubmit={ ( event ) => event.preventDefault() }>
-						<Dashicon icon="admin-links" />
-						<URLInput
-							value={ url }
-							onChange={ ( value ) => setAttributes( { url: value } ) }
-						/>
-						<IconButton icon="editor-break" label={ __( 'Apply' ) } type="submit" />
-					</form>
-				) }
-			</Fragment>
-								);
-				}
-}
-
-export default compose([
-				withColors('backgroundColor', 'borderColor', { textColor: 'color' }),
-				FallbackStyles,
-])(AnimationButtonEdit);
+export default edit;

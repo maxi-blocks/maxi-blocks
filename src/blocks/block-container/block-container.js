@@ -317,7 +317,6 @@ registerBlockType( 'gutenberg-extra/container', {
                             value={ paddingBottom }
                             onChange={ onChangePaddingBottom }
                         />
-
                     </PanelBody>
 
                      <PanelBody

@@ -30,6 +30,12 @@ registerBlockType( 'gutenberg-extra/gx-layout', {
 		__( 'layout', 'gutenberg-extra-blocks' ),
 		__( 'block', 'gutenberg-extra-blocks' ),
 	],
+	attributes: {
+	    className: {
+	        type: 'string',
+	        default: '',
+	    },
+	},
 
 	/* Render the block components. */
 	edit: props => {
@@ -58,9 +64,9 @@ function addGXLayoutButton() {
 	let buttonDiv = document.createElement( 'div' );
 	let html = '<div class="gx-toolbar-layout">';
 	html += `<a type="button" id="gxAddLayoutButton" class="button components-button components-icon-button" aria-label="${ __( 'GutenbergExtra Library', 'gutenberg-extra' ) }">\
-	</i><img src="/wp-content/plugins/gutenberg-extra/img/gx-icon.png" /> ${ __( 'GutenbergExtra Library', 'gutenberg-extra') }</a>`;
+	</i><img src="/wp-content/plugins/gutenberg-extra/img/gx-icon-white.svg" /> ${ __( 'GutenbergExtra Library', 'gutenberg-extra') }</a>`;
 	html += `<a type="button"  href="/wp-admin/customize.php" target="_blank" id="gxGoToCustomizerButton" class="button components-button components-icon-button" aria-label="${ __( 'Global Styles', 'gutenberg-extra' ) }">\
-	</i><img src="/wp-content/plugins/gutenberg-extra/img/gx-icon.png" /> ${ __( 'Global Styles', 'gutenberg-extra') }</a>`;
+	</i><img src="/wp-content/plugins/gutenberg-extra/img/gx-icon-white.svg" /> ${ __( 'Global Styles', 'gutenberg-extra') }</a>`;
 	html += '</div>';
 	buttonDiv.innerHTML = html;
 	toolbar.appendChild( buttonDiv );

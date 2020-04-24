@@ -258,7 +258,7 @@ const edit = (props) => {
               className={"bg-color-parent gx-reset-button background-gradient"}
             >
               <ColorControl
-                label={__("Background", "gutenberg-extra")}
+                label={__("Background Color", "gutenberg-extra")}
                 color={backgroundColor}
                 onColorChange={(value) =>
                   setAttributes({ backgroundColor: value })

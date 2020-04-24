@@ -1,0 +1,15 @@
+{
+    "image": {
+        "source_url": "",
+        "width": "",
+        "height": ""
+    },
+    "crop": {
+        "unit": "",
+        "x": "",
+        "y": "",
+        "width": "",
+        "height": "",
+        "scale": ""
+    }
+}

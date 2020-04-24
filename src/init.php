@@ -80,7 +80,6 @@ add_action( 'init', 'gutenberg_extra_block_assets' );
 
 
 function gutenberg_extra_load_custom_wp_admin_script() {
-        
 	// Register block editor script for backend.
 	wp_register_script(
 		'gutenberg_extra-block-js-admin', // Handle.
@@ -97,7 +96,7 @@ function gutenberg_extra_load_custom_wp_admin_script() {
 add_action( 'admin_enqueue_scripts', 'gutenberg_extra_load_custom_wp_admin_script' );
 
 function gutenberg_extra_load_custom_wp_admin_style() {
-        
+
 	// Register block editor script for backend.
 	wp_register_style(
 		'gutenberg_extra-block-css-admin', // Handle.
@@ -115,14 +114,15 @@ add_action( 'admin_enqueue_scripts', 'gutenberg_extra_load_custom_wp_admin_style
 add_filter( 'block_categories', 'gutenberg_extra_block_category' );
 
 function gutenberg_extra_block_category( $categories ) {
+	//print_r($categories);
 	return array_merge(
-		$categories,
 		array(
 			array(
 				'slug'  => 'gutenberg-extra-blocks',
-				'title' => __( 'GutenbergExtra Blocks', 'gutenberg-extra-blocks' ),
-			),
-		)
+				'title' => __( 'GutenbergExtra Blocks', 'gutenberg-extra' ),
+			)
+		),
+		$categories
 	);
 }
 
@@ -168,9 +168,9 @@ if ($this_content && $this_title ) {
 	//} //if ( ! $has_reusable_block )
 	//else {echo 'You already have Block with the same name';}
 
-} 
+}
 else {echo 'JSON Error';}
-   
+
 
     wp_die();
 }//function gx_insert_block()
@@ -192,14 +192,21 @@ require_once plugin_dir_path( __FILE__ ) . 'includes/layout/class-component-regi
 require_once plugin_dir_path( __FILE__ ) . 'includes/layout/register-layout-components.php';
 require_once plugin_dir_path( __FILE__ ) . 'includes/gx-wp-dashboard.php';
 
-		
-// Maybe this is not the best place, but for the moment...	
-function gutenberg_scripts () {	
-	wp_enqueue_script(	
-		'gutenberg_scripts',	
-		plugins_url( '../js/gutenberg_scripts.js', __FILE__ ),	
-		[],	
-		0.1	
-	);	
-};	
+// Maybe this is not the best place, but for the moment...
+function gutenberg_scripts () {
+	wp_enqueue_script(
+		'gutenberg_scripts',
+		plugins_url( '../js/gutenberg_scripts.js', __FILE__ ),
+		[],
+		0.1
+	);
+};
 add_action('wp_enqueue_scripts', 'gutenberg_scripts');
+add_action('admin_enqueue_scripts', 'gutenberg_scripts');
+
+// Post Meta register
+require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-post-meta.php';
+require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-responsive-frontend-block-styles.php';
+
+// Image crop and image sizes
+require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-image-size.php';

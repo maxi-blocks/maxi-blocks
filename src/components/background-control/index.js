@@ -263,11 +263,13 @@ export default class BackgroundControl extends GXComponent {
                         <ColorControl
                             label={__('Background color', 'gutenberg-extra')}
                             color={value.colorOptions.color}
+                            defaultColor={value.colorOptions.defaultColor}
                             onColorChange={val => {
                                 value.colorOptions.color = val;
                                 this.saveAndSend(value)
                             }}
                             gradient={value.colorOptions.gradient}
+                            defaultGradient={value.colorOptions.defaultGradient}
                             onGradientChange={val => {
                                 value.colorOptions.gradient = val;
                                 this.saveAndSend(value)

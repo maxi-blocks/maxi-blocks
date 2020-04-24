@@ -67,6 +67,7 @@ class BoxShadow extends GXComponent {
                 <ColorControl
                     label={__('Color', 'gutenberg-extra')}
                     color={value.shadowColor}
+                    defaultColor={value.defaultShadowColor}
                     onColorChange={val => onChangeValue('shadowColor', val)}
                     disableGradient
                     disableGradientAboveBackground
@@ -121,7 +122,8 @@ const BoxShadowControl = props => {
     const {
         boxShadowOptions,
         onChange,
-        className
+        className,
+        target
     } = props;
 
     const classes = classnames('gx-boxshadow-control', className);
@@ -136,6 +138,7 @@ const BoxShadowControl = props => {
                         <BoxShadow
                             boxShadowOptions={boxShadowOptions}
                             onChange={onChange}
+                            target={target}
                         />
                     )
                 }

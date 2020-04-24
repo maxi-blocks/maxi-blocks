@@ -39,44 +39,53 @@ import {
 import classnames from "classnames";
 
 /**
+ * Icons
+ */
+import {
+    typography,
+    image,
+    boxSettings,
+    width,
+    divider as iconDivider,
+    padding as iconPadding
+} from '../../icons';
+
+/**
  * Edit
  */
 const edit = (props) => {
     const {
         className,
         attributes: {
-            subtitle,
-            title,
-            text,
-            titleLevel,
-            subtitleLevel,
-            border,
-            size,
-            background,
+            uniqueID,
             blockStyle,
             defaultBlockStyle,
-            subtitleTextAlign,
-            titleTextAlign,
-            additionalDivider,
-            descriptionTextAlign,
-            subtitleBackgroundColor,
+            titleLevel,
+            subtitleLevel,
             hideTitle,
             hideSubtitle,
             hideDescription,
             twoColumnDescription,
             contentDirection,
-            uniqueID,
-            extraClassName,
-            boxShadow,
-            extraStyles,
             titleFontOptions,
             subtitleFontOptions,
             descriptionFontOptions,
+            subtitleBackgroundColor,
+            defaultSubtitleBackgroundColor,
+            divider,
+            background,
+            boxShadow,
+            border,
+            size,
             padding,
             margin,
             hoverAnimation,
             hoverAnimationDuration,
-            divider,
+            extraClassName,
+            extraStyles,
+            subtitle,
+            title,
+            description,
         },
         setAttributes,
     } = props;
@@ -97,8 +106,8 @@ const edit = (props) => {
                 <BlockStylesControl
                     blockStyle={blockStyle}
                     onChangeBlockStyle={blockStyle => setAttributes({ blockStyle })}
-                    defaultBlockStyle={defaultStatus}
-                    onChangeBlockStyle={defaultBlockStyle => setAttributes({ defaultBlockStyle })}
+                    defaultBlockStyle={defaultBlockStyle}
+                    onChangeDefaultBlockStyle={defaultBlockStyle => setAttributes({ defaultBlockStyle })}
                 />
                 <FontLevelControl
                     label={__("Title level", "gutenberg-extra")}
@@ -164,39 +173,6 @@ const edit = (props) => {
                     ]}
                     onChange={contentDirection => setAttributes({ contentDirection })}
                 />
-                <SelectControl
-                    label={__('Subtitle Align', 'gutenberg-extra')}
-                    className="gx-block-style"
-                    value={subtitleTextAlign}
-                    options={[
-                        { label: __('Left'), value: '5px auto 5px 0' },
-                        { label: __('Center'), value: '5px auto' },
-                        { label: __('Right'), value: '5px 0 5px auto' },
-                    ]}
-                    onChange={subtitleTextAlign => setAttributes({ subtitleTextAlign })}
-                />
-                <SelectControl
-                    label={__('Title Align', 'gutenberg-extra')}
-                    className="gx-block-style"
-                    value={titleTextAlign}
-                    options={[
-                        { label: __('Left'), value: 'left' },
-                        { label: __('Center'), value: 'center' },
-                        { label: __('Right'), value: 'right' },
-                    ]}
-                    onChange={titleTextAlign => setAttributes({ titleTextAlign })}
-                />
-                <SelectControl
-                    label={__('Description Align', 'gutenberg-extra')}
-                    className="gx-block-style"
-                    value={descriptionTextAlign}
-                    options={[
-                        { label: __('Left'), value: 'left' },
-                        { label: __('Center'), value: 'center' },
-                        { label: __('Right'), value: 'right' },
-                    ]}
-                    onChange={descriptionTextAlign => setAttributes({ descriptionTextAlign })}
-                />
             </PanelBody>
             <AccordionControl
                 isPrimary
@@ -204,6 +180,7 @@ const edit = (props) => {
                     {
                         label: __("Typography / Colours", "gutenberg-extra"),
                         className: "gx-typography-tab gx-typography-item",
+                        icon: typography,
                         content: (
                             <PanelBody
                                 className="gx-panel gx-color-setting gx-style-tab-setting"
@@ -233,14 +210,12 @@ const edit = (props) => {
                                     target="gx-title-extra-text"
                                 />
                                 <ColorControl
+                                    // Is this class doing something? vvv
                                     className={'gx-subtitle-background-color'}
                                     label={__("Subtitle Background", "gutenberg-extra")}
                                     color={subtitleBackgroundColor}
-                                    onColorChange={(value) => {
-                                        setAttributes({
-                                            subtitleBackgroundColor: value,
-                                        });
-                                    }}
+                                    defaultColor={defaultSubtitleBackgroundColor}
+                                    onColorChange={subtitleBackgroundColor => setAttributes({ subtitleBackgroundColor })}
                                     disableGradient
                                 />
                             </PanelBody>
@@ -249,6 +224,7 @@ const edit = (props) => {
                     {
                         label: __("Divider", "gutenberg-extra"),
                         className: "gx-divider-tab gx-divider-item",
+                        icon: iconDivider,
                         content: (
                             <PanelBody>
                                 <DividerSettings
@@ -261,6 +237,7 @@ const edit = (props) => {
                     {
                         label: __('Background Image', 'gutenberg-extra'),
                         className: 'gx-backgroundsettings-tab',
+                        icon: image,
                         content: (
                             <BackgroundControl
                                 backgroundOptions={background}
@@ -271,6 +248,7 @@ const edit = (props) => {
                     {
                         label: __('Box Settings', 'gutenberg-extra'),
                         className: 'gx-box-settings-tab gx-box-settings-item',
+                        icon: boxSettings,
                         content: (
                             <Fragment>
                                 <BoxShadowControl
@@ -288,8 +266,8 @@ const edit = (props) => {
                     {
                         label: __(' Width / Height', 'gutenberg-extra'),
                         className: 'gx-width-height-tab gx-width-height-items',
+                        icon: width,
                         content: (
-                            // Is this vvv PanelBody element necessary?
                             <PanelBody
                                 className="gx-panel gx-size-setting gx-style-tab-setting"
                                 initialOpen={true}
@@ -305,6 +283,7 @@ const edit = (props) => {
                     {
                         label: __('Padding & Margin', 'gutenberg-extra'),
                         className: 'gx-padding-tab gx-padding-margin-item',
+                        icon: iconPadding,
                         content: (
                             <PanelBody
                                 className="gx-panel gx-space-setting gx-style-tab-setting"
@@ -345,62 +324,51 @@ const edit = (props) => {
             </PanelBody>
         </InspectorControls>,
         <div
+            style={{
+                display: 'flex',
+                flexDirection: contentDirection
+            }}
             className={classes}
             data-gx_initial_block_class={defaultBlockStyle}
         >
-            <div
-                style={{
-                    order: 0,
-                }}
-            >
+            {
+                !hideSubtitle &&
                 <RichText
                     tagName={subtitleLevel}
                     placeholder={__("Get more out of now", "gutenberg-extra")}
                     value={subtitle}
-                    onChange={value => setAttributes({ subtitle: value })}
+                    onChange={subtitle => setAttributes({ subtitle })}
                     className="gx-title-extra-subtitle"
+                    style={{ backgroundColor: subtitleBackgroundColor}}
                 />
-            </div>
-            <div
-                style={{
-                    order: 3,
-                }}
-                dangerouslySetInnerHTML={{
-                    __html: additionalDivider,
-                }}
-            />
-            <div
-                style={{
-                    order: 1,
-                }}
-            >
+            }
+            {
+                !hideTitle &&
                 <RichText
                     tagName={titleLevel}
                     placeholder={__("Empowered by innovation", "gutenberg-extra")}
                     value={title}
-                    onChange={value => setAttributes({ title: value })}
+                    onChange={title => setAttributes({ title })}
                     className="gx-title-extra-title"
                 />
-            </div>
-            <Divider 
+            }
+            <Divider
                 dividerSettings={divider}
             />
-            <div
-                style={{
-                    order: 3,
-                }}
-            >
+            {
+                !hideDescription &&
                 <RichText
                     tagName="h6"
                     placeholder={__(
                         "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque malesuada volutpat mattis eros.",
                         "gutenberg-extra"
                     )}
-                    value={text}
-                    onChange={value => setAttributes({ text: value })}
-                    className="gx-title-extra-text"
+                    value={description}
+                    onChange={description => setAttributes({ description })}
+                    className="gx-title-extra-description"
+                    style={{ columnCount: twoColumnDescription ? 2 : 1 }}
                 />
-            </div>
+            }
         </div>
     ];
 };

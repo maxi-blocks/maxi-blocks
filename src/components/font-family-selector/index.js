@@ -6,20 +6,21 @@ const { Component } = wp.element;
 const {
     Button,
     Popover,
-    Spinner
+    Spinner,
+    Icon
 } = wp.components;
 
 /**
  * External dependencies
  */
-import { ChevronDown } from './icons';
 import Select from 'react-select';
 import { isNil } from 'lodash';
 
 /**
- * Styles
+ * Styles and icons
  */
 import './editor.scss';
+import { chevronDown } from '../../icons';
 
 /**
  * Component
@@ -34,7 +35,7 @@ export default class FontFamilySelector extends Component {
         options: this.fonts.optionsGetter
     }
 
-    render () {
+    render() {
         const {
             font,
             onChange,
@@ -66,19 +67,19 @@ export default class FontFamilySelector extends Component {
         };
 
         const onToggle = () => {
-            this.setState ( (state) => ({
-                isVisible: ! state.isVisible,
+            this.setState((state) => ({
+                isVisible: !state.isVisible,
             }))
         }
         const checkout = () => {
             setTimeout(() => {
-                this.setState ( {
+                this.setState({
                     options: this.fonts.optionsGetter
                 })
             }, 2500);
         }
 
-        const onFontChange = ( newFont ) => {
+        const onFontChange = (newFont) => {
             onChange(newFont);
             this.fonts.loadFonts(newFont.value, newFont.files);
         }
@@ -89,16 +90,19 @@ export default class FontFamilySelector extends Component {
                     className='gx-font-family-selector-button'
                     onClick={onToggle}
                     aria-expanded={this.state.isVisible}
-                    >
-                    { font }
-                    <ChevronDown />
-                    { this.state.isVisible && (
+                >
+                    {font}
+                    <Icon
+                        icon={chevronDown}
+                    />
+                    {this.state.isVisible && (
                         <Popover
-                        className="gx-font-family-selector-popover"
-                        noArrow={true}
+                            className="gx-font-family-selector-popover"
+                            noArrow={true}
+                            position= "top center"
                         >
                             <div className="gx-font-family-selector-content">
-                                { ! isNil (this.state.options ) &&
+                                {!isNil(this.state.options) &&
                                     <Select
                                         autoFocus
                                         backspaceRemovesValue={false}
@@ -115,15 +119,15 @@ export default class FontFamilySelector extends Component {
                                         closeMenuOnSelect={true}
                                     />
                                 }
-                                { isNil (this.state.options )
+                                {isNil(this.state.options)
                                     && checkout()
                                 }
-                                { isNil (this.state.options) &&
+                                {isNil(this.state.options) &&
                                     <Spinner />
                                 }
                             </div>
                         </Popover>
-                    ) }
+                    )}
                 </Button>
             </div>
         )

@@ -595,14 +595,10 @@
  * Can include things like variables and mixins
  * that are used across the project.
 */
-.gx-buttoneditor-button {
-  display: block;
-  width: -webkit-max-content;
-  width: -moz-max-content;
-  width: max-content;
+.gx-externalbutton-control {
   border: 1px solid black; }
 
-.gx-buttoneditor-button .gx-externalbutton-richtext {
+.gx-externalbutton-control .gx-externalbutton-richtext {
   display: block; }
 
 .gx-externalbutton-popover {
@@ -614,9 +610,11 @@
   opacity: 0;
   -webkit-transition: opacity .3s ease-in-out;
   -o-transition: opacity .3s ease-in-out;
-  transition: opacity .3s ease-in-out; }
+  transition: opacity .3s ease-in-out;
+  background-color: transparent !important;
+  max-width: 1.5rem; }
 
-.gx-buttoneditor-button:hover .gx-externalbutton-popover button {
+.gx-externalbutton-control:hover .gx-externalbutton-popover button {
   opacity: 1; }
 /**
  * #.# Common SCSS
@@ -772,6 +770,10 @@
 .gx-buttonstyles-control .gx-buttonstyles-selector-control input:checked ~ label {
   color: #fff;
   background-color: #00ccff; }
+
+.gx-buttoneditor-wrapper {
+  display: -ms-flexbox;
+  display: flex; }
 
 .gx-buttoneditor-control {
   width: auto;

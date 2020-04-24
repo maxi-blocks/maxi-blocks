@@ -376,11 +376,13 @@ class ImageSettingsComponent extends GXComponent {
                                     <ColorControl
                                         label={__('Background Colour', 'gutenberg-extra')}
                                         color={value[selector].backgroundColor}
+                                        defaultColor={value[selector].defaultBackgroundColor}
                                         onColorChange={val => {
                                             value[selector].backgroundColor = val;
                                             this.saveAndSend(value)
                                         }}
                                         gradient={value[selector].backgroundGradient}
+                                        defaultGradient={value[selector].resetBackgroundGradient}
                                         onGradientChange={val => {
                                             value[selector].backgroundGradient = val;
                                             this.saveAndSend(value)

@@ -66,7 +66,7 @@
  * Can include things like variables and mixins
  * that are used across the project.
 */
-.gx-buttoneditor-button {
+.gx-externalbutton-control {
   display: block;
   width: -webkit-max-content;
   width: -moz-max-content;
@@ -77,6 +77,16 @@
  * Can include things like variables and mixins
  * that are used across the project.
 */
+.gx-divider-wrapper.is-multiple.is-vertical .gx-divider:first-of-type {
+  margin-right: 0.5rem; }
+
+.gx-divider-wrapper.is-multiple.is-vertical .gx-divider:last-of-type {
+  margin-left: 0.5rem; }
+
+.gx-divider-wrapper.is-vertical {
+  display: -ms-flexbox;
+  display: flex; }
+
 .gx-divider {
   border: none; }
 /**

@@ -31,6 +31,7 @@ import classnames from 'classnames';
 import {
     isEmpty,
     isNil,
+    isNumber
 } from 'lodash';
 
 /**
@@ -43,7 +44,7 @@ import './editor.scss';
  */
 export class ButtonSettings extends GXComponent {
 
-    target = this.props.target ? this.props.target : 'gx-buttoneditor-button';
+    target = this.props.target ? this.props.target : 'gx-buttoneditor-wrapper';
 
     state = {
         selectorTypographyColors: 'normal',
@@ -61,13 +62,15 @@ export class ButtonSettings extends GXComponent {
      * Creates a new object for being joined with the rest of the values on meta
      */
     get getObject() {
+        if (this.type === 'wrapper')
+            return this.getWrapperStylesObject;
         if (this.type === 'normal')
             return this.getNormalStylesObject;
         if (this.type === 'hover')
             return this.getHoverStylesObject;
     }
 
-    get getNormalStylesObject() {
+    get getWrapperStylesObject() {
         const response = {
             label: this.object.label,
             general: {}
@@ -75,30 +78,34 @@ export class ButtonSettings extends GXComponent {
         if (!isNil(this.object.alignment)) {
             switch (this.object.alignment) {
                 case 'left':
-                    response.general['margin-right'] = 'auto';
+                    response.general['justify-content'] = 'flex-start';
                     break;
                 case 'center':
-                case 'justify':
-                    response.general['margin-right'] = 'auto';
-                    response.general['margin-left'] = 'auto';
+                    response.general['justify-content'] = 'center';
                     break;
                 case 'right':
-                    response.general['margin-left'] = 'auto';
+                    response.general['justify-content'] = 'flex-end';
                     break;
             }
         }
-        if (!isEmpty(this.object.normal.color)) {
+        return response;
+    }
+
+    get getNormalStylesObject() {
+        const response = {
+            label: this.object.label,
+            general: {}
+        }
+        if (!isEmpty(this.object.normal.color))
             response.general['color'] = this.object.normal.color;
-        }
-        if (!isEmpty(this.object.normal.backgroundColor)) {
+        if (!isEmpty(this.object.normal.backgroundColor))
             response.general['background-color'] = this.object.normal.backgroundColor;
-        }
-        if (!isEmpty(this.object.normal.borderSettings.borderColor)) {
+        if (isNumber(this.object.normal.opacity))
+            response.general['opacity'] = this.object.normal.opacity;
+        if (!isEmpty(this.object.normal.borderSettings.borderColor))
             response.general['border-color'] = this.object.normal.borderSettings.borderColor;
-        }
-        if (!isEmpty(this.object.normal.borderSettings.borderType)) {
+        if (!isEmpty(this.object.normal.borderSettings.borderType))
             response.general['border-style'] = this.object.normal.borderSettings.borderType;
-        }
         return response;
     }
 
@@ -107,18 +114,17 @@ export class ButtonSettings extends GXComponent {
             label: this.object.label,
             general: {}
         }
-        if (!isEmpty(this.object.hover.color)) {
+        if (!isEmpty(this.object.hover.color))
             response.general['color'] = this.object.hover.color;
-        }
-        if (!isEmpty(this.object.hover.backgroundColor)) {
+        if (!isEmpty(this.object.hover.backgroundColor))
             response.general['background-color'] = this.object.hover.backgroundColor;
-        }
-        if (!isEmpty(this.object.hover.borderSettings.borderColor)) {
+        if (isNumber(this.object.hover.opacity))
+            response.general['opacity'] = this.object.hover.opacity;
+        if (!isEmpty(this.object.hover.borderSettings.borderColor))
             response.general['border-color'] = this.object.hover.borderSettings.borderColor;
-        }
-        if (!isEmpty(this.object.hover.borderSettings.borderType)) {
+        if (!isEmpty(this.object.hover.borderSettings.borderType))
             response.general['border-style'] = this.object.hover.borderSettings.borderType;
-        }
+
         return response;
     }
 
@@ -128,10 +134,13 @@ export class ButtonSettings extends GXComponent {
     saveAndSend(value) {
         this.save(value);
 
-        this.target = this.props.target ? this.props.target : 'gx-buttoneditor-button';
+        this.target = this.props.target ? this.props.target : 'gx-buttoneditor-wrapper';
+        this.saveMeta(value, 'wrapper');
+
+        this.target = `${this.props.target ? this.props.target : 'gx-buttoneditor-wrapper'} .gx-buttoneditor-button`;
         this.saveMeta(value, 'normal');
 
-        this.target = `${this.target}:hover`;
+        this.target = `${this.props.target ? this.props.target : 'gx-buttoneditor-wrapper'} .gx-buttoneditor-button:hover`;
         this.saveMeta(value, 'hover');
 
         new BackEndResponsiveStyles(this.getMeta);
@@ -144,7 +153,7 @@ export class ButtonSettings extends GXComponent {
     saveMeta(value, type) {
         dispatch('core/editor').editPost({
             meta: {
-                _gutenberg_extra_responsive_styles: this.metaValue(value, type),
+                _gutenberg_extra_responsive_styles: this.metaValue(value, type, false),
             },
         });
     }
@@ -153,6 +162,7 @@ export class ButtonSettings extends GXComponent {
         const {
             className,
             buttonSettings,
+            target = 'gx-buttoneditor-wrapper'
         } = this.props;
 
         const {
@@ -175,6 +185,15 @@ export class ButtonSettings extends GXComponent {
                             className: "gx-typography-tab gx-typography-item",
                             content: (
                                 <Fragment>
+                                    {/** Should alignment be under this section? */}
+                                    <AlignmentControl
+                                        value={value.alignment}
+                                        onChange={val => {
+                                            value.alignment = val;
+                                            this.saveAndSend(value)
+                                        }}
+                                        disableJustify
+                                    />
                                     <NormalHoverControl
                                         /*not sure about vvv class => may should go on the component itself*/
                                         className="gx-buttonstyles-selector-control"
@@ -186,11 +205,13 @@ export class ButtonSettings extends GXComponent {
                                     <ColorControl
                                         label={__('Background Colour', 'gutenberg-extra')}
                                         color={value[selectorTypographyColors].backgroundColor}
+                                        defaultcolor={value[selectorTypographyColors].defaultBackgroundColor}
                                         onColorChange={val => {
                                             value[selectorTypographyColors].backgroundColor = val;
                                             this.saveAndSend(value);
                                         }}
                                         gradient={value[selectorTypographyColors].background}
+                                        defaultGradient={value[selectorTypographyColors].resetBackground}
                                         onGradientChange={val => {
                                             value[selectorTypographyColors].background = val;
                                             this.saveAndSend(value);
@@ -203,16 +224,7 @@ export class ButtonSettings extends GXComponent {
                                             value[selectorTypographyColors].typography = val;
                                             this.saveAndSend(value);
                                         }}
-                                        target={this.target}
-                                    />
-                                    {/** Should alignment be under Normal/hover scope? */}
-                                    <AlignmentControl
-                                        value={value.alignment}
-                                        onChange={val => {
-                                            value.alignment = val;
-                                            this.saveAndSend(value)
-                                        }}
-                                        disableJustify
+                                        target={`${target} .gx-buttoneditor-button`}
                                     />
                                 </Fragment>
                             )
@@ -252,8 +264,8 @@ export class ButtonSettings extends GXComponent {
                                         }}
                                         target={
                                             selectorBorder != 'hover' ?
-                                                `${this.target}` :
-                                                `${this.target}:hover`
+                                                `${target} .gx-buttoneditor-button` :
+                                                `${target} .gx-buttoneditor-button:hover`
                                         }
                                     />
                                 </Fragment>
@@ -278,7 +290,7 @@ export class ButtonSettings extends GXComponent {
                                             value[selectorOpacityShadow].borderSettings = val;
                                             this.saveAndSend(value)
                                         }}
-                                        target={this.target}
+                                        target={`${target} .gx-buttoneditor-button`}
                                     />
                                 </Fragment>
                             )
@@ -295,7 +307,7 @@ export class ButtonSettings extends GXComponent {
                                             value.size = val;
                                             this.saveAndSend(value);
                                         }}
-                                        target={this.target}
+                                        target={`${target} .gx-buttoneditor-button`}
                                     />
                                 </Fragment>
                             )
@@ -320,7 +332,7 @@ export class ButtonSettings extends GXComponent {
                                             value[selectorPaddingMargin].padding = val;
                                             this.saveAndSend(value)
                                         }}
-                                        target={this.target}
+                                        target={`${target} .gx-buttoneditor-button`}
                                     />
                                     <DimensionsControl
                                         value={value[selectorPaddingMargin].margin}
@@ -328,7 +340,7 @@ export class ButtonSettings extends GXComponent {
                                             value[selectorPaddingMargin].margin = val;
                                             this.saveAndSend(value)
                                         }}
-                                        target={this.target}
+                                        target={`${target} .gx-buttoneditor-button`}
                                     />
                                 </Fragment>
                             )
@@ -352,23 +364,25 @@ export const ButtonEditor = props => {
     } = props;
 
     const value = typeof buttonSettings === 'object' ? buttonSettings : JSON.parse(buttonSettings);
-    const classes = classnames("gx-buttoneditor-button", className);
+    const classes = classnames("gx-buttoneditor-wrapper", className);
 
     return (
-        <LinkedButton
-            className={classes}
-            placeholder={placeholder}
-            buttonText={value.buttonText}
-            onTextChange={val => {
-                value.buttonText = val;
-                onChange(JSON.stringify(value));
-            }}
-            externalLink={value.linkOptions}
-            onLinkChange={val => {
-                value.linkOptions = val;
-                onChange(JSON.stringify(value));
-            }}
-        />
+        <div className={classes}>
+            <LinkedButton
+                className="gx-buttoneditor-button"
+                placeholder={placeholder}
+                buttonText={value.buttonText}
+                onTextChange={val => {
+                    value.buttonText = val;
+                    onChange(JSON.stringify(value));
+                }}
+                externalLink={value.linkOptions}
+                onLinkChange={val => {
+                    value.linkOptions = val;
+                    onChange(JSON.stringify(value));
+                }}
+            />
+        </div>
     )
 }
 

@@ -46,6 +46,19 @@ const PopoverControl = props => {
                 <BaseControl.VisualLabel>
                     {label}
                 </BaseControl.VisualLabel>
+                {showReset &&
+                    <Button
+                        isSecondary
+                        onClick={onReset}
+                        type="reset"
+                    >
+                        {
+                            <Icon
+                                icon={reset}
+                            />
+                        }
+                    </Button>
+                }
                 {popovers.map(popover => {
                     if (!popover) {
                         return;
@@ -81,19 +94,6 @@ const PopoverControl = props => {
                         </Dropdown>
                     )
                 })}
-                {showReset &&
-                    <Button
-                        isSecondary
-                        onClick={onReset}
-                        type="reset"
-                    >
-                        {
-                            <Icon
-                                icon={reset}
-                            />
-                        }
-                    </Button>
-                }
             </BaseControl>
         </div>
     )

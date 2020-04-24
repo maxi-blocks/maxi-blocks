@@ -270,7 +270,8 @@ class ImageSettingsComponent extends GXComponent {
                     items={[
                         {
                             label: __("Image", "gutenberg-extra"),
-                            className: "gx-image-tab gx-image-item",
+                            classNameItem: 'gx-image-item"',
+                            classNameHeading: "gx-image-tab",
                             content: (
                                 <Fragment>
                                     <SelectControl
@@ -364,7 +365,8 @@ class ImageSettingsComponent extends GXComponent {
                         },
                         {
                             label: __("Background", "gutenberg-extra"),
-                            className: "gx-background-tab gx-background-item",
+                            classNameItem: 'gx-background-item',
+                            classNameHeading: "gx-background-tab",
                             content: (
                                 <Fragment>
                                     <NormalHoverControl
@@ -421,7 +423,8 @@ class ImageSettingsComponent extends GXComponent {
                         },
                         {
                             label: __("Border", "gutenberg-extra"),
-                            className: "gx-border-tab gx-border-item",
+                            classNameItem: 'gx-border-item',
+                            classNameHeading: "gx-border-tab",
                             content: (
                                 <BorderControl
                                     borderOptions={value[selector].borderSettings}

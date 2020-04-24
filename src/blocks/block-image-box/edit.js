@@ -2,12 +2,16 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { PanelBody } = wp.components;
 const { Fragment } = wp.element;
 const {
     InspectorControls,
     RichText,
 } = wp.blockEditor;
+const { 
+    PanelBody,
+    BaseControl
+} = wp.components;
+
 
 /**
  * Internal dependencies
@@ -32,7 +36,7 @@ import {
     TypographyControl
 } from '../../components';
 import { setLinkStyles } from './utils';
-import { 
+import {
     typography,
     image,
     button,
@@ -83,7 +87,7 @@ const edit = props => {
         setAttributes,
     } = props;
 
-    let classes = classnames('gx-block gx-image-box', blockStyle, extraClassName,className);
+    let classes = classnames('gx-block gx-image-box', blockStyle, extraClassName, className);
     if (className.indexOf(uniqueID) === -1)
         classes = classnames(classes, uniqueID);
 
@@ -142,8 +146,8 @@ const edit = props => {
                 items={[
                     {
                         label: __('Typography & Colours', 'gutenberg-extra'),
-                        className: 'gx-typography-tab',
-                        icon: typography,
+                        classNameHeading: 'gx-typography-tab',
+                        //icon: typography,
                         content: (
                             <PanelBody
                                 className="gx-panel gx-color-setting gx-style-tab-setting"
@@ -172,20 +176,30 @@ const edit = props => {
                     },
                     {
                         label: __('Image', 'gutenberg-extra'),
-                        className: 'gx-image-tab',
-                        icon: image,
+                        classNameItem: 'gx-image-item',
+                        classNameHeading: 'gx-image-tab',
+                        //icon: image,
                         content: (
-                            <ImageSettings
-                                imageSettings={imageSettings}
-                                onChange={imageSettings => setAttributes({ imageSettings })}
-                                mediaID={mediaID}
-                            />
+                            <Fragment>
+                                <PanelBody
+                                    className="gx-panel gx-color-setting gx-style-tab-setting"
+                                    initialOpen={true}
+                                    title={__("Immage settings", "gutenberg-extra")}
+                                >
+                                    <ImageSettings
+                                        imageSettings={imageSettings}
+                                        onChange={imageSettings => setAttributes({ imageSettings })}
+                                        mediaID={mediaID}
+                                    />
+                                </PanelBody>
+                            </Fragment>
                         ),
                     },
                     {
                         label: __('Button', 'gutenberg-extra'),
-                        className: 'gx-button-tab gx-button-item',
-                        icon: button,
+                        classNameItem: 'gx-button-item',
+                        classNameHeading: 'gx-button-tab',
+                        //icon: button,
                         content: (
                             <PanelBody
                                 className={'gx-panel gx-color-setting gx-style-tab-setting'}
@@ -199,8 +213,8 @@ const edit = props => {
                     },
                     {
                         label: __('Background Image', 'gutenberg-extra'),
-                        className: 'gx-backgroundsettings-tab',
-                        icon: image,
+                        classNameHeading: 'gx-backgroundsettings-tab',
+                        //icon: image,
                         content: (
                             <BackgroundControl
                                 backgroundOptions={background}
@@ -210,20 +224,23 @@ const edit = props => {
                     },
                     {
                         label: __('Box Settings', 'gutenberg-extra'),
-                        className: 'gx-box-settings-tab gx-box-settings-item',
-                        icon: boxSettings,
+                        classNameItem: 'gx-box-settings-item',
+                        classNameHeading: 'gx-box-settings-tab',
+                        //icon: boxSettings,
                         content: (
                             <Fragment>
-                                <BoxShadowControl
-                                    boxShadowOptions={boxShadow}
-                                    onChange={boxShadow => setAttributes({ boxShadow })}
-                                />
                                 <PanelBody
-                                    className="gx-panel gx-border-setting gx-style-tab-setting"
-                                    initialOpen={true}
-                                    title={__('Border settings', 'gutenberg-extra')}
+                                    className={'gx-panel gx-color-setting gx-style-tab-setting'}
                                 >
-                                    <Line/>
+                                    <BaseControl
+                                        className={"bg-color-parent gx-reset-button background-gradient"}
+                                    >
+                                        <BoxShadowControl
+                                            boxShadowOptions={boxShadow}
+                                            onChange={boxShadow => setAttributes({ boxShadow })}
+                                        />
+                                    </BaseControl>
+                                    <Line />
                                     <BorderControl
                                         borderOptions={border}
                                         onChange={border => setAttributes({ border })}
@@ -234,8 +251,9 @@ const edit = props => {
                     },
                     {
                         label: __(' Width / Height', 'gutenberg-extra'),
-                        className: 'gx-width-height-tab gx-width-height-items',
-                        icon: width,
+                        classNameItem: 'gx-width-height-item',
+                        classNameHeading: 'gx-width-height-tab',
+                        //icon: width,
                         content: (
                             // Is this vvv PanelBody element necessary?
                             <PanelBody
@@ -252,8 +270,9 @@ const edit = props => {
                     },
                     {
                         label: __('Padding & Margin', 'gutenberg-extra'),
-                        className: 'gx-padding-tab gx-padding-margin-item',
-                        icon: iconPadding,
+                        classNameItem: 'gx-padding-margin-item',
+                        classNameHeading: 'gx-padding-tab',
+                        //icon: iconPadding,
                         content: (
                             <PanelBody
                                 className="gx-panel gx-space-setting gx-style-tab-setting"

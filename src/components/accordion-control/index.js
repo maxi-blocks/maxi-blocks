@@ -63,11 +63,12 @@ export default class AccordionControl extends Component {
             >
                 {
                     items.map(item => {
-                        const classes = classnames('gx-accordion-tab', item.className);
+                        const classes = classnames('gx-accordion-tab', item.classNameHeading);
     
                         return (
                             <AccordionItem
-                                uuid={item.uuid ? item.uuid : undefined} 
+                                uuid={item.uuid ? item.uuid : undefined}
+                                className={item.classNameItem}
                             >
                                 <AccordionItemHeading
                                     className={classes}

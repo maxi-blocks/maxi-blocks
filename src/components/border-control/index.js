@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { Fragment } = wp.element;
 const { SelectControl } = wp.components;
 
 /**
@@ -11,6 +10,11 @@ const { SelectControl } = wp.components;
 import { GXComponent } from '../index';
 import ColorControl from '../color-control';
 import DimensionsControl from '../dimensions-control/index';
+
+/**
+ * External dependencies
+ */
+import classnames from 'classnames';
 
 /**
  * Component
@@ -25,13 +29,15 @@ export default class BorderControl extends GXComponent {
     render() {
         const {
             borderOptions,
+            className,
             target = ''
         } = this.props;
 
         let value = typeof borderOptions === 'object' ? borderOptions : JSON.parse(borderOptions);
-
+        const classes = classnames('gx-border-control', className);
+        
         return (
-            <Fragment>
+            <div className={classes}>
                 <ColorControl
                     label={__('Color', 'gutenberg-extra')}
                     color={value.general['border-color']}
@@ -81,7 +87,7 @@ export default class BorderControl extends GXComponent {
                     target={target}
                     avoidZero
                 />
-            </Fragment>
+            </div>
         )
     }
 

@@ -31,43 +31,6 @@ import save from './save';
  * Block
  */
 
-//let gxPlaceholder = ;
-
-// Declaring placeholder variables because attributes are not async when setting them
-let cssResponsive = '';
-let textDecorationTitleValue;
-let textDecorationTabletValue;
-let textDecorationMobileValue;
-let textDecorationDesktopValue;
-let fontSizeTitleValue;
-let fontSizeTitleTabletValue;
-let fontSizeTitleMobileValue;
-let fontSizeTitleDesktopValue;
-let lineHeightDesktopValue;
-let lineHeightTitleValue;
-let lineHeightTabletValue;
-let lineHeightMobileValue;
-let letterSpacingTitleValue;
-let letterSpacingDesktopValue;
-let letterSpacingTabletValue;
-let letterSpacingMobileValue;
-let fontWeightTitleValue;
-let fontWeightTabletValue;
-let fontWeightMobileValue;
-let fontWeightDesktopValue;
-let textTransformTitleValue;
-let textTransformDesktopValue;
-let textTransformTabletValue;
-let textTransformMobileValue;
-let fontStyleTitleValue;
-let fontStyleDesktopValue;
-let fontStyleTabletValue;
-let fontStyleMobileValue;
-const Divider = () => (
-    <hr style={{marginBottom: '15px',}} />
-);
-
-
 registerBlockType( 'gutenberg-extra/block-image-box', {
 	title: __('Image Box Extra', 'gutenberg-extra'),
 	icon: imageBox,

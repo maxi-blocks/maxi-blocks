@@ -1,5 +1,4 @@
 /* main panel */
-
 #accordion-panel-GutenbergExtra h3 {
   background: #000 !important;
   color: #fff !important;
@@ -132,7 +131,7 @@ span.gx-hover-tab-label {
 
 .gx-typography-popover .gx-unit-control .components-base-control__field {
   top: -2px;
-  left: -8px;
+  left: -1px;
   position: relative;
 }
 
@@ -651,7 +650,8 @@ body div.gx-sidebar .components-panel__body > .components-panel__body-title {
 .components-range-control.gx-with-unit-control .components-base-control__field .components-range-control__number {
   margin-left: auto;
   max-height: 30px;
-  margin-right: 2px;
+  height:30px !important;
+  margin-right: 3px;
 }
 
 .gx-sidebar button.components-range-control__reset:before,
@@ -924,6 +924,12 @@ input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before {
   background: #f2f2f2 !important;
 }
 
+.components-gx-dimensions-control__units button.is-primary,
+.gx-unit-control .components-radio-control__option input:checked + label {
+  color: #464a53 !important;
+  background: #f2f2f2 !important;
+}
+
 .gx-unit-control .components-radio-control__option:not(:last-child) {
   margin-bottom: 0 !important;
 }
@@ -1146,7 +1152,7 @@ input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before {
   padding: 0;
   width: 30px;
   border-radius: 5px;
-  margin-left: 0px;
+  margin-left:0;
   height: 30px !important;
 }
 
@@ -1334,7 +1340,7 @@ button[class*="gutenberg-extra"] .block-editor-block-types-list__item-icon .bloc
 
 .gx-image-item select,
 .gx-button-item .gx-border-item .accordion__panel .gx-border-type .components-base-control__field select {
-  height: 20px;
+  height: 28px;
   line-height: 20px;
   font-size: 10pt;
   margin-left: auto;
@@ -1492,7 +1498,7 @@ button[class*="gutenberg-extra"] .block-editor-block-types-list__item-icon .bloc
 }
 
 .gx-button-item .gx-box-settings-item .gx-opacity-control .components-range-control__number {
-  height: 30px !important;
+  height: 24px !important;
 }
 
 .components-panel__body
@@ -1648,7 +1654,7 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
 }
 
 .gx-box-shadow .gx-colorcontrol-control .gx-settings-button .components-base-control__field button[type="reset"] {
-  margin-right: 0;
+  margin-right: 0px;
 }
 
 .gx-box-shadow .components-range-control__reset {
@@ -1806,7 +1812,7 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
 
 .gx-controls .gx-accordion .gx-image-tab .components-base-control__label::before {
   content: url(../img/gx-image-tab.svg);
-  width: 1.2rem;
+  width: 1.29rem;
   height: 22px;
   top: 22px;
   margin-top: 2px;
@@ -1879,7 +1885,7 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
 
 .gx-controls .gx-accordion .gx-box-settings-tab .components-base-control__label:before {
   content: url(../img/gx-box-settings-tab.svg);
-  width: 1.28rem;
+  width: 1.29rem;
   height: 22px;
   margin-top: 2px;
 }
@@ -2029,7 +2035,7 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
 }
 
 .gx-box-settings-item .gx-Border button.components-color-palette__clear {
-  margin-right: 0 !important;
+  margin-right: 3px !important;
 }
 
 .gx-box-settings-item .gx-border-type select {
@@ -2061,9 +2067,9 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
 .gx-popover button.components-range-control__reset {
   font-size: 0 !important;
   background: transparent !important;
-  min-width: 30px;
+  min-width: 28px;
   padding: 0;
-  height: 30px !important;
+  height: 28px !important;
   border-radius: 5px;
 }
 
@@ -2075,6 +2081,7 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
 .gx-sidebar button.components-color-palette__clear {
   padding: 4px 10px 1px;
   margin-right: 3px;
+  margin-top:1px;
 }
 
 .gx-style-tab-setting .components-color-palette__item-wrapper {
@@ -2144,8 +2151,8 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
 
 .gx-panel .components-base-control.gx-unit-control .components-base-control__field {
   margin-bottom: 0 !important;
-  position: relative;
-  top: 1px !important;
+  position: unset;
+  top: -1px !important;
 }
 
 .gx-width-height-item .gx-size-setting .components-range-control__number {
@@ -2221,7 +2228,7 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
 
 .components-popover__content .gx-typography-popover .components-base-control__field {
   align-items: unset;
-  position: unset;
+  position: relative;
 }
 
 .gx-typography-popover .gx-device-control {
@@ -2254,7 +2261,7 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
 .edit-post-sidebar hr {
   border-top: none;
   border-top: 2px solid #dddfe1;
-  margin-top: 10px;
+  margin-top: 28.1px !important;
 }
 
 .block-editor-panel-color-gradient-settings.divider-color {
@@ -2285,6 +2292,7 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
 .gx-typography-popover .gx-unit-control {
   position: relative;
   top: 1px;
+  left:-2px;
 }
 
 .gx-sidebar .components-base-control.gutenberg-extra-checkbox-container{
@@ -2322,13 +2330,12 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
     max-width: unset;
   }
   
-
   .components-gx-dimensions-control__units button,
   .gx-unit-control .components-radio-control__option label {
     min-width: 27px;
-    line-height: 26px;
+    line-height: 28px;
     top: 1px;
-    height: 26px !important;
+    height: 28px !important;
   }
 
   .components-popover__content .gx-typography-popover {
@@ -2340,8 +2347,8 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
   }
 
   .gx-image-item .gx-colorcontrol-control .components-base-control__field > button {
-    height: 24px !important;
-    width: 24px !important;
+    height: 26px !important;
+    width: 26px !important;
   }
 
   .gx-button-item .accordion__panel,
@@ -2355,8 +2362,8 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
     .gx-popover-control
     .components-base-control__field
     > *:not(span) {
-    width: 24px !important;
-    height: 24px !important;
+    width: 26px !important;
+    height: 26px !important;
   }
 
   .gx-button-item
@@ -2377,7 +2384,7 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
     .gx-popover-control
     .components-base-control__field
     .components-button[type="reset"] {
-    height: 24px !important;
+    height: 26px !important;
   }
 
   .gx-button-item .gx-unit-control,
@@ -2613,6 +2620,135 @@ body .gx-controls .components-panel__body.is-opened.gx-background-setting.gx-sty
     padding-top: 0;
     margin-bottom: 10px;
   }
+
+/*================================================================================================*/
+.gx-image-width
+.components-base-control__field >
+input[type="number"].components-range-control__number{
+  margin-bottom: 5px;
+  margin-right: 3px;
+  margin-top:2px !important;
+  height:26px !important;
+}
+
+.gx-image-max-width
+.components-base-control__field >
+input[type="number"].components-range-control__number{
+  margin-right: 3px;
+  margin-top:2px !important;
+  height:26px !important;
+}
+
+.gx-image-width
+.components-base-control__field >
+.components-button.components-range-control__reset.is-secondary.is-small{
+  margin-top:-4px !important;
+  height: 24px !important;
+  width: 24px !important;
+}
+
+.gx-image-width > .components-base-control.gx-unit-control.components-radio-control > .components-base-control__field,
+.gx-image-max-width > .components-base-control.gx-unit-control.components-radio-control > .components-base-control__field{
+  position: relative ;
+  top: -1px !important;
+  left:3px !important;
+}
+
+.gx-image-width > .components-base-control.gx-unit-control.components-radio-control > .components-base-control__field > .components-radio-control__option > label,
+.gx-image-max-width > .components-base-control.gx-unit-control.components-radio-control > .components-base-control__field > .components-radio-control__option > label{
+  height:26px !important;
+  line-height: 26px !important;
+}
+
+.gx-image-max-width 
+.components-base-control__field >
+.components-button.components-range-control__reset.is-secondary.is-small{
+ margin-top: 2px !important;
+ height: 24px !important;
+ width: 24px !important;
+}
+
+.gx-typography-popover
+.components-base-control__label +
+button.components-button.is-secondary{
+  width:30px !important;
+  height:30px !important;
+}
+
+.gx-settings-button
+.components-button.is-secondary > svg{
+   width:18px !important;
+   height:18px !important;
+}
+
+.gx-accordion-tabgx-image-tab
+.components-button.is-secondary{
+ width:30px !important;
+ height:30px !important;
+}
+
+.gx-width-height-item 
+.components-base-control__field >
+input[type="number"].components-range-control__number{
+ height: 26px !important;
+ margin-right: 4px !important;
+}
+
+.gx-box-shadow
+.components-base-control__field > .components-button.is-secondary{
+ width: 30px !important;
+ height: 30px !important;
+}
+/*================================================================================================*/
+.components-range-control.gx-with-unit-control .components-base-control__field .components-range-control__number {
+  margin-left: auto;
+  max-height: 28px;
+  height:28px !important;
+  margin-right: 2px;
+  margin-top: 0px !important;
+}
+/*================================================================================================*/
+.gx-typography-popover
+.components-base-control__field
+.components-range-control__number{
+  margin-top: 0px !important;
+}
+
+.gx-typography-popover
+.components-base-control__field >
+.components-button.components-range-control__reset.is-secondary.is-small{
+  margin-top: 2px !important;
+}
+
+.gx-sidebar button.components-range-control__reset,
+.gx-sidebar button.components-color-palette__clear,
+.gx-popover button.components-range-control__reset {
+  font-size: 0 !important;
+  background: transparent !important;
+  min-width: 24px;
+  padding: 0;
+  height: 24px !important;
+  border-radius: 5px;
+}
+
+.gx-background-item
+.components-base-control__field > .components-range-control__number{
+  height: 26px !important;
+}
+
+.gx-width-height-item .components-base-control.gx-unit-control.components-radio-control{
+  position:relative;
+  top:0px !important;
+}
+}
+@media(max-width:1999px){
+  .gx-button-item
+  .gx-box-settings-item
+  .components-base-control.components-range-control.gx-opacity-control
+  .components-base-control__field > .components-range-control__number{
+    height: 26px !important;
+    margin-right: -5px;
+  }
 }
 
 .editor-styles-wrapper h1::before,
@@ -2654,4 +2790,117 @@ h2::before {
 
 .components-panel__body.block-editor-panel-color-gradient-settings.is-opened {
   padding: 0;
+}
+
+/*================================================================================================*/
+.components-panel__header.edit-post-sidebar-header.edit-post-sidebar__panel-tabs > ul > li > button
+ {
+   width: 100% !important;
+   height: 100% !important;
+   padding: 16px;
+}
+/*================================================================================================*/
+/*================================================================================================*/
+.gx-image-width
+.components-base-control__field >
+input[type="number"].components-range-control__number{
+  margin-bottom: 5px;
+  margin-right: 3px;
+  height:30px;
+}
+
+.gx-image-max-width
+.components-base-control__field >
+input[type="number"].components-range-control__number{
+  margin-right: 3px;
+  height:30px;
+}
+
+.gx-image-width
+.components-base-control__field >
+.components-button.components-range-control__reset.is-secondary.is-small{
+  margin-top:-5px;
+  height: 26px ;
+  width: 26px ;
+}
+
+.gx-image-width > .components-base-control.gx-unit-control.components-radio-control > .components-base-control__field,
+.gx-image-max-width > .components-base-control.gx-unit-control.components-radio-control > .components-base-control__field{
+  position: relative ;
+  top:1px !important;
+  left:-5px;
+}
+
+.gx-image-width > .components-base-control.gx-unit-control.components-radio-control > .components-base-control__field > .components-radio-control__option > label,
+.gx-image-max-width > .components-base-control.gx-unit-control.components-radio-control > .components-base-control__field > .components-radio-control__option > label{
+  height:30px;
+  line-height: 30px;
+}
+
+.gx-image-max-width 
+.components-base-control__field >
+.components-button.components-range-control__reset.is-secondary.is-small{
+ margin-top: 0 ;
+ height: 26px ;
+ width: 26px ;
+}
+
+.gx-typography-popover
+.components-base-control__label +
+button.components-button.is-secondary{
+  width:30px !important;
+  height:30px !important;
+}
+
+.gx-settings-button
+.components-button.is-secondary > svg{
+   width:18px !important;
+   height:18px !important;
+}
+
+.gx-accordion-tabgx-image-tab
+.components-button.is-secondary{
+ width:30px !important;
+ height:30px !important;
+}
+
+.gx-width-height-item
+.components-base-control.gx-unit-control.components-radio-control{
+  position:relative;
+  top: 1px;
+  right: 4px;
+}
+
+.gx-box-shadow
+.components-base-control__field > .components-button.is-secondary{
+ width: 30px !important;
+ height: 30px !important;
+}
+/*================================================================================================*/
+.gx-typography-popover
+.components-base-control__field
+.components-range-control__number{
+  margin-top: -2px !important;
+}
+
+.gx-typography-popover
+.components-base-control__field
+.components-button.components-range-control__reset.is-secondary.is-small{
+  margin-top:-1px;
+}
+
+.gx-background-item
+.components-base-control__field > .components-range-control__number{
+  height: 30px;
+}
+
+.gx-button-item
+.gx-box-settings-item
+.components-base-control__field > .components-range-control__number{
+  height: 30px !important;
+  margin-right: -6px;
+}
+
+.gx-box-shadow{
+  padding: 15px 27px 25px 10px !important;
 }

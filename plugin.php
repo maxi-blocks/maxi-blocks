@@ -1,14 +1,13 @@
 <?php
 /**
- * Plugin Name: GutenbergExtra
+ * Plugin Name: Gutenberg Extra - Last Github version
  * Plugin URI:
- * Description: GutenbergExtra — is a Gutenberg plugin created via create-guten-block.
+ * Description: GutenbergExtra — is a Gutenberg plugin created via create-guten-block. Last update: 25/04/20
  * Author: Gutenberg Den
  * Author URI:
  * Version: 1.0.9
  * License: GPL2+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
- *
  */
 
 // Exit if accessed directly.

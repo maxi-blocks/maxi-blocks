@@ -80,10 +80,6 @@ add_action( 'init', 'gutenberg_extra_block_assets' );
 
 
 function gutenberg_extra_load_custom_wp_admin_script() {
-<<<<<<< HEAD
-=======
-
->>>>>>> joshua-main
 	// Register block editor script for backend.
 	wp_register_script(
 		'gutenberg_extra-block-js-admin', // Handle.

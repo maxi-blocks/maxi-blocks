@@ -2029,10 +2029,10 @@
 	margin-bottom: 16px !important;
   }
   
-  .gx-box-settings-item .gx-Border button.components-color-palette__clear {
+/*  .gx-box-settings-item .gx-Border button.components-color-palette__clear {
 	margin-right: 3px !important;
   }
-  
+  */
   .gx-box-settings-item .gx-border-type select {
 	border-radius: 4px !important;
 	height: 100%;
@@ -2715,10 +2715,11 @@
   .gx-popover button.components-range-control__reset {
 	font-size: 0 !important;
 	background: transparent !important;
-	min-width: 24px;
+	min-width: 26px;
 	padding: 0;
-	height: 24px !important;
+	height: 26px !important;
 	border-radius: 5px;
+	margin-right: 0 !important;
   }
   
   .gx-background-item
@@ -2806,6 +2807,47 @@
 		top: -1px !important;
 		margin-right: 82px !important;
 	  }
+
+	  .gx-popover >
+	  .components-popover__content > div:last-child{
+		  margin-bottom: 20px !important;
+	  }
+
+
+/*----------------------------------------------------------------------*/
+  .gx-imagesettings-control >
+  .gx-style-tab-setting.gx-accordion.is-secondary >
+  .gx-background-item >
+  .accordion__panel >
+  .components-base-control.components-range-control >
+  .components-base-control__field >
+  input.components-range-control__number{
+	position: absolute;
+	top: -1px !important;
+	left: 173px !important;
+  }
+/*-------------------------------------------------------------------------*/
+  .components-popover__content
+  .components-base-control.components-range-control.gx-shadow-horizontal-control >
+  .components-base-control__field >
+  input.components-range-control__number,
+  .components-popover__content
+  .components-base-control.components-range-control.gx-shadow-vertical-control >
+  .components-base-control__field >
+  input.components-range-control__number,
+  .components-popover__content
+  .components-base-control.components-range-control.gx-shadow-blur-control >
+  .components-base-control__field >
+  input.components-range-control__number,
+  .components-popover__content
+  .components-base-control.components-range-control.gx-shadow-spread-control >
+  .components-base-control__field >
+  input.components-range-control__number{
+	  position:absolute;
+	  top:-1px !important;
+	  left:232px !important;
+  }
+
 }
   
   .editor-styles-wrapper h1::before,
@@ -2955,7 +2997,7 @@
   .gx-box-settings-item
   .components-base-control__field > .components-range-control__number{
 	height: 30px !important;
-	margin-right: -6px;
+	margin-right: -5px;
   }
   
   .gx-box-shadow{
@@ -3187,3 +3229,95 @@
 	  top:1px !important;
 	  margin-right: 86px !important
   }
+
+  /*----------------------------------------------------------------------*/
+  .gx-imagesettings-control >
+  .gx-style-tab-setting.gx-accordion.is-secondary >
+  .gx-background-item >
+  .accordion__panel >
+  .components-base-control.components-range-control >
+  .components-base-control__field {
+	  position:relative !important;
+	  display:flex;
+	  justify-content: space-between;
+	  flex-wrap: nowrap !important;
+  }
+/*-------------------------------------------------------------------------*/
+  .components-popover__content
+  .components-base-control.components-range-control.gx-shadow-horizontal-control >
+  .components-base-control__field,
+  .components-popover__content
+  .components-base-control.components-range-control.gx-shadow-vertical-control >
+  .components-base-control__field,
+  .components-popover__content
+  .components-base-control.components-range-control.gx-shadow-blur-control >
+  .components-base-control__field,
+  .components-popover__content
+  .components-base-control.components-range-control.gx-shadow-spread-control >
+  .components-base-control__field{
+	  display:flex;
+	  justify-content: space-between;
+	  position:relative;
+  }
+
+  .components-popover__content
+  .components-base-control.components-range-control.gx-shadow-horizontal-control >
+  .components-base-control__field > label,
+  .components-popover__content
+  .components-base-control.components-range-control.gx-shadow-vertical-control >
+  .components-base-control__field > label,
+  .components-popover__content
+  .components-base-control.components-range-control.gx-shadow-blur-control >
+  .components-base-control__field > label,
+  .components-popover__content
+  .components-base-control.components-range-control.gx-shadow-spread-control >
+  .components-base-control__field > label{
+	  width:auto !important;
+  }
+
+  .components-popover__content
+  .components-base-control.components-range-control.gx-shadow-horizontal-control >
+  .components-base-control__field >
+  input.components-range-control__number,
+  .components-popover__content
+  .components-base-control.components-range-control.gx-shadow-vertical-control >
+  .components-base-control__field >
+  input.components-range-control__number,
+  .components-popover__content
+  .components-base-control.components-range-control.gx-shadow-blur-control >
+  .components-base-control__field >
+  input.components-range-control__number,
+  .components-popover__content
+  .components-base-control.components-range-control.gx-shadow-spread-control >
+  .components-base-control__field >
+  input.components-range-control__number{
+	  position:absolute;
+	  right:33px !important;
+  }
+
+  .gx-box-settings-item
+  .components-base-control.bg-color-parent.gx-reset-button.background-gradient{
+	  position:relative;
+  }
+
+  .gx-box-settings-item
+  .gx-popover-control.gx-boxshadow-control{
+	  position:relative;
+  }
+
+  .gx-box-settings-item
+  .gx-popover-control.gx-boxshadow-control
+  .components-dropdown.gx-popover-dropdown{
+	position:absolute;
+	right:0px !important;
+  }
+
+  .gx-buttonsettings-control
+  .gx-popover-control.gx-boxshadow-control
+  .components-base-control.gx-settings-button
+  .components-base-control__field{
+	  position: relative;
+	  margin-top: 10px !important;
+  }
+
+

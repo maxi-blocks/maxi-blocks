@@ -95,7 +95,6 @@ const edit = (props) => {
     if (className.indexOf(uniqueID) === -1) {
         classes = classnames(classes, uniqueID);
     }
-    const Line = () => <hr style={{ marginTop: "28px" }} />;
 
     return [
         <InspectorControls>
@@ -161,7 +160,7 @@ const edit = (props) => {
                     checked={twoColumnDescription}
                     onChange={twoColumnDescription => setAttributes({ twoColumnDescription })}
                 />
-                <Line />
+                <hr style={{ marginTop: "28px" }} />
                 <SelectControl
                     label={__('Content Direction', 'gutenberg-extra')}
                     className="gx-block-style content-direction"

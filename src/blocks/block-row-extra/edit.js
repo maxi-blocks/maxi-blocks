@@ -13,7 +13,7 @@ const {
     PanelBody,
     BaseControl,
     Button,
-    Dropdown,
+    Icon,
     SelectControl,
     RangeControl,
 } = wp.components;
@@ -134,7 +134,7 @@ class edit extends GXBlock {
         this.displayStyles('row');
 
         // This should be improved: fixes have same styling on front and backend, but on different targets
-        this.target  = `${this.props.attributes.uniqueID}>div>div.block-editor-block-list__layout`;
+        this.target = `${this.props.attributes.uniqueID}>div>div.block-editor-block-list__layout`;
         this.displayStyles('row');
 
         new BackEndResponsiveStyles(this.getMeta);
@@ -361,51 +361,30 @@ class edit extends GXBlock {
                 </PanelBody>
             </InspectorControls>,
             <div className={classes}>
+                <span className="gx-row-selector">
+                    ROW
+                </span>
                 <InnerBlocks
                     templateLock={false}
                     allowedBlocks={ALLOWED_BLOCKS}
                     renderAppender={
                         !hasInnerBlock() ?
                             () => (
-                                <Dropdown
-                                    className={'gx-row-dropdown'}
-                                    renderToggle={({ isOpen, onToggle }) => (
+                                TEMPLATES.map((template, i) => {
+                                    return (
                                         <Button
-                                            className="gx-row-appender-button"
-                                            isSecondary
-                                            onClick={e => {
-                                                selecOnClick(e);
-                                                onToggle();
+                                            className="gx-row-template-button"
+                                            onClick={() => {
+                                                loadTemplate(i, this.setStyles.bind(this));
                                             }}
-                                            aria-expanded={isOpen}
-                                            action="popup"
                                         >
-                                            +
+                                            <Icon 
+                                                className="gx-row-template-icon"
+                                                icon={template.icon}
+                                            />
                                         </Button>
-                                    )}
-                                    popoverProps={
-                                        {
-                                            noArrow: false,
-                                            position: 'center'
-                                        }
-                                    }
-                                    renderContent={
-                                        () => (
-                                            TEMPLATES.map((template, i) => {
-                                                return (
-                                                    <Button
-                                                        onClick={() => {
-                                                            loadTemplate(i, this.setStyles.bind(this));
-                                                        }}
-                                                    >
-                                                        {template.buttonName}
-                                                    </Button>
-                                                )
-                                            })
-                                        )
-                                    }
-                                >
-                                </Dropdown>
+                                    )
+                                })
                             ) :
                             false
                     }

@@ -3362,6 +3362,7 @@
 	  border-color: #c5c5c5 !important;
   }
 
+<<<<<<< HEAD
   .gx-buttonsettings-control
   .components-panel__body.components-base-control.editor-panel-color-settings.block-editor-panel-color-settings.is-opened.typography.gx-typography-control{
 	  margin-top: -3px !important;
@@ -3457,3 +3458,5 @@
     border-radius: 5px;
     width: 47px !important;
   }
+=======
+>>>>>>> 78f3941dcf5ff802b56042ab0b7ab9eaee0011a9

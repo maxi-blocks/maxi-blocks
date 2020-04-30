@@ -1,0 +1,468 @@
+body {
+	background: rebeccapurple;
+}
+.gutenberg-extra-testimonial-block {
+	blockquote {
+		border-left: none;
+		margin-bottom: 1em;
+	}
+	padding: 20px;
+	background: #f3f3f3;
+	margin-bottom: 1em;
+	border-radius: 10px;
+	min-height: 160px;
+}
+
+.testimonial-slider {
+	margin-bottom: 2em;
+}
+
+.testimonial-text {
+	font-size: 12px;
+	line-height: 1.5;
+	font-style: normal;
+	text-align: center;
+	color: #9b9b9b;
+}
+
+.testimonial-title-container {
+	//text-align: center;
+}
+
+.testimonial-author-link,
+.testimonial-title-name {
+	padding-left: 12px;
+	margin-bottom: 5px;
+	font-style: normal;
+}
+
+span.testimonial-title {
+	font-style: normal;
+}
+
+.fa.fa-quote-left {
+	padding-right: 12px;
+	// padding-left: 22px;
+	font-size: 1.25em;
+}
+
+.fa.fa-quote-right {
+	padding-left: 12px;
+	font-size: 1.25em;
+}
+
+// slider
+ol.carousel-indicators {
+	bottom: -25px;
+}
+
+ol.carousel-indicators li {
+	background-color: rgba(167, 167, 167, 0.5);
+}
+
+ol.carousel-indicators .active {
+	background-color: black;
+}
+
+.entry-content {
+	a.carousel-control-prev,
+	a.carousel-control-next {
+		box-shadow: none;
+		border-bottom: none;
+		&:hover, &:focus, &:active {
+			box-shadow: none;
+			border-bottom: none;
+		}
+	}
+}
+
+.carousel-control-next-icon,
+.carousel-control-prev-icon {
+	color: #000;
+}
+
+.gutenberg-extra-testimonial-slider-block.testimonial-slider {
+	blockquote {
+		border-left: none;
+	}
+	background: #f3f3f3;
+	padding: 10px;
+	border-radius: 10px;
+	margin-bottom: 1em;
+	min-height: 160px;
+}
+
+.gutenberg-extra__picture {
+	position: relative;
+	display: flex;
+	justify-content: center;
+
+	.gutenberg-extra__picture__image {
+		width: 100px;
+		height: 100px;
+		margin-right: 30px;
+		margin-left: 4.5px;
+		overflow: hidden;
+		border: 1px solid #dadada;
+		font-size: .8em;
+		background-size: cover;
+		background-position: center;
+	}
+	img {
+		height: 100px;
+		width: 100px;
+		object-fit: cover;
+	}
+}
+
+.w-75 {
+	padding-left: 1em;
+}
+.testimonial-slider {
+	//max-width: 1285px!important;
+	padding-bottom: 9.2vw;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	position: relative;
+	width: 80%;
+	margin: auto;
+}
+.gutenberg-extra-testimonial-block {
+	float: left;
+	position: relative;
+	z-index: 9;
+	background-position: center;
+	background-size: cover;
+}
+.gutenberg-extra-testimonial-block-2{
+	width: 49%;
+}
+.gutenberg-extra-testimonial-block-3{
+	width: 30%;
+}
+.wp-block-gutenberg-extra-testimonials-slider-block, .testimonial-slider .carousel-inner{
+	background-repeat: no-repeat;
+	background-size: cover;
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+}
+.carousel{
+	width: 100%;
+}
+/**
+ * Setup css for background block
+ */
+.gx-background-setting .components-color-palette__item-wrapper{
+	display: none;
+	opacity: 0;
+	width: 0;
+}
+.gx-background-setting .components-base-control__label, .gx-background-setting .block-editor-color-palette-control__color-palette {
+	width: auto;
+}
+.gx-background-setting-panel .block-editor-panel-color-settings .components-panel__body-title,
+.gx-testimonial-setting-panel .block-editor-panel-color-settings .components-panel__body-title {
+	display: none !important;
+}
+.gx-background-setting-panel label,
+.gx-testimonial-setting-panel label,
+.gx-testimonial-setting-panel .components-base-control__label,
+.gx-background-setting-panel .components-base-control__label {
+	font-size: 15px;
+	color: #464a53;
+	font-weight: 500;
+	letter-spacing: -0.5px;
+}
+
+.gx-testimonial-setting-panel input[type=text],
+.gx-testimonial-setting-panel input[type=number],
+.gx-testimonial-setting-panel textarea,
+.gx-testimonial-setting-panel select,
+.gx-background-setting-panel input[type=text],
+.gx-background-setting-panel input[type=number],
+.gx-background-setting-panel textarea,
+.gx-background-setting-panel select {
+	height: 40px;
+	border-radius: 5px;
+	background-color: rgba(33,141,250,0);
+	border: 2px solid #dddfe1;
+	font-size: 20px;
+	color: #464a53;
+	font-weight: 500;
+}
+.gx-testimonial-setting-panel .components-color-palette .components-color-palette__custom-clear-wrapper,
+.gx-background-setting-panel .components-color-palette .components-color-palette__custom-clear-wrapper {
+	justify-content: flex-start;
+	flex-direction: row-reverse;
+	align-items: center;
+	width: 100%;
+}
+button.is-small {
+	height: 24px;
+	line-height: 22px;
+	padding: 0 8px 1px;
+	font-size: 11px;
+}
+.gx-testimonial-setting-panel button.components-color-palette__clear,
+.gx-background-setting-panel button.components-color-palette__clear {
+	font-size: 0 !important;
+	background: transparent !important;
+	border: none !important;
+}
+.gx-background-setting-panel button.components-range-control__reset::before,
+.gx-background-setting-panel button.components-color-palette__clear::before,
+.gx-testimonial-setting-panel button.components-range-control__reset::before,
+.gx-testimonial-setting-panel button.components-color-palette__clear::before,
+.gx-background-setting-panel .gx-popover button.components-range-control__reset::before,
+.gx-background-setting-panel .gx-background-custom-reset-option::before {
+	content: url(../img/gx-reset.svg) !important;
+	transform: scale(.75);
+}
+.gx-background-setting-panel .components-color-palette__custom-color button,
+.gx-background-setting-panel .gx-settings-button button,
+.gx-testimonial-setting-panel .components-color-palette__custom-color button,
+.gx-testimonial-setting-panel .gx-settings-button button
+{
+	width: 57px;
+	height: 40px;
+	color: transparent;
+	border-radius: 5px;
+	background-color: rgba(33,141,250,0) !important;
+	border: 2px solid #dddfe1;
+	font-size: 0px;
+	text-align: center;
+	line-height: 22px;
+}
+.gx-testimonial-setting-panel .components-range-control button {
+	background-color: rgba(33,141,250,0) !important;
+	border: none;
+	font-size: 0px;
+}
+.gx-testimonial-setting-panel .components-color-palette__custom-color button::before ,
+.gx-background-setting-panel .components-color-palette__custom-color button{
+	background-image: url(../img/icons/gx-colour-wheel.svg) !important;
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: 50%;
+	margin: 6px auto;
+	// background-color: rgba(33,141,250,0) !important;
+}
+.gx-sidebar-testimonial .components-base-control__field,
+.gx-background-gradient .gx-image-form-and-reset
+{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.gx-settings-typography-button::before {
+	content: url(../img/gx-settings-icon.png) !important;
+	margin: 7px auto;
+	background-color: rgba(33,141,250,0) !important;
+}
+.gx-sidebar-testimonial .gx-settings-button button:not(.gx-background-setting-panel .gx-background-custom-reset-option)::before {
+	content: url(../img/gx-settings-icon.png) !important;
+	margin: 7px auto;
+	background-color: rgba(33,141,250,0) !important;
+}
+
+.edit-post-layout.is-sidebar-opened .edit-post-sidebar.gx-sidebar-testimonial{
+	width: 450px !important;
+}
+.gx-background-setting-panel .gx-background-image-form {
+	color: #000000 !important;
+}
+.gx-background-setting-panel .gx-background-image-form svg {
+	margin: auto;
+}
+.gx-background-custom-reset-option{
+	height: unset !important;
+	width:  unset !important;
+	border: unset !important;
+}
+.dashicons, .dashicons-before:before {
+	font-family: dashicons;
+	display: inline-block;
+	line-height: 1!important;
+	font-weight: 400;
+	font-style: normal;
+	speak: none;
+	text-decoration: inherit;
+	text-transform: none;
+	text-rendering: auto;
+	-webkit-font-smoothing: antialiased;
+	font-size: 30px!important;
+	text-align: center!important;
+	transition: color .1s ease-in;
+	color: #22222291 !important;
+}
+
+/**Gradient Color**/
+.gx-background-gradient .gpw
+{
+	position: relative;
+}
+.gx-background-gradient .popover
+{
+	top: 60%;
+	right: 0%;
+	background: white;
+}
+
+////need to remove
+//.gx-background-setting {
+//	overflow-y: scroll;
+//}
+
+
+.gx-testimonial-setting-panel .gx-block-style select
+{
+	width: 160px;
+}
+
+.testimonial-slider .carousel-control-prev,
+.testimonial-slider .carousel-control-next
+{
+	display: none;
+}
+//.testimonial-popover.gx-popover{
+//	top: 32px !important;
+//	left: 995px !important;
+//	height: 340px !important;
+//	width: 420px !important;
+//	//background: red !important;
+//
+//	.components-popover__content{
+//		max-height: 340px !important;
+//		right: unset !important;
+//		left: unset !important;
+//		top: 0 !important;
+//		height: 100% !important;
+//		width: 100% !important;
+//	}
+//}
+//
+.gutenberg-extra_personal_info{
+	display: flex;
+	flex-flow: column wrap;
+	//align-items: center;
+	//justify-content: center;
+
+	h5 {
+		margin-bottom: 0;
+	}
+}
+
+.mb-10{
+	margin-bottom: 10px!important;
+}
+//person url part
+.person_link_options {
+	position: relative;
+
+	.editor-url-input__button{
+		form {
+			position: absolute;
+		}
+	}
+}
+.remove-testimonial-block {
+	position: relative;
+	margin: unset!important;
+	height: 30px;
+}
+
+
+
+/*
+Testimonial styles new
+ */
+
+.testimonials{
+	padding: 40px 0;
+	background: #f1f1f1;
+	color: #434343;
+	//text-align: center;
+}
+.inner{
+	max-width: 100%;
+	width: 100%;
+	overflow: hidden;
+	padding: 0 20px;
+}
+
+.border{
+	width: 160px;
+	height: 5px;
+	background: #6ab04c;
+	margin: 26px auto;
+}
+
+.row{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.col{
+	flex: 33.33%;
+	max-width: 33.33%;
+	box-sizing: border-box;
+	padding: 15px;
+}
+
+.gx-full-width-col {
+	flex: 50%;
+	max-width: 100%;
+	box-sizing: border-box;
+	padding: 15px;
+}
+
+.testimonial {
+	background: #fff;
+	padding: 30px;
+	box-shadow:0px 0px 29px -8px #00000036;
+}
+.testimonial img{
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+}
+.name{
+	font-size: 17px;
+	text-transform: uppercase;
+	margin: 20px 0;
+	text-align:center;
+}
+.stars{
+	color: #6ab04c;
+	margin-bottom: 20px;
+}
+.testimonial-personPosition{
+	font-size: 14px;
+	color: #9b9b9b;
+}
+
+
+@media screen and (max-width:960px) {
+	.col{
+		flex: 100%;
+		max-width: 80%;
+	}
+}
+
+@media screen and (max-width:600px) {
+	.col{
+		flex: 100%;
+		max-width: 100%;
+	}
+}
+
+
+.fillable_field {
+	border: none!important;
+	height: auto!important;
+	border-radius: unset!important;
+	border-bottom: 1px solid #333!important;
+}

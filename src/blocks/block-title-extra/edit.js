@@ -259,7 +259,7 @@ const edit = (props) => {
                                         boxShadowOptions={boxShadow}
                                         onChange={boxShadow => setAttributes({ boxShadow })}
                                     />
-                                    <Line />
+                                    <hr style={{ marginTop: "28px" }} />
                                     <BorderControl
                                         borderOptions={border}
                                         onChange={border => setAttributes({ border })}

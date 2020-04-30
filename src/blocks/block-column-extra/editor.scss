@@ -2,6 +2,9 @@
 //     border: 1px #ccc solid;
 //     border-radius: 20px;
 // }
+.gx-block-wrapper[data-type="gutenberg-extra/block-column-extra"]:hover {
+    outline: 1px solid blue;
+}
 
 .wp-block[data-type="gutenberg-extra/block-column-extra"] {
     margin: 0;

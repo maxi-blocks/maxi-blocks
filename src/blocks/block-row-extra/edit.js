@@ -130,7 +130,11 @@ class edit extends GXBlock {
             this.displayStyles('columns');
         })
 
-        this.target = `${this.props.attributes.uniqueID} .block-editor-block-list__layout`;
+        this.target = `${this.props.attributes.uniqueID}`;
+        this.displayStyles('row');
+
+        // This should be improved: fixes have same styling on front and backend, but on different targets
+        this.target  = `${this.props.attributes.uniqueID}>div>div.block-editor-block-list__layout`;
         this.displayStyles('row');
 
         new BackEndResponsiveStyles(this.getMeta);
@@ -253,7 +257,7 @@ class edit extends GXBlock {
                                     <BackgroundControl
                                         backgroundOptions={background}
                                         onChange={background => setAttributes({ background })}
-                                        // target="gx-row-block"
+                                    // target="gx-row-block"
                                     />
                                 ),
                             },
@@ -273,7 +277,7 @@ class edit extends GXBlock {
                                                 <BoxShadowControl
                                                     boxShadowOptions={boxShadow}
                                                     onChange={boxShadow => setAttributes({ boxShadow })}
-                                                    // target="gx-row-block"
+                                                // target="gx-row-block"
                                                 />
                                             </BaseControl>
                                             <hr style={{ marginTop: "28px" }} />
@@ -302,7 +306,7 @@ class edit extends GXBlock {
                                         <FullSizeControl
                                             sizeSettings={size}
                                             onChange={size => setAttributes({ size })}
-                                            // target="gx-row-block"
+                                        // target="gx-row-block"
                                         />
                                     </PanelBody>
                                 ),
@@ -323,13 +327,13 @@ class edit extends GXBlock {
                                             value={padding}
                                             onChange={padding => setAttributes({ padding })}
                                             avoidZero
-                                            // target="gx-row-block"
+                                        // target="gx-row-block"
                                         />
                                         <DimensionsControl
                                             value={margin}
                                             onChange={margin => setAttributes({ margin })}
                                             avoidZero
-                                            // target="gx-row-block"
+                                        // target="gx-row-block"
                                         />
                                     </PanelBody>
                                 ),

@@ -40,7 +40,7 @@ function gx_customizer_init( WP_Customize_Manager $wp_customize ){
 
 
         $transport = 'postMessage';
-        $contentColorsData = array_reverse([
+        $contentColorsData = [
             'body_background_color' => 'icon',
             'p_color'   => 'icon',
             'a_color'   => 'icon',
@@ -52,7 +52,7 @@ function gx_customizer_init( WP_Customize_Manager $wp_customize ){
             'h6_color'  => 'H6',
             'highlight' => 'icon',
             'hover'     => 'icon',
-        ]);
+        ];
         $headingSections = [
             'pDark' => 'Paragraph Dark',
             'pLight' => 'Paragraph Light',
@@ -91,80 +91,37 @@ function gx_customizer_init( WP_Customize_Manager $wp_customize ){
             'priority' => 1
         ));
 
-        $wp_customize->add_section('themeOptions', [
-            'title' => __('Theme Options', 'gutenberg-extra'),
-//            'priority' => 10,
-            'panel' => 'GutenbergExtra'
-        ]);
-
-        $wp_customize->add_section('ipsum', [
-            'title' => __('Ipsum', 'gutenberg-extra'),
-//            'priority' => 10,
-            'panel' => 'GutenbergExtra'
-        ]);
-
-        $wp_customize->add_section('globalBlockStyles', [
-            'title' => __('Global Block Styles', 'gutenberg-extra'),
-//            'priority' => 10,
-            'panel' => 'GutenbergExtra'
-        ]);
-
         $section = 'globalStyling';
+
         $wp_customize->add_section($section, [
-            'title' => __('Typography & Colours', 'gutenberg-extra'),
-//            'priority' => 10,
+            'title' => 'Global Styling',
+            'priority' => 10,
             'panel' => 'GutenbergExtra'
         ]);
-//        $wp_customize->add_section('test', [
-//            'title' => 'Test',
-////            'priority' => 10,
-//            'panel' => 'GutenbergExtra'
-//        ]);
-        $wp_customize->add_section('buttons', [
-            'title' => 'Buttons',
-//            'priority' => 10,
+        $wp_customize->add_section('test', [
+            'title' => 'Test',
+            'priority' => 10,
             'panel' => 'GutenbergExtra'
         ]);
-        $wp_customize->add_section('formFields', [
-            'title' => 'Form Fields',
-//            'priority' => 10,
-            'panel' => 'GutenbergExtra'
-        ]);
-        $wp_customize->add_section('images', [
-            'title' => 'Images',
-//            'priority' => 10,
-            'panel' => 'GutenbergExtra'
-        ]);
-        $wp_customize->add_section('icons', [
-            'title' => 'Icons',
-//            'priority' => 10,
-            'panel' => 'GutenbergExtra'
-        ]);
-        $wp_customize->add_section('backToTopButton', [
-            'title' => 'Back-to-top Button',
-//            'priority' => 10,
-            'panel' => 'GutenbergExtra'
+        $wp_customize->add_setting('tt', [
+            'default' => 'Default',
+            'transport' => $transport
         ]);
 
-//        $wp_customize->add_setting('tt', [
-//            'default' => 'Default',
-//            'transport' => $transport
-//        ]);
-//
-//        $wp_customize->add_control('tt', [
-//            'section' => 'test',
-//            'type' => 'text',
-//        ]);
+        $wp_customize->add_control('tt', [
+            'section' => 'test',
+            'type' => 'text',
+        ]);
 
-//        $wp_customize->add_setting('leftSideTest', [
-//            'default' => 'leftTestPanel',
-//            'transport' => $transport
-//        ]);
+        $wp_customize->add_setting('leftSideTest', [
+            'default' => 'leftTestPanel',
+            'transport' => $transport
+        ]);
 
-//        $wp_customize->add_control('leftSideTest', [
-//            'section' => 'test',
-//            'type' => 'text',
-//        ]);
+        $wp_customize->add_control('leftSideTest', [
+            'section' => 'test',
+            'type' => 'text',
+        ]);
 
         // Sections
         if ($section == 'globalStyling') {
@@ -238,9 +195,9 @@ function gx_customizer_init( WP_Customize_Manager $wp_customize ){
                     'label' => __('Global Theme colour', 'global-theme-color'),
                     'type' => 'select',
                     'choices' => [
-                        'gx-default' => 'Default - Light and Dark Blocks',
-                        'gx-dark' => 'Only Dark Blocks',
-                        'gx-light' => 'Only Light Blocks',
+                        'gx-default' => __('Show setting for Light and Dark Blocks', 'gutenberg-extra'),
+                        'gx-dark' => __('Show setting only for Dark Blocks', 'gutenberg-extra'),
+                        'gx-light' => __('Show setting only for Light Blocks', 'gutenberg-extra'),
                     ]
                 ]);
             }
@@ -380,10 +337,10 @@ function makeStyle() {
     for ($i =0; $i < $themeClassesCount; $i++) {
         $themeClassBody = 'body.'.$themeClasses[$i].' ';
         if(get_theme_mod('body_background_color'.$themeClasses[$i].'-color-dark'))
-            $style[] = $themeClassBody.'.gx-dark { background-color : '.get_theme_mod('body_background_color'.$themeClasses[$i].'-color-dark').';}';
+            $style[] = $themeClassBody.'.gx-dark { background-color : '.get_theme_mod('body_background_color'.$themeClasses[$i].'-color-dark').' !important;}';
         if(get_theme_mod('body_background_color'.$themeClasses[$i].'-color-light')) {
-            $style[] = $themeClassBody . '.gx-light { background-color : ' . get_theme_mod('body_background_color' . $themeClasses[$i] . '-color-light') . ';}';
-            $style[] = $themeClassBody . '.gx-default { background-color : ' . get_theme_mod('body_background_color' . $themeClasses[$i] . '-color-light') . ';}';
+            $style[] = $themeClassBody . '.gx-light { background-color : ' . get_theme_mod('body_background_color' . $themeClasses[$i] . '-color-light') . ' !important;}';
+            $style[] = $themeClassBody . '.gx-default { background-color : ' . get_theme_mod('body_background_color' . $themeClasses[$i] . '-color-light') . ' !important;}';
         }
 
         for ($m =0; $m < $tagsCount; $m++) {
@@ -398,27 +355,30 @@ function makeStyle() {
 
 //        add body class
         if (get_theme_mod('a_color'.$themeClasses[$i].'-color-dark')){
-            $style[] = $themeClassBody.'.gx-dark a { color : '.get_theme_mod('a_color'.$themeClasses[$i].'-color-dark').';}';
+            $style[] = $themeClassBody.'.gx-dark a { color : '.get_theme_mod('a_color'.$themeClasses[$i].'-color-dark').' !important;}';
         }
         if (get_theme_mod('a_color'.$themeClasses[$i].'-color-light')){
-            $style[] = $themeClassBody.'.gx-light a { color : '.get_theme_mod('a_color'.$themeClasses[$i].'-color-light').';}';
-            $style[] = $themeClassBody.'gx-default a { color : '.get_theme_mod('a_color'.$themeClasses[$i].'-color-light').';}';
+            $style[] = $themeClassBody.'.gx-light a { color : '.get_theme_mod('a_color'.$themeClasses[$i].'-color-light').' !important;}';
+            $style[] = $themeClassBody.'gx-default a { color : '.get_theme_mod('a_color'.$themeClasses[$i].'-color-light').' !important;}';
         }
 
          if (get_theme_mod('hover'.$themeClasses[$i].'-color-dark')){
-             $style[] = $themeClassBody.'.gx-dark a:hover { color : '.get_theme_mod('hover'.$themeClasses[$i].'-color-dark').';}';
+             $style[] = $themeClassBody.'.gx-dark a:hover { color : '.get_theme_mod('hover'.$themeClasses[$i].'-color-dark').' !important;}';
          }
          if (get_theme_mod('hover'.$themeClasses[$i].'-color-light')){
-             $style[] = $themeClassBody.'.gx-light a:hover { color : '.get_theme_mod('hover'.$themeClasses[$i].'-color-light').';}';
-             $style[] = $themeClassBody.'.gx-default a:hover { color : '.get_theme_mod('hover'.$themeClasses[$i].'-color-light').';}';
+             $style[] = $themeClassBody.'.gx-light a:hover { color : '.get_theme_mod('hover'.$themeClasses[$i].'-color-light').' !important;}';
+             $style[] = $themeClassBody.'.gx-default a:hover { color : '.get_theme_mod('hover'.$themeClasses[$i].'-color-light').' !important;}';
          }
 
          if (get_theme_mod('highlight'.$themeClasses[$i].'-color-dark')){
-             $style[] = $themeClassBody.'.gx-dark .gx-highlight { color : '.get_theme_mod('highlight'.$themeClasses[$i].'-color-dark').';}';
+             $style[] = $themeClassBody.'.gx-dark .gx-highlight { color : '.get_theme_mod('highlight'.$themeClasses[$i].'-color-dark').' !important;}';
+             $style[] = $themeClassBody.'.gx-dark .gx-divider { border-color : '.get_theme_mod('highlight'.$themeClasses[$i].'-color-dark').' !important;}';
          }
          if (get_theme_mod('highlight'.$themeClasses[$i].'-color-light')){
-             $style[] = $themeClassBody.'.gx-light .gx-highlight { color : '.get_theme_mod('highlight'.$themeClasses[$i].'-color-light').';}';
-             $style[] = $themeClassBody.'.gx-default .gx-highlight { color : '.get_theme_mod('highlight'.$themeClasses[$i].'-color-light').';}';
+             $style[] = $themeClassBody.'.gx-light .gx-highlight { color : '.get_theme_mod('highlight'.$themeClasses[$i].'-color-light').' !important;}';
+             $style[] = $themeClassBody.'.gx-default .gx-highlight { color : '.get_theme_mod('highlight'.$themeClasses[$i].'-color-light').' !important;}';
+             $style[] = $themeClassBody.'.gx-light .gx-divider { border-color : '.get_theme_mod('highlight'.$themeClasses[$i].'-color-light').' !important;}';
+             $style[] = $themeClassBody.'.gx-default .gx-divider { border-color : '.get_theme_mod('highlight'.$themeClasses[$i].'-color-light').' !important;}';
          }
 
      }
@@ -431,35 +391,35 @@ function checkThemeMod($tag, $mode, $themMod, $device){
 
     if($tag === 'li') $tag = 'p'; //styles for li same as p
     if(get_theme_mod($tag.$mode.'Font'.$themMod.'-'.$device)) {
-        $temp .= 'font-family:"'.str_replace('+',' ',get_theme_mod($tag.$mode.'Font'.$themMod.'-'.$device)).'";';
+        $temp .= 'font-family:"'.str_replace('+',' ',get_theme_mod($tag.$mode.'Font'.$themMod.'-'.$device)).'" !important;';
     }
 
     if(get_theme_mod($tag.'_color'.$themMod.'-color-'.strtolower($mode) )) {
-        $temp .= 'color : '.get_theme_mod($tag.'_color'.$themMod.'-color-'.strtolower($mode) ).';';
+        $temp .= 'color : '.get_theme_mod($tag.'_color'.$themMod.'-color-'.strtolower($mode) ).' !important;';
     }
 
     if(get_theme_mod($tag.$mode.'FS'.$themMod.'-'.$device)) {
-        $temp .= 'font-size : '.get_theme_mod( $tag.$mode.'FS'.$themMod.'-'.$device ).';';
+        $temp .= 'font-size : '.get_theme_mod( $tag.$mode.'FS'.$themMod.'-'.$device ).' !important;';
     }
 
     if(get_theme_mod($tag.$mode.'LineHgt'.$themMod.'-'.$device)) {
-        $temp .= 'line-height : '.get_theme_mod( $tag.$mode.'LineHgt'.$themMod.'-'.$device ).';';
+        $temp .= 'line-height : '.get_theme_mod( $tag.$mode.'LineHgt'.$themMod.'-'.$device ).' !important;';
     }
 
     if(get_theme_mod($tag.$mode.'LetterSpc'.$themMod.'-'.$device)) {
-        $temp .= 'letter-spacing : '.get_theme_mod( $tag.$mode.'LetterSpc'.$themMod.'-'.$device ).';';
+        $temp .= 'letter-spacing : '.get_theme_mod( $tag.$mode.'LetterSpc'.$themMod.'-'.$device ).' !important;';
     }
 
     if(get_theme_mod($tag.$mode.'Weight'.$themMod.'-'.$device)) {
-        $temp .= 'font-weight: '.get_theme_mod($tag.$mode.'Weight'.$themMod.'-'.$device).';';
+        $temp .= 'font-weight: '.get_theme_mod($tag.$mode.'Weight'.$themMod.'-'.$device).' !important;';
     }
 
     if(get_theme_mod($tag.$mode.'Transform'.$themMod.'-'.$device)) {
-        $temp .= 'text-transform:'.get_theme_mod($tag.$mode.'Transform'.$themMod.'-'.$device).';';
+        $temp .= 'text-transform:'.get_theme_mod($tag.$mode.'Transform'.$themMod.'-'.$device).' !important;';
     }
 
     if(get_theme_mod($tag.$mode.'Style'.$themMod.'-'.$device)) {
-        $temp .= 'font-style: '.get_theme_mod($tag.$mode.'Style'.$themMod.'-'.$device).';';
+        $temp .= 'font-style: '.get_theme_mod($tag.$mode.'Style'.$themMod.'-'.$device).' !important;';
     }
 
     if(get_theme_mod($tag.$mode.'DecorationLine'.$themMod.'-'.$device)) {
@@ -467,11 +427,12 @@ function checkThemeMod($tag, $mode, $themMod, $device){
     }
 
     if(get_theme_mod($tag.$mode.'Decoration'.$themMod.'-'.$device)) {
-        $temp .= 'text-decoration-style: '.get_theme_mod($tag.$mode.'Decoration'.$themMod.'-'.$device) .';';
+        $temp .= 'text-decoration-style: '.get_theme_mod($tag.$mode.'Decoration'.$themMod.'-'.$device) .' !important;';
     }
 
     return $temp;
 }
+
 function makeThemeStylesForCustomizer() {
 //    $themeStyles = array();
 //     by Default we have Default -> gx-default
@@ -633,7 +594,7 @@ function gx_admin_js_file() {
     if (is_customize_preview()) {
         $list = [];
         $font_info = [];
-        $fonts_list =  file_get_contents(plugin_dir_url(__FILE__) . 'dist/fonts.json');
+        $fonts_list =  file_get_contents(plugin_dir_url( __FILE__ ) . 'dist/fonts.json');
         $fonts_list = json_decode($fonts_list,true);
 
         $fonts_listCount = count($fonts_list['items']);

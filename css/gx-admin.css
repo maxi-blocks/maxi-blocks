@@ -1277,7 +1277,7 @@
 	text-align: justify;
 	margin-left: -12.5%;
   }
-  
+   
   .gx-sidebar .components-panel {
 	border: none !important;
 	background: #f2f2f2;
@@ -1552,7 +1552,7 @@
   /* 
   .gx-button-item .gx-typography-popover .gx-settings-button .components-base-control__field .gx-popover-dropdown {
 	margin-right: 2px !important;
-  } */
+  } 
   
   .gx-button-item
 	.gx-typography-item
@@ -1561,9 +1561,9 @@
 	.components-base-control__field
 	> *:not(span)
 	svg {
-	/* width: 12px !important; */
-	/* height: 12px !important; */
-  }
+	 width: 12px !important; 
+	 height: 12px !important; 
+  	}*/ 
   
   button[class*="gutenberg-extra"] span.block-editor-block-types-list__item-title {
 	color: black !important;
@@ -2124,7 +2124,7 @@
 	width: 100%;
   }
   
-  /* .gx-sidebar .components-base-control.gx-border-type .components-base-control__field {
+  /*.gx-sidebar .components-base-control.gx-border-type .components-base-control__field {
 	margin-bottom: 9px !important;
   } */
   
@@ -2140,9 +2140,9 @@
 	border-color: #00ccff;
   }
   
-  /* .gx-panel .components-base-control.gx-unit-control {
+  /*.gx-panel .components-base-control.gx-unit-control {
 	margin-bottom: -21px !important;
-  } */
+  }*/
   
   .gx-panel .components-base-control.gx-unit-control .components-base-control__field {
 	margin-bottom: 0 !important;
@@ -2611,7 +2611,6 @@
 	  margin-bottom: 10px;
 	}
   
-  /*================================================================================================*/
   .gx-image-width
   .components-base-control__field >
   input[type="number"].components-range-control__number{
@@ -2689,7 +2688,7 @@
    width: 30px !important;
    height: 30px !important;
   }
-  /*================================================================================================*/
+
   .components-range-control.gx-with-unit-control .components-base-control__field .components-range-control__number {
 	margin-left: auto;
 	max-height: 28px;
@@ -2697,7 +2696,7 @@
 	margin-right: 2px;
 	margin-top: 0px !important;
   }
-  /*================================================================================================*/
+
   .gx-typography-popover
   .components-base-control__field
   .components-range-control__number{
@@ -2747,7 +2746,6 @@
 	  margin-right: -5px;
 	}
 
-/*----------------------------------------------------------------------*/
   .gx-popover >
   .components-popover__content
   .components-base-control.gx-colorcontrol-control
@@ -2756,7 +2754,6 @@
 	  height:30px !important;
   }
 
- 
   .gx-divider-item
   .components-base-control.components-range-control.gx-with-unit-control{
 	position:relative;
@@ -2813,8 +2810,6 @@
 		  margin-bottom: 20px !important;
 	  }
 
-
-/*----------------------------------------------------------------------*/
   .gx-imagesettings-control >
   .gx-style-tab-setting.gx-accordion.is-secondary >
   .gx-background-item >
@@ -2826,7 +2821,7 @@
 	top: 0 !important;
 	left: 173px !important;
   }
-/*-------------------------------------------------------------------------*/
+
   .components-popover__content
   .components-base-control.components-range-control.gx-shadow-horizontal-control >
   .components-base-control__field >
@@ -2846,6 +2841,44 @@
 	  position:absolute;
 	  top: 0 !important;
 	  left:243px !important;
+  }
+
+  .block-editor-block-card__content > 
+  .block-editor-block-card__description{
+	  width: 100%;
+	  margin-top: 10px !important;
+  }
+
+  .gx-buttonsettings-control
+  .gx-popover-control.gx-boxshadow-control
+  .components-base-control.gx-settings-button
+  .components-base-control__field{
+	  position: relative;
+	  margin-top: 5px !important;
+  }
+
+  /*============================================================*/
+  .gx-popover >
+  .components-popover__content
+  .components-base-control.components-range-control.gx-with-unit-control >
+  .components-base-control__field
+  .components-range-control__root.css-yaebbd-Root.exqw8y20 >
+  .css-uojzqi-ActionRightWrapper.exqw8y214 > 
+  button.components-button.is-secondary{
+	border: 1px solid #dddfe1 !important;
+	width:28px !important;
+	height:28px !important;
+  }
+
+  .gx-popover >
+  .components-popover__content
+  .components-base-control.components-range-control.gx-with-unit-control 
+  .components-range-control__root.css-yaebbd-Root.exqw8y20 >
+  .components-range-control__number.css-1foiknu-InputNumber.exqw8y213{
+	width: 43px;
+	min-width: 40px !important;
+	position: relative;
+	left: 8px !important;
   }
 
 }
@@ -2891,15 +2924,13 @@
 	padding: 0;
   }
   
-  /*================================================================================================*/
   .components-panel__header.edit-post-sidebar-header.edit-post-sidebar__panel-tabs > ul > li > button
    {
 	 width: 100% !important;
 	 height: 100% !important;
 	 padding: 16px;
   }
-  /*================================================================================================*/
-  /*================================================================================================*/
+
   .gx-image-width
   .components-base-control__field >
   input[type="number"].components-range-control__number{
@@ -2975,7 +3006,7 @@
    width: 30px !important;
    height: 30px !important;
   }
-  /*================================================================================================*/
+  
   .gx-typography-popover
   .components-base-control__field
   .components-range-control__number{
@@ -3004,7 +3035,6 @@
 	padding: 15px 27px 25px 10px !important;
   }
   
-  /*==================================================================*/
   .gx-popover
   .components-popover__content{
 	 padding: 20px;
@@ -3089,7 +3119,6 @@
     border-color: #c5c5c5 !important;
   }
   
-
   .gx-popover >
   .components-popover__content >
   .components-base-control.components-base-control.gx-alignmentcontrol-control.components-radio-control >
@@ -3132,6 +3161,15 @@
   .components-popover__content >
   .components-base-control.components-base-control.gx-alignmentcontrol-control.components-radio-control >
   .components-base-control__field >
+  .components-radio-control__option > label > svg{
+	  position:relative;
+	  top:2px;
+  }
+
+  .gx-popover >
+  .components-popover__content >
+  .components-base-control.components-base-control.gx-alignmentcontrol-control.components-radio-control >
+  .components-base-control__field >
   .components-radio-control__option:nth-of-type(1) > label{
 	border-radius: 5px 0 0 5px;
   }
@@ -3163,7 +3201,6 @@
 	  position:relative;
 	  top:1px;
   }
-
 
   .gx-divider-item
   .components-base-control__field{
@@ -3230,7 +3267,6 @@
 	  margin-right: 86px !important
   }
 
-  /*----------------------------------------------------------------------*/
   .gx-imagesettings-control >
   .gx-style-tab-setting.gx-accordion.is-secondary >
   .gx-background-item >
@@ -3242,7 +3278,7 @@
 	  justify-content: space-between;
 	  flex-wrap: nowrap !important;
   }
-/*-------------------------------------------------------------------------*/
+
   .components-popover__content
   .components-base-control.components-range-control.gx-shadow-horizontal-control >
   .components-base-control__field,
@@ -3303,6 +3339,7 @@
   .gx-box-settings-item
   .gx-popover-control.gx-boxshadow-control{
 	  position:relative;
+	  width:100% !important;
   }
 
   .gx-box-settings-item
@@ -3317,7 +3354,106 @@
   .components-base-control.gx-settings-button
   .components-base-control__field{
 	  position: relative;
-	  margin-top: 10px !important;
+	  margin-top: 7px !important;
   }
 
+  button.components-button.is-secondary:hover{
+	  background-color: white !important;
+	  border-color: #c5c5c5 !important;
+  }
 
+  .gx-buttonsettings-control
+  .components-panel__body.components-base-control.editor-panel-color-settings.block-editor-panel-color-settings.is-opened.typography.gx-typography-control{
+	  margin-top: -3px !important;
+  }
+
+  .gx-buttonsettings-control
+  .components-panel__body.components-base-control.editor-panel-color-settings.block-editor-panel-color-settings.is-opened.typography.gx-typography-control
+  .gx-typography-color-display{
+	  position:relative;
+	  left:-1px !important;
+  }
+
+  .gx-buttonsettings-control
+  .components-panel__body.components-base-control.editor-panel-color-settings.block-editor-panel-color-settings.is-opened.typography.gx-typography-control
+  button.components-button.is-secondary{
+	  margin-right: -1px !important;
+  }
+
+  .css-uojzqi-ActionRightWrapper.exqw8y214
+  button.components-button.is-secondary{
+	  border-radius:5px !important;
+	  border: 1px solid #dddfe1 !important;
+  }
+
+  /*===============================================================*/
+  span.components-range-control__wrapper.css-pp5lt-Wrapper.exqw8y21{
+	  display:none !important;
+  }
+
+  .components-button.is-secondary {
+	box-shadow: none !important;
+  }
+
+  .css-uojzqi-ActionRightWrapper button, .css-uojzqi-ActionRightWrapper button.is-small {
+    margin-left: 0px;
+    height: 30px;
+    min-height: unset !important;
+  }
+
+  .css-1foiknu-InputNumber{
+	  min-width: unset !important;
+  }
+
+  .components-select-control__input{
+	  border-radius:5px !important;
+	  border: 1px solid #dddfe1 !important;
+  }
+
+  .block-editor-block-card__content >
+  .block-editor-block-card__title{
+	  color:#fff;
+  }
+
+  .block-editor-block-card__content >
+  .block-editor-block-card__description{
+	  display:block !important;
+  }
+
+  .gx-popover >
+  .components-popover__content
+  .components-base-control.components-range-control.gx-with-unit-control >
+  .components-base-control__field
+  .components-range-control__root.css-yaebbd-Root.exqw8y20
+  button.components-button.is-secondary{
+	border: 1px solid #dddfe1 !important;
+	width:30px !important;
+  }
+
+  .gx-popover >
+  .components-popover__content
+  .components-base-control.components-range-control.gx-with-unit-control 
+  .components-base-control__label{
+	  width:100% !important;
+  }
+
+  .gx-popover >
+  .components-popover__content
+  .components-base-control.components-range-control.gx-with-unit-control 
+  .components-range-control__number.css-1foiknu-InputNumber.exqw8y213{
+	width: 48px;
+	min-width: 40px !important;
+	position: relative;
+	left: 10px !important;
+  }
+
+ 
+
+  .gx-divider-item
+  .components-range-control__root.css-yaebbd-Root.exqw8y20 >
+  .components-range-control__number.css-1foiknu-InputNumber.exqw8y213{
+	position: relative;
+    left: 9px;
+    border-radius: 5px;
+    width: 47px !important;
+  }

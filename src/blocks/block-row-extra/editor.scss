@@ -1,0 +1,35 @@
+// div[data-type="gutenberg-extra/block-row-extra"].is-focused {
+//     border: 1px #ccc solid;
+//     border-radius: 20px;
+// }
+
+.gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"] {
+    width: 100%;
+    margin: auto;
+}
+
+.gx-block.gx-row-block {
+    .block-editor-inner-blocks,
+    .block-list-appender,
+    .gx-row-dropdown {
+        width: 100%
+    }
+
+    .gx-row-appender-button {
+        display: block;
+        width: 100%;
+    }
+
+    > div > div.block-editor-block-list__layout{
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .gx-block-wrapper[data-type="gutenberg-extra/block-column-extra"]:first-of-type {
+        margin-left: 0 !important;
+    }
+
+    .gx-block-wrapper[data-type="gutenberg-extra/block-column-extra"]:last-of-type {
+        margin-right: 0 !important;
+    }
+}

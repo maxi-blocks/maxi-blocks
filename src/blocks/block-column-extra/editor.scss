@@ -1,0 +1,12 @@
+// div[data-type="gutenberg-extra/block-column-extra"].is-focused {
+//     border: 1px #ccc solid;
+//     border-radius: 20px;
+// }
+
+.wp-block[data-type="gutenberg-extra/block-column-extra"] {
+    margin: 0;
+}
+
+.gx-column-block .block-list-appender {
+    width: 100%
+}

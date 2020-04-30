@@ -4,6 +4,8 @@
  * @version 0.1
  */
 
+import { style } from "../../icons";
+
 /**
  * WordPress dependencies
  */
@@ -48,7 +50,7 @@ export default class GXComponent extends Component {
     * @param {obj} meta		Old and saved metadate
     * @param {obj} value	New values to add
     */
-    metaValue(value, type = null, avoidZero = true) {
+    metaValue(value = null, type = null, avoidZero = true) {
         this.object = value;
         this.type = type || '';
 

@@ -232,7 +232,6 @@ class ResponsiveStylesResolver {
         this.meta = meta;
         this.object = object;
         this.avoidZero = avoidZero;
-        // console.log(this.object.label, avoidZero)
         this.newObject = this.objectManipulator();
         this.initEvents();
     }
@@ -288,6 +287,8 @@ class ResponsiveStylesResolver {
         let unit = this.object.unit ? this.object.unit : '';
 
         for (let [target, prop] of Object.entries(object)) {
+            if (typeof prop === 'undefined') 
+                return;
             // values with dimensions
             if (this.avoidZero){
                 if (
@@ -314,6 +315,8 @@ class ResponsiveStylesResolver {
                 newObject[device][target] = prop;
         }
 
+        if(this.object.label == 'Border width')
+            console.log(newObject);
         return newObject;
     }
     get getNewValue() {
@@ -400,6 +403,10 @@ class BackEndResponsiveStyles {
      */
     getTarget(target) {
         if(target.indexOf('__$:') != -1)
+            return target.replace('__$', '');
+        if(target.indexOf('__$>') != -1)
+            return target.replace('__$', '');
+        if(target.indexOf('__$#') != -1)
             return target.replace('__$', '');
         return target.replace('__$', ' .');
     }

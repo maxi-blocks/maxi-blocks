@@ -43,9 +43,8 @@ const save = props => {
     const linkStyles = setLinkStyles(props);
 
     let classes = classnames(className);
-    if (uniqueID && (typeof uniqueID !== 'undefined')) {
-        classes = classnames(classes, uniqueID)
-    }
+    if (uniqueID && (typeof uniqueID !== 'undefined'))
+        classes = classnames(classes, uniqueID);
 
     return (
         <div

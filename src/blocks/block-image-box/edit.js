@@ -92,7 +92,6 @@ const edit = props => {
         classes = classnames(classes, uniqueID);
 
     const linkStyles = setLinkStyles(props);
-    const Line = () => <hr style={{ marginTop: "28px" }} />;
 
     return [
         <InspectorControls>
@@ -240,7 +239,7 @@ const edit = props => {
                                             onChange={boxShadow => setAttributes({ boxShadow })}
                                         />
                                     </BaseControl>
-                                    <Line />
+                                    <hr style={{ marginTop: "28px" }} />
                                     <BorderControl
                                         borderOptions={border}
                                         onChange={border => setAttributes({ border })}

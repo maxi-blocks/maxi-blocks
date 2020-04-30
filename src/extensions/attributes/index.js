@@ -19,7 +19,9 @@ import {
 const allowedBlocks = [
 	'gutenberg-extra/block-image-box',
 	'gutenberg-extra/block-title-extra',
-	'gutenberg-extra/testimonials-slider-block'
+	'gutenberg-extra/testimonials-slider-block',
+	'gutenberg-extra/block-row-extra',
+	'gutenberg-extra/block-column-extra',
 ];
 
 /**
@@ -28,14 +30,14 @@ const allowedBlocks = [
  * @param {Object} settings Original block settings.
  * @return {Object} Filtered block settings.
  */
-function addAttributes( settings ) {
+function addAttributes(settings) {
 	// Add custom selector/id
-	if ( allowedBlocks.includes( settings.name ) && typeof settings.attributes !== 'undefined' ) {
-		settings.attributes = Object.assign( settings.attributes, {
+	if (allowedBlocks.includes(settings.name) && typeof settings.attributes !== 'undefined') {
+		settings.attributes = Object.assign(settings.attributes, {
 			uniqueID: {
 				type: 'string',
 			},
-		} );
+		});
 	}
 
 	return settings;
@@ -50,19 +52,19 @@ function addAttributes( settings ) {
 const withAttributes = createHigherOrderComponent(
 	BlockEdit => props => {
 		const { name: blockName } = props;
-		
-		if ( allowedBlocks.includes( blockName ) ) {
+
+		if (allowedBlocks.includes(blockName)) {
 			props.attributes.uniqueID = props.attributes.uniqueID || '';
 
-			if ( props.attributes.uniqueID === '' ) {
-				let newID = uniqueId(blockName.replace('gutenberg-extra/','') + '-');
-				if ( !isEmpty(document.getElementsByClassName(newID)) || !isNil(document.getElementById(newID)) )
-					newID = uniqueId(blockName.replace('gutenberg-extra/','') + '-');
+			if (props.attributes.uniqueID === '') {
+				let newID = uniqueId(`gx-${blockName.replace('gutenberg-extra/', '')}-`);
+				if (!isEmpty(document.getElementsByClassName(newID)) || !isNil(document.getElementById(newID)))
+					newID = uniqueId(blockName.replace('gutenberg-extra/', '') + '-');
 				props.attributes.uniqueID = newID;
 			}
 		}
 
-		return <BlockEdit { ...props } />;
+		return <BlockEdit {...props} />;
 	},
 	'withAttributes'
 );

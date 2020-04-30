@@ -112,7 +112,7 @@ class ResponsiveFrontendStyles {
 
         foreach ( $meta as $target => $prop ) {
             $target = self::getTarget($target);
-            $important = is_admin() ? ' !important' : '';
+            $important = ' !important';
             if ( isset($prop['desktop']) && !empty ($prop['desktop']) || ! isset($prop['font']) ) {
                 $response .= ".{$target}{";
                     if ( isset($prop['font']) )
@@ -142,6 +142,10 @@ class ResponsiveFrontendStyles {
     public function getTarget($target) {
         if(strpos($target, '__$:')) 
             return str_replace( '__$', '', $target );
+        if(strpos($target, '__$>')) 
+            return str_replace( '__$', '', $target );
+        if(strpos($target, '__$#')) 
+            return str_replace( '__$', '', $target );
         return str_replace( '__$', ' .', $target );
     }
 
@@ -150,7 +154,7 @@ class ResponsiveFrontendStyles {
      */
     public function getStyles($styles) {
         $response = '';
-        $important = is_admin() ? ' !important' : '';
+        $important = ' !important';
         foreach ( $styles as $property => $value ) {
             $response .= "{$property}: {$value}{$important};";
         }

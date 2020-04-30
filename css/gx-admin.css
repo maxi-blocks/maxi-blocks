@@ -2823,7 +2823,7 @@
   .components-base-control__field >
   input.components-range-control__number{
 	position: absolute;
-	top: -1px !important;
+	top: 0 !important;
 	left: 173px !important;
   }
 /*-------------------------------------------------------------------------*/
@@ -2844,8 +2844,8 @@
   .components-base-control__field >
   input.components-range-control__number{
 	  position:absolute;
-	  top:-1px !important;
-	  left:232px !important;
+	  top: 0 !important;
+	  left:243px !important;
   }
 
 }

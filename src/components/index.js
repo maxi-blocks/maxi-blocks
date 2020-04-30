@@ -1,6 +1,9 @@
 // GX component
 export { default as GXComponent} from '../extensions/gx-component';
 
+// GX Block
+export { default as GXBlock } from '../extensions/gx-block';
+
 // Typography defaults
 export { default as DefaultTypography } from '../extensions/defaults/typography';
 

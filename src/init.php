@@ -27,10 +27,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @uses {wp-editor} for WP editor styles.
  * @since 1.0.0
  */
-function gutenberg_den_cgb_block_assets() { // phpcs:ignore
+function gutenberg_extra_block_assets() { // phpcs:ignore
 	// Register block styles for both frontend + backend.
 	wp_register_style(
-		'gutenberg_den-cgb-style-css', // Handle.
+		'gutenberg_extra-style-css', // Handle.
 		plugins_url( 'dist/blocks.style.build.css', dirname( __FILE__ ) ), // Block style CSS.
 		array( 'wp-editor' ), // Dependency to include the CSS after it.
 		null // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.style.build.css' ) // Version: File modification time.
@@ -38,7 +38,7 @@ function gutenberg_den_cgb_block_assets() { // phpcs:ignore
 
 	// Register block editor script for backend.
 	wp_register_script(
-		'gutenberg_den-cgb-block-js', // Handle.
+		'gutenberg_extra-block-js', // Handle.
 		plugins_url( '/dist/blocks.build.js', dirname( __FILE__ ) ), // Block.build.js: We register the block here. Built with Webpack.
 		array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ), // Dependencies, defined above.
 		null, // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.build.js' ), // Version: filemtime — Gets file modification time.
@@ -47,7 +47,7 @@ function gutenberg_den_cgb_block_assets() { // phpcs:ignore
 
 	// Register block editor styles for backend.
 	wp_register_style(
-		'gutenberg_den-cgb-block-editor-css', // Handle.
+		'gutenberg_extra-block-editor-css', // Handle.
 		plugins_url( 'dist/blocks.editor.build.css', dirname( __FILE__ ) ), // Block editor CSS.
 		array( 'wp-edit-blocks' ), // Dependency to include the CSS after it.
 		null // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.editor.build.css' ) // Version: File modification time.
@@ -66,63 +66,63 @@ function gutenberg_den_cgb_block_assets() { // phpcs:ignore
 	register_block_type(
 		'cgb/block-gutenberg-extra', array(
 			// Enqueue blocks.style.build.css on both frontend & backend.
-			'style'         => 'gutenberg_den-cgb-style-css',
+			'style'         => 'gutenberg_extra-style-css',
 			// Enqueue blocks.build.js in the editor only.
-			'editor_script' => 'gutenberg_den-cgb-block-js',
+			'editor_script' => 'gutenberg_extra-block-js',
 			// Enqueue blocks.editor.build.css in the editor only.
-			'editor_style'  => 'gutenberg_den-cgb-block-editor-css',
+			'editor_style'  => 'gutenberg_extra-block-editor-css',
 		)
 	);
 }
 
 // Hook: Block assets.
-add_action( 'init', 'gutenberg_den_cgb_block_assets' );
+add_action( 'init', 'gutenberg_extra_block_assets' );
 
 
-function gutenberg_den_cgb_load_custom_wp_admin_script() {
-        
+function gutenberg_extra_load_custom_wp_admin_script() {
 	// Register block editor script for backend.
 	wp_register_script(
-		'gutenberg_den-cgb-block-js-admin', // Handle.
+		'gutenberg_extra-block-js-admin', // Handle.
 		plugins_url( '/js/library-button-modal.js', dirname( __FILE__ ) ), "",
 		null,
 		true
 	);
 
-	wp_enqueue_script('gutenberg_den-cgb-block-js-admin');
+	wp_enqueue_script('gutenberg_extra-block-js-admin');
 
 }
 
 
-add_action( 'admin_enqueue_scripts', 'gutenberg_den_cgb_load_custom_wp_admin_script' );
+add_action( 'admin_enqueue_scripts', 'gutenberg_extra_load_custom_wp_admin_script' );
 
-function gutenberg_den_cgb_load_custom_wp_admin_style() {
-        
+function gutenberg_extra_load_custom_wp_admin_style() {
+
 	// Register block editor script for backend.
 	wp_register_style(
-		'gutenberg_den-cgb-block-css-admin', // Handle.
+		'gutenberg_extra-block-css-admin', // Handle.
 		plugins_url( '/css/gx-admin.css', dirname( __FILE__ ) )
 	);
 
-	wp_enqueue_style('gutenberg_den-cgb-block-css-admin');
+	wp_enqueue_style('gutenberg_extra-block-css-admin');
 
 }
 
 
-add_action( 'admin_enqueue_scripts', 'gutenberg_den_cgb_load_custom_wp_admin_style' );
+add_action( 'admin_enqueue_scripts', 'gutenberg_extra_load_custom_wp_admin_style' );
 
 
-add_filter( 'block_categories', 'gutenberg_den_cgb_block_category' );
+add_filter( 'block_categories', 'gutenberg_extra_block_category' );
 
-function gutenberg_den_cgb_block_category( $categories ) {
+function gutenberg_extra_block_category( $categories ) {
+	//print_r($categories);
 	return array_merge(
-		$categories,
 		array(
 			array(
 				'slug'  => 'gutenberg-extra-blocks',
-				'title' => __( 'GutenbergExtra Blocks', 'gutenberg-extra-blocks' ),
-			),
-		)
+				'title' => __( 'GutenbergExtra Blocks', 'gutenberg-extra' ),
+			)
+		),
+		$categories
 	);
 }
 
@@ -168,9 +168,9 @@ if ($this_content && $this_title ) {
 	//} //if ( ! $has_reusable_block )
 	//else {echo 'You already have Block with the same name';}
 
-} 
+}
 else {echo 'JSON Error';}
-   
+
 
     wp_die();
 }//function gx_insert_block()
@@ -191,3 +191,22 @@ require_once plugin_dir_path( __FILE__ ) . 'includes/layout/layout-functions.php
 require_once plugin_dir_path( __FILE__ ) . 'includes/layout/class-component-registry.php';
 require_once plugin_dir_path( __FILE__ ) . 'includes/layout/register-layout-components.php';
 require_once plugin_dir_path( __FILE__ ) . 'includes/gx-wp-dashboard.php';
+
+// Maybe this is not the best place, but for the moment...
+function gutenberg_scripts () {
+	wp_enqueue_script(
+		'gutenberg_scripts',
+		plugins_url( '../js/gutenberg_scripts.js', __FILE__ ),
+		[],
+		0.1
+	);
+};
+add_action('wp_enqueue_scripts', 'gutenberg_scripts');
+add_action('admin_enqueue_scripts', 'gutenberg_scripts');
+
+// Post Meta register
+require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-post-meta.php';
+require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-responsive-frontend-block-styles.php';
+
+// Image crop and image sizes
+require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-image-size.php';

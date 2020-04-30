@@ -19,6 +19,7 @@ import { FormFileUpload } from '@wordpress/components';
 import { Fragment } from '@wordpress/element';
 import { DropdownMenu, MenuGroup, MenuItem } from '@wordpress/components';
 import { SelectControl } from '@wordpress/components';
+import iconsBlocks from '../../components/icons/icons-blocks.js';
 
 // import { withState } from '@wordpress/compose';
 const { __ } = wp.i18n;
@@ -42,8 +43,8 @@ const {
 } = wp.components;
 
 registerBlockType( 'gutenberg-extra/container', {
-    title: __( 'GX Container'),
-    icon: 'editor-expand',
+    title: __( 'Container Extra'),
+    icon: iconsBlocks.container,
     category: 'gutenberg-extra-blocks',
     attributes: {
         alignment: {
@@ -128,11 +129,11 @@ registerBlockType( 'gutenberg-extra/container', {
             },
             className,
         } = props;
- 
+
         const onChangeContent = ( newContent ) => {
             props.setAttributes( { content: newContent } );
         };
- 
+
         const onChangealignment = ( newalignment ) => {
             props.setAttributes( { alignment: newalignment === undefined ? 'none' : newalignment } );
         };
@@ -316,7 +317,6 @@ registerBlockType( 'gutenberg-extra/container', {
                             value={ paddingBottom }
                             onChange={ onChangePaddingBottom }
                         />
-                                        
                     </PanelBody>
 
                      <PanelBody

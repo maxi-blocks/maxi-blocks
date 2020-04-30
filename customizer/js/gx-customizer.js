@@ -58,133 +58,135 @@ jQuery(function($) {
     themes.forEach(theme => {
       wp.customize('body_background_color'+theme+'-color-dark', function(value) {
         value.bind(function (newVal) {
-          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-dark { background-color: ' + newVal + '; }</style>');
+          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-dark { background-color: ' + newVal + ' !important; }</style>');
           // $('body.'+theme+' .gx-dark').css('background-color', newVal)
         });
       });
       wp.customize('body_background_color'+theme+'-color-light', function(value) {
         value.bind(function (newVal) {
-          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-light { background-color: ' + newVal + '; }</style>');
+          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-light { background-color: ' + newVal + ' !important; }</style>');
           // $('body.'+theme+' .gx-light').css('background-color', newVal)
         });
       });
       wp.customize('hover'+theme+'-color-dark', function(value) {
         value.bind(function (newVal) {
           $('#color-dark-hover').remove();
-          $('head').append('<style id="color-dark-hover"> body.'+theme+' .gx-dark a:hover{ color: ' +newVal+';}</style>');
+          $('head').append('<style id="color-dark-hover"> body.'+theme+' .gx-dark a:hover{ color: ' +newVal+' !important; }</style>');
         });
       });
       wp.customize('hover'+theme+'-color-light', function(value) {
         value.bind(function (newVal) {
           $('#color-light-hover').remove();
-          $('head').append('<style id="color-light-hover"> body.'+theme+' .gx-light a:hover{ color: ' +newVal+';}</style>');
+          $('head').append('<style id="color-light-hover"> body.'+theme+' .gx-light a:hover{ color: ' +newVal+' !important; }</style>');
         });
       });
       wp.customize('highlight'+theme+'-color-dark', function(value) {
         value.bind(function (newVal) {
-          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-dark .gx-highlight { color: ' + newVal + '; }</style>');
+          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-dark .gx-highlight { color: ' + newVal + ' !important; }</style>');
+          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-dark .gx-divider { border-color: ' + newVal + ' !important; }</style>');
           // $('body.'+theme+' .gx-dark .gx-highlight').css('color', newVal)
         });
       });
       wp.customize('highlight'+theme+'-color-light', function(value) {
         value.bind(function (newVal) {
-          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-light .gx-highlight { color: ' + newVal + '; }</style>');
+          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-light .gx-highlight { color: ' + newVal + ' !important; }</style>');
+          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-light .gx-divider { border-color: ' + newVal + ' !important; }</style>');
           // $('body.'+theme+' .gx-light .gx-highlight').css('color', newVal)
         });
       });
       wp.customize('p_color'+theme+'-color-dark', function(value) {
         value.bind(function (newVal) {
-          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-dark p, .gx-dark li { color: ' + newVal + '; }</style>');
+          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-dark p, .gx-dark li { color: ' + newVal + ' !important; }</style>');
           // $('body.'+theme+' .gx-dark p, .gx-dark li').css('color', newVal)
         });
       });
       wp.customize('p_color'+theme+'-color-light', function(value) {
         value.bind(function (newVal) {
-          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-light p, .gx-light li { color: ' + newVal + '; }</style>');
+          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-light p, .gx-light li { color: ' + newVal + ' !important; }</style>');
           // $('body.'+theme+' .gx-light p, .gx-light li').css('color', newVal)
         });
       });
       wp.customize('a_color'+theme+'-color-dark', function(value) {
         value.bind(function (newVal) {
-          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-dark a { color: ' + newVal + '; }</style>');
+          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-dark a { color: ' + newVal + ' !important; }</style>');
           // $('body.'+theme+' .gx-dark a').css('color', newVal)
         });
       });
       wp.customize('a_color'+theme+'-color-light', function(value) {
         value.bind(function (newVal) {
-          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-light a { color: ' + newVal + '; }</style>');
+          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-light a { color: ' + newVal + ' !important; }</style>');
           // $('body.'+theme+' .gx-light a').css('color', newVal)
         });
       });
       wp.customize('h1_color'+theme+'-color-dark', function(value) {
         value.bind(function (newVal) {
-          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-dark h1 { color: ' + newVal + '; }</style>');
+          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-dark h1 { color: ' + newVal + ' !important; }</style>');
           // $('body.'+theme+' .gx-dark h1').css('color', newVal)
         });
       });
       wp.customize('h1_color'+theme+'-color-light', function(value) {
         value.bind(function (newVal) {
-          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-light h1 { color: ' + newVal + '; }</style>');
+          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-light h1 { color: ' + newVal + ' !important; }</style>');
           // $('body.'+theme+' .gx-light h1').css('color', newVal)
         });
       });
       wp.customize('h2_color'+theme+'-color-dark', function(value) {
         value.bind(function (newVal) {
-          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-dark h2 { color: ' + newVal + '; }</style>');
+          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-dark h2 { color: ' + newVal + ' !important; }</style>');
           // $('body.'+theme+' .gx-dark h2').css('color', newVal)
         });
       });
       wp.customize('h2_color'+theme+'-color-light', function(value) {
         value.bind(function (newVal) {
-          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-light h2 { color: ' + newVal + '; }</style>');
+          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-light h2 { color: ' + newVal + ' !important; }</style>');
           // $('body.'+theme+' .gx-light h2').css('color', newVal)
         });
       });
       wp.customize('h3_color'+theme+'-color-dark', function(value) {
         value.bind(function (newVal) {
-          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-dark h3 { color: ' + newVal + '; }</style>');
+          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-dark h3 { color: ' + newVal + ' !important; }</style>');
           // $('body.'+theme+' .gx-dark h3').css('color', newVal)
         });
       });
       wp.customize('h3_color'+theme+'-color-light', function(value) {
         value.bind(function (newVal) {
-          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-light h3 { color: ' + newVal + '; }</style>');
+          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-light h3 { color: ' + newVal + ' !important; }</style>');
           // $('body.'+theme+' .gx-light h3').css('color', newVal)
         });
       });
       wp.customize('h4_color'+theme+'-color-dark', function(value) {
         value.bind(function (newVal) {
-          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-dark h4 { color: ' + newVal + '; }</style>');
+          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-dark h4 { color: ' + newVal + ' !important; }</style>');
           // $('body.'+theme+' .gx-dark h4').css('color', newVal)
         });
       });
       wp.customize('h4_color'+theme+'-color-light', function(value) {
         value.bind(function (newVal) {
-          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-light h4 { color: ' + newVal + '; }</style>');
+          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-light h4 { color: ' + newVal + ' !important; }</style>');
           // $('body.'+theme+' .gx-light h4').css('color', newVal)
         });
       });
       wp.customize('h5_color'+theme+'-color-dark', function(value) {
         value.bind(function (newVal) {
-          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-dark h5 { color: ' + newVal + '; }</style>');
+          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-dark h5 { color: ' + newVal + ' !important; }</style>');
           // $('body.'+theme+' .gx-dark h5').css('color', newVal)
         });
       });
       wp.customize('h5_color'+theme+'-color-light', function(value) {
         value.bind(function (newVal) {
-          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-light h5 { color: ' + newVal + '; }</style>');
+          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-light h5 { color: ' + newVal + ' !important; }</style>');
           // $('body.'+theme+' .gx-light h5').css('color', newVal)
         });
       });
       wp.customize('h6_color'+theme+'-color-dark', function(value) {
         value.bind(function (newVal) {
-          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-dark h6 { color: ' + newVal + '; }</style>');
+          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-dark h6 { color: ' + newVal + ' !important; }</style>');
           // $('body.'+theme+' .gx-dark h6').css('color', newVal)
         });
       });
       wp.customize('h6_color'+theme+'-color-light', function(value) {
         value.bind(function (newVal) {
-          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-light h6 { color: ' + newVal + '; }</style>');
+          $('head').append('<style type="text/css">' + 'body.'+theme+' .gx-light h6 { color: ' + newVal + ' !important; }</style>');
           // $('body.'+theme+' .gx-light h6').css('color', newVal)
         });
       });
@@ -203,16 +205,31 @@ jQuery(function($) {
                 let elem =  `body.${theme} .${controlBlock[1]} ${tagBlok}`;
 
                 let elemStyle = controlBlock[2];
-                if (controlBlock[2] == 'font-family') {
-                  $(elem).css(elemStyle, newVal.replace(/\+/g, ' '));
-                  let styles = (gx_ajax_object.font_info[newVal].subsets).join(',');
-                  let weights = Object.values(gx_ajax_object.font_info[newVal].weights).join(',');
-                  let fontURL = newVal+':'+weights+'&subset='+styles;
-                  if(['Verdana', 'Arial'].includes(newVal) != false)
-                  $('head').append('<link href="https://fonts.googleapis.com/css?family=' + fontURL +'" rel="stylesheet" type="text/css">');
-                } else {
-                  $(elem).css(elemStyle, newVal);
+                console.log( 'elemStyle'+elemStyle);
+                 $(elem).css({elemStyle: ''});
+                //$(elem)[0].style[elemStyle] = '';
+                console.log('remove '+elemStyle);
+                let current_css = $(elem).attr('style') ? ($(elem).attr('style')+'; ') : '';
+
+
+                 console.log('current_css: '+current_css);
+                // $(elem)[0].setAttribute('style', current_css + elemStyle + ":" + newVal + " !important");
+                if (elemStyle == 'font-family') {
+                    console.log('font family!!');
+                    let styles = (gx_ajax_object.font_info[newVal].subsets).join(',');
+                    console.log("styles " + styles);
+                    let weights = Object.values(gx_ajax_object.font_info[newVal].weights).join(',');
+                    console.log("weights "+weights);
+                    let fontURL = newVal+':'+weights+'&subset='+styles;
+                    console.log('fontURL: '+fontURL);
+                    if(['Verdana', 'Arial'].includes(newVal) == false) {
+                      console.log('before append');
+                    $('head').append('<link href="https://fonts.googleapis.com/css?family=' + fontURL +'" rel="stylesheet" type="text/css">');
+                    newVal = newVal.replace(/\+/g, ' ');
+                    $(elem)[0].setAttribute('style', current_css + elemStyle + ": \"" + newVal + "\" !important");
+                  }
                 }
+                else { $(elem)[0].setAttribute('style', current_css + elemStyle + ":" + newVal + " !important");}
               });
 
             })
@@ -230,7 +247,8 @@ jQuery(function($) {
 
     $('.gx-global.gx-block').removeClass('gx-default');
     if (value.get() === 'gx-dark') {
-      $('.gx-global.gx-block').removeClass('gx-light');
+      $('.gx-global.gx-block').removeClass('gx-light');  $('#sub-accordion-section-globalStyling li.customize-section-description-container h3').append('<span class="gx-information"><img src="/wp-content/plugins/gutenberg-extra/img/information.svg" alt="info icon" /></span>');
+
       $('.gx-global.gx-block').addClass('gx-dark');
     }
     else if( value.get() === 'gx-light'){
@@ -245,5 +263,9 @@ jQuery(function($) {
       })
 
     }
-  })
+  });
+
+  // add ( i ) icon to a header
+
+  $('#sub-accordion-section-globalStyling li.customize-section-description-container h3').append('<span class="gx-information"><img src="/wp-content/plugins/gutenberg-extra/img/information.svg" alt="info icon" /></span>');
 });

@@ -315,8 +315,6 @@ class ResponsiveStylesResolver {
                 newObject[device][target] = prop;
         }
 
-        if(this.object.label == 'Border width')
-            console.log(newObject);
         return newObject;
     }
     get getNewValue() {

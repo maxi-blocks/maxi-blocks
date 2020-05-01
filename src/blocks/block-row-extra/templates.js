@@ -1,4 +1,13 @@
 /**
+ * External dependencies
+ */
+import {
+    isEmpty,
+    isNil,
+    uniqueId
+} from 'lodash';
+
+/**
  * Icons
  */
 import {
@@ -22,6 +31,16 @@ import {
 /**
  * Templates
  */
+
+const uniqueIdCreator = () => {
+    const newID = uniqueId('gx-block-column-extra-');
+    if (!isEmpty(document.getElementsByClassName(newID)) || !isNil(document.getElementById(newID)))
+        uniqueIdCreator();
+    
+    console.log(newID)
+    return newID;
+}
+
 const TEMPLATES = [
     {
         name: 'Full size column',
@@ -30,7 +49,10 @@ const TEMPLATES = [
             [
                 'gutenberg-extra/block-column-extra',
                 {
-                    sizeDesktop: 100
+                    uniqueID: 'gx-block-column-extra-1',
+                    sizeDesktop: 100,
+                    sizeTablet: 100,
+                    sizeMobile: 100
                 }
             ],
         ],
@@ -48,6 +70,7 @@ const TEMPLATES = [
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 47.5,
                     sizeTablet: 47.5,
                     sizeMobile: 47.5
@@ -56,6 +79,7 @@ const TEMPLATES = [
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 47.5,
                     sizeTablet: 47.5,
                     sizeMobile: 47.5
@@ -76,12 +100,14 @@ const TEMPLATES = [
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 23.7
                 }
             ],
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 71.3
                 }
             ],
@@ -100,6 +126,7 @@ const TEMPLATES = [
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 71.3,
                     sizeTablet: 71.3,
                     sizeMobile: 71.3
@@ -108,6 +135,7 @@ const TEMPLATES = [
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 23.7,
                     sizeTablet: 23.7,
                     sizeMobile: 23.7
@@ -128,12 +156,14 @@ const TEMPLATES = [
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 19
                 }
             ],
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 76
                 }
             ],
@@ -152,6 +182,7 @@ const TEMPLATES = [
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 76,
                     sizeTablet: 76,
                     sizeMobile: 76
@@ -160,6 +191,7 @@ const TEMPLATES = [
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 19,
                     sizeTablet: 19,
                     sizeMobile: 19
@@ -180,6 +212,7 @@ const TEMPLATES = [
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 30,
                     sizeTablet: 30,
                     sizeMobile: 30
@@ -188,6 +221,7 @@ const TEMPLATES = [
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 30,
                     sizeTablet: 30,
                     sizeMobile: 30
@@ -196,6 +230,7 @@ const TEMPLATES = [
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 30,
                     sizeTablet: 30,
                     sizeMobile: 30
@@ -216,18 +251,21 @@ const TEMPLATES = [
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 22.5
                 }
             ],
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 22.5
                 }
             ],
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 45
                 }
             ],
@@ -246,18 +284,21 @@ const TEMPLATES = [
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 15
                 }
             ],
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 15
                 }
             ],
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 60
                 }
             ],
@@ -276,18 +317,21 @@ const TEMPLATES = [
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 15
                 }
             ],
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 60
                 }
             ],
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 15
                 }
             ],
@@ -306,6 +350,7 @@ const TEMPLATES = [
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 45,
                     sizeTablet: 45,
                     sizeMobile: 45
@@ -314,6 +359,7 @@ const TEMPLATES = [
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 22.5,
                     sizeTablet: 22.5,
                     sizeMobile: 22.5
@@ -322,6 +368,7 @@ const TEMPLATES = [
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 22.5,
                     sizeTablet: 22.5,
                     sizeMobile: 22.5
@@ -342,6 +389,7 @@ const TEMPLATES = [
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 60,
                     sizeTablet: 60,
                     sizeMobile: 60
@@ -350,6 +398,7 @@ const TEMPLATES = [
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 15,
                     sizeTablet: 15,
                     sizeMobile: 15
@@ -358,6 +407,7 @@ const TEMPLATES = [
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 15,
                     sizeTablet: 15,
                     sizeMobile: 15
@@ -378,6 +428,7 @@ const TEMPLATES = [
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 21.3,
                     sizeTablet: 21.3,
                     sizeMobile: 21.3
@@ -386,6 +437,7 @@ const TEMPLATES = [
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 21.3,
                     sizeTablet: 21.3,
                     sizeMobile: 21.3
@@ -394,6 +446,7 @@ const TEMPLATES = [
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 21.3,
                     sizeTablet: 21.3,
                     sizeMobile: 21.3
@@ -402,6 +455,7 @@ const TEMPLATES = [
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 21.3,
                     sizeTablet: 21.3,
                     sizeMobile: 21.3
@@ -422,6 +476,7 @@ const TEMPLATES = [
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 16,
                     sizeTablet: 16,
                     sizeMobile: 16
@@ -430,6 +485,7 @@ const TEMPLATES = [
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 16,
                     sizeTablet: 16,
                     sizeMobile: 16
@@ -438,6 +494,7 @@ const TEMPLATES = [
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 16,
                     sizeTablet: 16,
                     sizeMobile: 16
@@ -446,6 +503,7 @@ const TEMPLATES = [
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 16,
                     sizeTablet: 16,
                     sizeMobile: 16
@@ -454,6 +512,7 @@ const TEMPLATES = [
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 16,
                     sizeTablet: 16,
                     sizeMobile: 16
@@ -474,6 +533,7 @@ const TEMPLATES = [
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 12.5,
                     sizeTablet: 12.5,
                     sizeMobile: 12.5
@@ -482,6 +542,7 @@ const TEMPLATES = [
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 12.5,
                     sizeTablet: 12.5,
                     sizeMobile: 12.5
@@ -490,6 +551,7 @@ const TEMPLATES = [
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 12.5,
                     sizeTablet: 12.5,
                     sizeMobile: 12.5
@@ -498,6 +560,7 @@ const TEMPLATES = [
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 12.5,
                     sizeTablet: 12.5,
                     sizeMobile: 12.5
@@ -506,6 +569,7 @@ const TEMPLATES = [
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 12.5,
                     sizeTablet: 12.5,
                     sizeMobile: 12.5
@@ -514,6 +578,7 @@ const TEMPLATES = [
             [
                 'gutenberg-extra/block-column-extra',
                 {
+                    uniqueID: 'gx-block-column-extra-1',
                     sizeDesktop: 12.5,
                     sizeTablet: 12.5,
                     sizeMobile: 12.5

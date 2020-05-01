@@ -55,21 +55,27 @@
 
         > div > div.block-editor-block-list__layout {
             display: flex;
-        }
 
-        > div > div.block-editor-block-list__layout > div.block-list-appender {
-            display: flex;
-            flex-wrap: wrap;
-        }
+            > div.block-list-appender {
+                margin: 0;
 
-        > div > div.block-editor-block-list__layout > div.block-list-appender > button.gx-row-template-button {
-            width: 10rem;
-            height: 5rem;
-        }
+                > div.gx-row-template-wrapper {
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: center;
+                    background-color: #ffffff;
 
-        > div > div.block-editor-block-list__layout > div.block-list-appender > button.gx-row-template-button > svg {
-            width: 100%;
-            height: 100%;
+                    > button.gx-row-template-button {
+                        width: 10rem;
+                        height: 5rem;
+
+                        > svg {
+                            width: 100%;
+                            height: 100%;
+                        }
+                    }
+                }
+            }
         }
 
         .gx-block-wrapper[data-type="gutenberg-extra/block-column-extra"]:first-of-type {
@@ -84,7 +90,7 @@
 
 div.gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"].is-selected:before,
 div.gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"].has-child-selected:before {
-    transform: translateX(-10px);
+    transform: translate(-8px, -8px);
     opacity: 1;
     visibility: visible;
 }
@@ -92,7 +98,7 @@ div.gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"].has-child-sele
 div.gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"].is-selected,
 div.gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"].has-child-selected {
     div.gx-block.gx-row-block > span.gx-row-selector {
-        transform: translateY(-100%);
+        transform: translateY(calc(-100% - 8px));
         opacity: 1;
         visibility: visible;
     }

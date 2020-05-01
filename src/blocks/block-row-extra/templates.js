@@ -1,13 +1,4 @@
 /**
- * External dependencies
- */
-import {
-    isEmpty,
-    isNil,
-    uniqueId
-} from 'lodash';
-
-/**
  * Icons
  */
 import {
@@ -31,16 +22,6 @@ import {
 /**
  * Templates
  */
-
-const uniqueIdCreator = () => {
-    const newID = uniqueId('gx-block-column-extra-');
-    if (!isEmpty(document.getElementsByClassName(newID)) || !isNil(document.getElementById(newID)))
-        uniqueIdCreator();
-    
-    console.log(newID)
-    return newID;
-}
-
 const TEMPLATES = [
     {
         name: 'Full size column',

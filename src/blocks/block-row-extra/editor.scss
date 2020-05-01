@@ -31,7 +31,7 @@
     .gx-block.gx-row-block {
         position: relative;
 
-        .gx-row-selector {
+        .gx-row-selector-wrapper {
             position: absolute;
             top: 0;
             left: 0;
@@ -40,6 +40,15 @@
             visibility: hidden;
             transition: all 1s ease;
             font-size: 12px;
+
+            .gx-row-selector-item-wrapper {
+                display: inline;
+
+                .gx-row-selector-item {
+                    cursor: pointer;
+                    text-decoration: underline;
+                }
+            }
         }
 
         .block-editor-inner-blocks,
@@ -97,7 +106,7 @@ div.gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"].has-child-sele
 
 div.gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"].is-selected,
 div.gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"].has-child-selected {
-    div.gx-block.gx-row-block > span.gx-row-selector {
+    div.gx-block.gx-row-block > div.gx-row-selector-wrapper {
         transform: translateY(calc(-100% - 8px));
         opacity: 1;
         visibility: visible;

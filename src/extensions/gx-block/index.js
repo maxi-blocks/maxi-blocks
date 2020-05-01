@@ -28,7 +28,6 @@ class GXBlock extends GXComponent {
 
             this.uniqueIDChecker(newUniqueId);
 
-            console.log('changing uniqueID')
             this.props.setAttributes({ uniqueID: newUniqueId })
         }
     }

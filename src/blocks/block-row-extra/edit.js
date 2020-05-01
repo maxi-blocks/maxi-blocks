@@ -46,13 +46,23 @@ import TEMPLATES from './templates';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
+import {
+    isEmpty,
+    isNil,
+    uniqueId,
+    uniqBy,
+    isEqual
+} from 'lodash';
+
 /**
  * Edit
  */
 const ALLOWED_BLOCKS = ['gutenberg-extra/block-column-extra'];
 
 class edit extends GXBlock {
+    state = {
+        selectorBlocks: [],
+    }
 
     componentDidMount() {
         this.uniqueIDChecker(this.props.attributes.uniqueID);
@@ -61,6 +71,29 @@ class edit extends GXBlock {
 
     componentDidUpdate() {
         this.setStyles();
+        this.setSelectorBlocks()
+    }
+
+    setSelectorBlocks() {
+        const {
+            originalNestedBlocks,
+            selectedBlockId
+        } = this.props;
+
+        if (isNil(originalNestedBlocks))
+            return
+
+        let selectorBlockList = [];
+        if (!isNil(selectedBlockId)) {
+            selectorBlockList = [...originalNestedBlocks, selectedBlockId]
+        }
+
+        if ( 
+            !isEqual(this.state.selectorBlocks, selectorBlockList) 
+        )
+            setTimeout(() => {          // Should find an alternative       
+                this.setState({ selectorBlocks: selectorBlockList });
+            }, 10);
     }
 
     /**
@@ -162,12 +195,17 @@ class edit extends GXBlock {
                 extraClassName,
                 extraStyles
             },
+            clientId,
+            selectedBlockId,
             loadTemplate,
             selectOnClick,
             hasInnerBlock,
             setAttributes,
             className,
         } = this.props;
+
+        const { selectorBlocks } = this.state;
+        console.log(selectorBlocks)
 
         let classes = classnames('gx-block gx-row-block', blockStyle, extraClassName, className);
 
@@ -346,17 +384,52 @@ class edit extends GXBlock {
                     />
                 </PanelBody>
             </InspectorControls>,
-            <div className={classes}>
-                <span className="gx-row-selector">
-                    ROW
-                </span>
+            <div
+                className={classes}
+            >
+                <div
+                    className="gx-row-selector-wrapper"
+                >
+                    {
+                        !isNil(selectorBlocks) &&
+                        selectorBlocks.map((blockId, i) => {
+                            const blockName = wp.data.select('core/block-editor').getBlockName(blockId)
+                            const blockType = wp.data.select('core/blocks').getBlockType(blockName);
+                            const title = blockType.title;
+
+                            return (
+                                <div
+                                    className="gx-row-selector-item-wrapper"
+                                >
+                                    {
+                                        i != 0 &&
+                                        <span> > </span>
+                                    }
+                                    <span
+                                        className="gx-row-selector-item"
+                                        target={blockId}
+                                        onClick={e => {
+                                            selectOnClick(blockId);
+                                            this.setState
+                                        }}
+                                    >
+                                        {title}
+                                    </span>
+                                </div>
+                            )
+                        })
+                    }
+                </div>
                 <InnerBlocks
                     templateLock={false}
                     allowedBlocks={ALLOWED_BLOCKS}
                     renderAppender={
                         !hasInnerBlock() ?
                             () => (
-                                <div class="gx-row-template-wrapper" onClick={selectOnClick}>
+                                <div
+                                    class="gx-row-template-wrapper"
+                                    onClick={() => selectOnClick(clientId)}
+                                >
                                     {
                                         TEMPLATES.map((template, i) => {
                                             return (
@@ -384,11 +457,12 @@ class edit extends GXBlock {
     }
 }
 
-const editSelect = withSelect((select, ownProps) => {
-    const { clientId } = ownProps;
-    const originalNestedBlocks = select('core/block-editor').getBlockOrder(clientId);
+const editSelect = withSelect(select => {
+    const selectedBlockId = select('core/block-editor').getSelectedBlockClientId();
+    const originalNestedBlocks = select('core/block-editor').getBlockParents(selectedBlockId);
 
     return {
+        selectedBlockId,
         originalNestedBlocks
     }
 })
@@ -396,8 +470,28 @@ const editSelect = withSelect((select, ownProps) => {
 const editDispatch = withDispatch((dispatch, ownProps) => {
     const { clientId } = ownProps;
 
+    /**
+     * Creates uniqueID for columns on loading templates
+     */
+    const uniqueIdCreator = () => {
+        const newID = uniqueId('gx-block-column-extra-');
+        if (!isEmpty(document.getElementsByClassName(newID)) || !isNil(document.getElementById(newID)))
+            uniqueIdCreator();
+
+        return newID;
+    }
+
+    /**
+     * Loads template into InnerBlocks
+     * 
+     * @param {integer} i Element of object TEMPLATES
+     * @param {function} callback 
+     */
     const loadTemplate = async (i, callback) => {
         const template = TEMPLATES[i];
+        template.content.map(column => {
+            column[1].uniqueID = uniqueIdCreator();
+        })
 
         const newTemplate = synchronizeBlocksWithTemplate([], template.content);
         dispatch('core/block-editor').replaceInnerBlocks(clientId, newTemplate);
@@ -408,17 +502,20 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
     }
 
     /**
-     * Fix no selecting block issue when clicking on the button 
+     * Block selector
+     * 
+     * @param {string} id Block id to select
      */
-    const selectOnClick = () => {
-        dispatch('core/editor').selectBlock(clientId);
+    const selectOnClick = (id) => {
+        console.log(id)
+        dispatch('core/editor').selectBlock(id);
     }
 
     /**
-     * Check if InnerBlock contains other blocks
+     * Check if InnerBlocks contains other blocks
      */
     const hasInnerBlock = () => {
-        return select('core/block-editor').getBlockOrder(clientId).length >= 1;
+        return select('core/block-editor').getBlockOrder(clientId).length >= 1; // hasChildBlocks ??
     }
 
     return {

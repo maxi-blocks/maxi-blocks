@@ -4,9 +4,11 @@
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
 const { synchronizeBlocksWithTemplate } = wp.blocks;
+const { compose } = wp.compose;
 const {
     select,
     dispatch,
+    withSelect,
     withDispatch
 } = wp.data;
 const {
@@ -161,29 +163,13 @@ class edit extends GXBlock {
                 extraStyles
             },
             loadTemplate,
-            clientId,
+            selectOnClick,
+            hasInnerBlock,
             setAttributes,
             className,
         } = this.props;
 
         let classes = classnames('gx-block gx-row-block', blockStyle, extraClassName, className);
-
-        /**
-         * Fix no selecting block issue when clicking on the button 
-         * 
-         * @param {object} e Clicked object properties
-         */
-        const selecOnClick = e => {
-            const rowBlockId = e.target.closest('[data-type="gutenberg-extra/block-row-extra"]').getAttribute('data-block');
-            dispatch('core/editor').selectBlock(rowBlockId);
-        }
-
-        /**
-         * Check if InnerBlock contains other blocks
-         */
-        const hasInnerBlock = () => {
-            return select('core/block-editor').getBlockOrder(clientId).length >= 1;
-        }
 
         return [
             <InspectorControls>
@@ -370,21 +356,25 @@ class edit extends GXBlock {
                     renderAppender={
                         !hasInnerBlock() ?
                             () => (
-                                TEMPLATES.map((template, i) => {
-                                    return (
-                                        <Button
-                                            className="gx-row-template-button"
-                                            onClick={() => {
-                                                loadTemplate(i, this.setStyles.bind(this));
-                                            }}
-                                        >
-                                            <Icon 
-                                                className="gx-row-template-icon"
-                                                icon={template.icon}
-                                            />
-                                        </Button>
-                                    )
-                                })
+                                <div class="gx-row-template-wrapper" onClick={selectOnClick}>
+                                    {
+                                        TEMPLATES.map((template, i) => {
+                                            return (
+                                                <Button
+                                                    className="gx-row-template-button"
+                                                    onClick={() => {
+                                                        loadTemplate(i, this.setStyles.bind(this));
+                                                    }}
+                                                >
+                                                    <Icon
+                                                        className="gx-row-template-icon"
+                                                        icon={template.icon}
+                                                    />
+                                                </Button>
+                                            )
+                                        })
+                                    }
+                                </div>
                             ) :
                             false
                     }
@@ -394,7 +384,16 @@ class edit extends GXBlock {
     }
 }
 
-export default withDispatch((dispatch, ownProps) => {
+const editSelect = withSelect((select, ownProps) => {
+    const { clientId } = ownProps;
+    const originalNestedBlocks = select('core/block-editor').getBlockOrder(clientId);
+
+    return {
+        originalNestedBlocks
+    }
+})
+
+const editDispatch = withDispatch((dispatch, ownProps) => {
     const { clientId } = ownProps;
 
     const loadTemplate = async (i, callback) => {
@@ -408,7 +407,28 @@ export default withDispatch((dispatch, ownProps) => {
             .then(() => callback());
     }
 
-    return {
-        loadTemplate
+    /**
+     * Fix no selecting block issue when clicking on the button 
+     */
+    const selectOnClick = () => {
+        dispatch('core/editor').selectBlock(clientId);
     }
-})(edit)
+
+    /**
+     * Check if InnerBlock contains other blocks
+     */
+    const hasInnerBlock = () => {
+        return select('core/block-editor').getBlockOrder(clientId).length >= 1;
+    }
+
+    return {
+        loadTemplate,
+        selectOnClick,
+        hasInnerBlock
+    }
+})
+
+export default compose(
+    editSelect,
+    editDispatch
+)(edit);

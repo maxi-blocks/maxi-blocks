@@ -2948,6 +2948,21 @@
 	 margin-top: 1px !important;
  }
 
+ .gx-width-height-item
+ .components-range-control__root.css-yaebbd-Root.exqw8y20 >
+ .components-range-control__number.css-1foiknu-InputNumber.exqw8y213{
+     position: relative;
+     top: 0;
+     left: 6px;
+ }
+
+ .gx-box-settings-item
+ .components-tab-panel__tabs
+ button > svg{
+	position: relative;
+	top: -2px;
+ }
+
 }
   
   .editor-styles-wrapper h1::before,
@@ -3549,7 +3564,7 @@
  .components-range-control__number.css-1foiknu-InputNumber.exqw8y213{
 	position: relative;
 	top: 0;
-	left: 8px;
+	left: 7px;
  }
 
  .gx-imagesettings-control
@@ -3614,3 +3629,5 @@
  .css-uojzqi-ActionRightWrapper.exqw8y214{
 	 margin-top: -1px;
  }
+
+ 

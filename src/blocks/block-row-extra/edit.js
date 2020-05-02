@@ -88,8 +88,8 @@ class edit extends GXBlock {
             selectorBlockList = [...originalNestedBlocks, selectedBlockId]
         }
 
-        if ( 
-            !isEqual(this.state.selectorBlocks, selectorBlockList) 
+        if (
+            !isEqual(this.state.selectorBlocks, selectorBlockList)
         )
             setTimeout(() => {          // Should find an alternative       
                 this.setState({ selectorBlocks: selectorBlockList });
@@ -196,7 +196,6 @@ class edit extends GXBlock {
                 extraStyles
             },
             clientId,
-            selectedBlockId,
             loadTemplate,
             selectOnClick,
             hasInnerBlock,
@@ -205,7 +204,6 @@ class edit extends GXBlock {
         } = this.props;
 
         const { selectorBlocks } = this.state;
-        console.log(selectorBlocks)
 
         let classes = classnames('gx-block gx-row-block', blockStyle, extraClassName, className);
 
@@ -387,39 +385,42 @@ class edit extends GXBlock {
             <div
                 className={classes}
             >
-                <div
-                    className="gx-row-selector-wrapper"
-                >
-                    {
-                        !isNil(selectorBlocks) &&
-                        selectorBlocks.map((blockId, i) => {
-                            const blockName = wp.data.select('core/block-editor').getBlockName(blockId)
-                            const blockType = wp.data.select('core/blocks').getBlockType(blockName);
-                            const title = blockType.title;
+                {
+                    selectorBlocks[0] === clientId &&
+                    <div
+                        className="gx-row-selector-wrapper"
+                    >
+                        {
+                            !isNil(selectorBlocks) &&
+                            selectorBlocks.map((blockId, i) => {
+                                const blockName = wp.data.select('core/block-editor').getBlockName(blockId)
+                                const blockType = wp.data.select('core/blocks').getBlockType(blockName);
+                                const title = blockType.title;
 
-                            return (
-                                <div
-                                    className="gx-row-selector-item-wrapper"
-                                >
-                                    {
-                                        i != 0 &&
-                                        <span> > </span>
-                                    }
-                                    <span
-                                        className="gx-row-selector-item"
-                                        target={blockId}
-                                        onClick={e => {
-                                            selectOnClick(blockId);
-                                            this.setState
-                                        }}
+                                return (
+                                    <div
+                                        className="gx-row-selector-item-wrapper"
                                     >
-                                        {title}
-                                    </span>
-                                </div>
-                            )
-                        })
-                    }
-                </div>
+                                        {
+                                            i != 0 &&
+                                            <span> > </span>
+                                        }
+                                        <span
+                                            className="gx-row-selector-item"
+                                            target={blockId}
+                                            onClick={e => {
+                                                selectOnClick(blockId);
+                                                this.setState
+                                            }}
+                                        >
+                                            {title}
+                                        </span>
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
+                }
                 <InnerBlocks
                     templateLock={false}
                     allowedBlocks={ALLOWED_BLOCKS}

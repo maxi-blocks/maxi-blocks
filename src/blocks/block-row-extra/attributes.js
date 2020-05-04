@@ -19,7 +19,11 @@ const attributes = {
         type: 'number',
         default: 0
     },
-    syncColumns: {
+    syncSize: {
+        type: 'boolean',
+        default: true,
+    },
+    syncStyles: {
         type: 'boolean',
         default: true,
     },

@@ -32,13 +32,20 @@ const save = props => {
         }
     } = props;
 
-    let classes = classnames('gx-block gx-block-wrapper', blockStyle, extraClassName, className);
+    let classes = classnames(
+        'gx-block gx-column-block', 
+        blockStyle, 
+        extraClassName, 
+        className
+    );
     if (uniqueID && (typeof uniqueID !== 'undefined'))
         classes = classnames(classes, uniqueID);
 
     return (
-        <div className={classes} uniqueid={uniqueID}>
-            <div className="gx-column-block">
+        <div className={classes}>
+            <div
+                className="gx-column-block-content"
+            >
                 <InnerBlocks.Content />
             </div>
         </div>

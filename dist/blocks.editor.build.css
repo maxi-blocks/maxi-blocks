@@ -845,93 +845,93 @@ input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before {
  * Can include things like variables and mixins
  * that are used across the project.
 */
-.gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"]:hover {
+.gx-row-block:hover {
   outline: 1px solid grey; }
 
-.gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"][data-align="full"] {
+div.wp-block[data-align="full"] > div.gx-row-block {
   width: auto; }
 
-.gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"] {
+div.gx-row-block {
   width: 100%;
-  margin: auto; }
-  .gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"] .gx-block.gx-row-block {
-    position: relative; }
-    .gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"] .gx-block.gx-row-block .gx-row-selector-wrapper:before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      -webkit-transform: translateX(0px);
-          -ms-transform: translateX(0px);
-              transform: translateX(0px);
-      width: 5rem;
-      height: 2rem;
-      border-top: 8px solid black;
-      border-left: 8px solid black;
-      opacity: 0;
-      visibility: hidden;
-      -webkit-transition: all 1s ease;
-      -o-transition: all 1s ease;
-      transition: all 1s ease; }
-    .gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"] .gx-block.gx-row-block .gx-row-selector-wrapper {
-      position: absolute;
-      top: 0;
-      left: 0;
-      -webkit-transform: translateY(0%);
-          -ms-transform: translateY(0%);
-              transform: translateY(0%);
-      opacity: 0;
-      visibility: hidden;
-      -webkit-transition: all 1s ease;
-      -o-transition: all 1s ease;
-      transition: all 1s ease;
-      font-size: 12px; }
-      .gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"] .gx-block.gx-row-block .gx-row-selector-wrapper .gx-row-selector-item-wrapper {
-        display: inline; }
-        .gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"] .gx-block.gx-row-block .gx-row-selector-wrapper .gx-row-selector-item-wrapper .gx-row-selector-item {
-          cursor: pointer;
-          text-decoration: underline; }
-    .gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"] .gx-block.gx-row-block .block-editor-inner-blocks,
-    .gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"] .gx-block.gx-row-block .block-list-appender,
-    .gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"] .gx-block.gx-row-block .gx-row-dropdown {
-      width: 100%; }
-    .gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"] .gx-block.gx-row-block .gx-row-appender-button {
-      display: block;
-      width: 100%; }
-    .gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"] .gx-block.gx-row-block > div > div.block-editor-block-list__layout {
-      display: -ms-flexbox;
-      display: flex; }
-      .gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"] .gx-block.gx-row-block > div > div.block-editor-block-list__layout > div.block-list-appender {
-        margin: 0; }
-        .gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"] .gx-block.gx-row-block > div > div.block-editor-block-list__layout > div.block-list-appender > div.gx-row-template-wrapper {
-          display: -ms-flexbox;
-          display: flex;
-          -ms-flex-wrap: wrap;
-              flex-wrap: wrap;
-          -ms-flex-pack: center;
-              justify-content: center;
-          background-color: #ffffff; }
-          .gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"] .gx-block.gx-row-block > div > div.block-editor-block-list__layout > div.block-list-appender > div.gx-row-template-wrapper > button.gx-row-template-button {
-            width: 10rem;
-            height: 5rem; }
-            .gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"] .gx-block.gx-row-block > div > div.block-editor-block-list__layout > div.block-list-appender > div.gx-row-template-wrapper > button.gx-row-template-button > svg {
-              width: 100%;
-              height: 100%; }
-    .gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"] .gx-block.gx-row-block .gx-block-wrapper[data-type="gutenberg-extra/block-column-extra"]:first-of-type {
+  margin: auto;
+  position: relative; }
+  div.gx-row-block > div.gx-row-selector-wrapper:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    -webkit-transform: translateX(0px);
+        -ms-transform: translateX(0px);
+            transform: translateX(0px);
+    width: 5rem;
+    height: 2rem;
+    border-top: 8px solid black;
+    border-left: 8px solid black;
+    opacity: 0;
+    visibility: hidden;
+    -webkit-transition: all 1s ease;
+    -o-transition: all 1s ease;
+    transition: all 1s ease; }
+  div.gx-row-block > div.gx-row-selector-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    -webkit-transform: translateY(0%);
+        -ms-transform: translateY(0%);
+            transform: translateY(0%);
+    opacity: 0;
+    visibility: hidden;
+    -webkit-transition: all 1s ease;
+    -o-transition: all 1s ease;
+    transition: all 1s ease;
+    font-size: 12px;
+    z-index: 1; }
+    div.gx-row-block > div.gx-row-selector-wrapper > div.gx-row-selector-item-wrapper {
+      display: inline; }
+      div.gx-row-block > div.gx-row-selector-wrapper > div.gx-row-selector-item-wrapper .gx-row-selector-item {
+        cursor: pointer;
+        text-decoration: underline; }
+  div.gx-row-block .block-editor-inner-blocks,
+  div.gx-row-block .block-list-appender,
+  div.gx-row-block .gx-row-dropdown {
+    width: 100%; }
+  div.gx-row-block .gx-row-appender-button {
+    display: block;
+    width: 100%; }
+  div.gx-row-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout {
+    display: -ms-flexbox;
+    display: flex; }
+    div.gx-row-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout > div.gx-column-block:first-of-type {
       margin-left: 0 !important; }
-    .gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"] .gx-block.gx-row-block .gx-block-wrapper[data-type="gutenberg-extra/block-column-extra"]:last-of-type {
+    div.gx-row-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout > div.gx-column-block:last-of-type {
       margin-right: 0 !important; }
+    div.gx-row-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout > div.block-list-appender {
+      margin: 0; }
+      div.gx-row-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout > div.block-list-appender > div.gx-row-template-wrapper {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+        -ms-flex-pack: center;
+            justify-content: center;
+        background-color: #ffffff; }
+        div.gx-row-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout > div.block-list-appender > div.gx-row-template-wrapper > button.gx-row-template-button {
+          width: 10rem;
+          height: 5rem; }
+          div.gx-row-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout > div.block-list-appender > div.gx-row-template-wrapper > button.gx-row-template-button > svg {
+            width: 100%;
+            height: 100%; }
 
-div.gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"].is-selected div.gx-block.gx-row-block > div.gx-row-selector-wrapper:before,
-div.gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"].has-child-selected div.gx-block.gx-row-block > div.gx-row-selector-wrapper:before {
+div.gx-row-block.is-selected > div.gx-row-selector-wrapper:before,
+div.gx-row-block.has-child-selected > div.gx-row-selector-wrapper:before {
   -webkit-transform: translate(-8px, calc(100% - 8px));
       -ms-transform: translate(-8px, calc(100% - 8px));
           transform: translate(-8px, calc(100% - 8px));
   opacity: 1;
   visibility: visible; }
 
-div.gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"].is-selected div.gx-block.gx-row-block > div.gx-row-selector-wrapper,
-div.gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"].has-child-selected div.gx-block.gx-row-block > div.gx-row-selector-wrapper {
+div.gx-row-block.is-selected > div.gx-row-selector-wrapper,
+div.gx-row-block.has-child-selected > div.gx-row-selector-wrapper {
   -webkit-transform: translateY(calc(-100% - 8px));
       -ms-transform: translateY(calc(-100% - 8px));
           transform: translateY(calc(-100% - 8px));
@@ -943,11 +943,9 @@ div.gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"].has-child-sele
  * Can include things like variables and mixins
  * that are used across the project.
 */
-.gx-block-wrapper[data-type="gutenberg-extra/block-column-extra"]:hover {
+.gx-column-block:hover {
   outline: 1px solid blue; }
 
-.wp-block[data-type="gutenberg-extra/block-column-extra"] {
+.gx-column-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout > div.block-list-appender {
+  width: 100%;
   margin: 0; }
-
-.gx-column-block .block-list-appender {
-  width: 100%; }

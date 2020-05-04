@@ -24,7 +24,7 @@ const save = props => {
     let classes = classnames('gx-block gx-row-block', blockStyle, extraClassName, className);
     if (uniqueID && (typeof uniqueID !== 'undefined'))
         classes = classnames(classes, uniqueID);
-    
+
     return (
         <div className={classes} >
             <InnerBlocks.Content />

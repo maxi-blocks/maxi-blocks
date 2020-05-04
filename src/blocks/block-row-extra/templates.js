@@ -31,15 +31,13 @@ const TEMPLATES = [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 100,
-                    sizeTablet: 100,
-                    sizeMobile: 100
+                    columnSize: 100,
                 }
             ],
         ],
         attributes: {
             columnGap: 0,
-            syncColumns: true,
+            syncSize: true,
             horizontalAlign: 'flex-start',
             verticalAlign: 'stretch'
         }
@@ -52,24 +50,20 @@ const TEMPLATES = [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 47.5,
-                    sizeTablet: 47.5,
-                    sizeMobile: 47.5
+                    columnSize: 47.5,
                 }
             ],
             [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 47.5,
-                    sizeTablet: 47.5,
-                    sizeMobile: 47.5
+                    columnSize: 47.5,
                 }
             ],
         ],
         attributes: {
             columnGap: 2.5,
-            syncColumns: true,
+            syncSize: true,
             horizontalAlign: 'flex-start',
             verticalAlign: 'stretch'
         }
@@ -82,20 +76,20 @@ const TEMPLATES = [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 23.7
+                    columnSize: 23.7
                 }
             ],
             [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 71.3
+                    columnSize: 71.3
                 }
             ],
         ],
         attributes: {
             columnGap: 2.5,
-            syncColumns: true,
+            syncSize: false,
             horizontalAlign: 'flex-start',
             verticalAlign: 'stretch'
         }
@@ -108,24 +102,20 @@ const TEMPLATES = [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 71.3,
-                    sizeTablet: 71.3,
-                    sizeMobile: 71.3
+                    columnSize: 71.3,
                 }
             ],
             [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 23.7,
-                    sizeTablet: 23.7,
-                    sizeMobile: 23.7
+                    columnSize: 23.7,
                 }
             ],
         ],
         attributes: {
             columnGap: 2.5,
-            syncColumns: true,
+            syncSize: false,
             horizontalAlign: 'flex-start',
             verticalAlign: 'stretch'
         }
@@ -138,20 +128,20 @@ const TEMPLATES = [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 19
+                    columnSize: 19
                 }
             ],
             [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 76
+                    columnSize: 76
                 }
             ],
         ],
         attributes: {
             columnGap: 2.5,
-            syncColumns: true,
+            syncSize: false,
             horizontalAlign: 'flex-start',
             verticalAlign: 'stretch'
         }
@@ -164,24 +154,20 @@ const TEMPLATES = [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 76,
-                    sizeTablet: 76,
-                    sizeMobile: 76
+                    columnSize: 76,
                 }
             ],
             [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 19,
-                    sizeTablet: 19,
-                    sizeMobile: 19
+                    columnSize: 19,
                 }
             ],
         ],
         attributes: {
             columnGap: 2.5,
-            syncColumns: true,
+            syncSize: false,
             horizontalAlign: 'flex-start',
             verticalAlign: 'stretch'
         }
@@ -194,33 +180,27 @@ const TEMPLATES = [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 30,
-                    sizeTablet: 30,
-                    sizeMobile: 30
+                    columnSize: 30,
                 }
             ],
             [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 30,
-                    sizeTablet: 30,
-                    sizeMobile: 30
+                    columnSize: 30,
                 }
             ],
             [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 30,
-                    sizeTablet: 30,
-                    sizeMobile: 30
+                    columnSize: 30,
                 }
             ],
         ],
         attributes: {
             columnGap: 2.5,
-            syncColumns: true,
+            syncSize: true,
             horizontalAlign: 'flex-start',
             verticalAlign: 'stretch'
         }
@@ -233,27 +213,27 @@ const TEMPLATES = [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 22.5
+                    columnSize: 22.5
                 }
             ],
             [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 22.5
+                    columnSize: 22.5
                 }
             ],
             [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 45
+                    columnSize: 45
                 }
             ],
         ],
         attributes: {
             columnGap: 2.5,
-            syncColumns: true,
+            syncSize: false,
             horizontalAlign: 'flex-start',
             verticalAlign: 'stretch'
         }
@@ -266,27 +246,27 @@ const TEMPLATES = [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 15
+                    columnSize: 15
                 }
             ],
             [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 15
+                    columnSize: 15
                 }
             ],
             [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 60
+                    columnSize: 60
                 }
             ],
         ],
         attributes: {
             columnGap: 2.5,
-            syncColumns: true,
+            syncSize: false,
             horizontalAlign: 'flex-start',
             verticalAlign: 'stretch'
         }
@@ -299,27 +279,27 @@ const TEMPLATES = [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 15
+                    columnSize: 15
                 }
             ],
             [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 60
+                    columnSize: 60
                 }
             ],
             [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 15
+                    columnSize: 15
                 }
             ],
         ],
         attributes: {
             columnGap: 2.5,
-            syncColumns: true,
+            syncSize: false,
             horizontalAlign: 'flex-start',
             verticalAlign: 'stretch'
         }
@@ -332,33 +312,27 @@ const TEMPLATES = [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 45,
-                    sizeTablet: 45,
-                    sizeMobile: 45
+                    columnSize: 45,
                 }
             ],
             [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 22.5,
-                    sizeTablet: 22.5,
-                    sizeMobile: 22.5
+                    columnSize: 22.5,
                 }
             ],
             [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 22.5,
-                    sizeTablet: 22.5,
-                    sizeMobile: 22.5
+                    columnSize: 22.5,
                 }
             ],
         ],
         attributes: {
             columnGap: 2.5,
-            syncColumns: true,
+            syncSize: false,
             horizontalAlign: 'flex-start',
             verticalAlign: 'stretch'
         }
@@ -371,33 +345,27 @@ const TEMPLATES = [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 60,
-                    sizeTablet: 60,
-                    sizeMobile: 60
+                    columnSize: 60,
                 }
             ],
             [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 15,
-                    sizeTablet: 15,
-                    sizeMobile: 15
+                    columnSize: 15,
                 }
             ],
             [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 15,
-                    sizeTablet: 15,
-                    sizeMobile: 15
+                    columnSize: 15,
                 }
             ],
         ],
         attributes: {
             columnGap: 2.5,
-            syncColumns: true,
+            syncSize: false,
             horizontalAlign: 'flex-start',
             verticalAlign: 'stretch'
         }
@@ -410,42 +378,34 @@ const TEMPLATES = [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 21.3,
-                    sizeTablet: 21.3,
-                    sizeMobile: 21.3
+                    columnSize: 21.3,
                 }
             ],
             [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 21.3,
-                    sizeTablet: 21.3,
-                    sizeMobile: 21.3
+                    columnSize: 21.3,
                 }
             ],
             [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 21.3,
-                    sizeTablet: 21.3,
-                    sizeMobile: 21.3
+                    columnSize: 21.3,
                 }
             ],
             [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 21.3,
-                    sizeTablet: 21.3,
-                    sizeMobile: 21.3
+                    columnSize: 21.3,
                 }
             ],
         ],
         attributes: {
             columnGap: 2.5,
-            syncColumns: true,
+            syncSize: true,
             horizontalAlign: 'flex-start',
             verticalAlign: 'stretch'
         }
@@ -458,51 +418,41 @@ const TEMPLATES = [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 16,
-                    sizeTablet: 16,
-                    sizeMobile: 16
+                    columnSize: 16,
                 }
             ],
             [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 16,
-                    sizeTablet: 16,
-                    sizeMobile: 16
+                    columnSize: 16,
                 }
             ],
             [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 16,
-                    sizeTablet: 16,
-                    sizeMobile: 16
+                    columnSize: 16,
                 }
             ],
             [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 16,
-                    sizeTablet: 16,
-                    sizeMobile: 16
+                    columnSize: 16,
                 }
             ],
             [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 16,
-                    sizeTablet: 16,
-                    sizeMobile: 16
+                    columnSize: 16,
                 }
             ],
         ],
         attributes: {
             columnGap: 2.5,
-            syncColumns: true,
+            syncSize: true,
             horizontalAlign: 'flex-start',
             verticalAlign: 'stretch'
         }
@@ -515,60 +465,48 @@ const TEMPLATES = [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 12.5,
-                    sizeTablet: 12.5,
-                    sizeMobile: 12.5
+                    columnSize: 12.5,
                 }
             ],
             [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 12.5,
-                    sizeTablet: 12.5,
-                    sizeMobile: 12.5
+                    columnSize: 12.5,
                 }
             ],
             [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 12.5,
-                    sizeTablet: 12.5,
-                    sizeMobile: 12.5
+                    columnSize: 12.5,
                 }
             ],
             [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 12.5,
-                    sizeTablet: 12.5,
-                    sizeMobile: 12.5
+                    columnSize: 12.5,
                 }
             ],
             [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 12.5,
-                    sizeTablet: 12.5,
-                    sizeMobile: 12.5
+                    columnSize: 12.5,
                 }
             ],
             [
                 'gutenberg-extra/block-column-extra',
                 {
                     uniqueID: 'gx-block-column-extra-1',
-                    sizeDesktop: 12.5,
-                    sizeTablet: 12.5,
-                    sizeMobile: 12.5
+                    columnSize: 12.5,
                 }
             ],
         ],
         attributes: {
             columnGap: 2.5,
-            syncColumns: true,
+            syncSize: true,
             horizontalAlign: 'flex-start',
             verticalAlign: 'stretch'
         }

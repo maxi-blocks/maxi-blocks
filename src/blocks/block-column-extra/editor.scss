@@ -1,15 +1,15 @@
-// div[data-type="gutenberg-extra/block-column-extra"].is-focused {
-//     border: 1px #ccc solid;
-//     border-radius: 20px;
-// }
-.gx-block-wrapper[data-type="gutenberg-extra/block-column-extra"]:hover {
+.gx-column-block:hover {
     outline: 1px solid blue;
 }
 
-.wp-block[data-type="gutenberg-extra/block-column-extra"] {
-    margin: 0;
-}
+.gx-column-block {
 
-.gx-column-block .block-list-appender {
-    width: 100%
+    > div.block-editor-inner-blocks {
+        > div.block-editor-block-list__layout {
+            > div.block-list-appender {
+                width: 100%;
+                margin: 0;
+            }
+        }
+    }
 }

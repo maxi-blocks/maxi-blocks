@@ -15,13 +15,7 @@ const attributes = {
         type: 'string',
         default: 'gx-def-light'
     },
-    sizeDesktop: {
-        type: 'number',
-    },
-    sizeTablet: {    
-        type: 'number',
-    },
-    sizeMobile: {    
+    columnSize: {
         type: 'number',
     },
     background: {

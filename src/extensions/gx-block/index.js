@@ -11,7 +11,7 @@ import GXComponent from '../gx-component';
  * Class
  */
 class GXBlock extends GXComponent {
-    uniqueIDChecker(idToCheck) {
+    uniqueIDChecker(idToCheck, callback) {
         if (document.getElementsByClassName(idToCheck).length > 1) {
             let newUniqueId = idToCheck + (Math.random() * 100).toFixed(0);
             let newUniqueIdNum = newUniqueId.match(/\d+$/)[0];
@@ -30,6 +30,9 @@ class GXBlock extends GXComponent {
 
             this.props.setAttributes({ uniqueID: newUniqueId })
         }
+        
+        if (callback)
+            callback();
     }
 }
 

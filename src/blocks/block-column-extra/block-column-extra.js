@@ -33,7 +33,8 @@ registerBlockType( 'gutenberg-extra/block-column-extra', {
 	description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque sunt hic obcaecati alias rerum fugit, dolore, quis placeat aliquid at natus fugiat, repellendus facilis asperiores illum voluptatum aut officiis delectus?",
 	category: 'gutenberg-extra-blocks',
 	supports: {
-        align: true,
+		align: true,
+		lightBlockWrapper: true
     },
 	attributes: {
 		...attributes
@@ -42,10 +43,10 @@ registerBlockType( 'gutenberg-extra/block-column-extra', {
 	getEditWrapperProps(attributes) {
         const {
 			uniqueID
-        } = attributes;
-
+		} = attributes;
+		
         return {
-			'uniqueid': uniqueID
+			'uniqueid': uniqueID,
         };
     },
 	edit,

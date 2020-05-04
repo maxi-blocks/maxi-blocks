@@ -12,7 +12,8 @@ const {
 } = wp.data;
 const {
     InnerBlocks,
-    InspectorControls
+    InspectorControls,
+    __experimentalBlock
 } = wp.blockEditor;
 const {
     PanelBody,
@@ -35,6 +36,10 @@ import {
     FullSizeControl,
     HoverAnimationControl,
 } from '../../components';
+import {
+    getBackgroundObject,
+    getBoxShadowObject
+} from './utils';
 
 /**
  * External dependencies
@@ -44,7 +49,8 @@ import {
     pull,
     isNil,
     isNumber,
-    isEmpty
+    sum,
+    round
 } from 'lodash';
 
 /**
@@ -53,12 +59,12 @@ import {
 class edit extends GXBlock {
 
     componentDidMount() {
-        this.uniqueIDChecker(this.props.attributes.uniqueID);
-        this.displayStyles();
+        this.uniqueIDChecker(this.props.attributes.uniqueID, this.displayStyles.bind(this));
     }
 
     componentDidUpdate() {
-        this.props.testCase(this.props.attributes);
+        this.props.synchronizeColumns(this.props.attributes);
+        this.props.synchronizeStyles(this.props.attributes)
         this.displayStyles();
     }
 
@@ -66,17 +72,21 @@ class edit extends GXBlock {
      * Retrieve the target for responsive CSS
      */
     get getTarget() {
-        return `gx-block-wrapper[uniqueid="${this.props.attributes.uniqueID}"]`;
+        return `${this.props.attributes.uniqueID}`;
     }
 
+    /**
+     * Get object for styling
+     */
     get getObject() {
         const {
             attributes: {
-                sizeDesktop,
+                columnSize,
                 sizeMobile,
                 sizeTablet
-            }
+            },
         } = this.props;
+
         let response = {
             label: "Column",
             desktop: {},
@@ -84,10 +94,10 @@ class edit extends GXBlock {
             mobile: {}
         };
 
-        if (!isNil(sizeDesktop) && isNumber(sizeDesktop))
-            if (sizeDesktop != 0) {
-                response.desktop['flex'] = `0 0 ${sizeDesktop}%`;
-                response.desktop['max-width'] = `${sizeDesktop}%`;
+        if (!isNil(columnSize) && isNumber(columnSize))
+            if (columnSize != 0) {
+                response.desktop['flex'] = `0 0 ${columnSize}%`;
+                response.desktop['max-width'] = `${columnSize}%`;
             }
             else {
                 response.desktop['flex'] = '0 0 auto';
@@ -126,7 +136,6 @@ class edit extends GXBlock {
                 _gutenberg_extra_responsive_styles: this.metaValue(),
             },
         });
-        new BackEndResponsiveStyles(this.getMeta);
     }
 
     render() {
@@ -135,9 +144,7 @@ class edit extends GXBlock {
                 uniqueID,
                 blockStyle,
                 defaultBlockStyle,
-                sizeDesktop,
-                sizeTablet,
-                sizeMobile,
+                columnSize,
                 background,
                 boxShadow,
                 border,
@@ -149,12 +156,23 @@ class edit extends GXBlock {
                 extraClassName,
                 extraStyles
             },
+            syncSize,
+            getColumnSize,
+            getMaxRangeSize,
             clientId,
             className,
             setAttributes
         } = this.props;
 
-        let classes = classnames('gx-block gx-column-block', blockStyle, extraClassName, className);
+        const columnSizeStyle = getColumnSize(this.props.attributes);
+
+        let classes = classnames(
+            'gx-block gx-column-block',
+            uniqueID,
+            blockStyle,
+            extraClassName,
+            className
+        );
 
         /**
          * Check if InnerBlock contains other blocks
@@ -168,8 +186,8 @@ class edit extends GXBlock {
          */
         const isSelect = () => {
             const selectedBlock = select('core/editor').getSelectedBlockClientId();
-            const nestedBlocks = select('core/block-editor').getBlockOrder(clientId);
-            return nestedBlocks.includes(selectedBlock) || clientId === selectedBlock;
+            const nestedColumns = select('core/block-editor').getBlockOrder(clientId);
+            return nestedColumns.includes(selectedBlock) || clientId === selectedBlock;
         }
 
         return [
@@ -186,30 +204,17 @@ class edit extends GXBlock {
                         defaultBlockStyle={defaultBlockStyle}
                         onChangeDefaultBlockStyle={defaultBlockStyle => setAttributes({ defaultBlockStyle })}
                     />
-                    <RangeControl
-                        label={__('Desktop', 'gutenberg-extra')}
-                        value={sizeDesktop}
-                        onChange={sizeDesktop => setAttributes({ sizeDesktop })}
-                        min={0}
-                        max={100}
-                        step={.1}
-                    />
-                    <RangeControl
-                        label={__('Tablet', 'gutenberg-extra')}
-                        value={sizeTablet}
-                        onChange={sizeTablet => setAttributes({ sizeTablet })}
-                        min={0}
-                        max={100}
-                        step={.1}
-                    />
-                    <RangeControl
-                        label={__('Mobile', 'gutenberg-extra')}
-                        value={sizeMobile}
-                        onChange={sizeMobile => setAttributes({ sizeMobile })}
-                        min={0}
-                        max={100}
-                        step={.1}
-                    />
+                    {
+                        !syncSize &&
+                        <RangeControl
+                            label={__('Column Size', 'gutenberg-extra')}
+                            value={columnSize}
+                            onChange={columnSize => setAttributes({ columnSize })}
+                            min={0}
+                            max={getMaxRangeSize()}
+                            step={.1}
+                        />
+                    }
                 </PanelBody>
                 <PanelBody
                     className="gx-panel gx-image-setting gx-style-tab-setting"
@@ -228,7 +233,7 @@ class edit extends GXBlock {
                                     <BackgroundControl
                                         backgroundOptions={background}
                                         onChange={background => setAttributes({ background })}
-                                        target=">.gx-column-block"
+                                    target=">.gx-column-block-content"
                                     />
                                 ),
                             },
@@ -248,15 +253,14 @@ class edit extends GXBlock {
                                                 <BoxShadowControl
                                                     boxShadowOptions={boxShadow}
                                                     onChange={boxShadow => setAttributes({ boxShadow })}
-                                                    target=">.gx-column-block"
+                                                target=">.gx-column-block-content"
                                                 />
                                             </BaseControl>
                                             <hr style={{ marginTop: "28px" }} />
                                             <BorderControl
                                                 borderOptions={border}
                                                 onChange={border => setAttributes({ border })}
-                                                target=">.gx-column-block"
-                                                //avoidZero={false}
+                                            target=">.gx-column-block-content"
                                             />
                                         </PanelBody>
                                     </Fragment>
@@ -277,7 +281,7 @@ class edit extends GXBlock {
                                         <FullSizeControl
                                             sizeSettings={size}
                                             onChange={size => setAttributes({ size })}
-                                            target=">.gx-column-block"
+                                        target=">.gx-column-block-content"
                                         />
                                     </PanelBody>
                                 ),
@@ -297,13 +301,13 @@ class edit extends GXBlock {
                                         <DimensionsControl
                                             value={padding}
                                             onChange={padding => setAttributes({ padding })}
-                                            target=">.gx-column-block"
+                                            target=">.gx-column-block-content"
                                             avoidZero
                                         />
                                         <DimensionsControl
                                             value={margin}
                                             onChange={margin => setAttributes({ margin })}
-                                            target=">.gx-column-block"
+                                            target=">.gx-column-block-content"
                                             avoidZero
                                         />
                                     </PanelBody>
@@ -331,172 +335,69 @@ class edit extends GXBlock {
                     />
                 </PanelBody>
             </InspectorControls>,
-            <div
+            <__experimentalBlock.div
                 className={classes}
+                style={{
+                    flex: `0 0 ${columnSizeStyle}%`,
+                    maxWidth: `${columnSizeStyle}%`,
+                }}
             >
-                <InnerBlocks
-                    templateLock={false}
-                    renderAppender={
-                        !hasInnerBlock() || isSelect() ?
-                            () => (
-                                <InnerBlocks.ButtonBlockAppender />
-                            ) :
-                            false
-                    }
-                />
-            </div>
+                <div
+                    className="gx-column-block-content"
+                >
+                    <InnerBlocks
+                        templateLock={false}
+                        renderAppender={
+                            !hasInnerBlock() || isSelect() ?
+                                () => (
+                                    <InnerBlocks.ButtonBlockAppender />
+                                ) :
+                                false
+                        }
+                    />
+                </div>
+            </__experimentalBlock.div>
         ];
     }
 }
 
-// May is not necessary withSelect...
 const editSelect = withSelect((select, ownProps) => {
     const {
         clientId
     } = ownProps;
 
     const rowBlockId = select('core/block-editor').getBlockRootClientId(clientId); // getBlockHierarchyRootClientId
-    const isSync = select('core/block-editor').getBlockAttributes(rowBlockId).syncColumns;
+    const syncSize = select('core/block-editor').getBlockAttributes(rowBlockId).syncSize;
+    const syncStyles = select('core/block-editor').getBlockAttributes(rowBlockId).syncStyles;
+    const columnGap = select('core/block-editor').getBlockAttributes(rowBlockId).columnGap;
 
     return {
-        isSync,
-        rowBlockId
+        syncSize,
+        syncStyles,
+        rowBlockId,
+        columnGap,
     }
 })
 
 const editDispatch = withDispatch((dispatch, ownProps) => {
     const {
-        isSync,
+        syncSize,
+        syncStyles,
+        columnGap,
         rowBlockId,
-        clientId
+        clientId,
     } = ownProps;
 
-    const isSelect = select('core/block-editor').getSelectedBlockClientId() === clientId;
-    const originalNestedBlocks = select('core/block-editor').getBlockOrder(rowBlockId);
-    let nestedBlocks = [...originalNestedBlocks];
-    nestedBlocks = pull(nestedBlocks, clientId);
-
-    const getBackgroundObject = object => {
-        const response = {
-            label: object.label,
-            general: {}
-        }
-
-        if (!isEmpty(object.colorOptions.color)) {
-            response.general['background-color'] = object.colorOptions.color;
-        }
-        if (!isEmpty(object.colorOptions.gradient)) {
-            response.general['background'] = object.colorOptions.gradient;
-        }
-        if (!isEmpty(object.blendMode)) {
-            response.general['background-blend-mode'] = object.blendMode;
-        }
-
-        object.backgroundOptions.map(option => {
-            if (isNil(option) || isEmpty(option.imageOptions.mediaURL))
-                return;
-            // Image
-            if (option.sizeSettings.size === 'custom' && !isNil(option.imageOptions.cropOptions)) {
-                if (!isNil(response.general['background-image']))
-                    response.general['background-image'] = `${response.general['background-image']},url('${option.imageOptions.cropOptions.image.source_url}')`;
-                else
-                    response.general['background-image'] = `url('${option.imageOptions.cropOptions.image.source_url}')`;
-                if (!isEmpty(object.colorOptions.gradient))
-                    response.general['background-image'] = `${response.general['background-image']}, ${object.colorOptions.gradient}`;
-            }
-            else if (option.sizeSettings.size === 'custom' && isNil(option.imageOptions.cropOptions) || option.sizeSettings.size != 'custom' && !isNil(option.imageOptions.mediaURL)) {
-                if (!isNil(response.general['background-image']))
-                    response.general['background-image'] = `${response.general['background-image']},url('${option.imageOptions.mediaURL}')`;
-                else
-                    response.general['background-image'] = `url('${option.imageOptions.mediaURL}')`;
-                if (!isEmpty(object.colorOptions.gradient))
-                    response.general['background-image'] = `${response.general['background-image']}, ${object.colorOptions.gradient}`;
-            }
-            // Size
-            if (option.sizeSettings.size != 'custom') {
-                if (!isNil(response.general['background-size']))
-                    response.general['background-size'] = `${response.general['background-size']},${option.sizeSettings.size}`;
-                else
-                    response.general['background-size'] = option.sizeSettings.size;
-            }
-            else {
-                if (!isNil(response.general['background-size']))
-                    response.general['background-size'] = `${response.general['background-size']},cover`;
-                else
-                    response.general['background-size'] = 'cover';
-            }
-            // Repeat
-            if (option.repeat) {
-                if (!isNil(response.general['background-repeat']))
-                    response.general['background-repeat'] = `${response.general['background-repeat']},${option.repeat}`;
-                else
-                    response.general['background-repeat'] = option.repeat;
-            }
-            // Position
-            if (option.positionOptions.position != 'custom') {
-                if (!isNil(response.general['background-position']))
-                    response.general['background-position'] = `${response.general['background-position']},${option.positionOptions.position}`;
-                else
-                    response.general['background-position'] = option.positionOptions.position;
-            }
-            else {
-                if (!isNil(response.general['background-position']))
-                    response.general['background-position'] = `
-                            ${response.general['background-position']},
-                            ${option.positionOptions.width + option.positionOptions.widthUnit} ${option.positionOptions.height + option.positionOptions.heightUnit}`;
-                else
-                    response.general['background-position'] = `${option.positionOptions.width + option.positionOptions.widthUnit} ${option.positionOptions.height + option.positionOptions.heightUnit}`;
-            }
-            // Origin
-            if (option.origin) {
-                if (!isNil(response.general['background-origin']))
-                    response.general['background-origin'] = `${response.general['background-origin']},${option.origin}`;
-                else
-                    response.general['background-origin'] = option.origin;
-            }
-            // Clip
-            if (option.clip) {
-                if (!isNil(response.general['background-clip']))
-                    response.general['background-clip'] = `${response.general['background-clip']},${option.clip}`;
-                else
-                    response.general['background-clip'] = option.clip;
-            }
-            // Attachment
-            if (option.attachment) {
-                if (!isNil(response.general['background-attachment']))
-                    response.general['background-attachment'] = `${response.general['background-attachment']},${option.attachment}`;
-                else
-                    response.general['background-attachment'] = option.attachment;
-            }
-        })
-
-        return response;
-    }
-
-    const getBoxShadowObject = object => {
-        let boxShadow = '';
-        object.shadowHorizontal ? boxShadow += (object.shadowHorizontal + 'px ') : null;
-        object.shadowVertical ? boxShadow += (object.shadowVertical + 'px ') : null;
-        object.shadowBlur ? boxShadow += (object.shadowBlur + 'px ') : null;
-        object.shadowSpread ? boxShadow += (object.shadowSpread + 'px ') : null;
-        object.shadowColor ? boxShadow += (object.shadowColor) : null;
-        boxShadow = boxShadow.trim();
-
-        const response = {
-            label: object.label,
-            general: {
-                "box-shadow": boxShadow
-            }
-        }
-
-        return response;
-    }
+    const originalNestedColumns = select('core/block-editor').getBlockOrder(rowBlockId);
+    let nestedColumns = [...originalNestedColumns];
+    nestedColumns = pull(nestedColumns, clientId);
+    const nestedColumnsNum = originalNestedColumns.length;
 
     const basicStyling = (id, object, avoidZero = true) => {
         const blockUniqueID = select('core/block-editor').getBlockAttributes(id).uniqueID;
         const meta = JSON.parse(select('core/editor').getEditedPostAttribute('meta')._gutenberg_extra_responsive_styles);
 
-        const target = `${blockUniqueID}>.gx-column-block`;
+        const target = `${blockUniqueID}`;
         let obj = {};
         if (object.label === 'Background')
             obj = getBackgroundObject(object)
@@ -516,30 +417,92 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
         new BackEndResponsiveStyles(meta);
     }
 
-    return {
-        testCase: attributes => {
-            if (!isSync || !isSelect)
-                return;
+    const synchronizeStyles = attributes => {
+        if (!syncStyles)
+            return;
 
-            const newAttributes = { ...attributes };
-            delete newAttributes.uniqueID;
+        let newStyles = { ...attributes };
+        delete newStyles.uniqueID;
+        delete newStyles.columnSize;
+        delete newStyles.sizeTablet;
+        delete newStyles.sizeMobile;
 
-            nestedBlocks.map( blockId => {  
-                dispatch('core/block-editor').updateBlockAttributes(blockId, newAttributes)
+        nestedColumns.map(blockId => {
+            dispatch('core/block-editor').updateBlockAttributes(blockId, newStyles)
                 .then(
                     () => {
-                        basicStyling(blockId, JSON.parse(newAttributes.background), false);
-                        basicStyling(blockId, JSON.parse(newAttributes.boxShadow), false);
-                        basicStyling(blockId, JSON.parse(newAttributes.border), false);
-                        basicStyling(blockId, JSON.parse(newAttributes.border).borderWidth, false);
-                        basicStyling(blockId, JSON.parse(newAttributes.border).borderRadius, false);
-                        basicStyling(blockId, JSON.parse(newAttributes.size));
-                        basicStyling(blockId, JSON.parse(newAttributes.margin));
-                        basicStyling(blockId, JSON.parse(newAttributes.padding));
+                        if (syncStyles) {
+                            basicStyling(blockId, JSON.parse(newStyles.background), false);
+                            basicStyling(blockId, JSON.parse(newStyles.boxShadow), false);
+                            basicStyling(blockId, JSON.parse(newStyles.border), false);
+                            basicStyling(blockId, JSON.parse(newStyles.border).borderWidth, false);
+                            basicStyling(blockId, JSON.parse(newStyles.border).borderRadius, false);
+                            basicStyling(blockId, JSON.parse(newStyles.size));
+                            basicStyling(blockId, JSON.parse(newStyles.margin));
+                            basicStyling(blockId, JSON.parse(newStyles.padding));
+                        }
                     }
                 )
-            })
+        })
+    }
+
+    const getSizeSync = () => {
+        return (100 - (nestedColumnsNum - 1) * columnGap * 2) / nestedColumnsNum;
+    }
+
+    const synchronizeColumns = () => {
+        if (!syncSize)
+            return;
+
+        const newAttributes = {
+            columnSize: getSizeSync(),
+            sizeTablet: getSizeSync(),
+            sizeMobile: getSizeSync(),
         }
+
+        nestedColumns.map(blockId => {
+            dispatch('core/block-editor').updateBlockAttributes(blockId, newAttributes)
+        })
+    }
+
+    const getSizeUnsync = () => {
+        let nestedColumnsSizes = [];
+        originalNestedColumns.map(columnId => {
+            nestedColumnsSizes.push(select('core/block-editor').getBlockAttributes(columnId).columnSize);
+        });
+        const totalNestedColumnsSizes = sum(nestedColumnsSizes) + (nestedColumnsSizes.length - 1) * columnGap * 2;
+        const totalDiff = totalNestedColumnsSizes - 100;
+
+        if (round(totalDiff) != 0)
+            nestedColumns.map(columnId => {
+                const columnSize = select('core/block-editor').getBlockAttributes(columnId).columnSize;
+                const newSize = columnSize - round(totalDiff, 2) / 2 > columnGap * 1.2 ?
+                    round(columnSize - round(totalDiff, 2) / 2, 2) :
+                    columnGap;
+                dispatch('core/block-editor').updateBlockAttributes(columnId, {
+                    columnSize: newSize
+                })
+            })
+    }
+
+    const getColumnSize = attributes => {
+        if (syncSize)
+            return getSizeSync();
+        if (!syncSize) {
+            getSizeUnsync();
+            return attributes.columnSize;
+        }
+    };
+
+    const getMaxRangeSize = () => {
+        return (100 - (nestedColumnsNum - 1) * columnGap * 3);
+    }
+
+    return {
+        synchronizeColumns,
+        synchronizeStyles,
+        getColumnSize,
+        getMaxRangeSize
     }
 })
 

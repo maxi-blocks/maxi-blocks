@@ -1,12 +1,15 @@
-.gx-block.gx-row-block {
+div.gx-row-block.alignfull {
+    width: auto;
+}
+
+div.gx-row-block {
     display: flex;
     flex-wrap: wrap;
 
-    .wp-block-gutenberg-extra-block-column-extra:first-of-type {
+    >div.gx-column-block:first-of-type {
         margin-left: 0 !important;
     }
-
-    .wp-block-gutenberg-extra-block-column-extra:last-of-type {
+    >div.gx-column-block:last-of-type {
         margin-right: 0 !important;
     }
 }

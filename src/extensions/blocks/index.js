@@ -36,8 +36,8 @@ const withCustomClassName = createHigherOrderComponent(
     'withClientIdClassName'
 );
 
-addFilter(
-    'editor.BlockListBlock',
-    'my-plugin/with-client-id-class-name',
-    withCustomClassName
-);
+// addFilter(
+//     'editor.BlockListBlock',
+//     'my-plugin/with-client-id-class-name',
+//     withCustomClassName
+// );

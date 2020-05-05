@@ -107,6 +107,8 @@ const Inspector = props => {
                     value={columnGap}
                     onChange={columnGap => setAttributes({ columnGap })}
                     step={.1}
+                    min={0}
+                    max={5}
                 />
                 <CheckBoxControl
                     label={__('Syncronize Columns', 'gutenberg-extra')}

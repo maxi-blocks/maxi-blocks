@@ -44,15 +44,43 @@ import {
  * Editor
  */
 class edit extends GXBlock {
+    state = {
+        originalWidth: 0,
+    }
 
     componentDidMount() {
         this.uniqueIDChecker(this.props.attributes.uniqueID, this.displayStyles.bind(this)); // May should go on constructor
     }
 
     componentDidUpdate() {
-        this.props.synchronizeColumns(this.props.attributes);
+        this.spaceChecker();
+        this.setResizeHandleStyles();
+        this.props.synchronizeColumns(this.props.syncSize);
         this.props.synchronizeStyles(this.props.attributes)
         this.displayStyles();
+    }
+
+    spaceChecker() {
+        let totalSize = [];
+        this.props.originalNestedColumns.map(columnId => {
+            totalSize.push(select('core/block-editor').getBlockAttributes(columnId).columnSize);
+        })
+
+        if (round(sum(totalSize)) != round(this.props.getRowPerCentWOMargin()))
+            this.props.redistributeColumnsSize(this.props.attributes.columnSize)
+    }
+
+    setResizeHandleStyles() {
+        const {
+            columnGap,
+            rowBlockWidth,
+            clientId
+        } = this.props;
+
+        const value = (columnGap * rowBlockWidth) / 100;
+        const node = document.querySelector(`.gx-column-block-resizer-${clientId} .components-resizable-box__handle`);
+        if (!isNil(node))
+            node.style.transform = `translateX(${value}px)`;
     }
 
     /**
@@ -131,7 +159,6 @@ class edit extends GXBlock {
                 uniqueID,
                 blockStyle,
                 columnSize,
-                columnGap,
                 extraClassName,
             },
             getColumnSize,
@@ -142,8 +169,18 @@ class edit extends GXBlock {
             rowBlockWidth,
             columnPosition,
             hasInnerBlock,
+            getResizePerCent,
+            redistributeColumnsSize,
+            resizeableBoxPerCentToPX,
+            getRowPerCentWOMargin,
+            columnGap,
+            syncSize,
             setAttributes
         } = this.props;
+
+        const {
+            originalWidth
+        } = this.state;
 
         let classes = classnames(
             'gx-block gx-column-block',
@@ -162,15 +199,6 @@ class edit extends GXBlock {
             return nestedColumns.includes(selectedBlock) || clientId === selectedBlock;
         }
 
-        const getResizePerCent = delta => {
-            const rowBlockNode = document.querySelector(`div[data-block="${rowBlockId}"]`);
-            const rowBlockWidth = rowBlockNode.getBoundingClientRect().width;
-            const newWidth = this.state.originalWidth + delta.width;
-            const diffPerCent = newWidth / rowBlockWidth * 100;
-
-            return diffPerCent;
-        }
-
         return [
             <Inspector {...this.props} />,
             <Fragment>
@@ -183,11 +211,14 @@ class edit extends GXBlock {
                     <ResizableBox
                         className={classnames(
                             "gx-column-block-resizer",
+                            `gx-column-block-resizer-${clientId}`,
                             columnPosition
                         )}
                         size={{
-                            width: (columnSize / 100) * rowBlockWidth
+                            width: `${columnSize}%`
                         }}
+                        minWidth={`${columnGap}%`}
+                        maxWidth="100%"
                         enable={{
                             top: false,
                             right: columnPosition != 'gx-column-right' ? true : false,
@@ -205,15 +236,11 @@ class edit extends GXBlock {
                         }}
                         onResize={(event, direction, elt, delta) => {
                             setAttributes({
-                                columnSize: round(getResizePerCent(delta), 1),
+                                columnSize: round(getResizePerCent(delta, originalWidth), 1),
                             });
+                            redistributeColumnsSize(getResizePerCent(delta, originalWidth))
                         }}
-                        onResizeStop={(event, direction, elt, delta) => {
-                            setAttributes({
-                                columnSize: round(getResizePerCent(delta), 1),
-                            });
-                        }}
-                        showHandle={true}
+                        showHandle={!syncSize}
                     >
                         <__experimentalBlock.div
                             className={classes}
@@ -252,6 +279,7 @@ const editSelect = withSelect((select, ownProps) => {
     const rowBlockNode = document.querySelector(`div[data-block="${rowBlockId}"]`);
     const rowBlockWidth = !isNil(rowBlockNode) ? rowBlockNode.getBoundingClientRect().width : 0;
     const hasInnerBlock = select('core/block-editor').getBlockOrder(clientId).length >= 1;
+    const originalNestedColumns = select('core/block-editor').getBlockOrder(rowBlockId);
 
     const getPosition = () => {
         const originalNestedColumns = select('core/block-editor').getBlockOrder(rowBlockId);
@@ -272,16 +300,21 @@ const editSelect = withSelect((select, ownProps) => {
         rowBlockWidth,
         columnGap,
         columnPosition: getPosition(),
-        hasInnerBlock
+        hasInnerBlock,
+        originalNestedColumns
     }
 })
 
 const editDispatch = withDispatch((dispatch, ownProps) => {
     const {
+        attributes: {
+            columnSize
+        },
         syncSize,
         syncStyles,
         columnGap,
         rowBlockId,
+        rowBlockWidth,
         clientId,
     } = ownProps;
 
@@ -347,8 +380,8 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
         return (100 - (nestedColumnsNum - 1) * columnGap * 2) / nestedColumnsNum;
     }
 
-    const synchronizeColumns = () => {
-        if (!syncSize)
+    const synchronizeColumns = (forceUpdate = false) => {
+        if (!syncSize && !forceUpdate)
             return;
 
         const newAttributes = {
@@ -362,44 +395,53 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
         })
     }
 
-    const getSizeUnsync = () => {
-        let nestedColumnsSizes = [];
-        originalNestedColumns.map(columnId => {
-            nestedColumnsSizes.push(select('core/block-editor').getBlockAttributes(columnId).columnSize);
-        });
-        const totalNestedColumnsSizes = sum(nestedColumnsSizes) + (nestedColumnsSizes.length - 1) * columnGap * 2;
-        const totalDiff = totalNestedColumnsSizes - 100;
-
-        if (round(totalDiff) != 0)
-            nestedColumns.map(columnId => {
-                const columnSize = select('core/block-editor').getBlockAttributes(columnId).columnSize;
-                const newSize = columnSize - round(totalDiff, 2) / 2 > columnGap * 1.2 ?
-                    round(columnSize - round(totalDiff, 2) / 2, 2) :
-                    columnGap;
-                dispatch('core/block-editor').updateBlockAttributes(columnId, {
-                    columnSize: newSize
-                })
-            })
+    const getRowPerCentWOMargin = () => {
+        return ((100 - (nestedColumnsNum - 1) * columnGap * 2));
     }
 
-    const getColumnSize = attributes => {
-        if (syncSize)
-            return getSizeSync();
-        if (!syncSize) {
-            getSizeUnsync();
-            return attributes.columnSize;
-        }
-    };
+    const getResizePerCent = (delta, originalWidth) => {
+        const newWidth = originalWidth + delta.width;
+        const diffPerCent = newWidth / rowBlockWidth * getRowPerCentWOMargin();
 
-    const getMaxRangeSize = () => {
-        return (100 - (nestedColumnsNum - 1) * columnGap * 3);
+        return diffPerCent;
+    }
+
+    const redistributeColumnsSize = newColumnSize => {
+        let newColumnId = '';
+        if (originalNestedColumns.indexOf(clientId) === originalNestedColumns.length - 1)
+            newColumnId = originalNestedColumns[originalNestedColumns.length - 2]
+        else
+            newColumnId = select('core/block-editor').getAdjacentBlockClientId(clientId);
+
+        let restColumnSizes = [];
+        originalNestedColumns.map(columnId => {
+            if (columnId === clientId || columnId === newColumnId)
+                return;
+            restColumnSizes.push(select('core/block-editor').getBlockAttributes(columnId).columnSize);
+        })
+
+        let newSize = round(getRowPerCentWOMargin() - newColumnSize - sum(restColumnSizes), 2);
+        if (newSize < columnGap * 1.2) {
+            newSize = columnGap;
+        }
+
+        const newColumnNode = document.querySelector(`.gx-column-block-resizer-${newColumnId}`);
+        if (!isNil(newColumnNode))
+            newColumnNode.style.width = `${newSize}%`;
+
+        dispatch('core/block-editor').updateBlockAttributes(newColumnId, {
+            columnSize: newSize
+        })
     }
 
     return {
         synchronizeColumns,
         synchronizeStyles,
-        getColumnSize,
-        getMaxRangeSize
+        // getColumnSize,
+        getRowPerCentWOMargin,
+        getResizePerCent,
+        redistributeColumnsSize,
+        // getSizeUnsync,
     }
 })
 

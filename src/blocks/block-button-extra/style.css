@@ -1,0 +1,26 @@
+.block-button-extra
+.components-panel__body.gx-panel.gx-color-setting.gx-style-tab-setting.is-opened{
+	background: #f2f2f2;
+	padding: 0 !important;
+}
+
+ .block-button-extra
+ .gx-buttonsettings-control{
+	 background: #f2f2f2;
+ }
+
+ .block-button-extra
+ .gx-typography-item
+ .accordion__panel{
+	 padding: 16px !important;
+ }
+
+ .block-button-extra
+ .gx-typography-item
+ .accordion__panel{
+     padding: 35px !important;
+ }
+
+ .components-popover__content{
+     margin-right: -35px !important;
+ }

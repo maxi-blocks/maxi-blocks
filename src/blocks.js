@@ -23,3 +23,5 @@ import './blocks/block-row-extra/block-row-extra';
 import './blocks/block-column-extra/block-column-extra';
 
 // import './blocks/block-button/block.js';
+
+import './blocks/block-button-extra/block-button-extra.js';

@@ -22,6 +22,7 @@ const allowedBlocks = [
 	'gutenberg-extra/testimonials-slider-block',
 	'gutenberg-extra/block-row-extra',
 	'gutenberg-extra/block-column-extra',
+	'gutenberg-extra/block-button-extra',
 ];
 
 /**

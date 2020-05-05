@@ -64,10 +64,10 @@ div.gx-row-block {
     > div.block-editor-inner-blocks > div.block-editor-block-list__layout {
         display: flex;
 
-        > div.gx-column-block:first-of-type {
+        > div.gx-column-left {
             margin-left: 0 !important;
         }
-        > div.gx-column-block:last-of-type {
+        > div.gx-column-right {
             margin-right: 0 !important;
         }
 

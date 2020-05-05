@@ -901,9 +901,9 @@ div.gx-row-block {
   div.gx-row-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout {
     display: -ms-flexbox;
     display: flex; }
-    div.gx-row-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout > div.gx-column-block:first-of-type {
+    div.gx-row-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout > div.gx-column-left {
       margin-left: 0 !important; }
-    div.gx-row-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout > div.gx-column-block:last-of-type {
+    div.gx-row-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout > div.gx-column-right {
       margin-right: 0 !important; }
     div.gx-row-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout > div.block-list-appender {
       margin: 0; }
@@ -943,9 +943,19 @@ div.gx-row-block.has-child-selected > div.gx-row-selector-wrapper {
  * Can include things like variables and mixins
  * that are used across the project.
 */
-.gx-column-block:hover {
+div.gx-column-block:hover {
   outline: 1px solid blue; }
 
-.gx-column-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout > div.block-list-appender {
-  width: 100%;
-  margin: 0; }
+div.gx-column-block {
+  max-width: 100% !important; }
+  div.gx-column-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout > div.block-list-appender {
+    width: 100%;
+    margin: 0; }
+
+div.components-resizable-box__container {
+  width: 100%; }
+  div.components-resizable-box__container > span > div.components-resizable-box__handle-right {
+    left: 100%;
+    -webkit-transform: translateX(20%);
+        -ms-transform: translateX(20%);
+            transform: translateX(20%); }

@@ -1,9 +1,12 @@
 /**
  * WordPress dependencies
  */
-const { __ } = wp.i18n;
-const { Fragment } = wp.element;
 const { compose } = wp.compose;
+const { Fragment } = wp.element;
+const {
+    ResizableBox,
+    Spinner
+} = wp.components;
 const {
     withSelect,
     withDispatch,
@@ -12,30 +15,14 @@ const {
 } = wp.data;
 const {
     InnerBlocks,
-    InspectorControls,
     __experimentalBlock
 } = wp.blockEditor;
-const {
-    PanelBody,
-    RangeControl,
-    BaseControl
-} = wp.components;
 
 /**
  * Internal dependencies
  */
-import {
-    GXBlock,
-    AccordionControl,
-    BackgroundControl,
-    BlockStylesControl,
-    BorderControl,
-    BoxShadowControl,
-    DimensionsControl,
-    CustomCSSControl,
-    FullSizeControl,
-    HoverAnimationControl,
-} from '../../components';
+import { GXBlock } from '../../components';
+import Inspector from './inspector';
 import {
     getBackgroundObject,
     getBoxShadowObject
@@ -59,7 +46,7 @@ import {
 class edit extends GXBlock {
 
     componentDidMount() {
-        this.uniqueIDChecker(this.props.attributes.uniqueID, this.displayStyles.bind(this));
+        this.uniqueIDChecker(this.props.attributes.uniqueID, this.displayStyles.bind(this)); // May should go on constructor
     }
 
     componentDidUpdate() {
@@ -143,28 +130,20 @@ class edit extends GXBlock {
             attributes: {
                 uniqueID,
                 blockStyle,
-                defaultBlockStyle,
                 columnSize,
-                background,
-                boxShadow,
-                border,
-                size,
-                padding,
-                margin,
-                hoverAnimation,
-                hoverAnimationDuration,
+                columnGap,
                 extraClassName,
-                extraStyles
             },
-            syncSize,
             getColumnSize,
-            getMaxRangeSize,
             clientId,
             className,
+            isSelected,
+            rowBlockId,
+            rowBlockWidth,
+            columnPosition,
+            hasInnerBlock,
             setAttributes
         } = this.props;
-
-        const columnSizeStyle = getColumnSize(this.props.attributes);
 
         let classes = classnames(
             'gx-block gx-column-block',
@@ -175,13 +154,6 @@ class edit extends GXBlock {
         );
 
         /**
-         * Check if InnerBlock contains other blocks
-         */
-        const hasInnerBlock = () => {
-            return select('core/block-editor').getBlockOrder(clientId).length >= 1;
-        }
-
-        /**
          * Check if current block or children is select
          */
         const isSelect = () => {
@@ -190,173 +162,80 @@ class edit extends GXBlock {
             return nestedColumns.includes(selectedBlock) || clientId === selectedBlock;
         }
 
+        const getResizePerCent = delta => {
+            const rowBlockNode = document.querySelector(`div[data-block="${rowBlockId}"]`);
+            const rowBlockWidth = rowBlockNode.getBoundingClientRect().width;
+            const newWidth = this.state.originalWidth + delta.width;
+            const diffPerCent = newWidth / rowBlockWidth * 100;
+
+            return diffPerCent;
+        }
+
         return [
-            <InspectorControls>
-                <PanelBody
-                    className="gx-panel gx-image-setting gx-content-tab-setting"
-                    initialOpen={true}
-                    // why this vvvv title?
-                    title={__('Image Settings', 'gutenberg-extra')}
-                >
-                    <BlockStylesControl
-                        blockStyle={blockStyle}
-                        onChangeBlockStyle={blockStyle => setAttributes({ blockStyle })}
-                        defaultBlockStyle={defaultBlockStyle}
-                        onChangeDefaultBlockStyle={defaultBlockStyle => setAttributes({ defaultBlockStyle })}
-                    />
-                    {
-                        !syncSize &&
-                        <RangeControl
-                            label={__('Column Size', 'gutenberg-extra')}
-                            value={columnSize}
-                            onChange={columnSize => setAttributes({ columnSize })}
-                            min={0}
-                            max={getMaxRangeSize()}
-                            step={.1}
-                        />
-                    }
-                </PanelBody>
-                <PanelBody
-                    className="gx-panel gx-image-setting gx-style-tab-setting"
-                    initialOpen={true}
-                    // why this vvvv title?
-                    title={__('Image Settings', 'gutenberg-extra')}
-                >
-                    <AccordionControl
-                        isPrimary
-                        items={[
-                            {
-                                label: __('Background Image', 'gutenberg-extra'),
-                                classNameHeading: 'gx-backgroundsettings-tab',
-                                //icon: image,
-                                content: (
-                                    <BackgroundControl
-                                        backgroundOptions={background}
-                                        onChange={background => setAttributes({ background })}
-                                    target=">.gx-column-block-content"
-                                    />
-                                ),
-                            },
-                            {
-                                label: __('Box Settings', 'gutenberg-extra'),
-                                classNameItem: 'gx-box-settings-item',
-                                classNameHeading: 'gx-box-settings-tab',
-                                //icon: boxSettings,
-                                content: (
-                                    <Fragment>
-                                        <PanelBody
-                                            className={'gx-panel gx-color-setting gx-style-tab-setting'}
-                                        >
-                                            <BaseControl
-                                                className={"bg-color-parent gx-reset-button background-gradient"}
-                                            >
-                                                <BoxShadowControl
-                                                    boxShadowOptions={boxShadow}
-                                                    onChange={boxShadow => setAttributes({ boxShadow })}
-                                                target=">.gx-column-block-content"
-                                                />
-                                            </BaseControl>
-                                            <hr style={{ marginTop: "28px" }} />
-                                            <BorderControl
-                                                borderOptions={border}
-                                                onChange={border => setAttributes({ border })}
-                                            target=">.gx-column-block-content"
-                                            />
-                                        </PanelBody>
-                                    </Fragment>
-                                ),
-                            },
-                            {
-                                label: __(' Width / Height', 'gutenberg-extra'),
-                                classNameItem: 'gx-width-height-item',
-                                classNameHeading: 'gx-width-height-tab',
-                                //icon: width,
-                                content: (
-                                    // Is this vvv PanelBody element necessary?
-                                    <PanelBody
-                                        className="gx-panel gx-size-setting gx-style-tab-setting"
-                                        initialOpen={true}
-                                        title={__('Size Settings', 'gutenberg-extra')}
-                                    >
-                                        <FullSizeControl
-                                            sizeSettings={size}
-                                            onChange={size => setAttributes({ size })}
-                                        target=">.gx-column-block-content"
-                                        />
-                                    </PanelBody>
-                                ),
-                            },
-                            {
-                                label: __('Padding & Margin', 'gutenberg-extra'),
-                                classNameItem: 'gx-padding-margin-item',
-                                classNameHeading: 'gx-padding-tab',
-                                //icon: iconPadding,
-                                content: (
-                                    <PanelBody
-                                        className="gx-panel gx-space-setting gx-style-tab-setting"
-                                        initialOpen={true}
-                                        // why this vvvv title?
-                                        title={__('Space Settings', 'gutenberg-extra')}
-                                    >
-                                        <DimensionsControl
-                                            value={padding}
-                                            onChange={padding => setAttributes({ padding })}
-                                            target=">.gx-column-block-content"
-                                            avoidZero
-                                        />
-                                        <DimensionsControl
-                                            value={margin}
-                                            onChange={margin => setAttributes({ margin })}
-                                            target=">.gx-column-block-content"
-                                            avoidZero
-                                        />
-                                    </PanelBody>
-                                ),
-                            }
-                        ]}
-                    />
-                </PanelBody>
-                <PanelBody
-                    initialOpen={true}
-                    className="gx-panel gx-advanced-setting gx-advanced-tab-setting"
-                    title={__('Advanced Settings', 'gutenberg-extra')}
-                >
-                    <HoverAnimationControl
-                        hoverAnimation={hoverAnimation}
-                        onChangeHoverAnimation={hoverAnimation => setAttributes({ hoverAnimation })}
-                        hoverAnimationDuration={hoverAnimationDuration}
-                        onChangeHoverAnimationDuration={hoverAnimationDuration => setAttributes({ hoverAnimationDuration })}
-                    />
-                    <CustomCSSControl
-                        extraClassName={extraClassName}
-                        onChangeExtraClassName={extraClassName => setAttributes({ extraClassName })}
-                        extraStyles={extraStyles}
-                        onChangeExtraStyles={extraStyles => setAttributes({ extraStyles })}
-                    />
-                </PanelBody>
-            </InspectorControls>,
-            <__experimentalBlock.div
-                className={classes}
-                style={{
-                    flex: `0 0 ${columnSizeStyle}%`,
-                    maxWidth: `${columnSizeStyle}%`,
-                }}
-            >
-                <div
-                    className="gx-column-block-content"
-                >
-                    <InnerBlocks
-                        templateLock={false}
-                        renderAppender={
-                            !hasInnerBlock() || isSelect() ?
-                                () => (
-                                    <InnerBlocks.ButtonBlockAppender />
-                                ) :
-                                false
-                        }
-                    />
-                </div>
-            </__experimentalBlock.div>
+            <Inspector {...this.props} />,
+            <Fragment>
+                {
+                    rowBlockWidth === 0 &&
+                    <Spinner />
+                }
+                {
+                    rowBlockWidth != 0 &&
+                    <ResizableBox
+                        className={classnames(
+                            "gx-column-block-resizer",
+                            columnPosition
+                        )}
+                        size={{
+                            width: (columnSize / 100) * rowBlockWidth
+                        }}
+                        enable={{
+                            top: false,
+                            right: columnPosition != 'gx-column-right' ? true : false,
+                            bottom: false,
+                            left: false,
+                            topRight: false,
+                            bottomRight: false,
+                            bottomLeft: false,
+                            topLeft: false,
+                        }}
+                        onResizeStart={(event, direction, elt, delta) => {
+                            this.setState({
+                                originalWidth: elt.getBoundingClientRect().width
+                            })
+                        }}
+                        onResize={(event, direction, elt, delta) => {
+                            setAttributes({
+                                columnSize: round(getResizePerCent(delta), 1),
+                            });
+                        }}
+                        onResizeStop={(event, direction, elt, delta) => {
+                            setAttributes({
+                                columnSize: round(getResizePerCent(delta), 1),
+                            });
+                        }}
+                        showHandle={true}
+                    >
+                        <__experimentalBlock.div
+                            className={classes}
+                        >
+                            <div
+                                className="gx-column-block-content"
+                            >
+                                <InnerBlocks
+                                    templateLock={false}
+                                    renderAppender={
+                                        !hasInnerBlock || isSelect() ?
+                                            () => (
+                                                <InnerBlocks.ButtonBlockAppender />
+                                            ) :
+                                            false
+                                    }
+                                />
+                            </div>
+                        </__experimentalBlock.div>
+                    </ResizableBox>
+                }
+            </Fragment>
         ];
     }
 }
@@ -370,12 +249,30 @@ const editSelect = withSelect((select, ownProps) => {
     const syncSize = select('core/block-editor').getBlockAttributes(rowBlockId).syncSize;
     const syncStyles = select('core/block-editor').getBlockAttributes(rowBlockId).syncStyles;
     const columnGap = select('core/block-editor').getBlockAttributes(rowBlockId).columnGap;
+    const rowBlockNode = document.querySelector(`div[data-block="${rowBlockId}"]`);
+    const rowBlockWidth = !isNil(rowBlockNode) ? rowBlockNode.getBoundingClientRect().width : 0;
+    const hasInnerBlock = select('core/block-editor').getBlockOrder(clientId).length >= 1;
+
+    const getPosition = () => {
+        const originalNestedColumns = select('core/block-editor').getBlockOrder(rowBlockId);
+        switch (originalNestedColumns.indexOf(clientId)) {
+            case 0:
+                return 'gx-column-left';
+            case originalNestedColumns.length - 1:
+                return 'gx-column-right';
+            default:
+                return 'gx-column-center';
+        }
+    }
 
     return {
         syncSize,
         syncStyles,
         rowBlockId,
+        rowBlockWidth,
         columnGap,
+        columnPosition: getPosition(),
+        hasInnerBlock
     }
 })
 

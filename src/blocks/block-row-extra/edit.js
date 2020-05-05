@@ -137,7 +137,7 @@ class edit extends GXBlock {
         this.displayStyles('columns');
 
         // This should be improved: row have same styling on front and backend, but on different targets
-        this.target = `${this.props.attributes.uniqueID}>div.block-editor-inner-blocks>div.block-editor-block-list__layout>div.gx-column-block`;
+        this.target = `${this.props.attributes.uniqueID}>div.block-editor-inner-blocks>div.block-editor-block-list__layout>div.gx-column-block-resizer`;
         this.displayStyles('columns');
 
         this.target = `${this.props.attributes.uniqueID}`;
@@ -292,7 +292,6 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
         })
 
         const newAttributes = template.attributes;
-        console.log(newAttributes)
         dispatch('core/block-editor').updateBlockAttributes(clientId, newAttributes);
 
         const newTemplate = synchronizeBlocksWithTemplate([], template.content);

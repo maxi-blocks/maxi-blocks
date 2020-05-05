@@ -48,6 +48,7 @@ const Inspector = props => {
         },
         syncSize,
         getMaxRangeSize,
+        redistributeColumnsSize,
         setAttributes
     } = props;
 
@@ -70,9 +71,12 @@ const Inspector = props => {
                     <RangeControl
                         label={__('Column Size', 'gutenberg-extra')}
                         value={columnSize}
-                        onChange={columnSize => setAttributes({ columnSize })}
+                        onChange={columnSize => {
+                            redistributeColumnsSize(columnSize);
+                            setAttributes({ columnSize })
+                        }}
                         min={0}
-                        max={getMaxRangeSize()}
+                        max={100}
                         step={.1}
                     />
                 }

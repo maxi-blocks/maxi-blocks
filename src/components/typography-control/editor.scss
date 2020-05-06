@@ -44,3 +44,429 @@
 .gx-title-typography-setting .components-base-control__label {
     width: 40%;
 }
+
+.gx-controls .components-panel__body {
+    border-top: none;
+}
+
+.components-base-control * {
+    background: none;
+}
+
+.gx-typography-control .gx-typography-color-display span{
+    border: 1px solid #dddfe1 !important;
+    opacity: 1 !important;
+}
+
+.components-base-control:last-child{
+    margin-bottom: 0 !important;
+}
+
+.gx-sidebar .gx-settings-button .components-base-control__field {
+    justify-content: space-between;
+}
+
+.gx-typography-popover .gx-settings-button .components-base-control__field {
+    display: flex;
+    justify-content: space-between;
+}
+
+.gx-typography-control .components-base-control__field .components-base-control__label {
+    margin-right: auto;
+}
+
+.components-base-control__label {
+    font-size: 13px !important;
+    color: #464a53 !important;
+}
+
+.gx-typography-popover .gx-settings-button .components-base-control__field .gx-popover-dropdown {
+    margin-left: auto;
+    margin-right: 3px;
+}
+
+.gx-sidebar .gx-popover-control .gx-settings-button .gx-popover-dropdown {
+    display: inherit;
+}
+
+.gx-typography-popover .gx-settings-button .components-base-control__field .components-button[action="popup"]{
+    border: 1px solid #dddfe1 !important;
+    opacity: 1 !important;
+}
+
+.gx-typography-popover .gx-settings-button .components-base-control__field .components-button[action="popup"] {
+    width: 30px;
+    height: 30px;
+    background: transparent !important;
+    padding: 0;
+    border-radius: 5px;
+}
+
+.gx-sidebar *, .gx-typography-popover * {
+    font-family: "Roboto", Helvetica, Arial, Lucida, sans-serif !important;
+    font-weight: 500 !important;
+}
+
+.gx-settings-button .components-button.is-secondary > svg {
+    width: 18px !important;
+    height: 18px !important;
+}
+
+.gx-sidebar .gx-settings-button button svg, .components-button[type="reset"] svg {
+    color: #464a53 !important;
+    fill: #464a53 !important;
+}
+
+.components-popover__content > div {
+    height: 100%;
+}
+
+.gx-font-family-selector-button {
+    height: 45px;
+    border-radius: 5px;
+    background-color: rgba(33, 141, 250, 0);
+    border: 2px solid #dddfe1;
+    font-size: 20px;
+    color: #464a53;
+    font-weight: 500;
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+.components-button {
+    display: inline-flex;
+    text-decoration: none;
+    cursor: pointer;
+    -webkit-appearance: none;
+    background: none;
+    background-color: rgba(0, 0, 0, 0);
+    transition: box-shadow .1s linear;
+    align-items: center;
+    padding: 0 8px;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+button{
+    font-family: inherit;
+}
+
+.components-button svg {
+    fill: currentColor;
+    outline: none;
+}
+.gx-font-family-selector-icon {
+    margin: auto;
+    margin-right: 0;
+    transition: .2s all ease;
+}
+
+.gx-font-family-selector-button {
+    font-size: 20px;
+    color: #464a53;
+    font-weight: 500;
+}
+
+.gx-colorcontrol-control .gx-colorcontrol-color-display span {
+    display: block;
+    width: 24px;
+    height: 24px;
+    margin: auto;
+}
+
+.gx-colorcontrol-color-display span{
+    border: 1px solid #dddfe1 !important;
+    opacity: 1 !important;
+}
+
+.gx-colorcontrol-color-display span {
+    margin-right: 8px !important;
+}
+
+.gx-colorcontrol-color-display span{
+    border-radius:5px;
+    float:left;
+}
+
+.gx-colorcontrol-control .gx-popover-control {
+    width: 100%;
+}
+
+gx-colorcontrol-control .gx-popover-control .components-base-control {
+    display: flex;
+    justify-content: space-between;
+}
+
+.components-base-control__label {
+    margin-bottom: 0 !important;
+    vertical-align: sub;
+    min-height: 24px;
+}
+
+.gx-colorcontrol-control .gx-popover-control .components-base-control__field .components-button{
+    border: 1px solid #dddfe1 !important;
+    opacity: 1 !important;
+}
+
+.gx-colorcontrol-control .components-base-control__field > button {
+    order: 3;
+    margin-left: 0;
+    height: 30px !important;
+}
+
+.components-button.is-secondary {
+    box-shadow: none !important;
+}
+
+.gx-settings-button .components-button {
+    padding: 0 !important;
+}
+
+.gx-settings-button .components-button.is-secondary > svg {
+    width: 18px !important;
+    height: 18px !important;
+}
+
+.components-button[type="reset"] svg {
+    color: #464a53 !important;
+    fill: #464a53 !important;
+}
+
+.components-base-control * {
+    background: none;
+}
+
+.gx-colorcontrol-control .gx-popover-control .components-base-control__field .components-dropdown {
+    margin-left: auto;
+}
+
+.components-base-control * {
+    background: none;
+}
+
+.gx-colorcontrol-control .gx-popover-control .components-base-control__field .components-button{
+    border: 1px solid #dddfe1 !important;
+    opacity: 1 !important;
+}
+
+.gx-settings-button .components-button {
+    padding: 0 !important;
+}
+
+.gx-settings-button .components-button.is-secondary > svg {
+    width: 18px !important;
+    height: 18px !important;
+}
+
+.components-popover__content label, .components-popover__content .components-base-control__label{
+    font-size: 16px !important;
+    color: #464a53;
+    font-weight: 500;
+    letter-spacing: -0.5px;
+}
+
+.gx-popover > .components-popover__content > .gx-popover-control {
+    margin-bottom: 11px;
+}
+
+.gx-popover > .components-popover__content > .gx-popover-control > .components-base-control.gx-settings-button > .components-base-control__field {
+    display: flex;
+    position: relative;
+}
+
+.gx-popover > .components-popover__content > .gx-popover-control > .components-base-control.gx-settings-button > .components-base-control__field button.components-button.is-secondary {
+    position: absolute;
+    right: 0;
+    top:-2px;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #dddfe1 !important;
+    border-radius: 5px;
+    background: #ffffff;
+    display: flex;
+    justify-content: center;
+}
+
+.gx-settings-button .components-button.is-secondary > svg {
+    width: 18px !important;
+    height: 18px !important;
+}
+
+.components-button[type="reset"] svg {
+    color: #464a53 !important;
+    fill: #464a53 !important;
+}
+
+.gx-popover > .components-popover__content > .gx-popover-control > .components-base-control.gx-settings-button > .components-base-control__field .components-dropdown.gx-popover-dropdown {
+    position: absolute;
+    right: 33px;
+    top: 0;
+}
+
+.gx-popover > .components-popover__content > .gx-popover-control > .components-base-control.gx-settings-button > .components-base-control__field .components-dropdown.gx-popover-dropdown > button.components-button.is-secondary {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #dddfe1 !important;
+    border-radius: 5px;
+    background: #ffffff;
+    display: flex;
+    justify-content: center;
+}
+
+.components-popover__content > div {
+    height: 100%;
+}
+
+.gx-popover > .components-popover__content > .components-base-control.components-base-control.gx-alignmentcontrol-control.components-radio-control > .components-base-control__field {
+    display: flex;
+    position: relative;
+    justify-content: flex-end;
+}
+
+.gx-popover > .components-popover__content > .components-base-control.components-base-control.gx-alignmentcontrol-control.components-radio-control > .components-base-control__field > label {
+    position: absolute;
+    left: 0;
+    top: -3px;
+}
+
+.gx-popover > .components-popover__content > .components-base-control.components-base-control.gx-alignmentcontrol-control.components-radio-control > .components-base-control__field > .components-radio-control__option > input[type="radio"]:checked + label {
+    -webkit-box-shadow: 0 0 0 2px #007cba;
+    box-shadow: 0 0 0 2px #007cba;
+    outline: 1px solid transparent;
+    position: relative;
+    z-index: 1;
+    border: 2px solid #007cba;
+}
+
+.gx-popover > .components-popover__content > .components-base-control.components-base-control.gx-alignmentcontrol-control.components-radio-control > .components-base-control__field > .components-radio-control__option:nth-of-type(1) > label {
+    border-radius: 5px 0 0 5px;
+}
+
+.gx-popover > .components-popover__content > .components-base-control.components-base-control.gx-alignmentcontrol-control.components-radio-control > .components-base-control__field > .components-radio-control__option > label {
+    display: flex;
+    justify-content: center;
+    border: 1px solid #dddfe1 !important;
+    width: 44px;
+    height: 29px;
+}
+
+.gx-popover > .components-popover__content > .components-base-control.components-base-control.gx-alignmentcontrol-control.components-radio-control > .components-base-control__field > .components-radio-control__option > label > svg {
+    position: relative;
+    top: 2px;
+}
+
+gx-popover > .components-popover__content > .components-base-control.components-base-control.gx-alignmentcontrol-control.components-radio-control > .components-base-control__field > .components-radio-control__option > label {
+    display: flex;
+    justify-content: center;
+    border: 1px solid #dddfe1 !important;
+    width: 44px;
+    height: 29px;
+}
+
+.gx-popover > .components-popover__content > .components-base-control.components-base-control.gx-alignmentcontrol-control.components-radio-control > .components-base-control__field > .components-radio-control__option:last-child > label {
+    border-radius: 0 5px 5px 0;
+}
+
+.components-base-control.components-base-control.gx-alignmentcontrol-control.components-radio-control
+.components-radio-control__option:last-child{
+    position:relative;
+    top:-2px;
+}
+
+.gx-device-control {
+    width: 101%;
+}
+
+.gx-device-control .components-radio-control__option {
+    width: 33%;
+    text-align: center;
+    border: 1px solid #dddfe1;
+}
+
+.gx-device-control .components-radio-control__option {
+    height: 33px !important;
+}
+
+.gx-device-control .components-radio-control__option input:checked + label {
+    background-color: #00ccff;
+    display: block;
+}
+
+.gx-device-control .components-radio-control__option > label > svg{
+        transform: scale(0.8);
+        position: relative;
+        top: 1px;
+        width: 24px !important;
+}
+
+.gx-device-control .components-radio-control__option:last-child{
+    top:-2px;
+}
+
+.gx-device-control .components-radio-control__option:first-child svg{
+    top:3px;
+    width: 28px !important;
+}
+
+.gx-device-control .components-radio-control__option:last-child svg{
+    top:2px;
+    width:17px !important;
+}
+
+.gx-with-unit-control {
+    clear: both;
+}
+
+.components-range-control.gx-with-unit-control .components-base-control__field {
+    display: flex;
+    justify-content: space-between;
+}
+
+.gx-with-unit-control .components-base-control__field {
+    position: relative;
+}
+
+.gx-popover > .components-popover__content .components-base-control.components-range-control.gx-with-unit-control .components-base-control__label {
+    width: 100% !important;
+}
+
+.gx-popover label, .gx-popover .components-base-control__label{
+    font-weight: 500;
+}
+
+.components-range-control.gx-with-unit-control .components-base-control__field .components-range-control__number {
+    margin-left: auto;
+    max-height: 30px;
+    height: 30px !important;
+    margin-right: 3px;
+}
+
+.gx-popover input[type="number"]{
+    min-height: unset;
+    max-height: unset !important;
+    border-radius: 5px;
+    background-color: rgba(33, 141, 250, 0);
+    font-size: 16px;
+    color: #464a53;
+    font-weight: 500;
+}
+
+.components-popover input[type="number"]{
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif;
+    padding: 6px 8px;
+    box-shadow: 0 0 0 transparent;
+    transition: box-shadow .1s linear;
+}
+
+.components-range-control__number:not(.gx-shadow-horizontal-control){
+    border: 1px solid #dddfe1 !important;
+    opacity: 1 !important;
+}
+
+.components-range-control__number:not(.gx-shadow-horizontal-control) {
+    max-width: 48px;
+    z-index: 1;
+    padding: 0 !important;
+    padding-left: 5px !important;
+    padding-top: 1px !important;
+}

@@ -482,7 +482,7 @@
   }
   
   .gx-panel label,
-  .gx-panel .components-base-control__label,
+  /*.gx-panel .components-base-control__label,*/
   .gx-popover label,
   .gx-popover .components-base-control__label,
   .gx-controls .gx-accordion .components-base-control__label {
@@ -574,10 +574,10 @@
 	padding: 0;
   }
   
-  .gx-sidebar .components-base-control .components-base-control__field {
+  /*.gx-sidebar .components-base-control .components-base-control__field {
 	display: flex;
 	align-items: center;
-  }
+  }*/
   
   .gx-sidebar .components-range-control__number {
 	width: 70px;
@@ -1080,9 +1080,9 @@
 	flex: 100%;
   }
   
-  .gx-sidebar .gx-link-setting .components-base-control__label {
+  /*.gx-sidebar .gx-link-setting .components-base-control__label {
 	flex: 36%;
-  }
+  }*/
   
   .gx-link-setting .components-base-control {
 	margin-bottom: 20px;
@@ -1184,7 +1184,7 @@
 	margin-top: 0 !important;
   }
   
-  .gx-device-control .components-radio-control__option:before {
+  /*.gx-device-control .components-radio-control__option:before {
 	content: "" !important;
 	display: block;
 	background-image: url("../img/gx-desktop-icon.svg");
@@ -1208,6 +1208,7 @@
 	width: 18px;
 	height: 28px;
   }
+  */
   
   .gx-device-control .components-radio-control__option {
 	width: 33%;
@@ -1756,12 +1757,13 @@
 	height: 40px;
   }
   
-  .gx-controls .gx-accordion .gx-typography-tab .components-base-control__label:before {
+  /*.gx-controls .gx-accordion .gx-typography-tab .components-base-control__label:before {
 	content: url(../img/gx-typography-tab.svg);
 	width: 1.29rem;
 	height: 22px;
 	padding-top: 1px;
   }
+  */
   
   .divider-accordion-tab {
 	padding: 7px 10px !important;
@@ -1780,12 +1782,13 @@
 	margin-bottom: 2px;
   }
   
-  .gx-controls .gx-accordion .gx-icon-tab .components-base-control__label:before {
+  /*.gx-controls .gx-accordion .gx-icon-tab .components-base-control__label:before {
 	content: url(../img/gx-icon-black.svg);
 	width: 1.41rem;
 	margin-right: 13px;
 	margin-left: 2px;
   }
+  */
   
   .gx-controls .gx-accordion .gx-icon-tab .components-base-control__label[aria-expanded="true"]::after {
 	right: 18px !important;
@@ -1796,7 +1799,7 @@
 	margin-bottom: 5px;
   }
   
-  .gx-controls .gx-accordion .gx-divider-tab .components-base-control__label::before {
+  /*.gx-controls .gx-accordion .gx-divider-tab .components-base-control__label::before {
 	content: url(../img/gx-divider-tab.svg);
 	margin-left: -2px;
 	width: 1.2rem;
@@ -1804,22 +1807,23 @@
 	top: 22px;
 	margin-top: 2px;
   }
+  */
   
-  .gx-controls .gx-accordion .gx-image-tab .components-base-control__label::before {
+  /*.gx-controls .gx-accordion .gx-image-tab .components-base-control__label::before {
 	content: url(../img/gx-image-tab.svg);
 	width: 1.29rem;
 	height: 22px;
 	top: 22px;
 	margin-top: 2px;
   }
-  
+  */
   .components-button.components-color-palette__clear.is-button.is-default.is-small:before {
 	content: url(../img/gx-reset.svg);
 	width: 1rem;
 	padding-top: 2px;
   }
   
-  .gx-controls .gx-accordion .gx-button-tab .components-base-control__label:before {
+  /*.gx-controls .gx-accordion .gx-button-tab .components-base-control__label:before {
 	content: url(../img/gx-button-tab.svg);
 	padding-top: 2px;
 	width: 1.2rem;
@@ -1827,6 +1831,7 @@
 	top: 22px;
 	margin-top: 2px;
   }
+  */
   
   .gx-box-settings-item {
 	background: none;
@@ -1878,7 +1883,7 @@
 	margin: auto;
   }
   
-  .gx-controls .gx-accordion .gx-box-settings-tab .components-base-control__label:before {
+  /*.gx-controls .gx-accordion .gx-box-settings-tab .components-base-control__label:before {
 	content: url(../img/gx-box-settings-tab.svg);
 	width: 1.29rem;
 	height: 22px;
@@ -1890,6 +1895,7 @@
 	width: 1.28rem;
 	height: 22px;
   }
+  */
   
   .gx-width-height-item .components-radio-control__option label {
 	height: 30px !important;
@@ -1906,11 +1912,12 @@
 	width: 31px !important;
   }
   
-  .gx-controls .gx-accordion .gx-padding-tab .components-base-control__label:before {
+  /*.gx-controls .gx-accordion .gx-padding-tab .components-base-control__label:before {
 	content: url(../img/gx-padding-tab.svg);
 	width: 1.28rem;
 	height: 22px;
   }
+  */
   
   .gx-controls .gx-accordion .components-base-control__label:hover {
 	cursor: pointer;
@@ -2203,7 +2210,7 @@
   .block-editor-panel-color-gradient-settings:last-child,
   .gx-divider-item .accordion__panel .components-panel__body.is-opened,
   .gx-divider-item .accordion__panel .components-panel__body.is-opened .divider-dimension:last-child,
-  .components-base-control.gx-title-level:last-child,
+  .components-base-control.gx-title-level:last-child
   .components-base-control__field {
 	margin-bottom: 0 !important;
   }

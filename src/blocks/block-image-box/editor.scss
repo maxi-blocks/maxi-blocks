@@ -1,0 +1,197 @@
+.gx-sidebar .components-panel__body.is-opened {
+    max-width: 100%;
+    margin-left: auto;
+}
+
+.gx-controls .components-panel__body.gx-image-setting,
+  .gx-controls .components-panel__body.gx-link-setting {
+	border-top: 2px solid #e8eaeb;
+	border-bottom: 2px solid #e8eaeb;
+  }
+
+.gx-content-tab-setting {
+    padding: 20px !important;
+}
+
+.gx-link-setting .components-base-control:not(.components-toggle-control) {
+    margin-bottom: 10px !important;
+}
+
+.components-base-control__field {
+    margin-bottom: 0 !important;
+}
+
+.components-base-control .components-base-control__field {
+    display: -ms-flexbox !important;
+    display: flex !important;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.gx-sidebar .gx-link-setting .components-base-control__label {
+    flex: 36%;
+}
+
+.components-base-control .components-base-control__label {
+    display: inline-block;
+}
+
+.components-base-control__label {
+    font-size:13px !important;
+    color:#464a53;
+    margin-bottom: 0 !important;
+    vertical-align: sub;
+    min-height: 24px;
+}
+
+.components-base-control__label {
+    font-size: 13px !important;
+    color: #464a53 !important;
+}
+
+label {
+    cursor: pointer;
+}
+
+.gx-panel input[type="text"], .gx-panel input[type="number"], .gx-panel textarea, .gx-panel select, .gx-popover input[type="text"], .gx-popover input[type="number"], .gx-controls select, .gx-popover textarea, .components-select-control__input {
+    min-height: unset;
+    max-height: unset !important;
+    border-radius: 5px;
+    background-color: rgba(33, 141, 250, 0);
+    border: 2px solid #dddfe1;
+    font-size: 16px;
+    color: #464a53;
+}
+
+.components-text-control__input, .components-textarea-control__input {
+    width: 100%;
+    padding: 6px 8px;
+}
+
+.gx-sidebar .components-base-control.gutenberg-extra-checkbox-container {
+    min-height: 23px;
+}
+
+.gx-link-setting .components-base-control:not(.components-toggle-control) {
+    margin-bottom: 10px !important;
+}
+
+.gx-panel label, .gx-popover label, .gx-popover .components-base-control__label, .gx-controls .gx-accordion .components-base-control__label {
+    font-size: 16px;
+    color: #464a53;
+    font-weight: 500;
+    letter-spacing: -0.5px;
+}
+
+.gx-controls * {
+    overflow-x: none;
+    background: #fff;
+}
+
+input[type="checkbox"].gutenberg-extra-checkbox-input {
+    position: relative;
+    width: 23px;
+    height: 23px;
+    transition: 0.3s;
+}
+/*----------------------------------------------------------------*/
+.gx-controls, .gx-controls > div:nth-child(3) {
+    background: #f2f2f2;
+}
+
+.gx-controls .gx-accordion {
+    background: #f2f2f2;
+    margin: 0px 10px 1px 10px;
+}
+
+.gx-controls .accordion__item {
+    background: none;
+    overflow-x: hidden !important;
+}
+
+.gx-controls .gx-accordion-tab {
+    border-radius: 0.3rem;
+}
+
+.gx-controls .gx-accordion-tab .components-base-control__label {
+    border-radius: 0.3rem;
+    height: 40px;
+}
+
+.gx-controls .gx-accordion-tab > .components-base-control__label {
+    margin-bottom: 7px !important;
+    box-shadow: 0rem 0rem 0.5rem rgba(33, 33, 33, 0.15);
+    position: relative;
+    background: #fff;
+    padding: 9px 9px;
+    display: flex;
+    align-items: center;
+}
+
+.gx-controls .gx-accordion .components-base-control__label {
+    letter-spacing: -0.5px;
+}
+
+.components-base-control__label > span{
+    font-size:13px !important;
+}
+
+.components-base-control__label > span > svg{
+    margin-right: 5px !important;
+    vertical-align: middle !important;
+}
+
+gx-controls .accordion__panel {
+    margin-top: -24px;
+    width: 108% !important;
+    margin-bottom: 15px;
+    margin-left: -4%;
+    margin-right: auto;
+    padding-top: 28px;
+    padding-bottom: 10px;
+    border-top: 2px solid #e8eaeb;
+}
+
+.components-panel__body.gx-panel.gx-color-setting.gx-style-tab-setting.is-opened {
+    margin-bottom: 0;
+}
+
+body .gx-controls .components-panel__body.is-opened:first-child {
+    margin-top: 0 !important;
+}
+
+.edit-post-settings-sidebar__panel-block .components-panel__body.gx-panel, .gx-sidebar .components-panel__body.is-opened {
+    max-width: 100%;
+    margin-left: auto;
+}
+
+.accordion__panel .components-panel__body {
+    padding-top: 15px !important;
+    padding-left: 27px !important;
+    padding-right: 25px !important;
+    padding-bottom: 10px !important;
+}
+
+.components-panel__body.editor-panel-color-settings.block-editor-panel-color-settings.is-opened {
+    margin-left: auto;
+}
+
+.edit-post-settings-sidebar__panel-block .components-panel__body.gx-panel, .gx-sidebar .components-panel__body.is-opened {
+    max-width: 100%;
+}
+
+.gx-sidebar .block-editor-panel-color-settings.is-opened {
+    padding: 0px !important;
+    margin-top: 0;
+}
+
+
+
+.gx-panel .components-base-control.gx-title-level, .gx-panel .components-base-control.gx-title-level .components-base-control__field, .components-base-control {
+    margin-bottom: 5px !important;
+}
+
+.components-base-control:last-child, .components-base-control.gx-title-level .components-base-control__field:first-child, .components-gx-dimensions-control:last-child, .block-editor-panel-color-gradient-settings:last-child, .gx-divider-item .accordion__panel .components-panel__body.is-opened, .gx-divider-item .accordion__panel .components-panel__body.is-opened .divider-dimension:last-child, .components-base-control.gx-title-level:last-child .components-base-control__field {
+    margin-bottom: 0 !important;
+}
+

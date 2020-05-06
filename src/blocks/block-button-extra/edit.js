@@ -14,6 +14,8 @@ const {
 } = wp.components;
 
 
+
+
 /**
  * Internal dependencies
  */
@@ -150,7 +152,6 @@ const edit = props => {
                 style={linkStyles}
             >
                     <ButtonEditor
-                       
                         buttonSettings={buttonSettings}
                         onChange={buttonSettings => setAttributes({ buttonSettings })}
                         data-gx_initial_block_class={defaultBlockStyle}

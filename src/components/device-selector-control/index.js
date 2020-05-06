@@ -22,6 +22,14 @@ import {
 } from '../../icons';
 
 /**
+ * Icons
+ */
+import DesctopIcon from '../../icons/block-icons/desktop-icon/icon';
+import TabletIcon from '../../icons/block-icons/tablet-icon/icon';
+import MobileIcon from '../../icons/block-icons/mobile-icon/icon';
+
+
+/**
  * Bock
  */
 const DeviceSelectorControl = props => {
@@ -39,9 +47,9 @@ const DeviceSelectorControl = props => {
             className={classes}
             selected={device}
             options={[
-                { label: "", value: 'desktop' },
-                { label: "", value: 'tablet' },
-                { label: "", value: 'mobile' },
+                { label: <DesctopIcon />, value: 'desktop' },
+                { label: <TabletIcon />, value: 'tablet' },
+                { label: <MobileIcon />, value: 'mobile' },
             ]}
             onChange={value => onChange(value)}
         />

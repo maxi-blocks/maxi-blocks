@@ -12,6 +12,16 @@ const {
     BaseControl
 } = wp.components;
 
+/**
+ * Icons
+ */
+
+import GxTypographyTab from '../../icons/block-icons/typography-tab/icon';
+import GxImageTab from '../../icons/block-icons/image-tab/icon';
+import GxButtonTab from '../../icons/block-icons/button-tab/icon';
+import GxBoxSettingsTab from '../../icons/block-icons/box-settings-tab/icon';
+import GxWithTab from '../../icons/block-icons/width-tab/icon';
+import GxPaddingTab from '../../icons/block-icons/padding-tab/icon';
 
 /**
  * Internal dependencies
@@ -144,7 +154,7 @@ const edit = props => {
                 isPrimary
                 items={[
                     {
-                        label: __('Typography & Colours', 'gutenberg-extra'),
+                        label:  <span><GxTypographyTab/>{__('Typography & Colours')}</span>,
                         classNameHeading: 'gx-typography-tab',
                         //icon: typography,
                         content: (
@@ -174,7 +184,7 @@ const edit = props => {
                         ),
                     },
                     {
-                        label: __('Image', 'gutenberg-extra'),
+                        label: <span><GxImageTab />{__('Image', 'gutenberg-extra')}</span>,
                         classNameItem: 'gx-image-item',
                         classNameHeading: 'gx-image-tab',
                         //icon: image,
@@ -195,7 +205,7 @@ const edit = props => {
                         ),
                     },
                     {
-                        label: __('Button', 'gutenberg-extra'),
+                        label: <span><GxButtonTab />{__('Button', 'gutenberg-extra')}</span>,
                         classNameItem: 'gx-button-item',
                         classNameHeading: 'gx-button-tab',
                         //icon: button,
@@ -222,7 +232,7 @@ const edit = props => {
                         ),
                     },
                     {
-                        label: __('Box Settings', 'gutenberg-extra'),
+                        label:<span><GxBoxSettingsTab />{ __('Box Settings', 'gutenberg-extra')}</span>,
                         classNameItem: 'gx-box-settings-item',
                         classNameHeading: 'gx-box-settings-tab',
                         //icon: boxSettings,
@@ -249,7 +259,7 @@ const edit = props => {
                         ),
                     },
                     {
-                        label: __(' Width / Height', 'gutenberg-extra'),
+                        label: <span><GxWithTab />{ __('Width / Height', 'gutenberg-extra')}</span>,
                         classNameItem: 'gx-width-height-item',
                         classNameHeading: 'gx-width-height-tab',
                         //icon: width,
@@ -268,7 +278,7 @@ const edit = props => {
                         ),
                     },
                     {
-                        label: __('Padding & Margin', 'gutenberg-extra'),
+                        label: <span><GxPaddingTab />{ __('Padding & Margin', 'gutenberg-extra')}</span>,
                         classNameItem: 'gx-padding-margin-item',
                         classNameHeading: 'gx-padding-tab',
                         //icon: iconPadding,

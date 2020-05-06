@@ -595,57 +595,20 @@
  * Can include things like variables and mixins
  * that are used across the project.
 */
-.gx-externalbutton-control {
-  border: 1px solid black; }
+input[type="checkbox"].gutenberg-extra-checkbox-input {
+  position: relative;
+  width: 35px;
+  height: 35px; }
 
-.gx-externalbutton-control .gx-externalbutton-richtext {
-  display: block; }
-
-.gx-externalbutton-popover {
-  position: fixed; }
-
-.gx-externalbutton-popover button {
-  -webkit-box-shadow: none;
-          box-shadow: none;
-  opacity: 0;
-  -webkit-transition: opacity .3s ease-in-out;
-  -o-transition: opacity .3s ease-in-out;
-  transition: opacity .3s ease-in-out;
-  background-color: transparent !important;
-  max-width: 1.5rem; }
-
-.gx-externalbutton-control:hover .gx-externalbutton-popover button {
-  opacity: 1; }
-/**
- * #.# Common SCSS
- *
- * Can include things like variables and mixins
- * that are used across the project.
-*/
-.gx-sidebar .gx-normalhover-control .components-base-control__field {
-  display: grid !important;
-  grid-template-columns: 1fr 1fr; }
-
-.gx-sidebar .gx-normalhover-control .components-base-control__field .components-radio-control__option {
-  height: 40px;
-  border: 2px solid #dddfe1;
-  border-right-width: 0;
-  margin: 0; }
-
-.gx-sidebar .gx-normalhover-control .components-base-control__field .components-radio-control__option:last-of-type {
-  border-right-width: 2px; }
-
-.gx-sidebar .gx-normalhover-control input {
-  display: none; }
-
-.gx-sidebar .gx-normalhover-control label {
-  display: block;
-  text-align: center;
-  line-height: 38px; }
-
-.gx-sidebar .gx-normalhover-control input:checked ~ label {
-  color: #fff;
-  background-color: #00ccff; }
+input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before {
+  content: url("../src/icons/setting-icons/checkbox/checkbox.svg");
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  margin: auto; }
 /**
  * #.# Common SCSS
  *
@@ -708,6 +671,36 @@
  * Can include things like variables and mixins
  * that are used across the project.
 */
+.gx-sidebar .gx-normalhover-control .components-base-control__field {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr; }
+
+.gx-sidebar .gx-normalhover-control .components-base-control__field .components-radio-control__option {
+  height: 40px;
+  border: 2px solid #dddfe1;
+  border-right-width: 0;
+  margin: 0; }
+
+.gx-sidebar .gx-normalhover-control .components-base-control__field .components-radio-control__option:last-of-type {
+  border-right-width: 2px; }
+
+.gx-sidebar .gx-normalhover-control input {
+  display: none; }
+
+.gx-sidebar .gx-normalhover-control label {
+  display: block;
+  text-align: center;
+  line-height: 38px; }
+
+.gx-sidebar .gx-normalhover-control input:checked ~ label {
+  color: #fff;
+  background-color: #00ccff; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
 .gx-typography-control {
   -ms-flex-pack: justify;
       justify-content: space-between;
@@ -741,6 +734,66 @@
 
 .gx-title-typography-setting .components-base-control__label {
   width: 40%; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
+.gx-sidebar .gx-imagesettings-control .gx-imagesettings-selector-control .components-base-control__field {
+  display: grid;
+  grid-template-columns: 1fr 1fr; }
+
+.gx-sidebar .gx-imagesettings-control .gx-imagesettings-selector-control .components-base-control__field .components-radio-control__option {
+  height: 50px;
+  border: 2px solid #dddfe1;
+  border-right-width: 0;
+  margin: 0; }
+
+.gx-sidebar .gx-imagesettings-control .gx-imagesettings-selector-control .components-base-control__field .components-radio-control__option:last-of-type {
+  border-right-width: 2px; }
+
+.gx-imagesettings-control .gx-imagesettings-selector-control input {
+  display: none; }
+
+.gx-imagesettings-control .gx-imagesettings-selector-control label {
+  display: block;
+  text-align: center;
+  line-height: 46px; }
+
+.gx-imagesettings-control .gx-imagesettings-selector-control input:checked ~ label {
+  color: #fff;
+  background-color: #00ccff; }
+
+.gx-block .gx-imageupload-button {
+  height: auto; }
+/**
+ * #.# Common SCSS
+ *
+ * Can include things like variables and mixins
+ * that are used across the project.
+*/
+.gx-externalbutton-control {
+  border: 1px solid black; }
+
+.gx-externalbutton-control .gx-externalbutton-richtext {
+  display: block; }
+
+.gx-externalbutton-popover {
+  position: fixed; }
+
+.gx-externalbutton-popover button {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  opacity: 0;
+  -webkit-transition: opacity .3s ease-in-out;
+  -o-transition: opacity .3s ease-in-out;
+  transition: opacity .3s ease-in-out;
+  background-color: transparent !important;
+  max-width: 1.5rem; }
+
+.gx-externalbutton-control:hover .gx-externalbutton-popover button {
+  opacity: 1; }
 /**
  * #.# Common SCSS
  *
@@ -784,59 +837,6 @@
  * Can include things like variables and mixins
  * that are used across the project.
 */
-input[type="checkbox"].gutenberg-extra-checkbox-input {
-  position: relative;
-  width: 35px;
-  height: 35px; }
-
-input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before {
-  content: url("../src/icons/setting-icons/checkbox/checkbox.svg");
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-      -ms-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
-  margin: auto; }
-/**
- * #.# Common SCSS
- *
- * Can include things like variables and mixins
- * that are used across the project.
-*/
-.gx-sidebar .gx-imagesettings-control .gx-imagesettings-selector-control .components-base-control__field {
-  display: grid;
-  grid-template-columns: 1fr 1fr; }
-
-.gx-sidebar .gx-imagesettings-control .gx-imagesettings-selector-control .components-base-control__field .components-radio-control__option {
-  height: 50px;
-  border: 2px solid #dddfe1;
-  border-right-width: 0;
-  margin: 0; }
-
-.gx-sidebar .gx-imagesettings-control .gx-imagesettings-selector-control .components-base-control__field .components-radio-control__option:last-of-type {
-  border-right-width: 2px; }
-
-.gx-imagesettings-control .gx-imagesettings-selector-control input {
-  display: none; }
-
-.gx-imagesettings-control .gx-imagesettings-selector-control label {
-  display: block;
-  text-align: center;
-  line-height: 46px; }
-
-.gx-imagesettings-control .gx-imagesettings-selector-control input:checked ~ label {
-  color: #fff;
-  background-color: #00ccff; }
-
-.gx-block .gx-imageupload-button {
-  height: auto; }
-/**
- * #.# Common SCSS
- *
- * Can include things like variables and mixins
- * that are used across the project.
-*/
 .gx-title-extra .block-editor-rich-text__editable [data-rich-text-placeholder]::after {
   opacity: 1 !important; }
 /**
@@ -845,7 +845,6 @@ input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before {
  * Can include things like variables and mixins
  * that are used across the project.
 */
-<<<<<<< HEAD
 .gx-row-block:hover {
   outline: 1px solid grey; }
 
@@ -933,91 +932,6 @@ div.gx-row-block.has-child-selected > div.gx-row-selector-wrapper:before {
 
 div.gx-row-block.is-selected > div.gx-row-selector-wrapper,
 div.gx-row-block.has-child-selected > div.gx-row-selector-wrapper {
-=======
-.gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"]:hover {
-  outline: 1px solid grey; }
-
-.gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"]:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  -webkit-transform: translateX(0px);
-      -ms-transform: translateX(0px);
-          transform: translateX(0px);
-  width: 5rem;
-  height: 2rem;
-  border-top: 8px solid black;
-  border-left: 8px solid black;
-  opacity: 0;
-  visibility: hidden;
-  -webkit-transition: all 1s ease;
-  -o-transition: all 1s ease;
-  transition: all 1s ease; }
-
-.gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"][data-align="full"] {
-  width: auto; }
-
-.gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"] {
-  width: 100%;
-  margin: auto; }
-  .gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"] .gx-block.gx-row-block {
-    position: relative; }
-    .gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"] .gx-block.gx-row-block .gx-row-selector {
-      position: absolute;
-      top: 0;
-      left: 0;
-      -webkit-transform: translateY(0%);
-          -ms-transform: translateY(0%);
-              transform: translateY(0%);
-      opacity: 0;
-      visibility: hidden;
-      -webkit-transition: all 1s ease;
-      -o-transition: all 1s ease;
-      transition: all 1s ease;
-      font-size: 12px; }
-    .gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"] .gx-block.gx-row-block .block-editor-inner-blocks,
-    .gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"] .gx-block.gx-row-block .block-list-appender,
-    .gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"] .gx-block.gx-row-block .gx-row-dropdown {
-      width: 100%; }
-    .gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"] .gx-block.gx-row-block .gx-row-appender-button {
-      display: block;
-      width: 100%; }
-    .gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"] .gx-block.gx-row-block > div > div.block-editor-block-list__layout {
-      display: -ms-flexbox;
-      display: flex; }
-      .gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"] .gx-block.gx-row-block > div > div.block-editor-block-list__layout > div.block-list-appender {
-        margin: 0; }
-        .gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"] .gx-block.gx-row-block > div > div.block-editor-block-list__layout > div.block-list-appender > div.gx-row-template-wrapper {
-          display: -ms-flexbox;
-          display: flex;
-          -ms-flex-wrap: wrap;
-              flex-wrap: wrap;
-          -ms-flex-pack: center;
-              justify-content: center;
-          background-color: #ffffff; }
-          .gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"] .gx-block.gx-row-block > div > div.block-editor-block-list__layout > div.block-list-appender > div.gx-row-template-wrapper > button.gx-row-template-button {
-            width: 10rem;
-            height: 5rem; }
-            .gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"] .gx-block.gx-row-block > div > div.block-editor-block-list__layout > div.block-list-appender > div.gx-row-template-wrapper > button.gx-row-template-button > svg {
-              width: 100%;
-              height: 100%; }
-    .gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"] .gx-block.gx-row-block .gx-block-wrapper[data-type="gutenberg-extra/block-column-extra"]:first-of-type {
-      margin-left: 0 !important; }
-    .gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"] .gx-block.gx-row-block .gx-block-wrapper[data-type="gutenberg-extra/block-column-extra"]:last-of-type {
-      margin-right: 0 !important; }
-
-div.gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"].is-selected:before,
-div.gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"].has-child-selected:before {
-  -webkit-transform: translate(-8px, -8px);
-      -ms-transform: translate(-8px, -8px);
-          transform: translate(-8px, -8px);
-  opacity: 1;
-  visibility: visible; }
-
-div.gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"].is-selected div.gx-block.gx-row-block > span.gx-row-selector,
-div.gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"].has-child-selected div.gx-block.gx-row-block > span.gx-row-selector {
->>>>>>> origin/hrach-button-extra
   -webkit-transform: translateY(calc(-100% - 8px));
       -ms-transform: translateY(calc(-100% - 8px));
           transform: translateY(calc(-100% - 8px));
@@ -1029,7 +943,6 @@ div.gx-block-wrapper[data-type="gutenberg-extra/block-row-extra"].has-child-sele
  * Can include things like variables and mixins
  * that are used across the project.
 */
-<<<<<<< HEAD
 div.gx-column-block:hover {
   outline: 1px solid blue; }
 
@@ -1046,19 +959,9 @@ div.components-resizable-box__container {
     -webkit-transform: translateX(20%);
         -ms-transform: translateX(20%);
             transform: translateX(20%); }
-=======
-.gx-block-wrapper[data-type="gutenberg-extra/block-column-extra"]:hover {
-  outline: 1px solid blue; }
-
-.wp-block[data-type="gutenberg-extra/block-column-extra"] {
-  margin: 0; }
-
-.gx-column-block .block-list-appender {
-  width: 100%; }
 /**
  * #.# Common SCSS
  *
  * Can include things like variables and mixins
  * that are used across the project.
 */
->>>>>>> origin/hrach-button-extra

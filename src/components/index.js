@@ -14,7 +14,6 @@ export { default as BackgroundControl } from './background-control';
 export { default as BorderControl } from './border-control';
 export { default as BlockStylesControl } from './block-styles-control';
 export { default as BoxShadowControl } from './box-shadow-control';
-export * from './button-settings';
 export { default as CheckBoxControl } from './checkbox-control';
 export { default as ColorControl } from './color-control';
 export { default as CustomCSSControl } from './custom-css-control';
@@ -35,3 +34,6 @@ export { default as PopoverControl } from './popover-control';
 export { default as FullSizeControl } from './full-size-control';
 export { default as TextShadowControl } from './text-shadow-control';
 export { default as TypographyControl } from './typography-control';
+
+// DEPRECATED
+export * from './deprecated/button-settings';

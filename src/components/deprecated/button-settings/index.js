@@ -12,17 +12,17 @@ const { dispatch } = wp.data;
 /**
  * Internal dependencies
  */
-import { GXComponent } from '../index';
-import AccordionControl from '../accordion-control';
-import AlignmentControl from '../alignment-control';
-import BorderControl from '../border-control';
-import BoxShadowControl from '../box-shadow-control';
-import ColorControl from '../color-control';
-import DimensionsControl from '../dimensions-control';
-import FullSizeControl from '../full-size-control';
-import LinkedButton from '../linked-button';
-import NormalHoverControl from '../normal-hover-control';
-import TypographyControl from '../typography-control';
+import { GXComponent } from '../../index';
+import AccordionControl from '../../accordion-control';
+import AlignmentControl from '../../alignment-control';
+import BorderControl from '../../border-control';
+import BoxShadowControl from '../../box-shadow-control';
+import ColorControl from '../../color-control';
+import DimensionsControl from '../../dimensions-control';
+import FullSizeControl from '../../full-size-control';
+import LinkedButton from '../../linked-button';
+import NormalHoverControl from '../../normal-hover-control';
+import TypographyControl from '../../typography-control';
 
 /**
  * External dependencies

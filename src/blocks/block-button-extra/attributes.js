@@ -15,56 +15,45 @@ const attributes = {
         type: 'string',
         default: 'gx-def-light'
     },
-    imagePosition: {
-        type: 'string',
-        default: 'top',
-    },
-    titleLevel: {
-        type: 'string',
-        default: 'h2'
-    },
-    linkTitle: {
-        type: 'string',
-    },
-    linkOptions: {
-        type: 'string',
-        default: JSON.stringify(attributesData.linkOptions),
-    },
-    titleFontOptions: {
-        type: 'string',
-        default: JSON.stringify(attributesData.titleFontOptions),
-    },
-    subtitleFontOptions: {
-        type: 'string',
-        default: JSON.stringify(attributesData.subtitleFontOptions),
-    },
-    descriptionFontOptions: {
-        type: 'string',
-        default: JSON.stringify(attributesData.descriptionFontOptions),
-    },
-    imageSettings: {
-        type: 'string',
-        default: JSON.stringify(attributesData.imageSettings)
-    },
     buttonSettings: {
         type: 'string',
         default: JSON.stringify(attributesData.buttonSettings)
     },
+    alignment: {
+        type: 'string',
+        default: 'center'
+    },
+    size: {
+        type: 'string',
+        default: JSON.stringify(attributesData.size)
+    },
+    backgroundColor: {
+        type: 'string',
+        default: '#00ccff',
+    },
+    backgroundDefaultColor: {
+        type: 'string',
+        default: '#00ccff',
+    },
     background: {
         type: 'string',
-        default: JSON.stringify(attributesData.background)
+        default: '',
+    },
+    backgroundDefault: {
+        type: 'string',
+        default: '',
     },
     boxShadow: {
         type: 'string',
         default: JSON.stringify(attributesData.boxShadow)
     },
+    typography: {
+        type: 'string',
+        default: JSON.stringify(attributesData.typography)
+    },
     border: {
         type: 'string',
         default: JSON.stringify(attributesData.border)
-    },
-    size: {
-        type: 'string',
-        default: JSON.stringify(attributesData.size)
     },
     margin: {
         type: 'string',
@@ -73,6 +62,50 @@ const attributes = {
     padding: {
         type: 'string',
         default: JSON.stringify(attributesData.padding)
+    },
+    opacity: {
+        type: 'number',
+        default: 100
+    },
+    backgroundColorHover: {
+        type: 'string',
+        default: '#00ccff',
+    },
+    backgroundDefaultColorHover: {
+        type: 'string',
+        default: '#00ccff',
+    },
+    backgroundHover: {
+        type: 'string',
+        default: '',
+    },
+    backgroundDefaultHover: {
+        type: 'string',
+        default: '',
+    },
+    boxShadowHover: {
+        type: 'string',
+        default: JSON.stringify(attributesData.boxShadowHover)
+    },
+    typographyHover: {
+        type: 'string',
+        default: JSON.stringify(attributesData.typographyHover)
+    },
+    borderHover: {
+        type: 'string',
+        default: JSON.stringify(attributesData.borderHover)
+    },
+    marginHover: {
+        type: 'string',
+        default: JSON.stringify(attributesData.marginHover)
+    },
+    paddingHover: {
+        type: 'string',
+        default: JSON.stringify(attributesData.paddingHover)
+    },
+    opacityHover: {
+        type: 'number',
+        default: 100
     },
     hoverAnimation: {
         type: 'string',
@@ -90,23 +123,14 @@ const attributes = {
         type: 'string',
         default: ''
     },
-    mediaID: {
-        type: 'number',
+    buttonText: {
+        type: 'string',
+        default: ''
     },
-    title: {
-        type: 'array',
-        source: 'children',
-        selector: '.gx-image-box-title',
-    },
-    additionalText: {
-        type: 'array',
-        source: 'children',
-        selector: '.gx-image-box-subtitle',
-    },
-    description: {
-        source: 'children',
-        selector: '.gx-image-box-description',
-    },
+    linkOptions: {
+        type: 'string',
+        default: '{}'
+    }
 }
 
 export default attributes;

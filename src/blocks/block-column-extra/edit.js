@@ -160,6 +160,7 @@ class edit extends GXBlock {
                 blockStyle,
                 columnSize,
                 extraClassName,
+                defaultBlockStyle
             },
             getColumnSize,
             clientId,
@@ -244,6 +245,7 @@ class edit extends GXBlock {
                     >
                         <__experimentalBlock.div
                             className={classes}
+                            data-gx_initial_block_class={defaultBlockStyle}
                         >
                             <div
                                 className="gx-column-block-content"

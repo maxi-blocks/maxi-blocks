@@ -30,7 +30,7 @@ class GXBlock extends GXComponent {
 
             this.props.setAttributes({ uniqueID: newUniqueId })
         }
-        
+
         if (callback)
             callback();
     }

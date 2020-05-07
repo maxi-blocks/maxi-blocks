@@ -22,6 +22,7 @@ import GxButtonTab from '../../icons/block-icons/button-tab/icon';
 import GxBoxSettingsTab from '../../icons/block-icons/box-settings-tab/icon';
 import GxWithTab from '../../icons/block-icons/width-tab/icon';
 import GxPaddingTab from '../../icons/block-icons/padding-tab/icon';
+import ArrowRight from '../../icons/block-icons/arrow-right/icon';
 
 /**
  * Internal dependencies
@@ -154,7 +155,7 @@ const edit = props => {
                 isPrimary
                 items={[
                     {
-                        label:  <span><GxTypographyTab/>{__('Typography & Colours')}</span>,
+                        label:  <span><GxTypographyTab/>{__('Typography & Colours')}<ArrowRight /></span>,
                         classNameHeading: 'gx-typography-tab',
                         //icon: typography,
                         content: (
@@ -184,7 +185,7 @@ const edit = props => {
                         ),
                     },
                     {
-                        label: <span><GxImageTab />{__('Image', 'gutenberg-extra')}</span>,
+                        label: <span><GxImageTab />{__('Image', 'gutenberg-extra')}<ArrowRight /></span>,
                         classNameItem: 'gx-image-item',
                         classNameHeading: 'gx-image-tab',
                         //icon: image,
@@ -205,7 +206,7 @@ const edit = props => {
                         ),
                     },
                     {
-                        label: <span><GxButtonTab />{__('Button', 'gutenberg-extra')}</span>,
+                        label: <span><GxButtonTab />{__('Button', 'gutenberg-extra')}<ArrowRight /></span>,
                         classNameItem: 'gx-button-item',
                         classNameHeading: 'gx-button-tab',
                         //icon: button,
@@ -221,7 +222,7 @@ const edit = props => {
                         )
                     },
                     {
-                        label: __('Background Image', 'gutenberg-extra'),
+                        label: <span>{__('Background Image', 'gutenberg-extra')}<ArrowRight /></span>,
                         classNameHeading: 'gx-backgroundsettings-tab',
                         //icon: image,
                         content: (
@@ -232,7 +233,7 @@ const edit = props => {
                         ),
                     },
                     {
-                        label:<span><GxBoxSettingsTab />{ __('Box Settings', 'gutenberg-extra')}</span>,
+                        label:<span><GxBoxSettingsTab />{ __('Box Settings', 'gutenberg-extra')}<ArrowRight /></span>,
                         classNameItem: 'gx-box-settings-item',
                         classNameHeading: 'gx-box-settings-tab',
                         //icon: boxSettings,
@@ -259,7 +260,7 @@ const edit = props => {
                         ),
                     },
                     {
-                        label: <span><GxWithTab />{ __('Width / Height', 'gutenberg-extra')}</span>,
+                        label: <span><GxWithTab />{ __('Width / Height', 'gutenberg-extra')}<ArrowRight /></span>,
                         classNameItem: 'gx-width-height-item',
                         classNameHeading: 'gx-width-height-tab',
                         //icon: width,
@@ -278,7 +279,7 @@ const edit = props => {
                         ),
                     },
                     {
-                        label: <span><GxPaddingTab />{ __('Padding & Margin', 'gutenberg-extra')}</span>,
+                        label: <span><GxPaddingTab />{ __('Padding & Margin', 'gutenberg-extra')}<ArrowRight /></span>,
                         classNameItem: 'gx-padding-margin-item',
                         classNameHeading: 'gx-padding-tab',
                         //icon: iconPadding,

@@ -379,12 +379,9 @@ gx-popover > .components-popover__content > .components-base-control.components-
 
 .gx-device-control .components-radio-control__option {
     width: 33%;
+    height: 33px !important;
     text-align: center;
     border: 1px solid #dddfe1;
-}
-
-.gx-device-control .components-radio-control__option {
-    height: 33px !important;
 }
 
 .gx-device-control .components-radio-control__option input:checked + label {
@@ -393,10 +390,10 @@ gx-popover > .components-popover__content > .components-base-control.components-
 }
 
 .gx-device-control .components-radio-control__option > label > svg{
-        transform: scale(0.8);
-        position: relative;
-        top: 1px;
-        width: 24px !important;
+    transform: scale(0.8);
+    position: relative;
+    top: 1px;
+    width: 24px !important;
 }
 
 .gx-device-control .components-radio-control__option:last-child{
@@ -413,8 +410,64 @@ gx-popover > .components-popover__content > .components-base-control.components-
     width:17px !important;
 }
 
-.gx-with-unit-control {
-    clear: both;
+.gx-popover > .components-popover__content > .components-base-control.gx-unit-control.components-radio-control {
+    position: relative;
+    top: 1px;
+}
+
+.gx-unit-control {
+    float: right;
+    margin-right: 85px;
+    margin-bottom: -30px !important;
+    z-index: 100;
+}
+
+.gx-unit-control .components-base-control__field {
+    z-index: 100;
+    display: flex;
+}
+
+.gx-unit-control .components-radio-control__option:not(:last-child) {
+    margin-bottom: 0 !important;
+}
+
+.gx-unit-control .components-base-control__field .components-radio-control__option:first-child label {
+    border-radius: 4px 0px 0px 4px;
+    overflow: hidden;
+}
+
+.gx-unit-control .components-radio-control__option input:checked + label {
+    color: #464a53 !important;
+    background: #f2f2f2 !important;
+}
+
+.gx-unit-control .components-radio-control__option label {
+    border: 1px solid #dddfe1 !important;
+    opacity: 1 !important;
+}
+
+.gx-unit-control .components-radio-control__option label {
+    min-width: 33px;
+    display: block;
+    margin-right: -2px;
+    justify-content: center;
+    line-height: 27px;
+    position: relative;
+    text-align: center;
+    text-shadow: none;
+    font-size: 9pt !important;
+    text-transform: uppercase;
+    top: -1px;
+    height: 30px !important;
+}
+
+.gx-popover label{
+    font-weight:500;
+}
+
+.gx-unit-control .components-base-control__field .components-radio-control__option:last-child label {
+    border-radius: 0px 4px 4px 0px;
+    overflow: hidden;
 }
 
 .components-range-control.gx-with-unit-control .components-base-control__field {
@@ -426,12 +479,18 @@ gx-popover > .components-popover__content > .components-base-control.components-
     position: relative;
 }
 
+.components-range-control.gx-with-unit-control .components-base-control__field label {
+    width: 100%;
+}
+
 .gx-popover > .components-popover__content .components-base-control.components-range-control.gx-with-unit-control .components-base-control__label {
     width: 100% !important;
 }
 
-.gx-popover label, .gx-popover .components-base-control__label{
-    font-weight: 500;
+.components-base-control__label {
+    margin-bottom: 0 !important;
+    vertical-align: sub;
+    min-height: 24px;
 }
 
 .components-range-control.gx-with-unit-control .components-base-control__field .components-range-control__number {
@@ -439,6 +498,7 @@ gx-popover > .components-popover__content > .components-base-control.components-
     max-height: 30px;
     height: 30px !important;
     margin-right: 3px;
+    margin-top:-24px;
 }
 
 .gx-popover input[type="number"]{
@@ -452,8 +512,8 @@ gx-popover > .components-popover__content > .components-base-control.components-
 }
 
 .components-popover input[type="number"]{
+    line-height: normal;
     font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif;
-    padding: 6px 8px;
     box-shadow: 0 0 0 transparent;
     transition: box-shadow .1s linear;
 }
@@ -464,9 +524,304 @@ gx-popover > .components-popover__content > .components-base-control.components-
 }
 
 .components-range-control__number:not(.gx-shadow-horizontal-control) {
+    min-height: 26px !important;
     max-width: 48px;
     z-index: 1;
     padding: 0 !important;
     padding-left: 5px !important;
     padding-top: 1px !important;
+}
+
+.components-range-control.gx-with-unit-control .components-base-control__field button {
+    margin-left: 0 !important;
+    margin-top:-24px;
+}
+
+.gx-popover button.components-range-control__reset {
+    font-size: 0 !important;
+    background: transparent !important;
+    min-width: 30px;
+    padding: 0;
+    height: 30px !important;
+    border-radius: 5px;
+}
+
+.gx-popover button.components-range-control__reset{
+    border: 1px solid #dddfe1 !important;
+    opacity: 1 !important;
+}
+
+.components-button.is-secondary {
+    box-shadow: none !important;
+}
+
+.gx-popover button.components-range-control__reset:before {
+    content: url("../img/gx-reset.svg") !important;
+    margin: auto;
+    margin-left: auto;
+    color: #464a53;
+    width: 18px;
+    height: 18px;
+}
+
+.gx-popover button.components-range-control__reset {
+    font-size: 0 !important;
+}
+
+.components-select-control__input, .gx-popover select {
+    padding: 0 24px 0px 5px !important;
+}
+
+.components-popover select{
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif;
+    transition: box-shadow .1s linear;
+}
+
+.components-select-control__input {
+    border-radius: 5px !important;
+    border: 1px solid #dddfe1 !important;
+    background: #fff url(../img/arrow-down.svg) no-repeat right 7px top 50% !important;
+    background-size: 9px 9px !important;
+    font-size: 10pt !important;
+    font-weight: 500;
+}
+
+.gx-popover .components-popover__content {
+    min-width: 373px !important;
+}
+
+div.gx-popover .components-popover__content {
+    padding: 20px;
+    min-width: 373px !important;
+}
+
+.components-popover__content {
+    box-shadow: 0 46px 133px rgba(150, 176, 203, 0.23) !important;
+}
+
+.gx-colorcontrol-color-display span{
+    border: 1px solid #dddfe1 !important;
+    opacity: 1 !important;
+    margin-right: 8px !important;
+    float: left;
+    border-radius: 5px;
+}
+
+.components-base-control:last-child{
+    margin-bottom:0 !important;
+}
+
+.gx-popover .components-base-control__label{
+    font-weight: 500;
+}
+
+.gx-colorcontrol-control .gx-popover-control .components-base-control__field .components-button{
+    border: 1px solid #dddfe1 !important;
+    opacity: 1 !important;
+}
+
+.gx-colorcontrol-control .components-base-control__field > button{
+    order: 3;
+    margin-left: 0;
+    height: 30px !important;
+}
+
+.components-button.is-secondary {
+    box-shadow: none !important;
+}
+
+.gx-settings-button .components-button {
+    padding: 0 !important;
+}
+
+.gx-settings-button .components-button.is-secondary > svg {
+    width: 18px !important;
+    height: 18px !important;
+}
+
+.components-button[type="reset"] svg {
+    color: #464a53 !important;
+    fill: #464a53 !important;
+}
+
+.components-popover__content > div:nth-of-type(2) {
+    margin-bottom: 5px !important;
+}
+
+.gx-unit-control {
+    float: right;
+    margin-right: 85px;
+    margin-bottom: -30px !important;
+    z-index: 100;
+}
+
+.gx-unit-control .components-base-control__field {
+    z-index: 100;
+    display: flex;
+}
+
+.gx-unit-control .components-radio-control__option:not(:last-child) {
+    margin-bottom: 0 !important;
+}
+
+.gx-unit-control .components-base-control__field .components-radio-control__option:first-child label {
+    border-radius: 4px 0px 0px 4px;
+    overflow: hidden;
+}
+
+.gx-unit-control .components-radio-control__option input:checked + label {
+    color: #464a53 !important;
+    background: #f2f2f2 !important;
+}
+
+.gx-unit-control .components-radio-control__option label {
+    border: 1px solid #dddfe1 !important;
+    opacity: 1 !important;
+}
+
+.gx-unit-control .components-radio-control__option label {
+    min-width: 33px;
+    display: block;
+    margin-right: -2px;
+    font-size: 9pt;
+    justify-content: center;
+    line-height: 30px;
+    position: relative;
+    text-align: center;
+    text-shadow: none;
+    text-transform: uppercase;
+    height: 32px !important;
+    top: -1px;
+    height: 30px !important;
+}
+
+.gx-popover label{
+    color: #464a53;
+    font-weight: 500;
+}
+
+.gx-unit-control .components-base-control__field .components-radio-control__option:last-child label {
+    border-radius: 0px 4px 4px 0px;
+    overflow: hidden;
+}
+
+.gx-popover button.components-range-control__reset{
+    border: 1px solid #dddfe1 !important;
+    opacity: 1 !important;
+}
+
+components-button.is-secondary {
+    box-shadow: none !important;
+}
+
+.components-popover__content > div:nth-of-type(2) > div:first-child{
+    position:relative;
+    top:1px;
+}
+
+.components-popover__content > div:nth-of-type(3) > div:first-child{
+    position:relative;
+    top:1px;
+}
+
+.gx-popover label, .gx-popover .components-base-control__label{
+    font-weight:500;
+}
+
+.components-range-control__number:not(.gx-shadow-horizontal-control){
+    border: 1px solid #dddfe1 !important;
+    opacity: 1 !important;
+}
+
+.components-popover__content > div:last-child{
+    position:relative;
+}
+
+.components-popover__content > div:last-child
+.components-range-control__slider{
+    display:block;
+    box-shadow: none;
+    background:none;
+    width: 100%;
+    top: -10px;
+    right: 36px;
+    max-width: 57%;
+}
+
+.components-popover__content > div:last-child
+.components-range-control__number{
+    position: absolute;
+    right:0;
+    top:3px;
+}
+
+@media all and(max-width:2000px){
+    .gx-colorcontrol-color-display span{
+        border: 1px solid #dddfe1 !important;
+        opacity: 1 !important;
+    }
+
+    .gx-popover > .components-popover__content .components-base-control.gx-colorcontrol-control button.components-button.is-secondary {
+        width: 30px !important;
+        height: 30px !important;
+    }
+
+    .gx-unit-control {
+        float: right;
+        margin-bottom: -30px !important;
+        z-index: 100;
+        margin-right: 80px;
+    }
+
+    .gx-unit-control .components-radio-control__option label {
+        min-width: 27px;
+        line-height: 28px;
+        top: 1px;
+        height: 28px !important;
+    }
+
+    .components-range-control.gx-with-unit-control .components-base-control__field > .components-range-control__number {
+        margin-left: auto;
+        max-height: 28px;
+        height: 28px !important;
+        margin-right: 2px;
+        margin-top: -24px !important;
+    }
+
+    .gx-popover button.components-range-control__reset {
+        font-size: 0 !important;
+        background: transparent !important;
+        min-width: 26px;
+        padding: 0;
+        height: 26px !important;
+        border-radius: 5px;
+        margin-right: 0 !important;
+    }
+    
+    .components-popover__content > div:nth-of-type(2) > div:first-child {
+        position: relative;
+        top: -1px;
+    }
+
+    .components-popover__content > div:nth-of-type(3) > div:first-child {
+        position: relative;
+        top: -1px;
+    }
+
+    .components-popover__content > div:last-child .components-range-control__number {
+        position: absolute;
+        top: 3px;
+        margin-left: 51px;
+    }
+
+    .components-popover__content > div:last-child .components-range-control__slider {
+        display: block;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        background: none;
+        width: 100%;
+        top: -10px;
+        right: 32px;
+        max-width: 50%;
+    }
 }

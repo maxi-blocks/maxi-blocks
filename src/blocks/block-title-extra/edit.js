@@ -61,6 +61,8 @@ import {
     padding as iconPadding
 } from '../../icons';
 
+import ArrowRight from '../../icons/block-icons/arrow-right/icon';
+
 /**
  * Edit
  */
@@ -188,7 +190,7 @@ const edit = (props) => {
                 isPrimary
                 items={[
                     {
-                        label:  <span><GxTypographyTab/>{__('Typography / Colours')}</span>,
+                        label:  <span><GxTypographyTab/>{__('Typography / Colours')}<ArrowRight /></span>,
                         classNameItem: 'gx-typography-item',
                         classNameHeading: "gx-typography-tab",
                         //icon: typography,
@@ -233,7 +235,7 @@ const edit = (props) => {
                         )
                     },
                     {
-                        label:  <span><GxDividerTab />{__("Divider", "gutenberg-extra")}</span>,
+                        label:  <span><GxDividerTab />{__("Divider", "gutenberg-extra")}<ArrowRight /></span>,
                         classNameItem: 'gx-divider-item',
                         classNameHeading: "gx-divider-tab",
                         //icon: iconDivider,
@@ -247,7 +249,7 @@ const edit = (props) => {
                         )
                     },
                     {
-                        label: __('Background Image', 'gutenberg-extra'),
+                        label: <span>{__('Background Image', 'gutenberg-extra')}<ArrowRight /></span>,
                         classNameHeading: 'gx-backgroundsettings-tab',
                         //icon: image,
                         content: (
@@ -258,7 +260,7 @@ const edit = (props) => {
                         ),
                     },
                     {
-                        label:<span><GxBoxSettingsTab />{ __('Box Settings', 'gutenberg-extra')}</span>,
+                        label:<span><GxBoxSettingsTab />{ __('Box Settings', 'gutenberg-extra')}<ArrowRight /></span>,
                         classNameItem: 'gx-box-settings-item',
                         classNameHeading: 'gx-box-settings-tab',
                         //icon: boxSettings,
@@ -279,7 +281,7 @@ const edit = (props) => {
                         ),
                     },
                     {
-                        label: <span><GxWithTab />{ __('Width / Height', 'gutenberg-extra')}</span>,
+                        label: <span><GxWithTab />{ __('Width / Height', 'gutenberg-extra')}<ArrowRight /></span>,
                         classNameItem: 'gx-width-height-item',
                         classNameHeading: 'gx-width-height-tab',
                         //icon: width,
@@ -297,7 +299,7 @@ const edit = (props) => {
                         ),
                     },
                     {
-                        label: <span><GxPaddingTab />{ __('Padding & Margin', 'gutenberg-extra')}</span>,
+                        label: <span><GxPaddingTab />{ __('Padding & Margin', 'gutenberg-extra')}<ArrowRight /></span>,
                         classNameItem: 'gx-padding-margin-item',
                         classNameHeading: 'gx-padding-tab',
                         //icon: iconPadding,

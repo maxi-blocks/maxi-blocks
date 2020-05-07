@@ -48,6 +48,11 @@ import './editor.scss';
 import { placeholderImage } from '../../icons';
 
 /**
+ * Icon
+ */
+import ArrowRight from '../../icons/block-icons/arrow-right/icon';
+
+/**
  * Component
  */
 class ImageSettingsComponent extends GXComponent {
@@ -269,7 +274,7 @@ class ImageSettingsComponent extends GXComponent {
                     isSecondary
                     items={[
                         {
-                            label: __("Image", "gutenberg-extra"),
+                            label: <span>{__("Image", "gutenberg-extra")}<ArrowRight /></span>,
                             classNameItem: 'gx-image-item"',
                             classNameHeading: "gx-image-tab",
                             content: (
@@ -364,7 +369,7 @@ class ImageSettingsComponent extends GXComponent {
                             )
                         },
                         {
-                            label: __("Background", "gutenberg-extra"),
+                            label: <span>{__("Background", "gutenberg-extra")}<ArrowRight /></span>,
                             classNameItem: 'gx-background-item',
                             classNameHeading: "gx-background-tab",
                             content: (
@@ -422,7 +427,7 @@ class ImageSettingsComponent extends GXComponent {
                             )
                         },
                         {
-                            label: __("Border", "gutenberg-extra"),
+                            label: <span>{__("Border", "gutenberg-extra")}<ArrowRight /></span>,
                             classNameItem: 'gx-border-item',
                             classNameHeading: "gx-border-tab",
                             content: (

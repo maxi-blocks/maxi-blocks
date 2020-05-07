@@ -210,3 +210,4 @@ require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-responsive-fr
 
 // Image crop and image sizes
 require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-image-size.php';
+

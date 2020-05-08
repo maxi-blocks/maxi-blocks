@@ -13,15 +13,6 @@ const {
     RichText,
 } = wp.blockEditor;
 
-/**
- * Icons
- */
-
-import GxTypographyTab from '../../icons/block-icons/typography-tab/icon';
-import GxDividerTab from '../../icons/block-icons/divider-tab/icon';
-import GxBoxSettingsTab from '../../icons/block-icons/box-settings-tab/icon';
-import GxWithTab from '../../icons/block-icons/width-tab/icon';
-import GxPaddingTab from '../../icons/block-icons/padding-tab/icon';
 
 /**
  * Internal dependencies
@@ -60,8 +51,6 @@ import {
     divider as iconDivider,
     padding as iconPadding
 } from '../../icons';
-
-import ArrowRight from '../../icons/block-icons/arrow-right/icon';
 
 /**
  * Edit
@@ -190,10 +179,10 @@ const edit = (props) => {
                 isPrimary
                 items={[
                     {
-                        label:  <span><GxTypographyTab/>{__('Typography / Colours')}<ArrowRight /></span>,
+                        label: __('Typography / Colours'),
                         classNameItem: 'gx-typography-item',
                         classNameHeading: "gx-typography-tab",
-                        //icon: typography,
+                        icon: typography,
                         content: (
                             <PanelBody
                                 className="gx-panel gx-color-setting gx-style-tab-setting"
@@ -235,10 +224,10 @@ const edit = (props) => {
                         )
                     },
                     {
-                        label:  <span><GxDividerTab />{__("Divider", "gutenberg-extra")}<ArrowRight /></span>,
+                        label: __("Divider", "gutenberg-extra"),
                         classNameItem: 'gx-divider-item',
                         classNameHeading: "gx-divider-tab",
-                        //icon: iconDivider,
+                        icon: iconDivider,
                         content: (
                             <PanelBody>
                                 <DividerSettings
@@ -249,9 +238,9 @@ const edit = (props) => {
                         )
                     },
                     {
-                        label: <span>{__('Background Image', 'gutenberg-extra')}<ArrowRight /></span>,
+                        label: __('Background Image', 'gutenberg-extra'),
                         classNameHeading: 'gx-backgroundsettings-tab',
-                        //icon: image,
+                        icon: image,
                         content: (
                             <BackgroundControl
                                 backgroundOptions={background}
@@ -260,10 +249,10 @@ const edit = (props) => {
                         ),
                     },
                     {
-                        label:<span><GxBoxSettingsTab />{ __('Box Settings', 'gutenberg-extra')}<ArrowRight /></span>,
+                        label: __('Box Settings', 'gutenberg-extra'),
                         classNameItem: 'gx-box-settings-item',
                         classNameHeading: 'gx-box-settings-tab',
-                        //icon: boxSettings,
+                        icon: boxSettings,
                         content: (
                             <Fragment>
                                 <PanelBody className={'gx-panel gx-color-setting gx-style-tab-setting'}>
@@ -281,10 +270,10 @@ const edit = (props) => {
                         ),
                     },
                     {
-                        label: <span><GxWithTab />{ __('Width / Height', 'gutenberg-extra')}<ArrowRight /></span>,
+                        label:  __('Width / Height', 'gutenberg-extra'),
                         classNameItem: 'gx-width-height-item',
                         classNameHeading: 'gx-width-height-tab',
-                        //icon: width,
+                        icon: width,
                         content: (
                             <PanelBody
                                 className="gx-panel gx-size-setting gx-style-tab-setting"
@@ -299,10 +288,10 @@ const edit = (props) => {
                         ),
                     },
                     {
-                        label: <span><GxPaddingTab />{ __('Padding & Margin', 'gutenberg-extra')}<ArrowRight /></span>,
+                        label: __('Padding & Margin', 'gutenberg-extra'),
                         classNameItem: 'gx-padding-margin-item',
                         classNameHeading: 'gx-padding-tab',
-                        //icon: iconPadding,
+                        icon: iconPadding,
                         content: (
                             <PanelBody
                                 className="gx-panel gx-space-setting gx-style-tab-setting"

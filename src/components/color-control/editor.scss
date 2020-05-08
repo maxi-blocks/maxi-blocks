@@ -97,3 +97,92 @@
   display: flex;
   justify-content: space-between;
 }
+
+// This should go to ColorControl component
+.gx-colorcontrol-control .gx-colorcontrol-color-display span {
+  display: block;
+  width: 24px;
+  height: 24px;
+  margin: auto;
+}
+
+// This should go to ColorControl component
+
+.gx-colorcontrol-color-display span{
+  border: 1px solid #dddfe1 !important;
+  opacity: 1 !important;
+}
+
+// This should go to ColorControl component
+.gx-colorcontrol-color-display span {
+  margin-right: 8px !important;
+}
+
+// This should go to ColorControl component
+.gx-colorcontrol-color-display span{
+  border-radius:5px;
+  float:left;
+}
+
+// This should go to ColorControl component
+.gx-colorcontrol-control .gx-popover-control {
+  width: 100%;
+}
+
+// This should go to ColorControl component
+.gx-colorcontrol-control .gx-popover-control .components-base-control {
+  display: flex;
+  justify-content: space-between;
+}
+
+// This should go to ColorControl component
+.gx-colorcontrol-control .gx-popover-control .components-base-control__field .components-button{
+  border: 1px solid #dddfe1 !important;
+  opacity: 1 !important;
+}
+
+// This should go to ColorControl component
+.gx-colorcontrol-control .components-base-control__field > button {
+  order: 3;
+  margin-left: 0;
+  height: 30px !important;
+}
+
+// This should go to ColorControl component
+.gx-colorcontrol-control .gx-popover-control .components-base-control__field .components-dropdown {
+  margin-left: auto;
+}
+
+// This should go to ColorControl component
+.gx-colorcontrol-control .gx-popover-control .components-base-control__field .components-button{
+  border: 1px solid #dddfe1 !important;
+  opacity: 1 !important;
+}
+
+.gx-colorcontrol-color-display span{
+  border: 1px solid #dddfe1 !important;
+  opacity: 1 !important;
+  margin-right: 8px !important;
+  float: left;
+  border-radius: 5px;
+}
+
+.gx-colorcontrol-control .gx-popover-control .components-base-control__field .components-button{
+  border: 1px solid #dddfe1 !important;
+  opacity: 1 !important;
+}
+
+.gx-colorcontrol-control .components-base-control__field > button{
+  order: 3;
+  margin-left: 0;
+  height: 30px !important;
+}
+
+@media all and(max-width:2000px){
+  .gx-colorcontrol-color-display span{
+    border: 1px solid #dddfe1 !important;
+    opacity: 1 !important;
+  }
+
+  
+}

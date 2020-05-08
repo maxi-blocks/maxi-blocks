@@ -39,10 +39,6 @@ import {
  */
 import './editor.scss';
 
-/**
- * Icon
- */
-import ArrowRight from '../../icons/block-icons/arrow-right/icon';
 
 
 /**
@@ -187,7 +183,7 @@ export class ButtonSettings extends GXComponent {
                     isSecondary
                     items={[
                         {
-                            label: <span>{__('Typography & Colors', 'gutenberg-extra')}<ArrowRight /></span>,
+                            label: __('Typography & Colors', 'gutenberg-extra'),
                             classNameItem: "gx-typography-item",
                             classNameHeading: "gx-typography-tab",
                             content: (
@@ -237,7 +233,7 @@ export class ButtonSettings extends GXComponent {
                             )
                         },
                         {
-                            label: <span>{__('Opacity / Shadow', 'gutenberg-extra')}<ArrowRight /></span>,
+                            label: __('Opacity / Shadow', 'gutenberg-extra'),
                             /** why gx-typography-tab if is Opacity/shadow settings? */
                             classNameItem: "gx-box-settings-item",
                             classNameHeading: "gx-typography-tab",
@@ -280,7 +276,7 @@ export class ButtonSettings extends GXComponent {
                             )
                         },
                         {
-                            label: <span>{__("Border", "gutenberg-extra")}<ArrowRight /></span>,
+                            label: __("Border", "gutenberg-extra"),
                             classNameItem: "gx-border-item",
                             classNameHeading: 'gx-border-tab',
                             content: (
@@ -305,7 +301,7 @@ export class ButtonSettings extends GXComponent {
                             )
                         },
                         {
-                            label: <span>{__('Width / Height', 'gutenberg-extra')}<ArrowRight /></span>,
+                            label: __('Width / Height', 'gutenberg-extra'),
                             /** why gx-typography-tab if its width/height? */
                             classNameItem: "gx-width-height-item",
                             classNameHeading: "gx-typography-tab",
@@ -323,7 +319,7 @@ export class ButtonSettings extends GXComponent {
                             )
                         },
                         {
-                            label: <span>{__('Padding / Margin', 'gutenberg-extra')}<ArrowRight /></span>,
+                            label: __('Padding / Margin', 'gutenberg-extra'),
                             /** why gx-typography-tab if its width/height? */
                             classNameItem: "gx-padding-margin-item",
                             classNameHeading: "gx-typography-tab",

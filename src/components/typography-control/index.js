@@ -17,6 +17,7 @@ import AlignmentControl from '../alignment-control';
 import ColorControl from '../color-control';
 import DeviceSelectorControl from '../device-selector-control/';
 import FontFamilySelector from '../font-family-selector';
+import SizeControl from '../size-control';
 import PopoverControl from '../popover-control';
 import TextShadowControl from '../text-shadow-control';
 
@@ -132,7 +133,7 @@ export default class Typography extends GXComponent {
             if (typeof newValue === 'undefined') {
                 newValue = '';
             }
-            switch(target){
+            switch (target) {
                 case 'font':
                     value.font = newValue.value;
                     value.options = newValue.files;
@@ -185,15 +186,22 @@ export default class Typography extends GXComponent {
                                         onChange={val => onChangeValue(val, 'text-shadow')}
                                         defaultColor={defaultColor}
                                     />
-                                    <AlignmentControl 
+                                    <AlignmentControl
                                         value={value.general['text-align']}
                                         onChange={val => onChangeValue(val, 'text-align')}
                                     />
-                                    <DeviceSelectorControl 
+                                    <DeviceSelectorControl
                                         device={device}
                                         onChange={onSelect}
                                     />
-                                    <RadioControl
+                                    <SizeControl
+                                        label={__('Size', 'gutenberg-extra')}
+                                        unit={value[device][getKey(value[device], 0)]}
+                                        onChangeUnit={value => onChangeValue(value, 0)}
+                                        value={value[device][getKey(value[device], 1)]}
+                                        onChangeValue={value => onChangeValue(value, 1)}
+                                    />
+                                    {/* <RadioControl
                                         className={'gx-unit-control'}
                                         selected={value[device][getKey(value[device], 0)]}
                                         options={[
@@ -213,7 +221,7 @@ export default class Typography extends GXComponent {
                                         min={0}
                                         step={0.1}
                                         allowReset={true}
-                                    />
+                                    /> */}
                                     <RadioControl
                                         className={'gx-unit-control'}
                                         selected={value[device][getKey(value[device], 2)]}

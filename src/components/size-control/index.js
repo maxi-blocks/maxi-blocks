@@ -14,7 +14,7 @@ import classnames from 'classnames';
 /**
  * Component
  */
-const SizeControl = props => {
+const SizeControl = (props) => {
 
     const {
         label,

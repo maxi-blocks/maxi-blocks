@@ -36,7 +36,7 @@
 
 /*-----------------------------------------------------------------------------------------------------------------------*/
 .gx-image-item .gx-style-tab-setting{
-    ackground: unset !important;
+    background: unset !important;
 }
 
 .gx-controls .gx-accordion-tab {
@@ -60,4 +60,106 @@
     padding: 9px 9px;
     display: flex;
     align-items: center;
+}
+
+components-base-control__label {
+    margin-bottom: 0 !important;
+    vertical-align: sub;
+    min-height: 24px;
+}
+
+.gx-controls .accordion__panel {
+    margin-top: -24px;
+    width: 109% !important;
+    margin-bottom: 15px;
+    margin-left: -4%;
+    margin-right: auto;
+    padding-top: 28px;
+    padding-bottom: 10px;
+}
+
+.gx-image-item .accordion__panel, .gx-button-item .accordion__panel {
+    border: none !important;
+    padding-left: 15px;
+    padding-right: 18px;
+    padding-top: 40px !important;
+}
+
+.components-base-control {
+    margin-bottom: 5px !important;
+}
+
+.gx-image-item .gx-imagesettings-control .components-base-control__field {
+    justify-content: space-between;
+}
+
+.components-base-control__field select {
+    max-width: 8.5rem;
+}
+
+.gx-controls select, .gx-panel select{
+    border: 1px solid #dddfe1 !important;
+    opacity: 1 !important;
+}
+
+.gx-image-item select{
+    height: 28px;
+    line-height: 20px;
+    font-size: 10pt;
+    margin-left: auto;
+}
+
+.gx-panel select, .components-select-control__input, .gx-popover select {
+    padding: 0 24px 0px 5px !important;
+}
+
+.gx-controls select, .components-select-control__input {
+    min-height: unset;
+    max-height: unset !important;
+    color: #464a53;
+}
+
+.components-select-control__input {
+    border-radius: 5px !important;
+    border: 1px solid #dddfe1 !important;
+    background: #fff url(../img/arrow-down.svg) no-repeat right 7px top 50% !important;
+    background-size: 9px 9px !important;
+    font-size: 10pt !important;
+}
+
+.components-panel__body select option {
+    vertical-align: middle;
+}
+
+.gx-image-item select{
+    line-height:20px;
+    font-size:10pt;
+}
+
+.gx-image-item .gx-imagesettings-control .components-base-control__field {
+    justify-content: space-between;
+}
+
+.gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option:first-of-type{
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option{
+    border: 1px solid #dddfe1 !important;
+    opacity: 1 !important;
+}
+
+.gx-image-item .gx-alignmentcontrol-control .components-radio-control__option{
+    height:30px !important;
+}
+
+.gx-sidebar div.gx-alignmentcontrol-control .components-radio-control__option{
+    border: 1px solid #dddfe1 !important;
+    opacity: 1 !important;
+}
+
+.gx-imagesettings-control
+.components-radio-control__option:last-child{
+    top:0 !important;
 }

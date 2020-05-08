@@ -17,6 +17,7 @@ import AlignmentControl from '../alignment-control';
 import ColorControl from '../color-control';
 import DeviceSelectorControl from '../device-selector-control/';
 import FontFamilySelector from '../font-family-selector';
+import SizeControl from '../size-control';
 import PopoverControl from '../popover-control';
 import TextShadowControl from '../text-shadow-control';
 
@@ -25,6 +26,9 @@ import TextShadowControl from '../text-shadow-control';
  */
 import classnames from 'classnames';
 
+
+// This file, editor.scss will affect only the editor (backend). Send me Ok when read
+// So, from here we are loading the file editor.scss vvv
 /**
  * Styles
  */
@@ -193,7 +197,22 @@ export default class Typography extends GXComponent {
                                         device={device}
                                         onChange={onSelect}
                                     />
-                                    <RadioControl
+                                    {/**
+                                     * Ok, heres the problem vvv
+                                     * This is a RadioControl and RangeControl component
+                                     * Together, they have the same visual aspect than a SizeControl component
+                                     * Is because, if you check SizeControl component, is the same
+                                     * combination of components: RadioControl and RangeControl
+                                     * Even the same classes
+                                     */}
+                                    <SizeControl 
+                                        label={__('Size', 'gutenberg-extra')}
+                                        unit={value[device][getKey(value[device], 0)]}
+                                        onChangeUnit={value => onChangeValue(value, 0)}
+                                        value={value[device][getKey(value[device], 1)]}
+                                        onChangeValue={value => onChangeValue(value, 1)}
+                                    />
+                                    {/* <RadioControl
                                         className={'gx-unit-control'}
                                         selected={value[device][getKey(value[device], 0)]}
                                         options={[
@@ -213,7 +232,7 @@ export default class Typography extends GXComponent {
                                         min={0}
                                         step={0.1}
                                         allowReset={true}
-                                    />
+                                    /> */}
                                     <RadioControl
                                         className={'gx-unit-control'}
                                         selected={value[device][getKey(value[device], 2)]}

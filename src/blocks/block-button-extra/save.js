@@ -1,26 +1,16 @@
 /**
  * WordPress dependencies
  */
-const { __ } = wp.i18n;
-const {
-    RichText,
-} = wp.blockEditor;
-
-/**
- * Internal dependencies
- */
-import {
-    ButtonSaver,
-    Image,
-    Link
-} from '../../components';
+const { Button } = wp.components;
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { setLinkStyles } from './utils';
 
+/**
+ * Save
+ */
 const save = props => {
     const {
         className,
@@ -28,63 +18,40 @@ const save = props => {
             uniqueID,
             blockStyle,
             defaultBlockStyle,
-            linkTitle,
             linkOptions,
-            imageSettings,
-            mediaID,
-            titleLevel,
-            title,
-            additionalText,
-            description,
-            buttonSettings,
+            buttonText,
+            extraClassName
         },
     } = props;
 
-    const linkStyles = setLinkStyles(props);
-
-    let classes = classnames(className);
+    let classes = classnames(
+        'gx-block gx-button-extra',
+        blockStyle,
+        extraClassName,
+        uniqueID,
+        className
+    );
     if (uniqueID && (typeof uniqueID !== 'undefined'))
         classes = classnames(classes, uniqueID);
 
+    const linkOpt = typeof linkOptions === 'object' ? linkOptions : JSON.parse(linkOptions);
+    const linkProps = {
+        href: linkOpt.url || '',
+        target: linkOpt.opensInNewTab ? '_blank' : '_self'
+    }
+
     return (
         <div
-            className={'gx-block ' + blockStyle + ' gx-image-box ' + classes}
+            className={classes}
             data-gx_initial_block_class={defaultBlockStyle}
         >
-            <Link
-                link={linkTitle}
-                linkOptions={linkOptions}
-                className="gx-image-box-link"
-                style={linkStyles}
+            <Button
+                className="gx-buttoneditor-button"
+                {...linkProps}
+                data-gx_initial_block_class={defaultBlockStyle}
             >
-                {mediaID &&
-                    <Image
-                        className="gx-image-box-image"
-                        imageSettings={imageSettings}
-                        mediaID={mediaID}
-                    />
-                }
-                <div class='gx-image-box-text'>
-                    <RichText.Content
-                        tagName={titleLevel}
-                        className="gx-image-box-title"
-                        value={title}
-                    />
-                    <RichText.Content
-                        tagName="p"
-                        className="gx-image-box-subtitle"
-                        value={additionalText}
-                    />
-                    <RichText.Content
-                        tagName="p"
-                        className="gx-image-box-description"
-                        value={description}
-                    />
-                    <ButtonSaver
-                        buttonSettings={buttonSettings}
-                    />
-                </div>
-            </Link>
+                {buttonText}
+            </Button>
         </div>
     );
 }

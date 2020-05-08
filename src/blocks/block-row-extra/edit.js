@@ -222,7 +222,7 @@ class edit extends GXBlock {
                     allowedBlocks={ALLOWED_BLOCKS}
                     // __experimentalMoverDirection="horizontal" // ???
                     renderAppender={
-                        !hasInnerBlock() ?
+                        !hasInnerBlock ?
                             () => (
                                 <div
                                     class="gx-row-template-wrapper"
@@ -255,13 +255,17 @@ class edit extends GXBlock {
     }
 }
 
-const editSelect = withSelect(select => {
+const editSelect = withSelect((select, ownProps) => {
+    const { clientId } = ownProps
+
     const selectedBlockId = select('core/block-editor').getSelectedBlockClientId();
     const originalNestedBlocks = select('core/block-editor').getBlockParents(selectedBlockId);
+    const hasInnerBlock = select('core/block-editor').getBlockOrder(clientId).length >= 1;
 
     return {
         selectedBlockId,
-        originalNestedBlocks
+        originalNestedBlocks,
+        hasInnerBlock
     }
 })
 
@@ -310,17 +314,9 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
         dispatch('core/editor').selectBlock(id);
     }
 
-    /**
-     * Check if InnerBlocks contains other blocks
-     */
-    const hasInnerBlock = () => {
-        return select('core/block-editor').getBlockOrder(clientId).length >= 1; // hasChildBlocks ??
-    }
-
     return {
         loadTemplate,
         selectOnClick,
-        hasInnerBlock,
     }
 })
 

@@ -31,7 +31,7 @@ function gx_save_post_function($post_id, $post, $update) {
 // ON Rendering post
 //======================================================================
 
-add_filter( 'the_content', 'check_page_content_test');
+//add_filter( 'the_content', 'check_page_content_test');
 function check_page_content_test( $content ) {
     $fullContent = get_the_content(); // argument ($content) in admin page will work for each block
     $pageID = get_the_ID();

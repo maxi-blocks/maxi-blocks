@@ -951,24 +951,9 @@ div.gx-column-block {
   div.gx-column-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout > div.block-list-appender {
     width: 100%;
     margin: 0; }
-<<<<<<< HEAD
-
-div.components-resizable-box__container {
-  width: 100%; }
-  div.components-resizable-box__container > span > div.components-resizable-box__handle-right {
-    left: 100%;
-    -webkit-transform: translateX(20%);
-        -ms-transform: translateX(20%);
-            transform: translateX(20%); }
 /**
  * #.# Common SCSS
  *
  * Can include things like variables and mixins
  * that are used across the project.
 */
-<<<<<<< HEAD
->>>>>>> origin/hrach-button-extra
-=======
->>>>>>> joshua-row-column-blocks
-=======
->>>>>>> joshua-button-extra

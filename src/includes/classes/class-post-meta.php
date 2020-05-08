@@ -1,8 +1,9 @@
 <?php
 
-class PostMeta {
+class PostMeta
+{
 
-    /**
+	/**
 	 * This plugin's instance.
 	 *
 	 * @var PostMeta
@@ -12,44 +13,68 @@ class PostMeta {
 	/**
 	 * Registers the plugin.
 	 */
-	public static function register() {
-		if ( null === self::$instance ) {
+	public static function register()
+	{
+		if (null === self::$instance) {
 			self::$instance = new PostMeta();
 		}
-    }
-    
-    /**
+	}
+
+	/**
 	 * Constructor
 	 */
-	public function __construct() {
-		add_filter( 'init', array( $this, 'register_meta' ) );
-    }
-    
-    /**
+	public function __construct()
+	{
+		add_filter('init', array($this, 'gx_wp_blocks_post_type_support'));
+		add_filter('init', array($this, 'gx_register_meta'));
+	}
+
+	/**
+	 * Adds 'custom-fields' support to 'wp_block' post type
+	 */
+	public function gx_wp_blocks_post_type_support()
+	{
+		add_post_type_support(
+			'wp_block', 
+			'custom-fields'
+		);
+	}
+
+	/**
 	 * Register meta.
 	 */
-	public function register_meta() {
-        $args = [
-            'show_in_rest'  => true,
-            'single'        => true,
-            'auth_callback' => array( $this, 'auth_callback' ),
+	public function gx_register_meta()
+	{
+		$args = [
+			'show_in_rest'  => true,
+			'single'        => true,
+			'auth_callback' => array($this, 'auth_callback'),
+			'show_in_rest'	=> true,
 		];
 
 		// Responsive styles
-        register_meta(
+		register_meta(
 			'post',
 			'_gutenberg_extra_responsive_styles',
 			$args
 		);
-    }
 
-    /**
+		// Responsive styles
+		register_meta(
+			'wp_block',
+			'_gutenberg_extra_responsive_styles',
+			$args
+		);
+	}
+
+	/**
 	 * Determine if the current user can edit posts
 	 *
 	 * @return bool True when can edit posts, else false.
 	 */
-	public function auth_callback() {
-		return current_user_can( 'edit_posts' );
+	public function auth_callback()
+	{
+		return current_user_can('edit_posts');
 	}
 }
 

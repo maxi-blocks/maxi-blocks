@@ -61,6 +61,9 @@ class edit extends GXBlock {
     }
 
     spaceChecker() {
+        if (isNil(this.props.attributes.originalNestedColumns))
+            return;
+            
         let totalSize = [];
         this.props.originalNestedColumns.map(columnId => {
             totalSize.push(select('core/block-editor').getBlockAttributes(columnId).columnSize);

@@ -1,3 +1,5 @@
+// Title Typography component is no sense, go to TypographyControl!
+
 .gx-title-typography-setting .components-select-control__input {
     max-width: 61%;
     width: 100%;
@@ -6,4 +8,13 @@
 
 .gx-title-typography-setting .components-base-control__label {
     width: 40%;
+}
+
+// This should go to PopoverControl component
+.gx-title-typography-setting > .components-popover__content > .components-base-control.components-base-control.gx-alignmentcontrol-control.components-radio-control > .components-base-control__field > .components-radio-control__option > label {
+    display: flex;
+    justify-content: center;
+    border: 1px solid #dddfe1 !important;
+    width: 44px;
+    height: 29px;
 }

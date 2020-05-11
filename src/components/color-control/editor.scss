@@ -1,3 +1,18 @@
+.gx-colorcontrol-control .gx-popover-control .components-base-control__field .components-dropdown {
+	margin-left: auto;
+  }
+
+  .gx-colorcontrol-control .components-base-control__field > button {
+    /* margin-right: 2px; */
+    order: 3;
+    border: 2px solid #dddfe1 !important;
+    padding: 0;
+    width: 30px;
+    border-radius: 5px;
+    margin-left:0;
+    height: 30px !important;
+    }
+/*----------------------------------------------------------------------------------------*/
 .gx-colorcontrol-control {
   display: flex;
 

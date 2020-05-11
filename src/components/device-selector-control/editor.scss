@@ -7,3 +7,18 @@
 .gx-device-control .components-radio-control__option .components-radio-control__input {
     margin: auto;
 }
+
+.gx-device-control .components-radio-control__input {
+	display: none;
+  }
+  
+/*-----------------------------------------------------------------------------------------*/
+
+.gx-device-control .components-radio-control__option {
+	height: 33px !important;
+  }
+  
+  .gx-device-control {
+	width: 101%;
+  }
+  

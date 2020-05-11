@@ -3,11 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
-const {
-    SelectControl,
-    RadioControl,
-    RangeControl,
-} = wp.components;
+const { SelectControl } = wp.components;
 
 /**
  * Internal dependencies
@@ -197,14 +193,6 @@ export default class Typography extends GXComponent {
                                         device={device}
                                         onChange={onSelect}
                                     />
-                                    {/**
-                                     * Ok, heres the problem vvv
-                                     * This is a RadioControl and RangeControl component
-                                     * Together, they have the same visual aspect than a SizeControl component
-                                     * Is because, if you check SizeControl component, is the same
-                                     * combination of components: RadioControl and RangeControl
-                                     * Even the same classes
-                                     */}
                                     <SizeControl 
                                         label={__('Size', 'gutenberg-extra')}
                                         unit={value[device][getKey(value[device], 0)]}
@@ -212,66 +200,19 @@ export default class Typography extends GXComponent {
                                         value={value[device][getKey(value[device], 1)]}
                                         onChangeValue={value => onChangeValue(value, 1)}
                                     />
-                                    {/* <RadioControl
-                                        className={'gx-unit-control'}
-                                        selected={value[device][getKey(value[device], 0)]}
-                                        options={[
-                                            { label: 'PX', value: 'px' },
-                                            { label: 'EM', value: 'em' },
-                                            { label: 'VW', value: 'vw' },
-                                            { label: '%', value: '%' },
-                                        ]}
-                                        onChange={value => onChangeValue(value, 0)}
-                                    />
-                                    <RangeControl
-                                        label={__('Size', 'gutenberg-extra')}
-                                        className={'gx-with-unit-control'}
-                                        value={value[device][getKey(value[device], 1)]}
-                                        onChange={value => onChangeValue(value, 1)}
-                                        id={'size-control'}
-                                        min={0}
-                                        step={0.1}
-                                        allowReset={true}
-                                    /> */}
-                                    <RadioControl
-                                        className={'gx-unit-control'}
-                                        selected={value[device][getKey(value[device], 2)]}
-                                        options={[
-                                            { label: 'PX', value: 'px' },
-                                            { label: 'EM', value: 'em' },
-                                            { label: 'VW', value: 'vw' },
-                                            { label: '%', value: '%' },
-                                        ]}
-                                        onChange={value => onChangeValue(value, 2)}
-                                    />
-                                    <RangeControl
+                                    <SizeControl 
                                         label={__('Line Height', 'gutenberg-extra')}
-                                        className={'gx-with-unit-control'}
+                                        unit={value[device][getKey(value[device], 2)]}
+                                        onChangeUnit={value => onChangeValue(value, 2)}
                                         value={value[device][getKey(value[device], 3)]}
-                                        onChange={value => onChangeValue(value, 3)}
-                                        min={0}
-                                        step={0.1}
-                                        allowReset={true}
+                                        onChangeValue={value => onChangeValue(value, 3)}
                                     />
-                                    <RadioControl
-                                        className={'gx-unit-control'}
-                                        selected={value[device][getKey(value[device], 4)]}
-                                        options={[
-                                            { label: 'PX', value: 'px' },
-                                            { label: 'EM', value: 'em' },
-                                            { label: 'VW', value: 'vw' },
-                                            { label: '%', value: '%' },
-                                        ]}
-                                        onChange={value => onChangeValue(value, 4)}
-                                    />
-                                    <RangeControl
+                                    <SizeControl 
                                         label={__('Letter Spacing', 'gutenberg-extra')}
-                                        className={'gx-with-unit-control'}
+                                        unit={value[device][getKey(value[device], 4)]}
+                                        onChangeUnit={value => onChangeValue(value, 4)}
                                         value={value[device][getKey(value[device], 5)]}
-                                        onChange={value => onChangeValue(value, 5)}
-                                        min={0}
-                                        step={0.1}
-                                        allowReset={true}
+                                        onChangeValue={value => onChangeValue(value, 5)}
                                     />
                                     <Divider />
                                     <SelectControl

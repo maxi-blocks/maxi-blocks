@@ -1,3 +1,74 @@
+.gx-typography-popover .components-range-control {
+	height: 30px;
+  }
+  
+  .gx-typography-popover .components-range-control__number {
+	height: 20px !important;
+	margin-left: 1px;
+  }
+  
+  .gx-typography-popover .gx-unit-control .components-base-control__field {
+	top: -2px;
+	left: -1px;
+	position: relative;
+  }
+  
+  .gx-typography-popover .components-range-control__number {
+	top: -2px !important;
+	left: 248px;
+  }
+  
+  .gx-typography-popover .components-range-control__reset {
+	top: 23px !important;
+  }
+  
+  .gx-typography-popover .gx-with-unit-control .components-base-control__label {
+	margin-bottom: 27px !important;
+  }
+
+  .gx-typography-popover .gx-settings-button .components-button[type="reset"] {
+	width: 28px;
+	height: 28px;
+  }
+  
+  .gx-typography-popover .gx-settings-button .components-button[type="reset"] svg {
+	margin: auto;
+	height: 15px;
+  }
+  
+  .gx-typography-popover .gx-settings-button .components-base-control__field {
+	display: flex;
+	justify-content: space-between;
+  }
+  
+  .gx-typography-popover .gx-settings-button .components-base-control__field .components-button[type="reset"] {
+	padding: 5px !important;
+	order: 1;
+	color: black;
+  }
+  
+  .gx-typography-popover .gx-settings-button .components-base-control__field .components-button[type="reset"]:focus {
+	box-shadow: none !important;
+  }
+  
+  .gx-typography-popover .gx-font-family-selector-button {
+	width: 100%;
+  }
+  
+  .gx-typography-popover .gx-settings-button .components-base-control__field .gx-popover-dropdown {
+	margin-left: auto;
+	/* margin-right: 3px; */
+  }
+  
+  .gx-typography-popover .gx-settings-button .components-base-control__field .components-button[type="reset"],
+  .gx-typography-popover .gx-settings-button .components-base-control__field .components-button[action="popup"] {
+	width: 30px;
+	height: 30px;
+	background: transparent !important;
+	padding: 0;
+	border-radius: 5px;
+  }
+/*------------------------------------------*/
 .gx-typography-control { 
     justify-content: space-between;
     display: flex;
@@ -67,6 +138,16 @@
     border-radius: 5px;
 }
 
+.gx-title-typography-setting .components-select-control__input {
+    max-width: 61%;
+    width: 100%;
+    margin-left: 5px;
+}
+
+.gx-title-typography-setting .components-base-control__label {
+    width: 40%;
+}
+
 // This should go to PopoverControl component
 .gx-title-typography-setting > .components-popover__content > .components-base-control.components-base-control.gx-alignmentcontrol-control.components-radio-control > .components-base-control__field > .components-radio-control__option > label {
     display: flex;
@@ -74,26 +155,4 @@
     border: 1px solid #dddfe1 !important;
     width: 44px;
     height: 29px;
-}
-
-// This should come here vvv ??
-@media all and(max-width:2000px){
-
-    // Should this class be inside TypographyControl styling?
-    .gx-unit-control {
-        float: right;
-        margin-bottom: -30px !important;
-        z-index: 100;
-        margin-right: 80px;
-    }
-
-    // Should this class be inside TypographyControl styling?
-    .gx-unit-control .components-radio-control__option label {
-        min-width: 27px;
-        line-height: 28px;
-        top: 1px;
-        height: 28px !important;
-    }
-
-   
 }

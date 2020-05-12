@@ -1,3 +1,51 @@
 .gx-background-popover-hide {
     z-index: -1;
 }
+
+.gx-background-control{
+	  padding: 40px;
+  }
+
+  .gx-background-control
+  .components-button.editor-post-featured-image__toggle{
+	  min-height: 40px !important;
+	  height:40px;
+  }
+
+  .gx-background-control
+  .components-base-control__field{
+	  position: relative;
+  }
+
+  .gx-background-control
+  .components-base-control__field
+  .components-dropdown.gx-popover-dropdown:nth-of-type(1){
+	  position: absolute;
+	  right:63px;
+  }
+
+@media all and(max-width:2000px){
+  .gx-background-control{
+	  padding: 30px !important;
+  }
+
+  .gx-background-control
+  .components-button.editor-post-featured-image__toggle{
+	  min-height: 40px !important;
+	  height:40px;
+	  width:100% !important;
+  }
+
+  .gx-background-control
+  .components-base-control__field{
+	  position: relative;
+  }
+
+  .gx-background-control
+  .components-base-control__field
+  .components-dropdown.gx-popover-dropdown:nth-of-type(1){
+	  position: absolute;
+	  right:56px !important;
+  }
+
+}

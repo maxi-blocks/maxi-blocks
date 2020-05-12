@@ -1,3 +1,5 @@
+import './editor.scss';
+
 /**
  * Wordpress dependencies
  */

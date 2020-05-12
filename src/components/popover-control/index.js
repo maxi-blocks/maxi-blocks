@@ -1,4 +1,3 @@
-import './editor.scss';
 /**
  * WordPress dependencies
  */
@@ -18,7 +17,7 @@ import classnames from 'classnames';
  * Styles and icons
  */
 import './editor.scss';
-import { 
+import {
     advanced,
     reset
 } from '../../icons';
@@ -30,7 +29,7 @@ const PopoverControl = props => {
     const {
         label,
         className,
-        classNamePopover = 'gx-popover',
+        classNamePopover,
         icon = advanced,
         showReset = undefined,
         onReset,
@@ -38,6 +37,12 @@ const PopoverControl = props => {
     } = props;
 
     const classes = classnames('gx-popover-control', className);
+    // For doing that, we need to modify a little bit
+    // let's do it (ask me if you don't understand what I'm doing, ok?)
+
+    // So, here we are getting a basic class for the popover, and adding a general class
+    // in case is passed by props => classNamePopover
+    let classesPopover = classnames('gx-popover', classNamePopover);
 
     return (
         <div className={classes}>
@@ -47,23 +52,17 @@ const PopoverControl = props => {
                 <BaseControl.VisualLabel>
                     {label}
                 </BaseControl.VisualLabel>
-                {showReset &&
-                    <Button
-                        isSecondary
-                        onClick={onReset}
-                        type="reset"
-                    >
-                        {
-                            <Icon
-                                icon={reset}
-                            />
-                        }
-                    </Button>
-                }
                 {popovers.map(popover => {
                     if (!popover) {
-                        return;
+                        return
                     }
+
+                    // Here we are updating that classesPopover with a specific class for that popover
+                    // In case it would be more than one element
+                    // I.g. on ColorControl we could have one class for color, and other gradient
+                    // Ping me when read =>
+                    classesPopover = classnames(classesPopover, popover.classNamePopover);
+
                     return (
                         <Dropdown
                             className={'gx-popover-dropdown'}
@@ -80,8 +79,16 @@ const PopoverControl = props => {
                                 </Button>
                             )}
                             popoverProps={
+                                // Here we have the popover options
+                                // It has classname, but it has an error (mea culpa in this case)
+                                // the problem it has is: doesn't have a constant class
+                                // so, how it should look our className for popover should be something like this:
+                                // '.gx-popover {popover class added, like .gx-typography-popover}
+                                // So, in this way, we have a constant class that will be repeated in all
+                                // Popover instances. That's a good starting
+                                // ping me when read =>
                                 {
-                                    className: popover.classNamePopover ? popover.classNamePopover : classNamePopover,
+                                    className: classesPopover,
                                     noArrow: true,
                                     position: 'center'
                                 }
@@ -95,6 +102,19 @@ const PopoverControl = props => {
                         </Dropdown>
                     )
                 })}
+                {showReset &&
+                    <Button
+                        isSecondary
+                        onClick={onReset}
+                        type="reset"
+                    >
+                        {
+                            <Icon
+                                icon={reset}
+                            />
+                        }
+                    </Button>
+                }
             </BaseControl>
         </div>
     )

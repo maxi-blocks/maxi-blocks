@@ -11,6 +11,16 @@
 .gx-device-control .components-radio-control__input {
 	display: none;
   }
+
+  .gx-device-control .components-radio-control__option {
+    width: 33%;
+    text-align: center;
+    border: 1px solid #dddfe1;
+    }
+    
+    .gx-device-control .components-base-control__field {
+    display: flex;
+    }
   
 /*-----------------------------------------------------------------------------------------*/
 
@@ -21,4 +31,6 @@
   .gx-device-control {
 	width: 101%;
   }
+
+
   

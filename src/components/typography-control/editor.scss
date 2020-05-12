@@ -1,73 +1,14 @@
-.gx-typography-popover .components-range-control {
-	height: 30px;
-  }
-  
-  .gx-typography-popover .components-range-control__number {
-	height: 20px !important;
-	margin-left: 1px;
-  }
-  
-  .gx-typography-popover .gx-unit-control .components-base-control__field {
-	top: -2px;
-	left: -1px;
-	position: relative;
-  }
-  
-  .gx-typography-popover .components-range-control__number {
-	top: -2px !important;
-	left: 248px;
-  }
-  
-  .gx-typography-popover .components-range-control__reset {
-	top: 23px !important;
-  }
-  
-  .gx-typography-popover .gx-with-unit-control .components-base-control__label {
-	margin-bottom: 27px !important;
-  }
+// Here we have an example vvvv
+// You are creating new CSS for fixing it, but in this case is just the
+// instance that refers .gx-popover. What would happen with
+// ... I don't know, BoxShadowControl! 
+// BoxShadowControl uses a popover too... so, are you going to do the CSS again?
+// Or going further: if we create a new component, should we do it again?
+// And worse! If there's a mistake and we need to change CSS, should we look
+// for eeeeeveeeeery instance of the situation and going changing???
+// CRAZY!!! hahahahahaha
+// What do you think? =>
 
-  .gx-typography-popover .gx-settings-button .components-button[type="reset"] {
-	width: 28px;
-	height: 28px;
-  }
-  
-  .gx-typography-popover .gx-settings-button .components-button[type="reset"] svg {
-	margin: auto;
-	height: 15px;
-  }
-  
-  .gx-typography-popover .gx-settings-button .components-base-control__field {
-	display: flex;
-	justify-content: space-between;
-  }
-  
-  .gx-typography-popover .gx-settings-button .components-base-control__field .components-button[type="reset"] {
-	padding: 5px !important;
-	order: 1;
-	color: black;
-  }
-  
-  .gx-typography-popover .gx-settings-button .components-base-control__field .components-button[type="reset"]:focus {
-	box-shadow: none !important;
-  }
-  
-  .gx-typography-popover .gx-font-family-selector-button {
-	width: 100%;
-  }
-  
-  .gx-typography-popover .gx-settings-button .components-base-control__field .gx-popover-dropdown {
-	margin-left: auto;
-	/* margin-right: 3px; */
-  }
-  
-  .gx-typography-popover .gx-settings-button .components-base-control__field .components-button[type="reset"],
-  .gx-typography-popover .gx-settings-button .components-base-control__field .components-button[action="popup"] {
-	width: 30px;
-	height: 30px;
-	background: transparent !important;
-	padding: 0;
-	border-radius: 5px;
-  }
 /*------------------------------------------*/
 .gx-typography-control { 
     justify-content: space-between;
@@ -90,7 +31,7 @@
         }
     }
 
-    .gx-typography-popover {
+    .gx-popover {
         width: 100%;
     }
 
@@ -111,7 +52,7 @@
     opacity: 1 !important;
 }
 
-.gx-typography-popover .gx-settings-button .components-base-control__field {
+.gx-popover .gx-settings-button .components-base-control__field {
     display: flex;
     justify-content: space-between;
 }
@@ -120,17 +61,17 @@
     margin-right: auto;
 }
 
-.gx-typography-popover .gx-settings-button .components-base-control__field .gx-popover-dropdown {
+.gx-popover .gx-settings-button .components-base-control__field .gx-popover-dropdown {
     margin-left: auto;
     margin-right: 3px;
 }
 
-.gx-typography-popover .gx-settings-button .components-base-control__field .components-button[action="popup"]{
+.gx-popover .gx-settings-button .components-base-control__field .components-button[action="popup"]{
     border: 1px solid #dddfe1 !important;
     opacity: 1 !important;
 }
 
-.gx-typography-popover .gx-settings-button .components-base-control__field .components-button[action="popup"] {
+.gx-popover .gx-settings-button .components-base-control__field .components-button[action="popup"] {
     width: 30px;
     height: 30px;
     background: transparent !important;
@@ -155,4 +96,143 @@
     border: 1px solid #dddfe1 !important;
     width: 44px;
     height: 29px;
+}
+
+  
+.gx-typography-item
+.block-editor-panel-color-gradient-settings
+.block-editor-color-gradient-control
+.component-color-indicator {
+  margin-left: -2px;
+  border-radius: 5px;
+  margin-top: -4px;
+}
+
+.gx-typography-popover .gx-unit-control {
+	position: relative;
+	top: 1px;
+	left:-2px;
+  }
+
+/*---------------------------------------------------------------------------*/
+.gx-typogrphy-inspect-panel > .gx-popover-control.gx-typography-popover {
+  width:100% !important;
+}
+
+.gx-typogrphy-inspect-panel > .gx-popover-control.gx-typography-popover > div{
+  width: 100% !important;
+}
+
+.gx-typogrphy-inspect-panel
+.components-button.is-secondary{
+  border-radius: 5px !important;
+  transition: 0.3s !important;
+}
+.gx-typogrphy-inspect-panel
+.components-button.is-secondary:hover{
+  border-color: #c5c5c5 !important;
+  transition: 0.3s !important;
+}
+
+.gx-typography-size, .gx-typography-line-height, .gx-typography-letter-spacing{
+  margin-bottom: 5px !important;
+}
+
+.gx-typography-popover
+.components-base-control__label +
+  button.components-button.is-secondary{
+  width:30px !important;
+  height:30px !important;
+}
+
+.gx-typography-popover .gx-device-control {
+	margin-bottom: 15px !important;
+}
+
+.gx-typography-popover
+.components-base-control__field
+.components-range-control__number{  
+  margin-top: -2px !important;
+}
+
+.gx-typography-popover
+.components-base-control__field
+.components-button.components-range-control__reset.is-secondary.is-small{
+margin-top:-1px;
+}
+
+.gx-typography-size
+.components-range-control__number,
+.gx-typography-line-height
+.components-range-control__number,
+.gx-typography-letter-spacing
+.components-range-control__number{
+  margin-top: -72px !important;
+}
+
+.gx-typography-size
+.components-button.components-range-control__reset.is-secondary.is-small,
+.gx-typography-line-height
+.components-button.components-range-control__reset.is-secondary.is-small,
+.gx-typography-letter-spacing
+.components-button.components-range-control__reset.is-secondary.is-small{
+  margin-top: -72px !important;
+}
+
+@media all and(max-width:2000px){
+  .gx-typography-size
+  .components-base-control.components-range-control.gx-with-unit-control
+  .components-base-control__field >
+  .components-range-control__number,
+  .gx-typography-line-height 
+  .components-base-control.components-range-control.gx-with-unit-control
+  .components-base-control__field >
+  .components-range-control__number,
+  .gx-typography-letter-spacing
+  .components-base-control.components-range-control.gx-with-unit-control
+  .components-base-control__field >
+  .components-range-control__number{
+    margin-top: -74px !important;
+}
+
+.gx-typography-size
+.components-base-control.components-range-control.gx-with-unit-control
+.components-button.components-range-control__reset.is-secondary.is-small,
+.gx-typography-line-height
+.components-base-control.components-range-control.gx-with-unit-control
+.components-button.components-range-control__reset.is-secondary.is-small,
+.gx-typography-letter-spacing
+.components-base-control.components-range-control.gx-with-unit-control
+.components-button.components-range-control__reset.is-secondary.is-small{
+  margin-top: -74px !important;
+}
+
+.gx-typography-popover .components-range-control__number {
+  top: -2px !important;
+  left: 226px;
+}
+
+.gx-typography-popover .components-popover__content {
+  padding: 19px 26px 19px 19px !important;
+}
+
+.gx-typography-popover
+.components-base-control__label +
+  button.components-button.is-secondary{
+  width:30px !important;
+  height:30px !important;
+}
+
+.gx-typography-popover
+.components-base-control__field
+.components-range-control__number{
+  margin-top: 0px !important;
+}
+
+.gx-typography-popover
+.components-base-control__field >
+.components-button.components-range-control__reset.is-secondary.is-small{
+  margin-top: 2px !important;
+}
+
 }

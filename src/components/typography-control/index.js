@@ -152,7 +152,7 @@ export default class Typography extends GXComponent {
         }
 
         return (
-            <div className={classes}>
+            <div className={classes + ' ' + 'gx-typogrphy-inspect-panel'}>
                 <div className="gx-typography-color-display">
                     <span
                         style={{
@@ -162,7 +162,7 @@ export default class Typography extends GXComponent {
                 </div>
                 <PopoverControl
                     label={value.label}
-                    className="gx-typography-popover"
+                    className={'gx-typography-popover'}
                     buttonText={__('Typography', 'gutenberg-extra')}
                     popovers={[
                         {
@@ -194,6 +194,7 @@ export default class Typography extends GXComponent {
                                         onChange={onSelect}
                                     />
                                     <SizeControl 
+                                        className={'gx-typography-size'}
                                         label={__('Size', 'gutenberg-extra')}
                                         unit={value[device][getKey(value[device], 0)]}
                                         onChangeUnit={value => onChangeValue(value, 0)}
@@ -201,6 +202,7 @@ export default class Typography extends GXComponent {
                                         onChangeValue={value => onChangeValue(value, 1)}
                                     />
                                     <SizeControl 
+                                        className={'gx-typography-line-height'}
                                         label={__('Line Height', 'gutenberg-extra')}
                                         unit={value[device][getKey(value[device], 2)]}
                                         onChangeUnit={value => onChangeValue(value, 2)}
@@ -208,6 +210,7 @@ export default class Typography extends GXComponent {
                                         onChangeValue={value => onChangeValue(value, 3)}
                                     />
                                     <SizeControl 
+                                        className={'gx-typography-letter-spacing'}
                                         label={__('Letter Spacing', 'gutenberg-extra')}
                                         unit={value[device][getKey(value[device], 4)]}
                                         onChangeUnit={value => onChangeValue(value, 4)}

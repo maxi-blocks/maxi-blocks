@@ -78,7 +78,7 @@ class GXCustomizerModel extends GXCustomizer
         $response = '';
 
         // General
-        get_theme_mod("body_background_color-{$theme}-color-{$style}") ? $response .= "--{$theme}-{$style}-background: " . get_theme_mod("body_background_color-{$theme}-color-{$style}") . '; ' : null;
+        get_theme_mod("body_background_color{$theme}-color-{$style}") ? $response .= "--{$theme}-{$style}-background: " . get_theme_mod("body_background_color{$theme}-color-{$style}") . '; ' : null;
         get_theme_mod("{$theme}-color-{$style}") ? $response .= "--{$theme}-{$style}-highlight: " . get_theme_mod("{$theme}-color-{$style}") . '; ' : null;
         get_theme_mod("{$theme}-color-{$style}") ? $response .= "--{$theme}-{$style}-hover: " . get_theme_mod("{$theme}-color-{$style}") . '; ' : null;
 

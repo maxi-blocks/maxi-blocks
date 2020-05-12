@@ -10,6 +10,7 @@
  */
 
 // Extensions
+import './extensions/store';
 import './extensions/attributes';
 import './extensions/blocks';
 

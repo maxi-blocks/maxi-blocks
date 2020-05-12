@@ -4,21 +4,25 @@
  * @version 0.1
  */
 
-import { style } from "../../icons";
-
 /**
  * WordPress dependencies
  */
 const { Component } = wp.element;
 const {
     dispatch,
-    select
+    select,
 } = wp.data;
 
 /**
  * Class
  */
 export default class GXComponent extends Component {
+
+    constructor() {
+        super(...arguments);
+        this.test = wp.data.select('gx').receiveGXStyles();
+        console.log(this.test)
+    }
 
     target = this.props.target ? this.props.target : '';
 

@@ -333,6 +333,81 @@
 .css-uojzqi-ActionRightWrapper.exqw8y214{
     margin-top: -1px;
 }
+
+.gx-popover .components-popover__content .gx-colorcontrol-control {
+	margin-bottom: 9px;
+  }
+
+  .gx-popover .components-range-control {
+	height: 30px;
+  }
+  
+  .gx-popover .components-range-control__number {
+	height: 20px !important;
+	margin-left: 1px;
+  }
+  
+  .gx-popover .gx-unit-control .components-base-control__field {
+	top: -2px;
+	left: -1px;
+	position: relative;
+  }
+  
+  .gx-popover .components-range-control__number {
+	top: -2px !important;
+	left: 248px;
+  }
+  
+  .gx-popover .components-range-control__reset {
+	top: 23px !important;
+  }
+  
+  .gx-popover .gx-with-unit-control .components-base-control__label {
+	margin-bottom: 27px !important;
+  }
+
+  .gx-popover .gx-settings-button .components-button[type="reset"] {
+	width: 28px;
+	height: 28px;
+  }
+  
+  .gx-popover .gx-settings-button .components-button[type="reset"] svg {
+	margin: auto;
+	height: 15px;
+  }
+  
+  .gx-popover .gx-settings-button .components-base-control__field {
+	display: flex;
+	justify-content: space-between;
+  }
+  
+  .gx-popover .gx-settings-button .components-base-control__field .components-button[type="reset"] {
+	padding: 5px !important;
+	order: 1;
+	color: black;
+  }
+  
+  .gx-popover .gx-settings-button .components-base-control__field .components-button[type="reset"]:focus {
+	box-shadow: none !important;
+  }
+  
+  .gx-popover .gx-font-family-selector-button {
+	width: 100%;
+  }
+  
+  .gx-popover .gx-settings-button .components-base-control__field .gx-popover-dropdown {
+	margin-left: auto;
+	/* margin-right: 3px; */
+  }
+  
+  .gx-popover .gx-settings-button .components-base-control__field .components-button[type="reset"],
+  .gx-popover .gx-settings-button .components-base-control__field .components-button[action="popup"] {
+	width: 30px;
+	height: 30px;
+	background: transparent !important;
+	padding: 0;
+	border-radius: 5px;
+  }
 /*-------------------------------------------------------------*/
 // This CSS is used to clean the global CSS that is affecting it
 .gx-sidebar .gx-popover-control .gx-settings-button button:before {
@@ -629,8 +704,92 @@ div.gx-popover .components-popover__content {
         max-width: 50%;
     }
 
-    /*--------------------------------------------------------------------*/
     .components-popover__content .gx-typography-popover {
         padding: 0px 0px 20px;
-      }
+    }
+
+    .components-popover__content > div:nth-of-type(2)
+    .components-range-control__number.css-1foiknu-InputNumber.exqw8y213{
+	      top:1px !important;
+    }
+
+ .components-popover__content > div:nth-of-type(2)
+ .css-uojzqi-ActionRightWrapper.exqw8y214{
+	 margin-top: 1px !important;
+ }
+
+ .components-popover__content > div:nth-of-type(3)
+ .components-range-control__number.css-1foiknu-InputNumber.exqw8y213{
+	 top:1px !important;
+ }
+
+ .components-popover__content > div:nth-of-type(3)
+ .css-uojzqi-ActionRightWrapper.exqw8y214{
+	 margin-top: 1px !important;
+ }
+
+ .gx-popover >
+ .components-popover__content >
+ .components-base-control.gx-unit-control.components-radio-control{
+   position:relative;
+   top:-1px !important;
+ }
+
+ .gx-popover >
+ .components-popover__content
+ .components-base-control.gx-colorcontrol-control
+ button.components-button.is-secondary{
+   width:30px !important;
+   height:30px !important;
+ }
+
+ .gx-popover >
+ .components-popover__content > div:last-child{
+   margin-bottom: 20px !important;
+ }
+
+ .components-popover__content
+ .components-base-control.components-range-control.gx-shadow-horizontal-control >
+ .components-base-control__field >
+ input.components-range-control__number,
+ .components-popover__content
+ .components-base-control.components-range-control.gx-shadow-vertical-control >
+ .components-base-control__field >
+ input.components-range-control__number,
+ .components-popover__content
+ .components-base-control.components-range-control.gx-shadow-blur-control >
+ .components-base-control__field >
+ input.components-range-control__number,
+ .components-popover__content
+ .components-base-control.components-range-control.gx-shadow-spread-control >
+ .components-base-control__field >
+ input.components-range-control__number{
+   position:absolute;
+   top: 0 !important;
+   left:243px !important;
+ }
+
+ .gx-popover >
+ .components-popover__content
+ .components-base-control.components-range-control.gx-with-unit-control >
+ .components-base-control__field
+ .components-range-control__root.css-yaebbd-Root.exqw8y20 >
+ .css-uojzqi-ActionRightWrapper.exqw8y214 > 
+ button.components-button.is-secondary{
+ border: 1px solid #dddfe1 !important;
+ width:28px !important;
+ height:28px !important;
+ }
+
+ .gx-popover >
+ .components-popover__content
+ .components-base-control.components-range-control.gx-with-unit-control 
+ .components-range-control__root.css-yaebbd-Root.exqw8y20 >
+ .components-range-control__number.css-1foiknu-InputNumber.exqw8y213{
+ width: 43px;
+ min-width: 40px !important;
+ position: relative;
+ left: 8px !important;
+ }
+
 }

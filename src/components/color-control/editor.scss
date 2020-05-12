@@ -12,6 +12,38 @@
     margin-left:0;
     height: 30px !important;
     }
+
+    .gx-colorcontrol-color-display span {
+    width: 24px;
+    height: 24px;
+    float: left;
+    border: 1px solid #dddfe1 !important;
+    margin-right: 8px;
+    margin-left: -4px;
+    border-radius: 5px;
+    }
+
+    .gx-colorcontrol-color-display span,
+    .gx-sidebar .component-color-indicator {
+    width: 24px;
+    height: 24px;
+    float: left;
+    border: 1px solid #dddfe1 !important;
+    margin-right: 8px;
+    margin-left: -4px;
+    border-radius: 5px;
+    }
+    
+    .gx-colorcontrol-color-display span {
+    margin-right: 8px !important;
+    }
+    
+    .gx-colorcontrol-control .components-base-control__field > button svg {
+    width: 12px;
+    height: 12px;
+    margin: auto;
+    }
+    
 /*----------------------------------------------------------------------------------------*/
 .gx-colorcontrol-control {
   display: flex;
@@ -157,11 +189,17 @@
 }
 
 // This should go to ColorControl component
-.gx-colorcontrol-control .components-base-control__field > button {
+/**
+* In ColorControl, you are ordering using flex order
+* Please, always, if it's possible, use HTML structure before modifying with CSS
+* Is much solider and cleaner
+* Ping me when read please =>
+*/
+/*.gx-colorcontrol-control .components-base-control__field > button {
   order: 3;
   margin-left: 0;
   height: 30px !important;
-}
+}*/
 
 // This should go to ColorControl component
 .gx-colorcontrol-control .gx-popover-control .components-base-control__field .components-dropdown {

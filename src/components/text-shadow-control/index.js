@@ -129,7 +129,7 @@ const TextShadowControl = props => {
             popovers={[
                 {
                     content: (
-                        <TextShadow
+                        <TextShadow 
                             value={value}
                             onChange={val => onChange(val)}
                             defaultColor={defaultColor}

@@ -42,14 +42,6 @@ $themesDefaultOptions =  array(
         'Dark' => array(
             'block' => array(
                 'background' => '#000000',
-//                'border'          =>  '2px solid #dddfe1',
-//                'border-radius'   =>  '4px',
-//                'color'           =>  '#ffffff',
-//                'cursor'          =>  'pointer',
-//                'height'          =>  'auto',
-//                'min-height'      =>  '40px',
-//                'overflow'        =>  'hidden',
-//                'justify-content' =>  'start',
             ),
             'domElements' => array(
                 'p' =>  set_color_and_fonts(['color' => '#9b9b9b', 'font-family' => 'Roboto', 'font-size' => '16px', 'font-weight' => '400', 'line-height' => '26px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
@@ -156,6 +148,97 @@ $themesDefaultOptions =  array(
             'hover' => '#9b9b9b',
         ),
     ),
+    'Candy' => array(
+        'Dark' => array(
+            'block' => array(
+                'background' => '#eaf4f9',
+            ),
+            'domElements' => array(
+                'p'  => set_color_and_fonts(['color' => '#666666', 'font-family' => 'Merriweather', 'font-size' => '16px', 'font-weight' => '400', 'line-height' => '26px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
+                'a'  => set_color_and_fonts(['color' => '#f74356', 'font-family' => 'Merriweather']),
+                'h1' => set_color_and_fonts(['color' => '#2b2b33', 'font-family' => 'Raleway',      'font-size' => '45px', 'font-weight' => '400', 'line-height' => '55px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
+                'h2' => set_color_and_fonts(['color' => '#64c2ec', 'font-family' => 'Raleway',      'font-size' => '38px', 'font-weight' => '400', 'line-height' => '48px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
+                'h3' => set_color_and_fonts(['color' => '#f74356', 'font-family' => 'Raleway',      'font-size' => '30px', 'font-weight' => '400', 'line-height' => '40px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
+                'h4' => set_color_and_fonts(['color' => '#2b2b33', 'font-family' => 'Raleway',      'font-size' => '26px', 'font-weight' => '400', 'line-height' => '36px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
+                'h5' => set_color_and_fonts(['color' => '#f74356', 'font-family' => 'Merriweather', 'font-size' => '22px', 'font-weight' => '400', 'line-height' => '32px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
+                'h6' => set_color_and_fonts(['color' => '#f74356', 'font-family' => 'Merriweather', 'font-size' => '20px', 'font-weight' => '400', 'line-height' => '30px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
+            ),
+            'highlight' => '#f74356',
+            'hover' => '#64c2ec',
+        ),
+        'Light' => array(
+            'block' => array(
+                'background' => '#ffffff',
+            ),
+            'domElements' => array(
+                'p'  => set_color_and_fonts(['color' => '#666666', 'font-family' => 'Merriweather', 'font-size' => '16px', 'font-weight' => '400', 'line-height' => '26px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
+                'a'  => set_color_and_fonts(['color' => '#f74356', 'font-family' => 'Merriweather']),
+                'h1' => set_color_and_fonts(['color' => '#2b2b33', 'font-family' => 'Raleway',      'font-size' => '45px', 'font-weight' => '400', 'line-height' => '55px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
+                'h2' => set_color_and_fonts(['color' => '#64c2ec', 'font-family' => 'Raleway',      'font-size' => '38px', 'font-weight' => '400', 'line-height' => '48px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
+                'h3' => set_color_and_fonts(['color' => '#f74356', 'font-family' => 'Raleway',      'font-size' => '30px', 'font-weight' => '400', 'line-height' => '40px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
+                'h4' => set_color_and_fonts(['color' => '#2b2b33', 'font-family' => 'Raleway',      'font-size' => '26px', 'font-weight' => '400', 'line-height' => '36px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
+                'h5' => set_color_and_fonts(['color' => '#f74356', 'font-family' => 'Merriweather', 'font-size' => '22px', 'font-weight' => '400', 'line-height' => '32px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
+                'h6' => set_color_and_fonts(['color' => '#f74356', 'font-family' => 'Merriweather', 'font-size' => '20px', 'font-weight' => '400', 'line-height' => '30px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
+            ),
+            'highlight' => '#f74356',
+            'hover' => '#64c2ec',
+        ),
+    ),
+    'Bumblebee' => array(
+        'Dark' => array(
+            'block' => array(
+                'background' => '#323c47',
+            ),
+            'domElements' => array(
+                'p'  => set_color_and_fonts(['color' => '#a7a7a7', 'font-family' => 'Lora',    'font-size' => '16px', 'font-weight' => '400', 'line-height' => '26px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
+                'a'  => set_color_and_fonts(['color' => '#ffd012', 'font-family' => 'Lora']),
+                'h1' => set_color_and_fonts(['color' => '#ffffff', 'font-family' => 'Poppins', 'font-size' => '45px', 'font-weight' => '700', 'line-height' => '55px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
+                'h2' => set_color_and_fonts(['color' => '#64c2ec', 'font-family' => 'Poppins', 'font-size' => '38px', 'font-weight' => '700', 'line-height' => '48px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
+                'h3' => set_color_and_fonts(['color' => '#f74356', 'font-family' => 'Poppins', 'font-size' => '30px', 'font-weight' => '700', 'line-height' => '40px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
+                'h4' => set_color_and_fonts(['color' => '#ffffff', 'font-family' => 'Poppins', 'font-size' => '26px', 'font-weight' => '700', 'line-height' => '36px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
+                'h5' => set_color_and_fonts(['color' => '#f74356', 'font-family' => 'Poppins', 'font-size' => '22px', 'font-weight' => '700', 'line-height' => '32px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
+                'h6' => set_color_and_fonts(['color' => '#ffd012', 'font-family' => 'Poppins', 'font-size' => '20px', 'font-weight' => '700', 'line-height' => '30px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
+            ),
+            'highlight' => '#ffd012',
+            'hover' => '#ff9212',
+        ),
+        'Light' => array(
+            'block' => array(
+                'background' => '#ffffff',
+            ),
+            'domElements' => array(
+                'p'  => set_color_and_fonts(['color' => '#666666', 'font-family' => 'Lora',    'font-size' => '16px', 'font-weight' => '400', 'line-height' => '26px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
+                'a'  => set_color_and_fonts(['color' => '#ffd012', 'font-family' => 'Lora']),
+                'h1' => set_color_and_fonts(['color' => '#323c47', 'font-family' => 'Poppins', 'font-size' => '45px', 'font-weight' => '700', 'line-height' => '55px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
+                'h2' => set_color_and_fonts(['color' => '#323c47', 'font-family' => 'Poppins', 'font-size' => '38px', 'font-weight' => '700', 'line-height' => '48px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
+                'h3' => set_color_and_fonts(['color' => '#323c47', 'font-family' => 'Poppins', 'font-size' => '30px', 'font-weight' => '700', 'line-height' => '40px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
+                'h4' => set_color_and_fonts(['color' => '#323c47', 'font-family' => 'Poppins', 'font-size' => '26px', 'font-weight' => '700', 'line-height' => '36px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
+                'h5' => set_color_and_fonts(['color' => '#ffd012', 'font-family' => 'Poppins', 'font-size' => '22px', 'font-weight' => '700', 'line-height' => '32px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
+                'h6' => set_color_and_fonts(['color' => '#ffd012', 'font-family' => 'Poppins', 'font-size' => '20px', 'font-weight' => '700', 'line-height' => '30px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
+            ),
+            'highlight' => '#ffd012',
+            'hover' => '#ff9212',
+        ),
+    ),
+);
+
+return $themesDefaultOptions;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //    'Natural' => array(
 //        'Dark' => array(
 //            'block' => array(
@@ -264,81 +347,3 @@ $themesDefaultOptions =  array(
 //            'hover' => '#f71717',
 //        ),
 //    ),
-    'Candy' => array(
-        'Dark' => array(
-            'block' => array(
-                'background' => '#eaf4f9',
-            ),
-            'domElements' => array(
-                'p'  => set_color_and_fonts(['color' => '#666666', 'font-family' => 'Merriweather', 'font-size' => '16px', 'font-weight' => '400', 'line-height' => '26px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
-                'a'  => set_color_and_fonts(['color' => '#f74356', 'font-family' => 'Merriweather']),
-                'h1' => set_color_and_fonts(['color' => '#2b2b33', 'font-family' => 'Raleway',      'font-size' => '45px', 'font-weight' => '400', 'line-height' => '55px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
-                'h2' => set_color_and_fonts(['color' => '#64c2ec', 'font-family' => 'Raleway',      'font-size' => '38px', 'font-weight' => '400', 'line-height' => '48px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
-                'h3' => set_color_and_fonts(['color' => '#f74356', 'font-family' => 'Raleway',      'font-size' => '30px', 'font-weight' => '400', 'line-height' => '40px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
-                'h4' => set_color_and_fonts(['color' => '#2b2b33', 'font-family' => 'Raleway',      'font-size' => '26px', 'font-weight' => '400', 'line-height' => '36px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
-                'h5' => set_color_and_fonts(['color' => '#f74356', 'font-family' => 'Merriweather', 'font-size' => '22px', 'font-weight' => '400', 'line-height' => '32px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
-                'h6' => set_color_and_fonts(['color' => '#f74356', 'font-family' => 'Merriweather', 'font-size' => '20px', 'font-weight' => '400', 'line-height' => '30px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
-            ),
-            'highlight' => '#f74356',
-            'hover' => '#64c2ec',
-        ),
-        'Light' => array(
-            'block' => array(
-                'background' => '#ffffff',
-            ),
-            'domElements' => array(
-                'p'  => set_color_and_fonts(['color' => '#666666', 'font-family' => 'Merriweather', 'font-size' => '16px', 'font-weight' => '400', 'line-height' => '26px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
-                'a'  => set_color_and_fonts(['color' => '#f74356', 'font-family' => 'Merriweather']),
-                'h1' => set_color_and_fonts(['color' => '#2b2b33', 'font-family' => 'Raleway',      'font-size' => '45px', 'font-weight' => '400', 'line-height' => '55px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
-                'h2' => set_color_and_fonts(['color' => '#64c2ec', 'font-family' => 'Raleway',      'font-size' => '38px', 'font-weight' => '400', 'line-height' => '48px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
-                'h3' => set_color_and_fonts(['color' => '#f74356', 'font-family' => 'Raleway',      'font-size' => '30px', 'font-weight' => '400', 'line-height' => '40px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
-                'h4' => set_color_and_fonts(['color' => '#2b2b33', 'font-family' => 'Raleway',      'font-size' => '26px', 'font-weight' => '400', 'line-height' => '36px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
-                'h5' => set_color_and_fonts(['color' => '#f74356', 'font-family' => 'Merriweather', 'font-size' => '22px', 'font-weight' => '400', 'line-height' => '32px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
-                'h6' => set_color_and_fonts(['color' => '#f74356', 'font-family' => 'Merriweather', 'font-size' => '20px', 'font-weight' => '400', 'line-height' => '30px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
-            ),
-            'highlight' => '#f74356',
-            'hover' => '#64c2ec',
-        ),
-    ),
-    'Bumblebee' => array(
-        'Dark' => array(
-            'block' => array(
-                'background' => '#323c47',
-            ),
-            'domElements' => array(
-                'p'  => set_color_and_fonts(['color' => '#a7a7a7', 'font-family' => 'Lora',    'font-size' => '16px', 'font-weight' => '400', 'line-height' => '26px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
-                'a'  => set_color_and_fonts(['color' => '#ffd012', 'font-family' => 'Lora']),
-                'h1' => set_color_and_fonts(['color' => '#ffffff', 'font-family' => 'Poppins', 'font-size' => '45px', 'font-weight' => '700', 'line-height' => '55px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
-                'h2' => set_color_and_fonts(['color' => '#64c2ec', 'font-family' => 'Poppins', 'font-size' => '38px', 'font-weight' => '700', 'line-height' => '48px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
-                'h3' => set_color_and_fonts(['color' => '#f74356', 'font-family' => 'Poppins', 'font-size' => '30px', 'font-weight' => '700', 'line-height' => '40px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
-                'h4' => set_color_and_fonts(['color' => '#ffffff', 'font-family' => 'Poppins', 'font-size' => '26px', 'font-weight' => '700', 'line-height' => '36px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
-                'h5' => set_color_and_fonts(['color' => '#f74356', 'font-family' => 'Poppins', 'font-size' => '22px', 'font-weight' => '700', 'line-height' => '32px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
-                'h6' => set_color_and_fonts(['color' => '#ffd012', 'font-family' => 'Poppins', 'font-size' => '20px', 'font-weight' => '700', 'line-height' => '30px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
-            ),
-            'highlight' => '#ffd012',
-            'hover' => '#ff9212',
-        ),
-        'Light' => array(
-            'block' => array(
-                'background' => '#ffffff',
-            ),
-            'domElements' => array(
-                'p'  => set_color_and_fonts(['color' => '#666666', 'font-family' => 'Lora',    'font-size' => '16px', 'font-weight' => '400', 'line-height' => '26px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
-                'a'  => set_color_and_fonts(['color' => '#ffd012', 'font-family' => 'Lora']),
-                'h1' => set_color_and_fonts(['color' => '#323c47', 'font-family' => 'Poppins', 'font-size' => '45px', 'font-weight' => '700', 'line-height' => '55px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
-                'h2' => set_color_and_fonts(['color' => '#323c47', 'font-family' => 'Poppins', 'font-size' => '38px', 'font-weight' => '700', 'line-height' => '48px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
-                'h3' => set_color_and_fonts(['color' => '#323c47', 'font-family' => 'Poppins', 'font-size' => '30px', 'font-weight' => '700', 'line-height' => '40px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
-                'h4' => set_color_and_fonts(['color' => '#323c47', 'font-family' => 'Poppins', 'font-size' => '26px', 'font-weight' => '700', 'line-height' => '36px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
-                'h5' => set_color_and_fonts(['color' => '#ffd012', 'font-family' => 'Poppins', 'font-size' => '22px', 'font-weight' => '700', 'line-height' => '32px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
-                'h6' => set_color_and_fonts(['color' => '#ffd012', 'font-family' => 'Poppins', 'font-size' => '20px', 'font-weight' => '700', 'line-height' => '30px', 'letter-spacing' => '0', 'transform' => 'none', 'style' => 'normal', 'decoration' => 'unset', 'decoration-line' => 'none']),
-            ),
-            'highlight' => '#ffd012',
-            'hover' => '#ff9212',
-        ),
-    ),
-);
-
-
-
-
-return $themesDefaultOptions;

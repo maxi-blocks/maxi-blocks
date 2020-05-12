@@ -156,6 +156,7 @@ class edit extends GXBlock {
                 uniqueID,
                 blockStyle,
                 extraClassName,
+                defaultBlockStyle
             },
             clientId,
             loadTemplate,
@@ -177,6 +178,7 @@ class edit extends GXBlock {
         return [
             <Inspector {...this.props} />,
             <__experimentalBlock
+                data-gx_initial_block_class={defaultBlockStyle}
                 className={classes}
             >
                 {

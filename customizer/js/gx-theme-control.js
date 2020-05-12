@@ -1,3 +1,6 @@
+/**
+ * This file make hide/show options for themes
+ */
 (function($) {
     /**
      * Run function when customizer is ready.

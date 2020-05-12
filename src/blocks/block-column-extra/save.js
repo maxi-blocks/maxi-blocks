@@ -29,6 +29,7 @@ const save = props => {
             uniqueID,
             blockStyle,
             extraClassName,
+            defaultBlockStyle
         }
     } = props;
 
@@ -42,7 +43,10 @@ const save = props => {
         classes = classnames(classes, uniqueID);
 
     return (
-        <div className={classes}>
+        <div 
+            className={classes}
+            data-gx_initial_block_class={defaultBlockStyle}
+        >
             <div
                 className="gx-column-block-content"
             >

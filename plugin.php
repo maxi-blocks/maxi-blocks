@@ -41,3 +41,8 @@ require_once plugin_dir_path( __FILE__ ) . 'customizer/customizer.php';
 //======================================================================
 
 require_once plugin_dir_path(__FILE__ ) . 'page-content-setting/dynamic_content.php';
+
+//======================================================================
+// STYLING API
+//======================================================================
+require_once plugin_dir_path( __FILE__ ) . 'API/class-gx-styles-api.php';

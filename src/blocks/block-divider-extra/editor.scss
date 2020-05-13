@@ -1,0 +1,7 @@
+.gx-divider-block {
+    &.is-rounded {
+        >hr.gx-divider {
+            border-radius: 2rem
+        }
+    }
+}

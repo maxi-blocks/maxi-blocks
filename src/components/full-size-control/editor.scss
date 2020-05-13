@@ -60,8 +60,18 @@
 	  margin-bottom: 5px !important;
   }
 
+  .gx-width-height-item
+  .components-base-control__field > label{
+    position:relative;
+    top:3px !important;
+  }
 
-  @media all and(max-widht:2000px){
+  @media all and(max-width:2000px){
+    .gx-width-height-item
+  .components-panel__body.gx-panel.gx-size-setting.gx-style-tab-setting.is-opened{
+    padding: 15px !important;
+  }
+
       .gx-width-height-item .gx-unit-control > .components-base-control__field:nth-of-type(1){
         position: relative !important;
         top: -1px !important;

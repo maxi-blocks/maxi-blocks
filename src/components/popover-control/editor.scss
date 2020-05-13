@@ -456,7 +456,7 @@
 // This should go to PopoverControl component
 .gx-popover > .components-popover__content > .gx-popover-control > .components-base-control.gx-settings-button > .components-base-control__field .components-dropdown.gx-popover-dropdown {
     position: absolute;
-    right: 33px;
+    right: 30px;
     top: 0;
 }
 
@@ -614,36 +614,55 @@ div.gx-popover .components-popover__content {
     font-weight:500;
 }
 
-.components-popover__content > div:nth-of-type(2) {
+.gx-typography-popover-styles
+.components-button.components-range-control__reset.is-secondary.is-small{
+  position:unset !important;
+}
+
+.gx-typography-popover-styles > div:nth-of-type(2) {
     margin-bottom: 5px !important;
 }
 
-.components-popover__content > div:nth-of-type(2) > div:first-child{
+.gx-typography-popover-styles > div:nth-of-type(2) > div:first-child{
     position:relative;
     top:1px;
 }
 
-.components-popover__content > div:nth-of-type(3) > div:first-child{
+.gx-typography-popover-styles > div:nth-of-type(3) > div:first-child{
     position:relative;
     top:1px;
 }
 
-.components-popover__content > div:last-child
+.gx-typography-popover-styles > div:nth-of-type(2) .components-range-control__number,
+.gx-typography-popover-styles > div:nth-of-type(3) .components-range-control__number,
+.gx-typography-popover-styles > div:nth-of-type(2) .components-button.components-range-control__reset.is-secondary.is-small,
+.gx-typography-popover-styles > div:nth-of-type(3) .components-button.components-range-control__reset.is-secondary.is-small{
+  margin-top:-70px !important;
+}
+
+.gx-typography-popover-styles > div:nth-of-type(4)
+.components-base-control__field
 .components-range-control__slider{
     display:block;
     box-shadow: none;
     background:none;
     width: 100%;
-    top: -10px;
-    right: 36px;
-    max-width: 57%;
+    top: 145px !important;
+    right: 56px !important;
+    max-width: 84% !important;
 }
 
-.components-popover__content > div:last-child
+.gx-typography-popover-styles > div:nth-of-type(4)
 .components-range-control__number{
     position: absolute;
     right:0;
-    top:3px;
+    top: 118px !important;
+    margin-left: 56px !important;
+}
+
+.gx-typography-popover-styles > div:nth-of-type(2) .components-range-control__slider ,
+.gx-typography-popover-styles > div:nth-of-type(3) .components-range-control__slider{
+  display:none;
 }
 
 .components-popover__content {
@@ -661,7 +680,51 @@ div.gx-popover .components-popover__content {
     letter-spacing: -0.5px;
 }
 
+.components-popover__content
+.components-range-control__slider{
+  display:block;
+  background: none;
+  box-shadow: none;
+}
+
+.components-popover__content
+.components-range-control__slider{
+  margin-left: -18px;
+  margin-top: -20px;
+  width: 83%;
+}
+
+.components-popover__content
+.components-range-control__number{
+  margin-top: 21px !important;
+}
+
+.components-popover__content
+.components-button.components-range-control__reset.is-secondary.is-small{
+  position: relative;
+  top: 17px !important;
+}
+
 @media all and(max-width:2000px){
+  .components-popover__content
+.components-range-control__slider{
+  margin-left: -18px;
+  margin-top: -20px;
+  width: 83%;
+}
+
+.components-popover__content
+.components-range-control__number{
+  margin-top: 21px !important;
+  margin-left: 8px !important;
+}
+
+.components-popover__content
+.components-button.components-range-control__reset.is-secondary.is-small{
+  position: relative;
+  top: 21px !important;
+}
+
     .gx-popover button.components-range-control__reset {
         font-size: 0 !important;
         background: transparent !important;
@@ -677,23 +740,58 @@ div.gx-popover .components-popover__content {
         height: 30px !important;
     }
 
-    .components-popover__content > div:nth-of-type(2) > div:first-child {
+    .gx-popover > .components-popover__content .components-base-control.gx-colorcontrol-control button.components-button.is-secondary > svg{
+        width:18px !important;
+        height:18px !important;
+    }
+    
+    .gx-typography-popover-styles > div:nth-of-type(2) .components-base-control__field .components-range-control__number,
+    .gx-typography-popover-styles > div:nth-of-type(3) .components-base-control__field .components-range-control__number{
+      margin-top:-76px !important;
+      margin-left:238px !important;
+    }
+
+    .gx-typography-popover-styles > div:nth-of-type(2) .components-base-control__field .components-button.components-range-control__reset.is-secondary.is-small,
+    .gx-typography-popover-styles > div:nth-of-type(3) .components-base-control__field .components-button.components-range-control__reset.is-secondary.is-small{
+      margin-top:-75px !important;
+    }
+
+    .gx-typography-popover-styles > div:nth-of-type(4)
+    .components-range-control__slider{
+     display:block;
+     box-shadow: none;
+     background:none;
+     width: 100%;
+     top: 125px !important;
+     right: 55px !important;
+     max-width: 83% !important;
+    }
+
+    .gx-typography-popover-styles > div:nth-of-type(4)
+    .components-range-control__number{
+      position: absolute;
+      right:0;
+      top: 118px !important;
+      margin-left: 38px !important;
+    }
+
+    .gx-typography-popover-styles > div:nth-of-type(2) > div:first-child {
         position: relative;
         top: -1px;
     }
 
-    .components-popover__content > div:nth-of-type(3) > div:first-child {
+    .gx-typography-popover-styles > div:nth-of-type(3) > div:first-child {
         position: relative;
         top: -1px;
     }
 
-    .components-popover__content > div:last-child .components-range-control__number {
+    .gx-typography-popover-styles > div:last-child .components-range-control__number {
         position: absolute;
         top: 3px;
         margin-left: 51px;
     }
 
-    .components-popover__content > div:last-child .components-range-control__slider {
+    .gx-typography-popover-styles > div:last-child .components-range-control__slider {
         display: block;
         -webkit-box-shadow: none;
         box-shadow: none;

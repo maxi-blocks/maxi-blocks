@@ -292,8 +292,6 @@
 	  margin-top: 7px !important;
   }
 
-    
-  
   .gx-button-item
   .gx-box-settings-item
   .components-base-control__field > .components-range-control__number{
@@ -301,8 +299,27 @@
 	margin-right: -5px;
   }
 
+  .gx-buttonsettings-control
+  .components-base-control__field > 
+  .components-radio-control__option:last-child{
+	  position: relative;
+	  top: 0 !important;
+  }
+
 
   @media all and(max-width:2000px){
+	.gx-buttonsettings-control
+	.gx-alignmentcontrol-control{
+		margin-top:5px !important;
+	}
+
+	.gx-buttonsettings-control
+	.gx-colorcontrol-control
+	.components-base-control__field >
+	.components-button.is-secondary > svg{
+		width:18px !important;
+	}
+
       .gx-button-item .accordion__panel {
         padding-left: 12px !important;
       }

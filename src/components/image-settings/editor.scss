@@ -326,7 +326,32 @@
     margin-right: 86px !important;
 }
 
+.gx-background-item
+.components-range-control__slider{
+  display: block;
+  background: none;
+  box-shadow: none !important;
+  top: -12px !important;
+  position: absolute;
+  width: 100% !important;
+  max-width: 70%;
+  right: 70px;
+}
+
 @media all and(max-width:2000px){
+  .gx-background-item
+  .components-range-control__slider{
+    max-width: 62%;
+    top:-15px !important;
+    right: 66px;
+  }
+
+  .gx-imagesettings-control
+ .accordion__panel >
+ div:last-child{
+   margin-top: 10px !important;
+ }
+
     .gx-image-item .gx-colorcontrol-control .components-base-control__field > button {
         height: 26px !important;
         width: 26px !important;

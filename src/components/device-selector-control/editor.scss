@@ -32,5 +32,21 @@
 	width: 101%;
   }
 
+.gx-device-control .components-radio-control__option:first-child svg{
+  width: 27px;
+  position:relative;
+  top:3px;
+}
 
+.gx-device-control .components-radio-control__option svg{
+  width: 19px;
+  position:relative;
+  top:1.5px;
+}
+
+.gx-device-control .components-radio-control__option:last-child svg{
+  width:17px;
+  position:relative;
+  top:1.5px;
+}
   

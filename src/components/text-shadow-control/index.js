@@ -24,7 +24,7 @@ const TextShadow = props => {
     const {
         value,
         onChange,
-        defaultColor
+        defaultColor,
     } = props;
 
     const minMaxSettings = {
@@ -75,6 +75,7 @@ const TextShadow = props => {
 
     return (
         <Fragment>
+            <span className="gx-typography-popover-styles">
             <ColorControl
                 label={__('Color', 'gutenberg-extra')}
                 color={color}
@@ -107,6 +108,7 @@ const TextShadow = props => {
                 min={0}
                 max={100}
             />
+            </span>
         </Fragment>
     )
 }

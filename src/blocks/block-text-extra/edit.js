@@ -162,7 +162,6 @@ class edit extends GXBlock {
                 className={classes}
                 data-gx_initial_block_class={defaultBlockStyle}
                 placeholder={__('Set your Maxi Text here...', 'gutenberg-extra')}
-                keepPlaceholderOnFocus={true}
                 onSplit={value => {
                     if (!value) {
                         return createBlock('gutenberg-extra/block-text-extra');

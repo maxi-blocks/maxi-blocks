@@ -25,11 +25,11 @@ const attributes = {
     },
     backgroundColor: {
         type: 'string',
-        default: '#00ccff',
+        default: '',
     },
     backgroundDefaultColor: {
         type: 'string',
-        default: '#00ccff',
+        default: '',
     },
     backgroundGradient: {
         type: 'string',
@@ -69,11 +69,11 @@ const attributes = {
     },
     backgroundColorHover: {
         type: 'string',
-        default: '#00ccff',
+        default: '',
     },
     backgroundDefaultColorHover: {
         type: 'string',
-        default: '#00ccff',
+        default: '',
     },
     backgroundGradientHover: {
         type: 'string',

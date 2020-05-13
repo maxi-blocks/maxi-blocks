@@ -250,7 +250,6 @@ class edit extends GXBlock {
                                         onClick={open}
                                         icon={placeholderImage}
                                     >
-                                        {}
                                     </IconButton>
                             }
                         </Fragment>

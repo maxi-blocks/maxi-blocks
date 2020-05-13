@@ -28160,10 +28160,10 @@ body.Bumblebee .gx-default .gx-highlight {
 body.Bumblebee .gx-light .gx-divider,
 body.Bumblebee .gx-default .gx-divider {
   border-color: var(--Bumblebee-light-highlight) !important; }
-<<<<<<< HEAD
 
 figure.gx-image-block {
-  position: relative; }
+  position: relative;
+  width: 100% !important; }
   figure.gx-image-block > div.gx-image-block-settings {
     position: absolute;
     width: 3rem;
@@ -28182,7 +28182,9 @@ figure.gx-image-block {
   figure.gx-image-block:hover > div.gx-image-block-settings > button.gx-image-block-upload-button {
     opacity: 1;
     visibility: visible; }
-=======
+  figure.gx-image-block > button.gx-imageupload-button > svg {
+    width: 100%;
+    height: auto; }
 /**
  * #.# Common SCSS
  *
@@ -29424,7 +29426,72 @@ body.Bumblebee .gx-default .gx-highlight {
 body.Bumblebee .gx-light .gx-divider,
 body.Bumblebee .gx-default .gx-divider {
   border-color: var(--Bumblebee-light-highlight) !important; }
->>>>>>> joshua-section-block
+
+.gx-section-block:hover {
+  outline: 1px solid grey; }
+
+div.wp-block[data-align="full"] > div.gx-section-block {
+  width: auto; }
+
+div.gx-section-block {
+  width: 100%;
+  margin: auto;
+  position: relative; }
+  div.gx-section-block > div.gx-section-selector-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    -webkit-transform: translateY(0%);
+        -ms-transform: translateY(0%);
+            transform: translateY(0%);
+    opacity: 0;
+    visibility: hidden;
+    -webkit-transition: all 1s ease;
+    -o-transition: all 1s ease;
+    transition: all 1s ease;
+    font-size: 12px;
+    z-index: 1; }
+    div.gx-section-block > div.gx-section-selector-wrapper:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      -webkit-transform: translateX(0px);
+          -ms-transform: translateX(0px);
+              transform: translateX(0px);
+      width: 5rem;
+      height: 2rem;
+      border-top: 8px solid black;
+      border-left: 8px solid black;
+      opacity: 0;
+      visibility: hidden;
+      -webkit-transition: all 1s ease;
+      -o-transition: all 1s ease;
+      transition: all 1s ease; }
+    div.gx-section-block > div.gx-section-selector-wrapper > div.gx-section-selector-item-wrapper {
+      display: inline; }
+      div.gx-section-block > div.gx-section-selector-wrapper > div.gx-section-selector-item-wrapper .gx-section-selector-item {
+        cursor: pointer;
+        text-decoration: underline; }
+  div.gx-section-block .block-editor-inner-blocks,
+  div.gx-section-block .block-list-appender,
+  div.gx-section-block .gx-section-dropdown {
+    width: 100%; }
+  div.gx-section-block .gx-section-appender-button {
+    display: block;
+    width: 100%; }
+  div.gx-section-block.is-selected > div.gx-section-selector-wrapper:before, div.gx-section-block.has-child-selected > div.gx-section-selector-wrapper:before {
+    -webkit-transform: translate(-8px, calc(100% - 8px));
+        -ms-transform: translate(-8px, calc(100% - 8px));
+            transform: translate(-8px, calc(100% - 8px));
+    opacity: 1;
+    visibility: visible; }
+  div.gx-section-block.is-selected > div.gx-section-selector-wrapper, div.gx-section-block.has-child-selected > div.gx-section-selector-wrapper {
+    -webkit-transform: translateY(calc(-100% - 8px));
+        -ms-transform: translateY(calc(-100% - 8px));
+            transform: translateY(calc(-100% - 8px));
+    opacity: 1;
+    visibility: visible; }
 /**
  * #.# Common SCSS
  *

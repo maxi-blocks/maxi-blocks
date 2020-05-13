@@ -126,15 +126,41 @@
 .gx-typogrphy-inspect-panel
 .components-button.is-secondary{
   border-radius: 5px !important;
+  border: 1px solid #dddfe1 !important;
   transition: 0.3s !important;
 }
+
 .gx-typogrphy-inspect-panel
+.components-button.is-secondary:focus{
+  outline:none !important;
+}
+
+.gx-typogrphy-inspect-panel
+.components-dropdown >
 .components-button.is-secondary:hover{
   border-color: #c5c5c5 !important;
   transition: 0.3s !important;
 }
 
-.gx-typography-size, .gx-typography-line-height, .gx-typography-letter-spacing{
+.gx-typography-size
+ .components-range-control__slider,
+  .gx-typography-line-height
+   .components-range-control__slider,
+    .gx-typography-letter-spacing 
+    .components-range-control__slider{
+      display:none;
+}
+
+.gx-typography-size
+.components-button.components-range-control__reset.is-secondary.is-small,
+.gx-typography-line-height
+.components-button.components-range-control__reset.is-secondary.is-small,
+.gx-typography-letter-spacing
+.components-button.components-range-control__reset.is-secondary.is-small{
+  position:unset;
+}
+
+.gx-typography-size , .gx-typography-line-height, .gx-typography-letter-spacing{
   margin-bottom: 5px !important;
 }
 
@@ -193,6 +219,7 @@ margin-top:-1px;
   .components-base-control__field >
   .components-range-control__number{
     margin-top: -74px !important;
+    margin-left: 238px !important;
 }
 
 .gx-typography-size
@@ -206,6 +233,8 @@ margin-top:-1px;
 .components-button.components-range-control__reset.is-secondary.is-small{
   margin-top: -74px !important;
 }
+
+
 
 .gx-typography-popover .components-range-control__number {
   top: -2px !important;

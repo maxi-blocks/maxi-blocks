@@ -21,7 +21,7 @@ export default class GXComponent extends Component {
     constructor() {
         super(...arguments);
         this.test = wp.data.select('gx').receiveGXStyles();
-        console.log(this.test)
+        //console.log(this.test)
     }
 
     target = this.props.target ? this.props.target : '';

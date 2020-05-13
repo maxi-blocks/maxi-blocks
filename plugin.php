@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Gutenberg Extra - Last Github version
  * Plugin URI:
- * Description: GutenbergExtra — is a Gutenberg plugin created via create-guten-block. Last update: 25/04/20
+ * Description: GutenbergExtra — is a Gutenberg plugin created via create-guten-block. Last update: 13/05/20
  * Author: Gutenberg Den
  * Author URI:
  * Version: 1.0.9

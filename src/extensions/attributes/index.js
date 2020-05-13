@@ -24,6 +24,7 @@ const allowedBlocks = [
 	'gutenberg-extra/block-column-extra',
 	'gutenberg-extra/block-button-extra',
 	'gutenberg-extra/block-text-extra',
+	'gutenberg-extra/block-divider-extra',
 ];
 
 /**

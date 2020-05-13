@@ -25675,6 +25675,12 @@ body.Bumblebee .gx-default .gx-highlight {
 body.Bumblebee .gx-light .gx-divider,
 body.Bumblebee .gx-default .gx-divider {
   border-color: var(--Bumblebee-light-highlight) !important; }
+<<<<<<< HEAD
+=======
+
+.gx-divider-block.is-rounded > hr.gx-divider {
+  border-radius: 2rem; }
+>>>>>>> joshua-divider-block
 /**
  * #.# Common SCSS
  *

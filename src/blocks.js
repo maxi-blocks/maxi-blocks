@@ -22,7 +22,11 @@ import './blocks/block-title-extra/block-title-extra.js';
 // import './blocks/block-testimonial/block-single-testimonial';
 import './blocks/block-row-extra/block-row-extra';
 import './blocks/block-column-extra/block-column-extra';
+<<<<<<< HEAD
 import './blocks/block-text-extra/block-text-extra';
+=======
+import './blocks/block-divider-extra/block-divider-extra';
+>>>>>>> joshua-divider-block
 
 // import './blocks/block-button/block.js';
 

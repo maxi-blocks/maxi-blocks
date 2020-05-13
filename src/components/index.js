@@ -25,7 +25,6 @@ export { default as FontLevelControl } from './font-level-control';
 export { default as HoverAnimationControl } from './hover-animation-control';
 export { default as ImageCropControl } from './image-crop-control';
 export { default as ImagePositionControl } from './image-position-control';
-export * from './image-settings';
 export * from './link-options-control';
 export { default as LinkedButton } from './linked-button';
 export { default as NormalHoverControl } from './normal-hover-control';
@@ -37,3 +36,4 @@ export { default as TypographyControl } from './typography-control';
 
 // DEPRECATED
 export * from './deprecated/button-settings';
+export * from './deprecated/image-settings';

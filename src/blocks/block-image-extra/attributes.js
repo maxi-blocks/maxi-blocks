@@ -15,18 +15,48 @@ const attributes = {
         type: 'string',
         default: 'gx-def-light'
     },
-    // Is this necessary? vvv
-    buttonSettings: {
+    size: {
         type: 'string',
-        default: JSON.stringify(attributesData.buttonSettings)
+        default: 'full'
+    },
+    sizeOptions: {
+        type: 'string',
+    },
+    cropOptions: {
+        type: 'string',
+        default: JSON.stringify(attributesData.cropOptions)
     },
     alignment: {
         type: 'string',
         default: 'center'
     },
-    size: {
+    captionType: {
         type: 'string',
-        default: JSON.stringify(attributesData.size)
+        default: 'none'
+    },
+    captionContent: {
+        type: 'string',
+        default: ''
+    },
+    captionTypography: {
+        type: 'string',
+        default: JSON.stringify(attributesData.typography)
+    },
+    maxWidthUnit: {
+        type: 'string',
+        default: 'px'
+    },
+    maxWidth: {
+        type: 'number',
+        default: 0
+    },
+    widthUnit: {
+        type: 'string',
+        default: 'px'
+    },
+    width: {
+        type: 'number',
+        default: 0
     },
     backgroundColor: {
         type: 'string',
@@ -36,77 +66,61 @@ const attributes = {
         type: 'string',
         default: '#00ccff',
     },
-    background: {
+    backgroundGradient: {
         type: 'string',
         default: '',
     },
-    backgroundDefault: {
+    backgroundGradientDefault: {
         type: 'string',
         default: '',
+    },
+    opacity: {
+        type: 'number',
+        default: 1
     },
     boxShadow: {
         type: 'string',
         default: JSON.stringify(attributesData.boxShadow)
     },
-    typography: {
-        type: 'string',
-        default: JSON.stringify(attributesData.typography)
-    },
     border: {
         type: 'string',
         default: JSON.stringify(attributesData.border)
-    },
-    margin: {
-        type: 'string',
-        default: JSON.stringify(attributesData.margin)
     },
     padding: {
         type: 'string',
         default: JSON.stringify(attributesData.padding)
     },
-    opacity: {
+    margin: {
+        type: 'string',
+        default: JSON.stringify(attributesData.margin)
+    },
+    backgroundColor: {
+        type: 'string',
+        default: '#00ccff',
+    },
+    backgroundDefaultColor: {
+        type: 'string',
+        default: '#00ccff',
+    },
+    backgroundGradientHover: {
+        type: 'string',
+        default: '',
+    },
+    backgroundtDefaultGradienHover: {
+        type: 'string',
+        default: '',
+    },
+    backgroundGradientAboveBackgroundHover: {
+        type: 'boolean',
+        default: false
+    },
+    opacityHover: {
         type: 'number',
-        default: 100
-    },
-    backgroundColorHover: {
-        type: 'string',
-        default: '#00ccff',
-    },
-    backgroundDefaultColorHover: {
-        type: 'string',
-        default: '#00ccff',
-    },
-    backgroundHover: {
-        type: 'string',
-        default: '',
-    },
-    backgroundDefaultHover: {
-        type: 'string',
-        default: '',
+        default: 1
     },
     boxShadowHover: {
         type: 'string',
         default: JSON.stringify(attributesData.boxShadowHover)
-    },
-    typographyHover: {
-        type: 'string',
-        default: JSON.stringify(attributesData.typographyHover)
-    },
-    borderHover: {
-        type: 'string',
-        default: JSON.stringify(attributesData.borderHover)
-    },
-    marginHover: {
-        type: 'string',
-        default: JSON.stringify(attributesData.marginHover)
-    },
-    paddingHover: {
-        type: 'string',
-        default: JSON.stringify(attributesData.paddingHover)
-    },
-    opacityHover: {
-        type: 'number',
-        default: 100
     },
     hoverAnimation: {
         type: 'string',
@@ -124,13 +138,23 @@ const attributes = {
         type: 'string',
         default: ''
     },
-    buttonText: {
-        type: 'string',
-        default: ''
+    mediaID: {
+        type: 'number',
     },
-    linkOptions: {
-        type: 'string',
-        default: '{}'
+    mediaURL: {
+        type: 'string'
+    },
+    mediaALT: {
+        type: 'string'
+    },
+    mediaURL: {
+        type: 'string'
+    },
+    mediaWidth: {
+        type: 'number'
+    },
+    mediaHeight: {
+        type: 'number'
     }
 }
 

@@ -19,16 +19,16 @@ const {
 /**
  * Internal dependencies
  */
-import { GXComponent } from '../index';
-import AccordionControl from '../accordion-control';
-import AlignmentControl from '../alignment-control';
-import BorderControl from '../border-control';
-import BoxShadowControl from '../box-shadow-control';
-import ColorControl from '../color-control';
-import ImageCropControl from '../image-crop-control';
-import NormalHoverControl from '../normal-hover-control';
-import SizeControl from '../size-control';
-import TypographyControl from '../typography-control';
+import { GXComponent } from '../../index';
+import AccordionControl from '../../accordion-control';
+import AlignmentControl from '../../alignment-control';
+import BorderControl from '../../border-control';
+import BoxShadowControl from '../../box-shadow-control';
+import ColorControl from '../../color-control';
+import ImageCropControl from '../../image-crop-control';
+import NormalHoverControl from '../../normal-hover-control';
+import SizeControl from '../../size-control';
+import TypographyControl from '../../typography-control';
 
 /**
  * External dependencies
@@ -45,7 +45,7 @@ import {
  * Styles and icons
  */
 import './editor.scss';
-import { placeholderImage } from '../../icons';
+import { placeholderImage } from '../../../icons';
 
 /**
  * Component

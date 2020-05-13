@@ -49,8 +49,8 @@ class Inspector extends Component {
                 alignment,
                 backgroundColor,
                 backgroundDefaultColor,
-                background,
-                backgroundDefault,
+                backgroundGradient,
+                backgroundGradientDefault,
                 boxShadow,
                 typography,
                 border,
@@ -60,8 +60,8 @@ class Inspector extends Component {
                 opacity,
                 backgroundColorHover,
                 backgroundDefaultColorHover,
-                backgroundHover,
-                backgroundDefaultHover,
+                backgroundGradientHover,
+                backgroundGradientDefaultHover,
                 boxShadowHover,
                 typographyHover,
                 borderHover,
@@ -170,22 +170,22 @@ class Inspector extends Component {
                                                 gradient={
                                                     getNormalHoverValue(
                                                         selectorTypographyColors,
-                                                        background,
-                                                        backgroundHover
+                                                        backgroundGradient,
+                                                        backgroundGradientHover
                                                     )
                                                 }
                                                 defaultGradient={
                                                     getNormalHoverValue(
                                                         selectorTypographyColors,
-                                                        backgroundDefault,
-                                                        backgroundDefaultHover
+                                                        backgroundGradientDefault,
+                                                        backgroundGradientDefaultHover
                                                     )
                                                 }
                                                 onGradientChange={value =>
                                                     normalHoverSaver(
                                                         selectorTypographyColors,
-                                                        'background',
-                                                        'backgroundHover',
+                                                        'backgroundGradient',
+                                                        'backgroundGradientHover',
                                                         value
                                                     )
                                                 }

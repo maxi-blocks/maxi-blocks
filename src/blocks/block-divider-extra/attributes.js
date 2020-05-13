@@ -37,15 +37,15 @@ const attributes = {
     },
     dividerWidth: {
         type: 'number',
-        default: 100
+        default: 20
     },
     dividerHeightUnit: {
         type: 'string',
-        default: 'em'
+        default: 'px'
     },
     dividerHeight: {
         type: 'number',
-        default: 1
+        default: 5
     },
     dividerColor: {
         type: 'string',

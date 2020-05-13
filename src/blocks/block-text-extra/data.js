@@ -1,33 +1,5 @@
-export const size = {
-    "label": "Size",
-    "general": {
-        "max-widthUnit": "px",
-        "max-width": 0,
-        "widthUnit": "em",
-        "width": 8,
-        "min-widthUnit": "px",
-        "min-width": 0,
-        "max-heightUnit": "px",
-        "max-height": 0,
-        "heightUnit": "em",
-        "height": 3,
-        "min-heightUnit": "px",
-        "min-height": 0
-    }
-};
-
-export const boxShadow = {
-    "label": "Box Shadow",
-        "shadowColor": "#ffffff",
-    "defaultShadowColor": "#ffffff",
-    "shadowHorizontal": 0,
-    "shadowVertical": 0,
-    "shadowBlur": 0,
-    "shadowSpread": 0
-}
-
 export const typography = {
-    "label": "Button text",
+    "label": "Typography",
     "font": "Roboto",
     "options": {
         "100": "http://fonts.gstatic.com/s/roboto/v20/KFOkCnqEu92Fr1MmgWxPKTM1K9nz.ttf",
@@ -85,6 +57,34 @@ export const typography = {
         "text-decoration": "none"
     }
 }
+
+export const boxShadow = {
+    "label": "Box Shadow",
+    "shadowColor": "#ffffff",
+    "defaultShadowColor": "#ffffff",
+    "shadowHorizontal": 0,
+    "shadowVertical": 0,
+    "shadowBlur": 0,
+    "shadowSpread": 0
+}
+
+export const size = {
+    "label": "Size",
+    "general": {
+        "max-widthUnit": "px",
+        "max-width": 0,
+        "widthUnit": "px",
+        "width": 0,
+        "min-widthUnit": "px",
+        "min-width": 0,
+        "max-heightUnit": "px",
+        "max-height": 0,
+        "heightUnit": "px",
+        "height": 0,
+        "min-heightUnit": "px",
+        "min-height": 0
+    }
+};
 
 export const border = {
     "label": "Border",
@@ -147,6 +147,32 @@ export const border = {
     }
 };
 
+export const padding = {
+    "label": "Padding",
+    "unit": "px",
+    "desktop": {
+        "padding-top": 0,
+        "padding-right": 0,
+        "padding-bottom": 0,
+        "padding-left": 0,
+        "sync": true
+    },
+    "tablet": {
+        "padding-top": 0,
+        "padding-right": 0,
+        "padding-bottom": 0,
+        "padding-left": 0,
+        "sync": true
+    },
+    "mobile": {
+        "padding-top": 0,
+        "padding-right": 0,
+        "padding-bottom": 0,
+        "padding-left": 0,
+        "sync": true
+    }
+};
+
 export const margin = {
     "label": "Margin",
     "min": "none",
@@ -174,44 +200,8 @@ export const margin = {
     }
 };
 
-export const padding = {
-    "label": "Padding",
-    "unit": "px",
-    "desktop": {
-        "padding-top": 0,
-        "padding-right": 0,
-        "padding-bottom": 0,
-        "padding-left": 0,
-        "sync": true
-    },
-    "tablet": {
-        "padding-top": 0,
-        "padding-right": 0,
-        "padding-bottom": 0,
-        "padding-left": 0,
-        "sync": true
-    },
-    "mobile": {
-        "padding-top": 0,
-        "padding-right": 0,
-        "padding-bottom": 0,
-        "padding-left": 0,
-        "sync": true
-    }
-};
-
-export const boxShadowHover = {
-    "label": "Box Shadow",
-        "shadowColor": "#ffffff",
-    "defaultShadowColor": "#ffffff",
-    "shadowHorizontal": 0,
-    "shadowVertical": 0,
-    "shadowBlur": 0,
-    "shadowSpread": 0
-}
-
 export const typographyHover = {
-    "label": "Button text",
+    "label": "Typography",
     "font": "Roboto",
     "options": {
         "100": "http://fonts.gstatic.com/s/roboto/v20/KFOkCnqEu92Fr1MmgWxPKTM1K9nz.ttf",
@@ -269,6 +259,34 @@ export const typographyHover = {
         "text-decoration": "none"
     }
 }
+
+export const boxShadowHover = {
+    "label": "Box Shadow",
+    "shadowColor": "#ffffff",
+    "defaultShadowColor": "#ffffff",
+    "shadowHorizontal": 0,
+    "shadowVertical": 0,
+    "shadowBlur": 0,
+    "shadowSpread": 0
+}
+
+export const sizeHover = {
+    "label": "Size",
+    "general": {
+        "max-widthUnit": "px",
+        "max-width": 0,
+        "widthUnit": "px",
+        "width": 0,
+        "min-widthUnit": "px",
+        "min-width": 0,
+        "max-heightUnit": "px",
+        "max-height": 0,
+        "heightUnit": "px",
+        "height": 0,
+        "min-heightUnit": "px",
+        "min-height": 0
+    }
+};
 
 export const borderHover = {
     "label": "Border",
@@ -331,6 +349,32 @@ export const borderHover = {
     }
 };
 
+export const paddingHover = {
+    "label": "Padding",
+    "unit": "px",
+    "desktop": {
+        "padding-top": 0,
+        "padding-right": 0,
+        "padding-bottom": 0,
+        "padding-left": 0,
+        "sync": true
+    },
+    "tablet": {
+        "padding-top": 0,
+        "padding-right": 0,
+        "padding-bottom": 0,
+        "padding-left": 0,
+        "sync": true
+    },
+    "mobile": {
+        "padding-top": 0,
+        "padding-right": 0,
+        "padding-bottom": 0,
+        "padding-left": 0,
+        "sync": true
+    }
+};
+
 export const marginHover = {
     "label": "Margin",
     "min": "none",
@@ -354,32 +398,6 @@ export const marginHover = {
         "margin-right": 0,
         "margin-bottom": 0,
         "margin-left": 0,
-        "sync": true
-    }
-};
-
-export const paddingHover = {
-    "label": "Padding",
-    "unit": "px",
-    "desktop": {
-        "padding-top": 0,
-        "padding-right": 0,
-        "padding-bottom": 0,
-        "padding-left": 0,
-        "sync": true
-    },
-    "tablet": {
-        "padding-top": 0,
-        "padding-right": 0,
-        "padding-bottom": 0,
-        "padding-left": 0,
-        "sync": true
-    },
-    "mobile": {
-        "padding-top": 0,
-        "padding-right": 0,
-        "padding-bottom": 0,
-        "padding-left": 0,
         "sync": true
     }
 };

@@ -23,6 +23,7 @@ const allowedBlocks = [
 	'gutenberg-extra/block-row-extra',
 	'gutenberg-extra/block-column-extra',
 	'gutenberg-extra/block-button-extra',
+	'gutenberg-extra/block-text-extra',
 ];
 
 /**

@@ -25,6 +25,7 @@ import './blocks/block-column-extra/block-column-extra';
 import './blocks/block-text-extra/block-text-extra';
 import './blocks/block-divider-extra/block-divider-extra';
 import './blocks/block-image-extra/block-image-extra';
+import './blocks/block-section-extra/block-section-extra';
 
 // import './blocks/block-button/block.js';
 

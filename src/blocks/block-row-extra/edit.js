@@ -189,10 +189,10 @@ class edit extends GXBlock {
                         {
                             !isNil(selectorBlocks) &&
                             selectorBlocks.map((blockId, i) => {
-                                const blockName = wp.data.select('core/block-editor').getBlockName(blockId);
+                                const blockName = select('core/block-editor').getBlockName(blockId);
                                 if (isNil(blockName)) // Check setTimeOut on componentDidUpdate()
                                     return;
-                                const blockType = wp.data.select('core/blocks').getBlockType(blockName);
+                                const blockType = select('core/blocks').getBlockType(blockName);
                                 const title = blockType.title;
 
                                 return (
@@ -206,10 +206,7 @@ class edit extends GXBlock {
                                         <span
                                             className="gx-row-selector-item"
                                             target={blockId}
-                                            onClick={e => {
-                                                selectOnClick(blockId);
-                                                this.setState
-                                            }}
+                                            onClick={() => selectOnClick(blockId)}
                                         >
                                             {title}
                                         </span>

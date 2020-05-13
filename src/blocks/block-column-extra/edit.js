@@ -332,7 +332,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
         const blockUniqueID = select('core/block-editor').getBlockAttributes(id).uniqueID;
         const meta = JSON.parse(select('core/editor').getEditedPostAttribute('meta')._gutenberg_extra_responsive_styles);
 
-        const target = `${blockUniqueID}`;
+        const target = `${blockUniqueID}">.gx-column-block-content"`;
         let obj = {};
         if (object.label === 'Background')
             obj = getBackgroundObject(object)

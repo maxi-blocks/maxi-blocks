@@ -1,5 +1,6 @@
 figure.gx-image-block {
 	position: relative;
+	width: 100% !important;
 
 	> div.gx-image-block-settings {
 		position: absolute;
@@ -24,6 +25,13 @@ figure.gx-image-block {
 				opacity: 1;
 				visibility: visible;
 			}
+		}
+	}
+
+	>button.gx-imageupload-button{
+		>svg{
+			width: 100%;
+			height: auto;
 		}
 	}
 }

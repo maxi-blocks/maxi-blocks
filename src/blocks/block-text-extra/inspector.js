@@ -330,7 +330,6 @@ class Inspector extends Component {
                                             <FullSizeControl
                                                 sizeSettings={size}
                                                 onChange={size => setAttributes({ size })}
-                                                avoidZero
                                             />
                                         </Fragment>
                                     )
@@ -371,7 +370,6 @@ class Inspector extends Component {
                                                         undefined :
                                                         ':hover'
                                                 }
-                                                avoidZero
                                             />
                                             <DimensionsControl
                                                 value={
@@ -394,7 +392,6 @@ class Inspector extends Component {
                                                         undefined :
                                                         ':hover'
                                                 }
-                                                avoidZero
                                             />
                                         </Fragment>
                                     )

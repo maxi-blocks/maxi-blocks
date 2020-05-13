@@ -60,11 +60,11 @@ const attributes = {
     },
     backgroundColor: {
         type: 'string',
-        default: '#00ccff',
+        default: '',
     },
     backgroundDefaultColor: {
         type: 'string',
-        default: '#00ccff',
+        default: '',
     },
     backgroundGradient: {
         type: 'string',
@@ -94,13 +94,13 @@ const attributes = {
         type: 'string',
         default: JSON.stringify(attributesData.margin)
     },
-    backgroundColor: {
+    backgroundColorHover: {
         type: 'string',
-        default: '#00ccff',
+        default: '',
     },
-    backgroundDefaultColor: {
+    backgroundDefaultColorHover: {
         type: 'string',
-        default: '#00ccff',
+        default: '',
     },
     backgroundGradientHover: {
         type: 'string',

@@ -36,11 +36,11 @@ const attributes = {
         type: 'string',
         default: '#00ccff',
     },
-    background: {
+    backgroundGradient: {
         type: 'string',
         default: '',
     },
-    backgroundDefault: {
+    backgroundGradientDefault: {
         type: 'string',
         default: '',
     },
@@ -76,11 +76,11 @@ const attributes = {
         type: 'string',
         default: '#00ccff',
     },
-    backgroundHover: {
+    backgroundGradientHover: {
         type: 'string',
         default: '',
     },
-    backgroundDefaultHover: {
+    backgroundGradientDefaultHover: {
         type: 'string',
         default: '',
     },

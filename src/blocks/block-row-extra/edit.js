@@ -46,11 +46,6 @@ class edit extends GXBlock {
         selectorBlocks: [],
     }
 
-    componentDidMount() {
-        this.uniqueIDChecker(this.props.attributes.uniqueID);
-        this.setStyles();
-    }
-
     componentDidUpdate() {
         this.setStyles();
         this.setSelectorBlocks()
@@ -260,7 +255,7 @@ const editSelect = withSelect((select, ownProps) => {
 
     const selectedBlockId = select('core/block-editor').getSelectedBlockClientId();
     const originalNestedBlocks = select('core/block-editor').getBlockParents(selectedBlockId);
-    const hasInnerBlock = select('core/block-editor').getBlockOrder(clientId).length >= 1;
+    const hasInnerBlock = !isEmpty(select('core/block-editor').getBlockOrder(clientId));
 
     return {
         selectedBlockId,

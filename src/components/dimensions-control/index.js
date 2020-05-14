@@ -121,12 +121,12 @@ export default class DimensionsControl extends GXComponent {
 		}
 
 		const onChangeValue = (e) => {
-			const newValue = Number(e.target.value);
+			const newValue = e.target.value;
 			const target = Number(e.target.getAttribute('action'));
 			if (value[device].sync === true || isNaN(newValue)) {
 				for (let [key, val] of Object.entries(value[device])) {
 					isNumber(val) ?
-						value[device][key] = !isNaN(newValue) ? newValue : 0 :
+						value[device][key] = !isNaN(newValue) ? newValue : '' :
 						null
 				}
 			}
@@ -139,8 +139,8 @@ export default class DimensionsControl extends GXComponent {
 		const onChangeSync = () => {
 			value[device].sync = !value[device].sync;
 			this.saveAndSend(value, avoidZero);
-        }
-        
+		}
+				
 		return (
 			<Fragment>
 				<div className={classes}>

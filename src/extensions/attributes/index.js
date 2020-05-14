@@ -64,7 +64,6 @@ const withAttributes = createHigherOrderComponent(
 		const {
 			attributes: {
 				uniqueID,
-				isFirstOnHierarchy
 			},
 			name,
 			clientId
@@ -72,12 +71,8 @@ const withAttributes = createHigherOrderComponent(
 
 		if (allowedBlocks.includes(name)) {
 			// uniqueID
-			if (isNil(uniqueID)) {
-				let newID = uniqueId(`gx-${name.replace('gutenberg-extra/', '')}-`);
-				if (!isEmpty(document.getElementsByClassName(newID)) || !isNil(document.getElementById(newID)))
-					newID = uniqueId(name.replace('gutenberg-extra/', '') + '-');
-				props.attributes.uniqueID = newID;
-			}
+			if (isNil(uniqueID) || document.getElementsByClassName(uniqueID).length > 1)
+				props.attributes.uniqueID = uniqueIdCreator(name);
 
 			// isFirstOnHierarchy
 			const hasParentBlocks = !isEmpty(select('core/block-editor').getBlockParents(clientId));
@@ -92,6 +87,15 @@ const withAttributes = createHigherOrderComponent(
 	},
 	'withAttributes'
 );
+
+const uniqueIdCreator = name => {
+	let newID = uniqueId(`gx-${name.replace('gutenberg-extra/', '')}-`);
+
+	if (!isEmpty(document.getElementsByClassName(newID)) || !isNil(document.getElementById(newID)))
+		uniqueIdCreator(name);
+
+	return newID;
+}
 
 addFilter(
 	'blocks.registerBlockType',

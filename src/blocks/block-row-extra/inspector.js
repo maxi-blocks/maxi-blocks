@@ -3,33 +3,18 @@
  */
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
-const { synchronizeBlocksWithTemplate } = wp.blocks;
-const { compose } = wp.compose;
-const {
-    select,
-    dispatch,
-    withSelect,
-    withDispatch
-} = wp.data;
+const { InspectorControls } = wp.blockEditor;
 const {
     PanelBody,
     BaseControl,
-    Button,
-    Icon,
     SelectControl,
     RangeControl,
 } = wp.components;
-const {
-    InspectorControls,
-    InnerBlocks,
-    __experimentalBlock
-} = wp.blockEditor;
 
 /**
  * Internal dependencies
  */
 import {
-    GXBlock,
     AccordionControl,
     BackgroundControl,
     BlockStylesControl,
@@ -41,19 +26,6 @@ import {
     FullSizeControl,
     HoverAnimationControl,
 } from '../../components';
-import TEMPLATES from './templates';
-
-/**
- * External dependencies
- */
-import classnames from 'classnames';
-import {
-    isEmpty,
-    isNil,
-    uniqueId,
-    uniqBy,
-    isEqual
-} from 'lodash';
 
 /**
  * Inspector
@@ -61,7 +33,6 @@ import {
 const Inspector = props => {
     const {
         attributes: {
-            uniqueID,
             isFirstOnHierarchy,
             blockStyle,
             defaultBlockStyle,
@@ -81,12 +52,7 @@ const Inspector = props => {
             extraClassName,
             extraStyles
         },
-        clientId,
-        loadTemplate,
-        selectOnClick,
-        hasInnerBlock,
         setAttributes,
-        className,
     } = props;
 
     return (

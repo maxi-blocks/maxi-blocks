@@ -29,10 +29,6 @@ import {
  */
 class edit extends GXBlock {
 
-    componentDidMount() {
-        this.uniqueIDChecker(this.props.attributes.uniqueID, this.displayStyles.bind(this)); // May should go on constructor
-    }
-
     componentDidUpdate() {
         this.displayStyles();
     }
@@ -93,18 +89,12 @@ class edit extends GXBlock {
             label: 'Button',
             general: {}
         }
-        // if (!isEmpty(color))
-        //     response.general['color'] = color;
         if (!isEmpty(backgroundColor))
             response.general['background-color'] = backgroundColor;
         if (!isEmpty(background))
             response.general['background'] = background;
         if (isNumber(opacity))
             response.general['opacity'] = opacity;
-        // if (!isEmpty(borderSettings.borderColor))
-        //     response.general['border-color'] = borderSettings.borderColor;
-        // if (!isEmpty(borderSettings.borderType))
-        //     response.general['border-style'] = borderSettings.borderType;
         return response;
     }
 
@@ -119,18 +109,13 @@ class edit extends GXBlock {
             label: 'Button',
             general: {}
         }
-        // if (!isEmpty(color))
-        //     response.general['color'] = color;
+        
         if (!isEmpty(backgroundColorHover))
             response.general['background-color'] = backgroundColorHover;
         if (!isEmpty(backgroundHover))
             response.general['background'] = backgroundHover;
         if (isNumber(opacityHover))
             response.general['opacity'] = opacityHover;
-        // if (!isEmpty(borderSettings.borderColor))
-        //     response.general['border-color'] = borderSettings.borderColor;
-        // if (!isEmpty(borderSettings.borderType))
-        //     response.general['border-style'] = borderSettings.borderType;
 
         return response;
     }

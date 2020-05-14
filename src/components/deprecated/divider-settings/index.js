@@ -7,10 +7,10 @@ const { SelectControl } = wp.components;
 /**
  * Internal dependencies
  */
-import { GXComponent } from '../index';
-import CheckBoxControl from '../checkbox-control';
-import ColorControl from '../color-control';
-import SizeControl from '../size-control';
+import { GXComponent } from '../../index';
+import CheckBoxControl from '../../checkbox-control';
+import ColorControl from '../../color-control';
+import SizeControl from '../../size-control';
 
 /**
  * External dependencies

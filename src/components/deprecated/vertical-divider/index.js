@@ -1,7 +1,7 @@
 const { __ } = wp.i18n;
 import { Component } from "@wordpress/element";
 
-import CheckBoxControl from '../checkbox-control';
+import CheckBoxControl from '../../checkbox-control';
 
 export const verticalDividerAttributes = {
   isVertical: {

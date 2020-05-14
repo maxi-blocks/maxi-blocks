@@ -25,10 +25,6 @@ import {
  */
 class edit extends GXBlock {
 
-    componentDidMount() {
-        this.uniqueIDChecker(this.props.attributes.uniqueID, this.displayStyles.bind(this)); // May should go on constructor
-    }
-
     componentDidUpdate() {
         this.displayStyles();
     }

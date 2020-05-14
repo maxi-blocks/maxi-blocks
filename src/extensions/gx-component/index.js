@@ -79,5 +79,6 @@ export default class GXComponent extends Component {
             },
         });
         new BackEndResponsiveStyles(this.getMeta);
+        dispatch('core/editor').autosave();
     }
 }

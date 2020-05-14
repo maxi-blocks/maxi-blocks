@@ -5,7 +5,7 @@ const { __ } = wp.i18n;
 const { dispatch } = wp.data;
 const {
     __experimentalBlock,
-    RichText
+    RichText,
 } = wp.blockEditor;
 
 /**
@@ -28,10 +28,6 @@ import {
  * Content
  */
 class edit extends GXBlock {
-
-    componentDidMount() {
-        this.uniqueIDChecker(this.props.attributes.uniqueID, this.displayStyles.bind(this)); // May should go on constructor
-    }
 
     componentDidUpdate() {
         this.displayStyles();
@@ -130,7 +126,6 @@ class edit extends GXBlock {
         });
     }
 
-
     render() {
         const {
             className,
@@ -172,7 +167,8 @@ class edit extends GXBlock {
                         content: value,
                     });
                 }}
-                withoutInteractiveFormatting={true}
+                keepPlaceholderOnFocus
+                formattingControls={[]}
             />
         ];
     }

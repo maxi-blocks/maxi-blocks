@@ -23,7 +23,8 @@ import Inspector from './inspector';
 import classnames from 'classnames';
 import {
     isNil,
-    isEqual
+    isEqual,
+    isEmpty
 } from 'lodash';
 
 /**
@@ -32,10 +33,6 @@ import {
 class edit extends GXBlock {
     state = {
         selectorBlocks: [],
-    }
-
-    componentDidMount() {
-        this.uniqueIDChecker(this.props.attributes.uniqueID);
     }
 
     componentDidUpdate() {
@@ -167,7 +164,7 @@ export default withSelect((select, ownProps) => {
 
     const selectedBlockId = select('core/block-editor').getSelectedBlockClientId();
     const originalNestedBlocks = select('core/block-editor').getBlockParents(selectedBlockId);
-    const hasInnerBlock = select('core/block-editor').getBlockOrder(clientId).length >= 1;
+    const hasInnerBlock = !isEmpty(select('core/block-editor').getBlockOrder(clientId));
 
     return {
         selectedBlockId,

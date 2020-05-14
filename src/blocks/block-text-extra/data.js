@@ -151,24 +151,24 @@ export const padding = {
     "label": "Padding",
     "unit": "px",
     "desktop": {
-        "padding-top": 0,
-        "padding-right": 0,
-        "padding-bottom": 0,
-        "padding-left": 0,
+        "padding-top": "",
+        "padding-right": "",
+        "padding-bottom": "",
+        "padding-left": "",
         "sync": true
     },
     "tablet": {
-        "padding-top": 0,
-        "padding-right": 0,
-        "padding-bottom": 0,
-        "padding-left": 0,
+        "padding-top": "",
+        "padding-right": "",
+        "padding-bottom": "",
+        "padding-left": "",
         "sync": true
     },
     "mobile": {
-        "padding-top": 0,
-        "padding-right": 0,
-        "padding-bottom": 0,
-        "padding-left": 0,
+        "padding-top": "",
+        "padding-right": "",
+        "padding-bottom": "",
+        "padding-left": "",
         "sync": true
     }
 };
@@ -178,24 +178,24 @@ export const margin = {
     "min": "none",
     "unit": "px",
     "desktop": {
-        "margin-top": 0,
-        "margin-right": 0,
-        "margin-bottom": 0,
-        "margin-left": 0,
+        "margin-top": "",
+        "margin-right": "",
+        "margin-bottom": "",
+        "margin-left": "",
         "sync": true
     },
     "tablet": {
-        "margin-top": 0,
-        "margin-right": 0,
-        "margin-bottom": 0,
-        "margin-left": 0,
+        "margin-top": "",
+        "margin-right": "",
+        "margin-bottom": "",
+        "margin-left": "",
         "sync": true
     },
     "mobile": {
-        "margin-top": 0,
-        "margin-right": 0,
-        "margin-bottom": 0,
-        "margin-left": 0,
+        "margin-top": "",
+        "margin-right": "",
+        "margin-bottom": "",
+        "margin-left": "",
         "sync": true
     }
 };
@@ -353,24 +353,24 @@ export const paddingHover = {
     "label": "Padding",
     "unit": "px",
     "desktop": {
-        "padding-top": 0,
-        "padding-right": 0,
-        "padding-bottom": 0,
-        "padding-left": 0,
+        "padding-top": "",
+        "padding-right": "",
+        "padding-bottom": "",
+        "padding-left": "",
         "sync": true
     },
     "tablet": {
-        "padding-top": 0,
-        "padding-right": 0,
-        "padding-bottom": 0,
-        "padding-left": 0,
+        "padding-top": "",
+        "padding-right": "",
+        "padding-bottom": "",
+        "padding-left": "",
         "sync": true
     },
     "mobile": {
-        "padding-top": 0,
-        "padding-right": 0,
-        "padding-bottom": 0,
-        "padding-left": 0,
+        "padding-top": "",
+        "padding-right": "",
+        "padding-bottom": "",
+        "padding-left": "",
         "sync": true
     }
 };
@@ -380,24 +380,24 @@ export const marginHover = {
     "min": "none",
     "unit": "px",
     "desktop": {
-        "margin-top": 0,
-        "margin-right": 0,
-        "margin-bottom": 0,
-        "margin-left": 0,
+        "margin-top": "",
+        "margin-right": "",
+        "margin-bottom": "",
+        "margin-left": "",
         "sync": true
     },
     "tablet": {
-        "margin-top": 0,
-        "margin-right": 0,
-        "margin-bottom": 0,
-        "margin-left": 0,
+        "margin-top": "",
+        "margin-right": "",
+        "margin-bottom": "",
+        "margin-left": "",
         "sync": true
     },
     "mobile": {
-        "margin-top": 0,
-        "margin-right": 0,
-        "margin-bottom": 0,
-        "margin-left": 0,
+        "margin-top": "",
+        "margin-right": "",
+        "margin-bottom": "",
+        "margin-left": "",
         "sync": true
     }
 };

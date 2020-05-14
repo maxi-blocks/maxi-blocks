@@ -8,31 +8,31 @@
 import GXComponent from '../gx-component';
 
 /**
+ * External dependencies
+ */
+import { 
+    isEmpty,
+    uniqueId
+} from 'lodash';
+
+/**
  * Class
  */
 class GXBlock extends GXComponent {
-    uniqueIDChecker(idToCheck, callback) {
-        if (document.getElementsByClassName(idToCheck).length > 1) {
-            let newUniqueId = idToCheck + (Math.random() * 100).toFixed(0);
-            let newUniqueIdNum = newUniqueId.match(/\d+$/)[0];
 
-            if (newUniqueIdNum.length > 3) {
-                const rawUniqueId = newUniqueId.replace(newUniqueIdNum, '');
+    constructor(){
+        super(...arguments);
+        this.uniqueIDChecker(this.props.attributes.uniqueID)
+    }
 
-                while (newUniqueIdNum.length > 3) {
-                    newUniqueIdNum = (Number(newUniqueIdNum) / 2).toFixed(0).toString();
-                }
-
-                newUniqueId = rawUniqueId + newUniqueIdNum;
-            }
+    uniqueIDChecker(idToCheck) {
+        if (!isEmpty(document.getElementsByClassName(idToCheck))) {
+            const newUniqueId = uniqueId(idToCheck.replace(idToCheck.match(/(\d+)(?!.*\d)/)[0], ''));
 
             this.uniqueIDChecker(newUniqueId);
 
             this.props.setAttributes({ uniqueID: newUniqueId })
         }
-
-        if (callback)
-            callback();
     }
 }
 

@@ -48,10 +48,6 @@ class edit extends GXBlock {
         originalWidth: 0,
     }
 
-    componentDidMount() {
-        this.uniqueIDChecker(this.props.attributes.uniqueID, this.displayStyles.bind(this)); // May should go on constructor
-    }
-
     componentDidUpdate() {
         this.spaceChecker();
         this.setResizeHandleStyles();
@@ -165,18 +161,13 @@ class edit extends GXBlock {
                 extraClassName,
                 defaultBlockStyle
             },
-            getColumnSize,
             clientId,
             className,
-            isSelected,
-            rowBlockId,
             rowBlockWidth,
             columnPosition,
             hasInnerBlock,
             getResizePerCent,
             redistributeColumnsSize,
-            resizeableBoxPerCentToPX,
-            getRowPerCentWOMargin,
             columnGap,
             syncSize,
             setAttributes
@@ -442,11 +433,9 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
     return {
         synchronizeColumns,
         synchronizeStyles,
-        // getColumnSize,
         getRowPerCentWOMargin,
         getResizePerCent,
         redistributeColumnsSize,
-        // getSizeUnsync,
     }
 })
 

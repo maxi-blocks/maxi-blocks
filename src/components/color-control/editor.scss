@@ -1,72 +1,69 @@
 .gx-colorcontrol-control .gx-popover-control .components-base-control__field .components-dropdown {
 	margin-left: auto;
-  }
+}
 
-  .gx-colorcontrol-control .components-base-control__field > button {
-    /* margin-right: 2px; */
-    order: 3;
-    border: 2px solid #dddfe1 !important;
-    padding: 0;
-    width: 30px;
-    border-radius: 5px;
-    margin-left:0;
-    height: 30px !important;
-    }
+.gx-colorcontrol-control .components-base-control__field > button {
+  order: 3;
+  border: 2px solid #dddfe1 !important;
+  padding: 0;
+  width: 30px;
+  border-radius: 5px;
+  margin-left:0;
+  height: 30px !important;
+}
 
-    .gx-colorcontrol-color-display span {
-    width: 24px;
-    height: 24px;
-    float: left;
-    border: 1px solid #dddfe1 !important;
-    margin-right: 8px;
-    margin-left: -4px;
-    border-radius: 5px;
-    }
+.gx-colorcontrol-color-display span {
+  width: 24px;
+  height: 24px;
+  float: left;
+  border: 1px solid #dddfe1 !important;
+  margin-right: 8px;
+  margin-left: -4px;
+  border-radius: 5px;
+}
 
-    .gx-colorcontrol-color-display span,
-    .gx-sidebar .component-color-indicator {
-    width: 24px;
-    height: 24px;
-    float: left;
-    border: 1px solid #dddfe1 !important;
-    margin-right: 8px;
-    margin-left: -4px;
-    border-radius: 5px;
-    }
+.gx-colorcontrol-color-display span,
+.gx-sidebar .component-color-indicator {
+  width: 24px;
+  height: 24px;
+  float: left;
+  border: 1px solid #dddfe1 !important;
+  margin-right: 8px;
+  margin-left: -4px;
+  border-radius: 5px;
+}
     
-    .gx-colorcontrol-color-display span {
-    margin-right: 8px !important;
-    }
+.gx-colorcontrol-color-display span {
+  margin-right: 8px !important;
+}
     
-    .gx-colorcontrol-control .components-base-control__field > button svg {
-    width: 12px;
-    height: 12px;
-    margin: auto;
-    }
+.gx-colorcontrol-control .components-base-control__field > button svg {
+  width: 12px;
+  height: 12px;
+  margin: auto;
+}
     
-/*----------------------------------------------------------------------------------------*/
 .gx-colorcontrol-control {
   display: flex;
 
-  .gx-colorcontrol-color-display {
-    span {
-      display: block;
-      width: 24px;
-      height: 24px;
-      border: 1px solid black;
-      margin: auto;
-    }
+.gx-colorcontrol-color-display {
+  span {
+    display: block;
+    width: 24px;
+    height: 24px;
+    border: 1px solid black;
+    margin: auto;
   }
+}
 
-  .gx-popover-control {
-    width: 100%;
+.gx-popover-control {
+  width: 100%;
 
     .components-base-control__field {
       display: flex;
       justify-content: space-between;
       width: 100%;
       .components-dropdown {
-        // margin-left: auto;
         margin-right: 3px;
       }
 
@@ -104,7 +101,7 @@
 }
 
 .gx-colorcontrol-gradient-popover
-  .components-custom-gradient-picker__gradient-bar {
+.components-custom-gradient-picker__gradient-bar {
   border-radius: 0;
 }
 
@@ -114,28 +111,28 @@
 }
 
 .gx-colorcontrol-gradient-popover
-  .components-custom-gradient-picker__ui-line
-  .components-base-control__field {
+.components-custom-gradient-picker__ui-line
+.components-base-control__field {
   display: flex;
   justify-content: space-between;
 }
 
 .gx-colorcontrol-gradient-popover
-  .components-custom-gradient-picker__ui-line
-  .components-base-control__label {
+.components-custom-gradient-picker__ui-line
+.components-base-control__label {
   margin: auto;
   margin-left: 0;
 }
 
 .gx-colorcontrol-gradient-popover
-  .components-custom-gradient-picker__ui-line
-  .components-angle-picker-control {
+.components-custom-gradient-picker__ui-line
+.components-angle-picker-control {
   width: 100%;
 }
 
 .gx-colorcontrol-gradient-popover
-  .components-custom-gradient-picker__ui-line
-  .components-angle-picker-control__angle-circle {
+.components-custom-gradient-picker__ui-line
+.components-angle-picker-control__angle-circle {
   margin: auto;
   margin-right: 0;
 }
@@ -145,7 +142,6 @@
   justify-content: space-between;
 }
 
-// This should go to ColorControl component
 .gx-colorcontrol-control .gx-colorcontrol-color-display span {
   display: block;
   width: 24px;
@@ -153,60 +149,38 @@
   margin: auto;
 }
 
-// This should go to ColorControl component
-
 .gx-colorcontrol-color-display span{
   border: 1px solid #dddfe1 !important;
   opacity: 1 !important;
 }
 
-// This should go to ColorControl component
 .gx-colorcontrol-color-display span {
   margin-right: 8px !important;
 }
 
-// This should go to ColorControl component
 .gx-colorcontrol-color-display span{
   border-radius:5px;
   float:left;
 }
 
-// This should go to ColorControl component
 .gx-colorcontrol-control .gx-popover-control {
   width: 100%;
 }
 
-// This should go to ColorControl component
 .gx-colorcontrol-control .gx-popover-control .components-base-control {
   display: flex;
   justify-content: space-between;
 }
 
-// This should go to ColorControl component
 .gx-colorcontrol-control .gx-popover-control .components-base-control__field .components-button{
   border: 1px solid #dddfe1 !important;
   opacity: 1 !important;
 }
 
-// This should go to ColorControl component
-/**
-* In ColorControl, you are ordering using flex order
-* Please, always, if it's possible, use HTML structure before modifying with CSS
-* Is much solider and cleaner
-* Ping me when read please =>
-*/
-/*.gx-colorcontrol-control .components-base-control__field > button {
-  order: 3;
-  margin-left: 0;
-  height: 30px !important;
-}*/
-
-// This should go to ColorControl component
 .gx-colorcontrol-control .gx-popover-control .components-base-control__field .components-dropdown {
   margin-left: auto;
 }
 
-// This should go to ColorControl component
 .gx-colorcontrol-control .gx-popover-control .components-base-control__field .components-button{
   border: 1px solid #dddfe1 !important;
   opacity: 1 !important;
@@ -232,10 +206,9 @@
 }
 
 @media all and(max-width:2000px){
+  
   .gx-colorcontrol-color-display span{
     border: 1px solid #dddfe1 !important;
     opacity: 1 !important;
-  }
-
-  
+  } 
 }

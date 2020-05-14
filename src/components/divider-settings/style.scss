@@ -46,22 +46,22 @@
 @media all and(max-width:2000px){
   .gx-divider-item
   .components-base-control.components-range-control.gx-with-unit-control{
-	position:relative;
-	margin-bottom: 10px !important;
+    position:relative;
+	  margin-bottom: 10px !important;
   }
   
   .gx-divider-item
   .components-range-control__number{
-	position: absolute !important;
-	top: -2px !important;
-	right: 26px !important;
+	  position: absolute !important;
+	  top: -2px !important;
+	  right: 26px !important;
   }
 
   .gx-divider-item
   .components-base-control.gx-unit-control.components-radio-control{
-	 position: relative !important;
-	 top: -3px !important;
-	 right: 2px !important;
+	  position: relative !important;
+	  top: -3px !important;
+	  right: 2px !important;
   }
 
   .gx-divider-item
@@ -73,19 +73,19 @@
   .gx-divider-item
   .css-uojzqi-ActionRightWrapper.exqw8y214 >
   button.components-button.components-range-control__reset.is-secondary.is-small{
-	position: absolute;
-	right: 0;
-	top: -1px !important;
+	  position: absolute;
+	  right: 0;
+	  top: -1px !important;
   }
 
   .gx-divider-item
   .accordion__panel
   .components-range-control__root.css-yaebbd-Root.exqw8y20 >
   .components-range-control__number.css-1foiknu-InputNumber.exqw8y213{
-	position: relative;
-	top:-2px !important;
-	right: 31px !important;
-	width: 44px !important;
+	  position: relative;
+	  top:-2px !important;
+	  right: 31px !important;
+	  width: 44px !important;
   }
 
   .gx-divider-item
@@ -95,8 +95,8 @@
   
   .gx-divider-item
   .components-base-control.gx-unit-control.components-radio-control{
-	position:relative;
-	top:3px;
+	  position:relative;
+	  top:3px;
   }
 
   .gx-divider-item
@@ -110,5 +110,4 @@
     top: -2px !important;
     margin-left:4px !important;
   }
-
 }

@@ -5,10 +5,8 @@
         float: none;
     }
 
-    // Space consecutive buttons evenly.
     .components-button + .components-button {
         margin-top: 1em;
         margin-right: 8px;
     }
-
 }

@@ -1,125 +1,115 @@
-  /* Units Control */
-  
-  .gx-with-unit-control {
+.gx-with-unit-control {
 	clear: both;
-  }
+}
   
-  .gx-with-unit-control .components-base-control__field {
+.gx-with-unit-control .components-base-control__field {
 	position: relative;
-  }
+}
   
-  .gx-with-unit-control .components-range-control__reset {
-	/* position: absolute; */
-	/* top: -2px !important; */
-	/* left: 89% !important; */
-	/* left: 31% !important; */
-	/* z-index: 100; */
+.gx-with-unit-control .components-range-control__reset {
 	margin-left: 6px !important;
-  }
+}
   
-  .gx-width-height-item .components-radio-control__option label {
+.gx-width-height-item .components-radio-control__option label {
 	height: 30px !important;
 	line-height: 28px;
-  }
+}
   
-  .gx-width-height-item .components-range-control__number {
+.gx-width-height-item .components-range-control__number {
 	top: -9px;
 	height: 31px !important;
-  }
+}
   
-  .gx-width-height-item .components-range-control__reset {
+.gx-width-height-item .components-range-control__reset {
 	height: 31px !important;
 	width: 31px !important;
-  }
+}
 
-  .gx-width-height-item .components-range-control__reset {
+.gx-width-height-item .components-range-control__reset {
 	top: -9px !important;
-  }
+}
 
-  .gx-width-height-item .gx-size-setting .components-range-control__number {
+.gx-width-height-item .gx-size-setting .components-range-control__number {
 	max-height: 30px !important;
-  }
+}
 
- .gx-width-height-item
- .components-range-control__number.css-1foiknu-InputNumber.exqw8y213{
+.gx-width-height-item
+.components-range-control__number.css-1foiknu-InputNumber.exqw8y213{
 	position: relative;
 	top: 0;
 	left: 7px;
- }
+}
 
 .gx-width-height-item
-  .components-base-control.gx-unit-control.components-radio-control{
+.components-base-control.gx-unit-control.components-radio-control{
 	position:relative;
 	top: 1px;
 	right: 4px;
-  }
+}
   
-    .gx-width-height-item
-  .components-base-control.components-range-control.gx-with-unit-control >
-  .components-base-control__field{
-	  margin-bottom: 5px !important;
-  }
+.gx-width-height-item
+.components-base-control.components-range-control.gx-with-unit-control >
+.components-base-control__field{
+	margin-bottom: 5px !important;
+}
+
+.gx-width-height-item
+.components-base-control__field > label{
+  position:relative;
+  top:3px !important;
+}
+
+@media all and(max-width:2000px){
 
   .gx-width-height-item
-  .components-base-control__field > label{
-    position:relative;
-    top:3px !important;
-  }
-
-  @media all and(max-width:2000px){
-    .gx-width-height-item
   .components-panel__body.gx-panel.gx-size-setting.gx-style-tab-setting.is-opened{
     padding: 15px !important;
   }
 
-      .gx-width-height-item .gx-unit-control > .components-base-control__field:nth-of-type(1){
-        position: relative !important;
-        top: -1px !important;
-      }
+  .gx-width-height-item .gx-unit-control > .components-base-control__field:nth-of-type(1){
+    position: relative !important;
+    top: -1px !important;
+  }
       
-      .gx-width-height-item .gx-size-setting .components-range-control__number {
-        max-height: 26px !important;
-      }
+  .gx-width-height-item .gx-size-setting .components-range-control__number {
+    max-height: 26px !important;
+  }
     
-      .gx-width-height-item .components-radio-control__option label {
-        height: 26px !important;
-        line-height: 26px;
-        width: 25px !important;
-        left: -31px !important;
-        min-width: unset;
-        position: relative;
-      }
+  .gx-width-height-item .components-radio-control__option label {
+    height: 26px !important;
+    line-height: 26px;
+    width: 25px !important;
+    left: -31px !important;
+    min-width: unset;
+    position: relative;
+  }
 
-      .gx-width-height-item .components-range-control__number {
-        /* top: -43px; */
-        height: 31px !important;
-        /* position: relative !important; */
-        /* left: 29.4%; */
-      }
+  .gx-width-height-item .components-range-control__number {
+    height: 31px !important;
+  }
 
-      .gx-width-height-item .gx-unit-control .components-base-control__field {
-        left: 30px;
-        position: relative;
-      }
+  .gx-width-height-item .gx-unit-control .components-base-control__field {
+    left: 30px;
+    position: relative;
+  }
 
-      .gx-width-height-item 
-      .components-base-control__field >
-      input[type="number"].components-range-control__number{
-       height: 26px !important;
-       margin-right: 4px !important;
-      }
+  .gx-width-height-item 
+  .components-base-control__field >
+    input[type="number"].components-range-control__number{
+    height: 26px !important;
+    margin-right: 4px !important;
+  }
       
-      .gx-width-height-item
-      .components-range-control__root.css-yaebbd-Root.exqw8y20 >
-      .components-range-control__number.css-1foiknu-InputNumber.exqw8y213{
-          position: relative;
-          top: 0;
-          left: 6px;
-      }
+  .gx-width-height-item
+  .components-range-control__root.css-yaebbd-Root.exqw8y20 >
+  .components-range-control__number.css-1foiknu-InputNumber.exqw8y213{
+    position: relative;
+    top: 0;
+    left: 6px;
+  }
 
-     .gx-width-height-item .components-base-control.gx-unit-control.components-radio-control{
-	      position:relative;
-	      top:0px !important;
-  }
-     
-  }
+  .gx-width-height-item .components-base-control.gx-unit-control.components-radio-control{
+	  position:relative;
+	  top:0px !important;
+  } 
+}

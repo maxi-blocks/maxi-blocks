@@ -48,8 +48,6 @@ class edit extends GXBlock {
             selectedBlockId
         } = this.props;
 
-        console.log(originalNestedBlocks)
-
         if (isNil(originalNestedBlocks))
             return;
 
@@ -70,6 +68,7 @@ class edit extends GXBlock {
         const {
             attributes: {
                 uniqueID,
+                isFirstOnHierarchy,
                 blockStyle,
                 extraClassName,
                 defaultBlockStyle
@@ -114,7 +113,7 @@ class edit extends GXBlock {
                 className={classes}
             >
                 {
-                    selectorBlocks[0] === clientId &&
+                    isFirstOnHierarchy &&
                     <div
                         className="gx-section-selector-wrapper"
                     >

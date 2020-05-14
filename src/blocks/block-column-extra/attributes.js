@@ -9,7 +9,7 @@ import * as attributesData from './data';
 const attributes = {
     blockStyle: {
         type: 'string',
-        default: 'gx-global'
+        default: 'gx-custom'
     },
     defaultBlockStyle: {
         type: 'string',

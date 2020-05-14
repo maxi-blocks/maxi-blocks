@@ -154,6 +154,7 @@ class edit extends GXBlock {
         const {
             attributes: {
                 uniqueID,
+                isFirstOnHierarchy,
                 blockStyle,
                 extraClassName,
                 defaultBlockStyle
@@ -182,7 +183,7 @@ class edit extends GXBlock {
                 className={classes}
             >
                 {
-                    selectorBlocks[0] === clientId &&
+                    isFirstOnHierarchy &&
                     <div
                         className="gx-row-selector-wrapper"
                     >

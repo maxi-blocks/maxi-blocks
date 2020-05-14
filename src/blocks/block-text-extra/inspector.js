@@ -47,6 +47,7 @@ class Inspector extends Component {
     render() {
         const {
             attributes: {
+                isFirstOnHierarchy,
                 blockStyle,
                 defaultBlockStyle,
                 textLevel,
@@ -119,6 +120,7 @@ class Inspector extends Component {
                         onChangeBlockStyle={blockStyle => setAttributes({ blockStyle })}
                         defaultBlockStyle={defaultBlockStyle}
                         onChangeDefaultBlockStyle={defaultBlockStyle => setAttributes({ defaultBlockStyle })}
+                        isFirstOnHierarchy={isFirstOnHierarchy}
                     />
                     <FontLevelControl
                         label={__('Level', 'gutenberg-extra')}

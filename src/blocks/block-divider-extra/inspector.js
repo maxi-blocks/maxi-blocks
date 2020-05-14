@@ -32,6 +32,7 @@ import {
 const Inspector = props => {
     const {
         attributes: {
+            isFirstOnHierarchy,
             blockStyle,
             defaultBlockStyle,
             hideDivider,
@@ -87,6 +88,7 @@ const Inspector = props => {
                     onChangeBlockStyle={blockStyle => setAttributes({ blockStyle })}
                     defaultBlockStyle={defaultBlockStyle}
                     onChangeDefaultBlockStyle={defaultBlockStyle => setAttributes({ defaultBlockStyle })}
+                    isFirstOnHierarchy={isFirstOnHierarchy}
                 />
             </PanelBody>
             <div className="block-button-extra">

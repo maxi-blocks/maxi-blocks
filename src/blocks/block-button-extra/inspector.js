@@ -44,6 +44,7 @@ class Inspector extends Component {
     render() {
         const {
             attributes: {
+                isFirstOnHierarchy,
                 blockStyle,
                 defaultBlockStyle,
                 alignment,
@@ -116,6 +117,7 @@ class Inspector extends Component {
                         onChangeBlockStyle={blockStyle => setAttributes({ blockStyle })}
                         defaultBlockStyle={defaultBlockStyle}
                         onChangeDefaultBlockStyle={defaultBlockStyle => setAttributes({ defaultBlockStyle })}
+                        isFirstOnHierarchy={isFirstOnHierarchy}
                     />
                 </PanelBody>
                 <div className="block-button-extra">

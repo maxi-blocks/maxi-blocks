@@ -32,6 +32,7 @@ import {
 const Inspector = props => {
     const {
         attributes: {
+            isFirstOnHierarchy,
             blockStyle,
             defaultBlockStyle,
             columnSize,
@@ -65,6 +66,7 @@ const Inspector = props => {
                     onChangeBlockStyle={blockStyle => setAttributes({ blockStyle })}
                     defaultBlockStyle={defaultBlockStyle}
                     onChangeDefaultBlockStyle={defaultBlockStyle => setAttributes({ defaultBlockStyle })}
+                    isFirstOnHierarchy={isFirstOnHierarchy}
                 />
                 {
                     !syncSize &&

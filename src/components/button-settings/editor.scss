@@ -1,328 +1,303 @@
-// ButtonStyles
 .gx-sidebar .gx-buttonstyles-control .gx-buttonstyles-selector-control .components-base-control__field {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 
 .gx-sidebar .gx-buttonstyles-control .gx-buttonstyles-selector-control .components-base-control__field .components-radio-control__option {
-    height: 50px;
-    border-right-width: 0;
-    margin: 0;
+  height: 50px;
+  border-right-width: 0;
+  margin: 0;
 }
 
 .gx-sidebar .gx-buttonstyles-control .gx-buttonstyles-selector-control .components-base-control__field .components-radio-control__option:last-of-type {
-    border-right-width: 2px;
+  border-right-width: 2px;
 }
 
 .gx-buttonstyles-control .gx-buttonstyles-selector-control input {
-    display: none;
+  display: none;
 }
 
 .gx-buttonstyles-control .gx-buttonstyles-selector-control label {
-    display: block;
-    text-align: center;
-    line-height: 46px;
+  display: block;
+  text-align: center;
+  line-height: 46px;
 }
 
 .gx-buttonstyles-control .gx-buttonstyles-selector-control input:checked ~ label {
-    color: #fff;
-    background-color: #00ccff;
+  color: #fff;
+  background-color: #00ccff;
 }
 
-// ButtonEditor
 .gx-buttoneditor-wrapper {
-    display: flex;
+  display: flex;
 }
 
-.gx-buttoneditor-control {
-    width: auto;
-    height: auto;
+.gx-buttoneditor-control { 
+  width: auto;
+  height: auto;
 }
 
-/*-------------------------------------------------------------------------------------*/
 .gx-button-item .accordion__panel > .components-panel__body {
-	padding: 1px !important;
-  }
+  padding: 1px !important;
+}
 
-  .gx-button-item .gx-border-item .accordion__panel .gx-border-type .components-base-control__field select {
-	height: 28px;
-	line-height: 20px;
-	font-size: 10pt;
-	margin-left: auto;
-	padding: 0;
-  }
+.gx-button-item .gx-border-item .accordion__panel .gx-border-type .components-base-control__field select {
+  height: 28px;
+  line-height: 20px;
+  font-size: 10pt;
+  margin-left: auto;
+  padding: 0;
+}
 
-  .gx-button-item .gx-padding-margin-item .components-gx-dimensions-control__units {
-	width: auto !important;
-  }
+.gx-button-item .gx-padding-margin-item .components-gx-dimensions-control__units {
+  width: auto !important;
+}
 
-  .gx-button-item
-	.gx-padding-margin-item
-	.components-gx-dimensions-control
-	.components-gx-dimensions-control__header
-	button,
-  .gx-button-item .gx-border-item .components-gx-dimensions-control .components-gx-dimensions-control__header button {
-	padding: 0;
-  }
+.gx-button-item
+.gx-padding-margin-item
+.components-gx-dimensions-control
+.components-gx-dimensions-control__header
+button,
+.gx-button-item .gx-border-item .components-gx-dimensions-control .components-gx-dimensions-control__header button {
+  padding: 0;
+}
 
-  .gx-button-item .gx-accordion {
-	margin: 0 !important;
-  }
+.gx-button-item .gx-accordion {
+  margin: 0 !important;
+}
 
-  .gx-button-item .gx-padding-margin-item .components-gx-dimensions-control__mobile-controls button[role="tab"] svg,
-  .gx-button-item .gx-border-item .components-gx-dimensions-control__mobile-controls button[role="tab"] svg {
-	padding-top: 3px !important;
-	max-height: 17px;
-  }
+.gx-button-item .gx-padding-margin-item .components-gx-dimensions-control__mobile-controls button[role="tab"] svg,
+.gx-button-item .gx-border-item .components-gx-dimensions-control__mobile-controls button[role="tab"] svg {
+  padding-top: 3px !important;
+  max-height: 17px;
+}
 
-  .gx-button-item .gx-padding-margin-item .components-gx-dimensions-control__mobile-controls button[role="tab"],
-  .gx-button-item .gx-border-item .components-gx-dimensions-control__mobile-controls button[role="tab"] {
-	padding-top: 0px !important;
-  }
+.gx-button-item .gx-padding-margin-item .components-gx-dimensions-control__mobile-controls button[role="tab"],
+.gx-button-item .gx-border-item .components-gx-dimensions-control__mobile-controls button[role="tab"] {
+  padding-top: 0px !important;
+}
   
-  .gx-button-item .gx-padding-margin-item .components-gx-dimensions-control__mobile-controls button[role="tab"]:focus,
-  .gx-button-item .gx-border-item .components-gx-dimensions-control__mobile-controls button[role="tab"]:focus {
-	box-shadow: none !important;
-  }
-  /* 
-  .gx-button-item .gx-border-item .width-dimensions-control {
-	margin-bottom: 10px !important;
-  } */
-  
-  .gx-button-item .gx-border-item .components-gx-dimensions-control__units button,
-  .gx-button-item .gx-padding-margin-item .components-gx-dimensions-control__units button {
-	padding: 0;
-	font-size: 9pt !important;
-  }
+.gx-button-item .gx-padding-margin-item .components-gx-dimensions-control__mobile-controls button[role="tab"]:focus,
+.gx-button-item .gx-border-item .components-gx-dimensions-control__mobile-controls button[role="tab"]:focus {
+  box-shadow: none !important;
+}
 
-  .gx-button-item .accordion__panel .gx-accordion-tab > .components-base-control__label::before {
-	display: none !important;
-  }
+.gx-button-item .gx-border-item .components-gx-dimensions-control__units button,
+.gx-button-item .gx-padding-margin-item .components-gx-dimensions-control__units button {
+  padding: 0;
+  font-size: 9pt !important;
+}
 
-  .gx-button-item .accordion__panel .gx-accordion-tab > .components-base-control__label {
-	background: #f2f2f2;
-	border: 1px solid #e8eaeb;
-	box-shadow: none !important;
-  }
+.gx-button-item .accordion__panel .gx-accordion-tab > .components-base-control__label::before {
+  display: none !important;
+}
 
-  .gx-button-item .gx-style-tab-setting {
-	background: unset !important;
-  }
+.gx-button-item .accordion__panel .gx-accordion-tab > .components-base-control__label {
+  background: #f2f2f2;
+  border: 1px solid #e8eaeb;
+  box-shadow: none !important;
+}
 
-  .gx-button-item .accordion__panel {
-	border: none !important;
-	padding-left: 15px;
-	padding-right: 18px;
-	padding-top: 40px !important;
-  }
+.gx-button-item .gx-style-tab-setting {
+  background: unset !important;
+}
 
-  .gx-button-item .gx-typography-item .gx-alignmentcontrol-control .components-radio-control__option {
-	height: 30px !important;
-  }
+.gx-button-item .accordion__panel {
+  border: none !important;
+  padding-left: 15px;
+  padding-right: 18px;
+  padding-top: 40px !important;
+}
 
-  .gx-button-item
-	.gx-typography-item
-	.gx-colorcontrol-control
-	.gx-popover-control
-	.components-base-control__field
-	.components-dropdown:nth-of-type(2) {
-	margin-left: 0 !important;
-  }
+.gx-button-item .gx-typography-item .gx-alignmentcontrol-control .components-radio-control__option {
+  height: 30px !important;
+}
 
-  .gx-button-item .gx-opacity-control .components-range-control__slider {
-	position: static;
-	background: none;
-	box-shadow: none;
-	padding: 0px;
-	display: block;
-  }
+.gx-button-item
+.gx-typography-item
+.gx-colorcontrol-control
+.gx-popover-control
+.components-base-control__field
+.components-dropdown:nth-of-type(2) {
+  margin-left: 0 !important;
+}
 
-  .gx-button-item
-	.gx-border-item
-	.accordion__panel
-	.gx-colorcontrol-control
-	.gx-popover-control
-	.components-base-control__field
-	.gx-popover-dropdown {
-	margin-left: auto;
-  }
+.gx-button-item .gx-opacity-control .components-range-control__slider {
+  position: static;
+  background: none;
+  box-shadow: none;
+  padding: 0px;
+  display: block;
+}
+
+.gx-button-item
+.gx-border-item
+.accordion__panel
+.gx-colorcontrol-control
+.gx-popover-control
+.components-base-control__field
+.gx-popover-dropdown {
+  margin-left: auto;
+}
   
-  .gx-button-item .gx-typography-item .gx-colorcontrol-control {
-	margin-top: 15px;
-  }
+.gx-button-item .gx-typography-item .gx-colorcontrol-control {
+  margin-top: 15px;
+}
   
-  .gx-button-item .gx-typography-item .gx-alignmentcontrol-control {
-	margin-bottom: 15px;
-  }
+.gx-button-item .gx-typography-item .gx-alignmentcontrol-control {
+  margin-bottom: 15px;
+}
   
-  .gx-button-item .gx-padding-margin-item .accordion__panel {
-	padding-top: 40px !important;
-  }
+.gx-button-item .gx-padding-margin-item .accordion__panel {
+  padding-top: 40px !important;
+}
   
-  .gx-button-item .gx-padding-margin-item .gx-buttonstyles-selector-control {
-	margin-bottom: 20px !important;
-  }
+.gx-button-item .gx-padding-margin-item .gx-buttonstyles-selector-control {
+  margin-bottom: 20px !important;
+}
   
-  .gx-button-item .gx-accordion > div:first-child .gx-accordion-tab .components-base-control__label::after {
-	top: 7px !important;
-  }
+.gx-button-item .gx-accordion > div:first-child .gx-accordion-tab .components-base-control__label::after {
+  top: 7px !important;
+}
   
-  .gx-button-item
-	.gx-typography-item
-	.gx-colorcontrol-control
-	.components-base-control__field
-	div.gx-popover-dropdown
-	button {
-	position: absolute;
-  }
+.gx-button-item
+.gx-typography-item
+.gx-colorcontrol-control
+.components-base-control__field
+div.gx-popover-dropdown
+button {
+  position: absolute;
+}
   
+.gx-button-item
+.gx-border-item
+.accordion__panel
+.gx-colorcontrol-control
+.gx-popover-control
+.components-base-control__field
+span {
+  line-height: 24px !important;
+}
   
-  .gx-button-item
-	.gx-border-item
-	.accordion__panel
-	.gx-colorcontrol-control
-	.gx-popover-control
-	.components-base-control__field
-	span {
-	line-height: 24px !important;
-  }
+.gx-button-item
+.gx-border-item
+.accordion__panel
+.gx-colorcontrol-control
+.gx-popover-control
+.components-base-control__field
+.components-button[type="reset"] {
+  height: 30px !important;
+}
   
-  .gx-button-item
-	.gx-border-item
-	.accordion__panel
-	.gx-colorcontrol-control
-	.gx-popover-control
-	.components-base-control__field
-	.components-button[type="reset"] {
-	height: 30px !important;
-  }
+.gx-button-item
+.gx-border-item
+.accordion__panel
+.gx-colorcontrol-control
+.gx-popover-control
+.components-base-control__field
+svg {
+  width: 16px;
+  height: 16px;
+}
   
-  .gx-button-item
-	.gx-border-item
-	.accordion__panel
-	.gx-colorcontrol-control
-	.gx-popover-control
-	.components-base-control__field
-	svg {
-	width: 16px;
-	height: 16px;
-  }
+.gx-button-item .gx-box-settings-item .gx-popover-control .gx-settings-button .components-base-control__field span {
+  line-height: 23px;
+}
   
-  .gx-button-item .gx-box-settings-item .gx-popover-control .gx-settings-button .components-base-control__field span {
-	line-height: 23px;
-  }
+.gx-button-item > div .accordion__panel {
+  padding-bottom: 0px !important;
+}
   
-  .gx-button-item > div .accordion__panel {
-	padding-bottom: 0px !important;
-  }
-  
-  .gx-button-item .gx-box-settings-item .gx-opacity-control .components-range-control__number {
-	height: 24px !important;
-  }
+.gx-button-item .gx-box-settings-item .gx-opacity-control .components-range-control__number {
+  height: 24px !important;
+}
  
-  .gx-button-item .gx-typography-item {
-	line-height: 25px;
-  }
+.gx-button-item .gx-typography-item {
+  line-height: 25px;
+}
   
-  .gx-button-item
-	.gx-typography-item
-	.gx-colorcontrol-control
-	.gx-popover-control
-	.gx-settings-button
-	> .components-base-control__field
-	.gx-popover-dropdown:nth-of-type(1) {
-	margin-left: auto;
-  }
+.gx-button-item
+.gx-typography-item
+.gx-colorcontrol-control
+.gx-popover-control
+.gx-settings-button > .components-base-control__field
+.gx-popover-dropdown:nth-of-type(1) {
+  margin-left: auto;
+}
   
-  .gx-button-item
-	.gx-typography-item
-	.gx-colorcontrol-control
-	.gx-popover-control
-	.components-base-control__field
-	> *:not(span) {
-	width: 30px !important;
-	height: 30px !important;
-  }
-  /* 
-  .gx-button-item .gx-typography-popover .gx-settings-button .components-base-control__field .gx-popover-dropdown {
-	margin-right: 2px !important;
-  } 
-  
-  .gx-button-item
-	.gx-typography-item
-	.gx-colorcontrol-control
-	.gx-popover-control
-	.components-base-control__field
-	> *:not(span)
-	svg {
-	 width: 12px !important; 
-	 height: 12px !important; 
-  	}*/ 
-  
- .gx-buttonsettings-control
-  .components-panel__body.components-base-control.editor-panel-color-settings.block-editor-panel-color-settings.is-opened.typography.gx-typography-control{
-	  margin-top: 0 !important;
-  }
+.gx-button-item
+.gx-typography-item
+.gx-colorcontrol-control
+.gx-popover-control
+.components-base-control__field > *:not(span) {
+  width: 30px !important;
+  height: 30px !important;
+}
 
-  .gx-buttonsettings-control
-  .components-panel__body.components-base-control.editor-panel-color-settings.block-editor-panel-color-settings.is-opened.typography.gx-typography-control
-  .gx-typography-color-display{
-	  position:relative;
-	  left: 0 !important;
-	  margin-right:8px !important;
-  }
+.gx-buttonsettings-control
+.components-panel__body.components-base-control.editor-panel-color-settings.block-editor-panel-color-settings.is-opened.typography.gx-typography-control{
+  margin-top: 0 !important;
+}
 
-    .gx-settings-button
-  .components-button.is-secondary > svg{
-	 width:18px !important;
-	 height:18px !important;
-  }
+.gx-buttonsettings-control
+.components-panel__body.components-base-control.editor-panel-color-settings.block-editor-panel-color-settings.is-opened.typography.gx-typography-control
+.gx-typography-color-display{
+  position:relative;
+  left: 0 !important;
+  margin-right:8px !important;
+}
 
-  .gx-buttonsettings-control
-  .components-panel__body.components-base-control.editor-panel-color-settings.block-editor-panel-color-settings.is-opened.typography.gx-typography-control
-  button.components-button.is-secondary{
-	  margin-right: 0px !important;
-  }
+.gx-settings-button
+.components-button.is-secondary > svg{
+  width:18px !important;
+  height:18px !important;
+}
 
-   .gx-buttonsettings-control
-  .gx-popover-control.gx-boxshadow-control
-  .components-base-control.gx-settings-button
-  .components-base-control__field{
-	  position: relative;
-	  margin-top: 7px !important;
-  }
+.gx-buttonsettings-control
+.components-panel__body.components-base-control.editor-panel-color-settings.block-editor-panel-color-settings.is-opened.typography.gx-typography-control
+button.components-button.is-secondary{
+  margin-right: 0px !important;
+}
 
-  .gx-button-item
-  .gx-box-settings-item
-  .components-base-control__field > .components-range-control__number{
-	height: 30px !important;
-	margin-right: -5px;
-  }
+.gx-buttonsettings-control
+.gx-popover-control.gx-boxshadow-control
+.components-base-control.gx-settings-button
+.components-base-control__field{
+  position: relative;
+  margin-top: 7px !important;
+}
 
-  .gx-buttonsettings-control
-  .components-base-control__field > 
-  .components-radio-control__option:last-child{
-	  position: relative;
-	  top: 0 !important;
-  }
+.gx-button-item
+.gx-box-settings-item
+.components-base-control__field > .components-range-control__number{
+  height: 30px !important;
+  margin-right: -5px;
+}
 
+.gx-buttonsettings-control
+.components-base-control__field > 
+.components-radio-control__option:last-child{
+  position: relative;
+  top: 0 !important;
+}
 
-  @media all and(max-width:2000px){
+@media all and(max-width:2000px){
+	
 	.gx-buttonsettings-control
 	.gx-alignmentcontrol-control{
-		margin-top:5px !important;
+	  margin-top:5px !important;
 	}
 
 	.gx-buttonsettings-control
 	.gx-colorcontrol-control
 	.components-base-control__field >
 	.components-button.is-secondary > svg{
-		width:18px !important;
+	  width:18px !important;
 	}
 
-      .gx-button-item .accordion__panel {
-        padding-left: 12px !important;
-      }
+    .gx-button-item .accordion__panel {
+      padding-left: 12px !important;
+    }
 
 	.gx-button-item
 	.components-button:not(.components-gx-dimensions-control__mobile-controls-item):not(.components-gx-dimensions-control_sync),
@@ -333,43 +308,43 @@
 	}
 	
 	.gx-button-item
-	  .gx-typography-item
-	  .gx-colorcontrol-control
-	  .gx-popover-control
-	  .components-base-control__field
-	  > *:not(span) {
-	  width: 26px !important;
-	  height: 26px !important;
+	.gx-typography-item
+	.gx-colorcontrol-control
+	.gx-popover-control
+	.components-base-control__field
+	> *:not(span) {
+	  width: 24px !important;
+	  height: 24px !important;
 	}
   
 	.gx-button-item
-	  .gx-border-item
-	  .accordion__panel
-	  .gx-colorcontrol-control
-	  .gx-popover-control
-	  .components-base-control__field
-	  svg {
+	.gx-border-item
+	.accordion__panel
+	.gx-colorcontrol-control
+	.gx-popover-control
+	.components-base-control__field
+	svg {
 	  width: 12px;
 	  height: 12px;
 	}
   
 	.gx-button-item
-	  .gx-border-item
-	  .accordion__panel
-	  .gx-colorcontrol-control
-	  .gx-popover-control
-	  .components-base-control__field
-	  .components-button[type="reset"] {
-	  height: 26px !important;
+	.gx-border-item
+	.accordion__panel
+	.gx-colorcontrol-control
+	.gx-popover-control
+	.components-base-control__field
+	.components-button[type="reset"] {
+	  height: 24px !important;
 	}
 
-  .gx-buttonsettings-control
-  .gx-popover-control.gx-boxshadow-control
-  .components-base-control.gx-settings-button
-  .components-base-control__field{
+    .gx-buttonsettings-control
+    .gx-popover-control.gx-boxshadow-control
+    .components-base-control.gx-settings-button
+    .components-base-control__field{
 	  position: relative;
 	  margin-top: 5px !important;
-  }
+    }
 
     .gx-button-item
 	.gx-box-settings-item
@@ -378,5 +353,4 @@
 	  height: 26px !important;
 	  margin-right: -5px;
 	}
-
-  }
+}

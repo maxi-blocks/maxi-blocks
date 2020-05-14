@@ -62,6 +62,7 @@ const Inspector = props => {
     const {
         attributes: {
             uniqueID,
+            isFirstOnHierarchy,
             blockStyle,
             defaultBlockStyle,
             columnGap,
@@ -101,6 +102,7 @@ const Inspector = props => {
                     onChangeBlockStyle={blockStyle => setAttributes({ blockStyle })}
                     defaultBlockStyle={defaultBlockStyle}
                     onChangeDefaultBlockStyle={defaultBlockStyle => setAttributes({ defaultBlockStyle })}
+                    isFirstOnHierarchy={isFirstOnHierarchy}
                 />
                 <RangeControl
                     label={__('Column gap', 'gutenberg-extra')}

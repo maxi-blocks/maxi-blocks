@@ -3,6 +3,7 @@
  */
 const { addFilter } = wp.hooks;
 const { createHigherOrderComponent } = wp.compose;
+const { select } = wp.data;
 
 /**
  * External Dependencies
@@ -42,6 +43,10 @@ function addAttributes(settings) {
 			uniqueID: {
 				type: 'string',
 			},
+			isFirstOnHierarchy: {
+				type: 'boolean',
+				default: false
+			}
 		});
 	}
 
@@ -56,17 +61,31 @@ function addAttributes(settings) {
  */
 const withAttributes = createHigherOrderComponent(
 	BlockEdit => props => {
-		const { name: blockName } = props;
+		const {
+			attributes: {
+				uniqueID,
+				isFirstOnHierarchy
+			},
+			name,
+			clientId
+		} = props;
 
-		if (allowedBlocks.includes(blockName)) {
-			props.attributes.uniqueID = props.attributes.uniqueID || '';
-
-			if (props.attributes.uniqueID === '') {
-				let newID = uniqueId(`gx-${blockName.replace('gutenberg-extra/', '')}-`);
+		if (allowedBlocks.includes(name)) {
+			// uniqueID
+			if (isNil(uniqueID)) {
+				let newID = uniqueId(`gx-${name.replace('gutenberg-extra/', '')}-`);
 				if (!isEmpty(document.getElementsByClassName(newID)) || !isNil(document.getElementById(newID)))
-					newID = uniqueId(blockName.replace('gutenberg-extra/', '') + '-');
+					newID = uniqueId(name.replace('gutenberg-extra/', '') + '-');
 				props.attributes.uniqueID = newID;
 			}
+
+			// isFirstOnHierarchy
+			const hasParentBlocks = !isEmpty(select('core/block-editor').getBlockParents(clientId));
+
+			if (!hasParentBlocks)
+				props.attributes.isFirstOnHierarchy = true;
+			else 
+				props.attributes.isFirstOnHierarchy = false;
 		}
 
 		return <BlockEdit {...props} />;

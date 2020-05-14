@@ -5,7 +5,7 @@ const {
 const {
   ToggleControl
 } = wp.components;
-import CheckBoxControl from '../checkbox-control';
+import CheckBoxControl from '../../checkbox-control';
 
 export const roudnedDividerAttributes = {
   isRounded:{

@@ -1,0 +1,110 @@
+// div[data-type="maxi-blocks/row-maxi"].is-focused {
+//     outline: dotted red;
+// }
+.maxi-row-block:hover {
+    outline: 1px solid grey;
+}
+
+div.wp-block[data-align="full"] > div.maxi-row-block {
+    width: auto;
+}
+
+div.maxi-row-block {
+    width: 100%;
+    margin: auto;
+    position: relative;
+
+    > div.maxi-row-selector-wrapper:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform: translateX(0px);
+        width: 5rem;
+        height: 2rem;
+        border-top: 8px solid black;
+        border-left: 8px solid black;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 1s ease;
+    }
+
+    > div.maxi-row-selector-wrapper {
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform: translateY(0%);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 1s ease;
+        font-size: 12px;
+        z-index: 1;
+
+        > div.maxi-row-selector-item-wrapper {
+            display: inline;
+
+            .maxi-row-selector-item {
+                cursor: pointer;
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .block-editor-inner-blocks,
+    .block-list-appender,
+    .maxi-row-dropdown {
+        width: 100%;
+    }
+
+    .maxi-row-appender-button {
+        display: block;
+        width: 100%;
+    }
+
+    > div.block-editor-inner-blocks > div.block-editor-block-list__layout {
+        display: flex;
+
+        > div.maxi-column-left {
+            margin-left: 0 !important;
+        }
+        > div.maxi-column-right {
+            margin-right: 0 !important;
+        }
+
+        > div.block-list-appender {
+            margin: 0;
+
+            > div.maxi-row-template-wrapper {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                background-color: #ffffff;
+
+                > button.maxi-row-template-button {
+                    width: 10rem;
+                    height: 5rem;
+
+                    > svg {
+                        width: 100%;
+                        height: 100%;
+                    }
+                }
+            }
+        }
+    }
+}
+
+div.maxi-row-block.is-selected,
+div.maxi-row-block.has-child-selected {
+    > div.maxi-row-selector-wrapper:before {
+        transform: translate(-8px, calc(100% - 8px));
+        opacity: 1;
+        visibility: visible;
+    }
+
+    > div.maxi-row-selector-wrapper {
+        transform: translateY(calc(-100% - 8px));
+        opacity: 1;
+        visibility: visible;
+    }
+}

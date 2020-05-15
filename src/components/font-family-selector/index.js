@@ -87,7 +87,7 @@ export default class FontFamilySelector extends Component {
         return (
             <div className={className}>
                 <Button
-                    className='gx-font-family-selector-button'
+                    className='maxi-font-family-selector-button'
                     onClick={onToggle}
                     aria-expanded={this.state.isVisible}
                 >
@@ -97,11 +97,11 @@ export default class FontFamilySelector extends Component {
                     />
                     {this.state.isVisible && (
                         <Popover
-                            className="gx-font-family-selector-popover"
+                            className="maxi-font-family-selector-popover"
                             noArrow={true}
                             position= "top center"
                         >
-                            <div className="gx-font-family-selector-content">
+                            <div className="maxi-font-family-selector-content">
                                 {!isNil(this.state.options) &&
                                     <Select
                                         autoFocus
@@ -112,7 +112,7 @@ export default class FontFamilySelector extends Component {
                                         menuIsOpen
                                         onChange={onFontChange}
                                         options={this.state.options}
-                                        placeholder={__("Search...", 'gutenberg-extra')}
+                                        placeholder={__("Search...", 'maxi-blocks')}
                                         styles={selectFontFamilyStyles}
                                         tabSelectsValue={false}
                                         value={font}

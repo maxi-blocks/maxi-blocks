@@ -18,14 +18,14 @@ export const TitleTypography = ( props ) => {
 
   return (
     <FontPopover
-      title={__('Title Typography', 'gutenberg-extra')}
+      title={__('Title Typography', 'maxi-blocks')}
       font={titleFontFamily}
       onFontFamilyChange={value => { setAttributes({ titleFontFamily: value }); }}
       fontSizeUnit={fontSizeTitleUnit}
       onFontSizeUnitChange={value => setAttributes({ fontSizeTitleUnit: value })}
       fontSize={fontSizeTitle}
       onFontSizeChange={value => setAttributes({ fontSizeTitle: value })}
-      classNamePopover={'gx-font-family-selector-popover'}
+      classNamePopover={'maxi-font-family-selector-popover'}
     />
   )
 }

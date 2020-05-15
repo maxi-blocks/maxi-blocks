@@ -1,0 +1,7 @@
+.maxi-divider-block {
+    &.is-rounded {
+        >hr.maxi-divider {
+            border-radius: 2rem
+        }
+    }
+}

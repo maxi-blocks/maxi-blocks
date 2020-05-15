@@ -52,7 +52,7 @@ import { placeholderImage } from '../../../icons';
  */
 class ImageSettingsComponent extends GXComponent {
 
-    target = this.props.target ? this.props.target : 'gx-image-box-image';
+    target = this.props.target ? this.props.target : 'maxi-image-box-image';
 
     state = {
         selector: 'normal',
@@ -175,13 +175,13 @@ class ImageSettingsComponent extends GXComponent {
     saveAndSend(value) {
         this.save(value);
 
-        this.target = this.props.target ? this.props.target : 'gx-image-box-image';
+        this.target = this.props.target ? this.props.target : 'maxi-image-box-image';
         this.saveMeta(value, 'normal');
 
-        this.target = `${this.props.target ? this.props.target : 'gx-image-box-image'}:hover`;
+        this.target = `${this.props.target ? this.props.target : 'maxi-image-box-image'}:hover`;
         this.saveMeta(value, 'hover');
 
-        this.target = `${this.props.target ? this.props.target : 'gx-image-box-image'} img`;
+        this.target = `${this.props.target ? this.props.target : 'maxi-image-box-image'} img`;
         this.saveMeta(value, 'img');
 
         new BackEndResponsiveStyles(this.getMeta);
@@ -205,7 +205,7 @@ class ImageSettingsComponent extends GXComponent {
             className,
             imageData,
             imageSettings,
-            target = 'gx-image-box-image',
+            target = 'maxi-image-box-image',
         } = this.props;
 
         const {
@@ -213,7 +213,7 @@ class ImageSettingsComponent extends GXComponent {
         } = this.state;
 
         let value = typeof imageSettings === 'object' ? imageSettings : JSON.parse(imageSettings);
-        const classes = classnames('gx-imagesettings-control', className);
+        const classes = classnames('maxi-imagesettings-control', className);
 
         const getSizeOptions = () => {
             let response = [];
@@ -269,13 +269,13 @@ class ImageSettingsComponent extends GXComponent {
                     isSecondary
                     items={[
                         {
-                            label: __("Image", "gutenberg-extra"),
-                            classNameItem: 'gx-image-item"',
-                            classNameHeading: "gx-image-tab",
+                            label: __('Image', 'maxi-blocks'),
+                            classNameItem: 'maxi-image-item"',
+                            classNameHeading: "maxi-image-tab",
                             content: (
                                 <Fragment>
                                     <SelectControl
-                                        label={__('Image Size', 'gutenberg-extra')}
+                                        label={__('Image Size', 'maxi-blocks')}
                                         value={value.imageSize.options[value.size] || value.size == 'custom' ? value.size : 'full'}
                                         options={getSizeOptions()}
                                         onChange={val => {
@@ -302,7 +302,7 @@ class ImageSettingsComponent extends GXComponent {
                                         disableJustify
                                     />
                                     <SelectControl
-                                        label={__('Caption', 'gutenberg-extra')}
+                                        label={__('Caption', 'maxi-blocks')}
                                         value={value.captionType}
                                         options={getCaptionOptions()}
                                         onChange={val => {
@@ -315,7 +315,7 @@ class ImageSettingsComponent extends GXComponent {
                                     />
                                     {value.captionType === 'custom' &&
                                         <TextControl
-                                            label={__('Custom Caption', 'gutenberg-extra')}
+                                            label={__('Custom Caption', 'maxi-blocks')}
                                             className="custom-caption"
                                             value={value.caption}
                                             onChange={val => {
@@ -335,7 +335,7 @@ class ImageSettingsComponent extends GXComponent {
                                         />
                                     }
                                     <SizeControl
-                                        label={__('Max Width', 'gutenberg-extra')}
+                                        label={__('Max Width', 'maxi-blocks')}
                                         unit={value.sizeSettings.maxWidthUnit}
                                         onChangeUnit={val => {
                                             value.sizeSettings.maxWidthUnit = val;
@@ -348,7 +348,7 @@ class ImageSettingsComponent extends GXComponent {
                                         }}
                                     />
                                     <SizeControl
-                                        label={__('Width', 'gutenberg-extra')}
+                                        label={__('Width', 'maxi-blocks')}
                                         unit={value.sizeSettings.widthUnit}
                                         onChangeUnit={val => {
                                             value.sizeSettings.widthUnit = val;
@@ -364,9 +364,9 @@ class ImageSettingsComponent extends GXComponent {
                             )
                         },
                         {
-                            label: __("Background", "gutenberg-extra"),
-                            classNameItem: 'gx-background-item',
-                            classNameHeading: "gx-background-tab",
+                            label: __('Background', 'maxi-blocks'),
+                            classNameItem: 'maxi-background-item',
+                            classNameHeading: "maxi-background-tab",
                             content: (
                                 <Fragment>
                                     <NormalHoverControl
@@ -376,7 +376,7 @@ class ImageSettingsComponent extends GXComponent {
                                         }}
                                     />
                                     <ColorControl
-                                        label={__('Background Colour', 'gutenberg-extra')}
+                                        label={__('Background Colour', 'maxi-blocks')}
                                         color={value[selector].backgroundColor}
                                         defaultColor={value[selector].defaultBackgroundColor}
                                         onColorChange={val => {
@@ -396,7 +396,7 @@ class ImageSettingsComponent extends GXComponent {
                                         }}
                                     />
                                     <RangeControl
-                                        label={__('Opacity', 'gutenberg-extra')}
+                                        label={__('Opacity', 'maxi-blocks')}
                                         value={value[selector].opacity * 100}
                                         allowReset={true}
                                         min={0}
@@ -422,9 +422,9 @@ class ImageSettingsComponent extends GXComponent {
                             )
                         },
                         {
-                            label: __("Border", "gutenberg-extra"),
-                            classNameItem: 'gx-border-item',
-                            classNameHeading: "gx-border-tab",
+                            label: __('Border', 'maxi-blocks'),
+                            classNameItem: 'maxi-border-item',
+                            classNameHeading: "maxi-border-tab",
                             content: (
                                 <BorderControl
                                     borderOptions={value[selector].borderSettings}
@@ -525,7 +525,7 @@ export const ImageUpload = props => {
             value={mediaID}
             render={({ open }) => (
                 <IconButton
-                    className='gx-imageupload-button'
+                    className='maxi-imageupload-button'
                     showTooltip="true"
                     onClick={open}>
                     {mediaID && !isEmpty(value.imageSize.options) ?
@@ -539,7 +539,7 @@ export const ImageUpload = props => {
                                 <Fragment>
                                     <Spinner />
                                     <p>
-                                        {__('Loading...', 'gutenberg-extra')}
+                                        {__('Loading...', 'maxi-blocks')}
                                     </p>
                                 </Fragment>
                             ) :

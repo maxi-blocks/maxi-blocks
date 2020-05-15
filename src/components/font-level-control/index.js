@@ -107,7 +107,7 @@ export default class FontLevelControl extends Component {
             lastLevel
         } = this.state;
 
-        let classes = classnames('gx-title-level', className);
+        let classes = classnames('maxi-title-level', className);
 
         const getOptions = () => {
             let response = [];

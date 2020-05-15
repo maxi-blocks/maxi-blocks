@@ -18,7 +18,7 @@ function GxWithTab(props) {
           }
         </style>
       </defs>
-      <title>{"gx-width-tab"}</title>
+      <title>{"maxi-width-tab"}</title>
       <g clipPath="url(#prefix__clip-path)">
         <path
           className="prefix__cls-3"

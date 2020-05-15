@@ -47,36 +47,36 @@ export const LinkOptionsControl = props => {
                 onChange={onChangeLink}
             />
             <CheckBoxControl
-                label={__('Open in New Window', 'gutenberg-extra')}
-                id='gx-new-window'
+                label={__('Open in New Window', 'maxi-blocks')}
+                id='maxi-new-window'
                 checked={value.opensInNewWindow}
                 onChange={newValue => onChangeValue('opensInNewWindow', newValue)}
             />
             <CheckBoxControl
-                label={__('Add "nofollow" attribute', 'gutenberg-extra')}
+                label={__('Add "nofollow" attribute', 'maxi-blocks')}
                 checked={value.addNofollow}
                 onChange={newValue => onChangeValue('addNofollow', newValue)}
             />
 
             <CheckBoxControl
-                label={__('Add "noopener" attribute', 'gutenberg-extra')}
+                label={__('Add "noopener" attribute', 'maxi-blocks')}
                 checked={value.addNoopener}
                 onChange={newValue => onChangeValue('addNoopener', newValue)}
             />
 
             <CheckBoxControl
-                label={__('Add "noreferrer" attribute', 'gutenberg-extra')}
+                label={__('Add "noreferrer" attribute', 'maxi-blocks')}
                 checked={value.addNoreferrer}
                 onChange={newValue => onChangeValue('addNoreferrer', newValue)}
             />
 
             <CheckBoxControl
-                label={__('Add "sponsored" attribute', 'gutenberg-extra')}
+                label={__('Add "sponsored" attribute', 'maxi-blocks')}
                 checked={value.addSponsored}
                 onChange={newValue => onChangeValue('addSponsored', newValue)}
             />
             <CheckBoxControl
-                label={__('Add "ugc" attribute', 'gutenberg-extra')}
+                label={__('Add "ugc" attribute', 'maxi-blocks')}
                 checked={value.addUgc}
                 onChange={newValue => onChangeValue('addUgc', newValue)}
             />

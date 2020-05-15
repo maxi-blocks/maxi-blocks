@@ -46,8 +46,8 @@ const AlignmentControl = props => {
 
     return (
         <RadioControl
-            label={__('Alignment', 'gutenberg-extra')}
-            className={'components-base-control gx-alignmentcontrol-control'}
+            label={__('Alignment', 'maxi-blocks')}
+            className={'components-base-control maxi-alignmentcontrol-control'}
             selected={value}
             options={getOptions()}
             onChange={value => onChange(value)}

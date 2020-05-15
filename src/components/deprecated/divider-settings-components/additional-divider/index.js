@@ -30,8 +30,8 @@ export const AdditionalDivider = ( props ) => {
 
   return (
     <ToggleControl
-      label={__('Additional Divider', 'gutenberg-extra')}
-      id='gx-block-style'
+      label={__('Additional Divider', 'maxi-blocks')}
+      id='maxi-block-style'
       checked={isMultiple}
       onChange={ onChangeAdditional }
     />

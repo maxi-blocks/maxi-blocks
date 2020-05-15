@@ -39,10 +39,10 @@ const {
     FormToggle,
 } = wp.components;
 
-registerBlockType( 'gutenberg-extra/block-single-testimonial', {
+registerBlockType( 'maxi-blocks/block-single-testimonial', {
     title: __( 'GX Single Testimonial'),
     icon: iconsBlocks.testimonial,
-    category: 'gutenberg-extra-blocks',
+    category: 'maxi-blocks-blocks',
     attributes: {
         alignment: {
             type: 'string',
@@ -116,17 +116,17 @@ registerBlockType( 'gutenberg-extra/block-single-testimonial', {
 		testimonial: {
 			type: 'array',
 			source: 'children',
-			selector: 'p.gx-single-testimonial-text',
+			selector: 'p.maxi-single-testimonial-text',
 		},
 		name: {
 			type: 'array',
 			source: 'children',
-			selector: 'p.gx-single-testimonial-name',
+			selector: 'p.maxi-single-testimonial-name',
 		},
 		position: {
 			type: 'array',
 			source: 'children',
-			selector: 'p.gx-single-testimonial-position',
+			selector: 'p.maxi-single-testimonial-position',
 		},
     },
     getEditWrapperProps: function () {
@@ -409,41 +409,41 @@ registerBlockType( 'gutenberg-extra/block-single-testimonial', {
                 <div className={ props.className + " " + fullWidthClass + alignmentClass} style={ styles }>
                 <RichText
                     tagName="h2"
-                    className="gx-single-testimonial-title"
-                    placeholder={ __( 'Write title…', 'gutenberg-extra' ) }
+                    className="maxi-single-testimonial-title"
+                    placeholder={ __( 'Write title…', 'maxi-blocks' ) }
                     value={ title }
                     onChange={ onChangeTitle }
                 />
-				<div className="gx-single-testimonial-image">
+				<div className="maxi-single-testimonial-image">
 					<MediaUpload
 						onSelect={ onSelectImage }
 						allowedTypes="image"
 						value={ mediaID }
 						render={ ( { open } ) => (
 							<Button className={ mediaID ? 'image-button' : 'button button-large' } onClick={ open }>
-								{ ! mediaID ? __( 'Upload Image', 'gutenberg-extra' ) : <img src={ mediaURL } alt={ __( 'Upload Image', 'gutenberg-extra' ) } /> }
+								{ ! mediaID ? __( 'Upload Image', 'maxi-blocks' ) : <img src={ mediaURL } alt={ __( 'Upload Image', 'maxi-blocks' ) } /> }
 							</Button>
 						) }
 					/>
 				</div>
                 <RichText
                     tagName="p"
-                    className="gx-single-testimonial-text"
-                    placeholder={ __( 'Write text', 'gutenberg-extra' ) }
+                    className="maxi-single-testimonial-text"
+                    placeholder={ __( 'Write text', 'maxi-blocks' ) }
                     value={ testimonial }
                     onChange={ onChangeTestimonial }
                 />
                 <RichText
                     tagName="p"
-                    className="gx-single-testimonial-name"
-                    placeholder={ __( 'Write name', 'gutenberg-extra' ) }
+                    className="maxi-single-testimonial-name"
+                    placeholder={ __( 'Write name', 'maxi-blocks' ) }
                     value={ name }
                     onChange={ onChangeName }
                 />
                 <RichText
                     tagName="p"
-                    className="gx-single-testimonial-position"
-                    placeholder={ __( 'Write position', 'gutenberg-extra' ) }
+                    className="maxi-single-testimonial-position"
+                    placeholder={ __( 'Write position', 'maxi-blocks' ) }
                     value={ position }
                     onChange={ onChangePosition }
                 />
@@ -496,28 +496,28 @@ registerBlockType( 'gutenberg-extra/block-single-testimonial', {
             <div  className={ props.className + " " + fullWidthClass + alignmentClass} style={ styles }>
                 <RichText.Content
                 tagName="h2"
-                className="gx-single-testimonial-title"
+                className="maxi-single-testimonial-title"
                 value={ title }
                 />
 				{
 					mediaURL && (
-						<img className="gx-single-testimonial-image" src={ mediaURL } alt={ __( 'Person Image', 'gutenberg-extra' ) } />
+						<img className="maxi-single-testimonial-image" src={ mediaURL } alt={ __( 'Person Image', 'maxi-blocks' ) } />
 					)
 				}
 
                 <RichText.Content
                 tagName="p"
-                className="gx-single-testimonial-text"
+                className="maxi-single-testimonial-text"
                 value={ testimonial }
                  />
                  <RichText.Content
                 tagName="p"
-                className="gx-single-testimonial-name"
+                className="maxi-single-testimonial-name"
                 value={ name }
                  />
                  <RichText.Content
                 tagName="p"
-                className="gx-single-testimonial-position"
+                className="maxi-single-testimonial-position"
                 value={ position }
                  />
             </div>

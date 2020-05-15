@@ -1,7 +1,7 @@
 <?php
 //add_action( 'wp_footer', 'page_dynamic' );
 //function page_dynamic() {
-//    wp_enqueue_script( 'customizer-page-dynamic', plugin_dir_url( __FILE__ ) . "/customizer/js/gx-customizer-dynamic.js?v=".rand(), array('jquery'), '1.0', true);
+//    wp_enqueue_script( 'customizer-page-dynamic', plugin_dir_url( __FILE__ ) . "/customizer/js/maxi-customizer-dynamic.js?v=".rand(), array('jquery'), '1.0', true);
 //    wp_localize_script( 'customizer-page-dynamic', 'dynamic_page_values',
 //        array(
 //            'themeSwitch' => get_theme_mod( 'themeSwitch' ),
@@ -20,8 +20,8 @@ function gx_save_post_function($post_id, $post, $update) {
     $post_type = $post->post_type;
 
     if ($post_type == 'page') {
-        if ( !!preg_match('#\\b'.preg_quote('gx-block', '#').'\\b#i', $post_content) ) {
-            add_post_meta($post_id, 'has-class', 'gx-block');
+        if ( !!preg_match('#\\b'.preg_quote('maxi-block', '#').'\\b#i', $post_content) ) {
+            add_post_meta($post_id, 'has-class', 'maxi-block');
         }
     }
 
@@ -37,21 +37,21 @@ function check_page_content_test( $content ) {
     $pageID = get_the_ID();
     $page_type = get_post_field('post_type', $pageID);
     $themeName = get_theme_mod('color_scheme') ? get_theme_mod('color_scheme') : 'Custom';
-    $themeSwitch = get_theme_mod('themeSwitch'.$themeName) ? get_theme_mod('themeSwitch'.$themeName) : 'gx-default';
+    $themeSwitch = get_theme_mod('themeSwitch'.$themeName) ? get_theme_mod('themeSwitch'.$themeName) : 'maxi-default';
 
     // add aditional info what was the initial class for blocks
 
-    if ( $themeSwitch !== 'gx-default' && (get_post_meta($pageID, 'has-class', true) || (is_page() && !!preg_match('#\\b'.preg_quote('gx-block', '#').'\\b#i', $fullContent) )) ) {
+    if ( $themeSwitch !== 'maxi-default' && (get_post_meta($pageID, 'has-class', true) || (is_page() && !!preg_match('#\\b'.preg_quote('maxi-block', '#').'\\b#i', $fullContent) )) ) {
 
-        $will_remove = $themeSwitch == 'gx-dark' ? 'gx-light' : 'gx-dark';
+        $will_remove = $themeSwitch == 'maxi-dark' ? 'maxi-light' : 'maxi-dark';
         $contentTemp = $content;
 
-        // don't replace if there are special blocks (they have not gx-global class)
-        if (!!preg_match('#\\b' . preg_quote('gx-global', '#') . '\\b#i', $content)) {
+        // don't replace if there are special blocks (they have not maxi-global class)
+        if (!!preg_match('#\\b' . preg_quote('maxi-global', '#') . '\\b#i', $content)) {
             // $content = preg_replace('/\s+/', ' ', $content); // remove all spaces
-            $content = str_replace([$will_remove, $themeSwitch, 'gx-default'], '', $content); // remove global classes
+            $content = str_replace([$will_remove, $themeSwitch, 'maxi-default'], '', $content); // remove global classes
             // then add current global class
-            $content = str_replace('gx-block gx-global', 'gx-block gx-global ' . $themeSwitch, $content);
+            $content = str_replace('maxi-block maxi-global', 'maxi-block maxi-global ' . $themeSwitch, $content);
         }
 
         $tempFullContent = str_replace($contentTemp, $content, $fullContent);
@@ -60,11 +60,11 @@ function check_page_content_test( $content ) {
 
             $tempFullContent = explode("\n", $fullContent);
             array_walk($tempFullContent, function (&$value) use ($will_remove, $themeSwitch) {
-                if (!!preg_match('#\\b' . preg_quote('gx-global', '#') . '\\b#i', $value)) {
+                if (!!preg_match('#\\b' . preg_quote('maxi-global', '#') . '\\b#i', $value)) {
 
                     // need to diferentiate which class is setted by default
-                    $value = str_replace([$will_remove, $themeSwitch, 'gx-default'], '', $value); // remove global classes
-                    $value = preg_replace('#\\b' . preg_quote('gx-global', '#') . '\\b#i', 'gx-global ' . $themeSwitch . '', $value);
+                    $value = str_replace([$will_remove, $themeSwitch, 'maxi-default'], '', $value); // remove global classes
+                    $value = preg_replace('#\\b' . preg_quote('maxi-global', '#') . '\\b#i', 'maxi-global ' . $themeSwitch . '', $value);
 
                 }
             });

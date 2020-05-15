@@ -22,8 +22,8 @@ export const HideDivider = ( props ) => {
 
   return (
     <CheckBoxControl
-      label={__('Hide Divider', 'gutenberg-extra')}
-      id='gx-new-window'
+      label={__('Hide Divider', 'maxi-blocks')}
+      id='maxi-new-window'
       checked={isHidden}
       onChange={(newValue) => setAttributes({isHidden: newValue})}
     />

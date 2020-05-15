@@ -9,11 +9,11 @@ import * as attributesData from './data';
 const attributes = {
     blockStyle: {
         type: 'string',
-        default: 'gx-custom'
+        default: 'maxi-custom'
     },
     defaultBlockStyle: {
         type: 'string',
-        default: 'gx-def-light'
+        default: 'maxi-def-light'
     },
     titleLevel: {
         type: "string",
@@ -110,17 +110,17 @@ const attributes = {
     subtitle: {
         type: "array",
         source: "children",
-        selector: ".gx-title-extra-subtitle",
+        selector: ".maxi-title-extra-subtitle",
     },
     title: {
         type: "array",
         source: "children",
-        selector: ".gx-title-extra-title",
+        selector: ".maxi-title-extra-title",
     },
     description: {
         type: "array",
         source: "children",
-        selector: ".gx-title-extra-description",
+        selector: ".maxi-title-extra-description",
     },
 };
 

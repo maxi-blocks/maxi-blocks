@@ -22,8 +22,8 @@ export const HideSubtitle = ( props ) => {
 
   return (
     <CheckBoxControl
-      label={__('Hide Subtitle', 'gutenberg-extra')}
-      id='gx-new-window'
+      label={__('Hide Subtitle', 'maxi-blocks')}
+      id='maxi-new-window'
       checked={hideSubtitle}
       onChange={(newValue) => setAttributes({hideSubtitle: newValue})}
     />

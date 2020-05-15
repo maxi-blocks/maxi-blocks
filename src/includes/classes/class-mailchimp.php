@@ -37,7 +37,7 @@ final class Mailchimp implements Provider_Interface {
 		if ( empty( $api_key ) ) {
 			throw new Mailchimp_API_Error_Exception(
 				/* translators: %s This PHP class name. Will print GXBlocks\Newsletter\Mailchimp */
-				sprintf( esc_html__( 'An API key is required to use %s.', 'gx-blocks' ), __CLASS__ )
+				sprintf( esc_html__( 'An API key is required to use %s.', 'maxi-blocks' ), __CLASS__ )
 			);
 		}
 
@@ -75,7 +75,7 @@ final class Mailchimp implements Provider_Interface {
 
 		if ( empty( $email ) || ! is_email( $email ) ) {
 			throw new Mailchimp_API_Error_Exception(
-				esc_html__( 'An invalid email address was provided.', 'gx-blocks' )
+				esc_html__( 'An invalid email address was provided.', 'maxi-blocks' )
 			);
 		}
 
@@ -85,7 +85,7 @@ final class Mailchimp implements Provider_Interface {
 		if ( empty( $list_id ) || ! in_array( $list_id, $list_ids, true ) ) {
 			throw new Mailchimp_API_Error_Exception(
 				/* translators: %s The PHP method name. Will be GXBlocks\Newsletter\Mailchimp\subscribe. */
-				sprintf( esc_html__( 'An invalid Mailchimp list ID was provided in %s', 'gx-blocks' ), __METHOD__ )
+				sprintf( esc_html__( 'An invalid Mailchimp list ID was provided in %s', 'maxi-blocks' ), __METHOD__ )
 			);
 		}
 
@@ -102,7 +102,7 @@ final class Mailchimp implements Provider_Interface {
 		if ( ! $response || ( ! empty( $response['status'] ) && is_numeric( $response['status'] && 200 !== $response['status'] ) ) || $this->mailchimp->getLastError() ) {
 			throw new Mailchimp_API_Error_Exception(
 				/* translators: %s The error message returns from the Mailchimp API. */
-				esc_html( sprintf( __( 'There was an error subscribing your email address. Please try again. Error: %s', 'gx-blocks' ), $this->mailchimp->getLastError() ) ),
+				esc_html( sprintf( __( 'There was an error subscribing your email address. Please try again. Error: %s', 'maxi-blocks' ), $this->mailchimp->getLastError() ) ),
 				$response['status']
 			);
 		}

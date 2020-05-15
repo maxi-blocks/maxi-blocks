@@ -25,8 +25,8 @@ export const SubtitleAlign = ( props ) => {
 
   return (
     <SelectControl
-      label={__('Subtitle Align', 'gutenberg-extra')}
-      className="gx-block-style"
+      label={__('Subtitle Align', 'maxi-blocks')}
+      className="maxi-block-style"
       value={subtitleTextAlign}
       options={[
         { label: __('Left'), value: '5px auto 5px 0' },

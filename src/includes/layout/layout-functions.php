@@ -38,11 +38,11 @@ function gx_blocks_register_layout_component( array $data ) {
 function gx_blocks_get_layout_component( $type, $key ) {
 
 	if ( empty( $type ) ) {
-		return new WP_Error( esc_html__( 'You must supply a type to retrieve a layout component.', 'gx-blocks' ) );
+		return new WP_Error( esc_html__( 'You must supply a type to retrieve a layout component.', 'maxi-blocks' ) );
 	}
 
 	if ( empty( $key ) ) {
-		return new WP_Error( esc_html__( 'You must supply a key to retrieve a layout component.', 'gx-blocks' ) );
+		return new WP_Error( esc_html__( 'You must supply a key to retrieve a layout component.', 'maxi-blocks' ) );
 	}
 
 	$type = sanitize_key( $type );

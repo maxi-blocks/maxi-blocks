@@ -25,8 +25,8 @@ export const RoundedDivider = ( props ) => {
   }
   return (
     <ToggleControl
-      label={__('Rounded Divider', 'gutenberg-extra')}
-      id='gx-block-style'
+      label={__('Rounded Divider', 'maxi-blocks')}
+      id='maxi-block-style'
       checked={isRounded}
       onChange={ onChangeRounded }
     />

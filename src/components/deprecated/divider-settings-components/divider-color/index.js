@@ -27,12 +27,12 @@ export const DividerColor = ( props ) => {
 
   return (
     <PanelColorSettings
-    title={__('Divider Colour', 'gutenberg-extra' )}
+    title={__('Divider Colour', 'maxi-blocks' )}
     colorSettings={[
       {
         value: dividerColor,
         onChange: onChangeDividerColor,
-        label: __('Divider Colour', 'gutenberg-extra' ),
+        label: __('Divider Colour', 'maxi-blocks' ),
       },
     ]}
     />

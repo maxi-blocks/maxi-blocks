@@ -15,13 +15,13 @@ import './extensions/attributes';
 // import './extensions/blocks';
 
 // Blocks
-import './blocks/block-row-extra/block-row-extra';
-import './blocks/block-column-extra/block-column-extra';
-import './blocks/block-text-extra/block-text-extra';
-import './blocks/block-divider-extra/block-divider-extra';
-import './blocks/block-image-extra/block-image-extra';
-import './blocks/block-section-extra/block-section-extra';
-import './blocks/block-button-extra/block-button-extra.js';
+import './blocks/row-maxi/row-maxi';
+import './blocks/column-maxi/column-maxi';
+import './blocks/text-maxi/text-maxi';
+import './blocks/divider-maxi/divider-maxi';
+import './blocks/image-maxi/image-maxi';
+import './blocks/section-maxi/section-maxi';
+import './blocks/button-maxi/button-maxi.js';
 
 // Deprecated
 // import './blocks/block-layout/block-layout.js';

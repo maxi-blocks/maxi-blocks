@@ -46,7 +46,7 @@ import './editor.scss';
  */
 export class ButtonSettings extends GXComponent {
 
-    target = this.props.target ? this.props.target : 'gx-buttoneditor-wrapper';
+    target = this.props.target ? this.props.target : 'maxi-buttoneditor-wrapper';
 
     state = {
         selectorTypographyColors: 'normal',
@@ -136,13 +136,13 @@ export class ButtonSettings extends GXComponent {
     saveAndSend(value) {
         this.save(value);
 
-        this.target = this.props.target ? this.props.target : 'gx-buttoneditor-wrapper';
+        this.target = this.props.target ? this.props.target : 'maxi-buttoneditor-wrapper';
         this.saveMeta(value, 'wrapper');
 
-        this.target = `${this.props.target ? this.props.target : 'gx-buttoneditor-wrapper'} .gx-buttoneditor-button`;
+        this.target = `${this.props.target ? this.props.target : 'maxi-buttoneditor-wrapper'} .maxi-buttoneditor-button`;
         this.saveMeta(value, 'normal');
 
-        this.target = `${this.props.target ? this.props.target : 'gx-buttoneditor-wrapper'} .gx-buttoneditor-button:hover`;
+        this.target = `${this.props.target ? this.props.target : 'maxi-buttoneditor-wrapper'} .maxi-buttoneditor-button:hover`;
         this.saveMeta(value, 'hover');
 
         new BackEndResponsiveStyles(this.getMeta);
@@ -164,7 +164,7 @@ export class ButtonSettings extends GXComponent {
         const {
             className,
             buttonSettings,
-            target = 'gx-buttoneditor-wrapper'
+            target = 'maxi-buttoneditor-wrapper'
         } = this.props;
 
         const {
@@ -175,7 +175,7 @@ export class ButtonSettings extends GXComponent {
         } = this.state;
 
         const value = typeof buttonSettings === 'object' ? buttonSettings : JSON.parse(buttonSettings);
-        const classes = classnames('gx-buttonsettings-control', className);
+        const classes = classnames('maxi-buttonsettings-control', className);
 
         return (
             <div className={classes}>
@@ -183,9 +183,9 @@ export class ButtonSettings extends GXComponent {
                     isSecondary
                     items={[
                         {
-                            label: __('Typography & Colors', 'gutenberg-extra'),
-                            classNameItem: "gx-typography-item",
-                            classNameHeading: "gx-typography-tab",
+                            label: __('Typography & Colors', 'maxi-blocks'),
+                            classNameItem: "maxi-typography-item",
+                            classNameHeading: "maxi-typography-tab",
                             content: (
                                 <Fragment>
                                     {/** Should alignment be under this section? */}
@@ -199,14 +199,14 @@ export class ButtonSettings extends GXComponent {
                                     />
                                     <NormalHoverControl
                                         /*not sure about vvv class => may should go on the component itself*/
-                                        className="gx-buttonstyles-selector-control"
+                                        className="maxi-buttonstyles-selector-control"
                                         selector={selectorTypographyColors}
                                         onChange={selectorTypographyColors => {
                                             this.setState({ selectorTypographyColors });
                                         }}
                                     />
                                     <ColorControl
-                                        label={__('Background Colour', 'gutenberg-extra')}
+                                        label={__('Background Colour', 'maxi-blocks')}
                                         color={value[selectorTypographyColors].backgroundColor}
                                         defaultcolor={value[selectorTypographyColors].defaultBackgroundColor}
                                         onColorChange={val => {
@@ -227,29 +227,29 @@ export class ButtonSettings extends GXComponent {
                                             value[selectorTypographyColors].typography = val;
                                             this.saveAndSend(value);
                                         }}
-                                        target={`${target} .gx-buttoneditor-button`}
+                                        target={`${target} .maxi-buttoneditor-button`}
                                     />
                                 </Fragment>
                             )
                         },
                         {
-                            label: __('Opacity / Shadow', 'gutenberg-extra'),
-                            /** why gx-typography-tab if is Opacity/shadow settings? */
-                            classNameItem: "gx-box-settings-item",
-                            classNameHeading: "gx-typography-tab",
+                            label: __('Opacity / Shadow', 'maxi-blocks'),
+                            /** why maxi-typography-tab if is Opacity/shadow settings? */
+                            classNameItem: "maxi-box-settings-item",
+                            classNameHeading: "maxi-typography-tab",
                             content: (
                                 <Fragment>
                                     <NormalHoverControl
                                         /*not sure about vvv class => may should go on the component itself*/
-                                        className="gx-buttonstyles-selector-control"
+                                        className="maxi-buttonstyles-selector-control"
                                         selector={selectorOpacityShadow}
                                         onChange={selectorOpacityShadow => {
                                             this.setState({ selectorOpacityShadow });
                                         }}
                                     />
                                     <RangeControl
-                                        label={__("Opacity", "gutenberg-extra")}
-                                        className={"gx-opacity-control"}
+                                        label={__("Opacity", "maxi-blocks")}
+                                        className={"maxi-opacity-control"}
                                         value={value[selectorOpacityShadow].opacity * 100}
                                         onChange={val => {
                                             value[selectorOpacityShadow].opacity = val / 100;
@@ -268,22 +268,22 @@ export class ButtonSettings extends GXComponent {
                                         }}
                                         target={
                                             selectorBorder != 'hover' ?
-                                                `${target} .gx-buttoneditor-button` :
-                                                `${target} .gx-buttoneditor-button:hover`
+                                                `${target} .maxi-buttoneditor-button` :
+                                                `${target} .maxi-buttoneditor-button:hover`
                                         }
                                     />
                                 </Fragment>
                             )
                         },
                         {
-                            label: __("Border", "gutenberg-extra"),
-                            classNameItem: "gx-border-item",
-                            classNameHeading: 'gx-border-tab',
+                            label: __("Border", "maxi-blocks"),
+                            classNameItem: "maxi-border-item",
+                            classNameHeading: 'maxi-border-tab',
                             content: (
                                 <Fragment>
                                     <NormalHoverControl
                                         /*not sure about vvv class => may should go on the component itself*/
-                                        className="gx-buttonstyles-selector-control"
+                                        className="maxi-buttonstyles-selector-control"
                                         selector={selectorBorder}
                                         onChange={selectorBorder => {
                                             this.setState({ selectorBorder });
@@ -295,16 +295,16 @@ export class ButtonSettings extends GXComponent {
                                             value[selectorOpacityShadow].borderSettings = val;
                                             this.saveAndSend(value)
                                         }}
-                                        target={`${target} .gx-buttoneditor-button`}
+                                        target={`${target} .maxi-buttoneditor-button`}
                                     />
                                 </Fragment>
                             )
                         },
                         {
-                            label: __('Width / Height', 'gutenberg-extra'),
-                            /** why gx-typography-tab if its width/height? */
-                            classNameItem: "gx-width-height-item",
-                            classNameHeading: "gx-typography-tab",
+                            label: __('Width / Height', 'maxi-blocks'),
+                            /** why maxi-typography-tab if its width/height? */
+                            classNameItem: "maxi-width-height-item",
+                            classNameHeading: "maxi-typography-tab",
                             content: (
                                 <Fragment>
                                     <FullSizeControl
@@ -313,21 +313,21 @@ export class ButtonSettings extends GXComponent {
                                             value.size = val;
                                             this.saveAndSend(value);
                                         }}
-                                        target={`${target} .gx-buttoneditor-button`}
+                                        target={`${target} .maxi-buttoneditor-button`}
                                     />
                                 </Fragment>
                             )
                         },
                         {
-                            label: __('Padding / Margin', 'gutenberg-extra'),
-                            /** why gx-typography-tab if its width/height? */
-                            classNameItem: "gx-padding-margin-item",
-                            classNameHeading: "gx-typography-tab",
+                            label: __('Padding / Margin', 'maxi-blocks'),
+                            /** why maxi-typography-tab if its width/height? */
+                            classNameItem: "maxi-padding-margin-item",
+                            classNameHeading: "maxi-typography-tab",
                             content: (
                                 <Fragment>
                                     <NormalHoverControl
                                         /*not sure about vvv class => may should go on the component itself*/
-                                        className="gx-buttonstyles-selector-control"
+                                        className="maxi-buttonstyles-selector-control"
                                         selector={selectorPaddingMargin}
                                         onChange={selectorPaddingMargin => {
                                             this.setState({ selectorPaddingMargin });
@@ -339,7 +339,7 @@ export class ButtonSettings extends GXComponent {
                                             value[selectorPaddingMargin].padding = val;
                                             this.saveAndSend(value)
                                         }}
-                                        target={`${target} .gx-buttoneditor-button`}
+                                        target={`${target} .maxi-buttoneditor-button`}
                                     />
                                     <DimensionsControl
                                         value={value[selectorPaddingMargin].margin}
@@ -347,7 +347,7 @@ export class ButtonSettings extends GXComponent {
                                             value[selectorPaddingMargin].margin = val;
                                             this.saveAndSend(value)
                                         }}
-                                        target={`${target} .gx-buttoneditor-button`}
+                                        target={`${target} .maxi-buttoneditor-button`}
                                     />
                                 </Fragment>
                             )
@@ -367,16 +367,16 @@ export const ButtonEditor = props => {
         className,
         buttonSettings,
         onChange,
-        placeholder = __('Read more text...', 'gutenberg-extra')
+        placeholder = __('Read more text...', 'maxi-blocks')
     } = props;
 
     const value = typeof buttonSettings === 'object' ? buttonSettings : JSON.parse(buttonSettings);
-    const classes = classnames("gx-buttoneditor-wrapper", className);
+    const classes = classnames("maxi-buttoneditor-wrapper", className);
 
     return (
         <div className={classes}>
             <LinkedButton
-                className="gx-buttoneditor-button"
+                className="maxi-buttoneditor-button"
                 placeholder={placeholder}
                 buttonText={value.buttonText}
                 onTextChange={val => {
@@ -407,7 +407,7 @@ export const ButtonSaver = props => {
         href: value.linkOptions.url || '',
         target: value.linkOptions.opensInNewTab ? '_blank' : '_self'
     }
-    const classes = classnames("gx-buttoneditor-button", className)
+    const classes = classnames("maxi-buttoneditor-button", className)
 
     return (
         <Fragment>

@@ -44,10 +44,10 @@ class GXCustomizerModel extends GXCustomizer
 
     public function gx_styling_model()
     {
-        wp_register_style('gx-model-variables', false);
-        wp_enqueue_style('gx-model-variables');
+        wp_register_style('model-variables', false);
+        wp_enqueue_style('model-variables');
         wp_add_inline_style(
-            'gx-model-variables',
+            'model-variables',
             self::gx_style_variables(),
             []
         );

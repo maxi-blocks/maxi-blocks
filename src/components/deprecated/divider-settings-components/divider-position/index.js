@@ -48,8 +48,8 @@ export const DividerPosition = ( props ) => {
 
   return (
     <SelectControl
-        label={__('Divider Position', 'gutenberg-extra')}
-        className="gx-block-style"
+        label={__('Divider Position', 'maxi-blocks')}
+        className="maxi-block-style"
         value={dividerOrder}
         options={[
           { label: __('After Title'), value: 1 },

@@ -22,8 +22,8 @@ export const HideTitle = ( props ) => {
 
   return (
     <CheckBoxControl
-      label={__('Hide Title', 'gutenberg-extra')}
-      id='gx-new-window'
+      label={__('Hide Title', 'maxi-blocks')}
+      id='maxi-new-window'
       checked={hideTitle}
       onChange={(newValue) => setAttributes({hideTitle: newValue})}
     />

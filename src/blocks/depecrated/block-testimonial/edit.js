@@ -291,7 +291,7 @@ const edit = (props) => {
 		.map(testimonial => {
 
 			return (
-				<div className={ testimonials.length <= 2 ? 'gx-full-width-col' : 'col' } key={testimonial.index}>
+				<div className={ testimonials.length <= 2 ? 'maxi-full-width-col' : 'col' } key={testimonial.index}>
 					<div className="testimonial">
                         <span className="testimonial-index" style={{ display: "none" }}>
                             {testimonial.index}
@@ -315,19 +315,19 @@ const edit = (props) => {
 								<RichText
 									tagName='p'
 									style={ nameSurnameStyles }
-									placeholder={__("Person's Full Name", "gutenberg-extra")}
+									placeholder={__("Person's Full Name", "maxi-blocks")}
 									value={ testimonial.personNameSurname }
 									onChange={ (value) => handlePersonNameSurnameChange(value, testimonial) }
-									className="gx-testimonial-name-surname fillable_field "
+									className="maxi-testimonial-name-surname fillable_field "
 								/>
 								<RichText
 									tagName="p"
 									style={{ height: 30 }}
 									autoFocus
-									placeholder={ __("Person's Position", "gutenberg-extra") }
+									placeholder={ __("Person's Position", "maxi-blocks") }
 									value={ testimonial.personPosition }
 									onChange={ (value) => handlePersonsPositionChange(value, testimonial) }
-									className="content-plain-text mb-10 fillable_field gx-testimonial-person-position"
+									className="content-plain-text mb-10 fillable_field maxi-testimonial-person-position"
 								/>
 							</div>
 							<div className="person_link_options edit" style={
@@ -342,10 +342,10 @@ const edit = (props) => {
 								<RichText
 									tagName="p"
 									// style={{ height: '40px', width: "83%"}}
-									placeholder={ __("Title of link", "gutenberg-extra") }
+									placeholder={ __("Title of link", "maxi-blocks") }
 									value={testimonial.linkOptionTitle}
 									onChange={ (value) => handleTitleLinkChange(value, testimonial) }
-									className="title-plain-text fillable_field gx-testimonial-title-text"
+									className="title-plain-text fillable_field maxi-testimonial-title-text"
 								/>
 								<SelectControl
 									value={ testimonial.linkOptionTarget }
@@ -362,7 +362,7 @@ const edit = (props) => {
 								<RichText
 									tagName="p"
 									style={{ textAlign: titleAlignment, fontStyle: titleStyle }}
-									placeholder={__("Title", "gutenberg-extra")}
+									placeholder={__("Title", "maxi-blocks")}
 									value={ testimonial.title }
 									onChange={value => handleTitleChange(value, testimonial)}
 									className="title-plain-text fillable_field"
@@ -371,7 +371,7 @@ const edit = (props) => {
 									tagName="p"
 									style={{ height: 58 }}
 									autoFocus
-									placeholder={__("Testimonial Text", "gutenberg-extra")}
+									placeholder={__("Testimonial Text", "maxi-blocks")}
 									value={testimonial.content}
 									onChange={ (value) => handleContentChange(value, testimonial) }
 									className="content-plain-text fillable_field"
@@ -429,7 +429,7 @@ const edit = (props) => {
 				props.setAttributes({ backgroundColor: value });
 				props.setAttributes({ backgroundImage: null });
 			},
-			label: __( 'Background Colour', "gutenberg-extra" ),
+			label: __( 'Background Colour', "maxi-blocks" ),
 			value: backgroundColor
 		},
 	];
@@ -448,7 +448,7 @@ const edit = (props) => {
 
 
 	return (
-		<div className={props.className + ' gx-block ' + blockStyle + ' gx-image-box ' + classes } style={ blockStyles }
+		<div className={props.className + ' maxi-block ' + blockStyle + ' maxi-image-box ' + classes } style={ blockStyles }
 			 data-gx_initial_block_class={defaultBlockStyle}>
 			<BlockControls>
 				<BlockAlignmentToolbar
@@ -461,28 +461,28 @@ const edit = (props) => {
 
 			{(testimonialsList.length <= 2) ?
 				(<button
-					className="gx-add-more-testimonial"
+					className="maxi-add-more-testimonial"
 					onClick={ handleAddMoreTestimonialClick }
 				>
 					+
 				</button>) : ''
 			}
 			<InspectorControls >
-				<div className="gx-testimonial-sidebar-group">
+				<div className="maxi-testimonial-sidebar-group">
 				<BlockStyles { ...props }/>
 				<PanelBody
-					title={__("Background setting", "gutenberg-extra")}
-					className="gx-testimonial-setting-panel gx-background-setting-panel gx-background-setting gx-content-tab-setting"
+					title={__("Background setting", "maxi-blocks")}
+					className="maxi-testimonial-setting-panel maxi-background-setting-panel maxi-background-setting maxi-content-tab-setting"
 					initialOpen={ false }
 				>
 					<BaseControl
-						className={"gx-bg-color-parent gx-settings-button gx-background-gradient"}
+						className={"maxi-bg-color-parent maxi-settings-button maxi-background-gradient"}
 					>
 						<PanelColorSettings
-							title={ __( 'Background Colour', "gutenberg-extra" ) }
+							title={ __( 'Background Colour', "maxi-blocks" ) }
 							colorSettings={ backgroundColorSettings }
 						/>
-						<div className={'gx-gradient'}>
+						<div className={'maxi-gradient'}>
 							<GradientPickerPopover
 								palette={defaultPalette}
 								onPaletteChange={ handleGradientPickerChange }
@@ -490,20 +490,20 @@ const edit = (props) => {
 						</div>
 					</BaseControl>
 					<BaseControl
-						className={"gx-settings-button gx-background-image"}
+						className={"maxi-settings-button maxi-background-image"}
 					>
-						<BaseControl.VisualLabel>{__("Background Image", "gutenberg-extra")}</BaseControl.VisualLabel>
-						<div className={"gx-image-form-and-reset"}>
+						<BaseControl.VisualLabel>{__("Background Image", "maxi-blocks")}</BaseControl.VisualLabel>
+						<div className={"maxi-image-form-and-reset"}>
 							{backgroundImage ?
-								(<Button className={'gx-background-custom-reset-option gx-reset-background-image'}
+								(<Button className={'maxi-background-custom-reset-option maxi-reset-background-image'}
 										 onClick={() => {
 										 	props.setAttributes({ backgroundImage: null })
 										 }}>
 								</Button>) : ''
 							}
 							<MediaUpload
-								className={"gx-background-image-form"}
-								label={__("Upload", "gutenberg-extra")}
+								className={"maxi-background-image-form"}
+								label={__("Upload", "maxi-blocks")}
 								type="image/*"
 								render={ ({open}) => (
 									<Button
@@ -522,14 +522,14 @@ const edit = (props) => {
 				</PanelBody>
 				<PanelBody
 					title="Title setting"
-					className=" gx-testimonial-setting-panel gx-sidebar gx-title-text-setting gx-content-tab-setting"
+					className=" maxi-testimonial-setting-panel maxi-sidebar maxi-title-text-setting maxi-content-tab-setting"
 					initialOpen={ false }
 				>
 					<TextAlignment {...props} onChange={value => props.setAttributes({ titleAlignment: value })} />
 
 					<SelectControl
 						label={__("Position", "gutemberg-extra")}
-						className="gx-block-style"
+						className="maxi-block-style"
 						value={ titleAlignment }
 						width={"160px"}
 						options={ [
@@ -539,8 +539,8 @@ const edit = (props) => {
 						onChange={ ( value ) => props.setAttributes({ titlePosition: value }) }
 					/>
 					<SelectControl
-						label={__("Style", "gutenberg-extra")}
-						className="gx-block-style"
+						label={__("Style", "maxi-blocks")}
+						className="maxi-block-style"
 						value={ titleStyle }
 						width={"160px"}
 						options={ [
@@ -552,26 +552,26 @@ const edit = (props) => {
 					/>
 				</PanelBody>
 				<PanelBody
-					title={__("Person's Image setting", "gutenberg-extra")}
-					className="gx-testimonial-setting-panel gx-person-image-setting gx-content-tab-setting"
+					title={__("Person's Image setting", "maxi-blocks")}
+					className="maxi-testimonial-setting-panel maxi-person-image-setting maxi-content-tab-setting"
 					initialOpen={ false }
 				>
 					<SelectControl
-						label={__("Alignment", "gutenberg-extra")}
-						className="gx-block-style"
+						label={__("Alignment", "maxi-blocks")}
+						className="maxi-block-style"
 						value={ imageAlignment }
 						width={"160px"}
 						options={ [
-							{ label: __('Top', "gutenberg-extra"),	  value: 'top' },
-							{ label: __('Right', "gutenberg-extra"),  value: 'right' },
-							{ label: __('Bottom', "gutenberg-extra"), value: 'bottom' },
-							{ label: __('Left', "gutenberg-extra"),   value: 'left' },
+							{ label: __('Top', "maxi-blocks"),	  value: 'top' },
+							{ label: __('Right', "maxi-blocks"),  value: 'right' },
+							{ label: __('Bottom', "maxi-blocks"), value: 'bottom' },
+							{ label: __('Left', "maxi-blocks"),   value: 'left' },
 						] }
 						onChange={ ( value ) => props.setAttributes({ imageAlignment : value }) }
 					/>
 					<SelectControl
-						label={__("Border rounded", "gutenberg-extra")}
-						className="gx-block-style"
+						label={__("Border rounded", "maxi-blocks")}
+						className="maxi-block-style"
 						value={ imageRound }
 						width={"160px"}
 						options={ [
@@ -582,28 +582,28 @@ const edit = (props) => {
 					/>
 				</PanelBody>
 				<PanelBody
-					title={__("Testimonial text style", "gutenberg-extra")}
-					className="gx-testimonial-setting-panel gx-testimonial-text-style gx-content-tab-setting"
+					title={__("Testimonial text style", "maxi-blocks")}
+					className="maxi-testimonial-setting-panel maxi-testimonial-text-style maxi-content-tab-setting"
 					initialOpen={ false }
 				>
 
 					<Typography
 						fontOptions={ fontOptions }
 						onChange={value => {  props.setAttributes({ fontOptions: value}) }}
-						target="gx-testimonial-name-surname"
+						target="maxi-testimonial-name-surname"
 					/>
 
 				</PanelBody>
 				<PanelBody
-					title={__("Testimonial size-control", "gutenberg-extra")}
-					className="gx-testimonial-setting-panel gx-testimonial-sizing gx-content-tab-setting"
+					title={__("Testimonial size-control", "maxi-blocks")}
+					className="maxi-testimonial-setting-panel maxi-testimonial-sizing maxi-content-tab-setting"
 					initialOpen={ false }
 				>
 					<SizeControl { ...props } />
 				</PanelBody>
 				<PanelBody
-					title={__('Space Settings', 'gutenberg-extra')}
-					className="gx-testimonial-setting-panel gx-space-setting gx-style-tab-setting"
+					title={__('Space Settings', 'maxi-blocks')}
+					className="maxi-testimonial-setting-panel maxi-space-setting maxi-style-tab-setting"
 					initialOpen={ false }
 				>
 					<PaddingMarginControl {...props} />

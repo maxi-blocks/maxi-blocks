@@ -39,19 +39,19 @@
 	margin-right: 5px;
 }
 
-.gx-layout-column-button .ab-block-button {
+.maxi-layout-column-button .ab-block-button {
 	margin-bottom: 0;
 }
 
-.gx-layout-selector-group {
+.maxi-layout-selector-group {
 	margin-top: 10px;
 }
 
-.gx-layout-selector {
+.maxi-layout-selector {
 	display: inline-block;
 	margin: 0 5px;
 
-	button.gx-layout-selector-button {
+	button.maxi-layout-selector-button {
 		padding: 15px;
 		height: auto;
 		border-radius: 5px;
@@ -67,7 +67,7 @@
 	}
 }
 
-.gx-toolbar-add-layout-button {
+.maxi-toolbar-add-layout-button {
 	margin-right: 3px;
 }
 
@@ -76,7 +76,7 @@
  * This probably belongs in a theme!
  */
 
- .gx-layout-team-1 {
+ .maxi-layout-team-1 {
 	.ab-profile-column {
 		flex: 100%;
 	}
@@ -85,7 +85,7 @@
 	}
  }
 
- .gx-layout-hero-cover {
+ .maxi-layout-hero-cover {
 	 .wp-block-cover__inner-container {
 		max-width: 800px;
 	 }
@@ -100,7 +100,7 @@
 	 color: #fff;
  }
 
- .gx-layout-landing-2 {
+ .maxi-layout-landing-2 {
 	.ab-block-profile {
 		padding: 0;
 		text-align: center;
@@ -125,8 +125,8 @@
 	}
  }
 
- .gx-layout-landing-3 {
-	 .gx-layout-landing-3-cover {
+ .maxi-layout-landing-3 {
+	 .maxi-layout-landing-3-cover {
 		 h2, h3, h4, h5, h6 {
 			 margin-left: auto;
 			 margin-right: auto;

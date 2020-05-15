@@ -1,5 +1,5 @@
 /**
- * BLOCK: gutenberg-extra/block-image-box
+ * BLOCK: maxi-blocks/block-image-box
  *
  * Registering an image block with Gutenberg.
  * Shows an image and a description. A test block.
@@ -31,11 +31,11 @@ import save from './save';
  * Block
  */
 
-registerBlockType( 'gutenberg-extra/block-image-box', {
-	title: __('Image Box Extra', 'gutenberg-extra'),
+registerBlockType( 'maxi-blocks/block-image-box', {
+	title: __('Image Box Extra', 'maxi-blocks'),
 	icon: imageBox,
 	description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque sunt hic obcaecati alias rerum fugit, dolore, quis placeat aliquid at natus fugiat, repellendus facilis asperiores illum voluptatum aut officiis delectus?",
-	category: 'gutenberg-extra-blocks',
+	category: 'maxi-blocks-blocks',
 	supports: {
         align: true,
     },

@@ -5,7 +5,7 @@
  * which makes it higher in priority.
  */
 
-.gutenberg-extra-testimonial-block {
+.maxi-blocks-testimonial-block {
   background: #fafafa;
   border-radius: 5px;
   border: 1px solid #cacaca;
@@ -19,7 +19,7 @@
   margin-bottom: 0.5em;
 }
 
-button.gx-add-more-testimonial {
+button.maxi-add-more-testimonial {
   height: 55px;
   width: 55px;
   background: #939393;
@@ -67,7 +67,7 @@ textarea.editor-plain-text.link-plain-text {
     text-align: center;
   }
 
-.gx-testimonial-sidebar-group {
+.maxi-testimonial-sidebar-group {
 
   .components-base-control__field {
     display: flex;
@@ -75,9 +75,9 @@ textarea.editor-plain-text.link-plain-text {
     align-items: center;
   }
 
-  .gx-background-setting-panel {
+  .maxi-background-setting-panel {
 
-    .gx-bg-color-parent {
+    .maxi-bg-color-parent {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -157,7 +157,7 @@ textarea.editor-plain-text.link-plain-text {
           justify-content: center;
           align-items: center;
           border-radius: 5px;
-          background-image: url(../img/icons/gx-gradient.svg) !important;
+          background-image: url(../img/icons/maxi-gradient.svg) !important;
           background-position: center;
           background-repeat: no-repeat;
           background-size: 50%;
@@ -173,7 +173,7 @@ textarea.editor-plain-text.link-plain-text {
 
     }
 
-    .gx-settings-button {
+    .maxi-settings-button {
       .components-base-control__field {
         display: flex;
         justify-content: space-between;

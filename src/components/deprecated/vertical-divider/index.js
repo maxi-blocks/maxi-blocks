@@ -49,8 +49,8 @@ export const VerticalDivider = (props) => {
 
   return (
     <CheckBoxControl
-      label={__('Vertical Divider', 'gutenberg-extra')}
-      id='gx-new-window'
+      label={__('Vertical Divider', 'maxi-blocks')}
+      id='maxi-new-window'
       checked={isVertical}
       onChange={onChangeDirection}
     />

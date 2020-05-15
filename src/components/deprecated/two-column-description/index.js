@@ -22,8 +22,8 @@ export const TwoColumn = ( props ) => {
 
   return (
     <CheckBoxControl
-      label={__('Two Column Description Layout', 'gutenberg-extra')}
-      id='gx-new-window'
+      label={__('Two Column Description Layout', 'maxi-blocks')}
+      id='maxi-new-window'
       checked={twoColumnDesc}
       onChange={(newValue) => setAttributes({twoColumnDesc: newValue})}
     />

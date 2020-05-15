@@ -55,7 +55,7 @@ export default class Typography extends GXComponent {
         const value = typeof fontOptions === 'object' ? fontOptions : JSON.parse(fontOptions);
         // All these classes are senseless
         const classes = classnames(
-            'components-panel__body components-base-control editor-panel-color-settings block-editor-panel-color-settings is-opened typography gx-typography-control',
+            'components-panel__body components-base-control editor-panel-color-settings block-editor-panel-color-settings is-opened typography maxi-typography-control',
             className
         )
 
@@ -83,16 +83,16 @@ export default class Typography extends GXComponent {
             const fontOptions = Object.keys(value.options);
             if (fontOptions.length === 0) {
                 return [
-                    { label: __('Thin (Hairline)', 'gutenberg-extra'), value: 100 },
-                    { label: __('Extra Light (Ultra Light)', 'gutenberg-extra'), value: 200 },
-                    { label: __('Light', 'gutenberg-extra'), value: 300 },
-                    { label: __('Normal (Regular)', 'gutenberg-extra'), value: 400 },
-                    { label: __('Medium', 'gutenberg-extra'), value: 500 },
-                    { label: __('Semi Bold (Demi Bold)', 'gutenberg-extra'), value: 600 },
-                    { label: __('Bold', 'gutenberg-extra'), value: 700 },
-                    { label: __('Extra Bold (Ultra Bold)', 'gutenberg-extra'), value: 800 },
-                    { label: __('Black (Heavy)', 'gutenberg-extra'), value: 900 },
-                    { label: __('Extra Black (Ultra Black)', 'gutenberg-extra'), value: 950 },
+                    { label: __('Thin (Hairline)', 'maxi-blocks'), value: 100 },
+                    { label: __('Extra Light (Ultra Light)', 'maxi-blocks'), value: 200 },
+                    { label: __('Light', 'maxi-blocks'), value: 300 },
+                    { label: __('Normal (Regular)', 'maxi-blocks'), value: 400 },
+                    { label: __('Medium', 'maxi-blocks'), value: 500 },
+                    { label: __('Semi Bold (Demi Bold)', 'maxi-blocks'), value: 600 },
+                    { label: __('Bold', 'maxi-blocks'), value: 700 },
+                    { label: __('Extra Bold (Ultra Bold)', 'maxi-blocks'), value: 800 },
+                    { label: __('Black (Heavy)', 'maxi-blocks'), value: 900 },
+                    { label: __('Extra Black (Ultra Black)', 'maxi-blocks'), value: 950 },
                 ]
             }
             const weightOptions = {
@@ -114,7 +114,7 @@ export default class Typography extends GXComponent {
             fontOptions.map(weight => {
                 let weightOption = {};
                 if (weightOptions[weight]) {
-                    weightOption.label = __(weightOptions[weight], 'gutenberg-extra');
+                    weightOption.label = __(weightOptions[weight], 'maxi-blocks');
                     weightOption.value = weight;
                     response.push(weightOption);
                 }
@@ -150,8 +150,8 @@ export default class Typography extends GXComponent {
         }
 
         return (
-            <div className={classes + ' ' + 'gx-typogrphy-inspect-panel'} /* This class doesn't come here...!*/> 
-                <div className="gx-typography-color-display">
+            <div className={classes + ' ' + 'maxi-typogrphy-inspect-panel'} /* This class doesn't come here...!*/> 
+                <div className="maxi-typography-color-display">
                     <span
                         style={{
                             background: value.general.color,
@@ -160,19 +160,19 @@ export default class Typography extends GXComponent {
                 </div>
                 <PopoverControl
                     label={value.label}
-                    className={'gx-typography-popover'}
-                    buttonText={__('Typography', 'gutenberg-extra')}
+                    className={'maxi-typography-popover'}
+                    buttonText={__('Typography', 'maxi-blocks')}
                     popovers={[
                         {
                             content: (
                                 <Fragment>
                                     <FontFamilySelector
-                                        className={'gx-font-family-selector'}
+                                        className={'maxi-font-family-selector'}
                                         font={value.font}
                                         onChange={(value) => onChangeValue(value, 'font')}
                                     />
                                     <ColorControl
-                                        label={__('Font Color', 'gutenberg-extra')}
+                                        label={__('Font Color', 'maxi-blocks')}
                                         color={value.general.color}
                                         defaultColor={defaultColor}
                                         onColorChange={value => onChangeValue(value, 'color')}
@@ -192,24 +192,24 @@ export default class Typography extends GXComponent {
                                         onChange={onSelect}
                                     />
                                     <SizeControl 
-                                        className={'gx-typography-size'}
-                                        label={__('Size', 'gutenberg-extra')}
+                                        className={'maxi-typography-size'}
+                                        label={__('Size', 'maxi-blocks')}
                                         unit={value[device][getKey(value[device], 0)]}
                                         onChangeUnit={value => onChangeValue(value, 0)}
                                         value={value[device][getKey(value[device], 1)]}
                                         onChangeValue={value => onChangeValue(value, 1)}
                                     />
                                     <SizeControl 
-                                        className={'gx-typography-line-height'}
-                                        label={__('Line Height', 'gutenberg-extra')}
+                                        className={'maxi-typography-line-height'}
+                                        label={__('Line Height', 'maxi-blocks')}
                                         unit={value[device][getKey(value[device], 2)]}
                                         onChangeUnit={value => onChangeValue(value, 2)}
                                         value={value[device][getKey(value[device], 3)]}
                                         onChangeValue={value => onChangeValue(value, 3)}
                                     />
                                     <SizeControl 
-                                        className={'gx-typography-letter-spacing'}
-                                        label={__('Letter Spacing', 'gutenberg-extra')}
+                                        className={'maxi-typography-letter-spacing'}
+                                        label={__('Letter Spacing', 'maxi-blocks')}
                                         unit={value[device][getKey(value[device], 4)]}
                                         onChangeUnit={value => onChangeValue(value, 4)}
                                         value={value[device][getKey(value[device], 5)]}
@@ -217,48 +217,48 @@ export default class Typography extends GXComponent {
                                     />
                                     <Divider />
                                     <SelectControl
-                                        label={__('Weight', 'gutenberg-extra')}
-                                        className="gx-title-typography-setting"
+                                        label={__('Weight', 'maxi-blocks')}
+                                        className="maxi-title-typography-setting"
                                         value={value[device][getKey(value[device], 6)]}
                                         options={getWeightOptions()}
                                         onChange={value => onChangeValue(value, 6)}
                                     />
                                     <SelectControl
-                                        label={__('Transform', 'gutenberg-extra')}
-                                        className="gx-title-typography-setting"
+                                        label={__('Transform', 'maxi-blocks')}
+                                        className="maxi-title-typography-setting"
                                         value={value[device][getKey(value[device], 7)]}
                                         options={[
-                                            { label: __('Default', 'gutenberg-extra'), value: 'none' },
-                                            { label: __('Capitilize', 'gutenberg-extra'), value: 'capitalize' },
-                                            { label: __('Uppercase', 'gutenberg-extra'), value: 'uppercase' },
-                                            { label: __('Lowercase', 'gutenberg-extra'), value: 'lowercase' },
-                                            { label: __('Full Width', 'gutenberg-extra'), value: 'full-width' },
-                                            { label: __('Full Size Kana', 'gutenberg-extra'), value: 'full-size-kana' },
+                                            { label: __('Default', 'maxi-blocks'), value: 'none' },
+                                            { label: __('Capitilize', 'maxi-blocks'), value: 'capitalize' },
+                                            { label: __('Uppercase', 'maxi-blocks'), value: 'uppercase' },
+                                            { label: __('Lowercase', 'maxi-blocks'), value: 'lowercase' },
+                                            { label: __('Full Width', 'maxi-blocks'), value: 'full-width' },
+                                            { label: __('Full Size Kana', 'maxi-blocks'), value: 'full-size-kana' },
                                         ]}
                                         onChange={value => onChangeValue(value, 7)}
                                     />
                                     <SelectControl
-                                        label={__('Style', 'gutenberg-extra')}
-                                        className="gx-title-typography-setting"
+                                        label={__('Style', 'maxi-blocks')}
+                                        className="maxi-title-typography-setting"
                                         value={value[device][getKey(value[device], 8)]}
                                         options={[
-                                            { label: __('Default', 'gutenberg-extra'), value: 'normal' },
-                                            { label: __('Italic', 'gutenberg-extra'), value: 'italic' },
-                                            { label: __('Oblique', 'gutenberg-extra'), value: 'oblique' },
+                                            { label: __('Default', 'maxi-blocks'), value: 'normal' },
+                                            { label: __('Italic', 'maxi-blocks'), value: 'italic' },
+                                            { label: __('Oblique', 'maxi-blocks'), value: 'oblique' },
                                             { label: __('Oblique (40 deg)'), value: 'oblique 40deg' },
                                         ]}
                                         onChange={value => onChangeValue(value, 8)}
                                     />
                                     <SelectControl
-                                        label={__('Decoration', 'gutenberg-extra')}
-                                        className="gx-title-typography-setting"
+                                        label={__('Decoration', 'maxi-blocks')}
+                                        className="maxi-title-typography-setting"
                                         value={value[device][getKey(value[device], 9)]}
                                         options={[
-                                            { label: __('Default', 'gutenberg-extra'), value: 'none' },
-                                            { label: __('Overline', 'gutenberg-extra'), value: 'overline' },
-                                            { label: __('Line Through', 'gutenberg-extra'), value: 'line-through' },
-                                            { label: __('Underline', 'gutenberg-extra'), value: 'underline' },
-                                            { label: __('Underline Overline', 'gutenberg-extra'), value: 'underline overline' },
+                                            { label: __('Default', 'maxi-blocks'), value: 'none' },
+                                            { label: __('Overline', 'maxi-blocks'), value: 'overline' },
+                                            { label: __('Line Through', 'maxi-blocks'), value: 'line-through' },
+                                            { label: __('Underline', 'maxi-blocks'), value: 'underline' },
+                                            { label: __('Underline Overline', 'maxi-blocks'), value: 'underline overline' },
                                         ]}
                                         onChange={value => onChangeValue(value, 9)}
                                     />

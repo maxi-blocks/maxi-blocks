@@ -52,7 +52,7 @@ const ColorControl = props => {
     } = props;
 
     const classes = classnames(
-        'components-base-control gx-colorcontrol-control', 
+        'components-base-control maxi-colorcontrol-control', 
         className
     );
 
@@ -71,7 +71,7 @@ const ColorControl = props => {
                             onChangeComplete={val => onColorChange(returnColor(val))}
                         />
                     ),
-                    classNamePopover: "gx-colorcontrol-color-popover gx-popover",
+                    classNamePopover: "maxi-colorcontrol-color-popover maxi-popover",
                     icon: colorIcon
                 },
             )
@@ -87,14 +87,14 @@ const ColorControl = props => {
                             />
                             {disableGradientAboveBackground &&
                                 <CheckBoxControl
-                                    label={__('Above Background Image', 'gutenberg-extra')}
+                                    label={__('Above Background Image', 'maxi-blocks')}
                                     checked={gradientAboveBackground}
                                     onChange={val => onGradientAboveBackgroundChange(val)}
                                 />
                             }
                         </Fragment>
                     ),
-                    classNamePopover: "gx-colorcontrol-gradient-popover gx-popover",
+                    classNamePopover: "maxi-colorcontrol-gradient-popover maxi-popover",
                     icon: gradientIcon
                 }
             )
@@ -114,7 +114,7 @@ const ColorControl = props => {
 
     return (
         <div className={classes}>
-            <div className="gx-colorcontrol-color-display">
+            <div className="maxi-colorcontrol-color-display">
                 <span
                     style={{
                         background: gradient ? gradient : color,

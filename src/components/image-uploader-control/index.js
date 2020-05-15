@@ -34,14 +34,14 @@ const MediaUploader = props => {
         imageData,
         onOpen = undefined,
         onClose = undefined,
-        placeholder = __('Set image', 'gutenberg-extra'),
+        placeholder = __('Set image', 'maxi-blocks'),
         extendSelector,
-        replaceButton = __('Replace image', 'gutenberg-extra'),
-        removeButton = __('Remove image', 'gutenberg-extra'),
+        replaceButton = __('Replace image', 'maxi-blocks'),
+        removeButton = __('Remove image', 'maxi-blocks'),
         alternativeImage
     } = props;
 
-    const classes = classnames('gx-mediauploader-control', className);
+    const classes = classnames('maxi-mediauploader-control', className);
 
     const onOpenImageModal = () => {
         !isNil(onOpenImageModal) && !isNil(onOpen) ?
@@ -57,12 +57,12 @@ const MediaUploader = props => {
             <MediaUploadCheck
                 fallback={
                     <p>
-                        {__('To edit this field, you need permission to upload media.', 'gutenberg-extra')}
+                        {__('To edit this field, you need permission to upload media.', 'maxi-blocks')}
                     </p>
                 }
             >
                 <MediaUpload
-                    title={__('Background image', 'gutenberg-extra')}
+                    title={__('Background image', 'maxi-blocks')}
                     onSelect={onSelectImage}
                     allowedTypes={['image']}
                     value={mediaID}
@@ -89,11 +89,11 @@ const MediaUploader = props => {
                                 <ResponsiveWrapper
                                     naturalWidth={alternativeImage? alternativeImage.width : imageData.media_details.width}
                                     naturalHeight={alternativeImage? alternativeImage.height : imageData.media_details.height}
-                                    className="gx-imageuploader-control-wrapper"
+                                    className="maxi-imageuploader-control-wrapper"
                                 >
                                     <img
                                         src={!isNil(alternativeImage) ? alternativeImage.source_url : imageData.source_url}
-                                        alt={__('Image', 'gutenberg-extra')}
+                                        alt={__('Image', 'maxi-blocks')}
                                     />
                                 </ResponsiveWrapper>
                             }
@@ -106,7 +106,7 @@ const MediaUploader = props => {
                 imageData &&
                 <MediaUploadCheck>
                     <MediaUpload
-                        title={__('Image', 'gutenberg-extra')}
+                        title={__('Image', 'maxi-blocks')}
                         onSelect={onSelectImage}
                         allowedTypes={['image']}
                         value={mediaID}
@@ -115,7 +115,7 @@ const MediaUploader = props => {
                                 onClick={open}
                                 isDefault
                                 isLarge
-                                className='gx-imageuploader-control-replace'
+                                className='maxi-imageuploader-control-replace'
                             >
                                 {replaceButton}
                             </Button>
@@ -130,7 +130,7 @@ const MediaUploader = props => {
                         onClick={onRemoveImage}
                         isLink
                         isDestructive
-                        className='gx-imageuploader-control-remove'
+                        className='maxi-imageuploader-control-remove'
                     >
                         {removeButton}
                     </Button>

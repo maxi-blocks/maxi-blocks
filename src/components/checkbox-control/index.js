@@ -29,9 +29,9 @@ const CheckBoxControl = props => {
     } = props;
 
     const instanceId = useInstanceId( CheckBoxControl );
-    const checkboxId = `gutenberg-extra-checkbox-${instanceId}`;
+    const checkboxId = `maxi-blocks-checkbox-${instanceId}`;
 
-    const classes = classnames('gutenberg-extra-checkbox-container', className);
+    const classes = classnames('maxi-blocks-checkbox-container', className);
 
     return (
         <BaseControl 
@@ -42,12 +42,12 @@ const CheckBoxControl = props => {
         >
             <label 
                 for={checkboxId}
-                className="gutenberg-extra-checkbox-label"
+                className="maxi-blocks-checkbox-label"
             >
                 <input 
                     id={checkboxId}
                     name={checkboxId}
-                    className="gutenberg-extra-checkbox-input"
+                    className="maxi-blocks-checkbox-input"
                     type="checkbox" 
                     onChange={el => onChange(el.target.checked)}
                     checked={checked}

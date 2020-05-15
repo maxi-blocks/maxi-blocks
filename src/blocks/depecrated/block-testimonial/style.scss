@@ -1,7 +1,7 @@
 body {
 	background: rebeccapurple;
 }
-.gutenberg-extra-testimonial-block {
+.maxi-blocks-testimonial-block {
 	blockquote {
 		border-left: none;
 		margin-bottom: 1em;
@@ -81,7 +81,7 @@ ol.carousel-indicators .active {
 	color: #000;
 }
 
-.gutenberg-extra-testimonial-slider-block.testimonial-slider {
+.maxi-blocks-testimonial-slider-block.testimonial-slider {
 	blockquote {
 		border-left: none;
 	}
@@ -128,20 +128,20 @@ ol.carousel-indicators .active {
 	width: 80%;
 	margin: auto;
 }
-.gutenberg-extra-testimonial-block {
+.maxi-blocks-testimonial-block {
 	float: left;
 	position: relative;
 	z-index: 9;
 	background-position: center;
 	background-size: cover;
 }
-.gutenberg-extra-testimonial-block-2{
+.maxi-blocks-testimonial-block-2{
 	width: 49%;
 }
-.gutenberg-extra-testimonial-block-3{
+.maxi-blocks-testimonial-block-3{
 	width: 30%;
 }
-.wp-block-gutenberg-extra-testimonials-slider-block, .testimonial-slider .carousel-inner{
+.wp-block-maxi-blocks-testimonials-slider-block, .testimonial-slider .carousel-inner{
 	background-repeat: no-repeat;
 	background-size: cover;
 	display: flex;
@@ -154,36 +154,36 @@ ol.carousel-indicators .active {
 /**
  * Setup css for background block
  */
-.gx-background-setting .components-color-palette__item-wrapper{
+.maxi-background-setting .components-color-palette__item-wrapper{
 	display: none;
 	opacity: 0;
 	width: 0;
 }
-.gx-background-setting .components-base-control__label, .gx-background-setting .block-editor-color-palette-control__color-palette {
+.maxi-background-setting .components-base-control__label, .maxi-background-setting .block-editor-color-palette-control__color-palette {
 	width: auto;
 }
-.gx-background-setting-panel .block-editor-panel-color-settings .components-panel__body-title,
-.gx-testimonial-setting-panel .block-editor-panel-color-settings .components-panel__body-title {
+.maxi-background-setting-panel .block-editor-panel-color-settings .components-panel__body-title,
+.maxi-testimonial-setting-panel .block-editor-panel-color-settings .components-panel__body-title {
 	display: none !important;
 }
-.gx-background-setting-panel label,
-.gx-testimonial-setting-panel label,
-.gx-testimonial-setting-panel .components-base-control__label,
-.gx-background-setting-panel .components-base-control__label {
+.maxi-background-setting-panel label,
+.maxi-testimonial-setting-panel label,
+.maxi-testimonial-setting-panel .components-base-control__label,
+.maxi-background-setting-panel .components-base-control__label {
 	font-size: 15px;
 	color: #464a53;
 	font-weight: 500;
 	letter-spacing: -0.5px;
 }
 
-.gx-testimonial-setting-panel input[type=text],
-.gx-testimonial-setting-panel input[type=number],
-.gx-testimonial-setting-panel textarea,
-.gx-testimonial-setting-panel select,
-.gx-background-setting-panel input[type=text],
-.gx-background-setting-panel input[type=number],
-.gx-background-setting-panel textarea,
-.gx-background-setting-panel select {
+.maxi-testimonial-setting-panel input[type=text],
+.maxi-testimonial-setting-panel input[type=number],
+.maxi-testimonial-setting-panel textarea,
+.maxi-testimonial-setting-panel select,
+.maxi-background-setting-panel input[type=text],
+.maxi-background-setting-panel input[type=number],
+.maxi-background-setting-panel textarea,
+.maxi-background-setting-panel select {
 	height: 40px;
 	border-radius: 5px;
 	background-color: rgba(33,141,250,0);
@@ -192,8 +192,8 @@ ol.carousel-indicators .active {
 	color: #464a53;
 	font-weight: 500;
 }
-.gx-testimonial-setting-panel .components-color-palette .components-color-palette__custom-clear-wrapper,
-.gx-background-setting-panel .components-color-palette .components-color-palette__custom-clear-wrapper {
+.maxi-testimonial-setting-panel .components-color-palette .components-color-palette__custom-clear-wrapper,
+.maxi-background-setting-panel .components-color-palette .components-color-palette__custom-clear-wrapper {
 	justify-content: flex-start;
 	flex-direction: row-reverse;
 	align-items: center;
@@ -205,25 +205,25 @@ button.is-small {
 	padding: 0 8px 1px;
 	font-size: 11px;
 }
-.gx-testimonial-setting-panel button.components-color-palette__clear,
-.gx-background-setting-panel button.components-color-palette__clear {
+.maxi-testimonial-setting-panel button.components-color-palette__clear,
+.maxi-background-setting-panel button.components-color-palette__clear {
 	font-size: 0 !important;
 	background: transparent !important;
 	border: none !important;
 }
-.gx-background-setting-panel button.components-range-control__reset::before,
-.gx-background-setting-panel button.components-color-palette__clear::before,
-.gx-testimonial-setting-panel button.components-range-control__reset::before,
-.gx-testimonial-setting-panel button.components-color-palette__clear::before,
-.gx-background-setting-panel .gx-popover button.components-range-control__reset::before,
-.gx-background-setting-panel .gx-background-custom-reset-option::before {
-	content: url(../img/gx-reset.svg) !important;
+.maxi-background-setting-panel button.components-range-control__reset::before,
+.maxi-background-setting-panel button.components-color-palette__clear::before,
+.maxi-testimonial-setting-panel button.components-range-control__reset::before,
+.maxi-testimonial-setting-panel button.components-color-palette__clear::before,
+.maxi-background-setting-panel .maxi-popover button.components-range-control__reset::before,
+.maxi-background-setting-panel .maxi-background-custom-reset-option::before {
+	content: url(../img/maxi-reset.svg) !important;
 	transform: scale(.75);
 }
-.gx-background-setting-panel .components-color-palette__custom-color button,
-.gx-background-setting-panel .gx-settings-button button,
-.gx-testimonial-setting-panel .components-color-palette__custom-color button,
-.gx-testimonial-setting-panel .gx-settings-button button
+.maxi-background-setting-panel .components-color-palette__custom-color button,
+.maxi-background-setting-panel .maxi-settings-button button,
+.maxi-testimonial-setting-panel .components-color-palette__custom-color button,
+.maxi-testimonial-setting-panel .maxi-settings-button button
 {
 	width: 57px;
 	height: 40px;
@@ -235,48 +235,48 @@ button.is-small {
 	text-align: center;
 	line-height: 22px;
 }
-.gx-testimonial-setting-panel .components-range-control button {
+.maxi-testimonial-setting-panel .components-range-control button {
 	background-color: rgba(33,141,250,0) !important;
 	border: none;
 	font-size: 0px;
 }
-.gx-testimonial-setting-panel .components-color-palette__custom-color button::before ,
-.gx-background-setting-panel .components-color-palette__custom-color button{
-	background-image: url(../img/icons/gx-colour-wheel.svg) !important;
+.maxi-testimonial-setting-panel .components-color-palette__custom-color button::before ,
+.maxi-background-setting-panel .components-color-palette__custom-color button{
+	background-image: url(../img/icons/maxi-colour-wheel.svg) !important;
 	background-repeat: no-repeat;
 	background-position: center center;
 	background-size: 50%;
 	margin: 6px auto;
 	// background-color: rgba(33,141,250,0) !important;
 }
-.gx-sidebar-testimonial .components-base-control__field,
-.gx-background-gradient .gx-image-form-and-reset
+.maxi-sidebar-testimonial .components-base-control__field,
+.maxi-background-gradient .maxi-image-form-and-reset
 {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 }
-.gx-settings-typography-button::before {
-	content: url(../img/gx-settings-icon.png) !important;
+.maxi-settings-typography-button::before {
+	content: url(../img/maxi-settings-icon.png) !important;
 	margin: 7px auto;
 	background-color: rgba(33,141,250,0) !important;
 }
-.gx-sidebar-testimonial .gx-settings-button button:not(.gx-background-setting-panel .gx-background-custom-reset-option)::before {
-	content: url(../img/gx-settings-icon.png) !important;
+.maxi-sidebar-testimonial .maxi-settings-button button:not(.maxi-background-setting-panel .maxi-background-custom-reset-option)::before {
+	content: url(../img/maxi-settings-icon.png) !important;
 	margin: 7px auto;
 	background-color: rgba(33,141,250,0) !important;
 }
 
-.edit-post-layout.is-sidebar-opened .edit-post-sidebar.gx-sidebar-testimonial{
+.edit-post-layout.is-sidebar-opened .edit-post-sidebar.maxi-sidebar-testimonial{
 	width: 450px !important;
 }
-.gx-background-setting-panel .gx-background-image-form {
+.maxi-background-setting-panel .maxi-background-image-form {
 	color: #000000 !important;
 }
-.gx-background-setting-panel .gx-background-image-form svg {
+.maxi-background-setting-panel .maxi-background-image-form svg {
 	margin: auto;
 }
-.gx-background-custom-reset-option{
+.maxi-background-custom-reset-option{
 	height: unset !important;
 	width:  unset !important;
 	border: unset !important;
@@ -299,11 +299,11 @@ button.is-small {
 }
 
 /**Gradient Color**/
-.gx-background-gradient .gpw
+.maxi-background-gradient .gpw
 {
 	position: relative;
 }
-.gx-background-gradient .popover
+.maxi-background-gradient .popover
 {
 	top: 60%;
 	right: 0%;
@@ -311,12 +311,12 @@ button.is-small {
 }
 
 ////need to remove
-//.gx-background-setting {
+//.maxi-background-setting {
 //	overflow-y: scroll;
 //}
 
 
-.gx-testimonial-setting-panel .gx-block-style select
+.maxi-testimonial-setting-panel .maxi-block-style select
 {
 	width: 160px;
 }
@@ -326,7 +326,7 @@ button.is-small {
 {
 	display: none;
 }
-//.testimonial-popover.gx-popover{
+//.testimonial-popover.maxi-popover{
 //	top: 32px !important;
 //	left: 995px !important;
 //	height: 340px !important;
@@ -412,7 +412,7 @@ Testimonial styles new
 	padding: 15px;
 }
 
-.gx-full-width-col {
+.maxi-full-width-col {
 	flex: 50%;
 	max-width: 100%;
 	box-sizing: border-box;

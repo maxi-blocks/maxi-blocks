@@ -70,7 +70,7 @@ class BoxShadow extends GXComponent {
         return (
             <Fragment>
                 <ColorControl
-                    label={__('Color', 'gutenberg-extra')}
+                    label={__('Color', 'maxi-blocks')}
                     color={value.shadowColor}
                     defaultColor={value.defaultShadowColor}
                     onColorChange={val => onChangeValue('shadowColor', val)}
@@ -78,8 +78,8 @@ class BoxShadow extends GXComponent {
                     disableGradientAboveBackground
                 />
                 <RangeControl
-                    label={__('Horizontal', 'gutenberg-extra')}
-                    className={'gx-shadow-horizontal-control'}
+                    label={__('Horizontal', 'maxi-blocks')}
+                    className={'maxi-shadow-horizontal-control'}
                     value={value.shadowHorizontal}
                     onChange={val => onChangeValue('shadowHorizontal', val)}
                     min={-100}
@@ -88,8 +88,8 @@ class BoxShadow extends GXComponent {
                     initialPosition={0}
                 />
                 <RangeControl
-                    label={__('Vertical', 'gutenberg-extra')}
-                    className={'gx-shadow-vertical-control'}
+                    label={__('Vertical', 'maxi-blocks')}
+                    className={'maxi-shadow-vertical-control'}
                     value={value.shadowVertical}
                     onChange={val => onChangeValue('shadowVertical', val)}
                     min={-100}
@@ -98,8 +98,8 @@ class BoxShadow extends GXComponent {
                     initialPosition={0}
                 />
                 <RangeControl
-                    label={__('Blur', 'gutenberg-extra')}
-                    className={'gx-shadow-blur-control'}
+                    label={__('Blur', 'maxi-blocks')}
+                    className={'maxi-shadow-blur-control'}
                     value={value.shadowBlur}
                     onChange={val => onChangeValue('shadowBlur', val)}
                     min={0}
@@ -108,8 +108,8 @@ class BoxShadow extends GXComponent {
                     initialPosition={0}
                 />
                 <RangeControl
-                    label={__('Spread', 'gutenberg-extra')}
-                    className={'gx-shadow-spread-control'}
+                    label={__('Spread', 'maxi-blocks')}
+                    className={'maxi-shadow-spread-control'}
                     value={value.shadowSpread}
                     onChange={val => onChangeValue('shadowSpread', val)}
                     min={-100}
@@ -131,11 +131,11 @@ const BoxShadowControl = props => {
         target
     } = props;
 
-    const classes = classnames('gx-boxshadow-control', className);
+    const classes = classnames('maxi-boxshadow-control', className);
 
     return (
         <PopoverControl
-            label={__('Box shadow', 'gutenberg-extra')}
+            label={__('Box shadow', 'maxi-blocks')}
             className={classes}
             popovers={[
                 {

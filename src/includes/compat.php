@@ -22,8 +22,8 @@ function gx_blocks_unregister_incompatible_blocks() {
 	<script>
 		window.addEventListener( 'DOMContentLoaded', function() {
 			wp.domReady( function() {
-				wp.blocks.unregisterBlockType( 'gx-blocks/newsletter' );
-				wp.blocks.unregisterBlockType( 'gx-blocks/ab-layouts' );
+				wp.blocks.unregisterBlockType( 'maxi-blocks/newsletter' );
+				wp.blocks.unregisterBlockType( 'maxi-blocks/ab-layouts' );
 			} );
 		} );
 	</script>

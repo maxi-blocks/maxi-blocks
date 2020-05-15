@@ -21,12 +21,12 @@ export const DescriptionColor = ( props ) => {
 
   return (
     <PanelColorSettings
-      title={__('Description Colour Settings', 'gutenberg-extra' )}
+      title={__('Description Colour Settings', 'maxi-blocks' )}
       colorSettings={[
         {
           value: descriptionColor,
           onChange: (value) => setAttributes({ descriptionColor: value }),
-          label: __('Description  Colour', 'gutenberg-extra' ),
+          label: __('Description  Colour', 'maxi-blocks' ),
         },
       ]}
     />

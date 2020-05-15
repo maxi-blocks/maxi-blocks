@@ -21,8 +21,8 @@ export const HideSubtitle = ( props ) => {
 
   return (
     <ToggleControl
-      label={__('Hide Subtitle', 'gutenberg-extra')}
-      id='gx-block-style'
+      label={__('Hide Subtitle', 'maxi-blocks')}
+      id='maxi-block-style'
       checked={hideSubtitle}
       onChange={(value) => {setAttributes({hideSubtitle: value})}}
     />

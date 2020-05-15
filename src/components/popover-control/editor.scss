@@ -1,12 +1,12 @@
-.gx-popover .components-color-picker .components-color-picker__body {
+.maxi-popover .components-color-picker .components-color-picker__body {
 	width: 100%;
 }
 
-.gx-popover .components-popover__content .gx-popover-dropdown {
+.maxi-popover .components-popover__content .maxi-popover-dropdown {
 	margin-left: auto;
 }
 
-.gx-popover .components-popover__content {
+.maxi-popover .components-popover__content {
 	min-width: 373px !important;
 }
 
@@ -18,7 +18,7 @@
 	box-shadow: 0 46px 133px rgba(150, 176, 203, 0.23) !important;
 }
 
-.gx-popover .components-color-picker {
+.maxi-popover .components-color-picker {
 	display: flex;
 	flex-direction: column;
 	background: white;
@@ -26,15 +26,15 @@
 	margin: auto;
 }
   
-.gx-popover .components-color-picker:hover {
+.maxi-popover .components-color-picker:hover {
 	background: white !important;
 }
   
-.gx-popover .components-color-picker .components-color-picker__saturation-color {
+.maxi-popover .components-color-picker .components-color-picker__saturation-color {
 	background-color: none !important;
 }
   
-.gx-popover
+.maxi-popover
 .components-color-picker
 .components-color-picker__body
 .components-color-picker__inputs-field
@@ -43,44 +43,44 @@
 	flex-direction: column;
 }
 
-.gx-popover button.components-range-control__reset:focus {
+.maxi-popover button.components-range-control__reset:focus {
 	outline: none !important;
 	border: none !important;
 }
 
-.components-popover__content .gx-typography-popover {
+.components-popover__content .maxi-typography-popover {
 	padding: 20px 24px 20px 17px;
 }
   
-.components-popover__content .gx-typography-popover .components-base-control__field {
+.components-popover__content .maxi-typography-popover .components-base-control__field {
 	align-items: unset;
 	position: relative;
 }
 
-.gx-popover
+.maxi-popover
 .components-popover__content{
 	padding: 20px;
 }
   
-.gx-popover >
+.maxi-popover >
 .components-popover__content >
-.gx-popover-control {
+.maxi-popover-control {
 	margin-bottom: 11px;
 }
 
-.gx-popover >
+.maxi-popover >
 .components-popover__content >
-.gx-popover-control > 
-.components-base-control.gx-settings-button >
+.maxi-popover-control > 
+.components-base-control.maxi-settings-button >
 .components-base-control__field{
 	display:flex;
 	position:relative;
 }
 
-.gx-popover >
+.maxi-popover >
 .components-popover__content >
-.gx-popover-control > 
-.components-base-control.gx-settings-button >
+.maxi-popover-control > 
+.components-base-control.maxi-settings-button >
 .components-base-control__field
 button.components-button.is-secondary{
 	position: absolute;
@@ -94,32 +94,32 @@ button.components-button.is-secondary{
 	justify-content: center;
 }
   
-.gx-popover >
+.maxi-popover >
 .components-popover__content >
-.gx-popover-control > 
-.components-base-control.gx-settings-button >
+.maxi-popover-control > 
+.components-base-control.maxi-settings-button >
 .components-base-control__field
 button.components-button.is-secondary:hover{
 	background-color: white !important;
   border-color: #c5c5c5 !important;
 }
 
-.gx-popover >
+.maxi-popover >
 .components-popover__content >
-.gx-popover-control > 
-.components-base-control.gx-settings-button >
+.maxi-popover-control > 
+.components-base-control.maxi-settings-button >
 .components-base-control__field
-.components-dropdown.gx-popover-dropdown{
+.components-dropdown.maxi-popover-dropdown{
 	position: absolute;
 	right:33px;
 }
 
-.gx-popover >
+.maxi-popover >
 .components-popover__content >
-.gx-popover-control > 
-.components-base-control.gx-settings-button >
+.maxi-popover-control > 
+.components-base-control.maxi-settings-button >
 .components-base-control__field
-.components-dropdown.gx-popover-dropdown >
+.components-dropdown.maxi-popover-dropdown >
 button.components-button.is-secondary{
 	width:30px;
 	height:30px;
@@ -130,46 +130,46 @@ button.components-button.is-secondary{
 	justify-content: center;
 }
 
-.gx-popover >
+.maxi-popover >
 .components-popover__content >
-.gx-popover-control > 
-.components-base-control.gx-settings-button >
+.maxi-popover-control > 
+.components-base-control.maxi-settings-button >
 .components-base-control__field
-.components-dropdown.gx-popover-dropdown >
+.components-dropdown.maxi-popover-dropdown >
 button.components-button.is-secondary:hover{
 	background-color: white !important;
   border-color: #c5c5c5 !important;
 }
   
-.gx-popover >
+.maxi-popover >
 .components-popover__content >
-.components-base-control.components-base-control.gx-alignmentcontrol-control.components-radio-control >
+.components-base-control.components-base-control.maxi-alignmentcontrol-control.components-radio-control >
 .components-base-control__field{
 	display:flex;
 	position:relative;
 	justify-content: flex-end;
 }
 
-.gx-popover >
+.maxi-popover >
 .components-popover__content >
-.components-base-control.components-base-control.gx-alignmentcontrol-control.components-radio-control >
+.components-base-control.components-base-control.maxi-alignmentcontrol-control.components-radio-control >
 .components-base-control__field > label{
 	position: absolute;
 	left: 0;
 	top: -3px;
 }
 
-.gx-popover >
+.maxi-popover >
 .components-popover__content >
-.components-base-control.components-base-control.gx-alignmentcontrol-control.components-radio-control >
+.components-base-control.components-base-control.maxi-alignmentcontrol-control.components-radio-control >
 .components-base-control__field >
 .components-radio-control__option > input[type="radio"]{
 	display:none;
 }
 
-.gx-popover >
+.maxi-popover >
 .components-popover__content >
-.components-base-control.components-base-control.gx-alignmentcontrol-control.components-radio-control >
+.components-base-control.components-base-control.maxi-alignmentcontrol-control.components-radio-control >
 .components-base-control__field >
 .components-radio-control__option > label{
 	display:flex;
@@ -179,34 +179,34 @@ button.components-button.is-secondary:hover{
 	height:29px;
 }
 
-.gx-popover >
+.maxi-popover >
 .components-popover__content >
-.components-base-control.components-base-control.gx-alignmentcontrol-control.components-radio-control >
+.components-base-control.components-base-control.maxi-alignmentcontrol-control.components-radio-control >
 .components-base-control__field >
 .components-radio-control__option > label > svg{
 	position:relative;
 	top:2px;
 }
 
-.gx-popover >
+.maxi-popover >
 .components-popover__content >
-.components-base-control.components-base-control.gx-alignmentcontrol-control.components-radio-control >
+.components-base-control.components-base-control.maxi-alignmentcontrol-control.components-radio-control >
 .components-base-control__field >
 .components-radio-control__option:nth-of-type(1) > label{
 	border-radius: 5px 0 0 5px;
 }
 
-.gx-popover >
+.maxi-popover >
 .components-popover__content >
-.components-base-control.components-base-control.gx-alignmentcontrol-control.components-radio-control >
+.components-base-control.components-base-control.maxi-alignmentcontrol-control.components-radio-control >
 .components-base-control__field >
 .components-radio-control__option:last-child > label{
 	border-radius: 0 5px 5px 0;
 }
 
-.gx-popover >
+.maxi-popover >
 .components-popover__content >
-.components-base-control.components-base-control.gx-alignmentcontrol-control.components-radio-control >
+.components-base-control.components-base-control.maxi-alignmentcontrol-control.components-radio-control >
 .components-base-control__field >
 .components-radio-control__option > input[type="radio"]:checked + label{
 	-webkit-box-shadow: 0 0 0 2px #007cba;
@@ -217,24 +217,24 @@ button.components-button.is-secondary:hover{
 	border:2px solid #007cba;
 }
 
-.gx-popover >
+.maxi-popover >
 .components-popover__content >
-.components-base-control.gx-unit-control.components-radio-control{
+.components-base-control.maxi-unit-control.components-radio-control{
 	position:relative;
 	top:1px;
 }
 
 .components-popover__content
-.components-base-control.components-range-control.gx-shadow-horizontal-control >
+.components-base-control.components-range-control.maxi-shadow-horizontal-control >
 .components-base-control__field,
 .components-popover__content
-.components-base-control.components-range-control.gx-shadow-vertical-control >
+.components-base-control.components-range-control.maxi-shadow-vertical-control >
 .components-base-control__field,
 .components-popover__content
-.components-base-control.components-range-control.gx-shadow-blur-control >
+.components-base-control.components-range-control.maxi-shadow-blur-control >
 .components-base-control__field,
 .components-popover__content
-.components-base-control.components-range-control.gx-shadow-spread-control >
+.components-base-control.components-range-control.maxi-shadow-spread-control >
 .components-base-control__field{
 	display:flex;
 	justify-content: space-between;
@@ -242,50 +242,50 @@ button.components-button.is-secondary:hover{
 }
 
 .components-popover__content
-.components-base-control.components-range-control.gx-shadow-horizontal-control >
+.components-base-control.components-range-control.maxi-shadow-horizontal-control >
 .components-base-control__field > label,
 .components-popover__content
-.components-base-control.components-range-control.gx-shadow-vertical-control >
+.components-base-control.components-range-control.maxi-shadow-vertical-control >
 .components-base-control__field > label,
 .components-popover__content
-.components-base-control.components-range-control.gx-shadow-blur-control >
+.components-base-control.components-range-control.maxi-shadow-blur-control >
 .components-base-control__field > label,
 .components-popover__content
-.components-base-control.components-range-control.gx-shadow-spread-control >
+.components-base-control.components-range-control.maxi-shadow-spread-control >
 .components-base-control__field > label{
 	width:auto !important;
 }
 
 .components-popover__content
-.components-base-control.components-range-control.gx-shadow-horizontal-control >
+.components-base-control.components-range-control.maxi-shadow-horizontal-control >
 .components-base-control__field >
 input.components-range-control__number,
 .components-popover__content
-.components-base-control.components-range-control.gx-shadow-vertical-control >
+.components-base-control.components-range-control.maxi-shadow-vertical-control >
 .components-base-control__field >
 input.components-range-control__number,
 .components-popover__content
-.components-base-control.components-range-control.gx-shadow-blur-control >
+.components-base-control.components-range-control.maxi-shadow-blur-control >
 .components-base-control__field >
 input.components-range-control__number,
 .components-popover__content
-.components-base-control.components-range-control.gx-shadow-spread-control >
+.components-base-control.components-range-control.maxi-shadow-spread-control >
 .components-base-control__field >
 input.components-range-control__number{
 	position:absolute;
 	right:33px !important;
 }
 
-.gx-popover >
+.maxi-popover >
 .components-popover__content
-.components-base-control.components-range-control.gx-with-unit-control 
+.components-base-control.components-range-control.maxi-with-unit-control 
 .components-range-control__wrapper.css-pp5lt-Wrapper.exqw8y21{
 	display:none !important;
 }
 
-.gx-popover >
+.maxi-popover >
 .components-popover__content
-.components-base-control.components-range-control.gx-with-unit-control >
+.components-base-control.components-range-control.maxi-with-unit-control >
 .components-base-control__field
 .components-range-control__root.css-yaebbd-Root.exqw8y20
   button.components-button.is-secondary{
@@ -293,16 +293,16 @@ input.components-range-control__number{
 	width:30px !important;
 }
 
-.gx-popover >
+.maxi-popover >
 .components-popover__content
-.components-base-control.components-range-control.gx-with-unit-control 
+.components-base-control.components-range-control.maxi-with-unit-control 
 .components-base-control__label{
 	width:100% !important;
 }
 
-.gx-popover >
+.maxi-popover >
 .components-popover__content
-.components-base-control.components-range-control.gx-with-unit-control 
+.components-base-control.components-range-control.maxi-with-unit-control 
 .components-range-control__number.css-1foiknu-InputNumber.exqw8y213{
 	width: 48px;
 	min-width: 40px !important;
@@ -334,74 +334,74 @@ input.components-range-control__number{
   margin-top: -1px;
 }
 
-.gx-popover .components-popover__content .gx-colorcontrol-control {
+.maxi-popover .components-popover__content .maxi-colorcontrol-control {
 	margin-bottom: 9px;
 }
 
-.gx-popover .components-range-control {
+.maxi-popover .components-range-control {
 	height: 30px;
 }
   
-.gx-popover .components-range-control__number {
+.maxi-popover .components-range-control__number {
 	height: 20px !important;
 	margin-left: 1px;
 }
   
-.gx-popover .gx-unit-control .components-base-control__field {
+.maxi-popover .maxi-unit-control .components-base-control__field {
 	top: -2px;
 	left: -1px;
 	position: relative;
 }
   
-.gx-popover .components-range-control__number {
+.maxi-popover .components-range-control__number {
 	top: -2px !important;
 	left: 248px;
 }
   
-.gx-popover .components-range-control__reset {
+.maxi-popover .components-range-control__reset {
 	top: 23px !important;
 }
   
-.gx-popover .gx-with-unit-control .components-base-control__label {
+.maxi-popover .maxi-with-unit-control .components-base-control__label {
 	margin-bottom: 27px !important;
 }
 
-.gx-popover .gx-settings-button .components-button[type="reset"] {
+.maxi-popover .maxi-settings-button .components-button[type="reset"] {
 	width: 28px;
 	height: 28px;
 }
   
-.gx-popover .gx-settings-button .components-button[type="reset"] svg {
+.maxi-popover .maxi-settings-button .components-button[type="reset"] svg {
 	margin: auto;
 	height: 15px;
 }
   
-.gx-popover .gx-settings-button .components-base-control__field {
+.maxi-popover .maxi-settings-button .components-base-control__field {
 	display: flex;
 	justify-content: space-between;
 }
   
-.gx-popover .gx-settings-button .components-base-control__field .components-button[type="reset"] {
+.maxi-popover .maxi-settings-button .components-base-control__field .components-button[type="reset"] {
 	padding: 5px !important;
 	order: 1;
 	color: black;
 }
   
-.gx-popover .gx-settings-button .components-base-control__field .components-button[type="reset"]:focus {
+.maxi-popover .maxi-settings-button .components-base-control__field .components-button[type="reset"]:focus {
 	box-shadow: none !important;
 }
   
-.gx-popover .gx-font-family-selector-button {
+.maxi-popover .maxi-font-family-selector-button {
 	width: 100%;
 }
   
-.gx-popover .gx-settings-button .components-base-control__field .gx-popover-dropdown {
+.maxi-popover .maxi-settings-button .components-base-control__field .maxi-popover-dropdown {
   margin-left: auto;
   margin-right: 5px !important;
 }
   
-.gx-popover .gx-settings-button .components-base-control__field .components-button[type="reset"],
-.gx-popover .gx-settings-button .components-base-control__field .components-button[action="popup"] {
+.maxi-popover .maxi-settings-button .components-base-control__field .components-button[type="reset"],
+.maxi-popover .maxi-settings-button .components-base-control__field .components-button[action="popup"] {
 	width: 30px;
 	height: 30px;
 	background: transparent !important;
@@ -409,33 +409,33 @@ input.components-range-control__number{
 	border-radius: 5px;
 }
 
-.gx-sidebar .gx-popover-control .gx-settings-button button:before {
+.maxi-sidebar .maxi-popover-control .maxi-settings-button button:before {
   content: none !important;
 }
 
-.gx-sidebar .gx-popover-control .gx-settings-button button svg {
+.maxi-sidebar .maxi-popover-control .maxi-settings-button button svg {
   fill: #000;
 }
 
-.gx-sidebar .gx-popover-control .gx-settings-button .gx-popover-dropdown {
+.maxi-sidebar .maxi-popover-control .maxi-settings-button .maxi-popover-dropdown {
   display: inherit;
 }
 
-.gx-sidebar .gx-popover-control .gx-settings-button button[type=reset] {
+.maxi-sidebar .maxi-popover-control .maxi-settings-button button[type=reset] {
   border: none;
   box-shadow: none;
 }
 
-.gx-popover > .components-popover__content > .gx-popover-control {
+.maxi-popover > .components-popover__content > .maxi-popover-control {
   margin-bottom: 11px;
 }
 
-.gx-popover > .components-popover__content > .gx-popover-control > .components-base-control.gx-settings-button > .components-base-control__field {
+.maxi-popover > .components-popover__content > .maxi-popover-control > .components-base-control.maxi-settings-button > .components-base-control__field {
   display: flex;
   position: relative;
 }
 
-.gx-popover > .components-popover__content > .gx-popover-control > .components-base-control.gx-settings-button > .components-base-control__field button.components-button.is-secondary {
+.maxi-popover > .components-popover__content > .maxi-popover-control > .components-base-control.maxi-settings-button > .components-base-control__field button.components-button.is-secondary {
   position: absolute;
   right: 0;
   top:-2px;
@@ -448,13 +448,13 @@ input.components-range-control__number{
   justify-content: center;
 }
 
-.gx-popover > .components-popover__content > .gx-popover-control > .components-base-control.gx-settings-button > .components-base-control__field .components-dropdown.gx-popover-dropdown {
+.maxi-popover > .components-popover__content > .maxi-popover-control > .components-base-control.maxi-settings-button > .components-base-control__field .components-dropdown.maxi-popover-dropdown {
   position: absolute;
   right: 30px;
   top: 0;
 }
 
-.gx-popover > .components-popover__content > .gx-popover-control > .components-base-control.gx-settings-button > .components-base-control__field .components-dropdown.gx-popover-dropdown > button.components-button.is-secondary {
+.maxi-popover > .components-popover__content > .maxi-popover-control > .components-base-control.maxi-settings-button > .components-base-control__field .components-dropdown.maxi-popover-dropdown > button.components-button.is-secondary {
   width: 30px;
   height: 30px;
   border: 1px solid #dddfe1 !important;
@@ -464,19 +464,19 @@ input.components-range-control__number{
   justify-content: center;
 }
 
-.gx-popover > .components-popover__content > .components-base-control.components-base-control.gx-alignmentcontrol-control.components-radio-control > .components-base-control__field {
+.maxi-popover > .components-popover__content > .components-base-control.components-base-control.maxi-alignmentcontrol-control.components-radio-control > .components-base-control__field {
   display: flex;
   position: relative;
   justify-content: flex-end;
 }
 
-.gx-popover > .components-popover__content > .components-base-control.components-base-control.gx-alignmentcontrol-control.components-radio-control > .components-base-control__field > label {
+.maxi-popover > .components-popover__content > .components-base-control.components-base-control.maxi-alignmentcontrol-control.components-radio-control > .components-base-control__field > label {
   position: absolute;
   left: 0;
   top: -3px;
 }
 
-.gx-popover > .components-popover__content > .components-base-control.components-base-control.gx-alignmentcontrol-control.components-radio-control > .components-base-control__field > .components-radio-control__option > input[type="radio"]:checked + label {
+.maxi-popover > .components-popover__content > .components-base-control.components-base-control.maxi-alignmentcontrol-control.components-radio-control > .components-base-control__field > .components-radio-control__option > input[type="radio"]:checked + label {
   -webkit-box-shadow: 0 0 0 2px #007cba;
   box-shadow: 0 0 0 2px #007cba;
   outline: 1px solid transparent;
@@ -485,11 +485,11 @@ input.components-range-control__number{
   border: 2px solid #007cba;
 }
 
-.gx-popover > .components-popover__content > .components-base-control.components-base-control.gx-alignmentcontrol-control.components-radio-control > .components-base-control__field > .components-radio-control__option:nth-of-type(1) > label {
+.maxi-popover > .components-popover__content > .components-base-control.components-base-control.maxi-alignmentcontrol-control.components-radio-control > .components-base-control__field > .components-radio-control__option:nth-of-type(1) > label {
   border-radius: 5px 0 0 5px;
 }
 
-.gx-popover > .components-popover__content > .components-base-control.components-base-control.gx-alignmentcontrol-control.components-radio-control > .components-base-control__field > .components-radio-control__option > label {
+.maxi-popover > .components-popover__content > .components-base-control.components-base-control.maxi-alignmentcontrol-control.components-radio-control > .components-base-control__field > .components-radio-control__option > label {
   display: flex;
   justify-content: center;
   border: 1px solid #dddfe1 !important;
@@ -497,21 +497,21 @@ input.components-range-control__number{
   height: 29px;
 }
 
-.gx-popover > .components-popover__content > .components-base-control.components-base-control.gx-alignmentcontrol-control.components-radio-control > .components-base-control__field > .components-radio-control__option > label > svg {
+.maxi-popover > .components-popover__content > .components-base-control.components-base-control.maxi-alignmentcontrol-control.components-radio-control > .components-base-control__field > .components-radio-control__option > label > svg {
   position: relative;
   top: 2px;
 }
 
-.gx-popover > .components-popover__content > .components-base-control.components-base-control.gx-alignmentcontrol-control.components-radio-control > .components-base-control__field > .components-radio-control__option:last-child > label {
+.maxi-popover > .components-popover__content > .components-base-control.components-base-control.maxi-alignmentcontrol-control.components-radio-control > .components-base-control__field > .components-radio-control__option:last-child > label {
   border-radius: 0 5px 5px 0;
 }
 
-.gx-popover > .components-popover__content > .components-base-control.gx-unit-control.components-radio-control {
+.maxi-popover > .components-popover__content > .components-base-control.maxi-unit-control.components-radio-control {
   position: relative;
   top: 1px;
 }
 
-.gx-popover > .components-popover__content .components-base-control.components-range-control.gx-with-unit-control .components-base-control__label {
+.maxi-popover > .components-popover__content .components-base-control.components-range-control.maxi-with-unit-control .components-base-control__label {
   width: 100% !important;
 }
 
@@ -519,11 +519,11 @@ input.components-range-control__number{
   height: 100%;
 }
 
-.gx-popover label{
+.maxi-popover label{
   font-weight:500;
 }
 
-.gx-popover input[type="number"]{
+.maxi-popover input[type="number"]{
   min-height: unset;
   max-height: unset !important;
   border-radius: 5px;
@@ -540,7 +540,7 @@ input.components-range-control__number{
   transition: box-shadow .1s linear;
 }
 
-.gx-popover button.components-range-control__reset {
+.maxi-popover button.components-range-control__reset {
   font-size: 0 !important;
   background: transparent !important;
   min-width: 30px;
@@ -549,13 +549,13 @@ input.components-range-control__number{
   border-radius: 5px;
 }
 
-.gx-popover button.components-range-control__reset{
+.maxi-popover button.components-range-control__reset{
   border: 1px solid #dddfe1 !important;
   opacity: 1 !important;
 }
 
-.gx-popover button.components-range-control__reset:before {
-  content: url("../img/gx-reset.svg") !important;
+.maxi-popover button.components-range-control__reset:before {
+  content: url("../img/maxi-reset.svg") !important;
   margin: auto;
   margin-left: auto;
   color: #464a53;
@@ -563,64 +563,64 @@ input.components-range-control__number{
   height: 18px;
 }
 
-.gx-popover button.components-range-control__reset {
+.maxi-popover button.components-range-control__reset {
   font-size: 0 !important;
 }
 
-.gx-popover .components-popover__content {
+.maxi-popover .components-popover__content {
   min-width: 373px !important;
 }
 
-div.gx-popover .components-popover__content {
+div.maxi-popover .components-popover__content {
   padding: 20px;
   min-width: 373px !important;
 }
 
-.gx-popover .components-base-control__label{
+.maxi-popover .components-base-control__label{
   font-weight: 500;
 }
 
-.gx-popover label{
+.maxi-popover label{
   color: #464a53;
   font-weight: 500;
 }
 
-.gx-popover button.components-range-control__reset{
+.maxi-popover button.components-range-control__reset{
   border: 1px solid #dddfe1 !important;
   opacity: 1 !important;
 }
 
-.gx-popover label, .gx-popover .components-base-control__label{
+.maxi-popover label, .maxi-popover .components-base-control__label{
   font-weight:500;
 }
 
-.gx-typography-popover-styles
+.maxi-typography-popover-styles
 .components-button.components-range-control__reset.is-secondary.is-small{
   position:unset !important;
 }
 
-.gx-typography-popover-styles > div:nth-of-type(2) {
+.maxi-typography-popover-styles > div:nth-of-type(2) {
   margin-bottom: 5px !important;
 }
 
-.gx-typography-popover-styles > div:nth-of-type(2) > div:first-child{
+.maxi-typography-popover-styles > div:nth-of-type(2) > div:first-child{
   position:relative;
   top:1px;
 }
 
-.gx-typography-popover-styles > div:nth-of-type(3) > div:first-child{
+.maxi-typography-popover-styles > div:nth-of-type(3) > div:first-child{
   position:relative;
   top:1px;
 }
 
-.gx-typography-popover-styles > div:nth-of-type(2) .components-range-control__number,
-.gx-typography-popover-styles > div:nth-of-type(3) .components-range-control__number,
-.gx-typography-popover-styles > div:nth-of-type(2) .components-button.components-range-control__reset.is-secondary.is-small,
-.gx-typography-popover-styles > div:nth-of-type(3) .components-button.components-range-control__reset.is-secondary.is-small{
+.maxi-typography-popover-styles > div:nth-of-type(2) .components-range-control__number,
+.maxi-typography-popover-styles > div:nth-of-type(3) .components-range-control__number,
+.maxi-typography-popover-styles > div:nth-of-type(2) .components-button.components-range-control__reset.is-secondary.is-small,
+.maxi-typography-popover-styles > div:nth-of-type(3) .components-button.components-range-control__reset.is-secondary.is-small{
   margin-top:-70px !important;
 }
 
-.gx-typography-popover-styles > div:nth-of-type(4)
+.maxi-typography-popover-styles > div:nth-of-type(4)
 .components-base-control__field
 .components-range-control__slider{
   display:block;
@@ -632,7 +632,7 @@ div.gx-popover .components-popover__content {
   max-width: 75% !important;
 }
 
-.gx-typography-popover-styles > div:nth-of-type(4)
+.maxi-typography-popover-styles > div:nth-of-type(4)
 .components-range-control__number{
   position: absolute;
   right:0;
@@ -640,8 +640,8 @@ div.gx-popover .components-popover__content {
   margin-left: 20px !important;
 }
 
-.gx-typography-popover-styles > div:nth-of-type(2) .components-range-control__slider ,
-.gx-typography-popover-styles > div:nth-of-type(3) .components-range-control__slider{
+.maxi-typography-popover-styles > div:nth-of-type(2) .components-range-control__slider ,
+.maxi-typography-popover-styles > div:nth-of-type(3) .components-range-control__slider{
   display:none;
 }
 
@@ -705,7 +705,7 @@ div.gx-popover .components-popover__content {
     top: 21px !important;
   }
 
-  .gx-popover button.components-range-control__reset {
+  .maxi-popover button.components-range-control__reset {
     font-size: 0 !important;
     background: transparent !important;
     min-width: 26px;
@@ -715,30 +715,30 @@ div.gx-popover .components-popover__content {
     margin-right: 0 !important;
   }
       
-  .gx-popover > .components-popover__content .components-base-control.gx-colorcontrol-control button.components-button.is-secondary > svg{
+  .maxi-popover > .components-popover__content .components-base-control.maxi-colorcontrol-control button.components-button.is-secondary > svg{
     width:18px !important;
     height:18px !important;
   }
     
-  .gx-typography-popover-styles
+  .maxi-typography-popover-styles
   .components-base-control.components-radio-control
   .components-base-control__field{
     position:relative;
     left:1px !important;
   }
 
-  .gx-typography-popover-styles > div:nth-of-type(2) .components-base-control__field .components-range-control__number,
-  .gx-typography-popover-styles > div:nth-of-type(3) .components-base-control__field .components-range-control__number{
+  .maxi-typography-popover-styles > div:nth-of-type(2) .components-base-control__field .components-range-control__number,
+  .maxi-typography-popover-styles > div:nth-of-type(3) .components-base-control__field .components-range-control__number{
     margin-top:-76px !important;
     margin-left:235px !important;
   }
 
-  .gx-typography-popover-styles > div:nth-of-type(2) .components-base-control__field .components-button.components-range-control__reset.is-secondary.is-small,
-  .gx-typography-popover-styles > div:nth-of-type(3) .components-base-control__field .components-button.components-range-control__reset.is-secondary.is-small{
+  .maxi-typography-popover-styles > div:nth-of-type(2) .components-base-control__field .components-button.components-range-control__reset.is-secondary.is-small,
+  .maxi-typography-popover-styles > div:nth-of-type(3) .components-base-control__field .components-button.components-range-control__reset.is-secondary.is-small{
     margin-top:-76px !important;
   }
 
-  .gx-typography-popover-styles > div:nth-of-type(4) .components-base-control__field .components-range-control__slider{
+  .maxi-typography-popover-styles > div:nth-of-type(4) .components-base-control__field .components-range-control__slider{
     display:block;
     box-shadow: none;
     background:none;
@@ -748,7 +748,7 @@ div.gx-popover .components-popover__content {
     max-width: 74% !important;
   }
 
-  .gx-typography-popover-styles > div:nth-of-type(4) 
+  .maxi-typography-popover-styles > div:nth-of-type(4) 
   .components-range-control__number{
     position: absolute;
     right:0;
@@ -756,23 +756,23 @@ div.gx-popover .components-popover__content {
     margin-left: 7px !important;
   }
 
-  .gx-typography-popover-styles > div:nth-of-type(2) > div:first-child {
+  .maxi-typography-popover-styles > div:nth-of-type(2) > div:first-child {
     position: relative;
     top: -1px;
   }
 
-  .gx-typography-popover-styles > div:nth-of-type(3) > div:first-child {
+  .maxi-typography-popover-styles > div:nth-of-type(3) > div:first-child {
     position: relative;
     top: -1px;
   }
 
-  .gx-typography-popover-styles > div:last-child .components-range-control__number {
+  .maxi-typography-popover-styles > div:last-child .components-range-control__number {
     position: absolute;
     top: 3px;
     margin-left: 51px;
   }
 
-  .gx-typography-popover-styles > div:last-child .components-range-control__slider {
+  .maxi-typography-popover-styles > div:last-child .components-range-control__slider {
     display: block;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -783,7 +783,7 @@ div.gx-popover .components-popover__content {
     max-width: 50%;
   }
 
-  .components-popover__content .gx-typography-popover {
+  .components-popover__content .maxi-typography-popover {
     padding: 0px 0px 20px;
   }
 
@@ -807,24 +807,24 @@ div.gx-popover .components-popover__content {
     margin-top: 1px !important;
   }
 
-  .gx-popover >
+  .maxi-popover >
   .components-popover__content >
-  .components-base-control.gx-unit-control.components-radio-control{
+  .components-base-control.maxi-unit-control.components-radio-control{
     position:relative;
     top:-1px !important;
   }
 
-  .gx-popover >
+  .maxi-popover >
   .components-popover__content
-  .components-base-control.gx-colorcontrol-control
+  .components-base-control.maxi-colorcontrol-control
   button.components-button.is-secondary{
     width:26px !important;
     height:26px !important;
   }
 
-  .gx-popover >
+  .maxi-popover >
   .components-popover__content
-  .components-base-control.gx-colorcontrol-control
+  .components-base-control.maxi-colorcontrol-control
   .components-base-control__field > 
   button.components-button.is-secondary > svg{
     transform:scale(1.3) !important;
@@ -833,11 +833,11 @@ div.gx-popover .components-popover__content {
     right: 0.5px;
   }
 
-  .gx-popover > .components-popover__content >
-  .gx-popover-control >
-  .components-base-control.gx-settings-button >
+  .maxi-popover > .components-popover__content >
+  .maxi-popover-control >
+  .components-base-control.maxi-settings-button >
   .components-base-control__field
-  .components-dropdown.gx-popover-dropdown >
+  .components-dropdown.maxi-popover-dropdown >
   button.components-button.is-secondary{
     width:26px !important;
     height:26px !important;
@@ -845,18 +845,18 @@ div.gx-popover .components-popover__content {
     left:4px !important;
   }
       
-  .gx-popover > .components-popover__content >
-  .gx-popover-control >
-  .components-base-control.gx-settings-button >
+  .maxi-popover > .components-popover__content >
+  .maxi-popover-control >
+  .components-base-control.maxi-settings-button >
   .components-base-control__field
   button.components-button.is-secondary {
     width: 26px !important;
     height:26px !important;
   }    
 
-  .gx-popover > .components-popover__content >
-  .gx-popover-control >
-  .components-base-control.gx-settings-button >
+  .maxi-popover > .components-popover__content >
+  .maxi-popover-control >
+  .components-base-control.maxi-settings-button >
   .components-base-control__field >
   button.components-button.is-secondary > svg {
     transform:scale(1.3) !important;
@@ -865,25 +865,25 @@ div.gx-popover .components-popover__content {
     right: 0.5px;
   }  
 
-  .gx-popover >
+  .maxi-popover >
   .components-popover__content > div:last-child{
     margin-bottom: 20px !important;
   }
 
   .components-popover__content
-  .components-base-control.components-range-control.gx-shadow-horizontal-control >
+  .components-base-control.components-range-control.maxi-shadow-horizontal-control >
   .components-base-control__field >
   input.components-range-control__number,
   .components-popover__content
-  .components-base-control.components-range-control.gx-shadow-vertical-control >
+  .components-base-control.components-range-control.maxi-shadow-vertical-control >
   .components-base-control__field >
   input.components-range-control__number,
   .components-popover__content
-  .components-base-control.components-range-control.gx-shadow-blur-control >
+  .components-base-control.components-range-control.maxi-shadow-blur-control >
   .components-base-control__field >
   input.components-range-control__number,
   .components-popover__content
-  .components-base-control.components-range-control.gx-shadow-spread-control >
+  .components-base-control.components-range-control.maxi-shadow-spread-control >
   .components-base-control__field >
   input.components-range-control__number{
     position:absolute;
@@ -891,9 +891,9 @@ div.gx-popover .components-popover__content {
     left:243px !important;
   }
 
-  .gx-popover >
+  .maxi-popover >
   .components-popover__content
-  .components-base-control.components-range-control.gx-with-unit-control >
+  .components-base-control.components-range-control.maxi-with-unit-control >
   .components-base-control__field
   .components-range-control__root.css-yaebbd-Root.exqw8y20 >
   .css-uojzqi-ActionRightWrapper.exqw8y214 > 
@@ -903,9 +903,9 @@ div.gx-popover .components-popover__content {
     height:28px !important;
   }
 
-  .gx-popover >
+  .maxi-popover >
   .components-popover__content
-  .components-base-control.components-range-control.gx-with-unit-control 
+  .components-base-control.components-range-control.maxi-with-unit-control 
   .components-range-control__root.css-yaebbd-Root.exqw8y20 >
   .components-range-control__number.css-1foiknu-InputNumber.exqw8y213{
     width: 43px;

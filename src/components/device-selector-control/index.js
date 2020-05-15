@@ -31,7 +31,7 @@ const DeviceSelectorControl = props => {
         onChange,
     } = props;
 
-    let classes = classnames('gx-device-control');
+    let classes = classnames('maxi-device-control');
     classes = classnames(classes, className);
 
     return (

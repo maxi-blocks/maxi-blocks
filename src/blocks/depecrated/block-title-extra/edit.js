@@ -92,7 +92,7 @@ const edit = (props) => {
         setAttributes,
     } = props;
 
-    let classes = classnames('gx-block gx-title-extra', blockStyle, extraClassName, className);
+    let classes = classnames('maxi-block maxi-title-extra', blockStyle, extraClassName, className);
     if (className.indexOf(uniqueID) === -1) {
         classes = classnames(classes, uniqueID);
     }
@@ -100,9 +100,9 @@ const edit = (props) => {
     return [
         <InspectorControls>
             <PanelBody
-                className="gx-panel gx-image-setting gx-content-tab-setting"
+                className="maxi-panel maxi-image-setting maxi-content-tab-setting"
                 initialOpen={true}
-                title={__("Image Settings", "gutenberg-extra")}
+                title={__("Image Settings", "maxi-blocks")}
             >
                 <BlockStylesControl
                     blockStyle={blockStyle}
@@ -111,7 +111,7 @@ const edit = (props) => {
                     onChangeDefaultBlockStyle={defaultBlockStyle => setAttributes({ defaultBlockStyle })}
                 />
                 <FontLevelControl
-                    label={__("Title level", "gutenberg-extra")}
+                    label={__("Title level", "maxi-blocks")}
                     value={titleLevel}
                     fontOptions={titleFontOptions}
                     onChange={(titleLevel, titleFontOptions) =>
@@ -121,7 +121,7 @@ const edit = (props) => {
                         })}
                 />
                 <FontLevelControl
-                    label={__("Subtitle level", "gutenberg-extra")}
+                    label={__("Subtitle level", "maxi-blocks")}
                     value={subtitleLevel}
                     fontOptions={subtitleFontOptions}
                     onChange={(subtitleLevel, subtitleFontOptions) =>
@@ -132,39 +132,39 @@ const edit = (props) => {
                 />
             </PanelBody>
             <PanelBody
-                className="gx-panel gx-image-setting gx-content-tab-setting"
+                className="maxi-panel maxi-image-setting maxi-content-tab-setting"
                 initialOpen={true}
                 // why this vvvv title?
-                title={__("Image Settings", "gutenberg-extra")}
+                title={__("Image Settings", "maxi-blocks")}
             >
                 <CheckBoxControl
-                    label={__('Hide Title', 'gutenberg-extra')}
-                    id='gx-new-window'
+                    label={__('Hide Title', 'maxi-blocks')}
+                    id='maxi-new-window'
                     checked={hideTitle}
                     onChange={hideTitle => setAttributes({ hideTitle })}
                 />
                 <CheckBoxControl
-                    label={__('Hide Subtitle', 'gutenberg-extra')}
-                    id='gx-new-window'
+                    label={__('Hide Subtitle', 'maxi-blocks')}
+                    id='maxi-new-window'
                     checked={hideSubtitle}
                     onChange={hideSubtitle => setAttributes({ hideSubtitle })}
                 />
                 <CheckBoxControl
-                    label={__('Hide Description', 'gutenberg-extra')}
-                    id='gx-new-window'
+                    label={__('Hide Description', 'maxi-blocks')}
+                    id='maxi-new-window'
                     checked={hideDescription}
                     onChange={hideDescription => setAttributes({ hideDescription })}
                 />
                 <CheckBoxControl
-                    label={__('Two Column Description Layout', 'gutenberg-extra')}
-                    id='gx-new-window'
+                    label={__('Two Column Description Layout', 'maxi-blocks')}
+                    id='maxi-new-window'
                     checked={twoColumnDescription}
                     onChange={twoColumnDescription => setAttributes({ twoColumnDescription })}
                 />
                 <hr style={{ marginTop: "28px" }} />
                 <SelectControl
-                    label={__('Content Direction', 'gutenberg-extra')}
-                    className="gx-block-style content-direction"
+                    label={__('Content Direction', 'maxi-blocks')}
+                    className="maxi-block-style content-direction"
                     value={contentDirection}
                     options={[
                         { label: __('From Left To Right'), value: 'row' },
@@ -180,41 +180,41 @@ const edit = (props) => {
                 items={[
                     {
                         label: __('Typography / Colours'),
-                        classNameItem: 'gx-typography-item',
-                        classNameHeading: "gx-typography-tab",
+                        classNameItem: 'maxi-typography-item',
+                        classNameHeading: "maxi-typography-tab",
                         icon: typography,
                         content: (
                             <PanelBody
-                                className="gx-panel gx-color-setting gx-style-tab-setting"
+                                className="maxi-panel maxi-color-setting maxi-style-tab-setting"
                                 initialOpen={true}
                                 // why this vvvv title?
-                                title={__("Colour settings", "gutenberg-extra")}
+                                title={__("Colour settings", "maxi-blocks")}
                             >
                                 <TypographyControl
                                     fontOptions={titleFontOptions}
                                     onChange={value => {
                                         setAttributes({ titleFontOptions: value });
                                     }}
-                                    target="gx-title-extra-title"
+                                    target="maxi-title-extra-title"
                                 />
                                 <TypographyControl
                                     fontOptions={subtitleFontOptions}
                                     onChange={value => {
                                         setAttributes({ subtitleFontOptions: value });
                                     }}
-                                    target="gx-title-extra-subtitle"
+                                    target="maxi-title-extra-subtitle"
                                 />
                                 <TypographyControl
                                     fontOptions={descriptionFontOptions}
                                     onChange={value => {
                                         setAttributes({ descriptionFontOptions: value });
                                     }}
-                                    target="gx-title-extra-text"
+                                    target="maxi-title-extra-text"
                                 />
                                 <ColorControl
                                     // Is this class doing something? vvv
-                                    className={'gx-subtitle-background-color'}
-                                    label={__("Subtitle Background", "gutenberg-extra")}
+                                    className={'maxi-subtitle-background-color'}
+                                    label={__("Subtitle Background", "maxi-blocks")}
                                     color={subtitleBackgroundColor}
                                     defaultColor={defaultSubtitleBackgroundColor}
                                     onColorChange={subtitleBackgroundColor => setAttributes({ subtitleBackgroundColor })}
@@ -224,9 +224,9 @@ const edit = (props) => {
                         )
                     },
                     {
-                        label: __("Divider", "gutenberg-extra"),
-                        classNameItem: 'gx-divider-item',
-                        classNameHeading: "gx-divider-tab",
+                        label: __("Divider", "maxi-blocks"),
+                        classNameItem: 'maxi-divider-item',
+                        classNameHeading: "maxi-divider-tab",
                         icon: <GxDividerTab />,
                         content: (
                             <PanelBody>
@@ -238,8 +238,8 @@ const edit = (props) => {
                         )
                     },
                     {
-                        label: __('Background Image', 'gutenberg-extra'),
-                        classNameHeading: 'gx-backgroundsettings-tab',
+                        label: __('Background Image', 'maxi-blocks'),
+                        classNameHeading: 'maxi-backgroundsettings-tab',
                         icon: <GxImageTab />,
                         content: (
                             <BackgroundControl
@@ -249,13 +249,13 @@ const edit = (props) => {
                         ),
                     },
                     {
-                        label: __('Box Settings', 'gutenberg-extra'),
-                        classNameItem: 'gx-box-settings-item',
-                        classNameHeading: 'gx-box-settings-tab',
+                        label: __('Box Settings', 'maxi-blocks'),
+                        classNameItem: 'maxi-box-settings-item',
+                        classNameHeading: 'maxi-box-settings-tab',
                         icon: boxSettings,
                         content: (
                             <Fragment>
-                                <PanelBody className={'gx-panel gx-color-setting gx-style-tab-setting'}>
+                                <PanelBody className={'maxi-panel maxi-color-setting maxi-style-tab-setting'}>
                                     <BoxShadowControl
                                         boxShadowOptions={boxShadow}
                                         onChange={boxShadow => setAttributes({ boxShadow })}
@@ -270,15 +270,15 @@ const edit = (props) => {
                         ),
                     },
                     {
-                        label:  __('Width / Height', 'gutenberg-extra'),
-                        classNameItem: 'gx-width-height-item',
-                        classNameHeading: 'gx-width-height-tab',
+                        label:  __('Width / Height', 'maxi-blocks'),
+                        classNameItem: 'maxi-width-height-item',
+                        classNameHeading: 'maxi-width-height-tab',
                         icon: width,
                         content: (
                             <PanelBody
-                                className="gx-panel gx-size-setting gx-style-tab-setting"
+                                className="maxi-panel maxi-size-setting maxi-style-tab-setting"
                                 initialOpen={true}
-                                title={__('Size Settings', 'gutenberg-extra')}
+                                title={__('Size Settings', 'maxi-blocks')}
                             >
                                 <FullSizeControl
                                     sizeSettings={size}
@@ -288,16 +288,16 @@ const edit = (props) => {
                         ),
                     },
                     {
-                        label: __('Padding & Margin', 'gutenberg-extra'),
-                        classNameItem: 'gx-padding-margin-item',
-                        classNameHeading: 'gx-padding-tab',
+                        label: __('Padding & Margin', 'maxi-blocks'),
+                        classNameItem: 'maxi-padding-margin-item',
+                        classNameHeading: 'maxi-padding-tab',
                         icon: iconPadding,
                         content: (
                             <PanelBody
-                                className="gx-panel gx-space-setting gx-style-tab-setting"
+                                className="maxi-panel maxi-space-setting maxi-style-tab-setting"
                                 initialOpen={true}
                                 // why this vvvv title?
-                                title={__('Space Settings', 'gutenberg-extra')}
+                                title={__('Space Settings', 'maxi-blocks')}
                             >
                                 <DimensionsControl
                                     value={padding}
@@ -314,8 +314,8 @@ const edit = (props) => {
             />
             <PanelBody
                 initialOpen={true}
-                className="gx-panel gx-advanced-setting gx-advanced-tab-setting"
-                title={__("Advanced Settings", "gutenberg-extra")}
+                className="maxi-panel maxi-advanced-setting maxi-advanced-tab-setting"
+                title={__("Advanced Settings", "maxi-blocks")}
             >
                 <HoverAnimationControl
                     hoverAnimation={hoverAnimation}
@@ -343,10 +343,10 @@ const edit = (props) => {
                 !hideSubtitle &&
                 <RichText
                     tagName={subtitleLevel}
-                    placeholder={__("Get more out of now", "gutenberg-extra")}
+                    placeholder={__("Get more out of now", "maxi-blocks")}
                     value={subtitle}
                     onChange={subtitle => setAttributes({ subtitle })}
-                    className="gx-title-extra-subtitle"
+                    className="maxi-title-extra-subtitle"
                     style={{ backgroundColor: subtitleBackgroundColor }}
                 />
             }
@@ -354,10 +354,10 @@ const edit = (props) => {
                 !hideTitle &&
                 <RichText
                     tagName={titleLevel}
-                    placeholder={__("Empowered by innovation", "gutenberg-extra")}
+                    placeholder={__("Empowered by innovation", "maxi-blocks")}
                     value={title}
                     onChange={title => setAttributes({ title })}
-                    className="gx-title-extra-title"
+                    className="maxi-title-extra-title"
                 />
             }
             <Divider
@@ -369,11 +369,11 @@ const edit = (props) => {
                     tagName="h6"
                     placeholder={__(
                         "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque malesuada volutpat mattis eros.",
-                        "gutenberg-extra"
+                        "maxi-blocks"
                     )}
                     value={description}
                     onChange={description => setAttributes({ description })}
-                    className="gx-title-extra-description"
+                    className="maxi-title-extra-description"
                     style={{ columnCount: twoColumnDescription ? 2 : 1 }}
                 />
             }

@@ -26,8 +26,8 @@ export const RoundedDivider = ( props ) => {
   }
   return (
     <CheckBoxControl
-      label={__('Rounded Divider', 'gutenberg-extra')}
-      id='gx-new-window'
+      label={__('Rounded Divider', 'maxi-blocks')}
+      id='maxi-new-window'
       checked={isRounded}
       onChange={onChangeRounded}
     />

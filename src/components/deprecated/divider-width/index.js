@@ -80,7 +80,7 @@ export class DividerWidth extends Component {
     return (
       <div className={"divider-dimension components-base-control"}>
         <RadioControl
-          className={"gx-unit-control divider-unit-control"}
+          className={"maxi-unit-control divider-unit-control"}
           selected={dividerWidthUnit}
           options={[
             { label: "PX", value: "px" },
@@ -91,8 +91,8 @@ export class DividerWidth extends Component {
           onChange={onChangeDividerWidthUnit}
         />
         <RangeControl
-          label={__("Width", "gutenberg-extra")}
-          className={"gx-with-unit-control divider-range-control"}
+          label={__("Width", "maxi-blocks")}
+          className={"maxi-with-unit-control divider-range-control"}
           value={isVertical ? dividerThickness : dividerWidth}
           onChange={onChangeDividerWidth}
           onClick={handleClick}

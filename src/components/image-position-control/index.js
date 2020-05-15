@@ -26,8 +26,8 @@ const ImagePositionControl = (props) => {
 
     return (
         <SelectControl
-            label={__("Image Position", 'gutenberg-extra')}
-            className={"gx-image-position"}
+            label={__("Image Position", 'maxi-blocks')}
+            className={"maxi-image-position"}
             value={value}
             options={options}
             onChange={value => onChange( value )}

@@ -1,48 +1,48 @@
-.gx-device-control .components-radio-control__option {
+.maxi-device-control .components-radio-control__option {
   display: flex;
   flex-direction: column-reverse;
   align-items: center;
 }
 
-.gx-device-control .components-radio-control__option .components-radio-control__input {
+.maxi-device-control .components-radio-control__option .components-radio-control__input {
   margin: auto;
 }
 
-.gx-device-control .components-radio-control__input {
+.maxi-device-control .components-radio-control__input {
 	display: none;
 }
 
-.gx-device-control .components-radio-control__option {
+.maxi-device-control .components-radio-control__option {
   width: 33%;
   text-align: center;
   border: 1px solid #dddfe1;
 }
     
-.gx-device-control .components-base-control__field {
+.maxi-device-control .components-base-control__field {
   display: flex;
 }
 
-.gx-device-control .components-radio-control__option {
+.maxi-device-control .components-radio-control__option {
 	height: 33px !important;
 }
   
-.gx-device-control {
+.maxi-device-control {
 	width: 101%;
 }
 
-.gx-device-control .components-radio-control__option:first-child svg{
+.maxi-device-control .components-radio-control__option:first-child svg{
   width: 27px;
   position:relative;
   top:3px;
 }
 
-.gx-device-control .components-radio-control__option svg{
+.maxi-device-control .components-radio-control__option svg{
   width: 19px;
   position:relative;
   top:1.5px;
 }
 
-.gx-device-control .components-radio-control__option:last-child svg{
+.maxi-device-control .components-radio-control__option:last-child svg{
   width:17px;
   position:relative;
   top:1.5px;

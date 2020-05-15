@@ -45,13 +45,13 @@ export default class LayoutLibrary extends Component {
 		let component = [];
 
 		switch ( this.props.currentTab ) {
-			case 'gx-layout-tgx-layouts' :
+			case 'maxi-layout-tmaxi-layouts' :
 				component = this.props.context.layouts;
 				break;
-			case 'gx-layout-tab-sections' :
+			case 'maxi-layout-tab-sections' :
 				component = this.props.context.sections;
 				break;
-			case 'gx-layout-tab-favorites' :
+			case 'maxi-layout-tab-favorites' :
 				component = this.props.context.favorites;
 				break;
 		}
@@ -83,17 +83,17 @@ export default class LayoutLibrary extends Component {
 
 		/* Expand each layout full width. */
 		const onZoom = () => {
-			const imageZoom = document.querySelector('.gx-layout-zoom-button');
-			imageZoom.parentNode.classList.toggle('gx-layout-zoom-layout');
+			const imageZoom = document.querySelector('.maxi-layout-zoom-button');
+			imageZoom.parentNode.classList.toggle('maxi-layout-zoom-layout');
 		};
 
 		return (
 			<Fragment key={ 'layout-library-fragment-' + this.props.clientId }>
 				{ /* Category filter and search header. */ }
-				<div className="gx-layout-modal-header">
+				<div className="maxi-layout-modal-header">
 					<SelectControl
 						key={ 'layout-library-select-categories-' + this.props.clientId }
-						label={ __( 'Layout Categories', 'gutenberg-extra-blocks' ) }
+						label={ __( 'Layout Categories', 'maxi-blocks-blocks' ) }
 						value={ this.state.category }
 						options={ catOptions }
 						onChange={ value => this.setState( { category: value } ) }
@@ -102,22 +102,22 @@ export default class LayoutLibrary extends Component {
 						key={ 'layout-library-search-layouts-' + this.props.clientId }
 						type="text"
 						value={ this.state.search }
-						placeholder={ __( 'Search Layouts', 'gutenberg-extra-blocks' ) }
+						placeholder={ __( 'Search Layouts', 'maxi-blocks-blocks' ) }
 						onChange={ value => this.setState( { search: value } ) }
 					/>
 				</div>
 
-				<div className={ 'gx-layout-view' }>
-					{ <div className={ 'gx-layout-view-left' }><p>{ __( 'Showing: ', 'gutenberg-extra-blocks' ) + this.props.data.length }</p></div> }
+				<div className={ 'maxi-layout-view' }>
+					{ <div className={ 'maxi-layout-view-left' }><p>{ __( 'Showing: ', 'maxi-blocks-blocks' ) + this.props.data.length }</p></div> }
 
 					{ /* Grid width view. */ }
-					<div className={ 'gx-layout-view-right' }>
-						<Tooltip key={ 'layout-library-grid-view-tooltip-' + this.props.clientId } text={ __( 'Grid View', 'gutenberg-extra-blocks' ) }>
+					<div className={ 'maxi-layout-view-right' }>
+						<Tooltip key={ 'layout-library-grid-view-tooltip-' + this.props.clientId } text={ __( 'Grid View', 'maxi-blocks-blocks' ) }>
 							<Button
 								key={ 'layout-library-grid-view-button-' + this.props.clientId }
 								className={ classnames(
 									this.state.activeView === 'grid' ? 'is-primary' : null,
-									'gx-layout-grid-view-button'
+									'maxi-layout-grid-view-button'
 								) }
 								isSmall
 								onClick={ () => this.setState( {
@@ -127,18 +127,18 @@ export default class LayoutLibrary extends Component {
 								<Dashicon
 									key={ 'layout-library-grid-view-dashicon-' + this.props.clientId }
 									icon={ 'screenoptions' }
-									className={ 'gx-layout-icon-grid' }
+									className={ 'maxi-layout-icon-grid' }
 								/>
 							</Button>
 						</Tooltip>
 
 						{ /* Full width layout view. */ }
-						<Tooltip key={ 'layout-library-full-view-tooltip-' + this.props.clientId } text={ __( 'Full Width View', 'gutenberg-extra-blocks' ) }>
+						<Tooltip key={ 'layout-library-full-view-tooltip-' + this.props.clientId } text={ __( 'Full Width View', 'maxi-blocks-blocks' ) }>
 							<Button
 								key={ 'layout-library-full-view-button-' + this.props.clientId }
 								className={ classnames(
 									this.state.activeView === 'full' ? 'is-primary' : null,
-									'gx-layout-full-view-button'
+									'maxi-layout-full-view-button'
 								) }
 								isSmall
 								onClick={ () => this.setState( {
@@ -148,7 +148,7 @@ export default class LayoutLibrary extends Component {
 								<Dashicon
 									key={ 'layout-library-full-view-dashicon-' + this.props.clientId }
 									icon={ 'tablet' }
-									className={ 'gx-layout-icon-tablet' }
+									className={ 'maxi-layout-icon-tablet' }
 								/>
 							</Button>
 						</Tooltip>
@@ -160,10 +160,10 @@ export default class LayoutLibrary extends Component {
 						<ButtonGroup
 							key={ 'layout-library-context-button-group-' + this.props.clientId }
 							className={ classnames(
-								'gx-layout-choices',
-								this.state.activeView === 'full' ? 'gx-layout-view-full' : null,
+								'maxi-layout-choices',
+								this.state.activeView === 'full' ? 'maxi-layout-view-full' : null,
 							) }
-							aria-label={ __( 'Layout Options', 'gutenberg-extra-blocks' ) }
+							aria-label={ __( 'Layout Options', 'maxi-blocks-blocks' ) }
 						>
 							{ map( this.props.data, ( { name, key, image, content, category, keywords } ) => {
 								if ( ( 'all' === this.state.category || category.includes( this.state.category ) ) && ( ! this.state.search || ( keywords && keywords.some( x => x.toLowerCase().includes( this.state.search.toLowerCase() ) ) ) ) ) {

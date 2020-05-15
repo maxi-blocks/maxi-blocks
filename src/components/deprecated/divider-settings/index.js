@@ -31,7 +31,7 @@ import './style.scss';
  * Component
  */
 export class DividerSettings extends GXComponent {
-    target = this.props.target ? this.props.target : 'gx-divider';
+    target = this.props.target ? this.props.target : 'maxi-divider';
 
     componentDidMount() {
         const value = typeof this.props.dividerSettings === 'object' ? this.props.dividerSettings : JSON.parse(this.props.dividerSettings);
@@ -120,8 +120,8 @@ export class DividerSettings extends GXComponent {
         return (
             <Fragment>
                 <CheckBoxControl
-                    label={__('Hide Divider', 'gutenberg-extra')}
-                    id='gx-new-window'
+                    label={__('Hide Divider', 'maxi-blocks')}
+                    id='maxi-new-window'
                     checked={value.isHidden}
                     onChange={val => {
                         value.isHidden = val;
@@ -130,14 +130,14 @@ export class DividerSettings extends GXComponent {
                 />
                 {/* Is really necessary? vvvv */}
                 <CheckBoxControl
-                    label={__('Vertical Divider', 'gutenberg-extra')}
-                    id='gx-new-window'
+                    label={__('Vertical Divider', 'maxi-blocks')}
+                    id='maxi-new-window'
                     checked={value.isVertical}
                     onChange={onVerticalChange}
                 />
                 <CheckBoxControl
-                    label={__('Rounded Divider', 'gutenberg-extra')}
-                    id='gx-new-window'
+                    label={__('Rounded Divider', 'maxi-blocks')}
+                    id='maxi-new-window'
                     checked={value.isRounded}
                     onChange={val => {
                         value.isRounded = val;
@@ -145,8 +145,8 @@ export class DividerSettings extends GXComponent {
                     }}
                 />
                 <CheckBoxControl
-                    label={__('Additional Divider', 'gutenberg-extra')}
-                    id='gx-new-window'
+                    label={__('Additional Divider', 'maxi-blocks')}
+                    id='maxi-new-window'
                     checked={value.isMultiple}
                     onChange={val => {
                         value.isMultiple = val;
@@ -156,8 +156,8 @@ export class DividerSettings extends GXComponent {
                 <Line />
                 {/** May an AligmentControl would be better vvvv */}
                 <SelectControl
-                    label={__('Divider Alignment', 'gutenberg-extra')}
-                    className="gx-block-style components-base-control divider-alignment"
+                    label={__('Divider Alignment', 'maxi-blocks')}
+                    className="maxi-block-style components-base-control divider-alignment"
                     value={value.dividerAlignment}
                     options={[
                         { label: __('Left'), value: 'left' },
@@ -170,8 +170,8 @@ export class DividerSettings extends GXComponent {
                     }}
                 />
                 <SelectControl
-                    label={__('Divider Position', 'gutenberg-extra')}
-                    className="gx-block-style"
+                    label={__('Divider Position', 'maxi-blocks')}
+                    className="maxi-block-style"
                     value={value.dividerOrder}
                     options={[
                         { label: __('After Title'), value: 1 },
@@ -189,7 +189,7 @@ export class DividerSettings extends GXComponent {
                 />
                 <Line />
                 <SizeControl
-                    label={__('Width', 'gutenberg-extra')}
+                    label={__('Width', 'maxi-blocks')}
                     unit={value.sizeSettings.widthUnit}
                     onChangeUnit={val => {
                         value.sizeSettings.widthUnit = val;
@@ -202,7 +202,7 @@ export class DividerSettings extends GXComponent {
                     }}
                 />
                 <SizeControl
-                    label={__('Height', 'gutenberg-extra')}
+                    label={__('Height', 'maxi-blocks')}
                     unit={value.sizeSettings.heightUnit}
                     onChangeUnit={val => {
                         value.sizeSettings.heightUnit = val;
@@ -216,7 +216,7 @@ export class DividerSettings extends GXComponent {
                 />
                 <Line />
                 <ColorControl
-                    label={__('Color', 'gutenberg-extra')}
+                    label={__('Color', 'maxi-blocks')}
                     color={value.dividerColor}
                     defaultColor={value.defaultDividerColor}
                     onColorChange={val => {
@@ -237,7 +237,7 @@ export const Divider = props => {
     } = props;
 
     const value = typeof dividerSettings === 'object' ? dividerSettings : JSON.parse(dividerSettings);
-    let classes = classnames('gx-divider-wrapper', className);
+    let classes = classnames('maxi-divider-wrapper', className);
     if (value.isMultiple)
         classes = classnames(classes, 'is-multiple');
     if (value.isVertical)
@@ -246,12 +246,12 @@ export const Divider = props => {
     return (
         <div className={classes}>
             <hr
-                className="gx-divider"
+                className="maxi-divider"
             />
             {
                 value.isMultiple ?
                     <hr
-                        className="gx-divider"
+                        className="maxi-divider"
                     /> :
                     null
             }

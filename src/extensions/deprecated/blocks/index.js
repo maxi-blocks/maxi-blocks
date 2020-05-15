@@ -8,11 +8,11 @@ const { createHigherOrderComponent } = wp.compose;
  * General
  */
 const allowedBlocks = [
-    // 'gutenberg-extra/block-image-box',
-    // 'gutenberg-extra/block-title-extra',
-    // 'gutenberg-extra/testimonials-slider-block',
-    'gutenberg-extra/block-row-extra',
-    'gutenberg-extra/block-column-extra',
+    // 'maxi-blocks/block-image-box',
+    // 'maxi-blocks/block-title-extra',
+    // 'maxi-blocks/testimonials-slider-block',
+    'maxi-blocks/row-maxi',
+    'maxi-blocks/column-maxi',
 ];
 
 /**
@@ -28,7 +28,7 @@ const withCustomClassName = createHigherOrderComponent(
         } = props;
 
         if (allowedBlocks.includes(blockName))
-            return <BlockListBlock {...props} className={`gx-block-wrapper ${uniqueID}`} />;
+            return <BlockListBlock {...props} className={`maxi-block-wrapper ${uniqueID}`} />;
         else
             return <BlockListBlock {...props} />;
 

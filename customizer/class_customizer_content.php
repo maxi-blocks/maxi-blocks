@@ -78,14 +78,14 @@ class GXCustomizerContent extends GXCustomizer
     }
 
     /**
-     * Creates Panel and Settings for GutenbergExtra
+     * Creates Panel and Settings for 
      */
     public function create_panel_section($wp_customize)
     {
         $wp_customize->add_panel(
-            'GutenbergExtra',
+            'MaxiBlocks',
             [
-                'title'     => 'GutenbergExtra',
+                'title'     => 'MaxiBlocks',
                 'priority'  => 1
             ]
         );
@@ -95,7 +95,7 @@ class GXCustomizerContent extends GXCustomizer
             [
                 'title'     => 'Global Styling',
                 'priority'  => 10,
-                'panel'     => 'GutenbergExtra'
+                'panel'     => 'MaxiBlocks'
             ]
         );
     }
@@ -133,7 +133,7 @@ class GXCustomizerContent extends GXCustomizer
             'color_scheme',
             [
                 'section'   => self::$section,
-                'label'     => __('Colour Scheme', 'gutenberg-extra'),
+                'label'     => __('Colour Scheme', 'maxi-blocks'),
                 'type'      => 'select',
                 'choices'   => self::$ColSchSettValues
             ]
@@ -170,7 +170,7 @@ class GXCustomizerContent extends GXCustomizer
             $wp_customize->add_setting(
                 'themeSwitch' .  self::$themes[$i],
                 [
-                    'default'   => 'gx-default',
+                    'default'   => 'default',
                     'transport' => self::$transport
                 ]
             );
@@ -181,9 +181,9 @@ class GXCustomizerContent extends GXCustomizer
                     'label'     => __('Global Theme colour', 'global-theme-color'),
                     'type'      => 'select',
                     'choices'   => [
-                        'gx-default'    => __('Show setting for Light and Dark Blocks', 'gutenberg-extra'),
-                        'gx-dark'       => __('Show setting only for Dark Blocks', 'gutenberg-extra'),
-                        'gx-light'      => __('Show setting only for Light Blocks', 'gutenberg-extra'),
+                        'default'    => __('Show setting for Light and Dark Blocks', 'maxi-blocks'),
+                        'dark'       => __('Show setting only for Dark Blocks', 'maxi-blocks'),
+                        'light'      => __('Show setting only for Light Blocks', 'maxi-blocks'),
                     ]
                 ]
             );

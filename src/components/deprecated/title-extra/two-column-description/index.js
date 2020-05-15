@@ -21,8 +21,8 @@ export const TwoColumn = ( props ) => {
 
   return (
     <ToggleControl
-      label={__('Two Column Description Layout', 'gutenberg-extra')}
-      id='gx-block-style'
+      label={__('Two Column Description Layout', 'maxi-blocks')}
+      id='maxi-block-style'
       checked={twoColumnDesc}
       onChange={(value) => {setAttributes({twoColumnDesc: value})}}
     />

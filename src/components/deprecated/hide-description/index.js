@@ -22,8 +22,8 @@ export const HideDescription = ( props ) => {
 
   return (
     <CheckBoxControl
-      label={__('Hide Description', 'gutenberg-extra')}
-      id='gx-new-window'
+      label={__('Hide Description', 'maxi-blocks')}
+      id='maxi-new-window'
       checked={hideDescription}
       onChange={(newValue) => setAttributes({hideDescription: newValue})}
     />

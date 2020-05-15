@@ -160,7 +160,7 @@ export default class BackgroundControl extends GXComponent {
         } = this.state;
 
         let value = typeof backgroundOptions === 'object' ? backgroundOptions : JSON.parse(backgroundOptions);
-        const classes = classnames('gx-background-control', className) + (isOpen ? ' gx-background-control-open' : '');
+        const classes = classnames('maxi-background-control', className) + (isOpen ? ' maxi-background-control-open' : '');
 
         const onAddBackground = i => {
             value.backgroundOptions.push(
@@ -243,13 +243,13 @@ export default class BackgroundControl extends GXComponent {
                                                 value.backgroundOptions[i].imageOptions.mediaURL = imageData.url;
                                                 this.saveAndSend(value);
                                             }}
-                                            placeholder={value.backgroundOptions.length - 1 === 0 ? __('Set image', 'gutenberg-extra') : __('Add Another Image', 'gutenberg-extra')}
+                                            placeholder={value.backgroundOptions.length - 1 === 0 ? __('Set image', 'maxi-blocks') : __('Add Another Image', 'maxi-blocks')}
                                             extendSelector={
                                                 value.backgroundOptions[i].imageOptions.mediaID &&
                                                 <Button
                                                     isSecondary
                                                     onClick={(e) => onOpenOptions(e, i)}
-                                                    className='gx-background-control-edit-image'
+                                                    className='maxi-background-control-edit-image'
                                                 >
                                                     Edit image
                                                 </Button>
@@ -261,7 +261,7 @@ export default class BackgroundControl extends GXComponent {
                             })
                         }
                         <ColorControl
-                            label={__('Background color', 'gutenberg-extra')}
+                            label={__('Background color', 'maxi-blocks')}
                             color={value.colorOptions.color}
                             defaultColor={value.colorOptions.defaultColor}
                             onColorChange={val => {
@@ -286,12 +286,12 @@ export default class BackgroundControl extends GXComponent {
                     isOpen &&
                     <AccordionControl
                         isSecondary
-                        preExpanded={['gx-background-control-image-tab']}
+                        preExpanded={['maxi-background-control-image-tab']}
                         items={[
                             {
-                                label: __('Image', 'gutenberg-extra'),
-                                className: 'gx-background-control-image-tab',
-                                uuid: 'gx-background-control-image-tab',
+                                label: __('Image', 'maxi-blocks'),
+                                className: 'maxi-background-control-image-tab',
+                                uuid: 'maxi-background-control-image-tab',
                                 content: (
                                     <ImageUploaderControl
                                         mediaID={value.backgroundOptions[selector].imageOptions.mediaID}
@@ -310,24 +310,24 @@ export default class BackgroundControl extends GXComponent {
                                             <Button
                                                 isSecondary
                                                 onClick={onDoneEdition}
-                                                className='gx-background-control-done-edition'
+                                                className='maxi-background-control-done-edition'
                                             >
                                                 Done
                                             </Button>
                                         }
-                                        replaceButton={__('Replace', 'gutenberg-extra')}
-                                        removeButton={__('Delete', 'gutenberg-extra')}
+                                        replaceButton={__('Replace', 'maxi-blocks')}
+                                        removeButton={__('Delete', 'maxi-blocks')}
                                         alternativeImage={getAlternativeImage(selector)}
                                     />
                                 )
                             },
                             {
-                                label: __('Background', 'gutenberg-extra'),
-                                className: 'gx-background-control-background-tab',
+                                label: __('Background', 'maxi-blocks'),
+                                className: 'maxi-background-control-background-tab',
                                 content: (
                                     <Fragment>
                                         <SelectControl
-                                            label={__('Background size', 'gutenberg-extra')}
+                                            label={__('Background size', 'maxi-blocks')}
                                             value={value.backgroundOptions[selector].sizeSettings.size}
                                             options={[
                                                 { label: 'Auto', value: 'auto' },
@@ -352,7 +352,7 @@ export default class BackgroundControl extends GXComponent {
                                             />
                                         }
                                         <SelectControl
-                                            label={__('Background repeat', 'gutenberg-extra')}
+                                            label={__('Background repeat', 'maxi-blocks')}
                                             value={value.backgroundOptions[selector].repeat}
                                             options={[
                                                 { label: 'Repeat', value: 'repeat' },
@@ -368,7 +368,7 @@ export default class BackgroundControl extends GXComponent {
                                             }}
                                         />
                                         <SelectControl
-                                            label={__('Background position', 'gutenberg-extra')}
+                                            label={__('Background position', 'maxi-blocks')}
                                             value={value.backgroundOptions[selector].positionOptions.position}
                                             options={[
                                                 { label: 'Left top', value: 'left top' },
@@ -417,7 +417,7 @@ export default class BackgroundControl extends GXComponent {
                                             </Fragment>
                                         }
                                         <SelectControl
-                                            label={__('Background origin', 'gutenberg-extra')}
+                                            label={__('Background origin', 'maxi-blocks')}
                                             value={value.backgroundOptions[selector].origin}
                                             options={[
                                                 { label: 'Padding', value: 'padding-box' },
@@ -430,7 +430,7 @@ export default class BackgroundControl extends GXComponent {
                                             }}
                                         />
                                         <SelectControl
-                                            label={__('Background clip', 'gutenberg-extra')}
+                                            label={__('Background clip', 'maxi-blocks')}
                                             value={value.backgroundOptions[selector].clip}
                                             options={[
                                                 { label: 'Border', value: 'border-box' },
@@ -443,7 +443,7 @@ export default class BackgroundControl extends GXComponent {
                                             }}
                                         />
                                         <SelectControl
-                                            label={__('Background attachment', 'gutenberg-extra')}
+                                            label={__('Background attachment', 'maxi-blocks')}
                                             value={value.backgroundOptions[selector].attachment}
                                             options={[
                                                 { label: 'Scroll', value: 'scroll' },

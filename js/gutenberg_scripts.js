@@ -72,7 +72,7 @@ class FontFamilyResolver {
      * Fetchs the JSON file with all the GFonts options
      */
     getJSON() {
-        const fontsUrl = 'https://ddlicensed.s3-eu-west-1.amazonaws.com/gutenberg-extra/fonts.json';
+        const fontsUrl = 'https://ddlicensed.s3-eu-west-1.amazonaws.com/maxi-blocks/fonts.json';
         const options = {
             method: 'GET',
             mode: 'cors',
@@ -103,7 +103,7 @@ class FontFamilyResolver {
      * In case that browser refuses JSON due to CORS, get it from proxy. Slowe process
      */
     localhostGetJSON() {
-        const fontsUrl = 'https://cors-anywhere.herokuapp.com/https://ddlicensed.s3-eu-west-1.amazonaws.com/gutenberg-extra/fonts.json';
+        const fontsUrl = 'https://cors-anywhere.herokuapp.com/https://ddlicensed.s3-eu-west-1.amazonaws.com/maxi-blocks/fonts.json';
         const options = {
             method: 'GET',
             mode: 'cors',
@@ -332,7 +332,7 @@ class BackEndResponsiveStyles {
     constructor(meta) {
         this.meta = meta;
         // Uses serverside loaded inline css
-        this.target = document.getElementById('gutenberg-extra-inline-css');
+        this.target = document.getElementById('maxi-blocks-inline-css');
         typeof this.meta != 'undefined' ?
             this.initEvents() :
             null;
@@ -349,7 +349,7 @@ class BackEndResponsiveStyles {
      */
     createElement() {
         const style = document.createElement('style');
-        style.id = 'gutenberg-extra-inline-css';
+        style.id = 'maxi-blocks-inline-css';
         document.body.appendChild(style);
         this.target = style;
         this.addValues();

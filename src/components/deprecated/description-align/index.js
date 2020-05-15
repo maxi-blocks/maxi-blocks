@@ -21,8 +21,8 @@ export const DescriptionAlign = ( props ) => {
 
   return (
     <SelectControl
-      label={__('Description Align', 'gutenberg-extra')}
-      className="gx-block-style"
+      label={__('Description Align', 'maxi-blocks')}
+      className="maxi-block-style"
       value={descriptionTextAlign}
       options={[
         { label: __('Left'), value: 'left' },

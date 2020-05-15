@@ -44,9 +44,9 @@ export default class Edit extends Component {
 				</BlockControls>
 				<Placeholder
 					key="placeholder"
-					label={ __( 'Layout Selector', 'gutenberg-extra-blocks' ) }
-					instructions={ __( 'Launch the layout library to browse pre-designed sections.', 'gutenberg-extra-blocks' ) }
-					className={ 'gx-layout-selector-placeholder' }
+					label={ __( 'Layout Selector', 'maxi-blocks-blocks' ) }
+					instructions={ __( 'Launch the layout library to browse pre-designed sections.', 'maxi-blocks-blocks' ) }
+					className={ 'maxi-layout-selector-placeholder' }
 					icon="layout"
 				>
 					<LayoutModal clientId={ clientId } />

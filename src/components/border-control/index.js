@@ -40,12 +40,12 @@ export default class BorderControl extends GXComponent {
         } = this.props;
 
         let value = typeof borderOptions === 'object' ? borderOptions : JSON.parse(borderOptions);
-        const classes = classnames('gx-border-control', className);
+        const classes = classnames('maxi-border-control', className);
         
         return (
             <div className={classes}>
                 <ColorControl
-                    label={__('Color', 'gutenberg-extra')}
+                    label={__('Color', 'maxi-blocks')}
                     color={value.general['border-color']}
                     defaultColor={value['defaultBorderColor']}
                     onColorChange={val => {
@@ -56,8 +56,8 @@ export default class BorderControl extends GXComponent {
                     disableGradientAboveBackground
                 />
                 <SelectControl
-                    label={__('Border Type', 'gutenberg-extra')}
-                    className="gx-border-type"
+                    label={__('Border Type', 'maxi-blocks')}
+                    className="maxi-border-type"
                     value={value.general['border-style']}
                     options={[
                         { label: 'None', value: 'none' },

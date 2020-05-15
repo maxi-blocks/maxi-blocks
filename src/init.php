@@ -64,7 +64,7 @@ function gutenberg_extra_block_assets() { // phpcs:ignore
 	 * @since 1.16.0
 	 */
 	register_block_type(
-		'cgb/block-gutenberg-extra', array(
+		'cgb/block-maxi-blocks', array(
 			// Enqueue blocks.style.build.css on both frontend & backend.
 			'style'         => 'gutenberg_extra-style-css',
 			// Enqueue blocks.build.js in the editor only.
@@ -100,7 +100,7 @@ function gutenberg_extra_load_custom_wp_admin_style() {
 	// Register block editor script for backend.
 	wp_register_style(
 		'gutenberg_extra-block-css-admin', // Handle.
-		plugins_url( '/css/gx-admin.css', dirname( __FILE__ ) )
+		plugins_url( '/css/maxi-admin.css', dirname( __FILE__ ) )
 	);
 
 	wp_enqueue_style('gutenberg_extra-block-css-admin');
@@ -118,8 +118,8 @@ function gutenberg_extra_block_category( $categories ) {
 	return array_merge(
 		array(
 			array(
-				'slug'  => 'gutenberg-extra-blocks',
-				'title' => __( 'GutenbergExtra Blocks', 'gutenberg-extra' ),
+				'slug'  => 'maxi-blocks-blocks',
+				'title' => __( 'MaxiBlocks Blocks', 'maxi-blocks' ),
 			)
 		),
 		$categories
@@ -190,7 +190,7 @@ add_action('wp_ajax_gx_insert_block', 'gx_insert_block', 10, 2);
 require_once plugin_dir_path( __FILE__ ) . 'includes/layout/layout-functions.php';
 require_once plugin_dir_path( __FILE__ ) . 'includes/layout/class-component-registry.php';
 require_once plugin_dir_path( __FILE__ ) . 'includes/layout/register-layout-components.php';
-require_once plugin_dir_path( __FILE__ ) . 'includes/gx-wp-dashboard.php';
+require_once plugin_dir_path( __FILE__ ) . 'includes/maxi-wp-dashboard.php';
 
 // Maybe this is not the best place, but for the moment...
 function gutenberg_scripts () {

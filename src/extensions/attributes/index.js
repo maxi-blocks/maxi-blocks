@@ -18,16 +18,16 @@ import {
  * General
  */
 const allowedBlocks = [
-	'gutenberg-extra/block-image-box',
-	'gutenberg-extra/block-title-extra',
-	'gutenberg-extra/testimonials-slider-block',
-	'gutenberg-extra/block-row-extra',
-	'gutenberg-extra/block-column-extra',
-	'gutenberg-extra/block-button-extra',
-	'gutenberg-extra/block-text-extra',
-	'gutenberg-extra/block-divider-extra',
-	'gutenberg-extra/block-image-extra',
-	'gutenberg-extra/block-section-extra',
+	'maxi-blocks/block-image-box',
+	'maxi-blocks/block-title-extra',
+	'maxi-blocks/testimonials-slider-block',
+	'maxi-blocks/row-maxi',
+	'maxi-blocks/column-maxi',
+	'maxi-blocks/button-maxi',
+	'maxi-blocks/text-maxi',
+	'maxi-blocks/divider-maxi',
+	'maxi-blocks/image-maxi',
+	'maxi-blocks/section-maxi',
 ];
 
 /**
@@ -54,7 +54,7 @@ function addAttributes(settings) {
 }
 
 /**
- * Add custom Gutenberg Extra attributes to selected blocks
+ * Add custom Maxi Blocks attributes to selected blocks
  *
  * @param {function|Component} BlockEdit Original component.
  * @return {string} Wrapped component.
@@ -89,7 +89,7 @@ const withAttributes = createHigherOrderComponent(
 );
 
 const uniqueIdCreator = name => {
-	let newID = uniqueId(`gx-${name.replace('gutenberg-extra/', '')}-`);
+	let newID = uniqueId(`maxi-${name.replace('maxi-blocks/', '')}-`);
 
 	if (!isEmpty(document.getElementsByClassName(newID)) || !isNil(document.getElementById(newID)))
 		uniqueIdCreator(name);
@@ -99,12 +99,12 @@ const uniqueIdCreator = name => {
 
 addFilter(
 	'blocks.registerBlockType',
-	'gutenberg-extra/custom/attributes',
+	'maxi-blocks/custom/attributes',
 	addAttributes
 );
 
 addFilter(
 	'editor.BlockEdit',
-	'gutenberg-extra/attributes',
+	'maxi-blocks/attributes',
 	withAttributes
 );

@@ -30,15 +30,15 @@ class ResponsiveFrontendStyles {
      */
     public function enqueue_styles() {
         // Inline styles
-        wp_register_style( 'gutenberg-extra', false );
-        wp_enqueue_style( 'gutenberg-extra' );
-        wp_add_inline_style('gutenberg-extra', $this->styles());
+        wp_register_style( 'maxi-blocks', false );
+        wp_enqueue_style( 'maxi-blocks' );
+        wp_add_inline_style('maxi-blocks', $this->styles());
 
         // Inline fonts
-        wp_register_script( 'gutenberg-extra-fonts', false );
-        wp_enqueue_script( 'gutenberg-extra-fonts' );
+        wp_register_script( 'maxi-blocks-fonts', false );
+        wp_enqueue_script( 'maxi-blocks-fonts' );
         wp_add_inline_script(
-            'gutenberg-extra-fonts',
+            'maxi-blocks-fonts',
             $this->fonts()
         );
     }

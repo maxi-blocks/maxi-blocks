@@ -21,8 +21,8 @@ export const HideDivider = ( props ) => {
 
   return (
     <ToggleControl
-      label={__('Hide Divider', 'gutenberg-extra')}
-      id='gx-block-style'
+      label={__('Hide Divider', 'maxi-blocks')}
+      id='maxi-block-style'
       checked={isHidden}
       onChange={(value) => setAttributes({isHidden: value})}
     />

@@ -1,10 +1,10 @@
-input[type="checkbox"].gutenberg-extra-checkbox-input {
+input[type="checkbox"].maxi-blocks-checkbox-input {
   position: relative;
   width: 35px;
   height: 35px;
 }
 
-input[type="checkbox"].gutenberg-extra-checkbox-input:checked::before {
+input[type="checkbox"].maxi-blocks-checkbox-input:checked::before {
   content: url('../src/icons/setting-icons/checkbox/checkbox.svg');
   position: absolute;
   top: 50%;

@@ -20,12 +20,12 @@ export const SubtitleBackgroundColor = ( props ) => {
 
   return (
     <PanelColorSettings
-      title={__('Sub-title Background Colour Settings', 'gutenberg-extra' )}
+      title={__('Sub-title Background Colour Settings', 'maxi-blocks
       colorSettings={[
         {
           value: subtitleBackgroundColor,
           onChange: (value) => setAttributes({ subtitleBackgroundColor: value }),
-          label: __('Sub-title Background Colour', 'gutenberg-extra' ),
+          label: __('Sub-title Background Colour', 'maxi-blocks
         },
       ]}
     />

@@ -21,14 +21,14 @@ const { registerBlockType } = wp.blocks;
 /**
  * Register the Layout block
  */
-registerBlockType( 'gutenberg-extra/gx-layout', {
+registerBlockType( 'maxi-blocks/maxi-layout', {
 	title: __( 'Library Extra'),
 	description: __( 'Add a pre-made block or layout.'),
 	icon: iconsBlocks.library,
-	category: 'gutenberg-extra-blocks',
+	category: 'maxi-blocks-blocks',
 	keywords: [
-		__( 'layout', 'gutenberg-extra-blocks' ),
-		__( 'block', 'gutenberg-extra-blocks' ),
+		__( 'layout', 'maxi-blocks-blocks' ),
+		__( 'block', 'maxi-blocks-blocks' ),
 	],
 	attributes: {
 	    className: {
@@ -62,11 +62,11 @@ function addGXLayoutButton() {
 		return;
 	}
 	let buttonDiv = document.createElement( 'div' );
-	let html = '<div class="gx-toolbar-layout">';
-	html += `<a type="button" id="gxAddLayoutButton" class="button components-button components-icon-button" aria-label="${ __( 'GutenbergExtra Library', 'gutenberg-extra' ) }">\
-	</i><img src="/wp-content/plugins/gutenberg-extra/img/gx-icon-white.svg" /> ${ __( 'GutenbergExtra Library', 'gutenberg-extra') }</a>`;
-	html += `<a type="button"  href="/wp-admin/customize.php" target="_blank" id="gxGoToCustomizerButton" class="button components-button components-icon-button" aria-label="${ __( 'Global Styles', 'gutenberg-extra' ) }">\
-	</i><img src="/wp-content/plugins/gutenberg-extra/img/gx-icon-white.svg" /> ${ __( 'Global Styles', 'gutenberg-extra') }</a>`;
+	let html = '<div class="maxi-toolbar-layout">';
+	html += `<a type="button" id="gxAddLayoutButton" class="button components-button components-icon-button" aria-label="${ __( 'MaxiBlocks Library', 'maxi-blocks' ) }">\
+	</i><img src="/wp-content/plugins/maxi-blocks/img/maxi-icon-white.svg" /> ${ __( 'MaxiBlocks Library', 'maxi-blocks') }</a>`;
+	html += `<a type="button"  href="/wp-admin/customize.php" target="_blank" id="gxGoToCustomizerButton" class="button components-button components-icon-button" aria-label="${ __( 'Global Styles', 'maxi-blocks' ) }">\
+	</i><img src="/wp-content/plugins/maxi-blocks/img/maxi-icon-white.svg" /> ${ __( 'Global Styles', 'maxi-blocks') }</a>`;
 	html += '</div>';
 	buttonDiv.innerHTML = html;
 	toolbar.appendChild( buttonDiv );
@@ -77,6 +77,6 @@ function addGXLayoutButton() {
  * Add the GE Library block on click.
  */
 function abInsertLayout() {
-	let block = wp.blocks.createBlock( 'gutenberg-extra/gx-layout' );
+	let block = wp.blocks.createBlock( 'maxi-blocks/maxi-layout' );
 	wp.data.dispatch( 'core/editor' ).insertBlocks( block );
 }

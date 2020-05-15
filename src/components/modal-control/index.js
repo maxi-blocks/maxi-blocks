@@ -30,7 +30,7 @@ class ModalControl extends Component {
         return (
             <div className={className}>
                 <BaseControl
-                    className={'gx-settings-button'}
+                    className={'maxi-settings-button'}
                 >
                     <BaseControl.VisualLabel>
                         Modal Test

@@ -21,8 +21,8 @@ export const AdditionalDivider = ( props ) => {
 
   return (
     <CheckBoxControl
-      label={__('Additional Divider', 'gutenberg-extra')}
-      id='gx-new-window'
+      label={__('Additional Divider', 'maxi-blocks')}
+      id='maxi-new-window'
       checked={isMultiple}
       onChange={onChangeAdditional}
     />

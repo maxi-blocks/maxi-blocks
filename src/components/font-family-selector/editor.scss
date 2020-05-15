@@ -1,4 +1,4 @@
-.gx-font-family-selector-button {
+.maxi-font-family-selector-button {
     height: 45px;
     border-radius: 5px;
     background-color: rgba(33,141,250,0);
@@ -10,26 +10,26 @@
     margin-bottom: 8px;
 }
 
-.gx-font-family-selector-icon {
+.maxi-font-family-selector-icon {
     margin: auto;
     margin-right: 0;
     transition: .2s all ease;
 }
 
-.gx-font-family-selector-button[aria-expanded="true"] .gx-font-family-selector-icon {
+.maxi-font-family-selector-button[aria-expanded="true"] .maxi-font-family-selector-icon {
     transform: rotate(90deg);
 }
 
-.gx-font-family-selector-popover .components-popover__content {
+.maxi-font-family-selector-popover .components-popover__content {
     border-radius: 5px;
     margin-top: 2px;
     max-height: none !important;
 }
 
-.gx-font-family-selector-content {
+.maxi-font-family-selector-content {
     min-width: 370px;
 }
 
-.gx-font-family-selector-content input {
+.maxi-font-family-selector-content input {
     box-shadow: none !important;
 }

@@ -2,11 +2,11 @@ const { __ } = wp.i18n;
 
 export const buttonShapes = [
 	{
-		value: 'gx-square',
+		value: 'maxi-square',
 		label: __('Square')
 	},
 	{
-		value: 'gx-circular',
+		value: 'maxi-circular',
 		label: __('Circular')
 	},
 ];
@@ -17,138 +17,138 @@ export const animationsClasses = [
 		label: __('None')
 	},
 	{
-		value: 'gx-grow',
+		value: 'maxi-grow',
 		label: __('Grow')
 	},
 	{
-		value: 'gx-shrink',
+		value: 'maxi-shrink',
 		label: __('Shrink')
 	},
 	{
-		value: 'gx-pulse',
+		value: 'maxi-pulse',
 		label: __('Pulse')
 	},
 	{
-		value: 'gx-pulse-grow',
+		value: 'maxi-pulse-grow',
 		label: __('Pulse Grow')
 	},
 	{
-		value: 'gx-pulse-shrink',
+		value: 'maxi-pulse-shrink',
 		label: __('Pulse Shrink')
 	},
 	{
-		value: 'gx-push',
+		value: 'maxi-push',
 		label: __('Push')
 	},
 	{
-		value: 'gx-pop',
+		value: 'maxi-pop',
 		label: __('Pop')
 	},
 	{
-		value: 'gx-bounce-in',
+		value: 'maxi-bounce-in',
 		label: __('Bounce In')
 	},
 	{
-		value: 'gx-bounce-out',
+		value: 'maxi-bounce-out',
 		label: __('Bounce Out')
 	},
 	{
-		value: 'gx-rotate',
+		value: 'maxi-rotate',
 		label: __('Rotate')
 	},
 	{
-		value: 'gx-float',
+		value: 'maxi-float',
 		label: __('Float')
 	},
 	{
-		value: 'gx-sink',
+		value: 'maxi-sink',
 		label: __('Sink')
 	},
 	{
-		value: 'gx-bob',
+		value: 'maxi-bob',
 		label: __('Bob')
 	},
 	{
-		value: 'gx-hang',
+		value: 'maxi-hang',
 		label: __('Hang')
 	},
 	{
-		value: 'gx-skew',
+		value: 'maxi-skew',
 		label: __('Skew')
 	},
 	{
-		value: 'gx-skew-forward',
+		value: 'maxi-skew-forward',
 		label: __('Skew Forward')
 	},
 	{
-		value: 'gx-skew-backward',
+		value: 'maxi-skew-backward',
 		label: __('Skew Backward')
 	},
 	{
-		value: 'gx-wobble-horizontal',
+		value: 'maxi-wobble-horizontal',
 		label: __('Wobble Horizontal')
 	},
 	{
-		value: 'gx-wobble-vertical',
+		value: 'maxi-wobble-vertical',
 		label: __('Wobble Vertical')
 	},
 	{
-		value: 'gx-wobble-to-bottom-right',
+		value: 'maxi-wobble-to-bottom-right',
 		label: __('Wobble Bottom Right')
 	},
 	{
-		value: 'gx-wobble-to-top-right',
+		value: 'maxi-wobble-to-top-right',
 		label: __('Wobble Top Right')
 	},
 	{
-		value: 'gx-wobble-top',
+		value: 'maxi-wobble-top',
 		label: __('Wobble Top')
 	},
 	{
-		value: 'gx-wobble-bottom',
+		value: 'maxi-wobble-bottom',
 		label: __('Wobble Bottom')
 	},
 	{
-		value: 'gx-wobble-skew',
+		value: 'maxi-wobble-skew',
 		label: __('Wobble Skew')
 	},
 	{
-		value: 'gx-buzz-out',
+		value: 'maxi-buzz-out',
 		label: __('Buzz Out')
 	},
 	{
-		value: 'gx-forward',
+		value: 'maxi-forward',
 		label: __('Forward')
 	},
 	{
-		value: 'gx-backward',
+		value: 'maxi-backward',
 		label: __('Backward')
 	},
 	{
-		value: 'gx-fade',
+		value: 'maxi-fade',
 		label: __('Fade')
 	},
 	{
-		value: 'gx-back-pulse',
+		value: 'maxi-back-pulse',
 		label: __('Back Pulse')
 	},
 ];
 
 export const buttonSizes = [
 	{
-		value: 'gx-small',
+		value: 'maxi-small',
 		label: __('Small')
 	},
 	{
-		value: 'gx-normal',
+		value: 'maxi-normal',
 		label: __('Normal')
 	},
 	{
-		value: 'gx-large',
+		value: 'maxi-large',
 		label: __('Large')
 	},
 	{
-		value: 'gx-x-large',
+		value: 'maxi-x-large',
 		label: __('Extra Large')
 	},
 ];

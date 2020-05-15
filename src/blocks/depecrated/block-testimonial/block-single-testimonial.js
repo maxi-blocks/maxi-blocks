@@ -12,11 +12,11 @@ import { registerBlockType } from '@wordpress/blocks';
 
 const { __ } = wp.i18n;
 
-registerBlockType("gutenberg-extra/testimonials-slider-block", {
-	title: __("Testimonials Extra", 'gutenberg-extra'),
+registerBlockType("maxi-blocks/testimonials-slider-block", {
+	title: __("Testimonials Extra", 'maxi-blocks'),
 	icon: iconsBlocks.basicGallery,
-	category: "gutenberg-extra-blocks",
-	keywords: [__("Testimonials Slider", 'gutenberg-extra'), __("gts", 'gutenberg-extra')],
+	category: "maxi-blocks-blocks",
+	keywords: [__("Testimonials Slider", 'maxi-blocks'), __("gts", 'maxi-blocks')],
 	attributes: {
 		...attributes
 	},

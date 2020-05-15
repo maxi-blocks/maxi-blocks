@@ -133,11 +133,11 @@ const blockAttributes = {
 	},
 	buttonShape: {
 		type: 'string',
-		default: 'gx-square',
+		default: 'maxi-square',
 	},
 	buttonSize: {
 		type: 'string',
-		default: 'gx-normal',
+		default: 'maxi-normal',
 	},
 	fontSize: {
 		type: 'number',
@@ -205,7 +205,7 @@ const blockAttributes = {
 
 };
 
-export const name = 'gutenberg-extra/block-button';
+export const name = 'maxi-blocks/block-button';
 
 const settings = {
 
@@ -213,7 +213,7 @@ const settings = {
 
 	description: __( '' ),
 	icon: iconsBlocks.button,
-	category: 'gutenberg-extra-blocks',
+	category: 'maxi-blocks-blocks',
 
 	attributes: blockAttributes,
 

@@ -9,11 +9,11 @@ import * as attributesData from './data';
 const attributes = {
     blockStyle: {
         type: 'string',
-        default: 'gx-custom'
+        default: 'maxi-custom'
     },
     defaultBlockStyle: {
         type: 'string',
-        default: 'gx-def-light'
+        default: 'maxi-def-light'
     },
     imagePosition: {
         type: 'string',
@@ -96,16 +96,16 @@ const attributes = {
     title: {
         type: 'array',
         source: 'children',
-        selector: '.gx-image-box-title',
+        selector: '.maxi-image-box-title',
     },
     additionalText: {
         type: 'array',
         source: 'children',
-        selector: '.gx-image-box-subtitle',
+        selector: '.maxi-image-box-subtitle',
     },
     description: {
         source: 'children',
-        selector: '.gx-image-box-description',
+        selector: '.maxi-image-box-description',
     },
 }
 

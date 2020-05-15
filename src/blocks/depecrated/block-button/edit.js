@@ -217,7 +217,7 @@ class AnimationButtonEdit extends Component {
 								return (
 												<Fragment>
 				<div className={ classnames( className, extraClassName, uniqueClass, uniqueHoverClass, buttonSize, buttonShape ) } title={ title } ref={ this.bindRef }>
-					{ hoverClass && <style dangerouslySetInnerHTML={{__html: `.wp-block-gx-animation-button:hover .hover-${hoverClass}{${hoverStyles}}` }} /> }
+					{ hoverClass && <style dangerouslySetInnerHTML={{__html: `.wp-block-maxi-animation-button:hover .hover-${hoverClass}{${hoverStyles}}` }} /> }
 					{ uniqueClass && <style dangerouslySetInnerHTML={{__html: `.${uniqueClass} .wp-block-button__link{${extraStyles}}` }} /> }
 					{ uniqueHoverClass && <style dangerouslySetInnerHTML={{__html: `.${uniqueHoverClass} .wp-block-button__link:hover{${extraHoverStyles}}` }} /> }
 					{ extraBeforeStyles && <style dangerouslySetInnerHTML={{__html: `.wp-block-button__link:before{${extraBeforeStyles}}` }} /> }
@@ -253,7 +253,7 @@ class AnimationButtonEdit extends Component {
 					<InspectorControls>
 						<PanelColorSettings
 							title={ __( 'Color Settings' ) }
-							className='gx-general-tab'
+							className='maxi-general-tab'
 							colorSettings={ [
 								{
 									value: backgroundColor.color,
@@ -279,7 +279,7 @@ class AnimationButtonEdit extends Component {
 					</PanelColorSettings>
 						<PanelColorSettings
 							title={ __( 'Hover' ) }
-							className='gx-hover-tab'
+							className='maxi-hover-tab'
 							colorSettings={ [
 								{
 									value: backgroundHoverColor,
@@ -301,10 +301,10 @@ class AnimationButtonEdit extends Component {
 								},
 							] }
 						/>
-					<PanelBody initialOpen={ false } title={ __( 'Border settings' ) } className='gx-general-tab'>
+					<PanelBody initialOpen={ false } title={ __( 'Border settings' ) } className='maxi-general-tab'>
 						<PanelColorSettings
 							title={ false }
-							className='gx-hidden-header'
+							className='maxi-hidden-header'
 							colorSettings={ [
 								{
 									value: borderColor.color,
@@ -346,7 +346,7 @@ class AnimationButtonEdit extends Component {
 					<PanelBody initialOpen={ false } title={ __( 'Border on Hover' ) } className=''>
 						<PanelColorSettings
 							// title={ __( 'Hover' ) }
-							className='gx-hidden-header'
+							className='maxi-hidden-header'
 							colorSettings={ [
 								{
 									value: borderHoverColor,
@@ -379,7 +379,7 @@ class AnimationButtonEdit extends Component {
 							/>
                         <ToggleControl
 								label={ __( 'Open in New Window' ) }
-								id='gx-new-window'
+								id='maxi-new-window'
 								checked={ opensInNewWindow }
 								onChange={ () => setAttributes( { opensInNewWindow: ! opensInNewWindow } ) }
 							/>

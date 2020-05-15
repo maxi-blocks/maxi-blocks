@@ -29,5 +29,5 @@ export const VerticalDivider = ( props ) => {
       }
     }
 
-    return (<ToggleControl label={__('Vertical Divider', 'gutenberg-extra')} id='gx-block-style' checked={isVertical} onChange={onChangeDirection}/>)
+    return (<ToggleControl label={__('Vertical Divider', 'maxi-blocks')} id='maxi-block-style' checked={isVertical} onChange={onChangeDirection}/>)
 }

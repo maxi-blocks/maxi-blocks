@@ -42,10 +42,10 @@ const {
     FormToggle,
 } = wp.components;
 
-registerBlockType( 'gutenberg-extra/container', {
+registerBlockType( 'maxi-blocks/container', {
     title: __( 'Container Extra'),
     icon: iconsBlocks.container,
-    category: 'gutenberg-extra-blocks',
+    category: 'maxi-blocks-blocks',
     attributes: {
         alignment: {
             type: 'string',

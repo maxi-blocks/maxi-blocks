@@ -33,7 +33,7 @@ const save = (props) => {
         },
     } = props;
 
-    let classes = classnames('gx-block gx-title-extra', blockStyle, extraClassName, className);
+    let classes = classnames('maxi-block maxi-title-extra', blockStyle, extraClassName, className);
     if (uniqueID && (typeof uniqueID !== 'undefined')) {
         classes = classnames(classes, uniqueID)
     }
@@ -47,14 +47,14 @@ const save = (props) => {
                 <RichText.Content
                     tagName={subtitleLevel}
                     value={subtitle}
-                    className="gx-title-extra-subtitle"
+                    className="maxi-title-extra-subtitle"
                 />
             </div>
             <div style={{ order: 1 }}>
                 <RichText.Content
                     tagName={titleLevel}
                     value={title}
-                    className="gx-title-extra-title"
+                    className="maxi-title-extra-title"
                 />
             </div>
             <Divider
@@ -64,7 +64,7 @@ const save = (props) => {
                 <RichText.Content
                     tagName="h6"
                     value={text}
-                    className="gx-title-extra-text"
+                    className="maxi-title-extra-text"
                 />
             </div>
         </div>

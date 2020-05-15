@@ -41,7 +41,7 @@ class GXCustomizer
             );
             wp_enqueue_style(
                 'theme-customizercss',
-                plugin_dir_url(__FILE__) . "/css/gx-customizer.css?v=" . rand()
+                plugin_dir_url(__FILE__) . "/css/maxi-customizer.css?v=" . rand()
             );
             wp_enqueue_style(
                 'page-loader',
@@ -81,7 +81,7 @@ class GXCustomizer
 
 
             wp_enqueue_script('select2-js', plugin_dir_url(__FILE__) . "/js/select2.min.js?v=" . rand(), ['jquery', 'customize-preview'], '', true);
-            wp_enqueue_script('theme-customizer', plugin_dir_url(__FILE__) . "/js/gx-admin.js?v=" . rand(), ['jquery', 'customize-preview'], '', true);
+            wp_enqueue_script('theme-customizer', plugin_dir_url(__FILE__) . "/js/maxi-admin.js?v=" . rand(), ['jquery', 'customize-preview'], '', true);
             wp_localize_script(
                 'theme-customizer',
                 'gx_ajax_object',
@@ -101,7 +101,7 @@ class GXCustomizer
         if (is_customize_preview()) {
             wp_enqueue_script(
                 'theme-customizerc',
-                plugin_dir_url(__FILE__) . "/js/gx-theme-control.js?v=" . rand(),
+                plugin_dir_url(__FILE__) . "/js/maxi-theme-control.js?v=" . rand(),
                 ['jquery', 'customize-preview'],
                 '',
                 true
@@ -135,12 +135,12 @@ class GXCustomizer
                     array_push($font_info[$family]['styles'], 'italic', 'oblique');
                 }
             }
-            wp_enqueue_script('theme-customizerc', plugin_dir_url(__FILE__) . "/js/gx-customizer.js?v=" . rand(), ['jquery', 'customize-preview'], '', true);
+            wp_enqueue_script('theme-customizerc', plugin_dir_url(__FILE__) . "/js/maxi-customizer.js?v=" . rand(), ['jquery', 'customize-preview'], '', true);
             wp_localize_script(
                 'theme-customizerc',
                 'gx_ajax_object',
                 array(
-                    'bodyClass' => 'gx-' . strtolower(get_theme_mod('color_scheme')),
+                    'bodyClass' => '' . strtolower(get_theme_mod('color_scheme')),
                     'font_info' => $font_info,
                 )
             );
@@ -186,47 +186,47 @@ class GXCustomizer
         for ($i = 0; $i < $themeClassesCount; $i++) {
             $themeClassBody = 'body.' . $themeClasses[$i] . ' ';
             if (get_theme_mod('body_background_color' . $themeClasses[$i] . '-color-dark'))
-                $style[] = $themeClassBody . '.gx-dark { background-color : ' . get_theme_mod('body_background_color' . $themeClasses[$i] . '-color-dark') . ' !important;}';
+                $style[] = $themeClassBody . '.dark { background-color : ' . get_theme_mod('body_background_color' . $themeClasses[$i] . '-color-dark') . ' !important;}';
             if (get_theme_mod('body_background_color' . $themeClasses[$i] . '-color-light')) {
-                $style[] = $themeClassBody . '.gx-light { background-color : ' . get_theme_mod('body_background_color' . $themeClasses[$i] . '-color-light') . ' !important;}';
-                $style[] = $themeClassBody . '.gx-default { background-color : ' . get_theme_mod('body_background_color' . $themeClasses[$i] . '-color-light') . ' !important;}';
+                $style[] = $themeClassBody . '.light { background-color : ' . get_theme_mod('body_background_color' . $themeClasses[$i] . '-color-light') . ' !important;}';
+                $style[] = $themeClassBody . '.default { background-color : ' . get_theme_mod('body_background_color' . $themeClasses[$i] . '-color-light') . ' !important;}';
             }
 
             for ($m = 0; $m < $tagsCount; $m++) {
-                $style[] = $themeClassBody . '.gx-dark ' . $tags[$m] . ' {' . self::checkThemeMod($tags[$m], 'Dark', $themeClasses[$i], 'desktop') . '}';
-                $style[] = $themeClassBody . '.gx-light ' . $tags[$m] . ' {' . self::checkThemeMod($tags[$m], 'Light', $themeClasses[$i], 'desktop') . '}';
+                $style[] = $themeClassBody . '.dark ' . $tags[$m] . ' {' . self::checkThemeMod($tags[$m], 'Dark', $themeClasses[$i], 'desktop') . '}';
+                $style[] = $themeClassBody . '.light ' . $tags[$m] . ' {' . self::checkThemeMod($tags[$m], 'Light', $themeClasses[$i], 'desktop') . '}';
 
                 // make responsive design
-                $style[] = '@media screen and (max-width:980px) { ' . $themeClassBody . '.gx-dark ' . $tags[$m] . ' {' . self::checkThemeMod($tags[$m], 'Dark', $themeClasses[$i], 'tablet') . '}' . $themeClassBody . '.gx-light ' . $tags[$m] . ' {' . self::checkThemeMod($tags[$m], 'Light', $themeClasses[$i], 'tablet') . '}' . '}';
-                $style[] = '@media screen and (max-width:480px) { ' . $themeClassBody . '.gx-dark ' . $tags[$m] . ' {'  . self::checkThemeMod($tags[$m], 'Dark', $themeClasses[$i], 'mobile') . '}' . $themeClassBody . '.gx-light ' . $tags[$m] . ' {' . self::checkThemeMod($tags[$m], 'Light', $themeClasses[$i], 'mobile') . '}' . '}';
+                $style[] = '@media screen and (max-width:980px) { ' . $themeClassBody . '.dark ' . $tags[$m] . ' {' . self::checkThemeMod($tags[$m], 'Dark', $themeClasses[$i], 'tablet') . '}' . $themeClassBody . '.light ' . $tags[$m] . ' {' . self::checkThemeMod($tags[$m], 'Light', $themeClasses[$i], 'tablet') . '}' . '}';
+                $style[] = '@media screen and (max-width:480px) { ' . $themeClassBody . '.dark ' . $tags[$m] . ' {'  . self::checkThemeMod($tags[$m], 'Dark', $themeClasses[$i], 'mobile') . '}' . $themeClassBody . '.light ' . $tags[$m] . ' {' . self::checkThemeMod($tags[$m], 'Light', $themeClasses[$i], 'mobile') . '}' . '}';
             }
 
             //        add body class
             if (get_theme_mod('a_color' . $themeClasses[$i] . '-color-dark')) {
-                $style[] = $themeClassBody . '.gx-dark a { color : ' . get_theme_mod('a_color' . $themeClasses[$i] . '-color-dark') . ' !important;}';
+                $style[] = $themeClassBody . '.dark a { color : ' . get_theme_mod('a_color' . $themeClasses[$i] . '-color-dark') . ' !important;}';
             }
             if (get_theme_mod('a_color' . $themeClasses[$i] . '-color-light')) {
-                $style[] = $themeClassBody . '.gx-light a { color : ' . get_theme_mod('a_color' . $themeClasses[$i] . '-color-light') . ' !important;}';
-                $style[] = $themeClassBody . 'gx-default a { color : ' . get_theme_mod('a_color' . $themeClasses[$i] . '-color-light') . ' !important;}';
+                $style[] = $themeClassBody . '.light a { color : ' . get_theme_mod('a_color' . $themeClasses[$i] . '-color-light') . ' !important;}';
+                $style[] = $themeClassBody . 'default a { color : ' . get_theme_mod('a_color' . $themeClasses[$i] . '-color-light') . ' !important;}';
             }
 
             if (get_theme_mod('hover' . $themeClasses[$i] . '-color-dark')) {
-                $style[] = $themeClassBody . '.gx-dark a:hover { color : ' . get_theme_mod('hover' . $themeClasses[$i] . '-color-dark') . ' !important;}';
+                $style[] = $themeClassBody . '.dark a:hover { color : ' . get_theme_mod('hover' . $themeClasses[$i] . '-color-dark') . ' !important;}';
             }
             if (get_theme_mod('hover' . $themeClasses[$i] . '-color-light')) {
-                $style[] = $themeClassBody . '.gx-light a:hover { color : ' . get_theme_mod('hover' . $themeClasses[$i] . '-color-light') . ' !important;}';
-                $style[] = $themeClassBody . '.gx-default a:hover { color : ' . get_theme_mod('hover' . $themeClasses[$i] . '-color-light') . ' !important;}';
+                $style[] = $themeClassBody . '.light a:hover { color : ' . get_theme_mod('hover' . $themeClasses[$i] . '-color-light') . ' !important;}';
+                $style[] = $themeClassBody . '.default a:hover { color : ' . get_theme_mod('hover' . $themeClasses[$i] . '-color-light') . ' !important;}';
             }
 
             if (get_theme_mod('highlight' . $themeClasses[$i] . '-color-dark')) {
-                $style[] = $themeClassBody . '.gx-dark .gx-highlight { color : ' . get_theme_mod('highlight' . $themeClasses[$i] . '-color-dark') . ' !important;}';
-                $style[] = $themeClassBody . '.gx-dark .gx-divider { border-color : ' . get_theme_mod('highlight' . $themeClasses[$i] . '-color-dark') . ' !important;}';
+                $style[] = $themeClassBody . '.dark .highlight { color : ' . get_theme_mod('highlight' . $themeClasses[$i] . '-color-dark') . ' !important;}';
+                $style[] = $themeClassBody . '.dark .divider { border-color : ' . get_theme_mod('highlight' . $themeClasses[$i] . '-color-dark') . ' !important;}';
             }
             if (get_theme_mod('highlight' . $themeClasses[$i] . '-color-light')) {
-                $style[] = $themeClassBody . '.gx-light .gx-highlight { color : ' . get_theme_mod('highlight' . $themeClasses[$i] . '-color-light') . ' !important;}';
-                $style[] = $themeClassBody . '.gx-default .gx-highlight { color : ' . get_theme_mod('highlight' . $themeClasses[$i] . '-color-light') . ' !important;}';
-                $style[] = $themeClassBody . '.gx-light .gx-divider { border-color : ' . get_theme_mod('highlight' . $themeClasses[$i] . '-color-light') . ' !important;}';
-                $style[] = $themeClassBody . '.gx-default .gx-divider { border-color : ' . get_theme_mod('highlight' . $themeClasses[$i] . '-color-light') . ' !important;}';
+                $style[] = $themeClassBody . '.light .highlight { color : ' . get_theme_mod('highlight' . $themeClasses[$i] . '-color-light') . ' !important;}';
+                $style[] = $themeClassBody . '.default .highlight { color : ' . get_theme_mod('highlight' . $themeClasses[$i] . '-color-light') . ' !important;}';
+                $style[] = $themeClassBody . '.light .divider { border-color : ' . get_theme_mod('highlight' . $themeClasses[$i] . '-color-light') . ' !important;}';
+                $style[] = $themeClassBody . '.default .divider { border-color : ' . get_theme_mod('highlight' . $themeClasses[$i] . '-color-light') . ' !important;}';
             }
         }
 
@@ -287,9 +287,9 @@ class GXCustomizer
     public function makeThemeStylesForCustomizer()
     {
         //    $themeStyles = array();
-        //     by Default we have Default -> gx-default
+        //     by Default we have Default -> default
         //    $currentThemeName = get_theme_mod('color_scheme') ?? 'Default';
-        //    $currentThemeName = get_theme_mod('themeSwitch'.$currentThemeName) ?? 'gx-default';
+        //    $currentThemeName = get_theme_mod('themeSwitch'.$currentThemeName) ?? 'default';
         $themes = require_once('theme_default_styles.php');
 
         $themesKeys = array_keys($themes);
@@ -437,7 +437,7 @@ class GXCustomizer
             }
         }
 
-        echo "<style id='gx-styles'>\n" . implode("\n", $style) . "\n</style>\n";
+        echo "<style id='styles'>\n" . implode("\n", $style) . "\n</style>\n";
     }
 }
 

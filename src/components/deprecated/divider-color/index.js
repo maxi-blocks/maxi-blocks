@@ -28,7 +28,7 @@ export const DividerColor = ( props ) => {
 
   return (
     <ColorControl
-      label={__("Divider Colour", "gutenberg-extra")}
+      label={__("Divider Colour", "maxi-blocks")}
       className={'components-base-control'}
       color={dividerColor}
       gradient={props.attributes.backgroundGradient}
@@ -36,13 +36,13 @@ export const DividerColor = ( props ) => {
       disableGradient
     />
     // <PanelColorSettings
-    // title={__('Divider Colour', 'gutenberg-extra' )}
+    // title={__('Divider Colour', 'maxi-blocks' )}
     // className={'divider-color'}
     // colorSettings={[
     //   {
     //     value: dividerColor,
     //     onChange: onChangeDividerColor,
-    //     label: __('Divider Colour', 'gutenberg-extra' ),
+    //     label: __('Divider Colour', 'maxi-blocks' ),
     //   },
     // ]}
     // />

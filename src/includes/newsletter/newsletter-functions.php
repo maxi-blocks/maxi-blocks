@@ -25,15 +25,15 @@ function form_submission_listener() {
 	}
 
 	if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['ab-newsletter-form-nonce'] ) ), 'ab-newsletter-form-nonce' ) ) {
-		send_processing_response( __( 'Nonce verification failed. Please try again.', 'gx-blocks' ) );
+		send_processing_response( __( 'Nonce verification failed. Please try again.', 'maxi-blocks' ) );
 	}
 
 	if ( empty( $_POST['ab-newsletter-mailing-list-provider'] ) || empty( $_POST['ab-newsletter-mailing-list'] ) ) {
-		send_processing_response( __( 'Invalid mailing provider configuration.', 'gx-blocks' ) );
+		send_processing_response( __( 'Invalid mailing provider configuration.', 'maxi-blocks' ) );
 	}
 
 	if ( empty( $_POST['ab-newsletter-email-address'] ) ) {
-		send_processing_response( __( 'You must provide an email address.', 'gx-blocks' ) );
+		send_processing_response( __( 'You must provide an email address.', 'maxi-blocks' ) );
 	}
 
 	$email              = sanitize_email( wp_unslash( $_POST['ab-newsletter-email-address'] ) );
@@ -44,7 +44,7 @@ function form_submission_listener() {
 	$subscriber_status  = ! empty( $_POST['ab-newsletter-double-opt-in'] ) ? 'pending' : 'subscribed';
 
 	if ( ! is_email( $email ) ) {
-		send_processing_response( __( 'Please provide a valid email address.', 'gx-blocks' ) );
+		send_processing_response( __( 'Please provide a valid email address.', 'maxi-blocks' ) );
 	}
 
 	$response = process_submission(
@@ -130,10 +130,10 @@ function process_submission( $email, $provider, array $args ) {
 	$args['status'] = ! empty( $args['status'] ) ? sanitize_key( $args['status'] ) : false;
 
 	$errors = [
-		'invalid_provider' => esc_html__( 'Invalid newsletter provider.', 'gx-blocks' ),
-		'invalid_email'    => esc_html__( 'Invalid email address.', 'gx-blocks' ),
-		'invalid_list_id'  => esc_html__( 'Invalid list ID.', 'gx-blocks' ),
-		'invalid_api_key'  => esc_html__( 'You must enter your email API key in the plugin settings page.', 'gx-blocks' ),
+		'invalid_provider' => esc_html__( 'Invalid newsletter provider.', 'maxi-blocks' ),
+		'invalid_email'    => esc_html__( 'Invalid email address.', 'maxi-blocks' ),
+		'invalid_list_id'  => esc_html__( 'Invalid list ID.', 'maxi-blocks' ),
+		'invalid_api_key'  => esc_html__( 'You must enter your email API key in the plugin settings page.', 'maxi-blocks' ),
 	];
 
 	if ( empty( $provider ) ) {
@@ -220,7 +220,7 @@ add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\frontend_assets' );
  */
 function frontend_assets() {
 	wp_register_script(
-		'gx-blocks-newsletter-functions',
+		'maxi-blocks-newsletter-functions',
 		plugins_url( '/dist/assets/js/newsletter-block-functions.js', gx_blocks_main_plugin_file() ),
 		[ 'jquery', 'wp-a11y' ],
 		'1.0',
@@ -228,17 +228,17 @@ function frontend_assets() {
 	);
 
 	wp_localize_script(
-		'gx-blocks-newsletter-functions',
+		'maxi-blocks-newsletter-functions',
 		'gx_blocks_newsletter_vars',
 		[
 			'ajaxurl' => esc_url( admin_url( 'admin-ajax.php' ) ),
 			'l10n'    => [
 				'button_text_processing' => esc_html( gx_blocks_newsletter_block_attributes()['buttonTextProcessing']['default'] ),
-				'invalid_configuration'  => esc_html__( 'Invalid configuration. Site owner: Please configure your newsletter provider settings.', 'gx-blocks' ),
+				'invalid_configuration'  => esc_html__( 'Invalid configuration. Site owner: Please configure your newsletter provider settings.', 'maxi-blocks' ),
 				'a11y'                   => [
-					'submission_processing' => esc_html__( 'The submission is being processed.', 'gx-blocks' ),
-					'submission_succeeded'  => esc_html__( 'The submission successfully succeeded.', 'gx-blocks' ),
-					'submission_failed'     => esc_html__( 'The submission failed.', 'gx-blocks' ),
+					'submission_processing' => esc_html__( 'The submission is being processed.', 'maxi-blocks' ),
+					'submission_succeeded'  => esc_html__( 'The submission successfully succeeded.', 'maxi-blocks' ),
+					'submission_failed'     => esc_html__( 'The submission failed.', 'maxi-blocks' ),
 				],
 			],
 		]
@@ -251,11 +251,11 @@ add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\admin_assets' );
  */
 function admin_assets() {
 	wp_localize_script(
-		'gx-blocks-block-js',
+		'maxi-blocks-block-js',
 		'gx_blocks_newsletter_block_vars',
 		[
 			'mailingListProviders'     => mailing_list_providers(),
-			'plugin_settings_page_url' => esc_url( admin_url( 'admin.php?page=gx-blocks-plugin-settings' ) ),
+			'plugin_settings_page_url' => esc_url( admin_url( 'admin.php?page=maxi-blocks-plugin-settings' ) ),
 		]
 	);
 }

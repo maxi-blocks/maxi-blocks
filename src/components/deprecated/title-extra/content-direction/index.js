@@ -25,8 +25,8 @@ export const ContentDirection = ( props ) => {
 
   return (
     <SelectControl
-        label={__('Content Direction', 'gutenberg-extra')}
-        className="gx-block-style"
+        label={__('Content Direction', 'maxi-blocks')}
+        className="maxi-block-style"
         value={contentDirection}
         options={[
             { label: __('From Left To Right'), value: 'row' },

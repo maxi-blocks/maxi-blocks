@@ -1,19 +1,19 @@
 @import '../../../node_modules/react-image-crop/lib/ReactCrop.scss';
 
-.gx-imagecrop-control {
+.maxi-imagecrop-control {
   margin-bottom: 8px;
 }
 
-.gx-imagecrop-control .ReactCrop__crop-selection {
+.maxi-imagecrop-control .ReactCrop__crop-selection {
   background: transparent;
 }
 
-.gx-imagecrop-control .gx-imagecrop-option-controls {
+.maxi-imagecrop-control .maxi-imagecrop-option-controls {
   display: flex;
   flex-direction: column;
 }
 
-.gx-imagecrop-control .gx-imagecrop-option-controls label {
+.maxi-imagecrop-control .maxi-imagecrop-option-controls label {
   display: flex;
   justify-content: space-between;
 }

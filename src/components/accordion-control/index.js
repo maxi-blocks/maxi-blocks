@@ -43,7 +43,7 @@ export default class AccordionControl extends Component {
             currentOpen
         } = this.state;
     
-        let classes = classnames('gx-style-tab-setting gx-accordion', className);
+        let classes = classnames('maxi-style-tab-setting maxi-accordion', className);
         if(isPrimary)
             classes = classnames(classes, 'is-primary');
         if(isSecondary)
@@ -63,7 +63,7 @@ export default class AccordionControl extends Component {
             >
                 {
                     items.map(item => {
-                        const classes = classnames('gx-accordion-tab', item.classNameHeading);
+                        const classes = classnames('maxi-accordion-tab', item.classNameHeading);
     
                         return (
                             <AccordionItem
@@ -77,7 +77,7 @@ export default class AccordionControl extends Component {
                                         className='components-base-control__label'
                                     >
                                         <Icon 
-                                            className='gx-accordion-icon'
+                                            className='maxi-accordion-icon'
                                             icon={item.icon}
                                         />
                                         {item.label}

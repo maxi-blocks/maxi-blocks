@@ -53,7 +53,7 @@ const SizeControl = props => {
     return (
         <div className={classes}>
             <RadioControl
-                className={'gx-unit-control'}
+                className={'maxi-unit-control'}
                 selected={unit}
                 options={[
                     { label: 'PX', value: 'px' },
@@ -65,7 +65,7 @@ const SizeControl = props => {
             />
             <RangeControl
                 label={label}
-                className={'gx-with-unit-control'}
+                className={'maxi-with-unit-control'}
                 value={value}
                 onChange={onChangeValue}
                 min={minMaxSettings[unit].min}

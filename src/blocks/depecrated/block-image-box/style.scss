@@ -4,24 +4,24 @@
  * CSS for both Frontend+Backend.
  */
 
- .gx-image-box-link {
+ .maxi-image-box-link {
 	display: flex;
 }
 
-.gx-sidebar .gx-advanced-tab-setting .gx-additional-css .components-base-control__field{
+.maxi-sidebar .maxi-advanced-tab-setting .maxi-additional-css .components-base-control__field{
 	flex-direction: column;
 	align-items: flex-start;
 }
 
-.gx-sidebar .gx-advanced-tab-setting .components-base-control .components-base-control__label{
+.maxi-sidebar .maxi-advanced-tab-setting .components-base-control .components-base-control__label{
 	flex: 120%;
 }
 
-.gx-sidebar .gx-advanced-tab-setting textarea {
+.maxi-sidebar .maxi-advanced-tab-setting textarea {
 	height: 200px;
 }
 
-.gx-title-typography-setting {
+.maxi-title-typography-setting {
 	.components-base-control__field {
 		display: flex;
 	}
@@ -33,7 +33,7 @@
 	}
 }
 
-.gx-device-control {
+.maxi-device-control {
 	input {
 		display: none;
 	}
@@ -64,7 +64,7 @@
 }
 
 
-.gx-with-unit-control {
+.maxi-with-unit-control {
 	.components-range-control__reset {
 		left: 43% !important;
 	}

@@ -40,12 +40,12 @@ const GeneralInput = props => {
     } = props;
 
     return (
-        <label for={`gx-imagecrop-${target}-control`}>
+        <label for={`maxi-imagecrop-${target}-control`}>
             {capitalize(target)}
             <input
                 type="number"
-                id={`gx-imagecrop-${target}-control`}
-                name={`gx-imagecrop-${target}-control`}
+                id={`maxi-imagecrop-${target}-control`}
+                name={`maxi-imagecrop-${target}-control`}
                 value={value.toFixed(0)}
                 onChange={e => onChange(parseInt(e.target.value))}
             />
@@ -267,7 +267,7 @@ class ImageCropComponent extends Component {
                     response.image.source_url = res.url;
                     this.props.onChange(response)
                 }).catch(err => {
-                    console.log(__('Error croping the image: ' + err, 'gutenberg-extra'));
+                    console.log(__('Error croping the image: ' + err, 'maxi-blocks'));
                 })
         })
     }
@@ -284,7 +284,7 @@ class ImageCropComponent extends Component {
                 body: data
             }
         ).catch(err => {
-            console.log(__('Error croping the image: ' + err, 'gutenberg-extra'));
+            console.log(__('Error croping the image: ' + err, 'maxi-blocks'));
         })
     }
 
@@ -294,7 +294,7 @@ class ImageCropComponent extends Component {
             className
         } = this.props;
 
-        const classes = classnames('gx-imagecrop-control', className);
+        const classes = classnames('maxi-imagecrop-control', className);
 
         return (
             <div className={classes}>
@@ -308,7 +308,7 @@ class ImageCropComponent extends Component {
                             onComplete={crop => this.onCropComplete(crop)}
                         />
                         {this.image &&
-                            <div className="gx-imagecrop-option-controls" >
+                            <div className="maxi-imagecrop-option-controls" >
                                 <GeneralInput
                                     target='width'
                                     value={this.state.crop.width * this.scaleX * this.getScale}

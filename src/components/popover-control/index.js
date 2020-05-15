@@ -36,13 +36,13 @@ const PopoverControl = props => {
         popovers
     } = props;
 
-    const classes = classnames('gx-popover-control', className);
-    let classesPopover = classnames('gx-popover', classNamePopover);
+    const classes = classnames('maxi-popover-control', className);
+    let classesPopover = classnames('maxi-popover', classNamePopover);
 
     return (
         <div className={classes}>
             <BaseControl
-                className={'gx-settings-button'}
+                className={'maxi-settings-button'}
             >
                 <BaseControl.VisualLabel>
                     {label}
@@ -55,7 +55,7 @@ const PopoverControl = props => {
 
                     return (
                         <Dropdown
-                            className={'gx-popover-dropdown'}
+                            className={'maxi-popover-dropdown'}
                             renderToggle={({ isOpen, onToggle }) => (
                                 <Button
                                     isSecondary

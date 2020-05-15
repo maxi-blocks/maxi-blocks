@@ -24,10 +24,10 @@ import save from './save';
  */
 
 
-registerBlockType( 'gutenberg-extra/block-title-extra', {
-	title: __('Title Extra', 'gutenberg-extra'),
+registerBlockType( 'maxi-blocks/block-title-extra', {
+	title: __('Title Extra', 'maxi-blocks'),
 	icon: titleExtra,
-	category: 'gutenberg-extra-blocks',
+	category: 'maxi-blocks-blocks',
 	supports: {
         align: true,
     },

@@ -1,0 +1,25 @@
+div.maxi-column-block:hover {
+    outline: 1px solid blue;
+}
+
+div.maxi-column-block {
+    max-width: 100% !important;
+
+    > div.block-editor-inner-blocks {
+        > div.block-editor-block-list__layout {
+            > div.block-list-appender {
+                width: 100%;
+                margin: 0;
+            }
+        }
+    }
+}
+
+// div.components-resizable-box__container {
+//     width: 100%;
+
+//     > span > div.components-resizable-box__handle-right {
+//         left: 100%;
+//         transform: translateX(20%);
+//     }
+// }

@@ -22,8 +22,8 @@ export const SubtitleBackgroundColor = ( props ) => {
 
   return (
     <ColorControl
-      className={'gx-subtitle-background-color'}
-      label={__("Subtitle Background", "gutenberg-extra")}
+      className={'maxi-subtitle-background-color'}
+      label={__('Subtitle Background', 'maxi-blocks')}
       color={subtitleBackgroundColor}
       gradient={props.attributes.backgroundGradient}
       onColorChange={(value) => {

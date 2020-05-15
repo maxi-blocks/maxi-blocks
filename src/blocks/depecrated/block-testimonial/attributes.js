@@ -48,7 +48,7 @@ const attributes = {
             personNameSurname: {
                 type: 'array',
                 source: 'children',
-                selector: ".gx-testimonial-name-surname"
+                selector: ".maxi-testimonial-name-surname"
             },
             personPosition: {
                 source: "text",

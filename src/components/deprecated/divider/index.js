@@ -98,7 +98,7 @@ class Divider extends Component {
         style={dividerWrapperStyles}
       >
         <div
-          className={'gx-divider'}
+          className={'maxi-divider'}
           style={dividerStyles}
         />
       </div>

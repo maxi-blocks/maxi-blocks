@@ -21,8 +21,8 @@ export const HideDescription = ( props ) => {
 
   return (
     <ToggleControl
-      label={__('Hide Description', 'gutenberg-extra')}
-      id='gx-block-style'
+      label={__('Hide Description', 'maxi-blocks')}
+      id='maxi-block-style'
       checked={hideDescription}
       onChange={(value) => {setAttributes({hideDescription: value})}}
     />

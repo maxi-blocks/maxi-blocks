@@ -1,8 +1,8 @@
-.gx-colorcontrol-control .gx-popover-control .components-base-control__field .components-dropdown {
+.maxi-colorcontrol-control .maxi-popover-control .components-base-control__field .components-dropdown {
 	margin-left: auto;
 }
 
-.gx-colorcontrol-control .components-base-control__field > button {
+.maxi-colorcontrol-control .components-base-control__field > button {
   order: 3;
   border: 2px solid #dddfe1 !important;
   padding: 0;
@@ -12,7 +12,7 @@
   height: 30px !important;
 }
 
-.gx-colorcontrol-color-display span {
+.maxi-colorcontrol-color-display span {
   width: 24px;
   height: 24px;
   float: left;
@@ -22,8 +22,8 @@
   border-radius: 5px;
 }
 
-.gx-colorcontrol-color-display span,
-.gx-sidebar .component-color-indicator {
+.maxi-colorcontrol-color-display span,
+.maxi-sidebar .component-color-indicator {
   width: 24px;
   height: 24px;
   float: left;
@@ -33,20 +33,20 @@
   border-radius: 5px;
 }
     
-.gx-colorcontrol-color-display span {
+.maxi-colorcontrol-color-display span {
   margin-right: 8px !important;
 }
     
-.gx-colorcontrol-control .components-base-control__field > button svg {
+.maxi-colorcontrol-control .components-base-control__field > button svg {
   width: 12px;
   height: 12px;
   margin: auto;
 }
     
-.gx-colorcontrol-control {
+.maxi-colorcontrol-control {
   display: flex;
 
-.gx-colorcontrol-color-display {
+.maxi-colorcontrol-color-display {
   span {
     display: block;
     width: 24px;
@@ -56,7 +56,7 @@
   }
 }
 
-.gx-popover-control {
+.maxi-popover-control {
   width: 100%;
 
     .components-base-control__field {
@@ -100,93 +100,93 @@
   }
 }
 
-.gx-colorcontrol-gradient-popover
+.maxi-colorcontrol-gradient-popover
 .components-custom-gradient-picker__gradient-bar {
   border-radius: 0;
 }
 
-.gx-colorcontrol-gradient-popover .components-custom-gradient-picker__ui-line {
+.maxi-colorcontrol-gradient-popover .components-custom-gradient-picker__ui-line {
   display: flex;
   flex-direction: column;
 }
 
-.gx-colorcontrol-gradient-popover
+.maxi-colorcontrol-gradient-popover
 .components-custom-gradient-picker__ui-line
 .components-base-control__field {
   display: flex;
   justify-content: space-between;
 }
 
-.gx-colorcontrol-gradient-popover
+.maxi-colorcontrol-gradient-popover
 .components-custom-gradient-picker__ui-line
 .components-base-control__label {
   margin: auto;
   margin-left: 0;
 }
 
-.gx-colorcontrol-gradient-popover
+.maxi-colorcontrol-gradient-popover
 .components-custom-gradient-picker__ui-line
 .components-angle-picker-control {
   width: 100%;
 }
 
-.gx-colorcontrol-gradient-popover
+.maxi-colorcontrol-gradient-popover
 .components-custom-gradient-picker__ui-line
 .components-angle-picker-control__angle-circle {
   margin: auto;
   margin-right: 0;
 }
 
-.gx-colorcontrol-control .gx-popover-control .components-base-control {
+.maxi-colorcontrol-control .maxi-popover-control .components-base-control {
   display: flex;
   justify-content: space-between;
 }
 
-.gx-colorcontrol-control .gx-colorcontrol-color-display span {
+.maxi-colorcontrol-control .maxi-colorcontrol-color-display span {
   display: block;
   width: 24px;
   height: 24px;
   margin: auto;
 }
 
-.gx-colorcontrol-color-display span{
+.maxi-colorcontrol-color-display span{
   border: 1px solid #dddfe1 !important;
   opacity: 1 !important;
 }
 
-.gx-colorcontrol-color-display span {
+.maxi-colorcontrol-color-display span {
   margin-right: 8px !important;
 }
 
-.gx-colorcontrol-color-display span{
+.maxi-colorcontrol-color-display span{
   border-radius:5px;
   float:left;
 }
 
-.gx-colorcontrol-control .gx-popover-control {
+.maxi-colorcontrol-control .maxi-popover-control {
   width: 100%;
 }
 
-.gx-colorcontrol-control .gx-popover-control .components-base-control {
+.maxi-colorcontrol-control .maxi-popover-control .components-base-control {
   display: flex;
   justify-content: space-between;
 }
 
-.gx-colorcontrol-control .gx-popover-control .components-base-control__field .components-button{
+.maxi-colorcontrol-control .maxi-popover-control .components-base-control__field .components-button{
   border: 1px solid #dddfe1 !important;
   opacity: 1 !important;
 }
 
-.gx-colorcontrol-control .gx-popover-control .components-base-control__field .components-dropdown {
+.maxi-colorcontrol-control .maxi-popover-control .components-base-control__field .components-dropdown {
   margin-left: auto;
 }
 
-.gx-colorcontrol-control .gx-popover-control .components-base-control__field .components-button{
+.maxi-colorcontrol-control .maxi-popover-control .components-base-control__field .components-button{
   border: 1px solid #dddfe1 !important;
   opacity: 1 !important;
 }
 
-.gx-colorcontrol-color-display span{
+.maxi-colorcontrol-color-display span{
   border: 1px solid #dddfe1 !important;
   opacity: 1 !important;
   margin-right: 8px !important;
@@ -194,12 +194,12 @@
   border-radius: 5px;
 }
 
-.gx-colorcontrol-control .gx-popover-control .components-base-control__field .components-button{
+.maxi-colorcontrol-control .maxi-popover-control .components-base-control__field .components-button{
   border: 1px solid #dddfe1 !important;
   opacity: 1 !important;
 }
 
-.gx-colorcontrol-control .components-base-control__field > button{
+.maxi-colorcontrol-control .components-base-control__field > button{
   order: 3;
   margin-left: 0;
   height: 30px !important;
@@ -207,7 +207,7 @@
 
 @media all and(max-width:2000px){
   
-  .gx-colorcontrol-color-display span{
+  .maxi-colorcontrol-color-display span{
     border: 1px solid #dddfe1 !important;
     opacity: 1 !important;
   } 

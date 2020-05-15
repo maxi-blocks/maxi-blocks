@@ -1,19 +1,19 @@
-.gx-sidebar .components-panel__body.is-opened {
+.maxi-sidebar .components-panel__body.is-opened {
     max-width: 100%;
     margin-left: auto;
 }
 
-.gx-controls .components-panel__body.gx-image-setting,
-.gx-controls .components-panel__body.gx-link-setting {
+.maxi-controls .components-panel__body.maxi-image-setting,
+.maxi-controls .components-panel__body.maxi-link-setting {
 	border-top: 2px solid #e8eaeb;
 	border-bottom: 2px solid #e8eaeb;
   }
 
-.gx-content-tab-setting {
+.maxi-content-tab-setting {
     padding: 20px !important;
 }
 
-.gx-link-setting .components-base-control:not(.components-toggle-control) {
+.maxi-link-setting .components-base-control:not(.components-toggle-control) {
     margin-bottom: 10px !important;
 }
 
@@ -28,7 +28,7 @@
     align-items: center;
 }
 
-.gx-sidebar .gx-link-setting .components-base-control__label {
+.maxi-sidebar .maxi-link-setting .components-base-control__label {
     flex: 36%;
 }
 
@@ -53,7 +53,7 @@ label {
     cursor: pointer;
 }
 
-.gx-panel input[type="text"], .gx-panel input[type="number"], .gx-panel textarea, .gx-panel select, .gx-popover input[type="text"], .gx-popover input[type="number"], .gx-controls select, .gx-popover textarea, .components-select-control__input {
+.maxi-panel input[type="text"], .maxi-panel input[type="number"], .maxi-panel textarea, .maxi-panel select, .maxi-popover input[type="text"], .maxi-popover input[type="number"], .maxi-controls select, .maxi-popover textarea, .components-select-control__input {
     min-height: unset;
     max-height: unset !important;
     border-radius: 5px;
@@ -68,27 +68,27 @@ label {
     padding: 6px 8px;
 }
 
-.gx-sidebar .components-base-control.gutenberg-extra-checkbox-container {
+.maxi-sidebar .components-base-control.maxi-blocks-checkbox-container {
     min-height: 23px;
 }
 
-.gx-link-setting .components-base-control:not(.components-toggle-control) {
+.maxi-link-setting .components-base-control:not(.components-toggle-control) {
     margin-bottom: 10px !important;
 }
 
-.gx-panel label, .gx-popover label, .gx-popover .components-base-control__label, .gx-controls .gx-accordion .components-base-control__label {
+.maxi-panel label, .maxi-popover label, .maxi-popover .components-base-control__label, .maxi-controls .maxi-accordion .components-base-control__label {
     font-size: 16px;
     color: #464a53;
     font-weight: 500;
     letter-spacing: -0.5px;
 }
 
-.gx-controls * {
+.maxi-controls * {
     overflow-x: none;
     background: #fff;
 }
 
-input[type="checkbox"].gutenberg-extra-checkbox-input {
+input[type="checkbox"].maxi-blocks-checkbox-input {
     position: relative;
     width: 23px;
     height: 23px;

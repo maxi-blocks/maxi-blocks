@@ -20,7 +20,7 @@ $dark-gray-700: #32373c;
 	}
 }
 
-.wp-block-gx-animation-button {
+.wp-block-maxi-animation-button {
 	display: inline-block;
 	margin-bottom: 0;
 	position: relative;
@@ -80,7 +80,7 @@ $dark-gray-700: #32373c;
 	}
 }
 
-.gx-button {
+.maxi-button {
 	width: calc( 50% - 20px );
 	text-align: center;
 	display: inline-block;
@@ -93,7 +93,7 @@ $dark-gray-700: #32373c;
 	text-decoration: none !important;
 }
 
-.gx-button.active {
+.maxi-button.active {
 	box-shadow: 0px 0 1px 1px rgba(0, 0, 0, 0.5);
 }
 

@@ -400,7 +400,7 @@ if ( !class_exists('Puc_v4p2_Plugin_UpdateChecker', false) ):
 		public function displayManualCheckResult() {
 			if ( isset($_GET['puc_update_check_result'], $_GET['puc_slug']) && ($_GET['puc_slug'] == $this->slug) ) {
 				$status = strval($_GET['puc_update_check_result']);
-				$title  = 'Gutenberg Extra';
+				$title  = 'Maxi Blocks';
 				if ( $status == 'no_update' ) {
 					$message = sprintf(_x('The %s plugin is up to date.', 'the plugin title', 'plugin-update-checker'), $title);
 				} else if ( $status == 'update_available' ) {

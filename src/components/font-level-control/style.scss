@@ -1,10 +1,10 @@
-.components-base-control.gx-title-level,
+.components-base-control.maxi-title-level,
 .components-base-control {
   margin-bottom: 5px !important;
 }
 
-.components-base-control.gx-title-level .components-base-control__field:first-child,
-.components-base-control.gx-title-level:last-child .components-base-control__field {
+.components-base-control.maxi-title-level .components-base-control__field:first-child,
+.components-base-control.maxi-title-level:last-child .components-base-control__field {
   margin-bottom: 0 !important;
 }
 
@@ -15,7 +15,7 @@
   align-items: center;
 }
 
-.gx-title-level .components-base-control__label {
+.maxi-title-level .components-base-control__label {
   flex: 100%;
 }
 
@@ -35,7 +35,7 @@
   max-width: 8.5rem;
 }
 
-.components-select-control__input, .gx-popover select {
+.components-select-control__input, .maxi-popover select {
   min-height: unset;
   max-height: unset !important;
   padding: 0 24px 0px 5px !important;

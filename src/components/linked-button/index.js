@@ -42,8 +42,8 @@ export default class LinkedButton extends Component {
     }
 
     popoverPosition() {
-        const target = document.querySelector(`.gx-externalbutton-unique-${this.state.uniqueHash} .gx-externalbutton-popover`);
-        const reference = document.querySelector(`button.gx-externalbutton-unique-${this.state.uniqueHash}`);
+        const target = document.querySelector(`.maxi-externalbutton-unique-${this.state.uniqueHash} .maxi-externalbutton-popover`);
+        const reference = document.querySelector(`button.maxi-externalbutton-unique-${this.state.uniqueHash}`);
         const scrollEl = getScrollContainer(target);
         if (isNil(target) || isNil(reference)) {
             return;
@@ -54,7 +54,7 @@ export default class LinkedButton extends Component {
     render() {
         const {
             className,
-            placeholder = __('External link', 'gutenberg-extra'),
+            placeholder = __('External link', 'maxi-blocks'),
             buttonText,
             onTextChange,
             externalLink,
@@ -62,7 +62,7 @@ export default class LinkedButton extends Component {
             settings = [
                 {
                     id: 'opensInNewTab',
-                    title: __('Open in new tab', 'gutenberg-extra')
+                    title: __('Open in new tab', 'maxi-blocks')
                 }
             ],
         } = this.props;
@@ -72,7 +72,7 @@ export default class LinkedButton extends Component {
         const value = typeof externalLink === 'object' ? externalLink : JSON.parse(externalLink);
 
         let classes = classnames(
-            `gx-externalbutton-control gx-externalbutton-unique-${uniqueHash}`, 
+            `maxi-externalbutton-control maxi-externalbutton-unique-${uniqueHash}`, 
             className
         );
 
@@ -82,18 +82,18 @@ export default class LinkedButton extends Component {
             >
                 <RichText
                     tagName="span"
-                    className="gx-externalbutton-richtext"
+                    className="maxi-externalbutton-richtext"
                     placeholder={placeholder}
                     value={buttonText}
                     onChange={val => onTextChange(val)}
                 />
                 <PopoverControl
-                    className="gx-externalbutton-popover"
+                    className="maxi-externalbutton-popover"
                     popovers={[
                         {
                             content: (
                                 <__experimentalLinkControl
-                                    className="gx-image-box-read-more-link"
+                                    className="maxi-image-box-read-more-link"
                                     value={value}
                                     onChange={val => onLinkChange(val)}
                                     settings={settings}

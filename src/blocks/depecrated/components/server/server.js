@@ -10,9 +10,9 @@ jQuery(document).ready(function($) {
     function onIframeLoad() {
         //console.log('onIframeLoad');
         setTimeout(function() {
-            $('iframe#gx-library-iframe').on('load', function() {
+            $('iframe#maxi-library-iframe').on('load', function() {
                 console.log('iframe loaded');
-                var frame = document.getElementById('gx-library-iframe');
+                var frame = document.getElementById('maxi-library-iframe');
 
                 jQuery.ajax({
                     type: 'GET',
@@ -130,13 +130,13 @@ jQuery(document).ready(function($) {
                                                     $('body .ddp-tab-section a.gx_close').on('click', function(e) {
                                                         e.preventDefault();
                                                         $('div.sectionSaved').html('<h3 class="gx_loading_text">Loading...</h3>');
-                                                        $('.ddp-tab-section').html('<iframe id="gx-library-iframe" name="gx-library-iframe" class="sectionsIframe" style="width: 100%;height: 100%;" src="'+ gx_sections_link + '"></iframe>');
+                                                        $('.ddp-tab-section').html('<iframe id="maxi-library-iframe" name="maxi-library-iframe" class="sectionsIframe" style="width: 100%;height: 100%;" src="'+ gx_sections_link + '"></iframe>');
                                                         onIframeLoad();
                                                     });
                                                     $('body .ddp-tab-module a.gx_close').on('click', function(e) {
                                                         e.preventDefault();
                                                         $('div.sectionSaved').html('<h3 class="gx_loading_text">Loading...</h3>');
-                                                        $('.ddp-tab-module').html('<iframe id="gx-library-iframe" name="gx-library-iframe" class="sectionsIframe" style="width: 100%;height: 100%;" src="'+ gx_modules_link +'"></iframe>');
+                                                        $('.ddp-tab-module').html('<iframe id="maxi-library-iframe" name="maxi-library-iframe" class="sectionsIframe" style="width: 100%;height: 100%;" src="'+ gx_modules_link +'"></iframe>');
                                                         onIframeLoad();
                                                     });
                                                 }
@@ -176,7 +176,7 @@ jQuery(document).ready(function($) {
                 }, false); // eventer(messageEvent, function(e) {
 
 
-            }); //  $('iframe#gx-library-iframe').on('load', function()
+            }); //  $('iframe#maxi-library-iframe').on('load', function()
 
         }, 200);
     }
@@ -216,7 +216,7 @@ jQuery(document).ready(function($) {
                                 $(".et_pb_modal_settings").append('<div class="et-pb-main-settings et-pb-main-settings-full ddp-tab ddp-tab-layout">\
                                 <div class="et-dlib-load-options ddp-replace-content et-fb-checkboxes-category-wrap"><p>\
                                 Important: if you\'re replacing the content, please manually clear the layout and update the page, then load the new layout.</p></div>\
-                                <iframe id="gx-library-iframe" name="gx-library-iframe" class="layoutsIframe" src="' + gx_layouts_link + '"></iframe></div>');
+                                <iframe id="maxi-library-iframe" name="maxi-library-iframe" class="layoutsIframe" src="' + gx_layouts_link + '"></iframe></div>');
                             }
                         } else {
                             $('li.et-pb-options-tabs-links-active').removeClass('et-pb-options-tabs-links-active');
@@ -225,7 +225,7 @@ jQuery(document).ready(function($) {
                             $(".et_pb_modal_settings").append('<div class="et-pb-main-settings et-pb-main-settings-full ddp-tab ddp-tab-layout active-container" style="opacity: 1;">\
                                 <div class="et-dlib-load-options ddp-replace-content et-fb-checkboxes-category-wrap"><p>\
                                 Important: if you\'re replacing the content, please manually clear the layout and update the page, then load the new layout.</p></div>\
-                                <iframe id="gx-library-iframe" name="gx-library-iframe" class="layoutsIframe" src="' + gx_layouts_link + '"></iframe></div>');
+                                <iframe id="maxi-library-iframe" name="maxi-library-iframe" class="layoutsIframe" src="' + gx_layouts_link + '"></iframe></div>');
                         }
                     }, 200);
 
@@ -254,7 +254,7 @@ jQuery(document).ready(function($) {
                         <img height="25" src="' + gx_wl_options_for_js.gx_wl_i_for_js + '" /> <span>' + gx_wl_options_for_js.gx_wl_pn_for_js + '</span></a></li> \
                         </ul>   \
                         <div class="et-pb-main-settings et-pb-main-settings-full ddp-tab ddp-tab-section" \
-                        style="display:block !important;" ><iframe id="gx-library-iframe" name="gx-library-iframe" class="sectionsIframe" \
+                        style="display:block !important;" ><iframe id="maxi-library-iframe" name="maxi-library-iframe" class="sectionsIframe" \
                         src="' + gx_sections_link + '"></iframe></div>');
 
                         } // if gx_wl_options_for_js.gx_plugin_setting_tab_position 
@@ -270,7 +270,7 @@ jQuery(document).ready(function($) {
                             </li>   \
                         </ul>   \
                         <div class="et-pb-main-settings et-pb-main-settings-full ddp-tab ddp-tab-section active-container" \
-                        style="display:block !important; opacity: 1 !important;" ><iframe id="gx-library-iframe" name="gx-library-iframe" class="sectionsIframe" \
+                        style="display:block !important; opacity: 1 !important;" ><iframe id="maxi-library-iframe" name="maxi-library-iframe" class="sectionsIframe" \
                         src="' + gx_sections_link + '"></iframe></div>');
 
                         }
@@ -309,7 +309,7 @@ jQuery(document).ready(function($) {
                     <img height="25" src="' + gx_wl_options_for_js.gx_wl_i_for_js + '" /> <span>' + gx_wl_options_for_js.gx_wl_pn_for_js + '</span></a></li> \
                     </ul>   \
                     <div class="et-pb-main-settings et-pb-main-settings-full ddp-tab ddp-tab-module" \
-                    style="display:block !important;" ><iframe id="gx-library-iframe" name="gx-library-iframe" class="sectionsIframe" \
+                    style="display:block !important;" ><iframe id="maxi-library-iframe" name="maxi-library-iframe" class="sectionsIframe" \
                     src="'+gx_modules_link+'"></iframe></div> \
                 ');
                         } else {
@@ -328,7 +328,7 @@ jQuery(document).ready(function($) {
                         </li>   \
                         </ul>   \
                     <div class="et-pb-main-settings et-pb-main-settings-full ddp-tab ddp-tab-module active-container"  \
-                    style="display:block !important; opacity: 1 !important;" ><iframe id="gx-library-iframe" name="gx-library-iframe" class="sectionsIframe" \
+                    style="display:block !important; opacity: 1 !important;" ><iframe id="maxi-library-iframe" name="maxi-library-iframe" class="sectionsIframe" \
                     src="'+gx_modules_link+'"></iframe></div> \
                 ');
                         }
@@ -345,8 +345,8 @@ jQuery(document).ready(function($) {
     });
 
     setInterval(function() {
-        if ($('iframe#gx-library-iframe').length) {
-           // console.log('gx-library-iframe');
+        if ($('iframe#maxi-library-iframe').length) {
+           // console.log('maxi-library-iframe');
             onIframeLoad();
         }
     }, 1000);
@@ -400,13 +400,13 @@ jQuery(document).ready(function($) {
                 } else {
                     gx_layouts_link = 'https://ondemand.divi-den.com/new-no-api-layouts-search-dngfh4q2/?uid=' + gx_rand;
                 }
-                $('<iframe id="gx-library-iframe" name="gx-library-iframe" src="' + gx_layouts_link  + '"></iframe>').insertAfter('.ddp-assistant hr');
+                $('<iframe id="maxi-library-iframe" name="maxi-library-iframe" src="' + gx_layouts_link  + '"></iframe>').insertAfter('.ddp-assistant hr');
                 console.log('$click_area.hasClass');
                 onIframeLoad();
             }
         } else {
             ajax_value = 'disabled';
-            //if ($click_area.hasClass('gx_enable')) { $('.ddp-assistant iframe#gx-library-iframe').remove(); }
+            //if ($click_area.hasClass('gx_enable')) { $('.ddp-assistant iframe#maxi-library-iframe').remove(); }
 
         }
 
@@ -445,8 +445,8 @@ jQuery(document).ready(function($) {
     }, 300);
 
     setInterval(function() {
-        if ($('iframe#gx-library-iframe').length > 0) {
-            $('div[data-dismissible=disable-ddpro-cache-notice-forever]:not(.shown)').insertBefore('iframe#gx-library-iframe');
+        if ($('iframe#maxi-library-iframe').length > 0) {
+            $('div[data-dismissible=disable-ddpro-cache-notice-forever]:not(.shown)').insertBefore('iframe#maxi-library-iframe');
             $('div[data-dismissible=disable-ddpro-cache-notice-forever]:not(.shown)').show();
             $('div[data-dismissible=disable-ddpro-cache-notice-forever]').addClass('shown');
         }

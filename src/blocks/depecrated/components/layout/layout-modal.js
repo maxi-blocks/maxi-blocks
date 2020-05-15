@@ -39,7 +39,7 @@ class LayoutModal extends Component {
 
         this.state = {
             modalOpen: true,
-            currentTab: 'gx-layout-tab-sections',
+            currentTab: 'maxi-layout-tab-sections',
             loadGlobalStyles: false,
         };
     }
@@ -52,34 +52,34 @@ class LayoutModal extends Component {
                     key={ 'layout-modal-library-button-' + this.props.clientId }
                     isPrimary
                     isLarge
-                    className="gx-layout-modal-button"
+                    className="maxi-layout-modal-button"
                     onClick={ () => this.setState( {
                         modalOpen: true
                     } ) }
                 >
-                    { __( 'Layout Library', 'gutenberg-extra-blocks' ) }
+                    { __( 'Layout Library', 'maxi-blocks-blocks' ) }
                 </Button>
                 { this.state.modalOpen ?
                     <LayoutsContext.Consumer key={ 'layouts-context-provider-' + this.props.clientId }>
                         { ( context ) => (
                             <Modal
                                 key={ 'layout-modal-modal-component-' + this.props.clientId }
-                                className="gx-layout-modal"
-                                title={ __( 'Gutenberg Extra Layouts and Blocks Library', 'gutenberg-extra-blocks' ) }
+                                className="maxi-layout-modal"
+                                title={ __( 'Maxi Blocks Layouts and Blocks Library', 'maxi-blocks-blocks' ) }
                                // shouldCloseOnOverlayClick={false}
                               //  onRequestClose={ () => this.setState( { modalOpen: false } ) }
                             >
                                 <ToggleControl
                                     label={ __( 'Load blocks with Global Styles from Theme Customizer' ) }
-                                    className={'gx-load-global-styles'}
+                                    className={'maxi-load-global-styles'}
                                     checked={ this.state.loadGlobalStyles  }
                                     onChange={ () => this.setState( { loadGlobalStyles: !this.state.loadGlobalStyles } ) }
                                 /> 
                                 <Iframe url="https://ondemand.dev400.com"
                                 width="100%"
                                 height="90%"
-                                id="gx-library-iframe"
-                                className="gx-library-iframe"
+                                id="maxi-library-iframe"
+                                className="maxi-library-iframe"
                                 display="initial"
                                 position="relative"/>
                             </Modal>
@@ -105,10 +105,10 @@ jQuery(document).ready(function($) {
         //console.log('onIframeLoad');
         setTimeout(function() {
             console.log('full stop '+ddd_full_stop);
-            $('iframe#gx-library-iframe').on('load', function() {
+            $('iframe#maxi-library-iframe').on('load', function() {
                 console.log('iframe loaded');
                 
-                var frame = document.getElementById('gx-library-iframe');
+                var frame = document.getElementById('maxi-library-iframe');
 
                 jQuery.ajax({
                     type: 'GET',
@@ -173,12 +173,12 @@ jQuery(document).ready(function($) {
                                         // });
                                         // wp.data.dispatch('core/editor').insertBlocks(insertedBlock); 
 
-                                        if($('.gx-load-global-styles .components-form-toggle').hasClass('is-checked')) {
+                                        if($('.maxi-load-global-styles .components-form-toggle').hasClass('is-checked')) {
                                             console.log('CHECKED!');
 
-                                            response.content = response.content.replace(/gx-dark/g, "gx-global");
-                                            response.content = response.content.replace(/gx-light/g, "gx-global");
-                                            response.content = response.content.replace(/gx-custom/g, "gx-global");
+                                            response.content = response.content.replace(/maxi-dark/g, "maxi-global");
+                                            response.content = response.content.replace(/maxi-light/g, "maxi-global");
+                                            response.content = response.content.replace(/maxi-custom/g, "maxi-global");
                                         }
 
                                         const {
@@ -218,9 +218,9 @@ jQuery(document).ready(function($) {
                 }, false); // eventer(messageEvent, function(e) {
                     ddd_full_stop = 0;
 
-            }); //  $('iframe#gx-library-iframe').on('load', function()
+            }); //  $('iframe#maxi-library-iframe').on('load', function()
 
-        $('.gx-layout-modal .components-button.components-icon-button').on('click', function(){
+        $('.maxi-layout-modal .components-button.components-icon-button').on('click', function(){
             console.log('close');
             $('.components-modal__screen-overlay').remove();
         });
@@ -232,9 +232,9 @@ jQuery(document).ready(function($) {
     if (typeof ajaxurl === 'undefined') { ajaxurl = gx_wl_options_for_js.gx_ajax_url; }
 
     setInterval(function() {
-        if ($('iframe#gx-library-iframe').length > 0) {
-            //console.log('gx-library-iframe layout modal');
-           // console.log($('iframe#gx-library-iframe').parents());
+        if ($('iframe#maxi-library-iframe').length > 0) {
+            //console.log('maxi-library-iframe layout modal');
+           // console.log($('iframe#maxi-library-iframe').parents());
             onIframeLoad();
         }
     }, 1000);

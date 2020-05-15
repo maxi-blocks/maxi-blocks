@@ -21,8 +21,8 @@ export const TitleAlign = ( props ) => {
 
   return (
     <SelectControl
-      label={__('Title Align', 'gutenberg-extra')}
-      className="gx-block-style"
+      label={__('Title Align', 'maxi-blocks')}
+      className="maxi-block-style"
       value={titleTextAlign}
       options={[
         { label: __('Left'), value: 'left' },

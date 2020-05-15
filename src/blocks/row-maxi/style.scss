@@ -1,0 +1,15 @@
+div.maxi-row-block.alignfull {
+    width: auto;
+}
+
+div.maxi-row-block {
+    display: flex;
+    flex-wrap: wrap;
+
+    >div.maxi-column-block:first-of-type {
+        margin-left: 0 !important;
+    }
+    >div.maxi-column-block:last-of-type {
+        margin-right: 0 !important;
+    }
+}

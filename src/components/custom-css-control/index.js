@@ -32,14 +32,14 @@ const CustomCSS = props => {
     return (
         <Fragment>
             <TextControl
-                label={__('Additional CSS Classes', 'gutenberg-extra')}
-                className="gx-additional-css"
+                label={__('Additional CSS Classes', 'maxi-blocks')}
+                className="maxi-additional-css"
                 value={extraClassName}
                 onChange={value => onChangeValue('extraClassName', value, onChangeExtraClassName)}
             />
             <TextareaControl
-                label={__('Additional CSS Styles', 'gutenberg-extra')}
-                className="gx-additional-css"
+                label={__('Additional CSS Styles', 'maxi-blocks')}
+                className="maxi-additional-css"
                 value={extraStyles}
                 onChange={value => onChangeValue('extraStyles', value, onChangeExtraStyles)}
             />

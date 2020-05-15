@@ -50,7 +50,7 @@ export const DividerWidth = ( props ) => {
   return (
     <div>
       <RadioControl
-        className={'gx-unit-control'}
+        className={'maxi-unit-control'}
         selected={ dividerWidthUnit }
         options={ [
             { label: 'PX', value: 'px' },
@@ -61,8 +61,8 @@ export const DividerWidth = ( props ) => {
         onChange={ onChangeDividerWidthUnit }
       />
       <RangeControl
-        label={__('Divider Width', 'gutenberg-extra')}
-        className={'gx-with-unit-control'}
+        label={__('Divider Width', 'maxi-blocks')}
+        className={'maxi-with-unit-control'}
         value={isVertical ? dividerThickness : dividerWidth}
         onChange={ onChangeDividerWidth }
         min={ 0 }

@@ -4,7 +4,7 @@
  * CSS for both Frontend+Backend.
  */
 
-.wp-block-gutenberg-extra-container.ge-fullwidth{
+.wp-block-maxi-blocks-container.ge-fullwidth{
 	max-width: 100vw !important;
     width: 100vw;
     position: relative;
@@ -14,22 +14,22 @@
     margin-right: -50vw !important;
 }
 
-.wp-block-gutenberg-extra-container.ge-not-fullwidth {
+.wp-block-maxi-blocks-container.ge-not-fullwidth {
 	width: 100% !important;
 	max-width: 100% !important;
 }
 
 /* Align */
 
-.wp-block-gutenberg-extra-container.ge-left-align {
+.wp-block-maxi-blocks-container.ge-left-align {
 	margin-right: auto !important;
 }
 
-.wp-block-gutenberg-extra-container.ge-center-align {
+.wp-block-maxi-blocks-container.ge-center-align {
 	margin-left: auto !important;
 	margin-right: auto !important;
 }
 
-.wp-block-gutenberg-extra-container.ge-right-align {
+.wp-block-maxi-blocks-container.ge-right-align {
 	margin-left: auto !important;
 }

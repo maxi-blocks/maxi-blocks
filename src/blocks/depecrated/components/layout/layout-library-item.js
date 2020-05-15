@@ -36,13 +36,13 @@ class LayoutLibraryItem extends Component {
 	render() {
 		return (
 			<Fragment>
-				<div key={ 'gx-layout-design-' + this.props.itemKey } className="gx-layout-design">
-					<div className="gx-layout-design-inside">
-						<div className="gx-layout-design-item">
+				<div key={ 'maxi-layout-design-' + this.props.itemKey } className="maxi-layout-design">
+					<div className="maxi-layout-design-inside">
+						<div className="maxi-layout-design-item">
 							{ /* Insert the selected layout. */ }
 							<Button
 								key={ this.props.itemKey }
-								className="gx-layout-insert-button"
+								className="maxi-layout-insert-button"
 								isSmall
 								onClick={ () => { this.props.import( this.props.content ) } }
 							>

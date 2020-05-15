@@ -63,34 +63,34 @@ export default class DimensionsControl extends GXComponent {
 
 		let value = typeof this.props.value === 'object' ? this.props.value : JSON.parse(this.props.value);
 		const classes = classnames( 
-			`components-gx-dimensions-control components-base-control gx-${value.label}-dimensions-control`,
+			`components-maxi-dimensions-control components-base-control maxi-${value.label}-dimensions-control`,
 			className
 		);
 
 		const unitSizes = [
 			{
 				/* translators: a unit of size (px) for css markup */
-				name: __('Pixel', 'gutenberg-extra'),
+				name: __('Pixel', 'maxi-blocks'),
 				unitValue: 'px',
 			},
 			{
 				/* translators: a unit of size (em) for css markup */
-				name: __('Em', 'gutenberg-extra'),
+				name: __('Em', 'maxi-blocks'),
 				unitValue: 'em',
 			},
 			{
 				/* translators: a unit of size (vw) for css markup */
-				name: __('Viewport Width', 'gutenberg-extra'),
+				name: __('Viewport Width', 'maxi-blocks'),
 				unitValue: 'vw',
 			},
 			{
 				/* translators: a unit of size (vh) for css markup */
-				name: __('Viewport Height', 'gutenberg-extra'),
+				name: __('Viewport Height', 'maxi-blocks'),
 				unitValue: 'vh',
 			},
 			{
 				/* translators: a unit of size for css markup */
-				name: __('Percentage', 'gutenberg-extra'),
+				name: __('Percentage', 'maxi-blocks'),
 				unitValue: '%',
 			},
 		];
@@ -145,38 +145,38 @@ export default class DimensionsControl extends GXComponent {
 			<Fragment>
 				<div className={classes}>
 					<Fragment>
-						<div className="components-gx-dimensions-control__header components-base-control">
-							{value.label && <p className={'components-gx-dimensions-control__label'}>{value.label}</p>}
+						<div className="components-maxi-dimensions-control__header components-base-control">
+							{value.label && <p className={'components-maxi-dimensions-control__label'}>{value.label}</p>}
 							<Button
 								className="components-color-palette__clear"
 								onClick={onChangeValue}
 								isSmall
 								aria-label={sprintf(
 									/* translators: %s: a texual label  */
-									__('Reset %s settings', 'gutenberg-extra'),
+									__('Reset %s settings', 'maxi-blocks'),
 									value.label.toLowerCase()
 								)}
 								action="reset"
 							>
 								{reset}
 							</Button>
-							<div className="components-gx-dimensions-control__actions">
-								<ButtonGroup className="components-gx-dimensions-control__units" aria-label={__('Select Units', 'gutenberg-extra')}>
+							<div className="components-maxi-dimensions-control__actions">
+								<ButtonGroup className="components-maxi-dimensions-control__units" aria-label={__('Select Units', 'maxi-blocks')}>
 									{map(unitSizes, ({ unitValue, name }) => (
 										<Tooltip text={sprintf(
 											/* translators: %s: values associated with CSS syntax, 'Pixel', 'Em', 'Percentage' */
-											__('%s Units', 'gutenberg-extra'),
+											__('%s Units', 'maxi-blocks'),
 											name
 										)}>
 											<Button
 												key={unitValue}
-												className={'components-button-radio components-gx-dimensions-control__units--' + name}
+												className={'components-button-radio components-maxi-dimensions-control__units--' + name}
 												isSmall
 												isPrimary={value.unit === unitValue}
 												aria-pressed={value.unit === unitValue}
 												aria-label={sprintf(
 													/* translators: %s: values associated with CSS syntax, 'Pixel', 'Em', 'Percentage' */
-													__('%s Units', 'gutenberg-extra'),
+													__('%s Units', 'maxi-blocks'),
 													name
 												)}
 												onClick={() => onChangeUnit(unitValue)}
@@ -189,7 +189,7 @@ export default class DimensionsControl extends GXComponent {
 							</div>
 						</div>
 						<TabPanel
-							className="components-gx-dimensions-control__mobile-controls"
+							className="components-maxi-dimensions-control__mobile-controls"
 							activeClass="tab-is-active"
 							initialTabName="desktop"
 							onSelect={onSelect}
@@ -197,31 +197,31 @@ export default class DimensionsControl extends GXComponent {
 								{
 									name: 'desktop',
 									title: desktop,
-									className: `components-gx-dimensions-control__mobile-controls-item components-button is-button is-default components-gx-dimensions-control__mobile-controls-item--desktop components-gx-dimensions-control__mobile-controls-item--desktop ${device == 'desktop' ? 'is-active' : ''}`,
+									className: `components-maxi-dimensions-control__mobile-controls-item components-button is-button is-default components-maxi-dimensions-control__mobile-controls-item--desktop components-maxi-dimensions-control__mobile-controls-item--desktop ${device == 'desktop' ? 'is-active' : ''}`,
 								},
 								{
 									name: 'tablet',
 									title: tablet,
-									className: `components-gx-dimensions-control__mobile-controls-item components-button is-button is-default components-gx-dimensions-control__mobile-controls-item--tablet components-gx-dimensions-control__mobile-controls-item--tablet ${device == 'tablet' ? 'is-active' : ''}`,
+									className: `components-maxi-dimensions-control__mobile-controls-item components-button is-button is-default components-maxi-dimensions-control__mobile-controls-item--tablet components-maxi-dimensions-control__mobile-controls-item--tablet ${device == 'tablet' ? 'is-active' : ''}`,
 								},
 								{
 									name: 'mobile',
 									title: mobile,
-									className: `components-gx-dimensions-control__mobile-controls-item components-button is-button is-default components-gx-dimensions-control__mobile-controls-item--mobile components-gx-dimensions-control__mobile-controls-item--mobile ${device == 'mobile' ? 'is-active' : ''}`,
+									className: `components-maxi-dimensions-control__mobile-controls-item components-button is-button is-default components-maxi-dimensions-control__mobile-controls-item--mobile components-maxi-dimensions-control__mobile-controls-item--mobile ${device == 'mobile' ? 'is-active' : ''}`,
 								},
 							]}>
 							{
 								() => {
 									return (
 										<Fragment>
-											<div className="components-gx-dimensions-control__inputs">
+											<div className="components-maxi-dimensions-control__inputs">
 												<input
-													className="components-gx-dimensions-control__number"
+													className="components-maxi-dimensions-control__number"
 													type="number"
 													onChange={onChangeValue}
 													aria-label={sprintf(
 														/* translators: %s: values associated with CSS syntax, 'Margin', 'Padding' */
-														__('%s Top', 'gutenberg-extra'),
+														__('%s Top', 'maxi-blocks'),
 														value.label
 													)}
 													value={value[device][getKey(value[device], 0)]}
@@ -231,12 +231,12 @@ export default class DimensionsControl extends GXComponent {
 													action="0"
 												/>
 												<input
-													className="components-gx-dimensions-control__number"
+													className="components-maxi-dimensions-control__number"
 													type="number"
 													onChange={onChangeValue}
 													aria-label={sprintf(
 														/* translators: %s: values associated with CSS syntax, 'Margin', 'Padding' */
-														__('%s Right', 'gutenberg-extra'),
+														__('%s Right', 'maxi-blocks'),
 														value.label
 													)}
 													value={value[device][getKey(value[device], 1)]}
@@ -246,12 +246,12 @@ export default class DimensionsControl extends GXComponent {
 													action="1"
 												/>
 												<input
-													className="components-gx-dimensions-control__number"
+													className="components-maxi-dimensions-control__number"
 													type="number"
 													onChange={onChangeValue}
 													aria-label={sprintf(
 														/* translators: %s: values associated with CSS syntax, 'Margin', 'Padding' */
-														__('%s Bottom', 'gutenberg-extra'),
+														__('%s Bottom', 'maxi-blocks'),
 														value.label
 													)}
 													value={value[device][getKey(value[device], 2)]}
@@ -261,12 +261,12 @@ export default class DimensionsControl extends GXComponent {
 													action="2"
 												/>
 												<input
-													className="components-gx-dimensions-control__number"
+													className="components-maxi-dimensions-control__number"
 													type="number"
 													onChange={onChangeValue}
 													aria-label={sprintf(
 														/* translators: %s: values associated with CSS syntax, 'Margin', 'Padding' */
-														__('%s Left', 'gutenberg-extra'),
+														__('%s Left', 'maxi-blocks'),
 														value.label
 													)}
 													value={value[device][getKey(value[device], 3)]}
@@ -275,10 +275,10 @@ export default class DimensionsControl extends GXComponent {
 													data-device-type={device}
 													action="3"
 												/>
-												<Tooltip text={!!value[device].sync ? __('Unsync', 'gutenberg-extra') : __('Sync', 'gutenberg-extra')} >
+												<Tooltip text={!!value[device].sync ? __('Unsync', 'maxi-blocks') : __('Sync', 'maximaxi-blocks')}>
 													<Button
-														className="components-gx-dimensions-control_sync"
-														aria-label={__('Sync Units', 'gutenberg-extra')}
+														className="components-maxi-dimensions-control_sync"
+														aria-label={__('Sync Units', 'maxi-blocks')}
 														isPrimary={value[device].sync ? value[device].sync : false}
 														aria-pressed={value[device].sync ? value[device].sync : false}
 														onClick={onChangeSync}
@@ -294,12 +294,12 @@ export default class DimensionsControl extends GXComponent {
 								}
 							}
 						</TabPanel>
-						<div className="components-gx-dimensions-control__input-labels">
-							<span className="components-gx-dimensions-control__number-label">{__('Top', 'gutenberg-extra')}</span>
-							<span className="components-gx-dimensions-control__number-label">{__('Right', 'gutenberg-extra')}</span>
-							<span className="components-gx-dimensions-control__number-label">{__('Bottom', 'gutenberg-extra')}</span>
-							<span className="components-gx-dimensions-control__number-label">{__('Left', 'gutenberg-extra')}</span>
-							<span className="components-gx-dimensions-control__number-label-blank"></span>
+						<div className="components-maxi-dimensions-control__input-labels">
+							<span className="components-maxi-dimensions-control__number-label">{__('Top', 'maxi-blocks')}</span>
+							<span className="components-maxi-dimensions-control__number-label">{__('Right', 'maxi-blocks')}</span>
+							<span className="components-maxi-dimensions-control__number-label">{__('Bottom', 'maxi-blocks')}</span>
+							<span className="components-maxi-dimensions-control__number-label">{__('Left', 'maxi-blocks')}</span>
+							<span className="components-maxi-dimensions-control__number-label-blank"></span>
 						</div>
 					</Fragment>
 				</div>

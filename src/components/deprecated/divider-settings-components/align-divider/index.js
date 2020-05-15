@@ -27,8 +27,8 @@ export const AlignDivider = ( props ) => {
 
   return (
     <SelectControl
-        label={__('Divider Alignment', 'gutenberg-extra')}
-        className="gx-block-style"
+        label={__('Divider Alignment', 'maxi-blocks')}
+        className="maxi-block-style"
         value={dividerAlignment}
         options={[
             { label: __('Left'), value: '0 auto 0 0' },

@@ -76,7 +76,7 @@ const save = (props) => {
 
 
                         <div className={"gts_personal_info  name"}>
-                            <span className="testimonial-personNameSurname gx-testimonial-name-surname">{testimonial.personNameSurname}</span>{" "}
+                            <span className="testimonial-personNameSurname maxi-testimonial-name-surname">{testimonial.personNameSurname}</span>{" "}
                             {/*<span className="testimonial-personSurname">{testimonial.personSurname}</span>*/}
                             <span className="testimonial-personPosition">{testimonial.personPosition}</span>
 
@@ -141,7 +141,7 @@ const save = (props) => {
             <div className={"testimonials align" + blockAlignment} style={ blockStyles }>
                 <div
                     id={id}
-                    className={'inner gx-block ' + blockStyle + ' gx-image-box '}
+                    className={'inner maxi-block ' + blockStyle + ' maxi-image-box '}
                     data-gx_initial_block_class={defaultBlockStyle}>
                     <div className="row">
                         {testimonialsList}

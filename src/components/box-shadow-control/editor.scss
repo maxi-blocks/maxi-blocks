@@ -1,0 +1,143 @@
+.gx-box-shadow .components-range-control__slider {
+	display: block;
+	box-shadow: none;
+	position: unset;
+	padding: 0;
+}
+  
+.gx-box-shadow {
+	margin: 18px 0;
+}
+  
+.gx-box-shadow .gx-colorcontrol-control .gx-settings-button .components-base-control__field > div {
+	margin-right: 4px;
+}
+  
+.gx-box-shadow .gx-colorcontrol-control .gx-settings-button .components-base-control__field button[type="reset"] {
+	margin-right: 0px;
+}
+  
+.gx-box-shadow .components-range-control__reset {
+	height: 30px !important;
+}
+  
+.gx-box-shadow .components-range-control__number {
+	position: unset;
+	height: 30px !important;
+}
+  
+.gx-box-shadow .gx-popover-control .components-base-control__field {
+	display: flex;
+	justify-content: space-between;
+}
+  
+.gx-box-shadow .gx-colorcontrol-color-display span {
+	width: 24px;
+	height: 24px;
+	float: left;
+	border: 2px solid #dddfe1;
+	margin-right: 8px;
+	margin-left: -4px;
+	border-radius: 5px;
+}
+  
+.gx-box-shadow .gx-colorcontrol-control .components-base-control__field .components-button.is-secondary {
+	color: black;
+	height: 30px;
+	width: 30px;
+	background-color: white !important;
+	border: 2px solid #dddfe1;
+	border-radius: 5px;
+	box-shadow: unset !important;
+}
+  
+.gx-box-shadow .gx-colorcontrol-control .components-base-control__field > .components-button.is-secondary {
+	order: 1;
+}
+  
+.gx-box-shadow
+.gx-colorcontrol-control
+.components-base-control__field
+.gx-popover-dropdown:nth-of-type(1)
+.components-button.is-secondary {
+	margin-left: 186px !important;
+}
+  
+.gx-box-shadow .gx-colorcontrol-control .components-base-control__field > .components-button.is-secondary svg {
+	width: 12px;
+	height: 12px;
+	margin: auto;
+}
+  
+.box-shadow .components-base-control__field {
+	display: flex;
+}
+
+.gx-box-shadow
+.components-base-control__field > .components-button.is-secondary{
+   width: 30px !important;
+   height: 30px !important;
+}
+
+.gx-box-settings-item
+.components-select-control__input{
+	height:28px !important;
+}
+ 
+.gx-box-settings-item
+button.components-button.is-secondary{
+	border-radius: 5px !important;
+}
+
+.gx-box-shadow{
+	padding: 15px 27px 25px 10px !important;
+}
+  
+.gx-box-settings-item
+.gx-border-control
+.components-base-control__field{
+	display:flex;
+	justify-content: space-between;
+}
+
+.gx-box-settings-item
+.components-base-control.bg-color-parent.gx-reset-button.background-gradient{
+	position:relative;
+}
+
+.gx-box-settings-item
+.gx-popover-control.gx-boxshadow-control{
+	position:relative;
+	width:100% !important;
+}
+
+.gx-box-settings-item
+.gx-popover-control.gx-boxshadow-control
+.components-dropdown.gx-popover-dropdown{
+	position:absolute;
+	right:0px !important;
+}
+
+@media all and(max-width:2000px){
+
+ .gx-box-settings-item
+ .components-tab-panel__tabs
+ button > svg{
+	position: relative;
+	top: -2px;
+ }
+
+ .gx-box-shadow
+ .components-base-control__field > .components-button.is-secondary{
+   width: 30px !important;
+   height: 30px !important;
+  }
+
+  .gx-box-settings-item .bg-color-parent .components-button.is-link {
+	  top: -12.4px !important;
+  }
+	
+  .gx-box-settings-item .bg-color-parent .components-circular-option-picker__clear {
+	  top: -16.4px !important;
+  }
+}

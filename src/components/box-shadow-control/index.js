@@ -18,6 +18,11 @@ import PopoverControl from '../popover-control';
 import classnames from 'classnames';
 
 /**
+ * Styles
+ */
+import './editor.scss';
+
+/**
  * Component
  */
 class BoxShadow extends GXComponent {

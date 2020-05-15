@@ -1,19 +1,19 @@
 @import '../../../node_modules/react-image-crop/lib/ReactCrop.scss';
 
 .gx-imagecrop-control {
-    margin-bottom: 8px;
+  margin-bottom: 8px;
 }
 
 .gx-imagecrop-control .ReactCrop__crop-selection {
-    background: transparent;
+  background: transparent;
 }
 
 .gx-imagecrop-control .gx-imagecrop-option-controls {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .gx-imagecrop-control .gx-imagecrop-option-controls label {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }

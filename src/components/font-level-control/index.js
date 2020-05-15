@@ -14,6 +14,11 @@ const {
 import { DefaultTypography } from '../index';
 
 /**
+ * Styles
+ */
+import './style.scss';
+
+/**
  * External dependencies
  */
 import classnames from 'classnames';

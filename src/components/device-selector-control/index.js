@@ -39,9 +39,9 @@ const DeviceSelectorControl = props => {
             className={classes}
             selected={device}
             options={[
-                { label: "", value: 'desktop' },
-                { label: "", value: 'tablet' },
-                { label: "", value: 'mobile' },
+                { label: <Icon icon={desktop}/>, value: 'desktop' },
+                { label: <Icon icon={tablet}/>, value: 'tablet' },
+                { label: <Icon icon={mobile}/>, value: 'mobile' },
             ]}
             onChange={value => onChange(value)}
         />

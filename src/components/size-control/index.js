@@ -1,15 +1,20 @@
 /**
  * WordPress dependencies
  */
-const {	
-    RadioControl, 
-    RangeControl 
+const {
+    RadioControl,
+    RangeControl
 } = wp.components;
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
+
+/**
+ * Styles
+ */
+import './editor.scss';
 
 /**
  * Component
@@ -44,7 +49,7 @@ const SizeControl = props => {
     } = props;
 
     const classes = classnames(className);
-    
+
     return (
         <div className={classes}>
             <RadioControl

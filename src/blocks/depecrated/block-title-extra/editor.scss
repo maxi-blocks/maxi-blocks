@@ -5,3 +5,33 @@
 .gx-title-extra .block-editor-rich-text__editable [data-rich-text-placeholder]::after{
   opacity: 1 !important;
 }
+
+.components-base-control__label > span{
+  font-size:13px !important;
+  display:block;
+  width:100%;
+  position:relative;
+  background: none;
+}
+
+.components-base-control__label > span > svg{
+  margin-right: 5px !important;
+  vertical-align: middle !important;
+}
+
+.components-base-control__label > span > svg:last-child{
+  position: absolute;
+  right: -5px;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  transition:all .3s;
+  background: none;
+}
+
+.components-base-control__label[aria-expanded="true"] > span > svg:last-child{
+  top: 30%;
+  transform: translate(-50%,-50%);
+  right: 0;
+  transform:rotate(90deg);
+  transition: all .3s;
+}

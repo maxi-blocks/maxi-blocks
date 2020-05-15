@@ -3,11 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
-const {
-    SelectControl,
-    RadioControl,
-    RangeControl,
-} = wp.components;
+const { SelectControl } = wp.components;
 
 /**
  * Internal dependencies
@@ -57,6 +53,7 @@ export default class Typography extends GXComponent {
         } = this.state;
 
         const value = typeof fontOptions === 'object' ? fontOptions : JSON.parse(fontOptions);
+        // All these classes are senseless
         const classes = classnames(
             'components-panel__body components-base-control editor-panel-color-settings block-editor-panel-color-settings is-opened typography gx-typography-control',
             className
@@ -153,7 +150,7 @@ export default class Typography extends GXComponent {
         }
 
         return (
-            <div className={classes}>
+            <div className={classes + ' ' + 'gx-typogrphy-inspect-panel'} /* This class doesn't come here...!*/> 
                 <div className="gx-typography-color-display">
                     <span
                         style={{
@@ -163,7 +160,7 @@ export default class Typography extends GXComponent {
                 </div>
                 <PopoverControl
                     label={value.label}
-                    className="gx-typography-popover"
+                    className={'gx-typography-popover'}
                     buttonText={__('Typography', 'gutenberg-extra')}
                     popovers={[
                         {
@@ -194,73 +191,29 @@ export default class Typography extends GXComponent {
                                         device={device}
                                         onChange={onSelect}
                                     />
-                                    <SizeControl
+                                    <SizeControl 
+                                        className={'gx-typography-size'}
                                         label={__('Size', 'gutenberg-extra')}
                                         unit={value[device][getKey(value[device], 0)]}
                                         onChangeUnit={value => onChangeValue(value, 0)}
                                         value={value[device][getKey(value[device], 1)]}
                                         onChangeValue={value => onChangeValue(value, 1)}
                                     />
-                                    {/* <RadioControl
-                                        className={'gx-unit-control'}
-                                        selected={value[device][getKey(value[device], 0)]}
-                                        options={[
-                                            { label: 'PX', value: 'px' },
-                                            { label: 'EM', value: 'em' },
-                                            { label: 'VW', value: 'vw' },
-                                            { label: '%', value: '%' },
-                                        ]}
-                                        onChange={value => onChangeValue(value, 0)}
-                                    />
-                                    <RangeControl
-                                        label={__('Size', 'gutenberg-extra')}
-                                        className={'gx-with-unit-control'}
-                                        value={value[device][getKey(value[device], 1)]}
-                                        onChange={value => onChangeValue(value, 1)}
-                                        id={'size-control'}
-                                        min={0}
-                                        step={0.1}
-                                        allowReset={true}
-                                    /> */}
-                                    <RadioControl
-                                        className={'gx-unit-control'}
-                                        selected={value[device][getKey(value[device], 2)]}
-                                        options={[
-                                            { label: 'PX', value: 'px' },
-                                            { label: 'EM', value: 'em' },
-                                            { label: 'VW', value: 'vw' },
-                                            { label: '%', value: '%' },
-                                        ]}
-                                        onChange={value => onChangeValue(value, 2)}
-                                    />
-                                    <RangeControl
+                                    <SizeControl 
+                                        className={'gx-typography-line-height'}
                                         label={__('Line Height', 'gutenberg-extra')}
-                                        className={'gx-with-unit-control'}
+                                        unit={value[device][getKey(value[device], 2)]}
+                                        onChangeUnit={value => onChangeValue(value, 2)}
                                         value={value[device][getKey(value[device], 3)]}
-                                        onChange={value => onChangeValue(value, 3)}
-                                        min={0}
-                                        step={0.1}
-                                        allowReset={true}
+                                        onChangeValue={value => onChangeValue(value, 3)}
                                     />
-                                    <RadioControl
-                                        className={'gx-unit-control'}
-                                        selected={value[device][getKey(value[device], 4)]}
-                                        options={[
-                                            { label: 'PX', value: 'px' },
-                                            { label: 'EM', value: 'em' },
-                                            { label: 'VW', value: 'vw' },
-                                            { label: '%', value: '%' },
-                                        ]}
-                                        onChange={value => onChangeValue(value, 4)}
-                                    />
-                                    <RangeControl
+                                    <SizeControl 
+                                        className={'gx-typography-letter-spacing'}
                                         label={__('Letter Spacing', 'gutenberg-extra')}
-                                        className={'gx-with-unit-control'}
+                                        unit={value[device][getKey(value[device], 4)]}
+                                        onChangeUnit={value => onChangeValue(value, 4)}
                                         value={value[device][getKey(value[device], 5)]}
-                                        onChange={value => onChangeValue(value, 5)}
-                                        min={0}
-                                        step={0.1}
-                                        allowReset={true}
+                                        onChangeValue={value => onChangeValue(value, 5)}
                                     />
                                     <Divider />
                                     <SelectControl

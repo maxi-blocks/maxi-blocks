@@ -11,6 +11,11 @@ import { GXComponent } from '../index';
 import SizeControl from '../size-control';
 
 /**
+ * Style
+ */
+import './editor.scss';
+
+/**
  * Component
  */
 export default class FullSizeControl extends GXComponent {

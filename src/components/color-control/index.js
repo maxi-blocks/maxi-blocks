@@ -51,7 +51,10 @@ const ColorControl = props => {
         onGradientAboveBackgroundChange,
     } = props;
 
-    const classes = classnames('components-base-control gx-colorcontrol-control', className);
+    const classes = classnames(
+        'components-base-control gx-colorcontrol-control', 
+        className
+    );
 
     const returnColor = val => {
         return `rgba(${val.rgb.r},${val.rgb.g},${val.rgb.b},${val.rgb.a})`;

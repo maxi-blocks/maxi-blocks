@@ -1,23 +1,23 @@
 .gx-externalbutton-control {
-    border: 1px solid black;
+  border: 1px solid black;
 }
 
 .gx-externalbutton-control .gx-externalbutton-richtext {
-    display: block;
+  display: block;
 }
 
 .gx-externalbutton-popover {
-    position: fixed;
+  position: fixed;
 }
 
 .gx-externalbutton-popover button {
-    box-shadow: none;
-    opacity: 0;
-    transition: opacity .3s ease-in-out;
-    background-color: transparent !important;
-    max-width: 1.5rem;
+  box-shadow: none;
+  opacity: 0;
+  transition: opacity .3s ease-in-out;
+  background-color: transparent !important;
+  max-width: 1.5rem;
 }
 
 .gx-externalbutton-control:hover .gx-externalbutton-popover button {
-    opacity: 1;
+  opacity: 1;
 }

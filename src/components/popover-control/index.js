@@ -17,7 +17,7 @@ import classnames from 'classnames';
  * Styles and icons
  */
 import './editor.scss';
-import { 
+import {
     advanced,
     reset
 } from '../../icons';
@@ -29,7 +29,7 @@ const PopoverControl = props => {
     const {
         label,
         className,
-        classNamePopover = 'gx-popover',
+        classNamePopover,
         icon = advanced,
         showReset = undefined,
         onReset,
@@ -37,6 +37,7 @@ const PopoverControl = props => {
     } = props;
 
     const classes = classnames('gx-popover-control', className);
+    let classesPopover = classnames('gx-popover', classNamePopover);
 
     return (
         <div className={classes}>
@@ -46,23 +47,12 @@ const PopoverControl = props => {
                 <BaseControl.VisualLabel>
                     {label}
                 </BaseControl.VisualLabel>
-                {showReset &&
-                    <Button
-                        isSecondary
-                        onClick={onReset}
-                        type="reset"
-                    >
-                        {
-                            <Icon
-                                icon={reset}
-                            />
-                        }
-                    </Button>
-                }
                 {popovers.map(popover => {
                     if (!popover) {
-                        return;
+                        return
                     }
+                    classesPopover = classnames(classesPopover, popover.classNamePopover);
+
                     return (
                         <Dropdown
                             className={'gx-popover-dropdown'}
@@ -80,7 +70,7 @@ const PopoverControl = props => {
                             )}
                             popoverProps={
                                 {
-                                    className: popover.classNamePopover ? popover.classNamePopover : classNamePopover,
+                                    className: classesPopover,
                                     noArrow: true,
                                     position: 'center'
                                 }
@@ -94,6 +84,19 @@ const PopoverControl = props => {
                         </Dropdown>
                     )
                 })}
+                {showReset &&
+                    <Button
+                        isSecondary
+                        onClick={onReset}
+                        type="reset"
+                    >
+                        {
+                            <Icon
+                                icon={reset}
+                            />
+                        }
+                    </Button>
+                }
             </BaseControl>
         </div>
     )

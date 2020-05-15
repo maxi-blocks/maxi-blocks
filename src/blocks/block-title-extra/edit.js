@@ -5,14 +5,12 @@ const { __ } = wp.i18n;
 const { Fragment } = wp.element;
 const {
     PanelBody,
-    SelectControl,
-    BaseControl
+    SelectControl
 } = wp.components;
 const {
     InspectorControls,
     RichText,
 } = wp.blockEditor;
-
 
 /**
  * Internal dependencies
@@ -52,6 +50,8 @@ import {
     padding as iconPadding
 } from '../../icons';
 
+import GxDividerTab from '../../icons/block-icons/divider-tab/icon.js';
+import GxImageTab from '../../icons/block-icons/image-tab/icon.js';
 /**
  * Edit
  */
@@ -227,7 +227,7 @@ const edit = (props) => {
                         label: __("Divider", "gutenberg-extra"),
                         classNameItem: 'gx-divider-item',
                         classNameHeading: "gx-divider-tab",
-                        icon: iconDivider,
+                        icon: <GxDividerTab />,
                         content: (
                             <PanelBody>
                                 <DividerSettings
@@ -240,7 +240,7 @@ const edit = (props) => {
                     {
                         label: __('Background Image', 'gutenberg-extra'),
                         classNameHeading: 'gx-backgroundsettings-tab',
-                        icon: image,
+                        icon: <GxImageTab />,
                         content: (
                             <BackgroundControl
                                 backgroundOptions={background}

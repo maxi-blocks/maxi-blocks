@@ -313,7 +313,13 @@
 .gx-imagesettings-control .components-base-control.gx-unit-control.components-radio-control {
   position: relative;
   top: 1px !important;
-  margin-right: 86px !important;
+  margin-right: 90px !important;
+}
+
+.gx-imagesettings-control .components-base-control.components-range-control.gx-with-unit-control
+.components-base-control__label{
+  position:relative;
+  top:5px !important;
 }
 
 .gx-background-item
@@ -343,6 +349,11 @@
 }
 
 @media all and(max-width:2000px){
+
+  .gx-imagesettings-control
+  .components-range-control.gx-with-unit-control .components-base-control__field .components-range-control__number{
+    margin-right:4px !important;
+  }
 
   .gx-image-item
   .components-base-control.components-base-control.gx-alignmentcontrol-control.components-radio-control
@@ -472,7 +483,7 @@
   .components-base-control.gx-unit-control.components-radio-control {
     position: relative;
     top: -1px !important;
-    margin-right: 82px !important;
+    margin-right: 85px !important;
   }
 
   .gx-imagesettings-control >

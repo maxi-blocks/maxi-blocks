@@ -311,7 +311,7 @@ input.components-range-control__number{
 }
 
 .components-popover__content > div:nth-of-type(2){
-  margin-bottom:5px !important;
+  margin-bottom:6px !important;
 }
 
 .components-popover__content > div:nth-of-type(2)
@@ -397,7 +397,7 @@ input.components-range-control__number{
   
 .gx-popover .gx-settings-button .components-base-control__field .gx-popover-dropdown {
   margin-left: auto;
-
+  margin-right: 5px !important;
 }
   
 .gx-popover .gx-settings-button .components-base-control__field .components-button[type="reset"],
@@ -637,7 +637,7 @@ div.gx-popover .components-popover__content {
   position: absolute;
   right:0;
   top: 118px !important;
-  margin-left: 23px !important;
+  margin-left: 20px !important;
 }
 
 .gx-typography-popover-styles > div:nth-of-type(2) .components-range-control__slider ,
@@ -719,11 +719,18 @@ div.gx-popover .components-popover__content {
     width:18px !important;
     height:18px !important;
   }
-      
+    
+  .gx-typography-popover-styles
+  .components-base-control.components-radio-control
+  .components-base-control__field{
+    position:relative;
+    left:1px !important;
+  }
+
   .gx-typography-popover-styles > div:nth-of-type(2) .components-base-control__field .components-range-control__number,
   .gx-typography-popover-styles > div:nth-of-type(3) .components-base-control__field .components-range-control__number{
     margin-top:-76px !important;
-    margin-left:238px !important;
+    margin-left:235px !important;
   }
 
   .gx-typography-popover-styles > div:nth-of-type(2) .components-base-control__field .components-button.components-range-control__reset.is-secondary.is-small,
@@ -737,8 +744,8 @@ div.gx-popover .components-popover__content {
     background:none;
     width: 100%;
     top: 140px !important;
-    right: 84px !important;
-    max-width: 75% !important;
+    right: 88px !important;
+    max-width: 74% !important;
   }
 
   .gx-typography-popover-styles > div:nth-of-type(4) 
@@ -746,7 +753,7 @@ div.gx-popover .components-popover__content {
     position: absolute;
     right:0;
     top: 112px !important;
-    margin-left: 11px !important;
+    margin-left: 7px !important;
   }
 
   .gx-typography-popover-styles > div:nth-of-type(2) > div:first-child {

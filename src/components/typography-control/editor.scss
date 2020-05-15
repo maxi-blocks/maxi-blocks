@@ -183,6 +183,16 @@
 }
 
 .gx-typography-size
+.components-base-control.gx-unit-control.components-radio-control,
+.gx-typography-line-height
+.components-base-control.gx-unit-control.components-radio-control,
+.gx-typography-letter-spacing
+.components-base-control.gx-unit-control.components-radio-control{
+  position:relative;
+  right:1px;
+}
+
+.gx-typography-size
 .components-button.components-range-control__reset.is-secondary.is-small,
 .gx-typography-line-height
 .components-button.components-range-control__reset.is-secondary.is-small,
@@ -205,7 +215,17 @@
   .components-base-control__field >
   .components-range-control__number{
     margin-top: -74px !important;
-    margin-left: 238px !important;
+    margin-left: 235.5px !important;
+  }
+
+  .gx-typography-size
+  .components-base-control.gx-unit-control.components-radio-control,
+  .gx-typography-line-height
+  .components-base-control.gx-unit-control.components-radio-control,
+  .gx-typography-letter-spacing
+  .components-base-control.gx-unit-control.components-radio-control{
+    position:relative;
+    left:2px;
   }
 
   .gx-typography-size

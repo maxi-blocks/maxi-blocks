@@ -3,8 +3,8 @@ import * as React from "react"
 function GxDividerTab(props) {
   return (
     <svg
-      width='1.29rem'
-      height='22px'
+      width='24px'
+      height='24px'
       id="prefix__Layer_1"
       x={0}
       y={0}

@@ -62,6 +62,20 @@
 @media all and(max-width:2000px){
 
   .gx-width-height-item
+  .components-base-control.gx-unit-control.components-radio-control{
+  	position:relative;
+	  top: 1px;
+	  right: -4px;
+  }
+
+  .gx-width-height-item
+  .components-base-control.gx-unit-control.components-radio-control
+  .components-base-control__field
+  .components-radio-control__option > label{
+    height:26px !important;
+  }
+
+  .gx-width-height-item
   .components-panel__body.gx-panel.gx-size-setting.gx-style-tab-setting.is-opened{
     padding: 15px !important;
   }

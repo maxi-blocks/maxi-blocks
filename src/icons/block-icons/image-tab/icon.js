@@ -2,7 +2,7 @@ import * as React from "react"
 
 function GxImageTab(props) {
   return (
-    <svg widht="1.29rem" height="22px" data-name="Layer 1" viewBox="0 0 21.15 21.15" {...props}>
+    <svg widht="24px" height="24px" data-name="Layer 1" viewBox="0 0 21.15 21.15" {...props}>
       <defs>
         <clipPath id="prefix__a">
           <path fill="none" d="M0 0h21.15v21.15H0z" />

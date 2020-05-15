@@ -44,6 +44,8 @@ import {
     padding as iconPadding
 } from '../../icons';
 
+import GxButtonTab from '../../icons/block-icons/button-tab/icon.js';
+
 /**
  * External dependencies
  */
@@ -197,7 +199,7 @@ const edit = props => {
                         label: __('Button', 'gutenberg-extra'),
                         classNameItem: 'gx-button-item',
                         classNameHeading: 'gx-button-tab',
-                        icon: button,
+                        icon: <GxButtonTab />,
                         content: (
                             <PanelBody
                                 className={'gx-panel gx-color-setting gx-style-tab-setting'}

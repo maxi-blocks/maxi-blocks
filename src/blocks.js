@@ -12,7 +12,7 @@
 // Extensions
 import './extensions/store';
 import './extensions/attributes';
-import './extensions/blocks';
+// import './extensions/blocks';
 
 // Blocks
 import './blocks/block-row-extra/block-row-extra';

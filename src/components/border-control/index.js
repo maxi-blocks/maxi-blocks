@@ -17,6 +17,11 @@ import DimensionsControl from '../dimensions-control/index';
 import classnames from 'classnames';
 
 /**
+ * Styles
+ */
+import './editor.scss';
+
+/**
  * Component
  */
 export default class BorderControl extends GXComponent {

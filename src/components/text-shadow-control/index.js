@@ -24,7 +24,7 @@ const TextShadow = props => {
     const {
         value,
         onChange,
-        defaultColor
+        defaultColor,
     } = props;
 
     const minMaxSettings = {
@@ -59,11 +59,11 @@ const TextShadow = props => {
     const color = valueDecomposed[3];
 
     const onChangeValue = (i, val, unit = '') => {
-        if(isNil(val))
-            valueDecomposed[i] = 0 + unit;    
+        if (isNil(val))
+            valueDecomposed[i] = 0 + unit;
         else
             valueDecomposed[i] = val + unit;
-        if(
+        if (
             valueDecomposed[0] === '0px' &&
             valueDecomposed[1] === '0px' &&
             valueDecomposed[2] === '0px'
@@ -75,38 +75,40 @@ const TextShadow = props => {
 
     return (
         <Fragment>
-            <ColorControl
-                label={__('Color', 'gutenberg-extra')}
-                color={color}
-                onColorChange={val => onChangeValue(3, val)}
-                onReset={() => onChangeValue(3, defaultColor)}
-                disableGradient
-                disableGradientAboveBackground
-            />
-            <SizeControl
-                label={__('Y-axis', 'gutenberg-extra')}
-                unit={yUnit}
-                onChangeUnit={val => onChangeValue(0, y, val)}
-                value={y}
-                onChangeValue={val => onChangeValue(0, val, yUnit)}
-                minMaxSettings={minMaxSettings}
+            <span className="gx-typography-popover-styles" /* This span is senseless */>
+                <ColorControl
+                    label={__('Color', 'gutenberg-extra')}
+                    color={color}
+                    onColorChange={val => onChangeValue(3, val)}
+                    onReset={() => onChangeValue(3, defaultColor)}
+                    disableGradient
+                    disableGradientAboveBackground
+                />
+                <SizeControl
+                    label={__('Y-axis', 'gutenberg-extra')}
+                    unit={yUnit}
+                    onChangeUnit={val => onChangeValue(0, y, val)}
+                    value={y}
+                    onChangeValue={val => onChangeValue(0, val, yUnit)}
+                    minMaxSettings={minMaxSettings}
 
-            />
-            <SizeControl
-                label={__('X-axis', 'gutenberg-extra')}
-                unit={xUnit}
-                onChangeUnit={val => onChangeValue(0, x, val)}
-                value={x}
-                onChangeValue={val => onChangeValue(0, val, xUnit)}
-                minMaxSettings={minMaxSettings}
-            />
-            <RangeControl
-                label={__('Blur', 'gutenberg-extra')}
-                value={blur}
-                onChange={val => onChangeValue(2, val, blurUnit)}
-                min={0}
-                max={100}
-            />
+                />
+                <SizeControl
+                    label={__('X-axis', 'gutenberg-extra')}
+                    unit={xUnit}
+                    onChangeUnit={val => onChangeValue(0, x, val)}
+                    value={x}
+                    onChangeValue={val => onChangeValue(0, val, xUnit)}
+                    minMaxSettings={minMaxSettings}
+                />
+                <RangeControl
+                    label={__('Blur', 'gutenberg-extra')}
+                    value={blur}
+                    onChange={val => onChangeValue(2, val, blurUnit)}
+                    min={0}
+                    max={100}
+                />
+            </span>
         </Fragment>
     )
 }

@@ -5,8 +5,7 @@ const { __ } = wp.i18n;
 const { Fragment } = wp.element;
 const {
     PanelBody,
-    SelectControl,
-    BaseControl
+    SelectControl
 } = wp.components;
 const {
     InspectorControls,
@@ -51,6 +50,8 @@ import {
     padding as iconPadding
 } from '../../icons';
 
+import GxDividerTab from '../../icons/block-icons/divider-tab/icon.js';
+import GxImageTab from '../../icons/block-icons/image-tab/icon.js';
 /**
  * Edit
  */
@@ -178,10 +179,10 @@ const edit = (props) => {
                 isPrimary
                 items={[
                     {
-                        label: __("Typography / Colours", "gutenberg-extra"),
+                        label: __('Typography / Colours'),
                         classNameItem: 'gx-typography-item',
                         classNameHeading: "gx-typography-tab",
-                        //icon: typography,
+                        icon: typography,
                         content: (
                             <PanelBody
                                 className="gx-panel gx-color-setting gx-style-tab-setting"
@@ -226,7 +227,7 @@ const edit = (props) => {
                         label: __("Divider", "gutenberg-extra"),
                         classNameItem: 'gx-divider-item',
                         classNameHeading: "gx-divider-tab",
-                        //icon: iconDivider,
+                        icon: <GxDividerTab />,
                         content: (
                             <PanelBody>
                                 <DividerSettings
@@ -239,7 +240,7 @@ const edit = (props) => {
                     {
                         label: __('Background Image', 'gutenberg-extra'),
                         classNameHeading: 'gx-backgroundsettings-tab',
-                        //icon: image,
+                        icon: <GxImageTab />,
                         content: (
                             <BackgroundControl
                                 backgroundOptions={background}
@@ -251,7 +252,7 @@ const edit = (props) => {
                         label: __('Box Settings', 'gutenberg-extra'),
                         classNameItem: 'gx-box-settings-item',
                         classNameHeading: 'gx-box-settings-tab',
-                        //icon: boxSettings,
+                        icon: boxSettings,
                         content: (
                             <Fragment>
                                 <PanelBody className={'gx-panel gx-color-setting gx-style-tab-setting'}>
@@ -269,10 +270,10 @@ const edit = (props) => {
                         ),
                     },
                     {
-                        label: __(' Width / Height', 'gutenberg-extra'),
+                        label:  __('Width / Height', 'gutenberg-extra'),
                         classNameItem: 'gx-width-height-item',
                         classNameHeading: 'gx-width-height-tab',
-                        //icon: width,
+                        icon: width,
                         content: (
                             <PanelBody
                                 className="gx-panel gx-size-setting gx-style-tab-setting"
@@ -290,7 +291,7 @@ const edit = (props) => {
                         label: __('Padding & Margin', 'gutenberg-extra'),
                         classNameItem: 'gx-padding-margin-item',
                         classNameHeading: 'gx-padding-tab',
-                        //icon: iconPadding,
+                        icon: iconPadding,
                         content: (
                             <PanelBody
                                 className="gx-panel gx-space-setting gx-style-tab-setting"

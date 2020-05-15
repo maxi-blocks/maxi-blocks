@@ -5,6 +5,11 @@ const { __ } = wp.i18n;
 const { SelectControl } = wp.components;
 
 /**
+ * Style
+ */
+import './style.scss';
+
+/**
  * Component
  */
 const ImagePositionControl = (props) => {

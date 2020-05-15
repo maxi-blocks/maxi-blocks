@@ -6,6 +6,11 @@ const { Fragment } = wp.element;
 const { SelectControl } = wp.components;
 
 /**
+ * Styles
+ */
+import './style.scss';
+
+/**
  * Component
  */
 const BlockStylesControl = (props) => {

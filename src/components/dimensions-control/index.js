@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const {	Fragment } = wp.element;
+const { Fragment } = wp.element;
 const {
 	__,
 	sprintf
@@ -44,15 +44,15 @@ export default class DimensionsControl extends GXComponent {
 
 	state = {
 		device: 'desktop'
-    }
-    
-    componentDidMount() {
+	}
+
+	componentDidMount() {
 		const value = typeof this.props.value === 'object' ? this.props.value : JSON.parse(this.props.value);
-        this.saveAndSend(value, this.props.avoidZero || false)
-    }
+		this.saveAndSend(value, this.props.avoidZero || false)
+	}
 
 	render() {
-		const { 
+		const {
 			className,
 			avoidZero = false
 		} = this.props;
@@ -62,7 +62,7 @@ export default class DimensionsControl extends GXComponent {
 		} = this.state;
 
 		let value = typeof this.props.value === 'object' ? this.props.value : JSON.parse(this.props.value);
-		const classes = classnames( 
+		const classes = classnames(
 			`components-maxi-dimensions-control components-base-control maxi-${value.label}-dimensions-control`,
 			className
 		);
@@ -140,170 +140,171 @@ export default class DimensionsControl extends GXComponent {
 			value[device].sync = !value[device].sync;
 			this.saveAndSend(value, avoidZero);
 		}
-				
+
 		return (
-			<Fragment>
-				<div className={classes}>
-					<Fragment>
-						<div className="components-maxi-dimensions-control__header components-base-control">
-							{value.label && <p className={'components-maxi-dimensions-control__label'}>{value.label}</p>}
-							<Button
-								className="components-color-palette__clear"
-								onClick={onChangeValue}
-								isSmall
-								aria-label={sprintf(
-									/* translators: %s: a texual label  */
-									__('Reset %s settings', 'maxi-blocks'),
-									value.label.toLowerCase()
-								)}
-								action="reset"
-							>
-								{reset}
-							</Button>
-							<div className="components-maxi-dimensions-control__actions">
-								<ButtonGroup className="components-maxi-dimensions-control__units" aria-label={__('Select Units', 'maxi-blocks')}>
-									{map(unitSizes, ({ unitValue, name }) => (
-										<Tooltip text={sprintf(
+			<div className={classes}>
+				<div className="components-maxi-dimensions-control__header components-base-control">
+					<p className='components-maxi-dimensions-control__label'>
+						{value.label}
+					</p>
+					<div className="components-maxi-dimensions-control__actions">
+						<ButtonGroup
+							className="components-maxi-dimensions-control__units"
+							aria-label={__('Select Units', 'maxi-blocks')}
+						>
+							{map(unitSizes, ({ unitValue, name }) => (
+								<Tooltip text={sprintf(
+									/* translators: %s: values associated with CSS syntax, 'Pixel', 'Em', 'Percentage' */
+									__('%s Units', 'maxi-blocks'),
+									name
+								)}>
+									<Button
+										key={unitValue}
+										className='components-maxi-dimensions-control__units-button maxi-unit-button'
+										isSmall
+										isPrimary={value.unit === unitValue}
+										aria-pressed={value.unit === unitValue}
+										aria-label={sprintf(
 											/* translators: %s: values associated with CSS syntax, 'Pixel', 'Em', 'Percentage' */
 											__('%s Units', 'maxi-blocks'),
 											name
-										)}>
+										)}
+										onClick={() => onChangeUnit(unitValue)}
+									>
+										{unitValue}
+									</Button>
+								</Tooltip>
+							))}
+						</ButtonGroup>
+						<Button
+							className="components-maxi-dimensions-control__units-reset"
+							onClick={onChangeValue}
+							aria-label={sprintf(
+								/* translators: %s: a texual label  */
+								__('Reset %s settings', 'maxi-blocks'),
+								value.label.toLowerCase()
+							)}
+							action="reset"
+							type="reset"
+						>
+							{reset}
+						</Button>
+					</div>
+				</div>
+				<TabPanel
+					className="components-maxi-dimensions-control__mobile-controls"
+					activeClass="tab-is-active"
+					initialTabName="desktop"
+					onSelect={onSelect}
+					tabs={[
+						{
+							name: 'desktop',
+							title: desktop,
+							className: `components-maxi-dimensions-control__mobile-controls-item components-button is-button is-default components-maxi-dimensions-control__mobile-controls-item--desktop components-maxi-dimensions-control__mobile-controls-item--desktop ${device == 'desktop' ? 'is-active' : ''}`,
+						},
+						{
+							name: 'tablet',
+							title: tablet,
+							className: `components-maxi-dimensions-control__mobile-controls-item components-button is-button is-default components-maxi-dimensions-control__mobile-controls-item--tablet components-maxi-dimensions-control__mobile-controls-item--tablet ${device == 'tablet' ? 'is-active' : ''}`,
+						},
+						{
+							name: 'mobile',
+							title: mobile,
+							className: `components-maxi-dimensions-control__mobile-controls-item components-button is-button is-default components-maxi-dimensions-control__mobile-controls-item--mobile components-maxi-dimensions-control__mobile-controls-item--mobile ${device == 'mobile' ? 'is-active' : ''}`,
+						},
+					]}>
+					{
+						() => {
+							return (
+								<Fragment>
+									<div className="components-maxi-dimensions-control__inputs">
+										<input
+											className="components-maxi-dimensions-control__number"
+											type="number"
+											onChange={onChangeValue}
+											aria-label={sprintf(
+												/* translators: %s: values associated with CSS syntax, 'Margin', 'Padding' */
+												__('%s Top', 'maxi-blocks'),
+												value.label
+											)}
+											value={value[device][getKey(value[device], 0)]}
+											min={value.min ? value.min : 0}
+											max={value.max ? value.max : 'none'}
+											data-device-type={device}
+											action="0"
+										/>
+										<input
+											className="components-maxi-dimensions-control__number"
+											type="number"
+											onChange={onChangeValue}
+											aria-label={sprintf(
+												/* translators: %s: values associated with CSS syntax, 'Margin', 'Padding' */
+												__('%s Right', 'maxi-blocks'),
+												value.label
+											)}
+											value={value[device][getKey(value[device], 1)]}
+											min={value.min ? value.min : 0}
+											max={value.max ? value.max : 'none'}
+											data-device-type={device}
+											action="1"
+										/>
+										<input
+											className="components-maxi-dimensions-control__number"
+											type="number"
+											onChange={onChangeValue}
+											aria-label={sprintf(
+												/* translators: %s: values associated with CSS syntax, 'Margin', 'Padding' */
+												__('%s Bottom', 'maxi-blocks'),
+												value.label
+											)}
+											value={value[device][getKey(value[device], 2)]}
+											min={value.min ? value.min : 0}
+											max={value.max ? value.max : 'none'}
+											data-device-type={device}
+											action="2"
+										/>
+										<input
+											className="components-maxi-dimensions-control__number"
+											type="number"
+											onChange={onChangeValue}
+											aria-label={sprintf(
+												/* translators: %s: values associated with CSS syntax, 'Margin', 'Padding' */
+												__('%s Left', 'maxi-blocks'),
+												value.label
+											)}
+											value={value[device][getKey(value[device], 3)]}
+											min={value.min ? value.min : 0}
+											max={value.max ? value.max : 'none'}
+											data-device-type={device}
+											action="3"
+										/>
+										<Tooltip text={!!value[device].sync ? __('Unsync', 'maxi-blocks') : __('Sync', 'maximaxi-blocks')}>
 											<Button
-												key={unitValue}
-												className={'components-button-radio components-maxi-dimensions-control__units--' + name}
+												className="components-maxi-dimensions-control_sync"
+												aria-label={__('Sync Units', 'maxi-blocks')}
+												isPrimary={value[device].sync ? value[device].sync : false}
+												aria-pressed={value[device].sync ? value[device].sync : false}
+												onClick={onChangeSync}
+												data-device-type={device}
 												isSmall
-												isPrimary={value.unit === unitValue}
-												aria-pressed={value.unit === unitValue}
-												aria-label={sprintf(
-													/* translators: %s: values associated with CSS syntax, 'Pixel', 'Em', 'Percentage' */
-													__('%s Units', 'maxi-blocks'),
-													name
-												)}
-												onClick={() => onChangeUnit(unitValue)}
 											>
-												{unitValue}
+												{sync}
 											</Button>
 										</Tooltip>
-									))}
-								</ButtonGroup>
-							</div>
-						</div>
-						<TabPanel
-							className="components-maxi-dimensions-control__mobile-controls"
-							activeClass="tab-is-active"
-							initialTabName="desktop"
-							onSelect={onSelect}
-							tabs={[
-								{
-									name: 'desktop',
-									title: desktop,
-									className: `components-maxi-dimensions-control__mobile-controls-item components-button is-button is-default components-maxi-dimensions-control__mobile-controls-item--desktop components-maxi-dimensions-control__mobile-controls-item--desktop ${device == 'desktop' ? 'is-active' : ''}`,
-								},
-								{
-									name: 'tablet',
-									title: tablet,
-									className: `components-maxi-dimensions-control__mobile-controls-item components-button is-button is-default components-maxi-dimensions-control__mobile-controls-item--tablet components-maxi-dimensions-control__mobile-controls-item--tablet ${device == 'tablet' ? 'is-active' : ''}`,
-								},
-								{
-									name: 'mobile',
-									title: mobile,
-									className: `components-maxi-dimensions-control__mobile-controls-item components-button is-button is-default components-maxi-dimensions-control__mobile-controls-item--mobile components-maxi-dimensions-control__mobile-controls-item--mobile ${device == 'mobile' ? 'is-active' : ''}`,
-								},
-							]}>
-							{
-								() => {
-									return (
-										<Fragment>
-											<div className="components-maxi-dimensions-control__inputs">
-												<input
-													className="components-maxi-dimensions-control__number"
-													type="number"
-													onChange={onChangeValue}
-													aria-label={sprintf(
-														/* translators: %s: values associated with CSS syntax, 'Margin', 'Padding' */
-														__('%s Top', 'maxi-blocks'),
-														value.label
-													)}
-													value={value[device][getKey(value[device], 0)]}
-													min={value.min ? value.min : 0}
-													max={value.max ? value.max : 'none'}
-													data-device-type={device}
-													action="0"
-												/>
-												<input
-													className="components-maxi-dimensions-control__number"
-													type="number"
-													onChange={onChangeValue}
-													aria-label={sprintf(
-														/* translators: %s: values associated with CSS syntax, 'Margin', 'Padding' */
-														__('%s Right', 'maxi-blocks'),
-														value.label
-													)}
-													value={value[device][getKey(value[device], 1)]}
-													min={value.min ? value.min : 0}
-													max={value.max ? value.max : 'none'}
-													data-device-type={device}
-													action="1"
-												/>
-												<input
-													className="components-maxi-dimensions-control__number"
-													type="number"
-													onChange={onChangeValue}
-													aria-label={sprintf(
-														/* translators: %s: values associated with CSS syntax, 'Margin', 'Padding' */
-														__('%s Bottom', 'maxi-blocks'),
-														value.label
-													)}
-													value={value[device][getKey(value[device], 2)]}
-													min={value.min ? value.min : 0}
-													max={value.max ? value.max : 'none'}
-													data-device-type={device}
-													action="2"
-												/>
-												<input
-													className="components-maxi-dimensions-control__number"
-													type="number"
-													onChange={onChangeValue}
-													aria-label={sprintf(
-														/* translators: %s: values associated with CSS syntax, 'Margin', 'Padding' */
-														__('%s Left', 'maxi-blocks'),
-														value.label
-													)}
-													value={value[device][getKey(value[device], 3)]}
-													min={value.min ? value.min : 0}
-													max={value.max ? value.max : 'none'}
-													data-device-type={device}
-													action="3"
-												/>
-												<Tooltip text={!!value[device].sync ? __('Unsync', 'maxi-blocks') : __('Sync', 'maximaxi-blocks')}>
-													<Button
-														className="components-maxi-dimensions-control_sync"
-														aria-label={__('Sync Units', 'maxi-blocks')}
-														isPrimary={value[device].sync ? value[device].sync : false}
-														aria-pressed={value[device].sync ? value[device].sync : false}
-														onClick={onChangeSync}
-														data-device-type={device}
-														isSmall
-													>
-														{sync}
-													</Button>
-												</Tooltip>
-											</div>
-										</Fragment>
-									)
-								}
-							}
-						</TabPanel>
-						<div className="components-maxi-dimensions-control__input-labels">
-							<span className="components-maxi-dimensions-control__number-label">{__('Top', 'maxi-blocks')}</span>
-							<span className="components-maxi-dimensions-control__number-label">{__('Right', 'maxi-blocks')}</span>
-							<span className="components-maxi-dimensions-control__number-label">{__('Bottom', 'maxi-blocks')}</span>
-							<span className="components-maxi-dimensions-control__number-label">{__('Left', 'maxi-blocks')}</span>
-							<span className="components-maxi-dimensions-control__number-label-blank"></span>
-						</div>
-					</Fragment>
+									</div>
+								</Fragment>
+							)
+						}
+					}
+				</TabPanel>
+				<div className="components-maxi-dimensions-control__input-labels">
+					<span className="components-maxi-dimensions-control__number-label">{__('Top', 'maxi-blocks')}</span>
+					<span className="components-maxi-dimensions-control__number-label">{__('Right', 'maxi-blocks')}</span>
+					<span className="components-maxi-dimensions-control__number-label">{__('Bottom', 'maxi-blocks')}</span>
+					<span className="components-maxi-dimensions-control__number-label">{__('Left', 'maxi-blocks')}</span>
+					<span className="components-maxi-dimensions-control__number-label-blank"></span>
 				</div>
-			</Fragment>
+			</div>
 		);
 	}
 }

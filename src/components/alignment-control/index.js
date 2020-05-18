@@ -47,7 +47,7 @@ const AlignmentControl = props => {
     return (
         <RadioControl
             label={__('Alignment', 'maxi-blocks')}
-            className={'components-base-control maxi-alignmentcontrol-control'}
+            className={'components-base-control maxi-alignment-control'}
             selected={value}
             options={getOptions()}
             onChange={value => onChange(value)}

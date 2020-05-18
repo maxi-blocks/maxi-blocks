@@ -1,214 +1,37 @@
-.maxi-colorcontrol-control .maxi-popover-control .components-base-control__field .components-dropdown {
-	margin-left: auto;
-}
-
-.maxi-colorcontrol-control .components-base-control__field > button {
-  order: 3;
-  border: 2px solid #dddfe1 !important;
-  padding: 0;
-  width: 30px;
-  border-radius: 5px;
-  margin-left:0;
-  height: 30px !important;
-}
-
-.maxi-colorcontrol-color-display span {
-  width: 24px;
-  height: 24px;
-  float: left;
-  border: 1px solid #dddfe1 !important;
-  margin-right: 8px;
-  margin-left: -4px;
-  border-radius: 5px;
-}
-
-.maxi-colorcontrol-color-display span,
-.maxi-sidebar .component-color-indicator {
-  width: 24px;
-  height: 24px;
-  float: left;
-  border: 1px solid #dddfe1 !important;
-  margin-right: 8px;
-  margin-left: -4px;
-  border-radius: 5px;
-}
-    
-.maxi-colorcontrol-color-display span {
-  margin-right: 8px !important;
-}
-    
-.maxi-colorcontrol-control .components-base-control__field > button svg {
-  width: 12px;
-  height: 12px;
-  margin: auto;
-}
-    
 .maxi-colorcontrol-control {
-  display: flex;
+    .maxi-box-shadow .maxi-colorcontrol-control .maxi-settings-button .components-base-control__field > div {
+        margin-right: 4px;
+    }
 
-.maxi-colorcontrol-color-display {
-  span {
-    display: block;
-    width: 24px;
-    height: 24px;
-    border: 1px solid black;
-    margin: auto;
-  }
-}
+    .maxi-box-shadow
+        .maxi-colorcontrol-control
+        .maxi-settings-button
+        .components-base-control__field
+        button[type="reset"] {
+        margin-right: 0px;
+    }
 
-.maxi-popover-control {
-  width: 100%;
-
-    .components-base-control__field {
-      display: flex;
-      justify-content: space-between;
-      width: 100%;
-      .components-dropdown {
-        margin-right: 3px;
-      }
-
-      .components-button {
+    .maxi-box-shadow .maxi-colorcontrol-control .components-base-control__field .components-button.is-secondary {
+        color: black;
         height: 30px;
         width: 30px;
+        background-color: white !important;
+        border: 2px solid #dddfe1;
         border-radius: 5px;
-        border: 2px solid #dddfe1 !important;
-        background-color: white;
-
-        &:hover {
-          background-color: white !important;
-          border-color: #c5c5c5 !important;
-        }
-
-        &:focus {
-          box-shadow: none !important;
-        }
-
-        svg {
-          margin: auto;
-        }
-
-        &[type="reset"] {
-          color: black !important;
-
-          svg {
-            height: 12px;
-            width: 12px;
-          }
-        }
-      }
+        box-shadow: unset !important;
     }
-  }
-}
 
-.maxi-colorcontrol-gradient-popover
-.components-custom-gradient-picker__gradient-bar {
-  border-radius: 0;
-}
+    .maxi-box-shadow .maxi-colorcontrol-control .components-base-control__field > .components-button.is-secondary {
+        order: 1;
+    }
 
-.maxi-colorcontrol-gradient-popover .components-custom-gradient-picker__ui-line {
-  display: flex;
-  flex-direction: column;
-}
+    .maxi-box-shadow .maxi-colorcontrol-control .components-base-control__field > .components-button.is-secondary svg {
+        width: 12px;
+        height: 12px;
+        margin: auto;
+    }
 
-.maxi-colorcontrol-gradient-popover
-.components-custom-gradient-picker__ui-line
-.components-base-control__field {
-  display: flex;
-  justify-content: space-between;
-}
-
-.maxi-colorcontrol-gradient-popover
-.components-custom-gradient-picker__ui-line
-.components-base-control__label {
-  margin: auto;
-  margin-left: 0;
-}
-
-.maxi-colorcontrol-gradient-popover
-.components-custom-gradient-picker__ui-line
-.components-angle-picker-control {
-  width: 100%;
-}
-
-.maxi-colorcontrol-gradient-popover
-.components-custom-gradient-picker__ui-line
-.components-angle-picker-control__angle-circle {
-  margin: auto;
-  margin-right: 0;
-}
-
-.maxi-colorcontrol-control .maxi-popover-control .components-base-control {
-  display: flex;
-  justify-content: space-between;
-}
-
-.maxi-colorcontrol-control .maxi-colorcontrol-color-display span {
-  display: block;
-  width: 24px;
-  height: 24px;
-  margin: auto;
-}
-
-.maxi-colorcontrol-color-display span{
-  border: 1px solid #dddfe1 !important;
-  opacity: 1 !important;
-}
-
-.maxi-colorcontrol-color-display span {
-  margin-right: 8px !important;
-}
-
-.maxi-colorcontrol-color-display span{
-  border-radius:5px;
-  float:left;
-}
-
-.maxi-colorcontrol-control .maxi-popover-control {
-  width: 100%;
-}
-
-.maxi-colorcontrol-control .maxi-popover-control .components-base-control {
-  display: flex;
-  justify-content: space-between;
-}
-
-.maxi-colorcontrol-control .maxi-popover-control .components-base-control__field .components-button{
-  border: 1px solid #dddfe1 !important;
-  opacity: 1 !important;
-}
-
-.maxi-colorcontrol-control .maxi-popover-control .components-base-control__field .components-dropdown {
-  margin-left: auto;
-}
-
-.maxi-colorcontrol-control .maxi-popover-control .components-base-control__field .components-button{
-  border: 1px solid #dddfe1 !important;
-  opacity: 1 !important;
-}
-
-.maxi-colorcontrol-color-display span{
-  border: 1px solid #dddfe1 !important;
-  opacity: 1 !important;
-  margin-right: 8px !important;
-  float: left;
-  border-radius: 5px;
-}
-
-.maxi-colorcontrol-control .maxi-popover-control .components-base-control__field .components-button{
-  border: 1px solid #dddfe1 !important;
-  opacity: 1 !important;
-}
-
-.maxi-colorcontrol-control .components-base-control__field > button{
-  order: 3;
-  margin-left: 0;
-  height: 30px !important;
-}
-
-@media all and(max-width:2000px){
-  
-  .maxi-colorcontrol-color-display span{
-    border: 1px solid #dddfe1 !important;
-    opacity: 1 !important;
-  } 
+    .maxi-popover-control {
+        width: 100%;
+    }
 }

@@ -45,7 +45,7 @@
 	justify-content: space-between;
 }
   
-.maxi-image-item .maxi-unit-control {
+.maxi-image-item .maxi-sizecontrol-unit {
 	margin-right: 83px !important;
 }
   
@@ -72,7 +72,7 @@
 	margin-right: 0 !important;
 }
 
-.maxi-image-item .maxi-unit-control .components-radio-control__option label {
+.maxi-image-item .maxi-sizecontrol-unit .components-radio-control__option label {
 	width: 30px;
 }
   
@@ -169,11 +169,11 @@
 	margin-left: 3px !important;
 }
 
-.maxi-image-item .maxi-unit-control .components-base-control__field {
+.maxi-image-item .maxi-sizecontrol-unit .components-base-control__field {
   top: 6px !important;
 }
     
-.maxi-image-item div > .maxi-with-unit-control:last-child {
+.maxi-image-item div > .maxi-sizecontrol-value:last-child {
   margin-bottom: 5px;
 }
 
@@ -248,7 +248,7 @@
  }
 
  .maxi-imagesettings-control
- .components-base-control.maxi-unit-control.components-radio-control{
+ .components-base-control.maxi-sizecontrol-unit.components-radio-control{
    position: relative;
    top:1px !important;
    margin-right: 86px !important
@@ -310,13 +310,13 @@
 	height: 30px;
 }
 
-.maxi-imagesettings-control .components-base-control.maxi-unit-control.components-radio-control {
+.maxi-imagesettings-control .components-base-control.maxi-sizecontrol-unit.components-radio-control {
   position: relative;
   top: 1px !important;
   margin-right: 90px !important;
 }
 
-.maxi-imagesettings-control .components-base-control.components-range-control.maxi-with-unit-control
+.maxi-imagesettings-control .components-base-control.components-range-control.maxi-sizecontrol-value
 .components-base-control__label{
   position:relative;
   top:5px !important;
@@ -351,7 +351,7 @@
 @media all and(max-width:2000px){
 
   .maxi-imagesettings-control
-  .components-range-control.maxi-with-unit-control .components-base-control__field .components-range-control__number{
+  .components-range-control.maxi-sizecontrol-value .components-base-control__field .components-range-control__number{
     margin-right:4px !important;
   }
 
@@ -399,7 +399,7 @@
 	  min-width: unset !important;
   }
     
-	.maxi-image-item .maxi-unit-control {
+	.maxi-image-item .maxi-sizecontrol-unit {
     margin-right: 73px;
   }
 
@@ -434,15 +434,15 @@
 	  width: 24px !important;
   }
   
-  .maxi-image-width > .components-base-control.maxi-unit-control.components-radio-control > .components-base-control__field,
-  .maxi-image-max-width > .components-base-control.maxi-unit-control.components-radio-control > .components-base-control__field{
+  .maxi-image-width > .components-base-control.maxi-sizecontrol-unit.components-radio-control > .components-base-control__field,
+  .maxi-image-max-width > .components-base-control.maxi-sizecontrol-unit.components-radio-control > .components-base-control__field{
 	  position: relative ;
 	  top: -1px !important;
 	  left:3px !important;
   }
   
-  .maxi-image-width > .components-base-control.maxi-unit-control.components-radio-control > .components-base-control__field > .components-radio-control__option > label,
-  .maxi-image-max-width > .components-base-control.maxi-unit-control.components-radio-control > .components-base-control__field > .components-radio-control__option > label{
+  .maxi-image-width > .components-base-control.maxi-sizecontrol-unit.components-radio-control > .components-base-control__field > .components-radio-control__option > label,
+  .maxi-image-max-width > .components-base-control.maxi-sizecontrol-unit.components-radio-control > .components-base-control__field > .components-radio-control__option > label{
 	  height:26px !important;
 	  line-height: 26px !important;
   }
@@ -463,7 +463,7 @@
   }
 
   .maxi-imagesettings-control
-  .components-base-control.components-range-control.maxi-with-unit-control
+  .components-base-control.components-range-control.maxi-sizecontrol-value
   .components-range-control__number.css-1foiknu-InputNumber.exqw8y213{
 	  position: absolute;
 	  top: 0;
@@ -471,7 +471,7 @@
   }
 
   .maxi-imagesettings-control
-  .components-base-control.components-range-control.maxi-with-unit-control
+  .components-base-control.components-range-control.maxi-sizecontrol-value
   .css-uojzqi-ActionRightWrapper.exqw8y214{
   	position: relative;
 	  top: 1px;
@@ -480,7 +480,7 @@
 
   .maxi-imagesettings-control
   .accordion__panel
-  .components-base-control.maxi-unit-control.components-radio-control {
+  .components-base-control.maxi-sizecontrol-unit.components-radio-control {
     position: relative;
     top: -1px !important;
     margin-right: 85px !important;

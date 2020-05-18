@@ -80,7 +80,7 @@ export class DividerWidth extends Component {
     return (
       <div className={"divider-dimension components-base-control"}>
         <RadioControl
-          className={"maxi-unit-control divider-unit-control"}
+          className={"maxi-sizecontrol-unit divider-unit-control"}
           selected={dividerWidthUnit}
           options={[
             { label: "PX", value: "px" },
@@ -92,7 +92,7 @@ export class DividerWidth extends Component {
         />
         <RangeControl
           label={__("Width", "maxi-blocks")}
-          className={"maxi-with-unit-control divider-range-control"}
+          className={"maxi-sizecontrol-value divider-range-control"}
           value={isVertical ? dividerThickness : dividerWidth}
           onChange={onChangeDividerWidth}
           onClick={handleClick}

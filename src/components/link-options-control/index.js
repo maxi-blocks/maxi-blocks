@@ -16,11 +16,6 @@ import CheckBoxControl from '../checkbox-control';
 import { isEmpty } from 'lodash';
 
 /**
- * Style
- */
-import './style.scss';
-
-/**
  * Blocks
  */
 export const LinkOptionsControl = props => {

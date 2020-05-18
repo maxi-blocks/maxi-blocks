@@ -14,6 +14,9 @@ import './extensions/store';
 import './extensions/attributes';
 // import './extensions/blocks';
 
+// CSS
+import './css';
+
 // Blocks
 import './blocks/row-maxi/row-maxi';
 import './blocks/column-maxi/column-maxi';
@@ -22,6 +25,9 @@ import './blocks/divider-maxi/divider-maxi';
 import './blocks/image-maxi/image-maxi';
 import './blocks/section-maxi/section-maxi';
 import './blocks/button-maxi/button-maxi.js';
+
+// Test
+import './blocks/test-maxi/test-maxi';
 
 // Deprecated
 // import './blocks/block-layout/block-layout.js';

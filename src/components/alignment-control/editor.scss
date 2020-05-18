@@ -1,52 +1,52 @@
-.maxi-sidebar div.maxi-alignmentcontrol-control .components-base-control__label{
-  margin: auto;
-  flex: 40%;
-}
+.maxi-alignment-control {
+    .components-radio-control__option {
+        border: 1px solid #dddfe1 !important;
+        opacity: 1 !important;
+        min-width: 40px;
+        height: 35px;
+        background-color: rgba(33, 141, 250, 0);
+        border: 2px solid #dddfe1;
+        border-right-width: 0;
+        font-size: 20px;
+        color: #464a53;
+        font-weight: 500;
+        margin: auto;
 
-.maxi-sidebar div.maxi-alignmentcontrol-control .components-radio-control__option input {
-  display: none;
-}
+        &:first-of-type,
+        &:first-of-type label {
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+            border-right-width: 2px;
+        }
 
-.maxi-sidebar div.maxi-alignmentcontrol-control .components-radio-control__option {
-  width: 45.6px;
-  height: 35px;
-  background-color: rgba(33,141,250,0);
-  border: 2px solid #dddfe1;
-  border-right-width: 0;
-  font-size: 20px;
-  color: #464a53;
-  font-weight: 500;
-  margin: auto;
-}
+        &:last-of-type,
+        &:last-of-type label {
+            border-left-width: 2px;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
 
-.maxi-sidebar div.maxi-alignmentcontrol-control .components-radio-control__option label {
-  display: block;
-  height: 100%;
-}
+        input {
+            display: none;
 
-.maxi-sidebar div.maxi-alignmentcontrol-control .components-radio-control__option svg {
-  display: block;
-  height: 100%;
-  margin: auto;
-  fill: #464a53;
-}
+            &:checked ~ label {
+                box-shadow: 0 0 0 2px #007cba;
+                outline: 1px solid transparent;
+                position: relative;
+                z-index: 1;
+            }
+        }
 
-.maxi-sidebar div.maxi-alignmentcontrol-control .components-radio-control__option:first-of-type,
-.maxi-sidebar div.maxi-alignmentcontrol-control .components-radio-control__option:first-of-type label {
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
-}
+        label {
+            display: block;
+            height: 100%;
+        }
 
-.maxi-sidebar div.maxi-alignmentcontrol-control .components-radio-control__option:last-of-type,
-.maxi-sidebar div.maxi-alignmentcontrol-control .components-radio-control__option:last-of-type label {
-  border-right-width: 2px;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
-}
-
-.maxi-sidebar div.maxi-alignmentcontrol-control .components-radio-control__option input:checked ~ label {
-  box-shadow: 0 0 0 2px #007cba;
-  outline: 1px solid transparent;
-  position: relative;
-  z-index: 1;
+        svg {
+            display: block;
+            height: 100%;
+            margin: auto;
+            fill: #464a53;
+        }
+    }
 }

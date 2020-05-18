@@ -10,11 +10,6 @@ const { useInstanceId } = wp.compose;
 import classnames from 'classnames';
 
 /**
- * Styles
- */
-import './editor.scss';
-
-/**
  * Component
  */
 const CheckBoxControl = props => {
@@ -31,7 +26,10 @@ const CheckBoxControl = props => {
     const instanceId = useInstanceId( CheckBoxControl );
     const checkboxId = `maxi-blocks-checkbox-${instanceId}`;
 
-    const classes = classnames('maxi-blocks-checkbox-container', className);
+    const classes = classnames(
+        'maxi-checkbox-control', 
+        className
+    );
 
     return (
         <BaseControl 

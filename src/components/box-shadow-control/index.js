@@ -18,11 +18,6 @@ import PopoverControl from '../popover-control';
 import classnames from 'classnames';
 
 /**
- * Styles
- */
-import './editor.scss';
-
-/**
  * Component
  */
 class BoxShadow extends GXComponent {
@@ -131,7 +126,10 @@ const BoxShadowControl = props => {
         target
     } = props;
 
-    const classes = classnames('maxi-boxshadow-control', className);
+    const classes = classnames(
+        'maxi-boxshadow-control', 
+        className
+    );
 
     return (
         <PopoverControl
@@ -139,6 +137,7 @@ const BoxShadowControl = props => {
             className={classes}
             popovers={[
                 {
+                    classNamePopover: 'maxi-boxshadow-popover',
                     content: (
                         <BoxShadow
                             boxShadowOptions={boxShadowOptions}

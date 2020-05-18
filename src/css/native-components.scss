@@ -1,0 +1,117 @@
+/************
+* BaseControl
+* SelectorControl
+* RangeControl
+* RadioControl
+* ButtonControl
+************/
+
+.maxi-sidebar,
+.maxi-popover {
+    // BaseControl
+    .components-base-control {
+        margin-bottom: 5px !important;
+
+        &:last-child {
+            margin-bottom: 0 !important;
+        }
+
+        .components-base-control__field {
+            display: -ms-flexbox !important;
+            display: flex !important;
+            -ms-flex-align: center;
+            align-items: center;
+
+            .components-base-control__label {
+                flex: 100%;
+                margin-bottom: 0;
+            }
+
+            // SelectorControl
+            .components-select-control__input {
+                font-size: 10pt !important;
+                max-width: 8.5rem;
+                background: #fff url(../img/arrow-down.svg) no-repeat right 7px top 50% !important;
+                background-size: 9px 9px !important;
+                border-radius: 5px !important;
+                border: 1px solid #dddfe1 !important;
+                min-height: unset;
+                max-height: unset !important;
+                color: #464a53;
+                font-weight: 500;
+            }
+
+            // RadioControl
+            .components-radio-control__option:not(:last-child) {
+                margin-bottom: 0 !important;
+            }
+
+            // ButtonControl
+            .components-button {
+                &:not(.maxi-unit-button) {
+                    display: inline-flex;
+                    width: 26px;
+                    min-width: 26px;
+                    height: 26px;
+                    text-decoration: none;
+                    cursor: pointer;
+                    -webkit-appearance: none;
+                    background: none;
+                    background-color: rgba(0, 0, 0, 0);
+                    transition: box-shadow 0.1s linear;
+                    align-items: center;
+                    overflow: hidden;
+                    padding: 0;
+                    opacity: 1;
+                    border-radius: 5px;
+                }
+
+                &:focus {
+                    box-shadow: none !important;
+                }
+
+                &.is-primary {
+                    border-color: #00ccff;
+
+                    &:focus:enabled {
+                        box-shadow: 0 0 0 1px #fff, 0 0 0 3px #00ccff;
+                    }
+                }
+
+                &.is-secondary {
+                    box-shadow: none !important;
+                    border: 1px solid #dddfe1 !important;
+
+                    &:hover {
+                        background-color: white !important;
+                        border-color: #c5c5c5 !important;
+                    }
+
+                    svg {
+                        width: 18px !important;
+                        height: 18px !important;
+                    }
+                }
+
+                &[type="reset"] {
+                    svg {
+                        fill: #464a53 !important;
+                    }
+                }
+
+                svg {
+                    margin: auto;
+                }
+            }
+        }
+    }
+
+    // RangeControl
+    .components-range-control {
+        .components-base-control__field {
+            .components-base-control__label {
+                flex: 40%;
+            }
+        }
+    }
+}

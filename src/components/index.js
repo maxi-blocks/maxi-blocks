@@ -23,7 +23,7 @@ export { default as FontFamilySelector } from './font-family-selector';
 export { default as FontLevelControl } from './font-level-control';
 export { default as HoverAnimationControl } from './hover-animation-control';
 export { default as ImageCropControl } from './image-crop-control';
-export { default as ImagePositionControl } from './image-position-control';
+export { default as ImagePositionControl } from './deprecated/image-position-control';
 export * from './link-options-control';
 export { default as LinkedButton } from './linked-button';
 export { default as NormalHoverControl } from './normal-hover-control';

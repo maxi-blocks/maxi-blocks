@@ -198,8 +198,6 @@ export class ButtonSettings extends GXComponent {
                                         disableJustify
                                     />
                                     <NormalHoverControl
-                                        /*not sure about vvv class => may should go on the component itself*/
-                                        className="maxi-buttonstyles-selector-control"
                                         selector={selectorTypographyColors}
                                         onChange={selectorTypographyColors => {
                                             this.setState({ selectorTypographyColors });
@@ -240,8 +238,6 @@ export class ButtonSettings extends GXComponent {
                             content: (
                                 <Fragment>
                                     <NormalHoverControl
-                                        /*not sure about vvv class => may should go on the component itself*/
-                                        className="maxi-buttonstyles-selector-control"
                                         selector={selectorOpacityShadow}
                                         onChange={selectorOpacityShadow => {
                                             this.setState({ selectorOpacityShadow });
@@ -282,8 +278,6 @@ export class ButtonSettings extends GXComponent {
                             content: (
                                 <Fragment>
                                     <NormalHoverControl
-                                        /*not sure about vvv class => may should go on the component itself*/
-                                        className="maxi-buttonstyles-selector-control"
                                         selector={selectorBorder}
                                         onChange={selectorBorder => {
                                             this.setState({ selectorBorder });
@@ -326,8 +320,6 @@ export class ButtonSettings extends GXComponent {
                             content: (
                                 <Fragment>
                                     <NormalHoverControl
-                                        /*not sure about vvv class => may should go on the component itself*/
-                                        className="maxi-buttonstyles-selector-control"
                                         selector={selectorPaddingMargin}
                                         onChange={selectorPaddingMargin => {
                                             this.setState({ selectorPaddingMargin });

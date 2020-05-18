@@ -56,7 +56,7 @@ const Inspector = props => {
     return (
         <InspectorControls>
             <PanelBody
-                className="maxi-panel maxi-image-setting maxi-content-tab-setting"
+                className="maxi-panel maxi-content-tab-setting"
                 initialOpen={true}
                 // why this vvvv title?
                 title={__('Image Settings', 'maxi-blocks')}
@@ -114,6 +114,7 @@ const Inspector = props => {
                                     <PanelBody
                                         className={'maxi-panel maxi-color-setting maxi-style-tab-setting'}
                                     >
+                                        {/* This BaseControl has no sense.... */}
                                         <BaseControl
                                             className={"bg-color-parent maxi-reset-button background-gradient"}
                                         >

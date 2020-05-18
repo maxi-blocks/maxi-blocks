@@ -42,7 +42,7 @@ const PopoverControl = props => {
     return (
         <div className={classes}>
             <BaseControl
-                className={'maxi-settings-button'}
+                className={'maxi-settings-button'} // This class is too wide, needs to be more specific
             >
                 <BaseControl.VisualLabel>
                     {label}

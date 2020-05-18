@@ -23,7 +23,10 @@ const NormalHoverControl = props => {
         onChange
     } = props;
 
-    let classes = classnames('maxi-normalhover-control maxi-buttonstyles-selector-control', className);
+    let classes = classnames(
+        'maxi-normalhover-control', 
+        className
+    );
 
     return (
         <RadioControl

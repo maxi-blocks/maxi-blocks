@@ -23,11 +23,6 @@ import TextShadowControl from '../text-shadow-control';
 import classnames from 'classnames';
 
 /**
- * Styles
- */
-import './editor.scss';
-
-/**
  * Component
  */
 export default class Typography extends GXComponent {
@@ -53,9 +48,8 @@ export default class Typography extends GXComponent {
         } = this.state;
 
         const value = typeof fontOptions === 'object' ? fontOptions : JSON.parse(fontOptions);
-        // All these classes are senseless
         const classes = classnames(
-            'components-panel__body components-base-control editor-panel-color-settings block-editor-panel-color-settings is-opened typography maxi-typography-control',
+            'maxi-typography-control',
             className
         )
 
@@ -150,8 +144,8 @@ export default class Typography extends GXComponent {
         }
 
         return (
-            <div className={classes + ' ' + 'maxi-typogrphy-inspect-panel'} /* This class doesn't come here...!*/> 
-                <div className="maxi-typography-color-display">
+            <div className={classes}> 
+                <div className="maxi-typography-color-display maxi-component-color-inidicator"> 
                     <span
                         style={{
                             background: value.general.color,

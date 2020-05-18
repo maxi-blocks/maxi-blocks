@@ -45,7 +45,7 @@
 
 @media all and(max-width:2000px){
   .maxi-divider-item
-  .components-base-control.components-range-control.maxi-with-unit-control{
+  .components-base-control.components-range-control.maxi-sizecontrol-value{
     position:relative;
 	  margin-bottom: 10px !important;
   }
@@ -58,7 +58,7 @@
   }
 
   .maxi-divider-item
-  .components-base-control.maxi-unit-control.components-radio-control{
+  .components-base-control.maxi-sizecontrol-unit.components-radio-control{
 	  position: relative !important;
 	  top: -3px !important;
 	  right: 2px !important;
@@ -94,18 +94,18 @@
   }
   
   .maxi-divider-item
-  .components-base-control.maxi-unit-control.components-radio-control{
+  .components-base-control.maxi-sizecontrol-unit.components-radio-control{
 	  position:relative;
 	  top:3px;
   }
 
   .maxi-divider-item
-  .components-range-control.maxi-with-unit-control .components-base-control__field > .components-range-control__number {
+  .components-range-control.maxi-sizecontrol-value .components-base-control__field > .components-range-control__number {
     margin-top:-1px !important;
   }
 
   .maxi-divider-item
-  .components-range-control.maxi-with-unit-control .components-base-control__field > .components-button.components-range-control__reset.is-secondary.is-small{
+  .components-range-control.maxi-sizecontrol-value .components-base-control__field > .components-button.components-range-control__reset.is-secondary.is-small{
     position: relative !important;
     top: -2px !important;
     margin-left:4px !important;

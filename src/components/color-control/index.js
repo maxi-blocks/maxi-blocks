@@ -52,7 +52,7 @@ const ColorControl = props => {
     } = props;
 
     const classes = classnames(
-        'components-base-control maxi-colorcontrol-control', 
+        'maxi-colorcontrol-control', 
         className
     );
 
@@ -71,7 +71,7 @@ const ColorControl = props => {
                             onChangeComplete={val => onColorChange(returnColor(val))}
                         />
                     ),
-                    classNamePopover: "maxi-colorcontrol-color-popover maxi-popover",
+                    classNamePopover: "maxi-colorcontrol-color-popover",
                     icon: colorIcon
                 },
             )
@@ -114,7 +114,7 @@ const ColorControl = props => {
 
     return (
         <div className={classes}>
-            <div className="maxi-colorcontrol-color-display">
+            <div className="maxi-colorcontrol-color-display maxi-component-color-inidicator">
                 <span
                     style={{
                         background: gradient ? gradient : color,

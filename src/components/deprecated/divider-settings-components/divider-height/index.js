@@ -49,7 +49,7 @@ export const DividerHeight = ( props ) => {
   return (
     <div>
       <RadioControl
-        className={'maxi-unit-control'}
+        className={'maxi-sizecontrol-unit'}
         selected={ dividerHeightUnit }
         options={ [
           { label: 'PX', value: 'px' },
@@ -61,7 +61,7 @@ export const DividerHeight = ( props ) => {
       />
       <RangeControl
         label={__('Divider Height', 'maxi-blocks')}
-        className={'maxi-with-unit-control'}
+        className={'maxi-sizecontrol-value'}
         value={isVertical ? dividerHeight : dividerThickness}
         onChange={ onChangeDividerHeight }
         min={ 0 }

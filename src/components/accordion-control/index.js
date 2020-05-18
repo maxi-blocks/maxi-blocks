@@ -63,18 +63,25 @@ export default class AccordionControl extends Component {
             >
                 {
                     items.map(item => {
-                        const classes = classnames('maxi-accordion-tab', item.classNameHeading);
+                        const classesItem = classnames(
+                            'maxi-accordion-item',
+                            item.classNameItem
+                        );
+                        const classesItemHeading = classnames(
+                            'maxi-accordion-tab', 
+                            item.classNameHeading
+                        );
     
                         return (
                             <AccordionItem
                                 uuid={item.uuid ? item.uuid : undefined}
-                                className={item.classNameItem}
+                                className={classesItem}
                             >
-                                <AccordionItemHeading
-                                    className={classes}
+                                <AccordionItemHeading   
+                                    className={classesItemHeading}
                                 >
                                     <AccordionItemButton
-                                        className='components-base-control__label'
+                                        className='maxi-accordion-item-button'
                                     >
                                         <Icon 
                                             className='maxi-accordion-icon'
@@ -83,7 +90,9 @@ export default class AccordionControl extends Component {
                                         {item.label}
                                     </AccordionItemButton>
                                 </AccordionItemHeading>
-                                <AccordionItemPanel>
+                                <AccordionItemPanel
+                                    className="maxi-accordion-item-panel"
+                                >
                                     {item.content}
                                 </AccordionItemPanel>
                             </AccordionItem>

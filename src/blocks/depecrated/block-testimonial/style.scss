@@ -205,16 +205,16 @@ button.is-small {
 	padding: 0 8px 1px;
 	font-size: 11px;
 }
-.maxi-testimonial-setting-panel button.components-color-palette__clear,
-.maxi-background-setting-panel button.components-color-palette__clear {
+.maxi-testimonial-setting-panel button.components-maxi-dimensions-control__units-reset,
+.maxi-background-setting-panel button.components-maxi-dimensions-control__units-reset {
 	font-size: 0 !important;
 	background: transparent !important;
 	border: none !important;
 }
 .maxi-background-setting-panel button.components-range-control__reset::before,
-.maxi-background-setting-panel button.components-color-palette__clear::before,
+.maxi-background-setting-panel button.components-maxi-dimensions-control__units-reset::before,
 .maxi-testimonial-setting-panel button.components-range-control__reset::before,
-.maxi-testimonial-setting-panel button.components-color-palette__clear::before,
+.maxi-testimonial-setting-panel button.components-maxi-dimensions-control__units-reset::before,
 .maxi-background-setting-panel .maxi-popover button.components-range-control__reset::before,
 .maxi-background-setting-panel .maxi-background-custom-reset-option::before {
 	content: url(../img/maxi-reset.svg) !important;

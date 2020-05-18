@@ -110,7 +110,7 @@ class Inspector extends Component {
         return (
             <InspectorControls>
                 <PanelBody
-                    className="maxi-panel maxi-image-setting maxi-content-tab-setting"
+                    className="maxi-panel maxi-content-tab-setting"
                     initialOpen={true}
                     // why this vvvv title?
                     title={__('Image Settings', 'maxi-blocks')}
@@ -144,8 +144,6 @@ class Inspector extends Component {
                                         <Fragment>
                                             {/** Should alignment be under this section? */}
                                             <NormalHoverControl
-                                                /*not sure about vvv class => may should go on the component itself*/
-                                                className="maxi-buttonstyles-selector-control"
                                                 selector={selectorTypographyColors}
                                                 onChange={selectorTypographyColors => this.setState({ selectorTypographyColors })}
                                             />
@@ -230,8 +228,6 @@ class Inspector extends Component {
                                     content: (
                                         <Fragment>
                                             <NormalHoverControl
-                                                /*not sure about vvv class => may should go on the component itself*/
-                                                className="maxi-buttonstyles-selector-control"
                                                 selector={selectorOpacityShadow}
                                                 onChange={selectorOpacityShadow => this.setState({ selectorOpacityShadow })}
                                             />
@@ -290,8 +286,6 @@ class Inspector extends Component {
                                     content: (
                                         <Fragment>
                                             <NormalHoverControl
-                                                /*not sure about vvv class => may should go on the component itself*/
-                                                className="maxi-buttonstyles-selector-control"
                                                 selector={selectorBorder}
                                                 onChange={selectorBorder => {
                                                     this.setState({ selectorBorder });
@@ -344,8 +338,6 @@ class Inspector extends Component {
                                     content: (
                                         <Fragment>
                                             <NormalHoverControl
-                                                /*not sure about vvv class => may should go on the component itself*/
-                                                className="maxi-buttonstyles-selector-control"
                                                 selector={selectorPaddingMargin}
                                                 onChange={selectorPaddingMargin => {
                                                     this.setState({ selectorPaddingMargin });

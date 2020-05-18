@@ -31,8 +31,7 @@ const DeviceSelectorControl = props => {
         onChange,
     } = props;
 
-    let classes = classnames('maxi-device-control');
-    classes = classnames(classes, className);
+    const classes = classnames('maxi-device-control', className);
 
     return (
         <RadioControl

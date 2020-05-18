@@ -100,7 +100,7 @@ const edit = (props) => {
     return [
         <InspectorControls>
             <PanelBody
-                className="maxi-panel maxi-image-setting maxi-content-tab-setting"
+                className="maxi-panel maxi-content-tab-setting"
                 initialOpen={true}
                 title={__("Image Settings", "maxi-blocks")}
             >
@@ -132,7 +132,7 @@ const edit = (props) => {
                 />
             </PanelBody>
             <PanelBody
-                className="maxi-panel maxi-image-setting maxi-content-tab-setting"
+                className="maxi-panel maxi-content-tab-setting"
                 initialOpen={true}
                 // why this vvvv title?
                 title={__("Image Settings", "maxi-blocks")}

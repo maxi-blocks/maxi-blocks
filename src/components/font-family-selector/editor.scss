@@ -1,7 +1,7 @@
 .maxi-font-family-selector-button {
     height: 45px;
     border-radius: 5px;
-    background-color: rgba(33,141,250,0);
+    background-color: rgba(33, 141, 250, 0);
     border: 2px solid #dddfe1;
     font-size: 20px;
     color: #464a53;
@@ -13,7 +13,7 @@
 .maxi-font-family-selector-icon {
     margin: auto;
     margin-right: 0;
-    transition: .2s all ease;
+    transition: 0.2s all ease;
 }
 
 .maxi-font-family-selector-button[aria-expanded="true"] .maxi-font-family-selector-icon {
@@ -32,4 +32,11 @@
 
 .maxi-font-family-selector-content input {
     box-shadow: none !important;
+}
+
+///////
+.maxi-font-family-selector-popover .components-popover__content {
+    bottom: unset !important;
+    top: 32px;
+    left: 3.5px !important;
 }

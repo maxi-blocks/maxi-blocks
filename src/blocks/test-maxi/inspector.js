@@ -2,12 +2,15 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { Fragment, Component } = wp.element;
 const { InspectorControls } = wp.blockEditor;
 const {
     PanelBody,
     RangeControl,
 } = wp.components;
+const {
+    Fragment,
+    Component
+} = wp.element;
 
 /**
  * Internal dependencies
@@ -18,13 +21,17 @@ import {
     BorderControl,
     BlockStylesControl,
     BoxShadowControl,
+    CheckBoxControl,
     ColorControl,
     CustomCSSControl,
     DimensionsControl,
+    FontLevelControl,
     FullSizeControl,
     HoverAnimationControl,
     NormalHoverControl,
-    TypographyControl
+    SizeControl,
+    TypographyControl,
+    DeviceSelectorControl
 } from '../../components';
 
 /**
@@ -38,7 +45,12 @@ class Inspector extends Component {
         selectorTypographyColors: 'normal',
         selectorOpacityShadow: 'normal',
         selectorPaddingMargin: 'normal',
-        selectorBorder: 'normal'
+        selectorBorder: 'normal',
+        checkbox: false,
+        device: 'desktop',
+        alignment: 'center',
+        unit: 'px',
+        width: 0
     }
 
     render() {
@@ -47,28 +59,28 @@ class Inspector extends Component {
                 isFirstOnHierarchy,
                 blockStyle,
                 defaultBlockStyle,
-                alignment,
+                textLevel,
+                typography,
                 backgroundColor,
                 backgroundDefaultColor,
                 backgroundGradient,
                 backgroundGradientDefault,
+                opacity,
                 boxShadow,
-                typography,
                 border,
                 size,
                 margin,
                 padding,
-                opacity,
+                typographyHover,
                 backgroundColorHover,
                 backgroundDefaultColorHover,
                 backgroundGradientHover,
                 backgroundGradientDefaultHover,
+                opacityHover,
                 boxShadowHover,
-                typographyHover,
                 borderHover,
                 marginHover,
                 paddingHover,
-                opacityHover,
                 hoverAnimation,
                 hoverAnimationDuration,
                 extraClassName,
@@ -82,6 +94,11 @@ class Inspector extends Component {
             selectorOpacityShadow,
             selectorPaddingMargin,
             selectorBorder,
+            checkbox,
+            device,
+            alignment,
+            unit,
+            width
         } = this.state;
 
         const getNormalHoverValue = (selector, normalValue, hoverValue) => {
@@ -104,6 +121,22 @@ class Inspector extends Component {
             }
         }
 
+        const onSelect = (device) => {
+            switch (device) {
+                case 'desktop':
+                    this.setState({ device: 'desktop' });
+                    break;
+                case 'tablet':
+                    this.setState({ device: 'tablet' });
+                    break;
+                case 'mobile':
+                    this.setState({ device: 'mobile' });
+                    break;
+                default:
+                    break;
+            }
+        };
+
         return (
             <InspectorControls>
                 <PanelBody
@@ -112,13 +145,65 @@ class Inspector extends Component {
                     // why this vvvv title?
                     title={__('Image Settings', 'maxi-blocks')}
                 >
-                    <BlockStylesControl
+                    <SizeControl
+                        label={__('Width', 'maxi-blocks')}
+                        unit={unit}
+                        onChangeUnit={unit => this.setState({ unit })}
+                        value={width}
+                        onChangeValue={width => this.setstate({ width })}
+                    />
+                    <AlignmentControl
+                        value={alignment}
+                        onchange={alignment => this.setState({ alignment })}
+                    />
+                    <TypographyControl
+                        fontOptions={typography}
+                        onChange={value => console.log(value)}
+                    />
+                    <DimensionsControl
+                        value={padding}
+                        onChange={value => console.log(value)}
+                    />
+                    <DeviceSelectorControl
+                        device={device}
+                        onChange={onSelect}
+                    />
+                    <CheckBoxControl
+                        label={__('Some label', 'gutenberg-extra')}
+                        checked={checkbox}
+                        onChange={checkbox => this.setState({ checkbox })}
+                    />
+                    <BoxShadowControl
+                        boxShadowOptions={boxShadow}
+                        onChange={value => console.log(value)}
+                    />
+                    <NormalHoverControl
+                        selector={selectorTypographyColors}
+                        onChange={selectorTypographyColors => this.setState({ selectorTypographyColors })}
+                    />
+                    <ColorControl
+                        label={__('Background Colour', 'maxi-blocks')}
+                        color={backgroundColor}
+                        defaultcolor={backgroundDefaultColor}
+                        onColorChange={value => console.log(value)}
+                        gradient={backgroundGradient}
+                        defaultGradient={backgroundGradientDefault}
+                        onGradientChange={value => console.log(value)}
+                        disableGradientOverBackground
+                    />
+                    <FontLevelControl
+                        label={__('Level', 'maxi-blocks')}
+                        value={textLevel}
+                        onChange={textLevel => setAttributes({ textLevel })}
+                        fontOptions={typography} // It may need to send typographyHover too
+                    />
+                    {/* <BlockStylesControl
                         blockStyle={blockStyle}
                         onChangeBlockStyle={blockStyle => setAttributes({ blockStyle })}
                         defaultBlockStyle={defaultBlockStyle}
                         onChangeDefaultBlockStyle={defaultBlockStyle => setAttributes({ defaultBlockStyle })}
                         isFirstOnHierarchy={isFirstOnHierarchy}
-                    />
+                    /> */}
                 </PanelBody>
                 <div className="button-maxi">
                     <PanelBody
@@ -134,16 +219,33 @@ class Inspector extends Component {
                                     content: (
                                         <Fragment>
                                             {/** Should alignment be under this section? */}
-                                            <AlignmentControl
-                                                value={alignment}
-                                                onChange={alignment => setAttributes({ alignment })}
-                                                disableJustify
-                                            />
                                             <NormalHoverControl
+                                                /*not sure about vvv class => may should go on the component itself*/
+                                                className="maxi-buttonstyles-selector-control"
                                                 selector={selectorTypographyColors}
-                                                onChange={selectorTypographyColors => {
-                                                    this.setState({ selectorTypographyColors });
-                                                }}
+                                                onChange={selectorTypographyColors => this.setState({ selectorTypographyColors })}
+                                            />
+                                            <TypographyControl
+                                                fontOptions={
+                                                    getNormalHoverValue(
+                                                        selectorTypographyColors,
+                                                        typography,
+                                                        typographyHover
+                                                    )
+                                                }
+                                                onChange={value =>
+                                                    normalHoverSaver(
+                                                        selectorTypographyColors,
+                                                        'typography',
+                                                        'typographyHover',
+                                                        value
+                                                    )
+                                                }
+                                                target={
+                                                    selectorTypographyColors != 'hover' ?
+                                                        undefined :
+                                                        ':hover'
+                                                }
                                             />
                                             <ColorControl
                                                 label={__('Background Colour', 'maxi-blocks')}
@@ -151,7 +253,9 @@ class Inspector extends Component {
                                                     getNormalHoverValue(
                                                         selectorTypographyColors,
                                                         backgroundColor,
-                                                        backgroundColorHover)}
+                                                        backgroundColorHover
+                                                    )
+                                                }
                                                 defaultcolor={
                                                     getNormalHoverValue(
                                                         selectorTypographyColors,
@@ -191,23 +295,6 @@ class Inspector extends Component {
                                                 }
                                                 disableGradientOverBackground
                                             />
-                                            <TypographyControl
-                                                fontOptions={
-                                                    getNormalHoverValue(
-                                                        selectorTypographyColors,
-                                                        typography,
-                                                        typographyHover
-                                                    )
-                                                }
-                                                onChange={value =>
-                                                    normalHoverSaver(
-                                                        selectorTypographyColors,
-                                                        'typography',
-                                                        'typographyHover',
-                                                        value
-                                                    )
-                                                }
-                                            />
                                         </Fragment>
                                     )
                                 },
@@ -219,10 +306,10 @@ class Inspector extends Component {
                                     content: (
                                         <Fragment>
                                             <NormalHoverControl
+                                                /*not sure about vvv class => may should go on the component itself*/
+                                                className="maxi-buttonstyles-selector-control"
                                                 selector={selectorOpacityShadow}
-                                                onChange={selectorOpacityShadow => {
-                                                    this.setState({ selectorOpacityShadow });
-                                                }}
+                                                onChange={selectorOpacityShadow => this.setState({ selectorOpacityShadow })}
                                             />
                                             <RangeControl
                                                 label={__("Opacity", "maxi-blocks")}
@@ -264,9 +351,9 @@ class Inspector extends Component {
                                                     )
                                                 }
                                                 target={
-                                                    selectorBorder != 'hover' ?
-                                                        `maxi-buttoneditor-button` :
-                                                        `maxi-buttoneditor-button:hover`
+                                                    selectorOpacityShadow != 'hover' ?
+                                                        undefined :
+                                                        ':hover'
                                                 }
                                             />
                                         </Fragment>
@@ -279,6 +366,8 @@ class Inspector extends Component {
                                     content: (
                                         <Fragment>
                                             <NormalHoverControl
+                                                /*not sure about vvv class => may should go on the component itself*/
+                                                className="maxi-buttonstyles-selector-control"
                                                 selector={selectorBorder}
                                                 onChange={selectorBorder => {
                                                     this.setState({ selectorBorder });
@@ -300,7 +389,11 @@ class Inspector extends Component {
                                                         value
                                                     )
                                                 }
-                                                target={`maxi-buttoneditor-button`}
+                                                target={
+                                                    selectorBorder != 'hover' ?
+                                                        undefined :
+                                                        ':hover'
+                                                }
                                             />
                                         </Fragment>
                                     )
@@ -315,7 +408,6 @@ class Inspector extends Component {
                                             <FullSizeControl
                                                 sizeSettings={size}
                                                 onChange={size => setAttributes({ size })}
-                                                target={`maxi-buttoneditor-button`}
                                             />
                                         </Fragment>
                                     )
@@ -328,6 +420,8 @@ class Inspector extends Component {
                                     content: (
                                         <Fragment>
                                             <NormalHoverControl
+                                                /*not sure about vvv class => may should go on the component itself*/
+                                                className="maxi-buttonstyles-selector-control"
                                                 selector={selectorPaddingMargin}
                                                 onChange={selectorPaddingMargin => {
                                                     this.setState({ selectorPaddingMargin });
@@ -349,7 +443,11 @@ class Inspector extends Component {
                                                         value
                                                     )
                                                 }
-                                                target={`maxi-buttoneditor-button`}
+                                                target={
+                                                    selectorPaddingMargin != 'hover' ?
+                                                        undefined :
+                                                        ':hover'
+                                                }
                                             />
                                             <DimensionsControl
                                                 value={
@@ -367,7 +465,11 @@ class Inspector extends Component {
                                                         value
                                                     )
                                                 }
-                                                target={`maxi-buttoneditor-button`}
+                                                target={
+                                                    selectorPaddingMargin != 'hover' ?
+                                                        undefined :
+                                                        ':hover'
+                                                }
                                             />
                                         </Fragment>
                                     )

@@ -30,11 +30,6 @@ import {
 } from 'lodash';
 
 /**
- * Styles
- */
-import './editor.scss'
-
-/**
  * Components
  */
 export default class BackgroundControl extends GXComponent {

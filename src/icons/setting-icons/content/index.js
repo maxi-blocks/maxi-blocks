@@ -4,12 +4,24 @@
 const { SVG, Path } = wp.primitives;
 
 const content = (
-    <SVG width={27.07} height={36.063} viewBox="0 0 27.07 36.063">
-        <Path
-            d="M22.55 9.025H4.52V6.772h18.03v2.253zm-4.51 4.507H4.52v-2.253h13.52v2.253zm-2.25 4.506H4.52v-2.253h11.27v2.253zm2.25 18.025H.01V.012h27.05V27.05h-9.02v9.012zM2.26 33.81h13.53v-9.012h9.01V2.266H2.26v31.546zm16.24 2.253H.01v-2.251h17.57l7.22-7.047v-24.5h2.26v25.447z"
-            fill="#464a53"
-            fillRule="evenodd"
-        />
+    <SVG
+        preserveAspectRatio="none"
+        x="0px"
+        y="0px"
+        viewBox="0 0 24 24"
+    >
+        <defs>
+            <Path
+                id="a"
+                stroke="#464A53"
+                strokeWidth={1.5}
+                strokeLinejoin="round"
+                strokeLinecap="round"
+                fill="none"
+                d="M20.4.95H3.45v22.2H15.1l.05-.05v-4.4h5.25V.95zm-.15 17.75l-5.1 4.4v.05h-.05M6.85 5.2H17.4M6.85 7.85h8.6m-8.6 2.95h5.05"
+            />
+        </defs>
+        <use xlinkHref="#a" />
     </SVG>
 )
 

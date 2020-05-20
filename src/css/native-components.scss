@@ -66,6 +66,12 @@
                     border-radius: 5px;
                 }
 
+                &:hover {
+                    box-shadow: none !important;
+                    border-color: #c5c5c5 !important;
+                    cursor: pointer;
+                }
+
                 &:focus {
                     box-shadow: none !important;
                 }

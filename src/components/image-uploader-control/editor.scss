@@ -1,0 +1,37 @@
+.maxi-mediauploader-control {
+    position: relative;
+    margin-bottom: 8px;
+
+    .maxi-imageuploader-control-replace{
+        display: none;
+    }
+
+    .maxi-background-control-edit-image,
+    .maxi-background-control-done-edition,
+    .maxi-imageuploader-control-remove {
+        display: block;
+        position: absolute;
+        top: 100%;
+        transform: translateY(calc(-100% - 20px));
+        width: 40%;
+        height: 2rem;
+        background: #83858B;
+        border: 1px solid #F2F2F2;
+        border-radius: 5px;
+        box-shadow: none;
+        outline: none;
+        color: #FDFDFD !important;
+        font-size: 13px;
+        text-align: center;
+        text-decoration: none;
+    }
+
+    .maxi-background-control-done-edition,
+    .maxi-background-control-edit-image{
+        right: 5%;
+    }
+
+    .maxi-imageuploader-control-remove {
+        left: 5%;
+    }
+}

@@ -27,6 +27,7 @@ export { default as ImagePositionControl } from './deprecated/image-position-con
 export * from './link-options-control';
 export { default as LinkedButton } from './linked-button';
 export { default as NormalHoverControl } from './normal-hover-control';
+export { default as SettingTabsControl } from './setting-tabs-control';
 export { default as SizeControl } from './size-control';
 export { default as PopoverControl } from './popover-control';
 export { default as FullSizeControl } from './full-size-control';

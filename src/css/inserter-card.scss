@@ -2,34 +2,39 @@
 * Block card
 ***********/
 .maxi-sidebar {
-    .block-editor-block-inspector.maxi-controls {
-        .block-editor-block-card {
-            padding: 9.5px 17px 20px;
-            padding-bottom: 9px;
+	.block-editor-block-inspector.maxi-controls {
+		.block-editor-block-card {
+			padding: 9.5px 17px 20px;
+			padding-bottom: 9px;
 
-            &:after {
-                position: absolute;
-                content: url("../img/maxi-logo.svg");
-                width: 1.9rem;
-                right: 10px;
-            }
+			&:after {
+				position: absolute;
+				content: url("../img/maxi-logo.svg");
+				width: 1.9rem;
+				right: 10px;
+			}
 
-            .block-editor-block-card__content {
-                min-width: 87%;
+			.block-editor-block-card__content {
+				min-width: 87%;
 
-                .block-editor-block-card__title {
-                    color: #fff;
-                }
+				.block-editor-block-card__title {
+					color: #fff;
+				}
 
-                .block-editor-block-card__description {
-                    display: block !important;
-                    padding-top: 8px;
-                    text-align: justify;
-                    margin-left: -12.5%;
-                }
-            }
-        }
-    }
+				.block-editor-block-card__description {
+					display: block !important;
+					padding-top: 8px;
+					text-align: justify;
+					margin-left: -12.5%;
+				}
+			}
+		}
+
+		.block-editor-block-card__content *,
+		.block-editor-block-icon * {
+			background: #000 !important;
+		}
+	}
 }
 
 /***************
@@ -131,10 +136,6 @@ button[class*="maxi-blocks"] span.block-editor-block-types-list__item-title {
 .maxi-sidebar .block-editor-block-icon svg {
 	transform: scale(1.63);
 }
-
-
-
-
 
 // .maxi-sidebar .block-editor-block-inspector.maxi-controls .block-editor-block-card,
 // .maxi-sidebar .edit-post-settings-sidebar__panel-block.maxi-controls .block-editor-block-card {

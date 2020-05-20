@@ -238,6 +238,12 @@ export default class BackgroundControl extends GXComponent {
                                                 value.backgroundOptions[i].imageOptions.mediaURL = imageData.url;
                                                 this.saveAndSend(value);
                                             }}
+                                            onRemoveImage={() => {
+                                                value.backgroundOptions[selector].imageOptions.mediaID = '';
+                                                value.backgroundOptions[selector].imageOptions.mediaURL = '';
+                                                onRemoveImage();
+                                                this.saveAndSend(value);
+                                            }}
                                             placeholder={value.backgroundOptions.length - 1 === 0 ? __('Set image', 'maxi-blocks') : __('Add Another Image', 'maxi-blocks')}
                                             extendSelector={
                                                 value.backgroundOptions[i].imageOptions.mediaID &&
@@ -250,6 +256,7 @@ export default class BackgroundControl extends GXComponent {
                                                 </Button>
                                             }
                                             alternativeImage={getAlternativeImage(i)}
+                                            removeButton={__('Remove', 'maxi-blocks')}
                                         />
                                     </Fragment>
                                 )
@@ -282,6 +289,7 @@ export default class BackgroundControl extends GXComponent {
                     <AccordionControl
                         isSecondary
                         preExpanded={['maxi-background-control-image-tab']}
+                        disablePadding
                         items={[
                             {
                                 label: __('Image', 'maxi-blocks'),

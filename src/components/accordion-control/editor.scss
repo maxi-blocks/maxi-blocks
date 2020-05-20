@@ -1,57 +1,55 @@
-.maxi-controls {
-	.maxi-accordion {
-		background: #f2f2f2;
-		margin: 0px 10px 1px 10px;
+.maxi-accordion-control {
+	background: #f2f2f2;
+	margin: 0px 10px 1px 10px;
 
-		.maxi-accordion-item {
-			background: none;
-			overflow-x: hidden !important;
+	.maxi-accordion-item {
+		background: none;
+		overflow-x: hidden !important;
 
-			.maxi-accordion-icon {
-				max-width: 24px;
-				max-height: 24px;
+		.maxi-accordion-icon {
+			max-width: 24px;
+			max-height: 24px;
+		}
+
+		// This many values are strange...
+		.maxi-accordion-item-panel:not(.disable-padding) {
+			padding-top: 15px !important;
+			padding-left: 27px !important;
+			padding-right: 25px !important;
+			padding-bottom: 10px !important;
+		}
+
+		.maxi-accordion-item-button {
+			margin-bottom: 7px !important;
+			box-shadow: 0rem 0rem 0.5rem rgba(33, 33, 33, 0.15);
+			position: relative;
+			border-radius: 0.3rem;
+			background: #fff;
+			display: flex;
+			align-items: center;
+			font-size: 13px;
+			height: 40px;
+			padding: 10px 12px;
+
+			&:before {
+				margin-right: 8px;
 			}
 
-			// This many values are strange...
-			.maxi-accordion-item-panel {
-				padding-top: 15px !important;
-				padding-left: 27px !important;
-				padding-right: 25px !important;
-				padding-bottom: 10px !important;
+			&:hover {
+				cursor: pointer;
 			}
 
-			.maxi-accordion-item-button {
-				margin-bottom: 7px !important;
-				box-shadow: 0rem 0rem 0.5rem rgba(33, 33, 33, 0.15);
-				position: relative;
-				border-radius: 0.3rem;
-				background: #fff;
-				display: flex;
-				align-items: center;
-				font-size: 13px;
-				height: 40px;
-				padding: 10px 12px;
+			&[aria-expanded="true"] {
+				margin-bottom: 0;
 
-				&:before {
-					margin-right: 8px;
-				}
-
-				&:hover {
-					cursor: pointer;
-				}
-
-				&[aria-expanded="true"] {
-					margin-bottom: 0;
-
-					&:after {
-						content: url(../img/arrow-right.svg);
-						width: 6px;
-						position: absolute;
-						top: 10px;
-						right: 12px;
-						transform: rotate(90deg);
-						transition: transform 0.3s linear;
-					}
+				&:after {
+					content: url(../img/arrow-right.svg);
+					width: 6px;
+					position: absolute;
+					top: 10px;
+					right: 12px;
+					transform: rotate(90deg);
+					transition: transform 0.3s linear;
 				}
 			}
 		}

@@ -8,34 +8,9 @@
 
 @import "../../customizer/css/maxi-themes-styles.scss";
 
+@import './library-button-modal.scss';
 @import "./native-components.scss";
 @import "./inserter-card.scss";
-
-/** For fixing **/
-.block-editor-block-icon {
-	background: inherit;
-}
-
-.components-panel__body select option {
-	vertical-align: middle;
-}
-
-.edit-post-sidebar hr {
-	border-top: none;
-	border-top: 2px solid #dddfe1;
-	margin-top: 28.1px !important;
-}
-
-.components-panel__body select option {
-	vertical-align: middle;
-}
-
-.editor-styles-wrapper h1::before,
-.editor-styles-wrapper h2::before,
-h2::before {
-	display: none !important;
-	background: white !important;
-}
 
 /*****************
 * General settings
@@ -51,415 +26,81 @@ h2.gx_error {
 	font-family: "Roboto", Helvetica, Arial, Lucida, sans-serif !important;
 	font-weight: 500 !important;
 	font-size: 16px;
-}
-
-/*********************
-* Library button modal
-*********************/
-.edit-post-layout.is-sidebar-opened .edit-post-plugin-sidebar__sidebar-layout.maxi-sidebar,
-.edit-post-layout.is-sidebar-opened .edit-post-sidebar.maxi-sidebar {
-	overflow-x: hidden;
-	width: 385px;
-	background: #f2f2f2;
-}
-
-.maxi-enabled .title {
-	background-color: #f2f2f2;
-}
-
-/* 3 Tabs: Content, Style, Advaced */
-.maxi-tab {
-	width: 33.33333%;
-	font-size: 16px;
-	color: #000;
-	font-weight: 500;
-	display: inline-block;
-	text-align: center;
-	border-bottom: 2px solid #e8eaeb;
-	padding-top: 20px;
-	padding-bottom: 15px;
-}
-
-// ??????
-.maxi-tabs {
-	padding-top: 0;
-	margin-bottom: 15px;
-}
-
-.maxi-tab:before {
-	margin-bottom: 5px;
-}
-
-.maxi-tab:hover {
-	cursor: pointer;
-}
-
-.maxi-tab:hover,
-.maxi-tab:hover .title,
-.maxi-tab:active,
-.maxi-tab:focus {
-	background: #f2f2f2;
-}
-
-.maxi-tab.maxi-enabled {
-	background-color: #f2f2f2;
-	border-bottom: 2px solid #00ccff;
-}
-
-.maxi-tab.maxi-content-tab-label:before {
-	content: url("../img/maxi-content.svg");
-	transition: all 0.3s;
-	display: block;
-	transform: scale(1.2);
-	max-width: 100%;
-	min-height: 45px;
-	padding-top: 6px;
-}
-
-.maxi-tab.maxi-style-tab-label:before {
-	content: url("../img/maxi-style.svg");
-	transition: all 0.3s;
-	display: block;
-	min-height: 37px;
-	padding-bottom: 7px;
-}
-
-.maxi-tab.maxi-advanced-tab-label:before {
-	content: url("../img/maxi-advanced.svg");
-	transition: all 0.3s;
-	display: block;
-	min-height: 37px;
-	padding-bottom: 7px;
-}
-
-.maxi-tab.maxi-content-tab-label::before,
-.maxi-tab.maxi-style-tab-label::before,
-.maxi-tab.maxi-advanced-tab-label::before {
-	min-height: auto;
-	margin-bottom: 0;
-	padding-bottom: 0;
-	width: 2rem;
-	height: 4rem;
-	margin: auto;
-}
-
-.maxi-tab.maxi-advanced-tab-label::before {
-	min-height: 37px;
-	width: 2rem;
-	padding-bottom: 7px;
-	padding-top: 16px;
-}
-
-.maxi-tab.maxi-content-tab-label::before {
-	padding-top: 16px;
-}
-
-.maxi-tab.maxi-style-tab-label::before {
-	width: 1.4rem;
-	padding-top: 15px;
-}
-
-.maxi-content-tab-setting {
-	padding: 20px !important;
-}
-
-.maxi-tab.maxi-content-tab::before {
-	margin-bottom: -5px !important;
-}
-
-.maxi-tab .content-title {
-	position: relative;
-	top: -5px;
-}
-
-.maxi-tab .style-title {
-	position: relative;
-	top: -4px;
-}
-
-.maxi-tab .advanced-title {
-	position: relative;
-	top: -4px;
-}
-
-.maxi-sidebar .components-form-toggle .components-form-toggle__thumb {
-	background-color: #dddfe1;
-	border: 5px solid #dddfe1;
-}
-
-.maxi-sidebar .components-form-toggle .components-form-toggle__off {
-	color: #dddfe1;
-}
-
-.maxi-sidebar .components-form-toggle.is-checked .components-form-toggle__track {
-	background-color: #00ccff;
-	border: 9px solid transparent;
-}
-
-.maxi-sidebar .components-form-toggle.is-checked .components-form-toggle__thumb {
-	background-color: #fff;
-	border-width: 0;
+	color: #464a53;
 }
 
 /****************
 * Gutenberg Panel
 ****************/
-.maxi-controls * {
-	overflow-x: none;
-	background: #fff;
-}
-
-.maxi-controls,
-.maxi-controls > div:nth-child(3) {
+.maxi-controls {
 	background: #f2f2f2;
+
+	> div {
+		background: #f2f2f2;
+	}
+
+	* {
+		overflow-x: none;
+		background: #fff;
+	}
+
+	.components-panel__body {	// This should be fix
+		border-top: none;
+
+		.components-panel__body-title {
+			display: none !important;
+		}
+
+		.maxi-panel:first-child {
+			margin-top: 0 !important;
+		}
+	}
+
+	.block-editor-block-inspector__advanced {
+		display: none;
+	}
 }
 
-.maxi-controls .block-editor-block-card__content *,
-.maxi-controls .block-editor-block-icon * {
-	background: #000 !important;
-}
+.maxi-sidebar,
+.maxi-popover {
+	input[type="text"],
+	input[type="number"],
+	textarea,
+	select {
+		min-height: unset;
+		max-height: unset !important;
+		border-radius: 5px;
+		background-color: rgba(33, 141, 250, 0);
+		border: 2px solid #dddfe1;
+		font-size: 16px;
+		color: #464a53;
+		font-weight: 500;
+	}
 
-// may to extensive scope??
-.maxi-controls .components-panel__body {
-	border-top: none;
-}
+	select {
+		padding: 0 24px 0px 5px !important;
+		border: 1px solid #dddfe1 !important;
+		opacity: 1 !important;
+	}
 
-.maxi-controls .components-panel__body.maxi-content-tab-setting {
-	border-top: 2px solid #e8eaeb;
-	border-bottom: 2px solid #e8eaeb;
-}
+	button.components-range-control__reset,
+	button.components-circular-option-picker__clear {
+		font-size: 0 !important;
 
-.components-base-control.components-radio-control .components-base-control__field {
-	position: relative;
-	top: 1px;
-}
+		&:before {
+			content: url("../img/maxi-reset.svg") !important;
+			margin: auto;
+			margin-left: auto;
+			color: #464a53;
+			width: 18px;
+			height: 18px;
+		}
+	}
 
-// Not sure if using CSS is best option
-.maxi-controls .editor-block-inspector__advanced,
-.maxi-controls .block-editor-block-inspector__advanced {
-	display: none !important;
-}
-
-.maxi-box-settings-item .maxi-border-setting {
-	padding-right: 25px;
-}
-
-// this is no sense... if not using, don't put it, no?
-body div.maxi-sidebar .components-panel__body > .components-panel__body-title {
-	display: none !important;
-}
-
-.edit-post-settings-sidebar__panel-block .components-panel__body.maxi-panel:first-child {
-	margin-top: 0 !important;
-}
-
-// .components-panel__body.editor-panel-color-settings.block-editor-panel-color-settings.is-opened {
-// 	margin-left: auto;
-// }
-
-// .maxi-sidebar .components-button::before,
-// .maxi-sidebar .components-button svg {
-// 	width: 18px !important;
-// 	height: 18px !important;
-// }
-
-.edit-post-settings-sidebar__panel-block .components-panel__body.maxi-panel,
-.edit-post-settings-sidebar__panel-block .components-panel__body.maxi-panel .components-panel__body {
-	border-top: none;
-}
-
-// .edit-post-settings-sidebar__panel-block .components-panel__body.maxi-panel,
-// .maxi-sidebar .components-panel__body.is-opened {
-// 	max-width: 100%;
-// 	margin-left: auto;
-// }
-
-.maxi-panel label,
-.maxi-popover label,
-.maxi-popover .components-base-control__label,
-.maxi-controls .maxi-accordion .components-base-control__label {
-	font-size: 16px;
-	color: #464a53;
-	font-weight: 500;
-}
-
-.maxi-panel input[type="text"],
-.maxi-panel input[type="number"],
-.maxi-panel textarea,
-.maxi-panel select,
-.maxi-popover input[type="text"],
-.maxi-popover input[type="number"],
-.maxi-controls select,
-.maxi-popover textarea,
-.components-select-control__input {
-	min-height: unset;
-	max-height: unset !important;
-	border-radius: 5px;
-	background-color: rgba(33, 141, 250, 0);
-	border: 2px solid #dddfe1;
-	font-size: 16px;
-	color: #464a53;
-	font-weight: 500;
-}
-
-.maxi-panel select,
-.components-select-control__input,
-.maxi-popover select {
-	padding: 0 24px 0px 5px !important;
-}
-
-.maxi-sidebar .components-button:hover {
-	box-shadow: none !important;
-	border-color: #c5c5c5 !important;
-	cursor: pointer;
-}
-
-// .maxi-settings-button .components-button {
-// 	padding: 0 !important;
-// }
-
-// .maxi-sidebar .components-panel__body.is-opened.edit-post-settings-sidebar__panel-block {
-// 	padding: 0;
-// }
-
-.maxi-sidebar .components-range-control__number {
-	width: 70px;
-}
-
-// Not sure if there's a global class for reset...
-.maxi-sidebar button.components-range-control__reset:before,
-.maxi-sidebar button.components-circular-option-picker__clear:before,
-.maxi-popover button.components-range-control__reset:before {
-	content: url("../img/maxi-reset.svg") !important;
-	margin: auto;
-	margin-left: auto;
-	color: #464a53;
-	width: 18px;
-	height: 18px;
-}
-
-// .maxi-sidebar button.components-range-control__reset:disabled,
-// .maxi-popover button.components-range-control__reset:disabled {
-// 	opacity: 0.5;
-// }
-
-.maxi-sidebar button.components-range-control__reset,
-.maxi-sidebar button.components-circular-option-picker__clear,
-.maxi-popover button.components-range-control__reset {
-	font-size: 0 !important;
-	background: transparent !important;
-	border: none !important;
-}
-
-.maxi-sidebar button.components-range-control__reset:before,
-.maxi-sidebar
-	div:not(c.omponents-maxi-dimensions-control)
-	button.components-maxi-dimensions-control__units-reset:before,
-.maxi-popover button.components-range-control__reset:before {
-	content: url("../img/reset.svg") !important;
-	transform: scale(0.9);
-}
-
-.maxi-sidebar button.components-range-control__reset,
-// .maxi-sidebar button.components-maxi-dimensions-control__units-reset,
-.maxi-popover button.components-range-control__reset {
-	font-size: 0 !important;
-	background: transparent !important;
-	min-width: 30px;
-	padding: 0;
-	height: 30px !important;
-	border-radius: 5px;
-}
-
-// Refers a bad class referred but acording to reset button
-.maxi-style-tab-setting .components-color-palette {
-	width: auto;
-}
-
-// .maxi-sidebar button.components-maxi-dimensions-control__units-reset {
-// 	padding: 4px 10px 1px;
-// 	margin-right: 3px;
-// 	margin-top: 0;
-// }
-
-.maxi-controls select,
-.maxi-panel select {
-	border: 1px solid #dddfe1 !important;
-	opacity: 1 !important;
-}
-
-.maxi-panel select,
-.components-select-control__input,
-.maxi-popover select {
-	padding: 0 24px 0px 5px !important;
-}
-/**/
-
-.maxi-sidebar .components-form-toggle .components-form-toggle__track {
-	border: 2px solid#dddfe1;
-}
-
-// May we should create Opacity control for having all together?
-// .maxi-opacity-control .components-base-control__field .components-base-control__label,
-// What is true is that we don't need this second line
-// .maxi-imagesettings-opacity .components-base-control__field .components-base-control__label {
-// 	width: auto;
-// 	margin-right: 10px;
-// }
-
-// Should be check, same CSS on different components
-// .components-maxi-dimensions-control__units button,
-.maxi-sizecontrol-unit .components-radio-control__option label {
-	font-size: 13px;
-	min-width: 33px;
-	display: block;
-	text-align: center;
-	margin-right: -2px;
-	font-size: 9pt;
-	justify-content: center;
-	line-height: 30px;
-	border: 2px solid #dddfe1 !important;
-	position: relative;
-	text-shadow: none;
-	text-transform: uppercase;
-	height: 32px !important;
-	top: -1px;
-	height: 30px !important;
-}
-
-// .components-maxi-dimensions-control__units button.is-primary,
-.maxi-sizecontrol-unit .components-radio-control__option input:checked + label {
-	color: #464a53 !important;
-	background: #f2f2f2 !important;
-}
-
-// .maxi-sidebar
-// 	.components-circular-option-picker__custom-clear-wrapper
-// 	button:not(.components-circular-option-picker__clear):before {
-// 	content: url(../img/maxi-colour-wheel.svg) !important;
-// 	width: 18px;
-// 	height: 18px;
-// 	margin: auto;
-// 	background-color: rgba(33, 141, 250, 0) !important;
-// }
-
-/*************
-* RangeControl
-*************/
-
-.css-yaebbd-Root {
-	position: unset !important;
-}
-
-.css-uojzqi-ActionRightWrapper button,
-.css-uojzqi-ActionRightWrapper button.is-small {
-	margin-left: 0px;
-	height: 30px;
-	min-height: unset !important;
-}
-
-.css-1foiknu-InputNumber {
-	min-width: unset !important;
+	.components-panel {
+		background: transparent;
+		border: none;
+	}
 }
 
 /**************************
@@ -484,6 +125,13 @@ body div.maxi-sidebar .components-panel__body > .components-panel__body-title {
 /************
 * Unit button
 ************/
+
+// .components-maxi-dimensions-control__units button.is-primary,
+.maxi-sizecontrol-unit .components-radio-control__option input:checked + label {
+	color: #464a53 !important;
+	background: #f2f2f2 !important;
+}
+
 .components-maxi-dimensions-control__units {
 	display: flex;
 
@@ -502,12 +150,13 @@ body div.maxi-sidebar .components-panel__body > .components-panel__body-title {
 		text-shadow: none;
 		text-transform: uppercase;
 		color: #464a53 !important;
-		background: #f2f2f2;
+		background: #fff;
 		box-shadow: none;
 		padding: 0;
+		box-shadow: none !important;
 
 		&:hover {
-			box-shadow: none !important;
+			background: #fff !important;
 		}
 
 		&:focus {
@@ -515,6 +164,10 @@ body div.maxi-sidebar .components-panel__body > .components-panel__body-title {
 			&:enabled {
 				box-shadow: none !important;
 			}
+		}
+
+		&[aria-pressed="true"] {
+			background-color: #f2f2f2;
 		}
 	}
 }
@@ -556,40 +209,10 @@ body div.maxi-sidebar .components-panel__body > .components-panel__body-title {
 	.divider-dimension .components-range-control__number {
 		left: 167px;
 	}
-	.maxi-sizecontrol-value .components-range-control__reset {
-		margin-left: 0 !important;
-		z-index: 100;
-	}
-
-	.maxi-sizecontrol-value .components-range-control__reset {
-		top: -1px;
-		left: 88% !important;
-		z-index: 100;
-	}
-	// .maxi-sizecontrol-unit {
-	// 	float: right;
-	// 	margin-bottom: -30px !important;
-	// 	z-index: 100;
-	// }
-
-	// .maxi-settings-button .components-button.is-secondary > svg {
-	// 	width: 18px !important;
-	// 	height: 18px !important;
-	// }
 
 	.maxi-accordion-tab.maxi-image-tab .components-button.is-secondary {
 		width: 30px !important;
 		height: 30px !important;
-	}
-
-	.components-range-control.maxi-sizecontrol-value
-		.components-base-control__field
-		> .components-range-control__number {
-		margin-left: auto;
-		max-height: 28px;
-		height: 28px !important;
-		margin-right: 2px;
-		margin-top: -24px !important;
 	}
 
 	.components-base-control.components-radio-control .components-base-control__field {
@@ -601,22 +224,10 @@ body div.maxi-sidebar .components-panel__body > .components-panel__body-title {
 		height: 26px !important;
 	}
 
-	// .maxi-sizecontrol-unit {
-	// 	margin-right: 80px;
-	// }
-
 	.divider-dimension .maxi-sizecontrol-unit {
 		position: relative;
 		top: -1px;
 	}
-
-	// .maxi-sidebar button.components-button,
-	// .maxi-colorcontrol-control .components-base-control__field > button {
-	// 	width: 26px !important;
-	// 	height: 26px !important;
-	// 	min-width: unset;
-	// 	max-width: unset;
-	// }
 
 	// .components-maxi-dimensions-control__units button,
 	.maxi-sizecontrol-unit .components-radio-control__option label {
@@ -626,11 +237,6 @@ body div.maxi-sidebar .components-panel__body > .components-panel__body-title {
 		height: 28px !important;
 	}
 
-	// .maxi-sidebar .components-panel__body.is-opened,
-	// .maxi-popover .components-popover__content {
-	// 	padding: 20px;
-	// }
-
 	.edit-post-layout.is-sidebar-opened .edit-post-plugin-sidebar__sidebar-layout.maxi-sidebar,
 	.edit-post-layout.is-sidebar-opened .edit-post-sidebar.maxi-sidebar {
 		font-size: 16px !important;
@@ -639,30 +245,56 @@ body div.maxi-sidebar .components-panel__body > .components-panel__body-title {
 
 	#gxAddLayoutButton,
 	#gxGoToCustomizerButton,
-	.maxi-tab,
+	.maxi-tab-control,
 	h2.gx_error,
-	.maxi-panel label,
-	.maxi-panel .components-base-control__label,
+	.maxi-tabs-content label,
+	.maxi-tabs-content .components-base-control__label,
 	.maxi-popover label,
-	.maxi-controls .maxi-accordion .components-base-control__label,
-	.maxi-panel input[type="text"],
-	.maxi-panel input[type="number"],
-	.maxi-panel textarea,
-	.maxi-panel select,
+	.maxi-controls .maxi-accordion-control .components-base-control__label,
+	.maxi-tabs-content input[type="text"],
+	.maxi-tabs-content input[type="number"],
+	.maxi-tabs-content textarea,
+	.maxi-tabs-content select,
 	.maxi-popover input[type="text"],
 	.maxi-popover input[type="number"],
 	.maxi-popover textarea,
 	.maxi-popover select,
-	.maxi-panel input[type="text"],
-	.maxi-panel input[type="number"],
-	.maxi-panel textarea,
-	.maxi-panel select,
+	.maxi-tabs-content input[type="text"],
+	.maxi-tabs-content input[type="number"],
+	.maxi-tabs-content textarea,
+	.maxi-tabs-content select,
 	.maxi-popover input[type="text"],
 	.maxi-popover input[type="number"],
 	.maxi-popover textarea,
 	.maxi-popover select {
 		font-size: 13px;
 	}
+	// #gxAddLayoutButton,
+	// #gxGoToCustomizerButton,
+	// .maxi-tab,
+	// h2.gx_error,
+	// .maxi-panel label,
+	// .maxi-panel .components-base-control__label,
+	// .maxi-popover label,
+	// .maxi-controls .maxi-accordion .components-base-control__label,
+	// .maxi-panel input[type="text"],
+	// .maxi-panel input[type="number"],
+	// .maxi-panel textarea,
+	// .maxi-panel select,
+	// .maxi-popover input[type="text"],
+	// .maxi-popover input[type="number"],
+	// .maxi-popover textarea,
+	// .maxi-popover select,
+	// .maxi-panel input[type="text"],
+	// .maxi-panel input[type="number"],
+	// .maxi-panel textarea,
+	// .maxi-panel select,
+	// .maxi-popover input[type="text"],
+	// .maxi-popover input[type="number"],
+	// .maxi-popover textarea,
+	// .maxi-popover select {
+	// 	font-size: 13px;
+	// }
 
 	.maxi-sidebar .block-editor-block-card {
 		font-size: 17px;
@@ -739,22 +371,6 @@ body div.maxi-sidebar .components-panel__body > .components-panel__body-title {
 		padding-top: 0;
 		margin-bottom: 10px;
 	}
-
-	.maxi-sidebar button.components-range-control__reset,
-	// .maxi-sidebar button.components-maxi-dimensions-control__units-reset,
-	.maxi-popover button.components-range-control__reset {
-		font-size: 0 !important;
-		background: transparent !important;
-		min-width: 26px;
-		padding: 0;
-		height: 26px !important;
-		border-radius: 5px;
-		margin-right: 0 !important;
-	}
-
-	// .components-panel__body .components-maxi-dimensions-control__label {
-	// 	font-size: 13px !important;
-	// }
 
 	.components-circular-option-picker
 		.components-button.components-circular-option-picker__clear.is-secondary.is-small {

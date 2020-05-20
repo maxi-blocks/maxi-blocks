@@ -1,3 +1,20 @@
-<svg width="27.07"height="36.063"viewBox="0 0 27.07 36.063">
-    <path d="M22.55 9.025H4.52V6.772h18.03v2.253zm-4.51 4.507H4.52v-2.253h13.52v2.253zm-2.25 4.506H4.52v-2.253h11.27v2.253zm2.25 18.025H.01V.012h27.05V27.05h-9.02v9.012zM2.26 33.81h13.53v-9.012h9.01V2.266H2.26v31.546zm16.24 2.253H.01v-2.251h17.57l7.22-7.047v-24.5h2.26v25.447z" fill="#464a53" fillRule="evenodd" />
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" 
+    xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none" x="0px" y="0px" viewBox="0 0 24 24">
+    <defs>
+        <path id="Layer1_0_1_STROKES" stroke="#464A53" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" fill="none" d="
+M 20.4 0.95
+L 3.45 0.95 3.45 23.15 15.1 23.15 15.15 23.1 15.15 18.7 20.25 18.7 20.4 18.7 20.4 0.95 Z
+M 20.25 18.7
+L 15.15 23.1 15.15 23.15 15.1 23.15
+M 6.85 5.2
+L 17.4 5.2
+M 6.85 7.85
+L 15.45 7.85
+M 6.85 10.8
+L 11.9 10.8"/>
+    </defs>
+
+    <g transform="matrix( 1, 0, 0, 1, 0,0) ">
+        <use xlink:href="#Layer1_0_1_STROKES"/>
+    </g>
 </svg>

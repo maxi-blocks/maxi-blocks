@@ -10,6 +10,11 @@ const { useInstanceId } = wp.compose;
 import classnames from 'classnames';
 
 /**
+ * Style
+ */
+import './style.scss';
+
+/**
  * Component
  */
 const CheckBoxControl = props => {

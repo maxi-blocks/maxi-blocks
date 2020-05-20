@@ -37,17 +37,23 @@ export default class AccordionControl extends Component {
             items,
             isPrimary = false,
             isSecondary = false,
+            disablePadding = false
         } = this.props;
 
         const { 
             currentOpen
         } = this.state;
     
-        let classes = classnames('maxi-style-tab-setting maxi-accordion', className);
-        if(isPrimary)
-            classes = classnames(classes, 'is-primary');
-        if(isSecondary)
-            classes = classnames(classes, 'is-secondary');
+        let classes = classnames(
+            'maxi-accordion-control',
+            className,
+            isPrimary ?
+                'is-primary':
+                '',
+            isSecondary ? 
+                'is-secondary' :
+                '',
+        );
 
         const onOpen = value => {
             this.setState({currentOpen: value})
@@ -71,6 +77,13 @@ export default class AccordionControl extends Component {
                             'maxi-accordion-tab', 
                             item.classNameHeading
                         );
+
+                        const classesItemPanel = classnames(
+                            "maxi-accordion-item-panel",
+                            disablePadding ?
+                            'disable-padding' :
+                            ''
+                        )
     
                         return (
                             <AccordionItem
@@ -91,7 +104,7 @@ export default class AccordionControl extends Component {
                                     </AccordionItemButton>
                                 </AccordionItemHeading>
                                 <AccordionItemPanel
-                                    className="maxi-accordion-item-panel"
+                                    className={classesItemPanel}
                                 >
                                     {item.content}
                                 </AccordionItemPanel>

@@ -287,19 +287,19 @@ class ResponsiveStylesResolver {
         let unit = this.object.unit ? this.object.unit : '';
 
         for (let [target, prop] of Object.entries(object)) {
-            if (typeof prop === 'undefined') 
+            if (typeof prop === 'undefined')
                 return;
             // values with dimensions
-            if (this.avoidZero){
+            if (this.avoidZero) {
                 if (
-                    target != 'sync' && prop != 0 && typeof prop === 'number' || 
+                    target != 'sync' && prop != 0 && typeof prop === 'number' ||
                     unitChecker.indexOf(target) == 0 && prop != 0
                 )
                     newObject[device][target] = prop + unit;
             }
-            else{
+            else {
                 if (
-                    target != 'sync' && typeof prop === 'number' || 
+                    target != 'sync' && typeof prop === 'number' ||
                     unitChecker.indexOf(target) == 0
                 )
                     newObject[device][target] = prop + unit;
@@ -400,11 +400,11 @@ class BackEndResponsiveStyles {
      * @param {string} target style target for scoping
      */
     getTarget(target) {
-        if(target.indexOf('__$:') != -1)
+        if (target.indexOf('__$:') != -1)
             return target.replace('__$', '');
-        if(target.indexOf('__$>') != -1)
+        if (target.indexOf('__$>') != -1)
             return target.replace('__$', '');
-        if(target.indexOf('__$#') != -1)
+        if (target.indexOf('__$#') != -1)
             return target.replace('__$', '');
         return target.replace('__$', ' .');
     }
@@ -483,7 +483,7 @@ class FixObjectFollower {
     }
 
     getTop(posData) {
-        switch(this.position){
+        switch (this.position) {
             case 'top':
                 return posData.top;
             case 'middle':

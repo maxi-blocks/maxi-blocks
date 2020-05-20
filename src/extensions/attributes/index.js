@@ -28,6 +28,7 @@ const allowedBlocks = [
 	'maxi-blocks/divider-maxi',
 	'maxi-blocks/image-maxi',
 	'maxi-blocks/section-maxi',
+	'maxi-blocks/test-maxi',
 ];
 
 /**
@@ -38,7 +39,7 @@ const allowedBlocks = [
  */
 function addAttributes(settings) {
 	// Add custom selector/id
-	if (allowedBlocks.includes(settings.name) && typeof settings.attributes !== 'undefined') {
+	if (allowedBlocks.includes(settings.name) && !isNil(settings.attributes)) {
 		settings.attributes = Object.assign(settings.attributes, {
 			uniqueID: {
 				type: 'string',
@@ -48,6 +49,12 @@ function addAttributes(settings) {
 				default: false
 			}
 		});
+	}
+
+	if (allowedBlocks.includes(settings.name) && !isNil(settings.support)) {
+		settings.support = Object.assign(settings.support, {
+			customClassName: false
+		})
 	}
 
 	return settings;
@@ -79,7 +86,7 @@ const withAttributes = createHigherOrderComponent(
 
 			if (!hasParentBlocks)
 				props.attributes.isFirstOnHierarchy = true;
-			else 
+			else
 				props.attributes.isFirstOnHierarchy = false;
 		}
 

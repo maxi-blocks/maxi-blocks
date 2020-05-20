@@ -35,7 +35,7 @@ registerBlockType( 'maxi-blocks/test-maxi', {
 	category: 'maxi-blocks-blocks',
 	supports: {
 		align: true,
-		lightBlockWrapper: true
+		lightBlockWrapper: true,
     },
 	attributes: {
 		...attributes

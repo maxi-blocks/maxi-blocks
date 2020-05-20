@@ -10,6 +10,27 @@ div.maxi-row-block {
     margin-left: 0 !important; }
   div.maxi-row-block > div.maxi-column-block:last-of-type {
     margin-right: 0 !important; }
+.maxi-checkbox-control .maxi-blocks-checkbox-input {
+  position: relative;
+  width: 23px;
+  height: 23px;
+  background-color: #00cdff !important;
+  border: none !important; }
+  .maxi-checkbox-control .maxi-blocks-checkbox-input:checked:before {
+    content: url("../src/icons/setting-icons/checkbox/checkbox.svg");
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+    margin: auto !important;
+    width: 20px;
+    height: 20px; }
+  .maxi-checkbox-control .maxi-blocks-checkbox-input:focus {
+    border: none;
+    -webkit-box-shadow: none;
+            box-shadow: none; }
 .maxi-externalbutton-control {
   display: block;
   width: -webkit-max-content;

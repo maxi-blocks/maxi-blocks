@@ -216,8 +216,8 @@ function abInsertLayoutAdmin() {
         } //if ($('.maxi-panel').length > 0)
         else {
            // console.log('no Panel');
-            $('div.block-editor-block-inspector').removeClass('maxi-controls');
-            $('div.edit-post-sidebar').removeClass('maxi-sidebar');
+            // $('div.block-editor-block-inspector').removeClass('maxi-controls');
+            // $('div.edit-post-sidebar').removeClass('maxi-sidebar');
             $('.maxi-tabs').remove();
         }
 

@@ -12,6 +12,7 @@
 // Extensions
 import './extensions/store';
 import './extensions/attributes';
+import './extensions/dom';
 // import './extensions/blocks';
 
 // CSS

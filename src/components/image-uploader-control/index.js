@@ -11,7 +11,6 @@ const {
     Button,
     ResponsiveWrapper,
     Spinner,
-    BaseControl
 } = wp.components;
 
 /**
@@ -19,6 +18,11 @@ const {
  */
 import { isNil } from 'lodash';
 import classnames from 'classnames';
+
+/**
+ * Styles
+ */
+import './editor.scss';
 
 /**
  * Component
@@ -39,9 +43,12 @@ const MediaUploader = props => {
         replaceButton = __('Replace image', 'maxi-blocks'),
         removeButton = __('Remove image', 'maxi-blocks'),
         alternativeImage
-    } = props;
+    } = props; 
 
-    const classes = classnames('maxi-mediauploader-control', className);
+    const classes = classnames(
+        'maxi-mediauploader-control', 
+        className
+    );
 
     const onOpenImageModal = () => {
         !isNil(onOpenImageModal) && !isNil(onOpen) ?
@@ -50,9 +57,8 @@ const MediaUploader = props => {
     }
 
     return (
-        <BaseControl
+        <div
             className={classes}
-            label={label}
         >
             <MediaUploadCheck
                 fallback={
@@ -139,7 +145,7 @@ const MediaUploader = props => {
             {
                 extendSelector
             }
-        </BaseControl>
+        </div>
     )
 };
 

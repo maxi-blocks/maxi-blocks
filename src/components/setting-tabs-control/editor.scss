@@ -1,0 +1,79 @@
+.maxi-tabs-control {
+    padding-top: 0;
+    margin-bottom: 15px;
+    display: flex;
+
+    .maxi-tab-control {
+        display: flex;
+        flex-direction: column;
+        width: 33.33333%;
+        height: auto;
+        font-size: 16px;
+        color: #000;
+        font-weight: 500;
+        text-align: center;
+        border-bottom: 2px solid #e8eaeb;
+        padding-top: 20px;
+        padding-bottom: 15px;
+
+        &:hover {
+            cursor: pointer;
+        }
+
+        &:focus {
+            box-shadow: none;
+        }
+
+        &:hover,
+        &:hover svg,
+        &:active,
+        &:focus {
+            background: #f2f2f2;
+        }
+
+        &[aria-pressed="true"] {
+            background-color: #f2f2f2;
+            border-bottom: 2px solid #00ccff;
+
+            svg {
+                background-color: #f2f2f2;
+            }
+        }
+
+        svg {
+            width: 24px;
+            height: 24px;
+            margin-top: 2px;
+            margin-bottom: 10px;
+        }
+    }
+}
+
+.maxi-tabs-content{
+    &:not(.disable-styles) {
+        border-top: 2px solid #e8eaeb;
+        border-bottom: 2px solid #e8eaeb;
+        padding: 20px !important;
+    }
+
+    .maxi-tab-content{
+        display: none;
+
+        &.disable-styles {
+            background-color: #f2f2f2;
+        }
+
+        &.is-selected{
+            display: block;
+        }
+    }
+}
+
+@media only screen and (max-width: 2000px) {
+    .maxi-tabs-control {
+        .maxi-tab-control {
+            font-size: 13px;
+            padding-bottom: 6px;
+        }
+    }
+}

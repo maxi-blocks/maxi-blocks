@@ -45,7 +45,7 @@ const {
 registerBlockType( 'maxi-blocks/container', {
     title: __( 'Container Extra'),
     icon: iconsBlocks.container,
-    category: 'maxi-blocks-blocks',
+    category: 'maxi-blocks',
     attributes: {
         alignment: {
             type: 'string',

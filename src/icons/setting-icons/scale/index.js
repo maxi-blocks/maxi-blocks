@@ -8,7 +8,7 @@ const scale = (
         <defs>
             <Path
                 id="scale__a"
-                stroke="#0CF"
+                stroke="#ff4a17"
                 strokeWidth={1.5}
                 strokeLinejoin="round"
                 strokeLinecap="round"
@@ -17,7 +17,7 @@ const scale = (
             />
             <Path
                 id="scale__b"
-                stroke="#0CF"
+                stroke="#ff4a17"
                 strokeWidth={1.5}
                 strokeLinejoin="round"
                 strokeLinecap="round"
@@ -26,7 +26,7 @@ const scale = (
             />
             <Path
                 id="scale__c"
-                stroke="#0CF"
+                stroke="#ff4a17"
                 strokeWidth={1.5}
                 strokeLinejoin="round"
                 strokeLinecap="round"

@@ -213,7 +213,7 @@ const settings = {
 
 	description: __( '' ),
 	icon: iconsBlocks.button,
-	category: 'maxi-blocks-blocks',
+	category: 'maxi-blocks',
 
 	attributes: blockAttributes,
 

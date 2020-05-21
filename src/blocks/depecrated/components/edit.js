@@ -44,8 +44,8 @@ export default class Edit extends Component {
 				</BlockControls>
 				<Placeholder
 					key="placeholder"
-					label={ __( 'Layout Selector', 'maxi-blocks-blocks' ) }
-					instructions={ __( 'Launch the layout library to browse pre-designed sections.', 'maxi-blocks-blocks' ) }
+					label={ __( 'Layout Selector', 'maxi-blocks' ) }
+					instructions={ __( 'Launch the layout library to browse pre-designed sections.', 'maxi-blocks' ) }
 					className={ 'maxi-layout-selector-placeholder' }
 					icon="layout"
 				>

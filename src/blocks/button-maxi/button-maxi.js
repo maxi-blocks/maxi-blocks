@@ -32,7 +32,7 @@ registerBlockType( 'maxi-blocks/button-maxi', {
 	title: __('Button Maxi', 'maxi-blocks'),
 	icon: imageBox,
 	description: "Insert, modify or style a button",
-	category: 'maxi-blocks-blocks',
+	category: 'maxi-blocks',
 	supports: {
 		align: true,
 		lightBlockWrapper: true

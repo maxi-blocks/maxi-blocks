@@ -1,8 +1,8 @@
 /**
  * Gutenberg Frontend Scripts
- * 
+ *
  * @version 0.3
- * 
+ *
  * 1 - Font Family resolver
  * 2 - Responsive Frontend Styles resolver
  * 3 - Responsive Backend Styles resolver
@@ -12,7 +12,7 @@
 /**
  * Font Family resolver
  * Resolves the font source loading from Gutenberg blocks on backend andfrontend
- * 
+ *
  * @version 0.2
  */
 
@@ -29,7 +29,7 @@ class FontFamilyResolver {
 
     /**
      * Returns an array with all the elements with a font-family CSS style option
-     * 
+     *
      * @return {array} elements with font-family on inline style
      */
     get elemensGetter() {
@@ -40,7 +40,7 @@ class FontFamilyResolver {
 
     /**
      * Returns a non-repeated element list of the family fonts founded on the DOM
-     * 
+     *
      * @return {set} List of font families on the DOM
      */
     get DOMFontList() {
@@ -72,7 +72,7 @@ class FontFamilyResolver {
      * Fetchs the JSON file with all the GFonts options
      */
     getJSON() {
-        const fontsUrl = 'https://ddlicensed.s3-eu-west-1.amazonaws.com/maxi-blocks/fonts.json';
+        const fontsUrl = 'https://storage.googleapis.com/plugin-files/maxi-blocks/fonts.json';
         const options = {
             method: 'GET',
             mode: 'cors',
@@ -103,7 +103,7 @@ class FontFamilyResolver {
      * In case that browser refuses JSON due to CORS, get it from proxy. Slowe process
      */
     localhostGetJSON() {
-        const fontsUrl = 'https://cors-anywhere.herokuapp.com/https://ddlicensed.s3-eu-west-1.amazonaws.com/maxi-blocks/fonts.json';
+        const fontsUrl = 'https://storage.googleapis.com/plugin-files/maxi-blocks/fonts.json';
         const options = {
             method: 'GET',
             mode: 'cors',
@@ -149,9 +149,9 @@ class FontFamilyResolver {
 
     /**
      * Get font families from GFonts JSON file
-     * 
+     *
      * @param {JSON} data Recibes JSON data with the fonts variants and properties
-     * @returns {array} Options ready for React-Select 
+     * @returns {array} Options ready for React-Select
      */
     getFontFamilyOptions(data) {
         let options = [];
@@ -170,7 +170,7 @@ class FontFamilyResolver {
      * Loads the font on background using JS FontFace API
      * FontFaceSet API uses check() to check if a font exists, but needs to compare with some exact value:
      * in this case is used '12px' as a standard that returns if the font has been loaded.
-     * 
+     *
      * @param {string} font Name of the selected font
      * @param {obj} files Different variations of the font
      */
@@ -190,7 +190,7 @@ class FontFamilyResolver {
 
     /**
      * Prepares the styles to be ready for JS FontFace API
-     * 
+     *
      * @param {obj} variant Concrete variant of the font with name and url
      * @returns {obj} Styles options for load the font on FontFace API
      */
@@ -221,7 +221,7 @@ document.onreadystatechange = function () {
 /**
  * Responsive Frontend Styles resolver
  * Creates a new object ready to deliver responsive styles on frontend
- * 
+ *
  * @todo    Comment and extend documentation
  * @version 0.2
  */
@@ -290,14 +290,14 @@ class ResponsiveStylesResolver {
             if (typeof prop === 'undefined')
                 return;
             // values with dimensions
-            if (this.avoidZero) {
+            if (this.avoidZero){
                 if (
                     target != 'sync' && prop != 0 && typeof prop === 'number' ||
                     unitChecker.indexOf(target) == 0 && prop != 0
                 )
                     newObject[device][target] = prop + unit;
             }
-            else {
+            else{
                 if (
                     target != 'sync' && typeof prop === 'number' ||
                     unitChecker.indexOf(target) == 0
@@ -324,7 +324,7 @@ class ResponsiveStylesResolver {
 
 /**
  * Responsive Backend Styles resolver
- * 
+ *
  * @version 0.2
  */
 
@@ -396,22 +396,22 @@ class BackEndResponsiveStyles {
 
     /**
      * Retrieve cleaned target
-     * 
+     *
      * @param {string} target style target for scoping
      */
     getTarget(target) {
-        if (target.indexOf('__$:') != -1)
+        if(target.indexOf('__$:') != -1)
             return target.replace('__$', '');
-        if (target.indexOf('__$>') != -1)
+        if(target.indexOf('__$>') != -1)
             return target.replace('__$', '');
-        if (target.indexOf('__$#') != -1)
+        if(target.indexOf('__$#') != -1)
             return target.replace('__$', '');
         return target.replace('__$', ' .');
     }
 
     /**
      * Retrieve each one of the styles CSS props
-     * 
+     *
      * @param {obj} styles responsive styles device
      */
     getResponsiveStyles(styles) {
@@ -427,7 +427,7 @@ class BackEndResponsiveStyles {
 /**
  * Fix Object Follower
  * Returns top and left constant position relative to scroll container for fixed elements
- * 
+ *
  * @param {node} target     Element to be fixed
  * @param {node} reference  Element to be followed
  * @param {node} scrollEl   Element container with scroll attach
@@ -483,7 +483,7 @@ class FixObjectFollower {
     }
 
     getTop(posData) {
-        switch (this.position) {
+        switch(this.position){
             case 'top':
                 return posData.top;
             case 'middle':

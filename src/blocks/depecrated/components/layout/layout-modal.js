@@ -57,7 +57,7 @@ class LayoutModal extends Component {
                         modalOpen: true
                     } ) }
                 >
-                    { __( 'Layout Library', 'maxi-blocks-blocks' ) }
+                    { __( 'Layout Library', 'maxi-blocks' ) }
                 </Button>
                 { this.state.modalOpen ?
                     <LayoutsContext.Consumer key={ 'layouts-context-provider-' + this.props.clientId }>
@@ -65,7 +65,7 @@ class LayoutModal extends Component {
                             <Modal
                                 key={ 'layout-modal-modal-component-' + this.props.clientId }
                                 className="maxi-layout-modal"
-                                title={ __( 'Maxi Blocks Layouts and Blocks Library', 'maxi-blocks-blocks' ) }
+                                title={ __( 'Maxi Blocks Layouts and Blocks Library', 'maxi-blocks' ) }
                                // shouldCloseOnOverlayClick={false}
                               //  onRequestClose={ () => this.setState( { modalOpen: false } ) }
                             >
@@ -74,8 +74,8 @@ class LayoutModal extends Component {
                                     className={'maxi-load-global-styles'}
                                     checked={ this.state.loadGlobalStyles  }
                                     onChange={ () => this.setState( { loadGlobalStyles: !this.state.loadGlobalStyles } ) }
-                                /> 
-                                <Iframe url="https://ondemand.dev400.com"
+                                />
+                                <Iframe url="https://ge-library.dev700.com"
                                 width="100%"
                                 height="90%"
                                 id="maxi-library-iframe"
@@ -107,7 +107,6 @@ jQuery(document).ready(function($) {
             console.log('full stop '+ddd_full_stop);
             $('iframe#maxi-library-iframe').on('load', function() {
                 console.log('iframe loaded');
-                
                 var frame = document.getElementById('maxi-library-iframe');
 
                 jQuery.ajax({
@@ -147,7 +146,7 @@ jQuery(document).ready(function($) {
                 // Listen to message from child window
                 eventer(messageEvent, function(e) {
 
-                    if (e.origin === 'https://ondemand.dev400.com') {
+                    if (e.origin === 'https://ge-library.dev700.com') {
                         var response;
                         if (jQuery.type(e.data) === 'string') { // check if the response is text
 
@@ -171,7 +170,7 @@ jQuery(document).ready(function($) {
                                         // var insertedBlock = wp.blocks.createBlock('core/image', {
                                         // content: '<!-- wp:image {\"id\":210927,\"align\":\"center\"} -->\n<div class=\"wp-block-image\"><figure class=\"aligncenter\"><img src=\"https://gutenberg.dev700.com/wp-content/uploads/2018/05/blog3.jpg\" alt=\"\" class=\"wp-image-210927\"/><figcaption>thsi is a test</figcaption></figure></div>\n<!-- /wp:image -->',
                                         // });
-                                        // wp.data.dispatch('core/editor').insertBlocks(insertedBlock); 
+                                        // wp.data.dispatch('core/editor').insertBlocks(insertedBlock);
 
                                         if($('.maxi-load-global-styles .components-form-toggle').hasClass('is-checked')) {
                                             console.log('CHECKED!');
@@ -208,7 +207,6 @@ jQuery(document).ready(function($) {
 
 
                                         ddd_full_stop = 1;
-                                        
                                     }
                                 } //  if (response)
                             } // if (~e.data.indexOf('context'))

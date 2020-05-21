@@ -15,7 +15,7 @@ const { __ } = wp.i18n;
 registerBlockType("maxi-blocks/testimonials-slider-block", {
 	title: __("Testimonials Extra", 'maxi-blocks'),
 	icon: iconsBlocks.basicGallery,
-	category: "maxi-blocks-blocks",
+	category: "maxi-blocks",
 	keywords: [__("Testimonials Slider", 'maxi-blocks'), __("gts", 'maxi-blocks')],
 	attributes: {
 		...attributes

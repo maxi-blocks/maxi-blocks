@@ -4,13 +4,41 @@
 const { SVG, Path } = wp.primitives;
 
 const library = (
-    <SVG preserveAspectRatio="none" x="0px" y="0px" width="24px" height="24px" viewBox="0 0 24 24">
-        <defs>
-            <Path id="Layer0_0_1_STROKES" stroke="#00CCFF" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" fill="none" d="M 12.65 7.35L 12.65 7.4 12.7 7.4 12.65 7.35 5.55 1.8 5.65 11.4 12.65 7.4 12.65 7.5 12.75 7.45 12.85 7.5 19.55 11.5 19.65 11.55 19.55 11.65 12.75 15.55 12.75 23.6 19.55 19.35M 12.65 7.35L 19.8 1.8 19.8 11.35M 12.45 15.55L 5.7 11.45 5.65 11.4 5.75 19.3 10.7 22.35 10.65 17.45 7.9 15.75M 16.7 17.35L 13.25 19.45" />
-        </defs>
-        <g transform="matrix( 1, 0, 0, 1, -0.65,-0.7) ">
-            <use href="#Layer0_0_1_STROKES" />
-        </g>
+    <SVG
+      id="maxi__Layer_1"
+      x={0}
+      y={0}
+      viewBox="0 0 45 38"
+      xmlSpace="preserve"
+    >
+      <g id="maxi__Layer0_11_MEMBER_0_FILL" fill="#ff4a17">
+        <Path
+          className="maxi__part0"
+          d="M22.5 39.2v-5l-7.8-8.1v5l7.8 8.1m-9-32.3h9V3.3H9.9l3.6 3.6M5.4 21.6V6.3L.2 16.2l5.2 5.4z"
+        />
+        <Path
+          className="maxi__part1"
+          d="M13.7 18.8l8.8 8.8V17.2L6.4 1.1v29l7.4 7.4V18.8z"
+        />
+        <Path
+          className="maxi__part2"
+          d="M14.7 26.2v-5l7.8 7.8.7-.7-.7-.7-8.8-8.8v19.5h.9V26.2M9.9 3.3L5.4-1.2V30h.9V1l16.1 16.1.7-.7-9.6-9.6-3.6-3.5z"
+        />
+      </g>
+      <g id="maxi__Layer0_11_MEMBER_1_FILL" fill="#ff4a17">
+        <Path
+          className="maxi__part0"
+          d="M22.5 34.2v5l7.8-8.1v-5l-7.8 8.1M39.6 6.3v15.3l5.2-5.4-5.2-9.9m-17.1.6h9L35 3.3H22.5v3.6z"
+        />
+        <Path
+          className="maxi__part2"
+          d="M31.5 6.9l-9.6 9.6.7.7 16-16.1v29h.9V-1.2L35 3.3l-3.5 3.6m-9 22.1l7.8-7.8v17.2h.9V18.8l-8.8 8.8-.7.7.8.7z"
+        />
+        <Path
+          className="maxi__part1"
+          d="M22.5 27.6l8.8-8.8v18.6l7.4-7.4V1L22.5 17.2v10.4z"
+        />
+      </g>
     </SVG>
 )
 

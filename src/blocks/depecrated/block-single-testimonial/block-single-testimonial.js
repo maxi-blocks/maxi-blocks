@@ -42,7 +42,7 @@ const {
 registerBlockType( 'maxi-blocks/block-single-testimonial', {
     title: __( 'GX Single Testimonial'),
     icon: iconsBlocks.testimonial,
-    category: 'maxi-blocks-blocks',
+    category: 'maxi-blocks',
     attributes: {
         alignment: {
             type: 'string',

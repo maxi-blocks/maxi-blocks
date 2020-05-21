@@ -26,12 +26,16 @@ import './blocks/divider-maxi/divider-maxi';
 import './blocks/image-maxi/image-maxi';
 import './blocks/section-maxi/section-maxi';
 import './blocks/button-maxi/button-maxi.js';
+import './blocks/cloud-maxi/cloud-maxi.js';
 
 // Test
 import './blocks/test-maxi/test-maxi';
 
 // Deprecated
 // import './blocks/block-layout/block-layout.js';
+
+// Deprecated
+//import './blocks/block-layout/block-layout.js';
 // import './blocks/block-container/block-container.js';
 // import './blocks/block-image-box/block-image-box.js';
 // import './blocks/block-title-extra/block-title-extra.js';

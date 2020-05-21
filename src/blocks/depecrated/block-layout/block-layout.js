@@ -25,10 +25,10 @@ registerBlockType( 'maxi-blocks/maxi-layout', {
 	title: __( 'Library Extra'),
 	description: __( 'Add a pre-made block or layout.'),
 	icon: iconsBlocks.library,
-	category: 'maxi-blocks-blocks',
+	category: 'maxi-blocks',
 	keywords: [
-		__( 'layout', 'maxi-blocks-blocks' ),
-		__( 'block', 'maxi-blocks-blocks' ),
+		__( 'layout', 'maxi-blocks' ),
+		__( 'block', 'maxi-blocks' ),
 	],
 	attributes: {
 	    className: {

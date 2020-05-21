@@ -32,7 +32,7 @@ registerBlockType( 'maxi-blocks/section-maxi', {
 	title: __('Section Maxi', 'maxi-blocks'),
 	icon: imageBox,
 	description: "Group of blocks composed with a similar style or layout",
-	category: 'maxi-blocks-blocks',
+	category: 'maxi-blocks',
 	supports: {
 		align: true,
 		lightBlockWrapper: true

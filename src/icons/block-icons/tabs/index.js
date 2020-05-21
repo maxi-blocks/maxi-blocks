@@ -8,7 +8,7 @@ const tabs = (
         <defs>
             <Path
                 id="tabs__a"
-                stroke="#0CF"
+                stroke="#ff4a17"
                 strokeWidth={1.5}
                 strokeLinejoin="round"
                 strokeLinecap="round"

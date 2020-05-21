@@ -49,7 +49,7 @@ jQuery(document).ready(function($) {
                 // Listen to message from child window
                 eventer(messageEvent, function(e) {
 
-                    if (e.origin === 'https://ondemand.dev400.com') {
+                    if (e.origin === 'https://ge-library.dev700.com') {
                         var response;
                         if (jQuery.type(e.data) === 'string') { // check if the response is text
 
@@ -72,7 +72,7 @@ jQuery(document).ready(function($) {
                                         insertedBlock = wp.blocks.createBlock('core/image', {
                                         content: '<!-- wp:image {\"id\":210927,\"align\":\"center\"} -->\n<div class=\"wp-block-image\"><figure class=\"aligncenter\"><img src=\"https://gutenberg.dev700.com/wp-content/uploads/2018/05/blog3.jpg\" alt=\"\" class=\"wp-image-210927\"/><figcaption>thsi is a test</figcaption></figure></div>\n<!-- /wp:image -->',
                                         });
-                                        wp.data.dispatch('core/editor').insertBlocks(insertedBlock); 
+                                        wp.data.dispatch('core/editor').insertBlocks(insertedBlock);
 
                                         // wp.data.dispatch('core/editor').replaceBlocks(
                                         //     block.clientId,
@@ -85,7 +85,6 @@ jQuery(document).ready(function($) {
 
 
                                         ddd_full_stop = 1;
-                                        
                                     } else if (response.context == 'et_builder_layouts' || $(frame).hasClass('settingsIframe')) {
                                         response_data = encodeURIComponent(JSON.stringify(response.data));
 
@@ -168,7 +167,7 @@ jQuery(document).ready(function($) {
                                         success: function(data) {},
                                         error: function(data) {}
                                     });
-                                }, 1000); //setTimeout(function(){  
+                                }, 1000); //setTimeout(function(){
                             }
 
                         } //if jQuery.type(e.data) === 'string'
@@ -257,7 +256,7 @@ jQuery(document).ready(function($) {
                         style="display:block !important;" ><iframe id="maxi-library-iframe" name="maxi-library-iframe" class="sectionsIframe" \
                         src="' + gx_sections_link + '"></iframe></div>');
 
-                        } // if gx_wl_options_for_js.gx_plugin_setting_tab_position 
+                        } // if gx_wl_options_for_js.gx_plugin_setting_tab_position
                         else {
                             $('li.et-pb-options-tabs-links-active').removeClass('et-pb-options-tabs-links-active');
                             $('div.active-container').removeClass('active-container').css('opacity', 0);

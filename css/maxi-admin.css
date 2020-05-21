@@ -4,12 +4,10 @@
 	color: #fff !important;
 	border-left-color: #fff !important;
 }
-  
 #accordion-panel-MaxiBlocks *,
 #accordion-panel-MaxiBlocks h3:after {
 	color: #fff !important;
 }
-  
 #accordion-panel-MaxiBlocks h3:before {
 	content: "";
 	display: block;
@@ -21,65 +19,62 @@
 	background-position: left;
 	margin-top: -3px;
 }
-  
+
 /* Layout Button */
-  
+
 #gxAddLayoutButton {
 	display: flex;
 	align-items: center;
 	font-family: Roboto, sans-serif;
 	font-size: 16px;
 	letter-spacing: 0.5px;
-	color: #fff;
-	background-color: #000;
+	color:#081219;
+	background-color: #fff !important;
 	margin-right: 0;
 	margin-left: 10px;
 	border-radius: 3px;
 	float: left;
-	border: none !important;
+	border: 2px solid #BBC9C4 !important;
 	box-shadow: none !important;
 	padding: 5px 26px;
 	justify-content: center;
 	min-height: 45px;
 }
-  
+
 #gxAddLayoutButton:hover {
-	background-color: #464a53 !important;
-	border: none !important;
+	border-color: #081219 !important;
 }
-  
+
 #gxAddLayoutButton img,
 #gxGoToCustomizerButton img {
 	margin-right: 10px;
 }
-  
 #gxAddLayoutButton img,
 #gxGoToCustomizerButton img {
 	max-width: 20px;
 }
-  
+
 /* Global Styles Button */
-  
+
 #gxGoToCustomizerButton {
 	display: flex;
 	align-items: center;
 	font-family: Roboto, sans-serif;
 	font-size: 16px;
 	letter-spacing: 0.5px;
-	color: #fff;
-	background-color: #0cf;
+	color: #081219;
+	background-color: #fff;
 	margin-right: 10px;
 	margin-left: 15px;
 	border-radius: 3px;
 	float: right;
-	border: none !important;
+	border: 2px solid #ff4a17 !important;
 	box-shadow: none !important;
 	padding: 5px 26px;
 	justify-content: center;
 	min-height: 45px;
 }
-  
+
 #gxGoToCustomizerButton:hover {
-	background-color: #06deeb !important;
-	border: none !important;
+	border-color: #081219 !important;
 }

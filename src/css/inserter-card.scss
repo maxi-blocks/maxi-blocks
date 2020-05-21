@@ -89,12 +89,13 @@ button[class*="maxi-blocks"] {
 }
 
 button[class*="maxi-blocks"] .block-editor-block-types-list__item-icon {
-	background: black;
+	background: #fff;
 	border-radius: 10rem;
 	margin: auto;
 	padding: 0;
-	height: 37px;
-	width: 37px;
+	height: 45px;
+	width: 45px;
+	border: 2px solid #C1C1C1;
 }
 
 button[class*="maxi-blocks"] .block-editor-block-types-list__item-icon .block-editor-block-icon {

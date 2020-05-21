@@ -118,8 +118,8 @@ function gutenberg_extra_block_category( $categories ) {
 	return array_merge(
 		array(
 			array(
-				'slug'  => 'maxi-blocks-blocks',
-				'title' => __( 'MaxiBlocks Blocks', 'maxi-blocks' ),
+				'slug'  => 'maxi-blocks',
+				'title' => __( 'Maxi Blocks', 'maxi-blocks' ),
 			)
 		),
 		$categories

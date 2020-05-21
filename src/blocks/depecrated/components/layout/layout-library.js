@@ -93,7 +93,7 @@ export default class LayoutLibrary extends Component {
 				<div className="maxi-layout-modal-header">
 					<SelectControl
 						key={ 'layout-library-select-categories-' + this.props.clientId }
-						label={ __( 'Layout Categories', 'maxi-blocks-blocks' ) }
+						label={ __( 'Layout Categories', 'maxi-blocks' ) }
 						value={ this.state.category }
 						options={ catOptions }
 						onChange={ value => this.setState( { category: value } ) }
@@ -102,17 +102,17 @@ export default class LayoutLibrary extends Component {
 						key={ 'layout-library-search-layouts-' + this.props.clientId }
 						type="text"
 						value={ this.state.search }
-						placeholder={ __( 'Search Layouts', 'maxi-blocks-blocks' ) }
+						placeholder={ __( 'Search Layouts', 'maxi-blocks' ) }
 						onChange={ value => this.setState( { search: value } ) }
 					/>
 				</div>
 
 				<div className={ 'maxi-layout-view' }>
-					{ <div className={ 'maxi-layout-view-left' }><p>{ __( 'Showing: ', 'maxi-blocks-blocks' ) + this.props.data.length }</p></div> }
+					{ <div className={ 'maxi-layout-view-left' }><p>{ __( 'Showing: ', 'maxi-blocks' ) + this.props.data.length }</p></div> }
 
 					{ /* Grid width view. */ }
 					<div className={ 'maxi-layout-view-right' }>
-						<Tooltip key={ 'layout-library-grid-view-tooltip-' + this.props.clientId } text={ __( 'Grid View', 'maxi-blocks-blocks' ) }>
+						<Tooltip key={ 'layout-library-grid-view-tooltip-' + this.props.clientId } text={ __( 'Grid View', 'maxi-blocks' ) }>
 							<Button
 								key={ 'layout-library-grid-view-button-' + this.props.clientId }
 								className={ classnames(
@@ -133,7 +133,7 @@ export default class LayoutLibrary extends Component {
 						</Tooltip>
 
 						{ /* Full width layout view. */ }
-						<Tooltip key={ 'layout-library-full-view-tooltip-' + this.props.clientId } text={ __( 'Full Width View', 'maxi-blocks-blocks' ) }>
+						<Tooltip key={ 'layout-library-full-view-tooltip-' + this.props.clientId } text={ __( 'Full Width View', 'maxi-blocks' ) }>
 							<Button
 								key={ 'layout-library-full-view-button-' + this.props.clientId }
 								className={ classnames(
@@ -163,7 +163,7 @@ export default class LayoutLibrary extends Component {
 								'maxi-layout-choices',
 								this.state.activeView === 'full' ? 'maxi-layout-view-full' : null,
 							) }
-							aria-label={ __( 'Layout Options', 'maxi-blocks-blocks' ) }
+							aria-label={ __( 'Layout Options', 'maxi-blocks' ) }
 						>
 							{ map( this.props.data, ( { name, key, image, content, category, keywords } ) => {
 								if ( ( 'all' === this.state.category || category.includes( this.state.category ) ) && ( ! this.state.search || ( keywords && keywords.some( x => x.toLowerCase().includes( this.state.search.toLowerCase() ) ) ) ) ) {

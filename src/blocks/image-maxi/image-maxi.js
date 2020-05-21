@@ -32,7 +32,7 @@ registerBlockType( 'maxi-blocks/image-maxi', {
 	title: __('Image Maxi', 'maxi-blocks'),
 	icon: imageBox,
 	description: "Insert, modify or style an image",
-	category: 'maxi-blocks-blocks',
+	category: 'maxi-blocks',
 	supports: {
 		align: true,
 		lightBlockWrapper: true

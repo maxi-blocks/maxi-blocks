@@ -32,7 +32,7 @@ registerBlockType( 'maxi-blocks/row-maxi', {
 	title: __('Row Maxi', 'maxi-blocks'),
 	icon: imageBox,
 	description: "Position one or more blocks, arranged side-by-side (horizontal)",
-	category: 'maxi-blocks-blocks',
+	category: 'maxi-blocks',
 	supports: {
 		align: true,
 		lightBlockWrapper: true

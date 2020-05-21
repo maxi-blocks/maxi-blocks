@@ -140,7 +140,7 @@ export default class DimensionsControl extends GXComponent {
 			value[device].sync = !value[device].sync;
 			this.saveAndSend(value, avoidZero);
 		}
-
+				
 		return (
 			<div className={classes}>
 				<div className="components-maxi-dimensions-control__header components-base-control">

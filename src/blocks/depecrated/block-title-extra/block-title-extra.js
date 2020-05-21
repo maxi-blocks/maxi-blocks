@@ -27,7 +27,7 @@ import save from './save';
 registerBlockType( 'maxi-blocks/block-title-extra', {
 	title: __('Title Extra', 'maxi-blocks'),
 	icon: titleExtra,
-	category: 'maxi-blocks-blocks',
+	category: 'maxi-blocks',
 	supports: {
         align: true,
     },

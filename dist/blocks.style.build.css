@@ -161,11 +161,6 @@ button.components-button.components-range-control__reset.is-secondary.is-small {
 .maxi-image-block:hover > div.maxi-image-block-settings > button.maxi-image-block-upload-button {
   opacity: 1;
   visibility: visible; }
-figure.maxi-image-block {
-  width: -webkit-max-content !important;
-  width: -moz-max-content !important;
-  width: max-content !important;
-  max-width: 100%; }
 .maxi-button-extra {
   display: -ms-flexbox;
   display: flex; }

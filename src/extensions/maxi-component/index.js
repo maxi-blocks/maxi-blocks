@@ -77,8 +77,8 @@ export default class GXComponent extends Component {
             meta: {
                 _gutenberg_extra_responsive_styles: this.metaValue(value, null, avoidZero),
             },
-        });
+        })
+        .then(() => dispatch('core/editor').savePost());
         new BackEndResponsiveStyles(this.getMeta);
-        dispatch('core/editor').autosave();
     }
 }

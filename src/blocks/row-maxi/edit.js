@@ -121,7 +121,8 @@ class edit extends GXBlock {
             meta: {
                 _gutenberg_extra_responsive_styles: this.metaValue(null, type),
             },
-        });
+        })
+        .then(() => dispatch('core/editor').savePost())
     }
 
     /**

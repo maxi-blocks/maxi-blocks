@@ -79,15 +79,14 @@ class edit extends GXBlock {
         if (!isNil(alignment)) {
             switch (alignment) {
                 case 'left':
-                    response.general['margin-right'] = 'auto';
+                    response.general['text-align'] = 'left';
                     break;
                 case 'center':
                 case 'justify':
-                    response.general['margin-right'] = 'auto';
-                    response.general['margin-left'] = 'auto';
+                    response.general['text-align'] = 'center';
                     break;
                 case 'right':
-                    response.general['margin-left'] = 'auto';
+                    response.general['text-align'] = 'right';
                     break;
             }
         }

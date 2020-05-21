@@ -43,22 +43,18 @@ const SettingTabsControl = props => {
                 className="maxi-tabs-control"
             >
                 {
-                    items.map((item, i) => {
-                        console.log(tab.label === item.label)
-
-                        return (
-                            <Button
-                                className="maxi-tab-control"
-                                onClick={() => setTab(i)}
-                                aria-pressed={tab === i}
-                            >
-                                <Icon
-                                    icon={item.icon}
-                                />
-                                {item.label}
-                            </Button>
-                        )
-                    })
+                    items.map((item, i) => (
+                        <Button
+                            className="maxi-tab-control"
+                            onClick={() => setTab(i)}
+                            aria-pressed={tab === i}
+                        >
+                            <Icon
+                                icon={item.icon}
+                            />
+                            {item.label}
+                        </Button>
+                    ))
                 }
             </div>
             <div

@@ -22,18 +22,20 @@ document.onreadystatechange = () => {
                 for (let mutation of mutationsList) {
                     if (mutation.type === 'childList' && !!mutation.target.classList) {
                         const blockName = select('core/block-editor').getBlockName((select('core/block-editor').getSelectedBlockClientId()));
-
+                        const editPostSidebarNode = document.querySelector('.edit-post-sidebar');
+                        const blockEditorBlockInspectorNode = document.querySelector('.block-editor-block-inspector');
+                        
                         if (!!blockName && blockName.indexOf('maxi-blocks') >= 0) {
-                            if (document.querySelector('.edit-post-sidebar'))
-                                document.querySelector('.edit-post-sidebar').classList.add('maxi-sidebar');
-                            if (document.querySelector('.block-editor-block-inspector'))
-                                document.querySelector('.block-editor-block-inspector').classList.add('maxi-controls')
+                            if (editPostSidebarNode)
+                                editPostSidebarNode.classList.add('maxi-sidebar');
+                            if (blockEditorBlockInspectorNode)
+                                blockEditorBlockInspectorNode.classList.add('maxi-controls')
                         }
                         else {
-                            if (document.querySelector('.edit-post-sidebar').classList.contains('maxi-sidebar'))
-                                document.querySelector('.edit-post-sidebar').classList.remove('maxi-sidebar');
-                            if (document.querySelector('.block-editor-block-inspector').classList.contains('maxi-controls'))
-                                document.querySelector('.block-editor-block-inspector').classList.remove('maxi-controls');
+                            if (!!editPostSidebarNode && editPostSidebarNode.classList.contains('maxi-sidebar'))
+                                editPostSidebarNode.classList.remove('maxi-sidebar');
+                            if (!!blockEditorBlockInspectorNode && blockEditorBlockInspectorNode.classList.contains('maxi-controls'))
+                                blockEditorBlockInspectorNode.classList.remove('maxi-controls');
                         }
                     }
                 }

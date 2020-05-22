@@ -43,7 +43,6 @@ import {
 /**
  * Editor
  */
-
 class edit extends GXBlock {
     state = {
         originalWidth: 0,

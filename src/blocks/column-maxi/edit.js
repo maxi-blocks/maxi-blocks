@@ -43,6 +43,7 @@ import {
 /**
  * Editor
  */
+
 class edit extends GXBlock {
     state = {
         originalWidth: 0,
@@ -153,6 +154,8 @@ class edit extends GXBlock {
     }
 
     render() {
+        const ALLOWED_BLOCKS = wp.blocks.getBlockTypes().map(block => block.name).filter(blockName => blockName !== 'maxi-blocks/row-maxi');
+
         const {
             attributes: {
                 uniqueID,
@@ -245,6 +248,7 @@ class edit extends GXBlock {
                                 className="maxi-column-block-content"
                             >
                                 <InnerBlocks
+                                    allowedBlocks={ALLOWED_BLOCKS}
                                     templateLock={false}
                                     renderAppender={
                                         !hasInnerBlock || isSelect() ?

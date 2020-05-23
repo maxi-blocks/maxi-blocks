@@ -12,7 +12,11 @@ const {
  * Internal dependencies
  */
 import Inspector from './inspector';
-import { GXBlock } from '../../components';
+import { 
+    GXBlock,
+    __experimentalToolbar
+} from '../../components';
+import MaxiToolbar from '../../components/toolbar';
 
 /**
  * External dependencies
@@ -138,7 +142,10 @@ class edit extends GXBlock {
                 content
             },
             setAttributes,
+            clientId
         } = this.props;
+
+        console.log('original =>', this.props)
 
         let classes = classnames(
             'maxi-block maxi-text-block',
@@ -149,7 +156,13 @@ class edit extends GXBlock {
         );
 
         return [
-            <Inspector {...this.props} />,
+            // <Inspector {...this.props} />,
+            // <__experimentalToolbar 
+            //     clientId={clientId}
+            // />,
+            <MaxiToolbar 
+                clientId={clientId}
+            />,
             <RichText
                 value={content}
                 onChange={content => setAttributes({ content })}

@@ -1,10 +1,10 @@
-div.maxi-row-block.alignfull {
-    width: auto;
-}
-
 div.maxi-row-block {
     display: flex;
     flex-wrap: wrap;
+
+    &.alignfull {
+        width: auto;
+    }
 
     >div.maxi-column-block:first-of-type {
         margin-left: 0 !important;

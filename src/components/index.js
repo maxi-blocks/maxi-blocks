@@ -34,6 +34,10 @@ export { default as FullSizeControl } from './full-size-control';
 export { default as TextShadowControl } from './text-shadow-control';
 export { default as TypographyControl } from './typography-control';
 
+// Experimental
+export { default as __experimentalDraggableBlock } from './draggable-block';
+export { default as __experimentalToolbar } from './toolbar-control';
+
 // DEPRECATED
 export * from './deprecated/button-settings';
 export * from './deprecated/image-settings';

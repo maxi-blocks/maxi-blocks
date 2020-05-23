@@ -1,0 +1,84 @@
+.maxi-toolbar__popover {
+    .components-popover__content {
+        background-color: transparent;
+        border: none;
+        overflow: hidden;
+        box-shadow: none;
+
+        .toolbar-wrapper {
+            display: flex;
+            width: min-content;
+            margin-left: auto;
+
+            &:last-child {
+                border-right: 1px solid #fff;
+            }
+
+            button:focus {
+                outline: none;
+                box-shadow: none;
+            }
+
+            .toolbar-item {
+                width: 1.5rem;
+                height: 1.5rem;
+                background-color: #000;
+                border: 1px solid #fff;
+                border-right: none;
+                padding: 0;
+                cursor: pointer;
+
+                &__dropdown {
+                    > button {
+                        display: block;
+                        width: 100%;
+                        height: auto;
+                        padding: 0;
+                    }
+                }
+
+                &__icon {
+                    display: block;
+                    width: 1rem;
+                    margin: auto;
+                }
+
+                &__move {
+                    cursor: move;
+                }
+            }
+        }
+    }
+}
+
+.toolbar-item__popover {
+    &:before,
+    &:after {
+        border-color: #000 !important;
+        border-left-color: transparent !important;
+        border-right-color: transparent !important;
+    }
+
+    .components-popover__content {
+        background-color: #000;
+    }
+
+    &__wrapper {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    &__template-button {
+        flex: 33.33%;
+        width: 33.33%;
+
+        &__icon {
+            width: 100%;
+            height: 100%;
+
+            path {
+                stroke: #fff;
+            }
+        }
+    }
+}

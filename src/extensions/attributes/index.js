@@ -47,6 +47,10 @@ function addAttributes(settings) {
 			isFirstOnHierarchy: {
 				type: 'boolean',
 				default: false
+			},
+			linkSettings: {
+				type: 'string',
+				default: '{}'
 			}
 		});
 	}

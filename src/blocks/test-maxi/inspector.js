@@ -35,6 +35,9 @@ import {
     DeviceSelectorControl
 } from '../../components';
 
+/**
+ * Icons
+ */
 import {
     content,
     style,
@@ -166,11 +169,11 @@ class Inspector extends Component {
                                     />
                                     <TypographyControl
                                         fontOptions={typography}
-                                        onChange={value => console.log(value)}
+                                        onChange={value => null}
                                     />
                                     <DimensionsControl
                                         value={padding}
-                                        onChange={value => console.log(value)}
+                                        onChange={value => null}
                                     />
                                     <DeviceSelectorControl
                                         device={device}
@@ -183,7 +186,7 @@ class Inspector extends Component {
                                     />
                                     <BoxShadowControl
                                         boxShadowOptions={boxShadow}
-                                        onChange={value => console.log(value)}
+                                        onChange={value => null}
                                     />
                                     <NormalHoverControl
                                         selector={selectorTypographyColors}
@@ -193,10 +196,10 @@ class Inspector extends Component {
                                         label={__('Background Colour', 'maxi-blocks')}
                                         color={backgroundColor}
                                         defaultcolor={backgroundDefaultColor}
-                                        onColorChange={value => console.log(value)}
+                                        onColorChange={value => null}
                                         gradient={backgroundGradient}
                                         defaultGradient={backgroundGradientDefault}
-                                        onGradientChange={value => console.log(value)}
+                                        onGradientChange={value => null}
                                         disableGradientOverBackground
                                     />
                                     <FontLevelControl

@@ -153,7 +153,8 @@ class edit extends GXBlock {
     }
 
     render() {
-        const ALLOWED_BLOCKS = wp.blocks.getBlockTypes().map(block => block.name).filter(blockName => blockName !== 'maxi-blocks/row-maxi');
+        const ALLOWED_BLOCKS = wp.blocks.getBlockTypes().map(block => block.name)
+        .filter(blockName => (blockName !== 'maxi-blocks/row-maxi' && blockName !== 'maxi-blocks/column-maxi'));
 
         const {
             attributes: {

@@ -1,7 +1,8 @@
 /**
  * Gutenberg Extra extension class
  * 
- * @version 0.1
+ * @todo Optimize to don't send repeat or existent values
+ * @todo Comment properly
  */
 
 /**

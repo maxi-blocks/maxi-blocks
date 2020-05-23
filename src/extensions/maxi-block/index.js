@@ -1,5 +1,7 @@
 /**
  * Maxi Blocks Block component extension
+ * 
+ * @todo Comment properly
  */
 
 /**

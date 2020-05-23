@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) {
 if (!class_exists('GXStylesAPI')) :
 
     /**
-     * The EasyTheme API class
+     * The Gutenberg Extra API class
      */
 
     class GXStylesAPI

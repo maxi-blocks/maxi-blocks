@@ -5,7 +5,6 @@ const { select } = wp.data;
 const { getDefaultBlockName } = wp.blocks;
 
 /**
- * Sidebar classes
  * Adds special classes on Settings Sidebar
  */
 document.onreadystatechange = () => {

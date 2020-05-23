@@ -187,10 +187,10 @@ add_filter( 'wp_targeted_link_rel', 'gx_links_control', 10, 2 );
 add_action('wp_ajax_gx_get_option', 'gx_get_option', 9, 1);
 add_action('wp_ajax_gx_insert_block', 'gx_insert_block', 10, 2);
 
-require_once plugin_dir_path( __FILE__ ) . 'includes/layout/layout-functions.php';
-require_once plugin_dir_path( __FILE__ ) . 'includes/layout/class-component-registry.php';
-require_once plugin_dir_path( __FILE__ ) . 'includes/layout/register-layout-components.php';
-require_once plugin_dir_path( __FILE__ ) . 'includes/maxi-wp-dashboard.php';
+// require_once plugin_dir_path( __FILE__ ) . 'includes/layout/layout-functions.php';
+// require_once plugin_dir_path( __FILE__ ) . 'includes/layout/class-component-registry.php';
+// require_once plugin_dir_path( __FILE__ ) . 'includes/layout/register-layout-components.php';
+// require_once plugin_dir_path( __FILE__ ) . 'includes/maxi-wp-dashboard.php';
 
 // Maybe this is not the best place, but for the moment...
 function gutenberg_scripts () {

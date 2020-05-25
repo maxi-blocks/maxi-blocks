@@ -81,7 +81,6 @@ const Inspector = props => {
                 items={[
                     {
                         label: __('Style', 'maxi-blocks'),
-                        disableStyles: true,
                         content: (
                             <Fragment>
                                 <BlockStylesControl

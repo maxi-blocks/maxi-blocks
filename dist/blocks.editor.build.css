@@ -2914,7 +2914,7 @@ button[type="reset"] {
       background: #f2f2f2; }
     .maxi-tabs-control .maxi-tab-control__button[aria-pressed="true"] {
       background-color: #f2f2f2;
-      border-bottom: 2px solid #00ccff; }
+      border-bottom: 2px solid #ff4a17; }
       .maxi-tabs-control .maxi-tab-control__button[aria-pressed="true"] svg {
         background-color: #f2f2f2; }
     .maxi-tabs-control .maxi-tab-control__button svg {

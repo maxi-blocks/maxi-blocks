@@ -155,7 +155,6 @@ class Inspector extends Component {
                     items={[
                         {
                             label: __('Style', 'maxi-blocks'),
-                            disableStyles: true,
                             content: (
                                 <Fragment>
                                     <BlockStylesControl

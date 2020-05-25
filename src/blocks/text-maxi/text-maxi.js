@@ -31,7 +31,7 @@ import { imageBox } from '../../icons';
 registerBlockType( 'maxi-blocks/text-maxi', {
 	title: __('Text Maxi', 'maxi-blocks'),
 	icon: imageBox,
-	description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque sunt hic obcaecati alias rerum fugit, dolore, quis placeat aliquid at natus fugiat, repellendus facilis asperiores illum voluptatum aut officiis delectus?",
+	description: 'Insert, modify or style text',
 	category: 'maxi-blocks',
 	supports: {
 		align: true,

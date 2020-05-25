@@ -28,9 +28,6 @@ import './blocks/section-maxi/section-maxi';
 import './blocks/button-maxi/button-maxi.js';
 import './blocks/cloud-maxi/cloud-maxi.js';
 
-// Test
-import './blocks/test-maxi/test-maxi';
-
 // Deprecated
 // import './blocks/block-layout/block-layout.js';
 

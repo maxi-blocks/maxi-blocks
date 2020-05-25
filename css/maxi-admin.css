@@ -22,7 +22,7 @@
 
 /* Layout Button */
 
-#gxAddLayoutButton {
+#maxi-button__layout {
 	display: flex;
 	align-items: center;
 	font-family: Roboto, sans-serif;
@@ -41,22 +41,22 @@
 	min-height: 45px;
 }
 
-#gxAddLayoutButton:hover {
+#maxi-button__layout:hover {
 	border-color: #081219 !important;
 }
 
-#gxAddLayoutButton img,
-#gxGoToCustomizerButton img {
+#maxi-button__layout img,
+#maxi-button__go-to-customizer img {
 	margin-right: 10px;
 }
-#gxAddLayoutButton img,
-#gxGoToCustomizerButton img {
+#maxi-button__layout img,
+#maxi-button__go-to-customizer img {
 	max-width: 20px;
 }
 
 /* Global Styles Button */
 
-#gxGoToCustomizerButton {
+#maxi-button__go-to-customizer {
 	display: flex;
 	align-items: center;
 	font-family: Roboto, sans-serif;
@@ -75,6 +75,6 @@
 	min-height: 45px;
 }
 
-#gxGoToCustomizerButton:hover {
+#maxi-button__go-to-customizer:hover {
 	border-color: #081219 !important;
 }

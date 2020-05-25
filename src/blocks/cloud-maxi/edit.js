@@ -5,7 +5,7 @@
  /**
  * Import dependencies.
  */
-import LayoutModal from './layout/layout-modal';
+import MaxiModal from './modal';
 import { library } from '../../icons';
 
 /**
@@ -47,10 +47,10 @@ export default class Edit extends Component {
 					key="placeholder"
 					label={ __( 'Cloud Library Maxi', 'gutenberg-extra-blocks' ) }
 					instructions={ __( 'Launch the library to browse pre-designed blocks and templates.', 'gutenberg-extra-blocks' ) }
-					className={ 'maxi-cloud-selector-placeholder' }
+					className={ 'maxi-block-library__placeholder' }
 					icon= {library}
 				>
-					<LayoutModal clientId={ clientId } />
+					<MaxiModal clientId={ clientId } />
 				</Placeholder>
 			</Fragment>
 		];

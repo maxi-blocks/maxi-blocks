@@ -235,7 +235,7 @@ class Inspector extends Component {
                                                             target='>figcaption'
                                                         />
                                                     }
-                                                    <SizeControl
+                                                    <SizeControl 
                                                         label={__('Max Width', 'maxi-blocks')}
                                                         unit={maxWidthUnit}
                                                         onChangeUnit={maxWidthUnit => setAttributes({ maxWidthUnit })}
@@ -373,12 +373,10 @@ class Inspector extends Component {
                                                     <DimensionsControl
                                                         value={padding}
                                                         onChange={padding => setAttributes({ padding })}
-                                                        avoidZero
                                                     />
                                                     <DimensionsControl
                                                         value={margin}
                                                         onChange={margin => setAttributes({ margin })}
-                                                        avoidZero
                                                     />
                                                 </Fragment>
                                             )

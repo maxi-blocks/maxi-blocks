@@ -123,15 +123,21 @@ class Inspector extends Component {
                                         isPrimary
                                         items={[
                                             {
-                                                label: __('Typography & Colors', 'maxi-blocks'),
+                                                label: __("Alignment", "maxi-blocks"),
                                                 content: (
                                                     <Fragment>
-                                                        {/** Should alignment be under this section? */}
-                                                        <AlignmentControl
+                                                    <AlignmentControl
                                                             value={alignment}
                                                             onChange={alignment => setAttributes({ alignment })}
                                                             disableJustify
                                                         />
+                                                    </Fragment>
+                                                )
+                                            },
+                                            {
+                                                label: __('Typography & Colors', 'maxi-blocks'),
+                                                content: (
+                                                    <Fragment>
                                                         <NormalHoverControl
                                                             selector={selectorTypographyColors}
                                                             onChange={selectorTypographyColors => {

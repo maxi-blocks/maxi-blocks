@@ -190,6 +190,7 @@ export class ButtonSettings extends GXComponent {
                                 <Fragment>
                                     {/** Should alignment be under this section? */}
                                     <AlignmentControl
+                                        label={__('Alignment', 'maxi-blocks')}
                                         value={value.alignment}
                                         onChange={val => {
                                             value.alignment = val;

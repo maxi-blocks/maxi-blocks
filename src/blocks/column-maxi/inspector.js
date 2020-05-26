@@ -23,15 +23,6 @@ import {
 } from '../../components';
 
 /**
- * Icons
- */
-import {
-    content,
-    style,
-    advanced
-} from '../../icons'
-
-/**
  * Inspector
  */
 const Inspector = props => {
@@ -64,7 +55,6 @@ const Inspector = props => {
                 items={[
                     {
                         label: __('Content', 'maxi-blocks'),
-                        icon: content,
                         content: (
                             <Fragment>
                                 <BlockStylesControl
@@ -93,7 +83,6 @@ const Inspector = props => {
                     },
                     {
                         label: __('Style', 'maxi-blocks'),
-                        icon: style,
                         content: (
                             <AccordionControl
                                 isPrimary
@@ -161,7 +150,6 @@ const Inspector = props => {
                     },
                     {
                         label: __('Advanced', 'maxi-blocks'),
-                        icon: advanced,
                         content: (
                             <Fragment>
                                 <HoverAnimationControl

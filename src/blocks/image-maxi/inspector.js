@@ -168,6 +168,18 @@ class Inspector extends Component {
                                         isSecondary
                                         items={[
                                             {
+                                                label: __("Alignment", "maxi-blocks"),
+                                                content: (
+                                                    <Fragment>
+                                                        <AlignmentControl
+                                                            value={alignment}
+                                                            onChange={alignment => setAttributes({ alignment })}
+                                                            disableJustify
+                                                        />
+                                                    </Fragment>
+                                                )
+                                            },
+                                            {
                                                 label: __("Image", "maxi-blocks"),
                                                 content: (
                                                     <Fragment>
@@ -185,11 +197,6 @@ class Inspector extends Component {
                                                                 onChange={cropOptions => setAttributes({ cropOptions: JSON.stringify(cropOptions) })}
                                                             />
                                                         }
-                                                        <AlignmentControl
-                                                            value={alignment}
-                                                            onChange={alignment => setAttributes({ alignment })}
-                                                            disableJustify
-                                                        />
                                                         <SelectControl
                                                             label={__('Caption', 'maxi-blocks')}
                                                             value={captionType}
@@ -341,7 +348,7 @@ class Inspector extends Component {
                                                 )
                                             },
                                             {
-                                                label: __("Border", "maxi-blocks"), 
+                                                label: __("Border", "maxi-blocks"),
                                                 content: (
                                                     <BorderControl
                                                         borderOptions={border}

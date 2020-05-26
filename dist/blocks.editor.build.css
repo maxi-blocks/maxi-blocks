@@ -2090,33 +2090,31 @@ div.maxi-row-block.has-child-selected > div.maxi-row-selector-wrapper {
 *
 * Moved common styles to './src/css' 
 */
+.maxi-alignment-control.maxi-alignment-control__no-label .components-radio-control__option {
+  -ms-flex: 1;
+      flex: 1; }
+
 .maxi-alignment-control .components-radio-control__option {
-  border: 1px solid #dddfe1 !important;
   opacity: 1 !important;
   min-width: 40px;
-  height: 35px;
+  height: 30px;
   background-color: rgba(33, 141, 250, 0);
-  border: 2px solid #dddfe1;
-  border-right-width: 0;
   font-size: 20px;
   color: #464a53;
   font-weight: 500;
-  margin: auto; }
-  .maxi-alignment-control .components-radio-control__option:first-of-type,
-  .maxi-alignment-control .components-radio-control__option:first-of-type label {
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-    border-right-width: 2px; }
-  .maxi-alignment-control .components-radio-control__option:last-of-type,
-  .maxi-alignment-control .components-radio-control__option:last-of-type label {
-    border-left-width: 2px;
+  border: 2px solid #dddfe1;
+  border-right: 0; }
+  .maxi-alignment-control .components-radio-control__option:last-of-type {
+    border-right: 2px solid #dddfe1;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px; }
+  .maxi-alignment-control .components-radio-control__option:first-of-type {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px; }
   .maxi-alignment-control .components-radio-control__option input {
     display: none; }
     .maxi-alignment-control .components-radio-control__option input:checked ~ label {
-      -webkit-box-shadow: 0 0 0 2px #007cba;
-              box-shadow: 0 0 0 2px #007cba;
+      background-color: #f2f2f2;
       outline: 1px solid transparent;
       position: relative;
       z-index: 1; }

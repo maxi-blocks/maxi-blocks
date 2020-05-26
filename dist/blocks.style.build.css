@@ -241,12 +241,12 @@ button.components-button.components-range-control__reset.is-secondary.is-small {
   margin: 0 auto; }
 
 /* GX Button */
-#gxAddLayoutButton {
+#maxi-button__layout {
   color: #000;
   border: 1px solid #000;
   margin-right: 10px; }
 
-#gxAddLayoutButton img {
+#maxi-button__layout img {
   margin-right: 5px; }
 
 .maxi-cloud-column-button .ab-block-button {

@@ -3775,49 +3775,49 @@ div.maxi-section-block {
 /**
  * Editor styles for the admin
  */
-.maxi-cloud-modal {
+.maxi-block-library__modal {
   width: 1500px;
   min-height: 90%;
   max-width: 90%; }
-  .maxi-cloud-modal .components-modal__content {
+  .maxi-block-library__modal .components-modal__content {
     background: #f2f2f2;
     padding: 0;
     overflow-x: hidden;
     min-height: 100%;
     position: absolute;
     width: 100%; }
-  .maxi-cloud-modal .components-modal__header {
+  .maxi-block-library__modal .components-modal__header {
     margin-bottom: 25px;
     padding-left: 50px;
     padding-right: 25px; }
-    .maxi-cloud-modal .components-modal__header h1 {
+    .maxi-block-library__modal .components-modal__header h1 {
       font-weight: bold;
       font-size: 1rem; }
-  .maxi-cloud-modal .components-tab-panel__tab-content {
+  .maxi-block-library__modal .components-tab-panel__tab-content {
     background: #fff;
     padding: 35px;
     border-top: 1px solid #e2e4e7; }
-  .maxi-cloud-modal .components-tab-panel__tabs {
+  .maxi-block-library__modal .components-tab-panel__tabs {
     padding: 0 35px;
     margin-bottom: -1px; }
-    .maxi-cloud-modal .components-tab-panel__tabs button {
+    .maxi-block-library__modal .components-tab-panel__tabs button {
       padding: 15px 20px;
       background: none;
       border: none;
       font-size: 16px; }
-      .maxi-cloud-modal .components-tab-panel__tabs button:hover {
+      .maxi-block-library__modal .components-tab-panel__tabs button:hover {
         background: #fff;
         cursor: pointer; }
-  .maxi-cloud-modal .components-tab-panel__tabs .maxi-cloud-modal-active-tab {
+  .maxi-block-library__modal .components-tab-panel__tabs .maxi-block-library__modal-active-tab {
     font-weight: 600;
     background: #fff;
     border: 1px solid #e2e4e7;
     border-bottom: none; }
-  .maxi-cloud-modal .components-base-control {
+  .maxi-block-library__modal .components-base-control {
     display: inline-block; }
-  .maxi-cloud-modal .components-base-control:last-child {
+  .maxi-block-library__modal .components-base-control:last-child {
     float: right; }
-  .maxi-cloud-modal .maxi-cloud-modal-header {
+  .maxi-block-library__modal .maxi-block-library__modal-header {
     background: #f2f2f2;
     padding: 20px;
     margin-bottom: 20px;
@@ -3825,47 +3825,47 @@ div.maxi-section-block {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr;
     grid-gap: 0 5em; }
-    .maxi-cloud-modal .maxi-cloud-modal-header .components-base-control:last-child {
+    .maxi-block-library__modal .maxi-block-library__modal-header .components-base-control:last-child {
       -ms-flex-item-align: end;
           align-self: flex-end;
       margin: 0; }
-    .maxi-cloud-modal .maxi-cloud-modal-header .components-base-control__field {
+    .maxi-block-library__modal .maxi-block-library__modal-header .components-base-control__field {
       margin-bottom: 0; }
-    .maxi-cloud-modal .maxi-cloud-modal-header select,
-    .maxi-cloud-modal .maxi-cloud-modal-header input {
+    .maxi-block-library__modal .maxi-block-library__modal-header select,
+    .maxi-block-library__modal .maxi-block-library__modal-header input {
       font-size: 16px;
       height: 34px;
       width: 100%; }
-  .maxi-cloud-modal .maxi-cloud-choices {
+  .maxi-block-library__modal .maxi-cloud-choices {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr;
     grid-gap: 0 2em; }
-  .maxi-cloud-modal .maxi-cloud-view-full {
+  .maxi-block-library__modal .maxi-cloud-view-full {
     grid-template-columns: 1fr; }
-  .maxi-cloud-modal .maxi-cloud-view {
+  .maxi-block-library__modal .maxi-cloud-view {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr;
     grid-gap: 0 2em;
     margin-bottom: 20px; }
-  .maxi-cloud-modal .maxi-cloud-view-left p {
+  .maxi-block-library__modal .maxi-cloud-view-left p {
     margin: 0;
     line-height: 2.2em; }
-  .maxi-cloud-modal .maxi-cloud-view-right {
+  .maxi-block-library__modal .maxi-cloud-view-right {
     text-align: right; }
-    .maxi-cloud-modal .maxi-cloud-view-right button {
+    .maxi-block-library__modal .maxi-cloud-view-right button {
       margin-left: 5px;
       height: auto;
       padding: 5px; }
-  .maxi-cloud-modal .maxi-cloud-design {
+  .maxi-block-library__modal .maxi-cloud-design {
     text-align: center;
     margin-bottom: 40px;
     position: relative; }
-    .maxi-cloud-modal .maxi-cloud-design img {
+    .maxi-block-library__modal .maxi-cloud-design img {
       max-width: 100%;
       display: block; }
-    .maxi-cloud-modal .maxi-cloud-design .maxi-cloud-insert-button {
+    .maxi-block-library__modal .maxi-cloud-design .maxi-cloud-insert-button {
       height: auto;
       background: none;
       border: none;
@@ -3875,25 +3875,25 @@ div.maxi-section-block {
       padding: 0;
       z-index: 5;
       position: relative; }
-  .maxi-cloud-modal .maxi-cloud-design-inside {
+  .maxi-block-library__modal .maxi-cloud-design-inside {
     -webkit-transition: .2s ease;
     -o-transition: .2s ease;
     transition: .2s ease;
     border: solid 1px #cccccc; }
-    .maxi-cloud-modal .maxi-cloud-design-inside:hover {
+    .maxi-block-library__modal .maxi-cloud-design-inside:hover {
       -webkit-box-shadow: 0px 0px 0px 8px #ececec;
               box-shadow: 0px 0px 0px 8px #ececec; }
-  .maxi-cloud-modal .maxi-cloud-design-info {
+  .maxi-block-library__modal .maxi-cloud-design-info {
     background: #fff;
     border-top: solid 1px #ccc;
     text-align: left;
     position: relative;
     padding: 12px; }
-    .maxi-cloud-modal .maxi-cloud-design-info button:active {
+    .maxi-block-library__modal .maxi-cloud-design-info button:active {
       vertical-align: middle !important; }
-  .maxi-cloud-modal .maxi-cloud-design-title {
+  .maxi-block-library__modal .maxi-cloud-design-title {
     font-weight: bold; }
-  .maxi-cloud-modal button.maxi-cloud-favorite-button {
+  .maxi-block-library__modal button.maxi-cloud-favorite-button {
     background: none;
     border: none;
     -webkit-box-shadow: none;
@@ -3901,26 +3901,26 @@ div.maxi-section-block {
     float: right;
     border-radius: 3px;
     margin-top: -3px; }
-  .maxi-cloud-modal .components-button-group .components-button.maxi-cloud-favorite-button {
+  .maxi-block-library__modal .components-button-group .components-button.maxi-cloud-favorite-button {
     border-radius: 3px;
     padding: 0 8px 0px; }
-  .maxi-cloud-modal button.maxi-cloud-favorite-button:hover {
+  .maxi-block-library__modal button.maxi-cloud-favorite-button:hover {
     background: #fff;
     border: none;
     -webkit-box-shadow: inset 0 0 0 1px #e2e4e7, inset 0 0 0 2px #fff, 0 1px 1px rgba(25, 30, 35, 0.2);
             box-shadow: inset 0 0 0 1px #e2e4e7, inset 0 0 0 2px #fff, 0 1px 1px rgba(25, 30, 35, 0.2); }
-  .maxi-cloud-modal .components-button-group .components-button.maxi-cloud-favorite-button:focus {
+  .maxi-block-library__modal .components-button-group .components-button.maxi-cloud-favorite-button:focus {
     -webkit-box-shadow: inset 0 0 0 1px #e2e4e7, inset 0 0 0 2px #fff, 0 1px 1px rgba(25, 30, 35, 0.2);
             box-shadow: inset 0 0 0 1px #e2e4e7, inset 0 0 0 2px #fff, 0 1px 1px rgba(25, 30, 35, 0.2);
     background: #fff; }
-  .maxi-cloud-modal button.components-button.is-default:active:enabled {
+  .maxi-block-library__modal button.components-button.is-default:active:enabled {
     -webkit-box-shadow: inset 0 0 0 1px #ccd0d4, inset 0 0 0 2px #fff;
             box-shadow: inset 0 0 0 1px #ccd0d4, inset 0 0 0 2px #fff; }
-  .maxi-cloud-modal .maxi-cloud-icon-favorite {
+  .maxi-block-library__modal .maxi-cloud-icon-favorite {
     fill: #888; }
-  .maxi-cloud-modal .maxi-cloud-icon-favorite-active {
+  .maxi-block-library__modal .maxi-cloud-icon-favorite-active {
     fill: #f9569b; }
-  .maxi-cloud-modal .maxi-cloud-zoom-button {
+  .maxi-block-library__modal .maxi-cloud-zoom-button {
     position: absolute;
     top: 15px;
     right: 15px;
@@ -3935,15 +3935,15 @@ div.maxi-section-block {
     height: auto;
     opacity: 0;
     display: none; }
-  .maxi-cloud-modal .maxi-cloud-design:hover .maxi-cloud-zoom-button {
+  .maxi-block-library__modal .maxi-cloud-design:hover .maxi-cloud-zoom-button {
     opacity: 1; }
-  .maxi-cloud-modal .maxi-cloud-zoom-layout {
+  .maxi-block-library__modal .maxi-cloud-zoom-layout {
     grid-column: 1 / -1; }
 
-.maxi-cloud-selector-placeholder .components-placeholder__instructions {
+.maxi-block-library__placeholder .components-placeholder__instructions {
   margin-bottom: 1.4em; }
 
-.maxi-cloud-selector-placeholder button.maxi-cloud-modal-button {
+.maxi-block-library__placeholder button.maxi-block-library__modal-button {
   font-size: 16px;
   height: auto;
   padding: 6px 18px; }

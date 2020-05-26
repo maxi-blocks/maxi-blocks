@@ -8,11 +8,11 @@ const { RadioControl } = wp.components;
  * Styles and Icons
  */
 import './editor.scss';
-import { 
-    Icon, 
-    alignLeft, 
+import {
+    Icon,
+    alignLeft,
     alignCenter,
-    alignRight, 
+    alignRight,
     alignJustify
 } from '@wordpress/icons';
 
@@ -46,7 +46,6 @@ const AlignmentControl = props => {
 
     return (
         <RadioControl
-            label={__('Alignment', 'maxi-blocks')}
             className={'maxi-alignment-control'}
             selected={value}
             options={getOptions()}

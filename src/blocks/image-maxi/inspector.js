@@ -230,12 +230,30 @@ class Inspector extends Component {
                                                             value={maxWidth}
                                                             onChangeValue={maxWidth => setAttributes({ maxWidth })}
                                                         />
+                                                        <RangeControl
+                                                            value={ maxWidth }
+                                                            onChange={ maxWidth => setAttributes({ maxWidth }) }
+                                                            min={0}
+                                                            max={999}
+                                                            allowReset={false}
+                                                            withInputField={false}
+                                                            initialPosition={0}
+                                                        />
                                                         <SizeControl
                                                             label={__('Width', 'maxi-blocks')}
                                                             unit={widthUnit}
                                                             onChangeUnit={widthUnit => setAttributes({ widthUnit })}
                                                             value={width}
                                                             onChangeValue={width => setAttributes({ width })}
+                                                        />
+                                                        <RangeControl
+                                                            value={ width }
+                                                            onChange={ width => setAttributes({ width }) }
+                                                            min={0}
+                                                            max={999}
+                                                            allowReset={false}
+                                                            withInputField={false}
+                                                            initialPosition={0}
                                                         />
                                                     </Fragment>
                                                 )

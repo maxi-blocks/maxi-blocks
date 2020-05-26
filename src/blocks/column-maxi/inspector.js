@@ -54,7 +54,7 @@ const Inspector = props => {
             <SettingTabsControl
                 items={[
                     {
-                        label: __('Content', 'maxi-blocks'),
+                        label: __('Style', 'maxi-blocks'),
                         content: (
                             <Fragment>
                                 <BlockStylesControl
@@ -78,74 +78,69 @@ const Inspector = props => {
                                         step={.1}
                                     />
                                 }
+                                <AccordionControl
+                                    isPrimary
+                                    items={[
+                                        {
+                                            label: __('Background Image', 'maxi-blocks'),
+                                            content: (
+                                                <BackgroundControl
+                                                    backgroundOptions={background}
+                                                    onChange={background => setAttributes({ background })}
+                                                    target=">.maxi-column-block-content"
+                                                />
+                                            ),
+                                        },
+                                        {
+                                            label: __('Box Settings', 'maxi-blocks'),
+                                            content: (
+                                                <Fragment>
+                                                    <BoxShadowControl
+                                                        boxShadowOptions={boxShadow}
+                                                        onChange={boxShadow => setAttributes({ boxShadow })}
+                                                        target=">.maxi-column-block-content"
+                                                    />
+                                                    <hr style={{ marginTop: "28px" }} />
+                                                    <BorderControl
+                                                        borderOptions={border}
+                                                        onChange={border => setAttributes({ border })}
+                                                        target=">.maxi-column-block-content"
+                                                    />
+                                                </Fragment>
+                                            ),
+                                        },
+                                        {
+                                            label: __(' Width / Height', 'maxi-blocks'),
+                                            content: (
+                                                <FullSizeControl
+                                                    sizeSettings={size}
+                                                    onChange={size => setAttributes({ size })}
+                                                    target=">.maxi-column-block-content"
+                                                />
+                                            ),
+                                        },
+                                        {
+                                            label: __('Padding & Margin', 'maxi-blocks'),
+                                            content: (
+                                                <Fragment>
+                                                    <DimensionsControl
+                                                        value={padding}
+                                                        onChange={padding => setAttributes({ padding })}
+                                                        target=">.maxi-column-block-content"
+                                                        avoidZero
+                                                    />
+                                                    <DimensionsControl
+                                                        value={margin}
+                                                        onChange={margin => setAttributes({ margin })}
+                                                        target=">.maxi-column-block-content"
+                                                        avoidZero
+                                                    />
+                                                </Fragment>
+                                            ),
+                                        }
+                                    ]}
+                                />
                             </Fragment>
-                        )
-                    },
-                    {
-                        label: __('Style', 'maxi-blocks'),
-                        content: (
-                            <AccordionControl
-                                isPrimary
-                                items={[
-                                    {
-                                        label: __('Background Image', 'maxi-blocks'),
-                                        content: (
-                                            <BackgroundControl
-                                                backgroundOptions={background}
-                                                onChange={background => setAttributes({ background })}
-                                                target=">.maxi-column-block-content"
-                                            />
-                                        ),
-                                    },
-                                    {
-                                        label: __('Box Settings', 'maxi-blocks'),
-                                        content: (
-                                            <Fragment>
-                                                <BoxShadowControl
-                                                    boxShadowOptions={boxShadow}
-                                                    onChange={boxShadow => setAttributes({ boxShadow })}
-                                                    target=">.maxi-column-block-content"
-                                                />
-                                                <hr style={{ marginTop: "28px" }} />
-                                                <BorderControl
-                                                    borderOptions={border}
-                                                    onChange={border => setAttributes({ border })}
-                                                    target=">.maxi-column-block-content"
-                                                />
-                                            </Fragment>
-                                        ),
-                                    },
-                                    {
-                                        label: __(' Width / Height', 'maxi-blocks'),
-                                        content: (
-                                            <FullSizeControl
-                                                sizeSettings={size}
-                                                onChange={size => setAttributes({ size })}
-                                                target=">.maxi-column-block-content"
-                                            />
-                                        ),
-                                    },
-                                    {
-                                        label: __('Padding & Margin', 'maxi-blocks'),
-                                        content: (
-                                            <Fragment>
-                                                <DimensionsControl
-                                                    value={padding}
-                                                    onChange={padding => setAttributes({ padding })}
-                                                    target=">.maxi-column-block-content"
-                                                    avoidZero
-                                                />
-                                                <DimensionsControl
-                                                    value={margin}
-                                                    onChange={margin => setAttributes({ margin })}
-                                                    target=">.maxi-column-block-content"
-                                                    avoidZero
-                                                />
-                                            </Fragment>
-                                        ),
-                                    }
-                                ]}
-                            />
                         )
                     },
                     {

@@ -2090,11 +2090,9 @@ div.maxi-row-block.has-child-selected > div.maxi-row-selector-wrapper {
 *
 * Moved common styles to './src/css' 
 */
-.maxi-alignment-control .components-base-control__field {
-  border: 2px solid #dddfe1;
-  -ms-flex-pack: justify;
-      justify-content: space-between;
-  border-radius: 5px; }
+.maxi-alignment-control.maxi-alignment-control__no-label .components-radio-control__option {
+  -ms-flex: 1;
+      flex: 1; }
 
 .maxi-alignment-control .components-radio-control__option {
   opacity: 1 !important;
@@ -2104,11 +2102,15 @@ div.maxi-row-block.has-child-selected > div.maxi-row-selector-wrapper {
   font-size: 20px;
   color: #464a53;
   font-weight: 500;
-  -ms-flex: 1;
-      flex: 1;
-  border-right: 2px solid #dddfe1; }
-  .maxi-alignment-control .components-radio-control__option:last-child {
-    border-right: 0; }
+  border: 2px solid #dddfe1;
+  border-right: 0; }
+  .maxi-alignment-control .components-radio-control__option:last-of-type {
+    border-right: 2px solid #dddfe1;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px; }
+  .maxi-alignment-control .components-radio-control__option:first-of-type {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px; }
   .maxi-alignment-control .components-radio-control__option input {
     display: none; }
     .maxi-alignment-control .components-radio-control__option input:checked ~ label {

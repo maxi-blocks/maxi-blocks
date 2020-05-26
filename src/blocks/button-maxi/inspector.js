@@ -129,6 +129,7 @@ class Inspector extends Component {
                                                     <AlignmentControl
                                                             value={alignment}
                                                             onChange={alignment => setAttributes({ alignment })}
+                                                            disableJustify
                                                         />
                                                     </Fragment>
                                                 )

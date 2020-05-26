@@ -144,8 +144,8 @@ export default class Typography extends GXComponent {
         }
 
         return (
-            <div className={classes}> 
-                <div className="maxi-typography-color-display maxi-component-color-inidicator"> 
+            <div className={classes}>
+                <div className="maxi-typography-color-display maxi-component-color-inidicator">
                     <span
                         style={{
                             background: value.general.color,
@@ -178,6 +178,7 @@ export default class Typography extends GXComponent {
                                         defaultColor={defaultColor}
                                     />
                                     <AlignmentControl
+                                        label={__('Alignment', 'maxi-blocks')}
                                         value={value.general['text-align']}
                                         onChange={val => onChangeValue(val, 'text-align')}
                                     />
@@ -185,7 +186,7 @@ export default class Typography extends GXComponent {
                                         device={device}
                                         onChange={onSelect}
                                     />
-                                    <SizeControl 
+                                    <SizeControl
                                         className={'maxi-typography-size'}
                                         label={__('Size', 'maxi-blocks')}
                                         unit={value[device][getKey(value[device], 0)]}
@@ -193,7 +194,7 @@ export default class Typography extends GXComponent {
                                         value={value[device][getKey(value[device], 1)]}
                                         onChangeValue={value => onChangeValue(value, 1)}
                                     />
-                                    <SizeControl 
+                                    <SizeControl
                                         className={'maxi-typography-line-height'}
                                         label={__('Line Height', 'maxi-blocks')}
                                         unit={value[device][getKey(value[device], 2)]}
@@ -201,7 +202,7 @@ export default class Typography extends GXComponent {
                                         value={value[device][getKey(value[device], 3)]}
                                         onChangeValue={value => onChangeValue(value, 3)}
                                     />
-                                    <SizeControl 
+                                    <SizeControl
                                         className={'maxi-typography-letter-spacing'}
                                         label={__('Letter Spacing', 'maxi-blocks')}
                                         unit={value[device][getKey(value[device], 4)]}

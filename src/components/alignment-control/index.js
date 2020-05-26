@@ -5,6 +5,11 @@ const { __ } = wp.i18n;
 const { RadioControl } = wp.components;
 
 /**
+ * External dependencies
+ */
+import classnames from 'classnames';
+
+/**
  * Styles and Icons
  */
 import './editor.scss';
@@ -24,6 +29,7 @@ const AlignmentControl = props => {
     const {
         value,
         onChange,
+        label = '',
         disableLeft = false,
         disableCenter = false,
         disableRight = false,
@@ -44,9 +50,15 @@ const AlignmentControl = props => {
         return options;
     }
 
+    const classes = classnames(
+        'maxi-alignment-control',
+        ( label === '' ) ? 'maxi-alignment-control__no-label' : ''
+    );
+
     return (
         <RadioControl
-            className={'maxi-alignment-control'}
+            label={ label }
+            className={classes}
             selected={value}
             options={getOptions()}
             onChange={value => onChange(value)}

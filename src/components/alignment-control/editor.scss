@@ -1,8 +1,8 @@
 .maxi-alignment-control {
-    .components-base-control__field {
-        border: 2px solid #dddfe1;
-        justify-content: space-between;
-        border-radius: 5px;
+    &.maxi-alignment-control__no-label {
+        .components-radio-control__option {
+           flex: 1;
+        }
     }
     .components-radio-control__option {
         opacity: 1 !important;
@@ -12,11 +12,17 @@
         font-size: 20px;
         color: #464a53;
         font-weight: 500;
-        flex: 1;
-        border-right: 2px solid #dddfe1;
+        border: 2px solid #dddfe1;
+        border-right: 0;
 
-        &:last-child {
-            border-right: 0;
+        &:last-of-type {
+            border-right: 2px solid #dddfe1;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
+        &:first-of-type {
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
         }
 
         input {

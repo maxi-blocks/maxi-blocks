@@ -94,7 +94,6 @@ const Inspector = props => {
                     {
                         label: __('Style', 'maxi-blocks'),
                         icon: style,
-                        disableStyles: true,
                         content: (
                             <AccordionControl
                                 isPrimary

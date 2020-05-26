@@ -287,8 +287,10 @@ class ResponsiveStylesResolver {
         let unit = this.object.unit ? this.object.unit : '';
 
         for (let [target, prop] of Object.entries(object)) {
-            if (typeof prop === 'undefined')
+            if (typeof prop === 'undefined') {
+                console.error('Undefined property');
                 return;
+            }
             // values with dimensions
             if (this.avoidZero){
                 if (

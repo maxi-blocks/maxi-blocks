@@ -90,7 +90,7 @@ function gutenberg_extra_load_custom_wp_admin_script() {
 
 	wp_register_script('maxi-blocks-gutenberg-ui-js', plugins_url( '/js/gutenberg-ui.js', dirname( __FILE__ ) ), array( 'wp-i18n' ), null, true);
 	wp_localize_script('maxi-blocks-gutenberg-ui-js', 'maxiGutenbergUI', array(
-	    'maxi-plugin-url' => plugins_url(),
+	    'maxi-plugin-url' => plugins_url()
 	));
 
 	wp_enqueue_script('maxi-blocks-gutenberg-ui-js');

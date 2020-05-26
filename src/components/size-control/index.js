@@ -57,14 +57,12 @@ const SizeControl = props => {
         className
     );
 
-    const instanceId = useInstanceId(SizeControl);
-    const id = `inspector-radio-control-${instanceId}`;
     const options = [
         { label: 'PX', value: 'px' },
         { label: 'EM', value: 'em' },
         { label: 'VW', value: 'vw' },
         { label: '%', value: '%' },
-    ]
+    ];
 
     return (
         <BaseControl
@@ -81,8 +79,8 @@ const SizeControl = props => {
                             key={option.value}
                             className='components-maxi-dimensions-control__units-button maxi-unit-button'
                             isSmall
-                            isPrimary={value.unit === value}
-                            aria-pressed={value.unit === value}
+                            isPrimary={option.value === unit}
+                            aria-pressed={option.value === unit}
                             aria-label={sprintf(
                                 /* translators: %s: values associated with CSS syntax, 'Pixel', 'Em', 'Percentage' */
                                 __('%s Units', 'maxi-blocks'),
@@ -99,11 +97,9 @@ const SizeControl = props => {
                 type='number'
                 className='maxi-sizecontrol-value'
                 value={value}
-                onChange={onChangeValue}
+                onChange={e => onChangeValue(e.target.value)}
                 min={minMaxSettings[unit].min}
                 max={minMaxSettings[unit].max}
-                allowReset={true}
-                initialPosition={0}
             />
             <Button
                 className="components-maxi-dimensions-control__units-reset"

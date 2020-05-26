@@ -87,7 +87,7 @@ jQuery(document).ready(function($) {
 
                                         let first_image_id = json.match(new RegExp('wp:image {"id":' + '(.*)' + ','))[1];
 
-                                        let first_image_url = json.match(new RegExp('img src="' + '(.*)' + '" alt'))[1];
+                                        let first_image_url = json.match(new RegExp('/(?=https)(.*?)(.(gif|png|jpe?g))/gim'))[1];
 
                                         console.log(first_image_id);
 

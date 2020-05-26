@@ -96,7 +96,7 @@ const withAttributes = createHigherOrderComponent(
 );
 
 const uniqueIdCreator = name => {
-	let newID = uniqueId(`maxi-${name.replace('maxi-blocks/', '')}-`);
+	let newID = uniqueId(`${name.replace('maxi-blocks/', '')}-`);
 
 	if (!isEmpty(document.getElementsByClassName(newID)) || !isNil(document.getElementById(newID)))
 		uniqueIdCreator(name);

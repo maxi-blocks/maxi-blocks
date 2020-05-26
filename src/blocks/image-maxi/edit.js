@@ -11,7 +11,7 @@ const {
     __experimentalBlock,
     MediaUpload
 } = wp.blockEditor;
-const { 
+const {
     dispatch,
     withSelect,
 } = wp.data;
@@ -29,7 +29,6 @@ import classnames from 'classnames';
 import {
     isEmpty,
     isNil,
-    isNumber
 } from 'lodash';
 
 /**
@@ -53,7 +52,7 @@ class edit extends GXBlock {
         if (this.type === 'normal')
             return `${this.props.attributes.uniqueID}`;
         if (this.type === 'hover')
-        return `${this.props.attributes.uniqueID}:hover`;
+            return `${this.props.attributes.uniqueID}:hover`;
     }
 
     get getObject() {
@@ -66,6 +65,10 @@ class edit extends GXBlock {
     get getNormalObject() {
         const {
             alignment,
+            maxWidthUnit,
+            maxWidth,
+            widthUnit,
+            width,
             opacity,
             backgroundColor,
             backgroundGradient
@@ -90,12 +93,20 @@ class edit extends GXBlock {
                     break;
             }
         }
-        if (isNumber(opacity))
+        if (!!opacity)
             response.general['opacity'] = opacity;
-        if (!isEmpty(backgroundColor))
+        if (!!backgroundColor)
             response.general['background-color'] = backgroundColor;
-        if (!isEmpty(backgroundGradient))
+        if (!!backgroundGradient)
             response.general['background'] = backgroundGradient;
+        if (!!maxWidth) {
+            response.general['max-widthUnit'] = maxWidthUnit;
+            response.general['max-width'] = maxWidth;
+        }
+        if (!!width) {
+            response.general['widthUnit'] = widthUnit;
+            response.general['width'] = width;
+        }
 
         return response;
     }
@@ -108,7 +119,7 @@ class edit extends GXBlock {
         } = this.props.attributes;
 
         const response = {
-            label: 'Image',
+            label: 'Image Hover',
             general: {}
         }
         if (opacityHover)
@@ -137,7 +148,6 @@ class edit extends GXBlock {
             },
         });
     }
-
 
     render() {
         const {
@@ -183,15 +193,13 @@ class edit extends GXBlock {
 
         const image = getImage();
         if (image && imageData) {
-            console.log(image.source_url)
-
-            if(mediaALT != imageData.alt_text)
-                setAttributes({ mediaALT: imageData.alt_text})
-            if(mediaURL != image.source_url)
+            if (mediaALT != imageData.alt_text)
+                setAttributes({ mediaALT: imageData.alt_text })
+            if (mediaURL != image.source_url)
                 setAttributes({ mediaURL: image.source_url })
-            if(mediaWidth != image.width)
+            if (mediaWidth != image.width)
                 setAttributes({ mediaWidth: image.width })
-            if(mediaHeight != image.height)
+            if (mediaHeight != image.height)
                 setAttributes({ mediaHeight: image.height })
         }
 

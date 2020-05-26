@@ -29,15 +29,6 @@ import {
 } from '../../components';
 
 /**
- * Icons
- */
-import {
-    content,
-    style,
-    advanced
-} from '../../icons'
-
-/**
  * Inspector
  */
 class Inspector extends Component {
@@ -119,8 +110,7 @@ class Inspector extends Component {
                 <SettingTabsControl
                     items={[
                         {
-                            label: __('Content', 'maxi-blocks'),
-                            icon: content,
+                            label: __('Style', 'maxi-blocks'),
                             content: (
                                 <Fragment>
                                     <BlockStylesControl
@@ -136,264 +126,256 @@ class Inspector extends Component {
                                         onChange={textLevel => setAttributes({ textLevel })}
                                         fontOptions={typography} // It may need to send typographyHover too
                                     />
+                                    <AccordionControl
+                                        isPrimary
+                                        items={[
+                                            {
+                                                label: __('Typography & Colors', 'maxi-blocks'),
+                                                content: (
+                                                    <Fragment>
+                                                        <NormalHoverControl
+                                                            selector={selectorTypographyColors}
+                                                            onChange={selectorTypographyColors => this.setState({ selectorTypographyColors })}
+                                                        />
+                                                        <TypographyControl
+                                                            fontOptions={
+                                                                getNormalHoverValue(
+                                                                    selectorTypographyColors,
+                                                                    typography,
+                                                                    typographyHover
+                                                                )
+                                                            }
+                                                            onChange={value =>
+                                                                normalHoverSaver(
+                                                                    selectorTypographyColors,
+                                                                    'typography',
+                                                                    'typographyHover',
+                                                                    value
+                                                                )
+                                                            }
+                                                            target={
+                                                                selectorTypographyColors != 'hover' ?
+                                                                    undefined :
+                                                                    ':hover'
+                                                            }
+                                                        />
+                                                        <ColorControl
+                                                            label={__('Background Colour', 'maxi-blocks')}
+                                                            color={
+                                                                getNormalHoverValue(
+                                                                    selectorTypographyColors,
+                                                                    backgroundColor,
+                                                                    backgroundColorHover
+                                                                )
+                                                            }
+                                                            defaultcolor={
+                                                                getNormalHoverValue(
+                                                                    selectorTypographyColors,
+                                                                    backgroundDefaultColor,
+                                                                    backgroundDefaultColorHover
+                                                                )
+                                                            }
+                                                            onColorChange={value =>
+                                                                normalHoverSaver(
+                                                                    selectorTypographyColors,
+                                                                    'backgroundColor',
+                                                                    'backgroundColorHover',
+                                                                    value
+                                                                )
+                                                            }
+                                                            gradient={
+                                                                getNormalHoverValue(
+                                                                    selectorTypographyColors,
+                                                                    backgroundGradient,
+                                                                    backgroundGradientHover
+                                                                )
+                                                            }
+                                                            defaultGradient={
+                                                                getNormalHoverValue(
+                                                                    selectorTypographyColors,
+                                                                    backgroundGradientDefault,
+                                                                    backgroundGradientDefaultHover
+                                                                )
+                                                            }
+                                                            onGradientChange={value =>
+                                                                normalHoverSaver(
+                                                                    selectorTypographyColors,
+                                                                    'backgroundGradient',
+                                                                    'backgroundGradientHover',
+                                                                    value
+                                                                )
+                                                            }
+                                                            disableGradientOverBackground
+                                                        />
+                                                    </Fragment>
+                                                )
+                                            },
+                                            {
+                                                label: __('Opacity / Shadow', 'maxi-blocks'),
+                                                content: (
+                                                    <Fragment>
+                                                        <NormalHoverControl
+                                                            selector={selectorOpacityShadow}
+                                                            onChange={selectorOpacityShadow => this.setState({ selectorOpacityShadow })}
+                                                        />
+                                                        <RangeControl
+                                                            label={__("Opacity", "maxi-blocks")}
+                                                            className={"maxi-opacity-control"}
+                                                            value={
+                                                                getNormalHoverValue(
+                                                                    selectorOpacityShadow,
+                                                                    opacity,
+                                                                    opacityHover
+                                                                ) * 100
+                                                            }
+                                                            onChange={value =>
+                                                                normalHoverSaver(
+                                                                    selectorOpacityShadow,
+                                                                    'opacity',
+                                                                    'opacityHover',
+                                                                    value / 100
+                                                                )
+                                                            }
+                                                            min={0}
+                                                            max={100}
+                                                            allowReset={true}
+                                                            initialPosition={0}
+                                                        />
+                                                        <BoxShadowControl
+                                                            boxShadowOptions={
+                                                                getNormalHoverValue(
+                                                                    selectorOpacityShadow,
+                                                                    boxShadow,
+                                                                    boxShadowHover
+                                                                )
+                                                            }
+                                                            onChange={value =>
+                                                                normalHoverSaver(
+                                                                    selectorOpacityShadow,
+                                                                    'boxShadow',
+                                                                    'boxShadowHover',
+                                                                    value
+                                                                )
+                                                            }
+                                                            target={
+                                                                selectorOpacityShadow != 'hover' ?
+                                                                    undefined :
+                                                                    ':hover'
+                                                            }
+                                                        />
+                                                    </Fragment>
+                                                )
+                                            },
+                                            {
+                                                label: __("Border", "maxi-blocks"),
+                                                content: (
+                                                    <Fragment>
+                                                        <NormalHoverControl
+                                                            selector={selectorBorder}
+                                                            onChange={selectorBorder => {
+                                                                this.setState({ selectorBorder });
+                                                            }}
+                                                        />
+                                                        <BorderControl
+                                                            borderOptions={
+                                                                getNormalHoverValue(
+                                                                    selectorBorder,
+                                                                    border,
+                                                                    borderHover
+                                                                )
+                                                            }
+                                                            onChange={value =>
+                                                                normalHoverSaver(
+                                                                    selectorBorder,
+                                                                    'border',
+                                                                    'borderHover',
+                                                                    value
+                                                                )
+                                                            }
+                                                            target={
+                                                                selectorBorder != 'hover' ?
+                                                                    undefined :
+                                                                    ':hover'
+                                                            }
+                                                        />
+                                                    </Fragment>
+                                                )
+                                            },
+                                            {
+                                                label: __('Width / Height', 'maxi-blocks'),
+                                                content: (
+                                                    <Fragment>
+                                                        <FullSizeControl
+                                                            sizeSettings={size}
+                                                            onChange={size => setAttributes({ size })}
+                                                        />
+                                                    </Fragment>
+                                                )
+                                            },
+                                            {
+                                                label: __('Padding / Margin', 'maxi-blocks'),
+                                                content: (
+                                                    <Fragment>
+                                                        <NormalHoverControl
+                                                            selector={selectorPaddingMargin}
+                                                            onChange={selectorPaddingMargin => {
+                                                                this.setState({ selectorPaddingMargin });
+                                                            }}
+                                                        />
+                                                        <DimensionsControl
+                                                            value={
+                                                                getNormalHoverValue(
+                                                                    selectorPaddingMargin,
+                                                                    padding,
+                                                                    paddingHover
+                                                                )
+                                                            }
+                                                            onChange={value =>
+                                                                normalHoverSaver(
+                                                                    selectorPaddingMargin,
+                                                                    'padding',
+                                                                    'paddingHover',
+                                                                    value
+                                                                )
+                                                            }
+                                                            target={
+                                                                selectorPaddingMargin != 'hover' ?
+                                                                    undefined :
+                                                                    ':hover'
+                                                            }
+                                                        />
+                                                        <DimensionsControl
+                                                            value={
+                                                                getNormalHoverValue(
+                                                                    selectorPaddingMargin,
+                                                                    margin,
+                                                                    marginHover
+                                                                )
+                                                            }
+                                                            onChange={value =>
+                                                                normalHoverSaver(
+                                                                    selectorPaddingMargin,
+                                                                    'margin',
+                                                                    'marginHover',
+                                                                    value
+                                                                )
+                                                            }
+                                                            target={
+                                                                selectorPaddingMargin != 'hover' ?
+                                                                    undefined :
+                                                                    ':hover'
+                                                            }
+                                                        />
+                                                    </Fragment>
+                                                )
+                                            }
+                                        ]}
+                                    />
                                 </Fragment>
                             )
                         },
                         {
-                            label: __('Style', 'maxi-blocks'),
-                            icon: style,
-                            disableStyles: true,
-                            content: (
-                                <AccordionControl
-                                    isPrimary
-                                    items={[
-                                        {
-                                            label: __('Typography & Colors', 'maxi-blocks'),
-                                            content: (
-                                                <Fragment>
-                                                    <NormalHoverControl
-                                                        selector={selectorTypographyColors}
-                                                        onChange={selectorTypographyColors => this.setState({ selectorTypographyColors })}
-                                                    />
-                                                    <TypographyControl
-                                                        fontOptions={
-                                                            getNormalHoverValue(
-                                                                selectorTypographyColors,
-                                                                typography,
-                                                                typographyHover
-                                                            )
-                                                        }
-                                                        onChange={value =>
-                                                            normalHoverSaver(
-                                                                selectorTypographyColors,
-                                                                'typography',
-                                                                'typographyHover',
-                                                                value
-                                                            )
-                                                        }
-                                                        target={
-                                                            selectorTypographyColors != 'hover' ?
-                                                                undefined :
-                                                                ':hover'
-                                                        }
-                                                    />
-                                                    <ColorControl
-                                                        label={__('Background Colour', 'maxi-blocks')}
-                                                        color={
-                                                            getNormalHoverValue(
-                                                                selectorTypographyColors,
-                                                                backgroundColor,
-                                                                backgroundColorHover
-                                                            )
-                                                        }
-                                                        defaultcolor={
-                                                            getNormalHoverValue(
-                                                                selectorTypographyColors,
-                                                                backgroundDefaultColor,
-                                                                backgroundDefaultColorHover
-                                                            )
-                                                        }
-                                                        onColorChange={value =>
-                                                            normalHoverSaver(
-                                                                selectorTypographyColors,
-                                                                'backgroundColor',
-                                                                'backgroundColorHover',
-                                                                value
-                                                            )
-                                                        }
-                                                        gradient={
-                                                            getNormalHoverValue(
-                                                                selectorTypographyColors,
-                                                                backgroundGradient,
-                                                                backgroundGradientHover
-                                                            )
-                                                        }
-                                                        defaultGradient={
-                                                            getNormalHoverValue(
-                                                                selectorTypographyColors,
-                                                                backgroundGradientDefault,
-                                                                backgroundGradientDefaultHover
-                                                            )
-                                                        }
-                                                        onGradientChange={value =>
-                                                            normalHoverSaver(
-                                                                selectorTypographyColors,
-                                                                'backgroundGradient',
-                                                                'backgroundGradientHover',
-                                                                value
-                                                            )
-                                                        }
-                                                        disableGradientOverBackground
-                                                    />
-                                                </Fragment>
-                                            )
-                                        },
-                                        {
-                                            label: __('Opacity / Shadow', 'maxi-blocks'),
-                                            content: (
-                                                <Fragment>
-                                                    <NormalHoverControl
-                                                        selector={selectorOpacityShadow}
-                                                        onChange={selectorOpacityShadow => this.setState({ selectorOpacityShadow })}
-                                                    />
-                                                    <RangeControl
-                                                        label={__("Opacity", "maxi-blocks")}
-                                                        className={"maxi-opacity-control"}
-                                                        value={
-                                                            getNormalHoverValue(
-                                                                selectorOpacityShadow,
-                                                                opacity,
-                                                                opacityHover
-                                                            ) * 100
-                                                        }
-                                                        onChange={value =>
-                                                            normalHoverSaver(
-                                                                selectorOpacityShadow,
-                                                                'opacity',
-                                                                'opacityHover',
-                                                                value / 100
-                                                            )
-                                                        }
-                                                        min={0}
-                                                        max={100}
-                                                        allowReset={true}
-                                                        initialPosition={0}
-                                                    />
-                                                    <BoxShadowControl
-                                                        boxShadowOptions={
-                                                            getNormalHoverValue(
-                                                                selectorOpacityShadow,
-                                                                boxShadow,
-                                                                boxShadowHover
-                                                            )
-                                                        }
-                                                        onChange={value =>
-                                                            normalHoverSaver(
-                                                                selectorOpacityShadow,
-                                                                'boxShadow',
-                                                                'boxShadowHover',
-                                                                value
-                                                            )
-                                                        }
-                                                        target={
-                                                            selectorOpacityShadow != 'hover' ?
-                                                                undefined :
-                                                                ':hover'
-                                                        }
-                                                    />
-                                                </Fragment>
-                                            )
-                                        },
-                                        {
-                                            label: __("Border", "maxi-blocks"),
-                                            content: (
-                                                <Fragment>
-                                                    <NormalHoverControl
-                                                        selector={selectorBorder}
-                                                        onChange={selectorBorder => {
-                                                            this.setState({ selectorBorder });
-                                                        }}
-                                                    />
-                                                    <BorderControl
-                                                        borderOptions={
-                                                            getNormalHoverValue(
-                                                                selectorBorder,
-                                                                border,
-                                                                borderHover
-                                                            )
-                                                        }
-                                                        onChange={value =>
-                                                            normalHoverSaver(
-                                                                selectorBorder,
-                                                                'border',
-                                                                'borderHover',
-                                                                value
-                                                            )
-                                                        }
-                                                        target={
-                                                            selectorBorder != 'hover' ?
-                                                                undefined :
-                                                                ':hover'
-                                                        }
-                                                    />
-                                                </Fragment>
-                                            )
-                                        },
-                                        {
-                                            label: __('Width / Height', 'maxi-blocks'),
-                                            content: (
-                                                <Fragment>
-                                                    <FullSizeControl
-                                                        sizeSettings={size}
-                                                        onChange={size => setAttributes({ size })}
-                                                    />
-                                                </Fragment>
-                                            )
-                                        },
-                                        {
-                                            label: __('Padding / Margin', 'maxi-blocks'),
-                                            content: (
-                                                <Fragment>
-                                                    <NormalHoverControl
-                                                        selector={selectorPaddingMargin}
-                                                        onChange={selectorPaddingMargin => {
-                                                            this.setState({ selectorPaddingMargin });
-                                                        }}
-                                                    />
-                                                    <DimensionsControl
-                                                        value={
-                                                            getNormalHoverValue(
-                                                                selectorPaddingMargin,
-                                                                padding,
-                                                                paddingHover
-                                                            )
-                                                        }
-                                                        onChange={value =>
-                                                            normalHoverSaver(
-                                                                selectorPaddingMargin,
-                                                                'padding',
-                                                                'paddingHover',
-                                                                value
-                                                            )
-                                                        }
-                                                        target={
-                                                            selectorPaddingMargin != 'hover' ?
-                                                                undefined :
-                                                                ':hover'
-                                                        }
-                                                    />
-                                                    <DimensionsControl
-                                                        value={
-                                                            getNormalHoverValue(
-                                                                selectorPaddingMargin,
-                                                                margin,
-                                                                marginHover
-                                                            )
-                                                        }
-                                                        onChange={value =>
-                                                            normalHoverSaver(
-                                                                selectorPaddingMargin,
-                                                                'margin',
-                                                                'marginHover',
-                                                                value
-                                                            )
-                                                        }
-                                                        target={
-                                                            selectorPaddingMargin != 'hover' ?
-                                                                undefined :
-                                                                ':hover'
-                                                        }
-                                                    />
-                                                </Fragment>
-                                            )
-                                        }
-                                    ]}
-                                />
-                            )
-                        },
-                        {
                             label: __('Advanced', 'maxi-blocks'),
-                            icon: advanced,
                             content: (
                                 <Fragment>
                                     <HoverAnimationControl

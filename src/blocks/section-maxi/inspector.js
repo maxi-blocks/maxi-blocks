@@ -22,15 +22,6 @@ import {
 } from '../../components';
 
 /**
- * Icons
- */
-import {
-    content,
-    style,
-    advanced
-} from '../../icons'
-
-/**
  * Inspector
  */
 const Inspector = props => {
@@ -57,82 +48,75 @@ const Inspector = props => {
             <SettingTabsControl
                 items={[
                     {
-                        label: __('Content', 'maxi-blocks'),
-                        icon: content,
-                        content: (
-                            <BlockStylesControl
-                                blockStyle={blockStyle}
-                                onChangeBlockStyle={blockStyle => setAttributes({ blockStyle })}
-                                defaultBlockStyle={defaultBlockStyle}
-                                onChangeDefaultBlockStyle={defaultBlockStyle => setAttributes({ defaultBlockStyle })}
-                            />
-                        )
-                    },
-                    {
                         label: __('Style', 'maxi-blocks'),
-                        icon: style,
-                        disableStyles: true,
                         content: (
-                            <AccordionControl
-                                isPrimary
-                                items={[
-                                    {
-                                        label: __('Background Image', 'maxi-blocks'), content: (
-                                            <BackgroundControl
-                                                backgroundOptions={background}
-                                                onChange={background => setAttributes({ background })}
-                                            />
-                                        ),
-                                    },
-                                    {
-                                        label: __('Box Settings', 'maxi-blocks'), content: (
-                                            <Fragment>
-                                                <BoxShadowControl
-                                                    boxShadowOptions={boxShadow}
-                                                    onChange={boxShadow => setAttributes({ boxShadow })}
+                            <Fragment>
+                                <BlockStylesControl
+                                    blockStyle={blockStyle}
+                                    onChangeBlockStyle={blockStyle => setAttributes({ blockStyle })}
+                                    defaultBlockStyle={defaultBlockStyle}
+                                    onChangeDefaultBlockStyle={defaultBlockStyle => setAttributes({ defaultBlockStyle })}
+                                />
+                                <AccordionControl
+                                    isPrimary
+                                    items={[
+                                        {
+                                            label: __('Background Image', 'maxi-blocks'), content: (
+                                                <BackgroundControl
+                                                    backgroundOptions={background}
+                                                    onChange={background => setAttributes({ background })}
                                                 />
-                                                <hr style={{ marginTop: "28px" }} />
-                                                <BorderControl
-                                                    borderOptions={border}
-                                                    onChange={border => setAttributes({ border })}
-                                                    avoidZero={false}
+                                            ),
+                                        },
+                                        {
+                                            label: __('Box Settings', 'maxi-blocks'), content: (
+                                                <Fragment>
+                                                    <BoxShadowControl
+                                                        boxShadowOptions={boxShadow}
+                                                        onChange={boxShadow => setAttributes({ boxShadow })}
+                                                    />
+                                                    <hr style={{ marginTop: "28px" }} />
+                                                    <BorderControl
+                                                        borderOptions={border}
+                                                        onChange={border => setAttributes({ border })}
+                                                        avoidZero={false}
+                                                    />
+                                                </Fragment>
+                                            ),
+                                        },
+                                        {
+                                            label: __(' Width / Height', 'maxi-blocks'),
+                                            content: (
+                                                <FullSizeControl
+                                                    sizeSettings={size}
+                                                    onChange={size => setAttributes({ size })}
                                                 />
-                                            </Fragment>
-                                        ),
-                                    },
-                                    {
-                                        label: __(' Width / Height', 'maxi-blocks'),
-                                        content: (
-                                            <FullSizeControl
-                                                sizeSettings={size}
-                                                onChange={size => setAttributes({ size })}
-                                            />
-                                        ),
-                                    },
-                                    {
-                                        label: __('Padding & Margin', 'maxi-blocks'),
-                                        content: (
-                                            <Fragment>
-                                                <DimensionsControl
-                                                    value={padding}
-                                                    onChange={padding => setAttributes({ padding })}
-                                                    avoidZero
-                                                />
-                                                <DimensionsControl
-                                                    value={margin}
-                                                    onChange={margin => setAttributes({ margin })}
-                                                    avoidZero
-                                                />
-                                            </Fragment>
-                                        ),
-                                    }
-                                ]}
-                            />
+                                            ),
+                                        },
+                                        {
+                                            label: __('Padding & Margin', 'maxi-blocks'),
+                                            content: (
+                                                <Fragment>
+                                                    <DimensionsControl
+                                                        value={padding}
+                                                        onChange={padding => setAttributes({ padding })}
+                                                        avoidZero
+                                                    />
+                                                    <DimensionsControl
+                                                        value={margin}
+                                                        onChange={margin => setAttributes({ margin })}
+                                                        avoidZero
+                                                    />
+                                                </Fragment>
+                                            ),
+                                        }
+                                    ]}
+                                />
+                            </Fragment>
                         )
                     },
                     {
                         label: __('Advanced', 'maxi-blocks'),
-                        icon: advanced,
                         content: (
                             <Fragment>
                                 <HoverAnimationControl

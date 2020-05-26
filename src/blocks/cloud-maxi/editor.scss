@@ -2,7 +2,7 @@
  * Editor styles for the admin
  */
 
-.maxi-cloud-modal {
+.maxi-block-library__modal {
 	width: 1500px;
 	min-height: 90%;
 	max-width: 90%;
@@ -50,7 +50,7 @@
 		}
 	}
 
-	.components-tab-panel__tabs .maxi-cloud-modal-active-tab {
+	.components-tab-panel__tabs .maxi-block-library__modal-active-tab {
 		font-weight: 600;
 		background: #fff;
 		border: 1px solid #e2e4e7;
@@ -65,7 +65,7 @@
 		float: right;
 	}
 
-	.maxi-cloud-modal-header {
+	.maxi-block-library__modal-header {
 		background: #f2f2f2;
 		padding: 20px;
 		margin-bottom: 20px;
@@ -239,12 +239,12 @@
 	}
 }
 
-.maxi-cloud-selector-placeholder {
+.maxi-block-library__placeholder {
 	.components-placeholder__instructions {
 		margin-bottom: 1.4em;
 	}
 
-	button.maxi-cloud-modal-button {
+	button.maxi-block-library__modal-button {
 		font-size: 16px;
 		height: auto;
 		padding: 6px 18px;

@@ -9,13 +9,13 @@ import React, { createContext, Component } from 'react';
 
 const { apiFetch } = wp;
 
-export const LayoutsContext = createContext({
+export const MaxiContext = createContext({
 	layouts: '',
 	sections: '',
 	all: '',
 });
 
-export default class LayoutsProvider extends Component {
+export default class MaxiProvider extends Component {
 	state = {
 		layouts: '',
 		sections: '',
@@ -24,7 +24,7 @@ export default class LayoutsProvider extends Component {
 
 	async componentDidMount() {
 
-		
+
 		async components => {
 			let layouts   = [];
 			let sections  = [];
@@ -43,18 +43,18 @@ export default class LayoutsProvider extends Component {
 				layouts: layouts,
 				sections: sections,
 			} );
-		} 
+		}
 	}
 
 	render() {
 		return (
-				<LayoutsContext.Provider value={{
+				<MaxiContext.Provider value={{
 					layouts: this.state.layouts,
 					sections: this.state.sections,
 					all: this.state.all,
 				}}>
 					{this.props.children}
-				</LayoutsContext.Provider>
+				</MaxiContext.Provider>
 		);
 	}
 }

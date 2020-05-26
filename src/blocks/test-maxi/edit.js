@@ -145,8 +145,6 @@ class edit extends GXBlock {
             clientId
         } = this.props;
 
-        console.log('original =>', this.props)
-
         let classes = classnames(
             'maxi-block maxi-text-block',
             blockStyle,

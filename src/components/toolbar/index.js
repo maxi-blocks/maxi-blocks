@@ -17,12 +17,12 @@ import { __experimentalDraggableBlock } from '../index';
 import {
     DragAndDrop,
     Style,
-    ColumnPatterns,
+    ColumnPattern,
     Duplicate,
     Link,
     Favorite,
     Delete
-} from './utils';
+} from './utils/index';
 
 /**
  * External dependencies
@@ -73,15 +73,21 @@ const MaxiToolbar = props => {
                         <DragAndDrop
                             clientId={clientId}
                         />
-                        <Style />
-                        <ColumnPatterns />
+                        <Style 
+                            clientId={clientId}
+                        />
+                        <ColumnPattern
+                            clientId={clientId}
+                        />
                         <Duplicate
                             clientId={clientId}
                         />
                         <Link
                             clientId={clientId}
                         />
-                        <Favorite />
+                        <Favorite 
+                            clientId={clientId}
+                        />
                         <Delete
                             clientId={clientId}
                         />

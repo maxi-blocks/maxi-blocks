@@ -14,6 +14,7 @@ const {
  */
 import {
     AccordionControl,
+    AlignmentControl,
     BlockStylesControl,
     BoxShadowControl,
     CheckBoxControl,
@@ -94,6 +95,18 @@ const Inspector = props => {
                                     isSecondary
                                     items={[
                                         {
+                                            label: __("Alignment", "maxi-blocks"),
+                                            content: (
+                                                <Fragment>
+                                                <AlignmentControl
+                                                        value={alignment}
+                                                        onChange={alignment => setAttributes({ alignment })}
+                                                        disableJustify
+                                                    />
+                                                </Fragment>
+                                            )
+                                        },
+                                        {
                                             label: __('Divider', 'maxi-blocks'),
                                             content: (
                                                 <Fragment>
@@ -112,19 +125,6 @@ const Inspector = props => {
                                                         label={__('Rounded Divider', 'maxi-blocks')}
                                                         checked={roundedDivider}
                                                         onChange={roundedDivider => setAttributes({ roundedDivider })}
-                                                    />
-                                                    <hr style={{ marginTop: "28px" }} />
-                                                    {/** May an AligmentControl would be better vvvv */}
-                                                    <SelectControl
-                                                        label={__('Divider Alignment', 'maxi-blocks')}
-                                                        className="maxi-block-style components-base-control divider-alignment"
-                                                        value={alignment}
-                                                        options={[
-                                                            { label: __('Left'), value: 'left' },
-                                                            { label: __('Center'), value: 'center' },
-                                                            { label: __('Right'), value: 'right' },
-                                                        ]}
-                                                        onChange={alignment => setAttributes({ alignment })}
                                                     />
                                                     <hr style={{ marginTop: "28px" }} />
                                                     <SizeControl

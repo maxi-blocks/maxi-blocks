@@ -1486,21 +1486,22 @@ body.Bumblebee .maxi-default .maxi-divider {
       .maxi-popover .components-base-control .components-base-control__field .components-button svg {
         margin: auto; }
 
+.maxi-sidebar .components-range-control .components-base-control__field .components-range-control__wrapper,
+.maxi-popover .components-range-control .components-base-control__field .components-range-control__wrapper {
+  margin-left: 0; }
+
 .maxi-sidebar .components-range-control .components-base-control__field .components-range-control__slider + span,
 .maxi-popover .components-range-control .components-base-control__field .components-range-control__slider + span {
   background: #dddfe1;
-  height: 4px;
-  margin-top: 5px; }
+  height: 4px; }
 
 .maxi-sidebar .components-range-control .components-base-control__field .components-range-control__track,
 .maxi-popover .components-range-control .components-base-control__field .components-range-control__track {
   height: 4px;
-  margin-top: 13px;
-  background: #dddfe1 !important;
-  top: -8px; }
+  background: #dddfe1 !important; }
   .maxi-sidebar .components-range-control .components-base-control__field .components-range-control__track + span,
   .maxi-popover .components-range-control .components-base-control__field .components-range-control__track + span {
-    top: -8px; }
+    top: 1px; }
     .maxi-sidebar .components-range-control .components-base-control__field .components-range-control__track + span span,
     .maxi-popover .components-range-control .components-base-control__field .components-range-control__track + span span {
       -webkit-box-shadow: none !important;
@@ -1704,8 +1705,23 @@ h2.gx_error {
   background: transparent;
   border: none; }
 
-.maxi-sizecontrol-control .components-base-control__field > *:not(.components-base-control__label) {
-  margin-left: 4px; }
+.maxi-sizecontrol-control .components-range-control {
+  width: 100%;
+  -ms-flex: 100% !important;
+      flex: 100% !important;
+  margin-left: 0 !important; }
+
+.maxi-sizecontrol-control .components-base-control__label {
+  -ms-flex: 2 !important;
+      flex: 2 !important; }
+
+.maxi-sizecontrol-control .components-base-control__field {
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap; }
+  .maxi-sizecontrol-control .components-base-control__field > * {
+    margin-left: 4px;
+    -ms-flex: 1;
+        flex: 1; }
 
 /**************************
 * Component Color Indicator

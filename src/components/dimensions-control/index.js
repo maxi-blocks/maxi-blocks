@@ -22,8 +22,6 @@ import { GXComponent } from '../index';
  * External dependencies
  */
 import classnames from 'classnames';
-import map from 'lodash/map';
-import { isNumber } from 'lodash';
 
 /**
  * Styles and icons
@@ -54,7 +52,6 @@ export default class DimensionsControl extends GXComponent {
 	render() {
 		const {
 			className,
-			unit,
 			avoidZero = false
 		} = this.props;
 
@@ -143,7 +140,7 @@ export default class DimensionsControl extends GXComponent {
 						<SelectControl
 							className="components-maxi-dimensions-control__units"
 							options={options}
-							value={unit}
+							value={value.unit}
 							onChange={(val) => onChangeUnit(val)}
 						/>
 						<Button

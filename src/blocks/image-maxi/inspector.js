@@ -168,7 +168,7 @@ class Inspector extends Component {
                                         isSecondary
                                         items={[
                                             {
-                                                label: __("Alignment", "maxi-blocks"),
+                                                label: __('Alignment', 'maxi-blocks'),
                                                 content: (
                                                     <Fragment>
                                                         <AlignmentControl
@@ -179,7 +179,7 @@ class Inspector extends Component {
                                                 )
                                             },
                                             {
-                                                label: __("Sizing", "maxi-blocks"),
+                                                label: __('Sizing', 'maxi-blocks'),
                                                 content: (
                                                     <Fragment>
                                                         <SelectControl
@@ -198,7 +198,6 @@ class Inspector extends Component {
                                                         }
                                                         <SizeControl
                                                             label={__('Width', 'maxi-blocks')}
-                                                            showRangeControl={true}
                                                             unit={widthUnit}
                                                             onChangeUnit={widthUnit => setAttributes({ widthUnit })}
                                                             value={width}
@@ -206,7 +205,6 @@ class Inspector extends Component {
                                                         />
                                                         <SizeControl
                                                             label={__('Max Width', 'maxi-blocks')}
-                                                            showRangeControl={true}
                                                             unit={maxWidthUnit}
                                                             onChangeUnit={maxWidthUnit => setAttributes({ maxWidthUnit })}
                                                             value={maxWidth}
@@ -216,7 +214,7 @@ class Inspector extends Component {
                                                 )
                                             },
                                             {
-                                                label: __("Caption", "maxi-blocks"),
+                                                label: __('Caption', 'maxi-blocks'),
                                                 content: (
                                                     <Fragment>
                                                         <SelectControl
@@ -232,7 +230,7 @@ class Inspector extends Component {
                                                             captionType === 'custom' &&
                                                             <TextControl
                                                                 label={__('Custom Caption', 'maxi-blocks')}
-                                                                className="custom-caption"
+                                                                className='custom-caption'
                                                                 value={captionContent}
                                                                 onChange={captionContent => setAttributes({ captionContent })}
                                                             />
@@ -249,7 +247,7 @@ class Inspector extends Component {
                                                 )
                                             },
                                             {
-                                                label: __("Background", "maxi-blocks"),
+                                                label: __('Background', 'maxi-blocks'),
                                                 content: (
                                                     <Fragment>
                                                         <NormalHoverControl
@@ -307,8 +305,8 @@ class Inspector extends Component {
                                                             disableGradientOverBackground
                                                         />
                                                         <RangeControl
-                                                            label={__("Opacity", "maxi-blocks")}
-                                                            className={"maxi-opacity-control"}
+                                                            label={__('Opacity', 'maxi-blocks')}
+                                                            className='maxi-opacity-control'
                                                             value={
                                                                 getNormalHoverValue(
                                                                     selector,
@@ -355,7 +353,7 @@ class Inspector extends Component {
                                                 )
                                             },
                                             {
-                                                label: __("Border", "maxi-blocks"),
+                                                label: __('Border', 'maxi-blocks'),
                                                 content: (
                                                     <BorderControl
                                                         borderOptions={border}

@@ -9,9 +9,6 @@ const {
     BaseControl,
     Button
 } = wp.components;
-const {
-    Fragment,
-} = wp.element;
 
 /**
  * External dependencies
@@ -31,7 +28,6 @@ const SizeControl = props => {
 
     const {
         label,
-        showRangeControl,
         className,
         unit,
         onChangeUnit,
@@ -70,52 +66,47 @@ const SizeControl = props => {
     ];
 
     return (
-        <Fragment>
-            <BaseControl
-                label={label}
-                className={classes}
+        <BaseControl
+            label={label}
+            className={classes}
+        >
+            <input
+                type='number'
+                className='maxi-sizecontrol-value'
+                value={value}
+                onChange={e => onChangeValue(e.target.value)}
+                min={minMaxSettings[unit].min}
+                max={minMaxSettings[unit].max}
+            />
+            <SelectControl
+                className="components-maxi-dimensions-control__units"
+                options={options}
+                value={unit}
+                onChange={(val) => onChangeUnit(val)}
+            />
+            <Button
+                className="components-maxi-dimensions-control__units-reset"
+                onClick={() => onChangeValue('')}
+                isSmall
+                aria-label={sprintf(
+                    /* translators: %s: a texual label  */
+                    __('Reset %s settings', 'maxi-blocks'),
+                    label.toLowerCase()
+                )}
+                type="reset"
             >
-                <input
-                    type='number'
-                    className='maxi-sizecontrol-value'
-                    value={value}
-                    onChange={e => onChangeValue(e.target.value)}
-                    min={minMaxSettings[unit].min}
-                    max={minMaxSettings[unit].max}
-                />
-                <SelectControl
-                    className="components-maxi-dimensions-control__units"
-                    options={options}
-                    value={unit}
-                    onChange={(val) => onChangeUnit(val)}
-                />
-                <Button
-                    className="components-maxi-dimensions-control__units-reset"
-                    onClick={() => onChangeValue('')}
-                    isSmall
-                    aria-label={sprintf(
-                        /* translators: %s: a texual label  */
-                        __('Reset %s settings', 'maxi-blocks'),
-                        label.toLowerCase()
-                    )}
-                    type="reset"
-                >
-                    {reset}
-                </Button>
-                {
-                    showRangeControl &&
-                    <RangeControl
-                        value={ value }
-                        onChange={val => onChangeValue(val)}
-                        min={minMaxSettings[unit].min}
-                        max={minMaxSettings[unit].max}
-                        allowReset={false}
-                        withInputField={false}
-                        initialPosition={0}
-                    />
-                }
-            </BaseControl>
-        </Fragment>
+                {reset}
+            </Button>
+            <RangeControl
+                value={ value }
+                onChange={val => onChangeValue(val)}
+                min={minMaxSettings[unit].min}
+                max={minMaxSettings[unit].max}
+                allowReset={false}
+                withInputField={false}
+                initialPosition={0}
+            />
+        </BaseControl>
     )
 }
 

@@ -104,9 +104,19 @@ h2.gx_error {
 }
 
 .maxi-sizecontrol-control {
+	.components-range-control {
+		width: 100%;
+		flex: 100% !important;
+		margin-left: 0 !important;
+	}
+	.components-base-control__label {
+		flex: 2 !important;
+	}
 	.components-base-control__field {
-		& > *:not(.components-base-control__label) {
+		flex-wrap: wrap;
+		& > *:not(.components-base-control__label, .components-range-control) {
 			margin-left: 4px;
+			flex: 1;
 		}
 	}
 }

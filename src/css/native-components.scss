@@ -115,21 +115,21 @@
     // RangeControl
     .components-range-control {
         .components-base-control__field {
+            .components-range-control__wrapper {
+                margin-left: 0;
+            }
             .components-range-control__slider {
                 & + span {
                     background: #dddfe1;
                     height: 4px;
-                    margin-top: 5px;
                 }
             }
             .components-range-control__track {
                 height: 4px;
-                margin-top: 13px;
                 background: #dddfe1 !important;
-                top: -8px;
 
                 & + span {
-                    top: -8px;
+                    top: 1px;
                     span {
                         box-shadow: none !important;
                         border: none !important;

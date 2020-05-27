@@ -21,7 +21,10 @@ const {
 /**
  * Internal dependencies
  */
-import { GXBlock } from '../../components';
+import { 
+    GXBlock,
+    __experimentalToolbar
+} from '../../components';
 import Inspector from './inspector';
 import {
     getBackgroundObject,
@@ -199,6 +202,7 @@ class edit extends GXBlock {
 
         return [
             <Inspector {...this.props} />,
+            <__experimentalToolbar />,
             <Fragment>
                 {
                     rowBlockWidth === 0 &&

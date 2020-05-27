@@ -14,7 +14,10 @@ const {
 /**
  * Internal dependencies
  */
-import { GXBlock } from '../../components';
+import { 
+    GXBlock,
+    __experimentalToolbar
+} from '../../components';
 import Inspector from './inspector';
 
 /**
@@ -105,6 +108,7 @@ class edit extends GXBlock {
 
         return [
             <Inspector {...this.props} />,
+            <__experimentalToolbar />,
             <__experimentalBlock
                 data-gx_initial_block_class={defaultBlockStyle}
                 className={classes}

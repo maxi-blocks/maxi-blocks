@@ -12,6 +12,7 @@ import Inspector from './inspector';
 import {
     GXBlock,
     LinkedButton,
+    __experimentalToolbar
 } from '../../components';
 
 /**
@@ -163,6 +164,7 @@ class edit extends GXBlock {
 
         return [
             <Inspector {...this.props} />,
+            <__experimentalToolbar />,
             <__experimentalBlock
                 className={classes}
                 data-gx_initial_block_class={defaultBlockStyle}

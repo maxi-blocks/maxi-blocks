@@ -6,6 +6,9 @@
 		.block-editor-block-card {
 			padding: 9.5px 17px 20px;
 			padding-bottom: 9px;
+			box-shadow: 0px 5px 15px 0px rgba(119, 119, 119, 0.1);
+			position: relative;
+			border-bottom: 1px solid #f4f4f4;
 
 			&:after {
 				position: absolute;
@@ -17,10 +20,6 @@
 			.block-editor-block-card__content {
 				min-width: 87%;
 
-				.block-editor-block-card__title {
-					color: #fff;
-				}
-
 				.block-editor-block-card__description {
 					display: block !important;
 					padding-top: 8px;
@@ -28,11 +27,6 @@
 					margin-left: -12.5%;
 				}
 			}
-		}
-
-		.block-editor-block-card__content *,
-		.block-editor-block-icon * {
-			background: #000 !important;
 		}
 	}
 }
@@ -114,7 +108,7 @@ button[class*="maxi-blocks"] span.block-editor-block-types-list__item-title {
 	color: #fff;
 	font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen-Sans, Ubuntu, Cantarell, Helvetica Neue,
 		sans-serif;
-	background: #000;
+	background: #fff;
 	font-weight: 400;
 }
 

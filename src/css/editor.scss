@@ -103,6 +103,14 @@ h2.gx_error {
 	}
 }
 
+.maxi-sizecontrol-control {
+	.components-base-control__field {
+		& > *:not(.components-base-control__label) {
+			margin-left: 4px;
+		}
+	}
+}
+
 /**************************
 * Component Color Indicator
 **************************/
@@ -123,51 +131,17 @@ h2.gx_error {
 }
 
 /************
-* Unit button
+* Unit Select
 ************/
 
-// .components-maxi-dimensions-control__units button.is-primary,
-.maxi-sizecontrol-unit .components-radio-control__option input:checked + label {
-	color: #464a53 !important;
-	background: #f2f2f2 !important;
-}
-
-.components-maxi-dimensions-control__units {
-	display: flex;
-
-	.maxi-unit-button {
-		top: -1px;
-		display: block;
-		min-width: 33px;
-		height: 30px;
-		font-size: 13px;
-		margin-right: -2px;
-		justify-content: center;
-		line-height: 20px;
-		border: 2px solid #dddfe1 !important;
-		position: relative;
-		text-align: center;
-		text-shadow: none;
-		text-transform: uppercase;
-		color: #464a53 !important;
-		background: #fff;
-		box-shadow: none;
-		padding: 0;
-		box-shadow: none !important;
-
-		&:hover {
-			background: #fff !important;
-		}
-
-		&:focus {
-			border: none;
-			&:enabled {
-				box-shadow: none !important;
+.components-base-control {
+	.components-maxi-dimensions-control__units {
+		margin-bottom: 0 !important;
+		.components-base-control__field {
+			margin-bottom: 0;
+			.components-select-control__input {
+				min-width: 3.2rem;
 			}
-		}
-
-		&[aria-pressed="true"] {
-			background-color: #f2f2f2;
 		}
 	}
 }
@@ -178,9 +152,9 @@ h2.gx_error {
 
 .components-maxi-dimensions-control__units-reset {
 	display: inline-flex;
-	width: 26px;
-	min-width: 26px;
-	height: 26px;
+	width: 31px;
+	min-width: 31px;
+	height: 31px;
 	text-decoration: none;
 	cursor: pointer;
 	-webkit-appearance: none;
@@ -193,11 +167,11 @@ h2.gx_error {
 	opacity: 1;
 	border-radius: 5px;
 	box-shadow: none;
-	border: 1px solid #dddfe1;
+	border: 2px solid #dddfe1;
 
 	svg {
-		width: 18px;
-		height: 18px;
+		width: 12px;
+		height: 12px;
 		fill: #464a53;
 		margin: auto;
 	}

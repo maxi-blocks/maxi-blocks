@@ -30,15 +30,17 @@
             // SelectorControl
             .components-select-control__input {
                 font-size: 10pt !important;
-                max-width: 8.5rem;
+                max-width: 100%;
                 background: #fff url(../img/arrow-down.svg) no-repeat right 7px top 50% !important;
                 background-size: 9px 9px !important;
                 border-radius: 5px !important;
-                border: 1px solid #dddfe1 !important;
+                border: 2px solid #dddfe1 !important;
                 min-height: unset;
                 max-height: unset !important;
                 color: #464a53;
                 font-weight: 500;
+                height: 31px;
+                margin: 0 !important;
             }
 
             // RadioControl
@@ -48,23 +50,21 @@
 
             // ButtonControl
             .components-button {
-                &:not(.maxi-unit-button) {
-                    display: inline-flex;
-                    width: 26px;
-                    min-width: 26px;
-                    height: 26px;
-                    text-decoration: none;
-                    cursor: pointer;
-                    -webkit-appearance: none;
-                    background: none;
-                    background-color: rgba(0, 0, 0, 0);
-                    transition: box-shadow 0.1s linear;
-                    align-items: center;
-                    overflow: hidden;
-                    padding: 0;
-                    opacity: 1;
-                    border-radius: 5px;
-                }
+                display: inline-flex;
+                width: 31px;
+                min-width: 31px;
+                height: 31px;
+                text-decoration: none;
+                cursor: pointer;
+                -webkit-appearance: none;
+                background: none;
+                background-color: rgba(0, 0, 0, 0);
+                transition: box-shadow 0.1s linear;
+                align-items: center;
+                overflow: hidden;
+                padding: 0;
+                opacity: 1;
+                border-radius: 5px;
 
                 &:hover {
                     box-shadow: none !important;
@@ -115,13 +115,26 @@
     // RangeControl
     .components-range-control {
         .components-base-control__field {
+            .components-range-control__slider {
+                & + span {
+                    background: #dddfe1;
+                    height: 4px;
+                    margin-top: 5px;
+                }
+            }
             .components-range-control__track {
-                & ~ span {
+                height: 4px;
+                margin-top: 13px;
+                background: #dddfe1 !important;
+                top: -8px;
+
+                & + span {
+                    top: -8px;
                     span {
                         box-shadow: none !important;
                         border: none !important;
-                        width: 16px;
-                        height: 16px;
+                        width: 14px;
+                        height: 14px;
                         background-color: #464a53;
                     }
                 }

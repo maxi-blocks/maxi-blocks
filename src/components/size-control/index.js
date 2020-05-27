@@ -4,8 +4,8 @@
 const { __ } = wp.i18n;
 const { useInstanceId } = wp.compose;
 const {
+    SelectControl,
     BaseControl,
-    ButtonGroup,
     Button
 } = wp.components;
 
@@ -69,30 +69,6 @@ const SizeControl = props => {
             label={label}
             className={classes}
         >
-            <ButtonGroup
-                className="components-maxi-dimensions-control__units"
-                aria-label={__('Select Units', 'maxi-blocks')}
-            >
-                {
-                    options.map(option => (
-                        <Button
-                            key={option.value}
-                            className='components-maxi-dimensions-control__units-button maxi-unit-button'
-                            isSmall
-                            isPrimary={option.value === unit}
-                            aria-pressed={option.value === unit}
-                            aria-label={sprintf(
-                                /* translators: %s: values associated with CSS syntax, 'Pixel', 'Em', 'Percentage' */
-                                __('%s Units', 'maxi-blocks'),
-                                name
-                            )}
-                            onClick={() => onChangeUnit(option.value)}
-                        >
-                            {option.label}
-                        </Button>
-                    ))
-                }
-            </ButtonGroup>
             <input
                 type='number'
                 className='maxi-sizecontrol-value'
@@ -100,6 +76,12 @@ const SizeControl = props => {
                 onChange={e => onChangeValue(e.target.value)}
                 min={minMaxSettings[unit].min}
                 max={minMaxSettings[unit].max}
+            />
+            <SelectControl
+                className="components-maxi-dimensions-control__units"
+                options={options}
+                value={unit}
+                onChange={(val) => onChangeUnit(val)}
             />
             <Button
                 className="components-maxi-dimensions-control__units-reset"

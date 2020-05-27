@@ -179,7 +179,7 @@ class Inspector extends Component {
                                                 )
                                             },
                                             {
-                                                label: __("Image", "maxi-blocks"),
+                                                label: __("Sizing", "maxi-blocks"),
                                                 content: (
                                                     <Fragment>
                                                         <SelectControl
@@ -196,8 +196,46 @@ class Inspector extends Component {
                                                                 onChange={cropOptions => setAttributes({ cropOptions: JSON.stringify(cropOptions) })}
                                                             />
                                                         }
+                                                        <SizeControl
+                                                            label={__('Width', 'maxi-blocks')}
+                                                            unit={widthUnit}
+                                                            onChangeUnit={widthUnit => setAttributes({ widthUnit })}
+                                                            value={width}
+                                                            onChangeValue={width => setAttributes({ width })}
+                                                        />
+                                                        <RangeControl
+                                                            value={ width }
+                                                            onChange={ width => setAttributes({ width }) }
+                                                            min={0}
+                                                            max={999}
+                                                            allowReset={false}
+                                                            withInputField={false}
+                                                            initialPosition={0}
+                                                        />
+                                                        <SizeControl
+                                                            label={__('Max Width', 'maxi-blocks')}
+                                                            unit={maxWidthUnit}
+                                                            onChangeUnit={maxWidthUnit => setAttributes({ maxWidthUnit })}
+                                                            value={maxWidth}
+                                                            onChangeValue={maxWidth => setAttributes({ maxWidth })}
+                                                        />
+                                                        <RangeControl
+                                                            value={ maxWidth }
+                                                            onChange={ maxWidth => setAttributes({ maxWidth }) }
+                                                            min={0}
+                                                            max={999}
+                                                            allowReset={false}
+                                                            withInputField={false}
+                                                            initialPosition={0}
+                                                        />
+                                                    </Fragment>
+                                                )
+                                            },
+                                            {
+                                                label: __("Caption", "maxi-blocks"),
+                                                content: (
+                                                    <Fragment>
                                                         <SelectControl
-                                                            label={__('Caption', 'maxi-blocks')}
                                                             value={captionType}
                                                             options={getCaptionOptions()}
                                                             onChange={captionType => {
@@ -223,38 +261,6 @@ class Inspector extends Component {
                                                                 target='>figcaption'
                                                             />
                                                         }
-                                                        <SizeControl
-                                                            label={__('Max Width', 'maxi-blocks')}
-                                                            unit={maxWidthUnit}
-                                                            onChangeUnit={maxWidthUnit => setAttributes({ maxWidthUnit })}
-                                                            value={maxWidth}
-                                                            onChangeValue={maxWidth => setAttributes({ maxWidth })}
-                                                        />
-                                                        <RangeControl
-                                                            value={ maxWidth }
-                                                            onChange={ maxWidth => setAttributes({ maxWidth }) }
-                                                            min={0}
-                                                            max={999}
-                                                            allowReset={false}
-                                                            withInputField={false}
-                                                            initialPosition={0}
-                                                        />
-                                                        <SizeControl
-                                                            label={__('Width', 'maxi-blocks')}
-                                                            unit={widthUnit}
-                                                            onChangeUnit={widthUnit => setAttributes({ widthUnit })}
-                                                            value={width}
-                                                            onChangeValue={width => setAttributes({ width })}
-                                                        />
-                                                        <RangeControl
-                                                            value={ width }
-                                                            onChange={ width => setAttributes({ width }) }
-                                                            min={0}
-                                                            max={999}
-                                                            allowReset={false}
-                                                            withInputField={false}
-                                                            initialPosition={0}
-                                                        />
                                                     </Fragment>
                                                 )
                                             },

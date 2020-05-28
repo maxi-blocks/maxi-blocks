@@ -4,4 +4,8 @@ export { default as DragAndDrop } from'./dragndrop';
 export { default as Duplicate } from'./duplicate';
 export { default as Favorite } from'./favorite';
 export { default as Link } from'./link';
+export { default as PaddingMargin } from './padding-margin';
 export { default as Style } from'./style';
+export { default as TextColor } from './text-color';
+export { default as TextLevel } from './text-level';
+export { default as TextOptions } from './text-options';

@@ -12,7 +12,10 @@ const {
  * Internal dependencies
  */
 import Inspector from './inspector';
-import { GXBlock } from '../../components';
+import { 
+    GXBlock,
+    __experimentalToolbar
+} from '../../components';
 
 /**
  * External dependencies
@@ -150,6 +153,7 @@ class edit extends GXBlock {
 
         return [
             <Inspector {...this.props} />,
+            <__experimentalToolbar />,
             <RichText
                 value={content}
                 onChange={content => setAttributes({ content })}

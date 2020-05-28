@@ -1,57 +1,66 @@
 /**
  * WordPress dependencies
  */
-const { __experimentalLinkControl } = wp.blockEditor;
+const { Fragment } = wp.element;
 const {
     Icon,
     Dropdown,
-    Button
+    Button,
 } = wp.components;
 const {
     useSelect,
-    useDispatch
+    useDispatch,
 } = wp.data;
+
+/**
+ * Internal dependencies
+ */
+import DimensionsControl from '../../dimensions-control';
 
 /**
  * Icons
  */
-import { toolbarLink } from '../../../icons';
+import { toolbarStyle } from '../../../icons';
 
 /**
- * Link
+ * PaddingMargin
  */
-const Link = props => {
+const PaddingMargin = props => {
     const { clientId } = props;
 
-	const { linkSettings } = useSelect(
-		( select ) => {
-			const { getBlockAttributes } = select(
-				'core/block-editor'
+    const { padding, margin } = useSelect(
+        (select) => {
+            const { getBlockAttributes } = select(
+                'core/block-editor',
             );
-			return {
-				linkSettings: getBlockAttributes( clientId ).linkSettings,
-			};
-		},
-		[ clientId ]
-	);
+            return {
+                padding: getBlockAttributes(clientId).padding,
+                margin: getBlockAttributes(clientId).margin,
+            };
+        },
+        [clientId]
+    );
 
     const { updateBlockAttributes } = useDispatch(
         'core/block-editor'
     );
+
+    if (blockType.name != 'maxi-blocks/text-maxi')
+        return null;
 
     return (
         <Dropdown
             className='toolbar-item toolbar-item__dropdown'
             renderToggle={({ isOpen, onToggle }) => (
                 <Button
-                    className='toolbar-item__link'
+                    className='toolbar-item__text-level'
                     onClick={onToggle}
                     aria-expanded={isOpen}
                     action="popup"
                 >
                     <Icon
                         className='toolbar-item__icon'
-                        icon={toolbarLink}
+                        icon={toolbarStyle}
                     />
                 </Button>
             )}
@@ -64,13 +73,9 @@ const Link = props => {
             }
             renderContent={
                 () => (
-                    <__experimentalLinkControl
-                        className="toolbar-item__popover__link-control"
-                        value={JSON.parse(linkSettings)}
-                        onChange={value => 
-                            updateBlockAttributes(clientId, { linkSettings: JSON.stringify(value) })
-                        }
-                    />
+                    <Fragment>
+                        
+                    </Fragment>
                 )
             }
         >
@@ -78,4 +83,4 @@ const Link = props => {
     )
 }
 
-export default Link;
+export default PaddingMargin;

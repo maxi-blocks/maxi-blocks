@@ -3,12 +3,12 @@
  */
 const { __ } = wp.i18n;
 const { __experimentalBlock } = wp.blockEditor;
-const { dispatch } = wp.data;
 
 /**
  * Internal dependencies
  */
 import Inspector from './inspector';
+import { BackEndResponsiveStyles } from '../../extensions/styles';
 import {
     GXBlock,
     LinkedButton,
@@ -83,13 +83,26 @@ class edit extends GXBlock {
         const {
             backgroundColor,
             background,
-            opacity
+            opacity,
+            boxShadow,
+            border,
+            size,
+            padding,
+            margin
         } = this.props.attributes;
 
         const response = {
-            label: 'Button',
-            general: {}
+            boxShadow,
+            border,
+            size,
+            padding,
+            margin,
+            button: {
+                label: 'Button',
+                general: {}
+            }
         }
+
         if (!isEmpty(backgroundColor))
             response.general['background-color'] = backgroundColor;
         if (!isEmpty(background))
@@ -103,20 +116,32 @@ class edit extends GXBlock {
         const {
             backgroundColorHover,
             backgroundHover,
-            opacityHover
+            opacityHover,
+            boxShadowHover,
+            borderHover,
+            sizeHover,
+            paddingHover,
+            marginHover
         } = this.props.attributes;
 
         const response = {
-            label: 'Button',
-            general: {}
+            boxShadowHover,
+            borderHover,
+            sizeHover,
+            paddingHover,
+            marginHover,
+            buttonHover: {
+                label: 'Button',
+                general: {}
+            }
         }
         
         if (!isEmpty(backgroundColorHover))
-            response.general['background-color'] = backgroundColorHover;
+            response.buttonHover.general['background-color'] = backgroundColorHover;
         if (!isEmpty(backgroundHover))
-            response.general['background'] = backgroundHover;
+            response.buttonHover.general['background'] = backgroundHover;
         if (isNumber(opacityHover))
-            response.general['opacity'] = opacityHover;
+            response.buttonHover.general['opacity'] = opacityHover;
 
         return response;
     }
@@ -130,14 +155,6 @@ class edit extends GXBlock {
         this.saveMeta('hover');
 
         new BackEndResponsiveStyles(this.getMeta);
-    }
-
-    saveMeta(type) {
-        dispatch('core/editor').editPost({
-            meta: {
-                _gutenberg_extra_responsive_styles: this.metaValue(null, type, false),
-            },
-        });
     }
 
     render() {

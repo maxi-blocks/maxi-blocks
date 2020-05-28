@@ -48,13 +48,12 @@ export default class DimensionsControl extends GXComponent {
 
 	componentDidMount() {
 		const value = typeof this.props.value === 'object' ? this.props.value : JSON.parse(this.props.value);
-		this.saveAndSend(value, this.props.avoidZero || false)
+		this.saveAndSend(value)
 	}
 
 	render() {
 		const {
 			className,
-			avoidZero = false
 		} = this.props;
 
 		const {
@@ -117,7 +116,7 @@ export default class DimensionsControl extends GXComponent {
 
 		const onChangeUnit = (unit) => {
 			value.unit = unit;
-			this.saveAndSend(value, avoidZero);
+			this.saveAndSend(value);
 		}
 
 		const onChangeValue = e => {
@@ -135,7 +134,7 @@ export default class DimensionsControl extends GXComponent {
 				value[device][getKey(value[device], target)] = !!Number(newValue) || newValue === '0' ? Number(newValue) : newValue;
 			}
 
-			this.saveAndSend(value, avoidZero);
+			this.saveAndSend(value);
 		}
 
 		const onReset = () => {
@@ -145,12 +144,12 @@ export default class DimensionsControl extends GXComponent {
 					value[device][sync] = true;
 			}
 
-			this.saveAndSend(value, avoidZero);
+			this.saveAndSend(value);
 		}
 
 		const onChangeSync = () => {
 			value[device].sync = !value[device].sync;
-			this.saveAndSend(value, avoidZero);
+			this.saveAndSend(value);
 		}
 				
 		return (

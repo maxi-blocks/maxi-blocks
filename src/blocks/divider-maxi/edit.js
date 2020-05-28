@@ -8,7 +8,8 @@ const { dispatch } = wp.data;
  * Internal dependencies
  */
 import Inspector from './inspector';
-import { 
+import { BackEndResponsiveStyles } from '../../extensions/styles';
+import {
     GXBlock,
     __experimentalToolbar
 } from '../../components';
@@ -46,39 +47,52 @@ class edit extends GXBlock {
             dividerWidthUnit,
             dividerWidth,
             dividerHeightUnit,
-            dividerHeight
+            dividerHeight,
+            opacity,
+            boxShadow,
+            size,
+            padding,
+            margin,
         } = this.props.attributes;
 
         const response = {
-            label: 'Divider',
-            general: {}
-        }
+            boxShadow,
+            size,
+            padding,
+            margin,
+            divider: {
+                label: 'Divider',
+                general: {}
+            }
+        };
 
-        if (!isNil(alignment)) {
+        if (!isNil(alignment)) {    // Needs to be reviewed
             switch (alignment) {
                 case 'left':
-                    response.general['margin-left'] = "0px";
+                    response.divider.general['margin-left'] = "0px";
                     break;
                 case 'center':
                 case 'justify':
-                    // response.general['margin-left'] = "auto";
-                    // response.general['margin-right'] = "auto";
+                    // response.divider.general['margin-left'] = "auto";
+                    // response.divider.general['margin-right'] = "auto";
                     null
                     break;
                 case 'right':
-                    response.general['margin-right'] = "0px";
+                    response.divider.general['margin-right'] = "0px";
                     break;
             }
         }
+        if (isNumber(opacity))
+            response.text.general['opacity'] = opacity;
         if (!isEmpty(dividerColor))
-            response.general['background-color'] = dividerColor;
+            response.divider.general['background-color'] = dividerColor;
         if (isNumber(dividerWidth)) {
-            response.general['widthUnit'] = dividerWidthUnit;
-            response.general['width'] = dividerWidth;
+            response.divider.general['widthUnit'] = dividerWidthUnit;
+            response.divider.general['width'] = dividerWidth;
         }
         if (isNumber(dividerHeight)) {
-            response.general['heightUnit'] = dividerHeightUnit;
-            response.general['height'] = dividerHeight;
+            response.divider.general['heightUnit'] = dividerHeightUnit;
+            response.divider.general['height'] = dividerHeight;
         }
 
         return response;

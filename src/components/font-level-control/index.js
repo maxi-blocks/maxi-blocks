@@ -70,18 +70,18 @@ export default class FontLevelControl extends Component {
         return response;
     }
 
-    /**
-    * Saves and send the data. Also refresh the styles on Editor
-    */
-    saveAndSend(value, fontOptResponse) {
-        this.props.onChange(value, JSON.stringify(fontOptResponse));
-        dispatch('core/editor').editPost({
-            meta: {
-                _gutenberg_extra_responsive_styles: this.metaValue(fontOptResponse),
-            },
-        });
-        new BackEndResponsiveStyles(this.getMeta);
-    }
+    // /**
+    // * Saves and send the data. Also refresh the styles on Editor
+    // */
+    // saveAndSend(value, fontOptResponse) {
+    //     this.props.onChange(value, JSON.stringify(fontOptResponse));
+    //     dispatch('core/editor').editPost({
+    //         meta: {
+    //             _gutenberg_extra_responsive_styles: this.metaValue(fontOptResponse),
+    //         },
+    //     });
+    //     new BackEndResponsiveStyles(this.getMeta);
+    // }
 
     render() {
         const {

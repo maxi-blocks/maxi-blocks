@@ -131,19 +131,23 @@ class edit extends GXBlock {
         const {
             opacityHover,
             backgroundColorHover,
-            backgroundGradientHover
+            backgroundGradientHover,
+            boxShadowHover
         } = this.props.attributes;
 
         const response = {
-            label: 'Image Hover',
-            general: {}
+            boxShadowHover: { ...JSON.parse(boxShadowHover) },
+            imageHover: {
+                label: 'Image Hover',
+                general: {}
+            }
         }
         if (opacityHover)
-            response.general['opacity'] = opacityHover;
+            response.imageHover.general['opacity'] = opacityHover;
         if (!isEmpty(backgroundColorHover))
-            response.general['background-color'] = backgroundColorHover;
+            response.imageHover.general['background-color'] = backgroundColorHover;
         if (!isEmpty(backgroundGradientHover))
-            response.general['background'] = backgroundGradientHover;
+            response.imageHover.general['background'] = backgroundGradientHover;
         return response;
     }
 

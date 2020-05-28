@@ -19,6 +19,7 @@ import {
     __experimentalToolbar
 } from '../../components';
 import Inspector from './inspector';
+import { getBakcgroundObject } from '../../extensions/styles/utils'
 
 /**
  * External dependencies

@@ -320,11 +320,11 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
         const responsiveStyle = new ResponsiveStylesResolver(target, obj);
         const response = JSON.stringify(responsiveStyle.getNewValue);
 
-        dispatch('core/editor').editPost({
-            meta: {
-                _gutenberg_extra_responsive_styles: response,
-            },
-        });
+        // dispatch('core/editor').editPost({
+        //     meta: {
+        //         _gutenberg_extra_responsive_styles: response,
+        //     },
+        // });
         // new BackEndResponsiveStyles(meta);
     }
 

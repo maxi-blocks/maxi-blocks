@@ -98,18 +98,6 @@ class edit extends GXBlock {
         return response;
     }
 
-    /**
-    * Refresh the styles on Editor
-    */
-    displayStyles() {
-        dispatch('core/editor').editPost({
-            meta: {
-                _gutenberg_extra_responsive_styles: this.metaValue(),
-            },
-        });
-        new BackEndResponsiveStyles(this.getMeta);
-    }
-
     render() {
         const {
             className,

@@ -106,7 +106,7 @@ class edit extends GXBlock {
         } = this.props;
 
         let response = {
-            background: { ...JSON.parse(background) },
+            background: { ...getBakcgroundObject(JSON.parse(background)) },
             boxShadow: { ...JSON.parse(boxShadow) },
             border: { ...JSON.parse(border) },
             borderWidth: { ...JSON.parse(border).borderWidth },

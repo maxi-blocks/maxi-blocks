@@ -23,7 +23,6 @@ export class ResponsiveStylesResolver {
         this.target = target;
         this.object = object;
         this.meta = this.oldMeta;
-        console.log(this.oldMeta)
         this.newObject = this.objectManipulator;
     }
 

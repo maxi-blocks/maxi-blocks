@@ -28,6 +28,7 @@ import {
 import Inspector from './inspector';
 import TEMPLATES from './templates';
 import { BackEndResponsiveStyles } from '../../extensions/styles';
+import { getBakcgroundObject } from '../../extensions/styles/utils'
 
 /**
  * External dependencies
@@ -116,8 +117,10 @@ class edit extends GXBlock {
             padding
         } = this.props.attributes;
 
+        console.log(getBakcgroundObject(JSON.parse(background)))
+
         return {
-            background: { ...JSON.parse(background) },
+            background: { ...getBakcgroundObject(JSON.parse(background)) },
             boxShadow: { ...JSON.parse(boxShadow) },
             border: { ...JSON.parse(border) },
             borderWidth: { ...JSON.parse(border).borderWidth },

@@ -56,10 +56,10 @@ class edit extends GXBlock {
         } = this.props.attributes;
 
         const response = {
-            boxShadow,
-            size,
-            padding,
-            margin,
+            boxShadow: { ...JSON.parse(boxShadow) },
+            size: { ...JSON.parse(size) },
+            padding: { ...JSON.parse(padding) },
+            margin: { ...JSON.parse(margin) },
             divider: {
                 label: 'Divider',
                 general: {}
@@ -83,7 +83,7 @@ class edit extends GXBlock {
             }
         }
         if (isNumber(opacity))
-            response.text.general['opacity'] = opacity;
+            response.divider.general['opacity'] = opacity;
         if (!isEmpty(dividerColor))
             response.divider.general['background-color'] = dividerColor;
         if (isNumber(dividerWidth)) {

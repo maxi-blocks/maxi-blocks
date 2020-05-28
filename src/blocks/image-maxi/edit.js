@@ -21,7 +21,7 @@ const {
  */
 import Inspector from './inspector';
 import { BackEndResponsiveStyles } from '../../extensions/styles';
-import { 
+import {
     GXBlock,
     __experimentalToolbar
 } from '../../components';
@@ -78,15 +78,17 @@ class edit extends GXBlock {
             backgroundGradient,
             boxShadow,
             border,
-            padding, 
+            padding,
             margin
         } = this.props.attributes;
 
         const response = {
-            boxShadow,
-            border,
-            padding,
-            margin,
+            boxShadow: { ...JSON.parse(boxShadow) },
+            border: { ...JSON.parse(border) },
+            borderWidth: { ...JSON.parse(border).borderWidth },
+            borderRadius: { ...JSON.parse(border).borderRadius },
+            padding: { ...JSON.parse(padding) },
+            margin: { ...JSON.parse(margin) },
             image: {
                 label: 'Image',
                 general: {}

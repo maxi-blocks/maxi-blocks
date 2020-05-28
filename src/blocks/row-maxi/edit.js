@@ -117,8 +117,6 @@ class edit extends GXBlock {
             padding
         } = this.props.attributes;
 
-        console.log(getBakcgroundObject(JSON.parse(background)))
-
         return {
             background: { ...getBakcgroundObject(JSON.parse(background)) },
             boxShadow: { ...JSON.parse(boxShadow) },

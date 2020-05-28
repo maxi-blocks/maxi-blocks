@@ -34,6 +34,7 @@ import {
     ResponsiveStylesResolver,
     BackEndResponsiveStyles
 } from '../../extensions/styles';
+import { getBakcgroundObject } from '../../extensions/styles/utils'
 
 /**
  * External dependencies

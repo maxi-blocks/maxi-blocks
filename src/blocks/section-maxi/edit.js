@@ -14,7 +14,7 @@ const {
 /**
  * Internal dependencies
  */
-import { 
+import {
     GXBlock,
     __experimentalToolbar
 } from '../../components';
@@ -39,7 +39,32 @@ class edit extends GXBlock {
     }
 
     componentDidUpdate() {
+        this.displayStyles();
         this.setSelectorBlocks();
+    }
+
+    get getObject() {
+        const {
+            background,
+            boxShadow,
+            border,
+            size,
+            margin,
+            padding,
+        } = this.props.attributes;
+
+        const response = {
+            background: { ...JSON.parse(background) },
+            boxShadow: { ...JSON.parse(boxShadow) },
+            border: { ...JSON.parse(border) },
+            borderWidth: { ...JSON.parse(border).borderWidth},
+            borderRadius: {...JSON.parse(border).borderRadius},
+            size: { ...JSON.parse(size) },
+            margin: { ...JSON.parse(margin) },
+            padding: { ...JSON.parse(padding) },
+        };
+
+        return response
     }
 
     setSelectorBlocks() {

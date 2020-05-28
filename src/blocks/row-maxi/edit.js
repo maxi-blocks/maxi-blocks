@@ -21,12 +21,13 @@ const {
 /**
  * Internal dependencies
  */
-import { 
+import {
     GXBlock,
     __experimentalToolbar
 } from '../../components';
 import Inspector from './inspector';
 import TEMPLATES from './templates';
+import { BackEndResponsiveStyles } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -50,7 +51,7 @@ class edit extends GXBlock {
     }
 
     componentDidUpdate() {
-        this.setStyles();
+        this.displayStyles();
         this.setSelectorBlocks()
     }
 
@@ -90,13 +91,15 @@ class edit extends GXBlock {
             return this.getRowObject
     }
 
-    get getColumnObject() {
+    get getColumnObject() { // it will destroy column styles object!
         const { columnGap } = this.props.attributes;
 
         return {
-            label: "Columns margin",
-            general: {
-                margin: `0 ${columnGap}%`
+            columnMargin: {
+                label: "Columns margin",
+                general: {
+                    margin: `0 ${columnGap}%`
+                }
             }
         };
     }
@@ -104,47 +107,51 @@ class edit extends GXBlock {
     get getRowObject() {
         const {
             horizontalAlign,
-            verticalAlign
+            verticalAlign,
+            background,
+            boxShadow,
+            border,
+            size,
+            margin,
+            padding
         } = this.props.attributes;
 
         return {
-            label: "Row align",
-            general: {
-                'justify-content': horizontalAlign,
-                'align-content': verticalAlign
+            background: { ...JSON.parse(background) },
+            boxShadow: { ...JSON.parse(boxShadow) },
+            border: { ...JSON.parse(border) },
+            borderWidth: { ...JSON.parse(border).borderWidth},
+            borderRadius: {...JSON.parse(border).borderRadius},
+            size: { ...JSON.parse(size) },
+            margin: { ...JSON.parse(margin) },
+            padding: { ...JSON.parse(padding) },
+            rowAlign: {
+                label: "Row align",
+                general: {
+                    'justify-content': horizontalAlign,
+                    'align-content': verticalAlign
+                }
             }
         };
     }
 
     /**
-    * Refresh the styles on Editor
-    */
-    displayStyles(type) {
-        dispatch('core/editor').editPost({
-            meta: {
-                _gutenberg_extra_responsive_styles: this.metaValue(null, type),
-            },
-        })
-        .then(() => dispatch('core/editor').savePost())
-    }
-
-    /**
      * Set styles for row and columns
      */
-    setStyles() {
+    displayStyles() {
         this.target = `${this.props.attributes.uniqueID}>div.maxi-column-block`;
-        this.displayStyles('columns');
+        this.saveMeta('columns');
 
         // This should be improved: row have same styling on front and backend, but on different targets
         this.target = `${this.props.attributes.uniqueID}>div.block-editor-inner-blocks>div.block-editor-block-list__layout>div.maxi-column-block-resizer`;
-        this.displayStyles('columns');
+        this.saveMeta('columns');
 
         this.target = `${this.props.attributes.uniqueID}`;
-        this.displayStyles('row');
+        this.saveMeta('row');
 
         // This should be improved: row have same styling on front and backend, but on different targets
         this.target = `${this.props.attributes.uniqueID}>div>div.block-editor-block-list__layout`;
-        this.displayStyles('row');
+        this.saveMeta('row');
 
         new BackEndResponsiveStyles(this.getMeta);
     }
@@ -234,7 +241,7 @@ class edit extends GXBlock {
                                                 <Button
                                                     className="maxi-row-template-button"
                                                     onClick={() => {
-                                                        loadTemplate(i, this.setStyles.bind(this));
+                                                        loadTemplate(i, this.displayStyles.bind(this));
                                                     }}
                                                 >
                                                     <Icon

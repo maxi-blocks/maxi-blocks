@@ -40,7 +40,7 @@ const ColumnPatterns = props => {
 		},
 		[ clientId ]
     );
-    if( blockType != 'maxi-blocks/row-maxi')
+    if( blockType.name != 'maxi-blocks/row-maxi')
         return null;
 
     return (
@@ -48,7 +48,7 @@ const ColumnPatterns = props => {
             className='toolbar-item toolbar-item__dropdown'
             renderToggle={({ isOpen, onToggle }) => (
                 <Button
-                    className='toolbar-item__column-patterns'
+                    className='toolbar-item__column-pattern'
                     onClick={onToggle}
                     aria-expanded={isOpen}
                     action="popup"
@@ -69,15 +69,15 @@ const ColumnPatterns = props => {
             renderContent={
                 () => (
                     <div
-                        class="toolbar-item__popover__wrapper"
+                        class="toolbar-item__popover__wrapper toolbar-item__popover__column-pattern"
                     >
                         {
                             TEMPLATES.map((template, i) => (
                                 <Button
-                                    className="toolbar-item__popover__template-button"
+                                    className="toolbar-item__popover__column-pattern__template-button"
                                 >
                                     <Icon
-                                        className="toolbar-item__popover__template-button__icon"
+                                        className="toolbar-item__popover__column-pattern__template-button__icon"
                                         icon={template.icon}
                                     />
                                 </Button>

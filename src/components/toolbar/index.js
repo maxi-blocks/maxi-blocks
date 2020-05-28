@@ -1,7 +1,6 @@
 /**
  * WordPress dependencies
  */
-const { __ } = wp.i18n;
 const { Popover } = wp.components;
 const { useBlockEditContext } = wp.blockEditor;
 const { Fragment } = wp.element;
@@ -16,18 +15,16 @@ import { __experimentalDraggableBlock } from '../index';
  */
 import {
     DragAndDrop,
-    Style,
     ColumnPattern,
     Duplicate,
     Link,
     Favorite,
-    Delete
+    Delete,
+    TextColor,
+    TextLevel,
+    TextOptions,
+    PaddingMargin
 } from './utils/index';
-
-/**
- * External dependencies
- */
-import classnames from 'classnames';
 
 /**
  * Styles
@@ -38,16 +35,6 @@ import './editor.scss';
  * Component
  */
 const MaxiToolbar = props => {
-    const {
-        className,
-        // clientId
-    } = props;
-
-    const classes = classnames(
-        'toolbar-wrapper',
-        className
-    )
-
     const {
         clientId,
         isSelected
@@ -68,12 +55,18 @@ const MaxiToolbar = props => {
                     className="maxi-toolbar__popover"
                 >
                     <div
-                        className={classes}
+                        className='toolbar-wrapper'
                     >
                         <DragAndDrop
                             clientId={clientId}
                         />
-                        <Style 
+                        <TextOptions
+                            clientId={clientId}
+                        />
+                        <TextColor
+                            clientId={clientId}
+                        />
+                        <TextLevel
                             clientId={clientId}
                         />
                         <ColumnPattern
@@ -85,7 +78,10 @@ const MaxiToolbar = props => {
                         <Link
                             clientId={clientId}
                         />
-                        <Favorite 
+                        <PaddingMargin
+                            clientId={clientId}
+                        />
+                        <Favorite
                             clientId={clientId}
                         />
                         <Delete

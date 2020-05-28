@@ -49,19 +49,11 @@ class PostMeta
 			'show_in_rest'  => true,
 			'single'        => true,
 			'auth_callback' => array($this, 'auth_callback'),
-			'show_in_rest'	=> true,
 		];
 
 		// Responsive styles
 		register_meta(
 			'post',
-			'_gutenberg_extra_responsive_styles',
-			$args
-		);
-
-		// Responsive styles
-		register_meta(
-			'wp_block',
 			'_gutenberg_extra_responsive_styles',
 			$args
 		);

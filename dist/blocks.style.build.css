@@ -289,24 +289,3 @@ button.components-button.components-range-control__reset.is-secondary.is-small {
 @media only screen and (min-width: 600px) {
   .maxi-cloud-landing-3 .ab-block-post-grid header .ab-block-post-grid-title {
     font-size: 24px; } }
-.maxi-image-block {
-  position: relative; }
-  .maxi-image-block > div.maxi-image-block-settings {
-    position: absolute;
-    width: 3rem;
-    height: 3rem;
-    top: 5%;
-    left: calc(95% - 3rem); }
-    .maxi-image-block > div.maxi-image-block-settings > button.maxi-image-block-upload-button {
-      width: 100%;
-      height: 100%;
-      border: 1px solid red;
-      opacity: 0;
-      visibility: hidden;
-      -webkit-transition: all .5s ease;
-      -o-transition: all .5s ease;
-      transition: all .5s ease; }
-
-.maxi-image-block:hover > div.maxi-image-block-settings > button.maxi-image-block-upload-button {
-  opacity: 1;
-  visibility: visible; }

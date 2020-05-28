@@ -144,13 +144,11 @@ const Inspector = props => {
                                                     value={padding}
                                                     onChange={padding => setAttributes({ padding })}
                                                     target=">.maxi-column-block-content"
-                                                    avoidZero
                                                 />
                                                 <DimensionsControl
                                                     value={margin}
                                                     onChange={margin => setAttributes({ margin })}
                                                     target=">.maxi-column-block-content"
-                                                    avoidZero
                                                 />
                                             </Fragment>
                                         ),

@@ -319,7 +319,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
     nestedColumns = pull(nestedColumns, clientId);
     const nestedColumnsNum = originalNestedColumns.length;
 
-    const basicStyling = (id, object, avoidZero = true) => {
+    const basicStyling = (id, object) => {
         const blockUniqueID = select('core/block-editor').getBlockAttributes(id).uniqueID;
         const meta = JSON.parse(select('core/editor').getEditedPostAttribute('meta')._gutenberg_extra_responsive_styles);
 
@@ -332,7 +332,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
         else
             obj = object;
 
-        const responsiveStyle = new ResponsiveStylesResolver(target, meta, obj, avoidZero);
+        const responsiveStyle = new ResponsiveStylesResolver(target, obj);
         const response = JSON.stringify(responsiveStyle.getNewValue);
 
         dispatch('core/editor').editPost({
@@ -340,7 +340,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
                 _gutenberg_extra_responsive_styles: response,
             },
         });
-        new BackEndResponsiveStyles(meta);
+        // new BackEndResponsiveStyles(meta);
     }
 
     const synchronizeStyles = attributes => {

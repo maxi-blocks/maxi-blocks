@@ -20,6 +20,7 @@ const {
  * Internal dependencies
  */
 import Inspector from './inspector';
+import { BackEndResponsiveStyles } from '../../extensions/styles';
 import { 
     GXBlock,
     __experimentalToolbar
@@ -74,41 +75,51 @@ class edit extends GXBlock {
             width,
             opacity,
             backgroundColor,
-            backgroundGradient
+            backgroundGradient,
+            boxShadow,
+            border,
+            padding, 
+            margin
         } = this.props.attributes;
 
         const response = {
-            label: 'Image',
-            general: {}
-        }
+            boxShadow,
+            border,
+            padding,
+            margin,
+            image: {
+                label: 'Image',
+                general: {}
+            }
+        };
 
         if (!isNil(alignment)) {
             switch (alignment) {
                 case 'left':
-                    response.general['text-align'] = 'left';
+                    response.image.general['text-align'] = 'left';
                     break;
                 case 'center':
                 case 'justify':
-                    response.general['text-align'] = 'center';
+                    response.image.general['text-align'] = 'center';
                     break;
                 case 'right':
-                    response.general['text-align'] = 'right';
+                    response.image.general['text-align'] = 'right';
                     break;
             }
         }
         if (!!opacity)
-            response.general['opacity'] = opacity;
+            response.image.general['opacity'] = opacity;
         if (!!backgroundColor)
-            response.general['background-color'] = backgroundColor;
+            response.image.general['background-color'] = backgroundColor;
         if (!!backgroundGradient)
-            response.general['background'] = backgroundGradient;
+            response.image.general['background'] = backgroundGradient;
         if (!!maxWidth) {
-            response.general['max-widthUnit'] = maxWidthUnit;
-            response.general['max-width'] = maxWidth;
+            response.image.general['max-widthUnit'] = maxWidthUnit;
+            response.image.general['max-width'] = maxWidth;
         }
         if (!!width) {
-            response.general['widthUnit'] = widthUnit;
-            response.general['width'] = width;
+            response.image.general['widthUnit'] = widthUnit;
+            response.image.general['width'] = width;
         }
 
         return response;
@@ -142,14 +153,6 @@ class edit extends GXBlock {
         this.saveMeta('hover');
 
         new BackEndResponsiveStyles(this.getMeta);
-    }
-
-    saveMeta(type) {
-        dispatch('core/editor').editPost({
-            meta: {
-                _gutenberg_extra_responsive_styles: this.metaValue(null, type, false),
-            },
-        });
     }
 
     render() {

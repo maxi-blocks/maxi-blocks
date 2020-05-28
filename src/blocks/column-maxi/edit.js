@@ -30,6 +30,10 @@ import {
     getBackgroundObject,
     getBoxShadowObject
 } from './utils';
+import { 
+    ResponsiveStylesResolver,
+    BackEndResponsiveStyles
+} from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -86,73 +90,45 @@ class edit extends GXBlock {
     }
 
     /**
-     * Retrieve the target for responsive CSS
-     */
-    get getTarget() {
-        return `${this.props.attributes.uniqueID}`;
-    }
-
-    /**
      * Get object for styling
      */
     get getObject() {
         const {
             attributes: {
                 columnSize,
-                sizeMobile,
-                sizeTablet
+                background,
+                boxShadow,
+                border,
+                size,
+                margin,
+                padding
             },
         } = this.props;
 
         let response = {
-            label: "Column",
-            desktop: {},
-            tablet: {},
-            mobile: {}
+            background,
+            boxShadow,
+            border,
+            size,
+            margin,
+            padding,
+            column: {
+                label: "Column",
+                general: {},
+            }
         };
 
         if (!isNil(columnSize) && isNumber(columnSize))
             if (columnSize != 0) {
-                response.desktop['flex'] = `0 0 ${columnSize}%`;
-                response.desktop['max-width'] = `${columnSize}%`;
+                response.column.general['flex'] = `0 0 ${columnSize}%`;
+                response.column.general['max-width'] = `${columnSize}%`;
             }
             else {
-                response.desktop['flex'] = '0 0 auto';
-                response.desktop['max-width'] = '';
+                response.column.general['flex'] = '0 0 auto';
+                response.column.general['max-width'] = '';
             }
-        if (!isNil(sizeTablet) && isNumber(sizeTablet)) {
-            if (sizeTablet != 0) {
-                response.tablet['flex'] = `0 0 ${sizeTablet}%`;
-                response.tablet['max-width'] = `${sizeTablet}%`;
-            }
-            else {
-                response.tablet['flex'] = '0 0 auto';
-                response.tablet['max-width'] = '';
-            }
-        }
-        if (!isNil(sizeMobile) && isNumber(sizeMobile)) {
-            if (sizeMobile != 0) {
-                response.mobile['flex'] = `0 0 ${sizeMobile}%`;
-                response.mobile['max-width'] = `${sizeMobile}%`;
-            }
-            else {
-                response.mobile['flex'] = '0 0 auto';
-                response.mobile['max-width'] = '';
-            }
-        }
 
         return response;
-    }
-
-    /**
-    * Refresh the styles on Editor
-    */
-    displayStyles() {
-        dispatch('core/editor').editPost({
-            meta: {
-                _gutenberg_extra_responsive_styles: this.metaValue(),
-            },
-        });
     }
 
     render() {
@@ -327,9 +303,8 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
     nestedColumns = pull(nestedColumns, clientId);
     const nestedColumnsNum = originalNestedColumns.length;
 
-    const basicStyling = (id, object, avoidZero = true) => {
+    const basicStyling = (id, object) => { // With new GXBlock style delivery system may is no requried anymore
         const blockUniqueID = select('core/block-editor').getBlockAttributes(id).uniqueID;
-        const meta = JSON.parse(select('core/editor').getEditedPostAttribute('meta')._gutenberg_extra_responsive_styles);
 
         const target = `${blockUniqueID}">.maxi-column-block-content"`;
         let obj = {};
@@ -340,7 +315,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
         else
             obj = object;
 
-        const responsiveStyle = new ResponsiveStylesResolver(target, meta, obj, avoidZero);
+        const responsiveStyle = new ResponsiveStylesResolver(target, obj); 
         const response = JSON.stringify(responsiveStyle.getNewValue);
 
         dispatch('core/editor').editPost({
@@ -348,7 +323,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
                 _gutenberg_extra_responsive_styles: response,
             },
         });
-        new BackEndResponsiveStyles(meta);
+        // new BackEndResponsiveStyles(meta);
     }
 
     const synchronizeStyles = attributes => {

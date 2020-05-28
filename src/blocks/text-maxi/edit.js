@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { dispatch } = wp.data;
 const {
     __experimentalBlock,
     RichText,
@@ -12,7 +11,8 @@ const {
  * Internal dependencies
  */
 import Inspector from './inspector';
-import { 
+import { BackEndResponsiveStyles } from '../../extensions/styles';
+import {
     GXBlock,
     __experimentalToolbar
 } from '../../components';
@@ -23,7 +23,6 @@ import {
 import classnames from 'classnames';
 import {
     isEmpty,
-    isNil,
     isNumber
 } from 'lodash';
 
@@ -31,11 +30,6 @@ import {
  * Content
  */
 class edit extends GXBlock {
-
-    componentDidUpdate() {
-        this.displayStyles();
-    }
-
     /**
      * Retrieve the target for responsive CSS
      */
@@ -55,59 +49,74 @@ class edit extends GXBlock {
 
     get getNormalObject() {
         const {
-            alignment,
-            opacity,
+            typography,
             backgroundColor,
-            backgroundGradient
+            backgroundGradient,
+            opacity,
+            boxShadow,
+            border,
+            size,
+            margin,
+            padding,
         } = this.props.attributes;
 
         const response = {
-            label: 'Text',
-            general: {}
-        }
-
-        if (!isNil(alignment)) {
-            switch (alignment) {
-                case 'left':
-                    response.general['margin-right'] = 'auto';
-                    break;
-                case 'center':
-                case 'justify':
-                    response.general['margin-right'] = 'auto';
-                    response.general['margin-left'] = 'auto';
-                    break;
-                case 'right':
-                    response.general['margin-left'] = 'auto';
-                    break;
+            typography: { ...JSON.parse(typography) },
+            boxShadow: { ...JSON.parse(boxShadow) },
+            border: { ...JSON.parse(border) },
+            borderWidth: { ...JSON.parse(border).borderWidth },
+            borderRadius: { ...JSON.parse(border).borderRadius },
+            size: { ...JSON.parse(size) },
+            margin: { ...JSON.parse(margin) },
+            padding: { ...JSON.parse(padding) },
+            text: {
+                label: 'Text',
+                general: {}
             }
-        }
+        };
+
         if (isNumber(opacity))
-            response.general['opacity'] = opacity;
+            response.text.general['opacity'] = opacity;
         if (!isEmpty(backgroundColor))
-            response.general['background-color'] = backgroundColor;
+            response.text.general['background-color'] = backgroundColor;
         if (!isEmpty(backgroundGradient))
-            response.general['background'] = backgroundGradient;
+            response.text.general['background'] = backgroundGradient;
 
         return response;
     }
 
     get getHoverObject() {
         const {
-            opacityHover,
+            typographyHover,
             backgroundColorHover,
-            backgroundGradientHover
+            backgroundGradientHover,
+            opacityHover,
+            boxShadowHover,
+            borderHover,
+            marginHover,
+            paddingHover,
         } = this.props.attributes;
 
         const response = {
-            label: 'Text',
-            general: {}
-        }
+            typographyHover: { ...JSON.parse(typographyHover) },
+            boxShadowHover: { ...JSON.parse(boxShadowHover) },
+            borderHover: { ...JSON.parse(borderHover) },
+            borderWidth: { ...JSON.parse(borderHover).borderWidth },
+            borderRadius: { ...JSON.parse(borderHover).borderRadius },
+            marginHover: { ...JSON.parse(marginHover) },
+            paddingHover: { ...JSON.parse(paddingHover) },
+            text: {
+                label: 'Text',
+                general: {}
+            }
+        };
+
         if (opacityHover)
-            response.general['opacity'] = opacityHover;
+            response.text.general['opacity'] = opacityHover;
         if (!isEmpty(backgroundColorHover))
-            response.general['background-color'] = backgroundColorHover;
+            response.text.general['background-color'] = backgroundColorHover;
         if (!isEmpty(backgroundGradientHover))
-            response.general['background'] = backgroundGradientHover;
+            response.text.general['background'] = backgroundGradientHover;
         return response;
     }
 
@@ -119,14 +128,6 @@ class edit extends GXBlock {
         this.saveMeta('hover');
 
         new BackEndResponsiveStyles(this.getMeta);
-    }
-
-    saveMeta(type) {
-        dispatch('core/editor').editPost({
-            meta: {
-                _gutenberg_extra_responsive_styles: this.metaValue(null, type, false),
-            },
-        });
     }
 
     render() {

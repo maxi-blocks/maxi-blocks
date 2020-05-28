@@ -24,6 +24,7 @@ import {
     isNil,
     isNumber
 } from 'lodash';
+import { typographyHover } from './data';
 
 /**
  * Content
@@ -43,7 +44,7 @@ class edit extends GXBlock {
         if (this.type === 'normal')
             return `${this.props.attributes.uniqueID} .maxi-buttoneditor-button`;
         if (this.type === 'hover')
-        return `${this.props.attributes.uniqueID} .maxi-buttoneditor-button:hover`;
+            return `${this.props.attributes.uniqueID} .maxi-buttoneditor-button:hover`;
     }
 
     /**
@@ -60,19 +61,21 @@ class edit extends GXBlock {
 
     get getWrapperObject() {
         const response = {
-            label: 'Button',
-            general: {}
+            button: {
+                label: 'Button',
+                general: {}
+            }
         }
         if (!isNil(this.props.attributes.alignment)) {
             switch (this.props.attributes.alignment) {
                 case 'left':
-                    response.general['justify-content'] = 'flex-start';
+                    response.button.general['justify-content'] = 'flex-start';
                     break;
                 case 'center':
-                    response.general['justify-content'] = 'center';
+                    response.button.general['justify-content'] = 'center';
                     break;
                 case 'right':
-                    response.general['justify-content'] = 'flex-end';
+                    response.button.general['justify-content'] = 'flex-end';
                     break;
             }
         }
@@ -82,8 +85,9 @@ class edit extends GXBlock {
     get getNormalObject() {
         const {
             backgroundColor,
-            background,
+            backgroundGradient,
             opacity,
+            typography,
             boxShadow,
             border,
             size,
@@ -92,11 +96,14 @@ class edit extends GXBlock {
         } = this.props.attributes;
 
         const response = {
-            boxShadow,
-            border,
-            size,
-            padding,
-            margin,
+            typography: { ...JSON.parse(typography) },
+            boxShadow: { ...JSON.parse(boxShadow) },
+            border: { ...JSON.parse(border) },
+            borderWidth: { ...JSON.parse(border).borderWidth },
+            borderRadius: { ...JSON.parse(border).borderRadius },
+            size: { ...JSON.parse(size) },
+            padding: { ...JSON.parse(padding) },
+            margin: { ...JSON.parse(margin) },
             button: {
                 label: 'Button',
                 general: {}
@@ -104,42 +111,45 @@ class edit extends GXBlock {
         }
 
         if (!isEmpty(backgroundColor))
-            response.general['background-color'] = backgroundColor;
-        if (!isEmpty(background))
-            response.general['background'] = background;
+            response.button.general['background-color'] = backgroundColor;
+        if (!isEmpty(backgroundGradient))
+            response.button.general['background'] = backgroundGradient;
         if (isNumber(opacity))
-            response.general['opacity'] = opacity;
+            response.button.general['opacity'] = opacity;
+
         return response;
     }
 
     get getHoverObject() {
         const {
             backgroundColorHover,
-            backgroundHover,
+            backgroundGradientHover,
             opacityHover,
+            typographyHover,
             boxShadowHover,
             borderHover,
-            sizeHover,
             paddingHover,
             marginHover
         } = this.props.attributes;
 
         const response = {
-            boxShadowHover,
-            borderHover,
-            sizeHover,
-            paddingHover,
-            marginHover,
+            typographyHover: { ...JSON.parse(typographyHover) },
+            boxShadowHover: { ...JSON.parse(boxShadowHover) },
+            borderHover: { ...JSON.parse(borderHover) },
+            borderWidth: { ...JSON.parse(borderHover).borderWidth },
+            borderRadius: { ...JSON.parse(borderHover).borderRadius },
+            paddingHover: { ...JSON.parse(paddingHover) },
+            marginHover: { ...JSON.parse(marginHover) },
             buttonHover: {
                 label: 'Button',
                 general: {}
             }
         }
-        
+
         if (!isEmpty(backgroundColorHover))
             response.buttonHover.general['background-color'] = backgroundColorHover;
-        if (!isEmpty(backgroundHover))
-            response.buttonHover.general['background'] = backgroundHover;
+        if (!isEmpty(backgroundGradientHover))
+            response.buttonHover.general['background'] = backgroundGradientHover;
         if (isNumber(opacityHover))
             response.buttonHover.general['opacity'] = opacityHover;
 

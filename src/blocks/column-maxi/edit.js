@@ -21,7 +21,7 @@ const {
 /**
  * Internal dependencies
  */
-import { 
+import {
     GXBlock,
     __experimentalToolbar
 } from '../../components';
@@ -30,7 +30,7 @@ import {
     getBackgroundObject,
     getBoxShadowObject
 } from './utils';
-import { 
+import {
     ResponsiveStylesResolver,
     BackEndResponsiveStyles
 } from '../../extensions/styles';
@@ -66,7 +66,7 @@ class edit extends GXBlock {
     spaceChecker() {
         if (isNil(this.props.attributes.originalNestedColumns))
             return;
-            
+
         let totalSize = [];
         this.props.originalNestedColumns.map(columnId => {
             totalSize.push(select('core/block-editor').getBlockAttributes(columnId).columnSize);
@@ -106,12 +106,14 @@ class edit extends GXBlock {
         } = this.props;
 
         let response = {
-            background,
-            boxShadow,
-            border,
-            size,
-            margin,
-            padding,
+            background: { ...JSON.parse(background) },
+            boxShadow: { ...JSON.parse(boxShadow) },
+            border: { ...JSON.parse(border) },
+            borderWidth: { ...JSON.parse(border).borderWidth },
+            borderRadius: { ...JSON.parse(border).borderRadius },
+            size: { ...JSON.parse(size) },
+            margin: { ...JSON.parse(margin) },
+            padding: { ...JSON.parse(padding) },
             column: {
                 label: "Column",
                 general: {},
@@ -133,7 +135,7 @@ class edit extends GXBlock {
 
     render() {
         const ALLOWED_BLOCKS = wp.blocks.getBlockTypes().map(block => block.name)
-        .filter(blockName => (blockName !== 'maxi-blocks/row-maxi' && blockName !== 'maxi-blocks/column-maxi'));
+            .filter(blockName => (blockName !== 'maxi-blocks/row-maxi' && blockName !== 'maxi-blocks/column-maxi'));
 
         const {
             attributes: {
@@ -315,7 +317,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
         else
             obj = object;
 
-        const responsiveStyle = new ResponsiveStylesResolver(target, obj); 
+        const responsiveStyle = new ResponsiveStylesResolver(target, obj);
         const response = JSON.stringify(responsiveStyle.getNewValue);
 
         dispatch('core/editor').editPost({

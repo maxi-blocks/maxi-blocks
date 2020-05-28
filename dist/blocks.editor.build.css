@@ -1412,25 +1412,27 @@ body.Bumblebee .maxi-default .maxi-divider {
     .maxi-sidebar .components-base-control .components-base-control__field .components-select-control__input,
     .maxi-popover .components-base-control .components-base-control__field .components-select-control__input {
       font-size: 10pt !important;
-      max-width: 8.5rem;
+      max-width: 100%;
       background: #fff url(../img/arrow-down.svg) no-repeat right 7px top 50% !important;
       background-size: 9px 9px !important;
       border-radius: 5px !important;
-      border: 1px solid #dddfe1 !important;
+      border: 2px solid #dddfe1 !important;
       min-height: unset;
       max-height: unset !important;
       color: #464a53;
-      font-weight: 500; }
+      font-weight: 500;
+      height: 31px;
+      margin: 0 !important; }
     .maxi-sidebar .components-base-control .components-base-control__field .components-radio-control__option:not(:last-child),
     .maxi-popover .components-base-control .components-base-control__field .components-radio-control__option:not(:last-child) {
       margin-bottom: 0 !important; }
-    .maxi-sidebar .components-base-control .components-base-control__field .components-button:not(.maxi-unit-button),
-    .maxi-popover .components-base-control .components-base-control__field .components-button:not(.maxi-unit-button) {
+    .maxi-sidebar .components-base-control .components-base-control__field .components-button,
+    .maxi-popover .components-base-control .components-base-control__field .components-button {
       display: -ms-inline-flexbox;
       display: inline-flex;
-      width: 26px;
-      min-width: 26px;
-      height: 26px;
+      width: 31px;
+      min-width: 31px;
+      height: 31px;
       text-decoration: none;
       cursor: pointer;
       -webkit-appearance: none;
@@ -1447,42 +1449,67 @@ body.Bumblebee .maxi-default .maxi-divider {
       padding: 0;
       opacity: 1;
       border-radius: 5px; }
-    .maxi-sidebar .components-base-control .components-base-control__field .components-button:hover,
-    .maxi-popover .components-base-control .components-base-control__field .components-button:hover {
+      .maxi-sidebar .components-base-control .components-base-control__field .components-button:hover,
+      .maxi-popover .components-base-control .components-base-control__field .components-button:hover {
+        -webkit-box-shadow: none !important;
+                box-shadow: none !important;
+        border-color: #c5c5c5 !important;
+        cursor: pointer; }
+      .maxi-sidebar .components-base-control .components-base-control__field .components-button:focus,
+      .maxi-popover .components-base-control .components-base-control__field .components-button:focus {
+        -webkit-box-shadow: none !important;
+                box-shadow: none !important; }
+      .maxi-sidebar .components-base-control .components-base-control__field .components-button.is-primary,
+      .maxi-popover .components-base-control .components-base-control__field .components-button.is-primary {
+        border-color: #00ccff; }
+        .maxi-sidebar .components-base-control .components-base-control__field .components-button.is-primary:focus:enabled,
+        .maxi-popover .components-base-control .components-base-control__field .components-button.is-primary:focus:enabled {
+          -webkit-box-shadow: 0 0 0 1px #fff, 0 0 0 3px #00ccff;
+                  box-shadow: 0 0 0 1px #fff, 0 0 0 3px #00ccff; }
+      .maxi-sidebar .components-base-control .components-base-control__field .components-button.is-secondary,
+      .maxi-popover .components-base-control .components-base-control__field .components-button.is-secondary {
+        -webkit-box-shadow: none !important;
+                box-shadow: none !important;
+        border: 1px solid #dddfe1 !important; }
+        .maxi-sidebar .components-base-control .components-base-control__field .components-button.is-secondary:hover,
+        .maxi-popover .components-base-control .components-base-control__field .components-button.is-secondary:hover {
+          background-color: white !important;
+          border-color: #ff4a17 !important; }
+        .maxi-sidebar .components-base-control .components-base-control__field .components-button.is-secondary svg,
+        .maxi-popover .components-base-control .components-base-control__field .components-button.is-secondary svg {
+          width: 18px !important;
+          height: 18px !important; }
+      .maxi-sidebar .components-base-control .components-base-control__field .components-button[type="reset"] svg,
+      .maxi-popover .components-base-control .components-base-control__field .components-button[type="reset"] svg {
+        fill: #464a53 !important; }
+      .maxi-sidebar .components-base-control .components-base-control__field .components-button svg,
+      .maxi-popover .components-base-control .components-base-control__field .components-button svg {
+        margin: auto; }
+
+.maxi-sidebar .components-range-control .components-base-control__field .components-range-control__wrapper,
+.maxi-popover .components-range-control .components-base-control__field .components-range-control__wrapper {
+  margin-left: 0; }
+
+.maxi-sidebar .components-range-control .components-base-control__field .components-range-control__slider + span,
+.maxi-popover .components-range-control .components-base-control__field .components-range-control__slider + span {
+  background: #dddfe1;
+  height: 4px; }
+
+.maxi-sidebar .components-range-control .components-base-control__field .components-range-control__track,
+.maxi-popover .components-range-control .components-base-control__field .components-range-control__track {
+  height: 4px;
+  background: #dddfe1 !important; }
+  .maxi-sidebar .components-range-control .components-base-control__field .components-range-control__track + span,
+  .maxi-popover .components-range-control .components-base-control__field .components-range-control__track + span {
+    top: 1px; }
+    .maxi-sidebar .components-range-control .components-base-control__field .components-range-control__track + span span,
+    .maxi-popover .components-range-control .components-base-control__field .components-range-control__track + span span {
       -webkit-box-shadow: none !important;
               box-shadow: none !important;
-      border-color: #c5c5c5 !important;
-      cursor: pointer; }
-    .maxi-sidebar .components-base-control .components-base-control__field .components-button:focus,
-    .maxi-popover .components-base-control .components-base-control__field .components-button:focus {
-      -webkit-box-shadow: none !important;
-              box-shadow: none !important; }
-    .maxi-sidebar .components-base-control .components-base-control__field .components-button.is-primary,
-    .maxi-popover .components-base-control .components-base-control__field .components-button.is-primary {
-      border-color: #00ccff; }
-      .maxi-sidebar .components-base-control .components-base-control__field .components-button.is-primary:focus:enabled,
-      .maxi-popover .components-base-control .components-base-control__field .components-button.is-primary:focus:enabled {
-        -webkit-box-shadow: 0 0 0 1px #fff, 0 0 0 3px #00ccff;
-                box-shadow: 0 0 0 1px #fff, 0 0 0 3px #00ccff; }
-    .maxi-sidebar .components-base-control .components-base-control__field .components-button.is-secondary,
-    .maxi-popover .components-base-control .components-base-control__field .components-button.is-secondary {
-      -webkit-box-shadow: none !important;
-              box-shadow: none !important;
-      border: 1px solid #dddfe1 !important; }
-      .maxi-sidebar .components-base-control .components-base-control__field .components-button.is-secondary:hover,
-      .maxi-popover .components-base-control .components-base-control__field .components-button.is-secondary:hover {
-        background-color: white !important;
-        border-color: #ff4a17 !important; }
-      .maxi-sidebar .components-base-control .components-base-control__field .components-button.is-secondary svg,
-      .maxi-popover .components-base-control .components-base-control__field .components-button.is-secondary svg {
-        width: 18px !important;
-        height: 18px !important; }
-    .maxi-sidebar .components-base-control .components-base-control__field .components-button[type="reset"] svg,
-    .maxi-popover .components-base-control .components-base-control__field .components-button[type="reset"] svg {
-      fill: #464a53 !important; }
-    .maxi-sidebar .components-base-control .components-base-control__field .components-button svg,
-    .maxi-popover .components-base-control .components-base-control__field .components-button svg {
-      margin: auto; }
+      border: none !important;
+      width: 14px;
+      height: 14px;
+      background-color: #464a53; }
 
 .maxi-sidebar .components-range-control .components-base-control__field .components-base-control__label,
 .maxi-popover .components-range-control .components-base-control__field .components-base-control__label {
@@ -1494,7 +1521,11 @@ body.Bumblebee .maxi-default .maxi-divider {
 ***********/
 .maxi-sidebar .block-editor-block-inspector.maxi-controls .block-editor-block-card {
   padding: 9.5px 17px 20px;
-  padding-bottom: 9px; }
+  padding-bottom: 9px;
+  -webkit-box-shadow: 0px 5px 15px 0px rgba(119, 119, 119, 0.1);
+          box-shadow: 0px 5px 15px 0px rgba(119, 119, 119, 0.1);
+  position: relative;
+  border-bottom: 1px solid #f4f4f4; }
   .maxi-sidebar .block-editor-block-inspector.maxi-controls .block-editor-block-card:after {
     position: absolute;
     content: url("../img/maxi-logo.svg");
@@ -1502,17 +1533,11 @@ body.Bumblebee .maxi-default .maxi-divider {
     right: 10px; }
   .maxi-sidebar .block-editor-block-inspector.maxi-controls .block-editor-block-card .block-editor-block-card__content {
     min-width: 87%; }
-    .maxi-sidebar .block-editor-block-inspector.maxi-controls .block-editor-block-card .block-editor-block-card__content .block-editor-block-card__title {
-      color: #fff; }
     .maxi-sidebar .block-editor-block-inspector.maxi-controls .block-editor-block-card .block-editor-block-card__content .block-editor-block-card__description {
       display: block !important;
       padding-top: 8px;
       text-align: justify;
       margin-left: -12.5%; }
-
-.maxi-sidebar .block-editor-block-inspector.maxi-controls .block-editor-block-card__content *,
-.maxi-sidebar .block-editor-block-inspector.maxi-controls .block-editor-block-icon * {
-  background: #000 !important; }
 
 /***************
 * Block inserter
@@ -1581,7 +1606,7 @@ button[class*="maxi-blocks"] span.block-editor-block-types-list__item-title {
   letter-spacing: 0px;
   color: #fff;
   font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen-Sans, Ubuntu, Cantarell, Helvetica Neue, sans-serif;
-  background: #000;
+  background: #fff;
   font-weight: 400; }
 
 .maxi-sidebar .block-editor-block-card .block-editor-block-card__title {
@@ -1680,6 +1705,24 @@ h2.gx_error {
   background: transparent;
   border: none; }
 
+.maxi-sizecontrol-control .components-range-control {
+  width: 100%;
+  -ms-flex: 100% !important;
+      flex: 100% !important;
+  margin-left: 0 !important; }
+
+.maxi-sizecontrol-control .components-base-control__label {
+  -ms-flex: 2 !important;
+      flex: 2 !important; }
+
+.maxi-sizecontrol-control .components-base-control__field {
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap; }
+  .maxi-sizecontrol-control .components-base-control__field > * {
+    margin-left: 4px;
+    -ms-flex: 1;
+        flex: 1; }
+
 /**************************
 * Component Color Indicator
 **************************/
@@ -1697,45 +1740,14 @@ h2.gx_error {
     border-radius: 5px; }
 
 /************
-* Unit button
+* Unit Select
 ************/
-.maxi-sizecontrol-unit .components-radio-control__option input:checked + label {
-  color: #464a53 !important;
-  background: #f2f2f2 !important; }
-
-.components-maxi-dimensions-control__units {
-  display: -ms-flexbox;
-  display: flex; }
-  .components-maxi-dimensions-control__units .maxi-unit-button {
-    top: -1px;
-    display: block;
-    min-width: 33px;
-    height: 30px;
-    font-size: 13px;
-    margin-right: -2px;
-    -ms-flex-pack: center;
-        justify-content: center;
-    line-height: 20px;
-    border: 2px solid #dddfe1 !important;
-    position: relative;
-    text-align: center;
-    text-shadow: none;
-    text-transform: uppercase;
-    color: #464a53 !important;
-    background: #fff;
-    -webkit-box-shadow: none;
-            box-shadow: none;
-    padding: 0;
-    box-shadow: none !important; }
-    .components-maxi-dimensions-control__units .maxi-unit-button:hover {
-      background: #fff !important; }
-    .components-maxi-dimensions-control__units .maxi-unit-button:focus {
-      border: none; }
-      .components-maxi-dimensions-control__units .maxi-unit-button:focus:enabled {
-        -webkit-box-shadow: none !important;
-                box-shadow: none !important; }
-    .components-maxi-dimensions-control__units .maxi-unit-button[aria-pressed="true"] {
-      background-color: #f2f2f2; }
+.components-base-control .components-maxi-dimensions-control__units {
+  margin-bottom: 0 !important; }
+  .components-base-control .components-maxi-dimensions-control__units .components-base-control__field {
+    margin-bottom: 0; }
+    .components-base-control .components-maxi-dimensions-control__units .components-base-control__field .components-select-control__input {
+      min-width: 3.2rem; }
 
 /*************
 * Reset Button
@@ -1743,9 +1755,9 @@ h2.gx_error {
 .components-maxi-dimensions-control__units-reset {
   display: -ms-inline-flexbox;
   display: inline-flex;
-  width: 26px;
-  min-width: 26px;
-  height: 26px;
+  width: 31px;
+  min-width: 31px;
+  height: 31px;
   text-decoration: none;
   cursor: pointer;
   -webkit-appearance: none;
@@ -1764,10 +1776,10 @@ h2.gx_error {
   border-radius: 5px;
   -webkit-box-shadow: none;
           box-shadow: none;
-  border: 1px solid #dddfe1; }
+  border: 2px solid #dddfe1; }
   .components-maxi-dimensions-control__units-reset svg {
-    width: 18px;
-    height: 18px;
+    width: 12px;
+    height: 12px;
     fill: #464a53;
     margin: auto; }
 
@@ -2090,9 +2102,11 @@ div.maxi-row-block.has-child-selected > div.maxi-row-selector-wrapper {
 *
 * Moved common styles to './src/css' 
 */
-.maxi-alignment-control.maxi-alignment-control__no-label .components-radio-control__option {
-  -ms-flex: 1;
-      flex: 1; }
+.maxi-alignment-control .components-base-control__field {
+  border: 2px solid #dddfe1;
+  -ms-flex-pack: justify;
+      justify-content: space-between;
+  border-radius: 5px; }
 
 .maxi-alignment-control .components-radio-control__option {
   opacity: 1 !important;
@@ -2102,12 +2116,11 @@ div.maxi-row-block.has-child-selected > div.maxi-row-selector-wrapper {
   font-size: 20px;
   color: #464a53;
   font-weight: 500;
-  border: 2px solid #dddfe1;
-  border-right: 0; }
-  .maxi-alignment-control .components-radio-control__option:last-of-type {
-    border-right: 2px solid #dddfe1;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px; }
+  -ms-flex: 1;
+      flex: 1;
+  border-right: 2px solid #dddfe1; }
+  .maxi-alignment-control .components-radio-control__option:last-child {
+    border-right: 0; }
   .maxi-alignment-control .components-radio-control__option:first-of-type {
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px; }
@@ -3689,8 +3702,8 @@ input[type="number"].components-range-control__number {
 .components-base-control__field >
 .components-button.components-range-control__reset.is-secondary.is-small {
     margin-top: -4px !important;
-    height: 24px !important;
-    width: 24px !important; }
+    height: 40px !important;
+    width: 40px !important; }
   .maxi-image-width > .components-base-control.maxi-sizecontrol-unit.components-radio-control > .components-base-control__field,
   .maxi-image-max-width > .components-base-control.maxi-sizecontrol-unit.components-radio-control > .components-base-control__field {
     position: relative;

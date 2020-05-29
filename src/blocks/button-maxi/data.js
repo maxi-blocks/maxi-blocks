@@ -2,17 +2,17 @@ export const size = {
     "label": "Size",
     "general": {
         "max-widthUnit": "px",
-        "max-width": 0,
+        "max-width": "",
         "widthUnit": "em",
         "width": 8,
         "min-widthUnit": "px",
-        "min-width": 0,
+        "min-width": "",
         "max-heightUnit": "px",
-        "max-height": 0,
+        "max-height": "",
         "heightUnit": "em",
         "height": 3,
         "min-heightUnit": "px",
-        "min-height": 0
+        "min-height": ""
     }
 };
 

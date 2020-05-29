@@ -79,7 +79,6 @@ const Inspector = props => {
                                                     <BorderControl
                                                         borderOptions={border}
                                                         onChange={border => setAttributes({ border })}
-                                                        avoidZero={false}
                                                     />
                                                 </Fragment>
                                             ),
@@ -100,12 +99,10 @@ const Inspector = props => {
                                                     <DimensionsControl
                                                         value={padding}
                                                         onChange={padding => setAttributes({ padding })}
-                                                        avoidZero
                                                     />
                                                     <DimensionsControl
                                                         value={margin}
                                                         onChange={margin => setAttributes({ margin })}
-                                                        avoidZero
                                                     />
                                                 </Fragment>
                                             ),

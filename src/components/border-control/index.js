@@ -23,7 +23,7 @@ export default class BorderControl extends GXComponent {
 
     componentDidMount() {
         const value = typeof this.props.borderOptions === 'object' ? this.props.borderOptions : JSON.parse(this.props.borderOptions);
-        this.saveAndSend(value, this.props.avoidZero || false)
+        this.saveAndSend(value)
     }
 
     render() {
@@ -31,7 +31,6 @@ export default class BorderControl extends GXComponent {
             borderOptions,
             className,
             target = '',
-            avoidZero = false
         } = this.props;
 
         let value = typeof borderOptions === 'object' ? borderOptions : JSON.parse(borderOptions);
@@ -45,7 +44,7 @@ export default class BorderControl extends GXComponent {
                     defaultColor={value['defaultBorderColor']}
                     onColorChange={val => {
                         value.general['border-color'] = val;
-                        this.saveAndSend(value, avoidZero);
+                        this.saveAndSend(value);
                     }}
                     disableGradient
                     disableGradientAboveBackground
@@ -67,26 +66,24 @@ export default class BorderControl extends GXComponent {
                     ]}
                     onChange={val => {
                         value.general['border-style'] = val;
-                        this.saveAndSend(value, avoidZero);
+                        this.saveAndSend(value);
                     }}
                 />
                 <DimensionsControl
                     value={value.borderWidth}
                     onChange={val => {
                         value.borderWidth = JSON.parse(val);
-                        this.saveAndSend(value, avoidZero);
+                        this.saveAndSend(value);
                     }}
                     target={target}
-                    avoidZero={avoidZero}
                 />
                 <DimensionsControl
                     value={value.borderRadius}
                     onChange={val => {
                         value.borderRadius = JSON.parse(val);
-                        this.saveAndSend(value, avoidZero);
+                        this.saveAndSend(value);
                     }}
                     target={target}
-                    avoidZero={avoidZero}
                 />
             </div>
         )

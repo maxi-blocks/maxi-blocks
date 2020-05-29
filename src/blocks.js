@@ -10,9 +10,11 @@
  */
 
 // Extensions
+import './extensions/dom';
 import './extensions/store';
 import './extensions/attributes';
-import './extensions/dom';
+import './extensions/save';
+// import './extensions/styles';
 // import './extensions/blocks';
 
 // CSS

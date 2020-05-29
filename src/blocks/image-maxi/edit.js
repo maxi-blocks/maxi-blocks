@@ -20,7 +20,11 @@ const {
  * Internal dependencies
  */
 import Inspector from './inspector';
-import { GXBlock } from '../../components';
+import { BackEndResponsiveStyles } from '../../extensions/styles';
+import {
+    GXBlock,
+    __experimentalToolbar
+} from '../../components';
 
 /**
  * External dependencies
@@ -71,41 +75,53 @@ class edit extends GXBlock {
             width,
             opacity,
             backgroundColor,
-            backgroundGradient
+            backgroundGradient,
+            boxShadow,
+            border,
+            padding,
+            margin
         } = this.props.attributes;
 
         const response = {
-            label: 'Image',
-            general: {}
-        }
+            boxShadow: { ...JSON.parse(boxShadow) },
+            border: { ...JSON.parse(border) },
+            borderWidth: { ...JSON.parse(border).borderWidth },
+            borderRadius: { ...JSON.parse(border).borderRadius },
+            padding: { ...JSON.parse(padding) },
+            margin: { ...JSON.parse(margin) },
+            image: {
+                label: 'Image',
+                general: {}
+            }
+        };
 
         if (!isNil(alignment)) {
             switch (alignment) {
                 case 'left':
-                    response.general['text-align'] = 'left';
+                    response.image.general['text-align'] = 'left';
                     break;
                 case 'center':
                 case 'justify':
-                    response.general['text-align'] = 'center';
+                    response.image.general['text-align'] = 'center';
                     break;
                 case 'right':
-                    response.general['text-align'] = 'right';
+                    response.image.general['text-align'] = 'right';
                     break;
             }
         }
         if (!!opacity)
-            response.general['opacity'] = opacity;
+            response.image.general['opacity'] = opacity;
         if (!!backgroundColor)
-            response.general['background-color'] = backgroundColor;
+            response.image.general['background-color'] = backgroundColor;
         if (!!backgroundGradient)
-            response.general['background'] = backgroundGradient;
+            response.image.general['background'] = backgroundGradient;
         if (!!maxWidth) {
-            response.general['max-widthUnit'] = maxWidthUnit;
-            response.general['max-width'] = maxWidth;
+            response.image.general['max-widthUnit'] = maxWidthUnit;
+            response.image.general['max-width'] = maxWidth;
         }
         if (!!width) {
-            response.general['widthUnit'] = widthUnit;
-            response.general['width'] = width;
+            response.image.general['widthUnit'] = widthUnit;
+            response.image.general['width'] = width;
         }
 
         return response;
@@ -115,19 +131,23 @@ class edit extends GXBlock {
         const {
             opacityHover,
             backgroundColorHover,
-            backgroundGradientHover
+            backgroundGradientHover,
+            boxShadowHover
         } = this.props.attributes;
 
         const response = {
-            label: 'Image Hover',
-            general: {}
+            boxShadowHover: { ...JSON.parse(boxShadowHover) },
+            imageHover: {
+                label: 'Image Hover',
+                general: {}
+            }
         }
         if (opacityHover)
-            response.general['opacity'] = opacityHover;
+            response.imageHover.general['opacity'] = opacityHover;
         if (!isEmpty(backgroundColorHover))
-            response.general['background-color'] = backgroundColorHover;
+            response.imageHover.general['background-color'] = backgroundColorHover;
         if (!isEmpty(backgroundGradientHover))
-            response.general['background'] = backgroundGradientHover;
+            response.imageHover.general['background'] = backgroundGradientHover;
         return response;
     }
 
@@ -139,14 +159,6 @@ class edit extends GXBlock {
         this.saveMeta('hover');
 
         new BackEndResponsiveStyles(this.getMeta);
-    }
-
-    saveMeta(type) {
-        dispatch('core/editor').editPost({
-            meta: {
-                _gutenberg_extra_responsive_styles: this.metaValue(null, type, false),
-            },
-        });
     }
 
     render() {
@@ -205,6 +217,7 @@ class edit extends GXBlock {
 
         return [
             <Inspector {...this.props} />,
+            <__experimentalToolbar />,
             <__experimentalBlock.figure
                 className={classes}
                 data-gx_initial_block_class={defaultBlockStyle}

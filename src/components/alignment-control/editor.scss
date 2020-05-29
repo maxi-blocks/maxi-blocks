@@ -1,6 +1,5 @@
 .maxi-alignment-control {
     .components-base-control__field {
-        border: 2px solid #dddfe1;
         justify-content: space-between;
         border-radius: 5px;
     }
@@ -13,14 +12,17 @@
         color: #464a53;
         font-weight: 500;
         flex: 1;
-        border-right: 2px solid #dddfe1;
+        border: 2px solid #dddfe1;
+        border-right: 0;
 
-        &:last-child {
-            border-right: 0;
-        }
         &:first-of-type {
             border-top-left-radius: 5px;
             border-bottom-left-radius: 5px;
+        }
+        &:last-of-type {
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+            border-right: 2px solid #dddfe1;
         }
 
         input {

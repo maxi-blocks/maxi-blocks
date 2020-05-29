@@ -4,8 +4,9 @@
 const { __ } = wp.i18n;
 const { useInstanceId } = wp.compose;
 const {
+    RangeControl,
+    SelectControl,
     BaseControl,
-    ButtonGroup,
     Button
 } = wp.components;
 
@@ -57,53 +58,31 @@ const SizeControl = props => {
         className
     );
 
-    const instanceId = useInstanceId(SizeControl);
-    const id = `inspector-radio-control-${instanceId}`;
     const options = [
         { label: 'PX', value: 'px' },
         { label: 'EM', value: 'em' },
         { label: 'VW', value: 'vw' },
         { label: '%', value: '%' },
-    ]
+    ];
 
     return (
         <BaseControl
             label={label}
             className={classes}
         >
-            <ButtonGroup
-                className="components-maxi-dimensions-control__units"
-                aria-label={__('Select Units', 'maxi-blocks')}
-            >
-                {
-                    options.map(option => (
-                        <Button
-                            key={option.value}
-                            className='components-maxi-dimensions-control__units-button maxi-unit-button'
-                            isSmall
-                            isPrimary={value.unit === value}
-                            aria-pressed={value.unit === value}
-                            aria-label={sprintf(
-                                /* translators: %s: values associated with CSS syntax, 'Pixel', 'Em', 'Percentage' */
-                                __('%s Units', 'maxi-blocks'),
-                                name
-                            )}
-                            onClick={() => onChangeUnit(option.value)}
-                        >
-                            {option.label}
-                        </Button>
-                    ))
-                }
-            </ButtonGroup>
             <input
                 type='number'
                 className='maxi-sizecontrol-value'
                 value={value}
-                onChange={onChangeValue}
+                onChange={e => onChangeValue(e.target.value)}
                 min={minMaxSettings[unit].min}
                 max={minMaxSettings[unit].max}
-                allowReset={true}
-                initialPosition={0}
+            />
+            <SelectControl
+                className="components-maxi-dimensions-control__units"
+                options={options}
+                value={unit}
+                onChange={(val) => onChangeUnit(val)}
             />
             <Button
                 className="components-maxi-dimensions-control__units-reset"
@@ -118,6 +97,15 @@ const SizeControl = props => {
             >
                 {reset}
             </Button>
+            <RangeControl
+                value={ value }
+                onChange={val => onChangeValue(val)}
+                min={minMaxSettings[unit].min}
+                max={minMaxSettings[unit].max}
+                allowReset={false}
+                withInputField={false}
+                initialPosition={0}
+            />
         </BaseControl>
     )
 }

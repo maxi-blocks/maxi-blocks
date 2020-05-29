@@ -7,7 +7,7 @@ const {
 	sprintf
 } = wp.i18n;
 const {
-	ButtonGroup,
+	SelectControl,
 	Button,
 	Tooltip,
 	TabPanel
@@ -22,8 +22,6 @@ import { GXComponent } from '../index';
  * External dependencies
  */
 import classnames from 'classnames';
-import map from 'lodash/map';
-import { isNumber } from 'lodash';
 
 /**
  * Styles and icons
@@ -48,13 +46,12 @@ export default class DimensionsControl extends GXComponent {
 
 	componentDidMount() {
 		const value = typeof this.props.value === 'object' ? this.props.value : JSON.parse(this.props.value);
-		this.saveAndSend(value, this.props.avoidZero || false)
+		this.saveAndSend(value)
 	}
 
 	render() {
 		const {
 			className,
-			avoidZero = false
 		} = this.props;
 
 		const {
@@ -67,32 +64,11 @@ export default class DimensionsControl extends GXComponent {
 			className
 		);
 
-		const unitSizes = [
-			{
-				/* translators: a unit of size (px) for css markup */
-				name: __('Pixel', 'maxi-blocks'),
-				unitValue: 'px',
-			},
-			{
-				/* translators: a unit of size (em) for css markup */
-				name: __('Em', 'maxi-blocks'),
-				unitValue: 'em',
-			},
-			{
-				/* translators: a unit of size (vw) for css markup */
-				name: __('Viewport Width', 'maxi-blocks'),
-				unitValue: 'vw',
-			},
-			{
-				/* translators: a unit of size (vh) for css markup */
-				name: __('Viewport Height', 'maxi-blocks'),
-				unitValue: 'vh',
-			},
-			{
-				/* translators: a unit of size for css markup */
-				name: __('Percentage', 'maxi-blocks'),
-				unitValue: '%',
-			},
+		const options = [
+			{ label: 'PX', value: 'px' },
+			{ label: 'EM', value: 'em' },
+			{ label: 'VW', value: 'vw' },
+			{ label: '%', value: '%' },
 		];
 
 		const onSelect = (tabName) => {
@@ -117,30 +93,42 @@ export default class DimensionsControl extends GXComponent {
 
 		const onChangeUnit = (unit) => {
 			value.unit = unit;
-			this.saveAndSend(value, avoidZero);
+			this.saveAndSend(value);
 		}
 
-		const onChangeValue = (e) => {
+		const onChangeValue = e => {
 			const newValue = e.target.value;
 			const target = Number(e.target.getAttribute('action'));
-			if (value[device].sync === true || isNaN(newValue)) {
-				for (let [key, val] of Object.entries(value[device])) {
-					isNumber(val) ?
-						value[device][key] = !isNaN(newValue) ? newValue : '' :
-						null
+
+			if (value[device].sync === true) {
+				for (let key of Object.keys(value[device])) {
+					key != 'sync' ?
+						value[device][key] = !!Number(newValue) || newValue === '0' ? Number(newValue) : newValue :
+						null;
 				}
 			}
 			else {
-				value[device][getKey(value[device], target)] = newValue;
+				value[device][getKey(value[device], target)] = !!Number(newValue) || newValue === '0' ? Number(newValue) : newValue;
 			}
-			this.saveAndSend(value, avoidZero);
+
+			this.saveAndSend(value);
+		}
+
+		const onReset = () => {
+			for (let key of Object.keys(value[device])) {
+				key != 'sync' ?
+					value[device][key] = '' :
+					value[device][sync] = true;
+			}
+
+			this.saveAndSend(value);
 		}
 
 		const onChangeSync = () => {
 			value[device].sync = !value[device].sync;
-			this.saveAndSend(value, avoidZero);
+			this.saveAndSend(value);
 		}
-				
+
 		return (
 			<div className={classes}>
 				<div className="components-maxi-dimensions-control__header components-base-control">
@@ -148,37 +136,15 @@ export default class DimensionsControl extends GXComponent {
 						{value.label}
 					</p>
 					<div className="components-maxi-dimensions-control__actions">
-						<ButtonGroup
+						<SelectControl
 							className="components-maxi-dimensions-control__units"
-							aria-label={__('Select Units', 'maxi-blocks')}
-						>
-							{map(unitSizes, ({ unitValue, name }) => (
-								<Tooltip text={sprintf(
-									/* translators: %s: values associated with CSS syntax, 'Pixel', 'Em', 'Percentage' */
-									__('%s Units', 'maxi-blocks'),
-									name
-								)}>
-									<Button
-										key={unitValue}
-										className='components-maxi-dimensions-control__units-button maxi-unit-button'
-										isSmall
-										isPrimary={value.unit === unitValue}
-										aria-pressed={value.unit === unitValue}
-										aria-label={sprintf(
-											/* translators: %s: values associated with CSS syntax, 'Pixel', 'Em', 'Percentage' */
-											__('%s Units', 'maxi-blocks'),
-											name
-										)}
-										onClick={() => onChangeUnit(unitValue)}
-									>
-										{unitValue}
-									</Button>
-								</Tooltip>
-							))}
-						</ButtonGroup>
+							options={options}
+							value={value.unit}
+							onChange={(val) => onChangeUnit(val)}
+						/>
 						<Button
 							className="components-maxi-dimensions-control__units-reset"
-							onClick={onChangeValue}
+							onClick={onReset}
 							aria-label={sprintf(
 								/* translators: %s: a texual label  */
 								__('Reset %s settings', 'maxi-blocks'),
@@ -282,8 +248,8 @@ export default class DimensionsControl extends GXComponent {
 											<Button
 												className="components-maxi-dimensions-control_sync"
 												aria-label={__('Sync Units', 'maxi-blocks')}
-												isPrimary={value[device].sync ? value[device].sync : false}
-												aria-pressed={value[device].sync ? value[device].sync : false}
+												isPrimary={value[device].sync}
+												aria-pressed={value[device].sync}
 												onClick={onChangeSync}
 												data-device-type={device}
 												isSmall

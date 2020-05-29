@@ -231,7 +231,7 @@ export class DividerSettings extends GXComponent {
 }
 
 export const Divider = props => {
-    const { 
+    const {
         dividerSettings,
         className
     } = props;

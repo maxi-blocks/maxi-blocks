@@ -35,7 +35,7 @@ export default class BorderControl extends GXComponent {
 
         let value = typeof borderOptions === 'object' ? borderOptions : JSON.parse(borderOptions);
         const classes = classnames('maxi-border-control', className);
-        
+
         return (
             <div className={classes}>
                 <ColorControl

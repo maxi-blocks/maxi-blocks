@@ -16,7 +16,7 @@ export const typography = {
         "900italic": "http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TLBBc9AMX6lJBP.ttf"
     },
     "general": {
-        "color": "#ffffff",
+        "color": "#9b9b9b",
         "text-shadow": "none",
         "text-align": "left"
     },

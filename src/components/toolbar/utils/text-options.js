@@ -24,7 +24,7 @@ import DeviceSelectorControl from '../../device-selector-control';
  * Icons
  */
 import {
-    toolbarStyle,
+    toolbarType,
     reset
 } from '../../../icons';
 
@@ -84,7 +84,7 @@ const TextOptions = props => {
                 >
                     <Icon
                         className='toolbar-item__icon'
-                        icon={toolbarStyle}
+                        icon={toolbarType}
                     />
                 </Button>
             )}
@@ -141,7 +141,6 @@ const TextOptions = props => {
                                 // className='maxi-sizecontrol-value'
                                 value={typography[device]['font-size']}
                                 onChange={e => {
-                                    console.log(typography)
                                     typography[device]['font-size'] = Number(e.target.value);
                                     updateTypography();
                                 }}

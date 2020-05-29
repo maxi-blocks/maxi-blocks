@@ -13,11 +13,6 @@ const {
 } = wp.data;
 
 /**
- * Internal dependencies
- */
-import DimensionsControl from '../../dimensions-control';
-
-/**
  * Icons
  */
 import { toolbarStyle } from '../../../icons';

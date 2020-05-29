@@ -50,6 +50,7 @@ class Inspector extends Component {
 
     state = {
         selector: 'normal',
+        boxShadowSelector: 'normal',
     }
 
     render() {
@@ -93,7 +94,10 @@ class Inspector extends Component {
             setAttributes,
         } = this.props;
 
-        const { selector } = this.state;
+        const {
+            selector,
+            boxShadowSelector,
+        } = this.state;
 
         const getSizeOptions = () => {
             let response = [];
@@ -347,29 +351,29 @@ class Inspector extends Component {
                                                 content: (
                                                     <Fragment>
                                                         <NormalHoverControl
-                                                            selector={selector}
-                                                            onChange={selector => {
-                                                                this.setState({ selector });
+                                                            selector={boxShadowSelector}
+                                                            onChange={boxShadowSelector => {
+                                                                this.setState({ boxShadowSelector });
                                                             }}
                                                         />
                                                         <BoxShadowControl
                                                             boxShadowOptions={
                                                                 getNormalHoverValue(
-                                                                    selector,
+                                                                    boxShadowSelector,
                                                                     boxShadow,
                                                                     boxShadowHover
                                                                 )
                                                             }
                                                             onChange={value =>
                                                                 normalHoverSaver(
-                                                                    selector,
+                                                                    boxShadowSelector,
                                                                     'boxShadow',
                                                                     'boxShadowHover',
                                                                     value
                                                                 )
                                                             }
                                                             target={
-                                                                selector != 'hover' ?
+                                                                boxShadowSelector != 'hover' ?
                                                                     undefined :
                                                                     ':hover'
                                                             }

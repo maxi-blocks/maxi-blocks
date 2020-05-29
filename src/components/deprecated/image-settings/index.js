@@ -294,6 +294,7 @@ class ImageSettingsComponent extends GXComponent {
                                         />
                                     }
                                     <AlignmentControl
+                                        label={__('Alignment', 'maxi-blocks')}
                                         value={value.alignment}
                                         onChange={val => {
                                             value.alignment = val;

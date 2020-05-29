@@ -12,7 +12,7 @@ import classnames from 'classnames';
 /**
  * Style
  */
-import './style.scss';
+import './editor.scss';
 
 /**
  * Component

@@ -48,7 +48,6 @@ const attributes = {
     },
     maxWidth: {
         type: 'number',
-        default: 0
     },
     widthUnit: {
         type: 'string',
@@ -56,7 +55,6 @@ const attributes = {
     },
     width: {
         type: 'number',
-        default: 0
     },
     backgroundColor: {
         type: 'string',

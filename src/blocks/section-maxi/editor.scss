@@ -1,18 +1,15 @@
-// div[data-type="maxi-blocks/section-maxi"].is-focused {
-//     outline: dotted red;
-// }
-.maxi-section-block:hover {
-    outline: 1px solid grey;
-}
-
-div.wp-block[data-align="full"] > div.maxi-section-block {
-    width: auto;
-}
-
 div.maxi-section-block {
     width: 100%;
     margin: auto;
     position: relative;
+
+    &:hover {
+        outline: 1px solid grey;
+    }
+
+    &.wp-block[data-align="full"] > div.maxi-section-block {
+        width: auto;
+    }
 
     > div.maxi-section-selector-wrapper {
         position: absolute;

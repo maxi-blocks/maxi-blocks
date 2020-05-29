@@ -8,7 +8,6 @@ const {
 } = wp.element;
 const {
     Button,
-    Icon
 } = wp.components;
 
 /**
@@ -31,10 +30,7 @@ const SettingTabsControl = props => {
     const [tab, setTab] = useState(0);
 
     const classesContent = classnames(
-        "maxi-tabs-content",
-        items[tab].disableStyles ?
-            'disable-styles' :
-            ''
+        "maxi-tabs-content"
     );
 
     return (
@@ -45,13 +41,10 @@ const SettingTabsControl = props => {
                 {
                     items.map((item, i) => (
                         <Button
-                            className="maxi-tab-control"
+                            className="maxi-tab-control__button"
                             onClick={() => setTab(i)}
                             aria-pressed={tab === i}
                         >
-                            <Icon
-                                icon={item.icon}
-                            />
                             {item.label}
                         </Button>
                     ))
@@ -64,12 +57,7 @@ const SettingTabsControl = props => {
                     items.map((item, i) => {
                         const classesItemContent = classnames(
                             "maxi-tab-content",
-                            tab === i ?
-                                'is-selected' :
-                                '',
-                            item.disableStyles ?
-                                'disable-styles' :
-                                ''
+                            tab === i ? 'is-selected' : ''
                         )
 
                         return (

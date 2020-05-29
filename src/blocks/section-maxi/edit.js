@@ -14,8 +14,12 @@ const {
 /**
  * Internal dependencies
  */
-import { GXBlock } from '../../components';
+import {
+    GXBlock,
+    __experimentalToolbar
+} from '../../components';
 import Inspector from './inspector';
+import { getBakcgroundObject } from '../../extensions/styles/utils'
 
 /**
  * External dependencies
@@ -36,7 +40,32 @@ class edit extends GXBlock {
     }
 
     componentDidUpdate() {
+        this.displayStyles();
         this.setSelectorBlocks();
+    }
+
+    get getObject() {
+        const {
+            background,
+            boxShadow,
+            border,
+            size,
+            margin,
+            padding,
+        } = this.props.attributes;
+
+        const response = {
+            background: { ...getBakcgroundObject(JSON.parse(background)) },
+            boxShadow: { ...JSON.parse(boxShadow) },
+            border: { ...JSON.parse(border) },
+            borderWidth: { ...JSON.parse(border).borderWidth },
+            borderRadius: { ...JSON.parse(border).borderRadius },
+            size: { ...JSON.parse(size) },
+            margin: { ...JSON.parse(margin) },
+            padding: { ...JSON.parse(padding) },
+        };
+
+        return response
     }
 
     setSelectorBlocks() {
@@ -105,6 +134,7 @@ class edit extends GXBlock {
 
         return [
             <Inspector {...this.props} />,
+            <__experimentalToolbar />,
             <__experimentalBlock
                 data-gx_initial_block_class={defaultBlockStyle}
                 className={classes}

@@ -80,18 +80,23 @@ add_action( 'init', 'gutenberg_extra_block_assets' );
 
 
 function gutenberg_extra_load_custom_wp_admin_script() {
+
 	// Register block editor script for backend.
-	wp_register_script(
-		'gutenberg_extra-block-js-admin', // Handle.
-		plugins_url( '/js/library-button-modal.js', dirname( __FILE__ ) ), "",
-		null,
-		true
+	wp_enqueue_script(
+		'maxi-blocks-cloud-js', // Handle.
+		plugins_url( '/js/cloud-server.js', dirname( __FILE__ ) ),
+		array( 'jquery', 'wp-blocks', 'wp-edit-post', 'wp-api')
 	);
 
-	wp_enqueue_script('gutenberg_extra-block-js-admin');
+	wp_register_script('maxi-blocks-gutenberg-ui-js', plugins_url( '/js/gutenberg-ui.js', dirname( __FILE__ ) ), array( 'wp-i18n' ), null, true);
+	wp_localize_script('maxi-blocks-gutenberg-ui-js', 'maxiGutenbergUI', array(
+	    'maxi-plugin-url' => plugins_url()
+	));
+
+	wp_enqueue_script('maxi-blocks-gutenberg-ui-js');
+
 
 }
-
 
 add_action( 'admin_enqueue_scripts', 'gutenberg_extra_load_custom_wp_admin_script' );
 
@@ -187,22 +192,10 @@ add_filter( 'wp_targeted_link_rel', 'gx_links_control', 10, 2 );
 add_action('wp_ajax_gx_get_option', 'gx_get_option', 9, 1);
 add_action('wp_ajax_gx_insert_block', 'gx_insert_block', 10, 2);
 
-require_once plugin_dir_path( __FILE__ ) . 'includes/layout/layout-functions.php';
-require_once plugin_dir_path( __FILE__ ) . 'includes/layout/class-component-registry.php';
-require_once plugin_dir_path( __FILE__ ) . 'includes/layout/register-layout-components.php';
-require_once plugin_dir_path( __FILE__ ) . 'includes/maxi-wp-dashboard.php';
-
-// Maybe this is not the best place, but for the moment...
-function gutenberg_scripts () {
-	wp_enqueue_script(
-		'gutenberg_scripts',
-		plugins_url( '../js/gutenberg_scripts.js', __FILE__ ),
-		[],
-		0.1
-	);
-};
-add_action('wp_enqueue_scripts', 'gutenberg_scripts');
-add_action('admin_enqueue_scripts', 'gutenberg_scripts');
+// require_once plugin_dir_path( __FILE__ ) . 'includes/layout/layout-functions.php';
+// require_once plugin_dir_path( __FILE__ ) . 'includes/layout/class-component-registry.php';
+// require_once plugin_dir_path( __FILE__ ) . 'includes/layout/register-layout-components.php';
+// require_once plugin_dir_path( __FILE__ ) . 'includes/maxi-wp-dashboard.php';
 
 // Post Meta register
 require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-post-meta.php';
@@ -211,3 +204,133 @@ require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-responsive-fr
 // Image crop and image sizes
 require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-image-size.php';
 
+add_action('wp_ajax_maxi_import_images', 'maxi_import_images', 3, 2);
+
+if ( ! function_exists('write_log')) {
+   function write_log ( $log )  {
+      if ( is_array( $log ) || is_object( $log ) ) {
+         error_log( print_r( $log, true ) );
+      } else {
+         error_log( $log );
+      }
+   }
+}
+
+//======================================================================
+// UPLOAD IMAGES
+//======================================================================
+
+function maxi_media_file_already_exists($filename){
+    global $wpdb;
+    $query = "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_value LIKE '%/$filename'";
+
+    if ( $wpdb->get_var($query) ){
+    	$post_title_for_image=substr($filename, 0 , (strrpos($filename, ".")));
+    	write_log('$post_title');
+    	write_log($post_title_for_image);
+    	$query2 = "SELECT ID FROM {$wpdb->posts} WHERE (post_type='attachment' AND post_title LIKE '$post_title_for_image')";
+    	//write_log($wpdb->get_var($query2));
+        $image_id = $wpdb->get_var($query2);
+
+        write_log('$image_id');
+        write_log($image_id);
+        return $image_id;
+    }
+
+    return 0;
+}
+
+function maxi_import_images(){
+    //echo 'START: maxi_import_image_to_upload';
+   write_log('START: maxi_import_image_to_upload');
+    global $wpdb;
+   // session_start();
+
+    write_log('=========================');
+
+
+    $maxi_image_to_upload = $_POST['maxi_image_to_upload'];
+    write_log('maxi_image_to_upload');
+    write_log($maxi_image_to_upload);
+
+    //$maxi_post_id_for_image_to_upload = $_SESSION['maxi_post_id_for_image'];
+    $maxi_post_id_for_image_to_upload = $_POST['maxi_post_id'];
+    write_log('$maxi_post_id_for_image_to_upload:');
+    write_log($maxi_post_id_for_image_to_upload);
+
+    //echo 'GET $_SESSION: '.$maxi_post_id_for_image_to_upload;
+
+    if (empty($maxi_image_to_upload) || empty($maxi_post_id_for_image_to_upload)) {
+       // echo 'empry posts raw';
+       write_log('empry posts raw');
+        return;
+    }
+
+    if (!function_exists('post_exists')) {
+        require_once(ABSPATH . 'wp-admin/includes/post.php');
+    }
+
+
+    $maxi_post_title=basename($maxi_image_to_upload);
+
+    //$maxi_post_title = strstr($maxi_image_to_upload, 'http', true);
+
+    write_log('$maxi_post_title:');
+    write_log($maxi_post_title);
+
+    $maxi_filename = sanitize_file_name($maxi_post_title);
+
+    //$maxi_filename = $maxi_post_title.'-featured-image-ddp.jpg';
+
+    write_log('maxi_filename: ');
+
+    write_log($maxi_filename);
+  //echo $maxi_filename;
+  /// echo 'maxi_media_file_already_exists: '.maxi_media_file_already_exists($maxi_filename) ;
+    write_log('maxi_media_file_already_exists: ');
+    write_log(maxi_media_file_already_exists($maxi_filename));
+
+   $post_id =  $maxi_post_id_for_image_to_upload;
+
+
+    if($post_id) {
+        if (maxi_media_file_already_exists($maxi_filename) === 0) {
+           write_log('Does not exist');
+            $maxi_upload_file = wp_upload_bits($maxi_filename, null, @file_get_contents($maxi_image_to_upload));
+            if(!$maxi_upload_file['error']) {
+              //if succesfull insert the new file into the media library (create a new attachment post type)
+              $maxi_wp_filetype = wp_check_filetype($maxi_filename, null );
+              $maxi_attachment = array(
+                'post_mime_type' => $maxi_wp_filetype['type'],
+                'post_parent' => $post_id,
+                'post_title' => preg_replace('/\.[^.]+$/', '', $maxi_filename),
+                'post_content' => '',
+                'post_status' => 'inherit'
+              );
+              //wp_insert_attachment( $maxi_attachment, $maxi_filename, $parent_post_id );
+              $maxi_attachment_id = wp_insert_attachment( $maxi_attachment, $maxi_upload_file['file'], $post_id );
+              if (!is_wp_error($maxi_attachment_id)) {
+                 //if attachment post was successfully created, insert it as a thumbnail to the post $post_id
+                 require_once(ABSPATH . "wp-admin" . '/includes/image.php');
+                 //wp_generate_attachment_metadata( $maxi_attachment_id, $file ); for images
+                 $maxi_attachment_data = wp_generate_attachment_metadata( $maxi_attachment_id, $maxi_upload_file['file'] );
+                 wp_update_attachment_metadata( $maxi_attachment_id,  $maxi_attachment_data );
+                 echo wp_get_attachment_image_src($maxi_attachment_id)[0];
+               //  set_post_thumbnail( $post_id, $maxi_attachment_id );
+               }
+            }
+        }
+        else {
+          //  set_post_thumbnail( $post_id, maxi_media_file_already_exists($maxi_filename));
+        	echo wp_get_attachment_image_src(maxi_media_file_already_exists($maxi_filename))[0];
+            write_log('Exists');
+        }
+    }
+
+   //echo 'END: maxi_import_image_to_upload';
+    write_log('END: maxi_import_image_to_upload');
+     write_log('________________________________________________');
+
+    die();
+
+} //maxi_import_image_to_upload($maxi_image_to_upload)

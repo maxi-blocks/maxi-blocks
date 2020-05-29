@@ -3,15 +3,16 @@
  */
 const { __ } = wp.i18n;
 const { __experimentalBlock } = wp.blockEditor;
-const { dispatch } = wp.data;
 
 /**
  * Internal dependencies
  */
 import Inspector from './inspector';
+import { BackEndResponsiveStyles } from '../../extensions/styles';
 import {
     GXBlock,
     LinkedButton,
+    __experimentalToolbar
 } from '../../components';
 
 /**
@@ -23,6 +24,7 @@ import {
     isNil,
     isNumber
 } from 'lodash';
+import { typographyHover } from './data';
 
 /**
  * Content
@@ -42,7 +44,7 @@ class edit extends GXBlock {
         if (this.type === 'normal')
             return `${this.props.attributes.uniqueID} .maxi-buttoneditor-button`;
         if (this.type === 'hover')
-        return `${this.props.attributes.uniqueID} .maxi-buttoneditor-button:hover`;
+            return `${this.props.attributes.uniqueID} .maxi-buttoneditor-button:hover`;
     }
 
     /**
@@ -59,19 +61,21 @@ class edit extends GXBlock {
 
     get getWrapperObject() {
         const response = {
-            label: 'Button',
-            general: {}
+            button: {
+                label: 'Button',
+                general: {}
+            }
         }
         if (!isNil(this.props.attributes.alignment)) {
             switch (this.props.attributes.alignment) {
                 case 'left':
-                    response.general['justify-content'] = 'flex-start';
+                    response.button.general['justify-content'] = 'flex-start';
                     break;
                 case 'center':
-                    response.general['justify-content'] = 'center';
+                    response.button.general['justify-content'] = 'center';
                     break;
                 case 'right':
-                    response.general['justify-content'] = 'flex-end';
+                    response.button.general['justify-content'] = 'flex-end';
                     break;
             }
         }
@@ -81,41 +85,73 @@ class edit extends GXBlock {
     get getNormalObject() {
         const {
             backgroundColor,
-            background,
-            opacity
+            backgroundGradient,
+            opacity,
+            typography,
+            boxShadow,
+            border,
+            size,
+            padding,
+            margin
         } = this.props.attributes;
 
         const response = {
-            label: 'Button',
-            general: {}
+            typography: { ...JSON.parse(typography) },
+            boxShadow: { ...JSON.parse(boxShadow) },
+            border: { ...JSON.parse(border) },
+            borderWidth: { ...JSON.parse(border).borderWidth },
+            borderRadius: { ...JSON.parse(border).borderRadius },
+            size: { ...JSON.parse(size) },
+            padding: { ...JSON.parse(padding) },
+            margin: { ...JSON.parse(margin) },
+            button: {
+                label: 'Button',
+                general: {}
+            }
         }
+
         if (!isEmpty(backgroundColor))
-            response.general['background-color'] = backgroundColor;
-        if (!isEmpty(background))
-            response.general['background'] = background;
+            response.button.general['background-color'] = backgroundColor;
+        if (!isEmpty(backgroundGradient))
+            response.button.general['background'] = backgroundGradient;
         if (isNumber(opacity))
-            response.general['opacity'] = opacity;
+            response.button.general['opacity'] = opacity;
+
         return response;
     }
 
     get getHoverObject() {
         const {
             backgroundColorHover,
-            backgroundHover,
-            opacityHover
+            backgroundGradientHover,
+            opacityHover,
+            typographyHover,
+            boxShadowHover,
+            borderHover,
+            paddingHover,
+            marginHover
         } = this.props.attributes;
 
         const response = {
-            label: 'Button',
-            general: {}
+            typographyHover: { ...JSON.parse(typographyHover) },
+            boxShadowHover: { ...JSON.parse(boxShadowHover) },
+            borderHover: { ...JSON.parse(borderHover) },
+            borderWidth: { ...JSON.parse(borderHover).borderWidth },
+            borderRadius: { ...JSON.parse(borderHover).borderRadius },
+            paddingHover: { ...JSON.parse(paddingHover) },
+            marginHover: { ...JSON.parse(marginHover) },
+            buttonHover: {
+                label: 'Button',
+                general: {}
+            }
         }
-        
+
         if (!isEmpty(backgroundColorHover))
-            response.general['background-color'] = backgroundColorHover;
-        if (!isEmpty(backgroundHover))
-            response.general['background'] = backgroundHover;
+            response.buttonHover.general['background-color'] = backgroundColorHover;
+        if (!isEmpty(backgroundGradientHover))
+            response.buttonHover.general['background'] = backgroundGradientHover;
         if (isNumber(opacityHover))
-            response.general['opacity'] = opacityHover;
+            response.buttonHover.general['opacity'] = opacityHover;
 
         return response;
     }
@@ -129,14 +165,6 @@ class edit extends GXBlock {
         this.saveMeta('hover');
 
         new BackEndResponsiveStyles(this.getMeta);
-    }
-
-    saveMeta(type) {
-        dispatch('core/editor').editPost({
-            meta: {
-                _gutenberg_extra_responsive_styles: this.metaValue(null, type, false),
-            },
-        });
     }
 
     render() {
@@ -163,6 +191,7 @@ class edit extends GXBlock {
 
         return [
             <Inspector {...this.props} />,
+            <__experimentalToolbar />,
             <__experimentalBlock
                 className={classes}
                 data-gx_initial_block_class={defaultBlockStyle}

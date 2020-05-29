@@ -6,6 +6,16 @@ const apiFetch = wp.apiFetch;
 
 /**
  * Register Store
+ * 
+ * Store ready to connect with data stored on MaxiBlocksAPI
+ * This connection permits retrieving data settings from DB
+ * created using Customizer. 
+ * 
+ * For the moment is just a test waiting for a final decision
+ * between Gutenberg and Customizer relation
+ * 
+ * @todo Change GX references for Maxi
+ * @todo Enlarge API scope for all the elements
  */
 const actions = {
 	setGXstyles( GXStyles ) {

@@ -11,6 +11,11 @@ const {
 } = wp.components;
 
 /**
+ * Internal dependencies
+ */
+import { FontFamilyResolver } from '../../extensions/styles/fonts';
+
+/**
  * External dependencies
  */
 import Select from 'react-select';
@@ -99,7 +104,7 @@ export default class FontFamilySelector extends Component {
                         <Popover
                             className="maxi-font-family-selector-popover"
                             noArrow={true}
-                            position= "top center"
+                            position="top center"
                         >
                             <div className="maxi-font-family-selector-content">
                                 {!isNil(this.state.options) &&

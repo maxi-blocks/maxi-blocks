@@ -72,17 +72,17 @@ export const size = {
     "label": "Size",
     "general": {
         "max-widthUnit": "px",
-        "max-width": 0,
+        "max-width": "",
         "widthUnit": "px",
-        "width": 0,
+        "width": "",
         "min-widthUnit": "px",
-        "min-width": 0,
+        "min-width": "",
         "max-heightUnit": "px",
-        "max-height": 0,
+        "max-height": "",
         "heightUnit": "px",
-        "height": 0,
+        "height": "",
         "min-heightUnit": "px",
-        "min-height": 0
+        "min-height": ""
     }
 };
 
@@ -274,17 +274,17 @@ export const sizeHover = {
     "label": "Size",
     "general": {
         "max-widthUnit": "px",
-        "max-width": 0,
+        "max-width": "",
         "widthUnit": "px",
-        "width": 0,
+        "width": "",
         "min-widthUnit": "px",
-        "min-width": 0,
+        "min-width": "",
         "max-heightUnit": "px",
-        "max-height": 0,
+        "max-height": "",
         "heightUnit": "px",
-        "height": 0,
+        "height": "",
         "min-heightUnit": "px",
-        "min-height": 0
+        "min-height": ""
     }
 };
 

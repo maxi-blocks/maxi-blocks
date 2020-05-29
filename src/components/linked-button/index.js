@@ -14,6 +14,7 @@ const {
  * Internal dependencies
  */
 import PopoverControl from '../popover-control';
+import { FixObjectFollower } from '../../extensions/dom';
 
 /**
  * External dependencies

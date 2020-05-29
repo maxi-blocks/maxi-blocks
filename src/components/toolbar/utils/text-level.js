@@ -14,7 +14,7 @@ const {
 /**
  * Icons
  */
-import { toolbarStyle } from '../../../icons';
+import { toolbarSettings } from '../../../icons';
 
 /**
  * TextLevel
@@ -71,7 +71,7 @@ const TextLevel = props => {
                 >
                     <Icon
                         className='toolbar-item__icon'
-                        icon={toolbarStyle}
+                        icon={toolbarSettings}
                     />
                 </Button>
             )}

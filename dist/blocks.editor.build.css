@@ -2982,11 +2982,12 @@ button[type="reset"] {
       .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item__dropdown > button {
         display: block;
         width: 100%;
-        height: auto;
+        height: 100%;
         padding: 0; }
       .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item__icon {
         display: block;
         width: 1rem;
+        height: 1rem;
         margin: auto; }
       .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item__move {
         cursor: move; }

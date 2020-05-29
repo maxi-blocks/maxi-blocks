@@ -4,7 +4,26 @@
 const { select } = wp.data;
 
 /**
- * Adds special classes on Settings Sidebar
+ * General
+ */
+const allowedBlocks = [
+    'maxi-blocks/block-image-box',
+    'maxi-blocks/block-title-extra',
+    'maxi-blocks/testimonials-slider-block',
+    'maxi-blocks/row-maxi',
+    'maxi-blocks/column-maxi',
+    'maxi-blocks/button-maxi',
+    'maxi-blocks/text-maxi',
+    'maxi-blocks/divider-maxi',
+    'maxi-blocks/image-maxi',
+    'maxi-blocks/section-maxi',
+    'maxi-blocks/test-maxi',
+];
+
+/**
+ * Mutation Observer for:
+ * - Add special classes on Settings Sidebar
+ * - Hide original WP toolbar on selected Maxi Blocks
  */
 document.addEventListener(
     'DOMContentLoaded',
@@ -22,18 +41,23 @@ document.addEventListener(
                         const blockName = select('core/block-editor').getBlockName((select('core/block-editor').getSelectedBlockClientId()));
                         const editPostSidebarNode = document.querySelector('.edit-post-sidebar');
                         const blockEditorBlockInspectorNode = document.querySelector('.block-editor-block-inspector');
+                        const blockToolbar = document.querySelector('.block-editor-block-toolbar');
 
-                        if (!!blockName && blockName.indexOf('maxi-blocks') >= 0) {
+                        if (!!blockName && allowedBlocks.includes(blockName)) {
                             if (editPostSidebarNode)
                                 editPostSidebarNode.classList.add('maxi-sidebar');
                             if (blockEditorBlockInspectorNode)
                                 blockEditorBlockInspectorNode.classList.add('maxi-controls')
+                            if (blockToolbar)
+                                blockToolbar.style.display = 'none';
                         }
                         else {
                             if (!!editPostSidebarNode && editPostSidebarNode.classList.contains('maxi-sidebar'))
                                 editPostSidebarNode.classList.remove('maxi-sidebar');
                             if (!!blockEditorBlockInspectorNode && blockEditorBlockInspectorNode.classList.contains('maxi-controls'))
                                 blockEditorBlockInspectorNode.classList.remove('maxi-controls');
+                            if (blockToolbar)
+                                blockToolbar.style.display = null;
                         }
                     }
                 }

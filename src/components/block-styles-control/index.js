@@ -3,6 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { SelectControl } = wp.components;
+const { Fragment } = wp.element;
 
 /**
  * Component
@@ -31,10 +32,9 @@ const BlockStylesControl = (props) => {
     }
 
     return (
-        <div className='maxi-block-style-control'>
+        <Fragment>
             <SelectControl
                 label={__('Block Style', 'maxi-blocks')}
-                className={'maxi-block-style'}
                 value={blockStyle}
                 options={getSelectorOptions()}
                 onChange={value => onChangeBlockStyle(value)}
@@ -52,7 +52,7 @@ const BlockStylesControl = (props) => {
                     onChange={value => onChangeDefaultBlockStyle(value)}
                 />
             }
-        </div>
+        </Fragment>
     )
 }
 

@@ -4,9 +4,7 @@
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
 const { InspectorControls } = wp.blockEditor;
-const {
-    RangeControl,
-} = wp.components;
+const { RangeControl } = wp.components;
 
 /**
  * Internal dependencies

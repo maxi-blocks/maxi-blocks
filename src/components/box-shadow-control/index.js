@@ -12,14 +12,9 @@ import { GXComponent } from '../index';
 import ColorControl from '../color-control';
 
 /**
- * External dependencies
- */
-import classnames from 'classnames';
-
-/**
  * Component
  */
-class BoxShadow extends GXComponent {
+export default class BoxShadowControl extends GXComponent {
 
     componentDidMount() {
         const value = typeof this.props.boxShadowOptions === 'object' ? this.props.boxShadowOptions : JSON.parse(this.props.boxShadowOptions);
@@ -33,7 +28,7 @@ class BoxShadow extends GXComponent {
         const response = {
             label: this.object.label,
             general: {
-                "box-shadow": this.getShadow
+                'box-shadow': this.getShadow
             }
         }
 
@@ -115,29 +110,3 @@ class BoxShadow extends GXComponent {
         )
     }
 }
-
-const BoxShadowControl = props => {
-
-    const {
-        boxShadowOptions,
-        onChange,
-        className,
-        target
-    } = props;
-
-    const classes = classnames(
-        'maxi-boxshadow-control',
-        className
-    );
-
-    return (
-        <BoxShadow
-            className={classes}
-            boxShadowOptions={boxShadowOptions}
-            onChange={onChange}
-            target={target}
-        />
-    )
-}
-
-export default BoxShadowControl;

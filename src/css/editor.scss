@@ -209,7 +209,7 @@ h2.gx_error {
 	.maxi-sidebar  {
 		input[type="number"].components-maxi-dimensions-control__number {
 			height: 32px !important;
-			padding-left: 10px;
+			padding-left: 5px;
 		}
 		.components-maxi-dimensions-control_sync {
 			width: 20% !important;
@@ -217,6 +217,11 @@ h2.gx_error {
 		.components-maxi-dimensions-control__mobile-controls {
 			button {
 				height: 32px;
+			}
+		}
+		.components-maxi-dimensions-control__input-labels {
+			.components-maxi-dimensions-control__number-label {
+				width: 20%;
 			}
 		}
 	}

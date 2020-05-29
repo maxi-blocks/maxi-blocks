@@ -264,6 +264,13 @@ export default class DimensionsControl extends GXComponent {
 						}
 					}
 				</TabPanel>
+				<div className="components-maxi-dimensions-control__input-labels">
+					<span className="components-maxi-dimensions-control__number-label">{__('Top', 'maxi-blocks')}</span>
+					<span className="components-maxi-dimensions-control__number-label">{__('Right', 'maxi-blocks')}</span>
+					<span className="components-maxi-dimensions-control__number-label">{__('Bottom', 'maxi-blocks')}</span>
+					<span className="components-maxi-dimensions-control__number-label">{__('Left', 'maxi-blocks')}</span>
+					<span className="components-maxi-dimensions-control__number-label-blank"></span>
+				</div>
 			</div>
 		);
 	}

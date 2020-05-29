@@ -1794,11 +1794,13 @@ h2.gx_error {
     top: -1px !important; }
   .maxi-sidebar input[type="number"].components-maxi-dimensions-control__number {
     height: 32px !important;
-    padding-left: 10px; }
+    padding-left: 5px; }
   .maxi-sidebar .components-maxi-dimensions-control_sync {
     width: 20% !important; }
   .maxi-sidebar .components-maxi-dimensions-control__mobile-controls button {
     height: 32px; }
+  .maxi-sidebar .components-maxi-dimensions-control__input-labels .components-maxi-dimensions-control__number-label {
+    width: 20%; }
   .divider-dimension .maxi-sizecontrol-unit {
     position: relative;
     top: -1px; }

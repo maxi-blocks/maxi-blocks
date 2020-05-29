@@ -140,11 +140,11 @@ class ResponsiveFrontendStyles {
      * Retrieve a cleaned target
      */
     public function getTarget($target) {
-        if(strpos($target, '__$:')) 
+        if(strpos($target, '__$:'))
             return str_replace( '__$', '', $target );
-        if(strpos($target, '__$>')) 
+        if(strpos($target, '__$>'))
             return str_replace( '__$', '', $target );
-        if(strpos($target, '__$#')) 
+        if(strpos($target, '__$#'))
             return str_replace( '__$', '', $target );
         return str_replace( '__$', ' .', $target );
     }

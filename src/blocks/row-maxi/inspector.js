@@ -62,60 +62,62 @@ const Inspector = props => {
                         label: __('Style', 'maxi-blocks'),
                         content: (
                             <Fragment>
-                                <BlockStylesControl
-                                    blockStyle={blockStyle}
-                                    onChangeBlockStyle={blockStyle => setAttributes({ blockStyle })}
-                                    defaultBlockStyle={defaultBlockStyle}
-                                    onChangeDefaultBlockStyle={defaultBlockStyle => setAttributes({ defaultBlockStyle })}
-                                    isFirstOnHierarchy={isFirstOnHierarchy}
-                                />
-                                <RangeControl
-                                    label={__('Column gap', 'maxi-blocks')}
-                                    value={columnGap}
-                                    onChange={columnGap => setAttributes({ columnGap })}
-                                    step={.1}
-                                    min={0}
-                                    max={5}
-                                />
-                                <CheckBoxControl
-                                    label={__('Syncronize Columns', 'maxi-blocks')}
-                                    checked={syncSize}
-                                    onChange={syncSize => setAttributes({ syncSize })}
-                                />
-                                <CheckBoxControl
-                                    label={__('Syncronize Styles', 'maxi-blocks')}
-                                    checked={syncStyles}
-                                    onChange={syncStyles => setAttributes({ syncStyles })}
-                                />
-                                <SelectControl
-                                    label={__('Horizontal align', 'maxi-blocks')}
-                                    value={horizontalAlign}
-                                    options={
-                                        [
-                                            { label: 'Flex-start', value: 'flex-start' },
-                                            { label: 'Flex-end', value: 'flex-end' },
-                                            { label: 'Center', value: 'center' },
-                                            { label: 'Space between', value: 'space-between' },
-                                            { label: 'Space around', value: 'space-around' },
-                                        ]
-                                    }
-                                    onChange={horizontalAlign => setAttributes({ horizontalAlign })}
-                                />
-                                <SelectControl
-                                    label={__('Vertical align', 'maxi-blocks')}
-                                    value={verticalAlign}
-                                    options={
-                                        [
-                                            { label: 'Stretch', value: 'stretch' },
-                                            { label: 'Flex-start', value: 'flex-start' },
-                                            { label: 'Flex-end', value: 'flex-end' },
-                                            { label: 'Center', value: 'center' },
-                                            { label: 'Space between', value: 'space-between' },
-                                            { label: 'Space around', value: 'space-around' },
-                                        ]
-                                    }
-                                    onChange={verticalAlign => setAttributes({ verticalAlign })}
-                                />
+                                <div className='maxi-tab-content__box'>
+                                    <BlockStylesControl
+                                        blockStyle={blockStyle}
+                                        onChangeBlockStyle={blockStyle => setAttributes({ blockStyle })}
+                                        defaultBlockStyle={defaultBlockStyle}
+                                        onChangeDefaultBlockStyle={defaultBlockStyle => setAttributes({ defaultBlockStyle })}
+                                        isFirstOnHierarchy={isFirstOnHierarchy}
+                                    />
+                                    <RangeControl
+                                        label={__('Column gap', 'maxi-blocks')}
+                                        value={columnGap}
+                                        onChange={columnGap => setAttributes({ columnGap })}
+                                        step={.1}
+                                        min={0}
+                                        max={5}
+                                    />
+                                    <CheckBoxControl
+                                        label={__('Syncronize Columns', 'maxi-blocks')}
+                                        checked={syncSize}
+                                        onChange={syncSize => setAttributes({ syncSize })}
+                                    />
+                                    <CheckBoxControl
+                                        label={__('Syncronize Styles', 'maxi-blocks')}
+                                        checked={syncStyles}
+                                        onChange={syncStyles => setAttributes({ syncStyles })}
+                                    />
+                                    <SelectControl
+                                        label={__('Horizontal align', 'maxi-blocks')}
+                                        value={horizontalAlign}
+                                        options={
+                                            [
+                                                { label: 'Flex-start', value: 'flex-start' },
+                                                { label: 'Flex-end', value: 'flex-end' },
+                                                { label: 'Center', value: 'center' },
+                                                { label: 'Space between', value: 'space-between' },
+                                                { label: 'Space around', value: 'space-around' },
+                                            ]
+                                        }
+                                        onChange={horizontalAlign => setAttributes({ horizontalAlign })}
+                                    />
+                                    <SelectControl
+                                        label={__('Vertical align', 'maxi-blocks')}
+                                        value={verticalAlign}
+                                        options={
+                                            [
+                                                { label: 'Stretch', value: 'stretch' },
+                                                { label: 'Flex-start', value: 'flex-start' },
+                                                { label: 'Flex-end', value: 'flex-end' },
+                                                { label: 'Center', value: 'center' },
+                                                { label: 'Space between', value: 'space-between' },
+                                                { label: 'Space around', value: 'space-around' },
+                                            ]
+                                        }
+                                        onChange={verticalAlign => setAttributes({ verticalAlign })}
+                                    />
+                                </div>
                                 <AccordionControl
                                     isPrimary
                                     items={[
@@ -176,7 +178,7 @@ const Inspector = props => {
                     {
                         label: __('Advanced', 'maxi-blocks'),
                         content: (
-                            <Fragment>
+                            <div className='maxi-tab-content__box'>
                                 <HoverAnimationControl
                                     hoverAnimation={hoverAnimation}
                                     onChangeHoverAnimation={hoverAnimation => setAttributes({ hoverAnimation })}
@@ -189,7 +191,7 @@ const Inspector = props => {
                                     extraStyles={extraStyles}
                                     onChangeExtraStyles={extraStyles => setAttributes({ extraStyles })}
                                 />
-                            </Fragment>
+                            </div>
                         )
                     }
                 ]}

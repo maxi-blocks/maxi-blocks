@@ -3,7 +3,7 @@
 
 	.maxi-accordion-item {
 		background: none;
-		overflow-x: hidden !important;
+		overflow: hidden !important;
 
 		.maxi-accordion-icon {
 			max-width: 24px;
@@ -16,20 +16,19 @@
 			padding-left: 12px !important;
 			padding-right: 12px !important;
 			padding-bottom: 10px !important;
+			background-color: #fff;
 		}
 
 		.maxi-accordion-item-button {
-			margin-bottom: 7px !important;
 			box-shadow: 0rem 0rem 0.5rem rgba(33, 33, 33, 0.15);
 			position: relative;
-			border-radius: 0.3rem;
 			background: #fff;
 			display: flex;
 			align-items: center;
 			font-size: 13px;
-			height: 40px;
+			height: 45px;
 			padding: 10px 12px;
-			border: 1px solid #f2f2f2;
+			border-top: 2px solid #e8eaeb;
 
 			&:before {
 				margin-right: 8px;

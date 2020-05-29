@@ -34,13 +34,7 @@ class ResponsiveFrontendStyles {
         wp_enqueue_style( 'maxi-blocks' );
         wp_add_inline_style('maxi-blocks', $this->styles());
 
-        // Inline fonts
-        wp_register_script( 'maxi-blocks-fonts', false );
-        wp_enqueue_script( 'maxi-blocks-fonts' );
-        wp_add_inline_script(
-            'maxi-blocks-fonts',
-            $this->fonts()
-        );
+        $this->fonts();
     }
 
     /**
@@ -169,16 +163,28 @@ class ResponsiveFrontendStyles {
 
     public function fonts() {
         $meta = $this->getMeta();
+        
         if ( empty( $meta ) )
             return;
+
         $response = [];
         foreach ( $meta as $target ) {
             if (isset($target['font'])) {
                 $response[$target['font']] = $target['options'];
             }
         }
-        $obj = json_encode((object)$response);
-        return "var fontsToLoad = $obj";
+
+        foreach ($response as $font => $options) {
+            foreach ($options as $weight => $link) {
+                wp_enqueue_script(
+                    "{$font}-{$weight}",
+                    $link,
+                    [],
+                    null,
+                    false
+                );
+            }
+        }
     }
 }
 

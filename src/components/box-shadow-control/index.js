@@ -10,7 +10,6 @@ const { RangeControl } = wp.components;
  */
 import { GXComponent } from '../index';
 import ColorControl from '../color-control';
-import PopoverControl from '../popover-control';
 
 /**
  * External dependencies
@@ -24,7 +23,7 @@ class BoxShadow extends GXComponent {
 
     componentDidMount() {
         const value = typeof this.props.boxShadowOptions === 'object' ? this.props.boxShadowOptions : JSON.parse(this.props.boxShadowOptions);
-        this.saveAndSend(value)
+        this.saveAndSend(value);
     }
 
     /**
@@ -127,26 +126,16 @@ const BoxShadowControl = props => {
     } = props;
 
     const classes = classnames(
-        'maxi-boxshadow-control', 
+        'maxi-boxshadow-control',
         className
     );
 
     return (
-        <PopoverControl
-            label={__('Box shadow', 'maxi-blocks')}
+        <BoxShadow
             className={classes}
-            popovers={[
-                {
-                    classNamePopover: 'maxi-boxshadow-popover',
-                    content: (
-                        <BoxShadow
-                            boxShadowOptions={boxShadowOptions}
-                            onChange={onChange}
-                            target={target}
-                        />
-                    )
-                }
-            ]}
+            boxShadowOptions={boxShadowOptions}
+            onChange={onChange}
+            target={target}
         />
     )
 }

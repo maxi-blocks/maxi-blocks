@@ -10,7 +10,7 @@ const {
 const {
     RangeControl,
     SelectControl,
-    TextControl
+    TextareaControl
 } = wp.components;
 
 /**
@@ -157,13 +157,15 @@ class Inspector extends Component {
                             label: __('Style', 'maxi-blocks'),
                             content: (
                                 <Fragment>
-                                    <BlockStylesControl
-                                        blockStyle={blockStyle}
-                                        onChangeBlockStyle={blockStyle => setAttributes({ blockStyle })}
-                                        defaultBlockStyle={defaultBlockStyle}
-                                        onChangeDefaultBlockStyle={defaultBlockStyle => setAttributes({ defaultBlockStyle })}
-                                        isFirstOnHierarchy={isFirstOnHierarchy}
-                                    />
+                                    <div className='maxi-tab-content__box'>
+                                        <BlockStylesControl
+                                            blockStyle={blockStyle}
+                                            onChangeBlockStyle={blockStyle => setAttributes({ blockStyle })}
+                                            defaultBlockStyle={defaultBlockStyle}
+                                            onChangeDefaultBlockStyle={defaultBlockStyle => setAttributes({ defaultBlockStyle })}
+                                            isFirstOnHierarchy={isFirstOnHierarchy}
+                                        />
+                                    </div>
                                     <AccordionControl
                                         isSecondary
                                         items={[
@@ -229,9 +231,9 @@ class Inspector extends Component {
                                                         />
                                                         {
                                                             captionType === 'custom' &&
-                                                            <TextControl
-                                                                label={__('Custom Caption', 'maxi-blocks')}
+                                                            <TextareaControl
                                                                 className='custom-caption'
+                                                                placeHolder={__('Add you Custom Caption here', 'maxi-blocks')}
                                                                 value={captionContent}
                                                                 onChange={captionContent => setAttributes({ captionContent })}
                                                             />
@@ -328,6 +330,28 @@ class Inspector extends Component {
                                                             allowReset={true}
                                                             initialPosition={0}
                                                         />
+                                                    </Fragment>
+                                                )
+                                            },
+                                            {
+                                                label: __('Border', 'maxi-blocks'),
+                                                content: (
+                                                    <BorderControl
+                                                        borderOptions={border}
+                                                        onChange={border => setAttributes({ border })}
+                                                    />
+                                                )
+                                            },
+                                            {
+                                                label: __('Box Shadow', 'maxi-blocks'),
+                                                content: (
+                                                    <Fragment>
+                                                        <NormalHoverControl
+                                                            selector={selector}
+                                                            onChange={selector => {
+                                                                this.setState({ selector });
+                                                            }}
+                                                        />
                                                         <BoxShadowControl
                                                             boxShadowOptions={
                                                                 getNormalHoverValue(
@@ -351,15 +375,6 @@ class Inspector extends Component {
                                                             }
                                                         />
                                                     </Fragment>
-                                                )
-                                            },
-                                            {
-                                                label: __('Border', 'maxi-blocks'),
-                                                content: (
-                                                    <BorderControl
-                                                        borderOptions={border}
-                                                        onChange={border => setAttributes({ border })}
-                                                    />
                                                 )
                                             },
                                             {
@@ -387,7 +402,7 @@ class Inspector extends Component {
                         {
                             label: __('Advanced', 'maxi-blocks'),
                             content: (
-                                <Fragment>
+                                <div className='maxi-tab-content__box'>
                                     <HoverAnimationControl
                                         hoverAnimation={hoverAnimation}
                                         onChangeHoverAnimation={hoverAnimation => setAttributes({ hoverAnimation })}
@@ -400,7 +415,7 @@ class Inspector extends Component {
                                         extraStyles={extraStyles}
                                         onChangeExtraStyles={extraStyles => setAttributes({ extraStyles })}
                                     />
-                                </Fragment>
+                                </div>
                             )
                         }
                     ]}

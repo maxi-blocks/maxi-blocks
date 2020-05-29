@@ -2,6 +2,8 @@
  * Editor styles for the admin
  */
 
+$white: #fff;
+
 .maxi-block-library__modal {
 	width: 1500px;
 	min-height: 90%;
@@ -28,7 +30,7 @@
 	}
 
 	.components-tab-panel__tab-content {
-		background: #fff;
+		background: $white;
 		padding: 35px;
 		border-top: 1px solid #e2e4e7;
 	}
@@ -44,7 +46,7 @@
 			font-size: 16px;
 
 			&:hover {
-				background: #fff;
+				background: $white;
 				cursor: pointer;
 			}
 		}
@@ -52,7 +54,7 @@
 
 	.components-tab-panel__tabs .maxi-block-library__modal-active-tab {
 		font-weight: 600;
-		background: #fff;
+		background: $white;
 		border: 1px solid #e2e4e7;
 		border-bottom: none;
 	}
@@ -159,7 +161,7 @@
 	}
 
 	.maxi-cloud-design-info {
-		background: #fff;
+		background: $white;
 		border-top: solid 1px #ccc;
 		text-align: left;
 		position: relative;
@@ -191,18 +193,18 @@
 	}
 
 	button.maxi-cloud-favorite-button:hover {
-		background: #fff;
+		background: $white;
 		border: none;
-		box-shadow: inset 0 0 0 1px #e2e4e7, inset 0 0 0 2px #fff, 0 1px 1px rgba(25,30,35,.2);
+		box-shadow: inset 0 0 0 1px #e2e4e7, inset 0 0 0 2px $white, 0 1px 1px rgba(25,30,35,.2);
 	}
 
 	.components-button-group .components-button.maxi-cloud-favorite-button:focus {
-		box-shadow: inset 0 0 0 1px #e2e4e7, inset 0 0 0 2px #fff, 0 1px 1px rgba(25,30,35,.2);
-		background: #fff;
+		box-shadow: inset 0 0 0 1px #e2e4e7, inset 0 0 0 2px $white, 0 1px 1px rgba(25,30,35,.2);
+		background: $white;
 	}
 
 	button.components-button.is-default:active:enabled {
-		box-shadow: inset 0 0 0 1px #ccd0d4, inset 0 0 0 2px #fff;
+		box-shadow: inset 0 0 0 1px #ccd0d4, inset 0 0 0 2px $white;
 	}
 
 	.maxi-cloud-icon-favorite {
@@ -217,7 +219,7 @@
 		position: absolute;
 		top: 15px;
 		right: 15px;
-		background: #fff;
+		background: $white;
 		border-radius: 5px !important;
 		transition: .2s ease;
 		z-index: 10;
@@ -237,6 +239,27 @@
 	.maxi-cloud-zoom-layout {
 		grid-column: 1 / -1;
 	}
+
+	.maxi-block-library__modal__loading_message {
+		display: flex;
+	    justify-content: center;
+	    align-items: center;
+		width: 100%;
+		background: rgba(0,0,0,0.7);
+		height: 100%;
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+
+
+		p {
+			font-size: 42px;
+			color: $white;
+		}
+	}
+	.maxi-block__item--hidden {display: none !important;}
 }
 
 .maxi-block-library__placeholder {

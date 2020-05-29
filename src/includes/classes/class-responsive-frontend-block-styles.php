@@ -167,21 +167,18 @@ class ResponsiveFrontendStyles {
         if ( empty( $meta ) )
             return;
 
-        $response = [];
+        $fontOptions = [];
         foreach ( $meta as $target ) {
             if (isset($target['font'])) {
-                $response[$target['font']] = $target['options'];
+                $fontOptions[$target['font']] = $target['options'];
             }
         }
 
-        foreach ($response as $font => $options) {
-            foreach ($options as $weight => $link) {
-                wp_enqueue_script(
-                    "{$font}-{$weight}",
-                    $link,
-                    [],
-                    null,
-                    false
+        foreach ($fontOptions as $font => $options) {
+            foreach ($options as $style => $link) {
+                wp_enqueue_style(
+                    "{$font}-{$style}",
+                    "https://fonts.googleapis.com/css2?family={$font}"
                 );
             }
         }

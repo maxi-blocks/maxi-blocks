@@ -217,6 +217,7 @@ require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-responsive-fr
 require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-image-size.php';
 
 add_action('wp_ajax_maxi_import_images', 'maxi_import_images', 3, 2);
+add_action('wp_ajax_maxi_import_reusable_blocks', 'maxi_import_reusable_blocks', 4, 2);
 
 if ( ! function_exists('write_log')) {
    function write_log ( $log )  {
@@ -261,9 +262,9 @@ function maxi_import_images(){
     write_log('=========================');
 
 
-    $maxi_image_to_upload = $_POST['maxi_image_to_upload'];
-    write_log('maxi_image_to_upload');
-    write_log($maxi_image_to_upload);
+    $maxi_images_to_upload = json_decode(stripslashes($_POST['maxi_images_to_upload']));
+    write_log('maxi_images_to_upload');
+    write_log($maxi_images_to_upload);
 
     //$maxi_post_id_for_image_to_upload = $_SESSION['maxi_post_id_for_image'];
     $maxi_post_id_for_image_to_upload = $_POST['maxi_post_id'];
@@ -272,7 +273,7 @@ function maxi_import_images(){
 
     //echo 'GET $_SESSION: '.$maxi_post_id_for_image_to_upload;
 
-    if (empty($maxi_image_to_upload) || empty($maxi_post_id_for_image_to_upload)) {
+    if (empty($maxi_images_to_upload) || empty($maxi_post_id_for_image_to_upload)) {
        // echo 'empry posts raw';
        write_log('empry posts raw');
         return;
@@ -283,61 +284,68 @@ function maxi_import_images(){
     }
 
 
-    $maxi_post_title=basename($maxi_image_to_upload);
+ 	foreach($maxi_images_to_upload as $maxi_image_to_upload) {
 
-    //$maxi_post_title = strstr($maxi_image_to_upload, 'http', true);
+ 		write_log('$maxi_image_to_upload');
+ 		write_log($maxi_image_to_upload);
 
-    write_log('$maxi_post_title:');
-    write_log($maxi_post_title);
+	    $maxi_post_title=basename($maxi_image_to_upload);
 
-    $maxi_filename = sanitize_file_name($maxi_post_title);
+	    //$maxi_post_title = strstr($maxi_image_to_upload, 'http', true);
 
-    //$maxi_filename = $maxi_post_title.'-featured-image-ddp.jpg';
+	    write_log('$maxi_post_title:');
+	    write_log($maxi_post_title);
 
-    write_log('maxi_filename: ');
+	    $maxi_filename = sanitize_file_name($maxi_post_title);
 
-    write_log($maxi_filename);
-  //echo $maxi_filename;
-  /// echo 'maxi_media_file_already_exists: '.maxi_media_file_already_exists($maxi_filename) ;
-    write_log('maxi_media_file_already_exists: ');
-    write_log(maxi_media_file_already_exists($maxi_filename));
+	    //$maxi_filename = $maxi_post_title.'-featured-image-ddp.jpg';
 
-   $post_id =  $maxi_post_id_for_image_to_upload;
+	    write_log('maxi_filename: ');
+
+	    write_log($maxi_filename);
+	  //echo $maxi_filename;
+	  /// echo 'maxi_media_file_already_exists: '.maxi_media_file_already_exists($maxi_filename) ;
+	    write_log('maxi_media_file_already_exists: ');
+	    write_log(maxi_media_file_already_exists($maxi_filename));
+
+	   $post_id =  $maxi_post_id_for_image_to_upload;
 
 
-    if($post_id) {
-        if (maxi_media_file_already_exists($maxi_filename) === 0) {
-           write_log('Does not exist');
-            $maxi_upload_file = wp_upload_bits($maxi_filename, null, @file_get_contents($maxi_image_to_upload));
-            if(!$maxi_upload_file['error']) {
-              //if succesfull insert the new file into the media library (create a new attachment post type)
-              $maxi_wp_filetype = wp_check_filetype($maxi_filename, null );
-              $maxi_attachment = array(
-                'post_mime_type' => $maxi_wp_filetype['type'],
-                'post_parent' => $post_id,
-                'post_title' => preg_replace('/\.[^.]+$/', '', $maxi_filename),
-                'post_content' => '',
-                'post_status' => 'inherit'
-              );
-              //wp_insert_attachment( $maxi_attachment, $maxi_filename, $parent_post_id );
-              $maxi_attachment_id = wp_insert_attachment( $maxi_attachment, $maxi_upload_file['file'], $post_id );
-              if (!is_wp_error($maxi_attachment_id)) {
-                 //if attachment post was successfully created, insert it as a thumbnail to the post $post_id
-                 require_once(ABSPATH . "wp-admin" . '/includes/image.php');
-                 //wp_generate_attachment_metadata( $maxi_attachment_id, $file ); for images
-                 $maxi_attachment_data = wp_generate_attachment_metadata( $maxi_attachment_id, $maxi_upload_file['file'] );
-                 wp_update_attachment_metadata( $maxi_attachment_id,  $maxi_attachment_data );
-                 echo wp_get_attachment_image_src($maxi_attachment_id)[0];
-               //  set_post_thumbnail( $post_id, $maxi_attachment_id );
-               }
-            }
-        }
-        else {
-          //  set_post_thumbnail( $post_id, maxi_media_file_already_exists($maxi_filename));
-        	echo wp_get_attachment_image_src(maxi_media_file_already_exists($maxi_filename))[0];
-            write_log('Exists');
-        }
-    }
+	    if($post_id) {
+	        if (maxi_media_file_already_exists($maxi_filename) === 0) {
+	           write_log('Does not exist');
+	            $maxi_upload_file = wp_upload_bits($maxi_filename, null, @file_get_contents($maxi_image_to_upload));
+	            if(!$maxi_upload_file['error']) {
+	              //if succesfull insert the new file into the media library (create a new attachment post type)
+	              $maxi_wp_filetype = wp_check_filetype($maxi_filename, null );
+	              $maxi_attachment = array(
+	                'post_mime_type' => $maxi_wp_filetype['type'],
+	                'post_parent' => $post_id,
+	                'post_title' => preg_replace('/\.[^.]+$/', '', $maxi_filename),
+	                'post_content' => '',
+	                'post_status' => 'inherit'
+	              );
+	              //wp_insert_attachment( $maxi_attachment, $maxi_filename, $parent_post_id );
+	              $maxi_attachment_id = wp_insert_attachment( $maxi_attachment, $maxi_upload_file['file'], $post_id );
+	              if (!is_wp_error($maxi_attachment_id)) {
+	                 //if attachment post was successfully created, insert it as a thumbnail to the post $post_id
+	                 require_once(ABSPATH . "wp-admin" . '/includes/image.php');
+	                 //wp_generate_attachment_metadata( $maxi_attachment_id, $file ); for images
+	                 $maxi_attachment_data = wp_generate_attachment_metadata( $maxi_attachment_id, $maxi_upload_file['file'] );
+	                 wp_update_attachment_metadata( $maxi_attachment_id,  $maxi_attachment_data );
+	                 echo $maxi_image_to_upload.'|'.wp_get_attachment_image_src($maxi_attachment_id, 'full')[0].',';
+	               //  set_post_thumbnail( $post_id, $maxi_attachment_id );
+	               }
+	            }
+	        }
+	        else {
+	          //  set_post_thumbnail( $post_id, maxi_media_file_already_exists($maxi_filename));
+	        	echo $maxi_image_to_upload.'|'.wp_get_attachment_image_src(maxi_media_file_already_exists($maxi_filename), 'full')[0].',';
+	            write_log('Exists');
+	        }
+	    }
+
+	} // foreach end
 
    //echo 'END: maxi_import_image_to_upload';
     write_log('END: maxi_import_image_to_upload');
@@ -346,3 +354,42 @@ function maxi_import_images(){
     die();
 
 } //maxi_import_image_to_upload($maxi_image_to_upload)
+
+
+function maxi_import_reusable_blocks() {
+
+	$maxi_reusable_block_title = $_POST['maxi_reusable_block_title'];
+	write_log('maxi_reusable_block_title: ');
+	write_log($maxi_reusable_block_title);
+
+	//$maxi_post_id_for_image_to_upload = $_SESSION['maxi_post_id_for_image'];
+	$maxi_reusable_block_content = $_POST['maxi_reusable_block_content'];
+	write_log('$maxi_reusable_block_content: ');
+	write_log($maxi_reusable_block_content);
+	$reusable_block_exists = get_posts( array(
+		'name'           => sanitize_title( $maxi_reusable_block_title ),
+		'post_type'      => 'wp_block',
+		'posts_per_page' => 1
+	) );
+
+	if ( ! $reusable_block_exists ) {
+		wp_insert_post( array(
+			'post_content'   => $maxi_reusable_block_content,
+			'post_title'     => $maxi_reusable_block_title,
+			'post_type'      => 'wp_block',
+			'post_status'    => 'publish',
+			'comment_status' => 'closed',
+			'ping_status'    => 'closed',
+			'guid'           => sprintf(
+				'%s/wp_block/%s',
+				site_url(),
+				sanitize_title( $maxi_reusable_block_title )
+			)
+		) );
+	}
+	else {
+		echo 'Block already exists';
+	}
+
+	die();
+}

@@ -82,16 +82,6 @@ export const boxShadow = {
     "shadowSpread": 0
 }
 
-export const boxShadowHover = {
-    "label": "Box Shadow Hover",
-    "shadowColor": "#ffffff",
-    "defaultShadowColor": "#ffffff",
-    "shadowHorizontal": 0,
-    "shadowVertical": 0,
-    "shadowBlur": 0,
-    "shadowSpread": 0
-}
-
 export const border = {
     "label": "Border",
     "defaultBorderColor": "#ffffff",

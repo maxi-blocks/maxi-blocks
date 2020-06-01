@@ -11,7 +11,6 @@ const {
     withSelect,
     withDispatch,
     select,
-    dispatch
 } = wp.data;
 const {
     InnerBlocks,
@@ -107,7 +106,7 @@ class edit extends GXBlock {
 
         let response = {
             background: { ...getBackgroundObject(JSON.parse(background)) },
-            boxShadow: { ...JSON.parse(boxShadow) },
+            boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
             border: { ...JSON.parse(border) },
             borderWidth: { ...JSON.parse(border).borderWidth },
             borderRadius: { ...JSON.parse(border).borderRadius },

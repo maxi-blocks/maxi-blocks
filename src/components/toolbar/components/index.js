@@ -1,5 +1,6 @@
 export { default as Alignment } from'./alignment';
 export { default as BackgroundColor } from'./background-color/';
+export { default as BoxShadow } from'./box-shadow';
 export { default as ColumnPattern } from'./column-pattern/';
 export { default as Delete } from'./delete/';
 export { default as Mover } from'./mover/';

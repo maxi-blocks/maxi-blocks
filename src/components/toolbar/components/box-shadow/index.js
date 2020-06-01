@@ -1,7 +1,6 @@
 /**
  * WordPress dependencies
  */
-const { Fragment } = wp.element;
 const {
     Icon,
     Dropdown,
@@ -13,6 +12,11 @@ const {
 } = wp.data;
 
 /**
+ * Internal dependencies
+ */
+import BoxShadowControl from '../../../box-shadow-control';
+
+/**
  * Icons
  */
 import { toolbarStyle } from '../../../../icons';
@@ -20,35 +24,42 @@ import { toolbarStyle } from '../../../../icons';
 /**
  * PaddingMargin
  */
+const ALLOWED_BLOCKS = [
+    'maxi-blocks/text-maxi',
+    'maxi-blocks/button-maxi',
+    'maxi-blocks/image-maxi',
+    'maxi-blocks/divider-maxi'
+]
+
 const PaddingMargin = props => {
     const { clientId } = props;
 
-    const { padding, margin } = useSelect(
+    const { blockName, boxShadow } = useSelect(
         (select) => {
-            const { getBlockAttributes } = select(
+            const { getBlockName, getBlockAttributes } = select(
                 'core/block-editor',
             );
             return {
-                padding: getBlockAttributes(clientId).padding,
-                margin: getBlockAttributes(clientId).margin,
+                blockName: getBlockName(clientId),
+                boxShadow: getBlockAttributes(clientId).boxShadow,
             };
         },
         [clientId]
     );
 
+    if (!ALLOWED_BLOCKS.includes(blockName))
+        return null;
+
     const { updateBlockAttributes } = useDispatch(
         'core/block-editor'
     );
-
-    if (blockType.name != 'maxi-blocks/text-maxi')
-        return null;
 
     return (
         <Dropdown
             className='toolbar-item toolbar-item__dropdown'
             renderToggle={({ isOpen, onToggle }) => (
                 <Button
-                    className='toolbar-item__text-level'
+                    className='toolbar-item__box-shadow'
                     onClick={onToggle}
                     aria-expanded={isOpen}
                     action="popup"
@@ -68,9 +79,13 @@ const PaddingMargin = props => {
             }
             renderContent={
                 () => (
-                    <Fragment>
-                        
-                    </Fragment>
+                    <BoxShadowControl
+                        boxShadowOptions={JSON.parse(boxShadow)}
+                        onChange={boxShadow => updateBlockAttributes(
+                            clientId,
+                            { boxShadow }
+                        )}
+                    />
                 )
             }
         >

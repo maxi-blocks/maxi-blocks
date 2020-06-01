@@ -27,7 +27,10 @@ import {
 import Inspector from './inspector';
 import TEMPLATES from './templates';
 import { BackEndResponsiveStyles } from '../../extensions/styles';
-import { getBackgroundObject } from '../../extensions/styles/utils'
+import { 
+    getBackgroundObject,
+    getBoxShadowObject
+} from '../../extensions/styles/utils'
 
 /**
  * External dependencies
@@ -118,7 +121,7 @@ class edit extends GXBlock {
 
         return {
             background: { ...getBackgroundObject(JSON.parse(background)) },
-            boxShadow: { ...JSON.parse(boxShadow) },
+            boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
             border: { ...JSON.parse(border) },
             borderWidth: { ...JSON.parse(border).borderWidth },
             borderRadius: { ...JSON.parse(border).borderRadius },

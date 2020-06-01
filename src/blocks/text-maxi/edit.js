@@ -12,7 +12,10 @@ const {
  */
 import Inspector from './inspector';
 import { BackEndResponsiveStyles } from '../../extensions/styles';
-import { getBackgroundObject } from '../../extensions/styles/utils';
+import { 
+    getBackgroundObject, 
+    getBoxShadowObject
+} from '../../extensions/styles/utils';
 import {
     GXBlock,
     __experimentalToolbar
@@ -63,7 +66,7 @@ class edit extends GXBlock {
         const response = {
             typography: { ...JSON.parse(typography) },
             background: { ...getBackgroundObject(JSON.parse(background)) },
-            boxShadow: { ...JSON.parse(boxShadow) },
+            boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
             border: { ...JSON.parse(border) },
             borderWidth: { ...JSON.parse(border).borderWidth },
             borderRadius: { ...JSON.parse(border).borderRadius },
@@ -97,7 +100,7 @@ class edit extends GXBlock {
         const response = {
             typographyHover: { ...JSON.parse(typographyHover) },
             backgroundHover: { ...getBackgroundObject(JSON.parse(backgroundHover)) },
-            boxShadowHover: { ...JSON.parse(boxShadowHover) },
+            boxShadowHover: { ...getBoxShadowObject(JSON.parse(boxShadowHover)) },
             borderHover: { ...JSON.parse(borderHover) },
             borderWidth: { ...JSON.parse(borderHover).borderWidth },
             borderRadius: { ...JSON.parse(borderHover).borderRadius },

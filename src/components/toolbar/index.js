@@ -19,11 +19,11 @@ import { isNil } from 'lodash';
 import {
     Alignment,
     BackgroundColor,
+    BoxShadow,
     Mover,
     ColumnPattern,
     Duplicate,
     Link,
-    Favorite,
     Delete,
     ImageSize,
     TextColor,
@@ -78,6 +78,9 @@ const MaxiToolbar = () => {
                         <Alignment
                             clientId={clientId}
                         />
+                        <BoxShadow
+                            clientId={clientId}
+                        />
                         <BackgroundColor
                             clientId={clientId}
                         />
@@ -103,9 +106,6 @@ const MaxiToolbar = () => {
                             clientId={clientId}
                         />
                         <PaddingMargin
-                            clientId={clientId}
-                        />
-                        <Favorite
                             clientId={clientId}
                         />
                         <Delete

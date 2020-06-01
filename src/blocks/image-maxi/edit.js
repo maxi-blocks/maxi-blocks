@@ -18,7 +18,10 @@ const {
  */
 import Inspector from './inspector';
 import { BackEndResponsiveStyles } from '../../extensions/styles';
-import { getBackgroundObject } from '../../extensions/styles/utils';
+import { 
+    getBackgroundObject, 
+    getBoxShadowObject
+} from '../../extensions/styles/utils';
 import {
     GXBlock,
     __experimentalToolbar
@@ -80,7 +83,7 @@ class edit extends GXBlock {
         } = this.props.attributes;
 
         const response = {
-            boxShadow: { ...JSON.parse(boxShadow) },
+            boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
             border: { ...JSON.parse(border) },
             borderWidth: { ...JSON.parse(border).borderWidth },
             borderRadius: { ...JSON.parse(border).borderRadius },
@@ -129,7 +132,7 @@ class edit extends GXBlock {
         } = this.props.attributes;
 
         const response = {
-            boxShadowHover: { ...JSON.parse(boxShadowHover) },
+            boxShadowHover: { ...getBoxShadowObject(JSON.parse(boxShadowHover)) },
             backgroundHover: { ...getBackgroundObject(JSON.parse(backgroundHover)) },
             imageHover: {
                 label: 'Image Hover',

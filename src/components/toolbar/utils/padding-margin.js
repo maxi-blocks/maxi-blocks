@@ -20,7 +20,7 @@ import DimensionsControl from '../../dimensions-control';
 /**
  * Icons
  */
-import { toolbarStyle } from '../../../icons';
+import { toolbarPadding } from '../../../icons';
 
 /**
  * PaddingMargin
@@ -57,7 +57,7 @@ const PaddingMargin = props => {
                 >
                     <Icon
                         className='toolbar-item__icon'
-                        icon={toolbarStyle}
+                        icon={toolbarPadding}
                     />
                 </Button>
             )}

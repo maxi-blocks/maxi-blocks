@@ -38,8 +38,8 @@ class GXCustomizerModel extends GXCustomizer
 
     public function __construct()
     {
-        add_action('wp_enqueue_scripts', [$this, 'gx_styling_model']);
-        add_action('admin_enqueue_scripts', [$this, 'gx_styling_model']);
+       // add_action('wp_enqueue_scripts', [$this, 'gx_styling_model']);
+       // add_action('admin_enqueue_scripts', [$this, 'gx_styling_model']);
     }
 
     public function gx_styling_model()

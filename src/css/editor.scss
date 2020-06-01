@@ -41,7 +41,6 @@ h2.gx_error {
 
 	* {
 		overflow-x: none;
-		background: #fff;
 	}
 
 	.components-panel__body {	// This should be fix
@@ -78,7 +77,7 @@ h2.gx_error {
 	}
 
 	select {
-		padding: 0 24px 0px 5px !important;
+		padding: 0 24px 0px 10px !important;
 		border: 1px solid #dddfe1 !important;
 		opacity: 1 !important;
 	}
@@ -92,8 +91,8 @@ h2.gx_error {
 			margin: auto;
 			margin-left: auto;
 			color: #464a53;
-			width: 18px;
-			height: 18px;
+			width: 14px;
+			height: 14px;
 		}
 	}
 
@@ -114,9 +113,12 @@ h2.gx_error {
 	}
 	.components-base-control__field {
 		flex-wrap: wrap;
-		& > *:not(.components-base-control__label, .components-range-control) {
+		& > * {
 			margin-left: 4px;
-			flex: 1;
+		}
+		.components-base-control__label,
+		.components-range-control {
+			margin-left: 0 !important;
 		}
 	}
 }
@@ -129,14 +131,13 @@ h2.gx_error {
 
 	span {
 		display: block;
-		width: 24px;
-		height: 24px;
+		width: 28px;
+		height: 28px;
 		margin: auto;
-		border: 1px solid #dddfe1 !important;
+		border: 2px solid #dddfe1 !important;
 		opacity: 1 !important;
 		margin-right: 8px !important;
 		float: left;
-		border-radius: 5px;
 	}
 }
 
@@ -178,10 +179,11 @@ h2.gx_error {
 	border-radius: 5px;
 	box-shadow: none;
 	border: 2px solid #dddfe1;
+	margin-left: 5px;
 
 	svg {
-		width: 12px;
-		height: 12px;
+		width: 14px;
+		height: 14px;
 		fill: #464a53;
 		margin: auto;
 	}
@@ -204,8 +206,24 @@ h2.gx_error {
 		top: -1px !important;
 	}
 
-	.maxi-sidebar input[type="number"].components-maxi-dimensions-control__number {
-		height: 26px !important;
+	.maxi-sidebar  {
+		input[type="number"].components-maxi-dimensions-control__number {
+			height: 32px !important;
+			padding-left: 5px;
+		}
+		.components-maxi-dimensions-control_sync {
+			width: 20% !important;
+		}
+		.components-maxi-dimensions-control__mobile-controls {
+			button {
+				height: 32px;
+			}
+		}
+		.components-maxi-dimensions-control__input-labels {
+			.components-maxi-dimensions-control__number-label {
+				width: 20%;
+			}
+		}
 	}
 
 	.divider-dimension .maxi-sizecontrol-unit {

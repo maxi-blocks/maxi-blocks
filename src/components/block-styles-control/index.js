@@ -2,8 +2,8 @@
  * WordPress Dependencies
  */
 const { __ } = wp.i18n;
-const { Fragment } = wp.element;
 const { SelectControl } = wp.components;
+const { Fragment } = wp.element;
 
 /**
  * Component
@@ -35,7 +35,6 @@ const BlockStylesControl = (props) => {
         <Fragment>
             <SelectControl
                 label={__('Block Style', 'maxi-blocks')}
-                className={'maxi-block-style'}
                 value={blockStyle}
                 options={getSelectorOptions()}
                 onChange={value => onChangeBlockStyle(value)}

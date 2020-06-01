@@ -85,7 +85,7 @@ function gutenberg_extra_load_custom_wp_admin_script() {
 	wp_enqueue_script(
 		'maxi-blocks-cloud-js', // Handle.
 		plugins_url( '/js/cloud-server.js', dirname( __FILE__ ) ),
-		array( 'jquery', 'wp-blocks', 'wp-edit-post', 'wp-api'),
+		array( 'jquery', 'wp-blocks', 'wp-edit-post', 'wp-api')
 	);
 
 	wp_register_script('maxi-blocks-gutenberg-ui-js', plugins_url( '/js/gutenberg-ui.js', dirname( __FILE__ ) ), array( 'wp-i18n' ), null, true);

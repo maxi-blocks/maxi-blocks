@@ -3,12 +3,16 @@
  */
 const { Popover } = wp.components;
 const { useBlockEditContext } = wp.blockEditor;
-const { Fragment } = wp.element;
+const { 
+    Fragment, 
+    useEffect, 
+    useState 
+} = wp.element;
 
 /**
- * Internal dependencies
+ * External dependencies
  */
-import { __experimentalDraggableBlock } from '../index';
+import { isNil } from 'lodash';
 
 /**
  * Utils
@@ -34,18 +38,27 @@ import './editor.scss';
 /**
  * Component
  */
-const MaxiToolbar = props => {
+const MaxiToolbar = () => {
     const {
         clientId,
         isSelected
     } = useBlockEditContext();
 
-    const anchorRef = document.getElementById(`block-${clientId}`)
+    const [anchorRef, setAnchorRef] = useState(document.getElementById(`block-${clientId}`));
+
+    useEffect(
+        () => {
+            if (isNil(anchorRef))
+                setAnchorRef(document.getElementById(`block-${clientId}`))
+        },
+        [anchorRef]
+    );
 
     return (
         <Fragment>
             {
                 isSelected &&
+                anchorRef &&
                 <Popover
                     noArrow
                     animate={false}

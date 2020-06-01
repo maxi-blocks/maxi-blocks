@@ -69,7 +69,7 @@ class MaxiModal extends Component {
                     key={ 'maxi-block-library__modal-button--' + this.props.clientId }
                     isPrimary
                     isLarge
-                    className="maxi-block-library__modal-button"
+                    className='maxi-block-library__modal-button'
                     onClick={ onClick }
                 >
                     { __( 'Launch the Library', 'maxi-blocks' ) }
@@ -92,6 +92,11 @@ class MaxiModal extends Component {
                                 className="maxi-block-library__modal-iframe"
                                 display="initial"
                                 position="relative"/>
+                                <Fragment>
+                                    <div class='maxi-block-library__modal__loading_message maxi-block__item--hidden'>
+                                        <p>Saving...</p>
+                                    </div>
+                                </Fragment>
                             </Modal>
                         )}
                     </MaxiContext.Consumer>

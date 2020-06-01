@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Maxi Blocks - Last Github version
  * Plugin URI:
- * Description: MaxiBlocks — is a Gutenberg plugin created via create-guten-block. Last update: 23/05/20
+ * Description: MaxiBlocks — is a Gutenberg plugin created via create-guten-block. Last update: 29/05/20
  * Author: Gutenberg Den
  * Author URI:
  * Version: 0.1

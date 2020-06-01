@@ -57,13 +57,15 @@ const Inspector = props => {
                         label: __('Content', 'maxi-blocks'),
                         content: (
                             <Fragment>
-                                <BlockStylesControl
-                                    blockStyle={blockStyle}
-                                    onChangeBlockStyle={blockStyle => setAttributes({ blockStyle })}
-                                    defaultBlockStyle={defaultBlockStyle}
-                                    onChangeDefaultBlockStyle={defaultBlockStyle => setAttributes({ defaultBlockStyle })}
-                                    isFirstOnHierarchy={isFirstOnHierarchy}
-                                />
+                                <div className='maxi-tab-content__box'>
+                                    <BlockStylesControl
+                                        blockStyle={blockStyle}
+                                        onChangeBlockStyle={blockStyle => setAttributes({ blockStyle })}
+                                        defaultBlockStyle={defaultBlockStyle}
+                                        onChangeDefaultBlockStyle={defaultBlockStyle => setAttributes({ defaultBlockStyle })}
+                                        isFirstOnHierarchy={isFirstOnHierarchy}
+                                    />
+                                </div>
                                 {
                                     !syncSize &&
                                     <RangeControl
@@ -149,7 +151,7 @@ const Inspector = props => {
                     {
                         label: __('Advanced', 'maxi-blocks'),
                         content: (
-                            <Fragment>
+                            <div className='maxi-tab-content__box'>
                                 <HoverAnimationControl
                                     hoverAnimation={hoverAnimation}
                                     onChangeHoverAnimation={hoverAnimation => setAttributes({ hoverAnimation })}
@@ -162,7 +164,7 @@ const Inspector = props => {
                                     extraStyles={extraStyles}
                                     onChangeExtraStyles={extraStyles => setAttributes({ extraStyles })}
                                 />
-                            </Fragment>
+                            </div>
                         )
                     }
                 ]}

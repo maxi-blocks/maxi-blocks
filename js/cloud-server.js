@@ -1,6 +1,4 @@
-let ddd_full_stop = 0;
-
-let json_counters_array = [];
+//let ddd_full_stop = 0;
 
 //console.log('layout-modal loaded');
 
@@ -70,16 +68,20 @@ jQuery(document).ready(function($) {
               //console.log('e.data: ' + JSON.stringify(e.data));
               let action_type = e.data.action;
               if (action_type === 'import') {
-                jQuery('.maxi-block-library__modal__loading_message p').text('Saving');
-                jQuery('.maxi-block-library__modal__loading_message').removeClass('maxi-block__item--hidden');
+                jQuery('.maxi-block-library__modal__loading_message p').text('Saving...');
+                //jQuery('.maxi-block-library__modal__loading_message').removeClass('maxi-block__item--hidden');
               }
+              if (action_type === 'insert') {
+                jQuery('.maxi-block-library__modal__loading_message p').text('Inserting...');
+              }
+              jQuery('.maxi-block-library__modal__loading_message').removeClass('maxi-block__item--hidden');
               if (~e.data.json.indexOf('wp_block')) { // if the response is a gutenberg json file
                     // console.log("e.data: " + e.data);
 
                     response = JSON.parse(e.data.json);
                     //console.log('response '+response);
                     if (response) {
-                        if (ddd_full_stop === 0) {
+                       // if (ddd_full_stop === 0) {
                             response = jQuery.parseJSON(response);
                            // console.log('response.content ' + response.content);
                             let json = response.content;
@@ -139,7 +141,6 @@ jQuery(document).ready(function($) {
                             jQuery.ajax({
                                 type: 'POST',
                                 url: ajaxurl,
-                                // processData: false,
                                 data: {
                                     'action': 'maxi_import_images',
                                     'maxi_post_id': current_post_id,
@@ -170,6 +171,7 @@ jQuery(document).ready(function($) {
 
                                     if(action_type === 'insert') {
                                       console.log('INSERTING BLOCKS');
+                                      jQuery('.maxi-block-library__modal__loading_message p').text('Done!');
                                       wp.data.dispatch('core/block-editor').replaceBlocks(
                                         clientId,
                                         wp.blocks.rawHandler({
@@ -186,7 +188,6 @@ jQuery(document).ready(function($) {
                                       jQuery.ajax({
                                           type: 'POST',
                                           url: ajaxurl,
-                                          // processData: false,
                                           data: {
                                               'action': 'maxi_import_reusable_blocks',
                                               'maxi_reusable_block_title': new_reusable_block_title,
@@ -202,7 +203,7 @@ jQuery(document).ready(function($) {
                                               console.log('Imported');
                                               jQuery('.maxi-block-library__modal__loading_message p').text('Saved to Re-usable Blocks Library');
                                             }
-                                            setTimeout(function(){ jQuery('.maxi-block-library__modal__loading_message').addClass('maxi-block__item--hidden'); }, 5000);
+                                            setTimeout(function(){ jQuery('.maxi-block-library__modal__loading_message').addClass('maxi-block__item--hidden'); }, 3000);
                                           },
                                           error: function(data) {
                                               console.log('Re-usable import error');
@@ -215,7 +216,7 @@ jQuery(document).ready(function($) {
                                     }
 
 
-                                        ddd_full_stop = 1;
+                                      //  ddd_full_stop = 1;
                                     // console.log(data);
                                 },
                                 error: function(data) {
@@ -223,14 +224,14 @@ jQuery(document).ready(function($) {
                                     console.log(data);
                                 }
                             });
-                        }
+                        //}
                     } //  if (response)
                 } // if (~e.data.indexOf('context'))
 
             } //if jQuery.type(e.data) === 'string'
         } //if (e.origin === 'https://ondemand.divi-den.com') {
     }, false); // eventer(messageEvent, function(e) {
-    ddd_full_stop = 0;
+  //  ddd_full_stop = 0;
 
     $('.maxi-cloud-modal .components-button.components-icon-button').on('click', function() {
         console.log('close');
@@ -240,13 +241,5 @@ jQuery(document).ready(function($) {
 // }, 200);
 } //function onIframeLoad()
 //}); //  $('iframe#maxi-block-library__modal-iframe').on('load', function()
-
-// setInterval(function() {
-//     if ($('iframe#maxi-block-library__modal-iframe').length > 0) {
-//        // console.log('maxi-block-library__modal-iframe layout modal');
-//         // console.log($('iframe#maxi-block-library__modal-iframe').parents());
-//         onIframeLoad();
-//     }
-// }, 1000);
 
 }); //jQuery(document).ready(function($)

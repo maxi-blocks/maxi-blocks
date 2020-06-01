@@ -18,7 +18,6 @@ import {
     BorderControl,
     BlockStylesControl,
     BoxShadowControl,
-    ColorControl,
     CustomCSSControl,
     DimensionsControl,
     FullSizeControl,

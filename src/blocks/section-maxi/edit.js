@@ -19,7 +19,10 @@ import {
     __experimentalToolbar
 } from '../../components';
 import Inspector from './inspector';
-import { getBackgroundObject } from '../../extensions/styles/utils'
+import { 
+    getBackgroundObject,
+    getBoxShadowObject
+} from '../../extensions/styles/utils'
 
 /**
  * External dependencies
@@ -56,7 +59,7 @@ class edit extends GXBlock {
 
         const response = {
             background: { ...getBackgroundObject(JSON.parse(background)) },
-            boxShadow: { ...JSON.parse(boxShadow) },
+            boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
             border: { ...JSON.parse(border) },
             borderWidth: { ...JSON.parse(border).borderWidth },
             borderRadius: { ...JSON.parse(border).borderRadius },

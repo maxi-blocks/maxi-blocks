@@ -109,3 +109,21 @@ export const getBackgroundObject = backgroundObject => {
 
     return response;
 }
+
+export const getBoxShadowObject = boxShadowObject => {
+    const response = {
+        label: boxShadowObject.label,
+        general: {}
+    }
+
+    let boxShadowString = '';
+    boxShadowObject.shadowHorizontal ? boxShadowString += (boxShadowObject.shadowHorizontal + 'px ') : null;
+    boxShadowObject.shadowVertical ? boxShadowString += (boxShadowObject.shadowVertical + 'px ') : null;
+    boxShadowObject.shadowBlur ? boxShadowString += (boxShadowObject.shadowBlur + 'px ') : null;
+    boxShadowObject.shadowSpread ? boxShadowString += (boxShadowObject.shadowSpread + 'px ') : null;
+    boxShadowObject.shadowColor ? boxShadowString += (boxShadowObject.shadowColor) : null;
+
+    response.general['box-shadow'] = boxShadowString.trim()
+
+    return response;
+}

@@ -2952,6 +2952,73 @@ button[type="reset"] {
 *
 * Moved common styles to './src/css' 
 */
+.toolbar-item__popover__column-pattern__template-button {
+  -ms-flex: 33.33%;
+      flex: 33.33%;
+  width: 33.33%; }
+  .toolbar-item__popover__column-pattern__template-button__icon {
+    width: 100%;
+    height: 100%; }
+    .toolbar-item__popover__column-pattern__template-button__icon path {
+      stroke: #fff; }
+/**
+* Leave blank due to bug on CGB. Check it on:
+* https://github.com/ahmadawais/create-guten-block/issues/111
+*
+* Moved common styles to './src/css' 
+*/
+.toolbar-item__popover__text-level {
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content; }
+  .toolbar-item__popover__text-level__button {
+    display: block;
+    width: 2.5rem;
+    height: 1.5rem;
+    margin: 0 0.1rem;
+    padding: 0;
+    color: #fff;
+    border: 1px solid #fff; }
+    .toolbar-item__popover__text-level__button:hover {
+      color: #fff;
+      -webkit-box-shadow: none;
+              box-shadow: none;
+      outline: 1px solid transparent; }
+    .toolbar-item__popover__text-level__button[aria-pressed="true"] {
+      border: 0 0 0 1.5px #f04f26; }
+/**
+* Leave blank due to bug on CGB. Check it on:
+* https://github.com/ahmadawais/create-guten-block/issues/111
+*
+* Moved common styles to './src/css' 
+*/
+.toolbar-item__popover__font-options__font {
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%; }
+  .toolbar-item__popover__font-options__font__selector {
+    -ms-flex-preferred-size: 100%;
+        flex-basis: 100%; }
+
+.toolbar-item__popover__font-options .maxi-device-control {
+  width: 100%; }
+
+.toolbar-item__popover__font-options__number-control {
+  width: 100%; }
+  .toolbar-item__popover__font-options__number-control .components-base-control__field {
+    display: -ms-flexbox;
+    display: flex; }
+  .toolbar-item__popover__font-options__number-control .components-base-control__label {
+    -ms-flex-preferred-size: 100%;
+        flex-basis: 100%; }
+  .toolbar-item__popover__font-options__number-control input[type="number"] {
+    width: 2rem; }
+/**
+* Leave blank due to bug on CGB. Check it on:
+* https://github.com/ahmadawais/create-guten-block/issues/111
+*
+* Moved common styles to './src/css' 
+*/
 .maxi-toolbar__popover .components-popover__content {
   background-color: transparent;
   border: none;
@@ -3005,58 +3072,6 @@ button[type="reset"] {
   display: flex;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap; }
-
-.toolbar-item__popover__column-pattern__template-button {
-  -ms-flex: 33.33%;
-      flex: 33.33%;
-  width: 33.33%; }
-  .toolbar-item__popover__column-pattern__template-button__icon {
-    width: 100%;
-    height: 100%; }
-    .toolbar-item__popover__column-pattern__template-button__icon path {
-      stroke: #fff; }
-
-.toolbar-item__popover__font-options__font {
-  display: -ms-flexbox;
-  display: flex;
-  width: 100%; }
-  .toolbar-item__popover__font-options__font__selector {
-    -ms-flex-preferred-size: 100%;
-        flex-basis: 100%; }
-
-.toolbar-item__popover__font-options .maxi-device-control {
-  width: 100%; }
-
-.toolbar-item__popover__font-options__number-control {
-  width: 100%; }
-  .toolbar-item__popover__font-options__number-control .components-base-control__field {
-    display: -ms-flexbox;
-    display: flex; }
-  .toolbar-item__popover__font-options__number-control .components-base-control__label {
-    -ms-flex-preferred-size: 100%;
-        flex-basis: 100%; }
-  .toolbar-item__popover__font-options__number-control input[type="number"] {
-    width: 2rem; }
-
-.toolbar-item__popover__text-level {
-  width: -webkit-max-content;
-  width: -moz-max-content;
-  width: max-content; }
-  .toolbar-item__popover__text-level__button {
-    display: block;
-    width: 2.5rem;
-    height: 1.5rem;
-    margin: 0 0.1rem;
-    padding: 0;
-    color: #fff;
-    border: 1px solid #fff; }
-    .toolbar-item__popover__text-level__button:hover {
-      color: #fff;
-      -webkit-box-shadow: none;
-              box-shadow: none;
-      outline: 1px solid transparent; }
-    .toolbar-item__popover__text-level__button[aria-pressed="true"] {
-      border: 0 0 0 1.5px #f04f26; }
 /**
 * Leave blank due to bug on CGB. Check it on:
 * https://github.com/ahmadawais/create-guten-block/issues/111

@@ -1,0 +1,17 @@
+.toolbar-item__popover {
+    &__column-pattern {
+        &__template-button {
+            flex: 33.33%;
+            width: 33.33%;
+
+            &__icon {
+                width: 100%;
+                height: 100%;
+
+                path {
+                    stroke: #fff;
+                }
+            }
+        }
+    }
+}

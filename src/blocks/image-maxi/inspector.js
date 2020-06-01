@@ -19,10 +19,10 @@ const {
 import {
     AccordionControl,
     AlignmentControl,
+    BackgroundControl,
     BorderControl,
     BlockStylesControl,
     BoxShadowControl,
-    ColorControl,
     CustomCSSControl,
     DimensionsControl,
     HoverAnimationControl,
@@ -68,19 +68,13 @@ class Inspector extends Component {
                 maxWidth,
                 widthUnit,
                 width,
-                backgroundColor,
-                backgroundDefaultColor,
-                backgroundGradient,
-                backgroundGradientDefault,
+                background,
                 opacity,
                 boxShadow,
                 border,
                 padding,
                 margin,
-                backgroundColorHover,
-                backgroundDefaultColorHover,
-                backgroundGradientHover,
-                backgroundGradientDefaultHover,
+                backgroundHover,
                 opacityHover,
                 boxShadowHover,
                 hoverAnimation,
@@ -257,45 +251,15 @@ class Inspector extends Component {
                                                                 this.setState({ selector });
                                                             }}
                                                         />
-                                                        <ColorControl
-                                                            label={__('Background Colour', 'maxi-blocks')}
-                                                            color={
+                                                        <BackgroundControl
+                                                            backgroundOptions={
                                                                 getNormalHoverValue(
                                                                     selector,
-                                                                    backgroundColor,
-                                                                    backgroundColorHover
+                                                                    JSON.parse(background),
+                                                                    JSON.parse(backgroundHover)
                                                                 )
                                                             }
-                                                            defaultcolor={
-                                                                getNormalHoverValue(
-                                                                    selector,
-                                                                    backgroundDefaultColor,
-                                                                    backgroundDefaultColorHover
-                                                                )
-                                                            }
-                                                            onColorChange={value =>
-                                                                normalHoverSaver(
-                                                                    selector,
-                                                                    'backgroundColor',
-                                                                    'backgroundColorHover',
-                                                                    value
-                                                                )
-                                                            }
-                                                            gradient={
-                                                                getNormalHoverValue(
-                                                                    selector,
-                                                                    backgroundGradient,
-                                                                    backgroundGradientHover
-                                                                )
-                                                            }
-                                                            defaultGradient={
-                                                                getNormalHoverValue(
-                                                                    selector,
-                                                                    backgroundGradientDefault,
-                                                                    backgroundGradientDefaultHover
-                                                                )
-                                                            }
-                                                            onGradientChange={value =>
+                                                            onChange={value =>
                                                                 normalHoverSaver(
                                                                     selector,
                                                                     'background',
@@ -303,7 +267,7 @@ class Inspector extends Component {
                                                                     value
                                                                 )
                                                             }
-                                                            disableGradientOverBackground
+                                                            disableImage
                                                         />
                                                         <RangeControl
                                                             label={__('Opacity', 'maxi-blocks')}

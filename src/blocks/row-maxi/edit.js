@@ -5,7 +5,6 @@ const { synchronizeBlocksWithTemplate } = wp.blocks;
 const { compose } = wp.compose;
 const {
     select,
-    dispatch,
     withSelect,
     withDispatch
 } = wp.data;
@@ -28,7 +27,7 @@ import {
 import Inspector from './inspector';
 import TEMPLATES from './templates';
 import { BackEndResponsiveStyles } from '../../extensions/styles';
-import { getBakcgroundObject } from '../../extensions/styles/utils'
+import { getBackgroundObject } from '../../extensions/styles/utils'
 
 /**
  * External dependencies
@@ -92,7 +91,7 @@ class edit extends GXBlock {
             return this.getRowObject
     }
 
-    get getColumnObject() { // it will destroy column styles object!
+    get getColumnObject() {
         const { columnGap } = this.props.attributes;
 
         return {
@@ -118,7 +117,7 @@ class edit extends GXBlock {
         } = this.props.attributes;
 
         return {
-            background: { ...getBakcgroundObject(JSON.parse(background)) },
+            background: { ...getBackgroundObject(JSON.parse(background)) },
             boxShadow: { ...JSON.parse(boxShadow) },
             border: { ...JSON.parse(border) },
             borderWidth: { ...JSON.parse(border).borderWidth },
@@ -162,6 +161,7 @@ class edit extends GXBlock {
             attributes: {
                 uniqueID,
                 isFirstOnHierarchy,
+                rowPattern,
                 blockStyle,
                 extraClassName,
                 defaultBlockStyle
@@ -171,6 +171,7 @@ class edit extends GXBlock {
             selectOnClick,
             hasInnerBlock,
             className,
+            setAttributes
         } = this.props;
 
         const { selectorBlocks } = this.state;
@@ -228,7 +229,6 @@ class edit extends GXBlock {
                 <InnerBlocks
                     // templateLock="insert"
                     allowedBlocks={ALLOWED_BLOCKS}
-                    // __experimentalMoverDirection="horizontal" // ???
                     renderAppender={
                         !hasInnerBlock ?
                             () => (
@@ -242,7 +242,8 @@ class edit extends GXBlock {
                                                 <Button
                                                     className="maxi-row-template-button"
                                                     onClick={() => {
-                                                        loadTemplate(i, this.displayStyles.bind(this));
+                                                        setAttributes({ rowPattern: template.i });
+                                                        loadTemplate(i);
                                                     }}
                                                 >
                                                     <Icon
@@ -282,6 +283,8 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 
     /**
      * Creates uniqueID for columns on loading templates
+     * 
+     * Not sure if is necessary anymore
      */
     const uniqueIdCreator = () => {
         const newID = uniqueId('maxi-column-maxi-');
@@ -297,7 +300,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
      * @param {integer} i Element of object TEMPLATES
      * @param {function} callback 
      */
-    const loadTemplate = async (i, callback) => {
+    const loadTemplate = async i => {
         const template = TEMPLATES[i];
         template.content.map(column => {
             column[1].uniqueID = uniqueIdCreator();
@@ -308,9 +311,6 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 
         const newTemplate = synchronizeBlocksWithTemplate([], template.content);
         dispatch('core/block-editor').replaceInnerBlocks(clientId, newTemplate)
-            .then(() => {
-                callback();
-            });
     }
 
     /**

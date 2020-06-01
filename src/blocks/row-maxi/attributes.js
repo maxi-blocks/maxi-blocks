@@ -7,6 +7,9 @@ import * as attributesData from './data';
  * Attributes
  */
 const attributes = {
+    rowPattern: {
+        type: 'string',
+    },
     blockStyle: {
         type: 'string',
         default: 'maxi-custom'

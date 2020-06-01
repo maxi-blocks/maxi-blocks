@@ -28,21 +28,9 @@ const attributes = {
         type: 'string',
         default: JSON.stringify(attributesData.size)
     },
-    backgroundColor: {
+    background: {
         type: 'string',
-        default: '#00ccff',
-    },
-    backgroundDefaultColor: {
-        type: 'string',
-        default: '#00ccff',
-    },
-    backgroundGradient: {
-        type: 'string',
-        default: '',
-    },
-    backgroundGradientDefault: {
-        type: 'string',
-        default: '',
+        default: JSON.stringify(attributesData.background)
     },
     boxShadow: {
         type: 'string',
@@ -68,21 +56,9 @@ const attributes = {
         type: 'number',
         default: 100
     },
-    backgroundColorHover: {
+    backgroundHover: {
         type: 'string',
-        default: '#00ccff',
-    },
-    backgroundDefaultColorHover: {
-        type: 'string',
-        default: '#00ccff',
-    },
-    backgroundGradientHover: {
-        type: 'string',
-        default: '',
-    },
-    backgroundGradientDefaultHover: {
-        type: 'string',
-        default: '',
+        default: JSON.stringify(attributesData.backgroundHover)
     },
     boxShadowHover: {
         type: 'string',

@@ -9,6 +9,7 @@ const { __experimentalBlock } = wp.blockEditor;
  */
 import Inspector from './inspector';
 import { BackEndResponsiveStyles } from '../../extensions/styles';
+import { getBackgroundObject } from '../../extensions/styles/utils';
 import {
     GXBlock,
     LinkedButton,
@@ -20,11 +21,9 @@ import {
  */
 import classnames from 'classnames';
 import {
-    isEmpty,
     isNil,
     isNumber
 } from 'lodash';
-import { typographyHover } from './data';
 
 /**
  * Content
@@ -84,8 +83,7 @@ class edit extends GXBlock {
 
     get getNormalObject() {
         const {
-            backgroundColor,
-            backgroundGradient,
+            background,
             opacity,
             typography,
             boxShadow,
@@ -97,6 +95,7 @@ class edit extends GXBlock {
 
         const response = {
             typography: { ...JSON.parse(typography) },
+            background: { ...getBackgroundObject(JSON.parse(background)) },
             boxShadow: { ...JSON.parse(boxShadow) },
             border: { ...JSON.parse(border) },
             borderWidth: { ...JSON.parse(border).borderWidth },
@@ -110,10 +109,6 @@ class edit extends GXBlock {
             }
         }
 
-        if (!isEmpty(backgroundColor))
-            response.button.general['background-color'] = backgroundColor;
-        if (!isEmpty(backgroundGradient))
-            response.button.general['background'] = backgroundGradient;
         if (isNumber(opacity))
             response.button.general['opacity'] = opacity;
 
@@ -122,8 +117,7 @@ class edit extends GXBlock {
 
     get getHoverObject() {
         const {
-            backgroundColorHover,
-            backgroundGradientHover,
+            backgroundHover,
             opacityHover,
             typographyHover,
             boxShadowHover,
@@ -134,6 +128,7 @@ class edit extends GXBlock {
 
         const response = {
             typographyHover: { ...JSON.parse(typographyHover) },
+            backgroundHover: { ...getBackgroundObject(JSON.parse(backgroundHover)) },
             boxShadowHover: { ...JSON.parse(boxShadowHover) },
             borderHover: { ...JSON.parse(borderHover) },
             borderWidth: { ...JSON.parse(borderHover).borderWidth },
@@ -146,10 +141,6 @@ class edit extends GXBlock {
             }
         }
 
-        if (!isEmpty(backgroundColorHover))
-            response.buttonHover.general['background-color'] = backgroundColorHover;
-        if (!isEmpty(backgroundGradientHover))
-            response.buttonHover.general['background'] = backgroundGradientHover;
         if (isNumber(opacityHover))
             response.buttonHover.general['opacity'] = opacityHover;
 

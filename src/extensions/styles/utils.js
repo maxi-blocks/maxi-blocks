@@ -13,7 +13,7 @@ import {
  * 
  * @return {object}
  */
-export const getBakcgroundObject = backgroundObject => {
+export const getBackgroundObject = backgroundObject => {
     const response = {
         label: backgroundObject.label,
         general: {}

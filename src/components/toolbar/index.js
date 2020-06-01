@@ -3,12 +3,11 @@
  */
 const { Popover } = wp.components;
 const { useBlockEditContext } = wp.blockEditor;
-const { 
-    Fragment, 
-    useEffect, 
-    useState 
+const {
+    Fragment,
+    useEffect,
+    useState
 } = wp.element;
-
 /**
  * External dependencies
  */
@@ -18,17 +17,20 @@ import { isNil } from 'lodash';
  * Utils
  */
 import {
-    DragAndDrop,
+    Alignment,
+    BackgroundColor,
+    Mover,
     ColumnPattern,
     Duplicate,
     Link,
     Favorite,
     Delete,
+    ImageSize,
     TextColor,
     TextLevel,
     TextOptions,
     PaddingMargin
-} from './utils/index';
+} from './components/';
 
 /**
  * Styles
@@ -70,7 +72,16 @@ const MaxiToolbar = () => {
                     <div
                         className='toolbar-wrapper'
                     >
-                        <DragAndDrop
+                        <Mover
+                            clientId={clientId}
+                        />
+                        <Alignment
+                            clientId={clientId}
+                        />
+                        <BackgroundColor
+                            clientId={clientId}
+                        />
+                        <ImageSize
                             clientId={clientId}
                         />
                         <TextOptions

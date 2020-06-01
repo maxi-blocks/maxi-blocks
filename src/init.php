@@ -271,6 +271,8 @@ function maxi_import_images(){
         require_once(ABSPATH . 'wp-admin/includes/post.php');
     }
 
+    // placeholder image
+    $maxi_placeholder_image = esc_url( plugins_url( 'img/placeholder.jpg', 'maxi-blocks/plugin.php' ));
 
  	foreach($maxi_images_to_upload as $maxi_image_to_upload) {
 
@@ -302,36 +304,60 @@ function maxi_import_images(){
 	    if($post_id) {
 	        if (maxi_media_file_already_exists($maxi_filename) === 0) {
 	           write_log('Does not exist');
-	            $maxi_upload_file = wp_upload_bits($maxi_filename, null, @file_get_contents($maxi_image_to_upload));
-	            if(!$maxi_upload_file['error']) {
-	              //if succesfull insert the new file into the media library (create a new attachment post type)
-	              $maxi_wp_filetype = wp_check_filetype($maxi_filename, null );
-	              $maxi_attachment = array(
-	                'post_mime_type' => $maxi_wp_filetype['type'],
-	                'post_parent' => $post_id,
-	                'post_title' => preg_replace('/\.[^.]+$/', '', $maxi_filename),
-	                'post_content' => '',
-	                'post_status' => 'inherit'
-	              );
-	              //wp_insert_attachment( $maxi_attachment, $maxi_filename, $parent_post_id );
-	              $maxi_attachment_id = wp_insert_attachment( $maxi_attachment, $maxi_upload_file['file'], $post_id );
-	              if (!is_wp_error($maxi_attachment_id)) {
-	                 //if attachment post was successfully created, insert it as a thumbnail to the post $post_id
-	                 require_once(ABSPATH . "wp-admin" . '/includes/image.php');
-	                 //wp_generate_attachment_metadata( $maxi_attachment_id, $file ); for images
-	                 $maxi_attachment_data = wp_generate_attachment_metadata( $maxi_attachment_id, $maxi_upload_file['file'] );
-	                 wp_update_attachment_metadata( $maxi_attachment_id,  $maxi_attachment_data );
-	                 echo $maxi_image_to_upload.'|'.wp_get_attachment_image_src($maxi_attachment_id, 'full')[0].',';
-	               //  set_post_thumbnail( $post_id, $maxi_attachment_id );
-	               }
+	           if(@file_get_contents($maxi_image_to_upload) !== FALSE) {
+		            $maxi_upload_file = wp_upload_bits($maxi_filename, null, @file_get_contents($maxi_image_to_upload));
+		            write_log('$maxi_upload_file');
+		            write_log($maxi_upload_file);
+		            if(!$maxi_upload_file['error']) {
+		              //if succesfull insert the new file into the media library (create a new attachment post type)
+		              $maxi_wp_filetype = wp_check_filetype($maxi_filename, null );
+		              $maxi_attachment = array(
+		                'post_mime_type' => $maxi_wp_filetype['type'],
+		                'post_parent' => $post_id,
+		                'post_title' => preg_replace('/\.[^.]+$/', '', $maxi_filename),
+		                'post_content' => '',
+		                'post_status' => 'inherit'
+		              );
+		              //wp_insert_attachment( $maxi_attachment, $maxi_filename, $parent_post_id );
+
+		              $maxi_attachment_id = wp_insert_attachment( $maxi_attachment, $maxi_upload_file['file'], $post_id );
+		              write_log('$maxi_attachment_id');
+		              write_log($maxi_attachment_id);
+		              if (!is_wp_error($maxi_attachment_id)) {
+		                 //if attachment post was successfully created, insert it as a thumbnail to the post $post_id
+		                 require_once(ABSPATH . "wp-admin" . '/includes/image.php');
+		                 //wp_generate_attachment_metadata( $maxi_attachment_id, $file ); for images
+		                 $maxi_attachment_data = wp_generate_attachment_metadata( $maxi_attachment_id, $maxi_upload_file['file'] );
+		                 wp_update_attachment_metadata( $maxi_attachment_id,  $maxi_attachment_data );
+		                 echo $maxi_image_to_upload.'|'.wp_get_attachment_image_src($maxi_attachment_id, 'full')[0].',';
+		               }
+		               else {
+		               	echo $maxi_image_to_upload.'|'.$maxi_placeholder_image.',';
+		               	write_log('Using placeholder: uploaded attachment error');
+		               }
+		            }
+		            else {
+		            	echo $maxi_image_to_upload.'|'.$maxi_placeholder_image.',';
+		            	write_log('Using placeholder: upload error');
+		            }
+		        }
+		        else {
+		        	echo $maxi_image_to_upload.'|'.$maxi_placeholder_image.',';
+		        	write_log('Using placeholder: original image is empty');
+		        } //if(@file_get_contents($maxi_image_to_upload) !== "")
+	    	} //if (maxi_media_file_already_exists($maxi_filename) === 0)
+	        else {
+	        	$maxi_existing_image = wp_get_attachment_image_src(maxi_media_file_already_exists($maxi_filename), 'full');
+	        	if (!is_wp_error($maxi_existing_image)) {
+	        		echo $maxi_image_to_upload.'|'.$maxi_existing_image[0].',';
+	           		write_log('Exists');
+	        	}
+	        	else {
+	               	echo $maxi_image_to_upload.'|'.$maxi_placeholder_image.',';
+	               	write_log('Using placeholder: existing attachment error');
 	            }
 	        }
-	        else {
-	          //  set_post_thumbnail( $post_id, maxi_media_file_already_exists($maxi_filename));
-	        	echo $maxi_image_to_upload.'|'.wp_get_attachment_image_src(maxi_media_file_already_exists($maxi_filename), 'full')[0].',';
-	            write_log('Exists');
-	        }
-	    }
+	    } //if($post_id)
 
 	} // foreach end
 

@@ -147,6 +147,7 @@ export default class BackgroundControl extends GXComponent {
         const {
             className,
             backgroundOptions,
+            disableImage = false
         } = this.props;
 
         const {
@@ -226,6 +227,7 @@ export default class BackgroundControl extends GXComponent {
                     !isOpen &&
                     <Fragment>
                         {
+                            !disableImage &&
                             value.backgroundOptions.map((option, i) => {
                                 return (
                                     <Fragment>

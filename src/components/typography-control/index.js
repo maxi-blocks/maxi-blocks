@@ -163,7 +163,7 @@ export default class Typography extends GXComponent {
                                     <FontFamilySelector
                                         className={'maxi-font-family-selector'}
                                         font={value.font}
-                                        onChange={(value) => onChangeValue(value, 'font')}
+                                        onChange={value => onChangeValue(value, 'font')}
                                     />
                                     <ColorControl
                                         label={__('Font Color', 'maxi-blocks')}

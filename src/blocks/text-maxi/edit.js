@@ -12,6 +12,7 @@ const {
  */
 import Inspector from './inspector';
 import { BackEndResponsiveStyles } from '../../extensions/styles';
+import { getBackgroundObject } from '../../extensions/styles/utils';
 import {
     GXBlock,
     __experimentalToolbar
@@ -50,8 +51,7 @@ class edit extends GXBlock {
     get getNormalObject() {
         const {
             typography,
-            backgroundColor,
-            backgroundGradient,
+            background,
             opacity,
             boxShadow,
             border,
@@ -59,13 +59,15 @@ class edit extends GXBlock {
             margin,
             padding,
         } = this.props.attributes;
-
+        
         const response = {
             typography: { ...JSON.parse(typography) },
+            background: { ...getBackgroundObject(JSON.parse(background)) },
             boxShadow: { ...JSON.parse(boxShadow) },
             border: { ...JSON.parse(border) },
             borderWidth: { ...JSON.parse(border).borderWidth },
             borderRadius: { ...JSON.parse(border).borderRadius },
+            borderWidth: { ...JSON.parse(border).borderWidth },
             size: { ...JSON.parse(size) },
             margin: { ...JSON.parse(margin) },
             padding: { ...JSON.parse(padding) },
@@ -77,10 +79,6 @@ class edit extends GXBlock {
 
         if (isNumber(opacity))
             response.text.general['opacity'] = opacity;
-        if (!isEmpty(backgroundColor))
-            response.text.general['background-color'] = backgroundColor;
-        if (!isEmpty(backgroundGradient))
-            response.text.general['background'] = backgroundGradient;
 
         return response;
     }
@@ -88,8 +86,7 @@ class edit extends GXBlock {
     get getHoverObject() {
         const {
             typographyHover,
-            backgroundColorHover,
-            backgroundGradientHover,
+            backgroundHover,
             opacityHover,
             boxShadowHover,
             borderHover,
@@ -99,6 +96,7 @@ class edit extends GXBlock {
 
         const response = {
             typographyHover: { ...JSON.parse(typographyHover) },
+            backgroundHover: { ...getBackgroundObject(JSON.parse(backgroundHover)) },
             boxShadowHover: { ...JSON.parse(boxShadowHover) },
             borderHover: { ...JSON.parse(borderHover) },
             borderWidth: { ...JSON.parse(borderHover).borderWidth },
@@ -113,10 +111,6 @@ class edit extends GXBlock {
 
         if (opacityHover)
             response.text.general['opacity'] = opacityHover;
-        if (!isEmpty(backgroundColorHover))
-            response.text.general['background-color'] = backgroundColorHover;
-        if (!isEmpty(backgroundGradientHover))
-            response.text.general['background'] = backgroundGradientHover;
         return response;
     }
 

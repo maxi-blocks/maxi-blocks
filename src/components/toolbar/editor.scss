@@ -8,10 +8,18 @@
         .toolbar-wrapper {
             display: flex;
             width: min-content;
-            margin-left: auto;
+            margin: 0 auto 0.5rem;
+            position: relative;
 
-            &:last-child {
-                border-right: 1px solid #fff;
+            &:after {
+                content: '';
+                border-left: 0.5rem solid transparent;
+                border-right: 0.5rem solid transparent;
+                border-top: 0.5rem solid #232533;
+                position: absolute;
+                bottom: -0.5rem;
+                left: 50%;
+                transform: translateX(-50%);
             }
 
             button:focus {
@@ -20,13 +28,24 @@
             }
 
             .toolbar-item {
-                width: 1.5rem;
-                height: 1.5rem;
+                width: 2rem;
+                height: 2rem;
                 background-color: #232533;
-                border: 1px solid #fff;
-                border-right: none;
+                border-right: 2px solid #616161;
                 padding: 0;
                 cursor: pointer;
+                border-radius: 0;
+
+                &:last-child {
+                    border-top-right-radius: 5px;
+                    border-bottom-right-radius: 5px;
+                    border-right: 0;
+                }
+
+                &:first-child {
+                    border-top-left-radius: 5px;
+                    border-bottom-left-radius: 5px;
+                }
 
                 &__dropdown {
                     > button {
@@ -61,7 +80,11 @@
     }
 
     .components-popover__content {
-        background-color: #232533;
+        background-color: #232433;
+        border-radius: 5px;
+        border: none;
+        min-width: 300px;
+
     }
 
     &__wrapper {

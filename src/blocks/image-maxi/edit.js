@@ -58,6 +58,8 @@ class edit extends GXBlock {
             return `${this.props.attributes.uniqueID}`;
         if (this.type === 'hover')
             return `${this.props.attributes.uniqueID}:hover`;
+        if (this.type === 'figcaption')
+            return `${this.props.attributes.uniqueID}>figcaption`;
     }
 
     get getObject() {
@@ -65,6 +67,8 @@ class edit extends GXBlock {
             return this.getNormalObject
         if (this.type === 'hover')
             return this.getHoverObject
+        if (this.type === 'figcaption')
+            return this.getFigcaptionObject
     }
 
     get getNormalObject() {
@@ -145,12 +149,25 @@ class edit extends GXBlock {
         return response;
     }
 
+    get getFigcaptionObject() {
+        const {
+            captionTypography
+        } = this.props.attributes;
+
+        const response = {
+            captionTypography: { ...JSON.parse(captionTypography) }
+        };
+
+        return response
+    }
+
     /**
     * Refresh the styles on Editor
     */
     displayStyles() {
         this.saveMeta('normal');
         this.saveMeta('hover');
+        this.saveMeta('figcaption')
 
         new BackEndResponsiveStyles(this.getMeta);
     }

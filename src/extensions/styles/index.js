@@ -34,7 +34,6 @@ export class ResponsiveStylesResolver {
     get objectManipulator() {
         let response = {};
 
-
         for (let key of Object.keys(this.object)) {
             let newObject = {};
 

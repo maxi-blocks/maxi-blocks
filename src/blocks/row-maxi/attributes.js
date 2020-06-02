@@ -1,7 +1,7 @@
 /**
  * Imports
  */
-import * as attributesData from './data';
+import * as attributesData from '../../extensions/styles/defaults';
 
 /**
  * Attributes

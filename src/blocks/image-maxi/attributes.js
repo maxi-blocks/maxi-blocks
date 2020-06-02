@@ -1,7 +1,7 @@
 /**
  * Imports
  */
-import * as attributesData from './data';
+import * as attributesData from '../../extensions/styles/defaults';
 
 /**
  * Attributes
@@ -86,7 +86,6 @@ const attributes = {
     },
     opacityHover: {
         type: 'number',
-        default: 1
     },
     boxShadowHover: {
         type: 'string',

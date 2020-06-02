@@ -144,7 +144,6 @@ export default class Typography extends GXComponent {
         return (
             <div className={classes}>
                 <FontFamilySelector
-                    className={'maxi-font-family-selector'}
                     font={value.font}
                     onChange={(value) => onChangeValue(value, 'font')}
                 />

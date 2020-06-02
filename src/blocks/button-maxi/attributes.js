@@ -1,7 +1,8 @@
 /**
  * Imports
  */
-import * as attributesData from './data';
+import * as attributesData from '../../extensions/styles/defaults';
+import * as buttonAttributesData from './data';
 
 /**
  * Attributes
@@ -15,11 +16,6 @@ const attributes = {
         type: 'string',
         default: 'maxi-def-light'
     },
-    // Is this necessary? vvv
-    buttonSettings: {
-        type: 'string',
-        default: JSON.stringify(attributesData.buttonSettings)
-    },
     alignment: {
         type: 'string',
         default: 'center'
@@ -30,7 +26,7 @@ const attributes = {
     },
     background: {
         type: 'string',
-        default: JSON.stringify(attributesData.background)
+        default: JSON.stringify(buttonAttributesData.background)
     },
     boxShadow: {
         type: 'string',
@@ -58,7 +54,7 @@ const attributes = {
     },
     backgroundHover: {
         type: 'string',
-        default: JSON.stringify(attributesData.backgroundHover)
+        default: JSON.stringify(buttonAttributesData.backgroundHover)
     },
     boxShadowHover: {
         type: 'string',
@@ -82,7 +78,6 @@ const attributes = {
     },
     opacityHover: {
         type: 'number',
-        default: 100
     },
     hoverAnimation: {
         type: 'string',

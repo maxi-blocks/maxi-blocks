@@ -1,4 +1,7 @@
 figure.maxi-image-block {
+	display: flex;
+	flex-direction: column;
+
 	> div.maxi-image-block-settings {
 		position: absolute;
 		width: 3rem;
@@ -30,5 +33,13 @@ figure.maxi-image-block {
 			width: 100%;
 			height: auto;
 		}
+	}
+
+	img {
+		display: block;
+	}
+
+	figcaption {
+		width: 100%;
 	}
 }

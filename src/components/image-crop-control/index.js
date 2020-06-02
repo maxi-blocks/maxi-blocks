@@ -46,7 +46,7 @@ const GeneralInput = props => {
                 type="number"
                 id={`maxi-imagecrop-${target}-control`}
                 name={`maxi-imagecrop-${target}-control`}
-                value={value.toFixed(0)}
+                value={Number(value).toFixed()}
                 onChange={e => onChange(parseInt(e.target.value))}
             />
         </label>
@@ -54,13 +54,36 @@ const GeneralInput = props => {
 }
 
 class ImageCropComponent extends Component {
+    state = {
+        imageID: this.props.mediaID,
+        crop: {
+            unit: 'px',
+            x: !isEmpty(this.props.cropOptions) ? this.props.cropOptions.crop.x : 0,
+            y: !isEmpty(this.props.cropOptions) ? this.props.cropOptions.crop.y : 0,
+            width: !isEmpty(this.props.cropOptions) ? this.props.cropOptions.crop.width : 0,
+            height: !isEmpty(this.props.cropOptions) ? this.props.cropOptions.crop.height : 0,
+        },
+        scale: !isEmpty(this.props.cropOptions) ? this.props.cropOptions.crop.scale : 100,
+    }
+
     componentDidMount() {
         this.forceUpdate();     // solves issue when diselecting and selecting block again
         this.blockId = select('core/block-editor').getSelectedBlockClientId();
     }
 
     componentDidUpdate() {
-        if(this.state.imageID != this.props.mediaID) {
+        this.checkNewImage();
+        this.checkNewValues();
+    }
+
+    componentWillUnmount() {
+        if (isNil(select('core/block-editor').getBlocksByClientId(this.blockId)[0])) {
+            this.deleteFile(this.props.cropOptions);
+        }
+    }
+
+    checkNewImage() {
+        if (this.state.imageID != this.props.mediaID) {
             this.setState(
                 {
                     imageID: this.props.mediaID,
@@ -78,22 +101,15 @@ class ImageCropComponent extends Component {
         }
     }
 
-    componentWillUnmount() {
-        if (isNil(select('core/block-editor').getBlocksByClientId(this.blockId)[0])) {
-            this.deleteFile(this.props.cropOptions);
-        }
-    }
+    checkNewValues() {
+        const cropOptions = typeof this.props.cropOptions != 'object' ?
+            JSON.parse(this.props.cropOptions) :
+            this.props.cropOptions;
 
-    state = {
-        imageID: this.props.mediaID,
-        crop: {
-            unit: 'px',
-            x: !isEmpty(this.props.cropOptions) ? this.props.cropOptions.crop.x : 0,
-            y: !isEmpty(this.props.cropOptions) ? this.props.cropOptions.crop.y : 0,
-            width: !isEmpty(this.props.cropOptions) ? this.props.cropOptions.crop.width : 0,
-            height: !isEmpty(this.props.cropOptions) ? this.props.cropOptions.crop.height : 0,
-        },
-        scale: !isEmpty(this.props.cropOptions) ? this.props.cropOptions.crop.scale : 100,
+        if (cropOptions.crop.scale != this.state.scale)
+            this.setState({
+                scale: Number(cropOptions.crop.scale)
+            })
     }
 
     get getScale() {
@@ -159,7 +175,7 @@ class ImageCropComponent extends Component {
     }
 
     get getOldFile() {
-        if(isEmpty(this.props.cropOptions))
+        if (isEmpty(this.props.cropOptions))
             return '';
         else
             return this.props.cropOptions.image.source_url;
@@ -289,7 +305,7 @@ class ImageCropComponent extends Component {
     }
 
     render() {
-        const { 
+        const {
             imageData,
             className
         } = this.props;

@@ -8,7 +8,7 @@
         flex-direction: column;
         width: 50%;
         height: auto;
-        font-size: 16px;
+        font-size: 13px;
         color: #000;
         font-weight: 500;
         text-align: center;
@@ -56,22 +56,18 @@
         display: none;
 
         .maxi-tab-content__box {
-            padding: 25px 20px 20px;
+            padding: 20px 10px 15px;
             background-color: #fff;
             margin-bottom: 10px;
             border-top: 2px solid #e8eaeb;
             border-bottom: 1px solid #e8eaeb;
+            .components-base-control__label {
+                flex: none;
+                width: 50%;
+            }
         }
         &.is-selected {
             display: block;
-        }
-    }
-}
-
-@media only screen and (max-width: 2000px) {
-    .maxi-tabs-control {
-        .maxi-tab-control__button {
-            font-size: 13px;
         }
     }
 }

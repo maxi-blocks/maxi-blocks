@@ -36,8 +36,8 @@
         width: 41px !important;
         //font-weight: 500;
         margin-right: -1px;
-        height: 26px;
-        padding-top: 5px !important;
+        height: 36px;
+        padding-top: 8px !important;
 
         &.is-active {
             display: block;
@@ -78,7 +78,8 @@
         margin: 0 -2px 0 0;
         border: 2px solid #dddfe1;
         padding-right: 1px;
-        width: 23%;
+        width: 22%;
+        flex: none;
 
         &:focus {
             z-index: 1;
@@ -124,7 +125,7 @@
         padding: 0;
         text-align: center;
         text-shadow: none;
-        width: 30px;
+        width: 40px;
         border: 2px solid #dddfe1;
         background: #f2f2f2;
 

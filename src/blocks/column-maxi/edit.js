@@ -11,7 +11,6 @@ const {
     withSelect,
     withDispatch,
     select,
-    dispatch
 } = wp.data;
 const {
     InnerBlocks,
@@ -34,7 +33,6 @@ import {
     ResponsiveStylesResolver,
     BackEndResponsiveStyles
 } from '../../extensions/styles';
-import { getBakcgroundObject } from '../../extensions/styles/utils'
 
 /**
  * External dependencies
@@ -107,8 +105,8 @@ class edit extends GXBlock {
         } = this.props;
 
         let response = {
-            background: { ...getBakcgroundObject(JSON.parse(background)) },
-            boxShadow: { ...JSON.parse(boxShadow) },
+            background: { ...getBackgroundObject(JSON.parse(background)) },
+            boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
             border: { ...JSON.parse(border) },
             borderWidth: { ...JSON.parse(border).borderWidth },
             borderRadius: { ...JSON.parse(border).borderRadius },

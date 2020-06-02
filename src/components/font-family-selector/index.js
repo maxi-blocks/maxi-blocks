@@ -2,10 +2,13 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { Component } = wp.element;
+const { 
+    Component,
+    Fragment
+} = wp.element;
 const {
     Button,
-    Popover,
+    Dropdown,
     Spinner,
     Icon
 } = wp.components;
@@ -20,6 +23,7 @@ import { FontFamilyResolver } from '../../extensions/styles/fonts';
  */
 import Select from 'react-select';
 import { isNil } from 'lodash';
+import classnames from 'classnames';
 
 /**
  * Styles and icons
@@ -36,7 +40,6 @@ export default class FontFamilySelector extends Component {
     fonts = new FontFamilyResolver();
 
     state = {
-        isVisible: false,
         options: this.fonts.optionsGetter
     }
 
@@ -71,11 +74,6 @@ export default class FontFamilySelector extends Component {
             })
         };
 
-        const onToggle = () => {
-            this.setState((state) => ({
-                isVisible: !state.isVisible,
-            }))
-        }
         const checkout = () => {
             setTimeout(() => {
                 this.setState({
@@ -89,52 +87,64 @@ export default class FontFamilySelector extends Component {
             this.fonts.loadFonts(newFont.value, newFont.files);
         }
 
+        const classes = classnames(
+            'maxi-font-family-selector',
+            className
+        )
+
         return (
-            <div className={className}>
-                <Button
-                    className='maxi-font-family-selector-button'
-                    onClick={onToggle}
-                    aria-expanded={this.state.isVisible}
-                >
-                    {font}
-                    <Icon
-                        icon={chevronDown}
-                    />
-                    {this.state.isVisible && (
-                        <Popover
-                            className="maxi-font-family-selector-popover"
-                            noArrow={true}
-                            position="top center"
-                        >
-                            <div className="maxi-font-family-selector-content">
-                                {!isNil(this.state.options) &&
-                                    <Select
-                                        autoFocus
-                                        backspaceRemovesValue={false}
-                                        controlShouldRenderValue={false}
-                                        hideSelectedOptions={false}
-                                        isClearable={false}
-                                        menuIsOpen
-                                        onChange={onFontChange}
-                                        options={this.state.options}
-                                        placeholder={__("Search...", 'maxi-blocks')}
-                                        styles={selectFontFamilyStyles}
-                                        tabSelectsValue={false}
-                                        value={font}
-                                        closeMenuOnSelect={true}
-                                    />
-                                }
-                                {isNil(this.state.options)
-                                    && checkout()
-                                }
-                                {isNil(this.state.options) &&
-                                    <Spinner />
-                                }
-                            </div>
-                        </Popover>
-                    )}
-                </Button>
-            </div>
+            <Dropdown
+                className={classes}
+                renderToggle={({ isOpen, onToggle }) => (
+                    <Button
+                        className='maxi-font-family-selector__button'
+                        onClick={onToggle}
+                        aria-expanded={this.state.isVisible}
+                    >
+                        {font}
+                        <Icon
+                            className='maxi-font-family-selector__button__icon'
+                            icon={chevronDown}
+                        />
+                    </Button>
+                )}
+                popoverProps={
+                    {
+                        className: 'maxi-font-family-selector__popover',
+                        noArrow: true,
+                        position: 'middle center right'
+                    }
+                }
+                renderContent={
+                    () => (
+                        <Fragment>
+                            {!isNil(this.state.options) &&
+                                <Select
+                                    autoFocus
+                                    backspaceRemovesValue={false}
+                                    controlShouldRenderValue={false}
+                                    hideSelectedOptions={false}
+                                    isClearable={false}
+                                    menuIsOpen
+                                    onChange={onFontChange}
+                                    options={this.state.options}
+                                    placeholder={__("Search...", 'maxi-blocks')}
+                                    styles={selectFontFamilyStyles}
+                                    tabSelectsValue={false}
+                                    value={font}
+                                    closeMenuOnSelect={true}
+                                />
+                            }
+                            {isNil(this.state.options)
+                                && checkout()
+                            }
+                            {isNil(this.state.options) &&
+                                <Spinner />
+                            }
+                        </Fragment>
+                    )
+                }
+            />
         )
     }
 }

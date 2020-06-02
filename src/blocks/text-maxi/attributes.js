@@ -1,7 +1,7 @@
 /**
  * Imports
  */
-import * as attributesData from './data';
+import * as attributesData from '../../extensions/styles/defaults';
 
 /**
  * Attributes
@@ -23,25 +23,13 @@ const attributes = {
         type: 'string',
         default: JSON.stringify(attributesData.typography)
     },
-    backgroundColor: {
-        type: 'string',
-        default: '',
-    },
-    backgroundDefaultColor: {
-        type: 'string',
-        default: '',
-    },
-    backgroundGradient: {
-        type: 'string',
-        default: '',
-    },
-    backgroundGradientDefault: {
-        type: 'string',
-        default: '',
-    },
     opacity: {
         type: 'number',
         default: 100
+    },
+    background: {
+        type: 'string',
+        default: JSON.stringify(attributesData.background)
     },
     boxShadow: {
         type: 'string',
@@ -67,25 +55,16 @@ const attributes = {
         type: 'string',
         default: JSON.stringify(attributesData.typographyHover)
     },
-    backgroundColorHover: {
+    backgroundHover: {
         type: 'string',
-        default: '',
+        default: JSON.stringify(attributesData.backgroundHover)
     },
-    backgroundDefaultColorHover: {
+    boxShadowHover: {
         type: 'string',
-        default: '',
-    },
-    backgroundGradientHover: {
-        type: 'string',
-        default: '',
-    },
-    backgroundGradientDefaultHover: {
-        type: 'string',
-        default: '',
+        default: JSON.stringify(attributesData.boxShadowHover)
     },
     opacityHover: {
         type: 'number',
-        default: 100
     },
     boxShadowHover: {
         type: 'string',

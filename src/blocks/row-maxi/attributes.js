@@ -1,12 +1,15 @@
 /**
  * Imports
  */
-import * as attributesData from './data';
+import * as attributesData from '../../extensions/styles/defaults';
 
 /**
  * Attributes
  */
 const attributes = {
+    rowPattern: {
+        type: 'string',
+    },
     blockStyle: {
         type: 'string',
         default: 'maxi-custom'

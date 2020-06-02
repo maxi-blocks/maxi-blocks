@@ -10,27 +10,24 @@
 .maxi-popover {
     // BaseControl
     .components-base-control {
-        margin-bottom: 5px !important;
+        margin-bottom: 10px !important;
 
         &:last-child {
             margin-bottom: 0 !important;
         }
 
         .components-base-control__field {
-            display: -ms-flexbox !important;
             display: flex !important;
-            -ms-flex-align: center;
             align-items: center;
+            justify-content: space-between;
 
             .components-base-control__label {
-                flex: 100%;
                 margin-bottom: 0;
+                width: 50%;
             }
 
             // SelectorControl
             .components-select-control__input {
-                font-size: 10pt !important;
-                max-width: 100%;
                 background: #fff url(../img/arrow-down.svg) no-repeat right 7px top 50% !important;
                 background-size: 9px 9px !important;
                 border-radius: 5px !important;

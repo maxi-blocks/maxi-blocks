@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { Fragment } = wp.element;
 const { SelectControl } = wp.components;
 
 /**
@@ -14,7 +13,6 @@ import ColorControl from '../color-control';
 import DeviceSelectorControl from '../device-selector-control/';
 import FontFamilySelector from '../font-family-selector';
 import SizeControl from '../size-control';
-import PopoverControl from '../popover-control';
 import TextShadowControl from '../text-shadow-control';
 
 /**
@@ -102,8 +100,8 @@ export default class Typography extends GXComponent {
                 950: 'Extra Black (Ultra Black)',
             }
             let response = [];
-            if (!fontOptions.includes("900")) {
-                fontOptions.push("900")
+            if (!fontOptions.includes('900')) {
+                fontOptions.push('900')
             }
             fontOptions.map(weight => {
                 let weightOption = {};
@@ -145,122 +143,101 @@ export default class Typography extends GXComponent {
 
         return (
             <div className={classes}>
-                <div className="maxi-typography-color-display maxi-component-color-inidicator">
-                    <span
-                        style={{
-                            background: value.general.color,
-                        }}
-                    ></span>
-                </div>
-                <PopoverControl
-                    label={value.label}
-                    className={'maxi-typography-popover'}
-                    buttonText={__('Typography', 'maxi-blocks')}
-                    popovers={[
-                        {
-                            content: (
-                                <Fragment>
-                                    <FontFamilySelector
-                                        className={'maxi-font-family-selector'}
-                                        font={value.font}
-                                        onChange={(value) => onChangeValue(value, 'font')}
-                                    />
-                                    <ColorControl
-                                        label={__('Font Color', 'maxi-blocks')}
-                                        color={value.general.color}
-                                        defaultColor={defaultColor}
-                                        onColorChange={value => onChangeValue(value, 'color')}
-                                        disableGradient
-                                    />
-                                    <TextShadowControl
-                                        value={value.general['text-shadow']}
-                                        onChange={val => onChangeValue(val, 'text-shadow')}
-                                        defaultColor={defaultColor}
-                                    />
-                                    <AlignmentControl
-                                        label={__('Alignment', 'maxi-blocks')}
-                                        value={value.general['text-align']}
-                                        onChange={val => onChangeValue(val, 'text-align')}
-                                    />
-                                    <DeviceSelectorControl
-                                        device={device}
-                                        onChange={onSelect}
-                                    />
-                                    <SizeControl
-                                        className={'maxi-typography-size'}
-                                        label={__('Size', 'maxi-blocks')}
-                                        unit={value[device][getKey(value[device], 0)]}
-                                        onChangeUnit={value => onChangeValue(value, 0)}
-                                        value={value[device][getKey(value[device], 1)]}
-                                        onChangeValue={value => onChangeValue(value, 1)}
-                                    />
-                                    <SizeControl
-                                        className={'maxi-typography-line-height'}
-                                        label={__('Line Height', 'maxi-blocks')}
-                                        unit={value[device][getKey(value[device], 2)]}
-                                        onChangeUnit={value => onChangeValue(value, 2)}
-                                        value={value[device][getKey(value[device], 3)]}
-                                        onChangeValue={value => onChangeValue(value, 3)}
-                                    />
-                                    <SizeControl
-                                        className={'maxi-typography-letter-spacing'}
-                                        label={__('Letter Spacing', 'maxi-blocks')}
-                                        unit={value[device][getKey(value[device], 4)]}
-                                        onChangeUnit={value => onChangeValue(value, 4)}
-                                        value={value[device][getKey(value[device], 5)]}
-                                        onChangeValue={value => onChangeValue(value, 5)}
-                                    />
-                                    <Divider />
-                                    <SelectControl
-                                        label={__('Weight', 'maxi-blocks')}
-                                        className="maxi-title-typography-setting"
-                                        value={value[device][getKey(value[device], 6)]}
-                                        options={getWeightOptions()}
-                                        onChange={value => onChangeValue(value, 6)}
-                                    />
-                                    <SelectControl
-                                        label={__('Transform', 'maxi-blocks')}
-                                        className="maxi-title-typography-setting"
-                                        value={value[device][getKey(value[device], 7)]}
-                                        options={[
-                                            { label: __('Default', 'maxi-blocks'), value: 'none' },
-                                            { label: __('Capitilize', 'maxi-blocks'), value: 'capitalize' },
-                                            { label: __('Uppercase', 'maxi-blocks'), value: 'uppercase' },
-                                            { label: __('Lowercase', 'maxi-blocks'), value: 'lowercase' },
-                                            { label: __('Full Width', 'maxi-blocks'), value: 'full-width' },
-                                            { label: __('Full Size Kana', 'maxi-blocks'), value: 'full-size-kana' },
-                                        ]}
-                                        onChange={value => onChangeValue(value, 7)}
-                                    />
-                                    <SelectControl
-                                        label={__('Style', 'maxi-blocks')}
-                                        className="maxi-title-typography-setting"
-                                        value={value[device][getKey(value[device], 8)]}
-                                        options={[
-                                            { label: __('Default', 'maxi-blocks'), value: 'normal' },
-                                            { label: __('Italic', 'maxi-blocks'), value: 'italic' },
-                                            { label: __('Oblique', 'maxi-blocks'), value: 'oblique' },
-                                            { label: __('Oblique (40 deg)'), value: 'oblique 40deg' },
-                                        ]}
-                                        onChange={value => onChangeValue(value, 8)}
-                                    />
-                                    <SelectControl
-                                        label={__('Decoration', 'maxi-blocks')}
-                                        className="maxi-title-typography-setting"
-                                        value={value[device][getKey(value[device], 9)]}
-                                        options={[
-                                            { label: __('Default', 'maxi-blocks'), value: 'none' },
-                                            { label: __('Overline', 'maxi-blocks'), value: 'overline' },
-                                            { label: __('Line Through', 'maxi-blocks'), value: 'line-through' },
-                                            { label: __('Underline', 'maxi-blocks'), value: 'underline' },
-                                            { label: __('Underline Overline', 'maxi-blocks'), value: 'underline overline' },
-                                        ]}
-                                        onChange={value => onChangeValue(value, 9)}
-                                    />
-                                </Fragment>
-                            )
-                        }
+                <FontFamilySelector
+                    font={value.font}
+                    onChange={(value) => onChangeValue(value, 'font')}
+                />
+                <ColorControl
+                    label={__('Font Color', 'maxi-blocks')}
+                    color={value.general.color}
+                    defaultColor={defaultColor}
+                    onColorChange={value => onChangeValue(value, 'color')}
+                    disableGradient
+                />
+                <TextShadowControl
+                    value={value.general['text-shadow']}
+                    onChange={val => onChangeValue(val, 'text-shadow')}
+                    defaultColor={defaultColor}
+                />
+                <AlignmentControl
+                    label={__('Alignment', 'maxi-blocks')}
+                    value={value.general['text-align']}
+                    onChange={val => onChangeValue(val, 'text-align')}
+                />
+                <DeviceSelectorControl
+                    device={device}
+                    onChange={onSelect}
+                />
+                <SizeControl
+                    className={'maxi-typography-size'}
+                    label={__('Size', 'maxi-blocks')}
+                    unit={value[device][getKey(value[device], 0)]}
+                    onChangeUnit={value => onChangeValue(value, 0)}
+                    value={value[device][getKey(value[device], 1)]}
+                    onChangeValue={value => onChangeValue(value, 1)}
+                />
+                <SizeControl
+                    className={'maxi-typography-line-height'}
+                    label={__('Line Height', 'maxi-blocks')}
+                    unit={value[device][getKey(value[device], 2)]}
+                    onChangeUnit={value => onChangeValue(value, 2)}
+                    value={value[device][getKey(value[device], 3)]}
+                    onChangeValue={value => onChangeValue(value, 3)}
+                />
+                <SizeControl
+                    className={'maxi-typography-letter-spacing'}
+                    label={__('Letter Spacing', 'maxi-blocks')}
+                    unit={value[device][getKey(value[device], 4)]}
+                    onChangeUnit={value => onChangeValue(value, 4)}
+                    value={value[device][getKey(value[device], 5)]}
+                    onChangeValue={value => onChangeValue(value, 5)}
+                />
+                <Divider />
+                <SelectControl
+                    label={__('Weight', 'maxi-blocks')}
+                    className='maxi-title-typography-setting'
+                    value={value[device][getKey(value[device], 6)]}
+                    options={getWeightOptions()}
+                    onChange={value => onChangeValue(value, 6)}
+                />
+                <SelectControl
+                    label={__('Transform', 'maxi-blocks')}
+                    className='maxi-title-typography-setting'
+                    value={value[device][getKey(value[device], 7)]}
+                    options={[
+                        { label: __('Default', 'maxi-blocks'), value: 'none' },
+                        { label: __('Capitilize', 'maxi-blocks'), value: 'capitalize' },
+                        { label: __('Uppercase', 'maxi-blocks'), value: 'uppercase' },
+                        { label: __('Lowercase', 'maxi-blocks'), value: 'lowercase' },
+                        { label: __('Full Width', 'maxi-blocks'), value: 'full-width' },
+                        { label: __('Full Size Kana', 'maxi-blocks'), value: 'full-size-kana' },
                     ]}
+                    onChange={value => onChangeValue(value, 7)}
+                />
+                <SelectControl
+                    label={__('Style', 'maxi-blocks')}
+                    className='maxi-title-typography-setting'
+                    value={value[device][getKey(value[device], 8)]}
+                    options={[
+                        { label: __('Default', 'maxi-blocks'), value: 'normal' },
+                        { label: __('Italic', 'maxi-blocks'), value: 'italic' },
+                        { label: __('Oblique', 'maxi-blocks'), value: 'oblique' },
+                        { label: __('Oblique (40 deg)'), value: 'oblique 40deg' },
+                    ]}
+                    onChange={value => onChangeValue(value, 8)}
+                />
+                <SelectControl
+                    label={__('Decoration', 'maxi-blocks')}
+                    className='maxi-title-typography-setting'
+                    value={value[device][getKey(value[device], 9)]}
+                    options={[
+                        { label: __('Default', 'maxi-blocks'), value: 'none' },
+                        { label: __('Overline', 'maxi-blocks'), value: 'overline' },
+                        { label: __('Line Through', 'maxi-blocks'), value: 'line-through' },
+                        { label: __('Underline', 'maxi-blocks'), value: 'underline' },
+                        { label: __('Underline Overline', 'maxi-blocks'), value: 'underline overline' },
+                    ]}
+                    onChange={value => onChangeValue(value, 9)}
                 />
             </div>
         )

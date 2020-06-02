@@ -6,7 +6,8 @@ const { Fragment } = wp.element;
 const { withSelect } = wp.data;
 const {
     Spinner,
-    IconButton
+    IconButton,
+    ResizableBox
 } = wp.components;
 const {
     __experimentalBlock,
@@ -18,8 +19,8 @@ const {
  */
 import Inspector from './inspector';
 import { BackEndResponsiveStyles } from '../../extensions/styles';
-import { 
-    getBackgroundObject, 
+import {
+    getBackgroundObject,
     getBoxShadowObject
 } from '../../extensions/styles/utils';
 import {
@@ -46,6 +47,11 @@ import { placeholderImage } from '../../icons';
  */
 class edit extends GXBlock {
 
+    state = {
+        resizableWidth: this.props.attributes.mediaWidth,
+        resizableHeight: this.props.attributes.mediaHeight,
+    }
+
     componentDidUpdate() {
         this.displayStyles();
     }
@@ -58,6 +64,8 @@ class edit extends GXBlock {
             return `${this.props.attributes.uniqueID}`;
         if (this.type === 'hover')
             return `${this.props.attributes.uniqueID}:hover`;
+        if (this.type === 'figcaption')
+            return `${this.props.attributes.uniqueID}>figcaption`;
     }
 
     get getObject() {
@@ -65,6 +73,8 @@ class edit extends GXBlock {
             return this.getNormalObject
         if (this.type === 'hover')
             return this.getHoverObject
+        if (this.type === 'figcaption')
+            return this.getFigcaptionObject
     }
 
     get getNormalObject() {
@@ -99,14 +109,14 @@ class edit extends GXBlock {
         if (!isNil(alignment)) {
             switch (alignment) {
                 case 'left':
-                    response.image.general['text-align'] = 'left';
+                    response.image.general['align-items'] = 'flex-start';
                     break;
                 case 'center':
                 case 'justify':
-                    response.image.general['text-align'] = 'center';
+                    response.image.general['align-items'] = 'center';
                     break;
                 case 'right':
-                    response.image.general['text-align'] = 'right';
+                    response.image.general['align-items'] = 'flex-end';
                     break;
             }
         }
@@ -145,12 +155,25 @@ class edit extends GXBlock {
         return response;
     }
 
+    get getFigcaptionObject() {
+        const {
+            captionTypography
+        } = this.props.attributes;
+
+        const response = {
+            captionTypography: { ...JSON.parse(captionTypography) }
+        };
+
+        return response
+    }
+
     /**
     * Refresh the styles on Editor
     */
     displayStyles() {
         this.saveMeta('normal');
         this.saveMeta('hover');
+        this.saveMeta('figcaption')
 
         new BackEndResponsiveStyles(this.getMeta);
     }
@@ -174,7 +197,13 @@ class edit extends GXBlock {
             },
             imageData,
             setAttributes,
+            clientId
         } = this.props;
+
+        const {
+            resizableWidth,
+            resizableHeight
+        } = this.state;
 
         let classes = classnames(
             'maxi-block maxi-image-block',
@@ -234,13 +263,51 @@ class edit extends GXBlock {
                                             icon={placeholderImage}
                                         />
                                     </div>
-                                    <img
-                                        className={"wp-image-" + mediaID}
-                                        src={mediaURL}
-                                        width={mediaWidth}
-                                        height={mediaHeight}
-                                        alt={mediaALT}
-                                    />
+                                    <ResizableBox
+                                        className="maxi-image-block-resizer"
+                                        size={{
+                                            width: resizableWidth
+                                        }}
+                                        maxWidth="100%"
+                                        enable={{
+                                            top: false,
+                                            right: true,
+                                            bottom: false,
+                                            left: false,
+                                            topRight: false,
+                                            bottomRight: false,
+                                            bottomLeft: false,
+                                            topLeft: false,
+                                        }}
+                                        onResizeStart={() => {
+                                            setAttributes({
+                                                size: 'custom'
+                                            })
+                                        }}
+                                        onResize={(event, direction, elt, delta) => {
+                                            this.setState({
+                                                resizableWidth: elt.getBoundingClientRect().width,
+                                                resizableHeight: elt.getBoundingClientRect().height
+                                            })
+                                        }}
+                                        onResizeStop={(event, direction, elt, delta) => {
+                                            const originalWidth = document.getElementById(`block-${clientId}`).getBoundingClientRect().width;
+                                            const newScale = (elt.getBoundingClientRect().width / originalWidth) * 100;
+                                            cropOptions.crop.scale = Number(newScale).toFixed();
+
+                                            setAttributes({
+                                                cropOptions: JSON.stringify(cropOptions)
+                                            });
+                                        }}
+                                    >
+                                        <img
+                                            className={"wp-image-" + mediaID}
+                                            src={mediaURL}
+                                            width={resizableWidth}
+                                            height={resizableHeight}
+                                            alt={mediaALT}
+                                        />
+                                    </ResizableBox>
                                     {captionType !== 'none' &&
                                         <figcaption>
                                             {captionContent}

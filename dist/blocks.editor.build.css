@@ -1253,7 +1253,7 @@ body.Bumblebee .maxi-default .maxi-divider {
 .edit-post-layout.is-sidebar-opened .edit-post-plugin-sidebar__sidebar-layout.maxi-sidebar,
 .edit-post-layout.is-sidebar-opened .edit-post-sidebar.maxi-sidebar {
   overflow-x: hidden;
-  width: 385px;
+  width: 330px;
   background: #f2f2f2; }
 
 .maxi-enabled .title {
@@ -1395,7 +1395,7 @@ body.Bumblebee .maxi-default .maxi-divider {
 .maxi-sidebar .components-base-control,
 .maxi-popover .components-base-control,
 .toolbar-item__popover .components-base-control {
-  margin-bottom: 5px !important; }
+  margin-bottom: 10px !important; }
   .maxi-sidebar .components-base-control:last-child,
   .maxi-popover .components-base-control:last-child,
   .toolbar-item__popover .components-base-control:last-child {
@@ -1406,18 +1406,17 @@ body.Bumblebee .maxi-default .maxi-divider {
     display: -ms-flexbox !important;
     display: flex !important;
     -ms-flex-align: center;
-    align-items: center; }
+        align-items: center;
+    -ms-flex-pack: justify;
+        justify-content: space-between; }
     .maxi-sidebar .components-base-control .components-base-control__field .components-base-control__label,
     .maxi-popover .components-base-control .components-base-control__field .components-base-control__label,
     .toolbar-item__popover .components-base-control .components-base-control__field .components-base-control__label {
-      -ms-flex: 100%;
-          flex: 100%;
-      margin-bottom: 0; }
+      margin-bottom: 0;
+      width: 50%; }
     .maxi-sidebar .components-base-control .components-base-control__field .components-select-control__input,
     .maxi-popover .components-base-control .components-base-control__field .components-select-control__input,
     .toolbar-item__popover .components-base-control .components-base-control__field .components-select-control__input {
-      font-size: 10pt !important;
-      max-width: 100%;
       background: #fff url(../img/arrow-down.svg) no-repeat right 7px top 50% !important;
       background-size: 9px 9px !important;
       border-radius: 5px !important;
@@ -1661,7 +1660,7 @@ h2.gx_error {
 .maxi-popover * {
   font-family: "Roboto", Helvetica, Arial, Lucida, sans-serif !important;
   font-weight: 500 !important;
-  font-size: 16px;
+  font-size: 13px;
   color: #464a53; }
 
 /****************
@@ -1695,9 +1694,11 @@ h2.gx_error {
   border-radius: 5px;
   background-color: rgba(33, 141, 250, 0);
   border: 2px solid #dddfe1;
-  font-size: 16px;
+  font-size: 13px;
   color: #464a53;
-  font-weight: 500; }
+  font-weight: 500;
+  -ms-flex: 1;
+      flex: 1; }
 
 .maxi-sidebar select,
 .maxi-popover select {
@@ -1726,23 +1727,29 @@ h2.gx_error {
   background: transparent;
   border: none; }
 
-.maxi-sizecontrol-control .components-range-control {
+.maxi-sidebar .maxi-sizecontrol-control .maxi-sizecontrol-value {
+  width: 20%;
+  height: 31px;
+  -ms-flex: none;
+      flex: none; }
+
+.maxi-sidebar .maxi-sizecontrol-control .components-range-control {
   width: 100%;
   -ms-flex: 100% !important;
       flex: 100% !important;
   margin-left: 0 !important; }
 
-.maxi-sizecontrol-control .components-base-control__label {
+.maxi-sidebar .maxi-sizecontrol-control .components-base-control__label {
   -ms-flex: 2 !important;
       flex: 2 !important; }
 
-.maxi-sizecontrol-control .components-base-control__field {
+.maxi-sidebar .maxi-sizecontrol-control .components-base-control__field {
   -ms-flex-wrap: wrap;
       flex-wrap: wrap; }
-  .maxi-sizecontrol-control .components-base-control__field > * {
+  .maxi-sidebar .maxi-sizecontrol-control .components-base-control__field > * {
     margin-left: 4px; }
-  .maxi-sizecontrol-control .components-base-control__field .components-base-control__label,
-  .maxi-sizecontrol-control .components-base-control__field .components-range-control {
+  .maxi-sidebar .maxi-sizecontrol-control .components-base-control__field .components-base-control__label,
+  .maxi-sidebar .maxi-sizecontrol-control .components-base-control__field .components-range-control {
     margin-left: 0 !important; }
 
 /**************************
@@ -1768,7 +1775,8 @@ h2.gx_error {
   .components-base-control .components-maxi-dimensions-control__units .components-base-control__field {
     margin-bottom: 0; }
     .components-base-control .components-maxi-dimensions-control__units .components-base-control__field .components-select-control__input {
-      min-width: 3.2rem; }
+      min-width: 3.2rem;
+      max-width: 100%; }
 
 /*************
 * Reset Button
@@ -1804,177 +1812,6 @@ h2.gx_error {
     height: 14px;
     fill: #464a53;
     margin: auto; }
-
-@media all and (max-width: 2000px) {
-  .divider-dimension .components-range-control__number {
-    left: 167px; }
-  .maxi-accordion-tab.maxi-image-tab .components-button.is-secondary {
-    width: 30px !important;
-    height: 30px !important; }
-  .components-base-control.components-radio-control .components-base-control__field {
-    position: relative;
-    top: -1px !important; }
-  .maxi-sidebar input[type="number"].components-maxi-dimensions-control__number {
-    height: 32px !important;
-    padding-left: 5px; }
-  .maxi-sidebar .components-maxi-dimensions-control_sync {
-    width: 20% !important; }
-  .maxi-sidebar .components-maxi-dimensions-control__mobile-controls button {
-    height: 32px; }
-  .maxi-sidebar .components-maxi-dimensions-control__input-labels .components-maxi-dimensions-control__number-label {
-    width: 20%; }
-  .divider-dimension .maxi-sizecontrol-unit {
-    position: relative;
-    top: -1px; }
-  .maxi-sizecontrol-unit .components-radio-control__option label {
-    min-width: 27px;
-    line-height: 28px;
-    top: 1px;
-    height: 28px !important; }
-  .edit-post-layout.is-sidebar-opened .edit-post-plugin-sidebar__sidebar-layout.maxi-sidebar,
-  .edit-post-layout.is-sidebar-opened .edit-post-sidebar.maxi-sidebar {
-    font-size: 16px !important;
-    width: 310px; }
-  #gxAddLayoutButton,
-  #gxGoToCustomizerButton,
-  .maxi-tab-control,
-  h2.gx_error,
-  .maxi-tabs-content label,
-  .maxi-tabs-content .components-base-control__label,
-  .maxi-popover label,
-  .maxi-controls .maxi-accordion-control .components-base-control__label,
-  .maxi-tabs-content input[type="text"],
-  .maxi-tabs-content input[type="number"],
-  .maxi-tabs-content textarea,
-  .maxi-tabs-content select,
-  .maxi-popover input[type="text"],
-  .maxi-popover input[type="number"],
-  .maxi-popover textarea,
-  .maxi-popover select,
-  .maxi-tabs-content input[type="text"],
-  .maxi-tabs-content input[type="number"],
-  .maxi-tabs-content textarea,
-  .maxi-tabs-content select,
-  .maxi-popover input[type="text"],
-  .maxi-popover input[type="number"],
-  .maxi-popover textarea,
-  .maxi-popover select {
-    font-size: 13px; }
-  .maxi-sidebar .block-editor-block-card {
-    font-size: 17px; }
-  .maxi-sidebar .block-editor-block-card .block-editor-block-card__title {
-    line-height: 8px;
-    padding-top: 7px; }
-  .maxi-sidebar .block-editor-block-card .block-editor-block-card__title:after {
-    top: 5px;
-    width: 21px; }
-  .maxi-sidebar .block-editor-block-icon svg {
-    -webkit-transform: scale(1.32);
-        -ms-transform: scale(1.32);
-            transform: scale(1.32);
-    margin-top: 0; }
-  .maxi-sidebar .block-editor-block-icon {
-    width: 20px;
-    height: 25px; }
-  .maxi-sidebar .block-editor-block-card__description {
-    font-size: 11px;
-    line-height: 130%; }
-  .maxi-sidebar .edit-post-settings-sidebar__panel-block.maxi-controls .block-editor-block-card {
-    padding: 13px 16px; }
-  .maxi-tab {
-    padding-top: 0;
-    padding-bottom: 6px; }
-  .maxi-tab.maxi-content-tab-label:before {
-    -webkit-transform: none;
-        -ms-transform: none;
-            transform: none;
-    min-height: auto;
-    margin-bottom: 0;
-    padding-bottom: 0;
-    padding-top: 12px; }
-  .maxi-tab.maxi-content-tab-label:before,
-  .maxi-tab.maxi-style-tab-label:before,
-  .maxi-tab.maxi-advanced-tab-label:before {
-    min-height: auto;
-    margin-bottom: 0;
-    padding-bottom: 0;
-    width: 4rem;
-    height: 3.6rem;
-    margin: auto; }
-  .maxi-tab.maxi-advanced-tab-label:before {
-    padding-top: 9px;
-    -webkit-transform: scale(0.37);
-        -ms-transform: scale(0.37);
-            transform: scale(0.37); }
-  .maxi-tab.maxi-content-tab-label::before {
-    -webkit-transform: scale(0.37);
-        -ms-transform: scale(0.37);
-            transform: scale(0.37);
-    padding-top: 12px; }
-  .maxi-tab.maxi-style-tab-label::before {
-    -webkit-transform: scale(0.23);
-        -ms-transform: scale(0.23);
-            transform: scale(0.23); }
-  .maxi-tabs {
-    padding-top: 0;
-    margin-bottom: 10px; }
-  .components-circular-option-picker
-.components-button.components-circular-option-picker__clear.is-secondary.is-small {
-    margin-top: 0px !important; }
-  .components-range-control__number {
-    min-height: 26px !important;
-    max-width: 48px;
-    height: 25px;
-    top: 0px;
-    left: 250px;
-    z-index: 1;
-    padding: 0 !important;
-    border: 2px solid #dddfe1 !important;
-    padding-left: 5px !important;
-    padding-top: 1px !important; }
-  .components-range-control__number {
-    min-height: 26px !important;
-    max-width: 48px;
-    height: 25px;
-    top: 0px;
-    left: 234px;
-    z-index: 1;
-    padding: 0 !important;
-    border: 2px solid #dddfe1 !important;
-    padding-left: 5px !important;
-    padding-top: 1px !important; }
-  .maxi-controls .maxi-box-settings-item .accordion__panel[aria-hidden="false"] {
-    margin-top: -30px;
-    width: 109% !important;
-    margin-bottom: 20px;
-    margin-left: -4%;
-    margin-right: auto;
-    padding-top: 53px;
-    padding-bottom: 24px;
-    border-top: 2px solid #e8eaeb; }
-  .maxi-controls .accordion__panel {
-    margin-top: -30px;
-    width: 109% !important;
-    margin-bottom: 20px;
-    margin-left: -4%;
-    margin-right: auto;
-    padding-top: 28px;
-    padding-bottom: 24px;
-    border-top: 2px solid #e8eaeb; }
-  .block-editor-block-card::after {
-    position: absolute;
-    content: url("../img/maxi-logo.svg");
-    width: 1.4rem !important;
-    right: 30px;
-    top: 8px !important; }
-  .components-range-control.maxi-sizecontrol-value .components-base-control__field .components-range-control__number {
-    margin-left: auto;
-    max-height: 28px;
-    height: 28px !important;
-    margin-right: 2px; }
-  .block-editor-block-card__content > .block-editor-block-card__description {
-    width: 100%;
-    margin-top: 10px !important; } }
 /**
 * Leave blank due to bug on CGB. Check it on:
 * https://github.com/ahmadawais/create-guten-block/issues/111
@@ -2476,21 +2313,6 @@ button[type="reset"] {
 *
 * Moved common styles to './src/css' 
 */
-@media all and (max-width: 2000px) {
-  .maxi-sizecontrol-unit .components-radio-control__option label {
-    min-width: 27px;
-    line-height: 28px;
-    top: 1px;
-    height: 28px !important; }
-  .components-range-control.maxi-sizecontrol-value
-.components-base-control__field
-> .components-range-control__number {
-    margin-left: auto;
-    max-height: 28px;
-    height: 28px !important;
-    margin-right: 2px;
-    margin-top: -24px !important; } }
-
 .maxi-sizecontrol-unit .components-base-control__field {
   z-index: 100;
   display: -ms-flexbox;
@@ -2676,8 +2498,8 @@ button[type="reset"] {
     border-width: 2px !important;
     width: 41px !important;
     margin-right: -1px;
-    height: 26px;
-    padding-top: 5px !important; }
+    height: 36px;
+    padding-top: 8px !important; }
     .components-maxi-dimensions-control__mobile-controls-item.is-active {
       display: block;
       -webkit-box-shadow: none;
@@ -2704,7 +2526,9 @@ button[type="reset"] {
     margin: 0 -2px 0 0;
     border: 2px solid #dddfe1;
     padding-right: 1px;
-    width: 23%; }
+    width: 22%;
+    -ms-flex: none;
+        flex: none; }
     .components-maxi-dimensions-control input[type="number"].components-maxi-dimensions-control__number:focus {
       z-index: 1; }
   .components-maxi-dimensions-control__input-labels {
@@ -2740,7 +2564,7 @@ button[type="reset"] {
     padding: 0;
     text-align: center;
     text-shadow: none;
-    width: 30px;
+    width: 40px;
     border: 2px solid #dddfe1;
     background: #f2f2f2; }
     .components-maxi-dimensions-control_sync.components-button.is-small svg {
@@ -2827,45 +2651,40 @@ button[type="reset"] {
 *
 * Moved common styles to './src/css' 
 */
-.maxi-font-family-selector-button {
-  height: 45px;
-  border-radius: 5px;
-  background-color: rgba(33, 141, 250, 0);
-  border: 2px solid #dddfe1;
-  font-size: 20px;
-  color: #464a53;
-  font-weight: 500;
-  width: 100%;
-  margin-bottom: 8px; }
-
-.maxi-font-family-selector-icon {
-  margin: auto;
-  margin-right: 0;
-  -webkit-transition: 0.2s all ease;
-  -o-transition: 0.2s all ease;
-  transition: 0.2s all ease; }
-
-.maxi-font-family-selector-button[aria-expanded="true"] .maxi-font-family-selector-icon {
-  -webkit-transform: rotate(90deg);
-      -ms-transform: rotate(90deg);
-          transform: rotate(90deg); }
-
-.maxi-font-family-selector-popover .components-popover__content {
-  border-radius: 5px;
-  margin-top: 2px;
-  max-height: none !important; }
-
-.maxi-font-family-selector-content {
-  min-width: 370px; }
-
-.maxi-font-family-selector-content input {
-  -webkit-box-shadow: none !important;
-          box-shadow: none !important; }
-
-.maxi-font-family-selector-popover .components-popover__content {
-  bottom: unset !important;
-  top: 32px;
-  left: 3.5px !important; }
+.maxi-font-family-selector {
+  display: block; }
+  .maxi-font-family-selector__button {
+    height: 31px;
+    border-radius: 5px;
+    background-color: rgba(33, 141, 250, 0);
+    border: 2px solid #dddfe1;
+    font-size: 13px;
+    color: #464a53;
+    font-weight: 500;
+    width: 100%;
+    margin-bottom: 8px; }
+    .maxi-font-family-selector__button__icon {
+      margin: -4px 0 auto auto;
+      -webkit-transition: 0.2s all ease;
+      -o-transition: 0.2s all ease;
+      transition: 0.2s all ease; }
+    .maxi-font-family-selector__button[aria-expanded="true"] svg {
+      -webkit-transform: rotate(90deg);
+          -ms-transform: rotate(90deg);
+              transform: rotate(90deg); }
+  .maxi-font-family-selector__popover {
+    margin-top: -8px !important; }
+    .maxi-font-family-selector__popover .components-popover__content {
+      border: 2px solid #dddfe1;
+      border-radius: 5px;
+      margin-top: 2px;
+      max-height: none !important;
+      width: 291px;
+      overflow: hidden;
+      padding: 0; }
+      .maxi-font-family-selector__popover .components-popover__content input {
+        -webkit-box-shadow: none !important;
+                box-shadow: none !important; }
 /**
 * Leave blank due to bug on CGB. Check it on:
 * https://github.com/ahmadawais/create-guten-block/issues/111
@@ -2948,7 +2767,7 @@ button[type="reset"] {
         flex-direction: column;
     width: 50%;
     height: auto;
-    font-size: 16px;
+    font-size: 13px;
     color: #000;
     font-weight: 500;
     text-align: center;
@@ -2978,17 +2797,17 @@ button[type="reset"] {
 .maxi-tabs-content .maxi-tab-content {
   display: none; }
   .maxi-tabs-content .maxi-tab-content .maxi-tab-content__box {
-    padding: 25px 20px 20px;
+    padding: 20px 10px 15px;
     background-color: #fff;
     margin-bottom: 10px;
     border-top: 2px solid #e8eaeb;
     border-bottom: 1px solid #e8eaeb; }
+    .maxi-tabs-content .maxi-tab-content .maxi-tab-content__box .components-base-control__label {
+      -ms-flex: none;
+          flex: none;
+      width: 50%; }
   .maxi-tabs-content .maxi-tab-content.is-selected {
     display: block; }
-
-@media only screen and (max-width: 2000px) {
-  .maxi-tabs-control .maxi-tab-control__button {
-    font-size: 13px; } }
 /**
 * Leave blank due to bug on CGB. Check it on:
 * https://github.com/ahmadawais/create-guten-block/issues/111
@@ -3278,705 +3097,6 @@ button[type="reset"] {
 *
 * Moved common styles to './src/css' 
 */
-.maxi-sidebar .maxi-buttonstyles-control .maxi-buttonstyles-selector-control .components-base-control__field {
-  display: grid;
-  grid-template-columns: 1fr 1fr; }
-
-.maxi-sidebar .maxi-buttonstyles-control .maxi-buttonstyles-selector-control .components-base-control__field .components-radio-control__option {
-  height: 50px;
-  border-right-width: 0;
-  margin: 0; }
-
-.maxi-sidebar .maxi-buttonstyles-control .maxi-buttonstyles-selector-control .components-base-control__field .components-radio-control__option:last-of-type {
-  border-right-width: 2px; }
-
-.maxi-buttonstyles-control .maxi-buttonstyles-selector-control input {
-  display: none; }
-
-.maxi-buttonstyles-control .maxi-buttonstyles-selector-control label {
-  display: block;
-  text-align: center;
-  line-height: 46px; }
-
-.maxi-buttonstyles-control .maxi-buttonstyles-selector-control input:checked ~ label {
-  color: #fff;
-  background-color: #00ccff; }
-
-.maxi-buttoneditor-wrapper {
-  display: -ms-flexbox;
-  display: flex; }
-
-.maxi-buttoneditor-control {
-  width: auto;
-  height: auto; }
-
-.maxi-button-item .accordion__panel > .components-panel__body {
-  padding: 1px !important; }
-
-.maxi-button-item .maxi-border-item .accordion__panel .maxi-border-type .components-base-control__field select {
-  height: 28px;
-  line-height: 20px;
-  font-size: 10pt;
-  margin-left: auto;
-  padding: 0; }
-
-.maxi-button-item .maxi-padding-margin-item .components-maxi-dimensions-control__units {
-  width: auto !important; }
-
-.maxi-button-item
-.maxi-padding-margin-item
-.components-maxi-dimensions-control
-.components-maxi-dimensions-control__header
-button,
-.maxi-button-item .maxi-border-item .components-maxi-dimensions-control .components-maxi-dimensions-control__header button {
-  padding: 0; }
-
-.maxi-button-item .maxi-padding-margin-item .components-maxi-dimensions-control__mobile-controls button[role="tab"] svg,
-.maxi-button-item .maxi-border-item .components-maxi-dimensions-control__mobile-controls button[role="tab"] svg {
-  padding-top: 3px !important;
-  max-height: 17px; }
-
-.maxi-button-item .maxi-padding-margin-item .components-maxi-dimensions-control__mobile-controls button[role="tab"],
-.maxi-button-item .maxi-border-item .components-maxi-dimensions-control__mobile-controls button[role="tab"] {
-  padding-top: 0px !important; }
-
-.maxi-button-item .maxi-padding-margin-item .components-maxi-dimensions-control__mobile-controls button[role="tab"]:focus,
-.maxi-button-item .maxi-border-item .components-maxi-dimensions-control__mobile-controls button[role="tab"]:focus {
-  -webkit-box-shadow: none !important;
-          box-shadow: none !important; }
-
-.maxi-button-item .maxi-border-item .components-maxi-dimensions-control__units button,
-.maxi-button-item .maxi-padding-margin-item .components-maxi-dimensions-control__units button {
-  padding: 0;
-  font-size: 9pt !important; }
-
-.maxi-button-item .accordion__panel .maxi-accordion-tab > .components-base-control__label {
-  background: #f2f2f2;
-  border: 1px solid #e8eaeb;
-  -webkit-box-shadow: none !important;
-          box-shadow: none !important; }
-
-.maxi-button-item .accordion__panel {
-  border: none !important;
-  padding-left: 15px;
-  padding-right: 18px;
-  padding-top: 40px !important; }
-
-.maxi-button-item .maxi-typography-item .maxi-alignmentcontrol-control .components-radio-control__option {
-  height: 30px !important; }
-
-.maxi-button-item
-.maxi-typography-item
-.maxi-colorcontrol-control
-.maxi-popover-control
-.components-base-control__field
-.components-dropdown:nth-of-type(2) {
-  margin-left: 0 !important; }
-
-.maxi-button-item .maxi-opacity-control .components-range-control__slider {
-  position: static;
-  background: none;
-  -webkit-box-shadow: none;
-          box-shadow: none;
-  padding: 0px;
-  display: block; }
-
-.maxi-button-item
-.maxi-border-item
-.accordion__panel
-.maxi-colorcontrol-control
-.maxi-popover-control
-.components-base-control__field
-.maxi-popover-dropdown {
-  margin-left: auto; }
-
-.maxi-button-item .maxi-typography-item .maxi-colorcontrol-control {
-  margin-top: 15px; }
-
-.maxi-button-item .maxi-typography-item .maxi-alignmentcontrol-control {
-  margin-bottom: 15px; }
-
-.maxi-button-item .maxi-padding-margin-item .accordion__panel {
-  padding-top: 40px !important; }
-
-.maxi-button-item .maxi-padding-margin-item .maxi-buttonstyles-selector-control {
-  margin-bottom: 20px !important; }
-
-.maxi-button-item .maxi-accordion > div:first-child .maxi-accordion-tab .components-base-control__label::after {
-  top: 7px !important; }
-
-.maxi-button-item
-.maxi-typography-item
-.maxi-colorcontrol-control
-.components-base-control__field
-div.maxi-popover-dropdown
-button {
-  position: absolute; }
-
-.maxi-button-item
-.maxi-border-item
-.accordion__panel
-.maxi-colorcontrol-control
-.maxi-popover-control
-.components-base-control__field
-span {
-  line-height: 24px !important; }
-
-.maxi-button-item
-.maxi-border-item
-.accordion__panel
-.maxi-colorcontrol-control
-.maxi-popover-control
-.components-base-control__field
-.components-button[type="reset"] {
-  height: 30px !important; }
-
-.maxi-button-item
-.maxi-border-item
-.accordion__panel
-.maxi-colorcontrol-control
-.maxi-popover-control
-.components-base-control__field
-svg {
-  width: 16px;
-  height: 16px; }
-
-.maxi-button-item .maxi-box-settings-item .maxi-popover-control .maxi-settings-button .components-base-control__field span {
-  line-height: 23px; }
-
-.maxi-button-item > div .accordion__panel {
-  padding-bottom: 0px !important; }
-
-.maxi-button-item .maxi-box-settings-item .maxi-opacity-control .components-range-control__number {
-  height: 24px !important; }
-
-.maxi-button-item .maxi-typography-item {
-  line-height: 25px; }
-
-.maxi-button-item
-.maxi-typography-item
-.maxi-colorcontrol-control
-.maxi-popover-control
-.maxi-settings-button > .components-base-control__field
-.maxi-popover-dropdown:nth-of-type(1) {
-  margin-left: auto; }
-
-.maxi-button-item
-.maxi-typography-item
-.maxi-colorcontrol-control
-.maxi-popover-control
-.components-base-control__field > *:not(span) {
-  width: 30px !important;
-  height: 30px !important; }
-
-.maxi-buttonsettings-control
-.components-panel__body.components-base-control.editor-panel-color-settings.block-editor-panel-color-settings.is-opened.typography.maxi-typography-control {
-  margin-top: 0 !important; }
-
-.maxi-buttonsettings-control
-.components-panel__body.components-base-control.editor-panel-color-settings.block-editor-panel-color-settings.is-opened.typography.maxi-typography-control
-.maxi-typography-color-display {
-  position: relative;
-  left: 0 !important;
-  margin-right: 8px !important; }
-
-.maxi-settings-button
-.components-button.is-secondary > svg {
-  width: 18px !important;
-  height: 18px !important; }
-
-.maxi-buttonsettings-control
-.components-panel__body.components-base-control.editor-panel-color-settings.block-editor-panel-color-settings.is-opened.typography.maxi-typography-control
-button.components-button.is-secondary {
-  margin-right: 0px !important; }
-
-.maxi-buttonsettings-control
-.maxi-popover-control.maxi-boxshadow-control
-.components-base-control.maxi-settings-button
-.components-base-control__field {
-  position: relative;
-  margin-top: 7px !important; }
-
-.maxi-button-item
-.maxi-box-settings-item
-.components-base-control__field > .components-range-control__number {
-  height: 30px !important;
-  margin-right: -5px; }
-
-.maxi-buttonsettings-control
-.components-base-control__field >
-.components-radio-control__option:last-child {
-  position: relative;
-  top: 0 !important; }
-
-@media all and (max-width: 2000px) {
-  .maxi-buttonsettings-control
-.maxi-alignmentcontrol-control {
-    margin-top: 5px !important; }
-  .maxi-buttonsettings-control
-.maxi-colorcontrol-control
-.components-base-control__field >
-.components-button.is-secondary > svg {
-    width: 18px !important; }
-  .maxi-button-item .accordion__panel {
-    padding-left: 12px !important; }
-  .maxi-button-item
-.components-button:not(.components-maxi-dimensions-control__mobile-controls-item):not(.components-maxi-dimensions-control_sync),
-  .maxi-button-item .maxi-typography-item .maxi-popover-control .components-base-control__field > *:not(span) > * {
-    width: 24px !important;
-    height: 24px !important;
-    min-width: unset !important; }
-  .maxi-button-item
-.maxi-typography-item
-.maxi-colorcontrol-control
-.maxi-popover-control
-.components-base-control__field
-> *:not(span) {
-    width: 24px !important;
-    height: 24px !important; }
-  .maxi-button-item
-.maxi-border-item
-.accordion__panel
-.maxi-colorcontrol-control
-.maxi-popover-control
-.components-base-control__field
-svg {
-    width: 12px;
-    height: 12px; }
-  .maxi-button-item
-.maxi-border-item
-.accordion__panel
-.maxi-colorcontrol-control
-.maxi-popover-control
-.components-base-control__field
-.components-button[type="reset"] {
-    height: 24px !important; }
-  .maxi-buttonsettings-control
-.maxi-popover-control.maxi-boxshadow-control
-.components-base-control.maxi-settings-button
-.components-base-control__field {
-    position: relative;
-    margin-top: 5px !important; }
-  .maxi-button-item
-.maxi-box-settings-item
-.components-base-control.components-range-control.maxi-opacity-control
-.components-base-control__field > .components-range-control__number {
-    height: 26px !important;
-    margin-right: -5px; } }
-/**
-* Leave blank due to bug on CGB. Check it on:
-* https://github.com/ahmadawais/create-guten-block/issues/111
-*
-* Moved common styles to './src/css' 
-*/
-.maxi-image-item .maxi-Border {
-  margin-bottom: 10px; }
-
-.maxi-sidebar .maxi-imagesettings-control .maxi-imagesettings-selector-control .components-base-control__field {
-  display: grid;
-  grid-template-columns: 1fr 1fr; }
-
-.maxi-sidebar .maxi-imagesettings-control .maxi-imagesettings-selector-control .components-base-control__field .components-radio-control__option {
-  height: 50px;
-  border: 2px solid #dddfe1;
-  border-right-width: 0;
-  margin: 0; }
-
-.maxi-sidebar .maxi-imagesettings-control .maxi-imagesettings-selector-control .components-base-control__field .components-radio-control__option:last-of-type {
-  border-right-width: 2px; }
-
-.maxi-imagesettings-control .maxi-imagesettings-selector-control input {
-  display: none; }
-
-.maxi-imagesettings-control .maxi-imagesettings-selector-control label {
-  display: block;
-  text-align: center;
-  line-height: 46px; }
-
-.maxi-imagesettings-control .maxi-imagesettings-selector-control input:checked ~ label {
-  color: #fff;
-  background-color: #00ccff; }
-
-.maxi-block .maxi-imageupload-button {
-  height: auto; }
-
-.maxi-image-box-image button:first-child {
-  height: auto; }
-
-.maxi-image-item .maxi-imagesettings-control .components-base-control__field {
-  -ms-flex-pack: justify;
-      justify-content: space-between; }
-
-.maxi-image-item .maxi-sizecontrol-unit {
-  margin-right: 83px !important; }
-
-.maxi-image-item .components-range-control__number {
-  top: -5px;
-  max-height: 26px;
-  left: 182px !important; }
-
-.maxi-image-item .maxi-colorcontrol-control .maxi-popover-control .components-base-control__field div:first-of-type {
-  margin-left: auto;
-  margin-right: 4px; }
-
-.maxi-image-item .maxi-colorcontrol-control .maxi-popover-control .components-base-control__field div:last-of-type {
-  margin-right: 4px; }
-
-.maxi-image-item
-.maxi-colorcontrol-control
-.maxi-popover-control
-.components-base-control__field
-.components-button.is-secondary[type="reset"] {
-  margin-right: 0 !important; }
-
-.maxi-image-item .maxi-sizecontrol-unit .components-radio-control__option label {
-  width: 30px; }
-
-.maxi-image-item .components-range-control__reset {
-  top: -5px !important; }
-
-.maxi-image-item .accordion__panel > .components-panel__body {
-  padding: 1px !important; }
-
-.maxi-image-item select {
-  height: 28px;
-  line-height: 20px;
-  font-size: 10pt;
-  margin-left: auto;
-  padding: 0; }
-
-.maxi-image-item .maxi-padding-margin-item .components-maxi-dimensions-control__units {
-  width: auto !important; }
-
-.maxi-image-item .components-maxi-dimensions-control .components-maxi-dimensions-control__header button,
-.maxi-image-item .components-maxi-dimensions-control .components-maxi-dimensions-control__header button {
-  padding: 0; }
-
-.maxi-image-item .maxi-accordion {
-  margin: 0 !important; }
-
-.maxi-image-item .maxi-padding-margin-item .components-maxi-dimensions-control__mobile-controls button[role="tab"] svg,
-.maxi-image-item .maxi-border-item .components-maxi-dimensions-control__mobile-controls button[role="tab"] svg {
-  padding-top: 3px !important;
-  max-height: 17px; }
-
-.maxi-image-item .components-maxi-dimensions-control__units button,
-.maxi-image-item .components-maxi-dimensions-control__units button {
-  padding: 0;
-  font-size: 9pt !important; }
-
-.maxi-image-item .accordion__panel .maxi-accordion-tab > .components-base-control__label::before {
-  display: none !important; }
-
-.maxi-image-item .maxi-colorcontrol-control .components-base-control__field > button {
-  height: 30px !important;
-  width: 30px !important; }
-
-.maxi-image-item .accordion__panel .maxi-accordion-tab > .components-base-control__label {
-  background: #f2f2f2;
-  border: 1px solid #e8eaeb;
-  -webkit-box-shadow: none !important;
-          box-shadow: none !important; }
-
-.maxi-image-item .accordion__panel {
-  border: none !important;
-  padding-left: 15px;
-  padding-right: 18px;
-  padding-top: 40px !important; }
-
-.maxi-image-item .maxi-imagesettings-selector-control .components-radio-control__option {
-  height: 40px !important; }
-
-.maxi-image-item .maxi-imagesettings-selector-control .components-radio-control__option label {
-  height: 100% !important;
-  line-height: 37px; }
-
-.maxi-image-item .maxi-alignmentcontrol-control .components-radio-control__option {
-  height: 30px !important; }
-
-.maxi-image-item
-.maxi-background-item
-.maxi-colorcontrol-control
-.components-base-control.maxi-settings-button
-.components-base-control__field
-.components-dropdown:nth-of-type(2) {
-  margin-left: 0 !important; }
-
-.maxi-image-item .maxi-background-item .components-range-control__reset {
-  margin-left: 3px !important; }
-
-.maxi-image-item .maxi-sizecontrol-unit .components-base-control__field {
-  top: 6px !important; }
-
-.maxi-image-item div > .maxi-sizecontrol-value:last-child {
-  margin-bottom: 5px; }
-
-.maxi-image-item .maxi-box-settings-item .maxi-opacity-control .components-range-control__slider,
-.maxi-imagesettings-control .maxi-imagesettings-opacity .components-range-control__slider {
-  position: static;
-  background: none;
-  -webkit-box-shadow: none;
-          box-shadow: none;
-  padding: 0px;
-  display: block; }
-
-.maxi-image-item .maxi-style-tab-setting {
-  background: unset !important; }
-
-.maxi-image-item .accordion__panel .maxi-accordion-tab > .components-base-control__label {
-  background: #f2f2f2;
-  border: 1px solid #e8eaeb;
-  -webkit-box-shadow: none !important;
-          box-shadow: none !important; }
-
-.maxi-image-item .accordion__panel, .maxi-button-item .accordion__panel {
-  border: none !important;
-  padding-left: 15px;
-  padding-right: 18px;
-  padding-top: 40px !important; }
-
-.maxi-image-item .maxi-imagesettings-control .components-base-control__field {
-  -ms-flex-pack: justify;
-      justify-content: space-between; }
-
-.maxi-image-item select {
-  height: 28px;
-  line-height: 20px;
-  font-size: 10pt;
-  margin-left: auto; }
-
-.maxi-image-item select {
-  line-height: 20px;
-  font-size: 10pt; }
-
-.maxi-image-item .maxi-imagesettings-control .components-base-control__field {
-  -ms-flex-pack: justify;
-      justify-content: space-between; }
-
-.maxi-image-item .maxi-alignmentcontrol-control .components-radio-control__option {
-  height: 30px !important; }
-
-.maxi-sidebar div.maxi-alignmentcontrol-control .components-radio-control__option {
-  border: 1px solid #dddfe1 !important;
-  opacity: 1 !important; }
-
-.maxi-imagesettings-control
-.components-radio-control__option:last-child {
-  top: 0 !important; }
-
-.maxi-image-item hr {
-  margin-top: 1.5em !important; }
-
-.maxi-imagesettings-control
-.accordion__panel >
-div:last-child {
-  margin-top: 5px !important; }
-
-.maxi-imagesettings-control
-.components-base-control.maxi-sizecontrol-unit.components-radio-control {
-  position: relative;
-  top: 1px !important;
-  margin-right: 86px !important; }
-
-.maxi-imagesettings-control >
-.maxi-style-tab-setting.maxi-accordion.is-secondary >
-.maxi-background-item >
-.accordion__panel >
-.components-base-control.components-range-control >
-.components-base-control__field {
-  position: relative !important;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-pack: justify;
-      justify-content: space-between;
-  -ms-flex-wrap: nowrap !important;
-      flex-wrap: nowrap !important; }
-
-.maxi-imagesettings-control
-.components-range-control__wrapper.css-pp5lt-Wrapper.exqw8y21 {
-  display: none !important; }
-
-.maxi-imagesettings-control
-.components-range-control__number.css-1foiknu-InputNumber.exqw8y213 {
-  position: absolute;
-  top: 0;
-  right: 30px !important; }
-
-.maxi-imagesettings-control
-.css-uojzqi-ActionRightWrapper.exqw8y214 {
-  position: relative;
-  top: 0px;
-  left: 142px !important; }
-
-.maxi-background-item
-.components-range-control__wrapper.css-pp5lt-Wrapper.exqw8y21 {
-  display: unset !important; }
-
-.maxi-background-item
-.components-range-control__number.css-1foiknu-InputNumber.exqw8y213 {
-  position: unset !important; }
-
-.maxi-background-item
-.css-uojzqi-ActionRightWrapper.exqw8y214 {
-  position: unset !important; }
-
-.maxi-background-item
-button.components-button.is-secondary {
-  border-radius: 5px !important; }
-
-.maxi-background-item
-.components-base-control__field > .components-range-control__number {
-  height: 30px; }
-
-.maxi-imagesettings-control .components-base-control.maxi-sizecontrol-unit.components-radio-control {
-  position: relative;
-  top: 1px !important;
-  margin-right: 90px !important; }
-
-.maxi-imagesettings-control .components-base-control.components-range-control.maxi-sizecontrol-value
-.components-base-control__label {
-  position: relative;
-  top: 5px !important; }
-
-.maxi-background-item
-.components-range-control__slider {
-  display: block;
-  background: none;
-  -webkit-box-shadow: none !important;
-          box-shadow: none !important;
-  top: -12px !important;
-  position: absolute;
-  width: 100% !important;
-  max-width: 70%;
-  right: 70px; }
-
-.maxi-image-item
-.components-base-control.components-base-control.maxi-alignmentcontrol-control.components-radio-control
-.components-base-control__field
-.components-radio-control__option:last-child {
-  margin-right: 1px !important; }
-
-.maxi-image-item
-.components-base-control.components-base-control.maxi-alignmentcontrol-control.components-radio-control
-.components-base-control__field {
-  position: relative;
-  top: 0 !important; }
-
-@media all and (max-width: 2000px) {
-  .maxi-imagesettings-control
-.components-range-control.maxi-sizecontrol-value .components-base-control__field .components-range-control__number {
-    margin-right: 4px !important; }
-  .maxi-image-item
-.components-base-control.components-base-control.maxi-alignmentcontrol-control.components-radio-control
-.components-base-control__field {
-    position: relative;
-    top: 0 !important; }
-  .maxi-background-item
-.components-range-control__slider {
-    max-width: 62%;
-    top: -15px !important;
-    right: 66px; }
-  .maxi-imagesettings-control
-.accordion__panel >
-div:last-child {
-    margin-top: 5px !important; }
-  .maxi-imagesettings-control
-.accordion__panel
-.maxi-popover-control.maxi-boxshadow-control {
-    margin-top: 10px !important; }
-  .maxi-image-item .maxi-colorcontrol-control .components-base-control__field > button {
-    height: 26px !important;
-    width: 26px !important; }
-  .maxi-image-item .accordion__panel {
-    padding-left: 12px !important; }
-  .maxi-image-item
-.components-button:not(.components-maxi-dimensions-control__mobile-controls-item):not(.components-maxi-dimensions-control_sync):not(button.components-button-radio),
-  .maxi-image-item .maxi-popover-control .components-base-control__field > *:not(span) > * {
-    width: 24px !important;
-    height: 24px !important;
-    min-width: unset !important; }
-  .maxi-image-item .maxi-sizecontrol-unit {
-    margin-right: 73px; }
-  .maxi-image-item .components-range-control__number {
-    top: -5px;
-    max-height: 26px;
-    left: 168px; }
-  .maxi-image-width
-.components-base-control__field >
-input[type="number"].components-range-control__number {
-    margin-bottom: 5px;
-    margin-right: 3px;
-    margin-top: 2px !important;
-    height: 26px !important; }
-  .maxi-image-max-width
-.components-base-control__field >
-input[type="number"].components-range-control__number {
-    margin-right: 3px;
-    margin-top: 2px !important;
-    height: 26px !important; }
-  .maxi-image-width
-.components-base-control__field >
-.components-button.components-range-control__reset.is-secondary.is-small {
-    margin-top: -4px !important;
-    height: 40px !important;
-    width: 40px !important; }
-  .maxi-image-width > .components-base-control.maxi-sizecontrol-unit.components-radio-control > .components-base-control__field,
-  .maxi-image-max-width > .components-base-control.maxi-sizecontrol-unit.components-radio-control > .components-base-control__field {
-    position: relative;
-    top: -1px !important;
-    left: 3px !important; }
-  .maxi-image-width > .components-base-control.maxi-sizecontrol-unit.components-radio-control > .components-base-control__field > .components-radio-control__option > label,
-  .maxi-image-max-width > .components-base-control.maxi-sizecontrol-unit.components-radio-control > .components-base-control__field > .components-radio-control__option > label {
-    height: 26px !important;
-    line-height: 26px !important; }
-  .maxi-image-max-width
-.components-base-control__field >
-.components-button.components-range-control__reset.is-secondary.is-small {
-    margin-top: 2px !important;
-    height: 24px !important;
-    width: 24px !important; }
-  .maxi-background-item
-.maxi-boxshadow-control
-button.components-button.is-secondary {
-    position: relative;
-    top: -4px !important; }
-  .maxi-imagesettings-control
-.components-base-control.components-range-control.maxi-sizecontrol-value
-.components-range-control__number.css-1foiknu-InputNumber.exqw8y213 {
-    position: absolute;
-    top: 0;
-    right: 26px !important; }
-  .maxi-imagesettings-control
-.components-base-control.components-range-control.maxi-sizecontrol-value
-.css-uojzqi-ActionRightWrapper.exqw8y214 {
-    position: relative;
-    top: 1px;
-    left: 96px !important; }
-  .maxi-imagesettings-control
-.accordion__panel
-.components-base-control.maxi-sizecontrol-unit.components-radio-control {
-    position: relative;
-    top: -1px !important;
-    margin-right: 85px !important; }
-  .maxi-imagesettings-control >
-.maxi-style-tab-setting.maxi-accordion.is-secondary >
-.maxi-background-item >
-.accordion__panel >
-.components-base-control.components-range-control >
-.components-base-control__field >
-input.components-range-control__number {
-    position: absolute;
-    top: 0 !important;
-    left: 173px !important; }
-  .maxi-background-item
-.components-base-control__field > .components-range-control__number {
-    height: 26px !important; } }
-/**
-* Leave blank due to bug on CGB. Check it on:
-* https://github.com/ahmadawais/create-guten-block/issues/111
-*
-* Moved common styles to './src/css' 
-*/
 div.maxi-column-block:hover {
   outline: 1px solid blue; }
 
@@ -4010,27 +3130,31 @@ figure.maxi-image-block {
   display: flex;
   -ms-flex-direction: column;
       flex-direction: column; }
-  figure.maxi-image-block > div.maxi-image-block-settings {
+  figure.maxi-image-block > button.maxi-imageupload-button {
+    height: auto; }
+    figure.maxi-image-block > button.maxi-imageupload-button > svg {
+      width: 100%;
+      height: auto; }
+  figure.maxi-image-block > div.maxi-image-block-resizer > div.maxi-image-block-settings {
     position: absolute;
     width: 3rem;
     height: 3rem;
     top: 5%;
     left: calc(95% - 3rem); }
-    figure.maxi-image-block > div.maxi-image-block-settings > button.maxi-image-block-upload-button {
+    figure.maxi-image-block > div.maxi-image-block-resizer > div.maxi-image-block-settings > button.maxi-image-block-upload-button {
       width: 100%;
       height: 100%;
-      border: 1px solid red;
+      background: #000;
       opacity: 0;
       visibility: hidden;
-      -webkit-transition: all .5s ease;
-      -o-transition: all .5s ease;
-      transition: all .5s ease; }
-  figure.maxi-image-block:hover > div.maxi-image-block-settings > button.maxi-image-block-upload-button {
+      -webkit-transition: all 0.5s ease;
+      -o-transition: all 0.5s ease;
+      transition: all 0.5s ease; }
+      figure.maxi-image-block > div.maxi-image-block-resizer > div.maxi-image-block-settings > button.maxi-image-block-upload-button svg {
+        fill: #fff; }
+  figure.maxi-image-block > div.maxi-image-block-resizer:hover > div.maxi-image-block-settings > button.maxi-image-block-upload-button {
     opacity: 1;
     visibility: visible; }
-  figure.maxi-image-block > button.maxi-imageupload-button > svg {
-    width: 100%;
-    height: auto; }
   figure.maxi-image-block img {
     display: block; }
   figure.maxi-image-block figcaption {

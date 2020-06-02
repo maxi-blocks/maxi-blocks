@@ -40,7 +40,7 @@ import {
 /**
  * Icons
  */
-import { placeholderImage } from '../../icons';
+import { toolbarReplaceImage } from '../../icons';
 
 /**
  * Content
@@ -253,16 +253,6 @@ class edit extends GXBlock {
                         <Fragment>
                             {!isNil(mediaID) && imageData ?
                                 <Fragment>
-                                    <div
-                                        className="maxi-image-block-settings"
-                                    >
-                                        <IconButton
-                                            className='maxi-image-block-upload-button'
-                                            showTooltip="true"
-                                            onClick={open}
-                                            icon={placeholderImage}
-                                        />
-                                    </div>
                                     <ResizableBox
                                         className="maxi-image-block-resizer"
                                         size={{
@@ -300,6 +290,16 @@ class edit extends GXBlock {
                                             });
                                         }}
                                     >
+                                        <div
+                                            className="maxi-image-block-settings"
+                                        >
+                                            <IconButton
+                                                className='maxi-image-block-upload-button'
+                                                showTooltip="true"
+                                                onClick={open}
+                                                icon={toolbarReplaceImage}
+                                            />
+                                        </div>
                                         <img
                                             className={"wp-image-" + mediaID}
                                             src={mediaURL}

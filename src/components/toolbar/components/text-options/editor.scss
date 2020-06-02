@@ -1,0 +1,32 @@
+.toolbar-item__popover {
+    &__font-options {
+        &__font {
+            display: flex;
+            width: 100%;
+
+            &__selector {
+                flex-basis: 100%;
+            }
+        }
+
+        .maxi-device-control {
+            width: 100%;
+        }
+
+        &__number-control {
+            width: 100%;
+
+            .components-base-control__field {
+                display: flex;
+            }
+
+            .components-base-control__label {
+                flex-basis: 100%;
+            }
+
+            input[type="number"] {
+                width: 2rem;
+            }
+        }
+    }
+}

@@ -8,7 +8,7 @@ const { dispatch } = wp.data;
  * Internal dependencies
  */
 import Inspector from './inspector';
-import { BackEndResponsiveStyles } from '../../extensions/styles';
+import { getBoxShadowObject } from '../../extensions/styles/utils';
 import {
     GXBlock,
     __experimentalToolbar
@@ -56,7 +56,7 @@ class edit extends GXBlock {
         } = this.props.attributes;
 
         const response = {
-            boxShadow: { ...JSON.parse(boxShadow) },
+            boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
             size: { ...JSON.parse(size) },
             padding: { ...JSON.parse(padding) },
             margin: { ...JSON.parse(margin) },

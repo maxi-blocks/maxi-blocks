@@ -1,7 +1,8 @@
 /**
  * Imports
  */
-import * as attributesData from './data';
+import * as attributesData from '../../extensions/styles/defaults';
+import * as buttonAttributesData from './data';
 
 /**
  * Attributes
@@ -15,11 +16,6 @@ const attributes = {
         type: 'string',
         default: 'maxi-def-light'
     },
-    // Is this necessary? vvv
-    buttonSettings: {
-        type: 'string',
-        default: JSON.stringify(attributesData.buttonSettings)
-    },
     alignment: {
         type: 'string',
         default: 'center'
@@ -28,21 +24,9 @@ const attributes = {
         type: 'string',
         default: JSON.stringify(attributesData.size)
     },
-    backgroundColor: {
+    background: {
         type: 'string',
-        default: '#00ccff',
-    },
-    backgroundDefaultColor: {
-        type: 'string',
-        default: '#00ccff',
-    },
-    backgroundGradient: {
-        type: 'string',
-        default: '',
-    },
-    backgroundGradientDefault: {
-        type: 'string',
-        default: '',
+        default: JSON.stringify(buttonAttributesData.background)
     },
     boxShadow: {
         type: 'string',
@@ -68,21 +52,9 @@ const attributes = {
         type: 'number',
         default: 100
     },
-    backgroundColorHover: {
+    backgroundHover: {
         type: 'string',
-        default: '#00ccff',
-    },
-    backgroundDefaultColorHover: {
-        type: 'string',
-        default: '#00ccff',
-    },
-    backgroundGradientHover: {
-        type: 'string',
-        default: '',
-    },
-    backgroundGradientDefaultHover: {
-        type: 'string',
-        default: '',
+        default: JSON.stringify(buttonAttributesData.backgroundHover)
     },
     boxShadowHover: {
         type: 'string',
@@ -106,7 +78,6 @@ const attributes = {
     },
     opacityHover: {
         type: 'number',
-        default: 100
     },
     hoverAnimation: {
         type: 'string',

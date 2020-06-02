@@ -1,7 +1,7 @@
 /**
  * Imports
  */
-import * as attributesData from './data';
+import * as attributesData from '../../extensions/styles/defaults';
 
 /**
  * Attributes
@@ -56,21 +56,9 @@ const attributes = {
     width: {
         type: 'number',
     },
-    backgroundColor: {
+    background: {
         type: 'string',
-        default: '',
-    },
-    backgroundDefaultColor: {
-        type: 'string',
-        default: '',
-    },
-    backgroundGradient: {
-        type: 'string',
-        default: '',
-    },
-    backgroundGradientDefault: {
-        type: 'string',
-        default: '',
+        default: JSON.stringify(attributesData.background)
     },
     opacity: {
         type: 'number',
@@ -92,29 +80,12 @@ const attributes = {
         type: 'string',
         default: JSON.stringify(attributesData.margin)
     },
-    backgroundColorHover: {
+    backgroundHover: {
         type: 'string',
-        default: '',
-    },
-    backgroundDefaultColorHover: {
-        type: 'string',
-        default: '',
-    },
-    backgroundGradientHover: {
-        type: 'string',
-        default: '',
-    },
-    backgroundtDefaultGradienHover: {
-        type: 'string',
-        default: '',
-    },
-    backgroundGradientAboveBackgroundHover: {
-        type: 'boolean',
-        default: false
+        default: JSON.stringify(attributesData.backgroundHover)
     },
     opacityHover: {
         type: 'number',
-        default: 1
     },
     boxShadowHover: {
         type: 'string',

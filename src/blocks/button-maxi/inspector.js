@@ -14,10 +14,10 @@ const {
 import {
     AccordionControl,
     AlignmentControl,
+    BackgroundControl,
     BorderControl,
     BlockStylesControl,
     BoxShadowControl,
-    ColorControl,
     CustomCSSControl,
     DimensionsControl,
     FullSizeControl,
@@ -48,10 +48,7 @@ class Inspector extends Component {
                 blockStyle,
                 defaultBlockStyle,
                 alignment,
-                backgroundColor,
-                backgroundDefaultColor,
-                backgroundGradient,
-                backgroundGradientDefault,
+                background,
                 boxShadow,
                 typography,
                 border,
@@ -59,10 +56,7 @@ class Inspector extends Component {
                 margin,
                 padding,
                 opacity,
-                backgroundColorHover,
-                backgroundDefaultColorHover,
-                backgroundGradientHover,
-                backgroundGradientDefaultHover,
+                backgroundHover,
                 boxShadowHover,
                 typographyHover,
                 borderHover,
@@ -128,7 +122,7 @@ class Inspector extends Component {
                                                 label: __("Alignment", "maxi-blocks"),
                                                 content: (
                                                     <Fragment>
-                                                    <AlignmentControl
+                                                        <AlignmentControl
                                                             value={alignment}
                                                             onChange={alignment => setAttributes({ alignment })}
                                                         />
@@ -145,51 +139,23 @@ class Inspector extends Component {
                                                                 this.setState({ selectorTypographyColors });
                                                             }}
                                                         />
-                                                        <ColorControl
-                                                            label={__('Background Colour', 'maxi-blocks')}
-                                                            color={
+                                                        <BackgroundControl
+                                                            backgroundOptions={
                                                                 getNormalHoverValue(
                                                                     selectorTypographyColors,
-                                                                    backgroundColor,
-                                                                    backgroundColorHover)}
-                                                            defaultcolor={
-                                                                getNormalHoverValue(
-                                                                    selectorTypographyColors,
-                                                                    backgroundDefaultColor,
-                                                                    backgroundDefaultColorHover
+                                                                    background,
+                                                                    backgroundHover
                                                                 )
                                                             }
-                                                            onColorChange={value =>
+                                                            onChange={value =>
                                                                 normalHoverSaver(
                                                                     selectorTypographyColors,
-                                                                    'backgroundColor',
-                                                                    'backgroundColorHover',
+                                                                    'background',
+                                                                    'backgroundHover',
                                                                     value
                                                                 )
                                                             }
-                                                            gradient={
-                                                                getNormalHoverValue(
-                                                                    selectorTypographyColors,
-                                                                    backgroundGradient,
-                                                                    backgroundGradientHover
-                                                                )
-                                                            }
-                                                            defaultGradient={
-                                                                getNormalHoverValue(
-                                                                    selectorTypographyColors,
-                                                                    backgroundGradientDefault,
-                                                                    backgroundGradientDefaultHover
-                                                                )
-                                                            }
-                                                            onGradientChange={value =>
-                                                                normalHoverSaver(
-                                                                    selectorTypographyColors,
-                                                                    'backgroundGradient',
-                                                                    'backgroundGradientHover',
-                                                                    value
-                                                                )
-                                                            }
-                                                            disableGradientOverBackground
+                                                            disableImage
                                                         />
                                                         <TypographyControl
                                                             fontOptions={

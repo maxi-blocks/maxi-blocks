@@ -3,6 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
+const { withSelect } = wp.data;
 const {
     Spinner,
     IconButton
@@ -11,16 +12,16 @@ const {
     __experimentalBlock,
     MediaUpload
 } = wp.blockEditor;
-const {
-    dispatch,
-    withSelect,
-} = wp.data;
 
 /**
  * Internal dependencies
  */
 import Inspector from './inspector';
 import { BackEndResponsiveStyles } from '../../extensions/styles';
+import { 
+    getBackgroundObject, 
+    getBoxShadowObject
+} from '../../extensions/styles/utils';
 import {
     GXBlock,
     __experimentalToolbar
@@ -74,8 +75,7 @@ class edit extends GXBlock {
             widthUnit,
             width,
             opacity,
-            backgroundColor,
-            backgroundGradient,
+            background,
             boxShadow,
             border,
             padding,
@@ -83,12 +83,13 @@ class edit extends GXBlock {
         } = this.props.attributes;
 
         const response = {
-            boxShadow: { ...JSON.parse(boxShadow) },
+            boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
             border: { ...JSON.parse(border) },
             borderWidth: { ...JSON.parse(border).borderWidth },
             borderRadius: { ...JSON.parse(border).borderRadius },
             padding: { ...JSON.parse(padding) },
             margin: { ...JSON.parse(margin) },
+            background: { ...getBackgroundObject(JSON.parse(background)) },
             image: {
                 label: 'Image',
                 general: {}
@@ -111,10 +112,6 @@ class edit extends GXBlock {
         }
         if (!!opacity)
             response.image.general['opacity'] = opacity;
-        if (!!backgroundColor)
-            response.image.general['background-color'] = backgroundColor;
-        if (!!backgroundGradient)
-            response.image.general['background'] = backgroundGradient;
         if (!!maxWidth) {
             response.image.general['max-widthUnit'] = maxWidthUnit;
             response.image.general['max-width'] = maxWidth;
@@ -130,13 +127,13 @@ class edit extends GXBlock {
     get getHoverObject() {
         const {
             opacityHover,
-            backgroundColorHover,
-            backgroundGradientHover,
+            backgroundHover,
             boxShadowHover
         } = this.props.attributes;
 
         const response = {
-            boxShadowHover: { ...JSON.parse(boxShadowHover) },
+            boxShadowHover: { ...getBoxShadowObject(JSON.parse(boxShadowHover)) },
+            backgroundHover: { ...getBackgroundObject(JSON.parse(backgroundHover)) },
             imageHover: {
                 label: 'Image Hover',
                 general: {}
@@ -144,10 +141,7 @@ class edit extends GXBlock {
         }
         if (opacityHover)
             response.imageHover.general['opacity'] = opacityHover;
-        if (!isEmpty(backgroundColorHover))
-            response.imageHover.general['background-color'] = backgroundColorHover;
-        if (!isEmpty(backgroundGradientHover))
-            response.imageHover.general['background'] = backgroundGradientHover;
+
         return response;
     }
 

@@ -1393,24 +1393,29 @@ body.Bumblebee .maxi-default .maxi-divider {
 * ButtonControl
 ************/
 .maxi-sidebar .components-base-control,
-.maxi-popover .components-base-control {
+.maxi-popover .components-base-control,
+.toolbar-item__popover .components-base-control {
   margin-bottom: 5px !important; }
   .maxi-sidebar .components-base-control:last-child,
-  .maxi-popover .components-base-control:last-child {
+  .maxi-popover .components-base-control:last-child,
+  .toolbar-item__popover .components-base-control:last-child {
     margin-bottom: 0 !important; }
   .maxi-sidebar .components-base-control .components-base-control__field,
-  .maxi-popover .components-base-control .components-base-control__field {
+  .maxi-popover .components-base-control .components-base-control__field,
+  .toolbar-item__popover .components-base-control .components-base-control__field {
     display: -ms-flexbox !important;
     display: flex !important;
     -ms-flex-align: center;
     align-items: center; }
     .maxi-sidebar .components-base-control .components-base-control__field .components-base-control__label,
-    .maxi-popover .components-base-control .components-base-control__field .components-base-control__label {
+    .maxi-popover .components-base-control .components-base-control__field .components-base-control__label,
+    .toolbar-item__popover .components-base-control .components-base-control__field .components-base-control__label {
       -ms-flex: 100%;
           flex: 100%;
       margin-bottom: 0; }
     .maxi-sidebar .components-base-control .components-base-control__field .components-select-control__input,
-    .maxi-popover .components-base-control .components-base-control__field .components-select-control__input {
+    .maxi-popover .components-base-control .components-base-control__field .components-select-control__input,
+    .toolbar-item__popover .components-base-control .components-base-control__field .components-select-control__input {
       font-size: 10pt !important;
       max-width: 100%;
       background: #fff url(../img/arrow-down.svg) no-repeat right 7px top 50% !important;
@@ -1424,10 +1429,12 @@ body.Bumblebee .maxi-default .maxi-divider {
       height: 31px;
       margin: 0 !important; }
     .maxi-sidebar .components-base-control .components-base-control__field .components-radio-control__option:not(:last-child),
-    .maxi-popover .components-base-control .components-base-control__field .components-radio-control__option:not(:last-child) {
+    .maxi-popover .components-base-control .components-base-control__field .components-radio-control__option:not(:last-child),
+    .toolbar-item__popover .components-base-control .components-base-control__field .components-radio-control__option:not(:last-child) {
       margin-bottom: 0 !important; }
     .maxi-sidebar .components-base-control .components-base-control__field .components-button,
-    .maxi-popover .components-base-control .components-base-control__field .components-button {
+    .maxi-popover .components-base-control .components-base-control__field .components-button,
+    .toolbar-item__popover .components-base-control .components-base-control__field .components-button {
       display: -ms-inline-flexbox;
       display: inline-flex;
       width: 31px;
@@ -1450,60 +1457,74 @@ body.Bumblebee .maxi-default .maxi-divider {
       opacity: 1;
       border-radius: 5px; }
       .maxi-sidebar .components-base-control .components-base-control__field .components-button:hover,
-      .maxi-popover .components-base-control .components-base-control__field .components-button:hover {
+      .maxi-popover .components-base-control .components-base-control__field .components-button:hover,
+      .toolbar-item__popover .components-base-control .components-base-control__field .components-button:hover {
         -webkit-box-shadow: none !important;
                 box-shadow: none !important;
         border-color: #c5c5c5 !important;
         cursor: pointer; }
       .maxi-sidebar .components-base-control .components-base-control__field .components-button:focus,
-      .maxi-popover .components-base-control .components-base-control__field .components-button:focus {
+      .maxi-popover .components-base-control .components-base-control__field .components-button:focus,
+      .toolbar-item__popover .components-base-control .components-base-control__field .components-button:focus {
         -webkit-box-shadow: none !important;
                 box-shadow: none !important; }
       .maxi-sidebar .components-base-control .components-base-control__field .components-button.is-primary,
-      .maxi-popover .components-base-control .components-base-control__field .components-button.is-primary {
+      .maxi-popover .components-base-control .components-base-control__field .components-button.is-primary,
+      .toolbar-item__popover .components-base-control .components-base-control__field .components-button.is-primary {
         border-color: #00ccff; }
         .maxi-sidebar .components-base-control .components-base-control__field .components-button.is-primary:focus:enabled,
-        .maxi-popover .components-base-control .components-base-control__field .components-button.is-primary:focus:enabled {
+        .maxi-popover .components-base-control .components-base-control__field .components-button.is-primary:focus:enabled,
+        .toolbar-item__popover .components-base-control .components-base-control__field .components-button.is-primary:focus:enabled {
           -webkit-box-shadow: 0 0 0 1px #fff, 0 0 0 3px #00ccff;
                   box-shadow: 0 0 0 1px #fff, 0 0 0 3px #00ccff; }
       .maxi-sidebar .components-base-control .components-base-control__field .components-button.is-secondary,
-      .maxi-popover .components-base-control .components-base-control__field .components-button.is-secondary {
+      .maxi-popover .components-base-control .components-base-control__field .components-button.is-secondary,
+      .toolbar-item__popover .components-base-control .components-base-control__field .components-button.is-secondary {
         -webkit-box-shadow: none !important;
                 box-shadow: none !important;
-        border: 2px solid #dddfe1 !important; }
+        border: 2px solid #dddfe1; }
         .maxi-sidebar .components-base-control .components-base-control__field .components-button.is-secondary:hover,
-        .maxi-popover .components-base-control .components-base-control__field .components-button.is-secondary:hover {
-          background-color: white !important;
-          border-color: #ff4a17 !important; }
+        .maxi-popover .components-base-control .components-base-control__field .components-button.is-secondary:hover,
+        .toolbar-item__popover .components-base-control .components-base-control__field .components-button.is-secondary:hover {
+          background-color: white;
+          border-color: #ff4a17; }
         .maxi-sidebar .components-base-control .components-base-control__field .components-button.is-secondary svg,
-        .maxi-popover .components-base-control .components-base-control__field .components-button.is-secondary svg {
+        .maxi-popover .components-base-control .components-base-control__field .components-button.is-secondary svg,
+        .toolbar-item__popover .components-base-control .components-base-control__field .components-button.is-secondary svg {
           width: 14px !important;
           height: 14px !important; }
       .maxi-sidebar .components-base-control .components-base-control__field .components-button[type="reset"] svg,
-      .maxi-popover .components-base-control .components-base-control__field .components-button[type="reset"] svg {
-        fill: #464a53 !important; }
+      .maxi-popover .components-base-control .components-base-control__field .components-button[type="reset"] svg,
+      .toolbar-item__popover .components-base-control .components-base-control__field .components-button[type="reset"] svg {
+        fill: #464a53; }
       .maxi-sidebar .components-base-control .components-base-control__field .components-button svg,
-      .maxi-popover .components-base-control .components-base-control__field .components-button svg {
+      .maxi-popover .components-base-control .components-base-control__field .components-button svg,
+      .toolbar-item__popover .components-base-control .components-base-control__field .components-button svg {
         margin: auto; }
 
 .maxi-sidebar .components-range-control .components-base-control__field .components-range-control__wrapper,
-.maxi-popover .components-range-control .components-base-control__field .components-range-control__wrapper {
+.maxi-popover .components-range-control .components-base-control__field .components-range-control__wrapper,
+.toolbar-item__popover .components-range-control .components-base-control__field .components-range-control__wrapper {
   margin-left: 0; }
 
 .maxi-sidebar .components-range-control .components-base-control__field .components-range-control__slider + span,
-.maxi-popover .components-range-control .components-base-control__field .components-range-control__slider + span {
+.maxi-popover .components-range-control .components-base-control__field .components-range-control__slider + span,
+.toolbar-item__popover .components-range-control .components-base-control__field .components-range-control__slider + span {
   background: #dddfe1;
   height: 4px; }
 
 .maxi-sidebar .components-range-control .components-base-control__field .components-range-control__track,
-.maxi-popover .components-range-control .components-base-control__field .components-range-control__track {
+.maxi-popover .components-range-control .components-base-control__field .components-range-control__track,
+.toolbar-item__popover .components-range-control .components-base-control__field .components-range-control__track {
   height: 4px;
   background: #dddfe1 !important; }
   .maxi-sidebar .components-range-control .components-base-control__field .components-range-control__track + span,
-  .maxi-popover .components-range-control .components-base-control__field .components-range-control__track + span {
+  .maxi-popover .components-range-control .components-base-control__field .components-range-control__track + span,
+  .toolbar-item__popover .components-range-control .components-base-control__field .components-range-control__track + span {
     top: 1px; }
     .maxi-sidebar .components-range-control .components-base-control__field .components-range-control__track + span span,
-    .maxi-popover .components-range-control .components-base-control__field .components-range-control__track + span span {
+    .maxi-popover .components-range-control .components-base-control__field .components-range-control__track + span span,
+    .toolbar-item__popover .components-range-control .components-base-control__field .components-range-control__track + span span {
       -webkit-box-shadow: none !important;
               box-shadow: none !important;
       border: none !important;
@@ -1512,7 +1533,8 @@ body.Bumblebee .maxi-default .maxi-divider {
       background-color: #464a53; }
 
 .maxi-sidebar .components-range-control .components-base-control__field .components-base-control__label,
-.maxi-popover .components-range-control .components-base-control__field .components-base-control__label {
+.maxi-popover .components-range-control .components-base-control__field .components-base-control__label,
+.toolbar-item__popover .components-range-control .components-base-control__field .components-base-control__label {
   -ms-flex: 40%;
       flex: 40%; }
 
@@ -2973,6 +2995,47 @@ button[type="reset"] {
 *
 * Moved common styles to './src/css' 
 */
+.toolbar-item__popover .maxi-alignment-control .components-radio-control__option {
+  border-color: #7a7c85; }
+  .toolbar-item__popover .maxi-alignment-control .components-radio-control__option .components-radio-control__input:checked ~ label svg {
+    fill: #464a53; }
+  .toolbar-item__popover .maxi-alignment-control .components-radio-control__option svg {
+    fill: #fff; }
+/**
+* Leave blank due to bug on CGB. Check it on:
+* https://github.com/ahmadawais/create-guten-block/issues/111
+*
+* Moved common styles to './src/css' 
+*/
+.toolbar-item__popover .components-base-control__field {
+  color: #fff; }
+  .toolbar-item__popover .components-base-control__field .components-range-control__slider + span {
+    background: #80828a !important; }
+  .toolbar-item__popover .components-base-control__field .components-range-control__track + span span {
+    background-color: #fff !important; }
+  .toolbar-item__popover .components-base-control__field .components-range-control__tooltip {
+    border: 2px solid #80828a;
+    background-color: #232433;
+    color: #80828a; }
+    .toolbar-item__popover .components-base-control__field .components-range-control__tooltip:after {
+      border-top-color: #80828a; }
+  .toolbar-item__popover .components-base-control__field .components-range-control__number {
+    background-color: transparent;
+    color: #fff;
+    border-color: #80828a !important; }
+  .toolbar-item__popover .components-base-control__field .components-button.is-secondary {
+    background-color: transparent;
+    border-color: #80828a !important; }
+    .toolbar-item__popover .components-base-control__field .components-button.is-secondary:hover {
+      background-color: transparent !important; }
+    .toolbar-item__popover .components-base-control__field .components-button.is-secondary svg {
+      fill: #fff !important; }
+/**
+* Leave blank due to bug on CGB. Check it on:
+* https://github.com/ahmadawais/create-guten-block/issues/111
+*
+* Moved common styles to './src/css' 
+*/
 .toolbar-item__popover__column-pattern__template-button {
   -ms-flex: 33.33%;
       flex: 33.33%;
@@ -2982,6 +3045,102 @@ button[type="reset"] {
     height: 100%; }
     .toolbar-item__popover__column-pattern__template-button__icon path {
       stroke: #fff; }
+/**
+* Leave blank due to bug on CGB. Check it on:
+* https://github.com/ahmadawais/create-guten-block/issues/111
+*
+* Moved common styles to './src/css' 
+*/
+.toolbar-item__popover .components-form-toggle.is-checked .components-form-toggle__track {
+  background-color: #5f6063; }
+
+.toolbar-item__popover .components-form-toggle .components-form-toggle__track {
+  border: 0;
+  background-color: #fff; }
+
+.toolbar-item__popover .block-editor-url-input__input {
+  background-color: transparent;
+  color: #fff;
+  border: 2px solid #5f6063 !important; }
+  .toolbar-item__popover .block-editor-url-input__input:focus {
+    outline: none !important;
+    -webkit-box-shadow: none !important;
+            box-shadow: none !important; }
+  .toolbar-item__popover .block-editor-url-input__input::-webkit-input-placeholder {
+    color: #5f6063; }
+  .toolbar-item__popover .block-editor-url-input__input::-moz-placeholder {
+    color: #5f6063; }
+  .toolbar-item__popover .block-editor-url-input__input::-ms-input-placeholder {
+    color: #5f6063; }
+  .toolbar-item__popover .block-editor-url-input__input::placeholder {
+    color: #5f6063; }
+
+.toolbar-item__popover .block-editor-link-control__search-submit svg {
+  fill: #5f6063 !important; }
+
+.toolbar-item__popover .block-editor-link-control__settings {
+  border-top: 0;
+  padding: 0 18px 15px 18px; }
+/**
+* Leave blank due to bug on CGB. Check it on:
+* https://github.com/ahmadawais/create-guten-block/issues/111
+*
+* Moved common styles to './src/css' 
+*/
+.toolbar-item__popover .components-maxi-dimensions-control {
+  color: #fff; }
+  .toolbar-item__popover .components-maxi-dimensions-control_sync {
+    border-color: #80828a !important;
+    background-color: transparent !important;
+    width: 36px !important; }
+    .toolbar-item__popover .components-maxi-dimensions-control_sync:hover {
+      background-color: transparent !important; }
+    .toolbar-item__popover .components-maxi-dimensions-control_sync svg {
+      fill: currentColor;
+      color: #fff; }
+  .toolbar-item__popover .components-maxi-dimensions-control__mobile-controls-item {
+    height: 36px;
+    border-color: #80828a !important; }
+    .toolbar-item__popover .components-maxi-dimensions-control__mobile-controls-item svg {
+      fill: currentColor;
+      color: #fff; }
+
+.toolbar-item__popover input[type=number].components-maxi-dimensions-control__number {
+  background-color: transparent;
+  border-color: #80828a !important;
+  color: #fff; }
+
+.toolbar-item__popover .components-maxi-dimensions-control__units-reset {
+  background-color: none;
+  border-color: #80828a !important; }
+  .toolbar-item__popover .components-maxi-dimensions-control__units-reset:hover {
+    background-color: transparent !important; }
+  .toolbar-item__popover .components-maxi-dimensions-control__units-reset svg {
+    fill: #fff !important; }
+
+.toolbar-item__popover .components-base-control .components-base-control__field .components-select-control__input {
+  background-color: transparent !important;
+  color: #fff;
+  border-color: #80828a !important; }
+/**
+* Leave blank due to bug on CGB. Check it on:
+* https://github.com/ahmadawais/create-guten-block/issues/111
+*
+* Moved common styles to './src/css' 
+*/
+.toolbar-item__popover .components-color-picker__inputs-toggle {
+  border: 0; }
+  .toolbar-item__popover .components-color-picker__inputs-toggle:focus {
+    outline: none !important;
+    -webkit-box-shadow: none !important;
+            box-shadow: none !important; }
+  .toolbar-item__popover .components-color-picker__inputs-toggle svg {
+    fill: #fff; }
+
+.toolbar-item__popover .components-color-picker__inputs-field .components-text-control__input {
+  background-color: transparent;
+  color: #fff;
+  border: 2px solid #dddfe1 !important; }
 /**
 * Leave blank due to bug on CGB. Check it on:
 * https://github.com/ahmadawais/create-guten-block/issues/111
@@ -3052,21 +3211,38 @@ button[type="reset"] {
     width: -webkit-min-content;
     width: -moz-min-content;
     width: min-content;
-    margin-left: auto; }
-    .maxi-toolbar__popover .components-popover__content .toolbar-wrapper:last-child {
-      border-right: 1px solid #fff; }
+    margin: 0 auto 0.5rem;
+    position: relative; }
+    .maxi-toolbar__popover .components-popover__content .toolbar-wrapper:after {
+      content: '';
+      border-left: 0.5rem solid transparent;
+      border-right: 0.5rem solid transparent;
+      border-top: 0.5rem solid #232533;
+      position: absolute;
+      bottom: -0.5rem;
+      left: 50%;
+      -webkit-transform: translateX(-50%);
+          -ms-transform: translateX(-50%);
+              transform: translateX(-50%); }
     .maxi-toolbar__popover .components-popover__content .toolbar-wrapper button:focus {
       outline: none;
       -webkit-box-shadow: none;
               box-shadow: none; }
     .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item {
-      width: 1.5rem;
-      height: 1.5rem;
+      width: 2rem;
+      height: 2rem;
       background-color: #232533;
-      border: 1px solid #fff;
-      border-right: none;
+      border-right: 2px solid #616161;
       padding: 0;
-      cursor: pointer; }
+      cursor: pointer;
+      border-radius: 0; }
+      .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item:last-child {
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+        border-right: 0; }
+      .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item:first-child {
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px; }
       .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item__dropdown > button {
         display: block;
         width: 100%;
@@ -3086,7 +3262,10 @@ button[type="reset"] {
   border-right-color: transparent !important; }
 
 .toolbar-item__popover .components-popover__content {
-  background-color: #232533; }
+  background-color: #232433;
+  border-radius: 5px;
+  border: none;
+  min-width: 300px; }
 
 .toolbar-item__popover__wrapper {
   display: -ms-flexbox;

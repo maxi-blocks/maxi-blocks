@@ -25,9 +25,8 @@ import { isNil } from 'lodash';
 /**
  * Icons
  */
-import {
-    toolbarAlign,
-} from '../../../../icons';
+import './editor.scss';
+import { toolbarAlign } from '../../../../icons';
 
 /**
  * Alignment

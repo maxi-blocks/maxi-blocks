@@ -19,6 +19,7 @@ import BoxShadowControl from '../../../box-shadow-control';
 /**
  * Icons
  */
+import './editor.scss';
 import { toolbarStyle } from '../../../../icons';
 
 /**

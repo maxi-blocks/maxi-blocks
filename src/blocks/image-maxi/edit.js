@@ -40,7 +40,10 @@ import {
 /**
  * Icons
  */
-import { toolbarReplaceImage } from '../../icons';
+import { 
+    toolbarReplaceImage,
+    placeholderImage
+} from '../../icons';
 
 /**
  * Content

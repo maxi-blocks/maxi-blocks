@@ -197,7 +197,7 @@ class Inspector extends Component {
                                                                 onChange={cropOptions => setAttributes({ cropOptions: JSON.stringify(cropOptions) })}
                                                             />
                                                         }
-                                                        <SizeControl
+                                                        {/* <SizeControl
                                                             label={__('Width', 'maxi-blocks')}
                                                             unit={widthUnit}
                                                             onChangeUnit={widthUnit => setAttributes({ widthUnit })}
@@ -210,7 +210,7 @@ class Inspector extends Component {
                                                             onChangeUnit={maxWidthUnit => setAttributes({ maxWidthUnit })}
                                                             value={maxWidth}
                                                             onChangeValue={maxWidth => setAttributes({ maxWidth })}
-                                                        />
+                                                        /> */}
                                                     </Fragment>
                                                 )
                                             },

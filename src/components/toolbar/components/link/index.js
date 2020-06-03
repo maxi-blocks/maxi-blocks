@@ -15,6 +15,7 @@ const {
 /**
  * Icons
  */
+import './editor.scss';
 import { toolbarLink } from '../../../../icons';
 
 /**
@@ -67,7 +68,7 @@ const Link = props => {
                     <__experimentalLinkControl
                         className="toolbar-item__popover__link-control"
                         value={JSON.parse(linkSettings)}
-                        onChange={value => 
+                        onChange={value =>
                             updateBlockAttributes(clientId, { linkSettings: JSON.stringify(value) })
                         }
                     />

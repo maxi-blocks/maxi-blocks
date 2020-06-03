@@ -7,7 +7,8 @@
 ************/
 
 .maxi-sidebar,
-.maxi-popover {
+.maxi-popover,
+.toolbar-item__popover {
     // BaseControl
     .components-base-control {
         margin-bottom: 10px !important;
@@ -83,11 +84,11 @@
 
                 &.is-secondary {
                     box-shadow: none !important;
-                    border: 2px solid #dddfe1 !important;
+                    border: 2px solid #dddfe1;
 
                     &:hover {
-                        background-color: white !important;
-                        border-color: #ff4a17 !important;
+                        background-color: white;
+                        border-color: #ff4a17;
                     }
 
                     svg {
@@ -98,7 +99,7 @@
 
                 &[type="reset"] {
                     svg {
-                        fill: #464a53 !important;
+                        fill: #464a53;
                     }
                 }
 

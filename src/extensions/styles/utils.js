@@ -1,10 +1,30 @@
 /**
+ * WordPress dependencies
+ */
+const { select } = wp.data;
+const { getBlockAttributes } = wp.blocks;
+
+/**
  * External dependencies
  */
 import {
     isEmpty,
     isNil,
 } from 'lodash'
+
+/**
+ * Returns default property of the block
+ * 
+ * @param {string} clientId Block's client id
+ * @param {string} prop Claimed property to return
+ */
+export const getDefaultProp = (clientId, prop) => {
+    const { getBlockName } = select('core/block-editor');
+    const blockName = getBlockName(clientId);
+    const defaultProp = getBlockAttributes(blockName)[prop];
+
+    return defaultProp;
+}
 
 /**
  * Clean BackgroundControl object for being delivered for styling

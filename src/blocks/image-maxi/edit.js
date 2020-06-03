@@ -49,14 +49,16 @@ import {
  * Content
  */
 class edit extends GXBlock {
-
-    state = {
-        resizableWidth: this.props.attributes.mediaWidth,
-        resizableHeight: this.props.attributes.mediaHeight,
-    }
-
     componentDidUpdate() {
         this.displayStyles();
+    }
+
+    get getWrapperWidth() {
+        const target = document.getElementById(`block-${this.props.clientId}`);
+        if(!target)
+            return;
+
+        return target.getBoundingClientRect().width;
     }
 
     /**
@@ -67,6 +69,8 @@ class edit extends GXBlock {
             return `${this.props.attributes.uniqueID}`;
         if (this.type === 'hover')
             return `${this.props.attributes.uniqueID}:hover`;
+        if (this.type === 'image')
+            return `${this.props.attributes.uniqueID}>img`;
         if (this.type === 'figcaption')
             return `${this.props.attributes.uniqueID}>figcaption`;
     }
@@ -76,6 +80,8 @@ class edit extends GXBlock {
             return this.getNormalObject
         if (this.type === 'hover')
             return this.getHoverObject
+        if (this.type === 'image')
+            return this.getImageObject
         if (this.type === 'figcaption')
             return this.getFigcaptionObject
     }
@@ -129,10 +135,6 @@ class edit extends GXBlock {
             response.image.general['max-widthUnit'] = maxWidthUnit;
             response.image.general['max-width'] = maxWidth;
         }
-        if (!!width) {
-            response.image.general['widthUnit'] = widthUnit;
-            response.image.general['width'] = width;
-        }
 
         return response;
     }
@@ -158,6 +160,24 @@ class edit extends GXBlock {
         return response;
     }
 
+    get getImageObject() {
+        const {
+            width
+        } = this.props.attributes;
+
+        const response = {
+            imageSize: {
+                label: 'Image Size',
+                general: {}
+            }
+        };
+
+        if (!!width)
+            response.imageSize.general['width'] = `${width}%`;
+
+        return response
+    }
+
     get getFigcaptionObject() {
         const {
             captionTypography
@@ -176,6 +196,7 @@ class edit extends GXBlock {
     displayStyles() {
         this.saveMeta('normal');
         this.saveMeta('hover');
+        this.saveMeta('image');
         this.saveMeta('figcaption')
 
         new BackEndResponsiveStyles(this.getMeta);
@@ -196,17 +217,13 @@ class edit extends GXBlock {
                 mediaALT,
                 mediaURL,
                 mediaWidth,
-                mediaHeight
+                mediaHeight,
+                width,
             },
             imageData,
             setAttributes,
-            clientId
+            isSelected
         } = this.props;
-
-        const {
-            resizableWidth,
-            resizableHeight
-        } = this.state;
 
         let classes = classnames(
             'maxi-block maxi-image-block',
@@ -257,39 +274,26 @@ class edit extends GXBlock {
                             {!isNil(mediaID) && imageData ?
                                 <Fragment>
                                     <ResizableBox
-                                        className="maxi-image-block-resizer"
+                                        className='maxi-image-block-resizer'
                                         size={{
-                                            width: resizableWidth
+                                            width: `${width}%`,
+                                            height: 'auto'
                                         }}
-                                        maxWidth="100%"
+                                        maxWidth='100%'
                                         enable={{
                                             top: false,
-                                            right: true,
+                                            right: false,
                                             bottom: false,
                                             left: false,
-                                            topRight: false,
-                                            bottomRight: false,
-                                            bottomLeft: false,
-                                            topLeft: false,
-                                        }}
-                                        onResizeStart={() => {
-                                            setAttributes({
-                                                size: 'custom'
-                                            })
+                                            topRight: true,
+                                            bottomRight: true,
+                                            bottomLeft: true,
+                                            topLeft: true,
                                         }}
                                         onResize={(event, direction, elt, delta) => {
-                                            this.setState({
-                                                resizableWidth: elt.getBoundingClientRect().width,
-                                                resizableHeight: elt.getBoundingClientRect().height
-                                            })
-                                        }}
-                                        onResizeStop={(event, direction, elt, delta) => {
-                                            const originalWidth = document.getElementById(`block-${clientId}`).getBoundingClientRect().width;
-                                            const newScale = (elt.getBoundingClientRect().width / originalWidth) * 100;
-                                            cropOptions.crop.scale = Number(newScale).toFixed();
-
+                                            const newScale = Number(((elt.getBoundingClientRect().width / this.getWrapperWidth) * 100).toFixed());
                                             setAttributes({
-                                                cropOptions: JSON.stringify(cropOptions)
+                                                width: Number(newScale.toFixed()),
                                             });
                                         }}
                                     >
@@ -306,8 +310,8 @@ class edit extends GXBlock {
                                         <img
                                             className={"wp-image-" + mediaID}
                                             src={mediaURL}
-                                            width={resizableWidth}
-                                            height={resizableHeight}
+                                            width={mediaWidth}
+                                            height={mediaHeight}
                                             alt={mediaALT}
                                         />
                                     </ResizableBox>

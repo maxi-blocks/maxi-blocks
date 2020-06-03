@@ -29,29 +29,29 @@ const CheckBoxControl = props => {
     } = props;
 
     const instanceId = useInstanceId( CheckBoxControl );
-    const checkboxId = `maxi-blocks-checkbox-${instanceId}`;
+    const checkboxId = `maxi-checkbox-control__${instanceId}`;
 
     const classes = classnames(
-        'maxi-checkbox-control', 
+        'maxi-checkbox-control',
         className
     );
 
     return (
-        <BaseControl 
+        <BaseControl
             id={id}
             label={title}
             help={help}
             className={classes}
         >
-            <label 
+            <label
                 for={checkboxId}
-                className="maxi-blocks-checkbox-label"
+                className='maxi-checkbox-control__label'
             >
-                <input 
+                <input
                     id={checkboxId}
                     name={checkboxId}
-                    className="maxi-blocks-checkbox-input"
-                    type="checkbox" 
+                    className='maxi-checkbox-control__input'
+                    type='checkbox'
                     onChange={el => onChange(el.target.checked)}
                     checked={checked}
                 />

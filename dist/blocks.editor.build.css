@@ -1537,6 +1537,12 @@ body.Bumblebee .maxi-default .maxi-divider {
   -ms-flex: 40%;
       flex: 40%; }
 
+.maxi-popover .components-popover__content {
+  padding: 20px;
+  min-width: 373px !important;
+  -webkit-box-shadow: 0 46px 133px rgba(150, 176, 203, 0.23) !important;
+          box-shadow: 0 46px 133px rgba(150, 176, 203, 0.23) !important; }
+
 /***********
 * Block card
 ***********/
@@ -1752,21 +1758,6 @@ h2.gx_error {
   .maxi-sidebar .maxi-sizecontrol-control .components-base-control__field .components-range-control {
     margin-left: 0 !important; }
 
-/**************************
-* Component Color Indicator
-**************************/
-.maxi-component-color-inidicator {
-  margin: auto; }
-  .maxi-component-color-inidicator span {
-    display: block;
-    width: 28px;
-    height: 28px;
-    margin: auto;
-    border: 2px solid #dddfe1 !important;
-    opacity: 1 !important;
-    margin-right: 8px !important;
-    float: left; }
-
 /************
 * Unit Select
 ************/
@@ -1916,19 +1907,19 @@ div.maxi-row-block.has-child-selected > div.maxi-row-selector-wrapper {
 */
 .maxi-accordion-control {
   margin: 0px 0 1px 0; }
-  .maxi-accordion-control .maxi-accordion-item {
+  .maxi-accordion-control__item {
     background: none;
     overflow: hidden !important; }
-    .maxi-accordion-control .maxi-accordion-item .maxi-accordion-icon {
+    .maxi-accordion-control__item .maxi-accordion-icon {
       max-width: 24px;
       max-height: 24px; }
-    .maxi-accordion-control .maxi-accordion-item .maxi-accordion-item-panel:not(.disable-padding) {
+    .maxi-accordion-control__item__panel:not(.disable-padding) {
       padding-top: 15px !important;
       padding-left: 12px !important;
       padding-right: 12px !important;
       padding-bottom: 10px !important;
       background-color: #fff; }
-    .maxi-accordion-control .maxi-accordion-item .maxi-accordion-item-button {
+    .maxi-accordion-control__item__button {
       -webkit-box-shadow: 0rem 0rem 0.5rem rgba(33, 33, 33, 0.15);
               box-shadow: 0rem 0rem 0.5rem rgba(33, 33, 33, 0.15);
       position: relative;
@@ -1941,13 +1932,13 @@ div.maxi-row-block.has-child-selected > div.maxi-row-selector-wrapper {
       height: 45px;
       padding: 10px 12px;
       border-top: 2px solid #e8eaeb; }
-      .maxi-accordion-control .maxi-accordion-item .maxi-accordion-item-button:before {
+      .maxi-accordion-control__item__button:before {
         margin-right: 8px; }
-      .maxi-accordion-control .maxi-accordion-item .maxi-accordion-item-button:hover {
+      .maxi-accordion-control__item__button:hover {
         cursor: pointer; }
-      .maxi-accordion-control .maxi-accordion-item .maxi-accordion-item-button[aria-expanded="true"] {
+      .maxi-accordion-control__item__button[aria-expanded="true"] {
         margin-bottom: 0; }
-        .maxi-accordion-control .maxi-accordion-item .maxi-accordion-item-button[aria-expanded="true"]:after {
+        .maxi-accordion-control__item__button[aria-expanded="true"]:after {
           content: url(../img/arrow-right.svg);
           width: 6px;
           position: absolute;
@@ -2012,52 +2003,26 @@ div.maxi-row-block.has-child-selected > div.maxi-row-selector-wrapper {
 *
 * Moved common styles to './src/css' 
 */
-.maxi-popover-control .maxi-popover-dropdown {
+.maxi-popover-control__dropdown {
   margin-left: auto;
   margin-right: 5px; }
-
-.maxi-popover .components-popover__content {
-  padding: 20px;
-  min-width: 373px !important;
-  -webkit-box-shadow: 0 46px 133px rgba(150, 176, 203, 0.23) !important;
-          box-shadow: 0 46px 133px rgba(150, 176, 203, 0.23) !important; }
 /**
 * Leave blank due to bug on CGB. Check it on:
 * https://github.com/ahmadawais/create-guten-block/issues/111
 *
 * Moved common styles to './src/css' 
 */
-.maxi-colorcontrol-control .maxi-box-shadow .maxi-colorcontrol-control .maxi-settings-button .components-base-control__field > div {
-  margin-right: 4px; }
-
-.maxi-colorcontrol-control .maxi-box-shadow
-.maxi-colorcontrol-control
-.maxi-settings-button
-.components-base-control__field
-button[type="reset"] {
-  margin-right: 0px; }
-
-.maxi-colorcontrol-control .maxi-box-shadow .maxi-colorcontrol-control .components-base-control__field .components-button.is-secondary {
-  color: black;
-  height: 30px;
-  width: 30px;
-  background-color: white !important;
-  border: 2px solid #dddfe1;
-  border-radius: 5px;
-  -webkit-box-shadow: unset !important;
-          box-shadow: unset !important; }
-
-.maxi-colorcontrol-control .maxi-box-shadow .maxi-colorcontrol-control .components-base-control__field > .components-button.is-secondary {
-  -ms-flex-order: 1;
-      order: 1; }
-
-.maxi-colorcontrol-control .maxi-box-shadow .maxi-colorcontrol-control .components-base-control__field > .components-button.is-secondary svg {
-  width: 12px;
-  height: 12px;
+.maxi-colorcontrol__display {
   margin: auto; }
-
-.maxi-colorcontrol-control .maxi-popover-control {
-  width: 100%; }
+  .maxi-colorcontrol__display span {
+    display: block;
+    width: 28px;
+    height: 28px;
+    margin: auto;
+    border: 2px solid #dddfe1;
+    opacity: 1;
+    margin-right: 8px;
+    float: left; }
 /**
 * Leave blank due to bug on CGB. Check it on:
 * https://github.com/ahmadawais/create-guten-block/issues/111
@@ -2588,13 +2553,13 @@ button[type="reset"] {
 *
 * Moved common styles to './src/css' 
 */
-.maxi-checkbox-control .maxi-blocks-checkbox-input {
+.maxi-checkbox-control__input {
   position: relative;
   width: 23px;
   height: 23px;
   background-color: #00cdff !important;
   border: none !important; }
-  .maxi-checkbox-control .maxi-blocks-checkbox-input:checked:before {
+  .maxi-checkbox-control__input:checked:before {
     content: url("../src/icons/setting-icons/checkbox/checkbox.svg");
     position: absolute;
     top: 50%;
@@ -2605,7 +2570,7 @@ button[type="reset"] {
     margin: auto !important;
     width: 20px;
     height: 20px; }
-  .maxi-checkbox-control .maxi-blocks-checkbox-input:focus {
+  .maxi-checkbox-control__input:focus {
     border: none;
     -webkit-box-shadow: none;
             box-shadow: none; }
@@ -2629,12 +2594,12 @@ button[type="reset"] {
     height: 33px !important;
     text-align: center;
     border: 1px solid #dddfe1; }
-    .maxi-device-control .components-base-control__field .components-radio-control__option .components-radio-control__input {
+    .maxi-device-control .components-base-control__field .components-radio-control__option__input {
       margin: auto;
       display: none; }
-      .maxi-device-control .components-base-control__field .components-radio-control__option .components-radio-control__input:checked ~ label {
+      .maxi-device-control .components-base-control__field .components-radio-control__option__input:checked ~ label {
         background-color: #00ccff; }
-        .maxi-device-control .components-base-control__field .components-radio-control__option .components-radio-control__input:checked ~ label svg path {
+        .maxi-device-control .components-base-control__field .components-radio-control__option__input:checked ~ label svg path {
           fill: #fff; }
     .maxi-device-control .components-base-control__field .components-radio-control__option label {
       width: 100%;
@@ -2691,27 +2656,21 @@ button[type="reset"] {
 *
 * Moved common styles to './src/css' 
 */
-.maxi-externalbutton-control {
+.maxi-externalbutton {
   border: 1px solid black; }
-
-.maxi-externalbutton-control .maxi-externalbutton-richtext {
-  display: block; }
-
-.maxi-externalbutton-popover {
-  position: fixed; }
-
-.maxi-externalbutton-popover button {
-  -webkit-box-shadow: none;
-          box-shadow: none;
-  opacity: 0;
-  -webkit-transition: opacity .3s ease-in-out;
-  -o-transition: opacity .3s ease-in-out;
-  transition: opacity .3s ease-in-out;
-  background-color: transparent !important;
-  max-width: 1.5rem; }
-
-.maxi-externalbutton-control:hover .maxi-externalbutton-popover button {
-  opacity: 1; }
+  .maxi-externalbutton__richtext {
+    display: block; }
+  .maxi-externalbutton__popover {
+    position: fixed; }
+    .maxi-externalbutton__popover button {
+      -webkit-box-shadow: none;
+              box-shadow: none;
+      opacity: 0;
+      -webkit-transition: opacity .3s ease-in-out;
+      -o-transition: opacity .3s ease-in-out;
+      transition: opacity .3s ease-in-out;
+      background-color: transparent !important;
+      max-width: 1.5rem; }
 /**
 * Leave blank due to bug on CGB. Check it on:
 * https://github.com/ahmadawais/create-guten-block/issues/111

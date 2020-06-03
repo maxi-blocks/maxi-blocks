@@ -1,37 +1,14 @@
-.maxi-colorcontrol-control {
-    .maxi-box-shadow .maxi-colorcontrol-control .maxi-settings-button .components-base-control__field > div {
-        margin-right: 4px;
-    }
+.maxi-colorcontrol__display {
+	margin: auto;
 
-    .maxi-box-shadow
-        .maxi-colorcontrol-control
-        .maxi-settings-button
-        .components-base-control__field
-        button[type="reset"] {
-        margin-right: 0px;
-    }
-
-    .maxi-box-shadow .maxi-colorcontrol-control .components-base-control__field .components-button.is-secondary {
-        color: black;
-        height: 30px;
-        width: 30px;
-        background-color: white !important;
-        border: 2px solid #dddfe1;
-        border-radius: 5px;
-        box-shadow: unset !important;
-    }
-
-    .maxi-box-shadow .maxi-colorcontrol-control .components-base-control__field > .components-button.is-secondary {
-        order: 1;
-    }
-
-    .maxi-box-shadow .maxi-colorcontrol-control .components-base-control__field > .components-button.is-secondary svg {
-        width: 12px;
-        height: 12px;
-        margin: auto;
-    }
-
-    .maxi-popover-control {
-        width: 100%;
-    }
+	span {
+		display: block;
+		width: 28px;
+		height: 28px;
+		margin: auto;
+		border: 2px solid #dddfe1;
+		opacity: 1;
+		margin-right: 8px;
+		float: left;
+	}
 }

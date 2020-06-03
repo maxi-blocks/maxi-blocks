@@ -1733,31 +1733,6 @@ h2.gx_error {
   background: transparent;
   border: none; }
 
-.maxi-sidebar .maxi-sizecontrol-control .maxi-sizecontrol-value {
-  width: 20%;
-  height: 31px;
-  -ms-flex: none;
-      flex: none; }
-
-.maxi-sidebar .maxi-sizecontrol-control .components-range-control {
-  width: 100%;
-  -ms-flex: 100% !important;
-      flex: 100% !important;
-  margin-left: 0 !important; }
-
-.maxi-sidebar .maxi-sizecontrol-control .components-base-control__label {
-  -ms-flex: 2 !important;
-      flex: 2 !important; }
-
-.maxi-sidebar .maxi-sizecontrol-control .components-base-control__field {
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap; }
-  .maxi-sidebar .maxi-sizecontrol-control .components-base-control__field > * {
-    margin-left: 4px; }
-  .maxi-sidebar .maxi-sizecontrol-control .components-base-control__field .components-base-control__label,
-  .maxi-sidebar .maxi-sizecontrol-control .components-base-control__field .components-range-control {
-    margin-left: 0 !important; }
-
 /************
 * Unit Select
 ************/
@@ -2032,11 +2007,10 @@ div.maxi-row-block.has-child-selected > div.maxi-row-selector-wrapper {
 .maxi-mediauploader-control {
   position: relative;
   margin-bottom: 8px; }
-  .maxi-mediauploader-control .maxi-imageuploader-control-replace {
+  .maxi-mediauploader-control__replace {
     display: none; }
-  .maxi-mediauploader-control .maxi-background-control-edit-image,
-  .maxi-mediauploader-control .maxi-background-control-done-edition,
-  .maxi-mediauploader-control .maxi-imageuploader-control-remove {
+  .maxi-mediauploader-control .maxi-background-control__image-edit,
+  .maxi-mediauploader-control .maxi-background-control__done-edition, .maxi-mediauploader-control__remove {
     display: block;
     position: absolute;
     top: 100%;
@@ -2055,10 +2029,10 @@ div.maxi-row-block.has-child-selected > div.maxi-row-selector-wrapper {
     font-size: 13px;
     text-align: center;
     text-decoration: none; }
-  .maxi-mediauploader-control .maxi-background-control-done-edition,
-  .maxi-mediauploader-control .maxi-background-control-edit-image {
+  .maxi-mediauploader-control .maxi-background-control__done-edition,
+  .maxi-mediauploader-control .maxi-background-control__image-edit {
     right: 5%; }
-  .maxi-mediauploader-control .maxi-imageuploader-control-remove {
+  .maxi-mediauploader-control__remove {
     left: 5%; }
 /**
 * Leave blank due to bug on CGB. Check it on:
@@ -2261,16 +2235,16 @@ div.maxi-row-block.has-child-selected > div.maxi-row-selector-wrapper {
   margin-bottom: 8px; }
   .maxi-imagecrop-control .ReactCrop__crop-selection {
     background: transparent; }
-  .maxi-imagecrop-control .maxi-imagecrop-option-controls {
+  .maxi-imagecrop-control__options {
     display: -ms-flexbox;
     display: flex;
     margin: 10px 0; }
-    .maxi-imagecrop-control .maxi-imagecrop-option-controls label {
+    .maxi-imagecrop-control__options label {
       width: 20%;
       margin-right: 5px; }
-      .maxi-imagecrop-control .maxi-imagecrop-option-controls label:last-child {
+      .maxi-imagecrop-control__options label:last-child {
         margin-right: 0; }
-      .maxi-imagecrop-control .maxi-imagecrop-option-controls label input[type=number] {
+      .maxi-imagecrop-control__options label input[type=number] {
         width: 100%; }
 /**
 * Leave blank due to bug on CGB. Check it on:
@@ -2278,154 +2252,30 @@ div.maxi-row-block.has-child-selected > div.maxi-row-selector-wrapper {
 *
 * Moved common styles to './src/css' 
 */
-.maxi-sizecontrol-unit .components-base-control__field {
-  z-index: 100;
-  display: -ms-flexbox;
-  display: flex; }
+.maxi-size-control .maxi-size-control__value {
+  width: 20%;
+  height: 31px;
+  -ms-flex: none;
+      flex: none; }
 
-.maxi-sizecontrol-unit input[type="radio"] {
-  width: 0 !important;
-  height: 0 !important; }
-
-.maxi-sizecontrol-unit .components-radio-control__option input {
-  display: none; }
-
-.maxi-sizecontrol-unit .components-base-control__field .components-radio-control__option:first-child label {
-  border-radius: 4px 0px 0px 4px;
-  overflow: hidden; }
-
-.maxi-sizecontrol-unit .components-base-control__field .components-radio-control__option:last-child label {
-  border-radius: 0px 4px 4px 0px;
-  overflow: hidden; }
-
-.maxi-panel .components-base-control.maxi-sizecontrol-unit .components-base-control__field {
-  margin-bottom: 0 !important;
-  position: unset;
-  top: -1px !important; }
-
-.components-range-control.maxi-sizecontrol-value .components-base-control__field .components-range-control__number {
-  margin-left: auto;
-  max-height: 30px;
-  height: 30px !important;
-  margin-right: 5px;
-  margin-top: -24px; }
-
-.components-range-control.maxi-sizecontrol-value .components-base-control__field button {
-  margin-left: 0 !important;
-  margin-top: -24px; }
-
-.components-range-control.maxi-sizecontrol-value .components-base-control__field label {
-  width: 100%; }
-
-.components-range-control.maxi-sizecontrol-value .components-base-control__field {
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-pack: justify;
-      justify-content: space-between; }
-
-.maxi-sizecontrol-unit .components-base-control__field {
-  z-index: 100;
-  display: -ms-flexbox;
-  display: flex; }
-
-.maxi-sizecontrol-unit .components-base-control__field .components-radio-control__option:first-child label {
-  border-radius: 4px 0px 0px 4px;
-  overflow: hidden; }
-
-.maxi-sizecontrol-unit .components-radio-control__option input:checked + label {
-  color: #464a53 !important;
-  background: #f2f2f2 !important; }
-
-.maxi-sizecontrol-unit .components-radio-control__option label {
-  min-width: 33px;
-  display: block;
-  margin-right: -2px;
-  -ms-flex-pack: center;
-      justify-content: center;
-  line-height: 27px;
-  position: relative;
-  text-align: center;
-  text-shadow: none;
-  font-size: 9pt !important;
-  text-transform: uppercase;
-  top: -1px;
-  height: 30px !important; }
-
-.maxi-sizecontrol-unit .components-base-control__field .components-radio-control__option:last-child label {
-  border-radius: 0px 4px 4px 0px;
-  overflow: hidden; }
-
-.maxi-sizecontrol-value .components-base-control__field {
-  position: relative; }
-
-.maxi-sizecontrol-unit .components-base-control__field {
-  z-index: 100;
-  display: -ms-flexbox;
-  display: flex; }
-
-.maxi-sizecontrol-unit .components-base-control__field .components-radio-control__option:first-child label {
-  border-radius: 4px 0px 0px 4px;
-  overflow: hidden; }
-
-.maxi-sizecontrol-unit .components-radio-control__option input:checked + label {
-  color: #464a53 !important;
-  background: #f2f2f2 !important; }
-
-.maxi-sizecontrol-unit .components-radio-control__option label {
-  border: 1px solid #dddfe1 !important;
-  opacity: 1 !important; }
-
-.maxi-sizecontrol-unit .components-radio-control__option label {
-  min-width: 33px;
-  display: block;
-  margin-right: -2px;
-  font-size: 9pt;
-  -ms-flex-pack: center;
-      justify-content: center;
-  line-height: 30px;
-  position: relative;
-  text-align: center;
-  text-shadow: none;
-  text-transform: uppercase;
-  height: 32px !important;
-  top: -1px;
-  height: 30px !important; }
-
-.maxi-sizecontrol-unit .components-base-control__field .components-radio-control__option:last-child label {
-  border-radius: 0px 4px 4px 0px;
-  overflow: hidden; }
-
-.maxi-controls .components-panel__body {
-  border-top: none; }
-
-.maxi-panel .components-base-control.maxi-sizecontrol-unit .components-base-control__field {
-  margin-bottom: 0 !important;
-  position: unset;
-  top: -1px !important; }
-
-.components-base-control.components-range-control.maxi-sizecontrol-value .components-base-control__field {
-  margin-bottom: 5px !important; }
-
-.components-base-control * {
-  background: none; }
-
-.components-range-control.maxi-sizecontrol-value .components-base-control__field label {
-  width: 100%; }
-
-.components-range-control.maxi-sizecontrol-value .components-base-control__field button {
+.maxi-size-control .components-range-control {
+  width: 100%;
+  -ms-flex: 100% !important;
+      flex: 100% !important;
   margin-left: 0 !important; }
 
-.components-range-control.maxi-sizecontrol-value .components-base-control__field {
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-pack: justify;
-      justify-content: space-between; }
+.maxi-size-control .components-base-control__label {
+  -ms-flex: 2 !important;
+      flex: 2 !important; }
 
-.components-range-control.maxi-sizecontrol-value .components-base-control__field .components-range-control__number {
-  margin-left: auto;
-  max-height: 30px;
-  height: 30px !important;
-  margin-right: 3px; }
+.maxi-size-control .components-base-control__field {
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap; }
+  .maxi-size-control .components-base-control__field > * {
+    margin-left: 4px; }
+  .maxi-size-control .components-base-control__field .components-base-control__label,
+  .maxi-size-control .components-base-control__field .components-range-control {
+    margin-left: 0 !important; }
 /**
 * Leave blank due to bug on CGB. Check it on:
 * https://github.com/ahmadawais/create-guten-block/issues/111
@@ -2765,7 +2615,7 @@ div.maxi-row-block.has-child-selected > div.maxi-row-selector-wrapper {
       -ms-flex: none;
           flex: none;
       width: 50%; }
-  .maxi-tabs-content .maxi-tab-content.is-selected {
+  .maxi-tabs-content .maxi-tab-content--selected {
     display: block; }
 /**
 * Leave blank due to bug on CGB. Check it on:

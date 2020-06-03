@@ -54,7 +54,7 @@ const SettingTabsControl = props => {
                     items.map((item, i) => {
                         const classesItemContent = classnames(
                             'maxi-tab-content',
-                            tab === i ? 'is-selected' : ''
+                            tab === i ? 'maxi-tab-content--selected' : ''
                         )
 
                         return (

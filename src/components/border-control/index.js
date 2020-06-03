@@ -51,7 +51,7 @@ export default class BorderControl extends GXComponent {
                 />
                 <SelectControl
                     label={__('Border Type', 'maxi-blocks')}
-                    className="maxi-border-type"
+                    className='maxi-border-control__type'
                     value={value.general['border-style']}
                     options={[
                         { label: 'None', value: 'none' },

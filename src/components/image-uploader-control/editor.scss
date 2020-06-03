@@ -2,13 +2,13 @@
     position: relative;
     margin-bottom: 8px;
 
-    .maxi-imageuploader-control-replace{
+    &__replace {
         display: none;
     }
 
-    .maxi-background-control-edit-image,
-    .maxi-background-control-done-edition,
-    .maxi-imageuploader-control-remove {
+    .maxi-background-control__image-edit,
+    .maxi-background-control__done-edition,
+    &__remove {
         display: block;
         position: absolute;
         top: 100%;
@@ -26,12 +26,12 @@
         text-decoration: none;
     }
 
-    .maxi-background-control-done-edition,
-    .maxi-background-control-edit-image{
+    .maxi-background-control__done-edition,
+    .maxi-background-control__image-edit {
         right: 5%;
     }
 
-    .maxi-imageuploader-control-remove {
+    &__remove {
         left: 5%;
     }
 }

@@ -53,7 +53,7 @@ const SizeControl = props => {
     } = props;
 
     const classes = classnames(
-        'maxi-sizecontrol-control',
+        'maxi-size-control',
         className
     );
 
@@ -71,7 +71,7 @@ const SizeControl = props => {
         >
             <input
                 type='number'
-                className='maxi-sizecontrol-value'
+                className='maxi-size-control__value'
                 value={value}
                 onChange={e => onChangeValue(e.target.value)}
                 min={minMaxSettings[unit].min}

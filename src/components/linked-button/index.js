@@ -43,8 +43,8 @@ export default class LinkedButton extends Component {
     }
 
     popoverPosition() {
-        const target = document.querySelector(`.maxi-externalbutton-unique-${this.state.uniqueHash} .maxi-externalbutton-popover`);
-        const reference = document.querySelector(`button.maxi-externalbutton-unique-${this.state.uniqueHash}`);
+        const target = document.querySelector(`.maxi-externalbutton__unique-${this.state.uniqueHash} .maxi-externalbutton__popover`);
+        const reference = document.querySelector(`button.maxi-externalbutton__unique-${this.state.uniqueHash}`);
         const scrollEl = getScrollContainer(target);
         if (isNil(target) || isNil(reference)) {
             return;
@@ -73,7 +73,7 @@ export default class LinkedButton extends Component {
         const value = typeof externalLink === 'object' ? externalLink : JSON.parse(externalLink);
 
         let classes = classnames(
-            `maxi-externalbutton-control maxi-externalbutton-unique-${uniqueHash}`, 
+            `maxi-externalbutton-control maxi-externalbutton__unique-${uniqueHash}`,
             className
         );
 
@@ -82,19 +82,18 @@ export default class LinkedButton extends Component {
                 className={classes}
             >
                 <RichText
-                    tagName="span"
-                    className="maxi-externalbutton-richtext"
+                    tagName='span'
+                    className='maxi-externalbutton__richtext'
                     placeholder={placeholder}
                     value={buttonText}
                     onChange={val => onTextChange(val)}
                 />
                 <PopoverControl
-                    className="maxi-externalbutton-popover"
+                    className='maxi-externalbutton__popover'
                     popovers={[
                         {
                             content: (
                                 <__experimentalLinkControl
-                                    className="maxi-image-box-read-more-link"
                                     value={value}
                                     onChange={val => onLinkChange(val)}
                                     settings={settings}

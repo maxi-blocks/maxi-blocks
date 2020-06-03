@@ -24,7 +24,7 @@ const NormalHoverControl = props => {
     } = props;
 
     let classes = classnames(
-        'maxi-normalhover-control', 
+        'maxi-normalhover-control',
         className
     );
 

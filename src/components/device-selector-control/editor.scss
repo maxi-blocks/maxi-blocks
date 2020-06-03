@@ -11,11 +11,11 @@
             text-align: center;
             border: 1px solid #dddfe1;
 
-            .components-radio-control__input {
+            &__input {
                 margin: auto;
                 display: none;
 
-                &:checked ~label {
+                &:checked ~ label {
                     background-color: #00ccff;
 
                     svg path {

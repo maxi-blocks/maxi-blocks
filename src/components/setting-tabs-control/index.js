@@ -1,7 +1,6 @@
 /**
  * WordPress dependencies
  */
-const { __ } = wp.i18n;
 const {
     Fragment,
     useState
@@ -29,19 +28,17 @@ const SettingTabsControl = props => {
 
     const [tab, setTab] = useState(0);
 
-    const classesContent = classnames(
-        "maxi-tabs-content"
-    );
+    const classesContent = classnames('maxi-tabs-content');
 
     return (
         <Fragment>
             <div
-                className="maxi-tabs-control"
+                className='maxi-tabs-control'
             >
                 {
                     items.map((item, i) => (
                         <Button
-                            className="maxi-tab-control__button"
+                            className='maxi-tab-control__button'
                             onClick={() => setTab(i)}
                             aria-pressed={tab === i}
                         >
@@ -56,7 +53,7 @@ const SettingTabsControl = props => {
                 {
                     items.map((item, i) => {
                         const classesItemContent = classnames(
-                            "maxi-tab-content",
+                            'maxi-tab-content',
                             tab === i ? 'is-selected' : ''
                         )
 

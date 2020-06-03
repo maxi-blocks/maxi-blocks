@@ -32,7 +32,7 @@ div.maxi-row-block {
 *
 * Moved common styles to './src/css' 
 */
-.maxi-externalbutton-control {
+.maxi-externalbutton {
   display: block;
   width: -webkit-max-content;
   width: -moz-max-content;

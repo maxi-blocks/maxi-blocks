@@ -1,7 +1,6 @@
 /**
  * Wordpress dependencies
  */
-const { __ } = wp.i18n;
 const { RadioControl } = wp.components;
 
 /**

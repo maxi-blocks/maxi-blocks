@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { 
+const {
     Icon,
     RadioControl
 } = wp.components;
@@ -25,6 +25,7 @@ import {
  * Bock
  */
 const DeviceSelectorControl = props => {
+
     const {
         className,
         device,

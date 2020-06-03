@@ -241,7 +241,7 @@ export const cropOptions = {
     "image": {
         "source_url": "",
         "width": "",
-        "height": ""
+        "height": "",
     },
     "crop": {
         "unit": "",

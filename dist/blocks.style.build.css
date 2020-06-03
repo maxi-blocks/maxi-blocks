@@ -192,6 +192,11 @@ button.components-button.components-range-control__reset.is-secondary.is-small {
 *
 * Moved common styles to './src/css' 
 */
+figure.maxi-image-block {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+      flex-direction: column; }
 /**
 * Leave blank due to bug on CGB. Check it on:
 * https://github.com/ahmadawais/create-guten-block/issues/111

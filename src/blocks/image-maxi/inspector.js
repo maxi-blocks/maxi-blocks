@@ -10,12 +10,13 @@ const {
 const {
     RangeControl,
     SelectControl,
-    TextareaControl
+    TextareaControl,
 } = wp.components;
 
 /**
  * Internal dependencies
  */
+import { getDefaultProp } from '../../extensions/styles/utils'
 import {
     AccordionControl,
     AlignmentControl,
@@ -39,6 +40,7 @@ import {
 import {
     capitalize,
     isEmpty,
+    isNil
 } from 'lodash';
 
 /**
@@ -85,6 +87,7 @@ class Inspector extends Component {
                 mediaID,
             },
             imageData,
+            clientId,
             setAttributes,
         } = this.props;
 
@@ -197,6 +200,17 @@ class Inspector extends Component {
                                                                 onChange={cropOptions => setAttributes({ cropOptions: JSON.stringify(cropOptions) })}
                                                             />
                                                         }
+                                                        <RangeControl
+                                                            label={__('Width', 'maxi-blocks')}
+                                                            value={width}
+                                                            onChange={width => {
+                                                                if (isNil(width))
+                                                                    setAttributes({ width: getDefaultProp(clientId, 'width') })
+                                                                else
+                                                                    setAttributes({ width })
+                                                            }}
+                                                            allowReset
+                                                        />
                                                         {/* <SizeControl
                                                             label={__('Width', 'maxi-blocks')}
                                                             unit={widthUnit}

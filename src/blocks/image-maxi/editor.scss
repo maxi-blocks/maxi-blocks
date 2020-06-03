@@ -1,7 +1,4 @@
 figure.maxi-image-block {
-	display: flex;
-	flex-direction: column;
-
 	> div.maxi-image-block-settings {
 		position: absolute;
 		width: 3rem;
@@ -37,9 +34,28 @@ figure.maxi-image-block {
 
 	img {
 		display: block;
+		width: 100%;
 	}
 
 	figcaption {
 		width: 100%;
 	}
+
+	.maxi-image-block-resizer{
+		.components-resizable-box__handle {
+			display: none;
+			visibility: hidden;
+
+			&:after {
+				background: #ff4a17;
+			}
+		}
+
+		&:hover {
+			.components-resizable-box__handle {
+				display: block;
+				visibility: visible;
+			}
+		}
+	}	
 }

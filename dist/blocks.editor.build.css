@@ -3645,36 +3645,46 @@ div.maxi-column-block {
 *
 * Moved common styles to './src/css' 
 */
-figure.maxi-image-block {
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-direction: column;
-      flex-direction: column; }
-  figure.maxi-image-block > div.maxi-image-block-settings {
-    position: absolute;
-    width: 3rem;
-    height: 3rem;
-    top: 5%;
-    left: calc(95% - 3rem); }
-    figure.maxi-image-block > div.maxi-image-block-settings > button.maxi-image-block-upload-button {
-      width: 100%;
-      height: 100%;
-      border: 1px solid red;
-      opacity: 0;
-      visibility: hidden;
-      -webkit-transition: all .5s ease;
-      -o-transition: all .5s ease;
-      transition: all .5s ease; }
-  figure.maxi-image-block:hover > div.maxi-image-block-settings > button.maxi-image-block-upload-button {
-    opacity: 1;
-    visibility: visible; }
-  figure.maxi-image-block > button.maxi-imageupload-button > svg {
+figure.maxi-image-block > div.maxi-image-block-settings {
+  position: absolute;
+  width: 3rem;
+  height: 3rem;
+  top: 5%;
+  left: calc(95% - 3rem); }
+  figure.maxi-image-block > div.maxi-image-block-settings > button.maxi-image-block-upload-button {
     width: 100%;
-    height: auto; }
-  figure.maxi-image-block img {
-    display: block; }
-  figure.maxi-image-block figcaption {
-    width: 100%; }
+    height: 100%;
+    border: 1px solid red;
+    opacity: 0;
+    visibility: hidden;
+    -webkit-transition: all .5s ease;
+    -o-transition: all .5s ease;
+    transition: all .5s ease; }
+
+figure.maxi-image-block:hover > div.maxi-image-block-settings > button.maxi-image-block-upload-button {
+  opacity: 1;
+  visibility: visible; }
+
+figure.maxi-image-block > button.maxi-imageupload-button > svg {
+  width: 100%;
+  height: auto; }
+
+figure.maxi-image-block img {
+  display: block;
+  width: 100%; }
+
+figure.maxi-image-block figcaption {
+  width: 100%; }
+
+figure.maxi-image-block .maxi-image-block-resizer .components-resizable-box__handle {
+  display: none;
+  visibility: hidden; }
+  figure.maxi-image-block .maxi-image-block-resizer .components-resizable-box__handle:after {
+    background: #ff4a17; }
+
+figure.maxi-image-block .maxi-image-block-resizer:hover .components-resizable-box__handle {
+  display: block;
+  visibility: visible; }
 /**
 * Leave blank due to bug on CGB. Check it on:
 * https://github.com/ahmadawais/create-guten-block/issues/111

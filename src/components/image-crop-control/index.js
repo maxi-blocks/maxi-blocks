@@ -57,7 +57,6 @@ class ImageCropComponent extends Component {
     state = {
         imageID: this.props.mediaID,
         crop: {
-            unit: 'px',
             x: !isEmpty(this.props.cropOptions) ? this.props.cropOptions.crop.x : 0,
             y: !isEmpty(this.props.cropOptions) ? this.props.cropOptions.crop.y : 0,
             width: !isEmpty(this.props.cropOptions) ? this.props.cropOptions.crop.width : 0,
@@ -66,6 +65,10 @@ class ImageCropComponent extends Component {
         scale: !isEmpty(this.props.cropOptions) ? this.props.cropOptions.crop.scale : 100,
     }
 
+    cropOptions = typeof this.props.cropOptions != 'object' ?
+        JSON.parse(this.props.cropOptions) :
+        this.props.cropOptions;
+
     componentDidMount() {
         this.forceUpdate();     // solves issue when diselecting and selecting block again
         this.blockId = select('core/block-editor').getSelectedBlockClientId();
@@ -73,13 +76,11 @@ class ImageCropComponent extends Component {
 
     componentDidUpdate() {
         this.checkNewImage();
-        this.checkNewValues();
     }
 
     componentWillUnmount() {
-        if (isNil(select('core/block-editor').getBlocksByClientId(this.blockId)[0])) {
+        if (isNil(select('core/block-editor').getBlocksByClientId(this.blockId)[0]))
             this.deleteFile(this.props.cropOptions);
-        }
     }
 
     checkNewImage() {
@@ -101,19 +102,8 @@ class ImageCropComponent extends Component {
         }
     }
 
-    checkNewValues() {
-        const cropOptions = typeof this.props.cropOptions != 'object' ?
-            JSON.parse(this.props.cropOptions) :
-            this.props.cropOptions;
-
-        if (cropOptions.crop.scale != this.state.scale)
-            this.setState({
-                scale: Number(cropOptions.crop.scale)
-            })
-    }
-
     get getScale() {
-        return this.state.scale / 100;
+        return this.cropOptions.crop.scale / 100;
     }
 
     get scaleX() {
@@ -125,19 +115,19 @@ class ImageCropComponent extends Component {
     }
 
     get getX() {
-        return this.state.crop.x * this.scaleX;
+        return this.cropOptions.crop.x * this.scaleX;
     }
 
     get getY() {
-        return this.state.crop.y * this.scaleY;
+        return this.cropOptions.crop.y * this.scaleY;
     }
 
     get getWidth() {
-        return (this.state.crop.width * this.scaleX).toFixed(0);
+        return (this.cropOptions.crop.width * this.scaleX).toFixed(0);
     }
 
     get getHeight() {
-        return (this.state.crop.height * this.scaleY).toFixed(0);
+        return (this.cropOptions.crop.height * this.scaleY).toFixed(0);
     }
 
     get getMimeType() {
@@ -181,49 +171,40 @@ class ImageCropComponent extends Component {
             return this.props.cropOptions.image.source_url;
     }
 
-    get getResponse() {
-        return {
-            image: {
-                url: "",
-                width: this.getWidth * this.getScale,
-                height: this.getHeight * this.getScale
-            },
-            crop: {
-                unit: this.state.crop.unit,
-                x: this.state.crop.x,
-                y: this.state.crop.y,
-                width: this.state.crop.width,
-                height: this.state.crop.height,
-                scale: this.state.scale
-            }
-        }
+    saveData(crop) {
+        this.cropOptions.crop.x = crop.x;
+        this.cropOptions.crop.y = crop.y;
+        this.cropOptions.crop.width = crop.width;
+        this.cropOptions.crop.height = crop.height;
+
+        this.props.onChange(this.cropOptions)
     }
 
     onImageLoad(image) {
         this.image = image;
         this.mediaID = this.props.mediaID;
-        return false;
-    }
+        this.cropOptions.crop.width = image.width;
+        this.cropOptions.crop.height = image.height;
 
-    onCropComplete() {
-        this.setData();
-        this.createHiddenCanvas();
-        this.cropper();
-        this.uploadNewFile();
+        this.props.onChange(this.cropOptions);
+
+        return false;
     }
 
     debounceComplete = debounce(this.onCropComplete.bind(this), 1000);
 
     onInputChange(target, value) {
-        let crop = this.state.crop;
-        crop[target] = value;
-        this.setState({ crop });
+        this.cropOptions.crop[target] = value;
+        this.props.onChange(this.cropOptions);
         this.debounceComplete();
     }
 
-    onScaleChange(scale) {
-        this.setState({ scale });
-        this.debounceComplete();
+    onCropComplete(crop) {
+        this.saveData(crop);
+        this.setData();
+        this.createHiddenCanvas();
+        this.cropper();
+        this.uploadNewFile();
     }
 
     setData() {
@@ -279,9 +260,9 @@ class ImageCropComponent extends Component {
                     return data.json();
                 })
                 .then(res => {
-                    const response = this.getResponse;
-                    response.image.source_url = res.url;
-                    this.props.onChange(response)
+                    this.cropOptions.image.source_url = res.url;
+                    this.props.onChange(this.cropOptions)
+                    console.log('newImage!')
                 }).catch(err => {
                     console.log(__('Error croping the image: ' + err, 'maxi-blocks'));
                 })
@@ -312,6 +293,10 @@ class ImageCropComponent extends Component {
 
         const classes = classnames('maxi-imagecrop-control', className);
 
+        this.cropOptions = typeof this.props.cropOptions != 'object' ?
+            JSON.parse(this.props.cropOptions) :
+            this.props.cropOptions;
+
         return (
             <div className={classes}>
                 {imageData &&
@@ -327,28 +312,28 @@ class ImageCropComponent extends Component {
                             <div className="maxi-imagecrop-option-controls" >
                                 <GeneralInput
                                     target='width'
-                                    value={this.state.crop.width * this.scaleX * this.getScale}
+                                    value={this.cropOptions.crop.width * this.scaleX * this.getScale}
                                     onChange={value => this.onInputChange('width', value / this.scaleX / this.getScale)}
                                 />
                                 <GeneralInput
                                     target='height'
-                                    value={this.state.crop.height * this.scaleY * this.getScale}
+                                    value={this.cropOptions.crop.height * this.scaleY * this.getScale}
                                     onChange={value => this.onInputChange('height', value / this.scaleY / this.getScale)}
                                 />
                                 <GeneralInput
                                     target='x'
-                                    value={this.state.crop.x}
+                                    value={this.cropOptions.crop.x}
                                     onChange={value => this.onInputChange('x', value)}
                                 />
                                 <GeneralInput
                                     target='y'
-                                    value={this.state.crop.y}
+                                    value={this.cropOptions.crop.y}
                                     onChange={value => this.onInputChange('y', value)}
                                 />
                                 <GeneralInput
                                     target='scale'
-                                    value={this.state.scale}
-                                    onChange={scale => this.onScaleChange(scale)}
+                                    value={Number(this.cropOptions.crop.scale)}
+                                    onChange={scale => this.onInputChange('scale', scale)}
                                 />
                             </div>
                         }

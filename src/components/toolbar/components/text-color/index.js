@@ -15,6 +15,7 @@ const {
 /**
  * Icons
  */
+import './editor.scss';
 import { toolbarStyle } from '../../../../icons';
 
 /**

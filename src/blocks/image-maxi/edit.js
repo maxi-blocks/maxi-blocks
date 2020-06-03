@@ -6,7 +6,8 @@ const { Fragment } = wp.element;
 const { withSelect } = wp.data;
 const {
     Spinner,
-    IconButton
+    IconButton,
+    ResizableBox
 } = wp.components;
 const {
     __experimentalBlock,
@@ -18,8 +19,8 @@ const {
  */
 import Inspector from './inspector';
 import { BackEndResponsiveStyles } from '../../extensions/styles';
-import { 
-    getBackgroundObject, 
+import {
+    getBackgroundObject,
     getBoxShadowObject
 } from '../../extensions/styles/utils';
 import {
@@ -39,15 +40,25 @@ import {
 /**
  * Icons
  */
-import { placeholderImage } from '../../icons';
+import { 
+    toolbarReplaceImage,
+    placeholderImage
+} from '../../icons';
 
 /**
  * Content
  */
 class edit extends GXBlock {
-
     componentDidUpdate() {
         this.displayStyles();
+    }
+
+    get getWrapperWidth() {
+        const target = document.getElementById(`block-${this.props.clientId}`);
+        if(!target)
+            return;
+
+        return target.getBoundingClientRect().width;
     }
 
     /**
@@ -58,6 +69,10 @@ class edit extends GXBlock {
             return `${this.props.attributes.uniqueID}`;
         if (this.type === 'hover')
             return `${this.props.attributes.uniqueID}:hover`;
+        if (this.type === 'image')
+            return `${this.props.attributes.uniqueID}>img`;
+        if (this.type === 'figcaption')
+            return `${this.props.attributes.uniqueID}>figcaption`;
     }
 
     get getObject() {
@@ -65,6 +80,10 @@ class edit extends GXBlock {
             return this.getNormalObject
         if (this.type === 'hover')
             return this.getHoverObject
+        if (this.type === 'image')
+            return this.getImageObject
+        if (this.type === 'figcaption')
+            return this.getFigcaptionObject
     }
 
     get getNormalObject() {
@@ -99,14 +118,14 @@ class edit extends GXBlock {
         if (!isNil(alignment)) {
             switch (alignment) {
                 case 'left':
-                    response.image.general['text-align'] = 'left';
+                    response.image.general['align-items'] = 'flex-start';
                     break;
                 case 'center':
                 case 'justify':
-                    response.image.general['text-align'] = 'center';
+                    response.image.general['align-items'] = 'center';
                     break;
                 case 'right':
-                    response.image.general['text-align'] = 'right';
+                    response.image.general['align-items'] = 'flex-end';
                     break;
             }
         }
@@ -115,10 +134,6 @@ class edit extends GXBlock {
         if (!!maxWidth) {
             response.image.general['max-widthUnit'] = maxWidthUnit;
             response.image.general['max-width'] = maxWidth;
-        }
-        if (!!width) {
-            response.image.general['widthUnit'] = widthUnit;
-            response.image.general['width'] = width;
         }
 
         return response;
@@ -145,12 +160,44 @@ class edit extends GXBlock {
         return response;
     }
 
+    get getImageObject() {
+        const {
+            width
+        } = this.props.attributes;
+
+        const response = {
+            imageSize: {
+                label: 'Image Size',
+                general: {}
+            }
+        };
+
+        if (!!width)
+            response.imageSize.general['width'] = `${width}%`;
+
+        return response
+    }
+
+    get getFigcaptionObject() {
+        const {
+            captionTypography
+        } = this.props.attributes;
+
+        const response = {
+            captionTypography: { ...JSON.parse(captionTypography) }
+        };
+
+        return response
+    }
+
     /**
     * Refresh the styles on Editor
     */
     displayStyles() {
         this.saveMeta('normal');
         this.saveMeta('hover');
+        this.saveMeta('image');
+        this.saveMeta('figcaption')
 
         new BackEndResponsiveStyles(this.getMeta);
     }
@@ -170,10 +217,12 @@ class edit extends GXBlock {
                 mediaALT,
                 mediaURL,
                 mediaWidth,
-                mediaHeight
+                mediaHeight,
+                width,
             },
             imageData,
             setAttributes,
+            isSelected
         } = this.props;
 
         let classes = classnames(
@@ -224,23 +273,48 @@ class edit extends GXBlock {
                         <Fragment>
                             {!isNil(mediaID) && imageData ?
                                 <Fragment>
-                                    <div
-                                        className="maxi-image-block-settings"
+                                    <ResizableBox
+                                        className='maxi-image-block-resizer'
+                                        size={{
+                                            width: `${width}%`,
+                                            height: 'auto'
+                                        }}
+                                        maxWidth='100%'
+                                        enable={{
+                                            top: false,
+                                            right: false,
+                                            bottom: false,
+                                            left: false,
+                                            topRight: true,
+                                            bottomRight: true,
+                                            bottomLeft: true,
+                                            topLeft: true,
+                                        }}
+                                        onResize={(event, direction, elt, delta) => {
+                                            const newScale = Number(((elt.getBoundingClientRect().width / this.getWrapperWidth) * 100).toFixed());
+                                            setAttributes({
+                                                width: Number(newScale.toFixed()),
+                                            });
+                                        }}
                                     >
-                                        <IconButton
-                                            className='maxi-image-block-upload-button'
-                                            showTooltip="true"
-                                            onClick={open}
-                                            icon={placeholderImage}
+                                        <div
+                                            className="maxi-image-block-settings"
+                                        >
+                                            <IconButton
+                                                className='maxi-image-block-upload-button'
+                                                showTooltip="true"
+                                                onClick={open}
+                                                icon={toolbarReplaceImage}
+                                            />
+                                        </div>
+                                        <img
+                                            className={"wp-image-" + mediaID}
+                                            src={mediaURL}
+                                            width={mediaWidth}
+                                            height={mediaHeight}
+                                            alt={mediaALT}
                                         />
-                                    </div>
-                                    <img
-                                        className={"wp-image-" + mediaID}
-                                        src={mediaURL}
-                                        width={mediaWidth}
-                                        height={mediaHeight}
-                                        alt={mediaALT}
-                                    />
+                                    </ResizableBox>
                                     {captionType !== 'none' &&
                                         <figcaption>
                                             {captionContent}

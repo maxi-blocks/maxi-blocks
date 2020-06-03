@@ -6,7 +6,8 @@ const {
     Icon,
     Dropdown,
     Button,
-    SelectControl
+    SelectControl,
+    RangeControl
 } = wp.components;
 const {
     useSelect,
@@ -17,12 +18,15 @@ const {
  * Internal dependencies
  */
 import ImageCropControl from '../../../image-crop-control';
-import SizeControl from '../../../size-control';
+import { getDefaultProp } from '../../../../extensions/styles/utils';
 
 /**
  * External dependencies
  */
-import { capitalize } from 'lodash';
+import { 
+    capitalize,
+    isNil
+} from 'lodash';
 
 /**
  * Icons
@@ -40,10 +44,7 @@ const ImageSize = props => {
         mediaID,
         size,
         cropOptions,
-        widthUnit,
         width,
-        maxWidthUnit,
-        maxWidth,
         imageData
     } = useSelect(
         (select) => {
@@ -73,7 +74,7 @@ const ImageSize = props => {
         'core/block-editor'
     );
 
-    if (blockName.name != 'maxi-blocks/image-maxi')
+    if (blockName != 'maxi-blocks/image-maxi')
         return null;
 
     const getSizeOptions = () => {
@@ -146,31 +147,22 @@ const ImageSize = props => {
                                 )}
                             />
                         }
-                        <SizeControl
+                        <RangeControl
                             label={__('Width', 'maxi-blocks')}
-                            unit={widthUnit}
-                            onChangeUnit={widthUnit => updateBlockAttributes(
-                                clientId,
-                                { widthUnit }
-                            )}
                             value={width}
-                            onChangeValue={width => updateBlockAttributes(
-                                clientId,
-                                { width }
-                            )}
-                        />
-                        <SizeControl
-                            label={__('Max Width', 'maxi-blocks')}
-                            unit={maxWidthUnit}
-                            onChangeUnit={maxWidthUnit => updateBlockAttributes(
-                                clientId,
-                                { maxWidthUnit }
-                            )}
-                            value={maxWidth}
-                            onChangeValue={maxWidth => updateBlockAttributes(
-                                clientId,
-                                { maxWidth }
-                            )}
+                            onChange={width => {
+                                if (isNil(width))
+                                    updateBlockAttributes(
+                                        clientId,
+                                        { width: getDefaultProp(clientId, 'width') }
+                                    )
+                                else
+                                    updateBlockAttributes(
+                                        clientId,
+                                        { width }
+                                    )
+                            }}
+                            allowReset
                         />
                     </Fragment>
                 )

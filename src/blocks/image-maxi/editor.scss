@@ -1,34 +1,69 @@
 figure.maxi-image-block {
-	> div.maxi-image-block-settings {
-		position: absolute;
-		width: 3rem;
-		height: 3rem;
-		top: 5%;
-		left: calc(95% - 3rem);
+	> button.maxi-imageupload-button {
+		height: auto;
 
-		> button.maxi-image-block-upload-button {
-			width: 100%;
-			height: 100%;
-			border: 1px solid red;
-			opacity: 0;
-			visibility: hidden;
-			transition: all .5s ease;
-		}
-	}
-
-	&:hover {
-		> div.maxi-image-block-settings {
-			> button.maxi-image-block-upload-button {
-				opacity: 1;
-				visibility: visible;
-			}
-		}
-	}
-
-	>button.maxi-imageupload-button{
-		>svg{
+		> svg {
 			width: 100%;
 			height: auto;
 		}
 	}
+
+	> div.maxi-image-block-resizer {
+		> div.maxi-image-block-settings {
+			position: absolute;
+			width: 3rem;
+			height: 3rem;
+			top: 5%;
+			left: calc(95% - 3rem);
+
+			> button.maxi-image-block-upload-button {
+				width: 100%;
+				height: 100%;
+				background: #000;
+				opacity: 0;
+				visibility: hidden;
+				transition: all 0.5s ease;
+
+				svg {
+					fill: #fff;
+				}
+			}
+		}
+
+		&:hover {
+			> div.maxi-image-block-settings {
+				> button.maxi-image-block-upload-button {
+					opacity: 1;
+					visibility: visible;
+				}
+			}
+		}
+	}
+
+	img {
+		display: block;
+		width: 100%;
+	}
+
+	figcaption {
+		width: 100%;
+	}
+
+	.maxi-image-block-resizer{
+		.components-resizable-box__handle {
+			display: none;
+			visibility: hidden;
+
+			&:after {
+				background: #ff4a17;
+			}
+		}
+
+		&:hover {
+			.components-resizable-box__handle {
+				display: block;
+				visibility: visible;
+			}
+		}
+	}	
 }

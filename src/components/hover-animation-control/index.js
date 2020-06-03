@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { Fragment } = wp.element;
 const { SelectControl } = wp.components;
 
 /**
@@ -28,22 +27,22 @@ const HoverAnimationControl = ( props ) => {
     } = props;
 
     return (
-        <Fragment>
+        <div className="maxi-hover-animation">
             <SelectControl
-                label={__("Hover Animation", 'maxi-blocks')}
-                className={"maxi-hover-animation"}
+                label={__('Hover Animation', 'maxi-blocks')}
+                className={'maxi-hover-animation__type'}
                 value={hoverAnimation}
                 options={hoverAnimationOptions}
                 onChange={value => onChangeHoverAnimation( value )}
             />
             <SelectControl
-                label={__("Animation Duration", 'maxi-blocks')}
-                className={"maxi-hover-animation-duration"}
+                label={__('Animation Duration', 'maxi-blocks')}
+                className={'maxi-hover-animation__duration'}
                 value={hoverAnimationDuration}
                 options={animationDurationOptions}
                 onChange={value => onChangeHoverAnimationDuration( value )}
             />
-        </Fragment>
+        </div>
     )
 }
 

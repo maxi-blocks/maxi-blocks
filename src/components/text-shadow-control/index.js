@@ -75,40 +75,38 @@ const TextShadow = props => {
 
     return (
         <Fragment>
-            <span className="maxi-typography-popover-styles" /* This span is senseless */>
-                <ColorControl
-                    label={__('Color', 'maxi-blocks')}
-                    color={color}
-                    onColorChange={val => onChangeValue(3, val)}
-                    onReset={() => onChangeValue(3, defaultColor)}
-                    disableGradient
-                    disableGradientAboveBackground
-                />
-                <SizeControl
-                    label={__('Y-axis', 'maxi-blocks')}
-                    unit={yUnit}
-                    onChangeUnit={val => onChangeValue(0, y, val)}
-                    value={y}
-                    onChangeValue={val => onChangeValue(0, val, yUnit)}
-                    minMaxSettings={minMaxSettings}
+            <ColorControl
+                label={__('Color', 'maxi-blocks')}
+                color={color}
+                onColorChange={val => onChangeValue(3, val)}
+                onReset={() => onChangeValue(3, defaultColor)}
+                disableGradient
+                disableGradientAboveBackground
+            />
+            <SizeControl
+                label={__('Y-axis', 'maxi-blocks')}
+                unit={yUnit}
+                onChangeUnit={val => onChangeValue(0, y, val)}
+                value={y}
+                onChangeValue={val => onChangeValue(0, val, yUnit)}
+                minMaxSettings={minMaxSettings}
 
-                />
-                <SizeControl
-                    label={__('X-axis', 'maxi-blocks')}
-                    unit={xUnit}
-                    onChangeUnit={val => onChangeValue(0, x, val)}
-                    value={x}
-                    onChangeValue={val => onChangeValue(0, val, xUnit)}
-                    minMaxSettings={minMaxSettings}
-                />
-                <RangeControl
-                    label={__('Blur', 'maxi-blocks')}
-                    value={blur}
-                    onChange={val => onChangeValue(2, val, blurUnit)}
-                    min={0}
-                    max={100}
-                />
-            </span>
+            />
+            <SizeControl
+                label={__('X-axis', 'maxi-blocks')}
+                unit={xUnit}
+                onChangeUnit={val => onChangeValue(0, x, val)}
+                value={x}
+                onChangeValue={val => onChangeValue(0, val, xUnit)}
+                minMaxSettings={minMaxSettings}
+            />
+            <RangeControl
+                label={__('Blur', 'maxi-blocks')}
+                value={blur}
+                onChange={val => onChangeValue(2, val, blurUnit)}
+                min={0}
+                max={100}
+            />
         </Fragment>
     )
 }

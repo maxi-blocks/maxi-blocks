@@ -55,6 +55,7 @@ const attributes = {
     },
     width: {
         type: 'number',
+        default: 100
     },
     background: {
         type: 'string',
@@ -124,6 +125,14 @@ const attributes = {
     },
     mediaHeight: {
         type: 'number'
+    },
+    resizableWidth: {
+        type: 'number',
+        default: 100
+    },
+    resizableHeight: {
+        type: 'number',
+        default: 100
     }
 }
 

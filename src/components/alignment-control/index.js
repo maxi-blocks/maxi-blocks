@@ -13,12 +13,12 @@ import classnames from 'classnames';
  */
 import './editor.scss';
 import {
-    Icon,
     alignLeft,
     alignCenter,
     alignRight,
     alignJustify
-} from '@wordpress/icons';
+} from '../../icons';
+import { Icon } from '@wordpress/icons';
 
 /**
  * Component

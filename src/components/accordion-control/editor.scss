@@ -11,7 +11,7 @@
 		}
 
 		// This many values are strange...
-		&__panel:not(.disable-padding) {
+		&__panel:not(.maxi-accordion-control__item__panel--disable-padding) {
 			padding-top: 15px !important;
 			padding-left: 12px !important;
 			padding-right: 12px !important;

@@ -24,16 +24,31 @@ import './editor.scss';
  */
 const SettingTabsControl = props => {
 
-    const { items } = props;
+    const {
+        items,
+        disablePadding = false
+    } = props;
 
     const [tab, setTab] = useState(0);
 
-    const classesContent = classnames('maxi-tabs-content');
+    const classesControl = classnames(
+        'maxi-tabs-control',
+        !disablePadding ?
+            'maxi-tabs-control--disable-padding' :
+            ''
+    )
+
+    const classesContent = classnames(
+        'maxi-tabs-content',
+        disablePadding ?
+            'maxi-tabs-content--disable-padding' :
+            ''
+    );
 
     return (
         <Fragment>
             <div
-                className='maxi-tabs-control'
+                className={classesControl}
             >
                 {
                     items.map((item, i) => (

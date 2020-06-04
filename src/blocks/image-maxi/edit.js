@@ -88,11 +88,9 @@ class edit extends GXBlock {
 
     get getNormalObject() {
         const {
-            alignment,
-            maxWidthUnit,
-            maxWidth,
-            widthUnit,
-            width,
+            alignmentDesktop,
+            alignmentTablet,
+            alignmentMobile,
             opacity,
             background,
             boxShadow,
@@ -111,30 +109,57 @@ class edit extends GXBlock {
             background: { ...getBackgroundObject(JSON.parse(background)) },
             image: {
                 label: 'Image',
-                general: {}
+                general: {},
+                desktop: {},
+                tablet: {},
+                mobile: {}
             }
         };
 
-        if (!isNil(alignment)) {
-            switch (alignment) {
+        if (!isNil(alignmentDesktop)) {
+            switch (alignmentDesktop) {
                 case 'left':
-                    response.image.general['align-items'] = 'flex-start';
+                    response.image.desktop['align-items'] = 'flex-start';
                     break;
                 case 'center':
                 case 'justify':
-                    response.image.general['align-items'] = 'center';
+                    response.image.desktop['align-items'] = 'center';
                     break;
                 case 'right':
-                    response.image.general['align-items'] = 'flex-end';
+                    response.image.desktop['align-items'] = 'flex-end';
+                    break;
+            }
+        }
+        if (!isNil(alignmentTablet)) {
+            switch (alignmentTablet) {
+                case 'left':
+                    response.image.tablet['align-items'] = 'flex-start';
+                    break;
+                case 'center':
+                case 'justify':
+                    response.image.tablet['align-items'] = 'center';
+                    break;
+                case 'right':
+                    response.image.tablet['align-items'] = 'flex-end';
+                    break;
+            }
+        }
+        if (!isNil(alignmentMobile)) {
+            switch (alignmentMobile) {
+                case 'left':
+                    response.image.mobile['align-items'] = 'flex-start';
+                    break;
+                case 'center':
+                case 'justify':
+                    response.image.mobile['align-items'] = 'center';
+                    break;
+                case 'right':
+                    response.image.mobile['align-items'] = 'flex-end';
                     break;
             }
         }
         if (!!opacity)
             response.image.general['opacity'] = opacity;
-        if (!!maxWidth) {
-            response.image.general['max-widthUnit'] = maxWidthUnit;
-            response.image.general['max-width'] = maxWidth;
-        }
 
         return response;
     }

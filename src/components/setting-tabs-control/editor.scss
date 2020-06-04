@@ -1,7 +1,10 @@
 .maxi-tabs-control {
-    padding-top: 0;
-    margin-bottom: 15px;
     display: flex;
+    padding-top: 0;
+
+    &:not(.disable-padding) {
+        margin-bottom: 15px;
+    }
 
     .maxi-tab-control__button {
         display: flex;
@@ -51,6 +54,14 @@
 }
 
 .maxi-tabs-content {
+
+    &:not(.disable-padding) {
+        padding-top: 12px !important;
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+        padding-bottom: 12px !important;
+        background-color: #fff;
+    }
 
     .maxi-tab-content {
         display: none;

@@ -2,7 +2,6 @@
  * Wordpress dependencies
  */
 const { __ } = wp.i18n;
-const { Fragment } = wp.element;
 const { RangeControl } = wp.components;
 
 /**
@@ -57,9 +56,10 @@ export default class BoxShadowControl extends GXComponent {
         }
 
         return (
-            <Fragment>
+            <div className="maxi-shadow-control">
                 <ColorControl
                     label={__('Color', 'maxi-blocks')}
+                    className={'maxi-shadow-control__color'}
                     color={value.shadowColor}
                     defaultColor={value.defaultShadowColor}
                     onColorChange={val => onChangeValue('shadowColor', val)}
@@ -68,7 +68,7 @@ export default class BoxShadowControl extends GXComponent {
                 />
                 <RangeControl
                     label={__('Horizontal', 'maxi-blocks')}
-                    className={'maxi-shadow-horizontal-control'}
+                    className={'maxi-shadow-control__horizontal'}
                     value={value.shadowHorizontal}
                     onChange={val => onChangeValue('shadowHorizontal', val)}
                     min={-100}
@@ -78,7 +78,7 @@ export default class BoxShadowControl extends GXComponent {
                 />
                 <RangeControl
                     label={__('Vertical', 'maxi-blocks')}
-                    className={'maxi-shadow-vertical-control'}
+                    className={'maxi-shadow-control__vertical'}
                     value={value.shadowVertical}
                     onChange={val => onChangeValue('shadowVertical', val)}
                     min={-100}
@@ -88,7 +88,7 @@ export default class BoxShadowControl extends GXComponent {
                 />
                 <RangeControl
                     label={__('Blur', 'maxi-blocks')}
-                    className={'maxi-shadow-blur-control'}
+                    className={'maxi-shadow-control__blur'}
                     value={value.shadowBlur}
                     onChange={val => onChangeValue('shadowBlur', val)}
                     min={0}
@@ -98,7 +98,7 @@ export default class BoxShadowControl extends GXComponent {
                 />
                 <RangeControl
                     label={__('Spread', 'maxi-blocks')}
-                    className={'maxi-shadow-spread-control'}
+                    className={'maxi-shadow-control__spread-control'}
                     value={value.shadowSpread}
                     onChange={val => onChangeValue('shadowSpread', val)}
                     min={-100}
@@ -106,7 +106,7 @@ export default class BoxShadowControl extends GXComponent {
                     allowReset={true}
                     initialPosition={0}
                 />
-            </Fragment>
+            </div>
         )
     }
 }

@@ -143,3 +143,11 @@
         }
     }
 }
+
+.maxi-popover {
+    .components-popover__content {
+        padding: 20px;
+        min-width: 373px !important;
+        box-shadow: 0 46px 133px rgba(150, 176, 203, 0.23) !important;
+    }
+}

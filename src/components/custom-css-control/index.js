@@ -15,7 +15,7 @@ const CustomCSS = props => {
     const {
         extraClassName = props.attributes.extraClassName,
         onChangeExtraClassName = undefined,
-        extraStyles = props.attributes.extraStyles, 
+        extraStyles = props.attributes.extraStyles,
         onChangeExtraStyles = undefined,
         setAttributes
     } = props;
@@ -33,61 +33,16 @@ const CustomCSS = props => {
         <Fragment>
             <TextControl
                 label={__('Additional CSS Classes', 'maxi-blocks')}
-                className="maxi-additional-css"
+                className='maxi-additional__css-classes'
                 value={extraClassName}
                 onChange={value => onChangeValue('extraClassName', value, onChangeExtraClassName)}
             />
             <TextareaControl
                 label={__('Additional CSS Styles', 'maxi-blocks')}
-                className="maxi-additional-css"
+                className='maxi-additional__css-styles'
                 value={extraStyles}
                 onChange={value => onChangeValue('extraStyles', value, onChangeExtraStyles)}
             />
-            {/*<TextareaControl
-                label={ __( 'Additional CSS Hover Styles', 'gutenber-extra' ) }
-                value={ extraHoverStyles }
-                onChange={ (e) => {
-                    setAttributes( {
-                        extraHoverStyles: e,
-                    } );
-                } }
-            />
-            <TextareaControl
-                label={ __( 'Additional CSS Before Styles', 'gutenber-extra' ) }
-                value={ extraBeforeStyles }
-                onChange={ (e) => {
-                    setAttributes( {
-                        extraBeforeStyles: e,
-                    } );
-                } }
-            />
-            <TextareaControl
-                label={ __( 'Additional CSS After Styles', 'gutenber-extra' ) }
-                value={ extraAfterStyles }
-                onChange={ (e) => {
-                    setAttributes( {
-                        extraAfterStyles: e,
-                    } );
-                } }
-            />
-            <TextareaControl
-                label={ __( 'Additional CSS Hover Before Styles', 'gutenber-extra' ) }
-                value={ extraHoverBeforeStyles }
-                onChange={ (e) => {
-                    setAttributes( {
-                        extraHoverBeforeStyles: e,
-                    } );
-                } }
-            />
-            <TextareaControl
-                label={ __( 'Additional CSS Hover After Styles', 'gutenber-extra' ) }
-                value={ extraHoverAfterStyles }
-                onChange={ (e) => {
-                    setAttributes( {
-                        extraHoverAfterStyles: e,
-                    } );
-                } }
-            />*/}
         </Fragment>
     )
 }

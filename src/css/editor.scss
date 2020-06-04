@@ -103,52 +103,6 @@ h2.gx_error {
 	}
 }
 
-.maxi-sidebar {
-	.maxi-sizecontrol-control {
-		.maxi-sizecontrol-value {
-			width: 20%;
-			height: 31px;
-			flex: none;
-		}
-		.components-range-control {
-			width: 100%;
-			flex: 100% !important;
-			margin-left: 0 !important;
-		}
-		.components-base-control__label {
-			flex: 2 !important;
-		}
-		.components-base-control__field {
-			flex-wrap: wrap;
-			& > * {
-				margin-left: 4px;
-			}
-			.components-base-control__label,
-			.components-range-control {
-				margin-left: 0 !important;
-			}
-		}
-	}
-}
-
-/**************************
-* Component Color Indicator
-**************************/
-.maxi-component-color-inidicator {
-	margin: auto;
-
-	span {
-		display: block;
-		width: 28px;
-		height: 28px;
-		margin: auto;
-		border: 2px solid #dddfe1 !important;
-		opacity: 1 !important;
-		margin-right: 8px !important;
-		float: left;
-	}
-}
-
 /************
 * Unit Select
 ************/

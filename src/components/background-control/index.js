@@ -156,33 +156,33 @@ export default class BackgroundControl extends GXComponent {
         } = this.state;
 
         let value = typeof backgroundOptions === 'object' ? backgroundOptions : JSON.parse(backgroundOptions);
-        const classes = classnames('maxi-background-control', className) + (isOpen ? ' maxi-background-control-open' : '');
+        const classes = classnames('maxi-background-control', className) + (isOpen ? ' maxi-background-control__open' : '');
 
         const onAddBackground = i => {
             value.backgroundOptions.push(
                 {
                     imageOptions: {
-                        mediaID: "",
-                        mediaURL: ""
+                        mediaID: '',
+                        mediaURL: ''
                     },
                     sizeSettings: {
-                        size: "cover",
-                        widthUnit: "%",
+                        size: 'cover',
+                        widthUnit: '%',
                         width: 100,
-                        heightUnit: "%",
+                        heightUnit: '%',
                         height: 100
                     },
-                    repeat: "no-repeat",
+                    repeat: 'no-repeat',
                     positionOptions: {
-                        position: "center center",
-                        widthUnit: "%",
+                        position: 'center center',
+                        widthUnit: '%',
                         width: 0,
-                        heightUnit: "%",
+                        heightUnit: '%',
                         height: 0
                     },
-                    origin: "padding-box",
-                    clip: "border-box",
-                    attachment: "scroll"
+                    origin: 'padding-box',
+                    clip: 'border-box',
+                    attachment: 'scroll'
                 }
             );
         }
@@ -252,7 +252,7 @@ export default class BackgroundControl extends GXComponent {
                                                 <Button
                                                     isSecondary
                                                     onClick={(e) => onOpenOptions(e, i)}
-                                                    className='maxi-background-control-edit-image'
+                                                    className='maxi-background-control__image-edit'
                                                 >
                                                     Edit image
                                                 </Button>
@@ -290,13 +290,13 @@ export default class BackgroundControl extends GXComponent {
                     isOpen &&
                     <AccordionControl
                         isSecondary
-                        preExpanded={['maxi-background-control-image-tab']}
+                        preExpanded={['maxi-background-control__image-tab']}
                         disablePadding
                         items={[
                             {
                                 label: __('Image', 'maxi-blocks'),
-                                className: 'maxi-background-control-image-tab',
-                                uuid: 'maxi-background-control-image-tab',
+                                className: 'maxi-background-control__image-tab',
+                                uuid: 'maxi-background-control__image-tab',
                                 content: (
                                     <ImageUploaderControl
                                         mediaID={value.backgroundOptions[selector].imageOptions.mediaID}
@@ -315,7 +315,7 @@ export default class BackgroundControl extends GXComponent {
                                             <Button
                                                 isSecondary
                                                 onClick={onDoneEdition}
-                                                className='maxi-background-control-done-edition'
+                                                className='maxi-background-control__done-edition'
                                             >
                                                 Done
                                             </Button>
@@ -328,7 +328,7 @@ export default class BackgroundControl extends GXComponent {
                             },
                             {
                                 label: __('Background', 'maxi-blocks'),
-                                className: 'maxi-background-control-background-tab',
+                                className: 'maxi-background-control__background-tab',
                                 content: (
                                     <Fragment>
                                         <SelectControl

@@ -1,26 +1,27 @@
 @import '../../../node_modules/react-image-crop/lib/ReactCrop.scss';
 
 .maxi-imagecrop-control {
-  margin-bottom: 8px;
+    margin-bottom: 8px;
 
-  .ReactCrop__crop-selection {
-    background: transparent;
-  }
+    .ReactCrop__crop-selection {
+        background: transparent;
+    }
 
-  .maxi-imagecrop-option-controls {
-    display: flex;
-    margin: 10px 0;
+    &__options {
+        display: flex;
+        margin: 10px 0;
 
-    label {
-      width: 20%;
-      margin-right: 5px;
+        label {
+            width: 20%;
+            margin-right: 5px;
 
-        &:last-child {
-          margin-right: 0;
-        }
-        input[type=number] {
-          width: 100%;
+            &:last-child {
+                margin-right: 0;
+            }
+
+            input[type=number] {
+                width: 100%;
+            }
         }
     }
-  }
 }

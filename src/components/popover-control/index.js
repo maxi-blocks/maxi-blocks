@@ -41,9 +41,7 @@ const PopoverControl = props => {
 
     return (
         <div className={classes}>
-            <BaseControl
-                className={'maxi-settings-button'} // This class is too wide, needs to be more specific
-            >
+            <BaseControl className={'maxi-popover-control__base-control'}>
                 <BaseControl.VisualLabel>
                     {label}
                 </BaseControl.VisualLabel>
@@ -55,13 +53,13 @@ const PopoverControl = props => {
 
                     return (
                         <Dropdown
-                            className={'maxi-popover-dropdown'}
+                            className={'maxi-popover-control__dropdown'}
                             renderToggle={({ isOpen, onToggle }) => (
                                 <Button
                                     isSecondary
                                     onClick={onToggle}
                                     aria-expanded={isOpen}
-                                    action="popup"
+                                    action='popup'
                                 >
                                     <Icon
                                         icon={popover.icon ? popover.icon : icon}
@@ -88,7 +86,7 @@ const PopoverControl = props => {
                     <Button
                         isSecondary
                         onClick={onReset}
-                        type="reset"
+                        type='reset'
                     >
                         {
                             <Icon

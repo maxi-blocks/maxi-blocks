@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { useInstanceId } = wp.compose;
 const {
     RangeControl,
     SelectControl,
@@ -54,7 +53,7 @@ const SizeControl = props => {
     } = props;
 
     const classes = classnames(
-        'maxi-sizecontrol-control',
+        'maxi-size-control',
         className
     );
 
@@ -72,20 +71,20 @@ const SizeControl = props => {
         >
             <input
                 type='number'
-                className='maxi-sizecontrol-value'
+                className='maxi-size-control__value'
                 value={value}
                 onChange={e => onChangeValue(e.target.value)}
                 min={minMaxSettings[unit].min}
                 max={minMaxSettings[unit].max}
             />
             <SelectControl
-                className="components-maxi-dimensions-control__units"
+                className='components-maxi-dimensions-control__units'
                 options={options}
                 value={unit}
                 onChange={(val) => onChangeUnit(val)}
             />
             <Button
-                className="components-maxi-dimensions-control__units-reset"
+                className='components-maxi-dimensions-control__units-reset'
                 onClick={() => onChangeValue('')}
                 isSmall
                 aria-label={sprintf(
@@ -93,7 +92,7 @@ const SizeControl = props => {
                     __('Reset %s settings', 'maxi-blocks'),
                     label.toLowerCase()
                 )}
-                type="reset"
+                type='reset'
             >
                 {reset}
             </Button>

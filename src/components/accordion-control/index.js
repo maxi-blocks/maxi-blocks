@@ -81,7 +81,7 @@ export default class AccordionControl extends Component {
                         const classesItemPanel = classnames(
                             'maxi-accordion-control__item__panel',
                             disablePadding || item.disablePadding ?
-                                'disable-padding' :
+                                'maxi-accordion-control__item__panel--disable-padding' :
                                 ''
                         )
 

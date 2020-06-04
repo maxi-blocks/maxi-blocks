@@ -34,14 +34,14 @@ const SettingTabsControl = props => {
     const classesControl = classnames(
         'maxi-tabs-control',
         !disablePadding ?
-            'disable-padding' :
+            'maxi-tabs-control--disable-padding' :
             ''
     )
 
     const classesContent = classnames(
         'maxi-tabs-content',
         disablePadding ?
-            'disable-padding' :
+            'maxi-tabs-content--disable-padding' :
             ''
     );
 

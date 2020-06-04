@@ -2,7 +2,7 @@
     display: flex;
     padding-top: 0;
 
-    &:not(.disable-padding) {
+    &:not(.maxi-tabs-control--disable-padding) {
         margin-bottom: 15px;
     }
 
@@ -55,7 +55,7 @@
 
 .maxi-tabs-content {
 
-    &:not(.disable-padding) {
+    &:not(.maxi-tabs-content--disable-padding) {
         padding-top: 12px !important;
         padding-left: 12px !important;
         padding-right: 12px !important;

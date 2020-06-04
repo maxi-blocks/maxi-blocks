@@ -1,6 +1,7 @@
 /**
  * WordPress dependencies
  */
+const { __ } = wp.i18n;
 const { Component } = wp.element;
 const {
     BaseControl,
@@ -29,24 +30,22 @@ class ModalControl extends Component {
 
         return (
             <div className={className}>
-                <BaseControl
-                    className={'maxi-settings-button'}
-                >
+                <BaseControl>
                     <BaseControl.VisualLabel>
-                        Modal Test
+                        { __('Modal Test', 'maxi-blocks') }
                     </BaseControl.VisualLabel>
                     <Button
                         isSecondary
                         onClick={onClick}
                     >
-                        Open Modal
+                        { __('Open Modal', 'maxi-blocks') }
                     </Button>
                     {isOpen &&
                         <Modal
-                            title="This is my modal"
+                            title='This is my modal'
                             onRequestClose={onClick}>
                             <Button isSecondary onClick={onClick}>
-                                My custom close button
+                                { __('My custom close button', 'maxi-blocks') }
                             </Button>
                         </Modal>
                     }

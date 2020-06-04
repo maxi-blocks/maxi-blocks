@@ -144,32 +144,37 @@ export default class Typography extends GXComponent {
         return (
             <div className={classes}>
                 <FontFamilySelector
+                    className="maxi-typography-control__font-family"
                     font={value.font}
                     onChange={(value) => onChangeValue(value, 'font')}
                 />
                 <ColorControl
                     label={__('Font Color', 'maxi-blocks')}
+                    className="maxi-typography-control__color"
                     color={value.general.color}
                     defaultColor={defaultColor}
                     onColorChange={value => onChangeValue(value, 'color')}
                     disableGradient
                 />
                 <TextShadowControl
+                    className="maxi-typography-control__text-shadow"
                     value={value.general['text-shadow']}
                     onChange={val => onChangeValue(val, 'text-shadow')}
                     defaultColor={defaultColor}
                 />
                 <AlignmentControl
+                    className="maxi-typography-control__text-alignment"
                     label={__('Alignment', 'maxi-blocks')}
                     value={value.general['text-align']}
                     onChange={val => onChangeValue(val, 'text-align')}
                 />
                 <DeviceSelectorControl
+                    className="maxi-typography-control__device-selector"
                     device={device}
                     onChange={onSelect}
                 />
                 <SizeControl
-                    className={'maxi-typography-size'}
+                    className={'maxi-typography-control__size'}
                     label={__('Size', 'maxi-blocks')}
                     unit={value[device][getKey(value[device], 0)]}
                     onChangeUnit={value => onChangeValue(value, 0)}
@@ -177,7 +182,7 @@ export default class Typography extends GXComponent {
                     onChangeValue={value => onChangeValue(value, 1)}
                 />
                 <SizeControl
-                    className={'maxi-typography-line-height'}
+                    className={'maxi-typography-control__line-height'}
                     label={__('Line Height', 'maxi-blocks')}
                     unit={value[device][getKey(value[device], 2)]}
                     onChangeUnit={value => onChangeValue(value, 2)}
@@ -185,7 +190,7 @@ export default class Typography extends GXComponent {
                     onChangeValue={value => onChangeValue(value, 3)}
                 />
                 <SizeControl
-                    className={'maxi-typography-letter-spacing'}
+                    className={'maxi-typography-control__letter-spacing'}
                     label={__('Letter Spacing', 'maxi-blocks')}
                     unit={value[device][getKey(value[device], 4)]}
                     onChangeUnit={value => onChangeValue(value, 4)}
@@ -195,14 +200,14 @@ export default class Typography extends GXComponent {
                 <Divider />
                 <SelectControl
                     label={__('Weight', 'maxi-blocks')}
-                    className='maxi-title-typography-setting'
+                    className='maxi-typography-control__weight'
                     value={value[device][getKey(value[device], 6)]}
                     options={getWeightOptions()}
                     onChange={value => onChangeValue(value, 6)}
                 />
                 <SelectControl
                     label={__('Transform', 'maxi-blocks')}
-                    className='maxi-title-typography-setting'
+                    className='maxi-typography-control__transform'
                     value={value[device][getKey(value[device], 7)]}
                     options={[
                         { label: __('Default', 'maxi-blocks'), value: 'none' },
@@ -216,7 +221,7 @@ export default class Typography extends GXComponent {
                 />
                 <SelectControl
                     label={__('Style', 'maxi-blocks')}
-                    className='maxi-title-typography-setting'
+                    className='maxi-typography-control__font-style'
                     value={value[device][getKey(value[device], 8)]}
                     options={[
                         { label: __('Default', 'maxi-blocks'), value: 'normal' },
@@ -228,7 +233,7 @@ export default class Typography extends GXComponent {
                 />
                 <SelectControl
                     label={__('Decoration', 'maxi-blocks')}
-                    className='maxi-title-typography-setting'
+                    className='maxi-typography-control__decoration'
                     value={value[device][getKey(value[device], 9)]}
                     options={[
                         { label: __('Default', 'maxi-blocks'), value: 'none' },

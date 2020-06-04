@@ -1,7 +1,7 @@
 .maxi-accordion-control {
 	margin: 0px 0 1px 0;
 
-	.maxi-accordion-item {
+	&__item {
 		background: none;
 		overflow: hidden !important;
 
@@ -11,7 +11,7 @@
 		}
 
 		// This many values are strange...
-		.maxi-accordion-item-panel:not(.disable-padding) {
+		&__panel:not(.disable-padding) {
 			padding-top: 15px !important;
 			padding-left: 12px !important;
 			padding-right: 12px !important;
@@ -19,7 +19,7 @@
 			background-color: #fff;
 		}
 
-		.maxi-accordion-item-button {
+		&__button {
 			box-shadow: 0rem 0rem 0.5rem rgba(33, 33, 33, 0.15);
 			position: relative;
 			background: #fff;

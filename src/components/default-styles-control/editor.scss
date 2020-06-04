@@ -1,0 +1,25 @@
+.maxi-defaultstyles-control {
+    display: flex;
+    margin-bottom: 8px;
+
+    &__button {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        margin: 4px;        
+        border: 2px solid #BBBBBB;
+        background: #F8F8F8;
+
+        &:first-of-type {
+            margin-left: 0;
+        }
+
+        &:last-of-type {
+            margin-right: 0;
+        }
+
+        &__icon {
+            margin: auto;
+        }
+    }
+}

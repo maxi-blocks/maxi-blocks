@@ -10,6 +10,7 @@ const { getBlockAttributes } = wp.blocks;
 import {
     isEmpty,
     isNil,
+    isNumber
 } from 'lodash'
 
 /**
@@ -21,9 +22,11 @@ import {
 export const getDefaultProp = (clientId, prop) => {
     const { getBlockName } = select('core/block-editor');
     const blockName = getBlockName(clientId);
-    const defaultProp = getBlockAttributes(blockName)[prop];
 
-    return defaultProp;
+    if (prop)
+        return getBlockAttributes(blockName)[prop];
+    else
+        return getBlockAttributes(blockName);
 }
 
 /**
@@ -137,10 +140,10 @@ export const getBoxShadowObject = boxShadowObject => {
     }
 
     let boxShadowString = '';
-    boxShadowObject.shadowHorizontal ? boxShadowString += (boxShadowObject.shadowHorizontal + 'px ') : null;
-    boxShadowObject.shadowVertical ? boxShadowString += (boxShadowObject.shadowVertical + 'px ') : null;
-    boxShadowObject.shadowBlur ? boxShadowString += (boxShadowObject.shadowBlur + 'px ') : null;
-    boxShadowObject.shadowSpread ? boxShadowString += (boxShadowObject.shadowSpread + 'px ') : null;
+    isNumber(boxShadowObject.shadowHorizontal) ? boxShadowString += (boxShadowObject.shadowHorizontal + 'px ') : null;
+    isNumber(boxShadowObject.shadowVertical) ? boxShadowString += (boxShadowObject.shadowVertical + 'px ') : null;
+    isNumber(boxShadowObject.shadowBlur) ? boxShadowString += (boxShadowObject.shadowBlur + 'px ') : null;
+    isNumber(boxShadowObject.shadowSpread) ? boxShadowString += (boxShadowObject.shadowSpread + 'px ') : null;
     boxShadowObject.shadowColor ? boxShadowString += (boxShadowObject.shadowColor) : null;
 
     response.general['box-shadow'] = boxShadowString.trim()

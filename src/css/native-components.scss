@@ -25,6 +25,7 @@
             .components-base-control__label {
                 margin-bottom: 0;
                 width: 50%;
+                flex: 2;
             }
 
             // SelectorControl
@@ -112,7 +113,14 @@
 
     // RangeControl
     .components-range-control {
+        .components-range-control__root {
+            & > span:not(.components-range-control__wrapper) {
+                margin-left: 4px;
+            }
+        }
         .components-base-control__field {
+            margin-bottom: 0 !important;
+
             .components-range-control__wrapper {
                 margin-left: 0;
             }

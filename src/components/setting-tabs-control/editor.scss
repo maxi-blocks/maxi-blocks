@@ -3,7 +3,7 @@
     padding-top: 0;
 
     &:not(.maxi-tabs-control--disable-padding) {
-        margin-bottom: 15px;
+        margin-bottom: 10px;
     }
 
     .maxi-tab-control__button {
@@ -67,7 +67,7 @@
         display: none;
 
         .maxi-tab-content__box {
-            padding: 20px 10px 15px;
+            padding: 16px 10px 10px;
             background-color: #fff;
             margin-bottom: 10px;
             border-top: 2px solid #e8eaeb;

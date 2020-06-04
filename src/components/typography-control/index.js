@@ -52,7 +52,7 @@ export default class Typography extends GXComponent {
         )
 
         const Divider = () => (
-            <hr style={{ marginBottom: '15px', }} />
+            <hr style={{ margin: '15px 0' }} />
         );
 
         const onSelect = (device) => {

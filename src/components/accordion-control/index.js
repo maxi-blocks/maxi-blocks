@@ -48,7 +48,7 @@ export default class AccordionControl extends Component {
             'maxi-accordion-control',
             className,
             isPrimary ?
-                'is-primary':
+                'is-primary' :
                 '',
             isSecondary ?
                 'is-secondary' :
@@ -56,7 +56,7 @@ export default class AccordionControl extends Component {
         );
 
         const onOpen = value => {
-            this.setState({currentOpen: value})
+            this.setState({ currentOpen: value })
         }
 
         return (
@@ -80,9 +80,9 @@ export default class AccordionControl extends Component {
 
                         const classesItemPanel = classnames(
                             'maxi-accordion-control__item__panel',
-                            disablePadding ?
-                            'disable-padding' :
-                            ''
+                            disablePadding || item.disablePadding ?
+                                'maxi-accordion-control__item__panel--disable-padding' :
+                                ''
                         )
 
                         return (

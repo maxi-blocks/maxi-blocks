@@ -26,7 +26,15 @@ const attributes = {
         type: 'string',
         default: JSON.stringify(attributesData.cropOptions)
     },
-    alignment: {
+    alignmentDesktop: {
+        type: 'string',
+        default: 'center'
+    },
+    alignmentTablet: {
+        type: 'string',
+        default: 'center'
+    },
+    alignmentMobile: {
         type: 'string',
         default: 'center'
     },

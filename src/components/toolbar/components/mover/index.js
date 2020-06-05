@@ -21,14 +21,14 @@ const {
 import {  toolbarMove } from '../../../../icons';
 
 /**
- * Drag&Drop 
+ * Mover
  */
-const DragAndDrop = props => {
+const Mover = props => {
     const {
         clientId
     } = props;
 
-    const { rootClientId, index, isDraggable } = useSelect(
+    const { srcRootClientId, index, isDraggable } = useSelect(
         (select) => {
             const {
                 getBlockIndex,
@@ -42,7 +42,7 @@ const DragAndDrop = props => {
 
             return {
                 index: getBlockIndex(clientId, rootClientId),
-                rootClientId,
+                srcRootClientId: rootClientId,
                 isDraggable: 'all' !== templateLock,
             };
         },
@@ -67,7 +67,7 @@ const DragAndDrop = props => {
         type: 'block',
         srcIndex: index,
         srcClientId: clientId,
-        rootClientId,
+        srcRootClientId,
     };
 
     return (
@@ -100,4 +100,4 @@ const DragAndDrop = props => {
     )
 }
 
-export default DragAndDrop;
+export default Mover;

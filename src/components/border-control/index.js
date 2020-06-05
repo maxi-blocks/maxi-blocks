@@ -2,7 +2,10 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { SelectControl } = wp.components;
+const {
+    SelectControl,
+    Icon,
+} = wp.components;
 const { useSelect } = wp.data;
 
 /**
@@ -17,6 +20,16 @@ import {
     borderDasehd,
     borderDotted
 } from './defaults'
+
+/**
+ * Styles and icons
+ */
+import {
+    styleNone,
+    dashed,
+    dotted,
+    solid
+} from '../../icons';
 
 /**
  * External dependencies
@@ -53,43 +66,44 @@ const BorderControl = props => {
         'maxi-border-control',
         className
     );
-    
+
     return (
         <div className={classes}>
             <DefaultStylesControl
-                onChangeDefault={() => onChange(getDefaultProp(clientId, 'border'))}
                 items={[
                     {
                         content: (
-                            <hr
-                                style={{
-                                    borderTop: '2px solid #000',
-                                    width: '2rem'
-                                }}
-                            />
+                            <Icon
+                                className='maxi-defaultstyles-control__button__icon'
+                                icon={styleNone}
+                             />
                         ),
-                        onChange: () => onChange(JSON.stringify(borderSolid))
-
+                        onChange: () => onChange(getDefaultProp(clientId, 'border'))
                     },
                     {
                         content: (
-                            <hr
-                                style={{
-                                    borderTop: '2px dashed #000',
-                                    width: '2rem'
-                                }}
-                            />
+                            <Icon
+                                className='maxi-defaultstyles-control__button__icon'
+                                icon={solid}
+                             />
+                        ),
+                        onChange: () => onChange(JSON.stringify(borderSolid))
+                    },
+                    {
+                        content: (
+                            <Icon
+                                className='maxi-defaultstyles-control__button__icon'
+                                icon={dashed}
+                             />
                         ),
                         onChange: () => onChange(JSON.stringify(borderDasehd))
                     },
                     {
                         content: (
-                            <hr
-                                style={{
-                                    borderTop: '2px dotted #000',
-                                    width: '2rem'
-                                }}
-                            />
+                            <Icon
+                                className='maxi-defaultstyles-control__button__icon'
+                                icon={dotted}
+                             />
                         ),
                         onChange: () => onChange(JSON.stringify(borderDotted))
                     },

@@ -1702,11 +1702,7 @@ h2.gx_error {
 .maxi-popover input[type="text"],
 .maxi-popover input[type="number"],
 .maxi-popover textarea,
-.maxi-popover select,
-.toolbar-item__popover input[type="text"],
-.toolbar-item__popover input[type="number"],
-.toolbar-item__popover textarea,
-.toolbar-item__popover select {
+.maxi-popover select {
   min-height: unset;
   max-height: unset !important;
   border-radius: 5px;
@@ -1719,8 +1715,7 @@ h2.gx_error {
       flex: 1; }
 
 .maxi-sidebar select,
-.maxi-popover select,
-.toolbar-item__popover select {
+.maxi-popover select {
   padding: 0 24px 0px 10px !important;
   border: 1px solid #dddfe1 !important;
   opacity: 1 !important; }
@@ -1728,16 +1723,12 @@ h2.gx_error {
 .maxi-sidebar button.components-range-control__reset,
 .maxi-sidebar button.components-circular-option-picker__clear,
 .maxi-popover button.components-range-control__reset,
-.maxi-popover button.components-circular-option-picker__clear,
-.toolbar-item__popover button.components-range-control__reset,
-.toolbar-item__popover button.components-circular-option-picker__clear {
+.maxi-popover button.components-circular-option-picker__clear {
   font-size: 0 !important; }
   .maxi-sidebar button.components-range-control__reset:before,
   .maxi-sidebar button.components-circular-option-picker__clear:before,
   .maxi-popover button.components-range-control__reset:before,
-  .maxi-popover button.components-circular-option-picker__clear:before,
-  .toolbar-item__popover button.components-range-control__reset:before,
-  .toolbar-item__popover button.components-circular-option-picker__clear:before {
+  .maxi-popover button.components-circular-option-picker__clear:before {
     content: url("../img/maxi-reset.svg") !important;
     margin: auto;
     margin-left: auto;
@@ -1746,8 +1737,7 @@ h2.gx_error {
     height: 14px; }
 
 .maxi-sidebar .components-panel,
-.maxi-popover .components-panel,
-.toolbar-item__popover .components-panel {
+.maxi-popover .components-panel {
   background: transparent;
   border: none; }
 
@@ -1988,7 +1978,6 @@ div.maxi-row-block.has-child-selected > div.maxi-row-selector-wrapper {
   .maxi-alignment-control .components-radio-control__option svg {
     display: block;
     height: 100%;
-    width: 20px;
     margin: auto;
     fill: #464a53; }
 /**
@@ -2433,14 +2422,14 @@ div.maxi-row-block.has-child-selected > div.maxi-row-selector-wrapper {
         justify-content: center;
     width: 100%;
     margin: 4px;
-    height: 40px;
+    border: 2px solid #BBBBBB;
     background: #F8F8F8; }
     .maxi-defaultstyles-control__button:first-of-type {
       margin-left: 0; }
     .maxi-defaultstyles-control__button:last-of-type {
       margin-right: 0; }
     .maxi-defaultstyles-control__button__icon {
-      width: 40px; }
+      margin: auto; }
 /**
 * Leave blank due to bug on CGB. Check it on:
 * https://github.com/ahmadawais/create-guten-block/issues/111
@@ -2734,6 +2723,24 @@ div.maxi-row-block.has-child-selected > div.maxi-row-selector-wrapper {
 *
 * Moved common styles to './src/css' 
 */
+.toolbar-item__popover__dropdown-options {
+  display: -ms-flexbox;
+  display: flex; }
+  .toolbar-item__popover__dropdown-options__button {
+    display: block;
+    background: #fff;
+    width: 100%;
+    margin: 0 4px; }
+    .toolbar-item__popover__dropdown-options__button:first-of-type {
+      margin-left: 0; }
+    .toolbar-item__popover__dropdown-options__button:last-of-type {
+      margin-right: 0; }
+/**
+* Leave blank due to bug on CGB. Check it on:
+* https://github.com/ahmadawais/create-guten-block/issues/111
+*
+* Moved common styles to './src/css' 
+*/
 .toolbar-item__popover .components-form-toggle.is-checked .components-form-toggle__track {
   background-color: #5f6063; }
 
@@ -2885,7 +2892,7 @@ div.maxi-row-block.has-child-selected > div.maxi-row-selector-wrapper {
 .maxi-toolbar__popover .components-popover__content {
   background-color: transparent;
   border: none;
-  overflow: visible;
+  overflow: hidden;
   -webkit-box-shadow: none;
           box-shadow: none; }
   .maxi-toolbar__popover .components-popover__content .toolbar-wrapper {
@@ -2895,10 +2902,7 @@ div.maxi-row-block.has-child-selected > div.maxi-row-selector-wrapper {
     width: -moz-min-content;
     width: min-content;
     margin: 0 auto 0.5rem;
-    position: relative;
-    -webkit-box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.2);
-            box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.2);
-    border-radius: 5px; }
+    position: relative; }
     .maxi-toolbar__popover .components-popover__content .toolbar-wrapper:after {
       content: '';
       border-left: 0.5rem solid transparent;
@@ -2918,32 +2922,17 @@ div.maxi-row-block.has-child-selected > div.maxi-row-selector-wrapper {
       width: 2rem;
       height: 2rem;
       background-color: #232533;
+      border-right: 2px solid #616161;
       padding: 0;
       cursor: pointer;
-      border-radius: 0;
-      position: relative;
-      padding-right: 2px; }
-      .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item:after {
-        content: '';
-        position: absolute;
-        top: 50%;
-        right: 0;
-        width: 2px;
-        height: 70%;
-        background-color: #616161;
-        -webkit-transform: translateY(-50%);
-            -ms-transform: translateY(-50%);
-                transform: translateY(-50%);
-        padding-left: 2px; }
+      border-radius: 0; }
       .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item:last-child {
         border-top-right-radius: 5px;
-        border-bottom-right-radius: 5px; }
-        .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item:last-child:after {
-          content: none; }
+        border-bottom-right-radius: 5px;
+        border-right: 0; }
       .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item:first-child {
         border-top-left-radius: 5px;
-        border-bottom-left-radius: 5px;
-        padding-left: 2px; }
+        border-bottom-left-radius: 5px; }
       .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item__dropdown > button {
         display: block;
         width: 100%;

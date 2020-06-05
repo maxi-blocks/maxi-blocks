@@ -9,10 +9,7 @@ const {
     Button,
     BaseControl
 } = wp.components;
-const {
-    useSelect,
-    useDispatch,
-} = wp.data;
+const { useDispatch } = wp.data;
 
 /**
  * Internal dependencies
@@ -33,21 +30,13 @@ import {
  * TextOptions
  */
 const TextOptions = props => {
-    const { clientId } = props;
+    const {
+        clientId,
+        blockName,
+        rawTypography
+    } = props;
 
-    const { blockName, rawTypography, defaultRawTypography } = useSelect(
-        (select) => {
-            const { getBlockName, getBlockAttributes } = select(
-                'core/block-editor',
-            );
-            return {
-                blockName: getBlockName(clientId),
-                rawTypography: getBlockAttributes(clientId).typography,
-                defaultRawTypography: wp.blocks.getBlockAttributes('maxi-blocks/text-maxi').typography,
-            };
-        },
-        [clientId]
-    );
+    const defaultRawTypography = wp.blocks.getBlockAttributes('maxi-blocks/text-maxi').typography;
 
     const { updateBlockAttributes } = useDispatch(
         'core/block-editor'

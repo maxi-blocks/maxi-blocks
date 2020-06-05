@@ -8,6 +8,7 @@ const { Component } = wp.element;
  * External dependencies
  */
 import classnames from 'classnames';
+import { lowerCase } from 'lodash';
 import {
     Accordion,
     AccordionItem,
@@ -89,6 +90,7 @@ export default class AccordionControl extends Component {
                             <AccordionItem
                                 uuid={item.uuid ? item.uuid : undefined}
                                 className={classesItem}
+                                data-name={lowerCase(item.label)}
                             >
                                 <AccordionItemHeading
                                     className={classesItemHeading}

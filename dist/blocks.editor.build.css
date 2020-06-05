@@ -2474,39 +2474,41 @@ div.maxi-row-block.has-child-selected > div.maxi-row-selector-wrapper {
 *
 * Moved common styles to './src/css' 
 */
-.maxi-device-control .components-base-control__field {
-  display: -ms-flexbox;
-  display: flex; }
-  .maxi-device-control .components-base-control__field .components-radio-control__option {
+.maxi-device-control {
+  margin-left: -12px;
+  margin-right: -12px; }
+  .maxi-device-control .components-base-control__field {
     display: -ms-flexbox;
     display: flex;
-    -ms-flex-direction: column-reverse;
-        flex-direction: column-reverse;
-    -ms-flex-align: center;
-        align-items: center;
-    width: 33.3333%;
-    height: 33px !important;
-    text-align: center;
-    border: 2px solid #dddfe1;
-    border-right: none; }
-    .maxi-device-control .components-base-control__field .components-radio-control__option:last-child {
-      border-right: 2px solid #dddfe1; }
-    .maxi-device-control .components-base-control__field .components-radio-control__option .components-radio-control__input {
-      margin: auto;
-      display: none; }
-      .maxi-device-control .components-base-control__field .components-radio-control__option .components-radio-control__input:checked ~ label {
-        background-color: #ff4a17; }
-        .maxi-device-control .components-base-control__field .components-radio-control__option .components-radio-control__input:checked ~ label svg path {
-          fill: #fff; }
-    .maxi-device-control .components-base-control__field .components-radio-control__option label {
-      width: 100%;
-      height: 100%; }
-    .maxi-device-control .components-base-control__field .components-radio-control__option svg {
-      width: auto;
-      height: 20px;
-      -webkit-transform: translateY(5px);
-          -ms-transform: translateY(5px);
-              transform: translateY(5px); }
+    -webkit-box-shadow: 0rem -4px 10px rgba(33, 33, 33, 0.08);
+            box-shadow: 0rem -4px 10px rgba(33, 33, 33, 0.08);
+    border-top: 1px solid #e8eaeb; }
+    .maxi-device-control .components-base-control__field .components-radio-control__option {
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-direction: column;
+          flex-direction: column;
+      width: 50%;
+      height: auto;
+      font-size: 13px;
+      color: #000;
+      font-weight: 500;
+      text-align: center;
+      background-color: #fff; }
+      .maxi-device-control .components-base-control__field .components-radio-control__option:last-child label {
+        border-right: none; }
+      .maxi-device-control .components-base-control__field .components-radio-control__option .components-radio-control__input {
+        margin: auto;
+        display: none; }
+        .maxi-device-control .components-base-control__field .components-radio-control__option .components-radio-control__input:checked ~ label {
+          background-color: #f2f2f2;
+          border-bottom-color: #ff4a17; }
+      .maxi-device-control .components-base-control__field .components-radio-control__option label {
+        width: 100%;
+        height: 100%;
+        border-bottom: 2px solid #e8eaeb;
+        border-right: 2px solid #e8eaeb;
+        padding: 8px 0; }
 /**
 * Leave blank due to bug on CGB. Check it on:
 * https://github.com/ahmadawais/create-guten-block/issues/111
@@ -2637,19 +2639,11 @@ div.maxi-row-block.has-child-selected > div.maxi-row-selector-wrapper {
     .maxi-tabs-control .maxi-tab-control__button:focus {
       -webkit-box-shadow: none;
               box-shadow: none; }
-    .maxi-tabs-control .maxi-tab-control__button:hover,
-    .maxi-tabs-control .maxi-tab-control__button:hover svg, .maxi-tabs-control .maxi-tab-control__button:active, .maxi-tabs-control .maxi-tab-control__button:focus {
+    .maxi-tabs-control .maxi-tab-control__button:hover, .maxi-tabs-control .maxi-tab-control__button:active, .maxi-tabs-control .maxi-tab-control__button:focus {
       background: #f2f2f2; }
     .maxi-tabs-control .maxi-tab-control__button[aria-pressed="true"] {
       background-color: #f2f2f2;
       border-bottom: 2px solid #ff4a17; }
-      .maxi-tabs-control .maxi-tab-control__button[aria-pressed="true"] svg {
-        background-color: #f2f2f2; }
-    .maxi-tabs-control .maxi-tab-control__button svg {
-      width: 24px;
-      height: 24px;
-      margin-top: 2px;
-      margin-bottom: 10px; }
 
 .maxi-tabs-content:not(.maxi-tabs-content--disable-padding) {
   padding-top: 12px !important;

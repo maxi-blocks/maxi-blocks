@@ -29,7 +29,6 @@
         }
 
         &:hover,
-        &:hover svg,
         &:active,
         &:focus {
             background: #f2f2f2;
@@ -38,17 +37,6 @@
         &[aria-pressed="true"] {
             background-color: #f2f2f2;
             border-bottom: 2px solid #ff4a17;
-
-            svg {
-                background-color: #f2f2f2;
-            }
-        }
-
-        svg {
-            width: 24px;
-            height: 24px;
-            margin-top: 2px;
-            margin-bottom: 10px;
         }
     }
 }

@@ -110,6 +110,10 @@
                 & + span {
                     span {
                         background-color: #fff !important;
+
+                        &:before {
+                            border-color: #fff !important;
+                        }
                     }
                 }
             }

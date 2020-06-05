@@ -53,7 +53,7 @@ const SettingTabsControl = props => {
                 {
                     items.map((item, i) => (
                         <Button
-                            className='maxi-tab-control__button'
+                            className='maxi-tabs-control__button'
                             onClick={() => setTab(i)}
                             aria-pressed={tab === i}
                         >

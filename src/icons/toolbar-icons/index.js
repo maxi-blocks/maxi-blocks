@@ -1,8 +1,11 @@
 export { default as toolbarAlign} from './align';
 export { default as toolbarBold} from './bold';
+export { default as toolbarColumnPattern} from './column-pattern';
 export { default as toolbarDelete} from './delete';
+export { default as toolbarDropShadow} from './drop-shadow';
 export { default as toolbarDuplicate} from './duplicate';
 export { default as toolbarFavorite} from './favorite';
+export { default as toolbarGlobal} from './global';
 export { default as toolbarItalic} from './italic';
 export { default as toolbarLink} from './link';
 export { default as toolbarList} from './list';

@@ -7,10 +7,7 @@ const {
     Button,
     ColorPicker
 } = wp.components;
-const {
-    useSelect,
-    useDispatch,
-} = wp.data;
+const { useDispatch } = wp.data;
 
 /**
  * Icons
@@ -22,20 +19,11 @@ import { toolbarStyle } from '../../../../icons';
  * TextColor
  */
 const TextColor = props => {
-    const { clientId } = props;
-
-    const { blockName, rawTypography } = useSelect(
-        (select) => {
-            const { getBlockName, getBlockAttributes } = select(
-                'core/block-editor',
-            );
-            return {
-                blockName: getBlockName(clientId),
-                rawTypography: getBlockAttributes(clientId).typography,
-            };
-        },
-        [clientId]
-    );
+    const {
+        clientId,
+        blockName,
+        rawTypography
+    } = props;
 
     const { updateBlockAttributes } = useDispatch(
         'core/block-editor'

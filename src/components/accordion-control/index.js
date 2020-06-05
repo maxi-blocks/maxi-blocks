@@ -40,25 +40,25 @@ export default class AccordionControl extends Component {
             disablePadding = false
         } = this.props;
 
-        const { 
+        const {
             currentOpen
         } = this.state;
-    
+
         let classes = classnames(
             'maxi-accordion-control',
             className,
             isPrimary ?
-                'is-primary':
+                'is-primary' :
                 '',
-            isSecondary ? 
+            isSecondary ?
                 'is-secondary' :
                 '',
         );
 
         const onOpen = value => {
-            this.setState({currentOpen: value})
+            this.setState({ currentOpen: value })
         }
-    
+
         return (
             <Accordion
                 className={classes}
@@ -70,33 +70,33 @@ export default class AccordionControl extends Component {
                 {
                     items.map(item => {
                         const classesItem = classnames(
-                            'maxi-accordion-item',
+                            'maxi-accordion-control__item',
                             item.classNameItem
                         );
                         const classesItemHeading = classnames(
-                            'maxi-accordion-tab', 
+                            'maxi-accordion-tab',
                             item.classNameHeading
                         );
 
                         const classesItemPanel = classnames(
-                            "maxi-accordion-item-panel",
-                            disablePadding ?
-                            'disable-padding' :
-                            ''
+                            'maxi-accordion-control__item__panel',
+                            disablePadding || item.disablePadding ?
+                                'maxi-accordion-control__item__panel--disable-padding' :
+                                ''
                         )
-    
+
                         return (
                             <AccordionItem
                                 uuid={item.uuid ? item.uuid : undefined}
                                 className={classesItem}
                             >
-                                <AccordionItemHeading   
+                                <AccordionItemHeading
                                     className={classesItemHeading}
                                 >
                                     <AccordionItemButton
-                                        className='maxi-accordion-item-button'
+                                        className='maxi-accordion-control__item__button'
                                     >
-                                        <Icon 
+                                        <Icon
                                             className='maxi-accordion-icon'
                                             icon={item.icon}
                                         />

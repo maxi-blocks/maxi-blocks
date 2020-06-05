@@ -43,7 +43,7 @@ const GeneralInput = props => {
         <label for={`maxi-imagecrop-${target}-control`}>
             {capitalize(target)}
             <input
-                type="number"
+                type='number'
                 id={`maxi-imagecrop-${target}-control`}
                 name={`maxi-imagecrop-${target}-control`}
                 value={Number(value).toFixed()}
@@ -213,8 +213,8 @@ class ImageCropComponent extends Component {
     }
 
     createHiddenCanvas() {
-        this.hiddenCanvas = document.createElement("canvas");
-        this.hiddenCtx = this.hiddenCanvas.getContext("2d");
+        this.hiddenCanvas = document.createElement('canvas');
+        this.hiddenCtx = this.hiddenCanvas.getContext('2d');
         this.hiddenCanvas.width = this.getWidth * this.getScale;
         this.hiddenCanvas.height = this.getHeight * this.getScale;
     }
@@ -309,7 +309,7 @@ class ImageCropComponent extends Component {
                             onComplete={crop => this.onCropComplete(crop)}
                         />
                         {this.image &&
-                            <div className="maxi-imagecrop-option-controls" >
+                            <div className='maxi-imagecrop-control__options' >
                                 <GeneralInput
                                     target='width'
                                     value={this.cropOptions.crop.width * this.scaleX * this.getScale}

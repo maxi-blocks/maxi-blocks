@@ -4,7 +4,6 @@
 const { SelectControl } = wp.components;
 const { Component } = wp.element;
 const {
-    dispatch,
     select
 } = wp.data;
 
@@ -56,7 +55,7 @@ export default class FontLevelControl extends Component {
     }
 
     /**
-    * Creates a new object that 
+    * Creates a new object that
     *
     * @param {string} target	Block attribute: uniqueID
     * @param {obj} meta		Old and saved metadate
@@ -69,19 +68,6 @@ export default class FontLevelControl extends Component {
         const response = JSON.stringify(responsiveStyle.getNewValue);
         return response;
     }
-
-    // /**
-    // * Saves and send the data. Also refresh the styles on Editor
-    // */
-    // saveAndSend(value, fontOptResponse) {
-    //     this.props.onChange(value, JSON.stringify(fontOptResponse));
-    //     dispatch('core/editor').editPost({
-    //         meta: {
-    //             _gutenberg_extra_responsive_styles: this.metaValue(fontOptResponse),
-    //         },
-    //     });
-    //     new BackEndResponsiveStyles(this.getMeta);
-    // }
 
     render() {
         const {

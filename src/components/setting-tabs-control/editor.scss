@@ -1,7 +1,10 @@
 .maxi-tabs-control {
-    padding-top: 0;
-    margin-bottom: 15px;
     display: flex;
+    padding-top: 0;
+
+    &:not(.maxi-tabs-control--disable-padding) {
+        margin-bottom: 10px;
+    }
 
     .maxi-tab-control__button {
         display: flex;
@@ -52,11 +55,19 @@
 
 .maxi-tabs-content {
 
+    &:not(.maxi-tabs-content--disable-padding) {
+        padding-top: 12px !important;
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+        padding-bottom: 12px !important;
+        background-color: #fff;
+    }
+
     .maxi-tab-content {
         display: none;
 
         .maxi-tab-content__box {
-            padding: 20px 10px 15px;
+            padding: 16px 10px 10px;
             background-color: #fff;
             margin-bottom: 10px;
             border-top: 2px solid #e8eaeb;
@@ -66,7 +77,7 @@
                 width: 50%;
             }
         }
-        &.is-selected {
+        &--selected {
             display: block;
         }
     }

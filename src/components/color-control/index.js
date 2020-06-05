@@ -17,7 +17,6 @@ import PopoverControl from '../popover-control';
 /**
  * External dependencies
  */
-import { isNil } from 'lodash';
 import classnames from 'classnames';
 
 /**
@@ -52,7 +51,7 @@ const ColorControl = props => {
     } = props;
 
     const classes = classnames(
-        'maxi-colorcontrol-control', 
+        'maxi-colorcontrol',
         className
     );
 
@@ -71,7 +70,7 @@ const ColorControl = props => {
                             onChangeComplete={val => onColorChange(returnColor(val))}
                         />
                     ),
-                    classNamePopover: "maxi-colorcontrol-color-popover",
+                    classNamePopover: 'maxi-colorcontrol__popover',
                     icon: colorIcon
                 },
             )
@@ -94,7 +93,7 @@ const ColorControl = props => {
                             }
                         </Fragment>
                     ),
-                    classNamePopover: "maxi-colorcontrol-gradient-popover maxi-popover",
+                    classNamePopover: 'maxi-colorcontrol__gradient-popover maxi-popover',
                     icon: gradientIcon
                 }
             )
@@ -114,7 +113,7 @@ const ColorControl = props => {
 
     return (
         <div className={classes}>
-            <div className="maxi-colorcontrol-color-display maxi-component-color-inidicator">
+            <div className='maxi-colorcontrol__display'>
                 <span
                     style={{
                         background: gradient ? gradient : color,

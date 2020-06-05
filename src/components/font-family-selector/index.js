@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { 
+const {
     Component,
     Fragment
 } = wp.element;
@@ -128,7 +128,7 @@ export default class FontFamilySelector extends Component {
                                     menuIsOpen
                                     onChange={onFontChange}
                                     options={this.state.options}
-                                    placeholder={__("Search...", 'maxi-blocks')}
+                                    placeholder={__('Search...', 'maxi-blocks')}
                                     styles={selectFontFamilyStyles}
                                     tabSelectsValue={false}
                                     value={font}

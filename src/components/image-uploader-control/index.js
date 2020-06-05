@@ -30,7 +30,6 @@ import './editor.scss';
 const MediaUploader = props => {
 
     const {
-        label = '',
         className,
         mediaID,
         onSelectImage,
@@ -43,10 +42,10 @@ const MediaUploader = props => {
         replaceButton = __('Replace image', 'maxi-blocks'),
         removeButton = __('Remove image', 'maxi-blocks'),
         alternativeImage
-    } = props; 
+    } = props;
 
     const classes = classnames(
-        'maxi-mediauploader-control', 
+        'maxi-mediauploader-control',
         className
     );
 
@@ -95,7 +94,7 @@ const MediaUploader = props => {
                                 <ResponsiveWrapper
                                     naturalWidth={alternativeImage? alternativeImage.width : imageData.media_details.width}
                                     naturalHeight={alternativeImage? alternativeImage.height : imageData.media_details.height}
-                                    className="maxi-imageuploader-control-wrapper"
+                                    className='maxi-imageuploader-control__responsive-wrapper'
                                 >
                                     <img
                                         src={!isNil(alternativeImage) ? alternativeImage.source_url : imageData.source_url}
@@ -121,7 +120,7 @@ const MediaUploader = props => {
                                 onClick={open}
                                 isDefault
                                 isLarge
-                                className='maxi-imageuploader-control-replace'
+                                className='maxi-mediauploader-control__replace'
                             >
                                 {replaceButton}
                             </Button>
@@ -136,7 +135,7 @@ const MediaUploader = props => {
                         onClick={onRemoveImage}
                         isLink
                         isDestructive
-                        className='maxi-imageuploader-control-remove'
+                        className='maxi-mediauploader-control__remove'
                     >
                         {removeButton}
                     </Button>

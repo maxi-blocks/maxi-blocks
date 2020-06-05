@@ -6,17 +6,22 @@
             display: flex;
             flex-direction: column-reverse;
             align-items: center;
-            width: 33%;
+            width: 33.3333%;
             height: 33px !important;
             text-align: center;
-            border: 1px solid #dddfe1;
+            border: 2px solid #dddfe1;
+            border-right: none;
+
+            &:last-child {
+                border-right: 2px solid #dddfe1;
+            }
 
             .components-radio-control__input {
                 margin: auto;
                 display: none;
 
-                &:checked ~label {
-                    background-color: #00ccff;
+                &:checked ~ label {
+                    background-color: #ff4a17;
 
                     svg path {
                         fill: #fff;
@@ -31,8 +36,8 @@
 
             svg {
                 width: auto;
-                height: 25px;
-                transform: translateY(2.5px);
+                height: 20px;
+                transform: translateY(5px);
             }
         }
     }

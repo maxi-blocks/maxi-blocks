@@ -10,13 +10,6 @@
 			position: relative;
 			border-bottom: 1px solid #f4f4f4;
 
-			&:after {
-				position: absolute;
-				content: url("../img/maxi-logo.svg");
-				width: 1.9rem;
-				right: 10px;
-			}
-
 			.block-editor-block-card__content {
 				min-width: 87%;
 
@@ -24,7 +17,9 @@
 					display: block !important;
 					padding-top: 8px;
 					text-align: justify;
-					margin-left: -12.5%;
+					margin-left: -40px;
+					border-top: 2px solid #eef0f0;
+					margin-top: 10px;
 				}
 			}
 		}
@@ -117,6 +112,9 @@ button[class*="maxi-blocks"] span.block-editor-block-types-list__item-title {
 	margin-bottom: 0;
 	background: none !important;
 	position: relative;
+	font-size: 1rem;
+	color: #232433;
+	font-weight: 500;
 }
 
 .maxi-controls .block-editor-block-card__content {

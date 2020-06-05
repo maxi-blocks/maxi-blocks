@@ -1413,7 +1413,9 @@ body.Bumblebee .maxi-default .maxi-divider {
     .maxi-popover .components-base-control .components-base-control__field .components-base-control__label,
     .toolbar-item__popover .components-base-control .components-base-control__field .components-base-control__label {
       margin-bottom: 0;
-      width: 50%; }
+      width: 50%;
+      -ms-flex: 2;
+          flex: 2; }
     .maxi-sidebar .components-base-control .components-base-control__field .components-select-control__input,
     .maxi-popover .components-base-control .components-base-control__field .components-select-control__input,
     .toolbar-item__popover .components-base-control .components-base-control__field .components-select-control__input {
@@ -1501,41 +1503,53 @@ body.Bumblebee .maxi-default .maxi-divider {
       .toolbar-item__popover .components-base-control .components-base-control__field .components-button svg {
         margin: auto; }
 
-.maxi-sidebar .components-range-control .components-base-control__field .components-range-control__wrapper,
-.maxi-popover .components-range-control .components-base-control__field .components-range-control__wrapper,
-.toolbar-item__popover .components-range-control .components-base-control__field .components-range-control__wrapper {
-  margin-left: 0; }
+.maxi-sidebar .components-range-control .components-range-control__root > span:not(.components-range-control__wrapper),
+.maxi-popover .components-range-control .components-range-control__root > span:not(.components-range-control__wrapper),
+.toolbar-item__popover .components-range-control .components-range-control__root > span:not(.components-range-control__wrapper) {
+  margin-left: 4px; }
 
-.maxi-sidebar .components-range-control .components-base-control__field .components-range-control__slider + span,
-.maxi-popover .components-range-control .components-base-control__field .components-range-control__slider + span,
-.toolbar-item__popover .components-range-control .components-base-control__field .components-range-control__slider + span {
-  background: #dddfe1;
-  height: 4px; }
+.maxi-sidebar .components-range-control .components-base-control__field,
+.maxi-popover .components-range-control .components-base-control__field,
+.toolbar-item__popover .components-range-control .components-base-control__field {
+  margin-bottom: 0 !important; }
+  .maxi-sidebar .components-range-control .components-base-control__field .components-range-control__wrapper,
+  .maxi-popover .components-range-control .components-base-control__field .components-range-control__wrapper,
+  .toolbar-item__popover .components-range-control .components-base-control__field .components-range-control__wrapper {
+    margin-left: 0; }
+  .maxi-sidebar .components-range-control .components-base-control__field .components-range-control__slider + span,
+  .maxi-popover .components-range-control .components-base-control__field .components-range-control__slider + span,
+  .toolbar-item__popover .components-range-control .components-base-control__field .components-range-control__slider + span {
+    background: #dddfe1;
+    height: 4px; }
+  .maxi-sidebar .components-range-control .components-base-control__field .components-range-control__track,
+  .maxi-popover .components-range-control .components-base-control__field .components-range-control__track,
+  .toolbar-item__popover .components-range-control .components-base-control__field .components-range-control__track {
+    height: 4px;
+    background: #dddfe1 !important; }
+    .maxi-sidebar .components-range-control .components-base-control__field .components-range-control__track + span,
+    .maxi-popover .components-range-control .components-base-control__field .components-range-control__track + span,
+    .toolbar-item__popover .components-range-control .components-base-control__field .components-range-control__track + span {
+      top: 1px; }
+      .maxi-sidebar .components-range-control .components-base-control__field .components-range-control__track + span span,
+      .maxi-popover .components-range-control .components-base-control__field .components-range-control__track + span span,
+      .toolbar-item__popover .components-range-control .components-base-control__field .components-range-control__track + span span {
+        -webkit-box-shadow: none !important;
+                box-shadow: none !important;
+        border: none !important;
+        width: 14px;
+        height: 14px;
+        background-color: #464a53; }
+  .maxi-sidebar .components-range-control .components-base-control__field .components-base-control__label,
+  .maxi-popover .components-range-control .components-base-control__field .components-base-control__label,
+  .toolbar-item__popover .components-range-control .components-base-control__field .components-base-control__label {
+    -ms-flex: 40%;
+        flex: 40%; }
 
-.maxi-sidebar .components-range-control .components-base-control__field .components-range-control__track,
-.maxi-popover .components-range-control .components-base-control__field .components-range-control__track,
-.toolbar-item__popover .components-range-control .components-base-control__field .components-range-control__track {
-  height: 4px;
-  background: #dddfe1 !important; }
-  .maxi-sidebar .components-range-control .components-base-control__field .components-range-control__track + span,
-  .maxi-popover .components-range-control .components-base-control__field .components-range-control__track + span,
-  .toolbar-item__popover .components-range-control .components-base-control__field .components-range-control__track + span {
-    top: 1px; }
-    .maxi-sidebar .components-range-control .components-base-control__field .components-range-control__track + span span,
-    .maxi-popover .components-range-control .components-base-control__field .components-range-control__track + span span,
-    .toolbar-item__popover .components-range-control .components-base-control__field .components-range-control__track + span span {
-      -webkit-box-shadow: none !important;
-              box-shadow: none !important;
-      border: none !important;
-      width: 14px;
-      height: 14px;
-      background-color: #464a53; }
-
-.maxi-sidebar .components-range-control .components-base-control__field .components-base-control__label,
-.maxi-popover .components-range-control .components-base-control__field .components-base-control__label,
-.toolbar-item__popover .components-range-control .components-base-control__field .components-base-control__label {
-  -ms-flex: 40%;
-      flex: 40%; }
+.maxi-popover .components-popover__content {
+  padding: 20px;
+  min-width: 373px !important;
+  -webkit-box-shadow: 0 46px 133px rgba(150, 176, 203, 0.23) !important;
+          box-shadow: 0 46px 133px rgba(150, 176, 203, 0.23) !important; }
 
 /***********
 * Block card
@@ -1547,18 +1561,15 @@ body.Bumblebee .maxi-default .maxi-divider {
           box-shadow: 0px 5px 15px 0px rgba(119, 119, 119, 0.1);
   position: relative;
   border-bottom: 1px solid #f4f4f4; }
-  .maxi-sidebar .block-editor-block-inspector.maxi-controls .block-editor-block-card:after {
-    position: absolute;
-    content: url("../img/maxi-logo.svg");
-    width: 1.9rem;
-    right: 10px; }
   .maxi-sidebar .block-editor-block-inspector.maxi-controls .block-editor-block-card .block-editor-block-card__content {
     min-width: 87%; }
     .maxi-sidebar .block-editor-block-inspector.maxi-controls .block-editor-block-card .block-editor-block-card__content .block-editor-block-card__description {
       display: block !important;
       padding-top: 8px;
       text-align: justify;
-      margin-left: -12.5%; }
+      margin-left: -40px;
+      border-top: 2px solid #eef0f0;
+      margin-top: 10px; }
 
 /***************
 * Block inserter
@@ -1634,7 +1645,10 @@ button[class*="maxi-blocks"] span.block-editor-block-types-list__item-title {
   line-height: 33px;
   margin-bottom: 0;
   background: none !important;
-  position: relative; }
+  position: relative;
+  font-size: 1rem;
+  color: #232433;
+  font-weight: 500; }
 
 .maxi-controls .block-editor-block-card__content {
   background: inherit !important; }
@@ -1688,7 +1702,11 @@ h2.gx_error {
 .maxi-popover input[type="text"],
 .maxi-popover input[type="number"],
 .maxi-popover textarea,
-.maxi-popover select {
+.maxi-popover select,
+.toolbar-item__popover input[type="text"],
+.toolbar-item__popover input[type="number"],
+.toolbar-item__popover textarea,
+.toolbar-item__popover select {
   min-height: unset;
   max-height: unset !important;
   border-radius: 5px;
@@ -1701,7 +1719,8 @@ h2.gx_error {
       flex: 1; }
 
 .maxi-sidebar select,
-.maxi-popover select {
+.maxi-popover select,
+.toolbar-item__popover select {
   padding: 0 24px 0px 10px !important;
   border: 1px solid #dddfe1 !important;
   opacity: 1 !important; }
@@ -1709,12 +1728,16 @@ h2.gx_error {
 .maxi-sidebar button.components-range-control__reset,
 .maxi-sidebar button.components-circular-option-picker__clear,
 .maxi-popover button.components-range-control__reset,
-.maxi-popover button.components-circular-option-picker__clear {
+.maxi-popover button.components-circular-option-picker__clear,
+.toolbar-item__popover button.components-range-control__reset,
+.toolbar-item__popover button.components-circular-option-picker__clear {
   font-size: 0 !important; }
   .maxi-sidebar button.components-range-control__reset:before,
   .maxi-sidebar button.components-circular-option-picker__clear:before,
   .maxi-popover button.components-range-control__reset:before,
-  .maxi-popover button.components-circular-option-picker__clear:before {
+  .maxi-popover button.components-circular-option-picker__clear:before,
+  .toolbar-item__popover button.components-range-control__reset:before,
+  .toolbar-item__popover button.components-circular-option-picker__clear:before {
     content: url("../img/maxi-reset.svg") !important;
     margin: auto;
     margin-left: auto;
@@ -1723,49 +1746,10 @@ h2.gx_error {
     height: 14px; }
 
 .maxi-sidebar .components-panel,
-.maxi-popover .components-panel {
+.maxi-popover .components-panel,
+.toolbar-item__popover .components-panel {
   background: transparent;
   border: none; }
-
-.maxi-sidebar .maxi-sizecontrol-control .maxi-sizecontrol-value {
-  width: 20%;
-  height: 31px;
-  -ms-flex: none;
-      flex: none; }
-
-.maxi-sidebar .maxi-sizecontrol-control .components-range-control {
-  width: 100%;
-  -ms-flex: 100% !important;
-      flex: 100% !important;
-  margin-left: 0 !important; }
-
-.maxi-sidebar .maxi-sizecontrol-control .components-base-control__label {
-  -ms-flex: 2 !important;
-      flex: 2 !important; }
-
-.maxi-sidebar .maxi-sizecontrol-control .components-base-control__field {
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap; }
-  .maxi-sidebar .maxi-sizecontrol-control .components-base-control__field > * {
-    margin-left: 4px; }
-  .maxi-sidebar .maxi-sizecontrol-control .components-base-control__field .components-base-control__label,
-  .maxi-sidebar .maxi-sizecontrol-control .components-base-control__field .components-range-control {
-    margin-left: 0 !important; }
-
-/**************************
-* Component Color Indicator
-**************************/
-.maxi-component-color-inidicator {
-  margin: auto; }
-  .maxi-component-color-inidicator span {
-    display: block;
-    width: 28px;
-    height: 28px;
-    margin: auto;
-    border: 2px solid #dddfe1 !important;
-    opacity: 1 !important;
-    margin-right: 8px !important;
-    float: left; }
 
 /************
 * Unit Select
@@ -1916,19 +1900,19 @@ div.maxi-row-block.has-child-selected > div.maxi-row-selector-wrapper {
 */
 .maxi-accordion-control {
   margin: 0px 0 1px 0; }
-  .maxi-accordion-control .maxi-accordion-item {
+  .maxi-accordion-control__item {
     background: none;
     overflow: hidden !important; }
-    .maxi-accordion-control .maxi-accordion-item .maxi-accordion-icon {
+    .maxi-accordion-control__item .maxi-accordion-icon {
       max-width: 24px;
       max-height: 24px; }
-    .maxi-accordion-control .maxi-accordion-item .maxi-accordion-item-panel:not(.disable-padding) {
+    .maxi-accordion-control__item__panel:not(.maxi-accordion-control__item__panel--disable-padding) {
       padding-top: 15px !important;
       padding-left: 12px !important;
       padding-right: 12px !important;
       padding-bottom: 10px !important;
       background-color: #fff; }
-    .maxi-accordion-control .maxi-accordion-item .maxi-accordion-item-button {
+    .maxi-accordion-control__item__button {
       -webkit-box-shadow: 0rem 0rem 0.5rem rgba(33, 33, 33, 0.15);
               box-shadow: 0rem 0rem 0.5rem rgba(33, 33, 33, 0.15);
       position: relative;
@@ -1941,13 +1925,13 @@ div.maxi-row-block.has-child-selected > div.maxi-row-selector-wrapper {
       height: 45px;
       padding: 10px 12px;
       border-top: 2px solid #e8eaeb; }
-      .maxi-accordion-control .maxi-accordion-item .maxi-accordion-item-button:before {
+      .maxi-accordion-control__item__button:before {
         margin-right: 8px; }
-      .maxi-accordion-control .maxi-accordion-item .maxi-accordion-item-button:hover {
+      .maxi-accordion-control__item__button:hover {
         cursor: pointer; }
-      .maxi-accordion-control .maxi-accordion-item .maxi-accordion-item-button[aria-expanded="true"] {
+      .maxi-accordion-control__item__button[aria-expanded="true"] {
         margin-bottom: 0; }
-        .maxi-accordion-control .maxi-accordion-item .maxi-accordion-item-button[aria-expanded="true"]:after {
+        .maxi-accordion-control__item__button[aria-expanded="true"]:after {
           content: url(../img/arrow-right.svg);
           width: 6px;
           position: absolute;
@@ -2004,6 +1988,7 @@ div.maxi-row-block.has-child-selected > div.maxi-row-selector-wrapper {
   .maxi-alignment-control .components-radio-control__option svg {
     display: block;
     height: 100%;
+    width: 20px;
     margin: auto;
     fill: #464a53; }
 /**
@@ -2012,52 +1997,26 @@ div.maxi-row-block.has-child-selected > div.maxi-row-selector-wrapper {
 *
 * Moved common styles to './src/css' 
 */
-.maxi-popover-control .maxi-popover-dropdown {
+.maxi-popover-control__dropdown {
   margin-left: auto;
   margin-right: 5px; }
-
-.maxi-popover .components-popover__content {
-  padding: 20px;
-  min-width: 373px !important;
-  -webkit-box-shadow: 0 46px 133px rgba(150, 176, 203, 0.23) !important;
-          box-shadow: 0 46px 133px rgba(150, 176, 203, 0.23) !important; }
 /**
 * Leave blank due to bug on CGB. Check it on:
 * https://github.com/ahmadawais/create-guten-block/issues/111
 *
 * Moved common styles to './src/css' 
 */
-.maxi-colorcontrol-control .maxi-box-shadow .maxi-colorcontrol-control .maxi-settings-button .components-base-control__field > div {
-  margin-right: 4px; }
-
-.maxi-colorcontrol-control .maxi-box-shadow
-.maxi-colorcontrol-control
-.maxi-settings-button
-.components-base-control__field
-button[type="reset"] {
-  margin-right: 0px; }
-
-.maxi-colorcontrol-control .maxi-box-shadow .maxi-colorcontrol-control .components-base-control__field .components-button.is-secondary {
-  color: black;
-  height: 30px;
-  width: 30px;
-  background-color: white !important;
-  border: 2px solid #dddfe1;
-  border-radius: 5px;
-  -webkit-box-shadow: unset !important;
-          box-shadow: unset !important; }
-
-.maxi-colorcontrol-control .maxi-box-shadow .maxi-colorcontrol-control .components-base-control__field > .components-button.is-secondary {
-  -ms-flex-order: 1;
-      order: 1; }
-
-.maxi-colorcontrol-control .maxi-box-shadow .maxi-colorcontrol-control .components-base-control__field > .components-button.is-secondary svg {
-  width: 12px;
-  height: 12px;
+.maxi-colorcontrol__display {
   margin: auto; }
-
-.maxi-colorcontrol-control .maxi-popover-control {
-  width: 100%; }
+  .maxi-colorcontrol__display span {
+    display: block;
+    width: 28px;
+    height: 28px;
+    margin: auto;
+    border: 2px solid #dddfe1;
+    opacity: 1;
+    margin-right: 8px;
+    float: left; }
 /**
 * Leave blank due to bug on CGB. Check it on:
 * https://github.com/ahmadawais/create-guten-block/issues/111
@@ -2067,11 +2026,10 @@ button[type="reset"] {
 .maxi-mediauploader-control {
   position: relative;
   margin-bottom: 8px; }
-  .maxi-mediauploader-control .maxi-imageuploader-control-replace {
+  .maxi-mediauploader-control__replace {
     display: none; }
-  .maxi-mediauploader-control .maxi-background-control-edit-image,
-  .maxi-mediauploader-control .maxi-background-control-done-edition,
-  .maxi-mediauploader-control .maxi-imageuploader-control-remove {
+  .maxi-mediauploader-control .maxi-background-control__image-edit,
+  .maxi-mediauploader-control .maxi-background-control__done-edition, .maxi-mediauploader-control__remove {
     display: block;
     position: absolute;
     top: 100%;
@@ -2090,10 +2048,10 @@ button[type="reset"] {
     font-size: 13px;
     text-align: center;
     text-decoration: none; }
-  .maxi-mediauploader-control .maxi-background-control-done-edition,
-  .maxi-mediauploader-control .maxi-background-control-edit-image {
+  .maxi-mediauploader-control .maxi-background-control__done-edition,
+  .maxi-mediauploader-control .maxi-background-control__image-edit {
     right: 5%; }
-  .maxi-mediauploader-control .maxi-imageuploader-control-remove {
+  .maxi-mediauploader-control__remove {
     left: 5%; }
 /**
 * Leave blank due to bug on CGB. Check it on:
@@ -2296,16 +2254,16 @@ button[type="reset"] {
   margin-bottom: 8px; }
   .maxi-imagecrop-control .ReactCrop__crop-selection {
     background: transparent; }
-  .maxi-imagecrop-control .maxi-imagecrop-option-controls {
+  .maxi-imagecrop-control__options {
     display: -ms-flexbox;
     display: flex;
     margin: 10px 0; }
-    .maxi-imagecrop-control .maxi-imagecrop-option-controls label {
+    .maxi-imagecrop-control__options label {
       width: 20%;
       margin-right: 5px; }
-      .maxi-imagecrop-control .maxi-imagecrop-option-controls label:last-child {
+      .maxi-imagecrop-control__options label:last-child {
         margin-right: 0; }
-      .maxi-imagecrop-control .maxi-imagecrop-option-controls label input[type=number] {
+      .maxi-imagecrop-control__options label input[type=number] {
         width: 100%; }
 /**
 * Leave blank due to bug on CGB. Check it on:
@@ -2313,154 +2271,30 @@ button[type="reset"] {
 *
 * Moved common styles to './src/css' 
 */
-.maxi-sizecontrol-unit .components-base-control__field {
-  z-index: 100;
-  display: -ms-flexbox;
-  display: flex; }
+.maxi-size-control .maxi-size-control__value {
+  width: 20%;
+  height: 31px;
+  -ms-flex: none;
+      flex: none; }
 
-.maxi-sizecontrol-unit input[type="radio"] {
-  width: 0 !important;
-  height: 0 !important; }
-
-.maxi-sizecontrol-unit .components-radio-control__option input {
-  display: none; }
-
-.maxi-sizecontrol-unit .components-base-control__field .components-radio-control__option:first-child label {
-  border-radius: 4px 0px 0px 4px;
-  overflow: hidden; }
-
-.maxi-sizecontrol-unit .components-base-control__field .components-radio-control__option:last-child label {
-  border-radius: 0px 4px 4px 0px;
-  overflow: hidden; }
-
-.maxi-panel .components-base-control.maxi-sizecontrol-unit .components-base-control__field {
-  margin-bottom: 0 !important;
-  position: unset;
-  top: -1px !important; }
-
-.components-range-control.maxi-sizecontrol-value .components-base-control__field .components-range-control__number {
-  margin-left: auto;
-  max-height: 30px;
-  height: 30px !important;
-  margin-right: 5px;
-  margin-top: -24px; }
-
-.components-range-control.maxi-sizecontrol-value .components-base-control__field button {
-  margin-left: 0 !important;
-  margin-top: -24px; }
-
-.components-range-control.maxi-sizecontrol-value .components-base-control__field label {
-  width: 100%; }
-
-.components-range-control.maxi-sizecontrol-value .components-base-control__field {
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-pack: justify;
-      justify-content: space-between; }
-
-.maxi-sizecontrol-unit .components-base-control__field {
-  z-index: 100;
-  display: -ms-flexbox;
-  display: flex; }
-
-.maxi-sizecontrol-unit .components-base-control__field .components-radio-control__option:first-child label {
-  border-radius: 4px 0px 0px 4px;
-  overflow: hidden; }
-
-.maxi-sizecontrol-unit .components-radio-control__option input:checked + label {
-  color: #464a53 !important;
-  background: #f2f2f2 !important; }
-
-.maxi-sizecontrol-unit .components-radio-control__option label {
-  min-width: 33px;
-  display: block;
-  margin-right: -2px;
-  -ms-flex-pack: center;
-      justify-content: center;
-  line-height: 27px;
-  position: relative;
-  text-align: center;
-  text-shadow: none;
-  font-size: 9pt !important;
-  text-transform: uppercase;
-  top: -1px;
-  height: 30px !important; }
-
-.maxi-sizecontrol-unit .components-base-control__field .components-radio-control__option:last-child label {
-  border-radius: 0px 4px 4px 0px;
-  overflow: hidden; }
-
-.maxi-sizecontrol-value .components-base-control__field {
-  position: relative; }
-
-.maxi-sizecontrol-unit .components-base-control__field {
-  z-index: 100;
-  display: -ms-flexbox;
-  display: flex; }
-
-.maxi-sizecontrol-unit .components-base-control__field .components-radio-control__option:first-child label {
-  border-radius: 4px 0px 0px 4px;
-  overflow: hidden; }
-
-.maxi-sizecontrol-unit .components-radio-control__option input:checked + label {
-  color: #464a53 !important;
-  background: #f2f2f2 !important; }
-
-.maxi-sizecontrol-unit .components-radio-control__option label {
-  border: 1px solid #dddfe1 !important;
-  opacity: 1 !important; }
-
-.maxi-sizecontrol-unit .components-radio-control__option label {
-  min-width: 33px;
-  display: block;
-  margin-right: -2px;
-  font-size: 9pt;
-  -ms-flex-pack: center;
-      justify-content: center;
-  line-height: 30px;
-  position: relative;
-  text-align: center;
-  text-shadow: none;
-  text-transform: uppercase;
-  height: 32px !important;
-  top: -1px;
-  height: 30px !important; }
-
-.maxi-sizecontrol-unit .components-base-control__field .components-radio-control__option:last-child label {
-  border-radius: 0px 4px 4px 0px;
-  overflow: hidden; }
-
-.maxi-controls .components-panel__body {
-  border-top: none; }
-
-.maxi-panel .components-base-control.maxi-sizecontrol-unit .components-base-control__field {
-  margin-bottom: 0 !important;
-  position: unset;
-  top: -1px !important; }
-
-.components-base-control.components-range-control.maxi-sizecontrol-value .components-base-control__field {
-  margin-bottom: 5px !important; }
-
-.components-base-control * {
-  background: none; }
-
-.components-range-control.maxi-sizecontrol-value .components-base-control__field label {
-  width: 100%; }
-
-.components-range-control.maxi-sizecontrol-value .components-base-control__field button {
+.maxi-size-control .components-range-control {
+  width: 100%;
+  -ms-flex: 100% !important;
+      flex: 100% !important;
   margin-left: 0 !important; }
 
-.components-range-control.maxi-sizecontrol-value .components-base-control__field {
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-pack: justify;
-      justify-content: space-between; }
+.maxi-size-control .components-base-control__label {
+  -ms-flex: 2 !important;
+      flex: 2 !important; }
 
-.components-range-control.maxi-sizecontrol-value .components-base-control__field .components-range-control__number {
-  margin-left: auto;
-  max-height: 30px;
-  height: 30px !important;
-  margin-right: 3px; }
+.maxi-size-control .components-base-control__field {
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap; }
+  .maxi-size-control .components-base-control__field > * {
+    margin-left: 4px; }
+  .maxi-size-control .components-base-control__field .components-base-control__label,
+  .maxi-size-control .components-base-control__field .components-range-control {
+    margin-left: 0 !important; }
 /**
 * Leave blank due to bug on CGB. Check it on:
 * https://github.com/ahmadawais/create-guten-block/issues/111
@@ -2588,13 +2422,38 @@ button[type="reset"] {
 *
 * Moved common styles to './src/css' 
 */
-.maxi-checkbox-control .maxi-blocks-checkbox-input {
+.maxi-defaultstyles-control {
+  display: -ms-flexbox;
+  display: flex;
+  margin-bottom: 8px; }
+  .maxi-defaultstyles-control__button {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: center;
+        justify-content: center;
+    width: 100%;
+    margin: 4px;
+    height: 40px;
+    background: #F8F8F8; }
+    .maxi-defaultstyles-control__button:first-of-type {
+      margin-left: 0; }
+    .maxi-defaultstyles-control__button:last-of-type {
+      margin-right: 0; }
+    .maxi-defaultstyles-control__button__icon {
+      width: 40px; }
+/**
+* Leave blank due to bug on CGB. Check it on:
+* https://github.com/ahmadawais/create-guten-block/issues/111
+*
+* Moved common styles to './src/css' 
+*/
+.maxi-checkbox-control__input {
   position: relative;
   width: 23px;
   height: 23px;
   background-color: #00cdff !important;
   border: none !important; }
-  .maxi-checkbox-control .maxi-blocks-checkbox-input:checked:before {
+  .maxi-checkbox-control__input:checked:before {
     content: url("../src/icons/setting-icons/checkbox/checkbox.svg");
     position: absolute;
     top: 50%;
@@ -2605,7 +2464,7 @@ button[type="reset"] {
     margin: auto !important;
     width: 20px;
     height: 20px; }
-  .maxi-checkbox-control .maxi-blocks-checkbox-input:focus {
+  .maxi-checkbox-control__input:focus {
     border: none;
     -webkit-box-shadow: none;
             box-shadow: none; }
@@ -2625,15 +2484,18 @@ button[type="reset"] {
         flex-direction: column-reverse;
     -ms-flex-align: center;
         align-items: center;
-    width: 33%;
+    width: 33.3333%;
     height: 33px !important;
     text-align: center;
-    border: 1px solid #dddfe1; }
+    border: 2px solid #dddfe1;
+    border-right: none; }
+    .maxi-device-control .components-base-control__field .components-radio-control__option:last-child {
+      border-right: 2px solid #dddfe1; }
     .maxi-device-control .components-base-control__field .components-radio-control__option .components-radio-control__input {
       margin: auto;
       display: none; }
       .maxi-device-control .components-base-control__field .components-radio-control__option .components-radio-control__input:checked ~ label {
-        background-color: #00ccff; }
+        background-color: #ff4a17; }
         .maxi-device-control .components-base-control__field .components-radio-control__option .components-radio-control__input:checked ~ label svg path {
           fill: #fff; }
     .maxi-device-control .components-base-control__field .components-radio-control__option label {
@@ -2641,10 +2503,10 @@ button[type="reset"] {
       height: 100%; }
     .maxi-device-control .components-base-control__field .components-radio-control__option svg {
       width: auto;
-      height: 25px;
-      -webkit-transform: translateY(2.5px);
-          -ms-transform: translateY(2.5px);
-              transform: translateY(2.5px); }
+      height: 20px;
+      -webkit-transform: translateY(5px);
+          -ms-transform: translateY(5px);
+              transform: translateY(5px); }
 /**
 * Leave blank due to bug on CGB. Check it on:
 * https://github.com/ahmadawais/create-guten-block/issues/111
@@ -2691,27 +2553,21 @@ button[type="reset"] {
 *
 * Moved common styles to './src/css' 
 */
-.maxi-externalbutton-control {
+.maxi-externalbutton {
   border: 1px solid black; }
-
-.maxi-externalbutton-control .maxi-externalbutton-richtext {
-  display: block; }
-
-.maxi-externalbutton-popover {
-  position: fixed; }
-
-.maxi-externalbutton-popover button {
-  -webkit-box-shadow: none;
-          box-shadow: none;
-  opacity: 0;
-  -webkit-transition: opacity .3s ease-in-out;
-  -o-transition: opacity .3s ease-in-out;
-  transition: opacity .3s ease-in-out;
-  background-color: transparent !important;
-  max-width: 1.5rem; }
-
-.maxi-externalbutton-control:hover .maxi-externalbutton-popover button {
-  opacity: 1; }
+  .maxi-externalbutton__richtext {
+    display: block; }
+  .maxi-externalbutton__popover {
+    position: fixed; }
+    .maxi-externalbutton__popover button {
+      -webkit-box-shadow: none;
+              box-shadow: none;
+      opacity: 0;
+      -webkit-transition: opacity .3s ease-in-out;
+      -o-transition: opacity .3s ease-in-out;
+      transition: opacity .3s ease-in-out;
+      background-color: transparent !important;
+      max-width: 1.5rem; }
 /**
 * Leave blank due to bug on CGB. Check it on:
 * https://github.com/ahmadawais/create-guten-block/issues/111
@@ -2756,10 +2612,11 @@ button[type="reset"] {
 * Moved common styles to './src/css' 
 */
 .maxi-tabs-control {
-  padding-top: 0;
-  margin-bottom: 15px;
   display: -ms-flexbox;
-  display: flex; }
+  display: flex;
+  padding-top: 0; }
+  .maxi-tabs-control:not(.maxi-tabs-control--disable-padding) {
+    margin-bottom: 10px; }
   .maxi-tabs-control .maxi-tab-control__button {
     display: -ms-flexbox;
     display: flex;
@@ -2794,10 +2651,17 @@ button[type="reset"] {
       margin-top: 2px;
       margin-bottom: 10px; }
 
+.maxi-tabs-content:not(.maxi-tabs-content--disable-padding) {
+  padding-top: 12px !important;
+  padding-left: 12px !important;
+  padding-right: 12px !important;
+  padding-bottom: 12px !important;
+  background-color: #fff; }
+
 .maxi-tabs-content .maxi-tab-content {
   display: none; }
   .maxi-tabs-content .maxi-tab-content .maxi-tab-content__box {
-    padding: 20px 10px 15px;
+    padding: 16px 10px 10px;
     background-color: #fff;
     margin-bottom: 10px;
     border-top: 2px solid #e8eaeb;
@@ -2806,7 +2670,7 @@ button[type="reset"] {
       -ms-flex: none;
           flex: none;
       width: 50%; }
-  .maxi-tabs-content .maxi-tab-content.is-selected {
+  .maxi-tabs-content .maxi-tab-content--selected {
     display: block; }
 /**
 * Leave blank due to bug on CGB. Check it on:
@@ -3021,7 +2885,7 @@ button[type="reset"] {
 .maxi-toolbar__popover .components-popover__content {
   background-color: transparent;
   border: none;
-  overflow: hidden;
+  overflow: visible;
   -webkit-box-shadow: none;
           box-shadow: none; }
   .maxi-toolbar__popover .components-popover__content .toolbar-wrapper {
@@ -3031,7 +2895,10 @@ button[type="reset"] {
     width: -moz-min-content;
     width: min-content;
     margin: 0 auto 0.5rem;
-    position: relative; }
+    position: relative;
+    -webkit-box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.2);
+            box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.2);
+    border-radius: 5px; }
     .maxi-toolbar__popover .components-popover__content .toolbar-wrapper:after {
       content: '';
       border-left: 0.5rem solid transparent;
@@ -3051,17 +2918,32 @@ button[type="reset"] {
       width: 2rem;
       height: 2rem;
       background-color: #232533;
-      border-right: 2px solid #616161;
       padding: 0;
       cursor: pointer;
-      border-radius: 0; }
+      border-radius: 0;
+      position: relative;
+      padding-right: 2px; }
+      .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item:after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        right: 0;
+        width: 2px;
+        height: 70%;
+        background-color: #616161;
+        -webkit-transform: translateY(-50%);
+            -ms-transform: translateY(-50%);
+                transform: translateY(-50%);
+        padding-left: 2px; }
       .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item:last-child {
         border-top-right-radius: 5px;
-        border-bottom-right-radius: 5px;
-        border-right: 0; }
+        border-bottom-right-radius: 5px; }
+        .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item:last-child:after {
+          content: none; }
       .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item:first-child {
         border-top-left-radius: 5px;
-        border-bottom-left-radius: 5px; }
+        border-bottom-left-radius: 5px;
+        padding-left: 2px; }
       .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item__dropdown > button {
         display: block;
         width: 100%;

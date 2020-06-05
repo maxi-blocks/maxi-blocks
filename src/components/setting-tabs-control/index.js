@@ -1,7 +1,6 @@
 /**
  * WordPress dependencies
  */
-const { __ } = wp.i18n;
 const {
     Fragment,
     useState
@@ -25,23 +24,36 @@ import './editor.scss';
  */
 const SettingTabsControl = props => {
 
-    const { items } = props;
+    const {
+        items,
+        disablePadding = false
+    } = props;
 
     const [tab, setTab] = useState(0);
 
+    const classesControl = classnames(
+        'maxi-tabs-control',
+        !disablePadding ?
+            'maxi-tabs-control--disable-padding' :
+            ''
+    )
+
     const classesContent = classnames(
-        "maxi-tabs-content"
+        'maxi-tabs-content',
+        disablePadding ?
+            'maxi-tabs-content--disable-padding' :
+            ''
     );
 
     return (
         <Fragment>
             <div
-                className="maxi-tabs-control"
+                className={classesControl}
             >
                 {
                     items.map((item, i) => (
                         <Button
-                            className="maxi-tab-control__button"
+                            className='maxi-tab-control__button'
                             onClick={() => setTab(i)}
                             aria-pressed={tab === i}
                         >
@@ -56,8 +68,8 @@ const SettingTabsControl = props => {
                 {
                     items.map((item, i) => {
                         const classesItemContent = classnames(
-                            "maxi-tab-content",
-                            tab === i ? 'is-selected' : ''
+                            'maxi-tab-content',
+                            tab === i ? 'maxi-tab-content--selected' : ''
                         )
 
                         return (

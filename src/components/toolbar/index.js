@@ -60,8 +60,13 @@ const MaxiToolbar = () => {
 
     const anchorRef = document.getElementById(`block-${clientId}`);
 
-    if(document.getElementsByClassName('maxi-toolbar__popover').length > 1)
-        return null;
+    // if(document.querySelectorAll('.maxi-toolbar__popover').length > 1)
+    //     Array.from(document.querySelectorAll('.maxi-toolbar__popover')).map( el => {
+    //         if(el === anchorRef) {
+    //             console.log('no');
+    //             return null
+    //         }
+    //     })
 
     return (
         <Fragment>

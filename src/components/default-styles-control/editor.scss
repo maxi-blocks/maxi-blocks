@@ -6,8 +6,9 @@
         display: flex;
         justify-content: center;
         width: 100%;
-        margin: 4px;        
-        border: 2px solid #BBBBBB;
+        margin: 4px;
+        height: 40px;
+        // border: 2px solid #BBBBBB;
         background: #F8F8F8;
 
         &:first-of-type {
@@ -19,7 +20,7 @@
         }
 
         &__icon {
-            margin: auto;
+            width: 40px;
         }
     }
 }

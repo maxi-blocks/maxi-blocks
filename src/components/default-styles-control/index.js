@@ -15,7 +15,12 @@ import classnames from 'classnames';
  * Styles and icons
  */
 import './editor.scss';
-import { toolbarReplaceImage } from '../../icons';
+import {
+    styleNone,
+    dashed,
+    dotted,
+    solid
+} from '../../icons';
 
 /**
  * Component
@@ -24,7 +29,6 @@ const DefaultStylesControl = props => {
 
     const {
         className,
-        onChangeDefault,
         items,
     } = props;
 
@@ -37,15 +41,6 @@ const DefaultStylesControl = props => {
         <div
             className={classes}
         >
-            <Button
-                className='maxi-defaultstyles-control__button'
-                onClick={onChangeDefault}
-            >
-                <Icon
-                    className='maxi-defaultstyles-control__button__icon'
-                    icon={toolbarReplaceImage}
-                />
-            </Button>
             {
                 items.map(item => {
                     const classesItem = classnames(

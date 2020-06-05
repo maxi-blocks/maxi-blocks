@@ -1,0 +1,19 @@
+.maxi-shadow-control{
+    &__default {
+        width: 2rem;
+        height: 1rem;
+        background: #fff;
+
+        &__total {
+            box-shadow: 0px 0px 10px 0px #A2A2A2;
+        }
+
+        &__bottom {
+            box-shadow: 0px 7px 15px -2px #A2A2A2,
+        }
+
+        &__solid {
+            box-shadow: 2.5px 5px 0px 0px #A2A2A2,
+        }
+    }
+}

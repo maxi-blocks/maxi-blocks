@@ -2447,6 +2447,25 @@ div.maxi-row-block.has-child-selected > div.maxi-row-selector-wrapper {
 *
 * Moved common styles to './src/css' 
 */
+.maxi-shadow-control__default {
+  width: 2rem;
+  height: 1rem;
+  background: #fff; }
+  .maxi-shadow-control__default__total {
+    -webkit-box-shadow: 0px 0px 10px 0px #A2A2A2;
+            box-shadow: 0px 0px 10px 0px #A2A2A2; }
+  .maxi-shadow-control__default__bottom {
+    -webkit-box-shadow: 0px 7px 15px -2px #A2A2A2;
+            box-shadow: 0px 7px 15px -2px #A2A2A2; }
+  .maxi-shadow-control__default__solid {
+    -webkit-box-shadow: 2.5px 5px 0px 0px #A2A2A2;
+            box-shadow: 2.5px 5px 0px 0px #A2A2A2; }
+/**
+* Leave blank due to bug on CGB. Check it on:
+* https://github.com/ahmadawais/create-guten-block/issues/111
+*
+* Moved common styles to './src/css' 
+*/
 .maxi-checkbox-control__input {
   position: relative;
   width: 23px;
@@ -2690,29 +2709,25 @@ div.maxi-row-block.has-child-selected > div.maxi-row-selector-wrapper {
 *
 * Moved common styles to './src/css' 
 */
-.toolbar-item__popover .components-base-control__field {
-  color: #fff; }
-  .toolbar-item__popover .components-base-control__field .components-range-control__slider + span {
-    background: #80828a !important; }
-  .toolbar-item__popover .components-base-control__field .components-range-control__track + span span {
-    background-color: #fff !important; }
-  .toolbar-item__popover .components-base-control__field .components-range-control__tooltip {
-    border: 2px solid #80828a;
-    background-color: #232433;
-    color: #80828a; }
-    .toolbar-item__popover .components-base-control__field .components-range-control__tooltip:after {
-      border-top-color: #80828a; }
-  .toolbar-item__popover .components-base-control__field .components-range-control__number {
-    background-color: transparent;
-    color: #fff;
-    border-color: #80828a !important; }
-  .toolbar-item__popover .components-base-control__field .components-button.is-secondary {
-    background-color: transparent;
-    border-color: #80828a !important; }
-    .toolbar-item__popover .components-base-control__field .components-button.is-secondary:hover {
-      background-color: transparent !important; }
-    .toolbar-item__popover .components-base-control__field .components-button.is-secondary svg {
-      fill: #fff !important; }
+.toolbar-item__box-shadow__icon {
+  border: 1px solid #fff; }
+/**
+* Leave blank due to bug on CGB. Check it on:
+* https://github.com/ahmadawais/create-guten-block/issues/111
+*
+* Moved common styles to './src/css' 
+*/
+.maxi-shadow-control__default__total {
+  -webkit-box-shadow: 0px 0px 10px 0px #000;
+          box-shadow: 0px 0px 10px 0px #000; }
+
+.maxi-shadow-control__default__bottom {
+  -webkit-box-shadow: 0px 7px 15px -2px #000;
+          box-shadow: 0px 7px 15px -2px #000; }
+
+.maxi-shadow-control__default__solid {
+  -webkit-box-shadow: 2.5px 5px 0px 0px #000;
+          box-shadow: 2.5px 5px 0px 0px #000; }
 /**
 * Leave blank due to bug on CGB. Check it on:
 * https://github.com/ahmadawais/create-guten-block/issues/111
@@ -2746,6 +2761,8 @@ div.maxi-row-block.has-child-selected > div.maxi-row-selector-wrapper {
       margin-left: 0; }
     .toolbar-item__popover__dropdown-options__button:last-of-type {
       margin-right: 0; }
+    .toolbar-item__popover__dropdown-options__button:hover {
+      color: inherit; }
 /**
 * Leave blank due to bug on CGB. Check it on:
 * https://github.com/ahmadawais/create-guten-block/issues/111
@@ -2918,7 +2935,7 @@ div.maxi-row-block.has-child-selected > div.maxi-row-selector-wrapper {
             box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.2);
     border-radius: 5px; }
     .maxi-toolbar__popover .components-popover__content .toolbar-wrapper:after {
-      content: '';
+      content: "";
       border-left: 0.5rem solid transparent;
       border-right: 0.5rem solid transparent;
       border-top: 0.5rem solid #232533;
@@ -2942,7 +2959,7 @@ div.maxi-row-block.has-child-selected > div.maxi-row-selector-wrapper {
       position: relative;
       padding-right: 2px; }
       .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item:after {
-        content: '';
+        content: "";
         position: absolute;
         top: 50%;
         right: 0;
@@ -2980,6 +2997,30 @@ div.maxi-row-block.has-child-selected > div.maxi-row-selector-wrapper {
   border-left-color: transparent !important;
   border-right-color: transparent !important; }
 
+.toolbar-item__popover .components-base-control__field {
+  color: #fff; }
+  .toolbar-item__popover .components-base-control__field .components-range-control__slider + span {
+    background: #80828a !important; }
+  .toolbar-item__popover .components-base-control__field .components-range-control__track + span span {
+    background-color: #fff !important; }
+  .toolbar-item__popover .components-base-control__field .components-range-control__tooltip {
+    border: 2px solid #80828a;
+    background-color: #232433;
+    color: #80828a; }
+    .toolbar-item__popover .components-base-control__field .components-range-control__tooltip:after {
+      border-top-color: #80828a; }
+  .toolbar-item__popover .components-base-control__field .components-range-control__number {
+    background-color: transparent;
+    color: #fff;
+    border-color: #80828a !important; }
+  .toolbar-item__popover .components-base-control__field .components-button.is-secondary {
+    background-color: transparent;
+    border-color: #80828a !important; }
+    .toolbar-item__popover .components-base-control__field .components-button.is-secondary:hover {
+      background-color: transparent !important; }
+    .toolbar-item__popover .components-base-control__field .components-button.is-secondary svg {
+      fill: #fff !important; }
+
 .toolbar-item__popover .components-popover__content {
   background-color: #232433;
   border-radius: 5px;
@@ -2991,6 +3032,18 @@ div.maxi-row-block.has-child-selected > div.maxi-row-selector-wrapper {
   display: flex;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap; }
+
+.toolbar-item__popover .maxi-defaultstyles-control__button {
+  background: #545660;
+  border: 1px solid #fff; }
+  .toolbar-item__popover .maxi-defaultstyles-control__button:focus {
+    outline: none;
+    -webkit-box-shadow: none;
+            box-shadow: none; }
+  .toolbar-item__popover .maxi-defaultstyles-control__button svg {
+    fill: #fff; }
+  .toolbar-item__popover .maxi-defaultstyles-control__button:not(:first-of-type) svg path {
+    stroke: #fff; }
 /**
 * Leave blank due to bug on CGB. Check it on:
 * https://github.com/ahmadawais/create-guten-block/issues/111
@@ -3033,25 +3086,33 @@ figure.maxi-image-block > button.maxi-imageupload-button {
 
 figure.maxi-image-block > div.maxi-image-block-resizer > div.maxi-image-block-settings {
   position: absolute;
-  width: 3rem;
-  height: 3rem;
-  top: 5%;
-  left: calc(95% - 3rem); }
+  width: 2rem;
+  height: 2rem;
+  top: 2.5%;
+  left: 97.5%;
+  -webkit-transform: translateX(-50%);
+      -ms-transform: translateX(-50%);
+          transform: translateX(-50%); }
   figure.maxi-image-block > div.maxi-image-block-resizer > div.maxi-image-block-settings > button.maxi-image-block-upload-button {
     width: 100%;
     height: 100%;
-    background: #000;
+    background: #232533;
     opacity: 0;
     visibility: hidden;
     -webkit-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
-    transition: all 0.5s ease; }
+    transition: all 0.5s ease;
+    padding: 8px; }
     figure.maxi-image-block > div.maxi-image-block-resizer > div.maxi-image-block-settings > button.maxi-image-block-upload-button svg {
-      fill: #fff; }
+      fill: #fff;
+      width: 20px;
+      height: 20px; }
 
 figure.maxi-image-block > div.maxi-image-block-resizer:hover > div.maxi-image-block-settings > button.maxi-image-block-upload-button {
-  opacity: 1;
+  opacity: 0.6;
   visibility: visible; }
+  figure.maxi-image-block > div.maxi-image-block-resizer:hover > div.maxi-image-block-settings > button.maxi-image-block-upload-button:hover {
+    opacity: 1; }
 
 figure.maxi-image-block img {
   display: block;

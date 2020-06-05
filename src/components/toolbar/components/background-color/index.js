@@ -13,11 +13,6 @@ const {
 } = wp.data;
 
 /**
- * Icons
- */
-import { toolbarStyle } from '../../../../icons';
-
-/**
  * BackgroundColor
  */
 const BackgroundColor = props => {
@@ -70,10 +65,13 @@ const BackgroundColor = props => {
                     aria-expanded={isOpen}
                     action="popup"
                 >
-                    <Icon
+                    <div
                         className='toolbar-item__icon'
-                        icon={toolbarStyle}
-                    />
+                        style={{
+                            background: background.colorOptions.color,
+                            border: '1px solid #fff'
+                        }}
+                    ></div>
                 </Button>
             )}
             popoverProps={

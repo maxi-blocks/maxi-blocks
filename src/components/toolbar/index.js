@@ -11,6 +11,7 @@ const { Fragment } = wp.element;
 import {
     Alignment,
     BackgroundColor,
+    Border,
     BoxShadow,
     Mover,
     ColumnPattern,
@@ -60,14 +61,6 @@ const MaxiToolbar = () => {
 
     const anchorRef = document.getElementById(`block-${clientId}`);
 
-    // if(document.querySelectorAll('.maxi-toolbar__popover').length > 1)
-    //     Array.from(document.querySelectorAll('.maxi-toolbar__popover')).map( el => {
-    //         if(el === anchorRef) {
-    //             console.log('no');
-    //             return null
-    //         }
-    //     })
-
     return (
         <Fragment>
             {
@@ -81,7 +74,6 @@ const MaxiToolbar = () => {
                     anchorRef={anchorRef}
                     className="maxi-toolbar__popover"
                     uniqueID={uniqueID}
-                    // __unstableBoundaryParent
                     __unstableSticky={true}
                     __unstableSlotName="block-toolbar"
                     shouldAnchorIncludePadding
@@ -99,6 +91,9 @@ const MaxiToolbar = () => {
                             clientId={clientId}
                         />
                         <BackgroundColor
+                            clientId={clientId}
+                        />
+                        <Border
                             clientId={clientId}
                         />
                         <ImageSize

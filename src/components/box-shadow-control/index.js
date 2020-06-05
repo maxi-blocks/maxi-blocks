@@ -2,8 +2,11 @@
  * Wordpress dependencies
  */
 const { __ } = wp.i18n;
-const { RangeControl } = wp.components;
 const { useSelect } = wp.data;
+const {
+    RangeControl,
+    Icon
+} = wp.components;
 
 /**
  * Internal dependencies
@@ -23,10 +26,16 @@ import {
 import classnames from 'classnames';
 
 /**
+ * Styles and icons
+ */
+import './editor.scss';
+import { styleNone } from '../../icons';
+
+/**
  * Component
  */
 const BoxShadowControl = props => {
-    const { 
+    const {
         boxShadowOptions,
         onChange,
         className
@@ -44,8 +53,8 @@ const BoxShadowControl = props => {
         []
     )
 
-    let value = typeof boxShadowOptions === 'object' ? 
-        boxShadowOptions : 
+    let value = typeof boxShadowOptions === 'object' ?
+        boxShadowOptions :
         JSON.parse(boxShadowOptions);
     const classes = classnames(
         'maxi-shadow-control',
@@ -64,42 +73,35 @@ const BoxShadowControl = props => {
                 items={[
                     {
                         content: (
+                            <Icon
+                                className='maxi-defaultstyles-control__button__icon'
+                                icon={styleNone}
+                            />
+                        ),
+                        onChange: () => onChange(getDefaultProp(clientId, 'border'))
+                    },
+                    {
+                        content: (
                             <div
-                                style={{
-                                    width: '2rem',
-                                    height: '1rem',
-                                    boxShadow: '0px 0px 10px 0px #A2A2A2',
-                                    background: '#fff'
-                                }}
-                            >
-                                </div>
+                                className='maxi-shadow-control__default maxi-shadow-control__default__total'
+                            ></div>
                         ),
                         onChange: () => onChange(JSON.stringify(boxShadowTotal))
 
                     },
                     {
                         content: (
-                            <hr
-                                style={{
-                                    width: '2rem',
-                                    height: '1rem',
-                                    boxShadow: '0px 7px 15px -2px #A2A2A2',
-                                    background: '#fff'
-                                }}
-                            />
+                            <div
+                                className='maxi-shadow-control__default maxi-shadow-control__default__bottom'
+                            ></div>
                         ),
                         onChange: () => onChange(JSON.stringify(boxShadowBottom))
                     },
                     {
                         content: (
-                            <hr
-                                style={{
-                                    width: '2rem',
-                                    height: '1rem',
-                                    boxShadow: '2.5px 5px 0px 0px #A2A2A2',
-                                    background: '#fff'
-                                }}
-                            />
+                            <div
+                                className='maxi-shadow-control__default maxi-shadow-control__default__solid'
+                            ></div>
                         ),
                         onChange: () => onChange(JSON.stringify(boxShadowSolid))
                     },

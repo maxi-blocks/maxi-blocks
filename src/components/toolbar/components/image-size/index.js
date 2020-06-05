@@ -102,12 +102,12 @@ const ImageSize = props => {
         const button = wrapperElement.querySelector('.maxi-accordion-control__item__button');
         const content = wrapperElement.querySelector('.maxi-accordion-control__item__panel');
 
-        Array.from(document.getElementsByClassName('maxi-accordion-control__item__button')).map ( el => {
-            if(el.getAttribute('aria-expanded'))
+        Array.from(document.getElementsByClassName('maxi-accordion-control__item__button')).map(el => {
+            if (el.getAttribute('aria-expanded'))
                 el.setAttribute('aria-expanded', false)
         })
-        Array.from(document.getElementsByClassName('maxi-accordion-control__item__panel')).map ( el => {
-            if(!el.getAttribute('hidden'))
+        Array.from(document.getElementsByClassName('maxi-accordion-control__item__panel')).map(el => {
+            if (!el.getAttribute('hidden'))
                 el.setAttribute('hidden', '')
         })
 
@@ -117,6 +117,18 @@ const ImageSize = props => {
         })
         button.setAttribute('aria-expanded', true)
         content.removeAttribute('hidden');
+
+        if (item === 'sizing')
+            updateBlockAttributes(
+                clientId,
+                { size: 'custom' }
+            )
+
+        if (item === 'caption')
+            updateBlockAttributes(
+                clientId,
+                { captionType: 'custom' }
+            )
     }
 
     return (

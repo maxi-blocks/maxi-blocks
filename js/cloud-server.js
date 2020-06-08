@@ -6,9 +6,41 @@ if (typeof ajaxurl === 'undefined') { ajaxurl = gx_wl_options_for_js.gx_ajax_url
 
 
 jQuery(document).ready(function($) {
+  console.log('START');
+  function isEmpty(obj) {
+      for(var key in obj) {
+          if(obj.hasOwnProperty(key))
+              return false;
+      }
+      return true;
+  }
+  let rb_to_send_final = '';
+  wp.data.subscribe(function () {
+    var isSavingPost = wp.data.select('core/editor').isSavingPost();
+    var isAutosavingPost = wp.data.select('core/editor').isAutosavingPost();
+
+    if (!isSavingPost && !isAutosavingPost) {
+
+    let rb_to_send = '';
+    let maxi_reusable_blocks = wp.data.select( 'core' ).getEntityRecords( 'postType', 'wp_block' );
+    if(!isEmpty(maxi_reusable_blocks)) {
+     //console.log('maxi_reusable_blocks: '+maxi_reusable_blocks);
+     for (let [key, value] of Object.entries(maxi_reusable_blocks)) {
+      if (!isEmpty(value) && ~value.title.raw.indexOf(' ')) {
+        let rb_id = value.title.raw.split(' ').pop().trim();
+        if (~rb_id.indexOf('-')) {
+         // console.log(rb_id);
+          rb_to_send = rb_to_send + ' ' + rb_id;
+        }
+      }
+     }
+    // console.log('rb_to_send '+rb_to_send);
+    }
+    rb_to_send_final = rb_to_send;
+  }
+  });
     // main function
 
-    console.log('START');
     $('.components-button.maxi-block-library__modal-button').live('click', function() {
       console.log('button clicked');
       setTimeout(function(){
@@ -33,9 +65,18 @@ jQuery(document).ready(function($) {
              // console.log('success data:');
              // console.log(data);
               let gx_sp_enable = $.trim(data + '');
-              if (gx_sp_enable === 'enabled') { frame.contentWindow.postMessage('pro_membership_activated', '*'); } else { frame.contentWindow.postMessage('pro_membership_dectivated', '*'); }
+              if (gx_sp_enable === 'enabled') {
+                frame.contentWindow.postMessage('pro_membership_activated', '*');
+              }
+              else {
+                frame.contentWindow.postMessage('pro_membership_dectivated', '*');
+              }
+
+              if(rb_to_send_final !== '') frame.contentWindow.postMessage('imported:'+rb_to_send_final, '*');
             }
         });
+
+      //  frame.contentWindow.postMessage(, '*');
         // function to get post id from the url parameter 'post'
         function getUrlVars() {
           let lets = [],
@@ -61,7 +102,8 @@ jQuery(document).ready(function($) {
 
       // Listen to message from child window
         eventer(messageEvent, function(e) {
-        if (e.origin === 'https://ge-library.dev700.com') {
+          console.log('e.origin: '+e.origin);
+        if (e.origin === 'https://ge-library.dev700.com') { //'https://ge-library.dev700.com
             let response;
            //console.log('jQuery.type(e.data) '+jQuery.type(e.data) );
             if (jQuery.type(e.data) === 'object') { // check if the response is text
@@ -215,9 +257,6 @@ jQuery(document).ready(function($) {
                                       console.log('Error: no action to do');
                                     }
 
-
-                                      //  ddd_full_stop = 1;
-                                    // console.log(data);
                                 },
                                 error: function(data) {
                                     console.log('AJAX error');

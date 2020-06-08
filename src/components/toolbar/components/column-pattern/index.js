@@ -31,7 +31,7 @@ import {
  * Styles and icons
  */
 import './editor.scss';
-import { toolbarStyle } from '../../../../icons';
+import { toolbarColumnPattern } from '../../../../icons';
 
 /**
  * Column patterns
@@ -160,7 +160,7 @@ const ColumnPatterns = props => {
                 >
                     <Icon
                         className='toolbar-item__icon'
-                        icon={toolbarStyle}
+                        icon={toolbarColumnPattern}
                     />
                 </Button>
             )}

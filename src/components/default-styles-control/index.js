@@ -1,10 +1,7 @@
 /**
  * WordPress dependencies
  */
-const {
-    Button,
-    Icon
-} = wp.components;
+const { Button } = wp.components;
 
 /**
  * External dependencies
@@ -15,12 +12,6 @@ import classnames from 'classnames';
  * Styles and icons
  */
 import './editor.scss';
-import {
-    styleNone,
-    dashed,
-    dotted,
-    solid
-} from '../../icons';
 
 /**
  * Component

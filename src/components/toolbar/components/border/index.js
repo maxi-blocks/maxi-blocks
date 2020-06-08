@@ -5,7 +5,6 @@ const {
     Icon,
     Dropdown,
     Button,
-    ColorPicker
 } = wp.components;
 const {
     useSelect,
@@ -13,79 +12,83 @@ const {
 } = wp.data;
 
 /**
- * BackgroundColor
+ * Internal dependencies
  */
-const BackgroundColor = props => {
+import BorderControl from '../../../border-control';
+
+/**
+ * Styles
+ */
+import './editor.scss';
+
+/**
+ * Border
+ */
+const ALLOWED_BLOCKS = [
+    'maxi-blocks/text-maxi',
+    'maxi-blocks/button-maxi',
+    'maxi-blocks/image-maxi',
+    'maxi-blocks/divider-maxi'
+]
+
+const Border = props => {
     const { clientId } = props;
 
-    const { blockName, rawBackground } = useSelect(
+    const { blockName, border } = useSelect(
         (select) => {
             const { getBlockName, getBlockAttributes } = select(
                 'core/block-editor',
             );
             return {
                 blockName: getBlockName(clientId),
-                rawBackground: getBlockAttributes(clientId).background,
+                border: getBlockAttributes(clientId).border,
             };
         },
         [clientId]
     );
 
+    if (!ALLOWED_BLOCKS.includes(blockName))
+        return null;
+
     const { updateBlockAttributes } = useDispatch(
         'core/block-editor'
     );
 
-    if (blockName === 'maxi-blocks/divider-maxi')
-        return null;
-
-    let background = JSON.parse(rawBackground);
-
-    const updateBackground = val => {
-        background.colorOptions.color = returnColor(val)
-
-        updateBlockAttributes(
-            clientId,
-            {
-                background: JSON.stringify(background)
-            }
-        )
-    }
-
-    const returnColor = val => {
-        return `rgba(${val.rgb.r},${val.rgb.g},${val.rgb.b},${val.rgb.a})`;
-    }
+    const value = typeof border != 'object' ? JSON.parse(border) : border;
 
     return (
         <Dropdown
             className='toolbar-item toolbar-item__dropdown'
             renderToggle={({ isOpen, onToggle }) => (
                 <Button
-                    className='toolbar-item__text-options'
+                    className='toolbar-item__box-shadow'
                     onClick={onToggle}
                     aria-expanded={isOpen}
                     action="popup"
                 >
                     <div
-                        className='toolbar-item__icon'
+                        className='toolbar-item__icon toolbar-item__box-shadow__icon'
                         style={{
-                            background: background.colorOptions.color,
-                            border: '1px solid #fff'
+                            borderStyle: value.general['border-style']
                         }}
                     ></div>
                 </Button>
             )}
             popoverProps={
                 {
-                    className: 'toolbar-item__popover',
+                    className: 'toolbar-item__popover toolbar-item__box-shadow__popover',
                     noArrow: false,
-                    position: 'center'
+                    position: 'top center'
                 }
             }
             renderContent={
                 () => (
-                    <ColorPicker
-                        color={background.colorOptions.color}
-                        onChangeComplete={val => updateBackground(val)}
+                    <BorderControl
+                        borderOptions={JSON.parse(border)}
+                        onChange={border => updateBlockAttributes(
+                            clientId,
+                            { border }
+                        )}
                     />
                 )
             }
@@ -94,4 +97,4 @@ const BackgroundColor = props => {
     )
 }
 
-export default BackgroundColor;
+export default Border;

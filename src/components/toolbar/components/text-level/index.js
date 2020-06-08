@@ -21,16 +21,18 @@ import { toolbarSettings } from '../../../../icons';
  * TextLevel
  */
 const TextLevel = props => {
-    const { clientId } = props;
+    const { 
+        clientId,
+        blockName,
+        rawTypography
+    } = props;
 
-    const { blockName, rawTypography, textLevel } = useSelect(
+    const { textLevel } = useSelect(
         (select) => {
-            const { getBlockName, getBlockAttributes } = select(
+            const { getBlockAttributes } = select(
                 'core/block-editor',
             );
             return {
-                blockName: getBlockName(clientId),
-                rawTypography: getBlockAttributes(clientId).typography,
                 textLevel: getBlockAttributes(clientId).textLevel,
             };
         },

@@ -1,0 +1,22 @@
+.toolbar-item__popover__dropdown-options{
+    display: flex;
+
+    &__button {
+        display: block;
+        background: #fff;
+        width: 100%;
+        margin: 0 4px;
+
+        &:first-of-type {
+            margin-left: 0;
+        }
+
+        &:last-of-type {
+            margin-right: 0;
+        }
+
+        &:hover {
+            color: inherit;
+        }
+    }
+}

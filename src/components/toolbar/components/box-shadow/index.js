@@ -20,10 +20,10 @@ import BoxShadowControl from '../../../box-shadow-control';
  * Icons
  */
 import './editor.scss';
-import { toolbarStyle } from '../../../../icons';
+import { toolbarDropShadow } from '../../../../icons';
 
 /**
- * PaddingMargin
+ * BoxShadow
  */
 const ALLOWED_BLOCKS = [
     'maxi-blocks/text-maxi',
@@ -32,7 +32,7 @@ const ALLOWED_BLOCKS = [
     'maxi-blocks/divider-maxi'
 ]
 
-const PaddingMargin = props => {
+const BoxShadow = props => {
     const { clientId } = props;
 
     const { blockName, boxShadow } = useSelect(
@@ -67,7 +67,7 @@ const PaddingMargin = props => {
                 >
                     <Icon
                         className='toolbar-item__icon'
-                        icon={toolbarStyle}
+                        icon={toolbarDropShadow}
                     />
                 </Button>
             )}
@@ -94,4 +94,4 @@ const PaddingMargin = props => {
     )
 }
 
-export default PaddingMargin;
+export default BoxShadow;

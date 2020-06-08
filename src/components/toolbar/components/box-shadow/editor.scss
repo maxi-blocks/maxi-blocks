@@ -1,49 +1,15 @@
-.toolbar-item__popover {
-    .components-base-control {
-        &__field {
-            color: #fff;
+.maxi-shadow-control{
+    &__default {
+        &__total {
+            box-shadow: 0px 0px 10px 0px #000;
+        }
 
-            .components-range-control__slider {
-                & + span {
-                    background: #80828a !important;
-                }
-            }
-            .components-range-control__track {
-                & + span {
-                    span {
-                        background-color: #fff !important;
-                    }
-                }
-            }
-            .components-range-control__tooltip {
-                border: 2px solid #80828a;
-                background-color: #232433;
-                color: #80828a;
+        &__bottom {
+            box-shadow: 0px 7px 15px -2px #000,
+        }
 
-                &:after {
-                    border-top-color: #80828a;
-                }
-            }
-
-            .components-range-control__number {
-                background-color: transparent;
-                color: #fff;
-                border-color: #80828a !important;
-            }
-
-            .components-button {
-                &.is-secondary {
-                    background-color: transparent;
-                    border-color: #80828a !important;
-
-                    &:hover {
-                        background-color: transparent !important;
-                    }
-                    svg {
-                        fill: #fff !important;
-                    }
-                }
-            }
+        &__solid {
+            box-shadow: 2.5px 5px 0px 0px #000,
         }
     }
 }

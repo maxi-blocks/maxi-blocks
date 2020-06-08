@@ -11,21 +11,25 @@ figure.maxi-image-block {
 	> div.maxi-image-block-resizer {
 		> div.maxi-image-block-settings {
 			position: absolute;
-			width: 3rem;
-			height: 3rem;
-			top: 5%;
-			left: calc(95% - 3rem);
+			width: 2rem;
+			height: 2rem;
+			top: 2.5%;
+			left: 95%;
+			transform: translateX(-100%);
 
 			> button.maxi-image-block-upload-button {
 				width: 100%;
 				height: 100%;
-				background: #000;
+				background: #232533;
 				opacity: 0;
 				visibility: hidden;
 				transition: all 0.5s ease;
+				padding: 8px;
 
 				svg {
 					fill: #fff;
+					width: 20px;
+					height: 20px;
 				}
 			}
 		}
@@ -33,8 +37,12 @@ figure.maxi-image-block {
 		&:hover {
 			> div.maxi-image-block-settings {
 				> button.maxi-image-block-upload-button {
-					opacity: 1;
+					opacity: 0.6;
 					visibility: visible;
+
+					&:hover {
+						opacity: 1;
+					}
 				}
 			}
 		}
@@ -49,7 +57,7 @@ figure.maxi-image-block {
 		width: 100%;
 	}
 
-	.maxi-image-block-resizer{
+	.maxi-image-block-resizer {
 		.components-resizable-box__handle {
 			display: none;
 			visibility: hidden;
@@ -65,5 +73,5 @@ figure.maxi-image-block {
 				visibility: visible;
 			}
 		}
-	}	
+	}
 }

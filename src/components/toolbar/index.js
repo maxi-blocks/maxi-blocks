@@ -2,16 +2,8 @@
  * WordPress dependencies
  */
 const { Popover } = wp.components;
-const { useBlockEditContext } = wp.blockEditor;
-const {
-    Fragment,
-    useEffect,
-    useState
-} = wp.element;
-/**
- * External dependencies
- */
-import { isNil } from 'lodash';
+const { useSelect } = wp.data;
+const { Fragment } = wp.element;
 
 /**
  * Utils
@@ -19,6 +11,7 @@ import { isNil } from 'lodash';
 import {
     Alignment,
     BackgroundColor,
+    Border,
     BoxShadow,
     Mover,
     ColumnPattern,
@@ -26,7 +19,9 @@ import {
     Link,
     Delete,
     ImageSize,
+    TextBold,
     TextColor,
+    TextItalic,
     TextLevel,
     TextOptions,
     PaddingMargin
@@ -41,33 +36,47 @@ import './editor.scss';
  * Component
  */
 const MaxiToolbar = () => {
-    const {
-        clientId,
-        isSelected
-    } = useBlockEditContext();
-
-    const [anchorRef, setAnchorRef] = useState(document.getElementById(`block-${clientId}`));
-
-    useEffect(
-        () => {
-            if (isNil(anchorRef))
-                setAnchorRef(document.getElementById(`block-${clientId}`))
+    const { clientId, blockName, uniqueID, rawTypography } = useSelect(
+        select => {
+            const { 
+                getSelectedBlockClientId,
+                getBlockName, 
+                getBlockAttributes
+            } = select(
+                'core/block-editor'
+            )
+            const clientId = getSelectedBlockClientId();
+            const blockName = clientId ? getBlockName(clientId) : '';
+            const rawTypography = clientId ? getBlockAttributes(clientId).typography : {};
+            const uniqueID = clientId ? getBlockAttributes(clientId).uniqueID : '';
+            return {
+                clientId,
+                blockName,
+                rawTypography,
+                uniqueID
+            }
         },
-        [anchorRef]
-    );
+        []
+    )
+
+    const anchorRef = document.getElementById(`block-${clientId}`);
 
     return (
         <Fragment>
             {
-                isSelected &&
+                clientId &&
                 anchorRef &&
                 <Popover
                     noArrow
                     animate={false}
-                    position='top right'
+                    position='top center right'
                     focusOnMount={false}
                     anchorRef={anchorRef}
                     className="maxi-toolbar__popover"
+                    uniqueID={uniqueID}
+                    __unstableSticky={true}
+                    __unstableSlotName="block-toolbar"
+                    shouldAnchorIncludePadding
                 >
                     <div
                         className='toolbar-wrapper'
@@ -84,17 +93,36 @@ const MaxiToolbar = () => {
                         <BackgroundColor
                             clientId={clientId}
                         />
+                        <Border
+                            clientId={clientId}
+                        />
                         <ImageSize
                             clientId={clientId}
                         />
                         <TextOptions
                             clientId={clientId}
+                            blockName={blockName}
+                            rawTypography={rawTypography}
+                        />
+                        <TextBold
+                            clientId={clientId}
+                            blockName={blockName}
+                            rawTypography={rawTypography}
+                        />
+                        <TextItalic
+                            clientId={clientId}
+                            blockName={blockName}
+                            rawTypography={rawTypography}
                         />
                         <TextColor
                             clientId={clientId}
+                            blockName={blockName}
+                            rawTypography={rawTypography}
                         />
                         <TextLevel
                             clientId={clientId}
+                            blockName={blockName}
+                            rawTypography={rawTypography}
                         />
                         <ColumnPattern
                             clientId={clientId}

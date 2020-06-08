@@ -14,7 +14,7 @@
             border-radius: 5px;
 
             &:after {
-                content: '';
+                content: "";
                 border-left: 0.5rem solid transparent;
                 border-right: 0.5rem solid transparent;
                 border-top: 0.5rem solid #232533;
@@ -40,7 +40,7 @@
                 padding-right: 2px;
 
                 &:after {
-                    content: '';
+                    content: "";
                     position: absolute;
                     top: 50%;
                     right: 0;
@@ -97,16 +97,87 @@
         border-right-color: transparent !important;
     }
 
+    .components-base-control {
+        &__field {
+            color: #fff;
+
+            .components-range-control__slider {
+                & + span {
+                    background: #80828a !important;
+                }
+            }
+            .components-range-control__track {
+                & + span {
+                    span {
+                        background-color: #fff !important;
+
+                        &:before {
+                            border-color: #fff !important;
+                        }
+                    }
+                }
+            }
+            .components-range-control__tooltip {
+                border: 2px solid #80828a;
+                background-color: #232433;
+                color: #80828a;
+
+                &:after {
+                    border-top-color: #80828a;
+                }
+            }
+
+            .components-range-control__number {
+                background-color: transparent;
+                color: #fff;
+                border-color: #80828a !important;
+            }
+
+            .components-button {
+                &.is-secondary {
+                    background-color: transparent;
+                    border-color: #80828a !important;
+
+                    &:hover {
+                        background-color: transparent !important;
+                    }
+                    svg {
+                        fill: #fff !important;
+                    }
+                }
+            }
+        }
+    }
+
     .components-popover__content {
         background-color: #232433;
         border-radius: 5px;
         border: none;
         min-width: 300px;
-
     }
 
     &__wrapper {
         display: flex;
         flex-wrap: wrap;
+    }
+
+    .maxi-defaultstyles-control__button {
+        background: #545660;
+        border: 1px solid #fff;
+
+        &:focus {
+            outline: none;
+            box-shadow: none;
+        }
+
+        svg {
+            fill: #fff;
+        }
+
+        &:not(:first-of-type) {
+            svg path {
+                stroke: #fff;
+            }
+        }
     }
 }

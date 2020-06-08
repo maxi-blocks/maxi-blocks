@@ -137,11 +137,24 @@
                 & + span {
                     top: 1px;
                     span {
+                        position: relative;
                         box-shadow: none !important;
                         border: none !important;
                         width: 14px;
                         height: 14px;
                         background-color: #464a53;
+
+                        &:before {
+                            content: "";
+                            position: absolute;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                            width: 20px;
+                            height: 20px;
+                            border: 2px solid #464a53;
+                            border-radius: 50%;
+                        }
                     }
                 }
             }

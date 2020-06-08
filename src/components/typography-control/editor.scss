@@ -1,0 +1,15 @@
+.maxi-typography-control {
+    .maxi-tabs-control {
+        margin-left: -12px;
+        margin-right: -12px;
+
+        &__button {
+            border-top: 1px solid #dddfe1;
+            border-right: 1px solid #dddfe1;
+
+            &:last-of-type {
+                border-right: none;
+            }
+        }
+    }
+}

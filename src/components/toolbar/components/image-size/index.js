@@ -17,20 +17,20 @@ const {
 /**
  * Internal dependencies
  */
-import ImageCropControl from '../../../image-crop-control';
 import { getDefaultProp } from '../../../../extensions/styles/utils';
 
 /**
  * External dependencies
  */
-import { 
+import {
     capitalize,
     isNil
 } from 'lodash';
 
 /**
- * Icons
+ * Styles and icons
  */
+import './editor.scss';
 import { toolbarSettings } from '../../../../icons';
 
 /**
@@ -41,13 +41,11 @@ const ImageSize = props => {
 
     const {
         blockName,
-        mediaID,
         size,
-        cropOptions,
         width,
         imageData
     } = useSelect(
-        (select) => {
+        select => {
             const { getBlockName, getBlockAttributes } = select(
                 'core/block-editor',
             );
@@ -57,13 +55,8 @@ const ImageSize = props => {
             const mediaID = getBlockAttributes(clientId).mediaID;
             return {
                 blockName: getBlockName(clientId),
-                mediaID,
                 size: getBlockAttributes(clientId).size,
-                cropOptions: getBlockAttributes(clientId).cropOptions,
-                widthUnit: getBlockAttributes(clientId).widthUnit,
                 width: getBlockAttributes(clientId).width,
-                maxWidth: getBlockAttributes(clientId).maxWidth,
-                maxWidthUnit: getBlockAttributes(clientId).maxWidthUnit,
                 imageData: getMedia(mediaID)
             };
         },
@@ -72,6 +65,10 @@ const ImageSize = props => {
 
     const { updateBlockAttributes } = useDispatch(
         'core/block-editor'
+    );
+
+    const { openGeneralSidebar } = useDispatch(
+        'core/edit-post'
     );
 
     if (blockName != 'maxi-blocks/image-maxi')
@@ -97,6 +94,41 @@ const ImageSize = props => {
             label: 'Custom', value: 'custom'
         });
         return response;
+    }
+
+    const onEditImageClick = item => {
+        const sidebar = document.querySelector('.maxi-sidebar');
+        const wrapperElement = document.querySelector(`.maxi-accordion-control__item[data-name="${item}"]`);
+        const button = wrapperElement.querySelector('.maxi-accordion-control__item__button');
+        const content = wrapperElement.querySelector('.maxi-accordion-control__item__panel');
+
+        Array.from(document.getElementsByClassName('maxi-accordion-control__item__button')).map(el => {
+            if (el.getAttribute('aria-expanded'))
+                el.setAttribute('aria-expanded', false)
+        })
+        Array.from(document.getElementsByClassName('maxi-accordion-control__item__panel')).map(el => {
+            if (!el.getAttribute('hidden'))
+                el.setAttribute('hidden', '')
+        })
+
+        sidebar.scroll({
+            top: wrapperElement.getBoundingClientRect().top,
+            behavior: 'smooth'
+        })
+        button.setAttribute('aria-expanded', true)
+        content.removeAttribute('hidden');
+
+        if (item === 'sizing')
+            updateBlockAttributes(
+                clientId,
+                { size: 'custom' }
+            )
+
+        if (item === 'caption')
+            updateBlockAttributes(
+                clientId,
+                { captionType: 'custom' }
+            )
     }
 
     return (
@@ -134,19 +166,6 @@ const ImageSize = props => {
                                 { size }
                             )}
                         />
-                        {
-                            size === 'custom' &&
-                            <ImageCropControl
-                                mediaID={mediaID}
-                                cropOptions={JSON.parse(cropOptions)}
-                                onChange={cropOptions => updateBlockAttributes(
-                                    clientId,
-                                    {
-                                        cropOptions: JSON.stringify(cropOptions)
-                                    }
-                                )}
-                            />
-                        }
                         <RangeControl
                             label={__('Width', 'maxi-blocks')}
                             value={width}
@@ -164,6 +183,28 @@ const ImageSize = props => {
                             }}
                             allowReset
                         />
+                        <div
+                            className='toolbar-item__popover__dropdown-options'
+                        >
+                            <Button
+                                className='toolbar-item__popover__dropdown-options__button'
+                                onClick={() =>
+                                    openGeneralSidebar('edit-post/block')
+                                        .then(() => onEditImageClick('sizing'))
+                                }
+                            >
+                                Edit Image
+                            </Button>
+                            <Button
+                                className='toolbar-item__popover__dropdown-options__button'
+                                onClick={() =>
+                                    openGeneralSidebar('edit-post/block')
+                                        .then(() => onEditImageClick('caption'))
+                                }
+                            >
+                                Add Caption
+                            </Button>
+                        </div>
                     </Fragment>
                 )
             }

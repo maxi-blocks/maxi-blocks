@@ -41,7 +41,7 @@ const ALLOWED_BLOCKS = [
 const Alignment = props => {
     const { clientId } = props;
 
-    const { blockName, alignment, rawTypography } = useSelect(
+    const { blockName, alignment, alignmentDesktop, rawTypography } = useSelect(
         (select) => {
             const { getBlockName, getBlockAttributes } = select(
                 'core/block-editor',
@@ -49,6 +49,7 @@ const Alignment = props => {
             return {
                 blockName: getBlockName(clientId),
                 alignment: getBlockAttributes(clientId).alignment,
+                alignmentDesktop: getBlockAttributes(clientId).alignmentDesktop,
                 rawTypography: getBlockAttributes(clientId).typography,
             };
         },
@@ -114,11 +115,24 @@ const Alignment = props => {
                         }
                         {
                             !typography &&
+                            alignment && 
                             <AlignmentControl
                                 value={alignment}
                                 onChange={alignment => updateBlockAttributes(
                                     clientId,
                                     { alignment }
+                                )}
+                                disableJustify
+                            />
+                        }
+                                                {
+                            !typography &&
+                            alignmentDesktop && 
+                            <AlignmentControl
+                                value={alignmentDesktop}
+                                onChange={alignmentDesktop => updateBlockAttributes(
+                                    clientId,
+                                    { alignmentDesktop }
                                 )}
                                 disableJustify
                             />

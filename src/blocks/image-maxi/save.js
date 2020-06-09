@@ -32,11 +32,13 @@ const save = props => {
 
     let classes = classnames(
         'maxi-block maxi-image-block',
-        fullWidth ? 'alignfull' : undefined,
         blockStyle,
         extraClassName,
         uniqueID,
-        className
+        className,
+        fullWidth === 'full' ?
+            'alignfull' :
+            '',
     );
     if (uniqueID && (typeof uniqueID !== 'undefined'))
         classes = classnames(classes, uniqueID);

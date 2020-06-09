@@ -30,10 +30,10 @@
 
             // SelectorControl
             .components-select-control__input {
-                background: #fff url(../img/arrow-down.svg) no-repeat right 7px top 50% !important;
+                background: #fff url(../img/arrow-down.svg) no-repeat right 7px top 50%;
                 background-size: 9px 9px !important;
                 border-radius: 5px !important;
-                border: 2px solid #dddfe1 !important;
+                border: 2px solid #dddfe1;
                 min-height: unset;
                 max-height: unset !important;
                 color: #464a53;
@@ -71,10 +71,6 @@
                     cursor: pointer;
                 }
 
-                &:focus {
-                    box-shadow: none !important;
-                }
-
                 &.is-primary {
                     border-color: #00ccff;
 
@@ -108,6 +104,14 @@
                     margin: auto;
                 }
             }
+        }
+    }
+
+    // ButtonControl
+    .components-button {
+        &:focus {
+            box-shadow: none !important;
+            outline: none !important;
         }
     }
 

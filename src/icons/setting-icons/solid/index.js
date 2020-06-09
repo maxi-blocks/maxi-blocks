@@ -8,8 +8,8 @@ const solid = (
         <Path
             fill="none"
             stroke="#173042"
-            stroke-width="2"
-            stroke-miterlimit="10"
+            strokeWidth="2"
+            strokeMiterlimit="10"
             d="M1 2h60"
         />
     </SVG>

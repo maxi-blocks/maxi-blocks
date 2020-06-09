@@ -1,25 +1,25 @@
 .maxi-checkbox-control {
     &__input {
         position: relative;
-        width: 23px;
-        height: 23px;
+        width: 23px !important;
+        height: 23px !important;
         background-color: #00cdff !important;
         border: none !important;
 
         &:checked:before {
-            content: url("../src/icons/setting-icons/checkbox/checkbox.svg");
+            content: url("../src/icons/setting-icons/checkbox/checkbox.svg") !important;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             margin: auto !important;
-            width: 20px;
-            height: 20px;
+            width: 20px !important;
+            height: 20px !important;
         }
 
         &:focus {
-            border: none;
-            box-shadow: none;
+            border: none !important;
+            box-shadow: none !important;
         }
   }
 }

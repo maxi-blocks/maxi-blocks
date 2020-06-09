@@ -39,33 +39,30 @@ const ALLOWED_BLOCKS = [
 ]
 
 const Alignment = props => {
-    const { clientId } = props;
+    const {
+        clientId,
+        blockName
+    } = props;
 
-    const { blockName, alignment, alignmentDesktop, rawTypography } = useSelect(
+    if (!ALLOWED_BLOCKS.includes(blockName))
+        return null;
+
+    const { alignment, alignmentDesktop } = useSelect(
         (select) => {
-            const { getBlockName, getBlockAttributes } = select(
+            const { getBlockAttributes } = select(
                 'core/block-editor',
             );
             return {
-                blockName: getBlockName(clientId),
                 alignment: getBlockAttributes(clientId).alignment,
                 alignmentDesktop: getBlockAttributes(clientId).alignmentDesktop,
-                rawTypography: getBlockAttributes(clientId).typography,
             };
         },
         [clientId]
     );
 
-    if (!ALLOWED_BLOCKS.includes(blockName))
-        return null;
-
     const { updateBlockAttributes } = useDispatch(
         'core/block-editor'
     );
-
-    let typography = undefined;
-    if (!isNil(rawTypography))
-        typography = JSON.parse(rawTypography);
 
     return (
         <Dropdown
@@ -94,47 +91,33 @@ const Alignment = props => {
                 () => (
                     <Fragment>
                         {
-                            typography &&
-                            <AlignmentControl
-                                value={typography.general['text-align']}
-                                onChange={alignment => {
-                                    typography.general['text-align'] = alignment;
-                                    updateBlockAttributes(
-                                        clientId,
-                                        {
-                                            typography: JSON.stringify(typography)
-                                        }
-                                    )
-                                }}
-                                disableJustify={
-                                    blockName === 'maxi-blocks/button-maxi' ?
-                                        true :
-                                        false
-                                }
-                            />
-                        }
-                        {
-                            !typography &&
-                            alignment && 
+                            alignment &&
                             <AlignmentControl
                                 value={alignment}
                                 onChange={alignment => updateBlockAttributes(
                                     clientId,
                                     { alignment }
                                 )}
-                                disableJustify
+                                disableJustify={
+                                    blockName === 'maxi-blocks/text-maxi' ?
+                                        false :
+                                        true
+                                }
                             />
                         }
-                                                {
-                            !typography &&
-                            alignmentDesktop && 
+                        {
+                            alignmentDesktop &&
                             <AlignmentControl
                                 value={alignmentDesktop}
                                 onChange={alignmentDesktop => updateBlockAttributes(
                                     clientId,
                                     { alignmentDesktop }
                                 )}
-                                disableJustify
+                                disableJustify={
+                                    blockName === 'maxi-blocks/text-maxi' ?
+                                        false :
+                                        true
+                                }
                             />
                         }
                     </Fragment>

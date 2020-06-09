@@ -6,7 +6,6 @@ const {
     SelectControl,
     Icon,
 } = wp.components;
-const { useSelect } = wp.data;
 
 /**
  * Internal dependencies
@@ -22,7 +21,7 @@ import {
 } from './defaults'
 
 /**
- * Styles and icons
+ * Icons
  */
 import {
     styleNone,
@@ -47,18 +46,6 @@ const BorderControl = props => {
         onChange
     } = props;
 
-    const { clientId } = useSelect(
-        select => {
-            const { getSelectedBlockClientId } = select(
-                'core/block-editor'
-            );
-            return {
-                clientId: getSelectedBlockClientId()
-            }
-        },
-        []
-    )
-
     let value = typeof borderOptions === 'object' ?
         borderOptions :
         JSON.parse(borderOptions);
@@ -78,7 +65,7 @@ const BorderControl = props => {
                                 icon={styleNone}
                              />
                         ),
-                        onChange: () => onChange(getDefaultProp(clientId, 'border'))
+                        onChange: () => onChange(getDefaultProp(null, 'border'))
                     },
                     {
                         content: (

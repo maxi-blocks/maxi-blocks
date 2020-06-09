@@ -8,8 +8,9 @@ const {
 const { useDispatch } = wp.data;
 
 /**
- * Icons
+ * Styles and icons
  */
+import './editor.scss';
 import { toolbarItalic } from '../../../../icons';
 
 /**
@@ -57,6 +58,7 @@ const TextItalic = props => {
         <Button
             className='toolbar-item toolbar-item__italic'
             onClick={getBoldTypography}
+            aria-pressed={typography.desktop['font-style'] === 'italic'}
         >
             <Icon
                 className='toolbar-item__icon'

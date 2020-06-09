@@ -14,8 +14,6 @@ import './extensions/dom';
 import './extensions/store';
 import './extensions/attributes';
 import './extensions/save';
-// import './extensions/styles';
-// import './extensions/blocks';
 
 // CSS
 import './css';
@@ -29,14 +27,3 @@ import './blocks/image-maxi/image-maxi';
 import './blocks/section-maxi/section-maxi';
 import './blocks/button-maxi/button-maxi.js';
 import './blocks/cloud-maxi/cloud-maxi.js';
-
-// Deprecated
-// import './blocks/block-layout/block-layout.js';
-
-// Deprecated
-//import './blocks/block-layout/block-layout.js';
-// import './blocks/block-container/block-container.js';
-// import './blocks/block-image-box/block-image-box.js';
-// import './blocks/block-title-extra/block-title-extra.js';
-// import './blocks/block-testimonial/block-single-testimonial';
-// import './blocks/block-button/block.js';

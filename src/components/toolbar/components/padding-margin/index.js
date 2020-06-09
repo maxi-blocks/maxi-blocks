@@ -20,7 +20,6 @@ import DimensionsControl from '../../../dimensions-control';
 /**
  * Icons
  */
-import './editor.scss';
 import { toolbarPadding } from '../../../../icons';
 
 /**

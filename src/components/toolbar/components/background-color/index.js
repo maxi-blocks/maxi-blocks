@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 const {
-    Icon,
     Dropdown,
     Button,
     ColorPicker
@@ -13,18 +12,25 @@ const {
 } = wp.data;
 
 /**
+ * External dependencies
+ */
+import { isNil } from 'lodash';
+
+/**
  * BackgroundColor
  */
 const BackgroundColor = props => {
-    const { clientId } = props;
+    const { 
+        clientId,
+        blockName
+    } = props;
 
-    const { blockName, rawBackground } = useSelect(
+    const { rawBackground } = useSelect(
         (select) => {
-            const { getBlockName, getBlockAttributes } = select(
+            const { getBlockAttributes } = select(
                 'core/block-editor',
             );
             return {
-                blockName: getBlockName(clientId),
                 rawBackground: getBlockAttributes(clientId).background,
             };
         },
@@ -35,10 +41,12 @@ const BackgroundColor = props => {
         'core/block-editor'
     );
 
-    if (blockName === 'maxi-blocks/divider-maxi')
+    if (blockName === 'maxi-blocks/divider-maxi' || isNil(rawBackground))
         return null;
 
-    let background = JSON.parse(rawBackground);
+    let background = typeof rawBackground != 'object' ? 
+        JSON.parse(rawBackground) : 
+        rawBackground;
 
     const updateBackground = val => {
         background.colorOptions.color = returnColor(val)
@@ -89,8 +97,7 @@ const BackgroundColor = props => {
                     />
                 )
             }
-        >
-        </Dropdown>
+        />
     )
 }
 

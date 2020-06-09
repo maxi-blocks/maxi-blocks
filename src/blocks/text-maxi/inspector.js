@@ -14,6 +14,7 @@ const {
  */
 import {
     AccordionControl,
+    AlignmentControl,
     BackgroundControl,
     BorderControl,
     BlockStylesControl,
@@ -23,7 +24,6 @@ import {
     FontLevelControl,
     FullSizeControl,
     HoverAnimationControl,
-    NormalHoverControl,
     SettingTabsControl,
     TypographyControl
 } from '../../components';
@@ -31,339 +31,326 @@ import {
 /**
  * Inspector
  */
-class Inspector extends Component {
+const Inspector = props => {
+    const {
+        attributes: {
+            isFirstOnHierarchy,
+            blockStyle,
+            defaultBlockStyle,
+            textLevel,
+            alignmentDesktop,
+            alignmentTablet,
+            alignmentMobile,
+            typography,
+            background,
+            opacity,
+            boxShadow,
+            border,
+            size,
+            margin,
+            padding,
+            typographyHover,
+            backgroundHover,
+            opacityHover,
+            boxShadowHover,
+            borderHover,
+            hoverAnimation,
+            hoverAnimationDuration,
+            extraClassName,
+            extraStyles,
+        },
+        setAttributes,
+    } = props;
 
-    target = this.props.attributes.uniqueID;
-
-    state = {
-        selectorTypographyColors: 'normal',
-        selectorOpacityShadow: 'normal',
-        selectorPaddingMargin: 'normal',
-        selectorBorder: 'normal'
+    const getNormalHoverValue = (selector, normalValue, hoverValue) => {
+        switch (selector) {
+            case 'normal':
+                return normalValue;
+            case 'hover':
+                return hoverValue;
+        }
     }
 
-    render() {
-        const {
-            attributes: {
-                isFirstOnHierarchy,
-                blockStyle,
-                defaultBlockStyle,
-                textLevel,
-                typography,
-                background,
-                opacity,
-                boxShadow,
-                border,
-                size,
-                margin,
-                padding,
-                typographyHover,
-                backgroundHover,
-                opacityHover,
-                boxShadowHover,
-                borderHover,
-                marginHover,
-                paddingHover,
-                hoverAnimation,
-                hoverAnimationDuration,
-                extraClassName,
-                extraStyles,
-            },
-            setAttributes,
-        } = this.props;
-
-        const {
-            selectorTypographyColors,
-            selectorOpacityShadow,
-            selectorPaddingMargin,
-            selectorBorder,
-        } = this.state;
-
-        const getNormalHoverValue = (selector, normalValue, hoverValue) => {
-            switch (selector) {
-                case 'normal':
-                    return normalValue;
-                case 'hover':
-                    return hoverValue;
-            }
+    const normalHoverSaver = (selector, normalProp, hoverProp, value) => {
+        switch (selector) {
+            case 'normal':
+                setAttributes({ [normalProp]: value })
+                break;
+            case 'hover':
+                setAttributes({ [hoverProp]: value })
+                break;
         }
+    }
 
-        const normalHoverSaver = (selector, normalProp, hoverProp, value) => {
-            switch (selector) {
-                case 'normal':
-                    setAttributes({ [normalProp]: value })
-                    break;
-                case 'hover':
-                    setAttributes({ [hoverProp]: value })
-                    break;
-            }
-        }
-
-        return (
-            <InspectorControls>
-                <SettingTabsControl
-                    items={[
-                        {
-                            label: __('Style', 'maxi-blocks'),
-                            content: (
-                                <Fragment>
-                                    <div className='maxi-tab-content__box'>
-                                        <BlockStylesControl
-                                            blockStyle={blockStyle}
-                                            onChangeBlockStyle={blockStyle => setAttributes({ blockStyle })}
-                                            defaultBlockStyle={defaultBlockStyle}
-                                            onChangeDefaultBlockStyle={defaultBlockStyle => setAttributes({ defaultBlockStyle })}
-                                            isFirstOnHierarchy={isFirstOnHierarchy}
-                                        />
-                                        <FontLevelControl
-                                            label={__('Level', 'maxi-blocks')}
-                                            value={textLevel}
-                                            onChange={textLevel => setAttributes({ textLevel })}
-                                            fontOptions={typography} // It may need to send typographyHover too
-                                        />
-                                    </div>
-                                    <AccordionControl
-                                        isPrimary
-                                        items={[
-                                            {
-                                                label: __('Typography & Colors', 'maxi-blocks'),
-                                                content: (
-                                                    <Fragment>
-                                                        <NormalHoverControl
-                                                            selector={selectorTypographyColors}
-                                                            onChange={selectorTypographyColors => this.setState({ selectorTypographyColors })}
-                                                        />
-                                                        <TypographyControl
-                                                            fontOptions={
-                                                                getNormalHoverValue(
-                                                                    selectorTypographyColors,
-                                                                    typography,
-                                                                    typographyHover
-                                                                )
-                                                            }
-                                                            onChange={value =>
-                                                                normalHoverSaver(
-                                                                    selectorTypographyColors,
-                                                                    'typography',
-                                                                    'typographyHover',
-                                                                    value
-                                                                )
-                                                            }
-                                                            target={
-                                                                selectorTypographyColors != 'hover' ?
-                                                                    undefined :
-                                                                    ':hover'
-                                                            }
-                                                        />
-                                                        <BackgroundControl
-                                                            backgroundOptions={
-                                                                getNormalHoverValue(
-                                                                    selectorTypographyColors,
-                                                                    background,
-                                                                    backgroundHover
-                                                                )
-                                                            }
-                                                            onChange={value =>
-                                                                normalHoverSaver(
-                                                                    selectorTypographyColors,
-                                                                    'background',
-                                                                    'backgroundHover',
-                                                                    value
-                                                                )
-                                                            }
-                                                            disableImage
-                                                        />
-                                                    </Fragment>
-                                                )
-                                            },
-                                            {
-                                                label: __('Opacity / Shadow', 'maxi-blocks'),
-                                                content: (
-                                                    <Fragment>
-                                                        <NormalHoverControl
-                                                            selector={selectorOpacityShadow}
-                                                            onChange={selectorOpacityShadow => this.setState({ selectorOpacityShadow })}
-                                                        />
-                                                        <RangeControl
-                                                            label={__("Opacity", "maxi-blocks")}
-                                                            className={"maxi-opacity-control"}
-                                                            value={
-                                                                getNormalHoverValue(
-                                                                    selectorOpacityShadow,
-                                                                    opacity,
-                                                                    opacityHover
-                                                                ) * 100
-                                                            }
-                                                            onChange={value =>
-                                                                normalHoverSaver(
-                                                                    selectorOpacityShadow,
-                                                                    'opacity',
-                                                                    'opacityHover',
-                                                                    value / 100
-                                                                )
-                                                            }
-                                                            min={0}
-                                                            max={100}
-                                                            allowReset={true}
-                                                            initialPosition={0}
-                                                        />
-                                                        <BoxShadowControl
-                                                            boxShadowOptions={
-                                                                getNormalHoverValue(
-                                                                    selectorOpacityShadow,
-                                                                    boxShadow,
-                                                                    boxShadowHover
-                                                                )
-                                                            }
-                                                            onChange={value =>
-                                                                normalHoverSaver(
-                                                                    selectorOpacityShadow,
-                                                                    'boxShadow',
-                                                                    'boxShadowHover',
-                                                                    value
-                                                                )
-                                                            }
-                                                            target={
-                                                                selectorOpacityShadow != 'hover' ?
-                                                                    undefined :
-                                                                    ':hover'
-                                                            }
-                                                        />
-                                                    </Fragment>
-                                                )
-                                            },
-                                            {
-                                                label: __("Border", "maxi-blocks"),
-                                                content: (
-                                                    <Fragment>
-                                                        <NormalHoverControl
-                                                            selector={selectorBorder}
-                                                            onChange={selectorBorder => {
-                                                                this.setState({ selectorBorder });
-                                                            }}
-                                                        />
-                                                        <BorderControl
-                                                            borderOptions={
-                                                                getNormalHoverValue(
-                                                                    selectorBorder,
-                                                                    border,
-                                                                    borderHover
-                                                                )
-                                                            }
-                                                            onChange={value =>
-                                                                normalHoverSaver(
-                                                                    selectorBorder,
-                                                                    'border',
-                                                                    'borderHover',
-                                                                    value
-                                                                )
-                                                            }
-                                                            target={
-                                                                selectorBorder != 'hover' ?
-                                                                    undefined :
-                                                                    ':hover'
-                                                            }
-                                                        />
-                                                    </Fragment>
-                                                )
-                                            },
-                                            {
-                                                label: __('Width / Height', 'maxi-blocks'),
-                                                content: (
-                                                    <Fragment>
-                                                        <FullSizeControl
-                                                            sizeSettings={size}
-                                                            onChange={size => setAttributes({ size })}
-                                                        />
-                                                    </Fragment>
-                                                )
-                                            },
-                                            {
-                                                label: __('Padding / Margin', 'maxi-blocks'),
-                                                content: (
-                                                    <Fragment>
-                                                        <NormalHoverControl
-                                                            selector={selectorPaddingMargin}
-                                                            onChange={selectorPaddingMargin => {
-                                                                this.setState({ selectorPaddingMargin });
-                                                            }}
-                                                        />
-                                                        <DimensionsControl
-                                                            value={
-                                                                getNormalHoverValue(
-                                                                    selectorPaddingMargin,
-                                                                    padding,
-                                                                    paddingHover
-                                                                )
-                                                            }
-                                                            onChange={value =>
-                                                                normalHoverSaver(
-                                                                    selectorPaddingMargin,
-                                                                    'padding',
-                                                                    'paddingHover',
-                                                                    value
-                                                                )
-                                                            }
-                                                            target={
-                                                                selectorPaddingMargin != 'hover' ?
-                                                                    undefined :
-                                                                    ':hover'
-                                                            }
-                                                        />
-                                                        <DimensionsControl
-                                                            value={
-                                                                getNormalHoverValue(
-                                                                    selectorPaddingMargin,
-                                                                    margin,
-                                                                    marginHover
-                                                                )
-                                                            }
-                                                            onChange={value =>
-                                                                normalHoverSaver(
-                                                                    selectorPaddingMargin,
-                                                                    'margin',
-                                                                    'marginHover',
-                                                                    value
-                                                                )
-                                                            }
-                                                            target={
-                                                                selectorPaddingMargin != 'hover' ?
-                                                                    undefined :
-                                                                    ':hover'
-                                                            }
-                                                        />
-                                                    </Fragment>
-                                                )
-                                            }
-                                        ]}
-                                    />
-                                </Fragment>
-                            )
-                        },
-                        {
-                            label: __('Advanced', 'maxi-blocks'),
-                            content: (
+    return (
+        <InspectorControls>
+            <SettingTabsControl
+                disablePadding
+                items={[
+                    {
+                        label: __('Style', 'maxi-blocks'),
+                        content: (
+                            <Fragment>
                                 <div className='maxi-tab-content__box'>
-                                    <HoverAnimationControl
-                                        hoverAnimation={hoverAnimation}
-                                        onChangeHoverAnimation={hoverAnimation => setAttributes({ hoverAnimation })}
-                                        hoverAnimationDuration={hoverAnimationDuration}
-                                        onChangeHoverAnimationDuration={hoverAnimationDuration => setAttributes({ hoverAnimationDuration })}
-                                    />
-                                    <CustomCSSControl
-                                        extraClassName={extraClassName}
-                                        onChangeExtraClassName={extraClassName => setAttributes({ extraClassName })}
-                                        extraStyles={extraStyles}
-                                        onChangeExtraStyles={extraStyles => setAttributes({ extraStyles })}
+                                    <BlockStylesControl
+                                        blockStyle={blockStyle}
+                                        onChangeBlockStyle={blockStyle => setAttributes({ blockStyle })}
+                                        defaultBlockStyle={defaultBlockStyle}
+                                        onChangeDefaultBlockStyle={defaultBlockStyle => setAttributes({ defaultBlockStyle })}
+                                        isFirstOnHierarchy={isFirstOnHierarchy}
                                     />
                                 </div>
-                            )
-                        }
-                    ]}
-                />
-            </InspectorControls >
-        )
-    }
+                                <AccordionControl
+                                    isSecondary
+                                    items={[
+                                        {
+                                            label: __('Alignment', 'maxi-blocks'),
+                                            disablePadding: true,
+                                            content: (
+                                                <SettingTabsControl
+                                                    items={[
+                                                        {
+                                                            label: __('Desktop', 'maxi-blocks'),
+                                                            content: (
+                                                                <AlignmentControl
+                                                                    value={alignmentDesktop}
+                                                                    onChange={alignmentDesktop => setAttributes({ alignmentDesktop })}
+                                                                />
+                                                            )
+                                                        },
+                                                        {
+                                                            label: __('Tablet', 'maxi-blocks'),
+                                                            content: (
+                                                                <AlignmentControl
+                                                                    value={alignmentTablet}
+                                                                    onChange={alignmentTablet => setAttributes({ alignmentTablet })}
+                                                                />
+                                                            )
+                                                        },
+                                                        {
+                                                            label: __('Mobile', 'maxi-blocks'),
+                                                            content: (
+                                                                <AlignmentControl
+                                                                    value={alignmentMobile}
+                                                                    onChange={alignmentMobile => setAttributes({ alignmentMobile })}
+                                                                />
+                                                            )
+                                                        },
+                                                    ]}
+                                                />
+                                            )
+                                        },
+                                        {
+                                            label: __('Level', 'maxi-blocks'),
+                                            content: (
+                                                <FontLevelControl
+                                                    value={textLevel}
+                                                    onChange={(textLevel, typography, typographyHover) =>
+                                                        setAttributes({
+                                                            textLevel,
+                                                            typography,
+                                                            typographyHover
+                                                        })
+                                                    }
+                                                    fontOptions={typography}
+                                                    fontOptionsHover={typographyHover}
+                                                />
+                                            )
+                                        },
+                                        {
+                                            label: __('Typography', 'maxi-blocks'),
+                                            disablePadding: true,
+                                            content: (
+                                                <SettingTabsControl
+                                                    items={[
+                                                        {
+                                                            label: __('Normal', 'gutenberg-extra'),
+                                                            content: (
+                                                                <TypographyControl
+                                                                    fontOptions={typography}
+                                                                    onChange={typography => setAttributes({ typography })}
+                                                                    hideAlignment
+                                                                />
+                                                            )
+                                                        },
+                                                        {
+                                                            label: __('Hover', 'gutenberg-extra'),
+                                                            content: (
+                                                                <TypographyControl
+                                                                    fontOptions={typographyHover}
+                                                                    onChange={typographyHover => setAttributes({ typographyHover })}
+                                                                    target=':hover'
+                                                                    hideAlignment
+                                                                />
+                                                            )
+                                                        },
+                                                    ]}
+                                                />
+                                            )
+                                        },
+                                        {
+                                            label: __('Background', 'maxi-blocks'),
+                                            disablePadding: true,
+                                            content: (
+                                                <SettingTabsControl
+                                                    items={[
+                                                        {
+                                                            label: __('Normal', 'gutenberg-extra'),
+                                                            content: (
+                                                                <Fragment>
+                                                                    <RangeControl
+                                                                        label={__('Opacity', 'maxi-blocks')}
+                                                                        className='maxi-opacity-control'
+                                                                        value={opacity * 100}
+                                                                        onChange={value => setAttributes({ opacity: value / 100 })}
+                                                                        min={0}
+                                                                        max={100}
+                                                                        allowReset={true}
+                                                                        initialPosition={0}
+                                                                    />
+                                                                    <BackgroundControl
+                                                                        backgroundOptions={background}
+                                                                        onChange={background => setAttributes({ background })}
+                                                                        disableImage
+                                                                    />
+                                                                </Fragment>
+                                                            )
+                                                        },
+                                                        {
+                                                            label: __('Hover', 'gutenberg-extra'),
+                                                            content: (
+                                                                <Fragment>
+                                                                    <RangeControl
+                                                                        label={__('Opacity', 'maxi-blocks')}
+                                                                        className='maxi-opacity-control'
+                                                                        value={opacityHover * 100}
+                                                                        onChange={value => setAttributes({ opacityHover: value / 100 })}
+                                                                        min={0}
+                                                                        max={100}
+                                                                        allowReset={true}
+                                                                        initialPosition={0}
+                                                                    />
+                                                                    <BackgroundControl
+                                                                        backgroundOptions={backgroundHover}
+                                                                        onChange={backgroundHover => setAttributes({ backgroundHover })}
+                                                                        disableImage
+                                                                    />
+                                                                </Fragment>
+                                                            )
+                                                        },
+                                                    ]}
+                                                />
+                                            )
+                                        },
+                                        {
+                                            label: __('Border', 'maxi-blocks'),
+                                            disablePadding: true,
+                                            content: (
+                                                <SettingTabsControl
+                                                    items={[
+                                                        {
+                                                            label: __('Normal', 'gutenberg-extra'),
+                                                            content: (
+                                                                <BorderControl
+                                                                    borderOptions={border}
+                                                                    onChange={border => setAttributes({ border })}
+                                                                />
+                                                            )
+                                                        },
+                                                        {
+                                                            label: __('Hover', 'gutenberg-extra'),
+                                                            content: (
+                                                                <BorderControl
+                                                                    borderOptions={borderHover}
+                                                                    onChange={borderHover => setAttributes({ borderHover })}
+                                                                />
+                                                            )
+                                                        },
+                                                    ]}
+                                                />
+                                            )
+                                        },
+                                        {
+                                            label: __('Width / Height', 'maxi-blocks'),
+                                            content: (
+                                                <FullSizeControl
+                                                    sizeSettings={size}
+                                                    onChange={size => setAttributes({ size })}
+                                                />
+                                            )
+                                        },
+                                        {
+                                            label: __('Box Shadow', 'maxi-blocks'),
+                                            disablePadding: true,
+                                            content: (
+                                                <SettingTabsControl
+                                                    items={[
+                                                        {
+                                                            label: __('Normal', 'gutenberg-extra'),
+                                                            content: (
+                                                                <BoxShadowControl
+                                                                    boxShadowOptions={boxShadow}
+                                                                    onChange={boxShadow => setAttributes({ boxShadow })}
+                                                                />
+                                                            )
+                                                        },
+                                                        {
+                                                            label: __('Hover', 'gutenberg-extra'),
+                                                            content: (
+                                                                <BoxShadowControl
+                                                                    boxShadowOptions={boxShadowHover}
+                                                                    onChange={boxShadowHover => setAttributes({ boxShadowHover })}
+                                                                    target=':hover'
+                                                                />
+                                                            )
+                                                        },
+                                                    ]}
+                                                />
+                                            )
+                                        },
+                                        {
+                                            label: __('Padding / Margin', 'maxi-blocks'),
+                                            content: (
+                                                <Fragment>
+                                                    <DimensionsControl
+                                                        value={padding}
+                                                        onChange={padding => setAttributes({ padding })}
+                                                    />
+                                                    <DimensionsControl
+                                                        value={margin}
+                                                        onChange={margin => setAttributes({ margin })}
+                                                    />
+                                                </Fragment>
+                                            )
+                                        }
+                                    ]}
+                                />
+                            </Fragment>
+                        )
+                    },
+                    {
+                        label: __('Advanced', 'maxi-blocks'),
+                        content: (
+                            <div className='maxi-tab-content__box'>
+                                <HoverAnimationControl
+                                    hoverAnimation={hoverAnimation}
+                                    onChangeHoverAnimation={hoverAnimation => setAttributes({ hoverAnimation })}
+                                    hoverAnimationDuration={hoverAnimationDuration}
+                                    onChangeHoverAnimationDuration={hoverAnimationDuration => setAttributes({ hoverAnimationDuration })}
+                                />
+                                <CustomCSSControl
+                                    extraClassName={extraClassName}
+                                    onChangeExtraClassName={extraClassName => setAttributes({ extraClassName })}
+                                    extraStyles={extraStyles}
+                                    onChangeExtraStyles={extraStyles => setAttributes({ extraStyles })}
+                                />
+                            </div>
+                        )
+                    }
+                ]}
+            />
+        </InspectorControls >
+    )
 }
 
 export default Inspector;

@@ -15,6 +15,18 @@ const attributes = {
         type: 'string',
         default: 'maxi-def-light'
     },
+    alignmentDesktop: {
+        type: 'string',
+        default: 'left'
+    },
+    alignmentTablet: {
+        type: 'string',
+        default: 'left'
+    },
+    alignmentMobile: {
+        type: 'string',
+        default: 'left'
+    },
     textLevel: {
         type: 'string',
         default: 'p'

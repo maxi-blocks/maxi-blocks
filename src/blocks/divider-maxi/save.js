@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies
+ */
+const { Fragment } = wp.element;
+
+/**
  * External dependencies
  */
 import classnames from 'classnames';
@@ -14,9 +19,8 @@ const save = props => {
             blockStyle,
             defaultBlockStyle,
             extraClassName,
-            verticalDivider,
-            roundedDivider,
-            hideDivider
+            showLine,
+            lineOrientation
         },
     } = props;
 
@@ -25,15 +29,14 @@ const save = props => {
         blockStyle,
         extraClassName,
         uniqueID,
-        className
+        className,
+        lineOrientation === 'vertical' ?
+            'maxi-divider-block--vertical' :
+            'maxi-divider-block--horizontal',
     );
     if (uniqueID && (typeof uniqueID !== 'undefined'))
         classes = classnames(classes, uniqueID);
 
-    if (verticalDivider)
-        classes = classnames(classes, 'is-vertical')
-    if (roundedDivider)
-        classes = classnames(classes, 'is-rounded')
 
     return (
         <div
@@ -41,10 +44,11 @@ const save = props => {
             data-gx_initial_block_class={defaultBlockStyle}
         >
             {
-                !hideDivider &&
-                <hr
-                    className="maxi-divider"
-                />
+                showLine &&
+                <Fragment>
+                    <hr class="maxi-divider-block__divider-1" />
+                    <hr class="maxi-divider-block__divider-2" />
+                </Fragment>
             }
         </div>
     );

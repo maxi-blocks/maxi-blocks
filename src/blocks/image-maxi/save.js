@@ -18,6 +18,7 @@ const save = props => {
             uniqueID,
             blockStyle,
             defaultBlockStyle,
+            fullWidth,
             extraClassName,
             captionType,
             captionContent,
@@ -31,6 +32,7 @@ const save = props => {
 
     let classes = classnames(
         'maxi-block maxi-image-block',
+        fullWidth ? 'alignfull' : undefined,
         blockStyle,
         extraClassName,
         uniqueID,

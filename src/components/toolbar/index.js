@@ -3,7 +3,11 @@
  */
 const { Popover } = wp.components;
 const { useSelect } = wp.data;
-const { Fragment } = wp.element;
+const {
+    Fragment,
+    useEffect,
+    useState
+} = wp.element;
 
 /**
  * Utils
@@ -33,14 +37,30 @@ import {
 import './editor.scss';
 
 /**
+ * General
+ */
+const allowedBlocks = [
+    'maxi-blocks/block-image-box',
+    'maxi-blocks/block-title-extra',
+    'maxi-blocks/testimonials-slider-block',
+    'maxi-blocks/row-maxi',
+    'maxi-blocks/column-maxi',
+    'maxi-blocks/button-maxi',
+    'maxi-blocks/text-maxi',
+    'maxi-blocks/divider-maxi',
+    'maxi-blocks/image-maxi',
+    'maxi-blocks/section-maxi',
+];
+
+/**
  * Component
  */
 const MaxiToolbar = () => {
     const { clientId, blockName, uniqueID, rawTypography } = useSelect(
         select => {
-            const { 
+            const {
                 getSelectedBlockClientId,
-                getBlockName, 
+                getBlockName,
                 getBlockAttributes
             } = select(
                 'core/block-editor'
@@ -59,7 +79,16 @@ const MaxiToolbar = () => {
         []
     )
 
-    const anchorRef = document.getElementById(`block-${clientId}`);
+    const [anchorRef, setAnchorRef] = useState(
+        document.getElementById(`block-${clientId}`)
+    )
+
+    useEffect(() => {
+        setAnchorRef(document.getElementById(`block-${clientId}`));
+    })
+
+    if (!allowedBlocks.includes(blockName))
+        return null;
 
     return (
         <Fragment>
@@ -73,7 +102,7 @@ const MaxiToolbar = () => {
                     focusOnMount={false}
                     anchorRef={anchorRef}
                     className="maxi-toolbar__popover"
-                    uniqueID={uniqueID}
+                    uniqueid={uniqueID}
                     __unstableSticky={true}
                     __unstableSlotName="block-toolbar"
                     shouldAnchorIncludePadding
@@ -86,18 +115,23 @@ const MaxiToolbar = () => {
                         />
                         <Alignment
                             clientId={clientId}
+                            blockName={blockName}
                         />
                         <BoxShadow
                             clientId={clientId}
+                            blockName={blockName}
                         />
                         <BackgroundColor
                             clientId={clientId}
+                            blockName={blockName}
                         />
                         <Border
                             clientId={clientId}
+                            blockName={blockName}
                         />
                         <ImageSize
                             clientId={clientId}
+                            blockName={blockName}
                         />
                         <TextOptions
                             clientId={clientId}
@@ -126,6 +160,7 @@ const MaxiToolbar = () => {
                         />
                         <ColumnPattern
                             clientId={clientId}
+                            blockName={blockName}
                         />
                         <Duplicate
                             clientId={clientId}

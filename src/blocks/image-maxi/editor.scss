@@ -1,42 +1,12 @@
-figure.maxi-image-block {
-	> button.maxi-imageupload-button {
-		height: auto;
-
-		> svg {
-			width: 100%;
-			height: auto;
-		}
+.maxi-image-block {
+	.maxi-imageupload-button {
+		height: 100%;
 	}
 
-	> div.maxi-image-block-resizer {
-		> div.maxi-image-block-settings {
-			position: absolute;
-			width: 2rem;
-			height: 2rem;
-			top: 2.5%;
-			left: 95%;
-			transform: translateX(-100%);
-
-			> button.maxi-image-block-upload-button {
-				width: 100%;
-				height: 100%;
-				background: #232533;
-				opacity: 0;
-				visibility: hidden;
-				transition: all 0.5s ease;
-				padding: 8px;
-
-				svg {
-					fill: #fff;
-					width: 20px;
-					height: 20px;
-				}
-			}
-		}
-
+	&__resizer {
 		&:hover {
-			> div.maxi-image-block-settings {
-				> button.maxi-image-block-upload-button {
+			.maxi-image-block__settings {
+				&__upload-button {
 					opacity: 0.6;
 					visibility: visible;
 
@@ -46,18 +16,7 @@ figure.maxi-image-block {
 				}
 			}
 		}
-	}
 
-	img {
-		display: block;
-		width: 100%;
-	}
-
-	figcaption {
-		width: 100%;
-	}
-
-	.maxi-image-block-resizer {
 		.components-resizable-box__handle {
 			display: none;
 			visibility: hidden;
@@ -73,5 +32,39 @@ figure.maxi-image-block {
 				visibility: visible;
 			}
 		}
+	}
+
+	&__settings {
+		position: absolute;
+		width: 2rem;
+		height: 2rem;
+		top: 2.5%;
+		left: 95%;
+		transform: translateX(-100%);
+
+		&__upload-button {
+			width: 100%;
+			height: 100%;
+			background: #232533;
+			opacity: 0;
+			visibility: hidden;
+			transition: all 0.5s ease;
+			padding: 8px !important;
+
+			svg {
+				fill: #fff;
+				width: 20px;
+				height: 20px;
+			}
+		}
+	}
+
+	img {
+		display: block;
+		width: 100%;
+	}
+
+	figcaption {
+		width: 100%;
 	}
 }

@@ -1,14 +1,18 @@
 /**
  * WordPress dependencies
  */
+const { Fragment } = wp.element;
 const { __experimentalBlock } = wp.blockEditor;
-const { dispatch } = wp.data;
 
 /**
  * Internal dependencies
  */
 import Inspector from './inspector';
-import { getBoxShadowObject } from '../../extensions/styles/utils';
+import { BackEndResponsiveStyles } from '../../extensions/styles';
+import {
+    getBackgroundObject,
+    getBoxShadowObject
+} from '../../extensions/styles/utils';
 import {
     GXBlock,
     __experimentalToolbar
@@ -19,7 +23,6 @@ import {
  */
 import classnames from 'classnames';
 import {
-    isEmpty,
     isNil,
     isNumber
 } from 'lodash';
@@ -37,18 +40,34 @@ class edit extends GXBlock {
      * Retrieve the target for responsive CSS
      */
     get getTarget() {
-        return `${this.props.attributes.uniqueID}>hr`;
+        if (this.type === 'normal')
+            return `${this.props.attributes.uniqueID}`;
+        if (this.type === 'hover')
+            return `${this.props.attributes.uniqueID}:hover`;
+        if (this.type === 'divider1')
+            return `${this.props.attributes.uniqueID} > hr.maxi-divider-block__divider-1`;
+        if (this.type === 'divider2')
+            return `${this.props.attributes.uniqueID} > hr.maxi-divider-block__divider-2`;
     }
 
     get getObject() {
+        if (this.type === 'normal')
+            return this.getNormalObject;
+        if (this.type === 'hover')
+            return this.getHoverObject;
+        if (this.type === 'divider1')
+            return this.getFirstDividerObject;
+        if (this.type === 'divider2')
+            return this.getSecondDividerObject;
+    }
+
+    get getNormalObject() {
         const {
-            alignment,
-            dividerColor,
-            dividerWidthUnit,
-            dividerWidth,
-            dividerHeightUnit,
-            dividerHeight,
+            lineVertical,
+            lineHorizontal,
+            linesAlign,
             opacity,
+            background,
             boxShadow,
             size,
             padding,
@@ -56,6 +75,7 @@ class edit extends GXBlock {
         } = this.props.attributes;
 
         const response = {
+            background: { ...getBackgroundObject(JSON.parse(background)) },
             boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
             size: { ...JSON.parse(size) },
             padding: { ...JSON.parse(padding) },
@@ -66,36 +86,79 @@ class edit extends GXBlock {
             }
         };
 
-        if (!isNil(alignment)) {    // Needs to be reviewed
-            switch (alignment) {
-                case 'left':
-                    response.divider.general['margin-left'] = "0px";
-                    break;
-                case 'center':
-                case 'justify':
-                    // response.divider.general['margin-left'] = "auto";
-                    // response.divider.general['margin-right'] = "auto";
-                    null
-                    break;
-                case 'right':
-                    response.divider.general['margin-right'] = "0px";
-                    break;
-            }
-        }
         if (isNumber(opacity))
             response.divider.general['opacity'] = opacity;
-        if (!isEmpty(dividerColor))
-            response.divider.general['background-color'] = dividerColor;
-        if (isNumber(dividerWidth)) {
-            response.divider.general['widthUnit'] = dividerWidthUnit;
-            response.divider.general['width'] = dividerWidth;
-        }
-        if (isNumber(dividerHeight)) {
-            response.divider.general['heightUnit'] = dividerHeightUnit;
-            response.divider.general['height'] = dividerHeight;
+        if (!isNil(linesAlign)) {
+            response.divider.general['flex-direction'] = linesAlign;
+            if (linesAlign === 'row') {
+                if (!isNil(lineVertical))
+                    response.divider.general['align-items'] = lineVertical;
+                if (!isNil(lineHorizontal))
+                    response.divider.general['justify-content'] = lineHorizontal;
+            }
+            else {
+                if (!isNil(lineVertical))
+                    response.divider.general['justify-content'] = lineVertical;
+                if (!isNil(lineHorizontal))
+                    response.divider.general['align-items'] = lineHorizontal;
+            }
         }
 
         return response;
+    }
+
+    get getHoverObject() {
+        const {
+            opacityHover,
+            backgroundHover,
+            boxShadowHover
+        } = this.props.attributes;
+
+        const response = {
+            backgroundHover: { ...getBackgroundObject(JSON.parse(backgroundHover)) },
+            boxShadowHover: { ...getBoxShadowObject(JSON.parse(boxShadowHover)) },
+            dividerHover: {
+                label: 'Divider',
+                general: {}
+            }
+        };
+
+        if (isNumber(opacityHover))
+            response.dividerHover.general['opacity'] = opacityHover;
+
+        return response;
+    }
+
+    get getFirstDividerObject() {
+        const { divider1 } = this.props.attributes;
+
+        const response = {
+            divider: { ...JSON.parse(divider1) }
+        };
+
+        return response;
+    }
+
+    get getSecondDividerObject() {
+        const { divider2 } = this.props.attributes;
+
+        const response = {
+            divider: { ...JSON.parse(divider2) }
+        };
+
+        return response;
+    }
+
+    /**
+    * Refresh the styles on Editor
+    */
+    displayStyles() {
+        this.saveMeta('normal');
+        this.saveMeta('hover');
+        this.saveMeta('divider1');
+        this.saveMeta('divider2');
+
+        new BackEndResponsiveStyles(this.getMeta);
     }
 
     render() {
@@ -105,10 +168,10 @@ class edit extends GXBlock {
                 uniqueID,
                 blockStyle,
                 defaultBlockStyle,
+                showLine,
+                lineOrientation,
                 extraClassName,
-                hideDivider,
-                verticalDivider,
-                roundedDivider
+                fullWidth
             },
         } = this.props;
 
@@ -117,12 +180,11 @@ class edit extends GXBlock {
             blockStyle,
             extraClassName,
             uniqueID,
-            className
+            className,
+            lineOrientation === 'vertical' ?
+                'maxi-divider-block--vertical' :
+                'maxi-divider-block--horizontal',
         );
-        if (verticalDivider)
-            classes = classnames(classes, 'is-vertical')
-        if (roundedDivider)
-            classes = classnames(classes, 'is-rounded')
 
         return [
             <Inspector {...this.props} />,
@@ -130,12 +192,14 @@ class edit extends GXBlock {
             <__experimentalBlock
                 className={classes}
                 data-gx_initial_block_class={defaultBlockStyle}
+                data-align={fullWidth}
             >
                 {
-                    !hideDivider &&
-                    <hr
-                        className="maxi-divider"
-                    />
+                    showLine &&
+                    <Fragment>
+                        <hr class="maxi-divider-block__divider-1" />
+                        <hr class="maxi-divider-block__divider-2" />
+                    </Fragment>
                 }
             </__experimentalBlock>
         ];

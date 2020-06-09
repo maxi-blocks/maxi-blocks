@@ -120,10 +120,10 @@
             .components-range-control__tooltip {
                 border: 2px solid #80828a;
                 background-color: #232433;
-                color: #80828a;
+                color: #fff;
 
                 &:after {
-                    border-top-color: #80828a;
+                    border-top-color: #fff;
                 }
             }
 
@@ -131,6 +131,12 @@
                 background-color: transparent;
                 color: #fff;
                 border-color: #80828a !important;
+            }
+
+            .components-select-control__input {
+                background-color: transparent !important;
+                color: #fff !important;
+                border: 2px solid #80828a !important;
             }
 
             .components-button {
@@ -147,6 +153,10 @@
                 }
             }
         }
+
+        &__label {
+            color: #fff;
+        }
     }
 
     .components-popover__content {
@@ -159,6 +169,11 @@
     &__wrapper {
         display: flex;
         flex-wrap: wrap;
+    }
+
+    input[type="number"] {
+        color: #fff;
+        border-color: #80828a;
     }
 
     .maxi-defaultstyles-control__button {
@@ -178,6 +193,55 @@
             svg path {
                 stroke: #fff;
             }
+        }
+    }
+
+    .components-maxi-dimensions-control {
+        color: #fff;
+
+        &_sync {
+            border-color: #80828a !important;
+            background-color: transparent !important;
+            width: 36px !important;
+
+            &:hover {
+                background-color: transparent !important;
+            }
+            &[aria-pressed="true"] {
+                border-color: #fff;
+                
+                svg {
+                    fill: #fff;
+                }
+            }
+        }
+        &__mobile-controls-item {
+            height: 36px;
+            border-color: #80828a !important;
+
+            svg {
+                fill: currentColor;
+                color: #fff;
+            }
+        }
+
+        &__units-reset {
+            background-color: none;
+            border-color: #80828a !important;
+    
+            &:hover {
+                background-color: transparent !important;
+                border-color: #80828a !important;
+            }
+            svg {
+                fill: #fff !important;
+            }
+        }
+
+        &__number {
+            background-color: transparent;
+            border-color: #80828a !important;
+            color: #fff;
         }
     }
 }

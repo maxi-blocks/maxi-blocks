@@ -11,9 +11,15 @@
         font-weight: 500;
         width: 100%;
         margin-bottom: 8px;
+        padding: 0 1rem;
+
+        &:focus,
+        &:hover {
+            color: inherit;
+        }
 
         &__icon {
-            margin: -4px 0 auto auto;
+            margin: auto 0 auto auto;
             transition: 0.2s all ease;
         }
 

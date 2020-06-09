@@ -8,8 +8,9 @@ const {
 const { useDispatch } = wp.data;
 
 /**
- * Icons
+ * Styles and icons
  */
+import './editor.scss';
 import { toolbarBold } from '../../../../icons';
 
 /**
@@ -56,6 +57,7 @@ const TextBold = props => {
         <Button
             className='toolbar-item toolbar-item__bold'
             onClick={getBoldTypography}
+            aria-pressed={typography.desktop['font-weight'] === 800}
         >
             <Icon
                 className='toolbar-item__icon'

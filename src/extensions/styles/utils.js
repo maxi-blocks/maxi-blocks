@@ -20,8 +20,11 @@ import {
  * @param {string} prop Claimed property to return
  */
 export const getDefaultProp = (clientId, prop) => {
-    const { getBlockName } = select('core/block-editor');
-    const blockName = getBlockName(clientId);
+    const { getBlockName, getSelectedBlockClientId } = select('core/block-editor');
+    const blockName = clientId ? 
+        getBlockName(clientId) :
+        getBlockName(getSelectedBlockClientId());
+
 
     if (prop)
         return getBlockAttributes(blockName)[prop];

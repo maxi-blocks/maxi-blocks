@@ -2,7 +2,6 @@
  * Wordpress dependencies
  */
 const { __ } = wp.i18n;
-const { useSelect } = wp.data;
 const {
     RangeControl,
     Icon
@@ -41,18 +40,6 @@ const BoxShadowControl = props => {
         className
     } = props;
 
-    const { clientId } = useSelect(
-        select => {
-            const { getSelectedBlockClientId } = select(
-                'core/block-editor'
-            );
-            return {
-                clientId: getSelectedBlockClientId()
-            }
-        },
-        []
-    )
-
     let value = typeof boxShadowOptions === 'object' ?
         boxShadowOptions :
         JSON.parse(boxShadowOptions);
@@ -69,7 +56,6 @@ const BoxShadowControl = props => {
     return (
         <div className={classes}>
             <DefaultStylesControl
-                onChangeDefault={() => onChange(getDefaultProp(clientId, 'boxShadow'))}
                 items={[
                     {
                         content: (
@@ -78,7 +64,7 @@ const BoxShadowControl = props => {
                                 icon={styleNone}
                             />
                         ),
-                        onChange: () => onChange(getDefaultProp(clientId, 'border'))
+                        onChange: () => onChange(getDefaultProp(null, 'border'))
                     },
                     {
                         content: (

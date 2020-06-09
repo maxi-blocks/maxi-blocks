@@ -49,6 +49,7 @@ const Inspector = props => {
             defaultBlockStyle,
             size,
             cropOptions,
+            fullWidth,
             alignmentDesktop,
             alignmentTablet,
             alignmentMobile,
@@ -65,6 +66,7 @@ const Inspector = props => {
             backgroundHover,
             opacityHover,
             boxShadowHover,
+            borderHover,
             hoverAnimation,
             hoverAnimationDuration,
             extraClassName,
@@ -189,6 +191,15 @@ const Inspector = props => {
                                                             onChange={cropOptions => setAttributes({ cropOptions: JSON.stringify(cropOptions) })}
                                                         />
                                                     }
+                                                    <SelectControl
+                                                        label={__('Fullwidth', 'maxi-blocks')}
+                                                        value={fullWidth}
+                                                        options={[
+                                                            { label: __('No', 'maxi-blocks'), value: 'normal' },
+                                                            { label: __('Yes', 'maxi-blocks'), value: 'full' }
+                                                        ]}
+                                                        onChange={fullWidth => setAttributes({ fullWidth })}
+                                                    />
                                                     <RangeControl
                                                         label={__('Width', 'maxi-blocks')}
                                                         value={width}
@@ -246,11 +257,6 @@ const Inspector = props => {
                                                             label: __('Normal', 'gutenberg-extra'),
                                                             content: (
                                                                 <Fragment>
-                                                                    <BackgroundControl
-                                                                        backgroundOptions={background}
-                                                                        onChange={background => setAttributes({ background })}
-                                                                        disableImage
-                                                                    />
                                                                     <RangeControl
                                                                         label={__('Opacity', 'maxi-blocks')}
                                                                         className='maxi-opacity-control'
@@ -261,6 +267,11 @@ const Inspector = props => {
                                                                         allowReset={true}
                                                                         initialPosition={0}
                                                                     />
+                                                                    <BackgroundControl
+                                                                        backgroundOptions={background}
+                                                                        onChange={background => setAttributes({ background })}
+                                                                        disableImage
+                                                                    />
                                                                 </Fragment>
                                                             )
                                                         },
@@ -268,11 +279,6 @@ const Inspector = props => {
                                                             label: __('Hover', 'gutenberg-extra'),
                                                             content: (
                                                                 <Fragment>
-                                                                    <BackgroundControl
-                                                                        backgroundOptions={backgroundHover}
-                                                                        onChange={backgroundHover => setAttributes({ backgroundHover })}
-                                                                        disableImage
-                                                                    />
                                                                     <RangeControl
                                                                         label={__('Opacity', 'maxi-blocks')}
                                                                         className='maxi-opacity-control'
@@ -283,6 +289,11 @@ const Inspector = props => {
                                                                         allowReset={true}
                                                                         initialPosition={0}
                                                                     />
+                                                                    <BackgroundControl
+                                                                        backgroundOptions={backgroundHover}
+                                                                        onChange={backgroundHover => setAttributes({ backgroundHover })}
+                                                                        disableImage
+                                                                    />
                                                                 </Fragment>
                                                             )
                                                         },
@@ -292,10 +303,29 @@ const Inspector = props => {
                                         },
                                         {
                                             label: __('Border', 'maxi-blocks'),
+                                            disablePadding: true,
                                             content: (
-                                                <BorderControl
-                                                    borderOptions={border}
-                                                    onChange={border => setAttributes({ border })}
+                                                <SettingTabsControl
+                                                    items={[
+                                                        {
+                                                            label: __('Normal', 'gutenberg-extra'),
+                                                            content: (
+                                                                <BorderControl
+                                                                    borderOptions={border}
+                                                                    onChange={border => setAttributes({ border })}
+                                                                />
+                                                            )
+                                                        },
+                                                        {
+                                                            label: __('Hover', 'gutenberg-extra'),
+                                                            content: (
+                                                                <BorderControl
+                                                                    borderOptions={borderHover}
+                                                                    onChange={borderHover => setAttributes({ borderHover })}
+                                                                />
+                                                            )
+                                                        },
+                                                    ]}
                                                 />
                                             )
                                         },

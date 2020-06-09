@@ -1,6 +1,4 @@
-let ddd_full_stop = 0;
-
-let json_counters_array = [];
+//let ddd_full_stop = 0;
 
 //console.log('layout-modal loaded');
 
@@ -8,9 +6,41 @@ if (typeof ajaxurl === 'undefined') { ajaxurl = gx_wl_options_for_js.gx_ajax_url
 
 
 jQuery(document).ready(function($) {
+  console.log('START');
+  function isEmpty(obj) {
+      for(var key in obj) {
+          if(obj.hasOwnProperty(key))
+              return false;
+      }
+      return true;
+  }
+  let rb_to_send_final = '';
+  wp.data.subscribe(function () {
+    var isSavingPost = wp.data.select('core/editor').isSavingPost();
+    var isAutosavingPost = wp.data.select('core/editor').isAutosavingPost();
+
+    if (!isSavingPost && !isAutosavingPost) {
+
+    let rb_to_send = '';
+    let maxi_reusable_blocks = wp.data.select( 'core' ).getEntityRecords( 'postType', 'wp_block' );
+    if(!isEmpty(maxi_reusable_blocks)) {
+     //console.log('maxi_reusable_blocks: '+maxi_reusable_blocks);
+     for (let [key, value] of Object.entries(maxi_reusable_blocks)) {
+      if (!isEmpty(value) && ~value.title.raw.indexOf(' ')) {
+        let rb_id = value.title.raw.split(' ').pop().trim();
+        if (~rb_id.indexOf('-')) {
+         // console.log(rb_id);
+          rb_to_send = rb_to_send + ' ' + rb_id;
+        }
+      }
+     }
+    console.log('rb_to_send '+rb_to_send);
+    }
+    rb_to_send_final = rb_to_send;
+  }
+  });
     // main function
 
-    console.log('START');
     $('.components-button.maxi-block-library__modal-button').live('click', function() {
       console.log('button clicked');
       setTimeout(function(){
@@ -23,9 +53,13 @@ jQuery(document).ready(function($) {
       console.log('onIframeLoad');
       //console.log('full stop '+ddd_full_stop);
      // $('iframe#maxi-block-library__modal-iframe').on('load', function() {
-        console.log('iframe loaded !!!');
+
 
         let frame = document.getElementById('maxi-block-library__modal-iframe');
+
+        if(typeof(frame) != 'undefined' && frame != null) {
+
+          console.log('iframe loaded !!!');
 
         jQuery.ajax({
             type: 'GET',
@@ -35,9 +69,20 @@ jQuery(document).ready(function($) {
              // console.log('success data:');
              // console.log(data);
               let gx_sp_enable = $.trim(data + '');
-              if (gx_sp_enable === 'enabled') { frame.contentWindow.postMessage('pro_membership_activated', '*'); } else { frame.contentWindow.postMessage('pro_membership_dectivated', '*'); }
+              if (gx_sp_enable === 'enabled') {
+                frame.contentWindow.postMessage('pro_membership_activated', '*');
+              }
+              else {
+                frame.contentWindow.postMessage('pro_membership_dectivated', '*');
+              }
+
+              console.log('rb_to_send final '+rb_to_send_final);
+
+              if(rb_to_send_final !== '') frame.contentWindow.postMessage('imported:'+rb_to_send_final, '*');
             }
         });
+
+      //  frame.contentWindow.postMessage(, '*');
         // function to get post id from the url parameter 'post'
         function getUrlVars() {
           let lets = [],
@@ -63,23 +108,28 @@ jQuery(document).ready(function($) {
 
       // Listen to message from child window
         eventer(messageEvent, function(e) {
-        if (e.origin === 'https://ge-library.dev700.com') {
+          console.log('e.origin: '+e.origin);
+        if (e.origin === 'https://ge-library.dev700.com') { //'https://ge-library.dev700.com
             let response;
            //console.log('jQuery.type(e.data) '+jQuery.type(e.data) );
             if (jQuery.type(e.data) === 'object') { // check if the response is text
               //console.log('e.data: ' + JSON.stringify(e.data));
               let action_type = e.data.action;
               if (action_type === 'import') {
-                jQuery('.maxi-block-library__modal__loading_message p').text('Saving');
-                jQuery('.maxi-block-library__modal__loading_message').removeClass('maxi-block__item--hidden');
+                jQuery('.maxi-block-library__modal__loading_message p').text('Saving...');
+                //jQuery('.maxi-block-library__modal__loading_message').removeClass('maxi-block__item--hidden');
               }
+              if (action_type === 'insert') {
+                jQuery('.maxi-block-library__modal__loading_message p').text('Inserting...');
+              }
+              jQuery('.maxi-block-library__modal__loading_message').removeClass('maxi-block__item--hidden');
               if (~e.data.json.indexOf('wp_block')) { // if the response is a gutenberg json file
                     // console.log("e.data: " + e.data);
 
                     response = JSON.parse(e.data.json);
                     //console.log('response '+response);
                     if (response) {
-                        if (ddd_full_stop === 0) {
+                       // if (ddd_full_stop === 0) {
                             response = jQuery.parseJSON(response);
                            // console.log('response.content ' + response.content);
                             let json = response.content;
@@ -139,7 +189,6 @@ jQuery(document).ready(function($) {
                             jQuery.ajax({
                                 type: 'POST',
                                 url: ajaxurl,
-                                // processData: false,
                                 data: {
                                     'action': 'maxi_import_images',
                                     'maxi_post_id': current_post_id,
@@ -170,6 +219,7 @@ jQuery(document).ready(function($) {
 
                                     if(action_type === 'insert') {
                                       console.log('INSERTING BLOCKS');
+                                      jQuery('.maxi-block-library__modal__loading_message p').text('Done!');
                                       wp.data.dispatch('core/block-editor').replaceBlocks(
                                         clientId,
                                         wp.blocks.rawHandler({
@@ -186,7 +236,6 @@ jQuery(document).ready(function($) {
                                       jQuery.ajax({
                                           type: 'POST',
                                           url: ajaxurl,
-                                          // processData: false,
                                           data: {
                                               'action': 'maxi_import_reusable_blocks',
                                               'maxi_reusable_block_title': new_reusable_block_title,
@@ -194,15 +243,9 @@ jQuery(document).ready(function($) {
                                           },
                                           success: function(data) {
                                            // console.log(data);
-                                            if(data === 'Block already exists') {
-                                              console.log('Block already exists');
-                                              jQuery('.maxi-block-library__modal__loading_message p').text('Already exists in Re-usable Blocks Library');
-                                            }
-                                            else {
-                                              console.log('Imported');
-                                              jQuery('.maxi-block-library__modal__loading_message p').text('Saved to Re-usable Blocks Library');
-                                            }
-                                            setTimeout(function(){ jQuery('.maxi-block-library__modal__loading_message').addClass('maxi-block__item--hidden'); }, 5000);
+                                            console.log('Imported');
+                                            jQuery('.maxi-block-library__modal__loading_message p').text('Saved to Re-usable Blocks Library');
+                                            setTimeout(function(){ jQuery('.maxi-block-library__modal__loading_message').addClass('maxi-block__item--hidden'); }, 3000);
                                           },
                                           error: function(data) {
                                               console.log('Re-usable import error');
@@ -214,39 +257,30 @@ jQuery(document).ready(function($) {
                                       console.log('Error: no action to do');
                                     }
 
-
-                                        ddd_full_stop = 1;
-                                    // console.log(data);
                                 },
                                 error: function(data) {
                                     console.log('AJAX error');
                                     console.log(data);
                                 }
                             });
-                        }
+                        //}
                     } //  if (response)
                 } // if (~e.data.indexOf('context'))
 
             } //if jQuery.type(e.data) === 'string'
         } //if (e.origin === 'https://ondemand.divi-den.com') {
     }, false); // eventer(messageEvent, function(e) {
-    ddd_full_stop = 0;
+  //  ddd_full_stop = 0;
 
     $('.maxi-cloud-modal .components-button.components-icon-button').on('click', function() {
         console.log('close');
         $('.components-modal__screen-overlay').remove();
     });
 
-// }, 200);
+} // if frame
 } //function onIframeLoad()
 //}); //  $('iframe#maxi-block-library__modal-iframe').on('load', function()
 
-// setInterval(function() {
-//     if ($('iframe#maxi-block-library__modal-iframe').length > 0) {
-//        // console.log('maxi-block-library__modal-iframe layout modal');
-//         // console.log($('iframe#maxi-block-library__modal-iframe').parents());
-//         onIframeLoad();
-//     }
-// }, 1000);
+setInterval(function(){ onIframeLoad() }, 1000);
 
 }); //jQuery(document).ready(function($)

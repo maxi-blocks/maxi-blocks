@@ -85,7 +85,7 @@ class MaxiModal extends Component {
                                 shouldCloseOnClickOutside={false}
                                 onRequestClose={ onClick }
                             >
-                                <Iframe url="https://ge-library.dev700.com"
+                                <Iframe url="https://ge-library.dev700.com/?_sft_gutenberg_type=block-patterns&_sft_light_or_dark=light"
                                 width="100%"
                                 height="90%"
                                 id="maxi-block-library__modal-iframe"

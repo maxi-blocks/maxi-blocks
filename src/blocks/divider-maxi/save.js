@@ -19,6 +19,7 @@ const save = props => {
             blockStyle,
             defaultBlockStyle,
             extraClassName,
+            fullWidth,
             showLine,
             lineOrientation
         },
@@ -30,6 +31,9 @@ const save = props => {
         extraClassName,
         uniqueID,
         className,
+        fullWidth === 'full' ?
+            'alignfull' :
+            undefined,
         lineOrientation === 'vertical' ?
             'maxi-divider-block--vertical' :
             'maxi-divider-block--horizontal',

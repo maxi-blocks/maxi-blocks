@@ -40,7 +40,7 @@ import {
 /**
  * Icons
  */
-import { 
+import {
     toolbarReplaceImage,
     placeholderImage
 } from '../../icons';
@@ -55,7 +55,7 @@ class edit extends GXBlock {
 
     get getWrapperWidth() {
         const target = document.getElementById(`block-${this.props.clientId}`);
-        if(!target)
+        if (!target)
             return;
 
         return target.getBoundingClientRect().width;
@@ -77,13 +77,13 @@ class edit extends GXBlock {
 
     get getObject() {
         if (this.type === 'normal')
-            return this.getNormalObject
+            return this.getNormalObject;
         if (this.type === 'hover')
-            return this.getHoverObject
+            return this.getHoverObject;
         if (this.type === 'image')
-            return this.getImageObject
+            return this.getImageObject;
         if (this.type === 'figcaption')
-            return this.getFigcaptionObject
+            return this.getFigcaptionObject;
     }
 
     get getNormalObject() {
@@ -235,6 +235,7 @@ class edit extends GXBlock {
                 blockStyle,
                 defaultBlockStyle,
                 extraClassName,
+                fullWidth,
                 captionType,
                 captionContent,
                 size,
@@ -247,7 +248,6 @@ class edit extends GXBlock {
             },
             imageData,
             setAttributes,
-            isSelected
         } = this.props;
 
         let classes = classnames(
@@ -289,6 +289,7 @@ class edit extends GXBlock {
             <__experimentalBlock.figure
                 className={classes}
                 data-gx_initial_block_class={defaultBlockStyle}
+                data-align={fullWidth}
             >
                 <MediaUpload
                     onSelect={media => setAttributes({ mediaID: media.id })}
@@ -299,7 +300,7 @@ class edit extends GXBlock {
                             {!isNil(mediaID) && imageData ?
                                 <Fragment>
                                     <ResizableBox
-                                        className='maxi-image-block-resizer'
+                                        className='maxi-image-block__resizer'
                                         size={{
                                             width: `${width}%`,
                                             height: 'auto'
@@ -323,10 +324,10 @@ class edit extends GXBlock {
                                         }}
                                     >
                                         <div
-                                            className="maxi-image-block-settings"
+                                            className="maxi-image-block__settings"
                                         >
                                             <IconButton
-                                                className='maxi-image-block-upload-button'
+                                                className='maxi-image-block__settings__upload-button'
                                                 showTooltip="true"
                                                 onClick={open}
                                                 icon={toolbarReplaceImage}

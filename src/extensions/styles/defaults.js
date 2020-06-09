@@ -82,7 +82,6 @@ export const typography = {
     },
     "general": {
         "color": "#9b9b9b",
-        "text-shadow": "none",
         "text-align": "left"
     },
     "desktop": {
@@ -93,9 +92,10 @@ export const typography = {
         "letter-spacingUnit": "px",
         "letter-spacing": 0,
         "font-weight": 400,
-        "text-transform": "none",
-        "font-style": "normal",
-        "text-decoration": "none"
+        "text-transform": "",
+        "font-style": "",
+        "text-decoration": "",
+        "text-shadow": ""
     },
     "tablet": {
         "font-sizeUnit": "px",
@@ -105,9 +105,10 @@ export const typography = {
         "letter-spacingUnit": "px",
         "letter-spacing": 0,
         "font-weight": 400,
-        "text-transform": "none",
-        "font-style": "normal",
-        "text-decoration": "none"
+        "text-transform": "",
+        "font-style": "",
+        "text-decoration": "",
+        "text-shadow": ""
     },
     "mobile": {
         "font-sizeUnit": "px",
@@ -117,9 +118,10 @@ export const typography = {
         "letter-spacingUnit": "px",
         "letter-spacing": 0,
         "font-weight": 400,
-        "text-transform": "none",
-        "font-style": "normal",
-        "text-decoration": "none"
+        "text-transform": "",
+        "font-style": "",
+        "text-decoration": "",
+        "text-shadow": ""
     }
 }
 
@@ -301,25 +303,11 @@ export const boxShadowHover = {
 }
 
 export const typographyHover = {
-    "label": "Button text",
-    "font": "Roboto",
-    "options": {
-        "100": "http://fonts.gstatic.com/s/roboto/v20/KFOkCnqEu92Fr1MmgWxPKTM1K9nz.ttf",
-        "100italic": "http://fonts.gstatic.com/s/roboto/v20/KFOiCnqEu92Fr1Mu51QrIzcXLsnzjYk.ttf",
-        "300": "http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmSU5vAx05IsDqlA.ttf",
-        "300italic": "http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TjARc9AMX6lJBP.ttf",
-        "400": "http://fonts.gstatic.com/s/roboto/v20/KFOmCnqEu92Fr1Me5WZLCzYlKw.ttf",
-        "italic": "http://fonts.gstatic.com/s/roboto/v20/KFOkCnqEu92Fr1Mu52xPKTM1K9nz.ttf",
-        "500": "http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmEU9vAx05IsDqlA.ttf",
-        "500italic": "http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51S7ABc9AMX6lJBP.ttf",
-        "700": "http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmWUlvAx05IsDqlA.ttf",
-        "700italic": "http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TzBhc9AMX6lJBP.ttf",
-        "900": "http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmYUtvAx05IsDqlA.ttf",
-        "900italic": "http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TLBBc9AMX6lJBP.ttf"
-    },
+    "label": "Typography",
+    "font": "",
+    "options": {},
     "general": {
         "color": "",
-        "text-shadow": "none",
         "text-align": ""
     },
     "desktop": {
@@ -330,9 +318,10 @@ export const typographyHover = {
         "letter-spacingUnit": "px",
         "letter-spacing": "",
         "font-weight": "",
-        "text-transform": "none",
-        "font-style": "normal",
-        "text-decoration": "none"
+        "text-transform": "",
+        "font-style": "",
+        "text-decoration": "",
+        "text-shadow": ""
     },
     "tablet": {
         "font-sizeUnit": "px",
@@ -342,9 +331,10 @@ export const typographyHover = {
         "letter-spacingUnit": "px",
         "letter-spacing": "",
         "font-weight": "",
-        "text-transform": "none",
-        "font-style": "normal",
-        "text-decoration": "none"
+        "text-transform": "",
+        "font-style": "",
+        "text-decoration": "",
+        "text-shadow": ""
     },
     "mobile": {
         "font-sizeUnit": "px",
@@ -354,9 +344,10 @@ export const typographyHover = {
         "letter-spacingUnit": "px",
         "letter-spacing": "",
         "font-weight": "",
-        "text-transform": "none",
-        "font-style": "normal",
-        "text-decoration": "none"
+        "text-transform": "",
+        "font-style": "",
+        "text-decoration": "",
+        "text-shadow": ""
     }
 }
 
@@ -473,3 +464,39 @@ export const paddingHover = {
         "sync": true
     }
 };
+
+export const __experimentalDivider1 = {
+    "label": "Divider",
+    "general": {
+        "border-color": "#000",
+        "border-style": "solid",
+        "widthUnit": "%",
+        "width": "90",
+        "heightUnit": "px",
+        "height": "",
+        "border-top-widthUnit": "px",
+        "border-top-width": 1,
+        "border-right-widthUnit": "px",
+        "border-right-width": "",
+        "border-radius": "",
+        "opacity": 1
+    }
+}
+
+export const __experimentalDivider2 = {
+    "label": "Divider",
+    "general": {
+        "border-color": "#000",
+        "border-style": "none",
+        "widthUnit": "%",
+        "width": "",
+        "heightUnit": "px",
+        "height": "",
+        "border-top-widthUnit": "px",
+        "border-top-width": "",
+        "border-right-widthUnit": "px",
+        "border-right-width": "",
+        "border-radius": "",
+        "opacity": 1
+    }
+}

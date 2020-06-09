@@ -11,9 +11,9 @@ const alignLeft = (
         <Path
             fill="none"
             stroke="#173042"
-            stroke-width="2"
-            stroke-miterlimit="10"
-            stroke-dasharray="2,2"
+            strokeWidth="2"
+            strokeMiterlimit="10"
+            strokeDasharray="2,2"
             d="M4 2h55"
         />
         <Path

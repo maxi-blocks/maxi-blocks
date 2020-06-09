@@ -33,23 +33,25 @@ const ALLOWED_BLOCKS = [
 ]
 
 const BoxShadow = props => {
-    const { clientId } = props;
+    const {
+        clientId,
+        blockName
+    } = props;
 
-    const { blockName, boxShadow } = useSelect(
+    if (!ALLOWED_BLOCKS.includes(blockName))
+        return null;
+
+    const { boxShadow } = useSelect(
         (select) => {
-            const { getBlockName, getBlockAttributes } = select(
+            const { getBlockAttributes } = select(
                 'core/block-editor',
             );
             return {
-                blockName: getBlockName(clientId),
                 boxShadow: getBlockAttributes(clientId).boxShadow,
             };
         },
         [clientId]
     );
-
-    if (!ALLOWED_BLOCKS.includes(blockName))
-        return null;
 
     const { updateBlockAttributes } = useDispatch(
         'core/block-editor'

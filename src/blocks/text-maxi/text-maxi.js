@@ -19,10 +19,8 @@ import edit from './edit.js';
 import save from './save.js';
 
 /**
- * Styles and icons
+ * Icons
  */
-import './style.scss';
-import './editor.scss';
 import { imageBox } from '../../icons';
 
 /**

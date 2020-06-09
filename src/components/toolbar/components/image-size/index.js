@@ -37,16 +37,17 @@ import { toolbarSettings } from '../../../../icons';
  * ImageSize
  */
 const ImageSize = props => {
-    const { clientId } = props;
-
     const {
-        blockName,
-        size,
-        width,
-        imageData
-    } = useSelect(
+        clientId,
+        blockName
+    } = props;
+
+    if (blockName != 'maxi-blocks/image-maxi')
+        return null;
+
+    const { size, width, imageData } = useSelect(
         select => {
-            const { getBlockName, getBlockAttributes } = select(
+            const { getBlockAttributes } = select(
                 'core/block-editor',
             );
             const { getMedia } = select(
@@ -54,7 +55,6 @@ const ImageSize = props => {
             )
             const mediaID = getBlockAttributes(clientId).mediaID;
             return {
-                blockName: getBlockName(clientId),
                 size: getBlockAttributes(clientId).size,
                 width: getBlockAttributes(clientId).width,
                 imageData: getMedia(mediaID)
@@ -70,9 +70,6 @@ const ImageSize = props => {
     const { openGeneralSidebar } = useDispatch(
         'core/edit-post'
     );
-
-    if (blockName != 'maxi-blocks/image-maxi')
-        return null;
 
     const getSizeOptions = () => {
         let response = [];

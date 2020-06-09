@@ -15,57 +15,68 @@ const attributes = {
         type: 'string',
         default: 'maxi-def-light'
     },
-    hideDivider: {
+    showLine: {
         type: 'boolean',
-        default: false
+        default: true
     },
-    verticalDivider: {
-        type: 'boolean',
-        default: false
+    lineVertical: {
+        type: 'string',
+        default: 'flex-start'
     },
-    roundedDivider: {
-        type: 'boolean',
-        default: false
+    lineHorizontal: {
+        type: 'string',
+        default: 'flex-start'
     },
-    alignment: {
+    lineHorizontal: {
         type: 'string',
         default: 'center'
     },
-    dividerWidthUnit: {
+    lineOrientation: {
         type: 'string',
-        default: '%'
+        default: 'horizontal'
     },
-    dividerWidth: {
-        type: 'number',
-        default: 20
-    },
-    dividerHeightUnit: {
+    linesAlign: {
         type: 'string',
-        default: 'px'
+        default: 'row'
     },
-    dividerHeight: {
-        type: 'number',
-        default: 5
-    },
-    dividerColor: {
+    divider1: {
         type: 'string',
-        default: '#00ccff'
+        default: JSON.stringify(attributesData.__experimentalDivider1)
     },
-    dividerColorDefault: {
+    divider2: {
         type: 'string',
-        default: '#00ccff'
+        default: JSON.stringify(attributesData.__experimentalDivider2)
     },
-    boxShadow: {
+    fullWidth: {
         type: 'string',
-        default: JSON.stringify(attributesData.boxShadow)
+        default: 'normal',
+    },
+    size: {
+        type: 'string',
+        default: JSON.stringify(attributesData.size)
     },
     opacity: {
         type: 'number',
         default: 1
     },
-    size: {
+    opacityHover: {
+        type: 'number',
+    },
+    background: {
         type: 'string',
-        default: JSON.stringify(attributesData.size)
+        default: JSON.stringify(attributesData.background)
+    },
+    backgroundHover: {
+        type: 'string',
+        default: JSON.stringify(attributesData.backgroundHover)
+    },
+    boxShadow: {
+        type: 'string',
+        default: JSON.stringify(attributesData.boxShadow)
+    },
+    boxShadowHover: {
+        type: 'string',
+        default: JSON.stringify(attributesData.boxShadowHover)
     },
     padding: {
         type: 'string',

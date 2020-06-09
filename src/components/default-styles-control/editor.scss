@@ -8,8 +8,12 @@
         width: 100%;
         margin: 4px;
         height: 40px;
-        // border: 2px solid #BBBBBB;
-        background: #F8F8F8;
+        background: #f8f8f8;
+
+        &:focus {
+            outline: none !important;
+            box-shadow: none !important;
+        }
 
         &:first-of-type {
             margin-left: 0;

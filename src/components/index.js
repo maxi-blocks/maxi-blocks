@@ -17,6 +17,7 @@ export { default as BoxShadowControl } from './box-shadow-control';
 export { default as CheckBoxControl } from './checkbox-control';
 export { default as ColorControl } from './color-control';
 export { default as CustomCSSControl } from './custom-css-control';
+export { default as DefaultStylesControl } from './default-styles-control';
 export { default as DeviceSelectorControl } from './device-selector-control';
 export { default as DimensionsControl } from './dimensions-control';
 export { default as FontFamilySelector } from './font-family-selector';
@@ -35,3 +36,4 @@ export { default as TypographyControl } from './typography-control';
 
 // Experimental
 export { default as __experimentalToolbar } from './toolbar';
+export { default as __experimentalDividerControl } from './divider-control';

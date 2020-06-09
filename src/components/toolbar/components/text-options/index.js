@@ -2,20 +2,22 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { useState } = wp.element;
+const { useDispatch } = wp.data;
+const {
+    Fragment,
+    useState 
+} = wp.element;
 const {
     Icon,
     Dropdown,
     Button,
     BaseControl
 } = wp.components;
-const { useDispatch } = wp.data;
 
 /**
  * Internal dependencies
  */
 import FontFamilySelector from '../../../font-family-selector';
-import DeviceSelectorControl from '../../../device-selector-control';
 
 /**
  * Styles and icons
@@ -25,6 +27,7 @@ import {
     toolbarType,
     reset
 } from '../../../../icons';
+import SettingTabsControl from '../../../setting-tabs-control';
 
 /**
  * TextOptions
@@ -53,8 +56,6 @@ const TextOptions = props => {
             }
         )
     }
-
-    const [device, setDevice] = useState('desktop');
 
     let typography = JSON.parse(rawTypography);
     let defaultTypography = JSON.parse(defaultRawTypography);
@@ -116,100 +117,302 @@ const TextOptions = props => {
                                 {reset}
                             </Button>
                         </div>
-                        <DeviceSelectorControl
-                            device={device}
-                            onChange={device => setDevice(device)}
+                        <SettingTabsControl
+                            disablePadding
+                            items={[
+                                {
+                                    label: __('Desktop', 'maxi-blocks'),
+                                    content: (
+                                        <Fragment>
+                                            <BaseControl
+                                                label={__('Size', 'maxi-blocks')}
+                                                className='toolbar-item__popover__font-options__number-control'
+                                            >
+                                                <input
+                                                    type='number'
+                                                    value={typography.desktop['font-size']}
+                                                    onChange={e => {
+                                                        typography.desktop['font-size'] = Number(e.target.value);
+                                                        updateTypography();
+                                                    }}
+
+                                                />
+                                                <Button
+                                                    className="components-maxi-dimensions-control__units-reset"
+                                                    onClick={() => {
+                                                        typography.desktop['font-size'] = defaultTypography.desktop['font-size'];
+                                                        updateTypography();
+                                                    }}
+                                                    isSmall
+                                                    aria-label={sprintf(
+                                                        /* translators: %s: a texual label  */
+                                                        __('Reset %s settings', 'maxi-blocks'),
+                                                        'size'
+                                                    )}
+                                                    type="reset"
+                                                >
+                                                    {reset}
+                                                </Button>
+                                            </BaseControl>
+                                            <BaseControl
+                                                label={__('Line Height', 'maxi-blocks')}
+                                                className='toolbar-item__popover__font-options__number-control'
+                                            >
+                                                <input
+                                                    type='number'
+                                                    value={typography.desktop['line-height']}
+                                                    onChange={e => {
+                                                        typography.desktop['line-height'] = Number(e.target.value);
+                                                        updateTypography();
+                                                    }}
+
+                                                />
+                                                <Button
+                                                    className="components-maxi-dimensions-control__units-reset"
+                                                    onClick={() => {
+                                                        typography.desktop['line-height'] = defaultTypography.desktop['line-height'];
+                                                        updateTypography();
+                                                    }}
+                                                    isSmall
+                                                    aria-label={sprintf(
+                                                        /* translators: %s: a texual label  */
+                                                        __('Reset %s settings', 'maxi-blocks'),
+                                                        'line height'
+                                                    )}
+                                                    type="reset"
+                                                >
+                                                    {reset}
+                                                </Button>
+                                            </BaseControl>
+                                            <BaseControl
+                                                label={__('Letter Spacing', 'maxi-blocks')}
+                                                className='toolbar-item__popover__font-options__number-control'
+                                            >
+                                                <input
+                                                    type='number'
+                                                    value={typography.desktop['letter-spacing']}
+                                                    onChange={e => {
+                                                        typography.desktop['letter-spacing'] = Number(e.target.value);
+                                                        updateTypography();
+                                                    }}
+
+                                                />
+                                                <Button
+                                                    className="components-maxi-dimensions-control__units-reset"
+                                                    onClick={() => {
+                                                        typography.desktop['letter-spacing'] = defaultTypography.desktop['letter-spacing'];
+                                                        updateTypography();
+                                                    }}
+                                                    isSmall
+                                                    aria-label={sprintf(
+                                                        /* translators: %s: a texual label  */
+                                                        __('Reset %s settings', 'maxi-blocks'),
+                                                        'letter spacing'
+                                                    )}
+                                                    type="reset"
+                                                >
+                                                    {reset}
+                                                </Button>
+                                            </BaseControl>
+                                        </Fragment>
+                                    )
+                                },
+                                {
+                                    label: __('Tablet', 'maxi-blocks'),
+                                    content: (
+                                        <Fragment>
+                                            <BaseControl
+                                                label={__('Size', 'maxi-blocks')}
+                                                className='toolbar-item__popover__font-options__number-control'
+                                            >
+                                                <input
+                                                    type='number'
+                                                    value={typography.tablet['font-size']}
+                                                    onChange={e => {
+                                                        typography.tablet['font-size'] = Number(e.target.value);
+                                                        updateTypography();
+                                                    }}
+
+                                                />
+                                                <Button
+                                                    className="components-maxi-dimensions-control__units-reset"
+                                                    onClick={() => {
+                                                        typography.tablet['font-size'] = defaultTypography.tablet['font-size'];
+                                                        updateTypography();
+                                                    }}
+                                                    isSmall
+                                                    aria-label={sprintf(
+                                                        /* translators: %s: a texual label  */
+                                                        __('Reset %s settings', 'maxi-blocks'),
+                                                        'size'
+                                                    )}
+                                                    type="reset"
+                                                >
+                                                    {reset}
+                                                </Button>
+                                            </BaseControl>
+                                            <BaseControl
+                                                label={__('Line Height', 'maxi-blocks')}
+                                                className='toolbar-item__popover__font-options__number-control'
+                                            >
+                                                <input
+                                                    type='number'
+                                                    value={typography.tablet['line-height']}
+                                                    onChange={e => {
+                                                        typography.tablet['line-height'] = Number(e.target.value);
+                                                        updateTypography();
+                                                    }}
+
+                                                />
+                                                <Button
+                                                    className="components-maxi-dimensions-control__units-reset"
+                                                    onClick={() => {
+                                                        typography.tablet['line-height'] = defaultTypography.tablet['line-height'];
+                                                        updateTypography();
+                                                    }}
+                                                    isSmall
+                                                    aria-label={sprintf(
+                                                        /* translators: %s: a texual label  */
+                                                        __('Reset %s settings', 'maxi-blocks'),
+                                                        'line height'
+                                                    )}
+                                                    type="reset"
+                                                >
+                                                    {reset}
+                                                </Button>
+                                            </BaseControl>
+                                            <BaseControl
+                                                label={__('Letter Spacing', 'maxi-blocks')}
+                                                className='toolbar-item__popover__font-options__number-control'
+                                            >
+                                                <input
+                                                    type='number'
+                                                    value={typography.tablet['letter-spacing']}
+                                                    onChange={e => {
+                                                        typography.tablet['letter-spacing'] = Number(e.target.value);
+                                                        updateTypography();
+                                                    }}
+
+                                                />
+                                                <Button
+                                                    className="components-maxi-dimensions-control__units-reset"
+                                                    onClick={() => {
+                                                        typography.tablet['letter-spacing'] = defaultTypography.tablet['letter-spacing'];
+                                                        updateTypography();
+                                                    }}
+                                                    isSmall
+                                                    aria-label={sprintf(
+                                                        /* translators: %s: a texual label  */
+                                                        __('Reset %s settings', 'maxi-blocks'),
+                                                        'letter spacing'
+                                                    )}
+                                                    type="reset"
+                                                >
+                                                    {reset}
+                                                </Button>
+                                            </BaseControl>
+                                        </Fragment>
+                                    )
+                                },
+                                {
+                                    label: __('Mobile', 'maxi-blocks'),
+                                    content: (
+                                        <Fragment>
+                                            <BaseControl
+                                                label={__('Size', 'maxi-blocks')}
+                                                className='toolbar-item__popover__font-options__number-control'
+                                            >
+                                                <input
+                                                    type='number'
+                                                    value={typography.mobile['font-size']}
+                                                    onChange={e => {
+                                                        typography.mobile['font-size'] = Number(e.target.value);
+                                                        updateTypography();
+                                                    }}
+
+                                                />
+                                                <Button
+                                                    className="components-maxi-dimensions-control__units-reset"
+                                                    onClick={() => {
+                                                        typography.mobile['font-size'] = defaultTypography.mobile['font-size'];
+                                                        updateTypography();
+                                                    }}
+                                                    isSmall
+                                                    aria-label={sprintf(
+                                                        /* translators: %s: a texual label  */
+                                                        __('Reset %s settings', 'maxi-blocks'),
+                                                        'size'
+                                                    )}
+                                                    type="reset"
+                                                >
+                                                    {reset}
+                                                </Button>
+                                            </BaseControl>
+                                            <BaseControl
+                                                label={__('Line Height', 'maxi-blocks')}
+                                                className='toolbar-item__popover__font-options__number-control'
+                                            >
+                                                <input
+                                                    type='number'
+                                                    value={typography.mobile['line-height']}
+                                                    onChange={e => {
+                                                        typography.mobile['line-height'] = Number(e.target.value);
+                                                        updateTypography();
+                                                    }}
+
+                                                />
+                                                <Button
+                                                    className="components-maxi-dimensions-control__units-reset"
+                                                    onClick={() => {
+                                                        typography.mobile['line-height'] = defaultTypography.mobile['line-height'];
+                                                        updateTypography();
+                                                    }}
+                                                    isSmall
+                                                    aria-label={sprintf(
+                                                        /* translators: %s: a texual label  */
+                                                        __('Reset %s settings', 'maxi-blocks'),
+                                                        'line height'
+                                                    )}
+                                                    type="reset"
+                                                >
+                                                    {reset}
+                                                </Button>
+                                            </BaseControl>
+                                            <BaseControl
+                                                label={__('Letter Spacing', 'maxi-blocks')}
+                                                className='toolbar-item__popover__font-options__number-control'
+                                            >
+                                                <input
+                                                    type='number'
+                                                    value={typography.mobile['letter-spacing']}
+                                                    onChange={e => {
+                                                        typography.mobile['letter-spacing'] = Number(e.target.value);
+                                                        updateTypography();
+                                                    }}
+
+                                                />
+                                                <Button
+                                                    className="components-maxi-dimensions-control__units-reset"
+                                                    onClick={() => {
+                                                        typography.mobile['letter-spacing'] = defaultTypography.mobile['letter-spacing'];
+                                                        updateTypography();
+                                                    }}
+                                                    isSmall
+                                                    aria-label={sprintf(
+                                                        /* translators: %s: a texual label  */
+                                                        __('Reset %s settings', 'maxi-blocks'),
+                                                        'letter spacing'
+                                                    )}
+                                                    type="reset"
+                                                >
+                                                    {reset}
+                                                </Button>
+                                            </BaseControl>
+                                        </Fragment>
+                                    )
+                                },
+                            ]}
                         />
-                        <BaseControl
-                            label={__('Size', 'maxi-blocks')}
-                            className='toolbar-item__popover__font-options__number-control'
-                        >
-                            <input
-                                type='number'
-                                value={typography[device]['font-size']}
-                                onChange={e => {
-                                    typography[device]['font-size'] = Number(e.target.value);
-                                    updateTypography();
-                                }}
-
-                            />
-                            <Button
-                                className="components-maxi-dimensions-control__units-reset"
-                                onClick={() => {
-                                    typography[device]['font-size'] = defaultTypography[device]['font-size'];
-                                    updateTypography();
-                                }}
-                                isSmall
-                                aria-label={sprintf(
-                                    /* translators: %s: a texual label  */
-                                    __('Reset %s settings', 'maxi-blocks'),
-                                    'size'
-                                )}
-                                type="reset"
-                            >
-                                {reset}
-                            </Button>
-                        </BaseControl>
-                        <BaseControl
-                            label={__('Line Height', 'maxi-blocks')}
-                            className='toolbar-item__popover__font-options__number-control'
-                        >
-                            <input
-                                type='number'
-                                value={typography[device]['line-height']}
-                                onChange={e => {
-                                    typography[device]['line-height'] = Number(e.target.value);
-                                    updateTypography();
-                                }}
-
-                            />
-                            <Button
-                                className="components-maxi-dimensions-control__units-reset"
-                                onClick={() => {
-                                    typography[device]['line-height'] = defaultTypography[device]['line-height'];
-                                    updateTypography();
-                                }}
-                                isSmall
-                                aria-label={sprintf(
-                                    /* translators: %s: a texual label  */
-                                    __('Reset %s settings', 'maxi-blocks'),
-                                    'line height'
-                                )}
-                                type="reset"
-                            >
-                                {reset}
-                            </Button>
-                        </BaseControl>
-                        <BaseControl
-                            label={__('Letter Spacing', 'maxi-blocks')}
-                            className='toolbar-item__popover__font-options__number-control'
-                        >
-                            <input
-                                type='number'
-                                value={typography[device]['letter-spacing']}
-                                onChange={e => {
-                                    typography[device]['letter-spacing'] = Number(e.target.value);
-                                    updateTypography();
-                                }}
-
-                            />
-                            <Button
-                                className="components-maxi-dimensions-control__units-reset"
-                                onClick={() => {
-                                    typography[device]['letter-spacing'] = defaultTypography[device]['letter-spacing'];
-                                    updateTypography();
-                                }}
-                                isSmall
-                                aria-label={sprintf(
-                                    /* translators: %s: a texual label  */
-                                    __('Reset %s settings', 'maxi-blocks'),
-                                    'letter spacing'
-                                )}
-                                type="reset"
-                            >
-                                {reset}
-                            </Button>
-                        </BaseControl>
                     </div>
                 )
             }

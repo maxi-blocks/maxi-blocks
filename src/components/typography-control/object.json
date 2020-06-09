@@ -15,9 +15,9 @@
         "900": "http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmYUtvAx05IsDqlA.ttf",
         "900italic": "http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TLBBc9AMX6lJBP.ttf"
     },
+    "textShadowActive": false,
     "general": {
         "color": "#9b9b9b",
-        "text-shadow": "none",
         "text-align": "left"
     },
     "desktop": {
@@ -30,7 +30,8 @@
         "font-weight": 400,
         "text-transform": "none",
         "font-style": "normal",
-        "text-decoration": "none"
+        "text-decoration": "none",
+        "text-shadow": "none"
     },
     "tablet": {
         "font-sizeUnit": "px",
@@ -42,7 +43,8 @@
         "font-weight": 400,
         "text-transform": "none",
         "font-style": "normal",
-        "text-decoration": "none"
+        "text-decoration": "none",
+        "text-shadow": "none"
     },
     "mobile": {
         "font-sizeUnit": "px",
@@ -54,6 +56,7 @@
         "font-weight": 400,
         "text-transform": "none",
         "font-style": "normal",
-        "text-decoration": "none"
+        "text-decoration": "none",
+        "text-shadow": "none"
     }
 }

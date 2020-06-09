@@ -12,8 +12,8 @@ const {
  */
 import Inspector from './inspector';
 import { BackEndResponsiveStyles } from '../../extensions/styles';
-import { 
-    getBackgroundObject, 
+import {
+    getBackgroundObject,
     getBoxShadowObject
 } from '../../extensions/styles/utils';
 import {
@@ -26,7 +26,7 @@ import {
  */
 import classnames from 'classnames';
 import {
-    isEmpty,
+    isNil,
     isNumber
 } from 'lodash';
 
@@ -53,6 +53,9 @@ class edit extends GXBlock {
 
     get getNormalObject() {
         const {
+            alignmentDesktop,
+            alignmentTablet,
+            alignmentMobile,
             typography,
             background,
             opacity,
@@ -62,7 +65,7 @@ class edit extends GXBlock {
             margin,
             padding,
         } = this.props.attributes;
-        
+
         const response = {
             typography: { ...JSON.parse(typography) },
             background: { ...getBackgroundObject(JSON.parse(background)) },
@@ -76,10 +79,61 @@ class edit extends GXBlock {
             padding: { ...JSON.parse(padding) },
             text: {
                 label: 'Text',
-                general: {}
+                general: {},
+                desktop: {},
+                tablet: {},
+                mobile: {}
             }
         };
 
+        if (!isNil(alignmentDesktop)) {
+            switch (alignmentDesktop) {
+                case 'left':
+                    response.text.desktop['text-align'] = 'left';
+                    break;
+                case 'center':
+                    response.text.desktop['text-align'] = 'center';
+                    break;
+                case 'right':
+                    response.text.desktop['text-align'] = 'right';
+                    break;
+                case 'justify':
+                    response.text.desktop['text-align'] = 'justify';
+                    break;
+            }
+        }
+        if (!isNil(alignmentTablet)) {
+            switch (alignmentTablet) {
+                case 'left':
+                    response.text.tablet['text-align'] = 'left';
+                    break;
+                case 'center':
+                    response.text.tablet['text-align'] = 'center';
+                    break;
+                case 'right':
+                    response.text.tablet['text-align'] = 'right';
+                    break;
+                case 'justify':
+                    response.text.tablet['text-align'] = 'justify';
+                    break;
+            }
+        }
+        if (!isNil(alignmentMobile)) {
+            switch (alignmentMobile) {
+                case 'left':
+                    response.text.mobile['text-align'] = 'left';
+                    break;
+                case 'center':
+                    response.text.mobile['text-align'] = 'center';
+                    break;
+                case 'right':
+                    response.text.mobile['text-align'] = 'right';
+                    break;
+                case 'justify':
+                    response.text.mobile['text-align'] = 'justify';
+                    break;
+            }
+        }
         if (isNumber(opacity))
             response.text.general['opacity'] = opacity;
 

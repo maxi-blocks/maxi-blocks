@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 const {
-    Icon,
     Dropdown,
     Button,
 } = wp.components;
@@ -28,13 +27,19 @@ const ALLOWED_BLOCKS = [
     'maxi-blocks/text-maxi',
     'maxi-blocks/button-maxi',
     'maxi-blocks/image-maxi',
-    'maxi-blocks/divider-maxi'
+    // 'maxi-blocks/divider-maxi'
 ]
 
 const Border = props => {
-    const { clientId } = props;
+    const {
+        clientId,
+        blockName,
+    } = props;
 
-    const { blockName, border } = useSelect(
+    if (!ALLOWED_BLOCKS.includes(blockName))
+        return null;
+
+    const { border } = useSelect(
         (select) => {
             const { getBlockName, getBlockAttributes } = select(
                 'core/block-editor',
@@ -46,9 +51,6 @@ const Border = props => {
         },
         [clientId]
     );
-
-    if (!ALLOWED_BLOCKS.includes(blockName))
-        return null;
 
     const { updateBlockAttributes } = useDispatch(
         'core/block-editor'
@@ -92,8 +94,7 @@ const Border = props => {
                     />
                 )
             }
-        >
-        </Dropdown>
+        />
     )
 }
 

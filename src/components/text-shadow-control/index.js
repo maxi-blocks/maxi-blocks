@@ -2,20 +2,36 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { Fragment } = wp.element;
-const { RangeControl } = wp.components;
+const {
+    Fragment,
+    useState
+} = wp.element;
+const {
+    RangeControl,
+    SelectControl,
+    Icon
+} = wp.components;
 
 /**
  * Internal dependencies
  */
 import ColorControl from '../color-control';
-import SizeControl from '../size-control';
-import PopoverControl from '../popover-control';
+import DefaultStylesControl from '../default-styles-control';
 
 /**
  * External dependencies
  */
-import { isNil } from 'lodash';
+import classnames from 'classnames';
+import {
+    isNil,
+    isEmpty
+} from 'lodash';
+
+/**
+ * Styles and icons
+ */
+import './editor.scss';
+import { styleNone } from '../../icons';
 
 /**
  * Component
@@ -27,42 +43,20 @@ const TextShadow = props => {
         defaultColor,
     } = props;
 
-    const minMaxSettings = {
-        'px': {
-            min: -100,
-            max: 100
-        },
-        'em': {
-            min: -10,
-            max: 10
-        },
-        'vw': {
-            min: -10,
-            max: 10
-        },
-        '%': {
-            min: -10,
-            max: 10
-        }
-    };
-
-    const valueDecomposed = value != 'none' ? value.split(' ') : `0px 0px 0px ${defaultColor}`.split(' ');
-    const yDecomposed = valueDecomposed[0].match(/[-?0-9\d*]+|\D+/g);
-    const y = Number(yDecomposed[0]);
-    const yUnit = yDecomposed[1];
-    const xDecomposed = valueDecomposed[1].match(/[-?0-9\d*]+|\D+/g);
-    const x = Number(xDecomposed[0]);
-    const xUnit = xDecomposed[1];
-    const blurDecomposed = valueDecomposed[2].match(/[-?0-9\d*]+|\D+/g);
-    const blur = Number(blurDecomposed[0]);
-    const blurUnit = blurDecomposed[1];
+    const valueDecomposed = !isEmpty(value) && value != 'none' ?
+        value.split(' ') :
+        `0px 0px 0px ${defaultColor}`.split(' ');
+    const x = Number(valueDecomposed[0].match(/[-?0-9\d*]+|\D+/g)[0]);
+    const y = Number(valueDecomposed[1].match(/[-?0-9\d*]+|\D+/g)[0]);
+    const blur = Number(valueDecomposed[2].match(/[-?0-9\d*]+|\D+/g)[0]);
     const color = valueDecomposed[3];
 
-    const onChangeValue = (i, val, unit = '') => {
+    const onChangeValue = (i, val) => {
         if (isNil(val))
-            valueDecomposed[i] = 0 + unit;
+            valueDecomposed[i] = 0 + 'px';
         else
-            valueDecomposed[i] = val + unit;
+            valueDecomposed[i] = val + 'px';
+
         if (
             valueDecomposed[0] === '0px' &&
             valueDecomposed[1] === '0px' &&
@@ -75,6 +69,49 @@ const TextShadow = props => {
 
     return (
         <Fragment>
+            <DefaultStylesControl
+                items={[
+                    {
+                        content: (
+                            <Icon
+                                className='maxi-defaultstyles-control__button__icon'
+                                icon={styleNone}
+                            />
+                        ),
+                        onChange: () => onChange('')
+                    },
+                    {
+                        content: (
+                            <span
+                                className='maxi-textshadow-control__default maxi-textshadow-control__default__total'
+                            >
+                                Maxi
+                            </span>
+                        ),
+                        onChange: () => onChange('0px 0px 5px #A2A2A2')
+                    },
+                    {
+                        content: (
+                            <span
+                                className='maxi-textshadow-control__default maxi-textshadow-control__default__bottom'
+                            >
+                                Maxi
+                            </span>
+                        ),
+                        onChange: () => onChange('5px 0px 3px #A2A2A2')
+                    },
+                    {
+                        content: (
+                            <span
+                                className='maxi-textshadow-control__default maxi-textshadow-control__default__solid'
+                            >
+                                Maxi
+                            </span>
+                        ),
+                        onChange: () => onChange('2px 4px 0px #A2A2A2')
+                    },
+                ]}
+            />
             <ColorControl
                 label={__('Color', 'maxi-blocks')}
                 color={color}
@@ -83,29 +120,29 @@ const TextShadow = props => {
                 disableGradient
                 disableGradientAboveBackground
             />
-            <SizeControl
-                label={__('Y-axis', 'maxi-blocks')}
-                unit={yUnit}
-                onChangeUnit={val => onChangeValue(0, y, val)}
-                value={y}
-                onChangeValue={val => onChangeValue(0, val, yUnit)}
-                minMaxSettings={minMaxSettings}
-
-            />
-            <SizeControl
+            <RangeControl
                 label={__('X-axis', 'maxi-blocks')}
-                unit={xUnit}
-                onChangeUnit={val => onChangeValue(0, x, val)}
                 value={x}
-                onChangeValue={val => onChangeValue(0, val, xUnit)}
-                minMaxSettings={minMaxSettings}
+                onChange={val => onChangeValue(0, val)}
+                min={0}
+                max={100}
+                allowReset
+            />
+            <RangeControl
+                label={__('Y-axis', 'maxi-blocks')}
+                value={y}
+                onChange={val => onChangeValue(1, val)}
+                min={0}
+                max={100}
+                allowReset
             />
             <RangeControl
                 label={__('Blur', 'maxi-blocks')}
                 value={blur}
-                onChange={val => onChangeValue(2, val, blurUnit)}
+                onChange={val => onChangeValue(2, val)}
                 min={0}
                 max={100}
+                allowReset
             />
         </Fragment>
     )
@@ -118,26 +155,51 @@ const TextShadowControl = props => {
     const {
         value,
         onChange,
-        defaultColor
+        defaultColor,
+        className
     } = props;
 
+    const [showOptions, changeShowOptions] = useState(
+        !isEmpty(value) ? true : false
+    );
+    const [lastValue, changeLastValue] = useState(value);
+
+    const classes = classnames(
+        'maxi-textshadow-control',
+        className
+    )
+
     return (
-        <PopoverControl
-            label={__('Text Shadow', 'maxi-blocks')}
-            showReset
-            onReset={() => onChange('none')}
-            popovers={[
-                {
-                    content: (
-                        <TextShadow
-                            value={value}
-                            onChange={val => onChange(val)}
-                            defaultColor={defaultColor}
-                        />
-                    )
-                }
-            ]}
-        />
+        <div className={classes}>
+            <SelectControl
+                label={__('Text Shadow', 'maxi-blocks')}
+                value={showOptions}
+                options={[
+                    { label: __('No', 'maxi-blocks'), value: false },
+                    { label: __('Yes', 'maxi-blocks'), value: true }
+                ]}
+                onChange={val => {
+                    changeShowOptions(!showOptions);
+                    if (showOptions) {
+                        changeLastValue(value);
+                        onChange('');
+                    }
+                    else
+                        onChange(lastValue)
+                }}
+            />
+            {
+                showOptions &&
+                <TextShadow
+                    value={lastValue}
+                    onChange={val => {
+                        changeLastValue(val);
+                        onChange(val)
+                    }}
+                    defaultColor={defaultColor}
+                />
+            }
+        </div>
     )
 }
 

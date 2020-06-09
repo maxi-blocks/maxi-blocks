@@ -26,6 +26,10 @@ const attributes = {
         type: 'string',
         default: JSON.stringify(attributesData.cropOptions)
     },
+    fullWidth: {
+        type: 'string',
+        default: 'normal',
+    },
     alignmentDesktop: {
         type: 'string',
         default: 'center'
@@ -99,6 +103,10 @@ const attributes = {
     boxShadowHover: {
         type: 'string',
         default: JSON.stringify(attributesData.boxShadowHover)
+    },
+    borderHover: {
+        type: 'string',
+        default: JSON.stringify(attributesData.border)
     },
     hoverAnimation: {
         type: 'string',

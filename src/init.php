@@ -401,9 +401,6 @@ function maxi_import_reusable_blocks() {
 			)
 		) );
 	}
-	else {
-		echo 'Block already exists';
-	}
 
 	die();
 }

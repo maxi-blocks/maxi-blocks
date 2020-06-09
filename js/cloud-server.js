@@ -34,7 +34,7 @@ jQuery(document).ready(function($) {
         }
       }
      }
-    // console.log('rb_to_send '+rb_to_send);
+    console.log('rb_to_send '+rb_to_send);
     }
     rb_to_send_final = rb_to_send;
   }
@@ -53,9 +53,13 @@ jQuery(document).ready(function($) {
       console.log('onIframeLoad');
       //console.log('full stop '+ddd_full_stop);
      // $('iframe#maxi-block-library__modal-iframe').on('load', function() {
-        console.log('iframe loaded !!!');
+
 
         let frame = document.getElementById('maxi-block-library__modal-iframe');
+
+        if(typeof(frame) != 'undefined' && frame != null) {
+
+          console.log('iframe loaded !!!');
 
         jQuery.ajax({
             type: 'GET',
@@ -71,6 +75,8 @@ jQuery(document).ready(function($) {
               else {
                 frame.contentWindow.postMessage('pro_membership_dectivated', '*');
               }
+
+              console.log('rb_to_send final '+rb_to_send_final);
 
               if(rb_to_send_final !== '') frame.contentWindow.postMessage('imported:'+rb_to_send_final, '*');
             }
@@ -237,14 +243,8 @@ jQuery(document).ready(function($) {
                                           },
                                           success: function(data) {
                                            // console.log(data);
-                                            if(data === 'Block already exists') {
-                                              console.log('Block already exists');
-                                              jQuery('.maxi-block-library__modal__loading_message p').text('Already exists in Re-usable Blocks Library');
-                                            }
-                                            else {
-                                              console.log('Imported');
-                                              jQuery('.maxi-block-library__modal__loading_message p').text('Saved to Re-usable Blocks Library');
-                                            }
+                                            console.log('Imported');
+                                            jQuery('.maxi-block-library__modal__loading_message p').text('Saved to Re-usable Blocks Library');
                                             setTimeout(function(){ jQuery('.maxi-block-library__modal__loading_message').addClass('maxi-block__item--hidden'); }, 3000);
                                           },
                                           error: function(data) {
@@ -277,8 +277,10 @@ jQuery(document).ready(function($) {
         $('.components-modal__screen-overlay').remove();
     });
 
-// }, 200);
+} // if frame
 } //function onIframeLoad()
 //}); //  $('iframe#maxi-block-library__modal-iframe').on('load', function()
+
+setInterval(function(){ onIframeLoad() }, 1000);
 
 }); //jQuery(document).ready(function($)

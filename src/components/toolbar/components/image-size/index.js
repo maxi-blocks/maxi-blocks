@@ -129,84 +129,88 @@ const ImageSize = props => {
     }
 
     return (
-        <Dropdown
-            className='toolbar-item toolbar-item__dropdown'
-            renderToggle={({ isOpen, onToggle }) => (
-                <Button
-                    className='toolbar-item__text-options'
-                    onClick={onToggle}
-                    aria-expanded={isOpen}
-                    action="popup"
-                >
-                    <Icon
-                        className='toolbar-item__icon'
-                        icon={toolbarSettings}
-                    />
-                </Button>
-            )}
-            popoverProps={
-                {
-                    className: 'toolbar-item__popover',
-                    noArrow: false,
-                    position: 'center'
-                }
-            }
-            renderContent={
-                () => (
-                    <Fragment>
-                        <SelectControl
-                            label={__('Image Size', 'maxi-blocks')}
-                            value={size || size == 'custom' ? size : 'full'} // is still necessary?
-                            options={getSizeOptions()}
-                            onChange={size => updateBlockAttributes(
-                                clientId,
-                                { size }
-                            )}
-                        />
-                        <RangeControl
-                            label={__('Width', 'maxi-blocks')}
-                            value={width}
-                            onChange={width => {
-                                if (isNil(width))
-                                    updateBlockAttributes(
-                                        clientId,
-                                        { width: getDefaultProp(clientId, 'width') }
-                                    )
-                                else
-                                    updateBlockAttributes(
-                                        clientId,
-                                        { width }
-                                    )
-                            }}
-                            allowReset
-                        />
-                        <div
-                            className='toolbar-item__popover__dropdown-options'
+        <Fragment>
+            {
+                isNil(size) &&
+                <Dropdown
+                    className='toolbar-item toolbar-item__dropdown'
+                    renderToggle={({ isOpen, onToggle }) => (
+                        <Button
+                            className='toolbar-item__text-options'
+                            onClick={onToggle}
+                            aria-expanded={isOpen}
+                            action="popup"
                         >
-                            <Button
-                                className='toolbar-item__popover__dropdown-options__button'
-                                onClick={() =>
-                                    openGeneralSidebar('edit-post/block')
-                                        .then(() => onEditImageClick('sizing'))
-                                }
-                            >
-                                Edit Image
-                            </Button>
-                            <Button
-                                className='toolbar-item__popover__dropdown-options__button'
-                                onClick={() =>
-                                    openGeneralSidebar('edit-post/block')
-                                        .then(() => onEditImageClick('caption'))
-                                }
-                            >
-                                Add Caption
-                            </Button>
-                        </div>
-                    </Fragment>
-                )
+                            <Icon
+                                className='toolbar-item__icon'
+                                icon={toolbarSettings}
+                            />
+                        </Button>
+                    )}
+                    popoverProps={
+                        {
+                            className: 'toolbar-item__popover',
+                            noArrow: false,
+                            position: 'center'
+                        }
+                    }
+                    renderContent={
+                        () => (
+                            <Fragment>
+                                <SelectControl
+                                    label={__('Image Size', 'maxi-blocks')}
+                                    value={size || size == 'custom' ? size : 'full'} // is still necessary?
+                                    options={getSizeOptions()}
+                                    onChange={size => updateBlockAttributes(
+                                        clientId,
+                                        { size }
+                                    )}
+                                />
+                                <RangeControl
+                                    label={__('Width', 'maxi-blocks')}
+                                    value={width}
+                                    onChange={width => {
+                                        if (isNil(width))
+                                            updateBlockAttributes(
+                                                clientId,
+                                                { width: getDefaultProp(clientId, 'width') }
+                                            )
+                                        else
+                                            updateBlockAttributes(
+                                                clientId,
+                                                { width }
+                                            )
+                                    }}
+                                    allowReset
+                                />
+                                <div
+                                    className='toolbar-item__popover__dropdown-options'
+                                >
+                                    <Button
+                                        className='toolbar-item__popover__dropdown-options__button'
+                                        onClick={() =>
+                                            openGeneralSidebar('edit-post/block')
+                                                .then(() => onEditImageClick('sizing'))
+                                        }
+                                    >
+                                        Edit Image
+                                </Button>
+                                    <Button
+                                        className='toolbar-item__popover__dropdown-options__button'
+                                        onClick={() =>
+                                            openGeneralSidebar('edit-post/block')
+                                                .then(() => onEditImageClick('caption'))
+                                        }
+                                    >
+                                        Add Caption
+                                </Button>
+                                </div>
+                            </Fragment>
+                        )
+                    }
+                />
             }
-        >
-        </Dropdown>
+        </Fragment>
     )
 }
 

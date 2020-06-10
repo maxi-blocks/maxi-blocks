@@ -1819,67 +1819,31 @@ h2.gx_error {
 *
 * Moved common styles to './src/css' 
 */
-.maxi-row-block {
+div.maxi-row-block {
   position: relative;
   width: 100%;
   margin: auto; }
-  .maxi-row-block:hover {
+  div.maxi-row-block:hover {
     outline: 1px solid grey; }
-  .maxi-row-block[data-align="full"] {
+  div.maxi-row-block[data-align="full"] {
     width: auto; }
-  .maxi-row-block > div.maxi-row-selector-wrapper:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    -webkit-transform: translateX(0px);
-        -ms-transform: translateX(0px);
-            transform: translateX(0px);
-    width: 5rem;
-    height: 2rem;
-    border-top: 8px solid black;
-    border-left: 8px solid black;
-    opacity: 0;
-    visibility: hidden;
-    -webkit-transition: all 1s ease;
-    -o-transition: all 1s ease;
-    transition: all 1s ease; }
-  .maxi-row-block > div.maxi-row-selector-wrapper {
-    position: absolute;
-    top: 0;
-    left: 0;
-    -webkit-transform: translateY(0%);
-        -ms-transform: translateY(0%);
-            transform: translateY(0%);
-    opacity: 0;
-    visibility: hidden;
-    -webkit-transition: all 1s ease;
-    -o-transition: all 1s ease;
-    transition: all 1s ease;
-    font-size: 12px;
-    z-index: 1; }
-    .maxi-row-block > div.maxi-row-selector-wrapper > div.maxi-row-selector-item-wrapper {
-      display: inline; }
-      .maxi-row-block > div.maxi-row-selector-wrapper > div.maxi-row-selector-item-wrapper .maxi-row-selector-item {
-        cursor: pointer;
-        text-decoration: underline; }
-  .maxi-row-block .block-editor-inner-blocks,
-  .maxi-row-block .block-list-appender,
-  .maxi-row-block .maxi-row-dropdown {
+  div.maxi-row-block .block-editor-inner-blocks,
+  div.maxi-row-block .block-list-appender,
+  div.maxi-row-block .maxi-row-dropdown {
     width: 100%; }
-  .maxi-row-block .maxi-row-appender-button {
+  div.maxi-row-block .maxi-row-appender-button {
     display: block;
     width: 100%; }
-  .maxi-row-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout {
+  div.maxi-row-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout {
     display: -ms-flexbox;
     display: flex; }
-    .maxi-row-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout > div.maxi-column-left {
+    div.maxi-row-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout > div.maxi-column-left {
       margin-left: 0 !important; }
-    .maxi-row-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout > div.maxi-column-right {
+    div.maxi-row-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout > div.maxi-column-right {
       margin-right: 0 !important; }
-    .maxi-row-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout > div.block-list-appender {
+    div.maxi-row-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout > div.block-list-appender {
       margin: 0; }
-      .maxi-row-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout > div.block-list-appender > div.maxi-row-template-wrapper {
+      div.maxi-row-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout > div.block-list-appender > div.maxi-row-template-wrapper {
         display: -ms-flexbox;
         display: flex;
         -ms-flex-wrap: wrap;
@@ -1887,28 +1851,12 @@ h2.gx_error {
         -ms-flex-pack: center;
             justify-content: center;
         background-color: #ffffff; }
-        .maxi-row-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout > div.block-list-appender > div.maxi-row-template-wrapper > button.maxi-row-template-button {
+        div.maxi-row-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout > div.block-list-appender > div.maxi-row-template-wrapper > button.maxi-row-template-button {
           width: 10rem;
           height: 5rem; }
-          .maxi-row-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout > div.block-list-appender > div.maxi-row-template-wrapper > button.maxi-row-template-button > svg {
+          div.maxi-row-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout > div.block-list-appender > div.maxi-row-template-wrapper > button.maxi-row-template-button > svg {
             width: 100%;
             height: 100%; }
-
-div.maxi-row-block.is-selected > div.maxi-row-selector-wrapper:before,
-div.maxi-row-block.has-child-selected > div.maxi-row-selector-wrapper:before {
-  -webkit-transform: translate(-8px, calc(100% - 8px));
-      -ms-transform: translate(-8px, calc(100% - 8px));
-          transform: translate(-8px, calc(100% - 8px));
-  opacity: 1;
-  visibility: visible; }
-
-div.maxi-row-block.is-selected > div.maxi-row-selector-wrapper,
-div.maxi-row-block.has-child-selected > div.maxi-row-selector-wrapper {
-  -webkit-transform: translateY(calc(-100% - 8px));
-      -ms-transform: translateY(calc(-100% - 8px));
-          transform: translateY(calc(-100% - 8px));
-  opacity: 1;
-  visibility: visible; }
 /**
 * Leave blank due to bug on CGB. Check it on:
 * https://github.com/ahmadawais/create-guten-block/issues/111
@@ -3004,8 +2952,8 @@ div.maxi-row-block.has-child-selected > div.maxi-row-selector-wrapper {
     width: min-content;
     margin: 0 auto 0.5rem;
     position: relative;
-    -webkit-box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.2);
-            box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.2);
+            box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.2);
     border-radius: 5px; }
     .maxi-toolbar__popover .components-popover__content .toolbar-wrapper:after {
       content: "";
@@ -3167,11 +3115,42 @@ div.maxi-row-block.has-child-selected > div.maxi-row-selector-wrapper {
 *
 * Moved common styles to './src/css' 
 */
-.maxi-column-block {
+.maxi-breadcrumbs {
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  margin: 0 !important;
+  padding: 0 .5rem !important;
+  line-height: 1.2rem;
+  background: #232533; }
+  .maxi-breadcrumbs__popover .components-popover__content {
+    background: transparent;
+    border: none;
+    -webkit-box-shadow: none;
+            box-shadow: none;
+    margin-left: 0 !important;
+    border-radius: 0;
+    padding: 0; }
+  .maxi-breadcrumbs__item {
+    display: inline;
+    list-style: none;
+    font-size: 13px; }
+    .maxi-breadcrumbs__item span {
+      color: #fff; }
+    .maxi-breadcrumbs__item__content {
+      text-decoration: underline;
+      cursor: pointer; }
+/**
+* Leave blank due to bug on CGB. Check it on:
+* https://github.com/ahmadawais/create-guten-block/issues/111
+*
+* Moved common styles to './src/css' 
+*/
+div.maxi-column-block {
   max-width: 100% !important; }
-  .maxi-column-block:hover {
+  div.maxi-column-block:hover {
     outline: 1px solid blue; }
-  .maxi-column-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout > div.block-list-appender {
+  div.maxi-column-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout > div.block-list-appender {
     width: 100%;
     margin: 0; }
 /**
@@ -3223,6 +3202,10 @@ div.maxi-row-block.has-child-selected > div.maxi-row-selector-wrapper {
       width: 20px;
       height: 20px; }
 
+.maxi-image-block .maxi-imageupload-button svg {
+  max-width: 100%;
+  height: auto; }
+
 .maxi-image-block img {
   display: block;
   width: 100%; }
@@ -3243,42 +3226,6 @@ div.maxi-row-block.has-child-selected > div.maxi-row-selector-wrapper {
     outline: 1px solid grey; }
   .maxi-section-block[data-align="full"] {
     width: auto; }
-  .maxi-section-block > div.maxi-section-selector-wrapper {
-    position: absolute;
-    top: 0;
-    left: 0;
-    -webkit-transform: translateY(0%);
-        -ms-transform: translateY(0%);
-            transform: translateY(0%);
-    opacity: 0;
-    visibility: hidden;
-    -webkit-transition: all 1s ease;
-    -o-transition: all 1s ease;
-    transition: all 1s ease;
-    font-size: 12px;
-    z-index: 1; }
-    .maxi-section-block > div.maxi-section-selector-wrapper:before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      -webkit-transform: translateX(0px);
-          -ms-transform: translateX(0px);
-              transform: translateX(0px);
-      width: 5rem;
-      height: 2rem;
-      border-top: 8px solid black;
-      border-left: 8px solid black;
-      opacity: 0;
-      visibility: hidden;
-      -webkit-transition: all 1s ease;
-      -o-transition: all 1s ease;
-      transition: all 1s ease; }
-    .maxi-section-block > div.maxi-section-selector-wrapper > div.maxi-section-selector-item-wrapper {
-      display: inline; }
-      .maxi-section-block > div.maxi-section-selector-wrapper > div.maxi-section-selector-item-wrapper .maxi-section-selector-item {
-        cursor: pointer;
-        text-decoration: underline; }
   .maxi-section-block .block-editor-inner-blocks,
   .maxi-section-block .block-list-appender,
   .maxi-section-block .maxi-section-dropdown {
@@ -3286,18 +3233,6 @@ div.maxi-row-block.has-child-selected > div.maxi-row-selector-wrapper {
   .maxi-section-block .maxi-section-appender-button {
     display: block;
     width: 100%; }
-  .maxi-section-block.is-selected > div.maxi-section-selector-wrapper:before, .maxi-section-block.has-child-selected > div.maxi-section-selector-wrapper:before {
-    -webkit-transform: translate(-8px, calc(100% - 8px));
-        -ms-transform: translate(-8px, calc(100% - 8px));
-            transform: translate(-8px, calc(100% - 8px));
-    opacity: 1;
-    visibility: visible; }
-  .maxi-section-block.is-selected > div.maxi-section-selector-wrapper, .maxi-section-block.has-child-selected > div.maxi-section-selector-wrapper {
-    -webkit-transform: translateY(calc(-100% - 8px));
-        -ms-transform: translateY(calc(-100% - 8px));
-            transform: translateY(calc(-100% - 8px));
-    opacity: 1;
-    visibility: visible; }
 /**
 * Leave blank due to bug on CGB. Check it on:
 * https://github.com/ahmadawais/create-guten-block/issues/111

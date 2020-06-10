@@ -195,7 +195,7 @@ class edit extends GXBlock {
                 data-align={fullWidth}
             >
                 {
-                    showLine &&
+                    showLine === 'yes' &&
                     <Fragment>
                         <hr class="maxi-divider-block__divider-1" />
                         <hr class="maxi-divider-block__divider-2" />

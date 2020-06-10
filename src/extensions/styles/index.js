@@ -69,7 +69,7 @@ export class ResponsiveStylesResolver {
         for (let [target, prop] of Object.entries(object)) {
 
             if (isNil(prop)) {
-                console.log('Undefined property');
+                console.error(`Undefined property. Property: ${this.target}`);
                 return;
             }
             // values with dimensions

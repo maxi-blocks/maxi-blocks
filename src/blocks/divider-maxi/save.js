@@ -48,7 +48,7 @@ const save = props => {
             data-gx_initial_block_class={defaultBlockStyle}
         >
             {
-                showLine &&
+                showLine === 'yes' &&
                 <Fragment>
                     <hr class="maxi-divider-block__divider-1" />
                     <hr class="maxi-divider-block__divider-2" />

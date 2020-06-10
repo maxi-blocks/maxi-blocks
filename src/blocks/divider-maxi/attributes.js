@@ -16,8 +16,8 @@ const attributes = {
         default: 'maxi-def-light'
     },
     showLine: {
-        type: 'boolean',
-        default: true
+        type: 'string',
+        default: 'yes'
     },
     lineVertical: {
         type: 'string',

@@ -4,7 +4,6 @@
 const { synchronizeBlocksWithTemplate } = wp.blocks;
 const { compose } = wp.compose;
 const {
-    select,
     withSelect,
     withDispatch
 } = wp.data;
@@ -22,7 +21,8 @@ const {
  */
 import {
     GXBlock,
-    __experimentalToolbar
+    __experimentalToolbar,
+    __experimentalBreadcrumbs
 } from '../../components';
 import Inspector from './inspector';
 import TEMPLATES from './templates';
@@ -40,7 +40,7 @@ import {
     isEmpty,
     isNil,
     uniqueId,
-    isEqual
+    isNumber
 } from 'lodash';
 
 /**
@@ -49,37 +49,6 @@ import {
 const ALLOWED_BLOCKS = ['maxi-blocks/column-maxi'];
 
 class edit extends GXBlock {
-    state = {
-        selectorBlocks: [],
-    }
-
-    componentDidUpdate() {
-        this.displayStyles();
-        this.setSelectorBlocks()
-    }
-
-    setSelectorBlocks() {
-        const {
-            originalNestedBlocks,
-            selectedBlockId
-        } = this.props;
-
-        if (isNil(originalNestedBlocks))
-            return
-
-        let selectorBlockList = [];
-        if (!isNil(selectedBlockId)) {
-            selectorBlockList = [...originalNestedBlocks, selectedBlockId]
-        }
-
-        if (
-            !isEqual(this.state.selectorBlocks, selectorBlockList)
-        )
-            setTimeout(() => {          // Should find an alternative       
-                this.setState({ selectorBlocks: selectorBlockList });
-            }, 10);
-    }
-
     /**
      * Retrieve the target for responsive CSS
      */
@@ -109,7 +78,7 @@ class edit extends GXBlock {
             padding
         } = this.props.attributes;
 
-        return {
+        let response = {
             background: { ...getBackgroundObject(JSON.parse(background)) },
             boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
             border: { ...JSON.parse(border) },
@@ -118,15 +87,19 @@ class edit extends GXBlock {
             size: { ...JSON.parse(size) },
             margin: { ...JSON.parse(margin) },
             padding: { ...JSON.parse(padding) },
-            rowAlign: {
+            row: {
                 label: "Row",
                 general: {
                     'justify-content': horizontalAlign,
                     'align-content': verticalAlign,
-                    'opacity': opacity
                 }
             }
         };
+
+        if (isNumber(opacity))
+            response.row.general['opacity'] = opacity;
+
+        return response;
     }
 
     get getHoverObject() {
@@ -137,19 +110,22 @@ class edit extends GXBlock {
             borderHover,
         } = this.props.attributes;
 
-        return {
+        let response = {
             backgroundHover: { ...getBackgroundObject(JSON.parse(backgroundHover)) },
             boxShadowHover: { ...getBoxShadowObject(JSON.parse(boxShadowHover)) },
             borderHover: { ...JSON.parse(borderHover) },
             borderWidthHover: { ...JSON.parse(borderHover).borderWidth },
             borderRadiusHover: { ...JSON.parse(borderHover).borderRadius },
-            rowAlign: {
+            row: {
                 label: "Row",
-                general: {
-                    'opacity': opacityHover
-                }
+                general: {}
             }
         };
+
+        if (isNumber(opacityHover))
+            response.row.general['opacity'] = opacityHover;
+
+        return response;
     }
 
     get getColumnObject() {
@@ -197,7 +173,6 @@ class edit extends GXBlock {
         const {
             attributes: {
                 uniqueID,
-                isFirstOnHierarchy,
                 blockStyle,
                 extraClassName,
                 defaultBlockStyle,
@@ -211,8 +186,6 @@ class edit extends GXBlock {
             setAttributes
         } = this.props;
 
-        const { selectorBlocks } = this.state;
-
         let classes = classnames(
             'maxi-block maxi-row-block',
             uniqueID,
@@ -224,46 +197,12 @@ class edit extends GXBlock {
         return [
             <Inspector {...this.props} />,
             <__experimentalToolbar />,
+            <__experimentalBreadcrumbs />,
             <__experimentalBlock
                 data-gx_initial_block_class={defaultBlockStyle}
                 className={classes}
                 data-align={fullWidth}
             >
-                {
-                    isFirstOnHierarchy &&
-                    <div
-                        className="maxi-row-selector-wrapper"
-                    >
-                        {
-                            !isNil(selectorBlocks) &&
-                            selectorBlocks.map((blockId, i) => {
-                                const blockName = select('core/block-editor').getBlockName(blockId);
-                                if (isNil(blockName)) // Check setTimeOut on componentDidUpdate()
-                                    return;
-                                const blockType = select('core/blocks').getBlockType(blockName);
-                                const title = blockType.title;
-
-                                return (
-                                    <div
-                                        className="maxi-row-selector-item-wrapper"
-                                    >
-                                        {
-                                            i != 0 &&
-                                            <span> > </span>
-                                        }
-                                        <span
-                                            className="maxi-row-selector-item"
-                                            target={blockId}
-                                            onClick={() => selectOnClick(blockId)}
-                                        >
-                                            {title}
-                                        </span>
-                                    </div>
-                                )
-                            })
-                        }
-                    </div>
-                }
                 <InnerBlocks
                     // templateLock="insert"
                     allowedBlocks={ALLOWED_BLOCKS}
@@ -338,7 +277,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
      * @param {integer} i Element of object TEMPLATES
      * @param {function} callback 
      */
-    const loadTemplate = async i => {
+    const loadTemplate = i => {
         const template = TEMPLATES[i];
         template.content.map(column => {
             column[1].uniqueID = uniqueIdCreator();

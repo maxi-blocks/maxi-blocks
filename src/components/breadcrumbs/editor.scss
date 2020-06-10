@@ -1,0 +1,33 @@
+.maxi-breadcrumbs {
+    width: max-content;
+    margin: 0 !important;
+    padding: 0 .5rem !important;
+    line-height: 1.2rem;
+    background: #232533;
+
+    &__popover {
+        .components-popover__content {
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            margin-left: 0 !important;
+            border-radius: 0;
+            padding: 0;
+        }
+    }
+
+    &__item {
+        display: inline;
+        list-style: none;
+        font-size: 13px;
+
+        span {
+            color: #fff;
+        }
+
+        &__content {
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    }
+}

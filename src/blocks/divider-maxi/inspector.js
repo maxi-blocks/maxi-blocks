@@ -140,14 +140,14 @@ const Inspector = props => {
                                                     <SelectControl
                                                         label={__('Show Line', 'maxi-blocks')}
                                                         options={[
-                                                            { label: __('No', 'maxi-blocks'), value: false },
-                                                            { label: __('Yes', 'maxi-blocks'), value: true },
+                                                            { label: __('No', 'maxi-blocks'), value: 'no' },
+                                                            { label: __('Yes', 'maxi-blocks'), value: 'yes' },
                                                         ]}
                                                         value={showLine}
-                                                        onChange={value => setAttributes({ showLine: Boolean(value) })}
+                                                        onChange={showLine => setAttributes({ showLine })}
                                                     />
                                                     {
-                                                        showLine &&
+                                                        showLine === 'yes' &&
                                                         <Fragment>
                                                             <SelectControl
                                                                 label={__('Line Vertical Position', 'maxi-blocks')}

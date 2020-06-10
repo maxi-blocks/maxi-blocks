@@ -1,6 +1,7 @@
 /**
  * WordPress dependencies
  */
+const { Fragment } = wp.element;
 const {
     Dropdown,
     Button,
@@ -20,7 +21,7 @@ import { isNil } from 'lodash';
  * BackgroundColor
  */
 const BackgroundColor = props => {
-    const { 
+    const {
         clientId,
         blockName
     } = props;
@@ -44,8 +45,8 @@ const BackgroundColor = props => {
     if (blockName === 'maxi-blocks/divider-maxi' || isNil(rawBackground))
         return null;
 
-    let background = typeof rawBackground != 'object' ? 
-        JSON.parse(rawBackground) : 
+    let background = typeof rawBackground != 'object' ?
+        JSON.parse(rawBackground) :
         rawBackground;
 
     const updateBackground = val => {
@@ -64,40 +65,45 @@ const BackgroundColor = props => {
     }
 
     return (
-        <Dropdown
-            className='toolbar-item toolbar-item__dropdown'
-            renderToggle={({ isOpen, onToggle }) => (
-                <Button
-                    className='toolbar-item__text-options'
-                    onClick={onToggle}
-                    aria-expanded={isOpen}
-                    action="popup"
-                >
-                    <div
-                        className='toolbar-item__icon'
-                        style={{
-                            background: background.colorOptions.color,
-                            border: '1px solid #fff'
-                        }}
-                    ></div>
-                </Button>
-            )}
-            popoverProps={
-                {
-                    className: 'toolbar-item__popover',
-                    noArrow: false,
-                    position: 'center'
-                }
+        <Fragment>
+            {
+                !isNil(background) &&
+                <Dropdown
+                    className='toolbar-item toolbar-item__dropdown'
+                    renderToggle={({ isOpen, onToggle }) => (
+                        <Button
+                            className='toolbar-item__text-options'
+                            onClick={onToggle}
+                            aria-expanded={isOpen}
+                            action="popup"
+                        >
+                            <div
+                                className='toolbar-item__icon'
+                                style={{
+                                    background: background.colorOptions.color,
+                                    border: '1px solid #fff'
+                                }}
+                            ></div>
+                        </Button>
+                    )}
+                    popoverProps={
+                        {
+                            className: 'toolbar-item__popover',
+                            noArrow: false,
+                            position: 'center'
+                        }
+                    }
+                    renderContent={
+                        () => (
+                            <ColorPicker
+                                color={background.colorOptions.color}
+                                onChangeComplete={val => updateBackground(val)}
+                            />
+                        )
+                    }
+                />
             }
-            renderContent={
-                () => (
-                    <ColorPicker
-                        color={background.colorOptions.color}
-                        onChangeComplete={val => updateBackground(val)}
-                    />
-                )
-            }
-        />
+        </Fragment>
     )
 }
 

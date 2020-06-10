@@ -303,7 +303,7 @@ class edit extends GXBlock {
                                         className='maxi-image-block__resizer'
                                         size={{
                                             width: `${width}%`,
-                                            height: 'auto'
+                                            height: '100%'
                                         }}
                                         maxWidth='100%'
                                         enable={{

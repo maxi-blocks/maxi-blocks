@@ -1,6 +1,7 @@
 /**
  * WordPress dependencies
  */
+const { Fragment } = wp.element;
 const {
     Icon,
     Dropdown,
@@ -17,10 +18,16 @@ const {
 import BoxShadowControl from '../../../box-shadow-control';
 
 /**
+ * External dependencies
+ */
+import { isNil } from 'lodash';
+
+/**
  * Icons
  */
 import './editor.scss';
 import { toolbarDropShadow } from '../../../../icons';
+import { boxShadowBottom } from '../../../box-shadow-control/defaults';
 
 /**
  * BoxShadow
@@ -59,41 +66,45 @@ const BoxShadow = props => {
     );
 
     return (
-        <Dropdown
-            className='toolbar-item toolbar-item__dropdown'
-            renderToggle={({ isOpen, onToggle }) => (
-                <Button
-                    className='toolbar-item__box-shadow'
-                    onClick={onToggle}
-                    aria-expanded={isOpen}
-                    action="popup"
-                >
-                    <Icon
-                        className='toolbar-item__icon'
-                        icon={toolbarDropShadow}
-                    />
-                </Button>
-            )}
-            popoverProps={
-                {
-                    className: 'toolbar-item__popover',
-                    noArrow: false,
-                    position: 'top center'
-                }
+        <Fragment>
+            {
+                !isNil(boxShadowBottom) &&
+                <Dropdown
+                    className='toolbar-item toolbar-item__dropdown'
+                    renderToggle={({ isOpen, onToggle }) => (
+                        <Button
+                            className='toolbar-item__box-shadow'
+                            onClick={onToggle}
+                            aria-expanded={isOpen}
+                            action="popup"
+                        >
+                            <Icon
+                                className='toolbar-item__icon'
+                                icon={toolbarDropShadow}
+                            />
+                        </Button>
+                    )}
+                    popoverProps={
+                        {
+                            className: 'toolbar-item__popover',
+                            noArrow: false,
+                            position: 'top center'
+                        }
+                    }
+                    renderContent={
+                        () => (
+                            <BoxShadowControl
+                                boxShadowOptions={JSON.parse(boxShadow)}
+                                onChange={boxShadow => updateBlockAttributes(
+                                    clientId,
+                                    { boxShadow }
+                                )}
+                            />
+                        )
+                    }
+                />
             }
-            renderContent={
-                () => (
-                    <BoxShadowControl
-                        boxShadowOptions={JSON.parse(boxShadow)}
-                        onChange={boxShadow => updateBlockAttributes(
-                            clientId,
-                            { boxShadow }
-                        )}
-                    />
-                )
-            }
-        >
-        </Dropdown>
+        </Fragment>
     )
 }
 

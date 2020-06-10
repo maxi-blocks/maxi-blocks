@@ -100,8 +100,6 @@ class edit extends GXBlock {
             return this.getNormalObject;
         if (this.type === 'hover')
             return this.getHoverObject
-        if (this.type === 'columns')
-            return this.getColumnObject;
     }
 
     /**
@@ -111,6 +109,7 @@ class edit extends GXBlock {
         const {
             attributes: {
                 columnSize,
+                opacity,
                 background,
                 boxShadow,
                 border,
@@ -144,6 +143,8 @@ class edit extends GXBlock {
                 response.column.general['flex'] = '0 0 auto';
                 response.column.general['max-width'] = '';
             }
+        if (isNumber(opacity))
+            response.column.general['opacity'] = opacity;
 
         return response;
     }
@@ -156,19 +157,22 @@ class edit extends GXBlock {
             borderHover,
         } = this.props.attributes;
 
-        return {
+        let response = {
             backgroundHover: { ...getBackgroundObject(JSON.parse(backgroundHover)) },
             boxShadowHover: { ...getBoxShadowObject(JSON.parse(boxShadowHover)) },
             borderHover: { ...JSON.parse(borderHover) },
             borderWidthHover: { ...JSON.parse(borderHover).borderWidth },
             borderRadiusHover: { ...JSON.parse(borderHover).borderRadius },
-            rowAlign: {
-                label: "Row",
-                general: {
-                    'opacity': opacityHover
-                }
+            columnHover: {
+                label: "columnHover",
+                general: {}
             }
         };
+
+        if (isNumber(opacityHover))
+            response.columnHover.general['opacity'] = opacityHover;
+
+        return response;
     }
 
     /**
@@ -278,7 +282,7 @@ class edit extends GXBlock {
                                 className="maxi-column-block-content"
                             >
                                 <InnerBlocks
-                                    allowedBlocks={ALLOWED_BLOCKS}
+                                    // allowedBlocks={ALLOWED_BLOCKS}
                                     templateLock={false}
                                     renderAppender={
                                         !hasInnerBlock || isSelect() ?

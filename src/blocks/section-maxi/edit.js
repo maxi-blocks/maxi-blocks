@@ -3,7 +3,6 @@
  */
 const {
     select,
-    dispatch,
     withSelect
 } = wp.data;
 const {
@@ -16,7 +15,8 @@ const {
  */
 import {
     GXBlock,
-    __experimentalToolbar
+    __experimentalToolbar,
+    __experimentalBreadcrumbs
 } from '../../components';
 import { BackEndResponsiveStyles } from '../../extensions/styles';
 import Inspector from './inspector';
@@ -30,8 +30,6 @@ import {
  */
 import classnames from 'classnames';
 import {
-    isNil,
-    isEqual,
     isEmpty,
     isNumber
 } from 'lodash';
@@ -40,15 +38,6 @@ import {
  * Edit
  */
 class edit extends GXBlock {
-    state = {
-        selectorBlocks: [],
-    }
-
-    componentDidUpdate() {
-        this.displayStyles();
-        this.setSelectorBlocks();
-    }
-
     /**
      * Retrieve the target for responsive CSS
      */
@@ -134,33 +123,10 @@ class edit extends GXBlock {
         new BackEndResponsiveStyles(this.getMeta);
     }
 
-    setSelectorBlocks() {
-        const {
-            originalNestedBlocks,
-            selectedBlockId
-        } = this.props;
-
-        if (isNil(originalNestedBlocks))
-            return;
-
-        let selectorBlockList = [];
-        if (!isNil(selectedBlockId)) {
-            selectorBlockList = [...originalNestedBlocks, selectedBlockId]
-        }
-
-        if (
-            !isEqual(this.state.selectorBlocks, selectorBlockList)
-        )
-            setTimeout(() => {          // Should find an alternative       
-                this.setState({ selectorBlocks: selectorBlockList });
-            }, 10);
-    }
-
     render() {
         const {
             attributes: {
                 uniqueID,
-                isFirstOnHierarchy,
                 blockStyle,
                 defaultBlockStyle,
                 fullWidth,
@@ -171,8 +137,6 @@ class edit extends GXBlock {
             hasInnerBlock,
         } = this.props;
 
-        const { selectorBlocks } = this.state;
-
         let classes = classnames(
             'maxi-block maxi-section-block',
             uniqueID,
@@ -182,16 +146,9 @@ class edit extends GXBlock {
         );
 
         /**
-         * Block selector
-         * 
-         * @param {string} id Block id to select
-         */
-        const selectOnClick = id => {
-            dispatch('core/editor').selectBlock(id);
-        }
-
-        /**
          * Check if current block or children is select
+         * 
+         * todo: should go to withSelect
          */
         const isSelect = () => {
             const selectedBlock = select('core/editor').getSelectedBlockClientId();
@@ -202,46 +159,12 @@ class edit extends GXBlock {
         return [
             <Inspector {...this.props} />,
             <__experimentalToolbar />,
+            <__experimentalBreadcrumbs />,
             <__experimentalBlock
                 data-gx_initial_block_class={defaultBlockStyle}
                 className={classes}
                 data-align={fullWidth}
             >
-                {   // This should be a component -- #116
-                    isFirstOnHierarchy &&
-                    <div
-                        className="maxi-section-selector-wrapper"
-                    >
-                        {
-                            !isNil(selectorBlocks) &&
-                            selectorBlocks.map((blockId, i) => {
-                                const blockName = select('core/block-editor').getBlockName(blockId);
-                                if (isNil(blockName)) // Check setTimeOut on componentDidUpdate()
-                                    return;
-                                const blockType = select('core/blocks').getBlockType(blockName);
-                                const title = blockType.title;
-
-                                return (
-                                    <div
-                                        className="maxi-section-selector-item-wrapper"
-                                    >
-                                        {
-                                            i != 0 &&
-                                            <span> > </span>
-                                        }
-                                        <span
-                                            className="maxi-section-selector-item"
-                                            target={blockId}
-                                            onClick={() => selectOnClick(blockId)}
-                                        >
-                                            {title}
-                                        </span>
-                                    </div>
-                                )
-                            })
-                        }
-                    </div>
-                }
                 <InnerBlocks
                     templateLock={false}
                     renderAppender={
@@ -258,15 +181,11 @@ class edit extends GXBlock {
 }
 
 export default withSelect((select, ownProps) => {
-    const { clientId } = ownProps
+    const { clientId } = ownProps;
 
-    const selectedBlockId = select('core/block-editor').getSelectedBlockClientId();
-    const originalNestedBlocks = select('core/block-editor').getBlockParents(selectedBlockId);
     const hasInnerBlock = !isEmpty(select('core/block-editor').getBlockOrder(clientId));
 
     return {
-        selectedBlockId,
-        originalNestedBlocks,
         hasInnerBlock
     }
 })(edit)

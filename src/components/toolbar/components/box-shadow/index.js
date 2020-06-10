@@ -54,8 +54,9 @@ const BoxShadow = props => {
             const { getBlockAttributes } = select(
                 'core/block-editor',
             );
+            const attributes = getBlockAttributes(clientId);
             return {
-                boxShadow: getBlockAttributes(clientId).boxShadow,
+                boxShadow: attributes ? attributes.boxShadow : null
             };
         },
         [clientId]

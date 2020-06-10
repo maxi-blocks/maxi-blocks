@@ -45,9 +45,10 @@ const Size = props => {
             const { getBlockAttributes } = select(
                 'core/block-editor',
             );
+            const attributes = getBlockAttributes(clientId);
             return {
-                fullWidth: getBlockAttributes(clientId).fullWidth,
-                size: getBlockAttributes(clientId).size,
+                fullWidth: attributes ? attributes.fullWidth : null,
+                size: attributes ? attributes.size : null,
             };
         },
         [clientId]

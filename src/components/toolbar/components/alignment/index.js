@@ -52,9 +52,10 @@ const Alignment = props => {
             const { getBlockAttributes } = select(
                 'core/block-editor',
             );
+            const attributes = getBlockAttributes(clientId);
             return {
-                alignment: getBlockAttributes(clientId).alignment,
-                alignmentDesktop: getBlockAttributes(clientId).alignmentDesktop,
+                alignment: attributes ? attributes.alignment : null,
+                alignmentDesktop: attributes ? attributes.alignmentDesktop : null,
             };
         },
         [clientId]
@@ -65,66 +66,70 @@ const Alignment = props => {
     );
 
     return (
-        <Dropdown
-            className='toolbar-item toolbar-item__dropdown'
-            renderToggle={({ isOpen, onToggle }) => (
-                <Button
-                    className='toolbar-item__alignment'
-                    onClick={onToggle}
-                    aria-expanded={isOpen}
-                    action="popup"
-                >
-                    <Icon
-                        className='toolbar-item__icon'
-                        icon={toolbarAlign}
-                    />
-                </Button>
-            )}
-            popoverProps={
-                {
-                    className: 'toolbar-item__popover',
-                    noArrow: false,
-                    position: 'center'
-                }
-            }
-            renderContent={
-                () => (
-                    <Fragment>
-                        {
-                            alignment &&
-                            <AlignmentControl
-                                value={alignment}
-                                onChange={alignment => updateBlockAttributes(
-                                    clientId,
-                                    { alignment }
-                                )}
-                                disableJustify={
-                                    blockName === 'maxi-blocks/text-maxi' ?
-                                        false :
-                                        true
-                                }
+        <Fragment>
+            {
+                (!isNil(alignment) || !isNil(alignmentDesktop)) &&
+                <Dropdown
+                    className='toolbar-item toolbar-item__dropdown'
+                    renderToggle={({ isOpen, onToggle }) => (
+                        <Button
+                            className='toolbar-item__alignment'
+                            onClick={onToggle}
+                            aria-expanded={isOpen}
+                            action="popup"
+                        >
+                            <Icon
+                                className='toolbar-item__icon'
+                                icon={toolbarAlign}
                             />
-                        }
+                        </Button>
+                    )}
+                    popoverProps={
                         {
-                            alignmentDesktop &&
-                            <AlignmentControl
-                                value={alignmentDesktop}
-                                onChange={alignmentDesktop => updateBlockAttributes(
-                                    clientId,
-                                    { alignmentDesktop }
-                                )}
-                                disableJustify={
-                                    blockName === 'maxi-blocks/text-maxi' ?
-                                        false :
-                                        true
-                                }
-                            />
+                            className: 'toolbar-item__popover',
+                            noArrow: false,
+                            position: 'center'
                         }
-                    </Fragment>
-                )
+                    }
+                    renderContent={
+                        () => (
+                            <Fragment>
+                                {
+                                    alignment &&
+                                    <AlignmentControl
+                                        value={alignment}
+                                        onChange={alignment => updateBlockAttributes(
+                                            clientId,
+                                            { alignment }
+                                        )}
+                                        disableJustify={
+                                            blockName === 'maxi-blocks/text-maxi' ?
+                                                false :
+                                                true
+                                        }
+                                    />
+                                }
+                                {
+                                    alignmentDesktop &&
+                                    <AlignmentControl
+                                        value={alignmentDesktop}
+                                        onChange={alignmentDesktop => updateBlockAttributes(
+                                            clientId,
+                                            { alignmentDesktop }
+                                        )}
+                                        disableJustify={
+                                            blockName === 'maxi-blocks/text-maxi' ?
+                                                false :
+                                                true
+                                        }
+                                    />
+                                }
+                            </Fragment>
+                        )
+                    }
+                />
             }
-        >
-        </Dropdown>
+        </Fragment>
     )
 }
 

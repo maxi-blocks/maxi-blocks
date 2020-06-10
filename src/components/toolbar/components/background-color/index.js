@@ -31,8 +31,9 @@ const BackgroundColor = props => {
             const { getBlockAttributes } = select(
                 'core/block-editor',
             );
+            const attributes = getBlockAttributes(clientId);
             return {
-                rawBackground: getBlockAttributes(clientId).background,
+                rawBackground: attributes ? attributes.background : null,
             };
         },
         [clientId]

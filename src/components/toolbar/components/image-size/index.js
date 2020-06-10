@@ -53,11 +53,12 @@ const ImageSize = props => {
             const { getMedia } = select(
                 'core'
             )
-            const mediaID = getBlockAttributes(clientId).mediaID;
+            const attributes = getBlockAttributes(clientId);
+            const mediaID = attributes ? attributes.mediaID : null;
             return {
-                size: getBlockAttributes(clientId).size,
-                width: getBlockAttributes(clientId).width,
-                imageData: getMedia(mediaID)
+                size: attributes ? attributes.size : null,
+                width: attributes ? attributes.width : null,
+                imageData: mediaID ? getMedia(mediaID) : null
             };
         },
         [clientId]

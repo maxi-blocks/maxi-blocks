@@ -35,8 +35,9 @@ const Link = props => {
             const { getBlockAttributes } = select(
                 'core/block-editor'
             );
+            const attributes = getBlockAttributes(clientId);
             return {
-                linkSettings: getBlockAttributes(clientId).linkSettings,
+                linkSettings: attributes ? attributes.linkSettings : null,
             };
         },
         [clientId]

@@ -50,9 +50,10 @@ const Border = props => {
             const { getBlockName, getBlockAttributes } = select(
                 'core/block-editor',
             );
+            const attributes = getBlockAttributes(clientId);
             return {
                 blockName: getBlockName(clientId),
-                border: getBlockAttributes(clientId).border,
+                border: attributes ? attributes.border : null,
             };
         },
         [clientId]

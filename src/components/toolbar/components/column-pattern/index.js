@@ -51,9 +51,10 @@ const ColumnPatterns = props => {
             } = select(
                 'core/block-editor',
             );
+            const attributes = getBlockAttributes(clientId);
             return {
                 blockName: getBlockName(clientId),
-                rowPattern: getBlockAttributes(clientId).rowPattern,
+                rowPattern: attributes ? attributes.rowPattern : null,
                 innerBlocks: getBlockOrder(clientId)
             };
         },

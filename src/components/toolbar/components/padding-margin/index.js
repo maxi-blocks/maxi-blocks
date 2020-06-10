@@ -38,9 +38,10 @@ const PaddingMargin = props => {
             const { getBlockAttributes } = select(
                 'core/block-editor',
             );
+            const attributes = getBlockAttributes(clientId);
             return {
-                padding: getBlockAttributes(clientId).padding,
-                margin: getBlockAttributes(clientId).margin,
+                padding: attributes ? attributes.padding : null,
+                margin: attributes ? attributes.margin : null,
             };
         },
         [clientId]

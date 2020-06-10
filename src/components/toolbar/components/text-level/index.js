@@ -37,9 +37,10 @@ const TextLevel = props => {
             const { getBlockAttributes } = select(
                 'core/block-editor',
             );
+            const attributes = getBlockAttributes(clientId);
             return {
-                textLevel: getBlockAttributes(clientId).textLevel,
-                rawTypographyHover: getBlockAttributes(clientId).typographyHover,
+                textLevel: attributes ? attributes.textLevel : null,
+                rawTypographyHover: attributes ? attributes.typographyHover : null,
             };
         },
         [clientId]

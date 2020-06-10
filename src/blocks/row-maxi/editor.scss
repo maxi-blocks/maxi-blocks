@@ -1,17 +1,17 @@
-div.maxi-row-block {
+.maxi-row-block {
+    position: relative;
     width: 100%;
     margin: auto;
-    position: relative;
 
     &:hover {
         outline: 1px solid grey;
     }
 
-    &.wp-block[data-align="full"] > div.maxi-row-block {
+    &[data-align="full"] {
         width: auto;
     }
 
-    > div.maxi-row-selector-wrapper:before {
+    > div.maxi-row-selector-wrapper:before {    // This should be a component -- #116
         content: "";
         position: absolute;
         top: 0;
@@ -26,7 +26,7 @@ div.maxi-row-block {
         transition: all 1s ease;
     }
 
-    > div.maxi-row-selector-wrapper {
+    > div.maxi-row-selector-wrapper {       // This should be a component -- #116
         position: absolute;
         top: 0;
         left: 0;
@@ -93,13 +93,13 @@ div.maxi-row-block {
 
 div.maxi-row-block.is-selected,
 div.maxi-row-block.has-child-selected {
-    > div.maxi-row-selector-wrapper:before {
+    > div.maxi-row-selector-wrapper:before {        // This should be a component -- #116
         transform: translate(-8px, calc(100% - 8px));
         opacity: 1;
         visibility: visible;
     }
 
-    > div.maxi-row-selector-wrapper {
+    > div.maxi-row-selector-wrapper {       // This should be a component -- #116
         transform: translateY(calc(-100% - 8px));
         opacity: 1;
         visibility: visible;

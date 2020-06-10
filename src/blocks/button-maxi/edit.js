@@ -2,7 +2,10 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { __experimentalBlock } = wp.blockEditor;
+const {
+    __experimentalBlock,
+    RichText,
+} = wp.blockEditor;
 
 /**
  * Internal dependencies
@@ -15,7 +18,6 @@ import {
 } from '../../extensions/styles/utils';
 import {
     GXBlock,
-    LinkedButton,
     __experimentalToolbar
 } from '../../components';
 
@@ -44,9 +46,9 @@ class edit extends GXBlock {
         if (this.type === 'wrapper')
             return `${this.props.attributes.uniqueID}`;
         if (this.type === 'normal')
-            return `${this.props.attributes.uniqueID} .maxi-buttoneditor-button`;
+            return `${this.props.attributes.uniqueID} .maxi-button-extra__button`;
         if (this.type === 'hover')
-            return `${this.props.attributes.uniqueID} .maxi-buttoneditor-button:hover`;
+            return `${this.props.attributes.uniqueID} .maxi-button-extra__button:hover`;
     }
 
     /**
@@ -62,22 +64,61 @@ class edit extends GXBlock {
     }
 
     get getWrapperObject() {
+        const {
+            alignmentDesktop,
+            alignmentTablet,
+            alignmentMobile,
+        } = this.props.attributes;
+
         const response = {
             button: {
                 label: 'Button',
-                general: {}
+                general: {},
+                desktop: {},
+                tablet: {},
+                mobile: {}
             }
-        }
-        if (!isNil(this.props.attributes.alignment)) {
-            switch (this.props.attributes.alignment) {
+        };
+
+        if (!isNil(alignmentDesktop)) {
+            switch (alignmentDesktop) {
                 case 'left':
-                    response.button.general['justify-content'] = 'flex-start';
+                    response.button.desktop['align-items'] = 'flex-start';
                     break;
                 case 'center':
-                    response.button.general['justify-content'] = 'center';
+                case 'justify':
+                    response.button.desktop['align-items'] = 'center';
                     break;
                 case 'right':
-                    response.button.general['justify-content'] = 'flex-end';
+                    response.button.desktop['align-items'] = 'flex-end';
+                    break;
+            }
+        }
+        if (!isNil(alignmentTablet)) {
+            switch (alignmentTablet) {
+                case 'left':
+                    response.button.tablet['align-items'] = 'flex-start';
+                    break;
+                case 'center':
+                case 'justify':
+                    response.button.tablet['align-items'] = 'center';
+                    break;
+                case 'right':
+                    response.button.tablet['align-items'] = 'flex-end';
+                    break;
+            }
+        }
+        if (!isNil(alignmentMobile)) {
+            switch (alignmentMobile) {
+                case 'left':
+                    response.button.mobile['align-items'] = 'flex-start';
+                    break;
+                case 'center':
+                case 'justify':
+                    response.button.mobile['align-items'] = 'center';
+                    break;
+                case 'right':
+                    response.button.mobile['align-items'] = 'flex-end';
                     break;
             }
         }
@@ -125,8 +166,6 @@ class edit extends GXBlock {
             typographyHover,
             boxShadowHover,
             borderHover,
-            paddingHover,
-            marginHover
         } = this.props.attributes;
 
         const response = {
@@ -136,8 +175,6 @@ class edit extends GXBlock {
             borderHover: { ...JSON.parse(borderHover) },
             borderWidth: { ...JSON.parse(borderHover).borderWidth },
             borderRadius: { ...JSON.parse(borderHover).borderRadius },
-            paddingHover: { ...JSON.parse(paddingHover) },
-            marginHover: { ...JSON.parse(marginHover) },
             buttonHover: {
                 label: 'Button',
                 general: {}
@@ -168,7 +205,6 @@ class edit extends GXBlock {
                 uniqueID,
                 blockStyle,
                 defaultBlockStyle,
-                linkOptions,
                 extraClassName,
                 buttonText,
             },
@@ -190,13 +226,15 @@ class edit extends GXBlock {
                 className={classes}
                 data-gx_initial_block_class={defaultBlockStyle}
             >
-                <LinkedButton
-                    className="maxi-buttoneditor-button"
-                    placeholder={__('Click me', 'maxi-blocks')}
-                    buttonText={buttonText}
-                    onTextChange={buttonText => setAttributes({ buttonText })}
-                    externalLink={JSON.parse(linkOptions)}
-                    onLinkChange={value => setAttributes({ linkOptions: JSON.stringify(value) })}
+                <RichText
+                    className="maxi-button-extra__button"
+                    // tagName="button"
+                    withoutInteractiveFormatting
+                    placeholder={__('Set some text...', 'maxi-blocks')}
+                    // keepPlaceholderOnFocus
+                    value={buttonText}
+                    onChange={buttonText => setAttributes({ buttonText })}
+                    identifier="text"
                 />
             </__experimentalBlock>
         ];

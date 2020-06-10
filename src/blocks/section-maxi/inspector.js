@@ -4,6 +4,10 @@
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
 const { InspectorControls } = wp.blockEditor;
+const { 
+    RangeControl,
+    SelectControl
+} = wp.components;
 
 /**
  * Internal dependencies
@@ -27,12 +31,19 @@ import {
 const Inspector = props => {
     const {
         attributes: {
+            isFirstOnHierarchy,
             blockStyle,
             defaultBlockStyle,
-            background,
-            boxShadow,
-            border,
+            fullWidth,
             size,
+            opacity,
+            opacityHover,
+            background,
+            backgroundHover,
+            border,
+            borderHover,
+            boxShadow,
+            boxShadowHover,
             padding,
             margin,
             hoverAnimation,
@@ -46,6 +57,7 @@ const Inspector = props => {
     return (
         <InspectorControls>
             <SettingTabsControl
+                disablePadding
                 items={[
                     {
                         label: __('Style', 'maxi-blocks'),
@@ -57,42 +69,141 @@ const Inspector = props => {
                                         onChangeBlockStyle={blockStyle => setAttributes({ blockStyle })}
                                         defaultBlockStyle={defaultBlockStyle}
                                         onChangeDefaultBlockStyle={defaultBlockStyle => setAttributes({ defaultBlockStyle })}
+                                        isFirstOnHierarchy={isFirstOnHierarchy}
                                     />
                                 </div>
                                 <AccordionControl
                                     isPrimary
                                     items={[
                                         {
-                                            label: __('Background Image', 'maxi-blocks'), content: (
-                                                <BackgroundControl
-                                                    backgroundOptions={background}
-                                                    onChange={background => setAttributes({ background })}
-                                                />
-                                            ),
-                                        },
-                                        {
-                                            label: __('Box Settings', 'maxi-blocks'), content: (
+                                            label: __('Sizing', 'maxi-blocks'),
+                                            content: (
                                                 <Fragment>
-                                                    <BoxShadowControl
-                                                        boxShadowOptions={boxShadow}
-                                                        onChange={boxShadow => setAttributes({ boxShadow })}
+                                                    <SelectControl
+                                                        label={__('Fullwidth', 'maxi-blocks')}
+                                                        value={fullWidth}
+                                                        options={[
+                                                            { label: __('No', 'maxi-blocks'), value: 'normal' },
+                                                            { label: __('Yes', 'maxi-blocks'), value: 'full' }
+                                                        ]}
+                                                        onChange={fullWidth => setAttributes({ fullWidth })}
                                                     />
-                                                    <hr style={{ marginTop: "28px" }} />
-                                                    <BorderControl
-                                                        borderOptions={border}
-                                                        onChange={border => setAttributes({ border })}
+                                                    <FullSizeControl
+                                                        sizeSettings={size}
+                                                        onChange={size => setAttributes({ size })}
                                                     />
                                                 </Fragment>
                                             ),
                                         },
                                         {
-                                            label: __(' Width / Height', 'maxi-blocks'),
+                                            label: __('Background', 'maxi-blocks'),
+                                            disablePadding: true,
                                             content: (
-                                                <FullSizeControl
-                                                    sizeSettings={size}
-                                                    onChange={size => setAttributes({ size })}
+                                                <SettingTabsControl
+                                                    items={[
+                                                        {
+                                                            label: __('Normal', 'gutenberg-extra'),
+                                                            content: (
+                                                                <Fragment>
+                                                                    <RangeControl
+                                                                        label={__('Opacity', 'maxi-blocks')}
+                                                                        className='maxi-opacity-control'
+                                                                        value={opacity * 100}
+                                                                        onChange={value => setAttributes({ opacity: value / 100 })}
+                                                                        min={0}
+                                                                        max={100}
+                                                                        allowReset={true}
+                                                                        initialPosition={0}
+                                                                    />
+                                                                    <BackgroundControl
+                                                                        backgroundOptions={background}
+                                                                        onChange={background => setAttributes({ background })}
+                                                                    />
+                                                                </Fragment>
+                                                            )
+                                                        },
+                                                        {
+                                                            label: __('Hover', 'gutenberg-extra'),
+                                                            content: (
+                                                                <Fragment>
+                                                                    <RangeControl
+                                                                        label={__('Opacity', 'maxi-blocks')}
+                                                                        className='maxi-opacity-control'
+                                                                        value={opacityHover * 100}
+                                                                        onChange={value => setAttributes({ opacityHover: value / 100 })}
+                                                                        min={0}
+                                                                        max={100}
+                                                                        allowReset={true}
+                                                                        initialPosition={0}
+                                                                    />
+                                                                    <BackgroundControl
+                                                                        backgroundOptions={backgroundHover}
+                                                                        onChange={backgroundHover => setAttributes({ backgroundHover })}
+                                                                        disableImage
+                                                                    />
+                                                                </Fragment>
+                                                            )
+                                                        },
+                                                    ]}
                                                 />
-                                            ),
+                                            )
+                                        },
+                                        {
+                                            label: __('Border', 'maxi-blocks'),
+                                            disablePadding: true,
+                                            content: (
+                                                <SettingTabsControl
+                                                    items={[
+                                                        {
+                                                            label: __('Normal', 'gutenberg-extra'),
+                                                            content: (
+                                                                <BorderControl
+                                                                    borderOptions={border}
+                                                                    onChange={border => setAttributes({ border })}
+                                                                />
+                                                            )
+                                                        },
+                                                        {
+                                                            label: __('Hover', 'gutenberg-extra'),
+                                                            content: (
+                                                                <BorderControl
+                                                                    borderOptions={borderHover}
+                                                                    onChange={borderHover => setAttributes({ borderHover })}
+                                                                />
+                                                            )
+                                                        },
+                                                    ]}
+                                                />
+                                            )
+                                        },
+                                        {
+                                            label: __('Box Shadow', 'maxi-blocks'),
+                                            disablePadding: true,
+                                            content: (
+                                                <SettingTabsControl
+                                                    items={[
+                                                        {
+                                                            label: __('Normal', 'gutenberg-extra'),
+                                                            content: (
+                                                                <BoxShadowControl
+                                                                    boxShadowOptions={boxShadow}
+                                                                    onChange={boxShadow => setAttributes({ boxShadow })}
+                                                                />
+                                                            )
+                                                        },
+                                                        {
+                                                            label: __('Hover', 'gutenberg-extra'),
+                                                            content: (
+                                                                <BoxShadowControl
+                                                                    boxShadowOptions={boxShadowHover}
+                                                                    onChange={boxShadowHover => setAttributes({ boxShadowHover })}
+                                                                    target=':hover'
+                                                                />
+                                                            )
+                                                        },
+                                                    ]}
+                                                />
+                                            )
                                         },
                                         {
                                             label: __('Padding & Margin', 'maxi-blocks'),
@@ -107,7 +218,7 @@ const Inspector = props => {
                                                         onChange={margin => setAttributes({ margin })}
                                                     />
                                                 </Fragment>
-                                            ),
+                                            )
                                         }
                                     ]}
                                 />

@@ -74,7 +74,11 @@ const MediaUploader = props => {
                     onClose={!isNil(onClose) ? onClose : null}
                     render={({ open }) => (
                         <Button
-                            className={!mediaID ? 'editor-post-featured-image__toggle' : 'editor-post-featured-image__preview'}
+                            className={
+                                !mediaID ? 
+                                    'editor-post-featured-image__toggle' : 
+                                    'editor-post-featured-image__preview'
+                            }
                             onClick={() => {
                                 open();
                                 onOpenImageModal();
@@ -92,12 +96,24 @@ const MediaUploader = props => {
                                 !!mediaID &&
                                 imageData &&
                                 <ResponsiveWrapper
-                                    naturalWidth={alternativeImage? alternativeImage.width : imageData.media_details.width}
-                                    naturalHeight={alternativeImage? alternativeImage.height : imageData.media_details.height}
+                                    naturalWidth={
+                                        alternativeImage ?
+                                            alternativeImage.width :
+                                            imageData.media_details.width
+                                    }
+                                    naturalHeight={
+                                        alternativeImage ?
+                                            alternativeImage.height :
+                                            imageData.media_details.height
+                                    }
                                     className='maxi-imageuploader-control__responsive-wrapper'
                                 >
                                     <img
-                                        src={!isNil(alternativeImage) ? alternativeImage.source_url : imageData.source_url}
+                                        src={
+                                            !isNil(alternativeImage) ?
+                                                alternativeImage.source_url :
+                                                imageData.source_url
+                                        }
                                         alt={__('Image', 'maxi-blocks')}
                                     />
                                 </ResponsiveWrapper>
@@ -133,7 +149,6 @@ const MediaUploader = props => {
                 <MediaUploadCheck>
                     <Button
                         onClick={onRemoveImage}
-                        isLink
                         isDestructive
                         className='maxi-mediauploader-control__remove'
                     >

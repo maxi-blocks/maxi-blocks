@@ -175,7 +175,9 @@ class ImageCropComponent extends Component {
         this.cropOptions.crop.x = crop.x;
         this.cropOptions.crop.y = crop.y;
         this.cropOptions.crop.width = crop.width;
-        this.cropOptions.crop.height = crop.height;
+        this.cropOptions.crop.width = crop.width;
+        this.cropOptions.image.height = crop.height;
+        this.cropOptions.image.height = crop.height;
 
         this.props.onChange(this.cropOptions)
     }
@@ -185,6 +187,8 @@ class ImageCropComponent extends Component {
         this.mediaID = this.props.mediaID;
         this.cropOptions.crop.width = image.width;
         this.cropOptions.crop.height = image.height;
+        this.cropOptions.image.width = image.width;
+        this.cropOptions.image.height = image.height;
 
         this.props.onChange(this.cropOptions);
 
@@ -262,7 +266,6 @@ class ImageCropComponent extends Component {
                 .then(res => {
                     this.cropOptions.image.source_url = res.url;
                     this.props.onChange(this.cropOptions)
-                    console.log('newImage!')
                 }).catch(err => {
                     console.log(__('Error croping the image: ' + err, 'maxi-blocks'));
                 })

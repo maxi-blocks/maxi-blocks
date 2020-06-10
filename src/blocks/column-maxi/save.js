@@ -23,7 +23,6 @@ import classnames from 'classnames';
  */
 const save = props => {
     const {
-        anchor,
         className,
         attributes: {
             uniqueID,
@@ -34,16 +33,16 @@ const save = props => {
     } = props;
 
     let classes = classnames(
-        'maxi-block maxi-column-block', 
-        blockStyle, 
-        extraClassName, 
-        className
+        'maxi-block maxi-column-block',
+        blockStyle,
+        extraClassName,
+        className,
     );
     if (uniqueID && (typeof uniqueID !== 'undefined'))
         classes = classnames(classes, uniqueID);
 
     return (
-        <div 
+        <div
             className={classes}
             data-gx_initial_block_class={defaultBlockStyle}
         >

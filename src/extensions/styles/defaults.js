@@ -22,7 +22,22 @@ export const background = {
         {
             "imageOptions": {
                 "mediaID": "",
-                "mediaURL": ""
+                "mediaURL": "",
+                "cropOptions": {
+                    "image": {
+                        "source_url": "",
+                        "width": "",
+                        "height": "",
+                    },
+                    "crop": {
+                        "unit": "",
+                        "x": 0,
+                        "y": 0,
+                        "width": 0,
+                        "height": 0,
+                        "scale": 100
+                    }
+                }
             },
             "sizeSettings": {
                 "size": "cover",
@@ -261,7 +276,22 @@ export const backgroundHover = {
         {
             "imageOptions": {
                 "mediaID": "",
-                "mediaURL": ""
+                "mediaURL": "",
+                "cropOptions": {
+                    "image": {
+                        "source_url": "",
+                        "width": "",
+                        "height": "",
+                    },
+                    "crop": {
+                        "unit": "",
+                        "x": 0,
+                        "y": 0,
+                        "width": 0,
+                        "height": 0,
+                        "scale": 100
+                    }
+                }
             },
             "sizeSettings": {
                 "size": "cover",
@@ -409,59 +439,6 @@ export const borderHover = {
             "border-bottom-left-radius": "",
             "sync": true
         }
-    }
-};
-
-export const marginHover = {
-    "label": "Margin",
-    "min": "none",
-    "unit": "px",
-    "desktop": {
-        "margin-top": "",
-        "margin-right": "",
-        "margin-bottom": "",
-        "margin-left": "",
-        "sync": true
-    },
-    "tablet": {
-        "margin-top": "",
-        "margin-right": "",
-        "margin-bottom": "",
-        "margin-left": "",
-        "sync": true
-    },
-    "mobile": {
-        "margin-top": "",
-        "margin-right": "",
-        "margin-bottom": "",
-        "margin-left": "",
-        "sync": true
-    }
-};
-
-export const paddingHover = {
-    "label": "Padding",
-    "unit": "px",
-    "desktop": {
-        "padding-top": "",
-        "padding-right": "",
-        "padding-bottom": "",
-        "padding-left": "",
-        "sync": true
-    },
-    "tablet": {
-        "padding-top": "",
-        "padding-right": "",
-        "padding-bottom": "",
-        "padding-left": "",
-        "sync": true
-    },
-    "mobile": {
-        "padding-top": "",
-        "padding-right": "",
-        "padding-bottom": "",
-        "padding-left": "",
-        "sync": true
     }
 };
 

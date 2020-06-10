@@ -1,4 +1,4 @@
-div.maxi-row-block {
+.maxi-row-block {
     display: flex;
     flex-wrap: wrap;
 
@@ -6,10 +6,10 @@ div.maxi-row-block {
         width: auto;
     }
 
-    >div.maxi-column-block:first-of-type {
+    > .maxi-column-block:first-of-type {
         margin-left: 0 !important;
     }
-    >div.maxi-column-block:last-of-type {
+    > .maxi-column-block:last-of-type {
         margin-right: 0 !important;
     }
 }

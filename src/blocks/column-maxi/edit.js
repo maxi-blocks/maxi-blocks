@@ -28,7 +28,7 @@ import Inspector from './inspector';
 import {
     getBackgroundObject,
     getBoxShadowObject
-} from './utils';
+} from '../../extensions/styles/utils';
 import {
     ResponsiveStylesResolver,
     BackEndResponsiveStyles
@@ -88,10 +88,26 @@ class edit extends GXBlock {
             node.style.transform = `translateX(${value}px)`;
     }
 
+    get getTarget() {
+        if (this.type === 'normal')
+            return `${this.props.attributes.uniqueID}`;
+        if (this.type === 'hover')
+            return `${this.props.attributes.uniqueID}:hover`;
+    }
+
+    get getObject() {
+        if (this.type === 'normal')
+            return this.getNormalObject;
+        if (this.type === 'hover')
+            return this.getHoverObject
+        if (this.type === 'columns')
+            return this.getColumnObject;
+    }
+
     /**
      * Get object for styling
      */
-    get getObject() {
+    get getNormalObject() {
         const {
             attributes: {
                 columnSize,
@@ -130,6 +146,39 @@ class edit extends GXBlock {
             }
 
         return response;
+    }
+
+    get getHoverObject() {
+        const {
+            opacityHover,
+            backgroundHover,
+            boxShadowHover,
+            borderHover,
+        } = this.props.attributes;
+
+        return {
+            backgroundHover: { ...getBackgroundObject(JSON.parse(backgroundHover)) },
+            boxShadowHover: { ...getBoxShadowObject(JSON.parse(boxShadowHover)) },
+            borderHover: { ...JSON.parse(borderHover) },
+            borderWidthHover: { ...JSON.parse(borderHover).borderWidth },
+            borderRadiusHover: { ...JSON.parse(borderHover).borderRadius },
+            rowAlign: {
+                label: "Row",
+                general: {
+                    'opacity': opacityHover
+                }
+            }
+        };
+    }
+
+    /**
+    * Refresh the styles on Editor
+    */
+    displayStyles() {
+        this.saveMeta('normal');
+        this.saveMeta('hover');
+
+        new BackEndResponsiveStyles(this.getMeta);
     }
 
     render() {

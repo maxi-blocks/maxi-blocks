@@ -62,26 +62,6 @@ const Inspector = props => {
         setAttributes,
     } = props;
 
-    const getNormalHoverValue = (selector, normalValue, hoverValue) => {
-        switch (selector) {
-            case 'normal':
-                return normalValue;
-            case 'hover':
-                return hoverValue;
-        }
-    }
-
-    const normalHoverSaver = (selector, normalProp, hoverProp, value) => {
-        switch (selector) {
-            case 'normal':
-                setAttributes({ [normalProp]: value })
-                break;
-            case 'hover':
-                setAttributes({ [hoverProp]: value })
-                break;
-        }
-    }
-
     return (
         <InspectorControls>
             <SettingTabsControl

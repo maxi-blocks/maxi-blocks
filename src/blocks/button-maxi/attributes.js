@@ -16,29 +16,60 @@ const attributes = {
         type: 'string',
         default: 'maxi-def-light'
     },
-    alignment: {
+    alignmentDesktop: {
         type: 'string',
         default: 'center'
     },
-    size: {
+    alignmentTablet: {
         type: 'string',
-        default: JSON.stringify(attributesData.size)
+        default: 'center'
+    },
+    alignmentMobile: {
+        type: 'string',
+        default: 'center'
+    },
+    typography: {
+        type: 'string',
+        default: JSON.stringify(buttonAttributesData.typography)
+    },
+    typographyHover: {
+        type: 'string',
+        default: JSON.stringify(attributesData.typographyHover)
     },
     background: {
         type: 'string',
         default: JSON.stringify(buttonAttributesData.background)
     },
+    backgroundHover: {
+        type: 'string',
+        default: JSON.stringify(attributesData.backgroundHover)
+    },
+    opacity: {
+        type: 'number',
+        default: 100
+    },
+    opacityHover: {
+        type: 'number',
+    },
+    border: {
+        type: 'string',
+        default: JSON.stringify(buttonAttributesData.border)
+    },
+    borderHover: {
+        type: 'string',
+        default: JSON.stringify(attributesData.borderHover)
+    },
+    size: {
+        type: 'string',
+        default: JSON.stringify(attributesData.size)
+    },
     boxShadow: {
         type: 'string',
         default: JSON.stringify(attributesData.boxShadow)
     },
-    typography: {
+    boxShadowHover: {
         type: 'string',
-        default: JSON.stringify(attributesData.typography)
-    },
-    border: {
-        type: 'string',
-        default: JSON.stringify(attributesData.border)
+        default: JSON.stringify(attributesData.boxShadowHover)
     },
     margin: {
         type: 'string',
@@ -46,38 +77,7 @@ const attributes = {
     },
     padding: {
         type: 'string',
-        default: JSON.stringify(attributesData.padding)
-    },
-    opacity: {
-        type: 'number',
-        default: 100
-    },
-    backgroundHover: {
-        type: 'string',
-        default: JSON.stringify(buttonAttributesData.backgroundHover)
-    },
-    boxShadowHover: {
-        type: 'string',
-        default: JSON.stringify(attributesData.boxShadowHover)
-    },
-    typographyHover: {
-        type: 'string',
-        default: JSON.stringify(attributesData.typographyHover)
-    },
-    borderHover: {
-        type: 'string',
-        default: JSON.stringify(attributesData.borderHover)
-    },
-    marginHover: {
-        type: 'string',
-        default: JSON.stringify(attributesData.marginHover)
-    },
-    paddingHover: {
-        type: 'string',
-        default: JSON.stringify(attributesData.paddingHover)
-    },
-    opacityHover: {
-        type: 'number',
+        default: JSON.stringify(buttonAttributesData.padding)
     },
     hoverAnimation: {
         type: 'string',

@@ -1,17 +1,17 @@
-div.maxi-section-block {
+.maxi-section-block {
+    position: relative;
     width: 100%;
     margin: auto;
-    position: relative;
 
     &:hover {
         outline: 1px solid grey;
     }
 
-    &.wp-block[data-align="full"] > div.maxi-section-block {
-        width: auto;
+    &[data-align="full"] {
+        width: auto; 
     }
 
-    > div.maxi-section-selector-wrapper {
+    > div.maxi-section-selector-wrapper {   // This should be a component -- #116
         position: absolute;
         top: 0;
         left: 0;
@@ -65,7 +65,7 @@ div.maxi-section-block {
             opacity: 1;
             visibility: visible;
         }
-    
+
         > div.maxi-section-selector-wrapper {
             transform: translateY(calc(-100% - 8px));
             opacity: 1;
@@ -73,5 +73,3 @@ div.maxi-section-block {
         }
     }
 }
-
-

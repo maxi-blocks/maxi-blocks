@@ -18,8 +18,9 @@ import {
     GXBlock,
     __experimentalToolbar
 } from '../../components';
+import { BackEndResponsiveStyles } from '../../extensions/styles';
 import Inspector from './inspector';
-import { 
+import {
     getBackgroundObject,
     getBoxShadowObject
 } from '../../extensions/styles/utils'
@@ -31,7 +32,8 @@ import classnames from 'classnames';
 import {
     isNil,
     isEqual,
-    isEmpty
+    isEmpty,
+    isNumber
 } from 'lodash';
 
 /**
@@ -47,28 +49,89 @@ class edit extends GXBlock {
         this.setSelectorBlocks();
     }
 
+    /**
+     * Retrieve the target for responsive CSS
+     */
+    get getTarget() {
+        if (this.type === 'normal')
+            return `${this.props.attributes.uniqueID}`;
+        if (this.type === 'hover')
+            return `${this.props.attributes.uniqueID}:hover`;
+    }
+
     get getObject() {
+        if (this.type === 'normal')
+            return this.getNormalObject;
+        if (this.type === 'hover')
+            return this.getHoverObject;
+    }
+
+    get getNormalObject() {
         const {
-            background,
-            boxShadow,
-            border,
             size,
+            opacity,
+            background,
+            border,
+            boxShadow,
             margin,
             padding,
         } = this.props.attributes;
 
         const response = {
+            size: { ...JSON.parse(size) },
             background: { ...getBackgroundObject(JSON.parse(background)) },
-            boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
             border: { ...JSON.parse(border) },
+            boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
             borderWidth: { ...JSON.parse(border).borderWidth },
             borderRadius: { ...JSON.parse(border).borderRadius },
-            size: { ...JSON.parse(size) },
             margin: { ...JSON.parse(margin) },
             padding: { ...JSON.parse(padding) },
+            section: {
+                label: 'Section',
+                general: {}
+            }
         };
 
-        return response
+        if (isNumber(opacity))
+            response.section.general['opacity'] = opacity;
+
+        return response;
+    }
+
+    get getHoverObject() {
+        const {
+            opacityHover,
+            backgroundHover,
+            borderHover,
+            boxShadowHover,
+        } = this.props.attributes;
+
+        const response = {
+            backgroundHover: { ...getBackgroundObject(JSON.parse(backgroundHover)) },
+            boxShadowHover: { ...getBoxShadowObject(JSON.parse(boxShadowHover)) },
+            borderHover: { ...JSON.parse(borderHover) },
+            borderWidthHover: { ...JSON.parse(borderHover).borderWidth },
+            borderRadiusHover: { ...JSON.parse(borderHover).borderRadius },
+            sectionHover: {
+                label: 'Section',
+                general: {}
+            }
+        };
+
+        if (isNumber(opacityHover))
+            response.sectionHover.general['opacity'] = opacityHover;
+
+        return response;
+    }
+
+    /** 
+    * Refresh the styles on Editor
+    */
+    displayStyles() {
+        this.saveMeta('normal');
+        this.saveMeta('hover');
+
+        new BackEndResponsiveStyles(this.getMeta);
     }
 
     setSelectorBlocks() {
@@ -99,8 +162,9 @@ class edit extends GXBlock {
                 uniqueID,
                 isFirstOnHierarchy,
                 blockStyle,
+                defaultBlockStyle,
+                fullWidth,
                 extraClassName,
-                defaultBlockStyle
             },
             className,
             clientId,
@@ -141,8 +205,9 @@ class edit extends GXBlock {
             <__experimentalBlock
                 data-gx_initial_block_class={defaultBlockStyle}
                 className={classes}
+                data-align={fullWidth}
             >
-                {
+                {   // This should be a component -- #116
                     isFirstOnHierarchy &&
                     <div
                         className="maxi-section-selector-wrapper"

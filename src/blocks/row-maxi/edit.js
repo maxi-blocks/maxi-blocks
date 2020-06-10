@@ -27,7 +27,7 @@ import {
 import Inspector from './inspector';
 import TEMPLATES from './templates';
 import { BackEndResponsiveStyles } from '../../extensions/styles';
-import { 
+import {
     getBackgroundObject,
     getBoxShadowObject
 } from '../../extensions/styles/utils'
@@ -88,10 +88,68 @@ class edit extends GXBlock {
     }
 
     get getObject() {
+        if (this.type === 'normal')
+            return this.getNormalObject;
+        if (this.type === 'hover')
+            return this.getHoverObject
         if (this.type === 'columns')
-            return this.getColumnObject
-        if (this.type === 'row')
-            return this.getRowObject
+            return this.getColumnObject;
+    }
+
+    get getNormalObject() {
+        const {
+            horizontalAlign,
+            verticalAlign,
+            opacity,
+            background,
+            border,
+            size,
+            boxShadow,
+            margin,
+            padding
+        } = this.props.attributes;
+
+        return {
+            background: { ...getBackgroundObject(JSON.parse(background)) },
+            boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
+            border: { ...JSON.parse(border) },
+            borderWidth: { ...JSON.parse(border).borderWidth },
+            borderRadius: { ...JSON.parse(border).borderRadius },
+            size: { ...JSON.parse(size) },
+            margin: { ...JSON.parse(margin) },
+            padding: { ...JSON.parse(padding) },
+            rowAlign: {
+                label: "Row",
+                general: {
+                    'justify-content': horizontalAlign,
+                    'align-content': verticalAlign,
+                    'opacity': opacity
+                }
+            }
+        };
+    }
+
+    get getHoverObject() {
+        const {
+            opacityHover,
+            backgroundHover,
+            boxShadowHover,
+            borderHover,
+        } = this.props.attributes;
+
+        return {
+            backgroundHover: { ...getBackgroundObject(JSON.parse(backgroundHover)) },
+            boxShadowHover: { ...getBoxShadowObject(JSON.parse(boxShadowHover)) },
+            borderHover: { ...JSON.parse(borderHover) },
+            borderWidthHover: { ...JSON.parse(borderHover).borderWidth },
+            borderRadiusHover: { ...JSON.parse(borderHover).borderRadius },
+            rowAlign: {
+                label: "Row",
+                general: {
+                    'opacity': opacityHover
+                }
+            }
+        };
     }
 
     get getColumnObject() {
@@ -107,54 +165,30 @@ class edit extends GXBlock {
         };
     }
 
-    get getRowObject() {
-        const {
-            horizontalAlign,
-            verticalAlign,
-            background,
-            boxShadow,
-            border,
-            size,
-            margin,
-            padding
-        } = this.props.attributes;
-
-        return {
-            background: { ...getBackgroundObject(JSON.parse(background)) },
-            boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
-            border: { ...JSON.parse(border) },
-            borderWidth: { ...JSON.parse(border).borderWidth },
-            borderRadius: { ...JSON.parse(border).borderRadius },
-            size: { ...JSON.parse(size) },
-            margin: { ...JSON.parse(margin) },
-            padding: { ...JSON.parse(padding) },
-            rowAlign: {
-                label: "Row align",
-                general: {
-                    'justify-content': horizontalAlign,
-                    'align-content': verticalAlign
-                }
-            }
-        };
-    }
-
     /**
      * Set styles for row and columns
      */
     displayStyles() {
+        this.target = `${this.props.attributes.uniqueID}`;
+        this.saveMeta('normal');
+
+        // This should be improved: row have same styling on front and backend, but on different targets
+        this.target = `${this.props.attributes.uniqueID}>div>div.block-editor-block-list__layout`;
+        this.saveMeta('normal');
+
+        this.target = `${this.props.attributes.uniqueID}:hover`;
+        this.saveMeta('hover');
+
+        // This should be improved: row have same styling on front and backend, but on different targets
+        this.target = `${this.props.attributes.uniqueID}>div>div.block-editor-block-list__layout:hover`;
+        this.saveMeta('hover');
+
         this.target = `${this.props.attributes.uniqueID}>div.maxi-column-block`;
         this.saveMeta('columns');
 
         // This should be improved: row have same styling on front and backend, but on different targets
         this.target = `${this.props.attributes.uniqueID}>div.block-editor-inner-blocks>div.block-editor-block-list__layout>div.maxi-column-block-resizer`;
         this.saveMeta('columns');
-
-        this.target = `${this.props.attributes.uniqueID}`;
-        this.saveMeta('row');
-
-        // This should be improved: row have same styling on front and backend, but on different targets
-        this.target = `${this.props.attributes.uniqueID}>div>div.block-editor-block-list__layout`;
-        this.saveMeta('row');
 
         new BackEndResponsiveStyles(this.getMeta);
     }
@@ -164,10 +198,10 @@ class edit extends GXBlock {
             attributes: {
                 uniqueID,
                 isFirstOnHierarchy,
-                rowPattern,
                 blockStyle,
                 extraClassName,
-                defaultBlockStyle
+                defaultBlockStyle,
+                fullWidth
             },
             clientId,
             loadTemplate,
@@ -193,6 +227,7 @@ class edit extends GXBlock {
             <__experimentalBlock
                 data-gx_initial_block_class={defaultBlockStyle}
                 className={classes}
+                data-align={fullWidth}
             >
                 {
                     isFirstOnHierarchy &&

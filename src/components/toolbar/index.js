@@ -28,7 +28,8 @@ import {
     TextItalic,
     TextLevel,
     TextOptions,
-    PaddingMargin
+    PaddingMargin,
+    Size
 } from './components/';
 
 /**
@@ -117,10 +118,6 @@ const MaxiToolbar = () => {
                             clientId={clientId}
                             blockName={blockName}
                         />
-                        <BoxShadow
-                            clientId={clientId}
-                            blockName={blockName}
-                        />
                         <BackgroundColor
                             clientId={clientId}
                             blockName={blockName}
@@ -130,6 +127,10 @@ const MaxiToolbar = () => {
                             blockName={blockName}
                         />
                         <ImageSize
+                            clientId={clientId}
+                            blockName={blockName}
+                        />
+                        <Size
                             clientId={clientId}
                             blockName={blockName}
                         />
@@ -162,13 +163,17 @@ const MaxiToolbar = () => {
                             clientId={clientId}
                             blockName={blockName}
                         />
-                        <Duplicate
-                            clientId={clientId}
-                        />
                         <Link
                             clientId={clientId}
                         />
                         <PaddingMargin
+                            clientId={clientId}
+                        />
+                        <BoxShadow
+                            clientId={clientId}
+                            blockName={blockName}
+                        />
+                        <Duplicate
                             clientId={clientId}
                         />
                         <Delete

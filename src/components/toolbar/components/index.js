@@ -10,6 +10,7 @@ export { default as Favorite } from'./favorite/';
 export { default as ImageSize } from'./image-size/';
 export { default as Link } from'./link/';
 export { default as PaddingMargin } from './padding-margin/';
+export { default as Size } from'./size/';
 export { default as Style } from'./style/';
 export { default as TextBold } from './text-bold/';
 export { default as TextColor } from './text-color/';

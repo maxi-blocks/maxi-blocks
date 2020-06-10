@@ -16,7 +16,9 @@ import AccordionControl from '../accordion-control';
 import ColorControl from '../color-control';
 import ImageUploaderControl from '../image-uploader-control';
 import ImageCropControl from '../image-crop-control';
+import SettingTabsControl from '../setting-tabs-control';
 import SizeControl from '../size-control';
+import { background } from '../../extensions/styles/defaults';
 
 /**
  * External dependencies
@@ -30,117 +32,17 @@ import {
 } from 'lodash';
 
 /**
+ * Styles
+ */
+import './editor.scss';
+
+/**
  * Components
  */
 export default class BackgroundControl extends GXComponent {
     state = {
         isOpen: false,
         selector: 0
-    }
-
-    componentDidMount() {
-        const value = typeof this.props.backgroundOptions === 'object' ? this.props.backgroundOptions : JSON.parse(this.props.backgroundOptions);
-        this.saveAndSend(value)
-    }
-
-    /**
-     * Creates a new object for being joined with the rest of the values on meta
-     */
-    get getObject() {
-        const response = {
-            label: this.object.label,
-            general: {}
-        }
-
-        if (!isEmpty(this.object.colorOptions.color)) {
-            response.general['background-color'] = this.object.colorOptions.color;
-        }
-        if (!isEmpty(this.object.colorOptions.gradient)) {
-            response.general['background'] = this.object.colorOptions.gradient;
-        }
-        if (!isEmpty(this.object.blendMode)) {
-            response.general['background-blend-mode'] = this.object.blendMode;
-        }
-
-        this.object.backgroundOptions.map(option => {
-            if (isNil(option) || isEmpty(option.imageOptions.mediaURL))
-                return;
-            // Image
-            if (option.sizeSettings.size === 'custom' && !isNil(option.imageOptions.cropOptions)) {
-                if (!isNil(response.general['background-image']))
-                    response.general['background-image'] = `${response.general['background-image']},url('${option.imageOptions.cropOptions.image.source_url}')`;
-                else
-                    response.general['background-image'] = `url('${option.imageOptions.cropOptions.image.source_url}')`;
-                if (!isEmpty(this.object.colorOptions.gradient))
-                    response.general['background-image'] = `${response.general['background-image']}, ${this.object.colorOptions.gradient}`;
-            }
-            else if (option.sizeSettings.size === 'custom' && isNil(option.imageOptions.cropOptions) || option.sizeSettings.size != 'custom' && !isNil(option.imageOptions.mediaURL)) {
-                if (!isNil(response.general['background-image']))
-                    response.general['background-image'] = `${response.general['background-image']},url('${option.imageOptions.mediaURL}')`;
-                else
-                    response.general['background-image'] = `url('${option.imageOptions.mediaURL}')`;
-                if (!isEmpty(this.object.colorOptions.gradient))
-                    response.general['background-image'] = `${response.general['background-image']}, ${this.object.colorOptions.gradient}`;
-            }
-            // Size
-            if (option.sizeSettings.size != 'custom') {
-                if (!isNil(response.general['background-size']))
-                    response.general['background-size'] = `${response.general['background-size']},${option.sizeSettings.size}`;
-                else
-                    response.general['background-size'] = option.sizeSettings.size;
-            }
-            else {
-                if (!isNil(response.general['background-size']))
-                    response.general['background-size'] = `${response.general['background-size']},cover`;
-                else
-                    response.general['background-size'] = 'cover';
-            }
-            // Repeat
-            if (option.repeat) {
-                if (!isNil(response.general['background-repeat']))
-                    response.general['background-repeat'] = `${response.general['background-repeat']},${option.repeat}`;
-                else
-                    response.general['background-repeat'] = option.repeat;
-            }
-            // Position
-            if (option.positionOptions.position != 'custom') {
-                if (!isNil(response.general['background-position']))
-                    response.general['background-position'] = `${response.general['background-position']},${option.positionOptions.position}`;
-                else
-                    response.general['background-position'] = option.positionOptions.position;
-            }
-            else {
-                if (!isNil(response.general['background-position']))
-                    response.general['background-position'] = `
-                            ${response.general['background-position']},
-                            ${option.positionOptions.width + option.positionOptions.widthUnit} ${option.positionOptions.height + option.positionOptions.heightUnit}`;
-                else
-                    response.general['background-position'] = `${option.positionOptions.width + option.positionOptions.widthUnit} ${option.positionOptions.height + option.positionOptions.heightUnit}`;
-            }
-            // Origin
-            if (option.origin) {
-                if (!isNil(response.general['background-origin']))
-                    response.general['background-origin'] = `${response.general['background-origin']},${option.origin}`;
-                else
-                    response.general['background-origin'] = option.origin;
-            }
-            // Clip
-            if (option.clip) {
-                if (!isNil(response.general['background-clip']))
-                    response.general['background-clip'] = `${response.general['background-clip']},${option.clip}`;
-                else
-                    response.general['background-clip'] = option.clip;
-            }
-            // Attachment
-            if (option.attachment) {
-                if (!isNil(response.general['background-attachment']))
-                    response.general['background-attachment'] = `${response.general['background-attachment']},${option.attachment}`;
-                else
-                    response.general['background-attachment'] = option.attachment;
-            }
-        })
-
-        return response;
     }
 
     render() {
@@ -155,36 +57,20 @@ export default class BackgroundControl extends GXComponent {
             selector
         } = this.state;
 
-        let value = typeof backgroundOptions === 'object' ? backgroundOptions : JSON.parse(backgroundOptions);
-        const classes = classnames('maxi-background-control', className) + (isOpen ? ' maxi-background-control__open' : '');
+        let value = typeof backgroundOptions === 'object' ?
+            backgroundOptions :
+            JSON.parse(backgroundOptions);
 
-        const onAddBackground = i => {
-            value.backgroundOptions.push(
-                {
-                    imageOptions: {
-                        mediaID: '',
-                        mediaURL: ''
-                    },
-                    sizeSettings: {
-                        size: 'cover',
-                        widthUnit: '%',
-                        width: 100,
-                        heightUnit: '%',
-                        height: 100
-                    },
-                    repeat: 'no-repeat',
-                    positionOptions: {
-                        position: 'center center',
-                        widthUnit: '%',
-                        width: 0,
-                        heightUnit: '%',
-                        height: 0
-                    },
-                    origin: 'padding-box',
-                    clip: 'border-box',
-                    attachment: 'scroll'
-                }
-            );
+        const classes = classnames(
+            'maxi-background-control',
+            className,
+            isOpen ?
+                'maxi-background-control__open' :
+                ''
+        );
+
+        const onAddBackground = () => {
+            value.backgroundOptions.push(background.backgroundOptions[0])
         }
 
         const onOpenOptions = (e, i) => {
@@ -193,7 +79,6 @@ export default class BackgroundControl extends GXComponent {
                 isOpen: true,
                 selector: i
             })
-
         }
 
         const onRemoveImage = () => {
@@ -246,7 +131,11 @@ export default class BackgroundControl extends GXComponent {
                                                 onRemoveImage();
                                                 this.saveAndSend(value);
                                             }}
-                                            placeholder={value.backgroundOptions.length - 1 === 0 ? __('Set image', 'maxi-blocks') : __('Add Another Image', 'maxi-blocks')}
+                                            placeholder={
+                                                value.backgroundOptions.length - 1 === 0 ?
+                                                    __('Set image', 'maxi-blocks') :
+                                                    __('Add Another Image', 'maxi-blocks')
+                                            }
                                             extendSelector={
                                                 value.backgroundOptions[i].imageOptions.mediaID &&
                                                 <Button
@@ -288,10 +177,7 @@ export default class BackgroundControl extends GXComponent {
                 }
                 {
                     isOpen &&
-                    <AccordionControl
-                        isSecondary
-                        preExpanded={['maxi-background-control__image-tab']}
-                        disablePadding
+                    <SettingTabsControl
                         items={[
                             {
                                 label: __('Image', 'maxi-blocks'),
@@ -349,7 +235,11 @@ export default class BackgroundControl extends GXComponent {
                                             value.backgroundOptions[selector].sizeSettings.size === 'custom' &&
                                             <ImageCropControl
                                                 mediaID={value.backgroundOptions[selector].imageOptions.mediaID}
-                                                cropOptions={value.backgroundOptions[selector].imageOptions.cropOptions ? value.backgroundOptions[selector].imageOptions.cropOptions : {}}
+                                                cropOptions={
+                                                    value.backgroundOptions[selector].imageOptions.cropOptions ?
+                                                        value.backgroundOptions[selector].imageOptions.cropOptions :
+                                                        {}
+                                                }
                                                 onChange={cropOptions => {
                                                     value.backgroundOptions[selector].imageOptions.cropOptions = cropOptions;
                                                     this.saveAndSend(value);

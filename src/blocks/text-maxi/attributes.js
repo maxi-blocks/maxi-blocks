@@ -86,14 +86,6 @@ const attributes = {
         type: 'string',
         default: JSON.stringify(attributesData.borderHover)
     },
-    marginHover: {
-        type: 'string',
-        default: JSON.stringify(attributesData.marginHover)
-    },
-    paddingHover: {
-        type: 'string',
-        default: JSON.stringify(attributesData.paddingHover)
-    },
     hoverAnimation: {
         type: 'string',
         default: 'none',

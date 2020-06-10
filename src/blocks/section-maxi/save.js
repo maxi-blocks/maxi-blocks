@@ -16,24 +16,28 @@ const save = props => {
         attributes: {
             uniqueID,
             blockStyle,
+            defaultBlockStyle,
+            fullWidth,
             extraClassName,
-            defaultBlockStyle
         },
         className,
     } = props;
 
     let classes = classnames(
-        'maxi-block maxi-section-block', 
-        blockStyle, 
-        extraClassName, 
-        className
+        'maxi-block maxi-section-block',
+        blockStyle,
+        extraClassName,
+        className,
+        fullWidth === 'full' ?
+            'alignfull' :
+            '',
     );
     if (uniqueID && (typeof uniqueID !== 'undefined'))
         classes = classnames(classes, uniqueID);
 
     return (
-        <div 
-            className={classes} 
+        <div
+            className={classes}
             data-gx_initial_block_class={defaultBlockStyle}
         >
             <InnerBlocks.Content />

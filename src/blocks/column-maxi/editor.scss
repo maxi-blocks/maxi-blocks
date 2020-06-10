@@ -1,9 +1,9 @@
-div.maxi-column-block:hover {
-    outline: 1px solid blue;
-}
-
-div.maxi-column-block {
+.maxi-column-block {
     max-width: 100% !important;
+
+    &:hover {
+        outline: 1px solid blue;
+    }
 
     > div.block-editor-inner-blocks {
         > div.block-editor-block-list__layout {

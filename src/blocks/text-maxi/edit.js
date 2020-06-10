@@ -147,8 +147,6 @@ class edit extends GXBlock {
             opacityHover,
             boxShadowHover,
             borderHover,
-            marginHover,
-            paddingHover,
         } = this.props.attributes;
 
         const response = {
@@ -158,8 +156,6 @@ class edit extends GXBlock {
             borderHover: { ...JSON.parse(borderHover) },
             borderWidth: { ...JSON.parse(borderHover).borderWidth },
             borderRadius: { ...JSON.parse(borderHover).borderRadius },
-            marginHover: { ...JSON.parse(marginHover) },
-            paddingHover: { ...JSON.parse(paddingHover) },
             text: {
                 label: 'Text',
                 general: {}

@@ -29,7 +29,8 @@ const ALLOWED_BLOCKS = [
     'maxi-blocks/text-maxi',
     'maxi-blocks/button-maxi',
     'maxi-blocks/image-maxi',
-    'maxi-blocks/divider-maxi'
+    'maxi-blocks/divider-maxi',
+    'maxi-blocks/section-maxi',
 ]
 
 const BoxShadow = props => {

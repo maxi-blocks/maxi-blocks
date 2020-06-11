@@ -56,7 +56,8 @@
   display: -ms-flexbox;
   display: flex;
   -ms-flex-pack: justify;
-      justify-content: space-between; }
+      justify-content: space-between;
+  margin: auto; }
   .maxi-divider-block--horizontal hr {
     margin: .5rem 0 !important; }
   .maxi-divider-block--vertical hr {

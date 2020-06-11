@@ -52,59 +52,53 @@ const PaddingMargin = props => {
     );
 
     return (
-        <Fragment>
-            {
-                !isNil(padding) &&
-                !isNil(margin) &&
-                <Dropdown
-                    className='toolbar-item toolbar-item__dropdown'
-                    renderToggle={({ isOpen, onToggle }) => (
-                        <Button
-                            className='toolbar-item__padding-margin'
-                            onClick={onToggle}
-                            aria-expanded={isOpen}
-                            action="popup"
-                        >
-                            <Icon
-                                className='toolbar-item__icon'
-                                icon={toolbarPadding}
-                            />
-                        </Button>
-                    )}
-                    popoverProps={
-                        {
-                            className: 'toolbar-item__popover',
-                            noArrow: false,
-                            position: 'top center'
-                        }
-                    }
-                    renderContent={
-                        () => (
-                            <Fragment>
-                                <DimensionsControl
-                                    value={padding}
-                                    onChange={padding => updateBlockAttributes(
-                                        clientId,
-                                        {
-                                            padding
-                                        }
-                                    )}
-                                />
-                                <DimensionsControl
-                                    value={margin}
-                                    onChange={margin => updateBlockAttributes(
-                                        clientId,
-                                        {
-                                            margin
-                                        }
-                                    )}
-                                />
-                            </Fragment>
-                        )
-                    }
-                />
+        <Dropdown
+            className='toolbar-item toolbar-item__dropdown'
+            renderToggle={({ isOpen, onToggle }) => (
+                <Button
+                    className='toolbar-item__padding-margin'
+                    onClick={onToggle}
+                    aria-expanded={isOpen}
+                    action="popup"
+                >
+                    <Icon
+                        className='toolbar-item__icon'
+                        icon={toolbarPadding}
+                    />
+                </Button>
+            )}
+            popoverProps={
+                {
+                    className: 'toolbar-item__popover',
+                    noArrow: false,
+                    position: 'top center'
+                }
             }
-        </Fragment>
+            renderContent={
+                () => (
+                    <Fragment>
+                        <DimensionsControl
+                            value={padding}
+                            onChange={padding => updateBlockAttributes(
+                                clientId,
+                                {
+                                    padding
+                                }
+                            )}
+                        />
+                        <DimensionsControl
+                            value={margin}
+                            onChange={margin => updateBlockAttributes(
+                                clientId,
+                                {
+                                    margin
+                                }
+                            )}
+                        />
+                    </Fragment>
+                )
+            }
+        />
     )
 }
 

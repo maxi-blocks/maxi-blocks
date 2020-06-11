@@ -151,57 +151,52 @@ const ColumnPatterns = props => {
     }
 
     return (
-        <Fragment>
-            {
-                !isNil(rowPattern) &&
-                <Dropdown
-                    className='toolbar-item toolbar-item__dropdown'
-                    renderToggle={({ isOpen, onToggle }) => (
-                        <Button
-                            className='toolbar-item__column-pattern'
-                            onClick={onToggle}
-                            aria-expanded={isOpen}
-                            action="popup"
-                        >
-                            <Icon
-                                className='toolbar-item__icon'
-                                icon={toolbarColumnPattern}
-                            />
-                        </Button>
-                    )}
-                    popoverProps={
-                        {
-                            className: 'toolbar-item__popover',
-                            noArrow: false,
-                            position: 'center'
-                        }
-                    }
-                    renderContent={
-                        () => (
-                            <div
-                                class="toolbar-item__popover__wrapper toolbar-item__popover__column-pattern"
-                            >
-                                {
-                                    TEMPLATES.map((template, i) => (
-                                        <Button
-                                            className="toolbar-item__popover__column-pattern__template-button"
-                                            aria-pressed={rowPattern === i}
-                                            onClick={() => loadTemplate(i)}
-                                        >
-                                            <Icon
-                                                className="toolbar-item__popover__column-pattern__template-button__icon"
-                                                icon={template.icon}
-                                            />
-                                        </Button>
-                                    )
-                                    )
-                                }
-                            </div>
-                        )
-                    }
-                />
+        <Dropdown
+            className='toolbar-item toolbar-item__dropdown'
+            renderToggle={({ isOpen, onToggle }) => (
+                <Button
+                    className='toolbar-item__column-pattern'
+                    onClick={onToggle}
+                    aria-expanded={isOpen}
+                    action="popup"
+                >
+                    <Icon
+                        className='toolbar-item__icon'
+                        icon={toolbarColumnPattern}
+                    />
+                </Button>
+            )}
+            popoverProps={
+                {
+                    className: 'toolbar-item__popover',
+                    noArrow: false,
+                    position: 'center'
+                }
             }
-        </Fragment>
+            renderContent={
+                () => (
+                    <div
+                        class="toolbar-item__popover__wrapper toolbar-item__popover__column-pattern"
+                    >
+                        {
+                            TEMPLATES.map((template, i) => (
+                                <Button
+                                    className="toolbar-item__popover__column-pattern__template-button"
+                                    aria-pressed={rowPattern === i}
+                                    onClick={() => loadTemplate(i)}
+                                >
+                                    <Icon
+                                        className="toolbar-item__popover__column-pattern__template-button__icon"
+                                        icon={template.icon}
+                                    />
+                                </Button>
+                            )
+                            )
+                        }
+                    </div>
+                )
+            }
+        />
     )
 }
 

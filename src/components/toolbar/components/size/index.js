@@ -59,60 +59,54 @@ const Size = props => {
     );
 
     return (
-        <Fragment>
-            {
-                !isNil(fullWidth) &&
-                !isNil(size) &&
-                <Dropdown
-                    className='toolbar-item toolbar-item__dropdown'
-                    renderToggle={({ isOpen, onToggle }) => (
-                        <Button
-                            className='toolbar-item__size'
-                            onClick={onToggle}
-                            aria-expanded={isOpen}
-                            action="popup"
-                        >
-                            <Icon
-                                className='toolbar-item__icon'
-                                icon={toolbarSettings}
-                            />
-                        </Button>
-                    )}
-                    popoverProps={
-                        {
-                            className: 'toolbar-item__popover',
-                            noArrow: false,
-                            position: 'center'
-                        }
-                    }
-                    renderContent={
-                        () => (
-                            <Fragment>
-                                <SelectControl
-                                    label={__('Fullwidth', 'maxi-blocks')}
-                                    value={fullWidth}
-                                    options={[
-                                        { label: __('No', 'maxi-blocks'), value: 'normal' },
-                                        { label: __('Yes', 'maxi-blocks'), value: 'full' }
-                                    ]}
-                                    onChange={fullWidth => updateBlockAttributes(
-                                        clientId,
-                                        { fullWidth }
-                                    )}
-                                />
-                                <FullSizeControl
-                                    sizeSettings={size}
-                                    onChange={size => updateBlockAttributes(
-                                        clientId,
-                                        { size }
-                                    )}
-                                />
-                            </Fragment>
-                        )
-                    }
-                />
+        <Dropdown
+            className='toolbar-item toolbar-item__dropdown'
+            renderToggle={({ isOpen, onToggle }) => (
+                <Button
+                    className='toolbar-item__size'
+                    onClick={onToggle}
+                    aria-expanded={isOpen}
+                    action="popup"
+                >
+                    <Icon
+                        className='toolbar-item__icon'
+                        icon={toolbarSettings}
+                    />
+                </Button>
+            )}
+            popoverProps={
+                {
+                    className: 'toolbar-item__popover',
+                    noArrow: false,
+                    position: 'center'
+                }
             }
-        </Fragment>
+            renderContent={
+                () => (
+                    <Fragment>
+                        <SelectControl
+                            label={__('Fullwidth', 'maxi-blocks')}
+                            value={fullWidth}
+                            options={[
+                                { label: __('No', 'maxi-blocks'), value: 'normal' },
+                                { label: __('Yes', 'maxi-blocks'), value: 'full' }
+                            ]}
+                            onChange={fullWidth => updateBlockAttributes(
+                                clientId,
+                                { fullWidth }
+                            )}
+                        />
+                        <FullSizeControl
+                            sizeSettings={size}
+                            onChange={size => updateBlockAttributes(
+                                clientId,
+                                { size }
+                            )}
+                        />
+                    </Fragment>
+                )
+            }
+        />
     )
 }
 

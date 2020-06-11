@@ -66,12 +66,12 @@
 		}
 	}
 
-	img {
+	&__image {
 		display: block;
-		width: 100%;
+		width: 100% !important;
 	}
 
-	figcaption {
+	&__caption {
 		width: 100%;
 	}
 }

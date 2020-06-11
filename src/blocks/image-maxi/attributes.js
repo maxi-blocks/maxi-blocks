@@ -69,21 +69,36 @@ const attributes = {
         type: 'number',
         default: 100
     },
+    opacity: {
+        type: 'number',
+        default: 1
+    },
+    opacityHover: {
+        type: 'number',
+    },
     background: {
         type: 'string',
         default: JSON.stringify(attributesData.background)
     },
-    opacity: {
-        type: 'number',
-        default: 1
+    backgroundHover: {
+        type: 'string',
+        default: JSON.stringify(attributesData.backgroundHover)
     },
     boxShadow: {
         type: 'string',
         default: JSON.stringify(attributesData.boxShadow)
     },
+    boxShadowHover: {
+        type: 'string',
+        default: JSON.stringify(attributesData.boxShadowHover)
+    },
     border: {
         type: 'string',
         default: JSON.stringify(attributesData.border)
+    },
+    borderHover: {
+        type: 'string',
+        default: JSON.stringify(attributesData.borderHover)
     },
     padding: {
         type: 'string',
@@ -92,21 +107,6 @@ const attributes = {
     margin: {
         type: 'string',
         default: JSON.stringify(attributesData.margin)
-    },
-    backgroundHover: {
-        type: 'string',
-        default: JSON.stringify(attributesData.backgroundHover)
-    },
-    opacityHover: {
-        type: 'number',
-    },
-    boxShadowHover: {
-        type: 'string',
-        default: JSON.stringify(attributesData.boxShadowHover)
-    },
-    borderHover: {
-        type: 'string',
-        default: JSON.stringify(attributesData.border)
     },
     hoverAnimation: {
         type: 'string',
@@ -142,14 +142,6 @@ const attributes = {
     mediaHeight: {
         type: 'number'
     },
-    resizableWidth: {
-        type: 'number',
-        default: 100
-    },
-    resizableHeight: {
-        type: 'number',
-        default: 100
-    }
 }
 
 export default attributes;

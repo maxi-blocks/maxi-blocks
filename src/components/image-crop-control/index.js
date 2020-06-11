@@ -28,6 +28,7 @@ import {
  * Styles
  */
 import './editor.scss';
+import { image } from '../../icons';
 
 /**
  * Component
@@ -172,12 +173,14 @@ class ImageCropComponent extends Component {
     }
 
     saveData(crop) {
-        this.cropOptions.crop.x = crop.x;
-        this.cropOptions.crop.y = crop.y;
-        this.cropOptions.crop.width = crop.width;
-        this.cropOptions.crop.width = crop.width;
-        this.cropOptions.image.height = crop.height;
-        this.cropOptions.image.height = crop.height;
+        if (crop) {
+            this.cropOptions.crop.x = crop.width ? crop.x : 0;
+            this.cropOptions.crop.y = crop.height ? crop.y : 0;
+            this.cropOptions.crop.width = crop.width ? crop.width : this.image.width;
+            this.cropOptions.crop.height = crop.height ? crop.height : this.image.height;
+            this.cropOptions.image.width = crop.width ? crop.width : this.image.width;
+            this.cropOptions.image.height = crop.height ? crop.height : this.image.height;
+        }
 
         this.props.onChange(this.cropOptions)
     }
@@ -310,6 +313,7 @@ class ImageCropComponent extends Component {
                             onImageLoaded={image => this.onImageLoad(image)}
                             onChange={crop => this.setState({ crop })}
                             onComplete={crop => this.onCropComplete(crop)}
+                            keepSelection={false}
                         />
                         {this.image &&
                             <div className='maxi-imagecrop-control__options' >

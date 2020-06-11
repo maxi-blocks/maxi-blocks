@@ -13,6 +13,7 @@ const { registerBlockType } = wp.blocks;
 /**
  * Styles and icons
  */
+import './style.scss';
 import './editor.scss';
 import { imageBox } from '../../icons';
 

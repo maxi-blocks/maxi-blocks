@@ -69,8 +69,12 @@ class edit extends GXBlock {
             return `${this.props.attributes.uniqueID}`;
         if (this.type === 'hover')
             return `${this.props.attributes.uniqueID}:hover`;
-        if (this.type === 'image')
+        if (this.type === 'imageFrontend')
             return `${this.props.attributes.uniqueID}>img`;
+        if (this.type === 'imageHover')
+            return `${this.props.attributes.uniqueID} img:hover`;
+        if (this.type === 'imageBackend')
+            return `${this.props.attributes.uniqueID} img`;
         if (this.type === 'figcaption')
             return `${this.props.attributes.uniqueID}>figcaption`;
     }
@@ -80,8 +84,12 @@ class edit extends GXBlock {
             return this.getNormalObject;
         if (this.type === 'hover')
             return this.getHoverObject;
-        if (this.type === 'image')
-            return this.getImageObject;
+        if (this.type === 'imageFrontend')
+            return this.getImageFrontendObject;
+        if (this.type === 'imageHover')
+            return this.getImageHoverObject;
+        if (this.type === 'imageBackend')
+            return this.getImageBackendObject;
         if (this.type === 'figcaption')
             return this.getFigcaptionObject;
     }
@@ -94,16 +102,12 @@ class edit extends GXBlock {
             opacity,
             background,
             boxShadow,
-            border,
             padding,
             margin
         } = this.props.attributes;
 
         const response = {
             boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
-            border: { ...JSON.parse(border) },
-            borderWidth: { ...JSON.parse(border).borderWidth },
-            borderRadius: { ...JSON.parse(border).borderRadius },
             padding: { ...JSON.parse(padding) },
             margin: { ...JSON.parse(margin) },
             background: { ...getBackgroundObject(JSON.parse(background)) },
@@ -185,9 +189,9 @@ class edit extends GXBlock {
         return response;
     }
 
-    get getImageObject() {
+    get getImageFrontendObject() {
         const {
-            width
+            width,
         } = this.props.attributes;
 
         const response = {
@@ -199,6 +203,38 @@ class edit extends GXBlock {
 
         if (!!width)
             response.imageSize.general['width'] = `${width}%`;
+
+        return response
+    }
+
+    get getImageHoverObject() {
+        const {
+            borderHover
+        } = this.props.attributes;
+
+        const response = {
+            borderHover: { ...JSON.parse(borderHover) },
+            borderWidth: { ...JSON.parse(borderHover).borderWidth },
+            borderRadius: { ...JSON.parse(borderHover).borderRadius },
+        };
+
+        return response
+    }
+
+    get getImageBackendObject() {
+        const {
+            border
+        } = this.props.attributes;
+
+        const response = {
+            border: { ...JSON.parse(border) },
+            borderWidth: { ...JSON.parse(border).borderWidth },
+            borderRadius: { ...JSON.parse(border).borderRadius },
+            imageSize: {
+                label: 'Image Size',
+                general: {}
+            }
+        };
 
         return response
     }
@@ -221,7 +257,9 @@ class edit extends GXBlock {
     displayStyles() {
         this.saveMeta('normal');
         this.saveMeta('hover');
-        this.saveMeta('image');
+        this.saveMeta('imageFrontend');
+        this.saveMeta('imageHover');
+        this.saveMeta('imageBackend');
         this.saveMeta('figcaption')
 
         new BackEndResponsiveStyles(this.getMeta);
@@ -334,7 +372,7 @@ class edit extends GXBlock {
                                             />
                                         </div>
                                         <img
-                                            className={"wp-image-" + mediaID}
+                                            className={`maxi-image-block__image wp-image-${mediaID}`}
                                             src={mediaURL}
                                             width={mediaWidth}
                                             height={mediaHeight}
@@ -342,7 +380,9 @@ class edit extends GXBlock {
                                         />
                                     </ResizableBox>
                                     {captionType !== 'none' &&
-                                        <figcaption>
+                                        <figcaption
+                                            className="maxi-image-block__caption"
+                                        >
                                             {captionContent}
                                         </figcaption>
                                     }

@@ -186,9 +186,6 @@ class edit extends GXBlock {
     }
 
     render() {
-        const ALLOWED_BLOCKS = wp.blocks.getBlockTypes().map(block => block.name)
-            .filter(blockName => (blockName !== 'maxi-blocks/row-maxi' && blockName !== 'maxi-blocks/column-maxi'));
-
         const {
             attributes: {
                 uniqueID,
@@ -278,9 +275,9 @@ class edit extends GXBlock {
                             className={classes}
                             data-gx_initial_block_class={defaultBlockStyle}
                         >
-                            <div
+                            {/* <div
                                 className="maxi-column-block-content"
-                            >
+                            > */}
                                 <InnerBlocks
                                     // allowedBlocks={ALLOWED_BLOCKS}
                                     templateLock={false}
@@ -292,7 +289,7 @@ class edit extends GXBlock {
                                             false
                                     }
                                 />
-                            </div>
+                            {/* </div> */}
                         </__experimentalBlock.div>
                     </ResizableBox>
                 }

@@ -75,24 +75,19 @@ const Inspector = props => {
                                     isPrimary
                                     items={[
                                         {
-                                            label: __('Row Settings', 'maxi-blocks'),
+                                            label: __('Column Settings', 'maxi-blocks'),
                                             content: (
-                                                <Fragment>
-                                                    {
-                                                        !syncSize &&
-                                                        <RangeControl
-                                                            label={__('Column Size', 'maxi-blocks')}
-                                                            value={columnSize}
-                                                            onChange={columnSize => {
-                                                                redistributeColumnsSize(columnSize);
-                                                                setAttributes({ columnSize })
-                                                            }}
-                                                            min={0}
-                                                            max={100}
-                                                            step={.1}
-                                                        />
-                                                    }
-                                                </Fragment>
+                                                <RangeControl
+                                                    label={__('Column Size', 'maxi-blocks')}
+                                                    value={columnSize}
+                                                    onChange={columnSize => {
+                                                        redistributeColumnsSize(columnSize);
+                                                        setAttributes({ columnSize })
+                                                    }}
+                                                    min={0}
+                                                    max={100}
+                                                    step={.1}
+                                                />
                                             )
                                         },
                                         {

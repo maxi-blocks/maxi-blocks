@@ -46,11 +46,11 @@ const save = props => {
             className={classes}
             data-gx_initial_block_class={defaultBlockStyle}
         >
-            <div
+            {/* <div
                 className="maxi-column-block-content"
-            >
+            > */}
                 <InnerBlocks.Content />
-            </div>
+            {/* </div> */}
         </div>
     );
 }

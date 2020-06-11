@@ -286,6 +286,7 @@ export default class BackgroundControl extends GXComponent {
                                             value.backgroundOptions[selector].positionOptions.position === 'custom' &&
                                             <Fragment>
                                                 <SizeControl
+                                                    label={__('Y-axis', 'maxi-blocks')}
                                                     unit={value.backgroundOptions[selector].positionOptions.widthUnit}
                                                     onChangeUnit={val => {
                                                         value.backgroundOptions[selector].positionOptions.widthUnit = val;
@@ -298,6 +299,7 @@ export default class BackgroundControl extends GXComponent {
                                                     }}
                                                 />
                                                 <SizeControl
+                                                    label={__('X-axis', 'maxi-blocks')}
                                                     unit={value.backgroundOptions[selector].positionOptions.heightUnit}
                                                     onChangeUnit={val => {
                                                         value.backgroundOptions[selector].positionOptions.heightUnit = val;

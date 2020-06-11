@@ -76,6 +76,7 @@ const SizeControl = props => {
                 onChange={e => onChangeValue(e.target.value)}
                 min={minMaxSettings[unit].min}
                 max={minMaxSettings[unit].max}
+                placeholder='auto'
             />
             <SelectControl
                 className='components-maxi-dimensions-control__units'
@@ -97,7 +98,7 @@ const SizeControl = props => {
                 {reset}
             </Button>
             <RangeControl
-                value={ value }
+                value={Number(value)}
                 onChange={val => onChangeValue(val)}
                 min={minMaxSettings[unit].min}
                 max={minMaxSettings[unit].max}

@@ -73,7 +73,7 @@ const SizeControl = props => {
                 type='number'
                 className='maxi-size-control__value'
                 value={value}
-                onChange={e => onChangeValue(e.target.value)}
+                onChange={e => onChangeValue(Number(e.target.value))}
                 min={minMaxSettings[unit].min}
                 max={minMaxSettings[unit].max}
                 placeholder='auto'
@@ -99,7 +99,7 @@ const SizeControl = props => {
             </Button>
             <RangeControl
                 value={Number(value)}
-                onChange={val => onChangeValue(val)}
+                onChange={val => onChangeValue(Number(val))}
                 min={minMaxSettings[unit].min}
                 max={minMaxSettings[unit].max}
                 allowReset={false}

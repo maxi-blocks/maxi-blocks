@@ -67,7 +67,6 @@ export class ResponsiveStylesResolver {
         let unit = this.object[key].unit ? this.object[key].unit : '';
 
         for (let [target, prop] of Object.entries(object)) {
-
             if (isNil(prop)) {
                 console.error(`Undefined property. Property: ${this.target}`);
                 return;
@@ -82,7 +81,7 @@ export class ResponsiveStylesResolver {
             if (unitChecker.indexOf(target) == 0)
                 unit = '';
             // values with metrics
-            if (prop.length <= 2)
+            if (prop.length <= 2 && !isEmpty(prop))
                 unitChecker = target, unit = prop;
             // values with strings
             if (prop.length > 2)

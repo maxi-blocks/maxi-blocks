@@ -48,45 +48,40 @@ const Link = props => {
     );
 
     return (
-        <Fragment>
-            {
-                !isNil(linkSettings) &&
-                <Dropdown
-                    className='toolbar-item toolbar-item__dropdown'
-                    renderToggle={({ isOpen, onToggle }) => (
-                        <Button
-                            className='toolbar-item__link'
-                            onClick={onToggle}
-                            aria-expanded={isOpen}
-                            action="popup"
-                        >
-                            <Icon
-                                className='toolbar-item__icon'
-                                icon={toolbarLink}
-                            />
-                        </Button>
-                    )}
-                    popoverProps={
-                        {
-                            className: 'toolbar-item__popover',
-                            noArrow: false,
-                            position: 'top center'
-                        }
-                    }
-                    renderContent={
-                        () => (
-                            <__experimentalLinkControl
-                                className="toolbar-item__popover__link-control"
-                                value={JSON.parse(linkSettings)}
-                                onChange={value =>
-                                    updateBlockAttributes(clientId, { linkSettings: JSON.stringify(value) })
-                                }
-                            />
-                        )
-                    }
-                />
+        <Dropdown
+            className='toolbar-item toolbar-item__dropdown'
+            renderToggle={({ isOpen, onToggle }) => (
+                <Button
+                    className='toolbar-item__link'
+                    onClick={onToggle}
+                    aria-expanded={isOpen}
+                    action="popup"
+                >
+                    <Icon
+                        className='toolbar-item__icon'
+                        icon={toolbarLink}
+                    />
+                </Button>
+            )}
+            popoverProps={
+                {
+                    className: 'toolbar-item__popover',
+                    noArrow: false,
+                    position: 'top center'
+                }
             }
-        </Fragment>
+            renderContent={
+                () => (
+                    <__experimentalLinkControl
+                        className="toolbar-item__popover__link-control"
+                        value={JSON.parse(linkSettings)}
+                        onChange={value =>
+                            updateBlockAttributes(clientId, { linkSettings: JSON.stringify(value) })
+                        }
+                    />
+                )
+            }
+        />
     )
 }
 

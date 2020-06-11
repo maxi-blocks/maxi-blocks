@@ -66,45 +66,40 @@ const BackgroundColor = props => {
     }
 
     return (
-        <Fragment>
-            {
-                !isNil(background) &&
-                <Dropdown
-                    className='toolbar-item toolbar-item__dropdown'
-                    renderToggle={({ isOpen, onToggle }) => (
-                        <Button
-                            className='toolbar-item__text-options'
-                            onClick={onToggle}
-                            aria-expanded={isOpen}
-                            action="popup"
-                        >
-                            <div
-                                className='toolbar-item__icon'
-                                style={{
-                                    background: background.colorOptions.color,
-                                    border: '1px solid #fff'
-                                }}
-                            ></div>
-                        </Button>
-                    )}
-                    popoverProps={
-                        {
-                            className: 'toolbar-item__popover',
-                            noArrow: false,
-                            position: 'center'
-                        }
-                    }
-                    renderContent={
-                        () => (
-                            <ColorPicker
-                                color={background.colorOptions.color}
-                                onChangeComplete={val => updateBackground(val)}
-                            />
-                        )
-                    }
-                />
+        <Dropdown
+            className='toolbar-item toolbar-item__dropdown'
+            renderToggle={({ isOpen, onToggle }) => (
+                <Button
+                    className='toolbar-item__text-options'
+                    onClick={onToggle}
+                    aria-expanded={isOpen}
+                    action="popup"
+                >
+                    <div
+                        className='toolbar-item__icon'
+                        style={{
+                            background: background.colorOptions.color,
+                            border: '1px solid #fff'
+                        }}
+                    ></div>
+                </Button>
+            )}
+            popoverProps={
+                {
+                    className: 'toolbar-item__popover',
+                    noArrow: false,
+                    position: 'center'
+                }
             }
-        </Fragment>
+            renderContent={
+                () => (
+                    <ColorPicker
+                        color={background.colorOptions.color}
+                        onChangeComplete={val => updateBackground(val)}
+                    />
+                )
+            }
+        />
     )
 }
 

@@ -187,6 +187,7 @@ export default class DimensionsControl extends GXComponent {
 										<input
 											className="components-maxi-dimensions-control__number"
 											type="number"
+											placeholder='auto'
 											onChange={onChangeValue}
 											aria-label={sprintf(
 												/* translators: %s: values associated with CSS syntax, 'Margin', 'Padding' */
@@ -202,6 +203,7 @@ export default class DimensionsControl extends GXComponent {
 										<input
 											className="components-maxi-dimensions-control__number"
 											type="number"
+											placeholder='auto'
 											onChange={onChangeValue}
 											aria-label={sprintf(
 												/* translators: %s: values associated with CSS syntax, 'Margin', 'Padding' */
@@ -217,6 +219,7 @@ export default class DimensionsControl extends GXComponent {
 										<input
 											className="components-maxi-dimensions-control__number"
 											type="number"
+											placeholder='auto'
 											onChange={onChangeValue}
 											aria-label={sprintf(
 												/* translators: %s: values associated with CSS syntax, 'Margin', 'Padding' */
@@ -232,6 +235,7 @@ export default class DimensionsControl extends GXComponent {
 										<input
 											className="components-maxi-dimensions-control__number"
 											type="number"
+											placeholder='auto'
 											onChange={onChangeValue}
 											aria-label={sprintf(
 												/* translators: %s: values associated with CSS syntax, 'Margin', 'Padding' */

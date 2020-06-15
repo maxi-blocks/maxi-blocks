@@ -26,7 +26,6 @@ import {
 } from '../../components';
 import Inspector from './inspector';
 import TEMPLATES from './templates';
-import { BackEndResponsiveStyles } from '../../extensions/styles';
 import {
     getBackgroundObject,
     getBoxShadowObject
@@ -56,7 +55,7 @@ class edit extends GXBlock {
             [`${this.props.attributes.uniqueID}:hover`]: this.getHoverObject,
             [`${this.props.attributes.uniqueID}>div>div.block-editor-block-list__layout:hover`]: this.getHoverObject,
             [`${this.props.attributes.uniqueID}>div.maxi-column-block`]: this.getColumnObject,
-            [`${this.props.attributes.uniqueID}>div.block-editor-inner-blocks>div.block-editor-block-list__layout>div.maxi-column-block-resizer`]: this.getColumnObject
+            [`${this.props.attributes.uniqueID}>div.block-editor-inner-blocks>div.block-editor-block-list__layout>div.maxi-column-block__resizer`]: this.getColumnObject
         }
         
         return response;
@@ -141,7 +140,6 @@ class edit extends GXBlock {
     render() {
         const {
             attributes: {
-                isFirstOnHierarchy,
                 uniqueID,
                 blockStyle,
                 extraClassName,
@@ -230,8 +228,6 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 
     /**
      * Creates uniqueID for columns on loading templates
-     * 
-     * Not sure if is necessary anymore
      */
     const uniqueIdCreator = () => {
         const newID = uniqueId('maxi-column-maxi-');

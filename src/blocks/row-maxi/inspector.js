@@ -94,11 +94,6 @@ const Inspector = props => {
                                                         max={5}
                                                     />
                                                     <CheckBoxControl
-                                                        label={__('Syncronize Columns', 'maxi-blocks')}
-                                                        checked={syncSize}
-                                                        onChange={syncSize => setAttributes({ syncSize })}
-                                                    />
-                                                    <CheckBoxControl
                                                         label={__('Syncronize Styles', 'maxi-blocks')}
                                                         checked={syncStyles}
                                                         onChange={syncStyles => setAttributes({ syncStyles })}

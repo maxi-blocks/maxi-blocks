@@ -44,7 +44,7 @@ const ImageSize = props => {
     if (blockName != 'maxi-blocks/image-maxi')
         return null;
 
-    const { size, width, imageData } = useSelect(
+    const { size, width, imageData, fullWidth, isFirstOnHierarchy } = useSelect(
         select => {
             const { getBlockAttributes } = select(
                 'core/block-editor',
@@ -57,7 +57,10 @@ const ImageSize = props => {
             return {
                 size: attributes ? attributes.size : null,
                 width: attributes ? attributes.width : null,
-                imageData: mediaID ? getMedia(mediaID) : null
+                imageData: mediaID ? getMedia(mediaID) : null,
+                fullWidth: attributes ? attributes.fullWidth : null,
+                isFirstOnHierarchy: attributes ? attributes.isFirstOnHierarchy : null,
+
             };
         },
         [clientId]
@@ -164,6 +167,21 @@ const ImageSize = props => {
                                 { size }
                             )}
                         />
+                        {
+                            isFirstOnHierarchy &&
+                            <SelectControl
+                                label={__('Fullwidth', 'maxi-blocks')}
+                                value={fullWidth}
+                                options={[
+                                    { label: __('No', 'maxi-blocks'), value: 'normal' },
+                                    { label: __('Yes', 'maxi-blocks'), value: 'full' }
+                                ]}
+                                onChange={fullWidth => updateBlockAttributes(
+                                    clientId,
+                                    { fullWidth }
+                                )}
+                            />
+                        }
                         <RangeControl
                             label={__('Width', 'maxi-blocks')}
                             value={width}

@@ -11,12 +11,13 @@ const {
     dispatch,
     select,
 } = wp.data;
+const apiFetch = wp.apiFetch;
 
 /**
  * Internal dependencies
  */
 import GXComponent from '../maxi-component';
-import { 
+import {
     ResponsiveStylesResolver,
     BackEndResponsiveStyles
 } from '../styles';
@@ -27,17 +28,21 @@ import {
 import {
     isEmpty,
     uniqueId,
+    isEqual,
+    isNil
 } from 'lodash';
 
 /**
  * Class
  */
 class GXBlock extends GXComponent {
+    state = {
+        styles: {}
+    }
 
     constructor() {
         super(...arguments);
-        this.test = wp.data.select('gx').receiveGXStyles(); // API test
-        this.uniqueIDChecker(this.props.attributes.uniqueID)
+        this.uniqueIDChecker(this.props.attributes.uniqueID);
     }
 
     componentDidMount() {
@@ -67,52 +72,33 @@ class GXBlock extends GXComponent {
         return meta ? JSON.parse(meta) : {};
     }
 
-    /**
-     * Retrieve the target for responsive CSS 
-     * 
-     * @todo check if it worth with this new system
-     */
-    get getTarget() {
-        return this.props.attributes.uniqueID;
-    }
-
     get getObject() {
         return null;
     }
 
-    /**
-    * Creates a new object that 
-    *
-    * @param {string} target	Block attribute: uniqueID
-    * @param {obj} meta		Old and saved metadate
-    * @param {obj} value	New values to add
-    */
-    metaValue(type = null) {
-        this.type = type || '';
-
-        const styleTarget = this.getTarget;
+    metaValue() {
         const obj = this.getObject;
 
-        const responsiveStyle = new ResponsiveStylesResolver(styleTarget, obj);
-        const response = JSON.stringify(responsiveStyle.newMeta);
+        if (isEqual(obj, this.state.styles))
+            return null;
 
-        return response;
+        this.setState({
+            styles: obj
+        })
+
+        return new ResponsiveStylesResolver(obj);
     }
 
     /** 
     * Refresh the styles on Editor
     */
     displayStyles() {
-        this.saveMeta();
-        new BackEndResponsiveStyles(this.getMeta);
-    }
+        const newMeta = this.metaValue();
 
-    saveMeta(type) {
-        dispatch('core/editor').editPost({
-            meta: {
-                _gutenberg_extra_responsive_styles: this.metaValue(type),
-            },
-        });
+        if (isNil(newMeta) || isEqual(this.getMeta, newMeta))
+            return;
+
+        this.saveMeta(newMeta);
     }
 
     removeStyle(target = this.props.attributes.uniqueID) {
@@ -122,12 +108,29 @@ class GXBlock extends GXComponent {
                 delete cleanMeta[key]
         })
 
-        dispatch('core/editor').editPost({
-            meta: {
-                _gutenberg_extra_responsive_styles: JSON.stringify(cleanMeta),
+        this.saveMeta(cleanMeta)
+    }
+
+    saveMeta(newMeta) {
+        const post = select('core/editor').getCurrentPost();
+        const id = post.id;
+        const type = post.type;
+
+        dispatch('core').editEntityRecord(
+            'postType',
+            type,
+            id,
+            {
+                meta: {
+                    _gutenberg_extra_responsive_styles: JSON.stringify(newMeta)
+                }
             },
-        })
-            .then(() => new BackEndResponsiveStyles(this.getMeta));
+            {
+                undoIgnore: true
+            }
+        )
+        .then(new BackEndResponsiveStyles(newMeta))
+        .catch(err => console.log(err))
     }
 }
 

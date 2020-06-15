@@ -68,8 +68,9 @@ const MaxiToolbar = () => {
             )
             const clientId = getSelectedBlockClientId();
             const blockName = clientId ? getBlockName(clientId) : '';
-            const rawTypography = clientId ? getBlockAttributes(clientId).typography : {};
-            const uniqueID = clientId ? getBlockAttributes(clientId).uniqueID : '';
+            const attributes = getBlockAttributes(clientId);
+            const rawTypography = attributes ? attributes.typography : {};
+            const uniqueID = attributes ? attributes.uniqueID : '';
             return {
                 clientId,
                 blockName,

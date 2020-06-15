@@ -29,10 +29,6 @@ import {
     getBackgroundObject,
     getBoxShadowObject
 } from '../../extensions/styles/utils';
-import {
-    ResponsiveStylesResolver,
-    BackEndResponsiveStyles
-} from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -52,6 +48,7 @@ import {
 class edit extends GXBlock {
     state = {
         originalWidth: 0,
+        styles: {}
     }
 
     componentDidUpdate() {
@@ -88,18 +85,13 @@ class edit extends GXBlock {
             node.style.transform = `translateX(${value}px)`;
     }
 
-    get getTarget() {
-        if (this.type === 'normal')
-            return `${this.props.attributes.uniqueID}`;
-        if (this.type === 'hover')
-            return `${this.props.attributes.uniqueID}:hover`;
-    }
-
     get getObject() {
-        if (this.type === 'normal')
-            return this.getNormalObject;
-        if (this.type === 'hover')
-            return this.getHoverObject
+        let response = {
+            [this.props.attributes.uniqueID]: this.getNormalObject,
+            [`${this.props.attributes.uniqueID}:hover`]: this.getHoverObject
+        }
+
+        return response;
     }
 
     /**
@@ -173,16 +165,6 @@ class edit extends GXBlock {
             response.columnHover.general['opacity'] = opacityHover;
 
         return response;
-    }
-
-    /**
-    * Refresh the styles on Editor
-    */
-    displayStyles() {
-        this.saveMeta('normal');
-        this.saveMeta('hover');
-
-        new BackEndResponsiveStyles(this.getMeta);
     }
 
     render() {
@@ -366,8 +348,8 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
         else
             obj = object;
 
-        const responsiveStyle = new ResponsiveStylesResolver(target, obj);
-        const response = JSON.stringify(responsiveStyle.getNewValue);
+        // const responsiveStyle = new ResponsiveStylesResolver(target, obj);
+        // const response = JSON.stringify(responsiveStyle.getNewValue);
 
         // dispatch('core/editor').editPost({
         //     meta: {

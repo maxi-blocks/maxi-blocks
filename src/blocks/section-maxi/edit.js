@@ -18,7 +18,6 @@ import {
     __experimentalToolbar,
     __experimentalBreadcrumbs
 } from '../../components';
-import { BackEndResponsiveStyles } from '../../extensions/styles';
 import Inspector from './inspector';
 import {
     getBackgroundObject,
@@ -38,21 +37,13 @@ import {
  * Edit
  */
 class edit extends GXBlock {
-    /**
-     * Retrieve the target for responsive CSS
-     */
-    get getTarget() {
-        if (this.type === 'normal')
-            return `${this.props.attributes.uniqueID}`;
-        if (this.type === 'hover')
-            return `${this.props.attributes.uniqueID}:hover`;
-    }
-
     get getObject() {
-        if (this.type === 'normal')
-            return this.getNormalObject;
-        if (this.type === 'hover')
-            return this.getHoverObject;
+        let response = {
+            [this.props.attributes.uniqueID]: this.getNormalObject,
+            [`${this.props.attributes.uniqueID}:hover`]: this.getHoverObject
+        }
+
+        return response;
     }
 
     get getNormalObject() {
@@ -111,16 +102,6 @@ class edit extends GXBlock {
             response.sectionHover.general['opacity'] = opacityHover;
 
         return response;
-    }
-
-    /** 
-    * Refresh the styles on Editor
-    */
-    displayStyles() {
-        this.saveMeta('normal');
-        this.saveMeta('hover');
-
-        new BackEndResponsiveStyles(this.getMeta);
     }
 
     render() {

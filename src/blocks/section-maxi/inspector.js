@@ -4,7 +4,7 @@
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
 const { InspectorControls } = wp.blockEditor;
-const { 
+const {
     RangeControl,
     SelectControl
 } = wp.components;
@@ -79,15 +79,18 @@ const Inspector = props => {
                                             label: __('Sizing', 'maxi-blocks'),
                                             content: (
                                                 <Fragment>
-                                                    <SelectControl
-                                                        label={__('Fullwidth', 'maxi-blocks')}
-                                                        value={fullWidth}
-                                                        options={[
-                                                            { label: __('No', 'maxi-blocks'), value: 'normal' },
-                                                            { label: __('Yes', 'maxi-blocks'), value: 'full' }
-                                                        ]}
-                                                        onChange={fullWidth => setAttributes({ fullWidth })}
-                                                    />
+                                                    {
+                                                        isFirstOnHierarchy &&
+                                                        <SelectControl
+                                                            label={__('Fullwidth', 'maxi-blocks')}
+                                                            value={fullWidth}
+                                                            options={[
+                                                                { label: __('No', 'maxi-blocks'), value: 'normal' },
+                                                                { label: __('Yes', 'maxi-blocks'), value: 'full' }
+                                                            ]}
+                                                            onChange={fullWidth => setAttributes({ fullWidth })}
+                                                        />
+                                                    }
                                                     <FullSizeControl
                                                         sizeSettings={size}
                                                         onChange={size => setAttributes({ size })}

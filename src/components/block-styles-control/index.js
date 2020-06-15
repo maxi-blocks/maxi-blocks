@@ -6,6 +6,11 @@ const { SelectControl } = wp.components;
 const { Fragment } = wp.element;
 
 /**
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
+
+/**
  * Component
  */
 const BlockStylesControl = (props) => {
@@ -16,6 +21,9 @@ const BlockStylesControl = (props) => {
         onChangeDefaultBlockStyle,
         isFirstOnHierarchy,
     } = props;
+
+    // const isFirstOnHierarchy = isEmpty(wp.data.select('core/block-editor').getBlock(wp.data.select('core/block-editor').getSelectedBlockClientId()).innerBlocks)
+    // console.log(isFirstOnHierarchy)
 
     const getSelectorOptions = () => {
         if (isFirstOnHierarchy)

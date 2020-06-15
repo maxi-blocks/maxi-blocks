@@ -191,15 +191,18 @@ const Inspector = props => {
                                                             onChange={cropOptions => setAttributes({ cropOptions: JSON.stringify(cropOptions) })}
                                                         />
                                                     }
-                                                    <SelectControl
-                                                        label={__('Fullwidth', 'maxi-blocks')}
-                                                        value={fullWidth}
-                                                        options={[
-                                                            { label: __('No', 'maxi-blocks'), value: 'normal' },
-                                                            { label: __('Yes', 'maxi-blocks'), value: 'full' }
-                                                        ]}
-                                                        onChange={fullWidth => setAttributes({ fullWidth })}
-                                                    />
+                                                    {
+                                                        isFirstOnHierarchy &&
+                                                        <SelectControl
+                                                            label={__('Fullwidth', 'maxi-blocks')}
+                                                            value={fullWidth}
+                                                            options={[
+                                                                { label: __('No', 'maxi-blocks'), value: 'normal' },
+                                                                { label: __('Yes', 'maxi-blocks'), value: 'full' }
+                                                            ]}
+                                                            onChange={fullWidth => setAttributes({ fullWidth })}
+                                                        />
+                                                    }
                                                     <RangeControl
                                                         label={__('Width', 'maxi-blocks')}
                                                         value={width}

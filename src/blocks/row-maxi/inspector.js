@@ -219,15 +219,18 @@ const Inspector = props => {
                                             label: __('Width & Height', 'maxi-blocks'),
                                             content: (
                                                 <Fragment>
-                                                    <SelectControl
-                                                        label={__('Fullwidth', 'maxi-blocks')}
-                                                        value={fullWidth}
-                                                        options={[
-                                                            { label: __('No', 'maxi-blocks'), value: 'normal' },
-                                                            { label: __('Yes', 'maxi-blocks'), value: 'full' }
-                                                        ]}
-                                                        onChange={fullWidth => setAttributes({ fullWidth })}
-                                                    />
+                                                    {
+                                                        isFirstOnHierarchy &&
+                                                        <SelectControl
+                                                            label={__('Fullwidth', 'maxi-blocks')}
+                                                            value={fullWidth}
+                                                            options={[
+                                                                { label: __('No', 'maxi-blocks'), value: 'normal' },
+                                                                { label: __('Yes', 'maxi-blocks'), value: 'full' }
+                                                            ]}
+                                                            onChange={fullWidth => setAttributes({ fullWidth })}
+                                                        />
+                                                    }
                                                     <FullSizeControl
                                                         sizeSettings={size}
                                                         onChange={size => setAttributes({ size })}

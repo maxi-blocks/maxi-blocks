@@ -21,7 +21,7 @@ import { isNil } from 'lodash';
 /**
  * Internal dependencies
  */
-import FullSizeControl from '../../../full-size-control';
+import SizeControl from '../../../size-control';
 
 /**
  * Icons
@@ -58,6 +58,57 @@ const Size = props => {
     const { updateBlockAttributes } = useDispatch(
         'core/block-editor'
     );
+
+    const { openGeneralSidebar } = useDispatch(
+        'core/edit-post'
+    );
+
+    let value = typeof size != 'object' ?
+        JSON.parse(size) :
+        size;
+
+    const updateSize = () => {
+        updateBlockAttributes(
+            clientId,
+            { size: JSON.stringify(value) }
+        )
+    }
+
+    const onEditImageClick = item => {
+        const sidebar = document.querySelector('.maxi-sidebar');
+        const wrapperElement = document.querySelector(`.maxi-accordion-control__item[data-name="${item}"]`);
+        const button = wrapperElement.querySelector('.maxi-accordion-control__item__button');
+        const content = wrapperElement.querySelector('.maxi-accordion-control__item__panel');
+
+        Array.from(document.getElementsByClassName('maxi-accordion-control__item__button')).map(el => {
+            if (el.getAttribute('aria-expanded'))
+                el.setAttribute('aria-expanded', false)
+        })
+        Array.from(document.getElementsByClassName('maxi-accordion-control__item__panel')).map(el => {
+            if (!el.getAttribute('hidden'))
+                el.setAttribute('hidden', '')
+        })
+
+        button.setAttribute('aria-expanded', true)
+        content.removeAttribute('hidden');
+
+        sidebar.scroll({
+            top: wrapperElement.getBoundingClientRect().top,
+            behavior: 'smooth'
+        })
+
+        if (item === 'sizing')
+            updateBlockAttributes(
+                clientId,
+                { size: 'custom' }
+            )
+
+        if (item === 'caption')
+            updateBlockAttributes(
+                clientId,
+                { captionType: 'custom' }
+            )
+    }
 
     return (
         <Dropdown
@@ -100,13 +151,45 @@ const Size = props => {
                                 )}
                             />
                         }
-                        <FullSizeControl
-                            sizeSettings={size}
-                            onChange={size => updateBlockAttributes(
-                                clientId,
-                                { size }
-                            )}
+                        <SizeControl
+                            label={__('Width', 'maxi-blocks')}
+                            unit={value.general.widthUnit}
+                            onChangeUnit={val => {
+                                value.general.widthUnit = val;
+                                updateSize();
+                            }}
+                            value={value.general.width}
+                            onChangeValue={val => {
+                                value.general.width = val;
+                                updateSize();
+                            }}
                         />
+                        <SizeControl
+                            label={__('Max Width', 'maxi-blocks')}
+                            unit={value.general['max-widthUnit']}
+                            onChangeUnit={val => {
+                                value.general['max-widthUnit'] = val;
+                                updateSize();
+                            }}
+                            value={value.general['max-width']}
+                            onChangeValue={val => {
+                                value.general['max-width'] = val;
+                                updateSize();
+                            }}
+                        />
+                        <div
+                            className='toolbar-item__popover__dropdown-options'
+                        >
+                            <Button
+                                className='toolbar-item__popover__dropdown-options__button'
+                                onClick={() =>
+                                    openGeneralSidebar('edit-post/block')
+                                        .then(() => onEditImageClick('width height'))
+                                }
+                            >
+                                Advanced Settings
+                            </Button>
+                        </div>
                     </Fragment>
                 )
             }

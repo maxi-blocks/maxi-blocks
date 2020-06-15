@@ -12,6 +12,12 @@
                     stroke: #fff;
                 }
             }
+
+            &[aria-pressed="true"] {
+                svg path {
+                    stroke-width: 4;
+                }
+            }
         }
     }
 }

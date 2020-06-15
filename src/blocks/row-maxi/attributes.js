@@ -8,7 +8,7 @@ import * as attributesData from '../../extensions/styles/defaults';
  */
 const attributes = {
     rowPattern: {
-        type: 'string',
+        type: 'number',
     },
     blockStyle: {
         type: 'string',

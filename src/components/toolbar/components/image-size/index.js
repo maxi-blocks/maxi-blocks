@@ -28,9 +28,8 @@ import {
 } from 'lodash';
 
 /**
- * Styles and icons
+ * Icons
  */
-import './editor.scss';
 import { toolbarSettings } from '../../../../icons';
 
 /**
@@ -109,12 +108,13 @@ const ImageSize = props => {
                 el.setAttribute('hidden', '')
         })
 
+        button.setAttribute('aria-expanded', true)
+        content.removeAttribute('hidden');
+
         sidebar.scroll({
             top: wrapperElement.getBoundingClientRect().top,
             behavior: 'smooth'
         })
-        button.setAttribute('aria-expanded', true)
-        content.removeAttribute('hidden');
 
         if (item === 'sizing')
             updateBlockAttributes(
@@ -192,7 +192,7 @@ const ImageSize = props => {
                                 }
                             >
                                 Edit Image
-                                </Button>
+                            </Button>
                             <Button
                                 className='toolbar-item__popover__dropdown-options__button'
                                 onClick={() =>
@@ -201,7 +201,7 @@ const ImageSize = props => {
                                 }
                             >
                                 Add Caption
-                                </Button>
+                            </Button>
                         </div>
                     </Fragment>
                 )

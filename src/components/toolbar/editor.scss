@@ -174,6 +174,10 @@
     input[type="number"] {
         color: #fff;
         border-color: #80828a;
+
+        &::placeholder {
+            color: #fff;
+        }
     }
 
     .maxi-defaultstyles-control__button {
@@ -209,7 +213,7 @@
             }
             &[aria-pressed="true"] {
                 border-color: #fff;
-                
+
                 svg {
                     fill: #fff;
                 }
@@ -228,7 +232,7 @@
         &__units-reset {
             background-color: none;
             border-color: #80828a !important;
-    
+
             &:hover {
                 background-color: transparent !important;
                 border-color: #80828a !important;
@@ -242,6 +246,29 @@
             background-color: transparent;
             border-color: #80828a !important;
             color: #fff;
+        }
+    }
+
+    &__dropdown-options {
+        display: flex;
+
+        &__button {
+            display: block;
+            background: #fff;
+            width: 100%;
+            margin: 0 4px;
+
+            &:first-of-type {
+                margin-left: 0;
+            }
+
+            &:last-of-type {
+                margin-right: 0;
+            }
+
+            &:hover {
+                color: inherit;
+            }
         }
     }
 }

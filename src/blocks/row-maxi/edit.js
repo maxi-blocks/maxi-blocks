@@ -189,7 +189,7 @@ class edit extends GXBlock {
                                                 <Button
                                                     className="maxi-row-template-button"
                                                     onClick={() => {
-                                                        setAttributes({ rowPattern: template.i });
+                                                        setAttributes({ rowPattern: i });
                                                         loadTemplate(i);
                                                     }}
                                                 >

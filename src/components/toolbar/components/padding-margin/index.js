@@ -6,16 +6,12 @@ const {
     Icon,
     Dropdown,
     Button,
+    RangeControl
 } = wp.components;
 const {
     useSelect,
     useDispatch,
 } = wp.data;
-
-/**
- * External dependencies
- */
-import { isNil } from 'lodash';
 
 /**
  * Internal dependencies
@@ -33,7 +29,7 @@ import { toolbarPadding } from '../../../../icons';
 const PaddingMargin = props => {
     const { clientId } = props;
 
-    const { padding, margin } = useSelect(
+    const { padding, margin, columnGap } = useSelect(
         (select) => {
             const { getBlockAttributes } = select(
                 'core/block-editor',
@@ -42,6 +38,7 @@ const PaddingMargin = props => {
             return {
                 padding: attributes ? attributes.padding : null,
                 margin: attributes ? attributes.margin : null,
+                columnGap: attributes ? attributes.columnGap : null
             };
         },
         [clientId]
@@ -95,6 +92,22 @@ const PaddingMargin = props => {
                                 }
                             )}
                         />
+                        {
+                            columnGap &&
+                            <RangeControl
+                                label={__('Column gap', 'maxi-blocks')}
+                                value={columnGap}
+                                onChange={columnGap => updateBlockAttributes(
+                                    clientId,
+                                    {
+                                        columnGap
+                                    }
+                                )}
+                                step={.1}
+                                min={0}
+                                max={5}
+                            />
+                        }
                     </Fragment>
                 )
             }

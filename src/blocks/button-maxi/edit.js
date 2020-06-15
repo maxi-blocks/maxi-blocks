@@ -34,33 +34,14 @@ import {
  * Content
  */
 class edit extends GXBlock {
-
-    componentDidUpdate() {
-        this.displayStyles();
-    }
-
-    /**
-     * Retrieve the target for responsive CSS
-     */
-    get getTarget() {
-        if (this.type === 'wrapper')
-            return `${this.props.attributes.uniqueID}`;
-        if (this.type === 'normal')
-            return `${this.props.attributes.uniqueID} .maxi-button-extra__button`;
-        if (this.type === 'hover')
-            return `${this.props.attributes.uniqueID} .maxi-button-extra__button:hover`;
-    }
-
-    /**
-     * Get object for styling
-     */
     get getObject() {
-        if (this.type === 'wrapper')
-            return this.getWrapperObject;
-        if (this.type === 'normal')
-            return this.getNormalObject;
-        if (this.type === 'hover')
-            return this.getHoverObject;
+        let response = {
+            [this.props.attributes.uniqueID]: this.getWrapperObject,
+            [`${this.props.attributes.uniqueID} .maxi-button-extra__button`]: this.getNormalObject,
+            [`${this.props.attributes.uniqueID} .maxi-button-extra__button:hover`]: this.getHoverObject
+        }
+
+        return response;
     }
 
     get getWrapperObject() {
@@ -185,17 +166,6 @@ class edit extends GXBlock {
             response.buttonHover.general['opacity'] = opacityHover;
 
         return response;
-    }
-
-    /**
-    * Refresh the styles on Editor
-    */
-    displayStyles() {
-        this.saveMeta('wrapper');
-        this.saveMeta('normal');
-        this.saveMeta('hover');
-
-        new BackEndResponsiveStyles(this.getMeta);
     }
 
     render() {

@@ -49,20 +49,17 @@ import {
 const ALLOWED_BLOCKS = ['maxi-blocks/column-maxi'];
 
 class edit extends GXBlock {
-    /**
-     * Retrieve the target for responsive CSS
-     */
-    get getTarget() {
-        return this.target;
-    }
-
     get getObject() {
-        if (this.type === 'normal')
-            return this.getNormalObject;
-        if (this.type === 'hover')
-            return this.getHoverObject
-        if (this.type === 'columns')
-            return this.getColumnObject;
+        let response = {
+            [this.props.attributes.uniqueID]: this.getNormalObject,
+            [`${this.props.attributes.uniqueID}>div>div.block-editor-block-list__layout`]: this.getNormalObject,
+            [`${this.props.attributes.uniqueID}:hover`]: this.getHoverObject,
+            [`${this.props.attributes.uniqueID}>div>div.block-editor-block-list__layout:hover`]: this.getHoverObject,
+            [`${this.props.attributes.uniqueID}>div.maxi-column-block`]: this.getColumnObject,
+            [`${this.props.attributes.uniqueID}>div.block-editor-inner-blocks>div.block-editor-block-list__layout>div.maxi-column-block-resizer`]: this.getColumnObject
+        }
+        
+        return response;
     }
 
     get getNormalObject() {
@@ -139,34 +136,6 @@ class edit extends GXBlock {
                 }
             }
         };
-    }
-
-    /**
-     * Set styles for row and columns
-     */
-    displayStyles() {
-        this.target = `${this.props.attributes.uniqueID}`;
-        this.saveMeta('normal');
-
-        // This should be improved: row have same styling on front and backend, but on different targets
-        this.target = `${this.props.attributes.uniqueID}>div>div.block-editor-block-list__layout`;
-        this.saveMeta('normal');
-
-        this.target = `${this.props.attributes.uniqueID}:hover`;
-        this.saveMeta('hover');
-
-        // This should be improved: row have same styling on front and backend, but on different targets
-        this.target = `${this.props.attributes.uniqueID}>div>div.block-editor-block-list__layout:hover`;
-        this.saveMeta('hover');
-
-        this.target = `${this.props.attributes.uniqueID}>div.maxi-column-block`;
-        this.saveMeta('columns');
-
-        // This should be improved: row have same styling on front and backend, but on different targets
-        this.target = `${this.props.attributes.uniqueID}>div.block-editor-inner-blocks>div.block-editor-block-list__layout>div.maxi-column-block-resizer`;
-        this.saveMeta('columns');
-
-        new BackEndResponsiveStyles(this.getMeta);
     }
 
     render() {

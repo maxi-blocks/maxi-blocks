@@ -19,11 +19,13 @@ import {
  * @todo    Comment and extend documentation
  */
 export class ResponsiveStylesResolver {
-    constructor(target, object) {
-        this.target = target;
+    constructor(object) {
         this.object = object;
         this.meta = this.oldMeta;
-        this.newObject = this.objectManipulator;
+
+        this.init();
+
+        return this.meta;
     }
 
     get oldMeta() {
@@ -31,40 +33,49 @@ export class ResponsiveStylesResolver {
         return meta ? JSON.parse(meta) : {};
     }
 
-    get objectManipulator() {
+    init() {
+        for (let [target, props] of Object.entries(this.object)) {
+            const newEntry = {
+                [target]: this.objectManipulator(props)
+            };
+            this.meta = Object.assign(this.meta, newEntry);
+        }
+    }
+
+    objectManipulator(props) {
         let response = {};
 
-        for (let key of Object.keys(this.object)) {
+        for (let key of Object.keys(props)) {
             let newObject = {};
 
-            newObject = this.propsObjectManipulator(newObject, key, 'general');
-            newObject = this.propsObjectManipulator(newObject, key, 'desktop');
-            newObject = this.propsObjectManipulator(newObject, key, 'tablet');
-            newObject = this.propsObjectManipulator(newObject, key, 'mobile');
+            newObject = this.propsObjectManipulator(props, newObject, key, 'general');
+            newObject = this.propsObjectManipulator(props, newObject, key, 'desktop');
+            newObject = this.propsObjectManipulator(props, newObject, key, 'tablet');
+            newObject = this.propsObjectManipulator(props, newObject, key, 'mobile');
             // On Typography component object
-            if (this.object[key].font) {
-                newObject.font = this.object[key].font;
-                newObject.options = this.object[key].options;
+            if (props[key].font) {
+                newObject.font = props[key].font;
+                newObject.options = props[key].options;
             }
 
-            Object.assign(response, { [this.object[key].label]: newObject })
+            Object.assign(response, { [props[key].label]: newObject })
 
         }
 
         return response;
     }
 
-    propsObjectManipulator(newObject, key, device) {
-        if (typeof this.object[key][device] === 'undefined') {
+    propsObjectManipulator(props, newObject, key, device) {
+        if (typeof props[key][device] === 'undefined') {
             return newObject;
         }
-        const object = this.object[key][device];
+        const object = props[key][device];
         if (device === 'general')
             device = 'desktop'
         if (typeof newObject[device] === 'undefined')
             newObject[device] = {};
         let unitChecker = '';
-        let unit = this.object[key].unit ? this.object[key].unit : '';
+        let unit = props[key].unit ? props[key].unit : '';
 
         for (let [target, prop] of Object.entries(object)) {
 
@@ -91,21 +102,6 @@ export class ResponsiveStylesResolver {
 
         return newObject;
     }
-
-    get newMeta() {
-        if (Object.entries(this.meta).length > 0 && this.meta.hasOwnProperty(this.target))
-            this.meta[this.target] = this.newObject;
-        else {
-            const newEntry = {
-                [this.target]: this.newObject
-            };
-
-            this.meta = Object.assign(this.meta, newEntry);
-        }
-
-        return this.meta;
-    }
-
 }
 
 /**

@@ -8,7 +8,6 @@ const { __experimentalBlock } = wp.blockEditor;
  * Internal dependencies
  */
 import Inspector from './inspector';
-import { BackEndResponsiveStyles } from '../../extensions/styles';
 import {
     getBackgroundObject,
     getBoxShadowObject
@@ -31,34 +30,16 @@ import {
  * Content
  */
 class edit extends GXBlock {
-
-    componentDidUpdate() {
-        this.displayStyles();
-    }
-
-    /**
-     * Retrieve the target for responsive CSS
-     */
-    get getTarget() {
-        if (this.type === 'normal')
-            return `${this.props.attributes.uniqueID}`;
-        if (this.type === 'hover')
-            return `${this.props.attributes.uniqueID}:hover`;
-        if (this.type === 'divider1')
-            return `${this.props.attributes.uniqueID} > hr.maxi-divider-block__divider-1`;
-        if (this.type === 'divider2')
-            return `${this.props.attributes.uniqueID} > hr.maxi-divider-block__divider-2`;
-    }
-
     get getObject() {
-        if (this.type === 'normal')
-            return this.getNormalObject;
-        if (this.type === 'hover')
-            return this.getHoverObject;
-        if (this.type === 'divider1')
-            return this.getFirstDividerObject;
-        if (this.type === 'divider2')
-            return this.getSecondDividerObject;
+        let response = {
+            [this.props.attributes.uniqueID]: this.getNormalObject,
+            [`${this.props.attributes.uniqueID}:hover`]: this.getHoverObject,
+            [`${this.props.attributes.uniqueID} > hr.maxi-divider-block__divider-1`]: this.getFirstDividerObject,
+            [`${this.props.attributes.uniqueID} > hr.maxi-divider-block__divider-2`]: this.getSecondDividerObject
+
+        }
+
+        return response;
     }
 
     get getNormalObject() {
@@ -147,18 +128,6 @@ class edit extends GXBlock {
         };
 
         return response;
-    }
-
-    /**
-    * Refresh the styles on Editor
-    */
-    displayStyles() {
-        this.saveMeta('normal');
-        this.saveMeta('hover');
-        this.saveMeta('divider1');
-        this.saveMeta('divider2');
-
-        new BackEndResponsiveStyles(this.getMeta);
     }
 
     render() {

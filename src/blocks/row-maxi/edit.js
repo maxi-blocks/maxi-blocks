@@ -141,6 +141,7 @@ class edit extends GXBlock {
     render() {
         const {
             attributes: {
+                isFirstOnHierarchy,
                 uniqueID,
                 blockStyle,
                 extraClassName,

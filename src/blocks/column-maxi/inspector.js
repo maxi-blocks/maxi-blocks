@@ -4,7 +4,10 @@
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
 const { InspectorControls } = wp.blockEditor;
-const { RangeControl } = wp.components;
+const { 
+    RangeControl,
+    Button
+} = wp.components;
 
 /**
  * Internal dependencies
@@ -48,7 +51,7 @@ const Inspector = props => {
             extraClassName,
             extraStyles
         },
-        syncSize,
+        cloneStyles,
         redistributeColumnsSize,
         setAttributes
     } = props;
@@ -77,17 +80,24 @@ const Inspector = props => {
                                         {
                                             label: __('Column Settings', 'maxi-blocks'),
                                             content: (
-                                                <RangeControl
-                                                    label={__('Column Size', 'maxi-blocks')}
-                                                    value={columnSize}
-                                                    onChange={columnSize => {
-                                                        redistributeColumnsSize(columnSize);
-                                                        setAttributes({ columnSize })
-                                                    }}
-                                                    min={0}
-                                                    max={100}
-                                                    step={.1}
-                                                />
+                                                <Fragment>
+                                                    <RangeControl
+                                                        label={__('Column Size', 'maxi-blocks')}
+                                                        value={columnSize}
+                                                        onChange={columnSize => {
+                                                            redistributeColumnsSize(columnSize);
+                                                            setAttributes({ columnSize })
+                                                        }}
+                                                        min={0}
+                                                        max={100}
+                                                        step={.1}
+                                                    />
+                                                    <Button
+                                                        onClick={() => cloneStyles()}
+                                                    >
+                                                        Clone styles
+                                                    </Button>
+                                                </Fragment>
                                             )
                                         },
                                         {

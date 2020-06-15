@@ -5,7 +5,7 @@ const { compose } = wp.compose;
 const { Fragment } = wp.element;
 const {
     ResizableBox,
-    Spinner
+    Spinner,
 } = wp.components;
 const {
     withSelect,
@@ -54,8 +54,6 @@ class edit extends GXBlock {
     componentDidUpdate() {
         this.spaceChecker();
         this.setResizeHandleStyles();
-        this.props.synchronizeColumns(this.props.syncSize);
-        this.props.synchronizeStyles(this.props.attributes)
         this.displayStyles();
     }
 
@@ -80,7 +78,7 @@ class edit extends GXBlock {
         } = this.props;
 
         const value = (columnGap * rowBlockWidth) / 100;
-        const node = document.querySelector(`.maxi-column-block-resizer-${clientId} .components-resizable-box__handle`);
+        const node = document.querySelector(`.maxi-column-block__resizer__${clientId} .components-resizable-box__handle`);
         if (!isNil(node))
             node.style.transform = `translateX(${value}px)`;
     }
@@ -184,7 +182,6 @@ class edit extends GXBlock {
             getResizePerCent,
             redistributeColumnsSize,
             columnGap,
-            syncSize,
             setAttributes
         } = this.props;
 
@@ -221,8 +218,8 @@ class edit extends GXBlock {
                     rowBlockWidth != 0 &&
                     <ResizableBox
                         className={classnames(
-                            "maxi-column-block-resizer",
-                            `maxi-column-block-resizer-${clientId}`,
+                            "maxi-column-block__resizer",
+                            `maxi-column-block__resizer__${clientId}`,
                             columnPosition
                         )}
                         size={{
@@ -251,27 +248,22 @@ class edit extends GXBlock {
                             });
                             redistributeColumnsSize(getResizePerCent(delta, originalWidth))
                         }}
-                        showHandle={!syncSize}
                     >
                         <__experimentalBlock.div
                             className={classes}
                             data-gx_initial_block_class={defaultBlockStyle}
                         >
-                            {/* <div
-                                className="maxi-column-block-content"
-                            > */}
-                                <InnerBlocks
-                                    // allowedBlocks={ALLOWED_BLOCKS}
-                                    templateLock={false}
-                                    renderAppender={
-                                        !hasInnerBlock || isSelect() ?
-                                            () => (
-                                                <InnerBlocks.ButtonBlockAppender />
-                                            ) :
-                                            false
-                                    }
-                                />
-                            {/* </div> */}
+                            <InnerBlocks
+                                // allowedBlocks={ALLOWED_BLOCKS}
+                                templateLock={false}
+                                renderAppender={
+                                    !hasInnerBlock || isSelect() ?
+                                        () => (
+                                            <InnerBlocks.ButtonBlockAppender />
+                                        ) :
+                                        false
+                                }
+                            />
                         </__experimentalBlock.div>
                     </ResizableBox>
                 }
@@ -286,7 +278,6 @@ const editSelect = withSelect((select, ownProps) => {
     } = ownProps;
 
     const rowBlockId = select('core/block-editor').getBlockRootClientId(clientId); // getBlockHierarchyRootClientId
-    const syncSize = select('core/block-editor').getBlockAttributes(rowBlockId).syncSize;
     const syncStyles = select('core/block-editor').getBlockAttributes(rowBlockId).syncStyles;
     const columnGap = select('core/block-editor').getBlockAttributes(rowBlockId).columnGap;
     const rowBlockNode = document.querySelector(`div[data-block="${rowBlockId}"]`);
@@ -307,7 +298,6 @@ const editSelect = withSelect((select, ownProps) => {
     }
 
     return {
-        syncSize,
         syncStyles,
         rowBlockId,
         rowBlockWidth,
@@ -320,11 +310,6 @@ const editSelect = withSelect((select, ownProps) => {
 
 const editDispatch = withDispatch((dispatch, ownProps) => {
     const {
-        attributes: {
-            columnSize
-        },
-        syncSize,
-        syncStyles,
         columnGap,
         rowBlockId,
         rowBlockWidth,
@@ -336,74 +321,16 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
     nestedColumns = pull(nestedColumns, clientId);
     const nestedColumnsNum = originalNestedColumns.length;
 
-    const basicStyling = (id, object) => { // With new GXBlock style delivery system may is no requried anymore
-        const blockUniqueID = select('core/block-editor').getBlockAttributes(id).uniqueID;
-
-        const target = `${blockUniqueID}">.maxi-column-block-content"`;
-        let obj = {};
-        if (object.label === 'Background')
-            obj = getBackgroundObject(object)
-        if (object.label === 'Box Shadow')
-            obj = getBoxShadowObject(object)
-        else
-            obj = object;
-
-        // const responsiveStyle = new ResponsiveStylesResolver(target, obj);
-        // const response = JSON.stringify(responsiveStyle.getNewValue);
-
-        // dispatch('core/editor').editPost({
-        //     meta: {
-        //         _gutenberg_extra_responsive_styles: response,
-        //     },
-        // });
-        // new BackEndResponsiveStyles(meta);
-    }
-
-    const synchronizeStyles = attributes => {
-        if (!syncStyles)
-            return;
-
-        let newStyles = { ...attributes };
+    const cloneStyles = () => {
+        let newStyles = { ...ownProps.attributes };
         delete newStyles.uniqueID;
         delete newStyles.columnSize;
         delete newStyles.sizeTablet;
         delete newStyles.sizeMobile;
 
         nestedColumns.map(blockId => {
-            dispatch('core/block-editor').updateBlockAttributes(blockId, newStyles)
-                .then(
-                    () => {
-                        if (syncStyles) {
-                            basicStyling(blockId, JSON.parse(newStyles.background), false);
-                            basicStyling(blockId, JSON.parse(newStyles.boxShadow), false);
-                            basicStyling(blockId, JSON.parse(newStyles.border), false);
-                            basicStyling(blockId, JSON.parse(newStyles.border).borderWidth, false);
-                            basicStyling(blockId, JSON.parse(newStyles.border).borderRadius, false);
-                            basicStyling(blockId, JSON.parse(newStyles.size));
-                            basicStyling(blockId, JSON.parse(newStyles.margin));
-                            basicStyling(blockId, JSON.parse(newStyles.padding));
-                        }
-                    }
-                )
-        })
-    }
-
-    const getSizeSync = () => {
-        return (100 - (nestedColumnsNum - 1) * columnGap * 2) / nestedColumnsNum;
-    }
-
-    const synchronizeColumns = (forceUpdate = false) => {
-        if (!syncSize && !forceUpdate)
-            return;
-
-        const newAttributes = {
-            columnSize: getSizeSync(),
-            sizeTablet: getSizeSync(),
-            sizeMobile: getSizeSync(),
-        }
-
-        nestedColumns.map(blockId => {
-            dispatch('core/block-editor').updateBlockAttributes(blockId, newAttributes)
+            if (blockId != clientId)
+                dispatch('core/block-editor').updateBlockAttributes(blockId, newStyles)
         })
     }
 
@@ -419,6 +346,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
     }
 
     const redistributeColumnsSize = newColumnSize => {
+        console.time('onResizingColumns')
         let newColumnId = '';
         if (originalNestedColumns.indexOf(clientId) === originalNestedColumns.length - 1)
             newColumnId = originalNestedColumns[originalNestedColumns.length - 2]
@@ -437,18 +365,18 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
             newSize = columnGap;
         }
 
-        const newColumnNode = document.querySelector(`.maxi-column-block-resizer-${newColumnId}`);
+        const newColumnNode = document.querySelector(`.maxi-column-block__resizer__${newColumnId}`);
         if (!isNil(newColumnNode))
             newColumnNode.style.width = `${newSize}%`;
 
         dispatch('core/block-editor').updateBlockAttributes(newColumnId, {
             columnSize: newSize
         })
+        console.timeEnd('onResizingColumns');
     }
 
     return {
-        synchronizeColumns,
-        synchronizeStyles,
+        cloneStyles,
         getRowPerCentWOMargin,
         getResizePerCent,
         redistributeColumnsSize,

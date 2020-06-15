@@ -22,10 +22,6 @@ const attributes = {
         type: 'number',
         default: 0
     },
-    syncSize: {
-        type: 'boolean',
-        default: true,
-    },
     syncStyles: {
         type: 'boolean',
         default: true,

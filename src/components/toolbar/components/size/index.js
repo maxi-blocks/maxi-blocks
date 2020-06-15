@@ -40,7 +40,7 @@ const Size = props => {
     if (blockName === 'maxi-blocks/image-maxi')
         return null;
 
-    const { fullWidth, size } = useSelect(
+    const { fullWidth, size, isFirstOnHierarchy } = useSelect(
         select => {
             const { getBlockAttributes } = select(
                 'core/block-editor',
@@ -49,6 +49,7 @@ const Size = props => {
             return {
                 fullWidth: attributes ? attributes.fullWidth : null,
                 size: attributes ? attributes.size : null,
+                isFirstOnHierarchy: attributes ? attributes.isFirstOnHierarchy : null,
             };
         },
         [clientId]
@@ -84,18 +85,21 @@ const Size = props => {
             renderContent={
                 () => (
                     <Fragment>
-                        <SelectControl
-                            label={__('Fullwidth', 'maxi-blocks')}
-                            value={fullWidth}
-                            options={[
-                                { label: __('No', 'maxi-blocks'), value: 'normal' },
-                                { label: __('Yes', 'maxi-blocks'), value: 'full' }
-                            ]}
-                            onChange={fullWidth => updateBlockAttributes(
-                                clientId,
-                                { fullWidth }
-                            )}
-                        />
+                        {
+                            isFirstOnHierarchy &&
+                            <SelectControl
+                                label={__('Fullwidth', 'maxi-blocks')}
+                                value={fullWidth}
+                                options={[
+                                    { label: __('No', 'maxi-blocks'), value: 'normal' },
+                                    { label: __('Yes', 'maxi-blocks'), value: 'full' }
+                                ]}
+                                onChange={fullWidth => updateBlockAttributes(
+                                    clientId,
+                                    { fullWidth }
+                                )}
+                            />
+                        }
                         <FullSizeControl
                             sizeSettings={size}
                             onChange={size => updateBlockAttributes(

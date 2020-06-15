@@ -404,3 +404,18 @@ function maxi_import_reusable_blocks() {
 
 	die();
 }
+
+/**
+ * Maxi blocks body classes
+ */
+add_filter('body_class', 'maxi_blocks_body_class');
+add_filter('admin_body_class', 'maxi_blocks_body_class');
+function maxi_blocks_body_class($classes) {
+	$MBClass = ' maxi-blocks--active ';
+	if(gettype($classes) === 'string')
+		$classes .= $MBClass;
+	if(gettype($classes) === 'array')
+		array_push($classes, $MBClass);
+
+	return $classes;
+}

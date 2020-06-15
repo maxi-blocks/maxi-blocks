@@ -8,7 +8,7 @@
 
 @import "../../customizer/css/maxi-themes-styles.scss";
 
-@import './library-button-modal.scss';
+@import "./library-button-modal.scss";
 @import "./native-components.scss";
 @import "./inserter-card.scss";
 
@@ -29,6 +29,15 @@ h2.gx_error {
 	color: #464a53;
 }
 
+/*****************
+* Editor settings
+******************/
+body.maxi-blocks--active {
+	.maxi-block[data-align="full"] .wp-block {
+		max-width: none;
+	}
+}
+
 /****************
 * Gutenberg Panel
 ****************/
@@ -43,7 +52,8 @@ h2.gx_error {
 		overflow-x: none;
 	}
 
-	.components-panel__body {	// This should be fix
+	.components-panel__body {
+		// This should be fix
 		border-top: none;
 
 		.components-panel__body-title {
@@ -152,4 +162,3 @@ h2.gx_error {
 		margin: auto;
 	}
 }
-

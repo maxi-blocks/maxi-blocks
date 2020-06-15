@@ -45,7 +45,6 @@ function addAttributes(settings) {
 			},
 			isFirstOnHierarchy: {
 				type: 'boolean',
-				default: false
 			},
 			linkSettings: {
 				type: 'string',
@@ -74,6 +73,7 @@ const withAttributes = createHigherOrderComponent(
 		const {
 			attributes: {
 				uniqueID,
+				isFirstOnHierarchy
 			},
 			name,
 			clientId
@@ -85,12 +85,14 @@ const withAttributes = createHigherOrderComponent(
 				props.attributes.uniqueID = uniqueIdCreator(name);
 
 			// isFirstOnHierarchy
-			const hasParentBlocks = !isEmpty(select('core/block-editor').getBlockParents(clientId));
+			if (isNil(isFirstOnHierarchy)) {
+				const hasParentBlocks = !isEmpty(select('core/block-editor').getBlockParents(clientId));
 
-			if (!hasParentBlocks)
-				props.attributes.isFirstOnHierarchy = true;
-			else
-				props.attributes.isFirstOnHierarchy = false;
+				if (!hasParentBlocks)
+					props.attributes.isFirstOnHierarchy = true;
+				else
+					props.attributes.isFirstOnHierarchy = false;
+			}
 		}
 
 		return <BlockEdit {...props} />;

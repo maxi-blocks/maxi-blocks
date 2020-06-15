@@ -44,8 +44,11 @@ const MaxiBreadcrumbs = () => {
                 'core/block-editor'
             )
             const clientId = getSelectedBlockClientId();
-            const uniqueID = clientId ?
-                getBlockAttributes(clientId).uniqueID :
+            const attributes = clientId ?
+                getBlockAttributes(clientId) :
+                null;
+            const uniqueID = attributes ?
+                attributes.uniqueID :
                 '';
             const originalNestedBlocks = clientId ?
                 getBlockParents(clientId) :
@@ -111,7 +114,7 @@ const MaxiBreadcrumbs = () => {
                                     >
                                         {
                                             i != 0 &&
-                                            <span> > </span>
+                                            <span>{' > '}</span>
                                         }
                                         <span
                                             className="maxi-breadcrumbs__item__content"

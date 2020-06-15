@@ -18,7 +18,6 @@ const {
  * Internal dependencies
  */
 import Inspector from './inspector';
-import { BackEndResponsiveStyles } from '../../extensions/styles';
 import {
     getBackgroundObject,
     getBoxShadowObject
@@ -61,37 +60,17 @@ class edit extends GXBlock {
         return target.getBoundingClientRect().width;
     }
 
-    /**
-     * Retrieve the target for responsive CSS
-     */
-    get getTarget() {
-        if (this.type === 'normal')
-            return `${this.props.attributes.uniqueID}`;
-        if (this.type === 'hover')
-            return `${this.props.attributes.uniqueID}:hover`;
-        if (this.type === 'imageFrontend')
-            return `${this.props.attributes.uniqueID}>img`;
-        if (this.type === 'imageHover')
-            return `${this.props.attributes.uniqueID} img:hover`;
-        if (this.type === 'imageBackend')
-            return `${this.props.attributes.uniqueID} img`;
-        if (this.type === 'figcaption')
-            return `${this.props.attributes.uniqueID}>figcaption`;
-    }
-
     get getObject() {
-        if (this.type === 'normal')
-            return this.getNormalObject;
-        if (this.type === 'hover')
-            return this.getHoverObject;
-        if (this.type === 'imageFrontend')
-            return this.getImageFrontendObject;
-        if (this.type === 'imageHover')
-            return this.getImageHoverObject;
-        if (this.type === 'imageBackend')
-            return this.getImageBackendObject;
-        if (this.type === 'figcaption')
-            return this.getFigcaptionObject;
+        let response = {
+            [this.props.attributes.uniqueID]: this.getNormalObject,
+            [`${this.props.attributes.uniqueID}:hover`]: this.getHoverObject,
+            [`${this.props.attributes.uniqueID}>img`]: this.getImageFrontendObject,
+            [`${this.props.attributes.uniqueID} img:hover`]: this.getImageHoverObject,
+            [`${this.props.attributes.uniqueID} img`]: this.getImageBackendObject,
+            [`${this.props.attributes.uniqueID}>figcaption`]: this.getFigcaptionObject
+        }
+
+        return response;
     }
 
     get getNormalObject() {
@@ -249,20 +228,6 @@ class edit extends GXBlock {
         };
 
         return response
-    }
-
-    /**
-    * Refresh the styles on Editor
-    */
-    displayStyles() {
-        this.saveMeta('normal');
-        this.saveMeta('hover');
-        this.saveMeta('imageFrontend');
-        this.saveMeta('imageHover');
-        this.saveMeta('imageBackend');
-        this.saveMeta('figcaption')
-
-        new BackEndResponsiveStyles(this.getMeta);
     }
 
     render() {

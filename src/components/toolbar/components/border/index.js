@@ -63,45 +63,52 @@ const Border = props => {
         'core/block-editor'
     );
 
-    const value = typeof border != 'object' ? JSON.parse(border) : border;
+    const value = typeof border != 'object' ?
+        JSON.parse(border) :
+        border;
 
     return (
-        <Dropdown
-            className='toolbar-item toolbar-item__dropdown'
-            renderToggle={({ isOpen, onToggle }) => (
-                <Button
-                    className='toolbar-item__box-shadow'
-                    onClick={onToggle}
-                    aria-expanded={isOpen}
-                    action="popup"
-                >
-                    <div
-                        className='toolbar-item__icon toolbar-item__box-shadow__icon'
-                        style={{
-                            borderStyle: value.general['border-style']
-                        }}
-                    ></div>
-                </Button>
-            )}
-            popoverProps={
-                {
-                    className: 'toolbar-item__popover toolbar-item__box-shadow__popover',
-                    noArrow: false,
-                    position: 'top center'
-                }
+        <Fragment>
+            {
+                !!value &&
+                <Dropdown
+                    className='toolbar-item toolbar-item__dropdown'
+                    renderToggle={({ isOpen, onToggle }) => (
+                        <Button
+                            className='toolbar-item__box-shadow'
+                            onClick={onToggle}
+                            aria-expanded={isOpen}
+                            action="popup"
+                        >
+                            <div
+                                className='toolbar-item__icon toolbar-item__box-shadow__icon'
+                                style={{
+                                    borderStyle: value.general['border-style']
+                                }}
+                            ></div>
+                        </Button>
+                    )}
+                    popoverProps={
+                        {
+                            className: 'toolbar-item__popover toolbar-item__box-shadow__popover',
+                            noArrow: false,
+                            position: 'top center'
+                        }
+                    }
+                    renderContent={
+                        () => (
+                            <BorderControl
+                                borderOptions={JSON.parse(border)}
+                                onChange={border => updateBlockAttributes(
+                                    clientId,
+                                    { border }
+                                )}
+                            />
+                        )
+                    }
+                />
             }
-            renderContent={
-                () => (
-                    <BorderControl
-                        borderOptions={JSON.parse(border)}
-                        onChange={border => updateBlockAttributes(
-                            clientId,
-                            { border }
-                        )}
-                    />
-                )
-            }
-        />
+        </Fragment>
     )
 }
 

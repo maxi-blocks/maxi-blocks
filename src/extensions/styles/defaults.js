@@ -97,7 +97,7 @@ export const typography = {
     },
     "general": {
         "color": "#9b9b9b",
-        "text-align": "left"
+        // "text-align": "left"
     },
     "desktop": {
         "font-sizeUnit": "px",
@@ -338,7 +338,7 @@ export const typographyHover = {
     "options": {},
     "general": {
         "color": "",
-        "text-align": ""
+        // "text-align": ""
     },
     "desktop": {
         "font-sizeUnit": "px",

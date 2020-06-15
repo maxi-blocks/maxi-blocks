@@ -40,12 +40,14 @@ import { toolbarColumnPattern } from '../../../../icons';
  * @todo Shows just row patterns with same existing number of columns
  */
 const ColumnPatterns = props => {
-    const { clientId } = props;
+    const { clientId, blockName } = props;
 
-    const { blockName, rowPattern, innerBlocks } = useSelect(
+    if (blockName != 'maxi-blocks/row-maxi')
+        return null;
+
+    const { rowPattern, innerBlocks } = useSelect(
         select => {
             const {
-                getBlockName,
                 getBlockAttributes,
                 getBlockOrder
             } = select(
@@ -53,16 +55,12 @@ const ColumnPatterns = props => {
             );
             const attributes = getBlockAttributes(clientId);
             return {
-                blockName: getBlockName(clientId),
                 rowPattern: attributes ? attributes.rowPattern : null,
                 innerBlocks: getBlockOrder(clientId)
             };
         },
         [clientId]
     );
-
-    if (blockName != 'maxi-blocks/row-maxi')
-        return null;
 
     const { updateBlockAttributes, replaceInnerBlocks } = useDispatch(
         'core/block-editor'

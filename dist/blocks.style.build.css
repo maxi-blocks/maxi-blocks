@@ -11,8 +11,8 @@
   display: block; }
 
 .maxi-block {
-  margin-right: auto;
-  margin-left: auto; }
+  margin-right: auto !important;
+  margin-left: auto !important; }
 /**
 * Leave blank due to bug on CGB. Check it on:
 * https://github.com/ahmadawais/create-guten-block/issues/111

@@ -2,6 +2,7 @@
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults';
+import * as rowAttributesData from './data';
 
 /**
  * Attributes
@@ -63,7 +64,7 @@ const attributes = {
     },
     size: {
         type: 'string',
-        default: JSON.stringify(attributesData.size)
+        default: JSON.stringify(rowAttributesData.size)
     },
     boxShadow: {
         type: 'string',
@@ -75,7 +76,7 @@ const attributes = {
     },
     margin: {
         type: 'string',
-        default: JSON.stringify(attributesData.margin)
+        default: JSON.stringify(rowAttributesData.margin)
     },
     padding: {
         type: 'string',

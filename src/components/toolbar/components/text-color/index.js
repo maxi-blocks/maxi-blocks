@@ -49,6 +49,9 @@ const TextColor = props => {
 
     let typography = JSON.parse(rawTypography);
 
+    if(!typography)
+        return null;
+
     return (
         <ToolbarPopover
             className='toolbar-item__text-options'

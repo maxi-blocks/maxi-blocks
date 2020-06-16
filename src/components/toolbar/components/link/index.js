@@ -1,22 +1,16 @@
 /**
  * WordPress dependencies
  */
-const { Fragment } = wp.element;
 const { __experimentalLinkControl } = wp.blockEditor;
-const {
-    Icon,
-    Dropdown,
-    Button
-} = wp.components;
 const {
     useSelect,
     useDispatch
 } = wp.data;
 
 /**
- * External dependencies
+ * Internal dependencies
  */
-import { isNil } from 'lodash';
+import ToolbarPopover from '../toolbar-popover';
 
 /**
  * Icons
@@ -48,39 +42,18 @@ const Link = props => {
     );
 
     return (
-        <Dropdown
-            className='toolbar-item toolbar-item__dropdown'
-            renderToggle={({ isOpen, onToggle }) => (
-                <Button
-                    className='toolbar-item__link'
-                    onClick={onToggle}
-                    aria-expanded={isOpen}
-                    action="popup"
-                >
-                    <Icon
-                        className='toolbar-item__icon'
-                        icon={toolbarLink}
-                    />
-                </Button>
+        <ToolbarPopover
+            className='toolbar-item__link'
+            icon={toolbarLink}
+            content={(
+                <__experimentalLinkControl
+                    className="toolbar-item__popover__link-control"
+                    value={JSON.parse(linkSettings)}
+                    onChange={value =>
+                        updateBlockAttributes(clientId, { linkSettings: JSON.stringify(value) })
+                    }
+                />
             )}
-            popoverProps={
-                {
-                    className: 'toolbar-item__popover',
-                    noArrow: false,
-                    position: 'top center'
-                }
-            }
-            renderContent={
-                () => (
-                    <__experimentalLinkControl
-                        className="toolbar-item__popover__link-control"
-                        value={JSON.parse(linkSettings)}
-                        onChange={value =>
-                            updateBlockAttributes(clientId, { linkSettings: JSON.stringify(value) })
-                        }
-                    />
-                )
-            }
         />
     )
 }

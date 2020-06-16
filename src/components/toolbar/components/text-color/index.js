@@ -1,13 +1,13 @@
 /**
  * WordPress dependencies
  */
-const {
-    Icon,
-    Dropdown,
-    Button,
-    ColorPicker
-} = wp.components;
+const { ColorPicker } = wp.components;
 const { useDispatch } = wp.data;
+
+/**
+ * Internal dependencies
+ */
+import ToolbarPopover from '../toolbar-popover';
 
 /**
  * Icons
@@ -50,38 +50,16 @@ const TextColor = props => {
     let typography = JSON.parse(rawTypography);
 
     return (
-        <Dropdown
-            className='toolbar-item toolbar-item__dropdown'
-            renderToggle={({ isOpen, onToggle }) => (
-                <Button
-                    className='toolbar-item__text-options'
-                    onClick={onToggle}
-                    aria-expanded={isOpen}
-                    action="popup"
-                >
-                    <Icon
-                        className='toolbar-item__icon'
-                        icon={toolbarStyle}
-                    />
-                </Button>
+        <ToolbarPopover
+            className='toolbar-item__text-options'
+            icon={toolbarStyle}
+            content={(
+                <ColorPicker
+                    color={typography.general.color}
+                    onChangeComplete={val => updateTypography(val)}
+                />
             )}
-            popoverProps={
-                {
-                    className: 'toolbar-item__popover',
-                    noArrow: false,
-                    position: 'center'
-                }
-            }
-            renderContent={
-                () => (
-                    <ColorPicker
-                        color={typography.general.color}
-                        onChangeComplete={val => updateTypography(val)}
-                    />
-                )
-            }
-        >
-        </Dropdown>
+        />
     )
 }
 

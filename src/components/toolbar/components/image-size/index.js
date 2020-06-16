@@ -3,8 +3,6 @@
  */
 const { Fragment } = wp.element;
 const {
-    Icon,
-    Dropdown,
     Button,
     SelectControl,
     RangeControl
@@ -18,6 +16,7 @@ const {
  * Internal dependencies
  */
 import { getDefaultProp } from '../../../../extensions/styles/utils';
+import ToolbarPopover from '../toolbar-popover';
 
 /**
  * External dependencies
@@ -133,97 +132,76 @@ const ImageSize = props => {
     }
 
     return (
-        <Dropdown
-            className='toolbar-item toolbar-item__dropdown'
-            renderToggle={({ isOpen, onToggle }) => (
-                <Button
-                    className='toolbar-item__text-options'
-                    onClick={onToggle}
-                    aria-expanded={isOpen}
-                    action="popup"
-                >
-                    <Icon
-                        className='toolbar-item__icon'
-                        icon={toolbarSettings}
+        <ToolbarPopover
+            className='toolbar-item__image-size'
+            icon={toolbarSettings}
+            content={(
+                <Fragment>
+                    <SelectControl
+                        label={__('Image Size', 'maxi-blocks')}
+                        value={size || size == 'custom' ? size : 'full'} // is still necessary?
+                        options={getSizeOptions()}
+                        onChange={size => updateBlockAttributes(
+                            clientId,
+                            { size }
+                        )}
                     />
-                </Button>
-            )}
-            popoverProps={
-                {
-                    className: 'toolbar-item__popover',
-                    noArrow: false,
-                    position: 'center'
-                }
-            }
-            renderContent={
-                () => (
-                    <Fragment>
+                    {
+                        isFirstOnHierarchy &&
                         <SelectControl
-                            label={__('Image Size', 'maxi-blocks')}
-                            value={size || size == 'custom' ? size : 'full'} // is still necessary?
-                            options={getSizeOptions()}
-                            onChange={size => updateBlockAttributes(
+                            label={__('Fullwidth', 'maxi-blocks')}
+                            value={fullWidth}
+                            options={[
+                                { label: __('No', 'maxi-blocks'), value: 'normal' },
+                                { label: __('Yes', 'maxi-blocks'), value: 'full' }
+                            ]}
+                            onChange={fullWidth => updateBlockAttributes(
                                 clientId,
-                                { size }
+                                { fullWidth }
                             )}
                         />
-                        {
-                            isFirstOnHierarchy &&
-                            <SelectControl
-                                label={__('Fullwidth', 'maxi-blocks')}
-                                value={fullWidth}
-                                options={[
-                                    { label: __('No', 'maxi-blocks'), value: 'normal' },
-                                    { label: __('Yes', 'maxi-blocks'), value: 'full' }
-                                ]}
-                                onChange={fullWidth => updateBlockAttributes(
+                    }
+                    <RangeControl
+                        label={__('Width', 'maxi-blocks')}
+                        value={width}
+                        onChange={width => {
+                            if (isNil(width))
+                                updateBlockAttributes(
                                     clientId,
-                                    { fullWidth }
-                                )}
-                            />
-                        }
-                        <RangeControl
-                            label={__('Width', 'maxi-blocks')}
-                            value={width}
-                            onChange={width => {
-                                if (isNil(width))
-                                    updateBlockAttributes(
-                                        clientId,
-                                        { width: getDefaultProp(clientId, 'width') }
-                                    )
-                                else
-                                    updateBlockAttributes(
-                                        clientId,
-                                        { width }
-                                    )
-                            }}
-                            allowReset
-                        />
-                        <div
-                            className='toolbar-item__popover__dropdown-options'
+                                    { width: getDefaultProp(clientId, 'width') }
+                                )
+                            else
+                                updateBlockAttributes(
+                                    clientId,
+                                    { width }
+                                )
+                        }}
+                        allowReset
+                    />
+                    <div
+                        className='toolbar-item__popover__dropdown-options'
+                    >
+                        <Button
+                            className='toolbar-item__popover__dropdown-options__button'
+                            onClick={() =>
+                                openGeneralSidebar('edit-post/block')
+                                    .then(() => onEditImageClick('sizing'))
+                            }
                         >
-                            <Button
-                                className='toolbar-item__popover__dropdown-options__button'
-                                onClick={() =>
-                                    openGeneralSidebar('edit-post/block')
-                                        .then(() => onEditImageClick('sizing'))
-                                }
-                            >
-                                Edit Image
-                            </Button>
-                            <Button
-                                className='toolbar-item__popover__dropdown-options__button'
-                                onClick={() =>
-                                    openGeneralSidebar('edit-post/block')
-                                        .then(() => onEditImageClick('caption'))
-                                }
-                            >
-                                Add Caption
-                            </Button>
-                        </div>
-                    </Fragment>
-                )
-            }
+                            Edit Image
+                    </Button>
+                        <Button
+                            className='toolbar-item__popover__dropdown-options__button'
+                            onClick={() =>
+                                openGeneralSidebar('edit-post/block')
+                                    .then(() => onEditImageClick('caption'))
+                            }
+                        >
+                            Add Caption
+                    </Button>
+                    </div>
+                </Fragment>
+            )}
         />
     )
 }

@@ -3,11 +3,6 @@
  */
 const { Fragment } = wp.element;
 const {
-    Icon,
-    Dropdown,
-    Button,
-} = wp.components;
-const {
     useSelect,
     useDispatch
 } = wp.data;
@@ -16,11 +11,7 @@ const {
  * Internal dependencies
  */
 import AlignmentControl from '../../../alignment-control';
-
-/**
- * External dependencies
- */
-import { isNil } from 'lodash';
+import ToolbarPopover from '../toolbar-popover';
 
 /**
  * Icons
@@ -66,70 +57,44 @@ const Alignment = props => {
     );
 
     return (
-        <Fragment>
-            {
-                (!isNil(alignment) || !isNil(alignmentDesktop)) &&
-                <Dropdown
-                    className='toolbar-item toolbar-item__dropdown'
-                    renderToggle={({ isOpen, onToggle }) => (
-                        <Button
-                            className='toolbar-item__alignment'
-                            onClick={onToggle}
-                            aria-expanded={isOpen}
-                            action="popup"
-                        >
-                            <Icon
-                                className='toolbar-item__icon'
-                                icon={toolbarAlign}
-                            />
-                        </Button>
-                    )}
-                    popoverProps={
-                        {
-                            className: 'toolbar-item__popover',
-                            noArrow: false,
-                            position: 'center'
-                        }
+        <ToolbarPopover
+            className='toolbar-item__alignment'
+            icon={toolbarAlign}
+            content={(
+                <Fragment>
+                    {
+                        alignment &&
+                        <AlignmentControl
+                            value={alignment}
+                            onChange={alignment => updateBlockAttributes(
+                                clientId,
+                                { alignment }
+                            )}
+                            disableJustify={
+                                blockName === 'maxi-blocks/text-maxi' ?
+                                    false :
+                                    true
+                            }
+                        />
                     }
-                    renderContent={
-                        () => (
-                            <Fragment>
-                                {
-                                    alignment &&
-                                    <AlignmentControl
-                                        value={alignment}
-                                        onChange={alignment => updateBlockAttributes(
-                                            clientId,
-                                            { alignment }
-                                        )}
-                                        disableJustify={
-                                            blockName === 'maxi-blocks/text-maxi' ?
-                                                false :
-                                                true
-                                        }
-                                    />
-                                }
-                                {
-                                    alignmentDesktop &&
-                                    <AlignmentControl
-                                        value={alignmentDesktop}
-                                        onChange={alignmentDesktop => updateBlockAttributes(
-                                            clientId,
-                                            { alignmentDesktop }
-                                        )}
-                                        disableJustify={
-                                            blockName === 'maxi-blocks/text-maxi' ?
-                                                false :
-                                                true
-                                        }
-                                    />
-                                }
-                            </Fragment>
-                        )
+                    {
+                        alignmentDesktop &&
+                        <AlignmentControl
+                            value={alignmentDesktop}
+                            onChange={alignmentDesktop => updateBlockAttributes(
+                                clientId,
+                                { alignmentDesktop }
+                            )}
+                            disableJustify={
+                                blockName === 'maxi-blocks/text-maxi' ?
+                                    false :
+                                    true
+                            }
+                        />
                     }
-                />
-            }
-        </Fragment>
+                </Fragment>
+            )}
+        />
     )
 }
 

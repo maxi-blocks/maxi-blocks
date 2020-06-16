@@ -1,11 +1,6 @@
 /**
  * WordPress dependencies
  */
-const { Fragment } = wp.element;
-const {
-    Dropdown,
-    Button,
-} = wp.components;
 const {
     useSelect,
     useDispatch,
@@ -15,16 +10,7 @@ const {
  * Internal dependencies
  */
 import BorderControl from '../../../border-control';
-
-/**
- * External dependencies
- */
-import { isNil } from 'lodash';
-
-/**
- * Styles
- */
-import './editor.scss';
+import ToolbarPopover from '../toolbar-popover';
 
 /**
  * Border
@@ -68,47 +54,28 @@ const Border = props => {
         border;
 
     return (
-        <Fragment>
-            {
-                !!value &&
-                <Dropdown
-                    className='toolbar-item toolbar-item__dropdown'
-                    renderToggle={({ isOpen, onToggle }) => (
-                        <Button
-                            className='toolbar-item__box-shadow'
-                            onClick={onToggle}
-                            aria-expanded={isOpen}
-                            action="popup"
-                        >
-                            <div
-                                className='toolbar-item__icon toolbar-item__box-shadow__icon'
-                                style={{
-                                    borderStyle: value.general['border-style']
-                                }}
-                            ></div>
-                        </Button>
+        <ToolbarPopover
+            className='toolbar-item__border'
+            icon={(
+                <div
+                    className='toolbar-item__border__icon'
+                    style={{
+                        borderStyle: value.general['border-style'],
+                        borderWidth: '1px',
+                        borderColor: '#fff'
+                    }}
+                ></div>
+            )}
+            content={(
+                <BorderControl
+                    borderOptions={JSON.parse(border)}
+                    onChange={border => updateBlockAttributes(
+                        clientId,
+                        { border }
                     )}
-                    popoverProps={
-                        {
-                            className: 'toolbar-item__popover toolbar-item__box-shadow__popover',
-                            noArrow: false,
-                            position: 'top center'
-                        }
-                    }
-                    renderContent={
-                        () => (
-                            <BorderControl
-                                borderOptions={JSON.parse(border)}
-                                onChange={border => updateBlockAttributes(
-                                    clientId,
-                                    { border }
-                                )}
-                            />
-                        )
-                    }
                 />
-            }
-        </Fragment>
+            )}
+        />
     )
 }
 

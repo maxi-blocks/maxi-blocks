@@ -13,6 +13,11 @@ const {
 } = wp.data;
 
 /**
+ * Internal dependencies
+ */
+import ToolbarPopover from '../toolbar-popover';
+
+/**
  * External dependencies
  */
 import { isNil } from 'lodash';
@@ -66,39 +71,23 @@ const BackgroundColor = props => {
     }
 
     return (
-        <Dropdown
-            className='toolbar-item toolbar-item__dropdown'
-            renderToggle={({ isOpen, onToggle }) => (
-                <Button
-                    className='toolbar-item__text-options'
-                    onClick={onToggle}
-                    aria-expanded={isOpen}
-                    action="popup"
-                >
-                    <div
-                        className='toolbar-item__icon'
-                        style={{
-                            background: background.colorOptions.color,
-                            border: '1px solid #fff'
-                        }}
-                    ></div>
-                </Button>
+        <ToolbarPopover
+            className='toolbar-item__background'
+            icon={(
+                <div
+                    className='toolbar-item__icon'
+                    style={{
+                        background: background.colorOptions.color,
+                        border: '1px solid #fff'
+                    }}
+                ></div>
             )}
-            popoverProps={
-                {
-                    className: 'toolbar-item__popover',
-                    noArrow: false,
-                    position: 'center'
-                }
-            }
-            renderContent={
-                () => (
-                    <ColorPicker
-                        color={background.colorOptions.color}
-                        onChangeComplete={val => updateBackground(val)}
-                    />
-                )
-            }
+            content={(
+                <ColorPicker
+                    color={background.colorOptions.color}
+                    onChangeComplete={val => updateBackground(val)}
+                />
+            )}
         />
     )
 }

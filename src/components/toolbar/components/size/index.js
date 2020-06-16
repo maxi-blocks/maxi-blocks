@@ -62,6 +62,9 @@ const Size = props => {
         JSON.parse(size) :
         size;
 
+    if(!value)
+        return null;
+
     const updateSize = () => {
         updateBlockAttributes(
             clientId,

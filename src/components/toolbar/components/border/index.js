@@ -53,6 +53,9 @@ const Border = props => {
         JSON.parse(border) :
         border;
 
+    if (!value)
+        return null;
+
     return (
         <ToolbarPopover
             className='toolbar-item__border'

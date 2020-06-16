@@ -28,7 +28,7 @@ const TextLevel = props => {
         rawTypography
     } = props;
 
-    const { textLevel, rawTypographyHover } = useSelect(
+    const { textLevel, rawTypographyHover, margin } = useSelect(
         (select) => {
             const { getBlockAttributes } = select(
                 'core/block-editor',
@@ -37,6 +37,7 @@ const TextLevel = props => {
             return {
                 textLevel: attributes ? attributes.textLevel : null,
                 rawTypographyHover: attributes ? attributes.typographyHover : null,
+                margin: attributes ? attributes.margin : null,
             };
         },
         [clientId]
@@ -59,18 +60,20 @@ const TextLevel = props => {
             content={(
                 <FontLevelControl
                     value={textLevel}
-                    onChange={(textLevel, typography, typographyHover) =>
+                    onChange={(textLevel, typography, typographyHover, margin) =>
                         updateBlockAttributes(
                             clientId,
                             {
                                 textLevel,
                                 typography,
-                                typographyHover
+                                typographyHover,
+                                margin
                             }
                         )
                     }
                     fontOptions={typography}
                     fontOptionsHover={typographyHover}
+                    marginOptions={margin}
                 />
             )}
         />

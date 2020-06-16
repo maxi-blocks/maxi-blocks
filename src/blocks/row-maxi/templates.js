@@ -62,7 +62,7 @@ const TEMPLATES = [
             ],
         ],
         attributes: {
-            columnGap: 2.5,
+            columnGap: 2.1,
             syncSize: true,
             horizontalAlign: 'flex-start',
             verticalAlign: 'stretch'
@@ -88,7 +88,7 @@ const TEMPLATES = [
             ],
         ],
         attributes: {
-            columnGap: 2.5,
+            columnGap: 2.1,
             syncSize: false,
             horizontalAlign: 'flex-start',
             verticalAlign: 'stretch'
@@ -114,7 +114,7 @@ const TEMPLATES = [
             ],
         ],
         attributes: {
-            columnGap: 2.5,
+            columnGap: 2.1,
             syncSize: false,
             horizontalAlign: 'flex-start',
             verticalAlign: 'stretch'
@@ -140,7 +140,7 @@ const TEMPLATES = [
             ],
         ],
         attributes: {
-            columnGap: 2.5,
+            columnGap: 2.1,
             syncSize: false,
             horizontalAlign: 'flex-start',
             verticalAlign: 'stretch'
@@ -166,7 +166,7 @@ const TEMPLATES = [
             ],
         ],
         attributes: {
-            columnGap: 2.5,
+            columnGap: 2.1,
             syncSize: false,
             horizontalAlign: 'flex-start',
             verticalAlign: 'stretch'
@@ -199,7 +199,7 @@ const TEMPLATES = [
             ],
         ],
         attributes: {
-            columnGap: 2.5,
+            columnGap: 2.1,
             syncSize: true,
             horizontalAlign: 'flex-start',
             verticalAlign: 'stretch'
@@ -232,7 +232,7 @@ const TEMPLATES = [
             ],
         ],
         attributes: {
-            columnGap: 2.5,
+            columnGap: 2.1,
             syncSize: false,
             horizontalAlign: 'flex-start',
             verticalAlign: 'stretch'
@@ -265,7 +265,7 @@ const TEMPLATES = [
             ],
         ],
         attributes: {
-            columnGap: 2.5,
+            columnGap: 2.1,
             syncSize: false,
             horizontalAlign: 'flex-start',
             verticalAlign: 'stretch'
@@ -298,7 +298,7 @@ const TEMPLATES = [
             ],
         ],
         attributes: {
-            columnGap: 2.5,
+            columnGap: 2.1,
             syncSize: false,
             horizontalAlign: 'flex-start',
             verticalAlign: 'stretch'
@@ -331,7 +331,7 @@ const TEMPLATES = [
             ],
         ],
         attributes: {
-            columnGap: 2.5,
+            columnGap: 2.1,
             syncSize: false,
             horizontalAlign: 'flex-start',
             verticalAlign: 'stretch'
@@ -364,7 +364,7 @@ const TEMPLATES = [
             ],
         ],
         attributes: {
-            columnGap: 2.5,
+            columnGap: 2.1,
             syncSize: false,
             horizontalAlign: 'flex-start',
             verticalAlign: 'stretch'
@@ -404,7 +404,7 @@ const TEMPLATES = [
             ],
         ],
         attributes: {
-            columnGap: 2.5,
+            columnGap: 2.1,
             syncSize: true,
             horizontalAlign: 'flex-start',
             verticalAlign: 'stretch'
@@ -451,7 +451,7 @@ const TEMPLATES = [
             ],
         ],
         attributes: {
-            columnGap: 2.5,
+            columnGap: 2.1,
             syncSize: true,
             horizontalAlign: 'flex-start',
             verticalAlign: 'stretch'
@@ -505,7 +505,7 @@ const TEMPLATES = [
             ],
         ],
         attributes: {
-            columnGap: 2.5,
+            columnGap: 2.1,
             syncSize: true,
             horizontalAlign: 'flex-start',
             verticalAlign: 'stretch'

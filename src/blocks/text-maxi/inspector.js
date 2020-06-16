@@ -125,15 +125,17 @@ const Inspector = props => {
                                             content: (
                                                 <FontLevelControl
                                                     value={textLevel}
-                                                    onChange={(textLevel, typography, typographyHover) =>
+                                                    onChange={(textLevel, typography, typographyHover, margin) =>
                                                         setAttributes({
                                                             textLevel,
                                                             typography,
-                                                            typographyHover
+                                                            typographyHover,
+                                                            margin
                                                         })
                                                     }
                                                     fontOptions={typography}
                                                     fontOptionsHover={typographyHover}
+                                                    sizeOptions={size}
                                                 />
                                             )
                                         },

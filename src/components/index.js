@@ -4,9 +4,6 @@ export { default as GXComponent} from '../extensions/maxi-component';
 // GX Block
 export { default as GXBlock } from '../extensions/maxi-block';
 
-// Typography defaults
-export { default as DefaultTypography } from '../extensions/defaults/typography';
-
 // Components
 export { default as AccordionControl } from './accordion-control';
 export { default as AlignmentControl } from './alignment-control';

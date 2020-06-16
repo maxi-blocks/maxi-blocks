@@ -3,12 +3,12 @@
  */
 const { Button } = wp.components;
 const { Component } = wp.element;
-const { select } = wp.data;
 
 /**
  * Internal dependencies
  */
-import { DefaultTypography } from '../index';
+import defaultTypography from '../../extensions/defaults/typography';
+import defaultMargin from '../../extensions/defaults/margin';
 import { getDefaultProp } from '../../extensions/styles/utils';
 
 /**
@@ -34,16 +34,22 @@ export default class FontLevelControl extends Component {
         lastLevel: this.props.value,
         p: {},
         pHover: {},
+        pMargin: {},
         h1: {},
         h1Hover: {},
+        h1Margin: {},
         h2: {},
         h2Hover: {},
+        h2Margin: {},
         h3: {},
         h3Hover: {},
+        h3Margin: {},
         h4: {},
         h4Hover: {},
+        h4Margin: {},
         h5: {},
         h5Hover: {},
+        h5Margin: {},
         h6: {},
         h6Hover: {}
     }
@@ -54,6 +60,7 @@ export default class FontLevelControl extends Component {
             value,
             fontOptions,
             fontOptionsHover,
+            marginOptions,
             onChange
         } = this.props;
 
@@ -67,26 +74,30 @@ export default class FontLevelControl extends Component {
         );
 
         const onChangeValue = value => {
-            saveOldTypography(value);
+            saveOldies(value);
             let fontOptResponse = {};
             let fontOptResponseHover = {};
+            let marginOptResponse = {};
             if (!isEmpty(this.state[value])) {
                 fontOptResponse = this.state[value];
                 fontOptResponseHover = this.state[`${value}Hover`];
+                fontOptResponseHover = this.state[`${value}Margin`];
             }
             else if (!isNil(fontOptions)) {
                 const oldFontOptions = typeof fontOptions === 'object' ? fontOptions : JSON.parse(fontOptions);
                 fontOptResponse.label = oldFontOptions.label;
-                Object.assign(fontOptResponse, DefaultTypography[value]);
-                fontOptResponseHover = JSON.parse(getDefaultProp(null, 'typographyHover'));
+                Object.assign(fontOptResponse, defaultTypography[value]);
+                fontOptResponseHover = getDefaultProp(null, 'typographyHover');
+                marginOptResponse = JSON.stringify(defaultMargin[value])
             }
-            onChange(value, JSON.stringify(fontOptResponse), JSON.stringify(fontOptResponseHover))
+            onChange(value, JSON.stringify(fontOptResponse), fontOptResponseHover, marginOptResponse)
         }
 
-        const saveOldTypography = value => {
+        const saveOldies = value => {
             this.setState({
                 [lastLevel]: typeof fontOptions === 'object' ? fontOptions : JSON.parse(fontOptions),
                 [`${lastLevel}Hover`]: typeof fontOptionsHover === 'object' ? fontOptionsHover : JSON.parse(fontOptionsHover),
+                [`${lastLevel}Margin`]: typeof marginOptions === 'object' ? marginOptions : JSON.parse(marginOptions),
                 lastLevel: value
             })
         }

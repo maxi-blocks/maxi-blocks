@@ -3171,6 +3171,8 @@ div.maxi-column-block {
     div.maxi-column-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout > div.block-list-appender {
       width: 100%;
       margin: 0; }
+      div.maxi-column-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout > div.block-list-appender .block-editor-button-block-appender {
+        padding: 6px 0; }
 /**
 * Leave blank due to bug on CGB. Check it on:
 * https://github.com/ahmadawais/create-guten-block/issues/111

@@ -26,6 +26,10 @@ div.maxi-column-block {
             > div.block-list-appender {
                 width: 100%;
                 margin: 0;
+
+                .block-editor-button-block-appender {
+                    padding: 6px 0;
+                }
             }
         }
     }

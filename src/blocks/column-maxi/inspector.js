@@ -51,8 +51,11 @@ const Inspector = props => {
             extraClassName,
             extraStyles
         },
+        clientId,
+        columnGap,
         cloneStyles,
         redistributeColumnsSize,
+        getColumnMaxWidth,
         setAttributes
     } = props;
 
@@ -85,11 +88,13 @@ const Inspector = props => {
                                                         label={__('Column Size', 'maxi-blocks')}
                                                         value={columnSize}
                                                         onChange={columnSize => {
-                                                            redistributeColumnsSize(columnSize);
+                                                            redistributeColumnsSize(columnSize, true);
+                                                            document.querySelector(`.maxi-column-block__resizer__${clientId}`)
+                                                                .style.width = `${columnSize}%`;
                                                             setAttributes({ columnSize })
                                                         }}
-                                                        min={0}
-                                                        max={100}
+                                                        min={columnGap}
+                                                        max={getColumnMaxWidth()}
                                                         step={.1}
                                                     />
                                                     <Button

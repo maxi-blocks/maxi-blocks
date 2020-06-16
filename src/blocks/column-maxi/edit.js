@@ -52,7 +52,7 @@ class edit extends GXBlock {
     }
 
     componentDidUpdate() {
-        this.spaceChecker();
+        // this.spaceChecker();
         this.setResizeHandleStyles();
         this.displayStyles();
     }
@@ -182,15 +182,15 @@ class edit extends GXBlock {
             getResizePerCent,
             redistributeColumnsSize,
             columnGap,
+            originalNestedColumns,
             setAttributes
         } = this.props;
 
-        const {
-            originalWidth
-        } = this.state;
+        const { originalWidth } = this.state;
 
         let classes = classnames(
-            'maxi-block maxi-column-block',
+            'maxi-block',
+            'maxi-column-block',
             uniqueID,
             blockStyle,
             extraClassName,
@@ -204,6 +204,13 @@ class edit extends GXBlock {
             const selectedBlock = select('core/editor').getSelectedBlockClientId();
             const nestedColumns = select('core/block-editor').getBlockOrder(clientId);
             return nestedColumns.includes(selectedBlock) || clientId === selectedBlock;
+        }
+
+        const getColumnWidthDefault = () => {
+            if (columnSize)
+                return `${columnSize}%`;
+
+            return `${100 / originalNestedColumns.length}%`;
         }
 
         return [
@@ -222,14 +229,14 @@ class edit extends GXBlock {
                             `maxi-column-block__resizer__${clientId}`,
                             columnPosition
                         )}
-                        size={{
-                            width: `${columnSize}%`
+                        defaultSize={{
+                            width: getColumnWidthDefault()
                         }}
                         minWidth={`${columnGap}%`}
                         maxWidth="100%"
                         enable={{
                             top: false,
-                            right: columnPosition != 'maxi-column-right' ? true : false,
+                            right: columnPosition != 'maxi-column-right',
                             bottom: false,
                             left: false,
                             topRight: false,
@@ -243,10 +250,13 @@ class edit extends GXBlock {
                             })
                         }}
                         onResize={(event, direction, elt, delta) => {
+                            redistributeColumnsSize(getResizePerCent(delta, originalWidth))
+                        }}
+                        onResizeStop={(event, direction, elt, delta) => {
                             setAttributes({
                                 columnSize: round(getResizePerCent(delta, originalWidth), 1),
                             });
-                            redistributeColumnsSize(getResizePerCent(delta, originalWidth))
+                            redistributeColumnsSize(getResizePerCent(delta, originalWidth), true);
                         }}
                     >
                         <__experimentalBlock.div
@@ -345,8 +355,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
         return diffPerCent;
     }
 
-    const redistributeColumnsSize = newColumnSize => {
-        console.time('onResizingColumns')
+    const redistributeColumnsSize = (newColumnSize, save = false) => {
         let newColumnId = '';
         if (originalNestedColumns.indexOf(clientId) === originalNestedColumns.length - 1)
             newColumnId = originalNestedColumns[originalNestedColumns.length - 2]
@@ -361,18 +370,40 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
         })
 
         let newSize = round(getRowPerCentWOMargin() - newColumnSize - sum(restColumnSizes), 2);
-        if (newSize < columnGap * 1.2) {
+        if (newSize < columnGap * 1.2)
             newSize = columnGap;
-        }
 
         const newColumnNode = document.querySelector(`.maxi-column-block__resizer__${newColumnId}`);
         if (!isNil(newColumnNode))
             newColumnNode.style.width = `${newSize}%`;
 
-        dispatch('core/block-editor').updateBlockAttributes(newColumnId, {
-            columnSize: newSize
+        if (save)
+            dispatch('core/block-editor').updateBlockAttributes(
+                newColumnId,
+                {
+                    columnSize: newSize
+                }
+            )
+    }
+
+    const getColumnMaxWidth = () => {
+        let newColumnId = '';
+        if (originalNestedColumns.indexOf(clientId) === originalNestedColumns.length - 1)
+            newColumnId = originalNestedColumns[originalNestedColumns.length - 2]
+        else
+            newColumnId = select('core/block-editor').getAdjacentBlockClientId(clientId);
+
+        let restColumnSizes = [];
+        originalNestedColumns.map(columnId => {
+            if (columnId === clientId || columnId === newColumnId)
+                return;
+            restColumnSizes.push(select('core/block-editor').getBlockAttributes(columnId).columnSize);
         })
-        console.timeEnd('onResizingColumns');
+
+        const columnGapWidth = columnGap * (originalNestedColumns.length - 1);
+        const maxWidth = round(100 - columnGapWidth - sum(restColumnSizes), 2);
+
+        return maxWidth;
     }
 
     return {
@@ -380,6 +411,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
         getRowPerCentWOMargin,
         getResizePerCent,
         redistributeColumnsSize,
+        getColumnMaxWidth
     }
 })
 

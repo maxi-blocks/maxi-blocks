@@ -2752,14 +2752,6 @@ div.maxi-row-block {
 *
 * Moved common styles to './src/css' 
 */
-.toolbar-item__box-shadow__icon {
-  border: 1px solid #fff; }
-/**
-* Leave blank due to bug on CGB. Check it on:
-* https://github.com/ahmadawais/create-guten-block/issues/111
-*
-* Moved common styles to './src/css' 
-*/
 .maxi-shadow-control__default__total {
   -webkit-box-shadow: 0px 0px 10px 0px #000;
           box-shadow: 0px 0px 10px 0px #000; }
@@ -2958,7 +2950,8 @@ div.maxi-row-block {
       outline: none;
       -webkit-box-shadow: none;
               box-shadow: none; }
-    .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item {
+    .maxi-toolbar__popover .components-popover__content .toolbar-wrapper > div,
+    .maxi-toolbar__popover .components-popover__content .toolbar-wrapper > button {
       width: 2rem;
       height: 2rem;
       background-color: #232533;
@@ -2967,7 +2960,8 @@ div.maxi-row-block {
       border-radius: 0;
       position: relative;
       padding-right: 2px; }
-      .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item:after {
+      .maxi-toolbar__popover .components-popover__content .toolbar-wrapper > div:after,
+      .maxi-toolbar__popover .components-popover__content .toolbar-wrapper > button:after {
         content: "";
         position: absolute;
         top: 50%;
@@ -2979,27 +2973,30 @@ div.maxi-row-block {
             -ms-transform: translateY(-50%);
                 transform: translateY(-50%);
         padding-left: 2px; }
-      .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item:last-child {
+      .maxi-toolbar__popover .components-popover__content .toolbar-wrapper > div:last-child,
+      .maxi-toolbar__popover .components-popover__content .toolbar-wrapper > button:last-child {
         border-top-right-radius: 5px;
         border-bottom-right-radius: 5px; }
-        .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item:last-child:after {
+        .maxi-toolbar__popover .components-popover__content .toolbar-wrapper > div:last-child:after,
+        .maxi-toolbar__popover .components-popover__content .toolbar-wrapper > button:last-child:after {
           content: none; }
-      .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item:first-child {
+      .maxi-toolbar__popover .components-popover__content .toolbar-wrapper > div:first-child,
+      .maxi-toolbar__popover .components-popover__content .toolbar-wrapper > button:first-child {
         border-top-left-radius: 5px;
         border-bottom-left-radius: 5px;
         padding-left: 2px; }
-      .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item__dropdown > button {
-        display: block;
-        width: 100%;
-        height: 100%;
-        padding: 0; }
-      .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item__icon {
-        display: block;
-        width: 1rem;
-        height: 1rem;
-        margin: auto; }
-      .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item__move {
-        cursor: move; }
+    .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item__button {
+      display: block;
+      width: 100%;
+      height: 100%;
+      padding: 0; }
+    .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item__icon {
+      display: block;
+      width: 1rem;
+      height: 1rem;
+      margin: auto; }
+    .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item__move {
+      cursor: move; }
 
 .toolbar-item__popover:before, .toolbar-item__popover:after {
   border-color: #232533 !important;
@@ -3043,7 +3040,8 @@ div.maxi-row-block {
   background-color: #232433;
   border-radius: 5px;
   border: none;
-  min-width: 300px; }
+  min-width: 300px;
+  padding: 12px; }
 
 .toolbar-item__popover__wrapper {
   display: -ms-flexbox;

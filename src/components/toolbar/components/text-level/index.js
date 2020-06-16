@@ -2,11 +2,6 @@
  * WordPress dependencies
  */
 const {
-    Icon,
-    Dropdown,
-    Button,
-} = wp.components;
-const {
     useSelect,
     useDispatch,
 } = wp.data;
@@ -15,6 +10,7 @@ const {
  * Internal dependencies
  */
 import FontLevelControl from '../../../font-level-control';
+import ToolbarPopover from '../toolbar-popover';
 
 /**
  * Styles and icons
@@ -57,49 +53,27 @@ const TextLevel = props => {
     const typographyHover = JSON.parse(rawTypographyHover);
 
     return (
-        <Dropdown
-            className='toolbar-item toolbar-item__dropdown'
-            renderToggle={({ isOpen, onToggle }) => (
-                <Button
-                    className='toolbar-item__text-level'
-                    onClick={onToggle}
-                    aria-expanded={isOpen}
-                    action="popup"
-                >
-                    <Icon
-                        className='toolbar-item__icon'
-                        icon={toolbarSettings}
-                    />
-                </Button>
+        <ToolbarPopover
+            className='toolbar-item__text-level'
+            icon={toolbarSettings}
+            content={(
+                <FontLevelControl
+                    value={textLevel}
+                    onChange={(textLevel, typography, typographyHover) =>
+                        updateBlockAttributes(
+                            clientId,
+                            {
+                                textLevel,
+                                typography,
+                                typographyHover
+                            }
+                        )
+                    }
+                    fontOptions={typography}
+                    fontOptionsHover={typographyHover}
+                />
             )}
-            popoverProps={
-                {
-                    className: 'toolbar-item__popover',
-                    noArrow: false,
-                    position: 'top center'
-                }
-            }
-            renderContent={
-                () => (
-                    <FontLevelControl
-                        value={textLevel}
-                        onChange={(textLevel, typography, typographyHover) =>
-                            updateBlockAttributes(
-                                clientId,
-                                {
-                                    textLevel,
-                                    typography,
-                                    typographyHover
-                                }
-                            )
-                        }
-                        fontOptions={typography}
-                        fontOptionsHover={typographyHover}
-                    />
-                )
-            }
-        >
-        </Dropdown>
+        />
     )
 }
 

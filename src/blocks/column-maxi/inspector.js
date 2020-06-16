@@ -94,6 +94,7 @@ const Inspector = props => {
                                                     />
                                                     <Button
                                                         onClick={() => cloneStyles()}
+                                                        isPrimary
                                                     >
                                                         Clone styles
                                                     </Button>

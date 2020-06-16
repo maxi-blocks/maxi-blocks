@@ -31,7 +31,6 @@ const TextItalic = props => {
         return null;
 
     const getBoldTypography = () => {
-        console.log(typography.desktop['font-style'])
         if (typography.desktop['font-style'] != 'italic') {
             typography.desktop['font-style'] = 'italic';
             typography.tablet['font-style'] = 'italic';

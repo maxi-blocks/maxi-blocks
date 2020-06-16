@@ -1,12 +1,6 @@
 /**
  * WordPress dependencies
  */
-const { Fragment } = wp.element;
-const {
-    Icon,
-    Dropdown,
-    Button,
-} = wp.components;
 const {
     useSelect,
     useDispatch,
@@ -16,18 +10,13 @@ const {
  * Internal dependencies
  */
 import BoxShadowControl from '../../../box-shadow-control';
-
-/**
- * External dependencies
- */
-import { isNil } from 'lodash';
+import ToolbarPopover from '../toolbar-popover';
 
 /**
  * Icons
  */
 import './editor.scss';
 import { toolbarDropShadow } from '../../../../icons';
-import { boxShadowBottom } from '../../../box-shadow-control/defaults';
 
 /**
  * BoxShadow
@@ -67,39 +56,18 @@ const BoxShadow = props => {
     );
 
     return (
-        <Dropdown
-            className='toolbar-item toolbar-item__dropdown'
-            renderToggle={({ isOpen, onToggle }) => (
-                <Button
-                    className='toolbar-item__box-shadow'
-                    onClick={onToggle}
-                    aria-expanded={isOpen}
-                    action="popup"
-                >
-                    <Icon
-                        className='toolbar-item__icon'
-                        icon={toolbarDropShadow}
-                    />
-                </Button>
+        <ToolbarPopover
+            className='toolbar-item__box-shadow'
+            icon={toolbarDropShadow}
+            content={(
+                <BoxShadowControl
+                    boxShadowOptions={JSON.parse(boxShadow)}
+                    onChange={boxShadow => updateBlockAttributes(
+                        clientId,
+                        { boxShadow }
+                    )}
+                />
             )}
-            popoverProps={
-                {
-                    className: 'toolbar-item__popover',
-                    noArrow: false,
-                    position: 'top center'
-                }
-            }
-            renderContent={
-                () => (
-                    <BoxShadowControl
-                        boxShadowOptions={JSON.parse(boxShadow)}
-                        onChange={boxShadow => updateBlockAttributes(
-                            clientId,
-                            { boxShadow }
-                        )}
-                    />
-                )
-            }
         />
     )
 }

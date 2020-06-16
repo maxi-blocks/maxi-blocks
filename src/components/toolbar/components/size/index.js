@@ -1,10 +1,9 @@
 /**
  * WordPress dependencies
  */
+const { __ } = wp.i18n;
 const { Fragment } = wp.element;
 const {
-    Icon,
-    Dropdown,
     Button,
     SelectControl,
 } = wp.components;
@@ -14,14 +13,10 @@ const {
 } = wp.data;
 
 /**
- * External dependencies
- */
-import { isNil } from 'lodash';
-
-/**
  * Internal dependencies
  */
 import SizeControl from '../../../size-control';
+import ToolbarPopover from '../toolbar-popover';
 
 /**
  * Icons
@@ -111,88 +106,67 @@ const Size = props => {
     }
 
     return (
-        <Dropdown
-            className='toolbar-item toolbar-item__dropdown'
-            renderToggle={({ isOpen, onToggle }) => (
-                <Button
-                    className='toolbar-item__size'
-                    onClick={onToggle}
-                    aria-expanded={isOpen}
-                    action="popup"
-                >
-                    <Icon
-                        className='toolbar-item__icon'
-                        icon={toolbarSettings}
+        <ToolbarPopover
+            className='toolbar-item__size'
+            icon={toolbarSettings}
+            content={(
+                <Fragment>
+                    {
+                        isFirstOnHierarchy &&
+                        <SelectControl
+                            label={__('Fullwidth', 'maxi-blocks')}
+                            value={fullWidth}
+                            options={[
+                                { label: __('No', 'maxi-blocks'), value: 'normal' },
+                                { label: __('Yes', 'maxi-blocks'), value: 'full' }
+                            ]}
+                            onChange={fullWidth => updateBlockAttributes(
+                                clientId,
+                                { fullWidth }
+                            )}
+                        />
+                    }
+                    <SizeControl
+                        label={__('Width', 'maxi-blocks')}
+                        unit={value.general.widthUnit}
+                        onChangeUnit={val => {
+                            value.general.widthUnit = val;
+                            updateSize();
+                        }}
+                        value={value.general.width}
+                        onChangeValue={val => {
+                            value.general.width = val;
+                            updateSize();
+                        }}
                     />
-                </Button>
-            )}
-            popoverProps={
-                {
-                    className: 'toolbar-item__popover',
-                    noArrow: false,
-                    position: 'center'
-                }
-            }
-            renderContent={
-                () => (
-                    <Fragment>
-                        {
-                            isFirstOnHierarchy &&
-                            <SelectControl
-                                label={__('Fullwidth', 'maxi-blocks')}
-                                value={fullWidth}
-                                options={[
-                                    { label: __('No', 'maxi-blocks'), value: 'normal' },
-                                    { label: __('Yes', 'maxi-blocks'), value: 'full' }
-                                ]}
-                                onChange={fullWidth => updateBlockAttributes(
-                                    clientId,
-                                    { fullWidth }
-                                )}
-                            />
-                        }
-                        <SizeControl
-                            label={__('Width', 'maxi-blocks')}
-                            unit={value.general.widthUnit}
-                            onChangeUnit={val => {
-                                value.general.widthUnit = val;
-                                updateSize();
-                            }}
-                            value={value.general.width}
-                            onChangeValue={val => {
-                                value.general.width = val;
-                                updateSize();
-                            }}
-                        />
-                        <SizeControl
-                            label={__('Max Width', 'maxi-blocks')}
-                            unit={value.general['max-widthUnit']}
-                            onChangeUnit={val => {
-                                value.general['max-widthUnit'] = val;
-                                updateSize();
-                            }}
-                            value={value.general['max-width']}
-                            onChangeValue={val => {
-                                value.general['max-width'] = val;
-                                updateSize();
-                            }}
-                        />
-                        <div
-                            className='toolbar-item__popover__dropdown-options'
+                    <SizeControl
+                        label={__('Max Width', 'maxi-blocks')}
+                        unit={value.general['max-widthUnit']}
+                        onChangeUnit={val => {
+                            value.general['max-widthUnit'] = val;
+                            updateSize();
+                        }}
+                        value={value.general['max-width']}
+                        onChangeValue={val => {
+                            value.general['max-width'] = val;
+                            updateSize();
+                        }}
+                    />
+                    <div
+                        className='toolbar-item__popover__dropdown-options'
+                    >
+                        <Button
+                            className='toolbar-item__popover__dropdown-options__button'
+                            onClick={() =>
+                                openGeneralSidebar('edit-post/block')
+                                    .then(() => onEditImageClick('width height'))
+                            }
                         >
-                            <Button
-                                className='toolbar-item__popover__dropdown-options__button'
-                                onClick={() =>
-                                    openGeneralSidebar('edit-post/block')
-                                        .then(() => onEditImageClick('width height'))
-                                }
-                            >
-                                Advanced Settings
+                            Advanced Settings
                             </Button>
-                        </div>
-                    </Fragment>
-                )
-            }
+                    </div>
+                </Fragment>
+            )}
         />
     )
 }

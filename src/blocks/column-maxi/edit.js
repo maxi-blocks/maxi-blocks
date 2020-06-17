@@ -105,7 +105,8 @@ class edit extends GXBlock {
                 border,
                 size,
                 margin,
-                padding
+                padding,
+                zIndex
             },
         } = this.props;
 
@@ -135,6 +136,8 @@ class edit extends GXBlock {
             }
         if (isNumber(opacity))
             response.column.general['opacity'] = opacity;
+        if (isNumber(zIndex))
+            response.column.general['z-index'] = zIndex;
 
         return response;
     }
@@ -215,7 +218,7 @@ class edit extends GXBlock {
 
         return [
             <Inspector {...this.props} />,
-            <__experimentalToolbar {...this.props}/>,
+            <__experimentalToolbar {...this.props} />,
             <Fragment>
                 {
                     rowBlockWidth === 0 &&

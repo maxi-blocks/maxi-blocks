@@ -55,6 +55,7 @@ class edit extends GXBlock {
             size,
             margin,
             padding,
+            zIndex
         } = this.props.attributes;
 
         const response = {
@@ -127,6 +128,8 @@ class edit extends GXBlock {
         }
         if (isNumber(opacity))
             response.text.general['opacity'] = opacity;
+        if (isNumber(zIndex))
+            response.text.general['z-index'] = zIndex;
 
         return response;
     }
@@ -164,8 +167,6 @@ class edit extends GXBlock {
             attributes: {
                 uniqueID,
                 blockStyle,
-                defaultBlockStyle,
-                fullWidth,
                 extraClassName,
                 textLevel,
                 content
@@ -183,7 +184,7 @@ class edit extends GXBlock {
 
         return [
             <Inspector {...this.props} />,
-            <__experimentalToolbar {...this.props}/>,
+            <__experimentalToolbar {...this.props} />,
             <RichText
                 value={content}
                 onChange={content => setAttributes({ content })}

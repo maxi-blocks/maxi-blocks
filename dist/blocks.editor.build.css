@@ -1562,6 +1562,27 @@ body.Bumblebee .maxi-default .maxi-divider {
     -ms-flex: 40%;
         flex: 40%; }
 
+.maxi-sidebar .components-input-control,
+.maxi-popover .components-input-control,
+.toolbar-item__popover .components-input-control {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+      align-items: center;
+  -ms-flex-pack: justify;
+      justify-content: space-between; }
+  .maxi-sidebar .components-input-control__input,
+  .maxi-popover .components-input-control__input,
+  .toolbar-item__popover .components-input-control__input {
+    min-height: unset;
+    max-height: unset !important;
+    border-radius: 5px;
+    background-color: rgba(33, 141, 250, 0);
+    border: 2px solid #dddfe1;
+    font-size: 13px;
+    color: #464a53;
+    font-weight: 500; }
+
 .maxi-popover .components-popover__content {
   padding: 20px;
   min-width: 373px !important;

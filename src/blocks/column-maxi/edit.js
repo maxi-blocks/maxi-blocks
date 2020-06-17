@@ -78,7 +78,7 @@ class edit extends GXBlock {
         } = this.props;
 
         const value = (columnGap * rowBlockWidth) / 100;
-        const node = document.querySelector(`.maxi-column-block__resizer__${clientId} .components-resizable-box__handle`);
+        const node = document.querySelector(`.maxi-column-block__resizer__${clientId} > span > .components-resizable-box__handle`);
         if (!isNil(node))
             node.style.transform = `translateX(${value}px)`;
     }

@@ -37,37 +37,31 @@ import { toolbarSettings } from '../../../../icons';
 const ImageSize = props => {
     const {
         clientId,
-        blockName
+        blockName,
+        size,
+        onChangeSize,
+        width,
+        onChangeWidth,
+        mediaID,
+        fullWidth,
+        onChangeFullWidth,
+        isFirstOnHierarchy,
+        onchangecaption
     } = props;
 
     if (blockName != 'maxi-blocks/image-maxi')
         return null;
 
-    const { size, width, imageData, fullWidth, isFirstOnHierarchy } = useSelect(
+    const { imageData } = useSelect(
         select => {
-            const { getBlockAttributes } = select(
-                'core/block-editor',
-            );
-            const { getMedia } = select(
-                'core'
-            )
-            const attributes = getBlockAttributes(clientId);
-            const mediaID = attributes ? attributes.mediaID : null;
+            const {
+                getMedia
+            } = select('core');
             return {
-                size: attributes ? attributes.size : null,
-                width: attributes ? attributes.width : null,
-                imageData: mediaID ? getMedia(mediaID) : null,
-                fullWidth: attributes ? attributes.fullWidth : null,
-                isFirstOnHierarchy: attributes ? attributes.isFirstOnHierarchy : null,
-
-            };
-        },
-        [clientId]
-    );
-
-    const { updateBlockAttributes } = useDispatch(
-        'core/block-editor'
-    );
+                imageData: getMedia(mediaID)
+            }
+        }
+    )
 
     const { openGeneralSidebar } = useDispatch(
         'core/edit-post'
@@ -119,16 +113,10 @@ const ImageSize = props => {
         })
 
         if (item === 'sizing')
-            updateBlockAttributes(
-                clientId,
-                { size: 'custom' }
-            )
+            onChangeSize('custom')
 
         if (item === 'caption')
-            updateBlockAttributes(
-                clientId,
-                { captionType: 'custom' }
-            )
+            onChangeCaption('custom')
     }
 
     return (
@@ -141,10 +129,7 @@ const ImageSize = props => {
                         label={__('Image Size', 'maxi-blocks')}
                         value={size || size == 'custom' ? size : 'full'} // is still necessary?
                         options={getSizeOptions()}
-                        onChange={size => updateBlockAttributes(
-                            clientId,
-                            { size }
-                        )}
+                        onChange={size => onChangeSize(size)}
                     />
                     {
                         isFirstOnHierarchy &&
@@ -155,10 +140,7 @@ const ImageSize = props => {
                                 { label: __('No', 'maxi-blocks'), value: 'normal' },
                                 { label: __('Yes', 'maxi-blocks'), value: 'full' }
                             ]}
-                            onChange={fullWidth => updateBlockAttributes(
-                                clientId,
-                                { fullWidth }
-                            )}
+                            onChange={fullWidth => onChangeFullWidth(fullWidth)}
                         />
                     }
                     <RangeControl
@@ -166,15 +148,9 @@ const ImageSize = props => {
                         value={width}
                         onChange={width => {
                             if (isNil(width))
-                                updateBlockAttributes(
-                                    clientId,
-                                    { width: getDefaultProp(clientId, 'width') }
-                                )
+                                onChangeWidth(getDefaultProp(clientId, 'width'))
                             else
-                                updateBlockAttributes(
-                                    clientId,
-                                    { width }
-                                )
+                                onChangeWidth(width)
                         }}
                         allowReset
                     />

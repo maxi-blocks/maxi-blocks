@@ -1,16 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { Fragment } = wp.element;
-const {
-    Dropdown,
-    Button,
-    ColorPicker
-} = wp.components;
-const {
-    useSelect,
-    useDispatch,
-} = wp.data;
+const { ColorPicker } = wp.components;
 
 /**
  * Internal dependencies
@@ -18,52 +9,26 @@ const {
 import ToolbarPopover from '../toolbar-popover';
 
 /**
- * External dependencies
- */
-import { isNil } from 'lodash';
-
-/**
  * BackgroundColor
  */
 const BackgroundColor = props => {
     const {
-        clientId,
-        blockName
+        blockName,
+        background,
+        onChange
     } = props;
 
-    const { rawBackground } = useSelect(
-        (select) => {
-            const { getBlockAttributes } = select(
-                'core/block-editor',
-            );
-            const attributes = getBlockAttributes(clientId);
-            return {
-                rawBackground: attributes ? attributes.background : null,
-            };
-        },
-        [clientId]
-    );
-
-    const { updateBlockAttributes } = useDispatch(
-        'core/block-editor'
-    );
-
-    if (blockName === 'maxi-blocks/divider-maxi' || isNil(rawBackground))
+    if (blockName === 'maxi-blocks/divider-maxi')
         return null;
 
-    let background = typeof rawBackground != 'object' ?
-        JSON.parse(rawBackground) :
-        rawBackground;
+    let value = typeof background != 'object' ?
+        JSON.parse(background) :
+        background;
 
     const updateBackground = val => {
-        background.colorOptions.color = returnColor(val)
+        value.colorOptions.color = returnColor(val)
 
-        updateBlockAttributes(
-            clientId,
-            {
-                background: JSON.stringify(background)
-            }
-        )
+        onChange(JSON.stringify(value))
     }
 
     const returnColor = val => {
@@ -77,14 +42,14 @@ const BackgroundColor = props => {
                 <div
                     className='toolbar-item__icon'
                     style={{
-                        background: background.colorOptions.color,
+                        background: value.colorOptions.color,
                         border: '1px solid #fff'
                     }}
                 ></div>
             )}
             content={(
                 <ColorPicker
-                    color={background.colorOptions.color}
+                    color={value.colorOptions.color}
                     onChangeComplete={val => updateBackground(val)}
                 />
             )}

@@ -5,7 +5,6 @@ const {
     Icon,
     Button,
 } = wp.components;
-const { useDispatch } = wp.data;
 
 /**
  * Styles and icons
@@ -20,44 +19,36 @@ const TextBold = props => {
     const { 
         clientId,
         blockName,
-        rawTypography
+        typography,
+        onChange
     } = props;
-
-    const { updateBlockAttributes } = useDispatch(
-        'core/block-editor'
-    );
 
     if (blockName != 'maxi-blocks/text-maxi')
         return null;
 
     const getBoldTypography = () => {
-        if (typography.desktop['font-weight'] != 800) {
-            typography.desktop['font-weight'] = 800;
-            typography.tablet['font-weight'] = 800;
-            typography.mobile['font-weight'] = 800;
+        if (value.desktop['font-weight'] != 800) {
+            value.desktop['font-weight'] = 800;
+            value.tablet['font-weight'] = 800;
+            value.mobile['font-weight'] = 800;
         }
         else {
-            typography.desktop['font-weight'] = 400;
-            typography.tablet['font-weight'] = 400;
-            typography.mobile['font-weight'] = 400;
+            value.desktop['font-weight'] = 400;
+            value.tablet['font-weight'] = 400;
+            value.mobile['font-weight'] = 400;
         }
 
 
-        updateBlockAttributes(
-            clientId,
-            {
-                typography: JSON.stringify(typography)
-            }
-        )
+        onChange(JSON.stringify(value))
     }
 
-    let typography = JSON.parse(rawTypography);
+    let value = JSON.parse(typography);
 
     return (
         <Button
             className='toolbar-item toolbar-item__bold'
             onClick={getBoldTypography}
-            aria-pressed={typography.desktop['font-weight'] === 800}
+            aria-pressed={value.desktop['font-weight'] === 800}
         >
             <Icon
                 className='toolbar-item__icon'

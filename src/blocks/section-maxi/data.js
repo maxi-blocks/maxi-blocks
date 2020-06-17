@@ -22,9 +22,9 @@ export const margin = {
     "unit": "px",
     "desktop": {
         "margin-top": 15,
-        "margin-right": 15,
+        "margin-right": "",
         "margin-bottom": 15,
-        "margin-left": 15,
+        "margin-left": "",
         "sync": true
     },
     "tablet": {

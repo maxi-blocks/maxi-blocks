@@ -22,24 +22,10 @@ import { toolbarLink } from '../../../../icons';
  * Link
  */
 const Link = props => {
-    const { clientId } = props;
-
-    const { linkSettings } = useSelect(
-        (select) => {
-            const { getBlockAttributes } = select(
-                'core/block-editor'
-            );
-            const attributes = getBlockAttributes(clientId);
-            return {
-                linkSettings: attributes ? attributes.linkSettings : null,
-            };
-        },
-        [clientId]
-    );
-
-    const { updateBlockAttributes } = useDispatch(
-        'core/block-editor'
-    );
+    const { 
+        linkSettings,
+        onChange
+    } = props;
 
     return (
         <ToolbarPopover
@@ -49,8 +35,7 @@ const Link = props => {
                 <__experimentalLinkControl
                     className="toolbar-item__popover__link-control"
                     value={JSON.parse(linkSettings)}
-                    onChange={value =>
-                        updateBlockAttributes(clientId, { linkSettings: JSON.stringify(value) })
+                    onChange={value => onChange(JSON.stringify(value))
                     }
                 />
             )}

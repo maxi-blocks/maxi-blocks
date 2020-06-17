@@ -3,11 +3,11 @@
  */
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
-const { RangeControl } = wp.components;
-const {
-    Fragment,
-    Component
-} = wp.element;
+const { Fragment } = wp.element;
+const { 
+    RangeControl,
+    SelectControl
+} = wp.components;
 
 /**
  * Internal dependencies
@@ -46,6 +46,7 @@ const Inspector = props => {
             opacity,
             boxShadow,
             border,
+            fullWidth,
             size,
             margin,
             padding,
@@ -255,10 +256,24 @@ const Inspector = props => {
                                         {
                                             label: __('Width / Height', 'maxi-blocks'),
                                             content: (
-                                                <FullSizeControl
-                                                    sizeSettings={size}
-                                                    onChange={size => setAttributes({ size })}
-                                                />
+                                                <Fragment>
+                                                    {
+                                                        isFirstOnHierarchy &&
+                                                        <SelectControl
+                                                            label={__('Fullwidth', 'maxi-blocks')}
+                                                            value={fullWidth}
+                                                            options={[
+                                                                { label: __('No', 'maxi-blocks'), value: 'normal' },
+                                                                { label: __('Yes', 'maxi-blocks'), value: 'full' }
+                                                            ]}
+                                                            onChange={fullWidth => setAttributes({ fullWidth })}
+                                                        />
+                                                    }
+                                                    <FullSizeControl
+                                                        sizeSettings={size}
+                                                        onChange={size => setAttributes({ size })}
+                                                    />
+                                                </Fragment>
                                             )
                                         },
                                         {

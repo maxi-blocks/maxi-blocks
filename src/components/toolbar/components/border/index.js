@@ -1,12 +1,4 @@
 /**
- * WordPress dependencies
- */
-const {
-    useSelect,
-    useDispatch,
-} = wp.data;
-
-/**
  * Internal dependencies
  */
 import BorderControl from '../../../border-control';
@@ -19,41 +11,16 @@ const ALLOWED_BLOCKS = [
     'maxi-blocks/text-maxi',
     'maxi-blocks/button-maxi',
     'maxi-blocks/image-maxi',
-    // 'maxi-blocks/divider-maxi'
 ]
 
 const Border = props => {
     const {
-        clientId,
         blockName,
+        border, 
+        onChange
     } = props;
 
     if (!ALLOWED_BLOCKS.includes(blockName))
-        return null;
-
-    const { border } = useSelect(
-        (select) => {
-            const { getBlockName, getBlockAttributes } = select(
-                'core/block-editor',
-            );
-            const attributes = getBlockAttributes(clientId);
-            return {
-                blockName: getBlockName(clientId),
-                border: attributes ? attributes.border : null,
-            };
-        },
-        [clientId]
-    );
-
-    const { updateBlockAttributes } = useDispatch(
-        'core/block-editor'
-    );
-
-    const value = typeof border != 'object' ?
-        JSON.parse(border) :
-        border;
-
-    if (!value)
         return null;
 
     return (
@@ -63,7 +30,7 @@ const Border = props => {
                 <div
                     className='toolbar-item__border__icon'
                     style={{
-                        borderStyle: value.general['border-style'],
+                        borderStyle: JSON.parse(border).general['border-style'],
                         borderWidth: '1px',
                         borderColor: '#fff'
                     }}
@@ -71,11 +38,8 @@ const Border = props => {
             )}
             content={(
                 <BorderControl
-                    borderOptions={JSON.parse(border)}
-                    onChange={border => updateBlockAttributes(
-                        clientId,
-                        { border }
-                    )}
+                    borderOptions={border}
+                    onChange={value => onChange(value)}
                 />
             )}
         />

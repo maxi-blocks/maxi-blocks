@@ -17,6 +17,7 @@ const save = props => {
             uniqueID,
             blockStyle,
             defaultBlockStyle,
+            fullWidth,
             extraClassName,
             textLevel,
             content
@@ -28,7 +29,10 @@ const save = props => {
         blockStyle,
         extraClassName,
         uniqueID,
-        className
+        className,
+        fullWidth === 'full' ?
+            'alignfull' :
+            '',
     );
     if (uniqueID && (typeof uniqueID !== 'undefined'))
         classes = classnames(classes, uniqueID);

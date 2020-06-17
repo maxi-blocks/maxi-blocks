@@ -40,11 +40,16 @@ registerBlockType( 'maxi-blocks/text-maxi', {
 	},
 	getEditWrapperProps(attributes) {
         const {
-			uniqueID
+			uniqueID,
+			defaultBlockStyle,
+			fullWidth
         } = attributes;
 
         return {
-			'uniqueid': uniqueID
+			'uniqueid': uniqueID,
+			'data-gx_initial_block_class': defaultBlockStyle,
+			'data-align': fullWidth
+
         };
     },
 	edit,

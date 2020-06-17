@@ -215,7 +215,7 @@ class edit extends GXBlock {
 
         return [
             <Inspector {...this.props} />,
-            <__experimentalToolbar />,
+            <__experimentalToolbar {...this.props}/>,
             <Fragment>
                 {
                     rowBlockWidth === 0 &&

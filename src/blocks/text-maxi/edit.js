@@ -165,6 +165,7 @@ class edit extends GXBlock {
                 uniqueID,
                 blockStyle,
                 defaultBlockStyle,
+                fullWidth,
                 extraClassName,
                 textLevel,
                 content
@@ -182,13 +183,12 @@ class edit extends GXBlock {
 
         return [
             <Inspector {...this.props} />,
-            <__experimentalToolbar />,
+            <__experimentalToolbar {...this.props}/>,
             <RichText
                 value={content}
                 onChange={content => setAttributes({ content })}
                 tagName={__experimentalBlock[textLevel]}
                 className={classes}
-                data-gx_initial_block_class={defaultBlockStyle}
                 placeholder={__('Set your Maxi Text here...', 'maxi-blocks')}
                 onSplit={value => {
                     if (!value) {

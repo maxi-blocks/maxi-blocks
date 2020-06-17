@@ -39,22 +39,24 @@ import { toolbarColumnPattern }  from '../../../../icons';
  * @todo Shows just row patterns with same existing number of columns
  */
 const ColumnPatterns = props => {
-    const { clientId, blockName } = props;
+    const { 
+        clientId, 
+        blockName,
+        rowPattern,
+        onChange
+    } = props;
 
     if (blockName != 'maxi-blocks/row-maxi')
         return null;
 
-    const { rowPattern, innerBlocks } = useSelect(
+    const { innerBlocks } = useSelect(
         select => {
             const {
-                getBlockAttributes,
                 getBlockOrder
             } = select(
                 'core/block-editor',
             );
-            const attributes = getBlockAttributes(clientId);
             return {
-                rowPattern: attributes ? attributes.rowPattern : null,
                 innerBlocks: getBlockOrder(clientId)
             };
         },
@@ -160,7 +162,10 @@ const ColumnPatterns = props => {
                             <Button
                                 className="toolbar-item__popover__column-pattern__template-button"
                                 aria-pressed={rowPattern === i}
-                                onClick={() => loadTemplate(i)}
+                                onClick={() => {
+                                    loadTemplate(i);
+                                    onChange(i)
+                                }}
                             >
                                 <Icon
                                     className="toolbar-item__popover__column-pattern__template-button__icon"

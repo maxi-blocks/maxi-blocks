@@ -18,46 +18,37 @@ import { toolbarItalic } from '../../../../icons';
  */
 const TextItalic = props => {
     const { 
-        clientId,
         blockName,
-        rawTypography
+        typography,
+        onChange
     } = props;
-
-    const { updateBlockAttributes } = useDispatch(
-        'core/block-editor'
-    );
 
     if (blockName != 'maxi-blocks/text-maxi')
         return null;
 
     const getBoldTypography = () => {
-        if (typography.desktop['font-style'] != 'italic') {
-            typography.desktop['font-style'] = 'italic';
-            typography.tablet['font-style'] = 'italic';
-            typography.mobile['font-style'] = 'italic';
+        if (value.desktop['font-style'] != 'italic') {
+            value.desktop['font-style'] = 'italic';
+            value.tablet['font-style'] = 'italic';
+            value.mobile['font-style'] = 'italic';
         }
         else {
-            typography.desktop['font-style'] = 'normal';
-            typography.tablet['font-style'] = 'normal';
-            typography.mobile['font-style'] = 'normal';
+            value.desktop['font-style'] = 'normal';
+            value.tablet['font-style'] = 'normal';
+            value.mobile['font-style'] = 'normal';
         }
 
 
-        updateBlockAttributes(
-            clientId,
-            {
-                typography: JSON.stringify(typography)
-            }
-        )
+        onChange(JSON.stringify(value))
     }
 
-    let typography = JSON.parse(rawTypography);
+    let value = JSON.parse(typography);
 
     return (
         <Button
             className='toolbar-item toolbar-item__italic'
             onClick={getBoldTypography}
-            aria-pressed={typography.desktop['font-style'] === 'italic'}
+            aria-pressed={value.desktop['font-style'] === 'italic'}
         >
             <Icon
                 className='toolbar-item__icon'

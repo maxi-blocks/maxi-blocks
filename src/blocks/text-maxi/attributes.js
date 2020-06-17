@@ -52,6 +52,10 @@ const attributes = {
         type: 'string',
         default: JSON.stringify(attributesData.border)
     },
+    fullWidth: {
+        type: 'string',
+        default: 'normal',
+    },
     size: {
         type: 'string',
         default: JSON.stringify(attributesData.size)

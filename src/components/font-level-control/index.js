@@ -87,10 +87,16 @@ export default class FontLevelControl extends Component {
                 const oldFontOptions = typeof fontOptions === 'object' ? fontOptions : JSON.parse(fontOptions);
                 fontOptResponse.label = oldFontOptions.label;
                 Object.assign(fontOptResponse, defaultTypography[value]);
-                fontOptResponseHover = getDefaultProp(null, 'typographyHover');
-                marginOptResponse = JSON.stringify(defaultMargin[value])
+                fontOptResponseHover = JSON.parse(getDefaultProp(null, 'typographyHover'));
+                marginOptResponse = defaultMargin[value];
             }
-            onChange(value, JSON.stringify(fontOptResponse), fontOptResponseHover, marginOptResponse)
+
+            onChange(
+                value, 
+                JSON.stringify(fontOptResponse), 
+                JSON.stringify(fontOptResponseHover), 
+                JSON.stringify(marginOptResponse)
+            )
         }
 
         const saveOldies = value => {

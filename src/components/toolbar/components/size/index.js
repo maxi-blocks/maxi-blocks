@@ -29,30 +29,16 @@ import { toolbarSettings } from '../../../../icons';
 const Size = props => {
     const {
         clientId,
-        blockName
+        blockName,
+        fullWidth,
+        onChangeFullWidth,
+        size,
+        onChangeSize,
+        isFirstOnHierarchy
     } = props;
 
     if (blockName === 'maxi-blocks/image-maxi')
         return null;
-
-    const { fullWidth, size, isFirstOnHierarchy } = useSelect(
-        select => {
-            const { getBlockAttributes } = select(
-                'core/block-editor',
-            );
-            const attributes = getBlockAttributes(clientId);
-            return {
-                fullWidth: attributes ? attributes.fullWidth : null,
-                size: attributes ? attributes.size : null,
-                isFirstOnHierarchy: attributes ? attributes.isFirstOnHierarchy : null,
-            };
-        },
-        [clientId]
-    );
-
-    const { updateBlockAttributes } = useDispatch(
-        'core/block-editor'
-    );
 
     const { openGeneralSidebar } = useDispatch(
         'core/edit-post'
@@ -66,10 +52,7 @@ const Size = props => {
         return null;
 
     const updateSize = () => {
-        updateBlockAttributes(
-            clientId,
-            { size: JSON.stringify(value) }
-        )
+        onChangeSize(JSON.stringify(value))
     }
 
     const onEditImageClick = item => {
@@ -123,10 +106,7 @@ const Size = props => {
                                 { label: __('No', 'maxi-blocks'), value: 'normal' },
                                 { label: __('Yes', 'maxi-blocks'), value: 'full' }
                             ]}
-                            onChange={fullWidth => updateBlockAttributes(
-                                clientId,
-                                { fullWidth }
-                            )}
+                            onChange={fullWidth => onChangeFullWidth( fullWidth )}
                         />
                     }
                     <SizeControl

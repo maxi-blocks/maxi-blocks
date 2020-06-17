@@ -34,6 +34,7 @@ import classnames from 'classnames';
 import {
     isEmpty,
     isNil,
+    isNumber
 } from 'lodash';
 
 /**
@@ -82,7 +83,8 @@ class edit extends GXBlock {
             background,
             boxShadow,
             padding,
-            margin
+            margin,
+            zIndex
         } = this.props.attributes;
 
         const response = {
@@ -141,8 +143,10 @@ class edit extends GXBlock {
                     break;
             }
         }
-        if (!!opacity)
+        if (isNumber(opacity))
             response.image.general['opacity'] = opacity;
+        if (isNumber(zIndex))
+            response.image.general['z-index'] = zIndex;
 
         return response;
     }
@@ -288,7 +292,7 @@ class edit extends GXBlock {
 
         return [
             <Inspector {...this.props} />,
-            <__experimentalToolbar {...this.props}/>,
+            <__experimentalToolbar {...this.props} />,
             <__experimentalBlock.figure
                 className={classes}
                 data-gx_initial_block_class={defaultBlockStyle}

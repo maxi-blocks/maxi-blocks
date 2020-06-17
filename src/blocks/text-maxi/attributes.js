@@ -110,6 +110,9 @@ const attributes = {
     content: {
         type: 'string',
         default: ''
+    },
+    zIndex: {
+        type: 'number'
     }
 }
 

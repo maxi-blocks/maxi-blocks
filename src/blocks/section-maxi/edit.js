@@ -55,6 +55,7 @@ class edit extends GXBlock {
             boxShadow,
             margin,
             padding,
+            zIndex
         } = this.props.attributes;
 
         const response = {
@@ -74,6 +75,8 @@ class edit extends GXBlock {
 
         if (isNumber(opacity))
             response.section.general['opacity'] = opacity;
+        if (isNumber(zIndex))
+            response.section.general['z-index'] = zIndex;
 
         return response;
     }
@@ -139,7 +142,7 @@ class edit extends GXBlock {
 
         return [
             <Inspector {...this.props} />,
-            <__experimentalToolbar {...this.props}/>,
+            <__experimentalToolbar {...this.props} />,
             <__experimentalBreadcrumbs />,
             <__experimentalBlock
                 data-gx_initial_block_class={defaultBlockStyle}

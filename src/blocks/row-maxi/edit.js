@@ -57,7 +57,7 @@ class edit extends GXBlock {
             [`${this.props.attributes.uniqueID}>div.maxi-column-block`]: this.getColumnObject,
             [`${this.props.attributes.uniqueID}>div.block-editor-inner-blocks>div.block-editor-block-list__layout>div.maxi-column-block__resizer`]: this.getColumnObject
         }
-        
+
         return response;
     }
 
@@ -71,7 +71,8 @@ class edit extends GXBlock {
             size,
             boxShadow,
             margin,
-            padding
+            padding,
+            zIndex
         } = this.props.attributes;
 
         let response = {
@@ -94,6 +95,8 @@ class edit extends GXBlock {
 
         if (isNumber(opacity))
             response.row.general['opacity'] = opacity;
+        if (isNumber(zIndex))
+            response.row.general['z-index'] = zIndex;
 
         return response;
     }
@@ -164,7 +167,7 @@ class edit extends GXBlock {
 
         return [
             <Inspector {...this.props} />,
-            <__experimentalToolbar {...this.props}/>,
+            <__experimentalToolbar {...this.props} />,
             <__experimentalBreadcrumbs />,
             <__experimentalBlock
                 data-gx_initial_block_class={defaultBlockStyle}

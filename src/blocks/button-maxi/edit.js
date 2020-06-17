@@ -11,7 +11,6 @@ const {
  * Internal dependencies
  */
 import Inspector from './inspector';
-import { BackEndResponsiveStyles } from '../../extensions/styles';
 import {
     getBackgroundObject,
     getBoxShadowObject
@@ -49,6 +48,7 @@ class edit extends GXBlock {
             alignmentDesktop,
             alignmentTablet,
             alignmentMobile,
+            zIndex
         } = this.props.attributes;
 
         const response = {
@@ -103,6 +103,9 @@ class edit extends GXBlock {
                     break;
             }
         }
+        if (isNumber(zIndex))
+            response.button.general['z-index'] = zIndex;
+
         return response;
     }
 
@@ -115,7 +118,8 @@ class edit extends GXBlock {
             border,
             size,
             padding,
-            margin
+            margin,
+            zIndex
         } = this.props.attributes;
 
         const response = {
@@ -136,6 +140,8 @@ class edit extends GXBlock {
 
         if (isNumber(opacity))
             response.button.general['opacity'] = opacity;
+        if (isNumber(zIndex))
+            response.button.general['z-index'] = zIndex;
 
         return response;
     }
@@ -191,7 +197,7 @@ class edit extends GXBlock {
 
         return [
             <Inspector {...this.props} />,
-            <__experimentalToolbar {...this.props}/>,
+            <__experimentalToolbar {...this.props} />,
             <__experimentalBlock
                 className={classes}
                 data-gx_initial_block_class={defaultBlockStyle}

@@ -4,7 +4,7 @@
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
 const { InspectorControls } = wp.blockEditor;
-const { 
+const {
     RangeControl,
     Button
 } = wp.components;
@@ -22,7 +22,8 @@ import {
     CustomCSSControl,
     FullSizeControl,
     HoverAnimationControl,
-    SettingTabsControl
+    SettingTabsControl,
+    __experimentalZIndexControl
 } from '../../components';
 
 /**
@@ -49,7 +50,8 @@ const Inspector = props => {
             hoverAnimation,
             hoverAnimationDuration,
             extraClassName,
-            extraStyles
+            extraStyles,
+            zIndex
         },
         clientId,
         columnGap,
@@ -259,6 +261,10 @@ const Inspector = props => {
                                     onChangeExtraClassName={extraClassName => setAttributes({ extraClassName })}
                                     extraStyles={extraStyles}
                                     onChangeExtraStyles={extraStyles => setAttributes({ extraStyles })}
+                                />
+                                <__experimentalZIndexControl
+                                    value={zIndex}
+                                    onChange={zIndex => setAttributes({ zIndex })}
                                 />
                             </div>
                         )

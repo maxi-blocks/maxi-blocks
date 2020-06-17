@@ -102,6 +102,9 @@ const attributes = {
     linkOptions: {
         type: 'string',
         default: '{}'
+    },
+    zIndex: {
+        type: 'number'
     }
 }
 

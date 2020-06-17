@@ -5,7 +5,7 @@
     display: block;
 }
 
-.maxi-block {
+.maxi-block:not([data-align="full"]) {
     margin-right: auto !important;
     margin-left: auto !important;
 }

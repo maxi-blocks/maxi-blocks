@@ -53,6 +53,7 @@ class edit extends GXBlock {
             size,
             padding,
             margin,
+            zIndex
         } = this.props.attributes;
 
         const response = {
@@ -84,6 +85,8 @@ class edit extends GXBlock {
                     response.divider.general['align-items'] = lineHorizontal;
             }
         }
+        if (isNumber(zIndex))
+            response.divider.general['z-index'] = zIndex;
 
         return response;
     }

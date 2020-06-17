@@ -2,8 +2,8 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { useDispatch } = wp.data;
 const { Fragment } = wp.element;
+const { getBlockAttributes } = wp.blocks;
 const {
     Button,
     BaseControl
@@ -30,31 +30,26 @@ import SettingTabsControl from '../../../setting-tabs-control';
  */
 const TextOptions = props => {
     const {
-        clientId,
         blockName,
-        rawTypography
+        typography,
+        onChange
     } = props;
 
-    const defaultRawTypography = wp.blocks.getBlockAttributes('maxi-blocks/text-maxi').typography;
-
-    const { updateBlockAttributes } = useDispatch(
-        'core/block-editor'
-    );
+    const defaultRawTypography = getBlockAttributes('maxi-blocks/text-maxi').typography;
 
     if (blockName != 'maxi-blocks/text-maxi')
         return null;
 
     const updateTypography = () => {
-        updateBlockAttributes(
-            clientId,
-            {
-                typography: JSON.stringify(typography)
-            }
-        )
+        onChange(JSON.stringify(value))
     }
 
-    let typography = JSON.parse(rawTypography);
-    let defaultTypography = JSON.parse(defaultRawTypography);
+    let value = typeof typography != 'object' ? 
+        JSON.parse(typography) :
+        typography;
+    let defaultTypography = typeof defaultRawTypography != 'object' ? 
+        JSON.parse(defaultRawTypography) :
+        defaultRawTypography;
 
     return (
         <ToolbarPopover
@@ -69,17 +64,17 @@ const TextOptions = props => {
                     >
                         <FontFamilySelector
                             className="toolbar-item__popover__font-options__font__selector"
-                            font={typography.font}
+                            font={value.font}
                             onChange={font => {
-                                typography.font = font.value;
-                                typography.options = font.files;
+                                value.font = font.value;
+                                value.options = font.files;
                                 updateTypography();
                             }}
                         />
                         <Button
                             className="components-maxi-dimensions-control__units-reset"
                             onClick={() => {
-                                typography.font = defaultRawTypography.font;
+                                value.font = defaultRawTypography.font;
                                 updateTypography();
                             }}
                             isSmall
@@ -106,9 +101,9 @@ const TextOptions = props => {
                                         >
                                             <input
                                                 type='number'
-                                                value={typography.desktop['font-size']}
+                                                value={value.desktop['font-size']}
                                                 onChange={e => {
-                                                    typography.desktop['font-size'] = Number(e.target.value);
+                                                    value.desktop['font-size'] = Number(e.target.value);
                                                     updateTypography();
                                                 }}
 
@@ -116,7 +111,7 @@ const TextOptions = props => {
                                             <Button
                                                 className="components-maxi-dimensions-control__units-reset"
                                                 onClick={() => {
-                                                    typography.desktop['font-size'] = defaultTypography.desktop['font-size'];
+                                                    value.desktop['font-size'] = defaultTypography.desktop['font-size'];
                                                     updateTypography();
                                                 }}
                                                 isSmall
@@ -136,9 +131,9 @@ const TextOptions = props => {
                                         >
                                             <input
                                                 type='number'
-                                                value={typography.desktop['line-height']}
+                                                value={value.desktop['line-height']}
                                                 onChange={e => {
-                                                    typography.desktop['line-height'] = Number(e.target.value);
+                                                    value.desktop['line-height'] = Number(e.target.value);
                                                     updateTypography();
                                                 }}
 
@@ -146,7 +141,7 @@ const TextOptions = props => {
                                             <Button
                                                 className="components-maxi-dimensions-control__units-reset"
                                                 onClick={() => {
-                                                    typography.desktop['line-height'] = defaultTypography.desktop['line-height'];
+                                                    value.desktop['line-height'] = defaultTypography.desktop['line-height'];
                                                     updateTypography();
                                                 }}
                                                 isSmall
@@ -166,9 +161,9 @@ const TextOptions = props => {
                                         >
                                             <input
                                                 type='number'
-                                                value={typography.desktop['letter-spacing']}
+                                                value={value.desktop['letter-spacing']}
                                                 onChange={e => {
-                                                    typography.desktop['letter-spacing'] = Number(e.target.value);
+                                                    value.desktop['letter-spacing'] = Number(e.target.value);
                                                     updateTypography();
                                                 }}
 
@@ -176,7 +171,7 @@ const TextOptions = props => {
                                             <Button
                                                 className="components-maxi-dimensions-control__units-reset"
                                                 onClick={() => {
-                                                    typography.desktop['letter-spacing'] = defaultTypography.desktop['letter-spacing'];
+                                                    value.desktop['letter-spacing'] = defaultTypography.desktop['letter-spacing'];
                                                     updateTypography();
                                                 }}
                                                 isSmall
@@ -203,9 +198,9 @@ const TextOptions = props => {
                                         >
                                             <input
                                                 type='number'
-                                                value={typography.tablet['font-size']}
+                                                value={value.tablet['font-size']}
                                                 onChange={e => {
-                                                    typography.tablet['font-size'] = Number(e.target.value);
+                                                    value.tablet['font-size'] = Number(e.target.value);
                                                     updateTypography();
                                                 }}
 
@@ -213,7 +208,7 @@ const TextOptions = props => {
                                             <Button
                                                 className="components-maxi-dimensions-control__units-reset"
                                                 onClick={() => {
-                                                    typography.tablet['font-size'] = defaultTypography.tablet['font-size'];
+                                                    value.tablet['font-size'] = defaultTypography.tablet['font-size'];
                                                     updateTypography();
                                                 }}
                                                 isSmall
@@ -233,9 +228,9 @@ const TextOptions = props => {
                                         >
                                             <input
                                                 type='number'
-                                                value={typography.tablet['line-height']}
+                                                value={value.tablet['line-height']}
                                                 onChange={e => {
-                                                    typography.tablet['line-height'] = Number(e.target.value);
+                                                    value.tablet['line-height'] = Number(e.target.value);
                                                     updateTypography();
                                                 }}
 
@@ -243,7 +238,7 @@ const TextOptions = props => {
                                             <Button
                                                 className="components-maxi-dimensions-control__units-reset"
                                                 onClick={() => {
-                                                    typography.tablet['line-height'] = defaultTypography.tablet['line-height'];
+                                                    value.tablet['line-height'] = defaultTypography.tablet['line-height'];
                                                     updateTypography();
                                                 }}
                                                 isSmall
@@ -263,9 +258,9 @@ const TextOptions = props => {
                                         >
                                             <input
                                                 type='number'
-                                                value={typography.tablet['letter-spacing']}
+                                                value={value.tablet['letter-spacing']}
                                                 onChange={e => {
-                                                    typography.tablet['letter-spacing'] = Number(e.target.value);
+                                                    value.tablet['letter-spacing'] = Number(e.target.value);
                                                     updateTypography();
                                                 }}
 
@@ -273,7 +268,7 @@ const TextOptions = props => {
                                             <Button
                                                 className="components-maxi-dimensions-control__units-reset"
                                                 onClick={() => {
-                                                    typography.tablet['letter-spacing'] = defaultTypography.tablet['letter-spacing'];
+                                                    value.tablet['letter-spacing'] = defaultTypography.tablet['letter-spacing'];
                                                     updateTypography();
                                                 }}
                                                 isSmall
@@ -300,9 +295,9 @@ const TextOptions = props => {
                                         >
                                             <input
                                                 type='number'
-                                                value={typography.mobile['font-size']}
+                                                value={value.mobile['font-size']}
                                                 onChange={e => {
-                                                    typography.mobile['font-size'] = Number(e.target.value);
+                                                    value.mobile['font-size'] = Number(e.target.value);
                                                     updateTypography();
                                                 }}
 
@@ -310,7 +305,7 @@ const TextOptions = props => {
                                             <Button
                                                 className="components-maxi-dimensions-control__units-reset"
                                                 onClick={() => {
-                                                    typography.mobile['font-size'] = defaultTypography.mobile['font-size'];
+                                                    value.mobile['font-size'] = defaultTypography.mobile['font-size'];
                                                     updateTypography();
                                                 }}
                                                 isSmall
@@ -330,9 +325,9 @@ const TextOptions = props => {
                                         >
                                             <input
                                                 type='number'
-                                                value={typography.mobile['line-height']}
+                                                value={value.mobile['line-height']}
                                                 onChange={e => {
-                                                    typography.mobile['line-height'] = Number(e.target.value);
+                                                    value.mobile['line-height'] = Number(e.target.value);
                                                     updateTypography();
                                                 }}
 
@@ -340,7 +335,7 @@ const TextOptions = props => {
                                             <Button
                                                 className="components-maxi-dimensions-control__units-reset"
                                                 onClick={() => {
-                                                    typography.mobile['line-height'] = defaultTypography.mobile['line-height'];
+                                                    value.mobile['line-height'] = defaultTypography.mobile['line-height'];
                                                     updateTypography();
                                                 }}
                                                 isSmall
@@ -360,9 +355,9 @@ const TextOptions = props => {
                                         >
                                             <input
                                                 type='number'
-                                                value={typography.mobile['letter-spacing']}
+                                                value={value.mobile['letter-spacing']}
                                                 onChange={e => {
-                                                    typography.mobile['letter-spacing'] = Number(e.target.value);
+                                                    value.mobile['letter-spacing'] = Number(e.target.value);
                                                     updateTypography();
                                                 }}
 
@@ -370,7 +365,7 @@ const TextOptions = props => {
                                             <Button
                                                 className="components-maxi-dimensions-control__units-reset"
                                                 onClick={() => {
-                                                    typography.mobile['letter-spacing'] = defaultTypography.mobile['letter-spacing'];
+                                                    value.mobile['letter-spacing'] = defaultTypography.mobile['letter-spacing'];
                                                     updateTypography();
                                                 }}
                                                 isSmall

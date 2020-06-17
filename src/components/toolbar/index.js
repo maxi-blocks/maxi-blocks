@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 const { Popover } = wp.components;
-const { useSelect } = wp.data;
 const {
     Fragment,
     useEffect,
@@ -56,30 +55,33 @@ const allowedBlocks = [
 /**
  * Component
  */
-const MaxiToolbar = () => {
-    const { clientId, blockName, uniqueID, rawTypography } = useSelect(
-        select => {
-            const {
-                getSelectedBlockClientId,
-                getBlockName,
-                getBlockAttributes
-            } = select(
-                'core/block-editor'
-            )
-            const clientId = getSelectedBlockClientId();
-            const blockName = clientId ? getBlockName(clientId) : '';
-            const attributes = getBlockAttributes(clientId);
-            const rawTypography = attributes ? attributes.typography : {};
-            const uniqueID = attributes ? attributes.uniqueID : '';
-            return {
-                clientId,
-                blockName,
-                rawTypography,
-                uniqueID
-            }
+const MaxiToolbar = props => {
+    const {
+        attributes: {
+            uniqueID,
+            typography,
+            typographyHover,
+            alignmentDesktop,
+            background,
+            border,
+            size,
+            width,
+            mediaID,
+            fullWidth,
+            isFirstOnHierarchy,
+            textLevel,
+            margin,
+            padding,
+            rowPattern,
+            linkSettings,
+            columnGap,
+            boxShadow
         },
-        []
-    )
+        clientId,
+        isSelected,
+        name,
+        setAttributes
+    } = props;
 
     const [anchorRef, setAnchorRef] = useState(
         document.getElementById(`block-${clientId}`)
@@ -89,13 +91,13 @@ const MaxiToolbar = () => {
         setAnchorRef(document.getElementById(`block-${clientId}`));
     })
 
-    if (!allowedBlocks.includes(blockName))
+    if (!allowedBlocks.includes(name))
         return null;
 
     return (
         <Fragment>
             {
-                clientId &&
+                isSelected &&
                 anchorRef &&
                 <Popover
                     noArrow
@@ -116,63 +118,104 @@ const MaxiToolbar = () => {
                             clientId={clientId}
                         />
                         <Alignment
-                            clientId={clientId}
-                            blockName={blockName}
+                            blockName={name}
+                            alignmentDesktop={alignmentDesktop}
+                            onChange={alignmentDesktop => setAttributes({ alignmentDesktop })}
                         />
                         <BackgroundColor
-                            clientId={clientId}
-                            blockName={blockName}
+                            blockName={name}
+                            background={background}
+                            onChange={background => setAttributes({ background })}
                         />
                         <Border
-                            clientId={clientId}
-                            blockName={blockName}
+                            blockName={name}
+                            border={border}
+                            onChange={border => setAttributes({ border })}
                         />
                         <ImageSize
                             clientId={clientId}
-                            blockName={blockName}
+                            blockName={name}
+                            size={size}
+                            onChangeSize={size => setAttributes({ size })}
+                            width={width}
+                            onChangeWidth={width => setAttributes({ width })}
+                            mediaID={mediaID}
+                            fullWidth={fullWidth}
+                            onChangeFullWidth={fullWidth => setAttributes({ fullWidth })}
+                            isFirstOnHierarchy={isFirstOnHierarchy}
+                            onChangeCaption={captionType => setAttributes({ captionType })}
                         />
                         <Size
                             clientId={clientId}
-                            blockName={blockName}
+                            blockName={name}
+                            size={size}
+                            onChangeSize={size => setAttributes({ size })}
+                            fullWidth={fullWidth}
+                            onChangeFullWidth={fullWidth => setAttributes({ fullWidth })}
+                            isFirstOnHierarchy={isFirstOnHierarchy}
                         />
                         <TextOptions
-                            clientId={clientId}
-                            blockName={blockName}
-                            rawTypography={rawTypography}
+                            blockName={name}
+                            typography={typography}
+                            onChange={typography => setAttributes({ typography })}
                         />
                         <TextBold
-                            clientId={clientId}
-                            blockName={blockName}
-                            rawTypography={rawTypography}
+                            blockName={name}
+                            typography={typography}
+                            onChange={typography => setAttributes({ typography })}
                         />
                         <TextItalic
-                            clientId={clientId}
-                            blockName={blockName}
-                            rawTypography={rawTypography}
+                            blockName={name}
+                            typography={typography}
+                            onChange={typography => setAttributes({ typography })}
                         />
                         <TextColor
-                            clientId={clientId}
-                            blockName={blockName}
-                            rawTypography={rawTypography}
+                            blockName={name}
+                            typography={typography}
+                            onChange={typography => setAttributes({ typography })}
                         />
                         <TextLevel
-                            clientId={clientId}
-                            blockName={blockName}
-                            rawTypography={rawTypography}
+                            blockName={name}
+                            textLevel={textLevel}
+                            typography={typography}
+                            typographyHover={typographyHover}
+                            margin={margin}
+                            onChange={
+                                (
+                                    textLevel,
+                                    typography,
+                                    typographyHover,
+                                    margin
+                                ) => setAttributes({
+                                    textLevel,
+                                    typography,
+                                    typographyHover,
+                                    margin
+                                })
+                            }
                         />
                         <ColumnPattern
                             clientId={clientId}
-                            blockName={blockName}
+                            blockName={name}
+                            rowPattern={rowPattern}
+                            onChange={rowPattern => setAttributes({ rowPattern })}
                         />
                         <Link
-                            clientId={clientId}
+                            linkSettings={linkSettings}
+                            onChange={linkSettings => setAttributes({ linkSettings })}
                         />
                         <PaddingMargin
-                            clientId={clientId}
+                            margin={margin}
+                            onChangeMargin={margin => setAttributes({ margin })}
+                            padding={padding}
+                            onChangePadding={padding => setAttributes({ padding })}
+                            columnGap={columnGap}
+                            onChangeColumnGap={columnGap => setAttributes({ columnGap })}
                         />
                         <BoxShadow
-                            clientId={clientId}
-                            blockName={blockName}
+                            blockName={name}
+                            boxShadow={boxShadow}
+                            onChange={boxShadow => setAttributes({ boxShadow })}
                         />
                         <Duplicate
                             clientId={clientId}

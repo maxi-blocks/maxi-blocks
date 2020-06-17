@@ -49,6 +49,7 @@ const BorderControl = props => {
     let value = typeof borderOptions === 'object' ?
         borderOptions :
         JSON.parse(borderOptions);
+        
     const classes = classnames(
         'maxi-border-control',
         className

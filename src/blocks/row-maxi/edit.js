@@ -164,7 +164,7 @@ class edit extends GXBlock {
 
         return [
             <Inspector {...this.props} />,
-            <__experimentalToolbar />,
+            <__experimentalToolbar {...this.props}/>,
             <__experimentalBreadcrumbs />,
             <__experimentalBlock
                 data-gx_initial_block_class={defaultBlockStyle}

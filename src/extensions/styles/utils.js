@@ -21,10 +21,9 @@ import {
  */
 export const getDefaultProp = (clientId, prop) => {
     const { getBlockName, getSelectedBlockClientId } = select('core/block-editor');
-    const blockName = clientId ? 
+    const blockName = !!clientId ?
         getBlockName(clientId) :
         getBlockName(getSelectedBlockClientId());
-
 
     if (prop)
         return getBlockAttributes(blockName)[prop];

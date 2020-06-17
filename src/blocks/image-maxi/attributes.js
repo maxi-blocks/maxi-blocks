@@ -142,6 +142,9 @@ const attributes = {
     mediaHeight: {
         type: 'number'
     },
+    zIndex: {
+        type: 'number'
+    }
 }
 
 export default attributes;

@@ -79,6 +79,9 @@ const attributes = {
         type: 'string',
         default: ''
     },
+    zIndex: {
+        type: 'number'
+    }
 }
 
 export default attributes;

@@ -22,7 +22,8 @@ import {
     CustomCSSControl,
     FullSizeControl,
     HoverAnimationControl,
-    SettingTabsControl
+    SettingTabsControl,
+    __experimentalZIndexControl
 } from '../../components';
 
 /**
@@ -49,7 +50,8 @@ const Inspector = props => {
             hoverAnimation,
             hoverAnimationDuration,
             extraClassName,
-            extraStyles
+            extraStyles,
+            zIndex
         },
         setAttributes,
     } = props;
@@ -243,6 +245,10 @@ const Inspector = props => {
                                     onChangeExtraClassName={extraClassName => setAttributes({ extraClassName })}
                                     extraStyles={extraStyles}
                                     onChangeExtraStyles={extraStyles => setAttributes({ extraStyles })}
+                                />
+                                <__experimentalZIndexControl
+                                    value={zIndex}
+                                    onChange={zIndex => setAttributes({ zIndex })}
                                 />
                             </div>
                         )

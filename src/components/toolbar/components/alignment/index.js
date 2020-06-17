@@ -17,7 +17,6 @@ const ALLOWED_BLOCKS = [
     'maxi-blocks/text-maxi',
     'maxi-blocks/button-maxi',
     'maxi-blocks/image-maxi',
-    'maxi-blocks/divider-maxi'
 ]
 
 const Alignment = props => {

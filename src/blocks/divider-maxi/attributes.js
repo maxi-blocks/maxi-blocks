@@ -21,11 +21,7 @@ const attributes = {
     },
     lineVertical: {
         type: 'string',
-        default: 'flex-start'
-    },
-    lineHorizontal: {
-        type: 'string',
-        default: 'flex-start'
+        default: 'center'
     },
     lineHorizontal: {
         type: 'string',
@@ -102,6 +98,9 @@ const attributes = {
         type: 'string',
         default: ''
     },
+    zIndex: {
+        type: 'number'
+    }
 }
 
 export default attributes;

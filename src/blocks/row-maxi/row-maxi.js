@@ -15,7 +15,7 @@ const { registerBlockType } = wp.blocks;
  */
 import './style.scss';
 import './editor.scss';
-import { imageBox } from '../../icons';
+import { rowIcon } from '../../icons';
 
 /**
  * Block dependencies
@@ -30,7 +30,7 @@ import save from './save';
 
 registerBlockType( 'maxi-blocks/row-maxi', {
 	title: __('Row Maxi', 'maxi-blocks'),
-	icon: imageBox,
+	icon: rowIcon,
 	description: "Position one or more blocks, arranged side-by-side (horizontal)",
 	category: 'maxi-blocks',
 	supports: {

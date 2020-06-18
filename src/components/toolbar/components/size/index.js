@@ -21,7 +21,10 @@ import ToolbarPopover from '../toolbar-popover';
  * Icons
  */
 import './editor.scss';
-import { toolbarSettings } from '../../../../icons';
+import {
+    toolbarSettings,
+    toolbarAdvancedSettings,
+} from '../../../../icons';
 
 /**
  * Size
@@ -140,7 +143,7 @@ const Size = props => {
                     >
                         <IconButton
                             className='toolbar-item__popover__dropdown-options__advanced-button'
-                            icon={toolbarSettings}
+                            icon={toolbarAdvancedSettings}
                             onClick={() =>
                                 openGeneralSidebar('edit-post/block')
                                     .then(() => onEditImageClick('width height'))

@@ -15,3 +15,4 @@ export { default as toolbarReplaceImage} from './replace-image';
 export { default as toolbarSettings} from './settings';
 export { default as toolbarStyle} from './style';
 export { default as toolbarType} from './type';
+export { default as toolbarAdvancedSettings} from './advanced-settings';

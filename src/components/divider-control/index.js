@@ -204,7 +204,7 @@ const DividerControl = props => {
                     ]}
                     value={value.general['border-radius']}
                     onChange={val => {
-                        value.general['border-radius'] = val;
+                            value.general['border-radius'] = val;
                         onChange(JSON.stringify(value));
                     }}
                 />
@@ -216,7 +216,10 @@ const DividerControl = props => {
                         label={__('Size', 'maxi-blocks')}
                         value={Number(value.general.width)}
                         onChange={val => {
-                            value.general.width = Number(val);
+                            if (!!val)
+                                value.general.width = Number(val);
+                            else
+                                value.general.width = '';
                             onChange(JSON.stringify(value));
                         }}
                         allowReset
@@ -225,7 +228,10 @@ const DividerControl = props => {
                         label={__('Weight', 'maxi-blocks')}
                         value={Number(value.general['border-top-width'])}
                         onChange={val => {
-                            value.general['border-top-width'] = Number(val);
+                            if (!!val)
+                                value.general['border-top-width'] = Number(val);
+                            else
+                                value.general['border-top-width'] = '';
                             onChange(JSON.stringify(value));
                         }}
                         allowReset
@@ -239,7 +245,10 @@ const DividerControl = props => {
                         label={__('Size', 'maxi-blocks')}
                         value={Number(value.general.height)}
                         onChange={val => {
-                            value.general.height = Number(val);
+                            if (!!val)
+                                value.general.height = Number(val);
+                            else
+                                value.general.height = '';
                             onChange(JSON.stringify(value));
                         }}
                         max={999}
@@ -249,7 +258,10 @@ const DividerControl = props => {
                         label={__('Weight', 'maxi-blocks')}
                         value={Number(value.general['border-right-width'])}
                         onChange={val => {
-                            value.general['border-right-width'] = Number(val);
+                            if (!!val)
+                                value.general['border-right-width'] = Number(val);
+                            else
+                                value.general['border-right-width'] = '';
                             onChange(JSON.stringify(value));
                         }}
                         max={999}
@@ -262,7 +274,10 @@ const DividerControl = props => {
                 className={"maxi-opacity-control"}
                 value={value.general.opacity * 100}
                 onChange={val => {
-                    value.general.opacity = val / 100;
+                    if (!!val)
+                        value.general.opacity = Number(val) / 100;
+                    else
+                        value.general.opacity = '';
                     onChange(JSON.stringify(value))
                 }}
                 min={0}

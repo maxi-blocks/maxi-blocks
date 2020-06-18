@@ -195,7 +195,6 @@ const Inspector = props => {
                                                                             <__experimentalDividerControl
                                                                                 dividerOptions={divider1}
                                                                                 onChange={divider1 => {
-                                                                                    // console.log(JSON.parse(divider1))
                                                                                     setAttributes({ divider1 })
                                                                                 }}
                                                                                 lineOrientation={lineOrientation}

@@ -5,7 +5,11 @@
     display: block;
 }
 
-.maxi-block:not([data-align="full"]) {
-    margin-right: auto !important;
-    margin-left: auto !important;
+.maxi-block{
+    position: relative;
+
+    &:not([data-align="full"]) {
+        margin-right: auto !important;
+        margin-left: auto !important;
+    }
 }

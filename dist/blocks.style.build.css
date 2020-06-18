@@ -10,9 +10,11 @@
 .maxi-link-wrapper {
   display: block; }
 
-.maxi-block:not([data-align="full"]) {
-  margin-right: auto !important;
-  margin-left: auto !important; }
+.maxi-block {
+  position: relative; }
+  .maxi-block:not([data-align="full"]) {
+    margin-right: auto !important;
+    margin-left: auto !important; }
 /**
 * Leave blank due to bug on CGB. Check it on:
 * https://github.com/ahmadawais/create-guten-block/issues/111
@@ -23,8 +25,8 @@
   position: relative;
   display: -ms-flexbox;
   display: flex;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap; }
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap; }
   .maxi-row-block.alignfull {
     width: auto; }
   .maxi-row-block > .maxi-column-block:first-of-type {

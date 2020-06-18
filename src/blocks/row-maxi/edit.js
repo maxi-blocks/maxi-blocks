@@ -4,6 +4,7 @@
 const { synchronizeBlocksWithTemplate } = wp.blocks;
 const { compose } = wp.compose;
 const {
+    select,
     withSelect,
     withDispatch
 } = wp.data;
@@ -39,7 +40,9 @@ import {
     isEmpty,
     isNil,
     uniqueId,
-    isNumber
+    isNumber,
+    round,
+    sum
 } from 'lodash';
 
 /**
@@ -227,8 +230,11 @@ const editSelect = withSelect((select, ownProps) => {
 })
 
 const editDispatch = withDispatch((dispatch, ownProps) => {
-    const { clientId } = ownProps;
-
+    const { 
+        clientId,
+        
+    } = ownProps;
+    
     /**
      * Creates uniqueID for columns on loading templates
      */
@@ -256,7 +262,9 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
         dispatch('core/block-editor').updateBlockAttributes(clientId, newAttributes);
 
         const newTemplate = synchronizeBlocksWithTemplate([], template.content);
-        dispatch('core/block-editor').replaceInnerBlocks(clientId, newTemplate)
+        dispatch('core/block-editor').replaceInnerBlocks(clientId, newTemplate);
+
+        onChangeColumnGap(newAttributes.columnGap)
     }
 
     /**
@@ -268,9 +276,35 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
         dispatch('core/editor').selectBlock(id);
     }
 
+    const onChangeColumnGap  = columnGap => {
+        const nestedBlocks = select('core/block-editor').getBlockOrder(clientId);
+        let columnSizes = {};
+        nestedBlocks.map(columnId => {
+            columnSizes[columnId] = select('core/block-editor').getBlockAttributes(columnId).columnSize;
+        })
+
+        const totalSize = round(sum(Object.values(columnSizes)), 2);
+        const realSize = (100 - ((nestedBlocks.length - 1) * columnGap) * 2);
+        const diffSizeXUnit = (realSize - totalSize) / nestedBlocks.length;
+
+        
+        for(let [key, value] of Object.entries(columnSizes)) {
+            const newValue = round(Number(value + diffSizeXUnit), 2);
+            
+            dispatch('core/block-editor').updateBlockAttributes(
+                key,
+                {
+                    columnSize: newValue
+                }
+            )
+            .then(() => document.querySelector(`.maxi-column-block__resizer__${key}`).style.width = `${newValue}%`)
+        }
+    }
+
     return {
         loadTemplate,
         selectOnClick,
+        onChangeColumnGap,
     }
 })
 

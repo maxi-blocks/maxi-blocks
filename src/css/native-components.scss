@@ -167,27 +167,6 @@
             }
         }
     }
-
-    // NumberControl
-    .components-input-control {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        &__label {
-        }
-
-        &__input {
-            min-height: unset;
-            max-height: unset !important;
-            border-radius: 5px;
-            background-color: rgba(33, 141, 250, 0);
-            border: 2px solid #dddfe1;
-            font-size: 13px;
-            color: #464a53;
-            font-weight: 500;
-        }
-    }
 }
 
 .maxi-popover {

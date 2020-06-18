@@ -80,6 +80,7 @@ const MaxiToolbar = props => {
         clientId,
         isSelected,
         name,
+        onChangeColumnGap,
         setAttributes
     } = props;
 
@@ -199,18 +200,23 @@ const MaxiToolbar = props => {
                             blockName={name}
                             rowPattern={rowPattern}
                             onChange={rowPattern => setAttributes({ rowPattern })}
+                            onChangeColumnGap={onChangeColumnGap}
                         />
                         <Link
                             linkSettings={linkSettings}
                             onChange={linkSettings => setAttributes({ linkSettings })}
                         />
                         <PaddingMargin
+                            blockName={name}
                             margin={margin}
                             onChangeMargin={margin => setAttributes({ margin })}
                             padding={padding}
                             onChangePadding={padding => setAttributes({ padding })}
                             columnGap={columnGap}
-                            onChangeColumnGap={columnGap => setAttributes({ columnGap })}
+                            onChangeColumnGap={columnGap => {
+                                onChangeColumnGap(columnGap);
+                                setAttributes({ columnGap })
+                            }}
                         />
                         <BoxShadow
                             blockName={name}

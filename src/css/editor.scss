@@ -38,6 +38,66 @@ body.maxi-blocks--active {
 	}
 }
 
+/*****************
+* Maxi Blocks
+******************/
+.maxi-block:not(.maxi-row-block--empty) {
+	.block-editor-inner-blocks {
+		.block-editor-block-list__layout {
+			position: inherit;
+
+			.block-list-appender {
+				visibility: hidden;
+				position: absolute;
+				top: 100%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				margin: 0;
+				opacity: 0;
+				transition: all 0.3s ease;
+
+				&:hover {
+					visibility: visible;
+					opacity: 1;
+				}
+
+				.block-editor-button-block-appender {
+					border-radius: 100%;
+					height: 1.5rem;
+					width: 1.5rem;
+					margin: auto;
+					padding: 0;
+					background: #1e1e1e;
+
+					&:hover,
+					&:focus {
+						outline: none;
+						box-shadow: none;
+					}
+
+					svg {
+						fill: #fff;
+						stroke: #fff;
+						min-width: 2rem;
+						min-height: 2rem;
+					}
+				}
+			}
+		}
+	}
+
+	&:hover {
+		.block-editor-inner-blocks {
+			.block-editor-block-list__layout {
+				.block-list-appender {
+					visibility: visible;
+					opacity: 1;
+				}
+			}
+		}
+	}
+}
+
 /****************
 * Gutenberg Panel
 ****************/

@@ -27,3 +27,4 @@ import './blocks/image-maxi/image-maxi';
 import './blocks/section-maxi/section-maxi';
 import './blocks/button-maxi/button-maxi.js';
 import './blocks/cloud-maxi/cloud-maxi.js';
+import './blocks/container-maxi/container-maxi.js';

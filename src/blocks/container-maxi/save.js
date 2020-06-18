@@ -24,7 +24,7 @@ const save = props => {
     } = props;
 
     let classes = classnames(
-        'maxi-block maxi-section-block',
+        'maxi-block maxi-scontainer-block',
         blockStyle,
         extraClassName,
         className,
@@ -36,12 +36,12 @@ const save = props => {
         classes = classnames(classes, uniqueID);
 
     return (
-        <section
+        <div
             className={classes}
             data-gx_initial_block_class={defaultBlockStyle}
         >
             <InnerBlocks.Content />
-        </section>
+        </div>
     );
 }
 

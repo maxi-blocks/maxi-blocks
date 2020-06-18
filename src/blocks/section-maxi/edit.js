@@ -16,7 +16,8 @@ const {
 import {
     GXBlock,
     __experimentalToolbar,
-    __experimentalBreadcrumbs
+    __experimentalBreadcrumbs,
+    __experimentalBlockPlaceholder
 } from '../../components';
 import Inspector from './inspector';
 import {
@@ -118,6 +119,7 @@ class edit extends GXBlock {
             },
             className,
             clientId,
+            isSelected,
             hasInnerBlock,
         } = this.props;
 
@@ -152,11 +154,25 @@ class edit extends GXBlock {
                 <InnerBlocks
                     templateLock={false}
                     renderAppender={
+<<<<<<< Updated upstream
                         !hasInnerBlock || isSelect() ?
                             () => (
                                 <InnerBlocks.ButtonBlockAppender />
                             ) :
                             false
+=======
+                        !hasInnerBlock ?
+                            () => (
+                                <__experimentalBlockPlaceholder
+                                    clientId={clientId}
+                                />
+                            ) :
+                            isSelected ?
+                                () => (
+                                    <InnerBlocks.ButtonBlockAppender />
+                                ) :
+                                false
+>>>>>>> Stashed changes
                     }
                 />
             </__experimentalBlock>

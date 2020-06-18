@@ -27,14 +27,19 @@ import { imageBox } from '../../icons';
  * Block
  */
 registerBlockType( 'maxi-blocks/text-maxi', {
-	title: __('Text Maxi', 'maxi-blocks'),
+	title: __('Text Maxi Sure!', 'maxi-blocks'),
 	icon: imageBox,
 	description: 'Insert, modify or style text',
 	category: 'maxi-blocks',
+	// supports: {
+	// 	align: false,
+	// 	lightBlockWrapper: true
+	// },
 	supports: {
-		align: true,
-		lightBlockWrapper: true
-    },
+		className: false,
+		align: false,
+		lightBlockWrapper: true,
+	},
 	attributes: {
 		...attributes
 	},
@@ -42,14 +47,11 @@ registerBlockType( 'maxi-blocks/text-maxi', {
         const {
 			uniqueID,
 			defaultBlockStyle,
-			fullWidth
         } = attributes;
 
         return {
 			'uniqueid': uniqueID,
 			'data-gx_initial_block_class': defaultBlockStyle,
-			'data-align': fullWidth
-
         };
     },
 	edit,

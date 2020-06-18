@@ -354,7 +354,7 @@ class ImageCropComponent extends Component {
     }
 }
 
-const ImageCropControl = withSelect((select, ownProps) => {
+export default withSelect((select, ownProps) => {
     const {
         mediaID = ownProps.mediaID
     } = ownProps;
@@ -363,5 +363,3 @@ const ImageCropControl = withSelect((select, ownProps) => {
         imageData,
     }
 })(ImageCropComponent)
-
-export default ImageCropControl;

@@ -38,6 +38,74 @@ body.maxi-blocks--active {
 	}
 }
 
+<<<<<<< Updated upstream
+=======
+/*****************
+* Maxi Blocks
+******************/
+.maxi-block {
+	.block-editor-inner-blocks {
+		.block-editor-inserter {
+			position: inherit;
+		}
+
+		.block-editor-block-list__layout {
+			position: inherit;
+
+			.block-list-appender {
+				.block-editor-button-block-appender {
+					visibility: hidden;
+					position: absolute;
+					top: 100%;
+					left: 50%;
+					transform: translate(-50%, -50%);
+					margin: 0;
+					opacity: 0;
+					transition: all 0.3s ease;
+					height: 1.5rem;
+					width: 1.5rem;
+					margin: auto;
+					padding: 0;
+					background: #1e1e1e;
+
+					&:hover {
+						visibility: visible;
+						opacity: 1;
+					}
+
+					&:hover,
+					&:focus {
+						outline: none;
+						box-shadow: none;
+					}
+
+					svg {
+						fill: #fff;
+						min-width: 2rem;
+						min-height: 2rem;
+					}
+				}
+			}
+		}
+	}
+	
+	&:hover {
+		> .block-editor-inner-blocks:first-of-type {
+			> .block-editor-block-list__layout {
+				> .block-list-appender {
+					> .block-editor-inserter {
+						> .block-editor-button-block-appender {
+							visibility: visible;
+							opacity: 1;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+>>>>>>> Stashed changes
 /****************
 * Gutenberg Panel
 ****************/

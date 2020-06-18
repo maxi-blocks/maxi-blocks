@@ -27,6 +27,7 @@ import {
     TextItalic,
     TextLevel,
     TextOptions,
+    TextShadow,
     PaddingMargin,
     Size
 } from './components/';
@@ -216,6 +217,11 @@ const MaxiToolbar = props => {
                             blockName={name}
                             boxShadow={boxShadow}
                             onChange={boxShadow => setAttributes({ boxShadow })}
+                        />
+                        <TextShadow
+                            blockName={name}
+                            typography={typography}
+                            onChange={typography => setAttributes({ typography })}
                         />
                         <Duplicate
                             clientId={clientId}

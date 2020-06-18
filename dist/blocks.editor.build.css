@@ -2843,6 +2843,20 @@ div.maxi-row-block {
 *
 * Moved common styles to './src/css' 
 */
+.toolbar-item__popover__dropdown-options__advanced-button {
+  background-color: #ff4a17;
+  border-radius: 50%;
+  position: absolute;
+  top: -25px;
+  right: -20px; }
+  .toolbar-item__popover__dropdown-options__advanced-button svg {
+    fill: #fff; }
+/**
+* Leave blank due to bug on CGB. Check it on:
+* https://github.com/ahmadawais/create-guten-block/issues/111
+*
+* Moved common styles to './src/css' 
+*/
 .toolbar-item__bold[aria-pressed="true"] svg path {
   fill: #ff4a17; }
 /**
@@ -3062,7 +3076,8 @@ div.maxi-row-block {
   border-radius: 5px;
   border: none;
   min-width: 300px;
-  padding: 12px; }
+  padding: 12px;
+  overflow: visible; }
 
 .toolbar-item__popover__wrapper {
   display: -ms-flexbox;

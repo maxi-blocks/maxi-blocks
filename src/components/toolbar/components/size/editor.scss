@@ -1,0 +1,14 @@
+
+    .toolbar-item__popover__dropdown-options {
+        &__advanced-button {
+            background-color: #ff4a17;
+            border-radius: 50%;
+            position: absolute;
+            top: -25px;
+            right: -20px;
+
+            svg {
+                fill: #fff;
+            }
+        }
+    }

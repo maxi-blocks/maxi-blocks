@@ -4,11 +4,10 @@
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
 const {
-    Button,
     SelectControl,
+    IconButton,
 } = wp.components;
 const {
-    useSelect,
     useDispatch,
 } = wp.data;
 
@@ -21,6 +20,7 @@ import ToolbarPopover from '../toolbar-popover';
 /**
  * Icons
  */
+import './editor.scss';
 import { toolbarSettings } from '../../../../icons';
 
 /**
@@ -138,15 +138,14 @@ const Size = props => {
                     <div
                         className='toolbar-item__popover__dropdown-options'
                     >
-                        <Button
-                            className='toolbar-item__popover__dropdown-options__button'
+                        <IconButton
+                            className='toolbar-item__popover__dropdown-options__advanced-button'
+                            icon={toolbarSettings}
                             onClick={() =>
                                 openGeneralSidebar('edit-post/block')
                                     .then(() => onEditImageClick('width height'))
                             }
-                        >
-                            Advanced Settings
-                            </Button>
+                        />
                     </div>
                 </Fragment>
             )}

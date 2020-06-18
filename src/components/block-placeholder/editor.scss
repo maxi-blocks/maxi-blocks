@@ -1,0 +1,30 @@
+.maxi-block-placeholder {
+    background: #DDDFE1;
+    padding: 1.75rem 0;
+    border: 1px solid #93959b;
+    border-radius: 5px;
+    margin: -15px 0;
+
+    &__text {
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 3rem !important;
+        font-family: 'Roboto',sans-serif !important;
+        font-size: 26pt !important;
+    }
+
+    .block-editor-inserter{
+        width: 100%;
+    }
+
+    &__button {
+        position: relative !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        margin: auto !important;
+        left: inherit !important;
+        transform: none !important;
+    }
+}

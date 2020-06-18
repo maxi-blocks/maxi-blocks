@@ -33,6 +33,16 @@ import {
  * Content
  */
 class edit extends GXBlock {
+    componentDidUpdate() {
+        this.fullWidthSetter();
+        this.displayStyles();
+    }
+
+    fullWidthSetter() {
+        if(!!document.getElementById(`block-${this.props.clientId}`))
+            document.getElementById(`block-${this.props.clientId}`).setAttribute('data-align', this.props.attributes.fullWidth);
+    }
+
     get getObject() {
         let response = {
             [this.props.attributes.uniqueID]: this.getNormalObject,

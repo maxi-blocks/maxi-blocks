@@ -256,11 +256,11 @@ class edit extends GXBlock {
                                 // allowedBlocks={ALLOWED_BLOCKS}
                                 templateLock={false}
                                 renderAppender={
-                                    !hasInnerBlock || isSelect() ?
+                                    // !hasInnerBlock || isSelect() ?
                                         () => (
                                             <InnerBlocks.ButtonBlockAppender />
-                                        ) :
-                                        false
+                                        )
+                                        // false
                                 }
                             />
                         </__experimentalBlock.div>

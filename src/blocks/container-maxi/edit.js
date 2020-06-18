@@ -67,16 +67,16 @@ class edit extends GXBlock {
             borderRadius: { ...JSON.parse(border).borderRadius },
             margin: { ...JSON.parse(margin) },
             padding: { ...JSON.parse(padding) },
-            section: {
-                label: 'Section',
+            container: {
+                label: 'Container',
                 general: {}
             }
         };
 
         if (isNumber(opacity))
-            response.section.general['opacity'] = opacity;
+            response.container.general['opacity'] = opacity;
         if (isNumber(zIndex))
-            response.section.general['z-index'] = zIndex;
+            response.container.general['z-index'] = zIndex;
 
         return response;
     }
@@ -95,14 +95,14 @@ class edit extends GXBlock {
             borderHover: { ...JSON.parse(borderHover) },
             borderWidthHover: { ...JSON.parse(borderHover).borderWidth },
             borderRadiusHover: { ...JSON.parse(borderHover).borderRadius },
-            sectionHover: {
-                label: 'Section',
+            containerHover: {
+                label: 'Container',
                 general: {}
             }
         };
 
         if (isNumber(opacityHover))
-            response.sectionHover.general['opacity'] = opacityHover;
+            response.containerHover.general['opacity'] = opacityHover;
 
         return response;
     }
@@ -122,7 +122,7 @@ class edit extends GXBlock {
         } = this.props;
 
         let classes = classnames(
-            'maxi-block maxi-section-block',
+            'maxi-block maxi-container-block',
             uniqueID,
             blockStyle,
             extraClassName,
@@ -148,7 +148,6 @@ class edit extends GXBlock {
                 data-gx_initial_block_class={defaultBlockStyle}
                 className={classes}
                 data-align={fullWidth}
-                tagName='section'
             >
                 <InnerBlocks
                     templateLock={false}

@@ -165,7 +165,11 @@ class edit extends GXBlock {
             uniqueID,
             blockStyle,
             extraClassName,
-            className
+            className,
+            hasInnerBlock ?
+                'maxi-row-block--full' :
+                'maxi-row-block--empty',
+
         );
 
         return [

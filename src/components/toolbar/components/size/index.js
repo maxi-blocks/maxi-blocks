@@ -7,9 +7,7 @@ const {
     SelectControl,
     IconButton,
 } = wp.components;
-const {
-    useDispatch,
-} = wp.data;
+const { useDispatch } = wp.data;
 
 /**
  * Internal dependencies
@@ -20,7 +18,6 @@ import ToolbarPopover from '../toolbar-popover';
 /**
  * Icons
  */
-import './editor.scss';
 import {
     toolbarSettings,
     toolbarAdvancedSettings,

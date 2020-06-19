@@ -16,7 +16,7 @@ import { toolbarBold } from '../../../../icons';
  * TextBold
  */
 const TextBold = props => {
-    const { 
+    const {
         clientId,
         blockName,
         typography,

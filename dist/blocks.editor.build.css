@@ -1395,7 +1395,7 @@ body.Bumblebee .maxi-default .maxi-divider {
 .maxi-sidebar .components-base-control,
 .maxi-popover .components-base-control,
 .toolbar-item__popover .components-base-control {
-  margin-bottom: 10px !important; }
+  margin-bottom: 7px !important; }
   .maxi-sidebar .components-base-control:last-child,
   .maxi-popover .components-base-control:last-child,
   .toolbar-item__popover .components-base-control:last-child {
@@ -3097,8 +3097,10 @@ div.maxi-row-block {
   border-radius: 5px;
   border: none;
   min-width: 300px;
-  padding: 20px;
+  padding: 15px;
   overflow: visible; }
+  .toolbar-item__popover .components-popover__content .maxi-colorcontrol {
+    margin-bottom: 10px; }
   .toolbar-item__popover .components-popover__content > .components-base-control:nth-last-child(2) {
     margin-bottom: 0 !important; }
 

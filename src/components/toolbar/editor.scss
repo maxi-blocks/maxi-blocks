@@ -180,9 +180,12 @@
         border-radius: 5px;
         border: none;
         min-width: 300px;
-        padding: 20px;
+        padding: 15px;
         overflow: visible;
 
+        .maxi-colorcontrol {
+            margin-bottom: 10px;
+        }
         & > .components-base-control {
             &:nth-last-child(2) {
                 margin-bottom: 0 !important;

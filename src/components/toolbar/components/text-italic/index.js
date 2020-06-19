@@ -5,7 +5,6 @@ const {
     Icon,
     Button,
 } = wp.components;
-const { useDispatch } = wp.data;
 
 /**
  * Styles and icons
@@ -17,7 +16,7 @@ import { toolbarItalic } from '../../../../icons';
  * TextItalic
  */
 const TextItalic = props => {
-    const { 
+    const {
         blockName,
         typography,
         onChange

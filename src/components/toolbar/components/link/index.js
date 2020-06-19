@@ -2,10 +2,6 @@
  * WordPress dependencies
  */
 const { __experimentalLinkControl } = wp.blockEditor;
-const {
-    useSelect,
-    useDispatch
-} = wp.data;
 
 /**
  * Internal dependencies
@@ -22,10 +18,14 @@ import { toolbarLink } from '../../../../icons';
  * Link
  */
 const Link = props => {
-    const { 
+    const {
+        blockName,
         linkSettings,
         onChange
     } = props;
+
+    if (blockName == 'maxi-blocks/divider-maxi')
+        return null;
 
     return (
         <ToolbarPopover

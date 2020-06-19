@@ -2863,24 +2863,6 @@ div.maxi-row-block {
 *
 * Moved common styles to './src/css' 
 */
-.toolbar-item__popover__dropdown-options__advanced-button {
-  background-color: #ff4a17;
-  border-radius: 50%;
-  position: absolute;
-  top: -18px;
-  right: -18px;
-  min-width: 32px !important;
-  padding: 0 !important;
-  height: 32px; }
-  .toolbar-item__popover__dropdown-options__advanced-button svg {
-    fill: #fff;
-    width: 20px; }
-/**
-* Leave blank due to bug on CGB. Check it on:
-* https://github.com/ahmadawais/create-guten-block/issues/111
-*
-* Moved common styles to './src/css' 
-*/
 .toolbar-item__bold[aria-pressed="true"] svg path {
   fill: #ff4a17; }
 /**
@@ -3044,6 +3026,16 @@ div.maxi-row-block {
         border-top-left-radius: 5px;
         border-bottom-left-radius: 5px;
         padding-left: 2px; }
+    .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item__text-options .toolbar-item__icon, .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item__border .toolbar-item__icon {
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-pack: center;
+          justify-content: center;
+      -ms-flex-align: center;
+          align-items: center; }
+      .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item__text-options .toolbar-item__icon svg, .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item__border .toolbar-item__icon svg {
+        width: 10px;
+        height: auto; }
     .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item__button {
       display: block;
       width: 100%;
@@ -3063,7 +3055,8 @@ div.maxi-row-block {
   border-right-color: transparent !important; }
 
 .toolbar-item__popover .components-base-control__field {
-  color: #fff; }
+  color: #fff;
+  margin-bottom: 0; }
   .toolbar-item__popover .components-base-control__field .components-range-control__slider + span {
     background: #80828a !important; }
   .toolbar-item__popover .components-base-control__field .components-range-control__track + span span {
@@ -3100,8 +3093,10 @@ div.maxi-row-block {
   border-radius: 5px;
   border: none;
   min-width: 300px;
-  padding: 12px;
+  padding: 20px;
   overflow: visible; }
+  .toolbar-item__popover .components-popover__content > .components-base-control:nth-last-child(2) {
+    margin-bottom: 0 !important; }
 
 .toolbar-item__popover__wrapper {
   display: -ms-flexbox;
@@ -3167,6 +3162,18 @@ div.maxi-row-block {
 .toolbar-item__popover__dropdown-options {
   display: -ms-flexbox;
   display: flex; }
+  .toolbar-item__popover__dropdown-options__advanced-button {
+    background-color: #ff4a17;
+    border-radius: 50%;
+    position: absolute;
+    top: -18px;
+    right: -18px;
+    min-width: 32px !important;
+    padding: 0 !important;
+    height: 32px; }
+    .toolbar-item__popover__dropdown-options__advanced-button svg {
+      fill: #fff;
+      width: 20px; }
   .toolbar-item__popover__dropdown-options__button {
     display: block;
     background: #fff;

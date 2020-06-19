@@ -8,7 +8,7 @@ import ToolbarPopover from '../toolbar-popover';
  * Styles and icons
  */
 import './editor.scss';
-import { toolbarSettings } from '../../../../icons';
+import { toolbarHeadingsLevel } from '../../../../icons';
 
 /**
  * TextLevel
@@ -29,7 +29,7 @@ const TextLevel = props => {
     return (
         <ToolbarPopover
             className='toolbar-item__text-level'
-            icon={toolbarSettings}
+            icon={toolbarHeadingsLevel}
             content={(
                 <FontLevelControl
                     value={textLevel}

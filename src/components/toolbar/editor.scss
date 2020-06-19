@@ -68,6 +68,20 @@
             }
 
             .toolbar-item {
+
+                &__text-options,
+                &__border {
+                    .toolbar-item__icon {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        svg {
+                            width: 10px;
+                            height: auto;
+                        }
+                    }
+                }
+
                 &__button {
                     display: block;
                     width: 100%;
@@ -101,6 +115,7 @@
     .components-base-control {
         &__field {
             color: #fff;
+            margin-bottom: 0;
 
             .components-range-control__slider {
                 & + span {
@@ -165,8 +180,14 @@
         border-radius: 5px;
         border: none;
         min-width: 300px;
-        padding: 12px;
+        padding: 20px;
         overflow: visible;
+
+        & > .components-base-control {
+            &:nth-last-child(2) {
+                margin-bottom: 0 !important;
+            }
+        }
     }
 
     &__wrapper {
@@ -255,6 +276,21 @@
     &__dropdown-options {
         display: flex;
 
+        &__advanced-button {
+            background-color: #ff4a17;
+            border-radius: 50%;
+            position: absolute;
+            top: -18px;
+            right: -18px;
+            min-width: 32px !important;
+            padding: 0 !important;
+            height: 32px;
+
+            svg {
+                fill: #fff;
+                width: 20px;
+            }
+        }
         &__button {
             display: block;
             background: #fff;

@@ -1,20 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" 
-    xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none" x="0px" y="0px" width="24px" height="24px" viewBox="0 0 24 24">
-    <defs>
-        <path id="Layer30_0_1_STROKES" stroke="#FFFFFF" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" fill="none" d="
-M 1.75 2.4
-L 1.75 7.8 4.95 7.8 4.95 6.4
-Q 4.95 6 5.25 5.75 5.5 5.45 5.9 5.45
-L 10.05 5.45 10.05 17.2
-Q 10.05 17.75 9.65 18.15 9.25 18.55 8.7 18.55
-L 7.35 18.55 7.35 21.6 16.6 21.6 16.6 18.55 15.3 18.55
-Q 14.75 18.55 14.35 18.15 13.95 17.75 13.95 17.2
-L 13.95 5.45 18.1 5.45
-Q 18.45 5.45 18.75 5.75 19 6 19 6.4
-L 19 7.8 22.2 7.8 22.2 2.4 1.75 2.4 Z"/>
-    </defs>
-
-    <g transform="matrix( 1, 0, 0, 1, 0,0) ">
-        <use xlink:href="#Layer30_0_1_STROKES"/>
-    </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22.4 21.2">
+  <g data-name="Layer 2">
+    <path fill="#fff" d="M21.4 0H1a1 1 0 00-1 1v5.4a1 1 0 001 1h3.2a1 1 0 001-1V5h3.2v10.9l-.11.1c-.1.11-.15.11-.19.11H6.5a1 1 0 00-1 1v3.1a1 1 0 001 1h9.3a1 1 0 001-1V17.1a1 1 0 00-1-1h-1.4l-.09-.1c-.11-.1-.11-.15-.11-.19V5h3v1.4a1 1 0 001 1h3.2a1 1 0 001-1V1a1 1 0 00-1-1zm-1 5.4h-1.2V5a2.3 2.3 0 00-.31-1.15A1.67 1.67 0 0017.4 3h-4.2a1 1 0 00-1 1v11.8a2.17 2.17 0 00.63 1.54 2 2 0 001.67.76h.3v1.1H7.5v-1.1h.6a2.19 2.19 0 001.54-.63 2 2 0 00.76-1.67V4a1 1 0 00-1-1H5.2a1.9 1.9 0 00-1.41.59A1.9 1.9 0 003.2 5v.4H2V2h18.4z" data-name="Layer 1"/>
+  </g>
 </svg>

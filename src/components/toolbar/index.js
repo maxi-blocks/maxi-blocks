@@ -119,10 +119,61 @@ const MaxiToolbar = props => {
                         <Mover
                             clientId={clientId}
                         />
+                        <TextOptions
+                            blockName={name}
+                            typography={typography}
+                            onChange={typography => setAttributes({ typography })}
+                        />
+                        <TextColor
+                            blockName={name}
+                            typography={typography}
+                            onChange={typography => setAttributes({ typography })}
+                        />
                         <Alignment
                             blockName={name}
                             alignmentDesktop={alignmentDesktop}
                             onChange={alignmentDesktop => setAttributes({ alignmentDesktop })}
+                        />
+                        <TextLevel
+                            blockName={name}
+                            textLevel={textLevel}
+                            typography={typography}
+                            typographyHover={typographyHover}
+                            margin={margin}
+                            onChange={
+                                (
+                                    textLevel,
+                                    typography,
+                                    typographyHover,
+                                    margin
+                                ) => setAttributes({
+                                    textLevel,
+                                    typography,
+                                    typographyHover,
+                                    margin
+                                })
+                            }
+                        />
+                        <TextBold
+                            blockName={name}
+                            typography={typography}
+                            onChange={typography => setAttributes({ typography })}
+                        />
+                        <TextItalic
+                            blockName={name}
+                            typography={typography}
+                            onChange={typography => setAttributes({ typography })}
+                        />
+                        <ColumnPattern
+                            clientId={clientId}
+                            blockName={name}
+                            rowPattern={rowPattern}
+                            onChange={rowPattern => setAttributes({ rowPattern })}
+                            onChangeColumnGap={onChangeColumnGap}
+                        />
+                        <Link
+                            linkSettings={linkSettings}
+                            onChange={linkSettings => setAttributes({ linkSettings })}
                         />
                         <BackgroundColor
                             blockName={name}
@@ -147,6 +198,11 @@ const MaxiToolbar = props => {
                             isFirstOnHierarchy={isFirstOnHierarchy}
                             onChangeCaption={captionType => setAttributes({ captionType })}
                         />
+                        <BoxShadow
+                            blockName={name}
+                            boxShadow={boxShadow}
+                            onChange={boxShadow => setAttributes({ boxShadow })}
+                        />
                         <Size
                             clientId={clientId}
                             blockName={name}
@@ -155,57 +211,6 @@ const MaxiToolbar = props => {
                             fullWidth={fullWidth}
                             onChangeFullWidth={fullWidth => setAttributes({ fullWidth })}
                             isFirstOnHierarchy={isFirstOnHierarchy}
-                        />
-                        <TextOptions
-                            blockName={name}
-                            typography={typography}
-                            onChange={typography => setAttributes({ typography })}
-                        />
-                        <TextBold
-                            blockName={name}
-                            typography={typography}
-                            onChange={typography => setAttributes({ typography })}
-                        />
-                        <TextItalic
-                            blockName={name}
-                            typography={typography}
-                            onChange={typography => setAttributes({ typography })}
-                        />
-                        <TextColor
-                            blockName={name}
-                            typography={typography}
-                            onChange={typography => setAttributes({ typography })}
-                        />
-                        <TextLevel
-                            blockName={name}
-                            textLevel={textLevel}
-                            typography={typography}
-                            typographyHover={typographyHover}
-                            margin={margin}
-                            onChange={
-                                (
-                                    textLevel,
-                                    typography,
-                                    typographyHover,
-                                    margin
-                                ) => setAttributes({
-                                    textLevel,
-                                    typography,
-                                    typographyHover,
-                                    margin
-                                })
-                            }
-                        />
-                        <ColumnPattern
-                            clientId={clientId}
-                            blockName={name}
-                            rowPattern={rowPattern}
-                            onChange={rowPattern => setAttributes({ rowPattern })}
-                            onChangeColumnGap={onChangeColumnGap}
-                        />
-                        <Link
-                            linkSettings={linkSettings}
-                            onChange={linkSettings => setAttributes({ linkSettings })}
                         />
                         <PaddingMargin
                             blockName={name}
@@ -218,11 +223,6 @@ const MaxiToolbar = props => {
                                 onChangeColumnGap(columnGap);
                                 setAttributes({ columnGap })
                             }}
-                        />
-                        <BoxShadow
-                            blockName={name}
-                            boxShadow={boxShadow}
-                            onChange={boxShadow => setAttributes({ boxShadow })}
                         />
                         <Duplicate
                             clientId={clientId}

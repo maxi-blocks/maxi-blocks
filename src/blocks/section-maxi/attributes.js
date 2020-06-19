@@ -18,7 +18,7 @@ const attributes = {
     },
     fullWidth: {
         type: 'string',
-        default: 'normal',
+        default: 'full',
     },
     size: {
         type: 'string',

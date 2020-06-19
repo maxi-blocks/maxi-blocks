@@ -1562,27 +1562,6 @@ body.Bumblebee .maxi-default .maxi-divider {
     -ms-flex: 40%;
         flex: 40%; }
 
-.maxi-sidebar .components-input-control,
-.maxi-popover .components-input-control,
-.toolbar-item__popover .components-input-control {
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-align: center;
-      align-items: center;
-  -ms-flex-pack: justify;
-      justify-content: space-between; }
-  .maxi-sidebar .components-input-control__input,
-  .maxi-popover .components-input-control__input,
-  .toolbar-item__popover .components-input-control__input {
-    min-height: unset;
-    max-height: unset !important;
-    border-radius: 5px;
-    background-color: rgba(33, 141, 250, 0);
-    border: 2px solid #dddfe1;
-    font-size: 13px;
-    color: #464a53;
-    font-weight: 500; }
-
 .maxi-popover .components-popover__content {
   padding: 20px;
   min-width: 373px !important;
@@ -1718,8 +1697,11 @@ h2.gx_error {
 /*****************
 * Editor settings
 ******************/
-body.maxi-blocks--active .maxi-block[data-align="full"] .wp-block {
-  max-width: none; }
+body.maxi-blocks--active .block-editor-block-list__layout.is-root-container .maxi-block[data-align="full"] {
+  margin-left: auto;
+  margin-right: auto; }
+  body.maxi-blocks--active .block-editor-block-list__layout.is-root-container .maxi-block[data-align="full"] .wp-block {
+    max-width: none; }
 
 /*****************
 * Maxi Blocks
@@ -3603,3 +3585,18 @@ div.maxi-column-block {
     opacity: 0; }
   100% {
     opacity: 1; } }
+/**
+* Leave blank due to bug on CGB. Check it on:
+* https://github.com/ahmadawais/create-guten-block/issues/111
+*
+* Moved common styles to './src/css' 
+*/
+.maxi-container-block {
+  margin: auto; }
+  .maxi-container-block:hover {
+    outline: 1px solid grey; }
+  .maxi-container-block[data-align="full"] {
+    width: auto; }
+  .maxi-container-block .block-editor-inner-blocks,
+  .maxi-container-block .maxi-container-dropdown {
+    width: 100%; }

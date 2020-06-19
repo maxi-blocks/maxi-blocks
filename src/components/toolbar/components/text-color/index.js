@@ -1,7 +1,10 @@
 /**
  * WordPress dependencies
  */
-const { ColorPicker } = wp.components;
+const {
+    ColorPicker,
+    Icon,
+} = wp.components;
 
 /**
  * Internal dependencies
@@ -12,7 +15,7 @@ import ToolbarPopover from '../toolbar-popover';
  * Icons
  */
 import './editor.scss';
-import { toolbarStyle } from '../../../../icons';
+import { toolbarType } from '../../../../icons';
 
 /**
  * TextColor
@@ -38,14 +41,29 @@ const TextColor = props => {
         return `rgba(${val.rgb.r},${val.rgb.g},${val.rgb.b},${val.rgb.a})`;
     }
 
-    let value = typeof typography != 'object' ? 
+    let value = typeof typography != 'object' ?
         JSON.parse(typography) :
         typography;
 
     return (
         <ToolbarPopover
             className='toolbar-item__text-options'
-            icon={toolbarStyle}
+            icon={(
+                <div
+                    className='toolbar-item__text-options__icon'
+                    style={{
+                        background: value.general.color,
+                        borderWidth: '1px',
+                        borderColor: '#fff',
+                        borderStyle: 'solid',
+                    }}
+                >
+                    <Icon
+                        className='toolbar-item__text-options__inner-icon'
+                        icon={toolbarType}
+                    />
+                </div>
+            )}
             content={(
                 <ColorPicker
                     color={value.general.color}

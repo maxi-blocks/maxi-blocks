@@ -13,10 +13,19 @@ const ALLOWED_BLOCKS = [
     'maxi-blocks/image-maxi',
 ]
 
+const { Icon } = wp.components;
+
+/**
+ * Icons
+ */
+import {
+    toolbarBorder,
+} from '../../../../icons';
+
 const Border = props => {
     const {
         blockName,
-        border, 
+        border,
         onChange
     } = props;
 
@@ -31,10 +40,17 @@ const Border = props => {
                     className='toolbar-item__border__icon'
                     style={{
                         borderStyle: JSON.parse(border).general['border-style'],
+                        background: JSON.parse(border).general['border-color'],
                         borderWidth: '1px',
                         borderColor: '#fff'
                     }}
-                ></div>
+                >
+                    <Icon
+
+                        className='toolbar-item__border__inner-icon'
+                        icon={toolbarBorder}
+                    />
+                </div>
             )}
             content={(
                 <BorderControl

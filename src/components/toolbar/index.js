@@ -126,28 +126,13 @@ const MaxiToolbar = props => {
                         <Mover
                             clientId={clientId}
                         />
-                        <Alignment
-                            blockName={name}
-                            alignmentDesktop={alignmentDesktop}
-                            onChange={alignmentDesktop => setAttributes({ alignmentDesktop })}
-                        />
-                        <BackgroundColor
-                            blockName={name}
-                            background={background}
-                            onChange={background => setAttributes({ background })}
-                        />
-                        <Border
-                            blockName={name}
-                            border={border}
-                            onChange={border => setAttributes({ border })}
-                        />
                         <Divider
                             blockName={name}
                             showLine={showLine}
                             divider1={divider1}
                             divider2={divider2}
                             lineOrientation={lineOrientation}
-                            onChange={(showLine, divider1, divider2, lineOrientation) =>
+                            onChange={(showLine, divider1, divider2) =>
                                 setAttributes({
                                     showLine,
                                     divider1,
@@ -155,39 +140,7 @@ const MaxiToolbar = props => {
                                 })
                             }
                         />
-                        <ImageSize
-                            clientId={clientId}
-                            blockName={name}
-                            size={size}
-                            onChangeSize={size => setAttributes({ size })}
-                            width={width}
-                            onChangeWidth={width => setAttributes({ width })}
-                            mediaID={mediaID}
-                            fullWidth={fullWidth}
-                            onChangeFullWidth={fullWidth => setAttributes({ fullWidth })}
-                            isFirstOnHierarchy={isFirstOnHierarchy}
-                            onChangeCaption={captionType => setAttributes({ captionType })}
-                        />
-                        <Size
-                            clientId={clientId}
-                            blockName={name}
-                            size={size}
-                            onChangeSize={size => setAttributes({ size })}
-                            fullWidth={fullWidth}
-                            onChangeFullWidth={fullWidth => setAttributes({ fullWidth })}
-                            isFirstOnHierarchy={isFirstOnHierarchy}
-                        />
                         <TextOptions
-                            blockName={name}
-                            typography={typography}
-                            onChange={typography => setAttributes({ typography })}
-                        />
-                        <TextBold
-                            blockName={name}
-                            typography={typography}
-                            onChange={typography => setAttributes({ typography })}
-                        />
-                        <TextItalic
                             blockName={name}
                             typography={typography}
                             onChange={typography => setAttributes({ typography })}
@@ -196,6 +149,11 @@ const MaxiToolbar = props => {
                             blockName={name}
                             typography={typography}
                             onChange={typography => setAttributes({ typography })}
+                        />
+                        <Alignment
+                            blockName={name}
+                            alignmentDesktop={alignmentDesktop}
+                            onChange={alignmentDesktop => setAttributes({ alignmentDesktop })}
                         />
                         <TextLevel
                             blockName={name}
@@ -217,6 +175,16 @@ const MaxiToolbar = props => {
                                 })
                             }
                         />
+                        <TextBold
+                            blockName={name}
+                            typography={typography}
+                            onChange={typography => setAttributes({ typography })}
+                        />
+                        <TextItalic
+                            blockName={name}
+                            typography={typography}
+                            onChange={typography => setAttributes({ typography })}
+                        />
                         <ColumnPattern
                             clientId={clientId}
                             blockName={name}
@@ -227,6 +195,43 @@ const MaxiToolbar = props => {
                         <Link
                             linkSettings={linkSettings}
                             onChange={linkSettings => setAttributes({ linkSettings })}
+                        />
+                        <BackgroundColor
+                            blockName={name}
+                            background={background}
+                            onChange={background => setAttributes({ background })}
+                        />
+                        <Border
+                            blockName={name}
+                            border={border}
+                            onChange={border => setAttributes({ border })}
+                        />
+                        <ImageSize
+                            clientId={clientId}
+                            blockName={name}
+                            size={size}
+                            onChangeSize={size => setAttributes({ size })}
+                            width={width}
+                            onChangeWidth={width => setAttributes({ width })}
+                            mediaID={mediaID}
+                            fullWidth={fullWidth}
+                            onChangeFullWidth={fullWidth => setAttributes({ fullWidth })}
+                            isFirstOnHierarchy={isFirstOnHierarchy}
+                            onChangeCaption={captionType => setAttributes({ captionType })}
+                        />
+                        <BoxShadow
+                            blockName={name}
+                            boxShadow={boxShadow}
+                            onChange={boxShadow => setAttributes({ boxShadow })}
+                        />
+                        <Size
+                            clientId={clientId}
+                            blockName={name}
+                            size={size}
+                            onChangeSize={size => setAttributes({ size })}
+                            fullWidth={fullWidth}
+                            onChangeFullWidth={fullWidth => setAttributes({ fullWidth })}
+                            isFirstOnHierarchy={isFirstOnHierarchy}
                         />
                         <PaddingMargin
                             blockName={name}
@@ -239,16 +244,6 @@ const MaxiToolbar = props => {
                                 onChangeColumnGap(columnGap);
                                 setAttributes({ columnGap })
                             }}
-                        />
-                        <BoxShadow
-                            blockName={name}
-                            boxShadow={boxShadow}
-                            onChange={boxShadow => setAttributes({ boxShadow })}
-                        />
-                        <TextShadow
-                            blockName={name}
-                            typography={typography}
-                            onChange={typography => setAttributes({ typography })}
                         />
                         <Duplicate
                             clientId={clientId}

@@ -36,11 +36,9 @@ const attributes = {
     },
     alignmentTablet: {
         type: 'string',
-        default: 'center'
     },
     alignmentMobile: {
         type: 'string',
-        default: 'center'
     },
     captionType: {
         type: 'string',

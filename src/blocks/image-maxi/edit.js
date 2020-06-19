@@ -49,10 +49,6 @@ import {
  * Content
  */
 class edit extends GXBlock {
-    componentDidUpdate() {
-        this.displayStyles();
-    }
-
     get getWrapperWidth() {
         const target = document.getElementById(`block-${this.props.clientId}`);
         if (!target)
@@ -307,7 +303,7 @@ class edit extends GXBlock {
                             {!isNil(mediaID) && imageData ?
                                 <Fragment>
                                     <ResizableBox
-                                        className='maxi-image-block__resizer'
+                                        className='maxi-block__resizer maxi-image-block__resizer'
                                         size={{
                                             width: `${width}%`,
                                             height: '100%'

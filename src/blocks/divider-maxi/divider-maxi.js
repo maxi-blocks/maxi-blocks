@@ -22,6 +22,7 @@ import save from './save.js';
  * Styles and icons
  */
 import './style.scss';
+import './editor.scss';
 import { dividerIcon } from '../../icons';
 
 /**

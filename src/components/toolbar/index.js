@@ -18,6 +18,7 @@ import {
     BoxShadow,
     Mover,
     ColumnPattern,
+    Divider,
     Duplicate,
     Link,
     Delete,
@@ -77,7 +78,12 @@ const MaxiToolbar = props => {
             rowPattern,
             linkSettings,
             columnGap,
-            boxShadow
+            boxShadow,
+            showLine,
+            divider1,
+            divider2,
+            lineOrientation
+
         },
         clientId,
         isSelected,
@@ -134,6 +140,20 @@ const MaxiToolbar = props => {
                             blockName={name}
                             border={border}
                             onChange={border => setAttributes({ border })}
+                        />
+                        <Divider
+                            blockName={name}
+                            showLine={showLine}
+                            divider1={divider1}
+                            divider2={divider2}
+                            lineOrientation={lineOrientation}
+                            onChange={(showLine, divider1, divider2, lineOrientation) =>
+                                setAttributes({
+                                    showLine,
+                                    divider1,
+                                    divider2,
+                                })
+                            }
                         />
                         <ImageSize
                             clientId={clientId}

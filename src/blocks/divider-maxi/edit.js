@@ -3,6 +3,8 @@
  */
 const { Fragment } = wp.element;
 const { __experimentalBlock } = wp.blockEditor;
+const { ResizableBox } = wp.components;
+const { dispatch } = wp.data;
 
 /**
  * Internal dependencies
@@ -30,6 +32,7 @@ import {
  * Content
  */
 class edit extends GXBlock {
+
     get getObject() {
         let response = {
             [this.props.attributes.uniqueID]: this.getNormalObject,
@@ -135,7 +138,6 @@ class edit extends GXBlock {
 
     render() {
         const {
-            className,
             attributes: {
                 uniqueID,
                 blockStyle,
@@ -143,8 +145,12 @@ class edit extends GXBlock {
                 showLine,
                 lineOrientation,
                 extraClassName,
-                fullWidth
+                fullWidth,
+                size
             },
+            className,
+            clientId,
+            setAttributes
         } = this.props;
 
         let classes = classnames(
@@ -158,22 +164,67 @@ class edit extends GXBlock {
                 'maxi-divider-block--horizontal',
         );
 
+        let value = typeof size != 'object' ?
+            JSON.parse(size) :
+            size;
+
         return [
             <Inspector {...this.props} />,
-            <__experimentalToolbar {...this.props}/>,
-            <__experimentalBlock
-                className={classes}
-                data-gx_initial_block_class={defaultBlockStyle}
-                data-align={fullWidth}
+            <__experimentalToolbar {...this.props} />,
+            <ResizableBox
+                className={classnames(
+                    'maxi-block__resizer',
+                    'maxi-divider-block__resizer',
+                    `maxi-divider-block__resizer__${clientId}`
+                )}
+                defaultSize={{
+                    width: '100%',
+                    height: value.general.height + value.general.heightUnit
+                }}
+                enable={{
+                    top: true,
+                    right: false,
+                    bottom: true,
+                    left: false,
+                    topRight: false,
+                    bottomRight: false,
+                    bottomLeft: false,
+                    topLeft: false,
+                }}
+                onResizeStart={() => {
+                    setTimeout(() => {
+                        dispatch('core/editor').selectBlock(clientId)
+                    }, 100);
+                    value.general.heightUnit != 'px' ?
+                        (
+                            value.general.heightUnit = 'px',
+                            setAttributes({
+                                size: JSON.stringify(value)
+                            })
+                        ) :
+                        null
+                }}
+                onResizeStop={(event, direction, elt, delta) => {
+                    value.general.height = elt.getBoundingClientRect().height;
+                    setAttributes({
+                        size: JSON.stringify(value),
+                    });
+                }}
             >
-                {
-                    showLine === 'yes' &&
-                    <Fragment>
-                        <hr class="maxi-divider-block__divider-1" />
-                        <hr class="maxi-divider-block__divider-2" />
-                    </Fragment>
-                }
-            </__experimentalBlock>
+                <__experimentalBlock
+                    className={classes}
+                    data-gx_initial_block_class={defaultBlockStyle}
+                    data-align={fullWidth}
+                >
+                    {
+                        showLine === 'yes' &&
+                        <Fragment>
+                            <hr class="maxi-divider-block__divider-1" />
+                            <hr class="maxi-divider-block__divider-2" />
+                        </Fragment>
+                    }
+                </__experimentalBlock>
+            </ResizableBox>
         ];
     }
 }

@@ -1639,8 +1639,7 @@ button[class*="maxi-blocks"] .block-editor-block-types-list__item-icon {
   margin: auto;
   padding: 0;
   height: 45px;
-  width: 45px;
-  border: 2px solid #C1C1C1; }
+  width: 45px; }
 
 button[class*="maxi-blocks"] .block-editor-block-types-list__item-icon .block-editor-block-icon {
   margin: 6.5px auto !important; }
@@ -1742,6 +1741,48 @@ body.maxi-blocks--active .block-editor-block-list__layout.is-root-container .max
       min-height: 2rem; }
 
 .maxi-block:hover > .block-editor-inner-blocks:first-of-type > .block-editor-block-list__layout > .block-list-appender > .block-editor-inserter > .block-editor-button-block-appender {
+  visibility: visible;
+  opacity: 1; }
+
+/*****************
+* Maxi Blocks
+******************/
+.maxi-block:not(.maxi-row-block--empty) .block-editor-inner-blocks .block-editor-block-list__layout {
+  position: inherit; }
+  .maxi-block:not(.maxi-row-block--empty) .block-editor-inner-blocks .block-editor-block-list__layout .block-list-appender {
+    visibility: hidden;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+    margin: 0;
+    opacity: 0;
+    -webkit-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease; }
+    .maxi-block:not(.maxi-row-block--empty) .block-editor-inner-blocks .block-editor-block-list__layout .block-list-appender:hover {
+      visibility: visible;
+      opacity: 1; }
+    .maxi-block:not(.maxi-row-block--empty) .block-editor-inner-blocks .block-editor-block-list__layout .block-list-appender .block-editor-button-block-appender {
+      border-radius: 100%;
+      height: 1.5rem;
+      width: 1.5rem;
+      margin: auto;
+      padding: 0;
+      background: #1e1e1e; }
+      .maxi-block:not(.maxi-row-block--empty) .block-editor-inner-blocks .block-editor-block-list__layout .block-list-appender .block-editor-button-block-appender:hover, .maxi-block:not(.maxi-row-block--empty) .block-editor-inner-blocks .block-editor-block-list__layout .block-list-appender .block-editor-button-block-appender:focus {
+        outline: none;
+        -webkit-box-shadow: none;
+                box-shadow: none; }
+      .maxi-block:not(.maxi-row-block--empty) .block-editor-inner-blocks .block-editor-block-list__layout .block-list-appender .block-editor-button-block-appender svg {
+        fill: #fff;
+        stroke: #fff;
+        min-width: 2rem;
+        min-height: 2rem; }
+
+.maxi-block:not(.maxi-row-block--empty):hover .block-editor-inner-blocks .block-editor-block-list__layout .block-list-appender {
   visibility: visible;
   opacity: 1; }
 

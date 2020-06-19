@@ -21,14 +21,14 @@ import save from './save.js';
 /**
  * Icons
  */
-import { imageBox } from '../../icons';
+import { textIcon } from '../../icons';
 
 /**
  * Block
  */
 registerBlockType( 'maxi-blocks/text-maxi', {
 	title: __('Text Maxi', 'maxi-blocks'),
-	icon: imageBox,
+	icon: textIcon,
 	description: 'Insert, modify or style text',
 	category: 'maxi-blocks',
 	supports: {

@@ -162,11 +162,7 @@ class edit extends GXBlock {
             uniqueID,
             blockStyle,
             extraClassName,
-<<<<<<< Updated upstream
-            className
-=======
             className,
->>>>>>> Stashed changes
         );
 
         return [

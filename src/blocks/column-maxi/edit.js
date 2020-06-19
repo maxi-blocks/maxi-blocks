@@ -272,13 +272,6 @@ class edit extends GXBlock {
                                 // allowedBlocks={ALLOWED_BLOCKS}
                                 templateLock={false}
                                 renderAppender={
-<<<<<<< Updated upstream
-                                    !hasInnerBlock || isSelect() ?
-                                        () => (
-                                            <InnerBlocks.ButtonBlockAppender />
-                                        ) :
-                                        false
-=======
                                     !hasInnerBlock ?
                                         () => (
                                             <__experimentalBlockPlaceholder
@@ -290,7 +283,6 @@ class edit extends GXBlock {
                                                 <InnerBlocks.ButtonBlockAppender />
                                             ) :
                                             false
->>>>>>> Stashed changes
                                 }
                             />
                         </__experimentalBlock.div>

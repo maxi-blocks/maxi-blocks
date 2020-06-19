@@ -2,7 +2,7 @@
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults';
-import * as sectionAttibutesData from './data';
+import * as sectionAttributesData from './data';
 
 /**
  * Attributes
@@ -22,7 +22,7 @@ const attributes = {
     },
     size: {
         type: 'string',
-        default: JSON.stringify(sectionAttibutesData.size)
+        default: JSON.stringify(sectionAttributesData.size)
     },
     opacity: {
         type: 'number',
@@ -57,11 +57,11 @@ const attributes = {
     },
     margin: {
         type: 'string',
-        default: JSON.stringify(sectionAttibutesData.margin)
+        default: JSON.stringify(sectionAttributesData.margin)
     },
     padding: {
         type: 'string',
-        default: JSON.stringify(attributesData.padding)
+        default: JSON.stringify(sectionAttributesData.padding)
     },
     hoverAnimation: {
         type: 'string',

@@ -90,7 +90,7 @@
     }
 }
 
-.toolbar-item__popover { 
+.toolbar-item__popover {
     &:before,
     &:after {
         border-color: #232533 !important;
@@ -166,6 +166,7 @@
         border: none;
         min-width: 300px;
         padding: 12px;
+        overflow: visible;
     }
 
     &__wrapper {

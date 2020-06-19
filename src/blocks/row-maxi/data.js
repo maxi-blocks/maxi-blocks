@@ -25,7 +25,7 @@ export const margin = {
         "margin-right": "",
         "margin-bottom": 15,
         "margin-left": "",
-        "sync": true
+        "sync": false
     },
     "tablet": {
         "margin-top": "",

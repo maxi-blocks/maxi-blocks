@@ -43,7 +43,8 @@ const ColumnPatterns = props => {
         clientId, 
         blockName,
         rowPattern,
-        onChange
+        onChange,
+        onChangeColumnGap
     } = props;
 
     if (blockName != 'maxi-blocks/row-maxi')
@@ -147,6 +148,8 @@ const ColumnPatterns = props => {
 
         const newTemplate = synchronizeBlocksWithTemplate([], newTemplateContent);
         replaceInnerBlocks(clientId, newTemplate);
+
+        onChangeColumnGap(newAttributes.columnGap)
     }
 
     return (

@@ -323,7 +323,7 @@ class edit extends GXBlock {
                                             bottomLeft: true,
                                             topLeft: true,
                                         }}
-                                        onResize={(event, direction, elt, delta) => {
+                                        onResizeStop={(event, direction, elt, delta) => {
                                             const newScale = Number(((elt.getBoundingClientRect().width / this.getWrapperWidth) * 100).toFixed());
                                             setAttributes({
                                                 width: Number(newScale.toFixed()),

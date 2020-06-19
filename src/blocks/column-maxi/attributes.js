@@ -2,6 +2,7 @@
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults';
+import { padding } from './data';
 
 /**
  * Attributes
@@ -63,7 +64,7 @@ const attributes = {
     },
     padding: {
         type: 'string',
-        default: JSON.stringify(attributesData.padding)
+        default: JSON.stringify(padding)
     },
     hoverAnimation: {
         type: 'string',

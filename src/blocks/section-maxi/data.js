@@ -25,7 +25,7 @@ export const margin = {
         "margin-right": "",
         "margin-bottom": 15,
         "margin-left": "",
-        "sync": true
+        "sync": false
     },
     "tablet": {
         "margin-top": "",
@@ -39,6 +39,32 @@ export const margin = {
         "margin-right": "",
         "margin-bottom": "",
         "margin-left": "",
+        "sync": true
+    }
+};
+
+export const padding = {
+    "label": "Padding",
+    "unit": "px",
+    "desktop": {
+        "padding-top": 15,
+        "padding-right": "",
+        "padding-bottom": 15,
+        "padding-left": "",
+        "sync": false
+    },
+    "tablet": {
+        "padding-top": "",
+        "padding-right": "",
+        "padding-bottom": "",
+        "padding-left": "",
+        "sync": true
+    },
+    "mobile": {
+        "padding-top": "",
+        "padding-right": "",
+        "padding-bottom": "",
+        "padding-left": "",
         "sync": true
     }
 };

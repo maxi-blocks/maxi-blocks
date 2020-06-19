@@ -4,6 +4,7 @@ export { default as Border } from'./border';
 export { default as BoxShadow } from'./box-shadow';
 export { default as ColumnPattern } from'./column-pattern/';
 export { default as Delete } from'./delete/';
+export { default as Divider } from'./divider-line/';
 export { default as Mover } from'./mover/';
 export { default as Duplicate } from'./duplicate/';
 export { default as Favorite } from'./favorite/';

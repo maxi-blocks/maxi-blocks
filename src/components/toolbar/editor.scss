@@ -274,4 +274,42 @@
             }
         }
     }
+
+    .maxi-tabs-control {
+        width: 100%;
+
+        &__button {
+            background: transparent;
+            color: #fff;
+            border: 1px solid #80828a;
+            border-left: none;
+
+            &:first-of-type,
+            &[aria-pressed="true"] + button {
+                border-left: 1px solid #80828a;
+            }
+
+            &[aria-pressed="true"] {
+                background: #4c4e59;
+                border: none;
+                border-bottom: 2px solid #ff4a17;
+            }
+        }
+    }
+
+    .maxi-tabs-content {
+        width: 100%;
+
+        .components-base-control__field {
+            display: flex;
+        }
+
+        .components-base-control__label {
+            flex-basis: 100%;
+        }
+
+        input[type="number"] {
+            width: 2rem;
+        }
+    }
 }

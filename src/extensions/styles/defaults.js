@@ -97,7 +97,6 @@ export const typography = {
     },
     "general": {
         "color": "#9b9b9b",
-        // "text-align": "left"
     },
     "desktop": {
         "font-sizeUnit": "px",
@@ -118,8 +117,8 @@ export const typography = {
         "line-heightUnit": "px",
         "line-height": 26,
         "letter-spacingUnit": "px",
-        "letter-spacing": 0,
-        "font-weight": 400,
+        "letter-spacing": "",
+        "font-weight": "",
         "text-transform": "",
         "font-style": "",
         "text-decoration": "",
@@ -131,8 +130,8 @@ export const typography = {
         "line-heightUnit": "px",
         "line-height": 26,
         "letter-spacingUnit": "px",
-        "letter-spacing": 0,
-        "font-weight": 400,
+        "letter-spacing": "",
+        "font-weight": "",
         "text-transform": "",
         "font-style": "",
         "text-decoration": "",
@@ -159,17 +158,17 @@ export const border = {
             "sync": true
         },
         "tablet": {
-            "border-top-width": 0,
-            "border-right-width": 0,
-            "border-bottom-width": 0,
-            "border-left-width": 0,
+            "border-top-width": "",
+            "border-right-width": "",
+            "border-bottom-width": "",
+            "border-left-width": "",
             "sync": true
         },
         "mobile": {
-            "border-top-width": 0,
-            "border-right-width": 0,
-            "border-bottom-width": 0,
-            "border-left-width": 0,
+            "border-top-width": "",
+            "border-right-width": "",
+            "border-bottom-width": "",
+            "border-left-width": "",
             "sync": true
         }
     },
@@ -185,17 +184,17 @@ export const border = {
             "sync": true
         },
         "tablet": {
-            "border-top-left-radius": 0,
-            "border-top-right-radius": 0,
-            "border-bottom-right-radius": 0,
-            "border-bottom-left-radius": 0,
+            "border-top-left-radius": "",
+            "border-top-right-radius": "",
+            "border-bottom-right-radius": "",
+            "border-bottom-left-radius": "",
             "sync": true
         },
         "mobile": {
-            "border-top-left-radius": 0,
-            "border-top-right-radius": 0,
-            "border-bottom-right-radius": 0,
-            "border-bottom-left-radius": 0,
+            "border-top-left-radius": "",
+            "border-top-right-radius": "",
+            "border-bottom-right-radius": "",
+            "border-bottom-left-radius": "",
             "sync": true
         }
     }
@@ -338,7 +337,6 @@ export const typographyHover = {
     "options": {},
     "general": {
         "color": "",
-        // "text-align": ""
     },
     "desktop": {
         "font-sizeUnit": "px",
@@ -445,14 +443,14 @@ export const borderHover = {
 export const __experimentalDivider1 = {
     "label": "Divider",
     "general": {
-        "border-color": "#000",
+        "border-color": "#ff4a17",
         "border-style": "solid",
         "widthUnit": "%",
-        "width": "90",
+        "width": 9,
         "heightUnit": "px",
         "height": "",
         "border-top-widthUnit": "px",
-        "border-top-width": 1,
+        "border-top-width": 2,
         "border-right-widthUnit": "px",
         "border-right-width": "",
         "border-radius": "",

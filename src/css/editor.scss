@@ -34,12 +34,33 @@ h2.gx_error {
 ******************/
 body.maxi-blocks--active {
 	.block-editor-block-list__layout.is-root-container {
-		.maxi-block[data-align="full"] {
-			margin-left: auto;
-			margin-right: auto;
+		.maxi-block {
+			&[data-align="full"] {
+				margin-left: auto;
+				margin-right: auto;
 
-			.wp-block {
-				max-width: none;
+				.wp-block {
+					max-width: none;
+				}
+			}
+
+			&__resizer {
+				.components-resizable-box__handle {
+					display: none;
+					visibility: hidden;
+
+					&:before,
+					&:after {
+						background: #ff4a17;
+					}
+				}
+
+				&:hover {
+					.components-resizable-box__handle {
+						display: block;
+						visibility: visible;
+					}
+				}
 			}
 		}
 	}

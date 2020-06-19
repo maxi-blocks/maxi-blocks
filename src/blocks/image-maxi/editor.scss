@@ -16,22 +16,6 @@
 				}
 			}
 		}
-
-		.components-resizable-box__handle {
-			display: none;
-			visibility: hidden;
-
-			&:after {
-				background: #ff4a17;
-			}
-		}
-
-		&:hover {
-			.components-resizable-box__handle {
-				display: block;
-				visibility: visible;
-			}
-		}
 	}
 
 	&__settings {

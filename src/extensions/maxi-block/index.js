@@ -11,7 +11,6 @@ const {
     dispatch,
     select,
 } = wp.data;
-const apiFetch = wp.apiFetch;
 
 /**
  * Internal dependencies

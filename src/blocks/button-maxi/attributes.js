@@ -22,11 +22,9 @@ const attributes = {
     },
     alignmentTablet: {
         type: 'string',
-        default: 'center'
     },
     alignmentMobile: {
         type: 'string',
-        default: 'center'
     },
     typography: {
         type: 'string',

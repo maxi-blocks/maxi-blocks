@@ -216,6 +216,7 @@ class edit extends GXBlock {
                     rowBlockWidth != 0 &&
                     <ResizableBox
                         className={classnames(
+                            'maxi-block__resizer',
                             "maxi-column-block__resizer",
                             `maxi-column-block__resizer__${clientId}`,
                             columnPosition

@@ -4,42 +4,10 @@
 const { SVG, Path } = wp.primitives;
 
 const library = (
-    <SVG
-      id="maxi__Layer_1"
-      x={0}
-      y={0}
-      viewBox="0 0 45 38"
-      xmlSpace="preserve"
-    >
-      <g id="maxi__Layer0_11_MEMBER_0_FILL" fill="#ff4a17">
-        <Path
-          className="maxi__part0"
-          d="M22.5 39.2v-5l-7.8-8.1v5l7.8 8.1m-9-32.3h9V3.3H9.9l3.6 3.6M5.4 21.6V6.3L.2 16.2l5.2 5.4z"
-        />
-        <Path
-          className="maxi__part1"
-          d="M13.7 18.8l8.8 8.8V17.2L6.4 1.1v29l7.4 7.4V18.8z"
-        />
-        <Path
-          className="maxi__part2"
-          d="M14.7 26.2v-5l7.8 7.8.7-.7-.7-.7-8.8-8.8v19.5h.9V26.2M9.9 3.3L5.4-1.2V30h.9V1l16.1 16.1.7-.7-9.6-9.6-3.6-3.5z"
-        />
-      </g>
-      <g id="maxi__Layer0_11_MEMBER_1_FILL" fill="#ff4a17">
-        <Path
-          className="maxi__part0"
-          d="M22.5 34.2v5l7.8-8.1v-5l-7.8 8.1M39.6 6.3v15.3l5.2-5.4-5.2-9.9m-17.1.6h9L35 3.3H22.5v3.6z"
-        />
-        <Path
-          className="maxi__part2"
-          d="M31.5 6.9l-9.6 9.6.7.7 16-16.1v29h.9V-1.2L35 3.3l-3.5 3.6m-9 22.1l7.8-7.8v17.2h.9V18.8l-8.8 8.8-.7.7.8.7z"
-        />
-        <Path
-          className="maxi__part1"
-          d="M22.5 27.6l8.8-8.8v18.6l7.4-7.4V1L22.5 17.2v10.4z"
-        />
-      </g>
-    </SVG>
+  <SVG xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <Path fill="#0e151b" d="M7.8 15.3V18l4.2 4.3 4.2-4.3v-2.7L12 19.6l-4.2-4.3M.1 10l2.8 2.9V4.7L.1 10m16.6-4.9l1.9-2H5.3l2 2h9.4m4.4 7.8l2.8-2.9-2.8-5.3v8.2z"/>
+    <Path fill="#f04f26" d="M20.6 17.4V1.9L12 10.5l-.1-.1L3.4 2v15.5l3.9 3.8v-9.9L12 16v.1l4.7-4.7v9.9l3.9-3.9z"/>
+  </SVG>
 )
 
 export default library;

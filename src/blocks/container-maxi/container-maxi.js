@@ -22,7 +22,7 @@ import save from './save';
  */
 import './style.scss';
 import './editor.scss';
-import { imageBox } from '../../icons';
+import { containerIcon } from '../../icons';
 
 /**
  * Block
@@ -30,7 +30,7 @@ import { imageBox } from '../../icons';
 
 registerBlockType('maxi-blocks/container-maxi', {
 	title: __('Container Maxi', 'maxi-blocks'),
-	icon: imageBox,
+	icon: containerIcon,
 	description: "Group of blocks composed with a similar style or layout",
 	category: 'maxi-blocks',
 	supports: {

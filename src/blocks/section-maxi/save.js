@@ -36,12 +36,12 @@ const save = props => {
         classes = classnames(classes, uniqueID);
 
     return (
-        <div
+        <section
             className={classes}
             data-gx_initial_block_class={defaultBlockStyle}
         >
             <InnerBlocks.Content />
-        </div>
+        </section>
     );
 }
 

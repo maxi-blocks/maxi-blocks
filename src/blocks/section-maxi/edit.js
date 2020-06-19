@@ -150,6 +150,7 @@ class edit extends GXBlock {
                 data-gx_initial_block_class={defaultBlockStyle}
                 className={classes}
                 data-align={fullWidth}
+                tagName='section'
             >
                 <InnerBlocks
                     templateLock={false}

@@ -234,10 +234,10 @@ const Inspector = props => {
                                                         value={padding}
                                                         onChange={padding => setAttributes({ padding })}
                                                     />
-                                                    <DimensionsControl
+                                                    {/* <DimensionsControl
                                                         value={margin}
                                                         onChange={margin => setAttributes({ margin })}
-                                                    />
+                                                    /> */}
                                                 </Fragment>
                                             )
                                         }

@@ -2,8 +2,8 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { Fragment } = wp.element;
 const { InspectorControls } = wp.blockEditor;
+const { Fragment } = wp.element;
 const {
     SelectControl,
     RangeControl,
@@ -59,6 +59,7 @@ const Inspector = props => {
             zIndex
         },
         setAttributes,
+        onChangeColumnGap
     } = props;
 
     return (
@@ -89,7 +90,11 @@ const Inspector = props => {
                                                     <RangeControl
                                                         label={__('Column gap', 'maxi-blocks')}
                                                         value={columnGap}
-                                                        onChange={columnGap => setAttributes({ columnGap })}
+                                                        onChange={columnGap => {
+                                                            onChangeColumnGap(columnGap);
+                                                            setAttributes({ columnGap })
+                                                        }
+                                                        }
                                                         step={.1}
                                                         min={0}
                                                         max={5}

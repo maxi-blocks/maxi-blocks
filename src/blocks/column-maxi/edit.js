@@ -53,22 +53,8 @@ class edit extends GXBlock {
     }
 
     componentDidUpdate() {
-        // this.spaceChecker();
         this.setResizeHandleStyles();
         this.displayStyles();
-    }
-
-    spaceChecker() {
-        if (isNil(this.props.attributes.originalNestedColumns))
-            return;
-
-        let totalSize = [];
-        this.props.originalNestedColumns.map(columnId => {
-            totalSize.push(select('core/block-editor').getBlockAttributes(columnId).columnSize);
-        })
-
-        if (round(sum(totalSize)) != round(this.props.getRowPerCentWOMargin()))
-            this.props.redistributeColumnsSize(this.props.attributes.columnSize)
     }
 
     setResizeHandleStyles() {
@@ -79,7 +65,7 @@ class edit extends GXBlock {
         } = this.props;
 
         const value = (columnGap * rowBlockWidth) / 100;
-        const node = document.querySelector(`.maxi-column-block__resizer__${clientId} .components-resizable-box__handle`);
+        const node = document.querySelector(`.maxi-column-block__resizer__${clientId} > span > .components-resizable-box__handle`);
         if (!isNil(node))
             node.style.transform = `translateX(${value}px)`;
     }
@@ -356,7 +342,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
     }
 
     const getRowPerCentWOMargin = () => {
-        return ((100 - (nestedColumnsNum - 1) * columnGap * 2));
+        return ((100 - ((nestedColumnsNum - 1) * columnGap) * 2));
     }
 
     const getResizePerCent = (delta, originalWidth) => {

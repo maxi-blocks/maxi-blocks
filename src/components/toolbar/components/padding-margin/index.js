@@ -12,6 +12,11 @@ import DimensionsControl from '../../../dimensions-control';
 import ToolbarPopover from '../toolbar-popover';
 
 /**
+ * External dependencies
+ */
+import { isNumber } from 'lodash';
+
+/**
  * Icons
  */
 import { toolbarPadding } from '../../../../icons';
@@ -20,14 +25,15 @@ import { toolbarPadding } from '../../../../icons';
  * PaddingMargin
  */
 const PaddingMargin = props => {
-    const { 
+    const {
+        blockName,
         margin,
         onChangeMargin,
         padding,
         onChangePadding,
         columnGap,
         onChangeColumnGap
-     } = props;
+    } = props;
 
     return (
         <ToolbarPopover
@@ -39,12 +45,15 @@ const PaddingMargin = props => {
                         value={padding}
                         onChange={padding => onChangePadding(padding)}
                     />
-                    <DimensionsControl
-                        value={margin}
-                        onChange={margin => onChangeMargin(margin)}
-                    />
                     {
-                        columnGap &&
+                        blockName != 'maxi-blocks/column-maxi' &&
+                        <DimensionsControl
+                            value={margin}
+                            onChange={margin => onChangeMargin(margin)}
+                        />
+                    }
+                    {
+                        isNumber(columnGap) &&
                         <RangeControl
                             label={__('Column gap', 'maxi-blocks')}
                             value={columnGap}

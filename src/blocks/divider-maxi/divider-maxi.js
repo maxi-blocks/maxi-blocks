@@ -22,14 +22,14 @@ import save from './save.js';
  * Styles and icons
  */
 import './style.scss';
-import { imageBox } from '../../icons';
+import { dividerIcon } from '../../icons';
 
 /**
  * Block
  */
 registerBlockType( 'maxi-blocks/divider-maxi', {
 	title: __('Divider Maxi', 'maxi-blocks'),
-	icon: imageBox,
+	icon: dividerIcon,
 	description: "Create a horizontal divider between visual elements",
 	category: 'maxi-blocks',
 	supports: {

@@ -1,6 +1,6 @@
 .maxi-block-placeholder {
     background: #DDDFE1;
-    padding: 1.75rem 0;
+    // padding: 1.75rem 0;
     border: 1px solid #93959b;
     border-radius: 5px;
     margin: -15px 0;
@@ -10,12 +10,13 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        line-height: 3rem !important;
         font-family: 'Roboto',sans-serif !important;
-        font-size: 26pt !important;
+        font-size: 16px !important;
     }
 
     .block-editor-inserter{
+        display: block;
+        margin: 28px 0;
         width: 100%;
     }
 

@@ -3,6 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { ButtonBlockerAppender } = wp.blockEditor;
+const { dispatch } = wp.data;
 
 /**
  * External dependencies
@@ -32,6 +33,7 @@ const BlockPlaceholder = props => {
     return (
         <div
             className={classes}
+            onClick={() => dispatch('core/editor').selectBlock(clientId)}
         >
             <p
                 className='maxi-block-placeholder__text'

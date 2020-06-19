@@ -1562,27 +1562,6 @@ body.Bumblebee .maxi-default .maxi-divider {
     -ms-flex: 40%;
         flex: 40%; }
 
-.maxi-sidebar .components-input-control,
-.maxi-popover .components-input-control,
-.toolbar-item__popover .components-input-control {
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-align: center;
-      align-items: center;
-  -ms-flex-pack: justify;
-      justify-content: space-between; }
-  .maxi-sidebar .components-input-control__input,
-  .maxi-popover .components-input-control__input,
-  .toolbar-item__popover .components-input-control__input {
-    min-height: unset;
-    max-height: unset !important;
-    border-radius: 5px;
-    background-color: rgba(33, 141, 250, 0);
-    border: 2px solid #dddfe1;
-    font-size: 13px;
-    color: #464a53;
-    font-weight: 500; }
-
 .maxi-popover .components-popover__content {
   padding: 20px;
   min-width: 373px !important;
@@ -1660,8 +1639,7 @@ button[class*="maxi-blocks"] .block-editor-block-types-list__item-icon {
   margin: auto;
   padding: 0;
   height: 45px;
-  width: 45px;
-  border: 2px solid #C1C1C1; }
+  width: 45px; }
 
 button[class*="maxi-blocks"] .block-editor-block-types-list__item-icon .block-editor-block-icon {
   margin: 6.5px auto !important; }
@@ -1720,6 +1698,48 @@ h2.gx_error {
 ******************/
 body.maxi-blocks--active .maxi-block[data-align="full"] .wp-block {
   max-width: none; }
+
+/*****************
+* Maxi Blocks
+******************/
+.maxi-block:not(.maxi-row-block--empty) .block-editor-inner-blocks .block-editor-block-list__layout {
+  position: inherit; }
+  .maxi-block:not(.maxi-row-block--empty) .block-editor-inner-blocks .block-editor-block-list__layout .block-list-appender {
+    visibility: hidden;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+    margin: 0;
+    opacity: 0;
+    -webkit-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease; }
+    .maxi-block:not(.maxi-row-block--empty) .block-editor-inner-blocks .block-editor-block-list__layout .block-list-appender:hover {
+      visibility: visible;
+      opacity: 1; }
+    .maxi-block:not(.maxi-row-block--empty) .block-editor-inner-blocks .block-editor-block-list__layout .block-list-appender .block-editor-button-block-appender {
+      border-radius: 100%;
+      height: 1.5rem;
+      width: 1.5rem;
+      margin: auto;
+      padding: 0;
+      background: #1e1e1e; }
+      .maxi-block:not(.maxi-row-block--empty) .block-editor-inner-blocks .block-editor-block-list__layout .block-list-appender .block-editor-button-block-appender:hover, .maxi-block:not(.maxi-row-block--empty) .block-editor-inner-blocks .block-editor-block-list__layout .block-list-appender .block-editor-button-block-appender:focus {
+        outline: none;
+        -webkit-box-shadow: none;
+                box-shadow: none; }
+      .maxi-block:not(.maxi-row-block--empty) .block-editor-inner-blocks .block-editor-block-list__layout .block-list-appender .block-editor-button-block-appender svg {
+        fill: #fff;
+        stroke: #fff;
+        min-width: 2rem;
+        min-height: 2rem; }
+
+.maxi-block:not(.maxi-row-block--empty):hover .block-editor-inner-blocks .block-editor-block-list__layout .block-list-appender {
+  visibility: visible;
+  opacity: 1; }
 
 /****************
 * Gutenberg Panel
@@ -3512,3 +3532,18 @@ div.maxi-column-block {
     opacity: 0; }
   100% {
     opacity: 1; } }
+/**
+* Leave blank due to bug on CGB. Check it on:
+* https://github.com/ahmadawais/create-guten-block/issues/111
+*
+* Moved common styles to './src/css' 
+*/
+.maxi-container-block {
+  margin: auto; }
+  .maxi-container-block:hover {
+    outline: 1px solid grey; }
+  .maxi-container-block[data-align="full"] {
+    width: auto; }
+  .maxi-container-block .block-editor-inner-blocks,
+  .maxi-container-block .maxi-container-dropdown {
+    width: 100%; }

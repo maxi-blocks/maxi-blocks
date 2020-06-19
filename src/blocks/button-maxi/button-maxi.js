@@ -22,14 +22,14 @@ import save from './save.js';
  * Styles and icons
  */
 import './style.scss';
-import { imageBox } from '../../icons';
+import { buttonIcon } from '../../icons';
 
 /**
  * Block
  */
 registerBlockType( 'maxi-blocks/button-maxi', {
 	title: __('Button Maxi', 'maxi-blocks'),
-	icon: imageBox,
+	icon: buttonIcon,
 	description: "Insert, modify or style a button",
 	category: 'maxi-blocks',
 	supports: {

@@ -27,18 +27,13 @@ import { imageBox } from '../../icons';
  * Block
  */
 registerBlockType( 'maxi-blocks/text-maxi', {
-	title: __('Text Maxi Sure!', 'maxi-blocks'),
+	title: __('Text Maxi', 'maxi-blocks'),
 	icon: imageBox,
 	description: 'Insert, modify or style text',
 	category: 'maxi-blocks',
-	// supports: {
-	// 	align: false,
-	// 	lightBlockWrapper: true
-	// },
 	supports: {
-		className: false,
 		align: false,
-		lightBlockWrapper: true,
+		lightBlockWrapper: true
 	},
 	attributes: {
 		...attributes

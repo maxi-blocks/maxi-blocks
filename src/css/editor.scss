@@ -33,8 +33,15 @@ h2.gx_error {
 * Editor settings
 ******************/
 body.maxi-blocks--active {
-	.maxi-block[data-align="full"] .wp-block {
-		max-width: none;
+	.block-editor-block-list__layout.is-root-container {
+		.maxi-block[data-align="full"] {
+			margin-left: auto;
+			margin-right: auto;
+
+			.wp-block {
+				max-width: none;
+			}
+		}
 	}
 }
 
@@ -86,7 +93,7 @@ body.maxi-blocks--active {
 			}
 		}
 	}
-	
+
 	&:hover {
 		> .block-editor-inner-blocks:first-of-type {
 			> .block-editor-block-list__layout {

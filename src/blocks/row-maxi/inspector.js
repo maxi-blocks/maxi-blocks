@@ -37,7 +37,8 @@ const Inspector = props => {
             blockStyle,
             defaultBlockStyle,
             columnGap,
-            syncStyles,
+            wrapTablet,
+            wrapMobile,
             horizontalAlign,
             verticalAlign,
             opacity,
@@ -100,20 +101,28 @@ const Inspector = props => {
                                                         max={5}
                                                     />
                                                     <CheckBoxControl
-                                                        label={__('Syncronize Styles', 'maxi-blocks')}
-                                                        checked={syncStyles}
-                                                        onChange={syncStyles => setAttributes({ syncStyles })}
+                                                        label={__('Wrap on Mobile', 'maxi-blocks')}
+                                                        checked={wrapMobile}
+                                                        onChange={wrapMobile => setAttributes({ wrapMobile })}
                                                     />
-                                                    <SelectControl
+                                                    {
+                                                        !wrapMobile &&
+                                                        <CheckBoxControl
+                                                            label={__('Wrap on Tablet', 'maxi-blocks')}
+                                                            checked={wrapTablet}
+                                                            onChange={wrapTablet => setAttributes({ wrapTablet })}
+                                                        />
+                                                    }
+                                                    {/* <SelectControl
                                                         label={__('Horizontal align', 'maxi-blocks')}
                                                         value={horizontalAlign}
                                                         options={
                                                             [
-                                                                { label: 'Flex-start', value: 'flex-start' },
-                                                                { label: 'Flex-end', value: 'flex-end' },
-                                                                { label: 'Center', value: 'center' },
-                                                                { label: 'Space between', value: 'space-between' },
-                                                                { label: 'Space around', value: 'space-around' },
+                                                                { label: __('Flex-start', 'maxi-blocks'), value: 'flex-start' },
+                                                                { label: __('Flex-end', 'maxi-blocks'), value: 'flex-end' },
+                                                                { label: __('Center', 'maxi-blocks'), value: 'center' },
+                                                                { label: __('Space between', 'maxi-blocks'), value: 'space-between' },
+                                                                { label: __('Space around', 'maxi-blocks'), value: 'space-around' },
                                                             ]
                                                         }
                                                         onChange={horizontalAlign => setAttributes({ horizontalAlign })}
@@ -123,16 +132,16 @@ const Inspector = props => {
                                                         value={verticalAlign}
                                                         options={
                                                             [
-                                                                { label: 'Stretch', value: 'stretch' },
-                                                                { label: 'Flex-start', value: 'flex-start' },
-                                                                { label: 'Flex-end', value: 'flex-end' },
-                                                                { label: 'Center', value: 'center' },
-                                                                { label: 'Space between', value: 'space-between' },
-                                                                { label: 'Space around', value: 'space-around' },
+                                                                { label: __('Stretch', 'maxi-blocks'), value: 'stretch' },
+                                                                { label: __('Flex-start', 'maxi-blocks'), value: 'flex-start' },
+                                                                { label: __('Flex-end', 'maxi-blocks'), value: 'flex-end' },
+                                                                { label: __('Center', 'maxi-blocks'), value: 'center' },
+                                                                { label: __('Space between', 'maxi-blocks'), value: 'space-between' },
+                                                                { label: __('Space around', 'maxi-blocks'), value: 'space-around' },
                                                             ]
                                                         }
                                                         onChange={verticalAlign => setAttributes({ verticalAlign })}
-                                                    />
+                                                    /> */}
                                                 </Fragment>
                                             )
                                         },
@@ -217,7 +226,7 @@ const Inspector = props => {
                                             )
                                         },
                                         {
-                                            label: __('Width & Height', 'maxi-blocks'),
+                                            label: __('Sizing', 'maxi-blocks'),
                                             content: (
                                                 <Fragment>
                                                     {

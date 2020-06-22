@@ -1395,7 +1395,7 @@ body.Bumblebee .maxi-default .maxi-divider {
 .maxi-sidebar .components-base-control,
 .maxi-popover .components-base-control,
 .toolbar-item__popover .components-base-control {
-  margin-bottom: 7px !important; }
+  margin-bottom: 10px !important; }
   .maxi-sidebar .components-base-control:last-child,
   .maxi-popover .components-base-control:last-child,
   .toolbar-item__popover .components-base-control:last-child {
@@ -1885,21 +1885,25 @@ div.maxi-row-block {
   margin: auto; }
   div.maxi-row-block:hover {
     outline: 1px solid grey; }
+    div.maxi-row-block:hover .maxi-column-block__resizer .components-resizable-box__handle {
+      display: block !important;
+      visibility: visible !important; }
   div.maxi-row-block[data-align="full"] {
     width: auto; }
   div.maxi-row-block .block-editor-inner-blocks,
   div.maxi-row-block .block-list-appender,
   div.maxi-row-block .maxi-row-dropdown {
-    width: 100%; }
+    width: 100%;
+    height: 100%; }
   div.maxi-row-block .maxi-row-appender-button {
     display: block;
     width: 100%; }
   div.maxi-row-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout {
     display: -ms-flexbox;
     display: flex; }
-    div.maxi-row-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout > div.maxi-column-left {
+    div.maxi-row-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout > div.maxi-column-block--left {
       margin-left: 0 !important; }
-    div.maxi-row-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout > div.maxi-column-right {
+    div.maxi-row-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout > div.maxi-column-block--right {
       margin-right: 0 !important; }
     div.maxi-row-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout > div.block-list-appender {
       margin: 0; }
@@ -2269,62 +2273,62 @@ div.maxi-row-block {
 *
 * Moved common styles to './src/css' 
 */
-.maxi-tabs-control {
-  display: -ms-flexbox;
-  display: flex;
-  padding-top: 0; }
-  .maxi-tabs-control:not(.maxi-tabs-control--disable-padding) {
-    margin-bottom: 10px; }
-  .maxi-tabs-control__button {
+.maxi-settingstab-control {
+  width: 100%; }
+  .maxi-settingstab-control .maxi-tabs-control {
     display: -ms-flexbox;
     display: flex;
-    -ms-flex-direction: column;
-        flex-direction: column;
-    width: 50%;
-    height: auto;
-    font-size: 13px;
-    color: #000;
-    font-weight: 500;
-    text-align: center;
-    border-bottom: 2px solid #e8eaeb;
-    border-radius: 0;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 0; }
+    .maxi-settingstab-control .maxi-tabs-control:not(.maxi-tabs-control--disable-padding) {
+      margin-bottom: 10px; }
+    .maxi-settingstab-control .maxi-tabs-control__button {
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-direction: column;
+          flex-direction: column;
+      width: 50%;
+      height: auto;
+      font-size: 13px;
+      color: #000;
+      font-weight: 500;
+      text-align: center;
+      border-bottom: 2px solid #e8eaeb;
+      border-radius: 0;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      background-color: #fff; }
+      .maxi-settingstab-control .maxi-tabs-control__button:hover {
+        cursor: pointer;
+        color: #000; }
+      .maxi-settingstab-control .maxi-tabs-control__button:focus {
+        -webkit-box-shadow: none !important;
+                box-shadow: none !important;
+        outline: none !important; }
+      .maxi-settingstab-control .maxi-tabs-control__button:hover, .maxi-settingstab-control .maxi-tabs-control__button:active, .maxi-settingstab-control .maxi-tabs-control__button:focus {
+        background: #f2f2f2; }
+      .maxi-settingstab-control .maxi-tabs-control__button[aria-pressed="true"] {
+        background-color: #f2f2f2;
+        border-bottom: 2px solid #ff4a17; }
+  .maxi-settingstab-control .maxi-tabs-content:not(.maxi-tabs-content--disable-padding) {
+    padding-top: 12px !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    padding-bottom: 12px !important;
     background-color: #fff; }
-    .maxi-tabs-control__button:hover {
-      cursor: pointer;
-      color: #000; }
-    .maxi-tabs-control__button:focus {
-      -webkit-box-shadow: none !important;
-              box-shadow: none !important;
-      outline: none !important; }
-    .maxi-tabs-control__button:hover, .maxi-tabs-control__button:active, .maxi-tabs-control__button:focus {
-      background: #f2f2f2; }
-    .maxi-tabs-control__button[aria-pressed="true"] {
-      background-color: #f2f2f2;
-      border-bottom: 2px solid #ff4a17; }
-
-.maxi-tabs-content:not(.maxi-tabs-content--disable-padding) {
-  padding-top: 12px !important;
-  padding-left: 12px !important;
-  padding-right: 12px !important;
-  padding-bottom: 12px !important;
-  background-color: #fff; }
-
-.maxi-tabs-content .maxi-tab-content {
-  display: none; }
-  .maxi-tabs-content .maxi-tab-content .maxi-tab-content__box {
-    padding: 16px 10px 10px;
-    background-color: #fff;
-    margin-bottom: 10px;
-    border-top: 2px solid #e8eaeb;
-    border-bottom: 1px solid #e8eaeb; }
-    .maxi-tabs-content .maxi-tab-content .maxi-tab-content__box .components-base-control__label {
-      -ms-flex: none;
-          flex: none;
-      width: 50%; }
-  .maxi-tabs-content .maxi-tab-content--selected {
-    display: block; }
+  .maxi-settingstab-control .maxi-tabs-content .maxi-tab-content {
+    display: none; }
+    .maxi-settingstab-control .maxi-tabs-content .maxi-tab-content .maxi-tab-content__box {
+      padding: 16px 10px 10px;
+      background-color: #fff;
+      margin-bottom: 10px;
+      border-top: 2px solid #e8eaeb;
+      border-bottom: 1px solid #e8eaeb; }
+      .maxi-settingstab-control .maxi-tabs-content .maxi-tab-content .maxi-tab-content__box .components-base-control__label {
+        -ms-flex: none;
+            flex: none;
+        width: 50%; }
+    .maxi-settingstab-control .maxi-tabs-content .maxi-tab-content--selected {
+      display: block; }
 /**
 * Leave blank due to bug on CGB. Check it on:
 * https://github.com/ahmadawais/create-guten-block/issues/111
@@ -2766,6 +2770,15 @@ div.maxi-row-block {
 *
 * Moved common styles to './src/css' 
 */
+.maxi-fullsize-control .maxi-tabs-control {
+  margin-left: -12px;
+  margin-right: -12px; }
+/**
+* Leave blank due to bug on CGB. Check it on:
+* https://github.com/ahmadawais/create-guten-block/issues/111
+*
+* Moved common styles to './src/css' 
+*/
 .maxi-textshadow-control__default__total {
   text-shadow: 0px 0px 5px #A2A2A2; }
 
@@ -2870,6 +2883,24 @@ div.maxi-row-block {
 .toolbar-item__popover .block-editor-link-control__settings {
   border-top: 0;
   padding: 0 18px 15px 18px; }
+/**
+* Leave blank due to bug on CGB. Check it on:
+* https://github.com/ahmadawais/create-guten-block/issues/111
+*
+* Moved common styles to './src/css' 
+*/
+.toolbar-item__popover__dropdown-options__advanced-button {
+  background-color: #ff4a17;
+  border-radius: 50%;
+  position: absolute;
+  top: -18px;
+  right: -18px;
+  min-width: 32px !important;
+  padding: 0 !important;
+  height: 32px; }
+  .toolbar-item__popover__dropdown-options__advanced-button svg {
+    fill: #fff;
+    width: 20px; }
 /**
 * Leave blank due to bug on CGB. Check it on:
 * https://github.com/ahmadawais/create-guten-block/issues/111
@@ -3030,16 +3061,6 @@ div.maxi-row-block {
         border-top-left-radius: 5px;
         border-bottom-left-radius: 5px;
         padding-left: 2px; }
-    .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item__text-options .toolbar-item__icon, .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item__border .toolbar-item__icon {
-      display: -ms-flexbox;
-      display: flex;
-      -ms-flex-pack: center;
-          justify-content: center;
-      -ms-flex-align: center;
-          align-items: center; }
-      .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item__text-options .toolbar-item__icon svg, .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item__border .toolbar-item__icon svg {
-        width: 10px;
-        height: auto; }
     .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item__button {
       display: block;
       width: 100%;
@@ -3059,8 +3080,7 @@ div.maxi-row-block {
   border-right-color: transparent !important; }
 
 .toolbar-item__popover .components-base-control__field {
-  color: #fff;
-  margin-bottom: 0; }
+  color: #fff; }
   .toolbar-item__popover .components-base-control__field .components-range-control__slider + span {
     background: #80828a !important; }
   .toolbar-item__popover .components-base-control__field .components-range-control__track + span span {
@@ -3097,12 +3117,8 @@ div.maxi-row-block {
   border-radius: 5px;
   border: none;
   min-width: 300px;
-  padding: 15px;
+  padding: 12px;
   overflow: visible; }
-  .toolbar-item__popover .components-popover__content .maxi-colorcontrol {
-    margin-bottom: 10px; }
-  .toolbar-item__popover .components-popover__content > .components-base-control:nth-last-child(2) {
-    margin-bottom: 0 !important; }
 
 .toolbar-item__popover__wrapper {
   display: -ms-flexbox;
@@ -3168,18 +3184,6 @@ div.maxi-row-block {
 .toolbar-item__popover__dropdown-options {
   display: -ms-flexbox;
   display: flex; }
-  .toolbar-item__popover__dropdown-options__advanced-button {
-    background-color: #ff4a17;
-    border-radius: 50%;
-    position: absolute;
-    top: -18px;
-    right: -18px;
-    min-width: 32px !important;
-    padding: 0 !important;
-    height: 32px; }
-    .toolbar-item__popover__dropdown-options__advanced-button svg {
-      fill: #fff;
-      width: 20px; }
   .toolbar-item__popover__dropdown-options__button {
     display: block;
     background: #fff;
@@ -3255,7 +3259,8 @@ div.maxi-row-block {
 * Moved common styles to './src/css' 
 */
 .maxi-block-placeholder {
-  background: #ebebeb;
+  background: #DDDFE1;
+  padding: 1.75rem 0;
   border: 1px solid #93959b;
   border-radius: 5px;
   margin: -15px 0; }
@@ -3265,11 +3270,10 @@ div.maxi-row-block {
     overflow: hidden;
     -o-text-overflow: ellipsis;
        text-overflow: ellipsis;
+    line-height: 3rem !important;
     font-family: 'Roboto',sans-serif !important;
-    font-size: 16px !important; }
+    font-size: 26pt !important; }
   .maxi-block-placeholder .block-editor-inserter {
-    display: block;
-    margin: 28px 0;
     width: 100%; }
   .maxi-block-placeholder__button {
     position: relative !important;
@@ -3290,15 +3294,15 @@ div.maxi-column-block {
   display: inline-block;
   width: 100%;
   max-width: 100% !important;
+  height: 100%;
   margin: auto; }
   div.maxi-column-block__resizer {
     line-height: 0; }
-    div.maxi-column-block__resizer .components-resizable-box__handle:after, div.maxi-column-block__resizer .components-resizable-box__handle:before {
-      background: #ff4a17; }
   div.maxi-column-block:hover {
     outline: 1px solid blue; }
   div.maxi-column-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout {
-    width: 100%; }
+    width: 100%;
+    height: 100%; }
     div.maxi-column-block > div.block-editor-inner-blocks > div.block-editor-block-list__layout > div.block-list-appender {
       width: 100%;
       margin: 0; }
@@ -3310,7 +3314,7 @@ div.maxi-column-block {
 *
 * Moved common styles to './src/css' 
 */
-.maxi-divider-block {
+div.maxi-divider-block {
   height: 100% !important; }
 /**
 * Leave blank due to bug on CGB. Check it on:

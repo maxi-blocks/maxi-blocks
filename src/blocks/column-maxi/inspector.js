@@ -189,7 +189,7 @@ const Inspector = props => {
                                             )
                                         },
                                         {
-                                            label: __('Width & Height', 'maxi-blocks'),
+                                            label: __('Sizing', 'maxi-blocks'),
                                             content: (
                                                 <FullSizeControl
                                                     sizeSettings={size}
@@ -234,10 +234,10 @@ const Inspector = props => {
                                                         value={padding}
                                                         onChange={padding => setAttributes({ padding })}
                                                     />
-                                                    {/* <DimensionsControl
+                                                    <DimensionsControl
                                                         value={margin}
                                                         onChange={margin => setAttributes({ margin })}
-                                                    /> */}
+                                                    />
                                                 </Fragment>
                                             )
                                         }

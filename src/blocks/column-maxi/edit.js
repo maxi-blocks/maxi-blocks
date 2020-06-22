@@ -73,7 +73,8 @@ class edit extends GXBlock {
     get getObject() {
         let response = {
             [this.props.attributes.uniqueID]: this.getNormalObject,
-            [`${this.props.attributes.uniqueID}:hover`]: this.getHoverObject
+            [`${this.props.attributes.uniqueID}:hover`]: this.getHoverObject,
+            [`${this.props.attributes.uniqueID}>.maxi-column-block__content`]: this.getContentObject,
         }
 
         return response;
@@ -86,26 +87,11 @@ class edit extends GXBlock {
         const {
             attributes: {
                 columnSize,
-                opacity,
-                background,
-                boxShadow,
-                border,
-                size,
-                margin,
-                padding,
                 zIndex
             },
         } = this.props;
 
         let response = {
-            background: { ...getBackgroundObject(JSON.parse(background)) },
-            boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
-            border: { ...JSON.parse(border) },
-            borderWidth: { ...JSON.parse(border).borderWidth },
-            borderRadius: { ...JSON.parse(border).borderRadius },
-            size: { ...JSON.parse(size) },
-            margin: { ...JSON.parse(margin) },
-            padding: { ...JSON.parse(padding) },
             column: {
                 label: "Column",
                 general: {},
@@ -121,8 +107,6 @@ class edit extends GXBlock {
                 response.column.general['flex'] = '0 0 auto';
                 response.column.general['max-width'] = '';
             }
-        if (isNumber(opacity))
-            response.column.general['opacity'] = opacity;
         if (isNumber(zIndex))
             response.column.general['z-index'] = zIndex;
 
@@ -151,6 +135,43 @@ class edit extends GXBlock {
 
         if (isNumber(opacityHover))
             response.columnHover.general['opacity'] = opacityHover;
+
+        return response;
+    }
+
+    get getContentObject() {
+        const {
+            attributes: {
+                opacity,
+                background,
+                boxShadow,
+                border,
+                size,
+                margin,
+                padding,
+            },
+        } = this.props;
+
+        let response = {
+            background: { ...getBackgroundObject(JSON.parse(background)) },
+            boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
+            border: { ...JSON.parse(border) },
+            borderWidth: { ...JSON.parse(border).borderWidth },
+            borderRadius: { ...JSON.parse(border).borderRadius },
+            size: { ...JSON.parse(size) },
+            margin: { ...JSON.parse(margin) },
+            padding: { ...JSON.parse(padding) },
+            column: {
+                label: "Column",
+                general: {},
+                desktop: {},
+                tablet: {},
+                mobile: {}
+            }
+        };
+
+        if (isNumber(opacity))
+            response.column.general['opacity'] = opacity;
 
         return response;
     }
@@ -185,17 +206,12 @@ class edit extends GXBlock {
             uniqueID,
             blockStyle,
             extraClassName,
-            className
+            className,
         );
 
-        /**
-         * Check if current block or children is select
-         */
-        const isSelect = () => {
-            const selectedBlock = select('core/editor').getSelectedBlockClientId();
-            const nestedColumns = select('core/block-editor').getBlockOrder(clientId);
-            return nestedColumns.includes(selectedBlock) || clientId === selectedBlock;
-        }
+        const size = typeof this.props.attributes.size != 'object' ?
+            JSON.parse(this.props.attributes.size) :
+            this.props.attributes.size;
 
         const getColumnWidthDefault = () => {
             if (columnSize)
@@ -225,10 +241,14 @@ class edit extends GXBlock {
                             width: getColumnWidthDefault()
                         }}
                         minWidth={`${columnGap}%`}
-                        maxWidth="100%"
+                        maxWidth={
+                            !!size.desktop['max-width'] ?
+                                `${size.desktop['max-width']}${size.desktop['max-widthUnit']}` :
+                                '100%'
+                        }
                         enable={{
                             top: false,
-                            right: columnPosition != 'maxi-column-right',
+                            right: columnPosition != 'maxi-column-block--right',
                             bottom: false,
                             left: false,
                             topRight: false,
@@ -255,23 +275,25 @@ class edit extends GXBlock {
                             className={classes}
                             data-gx_initial_block_class={defaultBlockStyle}
                         >
-                            <InnerBlocks
-                                // allowedBlocks={ALLOWED_BLOCKS}
-                                templateLock={false}
-                                renderAppender={
-                                    !hasInnerBlock ?
-                                        () => (
-                                            <__experimentalBlockPlaceholder
-                                                clientId={clientId}
-                                            />
-                                        ) :
-                                        isSelected ?
+                            <div className='maxi-column-block__content'>
+                                <InnerBlocks
+                                    // allowedBlocks={ALLOWED_BLOCKS}
+                                    templateLock={false}
+                                    renderAppender={
+                                        !hasInnerBlock ?
                                             () => (
-                                                <InnerBlocks.ButtonBlockAppender />
+                                                <__experimentalBlockPlaceholder
+                                                    clientId={clientId}
+                                                />
                                             ) :
-                                            false
-                                }
-                            />
+                                            isSelected ?
+                                                () => (
+                                                    <InnerBlocks.ButtonBlockAppender />
+                                                ) :
+                                                false
+                                    }
+                                />
+                            </div>
                         </__experimentalBlock.div>
                     </ResizableBox>
                 }
@@ -286,7 +308,6 @@ const editSelect = withSelect((select, ownProps) => {
     } = ownProps;
 
     const rowBlockId = select('core/block-editor').getBlockRootClientId(clientId); // getBlockHierarchyRootClientId
-    const syncStyles = select('core/block-editor').getBlockAttributes(rowBlockId).syncStyles;
     const columnGap = select('core/block-editor').getBlockAttributes(rowBlockId).columnGap;
     const rowBlockNode = document.querySelector(`div[data-block="${rowBlockId}"]`);
     const rowBlockWidth = !isNil(rowBlockNode) ? rowBlockNode.getBoundingClientRect().width : 0;
@@ -297,16 +318,15 @@ const editSelect = withSelect((select, ownProps) => {
         const originalNestedColumns = select('core/block-editor').getBlockOrder(rowBlockId);
         switch (originalNestedColumns.indexOf(clientId)) {
             case 0:
-                return 'maxi-column-left';
+                return 'maxi-column-block--left';
             case originalNestedColumns.length - 1:
-                return 'maxi-column-right';
+                return 'maxi-column-block--right';
             default:
-                return 'maxi-column-center';
+                return 'maxi-column-block--center';
         }
     }
 
     return {
-        syncStyles,
         rowBlockId,
         rowBlockWidth,
         columnGap,
@@ -333,8 +353,6 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
         let newStyles = { ...ownProps.attributes };
         delete newStyles.uniqueID;
         delete newStyles.columnSize;
-        delete newStyles.sizeTablet;
-        delete newStyles.sizeMobile;
 
         nestedColumns.map(blockId => {
             if (blockId != clientId)

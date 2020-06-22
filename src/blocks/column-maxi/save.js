@@ -1,17 +1,8 @@
 /**
  * WordPress dependencies
  */
-const { __ } = wp.i18n;
-const { registerBlockType } = wp.blocks;
-const { Fragment } = wp.element;
-const {
-    InnerBlocks,
-    InspectorControls
-} = wp.blockEditor;
-const {
-    PanelBody,
-    RangeControl
-} = wp.components;
+const { InnerBlocks } = wp.blockEditor;
+
 
 /**
  * External dependencies
@@ -46,11 +37,9 @@ const save = props => {
             className={classes}
             data-gx_initial_block_class={defaultBlockStyle}
         >
-            {/* <div
-                className="maxi-column-block-content"
-            > */}
+            <div className='maxi-column-block__content'>
                 <InnerBlocks.Content />
-            {/* </div> */}
+            </div>
         </div>
     );
 }

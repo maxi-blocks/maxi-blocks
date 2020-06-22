@@ -5,6 +5,15 @@ div.maxi-row-block {
 
     &:hover {
         outline: 1px solid grey;
+
+        .maxi-column-block {
+            &__resizer {
+                .components-resizable-box__handle {
+                    display: block !important;
+                    visibility: visible !important;
+                }
+            }
+        }
     }
 
     &[data-align="full"] {
@@ -15,6 +24,7 @@ div.maxi-row-block {
     .block-list-appender,
     .maxi-row-dropdown {
         width: 100%;
+        height: 100%;
     }
 
     .maxi-row-appender-button {
@@ -25,11 +35,14 @@ div.maxi-row-block {
     > div.block-editor-inner-blocks > div.block-editor-block-list__layout {
         display: flex;
 
-        > div.maxi-column-left {
-            margin-left: 0 !important;
-        }
-        > div.maxi-column-right {
-            margin-right: 0 !important;
+        > div.maxi-column-block {
+            &--left {
+                margin-left: 0 !important;
+            }
+
+            &--right {
+                margin-right: 0 !important;
+            }
         }
 
         > div.block-list-appender {

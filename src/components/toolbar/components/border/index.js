@@ -40,8 +40,9 @@ const Border = props => {
                     className='toolbar-item__border__icon'
                     style={{
                         borderStyle: JSON.parse(border).general['border-style'],
-                        background: JSON.parse(border).general['border-color'],
+                        background: ( JSON.parse(border).general['border-style'] === 'none' ) ? 'transparent' : JSON.parse(border).general['border-color'],
                         borderWidth: '1px',
+                        borderStyle: 'solid',
                         borderColor: '#fff'
                     }}
                 >

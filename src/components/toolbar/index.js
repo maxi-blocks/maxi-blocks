@@ -193,6 +193,7 @@ const MaxiToolbar = props => {
                             onChangeColumnGap={onChangeColumnGap}
                         />
                         <Link
+                            blockName={name}
                             linkSettings={linkSettings}
                             onChange={linkSettings => setAttributes({ linkSettings })}
                         />

@@ -151,6 +151,15 @@ const Inspector = props => {
                                                     {
                                                         showLine === 'yes' &&
                                                         <Fragment>
+                                                        <SelectControl
+                                                                label={__('Line Orientation', 'maxi-blocks')}
+                                                                options={[
+                                                                    { label: __('Horizontal', 'maxi-blocks'), value: 'horizontal' },
+                                                                    { label: __('Vertical', 'maxi-blocks'), value: 'vertical' },
+                                                                ]}
+                                                                value={lineOrientation}
+                                                                onChange={lineOrientation => setAttributes({ lineOrientation })}
+                                                            />
                                                             <SelectControl
                                                                 label={__('Line Vertical Position', 'maxi-blocks')}
                                                                 options={getVerticalOptions()}
@@ -162,15 +171,6 @@ const Inspector = props => {
                                                                 options={getHorizontalOptions()}
                                                                 value={lineHorizontal}
                                                                 onChange={lineHorizontal => setAttributes({ lineHorizontal })}
-                                                            />
-                                                            <SelectControl
-                                                                label={__('Line Orientation', 'maxi-blocks')}
-                                                                options={[
-                                                                    { label: __('Horizontal', 'maxi-blocks'), value: 'horizontal' },
-                                                                    { label: __('Vertical', 'maxi-blocks'), value: 'vertical' },
-                                                                ]}
-                                                                value={lineOrientation}
-                                                                onChange={lineOrientation => setAttributes({ lineOrientation })}
                                                             />
                                                             {
                                                                 getLinesQuantity() == 2 &&

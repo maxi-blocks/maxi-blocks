@@ -46,7 +46,7 @@ const Divider = props => {
                             { label: __('Yes', 'maxi-blocks'), value: 'yes' },
                         ]}
                         value={showLine}
-                        onChange={showLine => 
+                        onChange={showLine =>
                             onChange(
                                 showLine,
                                 divider1,

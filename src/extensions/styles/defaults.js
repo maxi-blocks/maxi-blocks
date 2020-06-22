@@ -144,7 +144,7 @@ export const border = {
     "defaultBorderColor": "#ffffff",
     "general": {
         "border-color": "#ffffff",
-        "border-style": "solid"
+        "border-style": "none"
     },
     "borderWidth": {
         "label": "Border width",

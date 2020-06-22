@@ -83,7 +83,6 @@ const MaxiToolbar = props => {
             divider1,
             divider2,
             lineOrientation
-
         },
         clientId,
         isSelected,

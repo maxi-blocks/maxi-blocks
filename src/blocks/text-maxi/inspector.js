@@ -256,7 +256,7 @@ const Inspector = props => {
                                             )
                                         },
                                         {
-                                            label: __('Width / Height', 'maxi-blocks'),
+                                            label: __('Sizing', 'maxi-blocks'),
                                             content: (
                                                 <Fragment>
                                                     {

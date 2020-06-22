@@ -114,27 +114,27 @@ const Size = props => {
                     }
                     <SizeControl
                         label={__('Width', 'maxi-blocks')}
-                        unit={value.general.widthUnit}
+                        unit={value.desktop.widthUnit}
                         onChangeUnit={val => {
-                            value.general.widthUnit = val;
+                            value.desktop.widthUnit = val;
                             updateSize();
                         }}
-                        value={value.general.width}
+                        value={value.desktop.width}
                         onChangeValue={val => {
-                            value.general.width = val;
+                            value.desktop.width = val;
                             updateSize();
                         }}
                     />
                     <SizeControl
                         label={__('Max Width', 'maxi-blocks')}
-                        unit={value.general['max-widthUnit']}
+                        unit={value.desktop['max-widthUnit']}
                         onChangeUnit={val => {
-                            value.general['max-widthUnit'] = val;
+                            value.desktop['max-widthUnit'] = val;
                             updateSize();
                         }}
-                        value={value.general['max-width']}
+                        value={value.desktop['max-width']}
                         onChangeValue={val => {
-                            value.general['max-width'] = val;
+                            value.desktop['max-width'] = val;
                             updateSize();
                         }}
                     />
@@ -146,7 +146,7 @@ const Size = props => {
                             icon={toolbarAdvancedSettings}
                             onClick={() =>
                                 openGeneralSidebar('edit-post/block')
-                                    .then(() => onEditImageClick('width height'))
+                                    .then(() => onEditImageClick('sizing'))
                             }
                         />
                     </div>

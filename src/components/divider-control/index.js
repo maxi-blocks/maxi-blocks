@@ -204,7 +204,7 @@ const DividerControl = props => {
                     ]}
                     value={value.general['border-radius']}
                     onChange={val => {
-                            value.general['border-radius'] = val;
+                        value.general['border-radius'] = val;
                         onChange(JSON.stringify(value));
                     }}
                 />
@@ -251,7 +251,7 @@ const DividerControl = props => {
                                 value.general.height = '';
                             onChange(JSON.stringify(value));
                         }}
-                        max={999}
+                        max={100}
                         allowReset
                     />
                     <RangeControl
@@ -264,7 +264,7 @@ const DividerControl = props => {
                                 value.general['border-right-width'] = '';
                             onChange(JSON.stringify(value));
                         }}
-                        max={999}
+                        max={100}
                         allowReset
                     />
                 </Fragment>

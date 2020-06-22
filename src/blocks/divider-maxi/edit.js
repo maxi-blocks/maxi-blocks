@@ -4,7 +4,7 @@
 const { Fragment } = wp.element;
 const { __experimentalBlock } = wp.blockEditor;
 const { ResizableBox } = wp.components;
-const { dispatch } = wp.data;
+const { withSelect } = wp.data;
 
 /**
  * Internal dependencies
@@ -32,7 +32,6 @@ import {
  * Content
  */
 class edit extends GXBlock {
-
     get getObject() {
         let response = {
             [this.props.attributes.uniqueID]: this.getNormalObject,
@@ -150,7 +149,9 @@ class edit extends GXBlock {
             },
             className,
             clientId,
-            setAttributes
+            isSelected,
+            setAttributes,
+            getLinesQuantity
         } = this.props;
 
         let classes = classnames(
@@ -177,14 +178,14 @@ class edit extends GXBlock {
                     'maxi-divider-block__resizer',
                     `maxi-divider-block__resizer__${clientId}`
                 )}
-                defaultSize={{
+                size={{
                     width: '100%',
-                    height: value.general.height + value.general.heightUnit
+                    height: value.desktop.height + value.desktop.heightUnit
                 }}
                 enable={{
-                    top: true,
+                    top: false,
                     right: false,
-                    bottom: true,
+                    bottom: isSelected,
                     left: false,
                     topRight: false,
                     bottomRight: false,
@@ -192,12 +193,9 @@ class edit extends GXBlock {
                     topLeft: false,
                 }}
                 onResizeStart={() => {
-                    setTimeout(() => {
-                        dispatch('core/editor').selectBlock(clientId)
-                    }, 100);
-                    value.general.heightUnit != 'px' ?
+                    value.desktop.heightUnit != 'px' ?
                         (
-                            value.general.heightUnit = 'px',
+                            value.desktop.heightUnit = 'px',
                             setAttributes({
                                 size: JSON.stringify(value)
                             })
@@ -205,7 +203,7 @@ class edit extends GXBlock {
                         null
                 }}
                 onResizeStop={(event, direction, elt, delta) => {
-                    value.general.height = elt.getBoundingClientRect().height;
+                    value.desktop.height = elt.getBoundingClientRect().height;
                     setAttributes({
                         size: JSON.stringify(value),
                     });
@@ -220,7 +218,10 @@ class edit extends GXBlock {
                         showLine === 'yes' &&
                         <Fragment>
                             <hr class="maxi-divider-block__divider-1" />
-                            <hr class="maxi-divider-block__divider-2" />
+                            {
+                                getLinesQuantity() === 2 &&
+                                <hr class="maxi-divider-block__divider-2" />
+                            }
                         </Fragment>
                     }
                 </__experimentalBlock>
@@ -229,4 +230,27 @@ class edit extends GXBlock {
     }
 }
 
-export default edit;
+export default withSelect((select, ownProps) => {
+    const {
+        divider1,
+        divider2
+    } = ownProps.attributes
+
+    const getLinesQuantity = () => {
+        let response = 0;
+
+        const div1 = JSON.parse(divider1).general['border-style'];
+        if (!isNil(div1) && div1 != 'none')
+            response++;
+
+        const div2 = JSON.parse(divider2).general['border-style'];
+        if (!isNil(div2) && div2 != 'none')
+            response++;
+
+        return response;
+    }
+
+    return {
+        getLinesQuantity
+    }
+})(edit);

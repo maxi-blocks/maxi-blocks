@@ -148,6 +148,8 @@ class edit extends GXBlock {
             attributes: {
                 uniqueID,
                 blockStyle,
+                wrapTablet,
+                wrapMobile,
                 extraClassName,
                 defaultBlockStyle,
                 fullWidth
@@ -166,6 +168,12 @@ class edit extends GXBlock {
             blockStyle,
             extraClassName,
             className,
+            !wrapTablet ?
+                'maxi-row-block--wrap-tablet' :
+                null,
+            !wrapMobile ?
+                'maxi-row-block--wrap-mobile' :
+                null,
         );
 
         return [
@@ -230,11 +238,11 @@ const editSelect = withSelect((select, ownProps) => {
 })
 
 const editDispatch = withDispatch((dispatch, ownProps) => {
-    const { 
+    const {
         clientId,
-        
+
     } = ownProps;
-    
+
     /**
      * Creates uniqueID for columns on loading templates
      */
@@ -276,7 +284,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
         dispatch('core/editor').selectBlock(id);
     }
 
-    const onChangeColumnGap  = columnGap => {
+    const onChangeColumnGap = columnGap => {
         const nestedBlocks = select('core/block-editor').getBlockOrder(clientId);
         let columnSizes = {};
         nestedBlocks.map(columnId => {
@@ -287,17 +295,16 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
         const realSize = (100 - ((nestedBlocks.length - 1) * columnGap) * 2);
         const diffSizeXUnit = (realSize - totalSize) / nestedBlocks.length;
 
-        
-        for(let [key, value] of Object.entries(columnSizes)) {
+        for (let [key, value] of Object.entries(columnSizes)) {
             const newValue = round(Number(value + diffSizeXUnit), 2);
-            
+
             dispatch('core/block-editor').updateBlockAttributes(
                 key,
                 {
                     columnSize: newValue
                 }
             )
-            .then(() => document.querySelector(`.maxi-column-block__resizer__${key}`).style.width = `${newValue}%`)
+                .then(() => document.querySelector(`.maxi-column-block__resizer__${key}`).style.width = `${newValue}%`)
         }
     }
 

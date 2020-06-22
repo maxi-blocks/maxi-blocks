@@ -169,17 +169,17 @@ export const padding = {
         "sync": true
     },
     "tablet": {
-        "padding-top": 10,
-        "padding-right": 10,
-        "padding-bottom": 10,
-        "padding-left": 10,
+        "padding-top": "",
+        "padding-right": "",
+        "padding-bottom": "",
+        "padding-left": "",
         "sync": true
     },
     "mobile": {
-        "padding-top": 10,
-        "padding-right": 10,
-        "padding-bottom": 10,
-        "padding-left": 10,
+        "padding-top": "",
+        "padding-right": "",
+        "padding-bottom": "",
+        "padding-left": "",
         "sync": true
     }
 };

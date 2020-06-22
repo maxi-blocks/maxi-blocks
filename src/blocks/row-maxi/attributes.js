@@ -23,9 +23,13 @@ const attributes = {
         type: 'number',
         default: 0
     },
-    syncStyles: {
+    wrapTablet: {
         type: 'boolean',
-        default: true,
+        default: false,
+    },
+    wrapMobile: {
+        type: 'boolean',
+        default: false,
     },
     horizontalAlign: {
         type: 'string',

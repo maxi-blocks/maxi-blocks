@@ -1,6 +1,6 @@
 export const size = {
     "label": "Size",
-    "general": {
+    "desktop": {
         "max-widthUnit": "px",
         "max-width": 1200,
         "widthUnit": "%",
@@ -9,7 +9,35 @@ export const size = {
         "min-width": "",
         "max-heightUnit": "px",
         "max-height": "",
-        "heightUnit": "em",
+        "heightUnit": "px",
+        "height": "",
+        "min-heightUnit": "px",
+        "min-height": ""
+    },
+    "tablet": {
+        "max-widthUnit": "px",
+        "max-width": "",
+        "widthUnit": "px",
+        "width": "",
+        "min-widthUnit": "px",
+        "min-width": "",
+        "max-heightUnit": "px",
+        "max-height": "",
+        "heightUnit": "px",
+        "height": "",
+        "min-heightUnit": "px",
+        "min-height": ""
+    },
+    "mobile": {
+        "max-widthUnit": "px",
+        "max-width": "",
+        "widthUnit": "px",
+        "width": "",
+        "min-widthUnit": "px",
+        "min-width": "",
+        "max-heightUnit": "px",
+        "max-height": "",
+        "heightUnit": "px",
         "height": "",
         "min-heightUnit": "px",
         "min-height": ""

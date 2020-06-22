@@ -1,10 +1,7 @@
 /**
  * WordPress dependencies
  */
-const {
-    Fragment,
-    useState
-} = wp.element;
+const { useState } = wp.element;
 const {
     Button,
 } = wp.components;
@@ -26,10 +23,16 @@ const SettingTabsControl = props => {
 
     const {
         items,
-        disablePadding = false
+        disablePadding = false,
+        className
     } = props;
 
     const [tab, setTab] = useState(0);
+
+    const classes = classnames(
+        'maxi-settingstab-control',
+        className
+    )
 
     const classesControl = classnames(
         'maxi-tabs-control',
@@ -46,7 +49,7 @@ const SettingTabsControl = props => {
     );
 
     return (
-        <Fragment>
+        <div className={classes}>
             <div
                 className={classesControl}
             >
@@ -82,7 +85,7 @@ const SettingTabsControl = props => {
                     })
                 }
             </div>
-        </Fragment>
+        </div>
     )
 }
 

@@ -2,8 +2,8 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { Fragment } = wp.element;
 const { InspectorControls } = wp.blockEditor;
+const { Fragment } = wp.element;
 const {
     RangeControl,
     SelectControl,
@@ -64,21 +64,8 @@ const Inspector = props => {
             zIndex
         },
         setAttributes,
+        getLinesQuantity
     } = props;
-
-    const getLinesQuantity = () => {
-        let response = 0;
-
-        const div1 = JSON.parse(divider1).general['border-style'];
-        if (!isNil(div1) && div1 != 'none')
-            response++;
-
-        const div2 = JSON.parse(divider2).general['border-style'];
-        if (!isNil(div2) && div2 != 'none')
-            response++;
-
-        return response;
-    }
 
     const getHorizontalOptions = () => {
         if (getLinesQuantity() != 2 || linesAlign == 'column')

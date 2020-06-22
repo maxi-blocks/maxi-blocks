@@ -7,78 +7,144 @@ const { Fragment } = wp.element;
 /**
  * Internal dependencies
  */
-import { GXComponent } from '../index';
 import SizeControl from '../size-control';
+import SettingTabsControl from '../setting-tabs-control';
+
+/**
+ * External dependencies
+ */
+import classnames from 'classnames';
+
+/**
+ * Styles
+ */
+import './editor.scss';
 
 /**
  * Component
  */
-export default class FullSizeControl extends GXComponent {
+const FullSizeControlSing = props => {
+    const {
+        size,
+        onChange
+    } = props;
 
-    componentDidMount() {
-        const value = typeof this.props.sizeSettings === 'object' ? this.props.sizeSettings : JSON.parse(this.props.sizeSettings);
-        this.saveAndSend(value)
+    const onChangeValue = (target, val) => {
+        if (typeof val === 'undefined')
+            val = '';
+        size[target] = val;
+        onChange(size);
     }
 
-    render() {
-        const {
-            sizeSettings,
-        } = this.props;
-
-        let value = typeof sizeSettings === 'object' ? sizeSettings : JSON.parse(sizeSettings);
-
-        const onChangeValue = (target, val) => {
-            if (typeof val === 'undefined')
-                val = '';
-            value.general[target] = val;
-            this.saveAndSend(value);
-        }
-
-        return (
-            <Fragment>
-                <SizeControl
-                    label={__('Max Width', 'maxi-blocks')}
-                    unit={value.general['max-widthUnit']}
-                    onChangeUnit={value => onChangeValue('max-widthUnit', value)}
-                    value={value.general['max-width']}
-                    onChangeValue={value => onChangeValue('max-width', value)}
-                />
-                <SizeControl
-                    label={__('Width', 'maxi-blocks')}
-                    unit={value.general.widthUnit}
-                    onChangeUnit={value => onChangeValue('widthUnit', value)}
-                    value={value.general.width}
-                    onChangeValue={value => onChangeValue('width', value)}
-                />
-                <SizeControl
-                    label={__('Min Width', 'maxi-blocks')}
-                    unit={value.general['min-widthUnit']}
-                    onChangeUnit={value => onChangeValue('min-widthUnit', value)}
-                    value={value.general['min-width']}
-                    onChangeValue={value => onChangeValue('min-width', value)}
-                />
-                <SizeControl
-                    label={__('Max Height', 'maxi-blocks')}
-                    unit={value.general['max-heightUnit']}
-                    onChangeUnit={value => onChangeValue('max-heightUnit', value)}
-                    value={value.general['max-height']}
-                    onChangeValue={value => onChangeValue('max-height', value)}
-                />
-                <SizeControl
-                    label={__('Height', 'maxi-blocks')}
-                    unit={value.general.heightUnit}
-                    onChangeUnit={value => onChangeValue('heightUnit', value)}
-                    value={value.general.height}
-                    onChangeValue={value => onChangeValue('height', value)}
-                />
-                <SizeControl
-                    label={__('Min Height', 'maxi-blocks')}
-                    unit={value.general['min-heightUnit']}
-                    onChangeUnit={value => onChangeValue('min-heightUnit', value)}
-                    value={value.general['min-height']}
-                    onChangeValue={value => onChangeValue('min-height', value)}
-                />
-            </Fragment>
-        )
-    }
+    return (
+        <Fragment>
+            <SizeControl
+                label={__('Max Width', 'maxi-blocks')}
+                unit={size['max-widthUnit']}
+                onChangeUnit={value => onChangeValue('max-widthUnit', value)}
+                value={size['max-width']}
+                onChangeValue={value => onChangeValue('max-width', value)}
+            />
+            <SizeControl
+                label={__('Width', 'maxi-blocks')}
+                unit={size.widthUnit}
+                onChangeUnit={value => onChangeValue('widthUnit', value)}
+                value={size.width}
+                onChangeValue={value => onChangeValue('width', value)}
+            />
+            <SizeControl
+                label={__('Min Width', 'maxi-blocks')}
+                unit={size['min-widthUnit']}
+                onChangeUnit={value => onChangeValue('min-widthUnit', value)}
+                value={size['min-width']}
+                onChangeValue={value => onChangeValue('min-width', value)}
+            />
+            <SizeControl
+                label={__('Max Height', 'maxi-blocks')}
+                unit={size['max-heightUnit']}
+                onChangeUnit={value => onChangeValue('max-heightUnit', value)}
+                value={size['max-height']}
+                onChangeValue={value => onChangeValue('max-height', value)}
+            />
+            <SizeControl
+                label={__('Height', 'maxi-blocks')}
+                unit={size.heightUnit}
+                onChangeUnit={value => onChangeValue('heightUnit', value)}
+                value={size.height}
+                onChangeValue={value => onChangeValue('height', value)}
+            />
+            <SizeControl
+                label={__('Min Height', 'maxi-blocks')}
+                unit={size['min-heightUnit']}
+                onChangeUnit={value => onChangeValue('min-heightUnit', value)}
+                value={size['min-height']}
+                onChangeValue={value => onChangeValue('min-height', value)}
+            />
+        </Fragment>
+    )
 }
+
+const FullSizeControl = props => {
+    const {
+        sizeSettings,
+        onChange,
+        className
+    } = props;
+
+    let value = typeof sizeSettings === 'object' ?
+        sizeSettings :
+        JSON.parse(sizeSettings);
+
+    const classes = classnames(
+        'maxi-fullsize-control',
+        className
+    )
+
+    return (
+        <div className={classes}>
+            <SettingTabsControl
+                disablePadding={true}
+                items={[
+                    {
+                        label: __('Desktop', 'maxi-blocks'),
+                        content: (
+                            <FullSizeControlSing
+                                size={value.desktop}
+                                onChange={val => {
+                                    value.desktop = val;
+                                    onChange(JSON.stringify(value))
+                                }}
+                            />
+                        )
+                    },
+                    {
+                        label: __('Tablet', 'maxi-blocks'),
+                        content: (
+                            <FullSizeControlSing
+                                size={value.tablet}
+                                onChange={val => {
+                                    value.tablet = val;
+                                    onChange(JSON.stringify(value))
+                                }}
+                            />
+                        )
+                    },
+                    {
+                        label: __('Mobile', 'maxi-blocks'),
+                        content: (
+                            <FullSizeControlSing
+                                size={value.mobile}
+                                onChange={val => {
+                                    value.mobile = val;
+                                    onChange(JSON.stringify(value))
+                                }}
+                            />
+                        )
+                    }
+                ]}
+            />
+        </div>
+    )
+}
+
+export default FullSizeControl;

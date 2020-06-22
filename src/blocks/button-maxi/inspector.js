@@ -127,7 +127,7 @@ const Inspector = props => {
                                                 <SettingTabsControl
                                                     items={[
                                                         {
-                                                            label: __('Normal', 'gutenberg-extra'),
+                                                            label: __('Normal', 'maxi-blocks'),
                                                             content: (
                                                                 <TypographyControl
                                                                     fontOptions={typography}
@@ -137,7 +137,7 @@ const Inspector = props => {
                                                             )
                                                         },
                                                         {
-                                                            label: __('Hover', 'gutenberg-extra'),
+                                                            label: __('Hover', 'maxi-blocks'),
                                                             content: (
                                                                 <TypographyControl
                                                                     fontOptions={typographyHover}
@@ -158,7 +158,7 @@ const Inspector = props => {
                                                 <SettingTabsControl
                                                     items={[
                                                         {
-                                                            label: __('Normal', 'gutenberg-extra'),
+                                                            label: __('Normal', 'maxi-blocks'),
                                                             content: (
                                                                 <Fragment>
                                                                     <RangeControl
@@ -180,7 +180,7 @@ const Inspector = props => {
                                                             )
                                                         },
                                                         {
-                                                            label: __('Hover', 'gutenberg-extra'),
+                                                            label: __('Hover', 'maxi-blocks'),
                                                             content: (
                                                                 <Fragment>
                                                                     <RangeControl
@@ -212,7 +212,7 @@ const Inspector = props => {
                                                 <SettingTabsControl
                                                     items={[
                                                         {
-                                                            label: __('Normal', 'gutenberg-extra'),
+                                                            label: __('Normal', 'maxi-blocks'),
                                                             content: (
                                                                 <BorderControl
                                                                     borderOptions={border}
@@ -221,7 +221,7 @@ const Inspector = props => {
                                                             )
                                                         },
                                                         {
-                                                            label: __('Hover', 'gutenberg-extra'),
+                                                            label: __('Hover', 'maxi-blocks'),
                                                             content: (
                                                                 <BorderControl
                                                                     borderOptions={borderHover}
@@ -234,7 +234,7 @@ const Inspector = props => {
                                             )
                                         },
                                         {
-                                            label: __('Width / Height', 'maxi-blocks'),
+                                            label: __('Sizing', 'maxi-blocks'),
                                             content: (
                                                 <FullSizeControl
                                                     sizeSettings={size}
@@ -249,7 +249,7 @@ const Inspector = props => {
                                                 <SettingTabsControl
                                                     items={[
                                                         {
-                                                            label: __('Normal', 'gutenberg-extra'),
+                                                            label: __('Normal', 'maxi-blocks'),
                                                             content: (
                                                                 <BoxShadowControl
                                                                     boxShadowOptions={boxShadow}
@@ -258,7 +258,7 @@ const Inspector = props => {
                                                             )
                                                         },
                                                         {
-                                                            label: __('Hover', 'gutenberg-extra'),
+                                                            label: __('Hover', 'maxi-blocks'),
                                                             content: (
                                                                 <BoxShadowControl
                                                                     boxShadowOptions={boxShadowHover}

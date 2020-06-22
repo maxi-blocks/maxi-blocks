@@ -29,10 +29,32 @@
       flex-wrap: nowrap; }
   .maxi-row-block.alignfull {
     width: auto; }
-  .maxi-row-block > .maxi-column-block:first-of-type {
+  .maxi-row-block > div.maxi-column-block:first-of-type {
     margin-left: 0 !important; }
-  .maxi-row-block > .maxi-column-block:last-of-type {
+  .maxi-row-block > div.maxi-column-block:last-of-type {
     margin-right: 0 !important; }
+  .maxi-row-block > div.maxi-column-block--desktop-fullwidth, .maxi-row-block > div.maxi-column-block--tablet-fullwidth, .maxi-row-block > div.maxi-column-block--mobile-fullwidth {
+    margin: inherit !important; }
+
+@media (max-width: 768px) {
+  body:not(.wp-admin) div.maxi-row-block {
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap; }
+    body:not(.wp-admin) div.maxi-row-block--wrap-tablet .maxi-column-block {
+      -ms-flex: 0 0 100% !important;
+          flex: 0 0 100% !important;
+      max-width: 100% !important;
+      margin: inherit !important; } }
+
+@media (max-width: 480px) {
+  body:not(.wp-admin) div.maxi-row-block {
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap; }
+    body:not(.wp-admin) div.maxi-row-block--wrap-mobile .maxi-column-block {
+      -ms-flex: 0 0 100% !important;
+          flex: 0 0 100% !important;
+      max-width: 100% !important;
+      margin: inherit !important; } }
 /**
 * Leave blank due to bug on CGB. Check it on:
 * https://github.com/ahmadawais/create-guten-block/issues/111

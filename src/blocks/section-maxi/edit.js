@@ -131,44 +131,32 @@ class edit extends GXBlock {
             className
         );
 
-        /**
-         * Check if current block or children is select
-         * 
-         * todo: should go to withSelect
-         */
-        const isSelect = () => {
-            const selectedBlock = select('core/editor').getSelectedBlockClientId();
-            const nestedColumns = select('core/block-editor').getBlockOrder(clientId);
-            return nestedColumns.includes(selectedBlock) || clientId === selectedBlock;
-        }
-
         return [
             <Inspector {...this.props} />,
             <__experimentalToolbar {...this.props} />,
             <__experimentalBreadcrumbs />,
-            <__experimentalBlock
-                data-gx_initial_block_class={defaultBlockStyle}
-                className={classes}
-                data-align={fullWidth}
-                tagName='section'
-            >
-                <InnerBlocks
-                    templateLock={false}
-                    renderAppender={
-                        !hasInnerBlock ?
+            <InnerBlocks
+                templateLock={false}
+                __experimentalTagName={__experimentalBlock.section}
+                __experimentalPassedProps={{
+                    className: classes,
+                    ['data-align']: fullWidth,
+                    ['data-gx_initial_block_class']: defaultBlockStyle
+                }}
+                renderAppender={
+                    !hasInnerBlock ?
+                        () => (
+                            <__experimentalBlockPlaceholder
+                                clientId={clientId}
+                            />
+                        ) :
+                        true ?
                             () => (
-                                <__experimentalBlockPlaceholder
-                                    clientId={clientId}
-                                />
+                                <InnerBlocks.ButtonBlockAppender />
                             ) :
-                            isSelected ?
-                                () => (
-                                    <InnerBlocks.ButtonBlockAppender />
-                                ) :
-                                false
-                    }
-                />
-            </__experimentalBlock>
+                            false
+                }
+            />
         ];
     }
 }

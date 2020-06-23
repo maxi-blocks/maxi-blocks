@@ -440,10 +440,9 @@ export const borderHover = {
     }
 };
 
-export const __experimentalDivider1 = {
+export const __experimentalDivider = {
     "label": "Divider",
     "general": {
-        "border-name": "none",
         "border-color": "#ff4a17",
         "border-style": "solid",
         "widthUnit": "%",

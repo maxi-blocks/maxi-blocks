@@ -22,7 +22,7 @@ import { toolbarDividersetting } from '../../../../icons';
 const DividerColor = props => {
     const {
         blockName,
-        divider1,
+        divider,
         onChange
     } = props;
 
@@ -40,9 +40,9 @@ const DividerColor = props => {
         return val.hex;
     }
 
-    let value = typeof divider1 != 'object' ?
-        JSON.parse(divider1) :
-        divider1;
+    let value = typeof divider != 'object' ?
+        JSON.parse(divider) :
+        divider;
 
     return (
         <ToolbarPopover

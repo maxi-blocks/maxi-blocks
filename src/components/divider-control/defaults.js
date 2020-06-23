@@ -1,7 +1,6 @@
 export const dividerSolidHorizontal = {
     "label": "Divider",
     "general": {
-        "border-name": "solid",
         "border-color": "#000",
         "border-style": "solid",
         "widthUnit": "%",
@@ -20,7 +19,6 @@ export const dividerSolidHorizontal = {
 export const dividerDottedHorizontal = {
     "label": "Divider",
     "general": {
-        "border-name": "dotted",
         "border-color": "#000",
         "border-style": "dotted",
         "widthUnit": "%",
@@ -39,7 +37,6 @@ export const dividerDottedHorizontal = {
 export const dividerDashedHorizontal = {
     "label": "Divider",
     "general": {
-        "border-name": "dashed",
         "border-color": "#000",
         "border-style": "dashed",
         "widthUnit": "%",
@@ -58,7 +55,6 @@ export const dividerDashedHorizontal = {
 export const dividerSolidVertical = {
     "label": "Divider",
     "general": {
-        "border-name": "solid",
         "border-color": "#000",
         "border-style": "solid",
         "widthUnit": "%",
@@ -77,7 +73,6 @@ export const dividerSolidVertical = {
 export const dividerDottedVertical = {
     "label": "Divider",
     "general": {
-        "border-name": "dotted",
         "border-color": "#000",
         "border-style": "dotted",
         "widthUnit": "%",
@@ -96,7 +91,6 @@ export const dividerDottedVertical = {
 export const dividerDashedVertical = {
     "label": "Divider",
     "general": {
-        "border-name": "dashed",
         "border-color": "#000",
         "border-style": "dashed",
         "widthUnit": "%",
@@ -115,15 +109,14 @@ export const dividerDashedVertical = {
 export const dividerNone = {
     "label": "Divider",
     "general": {
-        "border-name": "none",
-        "border-color": "#ff4a17",
-        "border-style": "solid",
+        "border-color": "",
+        "border-style": "none",
         "widthUnit": "%",
-        "width": 9,
+        "width": 0,
         "heightUnit": "px",
         "height": "",
         "border-top-widthUnit": "px",
-        "border-top-width": 2,
+        "border-top-width": 0,
         "border-right-widthUnit": "px",
         "border-right-width": "",
         "border-radius": "",

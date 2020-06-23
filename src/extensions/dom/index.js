@@ -1,7 +1,9 @@
 /**
  * WordPress dependencies
  */
-const { select } = wp.data;
+const {
+    select,
+} = wp.data;
 
 /**
  * General
@@ -145,3 +147,28 @@ export class FixObjectFollower {
         this.target.style.left = position.left + 'px';
     }
 }
+
+const openSidebar = item => {
+    const sidebar = document.querySelector('.maxi-sidebar');
+    const wrapperElement = document.querySelector(`.maxi-accordion-control__item[data-name="${item}"]`);
+    const button = wrapperElement.querySelector('.maxi-accordion-control__item__button');
+    const content = wrapperElement.querySelector('.maxi-accordion-control__item__panel');
+
+    Array.from(document.getElementsByClassName('maxi-accordion-control__item__button')).map(el => {
+        if (el.getAttribute('aria-expanded'))
+            el.setAttribute('aria-expanded', false)
+    })
+    Array.from(document.getElementsByClassName('maxi-accordion-control__item__panel')).map(el => {
+        if (!el.getAttribute('hidden'))
+            el.setAttribute('hidden', '')
+    })
+
+    button.setAttribute('aria-expanded', true)
+    content.removeAttribute('hidden');
+
+    sidebar.scroll({
+        top: wrapperElement.getBoundingClientRect().top,
+        behavior: 'smooth'
+    })
+}
+export default openSidebar;

@@ -176,7 +176,7 @@ const Inspector = props => {
                                             )
                                         },
                                         {
-                                            label: __('Sizing', 'maxi-blocks'),
+                                            label: __('Width / Height', 'maxi-blocks'),
                                             content: (
                                                 <Fragment>
                                                     <SelectControl

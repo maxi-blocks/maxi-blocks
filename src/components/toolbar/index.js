@@ -82,7 +82,7 @@ const MaxiToolbar = props => {
             columnGap,
             boxShadow,
             showLine,
-            divider1,
+            divider,
             lineOrientation,
             lineVertical,
             lineHorizontal,
@@ -130,18 +130,18 @@ const MaxiToolbar = props => {
                         />
                         <DividerColor
                             blockName={name}
-                            divider1={divider1}
-                            onChange={divider1 => setAttributes({ divider1 })}
+                            divider={divider}
+                            onChange={divider => setAttributes({ divider })}
                         />
                         <Divider
                             blockName={name}
                             showLine={showLine}
-                            divider1={divider1}
+                            divider={divider}
                             lineOrientation={lineOrientation}
-                            onChange={(showLine, divider1) =>
+                            onChange={(showLine, divider) =>
                                 setAttributes({
                                     showLine,
-                                    divider1,
+                                    divider,
                                 })
                             }
                         />
@@ -149,7 +149,7 @@ const MaxiToolbar = props => {
                             lineOrientation={lineOrientation}
                             lineVertical={lineVertical}
                             lineHorizontal={lineHorizontal}
-                            divider1={divider1}
+                            divider={divider}
                             blockName={name}
                             onChangeOrientation={(lineOrientation) => setAttributes({ lineOrientation })}
                             onChangeHorizontal={(lineHorizontal) => setAttributes({ lineHorizontal })}

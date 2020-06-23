@@ -29,6 +29,7 @@ import {
     dividerDashedVertical,
     dividerNone,
 } from './defaults';
+import { getDefaultProp } from '../../extensions/styles/utils';
 
 /**
  * External dependencies
@@ -52,7 +53,10 @@ const DividerControl = props => {
     const {
         dividerOptions,
         onChange,
-        lineOrientation
+        lineOrientation,
+        disableColor = false,
+        disableLineStyle = false,
+        disableBorderRadius = false,
     } = props;
 
     const [orientation, changeOrientation] = useState(
@@ -103,7 +107,7 @@ const DividerControl = props => {
             <DefaultStylesControl
                 items={[
                     {
-                        activeItem: ( value.general['border-name'] === 'none' ),
+                        activeItem: ( value.general['border-style'] === 'none' ),
                         content: (
                             <Icon
                                 className='maxi-defaultstyles-control__button__icon'
@@ -111,12 +115,12 @@ const DividerControl = props => {
                             />
                         ),
                         onChange: () => {
-                            onChange(JSON.stringify(dividerNone));
+                            onChange(getDefaultProp(null, 'divider'))
                             changeValue(dividerNone);
                         }
                     },
                     {
-                        activeItem: ( value.general['border-name'] === 'solid' ),
+                        activeItem: ( value.general['border-style'] === 'solid' ),
                         content: (
                             <Icon
                                 className='maxi-defaultstyles-control__button__icon'
@@ -135,7 +139,7 @@ const DividerControl = props => {
                         }
                     },
                     {
-                        activeItem: ( value.general['border-name'] === 'dashed' ),
+                        activeItem: ( value.general['border-style'] === 'dashed' ),
                         content: (
                             <Icon
                                 className='maxi-defaultstyles-control__button__icon'
@@ -154,7 +158,7 @@ const DividerControl = props => {
                         }
                     },
                     {
-                        activeItem: ( value.general['border-name'] === 'dotted' ),
+                        activeItem: ( value.general['border-style'] === 'dotted' ),
                         content: (
                             <Icon
                                 className='maxi-defaultstyles-control__button__icon'
@@ -174,47 +178,52 @@ const DividerControl = props => {
                     },
                 ]}
             />
-            <ColorControl
-                label={__('Color', 'maxi-blocks')}
-                color={value.general['border-color']}
-                // defaultColor={dividerColorDefault}
-                onColorChange={val => {
-                    value.general['border-color'] = val;
-                    onChange(JSON.stringify(value))
-                }}
-                disableGradient
-            />
-            <SelectControl
-                label={__('Line Style', 'maxi-blocks')}
-                options={[
-                    { label: __('None', 'maxi-blocks'), value: 'none' },
-                    { label: __('Dotted', 'maxi-blocks'), value: 'dotted' },
-                    { label: __('Dashed', 'maxi-blocks'), value: 'dashed' },
-                    { label: __('Solid', 'maxi-blocks'), value: 'solid' },
-                    { label: __('Double', 'maxi-blocks'), value: 'double' },
-                ]}
-                value={value.general['border-style']}
-                onChange={val => {
-                    value.general['border-style'] = val;
-                    if (val === 'none')
-                        value.general.width = 0;
-                    onChange(JSON.stringify(value))
-                }}
-            />
-            {
-                value.general['border-style'] === 'solid' &&
+            { !disableColor &&
+                <ColorControl
+                    label={__('Color', 'maxi-blocks')}
+                    color={value.general['border-color']}
+                    // defaultColor={dividerColorDefault}
+                    onColorChange={val => {
+                        value.general['border-color'] = val;
+                        onChange(JSON.stringify(value))
+                    }}
+                    disableGradient
+                />
+            }
+            { !disableLineStyle &&
                 <SelectControl
-                    label={__('Border Radius', 'maxi-blocks')}
+                    label={__('Line Style', 'maxi-blocks')}
                     options={[
-                        { label: __('No', 'maxi-blocks'), value: '' },
-                        { label: __('Yes', 'maxi-blocks'), value: '20px' }
+                        { label: __('None', 'maxi-blocks'), value: 'none' },
+                        { label: __('Dotted', 'maxi-blocks'), value: 'dotted' },
+                        { label: __('Dashed', 'maxi-blocks'), value: 'dashed' },
+                        { label: __('Solid', 'maxi-blocks'), value: 'solid' },
+                        { label: __('Double', 'maxi-blocks'), value: 'double' },
                     ]}
-                    value={value.general['border-radius']}
+                    value={value.general['border-style']}
                     onChange={val => {
-                            value.general['border-radius'] = val;
-                        onChange(JSON.stringify(value));
+                        value.general['border-style'] = val;
+                        if (val === 'none')
+                            value.general.width = 0;
+                        onChange(JSON.stringify(value))
                     }}
                 />
+            }
+            {
+                !disableBorderRadius &&
+                    value.general['border-style'] === 'solid' &&
+                    <SelectControl
+                        label={__('Border Radius', 'maxi-blocks')}
+                        options={[
+                            { label: __('No', 'maxi-blocks'), value: '' },
+                            { label: __('Yes', 'maxi-blocks'), value: '20px' }
+                        ]}
+                        value={value.general['border-radius']}
+                        onChange={val => {
+                                value.general['border-radius'] = val;
+                            onChange(JSON.stringify(value));
+                        }}
+                    />
             }
             {
                 orientation === 'horizontal' &&

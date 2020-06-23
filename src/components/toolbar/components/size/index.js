@@ -1,9 +1,4 @@
 /**
- * External dependencies
- */
-import classnames from 'classnames';
-
-/**
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
@@ -13,6 +8,7 @@ const {
     IconButton,
 } = wp.components;
 const { useDispatch } = wp.data;
+import openSidebar from '../../../../extensions/dom';
 
 /**
  * Internal dependencies
@@ -60,34 +56,6 @@ const Size = props => {
         onChangeSize(JSON.stringify(value))
     }
 
-    const onEditImageClick = item => {
-        const sidebar = document.querySelector('.maxi-sidebar');
-        const wrapperElement = document.querySelector(`.maxi-accordion-control__item[data-name="${item}"]`);
-        const button = wrapperElement.querySelector('.maxi-accordion-control__item__button');
-        const content = wrapperElement.querySelector('.maxi-accordion-control__item__panel');
-
-        Array.from(document.getElementsByClassName('maxi-accordion-control__item__button')).map(el => {
-            if (el.getAttribute('aria-expanded'))
-                el.setAttribute('aria-expanded', false)
-        })
-        Array.from(document.getElementsByClassName('maxi-accordion-control__item__panel')).map(el => {
-            if (!el.getAttribute('hidden'))
-                el.setAttribute('hidden', '')
-        })
-
-        button.setAttribute('aria-expanded', true)
-        content.removeAttribute('hidden');
-
-        sidebar.scroll({
-            top: wrapperElement.getBoundingClientRect().top,
-            behavior: 'smooth'
-        })
-    }
-
-    const classes = classnames(
-        'toolbar-item__popover__toggle-btn',
-    );
-
     return (
         <ToolbarPopover
             className='toolbar-item__size'
@@ -102,14 +70,14 @@ const Size = props => {
                             icon={toolbarAdvancedSettings}
                             onClick={() =>
                                 openGeneralSidebar('edit-post/block')
-                                    .then(() => onEditImageClick('width height'))
+                                    .then(() => openSidebar('width height'))
                             }
                         />
                     </div>
                     {
                         isFirstOnHierarchy &&
                         <RadioControl
-                            className={classes}
+                            className='toolbar-item__popover__toggle-btn'
                             label={__('Fullwidth', 'maxi-blocks')}
                             selected={fullWidth}
                             options={[

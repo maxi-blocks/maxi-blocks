@@ -13,7 +13,7 @@ const { Fragment } = wp.element;
  * Internal dependencies
  */
 import ToolbarPopover from '../toolbar-popover';
-import __experimentalDividerControl from '../divider-control';
+import __experimentalDividerControl from '../../../divider-control';
 
 /**
  * Icons
@@ -28,7 +28,7 @@ const Divider = props => {
     const {
         blockName,
         showLine,
-        divider1,
+        divider,
         lineOrientation,
         onChange
     } = props;
@@ -57,7 +57,7 @@ const Divider = props => {
                         onChange={showLine =>
                             onChange(
                                 showLine,
-                                divider1,
+                                divider,
                             )
                         }
                     />
@@ -65,11 +65,14 @@ const Divider = props => {
                         showLine === 'yes' &&
                         <Fragment>
                             <__experimentalDividerControl
-                                dividerOptions={divider1}
-                                onChange={divider1 => {
+                                disableColor={true}
+                                disableLineStyle={true}
+                                disableBorderRadius={true}
+                                dividerOptions={divider}
+                                onChange={divider => {
                                     onChange(
                                         showLine,
-                                        divider1,
+                                        divider,
                                     )
                                 }}
                                 lineOrientation={lineOrientation}

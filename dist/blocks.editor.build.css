@@ -2536,6 +2536,8 @@ div.maxi-row-block {
     margin: 4px;
     height: 40px;
     background: #f8f8f8; }
+    .maxi-defaultstyles-control__button--active {
+      border: 2px solid #dddfe2; }
     .maxi-defaultstyles-control__button:focus {
       outline: none !important;
       -webkit-box-shadow: none !important;

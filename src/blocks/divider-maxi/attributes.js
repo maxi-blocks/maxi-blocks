@@ -35,9 +35,9 @@ const attributes = {
         type: 'string',
         default: 'row'
     },
-    divider1: {
+    divider: {
         type: 'string',
-        default: JSON.stringify(attributesData.__experimentalDivider1)
+        default: JSON.stringify(attributesData.__experimentalDivider)
     },
     fullWidth: {
         type: 'string',

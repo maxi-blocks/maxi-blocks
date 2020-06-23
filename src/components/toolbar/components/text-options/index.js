@@ -11,6 +11,7 @@ const {
     BaseControl,
 } = wp.components;
 const { useDispatch } = wp.data;
+import openSidebar from '../../../../extensions/dom';
 
 /**
  * Internal dependencies
@@ -55,34 +56,10 @@ const TextOptions = props => {
     let value = typeof typography != 'object' ?
         JSON.parse(typography) :
         typography;
+
     let defaultTypography = typeof defaultRawTypography != 'object' ?
         JSON.parse(defaultRawTypography) :
         defaultRawTypography;
-
-    const onEditImageClick = item => {
-        const sidebar = document.querySelector('.maxi-sidebar');
-        const wrapperElement = document.querySelector(`.maxi-accordion-control__item[data-name="${item}"]`);
-        const button = wrapperElement.querySelector('.maxi-accordion-control__item__button');
-        const content = wrapperElement.querySelector('.maxi-accordion-control__item__panel');
-
-        Array.from(document.getElementsByClassName('maxi-accordion-control__item__button')).map(el => {
-            if (el.getAttribute('aria-expanded'))
-                el.setAttribute('aria-expanded', false)
-        })
-        Array.from(document.getElementsByClassName('maxi-accordion-control__item__panel')).map(el => {
-            if (!el.getAttribute('hidden'))
-                el.setAttribute('hidden', '')
-        })
-
-        button.setAttribute('aria-expanded', true)
-        content.removeAttribute('hidden');
-
-        sidebar.scroll({
-            top: wrapperElement.getBoundingClientRect().top,
-            behavior: 'smooth'
-        })
-
-    }
 
     return (
         <ToolbarPopover
@@ -328,7 +305,7 @@ const TextOptions = props => {
                                                 icon={toolbarAdvancedSettings}
                                                 onClick={() =>
                                                     openGeneralSidebar('edit-post/block')
-                                                        .then(() => onEditImageClick('typography'))
+                                                        .then(() => openSidebar('typography'))
                                                 }
                                             />
                                         </div>

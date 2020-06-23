@@ -10,6 +10,10 @@
         height: 40px;
         background: #f8f8f8;
 
+        &--active {
+            border: 2px solid #dddfe2;
+        }
+
         &:focus {
             outline: none !important;
             box-shadow: none !important;

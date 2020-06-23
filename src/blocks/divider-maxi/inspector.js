@@ -46,7 +46,6 @@ const Inspector = props => {
             lineOrientation,
             linesAlign,
             divider1,
-            divider2,
             fullWidth,
             size,
             opacity,
@@ -71,10 +70,6 @@ const Inspector = props => {
 
         const div1 = JSON.parse(divider1).general['border-style'];
         if (!isNil(div1) && div1 != 'none')
-            response++;
-
-        const div2 = JSON.parse(divider2).general['border-style'];
-        if (!isNil(div2) && div2 != 'none')
             response++;
 
         return response;
@@ -186,32 +181,12 @@ const Inspector = props => {
                                                                     />
                                                                 </Fragment>
                                                             }
-                                                            <SettingTabsControl
-                                                                disablePadding
-                                                                items={[
-                                                                    {
-                                                                        label: __('Line 1', 'maxi-blocks'),
-                                                                        content: (
-                                                                            <__experimentalDividerControl
-                                                                                dividerOptions={divider1}
-                                                                                onChange={divider1 => {
-                                                                                    setAttributes({ divider1 })
-                                                                                }}
-                                                                                lineOrientation={lineOrientation}
-                                                                            />
-                                                                        )
-                                                                    },
-                                                                    {
-                                                                        label: __('Line 2', 'maxi-blocks'),
-                                                                        content: (
-                                                                            <__experimentalDividerControl
-                                                                                dividerOptions={divider2}
-                                                                                onChange={divider2 => setAttributes({ divider2 })}
-                                                                                lineOrientation={lineOrientation}
-                                                                            />
-                                                                        )
-                                                                    },
-                                                                ]}
+                                                            <__experimentalDividerControl
+                                                                dividerOptions={divider1}
+                                                                onChange={divider1 => {
+                                                                    setAttributes({ divider1 })
+                                                                }}
+                                                                lineOrientation={lineOrientation}
                                                             />
                                                         </Fragment>
                                                     }
@@ -219,7 +194,7 @@ const Inspector = props => {
                                             )
                                         },
                                         {
-                                            label: __('Sizing', 'maxi-blocks'),
+                                            label: __('Width / Height', 'maxi-blocks'),
                                             content: (
                                                 <Fragment>
                                                     {

@@ -105,6 +105,68 @@
 }
 
 .toolbar-item__popover {
+
+    &__toggle-btn {
+        .components-base-control__field {
+            justify-content: space-between;
+            border-radius: 5px;
+            .components-base-control__label {
+                flex: 3 !important;
+            }
+        }
+        .components-radio-control__option {
+            opacity: 1 !important;
+            min-width: 40px;
+            height: 30px;
+            background-color: rgba(33, 141, 250, 0);
+            font-size: 13px;
+            line-height: 13px;
+            color: #fff;
+            font-weight: 500;
+            flex: 1;
+            border-bottom: none;
+            border-right: 0;
+
+            &:first-of-type {
+                input {
+                    & ~ label {
+                        border-top-left-radius: 5px;
+                        border-bottom-left-radius: 5px;
+                    }
+                }
+            }
+
+            &:last-of-type {
+                input {
+                    & ~ label {
+                        border-top-right-radius: 5px;
+                        border-bottom-right-radius: 5px;
+                    }
+                }
+            }
+
+            input {
+                display: none;
+
+                &:checked ~ label {
+                    background-color: #4f515c;
+                    position: relative;
+                    z-index: 1;
+                    border: 2px solid #dddfe1;
+                    border-bottom: 2px solid #ff4a17;
+                }
+            }
+
+            label {
+                display: block;
+                height: 100%;
+                text-align: center;
+                line-height: 26px;
+                border: 2px solid #5b5d68;
+            }
+        }
+    }
+
     &:before,
     &:after {
         border-color: #232533 !important;
@@ -187,7 +249,7 @@
             margin-bottom: 10px;
         }
         & > .components-base-control {
-            &:nth-last-child(2) {
+            &:nth-last-child(1) {
                 margin-bottom: 0 !important;
             }
         }
@@ -209,7 +271,10 @@
 
     .maxi-defaultstyles-control__button {
         background: #545660;
-        border: 1px solid #fff;
+
+        &--active {
+            border: 2px solid #919299;
+        }
 
         &:focus {
             outline: none;
@@ -320,18 +385,19 @@
         &__button {
             background: transparent;
             color: #fff;
-            border: 1px solid #80828a;
-            border-left: none;
+            border: 2px solid #5b5d68;
+            border-right: none;
+            padding-top: 5px;
+            padding-bottom: 5px;
 
-            &:first-of-type,
-            &[aria-pressed="true"] + button {
-                border-left: 1px solid #80828a;
+            &:last-of-type {
+                border: 2px solid #5b5d68;
             }
 
             &[aria-pressed="true"] {
                 background: #4c4e59;
-                border: none;
-                border-bottom: 2px solid #ff4a17;
+                border: 3px solid #dddfe1;
+                border-bottom: 3px solid #ff4a17;
             }
         }
     }

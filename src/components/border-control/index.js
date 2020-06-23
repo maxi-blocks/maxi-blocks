@@ -60,6 +60,7 @@ const BorderControl = props => {
             <DefaultStylesControl
                 items={[
                     {
+                        activeItem: ( value.general['border-style'] === 'none' ),
                         content: (
                             <Icon
                                 className='maxi-defaultstyles-control__button__icon'
@@ -69,6 +70,7 @@ const BorderControl = props => {
                         onChange: () => onChange(getDefaultProp(null, 'border'))
                     },
                     {
+                        activeItem: ( value.general['border-style'] === 'solid' ),
                         content: (
                             <Icon
                                 className='maxi-defaultstyles-control__button__icon'
@@ -78,6 +80,7 @@ const BorderControl = props => {
                         onChange: () => onChange(JSON.stringify(borderSolid))
                     },
                     {
+                        activeItem: ( value.general['border-style'] === 'dashed' ),
                         content: (
                             <Icon
                                 className='maxi-defaultstyles-control__button__icon'
@@ -87,6 +90,7 @@ const BorderControl = props => {
                         onChange: () => onChange(JSON.stringify(borderDasehd))
                     },
                     {
+                        activeItem: ( value.general['border-style'] === 'dotted' ),
                         content: (
                             <Icon
                                 className='maxi-defaultstyles-control__button__icon'

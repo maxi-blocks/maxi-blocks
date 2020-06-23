@@ -443,6 +443,7 @@ export const borderHover = {
 export const __experimentalDivider1 = {
     "label": "Divider",
     "general": {
+        "border-name": "none",
         "border-color": "#ff4a17",
         "border-style": "solid",
         "widthUnit": "%",
@@ -451,24 +452,6 @@ export const __experimentalDivider1 = {
         "height": "",
         "border-top-widthUnit": "px",
         "border-top-width": 2,
-        "border-right-widthUnit": "px",
-        "border-right-width": "",
-        "border-radius": "",
-        "opacity": 1
-    }
-}
-
-export const __experimentalDivider2 = {
-    "label": "Divider",
-    "general": {
-        "border-color": "#000",
-        "border-style": "none",
-        "widthUnit": "%",
-        "width": "",
-        "heightUnit": "px",
-        "height": "",
-        "border-top-widthUnit": "px",
-        "border-top-width": "",
         "border-right-widthUnit": "px",
         "border-right-width": "",
         "border-radius": "",

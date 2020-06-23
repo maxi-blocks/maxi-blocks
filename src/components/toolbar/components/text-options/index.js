@@ -26,8 +26,6 @@ import {
     toolbarType,
     toolbarAdvancedSettings,
     reset,
-    toolbarBold,
-    toolbarItalic,
 } from '../../../../icons';
 import SettingTabsControl from '../../../setting-tabs-control';
 
@@ -61,38 +59,6 @@ const TextOptions = props => {
         JSON.parse(defaultRawTypography) :
         defaultRawTypography;
 
-    const getBoldTypography = () => {
-        if (value.desktop['font-weight'] != 800) {
-            value.desktop['font-weight'] = 800;
-            value.tablet['font-weight'] = 800;
-            value.mobile['font-weight'] = 800;
-        }
-        else {
-            value.desktop['font-weight'] = 400;
-            value.tablet['font-weight'] = 400;
-            value.mobile['font-weight'] = 400;
-        }
-
-
-        onChange(JSON.stringify(value))
-    }
-
-    const getItalicTypography = () => {
-        if (value.desktop['font-style'] != 'italic') {
-            value.desktop['font-style'] = 'italic';
-            value.tablet['font-style'] = 'italic';
-            value.mobile['font-style'] = 'italic';
-        }
-        else {
-            value.desktop['font-style'] = 'normal';
-            value.tablet['font-style'] = 'normal';
-            value.mobile['font-style'] = 'normal';
-        }
-
-
-        onChange(JSON.stringify(value))
-    }
-
     const onEditImageClick = item => {
         const sidebar = document.querySelector('.maxi-sidebar');
         const wrapperElement = document.querySelector(`.maxi-accordion-control__item[data-name="${item}"]`);
@@ -116,17 +82,6 @@ const TextOptions = props => {
             behavior: 'smooth'
         })
 
-        if (item === 'sizing')
-            updateBlockAttributes(
-                clientId,
-                { size: 'custom' }
-            )
-
-        if (item === 'caption')
-            updateBlockAttributes(
-                clientId,
-                { captionType: 'custom' }
-            )
     }
 
     return (
@@ -367,6 +322,16 @@ const TextOptions = props => {
                                 label: __('Mobile', 'maxi-blocks'),
                                 content: (
                                     <Fragment>
+                                        <div className='toolbar-item__popover__dropdown-options'>
+                                            <IconButton
+                                                className='toolbar-item__popover__dropdown-options__advanced-button'
+                                                icon={toolbarAdvancedSettings}
+                                                onClick={() =>
+                                                    openGeneralSidebar('edit-post/block')
+                                                        .then(() => onEditImageClick('typography'))
+                                                }
+                                            />
+                                        </div>
                                         <BaseControl
                                             label={__('Size', 'maxi-blocks')}
                                             className='toolbar-item__popover__font-options__number-control'
@@ -462,16 +427,6 @@ const TextOptions = props => {
                             },
                         ]}
                     />
-                    <div className='toolbar-item__popover__dropdown-options'>
-                        <IconButton
-                            className='toolbar-item__popover__dropdown-options__advanced-button'
-                            icon={toolbarAdvancedSettings}
-                            onClick={() =>
-                                openGeneralSidebar('edit-post/block')
-                                    .then(() => onEditImageClick('typography'))
-                            }
-                        />
-                    </div>
                 </div>
             )}
         />

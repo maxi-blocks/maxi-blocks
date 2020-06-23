@@ -2840,6 +2840,20 @@ div.maxi-row-block {
 *
 * Moved common styles to './src/css' 
 */
+.toolbar-item__popover .maxi-alignment-control .components-radio-control__option {
+  border-color: #7a7c85; }
+  .toolbar-item__popover .maxi-alignment-control .components-radio-control__option .components-radio-control__input:checked ~ label {
+    background-color: #383a46; }
+    .toolbar-item__popover .maxi-alignment-control .components-radio-control__option .components-radio-control__input:checked ~ label svg {
+      fill: #fff; }
+  .toolbar-item__popover .maxi-alignment-control .components-radio-control__option svg {
+    fill: #fff; }
+/**
+* Leave blank due to bug on CGB. Check it on:
+* https://github.com/ahmadawais/create-guten-block/issues/111
+*
+* Moved common styles to './src/css' 
+*/
 .toolbar-item__popover .components-form-toggle.is-checked .components-form-toggle__track {
   background-color: #5f6063; }
 
@@ -3053,6 +3067,48 @@ div.maxi-row-block {
     .maxi-toolbar__popover .components-popover__content .toolbar-wrapper .toolbar-item__move {
       cursor: move; }
 
+.toolbar-item__popover__toggle-btn .components-base-control__field {
+  -ms-flex-pack: justify;
+      justify-content: space-between;
+  border-radius: 5px; }
+  .toolbar-item__popover__toggle-btn .components-base-control__field .components-base-control__label {
+    -ms-flex: 3 !important;
+        flex: 3 !important; }
+
+.toolbar-item__popover__toggle-btn .components-radio-control__option {
+  opacity: 1 !important;
+  min-width: 40px;
+  height: 30px;
+  background-color: rgba(33, 141, 250, 0);
+  font-size: 13px;
+  line-height: 13px;
+  color: #fff;
+  font-weight: 500;
+  -ms-flex: 1;
+      flex: 1;
+  border-bottom: none;
+  border-right: 0; }
+  .toolbar-item__popover__toggle-btn .components-radio-control__option:first-of-type input ~ label {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px; }
+  .toolbar-item__popover__toggle-btn .components-radio-control__option:last-of-type input ~ label {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px; }
+  .toolbar-item__popover__toggle-btn .components-radio-control__option input {
+    display: none; }
+    .toolbar-item__popover__toggle-btn .components-radio-control__option input:checked ~ label {
+      background-color: #4f515c;
+      position: relative;
+      z-index: 1;
+      border: 2px solid #dddfe1;
+      border-bottom: 2px solid #ff4a17; }
+  .toolbar-item__popover__toggle-btn .components-radio-control__option label {
+    display: block;
+    height: 100%;
+    text-align: center;
+    line-height: 26px;
+    border: 2px solid #5b5d68; }
+
 .toolbar-item__popover:before, .toolbar-item__popover:after {
   border-color: #232533 !important;
   border-left-color: transparent !important;
@@ -3101,7 +3157,7 @@ div.maxi-row-block {
   overflow: visible; }
   .toolbar-item__popover .components-popover__content .maxi-colorcontrol {
     margin-bottom: 10px; }
-  .toolbar-item__popover .components-popover__content > .components-base-control:nth-last-child(2) {
+  .toolbar-item__popover .components-popover__content > .components-base-control:nth-last-child(1) {
     margin-bottom: 0 !important; }
 
 .toolbar-item__popover__wrapper {
@@ -3123,8 +3179,9 @@ div.maxi-row-block {
     color: #fff; }
 
 .toolbar-item__popover .maxi-defaultstyles-control__button {
-  background: #545660;
-  border: 1px solid #fff; }
+  background: #545660; }
+  .toolbar-item__popover .maxi-defaultstyles-control__button--active {
+    border: 2px solid #919299; }
   .toolbar-item__popover .maxi-defaultstyles-control__button:focus {
     outline: none;
     -webkit-box-shadow: none;
@@ -3197,15 +3254,16 @@ div.maxi-row-block {
   .toolbar-item__popover .maxi-tabs-control__button {
     background: transparent;
     color: #fff;
-    border: 1px solid #80828a;
-    border-left: none; }
-    .toolbar-item__popover .maxi-tabs-control__button:first-of-type,
-    .toolbar-item__popover .maxi-tabs-control__button[aria-pressed="true"] + button {
-      border-left: 1px solid #80828a; }
+    border: 2px solid #5b5d68;
+    border-right: none;
+    padding-top: 5px;
+    padding-bottom: 5px; }
+    .toolbar-item__popover .maxi-tabs-control__button:last-of-type {
+      border: 2px solid #5b5d68; }
     .toolbar-item__popover .maxi-tabs-control__button[aria-pressed="true"] {
       background: #4c4e59;
-      border: none;
-      border-bottom: 2px solid #ff4a17; }
+      border: 3px solid #dddfe1;
+      border-bottom: 3px solid #ff4a17; }
 
 .toolbar-item__popover .maxi-tabs-content {
   width: 100%; }

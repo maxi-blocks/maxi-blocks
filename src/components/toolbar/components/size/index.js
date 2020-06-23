@@ -1,10 +1,15 @@
 /**
+ * External dependencies
+ */
+import classnames from 'classnames';
+
+/**
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
 const {
-    SelectControl,
+    RadioControl,
     IconButton,
 } = wp.components;
 const { useDispatch } = wp.data;
@@ -20,6 +25,7 @@ import ToolbarPopover from '../toolbar-popover';
  */
 import {
     toolbarSettings,
+    toolbarDividerWidth,
     toolbarAdvancedSettings,
 } from '../../../../icons';
 
@@ -28,13 +34,12 @@ import {
  */
 const Size = props => {
     const {
-        clientId,
         blockName,
         fullWidth,
         onChangeFullWidth,
         size,
         onChangeSize,
-        isFirstOnHierarchy
+        isFirstOnHierarchy,
     } = props;
 
     if (blockName === 'maxi-blocks/image-maxi')
@@ -77,31 +82,36 @@ const Size = props => {
             top: wrapperElement.getBoundingClientRect().top,
             behavior: 'smooth'
         })
-
-        if (item === 'sizing')
-            updateBlockAttributes(
-                clientId,
-                { size: 'custom' }
-            )
-
-        if (item === 'caption')
-            updateBlockAttributes(
-                clientId,
-                { captionType: 'custom' }
-            )
     }
+
+    const classes = classnames(
+        'toolbar-item__popover__toggle-btn',
+    );
 
     return (
         <ToolbarPopover
             className='toolbar-item__size'
-            icon={toolbarSettings}
+            icon={ ( (blockName === 'maxi-blocks/divider-maxi') ) ? toolbarDividerWidth : toolbarSettings }
             content={(
                 <Fragment>
+                    <div
+                        className='toolbar-item__popover__dropdown-options'
+                    >
+                        <IconButton
+                            className='toolbar-item__popover__dropdown-options__advanced-button'
+                            icon={toolbarAdvancedSettings}
+                            onClick={() =>
+                                openGeneralSidebar('edit-post/block')
+                                    .then(() => onEditImageClick('width height'))
+                            }
+                        />
+                    </div>
                     {
                         isFirstOnHierarchy &&
-                        <SelectControl
+                        <RadioControl
+                            className={classes}
                             label={__('Fullwidth', 'maxi-blocks')}
-                            value={fullWidth}
+                            selected={fullWidth}
                             options={[
                                 { label: __('No', 'maxi-blocks'), value: 'normal' },
                                 { label: __('Yes', 'maxi-blocks'), value: 'full' }
@@ -135,18 +145,6 @@ const Size = props => {
                             updateSize();
                         }}
                     />
-                    <div
-                        className='toolbar-item__popover__dropdown-options'
-                    >
-                        <IconButton
-                            className='toolbar-item__popover__dropdown-options__advanced-button'
-                            icon={toolbarAdvancedSettings}
-                            onClick={() =>
-                                openGeneralSidebar('edit-post/block')
-                                    .then(() => onEditImageClick('width height'))
-                            }
-                        />
-                    </div>
                 </Fragment>
             )}
         />

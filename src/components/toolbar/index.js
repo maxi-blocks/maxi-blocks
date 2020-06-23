@@ -19,6 +19,8 @@ import {
     Mover,
     ColumnPattern,
     Divider,
+    DividerColor,
+    DividerAlignment,
     Duplicate,
     Link,
     Delete,
@@ -81,8 +83,9 @@ const MaxiToolbar = props => {
             boxShadow,
             showLine,
             divider1,
-            divider2,
-            lineOrientation
+            lineOrientation,
+            lineVertical,
+            lineHorizontal,
         },
         clientId,
         isSelected,
@@ -125,19 +128,32 @@ const MaxiToolbar = props => {
                         <Mover
                             clientId={clientId}
                         />
+                        <DividerColor
+                            blockName={name}
+                            divider1={divider1}
+                            onChange={divider1 => setAttributes({ divider1 })}
+                        />
                         <Divider
                             blockName={name}
                             showLine={showLine}
                             divider1={divider1}
-                            divider2={divider2}
                             lineOrientation={lineOrientation}
-                            onChange={(showLine, divider1, divider2) =>
+                            onChange={(showLine, divider1) =>
                                 setAttributes({
                                     showLine,
                                     divider1,
-                                    divider2,
                                 })
                             }
+                        />
+                        <DividerAlignment
+                            lineOrientation={lineOrientation}
+                            lineVertical={lineVertical}
+                            lineHorizontal={lineHorizontal}
+                            divider1={divider1}
+                            blockName={name}
+                            onChangeOrientation={(lineOrientation) => setAttributes({ lineOrientation })}
+                            onChangeHorizontal={(lineHorizontal) => setAttributes({ lineHorizontal })}
+                            onChangeVertical={(lineVertical) => setAttributes({ lineVertical })}
                         />
                         <TextOptions
                             blockName={name}
@@ -219,11 +235,6 @@ const MaxiToolbar = props => {
                             isFirstOnHierarchy={isFirstOnHierarchy}
                             onChangeCaption={captionType => setAttributes({ captionType })}
                         />
-                        <BoxShadow
-                            blockName={name}
-                            boxShadow={boxShadow}
-                            onChange={boxShadow => setAttributes({ boxShadow })}
-                        />
                         <Size
                             clientId={clientId}
                             blockName={name}
@@ -232,6 +243,11 @@ const MaxiToolbar = props => {
                             fullWidth={fullWidth}
                             onChangeFullWidth={fullWidth => setAttributes({ fullWidth })}
                             isFirstOnHierarchy={isFirstOnHierarchy}
+                        />
+                        <BoxShadow
+                            blockName={name}
+                            boxShadow={boxShadow}
+                            onChange={boxShadow => setAttributes({ boxShadow })}
                         />
                         <PaddingMargin
                             blockName={name}

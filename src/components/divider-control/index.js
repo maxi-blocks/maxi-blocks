@@ -16,7 +16,6 @@ const {
 /**
  * Internal dependencies
  */
-import { getDefaultProp } from '../../extensions/styles/utils';
 import {
     ColorControl,
     DefaultStylesControl,
@@ -28,6 +27,7 @@ import {
     dividerSolidVertical,
     dividerDottedVertical,
     dividerDashedVertical,
+    dividerNone,
 } from './defaults';
 
 /**
@@ -103,15 +103,20 @@ const DividerControl = props => {
             <DefaultStylesControl
                 items={[
                     {
+                        activeItem: ( value.general['border-name'] === 'none' ),
                         content: (
                             <Icon
                                 className='maxi-defaultstyles-control__button__icon'
                                 icon={styleNone}
                             />
                         ),
-                        onChange: () => onChange(getDefaultProp(null, 'divider2'))
+                        onChange: () => {
+                            onChange(JSON.stringify(dividerNone));
+                            changeValue(dividerNone);
+                        }
                     },
                     {
+                        activeItem: ( value.general['border-name'] === 'solid' ),
                         content: (
                             <Icon
                                 className='maxi-defaultstyles-control__button__icon'
@@ -130,6 +135,7 @@ const DividerControl = props => {
                         }
                     },
                     {
+                        activeItem: ( value.general['border-name'] === 'dashed' ),
                         content: (
                             <Icon
                                 className='maxi-defaultstyles-control__button__icon'
@@ -148,6 +154,7 @@ const DividerControl = props => {
                         }
                     },
                     {
+                        activeItem: ( value.general['border-name'] === 'dotted' ),
                         content: (
                             <Icon
                                 className='maxi-defaultstyles-control__button__icon'

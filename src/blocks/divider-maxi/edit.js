@@ -38,8 +38,6 @@ class edit extends GXBlock {
             [this.props.attributes.uniqueID]: this.getNormalObject,
             [`${this.props.attributes.uniqueID}:hover`]: this.getHoverObject,
             [`${this.props.attributes.uniqueID} > hr.maxi-divider-block__divider-1`]: this.getFirstDividerObject,
-            [`${this.props.attributes.uniqueID} > hr.maxi-divider-block__divider-2`]: this.getSecondDividerObject
-
         }
 
         return response;
@@ -121,16 +119,6 @@ class edit extends GXBlock {
 
         const response = {
             divider: { ...JSON.parse(divider1) }
-        };
-
-        return response;
-    }
-
-    get getSecondDividerObject() {
-        const { divider2 } = this.props.attributes;
-
-        const response = {
-            divider: { ...JSON.parse(divider2) }
         };
 
         return response;

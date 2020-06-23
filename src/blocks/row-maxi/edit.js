@@ -153,7 +153,7 @@ class edit extends GXBlock {
                 wrapMobile,
                 extraClassName,
                 defaultBlockStyle,
-                fullWidth
+                fullWidth,
             },
             clientId,
             loadTemplate,
@@ -232,11 +232,15 @@ const editSelect = withSelect((select, ownProps) => {
     const selectedBlockId = select('core/block-editor').getSelectedBlockClientId();
     const originalNestedBlocks = select('core/block-editor').getBlockParents(selectedBlockId);
     const hasInnerBlock = !isEmpty(select('core/block-editor').getBlockOrder(clientId));
+    const isFirstOnHierarchy = isEmpty(select('core/block-editor').getBlockParents(clientId));
+
+    // console.log(select('core/block-editor').getBlockParents(clientId))
 
     return {
         selectedBlockId,
         originalNestedBlocks,
-        hasInnerBlock
+        hasInnerBlock,
+        // isFirstOnHierarchy
     }
 })
 

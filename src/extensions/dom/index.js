@@ -71,17 +71,6 @@ document.addEventListener(
         }
 
         /**
-         * Mutation Observer for:
-         * - Classes on hover
-         */
-
-
-
-
-
-
-
-        /**
          * Hover classes
          */
         window.addEventListener(
@@ -114,28 +103,5 @@ document.addEventListener(
                 }
             }
         )
-
-
-        // Array.from(document.getElementsByClassName('maxi-block'))
-        //     .map(el => {
-        //         el.addEventListener(
-        //             'mouseover',
-        //             () => {
-        //                 el.classList.add('maxi-block--hover')
-
-        //                 !Array.from(el.children)
-        //                     .map(child => {
-        //                         child.classList.contains('maxi-block--hover') ?
-        //                             child.classList.remove('maxi-block--hover') :
-        //                             null
-        //                     })
-        //             },
-        //             true
-        //         )
-        //         el.addEventListener(
-        //             'mouseout',
-        //             () => el.classList.remove('maxi-block--hover')
-        //         )
-        //     })
     }
 )

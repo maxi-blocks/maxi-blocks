@@ -73,19 +73,20 @@ export const margin = {
 
 export const padding = {
     "label": "Padding",
+    "min": "none",
     "unit": "px",
     "desktop": {
-        "padding-top": 15,
-        "padding-right": "",
-        "padding-bottom": 15,
-        "padding-left": "",
+        "padding-top": "",
+        "padding-right": 16,
+        "padding-bottom": "",
+        "padding-left": 16,
         "sync": false
     },
     "tablet": {
         "padding-top": "",
-        "padding-right": "",
+        "padding-right": 24,
         "padding-bottom": "",
-        "padding-left": "",
+        "padding-left": 24,
         "sync": true
     },
     "mobile": {

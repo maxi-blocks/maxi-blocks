@@ -70,3 +70,30 @@ export const margin = {
         "sync": true
     }
 };
+
+export const padding = {
+    "label": "Padding",
+    "min": "none",
+    "unit": "px",
+    "desktop": {
+        "padding-top": "",
+        "padding-right": 16,
+        "padding-bottom": "",
+        "padding-left": 16,
+        "sync": false
+    },
+    "tablet": {
+        "padding-top": "",
+        "padding-right": 24,
+        "padding-bottom": "",
+        "padding-left": 24,
+        "sync": true
+    },
+    "mobile": {
+        "padding-top": "",
+        "padding-right": "",
+        "padding-bottom": "",
+        "padding-left": "",
+        "sync": true
+    }
+};

@@ -146,28 +146,28 @@ class edit extends GXBlock {
             <Inspector {...this.props} />,
             <__experimentalToolbar {...this.props} />,
             <__experimentalBreadcrumbs />,
-            <__experimentalBlock
-                data-gx_initial_block_class={defaultBlockStyle}
-                className={classes}
-                data-align={fullWidth}
-            >
-                <InnerBlocks
-                    templateLock={false}
-                    renderAppender={
-                        !hasInnerBlock ?
+            <InnerBlocks
+                templateLock={false}
+                __experimentalTagName={__experimentalBlock.div}
+                __experimentalPassedProps={{
+                    className: classes,
+                    ['data-align']: fullWidth,
+                    ['data-gx_initial_block_class']: defaultBlockStyle
+                }}
+                renderAppender={
+                    !hasInnerBlock ?
+                        () => (
+                            <__experimentalBlockPlaceholder
+                                clientId={clientId}
+                            />
+                        ) :
+                        true ?
                             () => (
-                                <__experimentalBlockPlaceholder
-                                    clientId={clientId}
-                                />
+                                <InnerBlocks.ButtonBlockAppender />
                             ) :
-                            isSelected ?
-                                () => (
-                                    <InnerBlocks.ButtonBlockAppender />
-                                ) :
-                                false
-                    }
-                />
-            </__experimentalBlock>
+                            false
+                }
+            />
         ];
     }
 }

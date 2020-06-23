@@ -20,18 +20,18 @@ const allowedBlocks = [
     'maxi-blocks/container-maxi',
 ];
 
-/**
- * Mutation Observer for:
- * - Add special classes on Settings Sidebar
- * - Hide original WP toolbar on selected Maxi Blocks
- */
 document.addEventListener(
     'DOMContentLoaded',
     () => {
+        /**
+         * Mutation Observer for:
+         * - Add special classes on Settings Sidebar
+         * - Hide original WP toolbar on selected Maxi Blocks
+         */
         if (!!document.getElementsByClassName('edit-post-layout')) {
             const targetNode = document.querySelector('.edit-post-layout');
             const config = {
-                attributes: true,
+                attributes: false,
                 childList: true,
                 subtree: true
             };
@@ -69,79 +69,73 @@ document.addEventListener(
             });
             observer.observe(targetNode, config);
         }
-    }
-)
 
-/**
- * Fix Object Follower
- * Returns top and left constant position relative to scroll container for fixed elements
- *
- * @param {node} target     Element to be fixed
- * @param {node} reference  Element to be followed
- * @param {node} scrollEl   Element container with scroll attach
- */
-export class FixObjectFollower {
-    constructor(target, reference, scrollEl, position = 'top') {
-        this.target = target;
-        this.reference = reference;
-        this.scrollEl = scrollEl || document;
-        this.position = position;
-        this.initEvents();
-    }
+        /**
+         * Mutation Observer for:
+         * - Classes on hover
+         */
 
-    initEvents() {
-        this.getPosition();
-        this.scrollEl.addEventListener(
-            'scroll',
-            this.getPosition.bind(this)
-        )
-        this.scrollEl.addEventListener(
-            'resize',
-            this.getPosition.bind(this)
-        )
-        this.scrollEl.addEventListener(
-            'change',
-            this.getPosition.bind(this)
+
+
+
+
+
+
+        /**
+         * Hover classes
+         */
+        window.addEventListener(
+            'mouseover',
+            e => {
+                if (
+                    e.target.classList.contains('maxi-block') &&
+                    e.target.querySelector('.block-list-appender')
+                ) {
+                    Array.from(e.target.children).map(child => 
+                        child.classList.contains('block-list-appender') ?
+                            child.classList.add('block-list-appender--show') :
+                            null
+                    )
+                }
+            }
         )
         window.addEventListener(
-            'resize',
-            this.getPosition.bind(this)
+            'mouseout',
+            e => {
+                if (
+                    e.target.classList.contains('maxi-block') &&
+                    e.target.querySelector('.block-list-appender')
+                ) {
+                    Array.from(e.target.children).map(child => 
+                        child.classList.contains('block-list-appender') ?
+                            child.classList.remove('block-list-appender--show') :
+                            null
+                    )
+                }
+            }
         )
-        document.addEventListener(
-            'click',
-            this.onClick.bind(this)
-        )
-    }
 
-    onClick() {
-        setTimeout(() => {
-            this.getPosition()
-        }, 500);
-    }
 
-    getPosition() {
-        const posData = this.reference.getBoundingClientRect();
-        const position = {
-            top: this.getTop(posData),
-            left: posData.left + posData.width,
-        }
+        // Array.from(document.getElementsByClassName('maxi-block'))
+        //     .map(el => {
+        //         el.addEventListener(
+        //             'mouseover',
+        //             () => {
+        //                 el.classList.add('maxi-block--hover')
 
-        this.setPosition(position)
+        //                 !Array.from(el.children)
+        //                     .map(child => {
+        //                         child.classList.contains('maxi-block--hover') ?
+        //                             child.classList.remove('maxi-block--hover') :
+        //                             null
+        //                     })
+        //             },
+        //             true
+        //         )
+        //         el.addEventListener(
+        //             'mouseout',
+        //             () => el.classList.remove('maxi-block--hover')
+        //         )
+        //     })
     }
-
-    getTop(posData) {
-        switch (this.position) {
-            case 'top':
-                return posData.top;
-            case 'middle':
-                return posData.top + (posData.height / 2) - (this.target.clientHeight / 2);
-            case 'down':
-                return posData.top + posData.height - this.target.clientHeight;
-        }
-    }
-
-    setPosition(position) {
-        this.target.style.top = position.top + 'px';
-        this.target.style.left = position.left + 'px';
-    }
-}
+)

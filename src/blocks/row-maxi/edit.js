@@ -2,7 +2,10 @@
  * WordPress dependencies
  */
 const { synchronizeBlocksWithTemplate } = wp.blocks;
-const { compose } = wp.compose;
+const {
+    compose,
+    withInstanceId
+} = wp.compose;
 const {
     select,
     withSelect,
@@ -54,11 +57,9 @@ class edit extends GXBlock {
     get getObject() {
         let response = {
             [this.props.attributes.uniqueID]: this.getNormalObject,
-            [`${this.props.attributes.uniqueID}>div>div.block-editor-block-list__layout`]: this.getNormalObject,
             [`${this.props.attributes.uniqueID}:hover`]: this.getHoverObject,
-            [`${this.props.attributes.uniqueID}>div>div.block-editor-block-list__layout:hover`]: this.getHoverObject,
-            [`${this.props.attributes.uniqueID}>div.maxi-column-block`]: this.getColumnObject,
-            [`${this.props.attributes.uniqueID}>div.block-editor-inner-blocks>div.block-editor-block-list__layout>div.maxi-column-block__resizer`]: this.getColumnObject
+            [`${this.props.attributes.uniqueID}>.maxi-column-block`]: this.getColumnObject,
+            [`${this.props.attributes.uniqueID}>.maxi-column-block__resizer`]: this.getColumnObject
         }
 
         return response;
@@ -159,10 +160,11 @@ class edit extends GXBlock {
             selectOnClick,
             hasInnerBlock,
             className,
-            setAttributes
+            setAttributes,
+            instanceId
         } = this.props;
 
-        let classes = classnames(
+        const classes = classnames(
             'maxi-block maxi-row-block',
             uniqueID,
             blockStyle,
@@ -180,45 +182,46 @@ class edit extends GXBlock {
             <Inspector {...this.props} />,
             <__experimentalToolbar {...this.props} />,
             <__experimentalBreadcrumbs />,
-            <__experimentalBlock
-                data-gx_initial_block_class={defaultBlockStyle}
-                className={classes}
-                data-align={fullWidth}
-            >
-                <InnerBlocks
-                    // templateLock="insert"
-                    allowedBlocks={ALLOWED_BLOCKS}
-                    renderAppender={
-                        !hasInnerBlock ?
-                            () => (
-                                <div
-                                    class="maxi-row-template-wrapper"
-                                    onClick={() => selectOnClick(clientId)}
-                                >
-                                    {
-                                        TEMPLATES.map((template, i) => {
-                                            return (
-                                                <Button
-                                                    className="maxi-row-template-button"
-                                                    onClick={() => {
-                                                        setAttributes({ rowPattern: i });
-                                                        loadTemplate(i);
-                                                    }}
-                                                >
-                                                    <Icon
-                                                        className="maxi-row-template-icon"
-                                                        icon={template.icon}
-                                                    />
-                                                </Button>
-                                            )
-                                        })
-                                    }
-                                </div>
-                            ) :
-                            false
-                    }
-                />
-            </__experimentalBlock>
+            <InnerBlocks
+                // templateLock={'insert'}
+                __experimentalTagName={__experimentalBlock.div}
+                __experimentalPassedProps={{
+                    className: classes,
+                    ['data-align']: fullWidth,
+                    ['data-gx_initial_block_class']: defaultBlockStyle
+                }}
+                allowedBlocks={ALLOWED_BLOCKS}
+                renderAppender={
+                    !hasInnerBlock ?
+                        () => (
+                            <div
+                                className="maxi-row-block__template"
+                                onClick={() => selectOnClick(clientId)}
+                                key={`maxi-row-block--${instanceId}`}
+                            >
+                                {
+                                    TEMPLATES.map((template, i) => {
+                                        return (
+                                            <Button
+                                                className="maxi-row-block__template__button"
+                                                onClick={() => {
+                                                    setAttributes({ rowPattern: i });
+                                                    loadTemplate(i);
+                                                }}
+                                            >
+                                                <Icon
+                                                    className="maxi-row-block__template__icon"
+                                                    icon={template.icon}
+                                                />
+                                            </Button>
+                                        )
+                                    })
+                                }
+                            </div>
+                        ) :
+                        false
+                }
+            />
         ];
     }
 }
@@ -317,5 +320,6 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 
 export default compose(
     editSelect,
-    editDispatch
+    editDispatch,
+    withInstanceId
 )(edit);

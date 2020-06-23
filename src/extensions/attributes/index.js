@@ -86,14 +86,13 @@ const withAttributes = createHigherOrderComponent(
 				props.attributes.uniqueID = uniqueIdCreator(name);
 
 			// isFirstOnHierarchy
-			if (isNil(isFirstOnHierarchy)) {
-				const hasParentBlocks = !isEmpty(select('core/block-editor').getBlockParents(clientId));
+			let parentBlocks = select('core/block-editor').getBlockParents(clientId)
+				.filter(el => {return el != clientId});
 
-				if (!hasParentBlocks)
-					props.attributes.isFirstOnHierarchy = true;
-				else
-					props.attributes.isFirstOnHierarchy = false;
-			}
+			if (parentBlocks.includes(clientId))
+				parentBlocks.pop()
+
+			props.attributes.isFirstOnHierarchy = isEmpty(parentBlocks);
 		}
 
 		return <BlockEdit {...props} />;

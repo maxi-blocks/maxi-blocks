@@ -84,7 +84,7 @@ const attributes = {
     },
     padding: {
         type: 'string',
-        default: JSON.stringify(attributesData.padding)
+        default: JSON.stringify(rowAttributesData.padding)
     },
     hoverAnimation: {
         type: 'string',

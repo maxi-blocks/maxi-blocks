@@ -13,8 +13,8 @@
 .maxi-block {
   position: relative; }
   .maxi-block:not([data-align="full"]) {
-    margin-right: auto !important;
-    margin-left: auto !important; }
+    margin-right: auto;
+    margin-left: auto; }
 /**
 * Leave blank due to bug on CGB. Check it on:
 * https://github.com/ahmadawais/create-guten-block/issues/111
@@ -55,17 +55,6 @@
           flex: 0 0 100% !important;
       max-width: 100% !important;
       margin: inherit !important; } }
-/**
-* Leave blank due to bug on CGB. Check it on:
-* https://github.com/ahmadawais/create-guten-block/issues/111
-*
-* Moved common styles to './src/css' 
-*/
-.maxi-externalbutton {
-  display: block;
-  width: -webkit-max-content;
-  width: -moz-max-content;
-  width: max-content; }
 /**
 * Leave blank due to bug on CGB. Check it on:
 * https://github.com/ahmadawais/create-guten-block/issues/111

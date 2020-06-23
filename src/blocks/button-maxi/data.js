@@ -163,10 +163,10 @@ export const padding = {
     "unit": "px",
     "desktop": {
         "padding-top": 10,
-        "padding-right": 10,
+        "padding-right": 20,
         "padding-bottom": 10,
-        "padding-left": 10,
-        "sync": true
+        "padding-left": 20,
+        "sync": false
     },
     "tablet": {
         "padding-top": "",

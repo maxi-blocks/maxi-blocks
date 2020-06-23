@@ -2700,27 +2700,6 @@ body.maxi-blocks--active .block-editor-block-list__layout.is-root-container .max
 *
 * Moved common styles to './src/css' 
 */
-.maxi-externalbutton {
-  border: 1px solid black; }
-  .maxi-externalbutton__richtext {
-    display: block; }
-  .maxi-externalbutton__popover {
-    position: fixed; }
-    .maxi-externalbutton__popover button {
-      -webkit-box-shadow: none;
-              box-shadow: none;
-      opacity: 0;
-      -webkit-transition: opacity .3s ease-in-out;
-      -o-transition: opacity .3s ease-in-out;
-      transition: opacity .3s ease-in-out;
-      background-color: transparent !important;
-      max-width: 1.5rem; }
-/**
-* Leave blank due to bug on CGB. Check it on:
-* https://github.com/ahmadawais/create-guten-block/issues/111
-*
-* Moved common styles to './src/css' 
-*/
 .maxi-sidebar .maxi-normalhover-control {
   margin: -13px -12px 15px !important; }
   .maxi-sidebar .maxi-normalhover-control .components-base-control__field .components-radio-control__option {

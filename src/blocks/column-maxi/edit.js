@@ -74,7 +74,7 @@ class edit extends GXBlock {
         let response = {
             [this.props.attributes.uniqueID]: this.getNormalObject,
             [`${this.props.attributes.uniqueID}:hover`]: this.getHoverObject,
-            [`${this.props.attributes.uniqueID}>.maxi-column-block__content`]: this.getContentObject,
+            // [`${this.props.attributes.uniqueID}>.maxi-column-block__content`]: this.getContentObject,
         }
 
         return response;
@@ -87,11 +87,26 @@ class edit extends GXBlock {
         const {
             attributes: {
                 columnSize,
+                opacity,
+                background,
+                boxShadow,
+                border,
+                size,
+                margin,
+                padding,
                 zIndex
             },
         } = this.props;
 
         let response = {
+            background: { ...getBackgroundObject(JSON.parse(background)) },
+            boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
+            border: { ...JSON.parse(border) },
+            borderWidth: { ...JSON.parse(border).borderWidth },
+            borderRadius: { ...JSON.parse(border).borderRadius },
+            size: { ...JSON.parse(size) },
+            margin: { ...JSON.parse(margin) },
+            padding: { ...JSON.parse(padding) },
             column: {
                 label: "Column",
                 general: {},
@@ -109,6 +124,9 @@ class edit extends GXBlock {
             }
         if (isNumber(zIndex))
             response.column.general['z-index'] = zIndex;
+        if (isNumber(opacity))
+            response.column.general['opacity'] = opacity;
+
 
         return response;
     }
@@ -164,9 +182,6 @@ class edit extends GXBlock {
             column: {
                 label: "Column",
                 general: {},
-                desktop: {},
-                tablet: {},
-                mobile: {}
             }
         };
 
@@ -271,30 +286,28 @@ class edit extends GXBlock {
                             redistributeColumnsSize(getResizePerCent(delta, originalWidth), true);
                         }}
                     >
-                        <__experimentalBlock.div
-                            className={classes}
-                            data-gx_initial_block_class={defaultBlockStyle}
-                        >
-                            <div className='maxi-column-block__content'>
-                                <InnerBlocks
-                                    // allowedBlocks={ALLOWED_BLOCKS}
-                                    templateLock={false}
-                                    renderAppender={
-                                        !hasInnerBlock ?
-                                            () => (
-                                                <__experimentalBlockPlaceholder
-                                                    clientId={clientId}
-                                                />
-                                            ) :
-                                            isSelected ?
-                                                () => (
-                                                    <InnerBlocks.ButtonBlockAppender />
-                                                ) :
-                                                false
-                                    }
-                                />
-                            </div>
-                        </__experimentalBlock.div>
+                        <InnerBlocks
+                            // allowedBlocks={ALLOWED_BLOCKS}
+                            templateLock={false}
+                            __experimentalTagName={__experimentalBlock.div}
+                            __experimentalPassedProps={{
+                                className: classes,
+                                ['data-gx_initial_block_class']: defaultBlockStyle,
+                            }}
+                            renderAppender={
+                                !hasInnerBlock ?
+                                    () => (
+                                        <__experimentalBlockPlaceholder
+                                            clientId={clientId}
+                                        />
+                                    ) :
+                                    true ?
+                                        () => (
+                                            <InnerBlocks.ButtonBlockAppender />
+                                        ) :
+                                        false
+                            }
+                        />
                     </ResizableBox>
                 }
             </Fragment>

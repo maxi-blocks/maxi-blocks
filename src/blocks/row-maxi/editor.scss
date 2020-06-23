@@ -1,4 +1,4 @@
-div.maxi-row-block {
+.maxi-row-block {
     position: relative;
     width: 100%;
     margin: auto;
@@ -20,49 +20,33 @@ div.maxi-row-block {
         width: auto;
     }
 
-    .block-editor-inner-blocks,
-    .block-list-appender,
-    .maxi-row-dropdown {
-        width: 100%;
-        height: 100%;
-    }
-
-    .maxi-row-appender-button {
-        display: block;
-        width: 100%;
-    }
-
-    > div.block-editor-inner-blocks > div.block-editor-block-list__layout {
-        display: flex;
-
-        > div.maxi-column-block {
-            &--left {
-                margin-left: 0 !important;
-            }
-
-            &--right {
-                margin-right: 0 !important;
-            }
+    div.maxi-column-block {
+        &--left {
+            margin-left: 0 !important;
         }
 
-        > div.block-list-appender {
-            margin: 0;
+        &--right {
+            margin-right: 0 !important;
+        }
+    }
 
-            > div.maxi-row-template-wrapper {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                background-color: #ffffff;
+    .block-list-appender {
+        margin: 0;
+    }
 
-                > button.maxi-row-template-button {
-                    width: 10rem;
-                    height: 5rem;
+    &__template {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        background-color: #ffffff;
 
-                    > svg {
-                        width: 100%;
-                        height: 100%;
-                    }
-                }
+        &__button {
+            width: 10rem;
+            height: 5rem;
+
+            > svg {
+                width: 100%;
+                height: 100%;
             }
         }
     }

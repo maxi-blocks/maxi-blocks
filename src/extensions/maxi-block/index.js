@@ -20,6 +20,7 @@ import {
     ResponsiveStylesResolver,
     BackEndResponsiveStyles
 } from '../styles';
+import { getDefaultProp } from '../styles/utils';
 
 /**
  * External dependencies
@@ -28,7 +29,8 @@ import {
     isEmpty,
     uniqueId,
     isEqual,
-    isNil
+    isNil,
+    isObject
 } from 'lodash';
 
 /**
@@ -36,12 +38,44 @@ import {
  */
 class GXBlock extends GXComponent {
     state = {
-        styles: {}
+        styles: {},
     }
 
     constructor() {
         super(...arguments);
         this.uniqueIDChecker(this.props.attributes.uniqueID);
+        this.fixProps();
+    }
+
+    fixProps() {
+        Object.entries(this.props.attributes).map(([key, value]) => {
+            let obj;
+            try {
+                obj = JSON.parse(value);
+            } catch (error) {
+                return;
+            }
+
+            if (!isObject(obj))
+                return;
+
+            const defaultObj = JSON.parse(getDefaultProp(this.props.clientId, key));
+
+            const objKeys = Object.keys(obj).sort();
+            const defaultObjKeys = Object.keys(defaultObj).sort();
+            if (JSON.stringify(objKeys) != JSON.stringify(defaultObjKeys)) {
+                const newObject = this.generalToDesktop(obj, defaultObj);
+                this.props.setAttributes({ [key]: JSON.stringify(newObject) });
+                this.props.attributes[key] = JSON.stringify(newObject);
+            }
+        })
+    }
+
+    generalToDesktop(obj, defaultObj) {
+        if (obj.hasOwnProperty('general') && !obj.hasOwnProperty('desktop'))
+            defaultObj.desktop = obj.general;
+
+        return defaultObj;
     }
 
     componentDidMount() {
@@ -128,8 +162,8 @@ class GXBlock extends GXComponent {
                 undoIgnore: true
             }
         )
-        .then(new BackEndResponsiveStyles(newMeta))
-        .catch(err => console.log(err))
+            .then(new BackEndResponsiveStyles(newMeta))
+            .catch(err => console.error(err))
     }
 }
 

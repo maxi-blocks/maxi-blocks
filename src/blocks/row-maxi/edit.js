@@ -263,9 +263,9 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 
     /**
      * Loads template into InnerBlocks
-     * 
+     *
      * @param {integer} i Element of object TEMPLATES
-     * @param {function} callback 
+     * @param {function} callback
      */
     const loadTemplate = i => {
         const template = TEMPLATES[i];
@@ -284,7 +284,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 
     /**
      * Block selector
-     * 
+     *
      * @param {string} id Block id to select
      */
     const selectOnClick = (id) => {

@@ -1392,33 +1392,88 @@ body.Bumblebee .maxi-default .maxi-divider {
 * RadioControl
 * ButtonControl
 ************/
-.maxi-sidebar .components-base-control,
-.maxi-popover .components-base-control,
-.toolbar-item__popover .components-base-control {
+.maxi-sidebar .block-editor-link-control .block-editor-url-input__input,
+.maxi-popover .block-editor-link-control .block-editor-url-input__input,
+.toolbar-item__popover .block-editor-link-control .block-editor-url-input__input {
+  color: #fff; }
+  .maxi-sidebar .block-editor-link-control .block-editor-url-input__input::-webkit-input-placeholder,
+  .maxi-popover .block-editor-link-control .block-editor-url-input__input::-webkit-input-placeholder,
+  .toolbar-item__popover .block-editor-link-control .block-editor-url-input__input::-webkit-input-placeholder {
+    color: #5f6063 !important; }
+  .maxi-sidebar .block-editor-link-control .block-editor-url-input__input::-moz-placeholder,
+  .maxi-popover .block-editor-link-control .block-editor-url-input__input::-moz-placeholder,
+  .toolbar-item__popover .block-editor-link-control .block-editor-url-input__input::-moz-placeholder {
+    color: #5f6063 !important; }
+  .maxi-sidebar .block-editor-link-control .block-editor-url-input__input::-ms-input-placeholder,
+  .maxi-popover .block-editor-link-control .block-editor-url-input__input::-ms-input-placeholder,
+  .toolbar-item__popover .block-editor-link-control .block-editor-url-input__input::-ms-input-placeholder {
+    color: #5f6063 !important; }
+  .maxi-sidebar .block-editor-link-control .block-editor-url-input__input::placeholder,
+  .maxi-popover .block-editor-link-control .block-editor-url-input__input::placeholder,
+  .toolbar-item__popover .block-editor-link-control .block-editor-url-input__input::placeholder {
+    color: #5f6063 !important; }
+
+.maxi-sidebar .block-editor-link-control__search-item-title mark,
+.maxi-popover .block-editor-link-control__search-item-title mark,
+.toolbar-item__popover .block-editor-link-control__search-item-title mark {
+  color: #ff4a17; }
+
+.maxi-sidebar .block-editor-link-control__search-results-wrapper,
+.maxi-popover .block-editor-link-control__search-results-wrapper,
+.toolbar-item__popover .block-editor-link-control__search-results-wrapper {
+  margin-bottom: 10px; }
+
+.maxi-sidebar .block-editor-link-control__search-item-type,
+.maxi-popover .block-editor-link-control__search-item-type,
+.toolbar-item__popover .block-editor-link-control__search-item-type {
+  background-color: #000;
+  border-radius: 2px; }
+
+.maxi-sidebar .block-editor-link-control__search-item,
+.maxi-popover .block-editor-link-control__search-item,
+.toolbar-item__popover .block-editor-link-control__search-item {
+  background-color: #4f515c;
+  margin-bottom: 3px;
+  color: #fff; }
+  .maxi-sidebar .block-editor-link-control__search-item:hover,
+  .maxi-popover .block-editor-link-control__search-item:hover,
+  .toolbar-item__popover .block-editor-link-control__search-item:hover {
+    background-color: #42434a; }
+
+.maxi-sidebar .block-editor-link-control__search-results-wrapper:before, .maxi-sidebar .block-editor-link-control__search-results-wrapper:after,
+.maxi-popover .block-editor-link-control__search-results-wrapper:before,
+.maxi-popover .block-editor-link-control__search-results-wrapper:after,
+.toolbar-item__popover .block-editor-link-control__search-results-wrapper:before,
+.toolbar-item__popover .block-editor-link-control__search-results-wrapper:after {
+  background: none; }
+
+.maxi-sidebar .components-base-control:not(.block-editor-link-control__search-input),
+.maxi-popover .components-base-control:not(.block-editor-link-control__search-input),
+.toolbar-item__popover .components-base-control:not(.block-editor-link-control__search-input) {
   margin-bottom: 7px !important; }
-  .maxi-sidebar .components-base-control:last-child,
-  .maxi-popover .components-base-control:last-child,
-  .toolbar-item__popover .components-base-control:last-child {
+  .maxi-sidebar .components-base-control:not(.block-editor-link-control__search-input):last-child,
+  .maxi-popover .components-base-control:not(.block-editor-link-control__search-input):last-child,
+  .toolbar-item__popover .components-base-control:not(.block-editor-link-control__search-input):last-child {
     margin-bottom: 0 !important; }
-  .maxi-sidebar .components-base-control .components-base-control__field,
-  .maxi-popover .components-base-control .components-base-control__field,
-  .toolbar-item__popover .components-base-control .components-base-control__field {
+  .maxi-sidebar .components-base-control:not(.block-editor-link-control__search-input) .components-base-control__field,
+  .maxi-popover .components-base-control:not(.block-editor-link-control__search-input) .components-base-control__field,
+  .toolbar-item__popover .components-base-control:not(.block-editor-link-control__search-input) .components-base-control__field {
     display: -ms-flexbox !important;
     display: flex !important;
     -ms-flex-align: center;
         align-items: center;
     -ms-flex-pack: justify;
         justify-content: space-between; }
-    .maxi-sidebar .components-base-control .components-base-control__field .components-base-control__label,
-    .maxi-popover .components-base-control .components-base-control__field .components-base-control__label,
-    .toolbar-item__popover .components-base-control .components-base-control__field .components-base-control__label {
+    .maxi-sidebar .components-base-control:not(.block-editor-link-control__search-input) .components-base-control__field .components-base-control__label,
+    .maxi-popover .components-base-control:not(.block-editor-link-control__search-input) .components-base-control__field .components-base-control__label,
+    .toolbar-item__popover .components-base-control:not(.block-editor-link-control__search-input) .components-base-control__field .components-base-control__label {
       margin-bottom: 0;
       width: 50%;
       -ms-flex: 2;
           flex: 2; }
-    .maxi-sidebar .components-base-control .components-base-control__field .components-select-control__input,
-    .maxi-popover .components-base-control .components-base-control__field .components-select-control__input,
-    .toolbar-item__popover .components-base-control .components-base-control__field .components-select-control__input {
+    .maxi-sidebar .components-base-control:not(.block-editor-link-control__search-input) .components-base-control__field .components-select-control__input,
+    .maxi-popover .components-base-control:not(.block-editor-link-control__search-input) .components-base-control__field .components-select-control__input,
+    .toolbar-item__popover .components-base-control:not(.block-editor-link-control__search-input) .components-base-control__field .components-select-control__input {
       background: #fff url(../img/arrow-down.svg) no-repeat right 7px top 50%;
       background-size: 9px 9px !important;
       border-radius: 5px !important;
@@ -1429,13 +1484,13 @@ body.Bumblebee .maxi-default .maxi-divider {
       font-weight: 500;
       height: 31px;
       margin: 0 !important; }
-    .maxi-sidebar .components-base-control .components-base-control__field .components-radio-control__option:not(:last-child),
-    .maxi-popover .components-base-control .components-base-control__field .components-radio-control__option:not(:last-child),
-    .toolbar-item__popover .components-base-control .components-base-control__field .components-radio-control__option:not(:last-child) {
+    .maxi-sidebar .components-base-control:not(.block-editor-link-control__search-input) .components-base-control__field .components-radio-control__option:not(:last-child),
+    .maxi-popover .components-base-control:not(.block-editor-link-control__search-input) .components-base-control__field .components-radio-control__option:not(:last-child),
+    .toolbar-item__popover .components-base-control:not(.block-editor-link-control__search-input) .components-base-control__field .components-radio-control__option:not(:last-child) {
       margin-bottom: 0 !important; }
-    .maxi-sidebar .components-base-control .components-base-control__field .components-button,
-    .maxi-popover .components-base-control .components-base-control__field .components-button,
-    .toolbar-item__popover .components-base-control .components-base-control__field .components-button {
+    .maxi-sidebar .components-base-control:not(.block-editor-link-control__search-input) .components-base-control__field .components-button,
+    .maxi-popover .components-base-control:not(.block-editor-link-control__search-input) .components-base-control__field .components-button,
+    .toolbar-item__popover .components-base-control:not(.block-editor-link-control__search-input) .components-base-control__field .components-button {
       display: -ms-inline-flexbox;
       display: inline-flex;
       width: 31px;
@@ -1457,45 +1512,45 @@ body.Bumblebee .maxi-default .maxi-divider {
       padding: 0;
       opacity: 1;
       border-radius: 5px; }
-      .maxi-sidebar .components-base-control .components-base-control__field .components-button:hover,
-      .maxi-popover .components-base-control .components-base-control__field .components-button:hover,
-      .toolbar-item__popover .components-base-control .components-base-control__field .components-button:hover {
+      .maxi-sidebar .components-base-control:not(.block-editor-link-control__search-input) .components-base-control__field .components-button:hover,
+      .maxi-popover .components-base-control:not(.block-editor-link-control__search-input) .components-base-control__field .components-button:hover,
+      .toolbar-item__popover .components-base-control:not(.block-editor-link-control__search-input) .components-base-control__field .components-button:hover {
         -webkit-box-shadow: none !important;
                 box-shadow: none !important;
         border-color: #c5c5c5 !important;
         cursor: pointer; }
-      .maxi-sidebar .components-base-control .components-base-control__field .components-button.is-primary,
-      .maxi-popover .components-base-control .components-base-control__field .components-button.is-primary,
-      .toolbar-item__popover .components-base-control .components-base-control__field .components-button.is-primary {
+      .maxi-sidebar .components-base-control:not(.block-editor-link-control__search-input) .components-base-control__field .components-button.is-primary,
+      .maxi-popover .components-base-control:not(.block-editor-link-control__search-input) .components-base-control__field .components-button.is-primary,
+      .toolbar-item__popover .components-base-control:not(.block-editor-link-control__search-input) .components-base-control__field .components-button.is-primary {
         border-color: #00ccff; }
-        .maxi-sidebar .components-base-control .components-base-control__field .components-button.is-primary:focus:enabled,
-        .maxi-popover .components-base-control .components-base-control__field .components-button.is-primary:focus:enabled,
-        .toolbar-item__popover .components-base-control .components-base-control__field .components-button.is-primary:focus:enabled {
+        .maxi-sidebar .components-base-control:not(.block-editor-link-control__search-input) .components-base-control__field .components-button.is-primary:focus:enabled,
+        .maxi-popover .components-base-control:not(.block-editor-link-control__search-input) .components-base-control__field .components-button.is-primary:focus:enabled,
+        .toolbar-item__popover .components-base-control:not(.block-editor-link-control__search-input) .components-base-control__field .components-button.is-primary:focus:enabled {
           -webkit-box-shadow: 0 0 0 1px #fff, 0 0 0 3px #00ccff;
                   box-shadow: 0 0 0 1px #fff, 0 0 0 3px #00ccff; }
-      .maxi-sidebar .components-base-control .components-base-control__field .components-button.is-secondary,
-      .maxi-popover .components-base-control .components-base-control__field .components-button.is-secondary,
-      .toolbar-item__popover .components-base-control .components-base-control__field .components-button.is-secondary {
+      .maxi-sidebar .components-base-control:not(.block-editor-link-control__search-input) .components-base-control__field .components-button.is-secondary,
+      .maxi-popover .components-base-control:not(.block-editor-link-control__search-input) .components-base-control__field .components-button.is-secondary,
+      .toolbar-item__popover .components-base-control:not(.block-editor-link-control__search-input) .components-base-control__field .components-button.is-secondary {
         -webkit-box-shadow: none !important;
                 box-shadow: none !important;
         border: 2px solid #dddfe1; }
-        .maxi-sidebar .components-base-control .components-base-control__field .components-button.is-secondary:hover,
-        .maxi-popover .components-base-control .components-base-control__field .components-button.is-secondary:hover,
-        .toolbar-item__popover .components-base-control .components-base-control__field .components-button.is-secondary:hover {
+        .maxi-sidebar .components-base-control:not(.block-editor-link-control__search-input) .components-base-control__field .components-button.is-secondary:hover,
+        .maxi-popover .components-base-control:not(.block-editor-link-control__search-input) .components-base-control__field .components-button.is-secondary:hover,
+        .toolbar-item__popover .components-base-control:not(.block-editor-link-control__search-input) .components-base-control__field .components-button.is-secondary:hover {
           background-color: white;
           border-color: #ff4a17; }
-        .maxi-sidebar .components-base-control .components-base-control__field .components-button.is-secondary svg,
-        .maxi-popover .components-base-control .components-base-control__field .components-button.is-secondary svg,
-        .toolbar-item__popover .components-base-control .components-base-control__field .components-button.is-secondary svg {
+        .maxi-sidebar .components-base-control:not(.block-editor-link-control__search-input) .components-base-control__field .components-button.is-secondary svg,
+        .maxi-popover .components-base-control:not(.block-editor-link-control__search-input) .components-base-control__field .components-button.is-secondary svg,
+        .toolbar-item__popover .components-base-control:not(.block-editor-link-control__search-input) .components-base-control__field .components-button.is-secondary svg {
           width: 14px !important;
           height: 14px !important; }
-      .maxi-sidebar .components-base-control .components-base-control__field .components-button[type="reset"] svg,
-      .maxi-popover .components-base-control .components-base-control__field .components-button[type="reset"] svg,
-      .toolbar-item__popover .components-base-control .components-base-control__field .components-button[type="reset"] svg {
+      .maxi-sidebar .components-base-control:not(.block-editor-link-control__search-input) .components-base-control__field .components-button[type="reset"] svg,
+      .maxi-popover .components-base-control:not(.block-editor-link-control__search-input) .components-base-control__field .components-button[type="reset"] svg,
+      .toolbar-item__popover .components-base-control:not(.block-editor-link-control__search-input) .components-base-control__field .components-button[type="reset"] svg {
         fill: #464a53; }
-      .maxi-sidebar .components-base-control .components-base-control__field .components-button svg,
-      .maxi-popover .components-base-control .components-base-control__field .components-button svg,
-      .toolbar-item__popover .components-base-control .components-base-control__field .components-button svg {
+      .maxi-sidebar .components-base-control:not(.block-editor-link-control__search-input) .components-base-control__field .components-button svg,
+      .maxi-popover .components-base-control:not(.block-editor-link-control__search-input) .components-base-control__field .components-button svg,
+      .toolbar-item__popover .components-base-control:not(.block-editor-link-control__search-input) .components-base-control__field .components-button svg {
         margin: auto; }
 
 .maxi-sidebar .components-button:focus,
@@ -1693,6 +1748,11 @@ h2.gx_error {
   font-size: 13px;
   color: #464a53; }
 
+.block-editor-inserter {
+  color: #fff !important; }
+  .block-editor-inserter__toggle svg {
+    fill: #fff !important; }
+
 /*****************
 * Editor settings
 ******************/
@@ -1881,11 +1941,12 @@ body.maxi-blocks--active .block-editor-block-list__layout.is-root-container .max
 .maxi-row-block {
   position: relative;
   width: 100%;
-  margin: auto;
-  padding: 0; }
-  .maxi-row-block:hover .maxi-column-block__resizer .components-resizable-box__handle {
-    display: block !important;
-    visibility: visible !important; }
+  margin: auto; }
+  .maxi-row-block:hover {
+    outline: 1px solid grey; }
+    .maxi-row-block:hover .maxi-column-block__resizer .components-resizable-box__handle {
+      display: block !important;
+      visibility: visible !important; }
   .maxi-row-block[data-align="full"] {
     width: auto; }
   .maxi-row-block div.maxi-column-block--left {
@@ -1893,9 +1954,7 @@ body.maxi-blocks--active .block-editor-block-list__layout.is-root-container .max
   .maxi-row-block div.maxi-column-block--right {
     margin-right: 0 !important; }
   .maxi-row-block .block-list-appender {
-    margin: 0;
-    padding: 0;
-    width: 100%; }
+    margin: 0; }
   .maxi-row-block__template {
     display: -ms-flexbox;
     display: flex;
@@ -1903,23 +1962,13 @@ body.maxi-blocks--active .block-editor-block-list__layout.is-root-container .max
         flex-wrap: wrap;
     -ms-flex-pack: center;
         justify-content: center;
-    background-color: #f7f8fc;
-    width: 100%;
-    padding: 2rem 1rem;
-    margin: 0 auto; }
+    background-color: #ffffff; }
     .maxi-row-block__template__button {
-      width: 20%;
-      height: 50px;
-      display: inline-block; }
-      .maxi-row-block__template__button:hover svg {
-        stroke: #ff4a17;
-        fill: #fff;
-        -webkit-filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.3));
-                filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.3)); }
-      .maxi-row-block__template__button svg {
+      width: 10rem;
+      height: 5rem; }
+      .maxi-row-block__template__button > svg {
         width: 100%;
-        height: 100%;
-        fill: #e2e6ec; }
+        height: 100%; }
 /**
 * Leave blank due to bug on CGB. Check it on:
 * https://github.com/ahmadawais/create-guten-block/issues/111

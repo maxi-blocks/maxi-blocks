@@ -9,8 +9,41 @@
 .maxi-sidebar,
 .maxi-popover,
 .toolbar-item__popover {
+
+    .block-editor-link-control {
+        .block-editor-url-input__input {
+            color: #fff;
+            &::placeholder {
+                color: #5f6063 !important;
+            }
+        }
+        &__search-item-title {
+            mark {
+                color: #ff4a17;
+            }
+        }
+        &__search-results-wrapper {
+            margin-bottom: 10px;
+        }
+        &__search-item-type {
+            background-color: #000;
+            border-radius: 2px;
+        }
+        &__search-item {
+            background-color: #4f515c;
+            margin-bottom: 3px;
+            color: #fff;
+            &:hover {
+                background-color: #42434a;
+            }
+        }
+        &__search-results-wrapper:before,
+        &__search-results-wrapper:after {
+            background: none;
+        }
+    }
     // BaseControl
-    .components-base-control {
+    .components-base-control:not(.block-editor-link-control__search-input) {
         margin-bottom: 7px !important;
 
         &:last-child {

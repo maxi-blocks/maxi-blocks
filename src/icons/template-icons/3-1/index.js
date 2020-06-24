@@ -4,22 +4,8 @@
 const { SVG, Path } = wp.primitives;
 
 const threeOne = (
-  <SVG
-    width="24"
-    height="7"
-    id="Layer_1"
-    x="0px"
-    y="0px"
-    viewBox="0 0 112 36"
-    xmlSpace="preserve"
-  >
-    <style>
-      {
-        ".st0{fill:none;stroke:#464a53;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}"
-      }
-    </style>
-    <Path className="st0" d="M70 1H112V35H70z" />
-    <Path className="st0" d="M0 1H64.7V35H0z" />
+  <SVG xmlns="http://www.w3.org/2000/svg" x="0" y="0" version="1.1" viewBox="0 0 112 36" space="preserve">
+    <Path d="M70 1h42v34H70zM0 1h64.7v34H0z" />
   </SVG>
 );
 

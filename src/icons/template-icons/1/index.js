@@ -4,21 +4,12 @@
 const { SVG, Path } = wp.primitives;
 
 const oneColumn = (
-  <SVG
-    width="24"
-    height="7"
-    x="0px"
-    y="0px"
-    viewBox="0 0 112 36"
-    xmlSpace="preserve"
-  >
+  <SVG xmlns="http://www.w3.org/2000/svg" viewBox="0 0 112 36">
     <Path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
       d="M.7 1h110.5v34H.7V1z"
-      fill="none"
-      stroke="#464a53"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
     />
   </SVG>
 );

@@ -18,3 +18,6 @@ export { default as toolbarType } from './type';
 export { default as toolbarAdvancedSettings } from './advanced-settings';
 export { default as toolbarHeadingsLevel } from './headings-level';
 export { default as toolbarBorder } from './border';
+export { default as toolbarDividerWidth } from './divider-width';
+export { default as toolbarDividersetting } from './divider-setting';
+export { default as toolbarDividerAlign } from './divider-align';

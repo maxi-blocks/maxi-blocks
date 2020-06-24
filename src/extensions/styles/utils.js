@@ -15,7 +15,7 @@ import {
 
 /**
  * Returns default property of the block
- * 
+ *
  * @param {string} clientId Block's client id
  * @param {string} prop Claimed property to return
  */
@@ -33,9 +33,9 @@ export const getDefaultProp = (clientId, prop) => {
 
 /**
  * Clean BackgroundControl object for being delivered for styling
- * 
+ *
  * @param {object} backgroundObject BackgroundControl related object
- * 
+ *
  * @return {object}
  */
 export const getBackgroundObject = backgroundObject => {

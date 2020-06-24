@@ -58,15 +58,17 @@ const BoxShadowControl = props => {
             <DefaultStylesControl
                 items={[
                     {
+                        activeItem: ( value.shadowType === undefined ),
                         content: (
                             <Icon
                                 className='maxi-defaultstyles-control__button__icon'
                                 icon={styleNone}
                             />
                         ),
-                        onChange: () => onChange(getDefaultProp(null, 'border'))
+                        onChange: () => onChange(getDefaultProp(null, 'boxShadow'))
                     },
                     {
+                        activeItem: ( value.shadowType === 'total' ),
                         content: (
                             <div
                                 className='maxi-shadow-control__default maxi-shadow-control__default__total'
@@ -76,6 +78,7 @@ const BoxShadowControl = props => {
 
                     },
                     {
+                        activeItem: ( value.shadowType === 'bottom' ),
                         content: (
                             <div
                                 className='maxi-shadow-control__default maxi-shadow-control__default__bottom'
@@ -84,6 +87,7 @@ const BoxShadowControl = props => {
                         onChange: () => onChange(JSON.stringify(boxShadowBottom))
                     },
                     {
+                        activeItem: ( value.shadowType === 'solid' ),
                         content: (
                             <div
                                 className='maxi-shadow-control__default maxi-shadow-control__default__solid'

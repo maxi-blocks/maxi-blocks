@@ -11,6 +11,7 @@ const {
     useSelect,
     useDispatch,
 } = wp.data;
+import openSidebar from '../../../../extensions/dom';
 
 /**
  * Internal dependencies
@@ -89,36 +90,6 @@ const ImageSize = props => {
         return response;
     }
 
-    const onEditImageClick = item => {
-        const sidebar = document.querySelector('.maxi-sidebar');
-        const wrapperElement = document.querySelector(`.maxi-accordion-control__item[data-name="${item}"]`);
-        const button = wrapperElement.querySelector('.maxi-accordion-control__item__button');
-        const content = wrapperElement.querySelector('.maxi-accordion-control__item__panel');
-
-        Array.from(document.getElementsByClassName('maxi-accordion-control__item__button')).map(el => {
-            if (el.getAttribute('aria-expanded'))
-                el.setAttribute('aria-expanded', false)
-        })
-        Array.from(document.getElementsByClassName('maxi-accordion-control__item__panel')).map(el => {
-            if (!el.getAttribute('hidden'))
-                el.setAttribute('hidden', '')
-        })
-
-        button.setAttribute('aria-expanded', true)
-        content.removeAttribute('hidden');
-
-        sidebar.scroll({
-            top: wrapperElement.getBoundingClientRect().top,
-            behavior: 'smooth'
-        })
-
-        if (item === 'sizing')
-            onChangeSize('custom')
-
-        if (item === 'caption')
-            onChangeCaption('custom')
-    }
-
     return (
         <ToolbarPopover
             className='toolbar-item__image-size'
@@ -161,7 +132,7 @@ const ImageSize = props => {
                             className='toolbar-item__popover__dropdown-options__button'
                             onClick={() =>
                                 openGeneralSidebar('edit-post/block')
-                                    .then(() => onEditImageClick('sizing'))
+                                    .then(() => openSidebar('width height'))
                             }
                         >
                             Edit Image
@@ -170,7 +141,7 @@ const ImageSize = props => {
                             className='toolbar-item__popover__dropdown-options__button'
                             onClick={() =>
                                 openGeneralSidebar('edit-post/block')
-                                    .then(() => onEditImageClick('caption'))
+                                    .then(() => openSidebar('caption'))
                             }
                         >
                             Add Caption

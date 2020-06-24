@@ -37,9 +37,7 @@ class edit extends GXBlock {
         let response = {
             [this.props.attributes.uniqueID]: this.getNormalObject,
             [`${this.props.attributes.uniqueID}:hover`]: this.getHoverObject,
-            [`${this.props.attributes.uniqueID} > hr.maxi-divider-block__divider-1`]: this.getFirstDividerObject,
-            [`${this.props.attributes.uniqueID} > hr.maxi-divider-block__divider-2`]: this.getSecondDividerObject
-
+            [`${this.props.attributes.uniqueID} > hr.maxi-divider-block__divider`]: this.getDividerObject,
         }
 
         return response;
@@ -116,21 +114,11 @@ class edit extends GXBlock {
         return response;
     }
 
-    get getFirstDividerObject() {
-        const { divider1 } = this.props.attributes;
+    get getDividerObject() {
+        const { divider } = this.props.attributes;
 
         const response = {
-            divider: { ...JSON.parse(divider1) }
-        };
-
-        return response;
-    }
-
-    get getSecondDividerObject() {
-        const { divider2 } = this.props.attributes;
-
-        const response = {
-            divider: { ...JSON.parse(divider2) }
+            divider: { ...JSON.parse(divider) }
         };
 
         return response;
@@ -170,92 +158,61 @@ class edit extends GXBlock {
             JSON.parse(size) :
             size;
 
-        try {
-            return [
-                <Inspector {...this.props} />,
-                <__experimentalToolbar {...this.props} />,
-                <ResizableBox
-                    className={classnames(
-                        'maxi-block__resizer',
-                        'maxi-divider-block__resizer',
-                        `maxi-divider-block__resizer__${clientId}`
-                    )}
-                    size={{
-                        width: '100%',
-                        height: value.desktop.height + value.desktop.heightUnit
-                    }}
-                    enable={{
-                        top: false,
-                        right: false,
-                        bottom: isSelected,
-                        left: false,
-                        topRight: false,
-                        bottomRight: false,
-                        bottomLeft: false,
-                        topLeft: false,
-                    }}
-                    onResizeStart={() => {
-                        value.desktop.heightUnit != 'px' ?
-                            (
-                                value.desktop.heightUnit = 'px',
-                                setAttributes({
-                                    size: JSON.stringify(value)
-                                })
-                            ) :
-                            null
-                    }}
-                    onResizeStop={(event, direction, elt, delta) => {
-                        value.desktop.height = elt.getBoundingClientRect().height;
-                        setAttributes({
-                            size: JSON.stringify(value),
-                        });
-                    }}
+        return [
+            <Inspector {...this.props} />,
+            <__experimentalToolbar {...this.props} />,
+            <ResizableBox
+                className={classnames(
+                    'maxi-block__resizer',
+                    'maxi-divider-block__resizer',
+                    `maxi-divider-block__resizer__${clientId}`
+                )}
+                size={{
+                    width: '100%',
+                    height: value.desktop.height + value.desktop.heightUnit
+                }}
+                enable={{
+                    top: false,
+                    right: false,
+                    bottom: isSelected,
+                    left: false,
+                    topRight: false,
+                    bottomRight: false,
+                    bottomLeft: false,
+                    topLeft: false,
+                }}
+                onResizeStart={() => {
+                    value.desktop.heightUnit != 'px' ?
+                        (
+                            value.desktop.heightUnit = 'px',
+                            setAttributes({
+                                size: JSON.stringify(value)
+                            })
+                        ) :
+                        null
+                }}
+                onResizeStop={(event, direction, elt, delta) => {
+                    value.desktop.height = elt.getBoundingClientRect().height;
+                    setAttributes({
+                        size: JSON.stringify(value),
+                    });
+                }}
+            >
+                <__experimentalBlock
+                    className={classes}
+                    data-gx_initial_block_class={defaultBlockStyle}
+                    data-align={fullWidth}
                 >
-                    <__experimentalBlock
-                        className={classes}
-                        data-gx_initial_block_class={defaultBlockStyle}
-                        data-align={fullWidth}
-                    >
-                        {
-                            showLine === 'yes' &&
-                            <Fragment>
-                                <hr class="maxi-divider-block__divider-1" />
-                                {
-                                    getLinesQuantity() === 2 &&
-                                    <hr class="maxi-divider-block__divider-2" />
-                                }
-                            </Fragment>
-                        }
-                    </__experimentalBlock>
-                </ResizableBox>
-            ];
-        } catch (error) {
-            console.log(error)
-        }   
+                    {
+                        showLine === 'yes' &&
+                        <Fragment>
+                            <hr class="maxi-divider-block__divider" />
+                        </Fragment>
+                    }
+                </__experimentalBlock>
+            </ResizableBox>
+        ];
     }
 }
 
-export default withSelect((select, ownProps) => {
-    const {
-        divider1,
-        divider2
-    } = ownProps.attributes
-
-    const getLinesQuantity = () => {
-        let response = 0;
-
-        const div1 = JSON.parse(divider1).general['border-style'];
-        if (!isNil(div1) && div1 != 'none')
-            response++;
-
-        const div2 = JSON.parse(divider2).general['border-style'];
-        if (!isNil(div2) && div2 != 'none')
-            response++;
-
-        return response;
-    }
-
-    return {
-        getLinesQuantity
-    }
-})(edit);
+export default edit;

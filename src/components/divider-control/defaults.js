@@ -105,3 +105,21 @@ export const dividerDashedVertical = {
         "opacity": 1
     }
 }
+
+export const dividerNone = {
+    "label": "Divider",
+    "general": {
+        "border-color": "",
+        "border-style": "none",
+        "widthUnit": "%",
+        "width": 0,
+        "heightUnit": "px",
+        "height": "",
+        "border-top-widthUnit": "px",
+        "border-top-width": 0,
+        "border-right-widthUnit": "px",
+        "border-right-width": "",
+        "border-radius": "",
+        "opacity": 1
+    }
+}

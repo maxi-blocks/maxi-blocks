@@ -78,7 +78,7 @@ const Inspector = props => {
                                     isPrimary
                                     items={[
                                         {
-                                            label: __('Sizing', 'maxi-blocks'),
+                                            label: __('Width / Height', 'maxi-blocks'),
                                             content: (
                                                 <Fragment>
                                                     {

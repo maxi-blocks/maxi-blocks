@@ -36,13 +36,14 @@ const DefaultStylesControl = props => {
                 items.map(item => {
                     const classesItem = classnames(
                         'maxi-defaultstyles-control__button',
-                        item.className
+                        item.className,
+                        (item.activeItem) && 'maxi-defaultstyles-control__button--active',
                     );
 
                     return (
                         <Button
                             className={classesItem}
-                            onClick={item.onChange}
+                            onClick={() => item.onChange()}
                         >
                             {item.content}
                         </Button>

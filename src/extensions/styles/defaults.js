@@ -468,7 +468,7 @@ export const borderHover = {
     }
 };
 
-export const __experimentalDivider1 = {
+export const __experimentalDivider = {
     "label": "Divider",
     "general": {
         "border-color": "#ff4a17",
@@ -479,24 +479,6 @@ export const __experimentalDivider1 = {
         "height": "",
         "border-top-widthUnit": "px",
         "border-top-width": 2,
-        "border-right-widthUnit": "px",
-        "border-right-width": "",
-        "border-radius": "",
-        "opacity": 1
-    }
-}
-
-export const __experimentalDivider2 = {
-    "label": "Divider",
-    "general": {
-        "border-color": "#000",
-        "border-style": "none",
-        "widthUnit": "%",
-        "width": "",
-        "heightUnit": "%",
-        "height": "",
-        "border-top-widthUnit": "px",
-        "border-top-width": "",
         "border-right-widthUnit": "px",
         "border-right-width": "",
         "border-radius": "",

@@ -50,8 +50,7 @@ const save = props => {
             {
                 showLine === 'yes' &&
                 <Fragment>
-                    <hr class="maxi-divider-block__divider-1" />
-                    <hr class="maxi-divider-block__divider-2" />
+                    <hr class="maxi-divider-block__divider" />
                 </Fragment>
             }
         </div>

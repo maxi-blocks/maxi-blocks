@@ -29,6 +29,16 @@ h2.gx_error {
 	color: #464a53;
 }
 
+.block-editor-inserter {
+	color: #fff !important;
+	&__toggle {
+		svg {
+			fill: #fff !important;
+		}
+	}
+}
+
+
 /*****************
 * Editor settings
 ******************/
@@ -74,7 +84,6 @@ body.maxi-blocks--active {
 	.block-editor-block-list__layout {
 		position: inherit;
 	}
-
 	.block-list-appender {
 		.block-editor-button-block-appender {
 			visibility: hidden;

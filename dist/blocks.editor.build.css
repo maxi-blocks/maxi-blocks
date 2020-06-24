@@ -1881,12 +1881,11 @@ body.maxi-blocks--active .block-editor-block-list__layout.is-root-container .max
 .maxi-row-block {
   position: relative;
   width: 100%;
-  margin: auto; }
-  .maxi-row-block:hover {
-    outline: 1px solid grey; }
-    .maxi-row-block:hover .maxi-column-block__resizer .components-resizable-box__handle {
-      display: block !important;
-      visibility: visible !important; }
+  margin: auto;
+  padding: 0; }
+  .maxi-row-block:hover .maxi-column-block__resizer .components-resizable-box__handle {
+    display: block !important;
+    visibility: visible !important; }
   .maxi-row-block[data-align="full"] {
     width: auto; }
   .maxi-row-block div.maxi-column-block--left {
@@ -1894,7 +1893,9 @@ body.maxi-blocks--active .block-editor-block-list__layout.is-root-container .max
   .maxi-row-block div.maxi-column-block--right {
     margin-right: 0 !important; }
   .maxi-row-block .block-list-appender {
-    margin: 0; }
+    margin: 0;
+    padding: 0;
+    width: 100%; }
   .maxi-row-block__template {
     display: -ms-flexbox;
     display: flex;
@@ -1902,13 +1903,23 @@ body.maxi-blocks--active .block-editor-block-list__layout.is-root-container .max
         flex-wrap: wrap;
     -ms-flex-pack: center;
         justify-content: center;
-    background-color: #ffffff; }
+    background-color: #f7f8fc;
+    width: 100%;
+    padding: 2rem 1rem;
+    margin: 0 auto; }
     .maxi-row-block__template__button {
-      width: 10rem;
-      height: 5rem; }
-      .maxi-row-block__template__button > svg {
+      width: 20%;
+      height: 50px;
+      display: inline-block; }
+      .maxi-row-block__template__button:hover svg {
+        stroke: #ff4a17;
+        fill: #fff;
+        -webkit-filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.3));
+                filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.3)); }
+      .maxi-row-block__template__button svg {
         width: 100%;
-        height: 100%; }
+        height: 100%;
+        fill: #e2e6ec; }
 /**
 * Leave blank due to bug on CGB. Check it on:
 * https://github.com/ahmadawais/create-guten-block/issues/111

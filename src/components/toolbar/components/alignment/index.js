@@ -38,7 +38,7 @@ const Alignment = props => {
                     value={alignmentDesktop}
                     onChange={alignmentDesktop => onChange(alignmentDesktop)}
                     disableJustify={
-                        blockName === 'maxi-blocks/text-maxi' ?
+                        ( blockName === 'maxi-blocks/text-maxi' || blockName === 'maxi-blocks/button-maxi' ) ?
                             false :
                             true
                     }

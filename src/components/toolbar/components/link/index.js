@@ -29,11 +29,9 @@ const Link = props => {
 
     return (
         <ToolbarPopover
-            className='toolbar-item__link'
             icon={toolbarLink}
             content={(
                 <__experimentalLinkControl
-                    className="toolbar-item__popover__link-control"
                     value={JSON.parse(linkSettings)}
                     onChange={value => onChange(JSON.stringify(value))
                     }

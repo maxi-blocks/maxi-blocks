@@ -12,7 +12,8 @@ const { withSelect } = wp.data;
 import Inspector from './inspector';
 import {
     getBackgroundObject,
-    getBoxShadowObject
+    getBoxShadowObject,
+    getDefaultProp
 } from '../../extensions/styles/utils';
 import {
     GXBlock,
@@ -169,64 +170,68 @@ class edit extends GXBlock {
             JSON.parse(size) :
             size;
 
-        return [
-            <Inspector {...this.props} />,
-            <__experimentalToolbar {...this.props} />,
-            <ResizableBox
-                className={classnames(
-                    'maxi-block__resizer',
-                    'maxi-divider-block__resizer',
-                    `maxi-divider-block__resizer__${clientId}`
-                )}
-                size={{
-                    width: '100%',
-                    height: value.desktop.height + value.desktop.heightUnit
-                }}
-                enable={{
-                    top: false,
-                    right: false,
-                    bottom: isSelected,
-                    left: false,
-                    topRight: false,
-                    bottomRight: false,
-                    bottomLeft: false,
-                    topLeft: false,
-                }}
-                onResizeStart={() => {
-                    value.desktop.heightUnit != 'px' ?
-                        (
-                            value.desktop.heightUnit = 'px',
-                            setAttributes({
-                                size: JSON.stringify(value)
-                            })
-                        ) :
-                        null
-                }}
-                onResizeStop={(event, direction, elt, delta) => {
-                    value.desktop.height = elt.getBoundingClientRect().height;
-                    setAttributes({
-                        size: JSON.stringify(value),
-                    });
-                }}
-            >
-                <__experimentalBlock
-                    className={classes}
-                    data-gx_initial_block_class={defaultBlockStyle}
-                    data-align={fullWidth}
+        try {
+            return [
+                <Inspector {...this.props} />,
+                <__experimentalToolbar {...this.props} />,
+                <ResizableBox
+                    className={classnames(
+                        'maxi-block__resizer',
+                        'maxi-divider-block__resizer',
+                        `maxi-divider-block__resizer__${clientId}`
+                    )}
+                    size={{
+                        width: '100%',
+                        height: value.desktop.height + value.desktop.heightUnit
+                    }}
+                    enable={{
+                        top: false,
+                        right: false,
+                        bottom: isSelected,
+                        left: false,
+                        topRight: false,
+                        bottomRight: false,
+                        bottomLeft: false,
+                        topLeft: false,
+                    }}
+                    onResizeStart={() => {
+                        value.desktop.heightUnit != 'px' ?
+                            (
+                                value.desktop.heightUnit = 'px',
+                                setAttributes({
+                                    size: JSON.stringify(value)
+                                })
+                            ) :
+                            null
+                    }}
+                    onResizeStop={(event, direction, elt, delta) => {
+                        value.desktop.height = elt.getBoundingClientRect().height;
+                        setAttributes({
+                            size: JSON.stringify(value),
+                        });
+                    }}
                 >
-                    {
-                        showLine === 'yes' &&
-                        <Fragment>
-                            <hr class="maxi-divider-block__divider-1" />
-                            {
-                                getLinesQuantity() === 2 &&
-                                <hr class="maxi-divider-block__divider-2" />
-                            }
-                        </Fragment>
-                    }
-                </__experimentalBlock>
-            </ResizableBox>
-        ];
+                    <__experimentalBlock
+                        className={classes}
+                        data-gx_initial_block_class={defaultBlockStyle}
+                        data-align={fullWidth}
+                    >
+                        {
+                            showLine === 'yes' &&
+                            <Fragment>
+                                <hr class="maxi-divider-block__divider-1" />
+                                {
+                                    getLinesQuantity() === 2 &&
+                                    <hr class="maxi-divider-block__divider-2" />
+                                }
+                            </Fragment>
+                        }
+                    </__experimentalBlock>
+                </ResizableBox>
+            ];
+        } catch (error) {
+            console.log(error)
+        }   
     }
 }
 

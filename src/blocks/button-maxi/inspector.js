@@ -92,7 +92,6 @@ const Inspector = props => {
                                                                 <AlignmentControl
                                                                     value={alignmentDesktop}
                                                                     onChange={alignmentDesktop => setAttributes({ alignmentDesktop })}
-                                                                    disableJustify
                                                                 />
                                                             )
                                                         },
@@ -102,7 +101,7 @@ const Inspector = props => {
                                                                 <AlignmentControl
                                                                     value={alignmentTablet}
                                                                     onChange={alignmentTablet => setAttributes({ alignmentTablet })}
-                                                                    disableJustify
+
                                                                 />
                                                             )
                                                         },
@@ -112,7 +111,6 @@ const Inspector = props => {
                                                                 <AlignmentControl
                                                                     value={alignmentMobile}
                                                                     onChange={alignmentMobile => setAttributes({ alignmentMobile })}
-                                                                    disableJustify
                                                                 />
                                                             )
                                                         },

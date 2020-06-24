@@ -4,22 +4,8 @@
 const { SVG, Path } = wp.primitives;
 
 const twoColumns = (
-  <SVG
-    width="24"
-    height="7"
-    id="Layer_1"
-    x="0px"
-    y="0px"
-    viewBox="0 0 111 36"
-    xmlSpace="preserve"
-  >
-    <style>
-      {
-        ".st0{fill:none;stroke:#464a53;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}"
-      }
-    </style>
-    <Path className="st0" d="M59 1.1H111V35.1H59z" />
-    <Path className="st0" d="M0 1.1H52V35.1H0z" />
+  <SVG xmlns="http://www.w3.org/2000/svg" x="0" y="0" version="1.1" viewBox="0 0 111 36" space="preserve">
+    <Path d="M59 1.1h52v34H59zM0 1.1h52v34H0z" />
   </SVG>
 );
 

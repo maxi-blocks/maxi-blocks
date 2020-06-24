@@ -1396,6 +1396,30 @@ body.Bumblebee .maxi-default .maxi-divider {
 .maxi-popover .block-editor-link-control .block-editor-url-input__input,
 .toolbar-item__popover .block-editor-link-control .block-editor-url-input__input {
   color: #fff; }
+  .maxi-sidebar .block-editor-link-control .block-editor-url-input__input::-webkit-input-placeholder,
+  .maxi-popover .block-editor-link-control .block-editor-url-input__input::-webkit-input-placeholder,
+  .toolbar-item__popover .block-editor-link-control .block-editor-url-input__input::-webkit-input-placeholder {
+    color: #5f6063 !important; }
+  .maxi-sidebar .block-editor-link-control .block-editor-url-input__input::-moz-placeholder,
+  .maxi-popover .block-editor-link-control .block-editor-url-input__input::-moz-placeholder,
+  .toolbar-item__popover .block-editor-link-control .block-editor-url-input__input::-moz-placeholder {
+    color: #5f6063 !important; }
+  .maxi-sidebar .block-editor-link-control .block-editor-url-input__input::-ms-input-placeholder,
+  .maxi-popover .block-editor-link-control .block-editor-url-input__input::-ms-input-placeholder,
+  .toolbar-item__popover .block-editor-link-control .block-editor-url-input__input::-ms-input-placeholder {
+    color: #5f6063 !important; }
+  .maxi-sidebar .block-editor-link-control .block-editor-url-input__input::placeholder,
+  .maxi-popover .block-editor-link-control .block-editor-url-input__input::placeholder,
+  .toolbar-item__popover .block-editor-link-control .block-editor-url-input__input::placeholder {
+    color: #5f6063 !important; }
+  .maxi-sidebar .block-editor-link-control .block-editor-url-input__input:-ms-input-placeholder,
+  .maxi-popover .block-editor-link-control .block-editor-url-input__input:-ms-input-placeholder,
+  .toolbar-item__popover .block-editor-link-control .block-editor-url-input__input:-ms-input-placeholder {
+    color: #5f6063 !important; }
+  .maxi-sidebar .block-editor-link-control .block-editor-url-input__input::-ms-input-placeholder,
+  .maxi-popover .block-editor-link-control .block-editor-url-input__input::-ms-input-placeholder,
+  .toolbar-item__popover .block-editor-link-control .block-editor-url-input__input::-ms-input-placeholder {
+    color: #5f6063 !important; }
 
 .maxi-sidebar .block-editor-link-control__search-item-title mark,
 .maxi-popover .block-editor-link-control__search-item-title mark,

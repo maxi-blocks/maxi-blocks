@@ -1412,14 +1412,6 @@ body.Bumblebee .maxi-default .maxi-divider {
   .maxi-popover .block-editor-link-control .block-editor-url-input__input::placeholder,
   .toolbar-item__popover .block-editor-link-control .block-editor-url-input__input::placeholder {
     color: #5f6063 !important; }
-  .maxi-sidebar .block-editor-link-control .block-editor-url-input__input:-ms-input-placeholder,
-  .maxi-popover .block-editor-link-control .block-editor-url-input__input:-ms-input-placeholder,
-  .toolbar-item__popover .block-editor-link-control .block-editor-url-input__input:-ms-input-placeholder {
-    color: #5f6063 !important; }
-  .maxi-sidebar .block-editor-link-control .block-editor-url-input__input::-ms-input-placeholder,
-  .maxi-popover .block-editor-link-control .block-editor-url-input__input::-ms-input-placeholder,
-  .toolbar-item__popover .block-editor-link-control .block-editor-url-input__input::-ms-input-placeholder {
-    color: #5f6063 !important; }
 
 .maxi-sidebar .block-editor-link-control__search-item-title mark,
 .maxi-popover .block-editor-link-control__search-item-title mark,

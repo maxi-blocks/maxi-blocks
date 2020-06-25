@@ -248,6 +248,8 @@ class edit extends GXBlock {
                 mediaWidth,
                 mediaHeight,
                 width,
+                hoverAnimation,
+                hoverAnimationDuration,
             },
             imageData,
             setAttributes,
@@ -257,6 +259,8 @@ class edit extends GXBlock {
             'maxi-block maxi-image-block',
             blockStyle,
             extraClassName,
+            'hover-animation-type-'+hoverAnimation,
+            'hover-animation-duration-'+hoverAnimationDuration,
             uniqueID,
             className
         );

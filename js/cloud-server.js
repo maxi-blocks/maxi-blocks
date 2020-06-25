@@ -15,6 +15,37 @@ jQuery(document).ready(function($) {
       return true;
   }
   let rb_to_send_final = '';
+ // for alder browsers
+  if (!Array.prototype.filter)
+  {
+    Array.prototype.filter = function(fun /*, thisp*/)
+    {
+      "use strict";
+
+      if (this == null)
+        throw new TypeError();
+
+      var t = Object(this);
+      var len = t.length >>> 0;
+      if (typeof fun != "function")
+        throw new TypeError();
+
+      var res = [];
+      var thisp = arguments[1];
+      for (var i = 0; i < len; i++)
+      {
+        if (i in t)
+        {
+          var val = t[i]; // in case fun mutates this
+          if (fun.call(thisp, val, i, t))
+            res.push(val);
+        }
+      }
+
+      return res;
+    };
+  }
+
   wp.data.subscribe(function () {
     var isSavingPost = wp.data.select('core/editor').isSavingPost();
     var isAutosavingPost = wp.data.select('core/editor').isAutosavingPost();
@@ -34,7 +65,11 @@ jQuery(document).ready(function($) {
         }
       }
      }
-    console.log('rb_to_send '+rb_to_send);
+    //console.log('rb_to_send BEFORE '+rb_to_send);
+    rb_to_send=rb_to_send.split(' ').filter(function(item,i,allItems){
+        return i==allItems.indexOf(item);
+    }).join(' ');
+   // console.log('rb_to_send AFTER '+rb_to_send);
     }
     rb_to_send_final = rb_to_send;
   }
@@ -50,14 +85,8 @@ jQuery(document).ready(function($) {
     });
 
     function onIframeLoad() {
-      console.log('onIframeLoad');
-      //console.log('full stop '+ddd_full_stop);
-     // $('iframe#maxi-block-library__modal-iframe').on('load', function() {
-
-
-        let frame = document.getElementById('maxi-block-library__modal-iframe');
-
-        if(typeof(frame) != 'undefined' && frame != null) {
+      let frame = document.getElementById('maxi-block-library__modal-iframe');
+      if(typeof(frame) != 'undefined' && frame != null) {
 
           console.log('iframe loaded !!!');
 
@@ -76,7 +105,7 @@ jQuery(document).ready(function($) {
                 frame.contentWindow.postMessage('pro_membership_dectivated', '*');
               }
 
-              console.log('rb_to_send final '+rb_to_send_final);
+            //  console.log('rb_to_send final '+rb_to_send_final);
 
               if(rb_to_send_final !== '') frame.contentWindow.postMessage('imported:'+rb_to_send_final, '*');
             }
@@ -96,7 +125,7 @@ jQuery(document).ready(function($) {
           return lets;
         }
 
-       let post_id = getUrlVars()["post"];
+        let post_id = getUrlVars()["post"];
 
           // Create IE + others compatible event handler
         let eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
@@ -108,12 +137,14 @@ jQuery(document).ready(function($) {
 
       // Listen to message from child window
         eventer(messageEvent, function(e) {
-          console.log('e.origin: '+e.origin);
+        //console.log('e.origin: '+e.origin);
         if (e.origin === 'https://ge-library.dev700.com') { //'https://ge-library.dev700.com
             let response;
-           //console.log('jQuery.type(e.data) '+jQuery.type(e.data) );
+            full_stop = 0;
+           // console.log('jQuery.type(e.data) '+jQuery.type(e.data) );
+           // console.log('RESPONSE '+e.data);
             if (jQuery.type(e.data) === 'object') { // check if the response is text
-              //console.log('e.data: ' + JSON.stringify(e.data));
+              console.log('e.data: ' + JSON.stringify(e.data));
               let action_type = e.data.action;
               if (action_type === 'import') {
                 jQuery('.maxi-block-library__modal__loading_message p').text('Saving...');
@@ -262,10 +293,53 @@ jQuery(document).ready(function($) {
                                     console.log('AJAX error');
                                     console.log(data);
                                 }
-                            });
+                            }); // ajax
                         //}
                     } //  if (response)
-                } // if (~e.data.indexOf('context'))
+                } // if (~e.data.indexOf('wp_block'))
+              else if (~e.data.json.indexOf('svg') && full_stop !== 1) { // svg icon
+                  console.log('INSERTING SVG');
+                  const {
+                      canUserUseUnfilteredHTML
+                  } = wp.data.select('core/editor');
+                  const clientId = wp.data.select('core/block-editor').getSelectedBlock().clientId;
+                  let final_svg_content = JSON.parse(e.data.json);
+                  jQuery('.maxi-block-library__modal__loading_message p').text('Done!');
+                  console.log(final_svg_content);
+                 // final_svg_content = '<!-- wp:maxi-blocks/icon-maxi {"content":"'+final_svg_content +'}<!-- /wp:maxi-blocks/icon-maxi -->';
+                  if(full_stop !== 1) {
+                    wp.data.dispatch('core/block-editor').replaceBlocks(
+                      clientId,
+                      wp.blocks.rawHandler({
+                          HTML: final_svg_content,
+                          mode: 'BLOCKS',
+                          canUserUseUnfilteredHTML,
+                      }),
+                    );
+                  }
+                  full_stop = 1;
+              }
+              else { // FA icon
+                console.log('FA icon!');
+                const {
+                    canUserUseUnfilteredHTML
+                } = wp.data.select('core/editor');
+                const clientId = wp.data.select('core/block-editor').getSelectedBlock().clientId;
+                console.log('e.data.fatype '+e.data.fatype);
+                final_fa_content = '<i class="maxi-fa-icon ' + e.data.fatype +' '+ e.data.json +'"></i>';
+                if(full_stop !== 1) {
+                  wp.data.dispatch('core/block-editor').replaceBlocks(
+                    clientId,
+                    wp.blocks.rawHandler({
+                        HTML: final_fa_content,
+                        mode: 'BLOCKS',
+                        canUserUseUnfilteredHTML,
+                    }),
+                  );
+                }
+                full_stop = 1;
+
+              }
 
             } //if jQuery.type(e.data) === 'string'
         } //if (e.origin === 'https://ondemand.divi-den.com') {

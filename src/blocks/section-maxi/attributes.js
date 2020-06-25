@@ -16,6 +16,42 @@ const attributes = {
         type: 'string',
         default: 'maxi-def-light'
     },
+    containerXl: {
+        type: 'number',
+        default: 1200,
+    },
+    maxWidthXl: {
+        type: 'number',
+        default: 1140,
+    },
+    containerLg: {
+        type: 'number',
+        default: 992
+    },
+    maxWidthLg: {
+        type: 'number',
+        default: 960
+    },
+    containerMd: {
+        type: 'number',
+        default: 768
+    },
+    maxWidthMd: {
+        type: 'number',
+        default: 720
+    },
+    containerSm: {
+        type: 'number',
+        default: 576
+    },
+    maxWidthSm: {
+        type: 'number',
+        default: 540
+    },
+    containerPadding: {
+        type: 'number',
+        default: 15
+    },
     fullWidth: {
         type: 'string',
         default: 'full',

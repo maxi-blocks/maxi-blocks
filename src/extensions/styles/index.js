@@ -25,6 +25,8 @@ export class ResponsiveStylesResolver {
 
         this.init();
 
+        // console.log(this.meta)
+
         return this.meta;
     }
 
@@ -52,23 +54,24 @@ export class ResponsiveStylesResolver {
             newObject = this.propsObjectManipulator(props, newObject, key, 'desktop');
             newObject = this.propsObjectManipulator(props, newObject, key, 'tablet');
             newObject = this.propsObjectManipulator(props, newObject, key, 'mobile');
+            newObject = this.breakpointsObjectManipulator(props, newObject, key, 'breakpoints');
             // On Typography component object
             if (props[key].font) {
                 newObject.font = props[key].font;
                 newObject.options = props[key].options;
             }
 
-            Object.assign(response, { [props[key].label]: newObject })
-
+            if (!isNil(newObject))
+                Object.assign(response, { [props[key].label]: newObject })
         }
 
         return response;
     }
 
     propsObjectManipulator(props, newObject, key, device) {
-        if (typeof props[key][device] === 'undefined') {
+        if (typeof props[key][device] === 'undefined')
             return newObject;
-        }
+
         const object = props[key][device];
         if (device === 'general')
             device = 'desktop'
@@ -101,19 +104,26 @@ export class ResponsiveStylesResolver {
 
         return newObject;
     }
+
+    breakpointsObjectManipulator(props, newObject, key, type) {
+        if (typeof props[key][type] === 'undefined')
+            return newObject;
+        
+        newObject.breakpoints = { ...props[key][type] };
+
+        return newObject;
+    }
 }
 
 /**
  * Responsive Backend Styles resolver
- *
- * @version 0.2
  */
 export class BackEndResponsiveStyles {
     constructor(meta) {
         this.meta = meta;
         // Uses serverside loaded inline css
         this.target = document.getElementById('maxi-blocks-inline-css');
-        typeof this.meta != 'undefined' ?
+        !isNil(this.meta) ?
             this.initEvents() :
             null;
     }
@@ -151,7 +161,7 @@ export class BackEndResponsiveStyles {
         for (let [target, prop] of Object.entries(this.meta)) {
             target = this.getTarget(target);
             for (let value of Object.values(prop)) {
-                if ((typeof value.desktop != 'undefined' && Object.entries(value.desktop).length != 0) || value.hasOwnProperty('font')) {
+                if ((!isNil(value.desktop) && !isEmpty(value.desktop).length) || value.hasOwnProperty('font')) {
                     content += `.${target}{`;
                     content += this.getResponsiveStyles(value.desktop);
                     if (value.hasOwnProperty('font')) {
@@ -159,15 +169,20 @@ export class BackEndResponsiveStyles {
                     }
                     content += '}';
                 }
-                if (typeof value.tablet != 'undefined' && Object.entries(value.tablet).length != 0) {
+                if (!isNil(value.tablet) && !isEmpty(value.tablet).length) {
                     content += `@media only screen and (max-width: 768px){.${target}{`;
                     content += this.getResponsiveStyles(value.tablet);
                     content += '}}';
                 }
-                if (typeof value.mobile != 'undefined' && Object.entries(value.mobile).length != 0) {
+                if (!isNil(value.mobile) && !isEmpty(value.mobile).length) {
                     content += `@media only screen and (max-width: 768px){.${target}{`;
                     content += this.getResponsiveStyles(value.mobile);
                     content += '}}';
+                }
+                if (!isNil(value.breakpoints)) {
+                    for (let breakpoint of Object.values(value.breakpoints)) {
+                        content += `@media only screen and (max-width: ${breakpoint.value}){.${target}{${breakpoint.content}}}`;
+                    }
                 }
             }
         }

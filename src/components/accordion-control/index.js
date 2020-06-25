@@ -70,6 +70,9 @@ export default class AccordionControl extends Component {
             >
                 {
                     items.map(item => {
+                        if(!item)
+                            return null;
+
                         const classesItem = classnames(
                             'maxi-accordion-control__item',
                             item.classNameItem

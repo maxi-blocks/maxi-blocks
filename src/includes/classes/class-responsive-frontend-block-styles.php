@@ -87,10 +87,11 @@ class ResponsiveFrontendStyles
                 if (isset($props->breakpoints)) {
                     $response[$target]['breakpoints'] = '';
                     foreach ($props->breakpoints as $screen => $breakpoint) {
-                        $value = $breakpoint->value;
+                        $value = $breakpoint->value ?? '';
                         $content = $breakpoint->content ?? '';
                         
-                        $response[$target]['breakpoints'] .= "@media only screen and (min-width: $value) {.$target{ $content}}";
+                        if(!!$value && !!$content)
+                            $response[$target]['breakpoints'] .= "@media only screen and (min-width: $value) {.$target{ $content}}";
                     }
                 }
             }

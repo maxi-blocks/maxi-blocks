@@ -1,3 +1,8 @@
 .maxi-section-block {
     position: relative;
+
+    &__container {
+        margin-right: auto;
+        margin-left: auto;
+    }
 }

@@ -2,9 +2,9 @@ export const size = {
     "label": "Size",
     "desktop": {
         "max-widthUnit": "px",
-        "max-width": 1200,
+        "max-width": "",
         "widthUnit": "%",
-        "width": 100,
+        "width": "",
         "min-widthUnit": "px",
         "min-width": "",
         "max-heightUnit": "px",
@@ -77,16 +77,16 @@ export const padding = {
     "unit": "px",
     "desktop": {
         "padding-top": "",
-        "padding-right": 16,
+        "padding-right": "",
         "padding-bottom": "",
-        "padding-left": 16,
-        "sync": false
+        "padding-left": "",
+        "sync": true
     },
     "tablet": {
         "padding-top": "",
-        "padding-right": 24,
+        "padding-right": "",
         "padding-bottom": "",
-        "padding-left": 24,
+        "padding-left": "",
         "sync": true
     },
     "mobile": {

@@ -474,7 +474,7 @@ export const __experimentalDivider = {
         "border-color": "#ff4a17",
         "border-style": "solid",
         "widthUnit": "%",
-        "width": 9,
+        "width": 100,
         "heightUnit": "%",
         "height": "",
         "border-top-widthUnit": "px",

@@ -143,7 +143,7 @@ export default class DimensionsControl extends GXComponent {
 							onChange={(val) => onChangeUnit(val)}
 						/>
 						<Button
-							className="components-maxi-dimensions-control__units-reset"
+							className="components-maxi-control__units-reset"
 							onClick={onReset}
 							aria-label={sprintf(
 								/* translators: %s: a texual label  */

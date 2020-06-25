@@ -1,0 +1,145 @@
+/**
+ * Layout styles
+ * Loads on front end and back end
+ */
+
+
+.components-panel__body.padding-setting .components-base-control {
+	max-width: 100px;
+}
+
+.components-panel__body.padding-setting .components-base-control:first-of-type {
+    margin: 0 auto;
+}
+
+.components-panel__body.padding-setting .components-base-control:nth-of-type(2) {
+	float: right;
+	margin-bottom: 0;
+}
+
+.components-panel__body.padding-setting .components-base-control:nth-of-type(3) {
+	float: left;
+	margin-bottom: 0;
+}
+
+.components-panel__body.padding-setting .components-base-control:last-of-type {
+	clear: both;
+	margin: 0 auto;
+}
+
+/* GX Button */
+
+#gxAddLayoutButton {
+	color: #000;
+	border: 1px solid #000;
+	margin-right: 10px;
+}
+
+#gxAddLayoutButton img {
+	margin-right: 5px;
+}
+
+.maxi-layout-column-button .ab-block-button {
+	margin-bottom: 0;
+}
+
+.maxi-layout-selector-group {
+	margin-top: 10px;
+}
+
+.maxi-layout-selector {
+	display: inline-block;
+	margin: 0 5px;
+
+	button.maxi-layout-selector-button {
+		padding: 15px;
+		height: auto;
+		border-radius: 5px;
+		background: #fff;
+
+		&:hover {
+			background: #fff;
+		}
+	}
+
+	button.components-button.is-button:last-child {
+		border-radius: 5px;
+	}
+}
+
+.maxi-toolbar-add-layout-button {
+	margin-right: 3px;
+}
+
+/**
+ * Layout style modifications
+ * This probably belongs in a theme!
+ */
+
+ .maxi-layout-team-1 {
+	.ab-profile-column {
+		flex: 100%;
+	}
+	.ab-social-links {
+		padding-top: 25px;
+	}
+ }
+
+ .maxi-layout-hero-cover {
+	 .wp-block-cover__inner-container {
+		max-width: 800px;
+	 }
+
+	 h2, h3, h4 {
+		max-width: 100%;
+	 }
+ }
+
+ .ab-white-text,
+ .wp-block-heading .ab-white-text {
+	 color: #fff;
+ }
+
+ .maxi-layout-landing-2 {
+	.ab-block-profile {
+		padding: 0;
+		text-align: center;
+	}
+	.ab-block-profile .ab-profile-avatar-wrap,
+	.ab-block-profile .ab-profile-column {
+		flex: 0 0 100%;
+	}
+	.round .ab-profile-image-wrap {
+		max-width: 220px;
+		margin: 0 auto;
+	}
+	.ab-block-cta {
+		.ab-cta-content {
+			max-width: 700px;
+    		margin: 0 auto;
+		}
+
+		.ab-button {
+			font-weight: normal;
+		}
+	}
+ }
+
+ .maxi-layout-landing-3 {
+	 .maxi-layout-landing-3-cover {
+		 h2, h3, h4, h5, h6 {
+			 margin-left: auto;
+			 margin-right: auto;
+
+			@media only screen and (min-width: 600px) {
+				font-size: 42px;
+			}
+		 }
+	 }
+
+	 @media only screen and (min-width: 600px) {
+		.ab-block-post-grid header .ab-block-post-grid-title {
+			font-size: 24px;
+		}
+	}
+ }

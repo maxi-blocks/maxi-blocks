@@ -18,6 +18,8 @@ const save = props => {
             blockStyle,
             wrapTablet,
             wrapMobile,
+            hoverAnimation,
+            hoverAnimationDuration,
             extraClassName,
             defaultBlockStyle,
             fullWidth
@@ -29,6 +31,8 @@ const save = props => {
         'maxi-block maxi-row-block',
         blockStyle,
         extraClassName,
+        'hover-animation-type-'+hoverAnimation,
+        'hover-animation-duration-'+hoverAnimationDuration,
         className,
         fullWidth === 'full' ?
             'alignfull' :

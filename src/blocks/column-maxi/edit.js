@@ -198,7 +198,9 @@ class edit extends GXBlock {
                 blockStyle,
                 columnSize,
                 extraClassName,
-                defaultBlockStyle
+                defaultBlockStyle,
+                hoverAnimation,
+                hoverAnimationDuration,
             },
             clientId,
             isSelected,
@@ -220,6 +222,8 @@ class edit extends GXBlock {
             'maxi-column-block',
             uniqueID,
             blockStyle,
+            'hover-animation-type-'+hoverAnimation,
+            'hover-animation-duration-'+hoverAnimationDuration,
             extraClassName,
             className,
         );

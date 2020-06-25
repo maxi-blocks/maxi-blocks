@@ -19,7 +19,9 @@ const save = props => {
             uniqueID,
             blockStyle,
             extraClassName,
-            defaultBlockStyle
+            defaultBlockStyle,
+            hoverAnimation,
+            hoverAnimationDuration,
         }
     } = props;
 
@@ -27,6 +29,8 @@ const save = props => {
         'maxi-block maxi-column-block',
         blockStyle,
         extraClassName,
+        'hover-animation-type-'+hoverAnimation,
+        'hover-animation-duration-'+hoverAnimationDuration,
         className,
     );
     if (uniqueID && (typeof uniqueID !== 'undefined'))

@@ -5,6 +5,7 @@ const { __ } = wp.i18n;
 const { Fragment } = wp.element;
 const { InspectorControls } = wp.blockEditor;
 const {
+    BaseControl,
     RangeControl,
     SelectControl
 } = wp.components;
@@ -27,6 +28,11 @@ import {
 } from '../../components';
 
 /**
+ * External dependencies
+ */
+import { isNumber } from 'lodash';
+
+/**
  * Inspector
  */
 const Inspector = props => {
@@ -35,6 +41,15 @@ const Inspector = props => {
             isFirstOnHierarchy,
             blockStyle,
             defaultBlockStyle,
+            containerXl,
+            maxWidthXl,
+            containerLg,
+            maxWidthLg,
+            containerMd,
+            maxWidthMd,
+            containerSm,
+            maxWidthSm,
+            containerPadding,
             fullWidth,
             size,
             opacity,
@@ -55,6 +70,8 @@ const Inspector = props => {
         },
         setAttributes,
     } = props;
+
+    console.log(isFirstOnHierarchy && fullWidth)
 
     return (
         <InspectorControls>
@@ -77,6 +94,163 @@ const Inspector = props => {
                                 <AccordionControl
                                     isPrimary
                                     items={[
+                                        function () {
+                                            if (isFirstOnHierarchy && fullWidth) {
+                                                return {
+                                                    label: __('Container', 'maxi-blocks'),
+                                                    content: (
+                                                        <Fragment>
+                                                            <BaseControl
+                                                                label={__('Xl', 'max-width')}
+                                                            >
+                                                                <input
+                                                                    type='number'
+                                                                    placeholder={__('auto', 'maxi-blocks')}
+                                                                    value={containerXl}
+                                                                    onChange={e => setAttributes(
+                                                                        {
+                                                                            containerXl: isNumber(e.target.value) ?
+                                                                                Number(e.target.value) :
+                                                                                null
+                                                                        }
+                                                                    )}
+                                                                />
+                                                            </BaseControl>
+                                                            <BaseControl
+                                                                label={__('Xl - Max width', 'max-width')}
+                                                            >
+                                                                <input
+                                                                    type='number'
+                                                                    placeholder={__('auto', 'maxi-blocks')}
+                                                                    value={maxWidthXl}
+                                                                    onChange={e => setAttributes(
+                                                                        {
+                                                                            maxWidthXl: isNumber(e.target.value) ?
+                                                                                Number(e.target.value) :
+                                                                                null
+                                                                        }
+                                                                    )}
+                                                                />
+                                                            </BaseControl>
+                                                            <BaseControl
+                                                                label={__('Lg', 'max-width')}
+                                                            >
+                                                                <input
+                                                                    type='number'
+                                                                    placeholder={__('auto', 'maxi-blocks')}
+                                                                    value={containerLg}
+                                                                    onChange={e => setAttributes(
+                                                                        {
+                                                                            containerLg: isNumber(e.target.value) ?
+                                                                                Number(e.target.value) :
+                                                                                null
+                                                                        }
+                                                                    )}
+                                                                />
+                                                            </BaseControl>
+                                                            <BaseControl
+                                                                label={__('Lg - Max width', 'max-width')}
+                                                            >
+                                                                <input
+                                                                    type='number'
+                                                                    placeholder={__('auto', 'maxi-blocks')}
+                                                                    value={maxWidthLg}
+                                                                    onChange={e => setAttributes(
+                                                                        {
+                                                                            maxWidthLg: isNumber(e.target.value) ?
+                                                                                Number(e.target.value) :
+                                                                                null
+                                                                        }
+                                                                    )}
+                                                                />
+                                                            </BaseControl>
+                                                            <BaseControl
+                                                                label={__('Md', 'max-width')}
+                                                            >
+                                                                <input
+                                                                    type='number'
+                                                                    placeholder={__('auto', 'maxi-blocks')}
+                                                                    value={containerMd}
+                                                                    onChange={e => setAttributes(
+                                                                        {
+                                                                            containerMd: isNumber(e.target.value) ?
+                                                                                Number(e.target.value) :
+                                                                                null
+                                                                        }
+                                                                    )}
+                                                                />
+                                                            </BaseControl>
+                                                            <BaseControl
+                                                                label={__('Md - Max width', 'max-width')}
+                                                            >
+                                                                <input
+                                                                    type='number'
+                                                                    placeholder={__('auto', 'maxi-blocks')}
+                                                                    value={maxWidthMd}
+                                                                    onChange={e => setAttributes(
+                                                                        {
+                                                                            maxWidthMd: isNumber(e.target.value) ?
+                                                                                Number(e.target.value) :
+                                                                                null
+                                                                        }
+                                                                    )}
+                                                                />
+                                                            </BaseControl>
+                                                            <BaseControl
+                                                                label={__('Sm', 'max-width')}
+                                                            >
+                                                                <input
+                                                                    type='number'
+                                                                    placeholder={__('auto', 'maxi-blocks')}
+                                                                    value={containerSm}
+                                                                    onChange={e => setAttributes(
+                                                                        {
+                                                                            containerSm: isNumber(e.target.value) ?
+                                                                                Number(e.target.value) :
+                                                                                null
+                                                                        }
+                                                                    )}
+                                                                />
+                                                            </BaseControl>
+                                                            <BaseControl
+                                                                label={__('Sm - Max width', 'max-width')}
+                                                            >
+                                                                <input
+                                                                    type='number'
+                                                                    placeholder={__('auto', 'maxi-blocks')}
+                                                                    value={maxWidthSm}
+                                                                    onChange={e => setAttributes(
+                                                                        {
+                                                                            maxWidthSm: isNumber(e.target.value) ?
+                                                                                Number(e.target.value) :
+                                                                                null
+                                                                        }
+                                                                    )}
+                                                                />
+                                                            </BaseControl>
+                                                            <BaseControl
+                                                                label={__('Padding', 'max-width')}
+                                                            >
+                                                                <input
+                                                                    type='number'
+                                                                    placeholder={__('auto', 'maxi-blocks')}
+                                                                    value={containerPadding}
+                                                                    onChange={e => setAttributes({
+                                                                        containerPadding:
+                                                                            isNumber(e.target.value) ?
+                                                                                Number(e.target.value) :
+                                                                                null
+                                                                    }
+                                                                    )}
+                                                                />
+                                                            </BaseControl>
+                                                        </Fragment>
+                                                    )
+                                                }
+                                            }
+
+                                            return null;
+                                        }(),
                                         {
                                             label: __('Width / Height', 'maxi-blocks'),
                                             content: (

@@ -1,10 +1,8 @@
 /**
  * WordPress dependencies
  */
-const {
-    select,
-    withSelect
-} = wp.data;
+const { withSelect } = wp.data;
+const { Fragment } = wp.element;
 const {
     InnerBlocks,
     __experimentalBlock
@@ -41,7 +39,8 @@ class edit extends GXBlock {
     get getObject() {
         let response = {
             [this.props.attributes.uniqueID]: this.getNormalObject,
-            [`${this.props.attributes.uniqueID}:hover`]: this.getHoverObject
+            [`${this.props.attributes.uniqueID}:hover`]: this.getHoverObject,
+            [`${this.props.attributes.uniqueID}>.maxi-container-block__container`]: this.getContainerObject,
         }
 
         return response;
@@ -70,7 +69,7 @@ class edit extends GXBlock {
             padding: { ...JSON.parse(padding) },
             container: {
                 label: 'Container',
-                general: {}
+                general: {},
             }
         };
 
@@ -108,10 +107,61 @@ class edit extends GXBlock {
         return response;
     }
 
+    get getContainerObject() {
+        const {
+            containerXl,
+            maxWidthXl,
+            containerLg,
+            maxWidthLg,
+            containerMd,
+            maxWidthMd,
+            containerSm,
+            maxWidthSm,
+            containerPadding
+        } = this.props.attributes;
+
+        const response = {
+            container: {
+                label: 'Container',
+                general: {},
+                breakpoints: {
+                    sm: {},
+                    md: {},
+                    lg: {},
+                    xl: {},
+                }
+            }
+        };
+
+        if (isNumber(containerPadding)){
+            response.container.general['padding-left'] = `${containerPadding}px`;
+            response.container.general['padding-right'] = `${containerPadding}px`;
+        }
+        if (isNumber(containerSm))
+            response.container.breakpoints.sm.value = `${containerSm}px`;
+        if (isNumber(maxWidthSm))
+            response.container.breakpoints.sm.content = `max-width: ${maxWidthSm}px`;
+        if (isNumber(containerMd))
+            response.container.breakpoints.md.value = `${containerMd}px`;
+        if (isNumber(maxWidthMd))
+            response.container.breakpoints.md.content = `max-width: ${maxWidthMd}px`;
+        if (isNumber(containerLg))
+            response.container.breakpoints.lg.value = `${containerLg}px`;
+        if (isNumber(maxWidthLg))
+            response.container.breakpoints.lg.content = `max-width: ${maxWidthLg}px`;
+        if (isNumber(containerXl))
+            response.container.breakpoints.xl.value = `${containerXl}px`;
+        if (isNumber(maxWidthXl))
+            response.container.breakpoints.xl.content = `max-width: ${maxWidthXl}px`;
+
+        return response;
+    }
+
     render() {
         const {
             attributes: {
                 uniqueID,
+                isFirstOnHierarchy,
                 blockStyle,
                 defaultBlockStyle,
                 fullWidth,
@@ -119,7 +169,6 @@ class edit extends GXBlock {
             },
             className,
             clientId,
-            isSelected,
             hasInnerBlock,
         } = this.props;
 
@@ -131,43 +180,66 @@ class edit extends GXBlock {
             className
         );
 
-        /**
-         * Check if current block or children is select
-         * 
-         * todo: should go to withSelect
-         */
-        const isSelect = () => {
-            const selectedBlock = select('core/editor').getSelectedBlockClientId();
-            const nestedColumns = select('core/block-editor').getBlockOrder(clientId);
-            return nestedColumns.includes(selectedBlock) || clientId === selectedBlock;
-        }
-
         return [
             <Inspector {...this.props} />,
             <__experimentalToolbar {...this.props} />,
             <__experimentalBreadcrumbs />,
-            <InnerBlocks
-                templateLock={false}
-                __experimentalTagName={__experimentalBlock.div}
-                __experimentalPassedProps={{
-                    className: classes,
-                    ['data-align']: fullWidth,
-                    ['data-gx_initial_block_class']: defaultBlockStyle
-                }}
-                renderAppender={
-                    !hasInnerBlock ?
-                        () => (
-                            <__experimentalBlockPlaceholder
-                                clientId={clientId}
-                            />
-                        ) :
-                        true ?
-                            () => (
-                                <InnerBlocks.ButtonBlockAppender />
-                            ) :
-                            false
+            <Fragment>
+                {
+                    isFirstOnHierarchy && fullWidth &&
+                    <__experimentalBlock.section
+                        className={classes}
+                        data-align={fullWidth}
+                        data-gx_initial_block_class={defaultBlockStyle}
+                    >
+                        <InnerBlocks
+                            templateLock={false}
+                            __experimentalTagName='div'
+                            __experimentalPassedProps={{
+                                className: 'maxi-container-block__container',
+                            }}
+                            renderAppender={
+                                !hasInnerBlock ?
+                                    () => (
+                                        <__experimentalBlockPlaceholder
+                                            clientId={clientId}
+                                        />
+                                    ) :
+                                    true ?
+                                        () => (
+                                            <InnerBlocks.ButtonBlockAppender />
+                                        ) :
+                                        false
+                            }
+                        />
+                    </__experimentalBlock.section>
                 }
-            />
+                {
+                    (!isFirstOnHierarchy || !fullWidth) &&
+                    <InnerBlocks
+                        templateLock={false}
+                        __experimentalTagName={__experimentalBlock}
+                        __experimentalPassedProps={{
+                            className: classes,
+                            ['data-align']: fullWidth,
+                            ['data-gx_initial_block_class']: defaultBlockStyle
+                        }}
+                        renderAppender={
+                            !hasInnerBlock ?
+                                () => (
+                                    <__experimentalBlockPlaceholder
+                                        clientId={clientId}
+                                    />
+                                ) :
+                                true ?
+                                    () => (
+                                        <InnerBlocks.ButtonBlockAppender />
+                                    ) :
+                                    false
+                        }
+                    />
+                }
+            </Fragment>
         ];
     }
 }

@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 const { InnerBlocks } = wp.blockEditor;
+const { Fragment } = wp.element;
 
 /**
  * External dependencies
@@ -15,6 +16,7 @@ const save = props => {
     const {
         attributes: {
             uniqueID,
+            isFirstOnHierarchy,
             blockStyle,
             defaultBlockStyle,
             fullWidth,
@@ -24,7 +26,7 @@ const save = props => {
     } = props;
 
     let classes = classnames(
-        'maxi-block maxi-scontainer-block',
+        'maxi-block maxi-container-block',
         blockStyle,
         extraClassName,
         className,
@@ -36,12 +38,30 @@ const save = props => {
         classes = classnames(classes, uniqueID);
 
     return (
-        <div
-            className={classes}
-            data-gx_initial_block_class={defaultBlockStyle}
-        >
-            <InnerBlocks.Content />
-        </div>
+        <Fragment>
+            {
+                isFirstOnHierarchy &&
+                <section
+                    className={classes}
+                    data-gx_initial_block_class={defaultBlockStyle}
+                >
+                    <div
+                        className='maxi-container-block__container'
+                    >
+                        <InnerBlocks.Content />
+                    </div>
+                </section>
+            }
+            {
+                !isFirstOnHierarchy &&
+                <div
+                    className={classes}
+                    data-gx_initial_block_class={defaultBlockStyle}
+                >
+                    <InnerBlocks.Content />
+                </div>
+            }
+        </Fragment>
     );
 }
 

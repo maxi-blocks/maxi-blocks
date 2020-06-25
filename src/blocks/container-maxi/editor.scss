@@ -1,6 +1,4 @@
 .maxi-container-block {
-    // position: relative;
-    // width: 100%;
     margin: auto;
 
     &:hover {
@@ -8,11 +6,6 @@
     }
 
     &[data-align="full"] {
-        width: auto;
-    }
-
-    .block-editor-inner-blocks,
-    .maxi-container-dropdown {
-        width: 100%;
+        width: auto; 
     }
 }

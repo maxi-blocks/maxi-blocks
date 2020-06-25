@@ -188,7 +188,6 @@ body.maxi-blocks--active {
 
 	select {
 		padding: 0 24px 0px 10px !important;
-		border: 1px solid #dddfe1 !important;
 		opacity: 1 !important;
 	}
 
@@ -233,7 +232,7 @@ body.maxi-blocks--active {
 * Reset Button
 *************/
 
-.components-maxi-dimensions-control__units-reset {
+.components-maxi-control__units-reset {
 	display: inline-flex;
 	width: 31px;
 	min-width: 31px;

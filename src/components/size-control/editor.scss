@@ -1,4 +1,7 @@
 .maxi-size-control {
+    .components-base-control {
+        margin-bottom: 0;
+    }
     .maxi-size-control__value {
         width: 20%;
         height: 31px;
@@ -14,6 +17,7 @@
     }
     .components-base-control__field {
         flex-wrap: wrap;
+
         & > * {
             margin-left: 4px;
         }

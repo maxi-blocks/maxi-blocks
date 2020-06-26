@@ -92,7 +92,6 @@ class edit extends GXBlock {
                 general: {},
                 breakpoints: {
                     wrap: {
-                        type: 'normal',
                         content: 'flex-wrap: wrap;'
                     }
                 }

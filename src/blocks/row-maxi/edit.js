@@ -177,6 +177,8 @@ class edit extends GXBlock {
             loadTemplate,
             selectOnClick,
             hasInnerBlock,
+            hoverAnimation,
+            hoverAnimationDuration,
             className,
             setAttributes,
             instanceId
@@ -186,6 +188,8 @@ class edit extends GXBlock {
             'maxi-block maxi-row-block',
             uniqueID,
             blockStyle,
+            'hover-animation-type-'+hoverAnimation,
+            'hover-animation-duration-'+hoverAnimationDuration,
             extraClassName,
             className,
             !wrapTablet ?

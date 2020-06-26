@@ -26,7 +26,9 @@ const save = props => {
             mediaURL,
             mediaWidth,
             mediaHeight,
-            mediaALT
+            mediaALT,
+            hoverAnimation,
+            hoverAnimationDuration,
         },
     } = props;
 
@@ -34,6 +36,8 @@ const save = props => {
         'maxi-block maxi-image-block',
         blockStyle,
         extraClassName,
+        'hover-animation-type-'+hoverAnimation,
+        'hover-animation-duration-'+hoverAnimationDuration,
         uniqueID,
         className,
         fullWidth === 'full' ?

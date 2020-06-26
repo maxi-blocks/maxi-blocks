@@ -28,6 +28,7 @@ import {
     isNil,
     isNumber
 } from 'lodash';
+import transform from "css-to-react-native-transform";
 
 /**
  * Content
@@ -178,8 +179,11 @@ class edit extends GXBlock {
                 uniqueID,
                 blockStyle,
                 extraClassName,
+                hoverAnimation,
+                hoverAnimationDuration,
                 textLevel,
-                content
+                content,
+                extraStyles,
             },
             setAttributes,
         } = this.props;
@@ -188,9 +192,15 @@ class edit extends GXBlock {
             'maxi-block maxi-text-block',
             blockStyle,
             extraClassName,
+            'hover-animation-type-'+hoverAnimation,
+            'hover-animation-duration-'+hoverAnimationDuration,
             uniqueID,
             className
         );
+
+        let extraStylesObj = '';
+
+        if (!isNil(extraStyles))  {let extraStylesObj = transform(extraStyles);}
 
         return [
             <Inspector {...this.props} />,
@@ -200,6 +210,7 @@ class edit extends GXBlock {
                 onChange={content => setAttributes({ content })}
                 tagName={__experimentalBlock[textLevel]}
                 className={classes}
+                style={extraStylesObj}
                 placeholder={__('Set your Maxi Text here...', 'maxi-blocks')}
                 onSplit={value => {
                     if (!value) {

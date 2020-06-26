@@ -1,5 +1,46 @@
 .maxi-colorcontrol {
-
+	&__gradient {
+		.components-angle-picker-control {
+			width: 100%;
+			.components-base-control__field {
+				.components-base-control__label {
+					flex: 5 !important;
+				}
+			}
+		}
+		.components-circular-option-picker {
+			&__custom-clear-wrapper {
+				display: none;
+			}
+		}
+		.components-custom-gradient-picker {
+			&__toolbar {
+				& > div {
+					margin: 0 !important;
+				}
+				& > div:first-of-type {
+					.components-toolbar__control {
+						border-top-right-radius: 0 !important;
+						border-bottom-right-radius: 0 !important;
+					}
+				}
+				& > div:last-of-type {
+					.components-toolbar__control {
+						border-top-left-radius: 0 !important;
+						border-bottom-left-radius: 0 !important;
+					}
+				}
+				.components-toolbar__control {
+					border: 2px solid #dddfe1;
+					width: 45px;
+    				height: 35px;
+				}
+			}
+			&__ui-line {
+				flex-direction: column;
+			}
+		}
+	}
 	&__items {
 		display: inline-flex;
 		justify-content: space-between;

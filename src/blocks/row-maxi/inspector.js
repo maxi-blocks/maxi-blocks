@@ -13,7 +13,7 @@ const {
 /**
  * External dependencies
  */
-import { isNumber } from 'lodash';
+import { isEmpty } from 'lodash';
 
 /**
  * Internal dependencies
@@ -109,12 +109,14 @@ const Inspector = props => {
                                                             type='number'
                                                             placeholder={__('auto', 'maxi-blocks')}
                                                             value={wrap}
-                                                            onChange={e => setAttributes({
-                                                                wrap:
-                                                                    isNumber(e.target.value) ?
-                                                                        Number(e.target.value) :
-                                                                        null
-                                                            })}
+                                                            onChange={e => {
+                                                                setAttributes({
+                                                                    wrap:
+                                                                        !isEmpty(e.target.value) ?
+                                                                            Number(e.target.value) :
+                                                                            null
+                                                                })
+                                                            }}
                                                         />
                                                     </BaseControl>
                                                 </Fragment>

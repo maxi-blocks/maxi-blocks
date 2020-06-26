@@ -44,7 +44,7 @@
     }
     // BaseControl
     .components-base-control:not(.block-editor-link-control__search-input) {
-        margin-bottom: 7px !important;
+        margin-bottom: 7px;
 
         &:last-child {
             margin-bottom: 0 !important;
@@ -53,12 +53,10 @@
         .components-base-control__field {
             display: flex !important;
             align-items: center;
-            justify-content: space-between;
 
             .components-base-control__label {
                 margin-bottom: 0;
-                width: 50%;
-                flex: 2;
+                flex: 1;
             }
 
             // SelectorControl
@@ -66,7 +64,6 @@
                 background: #fff url(../img/arrow-down.svg) no-repeat right 7px top 50%;
                 background-size: 9px 9px !important;
                 border-radius: 5px !important;
-                border: 2px solid #dddfe1;
                 min-height: unset;
                 max-height: unset !important;
                 color: #464a53;
@@ -177,8 +174,8 @@
                         position: relative;
                         box-shadow: none !important;
                         border: none !important;
-                        width: 14px;
-                        height: 14px;
+                        width: 8px;
+                        height: 8px;
                         background-color: #464a53;
 
                         &:before {
@@ -187,8 +184,8 @@
                             top: 50%;
                             left: 50%;
                             transform: translate(-50%, -50%);
-                            width: 20px;
-                            height: 20px;
+                            width: 16px;
+                            height: 16px;
                             border: 2px solid #464a53;
                             border-radius: 50%;
                         }

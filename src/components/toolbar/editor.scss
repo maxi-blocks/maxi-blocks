@@ -106,6 +106,20 @@
 
 .toolbar-item__popover {
 
+    .components-maxi-control__units-reset {
+		border: 2px solid #80828a;
+		svg {
+			fill: #fff !important;
+		}
+    }
+
+    button.components-range-control__reset,
+	button.components-circular-option-picker__clear {
+		&:before {
+            content: url("../img/maxi-reset-white.svg") !important;
+        }
+    }
+
     &__toggle-btn {
         .components-base-control__field {
             justify-content: space-between;
@@ -215,6 +229,10 @@
                 background-color: transparent !important;
                 color: #fff !important;
                 border: 2px solid #80828a !important;
+
+                option {
+                    color: 000 !important;
+                }
             }
 
             .components-button {
@@ -270,10 +288,12 @@
     }
 
     .maxi-defaultstyles-control__button {
-        background: #545660;
+        background: #232533;
+        border: 1px solid #5b5d68;
 
         &--active {
-            border: 2px solid #919299;
+            border: 2px solid #fff;
+            background-color: #4f515c;
         }
 
         &:focus {
@@ -321,19 +341,6 @@
             }
         }
 
-        &__units-reset {
-            background-color: none;
-            border-color: #80828a !important;
-
-            &:hover {
-                background-color: transparent !important;
-                border-color: #80828a !important;
-            }
-            svg {
-                fill: #fff !important;
-            }
-        }
-
         &__number {
             background-color: transparent;
             border-color: #80828a !important;
@@ -348,8 +355,8 @@
             background-color: #ff4a17;
             border-radius: 50%;
             position: absolute;
-            top: -18px;
-            right: -18px;
+            top: -30px;
+            right: -30px;
             min-width: 32px !important;
             padding: 0 !important;
             height: 32px;
@@ -414,7 +421,7 @@
         }
 
         input[type="number"] {
-            width: 2rem;
+            width: 3.5rem;
         }
     }
 }

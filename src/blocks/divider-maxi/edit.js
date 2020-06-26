@@ -4,7 +4,6 @@
 const { Fragment } = wp.element;
 const { __experimentalBlock } = wp.blockEditor;
 const { ResizableBox } = wp.components;
-const { withSelect } = wp.data;
 
 /**
  * Internal dependencies
@@ -13,7 +12,6 @@ import Inspector from './inspector';
 import {
     getBackgroundObject,
     getBoxShadowObject,
-    getDefaultProp
 } from '../../extensions/styles/utils';
 import {
     GXBlock,

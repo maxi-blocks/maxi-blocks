@@ -1,8 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { InnerBlocks } = wp.blockEditor;
-
+const { Button } = wp.components;
 
 /**
  * External dependencies
@@ -18,31 +17,28 @@ const save = props => {
         attributes: {
             uniqueID,
             blockStyle,
-            extraClassName,
             defaultBlockStyle,
-            hoverAnimation,
-            hoverAnimationDuration,
-        }
+            fullWidth,
+            extraClassName
+        },
     } = props;
 
     let classes = classnames(
-        'maxi-block maxi-column-block',
+        'maxi-block maxi-icon-block',
         blockStyle,
         extraClassName,
-        'hover-animation-type-'+hoverAnimation,
-        'hover-animation-duration-'+hoverAnimationDuration,
+        uniqueID,
         className,
+        fullWidth === 'full' ?
+            'alignfull' :
+            '',
     );
     if (uniqueID && (typeof uniqueID !== 'undefined'))
         classes = classnames(classes, uniqueID);
 
     return (
-        <div
-            className={classes}
-            data-gx_initial_block_class={defaultBlockStyle}
-        >
-            <InnerBlocks.Content />
-        </div>
+        <figure>test
+        </figure>
     );
 }
 

@@ -20,8 +20,7 @@ import ToolbarPopover from '../toolbar-popover';
  * Icons
  */
 import {
-    toolbarSettings,
-    toolbarDividerWidth,
+    toolbarSizing,
     toolbarAdvancedSettings,
 } from '../../../../icons';
 
@@ -59,7 +58,7 @@ const Size = props => {
     return (
         <ToolbarPopover
             className='toolbar-item__size'
-            icon={ ( (blockName === 'maxi-blocks/divider-maxi') ) ? toolbarDividerWidth : toolbarSettings }
+            icon={ toolbarSizing }
             content={(
                 <Fragment>
                     <div
@@ -78,7 +77,7 @@ const Size = props => {
                         isFirstOnHierarchy &&
                         <RadioControl
                             className='toolbar-item__popover__toggle-btn'
-                            label={__('Fullwidth', 'maxi-blocks')}
+                            label={__('Full Width', 'maxi-blocks')}
                             selected={fullWidth}
                             options={[
                                 { label: __('No', 'maxi-blocks'), value: 'normal' },

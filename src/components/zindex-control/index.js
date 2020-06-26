@@ -45,7 +45,7 @@ const ZIndexControl = props => {
                 max='999'
             />
             <Button
-                className="components-maxi-dimensions-control__units-reset"
+                className="components-maxi-control__units-reset"
                 onClick={() => onChange(null)}
                 aria-label={__('Reset z-index settings', 'maxi-blocks')}
                 action="reset"

@@ -226,13 +226,13 @@ const Inspector = props => {
                                             )
                                         },
                                         {
-                                            label: __('Sizing', 'maxi-blocks'),
+                                            label: __('Width / Height', 'maxi-blocks'),
                                             content: (
                                                 <Fragment>
                                                     {
                                                         isFirstOnHierarchy &&
                                                         <SelectControl
-                                                            label={__('Fullwidth', 'maxi-blocks')}
+                                                            label={__('Full Width', 'maxi-blocks')}
                                                             value={fullWidth}
                                                             options={[
                                                                 { label: __('No', 'maxi-blocks'), value: 'normal' },

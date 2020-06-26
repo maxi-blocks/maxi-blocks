@@ -67,8 +67,7 @@ class edit extends GXBlock {
 
     get getNormalObject() {
         const {
-            horizontalAlign,
-            verticalAlign,
+            wrap,
             opacity,
             background,
             border,
@@ -90,17 +89,23 @@ class edit extends GXBlock {
             padding: { ...JSON.parse(padding) },
             row: {
                 label: "Row",
-                general: {
-                    'justify-content': horizontalAlign,
-                    'align-content': verticalAlign,
+                general: {},
+                breakpoints: {
+                    wrap: {
+                        type: 'normal',
+                        content: 'flex-wrap: wrap;'
+                    }
                 }
-            }
+            },
         };
 
         if (isNumber(opacity))
             response.row.general['opacity'] = opacity;
         if (isNumber(zIndex))
             response.row.general['z-index'] = zIndex;
+        if (isNumber(wrap))
+            response.row.breakpoints.wrap.rule = `max-width:${wrap}px`;
+
 
         return response;
     }
@@ -132,16 +137,29 @@ class edit extends GXBlock {
     }
 
     get getColumnObject() {
-        const { columnGap } = this.props.attributes;
+        const {
+            wrap,
+            columnGap
+        } = this.props.attributes;
 
-        return {
+        let response = {
             columnMargin: {
                 label: "Columns margin",
                 general: {
                     margin: `0 ${columnGap}%`
+                },
+                breakpoints: {
+                    wrap: {
+                        content: 'flex: 0 0 100% !important;max-width: 100% !important;margin: inherit !important;'
+                    }
                 }
-            }
+            },
         };
+
+        if (isNumber(wrap))
+            response.columnMargin.breakpoints.wrap.rule = `max-width:${wrap}px`;
+
+        return response;
     }
 
     render() {
@@ -232,15 +250,11 @@ const editSelect = withSelect((select, ownProps) => {
     const selectedBlockId = select('core/block-editor').getSelectedBlockClientId();
     const originalNestedBlocks = select('core/block-editor').getBlockParents(selectedBlockId);
     const hasInnerBlock = !isEmpty(select('core/block-editor').getBlockOrder(clientId));
-    const isFirstOnHierarchy = isEmpty(select('core/block-editor').getBlockParents(clientId));
-
-    // console.log(select('core/block-editor').getBlockParents(clientId))
 
     return {
         selectedBlockId,
         originalNestedBlocks,
         hasInnerBlock,
-        // isFirstOnHierarchy
     }
 })
 

@@ -2,7 +2,6 @@
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults';
-import { padding } from './data';
 
 /**
  * Attributes
@@ -18,6 +17,10 @@ const attributes = {
     },
     columnSize: {
         type: 'number',
+    },
+    verticalAlign: {
+        type: 'string',
+        default: 'flex-start'
     },
     opacity: {
         type: 'number',
@@ -64,7 +67,7 @@ const attributes = {
     },
     padding: {
         type: 'string',
-        default: JSON.stringify(padding)
+        default: JSON.stringify(attributesData.padding)
     },
     hoverAnimation: {
         type: 'string',

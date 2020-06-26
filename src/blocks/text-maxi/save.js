@@ -25,7 +25,7 @@ const save = props => {
     } = props;
 
     let classes = classnames(
-        'maxi-block maxi-image-block',
+        'maxi-block maxi-text-block',
         blockStyle,
         extraClassName,
         uniqueID,

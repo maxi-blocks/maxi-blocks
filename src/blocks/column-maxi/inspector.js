@@ -6,7 +6,8 @@ const { Fragment } = wp.element;
 const { InspectorControls } = wp.blockEditor;
 const {
     RangeControl,
-    Button
+    Button,
+    SelectControl
 } = wp.components;
 
 /**
@@ -36,6 +37,7 @@ const Inspector = props => {
             blockStyle,
             defaultBlockStyle,
             columnSize,
+            verticalAlign,
             opacity,
             opacityHover,
             background,
@@ -105,6 +107,20 @@ const Inspector = props => {
                                                     >
                                                         Clone styles
                                                     </Button>
+                                                    <SelectControl
+                                                        label={__('Vertical align', 'maxi-blocks')}
+                                                        value={verticalAlign}
+                                                        options={
+                                                            [
+                                                                { label: __('Top', 'maxi-blocks'), value: 'flex-start' },
+                                                                { label: __('Center', 'maxi-blocks'), value: 'center' },
+                                                                { label: __('Bottom', 'maxi-blocks'), value: 'flex-end' },
+                                                                { label: __('Space between', 'maxi-blocks'), value: 'space-between' },
+                                                                { label: __('Space around', 'maxi-blocks'), value: 'space-around' },
+                                                            ]
+                                                        }
+                                                        onChange={verticalAlign => setAttributes({ verticalAlign })}
+                                                    />
                                                 </Fragment>
                                             )
                                         },

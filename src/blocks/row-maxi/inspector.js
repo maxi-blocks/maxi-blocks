@@ -5,9 +5,15 @@ const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
 const { Fragment } = wp.element;
 const {
+    BaseControl,
     SelectControl,
     RangeControl,
 } = wp.components;
+
+/**
+ * External dependencies
+ */
+import { isNumber } from 'lodash';
 
 /**
  * Internal dependencies
@@ -18,7 +24,6 @@ import {
     BlockStylesControl,
     BorderControl,
     BoxShadowControl,
-    CheckBoxControl,
     DimensionsControl,
     CustomCSSControl,
     FullSizeControl,
@@ -37,10 +42,7 @@ const Inspector = props => {
             blockStyle,
             defaultBlockStyle,
             columnGap,
-            wrapTablet,
-            wrapMobile,
-            horizontalAlign,
-            verticalAlign,
+            wrap,
             opacity,
             opacityHover,
             background,
@@ -100,48 +102,21 @@ const Inspector = props => {
                                                         min={0}
                                                         max={5}
                                                     />
-                                                    <CheckBoxControl
-                                                        label={__('Wrap on Mobile', 'maxi-blocks')}
-                                                        checked={wrapMobile}
-                                                        onChange={wrapMobile => setAttributes({ wrapMobile })}
-                                                    />
-                                                    {
-                                                        !wrapMobile &&
-                                                        <CheckBoxControl
-                                                            label={__('Wrap on Tablet', 'maxi-blocks')}
-                                                            checked={wrapTablet}
-                                                            onChange={wrapTablet => setAttributes({ wrapTablet })}
+                                                    <BaseControl
+                                                        label={__('Wrap on', 'maxi-blocks')}
+                                                    >
+                                                        <input
+                                                            type='number'
+                                                            placeholder={__('auto', 'maxi-blocks')}
+                                                            value={wrap}
+                                                            onChange={e => setAttributes({
+                                                                wrap:
+                                                                    isNumber(e.target.value) ?
+                                                                        Number(e.target.value) :
+                                                                        null
+                                                            })}
                                                         />
-                                                    }
-                                                    {/* <SelectControl
-                                                        label={__('Horizontal align', 'maxi-blocks')}
-                                                        value={horizontalAlign}
-                                                        options={
-                                                            [
-                                                                { label: __('Flex-start', 'maxi-blocks'), value: 'flex-start' },
-                                                                { label: __('Flex-end', 'maxi-blocks'), value: 'flex-end' },
-                                                                { label: __('Center', 'maxi-blocks'), value: 'center' },
-                                                                { label: __('Space between', 'maxi-blocks'), value: 'space-between' },
-                                                                { label: __('Space around', 'maxi-blocks'), value: 'space-around' },
-                                                            ]
-                                                        }
-                                                        onChange={horizontalAlign => setAttributes({ horizontalAlign })}
-                                                    />
-                                                    <SelectControl
-                                                        label={__('Vertical align', 'maxi-blocks')}
-                                                        value={verticalAlign}
-                                                        options={
-                                                            [
-                                                                { label: __('Stretch', 'maxi-blocks'), value: 'stretch' },
-                                                                { label: __('Flex-start', 'maxi-blocks'), value: 'flex-start' },
-                                                                { label: __('Flex-end', 'maxi-blocks'), value: 'flex-end' },
-                                                                { label: __('Center', 'maxi-blocks'), value: 'center' },
-                                                                { label: __('Space between', 'maxi-blocks'), value: 'space-between' },
-                                                                { label: __('Space around', 'maxi-blocks'), value: 'space-around' },
-                                                            ]
-                                                        }
-                                                        onChange={verticalAlign => setAttributes({ verticalAlign })}
-                                                    /> */}
+                                                    </BaseControl>
                                                 </Fragment>
                                             )
                                         },

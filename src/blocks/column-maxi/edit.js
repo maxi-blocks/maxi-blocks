@@ -87,6 +87,7 @@ class edit extends GXBlock {
         const {
             attributes: {
                 columnSize,
+                verticalAlign,
                 opacity,
                 background,
                 boxShadow,
@@ -126,7 +127,8 @@ class edit extends GXBlock {
             response.column.general['z-index'] = zIndex;
         if (isNumber(opacity))
             response.column.general['opacity'] = opacity;
-
+        if (!isNil(verticalAlign))
+            response.column.general['justify-content'] = verticalAlign;
 
         return response;
     }

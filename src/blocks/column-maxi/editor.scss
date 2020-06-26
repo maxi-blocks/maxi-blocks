@@ -1,9 +1,8 @@
 div.maxi-column-block {
-    display: inline-block;
     width: 100%;
     max-width: 100% !important;
-    height: 100%;
     margin: auto;
+    height: 100%;
 
     &__resizer {
         line-height: 0;

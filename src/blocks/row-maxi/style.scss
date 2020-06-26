@@ -22,35 +22,3 @@
         }
     }
 }
-
-@media (max-width: 768px) {
-    body:not(.wp-admin) {
-        div.maxi-row-block {
-            flex-wrap: wrap;
-
-            &--wrap-tablet {
-                .maxi-column-block {
-                    flex: 0 0 100% !important;
-                    max-width: 100% !important;
-                    margin: inherit !important;
-                }
-            }
-        }
-    }
-}
-
-@media (max-width: 480px) {
-    body:not(.wp-admin) {
-        div.maxi-row-block {
-            flex-wrap: wrap;
-
-            &--wrap-mobile {
-                .maxi-column-block {
-                    flex: 0 0 100% !important;
-                    max-width: 100% !important;
-                    margin: inherit !important;
-                }
-            }
-        }
-    }
-}

@@ -138,19 +138,19 @@ class edit extends GXBlock {
             response.container.general['padding-right'] = `${containerPadding}px`;
         }
         if (isNumber(containerSm))
-            response.container.breakpoints.sm.value = `${containerSm}px`;
+            response.container.breakpoints.sm.rule = `min-width:${containerSm}px`;
         if (isNumber(maxWidthSm))
             response.container.breakpoints.sm.content = `max-width: ${maxWidthSm}px`;
         if (isNumber(containerMd))
-            response.container.breakpoints.md.value = `${containerMd}px`;
+            response.container.breakpoints.md.rule = `min-width:${containerMd}px`;
         if (isNumber(maxWidthMd))
             response.container.breakpoints.md.content = `max-width: ${maxWidthMd}px`;
         if (isNumber(containerLg))
-            response.container.breakpoints.lg.value = `${containerLg}px`;
+            response.container.breakpoints.lg.rule = `min-width:${containerLg}px`;
         if (isNumber(maxWidthLg))
             response.container.breakpoints.lg.content = `max-width: ${maxWidthLg}px`;
         if (isNumber(containerXl))
-            response.container.breakpoints.xl.value = `${containerXl}px`;
+            response.container.breakpoints.xl.rule = `min-width:${containerXl}px`;
         if (isNumber(maxWidthXl))
             response.container.breakpoints.xl.content = `max-width: ${maxWidthXl}px`;
 

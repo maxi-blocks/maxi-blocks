@@ -2,7 +2,6 @@
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults';
-import * as rowAttributesData from './data';
 
 /**
  * Attributes
@@ -23,21 +22,9 @@ const attributes = {
         type: 'number',
         default: 0
     },
-    wrapTablet: {
-        type: 'boolean',
-        default: false,
-    },
-    wrapMobile: {
-        type: 'boolean',
-        default: false,
-    },
-    horizontalAlign: {
-        type: 'string',
-        default: 'flex-start'
-    },
-    verticalAlign: {
-        type: 'string',
-        default: 'stretch'
+    wrap: {
+        type: 'number',
+        default: 768,
     },
     opacity: {
         type: 'number',
@@ -68,7 +55,7 @@ const attributes = {
     },
     size: {
         type: 'string',
-        default: JSON.stringify(rowAttributesData.size)
+        default: JSON.stringify(attributesData.size)
     },
     boxShadow: {
         type: 'string',
@@ -80,11 +67,11 @@ const attributes = {
     },
     margin: {
         type: 'string',
-        default: JSON.stringify(rowAttributesData.margin)
+        default: JSON.stringify(attributesData.margin)
     },
     padding: {
         type: 'string',
-        default: JSON.stringify(rowAttributesData.padding)
+        default: JSON.stringify(attributesData.padding)
     },
     hoverAnimation: {
         type: 'string',

@@ -2,7 +2,6 @@
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults';
-import * as containerAttributesData from './data';
 
 /**
  * Attributes
@@ -93,7 +92,7 @@ const attributes = {
     },
     margin: {
         type: 'string',
-        default: JSON.stringify(containerAttributesData.margin)
+        default: JSON.stringify(attributesData.margin)
     },
     padding: {
         type: 'string',

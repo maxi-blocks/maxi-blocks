@@ -25,8 +25,6 @@ export class ResponsiveStylesResolver {
 
         this.init();
 
-        // console.log(this.meta)
-
         return this.meta;
     }
 
@@ -82,7 +80,7 @@ export class ResponsiveStylesResolver {
 
         for (let [target, prop] of Object.entries(object)) {
             if (isNil(prop)) {
-                console.error(`Undefined property. Property: ${this.target}`);
+                console.error(`Undefined property. Property: ${target}`);
                 return;
             }
             // values with dimensions
@@ -181,7 +179,8 @@ export class BackEndResponsiveStyles {
                 }
                 if (!isNil(value.breakpoints)) {
                     for (let breakpoint of Object.values(value.breakpoints)) {
-                        content += `@media only screen and (max-width: ${breakpoint.value}){.${target}{${breakpoint.content}}}`;
+                        const rule = breakpoint.type === 'container' ? 'min-width' : 'max-width';
+                        content += `@media only screen and (${breakpoint.rule}){.${target}{${breakpoint.content}}}`;
                     }
                 }
             }

@@ -102,7 +102,7 @@ const BorderControl = props => {
                 ]}
             />
             <ColorControl
-                label={__('Border Color', 'maxi-blocks')}
+                label={__('Border', 'maxi-blocks')}
                 color={value.general['border-color']}
                 defaultColor={value['defaultBorderColor']}
                 onColorChange={val => {
@@ -111,6 +111,7 @@ const BorderControl = props => {
                 }}
                 disableImage
                 disableVideo
+                disableGradient
                 disableGradientAboveBackground
             />
             <SelectControl

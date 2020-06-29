@@ -5,6 +5,12 @@
 		}
 		.components-angle-picker-control {
 			width: 100%;
+			.components-angle-picker-control {
+				&__angle-circle-indicator,
+				&__angle-circle {
+					border-color: #dddfe2;
+				}
+			}
 			.components-base-control__field {
 				margin-bottom: 0;
 
@@ -47,6 +53,7 @@
 					&:hover {
 						background-color: #f1f1f1 !important;
 						border-color: #dddfe1 !important;
+
 						& > svg {
 							background-color: #f1f1f1;
 						}
@@ -124,12 +131,12 @@
 		justify-content: space-between;
 		align-items: center;
 		width: 100%;
+		margin-bottom: 10px;
 
 		&__color {
 			display: flex;
 			align-items: center;
 			justify-content: flex-end;
-			margin-bottom: 10px;
 
 			span {
 				display: block;
@@ -141,7 +148,7 @@
 				float: left;
 				border-radius: 5px;
 			}
-			.components-maxi-control__units-reset {
+			.components-maxi-control__reset-button {
 				border-color: #dddfe1;
 			}
 		}

@@ -13,7 +13,7 @@ const {
 /**
  * Internal dependencies
  */
-import { CheckBoxControl } from '../index';
+import { CheckBoxControl } from '../../components';
 
 /**
  * External dependencies
@@ -94,10 +94,9 @@ const ColorControl = props => {
             {
                 ( getOptions().length > 1 ) &&
                 <div className='maxi-colorcontrol__items'>
-                    <span>{__('Background', 'maxi-blocks')}</span>
+                    <span>{label}</span>
                     <RadioControl
                         label=''
-                        className=''
                         selected={backgroundItems}
                         options={getOptions()}
                         onChange={value => changeBackgroundItems(value)}
@@ -105,9 +104,7 @@ const ColorControl = props => {
                 </div>
             }
             <div className='maxi-colorcontrol__display'>
-                <span className='maxi-colorcontrol__display__title'>
-                    { ( label === '' ) ? __('Background Color', 'maxi-blocks') : label }
-                </span>
+                <span className='maxi-colorcontrol__display__title'>{`${label} ${__('Color', 'maxi-blocks')}`}</span>
                 <div className='maxi-colorcontrol__display__color'>
                     <span
                         style={{
@@ -115,7 +112,7 @@ const ColorControl = props => {
                         }}
                     ></span>
                     <Button
-                        className="components-maxi-control__units-reset"
+                        className="components-maxi-control__reset-button"
                         onClick={() => onReset()}
                         aria-label={sprintf(
                             /* translators: %s: a texual label  */
@@ -130,7 +127,7 @@ const ColorControl = props => {
 
             </div>
             {
-                ( disableColor === false ) &&
+                !disableColor &&
                 ( backgroundItems === 'color' ) &&
                 <div className="maxi-colorcontrol__color">
                     <ColorPicker
@@ -140,7 +137,7 @@ const ColorControl = props => {
                 </div>
             }
             {
-                ( disableGradient === false ) &&
+                !disableGradient &&
                 ( backgroundItems === 'gradient' ) &&
                 <div className="maxi-colorcontrol__gradient">
                     <__experimentalGradientPicker
@@ -157,12 +154,12 @@ const ColorControl = props => {
                 </div>
             }
             {
-                ( disableImage === false ) &&
+                !disableImage &&
                 ( backgroundItems === 'image' ) &&
                 <p>Image settings goes here soon</p>
             }
             {
-                ( disableVideo === false ) &&
+                !disableVideo &&
                 ( backgroundItems === 'video' ) &&
                 <p>Video settings goes here soon</p>
             }

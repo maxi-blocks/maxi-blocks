@@ -1,8 +1,13 @@
 .maxi-colorcontrol {
 	&__gradient {
+		.components-circular-option-picker {
+			margin-top: 0;
+		}
 		.components-angle-picker-control {
 			width: 100%;
 			.components-base-control__field {
+				margin-bottom: 0;
+
 				.components-base-control__label {
 					flex: 5 !important;
 				}
@@ -14,7 +19,10 @@
 			}
 		}
 		.components-custom-gradient-picker {
+			margin-top: 0;
+
 			&__toolbar {
+				min-height: auto;
 				& > div {
 					margin: 0 !important;
 				}
@@ -28,12 +36,28 @@
 					.components-toolbar__control {
 						border-top-left-radius: 0 !important;
 						border-bottom-left-radius: 0 !important;
+						border-left: 0;
 					}
 				}
-				.components-toolbar__control {
+				button.components-toolbar__control {
 					border: 2px solid #dddfe1;
-					width: 45px;
-    				height: 35px;
+					width: 37px !important;
+
+					&.is-pressed,
+					&:hover {
+						background-color: #f1f1f1 !important;
+						border-color: #dddfe1 !important;
+						& > svg {
+							background-color: #f1f1f1;
+						}
+					}
+					svg {
+						border: none !important;
+						border-radius: 0 !important;
+					}
+					&:before {
+						content: none;
+					}
 				}
 			}
 			&__ui-line {

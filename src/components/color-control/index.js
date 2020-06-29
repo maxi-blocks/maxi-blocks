@@ -14,7 +14,6 @@ const {
  * Internal dependencies
  */
 import { CheckBoxControl } from '../index';
-import PopoverControl from '../popover-control';
 
 /**
  * External dependencies
@@ -26,8 +25,6 @@ import classnames from 'classnames';
  */
 import './editor.scss';
 import {
-    colorWheel,
-    gradient as iconGradient,
     backgroundColor,
     backgroundImage,
     backgroundVideo,
@@ -41,18 +38,18 @@ import { Icon } from '@wordpress/icons';
  */
 const ColorControl = props => {
     const {
-        label,
+        label='',
         className,
         disableColor = false,
+        disableImage = false,
+        disableVideo = false,
+        disableGradient = false,
         color,
         defaultColor = '',
         onColorChange,
-        colorIcon = colorWheel,
-        disableGradient = false,
         gradient,
         defaultGradient = '',
         onGradientChange,
-        gradientIcon = iconGradient,
         disableGradientAboveBackground = false,
         gradientAboveBackground,
         onGradientAboveBackgroundChange,
@@ -76,28 +73,40 @@ const ColorControl = props => {
                 onGradientAboveBackgroundChange(false);
     }
 
+    const getOptions = () => {
+        let options = [];
+        if(!disableColor)
+            options.push({ label: <Icon icon={backgroundColor} />, value: 'color' });
+        if(!disableImage)
+            options.push({ label: <Icon icon={backgroundImage} />, value: 'image' });
+        if(!disableVideo)
+            options.push({ label: <Icon icon={backgroundVideo} />, value: 'video' });
+        if(!disableGradient)
+            options.push({ label: <Icon icon={backgroundGradient()} />, value: 'gradient' })
+
+        return options;
+    }
+
     const [backgroundItems, changeBackgroundItems] = useState('color');
 
     return (
         <div className={classes}>
-            <div className='maxi-colorcontrol__items'>
-                <span>{__('Background', 'maxi-blocks')}</span>
-                <RadioControl
-                    label=''
-                    className=''
-                    selected={backgroundItems}
-                    options={[
-                        { label: <Icon icon={backgroundColor} />, value: 'color' },
-                        { label: <Icon icon={backgroundImage} />, value: 'image' },
-                        { label: <Icon icon={backgroundVideo} />, value: 'video' },
-                        { label: <Icon icon={backgroundGradient()} />, value: 'gradient' },
-                    ]}
-                    onChange={value => changeBackgroundItems(value)}
-                />
-            </div>
+            {
+                ( getOptions().length > 1 ) &&
+                <div className='maxi-colorcontrol__items'>
+                    <span>{__('Background', 'maxi-blocks')}</span>
+                    <RadioControl
+                        label=''
+                        className=''
+                        selected={backgroundItems}
+                        options={getOptions()}
+                        onChange={value => changeBackgroundItems(value)}
+                    />
+                </div>
+            }
             <div className='maxi-colorcontrol__display'>
                 <span className='maxi-colorcontrol__display__title'>
-                    {__('Color', 'maxi-blocks')}
+                    { ( label === '' ) ? __('Background Color', 'maxi-blocks') : label }
                 </span>
                 <div className='maxi-colorcontrol__display__color'>
                     <span
@@ -121,6 +130,7 @@ const ColorControl = props => {
 
             </div>
             {
+                ( disableColor === false ) &&
                 ( backgroundItems === 'color' ) &&
                 <div className="maxi-colorcontrol__color">
                     <ColorPicker
@@ -130,6 +140,7 @@ const ColorControl = props => {
                 </div>
             }
             {
+                ( disableGradient === false ) &&
                 ( backgroundItems === 'gradient' ) &&
                 <div className="maxi-colorcontrol__gradient">
                     <__experimentalGradientPicker
@@ -146,10 +157,12 @@ const ColorControl = props => {
                 </div>
             }
             {
+                ( disableImage === false ) &&
                 ( backgroundItems === 'image' ) &&
                 <p>Image settings goes here soon</p>
             }
             {
+                ( disableVideo === false ) &&
                 ( backgroundItems === 'video' ) &&
                 <p>Video settings goes here soon</p>
             }

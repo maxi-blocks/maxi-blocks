@@ -104,6 +104,8 @@ const BoxShadowControl = props => {
                 defaultColor={value.defaultShadowColor}
                 onColorChange={val => onChangeValue('shadowColor', val)}
                 disableGradient
+                disableImage
+                disableVideo
                 disableGradientAboveBackground
             />
             <RangeControl

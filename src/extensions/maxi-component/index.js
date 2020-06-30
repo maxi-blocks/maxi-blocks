@@ -16,7 +16,7 @@ const {
 /**
  * Class
  */
-export default class GXComponent extends Component {
+export default class MaxiComponent extends Component {
     saveAndSend(value) {
         this.props.onChange(JSON.stringify(value));
     } 

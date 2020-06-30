@@ -15,7 +15,7 @@ const {
 /**
  * Internal dependencies
  */
-import GXComponent from '../maxi-component';
+import MaxiComponent from '../maxi-component';
 import {
     ResponsiveStylesResolver,
     BackEndResponsiveStyles
@@ -36,7 +36,7 @@ import {
 /**
  * Class
  */
-class GXBlock extends GXComponent {
+class MaxiBlock extends MaxiComponent {
     state = {
         styles: {},
     }
@@ -100,9 +100,17 @@ class GXBlock extends GXComponent {
         }
     }
 
-    get getMeta() {
-        let meta = select('core/editor').getEditedPostAttribute('meta')._gutenberg_extra_responsive_styles;
-        return meta ? JSON.parse(meta) : {};
+    getMeta() {
+        let meta = select('maxiBlocks').receiveMaxiStyles();
+
+        switch(typeof meta) {
+            case 'string':
+                return JSON.parse(meta);
+            case 'object':
+                return meta;
+            case 'undefined':
+                return {}
+        }
     }
 
     get getObject() {
@@ -115,11 +123,14 @@ class GXBlock extends GXComponent {
         if (isEqual(obj, this.state.styles))
             return null;
 
+        const meta = this.getMeta();
+        console.log(meta)
+
         this.setState({
             styles: obj
         })
 
-        return new ResponsiveStylesResolver(obj);
+        return new ResponsiveStylesResolver(obj, meta);
     }
 
     /** 
@@ -128,15 +139,14 @@ class GXBlock extends GXComponent {
     displayStyles() {
         const newMeta = this.metaValue();
 
-        if (isNil(newMeta) || isEqual(this.getMeta, newMeta))
+        if (isNil(newMeta))
             return;
-
         this.saveMeta(newMeta);
     }
 
     removeStyle(target = this.props.attributes.uniqueID) {
-        let cleanMeta = { ...this.getMeta };
-        Object.keys(this.getMeta).map(key => {
+        let cleanMeta = { ...this.getMeta() };
+        Object.keys(this.getMeta()).map(key => {
             if (key.indexOf(target) >= 0)
                 delete cleanMeta[key]
         })
@@ -144,27 +154,10 @@ class GXBlock extends GXComponent {
         this.saveMeta(cleanMeta)
     }
 
-    saveMeta(newMeta) {
-        const post = select('core/editor').getCurrentPost();
-        const id = post.id;
-        const type = post.type;
-
-        dispatch('core').editEntityRecord(
-            'postType',
-            type,
-            id,
-            {
-                meta: {
-                    _gutenberg_extra_responsive_styles: JSON.stringify(newMeta)
-                }
-            },
-            {
-                undoIgnore: true
-            }
-        )
+    async saveMeta(newMeta) {
+        dispatch('maxiBlocks').saveMaxiStyles(newMeta)
             .then(new BackEndResponsiveStyles(newMeta))
-            .catch(err => console.error(err))
     }
 }
 
-export default GXBlock;
+export default MaxiBlock;

@@ -11,7 +11,7 @@ const {
 /**
  * Internal dependencies
  */
-import { GXComponent } from '../index';
+import { MaxiComponent } from '../index';
 import AccordionControl from '../accordion-control';
 import ColorControl from '../color-control';
 import ImageUploaderControl from '../image-uploader-control';
@@ -39,7 +39,7 @@ import './editor.scss';
 /**
  * Components
  */
-export default class BackgroundControl extends GXComponent {
+export default class BackgroundControl extends MaxiComponent {
     state = {
         isOpen: false,
         selector: 0

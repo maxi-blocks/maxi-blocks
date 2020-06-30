@@ -1,8 +1,8 @@
 // GX component
-export { default as GXComponent} from '../extensions/maxi-component';
+export { default as MaxiComponent} from '../extensions/maxi-component';
 
 // GX Block
-export { default as GXBlock } from '../extensions/maxi-block';
+export { default as MaxiBlock } from '../extensions/maxi-block';
 
 // Components
 export { default as AccordionControl } from './accordion-control';

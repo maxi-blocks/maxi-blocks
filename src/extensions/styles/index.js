@@ -2,6 +2,7 @@
 * WordPress dependencies
 */
 const { select } = wp.data;
+const apiFetch = wp.apiFetch;
 
 /**
  * External dependencies
@@ -19,18 +20,13 @@ import {
  * @todo    Comment and extend documentation
  */
 export class ResponsiveStylesResolver {
-    constructor(object) {
+    constructor(object, meta) {
         this.object = object;
-        this.meta = this.oldMeta;
+        this.meta = meta;
 
-        this.init();
+        this.init()
 
         return this.meta;
-    }
-
-    get oldMeta() {
-        let meta = select('core/editor').getEditedPostAttribute('meta')._gutenberg_extra_responsive_styles;
-        return meta ? JSON.parse(meta) : {};
     }
 
     init() {
@@ -39,6 +35,9 @@ export class ResponsiveStylesResolver {
                 [target]: this.objectManipulator(props)
             };
             this.meta = Object.assign(this.meta, newEntry);
+
+            // Alternative
+            // this.meta[target] = this.objectManipulator(props);
         }
     }
 
@@ -106,7 +105,7 @@ export class ResponsiveStylesResolver {
     breakpointsObjectManipulator(props, newObject, key, type) {
         if (typeof props[key][type] === 'undefined')
             return newObject;
-        
+
         newObject.breakpoints = { ...props[key][type] };
 
         return newObject;
@@ -179,7 +178,6 @@ export class BackEndResponsiveStyles {
                 }
                 if (!isNil(value.breakpoints)) {
                     for (let breakpoint of Object.values(value.breakpoints)) {
-                        const rule = breakpoint.type === 'container' ? 'min-width' : 'max-width';
                         content += `@media only screen and (${breakpoint.rule}){.${target}{${breakpoint.content}}}`;
                     }
                 }

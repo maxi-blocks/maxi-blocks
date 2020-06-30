@@ -16,8 +16,6 @@ const save = props => {
         attributes: {
             uniqueID,
             blockStyle,
-            wrapTablet,
-            wrapMobile,
             hoverAnimation,
             hoverAnimationDuration,
             extraClassName,
@@ -37,12 +35,6 @@ const save = props => {
         fullWidth === 'full' ?
             'alignfull' :
             '',
-        !wrapTablet ?
-            'maxi-row-block--wrap-tablet' :
-            null,
-        !wrapMobile ?
-            'maxi-row-block--wrap-mobile' :
-            null,
     );
     if (uniqueID && (typeof uniqueID !== 'undefined'))
         classes = classnames(classes, uniqueID);

@@ -21,7 +21,7 @@ const {
  * Internal dependencies
  */
 import {
-    GXBlock,
+    MaxiBlock,
     __experimentalToolbar,
     __experimentalBlockPlaceholder
 } from '../../components';
@@ -46,7 +46,7 @@ import {
 /**
  * Editor
  */
-class edit extends GXBlock {
+class edit extends MaxiBlock {
     state = {
         originalWidth: 0,
         styles: {}
@@ -74,7 +74,6 @@ class edit extends GXBlock {
         let response = {
             [this.props.attributes.uniqueID]: this.getNormalObject,
             [`${this.props.attributes.uniqueID}:hover`]: this.getHoverObject,
-            // [`${this.props.attributes.uniqueID}>.maxi-column-block__content`]: this.getContentObject,
         }
 
         return response;
@@ -155,40 +154,6 @@ class edit extends GXBlock {
 
         if (isNumber(opacityHover))
             response.columnHover.general['opacity'] = opacityHover;
-
-        return response;
-    }
-
-    get getContentObject() {
-        const {
-            attributes: {
-                opacity,
-                background,
-                boxShadow,
-                border,
-                size,
-                margin,
-                padding,
-            },
-        } = this.props;
-
-        let response = {
-            background: { ...getBackgroundObject(JSON.parse(background)) },
-            boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
-            border: { ...JSON.parse(border) },
-            borderWidth: { ...JSON.parse(border).borderWidth },
-            borderRadius: { ...JSON.parse(border).borderRadius },
-            size: { ...JSON.parse(size) },
-            margin: { ...JSON.parse(margin) },
-            padding: { ...JSON.parse(padding) },
-            column: {
-                label: "Column",
-                general: {},
-            }
-        };
-
-        if (isNumber(opacity))
-            response.column.general['opacity'] = opacity;
 
         return response;
     }

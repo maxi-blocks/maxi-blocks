@@ -16,7 +16,7 @@ import {
     getBoxShadowObject
 } from '../../extensions/styles/utils';
 import {
-    GXBlock,
+    MaxiBlock,
     __experimentalToolbar
 } from '../../components';
 
@@ -33,7 +33,7 @@ import transform from "css-to-react-native-transform";
 /**
  * Content
  */
-class edit extends GXBlock {
+class edit extends MaxiBlock {
     componentDidUpdate() {
         this.fullWidthSetter();
         this.displayStyles();

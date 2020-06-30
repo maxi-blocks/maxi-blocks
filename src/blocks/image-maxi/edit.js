@@ -23,7 +23,7 @@ import {
     getBoxShadowObject
 } from '../../extensions/styles/utils';
 import {
-    GXBlock,
+    MaxiBlock,
     __experimentalToolbar
 } from '../../components';
 
@@ -48,7 +48,7 @@ import {
 /**
  * Content
  */
-class edit extends GXBlock {
+class edit extends MaxiBlock {
     get getWrapperWidth() {
         const target = document.getElementById(`block-${this.props.clientId}`);
         if (!target)

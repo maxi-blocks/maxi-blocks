@@ -277,6 +277,7 @@ class edit extends GXBlock {
                             bottomLeft: false,
                             topLeft: false,
                         }}
+                        onMouseEnter={() => { console.log('Hover') }}
                         onResizeStart={(event, direction, elt, delta) => {
                             this.setState({
                                 originalWidth: elt.getBoundingClientRect().width

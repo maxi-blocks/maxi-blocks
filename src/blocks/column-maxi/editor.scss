@@ -3,12 +3,13 @@ div.maxi-column-block {
     max-width: 100% !important;
     margin: auto;
     height: 100%;
+    //outline: 1px solid #7fbddc;
 
     &__resizer {
         line-height: 0;
+        outline: 1px solid #7fbddc;
     }
-
     &:hover {
-        outline: 1px solid blue;
+        //outline: 1px solid red;
     }
 }

@@ -154,7 +154,7 @@ export default class BackgroundControl extends GXComponent {
                             })
                         }
                         <ColorControl
-                            label={__('Background color', 'maxi-blocks')}
+                            label={__('Background', 'maxi-blocks')}
                             color={value.colorOptions.color}
                             defaultColor={value.colorOptions.defaultColor}
                             onColorChange={val => {

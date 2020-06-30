@@ -98,12 +98,14 @@ const BoxShadowControl = props => {
                 ]}
             />
             <ColorControl
-                label={__('Color', 'maxi-blocks')}
+                label={__('Box Shadow', 'maxi-blocks')}
                 className={'maxi-shadow-control__color'}
                 color={value.shadowColor}
                 defaultColor={value.defaultShadowColor}
                 onColorChange={val => onChangeValue('shadowColor', val)}
                 disableGradient
+                disableImage
+                disableVideo
                 disableGradientAboveBackground
             />
             <RangeControl

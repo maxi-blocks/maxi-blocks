@@ -53,28 +53,26 @@ const GradientControl = props => {
 
     return (
         <div className={classes}>
-            <div className='maxi-gradientcontrol__display'>
-                <BaseControl
-                    className='maxi-gradientcontrol__display__title'
-                    label={`${label} ${__('Color', 'maxi-blocks')}`}
-                >
-                    <div className='maxi-gradientcontrol__display__color'>
-                        <span style={{background: gradient}}></span>
-                        <Button
-                            className="components-maxi-control__reset-button"
-                            onClick={() => onReset()}
-                            aria-label={sprintf(
-                                /* translators: %s: a texual label  */
-                                __('Reset %s settings', 'maxi-blocks'),
-                                'font size'
-                            )}
-                            type="reset"
-                        >
-                            {reset}
-                        </Button>
-                    </div>
-                </BaseControl>
-            </div>
+            <BaseControl
+                className='maxi-gradientcontrol__display'
+                label={`${label} ${__('Color', 'maxi-blocks')}`}
+            >
+                <div className='maxi-gradientcontrol__display__color'>
+                    <span style={{background: gradient}}></span>
+                    <Button
+                        className="components-maxi-control__reset-button"
+                        onClick={() => onReset()}
+                        aria-label={sprintf(
+                            /* translators: %s: a texual label  */
+                            __('Reset %s settings', 'maxi-blocks'),
+                            'font size'
+                        )}
+                        type="reset"
+                    >
+                        {reset}
+                    </Button>
+                </div>
+            </BaseControl>
             <div className="maxi-gradientcontrol__gradient">
                 <__experimentalGradientPicker
                     value={gradient}

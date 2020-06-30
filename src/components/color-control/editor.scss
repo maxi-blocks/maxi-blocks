@@ -3,9 +3,8 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		width: 100%;
 
-		&__title {
+		.components-base-control__field {
 			width: 100%;
 		}
 		&__color {

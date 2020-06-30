@@ -44,9 +44,8 @@ const ColorControl = props => {
 
     return (
         <div className={classes}>
-            <div className='maxi-colorcontrol__display'>
-                <BaseControl
-                    className='maxi-colorcontrol__display__title'
+            <BaseControl
+                    className='maxi-colorcontrol__display'
                     label={`${label} ${__('Color', 'maxi-blocks')}`}
                 >
                     <div className='maxi-colorcontrol__display__color'>
@@ -65,7 +64,6 @@ const ColorControl = props => {
                         </Button>
                     </div>
                 </BaseControl>
-            </div>
             <div className="maxi-colorcontrol__color">
                 <ColorPicker
                     color={color}

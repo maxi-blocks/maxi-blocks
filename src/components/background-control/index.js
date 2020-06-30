@@ -7,7 +7,9 @@ const {
     SelectControl,
     RadioControl,
     Button,
+    Icon,
 } = wp.components;
+const { select } = wp.data;
 
 /**
  * Internal dependencies
@@ -42,7 +44,6 @@ import {
     backgroundVideo,
     backgroundGradient,
 } from '../../icons';
-import { Icon } from '@wordpress/icons';
 
 /**
  * Components
@@ -91,7 +92,7 @@ export default class BackgroundControl extends GXComponent {
             'maxi-blocks/button-maxi',
         ]
 
-        const currentBlockName = wp.data.select('core/block-editor').getSelectedBlock().name;
+        const currentBlockName = select('core/block-editor').getSelectedBlock().name;
 
         const onAddBackground = () => {
             value.backgroundOptions.push(background.backgroundOptions[0])

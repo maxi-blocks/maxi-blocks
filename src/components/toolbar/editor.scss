@@ -106,7 +106,7 @@
 
 .toolbar-item__popover {
 
-    .components-maxi-control__units-reset {
+    .components-maxi-control__reset-button {
 		border: 2px solid #80828a;
 		svg {
 			fill: #fff !important;
@@ -265,6 +265,57 @@
 
         .maxi-colorcontrol {
             margin-bottom: 10px;
+            color: #fff;
+
+            .components-custom-gradient-picker {
+                .components-base-control__field {
+                    margin-bottom: 10px;
+                }
+                .components-angle-picker-control {
+                    &__angle-circle-indicator,
+                    &__angle-circle {
+                        border-color: #808189;
+                    }
+                }
+                &__toolbar {
+                    background: none;
+
+                    button.components-toolbar__control {
+                        border-color: #808189;
+
+                        &.is-pressed,
+                        &:hover {
+                            background-color: #4f515b !important;
+                            border-color: #808189 !important;
+
+                            & > svg {
+                                background: none;
+                            }
+                        }
+                    }
+                }
+            }
+            &__items {
+                color: #fff;
+                .components-radio-control__option {
+                    border-color: #80828a;
+                    background-color: #242433;
+                }
+                input {
+                    &:checked ~ label {
+                        background-color: #4f515c;
+                    }
+                }
+                svg {
+                    fill: #fff !important;
+                    path {
+                        stroke: #fff;
+                    }
+                }
+            }
+            &__display {
+                color: #fff;
+            }
         }
         & > .components-base-control {
             &:nth-last-child(1) {

@@ -39,7 +39,7 @@ import { Icon } from '@wordpress/icons';
  */
 const ColorControl = props => {
     const {
-        label = '',
+        label,
         className,
         disableColor = false,
         disableImage = false,

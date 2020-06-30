@@ -1,0 +1,104 @@
+.maxi-gradientcontrol {
+	&__gradient {
+		.components-circular-option-picker {
+			margin-top: 0;
+		}
+		.components-angle-picker-control {
+			width: 100%;
+			.components-angle-picker-control {
+				&__angle-circle-indicator,
+				&__angle-circle {
+					border-color: #dddfe2;
+				}
+			}
+			.components-base-control__field {
+				margin-bottom: 0;
+
+				&__label {
+					flex: 5 !important;
+				}
+			}
+		}
+		.components-circular-option-picker {
+			&__custom-clear-wrapper {
+				display: none;
+			}
+		}
+		.components-custom-gradient-picker {
+			margin-top: 0;
+
+			&__toolbar {
+				min-height: auto;
+				& > div {
+					margin: 0 !important;
+				}
+				& > div:first-of-type {
+					.components-toolbar__control {
+						border-top-right-radius: 0 !important;
+						border-bottom-right-radius: 0 !important;
+					}
+				}
+				& > div:last-of-type {
+					.components-toolbar__control {
+						border-top-left-radius: 0 !important;
+						border-bottom-left-radius: 0 !important;
+						border-left: 0;
+					}
+				}
+				button.components-toolbar__control {
+					border: 2px solid #dddfe1;
+					width: 37px !important;
+
+					&.is-pressed,
+					&:hover {
+						background-color: #f1f1f1 !important;
+						border-color: #dddfe1 !important;
+
+						& > svg {
+							background-color: #f1f1f1;
+						}
+					}
+					svg {
+						border: none !important;
+						border-radius: 0 !important;
+					}
+					&:before {
+						content: none;
+					}
+				}
+			}
+			&__ui-line {
+				flex-direction: column;
+			}
+		}
+	}
+	&__display {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+
+		&__title {
+			width: 100%;
+		}
+		&__color {
+			display: flex;
+			align-items: center;
+			justify-content: flex-end;
+
+			span {
+				display: block;
+				width: 31px;
+				height: 31px;
+				margin: auto;
+				border: 2px solid #dddfe1;
+				opacity: 1;
+				float: left;
+				border-radius: 5px;
+			}
+			.components-maxi-control__reset-button {
+				border-color: #dddfe1;
+			}
+		}
+	}
+}

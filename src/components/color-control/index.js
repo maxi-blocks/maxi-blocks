@@ -6,6 +6,7 @@ const { useState } = wp.element;
 const {
     ColorPicker,
     RadioControl,
+    BaseControl,
     Button,
     __experimentalGradientPicker
 } = wp.components;
@@ -104,7 +105,10 @@ const ColorControl = props => {
                 </div>
             }
             <div className='maxi-colorcontrol__display'>
-                <span className='maxi-colorcontrol__display__title'>{`${label} ${__('Color', 'maxi-blocks')}`}</span>
+                <BaseControl
+                    className='maxi-colorcontrol__display__title'
+                    label={`${label} ${__('Color', 'maxi-blocks')}`}
+                />
                 <div className='maxi-colorcontrol__display__color'>
                     <span
                         style={{
@@ -128,7 +132,7 @@ const ColorControl = props => {
             </div>
             {
                 !disableColor &&
-                ( backgroundItems === 'color' ) &&
+                backgroundItems === 'color' &&
                 <div className="maxi-colorcontrol__color">
                     <ColorPicker
                         color={color}
@@ -138,7 +142,7 @@ const ColorControl = props => {
             }
             {
                 !disableGradient &&
-                ( backgroundItems === 'gradient' ) &&
+                backgroundItems === 'gradient' &&
                 <div className="maxi-colorcontrol__gradient">
                     <__experimentalGradientPicker
                         value={gradient}
@@ -155,12 +159,12 @@ const ColorControl = props => {
             }
             {
                 !disableImage &&
-                ( backgroundItems === 'image' ) &&
+                backgroundItems === 'image' &&
                 <p>Image settings goes here soon</p>
             }
             {
                 !disableVideo &&
-                ( backgroundItems === 'video' ) &&
+                backgroundItems === 'video' &&
                 <p>Video settings goes here soon</p>
             }
         </div>

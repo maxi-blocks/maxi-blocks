@@ -5,15 +5,18 @@ const { __ } = wp.i18n;
 const { Fragment } = wp.element;
 const {
     SelectControl,
+    RadioControl,
     Button,
+    Icon,
 } = wp.components;
+const { select } = wp.data;
 
 /**
  * Internal dependencies
  */
 import { GXComponent } from '../index';
-import AccordionControl from '../accordion-control';
 import ColorControl from '../color-control';
+import GradientControl from '../gradient-control';
 import ImageUploaderControl from '../image-uploader-control';
 import ImageCropControl from '../image-crop-control';
 import SettingTabsControl from '../setting-tabs-control';
@@ -32,9 +35,15 @@ import {
 } from 'lodash';
 
 /**
- * Styles
+ * Styles and icons
  */
 import './editor.scss';
+import {
+    backgroundColor,
+    backgroundImage,
+    backgroundVideo,
+    backgroundGradient,
+} from '../../icons';
 
 /**
  * Components
@@ -42,19 +51,21 @@ import './editor.scss';
 export default class BackgroundControl extends GXComponent {
     state = {
         isOpen: false,
-        selector: 0
+        selector: 0,
+        backgroundItems: 'color',
     }
 
     render() {
         const {
             className,
             backgroundOptions,
-            disableImage = false
+            disableImage = false,
         } = this.props;
 
         const {
             isOpen,
-            selector
+            selector,
+            backgroundItems,
         } = this.state;
 
         let value = typeof backgroundOptions === 'object' ?
@@ -68,6 +79,20 @@ export default class BackgroundControl extends GXComponent {
                 'maxi-background-control__open' :
                 ''
         );
+
+        const allowedBlocks = [
+            'maxi-blocks/column-maxi',
+            'maxi-blocks/row-maxi',
+            'maxi-blocks/container-maxi',
+        ]
+        const backgroundVideoAllowedBlocks = [...allowedBlocks]
+        const backgroundImageAllowedBlocks = [...allowedBlocks]
+        const backgroundGradientAllowedBlocks = [
+            ...allowedBlocks,
+            'maxi-blocks/button-maxi',
+        ]
+
+        const currentBlockName = select('core/block-editor').getSelectedBlock().name;
 
         const onAddBackground = () => {
             value.backgroundOptions.push(background.backgroundOptions[0])
@@ -106,13 +131,71 @@ export default class BackgroundControl extends GXComponent {
             }
         }
 
+        const getOptions = () => {
+            let options = [];
+            options.push({ label: <Icon icon={backgroundColor} />, value: 'color' });
+            backgroundImageAllowedBlocks.includes(currentBlockName) &&
+                options.push({ label: <Icon icon={backgroundImage} />, value: 'image' });
+            backgroundVideoAllowedBlocks.includes(currentBlockName) &&
+                options.push({ label: <Icon icon={backgroundVideo} />, value: 'video' });
+            backgroundGradientAllowedBlocks.includes(currentBlockName) &&
+                options.push({ label: <Icon icon={backgroundGradient()} />, value: 'gradient' })
+
+            return options;
+        }
+
         return (
             <div className={classes}>
+                {
+                    getOptions().length > 1 &&
+                    <div className='maxi-background-control__background-items'>
+                        <RadioControl
+                            label={__('Background')}
+                            selected={backgroundItems}
+                            options={getOptions()}
+                            onChange={value => this.setState({backgroundItems: value})}
+                        />
+                    </div>
+                }
                 {
                     !isOpen &&
                     <Fragment>
                         {
+                            backgroundItems === 'video' &&
+                                <h1>Video settigns goes here soon :)</h1>
+                        }
+                        {
+                            backgroundItems === 'gradient' &&
+                            <GradientControl
+                                label={__('Background', 'maxi-blocks')}
+                                gradient={value.colorOptions.gradient}
+                                defaultGradient={value.colorOptions.defaultGradient}
+                                onGradientChange={val => {
+                                    value.colorOptions.gradient = val;
+                                    this.saveAndSend(value)
+                                }}
+                                gradientAboveBackground={value.colorOptions.gradientAboveBackground}
+                                onGradientAboveBackgroundChange={val => {
+                                    value.colorOptions.gradientAboveBackground = val;
+                                    this.saveAndSend(value)
+                                }}
+                            />
+                        }
+                        {
+                            backgroundItems === 'color' &&
+                            <ColorControl
+                                label={__('Background', 'maxi-blocks')}
+                                color={value.colorOptions.color}
+                                defaultColor={value.colorOptions.defaultColor}
+                                onColorChange={val => {
+                                    value.colorOptions.color = val;
+                                    this.saveAndSend(value)
+                                }}
+                            />
+                        }
+                        {
                             !disableImage &&
+                            backgroundItems === 'image' &&
                             value.backgroundOptions.map((option, i) => {
                                 return (
                                     <Fragment>
@@ -153,26 +236,6 @@ export default class BackgroundControl extends GXComponent {
                                 )
                             })
                         }
-                        <ColorControl
-                            label={__('Background', 'maxi-blocks')}
-                            color={value.colorOptions.color}
-                            defaultColor={value.colorOptions.defaultColor}
-                            onColorChange={val => {
-                                value.colorOptions.color = val;
-                                this.saveAndSend(value)
-                            }}
-                            gradient={value.colorOptions.gradient}
-                            defaultGradient={value.colorOptions.defaultGradient}
-                            onGradientChange={val => {
-                                value.colorOptions.gradient = val;
-                                this.saveAndSend(value)
-                            }}
-                            gradientAboveBackground={value.colorOptions.gradientAboveBackground}
-                            onGradientAboveBackgroundChange={val => {
-                                value.colorOptions.gradientAboveBackground = val;
-                                this.saveAndSend(value)
-                            }}
-                        />
                     </Fragment>
                 }
                 {

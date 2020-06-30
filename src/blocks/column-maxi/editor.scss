@@ -8,6 +8,9 @@ div.maxi-column-block {
     &__resizer {
         line-height: 0;
         outline: 1px solid #7fbddc;
+        &.active-column ~ * {
+            opacity: 0.5;
+        }
     }
     &:hover {
         //outline: 1px solid red;

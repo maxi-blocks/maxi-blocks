@@ -49,7 +49,8 @@ import {
 class edit extends GXBlock {
     state = {
         originalWidth: 0,
-        styles: {}
+        styles: {},
+        isActive: false,
     }
 
     componentDidUpdate() {
@@ -256,6 +257,7 @@ class edit extends GXBlock {
                             'maxi-block__resizer',
                             "maxi-column-block__resizer",
                             `maxi-column-block__resizer__${clientId}`,
+                            this.state.isActive ? "active-column": null,
                             columnPosition
                         )}
                         defaultSize={{
@@ -277,7 +279,16 @@ class edit extends GXBlock {
                             bottomLeft: false,
                             topLeft: false,
                         }}
-                        onMouseEnter={() => { console.log('Hover') }}
+                        onMouseEnter={() => {
+                            this.setState({
+                                isActive: true
+                            })
+                        }}
+                        onMouseLeave={() => {
+                            this.setState({
+                                isActive: false
+                            })
+                        }}
                         onResizeStart={(event, direction, elt, delta) => {
                             this.setState({
                                 originalWidth: elt.getBoundingClientRect().width

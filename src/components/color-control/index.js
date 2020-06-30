@@ -39,7 +39,7 @@ import { Icon } from '@wordpress/icons';
  */
 const ColorControl = props => {
     const {
-        label='',
+        label = '',
         className,
         disableColor = false,
         disableImage = false,
@@ -66,23 +66,23 @@ const ColorControl = props => {
     }
 
     const onReset = () => {
-            if (!disableColor)
-                onColorChange(defaultColor);
-            if (!disableGradient)
-                onGradientChange(defaultGradient);
-            if (!disableGradient && !disableGradientAboveBackground)
-                onGradientAboveBackgroundChange(false);
+        if (!disableColor)
+            onColorChange(defaultColor);
+        if (!disableGradient)
+            onGradientChange(defaultGradient);
+        if (!disableGradient && !disableGradientAboveBackground)
+            onGradientAboveBackgroundChange(false);
     }
 
     const getOptions = () => {
         let options = [];
-        if(!disableColor)
+        if (!disableColor)
             options.push({ label: <Icon icon={backgroundColor} />, value: 'color' });
-        if(!disableImage)
+        if (!disableImage)
             options.push({ label: <Icon icon={backgroundImage} />, value: 'image' });
-        if(!disableVideo)
+        if (!disableVideo)
             options.push({ label: <Icon icon={backgroundVideo} />, value: 'video' });
-        if(!disableGradient)
+        if (!disableGradient)
             options.push({ label: <Icon icon={backgroundGradient()} />, value: 'gradient' })
 
         return options;
@@ -93,11 +93,10 @@ const ColorControl = props => {
     return (
         <div className={classes}>
             {
-                ( getOptions().length > 1 ) &&
+                (getOptions().length > 1) &&
                 <div className='maxi-colorcontrol__items'>
-                    <span>{label}</span>
                     <RadioControl
-                        label=''
+                        label={label}
                         selected={backgroundItems}
                         options={getOptions()}
                         onChange={value => changeBackgroundItems(value)}
@@ -108,27 +107,27 @@ const ColorControl = props => {
                 <BaseControl
                     className='maxi-colorcontrol__display__title'
                     label={`${label} ${__('Color', 'maxi-blocks')}`}
-                />
-                <div className='maxi-colorcontrol__display__color'>
-                    <span
-                        style={{
-                            background: gradient ? gradient : color,
-                        }}
-                    ></span>
-                    <Button
-                        className="components-maxi-control__reset-button"
-                        onClick={() => onReset()}
-                        aria-label={sprintf(
-                            /* translators: %s: a texual label  */
-                            __('Reset %s settings', 'maxi-blocks'),
-                            'font size'
-                        )}
-                        type="reset"
-                    >
-                        {reset}
-                    </Button>
-                </div>
-
+                >
+                    <div className='maxi-colorcontrol__display__color'>
+                        <span
+                            style={{
+                                background: gradient ? gradient : color,
+                            }}
+                        ></span>
+                        <Button
+                            className="components-maxi-control__reset-button"
+                            onClick={() => onReset()}
+                            aria-label={sprintf(
+                                /* translators: %s: a texual label  */
+                                __('Reset %s settings', 'maxi-blocks'),
+                                'font size'
+                            )}
+                            type="reset"
+                        >
+                            {reset}
+                        </Button>
+                    </div>
+                </BaseControl>
             </div>
             {
                 !disableColor &&

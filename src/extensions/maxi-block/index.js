@@ -10,12 +10,13 @@
 const {
     dispatch,
     select,
+    subscribe
 } = wp.data;
 
 /**
  * Internal dependencies
  */
-import GXComponent from '../maxi-component';
+import MaxiComponent from '../maxi-component';
 import {
     ResponsiveStylesResolver,
     BackEndResponsiveStyles
@@ -36,9 +37,10 @@ import {
 /**
  * Class
  */
-class GXBlock extends GXComponent {
+class MaxiBlock extends MaxiComponent {
     state = {
         styles: {},
+        updating: false
     }
 
     constructor() {
@@ -47,6 +49,40 @@ class GXBlock extends GXComponent {
         this.fixProps();
     }
 
+    componentDidMount() {
+        this.displayStyles();
+        this.saveProps();
+    }
+
+    componentDidUpdate() {
+        this.displayStyles();
+
+        if (!select('core/editor').isSavingPost() && this.state.updating) {
+            this.setState({
+                updating: false
+            })
+            this.saveProps();
+        }
+    }
+
+    componentWillUnmount() {
+        this.removeStyle();
+    }
+
+    uniqueIDChecker(idToCheck) {
+        if (!isEmpty(document.getElementsByClassName(idToCheck))) {
+            const newUniqueId = uniqueId(idToCheck.replace(idToCheck.match(/(\d+)(?!.*\d)/)[0], ''));
+
+            this.uniqueIDChecker(newUniqueId);
+
+            this.props.setAttributes({ uniqueID: newUniqueId })
+        }
+    }
+
+    /**
+     * In case some object has been modified and an old block has a prop that doesn't correspond
+     * with that object, this shoudl help. It can grow with different handlers/helpers to fix errors.
+     */
     fixProps() {
         Object.entries(this.props.attributes).map(([key, value]) => {
             let obj;
@@ -78,31 +114,36 @@ class GXBlock extends GXComponent {
         return defaultObj;
     }
 
-    componentDidMount() {
-        this.displayStyles();
+    /**
+     * Fix preview displays
+     */
+    saveProps() {
+        const unsubscribe = subscribe(() => {
+            const isSavingPost = select('core/editor').isSavingPost();
+            const isPreviewing = select('core/editor').isPreviewingPost();
+
+            if (isSavingPost && !isPreviewing && !this.state.updating) {
+                this.setState({
+                    updating: true
+                })
+                unsubscribe();
+
+                dispatch('maxiBlocks').saveMaxiStyles(this.getMeta(), true)
+            }
+        })
     }
 
-    componentDidUpdate() {
-        this.displayStyles();
-    }
+    getMeta() {
+        let meta = select('maxiBlocks').receiveMaxiStyles();
 
-    componentWillUnmount() {
-        this.removeStyle();
-    }
-
-    uniqueIDChecker(idToCheck) {
-        if (!isEmpty(document.getElementsByClassName(idToCheck))) {
-            const newUniqueId = uniqueId(idToCheck.replace(idToCheck.match(/(\d+)(?!.*\d)/)[0], ''));
-
-            this.uniqueIDChecker(newUniqueId);
-
-            this.props.setAttributes({ uniqueID: newUniqueId })
+        switch (typeof meta) {
+            case 'string':
+                return JSON.parse(meta);
+            case 'object':
+                return meta;
+            case 'undefined':
+                return {}
         }
-    }
-
-    get getMeta() {
-        let meta = select('core/editor').getEditedPostAttribute('meta')._gutenberg_extra_responsive_styles;
-        return meta ? JSON.parse(meta) : {};
     }
 
     get getObject() {
@@ -115,11 +156,13 @@ class GXBlock extends GXComponent {
         if (isEqual(obj, this.state.styles))
             return null;
 
+        const meta = this.getMeta();
+
         this.setState({
             styles: obj
         })
 
-        return new ResponsiveStylesResolver(obj);
+        return new ResponsiveStylesResolver(obj, meta);
     }
 
     /** 
@@ -128,15 +171,14 @@ class GXBlock extends GXComponent {
     displayStyles() {
         const newMeta = this.metaValue();
 
-        if (isNil(newMeta) || isEqual(this.getMeta, newMeta))
+        if (isNil(newMeta))
             return;
-
         this.saveMeta(newMeta);
     }
 
     removeStyle(target = this.props.attributes.uniqueID) {
-        let cleanMeta = { ...this.getMeta };
-        Object.keys(this.getMeta).map(key => {
+        let cleanMeta = { ...this.getMeta() };
+        Object.keys(this.getMeta()).map(key => {
             if (key.indexOf(target) >= 0)
                 delete cleanMeta[key]
         })
@@ -144,27 +186,10 @@ class GXBlock extends GXComponent {
         this.saveMeta(cleanMeta)
     }
 
-    saveMeta(newMeta) {
-        const post = select('core/editor').getCurrentPost();
-        const id = post.id;
-        const type = post.type;
-
-        dispatch('core').editEntityRecord(
-            'postType',
-            type,
-            id,
-            {
-                meta: {
-                    _gutenberg_extra_responsive_styles: JSON.stringify(newMeta)
-                }
-            },
-            {
-                undoIgnore: true
-            }
-        )
+    async saveMeta(newMeta) {
+        dispatch('maxiBlocks').saveMaxiStyles(newMeta)
             .then(new BackEndResponsiveStyles(newMeta))
-            .catch(err => console.error(err))
     }
 }
 
-export default GXBlock;
+export default MaxiBlock;

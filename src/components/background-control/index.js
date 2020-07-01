@@ -14,7 +14,7 @@ const { select } = wp.data;
 /**
  * Internal dependencies
  */
-import { GXComponent } from '../index';
+import { MaxiComponent } from '../index';
 import ColorControl from '../color-control';
 import GradientControl from '../gradient-control';
 import ImageUploaderControl from '../image-uploader-control';
@@ -48,7 +48,7 @@ import {
 /**
  * Components
  */
-export default class BackgroundControl extends GXComponent {
+export default class BackgroundControl extends MaxiComponent {
     state = {
         isOpen: false,
         selector: 0,

@@ -71,8 +71,6 @@ const Inspector = props => {
         setAttributes,
     } = props;
 
-    console.log(isFirstOnHierarchy && fullWidth)
-
     return (
         <InspectorControls>
             <SettingTabsControl

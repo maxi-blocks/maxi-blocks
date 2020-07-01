@@ -49,8 +49,17 @@ class ResponsiveFrontendStyles
         global $post;
         if (!$post || !isset($post->ID))
             return;
-        $meta = get_post_meta($post->ID, '_gutenberg_extra_responsive_styles', true);
-        if (empty($meta))
+
+        $styles = get_option('mb_styles_api');
+
+        if (!isset($styles[$post->ID]))
+            return;
+
+        $meta = is_preview() || is_admin() ? 
+            $styles[$post->ID]['_maxi_blocks_styles_preview'] :
+            $styles[$post->ID]['_maxi_blocks_styles'];
+
+        if (!!$meta && empty($meta))
             return;
         $meta = json_decode($meta);
         return $this->organizeMeta($meta);
@@ -89,8 +98,8 @@ class ResponsiveFrontendStyles
                     foreach ($props->breakpoints as $screen => $breakpoint) {
                         $rule = $breakpoint->rule ?? '';
                         $content = $breakpoint->content ?? '';
-                        
-                        if(!!$rule && !!$content)
+
+                        if (!!$rule && !!$content)
                             $response[$target]['breakpoints'] .= "@media only screen and ($rule) {.$target{ $content}}";
                     }
                 }

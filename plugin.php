@@ -45,4 +45,4 @@ require_once plugin_dir_path(__FILE__ ) . 'page-content-setting/dynamic_content.
 //======================================================================
 // STYLING API
 //======================================================================
-require_once plugin_dir_path( __FILE__ ) . 'API/class-maxi-styles-api.php';
+require_once plugin_dir_path( __FILE__ ) . 'API/class-maxi-blocks-api.php';

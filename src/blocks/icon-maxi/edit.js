@@ -25,7 +25,7 @@ import {
     getBoxShadowObject
 } from '../../extensions/styles/utils';
 import {
-    GXBlock,
+    MaxiBlock,
     __experimentalToolbar
 } from '../../components';
 import MaxiModalIcon from './modal';
@@ -58,7 +58,7 @@ import {
 /**
  * Content
  */
-class edit extends GXBlock {
+class edit extends MaxiBlock {
     componentDidUpdate() {
         this.displayStyles();
     }
@@ -197,7 +197,7 @@ class edit extends GXBlock {
         this.saveMeta('image');
         this.saveMeta('figcaption')
 
-        new BackEndResponsiveStyles(this.getMeta);
+        new BackEndResponsiveStyles(this.getMeta());
     }
 
     render() {

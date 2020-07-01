@@ -49,12 +49,20 @@ import {
 class edit extends MaxiBlock {
     state = {
         originalWidth: 0,
-        styles: {}
+        styles: {},
+        updating: false
     }
 
     componentDidUpdate() {
         this.setResizeHandleStyles();
         this.displayStyles();
+
+        if (!select('core/editor').isSavingPost() && this.state.updating) {
+            this.setState({
+                updating: false
+            })
+            this.saveProps();
+        }
     }
 
     setResizeHandleStyles() {

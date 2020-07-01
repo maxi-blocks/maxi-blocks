@@ -26,6 +26,9 @@ if (!class_exists('MaxiBlocksAPI')) :
             // REST API
             add_action('init', array($this, 'mb_register_options'));
             add_action('rest_api_init', array($this, 'mb_register_routes'));
+
+            // Handlers
+            add_action('before_delete_post', array($this, 'mb_delete_register'));
         }
 
         /**
@@ -49,16 +52,16 @@ if (!class_exists('MaxiBlocksAPI')) :
                 array(
                     'methods'             => 'GET',
                     'callback'            => array($this, 'get_maxi_blocks_styles'),
-                    // 'args' => array(
-                    //     'id' => array(
-                    //         'validate_callback' => function ($param, $request, $key) {
-                    //             return is_numeric($param);
-                    //         }
-                    //     ),
-                    // ),
-                    // 'permission_callback' => function () {
-                    //     return current_user_can('edit_posts');
-                    // },
+                    'args' => array(
+                        'id' => array(
+                            'validate_callback' => function ($param, $request, $key) {
+                                return is_numeric($param);
+                            }
+                        ),
+                    ),
+                    'permission_callback' => function () {
+                        return current_user_can('edit_posts');
+                    },
                     'schema' => array($this, 'schema_maxi_blocks_styles'),
                 )
             );
@@ -68,9 +71,26 @@ if (!class_exists('MaxiBlocksAPI')) :
                 array(
                     'methods'             => 'POST',
                     'callback'            => array($this, 'post_maxi_blocks_styles'),
-                    // 'permission_callback' => function () {
-                    //     return current_user_can('edit_posts');
-                    // },
+                    'args' => array(
+                        'id' => array(
+                            'validate_callback' => function ($param) {
+                                return is_numeric($param);
+                            }
+                        ),
+                        'meta' => array(
+                            'validate_callback' => function ($param) {
+                                return is_string($param);
+                            }
+                        ),
+                        'update' => array(
+                            'validate_callback' => function ($param) {
+                                return is_bool($param);
+                            }
+                        ),
+                    ),
+                    'permission_callback' => function () {
+                        return current_user_can('edit_posts');
+                    },
                     'schema' => array($this, 'schema_maxi_blocks_styles'),
                 )
             );
@@ -83,7 +103,7 @@ if (!class_exists('MaxiBlocksAPI')) :
          */
         public function get_maxi_blocks_styles($data)
         {
-            $response = get_option('mb_styles_api')[$data['id']]['_maxi_blocks_styles'];
+            $response = get_option('mb_styles_api')[$data['id']]['_maxi_blocks_styles_preview'];
 
             return $response;
         }
@@ -94,45 +114,30 @@ if (!class_exists('MaxiBlocksAPI')) :
         public function post_maxi_blocks_styles($data)
         {
             $styles = get_option('mb_styles_api');
-            $styles[$data['id']] = [
-                '_maxi_blocks_styles'           => $data['meta'],
-                '_maxi_blocks_styles_preview'   => $data['meta']
-            ];
+
+            if ($data['update']) {
+                $styles[$data['id']] = [
+                    '_maxi_blocks_styles'           => $data['meta'],
+                    '_maxi_blocks_styles_preview'   => $data['meta']
+                ];
+            } else
+                $styles[$data['id']]['_maxi_blocks_styles_preview'] = $data['meta'];
 
             update_option('mb_styles_api', $styles);
 
-            return $data;
+            return true;
         }
 
-        /**
-         * Styles schema
-         */
-        public function schema_maxi_blocks_styles()
+        public function mb_delete_register($postId)
         {
-            $schema = [
-                '$schema'       => 'http://json-schema.org/draft-04/schema#',
-                'title'         => 'comment',
-                'type'          => 'object',
-                'properties'    => [
-                    'id' => [
-                        'type' => 'integer',
-                        'additionalProperties' => [
-                            [
-                                '_maxi_blocks_styles'           => [
-                                    'type' => 'string'
-                                ],
-                                '_maxi_blocks_styles_preview'   => [
-                                    'type' => 'string'
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
-            ];
+            $styles = get_option('mb_styles_api');
 
-            return $schema;
+            unset($styles[$postId]);
+
+            update_option('mb_styles_api', $styles);
         }
     }
+
 
 endif;
 

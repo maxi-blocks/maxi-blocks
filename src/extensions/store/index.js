@@ -46,10 +46,11 @@ const actions = {
 			meta
 		};
 	},
-	saveMaxiStyles(meta) {
+	saveMaxiStyles(meta, update = false) {
 		return {
 			type: 'SAVE_POST_STYLES',
-			meta
+			meta,
+			update
 		}
 	}
 };
@@ -71,6 +72,7 @@ const controls = {
 				data: {
 					id,
 					meta: JSON.stringify(action.meta),
+					update: action.update
 				}
 			}
 		)
@@ -88,9 +90,6 @@ const resolvers = {
 	* receiveMaxiStyles() {
 		const maxiStyles = yield actions.receiveMaxiStyles();
 		return actions.sendMaxiStyles(maxiStyles);
-	},
-	* saveMaxiStyles(meta) {
-		yield actions.saveMaxiStyles(meta);
 	}
 };
 

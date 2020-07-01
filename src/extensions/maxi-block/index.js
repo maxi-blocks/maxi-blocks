@@ -10,6 +10,7 @@
 const {
     dispatch,
     select,
+    subscribe
 } = wp.data;
 
 /**
@@ -39,6 +40,7 @@ import {
 class MaxiBlock extends MaxiComponent {
     state = {
         styles: {},
+        updating: false
     }
 
     constructor() {
@@ -47,6 +49,40 @@ class MaxiBlock extends MaxiComponent {
         this.fixProps();
     }
 
+    componentDidMount() {
+        this.displayStyles();
+        this.saveProps();
+    }
+
+    componentDidUpdate() {
+        this.displayStyles();
+
+        if (!select('core/editor').isSavingPost() && this.state.updating) {
+            this.setState({
+                updating: false
+            })
+            this.saveProps();
+        }
+    }
+
+    componentWillUnmount() {
+        this.removeStyle();
+    }
+
+    uniqueIDChecker(idToCheck) {
+        if (!isEmpty(document.getElementsByClassName(idToCheck))) {
+            const newUniqueId = uniqueId(idToCheck.replace(idToCheck.match(/(\d+)(?!.*\d)/)[0], ''));
+
+            this.uniqueIDChecker(newUniqueId);
+
+            this.props.setAttributes({ uniqueID: newUniqueId })
+        }
+    }
+
+    /**
+     * In case some object has been modified and an old block has a prop that doesn't correspond
+     * with that object, this shoudl help. It can grow with different handlers/helpers to fix errors.
+     */
     fixProps() {
         Object.entries(this.props.attributes).map(([key, value]) => {
             let obj;
@@ -78,32 +114,29 @@ class MaxiBlock extends MaxiComponent {
         return defaultObj;
     }
 
-    componentDidMount() {
-        this.displayStyles();
-    }
+    /**
+     * Fix preview displays
+     */
+    saveProps() {
+        const unsubscribe = subscribe(() => {
+            const isSavingPost = select('core/editor').isSavingPost();
+            const isPreviewing = select('core/editor').isPreviewingPost();
 
-    componentDidUpdate() {
-        this.displayStyles();
-    }
+            if (isSavingPost && !isPreviewing && !this.state.updating) {
+                this.setState({
+                    updating: true
+                })
+                unsubscribe();
 
-    componentWillUnmount() {
-        this.removeStyle();
-    }
-
-    uniqueIDChecker(idToCheck) {
-        if (!isEmpty(document.getElementsByClassName(idToCheck))) {
-            const newUniqueId = uniqueId(idToCheck.replace(idToCheck.match(/(\d+)(?!.*\d)/)[0], ''));
-
-            this.uniqueIDChecker(newUniqueId);
-
-            this.props.setAttributes({ uniqueID: newUniqueId })
-        }
+                dispatch('maxiBlocks').saveMaxiStyles(this.getMeta(), true)
+            }
+        })
     }
 
     getMeta() {
         let meta = select('maxiBlocks').receiveMaxiStyles();
 
-        switch(typeof meta) {
+        switch (typeof meta) {
             case 'string':
                 return JSON.parse(meta);
             case 'object':
@@ -124,7 +157,6 @@ class MaxiBlock extends MaxiComponent {
             return null;
 
         const meta = this.getMeta();
-        console.log(meta)
 
         this.setState({
             styles: obj

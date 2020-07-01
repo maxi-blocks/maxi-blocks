@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
+const { select } = wp.data;
 const {
     __experimentalBlock,
     RichText,
@@ -37,6 +38,13 @@ class edit extends MaxiBlock {
     componentDidUpdate() {
         this.fullWidthSetter();
         this.displayStyles();
+
+        if (!select('core/editor').isSavingPost() && this.state.updating) {
+            this.setState({
+                updating: false
+            })
+            this.saveProps();
+        }
     }
 
     fullWidthSetter() {

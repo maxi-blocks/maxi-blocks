@@ -1,7 +1,8 @@
 .maxi-divider-block {
     display: flex;
     justify-content: space-between;
-    margin: auto;
+    // margin: auto;
+    width: 100%;
 
     &--horizontal {
         hr {

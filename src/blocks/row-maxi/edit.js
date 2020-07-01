@@ -24,7 +24,7 @@ const {
  * Internal dependencies
  */
 import {
-    GXBlock,
+    MaxiBlock,
     __experimentalToolbar,
     __experimentalBreadcrumbs
 } from '../../components';
@@ -53,7 +53,7 @@ import {
  */
 const ALLOWED_BLOCKS = ['maxi-blocks/column-maxi'];
 
-class edit extends GXBlock {
+class edit extends MaxiBlock {
     get getObject() {
         let response = {
             [this.props.attributes.uniqueID]: this.getNormalObject,
@@ -104,7 +104,6 @@ class edit extends GXBlock {
             response.row.general['z-index'] = zIndex;
         if (isNumber(wrap))
             response.row.breakpoints.wrap.rule = `max-width:${wrap}px`;
-
 
         return response;
     }
@@ -166,8 +165,6 @@ class edit extends GXBlock {
             attributes: {
                 uniqueID,
                 blockStyle,
-                wrapTablet,
-                wrapMobile,
                 extraClassName,
                 defaultBlockStyle,
                 fullWidth,
@@ -191,12 +188,6 @@ class edit extends GXBlock {
             'hover-animation-duration-'+hoverAnimationDuration,
             extraClassName,
             className,
-            !wrapTablet ?
-                'maxi-row-block--wrap-tablet' :
-                null,
-            !wrapMobile ?
-                'maxi-row-block--wrap-mobile' :
-                null,
         );
 
         return [

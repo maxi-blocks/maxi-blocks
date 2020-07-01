@@ -12,7 +12,7 @@ const {
  * Internal dependencies
  */
 import {
-    GXBlock,
+    MaxiBlock,
     __experimentalToolbar,
     __experimentalBreadcrumbs,
     __experimentalBlockPlaceholder
@@ -35,7 +35,7 @@ import {
 /**
  * Edit
  */
-class edit extends GXBlock {
+class edit extends MaxiBlock {
     get getObject() {
         let response = {
             [this.props.attributes.uniqueID]: this.getNormalObject,

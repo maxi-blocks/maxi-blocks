@@ -16,7 +16,7 @@ const {
 /**
  * Internal dependencies
  */
-import { GXComponent } from '../index';
+import { MaxiComponent } from '../index';
 
 /**
  * External dependencies
@@ -38,7 +38,7 @@ import {
 /**
  * Component
  */
-export default class DimensionsControl extends GXComponent {
+export default class DimensionsControl extends MaxiComponent {
 
 	state = {
 		device: 'desktop'

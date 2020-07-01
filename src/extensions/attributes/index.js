@@ -74,7 +74,6 @@ const withAttributes = createHigherOrderComponent(
 		const {
 			attributes: {
 				uniqueID,
-				isFirstOnHierarchy
 			},
 			name,
 			clientId

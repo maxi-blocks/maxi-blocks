@@ -198,7 +198,6 @@ add_action('wp_ajax_gx_insert_block', 'gx_insert_block', 10, 2);
 // require_once plugin_dir_path( __FILE__ ) . 'includes/maxi-wp-dashboard.php';
 
 // Post Meta register
-require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-post-meta.php';
 require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-responsive-frontend-block-styles.php';
 
 // Image crop and image sizes

@@ -1,11 +1,13 @@
 .maxi-container-block {
     margin: auto;
+    position: relative;
+    overflow: hidden;
 
     &:hover {
         outline: 1px solid grey;
     }
 
     &[data-align="full"] {
-        width: auto; 
+        width: auto;
     }
 }

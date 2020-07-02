@@ -13,6 +13,7 @@ const {
  */
 import {
     GXBlock,
+    VideoPlayer,
     __experimentalToolbar,
     __experimentalBreadcrumbs,
     __experimentalBlockPlaceholder
@@ -29,7 +30,8 @@ import {
 import classnames from 'classnames';
 import {
     isEmpty,
-    isNumber
+    isNumber,
+    isNil,
 } from 'lodash';
 
 /**
@@ -166,6 +168,7 @@ class edit extends GXBlock {
                 defaultBlockStyle,
                 fullWidth,
                 extraClassName,
+                background
             },
             className,
             clientId,
@@ -180,6 +183,8 @@ class edit extends GXBlock {
             className
         );
 
+        const videoOptions = JSON.parse(background).videoOptions;
+
         return [
             <Inspector {...this.props} />,
             <__experimentalToolbar {...this.props} />,
@@ -192,6 +197,7 @@ class edit extends GXBlock {
                         data-align={fullWidth}
                         data-gx_initial_block_class={defaultBlockStyle}
                     >
+                        <VideoPlayer videoOptions={videoOptions} />
                         <InnerBlocks
                             templateLock={false}
                             __experimentalTagName='div'

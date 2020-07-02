@@ -87,6 +87,21 @@ export const background = {
             "attachment": "scroll"
         }
     ],
+    "videoOptions": {
+        "mediaID": "",
+        "mediaURL": "",
+        "width": "100",
+        "widthUnit": "%",
+        "height": "100",
+        "heightUnit": "%",
+        "fill": "cover",
+        "position": "unset",
+        "autoplay": "no",
+        "loop": "no",
+        "muted": "no",
+        "controls": "no",
+        "preload": "metadata"
+    },
     "colorOptions": {
         "color": "",
         "defultColor": "",
@@ -340,6 +355,21 @@ export const backgroundHover = {
             "attachment": "scroll"
         }
     ],
+    "videoOptions": {
+        "mediaID": "",
+        "mediaURL": "",
+        "width": "100",
+        "widthUnit": "%",
+        "height": "100",
+        "heightUnit": "%",
+        "fill": "cover",
+        "position": "unset",
+        "autoplay": "no",
+        "loop": "no",
+        "muted": "no",
+        "controls": "no",
+        "preload": "metadata"
+    },
     "colorOptions": {
         "color": "",
         "defultColor": "",

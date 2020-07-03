@@ -19,12 +19,6 @@ const VideoPlayer = props => {
         value.mediaURL &&
             <div class="maxi-video-player">
                 <video
-                    style={{
-                        //'object-fit': value.fill,
-                        'object-position': value.position,
-                        width: `${value.width}${value.widthUnit}`,
-                        height: `${value.height}${value.heightUnit}`,
-                    }}
                     controls={!!parseInt(value.controls)}
                     autoplay={!!parseInt(value.autoplay)}
                     loop={!!parseInt(value.loop)}

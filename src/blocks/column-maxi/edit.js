@@ -29,7 +29,8 @@ import {
 import Inspector from './inspector';
 import {
     getBackgroundObject,
-    getBoxShadowObject
+    getBoxShadowObject,
+    getVideoBackgroundObject
 } from '../../extensions/styles/utils';
 
 /**
@@ -75,7 +76,7 @@ class edit extends GXBlock {
         let response = {
             [this.props.attributes.uniqueID]: this.getNormalObject,
             [`${this.props.attributes.uniqueID}:hover`]: this.getHoverObject,
-            // [`${this.props.attributes.uniqueID}>.maxi-column-block__content`]: this.getContentObject,
+            [`${this.props.attributes.uniqueID} .maxi-video-player video`]: { videoBackground: { ...getVideoBackgroundObject(JSON.parse(this.props.attributes.background).videoOptions) } },
         }
 
         return response;

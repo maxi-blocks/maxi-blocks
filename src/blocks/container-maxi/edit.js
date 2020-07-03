@@ -32,7 +32,6 @@ import classnames from 'classnames';
 import {
     isEmpty,
     isNumber,
-    isNil,
 } from 'lodash';
 
 /**
@@ -46,8 +45,6 @@ class edit extends GXBlock {
             [`${this.props.attributes.uniqueID}>.maxi-container-block__container`]: this.getContainerObject,
             [`${this.props.attributes.uniqueID} .maxi-video-player video`]: { videoBackground: { ...getVideoBackgroundObject(JSON.parse(this.props.attributes.background).videoOptions) } },
         }
-
-        console.log(response)
 
         return response;
     }

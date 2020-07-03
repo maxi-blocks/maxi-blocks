@@ -8,7 +8,7 @@ div.maxi-column-block {
     &__resizer {
         line-height: 0;
         outline: 1px solid #7fbddc;
-        &.active-column ~ * {
+        &.active-column {
             opacity: 0.5;
         }
     }

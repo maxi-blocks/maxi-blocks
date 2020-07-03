@@ -26,6 +26,14 @@ const attributes = {
         type: 'number',
         default: 768,
     },
+    horizontalAlign: {
+        type: 'string',
+        default: 'flex-start'
+    },
+    verticalAlign: {
+        type: 'string',
+        default: 'stretch'
+    },
     opacity: {
         type: 'number',
         default: 1,

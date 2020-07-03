@@ -8,23 +8,9 @@ import { margin } from './data';
  * Attributes
  */
 const attributes = {
-    blockStyle: {
+    alignment: {
         type: 'string',
-        default: 'maxi-custom'
-    },
-    defaultBlockStyle: {
-        type: 'string',
-        default: 'maxi-def-light'
-    },
-    alignmentDesktop: {
-        type: 'string',
-        default: 'left'
-    },
-    alignmentTablet: {
-        type: 'string',
-    },
-    alignmentMobile: {
-        type: 'string',
+        default: JSON.stringify(attributesData.alignment)
     },
     textLevel: {
         type: 'string',
@@ -34,21 +20,41 @@ const attributes = {
         type: 'string',
         default: JSON.stringify(attributesData.typography)
     },
+    typographyHover: {
+        type: 'string',
+        default: JSON.stringify(attributesData.typographyHover)
+    },
     opacity: {
         type: 'number',
-        default: 100
+        default: JSON.stringify(attributesData.opacity)
+    },
+    opacityHover: {
+        type: 'number',
+        default: JSON.stringify(attributesData.opacityHover)
     },
     background: {
         type: 'string',
         default: JSON.stringify(attributesData.background)
     },
+    backgroundHover: {
+        type: 'string',
+        default: JSON.stringify(attributesData.backgroundHover)
+    },
     boxShadow: {
         type: 'string',
         default: JSON.stringify(attributesData.boxShadow)
     },
+    boxShadowHover: {
+        type: 'string',
+        default: JSON.stringify(attributesData.boxShadowHover)
+    },
     border: {
         type: 'string',
         default: JSON.stringify(attributesData.border)
+    },
+    borderHover: {
+        type: 'string',
+        default: JSON.stringify(attributesData.borderHover)
     },
     fullWidth: {
         type: 'string',
@@ -66,29 +72,6 @@ const attributes = {
         type: 'string',
         default: JSON.stringify(attributesData.padding)
     },
-    typographyHover: {
-        type: 'string',
-        default: JSON.stringify(attributesData.typographyHover)
-    },
-    backgroundHover: {
-        type: 'string',
-        default: JSON.stringify(attributesData.backgroundHover)
-    },
-    boxShadowHover: {
-        type: 'string',
-        default: JSON.stringify(attributesData.boxShadowHover)
-    },
-    opacityHover: {
-        type: 'number',
-    },
-    boxShadowHover: {
-        type: 'string',
-        default: JSON.stringify(attributesData.boxShadowHover)
-    },
-    borderHover: {
-        type: 'string',
-        default: JSON.stringify(attributesData.borderHover)
-    },
     hoverAnimation: {
         type: 'string',
         default: 'none',
@@ -97,21 +80,10 @@ const attributes = {
         type: 'string',
         default: 'normal',
     },
-    extraClassName: {
-        type: 'string',
-        default: ''
-    },
-    extraStyles: {
-        type: 'string',
-        default: ''
-    },
     content: {
         type: 'string',
         default: ''
     },
-    zIndex: {
-        type: 'number'
-    }
 }
 
 export default attributes;

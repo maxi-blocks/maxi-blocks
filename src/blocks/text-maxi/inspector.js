@@ -3,7 +3,10 @@
  */
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
-const { Fragment } = wp.element;
+const {
+    Fragment,
+    useState
+} = wp.element;
 const {
     RangeControl,
     SelectControl
@@ -26,7 +29,12 @@ import {
     HoverAnimationControl,
     SettingTabsControl,
     TypographyControl,
-    __experimentalZIndexControl
+    __experimentalZIndexControl,
+    __experimentalResponsiveSelector,
+    __experimentalResponsiveControl,
+    __experimentalNumberControl,
+    __experimentalOpacityControl,
+    __experimentalMarginPaddingControl
 } from '../../components';
 
 /**
@@ -39,9 +47,7 @@ const Inspector = props => {
             blockStyle,
             defaultBlockStyle,
             textLevel,
-            alignmentDesktop,
-            alignmentTablet,
-            alignmentMobile,
+            alignment,
             typography,
             background,
             opacity,
@@ -58,15 +64,20 @@ const Inspector = props => {
             borderHover,
             hoverAnimation,
             hoverAnimationDuration,
-            extraClassName,
-            extraStyles,
-            zIndex
+            zIndex,
+            breakpoints
         },
         setAttributes,
     } = props;
 
+    const [breakpoint, setBreakpoint] = useState('general')
+
     return (
         <InspectorControls>
+            <__experimentalResponsiveSelector
+                selected={breakpoint}
+                onChange={breakpoint => setBreakpoint(breakpoint)}
+            />
             <SettingTabsControl
                 disablePadding
                 items={[
@@ -88,60 +99,39 @@ const Inspector = props => {
                                     items={[
                                         {
                                             label: __('Alignment', 'maxi-blocks'),
-                                            disablePadding: true,
                                             content: (
-                                                <SettingTabsControl
-                                                    items={[
-                                                        {
-                                                            label: __('Desktop', 'maxi-blocks'),
-                                                            content: (
-                                                                <AlignmentControl
-                                                                    value={alignmentDesktop}
-                                                                    onChange={alignmentDesktop => setAttributes({ alignmentDesktop })}
-                                                                />
-                                                            )
-                                                        },
-                                                        {
-                                                            label: __('Tablet', 'maxi-blocks'),
-                                                            content: (
-                                                                <AlignmentControl
-                                                                    value={alignmentTablet}
-                                                                    onChange={alignmentTablet => setAttributes({ alignmentTablet })}
-                                                                />
-                                                            )
-                                                        },
-                                                        {
-                                                            label: __('Mobile', 'maxi-blocks'),
-                                                            content: (
-                                                                <AlignmentControl
-                                                                    value={alignmentMobile}
-                                                                    onChange={alignmentMobile => setAttributes({ alignmentMobile })}
-                                                                />
-                                                            )
-                                                        },
-                                                    ]}
+                                                <AlignmentControl
+                                                    alignment={alignment}
+                                                    onChange={alignment => setAttributes({ alignment })}
+                                                    breakpoint={breakpoint}
                                                 />
                                             )
                                         },
-                                        {
-                                            label: __('Level', 'maxi-blocks'),
-                                            content: (
-                                                <FontLevelControl
-                                                    value={textLevel}
-                                                    onChange={(textLevel, typography, typographyHover, margin) =>
-                                                        setAttributes({
-                                                            textLevel,
-                                                            typography,
-                                                            typographyHover,
-                                                            margin
-                                                        })
-                                                    }
-                                                    fontOptions={typography}
-                                                    fontOptionsHover={typographyHover}
-                                                    sizeOptions={size}
-                                                />
-                                            )
-                                        },
+                                        function () {
+                                            if (breakpoint === 'general') {
+                                                return {
+                                                    label: __('Level', 'maxi-blocks'),
+                                                    content: (
+                                                        <FontLevelControl
+                                                            value={textLevel}
+                                                            onChange={(textLevel, typography, typographyHover, margin) =>
+                                                                setAttributes({
+                                                                    textLevel,
+                                                                    typography,
+                                                                    typographyHover,
+                                                                    margin
+                                                                })
+                                                            }
+                                                            fontOptions={typography}
+                                                            fontOptionsHover={typographyHover}
+                                                            sizeOptions={size}
+                                                        />
+                                                    )
+                                                }
+                                            }
+
+                                            return null;
+                                        }(),
                                         {
                                             label: __('Typography', 'maxi-blocks'),
                                             disablePadding: true,
@@ -153,8 +143,12 @@ const Inspector = props => {
                                                             content: (
                                                                 <TypographyControl
                                                                     fontOptions={typography}
-                                                                    onChange={typography => setAttributes({ typography })}
+                                                                    onChange={typography => {
+                                                                        console.log(JSON.parse(typography))
+                                                                        setAttributes({ typography })
+                                                                    }}
                                                                     hideAlignment
+                                                                    breakpoint={breakpoint}
                                                                 />
                                                             )
                                                         },
@@ -166,6 +160,7 @@ const Inspector = props => {
                                                                     onChange={typographyHover => setAttributes({ typographyHover })}
                                                                     target=':hover'
                                                                     hideAlignment
+                                                                    breakpoint={breakpoint}
                                                                 />
                                                             )
                                                         },
@@ -183,15 +178,10 @@ const Inspector = props => {
                                                             label: __('Normal', 'gutenberg-extra'),
                                                             content: (
                                                                 <Fragment>
-                                                                    <RangeControl
-                                                                        label={__('Opacity', 'maxi-blocks')}
-                                                                        className='maxi-opacity-control'
-                                                                        value={opacity * 100}
-                                                                        onChange={value => setAttributes({ opacity: value / 100 })}
-                                                                        min={0}
-                                                                        max={100}
-                                                                        allowReset={true}
-                                                                        initialPosition={0}
+                                                                    <__experimentalOpacityControl
+                                                                        opacity={opacity}
+                                                                        onChange={opacity => setAttributes({ opacity })}
+                                                                        breakpoint={breakpoint}
                                                                     />
                                                                     <BackgroundControl
                                                                         backgroundOptions={background}
@@ -205,15 +195,10 @@ const Inspector = props => {
                                                             label: __('Hover', 'gutenberg-extra'),
                                                             content: (
                                                                 <Fragment>
-                                                                    <RangeControl
-                                                                        label={__('Opacity', 'maxi-blocks')}
-                                                                        className='maxi-opacity-control'
-                                                                        value={opacityHover * 100}
-                                                                        onChange={value => setAttributes({ opacityHover: value / 100 })}
-                                                                        min={0}
-                                                                        max={100}
-                                                                        allowReset={true}
-                                                                        initialPosition={0}
+                                                                    <__experimentalOpacityControl
+                                                                        opacity={opacityHover}
+                                                                        onChange={opacityHover => setAttributes({ opacityHover })}
+                                                                        breakpoint={breakpoint}
                                                                     />
                                                                     <BackgroundControl
                                                                         backgroundOptions={backgroundHover}
@@ -237,8 +222,9 @@ const Inspector = props => {
                                                             label: __('Normal', 'gutenberg-extra'),
                                                             content: (
                                                                 <BorderControl
-                                                                    borderOptions={border}
+                                                                    border={border}
                                                                     onChange={border => setAttributes({ border })}
+                                                                    breakpoint={breakpoint}
                                                                 />
                                                             )
                                                         },
@@ -246,8 +232,9 @@ const Inspector = props => {
                                                             label: __('Hover', 'gutenberg-extra'),
                                                             content: (
                                                                 <BorderControl
-                                                                    borderOptions={borderHover}
+                                                                    border={borderHover}
                                                                     onChange={borderHover => setAttributes({ borderHover })}
+                                                                    breakpoint={breakpoint}
                                                                 />
                                                             )
                                                         },
@@ -272,8 +259,9 @@ const Inspector = props => {
                                                         />
                                                     }
                                                     <FullSizeControl
-                                                        sizeSettings={size}
+                                                        size={size}
                                                         onChange={size => setAttributes({ size })}
+                                                        breakpoint={breakpoint}
                                                     />
                                                 </Fragment>
                                             )
@@ -288,8 +276,9 @@ const Inspector = props => {
                                                             label: __('Normal', 'gutenberg-extra'),
                                                             content: (
                                                                 <BoxShadowControl
-                                                                    boxShadowOptions={boxShadow}
+                                                                    boxShadow={boxShadow}
                                                                     onChange={boxShadow => setAttributes({ boxShadow })}
+                                                                    breakpoint={breakpoint}
                                                                 />
                                                             )
                                                         },
@@ -297,9 +286,9 @@ const Inspector = props => {
                                                             label: __('Hover', 'gutenberg-extra'),
                                                             content: (
                                                                 <BoxShadowControl
-                                                                    boxShadowOptions={boxShadowHover}
+                                                                    boxShadow={boxShadowHover}
                                                                     onChange={boxShadowHover => setAttributes({ boxShadowHover })}
-                                                                    target=':hover'
+                                                                    breakpoint={breakpoint}
                                                                 />
                                                             )
                                                         },
@@ -311,13 +300,15 @@ const Inspector = props => {
                                             label: __('Padding / Margin', 'maxi-blocks'),
                                             content: (
                                                 <Fragment>
-                                                    <DimensionsControl
+                                                    <__experimentalMarginPaddingControl
                                                         value={padding}
                                                         onChange={padding => setAttributes({ padding })}
+                                                        breakpoint={breakpoint}
                                                     />
-                                                    <DimensionsControl
+                                                    <__experimentalMarginPaddingControl
                                                         value={margin}
                                                         onChange={margin => setAttributes({ margin })}
+                                                        breakpoint={breakpoint}
                                                     />
                                                 </Fragment>
                                             )
@@ -337,16 +328,22 @@ const Inspector = props => {
                                     hoverAnimationDuration={hoverAnimationDuration}
                                     onChangeHoverAnimationDuration={hoverAnimationDuration => setAttributes({ hoverAnimationDuration })}
                                 />
-                                <CustomCSSControl
-                                    extraClassName={extraClassName}
-                                    onChangeExtraClassName={extraClassName => setAttributes({ extraClassName })}
-                                    extraStyles={extraStyles}
-                                    onChangeExtraStyles={extraStyles => setAttributes({ extraStyles })}
-                                />
                                 <__experimentalZIndexControl
-                                    value={zIndex}
+                                    zindex={zIndex}
                                     onChange={zIndex => setAttributes({ zIndex })}
+                                    breakpoint={breakpoint}
                                 />
+                                {
+                                    breakpoint != 'general' &&
+                                    <__experimentalResponsiveControl
+                                        breakpoints={breakpoints}
+                                        onChange={breakpoints => {
+                                            console.log(breakpoints)
+                                            setAttributes({ breakpoints })
+                                        }}
+                                        breakpoint={breakpoint}
+                                    />
+                                }
                             </div>
                         )
                     }

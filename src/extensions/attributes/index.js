@@ -12,6 +12,7 @@ import {
 	uniqueId,
 	isEmpty,
 	isNil,
+	isNumber
 } from 'lodash';
 
 /**
@@ -41,6 +42,14 @@ function addAttributes(settings) {
 	// Add custom selector/id
 	if (allowedBlocks.includes(settings.name) && !isNil(settings.attributes)) {
 		settings.attributes = Object.assign(settings.attributes, {
+			blockStyle: {
+				type: 'string',
+				default: 'maxi-custom'
+			},
+			defaultBlockStyle: {
+				type: 'string',
+				default: 'maxi-def-light'
+			},
 			uniqueID: {
 				type: 'string',
 			},
@@ -50,7 +59,15 @@ function addAttributes(settings) {
 			linkSettings: {
 				type: 'string',
 				default: '{}'
-			}
+			},
+			breakpoints: {
+				type: 'string',
+				default: '{"label":"Breakpoints","general":"","xl":"","l":"","m":"","s":"","xs":""}'
+			},
+			zIndex: {
+				type: 'string',
+				default: '{"label":"Z-Index","general":{"z-index":""},"xl":{"z-index":""},"l":{"z-index":""},"m":{"z-index":""},"s":{"z-index":""},"xs":{"z-index":""}}'
+			},
 		});
 	}
 
@@ -74,6 +91,7 @@ const withAttributes = createHigherOrderComponent(
 		const {
 			attributes: {
 				uniqueID,
+				breakpoints,
 			},
 			name,
 			clientId
@@ -92,6 +110,25 @@ const withAttributes = createHigherOrderComponent(
 				parentBlocks.pop()
 
 			props.attributes.isFirstOnHierarchy = isEmpty(parentBlocks);
+
+			// Breakpoints
+			const defaultBreakpoints = select('maxiBlocks').receiveMaxiBreakpoints();
+			const value = JSON.parse(breakpoints);
+
+			console.log(isNumber(value.xl), value.xl)
+
+			if(!isNumber(value.xl) && !isEmpty(defaultBreakpoints)) {
+				console.log('hey')
+				const response = {
+					xl: defaultBreakpoints['xl'],
+					l: defaultBreakpoints['l'],
+					m: defaultBreakpoints['m'],
+					s: defaultBreakpoints['s'],
+					xs: defaultBreakpoints['xs'],
+				}
+
+				props.attributes.breakpoints = JSON.stringify(response);
+			}
 		}
 
 		return <BlockEdit {...props} />;

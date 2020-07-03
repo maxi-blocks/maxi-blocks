@@ -14,6 +14,7 @@ import SettingTabsControl from '../setting-tabs-control';
  * External dependencies
  */
 import classnames from 'classnames';
+import { isObject } from 'lodash';
 
 /**
  * Styles
@@ -86,14 +87,15 @@ const FullSizeControlSing = props => {
 
 const FullSizeControl = props => {
     const {
-        sizeSettings,
+        size,
         onChange,
-        className
+        className,
+        breakpoint
     } = props;
 
-    let value = typeof sizeSettings === 'object' ?
-        sizeSettings :
-        JSON.parse(sizeSettings);
+    let value = isObject(size) ?
+        size :
+        JSON.parse(size);
 
     const classes = classnames(
         'maxi-fullsize-control',
@@ -102,46 +104,12 @@ const FullSizeControl = props => {
 
     return (
         <div className={classes}>
-            <SettingTabsControl
-                disablePadding={true}
-                items={[
-                    {
-                        label: __('Desktop', 'maxi-blocks'),
-                        content: (
-                            <FullSizeControlSing
-                                size={value.desktop}
-                                onChange={val => {
-                                    value.desktop = val;
-                                    onChange(JSON.stringify(value))
-                                }}
-                            />
-                        )
-                    },
-                    {
-                        label: __('Tablet', 'maxi-blocks'),
-                        content: (
-                            <FullSizeControlSing
-                                size={value.tablet}
-                                onChange={val => {
-                                    value.tablet = val;
-                                    onChange(JSON.stringify(value))
-                                }}
-                            />
-                        )
-                    },
-                    {
-                        label: __('Mobile', 'maxi-blocks'),
-                        content: (
-                            <FullSizeControlSing
-                                size={value.mobile}
-                                onChange={val => {
-                                    value.mobile = val;
-                                    onChange(JSON.stringify(value))
-                                }}
-                            />
-                        )
-                    }
-                ]}
+            <FullSizeControlSing
+                size={value[breakpoint]}
+                onChange={val => {
+                    value[breakpoint] = val;
+                    onChange(JSON.stringify(value))
+                }}
             />
         </div>
     )

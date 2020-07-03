@@ -7,6 +7,7 @@ const { RadioControl } = wp.components;
  * External dependencies
  */
 import classnames from 'classnames';
+import { isObject } from 'lodash';
 
 /**
  * Styles and Icons
@@ -26,24 +27,25 @@ import { Icon } from '@wordpress/icons';
 const AlignmentControl = props => {
 
     const {
-        value,
+        alignment,
         onChange,
         label = '',
         disableLeft = false,
         disableCenter = false,
         disableRight = false,
         disableJustify = false,
+        breakpoint
     } = props;
 
     const getOptions = () => {
         let options = [];
-        if(!disableLeft)
+        if (!disableLeft)
             options.push({ label: <Icon icon={alignLeft} />, value: 'left' });
-        if(!disableCenter)
+        if (!disableCenter)
             options.push({ label: <Icon icon={alignCenter} />, value: 'center' });
-        if(!disableRight)
+        if (!disableRight)
             options.push({ label: <Icon icon={alignRight} />, value: 'right' });
-        if(!disableJustify)
+        if (!disableJustify)
             options.push({ label: <Icon icon={alignJustify} />, value: 'justify' })
 
         return options;
@@ -51,16 +53,23 @@ const AlignmentControl = props => {
 
     const classes = classnames(
         'maxi-alignment-control',
-        ( label === '' ) ? 'maxi-alignment-control__no-label' : ''
+        (label === '') ? 'maxi-alignment-control__no-label' : ''
     );
+
+    const value = !isObject(alignment) ?
+        JSON.parse(alignment) :
+        alignment;
 
     return (
         <RadioControl
-            label={ label }
+            label={label}
             className={classes}
-            selected={value}
+            selected={value[breakpoint].alignment}
             options={getOptions()}
-            onChange={value => onChange(value)}
+            onChange={val => {
+                value[breakpoint].alignment = val;
+                onChange(JSON.stringify(value));
+            }}
         />
     )
 }

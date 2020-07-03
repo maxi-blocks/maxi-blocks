@@ -43,6 +43,8 @@ const Inspector = props => {
             defaultBlockStyle,
             columnGap,
             wrap,
+            horizontalAlign,
+            verticalAlign,
             opacity,
             opacityHover,
             background,
@@ -119,6 +121,35 @@ const Inspector = props => {
                                                             }}
                                                         />
                                                     </BaseControl>
+                                                    <SelectControl
+                                                        label={__('Horizontal align', 'maxi-blocks')}
+                                                        value={horizontalAlign}
+                                                        options={
+                                                            [
+                                                                { label: __('Flex-start', 'maxi-blocks'), value: 'flex-start' },
+                                                                { label: __('Flex-end', 'maxi-blocks'), value: 'flex-end' },
+                                                                { label: __('Center', 'maxi-blocks'), value: 'center' },
+                                                                { label: __('Space between', 'maxi-blocks'), value: 'space-between' },
+                                                                { label: __('Space around', 'maxi-blocks'), value: 'space-around' },
+                                                            ]
+                                                        }
+                                                        onChange={horizontalAlign => setAttributes({ horizontalAlign })}
+                                                    />
+                                                    <SelectControl
+                                                        label={__('Vertical align', 'maxi-blocks')}
+                                                        value={verticalAlign}
+                                                        options={
+                                                            [
+                                                                { label: __('Stretch', 'maxi-blocks'), value: 'stretch' },
+                                                                { label: __('Flex-start', 'maxi-blocks'), value: 'flex-start' },
+                                                                { label: __('Flex-end', 'maxi-blocks'), value: 'flex-end' },
+                                                                { label: __('Center', 'maxi-blocks'), value: 'center' },
+                                                                { label: __('Space between', 'maxi-blocks'), value: 'space-between' },
+                                                                { label: __('Space around', 'maxi-blocks'), value: 'space-around' },
+                                                            ]
+                                                        }
+                                                        onChange={verticalAlign => setAttributes({ verticalAlign })}
+                                                    />
                                                 </Fragment>
                                             )
                                         },

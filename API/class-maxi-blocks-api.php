@@ -48,7 +48,7 @@ if (!class_exists('MaxiBlocksAPI')) :
         {
             register_rest_route(
                 $this->namespace,
-                '/maxi-blocks-styles/(?P<id>\d+)',
+                '/styles/(?P<id>\d+)',
                 array(
                     'methods'             => 'GET',
                     'callback'            => array($this, 'get_maxi_blocks_styles'),
@@ -62,12 +62,11 @@ if (!class_exists('MaxiBlocksAPI')) :
                     'permission_callback' => function () {
                         return current_user_can('edit_posts');
                     },
-                    'schema' => array($this, 'schema_maxi_blocks_styles'),
                 )
             );
             register_rest_route(
                 $this->namespace,
-                '/maxi-blocks-styles',
+                '/styles',
                 array(
                     'methods'             => 'POST',
                     'callback'            => array($this, 'post_maxi_blocks_styles'),
@@ -91,7 +90,17 @@ if (!class_exists('MaxiBlocksAPI')) :
                     'permission_callback' => function () {
                         return current_user_can('edit_posts');
                     },
-                    'schema' => array($this, 'schema_maxi_blocks_styles'),
+                )
+            );
+            register_rest_route(
+                $this->namespace,
+                '/breakpoints',
+                array(
+                    'methods'             => 'GET',
+                    'callback'            => array($this, 'get_maxi_blocks_breakpoints'),
+                    'permission_callback' => function () {
+                        return current_user_can('edit_posts');
+                    },
                 )
             );
         }
@@ -125,7 +134,18 @@ if (!class_exists('MaxiBlocksAPI')) :
 
             update_option('mb_styles_api', $styles);
 
-            return true;
+            return $styles;
+        }
+
+        public function get_maxi_blocks_breakpoints()
+        {
+            return [
+                'xs'    => 568,
+                's'     => 768,
+                'm'     => 1024,
+                'l'     => 1366,
+                'xl'    => 1680
+            ];
         }
 
         public function mb_delete_register($postId)

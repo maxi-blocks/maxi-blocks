@@ -40,13 +40,16 @@ import {
 class MaxiBlock extends MaxiComponent {
     state = {
         styles: {},
-        updating: false
+        updating: false,
+        breakpoints: this.getBreakpoints
     }
 
     constructor() {
         super(...arguments);
         this.uniqueIDChecker(this.props.attributes.uniqueID);
         this.fixProps();
+
+        this.breakpoints = select('maxiBlocks').receiveMaxiBreakpoints()
     }
 
     componentDidMount() {
@@ -128,12 +131,12 @@ class MaxiBlock extends MaxiComponent {
                 })
                 unsubscribe();
 
-                dispatch('maxiBlocks').saveMaxiStyles(this.getMeta(), true)
+                dispatch('maxiBlocks').saveMaxiStyles(this.getMeta, true)
             }
         })
     }
 
-    getMeta() {
+    get getMeta() {
         let meta = select('maxiBlocks').receiveMaxiStyles();
 
         switch (typeof meta) {
@@ -146,23 +149,31 @@ class MaxiBlock extends MaxiComponent {
         }
     }
 
+    get getBreakpoints() {
+        const { breakpoints } = this.props.attributes;
+
+        return JSON.parse(breakpoints);
+    }
+
     get getObject() {
         return null;
     }
 
     metaValue() {
         const obj = this.getObject;
+        const breakpoints = this.getBreakpoints;
 
-        if (isEqual(obj, this.state.styles))
+        if (isEqual(obj, this.state.styles) && isEqual(breakpoints, this.state.breakpoints))
             return null;
 
-        const meta = this.getMeta();
+        const meta = this.getMeta;
 
         this.setState({
-            styles: obj
+            styles: obj,
+            breakpoints
         })
 
-        return new ResponsiveStylesResolver(obj, meta);
+        return new ResponsiveStylesResolver(obj, meta, breakpoints);
     }
 
     /** 
@@ -177,8 +188,8 @@ class MaxiBlock extends MaxiComponent {
     }
 
     removeStyle(target = this.props.attributes.uniqueID) {
-        let cleanMeta = { ...this.getMeta() };
-        Object.keys(this.getMeta()).map(key => {
+        let cleanMeta = { ...this.getMeta };
+        Object.keys(this.getMeta).map(key => {
             if (key.indexOf(target) >= 0)
                 delete cleanMeta[key]
         })

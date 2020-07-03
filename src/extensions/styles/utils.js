@@ -152,3 +152,56 @@ export const getBoxShadowObject = boxShadowObject => {
 
     return response;
 }
+
+export const getAlignmentTextObject = alignment => {
+    const response = {
+        label: alignment.label,
+        general: {},
+        xl: {},
+        l: {},
+        m: {},
+        s: {},
+        xs: {}
+    }
+
+    for (let [key, value] of Object.entries(alignment)) {
+        if (!isNil(value.alignment)) {
+            switch (value.alignment) {
+                case 'left':
+                    response[key]['text-align'] = 'left';
+                    break;
+                case 'center':
+                    response[key]['text-align'] = 'center';
+                    break;
+                case 'right':
+                    response[key]['text-align'] = 'right';
+                    break;
+                case 'justify':
+                    response[key]['text-align'] = 'justify';
+                    break;
+            }
+        }
+    }
+
+    return response;
+}
+
+export const getOpacityObject = opacity => {
+    const response = {
+        label: opacity.label,
+        general: {},
+        xl: {},
+        l: {},
+        m: {},
+        s: {},
+        xs: {}
+    }
+
+    for (let [key, value] of Object.entries(opacity)) {
+        if (isNumber(value.opacity)) {
+            response[key]['opacity'] = value.opacity;
+        }
+    }
+
+    return response;
+}

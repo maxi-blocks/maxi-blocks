@@ -2,29 +2,27 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const {
-    BaseControl,
-    Button
-} = wp.components;
 
 /**
  * Internal dependencies
  */
-import { reset } from '../../icons';
+import __experimentalNumberControl from '../number-control';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
+import { isObject } from 'lodash';
 
 /**
  * Component
  */
 const ZIndexControl = props => {
     const {
-        value,
+        zindex,
         onChange,
-        className
+        className,
+        breakpoint
     } = props;
 
     const classes = classnames(
@@ -32,28 +30,20 @@ const ZIndexControl = props => {
         className
     )
 
+    const value = !isObject(zindex) ?
+        JSON.parse(zindex) :
+        zindex;
+
     return (
-        <BaseControl
+        <__experimentalNumberControl 
             label={__('Z-index', 'maxi-blocks')}
             className={classes}
-        >
-            <input
-                type='number'
-                value={!!value ? value : ''}
-                onChange={e => onChange(Number(e.target.value))}
-                min='-999'
-                max='999'
-            />
-            <Button
-                className="components-maxi-control__reset-button"
-                onClick={() => onChange(null)}
-                aria-label={__('Reset z-index settings', 'maxi-blocks')}
-                action="reset"
-                type="reset"
-            >
-                {reset}
-            </Button>
-        </BaseControl>
+            value={value[breakpoint]}
+            onChange={val => {
+                value[breakpoint] = val;
+                onChange(JSON.stringify(value))
+            }}
+        />
     )
 }
 

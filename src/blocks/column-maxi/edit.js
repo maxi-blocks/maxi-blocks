@@ -124,11 +124,11 @@ class edit extends MaxiBlock {
         if (!isNil(columnSize) && isNumber(columnSize))
             if (columnSize != 0) {
                 response.column.general['flex'] = `0 0 ${columnSize}%`;
-                response.column.general['max-width'] = `${columnSize}%`;
+                response.column.general['width'] = `${columnSize}%`;
             }
             else {
                 response.column.general['flex'] = '0 0 auto';
-                response.column.general['max-width'] = '';
+                response.column.general['width'] = '';
             }
         if (isNumber(zIndex))
             response.column.general['z-index'] = zIndex;

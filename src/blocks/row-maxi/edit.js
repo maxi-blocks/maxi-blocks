@@ -68,6 +68,8 @@ class edit extends MaxiBlock {
     get getNormalObject() {
         const {
             wrap,
+            horizontalAlign,
+            verticalAlign,
             opacity,
             background,
             border,
@@ -104,6 +106,10 @@ class edit extends MaxiBlock {
             response.row.general['z-index'] = zIndex;
         if (isNumber(wrap))
             response.row.breakpoints.wrap.rule = `max-width:${wrap}px`;
+        if (!isNil(horizontalAlign))
+            response.row.general['justify-content'] = horizontalAlign;
+        if (!isNil(verticalAlign))
+            response.row.general['align-items'] = verticalAlign;
 
         return response;
     }

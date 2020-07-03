@@ -1,12 +1,12 @@
-export const margin = {
+{
     "label": "Margin",
-    "unit": "em",
+    "unit": "px",
     "general": {
-        "margin-top": 1,
+        "margin-top": "",
         "margin-right": "",
-        "margin-bottom": 1,
+        "margin-bottom": "",
         "margin-left": "",
-        "sync": false
+        "sync": true
     },
     "xl": {
         "margin-top": "",

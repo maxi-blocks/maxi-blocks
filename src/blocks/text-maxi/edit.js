@@ -14,7 +14,9 @@ const {
 import Inspector from './inspector';
 import {
     getBackgroundObject,
-    getBoxShadowObject
+    getBoxShadowObject,
+    getAlignmentTextObject,
+    getOpacityObject
 } from '../../extensions/styles/utils';
 import {
     MaxiBlock,
@@ -25,10 +27,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import {
-    isNil,
-    isNumber
-} from 'lodash';
+import { isNil } from 'lodash';
 import transform from "css-to-react-native-transform";
 
 /**
@@ -48,7 +47,7 @@ class edit extends MaxiBlock {
     }
 
     fullWidthSetter() {
-        if(!!document.getElementById(`block-${this.props.clientId}`))
+        if (!!document.getElementById(`block-${this.props.clientId}`))
             document.getElementById(`block-${this.props.clientId}`).setAttribute('data-align', this.props.attributes.fullWidth);
     }
 
@@ -63,9 +62,7 @@ class edit extends MaxiBlock {
 
     get getNormalObject() {
         const {
-            alignmentDesktop,
-            alignmentTablet,
-            alignmentMobile,
+            alignment,
             typography,
             background,
             opacity,
@@ -74,81 +71,23 @@ class edit extends MaxiBlock {
             size,
             margin,
             padding,
-            zIndex
+            zIndex,
         } = this.props.attributes;
 
         const response = {
             typography: { ...JSON.parse(typography) },
+            alignment: { ...getAlignmentTextObject(JSON.parse(alignment)) },
             background: { ...getBackgroundObject(JSON.parse(background)) },
             boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
             border: { ...JSON.parse(border) },
             borderWidth: { ...JSON.parse(border).borderWidth },
             borderRadius: { ...JSON.parse(border).borderRadius },
-            borderWidth: { ...JSON.parse(border).borderWidth },
             size: { ...JSON.parse(size) },
             margin: { ...JSON.parse(margin) },
             padding: { ...JSON.parse(padding) },
-            text: {
-                label: 'Text',
-                general: {},
-                desktop: {},
-                tablet: {},
-                mobile: {}
-            }
+            opacity: { ...getOpacityObject(JSON.parse(opacity)) },
+            zindex: { ...JSON.parse(zIndex) },
         };
-
-        if (!isNil(alignmentDesktop)) {
-            switch (alignmentDesktop) {
-                case 'left':
-                    response.text.desktop['text-align'] = 'left';
-                    break;
-                case 'center':
-                    response.text.desktop['text-align'] = 'center';
-                    break;
-                case 'right':
-                    response.text.desktop['text-align'] = 'right';
-                    break;
-                case 'justify':
-                    response.text.desktop['text-align'] = 'justify';
-                    break;
-            }
-        }
-        if (!isNil(alignmentTablet)) {
-            switch (alignmentTablet) {
-                case 'left':
-                    response.text.tablet['text-align'] = 'left';
-                    break;
-                case 'center':
-                    response.text.tablet['text-align'] = 'center';
-                    break;
-                case 'right':
-                    response.text.tablet['text-align'] = 'right';
-                    break;
-                case 'justify':
-                    response.text.tablet['text-align'] = 'justify';
-                    break;
-            }
-        }
-        if (!isNil(alignmentMobile)) {
-            switch (alignmentMobile) {
-                case 'left':
-                    response.text.mobile['text-align'] = 'left';
-                    break;
-                case 'center':
-                    response.text.mobile['text-align'] = 'center';
-                    break;
-                case 'right':
-                    response.text.mobile['text-align'] = 'right';
-                    break;
-                case 'justify':
-                    response.text.mobile['text-align'] = 'justify';
-                    break;
-            }
-        }
-        if (isNumber(opacity))
-            response.text.general['opacity'] = opacity;
-        if (isNumber(zIndex))
-            response.text.general['z-index'] = zIndex;
 
         return response;
     }
@@ -169,14 +108,9 @@ class edit extends MaxiBlock {
             borderHover: { ...JSON.parse(borderHover) },
             borderWidth: { ...JSON.parse(borderHover).borderWidth },
             borderRadius: { ...JSON.parse(borderHover).borderRadius },
-            text: {
-                label: 'Text',
-                general: {}
-            }
+            opacity: { ...getOpacityObject(JSON.parse(opacityHover)) },
         };
 
-        if (opacityHover)
-            response.text.general['opacity'] = opacityHover;
         return response;
     }
 
@@ -200,19 +134,19 @@ class edit extends MaxiBlock {
             'maxi-block maxi-text-block',
             blockStyle,
             extraClassName,
-            'hover-animation-type-'+hoverAnimation,
-            'hover-animation-duration-'+hoverAnimationDuration,
+            'hover-animation-type-' + hoverAnimation,
+            'hover-animation-duration-' + hoverAnimationDuration,
             uniqueID,
             className
         );
 
         let extraStylesObj = '';
 
-        if (!isNil(extraStyles))  {let extraStylesObj = transform(extraStyles);}
+        if (!isNil(extraStyles)) { let extraStylesObj = transform(extraStyles); }
 
         return [
             <Inspector {...this.props} />,
-            <__experimentalToolbar {...this.props} />,
+            // <__experimentalToolbar {...this.props} />,
             <RichText
                 value={content}
                 onChange={content => setAttributes({ content })}

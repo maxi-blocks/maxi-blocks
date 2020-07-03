@@ -11,14 +11,21 @@ const {
  * Internal dependencies
  */
 import ColorControl from '../color-control';
-import DimensionsControl from '../dimensions-control/index';
+import DimensionsControl from '../dimensions-control';
 import DefaultStylesControl from '../default-styles-control';
+import __experimentalAxisControl from '../axis-control';
 import { getDefaultProp } from '../../extensions/styles/utils';
 import {
     borderSolid,
     borderDasehd,
     borderDotted
 } from './defaults'
+
+/**
+ * External dependencies
+ */
+import classnames from 'classnames';
+import { isObject } from 'lodash';
 
 /**
  * Icons
@@ -31,24 +38,19 @@ import {
 } from '../../icons';
 
 /**
- * External dependencies
- */
-import classnames from 'classnames';
-
-/**
  * Component
  */
 const BorderControl = props => {
     const {
-        borderOptions,
+        border,
         className,
-        target = '',
-        onChange
+        onChange,
+        breakpoint = 'general'
     } = props;
 
-    let value = typeof borderOptions === 'object' ?
-        borderOptions :
-        JSON.parse(borderOptions);
+    let value = !isObject(border) ?
+        JSON.parse(border) :
+        border;
 
     const classes = classnames(
         'maxi-border-control',
@@ -60,42 +62,42 @@ const BorderControl = props => {
             <DefaultStylesControl
                 items={[
                     {
-                        activeItem: ( value.general['border-style'] === 'none' ),
+                        activeItem: (value.general['border-style'] === 'none'),
                         content: (
                             <Icon
                                 className='maxi-defaultstyles-control__button__icon'
                                 icon={styleNone}
-                             />
+                            />
                         ),
                         onChange: () => onChange(getDefaultProp(null, 'border'))
                     },
                     {
-                        activeItem: ( value.general['border-style'] === 'solid' ),
+                        activeItem: (value.general['border-style'] === 'solid'),
                         content: (
                             <Icon
                                 className='maxi-defaultstyles-control__button__icon'
                                 icon={solid}
-                             />
+                            />
                         ),
                         onChange: () => onChange(JSON.stringify(borderSolid))
                     },
                     {
-                        activeItem: ( value.general['border-style'] === 'dashed' ),
+                        activeItem: (value.general['border-style'] === 'dashed'),
                         content: (
                             <Icon
                                 className='maxi-defaultstyles-control__button__icon'
                                 icon={dashed}
-                             />
+                            />
                         ),
                         onChange: () => onChange(JSON.stringify(borderDasehd))
                     },
                     {
-                        activeItem: ( value.general['border-style'] === 'dotted' ),
+                        activeItem: (value.general['border-style'] === 'dotted'),
                         content: (
                             <Icon
                                 className='maxi-defaultstyles-control__button__icon'
                                 icon={dotted}
-                             />
+                            />
                         ),
                         onChange: () => onChange(JSON.stringify(borderDotted))
                     },
@@ -103,10 +105,10 @@ const BorderControl = props => {
             />
             <ColorControl
                 label={__('Border', 'maxi-blocks')}
-                color={value.general['border-color']}
+                color={value[breakpoint]['border-color']}
                 defaultColor={value['defaultBorderColor']}
                 onColorChange={val => {
-                    value.general['border-color'] = val;
+                    value[breakpoint]['border-color'] = val;
                     onChange(JSON.stringify(value));
                 }}
                 disableImage
@@ -117,7 +119,7 @@ const BorderControl = props => {
             <SelectControl
                 label={__('Border Type', 'maxi-blocks')}
                 className='maxi-border-control__type'
-                value={value.general['border-style']}
+                value={value[breakpoint]['border-style']}
                 options={[
                     { label: 'None', value: 'none' },
                     { label: 'Dotted', value: 'dotted' },
@@ -130,25 +132,27 @@ const BorderControl = props => {
                     { label: 'Outset', value: 'outset' },
                 ]}
                 onChange={val => {
-                    value.general['border-style'] = val;
+                    value[breakpoint]['border-style'] = val;
                     onChange(JSON.stringify(value));
                 }}
             />
-            <DimensionsControl
-                value={value.borderWidth}
+            <__experimentalAxisControl
+                values={value.borderWidth}
                 onChange={val => {
+                    console.log('axiscontrol', val)
                     value.borderWidth = JSON.parse(val);
                     onChange(JSON.stringify(value));
                 }}
-                target={target}
+                breakpoint={breakpoint}
             />
-            <DimensionsControl
-                value={value.borderRadius}
+            <__experimentalAxisControl
+                values={value.borderRadius}
                 onChange={val => {
+                    console.log('axiscontrol', val)
                     value.borderRadius = JSON.parse(val);
                     onChange(JSON.stringify(value));
                 }}
-                target={target}
+                breakpoint={breakpoint}
             />
         </div>
     )

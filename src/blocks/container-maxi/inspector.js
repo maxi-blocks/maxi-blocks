@@ -109,7 +109,7 @@ const Inspector = props => {
                                                                         {
                                                                             containerXl: isNumber(e.target.value) ?
                                                                                 Number(e.target.value) :
-                                                                                null
+                                                                                undefined
                                                                         }
                                                                     )}
                                                                 />
@@ -125,7 +125,7 @@ const Inspector = props => {
                                                                         {
                                                                             maxWidthXl: isNumber(e.target.value) ?
                                                                                 Number(e.target.value) :
-                                                                                null
+                                                                                undefined
                                                                         }
                                                                     )}
                                                                 />
@@ -141,7 +141,7 @@ const Inspector = props => {
                                                                         {
                                                                             containerLg: isNumber(e.target.value) ?
                                                                                 Number(e.target.value) :
-                                                                                null
+                                                                                undefined
                                                                         }
                                                                     )}
                                                                 />
@@ -157,7 +157,7 @@ const Inspector = props => {
                                                                         {
                                                                             maxWidthLg: isNumber(e.target.value) ?
                                                                                 Number(e.target.value) :
-                                                                                null
+                                                                                undefined
                                                                         }
                                                                     )}
                                                                 />
@@ -173,7 +173,7 @@ const Inspector = props => {
                                                                         {
                                                                             containerMd: isNumber(e.target.value) ?
                                                                                 Number(e.target.value) :
-                                                                                null
+                                                                                undefined
                                                                         }
                                                                     )}
                                                                 />
@@ -189,7 +189,7 @@ const Inspector = props => {
                                                                         {
                                                                             maxWidthMd: isNumber(e.target.value) ?
                                                                                 Number(e.target.value) :
-                                                                                null
+                                                                                undefined
                                                                         }
                                                                     )}
                                                                 />
@@ -205,7 +205,7 @@ const Inspector = props => {
                                                                         {
                                                                             containerSm: isNumber(e.target.value) ?
                                                                                 Number(e.target.value) :
-                                                                                null
+                                                                                undefined
                                                                         }
                                                                     )}
                                                                 />
@@ -221,7 +221,7 @@ const Inspector = props => {
                                                                         {
                                                                             maxWidthSm: isNumber(e.target.value) ?
                                                                                 Number(e.target.value) :
-                                                                                null
+                                                                                undefined
                                                                         }
                                                                     )}
                                                                 />
@@ -237,7 +237,7 @@ const Inspector = props => {
                                                                         containerPadding:
                                                                             isNumber(e.target.value) ?
                                                                                 Number(e.target.value) :
-                                                                                null
+                                                                                undefined
                                                                     }
                                                                     )}
                                                                 />

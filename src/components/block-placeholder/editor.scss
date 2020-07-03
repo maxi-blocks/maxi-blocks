@@ -1,7 +1,9 @@
 .maxi-block-placeholder {
-    background: #ebebeb;
+    background: rgba(235, 235, 235, 0.8);
     border: 1px solid #93959b;
     border-radius: 5px;
+    position: relative;
+    z-index: 2;
 
     &__text {
         text-align: center;

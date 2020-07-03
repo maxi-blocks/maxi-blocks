@@ -317,6 +317,7 @@ const Inspector = props => {
                                                                         backgroundOptions={backgroundHover}
                                                                         onChange={backgroundHover => setAttributes({ backgroundHover })}
                                                                         disableImage
+                                                                        disableVideo
                                                                     />
                                                                 </Fragment>
                                                             )

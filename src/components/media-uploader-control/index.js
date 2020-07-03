@@ -31,6 +31,7 @@ const MediaUploader = props => {
 
     const {
         className,
+        mediaType = 'image',
         mediaID,
         onSelectImage,
         onRemoveImage,
@@ -41,12 +42,21 @@ const MediaUploader = props => {
         extendSelector,
         replaceButton = __('Replace image', 'maxi-blocks'),
         removeButton = __('Remove image', 'maxi-blocks'),
-        alternativeImage
+        alternativeImage,
+        allowedTypes = ['image'],
     } = props;
 
     const classes = classnames(
-        'maxi-mediauploader-control',
+        mediaType === 'image' ? 'maxi-mediauploader-control' :'maxi-mediauploader-control__video' ,
         className
+    );
+
+    const mediaClasses = classnames(
+        mediaType === 'image' &&
+            `editor-post-featured-image__${!mediaID ? 'toggle' : 'preview'}`
+        ,
+        mediaType === 'video' &&
+            `maxi-mediauploader-control__video__${!mediaID ? 'toggle' : 'preview'}`
     );
 
     const onOpenImageModal = () => {
@@ -67,18 +77,14 @@ const MediaUploader = props => {
                 }
             >
                 <MediaUpload
-                    title={__('Background image', 'maxi-blocks')}
+                    title={mediaType === 'image' ? __('Background image', 'maxi-blocks') : __('Background Video', 'maxi-blocks')}
                     onSelect={onSelectImage}
-                    allowedTypes={['image']}
+                    allowedTypes={allowedTypes}
                     value={mediaID}
                     onClose={!isNil(onClose) ? onClose : null}
                     render={({ open }) => (
                         <Button
-                            className={
-                                !mediaID ? 
-                                    'editor-post-featured-image__toggle' : 
-                                    'editor-post-featured-image__preview'
-                            }
+                            className={mediaClasses}
                             onClick={() => {
                                 open();
                                 onOpenImageModal();
@@ -93,6 +99,7 @@ const MediaUploader = props => {
                                 <Spinner />
                             }
                             {
+                                mediaType === 'image' &&
                                 !!mediaID &&
                                 imageData &&
                                 <ResponsiveWrapper
@@ -127,16 +134,19 @@ const MediaUploader = props => {
                 imageData &&
                 <MediaUploadCheck>
                     <MediaUpload
-                        title={__('Image', 'maxi-blocks')}
+                        title={mediaType === 'image' ? __('Image', 'maxi-blocks') : __('Video', 'maxi-blocks')}
                         onSelect={onSelectImage}
-                        allowedTypes={['image']}
+                        allowedTypes={allowedTypes}
                         value={mediaID}
                         render={({ open }) => (
                             <Button
                                 onClick={open}
                                 isDefault
                                 isLarge
-                                className='maxi-mediauploader-control__replace'
+                                className={mediaType === 'image'
+                                ? 'maxi-mediauploader-control__replace'
+                                : 'maxi-mediauploader-control__video__replace'
+                                }
                             >
                                 {replaceButton}
                             </Button>
@@ -150,7 +160,10 @@ const MediaUploader = props => {
                     <Button
                         onClick={onRemoveImage}
                         isDestructive
-                        className='maxi-mediauploader-control__remove'
+                        className={mediaType === 'image'
+                        ? 'maxi-mediauploader-control__remove'
+                        : 'maxi-mediauploader-control__video__remove'
+                        }
                     >
                         {removeButton}
                     </Button>
@@ -163,7 +176,7 @@ const MediaUploader = props => {
     )
 };
 
-const ImageUploaderControl = withSelect((select, props) => {
+const MediaUploaderControl = withSelect((select, props) => {
     const { getMedia } = select('core');
     const { mediaID } = props;
 
@@ -172,4 +185,4 @@ const ImageUploaderControl = withSelect((select, props) => {
     };
 })(MediaUploader)
 
-export default ImageUploaderControl;
+export default MediaUploaderControl;

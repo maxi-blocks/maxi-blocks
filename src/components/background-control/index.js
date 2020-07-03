@@ -15,13 +15,13 @@ const { select } = wp.data;
  * Internal dependencies
  */
 import { MaxiComponent } from '../index';
+import { background } from '../../extensions/styles/defaults';
 import ColorControl from '../color-control';
 import GradientControl from '../gradient-control';
-import ImageUploaderControl from '../image-uploader-control';
+import MediaUploaderControl from '../media-uploader-control';
 import ImageCropControl from '../image-crop-control';
 import SettingTabsControl from '../setting-tabs-control';
 import SizeControl from '../size-control';
-import { background } from '../../extensions/styles/defaults';
 
 /**
  * External dependencies
@@ -60,6 +60,7 @@ export default class BackgroundControl extends MaxiComponent {
             className,
             backgroundOptions,
             disableImage = false,
+            disableVideo = false,
         } = this.props;
 
         const {
@@ -134,9 +135,9 @@ export default class BackgroundControl extends MaxiComponent {
         const getOptions = () => {
             let options = [];
             options.push({ label: <Icon icon={backgroundColor} />, value: 'color' });
-            backgroundImageAllowedBlocks.includes(currentBlockName) &&
+            !disableImage && backgroundImageAllowedBlocks.includes(currentBlockName) &&
                 options.push({ label: <Icon icon={backgroundImage} />, value: 'image' });
-            backgroundVideoAllowedBlocks.includes(currentBlockName) &&
+            !disableVideo && backgroundVideoAllowedBlocks.includes(currentBlockName) &&
                 options.push({ label: <Icon icon={backgroundVideo} />, value: 'video' });
             backgroundGradientAllowedBlocks.includes(currentBlockName) &&
                 options.push({ label: <Icon icon={backgroundGradient()} />, value: 'gradient' })
@@ -161,8 +162,151 @@ export default class BackgroundControl extends MaxiComponent {
                     !isOpen &&
                     <Fragment>
                         {
+                            !disableVideo &&
                             backgroundItems === 'video' &&
-                                <h1>Video settigns goes here soon :)</h1>
+                            <div className="maxi-background-control__video">
+                                <MediaUploaderControl
+                                    allowedTypes={['video']}
+                                    mediaType='video'
+                                    mediaID={value.videoOptions.mediaID}
+                                    onSelectImage={videoData => {
+                                        value.videoOptions.mediaID = videoData.id;
+                                        value.videoOptions.mediaURL = videoData.url;
+                                        this.saveAndSend(value);
+                                    }}
+                                    onRemoveImage={() => {
+                                        value.videoOptions.mediaID = '';
+                                        value.videoOptions.mediaURL = '';
+                                        this.saveAndSend(value);
+                                    }}
+                                    placeholder={__('Set Video', 'maxi-blocks')}
+                                    replaceButton={__('Replace Video', 'maxi-blocks')}
+                                    removeButton={__('Remove Video', 'maxi-blocks')}
+                                />
+                                {
+                                    value.videoOptions.mediaURL &&
+                                    <Fragment>
+                                        <SizeControl
+                                        label={__('Width', 'maxi-blocks')}
+                                        unit={value.videoOptions.widthUnit}
+                                        onChangeUnit={val => {
+                                        value.videoOptions.widthUnit = val;
+                                            this.saveAndSend(value);
+                                        }}
+                                        value={value.videoOptions.width}
+                                        onChangeValue={val => {
+                                        value.videoOptions.width = val;
+                                        this.saveAndSend(value);
+                                        }}
+                                    />
+                                    <SizeControl
+                                        label={__('Height', 'maxi-blocks')}
+                                        unit={value.videoOptions.heightUnit}
+                                        onChangeUnit={val => {
+                                        value.videoOptions.heightUnit = val;
+                                            this.saveAndSend(value);
+                                        }}
+                                        value={value.videoOptions.height}
+                                        onChangeValue={val => {
+                                        value.videoOptions.height = val;
+                                        this.saveAndSend(value);
+                                        }}
+                                    />
+                                    <SelectControl
+                                        label={__('Fill', 'maxi-blocks')}
+                                        value={value.videoOptions.fill}
+                                        options={[
+                                            { label: 'Cover', value: 'cover' },
+                                            { label: 'Contain', value: 'contain' },
+                                            { label: 'Fill', value: 'fill' },
+                                            { label: 'Scale-down', value: 'scale-down' },
+                                            { label: 'None', value: 'none' },
+                                        ]}
+                                        onChange={val => {
+                                            value.videoOptions.fill = val;
+                                            this.saveAndSend(value);
+                                        }}
+                                    />
+                                    <SelectControl
+                                        label={__('Position', 'maxi-blocks')}
+                                        value={value.videoOptions.position}
+                                        options={[
+                                            { label: 'Unset', value: 'unset' },
+                                            { label: 'Top', value: 'top' },
+                                            { label: 'Right', value: 'right' },
+                                            { label: 'Bottom', value: 'bottom' },
+                                            { label: 'Left', value: 'left' },
+                                            { label: 'Center', value: 'center' },
+                                        ]}
+                                        onChange={val => {
+                                            value.videoOptions.position = val;
+                                            this.saveAndSend(value);
+                                        }}
+                                    />
+                                    <SelectControl
+                                        label={__('Autoplay', 'maxi-blocks')}
+                                        value={value.videoOptions.autoplay}
+                                        options={[
+                                            { label: 'No', value: 0 },
+                                            { label: 'Yes', value: 1 },
+                                        ]}
+                                        onChange={val => {
+                                            value.videoOptions.autoplay = val;
+                                            this.saveAndSend(value);
+                                        }}
+                                    />
+                                    <SelectControl
+                                        label={__('Playback Controls', 'maxi-blocks')}
+                                        value={value.videoOptions.controls}
+                                        options={[
+                                            { label: 'No', value: 0 },
+                                            { label: 'Yes', value: 1 },
+                                        ]}
+                                        onChange={val => {
+                                            value.videoOptions.controls = val;
+                                            this.saveAndSend(value);
+                                        }}
+                                    />
+                                    <SelectControl
+                                        label={__('Loop', 'maxi-blocks')}
+                                        value={value.videoOptions.loop}
+                                        options={[
+                                            { label: 'No', value: 0 },
+                                            { label: 'Yes', value: 1 },
+                                        ]}
+                                        onChange={val => {
+                                            value.videoOptions.loop = val;
+                                            this.saveAndSend(value);
+                                        }}
+                                    />
+                                    <SelectControl
+                                        label={__('Muted', 'maxi-blocks')}
+                                        value={value.videoOptions.muted}
+                                        options={[
+                                            { label: 'No', value: 0 },
+                                            { label: 'Yes', value: 1 },
+                                        ]}
+                                        onChange={val => {
+                                            value.videoOptions.muted = val;
+                                            this.saveAndSend(value);
+                                        }}
+                                    />
+                                    <SelectControl
+                                        label={__('Preload', 'maxi-blocks')}
+                                        value={value.videoOptions.muted}
+                                        options={[
+                                            { label: 'MetaData', value: 'metadata' },
+                                            { label: 'Auto', value: 'auto' },
+                                            { label: 'None', value: 'none' },
+                                        ]}
+                                        onChange={val => {
+                                            value.videoOptions.muted = val;
+                                            this.saveAndSend(value);
+                                        }}
+                                    />
+                                    </Fragment>
+                                }
+                            </div>
                         }
                         {
                             backgroundItems === 'gradient' &&
@@ -199,7 +343,7 @@ export default class BackgroundControl extends MaxiComponent {
                             value.backgroundOptions.map((option, i) => {
                                 return (
                                     <Fragment>
-                                        <ImageUploaderControl
+                                        <MediaUploaderControl
                                             mediaID={value.backgroundOptions[i].imageOptions.mediaID}
                                             onSelectImage={imageData => {
                                                 if (!isNumber(value.backgroundOptions[i].imageOptions.mediaID))
@@ -226,7 +370,7 @@ export default class BackgroundControl extends MaxiComponent {
                                                     onClick={(e) => onOpenOptions(e, i)}
                                                     className='maxi-background-control__image-edit'
                                                 >
-                                                    Edit image
+                                                    {__('Edit image', 'maxi-blocks')}
                                                 </Button>
                                             }
                                             alternativeImage={getAlternativeImage(i)}
@@ -240,6 +384,7 @@ export default class BackgroundControl extends MaxiComponent {
                 }
                 {
                     isOpen &&
+                    backgroundItems === 'image' &&
                     <SettingTabsControl
                         items={[
                             {
@@ -247,7 +392,7 @@ export default class BackgroundControl extends MaxiComponent {
                                 className: 'maxi-background-control__image-tab',
                                 uuid: 'maxi-background-control__image-tab',
                                 content: (
-                                    <ImageUploaderControl
+                                    <MediaUploaderControl
                                         mediaID={value.backgroundOptions[selector].imageOptions.mediaID}
                                         onSelectImage={imageData => {
                                             value.backgroundOptions[selector].imageOptions.mediaID = imageData.id;
@@ -266,7 +411,7 @@ export default class BackgroundControl extends MaxiComponent {
                                                 onClick={onDoneEdition}
                                                 className='maxi-background-control__done-edition'
                                             >
-                                                Done
+                                                {__('Done', 'maxi-blocks')}
                                             </Button>
                                         }
                                         replaceButton={__('Replace', 'maxi-blocks')}

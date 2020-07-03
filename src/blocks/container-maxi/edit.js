@@ -13,6 +13,7 @@ const {
  */
 import {
     MaxiBlock,
+    __experimentalVideoPlayer,
     __experimentalToolbar,
     __experimentalBreadcrumbs,
     __experimentalBlockPlaceholder
@@ -20,7 +21,8 @@ import {
 import Inspector from './inspector';
 import {
     getBackgroundObject,
-    getBoxShadowObject
+    getBoxShadowObject,
+    getVideoBackgroundObject
 } from '../../extensions/styles/utils'
 
 /**
@@ -29,7 +31,7 @@ import {
 import classnames from 'classnames';
 import {
     isEmpty,
-    isNumber
+    isNumber,
 } from 'lodash';
 
 /**
@@ -41,6 +43,7 @@ class edit extends MaxiBlock {
             [this.props.attributes.uniqueID]: this.getNormalObject,
             [`${this.props.attributes.uniqueID}:hover`]: this.getHoverObject,
             [`${this.props.attributes.uniqueID}>.maxi-container-block__container`]: this.getContainerObject,
+            [`${this.props.attributes.uniqueID} .maxi-video-player video`]: { videoBackground: { ...getVideoBackgroundObject(JSON.parse(this.props.attributes.background).videoOptions) } },
         }
 
         return response;
@@ -166,6 +169,7 @@ class edit extends MaxiBlock {
                 defaultBlockStyle,
                 fullWidth,
                 extraClassName,
+                background
             },
             className,
             clientId,
@@ -212,6 +216,7 @@ class edit extends MaxiBlock {
                                         false
                             }
                         />
+                        <__experimentalVideoPlayer videoOptions={background} />
                     </__experimentalBlock.section>
                 }
                 {

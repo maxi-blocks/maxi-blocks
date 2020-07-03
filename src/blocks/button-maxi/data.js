@@ -88,6 +88,21 @@ export const background = {
             "attachment": "scroll"
         }
     ],
+    "videoOptions": {
+        "mediaID": "",
+        "mediaURL": "",
+        "width": "100",
+        "widthUnit": "%",
+        "height": "100",
+        "heightUnit": "%",
+        "fill": "cover",
+        "position": "unset",
+        "autoplay": 0,
+        "loop": 0,
+        "muted": 0,
+        "controls": 0,
+        "preload": "metadata"
+    },
     "colorOptions": {
         "color": "#ff4a17",
         "defultColor": "",

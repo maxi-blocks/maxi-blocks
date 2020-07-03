@@ -50,7 +50,13 @@ class edit extends GXBlock {
     state = {
         originalWidth: 0,
         styles: {},
-        isActive: false,
+    }
+
+    componentDidMount() {
+        // document.querySelector('.maxi-container-block__container .block-editor-block-list__layout .block-editor-block-list__layout').addEventListener('mouseenter', function(evt){
+        //     console.log(evt.target.classList.add('active-column'))
+        // });
+        document.querySelector('.maxi-container-block__container .block-editor-block-list__block').style.background = "#0f0";
     }
 
     componentDidUpdate() {
@@ -257,7 +263,6 @@ class edit extends GXBlock {
                             'maxi-block__resizer',
                             "maxi-column-block__resizer",
                             `maxi-column-block__resizer__${clientId}`,
-                            this.state.isActive ? "active-column": null,
                             columnPosition
                         )}
                         defaultSize={{
@@ -278,16 +283,6 @@ class edit extends GXBlock {
                             bottomRight: false,
                             bottomLeft: false,
                             topLeft: false,
-                        }}
-                        onMouseEnter={() => {
-                            this.setState({
-                                isActive: true
-                            })
-                        }}
-                        onMouseLeave={() => {
-                            this.setState({
-                                isActive: false
-                            })
                         }}
                         onResizeStart={(event, direction, elt, delta) => {
                             this.setState({

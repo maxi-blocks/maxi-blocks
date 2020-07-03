@@ -22,7 +22,7 @@ const {
  */
 import {
     GXBlock,
-    VideoPlayer,
+    __experimentalVideoPlayer,
     __experimentalToolbar,
     __experimentalBlockPlaceholder
 } from '../../components';
@@ -243,8 +243,6 @@ class edit extends GXBlock {
             return `${100 / originalNestedColumns.length}%`;
         }
 
-        const videoOptions = JSON.parse(background).videoOptions;
-
         return [
             <Inspector {...this.props} />,
             <__experimentalToolbar {...this.props} />,
@@ -318,7 +316,7 @@ class edit extends GXBlock {
                                         false
                             }
                         />
-                        <VideoPlayer videoOptions={videoOptions} />
+                        <__experimentalVideoPlayer videoOptions={background} />
                     </ResizableBox>
                 }
             </Fragment>

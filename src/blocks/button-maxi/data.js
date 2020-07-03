@@ -97,10 +97,10 @@ export const background = {
         "heightUnit": "%",
         "fill": "cover",
         "position": "unset",
-        "autoplay": "no",
-        "loop": "no",
-        "muted": "no",
-        "controls": "no",
+        "autoplay": 0,
+        "loop": 0,
+        "muted": 0,
+        "controls": 0,
         "preload": "metadata"
     },
     "colorOptions": {

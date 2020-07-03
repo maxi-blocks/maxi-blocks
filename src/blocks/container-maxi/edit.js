@@ -13,7 +13,7 @@ const {
  */
 import {
     GXBlock,
-    VideoPlayer,
+    __experimentalVideoPlayer,
     __experimentalToolbar,
     __experimentalBreadcrumbs,
     __experimentalBlockPlaceholder
@@ -21,7 +21,8 @@ import {
 import Inspector from './inspector';
 import {
     getBackgroundObject,
-    getBoxShadowObject
+    getBoxShadowObject,
+    getVideoBackgroundObject
 } from '../../extensions/styles/utils'
 
 /**
@@ -43,7 +44,11 @@ class edit extends GXBlock {
             [this.props.attributes.uniqueID]: this.getNormalObject,
             [`${this.props.attributes.uniqueID}:hover`]: this.getHoverObject,
             [`${this.props.attributes.uniqueID}>.maxi-container-block__container`]: this.getContainerObject,
+            [`${this.props.attributes.uniqueID} .maxi-video-player video`]: { ...getVideoBackgroundObject(JSON.parse(this.props.attributes.background).videoOptions)},
+            // [`${this.props.attributes.uniqueID} .maxi-video-player`]: { ...getVideoBackgroundObject(JSON.parse(this.props.attributes.background.videoOptions))}
         }
+
+        console.log(response)
 
         return response;
     }
@@ -183,8 +188,6 @@ class edit extends GXBlock {
             className
         );
 
-        const videoOptions = JSON.parse(background).videoOptions;
-
         return [
             <Inspector {...this.props} />,
             <__experimentalToolbar {...this.props} />,
@@ -197,7 +200,6 @@ class edit extends GXBlock {
                         data-align={fullWidth}
                         data-gx_initial_block_class={defaultBlockStyle}
                     >
-                        <VideoPlayer videoOptions={videoOptions} />
                         <InnerBlocks
                             templateLock={false}
                             __experimentalTagName='div'
@@ -218,6 +220,7 @@ class edit extends GXBlock {
                                         false
                             }
                         />
+                        <__experimentalVideoPlayer videoOptions={background} />
                     </__experimentalBlock.section>
                 }
                 {

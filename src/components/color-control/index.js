@@ -46,7 +46,7 @@ const ColorControl = props => {
         <div className={classes}>
             <BaseControl
                     className='maxi-colorcontrol__display'
-                    label={`${label} ${__('Color', 'maxi-blocks')}`}
+                    label={`${label} ${__('Colour', 'maxi-blocks')}`}
                 >
                     <div className='maxi-colorcontrol__display__color'>
                         <span style={{background: color}}></span>

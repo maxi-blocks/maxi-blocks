@@ -30,6 +30,7 @@ export { default as TextShadowControl } from './text-shadow-control';
 export { default as TypographyControl } from './typography-control';
 
 // Experimental
+export { default as __experimentalVideoPlayer } from './video-player';
 export { default as __experimentalToolbar } from './toolbar';
 export { default as __experimentalDividerControl } from './divider-control';
 export { default as __experimentalBreadcrumbs } from './breadcrumbs';

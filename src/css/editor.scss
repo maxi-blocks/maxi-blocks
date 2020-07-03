@@ -83,6 +83,7 @@ body.maxi-blocks--active {
 	.block-editor-inserter,
 	.block-editor-block-list__layout {
 		position: inherit;
+		z-index: 2;
 	}
 	.block-list-appender {
 		.block-editor-button-block-appender {

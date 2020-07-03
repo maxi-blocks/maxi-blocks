@@ -22,13 +22,15 @@ const {
  */
 import {
     MaxiBlock,
+    __experimentalVideoPlayer,
     __experimentalToolbar,
     __experimentalBlockPlaceholder
 } from '../../components';
 import Inspector from './inspector';
 import {
     getBackgroundObject,
-    getBoxShadowObject
+    getBoxShadowObject,
+    getVideoBackgroundObject
 } from '../../extensions/styles/utils';
 
 /**
@@ -82,6 +84,7 @@ class edit extends MaxiBlock {
         let response = {
             [this.props.attributes.uniqueID]: this.getNormalObject,
             [`${this.props.attributes.uniqueID}:hover`]: this.getHoverObject,
+            [`${this.props.attributes.uniqueID} .maxi-video-player video`]: { videoBackground: { ...getVideoBackgroundObject(JSON.parse(this.props.attributes.background).videoOptions) } },
         }
 
         return response;
@@ -176,6 +179,7 @@ class edit extends MaxiBlock {
                 defaultBlockStyle,
                 hoverAnimation,
                 hoverAnimationDuration,
+                background,
             },
             clientId,
             isSelected,
@@ -287,6 +291,7 @@ class edit extends MaxiBlock {
                                         false
                             }
                         />
+                        <__experimentalVideoPlayer videoOptions={background} />
                     </ResizableBox>
                 }
             </Fragment>

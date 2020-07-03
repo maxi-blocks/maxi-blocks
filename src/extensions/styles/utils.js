@@ -162,7 +162,14 @@ export const getVideoBackgroundObject = videoOptions => {
     if(!isNil(videoOptions.fill))
         response.general['object-fit'] = videoOptions.fill;
 
-    console.log(response)
+    if(!isNil(videoOptions.position))
+        response.general['object-position'] = videoOptions.position;
+
+    if(!isNil(videoOptions.width))
+        response.general['width'] = `${videoOptions.width}${videoOptions.widthUnit}`;
+
+    if(!isNil(videoOptions.height))
+        response.general['height'] = `${videoOptions.height}${videoOptions.heightUnit}`;
 
     return response;
 }

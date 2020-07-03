@@ -44,8 +44,7 @@ class edit extends GXBlock {
             [this.props.attributes.uniqueID]: this.getNormalObject,
             [`${this.props.attributes.uniqueID}:hover`]: this.getHoverObject,
             [`${this.props.attributes.uniqueID}>.maxi-container-block__container`]: this.getContainerObject,
-            [`${this.props.attributes.uniqueID} .maxi-video-player video`]: { ...getVideoBackgroundObject(JSON.parse(this.props.attributes.background).videoOptions)},
-            // [`${this.props.attributes.uniqueID} .maxi-video-player`]: { ...getVideoBackgroundObject(JSON.parse(this.props.attributes.background.videoOptions))}
+            [`${this.props.attributes.uniqueID} .maxi-video-player video`]: { videoBackground: { ...getVideoBackgroundObject(JSON.parse(this.props.attributes.background).videoOptions) } },
         }
 
         console.log(response)

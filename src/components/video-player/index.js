@@ -11,22 +11,26 @@ const VideoPlayer = props => {
         videoOptions
     } = props;
 
+    let value = typeof videoOptions === 'object' ?
+    videoOptions.videoOptions :
+    JSON.parse(videoOptions).videoOptions;
+
     return (
-        videoOptions.mediaURL &&
+        value.mediaURL &&
             <div class="maxi-video-player">
                 <video
                     style={{
-                        'object-fit': videoOptions.fill,
-                        'object-position': videoOptions.position,
-                        width: `${videoOptions.width}${videoOptions.widthUnit}`,
-                        height: `${videoOptions.height}${videoOptions.heightUnit}`,
+                        //'object-fit': value.fill,
+                        'object-position': value.position,
+                        width: `${value.width}${value.widthUnit}`,
+                        height: `${value.height}${value.heightUnit}`,
                     }}
-                    controls={videoOptions.controls === 'yes'}
-                    autoplay={videoOptions.autoplay === 'yes'}
-                    loop={videoOptions.loop === 'yes'}
-                    muted={videoOptions.muted === 'yes'}
-                    preload={videoOptions.preload}
-                    src={videoOptions.mediaURL}
+                    controls={!!parseInt(value.controls)}
+                    autoplay={!!parseInt(value.autoplay)}
+                    loop={!!parseInt(value.loop)}
+                    muted={!!parseInt(value.muted)}
+                    preload={value.preload}
+                    src={value.mediaURL}
                 />
             </div>
     )

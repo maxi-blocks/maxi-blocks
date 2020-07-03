@@ -9,6 +9,7 @@ const {
 } = wp.blockEditor;
 const {
     Button,
+    ResponsiveWrapper,
     Spinner,
 } = wp.components;
 
@@ -26,25 +27,36 @@ import './editor.scss';
 /**
  * Component
  */
-const VideoUploader = props => {
+const MediaUploader = props => {
 
     const {
         className,
+        mediaType = 'image',
         mediaID,
         onSelectImage,
         onRemoveImage,
         imageData,
         onOpen = undefined,
         onClose = undefined,
-        placeholder = __('Set Video', 'maxi-blocks'),
+        placeholder = __('Set image', 'maxi-blocks'),
         extendSelector,
-        replaceButton = __('Replace Video', 'maxi-blocks'),
-        removeButton = __('Remove Video', 'maxi-blocks'),
+        replaceButton = __('Replace image', 'maxi-blocks'),
+        removeButton = __('Remove image', 'maxi-blocks'),
+        alternativeImage,
+        allowedTypes = ['image'],
     } = props;
 
     const classes = classnames(
-        'maxi-background-control__video__video-control',
+        mediaType === 'image' ? 'maxi-mediauploader-control' :'maxi-mediauploader-control__video' ,
         className
+    );
+
+    const mediaClasses = classnames(
+        mediaType === 'image' &&
+            `editor-post-featured-image__${!mediaID ? 'toggle' : 'preview'}`
+        ,
+        mediaType === 'video' &&
+            `maxi-mediauploader-control__video__${!mediaID ? 'toggle' : 'preview'}`
     );
 
     const onOpenImageModal = () => {
@@ -65,18 +77,14 @@ const VideoUploader = props => {
                 }
             >
                 <MediaUpload
-                    title={__('Background image', 'maxi-blocks')}
+                    title={mediaType === 'image' ? __('Background image', 'maxi-blocks') : __('Background Video', 'maxi-blocks')}
                     onSelect={onSelectImage}
-                    allowedTypes={['video']}
+                    allowedTypes={allowedTypes}
                     value={mediaID}
                     onClose={!isNil(onClose) ? onClose : null}
                     render={({ open }) => (
                         <Button
-                            className={
-                                !mediaID ?
-                                    'maxi-background-control__video__video-control__toggle' :
-                                    'maxi-background-control__video__video-control__preview'
-                            }
+                            className={mediaClasses}
                             onClick={() => {
                                 open();
                                 onOpenImageModal();
@@ -90,6 +98,33 @@ const VideoUploader = props => {
                                 !imageData &&
                                 <Spinner />
                             }
+                            {
+                                mediaType === 'image' &&
+                                !!mediaID &&
+                                imageData &&
+                                <ResponsiveWrapper
+                                    naturalWidth={
+                                        alternativeImage ?
+                                            alternativeImage.width :
+                                            imageData.media_details.width
+                                    }
+                                    naturalHeight={
+                                        alternativeImage ?
+                                            alternativeImage.height :
+                                            imageData.media_details.height
+                                    }
+                                    className='maxi-imageuploader-control__responsive-wrapper'
+                                >
+                                    <img
+                                        src={
+                                            !isNil(alternativeImage) ?
+                                                alternativeImage.source_url :
+                                                imageData.source_url
+                                        }
+                                        alt={__('Image', 'maxi-blocks')}
+                                    />
+                                </ResponsiveWrapper>
+                            }
                         </Button>
                     )}
                 />
@@ -99,16 +134,19 @@ const VideoUploader = props => {
                 imageData &&
                 <MediaUploadCheck>
                     <MediaUpload
-                        title={__('Video', 'maxi-blocks')}
+                        title={mediaType === 'image' ? __('Image', 'maxi-blocks') : __('Video', 'maxi-blocks')}
                         onSelect={onSelectImage}
-                        allowedTypes={['video']}
+                        allowedTypes={allowedTypes}
                         value={mediaID}
                         render={({ open }) => (
                             <Button
                                 onClick={open}
                                 isDefault
                                 isLarge
-                                className='maxi-background-control__video__video-control__replace'
+                                className={mediaType === 'image'
+                                ? 'maxi-mediauploader-control__replace'
+                                : 'maxi-mediauploader-control__video__replace'
+                                }
                             >
                                 {replaceButton}
                             </Button>
@@ -122,7 +160,10 @@ const VideoUploader = props => {
                     <Button
                         onClick={onRemoveImage}
                         isDestructive
-                        className='maxi-background-control__video__video-control__remove'
+                        className={mediaType === 'image'
+                        ? 'maxi-mediauploader-control__remove'
+                        : 'maxi-mediauploader-control__video__remove'
+                        }
                     >
                         {removeButton}
                     </Button>
@@ -135,13 +176,13 @@ const VideoUploader = props => {
     )
 };
 
-const VideoUploaderControl = withSelect((select, props) => {
+const MediaUploaderControl = withSelect((select, props) => {
     const { getMedia } = select('core');
     const { mediaID } = props;
 
     return {
         imageData: mediaID ? getMedia(mediaID) : null,
     };
-})(VideoUploader)
+})(MediaUploader)
 
-export default VideoUploaderControl;
+export default MediaUploaderControl;

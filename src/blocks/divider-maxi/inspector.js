@@ -3,10 +3,13 @@
  */
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
-const { Fragment } = wp.element;
 const {
-    RangeControl,
+    Fragment,
+    useState
+} = wp.element;
+const { 
     SelectControl,
+    TextControl
 } = wp.components;
 
 /**
@@ -17,13 +20,15 @@ import {
     BackgroundControl,
     BlockStylesControl,
     BoxShadowControl,
-    CustomCSSControl,
-    DimensionsControl,
     FullSizeControl,
     HoverAnimationControl,
     SettingTabsControl,
     __experimentalDividerControl,
-    __experimentalZIndexControl
+    __experimentalResponsiveSelector,
+    __experimentalZIndexControl,
+    __experimentalMarginPaddingControl,
+    __experimentalResponsiveControl,
+    __experimentalOpacityControl
 } from '../../components';
 
 /**
@@ -53,14 +58,20 @@ const Inspector = props => {
             hoverAnimation,
             hoverAnimationDuration,
             extraClassName,
-            extraStyles,
-            zIndex
+            zIndex,
+            breakpoints
         },
         setAttributes,
     } = props;
 
+    const [breakpoint, setBreakpoint] = useState('general')
+
     return (
         <InspectorControls>
+            <__experimentalResponsiveSelector
+                selected={breakpoint}
+                onChange={breakpoint => setBreakpoint(breakpoint)}
+            />
             <SettingTabsControl
                 disablePadding
                 items={[
@@ -80,65 +91,68 @@ const Inspector = props => {
                                 <AccordionControl
                                     isSecondary
                                     items={[
-                                        {
-                                            label: __('Line', 'maxi-blocks'),
-                                            content: (
-                                                <Fragment>
-                                                    <SelectControl
-                                                        label={__('Show Line', 'maxi-blocks')}
-                                                        options={[
-                                                            { label: __('No', 'maxi-blocks'), value: 'no' },
-                                                            { label: __('Yes', 'maxi-blocks'), value: 'yes' },
-                                                        ]}
-                                                        value={showLine}
-                                                        onChange={showLine => setAttributes({ showLine })}
-                                                    />
-                                                    {
-                                                        showLine === 'yes' &&
+                                        function () {
+                                            if (breakpoint === 'general')
+                                                return {
+                                                    label: __('Line', 'maxi-blocks'),
+                                                    content: (
                                                         <Fragment>
                                                             <SelectControl
-                                                                label={__('Line Orientation', 'maxi-blocks')}
+                                                                label={__('Show Line', 'maxi-blocks')}
                                                                 options={[
-                                                                    { label: __('Horizontal', 'maxi-blocks'), value: 'horizontal' },
-                                                                    { label: __('Vertical', 'maxi-blocks'), value: 'vertical' },
+                                                                    { label: __('No', 'maxi-blocks'), value: 0 },
+                                                                    { label: __('Yes', 'maxi-blocks'), value: 1 },
                                                                 ]}
-                                                                value={lineOrientation}
-                                                                onChange={lineOrientation => setAttributes({ lineOrientation })}
+                                                                value={showLine}
+                                                                onChange={val => setAttributes({ showLine: Number(val) })}
                                                             />
-                                                            <SelectControl
-                                                                label={__('Line Vertical Position', 'maxi-blocks')}
-                                                                options={
-                                                                    [
-                                                                        { label: __('Top', 'maxi-blocks'), value: 'flex-start' },
-                                                                        { label: __('Center', 'maxi-blocks'), value: 'center' },
-                                                                        { label: __('Bottom', 'maxi-blocks'), value: 'flex-end' },
-                                                                    ]
-                                                                }
-                                                                value={lineVertical}
-                                                                onChange={lineVertical => setAttributes({ lineVertical })}
-                                                            />
-                                                            <SelectControl
-                                                                label={__('Line Horizontal Position', 'maxi-blocks')}
-                                                                options={
-                                                                    [
-                                                                        { label: __('Left', 'maxi-blocks'), value: 'flex-start' },
-                                                                        { label: __('Center', 'maxi-blocks'), value: 'center' },
-                                                                        { label: __('Right', 'maxi-blocks'), value: 'flex-end' },
-                                                                    ]
-                                                                }
-                                                                value={lineHorizontal}
-                                                                onChange={lineHorizontal => setAttributes({ lineHorizontal })}
-                                                            />
-                                                            <__experimentalDividerControl
-                                                                dividerOptions={divider}
-                                                                onChange={divider => setAttributes({ divider })}
-                                                                lineOrientation={lineOrientation}
-                                                            />
+                                                            {
+                                                                !!showLine &&
+                                                                <Fragment>
+                                                                    <SelectControl
+                                                                        label={__('Line Orientation', 'maxi-blocks')}
+                                                                        options={[
+                                                                            { label: __('Horizontal', 'maxi-blocks'), value: 'horizontal' },
+                                                                            { label: __('Vertical', 'maxi-blocks'), value: 'vertical' },
+                                                                        ]}
+                                                                        value={lineOrientation}
+                                                                        onChange={lineOrientation => setAttributes({ lineOrientation })}
+                                                                    />
+                                                                    <SelectControl
+                                                                        label={__('Line Vertical Position', 'maxi-blocks')}
+                                                                        options={
+                                                                            [
+                                                                                { label: __('Top', 'maxi-blocks'), value: 'flex-start' },
+                                                                                { label: __('Center', 'maxi-blocks'), value: 'center' },
+                                                                                { label: __('Bottom', 'maxi-blocks'), value: 'flex-end' },
+                                                                            ]
+                                                                        }
+                                                                        value={lineVertical}
+                                                                        onChange={lineVertical => setAttributes({ lineVertical })}
+                                                                    />
+                                                                    <SelectControl
+                                                                        label={__('Line Horizontal Position', 'maxi-blocks')}
+                                                                        options={
+                                                                            [
+                                                                                { label: __('Left', 'maxi-blocks'), value: 'flex-start' },
+                                                                                { label: __('Center', 'maxi-blocks'), value: 'center' },
+                                                                                { label: __('Right', 'maxi-blocks'), value: 'flex-end' },
+                                                                            ]
+                                                                        }
+                                                                        value={lineHorizontal}
+                                                                        onChange={lineHorizontal => setAttributes({ lineHorizontal })}
+                                                                    />
+                                                                    <__experimentalDividerControl
+                                                                        dividerOptions={divider}
+                                                                        onChange={divider => setAttributes({ divider })}
+                                                                        lineOrientation={lineOrientation}
+                                                                    />
+                                                                </Fragment>
+                                                            }
                                                         </Fragment>
-                                                    }
-                                                </Fragment>
-                                            )
-                                        },
+                                                    )
+                                                }
+                                        }(),
                                         {
                                             label: __('Width / Height', 'maxi-blocks'),
                                             content: (
@@ -156,8 +170,9 @@ const Inspector = props => {
                                                         />
                                                     }
                                                     <FullSizeControl
-                                                        sizeSettings={size}
+                                                        size={size}
                                                         onChange={size => setAttributes({ size })}
+                                                        breakpoint={breakpoint}
                                                     />
                                                 </Fragment>
 
@@ -173,15 +188,10 @@ const Inspector = props => {
                                                             label: __('Normal', 'gutenberg-extra'),
                                                             content: (
                                                                 <Fragment>
-                                                                    <RangeControl
-                                                                        label={__('Opacity', 'maxi-blocks')}
-                                                                        className='maxi-opacity-control'
-                                                                        value={opacity * 100}
-                                                                        onChange={value => setAttributes({ opacity: value / 100 })}
-                                                                        min={0}
-                                                                        max={100}
-                                                                        allowReset={true}
-                                                                        initialPosition={0}
+                                                                    <__experimentalOpacityControl
+                                                                        opacity={opacity}
+                                                                        onChange={opacity => setAttributes({ opacity })}
+                                                                        breakpoint={breakpoint}
                                                                     />
                                                                     <BackgroundControl
                                                                         backgroundOptions={background}
@@ -195,15 +205,10 @@ const Inspector = props => {
                                                             label: __('Hover', 'gutenberg-extra'),
                                                             content: (
                                                                 <Fragment>
-                                                                    <RangeControl
-                                                                        label={__('Opacity', 'maxi-blocks')}
-                                                                        className='maxi-opacity-control'
-                                                                        value={opacityHover * 100}
-                                                                        onChange={value => setAttributes({ opacityHover: value / 100 })}
-                                                                        min={0}
-                                                                        max={100}
-                                                                        allowReset={true}
-                                                                        initialPosition={0}
+                                                                    <__experimentalOpacityControl
+                                                                        opacity={opacityHover}
+                                                                        onChange={opacityHover => setAttributes({ opacityHover })}
+                                                                        breakpoint={breakpoint}
                                                                     />
                                                                     <BackgroundControl
                                                                         backgroundOptions={backgroundHover}
@@ -227,8 +232,9 @@ const Inspector = props => {
                                                             label: __('Normal', 'gutenberg-extra'),
                                                             content: (
                                                                 <BoxShadowControl
-                                                                    boxShadowOptions={boxShadow}
+                                                                    boxShadow={boxShadow}
                                                                     onChange={boxShadow => setAttributes({ boxShadow })}
+                                                                    breakpoint={breakpoint}
                                                                 />
                                                             )
                                                         },
@@ -236,9 +242,9 @@ const Inspector = props => {
                                                             label: __('Hover', 'gutenberg-extra'),
                                                             content: (
                                                                 <BoxShadowControl
-                                                                    boxShadowOptions={boxShadowHover}
+                                                                    boxShadow={boxShadowHover}
                                                                     onChange={boxShadowHover => setAttributes({ boxShadowHover })}
-                                                                    target=':hover'
+                                                                    breakpoint={breakpoint}
                                                                 />
                                                             )
                                                         },
@@ -250,13 +256,15 @@ const Inspector = props => {
                                             label: __('Padding & Margin', 'maxi-blocks'),
                                             content: (
                                                 <Fragment>
-                                                    <DimensionsControl
+                                                    <__experimentalMarginPaddingControl
                                                         value={padding}
                                                         onChange={padding => setAttributes({ padding })}
+                                                        breakpoint={breakpoint}
                                                     />
-                                                    <DimensionsControl
+                                                    <__experimentalMarginPaddingControl
                                                         value={margin}
                                                         onChange={margin => setAttributes({ margin })}
+                                                        breakpoint={breakpoint}
                                                     />
                                                 </Fragment>
                                             )
@@ -270,22 +278,36 @@ const Inspector = props => {
                         label: __('Advanced', 'maxi-blocks'),
                         content: (
                             <div className='maxi-tab-content__box'>
-                                <HoverAnimationControl
-                                    hoverAnimation={hoverAnimation}
-                                    onChangeHoverAnimation={hoverAnimation => setAttributes({ hoverAnimation })}
-                                    hoverAnimationDuration={hoverAnimationDuration}
-                                    onChangeHoverAnimationDuration={hoverAnimationDuration => setAttributes({ hoverAnimationDuration })}
-                                />
-                                <CustomCSSControl
-                                    extraClassName={extraClassName}
-                                    onChangeExtraClassName={extraClassName => setAttributes({ extraClassName })}
-                                    extraStyles={extraStyles}
-                                    onChangeExtraStyles={extraStyles => setAttributes({ extraStyles })}
-                                />
+                                {
+                                    breakpoint === 'general' &&
+                                    <Fragment>
+                                        <HoverAnimationControl
+                                            hoverAnimation={hoverAnimation}
+                                            onChangeHoverAnimation={hoverAnimation => setAttributes({ hoverAnimation })}
+                                            hoverAnimationDuration={hoverAnimationDuration}
+                                            onChangeHoverAnimationDuration={hoverAnimationDuration => setAttributes({ hoverAnimationDuration })}
+                                        />
+                                        <TextControl
+                                            label={__('Additional CSS Classes', 'maxi-blocks')}
+                                            className='maxi-additional__css-classes'
+                                            value={extraClassName}
+                                            onChange={extraClassName => setAttributes({ extraClassName })}
+                                        />
+                                    </Fragment>
+                                }
                                 <__experimentalZIndexControl
-                                    value={zIndex}
+                                    zindex={zIndex}
                                     onChange={zIndex => setAttributes({ zIndex })}
+                                    breakpoint={breakpoint}
                                 />
+                                {
+                                    breakpoint != 'general' &&
+                                    <__experimentalResponsiveControl
+                                        breakpoints={breakpoints}
+                                        onChange={breakpoints => setAttributes({ breakpoints })}
+                                        breakpoint={breakpoint}
+                                    />
+                                }
                             </div>
                         )
                     }

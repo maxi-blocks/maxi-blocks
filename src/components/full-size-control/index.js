@@ -8,7 +8,6 @@ const { Fragment } = wp.element;
  * Internal dependencies
  */
 import SizeControl from '../size-control';
-import SettingTabsControl from '../setting-tabs-control';
 
 /**
  * External dependencies

@@ -72,14 +72,6 @@ const attributes = {
         type: 'string',
         default: JSON.stringify(attributesData.padding)
     },
-    hoverAnimation: {
-        type: 'string',
-        default: 'none',
-    },
-    hoverAnimationDuration: {
-        type: 'string',
-        default: 'normal',
-    },
     content: {
         type: 'string',
         default: ''

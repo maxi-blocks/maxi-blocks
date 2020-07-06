@@ -60,13 +60,25 @@ function addAttributes(settings) {
 				type: 'string',
 				default: '{}'
 			},
-			breakpoints: {
+			hoverAnimation: {
 				type: 'string',
-				default: '{"label":"Breakpoints","general":"","xl":"","l":"","m":"","s":"","xs":""}'
+				default: 'none',
+			},
+			hoverAnimationDuration: {
+				type: 'string',
+				default: 'normal',
+			},
+			extraClassName: {
+				type: 'string',
+				default: ''
 			},
 			zIndex: {
 				type: 'string',
 				default: '{"label":"Z-Index","general":{"z-index":""},"xl":{"z-index":""},"l":{"z-index":""},"m":{"z-index":""},"s":{"z-index":""},"xs":{"z-index":""}}'
+			},
+			breakpoints: {
+				type: 'string',
+				default: '{"label":"Breakpoints","general":"","xl":"","l":"","m":"","s":"","xs":""}'
 			},
 		});
 	}
@@ -104,7 +116,7 @@ const withAttributes = createHigherOrderComponent(
 
 			// isFirstOnHierarchy
 			let parentBlocks = select('core/block-editor').getBlockParents(clientId)
-				.filter(el => {return el != clientId});
+				.filter(el => { return el != clientId });
 
 			if (parentBlocks.includes(clientId))
 				parentBlocks.pop()
@@ -115,10 +127,7 @@ const withAttributes = createHigherOrderComponent(
 			const defaultBreakpoints = select('maxiBlocks').receiveMaxiBreakpoints();
 			const value = JSON.parse(breakpoints);
 
-			console.log(isNumber(value.xl), value.xl)
-
-			if(!isNumber(value.xl) && !isEmpty(defaultBreakpoints)) {
-				console.log('hey')
+			if (!isNumber(value.xl) && !isEmpty(defaultBreakpoints)) {
 				const response = {
 					xl: defaultBreakpoints['xl'],
 					l: defaultBreakpoints['l'],

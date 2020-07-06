@@ -24,7 +24,7 @@ import {
 import classnames from 'classnames';
 import {
     isNil,
-    isNumber
+    isObject
 } from 'lodash';
 
 /**
@@ -61,14 +61,14 @@ class edit extends MaxiBlock {
             size: { ...JSON.parse(size) },
             padding: { ...JSON.parse(padding) },
             margin: { ...JSON.parse(margin) },
+            opacity: { ...JSON.parse(opacity) },
+            zindex: { ...JSON.parse(zIndex) },
             divider: {
                 label: 'Divider',
                 general: {}
             }
         };
 
-        if (isNumber(opacity))
-            response.divider.general['opacity'] = opacity;
         if (!isNil(linesAlign)) {
             response.divider.general['flex-direction'] = linesAlign;
             if (linesAlign === 'row') {
@@ -84,8 +84,6 @@ class edit extends MaxiBlock {
                     response.divider.general['align-items'] = lineHorizontal;
             }
         }
-        if (isNumber(zIndex))
-            response.divider.general['z-index'] = zIndex;
 
         return response;
     }
@@ -100,14 +98,8 @@ class edit extends MaxiBlock {
         const response = {
             backgroundHover: { ...getBackgroundObject(JSON.parse(backgroundHover)) },
             boxShadowHover: { ...getBoxShadowObject(JSON.parse(boxShadowHover)) },
-            dividerHover: {
-                label: 'Divider',
-                general: {}
-            }
+            opacityHover: { ...JSON.parse(opacityHover) }
         };
-
-        if (isNumber(opacityHover))
-            response.dividerHover.general['opacity'] = opacityHover;
 
         return response;
     }
@@ -138,8 +130,9 @@ class edit extends MaxiBlock {
             clientId,
             isSelected,
             setAttributes,
-            getLinesQuantity
         } = this.props;
+
+        console.log(!!showLine, showLine)
 
         let classes = classnames(
             'maxi-block maxi-divider-block',
@@ -152,13 +145,13 @@ class edit extends MaxiBlock {
                 'maxi-divider-block--horizontal',
         );
 
-        let value = typeof size != 'object' ?
+        let value = !isObject(size) ?
             JSON.parse(size) :
             size;
 
         return [
             <Inspector {...this.props} />,
-            <__experimentalToolbar {...this.props} />,
+            // <__experimentalToolbar {...this.props} />,
             <ResizableBox
                 className={classnames(
                     'maxi-block__resizer',
@@ -167,7 +160,7 @@ class edit extends MaxiBlock {
                 )}
                 size={{
                     width: '100%',
-                    height: value.desktop.height + value.desktop.heightUnit
+                    height: value.general.height + value.general.heightUnit
                 }}
                 enable={{
                     top: false,
@@ -180,9 +173,9 @@ class edit extends MaxiBlock {
                     topLeft: false,
                 }}
                 onResizeStart={() => {
-                    value.desktop.heightUnit != 'px' ?
+                    value.general.heightUnit != 'px' ?
                         (
-                            value.desktop.heightUnit = 'px',
+                            value.general.heightUnit = 'px',
                             setAttributes({
                                 size: JSON.stringify(value)
                             })
@@ -190,7 +183,7 @@ class edit extends MaxiBlock {
                         null
                 }}
                 onResizeStop={(event, direction, elt, delta) => {
-                    value.desktop.height = elt.getBoundingClientRect().height;
+                    value.general.height = elt.getBoundingClientRect().height;
                     setAttributes({
                         size: JSON.stringify(value),
                     });
@@ -202,7 +195,7 @@ class edit extends MaxiBlock {
                     data-align={fullWidth}
                 >
                     {
-                        showLine === 'yes' &&
+                        !!showLine &&
                         <Fragment>
                             <hr class="maxi-divider-block__divider" />
                         </Fragment>

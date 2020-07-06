@@ -7,9 +7,9 @@ const {
     Fragment,
     useState
 } = wp.element;
-const {
-    RangeControl,
-    SelectControl
+const { 
+    SelectControl,
+    TextControl
 } = wp.components;
 
 /**
@@ -22,8 +22,6 @@ import {
     BorderControl,
     BlockStylesControl,
     BoxShadowControl,
-    CustomCSSControl,
-    DimensionsControl,
     FontLevelControl,
     FullSizeControl,
     HoverAnimationControl,
@@ -64,6 +62,7 @@ const Inspector = props => {
             borderHover,
             hoverAnimation,
             hoverAnimationDuration,
+            extraClassName,
             zIndex,
             breakpoints
         },
@@ -122,7 +121,7 @@ const Inspector = props => {
                                                                     margin
                                                                 })
                                                             }
-                                                            fontOptions={typography}
+                                                            typography={typography}
                                                             fontOptionsHover={typographyHover}
                                                             sizeOptions={size}
                                                         />
@@ -142,11 +141,8 @@ const Inspector = props => {
                                                             label: __('Normal', 'gutenberg-extra'),
                                                             content: (
                                                                 <TypographyControl
-                                                                    fontOptions={typography}
-                                                                    onChange={typography => {
-                                                                        console.log(JSON.parse(typography))
-                                                                        setAttributes({ typography })
-                                                                    }}
+                                                                    typography={typography}
+                                                                    onChange={typography => setAttributes({ typography })}
                                                                     hideAlignment
                                                                     breakpoint={breakpoint}
                                                                 />
@@ -156,7 +152,7 @@ const Inspector = props => {
                                                             label: __('Hover', 'gutenberg-extra'),
                                                             content: (
                                                                 <TypographyControl
-                                                                    fontOptions={typographyHover}
+                                                                    typography={typographyHover}
                                                                     onChange={typographyHover => setAttributes({ typographyHover })}
                                                                     target=':hover'
                                                                     hideAlignment
@@ -322,12 +318,23 @@ const Inspector = props => {
                         label: __('Advanced', 'maxi-blocks'),
                         content: (
                             <div className='maxi-tab-content__box'>
-                                <HoverAnimationControl
-                                    hoverAnimation={hoverAnimation}
-                                    onChangeHoverAnimation={hoverAnimation => setAttributes({ hoverAnimation })}
-                                    hoverAnimationDuration={hoverAnimationDuration}
-                                    onChangeHoverAnimationDuration={hoverAnimationDuration => setAttributes({ hoverAnimationDuration })}
-                                />
+                                {
+                                    breakpoint === 'general' &&
+                                    <Fragment>
+                                        <HoverAnimationControl
+                                            hoverAnimation={hoverAnimation}
+                                            onChangeHoverAnimation={hoverAnimation => setAttributes({ hoverAnimation })}
+                                            hoverAnimationDuration={hoverAnimationDuration}
+                                            onChangeHoverAnimationDuration={hoverAnimationDuration => setAttributes({ hoverAnimationDuration })}
+                                        />
+                                        <TextControl
+                                            label={__('Additional CSS Classes', 'maxi-blocks')}
+                                            className='maxi-additional__css-classes'
+                                            value={extraClassName}
+                                            onChange={extraClassName => setAttributes({ extraClassName })}
+                                        />
+                                    </Fragment>
+                                }
                                 <__experimentalZIndexControl
                                     zindex={zIndex}
                                     onChange={zIndex => setAttributes({ zIndex })}
@@ -337,10 +344,7 @@ const Inspector = props => {
                                     breakpoint != 'general' &&
                                     <__experimentalResponsiveControl
                                         breakpoints={breakpoints}
-                                        onChange={breakpoints => {
-                                            console.log(breakpoints)
-                                            setAttributes({ breakpoints })
-                                        }}
+                                        onChange={breakpoints => setAttributes({ breakpoints })}
                                         breakpoint={breakpoint}
                                     />
                                 }

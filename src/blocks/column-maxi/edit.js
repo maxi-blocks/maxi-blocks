@@ -30,7 +30,8 @@ import Inspector from './inspector';
 import {
     getBackgroundObject,
     getBoxShadowObject,
-    getVideoBackgroundObject
+    getVideoBackgroundObject,
+    getOpacityObject
 } from '../../extensions/styles/utils';
 
 /**
@@ -42,7 +43,8 @@ import {
     isNil,
     isNumber,
     sum,
-    round
+    round,
+    isObject
 } from 'lodash';
 
 /**
@@ -118,6 +120,8 @@ class edit extends MaxiBlock {
             size: { ...JSON.parse(size) },
             margin: { ...JSON.parse(margin) },
             padding: { ...JSON.parse(padding) },
+            opacity: { ...getOpacityObject(JSON.parse(opacity)) },
+            zindex: { ...JSON.parse(zIndex) },
             column: {
                 label: "Column",
                 general: {},
@@ -133,10 +137,6 @@ class edit extends MaxiBlock {
                 response.column.general['flex'] = '0 0 auto';
                 response.column.general['width'] = '';
             }
-        if (isNumber(zIndex))
-            response.column.general['z-index'] = zIndex;
-        if (isNumber(opacity))
-            response.column.general['opacity'] = opacity;
         if (!isNil(verticalAlign))
             response.column.general['justify-content'] = verticalAlign;
 
@@ -157,14 +157,8 @@ class edit extends MaxiBlock {
             borderHover: { ...JSON.parse(borderHover) },
             borderWidthHover: { ...JSON.parse(borderHover).borderWidth },
             borderRadiusHover: { ...JSON.parse(borderHover).borderRadius },
-            columnHover: {
-                label: "columnHover",
-                general: {}
-            }
+            opacity: { ...getOpacityObject(JSON.parse(opacityHover)) },
         };
-
-        if (isNumber(opacityHover))
-            response.columnHover.general['opacity'] = opacityHover;
 
         return response;
     }
@@ -180,9 +174,9 @@ class edit extends MaxiBlock {
                 hoverAnimation,
                 hoverAnimationDuration,
                 background,
+                size,
             },
             clientId,
-            isSelected,
             className,
             rowBlockWidth,
             columnPosition,
@@ -201,15 +195,15 @@ class edit extends MaxiBlock {
             'maxi-column-block',
             uniqueID,
             blockStyle,
-            'hover-animation-type-'+hoverAnimation,
-            'hover-animation-duration-'+hoverAnimationDuration,
+            'hover-animation-type-' + hoverAnimation,
+            'hover-animation-duration-' + hoverAnimationDuration,
             extraClassName,
             className,
         );
 
-        const size = typeof this.props.attributes.size != 'object' ?
-            JSON.parse(this.props.attributes.size) :
-            this.props.attributes.size;
+        const value = !isObject(size) ?
+            JSON.parse(size) :
+            size;
 
         const getColumnWidthDefault = () => {
             if (columnSize)
@@ -220,7 +214,7 @@ class edit extends MaxiBlock {
 
         return [
             <Inspector {...this.props} />,
-            <__experimentalToolbar {...this.props} />,
+            // <__experimentalToolbar {...this.props} />,
             <Fragment>
                 {
                     rowBlockWidth === 0 &&
@@ -240,8 +234,8 @@ class edit extends MaxiBlock {
                         }}
                         minWidth={`${columnGap}%`}
                         maxWidth={
-                            !!size.desktop['max-width'] ?
-                                `${size.desktop['max-width']}${size.desktop['max-widthUnit']}` :
+                            !!value.general['max-width'] ?
+                                `${value.general['max-width']}${value.general['max-widthUnit']}` :
                                 '100%'
                         }
                         enable={{

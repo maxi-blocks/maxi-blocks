@@ -31,16 +31,16 @@ import './editor.scss';
 const TypographyControl = props => {
     const {
         className,
-        fontOptions,
+        typography,
         defaultColor = '#9b9b9b',
         hideAlignment = false,
         onChange,
         breakpoint = 'general'
     } = props;
 
-    const value = typeof fontOptions === 'object' ?
-        fontOptions :
-        JSON.parse(fontOptions);
+    const value = typeof typography === 'object' ?
+        typography :
+        JSON.parse(typography);
 
     const classes = classnames(
         'maxi-typography-control',

@@ -32,7 +32,8 @@ import Inspector from './inspector';
 import TEMPLATES from './templates';
 import {
     getBackgroundObject,
-    getBoxShadowObject
+    getBoxShadowObject,
+    getOpacityObject
 } from '../../extensions/styles/utils'
 
 /**
@@ -89,23 +90,21 @@ class edit extends MaxiBlock {
             size: { ...JSON.parse(size) },
             margin: { ...JSON.parse(margin) },
             padding: { ...JSON.parse(padding) },
+            opacity: { ...getOpacityObject(JSON.parse(opacity)) },
+            zindex: { ...JSON.parse(zIndex) },
             row: {
                 label: "Row",
                 general: {},
-                breakpoints: {
-                    wrap: {
-                        content: 'flex-wrap: wrap;'
-                    }
-                }
+                // breakpoints: {
+                //     wrap: {
+                //         content: 'flex-wrap: wrap;'
+                //     }
+                // }
             },
         };
 
-        if (isNumber(opacity))
-            response.row.general['opacity'] = opacity;
-        if (isNumber(zIndex))
-            response.row.general['z-index'] = zIndex;
-        if (isNumber(wrap))
-            response.row.breakpoints.wrap.rule = `max-width:${wrap}px`;
+        // if (isNumber(wrap))
+        //     response.row.breakpoints.wrap.rule = `max-width:${wrap}px`;
         if (!isNil(horizontalAlign))
             response.row.general['justify-content'] = horizontalAlign;
         if (!isNil(verticalAlign))
@@ -128,14 +127,12 @@ class edit extends MaxiBlock {
             borderHover: { ...JSON.parse(borderHover) },
             borderWidthHover: { ...JSON.parse(borderHover).borderWidth },
             borderRadiusHover: { ...JSON.parse(borderHover).borderRadius },
+            opacity: { ...getOpacityObject(JSON.parse(opacityHover)) },
             row: {
                 label: "Row",
                 general: {}
             }
         };
-
-        if (isNumber(opacityHover))
-            response.row.general['opacity'] = opacityHover;
 
         return response;
     }
@@ -152,16 +149,16 @@ class edit extends MaxiBlock {
                 general: {
                     margin: `0 ${columnGap}%`
                 },
-                breakpoints: {
-                    wrap: {
-                        content: 'flex: 0 0 100% !important;max-width: 100% !important;margin: inherit !important;'
-                    }
-                }
+                // breakpoints: {
+                //     wrap: {
+                //         content: 'flex: 0 0 100% !important;max-width: 100% !important;margin: inherit !important;'
+                //     }
+                // }
             },
         };
 
-        if (isNumber(wrap))
-            response.columnMargin.breakpoints.wrap.rule = `max-width:${wrap}px`;
+        // if (isNumber(wrap))
+        //     response.columnMargin.breakpoints.wrap.rule = `max-width:${wrap}px`;
 
         return response;
     }
@@ -198,7 +195,7 @@ class edit extends MaxiBlock {
 
         return [
             <Inspector {...this.props} />,
-            <__experimentalToolbar {...this.props} />,
+            // <__experimentalToolbar {...this.props} />,
             <__experimentalBreadcrumbs />,
             <InnerBlocks
                 // templateLock={'insert'}

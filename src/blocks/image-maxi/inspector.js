@@ -3,11 +3,15 @@
  */
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
-const { Fragment } = wp.element;
+const {
+    Fragment,
+    useState
+} = wp.element;
 const {
     RangeControl,
     SelectControl,
     TextareaControl,
+    TextControl
 } = wp.components;
 
 /**
@@ -21,13 +25,14 @@ import {
     BorderControl,
     BlockStylesControl,
     BoxShadowControl,
-    CustomCSSControl,
-    DimensionsControl,
     HoverAnimationControl,
     ImageCropControl,
     SettingTabsControl,
     TypographyControl,
-    __experimentalZIndexControl
+    __experimentalResponsiveSelector,
+    __experimentalZIndexControl,
+    __experimentalMarginPaddingControl,
+    __experimentalResponsiveControl
 } from '../../components';
 
 /**
@@ -51,9 +56,7 @@ const Inspector = props => {
             size,
             cropOptions,
             fullWidth,
-            alignmentDesktop,
-            alignmentTablet,
-            alignmentMobile,
+            alignment,
             captionType,
             captionContent,
             captionTypography,
@@ -70,15 +73,17 @@ const Inspector = props => {
             borderHover,
             hoverAnimation,
             hoverAnimationDuration,
-            extraClassName,
-            extraStyles,
             mediaID,
-            zIndex
+            extraClassName,
+            zIndex,
+            breakpoints
         },
         imageData,
         clientId,
         setAttributes,
     } = props;
+
+    const [breakpoint, setBreakpoint] = useState('general')
 
     const getSizeOptions = () => {
         let response = [];
@@ -116,6 +121,10 @@ const Inspector = props => {
 
     return (
         <InspectorControls>
+            <__experimentalResponsiveSelector
+                selected={breakpoint}
+                onChange={breakpoint => setBreakpoint(breakpoint)}
+            />
             <SettingTabsControl
                 disablePadding
                 items={[
@@ -137,121 +146,100 @@ const Inspector = props => {
                                     items={[
                                         {
                                             label: __('Alignment', 'maxi-blocks'),
-                                            disablePadding: true,
                                             content: (
-                                                <SettingTabsControl
-                                                    items={[
-                                                        {
-                                                            label: __('Desktop', 'maxi-blocks'),
-                                                            content: (
-                                                                <AlignmentControl
-                                                                    value={alignmentDesktop}
-                                                                    onChange={alignmentDesktop => setAttributes({ alignmentDesktop })}
-                                                                    disableJustify
-                                                                />
-                                                            )
-                                                        },
-                                                        {
-                                                            label: __('Tablet', 'maxi-blocks'),
-                                                            content: (
-                                                                <AlignmentControl
-                                                                    value={alignmentTablet}
-                                                                    onChange={alignmentTablet => setAttributes({ alignmentTablet })}
-                                                                    disableJustify
-                                                                />
-                                                            )
-                                                        },
-                                                        {
-                                                            label: __('Mobile', 'maxi-blocks'),
-                                                            content: (
-                                                                <AlignmentControl
-                                                                    value={alignmentMobile}
-                                                                    onChange={alignmentMobile => setAttributes({ alignmentMobile })}
-                                                                    disableJustify
-                                                                />
-                                                            )
-                                                        },
-                                                    ]}
+                                                <AlignmentControl
+                                                    alignment={alignment}
+                                                    onChange={alignment => setAttributes({ alignment })}
+                                                    disableJustify
+                                                    breakpoint={breakpoint}
                                                 />
                                             )
                                         },
-                                        {
-                                            label: __('Width / Height', 'maxi-blocks'),
-                                            content: (
-                                                <Fragment>
-                                                    <SelectControl
-                                                        label={__('Image Size', 'maxi-blocks')}
-                                                        value={size || size == 'custom' ? size : 'full'} // is still necessary?
-                                                        options={getSizeOptions()}
-                                                        onChange={size => setAttributes({ size })}
-                                                    />
-                                                    {
-                                                        size === 'custom' &&
-                                                        <ImageCropControl
-                                                            mediaID={mediaID}
-                                                            cropOptions={JSON.parse(cropOptions)}
-                                                            onChange={cropOptions => setAttributes({ cropOptions: JSON.stringify(cropOptions) })}
-                                                        />
-                                                    }
-                                                    {
-                                                        isFirstOnHierarchy &&
-                                                        <SelectControl
-                                                            label={__('Full Width', 'maxi-blocks')}
-                                                            value={fullWidth}
-                                                            options={[
-                                                                { label: __('No', 'maxi-blocks'), value: 'normal' },
-                                                                { label: __('Yes', 'maxi-blocks'), value: 'full' }
-                                                            ]}
-                                                            onChange={fullWidth => setAttributes({ fullWidth })}
-                                                        />
-                                                    }
-                                                    <RangeControl
-                                                        label={__('Width', 'maxi-blocks')}
-                                                        value={width}
-                                                        onChange={width => {
-                                                            if (isNil(width))
-                                                                setAttributes({ width: getDefaultProp(clientId, 'width') })
-                                                            else
-                                                                setAttributes({ width })
-                                                        }}
-                                                        allowReset
-                                                    />
-                                                </Fragment>
-                                            )
-                                        },
-                                        {
-                                            label: __('Caption', 'maxi-blocks'),
-                                            content: (
-                                                <Fragment>
-                                                    <SelectControl
-                                                        value={captionType}
-                                                        options={getCaptionOptions()}
-                                                        onChange={captionType => {
-                                                            setAttributes({ captionType });
-                                                            if (imageData && captionType === 'attachment')
-                                                                setAttributes({ captionContent: imageData.caption.raw })
-                                                        }}
-                                                    />
-                                                    {
-                                                        captionType === 'custom' &&
-                                                        <TextareaControl
-                                                            className='custom-caption'
-                                                            placeHolder={__('Add you Custom Caption here', 'maxi-blocks')}
-                                                            value={captionContent}
-                                                            onChange={captionContent => setAttributes({ captionContent })}
-                                                        />
-                                                    }
-                                                    {
-                                                        captionType != 'none' &&
-                                                        <TypographyControl
-                                                            fontOptions={captionTypography}
-                                                            onChange={captionTypography => setAttributes({ captionTypography })}
-                                                            target='>figcaption'
-                                                        />
-                                                    }
-                                                </Fragment>
-                                            )
-                                        },
+                                        function () {
+                                            if (breakpoint === 'general') {
+                                                return {
+                                                    label: __('Width / Height', 'maxi-blocks'),
+                                                    content: (
+                                                        <Fragment>
+                                                            <SelectControl
+                                                                label={__('Image Size', 'maxi-blocks')}
+                                                                value={size || size == 'custom' ? size : 'full'} // is still necessary?
+                                                                options={getSizeOptions()}
+                                                                onChange={size => setAttributes({ size })}
+                                                            />
+                                                            {
+                                                                size === 'custom' &&
+                                                                <ImageCropControl
+                                                                    mediaID={mediaID}
+                                                                    cropOptions={JSON.parse(cropOptions)}
+                                                                    onChange={cropOptions => setAttributes({ cropOptions: JSON.stringify(cropOptions) })}
+                                                                />
+                                                            }
+                                                            {
+                                                                isFirstOnHierarchy &&
+                                                                <SelectControl
+                                                                    label={__('Full Width', 'maxi-blocks')}
+                                                                    value={fullWidth}
+                                                                    options={[
+                                                                        { label: __('No', 'maxi-blocks'), value: 'normal' },
+                                                                        { label: __('Yes', 'maxi-blocks'), value: 'full' }
+                                                                    ]}
+                                                                    onChange={fullWidth => setAttributes({ fullWidth })}
+                                                                />
+                                                            }
+                                                            <RangeControl
+                                                                label={__('Width', 'maxi-blocks')}
+                                                                value={width}
+                                                                onChange={width => {
+                                                                    if (isNil(width))
+                                                                        setAttributes({ width: getDefaultProp(clientId, 'width') })
+                                                                    else
+                                                                        setAttributes({ width })
+                                                                }}
+                                                                allowReset
+                                                            />
+                                                        </Fragment>
+                                                    )
+                                                }
+                                            }
+                                        }(),
+                                        function () {
+                                            if (breakpoint === 'general') {
+                                                return {
+                                                    label: __('Caption', 'maxi-blocks'),
+                                                    content: (
+                                                        <Fragment>
+                                                            <SelectControl
+                                                                value={captionType}
+                                                                options={getCaptionOptions()}
+                                                                onChange={captionType => {
+                                                                    setAttributes({ captionType });
+                                                                    if (imageData && captionType === 'attachment')
+                                                                        setAttributes({ captionContent: imageData.caption.raw })
+                                                                }}
+                                                            />
+                                                            {
+                                                                captionType === 'custom' &&
+                                                                <TextareaControl
+                                                                    className='custom-caption'
+                                                                    placeHolder={__('Add you Custom Caption here', 'maxi-blocks')}
+                                                                    value={captionContent}
+                                                                    onChange={captionContent => setAttributes({ captionContent })}
+                                                                />
+                                                            }
+                                                            {
+                                                                captionType != 'none' &&
+                                                                <TypographyControl
+                                                                    fontOptions={captionTypography}
+                                                                    onChange={captionTypography => setAttributes({ captionTypography })}
+                                                                    target='>figcaption'
+                                                                />
+                                                            }
+                                                        </Fragment>
+                                                    )
+                                                }
+                                            }
+                                        }(),
                                         {
                                             label: __('Background', 'maxi-blocks'),
                                             disablePadding: true,
@@ -316,8 +304,9 @@ const Inspector = props => {
                                                             label: __('Normal', 'gutenberg-extra'),
                                                             content: (
                                                                 <BorderControl
-                                                                    borderOptions={border}
+                                                                    border={border}
                                                                     onChange={border => setAttributes({ border })}
+                                                                    breakpoint={breakpoint}
                                                                 />
                                                             )
                                                         },
@@ -325,8 +314,9 @@ const Inspector = props => {
                                                             label: __('Hover', 'gutenberg-extra'),
                                                             content: (
                                                                 <BorderControl
-                                                                    borderOptions={borderHover}
+                                                                    border={borderHover}
                                                                     onChange={borderHover => setAttributes({ borderHover })}
+                                                                    breakpoint={breakpoint}
                                                                 />
                                                             )
                                                         },
@@ -344,8 +334,9 @@ const Inspector = props => {
                                                             label: __('Normal', 'gutenberg-extra'),
                                                             content: (
                                                                 <BoxShadowControl
-                                                                    boxShadowOptions={boxShadow}
+                                                                    boxShadow={boxShadow}
                                                                     onChange={boxShadow => setAttributes({ boxShadow })}
+                                                                    breakpoint={breakpoint}
                                                                 />
                                                             )
                                                         },
@@ -353,9 +344,9 @@ const Inspector = props => {
                                                             label: __('Hover', 'gutenberg-extra'),
                                                             content: (
                                                                 <BoxShadowControl
-                                                                    boxShadowOptions={boxShadowHover}
+                                                                    boxShadow={boxShadowHover}
                                                                     onChange={boxShadowHover => setAttributes({ boxShadowHover })}
-                                                                    target=':hover'
+                                                                    breakpoint={breakpoint}
                                                                 />
                                                             )
                                                         },
@@ -367,13 +358,15 @@ const Inspector = props => {
                                             label: __('Padding / Margin', 'maxi-blocks'),
                                             content: (
                                                 <Fragment>
-                                                    <DimensionsControl
+                                                    <__experimentalMarginPaddingControl
                                                         value={padding}
                                                         onChange={padding => setAttributes({ padding })}
+                                                        breakpoint={breakpoint}
                                                     />
-                                                    <DimensionsControl
+                                                    <__experimentalMarginPaddingControl
                                                         value={margin}
                                                         onChange={margin => setAttributes({ margin })}
+                                                        breakpoint={breakpoint}
                                                     />
                                                 </Fragment>
                                             )
@@ -387,22 +380,36 @@ const Inspector = props => {
                         label: __('Advanced', 'maxi-blocks'),
                         content: (
                             <div className='maxi-tab-content__box'>
-                                <HoverAnimationControl
-                                    hoverAnimation={hoverAnimation}
-                                    onChangeHoverAnimation={hoverAnimation => setAttributes({ hoverAnimation })}
-                                    hoverAnimationDuration={hoverAnimationDuration}
-                                    onChangeHoverAnimationDuration={hoverAnimationDuration => setAttributes({ hoverAnimationDuration })}
-                                />
-                                <CustomCSSControl
-                                    extraClassName={extraClassName}
-                                    onChangeExtraClassName={extraClassName => setAttributes({ extraClassName })}
-                                    extraStyles={extraStyles}
-                                    onChangeExtraStyles={extraStyles => setAttributes({ extraStyles })}
-                                />
+                                {
+                                    breakpoint === 'general' &&
+                                    <Fragment>
+                                        <HoverAnimationControl
+                                            hoverAnimation={hoverAnimation}
+                                            onChangeHoverAnimation={hoverAnimation => setAttributes({ hoverAnimation })}
+                                            hoverAnimationDuration={hoverAnimationDuration}
+                                            onChangeHoverAnimationDuration={hoverAnimationDuration => setAttributes({ hoverAnimationDuration })}
+                                        />
+                                        <TextControl
+                                            label={__('Additional CSS Classes', 'maxi-blocks')}
+                                            className='maxi-additional__css-classes'
+                                            value={extraClassName}
+                                            onChange={extraClassName => setAttributes({ extraClassName })}
+                                        />
+                                    </Fragment>
+                                }
                                 <__experimentalZIndexControl
-                                    value={zIndex}
+                                    zindex={zIndex}
                                     onChange={zIndex => setAttributes({ zIndex })}
+                                    breakpoint={breakpoint}
                                 />
+                                {
+                                    breakpoint != 'general' &&
+                                    <__experimentalResponsiveControl
+                                        breakpoints={breakpoints}
+                                        onChange={breakpoints => setAttributes({ breakpoints })}
+                                        breakpoint={breakpoint}
+                                    />
+                                }
                             </div>
                         )
                     }

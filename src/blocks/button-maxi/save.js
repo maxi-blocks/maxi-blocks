@@ -7,6 +7,7 @@ const { Button } = wp.components;
  * External dependencies
  */
 import classnames from 'classnames';
+import { isObject } from 'lodash';
 
 /**
  * Save
@@ -18,7 +19,7 @@ const save = props => {
             uniqueID,
             blockStyle,
             defaultBlockStyle,
-            linkOptions,
+            linkSettings,
             buttonText,
             extraClassName
         },
@@ -34,7 +35,10 @@ const save = props => {
     if (uniqueID && (typeof uniqueID !== 'undefined'))
         classes = classnames(classes, uniqueID);
 
-    const linkOpt = typeof linkOptions === 'object' ? linkOptions : JSON.parse(linkOptions);
+    const linkOpt = !isObject(linkSettings) ?
+        JSON.parse(linkSettings) :
+        linkSettings;
+
     const linkProps = {
         href: linkOpt.url || '',
         target: linkOpt.opensInNewTab ? '_blank' : '_self'

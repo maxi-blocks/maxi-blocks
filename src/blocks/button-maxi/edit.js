@@ -13,7 +13,9 @@ const {
 import Inspector from './inspector';
 import {
     getBackgroundObject,
-    getBoxShadowObject
+    getBoxShadowObject,
+    getAlignmentFlexObject,
+    getOpacityObject
 } from '../../extensions/styles/utils';
 import {
     MaxiBlock,
@@ -45,66 +47,14 @@ class edit extends MaxiBlock {
 
     get getWrapperObject() {
         const {
-            alignmentDesktop,
-            alignmentTablet,
-            alignmentMobile,
+            alignment,
             zIndex
         } = this.props.attributes;
 
         const response = {
-            button: {
-                label: 'Button',
-                general: {},
-                desktop: {},
-                tablet: {},
-                mobile: {}
-            }
+            alignment: { ...getAlignmentFlexObject(JSON.parse(alignment)) },
+            zindex: { ...JSON.parse(zIndex) },
         };
-
-        if (!isNil(alignmentDesktop)) {
-            switch (alignmentDesktop) {
-                case 'left':
-                    response.button.desktop['align-items'] = 'flex-start';
-                    break;
-                case 'center':
-                case 'justify':
-                    response.button.desktop['align-items'] = 'center';
-                    break;
-                case 'right':
-                    response.button.desktop['align-items'] = 'flex-end';
-                    break;
-            }
-        }
-        if (!isNil(alignmentTablet)) {
-            switch (alignmentTablet) {
-                case 'left':
-                    response.button.tablet['align-items'] = 'flex-start';
-                    break;
-                case 'center':
-                case 'justify':
-                    response.button.tablet['align-items'] = 'center';
-                    break;
-                case 'right':
-                    response.button.tablet['align-items'] = 'flex-end';
-                    break;
-            }
-        }
-        if (!isNil(alignmentMobile)) {
-            switch (alignmentMobile) {
-                case 'left':
-                    response.button.mobile['align-items'] = 'flex-start';
-                    break;
-                case 'center':
-                case 'justify':
-                    response.button.mobile['align-items'] = 'center';
-                    break;
-                case 'right':
-                    response.button.mobile['align-items'] = 'flex-end';
-                    break;
-            }
-        }
-        if (isNumber(zIndex))
-            response.button.general['z-index'] = zIndex;
 
         return response;
     }
@@ -132,16 +82,9 @@ class edit extends MaxiBlock {
             size: { ...JSON.parse(size) },
             padding: { ...JSON.parse(padding) },
             margin: { ...JSON.parse(margin) },
-            button: {
-                label: 'Button',
-                general: {}
-            }
+            opacity: { ...getOpacityObject(JSON.parse(opacity)) },
+            zindex: { ...JSON.parse(zIndex) },
         }
-
-        if (isNumber(opacity))
-            response.button.general['opacity'] = opacity;
-        if (isNumber(zIndex))
-            response.button.general['z-index'] = zIndex;
 
         return response;
     }
@@ -162,14 +105,8 @@ class edit extends MaxiBlock {
             borderHover: { ...JSON.parse(borderHover) },
             borderWidth: { ...JSON.parse(borderHover).borderWidth },
             borderRadius: { ...JSON.parse(borderHover).borderRadius },
-            buttonHover: {
-                label: 'Button',
-                general: {}
-            }
+            opacity: { ...getOpacityObject(JSON.parse(opacityHover)) },
         }
-
-        if (isNumber(opacityHover))
-            response.buttonHover.general['opacity'] = opacityHover;
 
         return response;
     }
@@ -197,7 +134,7 @@ class edit extends MaxiBlock {
 
         return [
             <Inspector {...this.props} />,
-            <__experimentalToolbar {...this.props} />,
+            // <__experimentalToolbar {...this.props} />,
             <__experimentalBlock
                 className={classes}
                 data-gx_initial_block_class={defaultBlockStyle}

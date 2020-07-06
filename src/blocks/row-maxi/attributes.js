@@ -10,14 +10,6 @@ const attributes = {
     rowPattern: {
         type: 'number',
     },
-    blockStyle: {
-        type: 'string',
-        default: 'maxi-custom'
-    },
-    defaultBlockStyle: {
-        type: 'string',
-        default: 'maxi-def-light'
-    },
     columnGap: {
         type: 'number',
         default: 0
@@ -36,10 +28,11 @@ const attributes = {
     },
     opacity: {
         type: 'number',
-        default: 1,
+        default: JSON.stringify(attributesData.opacity)
     },
     opacityHover: {
         type: 'number',
+        default: JSON.stringify(attributesData.opacityHover)
     },
     background: {
         type: 'string',
@@ -81,25 +74,6 @@ const attributes = {
         type: 'string',
         default: JSON.stringify(attributesData.padding)
     },
-    hoverAnimation: {
-        type: 'string',
-        default: 'none',
-    },
-    hoverAnimationDuration: {
-        type: 'string',
-        default: 'normal',
-    },
-    extraClassName: {
-        type: 'string',
-        default: ''
-    },
-    extraStyles: {
-        type: 'string',
-        default: ''
-    },
-    zIndex: {
-        type: 'number'
-    }
 }
 
 export default attributes;

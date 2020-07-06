@@ -2,11 +2,13 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { Fragment } = wp.element;
 const { InspectorControls } = wp.blockEditor;
 const {
-    BaseControl,
-    RangeControl,
+    Fragment,
+    useState
+} = wp.element;
+const {
+    TextControl,
     SelectControl
 } = wp.components;
 
@@ -19,18 +21,21 @@ import {
     BlockStylesControl,
     BorderControl,
     BoxShadowControl,
-    DimensionsControl,
-    CustomCSSControl,
     FullSizeControl,
     HoverAnimationControl,
     SettingTabsControl,
-    __experimentalZIndexControl
+    SizeControl,
+    __experimentalResponsiveSelector,
+    __experimentalZIndexControl,
+    __experimentalMarginPaddingControl,
+    __experimentalResponsiveControl,
+    __experimentalOpacityControl
 } from '../../components';
 
 /**
  * External dependencies
  */
-import { isNumber } from 'lodash';
+import { isObject } from 'lodash';
 
 /**
  * Inspector
@@ -41,15 +46,7 @@ const Inspector = props => {
             isFirstOnHierarchy,
             blockStyle,
             defaultBlockStyle,
-            containerXl,
-            maxWidthXl,
-            containerLg,
-            maxWidthLg,
-            containerMd,
-            maxWidthMd,
-            containerSm,
-            maxWidthSm,
-            containerPadding,
+            sizeContainer,
             fullWidth,
             size,
             opacity,
@@ -65,14 +62,24 @@ const Inspector = props => {
             hoverAnimation,
             hoverAnimationDuration,
             extraClassName,
-            extraStyles,
-            zIndex
+            zIndex,
+            breakpoints
         },
         setAttributes,
     } = props;
 
+    const [breakpoint, setBreakpoint] = useState('general');
+
+    let value = !isObject(sizeContainer) ?
+        JSON.parse(sizeContainer) :
+        sizeContainer;
+
     return (
         <InspectorControls>
+            <__experimentalResponsiveSelector
+                selected={breakpoint}
+                onChange={breakpoint => setBreakpoint(breakpoint)}
+            />
             <SettingTabsControl
                 disablePadding
                 items={[
@@ -98,150 +105,19 @@ const Inspector = props => {
                                                     label: __('Container', 'maxi-blocks'),
                                                     content: (
                                                         <Fragment>
-                                                            <BaseControl
-                                                                label={__('Xl', 'max-width')}
-                                                            >
-                                                                <input
-                                                                    type='number'
-                                                                    placeholder={__('auto', 'maxi-blocks')}
-                                                                    value={containerXl}
-                                                                    onChange={e => setAttributes(
-                                                                        {
-                                                                            containerXl: isNumber(e.target.value) ?
-                                                                                Number(e.target.value) :
-                                                                                undefined
-                                                                        }
-                                                                    )}
-                                                                />
-                                                            </BaseControl>
-                                                            <BaseControl
-                                                                label={__('Xl - Max width', 'max-width')}
-                                                            >
-                                                                <input
-                                                                    type='number'
-                                                                    placeholder={__('auto', 'maxi-blocks')}
-                                                                    value={maxWidthXl}
-                                                                    onChange={e => setAttributes(
-                                                                        {
-                                                                            maxWidthXl: isNumber(e.target.value) ?
-                                                                                Number(e.target.value) :
-                                                                                undefined
-                                                                        }
-                                                                    )}
-                                                                />
-                                                            </BaseControl>
-                                                            <BaseControl
-                                                                label={__('Lg', 'max-width')}
-                                                            >
-                                                                <input
-                                                                    type='number'
-                                                                    placeholder={__('auto', 'maxi-blocks')}
-                                                                    value={containerLg}
-                                                                    onChange={e => setAttributes(
-                                                                        {
-                                                                            containerLg: isNumber(e.target.value) ?
-                                                                                Number(e.target.value) :
-                                                                                undefined
-                                                                        }
-                                                                    )}
-                                                                />
-                                                            </BaseControl>
-                                                            <BaseControl
-                                                                label={__('Lg - Max width', 'max-width')}
-                                                            >
-                                                                <input
-                                                                    type='number'
-                                                                    placeholder={__('auto', 'maxi-blocks')}
-                                                                    value={maxWidthLg}
-                                                                    onChange={e => setAttributes(
-                                                                        {
-                                                                            maxWidthLg: isNumber(e.target.value) ?
-                                                                                Number(e.target.value) :
-                                                                                undefined
-                                                                        }
-                                                                    )}
-                                                                />
-                                                            </BaseControl>
-                                                            <BaseControl
-                                                                label={__('Md', 'max-width')}
-                                                            >
-                                                                <input
-                                                                    type='number'
-                                                                    placeholder={__('auto', 'maxi-blocks')}
-                                                                    value={containerMd}
-                                                                    onChange={e => setAttributes(
-                                                                        {
-                                                                            containerMd: isNumber(e.target.value) ?
-                                                                                Number(e.target.value) :
-                                                                                undefined
-                                                                        }
-                                                                    )}
-                                                                />
-                                                            </BaseControl>
-                                                            <BaseControl
-                                                                label={__('Md - Max width', 'max-width')}
-                                                            >
-                                                                <input
-                                                                    type='number'
-                                                                    placeholder={__('auto', 'maxi-blocks')}
-                                                                    value={maxWidthMd}
-                                                                    onChange={e => setAttributes(
-                                                                        {
-                                                                            maxWidthMd: isNumber(e.target.value) ?
-                                                                                Number(e.target.value) :
-                                                                                undefined
-                                                                        }
-                                                                    )}
-                                                                />
-                                                            </BaseControl>
-                                                            <BaseControl
-                                                                label={__('Sm', 'max-width')}
-                                                            >
-                                                                <input
-                                                                    type='number'
-                                                                    placeholder={__('auto', 'maxi-blocks')}
-                                                                    value={containerSm}
-                                                                    onChange={e => setAttributes(
-                                                                        {
-                                                                            containerSm: isNumber(e.target.value) ?
-                                                                                Number(e.target.value) :
-                                                                                undefined
-                                                                        }
-                                                                    )}
-                                                                />
-                                                            </BaseControl>
-                                                            <BaseControl
-                                                                label={__('Sm - Max width', 'max-width')}
-                                                            >
-                                                                <input
-                                                                    type='number'
-                                                                    placeholder={__('auto', 'maxi-blocks')}
-                                                                    value={maxWidthSm}
-                                                                    onChange={e => setAttributes(
-                                                                        {
-                                                                            maxWidthSm: isNumber(e.target.value) ?
-                                                                                Number(e.target.value) :
-                                                                                undefined
-                                                                        }
-                                                                    )}
-                                                                />
-                                                            </BaseControl>
-                                                            <BaseControl
-                                                                label={__('Padding', 'max-width')}
-                                                            >
-                                                                <input
-                                                                    type='number'
-                                                                    placeholder={__('auto', 'maxi-blocks')}
-                                                                    value={containerPadding}
-                                                                    onChange={e => setAttributes({
-                                                                        containerPadding:
-                                                                            isNumber(e.target.value) ?
-                                                                                Number(e.target.value) :
-                                                                                undefined
-                                                                    }
-                                                                    )}
-                                                                />
-                                                            </BaseControl>
+                                                            <SizeControl
+                                                                label={__('Max Width', 'maxi-blocks')}
+                                                                unit={value[breakpoint]['max-widthUnit']}
+                                                                onChangeUnit={val => {
+                                                                    value[breakpoint]['max-widthUnit'] = val;
+                                                                    setAttributes({ sizeContainer: JSON.stringify(value) })
+                                                                }}
+                                                                value={value[breakpoint]['max-width']}
+                                                                onChangeValue={val => {
+                                                                    value[breakpoint]['max-width'] = val;
+                                                                    setAttributes({ sizeContainer: JSON.stringify(value) })
+                                                                }}
+                                                            />
                                                         </Fragment>
                                                     )
                                                 }
@@ -266,8 +142,9 @@ const Inspector = props => {
                                                         />
                                                     }
                                                     <FullSizeControl
-                                                        sizeSettings={size}
+                                                        size={size}
                                                         onChange={size => setAttributes({ size })}
+                                                        breakpoint={breakpoint}
                                                     />
                                                 </Fragment>
                                             ),
@@ -279,18 +156,13 @@ const Inspector = props => {
                                                 <SettingTabsControl
                                                     items={[
                                                         {
-                                                            label: __('Normal', 'gutenberg-extra'),
+                                                            label: __('Normal', 'maxi-blocks'),
                                                             content: (
                                                                 <Fragment>
-                                                                    <RangeControl
-                                                                        label={__('Opacity', 'maxi-blocks')}
-                                                                        className='maxi-opacity-control'
-                                                                        value={opacity * 100}
-                                                                        onChange={value => setAttributes({ opacity: value / 100 })}
-                                                                        min={0}
-                                                                        max={100}
-                                                                        allowReset={true}
-                                                                        initialPosition={0}
+                                                                    <__experimentalOpacityControl
+                                                                        opacity={opacity}
+                                                                        onChange={opacity => setAttributes({ opacity })}
+                                                                        breakpoint={breakpoint}
                                                                     />
                                                                     <BackgroundControl
                                                                         backgroundOptions={background}
@@ -300,18 +172,13 @@ const Inspector = props => {
                                                             )
                                                         },
                                                         {
-                                                            label: __('Hover', 'gutenberg-extra'),
+                                                            label: __('Hover', 'maxi-blocks'),
                                                             content: (
                                                                 <Fragment>
-                                                                    <RangeControl
-                                                                        label={__('Opacity', 'maxi-blocks')}
-                                                                        className='maxi-opacity-control'
-                                                                        value={opacityHover * 100}
-                                                                        onChange={value => setAttributes({ opacityHover: value / 100 })}
-                                                                        min={0}
-                                                                        max={100}
-                                                                        allowReset={true}
-                                                                        initialPosition={0}
+                                                                    <__experimentalOpacityControl
+                                                                        opacity={opacityHover}
+                                                                        onChange={opacityHover => setAttributes({ opacityHover })}
+                                                                        breakpoint={breakpoint}
                                                                     />
                                                                     <BackgroundControl
                                                                         backgroundOptions={backgroundHover}
@@ -333,20 +200,22 @@ const Inspector = props => {
                                                 <SettingTabsControl
                                                     items={[
                                                         {
-                                                            label: __('Normal', 'gutenberg-extra'),
+                                                            label: __('Normal', 'maxi-blocks'),
                                                             content: (
                                                                 <BorderControl
-                                                                    borderOptions={border}
+                                                                    border={border}
                                                                     onChange={border => setAttributes({ border })}
+                                                                    breakpoint={breakpoint}
                                                                 />
                                                             )
                                                         },
                                                         {
-                                                            label: __('Hover', 'gutenberg-extra'),
+                                                            label: __('Hover', 'maxi-blocks'),
                                                             content: (
                                                                 <BorderControl
-                                                                    borderOptions={borderHover}
+                                                                    border={borderHover}
                                                                     onChange={borderHover => setAttributes({ borderHover })}
+                                                                    breakpoint={breakpoint}
                                                                 />
                                                             )
                                                         },
@@ -361,21 +230,22 @@ const Inspector = props => {
                                                 <SettingTabsControl
                                                     items={[
                                                         {
-                                                            label: __('Normal', 'gutenberg-extra'),
+                                                            label: __('Normal', 'maxi-blocks'),
                                                             content: (
                                                                 <BoxShadowControl
-                                                                    boxShadowOptions={boxShadow}
+                                                                    boxShadow={boxShadow}
                                                                     onChange={boxShadow => setAttributes({ boxShadow })}
+                                                                    breakpoint={breakpoint}
                                                                 />
                                                             )
                                                         },
                                                         {
-                                                            label: __('Hover', 'gutenberg-extra'),
+                                                            label: __('Hover', 'maxi-blocks'),
                                                             content: (
                                                                 <BoxShadowControl
-                                                                    boxShadowOptions={boxShadowHover}
+                                                                    boxShadow={boxShadowHover}
                                                                     onChange={boxShadowHover => setAttributes({ boxShadowHover })}
-                                                                    target=':hover'
+                                                                    breakpoint={breakpoint}
                                                                 />
                                                             )
                                                         },
@@ -387,13 +257,15 @@ const Inspector = props => {
                                             label: __('Padding & Margin', 'maxi-blocks'),
                                             content: (
                                                 <Fragment>
-                                                    <DimensionsControl
+                                                    <__experimentalMarginPaddingControl
                                                         value={padding}
                                                         onChange={padding => setAttributes({ padding })}
+                                                        breakpoint={breakpoint}
                                                     />
-                                                    <DimensionsControl
+                                                    <__experimentalMarginPaddingControl
                                                         value={margin}
                                                         onChange={margin => setAttributes({ margin })}
+                                                        breakpoint={breakpoint}
                                                     />
                                                 </Fragment>
                                             )
@@ -407,22 +279,36 @@ const Inspector = props => {
                         label: __('Advanced', 'maxi-blocks'),
                         content: (
                             <div className='maxi-tab-content__box'>
-                                <HoverAnimationControl
-                                    hoverAnimation={hoverAnimation}
-                                    onChangeHoverAnimation={hoverAnimation => setAttributes({ hoverAnimation })}
-                                    hoverAnimationDuration={hoverAnimationDuration}
-                                    onChangeHoverAnimationDuration={hoverAnimationDuration => setAttributes({ hoverAnimationDuration })}
-                                />
-                                <CustomCSSControl
-                                    extraClassName={extraClassName}
-                                    onChangeExtraClassName={extraClassName => setAttributes({ extraClassName })}
-                                    extraStyles={extraStyles}
-                                    onChangeExtraStyles={extraStyles => setAttributes({ extraStyles })}
-                                />
+                                {
+                                    breakpoint === 'general' &&
+                                    <Fragment>
+                                        <HoverAnimationControl
+                                            hoverAnimation={hoverAnimation}
+                                            onChangeHoverAnimation={hoverAnimation => setAttributes({ hoverAnimation })}
+                                            hoverAnimationDuration={hoverAnimationDuration}
+                                            onChangeHoverAnimationDuration={hoverAnimationDuration => setAttributes({ hoverAnimationDuration })}
+                                        />
+                                        <TextControl
+                                            label={__('Additional CSS Classes', 'maxi-blocks')}
+                                            className='maxi-additional__css-classes'
+                                            value={extraClassName}
+                                            onChange={extraClassName => setAttributes({ extraClassName })}
+                                        />
+                                    </Fragment>
+                                }
                                 <__experimentalZIndexControl
-                                    value={zIndex}
+                                    zindex={zIndex}
                                     onChange={zIndex => setAttributes({ zIndex })}
+                                    breakpoint={breakpoint}
                                 />
+                                {
+                                    breakpoint != 'general' &&
+                                    <__experimentalResponsiveControl
+                                        breakpoints={breakpoints}
+                                        onChange={breakpoints => setAttributes({ breakpoints })}
+                                        breakpoint={breakpoint}
+                                    />
+                                }
                             </div>
                         )
                     }

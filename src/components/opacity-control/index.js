@@ -42,7 +42,6 @@ const OpacityControl = props => {
             min={0}
             max={100}
             allowReset={true}
-            initialPosition={0}
         />
     )
 }

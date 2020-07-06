@@ -70,16 +70,9 @@ class edit extends MaxiBlock {
             borderRadius: { ...JSON.parse(border).borderRadius },
             margin: { ...JSON.parse(margin) },
             padding: { ...JSON.parse(padding) },
-            container: {
-                label: 'Container',
-                general: {},
-            }
+            opacity: { ...JSON.parse(opacity) },
+            zindex: { ...JSON.parse(zIndex) },
         };
-
-        if (isNumber(opacity))
-            response.container.general['opacity'] = opacity;
-        if (isNumber(zIndex))
-            response.container.general['z-index'] = zIndex;
 
         return response;
     }
@@ -98,64 +91,20 @@ class edit extends MaxiBlock {
             borderHover: { ...JSON.parse(borderHover) },
             borderWidthHover: { ...JSON.parse(borderHover).borderWidth },
             borderRadiusHover: { ...JSON.parse(borderHover).borderRadius },
-            containerHover: {
-                label: 'Container',
-                general: {}
-            }
+            opacityHover: { ...JSON.parse(opacityHover) }
         };
-
-        if (isNumber(opacityHover))
-            response.containerHover.general['opacity'] = opacityHover;
 
         return response;
     }
 
     get getContainerObject() {
         const {
-            containerXl,
-            maxWidthXl,
-            containerLg,
-            maxWidthLg,
-            containerMd,
-            maxWidthMd,
-            containerSm,
-            maxWidthSm,
-            containerPadding
+            sizeContainer,
         } = this.props.attributes;
 
         const response = {
-            container: {
-                label: 'Container',
-                general: {},
-                breakpoints: {
-                    sm: {},
-                    md: {},
-                    lg: {},
-                    xl: {},
-                }
-            }
+            size: { ...JSON.parse(sizeContainer) }
         };
-
-        if (isNumber(containerPadding)){
-            response.container.general['padding-left'] = `${containerPadding}px`;
-            response.container.general['padding-right'] = `${containerPadding}px`;
-        }
-        if (isNumber(containerSm))
-            response.container.breakpoints.sm.rule = `min-width:${containerSm}px`;
-        if (isNumber(maxWidthSm))
-            response.container.breakpoints.sm.content = `max-width: ${maxWidthSm}px`;
-        if (isNumber(containerMd))
-            response.container.breakpoints.md.rule = `min-width:${containerMd}px`;
-        if (isNumber(maxWidthMd))
-            response.container.breakpoints.md.content = `max-width: ${maxWidthMd}px`;
-        if (isNumber(containerLg))
-            response.container.breakpoints.lg.rule = `min-width:${containerLg}px`;
-        if (isNumber(maxWidthLg))
-            response.container.breakpoints.lg.content = `max-width: ${maxWidthLg}px`;
-        if (isNumber(containerXl))
-            response.container.breakpoints.xl.rule = `min-width:${containerXl}px`;
-        if (isNumber(maxWidthXl))
-            response.container.breakpoints.xl.content = `max-width: ${maxWidthXl}px`;
 
         return response;
     }
@@ -186,7 +135,7 @@ class edit extends MaxiBlock {
 
         return [
             <Inspector {...this.props} />,
-            <__experimentalToolbar {...this.props} />,
+            // <__experimentalToolbar {...this.props} />,
             <__experimentalBreadcrumbs />,
             <Fragment>
                 {

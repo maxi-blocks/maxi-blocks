@@ -186,6 +186,37 @@ export const getAlignmentTextObject = alignment => {
     return response;
 }
 
+export const getAlignmentFlexObject = alignment => {
+    const response = {
+        label: alignment.label,
+        general: {},
+        xl: {},
+        l: {},
+        m: {},
+        s: {},
+        xs: {}
+    }
+
+    for (let [key, value] of Object.entries(alignment)) {
+        if (!isNil(value.alignment)) {
+            switch (value.alignment) {
+                case 'left':
+                    response[key]['align-items'] = 'flex-start';
+                    break;
+                case 'center':
+                case 'justify':
+                    response[key]['align-items'] = 'center';
+                    break;
+                case 'right':
+                    response[key]['align-items'] = 'flex-end';
+                    break;
+            }
+        }
+    }
+
+    return response;
+}
+
 export const getOpacityObject = opacity => {
     const response = {
         label: opacity.label,

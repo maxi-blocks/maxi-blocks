@@ -965,7 +965,6 @@ export const backgroundHover = {
     }
 };
 
-
 export const __experimentalDivider = {
     "label": "Divider",
     "general": {
@@ -982,4 +981,32 @@ export const __experimentalDivider = {
         "border-radius": "",
         "opacity": 1
     }
+}
+
+export const __experimentalContainer = {
+    label: 'Container',
+    general: {
+        'max-widthUnit': '%',
+        'max-width': '90'
+    },
+    xl: {
+        'max-widthUnit': '%',
+        'max-width': '90'
+    },
+    l: {
+        'max-widthUnit': '%',
+        'max-width': '90'
+    },
+    m: {
+        'max-widthUnit': '%',
+        'max-width': '90'
+    },
+    s: {
+        'max-widthUnit': '%',
+        'max-width': '90'
+    },
+    xs: {
+        'max-widthUnit': '%',
+        'max-width': '90'
+    },
 }

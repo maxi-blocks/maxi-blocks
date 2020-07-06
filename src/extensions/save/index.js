@@ -24,14 +24,11 @@ const allowedBlocks = [
  */
 
 const withSave = (element, blockType, attributes) => {
-
-	
-
 	if (
 		allowedBlocks.includes(blockType.name) &&
 		!!attributes.linkSettings &&
 		!!JSON.parse(attributes.linkSettings).url
-	){
+	) {
 		const linkSettings = JSON.parse(attributes.linkSettings);
 
 		return (

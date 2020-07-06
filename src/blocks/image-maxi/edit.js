@@ -20,11 +20,12 @@ const {
 import Inspector from './inspector';
 import {
     getBackgroundObject,
-    getBoxShadowObject
+    getBoxShadowObject,
+    getAlignmentFlexObject
 } from '../../extensions/styles/utils';
 import {
     MaxiBlock,
-    __experimentalToolbar
+    __experimentalToolbar,
 } from '../../components';
 
 /**
@@ -34,7 +35,7 @@ import classnames from 'classnames';
 import {
     isEmpty,
     isNil,
-    isNumber
+    isObject
 } from 'lodash';
 
 /**
@@ -72,9 +73,7 @@ class edit extends MaxiBlock {
 
     get getNormalObject() {
         const {
-            alignmentDesktop,
-            alignmentTablet,
-            alignmentMobile,
+            alignment,
             opacity,
             background,
             boxShadow,
@@ -88,61 +87,10 @@ class edit extends MaxiBlock {
             padding: { ...JSON.parse(padding) },
             margin: { ...JSON.parse(margin) },
             background: { ...getBackgroundObject(JSON.parse(background)) },
-            image: {
-                label: 'Image',
-                general: {},
-                desktop: {},
-                tablet: {},
-                mobile: {}
-            }
+            opacity: { ...JSON.parse(opacity) },
+            zindex: { ...JSON.parse(zIndex) },
+            alignment: { ...getAlignmentFlexObject(JSON.parse(alignment)) }
         };
-
-        if (!isNil(alignmentDesktop)) {
-            switch (alignmentDesktop) {
-                case 'left':
-                    response.image.desktop['align-items'] = 'flex-start';
-                    break;
-                case 'center':
-                case 'justify':
-                    response.image.desktop['align-items'] = 'center';
-                    break;
-                case 'right':
-                    response.image.desktop['align-items'] = 'flex-end';
-                    break;
-            }
-        }
-        if (!isNil(alignmentTablet)) {
-            switch (alignmentTablet) {
-                case 'left':
-                    response.image.tablet['align-items'] = 'flex-start';
-                    break;
-                case 'center':
-                case 'justify':
-                    response.image.tablet['align-items'] = 'center';
-                    break;
-                case 'right':
-                    response.image.tablet['align-items'] = 'flex-end';
-                    break;
-            }
-        }
-        if (!isNil(alignmentMobile)) {
-            switch (alignmentMobile) {
-                case 'left':
-                    response.image.mobile['align-items'] = 'flex-start';
-                    break;
-                case 'center':
-                case 'justify':
-                    response.image.mobile['align-items'] = 'center';
-                    break;
-                case 'right':
-                    response.image.mobile['align-items'] = 'flex-end';
-                    break;
-            }
-        }
-        if (isNumber(opacity))
-            response.image.general['opacity'] = opacity;
-        if (isNumber(zIndex))
-            response.image.general['z-index'] = zIndex;
 
         return response;
     }
@@ -157,13 +105,8 @@ class edit extends MaxiBlock {
         const response = {
             boxShadowHover: { ...getBoxShadowObject(JSON.parse(boxShadowHover)) },
             backgroundHover: { ...getBackgroundObject(JSON.parse(backgroundHover)) },
-            imageHover: {
-                label: 'Image Hover',
-                general: {}
-            }
+            opacityHover: { ...JSON.parse(opacityHover) }
         }
-        if (opacityHover)
-            response.imageHover.general['opacity'] = opacityHover;
 
         return response;
     }
@@ -209,10 +152,6 @@ class edit extends MaxiBlock {
             border: { ...JSON.parse(border) },
             borderWidth: { ...JSON.parse(border).borderWidth },
             borderRadius: { ...JSON.parse(border).borderRadius },
-            imageSize: {
-                label: 'Image Size',
-                general: {}
-            }
         };
 
         return response
@@ -239,6 +178,7 @@ class edit extends MaxiBlock {
                 defaultBlockStyle,
                 extraClassName,
                 fullWidth,
+                cropOptions,
                 captionType,
                 captionContent,
                 size,
@@ -259,19 +199,19 @@ class edit extends MaxiBlock {
             'maxi-block maxi-image-block',
             blockStyle,
             extraClassName,
-            'hover-animation-type-'+hoverAnimation,
-            'hover-animation-duration-'+hoverAnimationDuration,
+            'hover-animation-type-' + hoverAnimation,
+            'hover-animation-duration-' + hoverAnimationDuration,
             uniqueID,
             className
         );
 
-        const cropOptions = typeof this.props.attributes.cropOptions === 'object' ?
-            this.props.attributes.cropOptions :
-            JSON.parse(this.props.attributes.cropOptions);
+        const value = !isObject(cropOptions) ?
+            JSON.parse(cropOptions) :
+            cropOptions;
 
         const getImage = () => {
-            if (size === 'custom' && !isEmpty(cropOptions.image.source_url))
-                return cropOptions.image;
+            if (size === 'custom' && !isEmpty(value.image.source_url))
+                return value.image;
             if (imageData && size)
                 return imageData.media_details.sizes[size];
             if (imageData)
@@ -292,7 +232,7 @@ class edit extends MaxiBlock {
 
         return [
             <Inspector {...this.props} />,
-            <__experimentalToolbar {...this.props} />,
+            // <__experimentalToolbar {...this.props} />,
             <__experimentalBlock.figure
                 className={classes}
                 data-gx_initial_block_class={defaultBlockStyle}

@@ -7,14 +7,6 @@ import * as attributesData from '../../extensions/styles/defaults';
  * Attributes
  */
 const attributes = {
-    blockStyle: {
-        type: 'string',
-        default: 'maxi-custom'
-    },
-    defaultBlockStyle: {
-        type: 'string',
-        default: 'maxi-def-light'
-    },
     size: {
         type: 'string',
         default: 'full'
@@ -30,15 +22,9 @@ const attributes = {
         type: 'string',
         default: 'normal',
     },
-    alignmentDesktop: {
+    alignment: {
         type: 'string',
-        default: 'center'
-    },
-    alignmentTablet: {
-        type: 'string',
-    },
-    alignmentMobile: {
-        type: 'string',
+        default: JSON.stringify(attributesData.alignment)
     },
     captionType: {
         type: 'string',
@@ -68,11 +54,12 @@ const attributes = {
         default: 100
     },
     opacity: {
-        type: 'number',
-        default: 1
+        type: 'string',
+        default: JSON.stringify(attributesData.opacity)
     },
     opacityHover: {
-        type: 'number',
+        type: 'string',
+        default: JSON.stringify(attributesData.opacityHover)
     },
     background: {
         type: 'string',
@@ -106,22 +93,6 @@ const attributes = {
         type: 'string',
         default: JSON.stringify(attributesData.margin)
     },
-    hoverAnimation: {
-        type: 'string',
-        default: 'none',
-    },
-    hoverAnimationDuration: {
-        type: 'string',
-        default: 'normal',
-    },
-    extraClassName: {
-        type: 'string',
-        default: ''
-    },
-    extraStyles: {
-        type: 'string',
-        default: ''
-    },
     mediaID: {
         type: 'number',
     },
@@ -140,9 +111,6 @@ const attributes = {
     mediaHeight: {
         type: 'number'
     },
-    zIndex: {
-        type: 'number'
-    }
 }
 
 export default attributes;

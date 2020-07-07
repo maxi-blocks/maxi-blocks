@@ -190,6 +190,7 @@ class edit extends MaxiBlock {
             className,
         );
 
+
         return [
             <Inspector {...this.props} />,
             <__experimentalToolbar {...this.props} />,

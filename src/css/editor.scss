@@ -46,9 +46,6 @@ body.maxi-blocks--active {
 	.block-editor-block-list__layout.is-root-container {
 		.maxi-block {
 			&[data-align="full"] {
-				// margin-left: auto;
-				// margin-right: auto;
-
 				.wp-block {
 					max-width: none;
 				}
@@ -79,11 +76,39 @@ body.maxi-blocks--active {
 /*****************
 * Maxi Blocks
 ******************/
+body {
+	.maxi-container-block  {
+		.maxi-container-block__container {
+			padding-right: 0 !important;
+			padding-left: 0 !important;
+			& > .block-list-appender {
+				margin: 0;
+			}
+			.maxi-column-block__resizer {
+				margin: 0 !important;
+			}
+		}
+		& > .block-editor-block-list__layout {
+			padding: 0 !important;
+
+			& > .wp-block-maxi-blocks-row-maxi {
+				padding: 0 !important;
+				justify-content: space-between;
+			}
+		}
+	}
+}
 .maxi-block {
-	.block-editor-inserter,
+	&:hover {
+		.maxi-column-hover {
+			opacity: 0.2;
+		}
+	}
 	.block-editor-block-list__layout {
-		position: inherit;
-		z-index: 2;
+		padding: 10px;
+		&:focus:after {
+			box-shadow: none !important;
+		}
 	}
 	.block-list-appender {
 		.block-editor-button-block-appender {
@@ -126,15 +151,6 @@ body.maxi-blocks--active {
 			opacity: 1 !important;
 		}
 	}
-
-	// &:hover {
-	// 	.block-list-appender {
-	// 		.block-editor-button-block-appender {
-	// 			visibility: visible !important;
-	// 			opacity: 1 !important;
-	// 		}
-	// 	}
-	// }
 }
 
 /****************

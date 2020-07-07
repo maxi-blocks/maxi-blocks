@@ -52,6 +52,7 @@ const Inspector = props => {
             padding,
             hoverAnimation,
             hoverAnimationDuration,
+            hoverAnimationType,
             extraClassName,
             extraStyles,
             zIndex
@@ -296,6 +297,8 @@ const Inspector = props => {
                                 <HoverAnimationControl
                                     hoverAnimation={hoverAnimation}
                                     onChangeHoverAnimation={hoverAnimation => setAttributes({ hoverAnimation })}
+                                    hoverAnimationType={hoverAnimationType}
+                                    onChangeHoverAnimationType={hoverAnimationType => setAttributes({ hoverAnimationType })}
                                     hoverAnimationDuration={hoverAnimationDuration}
                                     onChangeHoverAnimationDuration={hoverAnimationDuration => setAttributes({ hoverAnimationDuration })}
                                 />

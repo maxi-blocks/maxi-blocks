@@ -81,6 +81,10 @@ const attributes = {
         type: 'string',
         default: 'none',
     },
+    hoverAnimationType: {
+        type: 'string',
+        default: 'none',
+    },
     hoverAnimationDuration: {
         type: 'string',
         default: 'normal',

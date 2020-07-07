@@ -3,16 +3,15 @@ div.maxi-column-block {
     max-width: 100% !important;
     margin: auto;
     height: 100%;
-    //outline: 1px solid #7fbddc;
 
     &__resizer {
         line-height: 0;
         outline: 1px solid #7fbddc;
-        &.active-column {
-            opacity: 0.5;
+        position: relative;
+        padding: 10px;
+
+        &:hover {
+            outline: 2px solid #83605d;
         }
-    }
-    &:hover {
-        //outline: 1px solid red;
     }
 }

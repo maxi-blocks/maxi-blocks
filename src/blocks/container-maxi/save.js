@@ -8,12 +8,14 @@ const { Fragment } = wp.element;
  * External dependencies
  */
 import classnames from 'classnames';
+import Scripts from '../../extensions/styles/hoverAnimations.js';
 
 /**
  * Save
  */
 const save = props => {
     const {
+        className,
         attributes: {
             uniqueID,
             isFirstOnHierarchy,
@@ -21,14 +23,27 @@ const save = props => {
             defaultBlockStyle,
             fullWidth,
             extraClassName,
-        },
-        className,
+            hoverAnimation,
+            hoverAnimationType,
+            hoverAnimationTypeText,
+            hoverAnimationDuration,
+            hoverAnimationTitle,
+            hoverAnimationContent,
+            hoverOpacity,
+            hoverBackground,
+            hoverAnimationCustomBorder,
+            hoverPadding,
+        }
     } = props;
 
     let classes = classnames(
         'maxi-block maxi-container-block',
         blockStyle,
         extraClassName,
+        'hover-animation-' + hoverAnimation,
+        'hover-animation-type-' + hoverAnimationType,
+        'hover-animation-type-text-' + hoverAnimationTypeText,
+        'hover-animation-duration-' + hoverAnimationDuration,
         className,
         fullWidth === 'full' ?
             'alignfull' :
@@ -59,6 +74,30 @@ const save = props => {
                     data-gx_initial_block_class={defaultBlockStyle}
                 >
                     <InnerBlocks.Content />
+                    {hoverAnimation === 'text' &&
+                        <div className='maxi-block-text-hover'>
+                            {hoverAnimationTitle !== '' &&
+                                <h3 className='maxi-block-text-hover__title'>{hoverAnimationTitle}</h3>
+                            }
+                            {hoverAnimationContent !== '' &&
+                                <div className='maxi-block-text-hover__content'>{hoverAnimationContent}</div>
+                            }
+                        </div>
+                    }
+                    {hoverAnimation === 'basic' &&
+                        <Scripts
+                            hover_animation={hoverAnimationType}
+                            hover_animation_type={hoverAnimation}
+                        >
+                        </Scripts>
+                    }
+                    {hoverAnimation === 'text' &&
+                        <Scripts
+                            hover_animation={hoverAnimationTypeText}
+                            hover_animation_type={hoverAnimation}
+                        >
+                        </Scripts>
+                    }
                 </div>
             }
         </Fragment>

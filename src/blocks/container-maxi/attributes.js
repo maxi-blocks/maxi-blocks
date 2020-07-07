@@ -98,9 +98,21 @@ const attributes = {
         type: 'string',
         default: JSON.stringify(attributesData.padding)
     },
+    hoverPadding: {
+        type: 'string',
+        default: JSON.stringify(attributesData.padding)
+    },
     hoverAnimation: {
         type: 'string',
         default: 'none',
+    },
+    hoverAnimationType: {
+        type: 'string',
+        default: 'tilt',
+    },
+    hoverAnimationTypeText: {
+        type: 'string',
+        default: 'fade',
     },
     hoverAnimationDuration: {
         type: 'string',
@@ -116,7 +128,61 @@ const attributes = {
     },
     zIndex: {
         type: 'number'
-    }
+    },
+    hoverCustomTextContent: {
+            type: 'string',
+            default: 'no'
+    },
+    hoverCustomTextTitle: {
+        type: 'string',
+        default: 'no'
+    },
+    hoverAnimationTitle: {
+        type: 'string',
+        default: 'Add your Hover Title here',
+    },
+    hoverAnimationContent: {
+        type: 'string',
+        default: 'Add your Hover Content here',
+    },
+    hoverAnimationCustomBorder: {
+        type: 'string',
+        default: 'no'
+    },
+    hoverAnimationTitleTypography: {
+        type: 'string',
+        default: JSON.stringify(attributesData.typography)
+    },
+    hoverAnimationContentTypography: {
+        type: 'string',
+        default: JSON.stringify(attributesData.typography)
+    },
+    hoverCustomTextContent: {
+        type: 'string',
+        default: 'no'
+    },
+    hoverCustomTextTitle: {
+        type: 'string',
+        default: 'no'
+    },
+    hoverBorder: {
+        type: 'string',
+        default: JSON.stringify(attributesData.border)
+    },
+    hoverBackground: {
+        type: 'string',
+        default: JSON.stringify(attributesData.background)
+    },
+    hoverAnimationTypeOpacity: {
+        type: 'number',
+    },
+    hoverAnimationTypeOpacityColor: {
+        type: 'number',
+    },
+    hoverAnimationTypeOpacityColorBackground: {
+        type: 'string',
+        default: JSON.stringify(attributesData.background)
+    },
 }
 
 export default attributes;

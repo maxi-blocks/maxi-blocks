@@ -1,0 +1,90 @@
+.hover-animation-text.hover-animation-type-text-push-up.hover-animation-duration-shorter .hover_el{
+    -webkit-transition: .1s ease-in-out;
+    transition: .1s ease-in-out;
+}
+
+.hover-animation-text.hover-animation-type-text-push-up.hover-animation-duration-short .hover_el{
+    -webkit-transition: .2s ease-in-out;
+    transition: .2s ease-in-out;
+}
+
+.hover-animation-text.hover-animation-type-text-push-up.hover-animation-duration-normal .hover_el{
+    -webkit-transition: .3s ease-in-out;
+    transition: .3s ease-in-out;
+}
+
+.hover-animation-text.hover-animation-type-text-push-up.hover-animation-duration-long .hover_el{
+    -webkit-transition: .5s ease-in-out;
+    transition: .5s ease-in-out;
+}
+
+.hover-animation-text.hover-animation-type-text-push-up.hover-animation-duration-longer .hover_el{
+    -webkit-transition: .6s ease-in-out;
+    transition: .6s ease-in-out;
+}
+
+.hover-animation-text.hover-animation-type-text-push-up{
+    overflow: hidden;
+}
+
+.hover-animation-text.hover-animation-type-text-push-up,
+.hover-animation-text .maxi-text-block-wrap{
+    position: relative;
+}
+
+
+.hover-animation-text.hover-animation-type-text-push-up .hover_el_cont {
+    position: relative;
+    overflow: hidden;
+}
+
+.hover-animation-text.hover-animation-type-text-push-up .hover_el{
+    position: relative;
+    transform: translate(0,0);
+    display: block;
+    float: left;
+    width: 100%;
+}
+
+.hover-animation-text.hover-animation-type-text-push-up .maxi-block-text-hover .maxi-block-text-hover__title{
+    margin: 0 0 10px !important;
+}
+
+.hover-animation-text.hover-animation-type-text-push-up .maxi-block-text-hover{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+   transform: translate(0,100%);
+    overflow-y: scroll;
+}
+
+
+.hover-animation-text.hover-animation-type-text-push-up:hover .hover_el{
+    transform: translate(0,-100%);
+}
+
+
+
+.hover-animation-text.hover-animation-type-text-push-up .maxi-block-text-hover::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+
+.hover-animation-text.hover-animation-type-text-push-up .maxi-block-text-hover::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Handle */
+
+.hover-animation-text.hover-animation-type-text-push-up .maxi-block-text-hover::-webkit-scrollbar-thumb {
+    background: #dadada;
+}
+
+/* Handle on hover */
+
+.hover-animation-text.hover-animation-type-text-push-up .maxi-block-text-hover::-webkit-scrollbar-thumb:hover {
+    background: #000;
+}

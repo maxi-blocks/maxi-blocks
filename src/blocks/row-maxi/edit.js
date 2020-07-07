@@ -199,6 +199,7 @@ class edit extends GXBlock {
                 null,
         );
 
+
         return [
             <Inspector {...this.props} />,
             <__experimentalToolbar {...this.props} />,

@@ -2,8 +2,8 @@
     margin: auto;
     margin-bottom: 1rem;
 
-    &:hover {
-        //outline: 1px solid grey;
+    .maxi-container-block__container {
+        border: 1px solid #7fbddc;
     }
 
     &[data-align="full"] {

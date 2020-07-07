@@ -52,13 +52,6 @@ class edit extends GXBlock {
         styles: {},
     }
 
-    componentDidMount() {
-        // document.querySelector('.maxi-container-block__container .block-editor-block-list__layout .block-editor-block-list__layout').addEventListener('mouseenter', function(evt){
-        //     console.log(evt.target.classList.add('active-column'))
-        // });
-        document.querySelector('.maxi-container-block__container .block-editor-block-list__block').style.background = "#0f0";
-    }
-
     componentDidUpdate() {
         this.setResizeHandleStyles();
         this.displayStyles();

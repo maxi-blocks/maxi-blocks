@@ -76,7 +76,7 @@ jQuery(document).ready(function($) {
   });
     // main function
 
-    $('.components-button.maxi-block-library__modal-button').live('click', function() {
+    $('.components-button.maxi-block-library__modal-button').on('click', function() {
       console.log('button clicked');
       setTimeout(function(){
           console.log('iframe loaded');

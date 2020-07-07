@@ -39,6 +39,7 @@ const CustomCSS = props => {
             />
             <TextareaControl
                 label={__('Additional CSS Styles', 'maxi-blocks')}
+                placeholder={__('Uses the block\'s class as a parent class', 'maxi-blocks')}
                 className='maxi-additional__css-styles'
                 value={extraStyles}
                 onChange={value => onChangeValue('extraStyles', value, onChangeExtraStyles)}

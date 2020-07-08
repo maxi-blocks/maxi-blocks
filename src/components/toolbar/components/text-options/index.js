@@ -82,7 +82,7 @@ const TextOptions = props => {
                             }}
                         />
                         <Button
-                            className="components-maxi-dimensions-control__units-reset"
+                            className="components-maxi-control__reset-button"
                             onClick={() => {
                                 value.font = defaultRawTypography.font;
                                 updateTypography();
@@ -119,7 +119,7 @@ const TextOptions = props => {
 
                                             />
                                             <Button
-                                                className="components-maxi-dimensions-control__units-reset"
+                                                className="components-maxi-control__reset-button"
                                                 onClick={() => {
                                                     value.desktop['font-size'] = defaultTypography.desktop['font-size'];
                                                     updateTypography();
@@ -149,7 +149,7 @@ const TextOptions = props => {
 
                                             />
                                             <Button
-                                                className="components-maxi-dimensions-control__units-reset"
+                                                className="components-maxi-control__reset-button"
                                                 onClick={() => {
                                                     value.desktop['line-height'] = defaultTypography.desktop['line-height'];
                                                     updateTypography();
@@ -179,7 +179,7 @@ const TextOptions = props => {
 
                                             />
                                             <Button
-                                                className="components-maxi-dimensions-control__units-reset"
+                                                className="components-maxi-control__reset-button"
                                                 onClick={() => {
                                                     value.desktop['letter-spacing'] = defaultTypography.desktop['letter-spacing'];
                                                     updateTypography();
@@ -216,7 +216,7 @@ const TextOptions = props => {
 
                                             />
                                             <Button
-                                                className="components-maxi-dimensions-control__units-reset"
+                                                className="components-maxi-control__reset-button"
                                                 onClick={() => {
                                                     value.tablet['font-size'] = defaultTypography.tablet['font-size'];
                                                     updateTypography();
@@ -246,7 +246,7 @@ const TextOptions = props => {
 
                                             />
                                             <Button
-                                                className="components-maxi-dimensions-control__units-reset"
+                                                className="components-maxi-control__reset-button"
                                                 onClick={() => {
                                                     value.tablet['line-height'] = defaultTypography.tablet['line-height'];
                                                     updateTypography();
@@ -276,7 +276,7 @@ const TextOptions = props => {
 
                                             />
                                             <Button
-                                                className="components-maxi-dimensions-control__units-reset"
+                                                className="components-maxi-control__reset-button"
                                                 onClick={() => {
                                                     value.tablet['letter-spacing'] = defaultTypography.tablet['letter-spacing'];
                                                     updateTypography();
@@ -323,7 +323,7 @@ const TextOptions = props => {
 
                                             />
                                             <Button
-                                                className="components-maxi-dimensions-control__units-reset"
+                                                className="components-maxi-control__reset-button"
                                                 onClick={() => {
                                                     value.mobile['font-size'] = defaultTypography.mobile['font-size'];
                                                     updateTypography();
@@ -353,7 +353,7 @@ const TextOptions = props => {
 
                                             />
                                             <Button
-                                                className="components-maxi-dimensions-control__units-reset"
+                                                className="components-maxi-control__reset-button"
                                                 onClick={() => {
                                                     value.mobile['line-height'] = defaultTypography.mobile['line-height'];
                                                     updateTypography();
@@ -383,7 +383,7 @@ const TextOptions = props => {
 
                                             />
                                             <Button
-                                                className="components-maxi-dimensions-control__units-reset"
+                                                className="components-maxi-control__reset-button"
                                                 onClick={() => {
                                                     value.mobile['letter-spacing'] = defaultTypography.mobile['letter-spacing'];
                                                     updateTypography();

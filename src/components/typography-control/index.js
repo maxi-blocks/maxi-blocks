@@ -102,7 +102,7 @@ const TypographyControl = props => {
                 }}
             />
             <ColorControl
-                label={__('Font Color', 'maxi-blocks')}
+                label={__('Font', 'maxi-blocks')}
                 className="maxi-typography-control__color"
                 color={value.general.color}
                 defaultColor={defaultColor} // #128

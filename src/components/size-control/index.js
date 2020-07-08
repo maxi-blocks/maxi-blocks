@@ -85,7 +85,7 @@ const SizeControl = props => {
                 onChange={(val) => onChangeUnit(val)}
             />
             <Button
-                className='components-maxi-dimensions-control__units-reset'
+                className='components-maxi-control__reset-button'
                 onClick={() => onChangeValue('')}
                 isSmall
                 aria-label={sprintf(

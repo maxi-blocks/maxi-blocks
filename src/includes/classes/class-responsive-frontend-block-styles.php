@@ -1,6 +1,7 @@
 <?php
 
-class ResponsiveFrontendStyles {
+class ResponsiveFrontendStyles
+{
     /**
      * This plugin's instance.
      *
@@ -11,7 +12,8 @@ class ResponsiveFrontendStyles {
     /**
      * Registers the plugin.
      */
-    public static function register() {
+    public static function register()
+    {
         if (null === self::$instance) {
             self::$instance = new ResponsiveFrontendStyles();
         }
@@ -20,7 +22,8 @@ class ResponsiveFrontendStyles {
     /**
      * Constructor
      */
-    public function __construct() {
+    public function __construct()
+    {
         add_action('wp_enqueue_scripts', array($this, 'enqueue_styles'));
         add_action('admin_enqueue_scripts', array($this, 'enqueue_styles'));
     }
@@ -28,10 +31,11 @@ class ResponsiveFrontendStyles {
     /**
      * Enqueuing styles
      */
-    public function enqueue_styles() {
+    public function enqueue_styles()
+    {
         // Inline styles
-        wp_register_style( 'maxi-blocks', false );
-        wp_enqueue_style( 'maxi-blocks' );
+        wp_register_style('maxi-blocks', false);
+        wp_enqueue_style('maxi-blocks');
         wp_add_inline_style('maxi-blocks', $this->styles());
 
         $this->fonts();
@@ -40,42 +44,63 @@ class ResponsiveFrontendStyles {
     /**
      * Gets meta content
      */
-    public function getMeta () {
+    public function getMeta()
+    {
         global $post;
         if (!$post || !isset($post->ID))
             return;
-        $meta = get_post_meta($post->ID, '_gutenberg_extra_responsive_styles', true);
-        if (empty($meta))
+
+        $styles = get_option('mb_styles_api');
+
+        if (!isset($styles[$post->ID]))
             return;
-        $meta = json_decode( $meta );
+
+        $meta = is_preview() || is_admin() ? 
+            $styles[$post->ID]['_maxi_blocks_styles_preview'] :
+            $styles[$post->ID]['_maxi_blocks_styles'];
+
+        if (!!$meta && empty($meta))
+            return;
+        $meta = json_decode($meta);
         return $this->organizeMeta($meta);
     }
 
     /**
      * Organizes meta in order to avoid duplicate selectors on style element
      */
-    public function organizeMeta($meta) {
+    public function organizeMeta($meta)
+    {
         $response = [];
-        foreach ( $meta as $target => $fields ) {
+        foreach ($meta as $target => $fields) {
             $response[$target] = [];
-            foreach( $fields as $field => $props) {
-                if ( property_exists($props, 'font') ) :
+            foreach ($fields as $field => $props) {
+                if (property_exists($props, 'font')) :
                     $response[$target]['font'] = $props->font;
                     $response[$target]['options'] = $props->options;
                 endif;
                 if (isset($props->desktop)) {
-                    foreach( $props->desktop as $prop => $value ) {
+                    foreach ($props->desktop as $prop => $value) {
                         $response[$target]['desktop'][$prop] = $value;
                     }
                 }
                 if (isset($props->tablet)) {
-                    foreach( $props->tablet as $prop => $value ) {
+                    foreach ($props->tablet as $prop => $value) {
                         $response[$target]['tablet'][$prop] = $value;
                     }
                 }
                 if (isset($props->mobile)) {
-                    foreach( $props->mobile as $prop => $value ) {
+                    foreach ($props->mobile as $prop => $value) {
                         $response[$target]['mobile'][$prop] = $value;
+                    }
+                }
+                if (isset($props->breakpoints)) {
+                    $response[$target]['breakpoints'] = '';
+                    foreach ($props->breakpoints as $screen => $breakpoint) {
+                        $rule = $breakpoint->rule ?? '';
+                        $content = $breakpoint->content ?? '';
+
+                        if (!!$rule && !!$content)
+                            $response[$target]['breakpoints'] .= "@media only screen and ($rule) {.$target{ $content}}";
                     }
                 }
             }
@@ -87,9 +112,10 @@ class ResponsiveFrontendStyles {
     /**
      * Retrieve meta values for each device
      */
-    public function organizeResponsiveMeta($target, $deviceProps) {
+    public function organizeResponsiveMeta($target, $deviceProps)
+    {
         $response = [];
-        foreach( $deviceProps as $prop => $value ) {
+        foreach ($deviceProps as $prop => $value) {
             $response[$target]['desktop'][$prop] = $value;
         }
         return $response;
@@ -98,33 +124,37 @@ class ResponsiveFrontendStyles {
     /**
      * Create styles
      */
-    public function styles() {
+    public function styles()
+    {
         $meta = $this->getMeta();
-        if ( empty( $meta ) )
+        if (empty($meta))
             return;
         $response = '';
 
-        foreach ( $meta as $target => $prop ) {
+        foreach ($meta as $target => $prop) {
             $target = self::getTarget($target);
             $important = ' !important';
-            if ( isset($prop['desktop']) && !empty ($prop['desktop']) || ! isset($prop['font']) ) {
+
+            if (isset($prop['desktop']) && !empty($prop['desktop']) || !isset($prop['font'])) {
                 $response .= ".{$target}{";
-                    if ( isset($prop['font']) )
-                        $response .= "font-family: {$prop['font']}{$important};";
-                    if (isset($prop['desktop']) && !empty ($prop['desktop']))
-                        $response .= self::getStyles($prop['desktop']);
+                if (isset($prop['font']))
+                    $response .= "font-family: {$prop['font']}{$important};";
+                if (isset($prop['desktop']) && !empty($prop['desktop']))
+                    $response .= self::getStyles($prop['desktop']);
                 $response .= '}';
             };
-            if ( isset($prop['tablet']) && ! empty ($prop['tablet']) ) {
-                $response .= "@media only screen and (max-width: 768px) {.{$target}{";
-                    $response .= self::getStyles($prop['tablet']);
+            if (isset($prop['tablet']) && !empty($prop['tablet'])) {
+                $response .= "@media only screen and (max-width: 768px) {.$target{";
+                $response .= self::getStyles($prop['tablet']);
                 $response .= '}}';
             }
-            if ( isset($prop['mobile']) && ! empty ($prop['mobile']) ) {
-                $response .= "@media only screen and (max-width: 480px) {.{$target}{";
-                    $response .= self::getStyles($prop['mobile']);
+            if (isset($prop['mobile']) && !empty($prop['mobile'])) {
+                $response .= "@media only screen and (max-width: 480px) {.$target{";
+                $response .= self::getStyles($prop['mobile']);
                 $response .= '}}';
             }
+            if (isset($prop['breakpoints']) && !empty($prop['breakpoints']))
+                $response .= $prop['breakpoints'];
         }
 
         return wp_strip_all_tags($response);
@@ -133,23 +163,25 @@ class ResponsiveFrontendStyles {
     /**
      * Retrieve a cleaned target
      */
-    public function getTarget($target) {
-        if(strpos($target, '__$:'))
-            return str_replace( '__$', '', $target );
-        if(strpos($target, '__$>'))
-            return str_replace( '__$', '', $target );
-        if(strpos($target, '__$#'))
-            return str_replace( '__$', '', $target );
-        return str_replace( '__$', ' .', $target );
+    public function getTarget($target)
+    {
+        if (strpos($target, '__$:'))
+            return str_replace('__$', '', $target);
+        if (strpos($target, '__$>'))
+            return str_replace('__$', '', $target);
+        if (strpos($target, '__$#'))
+            return str_replace('__$', '', $target);
+        return str_replace('__$', ' .', $target);
     }
 
     /**
      * Responsive styles
      */
-    public function getStyles($styles) {
+    public function getStyles($styles)
+    {
         $response = '';
         $important = ' !important';
-        foreach ( $styles as $property => $value ) {
+        foreach ($styles as $property => $value) {
             $response .= "{$property}: {$value}{$important};";
         }
         return $response;
@@ -161,14 +193,15 @@ class ResponsiveFrontendStyles {
      * @return object   Font name with font options
      */
 
-    public function fonts() {
+    public function fonts()
+    {
         $meta = $this->getMeta();
-        
-        if ( empty( $meta ) )
+
+        if (empty($meta))
             return;
 
         $fontOptions = [];
-        foreach ( $meta as $target ) {
+        foreach ($meta as $target) {
             if (isset($target['font'])) {
                 $fontOptions[$target['font']] = $target['options'];
             }

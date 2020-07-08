@@ -1,8 +1,5 @@
 .maxi-block-placeholder {
-    background: #ebebeb;
-    border: 1px solid #93959b;
-    border-radius: 5px;
-    margin: -15px 0;
+    border: 1px solid #9b9b9b;
 
     &__text {
         text-align: center;
@@ -24,8 +21,10 @@
         position: relative !important;
         visibility: visible !important;
         opacity: 1 !important;
-        margin: auto !important;
-        left: inherit !important;
-        transform: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
     }
 }

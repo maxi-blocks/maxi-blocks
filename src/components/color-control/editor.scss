@@ -1,14 +1,30 @@
-.maxi-colorcontrol__display {
-	margin: auto;
+.maxi-colorcontrol {
+	&__display {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
 
-	span {
-		display: block;
-		width: 28px;
-		height: 28px;
-		margin: auto;
-		border: 2px solid #dddfe1;
-		opacity: 1;
-		margin-right: 8px;
-		float: left;
+		.components-base-control__field {
+			width: 100%;
+		}
+		&__color {
+			display: flex;
+			align-items: center;
+			justify-content: flex-end;
+
+			span {
+				display: block;
+				width: 31px;
+				height: 31px;
+				margin: auto;
+				border: 2px solid #dddfe1;
+				opacity: 1;
+				float: left;
+				border-radius: 5px;
+			}
+			.components-maxi-control__reset-button {
+				border-color: #dddfe1;
+			}
+		}
 	}
 }

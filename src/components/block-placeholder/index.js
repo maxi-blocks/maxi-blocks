@@ -22,7 +22,7 @@ const BlockPlaceholder = props => {
     const {
         clientId,
         className,
-        content = __('Start by adding a block here', 'maxi-blocks')
+        content = ''
     } = props;
 
     const classes = classnames(
@@ -40,8 +40,8 @@ const BlockPlaceholder = props => {
             >
                 {content}
             </p>
-            <ButtonBlockerAppender 
-                rootClientId={clientId} 
+            <ButtonBlockerAppender
+                rootClientId={clientId}
                 className='maxi-block-placeholder__button'
             />
         </div>

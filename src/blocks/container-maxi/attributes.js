@@ -2,7 +2,6 @@
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults';
-import * as containerAttributesData from './data';
 
 /**
  * Attributes
@@ -16,13 +15,49 @@ const attributes = {
         type: 'string',
         default: 'maxi-def-light'
     },
+    containerXl: {
+        type: 'number',
+        default: 1200,
+    },
+    maxWidthXl: {
+        type: 'number',
+        default: 1140,
+    },
+    containerLg: {
+        type: 'number',
+        default: 992
+    },
+    maxWidthLg: {
+        type: 'number',
+        default: 960
+    },
+    containerMd: {
+        type: 'number',
+        default: 768
+    },
+    maxWidthMd: {
+        type: 'number',
+        default: 720
+    },
+    containerSm: {
+        type: 'number',
+        default: 576
+    },
+    maxWidthSm: {
+        type: 'number',
+        default: 540
+    },
+    containerPadding: {
+        type: 'number',
+        default: 16
+    },
     fullWidth: {
         type: 'string',
         default: 'full',
     },
     size: {
         type: 'string',
-        default: JSON.stringify(containerAttributesData.size)
+        default: JSON.stringify(attributesData.size)
     },
     opacity: {
         type: 'number',
@@ -61,7 +96,11 @@ const attributes = {
     },
     padding: {
         type: 'string',
-        default: JSON.stringify(containerAttributesData.padding)
+        default: JSON.stringify(attributesData.padding)
+    },
+    hoverPadding: {
+        type: 'string',
+        default: JSON.stringify(attributesData.padding)
     },
     hoverPadding: {
         type: 'string',

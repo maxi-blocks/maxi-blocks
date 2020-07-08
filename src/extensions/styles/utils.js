@@ -152,3 +152,24 @@ export const getBoxShadowObject = boxShadowObject => {
 
     return response;
 }
+
+export const getVideoBackgroundObject = videoOptions => {
+    const response = {
+        label: 'Video Background',
+        general: {}
+    }
+
+    if(!isNil(videoOptions.fill))
+        response.general['object-fit'] = videoOptions.fill;
+
+    if(!isNil(videoOptions.position))
+        response.general['object-position'] = videoOptions.position;
+
+    if(!isNil(videoOptions.width))
+        response.general['width'] = `${videoOptions.width}${videoOptions.widthUnit}`;
+
+    if(!isNil(videoOptions.height))
+        response.general['height'] = `${videoOptions.height}${videoOptions.heightUnit}`;
+
+    return response;
+}

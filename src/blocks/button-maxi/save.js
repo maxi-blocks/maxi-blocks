@@ -52,9 +52,8 @@ const save = props => {
             data-gx_initial_block_class={defaultBlockStyle}
         >
             <Button
-                className="maxi-buttoneditor-button"
+                className="maxi-button-extra__button"
                 {...linkProps}
-                data-gx_initial_block_class={defaultBlockStyle}
             >
                 {buttonText}
             </Button>

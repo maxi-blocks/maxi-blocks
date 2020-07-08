@@ -1,6 +1,7 @@
 /**
  * Wordpress dependencies
  */
+const { __ } = wp.i18n;
 const { Button } = wp.components;
 const { Component } = wp.element;
 
@@ -51,7 +52,8 @@ export default class FontLevelControl extends Component {
         h5Hover: {},
         h5Margin: {},
         h6: {},
-        h6Hover: {}
+        h6Hover: {},
+        h6Margin: {},
     }
 
     render() {
@@ -81,7 +83,7 @@ export default class FontLevelControl extends Component {
             if (!isEmpty(this.state[value])) {
                 fontOptResponse = this.state[value];
                 fontOptResponseHover = this.state[`${value}Hover`];
-                fontOptResponseHover = this.state[`${value}Margin`];
+                marginOptResponse = this.state[`${value}Margin`];
             }
             else if (!isNil(fontOptions)) {
                 const oldFontOptions = typeof fontOptions === 'object' ? fontOptions : JSON.parse(fontOptions);
@@ -92,13 +94,12 @@ export default class FontLevelControl extends Component {
             }
 
             onChange(
-                value, 
-                JSON.stringify(fontOptResponse), 
-                JSON.stringify(fontOptResponseHover), 
+                value,
+                JSON.stringify(fontOptResponse),
+                JSON.stringify(fontOptResponseHover),
                 JSON.stringify(marginOptResponse)
             )
         }
-
         const saveOldies = value => {
             this.setState({
                 [lastLevel]: typeof fontOptions === 'object' ? fontOptions : JSON.parse(fontOptions),
@@ -115,49 +116,49 @@ export default class FontLevelControl extends Component {
                     aria-pressed={value === 'p'}
                     onClick={() => onChangeValue('p')}
                 >
-                    P
+                    {__('P', 'maxi-blocks')}
                 </Button>
                 <Button
                     className="maxi-fontlevel-control__button"
                     aria-pressed={value === 'h1'}
                     onClick={() => onChangeValue('h1')}
                 >
-                    H1
+                    {__('H1', 'maxi-blocks')}
                 </Button>
                 <Button
                     className="maxi-fontlevel-control__button"
                     aria-pressed={value === 'h2'}
                     onClick={() => onChangeValue('h2')}
                 >
-                    H2
+                    {__('H2', 'maxi-blocks')}
                 </Button>
                 <Button
                     className="maxi-fontlevel-control__button"
                     aria-pressed={value === 'h3'}
                     onClick={() => onChangeValue('h3')}
                 >
-                    H3
+                    {__('H3', 'maxi-blocks')}
                 </Button>
                 <Button
                     className="maxi-fontlevel-control__button"
                     aria-pressed={value === 'h4'}
                     onClick={() => onChangeValue('h4')}
                 >
-                    H4
+                    {__('H4', 'maxi-blocks')}
                 </Button>
                 <Button
                     className="maxi-fontlevel-control__button"
                     aria-pressed={value === 'h5'}
                     onClick={() => onChangeValue('h5')}
                 >
-                    H5
+                    {__('H5', 'maxi-blocks')}
                 </Button>
                 <Button
                     className="maxi-fontlevel-control__button"
                     aria-pressed={value === 'h6'}
                     onClick={() => onChangeValue('h6')}
                 >
-                    H6
+                    {__('H6', 'maxi-blocks')}
                 </Button>
             </div>
         )

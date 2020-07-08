@@ -87,6 +87,21 @@ export const background = {
             "attachment": "scroll"
         }
     ],
+    "videoOptions": {
+        "mediaID": "",
+        "mediaURL": "",
+        "width": "100",
+        "widthUnit": "%",
+        "height": "100",
+        "heightUnit": "%",
+        "fill": "cover",
+        "position": "unset",
+        "autoplay": 0,
+        "loop": 0,
+        "muted": 0,
+        "controls": 0,
+        "preload": "metadata"
+    },
     "colorOptions": {
         "color": "",
         "defultColor": "",
@@ -340,6 +355,21 @@ export const backgroundHover = {
             "attachment": "scroll"
         }
     ],
+    "videoOptions": {
+        "mediaID": "",
+        "mediaURL": "",
+        "width": "100",
+        "widthUnit": "%",
+        "height": "100",
+        "heightUnit": "%",
+        "fill": "cover",
+        "position": "unset",
+        "autoplay": 0,
+        "loop": 0,
+        "muted": 0,
+        "controls": 0,
+        "preload": "metadata"
+    },
     "colorOptions": {
         "color": "",
         "defultColor": "",
@@ -474,7 +504,7 @@ export const __experimentalDivider = {
         "border-color": "#ff4a17",
         "border-style": "solid",
         "widthUnit": "%",
-        "width": 9,
+        "width": 100,
         "heightUnit": "%",
         "height": "",
         "border-top-widthUnit": "px",

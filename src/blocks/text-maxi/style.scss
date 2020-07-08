@@ -1,29 +1,5 @@
-.maxi-image-block {
-	position: relative;
-
-	> div.maxi-image-block-settings {
-		position: absolute;
-		width: 3rem;
-		height: 3rem;
-		top: 5%;
-		left: calc(95% - 3rem);
-
-		> button.maxi-image-block-upload-button {
-			width: 100%;
-			height: 100%;
-			border: 1px solid red;
-			opacity: 0;
-			visibility: hidden;
-			transition: all .5s ease;
-		}
-	}
-}
-
-.maxi-image-block:hover {
-	> div.maxi-image-block-settings {
-		> button.maxi-image-block-upload-button {
-			opacity: 1;
-			visibility: visible;
-		}
-	}
+.maxi-text-block {
+    // margin-right: 0 !important;
+    // margin-left: 0 !important;
+    width: 100%;
 }

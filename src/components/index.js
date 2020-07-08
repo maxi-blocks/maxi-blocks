@@ -1,8 +1,8 @@
 // GX component
-export { default as GXComponent} from '../extensions/maxi-component';
+export { default as MaxiComponent} from '../extensions/maxi-component';
 
 // GX Block
-export { default as GXBlock } from '../extensions/maxi-block';
+export { default as MaxiBlock } from '../extensions/maxi-block';
 
 // Components
 export { default as AccordionControl } from './accordion-control';
@@ -31,6 +31,7 @@ export { default as TextShadowControl } from './text-shadow-control';
 export { default as TypographyControl } from './typography-control';
 
 // Experimental
+export { default as __experimentalVideoPlayer } from './video-player';
 export { default as __experimentalToolbar } from './toolbar';
 export { default as __experimentalDividerControl } from './divider-control';
 export { default as __experimentalBreadcrumbs } from './breadcrumbs';

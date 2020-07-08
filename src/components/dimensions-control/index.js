@@ -16,7 +16,7 @@ const {
 /**
  * Internal dependencies
  */
-import { GXComponent } from '../index';
+import { MaxiComponent } from '../index';
 
 /**
  * External dependencies
@@ -38,7 +38,7 @@ import {
 /**
  * Component
  */
-export default class DimensionsControl extends GXComponent {
+export default class DimensionsControl extends MaxiComponent {
 
 	state = {
 		device: 'desktop'
@@ -143,7 +143,7 @@ export default class DimensionsControl extends GXComponent {
 							onChange={(val) => onChangeUnit(val)}
 						/>
 						<Button
-							className="components-maxi-dimensions-control__units-reset"
+							className="components-maxi-control__reset-button"
 							onClick={onReset}
 							aria-label={sprintf(
 								/* translators: %s: a texual label  */

@@ -7,6 +7,10 @@ const { InspectorControls } = wp.blockEditor;
 const {
     RangeControl,
     Button,
+<<<<<<< HEAD
+=======
+    SelectControl,
+>>>>>>> 6daf5d611651abc76f04dd66c45e9e691d3c4b53
     RadioControl,
 } = wp.components;
 
@@ -38,6 +42,7 @@ const Inspector = props => {
             blockStyle,
             defaultBlockStyle,
             columnSize,
+            verticalAlign,
             opacity,
             opacityHover,
             background,
@@ -136,6 +141,20 @@ const Inspector = props => {
                                                     >
                                                         Clone styles
                                                     </Button>
+                                                    <SelectControl
+                                                        label={__('Vertical align', 'maxi-blocks')}
+                                                        value={verticalAlign}
+                                                        options={
+                                                            [
+                                                                { label: __('Top', 'maxi-blocks'), value: 'flex-start' },
+                                                                { label: __('Center', 'maxi-blocks'), value: 'center' },
+                                                                { label: __('Bottom', 'maxi-blocks'), value: 'flex-end' },
+                                                                { label: __('Space between', 'maxi-blocks'), value: 'space-between' },
+                                                                { label: __('Space around', 'maxi-blocks'), value: 'space-around' },
+                                                            ]
+                                                        }
+                                                        onChange={verticalAlign => setAttributes({ verticalAlign })}
+                                                    />
                                                 </Fragment>
                                             )
                                         },
@@ -183,6 +202,8 @@ const Inspector = props => {
                                                                     <BackgroundControl
                                                                         backgroundOptions={backgroundHover}
                                                                         onChange={backgroundHover => setAttributes({ backgroundHover })}
+                                                                        disableImage
+                                                                        disableVideo
                                                                     />
                                                                 </Fragment>
                                                             )
@@ -220,7 +241,7 @@ const Inspector = props => {
                                             )
                                         },
                                         {
-                                            label: __('Sizing', 'maxi-blocks'),
+                                            label: __('Width / Height', 'maxi-blocks'),
                                             content: (
                                                 <FullSizeControl
                                                     sizeSettings={size}

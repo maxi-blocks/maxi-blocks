@@ -1,70 +1,102 @@
 /**
  * WordPress dependencies
  */
-const { registerStore } = wp.data;
 const apiFetch = wp.apiFetch;
+const {
+	registerStore,
+	select
+} = wp.data;
 
 /**
  * Register Store
- * 
- * Store ready to connect with data stored on MaxiBlocksAPI
- * This connection permits retrieving data settings from DB
- * created using Customizer. 
- * 
- * For the moment is just a test waiting for a final decision
- * between Gutenberg and Customizer relation
- * 
- * @todo Change GX references for Maxi
- * @todo Enlarge API scope for all the elements
  */
+
+const reducer = (state, action) => {
+	switch (action.type) {
+		case 'SET_POST_STYLES':
+			return {
+				...state,
+				maxiStyles: action.maxiStyles,
+			};
+		case 'SEND_POST_STYLES':
+			return {
+				...state,
+				meta: action.meta,
+			}
+		case 'SAVE_POST_STYLES':
+			controls.SAVE_POST_STYLES(action);
+			return {
+				...state,
+				meta: action.meta
+			}
+	}
+
+	return state;
+};
+
 const actions = {
-	setGXstyles( GXStyles ) {
+	receiveMaxiStyles() {
 		return {
-			type: 'SET_USER_ROLES',
-			GXStyles,
+			type: 'RECEIVE_POST_STYLES',
 		};
 	},
-	receiveGXStyles( path ) {
+	sendMaxiStyles(meta) {
 		return {
-			type: 'RECEIVE_USER_ROLES',
-			path,
+			type: 'SEND_POST_STYLES',
+			meta
 		};
+	},
+	saveMaxiStyles(meta, update = false) {
+		return {
+			type: 'SAVE_POST_STYLES',
+			meta,
+			update
+		}
+	}
+};
+
+const controls = {
+	async RECEIVE_POST_STYLES() {
+		const id = select('core/editor').getCurrentPostId();
+
+		return await apiFetch({ path: '/maxi-blocks/v1.0/maxi-blocks-styles/' + id })
+			.catch(() => { return {} })
+	},
+	async SAVE_POST_STYLES(action) {
+		const id = select('core/editor').getCurrentPostId();
+
+		await apiFetch(
+			{
+				path: '/maxi-blocks/v1.0/maxi-blocks-styles',
+				method: 'POST',
+				data: {
+					id,
+					meta: JSON.stringify(action.meta),
+					update: action.update
+				}
+			}
+		)
+	}
+}
+
+const selectors = {
+	receiveMaxiStyles(state) {
+		if(!!state)
+			return state.meta;
 	},
 };
 
-const store = registerStore( 'gx', {
-	reducer( state = { GXStyles: {} }, action ) {
+const resolvers = {
+	* receiveMaxiStyles() {
+		const maxiStyles = yield actions.receiveMaxiStyles();
+		return actions.sendMaxiStyles(maxiStyles);
+	}
+};
 
-		switch ( action.type ) {
-			case 'SET_USER_ROLES':
-				return {
-					...state,
-					GXStyles: action.GXStyles,
-				};
-		}
-
-		return state;
-	},
-
+const store = registerStore('maxiBlocks', {
+	reducer,
 	actions,
-
-	selectors: {
-		receiveGXStyles( state ) {
-			const { GXStyles } = state;
-			return GXStyles;
-		},
-	},
-
-	controls: {
-		RECEIVE_USER_ROLES( action ) {
-			return apiFetch( { path: action.path } );
-		},
-	},
-
-	resolvers: {
-		* receiveGXStyles( state ) {
-            const GXStyles = yield actions.receiveGXStyles( '/gx/v1.0/default-theme-dark/?' + state );
-			return actions.setGXstyles( GXStyles );
-		},
-	},
-} );
+	selectors,
+	controls, 
+	resolvers
+});

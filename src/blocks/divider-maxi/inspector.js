@@ -39,7 +39,6 @@ const Inspector = props => {
             lineVertical,
             lineHorizontal,
             lineOrientation,
-            linesAlign,
             divider,
             fullWidth,
             size,
@@ -147,7 +146,7 @@ const Inspector = props => {
                                                     {
                                                         isFirstOnHierarchy &&
                                                         <SelectControl
-                                                            label={__('Fullwidth', 'maxi-blocks')}
+                                                            label={__('Full Width', 'maxi-blocks')}
                                                             value={fullWidth}
                                                             options={[
                                                                 { label: __('No', 'maxi-blocks'), value: 'normal' },

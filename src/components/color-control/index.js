@@ -2,17 +2,11 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { Fragment } = wp.element;
 const {
     ColorPicker,
-    __experimentalGradientPicker
+    BaseControl,
+    Button,
 } = wp.components;
-
-/**
- * Internal dependencies
- */
-import { CheckBoxControl } from '../index';
-import PopoverControl from '../popover-control';
 
 /**
  * External dependencies
@@ -23,10 +17,7 @@ import classnames from 'classnames';
  * Styles and icons
  */
 import './editor.scss';
-import {
-    colorWheel,
-    gradient as iconGradient
-} from '../../icons';
+import { reset } from '../../icons';
 
 /**
  * Component
@@ -35,19 +26,9 @@ const ColorControl = props => {
     const {
         label,
         className,
-        disableColor = false,
         color,
         defaultColor = '',
         onColorChange,
-        colorIcon = colorWheel,
-        disableGradient = false,
-        gradient,
-        defaultGradient = '',
-        onGradientChange,
-        gradientIcon = iconGradient,
-        disableGradientAboveBackground = false,
-        gradientAboveBackground,
-        onGradientAboveBackgroundChange,
     } = props;
 
     const classes = classnames(
@@ -59,73 +40,36 @@ const ColorControl = props => {
         return `rgba(${val.rgb.r},${val.rgb.g},${val.rgb.b},${val.rgb.a})`;
     }
 
-    const getPopovers = () => {
-        let response = [];
-        if (!disableColor) {
-            response.push(
-                {
-                    content: (
-                        <ColorPicker
-                            color={color}
-                            onChangeComplete={val => onColorChange(returnColor(val))}
-                        />
-                    ),
-                    classNamePopover: 'maxi-colorcontrol__popover',
-                    icon: colorIcon
-                },
-            )
-        }
-        if (!disableGradient) {
-            response.push(
-                {
-                    content: (
-                        <Fragment>
-                            <__experimentalGradientPicker
-                                value={gradient}
-                                onChange={val => onGradientChange(val)}
-                            />
-                            {disableGradientAboveBackground &&
-                                <CheckBoxControl
-                                    label={__('Above Background Image', 'maxi-blocks')}
-                                    checked={gradientAboveBackground}
-                                    onChange={val => onGradientAboveBackgroundChange(val)}
-                                />
-                            }
-                        </Fragment>
-                    ),
-                    classNamePopover: 'maxi-colorcontrol__gradient-popover maxi-popover',
-                    icon: gradientIcon
-                }
-            )
-        }
-
-        return response;
-    }
-
-    const onReset = () => {
-            if (!disableColor)
-                onColorChange(defaultColor);
-            if (!disableGradient)
-                onGradientChange(defaultGradient);
-            if (!disableGradient && !disableGradientAboveBackground)
-                onGradientAboveBackgroundChange(false);
-    }
+    const onReset = () => onColorChange(defaultColor);
 
     return (
         <div className={classes}>
-            <div className='maxi-colorcontrol__display'>
-                <span
-                    style={{
-                        background: gradient ? gradient : color,
-                    }}
-                ></span>
+            <BaseControl
+                    className='maxi-colorcontrol__display'
+                    label={`${label} ${__('Colour', 'maxi-blocks')}`}
+                >
+                    <div className='maxi-colorcontrol__display__color'>
+                        <span style={{background: color}}></span>
+                        <Button
+                            className="components-maxi-control__reset-button"
+                            onClick={() => onReset()}
+                            aria-label={sprintf(
+                                /* translators: %s: a texual label  */
+                                __('Reset %s settings', 'maxi-blocks'),
+                                'font size'
+                            )}
+                            type="reset"
+                        >
+                            {reset}
+                        </Button>
+                    </div>
+                </BaseControl>
+            <div className="maxi-colorcontrol__color">
+                <ColorPicker
+                    color={color}
+                    onChangeComplete={val => onColorChange(returnColor(val))}
+                />
             </div>
-            <PopoverControl
-                label={label}
-                showReset
-                onReset={onReset}
-                popovers={getPopovers()}
-            />
         </div>
     )
 }

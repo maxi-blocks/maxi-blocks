@@ -5,10 +5,16 @@ const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
 const { Fragment } = wp.element;
 const {
+    BaseControl,
     SelectControl,
     RangeControl,
     RadioControl,
 } = wp.components;
+
+/**
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
 
 /**
  * Internal dependencies
@@ -19,7 +25,6 @@ import {
     BlockStylesControl,
     BorderControl,
     BoxShadowControl,
-    CheckBoxControl,
     DimensionsControl,
     CustomCSSControl,
     FullSizeControl,
@@ -38,10 +43,7 @@ const Inspector = props => {
             blockStyle,
             defaultBlockStyle,
             columnGap,
-            wrapTablet,
-            wrapMobile,
-            horizontalAlign,
-            verticalAlign,
+            wrap,
             opacity,
             opacityHover,
             background,
@@ -129,19 +131,27 @@ const Inspector = props => {
                                                         min={0}
                                                         max={5}
                                                     />
-                                                    <CheckBoxControl
-                                                        label={__('Wrap on Mobile', 'maxi-blocks')}
-                                                        checked={wrapMobile}
-                                                        onChange={wrapMobile => setAttributes({ wrapMobile })}
-                                                    />
-                                                    {
-                                                        !wrapMobile &&
-                                                        <CheckBoxControl
-                                                            label={__('Wrap on Tablet', 'maxi-blocks')}
-                                                            checked={wrapTablet}
-                                                            onChange={wrapTablet => setAttributes({ wrapTablet })}
+                                                    <BaseControl
+                                                        label={__('Wrap on', 'maxi-blocks')}
+                                                    >
+                                                        <input
+                                                            type='number'
+                                                            placeholder={__('auto', 'maxi-blocks')}
+                                                            value={wrap}
+                                                            onChange={e => {
+                                                                setAttributes({
+                                                                    wrap:
+                                                                        !isEmpty(e.target.value) ?
+                                                                            Number(e.target.value) :
+                                                                            null
+                                                                })
+                                                            }}
                                                         />
+<<<<<<< HEAD
                                                     }
+=======
+                                                    </BaseControl>
+>>>>>>> 6daf5d611651abc76f04dd66c45e9e691d3c4b53
                                                 </Fragment>
                                             )
                                         },
@@ -226,13 +236,13 @@ const Inspector = props => {
                                             )
                                         },
                                         {
-                                            label: __('Sizing', 'maxi-blocks'),
+                                            label: __('Width / Height', 'maxi-blocks'),
                                             content: (
                                                 <Fragment>
                                                     {
                                                         isFirstOnHierarchy &&
                                                         <SelectControl
-                                                            label={__('Fullwidth', 'maxi-blocks')}
+                                                            label={__('Full Width', 'maxi-blocks')}
                                                             value={fullWidth}
                                                             options={[
                                                                 { label: __('No', 'maxi-blocks'), value: 'normal' },
@@ -331,6 +341,7 @@ const Inspector = props => {
                                         hoverAnimationTypeOpacityColor={hoverAnimationTypeOpacityColor}
                                         onChangeHoverAnimationTypeOpacityColor={hoverAnimationTypeOpacityColor => setAttributes({ hoverAnimationTypeOpacityColor})}
 
+<<<<<<< HEAD
                                 />
                                 {hoverAnimation === 'text' && hoverCustomTextTitle === 'yes' &&
                                 <TypographyControl
@@ -362,6 +373,39 @@ const Inspector = props => {
                                     disableImage
                                     target='.maxi-block-text-hover'
                                 />
+=======
+                                />
+                                {hoverAnimation === 'text' && hoverCustomTextTitle === 'yes' &&
+                                <TypographyControl
+                                    fontOptions={hoverAnimationTitleTypography}
+                                    onChange={hoverAnimationTitleTypography=> setAttributes({ hoverAnimationTitleTypography })}
+                                    target='>.maxi-block-text-hover .maxi-block-text-hover__title'
+                                />}
+                                {hoverAnimation === 'text' && hoverCustomTextContent === 'yes' &&
+                                <TypographyControl
+                                    fontOptions={hoverAnimationContentTypography}
+                                    onChange={hoverAnimationContentTypography=> setAttributes({ hoverAnimationContentTypography })}
+                                    target='>.maxi-block-text-hover .maxi-block-text-hover__content'
+                                />}
+                                { hoverAnimation === 'text' &&
+                                <Fragment>
+                                <RangeControl
+                                    label={__('Opacity', 'maxi-blocks')}
+                                    className='maxi-opacity-control'
+                                    value={hoverOpacity * 100}
+                                    onChange={value => setAttributes({ hoverOpacity: value / 100 })}
+                                    min={0}
+                                    max={100}
+                                    allowReset={true}
+                                    initialPosition={0}
+                                />
+                                <BackgroundControl
+                                    backgroundOptions={hoverBackground}
+                                    onChange={hoverBackground => setAttributes({ hoverBackground })}
+                                    disableImage
+                                    target='.maxi-block-text-hover'
+                                />
+>>>>>>> 6daf5d611651abc76f04dd66c45e9e691d3c4b53
 
                                 <RadioControl
                                     label={__('Custom Border', 'maxi-blocks')}

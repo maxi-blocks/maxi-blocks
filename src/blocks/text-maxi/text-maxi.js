@@ -19,8 +19,9 @@ import edit from './edit.js';
 import save from './save.js';
 
 /**
- * Icons
+ * Styles and icons
  */
+import './style.scss';
 import { textIcon } from '../../icons';
 
 /**

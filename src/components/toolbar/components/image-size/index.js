@@ -30,7 +30,7 @@ import {
 /**
  * Icons
  */
-import { toolbarSettings } from '../../../../icons';
+import { toolbarSizing } from '../../../../icons';
 
 /**
  * ImageSize
@@ -93,7 +93,7 @@ const ImageSize = props => {
     return (
         <ToolbarPopover
             className='toolbar-item__image-size'
-            icon={toolbarSettings}
+            icon={toolbarSizing}
             content={(
                 <Fragment>
                     <SelectControl
@@ -105,7 +105,7 @@ const ImageSize = props => {
                     {
                         isFirstOnHierarchy &&
                         <SelectControl
-                            label={__('Fullwidth', 'maxi-blocks')}
+                            label={__('Full Width', 'maxi-blocks')}
                             value={fullWidth}
                             options={[
                                 { label: __('No', 'maxi-blocks'), value: 'normal' },

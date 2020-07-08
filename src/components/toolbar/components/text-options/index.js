@@ -6,7 +6,6 @@ const { Fragment } = wp.element;
 const { getBlockAttributes } = wp.blocks;
 const {
     Button,
-    Icon,
     IconButton,
     BaseControl,
 } = wp.components;
@@ -18,6 +17,7 @@ import openSidebar from '../../../../extensions/dom';
  */
 import FontFamilySelector from '../../../font-family-selector';
 import ToolbarPopover from '../toolbar-popover';
+import { isEmpty } from 'lodash';
 
 /**
  * Styles and icons
@@ -113,7 +113,7 @@ const TextOptions = props => {
                                                 type='number'
                                                 value={value.desktop['font-size']}
                                                 onChange={e => {
-                                                    value.desktop['font-size'] = Number(e.target.value);
+                                                    value.desktop['font-size'] = isEmpty(e.target.value) ? '' : Number(e.target.value);
                                                     updateTypography();
                                                 }}
 
@@ -143,7 +143,7 @@ const TextOptions = props => {
                                                 type='number'
                                                 value={value.desktop['line-height']}
                                                 onChange={e => {
-                                                    value.desktop['line-height'] = Number(e.target.value);
+                                                    value.desktop['line-height'] = isEmpty(e.target.value) ? '' : Number(e.target.value);
                                                     updateTypography();
                                                 }}
 
@@ -173,7 +173,7 @@ const TextOptions = props => {
                                                 type='number'
                                                 value={value.desktop['letter-spacing']}
                                                 onChange={e => {
-                                                    value.desktop['letter-spacing'] = Number(e.target.value);
+                                                    value.desktop['letter-spacing'] = isEmpty(e.target.value) ? '' : Number(e.target.value);
                                                     updateTypography();
                                                 }}
 
@@ -210,7 +210,7 @@ const TextOptions = props => {
                                                 type='number'
                                                 value={value.tablet['font-size']}
                                                 onChange={e => {
-                                                    value.tablet['font-size'] = Number(e.target.value);
+                                                    value.tablet['font-size'] = isEmpty(e.target.value) ? '' : Number(e.target.value);
                                                     updateTypography();
                                                 }}
 
@@ -240,7 +240,7 @@ const TextOptions = props => {
                                                 type='number'
                                                 value={value.tablet['line-height']}
                                                 onChange={e => {
-                                                    value.tablet['line-height'] = Number(e.target.value);
+                                                    value.tablet['line-height'] = isEmpty(e.target.value) ? '' : Number(e.target.value);
                                                     updateTypography();
                                                 }}
 
@@ -270,7 +270,7 @@ const TextOptions = props => {
                                                 type='number'
                                                 value={value.tablet['letter-spacing']}
                                                 onChange={e => {
-                                                    value.tablet['letter-spacing'] = Number(e.target.value);
+                                                    value.tablet['letter-spacing'] = isEmpty(e.target.value) ? '' : Number(e.target.value);
                                                     updateTypography();
                                                 }}
 
@@ -317,7 +317,7 @@ const TextOptions = props => {
                                                 type='number'
                                                 value={value.mobile['font-size']}
                                                 onChange={e => {
-                                                    value.mobile['font-size'] = Number(e.target.value);
+                                                    value.mobile['font-size'] = isEmpty(e.target.value) ? '' : Number(e.target.value);
                                                     updateTypography();
                                                 }}
 
@@ -347,7 +347,7 @@ const TextOptions = props => {
                                                 type='number'
                                                 value={value.mobile['line-height']}
                                                 onChange={e => {
-                                                    value.mobile['line-height'] = Number(e.target.value);
+                                                    value.mobile['line-height'] = isEmpty(e.target.value) ? '' : Number(e.target.value);
                                                     updateTypography();
                                                 }}
 
@@ -377,7 +377,7 @@ const TextOptions = props => {
                                                 type='number'
                                                 value={value.mobile['letter-spacing']}
                                                 onChange={e => {
-                                                    value.mobile['letter-spacing'] = Number(e.target.value);
+                                                    value.mobile['letter-spacing'] = isEmpty(e.target.value) ? '' : Number(e.target.value);
                                                     updateTypography();
                                                 }}
 

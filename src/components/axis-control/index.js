@@ -41,7 +41,7 @@ const AxisControl = props => {
     const value = !isObject(values) ?
         JSON.parse(values) :
         values;
-
+    
     const classes = classnames(
         'maxi-axis-control',
         className

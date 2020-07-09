@@ -2,7 +2,7 @@
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults';
-import { margin } from './data';
+import { alignment, margin } from './data';
 
 /**
  * Attributes
@@ -10,7 +10,7 @@ import { margin } from './data';
 const attributes = {
     alignment: {
         type: 'string',
-        default: JSON.stringify(attributesData.alignment)
+        default: JSON.stringify(alignment)
     },
     textLevel: {
         type: 'string',

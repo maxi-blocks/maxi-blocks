@@ -1,12 +1,8 @@
 /**
- * WordPress dependencies
- */
-const { Button } = wp.components;
-
-/**
  * External dependencies
  */
 import classnames from 'classnames';
+import { isNil } from 'lodash';
 
 /**
  * Save
@@ -36,16 +32,17 @@ const save = props => {
         'maxi-block maxi-image-block',
         blockStyle,
         extraClassName,
-        'hover-animation-type-'+hoverAnimation,
-        'hover-animation-duration-'+hoverAnimationDuration,
+        'hover-animation-type-' + hoverAnimation,
+        'hover-animation-duration-' + hoverAnimationDuration,
         uniqueID,
         className,
         fullWidth === 'full' ?
             'alignfull' :
-            '',
+            null,
+        !isNil(uniqueID) ?
+            uniqueID :
+            null
     );
-    if (uniqueID && (typeof uniqueID !== 'undefined'))
-        classes = classnames(classes, uniqueID);
 
     return (
         <figure

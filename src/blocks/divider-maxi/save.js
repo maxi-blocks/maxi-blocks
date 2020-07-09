@@ -7,6 +7,7 @@ const { Fragment } = wp.element;
  * External dependencies
  */
 import classnames from 'classnames';
+import { isNil } from 'lodash';
 
 /**
  * Save
@@ -33,14 +34,14 @@ const save = props => {
         className,
         fullWidth === 'full' ?
             'alignfull' :
-            undefined,
+            null,
         lineOrientation === 'vertical' ?
             'maxi-divider-block--vertical' :
             'maxi-divider-block--horizontal',
+        !isNil(uniqueID) ?
+            uniqueID :
+            null
     );
-    if (uniqueID && (typeof uniqueID !== 'undefined'))
-        classes = classnames(classes, uniqueID);
-
 
     return (
         <div

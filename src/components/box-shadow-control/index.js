@@ -52,7 +52,8 @@ const BoxShadowControl = props => {
     )
 
     const onChangeValue = (target, val) => {
-        value[target] = val;
+        console.log(target, val)
+        value[breakpoint][target] = val;
         onChange(JSON.stringify(value));
     }
 

@@ -47,7 +47,6 @@ const ImageSize = props => {
         fullWidth,
         onChangeFullWidth,
         isFirstOnHierarchy,
-        onchangecaption
     } = props;
 
     if (blockName != 'maxi-blocks/image-maxi')

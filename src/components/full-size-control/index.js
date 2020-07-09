@@ -26,7 +26,8 @@ import './editor.scss';
 const FullSizeControlSing = props => {
     const {
         size,
-        onChange
+        onChange,
+        hideWidth = false
     } = props;
 
     const onChangeValue = (target, val) => {
@@ -45,13 +46,16 @@ const FullSizeControlSing = props => {
                 value={size['max-width']}
                 onChangeValue={value => onChangeValue('max-width', value)}
             />
-            <SizeControl
-                label={__('Width', 'maxi-blocks')}
-                unit={size.widthUnit}
-                onChangeUnit={value => onChangeValue('widthUnit', value)}
-                value={size.width}
-                onChangeValue={value => onChangeValue('width', value)}
-            />
+            {
+                !hideWidth &&
+                <SizeControl
+                    label={__('Width', 'maxi-blocks')}
+                    unit={size.widthUnit}
+                    onChangeUnit={value => onChangeValue('widthUnit', value)}
+                    value={size.width}
+                    onChangeValue={value => onChangeValue('width', value)}
+                />
+            }
             <SizeControl
                 label={__('Min Width', 'maxi-blocks')}
                 unit={size['min-widthUnit']}
@@ -89,7 +93,8 @@ const FullSizeControl = props => {
         size,
         onChange,
         className,
-        breakpoint
+        breakpoint,
+        hideWidth
     } = props;
 
     let value = isObject(size) ?
@@ -109,6 +114,7 @@ const FullSizeControl = props => {
                     value[breakpoint] = val;
                     onChange(JSON.stringify(value))
                 }}
+                hideWidth={hideWidth}
             />
         </div>
     )

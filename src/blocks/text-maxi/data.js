@@ -1,3 +1,25 @@
+export const alignment = {
+    "label": "Alignment",
+    "general": {
+        "alignment": "left"
+    },
+    "xl": {
+        "alignment": ""
+    },
+    "l": {
+        "alignment": ""
+    },
+    "m": {
+        "alignment": ""
+    },
+    "s": {
+        "alignment": ""
+    },
+    "xs": {
+        "alignment": ""
+    }
+}
+
 export const margin = {
     "label": "Margin",
     "unit": "em",

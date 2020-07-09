@@ -7,6 +7,7 @@
 /**
 * WordPress dependencies
 */
+const { Component } = wp.element;
 const {
     dispatch,
     select,
@@ -16,7 +17,6 @@ const {
 /**
  * Internal dependencies
  */
-import MaxiComponent from '../maxi-component';
 import {
     ResponsiveStylesResolver,
     BackEndResponsiveStyles
@@ -37,19 +37,17 @@ import {
 /**
  * Class
  */
-class MaxiBlock extends MaxiComponent {
+class MaxiBlock extends Component {
     state = {
         styles: {},
         updating: false,
-        breakpoints: this.getBreakpoints
+        breakpoints: this.getBreakpoints,
     }
 
     constructor() {
         super(...arguments);
         this.uniqueIDChecker(this.props.attributes.uniqueID);
         this.fixProps();
-
-        this.breakpoints = select('maxiBlocks').receiveMaxiBreakpoints()
     }
 
     componentDidMount() {
@@ -197,7 +195,7 @@ class MaxiBlock extends MaxiComponent {
         this.saveMeta(cleanMeta)
     }
 
-    async saveMeta(newMeta) {
+    saveMeta(newMeta) {
         dispatch('maxiBlocks').saveMaxiStyles(newMeta)
             .then(new BackEndResponsiveStyles(newMeta))
     }

@@ -31,7 +31,8 @@ import {
     getBackgroundObject,
     getBoxShadowObject,
     getVideoBackgroundObject,
-    getOpacityObject
+    getOpacityObject,
+    getColumnSizeObject
 } from '../../extensions/styles/utils';
 
 /**
@@ -39,55 +40,32 @@ import {
  */
 import classnames from 'classnames';
 import {
-    pull,
     isNil,
-    isNumber,
-    sum,
     round,
-    isObject
+    isObject,
+    isEmpty
 } from 'lodash';
 
 /**
  * Editor
  */
 class edit extends MaxiBlock {
-    state = {
-        originalWidth: 0,
-        styles: {},
-        updating: false
-    }
-
-    componentDidUpdate() {
-        this.setResizeHandleStyles();
-        this.displayStyles();
-
-        if (!select('core/editor').isSavingPost() && this.state.updating) {
-            this.setState({
-                updating: false
-            })
-            this.saveProps();
-        }
-    }
-
-    setResizeHandleStyles() {
-        const {
-            columnGap,
-            rowBlockWidth,
-            clientId
-        } = this.props;
-
-        const value = (columnGap * rowBlockWidth) / 100;
-        const node = document.querySelector(`.maxi-column-block__resizer__${clientId} > span > .components-resizable-box__handle`);
-        if (!isNil(node))
-            node.style.transform = `translateX(${value}px)`;
-    }
-
     get getObject() {
         let response = {
             [this.props.attributes.uniqueID]: this.getNormalObject,
             [`${this.props.attributes.uniqueID}:hover`]: this.getHoverObject,
-            [`${this.props.attributes.uniqueID} .maxi-video-player video`]: { videoBackground: { ...getVideoBackgroundObject(JSON.parse(this.props.attributes.background).videoOptions) } },
+            [`maxi-column-block__resizer__${this.props.attributes.uniqueID}`]: this.getResizerObject,
         }
+
+        const videoOptions = JSON.parse(this.props.attributes.background).videoOptions;
+        if(!isNil(videoOptions) && !isEmpty(videoOptions.mediaURL))
+            Object.assign(
+                response, 
+                {
+                    [`${this.props.attributes.uniqueID} .maxi-video-player video`]: 
+                        { videoBackground: { ...getVideoBackgroundObject(videoOptions) } }
+                }
+            )
 
         return response;
     }
@@ -122,21 +100,13 @@ class edit extends MaxiBlock {
             padding: { ...JSON.parse(padding) },
             opacity: { ...getOpacityObject(JSON.parse(opacity)) },
             zindex: { ...JSON.parse(zIndex) },
+            columnSize: { ...getColumnSizeObject(JSON.parse(columnSize)) },
             column: {
                 label: "Column",
                 general: {},
             }
         };
 
-        if (!isNil(columnSize) && isNumber(columnSize))
-            if (columnSize != 0) {
-                response.column.general['flex'] = `0 0 ${columnSize}%`;
-                response.column.general['width'] = `${columnSize}%`;
-            }
-            else {
-                response.column.general['flex'] = '0 0 auto';
-                response.column.general['width'] = '';
-            }
         if (!isNil(verticalAlign))
             response.column.general['justify-content'] = verticalAlign;
 
@@ -163,6 +133,16 @@ class edit extends MaxiBlock {
         return response;
     }
 
+    get getResizerObject() {
+        const { margin } = this.props.attributes;
+
+        let response = {
+            margin: { ...JSON.parse(margin) },
+        };
+
+        return response;
+    }
+
     render() {
         const {
             attributes: {
@@ -174,21 +154,18 @@ class edit extends MaxiBlock {
                 hoverAnimation,
                 hoverAnimationDuration,
                 background,
-                size,
             },
             clientId,
             className,
             rowBlockWidth,
-            columnPosition,
             hasInnerBlock,
-            getResizePerCent,
-            redistributeColumnsSize,
-            columnGap,
+            deviceType,
+            onDeviceTypeChange,
             originalNestedColumns,
             setAttributes
         } = this.props;
 
-        const { originalWidth } = this.state;
+        onDeviceTypeChange();
 
         let classes = classnames(
             'maxi-block',
@@ -201,20 +178,20 @@ class edit extends MaxiBlock {
             className,
         );
 
-        const value = !isObject(size) ?
-            JSON.parse(size) :
-            size;
+        const columnValue = !isObject(columnSize) ?
+            JSON.parse(columnSize) :
+            columnSize;
 
         const getColumnWidthDefault = () => {
-            if (columnSize)
-                return `${columnSize}%`;
+            if (columnValue.general.size)
+                return `${columnValue.general.size}%`;
 
             return `${100 / originalNestedColumns.length}%`;
         }
 
         return [
             <Inspector {...this.props} />,
-            // <__experimentalToolbar {...this.props} />,
+            <__experimentalToolbar {...this.props} />,
             <Fragment>
                 {
                     rowBlockWidth === 0 &&
@@ -223,44 +200,33 @@ class edit extends MaxiBlock {
                 {
                     rowBlockWidth != 0 &&
                     <ResizableBox
+                        ref={ref => console.log('ref', ref)}
                         className={classnames(
                             'maxi-block__resizer',
                             "maxi-column-block__resizer",
-                            `maxi-column-block__resizer__${clientId}`,
-                            columnPosition
+                            `maxi-column-block__resizer__${uniqueID}`,
                         )}
                         defaultSize={{
                             width: getColumnWidthDefault()
                         }}
-                        minWidth={`${columnGap}%`}
-                        maxWidth={
-                            !!value.general['max-width'] ?
-                                `${value.general['max-width']}${value.general['max-widthUnit']}` :
-                                '100%'
-                        }
+                        minWidth='1%'
+                        maxWidth='100%'
                         enable={{
                             top: false,
-                            right: columnPosition != 'maxi-column-block--right',
+                            right: true,
                             bottom: false,
-                            left: false,
+                            left: true,
                             topRight: false,
                             bottomRight: false,
                             bottomLeft: false,
                             topLeft: false,
                         }}
-                        onResizeStart={(event, direction, elt, delta) => {
-                            this.setState({
-                                originalWidth: elt.getBoundingClientRect().width
-                            })
-                        }}
-                        onResize={(event, direction, elt, delta) => {
-                            redistributeColumnsSize(getResizePerCent(delta, originalWidth))
-                        }}
                         onResizeStop={(event, direction, elt, delta) => {
+                            columnValue[deviceType].size = round(Number(elt.style.width.replace('%', '')));
+
                             setAttributes({
-                                columnSize: round(getResizePerCent(delta, originalWidth), 1),
+                                columnSize: JSON.stringify(columnValue),
                             });
-                            redistributeColumnsSize(getResizePerCent(delta, originalWidth), true);
                         }}
                     >
                         <InnerBlocks
@@ -299,127 +265,58 @@ const editSelect = withSelect((select, ownProps) => {
     } = ownProps;
 
     const rowBlockId = select('core/block-editor').getBlockRootClientId(clientId); // getBlockHierarchyRootClientId
-    const columnGap = select('core/block-editor').getBlockAttributes(rowBlockId).columnGap;
     const rowBlockNode = document.querySelector(`div[data-block="${rowBlockId}"]`);
     const rowBlockWidth = !isNil(rowBlockNode) ? rowBlockNode.getBoundingClientRect().width : 0;
     const hasInnerBlock = select('core/block-editor').getBlockOrder(clientId).length >= 1;
     const originalNestedColumns = select('core/block-editor').getBlockOrder(rowBlockId);
-
-    const getPosition = () => {
-        const originalNestedColumns = select('core/block-editor').getBlockOrder(rowBlockId);
-        switch (originalNestedColumns.indexOf(clientId)) {
-            case 0:
-                return 'maxi-column-block--left';
-            case originalNestedColumns.length - 1:
-                return 'maxi-column-block--right';
-            default:
-                return 'maxi-column-block--center';
-        }
-    }
+    const deviceType = select('core/edit-post').__experimentalGetPreviewDeviceType() === 'Desktop' ?
+        'general' :
+        select('core/edit-post').__experimentalGetPreviewDeviceType();
 
     return {
         rowBlockId,
         rowBlockWidth,
-        columnGap,
-        columnPosition: getPosition(),
         hasInnerBlock,
-        originalNestedColumns
+        originalNestedColumns,
+        deviceType
     }
-})
+});
 
 const editDispatch = withDispatch((dispatch, ownProps) => {
     const {
-        columnGap,
-        rowBlockId,
-        rowBlockWidth,
-        clientId,
+        attributes: {
+            uniqueID,
+            columnSize
+        },
+        deviceType,
     } = ownProps;
 
-    const originalNestedColumns = select('core/block-editor').getBlockOrder(rowBlockId);
-    let nestedColumns = [...originalNestedColumns];
-    nestedColumns = pull(nestedColumns, clientId);
-    const nestedColumnsNum = originalNestedColumns.length;
+    const onDeviceTypeChange = function() {
+        let newDeviceType = select('core/edit-post').__experimentalGetPreviewDeviceType();
+        newDeviceType = newDeviceType === 'Desktop' ? 
+            'general' : 
+            newDeviceType;
 
-    const cloneStyles = () => {
-        let newStyles = { ...ownProps.attributes };
-        delete newStyles.uniqueID;
-        delete newStyles.columnSize;
+        const allowedDeviceTypes = [
+            'general',
+            'xl',
+            'l',
+            'm',
+            's',
+        ];
 
-        nestedColumns.map(blockId => {
-            if (blockId != clientId)
-                dispatch('core/block-editor').updateBlockAttributes(blockId, newStyles)
-        })
-    }
-
-    const getRowPerCentWOMargin = () => {
-        return ((100 - ((nestedColumnsNum - 1) * columnGap) * 2));
-    }
-
-    const getResizePerCent = (delta, originalWidth) => {
-        const newWidth = originalWidth + delta.width;
-        const diffPerCent = newWidth / rowBlockWidth * getRowPerCentWOMargin();
-
-        return diffPerCent;
-    }
-
-    const redistributeColumnsSize = (newColumnSize, save = false) => {
-        let newColumnId = '';
-        if (originalNestedColumns.indexOf(clientId) === originalNestedColumns.length - 1)
-            newColumnId = originalNestedColumns[originalNestedColumns.length - 2]
-        else
-            newColumnId = select('core/block-editor').getAdjacentBlockClientId(clientId);
-
-        let restColumnSizes = [];
-        originalNestedColumns.map(columnId => {
-            if (columnId === clientId || columnId === newColumnId)
+        if (allowedDeviceTypes.includes(newDeviceType) && deviceType != newDeviceType) {
+            const node = document.querySelector(`.maxi-column-block__resizer__${uniqueID}`);
+            if (isNil(node))
                 return;
-            restColumnSizes.push(select('core/block-editor').getBlockAttributes(columnId).columnSize);
-        })
-
-        let newSize = round(getRowPerCentWOMargin() - newColumnSize - sum(restColumnSizes), 2);
-        if (newSize < columnGap * 1.2)
-            newSize = columnGap;
-
-        const newColumnNode = document.querySelector(`.maxi-column-block__resizer__${newColumnId}`);
-        if (!isNil(newColumnNode))
-            newColumnNode.style.width = `${newSize}%`;
-
-        if (save)
-            dispatch('core/block-editor').updateBlockAttributes(
-                newColumnId,
-                {
-                    columnSize: newSize
-                }
-            )
-    }
-
-    const getColumnMaxWidth = () => {
-        let newColumnId = '';
-        if (originalNestedColumns.indexOf(clientId) === originalNestedColumns.length - 1)
-            newColumnId = originalNestedColumns[originalNestedColumns.length - 2]
-        else
-            newColumnId = select('core/block-editor').getAdjacentBlockClientId(clientId);
-
-        let restColumnSizes = [];
-        originalNestedColumns.map(columnId => {
-            if (columnId === clientId || columnId === newColumnId)
-                return;
-            restColumnSizes.push(select('core/block-editor').getBlockAttributes(columnId).columnSize);
-        })
-
-        const columnGapWidth = columnGap * (originalNestedColumns.length - 1);
-        const maxWidth = round(100 - columnGapWidth - sum(restColumnSizes), 2);
-
-        return maxWidth;
-    }
+            const newColumnSize = JSON.parse(columnSize);
+            node.style.width = `${newColumnSize[newDeviceType].size}%`;
+        }
+    };
 
     return {
-        cloneStyles,
-        getRowPerCentWOMargin,
-        getResizePerCent,
-        redistributeColumnsSize,
-        getColumnMaxWidth
+        onDeviceTypeChange
     }
-})
+});
 
 export default compose(editSelect, editDispatch)(edit);

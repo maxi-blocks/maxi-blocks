@@ -31,7 +31,7 @@ import {
 import classnames from 'classnames';
 import {
     isEmpty,
-    isNumber,
+    isNil,
 } from 'lodash';
 
 /**
@@ -43,8 +43,17 @@ class edit extends MaxiBlock {
             [this.props.attributes.uniqueID]: this.getNormalObject,
             [`${this.props.attributes.uniqueID}:hover`]: this.getHoverObject,
             [`${this.props.attributes.uniqueID}>.maxi-container-block__container`]: this.getContainerObject,
-            [`${this.props.attributes.uniqueID} .maxi-video-player video`]: { videoBackground: { ...getVideoBackgroundObject(JSON.parse(this.props.attributes.background).videoOptions) } },
         }
+
+        const videoOptions = JSON.parse(this.props.attributes.background).videoOptions;
+        if(!isNil(videoOptions) && !isEmpty(videoOptions.mediaURL))
+            Object.assign(
+                response, 
+                {
+                    [`${this.props.attributes.uniqueID} .maxi-video-player video`]: 
+                        { videoBackground: { ...getVideoBackgroundObject(videoOptions) } }
+                }
+            )
 
         return response;
     }
@@ -103,7 +112,7 @@ class edit extends MaxiBlock {
         } = this.props.attributes;
 
         const response = {
-            size: { ...JSON.parse(sizeContainer) }
+            sizeContainer: { ...JSON.parse(sizeContainer) }
         };
 
         return response;
@@ -135,7 +144,7 @@ class edit extends MaxiBlock {
 
         return [
             <Inspector {...this.props} />,
-            // <__experimentalToolbar {...this.props} />,
+            <__experimentalToolbar {...this.props} />,
             <__experimentalBreadcrumbs />,
             <Fragment>
                 {

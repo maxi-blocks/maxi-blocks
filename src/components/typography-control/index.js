@@ -3,7 +3,6 @@
  */
 const { __ } = wp.i18n;
 const { SelectControl } = wp.components;
-const { Fragment } = wp.element;
 
 /**
  * Internal dependencies
@@ -11,7 +10,6 @@ const { Fragment } = wp.element;
 import AlignmentControl from '../alignment-control';
 import ColorControl from '../color-control';
 import FontFamilySelector from '../font-family-selector';
-import SettingTabsControl from '../setting-tabs-control';
 import SizeControl from '../size-control';
 import TextShadowControl from '../text-shadow-control';
 
@@ -19,6 +17,7 @@ import TextShadowControl from '../text-shadow-control';
  * External dependencies
  */
 import classnames from 'classnames';
+import { isObject } from 'lodash';
 
 /**
  * Styles
@@ -38,9 +37,9 @@ const TypographyControl = props => {
         breakpoint = 'general'
     } = props;
 
-    const value = typeof typography === 'object' ?
-        typography :
-        JSON.parse(typography);
+    const value = !isObject(typography) ?
+        JSON.parse(typography) :
+        typography;
 
     const classes = classnames(
         'maxi-typography-control',

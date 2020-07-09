@@ -1,20 +1,13 @@
 /**
  * WordPress dependencies
  */
-const { __ } = wp.i18n;
 const { Fragment } = wp.element;
-const { RangeControl } = wp.components;
 
 /**
  * Internal dependencies
  */
-import DimensionsControl from '../../../dimensions-control';
 import ToolbarPopover from '../toolbar-popover';
-
-/**
- * External dependencies
- */
-import { isNumber } from 'lodash';
+import __experimentalMarginPaddingControl from '../../../margin-padding-control';
 
 /**
  * Icons
@@ -31,8 +24,7 @@ const PaddingMargin = props => {
         onChangeMargin,
         padding,
         onChangePadding,
-        columnGap,
-        onChangeColumnGap
+        breakpoint
     } = props;
 
     return (
@@ -41,26 +33,17 @@ const PaddingMargin = props => {
             icon={toolbarPadding}
             content={(
                 <Fragment>
-                    <DimensionsControl
+                    <__experimentalMarginPaddingControl
                         value={padding}
-                        onChange={padding => onChangePadding(padding)}
+                        onChange={padding => onChangePadding({ padding })}
+                        breakpoint={breakpoint}
                     />
                     {
                         blockName != 'maxi-blocks/column-maxi' &&
-                        <DimensionsControl
+                        <__experimentalMarginPaddingControl
                             value={margin}
-                            onChange={margin => onChangeMargin(margin)}
-                        />
-                    }
-                    {
-                        isNumber(columnGap) &&
-                        <RangeControl
-                            label={__('Column gap', 'maxi-blocks')}
-                            value={columnGap}
-                            onChange={columnGap => onChangeColumnGap(columnGap)}
-                            step={.1}
-                            min={0}
-                            max={5}
+                            onChange={margin => onChangeMargin({ margin })}
+                            breakpoint={breakpoint}
                         />
                     }
                 </Fragment>

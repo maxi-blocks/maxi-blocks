@@ -7,7 +7,6 @@ const {
     withInstanceId
 } = wp.compose;
 const {
-    select,
     withSelect,
     withDispatch
 } = wp.data;
@@ -44,9 +43,6 @@ import {
     isEmpty,
     isNil,
     uniqueId,
-    isNumber,
-    round,
-    sum
 } from 'lodash';
 
 /**
@@ -59,8 +55,6 @@ class edit extends MaxiBlock {
         let response = {
             [this.props.attributes.uniqueID]: this.getNormalObject,
             [`${this.props.attributes.uniqueID}:hover`]: this.getHoverObject,
-            [`${this.props.attributes.uniqueID}>.maxi-column-block`]: this.getColumnObject,
-            [`${this.props.attributes.uniqueID}>.maxi-column-block__resizer`]: this.getColumnObject
         }
 
         return response;
@@ -68,7 +62,6 @@ class edit extends MaxiBlock {
 
     get getNormalObject() {
         const {
-            wrap,
             horizontalAlign,
             verticalAlign,
             opacity,
@@ -95,16 +88,9 @@ class edit extends MaxiBlock {
             row: {
                 label: "Row",
                 general: {},
-                // breakpoints: {
-                //     wrap: {
-                //         content: 'flex-wrap: wrap;'
-                //     }
-                // }
             },
         };
 
-        // if (isNumber(wrap))
-        //     response.row.breakpoints.wrap.rule = `max-width:${wrap}px`;
         if (!isNil(horizontalAlign))
             response.row.general['justify-content'] = horizontalAlign;
         if (!isNil(verticalAlign))
@@ -128,37 +114,7 @@ class edit extends MaxiBlock {
             borderWidthHover: { ...JSON.parse(borderHover).borderWidth },
             borderRadiusHover: { ...JSON.parse(borderHover).borderRadius },
             opacity: { ...getOpacityObject(JSON.parse(opacityHover)) },
-            row: {
-                label: "Row",
-                general: {}
-            }
         };
-
-        return response;
-    }
-
-    get getColumnObject() {
-        const {
-            wrap,
-            columnGap
-        } = this.props.attributes;
-
-        let response = {
-            columnMargin: {
-                label: "Columns margin",
-                general: {
-                    margin: `0 ${columnGap}%`
-                },
-                // breakpoints: {
-                //     wrap: {
-                //         content: 'flex: 0 0 100% !important;max-width: 100% !important;margin: inherit !important;'
-                //     }
-                // }
-            },
-        };
-
-        // if (isNumber(wrap))
-        //     response.columnMargin.breakpoints.wrap.rule = `max-width:${wrap}px`;
 
         return response;
     }
@@ -187,15 +143,15 @@ class edit extends MaxiBlock {
             'maxi-block maxi-row-block',
             uniqueID,
             blockStyle,
-            'hover-animation-type-'+hoverAnimation,
-            'hover-animation-duration-'+hoverAnimationDuration,
+            'hover-animation-type-' + hoverAnimation,
+            'hover-animation-duration-' + hoverAnimationDuration,
             extraClassName,
             className,
         );
 
         return [
             <Inspector {...this.props} />,
-            // <__experimentalToolbar {...this.props} />,
+            <__experimentalToolbar {...this.props} />,
             <__experimentalBreadcrumbs />,
             <InnerBlocks
                 // templateLock={'insert'}
@@ -247,18 +203,19 @@ const editSelect = withSelect((select, ownProps) => {
     const selectedBlockId = select('core/block-editor').getSelectedBlockClientId();
     const originalNestedBlocks = select('core/block-editor').getBlockParents(selectedBlockId);
     const hasInnerBlock = !isEmpty(select('core/block-editor').getBlockOrder(clientId));
+    const deviceType = select('core/edit-post').__experimentalGetPreviewDeviceType();
 
     return {
         selectedBlockId,
         originalNestedBlocks,
         hasInnerBlock,
+        deviceType
     }
 })
 
 const editDispatch = withDispatch((dispatch, ownProps) => {
     const {
         clientId,
-
     } = ownProps;
 
     /**
@@ -289,8 +246,6 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 
         const newTemplate = synchronizeBlocksWithTemplate([], template.content);
         dispatch('core/block-editor').replaceInnerBlocks(clientId, newTemplate);
-
-        onChangeColumnGap(newAttributes.columnGap)
     }
 
     /**
@@ -302,34 +257,9 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
         dispatch('core/editor').selectBlock(id);
     }
 
-    const onChangeColumnGap = columnGap => {
-        const nestedBlocks = select('core/block-editor').getBlockOrder(clientId);
-        let columnSizes = {};
-        nestedBlocks.map(columnId => {
-            columnSizes[columnId] = select('core/block-editor').getBlockAttributes(columnId).columnSize;
-        })
-
-        const totalSize = round(sum(Object.values(columnSizes)), 2);
-        const realSize = (100 - ((nestedBlocks.length - 1) * columnGap) * 2);
-        const diffSizeXUnit = (realSize - totalSize) / nestedBlocks.length;
-
-        for (let [key, value] of Object.entries(columnSizes)) {
-            const newValue = round(Number(value + diffSizeXUnit), 2);
-
-            dispatch('core/block-editor').updateBlockAttributes(
-                key,
-                {
-                    columnSize: newValue
-                }
-            )
-                .then(() => document.querySelector(`.maxi-column-block__resizer__${key}`).style.width = `${newValue}%`)
-        }
-    }
-
     return {
         loadTemplate,
         selectOnClick,
-        onChangeColumnGap,
     }
 })
 

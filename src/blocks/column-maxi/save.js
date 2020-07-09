@@ -3,18 +3,17 @@
  */
 const { InnerBlocks } = wp.blockEditor;
 
-
 /**
  * External dependencies
  */
 import classnames from 'classnames';
+import { isNil } from 'lodash';
 
 /**
  * Save
  */
 const save = props => {
     const {
-        className,
         attributes: {
             uniqueID,
             blockStyle,
@@ -22,7 +21,8 @@ const save = props => {
             defaultBlockStyle,
             hoverAnimation,
             hoverAnimationDuration,
-        }
+        },
+        className,
     } = props;
 
     let classes = classnames(
@@ -32,9 +32,10 @@ const save = props => {
         'hover-animation-type-'+hoverAnimation,
         'hover-animation-duration-'+hoverAnimationDuration,
         className,
+        !isNil(uniqueID) ?
+            uniqueID :
+            null
     );
-    if (uniqueID && (typeof uniqueID !== 'undefined'))
-        classes = classnames(classes, uniqueID);
 
     return (
         <div

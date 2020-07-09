@@ -7,7 +7,10 @@ const { Button } = wp.components;
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject } from 'lodash';
+import { 
+    isObject,
+    isNil
+} from 'lodash';
 
 /**
  * Save
@@ -25,15 +28,16 @@ const save = props => {
         },
     } = props;
 
-    let classes = classnames(
+    const classes = classnames(
         'maxi-block maxi-button-extra',
         blockStyle,
         extraClassName,
         uniqueID,
-        className
+        className,
+        !isNil(uniqueID) ?
+            uniqueID :
+            null
     );
-    if (uniqueID && (typeof uniqueID !== 'undefined'))
-        classes = classnames(classes, uniqueID);
 
     const linkOpt = !isObject(linkSettings) ?
         JSON.parse(linkSettings) :

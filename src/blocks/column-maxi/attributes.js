@@ -8,7 +8,8 @@ import * as attributesData from '../../extensions/styles/defaults';
  */
 const attributes = {
     columnSize: {
-        type: 'number',
+        type: 'string',
+        default: JSON.stringify(attributesData.__experimentalColumn)
     },
     verticalAlign: {
         type: 'string',

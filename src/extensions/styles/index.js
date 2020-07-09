@@ -1,15 +1,10 @@
 /**
- * WordPress dependencies
- */
-const { select } = wp.data;
-
-/**
  * External dependencies
  */
 import {
     isNil,
     isNumber,
-    isEmpty
+    isEmpty,
 } from 'lodash';
 
 /**
@@ -24,9 +19,7 @@ export class ResponsiveStylesResolver {
         this.meta = meta;
         this.breakpoints = breakpoints;
 
-        this.init()
-
-        console.log(this.meta)
+        this.init();
 
         return this.meta;
     }
@@ -52,29 +45,16 @@ export class ResponsiveStylesResolver {
         for (let [key, value] of Object.entries(props)) {
             let newObject = {};
 
-            for (let breakpoint of Object.keys(value)) {
-                if (breakpoint != 'label')
-                    newObject = this.propsObjectManipulator(value, newObject, breakpoint);
-            }
-
-            // newObject = this.propsObjectManipulator(value, newObject, 'general');
-            // newObject = this.propsObjectManipulator(value, newObject, 'l');
-            // newObject = this.breakpointsObjectManipulator(props, newObject, key, 'breakpoints');
-
-            // On Typography component object
-            // if (props[key].font) {
-            //     newObject.font = props[key].font;
-            //     newObject.options = props[key].options;
-            // }
-
-            // if(!isEmpty(newObject))
-            //     console.log(newObject)
+            newObject = this.propsObjectManipulator(value, newObject, 'general');
+            newObject = this.propsObjectManipulator(value, newObject, 'xl');
+            newObject = this.propsObjectManipulator(value, newObject, 'l');
+            newObject = this.propsObjectManipulator(value, newObject, 'm');
+            newObject = this.propsObjectManipulator(value, newObject, 's');
+            newObject = this.propsObjectManipulator(value, newObject, 'xs');
 
             if (!isNil(newObject))
                 Object.assign(response.content, { [props[key].label]: newObject })
         }
-
-        // console.log(response)
 
         return response;
     }
@@ -91,7 +71,7 @@ export class ResponsiveStylesResolver {
         for (let [target, prop] of Object.entries(object)) {
             if (isNil(prop)) {
                 console.error(`Undefined property. Property: ${target}`);
-                return;
+                continue;
             }
             // values with dimensions
             if (
@@ -105,8 +85,8 @@ export class ResponsiveStylesResolver {
             // values with metrics
             if (prop.length <= 2 && !isEmpty(prop))
                 unitChecker = target, unit = prop;
-            // values with strings
-            if (prop.length > 2)
+            // values with strings && font-options object
+            if (prop.length > 2 || target === 'font-options')
                 newObject[breakpoint][target] = prop;
         }
 
@@ -167,35 +147,64 @@ export class BackEndResponsiveStyles {
     createContent() {
         let response = '';
         for (let [target, prop] of Object.entries(this.meta)) {
+            if (isNil(prop.content))
+                continue;
+
             target = this.getTarget(target);
-            const breakpoints = prop.breakpoints;
 
             for (let value of Object.values(prop.content)) {
                 for (let [breakpoint, content] of Object.entries(value)) {
-                    if (breakpoint === 'font' || breakpoint === 'options')
-                        break;  // Is needed to fix font from typography!
+                    if (isEmpty(content))
+                        continue;
 
                     if (breakpoint === 'general') {
                         response += `.${target}{`;
                         response += this.getResponsiveStyles(content);
                         response += '}';
                     }
-                    else {
-                        response += `@media only screen and (max-width: ${breakpoints[breakpoint]}px){.${target}{`;
+                    if (breakpoint === 'xl') {
+                        response += `
+                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xl"] .${target},
+                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="l"] .${target},
+                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="m"] .${target},
+                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .${target},
+                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .${target}{`;
                         response += this.getResponsiveStyles(content);
-                        response += '}}';
+                        response += '}';
+                    }
+                    if (breakpoint === 'l') {
+                        response += `
+                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="l"] .${target},
+                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="m"] .${target},
+                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .${target},
+                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .${target}{`;
+                        response += this.getResponsiveStyles(content);
+                        response += '}';
+                    }
+                    if (breakpoint === 'm') {
+                        response += `
+                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="m"] .${target},
+                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .${target},
+                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .${target}{`;
+                        response += this.getResponsiveStyles(content);
+                        response += '}';
+                    }
+                    if (breakpoint === 's') {
+                        response += `
+                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .${target},
+                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .${target}{`;
+                        response += this.getResponsiveStyles(content);
+                        response += '}';
+                    }
+                    if (breakpoint === 'xs') {
+                        response += `
+                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .${target}{`;
+                        response += this.getResponsiveStyles(content);
+                        response += '}';
                     }
                 }
-
-                // if (!isNil(value.breakpoints)) {
-                //     for (let breakpoint of Object.values(value.breakpoints)) {
-                //         content += `@media only screen and (${breakpoint.rule}){.${target}{${breakpoint.content}}}`;
-                //     }
-                // }
             }
         }
-
-        // console.log(response)
 
         return response;
     }
@@ -223,6 +232,9 @@ export class BackEndResponsiveStyles {
     getResponsiveStyles(styles) {
         let responsiveStyles = '';
         for (let [key, value] of Object.entries(styles)) {
+            if(key === 'font-options')
+                continue;
+
             responsiveStyles += ` ${key}: ${value} !important;`;
         }
         return responsiveStyles;

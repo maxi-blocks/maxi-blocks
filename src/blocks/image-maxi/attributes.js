@@ -2,25 +2,19 @@
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults';
+import { size } from './data';
 
 /**
  * Attributes
  */
 const attributes = {
-    size: {
+    imageSize: {
         type: 'string',
         default: 'full'
-    },
-    sizeOptions: {
-        type: 'string',
     },
     cropOptions: {
         type: 'string',
         default: JSON.stringify(attributesData.cropOptions)
-    },
-    fullWidth: {
-        type: 'string',
-        default: 'normal',
     },
     alignment: {
         type: 'string',
@@ -38,20 +32,13 @@ const attributes = {
         type: 'string',
         default: JSON.stringify(attributesData.typography)
     },
-    maxWidthUnit: {
+    fullWidth: {
         type: 'string',
-        default: 'px'
+        default: 'normal',
     },
-    maxWidth: {
-        type: 'number',
-    },
-    widthUnit: {
+    size: {
         type: 'string',
-        default: 'px'
-    },
-    width: {
-        type: 'number',
-        default: 100
+        default: JSON.stringify(size)
     },
     opacity: {
         type: 'string',

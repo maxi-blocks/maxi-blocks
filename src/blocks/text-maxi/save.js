@@ -6,10 +6,7 @@ const { RichText } = wp.blockEditor;
  * External dependencies
  */
 import classnames from 'classnames';
-import {
-    isNil
-} from 'lodash';
-import transform from "css-to-react-native-transform";
+import { isNil } from 'lodash';
 
 /**
  * Save
@@ -36,26 +33,22 @@ const save = props => {
         blockStyle,
         extraClassName,
         uniqueID,
-        'hover-animation-type-'+hoverAnimation,
-        'hover-animation-duration-'+hoverAnimationDuration,
+        'hover-animation-type-' + hoverAnimation,
+        'hover-animation-duration-' + hoverAnimationDuration,
         className,
         fullWidth === 'full' ?
             'alignfull' :
-            '',
+            null,
+        !isNil(uniqueID) ?
+            uniqueID :
+            null
     );
-    if (uniqueID && (typeof uniqueID !== 'undefined'))
-        classes = classnames(classes, uniqueID);
-
-    let extraStylesObj = '';
-
-   // if (!isNil(extraStyles))  {let extraStylesObj = transform(extraStyles)}
 
     return (
         <RichText.Content
             value={content}
             tagName={textLevel}
             className={classes}
-            style={extraStylesObj}
             data-gx_initial_block_class={defaultBlockStyle}
         />
     );

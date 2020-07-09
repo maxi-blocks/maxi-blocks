@@ -10,17 +10,9 @@ const attributes = {
     rowPattern: {
         type: 'number',
     },
-    columnGap: {
-        type: 'number',
-        default: 0
-    },
-    wrap: {
-        type: 'number',
-        default: 768,
-    },
     horizontalAlign: {
         type: 'string',
-        default: 'flex-start'
+        default: 'space-between'
     },
     verticalAlign: {
         type: 'string',

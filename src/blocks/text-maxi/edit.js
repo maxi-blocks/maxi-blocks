@@ -28,7 +28,6 @@ import {
  */
 import classnames from 'classnames';
 import { isNil } from 'lodash';
-import transform from "css-to-react-native-transform";
 
 /**
  * Content
@@ -125,7 +124,6 @@ class edit extends MaxiBlock {
                 hoverAnimationDuration,
                 textLevel,
                 content,
-                extraStyles,
             },
             setAttributes,
         } = this.props;
@@ -140,19 +138,14 @@ class edit extends MaxiBlock {
             className
         );
 
-        let extraStylesObj = '';
-
-        if (!isNil(extraStyles)) { let extraStylesObj = transform(extraStyles); }
-
         return [
             <Inspector {...this.props} />,
-            // <__experimentalToolbar {...this.props} />,
+            <__experimentalToolbar {...this.props} />,
             <RichText
                 value={content}
                 onChange={content => setAttributes({ content })}
                 tagName={__experimentalBlock[textLevel]}
                 className={classes}
-                style={extraStylesObj}
                 placeholder={__('Set your Maxi Text here...', 'maxi-blocks')}
                 onSplit={value => {
                     if (!value) {

@@ -8,6 +8,7 @@ const { Fragment } = wp.element;
  * External dependencies
  */
 import classnames from 'classnames';
+import { isObject } from 'lodash';
 
 /**
  * Save
@@ -32,10 +33,11 @@ const save = props => {
         className,
         fullWidth === 'full' ?
             'alignfull' :
-            '',
+            null,
+        !isNil(uniqueID) ?
+            uniqueID :
+            null        
     );
-    if (uniqueID && (typeof uniqueID !== 'undefined'))
-        classes = classnames(classes, uniqueID);
 
     return (
         <Fragment>

@@ -1,24 +1,9 @@
 .maxi-row-block {
     position: relative;
     display: flex;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
 
     &.alignfull {
         width: auto;
-    }
-
-    > div.maxi-column-block {
-        &:first-of-type {
-            margin-left: 0 !important;
-        }
-        &:last-of-type {
-            margin-right: 0 !important;
-        }
-
-        &--desktop-fullwidth,
-        &--tablet-fullwidth,
-        &--mobile-fullwidth {
-            margin: inherit !important;
-        }
     }
 }

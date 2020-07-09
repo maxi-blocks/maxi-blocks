@@ -1,7 +1,7 @@
 export const alignment = {
     "label": "Alignment",
     "general": {
-        "alignment": "left"
+        "alignment": "center"
     },
     "xl": {
         "alignment": ""
@@ -984,29 +984,51 @@ export const __experimentalDivider = {
 }
 
 export const __experimentalContainer = {
-    label: 'Container',
+    label: "Container size",
     general: {
-        'max-widthUnit': '%',
-        'max-width': '90'
+        "max-widthUnit": "%",
+        "max-width": "90"
     },
     xl: {
-        'max-widthUnit': '%',
-        'max-width': '90'
+        "max-widthUnit": "%",
+        "max-width": ""
     },
     l: {
-        'max-widthUnit': '%',
-        'max-width': '90'
+        "max-widthUnit": "%",
+        "max-width": ""
     },
     m: {
-        'max-widthUnit': '%',
-        'max-width': '90'
+        "max-widthUnit": "%",
+        "max-width": ""
     },
     s: {
-        'max-widthUnit': '%',
-        'max-width': '90'
+        "max-widthUnit": "%",
+        "max-width": ""
     },
     xs: {
-        'max-widthUnit': '%',
-        'max-width': '90'
+        "max-widthUnit": "%",
+        "max-width": ""
+    },
+}
+
+export const __experimentalColumn = {
+    label: "Column size",
+    general: {
+        "size": 90
+    },
+    xl: {
+        "size": ""
+    },
+    l: {
+        "size": ""
+    },
+    m: {
+        "size": ""
+    },
+    s: {
+        "size": ""
+    },
+    xs: {
+        "size": ""
     },
 }

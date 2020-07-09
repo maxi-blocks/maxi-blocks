@@ -7,7 +7,10 @@ const { RadioControl } = wp.components;
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject } from 'lodash';
+import {
+    isObject,
+    isEmpty
+} from 'lodash';
 
 /**
  * Styles and Icons
@@ -53,7 +56,9 @@ const AlignmentControl = props => {
 
     const classes = classnames(
         'maxi-alignment-control',
-        (label === '') ? 'maxi-alignment-control__no-label' : ''
+        isEmpty(label) ?
+            'maxi-alignment-control__no-label' :
+            ''
     );
 
     const value = !isObject(alignment) ?

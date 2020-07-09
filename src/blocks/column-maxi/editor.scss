@@ -1,5 +1,7 @@
-div.maxi-column-block {
-    width: 100% !important;
+.edit-post-visual-editor.editor-styles-wrapper .maxi-column-block__resizer div.maxi-column-block {
+    width: 100%;
+    max-width: 100% !important;
+    flex-basis: 100% !important;
     margin: auto;
     height: 100%;
 

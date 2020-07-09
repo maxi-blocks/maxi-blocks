@@ -20,13 +20,14 @@
     }
 
     div.maxi-column-block {
-        &--left {
-            margin-left: 0 !important;
-        }
+        margin: 0 !important;
+        // &--left {
+        //     margin-left: 0 !important;
+        // }
 
-        &--right {
-            margin-right: 0 !important;
-        }
+        // &--right {
+        //     margin-right: 0 !important;
+        // }
     }
 
     .block-list-appender {

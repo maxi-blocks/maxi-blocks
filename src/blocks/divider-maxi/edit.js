@@ -4,6 +4,11 @@
 const { Fragment } = wp.element;
 const { __experimentalBlock } = wp.blockEditor;
 const { ResizableBox } = wp.components;
+const { compose } = wp.compose;
+const { 
+    withSelect,
+    withDispatch
+} = wp.data;
 
 /**
  * Internal dependencies
@@ -127,12 +132,13 @@ class edit extends MaxiBlock {
                 size
             },
             className,
-            clientId,
             isSelected,
+            deviceType,
+            onDeviceTypeChange,
             setAttributes,
         } = this.props;
 
-        console.log(!!showLine, showLine)
+        onDeviceTypeChange();
 
         let classes = classnames(
             'maxi-block maxi-divider-block',
@@ -151,16 +157,16 @@ class edit extends MaxiBlock {
 
         return [
             <Inspector {...this.props} />,
-            // <__experimentalToolbar {...this.props} />,
+            <__experimentalToolbar {...this.props} />,
             <ResizableBox
                 className={classnames(
                     'maxi-block__resizer',
                     'maxi-divider-block__resizer',
-                    `maxi-divider-block__resizer__${clientId}`
+                    `maxi-divider-block__resizer__${uniqueID}`
                 )}
-                size={{
+                defaultSize={{
                     width: '100%',
-                    height: value.general.height + value.general.heightUnit
+                    height: value[deviceType].height + value[deviceType].heightUnit
                 }}
                 enable={{
                     top: false,
@@ -173,9 +179,9 @@ class edit extends MaxiBlock {
                     topLeft: false,
                 }}
                 onResizeStart={() => {
-                    value.general.heightUnit != 'px' ?
+                    value[deviceType].heightUnit != 'px' ?
                         (
-                            value.general.heightUnit = 'px',
+                            value[deviceType].heightUnit = 'px',
                             setAttributes({
                                 size: JSON.stringify(value)
                             })
@@ -183,7 +189,7 @@ class edit extends MaxiBlock {
                         null
                 }}
                 onResizeStop={(event, direction, elt, delta) => {
-                    value.general.height = elt.getBoundingClientRect().height;
+                    value[deviceType].height = elt.getBoundingClientRect().height;
                     setAttributes({
                         size: JSON.stringify(value),
                     });
@@ -206,4 +212,50 @@ class edit extends MaxiBlock {
     }
 }
 
-export default edit;
+const editSelect = withSelect(select => {
+    let deviceType = select('core/edit-post').__experimentalGetPreviewDeviceType();
+    deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
+
+    return {
+        deviceType
+    }
+});
+
+const editDispatch = withDispatch((dispatch, ownProps, { select }) => {
+    const {
+        attributes: {
+            uniqueID,
+            size
+        },
+        deviceType,
+    } = ownProps;
+
+    const onDeviceTypeChange = function() {
+        let newDeviceType = select('core/edit-post').__experimentalGetPreviewDeviceType();
+        newDeviceType = newDeviceType === 'Desktop' ? 
+            'general' : 
+            newDeviceType;
+
+        const allowedDeviceTypes = [
+            'general',
+            'xl',
+            'l',
+            'm',
+            's',
+        ];
+
+        if (allowedDeviceTypes.includes(newDeviceType) && deviceType != newDeviceType) {
+            const node = document.querySelector(`.maxi-divider-block__resizer__${uniqueID}`);
+            if (isNil(node))
+                return;
+            const newSize = JSON.parse(size);
+            node.style.height = `${newSize[newDeviceType].height}px`;
+        }
+    };
+
+    return {
+        onDeviceTypeChange
+    }
+});
+
+export default compose(editSelect, editDispatch)(edit);

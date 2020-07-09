@@ -26,10 +26,6 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import {
-    isNil,
-    isNumber
-} from 'lodash';
 
 /**
  * Content
@@ -134,17 +130,15 @@ class edit extends MaxiBlock {
 
         return [
             <Inspector {...this.props} />,
-            // <__experimentalToolbar {...this.props} />,
+            <__experimentalToolbar {...this.props} />,
             <__experimentalBlock
                 className={classes}
                 data-gx_initial_block_class={defaultBlockStyle}
             >
                 <RichText
                     className="maxi-button-extra__button"
-                    // tagName="button"
                     withoutInteractiveFormatting
                     placeholder={__('Set some text...', 'maxi-blocks')}
-                    // keepPlaceholderOnFocus
                     value={buttonText}
                     onChange={buttonText => setAttributes({ buttonText })}
                     identifier="text"

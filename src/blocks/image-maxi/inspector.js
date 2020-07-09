@@ -3,10 +3,8 @@
  */
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
-const {
-    Fragment,
-    useState
-} = wp.element;
+const { Fragment } = wp.element;
+const { useSelect } = wp.data;
 const {
     RangeControl,
     SelectControl,
@@ -25,6 +23,7 @@ import {
     BorderControl,
     BlockStylesControl,
     BoxShadowControl,
+    FullSizeControl,
     HoverAnimationControl,
     ImageCropControl,
     SettingTabsControl,
@@ -41,7 +40,8 @@ import {
 import {
     capitalize,
     isEmpty,
-    isNil
+    isNil,
+    isObject
 } from 'lodash';
 
 /**
@@ -53,18 +53,18 @@ const Inspector = props => {
             isFirstOnHierarchy,
             blockStyle,
             defaultBlockStyle,
-            size,
+            imageSize,
             cropOptions,
             fullWidth,
             alignment,
             captionType,
             captionContent,
             captionTypography,
-            width,
             background,
             opacity,
             boxShadow,
             border,
+            size,
             padding,
             margin,
             backgroundHover,
@@ -83,7 +83,26 @@ const Inspector = props => {
         setAttributes,
     } = props;
 
-    const [breakpoint, setBreakpoint] = useState('general')
+    const { deviceType } = useSelect(
+        select => {
+            const {
+                __experimentalGetPreviewDeviceType
+            } = select(
+                'core/edit-post'
+            );
+            let deviceType = __experimentalGetPreviewDeviceType();
+            deviceType = deviceType === 'Desktop' ?
+                'general' :
+                deviceType;
+            return {
+                deviceType,
+            }
+        }
+    );
+
+    const sizeValue = !isObject(size) ?
+        JSON.parse(size) :
+        size;
 
     const getSizeOptions = () => {
         let response = [];
@@ -121,10 +140,7 @@ const Inspector = props => {
 
     return (
         <InspectorControls>
-            <__experimentalResponsiveSelector
-                selected={breakpoint}
-                onChange={breakpoint => setBreakpoint(breakpoint)}
-            />
+            <__experimentalResponsiveSelector />
             <SettingTabsControl
                 disablePadding
                 items={[
@@ -151,50 +167,42 @@ const Inspector = props => {
                                                     alignment={alignment}
                                                     onChange={alignment => setAttributes({ alignment })}
                                                     disableJustify
-                                                    breakpoint={breakpoint}
+                                                    breakpoint={deviceType}
                                                 />
                                             )
                                         },
                                         function () {
-                                            if (breakpoint === 'general') {
+                                            if (deviceType === 'general') {
                                                 return {
                                                     label: __('Width / Height', 'maxi-blocks'),
                                                     content: (
                                                         <Fragment>
                                                             <SelectControl
                                                                 label={__('Image Size', 'maxi-blocks')}
-                                                                value={size || size == 'custom' ? size : 'full'} // is still necessary?
+                                                                value={imageSize || imageSize == 'custom' ? imageSize : 'full'} // is still necessary?
                                                                 options={getSizeOptions()}
-                                                                onChange={size => setAttributes({ size })}
+                                                                onChange={imageSize => setAttributes({ imageSize })}
                                                             />
                                                             {
-                                                                size === 'custom' &&
+                                                                imageSize === 'custom' &&
                                                                 <ImageCropControl
                                                                     mediaID={mediaID}
                                                                     cropOptions={JSON.parse(cropOptions)}
                                                                     onChange={cropOptions => setAttributes({ cropOptions: JSON.stringify(cropOptions) })}
                                                                 />
                                                             }
-                                                            {
-                                                                isFirstOnHierarchy &&
-                                                                <SelectControl
-                                                                    label={__('Full Width', 'maxi-blocks')}
-                                                                    value={fullWidth}
-                                                                    options={[
-                                                                        { label: __('No', 'maxi-blocks'), value: 'normal' },
-                                                                        { label: __('Yes', 'maxi-blocks'), value: 'full' }
-                                                                    ]}
-                                                                    onChange={fullWidth => setAttributes({ fullWidth })}
-                                                                />
-                                                            }
                                                             <RangeControl
                                                                 label={__('Width', 'maxi-blocks')}
-                                                                value={width}
-                                                                onChange={width => {
-                                                                    if (isNil(width))
-                                                                        setAttributes({ width: getDefaultProp(clientId, 'width') })
-                                                                    else
-                                                                        setAttributes({ width })
+                                                                value={sizeValue.general.width}
+                                                                onChange={val => {
+                                                                    if (isNil(val)) {
+                                                                        const defaultSize = getDefaultProp(clientId, 'size');
+                                                                        sizeValue.general.width = defaultSize.general.width;
+                                                                    }
+                                                                    else {
+                                                                        sizeValue.general.width = val;
+                                                                    }
+                                                                    setAttributes({ size: JSON.stringify(sizeValue) })
                                                                 }}
                                                                 allowReset
                                                             />
@@ -204,7 +212,7 @@ const Inspector = props => {
                                             }
                                         }(),
                                         function () {
-                                            if (breakpoint === 'general') {
+                                            if (deviceType === 'general') {
                                                 return {
                                                     label: __('Caption', 'maxi-blocks'),
                                                     content: (
@@ -306,7 +314,7 @@ const Inspector = props => {
                                                                 <BorderControl
                                                                     border={border}
                                                                     onChange={border => setAttributes({ border })}
-                                                                    breakpoint={breakpoint}
+                                                                    breakpoint={deviceType}
                                                                 />
                                                             )
                                                         },
@@ -316,12 +324,37 @@ const Inspector = props => {
                                                                 <BorderControl
                                                                     border={borderHover}
                                                                     onChange={borderHover => setAttributes({ borderHover })}
-                                                                    breakpoint={breakpoint}
+                                                                    breakpoint={deviceType}
                                                                 />
                                                             )
                                                         },
                                                     ]}
                                                 />
+                                            )
+                                        },
+                                        {
+                                            label: __('Width / Height', 'maxi-blocks'),
+                                            content: (
+                                                <Fragment>
+                                                    {
+                                                        isFirstOnHierarchy &&
+                                                        <SelectControl
+                                                            label={__('Full Width', 'maxi-blocks')}
+                                                            value={fullWidth}
+                                                            options={[
+                                                                { label: __('No', 'maxi-blocks'), value: 'normal' },
+                                                                { label: __('Yes', 'maxi-blocks'), value: 'full' }
+                                                            ]}
+                                                            onChange={fullWidth => setAttributes({ fullWidth })}
+                                                        />
+                                                    }
+                                                    <FullSizeControl
+                                                        size={size}
+                                                        onChange={size => setAttributes({ size })}
+                                                        breakpoint={deviceType}
+                                                        hideWidth
+                                                    />
+                                                </Fragment>
                                             )
                                         },
                                         {
@@ -336,7 +369,7 @@ const Inspector = props => {
                                                                 <BoxShadowControl
                                                                     boxShadow={boxShadow}
                                                                     onChange={boxShadow => setAttributes({ boxShadow })}
-                                                                    breakpoint={breakpoint}
+                                                                    breakpoint={deviceType}
                                                                 />
                                                             )
                                                         },
@@ -346,7 +379,7 @@ const Inspector = props => {
                                                                 <BoxShadowControl
                                                                     boxShadow={boxShadowHover}
                                                                     onChange={boxShadowHover => setAttributes({ boxShadowHover })}
-                                                                    breakpoint={breakpoint}
+                                                                    breakpoint={deviceType}
                                                                 />
                                                             )
                                                         },
@@ -361,12 +394,12 @@ const Inspector = props => {
                                                     <__experimentalMarginPaddingControl
                                                         value={padding}
                                                         onChange={padding => setAttributes({ padding })}
-                                                        breakpoint={breakpoint}
+                                                        breakpoint={deviceType}
                                                     />
                                                     <__experimentalMarginPaddingControl
                                                         value={margin}
                                                         onChange={margin => setAttributes({ margin })}
-                                                        breakpoint={breakpoint}
+                                                        breakpoint={deviceType}
                                                     />
                                                 </Fragment>
                                             )
@@ -381,7 +414,7 @@ const Inspector = props => {
                         content: (
                             <div className='maxi-tab-content__box'>
                                 {
-                                    breakpoint === 'general' &&
+                                    deviceType === 'general' &&
                                     <Fragment>
                                         <HoverAnimationControl
                                             hoverAnimation={hoverAnimation}
@@ -400,14 +433,14 @@ const Inspector = props => {
                                 <__experimentalZIndexControl
                                     zindex={zIndex}
                                     onChange={zIndex => setAttributes({ zIndex })}
-                                    breakpoint={breakpoint}
+                                    breakpoint={deviceType}
                                 />
                                 {
-                                    breakpoint != 'general' &&
+                                    deviceType != 'general' &&
                                     <__experimentalResponsiveControl
                                         breakpoints={breakpoints}
                                         onChange={breakpoints => setAttributes({ breakpoints })}
-                                        breakpoint={breakpoint}
+                                        breakpoint={deviceType}
                                     />
                                 }
                             </div>

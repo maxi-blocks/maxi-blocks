@@ -113,18 +113,12 @@ class edit extends MaxiBlock {
 
     get getImageFrontendObject() {
         const {
-            width,
+            size,
         } = this.props.attributes;
 
         const response = {
-            imageSize: {
-                label: 'Image Size',
-                general: {}
-            }
+            imageSize: { ...JSON.parse(size) }
         };
-
-        if (!!width)
-            response.imageSize.general['width'] = `${width}%`;
 
         return response
     }
@@ -178,16 +172,16 @@ class edit extends MaxiBlock {
                 defaultBlockStyle,
                 extraClassName,
                 fullWidth,
+                size,
                 cropOptions,
                 captionType,
                 captionContent,
-                size,
+                imageSize,
                 mediaID,
                 mediaALT,
                 mediaURL,
                 mediaWidth,
                 mediaHeight,
-                width,
                 hoverAnimation,
                 hoverAnimationDuration,
             },
@@ -205,15 +199,19 @@ class edit extends MaxiBlock {
             className
         );
 
-        const value = !isObject(cropOptions) ?
+        const cropOptionsValue = !isObject(cropOptions) ?
             JSON.parse(cropOptions) :
             cropOptions;
 
+        const sizeValue = !isObject(size) ?
+            JSON.parse(size) :
+            size;
+
         const getImage = () => {
-            if (size === 'custom' && !isEmpty(value.image.source_url))
-                return value.image;
-            if (imageData && size)
-                return imageData.media_details.sizes[size];
+            if (imageSize === 'custom' && !isEmpty(cropOptionsValue.image.source_url))
+                return cropOptionsValue.image;
+            if (imageData && imageSize)
+                return imageData.media_details.sizes[imageSize];
             if (imageData)
                 return imageData.media_details.sizes.full;
         }
@@ -232,7 +230,7 @@ class edit extends MaxiBlock {
 
         return [
             <Inspector {...this.props} />,
-            // <__experimentalToolbar {...this.props} />,
+            <__experimentalToolbar {...this.props} />,
             <__experimentalBlock.figure
                 className={classes}
                 data-gx_initial_block_class={defaultBlockStyle}
@@ -249,7 +247,7 @@ class edit extends MaxiBlock {
                                     <ResizableBox
                                         className='maxi-block__resizer maxi-image-block__resizer'
                                         size={{
-                                            width: `${width}%`,
+                                            width: `${sizeValue.general.width}%`,
                                             height: '100%'
                                         }}
                                         maxWidth='100%'
@@ -265,8 +263,9 @@ class edit extends MaxiBlock {
                                         }}
                                         onResizeStop={(event, direction, elt, delta) => {
                                             const newScale = Number(((elt.getBoundingClientRect().width / this.getWrapperWidth) * 100).toFixed());
+                                            sizeValue.general.width = newScale
                                             setAttributes({
-                                                width: Number(newScale.toFixed()),
+                                                size: JSON.stringify(sizeValue),
                                             });
                                         }}
                                     >

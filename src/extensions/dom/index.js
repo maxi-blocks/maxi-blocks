@@ -1,8 +1,10 @@
 /**
  * WordPress dependencies
  */
+const { Component } = wp.element;
 const {
     select,
+    subscribe
 } = wp.data;
 
 /**

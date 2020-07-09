@@ -22,7 +22,8 @@ import Inspector from './inspector';
 import {
     getBackgroundObject,
     getBoxShadowObject,
-    getVideoBackgroundObject
+    getVideoBackgroundObject,
+    getShapeDividerObject
 } from '../../extensions/styles/utils'
 
 /**
@@ -34,6 +35,10 @@ import {
     isNumber,
 } from 'lodash';
 
+import {
+    wavesBottom,
+} from '../../icons';
+
 /**
  * Edit
  */
@@ -44,6 +49,7 @@ class edit extends MaxiBlock {
             [`${this.props.attributes.uniqueID}:hover`]: this.getHoverObject,
             [`${this.props.attributes.uniqueID}>.maxi-container-block__container`]: this.getContainerObject,
             [`${this.props.attributes.uniqueID} .maxi-video-player video`]: { videoBackground: { ...getVideoBackgroundObject(JSON.parse(this.props.attributes.background).videoOptions) } },
+            [`${this.props.attributes.uniqueID} .maxi-shape-divider`]: { shapeDivider: { ...getShapeDividerObject(JSON.parse(this.props.attributes.shapeDivider)) } },
             [`${this.props.attributes.uniqueID} .maxi-block-text-hover .maxi-block-text-hover__content`]: this.getHoverAnimationTextContentObject,
             [`${this.props.attributes.uniqueID} .maxi-block-text-hover .maxi-block-text-hover__title`]: this.getHoverAnimationTextTitleObject,
             [`${this.props.attributes.uniqueID} .maxi-block-text-hover`]: this.getHoverAnimationMainObject,
@@ -112,7 +118,7 @@ class edit extends MaxiBlock {
         if (isNumber(opacityHover))
             response.containerHover.general['opacity'] = opacityHover;
 
-        return response;
+            return response;
     }
 
     get getContainerObject() {
@@ -164,7 +170,7 @@ class edit extends MaxiBlock {
 
         return response;
     }
-    
+
     get getHoverAnimationMainObject() {
         const {
             hoverOpacity,
@@ -298,6 +304,7 @@ class edit extends MaxiBlock {
                         data-align={fullWidth}
                         data-gx_initial_block_class={defaultBlockStyle}
                     >
+                        <div className="maxi-shape-divider">{wavesBottom}</div>
                         <InnerBlocks
                             templateLock={false}
                             __experimentalTagName='div'

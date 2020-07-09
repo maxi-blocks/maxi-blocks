@@ -29,6 +29,7 @@ export { default as PopoverControl } from './popover-control';
 export { default as FullSizeControl } from './full-size-control';
 export { default as TextShadowControl } from './text-shadow-control';
 export { default as TypographyControl } from './typography-control';
+export { default as ShapeDividerControl } from './shape-divider-control';
 
 // Experimental
 export { default as __experimentalVideoPlayer } from './video-player';

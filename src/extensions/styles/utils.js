@@ -12,6 +12,7 @@ import {
     isNil,
     isNumber
 } from 'lodash'
+import { shapeDivider } from './defaults';
 
 /**
  * Returns default property of the block
@@ -170,6 +171,21 @@ export const getVideoBackgroundObject = videoOptions => {
 
     if(!isNil(videoOptions.height))
         response.general['height'] = `${videoOptions.height}${videoOptions.heightUnit}`;
+
+    return response;
+}
+
+export const getShapeDividerObject = shapeDivider => {
+    const response = {
+        label: 'Shape Divider',
+        general: {}
+    }
+
+    if(!isNil(shapeDivider.opacity))
+        response.general['opacity'] = shapeDivider.opacity;
+
+    if(!isNil(shapeDivider.height))
+        response.general['height'] = `${shapeDivider.height}${shapeDivider.heightUnit}`;
 
     return response;
 }

@@ -1,0 +1,11 @@
+.maxi-shape-divider {
+    transition: padding 500ms ease 0ms,
+                height 500ms ease 0ms,
+                background-size 500ms ease 0ms;
+    width: 100%;
+    height: 100px;
+    svg {
+        width: 100%;
+        height: 100%;
+    }
+}

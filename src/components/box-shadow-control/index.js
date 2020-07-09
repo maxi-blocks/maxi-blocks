@@ -14,6 +14,7 @@ import ColorControl from '../color-control';
 import DefaultStylesControl from '../default-styles-control';
 import { getDefaultProp } from '../../extensions/styles/utils';
 import {
+    boxShadowNone,
     boxShadowTotal,
     boxShadowBottom,
     boxShadowSolid
@@ -52,8 +53,13 @@ const BoxShadowControl = props => {
     )
 
     const onChangeValue = (target, val) => {
-        console.log(target, val)
         value[breakpoint][target] = val;
+        onChange(JSON.stringify(value));
+    }
+
+    const onChangeDefault = defaultBoxShadow => {
+        value[breakpoint] = defaultBoxShadow;
+
         onChange(JSON.stringify(value));
     }
 
@@ -62,14 +68,14 @@ const BoxShadowControl = props => {
             <DefaultStylesControl
                 items={[
                     {
-                        activeItem: ( value[breakpoint].shadowType === undefined ),
+                        activeItem: ( value[breakpoint].shadowType === 'none' ),
                         content: (
                             <Icon
                                 className='maxi-defaultstyles-control__button__icon'
                                 icon={styleNone}
                             />
                         ),
-                        onChange: () => onChange(getDefaultProp(null, 'boxShadow'))
+                        onChange: () => onChangeDefault(boxShadowNone)
                     },
                     {
                         activeItem: ( value[breakpoint].shadowType === 'total' ),
@@ -78,7 +84,7 @@ const BoxShadowControl = props => {
                                 className='maxi-shadow-control__default maxi-shadow-control__default__total'
                             ></div>
                         ),
-                        onChange: () => onChange(JSON.stringify(boxShadowTotal))
+                        onChange: () => onChangeDefault(boxShadowTotal)
 
                     },
                     {
@@ -88,7 +94,7 @@ const BoxShadowControl = props => {
                                 className='maxi-shadow-control__default maxi-shadow-control__default__bottom'
                             ></div>
                         ),
-                        onChange: () => onChange(JSON.stringify(boxShadowBottom))
+                        onChange: () => onChangeDefault(boxShadowBottom)
                     },
                     {
                         activeItem: ( value[breakpoint].shadowType === 'solid' ),
@@ -97,7 +103,7 @@ const BoxShadowControl = props => {
                                 className='maxi-shadow-control__default maxi-shadow-control__default__solid'
                             ></div>
                         ),
-                        onChange: () => onChange(JSON.stringify(boxShadowSolid))
+                        onChange: () => onChangeDefault(boxShadowSolid)
                     },
                 ]}
             />

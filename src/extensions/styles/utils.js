@@ -147,7 +147,7 @@ export const getBoxShadowObject = boxShadow => {
     }
 
     for (let [key, value] of Object.entries(boxShadow)) {
-        if(key != 'label'){
+        if (key != 'label') {
             let boxShadowString = '';
             isNumber(value.shadowHorizontal) ? boxShadowString += (value.shadowHorizontal + 'px ') : null;
             isNumber(value.shadowVertical) ? boxShadowString += (value.shadowVertical + 'px ') : null;
@@ -279,14 +279,8 @@ export const getColumnSizeObject = columnSize => {
     }
 
     for (let [key, value] of Object.entries(columnSize)) {
-        if (!isNil(value.fullwidth) && value.fullwidth) {
-            response[key]['max-width'] = `100%`;
-            response[key]['flex-basis'] = `100%`;
-            response[key]['margin-left'] = `0 !important`;
-            response[key]['margin-right'] = `0 !important`;
-        }
-        else if (isNumber(value.size)) {
-            response[key]['max-width'] = `${value.size}%`;
+        if (isNumber(value.size)) {
+            response[key]['width'] = `${value.size}%`;
             response[key]['flex-basis'] = `${value.size}%`;
         }
     }

@@ -53,6 +53,7 @@ const Inspector = props => {
             padding,
             hoverAnimation,
             hoverAnimationDuration,
+            hoverAnimationType,
             extraClassName,
             zIndex,
             breakpoints

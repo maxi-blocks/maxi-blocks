@@ -72,10 +72,101 @@ const attributes = {
         type: 'string',
         default: JSON.stringify(attributesData.padding)
     },
+    hoverPadding: {
+        type: 'string',
+        default: JSON.stringify(attributesData.padding)
+    },
+    typographyHover: {
+        type: 'string',
+        default: JSON.stringify(attributesData.typographyHover)
+    },
+    backgroundHover: {
+        type: 'string',
+        default: JSON.stringify(attributesData.backgroundHover)
+    },
+    boxShadowHover: {
+        type: 'string',
+        default: JSON.stringify(attributesData.boxShadowHover)
+    },
+    boxShadowHover: {
+        type: 'string',
+        default: JSON.stringify(attributesData.boxShadowHover)
+    },
+    borderHover: {
+        type: 'string',
+        default: JSON.stringify(attributesData.borderHover)
+    },
+    hoverAnimation: {
+        type: 'string',
+        default: 'none',
+    },
+    hoverAnimationDuration: {
+        type: 'string',
+        default: 'normal',
+    },
     content: {
         type: 'string',
         default: ''
     },
+    hoverAnimationType: {
+      type: 'string',
+      default: 'tilt',
+    },
+    hoverAnimationTypeText: {
+      type: 'string',
+      default: 'fade',
+    },
+    hoverCustomTextTitle: {
+        type: 'string',
+        default: 'no'
+    },
+    hoverAnimationTitle: {
+        type: 'string',
+        default: 'Add your Hover Title here',
+    },
+    hoverAnimationContent: {
+        type: 'string',
+        default: 'Add your Hover Content here',
+    },
+    hoverAnimationCustomBorder: {
+        type: 'string',
+        default: 'no'
+    },
+    hoverAnimationTitleTypography: {
+        type: 'string',
+        default: JSON.stringify(attributesData.typography)
+    },
+    hoverAnimationContentTypography: {
+        type: 'string',
+        default: JSON.stringify(attributesData.typography)
+    },
+    hoverCustomTextContent: {
+        type: 'string',
+        default: 'no'
+    },
+    hoverCustomTextTitle: {
+        type: 'string',
+        default: 'no'
+    },
+    hoverBorder: {
+        type: 'string',
+        default: JSON.stringify(attributesData.border)
+    },
+    hoverBackground: {
+        type: 'string',
+        default: JSON.stringify(attributesData.background)
+    },
+    hoverAnimationTypeOpacity: {
+        type: 'number',
+    },
+    hoverAnimationTypeOpacityColor: {
+        type: 'number',
+    },
+    hoverAnimationTypeOpacityColorBackground: {
+        type: 'string',
+        default: JSON.stringify(attributesData.background)
+    },
 }
+
 
 export default attributes;

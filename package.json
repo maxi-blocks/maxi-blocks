@@ -27,7 +27,9 @@
     "react-image-crop": "^8.6.2",
     "react-lazy-load": "^3.0.13",
     "react-linear-gradient-picker": "^1.0.8",
-    "react-select": "^3.1.0"
+    "react-select": "^3.1.0",
+    "react-tilt": "^0.1.4",
+    "tilt.js": "^1.2.1"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.8.3"

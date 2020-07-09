@@ -35,14 +35,14 @@ const PaddingMargin = props => {
                 <Fragment>
                     <__experimentalMarginPaddingControl
                         value={padding}
-                        onChange={padding => onChangePadding({ padding })}
+                        onChange={padding => onChangePadding(padding)}
                         breakpoint={breakpoint}
                     />
                     {
                         blockName != 'maxi-blocks/column-maxi' &&
                         <__experimentalMarginPaddingControl
                             value={margin}
-                            onChange={margin => onChangeMargin({ margin })}
+                            onChange={margin => onChangeMargin(margin)}
                             breakpoint={breakpoint}
                         />
                     }

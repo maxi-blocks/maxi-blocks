@@ -46,6 +46,8 @@ import {
     placeholderImage
 } from '../../icons';
 
+import Scripts from '../../extensions/styles/hoverAnimations.js';
+
 /**
  * Content
  */
@@ -65,7 +67,12 @@ class edit extends MaxiBlock {
             [`${this.props.attributes.uniqueID}>img`]: this.getImageFrontendObject,
             [`${this.props.attributes.uniqueID} img:hover`]: this.getImageHoverObject,
             [`${this.props.attributes.uniqueID} img`]: this.getImageBackendObject,
-            [`${this.props.attributes.uniqueID}>figcaption`]: this.getFigcaptionObject
+            [`${this.props.attributes.uniqueID}>figcaption`]: this.getFigcaptionObject,
+            [`${this.props.attributes.uniqueID} .maxi-block-text-hover .maxi-block-text-hover__content`]: this.getHoverAnimationTextContentObject,
+            [`${this.props.attributes.uniqueID} .maxi-block-text-hover .maxi-block-text-hover__title`]: this.getHoverAnimationTextTitleObject,
+            [`${this.props.attributes.uniqueID} .maxi-block-text-hover`]: this.getHoverAnimationMainObject,
+            [`${this.props.attributes.uniqueID}.hover-animation-basic.hover-animation-type-opacity:hover .hover_el`]: this.getHoverAnimationTypeOpacityObject,
+            [`${this.props.attributes.uniqueID}.hover-animation-basic.hover-animation-type-opacity-with-colour:hover .hover_el:before`]: this.getHoverAnimationTypeOpacityColorObject,
         }
 
         return response;
@@ -163,6 +170,97 @@ class edit extends MaxiBlock {
         return response
     }
 
+
+    get getHoverAnimationMainObject() {
+        const {
+            hoverOpacity,
+            hoverBackground,
+            hoverBorder,
+            hoverPadding,
+        } = this.props.attributes;
+
+        const response = {
+            background: { ...getBackgroundObject(JSON.parse(hoverBackground)) },
+            border: { ...JSON.parse(hoverBorder) },
+            borderWidth: { ...JSON.parse(hoverBorder).borderWidth },
+            borderRadius: { ...JSON.parse(hoverBorder).borderRadius },
+            padding: { ...JSON.parse(hoverPadding) },
+            animationHover: {
+                label: 'Animation Hover',
+                general: {}
+            }
+        };
+
+        if (hoverOpacity)
+            response.animationHover.general['opacity'] = hoverOpacity;
+
+        return response
+    }
+
+    get getHoverAnimationTypeOpacityObject() {
+        const {
+            hoverAnimationTypeOpacity,
+        } = this.props.attributes;
+
+        const response = {
+            animationTypeOpacityHover: {
+                label: 'Animation Type Opacity Hover',
+                general: {}
+            }
+        };
+
+        if (hoverAnimationTypeOpacity)
+            response.animationTypeOpacityHover.general['opacity'] = hoverAnimationTypeOpacity;
+
+        return response
+    }
+
+    get getHoverAnimationTypeOpacityColorObject() {
+        const {
+            hoverAnimationTypeOpacityColor,
+            hoverAnimationTypeOpacityColorBackground,
+        } = this.props.attributes;
+
+        const response = {
+            background: { ...getBackgroundObject(JSON.parse(hoverAnimationTypeOpacityColorBackground)) },
+            animationTypeOpacityHoverColor: {
+                label: 'Animation Type Opacity Color Hover',
+                general: {}
+            }
+        };
+
+        if (hoverAnimationTypeOpacityColor)
+            response.animationTypeOpacityHoverColor.general['opacity'] = hoverAnimationTypeOpacityColor;
+
+        return response
+    }
+
+
+
+    get getHoverAnimationTextTitleObject() {
+        const {
+            hoverAnimationTitleTypography
+        } = this.props.attributes;
+
+        const response = {
+            hoverAnimationTitleTypography: { ...JSON.parse(hoverAnimationTitleTypography) }
+        };
+
+        return response
+    }
+
+    get getHoverAnimationTextContentObject() {
+        const {
+            hoverAnimationContentTypography
+        } = this.props.attributes;
+
+        const response = {
+            hoverAnimationContentTypography: { ...JSON.parse(hoverAnimationContentTypography) }
+        };
+
+        return response
+    }
+
     render() {
         const {
             className,
@@ -183,6 +281,8 @@ class edit extends MaxiBlock {
                 mediaWidth,
                 mediaHeight,
                 hoverAnimation,
+                hoverAnimationType,
+                hoverAnimationTypeText,
                 hoverAnimationDuration,
             },
             imageData,
@@ -193,10 +293,15 @@ class edit extends MaxiBlock {
             'maxi-block maxi-image-block',
             blockStyle,
             extraClassName,
-            'hover-animation-type-' + hoverAnimation,
+            'hover-animation-' + hoverAnimation,
+            'hover-animation-type-' + hoverAnimationType,
+            'hover-animation-type-text-' + hoverAnimationTypeText,
             'hover-animation-duration-' + hoverAnimationDuration,
             uniqueID,
-            className
+            className,
+            fullWidth === 'full' ?
+                'alignfull' :
+                '',
         );
 
         const cropOptionsValue = !isObject(cropOptions) ?
@@ -313,20 +418,36 @@ class edit extends MaxiBlock {
                         </Fragment>
                     )}
                 />
+                {hoverAnimation === 'basic' &&
+                    <Scripts
+                        hover_animation={hoverAnimationType}
+                        hover_animation_type={hoverAnimation}
+                    >
+                    </Scripts>
+                }
+                {hoverAnimation === 'text' &&
+                    <Scripts
+                        hover_animation={hoverAnimationTypeText}
+                        hover_animation_type={hoverAnimation}
+                    >
+                    </Scripts>
+                }
             </__experimentalBlock.figure>
         ];
     }
 }
 
 export default withSelect((select, ownProps) => {
-    const {
-        attributes: {
-            mediaID
-        }
-    } = ownProps;
+    const { mediaID } = ownProps.attributes;
 
     const imageData = select('core').getMedia(mediaID);
+    let deviceType = select('core/edit-post').__experimentalGetPreviewDeviceType();
+    deviceType = deviceType === 'Desktop' ?
+        'general' :
+        deviceType;
+
     return {
-        imageData
+        imageData,
+        deviceType
     }
 })(edit);

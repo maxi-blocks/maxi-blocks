@@ -6,7 +6,6 @@ const { Fragment } = wp.element;
 const { getBlockAttributes } = wp.blocks;
 const {
     Button,
-    Icon,
     IconButton,
     BaseControl,
 } = wp.components;
@@ -18,6 +17,7 @@ import openSidebar from '../../../../extensions/dom';
  */
 import FontFamilySelector from '../../../font-family-selector';
 import ToolbarPopover from '../toolbar-popover';
+import { isEmpty } from 'lodash';
 
 /**
  * Styles and icons
@@ -118,7 +118,7 @@ const TextOptions = props => {
                                 type='number'
                                 value={value[breakpoint]['font-size']}
                                 onChange={e => {
-                                    value[breakpoint]['font-size'] = Number(e.target.value);
+                                    value[breakpoint]['font-size'] = isEmpty(e.target.value) ? '' : Number(e.target.value);
                                     updateTypography();
                                 }}
 
@@ -148,7 +148,7 @@ const TextOptions = props => {
                                 type='number'
                                 value={value[breakpoint]['line-height']}
                                 onChange={e => {
-                                    value[breakpoint]['line-height'] = Number(e.target.value);
+                                    value[breakpoint]['line-height'] = isEmpty(e.target.value) ? '' : Number(e.target.value);
                                     updateTypography();
                                 }}
 
@@ -178,7 +178,7 @@ const TextOptions = props => {
                                 type='number'
                                 value={value[breakpoint]['letter-spacing']}
                                 onChange={e => {
-                                    value[breakpoint]['letter-spacing'] = Number(e.target.value);
+                                    value[breakpoint]['letter-spacing'] = isEmpty(e.target.value) ? '' : Number(e.target.value);
                                     updateTypography();
                                 }}
 

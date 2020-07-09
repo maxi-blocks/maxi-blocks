@@ -17,21 +17,27 @@ import {
  */
 const save = props => {
     const {
-        className,
         attributes: {
             uniqueID,
             blockStyle,
             defaultBlockStyle,
             linkSettings,
             buttonText,
-            extraClassName
+            extraClassName,
+            hoverAnimation,
+            hoverAnimationType,
+            hoverAnimationDuration,
         },
+        className
     } = props;
 
     const classes = classnames(
         'maxi-block maxi-button-extra',
         blockStyle,
         extraClassName,
+        'hover-animation-'+hoverAnimation,
+        'hover-animation-type-'+hoverAnimationType,
+        'hover-animation-duration-'+hoverAnimationDuration,
         uniqueID,
         className,
         !isNil(uniqueID) ?

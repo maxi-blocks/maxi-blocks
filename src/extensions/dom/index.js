@@ -79,8 +79,15 @@ document.addEventListener(
         window.addEventListener(
             'mouseover',
             e => {
+                if(e.target.classList.contains('maxi-column-block')) {
+                    const elem = (e.target).parentNode.parentNode.children;
+                    for (var i = 0; i < elem.length; i++) {
+                        elem[i].classList.add('maxi-column-hover');
+                    }
+                    (e.target).parentNode.classList.remove('maxi-column-hover');
+                }
                 if (
-                    e.target.classList.contains('maxi-block') &&
+                    e.target.classList.contains('wp-block-maxi-blocks-column-maxi') &&
                     e.target.querySelector('.block-list-appender')
                 ) {
                     Array.from(e.target.children).map(child =>

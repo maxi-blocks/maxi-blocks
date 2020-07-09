@@ -55,14 +55,19 @@ class edit extends MaxiBlock {
             [this.props.attributes.uniqueID]: this.getNormalObject,
             [`${this.props.attributes.uniqueID}:hover`]: this.getHoverObject,
             [`maxi-column-block__resizer__${this.props.attributes.uniqueID}`]: this.getResizerObject,
+            [`${this.props.attributes.uniqueID} .maxi-block-text-hover .maxi-block-text-hover__content`]: this.getHoverAnimationTextContentObject,
+            [`${this.props.attributes.uniqueID} .maxi-block-text-hover .maxi-block-text-hover__title`]: this.getHoverAnimationTextTitleObject,
+            [`${this.props.attributes.uniqueID} .maxi-block-text-hover`]: this.getHoverAnimationMainObject,
+            [`${this.props.attributes.uniqueID}.hover-animation-basic.hover-animation-type-opacity:hover .hover_el`]: this.getHoverAnimationTypeOpacityObject,
+            [`${this.props.attributes.uniqueID}.hover-animation-basic.hover-animation-type-opacity-with-colour:hover .hover_el:before`]: this.getHoverAnimationTypeOpacityColorObject,
         }
 
         const videoOptions = JSON.parse(this.props.attributes.background).videoOptions;
-        if(!isNil(videoOptions) && !isEmpty(videoOptions.mediaURL))
+        if (!isNil(videoOptions) && !isEmpty(videoOptions.mediaURL))
             Object.assign(
-                response, 
+                response,
                 {
-                    [`${this.props.attributes.uniqueID} .maxi-video-player video`]: 
+                    [`${this.props.attributes.uniqueID} .maxi-video-player video`]:
                         { videoBackground: { ...getVideoBackgroundObject(videoOptions) } }
                 }
             )
@@ -143,17 +148,106 @@ class edit extends MaxiBlock {
         return response;
     }
 
+    get getHoverAnimationMainObject() {
+        const {
+            hoverOpacity,
+            hoverBackground,
+            hoverBorder,
+            hoverPadding,
+        } = this.props.attributes;
+
+        const response = {
+            background: { ...getBackgroundObject(JSON.parse(hoverBackground)) },
+            border: { ...JSON.parse(hoverBorder) },
+            borderWidth: { ...JSON.parse(hoverBorder).borderWidth },
+            borderRadius: { ...JSON.parse(hoverBorder).borderRadius },
+            padding: { ...JSON.parse(hoverPadding) },
+            animationHover: {
+                label: 'Animation Hover',
+                general: {}
+            }
+        };
+
+        if (hoverOpacity)
+            response.animationHover.general['opacity'] = hoverOpacity;
+
+        return response
+    }
+
+    get getHoverAnimationTypeOpacityObject() {
+        const {
+            hoverAnimationTypeOpacity,
+        } = this.props.attributes;
+
+        const response = {
+            animationTypeOpacityHover: {
+                label: 'Animation Type Opacity Hover',
+                general: {}
+            }
+        };
+
+        if (hoverAnimationTypeOpacity)
+            response.animationTypeOpacityHover.general['opacity'] = hoverAnimationTypeOpacity;
+
+        return response
+    }
+
+    get getHoverAnimationTypeOpacityColorObject() {
+        const {
+            hoverAnimationTypeOpacityColor,
+            hoverAnimationTypeOpacityColorBackground,
+        } = this.props.attributes;
+
+        const response = {
+            background: { ...getBackgroundObject(JSON.parse(hoverAnimationTypeOpacityColorBackground)) },
+            animationTypeOpacityHoverColor: {
+                label: 'Animation Type Opacity Color Hover',
+                general: {}
+            }
+        };
+
+        if (hoverAnimationTypeOpacityColor)
+            response.animationTypeOpacityHoverColor.general['opacity'] = hoverAnimationTypeOpacityColor;
+
+        return response
+    }
+
+
+
+    get getHoverAnimationTextTitleObject() {
+        const {
+            hoverAnimationTitleTypography
+        } = this.props.attributes;
+
+        const response = {
+            hoverAnimationTitleTypography: { ...JSON.parse(hoverAnimationTitleTypography) }
+        };
+
+        return response
+    }
+
+    get getHoverAnimationTextContentObject() {
+        const {
+            hoverAnimationContentTypography
+        } = this.props.attributes;
+
+        const response = {
+            hoverAnimationContentTypography: { ...JSON.parse(hoverAnimationContentTypography) }
+        };
+
+        return response
+    }
+
     render() {
         const {
             attributes: {
                 uniqueID,
                 blockStyle,
+                size,
                 columnSize,
+                background,
                 extraClassName,
                 defaultBlockStyle,
-                hoverAnimation,
-                hoverAnimationDuration,
-                background,
             },
             clientId,
             className,
@@ -162,7 +256,11 @@ class edit extends MaxiBlock {
             deviceType,
             onDeviceTypeChange,
             originalNestedColumns,
-            setAttributes
+            setAttributes,
+            hoverAnimation,
+            hoverAnimationDuration,
+            hoverAnimationType,
+            hoverAnimationTypeText
         } = this.props;
 
         onDeviceTypeChange();
@@ -172,11 +270,17 @@ class edit extends MaxiBlock {
             'maxi-column-block',
             uniqueID,
             blockStyle,
-            'hover-animation-type-' + hoverAnimation,
-            'hover-animation-duration-' + hoverAnimationDuration,
             extraClassName,
+            'hover-animation-' + hoverAnimation,
+            'hover-animation-type-' + hoverAnimationType,
+            'hover-animation-type-text-' + hoverAnimationTypeText,
+            'hover-animation-duration-' + hoverAnimationDuration,
             className,
         );
+
+        const sizeValue = !isObject(size) ?
+            JSON.parse(size) :
+            size;
 
         const columnValue = !isObject(columnSize) ?
             JSON.parse(columnSize) :
@@ -210,7 +314,11 @@ class edit extends MaxiBlock {
                             width: getColumnWidthDefault()
                         }}
                         minWidth='1%'
-                        maxWidth='100%'
+                        maxWidth={
+                            !!sizeValue.general['max-width'] ?
+                                `${sizeValue.general['max-width']}${sizeValue.general['max-widthUnit']}` :
+                                '100%'
+                        }
                         enable={{
                             top: false,
                             right: true,
@@ -269,9 +377,10 @@ const editSelect = withSelect((select, ownProps) => {
     const rowBlockWidth = !isNil(rowBlockNode) ? rowBlockNode.getBoundingClientRect().width : 0;
     const hasInnerBlock = select('core/block-editor').getBlockOrder(clientId).length >= 1;
     const originalNestedColumns = select('core/block-editor').getBlockOrder(rowBlockId);
-    const deviceType = select('core/edit-post').__experimentalGetPreviewDeviceType() === 'Desktop' ?
+    let deviceType = select('core/edit-post').__experimentalGetPreviewDeviceType();
+    deviceType = deviceType === 'Desktop' ?
         'general' :
-        select('core/edit-post').__experimentalGetPreviewDeviceType();
+        deviceType;
 
     return {
         rowBlockId,
@@ -291,10 +400,10 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
         deviceType,
     } = ownProps;
 
-    const onDeviceTypeChange = function() {
+    const onDeviceTypeChange = function () {
         let newDeviceType = select('core/edit-post').__experimentalGetPreviewDeviceType();
-        newDeviceType = newDeviceType === 'Desktop' ? 
-            'general' : 
+        newDeviceType = newDeviceType === 'Desktop' ?
+            'general' :
             newDeviceType;
 
         const allowedDeviceTypes = [

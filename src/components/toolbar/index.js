@@ -31,7 +31,6 @@ import {
     TextItalic,
     TextLevel,
     TextOptions,
-    TextShadow,
     PaddingMargin,
     Size
 } from './components/';

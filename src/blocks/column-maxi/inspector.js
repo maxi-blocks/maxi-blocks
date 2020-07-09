@@ -7,7 +7,7 @@ const { Fragment } = wp.element;
 const {
     RangeControl,
     SelectControl,
-    TextControl
+    TextControl,
 } = wp.components;
 
 /**
@@ -27,7 +27,7 @@ import {
     __experimentalResponsiveControl,
     __experimentalNumberControl,
     __experimentalOpacityControl,
-    __experimentalMarginPaddingControl
+    __experimentalMarginPaddingControl,
 } from '../../components';
 
 /**
@@ -59,10 +59,29 @@ const Inspector = props => {
             padding,
             margin,
             hoverAnimation,
+            hoverAnimationType,
+            hoverAnimationTypeText,
             hoverAnimationDuration,
             extraClassName,
             zIndex,
-            breakpoints
+            breakpoints,
+            hoverAnimationTitle,
+            hoverAnimationContent,
+            hoverOpacity,
+            hoverBackground,
+            hoverAnimationCustomBorder,
+            hoverAnimationContentTypography,
+            hoverAnimationTitleTypography,
+            hoverCustomTextContent,
+            hoverCustomTextTitle,
+            hoverBorder,
+            hoverPadding,
+            hoverAnimationTypeOpacity,
+            onChangeHoverAnimationTypeOpacity,
+            hoverAnimationTypeColor,
+            hoverAnimationTypeOpacityColor,
+            onChangeHoverAnimationTypeOpacityColor,
+            hoverAnimationTypeOpacityColorBackground
         },
         deviceType,
         setAttributes
@@ -71,6 +90,14 @@ const Inspector = props => {
     const columnSizeValue = !isObject(columnSize) ?
         JSON.parse(columnSize) :
         columnSize;
+    const hoverAnimationCustomOptions = [
+            { label: __('Yes', 'maxi-blocks'), value: 'yes' },
+            { label: __('No', 'maxi-blocks'), value: 'no' },
+        ]
+    const hoverCustomTextOptions = [
+            { label: __('Yes', 'maxi-blocks'), value: 'yes' },
+            { label: __('No', 'maxi-blocks'), value: 'no' },
+        ]
 
     return (
         <InspectorControls>

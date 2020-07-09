@@ -1,0 +1,1 @@
+export { default as wavesBottom} from './waves-bottom';

@@ -121,6 +121,14 @@ export const boxShadow = {
     "shadowSpread": 0
 }
 
+export const shapeDivider = {
+    "height": "100",
+    "heightUnit": "px",
+    "opacity": 1,
+    "color": "#000000",
+    "gradient": ""
+}
+
 export const typography = {
     "label": "Typography",
     "font": "Roboto",

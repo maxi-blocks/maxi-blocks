@@ -70,18 +70,17 @@ const controls = {
 	async RECEIVE_POST_STYLES() {
 		const id = select('core/editor').getCurrentPostId();
 
-		return await apiFetch({ path: '/maxi-blocks/v1.0/styles/' + id })
-			.catch(() => { return {} })
+		return await apiFetch({ path: '/maxi-blocks/v1.0/post/' + id })
 	},
 	async RECEIVE_BREAKPOINTS() {
-		return await apiFetch({ path: '/maxi-blocks/v1.0/breakpoints/'})
+		return await apiFetch({ path: '/maxi-blocks/v1.0/breakpoints/' })
 	},
 	async SAVE_POST_STYLES(action) {
 		const id = select('core/editor').getCurrentPostId();
 
 		await apiFetch(
 			{
-				path: '/maxi-blocks/v1.0/styles',
+				path: '/maxi-blocks/v1.0/post',
 				method: 'POST',
 				data: {
 					id,
@@ -95,11 +94,11 @@ const controls = {
 
 const selectors = {
 	receiveMaxiStyles(state) {
-		if(!!state)
+		if (!!state)
 			return state.meta;
 	},
 	receiveMaxiBreakpoints(state) {
-		if(!!state)
+		if (!!state)
 			return state.breakpoints;
 	},
 };
@@ -119,6 +118,6 @@ const store = registerStore('maxiBlocks', {
 	reducer,
 	actions,
 	selectors,
-	controls, 
+	controls,
 	resolvers
 });

@@ -38,9 +38,9 @@ const ZIndexControl = props => {
         <__experimentalNumberControl 
             label={__('Z-index', 'maxi-blocks')}
             className={classes}
-            value={value[breakpoint]}
+            value={value[breakpoint]['z-index']}
             onChange={val => {
-                value[breakpoint] = val;
+                value[breakpoint]['z-index'] = val;
                 onChange(JSON.stringify(value))
             }}
         />

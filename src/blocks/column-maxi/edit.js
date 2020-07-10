@@ -287,8 +287,8 @@ class edit extends MaxiBlock {
             columnSize;
 
         const getColumnWidthDefault = () => {
-            if (columnValue.general.size)
-                return `${columnValue.general.size}%`;
+            if (columnValue[deviceType].size)
+                return `${columnValue[deviceType].size}%`;
 
             return `${100 / originalNestedColumns.length}%`;
         }
@@ -315,8 +315,8 @@ class edit extends MaxiBlock {
                         }}
                         minWidth='1%'
                         maxWidth={
-                            !!sizeValue.general['max-width'] ?
-                                `${sizeValue.general['max-width']}${sizeValue.general['max-widthUnit']}` :
+                            !!sizeValue[deviceType]['max-width'] ?
+                                `${sizeValue[deviceType]['max-width']}${sizeValue[deviceType]['max-widthUnit']}` :
                                 '100%'
                         }
                         enable={{

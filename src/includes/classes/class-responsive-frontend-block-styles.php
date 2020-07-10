@@ -50,14 +50,14 @@ class ResponsiveFrontendStyles
         if (!$post || !isset($post->ID))
             return;
 
-        $styles = get_option('mb_styles_api');
+        $styles = get_option("mb_post_api_{$post->ID}");
 
-        if (!isset($styles[$post->ID]))
+        if (!$styles)
             return;
 
         $meta = is_preview() || is_admin() ?
-            $styles[$post->ID]['_maxi_blocks_styles_preview'] :
-            $styles[$post->ID]['_maxi_blocks_styles'];
+            $styles['_maxi_blocks_styles_preview'] :
+            $styles['_maxi_blocks_styles'];
 
         if (!!$meta && empty($meta))
             return;
@@ -114,36 +114,35 @@ class ResponsiveFrontendStyles
 
         foreach ($meta as $target => $element) {
             $target = self::getTarget($target);
-            $important = ' !important';
             $breakpoints = $element['breakpoints'];
             $content = $element['content'];
 
-            if (isset($content['general'])) {
+            if (isset($content['general']) && !empty($content['general'])) {
                 $response .= ".{$target}{";
                 $response .= self::getStyles($content['general']);
                 $response .= '}';
             }
-            if (isset($content['xl'])) {
+            if (isset($content['xl']) && !empty($content['xl'])) {
                 $response .= "@media only screen and (max-width: {$breakpoints->xl}px) {.$target{";
                 $response .= self::getStyles($content['xl']);
                 $response .= '}}';
             }
-            if (isset($content['l'])) {
+            if (isset($content['l']) && !empty($content['l'])) {
                 $response .= "@media only screen and (max-width: {$breakpoints->l}px) {.$target{";
                 $response .= self::getStyles($content['l']);
                 $response .= '}}';
             }
-            if (isset($content['m'])) {
+            if (isset($content['m']) && !empty($content['m'])) {
                 $response .= "@media only screen and (max-width: {$breakpoints->m}px) {.$target{";
                 $response .= self::getStyles($content['m']);
                 $response .= '}}';
             }
-            if (isset($content['s'])) {
+            if (isset($content['s']) && !empty($content['s'])) {
                 $response .= "@media only screen and (max-width: {$breakpoints->s}px) {.$target{";
                 $response .= self::getStyles($content['s']);
                 $response .= '}}';
             }
-            if (isset($content['xs'])) {
+            if (isset($content['xs']) && !empty($content['xs'])) {
                 $response .= "@media only screen and (max-width: {$breakpoints->xs}px) {.$target{";
                 $response .= self::getStyles($content['xs']);
                 $response .= '}}';

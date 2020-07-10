@@ -24,7 +24,6 @@ if (!class_exists('MaxiBlocksAPI')) :
             $this->namespace = 'maxi-blocks/v' . $this->version;
 
             // REST API
-            add_action('init', array($this, 'mb_register_options'));
             add_action('rest_api_init', array($this, 'mb_register_routes'));
 
             // Handlers
@@ -34,11 +33,15 @@ if (!class_exists('MaxiBlocksAPI')) :
         /**
          * Register options for REST API
          */
-        public function mb_register_options()
+        public function mb_register_options($id)
         {
-            // Styles API
-            if (!get_option('mb_styles_api'))
-                add_option('mb_styles_api', []);
+            // Post API
+            $default_array = [
+                '_maxi_blocks_styles'           => '',
+                '_maxi_blocks_styles_preview'   => ''
+            ];
+            if (!get_option("mb_post_api_$id"))
+                add_option("mb_post_api_$id", $default_array);
         }
 
         /**
@@ -48,10 +51,10 @@ if (!class_exists('MaxiBlocksAPI')) :
         {
             register_rest_route(
                 $this->namespace,
-                '/styles/(?P<id>\d+)',
+                '/post/(?P<id>\d+)',
                 array(
                     'methods'             => 'GET',
-                    'callback'            => array($this, 'get_maxi_blocks_styles'),
+                    'callback'            => array($this, 'get_maxi_blocks_post'),
                     'args' => array(
                         'id' => array(
                             'validate_callback' => function ($param) {
@@ -66,10 +69,10 @@ if (!class_exists('MaxiBlocksAPI')) :
             );
             register_rest_route(
                 $this->namespace,
-                '/styles',
+                '/post',
                 array(
                     'methods'             => 'POST',
-                    'callback'            => array($this, 'post_maxi_blocks_styles'),
+                    'callback'            => array($this, 'post_maxi_blocks_post'),
                     'args' => array(
                         'id' => array(
                             'validate_callback' => function ($param) {
@@ -110,9 +113,13 @@ if (!class_exists('MaxiBlocksAPI')) :
          *
          * @return $posts JSON feed of returned objects
          */
-        public function get_maxi_blocks_styles($data)
+        public function get_maxi_blocks_post($data)
         {
-            $response = get_option('mb_styles_api')[$data['id']]['_maxi_blocks_styles_preview'];
+            $this->mb_register_options($data['id']);
+
+            $response = get_option("mb_post_api_{$data['id']}")['_maxi_blocks_styles_preview'];
+            if(!$response)
+                $response = '';
 
             return $response;
         }
@@ -120,19 +127,21 @@ if (!class_exists('MaxiBlocksAPI')) :
         /**
          * Post the posts
          */
-        public function post_maxi_blocks_styles($data)
+        public function post_maxi_blocks_post($data)
         {
-            $styles = get_option('mb_styles_api');
+            $this->mb_register_options($data['id']);
+
+            $styles = get_option("mb_post_api_{$data['id']}");
 
             if ($data['update']) {
-                $styles[$data['id']] = [
+                $styles = [
                     '_maxi_blocks_styles'           => $data['meta'],
                     '_maxi_blocks_styles_preview'   => $data['meta']
                 ];
             } else
-                $styles[$data['id']]['_maxi_blocks_styles_preview'] = $data['meta'];
+                $styles['_maxi_blocks_styles_preview'] = $data['meta'];
 
-            update_option('mb_styles_api', $styles);
+            update_option("mb_post_api_{$data['id']}", $styles);
 
             return $styles;
         }
@@ -150,11 +159,7 @@ if (!class_exists('MaxiBlocksAPI')) :
 
         public function mb_delete_register($postId)
         {
-            $styles = get_option('mb_styles_api');
-
-            unset($styles[$postId]);
-
-            update_option('mb_styles_api', $styles);
+            delete_option("mb_post_api$postId");
         }
     }
 

@@ -12,6 +12,11 @@ const {
 import ToolbarPopover from '../toolbar-popover';
 
 /**
+ * External dependencies
+ */
+import { isObject } from 'lodash';
+
+/**
  * Icons
  */
 import './editor.scss';
@@ -24,7 +29,8 @@ const TextColor = props => {
     const {
         blockName,
         typography,
-        onChange
+        onChange,
+        breakpoint
     } = props;
 
 
@@ -32,7 +38,7 @@ const TextColor = props => {
         return null;
 
     const updateTypography = val => {
-        value.general.color = returnColor(val)
+        value[breakpoint].color = returnColor(val)
 
         onChange(JSON.stringify(value))
     }
@@ -41,7 +47,7 @@ const TextColor = props => {
         return `rgba(${val.rgb.r},${val.rgb.g},${val.rgb.b},${val.rgb.a})`;
     }
 
-    let value = typeof typography != 'object' ?
+    let value = !isObject(typography) ?
         JSON.parse(typography) :
         typography;
 
@@ -52,7 +58,7 @@ const TextColor = props => {
                 <div
                     className='toolbar-item__text-options__icon'
                     style={{
-                        background: value.general.color,
+                        background: value[breakpoint].color,
                         borderWidth: '1px',
                         borderColor: '#fff',
                         borderStyle: 'solid',
@@ -66,7 +72,7 @@ const TextColor = props => {
             )}
             content={(
                 <ColorPicker
-                    color={value.general.color}
+                    color={value[breakpoint].color}
                     onChangeComplete={val => updateTypography(val)}
                 />
             )}

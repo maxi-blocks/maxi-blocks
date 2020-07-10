@@ -3,18 +3,23 @@
  */
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
+const { useDispatch } = wp.data;
 const {
     RadioControl,
     IconButton,
 } = wp.components;
-const { useDispatch } = wp.data;
-import openSidebar from '../../../../extensions/dom';
 
 /**
  * Internal dependencies
  */
 import SizeControl from '../../../size-control';
 import ToolbarPopover from '../toolbar-popover';
+import openSidebar from '../../../../extensions/dom';
+
+/**
+ * External dependencies
+ */
+import { isObject } from 'lodash';
 
 /**
  * Icons
@@ -35,6 +40,7 @@ const Size = props => {
         size,
         onChangeSize,
         isFirstOnHierarchy,
+        breakpoint
     } = props;
 
     if (blockName === 'maxi-blocks/image-maxi')
@@ -44,16 +50,9 @@ const Size = props => {
         'core/edit-post'
     );
 
-    let value = typeof size != 'object' ?
+    let value = !isObject(size) ?
         JSON.parse(size) :
         size;
-
-    if(!value)
-        return null;
-
-    const updateSize = () => {
-        onChangeSize(JSON.stringify(value))
-    }
 
     return (
         <ToolbarPopover
@@ -88,28 +87,28 @@ const Size = props => {
                     }
                     <SizeControl
                         label={__('Width', 'maxi-blocks')}
-                        unit={value.desktop.widthUnit}
+                        unit={value[breakpoint].widthUnit}
                         onChangeUnit={val => {
-                            value.desktop.widthUnit = val;
-                            updateSize();
+                            value[breakpoint].widthUnit = val;
+                            onChangeSize(JSON.stringify(value));
                         }}
-                        value={value.desktop.width}
+                        value={value[breakpoint].width}
                         onChangeValue={val => {
-                            value.desktop.width = val;
-                            updateSize();
+                            value[breakpoint].width = val;
+                            onChangeSize(JSON.stringify(value));
                         }}
                     />
                     <SizeControl
                         label={__('Max Width', 'maxi-blocks')}
-                        unit={value.desktop['max-widthUnit']}
+                        unit={value[breakpoint]['max-widthUnit']}
                         onChangeUnit={val => {
-                            value.desktop['max-widthUnit'] = val;
-                            updateSize();
+                            value[breakpoint]['max-widthUnit'] = val;
+                            onChangeSize(JSON.stringify(value));
                         }}
-                        value={value.desktop['max-width']}
+                        value={value[breakpoint]['max-width']}
                         onChangeValue={val => {
-                            value.desktop['max-width'] = val;
-                            updateSize();
+                            value[breakpoint]['max-width'] = val;
+                            onChangeSize(JSON.stringify(value));
                         }}
                     />
                 </Fragment>

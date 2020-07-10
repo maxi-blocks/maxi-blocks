@@ -17,7 +17,7 @@ import {
 /**
  * Component
  */
-const HoverAnimationControl = ( props ) => {
+const HoverAnimationControl = props => {
     const {
         hoverAnimation,
         onChangeHoverAnimation,

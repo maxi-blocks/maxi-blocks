@@ -1,6 +1,7 @@
-div.maxi-column-block {
-    width: 100%;
+.edit-post-visual-editor.editor-styles-wrapper .maxi-column-block__resizer div.maxi-column-block {
+    width: 100% !important;
     max-width: 100% !important;
+    flex-basis: 100% !important;
     margin: auto;
     height: 100%;
 
@@ -8,7 +9,7 @@ div.maxi-column-block {
         line-height: 0;
         outline: 1px solid #7fbddc;
         position: relative;
-        padding: 10px;
+        // padding: 10px;
 
         &:hover {
             outline: 2px solid #83605d;

@@ -1,59 +1,118 @@
 {
     "label": "Border",
-    "defaultBorderColor": "#ffffff",
     "general": {
         "border-color": "#ffffff",
         "border-style": "none"
     },
+    "xl": {
+        "border-color": "",
+        "border-style": ""
+    },
+    "l": {
+        "border-color": "",
+        "border-style": ""
+    },
+    "m": {
+        "border-color": "",
+        "border-style": ""
+    },
+    "s": {
+        "border-color": "",
+        "border-style": ""
+    },
+    "xs": {
+        "border-color": "",
+        "border-style": ""
+    },
     "borderWidth": {
         "label": "Border width",
         "unit": "px",
-        "max": 1000,
-        "desktop": {
+        "general": {
             "border-top-width": 0,
             "border-right-width": 0,
             "border-bottom-width": 0,
             "border-left-width": 0,
             "sync": true
         },
-        "tablet": {
-            "border-top-width": 0,
-            "border-right-width": 0,
-            "border-bottom-width": 0,
-            "border-left-width": 0,
+        "xl": {
+            "border-top-width": "",
+            "border-right-width": "",
+            "border-bottom-width": "",
+            "border-left-width": "",
             "sync": true
         },
-        "mobile": {
-            "border-top-width": 0,
-            "border-right-width": 0,
-            "border-bottom-width": 0,
-            "border-left-width": 0,
+        "l": {
+            "border-top-width": "",
+            "border-right-width": "",
+            "border-bottom-width": "",
+            "border-left-width": "",
+            "sync": true
+        },
+        "m": {
+            "border-top-width": "",
+            "border-right-width": "",
+            "border-bottom-width": "",
+            "border-left-width": "",
+            "sync": true
+        },
+        "s": {
+            "border-top-width": "",
+            "border-right-width": "",
+            "border-bottom-width": "",
+            "border-left-width": "",
+            "sync": true
+        },
+        "xs": {
+            "border-top-width": "",
+            "border-right-width": "",
+            "border-bottom-width": "",
+            "border-left-width": "",
             "sync": true
         }
     },
     "borderRadius": {
         "label": "Border radius",
         "unit": "px",
-        "max": 1000,
-        "desktop": {
+        "general": {
             "border-top-left-radius": 0,
             "border-top-right-radius": 0,
             "border-bottom-right-radius": 0,
             "border-bottom-left-radius": 0,
             "sync": true
         },
-        "tablet": {
-            "border-top-left-radius": 0,
-            "border-top-right-radius": 0,
-            "border-bottom-right-radius": 0,
-            "border-bottom-left-radius": 0,
+        "xl": {
+            "border-top-left-radius": "",
+            "border-top-right-radius": "",
+            "border-bottom-right-radius": "",
+            "border-bottom-left-radius": "",
             "sync": true
         },
-        "mobile": {
-            "border-top-left-radius": 0,
-            "border-top-right-radius": 0,
-            "border-bottom-right-radius": 0,
-            "border-bottom-left-radius": 0,
+        "l": {
+            "border-top-left-radius": "",
+            "border-top-right-radius": "",
+            "border-bottom-right-radius": "",
+            "border-bottom-left-radius": "",
+            "sync": true
+        },
+        "m": {
+            "border-top-left-radius": "",
+            "border-top-right-radius": "",
+            "border-bottom-right-radius": "",
+            "border-bottom-left-radius": "",
+            "sync": true
+        },
+        "s": {
+            "border-top-left-radius": "",
+            "border-top-right-radius": "",
+            "border-bottom-right-radius": "",
+            "border-bottom-left-radius": "",
+            "sync": true
+        },
+        "xs": {
+            "border-top-left-radius": "",
+            "border-top-right-radius": "",
+            "border-bottom-right-radius": "",
+            "border-bottom-left-radius": "",
             "sync": true
         }
     }

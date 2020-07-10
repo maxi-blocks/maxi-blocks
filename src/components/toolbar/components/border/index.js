@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies
+ */
+const { Icon } = wp.components;
+
+/**
  * Internal dependencies
  */
 import BorderControl from '../../../border-control';
@@ -13,8 +18,6 @@ const ALLOWED_BLOCKS = [
     'maxi-blocks/image-maxi',
 ]
 
-const { Icon } = wp.components;
-
 /**
  * Icons
  */
@@ -22,11 +25,15 @@ import {
     toolbarBorder,
 } from '../../../../icons';
 
+/**
+ * Component
+ */
 const Border = props => {
     const {
         blockName,
         border,
-        onChange
+        onChange,
+        breakpoint
     } = props;
 
     if (!ALLOWED_BLOCKS.includes(blockName))
@@ -39,8 +46,10 @@ const Border = props => {
                 <div
                     className='toolbar-item__border__icon'
                     style={{
-                        borderStyle: JSON.parse(border).general['border-style'],
-                        background: ( JSON.parse(border).general['border-style'] === 'none' ) ? 'transparent' : JSON.parse(border).general['border-color'],
+                        borderStyle: JSON.parse(border)[breakpoint]['border-style'],
+                        background: JSON.parse(border)[breakpoint]['border-style'] === 'none'? 
+                            'transparent' : 
+                            JSON.parse(border)[breakpoint]['border-color'],
                         borderWidth: '1px',
                         borderStyle: 'solid',
                         borderColor: '#fff'
@@ -55,8 +64,9 @@ const Border = props => {
             )}
             content={(
                 <BorderControl
-                    borderOptions={border}
+                    border={border}
                     onChange={value => onChange(value)}
+                    breakpoint={breakpoint}
                 />
             )}
         />

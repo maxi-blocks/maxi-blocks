@@ -4,6 +4,7 @@
     "height": "100",
     "heightUnit": "px",
     "opacity": 1,
+    "shapeStyle": "",
     "colorOptions": {
       "color": "#000000",
       "defultColor": "",

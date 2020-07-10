@@ -11,6 +11,11 @@ const {
 } = wp.components;
 
 /**
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
+
+/**
  * Internal dependencies
  */
 import { MaxiComponent } from '../index';
@@ -24,10 +29,8 @@ import {
  */
 import './editor.scss';
 import {
-    alignLeft,
-    alignRight,
-    alignCenter,
-    alignJustify,
+    wavesBottom,
+    wavesTop,
 } from '../../icons';
 import { Icon } from '@wordpress/icons';
 
@@ -49,32 +52,44 @@ export default class ShapeDividerControl extends MaxiComponent {
 
         const getOptions = () => {
             let options = [];
-            options.push({ label: <Icon icon={alignLeft} />, value: 'left' });
-            options.push({ label: <Icon icon={alignCenter} />, value: 'center' });
-            options.push({ label: <Icon icon={alignRight} />, value: 'right' });
-            options.push({ label: <Icon icon={alignJustify} />, value: 'justify' })
-
+            options.push({ label: __('None', 'max-block'), value: '' });
+            options.push({ label: wavesBottom, value: 'x1' });
+            options.push({ label: wavesTop, value: 'x2' });
+            options.push({ label: wavesBottom, value: 'x3' });
             return options;
         }
 
+        const showShapes = () => {
+            let result;
+            if (value.shapeStyle === '') result = __('Divider Style', 'max-block');
+            if (value.shapeStyle === 'x1') result = wavesBottom;
+            if (value.shapeStyle === 'x2') result = wavesTop;
+            return result;
+        }
+
         return (
-            <div>
+            <div className="maxi-shapedividercontrol">
                 <Dropdown
-                    className="my-container-class-name"
-                    contentClassName="my-popover-content-classname"
+                    className="maxi-shapedividercontrol__shape-selector"
+                    contentClassName="maxi-shapedividercontrol_popover"
                     position="bottom center"
                     renderToggle={ ( { isOpen, onToggle } ) => (
-                        <Button isPrimary onClick={ onToggle } aria-expanded={ isOpen }>
-                            Toggle Popover!
-                        </Button>
+                        <div
+                            className={'maxi-shapedividercontrol__shape-selector__display'}
+                            onClick={ onToggle }
+                        >
+                            {showShapes()}
+                        </div>
                     ) }
                     renderContent={ () => (
                         <RadioControl
-                            //label={ label }
-                            //className={classes}
-                            //selected={value}
+                            className={'maxi-shapedividercontrol__shape-list'}
+                            selected={value.shapeStyle}
                             options={getOptions()}
-                            //onChange={value => onChange(value)}
+                            onChange={val => {
+                                value.shapeStyle = val;
+                                onChange(JSON.stringify(value))
+                            }}
                         />
                     ) }
                 />

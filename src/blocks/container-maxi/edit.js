@@ -276,6 +276,8 @@ class edit extends MaxiBlock {
                 hoverAnimationType,
                 hoverAnimationTypeText,
                 hoverAnimationDuration,
+                shapeDivider,
+                shapeDividerBottom,
             },
             className,
             clientId,
@@ -299,7 +301,9 @@ class edit extends MaxiBlock {
             <__experimentalToolbar {...this.props} />,
             <__experimentalBreadcrumbs />,
             <Fragment>
-                <__experimentalShapeDivider/>
+                <__experimentalShapeDivider
+                    shapeDividerOptions={shapeDivider}
+                />
                 {
                     isFirstOnHierarchy && fullWidth &&
                     <__experimentalBlock.section
@@ -357,6 +361,7 @@ class edit extends MaxiBlock {
                 }
                 <__experimentalShapeDivider
                     position="bottom"
+                    shapeDividerOptions={shapeDividerBottom}
                 />
             </Fragment>
         ];

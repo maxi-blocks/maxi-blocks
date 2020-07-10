@@ -12,7 +12,6 @@ import {
     isNil,
     isNumber
 } from 'lodash'
-import { shapeDivider } from './defaults';
 
 /**
  * Returns default property of the block
@@ -186,6 +185,19 @@ export const getShapeDividerObject = shapeDivider => {
 
     if(!isNil(shapeDivider.height))
         response.general['height'] = `${shapeDivider.height}${shapeDivider.heightUnit}`;
+
+    return response;
+}
+
+export const getShapeDividerSVGObject = shapeDivider => {
+    const response = {
+        label: 'Shape Divider SVG',
+        general: {}
+    }
+
+    if (!isEmpty(shapeDivider.colorOptions.color)) {
+        response.general['fill'] = shapeDivider.colorOptions.color;
+    }
 
     return response;
 }

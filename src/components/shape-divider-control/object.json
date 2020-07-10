@@ -1,9 +1,15 @@
 {
-    "shapeDivider": {
-      "height": "100",
-      "heightUnit": "px",
-      "opacity": 1,
-      "color": "",
-      "gradient": ""
+  "label": "Shape Divider",
+  "shapeDivider": {
+    "height": "100",
+    "heightUnit": "px",
+    "opacity": 1,
+    "colorOptions": {
+      "color": "#000000",
+      "defultColor": "",
+      "gradient": "",
+      "defaultGradient": "",
+      "gradientAboveBackground": false
     }
+  }
 }

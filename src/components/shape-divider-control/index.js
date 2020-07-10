@@ -14,7 +14,6 @@ const {
  * Internal dependencies
  */
 import { MaxiComponent } from '../index';
-//import { shapeDivider } from '../../extensions/styles/defaults';
 import {
     BackgroundControl,
     SizeControl,
@@ -92,12 +91,14 @@ export default class ShapeDividerControl extends MaxiComponent {
                     allowReset={true}
                     initialPosition={0}
                 />
-                {/* <BackgroundControl
-                    backgroundOptions={{background}}
-                    onChange={background => setAttributes({ background })}
+                <BackgroundControl
+                    backgroundOptions={value}
+                    onChange={val => {
+                        onChange(val)
+                    }}
                     disableImage
                     disableVideo
-                /> */}
+                />
                 <SizeControl
                     label={__('Divider Height', 'maxi-blocks')}
                     unit={value.heightUnit}
@@ -110,21 +111,6 @@ export default class ShapeDividerControl extends MaxiComponent {
                         value.height = val;
                         onChange(JSON.stringify(value))
                     }}
-                />
-                <SelectControl
-                    label={__('Direction', 'maxi-blocks')}
-                    //value={}
-                    options={[
-                        { label: 'Scale Up', value: 'xxx' },
-                    ]}
-                    //onChange={}
-                />
-                <SizeControl
-                    label={__('Speed', 'maxi-blocks')}
-                    unit='%'
-                    onChangeUnit={value => onChangeValue('max-widthUnit', value)}
-                    value={0}
-                    //onChangeValue={value => onChangeValue('max-width', value)}
                 />
             </div>
         )

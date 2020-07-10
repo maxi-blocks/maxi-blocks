@@ -122,11 +122,31 @@ export const boxShadow = {
 }
 
 export const shapeDivider = {
+    "label": "Shape Divider",
     "height": "100",
     "heightUnit": "px",
     "opacity": 1,
-    "color": "#000000",
-    "gradient": ""
+    "colorOptions": {
+        "color": "#000000",
+        "defultColor": "",
+        "gradient": "",
+        "defaultGradient": "",
+        "gradientAboveBackground": false
+    }
+}
+
+export const shapeDividerBottom = {
+    "label": "Shape Divider",
+    "height": "100",
+    "heightUnit": "px",
+    "opacity": 1,
+    "colorOptions": {
+        "color": "#000000",
+        "defultColor": "",
+        "gradient": "",
+        "defaultGradient": "",
+        "gradientAboveBackground": false
+    }
 }
 
 export const typography = {

@@ -1,0 +1,46 @@
+{
+    "label": "Padding",
+    "unit": "px",
+    "general": {
+        "padding-top": "",
+        "padding-right": "",
+        "padding-bottom": "",
+        "padding-left": "",
+        "sync": true
+    },
+    "xl": {
+        "padding-top": "",
+        "padding-right": "",
+        "padding-bottom": "",
+        "padding-left": "",
+        "sync": true
+    },
+    "l": {
+        "padding-top": "",
+        "padding-right": "",
+        "padding-bottom": "",
+        "padding-left": "",
+        "sync": true
+    },
+    "m": {
+        "padding-top": "",
+        "padding-right": "",
+        "padding-bottom": "",
+        "padding-left": "",
+        "sync": true
+    },
+    "s": {
+        "padding-top": "",
+        "padding-right": "",
+        "padding-bottom": "",
+        "padding-left": "",
+        "sync": true
+    },
+    "xs": {
+        "padding-top": "",
+        "padding-right": "",
+        "padding-bottom": "",
+        "padding-left": "",
+        "sync": true
+    }
+}

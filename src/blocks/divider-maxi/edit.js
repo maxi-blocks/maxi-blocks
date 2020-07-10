@@ -4,6 +4,11 @@
 const { Fragment } = wp.element;
 const { __experimentalBlock } = wp.blockEditor;
 const { ResizableBox } = wp.components;
+const { compose } = wp.compose;
+const { 
+    withSelect,
+    withDispatch
+} = wp.data;
 
 /**
  * Internal dependencies
@@ -24,7 +29,7 @@ import {
 import classnames from 'classnames';
 import {
     isNil,
-    isNumber
+    isObject
 } from 'lodash';
 
 /**
@@ -61,14 +66,14 @@ class edit extends MaxiBlock {
             size: { ...JSON.parse(size) },
             padding: { ...JSON.parse(padding) },
             margin: { ...JSON.parse(margin) },
+            opacity: { ...JSON.parse(opacity) },
+            zindex: { ...JSON.parse(zIndex) },
             divider: {
                 label: 'Divider',
                 general: {}
             }
         };
 
-        if (isNumber(opacity))
-            response.divider.general['opacity'] = opacity;
         if (!isNil(linesAlign)) {
             response.divider.general['flex-direction'] = linesAlign;
             if (linesAlign === 'row') {
@@ -84,8 +89,6 @@ class edit extends MaxiBlock {
                     response.divider.general['align-items'] = lineHorizontal;
             }
         }
-        if (isNumber(zIndex))
-            response.divider.general['z-index'] = zIndex;
 
         return response;
     }
@@ -100,14 +103,8 @@ class edit extends MaxiBlock {
         const response = {
             backgroundHover: { ...getBackgroundObject(JSON.parse(backgroundHover)) },
             boxShadowHover: { ...getBoxShadowObject(JSON.parse(boxShadowHover)) },
-            dividerHover: {
-                label: 'Divider',
-                general: {}
-            }
+            opacityHover: { ...JSON.parse(opacityHover) }
         };
-
-        if (isNumber(opacityHover))
-            response.dividerHover.general['opacity'] = opacityHover;
 
         return response;
     }
@@ -135,11 +132,13 @@ class edit extends MaxiBlock {
                 size
             },
             className,
-            clientId,
             isSelected,
+            deviceType,
+            onDeviceTypeChange,
             setAttributes,
-            getLinesQuantity
         } = this.props;
+
+        onDeviceTypeChange();
 
         let classes = classnames(
             'maxi-block maxi-divider-block',
@@ -152,7 +151,7 @@ class edit extends MaxiBlock {
                 'maxi-divider-block--horizontal',
         );
 
-        let value = typeof size != 'object' ?
+        let value = !isObject(size) ?
             JSON.parse(size) :
             size;
 
@@ -163,11 +162,11 @@ class edit extends MaxiBlock {
                 className={classnames(
                     'maxi-block__resizer',
                     'maxi-divider-block__resizer',
-                    `maxi-divider-block__resizer__${clientId}`
+                    `maxi-divider-block__resizer__${uniqueID}`
                 )}
-                size={{
+                defaultSize={{
                     width: '100%',
-                    height: value.desktop.height + value.desktop.heightUnit
+                    height: value[deviceType].height + value[deviceType].heightUnit
                 }}
                 enable={{
                     top: false,
@@ -180,9 +179,9 @@ class edit extends MaxiBlock {
                     topLeft: false,
                 }}
                 onResizeStart={() => {
-                    value.desktop.heightUnit != 'px' ?
+                    value[deviceType].heightUnit != 'px' ?
                         (
-                            value.desktop.heightUnit = 'px',
+                            value[deviceType].heightUnit = 'px',
                             setAttributes({
                                 size: JSON.stringify(value)
                             })
@@ -190,7 +189,7 @@ class edit extends MaxiBlock {
                         null
                 }}
                 onResizeStop={(event, direction, elt, delta) => {
-                    value.desktop.height = elt.getBoundingClientRect().height;
+                    value[deviceType].height = elt.getBoundingClientRect().height;
                     setAttributes({
                         size: JSON.stringify(value),
                     });
@@ -202,7 +201,7 @@ class edit extends MaxiBlock {
                     data-align={fullWidth}
                 >
                     {
-                        showLine === 'yes' &&
+                        !!showLine &&
                         <Fragment>
                             <hr class="maxi-divider-block__divider" />
                         </Fragment>
@@ -213,4 +212,50 @@ class edit extends MaxiBlock {
     }
 }
 
-export default edit;
+const editSelect = withSelect(select => {
+    let deviceType = select('core/edit-post').__experimentalGetPreviewDeviceType();
+    deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
+
+    return {
+        deviceType
+    }
+});
+
+const editDispatch = withDispatch((dispatch, ownProps, { select }) => {
+    const {
+        attributes: {
+            uniqueID,
+            size
+        },
+        deviceType,
+    } = ownProps;
+
+    const onDeviceTypeChange = function() {
+        let newDeviceType = select('core/edit-post').__experimentalGetPreviewDeviceType();
+        newDeviceType = newDeviceType === 'Desktop' ? 
+            'general' : 
+            newDeviceType;
+
+        const allowedDeviceTypes = [
+            'general',
+            'xl',
+            'l',
+            'm',
+            's',
+        ];
+
+        if (allowedDeviceTypes.includes(newDeviceType) && deviceType != newDeviceType) {
+            const node = document.querySelector(`.maxi-divider-block__resizer__${uniqueID}`);
+            if (isNil(node))
+                return;
+            const newSize = JSON.parse(size);
+            node.style.height = `${newSize[newDeviceType].height}px`;
+        }
+    };
+
+    return {
+        onDeviceTypeChange
+    }
+});
+
+export default compose(editSelect, editDispatch)(edit);

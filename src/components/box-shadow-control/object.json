@@ -1,9 +1,51 @@
 {
     "label": "Box Shadow",
-    "shadowColor": "#ffffff",
-    "defaultShadowColor": "#ffffff",
-    "shadowHorizontal": 0,
-    "shadowVertical": 0,
-    "shadowBlur": 0,
-    "shadowSpread": 0
+    "general": {
+        "shadowColor": "#ffffff",
+        "defaultShadowColor": "#ffffff",
+        "shadowHorizontal": 0,
+        "shadowVertical": 0,
+        "shadowBlur": 0,
+        "shadowSpread": 0
+    },
+    "xl": {
+        "shadowColor": "",
+        "defaultShadowColor": "",
+        "shadowHorizontal": "",
+        "shadowVertical": "",
+        "shadowBlur": "",
+        "shadowSpread": ""
+    },
+    "l": {
+        "shadowColor": "",
+        "defaultShadowColor": "",
+        "shadowHorizontal": "",
+        "shadowVertical": "",
+        "shadowBlur": "",
+        "shadowSpread": ""
+    },
+    "m": {
+        "shadowColor": "",
+        "defaultShadowColor": "",
+        "shadowHorizontal": "",
+        "shadowVertical": "",
+        "shadowBlur": "",
+        "shadowSpread": ""
+    },
+    "s": {
+        "shadowColor": "",
+        "defaultShadowColor": "",
+        "shadowHorizontal": "",
+        "shadowVertical": "",
+        "shadowBlur": "",
+        "shadowSpread": ""
+    },
+    "xs": {
+        "shadowColor": "",
+        "defaultShadowColor": "",
+        "shadowHorizontal": "",
+        "shadowVertical": "",
+        "shadowBlur": "",
+        "shadowSpread": ""
+    }
 }

@@ -8,12 +8,12 @@ const { Fragment } = wp.element;
  * Internal dependencies
  */
 import SizeControl from '../size-control';
-import SettingTabsControl from '../setting-tabs-control';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
+import { isObject } from 'lodash';
 
 /**
  * Styles
@@ -26,7 +26,8 @@ import './editor.scss';
 const FullSizeControlSing = props => {
     const {
         size,
-        onChange
+        onChange,
+        hideWidth = false
     } = props;
 
     const onChangeValue = (target, val) => {
@@ -45,13 +46,16 @@ const FullSizeControlSing = props => {
                 value={size['max-width']}
                 onChangeValue={value => onChangeValue('max-width', value)}
             />
-            <SizeControl
-                label={__('Width', 'maxi-blocks')}
-                unit={size.widthUnit}
-                onChangeUnit={value => onChangeValue('widthUnit', value)}
-                value={size.width}
-                onChangeValue={value => onChangeValue('width', value)}
-            />
+            {
+                !hideWidth &&
+                <SizeControl
+                    label={__('Width', 'maxi-blocks')}
+                    unit={size.widthUnit}
+                    onChangeUnit={value => onChangeValue('widthUnit', value)}
+                    value={size.width}
+                    onChangeValue={value => onChangeValue('width', value)}
+                />
+            }
             <SizeControl
                 label={__('Min Width', 'maxi-blocks')}
                 unit={size['min-widthUnit']}
@@ -86,14 +90,16 @@ const FullSizeControlSing = props => {
 
 const FullSizeControl = props => {
     const {
-        sizeSettings,
+        size,
         onChange,
-        className
+        className,
+        breakpoint,
+        hideWidth
     } = props;
 
-    let value = typeof sizeSettings === 'object' ?
-        sizeSettings :
-        JSON.parse(sizeSettings);
+    let value = isObject(size) ?
+        size :
+        JSON.parse(size);
 
     const classes = classnames(
         'maxi-fullsize-control',
@@ -102,46 +108,13 @@ const FullSizeControl = props => {
 
     return (
         <div className={classes}>
-            <SettingTabsControl
-                disablePadding={true}
-                items={[
-                    {
-                        label: __('Desktop', 'maxi-blocks'),
-                        content: (
-                            <FullSizeControlSing
-                                size={value.desktop}
-                                onChange={val => {
-                                    value.desktop = val;
-                                    onChange(JSON.stringify(value))
-                                }}
-                            />
-                        )
-                    },
-                    {
-                        label: __('Tablet', 'maxi-blocks'),
-                        content: (
-                            <FullSizeControlSing
-                                size={value.tablet}
-                                onChange={val => {
-                                    value.tablet = val;
-                                    onChange(JSON.stringify(value))
-                                }}
-                            />
-                        )
-                    },
-                    {
-                        label: __('Mobile', 'maxi-blocks'),
-                        content: (
-                            <FullSizeControlSing
-                                size={value.mobile}
-                                onChange={val => {
-                                    value.mobile = val;
-                                    onChange(JSON.stringify(value))
-                                }}
-                            />
-                        )
-                    }
-                ]}
+            <FullSizeControlSing
+                size={value[breakpoint]}
+                onChange={val => {
+                    value[breakpoint] = val;
+                    onChange(JSON.stringify(value))
+                }}
+                hideWidth={hideWidth}
             />
         </div>
     )

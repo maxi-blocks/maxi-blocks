@@ -17,27 +17,20 @@ import { toolbarBold } from '../../../../icons';
  */
 const TextBold = props => {
     const {
-        clientId,
         blockName,
         typography,
-        onChange
+        onChange,
+        breakpoint
     } = props;
 
     if (blockName != 'maxi-blocks/text-maxi')
         return null;
 
     const getBoldTypography = () => {
-        if (value.desktop['font-weight'] != 800) {
-            value.desktop['font-weight'] = 800;
-            value.tablet['font-weight'] = 800;
-            value.mobile['font-weight'] = 800;
-        }
-        else {
-            value.desktop['font-weight'] = 400;
-            value.tablet['font-weight'] = 400;
-            value.mobile['font-weight'] = 400;
-        }
-
+        if (value[breakpoint]['font-weight'] != 800) 
+            value[breakpoint]['font-weight'] = 800;
+        else 
+            value[breakpoint]['font-weight'] = 400;
 
         onChange(JSON.stringify(value))
     }
@@ -48,7 +41,7 @@ const TextBold = props => {
         <Button
             className='toolbar-item toolbar-item__bold'
             onClick={getBoldTypography}
-            aria-pressed={value.desktop['font-weight'] === 800}
+            aria-pressed={value[breakpoint]['font-weight'] === 800}
         >
             <Icon
                 className='toolbar-item__icon'

@@ -1,5 +1,10 @@
 /**
- * Styles and icons
+ * External dependencies
+ */
+import { isObject } from 'lodash';
+
+/**
+ * Styles
  */
 import './editor.scss';
 
@@ -11,22 +16,22 @@ const VideoPlayer = props => {
         videoOptions
     } = props;
 
-    let value = typeof videoOptions === 'object' ?
-    videoOptions.videoOptions :
-    JSON.parse(videoOptions).videoOptions;
+    let value = !isObject(videoOptions) ?
+        JSON.parse(videoOptions).videoOptions :
+        videoOptions.videoOptions;
 
     return (
         value.mediaURL &&
-            <div class="maxi-video-player">
-                <video
-                    controls={!!parseInt(value.controls)}
-                    autoplay={!!parseInt(value.autoplay)}
-                    loop={!!parseInt(value.loop)}
-                    muted={!!parseInt(value.muted)}
-                    preload={value.preload}
-                    src={value.mediaURL}
-                />
-            </div>
+        <div class="maxi-video-player">
+            <video
+                controls={!!parseInt(value.controls)}
+                autoplay={!!parseInt(value.autoplay)}
+                loop={!!parseInt(value.loop)}
+                muted={!!parseInt(value.muted)}
+                preload={value.preload}
+                src={value.mediaURL}
+            />
+        </div>
     )
 }
 

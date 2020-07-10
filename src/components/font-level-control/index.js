@@ -53,7 +53,7 @@ export default class FontLevelControl extends Component {
         h5Margin: {},
         h6: {},
         h6Hover: {},
-        h6Margin: {},
+        h6Margin: {}
     }
 
     render() {

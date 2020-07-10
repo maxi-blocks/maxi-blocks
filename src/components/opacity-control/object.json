@@ -1,0 +1,21 @@
+{
+    "label": "Opacity",
+    "general": {
+        "opacity": 1
+    },
+    "xl": {
+        "opacity": ""
+    },
+    "l": {
+        "opacity": ""
+    },
+    "m": {
+        "opacity": ""
+    },
+    "s": {
+        "opacity": ""
+    },
+    "xs": {
+        "opacity": ""
+    }
+}

@@ -28,7 +28,6 @@ import {
  * Styles
  */
 import './editor.scss';
-import { image } from '../../icons';
 
 /**
  * Component

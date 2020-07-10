@@ -16,14 +16,16 @@ import {
     __experimentalVideoPlayer,
     __experimentalToolbar,
     __experimentalBreadcrumbs,
-    __experimentalBlockPlaceholder
+    __experimentalBlockPlaceholder,
+    __experimentalShapeDivider
 } from '../../components';
 import Inspector from './inspector';
 import {
     getBackgroundObject,
     getBoxShadowObject,
     getVideoBackgroundObject,
-    getShapeDividerObject
+    getShapeDividerObject,
+    getShapeDividerSVGObject,
 } from '../../extensions/styles/utils'
 
 /**
@@ -35,26 +37,26 @@ import {
     isNumber,
 } from 'lodash';
 
-import {
-    wavesBottom,
-} from '../../icons';
-
 /**
  * Edit
  */
 class edit extends MaxiBlock {
     get getObject() {
+
         let response = {
             [this.props.attributes.uniqueID]: this.getNormalObject,
             [`${this.props.attributes.uniqueID}:hover`]: this.getHoverObject,
             [`${this.props.attributes.uniqueID}>.maxi-container-block__container`]: this.getContainerObject,
-            [`${this.props.attributes.uniqueID} .maxi-video-player video`]: { videoBackground: { ...getVideoBackgroundObject(JSON.parse(this.props.attributes.background).videoOptions) } },
-            [`${this.props.attributes.uniqueID} .maxi-shape-divider`]: { shapeDivider: { ...getShapeDividerObject(JSON.parse(this.props.attributes.shapeDivider)) } },
             [`${this.props.attributes.uniqueID} .maxi-block-text-hover .maxi-block-text-hover__content`]: this.getHoverAnimationTextContentObject,
             [`${this.props.attributes.uniqueID} .maxi-block-text-hover .maxi-block-text-hover__title`]: this.getHoverAnimationTextTitleObject,
             [`${this.props.attributes.uniqueID} .maxi-block-text-hover`]: this.getHoverAnimationMainObject,
             [`${this.props.attributes.uniqueID}.hover-animation-basic.hover-animation-type-opacity:hover .hover_el`]: this.getHoverAnimationTypeOpacityObject,
             [`${this.props.attributes.uniqueID}.hover-animation-basic.hover-animation-type-opacity-with-colour:hover .hover_el:before`]: this.getHoverAnimationTypeOpacityColorObject,
+            [`${this.props.attributes.uniqueID} .maxi-video-player video`]: { videoBackground: { ...getVideoBackgroundObject(JSON.parse(this.props.attributes.background).videoOptions) } },
+            ['maxi-shape-divider__top']: { shapeDivider: { ...getShapeDividerObject(JSON.parse(this.props.attributes.shapeDivider)) } },
+            ['maxi-shape-divider__top svg']: { shapeDivider: { ...getShapeDividerSVGObject(JSON.parse(this.props.attributes.shapeDivider)) } },
+            ['maxi-shape-divider__bottom']: { shapeDividerBottom: { ...getShapeDividerObject(JSON.parse(this.props.attributes.shapeDividerBottom)) } },
+            ['maxi-shape-divider__bottom svg']: { shapeDividerBottom: { ...getShapeDividerSVGObject(JSON.parse(this.props.attributes.shapeDividerBottom)) } },
         }
 
         return response;
@@ -297,6 +299,7 @@ class edit extends MaxiBlock {
             <__experimentalToolbar {...this.props} />,
             <__experimentalBreadcrumbs />,
             <Fragment>
+                <__experimentalShapeDivider/>
                 {
                     isFirstOnHierarchy && fullWidth &&
                     <__experimentalBlock.section
@@ -304,7 +307,6 @@ class edit extends MaxiBlock {
                         data-align={fullWidth}
                         data-gx_initial_block_class={defaultBlockStyle}
                     >
-                        <div className="maxi-shape-divider">{wavesBottom}</div>
                         <InnerBlocks
                             templateLock={false}
                             __experimentalTagName='div'
@@ -353,6 +355,9 @@ class edit extends MaxiBlock {
                         }
                     />
                 }
+                <__experimentalShapeDivider
+                    position="bottom"
+                />
             </Fragment>
         ];
     }

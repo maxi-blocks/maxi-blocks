@@ -27,7 +27,7 @@ import {
     HoverAnimationControl,
     SettingTabsControl,
     TypographyControl,
-    ShapeDividerControl,
+    __experimentalShapeDividerControl ,
     __experimentalZIndexControl
 } from '../../components';
 
@@ -90,7 +90,8 @@ const Inspector = props => {
             hoverAnimationTypeOpacityColor,
             onChangeHoverAnimationTypeOpacityColor,
             hoverAnimationTypeOpacityColorBackground,
-            shapeDivider
+            shapeDivider,
+            shapeDividerBottom,
         },
         setAttributes,
     } = props;
@@ -552,7 +553,7 @@ const Inspector = props => {
                                                             label: __('Top', 'gutenberg-extra'),
                                                             content: (
                                                                 <Fragment>
-                                                                    <ShapeDividerControl
+                                                                    <__experimentalShapeDividerControl
                                                                         shapeDividerOptions={shapeDivider}
                                                                         onChange={shapeDivider => setAttributes({ shapeDivider })}
                                                                     />
@@ -563,7 +564,10 @@ const Inspector = props => {
                                                             label: __('Bottom', 'gutenberg-extra'),
                                                             content: (
                                                                 <Fragment>
-                                                                    <p>soon</p>
+                                                                    <__experimentalShapeDividerControl
+                                                                        shapeDividerOptions={shapeDividerBottom}
+                                                                        onChange={shapeDividerBottom => setAttributes({ shapeDividerBottom })}
+                                                                    />
                                                                 </Fragment>
                                                             )
                                                         },

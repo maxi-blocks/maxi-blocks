@@ -61,6 +61,8 @@ export default class BackgroundControl extends MaxiComponent {
             backgroundOptions,
             disableImage = false,
             disableVideo = false,
+            disableGradient = false,
+            disableColor = false,
         } = this.props;
 
         const {
@@ -134,12 +136,12 @@ export default class BackgroundControl extends MaxiComponent {
 
         const getOptions = () => {
             let options = [];
-            options.push({ label: <Icon icon={backgroundColor} />, value: 'color' });
+            !disableColor && options.push({ label: <Icon icon={backgroundColor} />, value: 'color' });
             !disableImage && backgroundImageAllowedBlocks.includes(currentBlockName) &&
                 options.push({ label: <Icon icon={backgroundImage} />, value: 'image' });
             !disableVideo && backgroundVideoAllowedBlocks.includes(currentBlockName) &&
                 options.push({ label: <Icon icon={backgroundVideo} />, value: 'video' });
-            backgroundGradientAllowedBlocks.includes(currentBlockName) &&
+            !disableImage && backgroundGradientAllowedBlocks.includes(currentBlockName) &&
                 options.push({ label: <Icon icon={backgroundGradient()} />, value: 'gradient' })
 
             return options;
@@ -309,6 +311,7 @@ export default class BackgroundControl extends MaxiComponent {
                             </div>
                         }
                         {
+                            !disableGradient &&
                             backgroundItems === 'gradient' &&
                             <GradientControl
                                 label={__('Background', 'maxi-blocks')}
@@ -326,6 +329,7 @@ export default class BackgroundControl extends MaxiComponent {
                             />
                         }
                         {
+                            !disableColor &&
                             backgroundItems === 'color' &&
                             <ColorControl
                                 label={__('Background', 'maxi-blocks')}

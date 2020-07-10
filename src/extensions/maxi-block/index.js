@@ -139,7 +139,10 @@ class MaxiBlock extends Component {
 
         switch (typeof meta) {
             case 'string':
-                return JSON.parse(meta);
+                if(!isEmpty(meta))
+                    return JSON.parse(meta);
+                else
+                    return {};
             case 'object':
                 return meta;
             case 'undefined':

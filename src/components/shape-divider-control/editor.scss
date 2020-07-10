@@ -1,11 +1,37 @@
-.maxi-shape-divider {
-    transition: padding 500ms ease 0ms,
-                height 500ms ease 0ms,
-                background-size 500ms ease 0ms;
-    width: 100%;
-    height: 100px;
-    svg {
+.maxi-shapedividercontrol {
+
+    &__shape-list {
+        .components-radio-control {
+            &__input {
+                display: none;
+            }
+            &__option {
+                margin-bottom: 0;
+                padding: 10px;
+                display: block;
+
+                &:hover {
+                    background: #eee;
+                }
+            }
+        }
+    }
+    &__shape-selector {
         width: 100%;
-        height: 100%;
+        margin-bottom: 10px;
+
+        &__display {
+            display: block;
+            border: 2px solid #ebeced;
+            background-color: #fff;
+            border-radius: 5px;
+            width: 100%;
+            padding: 0.5rem 0;
+            text-align: center;
+
+            &:hover {
+                color: #464a53;
+            }
+        }
     }
 }

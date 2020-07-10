@@ -126,6 +126,7 @@ export const shapeDivider = {
     "height": "100",
     "heightUnit": "px",
     "opacity": 1,
+    "shapeStyle": "",
     "colorOptions": {
         "color": "#000000",
         "defultColor": "",
@@ -136,10 +137,11 @@ export const shapeDivider = {
 }
 
 export const shapeDividerBottom = {
-    "label": "Shape Divider",
+    "label": "Shape Divider Bottom",
     "height": "100",
     "heightUnit": "px",
     "opacity": 1,
+    "shapeStyle": "",
     "colorOptions": {
         "color": "#000000",
         "defultColor": "",

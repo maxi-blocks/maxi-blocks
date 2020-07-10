@@ -99,11 +99,6 @@ body {
 	}
 }
 .maxi-block {
-	&:hover {
-		.maxi-column-hover {
-			opacity: 0.2;
-		}
-	}
 	.block-editor-block-list__layout {
 		padding: 10px;
 		&:focus:after {

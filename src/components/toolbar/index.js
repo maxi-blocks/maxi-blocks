@@ -85,6 +85,7 @@ const MaxiToolbar = props => {
             lineOrientation,
             lineVertical,
             lineHorizontal,
+            content,
         },
         clientId,
         isSelected,
@@ -210,15 +211,15 @@ const MaxiToolbar = props => {
                         />
                         <TextBold
                             blockName={name}
-                            typography={typography}
-                            onChange={typography => setAttributes({ typography })}
-                            breakpoint={deviceType}
+                            content={content}
+                            onChange={content => setAttributes({ content })}
+                            node={anchorRef}
                         />
                         <TextItalic
                             blockName={name}
-                            typography={typography}
-                            onChange={typography => setAttributes({ typography })}
-                            breakpoint={deviceType}
+                            content={content}
+                            onChange={content => setAttributes({ content })}
+                            node={anchorRef}
                         />
                         <ColumnPattern
                             clientId={clientId}

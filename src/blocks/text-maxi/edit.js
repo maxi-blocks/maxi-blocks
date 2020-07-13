@@ -231,10 +231,10 @@ class edit extends MaxiBlock {
             'maxi-block maxi-text-block',
             blockStyle,
             extraClassName,
-            'hover-animation-'+hoverAnimation,
-            'hover-animation-type-'+hoverAnimationType,
-            'hover-animation-type-text-'+hoverAnimationTypeText,
-            'hover-animation-duration-'+hoverAnimationDuration,
+            'hover-animation-' + hoverAnimation,
+            'hover-animation-type-' + hoverAnimationType,
+            'hover-animation-type-text-' + hoverAnimationTypeText,
+            'hover-animation-duration-' + hoverAnimationDuration,
             uniqueID,
             className
         );
@@ -248,18 +248,9 @@ class edit extends MaxiBlock {
                 tagName={__experimentalBlock[textLevel]}
                 className={classes}
                 placeholder={__('Set your Maxi Text here...', 'maxi-blocks')}
-                onSplit={value => {
-                    if (!value) {
-                        return createBlock('maxi-blocks/text-maxi');
-                    }
-
-                    return createBlock('maxi-blocks/text-maxi', {
-                        ...attributes,
-                        content: value,
-                    });
-                }}
                 keepPlaceholderOnFocus
-                formattingControls={[]}
+                __unstableEmbedURLOnPaste
+				__unstableAllowPrefixTransformations
             />
         ];
     }

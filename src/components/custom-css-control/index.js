@@ -3,10 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
-const {
-    TextControl,
-    TextareaControl,
-} = wp.components;
+const { TextControl } = wp.components;
 
 /**
  * Component
@@ -15,17 +12,15 @@ const CustomCSS = props => {
     const {
         extraClassName = props.attributes.extraClassName,
         onChangeExtraClassName = undefined,
-        extraStyles = props.attributes.extraStyles,
-        onChangeExtraStyles = undefined,
         setAttributes
     } = props;
 
     const onChangeValue = (target, value, callback) => {
-        if (typeof callback != 'undefined' ) {
+        if (typeof callback != 'undefined') {
             callback(value);
         }
         else {
-            setAttributes({[target]: value})
+            setAttributes({ [target]: value })
         }
     }
 
@@ -36,12 +31,6 @@ const CustomCSS = props => {
                 className='maxi-additional__css-classes'
                 value={extraClassName}
                 onChange={value => onChangeValue('extraClassName', value, onChangeExtraClassName)}
-            />
-            <TextareaControl
-                label={__('Additional CSS Styles', 'maxi-blocks')}
-                className='maxi-additional__css-styles'
-                value={extraStyles}
-                onChange={value => onChangeValue('extraStyles', value, onChangeExtraStyles)}
             />
         </Fragment>
     )

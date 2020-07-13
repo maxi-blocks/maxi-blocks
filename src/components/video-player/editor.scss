@@ -1,0 +1,13 @@
+.maxi-video-player {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    object-fit: cover;
+    height: 100%;
+
+    video {
+        width: 100%;
+        object-fit: cover;
+    }
+}

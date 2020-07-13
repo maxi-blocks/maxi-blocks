@@ -1,0 +1,120 @@
+
+.hover-animation-text.hover-animation-type-text-flip-vertical.hover-animation-duration-shorter .hover_el,
+.hover-animation-text.hover-animation-type-text-flip-vertical.hover-animation-duration-shorter .maxi-block-text-hover {
+    -webkit-transition: .1s ease-in-out;
+    transition: .1s ease-in-out;
+}
+
+.hover-animation-text.hover-animation-type-text-flip-vertical.hover-animation-duration-short .hover_el,
+.hover-animation-text.hover-animation-type-text-flip-vertical.hover-animation-duration-short .maxi-block-text-hover {
+    -webkit-transition: .2s ease-in-out;
+    transition: .2s ease-in-out;
+}
+
+.hover-animation-text.hover-animation-type-text-flip-vertical.hover-animation-duration-normal .hover_el,
+.hover-animation-text.hover-animation-type-text-flip-vertical.hover-animation-duration-normal .maxi-block-text-hover {
+    -webkit-transition: .3s ease-in-out;
+    transition: .3s ease-in-out;
+}
+
+.hover-animation-text.hover-animation-type-text-flip-vertical.hover-animation-duration-long .hover_el,
+.hover-animation-text.hover-animation-type-text-flip-vertical.hover-animation-duration-long .maxi-block-text-hover {
+    -webkit-transition: .5s ease-in-out;
+    transition: .5s ease-in-out;
+}
+
+.hover-animation-text.hover-animation-type-text-flip-vertical.hover-animation-duration-longer .hover_el,
+.hover-animation-text.hover-animation-type-text-flip-vertical.hover-animation-duration-longer .maxi-block-text-hover {
+    -webkit-transition: .6s ease-in-out;
+    transition: .6s ease-in-out;
+}
+
+.hover-animation-text.hover-animation-type-text-flip-vertical {
+    -webkit-perspective: 50em;
+    -moz-perspective: 50em;
+    perspective: 50em;
+}
+
+.hover-animation-text.hover-animation-type-text-flip-vertical,
+.hover-animation-text .maxi-text-block-wrap {
+    position: relative;
+}
+
+.hover-animation-text.hover-animation-type-text-flip-vertical .hover_el {
+    position: relative;
+    -webkit-transform: rotateY(0deg);
+    -moz-transform: rotateY(0deg);
+    -ms-transform: rotateY(0deg);
+    -o-transform: rotateY(0deg);
+    transform: rotateY(0deg);
+    overflow: hidden;
+
+    backface-visibility: hidden;
+}
+
+.hover-animation-text.hover-animation-type-text-flip-vertical:hover .hover_el {
+    -webkit-transform: rotateY(-180deg);
+    -moz-transform: rotateY(-180deg);
+    -ms-transform: rotateY(-180deg);
+    -o-transform: rotateY(-180deg);
+    transform: rotateY(-180deg);
+    opacity: 0;
+}
+
+.hover-animation-text.hover-animation-type-text-flip-vertical .maxi-block-text-hover .maxi-block-text-hover__title {
+    margin: 0 0 10px !important;
+}
+
+.hover-animation-text.hover-animation-type-text-flip-vertical .maxi-block-text-hover {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow-y: scroll;
+    z-index: 99;
+    opacity: 0;
+
+    -webkit-transform: rotateY(180deg);
+    -moz-transform: rotateY(180deg);
+    -ms-transform: rotateY(180deg);
+    -o-transform: rotateY(180deg);
+    transform: rotateY(180deg);
+    -webkit-transform-origin: 50% 0%;
+    -moz-transform-origin: 50% 0%;
+    -ms-transform-origin: 50% 0%;
+    -o-transform-origin: 50% 0%;
+    transform-origin: 50% 0%;
+}
+
+.hover-animation-text.hover-animation-type-text-flip-vertical:hover .maxi-block-text-hover {
+    opacity: 1;
+
+    -webkit-transform: rotateY(0deg);
+    -moz-transform: rotateY(0deg);
+    -ms-transform: rotateY(0deg);
+    -o-transform: rotateY(0deg);
+    transform: rotateY(0deg);
+}
+
+.hover-animation-text.hover-animation-type-text-flip-vertical .maxi-block-text-hover::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+
+.hover-animation-text.hover-animation-type-text-flip-vertical .maxi-block-text-hover::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Handle */
+
+.hover-animation-text.hover-animation-type-text-flip-vertical .maxi-block-text-hover::-webkit-scrollbar-thumb {
+    background: #dadada;
+}
+
+/* Handle on hover */
+
+.hover-animation-text.hover-animation-type-text-flip-vertical .maxi-block-text-hover::-webkit-scrollbar-thumb:hover {
+    background: #000;
+}

@@ -27,6 +27,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @uses {wp-editor} for WP editor styles.
  * @since 1.0.0
  */
+
+
 function gutenberg_extra_block_assets() { // phpcs:ignore
 	// Register block styles for both frontend + backend.
 	wp_register_style(
@@ -52,6 +54,217 @@ function gutenberg_extra_block_assets() { // phpcs:ignore
 		array( 'wp-edit-blocks' ), // Dependency to include the CSS after it.
 		null // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.editor.build.css' ) // Version: File modification time.
 	);
+
+	// Register block editor styles for backend.
+
+
+
+
+	// wp_enqueue_script(
+	// 	'maxi-blocks-tilt-js', // Handle.
+	// 	plugins_url( '/js/hover-animations/hover/tilt/tilt.jquery.min.js', dirname( __FILE__ ) ), array('jquery')
+	// );
+
+	// wp_enqueue_script(
+	// 	'maxi-blocks-tilt-hover-js', // Handle.
+	// 	plugins_url( '/js/hover-animations/hover/tilt/index.js', dirname( __FILE__ ) ), array('jquery')
+	// );
+
+	// wp_enqueue_script(
+	// 	'maxi-blocks-zoom-in-hover-js', // Handle.
+	// 	plugins_url( '/js/hover-animations/hover/zoom-in/zoom-in.js', dirname( __FILE__ ) ), array('jquery')
+	// );
+
+	// wp_enqueue_script(
+	// 	'maxi-blocks-zoom-out-hover-js', // Handle.
+	// 	plugins_url( '/js/hover-animations/hover/zoom-out/zoom-out.js', dirname( __FILE__ ) ), array('jquery')
+	// );
+
+	// wp_enqueue_script(
+	// 	'maxi-blocks-slide-hover-js', // Handle.
+	// 	plugins_url( '/js/hover-animations/hover/slide/slide.js', dirname( __FILE__ ) ), array('jquery')
+	// );
+
+	// wp_enqueue_script(
+	// 	'maxi-blocks-rotate-hover-js', // Handle.
+	// 	plugins_url( '/js/hover-animations/hover/rotate/rotate.js', dirname( __FILE__ ) ), array('jquery')
+	// );
+
+	// wp_enqueue_script(
+	// 	'maxi-blocks-blur-hover-js', // Handle.
+	// 	plugins_url( '/js/hover-animations/hover/blur/blur.js', dirname( __FILE__ ) ), array('jquery')
+	// );
+
+
+	// wp_enqueue_script(
+	// 	'maxi-blocks-gray-scale-hover-js', // Handle.
+	// 	plugins_url( '/js/hover-animations/hover/gray-scale/gray-scale.js', dirname( __FILE__ ) ), array('jquery')
+	// );
+
+
+ //    wp_enqueue_script(
+ //        'maxi-blocks-clear-gray-scale-hover-js', // Handle.
+ //        plugins_url( '/js/hover-animations/hover/clear-gray-scale/clear-gray-scale.js', dirname( __FILE__ ) ), array('jquery')
+ //    );
+
+
+	// wp_enqueue_script(
+	// 	'maxi-blocks-opacity-hover-js', // Handle.
+	// 	plugins_url( '/js/hover-animations/hover/opacity/opacity.js', dirname( __FILE__ ) ), array('jquery')
+	// );
+
+
+	// wp_enqueue_script(
+	// 	'maxi-blocks-opacity-with-colour-hover-js', // Handle.
+	// 	plugins_url( '/js/hover-animations/hover/opacity-with-colour/opacity-with-colour.js', dirname( __FILE__ ) ), array('jquery')
+	// );
+
+
+	// wp_enqueue_script(
+	// 	'maxi-blocks-shine-hover-js', // Handle.
+	// 	plugins_url( '/js/hover-animations/hover/shine/shine.js', dirname( __FILE__ ) ), array('jquery')
+	// );
+
+
+	// wp_enqueue_script(
+	// 	'maxi-blocks-circle-hover-js', // Handle.
+	// 	plugins_url( '/js/hover-animations/hover/circle/circle.js', dirname( __FILE__ ) ), array('jquery')
+	// );
+
+
+	// wp_enqueue_script(
+	// 	'maxi-blocks-clear-blur-hover-js', // Handle.
+	// 	plugins_url( '/js/hover-animations/hover/clear-blur/clear-blur.js', dirname( __FILE__ ) ), array('jquery')
+	// );
+
+
+	wp_enqueue_script(
+		'maxi-blocks-fade-hover-js', // Handle.
+		plugins_url( '/js/hover-animations/text/fade/fade.js', dirname( __FILE__ ) ), array('jquery')
+	);
+
+
+	wp_enqueue_script(
+		'maxi-blocks-push-up-hover-js', // Handle.
+		plugins_url( '/js/hover-animations/text/push-up/push-up.js', dirname( __FILE__ ) ), array('jquery')
+	);
+
+
+
+	wp_enqueue_script(
+		'maxi-blocks-push-down-hover-js', // Handle.
+		plugins_url( '/js/hover-animations/text/push-down/push-down.js', dirname( __FILE__ ) ), array('jquery')
+	);
+
+
+	wp_enqueue_script(
+		'maxi-blocks-push-left-hover-js', // Handle.
+		plugins_url( '/js/hover-animations/text/push-left/push-left.js', dirname( __FILE__ ) ), array('jquery')
+	);
+
+
+	wp_enqueue_script(
+		'maxi-blocks-push-right-hover-js', // Handle.
+		plugins_url( '/js/hover-animations/text/push-right/push-right.js', dirname( __FILE__ ) ), array('jquery')
+	);
+
+
+	wp_enqueue_script(
+		'maxi-blocks-slide-up-hover-js', // Handle.
+		plugins_url( '/js/hover-animations/text/slide-up/slide-up.js', dirname( __FILE__ ) ), array('jquery')
+	);
+
+
+	wp_enqueue_script(
+		'maxi-blocks-slide-down-hover-js', // Handle.
+		plugins_url( '/js/hover-animations/text/slide-down/slide-down.js', dirname( __FILE__ ) ), array('jquery')
+	);
+
+
+	wp_enqueue_script(
+		'maxi-blocks-slide-left-hover-js', // Handle.
+		plugins_url( '/js/hover-animations/text/slide-left/slide-left.js', dirname( __FILE__ ) ), array('jquery')
+	);
+
+
+	wp_enqueue_script(
+		'maxi-blocks-slide-right-hover-js', // Handle.
+		plugins_url( '/js/hover-animations/text/slide-right/slide-right.js', dirname( __FILE__ ) ), array('jquery')
+	);
+
+
+	wp_enqueue_script(
+		'maxi-blocks-reveal-up-hover-js', // Handle.
+		plugins_url( '/js/hover-animations/text/reveal-up/reveal-up.js', dirname( __FILE__ ) ), array('jquery')
+	);
+
+
+	wp_enqueue_script(
+		'maxi-blocks-reveal-down-hover-js', // Handle.
+		plugins_url( '/js/hover-animations/text/reveal-down/reveal-down.js', dirname( __FILE__ ) ), array('jquery')
+	);
+
+
+	wp_enqueue_script(
+		'maxi-blocks-reveal-left-hover-js', // Handle.
+		plugins_url( '/js/hover-animations/text/reveal-left/reveal-left.js', dirname( __FILE__ ) ), array('jquery')
+	);
+
+
+	wp_enqueue_script(
+		'maxi-blocks-reveal-right-hover-js', // Handle.
+		plugins_url( '/js/hover-animations/text/reveal-right/reveal-right.js', dirname( __FILE__ ) ), array('jquery')
+	);
+
+
+
+	wp_enqueue_script(
+		'maxi-blocks-hinge-up-hover-js', // Handle.
+		plugins_url( '/js/hover-animations/text/hinge-up/hinge-up.js', dirname( __FILE__ ) ), array('jquery')
+	);
+
+
+
+	wp_enqueue_script(
+		'maxi-blocks-hinge-down-hover-js', // Handle.
+		plugins_url( '/js/hover-animations/text/hinge-down/hinge-down.js', dirname( __FILE__ ) ), array('jquery')
+	);
+
+
+
+	wp_enqueue_script(
+		'maxi-blocks-hinge-left-hover-js', // Handle.
+		plugins_url( '/js/hover-animations/text/hinge-left/hinge-left.js', dirname( __FILE__ ) ), array('jquery')
+	);
+
+
+
+	wp_enqueue_script(
+		'maxi-blocks-hinge-right-hover-js', // Handle.
+		plugins_url( '/js/hover-animations/text/hinge-right/hinge-right.js', dirname( __FILE__ ) ), array('jquery')
+	);
+
+
+
+	wp_enqueue_script(
+		'maxi-blocks-flip-horizontal-hover-js', // Handle.
+		plugins_url( '/js/hover-animations/text/flip-horizontal/flip-horizontal.js', dirname( __FILE__ ) ), array('jquery')
+	);
+
+
+
+	wp_enqueue_script(
+		'maxi-blocks-flip-vertical-hover-js', // Handle.
+		plugins_url( '/js/hover-animations/text/flip-vertical/flip-vertical.js', dirname( __FILE__ ) ), array('jquery')
+	);
+
+
+
+	wp_enqueue_script(
+		'maxi-blocks-flip-diagonal-hover-js', // Handle.
+		plugins_url( '/js/hover-animations/text/flip-diagonal/flip-diagonal.js', dirname( __FILE__ ) ), array('jquery')
+	);
+
 
 	/**
 	 * Register Gutenberg block on server-side.
@@ -95,7 +308,6 @@ function gutenberg_extra_load_custom_wp_admin_script() {
 
 	wp_enqueue_script('maxi-blocks-gutenberg-ui-js');
 
-
 }
 
 add_action( 'admin_enqueue_scripts', 'gutenberg_extra_load_custom_wp_admin_script' );
@@ -110,10 +322,296 @@ function gutenberg_extra_load_custom_wp_admin_style() {
 
 	wp_enqueue_style('gutenberg_extra-block-css-admin');
 
+
+
+
 }
 
 
 add_action( 'admin_enqueue_scripts', 'gutenberg_extra_load_custom_wp_admin_style' );
+
+
+
+
+
+function gutenberg_extra_zoom_in_style() {
+
+	// Register block editor script for backend.
+	// wp_register_style(
+	// 	'gutenberg_extra-block-zoom-in', // Handle.
+	// 	plugins_url( '/js/hover-animations/hover/zoom-in/zoom-in.css', dirname( __FILE__ ) )
+	// );
+
+	// wp_enqueue_style('gutenberg_extra-block-zoom-in');
+
+
+	// wp_register_style(
+	// 	'gutenberg_extra-block-zoom-out', // Handle.
+	// 	plugins_url( '/js/hover-animations/hover/zoom-out/zoom-out.css', dirname( __FILE__ ) )
+	// );
+
+	// wp_enqueue_style('gutenberg_extra-block-zoom-out');
+
+	// wp_register_style(
+	// 	'gutenberg_extra-block-slide', // Handle.
+	// 	plugins_url( '/js/hover-animations/hover/slide/slide.css', dirname( __FILE__ ) )
+	// );
+
+	// wp_enqueue_style('gutenberg_extra-block-slide');
+
+
+
+ //    wp_register_style(
+ //        'gutenberg_extra-block-rotate', // Handle.
+ //        plugins_url( '/js/hover-animations/hover/rotate/rotate.css', dirname( __FILE__ ) )
+ //    );
+
+ //    wp_enqueue_style('gutenberg_extra-block-rotate');
+
+
+
+ //    wp_register_style(
+ //        'gutenberg_extra-block-blur', // Handle.
+ //        plugins_url( '/js/hover-animations/hover/blur/blur.css', dirname( __FILE__ ) )
+ //    );
+
+ //    wp_enqueue_style('gutenberg_extra-block-blur');
+
+ //    wp_register_style(
+ //        'gutenberg_extra-block-gray-scale', // Handle.
+ //        plugins_url( '/js/hover-animations/hover/gray-scale/gray-scale.css', dirname( __FILE__ ) )
+ //    );
+
+ //    wp_enqueue_style('gutenberg_extra-block-gray-scale');
+
+
+
+ //    wp_register_style(
+ //        'gutenberg_extra-block-clear-gray-scale', // Handle.
+ //        plugins_url( '/js/hover-animations/hover/clear-gray-scale/clear-gray-scale.css', dirname( __FILE__ ) )
+ //    );
+
+ //    wp_enqueue_style('gutenberg_extra-block-clear-gray-scale');
+
+
+
+ //    wp_register_style(
+ //        'gutenberg_extra-block-opacity', // Handle.
+ //        plugins_url( '/js/hover-animations/hover/opacity/opacity.css', dirname( __FILE__ ) )
+ //    );
+
+ //    wp_enqueue_style('gutenberg_extra-block-opacity');
+
+
+ //    wp_register_style(
+ //        'gutenberg_extra-block-opacity-with-colour', // Handle.
+ //        plugins_url( '/js/hover-animations/hover/opacity-with-colour/opacity-with-colour.css', dirname( __FILE__ ) )
+ //    );
+
+ //    wp_enqueue_style('gutenberg_extra-block-opacity-with-colour');
+
+ //    wp_register_style(
+ //        'gutenberg_extra-block-shine', // Handle.
+ //        plugins_url( '/js/hover-animations/hover/shine/shine.css', dirname( __FILE__ ) )
+ //    );
+
+ //    wp_enqueue_style('gutenberg_extra-block-shine');
+
+ //    wp_register_style(
+ //        'gutenberg_extra-block-circle', // Handle.
+ //        plugins_url( '/js/hover-animations/hover/circle/circle.css', dirname( __FILE__ ) )
+ //    );
+
+ //    wp_enqueue_style('gutenberg_extra-block-circle');
+
+
+
+ //    wp_register_style(
+ //        'gutenberg_extra-block-clear-blur', // Handle.
+ //        plugins_url( '/js/hover-animations/hover/clear-blur/clear-blur.css', dirname( __FILE__ ) )
+ //    );
+
+ //    wp_enqueue_style('gutenberg_extra-block-clear-blur');
+
+
+    wp_register_style(
+        'gutenberg_extra-block-fade', // Handle.
+        plugins_url( '/js/hover-animations/text/fade/fade.css', dirname( __FILE__ ) )
+    );
+
+    wp_enqueue_style('gutenberg_extra-block-fade');
+
+
+
+    wp_register_style(
+        'gutenberg_extra-block-push-up', // Handle.
+        plugins_url( '/js/hover-animations/text/push-up/push-up.css', dirname( __FILE__ ) )
+    );
+
+    wp_enqueue_style('gutenberg_extra-block-push-up');
+
+
+
+    wp_register_style(
+        'gutenberg_extra-block-push-down', // Handle.
+        plugins_url( '/js/hover-animations/text/push-down/push-down.css', dirname( __FILE__ ) )
+    );
+
+    wp_enqueue_style('gutenberg_extra-block-push-down');
+
+
+
+    wp_register_style(
+        'gutenberg_extra-block-push-left', // Handle.
+        plugins_url( '/js/hover-animations/text/push-left/push-left.css', dirname( __FILE__ ) )
+    );
+
+    wp_enqueue_style('gutenberg_extra-block-push-left');
+
+
+
+    wp_register_style(
+        'gutenberg_extra-block-push-right', // Handle.
+        plugins_url( '/js/hover-animations/text/push-right/push-right.css', dirname( __FILE__ ) )
+    );
+
+    wp_enqueue_style('gutenberg_extra-block-push-right');
+
+
+
+    wp_register_style(
+        'gutenberg_extra-block-slide-up', // Handle.
+        plugins_url( '/js/hover-animations/text/slide-up/slide-up.css', dirname( __FILE__ ) )
+    );
+
+    wp_enqueue_style('gutenberg_extra-block-slide-up');
+
+
+
+    wp_register_style(
+        'gutenberg_extra-block-slide-down', // Handle.
+        plugins_url( '/js/hover-animations/text/slide-down/slide-down.css', dirname( __FILE__ ) )
+    );
+
+    wp_enqueue_style('gutenberg_extra-block-slide-down');
+
+
+    wp_register_style(
+        'gutenberg_extra-block-slide-left', // Handle.
+        plugins_url( '/js/hover-animations/text/slide-left/slide-left.css', dirname( __FILE__ ) )
+    );
+
+    wp_enqueue_style('gutenberg_extra-block-slide-left');
+
+
+    wp_register_style(
+        'gutenberg_extra-block-slide-right', // Handle.
+        plugins_url( '/js/hover-animations/text/slide-right/slide-right.css', dirname( __FILE__ ) )
+    );
+
+    wp_enqueue_style('gutenberg_extra-block-slide-right');
+
+
+
+    wp_register_style(
+        'gutenberg_extra-block-reveal-up', // Handle.
+        plugins_url( '/js/hover-animations/text/reveal-up/reveal-up.css', dirname( __FILE__ ) )
+    );
+
+    wp_enqueue_style('gutenberg_extra-block-reveal-up');
+
+
+
+    wp_register_style(
+        'gutenberg_extra-block-reveal-down', // Handle.
+        plugins_url( '/js/hover-animations/text/reveal-down/reveal-down.css', dirname( __FILE__ ) )
+    );
+
+    wp_enqueue_style('gutenberg_extra-block-reveal-down');
+
+
+
+    wp_register_style(
+        'gutenberg_extra-block-reveal-left', // Handle.
+        plugins_url( '/js/hover-animations/text/reveal-left/reveal-left.css', dirname( __FILE__ ) )
+    );
+
+    wp_enqueue_style('gutenberg_extra-block-reveal-left');
+
+
+
+    wp_register_style(
+        'gutenberg_extra-block-reveal-right', // Handle.
+        plugins_url( '/js/hover-animations/text/reveal-right/reveal-right.css', dirname( __FILE__ ) )
+    );
+
+    wp_enqueue_style('gutenberg_extra-block-reveal-right');
+
+
+
+    wp_register_style(
+        'gutenberg_extra-block-hinge-up', // Handle.
+        plugins_url( '/js/hover-animations/text/hinge-up/hinge-up.css', dirname( __FILE__ ) )
+    );
+
+    wp_enqueue_style('gutenberg_extra-block-hinge-up');
+
+
+
+    wp_register_style(
+        'gutenberg_extra-block-hinge-down', // Handle.
+        plugins_url( '/js/hover-animations/text/hinge-down/hinge-down.css', dirname( __FILE__ ) )
+    );
+
+    wp_enqueue_style('gutenberg_extra-block-hinge-down');
+
+
+
+    wp_register_style(
+        'gutenberg_extra-block-hinge-left', // Handle.
+        plugins_url( '/js/hover-animations/text/hinge-left/hinge-left.css', dirname( __FILE__ ) )
+    );
+
+    wp_enqueue_style('gutenberg_extra-block-hinge-left');
+
+
+    wp_register_style(
+        'gutenberg_extra-block-hinge-right', // Handle.
+        plugins_url( '/js/hover-animations/text/hinge-right/hinge-right.css', dirname( __FILE__ ) )
+    );
+
+    wp_enqueue_style('gutenberg_extra-block-hinge-right');
+
+
+    wp_register_style(
+        'gutenberg_extra-block-flip-horizontal', // Handle.
+        plugins_url( '/js/hover-animations/text/flip-horizontal/flip-horizontal.css', dirname( __FILE__ ) )
+    );
+
+    wp_enqueue_style('gutenberg_extra-block-flip-horizontal');
+
+
+    wp_register_style(
+        'gutenberg_extra-block-flip-vertical', // Handle.
+        plugins_url( '/js/hover-animations/text/flip-vertical/flip-vertical.css', dirname( __FILE__ ) )
+    );
+
+    wp_enqueue_style('gutenberg_extra-block-flip-vertical');
+
+
+    wp_register_style(
+        'gutenberg_extra-block-flip-diagonal', // Handle.
+        plugins_url( '/js/hover-animations/text/flip-diagonal/flip-diagonal.css', dirname( __FILE__ ) )
+    );
+
+    wp_enqueue_style('gutenberg_extra-block-flip-diagonal');
+
+
+
+}
+
+
+add_action( 'init', 'gutenberg_extra_zoom_in_style' );
 
 
 add_filter( 'block_categories', 'gutenberg_extra_block_category' );
@@ -198,7 +696,6 @@ add_action('wp_ajax_gx_insert_block', 'gx_insert_block', 10, 2);
 // require_once plugin_dir_path( __FILE__ ) . 'includes/maxi-wp-dashboard.php';
 
 // Post Meta register
-require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-post-meta.php';
 require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-responsive-frontend-block-styles.php';
 
 // Image crop and image sizes
@@ -418,4 +915,61 @@ function maxi_blocks_body_class($classes) {
 		array_push($classes, $MBClass);
 
 	return $classes;
+}
+
+
+// Add a metabox for Custon Css into Document sidebar
+add_action( 'add_meta_boxes', 'maxi_add_metaboxes', 10, 2 );
+
+function maxi_add_metaboxes() {
+  add_meta_box( 'maxi_metabox', __('Custom CSS (for that page only)', 'maxi-blocks'), 'maxi_metabox_content', '', 'side', 'high' );
+}
+
+
+function maxi_metabox_content() {
+	global $post; // Get the current post data
+	$maxi_blocks_custom_ccs_page = get_post_meta( $post->ID, 'maxi_blocks_custom_ccs_page', true ); // Get the saved values
+	echo '<div>
+        <textarea style="width: 100%"
+        	rows="5"
+        	id="maxi_blocks_custom_ccs_page"
+        	name="maxi_blocks_custom_ccs_page"
+        	val="'.$maxi_blocks_custom_ccs_page.'"
+        	>'.$maxi_blocks_custom_ccs_page.'
+        </textarea>
+    	</div>';
+
+    wp_nonce_field( 'maxi_blocks_custom_ccs_page_nonce', 'maxi_blocks_custom_ccs_page_process' );
+}
+
+function maxi_save_metabox( $post_id, $post ) {
+
+	if ( !isset( $_POST['maxi_blocks_custom_ccs_page_process'] ) ) return;
+	if ( !wp_verify_nonce( $_POST['maxi_blocks_custom_ccs_page_process'], 'maxi_blocks_custom_ccs_page_nonce' ) ) {
+		return $post->ID;
+	}
+
+	if ( !current_user_can( 'edit_post', $post->ID )) {
+		return $post->ID;
+	}
+	if ( !isset( $_POST['maxi_blocks_custom_ccs_page'] ) ) {
+		return $post->ID;
+	}
+	$sanitized = wp_filter_post_kses( $_POST['maxi_blocks_custom_ccs_page'] );
+	// Save our submissions to the database
+	update_post_meta( $post->ID, 'maxi_blocks_custom_ccs_page', $sanitized );
+
+}
+add_action( 'save_post', 'maxi_save_metabox', 1, 2 );
+
+add_action( 'wp_head', 'maxi_output_css', 10, 2 );
+add_action( 'admin_head', 'maxi_output_css', 10, 2 );
+
+function maxi_output_css() {
+	global $post; // Get the current post data
+	$maxi_blocks_custom_ccs_page = get_post_meta( $post->ID, 'maxi_blocks_custom_ccs_page', true ); // Get the saved values
+	if($maxi_blocks_custom_ccs_page)
+	echo '<style id="maxi-blocks-custom-ccs-page">'.$maxi_blocks_custom_ccs_page.'</style>';
+
+   //wp_nonce_field( 'maxi_blocks_custom_ccs_page_nonce', 'maxi_blocks_custom_ccs_page_process' );
 }

@@ -1,22 +1,64 @@
+export const alignment = {
+    "label": "Alignment",
+    "general": {
+        "alignment": "left"
+    },
+    "xl": {
+        "alignment": ""
+    },
+    "l": {
+        "alignment": ""
+    },
+    "m": {
+        "alignment": ""
+    },
+    "s": {
+        "alignment": ""
+    },
+    "xs": {
+        "alignment": ""
+    }
+}
+
 export const margin = {
     "label": "Margin",
-    "min": "none",
     "unit": "em",
-    "desktop": {
+    "general": {
         "margin-top": 1,
         "margin-right": "",
         "margin-bottom": 1,
         "margin-left": "",
         "sync": false
     },
-    "tablet": {
+    "xl": {
         "margin-top": "",
         "margin-right": "",
         "margin-bottom": "",
         "margin-left": "",
         "sync": true
     },
-    "mobile": {
+    "l": {
+        "margin-top": "",
+        "margin-right": "",
+        "margin-bottom": "",
+        "margin-left": "",
+        "sync": true
+    },
+    "m": {
+        "margin-top": "",
+        "margin-right": "",
+        "margin-bottom": "",
+        "margin-left": "",
+        "sync": true
+    },
+    "s": {
+        "margin-top": "",
+        "margin-right": "",
+        "margin-bottom": "",
+        "margin-left": "",
+        "sync": true
+    },
+    "xs": {
         "margin-top": "",
         "margin-right": "",
         "margin-bottom": "",

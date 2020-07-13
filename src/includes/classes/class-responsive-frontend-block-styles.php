@@ -49,8 +49,17 @@ class ResponsiveFrontendStyles
         global $post;
         if (!$post || !isset($post->ID))
             return;
-        $meta = get_post_meta($post->ID, '_gutenberg_extra_responsive_styles', true);
-        if (empty($meta))
+
+        $styles = get_option("mb_post_api_{$post->ID}");
+
+        if (!$styles)
+            return;
+
+        $meta = is_preview() || is_admin() ?
+            $styles['_maxi_blocks_styles_preview'] :
+            $styles['_maxi_blocks_styles'];
+
+        if (!!$meta && empty($meta))
             return;
         $meta = json_decode($meta);
         return $this->organizeMeta($meta);
@@ -63,36 +72,17 @@ class ResponsiveFrontendStyles
     {
         $response = [];
         foreach ($meta as $target => $fields) {
-            $response[$target] = [];
-            foreach ($fields as $field => $props) {
-                if (property_exists($props, 'font')) :
-                    $response[$target]['font'] = $props->font;
-                    $response[$target]['options'] = $props->options;
-                endif;
-                if (isset($props->desktop)) {
-                    foreach ($props->desktop as $prop => $value) {
-                        $response[$target]['desktop'][$prop] = $value;
-                    }
-                }
-                if (isset($props->tablet)) {
-                    foreach ($props->tablet as $prop => $value) {
-                        $response[$target]['tablet'][$prop] = $value;
-                    }
-                }
-                if (isset($props->mobile)) {
-                    foreach ($props->mobile as $prop => $value) {
-                        $response[$target]['mobile'][$prop] = $value;
-                    }
-                }
-                if (isset($props->breakpoints)) {
-                    $response[$target]['breakpoints'] = '';
-                    foreach ($props->breakpoints as $screen => $breakpoint) {
-                        $rule = $breakpoint->rule ?? '';
-                        $content = $breakpoint->content ?? '';
-                        
-                        if(!!$rule && !!$content)
-                            $response[$target]['breakpoints'] .= "@media only screen and ($rule) {.$target{ $content}}";
-                    }
+            $response[$target] = [
+                'breakpoints' => $fields->breakpoints,
+                'content' => []
+            ];
+            foreach ($fields->content as $field => $props) {
+                foreach ($props as $prop => $value) {
+                    if (!isset($response[$target]['content'][$prop]))
+                        $response[$target]['content'][$prop] = [];
+
+                    $response[$target]['content'][$prop] =
+                        array_merge($response[$target]['content'][$prop], (array) $value);
                 }
             }
         }
@@ -122,30 +112,41 @@ class ResponsiveFrontendStyles
             return;
         $response = '';
 
-        foreach ($meta as $target => $prop) {
+        foreach ($meta as $target => $element) {
             $target = self::getTarget($target);
-            $important = ' !important';
+            $breakpoints = $element['breakpoints'];
+            $content = $element['content'];
 
-            if (isset($prop['desktop']) && !empty($prop['desktop']) || !isset($prop['font'])) {
+            if (isset($content['general']) && !empty($content['general'])) {
                 $response .= ".{$target}{";
-                if (isset($prop['font']))
-                    $response .= "font-family: {$prop['font']}{$important};";
-                if (isset($prop['desktop']) && !empty($prop['desktop']))
-                    $response .= self::getStyles($prop['desktop']);
+                $response .= self::getStyles($content['general']);
                 $response .= '}';
-            };
-            if (isset($prop['tablet']) && !empty($prop['tablet'])) {
-                $response .= "@media only screen and (max-width: 768px) {.$target{";
-                $response .= self::getStyles($prop['tablet']);
+            }
+            if (isset($content['xl']) && !empty($content['xl'])) {
+                $response .= "@media only screen and (max-width: {$breakpoints->xl}px) {.$target{";
+                $response .= self::getStyles($content['xl']);
                 $response .= '}}';
             }
-            if (isset($prop['mobile']) && !empty($prop['mobile'])) {
-                $response .= "@media only screen and (max-width: 480px) {.$target{";
-                $response .= self::getStyles($prop['mobile']);
+            if (isset($content['l']) && !empty($content['l'])) {
+                $response .= "@media only screen and (max-width: {$breakpoints->l}px) {.$target{";
+                $response .= self::getStyles($content['l']);
                 $response .= '}}';
             }
-            if (isset($prop['breakpoints']) && !empty($prop['breakpoints']))
-                $response .= $prop['breakpoints'];
+            if (isset($content['m']) && !empty($content['m'])) {
+                $response .= "@media only screen and (max-width: {$breakpoints->m}px) {.$target{";
+                $response .= self::getStyles($content['m']);
+                $response .= '}}';
+            }
+            if (isset($content['s']) && !empty($content['s'])) {
+                $response .= "@media only screen and (max-width: {$breakpoints->s}px) {.$target{";
+                $response .= self::getStyles($content['s']);
+                $response .= '}}';
+            }
+            if (isset($content['xs']) && !empty($content['xs'])) {
+                $response .= "@media only screen and (max-width: {$breakpoints->xs}px) {.$target{";
+                $response .= self::getStyles($content['xs']);
+                $response .= '}}';
+            }
         }
 
         return wp_strip_all_tags($response);
@@ -173,6 +174,8 @@ class ResponsiveFrontendStyles
         $response = '';
         $important = ' !important';
         foreach ($styles as $property => $value) {
+            if ($property === 'font-options')
+                continue;
             $response .= "{$property}: {$value}{$important};";
         }
         return $response;
@@ -193,8 +196,9 @@ class ResponsiveFrontendStyles
 
         $fontOptions = [];
         foreach ($meta as $target) {
-            if (isset($target['font'])) {
-                $fontOptions[$target['font']] = $target['options'];
+            foreach ($target['content'] as $breakpoint) {
+                if (array_key_exists('font-family', $breakpoint) && array_key_exists('font-options', $breakpoint))
+                    $fontOptions[$breakpoint['font-family']] = $breakpoint['font-options'];
             }
         }
 

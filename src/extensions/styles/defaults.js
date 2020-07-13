@@ -1,6 +1,312 @@
+export const alignment = {
+    "label": "Alignment",
+    "general": {
+        "alignment": "center"
+    },
+    "xl": {
+        "alignment": ""
+    },
+    "l": {
+        "alignment": ""
+    },
+    "m": {
+        "alignment": ""
+    },
+    "s": {
+        "alignment": ""
+    },
+    "xs": {
+        "alignment": ""
+    }
+}
+
+export const opacity = {
+    "label": "Opacity",
+    "general": {
+        "opacity": 1
+    },
+    "xl": {
+        "opacity": ""
+    },
+    "l": {
+        "opacity": ""
+    },
+    "m": {
+        "opacity": ""
+    },
+    "s": {
+        "opacity": ""
+    },
+    "xs": {
+        "opacity": ""
+    }
+}
+
+export const opacityHover = {
+    "label": "Opacity",
+    "general": {
+        "opacity": ""
+    },
+    "xl": {
+        "opacity": ""
+    },
+    "l": {
+        "opacity": ""
+    },
+    "m": {
+        "opacity": ""
+    },
+    "s": {
+        "opacity": ""
+    },
+    "xs": {
+        "opacity": ""
+    }
+}
+
+export const border = {
+    "label": "Border",
+    "general": {
+        "border-color": "#ffffff",
+        "border-style": "none"
+    },
+    "xl": {
+        "border-color": "",
+        "border-style": ""
+    },
+    "l": {
+        "border-color": "",
+        "border-style": ""
+    },
+    "m": {
+        "border-color": "",
+        "border-style": ""
+    },
+    "s": {
+        "border-color": "",
+        "border-style": ""
+    },
+    "xs": {
+        "border-color": "",
+        "border-style": ""
+    },
+    "borderWidth": {
+        "label": "Border width",
+        "unit": "px",
+        "general": {
+            "border-top-width": 0,
+            "border-right-width": 0,
+            "border-bottom-width": 0,
+            "border-left-width": 0,
+            "sync": true
+        },
+        "xl": {
+            "border-top-width": "",
+            "border-right-width": "",
+            "border-bottom-width": "",
+            "border-left-width": "",
+            "sync": true
+        },
+        "l": {
+            "border-top-width": "",
+            "border-right-width": "",
+            "border-bottom-width": "",
+            "border-left-width": "",
+            "sync": true
+        },
+        "m": {
+            "border-top-width": "",
+            "border-right-width": "",
+            "border-bottom-width": "",
+            "border-left-width": "",
+            "sync": true
+        },
+        "s": {
+            "border-top-width": "",
+            "border-right-width": "",
+            "border-bottom-width": "",
+            "border-left-width": "",
+            "sync": true
+        },
+        "xs": {
+            "border-top-width": "",
+            "border-right-width": "",
+            "border-bottom-width": "",
+            "border-left-width": "",
+            "sync": true
+        }
+    },
+    "borderRadius": {
+        "label": "Border radius",
+        "unit": "px",
+        "general": {
+            "border-top-left-radius": 0,
+            "border-top-right-radius": 0,
+            "border-bottom-right-radius": 0,
+            "border-bottom-left-radius": 0,
+            "sync": true
+        },
+        "xl": {
+            "border-top-left-radius": "",
+            "border-top-right-radius": "",
+            "border-bottom-right-radius": "",
+            "border-bottom-left-radius": "",
+            "sync": true
+        },
+        "l": {
+            "border-top-left-radius": "",
+            "border-top-right-radius": "",
+            "border-bottom-right-radius": "",
+            "border-bottom-left-radius": "",
+            "sync": true
+        },
+        "m": {
+            "border-top-left-radius": "",
+            "border-top-right-radius": "",
+            "border-bottom-right-radius": "",
+            "border-bottom-left-radius": "",
+            "sync": true
+        },
+        "s": {
+            "border-top-left-radius": "",
+            "border-top-right-radius": "",
+            "border-bottom-right-radius": "",
+            "border-bottom-left-radius": "",
+            "sync": true
+        },
+        "xs": {
+            "border-top-left-radius": "",
+            "border-top-right-radius": "",
+            "border-bottom-right-radius": "",
+            "border-bottom-left-radius": "",
+            "sync": true
+        }
+    }
+}
+
+export const borderHover = {
+    "label": "Border",
+    "general": {
+        "border-color": "",
+        "border-style": ""
+    },
+    "xl": {
+        "border-color": "",
+        "border-style": ""
+    },
+    "l": {
+        "border-color": "",
+        "border-style": ""
+    },
+    "m": {
+        "border-color": "",
+        "border-style": ""
+    },
+    "s": {
+        "border-color": "",
+        "border-style": ""
+    },
+    "xs": {
+        "border-color": "",
+        "border-style": ""
+    },
+    "borderWidth": {
+        "label": "Border width",
+        "unit": "px",
+        "general": {
+            "border-top-width": "",
+            "border-right-width": "",
+            "border-bottom-width": "",
+            "border-left-width": "",
+            "sync": true
+        },
+        "xl": {
+            "border-top-width": "",
+            "border-right-width": "",
+            "border-bottom-width": "",
+            "border-left-width": "",
+            "sync": true
+        },
+        "l": {
+            "border-top-width": "",
+            "border-right-width": "",
+            "border-bottom-width": "",
+            "border-left-width": "",
+            "sync": true
+        },
+        "m": {
+            "border-top-width": "",
+            "border-right-width": "",
+            "border-bottom-width": "",
+            "border-left-width": "",
+            "sync": true
+        },
+        "s": {
+            "border-top-width": "",
+            "border-right-width": "",
+            "border-bottom-width": "",
+            "border-left-width": "",
+            "sync": true
+        },
+        "xs": {
+            "border-top-width": "",
+            "border-right-width": "",
+            "border-bottom-width": "",
+            "border-left-width": "",
+            "sync": true
+        }
+    },
+    "borderRadius": {
+        "label": "Border radius",
+        "unit": "px",
+        "general": {
+            "border-top-left-radius": "",
+            "border-top-right-radius": "",
+            "border-bottom-right-radius": "",
+            "border-bottom-left-radius": "",
+            "sync": true
+        },
+        "xl": {
+            "border-top-left-radius": "",
+            "border-top-right-radius": "",
+            "border-bottom-right-radius": "",
+            "border-bottom-left-radius": "",
+            "sync": true
+        },
+        "l": {
+            "border-top-left-radius": "",
+            "border-top-right-radius": "",
+            "border-bottom-right-radius": "",
+            "border-bottom-left-radius": "",
+            "sync": true
+        },
+        "m": {
+            "border-top-left-radius": "",
+            "border-top-right-radius": "",
+            "border-bottom-right-radius": "",
+            "border-bottom-left-radius": "",
+            "sync": true
+        },
+        "s": {
+            "border-top-left-radius": "",
+            "border-top-right-radius": "",
+            "border-bottom-right-radius": "",
+            "border-bottom-left-radius": "",
+            "sync": true
+        },
+        "xs": {
+            "border-top-left-radius": "",
+            "border-top-right-radius": "",
+            "border-bottom-right-radius": "",
+            "border-bottom-left-radius": "",
+            "sync": true
+        }
+    }
+}
+
 export const size = {
     "label": "Size",
-    "desktop": {
+    "general": {
         "max-widthUnit": "px",
         "max-width": "",
         "widthUnit": "px",
@@ -14,7 +320,7 @@ export const size = {
         "min-heightUnit": "px",
         "min-height": ""
     },
-    "tablet": {
+    "xl": {
         "max-widthUnit": "px",
         "max-width": "",
         "widthUnit": "px",
@@ -28,7 +334,49 @@ export const size = {
         "min-heightUnit": "px",
         "min-height": ""
     },
-    "mobile": {
+    "l": {
+        "max-widthUnit": "px",
+        "max-width": "",
+        "widthUnit": "px",
+        "width": "",
+        "min-widthUnit": "px",
+        "min-width": "",
+        "max-heightUnit": "px",
+        "max-height": "",
+        "heightUnit": "px",
+        "height": "",
+        "min-heightUnit": "px",
+        "min-height": ""
+    },
+    "m": {
+        "max-widthUnit": "px",
+        "max-width": "",
+        "widthUnit": "px",
+        "width": "",
+        "min-widthUnit": "px",
+        "min-width": "",
+        "max-heightUnit": "px",
+        "max-height": "",
+        "heightUnit": "px",
+        "height": "",
+        "min-heightUnit": "px",
+        "min-height": ""
+    },
+    "s": {
+        "max-widthUnit": "px",
+        "max-width": "",
+        "widthUnit": "px",
+        "width": "",
+        "min-widthUnit": "px",
+        "min-width": "",
+        "max-heightUnit": "px",
+        "max-height": "",
+        "heightUnit": "px",
+        "height": "",
+        "min-heightUnit": "px",
+        "min-height": ""
+    },
+    "xs": {
         "max-widthUnit": "px",
         "max-width": "",
         "widthUnit": "px",
@@ -42,7 +390,7 @@ export const size = {
         "min-heightUnit": "px",
         "min-height": ""
     }
-};
+}
 
 export const background = {
     "label": "Background",
@@ -87,6 +435,21 @@ export const background = {
             "attachment": "scroll"
         }
     ],
+    "videoOptions": {
+        "mediaID": "",
+        "mediaURL": "",
+        "width": "100",
+        "widthUnit": "%",
+        "height": "100",
+        "heightUnit": "%",
+        "fill": "cover",
+        "position": "unset",
+        "autoplay": 0,
+        "loop": 0,
+        "muted": 0,
+        "controls": 0,
+        "preload": "metadata"
+    },
     "colorOptions": {
         "color": "",
         "defultColor": "",
@@ -98,35 +461,128 @@ export const background = {
 
 export const boxShadow = {
     "label": "Box Shadow",
-    "shadowColor": "#ffffff",
-    "defaultShadowColor": "#ffffff",
-    "shadowHorizontal": 0,
-    "shadowVertical": 0,
-    "shadowBlur": 0,
-    "shadowSpread": 0
+    "general": {
+        "shadowColor": "#ffffff",
+        "defaultShadowColor": "#ffffff",
+        "shadowHorizontal": 0,
+        "shadowVertical": 0,
+        "shadowBlur": 0,
+        "shadowSpread": 0
+    },
+    "xl": {
+        "shadowColor": "",
+        "defaultShadowColor": "",
+        "shadowHorizontal": "",
+        "shadowVertical": "",
+        "shadowBlur": "",
+        "shadowSpread": ""
+    },
+    "l": {
+        "shadowColor": "",
+        "defaultShadowColor": "",
+        "shadowHorizontal": "",
+        "shadowVertical": "",
+        "shadowBlur": "",
+        "shadowSpread": ""
+    },
+    "m": {
+        "shadowColor": "",
+        "defaultShadowColor": "",
+        "shadowHorizontal": "",
+        "shadowVertical": "",
+        "shadowBlur": "",
+        "shadowSpread": ""
+    },
+    "s": {
+        "shadowColor": "",
+        "defaultShadowColor": "",
+        "shadowHorizontal": "",
+        "shadowVertical": "",
+        "shadowBlur": "",
+        "shadowSpread": ""
+    },
+    "xs": {
+        "shadowColor": "",
+        "defaultShadowColor": "",
+        "shadowHorizontal": "",
+        "shadowVertical": "",
+        "shadowBlur": "",
+        "shadowSpread": ""
+    }
+}
+
+export const boxShadowHover = {
+    "label": "Box Shadow",
+    "general": {
+        "shadowColor": "",
+        "defaultShadowColor": "",
+        "shadowHorizontal": "",
+        "shadowVertical": "",
+        "shadowBlur": "",
+        "shadowSpread": ""
+    },
+    "xl": {
+        "shadowColor": "",
+        "defaultShadowColor": "",
+        "shadowHorizontal": "",
+        "shadowVertical": "",
+        "shadowBlur": "",
+        "shadowSpread": ""
+    },
+    "l": {
+        "shadowColor": "",
+        "defaultShadowColor": "",
+        "shadowHorizontal": "",
+        "shadowVertical": "",
+        "shadowBlur": "",
+        "shadowSpread": ""
+    },
+    "m": {
+        "shadowColor": "",
+        "defaultShadowColor": "",
+        "shadowHorizontal": "",
+        "shadowVertical": "",
+        "shadowBlur": "",
+        "shadowSpread": ""
+    },
+    "s": {
+        "shadowColor": "",
+        "defaultShadowColor": "",
+        "shadowHorizontal": "",
+        "shadowVertical": "",
+        "shadowBlur": "",
+        "shadowSpread": ""
+    },
+    "xs": {
+        "shadowColor": "",
+        "defaultShadowColor": "",
+        "shadowHorizontal": "",
+        "shadowVertical": "",
+        "shadowBlur": "",
+        "shadowSpread": ""
+    }
 }
 
 export const typography = {
     "label": "Typography",
-    "font": "Roboto",
-    "options": {
-        "100": "http://fonts.gstatic.com/s/roboto/v20/KFOkCnqEu92Fr1MmgWxPKTM1K9nz.ttf",
-        "100italic": "http://fonts.gstatic.com/s/roboto/v20/KFOiCnqEu92Fr1Mu51QrIzcXLsnzjYk.ttf",
-        "300": "http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmSU5vAx05IsDqlA.ttf",
-        "300italic": "http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TjARc9AMX6lJBP.ttf",
-        "400": "http://fonts.gstatic.com/s/roboto/v20/KFOmCnqEu92Fr1Me5WZLCzYlKw.ttf",
-        "italic": "http://fonts.gstatic.com/s/roboto/v20/KFOkCnqEu92Fr1Mu52xPKTM1K9nz.ttf",
-        "500": "http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmEU9vAx05IsDqlA.ttf",
-        "500italic": "http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51S7ABc9AMX6lJBP.ttf",
-        "700": "http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmWUlvAx05IsDqlA.ttf",
-        "700italic": "http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TzBhc9AMX6lJBP.ttf",
-        "900": "http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmYUtvAx05IsDqlA.ttf",
-        "900italic": "http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TLBBc9AMX6lJBP.ttf"
-    },
     "general": {
+        "font-family": "Roboto",
+        "font-options": {
+            "100": "http://fonts.gstatic.com/s/roboto/v20/KFOkCnqEu92Fr1MmgWxPKTM1K9nz.ttf",
+            "100italic": "http://fonts.gstatic.com/s/roboto/v20/KFOiCnqEu92Fr1Mu51QrIzcXLsnzjYk.ttf",
+            "300": "http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmSU5vAx05IsDqlA.ttf",
+            "300italic": "http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TjARc9AMX6lJBP.ttf",
+            "400": "http://fonts.gstatic.com/s/roboto/v20/KFOmCnqEu92Fr1Me5WZLCzYlKw.ttf",
+            "italic": "http://fonts.gstatic.com/s/roboto/v20/KFOkCnqEu92Fr1Mu52xPKTM1K9nz.ttf",
+            "500": "http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmEU9vAx05IsDqlA.ttf",
+            "500italic": "http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51S7ABc9AMX6lJBP.ttf",
+            "700": "http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmWUlvAx05IsDqlA.ttf",
+            "700italic": "http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TzBhc9AMX6lJBP.ttf",
+            "900": "http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmYUtvAx05IsDqlA.ttf",
+            "900italic": "http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TLBBc9AMX6lJBP.ttf"
+        },
         "color": "#9b9b9b",
-    },
-    "desktop": {
+        "text-align": "left",
         "font-sizeUnit": "px",
         "font-size": 16,
         "line-heightUnit": "px",
@@ -134,16 +590,20 @@ export const typography = {
         "letter-spacingUnit": "px",
         "letter-spacing": 0,
         "font-weight": 400,
-        "text-transform": "",
-        "font-style": "",
-        "text-decoration": "",
+        "text-transform": "none",
+        "font-style": "normal",
+        "text-decoration": "none",
         "text-shadow": ""
     },
-    "tablet": {
+    "xl": {
+        "font-family": "",
+        "font-options": {},
+        "color": "",
+        "text-align": "",
         "font-sizeUnit": "px",
-        "font-size": 16,
+        "font-size": "",
         "line-heightUnit": "px",
-        "line-height": 26,
+        "line-height": "",
         "letter-spacingUnit": "px",
         "letter-spacing": "",
         "font-weight": "",
@@ -152,11 +612,66 @@ export const typography = {
         "text-decoration": "",
         "text-shadow": ""
     },
-    "mobile": {
+    "l": {
+        "font-family": "",
+        "font-options": {},
+        "color": "",
+        "text-align": "",
         "font-sizeUnit": "px",
-        "font-size": 16,
+        "font-size": "",
         "line-heightUnit": "px",
-        "line-height": 26,
+        "line-height": "",
+        "letter-spacingUnit": "px",
+        "letter-spacing": "",
+        "font-weight": "",
+        "text-transform": "",
+        "font-style": "",
+        "text-decoration": "",
+        "text-shadow": ""
+    },
+    "m": {
+        "font-family": "",
+        "font-options": {},
+        "color": "",
+        "text-align": "",
+        "font-sizeUnit": "px",
+        "font-size": "",
+        "line-heightUnit": "px",
+        "line-height": "",
+        "letter-spacingUnit": "px",
+        "letter-spacing": "",
+        "font-weight": "",
+        "text-transform": "",
+        "font-style": "",
+        "text-decoration": "",
+        "text-shadow": ""
+    },
+    "s": {
+        "font-family": "",
+        "font-options": {},
+        "color": "",
+        "text-align": "",
+        "font-sizeUnit": "px",
+        "font-size": "",
+        "line-heightUnit": "px",
+        "line-height": "",
+        "letter-spacingUnit": "px",
+        "letter-spacing": "",
+        "font-weight": "",
+        "text-transform": "",
+        "font-style": "",
+        "text-decoration": "",
+        "text-shadow": ""
+    },
+    "xs": {
+        "font-family": "",
+        "font-options": {},
+        "color": "",
+        "text-align": "",
+        "font-sizeUnit": "px",
+        "font-size": "",
+        "line-heightUnit": "px",
+        "line-height": "",
         "letter-spacingUnit": "px",
         "letter-spacing": "",
         "font-weight": "",
@@ -167,119 +682,205 @@ export const typography = {
     }
 }
 
-export const border = {
-    "label": "Border",
-    "defaultBorderColor": "#ffffff",
+export const typographyHover = {
+    "label": "Typography",
     "general": {
-        "border-color": "#ffffff",
-        "border-style": "none"
+        "font-family": "",
+        "font-options": {},
+        "color": "",
+        "text-align": "",
+        "font-sizeUnit": "px",
+        "font-size": "",
+        "line-heightUnit": "px",
+        "line-height": "",
+        "letter-spacingUnit": "px",
+        "letter-spacing": "",
+        "font-weight": "",
+        "text-transform": "",
+        "font-style": "",
+        "text-decoration": "",
+        "text-shadow": ""
     },
-    "borderWidth": {
-        "label": "Border width",
-        "unit": "px",
-        "max": 1000,
-        "desktop": {
-            "border-top-width": 0,
-            "border-right-width": 0,
-            "border-bottom-width": 0,
-            "border-left-width": 0,
-            "sync": true
-        },
-        "tablet": {
-            "border-top-width": "",
-            "border-right-width": "",
-            "border-bottom-width": "",
-            "border-left-width": "",
-            "sync": true
-        },
-        "mobile": {
-            "border-top-width": "",
-            "border-right-width": "",
-            "border-bottom-width": "",
-            "border-left-width": "",
-            "sync": true
-        }
+    "xl": {
+        "font-family": "",
+        "font-options": {},
+        "color": "",
+        "text-align": "",
+        "font-sizeUnit": "px",
+        "font-size": "",
+        "line-heightUnit": "px",
+        "line-height": "",
+        "letter-spacingUnit": "px",
+        "letter-spacing": "",
+        "font-weight": "",
+        "text-transform": "",
+        "font-style": "",
+        "text-decoration": "",
+        "text-shadow": ""
     },
-    "borderRadius": {
-        "label": "Border radius",
-        "unit": "px",
-        "max": 1000,
-        "desktop": {
-            "border-top-left-radius": 0,
-            "border-top-right-radius": 0,
-            "border-bottom-right-radius": 0,
-            "border-bottom-left-radius": 0,
-            "sync": true
-        },
-        "tablet": {
-            "border-top-left-radius": "",
-            "border-top-right-radius": "",
-            "border-bottom-right-radius": "",
-            "border-bottom-left-radius": "",
-            "sync": true
-        },
-        "mobile": {
-            "border-top-left-radius": "",
-            "border-top-right-radius": "",
-            "border-bottom-right-radius": "",
-            "border-bottom-left-radius": "",
-            "sync": true
-        }
+    "l": {
+        "font-family": "",
+        "font-options": {},
+        "color": "",
+        "text-align": "",
+        "font-sizeUnit": "px",
+        "font-size": "",
+        "line-heightUnit": "px",
+        "line-height": "",
+        "letter-spacingUnit": "px",
+        "letter-spacing": "",
+        "font-weight": "",
+        "text-transform": "",
+        "font-style": "",
+        "text-decoration": "",
+        "text-shadow": ""
+    },
+    "m": {
+        "font-family": "",
+        "font-options": {},
+        "color": "",
+        "text-align": "",
+        "font-sizeUnit": "px",
+        "font-size": "",
+        "line-heightUnit": "px",
+        "line-height": "",
+        "letter-spacingUnit": "px",
+        "letter-spacing": "",
+        "font-weight": "",
+        "text-transform": "",
+        "font-style": "",
+        "text-decoration": "",
+        "text-shadow": ""
+    },
+    "s": {
+        "font-family": "",
+        "font-options": {},
+        "color": "",
+        "text-align": "",
+        "font-sizeUnit": "px",
+        "font-size": "",
+        "line-heightUnit": "px",
+        "line-height": "",
+        "letter-spacingUnit": "px",
+        "letter-spacing": "",
+        "font-weight": "",
+        "text-transform": "",
+        "font-style": "",
+        "text-decoration": "",
+        "text-shadow": ""
+    },
+    "xs": {
+        "font-family": "",
+        "font-options": {},
+        "color": "",
+        "text-align": "",
+        "font-sizeUnit": "px",
+        "font-size": "",
+        "line-heightUnit": "px",
+        "line-height": "",
+        "letter-spacingUnit": "px",
+        "letter-spacing": "",
+        "font-weight": "",
+        "text-transform": "",
+        "font-style": "",
+        "text-decoration": "",
+        "text-shadow": ""
     }
-};
+}
 
 export const margin = {
     "label": "Margin",
-    "min": "none",
     "unit": "px",
-    "desktop": {
+    "general": {
         "margin-top": "",
         "margin-right": "",
         "margin-bottom": "",
         "margin-left": "",
         "sync": true
     },
-    "tablet": {
+    "xl": {
         "margin-top": "",
         "margin-right": "",
         "margin-bottom": "",
         "margin-left": "",
         "sync": true
     },
-    "mobile": {
+    "l": {
+        "margin-top": "",
+        "margin-right": "",
+        "margin-bottom": "",
+        "margin-left": "",
+        "sync": true
+    },
+    "m": {
+        "margin-top": "",
+        "margin-right": "",
+        "margin-bottom": "",
+        "margin-left": "",
+        "sync": true
+    },
+    "s": {
+        "margin-top": "",
+        "margin-right": "",
+        "margin-bottom": "",
+        "margin-left": "",
+        "sync": true
+    },
+    "xs": {
         "margin-top": "",
         "margin-right": "",
         "margin-bottom": "",
         "margin-left": "",
         "sync": true
     }
-};
+}
 
 export const padding = {
     "label": "Padding",
     "unit": "px",
-    "desktop": {
+    "general": {
         "padding-top": "",
         "padding-right": "",
         "padding-bottom": "",
         "padding-left": "",
         "sync": true
     },
-    "tablet": {
+    "xl": {
         "padding-top": "",
         "padding-right": "",
         "padding-bottom": "",
         "padding-left": "",
         "sync": true
     },
-    "mobile": {
+    "l": {
+        "padding-top": "",
+        "padding-right": "",
+        "padding-bottom": "",
+        "padding-left": "",
+        "sync": true
+    },
+    "m": {
+        "padding-top": "",
+        "padding-right": "",
+        "padding-bottom": "",
+        "padding-left": "",
+        "sync": true
+    },
+    "s": {
+        "padding-top": "",
+        "padding-right": "",
+        "padding-bottom": "",
+        "padding-left": "",
+        "sync": true
+    },
+    "xs": {
         "padding-top": "",
         "padding-right": "",
         "padding-bottom": "",
         "padding-left": "",
         "sync": true
     }
-};
+}
 
 export const cropOptions = {
     "image": {
@@ -340,131 +941,27 @@ export const backgroundHover = {
             "attachment": "scroll"
         }
     ],
+    "videoOptions": {
+        "mediaID": "",
+        "mediaURL": "",
+        "width": "100",
+        "widthUnit": "%",
+        "height": "100",
+        "heightUnit": "%",
+        "fill": "cover",
+        "position": "unset",
+        "autoplay": 0,
+        "loop": 0,
+        "muted": 0,
+        "controls": 0,
+        "preload": "metadata"
+    },
     "colorOptions": {
         "color": "",
         "defultColor": "",
         "gradient": "",
         "defaultGradient": "",
         "gradientAboveBackground": false
-    }
-};
-
-export const boxShadowHover = {
-    "label": "Box Shadow",
-    "shadowColor": "#ffffff",
-    "defaultShadowColor": "#ffffff",
-    "shadowHorizontal": "",
-    "shadowVertical": "",
-    "shadowBlur": "",
-    "shadowSpread": ""
-}
-
-export const typographyHover = {
-    "label": "Typography",
-    "font": "",
-    "options": {},
-    "general": {
-        "color": "",
-    },
-    "desktop": {
-        "font-sizeUnit": "px",
-        "font-size": "",
-        "line-heightUnit": "px",
-        "line-height": "",
-        "letter-spacingUnit": "px",
-        "letter-spacing": "",
-        "font-weight": "",
-        "text-transform": "",
-        "font-style": "",
-        "text-decoration": "",
-        "text-shadow": ""
-    },
-    "tablet": {
-        "font-sizeUnit": "px",
-        "font-size": "",
-        "line-heightUnit": "px",
-        "line-height": "",
-        "letter-spacingUnit": "px",
-        "letter-spacing": "",
-        "font-weight": "",
-        "text-transform": "",
-        "font-style": "",
-        "text-decoration": "",
-        "text-shadow": ""
-    },
-    "mobile": {
-        "font-sizeUnit": "px",
-        "font-size": "",
-        "line-heightUnit": "px",
-        "line-height": "",
-        "letter-spacingUnit": "px",
-        "letter-spacing": "",
-        "font-weight": "",
-        "text-transform": "",
-        "font-style": "",
-        "text-decoration": "",
-        "text-shadow": ""
-    }
-}
-
-export const borderHover = {
-    "label": "Border",
-    "defaultBorderColor": "",
-    "general": {
-        "border-color": "",
-        "border-style": ""
-    },
-    "borderWidth": {
-        "label": "Border width",
-        "unit": "px",
-        "max": 1000,
-        "desktop": {
-            "border-top-width": "",
-            "border-right-width": "",
-            "border-bottom-width": "",
-            "border-left-width": "",
-            "sync": true
-        },
-        "tablet": {
-            "border-top-width": "",
-            "border-right-width": "",
-            "border-bottom-width": "",
-            "border-left-width": "",
-            "sync": true
-        },
-        "mobile": {
-            "border-top-width": "",
-            "border-right-width": "",
-            "border-bottom-width": "",
-            "border-left-width": "",
-            "sync": true
-        }
-    },
-    "borderRadius": {
-        "label": "Border radius",
-        "unit": "px",
-        "max": 1000,
-        "desktop": {
-            "border-top-left-radius": "",
-            "border-top-right-radius": "",
-            "border-bottom-right-radius": "",
-            "border-bottom-left-radius": "",
-            "sync": true
-        },
-        "tablet": {
-            "border-top-left-radius": "",
-            "border-top-right-radius": "",
-            "border-bottom-right-radius": "",
-            "border-bottom-left-radius": "",
-            "sync": true
-        },
-        "mobile": {
-            "border-top-left-radius": "",
-            "border-top-right-radius": "",
-            "border-bottom-right-radius": "",
-            "border-bottom-left-radius": "",
-            "sync": true
-        }
     }
 };
 
@@ -484,4 +981,54 @@ export const __experimentalDivider = {
         "border-radius": "",
         "opacity": 1
     }
+}
+
+export const __experimentalContainer = {
+    label: "Container size",
+    general: {
+        "max-widthUnit": "%",
+        "max-width": "90"
+    },
+    xl: {
+        "max-widthUnit": "%",
+        "max-width": ""
+    },
+    l: {
+        "max-widthUnit": "%",
+        "max-width": ""
+    },
+    m: {
+        "max-widthUnit": "%",
+        "max-width": ""
+    },
+    s: {
+        "max-widthUnit": "%",
+        "max-width": ""
+    },
+    xs: {
+        "max-widthUnit": "%",
+        "max-width": ""
+    },
+}
+
+export const __experimentalColumn = {
+    label: "Column size",
+    general: {
+        "size": 90
+    },
+    xl: {
+        "size": ""
+    },
+    l: {
+        "size": ""
+    },
+    m: {
+        "size": ""
+    },
+    s: {
+        "size": ""
+    },
+    xs: {
+        "size": ""
+    },
 }

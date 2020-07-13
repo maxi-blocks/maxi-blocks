@@ -100,7 +100,7 @@ body {
 }
 .maxi-block {
 	.block-editor-block-list__layout {
-		padding: 10px;
+		// padding: 10px;
 		&:focus:after {
 			box-shadow: none !important;
 		}
@@ -244,7 +244,7 @@ body {
 * Reset Button
 *************/
 
-.components-maxi-control__units-reset {
+.components-maxi-control__reset-button {
 	display: inline-flex;
 	width: 31px;
 	min-width: 31px;

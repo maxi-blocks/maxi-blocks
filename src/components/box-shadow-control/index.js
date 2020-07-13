@@ -14,6 +14,7 @@ import ColorControl from '../color-control';
 import DefaultStylesControl from '../default-styles-control';
 import { getDefaultProp } from '../../extensions/styles/utils';
 import {
+    boxShadowNone,
     boxShadowTotal,
     boxShadowBottom,
     boxShadowSolid
@@ -23,6 +24,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
+import { isObject } from 'lodash';
 
 /**
  * Styles and icons
@@ -35,21 +37,29 @@ import { styleNone } from '../../icons';
  */
 const BoxShadowControl = props => {
     const {
-        boxShadowOptions,
+        boxShadow,
         onChange,
-        className
+        className,
+        breakpoint
     } = props;
 
-    let value = typeof boxShadowOptions === 'object' ?
-        boxShadowOptions :
-        JSON.parse(boxShadowOptions);
+    let value = !isObject(boxShadow) ?
+        JSON.parse(boxShadow) :
+        boxShadow;
+
     const classes = classnames(
         'maxi-shadow-control',
         className
     )
 
     const onChangeValue = (target, val) => {
-        value[target] = val;
+        value[breakpoint][target] = val;
+        onChange(JSON.stringify(value));
+    }
+
+    const onChangeDefault = defaultBoxShadow => {
+        value[breakpoint] = defaultBoxShadow;
+
         onChange(JSON.stringify(value));
     }
 
@@ -58,58 +68,60 @@ const BoxShadowControl = props => {
             <DefaultStylesControl
                 items={[
                     {
-                        activeItem: ( value.shadowType === undefined ),
+                        activeItem: ( value[breakpoint].shadowType === 'none' ),
                         content: (
                             <Icon
                                 className='maxi-defaultstyles-control__button__icon'
                                 icon={styleNone}
                             />
                         ),
-                        onChange: () => onChange(getDefaultProp(null, 'boxShadow'))
+                        onChange: () => onChangeDefault(boxShadowNone)
                     },
                     {
-                        activeItem: ( value.shadowType === 'total' ),
+                        activeItem: ( value[breakpoint].shadowType === 'total' ),
                         content: (
                             <div
                                 className='maxi-shadow-control__default maxi-shadow-control__default__total'
                             ></div>
                         ),
-                        onChange: () => onChange(JSON.stringify(boxShadowTotal))
+                        onChange: () => onChangeDefault(boxShadowTotal)
 
                     },
                     {
-                        activeItem: ( value.shadowType === 'bottom' ),
+                        activeItem: ( value[breakpoint].shadowType === 'bottom' ),
                         content: (
                             <div
                                 className='maxi-shadow-control__default maxi-shadow-control__default__bottom'
                             ></div>
                         ),
-                        onChange: () => onChange(JSON.stringify(boxShadowBottom))
+                        onChange: () => onChangeDefault(boxShadowBottom)
                     },
                     {
-                        activeItem: ( value.shadowType === 'solid' ),
+                        activeItem: ( value[breakpoint].shadowType === 'solid' ),
                         content: (
                             <div
                                 className='maxi-shadow-control__default maxi-shadow-control__default__solid'
                             ></div>
                         ),
-                        onChange: () => onChange(JSON.stringify(boxShadowSolid))
+                        onChange: () => onChangeDefault(boxShadowSolid)
                     },
                 ]}
             />
             <ColorControl
-                label={__('Color', 'maxi-blocks')}
+                label={__('Box Shadow', 'maxi-blocks')}
                 className={'maxi-shadow-control__color'}
-                color={value.shadowColor}
-                defaultColor={value.defaultShadowColor}
+                color={value[breakpoint].shadowColor}
+                defaultColor={value[breakpoint].defaultShadowColor}
                 onColorChange={val => onChangeValue('shadowColor', val)}
                 disableGradient
+                disableImage
+                disableVideo
                 disableGradientAboveBackground
             />
             <RangeControl
                 label={__('Horizontal', 'maxi-blocks')}
                 className={'maxi-shadow-control__horizontal'}
-                value={value.shadowHorizontal}
+                value={value[breakpoint].shadowHorizontal}
                 onChange={val => onChangeValue('shadowHorizontal', val)}
                 min={-100}
                 max={100}
@@ -119,7 +131,7 @@ const BoxShadowControl = props => {
             <RangeControl
                 label={__('Vertical', 'maxi-blocks')}
                 className={'maxi-shadow-control__vertical'}
-                value={value.shadowVertical}
+                value={value[breakpoint].shadowVertical}
                 onChange={val => onChangeValue('shadowVertical', val)}
                 min={-100}
                 max={100}
@@ -129,7 +141,7 @@ const BoxShadowControl = props => {
             <RangeControl
                 label={__('Blur', 'maxi-blocks')}
                 className={'maxi-shadow-control__blur'}
-                value={value.shadowBlur}
+                value={value[breakpoint].shadowBlur}
                 onChange={val => onChangeValue('shadowBlur', val)}
                 min={0}
                 max={100}
@@ -139,7 +151,7 @@ const BoxShadowControl = props => {
             <RangeControl
                 label={__('Spread', 'maxi-blocks')}
                 className={'maxi-shadow-control__spread-control'}
-                value={value.shadowSpread}
+                value={value[breakpoint].shadowSpread}
                 onChange={val => onChangeValue('shadowSpread', val)}
                 min={-100}
                 max={100}

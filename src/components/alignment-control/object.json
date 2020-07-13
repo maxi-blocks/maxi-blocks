@@ -1,0 +1,21 @@
+{
+    "label": "Alignment",
+    "general": {
+        "alignment": "left"
+    },
+    "xl": {
+        "alignment": ""
+    },
+    "l": {
+        "alignment": ""
+    },
+    "m": {
+        "alignment": ""
+    },
+    "s": {
+        "alignment": ""
+    },
+    "xs": {
+        "alignment": ""
+    }
+}

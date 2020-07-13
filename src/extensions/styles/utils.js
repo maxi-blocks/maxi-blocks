@@ -34,27 +34,27 @@ export const getDefaultProp = (clientId, prop) => {
 /**
  * Clean BackgroundControl object for being delivered for styling
  *
- * @param {object} backgroundObject BackgroundControl related object
+ * @param {object} background BackgroundControl related object
  *
  * @return {object}
  */
-export const getBackgroundObject = backgroundObject => {
+export const getBackgroundObject = background => {
     const response = {
-        label: backgroundObject.label,
+        label: background.label,
         general: {}
     }
 
-    if (!isEmpty(backgroundObject.colorOptions.color)) {
-        response.general['background-color'] = backgroundObject.colorOptions.color;
+    if (!isEmpty(background.colorOptions.color)) {
+        response.general['background-color'] = background.colorOptions.color;
     }
-    if (!isEmpty(backgroundObject.colorOptions.gradient)) {
-        response.general['background'] = backgroundObject.colorOptions.gradient;
+    if (!isEmpty(background.colorOptions.gradient)) {
+        response.general['background'] = background.colorOptions.gradient;
     }
-    if (!isEmpty(backgroundObject.blendMode)) {
-        response.general['background-blend-mode'] = backgroundObject.blendMode;
+    if (!isEmpty(background.blendMode)) {
+        response.general['background-blend-mode'] = background.blendMode;
     }
 
-    backgroundObject.backgroundOptions.map(option => {
+    background.backgroundOptions.map(option => {
         if (isNil(option) || isEmpty(option.imageOptions.mediaURL))
             return;
         // Image
@@ -63,16 +63,16 @@ export const getBackgroundObject = backgroundObject => {
                 response.general['background-image'] = `${response.general['background-image']},url('${option.imageOptions.cropOptions.image.source_url}')`;
             else
                 response.general['background-image'] = `url('${option.imageOptions.cropOptions.image.source_url}')`;
-            if (!isEmpty(backgroundObject.colorOptions.gradient))
-                response.general['background-image'] = `${response.general['background-image']}, ${backgroundObject.colorOptions.gradient}`;
+            if (!isEmpty(background.colorOptions.gradient))
+                response.general['background-image'] = `${response.general['background-image']}, ${background.colorOptions.gradient}`;
         }
         else if (option.sizeSettings.size === 'custom' && isNil(option.imageOptions.cropOptions) || option.sizeSettings.size != 'custom' && !isNil(option.imageOptions.mediaURL)) {
             if (!isNil(response.general['background-image']))
                 response.general['background-image'] = `${response.general['background-image']},url('${option.imageOptions.mediaURL}')`;
             else
                 response.general['background-image'] = `url('${option.imageOptions.mediaURL}')`;
-            if (!isEmpty(backgroundObject.colorOptions.gradient))
-                response.general['background-image'] = `${response.general['background-image']}, ${backgroundObject.colorOptions.gradient}`;
+            if (!isEmpty(background.colorOptions.gradient))
+                response.general['background-image'] = `${response.general['background-image']}, ${background.colorOptions.gradient}`;
         }
         // Size
         if (option.sizeSettings.size != 'custom') {
@@ -135,20 +135,155 @@ export const getBackgroundObject = backgroundObject => {
     return response;
 }
 
-export const getBoxShadowObject = boxShadowObject => {
+export const getBoxShadowObject = boxShadow => {
     const response = {
-        label: boxShadowObject.label,
+        label: boxShadow.label,
+        general: {},
+        xl: {},
+        l: {},
+        m: {},
+        s: {},
+        xs: {}
+    }
+
+    for (let [key, value] of Object.entries(boxShadow)) {
+        if (key != 'label') {
+            let boxShadowString = '';
+            isNumber(value.shadowHorizontal) ? boxShadowString += (value.shadowHorizontal + 'px ') : null;
+            isNumber(value.shadowVertical) ? boxShadowString += (value.shadowVertical + 'px ') : null;
+            isNumber(value.shadowBlur) ? boxShadowString += (value.shadowBlur + 'px ') : null;
+            isNumber(value.shadowSpread) ? boxShadowString += (value.shadowSpread + 'px ') : null;
+            !isNil(value.shadowColor) ? boxShadowString += (value.shadowColor) : null;
+
+            response[key]['box-shadow'] = boxShadowString.trim();
+        }
+    }
+
+    return response;
+}
+
+export const getAlignmentTextObject = alignment => {
+    const response = {
+        label: alignment.label,
+        general: {},
+        xl: {},
+        l: {},
+        m: {},
+        s: {},
+        xs: {}
+    }
+
+    for (let [key, value] of Object.entries(alignment)) {
+        if (!isNil(value.alignment)) {
+            switch (value.alignment) {
+                case 'left':
+                    response[key]['text-align'] = 'left';
+                    break;
+                case 'center':
+                    response[key]['text-align'] = 'center';
+                    break;
+                case 'right':
+                    response[key]['text-align'] = 'right';
+                    break;
+                case 'justify':
+                    response[key]['text-align'] = 'justify';
+                    break;
+            }
+        }
+    }
+
+    return response;
+}
+
+export const getAlignmentFlexObject = alignment => {
+    const response = {
+        label: alignment.label,
+        general: {},
+        xl: {},
+        l: {},
+        m: {},
+        s: {},
+        xs: {}
+    }
+
+    for (let [key, value] of Object.entries(alignment)) {
+        if (!isNil(value.alignment)) {
+            switch (value.alignment) {
+                case 'left':
+                    response[key]['align-items'] = 'flex-start';
+                    break;
+                case 'center':
+                case 'justify':
+                    response[key]['align-items'] = 'center';
+                    break;
+                case 'right':
+                    response[key]['align-items'] = 'flex-end';
+                    break;
+            }
+        }
+    }
+
+    return response;
+}
+
+export const getOpacityObject = opacity => {
+    const response = {
+        label: opacity.label,
+        general: {},
+        xl: {},
+        l: {},
+        m: {},
+        s: {},
+        xs: {}
+    }
+
+    for (let [key, value] of Object.entries(opacity)) {
+        if (isNumber(value.opacity)) {
+            response[key]['opacity'] = value.opacity;
+        }
+    }
+
+    return response;
+}
+
+export const getVideoBackgroundObject = videoOptions => {
+    const response = {
+        label: 'Video Background',
         general: {}
     }
 
-    let boxShadowString = '';
-    isNumber(boxShadowObject.shadowHorizontal) ? boxShadowString += (boxShadowObject.shadowHorizontal + 'px ') : null;
-    isNumber(boxShadowObject.shadowVertical) ? boxShadowString += (boxShadowObject.shadowVertical + 'px ') : null;
-    isNumber(boxShadowObject.shadowBlur) ? boxShadowString += (boxShadowObject.shadowBlur + 'px ') : null;
-    isNumber(boxShadowObject.shadowSpread) ? boxShadowString += (boxShadowObject.shadowSpread + 'px ') : null;
-    boxShadowObject.shadowColor ? boxShadowString += (boxShadowObject.shadowColor) : null;
+    if (!isNil(videoOptions.fill))
+        response.general['object-fit'] = videoOptions.fill;
 
-    response.general['box-shadow'] = boxShadowString.trim()
+    if (!isNil(videoOptions.position))
+        response.general['object-position'] = videoOptions.position;
+
+    if (!isNil(videoOptions.width))
+        response.general['width'] = `${videoOptions.width}${videoOptions.widthUnit}`;
+
+    if (!isNil(videoOptions.height))
+        response.general['height'] = `${videoOptions.height}${videoOptions.heightUnit}`;
+
+    return response;
+}
+
+export const getColumnSizeObject = columnSize => {
+    const response = {
+        label: columnSize.label,
+        general: {},
+        xl: {},
+        l: {},
+        m: {},
+        s: {},
+        xs: {}
+    }
+
+    for (let [key, value] of Object.entries(columnSize)) {
+        if (isNumber(value.size)) {
+            response[key]['width'] = `${value.size}%`;
+            response[key]['flex-basis'] = `${value.size}%`;
+        }
+    }
 
     return response;
 }

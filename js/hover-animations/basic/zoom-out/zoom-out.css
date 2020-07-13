@@ -1,0 +1,47 @@
+.hover-animation-basic.hover-animation-type-zoom-out.animate_image{
+    overflow: hidden;
+}
+
+.hover-animation-basic.hover-animation-type-zoom-out.hover-animation-duration-shorter .hover_el{
+    -webkit-transition: .1s ease-in-out;
+    transition: .1s ease-in-out;
+}
+.hover-animation-basic.hover-animation-type-zoom-out.hover-animation-duration-short .hover_el{
+    -webkit-transition: .2s ease-in-out;
+    transition: .2s ease-in-out;
+}
+
+.hover-animation-basic.hover-animation-type-zoom-out.hover-animation-duration-normal .hover_el{
+    -webkit-transition: .3s ease-in-out;
+    transition: .3s ease-in-out;
+}
+
+.hover-animation-basic.hover-animation-type-zoom-out.hover-animation-duration-long .hover_el{
+    -webkit-transition: .5s ease-in-out;
+    transition: .5s ease-in-out;
+}
+.hover-animation-basic.hover-animation-type-zoom-out.hover-animation-duration-longer .hover_el{
+    -webkit-transition: .6s ease-in-out;
+    transition: .6s ease-in-out;
+}
+
+.hover-animation-basic.hover-animation-type-zoom-out .hover_el{
+    -webkit-transform: scale(1);
+    transform: scale(1);
+}
+
+.hover-animation-basic.hover-animation-type-zoom-out:hover .hover_el{
+    -webkit-transform: scale(0.9);
+    transform: scale(0.9);
+}
+
+.hover-animation-basic.hover-animation-type-zoom-out.animate_image .hover_el{
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+}
+
+.hover-animation-basic.hover-animation-type-zoom-out.animate_image:hover .hover_el{
+    -webkit-transform: scale(1);
+    transform: scale(1);
+}
+

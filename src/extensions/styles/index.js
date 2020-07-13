@@ -1,15 +1,10 @@
 /**
-* WordPress dependencies
-*/
-const { select } = wp.data;
-
-/**
  * External dependencies
  */
 import {
     isNil,
     isNumber,
-    isEmpty
+    isEmpty,
 } from 'lodash';
 
 /**
@@ -19,18 +14,14 @@ import {
  * @todo    Comment and extend documentation
  */
 export class ResponsiveStylesResolver {
-    constructor(object) {
+    constructor(object, meta, breakpoints) {
         this.object = object;
-        this.meta = this.oldMeta;
+        this.meta = meta;
+        this.breakpoints = breakpoints;
 
         this.init();
 
         return this.meta;
-    }
-
-    get oldMeta() {
-        let meta = select('core/editor').getEditedPostAttribute('meta')._gutenberg_extra_responsive_styles;
-        return meta ? JSON.parse(meta) : {};
     }
 
     init() {
@@ -39,74 +30,73 @@ export class ResponsiveStylesResolver {
                 [target]: this.objectManipulator(props)
             };
             this.meta = Object.assign(this.meta, newEntry);
+
+            // Alternative
+            // this.meta[target] = this.objectManipulator(props);
         }
     }
 
     objectManipulator(props) {
-        let response = {};
+        let response = {
+            breakpoints: this.breakpoints,
+            content: {}
+        };
 
-        for (let key of Object.keys(props)) {
+        for (let [key, value] of Object.entries(props)) {
             let newObject = {};
 
-            newObject = this.propsObjectManipulator(props, newObject, key, 'general');
-            newObject = this.propsObjectManipulator(props, newObject, key, 'desktop');
-            newObject = this.propsObjectManipulator(props, newObject, key, 'tablet');
-            newObject = this.propsObjectManipulator(props, newObject, key, 'mobile');
-            newObject = this.breakpointsObjectManipulator(props, newObject, key, 'breakpoints');
-            // On Typography component object
-            if (props[key].font) {
-                newObject.font = props[key].font;
-                newObject.options = props[key].options;
-            }
+            newObject = this.propsObjectManipulator(value, newObject, 'general');
+            newObject = this.propsObjectManipulator(value, newObject, 'xl');
+            newObject = this.propsObjectManipulator(value, newObject, 'l');
+            newObject = this.propsObjectManipulator(value, newObject, 'm');
+            newObject = this.propsObjectManipulator(value, newObject, 's');
+            newObject = this.propsObjectManipulator(value, newObject, 'xs');
 
             if (!isNil(newObject))
-                Object.assign(response, { [props[key].label]: newObject })
+                Object.assign(response.content, { [props[key].label]: newObject })
         }
 
         return response;
     }
 
-    propsObjectManipulator(props, newObject, key, device) {
-        if (typeof props[key][device] === 'undefined')
+    propsObjectManipulator(value, newObject, breakpoint) {
+        if (isNil(value[breakpoint]))
             return newObject;
 
-        const object = props[key][device];
-        if (device === 'general')
-            device = 'desktop'
-        if (typeof newObject[device] === 'undefined')
-            newObject[device] = {};
+        const object = value[breakpoint];
+        newObject[breakpoint] = {};
         let unitChecker = '';
-        let unit = props[key].unit ? props[key].unit : '';
+        let unit = value.unit ? value.unit : '';
 
         for (let [target, prop] of Object.entries(object)) {
             if (isNil(prop)) {
                 console.error(`Undefined property. Property: ${target}`);
-                return;
+                continue;
             }
             // values with dimensions
             if (
                 isNumber(prop) ||
                 unitChecker.indexOf(target) == 0 && !isEmpty(prop)
             )
-                newObject[device][target] = prop + unit;
+                newObject[breakpoint][target] = prop + unit;
             // avoid numbers with no related metric
             if (unitChecker.indexOf(target) == 0)
                 unit = '';
             // values with metrics
             if (prop.length <= 2 && !isEmpty(prop))
                 unitChecker = target, unit = prop;
-            // values with strings
-            if (prop.length > 2)
-                newObject[device][target] = prop;
+            // values with strings && font-options object
+            if (prop.length > 2 || target === 'font-options')
+                newObject[breakpoint][target] = prop;
         }
 
         return newObject;
     }
 
     breakpointsObjectManipulator(props, newObject, key, type) {
-        if (typeof props[key][type] === 'undefined')
+        if (isNil(props[key][type]))
             return newObject;
-        
+
         newObject.breakpoints = { ...props[key][type] };
 
         return newObject;
@@ -155,37 +145,68 @@ export class BackEndResponsiveStyles {
      * Creates the content to append on the inline style element on DOM
      */
     createContent() {
-        let content = '';
+        let response = '';
         for (let [target, prop] of Object.entries(this.meta)) {
+            if (isNil(prop.content))
+                continue;
+
             target = this.getTarget(target);
-            for (let value of Object.values(prop)) {
-                if ((!isNil(value.desktop) && !isEmpty(value.desktop).length) || value.hasOwnProperty('font')) {
-                    content += `.${target}{`;
-                    content += this.getResponsiveStyles(value.desktop);
-                    if (value.hasOwnProperty('font')) {
-                        content += `font-family: ${value.font}!important`;
+
+            for (let value of Object.values(prop.content)) {
+                for (let [breakpoint, content] of Object.entries(value)) {
+                    if (isEmpty(content))
+                        continue;
+
+                    if (breakpoint === 'general') {
+                        response += `.${target}{`;
+                        response += this.getResponsiveStyles(content);
+                        response += '}';
                     }
-                    content += '}';
-                }
-                if (!isNil(value.tablet) && !isEmpty(value.tablet).length) {
-                    content += `@media only screen and (max-width: 768px){.${target}{`;
-                    content += this.getResponsiveStyles(value.tablet);
-                    content += '}}';
-                }
-                if (!isNil(value.mobile) && !isEmpty(value.mobile).length) {
-                    content += `@media only screen and (max-width: 768px){.${target}{`;
-                    content += this.getResponsiveStyles(value.mobile);
-                    content += '}}';
-                }
-                if (!isNil(value.breakpoints)) {
-                    for (let breakpoint of Object.values(value.breakpoints)) {
-                        const rule = breakpoint.type === 'container' ? 'min-width' : 'max-width';
-                        content += `@media only screen and (${breakpoint.rule}){.${target}{${breakpoint.content}}}`;
+                    if (breakpoint === 'xl') {
+                        response += `
+                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xl"] .${target},
+                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="l"] .${target},
+                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="m"] .${target},
+                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .${target},
+                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .${target}{`;
+                        response += this.getResponsiveStyles(content);
+                        response += '}';
+                    }
+                    if (breakpoint === 'l') {
+                        response += `
+                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="l"] .${target},
+                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="m"] .${target},
+                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .${target},
+                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .${target}{`;
+                        response += this.getResponsiveStyles(content);
+                        response += '}';
+                    }
+                    if (breakpoint === 'm') {
+                        response += `
+                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="m"] .${target},
+                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .${target},
+                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .${target}{`;
+                        response += this.getResponsiveStyles(content);
+                        response += '}';
+                    }
+                    if (breakpoint === 's') {
+                        response += `
+                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .${target},
+                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .${target}{`;
+                        response += this.getResponsiveStyles(content);
+                        response += '}';
+                    }
+                    if (breakpoint === 'xs') {
+                        response += `
+                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .${target}{`;
+                        response += this.getResponsiveStyles(content);
+                        response += '}';
                     }
                 }
             }
         }
-        return content;
+
+        return response;
     }
 
     /**
@@ -211,6 +232,9 @@ export class BackEndResponsiveStyles {
     getResponsiveStyles(styles) {
         let responsiveStyles = '';
         for (let [key, value] of Object.entries(styles)) {
+            if(key === 'font-options')
+                continue;
+
             responsiveStyles += ` ${key}: ${value} !important;`;
         }
         return responsiveStyles;

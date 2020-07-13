@@ -1,6 +1,6 @@
 .maxi-container-block {
-    margin: auto;
-    margin-bottom: 1rem;
+    margin: 0 auto;
+    // margin-bottom: 1rem;
 
     .maxi-container-block__container {
         border: 1px solid #7fbddc;
@@ -8,5 +8,9 @@
 
     &[data-align="full"] {
         width: auto;
+    }
+
+    .block-list-appender {
+        margin: 0;
     }
 }

@@ -7,7 +7,6 @@ const {
     withInstanceId
 } = wp.compose;
 const {
-    select,
     withSelect,
     withDispatch
 } = wp.data;
@@ -24,7 +23,7 @@ const {
  * Internal dependencies
  */
 import {
-    GXBlock,
+    MaxiBlock,
     __experimentalToolbar,
     __experimentalBreadcrumbs
 } from '../../components';
@@ -32,7 +31,8 @@ import Inspector from './inspector';
 import TEMPLATES from './templates';
 import {
     getBackgroundObject,
-    getBoxShadowObject
+    getBoxShadowObject,
+    getOpacityObject
 } from '../../extensions/styles/utils'
 
 /**
@@ -43,9 +43,6 @@ import {
     isEmpty,
     isNil,
     uniqueId,
-    isNumber,
-    round,
-    sum
 } from 'lodash';
 
 /**
@@ -53,13 +50,16 @@ import {
  */
 const ALLOWED_BLOCKS = ['maxi-blocks/column-maxi'];
 
-class edit extends GXBlock {
+class edit extends MaxiBlock {
     get getObject() {
         let response = {
             [this.props.attributes.uniqueID]: this.getNormalObject,
             [`${this.props.attributes.uniqueID}:hover`]: this.getHoverObject,
-            [`${this.props.attributes.uniqueID}>.maxi-column-block`]: this.getColumnObject,
-            [`${this.props.attributes.uniqueID}>.maxi-column-block__resizer`]: this.getColumnObject
+            [`${this.props.attributes.uniqueID} .maxi-block-text-hover .maxi-block-text-hover__content`]: this.getHoverAnimationTextContentObject,
+            [`${this.props.attributes.uniqueID} .maxi-block-text-hover .maxi-block-text-hover__title`]: this.getHoverAnimationTextTitleObject,
+            [`${this.props.attributes.uniqueID} .maxi-block-text-hover`]: this.getHoverAnimationMainObject,
+            [`${this.props.attributes.uniqueID}.hover-animation-basic.hover-animation-type-opacity:hover .hover_el`]: this.getHoverAnimationTypeOpacityObject,
+            [`${this.props.attributes.uniqueID}.hover-animation-basic.hover-animation-type-opacity-with-colour:hover .hover_el:before`]: this.getHoverAnimationTypeOpacityColorObject,
         }
 
         return response;
@@ -67,7 +67,8 @@ class edit extends GXBlock {
 
     get getNormalObject() {
         const {
-            wrap,
+            horizontalAlign,
+            verticalAlign,
             opacity,
             background,
             border,
@@ -87,24 +88,18 @@ class edit extends GXBlock {
             size: { ...JSON.parse(size) },
             margin: { ...JSON.parse(margin) },
             padding: { ...JSON.parse(padding) },
+            opacity: { ...getOpacityObject(JSON.parse(opacity)) },
+            zindex: { ...JSON.parse(zIndex) },
             row: {
                 label: "Row",
                 general: {},
-                breakpoints: {
-                    wrap: {
-                        content: 'flex-wrap: wrap;'
-                    }
-                }
             },
         };
 
-        if (isNumber(opacity))
-            response.row.general['opacity'] = opacity;
-        if (isNumber(zIndex))
-            response.row.general['z-index'] = zIndex;
-        if (isNumber(wrap))
-            response.row.breakpoints.wrap.rule = `max-width:${wrap}px`;
-
+        if (!isNil(horizontalAlign))
+            response.row.general['justify-content'] = horizontalAlign;
+        if (!isNil(verticalAlign))
+            response.row.general['align-items'] = verticalAlign;
 
         return response;
     }
@@ -123,42 +118,100 @@ class edit extends GXBlock {
             borderHover: { ...JSON.parse(borderHover) },
             borderWidthHover: { ...JSON.parse(borderHover).borderWidth },
             borderRadiusHover: { ...JSON.parse(borderHover).borderRadius },
-            row: {
-                label: "Row",
-                general: {}
-            }
+            opacity: { ...getOpacityObject(JSON.parse(opacityHover)) },
         };
-
-        if (isNumber(opacityHover))
-            response.row.general['opacity'] = opacityHover;
 
         return response;
     }
 
-    get getColumnObject() {
+    get getHoverAnimationMainObject() {
         const {
-            wrap,
-            columnGap
+            hoverOpacity,
+            hoverBackground,
+            hoverBorder,
+            hoverPadding,
         } = this.props.attributes;
 
-        let response = {
-            columnMargin: {
-                label: "Columns margin",
-                general: {
-                    margin: `0 ${columnGap}%`
-                },
-                breakpoints: {
-                    wrap: {
-                        content: 'flex: 0 0 100% !important;max-width: 100% !important;margin: inherit !important;'
-                    }
-                }
-            },
+        const response = {
+            background: { ...getBackgroundObject(JSON.parse(hoverBackground)) },
+            border: { ...JSON.parse(hoverBorder) },
+            borderWidth: { ...JSON.parse(hoverBorder).borderWidth },
+            borderRadius: { ...JSON.parse(hoverBorder).borderRadius },
+            padding: { ...JSON.parse(hoverPadding) },
+            animationHover: {
+                label: 'Animation Hover',
+                general: {}
+            }
         };
 
-        if (isNumber(wrap))
-            response.columnMargin.breakpoints.wrap.rule = `max-width:${wrap}px`;
+        if (hoverOpacity)
+            response.animationHover.general['opacity'] = hoverOpacity;
 
-        return response;
+        return response
+    }
+
+    get getHoverAnimationTypeOpacityObject() {
+        const {
+            hoverAnimationTypeOpacity,
+        } = this.props.attributes;
+
+        const response = {
+            animationTypeOpacityHover: {
+                label: 'Animation Type Opacity Hover',
+                general: {}
+            }
+        };
+
+        if (hoverAnimationTypeOpacity)
+            response.animationTypeOpacityHover.general['opacity'] = hoverAnimationTypeOpacity;
+
+        return response
+    }
+
+    get getHoverAnimationTypeOpacityColorObject() {
+        const {
+            hoverAnimationTypeOpacityColor,
+            hoverAnimationTypeOpacityColorBackground,
+        } = this.props.attributes;
+
+        const response = {
+            background: { ...getBackgroundObject(JSON.parse(hoverAnimationTypeOpacityColorBackground)) },
+            animationTypeOpacityHoverColor: {
+                label: 'Animation Type Opacity Color Hover',
+                general: {}
+            }
+        };
+
+        if (hoverAnimationTypeOpacityColor)
+            response.animationTypeOpacityHoverColor.general['opacity'] = hoverAnimationTypeOpacityColor;
+
+        return response
+    }
+
+
+
+    get getHoverAnimationTextTitleObject() {
+        const {
+            hoverAnimationTitleTypography
+        } = this.props.attributes;
+
+        const response = {
+            hoverAnimationTitleTypography: { ...JSON.parse(hoverAnimationTitleTypography) }
+        };
+
+        return response
+    }
+
+    get getHoverAnimationTextContentObject() {
+        const {
+            hoverAnimationContentTypography
+        } = this.props.attributes;
+
+        const response = {
+            hoverAnimationContentTypography: { ...JSON.parse(hoverAnimationContentTypography) }
+        };
+
+        return response
     }
 
     render() {
@@ -166,18 +219,18 @@ class edit extends GXBlock {
             attributes: {
                 uniqueID,
                 blockStyle,
-                wrapTablet,
-                wrapMobile,
                 extraClassName,
                 defaultBlockStyle,
                 fullWidth,
+                hoverAnimation,
+                hoverAnimationType,
+                hoverAnimationTypeText,
+                hoverAnimationDuration,
             },
             clientId,
             loadTemplate,
             selectOnClick,
             hasInnerBlock,
-            hoverAnimation,
-            hoverAnimationDuration,
             className,
             setAttributes,
             instanceId
@@ -187,18 +240,13 @@ class edit extends GXBlock {
             'maxi-block maxi-row-block',
             uniqueID,
             blockStyle,
-            'hover-animation-type-'+hoverAnimation,
+            'hover-animation-'+hoverAnimation,
+            'hover-animation-type-'+hoverAnimationType,
+            'hover-animation-type-text-'+hoverAnimationTypeText,
             'hover-animation-duration-'+hoverAnimationDuration,
             extraClassName,
             className,
-            !wrapTablet ?
-                'maxi-row-block--wrap-tablet' :
-                null,
-            !wrapMobile ?
-                'maxi-row-block--wrap-mobile' :
-                null,
         );
-
 
         return [
             <Inspector {...this.props} />,
@@ -254,18 +302,22 @@ const editSelect = withSelect((select, ownProps) => {
     const selectedBlockId = select('core/block-editor').getSelectedBlockClientId();
     const originalNestedBlocks = select('core/block-editor').getBlockParents(selectedBlockId);
     const hasInnerBlock = !isEmpty(select('core/block-editor').getBlockOrder(clientId));
+    let deviceType = select('core/edit-post').__experimentalGetPreviewDeviceType();
+    deviceType = deviceType === 'Desktop' ?
+        'general' :
+        deviceType;
 
     return {
         selectedBlockId,
         originalNestedBlocks,
         hasInnerBlock,
+        deviceType
     }
 })
 
 const editDispatch = withDispatch((dispatch, ownProps) => {
     const {
         clientId,
-
     } = ownProps;
 
     /**
@@ -296,8 +348,6 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 
         const newTemplate = synchronizeBlocksWithTemplate([], template.content);
         dispatch('core/block-editor').replaceInnerBlocks(clientId, newTemplate);
-
-        onChangeColumnGap(newAttributes.columnGap)
     }
 
     /**
@@ -309,34 +359,9 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
         dispatch('core/editor').selectBlock(id);
     }
 
-    const onChangeColumnGap = columnGap => {
-        const nestedBlocks = select('core/block-editor').getBlockOrder(clientId);
-        let columnSizes = {};
-        nestedBlocks.map(columnId => {
-            columnSizes[columnId] = select('core/block-editor').getBlockAttributes(columnId).columnSize;
-        })
-
-        const totalSize = round(sum(Object.values(columnSizes)), 2);
-        const realSize = (100 - ((nestedBlocks.length - 1) * columnGap) * 2);
-        const diffSizeXUnit = (realSize - totalSize) / nestedBlocks.length;
-
-        for (let [key, value] of Object.entries(columnSizes)) {
-            const newValue = round(Number(value + diffSizeXUnit), 2);
-
-            dispatch('core/block-editor').updateBlockAttributes(
-                key,
-                {
-                    columnSize: newValue
-                }
-            )
-                .then(() => document.querySelector(`.maxi-column-block__resizer__${key}`).style.width = `${newValue}%`)
-        }
-    }
-
     return {
         loadTemplate,
         selectOnClick,
-        onChangeColumnGap,
     }
 })
 

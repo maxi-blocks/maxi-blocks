@@ -20,11 +20,12 @@ const {
 import Inspector from './inspector';
 import {
     getBackgroundObject,
-    getBoxShadowObject
+    getBoxShadowObject,
+    getAlignmentFlexObject
 } from '../../extensions/styles/utils';
 import {
-    GXBlock,
-    __experimentalToolbar
+    MaxiBlock,
+    __experimentalToolbar,
 } from '../../components';
 
 /**
@@ -34,7 +35,7 @@ import classnames from 'classnames';
 import {
     isEmpty,
     isNil,
-    isNumber
+    isObject
 } from 'lodash';
 
 /**
@@ -45,10 +46,12 @@ import {
     placeholderImage
 } from '../../icons';
 
+import Scripts from '../../extensions/styles/hoverAnimations.js';
+
 /**
  * Content
  */
-class edit extends GXBlock {
+class edit extends MaxiBlock {
     get getWrapperWidth() {
         const target = document.getElementById(`block-${this.props.clientId}`);
         if (!target)
@@ -64,7 +67,12 @@ class edit extends GXBlock {
             [`${this.props.attributes.uniqueID}>img`]: this.getImageFrontendObject,
             [`${this.props.attributes.uniqueID} img:hover`]: this.getImageHoverObject,
             [`${this.props.attributes.uniqueID} img`]: this.getImageBackendObject,
-            [`${this.props.attributes.uniqueID}>figcaption`]: this.getFigcaptionObject
+            [`${this.props.attributes.uniqueID}>figcaption`]: this.getFigcaptionObject,
+            [`${this.props.attributes.uniqueID} .maxi-block-text-hover .maxi-block-text-hover__content`]: this.getHoverAnimationTextContentObject,
+            [`${this.props.attributes.uniqueID} .maxi-block-text-hover .maxi-block-text-hover__title`]: this.getHoverAnimationTextTitleObject,
+            [`${this.props.attributes.uniqueID} .maxi-block-text-hover`]: this.getHoverAnimationMainObject,
+            [`${this.props.attributes.uniqueID}.hover-animation-basic.hover-animation-type-opacity:hover .hover_el`]: this.getHoverAnimationTypeOpacityObject,
+            [`${this.props.attributes.uniqueID}.hover-animation-basic.hover-animation-type-opacity-with-colour:hover .hover_el:before`]: this.getHoverAnimationTypeOpacityColorObject,
         }
 
         return response;
@@ -72,9 +80,7 @@ class edit extends GXBlock {
 
     get getNormalObject() {
         const {
-            alignmentDesktop,
-            alignmentTablet,
-            alignmentMobile,
+            alignment,
             opacity,
             background,
             boxShadow,
@@ -88,61 +94,10 @@ class edit extends GXBlock {
             padding: { ...JSON.parse(padding) },
             margin: { ...JSON.parse(margin) },
             background: { ...getBackgroundObject(JSON.parse(background)) },
-            image: {
-                label: 'Image',
-                general: {},
-                desktop: {},
-                tablet: {},
-                mobile: {}
-            }
+            opacity: { ...JSON.parse(opacity) },
+            zindex: { ...JSON.parse(zIndex) },
+            alignment: { ...getAlignmentFlexObject(JSON.parse(alignment)) }
         };
-
-        if (!isNil(alignmentDesktop)) {
-            switch (alignmentDesktop) {
-                case 'left':
-                    response.image.desktop['align-items'] = 'flex-start';
-                    break;
-                case 'center':
-                case 'justify':
-                    response.image.desktop['align-items'] = 'center';
-                    break;
-                case 'right':
-                    response.image.desktop['align-items'] = 'flex-end';
-                    break;
-            }
-        }
-        if (!isNil(alignmentTablet)) {
-            switch (alignmentTablet) {
-                case 'left':
-                    response.image.tablet['align-items'] = 'flex-start';
-                    break;
-                case 'center':
-                case 'justify':
-                    response.image.tablet['align-items'] = 'center';
-                    break;
-                case 'right':
-                    response.image.tablet['align-items'] = 'flex-end';
-                    break;
-            }
-        }
-        if (!isNil(alignmentMobile)) {
-            switch (alignmentMobile) {
-                case 'left':
-                    response.image.mobile['align-items'] = 'flex-start';
-                    break;
-                case 'center':
-                case 'justify':
-                    response.image.mobile['align-items'] = 'center';
-                    break;
-                case 'right':
-                    response.image.mobile['align-items'] = 'flex-end';
-                    break;
-            }
-        }
-        if (isNumber(opacity))
-            response.image.general['opacity'] = opacity;
-        if (isNumber(zIndex))
-            response.image.general['z-index'] = zIndex;
 
         return response;
     }
@@ -157,31 +112,20 @@ class edit extends GXBlock {
         const response = {
             boxShadowHover: { ...getBoxShadowObject(JSON.parse(boxShadowHover)) },
             backgroundHover: { ...getBackgroundObject(JSON.parse(backgroundHover)) },
-            imageHover: {
-                label: 'Image Hover',
-                general: {}
-            }
+            opacityHover: { ...JSON.parse(opacityHover) }
         }
-        if (opacityHover)
-            response.imageHover.general['opacity'] = opacityHover;
 
         return response;
     }
 
     get getImageFrontendObject() {
         const {
-            width,
+            size,
         } = this.props.attributes;
 
         const response = {
-            imageSize: {
-                label: 'Image Size',
-                general: {}
-            }
+            imageSize: { ...JSON.parse(size) }
         };
-
-        if (!!width)
-            response.imageSize.general['width'] = `${width}%`;
 
         return response
     }
@@ -209,10 +153,6 @@ class edit extends GXBlock {
             border: { ...JSON.parse(border) },
             borderWidth: { ...JSON.parse(border).borderWidth },
             borderRadius: { ...JSON.parse(border).borderRadius },
-            imageSize: {
-                label: 'Image Size',
-                general: {}
-            }
         };
 
         return response
@@ -230,6 +170,97 @@ class edit extends GXBlock {
         return response
     }
 
+
+    get getHoverAnimationMainObject() {
+        const {
+            hoverOpacity,
+            hoverBackground,
+            hoverBorder,
+            hoverPadding,
+        } = this.props.attributes;
+
+        const response = {
+            background: { ...getBackgroundObject(JSON.parse(hoverBackground)) },
+            border: { ...JSON.parse(hoverBorder) },
+            borderWidth: { ...JSON.parse(hoverBorder).borderWidth },
+            borderRadius: { ...JSON.parse(hoverBorder).borderRadius },
+            padding: { ...JSON.parse(hoverPadding) },
+            animationHover: {
+                label: 'Animation Hover',
+                general: {}
+            }
+        };
+
+        if (hoverOpacity)
+            response.animationHover.general['opacity'] = hoverOpacity;
+
+        return response
+    }
+
+    get getHoverAnimationTypeOpacityObject() {
+        const {
+            hoverAnimationTypeOpacity,
+        } = this.props.attributes;
+
+        const response = {
+            animationTypeOpacityHover: {
+                label: 'Animation Type Opacity Hover',
+                general: {}
+            }
+        };
+
+        if (hoverAnimationTypeOpacity)
+            response.animationTypeOpacityHover.general['opacity'] = hoverAnimationTypeOpacity;
+
+        return response
+    }
+
+    get getHoverAnimationTypeOpacityColorObject() {
+        const {
+            hoverAnimationTypeOpacityColor,
+            hoverAnimationTypeOpacityColorBackground,
+        } = this.props.attributes;
+
+        const response = {
+            background: { ...getBackgroundObject(JSON.parse(hoverAnimationTypeOpacityColorBackground)) },
+            animationTypeOpacityHoverColor: {
+                label: 'Animation Type Opacity Color Hover',
+                general: {}
+            }
+        };
+
+        if (hoverAnimationTypeOpacityColor)
+            response.animationTypeOpacityHoverColor.general['opacity'] = hoverAnimationTypeOpacityColor;
+
+        return response
+    }
+
+
+
+    get getHoverAnimationTextTitleObject() {
+        const {
+            hoverAnimationTitleTypography
+        } = this.props.attributes;
+
+        const response = {
+            hoverAnimationTitleTypography: { ...JSON.parse(hoverAnimationTitleTypography) }
+        };
+
+        return response
+    }
+
+    get getHoverAnimationTextContentObject() {
+        const {
+            hoverAnimationContentTypography
+        } = this.props.attributes;
+
+        const response = {
+            hoverAnimationContentTypography: { ...JSON.parse(hoverAnimationContentTypography) }
+        };
+
+        return response
+    }
+
     render() {
         const {
             className,
@@ -239,16 +270,19 @@ class edit extends GXBlock {
                 defaultBlockStyle,
                 extraClassName,
                 fullWidth,
+                size,
+                cropOptions,
                 captionType,
                 captionContent,
-                size,
+                imageSize,
                 mediaID,
                 mediaALT,
                 mediaURL,
                 mediaWidth,
                 mediaHeight,
-                width,
                 hoverAnimation,
+                hoverAnimationType,
+                hoverAnimationTypeText,
                 hoverAnimationDuration,
             },
             imageData,
@@ -259,21 +293,30 @@ class edit extends GXBlock {
             'maxi-block maxi-image-block',
             blockStyle,
             extraClassName,
-            'hover-animation-type-'+hoverAnimation,
-            'hover-animation-duration-'+hoverAnimationDuration,
+            'hover-animation-' + hoverAnimation,
+            'hover-animation-type-' + hoverAnimationType,
+            'hover-animation-type-text-' + hoverAnimationTypeText,
+            'hover-animation-duration-' + hoverAnimationDuration,
             uniqueID,
-            className
+            className,
+            fullWidth === 'full' ?
+                'alignfull' :
+                '',
         );
 
-        const cropOptions = typeof this.props.attributes.cropOptions === 'object' ?
-            this.props.attributes.cropOptions :
-            JSON.parse(this.props.attributes.cropOptions);
+        const cropOptionsValue = !isObject(cropOptions) ?
+            JSON.parse(cropOptions) :
+            cropOptions;
+
+        const sizeValue = !isObject(size) ?
+            JSON.parse(size) :
+            size;
 
         const getImage = () => {
-            if (size === 'custom' && !isEmpty(cropOptions.image.source_url))
-                return cropOptions.image;
-            if (imageData && size)
-                return imageData.media_details.sizes[size];
+            if (imageSize === 'custom' && !isEmpty(cropOptionsValue.image.source_url))
+                return cropOptionsValue.image;
+            if (imageData && imageSize)
+                return imageData.media_details.sizes[imageSize];
             if (imageData)
                 return imageData.media_details.sizes.full;
         }
@@ -309,7 +352,7 @@ class edit extends GXBlock {
                                     <ResizableBox
                                         className='maxi-block__resizer maxi-image-block__resizer'
                                         size={{
-                                            width: `${width}%`,
+                                            width: `${sizeValue.general.width}%`,
                                             height: '100%'
                                         }}
                                         maxWidth='100%'
@@ -325,8 +368,9 @@ class edit extends GXBlock {
                                         }}
                                         onResizeStop={(event, direction, elt, delta) => {
                                             const newScale = Number(((elt.getBoundingClientRect().width / this.getWrapperWidth) * 100).toFixed());
+                                            sizeValue.general.width = newScale
                                             setAttributes({
-                                                width: Number(newScale.toFixed()),
+                                                size: JSON.stringify(sizeValue),
                                             });
                                         }}
                                     >
@@ -374,20 +418,36 @@ class edit extends GXBlock {
                         </Fragment>
                     )}
                 />
+                {hoverAnimation === 'basic' &&
+                    <Scripts
+                        hover_animation={hoverAnimationType}
+                        hover_animation_type={hoverAnimation}
+                    >
+                    </Scripts>
+                }
+                {hoverAnimation === 'text' &&
+                    <Scripts
+                        hover_animation={hoverAnimationTypeText}
+                        hover_animation_type={hoverAnimation}
+                    >
+                    </Scripts>
+                }
             </__experimentalBlock.figure>
         ];
     }
 }
 
 export default withSelect((select, ownProps) => {
-    const {
-        attributes: {
-            mediaID
-        }
-    } = ownProps;
+    const { mediaID } = ownProps.attributes;
 
     const imageData = select('core').getMedia(mediaID);
+    let deviceType = select('core/edit-post').__experimentalGetPreviewDeviceType();
+    deviceType = deviceType === 'Desktop' ?
+        'general' :
+        deviceType;
+
     return {
-        imageData
+        imageData,
+        deviceType
     }
 })(edit);

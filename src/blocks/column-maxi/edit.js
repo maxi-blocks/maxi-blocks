@@ -21,14 +21,18 @@ const {
  * Internal dependencies
  */
 import {
-    GXBlock,
+    MaxiBlock,
+    __experimentalVideoPlayer,
     __experimentalToolbar,
     __experimentalBlockPlaceholder
 } from '../../components';
 import Inspector from './inspector';
 import {
     getBackgroundObject,
-    getBoxShadowObject
+    getBoxShadowObject,
+    getVideoBackgroundObject,
+    getOpacityObject,
+    getColumnSizeObject
 } from '../../extensions/styles/utils';
 
 /**
@@ -36,46 +40,37 @@ import {
  */
 import classnames from 'classnames';
 import {
-    pull,
     isNil,
-    isNumber,
-    sum,
-    round
+    round,
+    isObject,
+    isEmpty
 } from 'lodash';
 
 /**
  * Editor
  */
-class edit extends GXBlock {
-    state = {
-        originalWidth: 0,
-        styles: {},
-    }
-
-    componentDidUpdate() {
-        this.setResizeHandleStyles();
-        this.displayStyles();
-    }
-
-    setResizeHandleStyles() {
-        const {
-            columnGap,
-            rowBlockWidth,
-            clientId
-        } = this.props;
-
-        const value = (columnGap * rowBlockWidth) / 100;
-        const node = document.querySelector(`.maxi-column-block__resizer__${clientId} > span > .components-resizable-box__handle`);
-        if (!isNil(node))
-            node.style.transform = `translateX(${value}px)`;
-    }
-
+class edit extends MaxiBlock {
     get getObject() {
         let response = {
             [this.props.attributes.uniqueID]: this.getNormalObject,
             [`${this.props.attributes.uniqueID}:hover`]: this.getHoverObject,
-            // [`${this.props.attributes.uniqueID}>.maxi-column-block__content`]: this.getContentObject,
+            [`maxi-column-block__resizer__${this.props.attributes.uniqueID}`]: this.getResizerObject,
+            [`${this.props.attributes.uniqueID} .maxi-block-text-hover .maxi-block-text-hover__content`]: this.getHoverAnimationTextContentObject,
+            [`${this.props.attributes.uniqueID} .maxi-block-text-hover .maxi-block-text-hover__title`]: this.getHoverAnimationTextTitleObject,
+            [`${this.props.attributes.uniqueID} .maxi-block-text-hover`]: this.getHoverAnimationMainObject,
+            [`${this.props.attributes.uniqueID}.hover-animation-basic.hover-animation-type-opacity:hover .hover_el`]: this.getHoverAnimationTypeOpacityObject,
+            [`${this.props.attributes.uniqueID}.hover-animation-basic.hover-animation-type-opacity-with-colour:hover .hover_el:before`]: this.getHoverAnimationTypeOpacityColorObject,
         }
+
+        const videoOptions = JSON.parse(this.props.attributes.background).videoOptions;
+        if (!isNil(videoOptions) && !isEmpty(videoOptions.mediaURL))
+            Object.assign(
+                response,
+                {
+                    [`${this.props.attributes.uniqueID} .maxi-video-player video`]:
+                        { videoBackground: { ...getVideoBackgroundObject(videoOptions) } }
+                }
+            )
 
         return response;
     }
@@ -108,25 +103,15 @@ class edit extends GXBlock {
             size: { ...JSON.parse(size) },
             margin: { ...JSON.parse(margin) },
             padding: { ...JSON.parse(padding) },
+            opacity: { ...getOpacityObject(JSON.parse(opacity)) },
+            zindex: { ...JSON.parse(zIndex) },
+            columnSize: { ...getColumnSizeObject(JSON.parse(columnSize)) },
             column: {
                 label: "Column",
                 general: {},
             }
         };
 
-        if (!isNil(columnSize) && isNumber(columnSize))
-            if (columnSize != 0) {
-                response.column.general['flex'] = `0 0 ${columnSize}%`;
-                response.column.general['max-width'] = `${columnSize}%`;
-            }
-            else {
-                response.column.general['flex'] = '0 0 auto';
-                response.column.general['max-width'] = '';
-            }
-        if (isNumber(zIndex))
-            response.column.general['z-index'] = zIndex;
-        if (isNumber(opacity))
-            response.column.general['opacity'] = opacity;
         if (!isNil(verticalAlign))
             response.column.general['justify-content'] = verticalAlign;
 
@@ -147,50 +132,110 @@ class edit extends GXBlock {
             borderHover: { ...JSON.parse(borderHover) },
             borderWidthHover: { ...JSON.parse(borderHover).borderWidth },
             borderRadiusHover: { ...JSON.parse(borderHover).borderRadius },
-            columnHover: {
-                label: "columnHover",
-                general: {}
-            }
+            opacity: { ...getOpacityObject(JSON.parse(opacityHover)) },
         };
-
-        if (isNumber(opacityHover))
-            response.columnHover.general['opacity'] = opacityHover;
 
         return response;
     }
 
-    get getContentObject() {
-        const {
-            attributes: {
-                opacity,
-                background,
-                boxShadow,
-                border,
-                size,
-                margin,
-                padding,
-            },
-        } = this.props;
+    get getResizerObject() {
+        const { margin } = this.props.attributes;
 
         let response = {
-            background: { ...getBackgroundObject(JSON.parse(background)) },
-            boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
-            border: { ...JSON.parse(border) },
-            borderWidth: { ...JSON.parse(border).borderWidth },
-            borderRadius: { ...JSON.parse(border).borderRadius },
-            size: { ...JSON.parse(size) },
             margin: { ...JSON.parse(margin) },
-            padding: { ...JSON.parse(padding) },
-            column: {
-                label: "Column",
-                general: {},
+        };
+
+        return response;
+    }
+
+    get getHoverAnimationMainObject() {
+        const {
+            hoverOpacity,
+            hoverBackground,
+            hoverBorder,
+            hoverPadding,
+        } = this.props.attributes;
+
+        const response = {
+            background: { ...getBackgroundObject(JSON.parse(hoverBackground)) },
+            border: { ...JSON.parse(hoverBorder) },
+            borderWidth: { ...JSON.parse(hoverBorder).borderWidth },
+            borderRadius: { ...JSON.parse(hoverBorder).borderRadius },
+            padding: { ...JSON.parse(hoverPadding) },
+            animationHover: {
+                label: 'Animation Hover',
+                general: {}
             }
         };
 
-        if (isNumber(opacity))
-            response.column.general['opacity'] = opacity;
+        if (hoverOpacity)
+            response.animationHover.general['opacity'] = hoverOpacity;
 
-        return response;
+        return response
+    }
+
+    get getHoverAnimationTypeOpacityObject() {
+        const {
+            hoverAnimationTypeOpacity,
+        } = this.props.attributes;
+
+        const response = {
+            animationTypeOpacityHover: {
+                label: 'Animation Type Opacity Hover',
+                general: {}
+            }
+        };
+
+        if (hoverAnimationTypeOpacity)
+            response.animationTypeOpacityHover.general['opacity'] = hoverAnimationTypeOpacity;
+
+        return response
+    }
+
+    get getHoverAnimationTypeOpacityColorObject() {
+        const {
+            hoverAnimationTypeOpacityColor,
+            hoverAnimationTypeOpacityColorBackground,
+        } = this.props.attributes;
+
+        const response = {
+            background: { ...getBackgroundObject(JSON.parse(hoverAnimationTypeOpacityColorBackground)) },
+            animationTypeOpacityHoverColor: {
+                label: 'Animation Type Opacity Color Hover',
+                general: {}
+            }
+        };
+
+        if (hoverAnimationTypeOpacityColor)
+            response.animationTypeOpacityHoverColor.general['opacity'] = hoverAnimationTypeOpacityColor;
+
+        return response
+    }
+
+
+
+    get getHoverAnimationTextTitleObject() {
+        const {
+            hoverAnimationTitleTypography
+        } = this.props.attributes;
+
+        const response = {
+            hoverAnimationTitleTypography: { ...JSON.parse(hoverAnimationTitleTypography) }
+        };
+
+        return response
+    }
+
+    get getHoverAnimationTextContentObject() {
+        const {
+            hoverAnimationContentTypography
+        } = this.props.attributes;
+
+        const response = {
+            hoverAnimationContentTypography: { ...JSON.parse(hoverAnimationContentTypography) }
+        };
+
+        return response
     }
 
     render() {
@@ -198,45 +243,52 @@ class edit extends GXBlock {
             attributes: {
                 uniqueID,
                 blockStyle,
+                size,
                 columnSize,
+                background,
                 extraClassName,
                 defaultBlockStyle,
-                hoverAnimation,
-                hoverAnimationDuration,
             },
             clientId,
-            isSelected,
             className,
             rowBlockWidth,
-            columnPosition,
             hasInnerBlock,
-            getResizePerCent,
-            redistributeColumnsSize,
-            columnGap,
+            deviceType,
+            onDeviceTypeChange,
             originalNestedColumns,
-            setAttributes
+            setAttributes,
+            hoverAnimation,
+            hoverAnimationDuration,
+            hoverAnimationType,
+            hoverAnimationTypeText
         } = this.props;
 
-        const { originalWidth } = this.state;
+        onDeviceTypeChange();
 
         let classes = classnames(
             'maxi-block',
             'maxi-column-block',
             uniqueID,
             blockStyle,
-            'hover-animation-type-'+hoverAnimation,
-            'hover-animation-duration-'+hoverAnimationDuration,
             extraClassName,
+            'hover-animation-' + hoverAnimation,
+            'hover-animation-type-' + hoverAnimationType,
+            'hover-animation-type-text-' + hoverAnimationTypeText,
+            'hover-animation-duration-' + hoverAnimationDuration,
             className,
         );
 
-        const size = typeof this.props.attributes.size != 'object' ?
-            JSON.parse(this.props.attributes.size) :
-            this.props.attributes.size;
+        const sizeValue = !isObject(size) ?
+            JSON.parse(size) :
+            size;
+
+        const columnValue = !isObject(columnSize) ?
+            JSON.parse(columnSize) :
+            columnSize;
 
         const getColumnWidthDefault = () => {
-            if (columnSize)
-                return `${columnSize}%`;
+            if (columnValue[deviceType].size)
+                return `${columnValue[deviceType].size}%`;
 
             return `${100 / originalNestedColumns.length}%`;
         }
@@ -252,44 +304,37 @@ class edit extends GXBlock {
                 {
                     rowBlockWidth != 0 &&
                     <ResizableBox
+                        ref={ref => console.log('ref', ref)}
                         className={classnames(
                             'maxi-block__resizer',
                             "maxi-column-block__resizer",
-                            `maxi-column-block__resizer__${clientId}`,
-                            columnPosition
+                            `maxi-column-block__resizer__${uniqueID}`,
                         )}
                         defaultSize={{
                             width: getColumnWidthDefault()
                         }}
-                        minWidth={`${columnGap}%`}
+                        minWidth='1%'
                         maxWidth={
-                            !!size.desktop['max-width'] ?
-                                `${size.desktop['max-width']}${size.desktop['max-widthUnit']}` :
+                            !!sizeValue[deviceType]['max-width'] ?
+                                `${sizeValue[deviceType]['max-width']}${sizeValue[deviceType]['max-widthUnit']}` :
                                 '100%'
                         }
                         enable={{
                             top: false,
-                            right: columnPosition != 'maxi-column-block--right',
+                            right: true,
                             bottom: false,
-                            left: false,
+                            left: true,
                             topRight: false,
                             bottomRight: false,
                             bottomLeft: false,
                             topLeft: false,
                         }}
-                        onResizeStart={(event, direction, elt, delta) => {
-                            this.setState({
-                                originalWidth: elt.getBoundingClientRect().width
-                            })
-                        }}
-                        onResize={(event, direction, elt, delta) => {
-                            redistributeColumnsSize(getResizePerCent(delta, originalWidth))
-                        }}
                         onResizeStop={(event, direction, elt, delta) => {
+                            columnValue[deviceType].size = round(Number(elt.style.width.replace('%', '')));
+
                             setAttributes({
-                                columnSize: round(getResizePerCent(delta, originalWidth), 1),
+                                columnSize: JSON.stringify(columnValue),
                             });
-                            redistributeColumnsSize(getResizePerCent(delta, originalWidth), true);
                         }}
                     >
                         <InnerBlocks
@@ -314,6 +359,7 @@ class edit extends GXBlock {
                                         false
                             }
                         />
+                        <__experimentalVideoPlayer videoOptions={background} />
                     </ResizableBox>
                 }
             </Fragment>
@@ -327,127 +373,59 @@ const editSelect = withSelect((select, ownProps) => {
     } = ownProps;
 
     const rowBlockId = select('core/block-editor').getBlockRootClientId(clientId); // getBlockHierarchyRootClientId
-    const columnGap = select('core/block-editor').getBlockAttributes(rowBlockId).columnGap;
     const rowBlockNode = document.querySelector(`div[data-block="${rowBlockId}"]`);
     const rowBlockWidth = !isNil(rowBlockNode) ? rowBlockNode.getBoundingClientRect().width : 0;
     const hasInnerBlock = select('core/block-editor').getBlockOrder(clientId).length >= 1;
     const originalNestedColumns = select('core/block-editor').getBlockOrder(rowBlockId);
-
-    const getPosition = () => {
-        const originalNestedColumns = select('core/block-editor').getBlockOrder(rowBlockId);
-        switch (originalNestedColumns.indexOf(clientId)) {
-            case 0:
-                return 'maxi-column-block--left';
-            case originalNestedColumns.length - 1:
-                return 'maxi-column-block--right';
-            default:
-                return 'maxi-column-block--center';
-        }
-    }
+    let deviceType = select('core/edit-post').__experimentalGetPreviewDeviceType();
+    deviceType = deviceType === 'Desktop' ?
+        'general' :
+        deviceType;
 
     return {
         rowBlockId,
         rowBlockWidth,
-        columnGap,
-        columnPosition: getPosition(),
         hasInnerBlock,
-        originalNestedColumns
+        originalNestedColumns,
+        deviceType
     }
-})
+});
 
 const editDispatch = withDispatch((dispatch, ownProps) => {
     const {
-        columnGap,
-        rowBlockId,
-        rowBlockWidth,
-        clientId,
+        attributes: {
+            uniqueID,
+            columnSize
+        },
+        deviceType,
     } = ownProps;
 
-    const originalNestedColumns = select('core/block-editor').getBlockOrder(rowBlockId);
-    let nestedColumns = [...originalNestedColumns];
-    nestedColumns = pull(nestedColumns, clientId);
-    const nestedColumnsNum = originalNestedColumns.length;
+    const onDeviceTypeChange = function () {
+        let newDeviceType = select('core/edit-post').__experimentalGetPreviewDeviceType();
+        newDeviceType = newDeviceType === 'Desktop' ?
+            'general' :
+            newDeviceType;
 
-    const cloneStyles = () => {
-        let newStyles = { ...ownProps.attributes };
-        delete newStyles.uniqueID;
-        delete newStyles.columnSize;
+        const allowedDeviceTypes = [
+            'general',
+            'xl',
+            'l',
+            'm',
+            's',
+        ];
 
-        nestedColumns.map(blockId => {
-            if (blockId != clientId)
-                dispatch('core/block-editor').updateBlockAttributes(blockId, newStyles)
-        })
-    }
-
-    const getRowPerCentWOMargin = () => {
-        return ((100 - ((nestedColumnsNum - 1) * columnGap) * 2));
-    }
-
-    const getResizePerCent = (delta, originalWidth) => {
-        const newWidth = originalWidth + delta.width;
-        const diffPerCent = newWidth / rowBlockWidth * getRowPerCentWOMargin();
-
-        return diffPerCent;
-    }
-
-    const redistributeColumnsSize = (newColumnSize, save = false) => {
-        let newColumnId = '';
-        if (originalNestedColumns.indexOf(clientId) === originalNestedColumns.length - 1)
-            newColumnId = originalNestedColumns[originalNestedColumns.length - 2]
-        else
-            newColumnId = select('core/block-editor').getAdjacentBlockClientId(clientId);
-
-        let restColumnSizes = [];
-        originalNestedColumns.map(columnId => {
-            if (columnId === clientId || columnId === newColumnId)
+        if (allowedDeviceTypes.includes(newDeviceType) && deviceType != newDeviceType) {
+            const node = document.querySelector(`.maxi-column-block__resizer__${uniqueID}`);
+            if (isNil(node))
                 return;
-            restColumnSizes.push(select('core/block-editor').getBlockAttributes(columnId).columnSize);
-        })
-
-        let newSize = round(getRowPerCentWOMargin() - newColumnSize - sum(restColumnSizes), 2);
-        if (newSize < columnGap * 1.2)
-            newSize = columnGap;
-
-        const newColumnNode = document.querySelector(`.maxi-column-block__resizer__${newColumnId}`);
-        if (!isNil(newColumnNode))
-            newColumnNode.style.width = `${newSize}%`;
-
-        if (save)
-            dispatch('core/block-editor').updateBlockAttributes(
-                newColumnId,
-                {
-                    columnSize: newSize
-                }
-            )
-    }
-
-    const getColumnMaxWidth = () => {
-        let newColumnId = '';
-        if (originalNestedColumns.indexOf(clientId) === originalNestedColumns.length - 1)
-            newColumnId = originalNestedColumns[originalNestedColumns.length - 2]
-        else
-            newColumnId = select('core/block-editor').getAdjacentBlockClientId(clientId);
-
-        let restColumnSizes = [];
-        originalNestedColumns.map(columnId => {
-            if (columnId === clientId || columnId === newColumnId)
-                return;
-            restColumnSizes.push(select('core/block-editor').getBlockAttributes(columnId).columnSize);
-        })
-
-        const columnGapWidth = columnGap * (originalNestedColumns.length - 1);
-        const maxWidth = round(100 - columnGapWidth - sum(restColumnSizes), 2);
-
-        return maxWidth;
-    }
+            const newColumnSize = JSON.parse(columnSize);
+            node.style.width = `${newColumnSize[newDeviceType].size}%`;
+        }
+    };
 
     return {
-        cloneStyles,
-        getRowPerCentWOMargin,
-        getResizePerCent,
-        redistributeColumnsSize,
-        getColumnMaxWidth
+        onDeviceTypeChange
     }
-})
+});
 
 export default compose(editSelect, editDispatch)(edit);

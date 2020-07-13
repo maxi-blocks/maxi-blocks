@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 const { Popover } = wp.components;
+const { useSelect } = wp.data;
 const {
     Fragment,
     useEffect,
@@ -30,7 +31,6 @@ import {
     TextItalic,
     TextLevel,
     TextOptions,
-    TextShadow,
     PaddingMargin,
     Size
 } from './components/';
@@ -66,7 +66,7 @@ const MaxiToolbar = props => {
             uniqueID,
             typography,
             typographyHover,
-            alignmentDesktop,
+            alignment,
             background,
             border,
             size,
@@ -79,20 +79,36 @@ const MaxiToolbar = props => {
             padding,
             rowPattern,
             linkSettings,
-            columnGap,
             boxShadow,
             showLine,
             divider,
             lineOrientation,
             lineVertical,
             lineHorizontal,
+            content,
         },
         clientId,
         isSelected,
         name,
-        onChangeColumnGap,
         setAttributes
     } = props;
+
+    const { deviceType } = useSelect(
+        select => {
+            const {
+                __experimentalGetPreviewDeviceType
+            } = select(
+                'core/edit-post'
+            );
+            let deviceType = __experimentalGetPreviewDeviceType();
+            deviceType = deviceType === 'Desktop' ?
+                'general' :
+                deviceType;
+            return {
+                deviceType,
+            }
+        }
+    );
 
     const [anchorRef, setAnchorRef] = useState(
         document.getElementById(`block-${clientId}`)
@@ -159,16 +175,19 @@ const MaxiToolbar = props => {
                             blockName={name}
                             typography={typography}
                             onChange={typography => setAttributes({ typography })}
+                            breakpoint={deviceType}
                         />
                         <TextColor
                             blockName={name}
                             typography={typography}
                             onChange={typography => setAttributes({ typography })}
+                            breakpoint={deviceType}
                         />
                         <Alignment
                             blockName={name}
-                            alignmentDesktop={alignmentDesktop}
-                            onChange={alignmentDesktop => setAttributes({ alignmentDesktop })}
+                            alignment={alignment}
+                            onChange={alignment => setAttributes({ alignment })}
+                            breakpoint={deviceType}
                         />
                         <TextLevel
                             blockName={name}
@@ -192,20 +211,21 @@ const MaxiToolbar = props => {
                         />
                         <TextBold
                             blockName={name}
-                            typography={typography}
-                            onChange={typography => setAttributes({ typography })}
+                            content={content}
+                            onChange={content => setAttributes({ content })}
+                            node={anchorRef}
                         />
                         <TextItalic
                             blockName={name}
-                            typography={typography}
-                            onChange={typography => setAttributes({ typography })}
+                            content={content}
+                            onChange={content => setAttributes({ content })}
+                            node={anchorRef}
                         />
                         <ColumnPattern
                             clientId={clientId}
                             blockName={name}
                             rowPattern={rowPattern}
                             onChange={rowPattern => setAttributes({ rowPattern })}
-                            onChangeColumnGap={onChangeColumnGap}
                         />
                         <Link
                             blockName={name}
@@ -221,20 +241,24 @@ const MaxiToolbar = props => {
                             blockName={name}
                             border={border}
                             onChange={border => setAttributes({ border })}
+                            breakpoint={deviceType}
                         />
-                        <ImageSize
-                            clientId={clientId}
-                            blockName={name}
-                            size={size}
-                            onChangeSize={size => setAttributes({ size })}
-                            width={width}
-                            onChangeWidth={width => setAttributes({ width })}
-                            mediaID={mediaID}
-                            fullWidth={fullWidth}
-                            onChangeFullWidth={fullWidth => setAttributes({ fullWidth })}
-                            isFirstOnHierarchy={isFirstOnHierarchy}
-                            onChangeCaption={captionType => setAttributes({ captionType })}
-                        />
+                        {
+                            deviceType === 'general' &&
+                            <ImageSize
+                                clientId={clientId}
+                                blockName={name}
+                                size={size}
+                                onChangeSize={size => setAttributes({ size })}
+                                width={width}
+                                onChangeWidth={width => setAttributes({ width })}
+                                mediaID={mediaID}
+                                fullWidth={fullWidth}
+                                onChangeFullWidth={fullWidth => setAttributes({ fullWidth })}
+                                isFirstOnHierarchy={isFirstOnHierarchy}
+                                onChangeCaption={captionType => setAttributes({ captionType })}
+                            />
+                        }
                         <Size
                             clientId={clientId}
                             blockName={name}
@@ -243,11 +267,13 @@ const MaxiToolbar = props => {
                             fullWidth={fullWidth}
                             onChangeFullWidth={fullWidth => setAttributes({ fullWidth })}
                             isFirstOnHierarchy={isFirstOnHierarchy}
+                            breakpoint={deviceType}
                         />
                         <BoxShadow
                             blockName={name}
                             boxShadow={boxShadow}
                             onChange={boxShadow => setAttributes({ boxShadow })}
+                            breakpoint={deviceType}
                         />
                         <PaddingMargin
                             blockName={name}
@@ -255,11 +281,7 @@ const MaxiToolbar = props => {
                             onChangeMargin={margin => setAttributes({ margin })}
                             padding={padding}
                             onChangePadding={padding => setAttributes({ padding })}
-                            columnGap={columnGap}
-                            onChangeColumnGap={columnGap => {
-                                onChangeColumnGap(columnGap);
-                                setAttributes({ columnGap })
-                            }}
+                            breakpoint={deviceType}
                         />
                         <Duplicate
                             clientId={clientId}

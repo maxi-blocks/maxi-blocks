@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
+const { select } = wp.data;
 const {
     __experimentalBlock,
     RichText,
@@ -13,10 +14,12 @@ const {
 import Inspector from './inspector';
 import {
     getBackgroundObject,
-    getBoxShadowObject
+    getBoxShadowObject,
+    getAlignmentTextObject,
+    getOpacityObject
 } from '../../extensions/styles/utils';
 import {
-    GXBlock,
+    MaxiBlock,
     __experimentalToolbar
 } from '../../components';
 
@@ -24,30 +27,40 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import {
-    isNil,
-    isNumber
-} from 'lodash';
-import transform from "css-to-react-native-transform";
+import { isNil } from 'lodash';
+
+import Scripts from '../../extensions/styles/hoverAnimations.js';
 
 /**
  * Content
  */
-class edit extends GXBlock {
+class edit extends MaxiBlock {
     componentDidUpdate() {
         this.fullWidthSetter();
         this.displayStyles();
+
+        if (!select('core/editor').isSavingPost() && this.state.updating) {
+            this.setState({
+                updating: false
+            })
+            this.saveProps();
+        }
     }
 
     fullWidthSetter() {
-        if(!!document.getElementById(`block-${this.props.clientId}`))
+        if (!!document.getElementById(`block-${this.props.clientId}`))
             document.getElementById(`block-${this.props.clientId}`).setAttribute('data-align', this.props.attributes.fullWidth);
     }
 
     get getObject() {
         let response = {
             [this.props.attributes.uniqueID]: this.getNormalObject,
-            [`${this.props.attributes.uniqueID}:hover`]: this.getHoverObject
+            [`${this.props.attributes.uniqueID}:hover`]: this.getHoverObject,
+            [`${this.props.attributes.uniqueID} .maxi-block-text-hover .maxi-block-text-hover__content`]: this.getHoverAnimationTextContentObject,
+            [`${this.props.attributes.uniqueID} .maxi-block-text-hover .maxi-block-text-hover__title`]: this.getHoverAnimationTextTitleObject,
+            [`${this.props.attributes.uniqueID} .maxi-block-text-hover`]: this.getHoverAnimationMainObject,
+            [`${this.props.attributes.uniqueID}.hover-animation-basic.hover-animation-type-opacity:hover .hover_el`]: this.getHoverAnimationTypeOpacityObject,
+            [`${this.props.attributes.uniqueID}.hover-animation-basic.hover-animation-type-opacity-with-colour:hover .hover_el:before`]: this.getHoverAnimationTypeOpacityColorObject,
         }
 
         return response;
@@ -55,9 +68,7 @@ class edit extends GXBlock {
 
     get getNormalObject() {
         const {
-            alignmentDesktop,
-            alignmentTablet,
-            alignmentMobile,
+            alignment,
             typography,
             background,
             opacity,
@@ -66,81 +77,24 @@ class edit extends GXBlock {
             size,
             margin,
             padding,
+            hoverPadding,
             zIndex
         } = this.props.attributes;
 
         const response = {
             typography: { ...JSON.parse(typography) },
+            alignment: { ...getAlignmentTextObject(JSON.parse(alignment)) },
             background: { ...getBackgroundObject(JSON.parse(background)) },
             boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
             border: { ...JSON.parse(border) },
             borderWidth: { ...JSON.parse(border).borderWidth },
             borderRadius: { ...JSON.parse(border).borderRadius },
-            borderWidth: { ...JSON.parse(border).borderWidth },
             size: { ...JSON.parse(size) },
             margin: { ...JSON.parse(margin) },
             padding: { ...JSON.parse(padding) },
-            text: {
-                label: 'Text',
-                general: {},
-                desktop: {},
-                tablet: {},
-                mobile: {}
-            }
+            opacity: { ...getOpacityObject(JSON.parse(opacity)) },
+            zindex: { ...JSON.parse(zIndex) },
         };
-
-        if (!isNil(alignmentDesktop)) {
-            switch (alignmentDesktop) {
-                case 'left':
-                    response.text.desktop['text-align'] = 'left';
-                    break;
-                case 'center':
-                    response.text.desktop['text-align'] = 'center';
-                    break;
-                case 'right':
-                    response.text.desktop['text-align'] = 'right';
-                    break;
-                case 'justify':
-                    response.text.desktop['text-align'] = 'justify';
-                    break;
-            }
-        }
-        if (!isNil(alignmentTablet)) {
-            switch (alignmentTablet) {
-                case 'left':
-                    response.text.tablet['text-align'] = 'left';
-                    break;
-                case 'center':
-                    response.text.tablet['text-align'] = 'center';
-                    break;
-                case 'right':
-                    response.text.tablet['text-align'] = 'right';
-                    break;
-                case 'justify':
-                    response.text.tablet['text-align'] = 'justify';
-                    break;
-            }
-        }
-        if (!isNil(alignmentMobile)) {
-            switch (alignmentMobile) {
-                case 'left':
-                    response.text.mobile['text-align'] = 'left';
-                    break;
-                case 'center':
-                    response.text.mobile['text-align'] = 'center';
-                    break;
-                case 'right':
-                    response.text.mobile['text-align'] = 'right';
-                    break;
-                case 'justify':
-                    response.text.mobile['text-align'] = 'justify';
-                    break;
-            }
-        }
-        if (isNumber(opacity))
-            response.text.general['opacity'] = opacity;
-        if (isNumber(zIndex))
-            response.text.general['z-index'] = zIndex;
 
         return response;
     }
@@ -161,15 +115,99 @@ class edit extends GXBlock {
             borderHover: { ...JSON.parse(borderHover) },
             borderWidth: { ...JSON.parse(borderHover).borderWidth },
             borderRadius: { ...JSON.parse(borderHover).borderRadius },
-            text: {
-                label: 'Text',
+            opacity: { ...getOpacityObject(JSON.parse(opacityHover)) },
+        };
+
+        return response;
+    }
+
+    get getHoverAnimationMainObject() {
+        const {
+            hoverOpacity,
+            hoverBackground,
+            hoverBorder,
+            hoverPadding,
+        } = this.props.attributes;
+
+        const response = {
+            background: { ...getBackgroundObject(JSON.parse(hoverBackground)) },
+            border: { ...JSON.parse(hoverBorder) },
+            borderWidth: { ...JSON.parse(hoverBorder).borderWidth },
+            borderRadius: { ...JSON.parse(hoverBorder).borderRadius },
+            padding: { ...JSON.parse(hoverPadding) },
+            animationHover: {
+                label: 'Animation Hover',
                 general: {}
             }
         };
 
-        if (opacityHover)
-            response.text.general['opacity'] = opacityHover;
-        return response;
+        if (hoverOpacity)
+            response.animationHover.general['opacity'] = hoverOpacity;
+
+        return response
+    }
+
+    get getHoverAnimationTypeOpacityObject() {
+        const {
+            hoverAnimationTypeOpacity,
+        } = this.props.attributes;
+
+        const response = {
+            animationTypeOpacityHover: {
+                label: 'Animation Type Opacity Hover',
+                general: {}
+            }
+        };
+
+        if (hoverAnimationTypeOpacity)
+            response.animationTypeOpacityHover.general['opacity'] = hoverAnimationTypeOpacity;
+
+        return response
+    }
+
+    get getHoverAnimationTypeOpacityColorObject() {
+        const {
+            hoverAnimationTypeOpacityColor,
+            hoverAnimationTypeOpacityColorBackground,
+        } = this.props.attributes;
+
+        const response = {
+            background: { ...getBackgroundObject(JSON.parse(hoverAnimationTypeOpacityColorBackground)) },
+            animationTypeOpacityHoverColor: {
+                label: 'Animation Type Opacity Color Hover',
+                general: {}
+            }
+        };
+
+        if (hoverAnimationTypeOpacityColor)
+            response.animationTypeOpacityHoverColor.general['opacity'] = hoverAnimationTypeOpacityColor;
+
+        return response
+    }
+
+
+    get getHoverAnimationTextTitleObject() {
+        const {
+            hoverAnimationTitleTypography
+        } = this.props.attributes;
+
+        const response = {
+            hoverAnimationTitleTypography: { ...JSON.parse(hoverAnimationTitleTypography) }
+        };
+
+        return response
+    }
+
+    get getHoverAnimationTextContentObject() {
+        const {
+            hoverAnimationContentTypography
+        } = this.props.attributes;
+
+        const response = {
+            hoverAnimationContentTypography: { ...JSON.parse(hoverAnimationContentTypography) }
+        };
+
+        return response
     }
 
     render() {
@@ -181,9 +219,10 @@ class edit extends GXBlock {
                 extraClassName,
                 hoverAnimation,
                 hoverAnimationDuration,
+                hoverAnimationType,
+                hoverAnimationTypeText,
                 textLevel,
                 content,
-                extraStyles,
             },
             setAttributes,
         } = this.props;
@@ -192,15 +231,13 @@ class edit extends GXBlock {
             'maxi-block maxi-text-block',
             blockStyle,
             extraClassName,
-            'hover-animation-type-'+hoverAnimation,
-            'hover-animation-duration-'+hoverAnimationDuration,
+            'hover-animation-' + hoverAnimation,
+            'hover-animation-type-' + hoverAnimationType,
+            'hover-animation-type-text-' + hoverAnimationTypeText,
+            'hover-animation-duration-' + hoverAnimationDuration,
             uniqueID,
             className
         );
-
-        let extraStylesObj = '';
-
-        if (!isNil(extraStyles))  {let extraStylesObj = transform(extraStyles);}
 
         return [
             <Inspector {...this.props} />,
@@ -210,20 +247,10 @@ class edit extends GXBlock {
                 onChange={content => setAttributes({ content })}
                 tagName={__experimentalBlock[textLevel]}
                 className={classes}
-                style={extraStylesObj}
                 placeholder={__('Set your Maxi Text here...', 'maxi-blocks')}
-                onSplit={value => {
-                    if (!value) {
-                        return createBlock('maxi-blocks/text-maxi');
-                    }
-
-                    return createBlock('maxi-blocks/text-maxi', {
-                        ...attributes,
-                        content: value,
-                    });
-                }}
                 keepPlaceholderOnFocus
-                formattingControls={[]}
+                __unstableEmbedURLOnPaste
+				__unstableAllowPrefixTransformations
             />
         ];
     }

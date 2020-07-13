@@ -7,34 +7,48 @@ const { Button } = wp.components;
  * External dependencies
  */
 import classnames from 'classnames';
+import { 
+    isObject,
+    isNil
+} from 'lodash';
 
 /**
  * Save
  */
 const save = props => {
     const {
-        className,
         attributes: {
             uniqueID,
             blockStyle,
             defaultBlockStyle,
-            linkOptions,
+            linkSettings,
             buttonText,
-            extraClassName
+            extraClassName,
+            hoverAnimation,
+            hoverAnimationType,
+            hoverAnimationDuration,
         },
+        className
     } = props;
 
-    let classes = classnames(
+    const classes = classnames(
         'maxi-block maxi-button-extra',
         blockStyle,
         extraClassName,
+        'hover-animation-'+hoverAnimation,
+        'hover-animation-type-'+hoverAnimationType,
+        'hover-animation-duration-'+hoverAnimationDuration,
         uniqueID,
-        className
+        className,
+        !isNil(uniqueID) ?
+            uniqueID :
+            null
     );
-    if (uniqueID && (typeof uniqueID !== 'undefined'))
-        classes = classnames(classes, uniqueID);
 
-    const linkOpt = typeof linkOptions === 'object' ? linkOptions : JSON.parse(linkOptions);
+    const linkOpt = !isObject(linkSettings) ?
+        JSON.parse(linkSettings) :
+        linkSettings;
+
     const linkProps = {
         href: linkOpt.url || '',
         target: linkOpt.opensInNewTab ? '_blank' : '_self'
@@ -46,9 +60,8 @@ const save = props => {
             data-gx_initial_block_class={defaultBlockStyle}
         >
             <Button
-                className="maxi-buttoneditor-button"
+                className="maxi-button-extra__button"
                 {...linkProps}
-                data-gx_initial_block_class={defaultBlockStyle}
             >
                 {buttonText}
             </Button>

@@ -5,15 +5,11 @@ const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
 const { Fragment } = wp.element;
 const {
-    BaseControl,
     SelectControl,
+    TextControl,
     RangeControl,
+    RadioControl,
 } = wp.components;
-
-/**
- * External dependencies
- */
-import { isEmpty } from 'lodash';
 
 /**
  * Internal dependencies
@@ -24,12 +20,15 @@ import {
     BlockStylesControl,
     BorderControl,
     BoxShadowControl,
-    DimensionsControl,
-    CustomCSSControl,
     FullSizeControl,
     HoverAnimationControl,
     SettingTabsControl,
-    __experimentalZIndexControl
+    __experimentalZIndexControl,
+    __experimentalResponsiveSelector,
+    __experimentalResponsiveControl,
+    __experimentalNumberControl,
+    __experimentalOpacityControl,
+    __experimentalMarginPaddingControl
 } from '../../components';
 
 /**
@@ -41,8 +40,8 @@ const Inspector = props => {
             isFirstOnHierarchy,
             blockStyle,
             defaultBlockStyle,
-            columnGap,
-            wrap,
+            horizontalAlign,
+            verticalAlign,
             opacity,
             opacityHover,
             background,
@@ -56,17 +55,46 @@ const Inspector = props => {
             padding,
             margin,
             hoverAnimation,
+            hoverAnimationType,
+            hoverAnimationTypeText,
             hoverAnimationDuration,
             extraClassName,
-            extraStyles,
-            zIndex
+            zIndex,
+            breakpoints,
+            hoverAnimationTitle,
+            hoverAnimationContent,
+            hoverOpacity,
+            hoverBackground,
+            hoverAnimationCustomBorder,
+            hoverAnimationContentTypography,
+            hoverAnimationTitleTypography,
+            hoverCustomTextContent,
+            hoverCustomTextTitle,
+            hoverBorder,
+            hoverPadding,
+            hoverAnimationTypeOpacity,
+            onChangeHoverAnimationTypeOpacity,
+            hoverAnimationTypeColor,
+            hoverAnimationTypeOpacityColor,
+            onChangeHoverAnimationTypeOpacityColor,
+            hoverAnimationTypeOpacityColorBackground
         },
+        deviceType,
         setAttributes,
-        onChangeColumnGap
     } = props;
+
+    const hoverAnimationCustomOptions = [
+        { label: __('Yes', 'maxi-blocks'), value: 'yes' },
+        { label: __('No', 'maxi-blocks'), value: 'no' },
+    ]
+    const hoverCustomTextOptions = [
+        { label: __('Yes', 'maxi-blocks'), value: 'yes' },
+        { label: __('No', 'maxi-blocks'), value: 'no' },
+    ]
 
     return (
         <InspectorControls>
+            <__experimentalResponsiveSelector />
             <SettingTabsControl
                 disablePadding
                 items={[
@@ -90,90 +118,83 @@ const Inspector = props => {
                                             label: __('Row Settings', 'maxi-blocks'),
                                             content: (
                                                 <Fragment>
-                                                    <RangeControl
-                                                        label={__('Column gap', 'maxi-blocks')}
-                                                        value={columnGap}
-                                                        onChange={columnGap => {
-                                                            onChangeColumnGap(columnGap);
-                                                            setAttributes({ columnGap })
+                                                    <SelectControl
+                                                        label={__('Horizontal align', 'maxi-blocks')}
+                                                        value={horizontalAlign}
+                                                        options={
+                                                            [
+                                                                { label: __('Flex-start', 'maxi-blocks'), value: 'flex-start' },
+                                                                { label: __('Flex-end', 'maxi-blocks'), value: 'flex-end' },
+                                                                { label: __('Center', 'maxi-blocks'), value: 'center' },
+                                                                { label: __('Space between', 'maxi-blocks'), value: 'space-between' },
+                                                                { label: __('Space around', 'maxi-blocks'), value: 'space-around' },
+                                                            ]
                                                         }
-                                                        }
-                                                        step={.1}
-                                                        min={0}
-                                                        max={5}
+                                                        onChange={horizontalAlign => setAttributes({ horizontalAlign })}
                                                     />
-                                                    <BaseControl
-                                                        label={__('Wrap on', 'maxi-blocks')}
-                                                    >
-                                                        <input
-                                                            type='number'
-                                                            placeholder={__('auto', 'maxi-blocks')}
-                                                            value={wrap}
-                                                            onChange={e => {
-                                                                setAttributes({
-                                                                    wrap:
-                                                                        !isEmpty(e.target.value) ?
-                                                                            Number(e.target.value) :
-                                                                            null
-                                                                })
-                                                            }}
-                                                        />
-                                                    </BaseControl>
+                                                    <SelectControl
+                                                        label={__('Vertical align', 'maxi-blocks')}
+                                                        value={verticalAlign}
+                                                        options={
+                                                            [
+                                                                { label: __('Stretch', 'maxi-blocks'), value: 'stretch' },
+                                                                { label: __('Flex-start', 'maxi-blocks'), value: 'flex-start' },
+                                                                { label: __('Flex-end', 'maxi-blocks'), value: 'flex-end' },
+                                                                { label: __('Center', 'maxi-blocks'), value: 'center' },
+                                                                { label: __('Space between', 'maxi-blocks'), value: 'space-between' },
+                                                                { label: __('Space around', 'maxi-blocks'), value: 'space-around' },
+                                                            ]
+                                                        }
+                                                        onChange={verticalAlign => setAttributes({ verticalAlign })}
+                                                    />
                                                 </Fragment>
                                             )
                                         },
-                                        {
-                                            label: __('Background', 'maxi-blocks'),
-                                            disablePadding: true,
-                                            content: (
-                                                <SettingTabsControl
-                                                    items={[
-                                                        {
-                                                            label: __('Normal', 'gutenberg-extra'),
-                                                            content: (
-                                                                <Fragment>
-                                                                    <RangeControl
-                                                                        label={__('Opacity', 'maxi-blocks')}
-                                                                        className='maxi-opacity-control'
-                                                                        value={opacity * 100}
-                                                                        onChange={value => setAttributes({ opacity: value / 100 })}
-                                                                        min={0}
-                                                                        max={100}
-                                                                        allowReset={true}
-                                                                        initialPosition={0}
-                                                                    />
-                                                                    <BackgroundControl
-                                                                        backgroundOptions={background}
-                                                                        onChange={background => setAttributes({ background })}
-                                                                    />
-                                                                </Fragment>
-                                                            )
-                                                        },
-                                                        {
-                                                            label: __('Hover', 'gutenberg-extra'),
-                                                            content: (
-                                                                <Fragment>
-                                                                    <RangeControl
-                                                                        label={__('Opacity', 'maxi-blocks')}
-                                                                        className='maxi-opacity-control'
-                                                                        value={opacityHover * 100}
-                                                                        onChange={value => setAttributes({ opacityHover: value / 100 })}
-                                                                        min={0}
-                                                                        max={100}
-                                                                        allowReset={true}
-                                                                        initialPosition={0}
-                                                                    />
-                                                                    <BackgroundControl
-                                                                        backgroundOptions={backgroundHover}
-                                                                        onChange={backgroundHover => setAttributes({ backgroundHover })}
-                                                                    />
-                                                                </Fragment>
-                                                            )
-                                                        },
-                                                    ]}
-                                                />
-                                            )
-                                        },
+                                        function () {
+                                            if (deviceType === 'general')
+                                                return {
+                                                    label: __('Background', 'maxi-blocks'),
+                                                    disablePadding: true,
+                                                    content: (
+                                                        <SettingTabsControl
+                                                            items={[
+                                                                {
+                                                                    label: __('Normal', 'gutenberg-extra'),
+                                                                    content: (
+                                                                        <Fragment>
+                                                                            <__experimentalOpacityControl
+                                                                                opacity={opacity}
+                                                                                onChange={opacity => setAttributes({ opacity })}
+                                                                                breakpoint={deviceType}
+                                                                            />
+                                                                            <BackgroundControl
+                                                                                backgroundOptions={background}
+                                                                                onChange={background => setAttributes({ background })}
+                                                                            />
+                                                                        </Fragment>
+                                                                    )
+                                                                },
+                                                                {
+                                                                    label: __('Hover', 'gutenberg-extra'),
+                                                                    content: (
+                                                                        <Fragment>
+                                                                            <__experimentalOpacityControl
+                                                                                opacity={opacityHover}
+                                                                                onChange={opacityHover => setAttributes({ opacityHover })}
+                                                                                breakpoint={deviceType}
+                                                                            />
+                                                                            <BackgroundControl
+                                                                                backgroundOptions={backgroundHover}
+                                                                                onChange={backgroundHover => setAttributes({ backgroundHover })}
+                                                                            />
+                                                                        </Fragment>
+                                                                    )
+                                                                },
+                                                            ]}
+                                                        />
+                                                    )
+                                                }
+                                        }(),
                                         {
                                             label: __('Border', 'maxi-blocks'),
                                             disablePadding: true,
@@ -184,8 +205,9 @@ const Inspector = props => {
                                                             label: __('Normal', 'gutenberg-extra'),
                                                             content: (
                                                                 <BorderControl
-                                                                    borderOptions={border}
+                                                                    border={border}
                                                                     onChange={border => setAttributes({ border })}
+                                                                    breakpoint={deviceType}
                                                                 />
                                                             )
                                                         },
@@ -193,8 +215,9 @@ const Inspector = props => {
                                                             label: __('Hover', 'gutenberg-extra'),
                                                             content: (
                                                                 <BorderControl
-                                                                    borderOptions={borderHover}
+                                                                    border={borderHover}
                                                                     onChange={borderHover => setAttributes({ borderHover })}
+                                                                    breakpoint={deviceType}
                                                                 />
                                                             )
                                                         },
@@ -219,8 +242,9 @@ const Inspector = props => {
                                                         />
                                                     }
                                                     <FullSizeControl
-                                                        sizeSettings={size}
+                                                        size={size}
                                                         onChange={size => setAttributes({ size })}
+                                                        breakpoint={deviceType}
                                                     />
                                                 </Fragment>
                                             )
@@ -235,8 +259,9 @@ const Inspector = props => {
                                                             label: __('Normal', 'gutenberg-extra'),
                                                             content: (
                                                                 <BoxShadowControl
-                                                                    boxShadowOptions={boxShadow}
+                                                                    boxShadow={boxShadow}
                                                                     onChange={boxShadow => setAttributes({ boxShadow })}
+                                                                    breakpoint={deviceType}
                                                                 />
                                                             )
                                                         },
@@ -244,9 +269,9 @@ const Inspector = props => {
                                                             label: __('Hover', 'gutenberg-extra'),
                                                             content: (
                                                                 <BoxShadowControl
-                                                                    boxShadowOptions={boxShadowHover}
+                                                                    boxShadow={boxShadowHover}
                                                                     onChange={boxShadowHover => setAttributes({ boxShadowHover })}
-                                                                    target=':hover'
+                                                                    breakpoint={deviceType}
                                                                 />
                                                             )
                                                         },
@@ -258,13 +283,15 @@ const Inspector = props => {
                                             label: __('Padding / Margin', 'maxi-blocks'),
                                             content: (
                                                 <Fragment>
-                                                    <DimensionsControl
+                                                    <__experimentalMarginPaddingControl
                                                         value={padding}
                                                         onChange={padding => setAttributes({ padding })}
+                                                        breakpoint={deviceType}
                                                     />
-                                                    <DimensionsControl
+                                                    <__experimentalMarginPaddingControl
                                                         value={margin}
                                                         onChange={margin => setAttributes({ margin })}
+                                                        breakpoint={deviceType}
                                                     />
                                                 </Fragment>
                                             )
@@ -278,22 +305,136 @@ const Inspector = props => {
                         label: __('Advanced', 'maxi-blocks'),
                         content: (
                             <div className='maxi-tab-content__box'>
-                                <HoverAnimationControl
-                                    hoverAnimation={hoverAnimation}
-                                    onChangeHoverAnimation={hoverAnimation => setAttributes({ hoverAnimation })}
-                                    hoverAnimationDuration={hoverAnimationDuration}
-                                    onChangeHoverAnimationDuration={hoverAnimationDuration => setAttributes({ hoverAnimationDuration })}
-                                />
-                                <CustomCSSControl
-                                    extraClassName={extraClassName}
-                                    onChangeExtraClassName={extraClassName => setAttributes({ extraClassName })}
-                                    extraStyles={extraStyles}
-                                    onChangeExtraStyles={extraStyles => setAttributes({ extraStyles })}
-                                />
+                                {
+                                    deviceType === 'general' &&
+                                    <Fragment>
+                                        <HoverAnimationControl
+                                            hoverAnimation={hoverAnimation}
+                                            onChangeHoverAnimation={hoverAnimation => setAttributes({ hoverAnimation })}
+                                            hoverAnimationDuration={hoverAnimationDuration}
+                                            onChangeHoverAnimationDuration={hoverAnimationDuration => setAttributes({ hoverAnimationDuration })}
+                                        />
+                                        <TextControl
+                                            label={__('Additional CSS Classes', 'maxi-blocks')}
+                                            className='maxi-additional__css-classes'
+                                            value={extraClassName}
+                                            onChange={extraClassName => setAttributes({ extraClassName })}
+                                        />
+                                        <HoverAnimationControl
+                                            hoverAnimation={hoverAnimation}
+                                            onChangeHoverAnimation={hoverAnimation => setAttributes({ hoverAnimation })}
+
+                                            hoverAnimationType={hoverAnimationType}
+                                            onChangeHoverAnimationType={hoverAnimationType => setAttributes({ hoverAnimationType })}
+
+                                            hoverAnimationTypeText={hoverAnimationTypeText}
+                                            onChangeHoverAnimationTypeText={hoverAnimationTypeText => setAttributes({ hoverAnimationTypeText })}
+
+                                            hoverAnimationDuration={hoverAnimationDuration}
+                                            onChangeHoverAnimationDuration={hoverAnimationDuration => setAttributes({ hoverAnimationDuration })}
+
+                                            hoverAnimationTitle={hoverAnimationTitle}
+                                            onChangeHoverAnimationTitle={hoverAnimationTitle => setAttributes({ hoverAnimationTitle })}
+                                            hoverAnimationContent={hoverAnimationContent}
+                                            onChangeHoverAnimationContent={hoverAnimationContent => setAttributes({ hoverAnimationContent })}
+
+                                            hoverCustomTextContent={hoverCustomTextContent}
+                                            onChangeHoverAnimationCustomContent={hoverCustomTextContent => setAttributes({ hoverCustomTextContent })}
+
+                                            hoverCustomTextTitle={hoverCustomTextTitle}
+                                            onChangeHoverAnimationCustomTitle={hoverCustomTextTitle => setAttributes({ hoverCustomTextTitle })}
+
+                                            hoverAnimationTypeOpacity={hoverAnimationTypeOpacity}
+                                            onChangeHoverAnimationTypeOpacity={hoverAnimationTypeOpacity => setAttributes({ hoverAnimationTypeOpacity })}
+
+                                            hoverAnimationTypeOpacityColor={hoverAnimationTypeOpacityColor}
+                                            onChangeHoverAnimationTypeOpacityColor={hoverAnimationTypeOpacityColor => setAttributes({ hoverAnimationTypeOpacityColor })}
+
+                                        />
+                                        {
+                                            hoverAnimation === 'text' && hoverCustomTextTitle === 'yes' &&
+                                            <TypographyControl
+                                                fontOptions={hoverAnimationTitleTypography}
+                                                onChange={hoverAnimationTitleTypography => setAttributes({ hoverAnimationTitleTypography })}
+                                                target='>.maxi-block-text-hover .maxi-block-text-hover__title'
+                                            />}
+                                        {
+                                            hoverAnimation === 'text' && hoverCustomTextContent === 'yes' &&
+                                            <TypographyControl
+                                                fontOptions={hoverAnimationContentTypography}
+                                                onChange={hoverAnimationContentTypography => setAttributes({ hoverAnimationContentTypography })}
+                                                target='>.maxi-block-text-hover .maxi-block-text-hover__content'
+                                            />}
+                                        {
+                                            hoverAnimation === 'text' &&
+                                            <Fragment>
+                                                <RangeControl
+                                                    label={__('Opacity', 'maxi-blocks')}
+                                                    className='maxi-opacity-control'
+                                                    value={hoverOpacity * 100}
+                                                    onChange={value => setAttributes({ hoverOpacity: value / 100 })}
+                                                    min={0}
+                                                    max={100}
+                                                    allowReset={true}
+                                                    initialPosition={0}
+                                                />
+                                                <BackgroundControl
+                                                    backgroundOptions={hoverBackground}
+                                                    onChange={hoverBackground => setAttributes({ hoverBackground })}
+                                                    disableImage
+                                                    target='.maxi-block-text-hover'
+                                                />
+
+                                                <RadioControl
+                                                    label={__('Custom Border', 'maxi-blocks')}
+                                                    className={'maxi-hover-animation-custom-border'}
+                                                    selected={hoverAnimationCustomBorder}
+                                                    options={hoverAnimationCustomOptions}
+                                                    onChange={hoverAnimationCustomBorder => setAttributes({ hoverAnimationCustomBorder })}
+                                                />
+                                            </Fragment>
+                                        }
+                                        {
+                                            hoverAnimationCustomBorder === 'yes' && hoverAnimation === 'text' &&
+                                            <BorderControl
+                                                border={hoverBorder}
+                                                onChange={hoverBorder => setAttributes({ hoverBorder })}
+                                                breakpoint={deviceType}
+                                            />
+                                        }
+                                        {
+                                            hoverAnimation === 'text' &&
+                                            <Fragment>
+                                                <DimensionsControl
+                                                    label={__('Padding', 'maxi-blocks')}
+                                                    value={hoverPadding}
+                                                    onChange={hoverPadding => setAttributes({ hoverPadding })}
+                                                />
+                                            </Fragment>
+                                        }
+                                        {
+                                            hoverAnimationType === 'opacity-with-colour' &&
+                                            <BackgroundControl
+                                                backgroundOptions={hoverAnimationTypeOpacityColorBackground}
+                                                onChange={hoverAnimationTypeOpacityColorBackground => setAttributes({ hoverAnimationTypeOpacityColorBackground })}
+                                                disableImage
+                                            />
+                                        }
+                                    </Fragment>
+                                }
                                 <__experimentalZIndexControl
-                                    value={zIndex}
+                                    zindex={zIndex}
                                     onChange={zIndex => setAttributes({ zIndex })}
+                                    breakpoint={deviceType}
                                 />
+                                {
+                                    deviceType != 'general' &&
+                                    <__experimentalResponsiveControl
+                                        breakpoints={breakpoints}
+                                        onChange={breakpoints => setAttributes({ breakpoints })}
+                                        breakpoint={deviceType}
+                                    />
+                                }
                             </div>
                         )
                     }

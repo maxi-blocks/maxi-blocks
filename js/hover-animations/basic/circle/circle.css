@@ -1,0 +1,76 @@
+
+.hover-animation-basic.hover-animation-type-circle.hover-animation-duration-shorter:hover .hover_el:before{
+    -webkit-animation: circle .45s;
+    animation: circle .45s;
+}
+.hover-animation-basic.hover-animation-type-circle.hover-animation-duration-short:hover .hover_el:before{
+    -webkit-animation: circle .6s;
+    animation: circle .6s;
+}
+
+.hover-animation-basic.hover-animation-type-circle.hover-animation-duration-normal:hover .hover_el:before{
+    -webkit-animation: circle .75s;
+    animation: circle .75s;
+}
+
+.hover-animation-basic.hover-animation-type-circle.hover-animation-duration-long:hover .hover_el:before{
+    -webkit-animation: circle .9s;
+    animation: circle .9s;
+}
+
+.hover-animation-basic.hover-animation-type-circle.hover-animation-duration-longer:hover .hover_el:before{
+    -webkit-animation: circle 1.05s;
+    animation: circle 1.05s;
+}
+
+
+
+.hover-animation-basic.hover-animation-type-circle .hover_el{
+    position: relative;
+    overflow: hidden;
+}
+.hover-animation-basic.hover-animation-type-circle .hover_el:before{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 2;
+    display: block;
+    content: '';
+    width: 0;
+    height: 0;
+    background: rgba(255,255,255,.2);
+    border-radius: 100%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    opacity: 0;
+}
+
+
+
+@-webkit-keyframes circle {
+    0% {
+        opacity: 1;
+    }
+    40% {
+        opacity: 1;
+    }
+    100% {
+        width: 200%;
+        height: 200%;
+        opacity: 0;
+    }
+}
+@keyframes circle {
+    0% {
+        opacity: 1;
+    }
+    40% {
+        opacity: 1;
+    }
+    100% {
+        width: 200%;
+        height: 200%;
+        opacity: 0;
+    }
+}
+

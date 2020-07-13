@@ -38,3 +38,7 @@ export { default as styleNone } from './none';
 export { default as dashed } from './dashed';
 export { default as dotted } from './dotted';
 export { default as solid } from './solid';
+export { default as backgroundColor } from './background-color';
+export { default as backgroundVideo } from './background-video';
+export { default as backgroundImage } from './background-image';
+export { default as backgroundGradient } from './background-gradient';

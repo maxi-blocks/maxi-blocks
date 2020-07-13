@@ -1,0 +1,49 @@
+
+
+.hover-animation-basic.hover-animation-type-opacity-with-colour.hover-animation-duration-shorter .hover_el:before{
+    -webkit-transition: .1s ease-in-out;
+    transition: .1s ease-in-out;
+}
+.hover-animation-basic.hover-animation-type-opacity-with-colour.hover-animation-duration-short .hover_el:before{
+    -webkit-transition: .2s ease-in-out;
+    transition: .2s ease-in-out;
+}
+
+.hover-animation-basic.hover-animation-type-opacity-with-colour.hover-animation-duration-normal .hover_el:before{
+    -webkit-transition: .3s ease-in-out;
+    transition: .3s ease-in-out;
+}
+
+.hover-animation-basic.hover-animation-type-opacity-with-colour.hover-animation-duration-long .hover_el:before{
+    -webkit-transition: .5s ease-in-out;
+    transition: .5s ease-in-out;
+}
+
+.hover-animation-basic.hover-animation-type-opacity-with-colour.hover-animation-duration-longer .hover_el:before{
+    -webkit-transition: .6s ease-in-out;
+    transition: .6s ease-in-out;
+}
+
+
+
+.hover-animation-basic.hover-animation-type-opacity-with-colour .hover_el{
+    position: relative;
+}
+.hover-animation-basic.hover-animation-type-opacity-with-colour .hover_el:before{
+    content: "";
+    display: block;
+    position: absolute;
+    z-index: 99;
+    top: 0;
+    left: 0;
+    background-color: #000;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.hover-animation-basic.hover-animation-type-opacity-with-colour:hover .hover_el:before{
+    opacity: 0.7;
+}
+
+

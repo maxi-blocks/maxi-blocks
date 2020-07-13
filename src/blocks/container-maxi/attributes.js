@@ -7,49 +7,9 @@ import * as attributesData from '../../extensions/styles/defaults';
  * Attributes
  */
 const attributes = {
-    blockStyle: {
+    sizeContainer: {
         type: 'string',
-        default: 'maxi-custom'
-    },
-    defaultBlockStyle: {
-        type: 'string',
-        default: 'maxi-def-light'
-    },
-    containerXl: {
-        type: 'number',
-        default: 1200,
-    },
-    maxWidthXl: {
-        type: 'number',
-        default: 1140,
-    },
-    containerLg: {
-        type: 'number',
-        default: 992
-    },
-    maxWidthLg: {
-        type: 'number',
-        default: 960
-    },
-    containerMd: {
-        type: 'number',
-        default: 768
-    },
-    maxWidthMd: {
-        type: 'number',
-        default: 720
-    },
-    containerSm: {
-        type: 'number',
-        default: 576
-    },
-    maxWidthSm: {
-        type: 'number',
-        default: 540
-    },
-    containerPadding: {
-        type: 'number',
-        default: 16
+        default: JSON.stringify(attributesData.__experimentalContainer)
     },
     fullWidth: {
         type: 'string',
@@ -61,10 +21,11 @@ const attributes = {
     },
     opacity: {
         type: 'number',
-        default: 1
+        default: JSON.stringify(attributesData.opacity)
     },
     opacityHover: {
         type: 'number',
+        default: JSON.stringify(attributesData.opacityHover)
     },
     background: {
         type: 'string',
@@ -98,25 +59,80 @@ const attributes = {
         type: 'string',
         default: JSON.stringify(attributesData.padding)
     },
+    hoverPadding: {
+        type: 'string',
+        default: JSON.stringify(attributesData.padding)
+    },
     hoverAnimation: {
         type: 'string',
         default: 'none',
+    },
+    hoverAnimationType: {
+        type: 'string',
+        default: 'tilt',
+    },
+    hoverAnimationTypeText: {
+        type: 'string',
+        default: 'fade',
     },
     hoverAnimationDuration: {
         type: 'string',
         default: 'normal',
     },
-    extraClassName: {
+    hoverCustomTextContent: {
         type: 'string',
-        default: ''
+        default: 'no'
     },
-    extraStyles: {
+    hoverCustomTextTitle: {
         type: 'string',
-        default: ''
+        default: 'no'
     },
-    zIndex: {
-        type: 'number'
-    }
+    hoverAnimationTitle: {
+        type: 'string',
+        default: 'Add your Hover Title here',
+    },
+    hoverAnimationContent: {
+        type: 'string',
+        default: 'Add your Hover Content here',
+    },
+    hoverAnimationCustomBorder: {
+        type: 'string',
+        default: 'no'
+    },
+    hoverAnimationTitleTypography: {
+        type: 'string',
+        default: JSON.stringify(attributesData.typography)
+    },
+    hoverAnimationContentTypography: {
+        type: 'string',
+        default: JSON.stringify(attributesData.typography)
+    },
+    hoverCustomTextContent: {
+        type: 'string',
+        default: 'no'
+    },
+    hoverCustomTextTitle: {
+        type: 'string',
+        default: 'no'
+    },
+    hoverBorder: {
+        type: 'string',
+        default: JSON.stringify(attributesData.border)
+    },
+    hoverBackground: {
+        type: 'string',
+        default: JSON.stringify(attributesData.background)
+    },
+    hoverAnimationTypeOpacity: {
+        type: 'number',
+    },
+    hoverAnimationTypeOpacityColor: {
+        type: 'number',
+    },
+    hoverAnimationTypeOpacityColorBackground: {
+        type: 'string',
+        default: JSON.stringify(attributesData.background)
+    },
 }
 
 export default attributes;

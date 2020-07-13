@@ -12,6 +12,7 @@ import {
 	uniqueId,
 	isEmpty,
 	isNil,
+	isNumber
 } from 'lodash';
 
 /**
@@ -41,6 +42,14 @@ function addAttributes(settings) {
 	// Add custom selector/id
 	if (allowedBlocks.includes(settings.name) && !isNil(settings.attributes)) {
 		settings.attributes = Object.assign(settings.attributes, {
+			blockStyle: {
+				type: 'string',
+				default: 'maxi-custom'
+			},
+			defaultBlockStyle: {
+				type: 'string',
+				default: 'maxi-def-light'
+			},
 			uniqueID: {
 				type: 'string',
 			},
@@ -50,7 +59,27 @@ function addAttributes(settings) {
 			linkSettings: {
 				type: 'string',
 				default: '{}'
-			}
+			},
+			hoverAnimation: {
+				type: 'string',
+				default: 'none',
+			},
+			hoverAnimationDuration: {
+				type: 'string',
+				default: 'normal',
+			},
+			extraClassName: {
+				type: 'string',
+				default: ''
+			},
+			zIndex: {
+				type: 'string',
+				default: '{"label":"ZIndex","general":{"z-index":""},"xl":{"z-index":""},"l":{"z-index":""},"m":{"z-index":""},"s":{"z-index":""},"xs":{"z-index":""}}'
+			},
+			breakpoints: {
+				type: 'string',
+				default: '{"label":"Breakpoints","general":"","xl":"","l":"","m":"","s":"","xs":""}'
+			},
 		});
 	}
 
@@ -74,7 +103,7 @@ const withAttributes = createHigherOrderComponent(
 		const {
 			attributes: {
 				uniqueID,
-				isFirstOnHierarchy
+				breakpoints,
 			},
 			name,
 			clientId
@@ -87,12 +116,28 @@ const withAttributes = createHigherOrderComponent(
 
 			// isFirstOnHierarchy
 			let parentBlocks = select('core/block-editor').getBlockParents(clientId)
-				.filter(el => {return el != clientId});
+				.filter(el => { return el != clientId });
 
 			if (parentBlocks.includes(clientId))
 				parentBlocks.pop()
 
 			props.attributes.isFirstOnHierarchy = isEmpty(parentBlocks);
+
+			// Breakpoints
+			const defaultBreakpoints = select('maxiBlocks').receiveMaxiBreakpoints();
+			const value = JSON.parse(breakpoints);
+
+			if (!isNumber(value.xl) && !isEmpty(defaultBreakpoints)) {
+				const response = {
+					xl: defaultBreakpoints['xl'],
+					l: defaultBreakpoints['l'],
+					m: defaultBreakpoints['m'],
+					s: defaultBreakpoints['s'],
+					xs: defaultBreakpoints['xs'],
+				}
+
+				props.attributes.breakpoints = JSON.stringify(response);
+			}
 		}
 
 		return <BlockEdit {...props} />;

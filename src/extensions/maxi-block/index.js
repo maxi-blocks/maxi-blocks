@@ -7,15 +7,16 @@
 /**
 * WordPress dependencies
 */
+const { Component } = wp.element;
 const {
     dispatch,
     select,
+    subscribe
 } = wp.data;
 
 /**
  * Internal dependencies
  */
-import GXComponent from '../maxi-component';
 import {
     ResponsiveStylesResolver,
     BackEndResponsiveStyles
@@ -36,9 +37,11 @@ import {
 /**
  * Class
  */
-class GXBlock extends GXComponent {
+class MaxiBlock extends Component {
     state = {
         styles: {},
+        updating: false,
+        breakpoints: this.getBreakpoints,
     }
 
     constructor() {
@@ -47,6 +50,40 @@ class GXBlock extends GXComponent {
         this.fixProps();
     }
 
+    componentDidMount() {
+        this.displayStyles();
+        this.saveProps();
+    }
+
+    componentDidUpdate() {
+        this.displayStyles();
+
+        if (!select('core/editor').isSavingPost() && this.state.updating) {
+            this.setState({
+                updating: false
+            })
+            this.saveProps();
+        }
+    }
+
+    componentWillUnmount() {
+        this.removeStyle();
+    }
+
+    uniqueIDChecker(idToCheck) {
+        if (!isEmpty(document.getElementsByClassName(idToCheck))) {
+            const newUniqueId = uniqueId(idToCheck.replace(idToCheck.match(/(\d+)(?!.*\d)/)[0], ''));
+
+            this.uniqueIDChecker(newUniqueId);
+
+            this.props.setAttributes({ uniqueID: newUniqueId })
+        }
+    }
+
+    /**
+     * In case some object has been modified and an old block has a prop that doesn't correspond
+     * with that object, this shoudl help. It can grow with different handlers/helpers to fix errors.
+     */
     fixProps() {
         Object.entries(this.props.attributes).map(([key, value]) => {
             let obj;
@@ -78,31 +115,45 @@ class GXBlock extends GXComponent {
         return defaultObj;
     }
 
-    componentDidMount() {
-        this.displayStyles();
-    }
+    /**
+     * Fix preview displays
+     */
+    saveProps() {
+        const unsubscribe = subscribe(() => {
+            const isSavingPost = select('core/editor').isSavingPost();
+            const isPreviewing = select('core/editor').isPreviewingPost();
 
-    componentDidUpdate() {
-        this.displayStyles();
-    }
+            if (isSavingPost && !isPreviewing && !this.state.updating) {
+                this.setState({
+                    updating: true
+                })
+                unsubscribe();
 
-    componentWillUnmount() {
-        this.removeStyle();
-    }
-
-    uniqueIDChecker(idToCheck) {
-        if (!isEmpty(document.getElementsByClassName(idToCheck))) {
-            const newUniqueId = uniqueId(idToCheck.replace(idToCheck.match(/(\d+)(?!.*\d)/)[0], ''));
-
-            this.uniqueIDChecker(newUniqueId);
-
-            this.props.setAttributes({ uniqueID: newUniqueId })
-        }
+                dispatch('maxiBlocks').saveMaxiStyles(this.getMeta, true)
+            }
+        })
     }
 
     get getMeta() {
-        let meta = select('core/editor').getEditedPostAttribute('meta')._gutenberg_extra_responsive_styles;
-        return meta ? JSON.parse(meta) : {};
+        let meta = select('maxiBlocks').receiveMaxiStyles();
+
+        switch (typeof meta) {
+            case 'string':
+                if(!isEmpty(meta))
+                    return JSON.parse(meta);
+                else
+                    return {};
+            case 'object':
+                return meta;
+            case 'undefined':
+                return {}
+        }
+    }
+
+    get getBreakpoints() {
+        const { breakpoints } = this.props.attributes;
+
+        return JSON.parse(breakpoints);
     }
 
     get getObject() {
@@ -111,15 +162,19 @@ class GXBlock extends GXComponent {
 
     metaValue() {
         const obj = this.getObject;
+        const breakpoints = this.getBreakpoints;
 
-        if (isEqual(obj, this.state.styles))
+        if (isEqual(obj, this.state.styles) && isEqual(breakpoints, this.state.breakpoints))
             return null;
 
+        const meta = this.getMeta;
+
         this.setState({
-            styles: obj
+            styles: obj,
+            breakpoints
         })
 
-        return new ResponsiveStylesResolver(obj);
+        return new ResponsiveStylesResolver(obj, meta, breakpoints);
     }
 
     /** 
@@ -128,9 +183,8 @@ class GXBlock extends GXComponent {
     displayStyles() {
         const newMeta = this.metaValue();
 
-        if (isNil(newMeta) || isEqual(this.getMeta, newMeta))
+        if (isNil(newMeta))
             return;
-
         this.saveMeta(newMeta);
     }
 
@@ -145,26 +199,9 @@ class GXBlock extends GXComponent {
     }
 
     saveMeta(newMeta) {
-        const post = select('core/editor').getCurrentPost();
-        const id = post.id;
-        const type = post.type;
-
-        dispatch('core').editEntityRecord(
-            'postType',
-            type,
-            id,
-            {
-                meta: {
-                    _gutenberg_extra_responsive_styles: JSON.stringify(newMeta)
-                }
-            },
-            {
-                undoIgnore: true
-            }
-        )
+        dispatch('maxiBlocks').saveMaxiStyles(newMeta)
             .then(new BackEndResponsiveStyles(newMeta))
-            .catch(err => console.error(err))
     }
 }
 
-export default GXBlock;
+export default MaxiBlock;

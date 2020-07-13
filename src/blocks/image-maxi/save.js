@@ -1,12 +1,10 @@
 /**
- * WordPress dependencies
- */
-const { Button } = wp.components;
-
-/**
  * External dependencies
  */
 import classnames from 'classnames';
+import { isNil } from 'lodash';
+// import postscribe from 'postscribe';
+import Scripts from '../../extensions/styles/hoverAnimations.js';
 
 /**
  * Save
@@ -28,7 +26,15 @@ const save = props => {
             mediaHeight,
             mediaALT,
             hoverAnimation,
+            hoverAnimationType,
+            hoverAnimationTypeText,
             hoverAnimationDuration,
+            hoverAnimationTitle,
+            hoverAnimationContent,
+            hoverOpacity,
+            hoverBackground,
+            hoverAnimationCustomBorder,
+            hoverPadding,
         },
     } = props;
 
@@ -36,21 +42,24 @@ const save = props => {
         'maxi-block maxi-image-block',
         blockStyle,
         extraClassName,
-        'hover-animation-type-'+hoverAnimation,
-        'hover-animation-duration-'+hoverAnimationDuration,
+        'hover-animation-' + hoverAnimation,
+        'hover-animation-type-' + hoverAnimationType,
+        'hover-animation-type-text-' + hoverAnimationTypeText,
+        'hover-animation-duration-' + hoverAnimationDuration,
         uniqueID,
         className,
         fullWidth === 'full' ?
             'alignfull' :
-            '',
+            null,
+        !isNil(uniqueID) ?
+            uniqueID :
+            null
     );
-    if (uniqueID && (typeof uniqueID !== 'undefined'))
-        classes = classnames(classes, uniqueID);
 
     return (
         <figure
             className={classes}
-            data-gx_initial_block_class={defaultBlockStyle}
+            data-maxi_initial_block_class={defaultBlockStyle}
         >
             <img
                 className={"wp-image-" + mediaID}
@@ -59,10 +68,44 @@ const save = props => {
                 height={mediaHeight}
                 alt={mediaALT}
             />
-            {captionType !== 'none' &&
+            {
+                captionType !== 'none' &&
                 <figcaption>
                     {captionContent}
                 </figcaption>
+            }
+            {
+                hoverAnimation === 'text' &&
+                <div className='maxi-block-text-hover'>
+                    {
+                        hoverAnimationTitle !== '' &&
+                        <h3 className='maxi-block-text-hover__title'>
+                            {hoverAnimationTitle}
+                        </h3>
+                    }
+                    {
+                        hoverAnimationContent !== '' &&
+                        <div className='maxi-block-text-hover__content'>
+                            {hoverAnimationContent}
+                        </div>
+                    }
+                </div>
+            }
+            {
+                hoverAnimation === 'basic' &&
+                <Scripts
+                    hover_animation={hoverAnimationType}
+                    hover_animation_type={hoverAnimation}
+                >
+                </Scripts>
+            }
+            {
+                hoverAnimation === 'text' &&
+                <Scripts
+                    hover_animation={hoverAnimationTypeText}
+                    hover_animation_type={hoverAnimation}
+                >
+                </Scripts>
             }
         </figure>
     );

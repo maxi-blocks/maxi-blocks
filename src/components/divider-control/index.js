@@ -34,7 +34,10 @@ import { getDefaultProp } from '../../extensions/styles/utils';
 /**
  * External dependencies
  */
-import { isNil } from 'lodash';
+import { 
+    isNil,
+    isObject
+} from 'lodash';
 
 /**
  * Icons
@@ -63,7 +66,7 @@ const DividerControl = props => {
         lineOrientation
     )
 
-    const value = typeof dividerOptions != 'object' ?
+    const value = !isObject(dividerOptions) ?
         JSON.parse(dividerOptions) :
         dividerOptions
 

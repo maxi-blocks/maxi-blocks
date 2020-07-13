@@ -8,23 +8,9 @@ import * as buttonAttributesData from './data';
  * Attributes
  */
 const attributes = {
-    blockStyle: {
+    alignment: {
         type: 'string',
-        default: 'maxi-custom'
-    },
-    defaultBlockStyle: {
-        type: 'string',
-        default: 'maxi-def-light'
-    },
-    alignmentDesktop: {
-        type: 'string',
-        default: 'center'
-    },
-    alignmentTablet: {
-        type: 'string',
-    },
-    alignmentMobile: {
-        type: 'string',
+        default: JSON.stringify(attributesData.alignment)
     },
     typography: {
         type: 'string',
@@ -44,10 +30,11 @@ const attributes = {
     },
     opacity: {
         type: 'number',
-        default: 100
+        default: JSON.stringify(attributesData.opacity)
     },
     opacityHover: {
         type: 'number',
+        default: JSON.stringify(attributesData.opacityHover)
     },
     border: {
         type: 'string',
@@ -77,37 +64,10 @@ const attributes = {
         type: 'string',
         default: JSON.stringify(buttonAttributesData.padding)
     },
-    hoverAnimation: {
-        type: 'string',
-        default: 'none',
-    },
-    hoverAnimationType: {
-        type: 'string',
-        default: 'none',
-    },
-    hoverAnimationDuration: {
-        type: 'string',
-        default: 'normal',
-    },
-    extraClassName: {
-        type: 'string',
-        default: ''
-    },
-    extraStyles: {
-        type: 'string',
-        default: ''
-    },
     buttonText: {
         type: 'string',
         default: ''
     },
-    linkOptions: {
-        type: 'string',
-        default: '{}'
-    },
-    zIndex: {
-        type: 'number'
-    }
 }
 
 export default attributes;

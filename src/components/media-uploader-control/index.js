@@ -28,7 +28,6 @@ import './editor.scss';
  * Component
  */
 const MediaUploader = props => {
-
     const {
         className,
         mediaType = 'image',

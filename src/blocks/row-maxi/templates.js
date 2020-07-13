@@ -31,14 +31,40 @@ const TEMPLATES = [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 100,
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": true,
+                                "size": 100
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    ),
                 }
             ],
         ],
         attributes: {
-            columnGap: 0,
-            syncSize: true,
-            horizontalAlign: 'flex-start',
+            horizontalAlign: 'space-between',
             verticalAlign: 'stretch'
         }
     },
@@ -50,21 +76,75 @@ const TEMPLATES = [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 47.5,
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 47.5
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
             [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 47.5,
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 45
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
         ],
         attributes: {
-            columnGap: 2.1,
-            syncSize: true,
-            horizontalAlign: 'flex-start',
+            horizontalAlign: 'space-between',
             verticalAlign: 'stretch'
         }
     },
@@ -76,21 +156,75 @@ const TEMPLATES = [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 23.7
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 23.7
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
             [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 71.3
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 71.3
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
         ],
         attributes: {
-            columnGap: 2.1,
-            syncSize: false,
-            horizontalAlign: 'flex-start',
+            horizontalAlign: 'space-between',
             verticalAlign: 'stretch'
         }
     },
@@ -102,21 +236,75 @@ const TEMPLATES = [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 71.3,
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 71.3,
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
             [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 23.7,
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 23.7,
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
         ],
         attributes: {
-            columnGap: 2.1,
-            syncSize: false,
-            horizontalAlign: 'flex-start',
+            horizontalAlign: 'space-between',
             verticalAlign: 'stretch'
         }
     },
@@ -128,21 +316,75 @@ const TEMPLATES = [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 19
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 19
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
             [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 76
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 76
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
         ],
         attributes: {
-            columnGap: 2.1,
-            syncSize: false,
-            horizontalAlign: 'flex-start',
+            horizontalAlign: 'space-between',
             verticalAlign: 'stretch'
         }
     },
@@ -154,21 +396,75 @@ const TEMPLATES = [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 76,
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 76,
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
             [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 19,
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 19,
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
         ],
         attributes: {
-            columnGap: 2.1,
-            syncSize: false,
-            horizontalAlign: 'flex-start',
+            horizontalAlign: 'space-between',
             verticalAlign: 'stretch'
         }
     },
@@ -180,28 +476,110 @@ const TEMPLATES = [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 30,
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 30,
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
             [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 30,
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 30,
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
             [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 30,
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 30,
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
         ],
         attributes: {
-            columnGap: 2.1,
-            syncSize: true,
-            horizontalAlign: 'flex-start',
+            horizontalAlign: 'space-between',
             verticalAlign: 'stretch'
         }
     },
@@ -213,28 +591,110 @@ const TEMPLATES = [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 22.5
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 22.5
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
             [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 22.5
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 22.5
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
             [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 45
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 45
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
         ],
         attributes: {
-            columnGap: 2.1,
-            syncSize: false,
-            horizontalAlign: 'flex-start',
+            horizontalAlign: 'space-between',
             verticalAlign: 'stretch'
         }
     },
@@ -246,28 +706,110 @@ const TEMPLATES = [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 15
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 15
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
             [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 15
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 15
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
             [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 60
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 60
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
         ],
         attributes: {
-            columnGap: 2.1,
-            syncSize: false,
-            horizontalAlign: 'flex-start',
+            horizontalAlign: 'space-between',
             verticalAlign: 'stretch'
         }
     },
@@ -279,28 +821,110 @@ const TEMPLATES = [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 15
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 15
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
             [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 60
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 60
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
             [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 15
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 15
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
         ],
         attributes: {
-            columnGap: 2.1,
-            syncSize: false,
-            horizontalAlign: 'flex-start',
+            horizontalAlign: 'space-between',
             verticalAlign: 'stretch'
         }
     },
@@ -312,28 +936,110 @@ const TEMPLATES = [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 45,
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 45,
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
             [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 22.5,
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 22.5,
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
             [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 22.5,
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 22.5,
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
         ],
         attributes: {
-            columnGap: 2.1,
-            syncSize: false,
-            horizontalAlign: 'flex-start',
+            horizontalAlign: 'space-between',
             verticalAlign: 'stretch'
         }
     },
@@ -345,28 +1051,110 @@ const TEMPLATES = [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 60,
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 60,
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
             [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 15,
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 15,
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
             [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 15,
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 15,
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
         ],
         attributes: {
-            columnGap: 2.1,
-            syncSize: false,
-            horizontalAlign: 'flex-start',
+            horizontalAlign: 'space-between',
             verticalAlign: 'stretch'
         }
     },
@@ -378,35 +1166,145 @@ const TEMPLATES = [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 21.3,
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 21.3,
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
             [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 21.3,
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 21.3,
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
             [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 21.3,
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 21.3,
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
             [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 21.3,
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 21.3,
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
         ],
         attributes: {
-            columnGap: 2.1,
-            syncSize: true,
-            horizontalAlign: 'flex-start',
+            horizontalAlign: 'space-between',
             verticalAlign: 'stretch'
         }
     },
@@ -418,42 +1316,180 @@ const TEMPLATES = [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 16,
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 16,
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
             [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 16,
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 16,
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
             [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 16,
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 16,
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
             [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 16,
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 16,
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
             [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 16,
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 16,
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
         ],
         attributes: {
-            columnGap: 2.1,
-            syncSize: true,
-            horizontalAlign: 'flex-start',
+            horizontalAlign: 'space-between',
             verticalAlign: 'stretch'
         }
     },
@@ -465,49 +1501,215 @@ const TEMPLATES = [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 12.5,
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 12.5,
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
             [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 12.5,
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 12.5,
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
             [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 12.5,
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 12.5,
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
             [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 12.5,
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 12.5,
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
             [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 12.5,
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 12.5,
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
             [
                 'maxi-blocks/column-maxi',
                 {
                     uniqueID: 'maxi-column-maxi-1',
-                    columnSize: 12.5,
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 12.5,
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
                 }
             ],
         ],
         attributes: {
-            columnGap: 2.1,
-            syncSize: true,
-            horizontalAlign: 'flex-start',
+            horizontalAlign: 'space-between',
             verticalAlign: 'stretch'
         }
     },

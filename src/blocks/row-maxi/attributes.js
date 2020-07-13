@@ -10,28 +10,21 @@ const attributes = {
     rowPattern: {
         type: 'number',
     },
-    blockStyle: {
+    horizontalAlign: {
         type: 'string',
-        default: 'maxi-custom'
+        default: 'space-between'
     },
-    defaultBlockStyle: {
+    verticalAlign: {
         type: 'string',
-        default: 'maxi-def-light'
-    },
-    columnGap: {
-        type: 'number',
-        default: 0
-    },
-    wrap: {
-        type: 'number',
-        default: 768,
+        default: 'stretch'
     },
     opacity: {
         type: 'number',
-        default: 1,
+        default: JSON.stringify(attributesData.opacity)
     },
     opacityHover: {
         type: 'number',
+        default: JSON.stringify(attributesData.opacityHover)
     },
     background: {
         type: 'string',
@@ -92,17 +85,6 @@ const attributes = {
     hoverAnimationDuration: {
         type: 'string',
         default: 'normal',
-    },
-    extraClassName: {
-        type: 'string',
-        default: ''
-    },
-    extraStyles: {
-        type: 'string',
-        default: ''
-    },
-    zIndex: {
-        type: 'number'
     },
     hoverCustomTextContent: {
         type: 'string',

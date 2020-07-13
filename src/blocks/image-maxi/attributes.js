@@ -2,43 +2,23 @@
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults';
+import { size } from './data';
 
 /**
  * Attributes
  */
 const attributes = {
-    blockStyle: {
-        type: 'string',
-        default: 'maxi-custom'
-    },
-    defaultBlockStyle: {
-        type: 'string',
-        default: 'maxi-def-light'
-    },
-    size: {
+    imageSize: {
         type: 'string',
         default: 'full'
-    },
-    sizeOptions: {
-        type: 'string',
     },
     cropOptions: {
         type: 'string',
         default: JSON.stringify(attributesData.cropOptions)
     },
-    fullWidth: {
+    alignment: {
         type: 'string',
-        default: 'normal',
-    },
-    alignmentDesktop: {
-        type: 'string',
-        default: 'center'
-    },
-    alignmentTablet: {
-        type: 'string',
-    },
-    alignmentMobile: {
-        type: 'string',
+        default: JSON.stringify(attributesData.alignment)
     },
     captionType: {
         type: 'string',
@@ -52,27 +32,21 @@ const attributes = {
         type: 'string',
         default: JSON.stringify(attributesData.typography)
     },
-    maxWidthUnit: {
+    fullWidth: {
         type: 'string',
-        default: 'px'
+        default: 'normal',
     },
-    maxWidth: {
-        type: 'number',
-    },
-    widthUnit: {
+    size: {
         type: 'string',
-        default: 'px'
-    },
-    width: {
-        type: 'number',
-        default: 100
+        default: JSON.stringify(size)
     },
     opacity: {
-        type: 'number',
-        default: 1
+        type: 'string',
+        default: JSON.stringify(attributesData.opacity)
     },
     opacityHover: {
-        type: 'number',
+        type: 'string',
+        default: JSON.stringify(attributesData.opacityHover)
     },
     hoverOpacity: {
         type: 'number',
@@ -131,30 +105,6 @@ const attributes = {
         type: 'string',
         default: JSON.stringify(attributesData.margin)
     },
-    hoverAnimation: {
-        type: 'string',
-        default: 'none',
-    },
-    hoverAnimationDuration: {
-        type: 'string',
-        default: 'normal',
-    },
-    hoverAnimationType: {
-        type: 'string',
-        default: 'tilt',
-    },
-    hoverAnimationTypeText: {
-        type: 'string',
-        default: 'fade',
-    },
-    extraClassName: {
-        type: 'string',
-        default: ''
-    },
-    extraStyles: {
-        type: 'string',
-        default: ''
-    },
     mediaID: {
         type: 'number',
     },
@@ -173,8 +123,21 @@ const attributes = {
     mediaHeight: {
         type: 'number'
     },
-    zIndex: {
-        type: 'number'
+    hoverAnimation: {
+        type: 'string',
+        default: 'none',
+    },
+    hoverAnimationDuration: {
+        type: 'string',
+        default: 'normal',
+    },
+    hoverAnimationType: {
+        type: 'string',
+        default: 'tilt',
+    },
+    hoverAnimationTypeText: {
+        type: 'string',
+        default: 'fade',
     },
     hoverAnimationTitle: {
         type: 'string',

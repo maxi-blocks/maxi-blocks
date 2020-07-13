@@ -25,7 +25,8 @@ const BoxShadow = props => {
     const {
         blockName,
         boxShadow,
-        onChange
+        onChange,
+        breakpoint
     } = props;
 
     if (!ALLOWED_BLOCKS.includes(blockName))
@@ -37,8 +38,9 @@ const BoxShadow = props => {
             icon={toolbarDropShadow}
             content={(
                 <BoxShadowControl
-                    boxShadowOptions={boxShadow}
+                    boxShadow={boxShadow}
                     onChange={boxShadow => onChange(boxShadow)}
+                    breakpoint={breakpoint}
                 />
             )}
         />

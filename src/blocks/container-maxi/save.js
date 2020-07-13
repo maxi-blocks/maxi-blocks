@@ -8,6 +8,7 @@ const { Fragment } = wp.element;
  * External dependencies
  */
 import classnames from 'classnames';
+import { isNil } from 'lodash';
 import Scripts from '../../extensions/styles/hoverAnimations.js';
 
 /**
@@ -15,7 +16,6 @@ import Scripts from '../../extensions/styles/hoverAnimations.js';
  */
 const save = props => {
     const {
-        className,
         attributes: {
             uniqueID,
             isFirstOnHierarchy,
@@ -33,7 +33,8 @@ const save = props => {
             hoverBackground,
             hoverAnimationCustomBorder,
             hoverPadding,
-        }
+        },
+        className,
     } = props;
 
     let classes = classnames(
@@ -47,10 +48,11 @@ const save = props => {
         className,
         fullWidth === 'full' ?
             'alignfull' :
-            '',
+            null,
+        !isNil(uniqueID) ?
+            uniqueID :
+            null        
     );
-    if (uniqueID && (typeof uniqueID !== 'undefined'))
-        classes = classnames(classes, uniqueID);
 
     return (
         <Fragment>

@@ -22,8 +22,9 @@ const ALLOWED_BLOCKS = [
 const Alignment = props => {
     const {
         blockName,
-        alignmentDesktop,
-        onChange
+        alignment,
+        onChange,
+        breakpoint
     } = props;
 
     if (!ALLOWED_BLOCKS.includes(blockName))
@@ -35,13 +36,14 @@ const Alignment = props => {
             icon={toolbarAlign}
             content={(
                 <AlignmentControl
-                    value={alignmentDesktop}
-                    onChange={alignmentDesktop => onChange(alignmentDesktop)}
+                    alignment={alignment}
+                    onChange={alignment => onChange(alignment)}
                     disableJustify={
                         ( blockName === 'maxi-blocks/text-maxi' || blockName === 'maxi-blocks/button-maxi' ) ?
                             false :
                             true
                     }
+                    breakpoint={breakpoint}
                 />
             )}
         />

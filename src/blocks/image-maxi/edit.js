@@ -20,11 +20,12 @@ const {
 import Inspector from './inspector';
 import {
     getBackgroundObject,
-    getBoxShadowObject
+    getBoxShadowObject,
+    getAlignmentFlexObject
 } from '../../extensions/styles/utils';
 import {
     MaxiBlock,
-    __experimentalToolbar
+    __experimentalToolbar,
 } from '../../components';
 
 /**
@@ -34,7 +35,7 @@ import classnames from 'classnames';
 import {
     isEmpty,
     isNil,
-    isNumber
+    isObject
 } from 'lodash';
 
 /**
@@ -79,9 +80,7 @@ class edit extends MaxiBlock {
 
     get getNormalObject() {
         const {
-            alignmentDesktop,
-            alignmentTablet,
-            alignmentMobile,
+            alignment,
             opacity,
             background,
             boxShadow,
@@ -95,61 +94,10 @@ class edit extends MaxiBlock {
             padding: { ...JSON.parse(padding) },
             margin: { ...JSON.parse(margin) },
             background: { ...getBackgroundObject(JSON.parse(background)) },
-            image: {
-                label: 'Image',
-                general: {},
-                desktop: {},
-                tablet: {},
-                mobile: {}
-            }
+            opacity: { ...JSON.parse(opacity) },
+            zindex: { ...JSON.parse(zIndex) },
+            alignment: { ...getAlignmentFlexObject(JSON.parse(alignment)) }
         };
-
-        if (!isNil(alignmentDesktop)) {
-            switch (alignmentDesktop) {
-                case 'left':
-                    response.image.desktop['align-items'] = 'flex-start';
-                    break;
-                case 'center':
-                case 'justify':
-                    response.image.desktop['align-items'] = 'center';
-                    break;
-                case 'right':
-                    response.image.desktop['align-items'] = 'flex-end';
-                    break;
-            }
-        }
-        if (!isNil(alignmentTablet)) {
-            switch (alignmentTablet) {
-                case 'left':
-                    response.image.tablet['align-items'] = 'flex-start';
-                    break;
-                case 'center':
-                case 'justify':
-                    response.image.tablet['align-items'] = 'center';
-                    break;
-                case 'right':
-                    response.image.tablet['align-items'] = 'flex-end';
-                    break;
-            }
-        }
-        if (!isNil(alignmentMobile)) {
-            switch (alignmentMobile) {
-                case 'left':
-                    response.image.mobile['align-items'] = 'flex-start';
-                    break;
-                case 'center':
-                case 'justify':
-                    response.image.mobile['align-items'] = 'center';
-                    break;
-                case 'right':
-                    response.image.mobile['align-items'] = 'flex-end';
-                    break;
-            }
-        }
-        if (isNumber(opacity))
-            response.image.general['opacity'] = opacity;
-        if (isNumber(zIndex))
-            response.image.general['z-index'] = zIndex;
 
         return response;
     }
@@ -164,31 +112,20 @@ class edit extends MaxiBlock {
         const response = {
             boxShadowHover: { ...getBoxShadowObject(JSON.parse(boxShadowHover)) },
             backgroundHover: { ...getBackgroundObject(JSON.parse(backgroundHover)) },
-            imageHover: {
-                label: 'Image Hover',
-                general: {}
-            }
+            opacityHover: { ...JSON.parse(opacityHover) }
         }
-        if (opacityHover)
-            response.imageHover.general['opacity'] = opacityHover;
 
         return response;
     }
 
     get getImageFrontendObject() {
         const {
-            width,
+            size,
         } = this.props.attributes;
 
         const response = {
-            imageSize: {
-                label: 'Image Size',
-                general: {}
-            }
+            imageSize: { ...JSON.parse(size) }
         };
-
-        if (!!width)
-            response.imageSize.general['width'] = `${width}%`;
 
         return response
     }
@@ -216,10 +153,6 @@ class edit extends MaxiBlock {
             border: { ...JSON.parse(border) },
             borderWidth: { ...JSON.parse(border).borderWidth },
             borderRadius: { ...JSON.parse(border).borderRadius },
-            imageSize: {
-                label: 'Image Size',
-                general: {}
-            }
         };
 
         return response
@@ -337,15 +270,16 @@ class edit extends MaxiBlock {
                 defaultBlockStyle,
                 extraClassName,
                 fullWidth,
+                size,
+                cropOptions,
                 captionType,
                 captionContent,
-                size,
+                imageSize,
                 mediaID,
                 mediaALT,
                 mediaURL,
                 mediaWidth,
                 mediaHeight,
-                width,
                 hoverAnimation,
                 hoverAnimationType,
                 hoverAnimationTypeText,
@@ -355,31 +289,34 @@ class edit extends MaxiBlock {
             setAttributes,
         } = this.props;
 
-
         let classes = classnames(
-               'maxi-block maxi-image-block',
-               blockStyle,
-               extraClassName,
-               'hover-animation-'+hoverAnimation,
-               'hover-animation-type-'+hoverAnimationType,
-               'hover-animation-type-text-'+hoverAnimationTypeText,
-               'hover-animation-duration-'+hoverAnimationDuration,
-               uniqueID,
-               className,
-               fullWidth === 'full' ?
-                   'alignfull' :
-                   '',
-           );
+            'maxi-block maxi-image-block',
+            blockStyle,
+            extraClassName,
+            'hover-animation-' + hoverAnimation,
+            'hover-animation-type-' + hoverAnimationType,
+            'hover-animation-type-text-' + hoverAnimationTypeText,
+            'hover-animation-duration-' + hoverAnimationDuration,
+            uniqueID,
+            className,
+            fullWidth === 'full' ?
+                'alignfull' :
+                '',
+        );
 
-        const cropOptions = typeof this.props.attributes.cropOptions === 'object' ?
-            this.props.attributes.cropOptions :
-            JSON.parse(this.props.attributes.cropOptions);
+        const cropOptionsValue = !isObject(cropOptions) ?
+            JSON.parse(cropOptions) :
+            cropOptions;
+
+        const sizeValue = !isObject(size) ?
+            JSON.parse(size) :
+            size;
 
         const getImage = () => {
-            if (size === 'custom' && !isEmpty(cropOptions.image.source_url))
-                return cropOptions.image;
-            if (imageData && size)
-                return imageData.media_details.sizes[size];
+            if (imageSize === 'custom' && !isEmpty(cropOptionsValue.image.source_url))
+                return cropOptionsValue.image;
+            if (imageData && imageSize)
+                return imageData.media_details.sizes[imageSize];
             if (imageData)
                 return imageData.media_details.sizes.full;
         }
@@ -415,7 +352,7 @@ class edit extends MaxiBlock {
                                     <ResizableBox
                                         className='maxi-block__resizer maxi-image-block__resizer'
                                         size={{
-                                            width: `${width}%`,
+                                            width: `${sizeValue.general.width}%`,
                                             height: '100%'
                                         }}
                                         maxWidth='100%'
@@ -431,8 +368,9 @@ class edit extends MaxiBlock {
                                         }}
                                         onResizeStop={(event, direction, elt, delta) => {
                                             const newScale = Number(((elt.getBoundingClientRect().width / this.getWrapperWidth) * 100).toFixed());
+                                            sizeValue.general.width = newScale
                                             setAttributes({
-                                                width: Number(newScale.toFixed()),
+                                                size: JSON.stringify(sizeValue),
                                             });
                                         }}
                                     >
@@ -482,15 +420,15 @@ class edit extends MaxiBlock {
                 />
                 {hoverAnimation === 'basic' &&
                     <Scripts
-                    hover_animation = {hoverAnimationType}
-                    hover_animation_type = {hoverAnimation}
+                        hover_animation={hoverAnimationType}
+                        hover_animation_type={hoverAnimation}
                     >
                     </Scripts>
                 }
                 {hoverAnimation === 'text' &&
                     <Scripts
-                    hover_animation = {hoverAnimationTypeText}
-                    hover_animation_type = {hoverAnimation}
+                        hover_animation={hoverAnimationTypeText}
+                        hover_animation_type={hoverAnimation}
                     >
                     </Scripts>
                 }
@@ -500,14 +438,16 @@ class edit extends MaxiBlock {
 }
 
 export default withSelect((select, ownProps) => {
-    const {
-        attributes: {
-            mediaID
-        }
-    } = ownProps;
+    const { mediaID } = ownProps.attributes;
 
     const imageData = select('core').getMedia(mediaID);
+    let deviceType = select('core/edit-post').__experimentalGetPreviewDeviceType();
+    deviceType = deviceType === 'Desktop' ?
+        'general' :
+        deviceType;
+
     return {
-        imageData
+        imageData,
+        deviceType
     }
 })(edit);

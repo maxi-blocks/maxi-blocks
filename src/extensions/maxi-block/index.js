@@ -1,6 +1,6 @@
 /**
  * Maxi Blocks Block component extension
- * 
+ *
  * @todo Comment properly
  */
 
@@ -153,19 +153,22 @@ class MaxiBlock extends MaxiComponent {
     metaValue() {
         const obj = this.getObject;
 
-        if (isEqual(obj, this.state.styles))
-            return null;
+        if (!isNil(obj)) {
 
-        const meta = this.getMeta();
+            if (isEqual(obj, this.state.styles))
+                return null;
 
-        this.setState({
-            styles: obj
-        })
+            const meta = this.getMeta();
 
-        return new ResponsiveStylesResolver(obj, meta);
+            this.setState({
+                styles: obj
+            })
+
+            return new ResponsiveStylesResolver(obj, meta);
+        }
     }
 
-    /** 
+    /**
     * Refresh the styles on Editor
     */
     displayStyles() {

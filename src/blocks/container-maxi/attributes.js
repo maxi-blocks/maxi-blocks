@@ -102,10 +102,6 @@ const attributes = {
         type: 'string',
         default: JSON.stringify(attributesData.padding)
     },
-    hoverPadding: {
-        type: 'string',
-        default: JSON.stringify(attributesData.padding)
-    },
     hoverAnimation: {
         type: 'string',
         default: 'none',

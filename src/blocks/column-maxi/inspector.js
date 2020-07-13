@@ -7,10 +7,7 @@ const { InspectorControls } = wp.blockEditor;
 const {
     RangeControl,
     Button,
-<<<<<<< HEAD
-=======
     SelectControl,
->>>>>>> 6daf5d611651abc76f04dd66c45e9e691d3c4b53
     RadioControl,
 } = wp.components;
 

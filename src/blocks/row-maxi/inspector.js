@@ -147,11 +147,7 @@ const Inspector = props => {
                                                                 })
                                                             }}
                                                         />
-<<<<<<< HEAD
-                                                    }
-=======
                                                     </BaseControl>
->>>>>>> 6daf5d611651abc76f04dd66c45e9e691d3c4b53
                                                 </Fragment>
                                             )
                                         },
@@ -341,7 +337,6 @@ const Inspector = props => {
                                         hoverAnimationTypeOpacityColor={hoverAnimationTypeOpacityColor}
                                         onChangeHoverAnimationTypeOpacityColor={hoverAnimationTypeOpacityColor => setAttributes({ hoverAnimationTypeOpacityColor})}
 
-<<<<<<< HEAD
                                 />
                                 {hoverAnimation === 'text' && hoverCustomTextTitle === 'yes' &&
                                 <TypographyControl
@@ -373,39 +368,6 @@ const Inspector = props => {
                                     disableImage
                                     target='.maxi-block-text-hover'
                                 />
-=======
-                                />
-                                {hoverAnimation === 'text' && hoverCustomTextTitle === 'yes' &&
-                                <TypographyControl
-                                    fontOptions={hoverAnimationTitleTypography}
-                                    onChange={hoverAnimationTitleTypography=> setAttributes({ hoverAnimationTitleTypography })}
-                                    target='>.maxi-block-text-hover .maxi-block-text-hover__title'
-                                />}
-                                {hoverAnimation === 'text' && hoverCustomTextContent === 'yes' &&
-                                <TypographyControl
-                                    fontOptions={hoverAnimationContentTypography}
-                                    onChange={hoverAnimationContentTypography=> setAttributes({ hoverAnimationContentTypography })}
-                                    target='>.maxi-block-text-hover .maxi-block-text-hover__content'
-                                />}
-                                { hoverAnimation === 'text' &&
-                                <Fragment>
-                                <RangeControl
-                                    label={__('Opacity', 'maxi-blocks')}
-                                    className='maxi-opacity-control'
-                                    value={hoverOpacity * 100}
-                                    onChange={value => setAttributes({ hoverOpacity: value / 100 })}
-                                    min={0}
-                                    max={100}
-                                    allowReset={true}
-                                    initialPosition={0}
-                                />
-                                <BackgroundControl
-                                    backgroundOptions={hoverBackground}
-                                    onChange={hoverBackground => setAttributes({ hoverBackground })}
-                                    disableImage
-                                    target='.maxi-block-text-hover'
-                                />
->>>>>>> 6daf5d611651abc76f04dd66c45e9e691d3c4b53
 
                                 <RadioControl
                                     label={__('Custom Border', 'maxi-blocks')}

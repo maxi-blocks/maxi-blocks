@@ -7,16 +7,9 @@ import * as attributesData from '../../extensions/styles/defaults';
  * Attributes
  */
 const attributes = {
-    blockStyle: {
-        type: 'string',
-        default: 'maxi-custom'
-    },
-    defaultBlockStyle: {
-        type: 'string',
-        default: 'maxi-def-light'
-    },
     columnSize: {
-        type: 'number',
+        type: 'string',
+        default: JSON.stringify(attributesData.__experimentalColumn)
     },
     verticalAlign: {
         type: 'string',
@@ -24,10 +17,11 @@ const attributes = {
     },
     opacity: {
         type: 'number',
-        default: 1,
+        default: JSON.stringify(attributesData.opacity)
     },
     opacityHover: {
         type: 'number',
+        default: JSON.stringify(attributesData.opacityHover)
     },
     background: {
         type: 'string',

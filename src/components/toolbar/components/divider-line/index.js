@@ -62,7 +62,7 @@ const Divider = props => {
                         }
                     />
                     {
-                        showLine === 'yes' &&
+                        !!showLine &&
                         <Fragment>
                             <__experimentalDividerControl
                                 disableColor

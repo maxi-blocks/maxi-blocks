@@ -7,6 +7,7 @@
 /**
 * WordPress dependencies
 */
+const { Component } = wp.element;
 const {
     dispatch,
     select,
@@ -16,7 +17,6 @@ const {
 /**
  * Internal dependencies
  */
-import MaxiComponent from '../maxi-component';
 import {
     ResponsiveStylesResolver,
     BackEndResponsiveStyles
@@ -37,10 +37,11 @@ import {
 /**
  * Class
  */
-class MaxiBlock extends MaxiComponent {
+class MaxiBlock extends Component {
     state = {
         styles: {},
-        updating: false
+        updating: false,
+        breakpoints: this.getBreakpoints,
     }
 
     constructor() {
@@ -128,22 +129,31 @@ class MaxiBlock extends MaxiComponent {
                 })
                 unsubscribe();
 
-                dispatch('maxiBlocks').saveMaxiStyles(this.getMeta(), true)
+                dispatch('maxiBlocks').saveMaxiStyles(this.getMeta, true)
             }
         })
     }
 
-    getMeta() {
+    get getMeta() {
         let meta = select('maxiBlocks').receiveMaxiStyles();
 
         switch (typeof meta) {
             case 'string':
-                return JSON.parse(meta);
+                if(!isEmpty(meta))
+                    return JSON.parse(meta);
+                else
+                    return {};
             case 'object':
                 return meta;
             case 'undefined':
                 return {}
         }
+    }
+
+    get getBreakpoints() {
+        const { breakpoints } = this.props.attributes;
+
+        return JSON.parse(breakpoints);
     }
 
     get getObject() {
@@ -152,20 +162,19 @@ class MaxiBlock extends MaxiComponent {
 
     metaValue() {
         const obj = this.getObject;
+        const breakpoints = this.getBreakpoints;
 
-        if (!isNil(obj)) {
+        if (isEqual(obj, this.state.styles) && isEqual(breakpoints, this.state.breakpoints))
+            return null;
 
-            if (isEqual(obj, this.state.styles))
-                return null;
+        const meta = this.getMeta;
 
-            const meta = this.getMeta();
+        this.setState({
+            styles: obj,
+            breakpoints
+        })
 
-            this.setState({
-                styles: obj
-            })
-
-            return new ResponsiveStylesResolver(obj, meta);
-        }
+        return new ResponsiveStylesResolver(obj, meta, breakpoints);
     }
 
     /**
@@ -180,8 +189,8 @@ class MaxiBlock extends MaxiComponent {
     }
 
     removeStyle(target = this.props.attributes.uniqueID) {
-        let cleanMeta = { ...this.getMeta() };
-        Object.keys(this.getMeta()).map(key => {
+        let cleanMeta = { ...this.getMeta };
+        Object.keys(this.getMeta).map(key => {
             if (key.indexOf(target) >= 0)
                 delete cleanMeta[key]
         })
@@ -189,7 +198,7 @@ class MaxiBlock extends MaxiComponent {
         this.saveMeta(cleanMeta)
     }
 
-    async saveMeta(newMeta) {
+    saveMeta(newMeta) {
         dispatch('maxiBlocks').saveMaxiStyles(newMeta)
             .then(new BackEndResponsiveStyles(newMeta))
     }

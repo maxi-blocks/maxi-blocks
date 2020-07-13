@@ -1,23 +1,43 @@
 const defaultMargin = {
     p: {
         "label": "Margin",
-        "min": "none",
-        "unit": "em",
-        "desktop": {
-            "margin-top": 1,
-            "margin-right": "",
-            "margin-bottom": 1,
-            "margin-left": "",
-            "sync": true
-        },
-        "tablet": {
+        "unit": "px",
+        "general": {
             "margin-top": "",
             "margin-right": "",
             "margin-bottom": "",
             "margin-left": "",
             "sync": true
         },
-        "mobile": {
+        "xl": {
+            "margin-top": "",
+            "margin-right": "",
+            "margin-bottom": "",
+            "margin-left": "",
+            "sync": true
+        },
+        "l": {
+            "margin-top": "",
+            "margin-right": "",
+            "margin-bottom": "",
+            "margin-left": "",
+            "sync": true
+        },
+        "m": {
+            "margin-top": "",
+            "margin-right": "",
+            "margin-bottom": "",
+            "margin-left": "",
+            "sync": true
+        },
+        "s": {
+            "margin-top": "",
+            "margin-right": "",
+            "margin-bottom": "",
+            "margin-left": "",
+            "sync": true
+        },
+        "xs": {
             "margin-top": "",
             "margin-right": "",
             "margin-bottom": "",
@@ -27,23 +47,43 @@ const defaultMargin = {
     },
     link: {
         "label": "Margin",
-        "min": "none",
-        "unit": "em",
-        "desktop": {
-            "margin-top": 1,
-            "margin-right": "",
-            "margin-bottom": 1,
-            "margin-left": "",
-            "sync": true
-        },
-        "tablet": {
+        "unit": "px",
+        "general": {
             "margin-top": "",
             "margin-right": "",
             "margin-bottom": "",
             "margin-left": "",
             "sync": true
         },
-        "mobile": {
+        "xl": {
+            "margin-top": "",
+            "margin-right": "",
+            "margin-bottom": "",
+            "margin-left": "",
+            "sync": true
+        },
+        "l": {
+            "margin-top": "",
+            "margin-right": "",
+            "margin-bottom": "",
+            "margin-left": "",
+            "sync": true
+        },
+        "m": {
+            "margin-top": "",
+            "margin-right": "",
+            "margin-bottom": "",
+            "margin-left": "",
+            "sync": true
+        },
+        "s": {
+            "margin-top": "",
+            "margin-right": "",
+            "margin-bottom": "",
+            "margin-left": "",
+            "sync": true
+        },
+        "xs": {
             "margin-top": "",
             "margin-right": "",
             "margin-bottom": "",
@@ -53,23 +93,43 @@ const defaultMargin = {
     },
     h1: {
         "label": "Margin",
-        "min": "none",
-        "unit": "em",
-        "desktop": {
-            "margin-top": .67,
-            "margin-right": "",
-            "margin-bottom": .67,
-            "margin-left": "",
-            "sync": true
-        },
-        "tablet": {
+        "unit": "px",
+        "general": {
             "margin-top": "",
             "margin-right": "",
             "margin-bottom": "",
             "margin-left": "",
             "sync": true
         },
-        "mobile": {
+        "xl": {
+            "margin-top": "",
+            "margin-right": "",
+            "margin-bottom": "",
+            "margin-left": "",
+            "sync": true
+        },
+        "l": {
+            "margin-top": "",
+            "margin-right": "",
+            "margin-bottom": "",
+            "margin-left": "",
+            "sync": true
+        },
+        "m": {
+            "margin-top": "",
+            "margin-right": "",
+            "margin-bottom": "",
+            "margin-left": "",
+            "sync": true
+        },
+        "s": {
+            "margin-top": "",
+            "margin-right": "",
+            "margin-bottom": "",
+            "margin-left": "",
+            "sync": true
+        },
+        "xs": {
             "margin-top": "",
             "margin-right": "",
             "margin-bottom": "",
@@ -79,23 +139,43 @@ const defaultMargin = {
     },
     h2: {
         "label": "Margin",
-        "min": "none",
-        "unit": "em",
-        "desktop": {
-            "margin-top": .83,
-            "margin-right": "",
-            "margin-bottom": .83,
-            "margin-left": "",
-            "sync": true
-        },
-        "tablet": {
+        "unit": "px",
+        "general": {
             "margin-top": "",
             "margin-right": "",
             "margin-bottom": "",
             "margin-left": "",
             "sync": true
         },
-        "mobile": {
+        "xl": {
+            "margin-top": "",
+            "margin-right": "",
+            "margin-bottom": "",
+            "margin-left": "",
+            "sync": true
+        },
+        "l": {
+            "margin-top": "",
+            "margin-right": "",
+            "margin-bottom": "",
+            "margin-left": "",
+            "sync": true
+        },
+        "m": {
+            "margin-top": "",
+            "margin-right": "",
+            "margin-bottom": "",
+            "margin-left": "",
+            "sync": true
+        },
+        "s": {
+            "margin-top": "",
+            "margin-right": "",
+            "margin-bottom": "",
+            "margin-left": "",
+            "sync": true
+        },
+        "xs": {
             "margin-top": "",
             "margin-right": "",
             "margin-bottom": "",
@@ -105,23 +185,43 @@ const defaultMargin = {
     },
     h3: {
         "label": "Margin",
-        "min": "none",
-        "unit": "em",
-        "desktop": {
-            "margin-top": 1,
-            "margin-right": "",
-            "margin-bottom": 1,
-            "margin-left": "",
-            "sync": true
-        },
-        "tablet": {
+        "unit": "px",
+        "general": {
             "margin-top": "",
             "margin-right": "",
             "margin-bottom": "",
             "margin-left": "",
             "sync": true
         },
-        "mobile": {
+        "xl": {
+            "margin-top": "",
+            "margin-right": "",
+            "margin-bottom": "",
+            "margin-left": "",
+            "sync": true
+        },
+        "l": {
+            "margin-top": "",
+            "margin-right": "",
+            "margin-bottom": "",
+            "margin-left": "",
+            "sync": true
+        },
+        "m": {
+            "margin-top": "",
+            "margin-right": "",
+            "margin-bottom": "",
+            "margin-left": "",
+            "sync": true
+        },
+        "s": {
+            "margin-top": "",
+            "margin-right": "",
+            "margin-bottom": "",
+            "margin-left": "",
+            "sync": true
+        },
+        "xs": {
             "margin-top": "",
             "margin-right": "",
             "margin-bottom": "",
@@ -131,23 +231,43 @@ const defaultMargin = {
     },
     h4: {
         "label": "Margin",
-        "min": "none",
-        "unit": "em",
-        "desktop": {
-            "margin-top": 1.33,
-            "margin-right": "",
-            "margin-bottom": 1.33,
-            "margin-left": "",
-            "sync": true
-        },
-        "tablet": {
+        "unit": "px",
+        "general": {
             "margin-top": "",
             "margin-right": "",
             "margin-bottom": "",
             "margin-left": "",
             "sync": true
         },
-        "mobile": {
+        "xl": {
+            "margin-top": "",
+            "margin-right": "",
+            "margin-bottom": "",
+            "margin-left": "",
+            "sync": true
+        },
+        "l": {
+            "margin-top": "",
+            "margin-right": "",
+            "margin-bottom": "",
+            "margin-left": "",
+            "sync": true
+        },
+        "m": {
+            "margin-top": "",
+            "margin-right": "",
+            "margin-bottom": "",
+            "margin-left": "",
+            "sync": true
+        },
+        "s": {
+            "margin-top": "",
+            "margin-right": "",
+            "margin-bottom": "",
+            "margin-left": "",
+            "sync": true
+        },
+        "xs": {
             "margin-top": "",
             "margin-right": "",
             "margin-bottom": "",
@@ -157,23 +277,43 @@ const defaultMargin = {
     },
     h5: {
         "label": "Margin",
-        "min": "none",
-        "unit": "em",
-        "desktop": {
-            "margin-top": 1.67,
-            "margin-right": "",
-            "margin-bottom": 1.67,
-            "margin-left": "",
-            "sync": true
-        },
-        "tablet": {
+        "unit": "px",
+        "general": {
             "margin-top": "",
             "margin-right": "",
             "margin-bottom": "",
             "margin-left": "",
             "sync": true
         },
-        "mobile": {
+        "xl": {
+            "margin-top": "",
+            "margin-right": "",
+            "margin-bottom": "",
+            "margin-left": "",
+            "sync": true
+        },
+        "l": {
+            "margin-top": "",
+            "margin-right": "",
+            "margin-bottom": "",
+            "margin-left": "",
+            "sync": true
+        },
+        "m": {
+            "margin-top": "",
+            "margin-right": "",
+            "margin-bottom": "",
+            "margin-left": "",
+            "sync": true
+        },
+        "s": {
+            "margin-top": "",
+            "margin-right": "",
+            "margin-bottom": "",
+            "margin-left": "",
+            "sync": true
+        },
+        "xs": {
             "margin-top": "",
             "margin-right": "",
             "margin-bottom": "",
@@ -183,23 +323,43 @@ const defaultMargin = {
     },
     h6: {
         "label": "Margin",
-        "min": "none",
-        "unit": "em",
-        "desktop": {
-            "margin-top": 2.33,
-            "margin-right": "",
-            "margin-bottom": 2.33,
-            "margin-left": "",
-            "sync": true
-        },
-        "tablet": {
+        "unit": "px",
+        "general": {
             "margin-top": "",
             "margin-right": "",
             "margin-bottom": "",
             "margin-left": "",
             "sync": true
         },
-        "mobile": {
+        "xl": {
+            "margin-top": "",
+            "margin-right": "",
+            "margin-bottom": "",
+            "margin-left": "",
+            "sync": true
+        },
+        "l": {
+            "margin-top": "",
+            "margin-right": "",
+            "margin-bottom": "",
+            "margin-left": "",
+            "sync": true
+        },
+        "m": {
+            "margin-top": "",
+            "margin-right": "",
+            "margin-bottom": "",
+            "margin-left": "",
+            "sync": true
+        },
+        "s": {
+            "margin-top": "",
+            "margin-right": "",
+            "margin-bottom": "",
+            "margin-left": "",
+            "sync": true
+        },
+        "xs": {
             "margin-top": "",
             "margin-right": "",
             "margin-bottom": "",

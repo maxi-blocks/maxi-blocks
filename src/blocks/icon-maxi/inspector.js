@@ -195,7 +195,7 @@ const Inspector = props => {
                                                             label: __('Normal', 'gutenberg-extra'),
                                                             content: (
                                                                 <BorderControl
-                                                                    borderOptions={border}
+                                                                    border={border}
                                                                     onChange={border => setAttributes({ border })}
                                                                 />
                                                             )
@@ -204,7 +204,7 @@ const Inspector = props => {
                                                             label: __('Hover', 'gutenberg-extra'),
                                                             content: (
                                                                 <BorderControl
-                                                                    borderOptions={borderHover}
+                                                                    border={borderHover}
                                                                     onChange={borderHover => setAttributes({ borderHover })}
                                                                 />
                                                             )

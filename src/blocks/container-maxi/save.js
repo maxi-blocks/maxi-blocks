@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 const { InnerBlocks } = wp.blockEditor;
-const { Fragment } = wp.element;
 
 /**
  * External dependencies
@@ -19,6 +18,7 @@ import { __experimentalShapeDivider } from '../../components';
  * Save
  */
 const save = props => {
+
     const {
         className,
         attributes: {

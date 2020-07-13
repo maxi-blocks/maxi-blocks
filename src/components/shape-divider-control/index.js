@@ -43,6 +43,20 @@ import {
     swishBottom,
     swishTopOpacity,
     swishBottomOpacity,
+    slantTop,
+    slantBottom,
+    slantTopOpacity,
+    slantBottomOpacity,
+    peakTop,
+    peakBottom,
+    mountainsTop,
+    mountainsBottom,
+    mountainsTopOpacity,
+    mountainsBottomOpacity,
+    curveTop,
+    curveBottom,
+    curveTopOpacity,
+    curveBottomOpacity,
 } from '../../icons';
 
 /**
@@ -78,6 +92,20 @@ export default class ShapeDividerControl extends MaxiComponent {
             options.push({ label: swishBottom, value: 'swish-bottom' });
             options.push({ label: swishTopOpacity, value: 'swish-top-opacity' });
             options.push({ label: swishBottomOpacity, value: 'swish-bottom-opacity' });
+            options.push({ label: slantTop, value: 'slant-top' });
+            options.push({ label: slantBottom, value: 'slant-bottom' });
+            options.push({ label: slantTopOpacity, value: 'slant-top-opacity' });
+            options.push({ label: slantBottomOpacity, value: 'slant-bottom-opacity' });
+            options.push({ label: peakTop, value: 'peak-top' });
+            options.push({ label: peakBottom, value: 'peak-bottom' });
+            options.push({ label: mountainsTop, value: 'mountains-top' });
+            options.push({ label: mountainsBottom, value: 'mountains-bottom' });
+            options.push({ label: mountainsTopOpacity, value: 'mountains-top-opacity' });
+            options.push({ label: mountainsBottomOpacity, value: 'mountains-bottom-opacity' });
+            options.push({ label: curveTop, value: 'curve-top' });
+            options.push({ label: curveBottom, value: 'curve-bottom' });
+            options.push({ label: curveTopOpacity, value: 'curve-top-opacity' });
+            options.push({ label: curveBottomOpacity, value: 'curve-bottom-opacity' });
             return options;
         }
 
@@ -98,6 +126,20 @@ export default class ShapeDividerControl extends MaxiComponent {
             if (value.shapeStyle === 'swish-bottom') result = swishBottom;
             if (value.shapeStyle === 'swish-top-opacity') result = swishTopOpacity;
             if (value.shapeStyle === 'swish-bottom-opacity') result = swishBottomOpacity;
+            if (value.shapeStyle === 'slant-top') result = slantTop;
+            if (value.shapeStyle === 'slant-bottom') result = slantBottom;
+            if (value.shapeStyle === 'slant-top-opacity') result = slantTopOpacity;
+            if (value.shapeStyle === 'slant-bottom-opacity') result = slantBottomOpacity;
+            if (value.shapeStyle === 'peak-top') result = peakTop;
+            if (value.shapeStyle === 'peak-bottom') result = peakBottom;
+            if (value.shapeStyle === 'mountains-top') result = mountainsTop;
+            if (value.shapeStyle === 'mountains-bottom') result = mountainsBottom;
+            if (value.shapeStyle === 'mountains-top-opacity') result = mountainsTopOpacity;
+            if (value.shapeStyle === 'mountains-bottom-opacity') result = mountainsBottomOpacity;
+            if (value.shapeStyle === 'curve-top') result = curveTop;
+            if (value.shapeStyle === 'curve-bottom') result = curveBottom;
+            if (value.shapeStyle === 'curve-top-opacity') result = curveTopOpacity;
+            if (value.shapeStyle === 'curve-bottom-opacity') result = curveBottomOpacity;
             return result;
         }
 

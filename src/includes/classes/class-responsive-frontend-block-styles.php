@@ -55,7 +55,7 @@ class ResponsiveFrontendStyles
         if (!isset($styles[$post->ID]))
             return;
 
-        $meta = is_preview() || is_admin() ? 
+        $meta = is_preview() || is_admin() ?
             $styles[$post->ID]['_maxi_blocks_styles_preview'] :
             $styles[$post->ID]['_maxi_blocks_styles'];
 

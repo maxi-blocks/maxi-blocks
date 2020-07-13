@@ -25,8 +25,6 @@ const allowedBlocks = [
 
 const withSave = (element, blockType, attributes) => {
 
-	
-
 	if (
 		allowedBlocks.includes(blockType.name) &&
 		!!attributes.linkSettings &&

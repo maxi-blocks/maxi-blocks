@@ -13,7 +13,6 @@ const {
 /**
  * Internal dependencies
  */
-import { getDefaultProp } from '../../extensions/styles/utils'
 import {
     AccordionControl,
     AlignmentControl,

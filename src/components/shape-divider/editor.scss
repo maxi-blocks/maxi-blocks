@@ -3,7 +3,8 @@
                 height 500ms ease 0ms,
                 background-size 500ms ease 0ms;
     width: 100%;
-    height: 100px;
+    height: auto;
+    display: flex;
 
     svg {
         width: 100%;

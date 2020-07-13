@@ -11,6 +11,11 @@ import classnames from 'classnames';
 import Scripts from '../../extensions/styles/hoverAnimations.js';
 
 /**
+ * Internal dependencies
+ */
+import { __experimentalShapeDivider } from '../../components';
+
+/**
  * Save
  */
 const save = props => {
@@ -33,6 +38,8 @@ const save = props => {
             hoverBackground,
             hoverAnimationCustomBorder,
             hoverPadding,
+            shapeDivider,
+            shapeDividerBottom,
         }
     } = props;
 
@@ -53,7 +60,10 @@ const save = props => {
         classes = classnames(classes, uniqueID);
 
     return (
-        <Fragment>
+        <div className="maxi-section-container">
+            <__experimentalShapeDivider
+                shapeDividerOptions={shapeDivider}
+            />
             {
                 isFirstOnHierarchy &&
                 <section
@@ -100,7 +110,11 @@ const save = props => {
                     }
                 </div>
             }
-        </Fragment>
+            <__experimentalShapeDivider
+                position='bottom'
+                shapeDividerOptions={shapeDividerBottom}
+            />
+        </div>
     );
 }
 

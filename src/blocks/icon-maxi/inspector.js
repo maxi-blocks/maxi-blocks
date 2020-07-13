@@ -20,11 +20,13 @@ import {
     BorderControl,
     BlockStylesControl,
     BoxShadowControl,
-    CustomCSSControl,
-    DimensionsControl,
     HoverAnimationControl,
     SettingTabsControl,
-    TypographyControl
+    TypographyControl,
+    __experimentalResponsiveSelector,
+    __experimentalZIndexControl,
+    __experimentalMarginPaddingControl,
+    __experimentalResponsiveControl,
 } from '../../components';
 
 /**
@@ -65,13 +67,34 @@ const Inspector = props => {
             hoverAnimationDuration,
             extraClassName,
             extraStyles,
+            zIndex,
+            breakpoints,
+            hoverAnimationTitle,
+            hoverAnimationContent,
+            hoverOpacity,
+            hoverBackground,
+            hoverAnimationCustomBorder,
+            hoverAnimationContentTypography,
+            hoverAnimationTitleTypography,
+            hoverCustomTextContent,
+            hoverCustomTextTitle,
+            hoverBorder,
+            hoverPadding,
+            hoverAnimationTypeOpacity,
+            onChangeHoverAnimationTypeOpacity,
+            hoverAnimationTypeColor,
+            hoverAnimationTypeOpacityColor,
+            onChangeHoverAnimationTypeOpacityColor,
+            hoverAnimationTypeOpacityColorBackground
         },
         clientId,
         setAttributes,
+        deviceType,
     } = props;
 
     return (
         <InspectorControls>
+        <__experimentalResponsiveSelector />
             <SettingTabsControl
                 disablePadding
                 items={[
@@ -242,21 +265,6 @@ const Inspector = props => {
                                                 />
                                             )
                                         },
-                                        {
-                                            label: __('Padding / Margin', 'maxi-blocks'),
-                                            content: (
-                                                <Fragment>
-                                                    <DimensionsControl
-                                                        value={padding}
-                                                        onChange={padding => setAttributes({ padding })}
-                                                    />
-                                                    <DimensionsControl
-                                                        value={margin}
-                                                        onChange={margin => setAttributes({ margin })}
-                                                    />
-                                                </Fragment>
-                                            )
-                                        }
                                     ]}
                                 />
                             </Fragment>
@@ -272,14 +280,21 @@ const Inspector = props => {
                                     hoverAnimationDuration={hoverAnimationDuration}
                                     onChangeHoverAnimationDuration={hoverAnimationDuration => setAttributes({ hoverAnimationDuration })}
                                 />
-                                <CustomCSSControl
-                                    extraClassName={extraClassName}
-                                    onChangeExtraClassName={extraClassName => setAttributes({ extraClassName })}
-                                    extraStyles={extraStyles}
-                                    onChangeExtraStyles={extraStyles => setAttributes({ extraStyles })}
-                                />
                             </div>
                         )
+                    }
+                    <__experimentalZIndexControl
+                        zindex={zIndex}
+                        onChange={zIndex => setAttributes({ zIndex })}
+                        breakpoint={deviceType}
+                    />
+                    {
+                        deviceType != 'general' &&
+                        <__experimentalResponsiveControl
+                            breakpoints={breakpoints}
+                            onChange={breakpoints => setAttributes({ breakpoints })}
+                            breakpoint={deviceType}
+                        />
                     }
                 ]}
             />

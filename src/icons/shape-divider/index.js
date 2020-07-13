@@ -1,2 +1,14 @@
-export { default as wavesBottom} from './waves-bottom';
 export { default as wavesTop} from './waves-top';
+export { default as wavesBottom} from './waves-bottom';
+export { default as wavesTopOpacity} from './waves-top-opacity';
+export { default as wavesBottomOpacity} from './waves-bottom-opacity';
+export { default as waveTop} from './wave-top';
+export { default as waveTopOpacity} from './wave-top-opacity';
+export { default as waveBottom} from './wave-bottom';
+export { default as waveBottomOpacity} from './wave-bottom-opacity';
+export { default as triangleTop} from './triangle-top';
+export { default as triangleBottom} from './triangle-bottom';
+export { default as swishTop} from './swish-top';
+export { default as swishTopOpacity} from './swish-top-opacity';
+export { default as swishBottom} from './swish-bottom';
+export { default as swishBottomOpacity} from './swish-bottom-opacity';

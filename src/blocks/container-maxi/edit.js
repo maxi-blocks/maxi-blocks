@@ -300,7 +300,7 @@ class edit extends MaxiBlock {
             <Inspector {...this.props} />,
             <__experimentalToolbar {...this.props} />,
             <__experimentalBreadcrumbs />,
-            <Fragment>
+            <div className="maxi-section-container">
                 <__experimentalShapeDivider
                     shapeDividerOptions={shapeDivider}
                 />
@@ -360,10 +360,10 @@ class edit extends MaxiBlock {
                     />
                 }
                 <__experimentalShapeDivider
-                    position="bottom"
+                    position='bottom'
                     shapeDividerOptions={shapeDividerBottom}
                 />
-            </Fragment>
+            </div>
         ];
     }
 }

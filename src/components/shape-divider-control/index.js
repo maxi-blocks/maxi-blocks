@@ -29,10 +29,21 @@ import {
  */
 import './editor.scss';
 import {
-    wavesBottom,
     wavesTop,
+    wavesBottom,
+    wavesTopOpacity,
+    wavesBottomOpacity,
+    waveTop,
+    waveBottom,
+    waveTopOpacity,
+    waveBottomOpacity,
+    triangleTop,
+    triangleBottom,
+    swishTop,
+    swishBottom,
+    swishTopOpacity,
+    swishBottomOpacity,
 } from '../../icons';
-import { Icon } from '@wordpress/icons';
 
 /**
  * Component
@@ -53,17 +64,40 @@ export default class ShapeDividerControl extends MaxiComponent {
         const getOptions = () => {
             let options = [];
             options.push({ label: __('None', 'max-block'), value: '' });
-            options.push({ label: wavesBottom, value: 'x1' });
-            options.push({ label: wavesTop, value: 'x2' });
-            options.push({ label: wavesBottom, value: 'x3' });
+            options.push({ label: wavesTop, value: 'waves-top' });
+            options.push({ label: wavesBottom, value: 'waves-bottom' });
+            options.push({ label: wavesTopOpacity, value: 'waves-top-opacity' });
+            options.push({ label: wavesBottomOpacity, value: 'waves-bottom-opacity' });
+            options.push({ label: waveTop, value: 'wave-top' });
+            options.push({ label: waveBottom, value: 'wave-bottom' });
+            options.push({ label: waveTopOpacity, value: 'wave-top-opacity' });
+            options.push({ label: waveBottomOpacity, value: 'wave-bottom-opacity' });
+            options.push({ label: triangleTop, value: 'triangle-top' });
+            options.push({ label: triangleBottom, value: 'triangle-bottom' });
+            options.push({ label: swishTop, value: 'swish-top' });
+            options.push({ label: swishBottom, value: 'swish-bottom' });
+            options.push({ label: swishTopOpacity, value: 'swish-top-opacity' });
+            options.push({ label: swishBottomOpacity, value: 'swish-bottom-opacity' });
             return options;
         }
 
         const showShapes = () => {
             let result;
             if (value.shapeStyle === '') result = __('Divider Style', 'max-block');
-            if (value.shapeStyle === 'x1') result = wavesBottom;
-            if (value.shapeStyle === 'x2') result = wavesTop;
+            if (value.shapeStyle === 'waves-top') result = wavesTop;
+            if (value.shapeStyle === 'waves-bottom') result = wavesBottom;
+            if (value.shapeStyle === 'waves-top-opacity') result = wavesTopOpacity;
+            if (value.shapeStyle === 'waves-bottom-opacity') result = wavesBottomOpacity;
+            if (value.shapeStyle === 'wave-top') result = waveTop;
+            if (value.shapeStyle === 'wave-bottom') result = waveBottom;
+            if (value.shapeStyle === 'wave-top-opacity') result = waveTopOpacity;
+            if (value.shapeStyle === 'wave-bottom-opacity') result = waveBottomOpacity;
+            if (value.shapeStyle === 'triangle-top') result = triangleTop;
+            if (value.shapeStyle === 'triangle-bottom') result = triangleBottom;
+            if (value.shapeStyle === 'swish-top') result = swishTop;
+            if (value.shapeStyle === 'swish-bottom') result = swishBottom;
+            if (value.shapeStyle === 'swish-top-opacity') result = swishTopOpacity;
+            if (value.shapeStyle === 'swish-bottom-opacity') result = swishBottomOpacity;
             return result;
         }
 

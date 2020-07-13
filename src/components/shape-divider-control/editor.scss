@@ -7,9 +7,18 @@
             }
             &__option {
                 margin-bottom: 0;
-                padding: 10px;
                 display: block;
 
+                label {
+                    display: block;
+                    padding: 10px;
+                    margin-bottom: 5px;
+                }
+                input {
+                    &:checked ~ label {
+                        background: #eee;
+                    }
+                }
                 &:hover {
                     background: #eee;
                 }

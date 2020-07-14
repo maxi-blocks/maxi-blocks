@@ -59,8 +59,13 @@ const save = props => {
     if (uniqueID && (typeof uniqueID !== 'undefined'))
         classes = classnames(classes, uniqueID);
 
+    let sectionContainerClasses = classnames(
+        'maxi-section-container',
+        `section-${uniqueID}`,
+    );
+
     return (
-        <div className="maxi-section-container">
+        <div className={sectionContainerClasses}>
             <__experimentalShapeDivider
                 shapeDividerOptions={shapeDivider}
             />

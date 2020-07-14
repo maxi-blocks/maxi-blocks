@@ -129,7 +129,7 @@ export const shapeDivider = {
     "shapeStyle": "",
     "colorOptions": {
         "color": "#000000",
-        "defultColor": "",
+        "defultColor": "#000000",
         "gradient": "",
         "defaultGradient": "",
         "gradientAboveBackground": false
@@ -144,7 +144,7 @@ export const shapeDividerBottom = {
     "shapeStyle": "",
     "colorOptions": {
         "color": "#000000",
-        "defultColor": "",
+        "defultColor": "#000000",
         "gradient": "",
         "defaultGradient": "",
         "gradientAboveBackground": false

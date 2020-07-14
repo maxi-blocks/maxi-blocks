@@ -4,16 +4,9 @@
 const { __ } = wp.i18n;
 const {
     RangeControl,
-    SelectControl,
     RadioControl,
     Dropdown,
-    Button,
 } = wp.components;
-
-/**
- * External dependencies
- */
-import { isEmpty } from 'lodash';
 
 /**
  * Internal dependencies
@@ -57,6 +50,18 @@ import {
     curveBottom,
     curveTopOpacity,
     curveBottomOpacity,
+    arrowTop,
+    arrowBottom,
+    arrowTopOpacity,
+    arrowBottomOpacity,
+    asymmetricTop,
+    asymmetricBottom,
+    asymmetricTopOpacity,
+    asymmetricBottomOpacity,
+    cloudTop,
+    cloudBottom,
+    cloudTopOpacity,
+    cloudBottomOpacity,
 } from '../../icons';
 
 /**
@@ -106,41 +111,65 @@ export default class ShapeDividerControl extends MaxiComponent {
             options.push({ label: curveBottom, value: 'curve-bottom' });
             options.push({ label: curveTopOpacity, value: 'curve-top-opacity' });
             options.push({ label: curveBottomOpacity, value: 'curve-bottom-opacity' });
+            options.push({ label: arrowTop, value: 'arrow-top' });
+            options.push({ label: arrowBottom, value: 'arrow-bottom' });
+            options.push({ label: arrowTopOpacity, value: 'arrow-top-opacity' });
+            options.push({ label: arrowBottomOpacity, value: 'arrow-bottom-opacity' });
+            options.push({ label: asymmetricTop, value: 'asymmetric-top' });
+            options.push({ label: asymmetricBottom, value: 'asymmetric-bottom' });
+            options.push({ label: asymmetricTopOpacity, value: 'asymmetric-top-opacity' });
+            options.push({ label: asymmetricBottomOpacity, value: 'asymmetric-bottom-opacity' });
+            options.push({ label: cloudTop, value: 'cloud-top' });
+            options.push({ label: cloudBottom, value: 'cloud-bottom' });
+            options.push({ label: cloudTopOpacity, value: 'cloud-top-opacity' });
+            options.push({ label: cloudBottomOpacity, value: 'cloud-bottom-opacity' });
             return options;
         }
 
         const showShapes = () => {
-            let result;
-            if (value.shapeStyle === '') result = __('Divider Style', 'max-block');
-            if (value.shapeStyle === 'waves-top') result = wavesTop;
-            if (value.shapeStyle === 'waves-bottom') result = wavesBottom;
-            if (value.shapeStyle === 'waves-top-opacity') result = wavesTopOpacity;
-            if (value.shapeStyle === 'waves-bottom-opacity') result = wavesBottomOpacity;
-            if (value.shapeStyle === 'wave-top') result = waveTop;
-            if (value.shapeStyle === 'wave-bottom') result = waveBottom;
-            if (value.shapeStyle === 'wave-top-opacity') result = waveTopOpacity;
-            if (value.shapeStyle === 'wave-bottom-opacity') result = waveBottomOpacity;
-            if (value.shapeStyle === 'triangle-top') result = triangleTop;
-            if (value.shapeStyle === 'triangle-bottom') result = triangleBottom;
-            if (value.shapeStyle === 'swish-top') result = swishTop;
-            if (value.shapeStyle === 'swish-bottom') result = swishBottom;
-            if (value.shapeStyle === 'swish-top-opacity') result = swishTopOpacity;
-            if (value.shapeStyle === 'swish-bottom-opacity') result = swishBottomOpacity;
-            if (value.shapeStyle === 'slant-top') result = slantTop;
-            if (value.shapeStyle === 'slant-bottom') result = slantBottom;
-            if (value.shapeStyle === 'slant-top-opacity') result = slantTopOpacity;
-            if (value.shapeStyle === 'slant-bottom-opacity') result = slantBottomOpacity;
-            if (value.shapeStyle === 'peak-top') result = peakTop;
-            if (value.shapeStyle === 'peak-bottom') result = peakBottom;
-            if (value.shapeStyle === 'mountains-top') result = mountainsTop;
-            if (value.shapeStyle === 'mountains-bottom') result = mountainsBottom;
-            if (value.shapeStyle === 'mountains-top-opacity') result = mountainsTopOpacity;
-            if (value.shapeStyle === 'mountains-bottom-opacity') result = mountainsBottomOpacity;
-            if (value.shapeStyle === 'curve-top') result = curveTop;
-            if (value.shapeStyle === 'curve-bottom') result = curveBottom;
-            if (value.shapeStyle === 'curve-top-opacity') result = curveTopOpacity;
-            if (value.shapeStyle === 'curve-bottom-opacity') result = curveBottomOpacity;
-            return result;
+            switch(value.shapeStyle) {
+                case 'waves-top': return wavesTop;
+                case 'waves-bottom': return wavesBottom;
+                case 'waves-top-opacity': return wavesTopOpacity;
+                case 'waves-bottom-opacity': return wavesBottomOpacity;
+                case 'wave-top': return waveTop;
+                case 'wave-bottom': return waveBottom;
+                case 'wave-top-opacity': return waveTopOpacity;
+                case 'wave-bottom-opacity': return waveBottomOpacity;
+                case 'triangle-top': return triangleTop;
+                case 'triangle-bottom': return triangleBottom;
+                case 'swish-top': return swishTop;
+                case 'swish-bottom': return swishBottom;
+                case 'swish-top-opacity': return swishTopOpacity;
+                case 'swish-bottom-opacity': return swishBottomOpacity;
+                case 'slant-top': return slantTop;
+                case 'slant-bottom': return slantBottom;
+                case 'slant-top-opacity': return slantTopOpacity;
+                case 'slant-bottom-opacity': return slantBottomOpacity;
+                case 'peak-top': return peakTop;
+                case 'peak-bottom': return peakBottom;
+                case 'mountains-top': return mountainsTop;
+                case 'mountains-bottom': return mountainsBottom;
+                case 'mountains-top-opacity': return mountainsTopOpacity;
+                case 'mountains-bottom-opacity': return mountainsBottomOpacity;
+                case 'curve-top': return curveTop;
+                case 'curve-bottom': return curveBottom;
+                case 'curve-top-opacity': return curveTopOpacity;
+                case 'curve-bottom-opacity': return curveBottomOpacity;
+                case 'arrow-top': return arrowTop;
+                case 'arrow-bottom': return arrowBottom;
+                case 'arrow-top-opacity': return arrowTopOpacity;
+                case 'arrow-bottom-opacity': return arrowBottomOpacity;
+                case 'asymmetric-top': return asymmetricTop;
+                case 'asymmetric-bottom': return asymmetricBottom;
+                case 'asymmetric-top-opacity': return asymmetricTopOpacity;
+                case 'asymmetric-bottom-opacity': return asymmetricBottomOpacity;
+                case 'cloud-top': return cloudTop;
+                case 'cloud-bottom': return cloudBottom;
+                case 'cloud-top-opacity': return cloudTopOpacity;
+                case 'cloud-bottom-opacity': return cloudBottomOpacity;
+                default: return __('Divider Style', 'max-block');
+            }
         }
 
         return (
@@ -151,7 +180,7 @@ export default class ShapeDividerControl extends MaxiComponent {
                     position="bottom center"
                     renderToggle={ ( { isOpen, onToggle } ) => (
                         <div
-                            className={'maxi-shapedividercontrol__shape-selector__display'}
+                            className='maxi-shapedividercontrol__shape-selector__display'
                             onClick={ onToggle }
                         >
                             {showShapes()}
@@ -159,12 +188,12 @@ export default class ShapeDividerControl extends MaxiComponent {
                     ) }
                     renderContent={ () => (
                         <RadioControl
-                            className={'maxi-shapedividercontrol__shape-list'}
+                            className='maxi-shapedividercontrol__shape-list'
                             selected={value.shapeStyle}
                             options={getOptions()}
                             onChange={val => {
                                 value.shapeStyle = val;
-                                onChange(JSON.stringify(value))
+                                onChange(JSON.stringify(value));
                             }}
                         />
                     ) }
@@ -184,15 +213,14 @@ export default class ShapeDividerControl extends MaxiComponent {
                 />
                 <BackgroundControl
                     backgroundOptions={value}
-                    onChange={val => {
-                        onChange(val)
-                    }}
+                    onChange={val => onChange(val)}
                     disableImage
                     disableVideo
                 />
                 <SizeControl
                     label={__('Divider Height', 'maxi-blocks')}
                     unit={value.heightUnit}
+                    allowedUnits={['px']}
                     onChangeUnit={val => {
                         value.heightUnit = val;
                         onChange(JSON.stringify(value))

@@ -195,9 +195,6 @@ export const getShapeDividerSVGObject = shapeDivider => {
         general: {}
     }
 
-    response.general['width'] = '100%';
-    response.general['height'] = '100%';
-
     if (!isEmpty(shapeDivider.colorOptions.color)) {
         response.general['fill'] = shapeDivider.colorOptions.color;
     }

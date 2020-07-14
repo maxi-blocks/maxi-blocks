@@ -180,9 +180,8 @@ class ResponsiveFrontendStyles
     public function getStyles($styles)
     {
         $response = '';
-        $important = ' !important';
         foreach ($styles as $property => $value) {
-            $response .= "{$property}: {$value}{$important};";
+            $response .= "{$property}: {$value};";
         }
         return $response;
     }

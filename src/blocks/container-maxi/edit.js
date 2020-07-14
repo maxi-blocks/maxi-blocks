@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 const { withSelect } = wp.data;
-const { Fragment } = wp.element;
 const {
     InnerBlocks,
     __experimentalBlock
@@ -52,11 +51,11 @@ class edit extends MaxiBlock {
             [`${this.props.attributes.uniqueID} .maxi-block-text-hover`]: this.getHoverAnimationMainObject,
             [`${this.props.attributes.uniqueID}.hover-animation-basic.hover-animation-type-opacity:hover .hover_el`]: this.getHoverAnimationTypeOpacityObject,
             [`${this.props.attributes.uniqueID}.hover-animation-basic.hover-animation-type-opacity-with-colour:hover .hover_el:before`]: this.getHoverAnimationTypeOpacityColorObject,
-            [`${this.props.attributes.uniqueID} .maxi-video-player video`]: { videoBackground: { ...getVideoBackgroundObject(JSON.parse(this.props.attributes.background).videoOptions) } },
-            ['maxi-shape-divider__top']: { shapeDivider: { ...getShapeDividerObject(JSON.parse(this.props.attributes.shapeDivider)) } },
-            ['maxi-shape-divider__top svg']: { shapeDivider: { ...getShapeDividerSVGObject(JSON.parse(this.props.attributes.shapeDivider)) } },
-            ['maxi-shape-divider__bottom']: { shapeDividerBottom: { ...getShapeDividerObject(JSON.parse(this.props.attributes.shapeDividerBottom)) } },
-            ['maxi-shape-divider__bottom svg']: { shapeDividerBottom: { ...getShapeDividerSVGObject(JSON.parse(this.props.attributes.shapeDividerBottom)) } },
+            [`section-${this.props.attributes.uniqueID} .maxi-video-player video`]: { videoBackground: { ...getVideoBackgroundObject(JSON.parse(this.props.attributes.background).videoOptions) } },
+            [`section-${this.props.attributes.uniqueID} .maxi-shape-divider__top`]: { shapeDivider: { ...getShapeDividerObject(JSON.parse(this.props.attributes.shapeDivider)) } },
+            [`section-${this.props.attributes.uniqueID} .maxi-shape-divider__top svg`]: { shapeDivider: { ...getShapeDividerSVGObject(JSON.parse(this.props.attributes.shapeDivider)) } },
+            [`section-${this.props.attributes.uniqueID} .maxi-shape-divider__bottom`]: { shapeDividerBottom: { ...getShapeDividerObject(JSON.parse(this.props.attributes.shapeDividerBottom)) } },
+            [`section-${this.props.attributes.uniqueID} .maxi-shape-divider__bottom svg`]: { shapeDividerBottom: { ...getShapeDividerSVGObject(JSON.parse(this.props.attributes.shapeDividerBottom)) } },
         }
 
         return response;
@@ -296,11 +295,16 @@ class edit extends MaxiBlock {
             className
         );
 
+        let sectionContainerClasses = classnames(
+            'maxi-section-container',
+            `section-${uniqueID}`,
+        );
+
         return [
             <Inspector {...this.props} />,
             <__experimentalToolbar {...this.props} />,
             <__experimentalBreadcrumbs />,
-            <div className="maxi-section-container">
+            <div className={sectionContainerClasses}>
                 <__experimentalShapeDivider
                     shapeDividerOptions={shapeDivider}
                 />

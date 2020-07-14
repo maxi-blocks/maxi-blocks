@@ -32,6 +32,7 @@ const SizeControl = props => {
         onChangeUnit,
         value,
         onChangeValue,
+        allowedUnits = ['px', 'em', 'vw', '%'],
         minMaxSettings = {
             'px': {
                 min: 0,
@@ -57,12 +58,14 @@ const SizeControl = props => {
         className
     );
 
-    const options = [
-        { label: 'PX', value: 'px' },
-        { label: 'EM', value: 'em' },
-        { label: 'VW', value: 'vw' },
-        { label: '%', value: '%' },
-    ];
+    const getOptions = () => {
+        let options = [];
+            allowedUnits.includes('px') && options.push({label: 'PX', value: 'px'});
+            allowedUnits.includes('em') && options.push({label: 'EM', value: 'em'});
+            allowedUnits.includes('vw') && options.push({label: 'VW', value: 'vw'});
+            allowedUnits.includes('%') && options.push({label: '%', value: '%'});
+        return options;
+    };
 
     return (
         <BaseControl
@@ -80,7 +83,7 @@ const SizeControl = props => {
             />
             <SelectControl
                 className='components-maxi-dimensions-control__units'
-                options={options}
+                options={getOptions()}
                 value={unit}
                 onChange={(val) => onChangeUnit(val)}
             />

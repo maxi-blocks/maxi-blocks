@@ -209,7 +209,7 @@ export class BackEndResponsiveStyles {
     getResponsiveStyles(styles) {
         let responsiveStyles = '';
         for (let [key, value] of Object.entries(styles)) {
-            responsiveStyles += ` ${key}: ${value} !important;`;
+            responsiveStyles += ` ${key}: ${value};`;
         }
         return responsiveStyles;
     }

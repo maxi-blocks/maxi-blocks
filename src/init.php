@@ -334,6 +334,11 @@ function maxi_load_custom_wp_front_script() {
 	);
 
 	wp_enqueue_script(
+		'maxi-gsap-scroll-trigger-js',
+		plugins_url( '/js/ScrollTrigger.min.js', dirname( __FILE__ ) )
+	);
+
+	wp_enqueue_script(
 		'maxi-front-scripts-js',
 		plugins_url( '/js/front-scripts.js', dirname( __FILE__ ) ),
 		array(), false, true

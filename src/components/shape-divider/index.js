@@ -2,7 +2,10 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
+import {
+    isEmpty,
+    isObject,
+} from 'lodash';
 
 /**
  * Styles and icons
@@ -61,12 +64,21 @@ const ShapeDivider = props => {
         shapeDividerOptions,
     } = props;
 
-    let value = typeof shapeDividerOptions === 'object' ?
-    shapeDividerOptions :
-    JSON.parse(shapeDividerOptions);
+    let value = !isObject(shapeDividerOptions) ?
+        JSON.parse(shapeDividerOptions):
+        shapeDividerOptions;
 
-    const showShapes = () => {
-        switch(value.shapeStyle) {
+    const {
+        top:shapeDividerTopOptions,
+        bottom:shapeDividerBottomOptions
+    } = value;
+
+    const showShapes = (position) => {
+        switch(
+            position === 'top' ?
+                shapeDividerTopOptions.shapeStyle :
+                shapeDividerBottomOptions.shapeStyle
+        ) {
             case 'waves-top': return wavesTop;
             case 'waves-bottom': return wavesBottom;
             case 'waves-top-opacity': return wavesTopOpacity;
@@ -117,9 +129,16 @@ const ShapeDivider = props => {
     );
 
     return (
-        !isEmpty(showShapes()) &&
-            <div className={classes} data-height={value.height}>
-                {showShapes()}
+        !isEmpty(showShapes(position)) &&
+            <div
+                className={classes}
+                data-height={
+                position === 'top' ?
+                    shapeDividerTopOptions.height :
+                    shapeDividerBottomOptions.height
+                }
+            >
+                {showShapes(position)}
             </div>
     )
 }

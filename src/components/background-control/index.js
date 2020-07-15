@@ -151,7 +151,7 @@ export default class BackgroundControl extends MaxiComponent {
             <div className={classes}>
                 {
                     getOptions().length > 1 &&
-                    <div className='maxi-background-control__background-items'>
+                    <div className='maxi-fancy-radio-control'>
                         <RadioControl
                             label={__('Background')}
                             selected={backgroundItems}

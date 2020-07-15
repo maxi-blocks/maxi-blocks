@@ -185,11 +185,7 @@ const attributes = {
     },
     shapeDivider: {
         type: 'string',
-        default: JSON.stringify(attributesData.shapeDivider)
-    },
-    shapeDividerBottom: {
-        type: 'string',
-        default: JSON.stringify(attributesData.shapeDividerBottom)
+        default: JSON.stringify(attributesData.__experimentalShapeDivider)
     },
 }
 

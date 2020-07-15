@@ -1,15 +1,10 @@
-.maxi-section-container {
-    max-width: 100% !important;
-    width: 100% !important;
+.maxi-container-block {
+    position: relative;
+    margin-top: 0;
+    margin-bottom: 0;
 
-    .maxi-container-block {
-        position: relative;
-        margin-top: 0;
-        margin-bottom: 0;
-
-        &__container {
-            margin-right: auto;
-            margin-left: auto;
-        }
+    &__container {
+        margin-right: auto;
+        margin-left: auto;
     }
 }

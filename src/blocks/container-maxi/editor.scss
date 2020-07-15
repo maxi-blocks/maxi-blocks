@@ -1,15 +1,11 @@
-.maxi-section-container {
-    margin-bottom: 1rem;
+.maxi-container-block {
+    margin: auto;
 
-    .maxi-container-block {
-        margin: auto;
+    .maxi-container-block__container {
+        border: 1px solid #7fbddc;
+    }
 
-        .maxi-container-block__container {
-            border: 1px solid #7fbddc;
-        }
-
-        &[data-align="full"] {
-            width: auto;
-        }
+    &[data-align="full"] {
+        width: auto;
     }
 }

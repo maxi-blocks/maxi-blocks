@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 const { InnerBlocks } = wp.blockEditor;
+const { Fragment } = wp.element;
 
 /**
  * External dependencies
@@ -34,12 +35,7 @@ const save = props => {
             hoverAnimationDuration,
             hoverAnimationTitle,
             hoverAnimationContent,
-            hoverOpacity,
-            hoverBackground,
-            hoverAnimationCustomBorder,
-            hoverPadding,
             shapeDivider,
-            shapeDividerBottom,
         }
     } = props;
 
@@ -59,27 +55,30 @@ const save = props => {
     if (uniqueID && (typeof uniqueID !== 'undefined'))
         classes = classnames(classes, uniqueID);
 
-    let sectionContainerClasses = classnames(
-        'maxi-section-container',
-        `section-${uniqueID}`,
-    );
-
     return (
-        <div className={sectionContainerClasses}>
-            <__experimentalShapeDivider
-                shapeDividerOptions={shapeDivider}
-            />
+        <Fragment>
             {
                 isFirstOnHierarchy &&
                 <section
                     className={classes}
                     data-gx_initial_block_class={defaultBlockStyle}
                 >
+                    <__experimentalShapeDivider
+                        shapeDividerOptions={shapeDivider}
+                    />
                     <div
-                        className='maxi-container-block__container'
+                        className='maxi-container-block__wrapper'
                     >
-                        <InnerBlocks.Content />
+                        <div
+                            className='maxi-container-block__container'
+                        >
+                            <InnerBlocks.Content />
+                        </div>
                     </div>
+                    <__experimentalShapeDivider
+                        position='bottom'
+                        shapeDividerOptions={shapeDivider}
+                    />
                 </section>
             }
             {
@@ -88,7 +87,14 @@ const save = props => {
                     className={classes}
                     data-gx_initial_block_class={defaultBlockStyle}
                 >
-                    <InnerBlocks.Content />
+                    <__experimentalShapeDivider
+                        shapeDividerOptions={shapeDivider}
+                    />
+                    <div
+                        className='maxi-container-block__wrapper'
+                    >
+                        <InnerBlocks.Content />
+                    </div>
                     {hoverAnimation === 'text' &&
                         <div className='maxi-block-text-hover'>
                             {hoverAnimationTitle !== '' &&
@@ -113,13 +119,13 @@ const save = props => {
                         >
                         </Scripts>
                     }
+                    <__experimentalShapeDivider
+                        position='bottom'
+                        shapeDividerOptions={shapeDivider}
+                    />
                 </div>
             }
-            <__experimentalShapeDivider
-                position='bottom'
-                shapeDividerOptions={shapeDividerBottom}
-            />
-        </div>
+        </Fragment>
     );
 }
 

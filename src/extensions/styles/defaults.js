@@ -121,33 +121,33 @@ export const boxShadow = {
     "shadowSpread": 0
 }
 
-export const shapeDivider = {
+export const __experimentalShapeDivider = {
     "label": "Shape Divider",
-    "height": "100",
-    "heightUnit": "px",
-    "opacity": 1,
-    "shapeStyle": "",
-    "colorOptions": {
-        "color": "#000000",
-        "defultColor": "#000000",
-        "gradient": "",
-        "defaultGradient": "",
-        "gradientAboveBackground": false
-    }
-}
-
-export const shapeDividerBottom = {
-    "label": "Shape Divider Bottom",
-    "height": "100",
-    "heightUnit": "px",
-    "opacity": 1,
-    "shapeStyle": "",
-    "colorOptions": {
-        "color": "#000000",
-        "defultColor": "#000000",
-        "gradient": "",
-        "defaultGradient": "",
-        "gradientAboveBackground": false
+    "top": {
+        "height": "100",
+        "heightUnit": "px",
+        "opacity": 1,
+        "shapeStyle": "",
+        "colorOptions": {
+            "color": "#000000",
+            "defultColor": "#000000",
+            "gradient": "",
+            "defaultGradient": "",
+            "gradientAboveBackground": false
+        }
+    },
+    "bottom": {
+        "height": "100",
+        "heightUnit": "px",
+        "opacity": 1,
+        "shapeStyle": "",
+        "colorOptions": {
+            "color": "#000000",
+            "defultColor": "#000000",
+            "gradient": "",
+            "defaultGradient": "",
+            "gradientAboveBackground": false
+        }
     }
 }
 

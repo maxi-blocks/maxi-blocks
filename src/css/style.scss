@@ -13,6 +13,16 @@
         margin-left: auto;
     }
 }
+.maxi-container-block {
+    &__wrapper {
+        overflow: hidden;
+    }
+    &__container {
+        &:empty {
+            min-height: 132px;
+        }
+    }
+}
 .maxi-shape-divider {
     svg {
         width: 100%;

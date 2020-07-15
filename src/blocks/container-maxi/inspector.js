@@ -70,8 +70,6 @@ const Inspector = props => {
             hoverAnimationDuration,
             hoverAnimationType,
             hoverAnimationTypeText,
-            extraClassName,
-            extraStyles,
             zIndex,
             hoverAnimationTitle,
             hoverAnimationContent,
@@ -91,7 +89,6 @@ const Inspector = props => {
             onChangeHoverAnimationTypeOpacityColor,
             hoverAnimationTypeOpacityColorBackground,
             shapeDivider,
-            shapeDividerBottom,
         },
         setAttributes,
     } = props;
@@ -547,31 +544,9 @@ const Inspector = props => {
                                         {
                                             label: __('Shape Divider', 'maxi-blocks'),
                                             content: (
-                                                <SettingTabsControl
-                                                    items={[
-                                                        {
-                                                            label: __('Top', 'gutenberg-extra'),
-                                                            content: (
-                                                                <Fragment>
-                                                                    <__experimentalShapeDividerControl
-                                                                        shapeDividerOptions={shapeDivider}
-                                                                        onChange={shapeDivider => setAttributes({ shapeDivider })}
-                                                                    />
-                                                                </Fragment>
-                                                            )
-                                                        },
-                                                        {
-                                                            label: __('Bottom', 'gutenberg-extra'),
-                                                            content: (
-                                                                <Fragment>
-                                                                    <__experimentalShapeDividerControl
-                                                                        shapeDividerOptions={shapeDividerBottom}
-                                                                        onChange={shapeDividerBottom => setAttributes({ shapeDividerBottom })}
-                                                                    />
-                                                                </Fragment>
-                                                            )
-                                                        },
-                                                    ]}
+                                                <__experimentalShapeDividerControl
+                                                    shapeDividerOptions={shapeDivider}
+                                                    onChange={shapeDivider => setAttributes({ shapeDivider })}
                                                 />
                                             )
                                         }

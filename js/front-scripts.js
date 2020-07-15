@@ -1,6 +1,7 @@
 gsap.registerPlugin(ScrollTrigger);
 
 ScrollTrigger.matchMedia({
+
   "all": function () {
     ScrollTrigger.batch(".maxi-shape-divider", {
       start: "-150",
@@ -10,4 +11,5 @@ ScrollTrigger.matchMedia({
       onLeaveBack: (batch) => gsap.to(batch, { height: batch[0].getAttribute('data-height') })
     });
   }
+
 });

@@ -137,6 +137,10 @@ const attributes = {
         type: 'string',
         default: JSON.stringify(attributesData.__experimentalShapeDivider)
     },
+    motion: {
+        type: 'string',
+        default: JSON.stringify(attributesData.__experimentalMotion)
+    },
 }
 
 export default attributes;

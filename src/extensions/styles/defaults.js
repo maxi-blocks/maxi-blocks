@@ -1062,3 +1062,14 @@ export const __experimentalShapeDivider = {
         }
     }
 }
+
+export const __experimentalMotion = {
+    "label": "Motion Effects",
+    "vertical": {
+        "status": "no",
+        "direction": "up",
+        "speed": 5,
+        "viewportTop": "100",
+        "viewportBottom": "0",
+    },
+}

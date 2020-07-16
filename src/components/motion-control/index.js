@@ -9,6 +9,7 @@ import { isObject } from 'lodash';
 const { __ } = wp.i18n;
 const {
     RadioControl,
+    SelectControl,
     Icon,
 } = wp.components;
 const {
@@ -19,10 +20,7 @@ const {
 /**
  * Internal dependencies
  */
-import {
-    BackgroundControl,
-    SizeControl,
-} from '../../components';
+import { SizeControl } from '../../components';
 
 /**
  * Styles and icons
@@ -42,19 +40,18 @@ import {
  */
 const ShapeDividerControl = props => {
 
-    // const {
-    //     shapeDividerOptions,
-    //     onChange,
-    // } = props;
+    const {
+        motionOptions,
+        onChange,
+    } = props;
 
-    // let value = !isObject(shapeDividerOptions) ?
-    // JSON.parse(shapeDividerOptions) :
-    // shapeDividerOptions;
+    let value = !isObject(motionOptions) ?
+    JSON.parse(motionOptions) :
+    motionOptions;
 
-    // let {
-    //     top:shapeDividerTopOptions,
-    //     bottom:shapeDividerBottomOptions
-    // } = value;
+    let {
+        vertical: verticalOptions,
+    } = value;
 
     const [motionStatus, setMotionStatus] = useState('vertical');
 
@@ -80,7 +77,70 @@ const ShapeDividerControl = props => {
             {
             motionStatus === 'vertical' &&
                 <Fragment>
-                    <h1>Vertical Settings</h1>
+                    <div className='maxi-fancy-radio-control'>
+                        <RadioControl
+                            label={__('Enable Vertical', 'maxi-block')}
+                            selected={verticalOptions.status}
+                            options={
+                                [
+                                    { label: __('Yes', 'maxi-block'), value: 'yes' },
+                                    { label: __('No', 'maxi-block'), value: 'no' },
+                                ]
+                            }
+                            onChange={val => {
+                                verticalOptions.status = val;
+                                onChange(JSON.stringify(value));
+                            }}
+                        />
+                    </div>
+                    <SelectControl
+                        label={__('Direction', 'maxi-blocks')}
+                        value={verticalOptions.direction}
+                        options={[
+                            { label: 'Up', value: 'up' },
+                            { label: 'Down', value: 'down' },
+                        ]}
+                        onChange={val => {
+                            verticalOptions.direction = val;
+                            onChange(JSON.stringify(value));
+                        }}
+                    />
+                    <SizeControl
+                        label={__('Speed', 'maxi-blocks')}
+                        disableUnit
+                        min={0}
+                        max={10}
+                        initial={4}
+                        value={verticalOptions.speed}
+                        onChangeValue={val => {
+                            verticalOptions.speed = val;
+                            onChange(JSON.stringify(value));
+                        }}
+                    />
+                    <SizeControl
+                        label={__('Viewport Top', 'maxi-blocks')}
+                        disableUnit
+                        min={0}
+                        max={100}
+                        initial={100}
+                        value={verticalOptions.viewportTop}
+                        onChangeValue={val => {
+                            verticalOptions.viewportTop = val;
+                            onChange(JSON.stringify(value));
+                        }}
+                    />
+                    <SizeControl
+                        label={__('Viewport Bottom', 'maxi-blocks')}
+                        disableUnit
+                        min={0}
+                        max={100}
+                        initial={0}
+                        value={verticalOptions.viewportBottom}
+                        onChangeValue={val => {
+                            verticalOptions.viewportBottom = val;
+                            onChange(JSON.stringify(value));
+                        }}
+                    />
                 </Fragment>
             }
             {

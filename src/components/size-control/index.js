@@ -19,6 +19,7 @@ import classnames from 'classnames';
  */
 import './editor.scss';
 import { reset } from '../../icons';
+import { Fragment } from 'react';
 
 /**
  * Component
@@ -29,7 +30,11 @@ const SizeControl = props => {
         label,
         className,
         unit,
+        disableUnit = false,
         onChangeUnit,
+        min = 0,
+        max = 999,
+        initial = 0,
         value,
         onChangeValue,
         allowedUnits = ['px', 'em', 'vw', '%'],
@@ -72,21 +77,36 @@ const SizeControl = props => {
             label={label}
             className={classes}
         >
-            <input
-                type='number'
-                className='maxi-size-control__value'
-                value={value}
-                onChange={e => onChangeValue(Number(e.target.value))}
-                min={minMaxSettings[unit].min}
-                max={minMaxSettings[unit].max}
-                placeholder='auto'
-            />
-            <SelectControl
-                className='components-maxi-dimensions-control__units'
-                options={getOptions()}
-                value={unit}
-                onChange={(val) => onChangeUnit(val)}
-            />
+            {
+                (disableUnit) ?
+                    <input
+                        type='number'
+                        className='maxi-size-control__value'
+                        value={value}
+                        onChange={e => onChangeValue(Number(e.target.value))}
+                        min={min}
+                        max={max}
+                        placeholder='auto'
+                    />
+                :
+                    <Fragment>
+                        <input
+                            type='number'
+                            className='maxi-size-control__value'
+                            value={value}
+                            onChange={e => onChangeValue(Number(e.target.value))}
+                            min={minMaxSettings[unit].min}
+                            max={minMaxSettings[unit].max}
+                            placeholder='auto'
+                        />
+                        <SelectControl
+                            className='components-maxi-dimensions-control__units'
+                            options={getOptions()}
+                            value={unit}
+                            onChange={(val) => onChangeUnit(val)}
+                        />
+                    </Fragment>
+            }
             <Button
                 className='components-maxi-control__reset-button'
                 onClick={() => onChangeValue('')}
@@ -100,15 +120,28 @@ const SizeControl = props => {
             >
                 {reset}
             </Button>
-            <RangeControl
-                value={Number(value)}
-                onChange={val => onChangeValue(Number(val))}
-                min={minMaxSettings[unit].min}
-                max={minMaxSettings[unit].max}
-                allowReset={false}
-                withInputField={false}
-                initialPosition={0}
-            />
+            {
+                (disableUnit) ?
+                    <RangeControl
+                        value={Number(value)}
+                        onChange={val => onChangeValue(Number(val))}
+                        min={min}
+                        max={max}
+                        allowReset={false}
+                        withInputField={false}
+                        initialPosition={initial}
+                    />
+                :
+                    <RangeControl
+                        value={Number(value)}
+                        onChange={val => onChangeValue(Number(val))}
+                        min={minMaxSettings[unit].min}
+                        max={minMaxSettings[unit].max}
+                        allowReset={false}
+                        withInputField={false}
+                        initialPosition={initial}
+                    />
+            }
         </BaseControl>
     )
 }

@@ -87,6 +87,7 @@ const Inspector = props => {
             onChangeHoverAnimationTypeOpacityColor,
             hoverAnimationTypeOpacityColorBackground,
             shapeDivider,
+            motion,
         },
         deviceType,
         setAttributes,
@@ -450,8 +451,8 @@ const Inspector = props => {
                                             label: __('Motion Effects', 'maxi-blocks'),
                                             content: (
                                                 <__experimentalMotionControl
-                                                    //motionOptions={motion}
-                                                    //onChange={motion => setAttributes({ motion })}
+                                                    motionOptions={motion}
+                                                    onChange={motion => setAttributes({ motion })}
                                                 />
                                             )
                                         }

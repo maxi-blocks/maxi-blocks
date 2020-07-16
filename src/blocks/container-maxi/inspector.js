@@ -32,6 +32,7 @@ import {
     __experimentalResponsiveControl,
     __experimentalOpacityControl,
     __experimentalShapeDividerControl,
+    __experimentalMotionControl,
 } from '../../components';
 
 /**
@@ -442,6 +443,15 @@ const Inspector = props => {
                                                 <__experimentalShapeDividerControl
                                                     shapeDividerOptions={shapeDivider}
                                                     onChange={shapeDivider => setAttributes({ shapeDivider })}
+                                                />
+                                            )
+                                        },
+                                        {
+                                            label: __('Motion Effects', 'maxi-blocks'),
+                                            content: (
+                                                <__experimentalMotionControl
+                                                    //motionOptions={motion}
+                                                    //onChange={motion => setAttributes({ motion })}
                                                 />
                                             )
                                         }

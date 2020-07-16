@@ -111,6 +111,7 @@ const ShapeDividerControl = props => {
                         min={0}
                         max={10}
                         initial={4}
+                        step={0.1}
                         value={verticalOptions.speed}
                         onChangeValue={val => {
                             verticalOptions.speed = val;

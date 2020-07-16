@@ -35,6 +35,7 @@ const SizeControl = props => {
         min = 0,
         max = 999,
         initial = 0,
+        step = 1,
         value,
         onChangeValue,
         allowedUnits = ['px', 'em', 'vw', '%'],
@@ -86,6 +87,7 @@ const SizeControl = props => {
                         onChange={e => onChangeValue(Number(e.target.value))}
                         min={min}
                         max={max}
+                        step={step}
                         placeholder='auto'
                     />
                 :
@@ -97,6 +99,7 @@ const SizeControl = props => {
                             onChange={e => onChangeValue(Number(e.target.value))}
                             min={minMaxSettings[unit].min}
                             max={minMaxSettings[unit].max}
+                            step={step}
                             placeholder='auto'
                         />
                         <SelectControl
@@ -127,6 +130,7 @@ const SizeControl = props => {
                         onChange={val => onChangeValue(Number(val))}
                         min={min}
                         max={max}
+                        step={step}
                         allowReset={false}
                         withInputField={false}
                         initialPosition={initial}
@@ -137,6 +141,7 @@ const SizeControl = props => {
                         onChange={val => onChangeValue(Number(val))}
                         min={minMaxSettings[unit].min}
                         max={minMaxSettings[unit].max}
+                        step={step}
                         allowReset={false}
                         withInputField={false}
                         initialPosition={initial}

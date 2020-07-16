@@ -232,10 +232,7 @@ export class BackEndResponsiveStyles {
     getResponsiveStyles(styles) {
         let responsiveStyles = '';
         for (let [key, value] of Object.entries(styles)) {
-            if(key === 'font-options')
-                continue;
-
-            responsiveStyles += ` ${key}: ${value} !important;`;
+            responsiveStyles += ` ${key}: ${value};`;
         }
         return responsiveStyles;
     }

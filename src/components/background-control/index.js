@@ -57,6 +57,8 @@ const BackgroundControl = props => {
         backgroundOptions,
         disableImage = false,
         disableVideo = false,
+        disableGradient = false,
+        disableColor = false,
         onChange
     } = props;
 
@@ -125,12 +127,12 @@ const BackgroundControl = props => {
 
     const getOptions = () => {
         let options = [];
-        options.push({ label: <Icon icon={backgroundColor} />, value: 'color' });
+        !disableColor && options.push({ label: <Icon icon={backgroundColor} />, value: 'color' });
         !disableImage && backgroundImageAllowedBlocks.includes(currentBlockName) &&
             options.push({ label: <Icon icon={backgroundImage} />, value: 'image' });
         !disableVideo && backgroundVideoAllowedBlocks.includes(currentBlockName) &&
             options.push({ label: <Icon icon={backgroundVideo} />, value: 'video' });
-        backgroundGradientAllowedBlocks.includes(currentBlockName) &&
+        !disableImage && backgroundGradientAllowedBlocks.includes(currentBlockName) &&
             options.push({ label: <Icon icon={backgroundGradient()} />, value: 'gradient' })
 
         return options;
@@ -140,7 +142,7 @@ const BackgroundControl = props => {
         <div className={classes}>
             {
                 getOptions().length > 1 &&
-                <div className='maxi-background-control__background-items'>
+                <div className='maxi-fancy-radio-control'>
                     <RadioControl
                         label={__('Background')}
                         selected={backgroundItems}
@@ -300,6 +302,7 @@ const BackgroundControl = props => {
                         </div>
                     }
                     {
+                        !disableGradient &&
                         backgroundItems === 'gradient' &&
                         <GradientControl
                             label={__('Background', 'maxi-blocks')}
@@ -317,6 +320,7 @@ const BackgroundControl = props => {
                         />
                     }
                     {
+                        !disableColor &&
                         backgroundItems === 'color' &&
                         <ColorControl
                             label={__('Background', 'maxi-blocks')}
@@ -372,6 +376,54 @@ const BackgroundControl = props => {
                         })
                     }
                 </Fragment>
+            }
+            {
+                isOpen &&
+                backgroundItems === 'image' &&
+                <SettingTabsControl
+                    items={[
+                        {
+                            label: __('Image', 'maxi-blocks'),
+                            className: 'maxi-background-control__image-tab',
+                            uuid: 'maxi-background-control__image-tab',
+                            content: (
+                                <MediaUploaderControl
+                                    mediaID={value.backgroundOptions[i].imageOptions.mediaID}
+                                    onSelectImage={imageData => {
+                                        if (!isNumber(value.backgroundOptions[i].imageOptions.mediaID))
+                                            onAddBackground()
+                                        value.backgroundOptions[i].imageOptions.mediaID = imageData.id;
+                                        value.backgroundOptions[i].imageOptions.mediaURL = imageData.url;
+                                        onChange(JSON.stringify(value));
+                                    }}
+                                    onRemoveImage={() => {
+                                        value.backgroundOptions[selector].imageOptions.mediaID = '';
+                                        value.backgroundOptions[selector].imageOptions.mediaURL = '';
+                                        onRemoveImage();
+                                        onChange(JSON.stringify(value));
+                                    }}
+                                    placeholder={
+                                        value.backgroundOptions.length - 1 === 0 ?
+                                            __('Set image', 'maxi-blocks') :
+                                            __('Add Another Image', 'maxi-blocks')
+                                    }
+                                    extendSelector={
+                                        value.backgroundOptions[i].imageOptions.mediaID &&
+                                        <Button
+                                            isSecondary
+                                            onClick={(e) => onOpenOptions(e, i)}
+                                            className='maxi-background-control__image-edit'
+                                        >
+                                            {__('Edit image', 'maxi-blocks')}
+                                        </Button>
+                                    }
+                                    alternativeImage={getAlternativeImage(i)}
+                                    removeButton={__('Remove', 'maxi-blocks')}
+                                />
+                            )
+                        }
+                    ]}
+                />
             }
             {
                 isOpen &&

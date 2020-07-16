@@ -322,15 +322,31 @@ function gutenberg_extra_load_custom_wp_admin_style() {
 
 	wp_enqueue_style('gutenberg_extra-block-css-admin');
 
-
-
-
 }
-
-
 add_action( 'admin_enqueue_scripts', 'gutenberg_extra_load_custom_wp_admin_style' );
 
 
+function maxi_load_custom_wp_front_script() {
+
+	wp_enqueue_script(
+		'maxi-gsap-lib-js',
+		plugins_url( '/js/gsap.min.js', dirname( __FILE__ ) )
+	);
+
+	wp_enqueue_script(
+		'maxi-gsap-scroll-trigger-js',
+		plugins_url( '/js/ScrollTrigger.min.js', dirname( __FILE__ ) )
+	);
+
+	wp_enqueue_script(
+		'maxi-front-scripts-js',
+		plugins_url( '/js/front-scripts.js', dirname( __FILE__ ) ),
+		array(), false, true
+	);
+
+}
+
+add_action( 'wp_enqueue_scripts', 'maxi_load_custom_wp_front_script' );
 
 
 
@@ -960,7 +976,7 @@ function maxi_save_metabox( $post_id, $post ) {
 	update_post_meta( $post->ID, 'maxi_blocks_custom_ccs_page', $sanitized );
 
 }
-add_action( 'save_post', 'maxi_save_metabox', 1, 2 );
+// add_action( 'save_post', 'maxi_save_metabox', 1, 2 );
 
 add_action( 'wp_head', 'maxi_output_css', 10, 2 );
 add_action( 'admin_head', 'maxi_output_css', 10, 2 );

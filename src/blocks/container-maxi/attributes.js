@@ -133,6 +133,10 @@ const attributes = {
         type: 'string',
         default: JSON.stringify(attributesData.background)
     },
+    shapeDivider: {
+        type: 'string',
+        default: JSON.stringify(attributesData.__experimentalShapeDivider)
+    },
 }
 
 export default attributes;

@@ -1032,3 +1032,33 @@ export const __experimentalColumn = {
         "size": ""
     },
 }
+
+export const __experimentalShapeDivider = {
+    "label": "Shape Divider",
+    "top": {
+        "height": "100",
+        "heightUnit": "px",
+        "opacity": 1,
+        "shapeStyle": "",
+        "colorOptions": {
+            "color": "#000000",
+            "defultColor": "#000000",
+            "gradient": "",
+            "defaultGradient": "",
+            "gradientAboveBackground": false
+        }
+    },
+    "bottom": {
+        "height": "100",
+        "heightUnit": "px",
+        "opacity": 1,
+        "shapeStyle": "",
+        "colorOptions": {
+            "color": "#000000",
+            "defultColor": "#000000",
+            "gradient": "",
+            "defaultGradient": "",
+            "gradientAboveBackground": false
+        }
+    }
+}

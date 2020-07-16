@@ -1,9 +1,4 @@
 /**
- * External dependencies
- */
-import { isObject } from 'lodash';
-
-/**
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
@@ -24,6 +19,14 @@ import {
     BackgroundControl,
     SizeControl,
 } from '../../components';
+
+/**
+ * External dependencies
+ */
+import { 
+    isObject,
+    trim
+} from 'lodash';
 
 /**
  * Styles and icons
@@ -232,7 +235,7 @@ const ShapeDividerControl = props => {
                     <RangeControl
                         label={__('Opacity', 'maxi-blocks')}
                         className='maxi-opacity-control'
-                        value={shapeDividerTopOptions.opacity * 100}
+                        value={trim(shapeDividerTopOptions.opacity * 100)}
                         onChange={val => {
                             shapeDividerTopOptions.opacity = val / 100;
                             onChange(JSON.stringify(value))
@@ -297,7 +300,7 @@ const ShapeDividerControl = props => {
                     <RangeControl
                         label={__('Opacity', 'maxi-blocks')}
                         className='maxi-opacity-control'
-                        value={shapeDividerBottomOptions.opacity * 100}
+                        value={trim(shapeDividerBottomOptions.opacity * 100)}
                         onChange={val => {
                             shapeDividerBottomOptions.opacity = val / 100;
                             onChange(JSON.stringify(value))

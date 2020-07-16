@@ -1,6 +1,7 @@
 /**
  * WordPress dependencies
  */
+const { __ } = wp.i18n;
 const { Icon } = wp.components;
 
 /**
@@ -13,7 +14,7 @@ import ToolbarPopover from '../toolbar-popover';
  * Border
  */
 const ALLOWED_BLOCKS = [
-    'maxi-blocks/text-maxi',
+    // 'maxi-blocks/text-maxi',
     'maxi-blocks/button-maxi',
     'maxi-blocks/image-maxi',
 ]
@@ -42,6 +43,8 @@ const Border = props => {
     return (
         <ToolbarPopover
             className='toolbar-item__border'
+            advancedOptions='border'
+            tooltip={__('Border', 'maxi-blocks')}
             icon={(
                 <div
                     className='toolbar-item__border__icon'
@@ -56,7 +59,6 @@ const Border = props => {
                     }}
                 >
                     <Icon
-
                         className='toolbar-item__border__inner-icon'
                         icon={toolbarBorder}
                     />
@@ -67,6 +69,7 @@ const Border = props => {
                     border={border}
                     onChange={value => onChange(value)}
                     breakpoint={breakpoint}
+                    disableAdvanced
                 />
             )}
         />

@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies
+ */
+const { __ } = wp.i18n;
+
+/**
  * Internal dependencies
  */
 import AlignmentControl from '../../../alignment-control';
@@ -33,6 +38,7 @@ const Alignment = props => {
     return (
         <ToolbarPopover
             className='toolbar-item__alignment'
+            tooltip={__('Alignment', 'maxi-blocks')}
             icon={toolbarAlign}
             content={(
                 <AlignmentControl

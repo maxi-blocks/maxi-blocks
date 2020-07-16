@@ -1,13 +1,14 @@
 /**
+ * WordPress dependencies
+ */
+const { __ } = wp.i18n;
+const { RadioControl } = wp.components;
+const { Fragment } = wp.element;
+
+/**
  * External dependencies
  */
 import classnames from 'classnames';
-
-/**
- * WordPress dependencies
- */
-const { RadioControl } = wp.components;
-const { Fragment } = wp.element;
 
 /**
  * Internal dependencies
@@ -43,6 +44,7 @@ const Divider = props => {
     return (
         <ToolbarPopover
             className='toolbar-item__divider'
+            tooltip={__('Divider', 'maxi-blocks')}
             icon={toolbarDividersetting}
             content={(
                 <Fragment>

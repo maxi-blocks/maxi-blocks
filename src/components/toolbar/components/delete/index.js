@@ -1,9 +1,11 @@
 /**
  * WordPress dependencies
  */
+const { __ } = wp.i18n;
 const {
     Icon,
-    Button
+    Button,
+    Tooltip
 } = wp.components;
 const { useDispatch } = wp.data;
 
@@ -23,15 +25,20 @@ const Delete = props => {
     );
 
     return (
-        <Button
-            className='toolbar-item toolbar-item__delete'
-            onClick={() => removeBlock(clientId)}
+        <Tooltip
+            text={__('Delete', 'maxi-blocks')}
+            position='bottom center'
         >
-            <Icon
-                className='toolbar-item__icon'
-                icon={toolbarDelete}
-            />
-        </Button>
+            <Button
+                className='toolbar-item toolbar-item__delete'
+                onClick={() => removeBlock(clientId)}
+            >
+                <Icon
+                    className='toolbar-item__icon'
+                    icon={toolbarDelete}
+                />
+            </Button>
+        </Tooltip>
     )
 }
 

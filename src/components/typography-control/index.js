@@ -17,7 +17,10 @@ import TextShadowControl from '../text-shadow-control';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject } from 'lodash';
+import { 
+    isObject,
+    trim
+} from 'lodash';
 
 /**
  * Styles
@@ -135,7 +138,7 @@ const TypographyControl = props => {
                     value[breakpoint]['font-sizeUnit'] = val;
                     onChange(JSON.stringify(value))
                 }}
-                value={value[breakpoint]['font-size']}
+                value={trim(value[breakpoint]['font-size'])}
                 onChangeValue={val => {
                     value[breakpoint]['font-size'] = val;
                     onChange(JSON.stringify(value))
@@ -149,7 +152,7 @@ const TypographyControl = props => {
                     value[breakpoint]['line-heightUnit'] = val;
                     onChange(JSON.stringify(value))
                 }}
-                value={value[breakpoint]['line-height']}
+                value={trim(value[breakpoint]['line-height'])}
                 onChangeValue={val => {
                     value[breakpoint]['line-height'] = val;
                     onChange(JSON.stringify(value))
@@ -163,7 +166,7 @@ const TypographyControl = props => {
                     value[breakpoint]['letter-spacingUnit'] = val;
                     onChange(JSON.stringify(value))
                 }}
-                value={value[breakpoint]['letter-spacing']}
+                value={trim(value[breakpoint]['letter-spacing'])}
                 onChangeValue={val => {
                     value[breakpoint]['letter-spacing'] = val;
                     onChange(JSON.stringify(value))

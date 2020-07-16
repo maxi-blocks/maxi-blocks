@@ -13,6 +13,7 @@ const {
  * External dependencies
  */
 import classnames from 'classnames';
+import { trim } from 'lodash';
 
 /**
  * Styles
@@ -75,7 +76,7 @@ const SizeControl = props => {
             <input
                 type='number'
                 className='maxi-size-control__value'
-                value={value}
+                value={trim(value)}
                 onChange={e => onChangeValue(Number(e.target.value))}
                 min={minMaxSettings[unit].min}
                 max={minMaxSettings[unit].max}

@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies
+ */
+const { __ } = wp.i18n;
+
+/**
  * Internal dependencies
  */
 import TextShadowControl from '../../../text-shadow-control';
@@ -30,6 +35,7 @@ const TextShadow = props => {
     return (
         <ToolbarPopover
             className='toolbar-item__box-shadow'
+            tooltip={__('Text shadow', 'maxi-blocks')}
             icon={toolbarDropShadow}
             content={(
                 <TextShadowControl

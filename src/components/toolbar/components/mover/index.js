@@ -1,10 +1,12 @@
 /**
  * WordPress dependencies
  */
+const { __ } = wp.i18n;
 const {
     Draggable,
     Icon,
-    Button
+    Button,
+    Tooltip
 } = wp.components;
 const {
     useSelect,
@@ -18,7 +20,7 @@ const {
 /**
  * Icons
  */
-import {  toolbarMove } from '../../../../icons';
+import { toolbarMove } from '../../../../icons';
 
 /**
  * Mover
@@ -84,17 +86,22 @@ const Mover = props => {
             }}
         >
             {({ onDraggableStart, onDraggableEnd }) => (
-                <Button
-                    className='toolbar-item toolbar-item__move'
-                    draggable={isDraggable}
-                    onDragStart={onDraggableStart}
-                    onDragEnd={onDraggableEnd}
+                <Tooltip
+                    text={__('Mover', 'maxi-blocks')}
+                    position='bottom center'
                 >
-                    <Icon
-                        className='toolbar-item__icon'
-                        icon={toolbarMove}
-                    />
-                </Button>
+                    <Button
+                        className='toolbar-item toolbar-item__move'
+                        draggable={isDraggable}
+                        onDragStart={onDraggableStart}
+                        onDragEnd={onDraggableEnd}
+                    >
+                        <Icon
+                            className='toolbar-item__icon'
+                            icon={toolbarMove}
+                        />
+                    </Button>
+                </Tooltip>
             )}
         </Draggable>
     )

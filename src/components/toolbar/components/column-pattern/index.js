@@ -1,6 +1,7 @@
 /**
  * WordPress dependencies
  */
+const { __ } = wp.i18n;
 const { synchronizeBlocksWithTemplate } = wp.blocks;
 const {
     Icon,
@@ -153,6 +154,7 @@ const ColumnPatterns = props => {
         <ToolbarPopover
             className='toolbar-item__column-pattern'
             icon={toolbarColumnPattern}
+            tooltip={__('Column pattern', 'maxi-blocks')}
             content={(
                 <div
                     class="toolbar-item__popover__wrapper toolbar-item__popover__column-pattern"

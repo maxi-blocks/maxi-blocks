@@ -29,14 +29,14 @@ import {
     dividerDashedVertical,
     dividerNone,
 } from './defaults';
-import { getDefaultProp } from '../../extensions/styles/utils';
 
 /**
  * External dependencies
  */
 import { 
     isNil,
-    isObject
+    isObject,
+    trim
 } from 'lodash';
 
 /**
@@ -272,7 +272,7 @@ const DividerControl = props => {
             <RangeControl
                 label={__("Opacity", "maxi-blocks")}
                 className={"maxi-opacity-control"}
-                value={value.general.opacity * 100}
+                value={trim(value.general.opacity * 100)}
                 onChange={val => {
                     if (!!val)
                         value.general.opacity = Number(val) / 100;

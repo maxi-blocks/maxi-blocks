@@ -327,11 +327,12 @@ jQuery(document).ready(function($) {
                 const clientId = wp.data.select('core/block-editor').getSelectedBlock().clientId;
                 console.log('e.data.fatype '+e.data.fatype);
                 final_fa_content = '<i class="maxi-fa-icon ' + e.data.fatype +' '+ e.data.json +'"></i>';
+                final_fa_block = '<!-- wp:maxi-blocks/icon-maxi -->' + final_fa_content +'<!-- /wp:maxi-blocks/icon-maxi -->';
                 if(full_stop !== 1) {
                   wp.data.dispatch('core/block-editor').replaceBlocks(
                     clientId,
                     wp.blocks.rawHandler({
-                        HTML: final_fa_content,
+                        HTML:  final_fa_block,
                         mode: 'BLOCKS',
                         canUserUseUnfilteredHTML,
                     }),

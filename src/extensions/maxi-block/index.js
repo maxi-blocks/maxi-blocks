@@ -1,6 +1,6 @@
 /**
  * Maxi Blocks Block component extension
- * 
+ *
  * @todo Comment properly
  */
 
@@ -177,7 +177,7 @@ class MaxiBlock extends Component {
         return new ResponsiveStylesResolver(obj, meta, breakpoints);
     }
 
-    /** 
+    /**
     * Refresh the styles on Editor
     */
     displayStyles() {

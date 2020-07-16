@@ -37,7 +37,7 @@ const save = props => {
         classes = classnames(classes, uniqueID);
 
     return (
-        <figure>test
+        <figure>
         </figure>
     );
 }

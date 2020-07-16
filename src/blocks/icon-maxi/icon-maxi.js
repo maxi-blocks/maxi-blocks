@@ -16,7 +16,7 @@ const { registerBlockType } = wp.blocks;
  */
 import attributes from './attributes.js';
 import edit from './edit.js';
-import save from './save.js';
+//import save from './save.js';
 
 /**
  * Styles and icons
@@ -50,5 +50,7 @@ registerBlockType( 'maxi-blocks/icon-maxi', {
         };
     },
 	edit,
-	save
+	save: () => {
+		return null;
+	}
 } );

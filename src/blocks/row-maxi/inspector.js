@@ -405,8 +405,7 @@ const Inspector = props => {
                                         {
                                             hoverAnimation === 'text' &&
                                             <Fragment>
-                                                <DimensionsControl
-                                                    label={__('Padding', 'maxi-blocks')}
+                                                <__experimentalMarginPaddingControl
                                                     value={hoverPadding}
                                                     onChange={hoverPadding => setAttributes({ hoverPadding })}
                                                 />

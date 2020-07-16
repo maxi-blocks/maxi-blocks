@@ -16,7 +16,7 @@ const MarginPaddingControl = props => {
         value,
         className,
         onChange,
-        breakpoint
+        breakpoint = 'general'
     } = props;
 
     const classes = classnames(

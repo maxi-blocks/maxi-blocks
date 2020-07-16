@@ -1,11 +1,13 @@
 /**
  * WordPress dependencies
  */
+const { __ } = wp.i18n;
+const { useDispatch } = wp.data;
 const {
     Icon,
-    Button
+    Button,
+    Tooltip
 } = wp.components;
-const { useDispatch } = wp.data;
 
 /**
  * Icons
@@ -23,15 +25,20 @@ const Duplicate = props => {
     );
 
     return (
-        <Button
-            className='toolbar-item toolbar-item__duplicate'
-            onClick={() => duplicateBlocks([clientId])}
+        <Tooltip
+            text={_('Duplicate', 'maxi-blocks')}
+            position='bottom center'
         >
-            <Icon
-                className='toolbar-item__icon'
-                icon={toolbarDuplicate}
-            />
-        </Button>
+            <Button
+                className='toolbar-item toolbar-item__duplicate'
+                onClick={() => duplicateBlocks([clientId])}
+            >
+                <Icon
+                    className='toolbar-item__icon'
+                    icon={toolbarDuplicate}
+                />
+            </Button>
+        </Tooltip>
     )
 }
 

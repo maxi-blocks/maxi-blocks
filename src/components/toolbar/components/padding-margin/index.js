@@ -1,6 +1,7 @@
 /**
  * WordPress dependencies
  */
+const { __ } = wp.i18n;
 const { Fragment } = wp.element;
 
 /**
@@ -30,6 +31,7 @@ const PaddingMargin = props => {
     return (
         <ToolbarPopover
             className='toolbar-item__padding-margin'
+            tooltip={__('Padding & Margin', 'maxi-blocks')}
             icon={toolbarPadding}
             content={(
                 <Fragment>

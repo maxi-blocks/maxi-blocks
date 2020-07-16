@@ -16,6 +16,7 @@ import { reset } from '../../icons';
  * External dependencies
  */
 import classnames from 'classnames';
+import { trim } from 'lodash';
 
 /**
  * Component
@@ -42,7 +43,7 @@ const NumberControl = props => {
         >
             <input
                 type='number'
-                value={!!value ? value : ''}
+                value={!!value ? trim(value) : ''}
                 onChange={e => onChange(Number(e.target.value))}
                 min={min}
                 max={max}

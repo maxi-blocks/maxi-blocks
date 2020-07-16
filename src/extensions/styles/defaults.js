@@ -462,6 +462,7 @@ export const background = {
 export const boxShadow = {
     "label": "Box Shadow",
     "general": {
+        "shadowType": "none",
         "shadowColor": "#ffffff",
         "defaultShadowColor": "#ffffff",
         "shadowHorizontal": 0,

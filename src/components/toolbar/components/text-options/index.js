@@ -6,18 +6,18 @@ const { Fragment } = wp.element;
 const { getBlockAttributes } = wp.blocks;
 const {
     Button,
-    IconButton,
     BaseControl,
 } = wp.components;
-const { useDispatch } = wp.data;
-import openSidebar from '../../../../extensions/dom';
 
 /**
  * Internal dependencies
  */
 import FontFamilySelector from '../../../font-family-selector';
 import ToolbarPopover from '../toolbar-popover';
-import { isEmpty } from 'lodash';
+import { 
+    isEmpty,
+    trim
+} from 'lodash';
 
 /**
  * Styles and icons
@@ -25,10 +25,8 @@ import { isEmpty } from 'lodash';
 import './editor.scss';
 import {
     toolbarType,
-    toolbarAdvancedSettings,
     reset,
 } from '../../../../icons';
-import SettingTabsControl from '../../../setting-tabs-control';
 
 /**
  * TextOptions
@@ -46,10 +44,6 @@ const TextOptions = props => {
     if (blockName != 'maxi-blocks/text-maxi')
         return null;
 
-    const { openGeneralSidebar } = useDispatch(
-        'core/edit-post'
-    );
-
     const updateTypography = () => {
         onChange(JSON.stringify(value))
     }
@@ -65,7 +59,9 @@ const TextOptions = props => {
     return (
         <ToolbarPopover
             className='toolbar-item__text-options'
+            tooltip={__('Text options', 'maxi-blocks')}
             icon={toolbarType}
+            advancedOptions='typography'
             content={(
                 <div
                     class="toolbar-item__popover__wrapper toolbar-item__popover__font-options"
@@ -100,23 +96,13 @@ const TextOptions = props => {
                         </Button>
                     </div>
                     <Fragment>
-                        <div className='toolbar-item__popover__dropdown-options'>
-                            <IconButton
-                                className='toolbar-item__popover__dropdown-options__advanced-button'
-                                icon={toolbarAdvancedSettings}
-                                onClick={() =>
-                                    openGeneralSidebar('edit-post/block')
-                                        .then(() => openSidebar('typography'))
-                                }
-                            />
-                        </div>
                         <BaseControl
                             label={__('Size', 'maxi-blocks')}
                             className='toolbar-item__popover__font-options__number-control'
                         >
                             <input
                                 type='number'
-                                value={value[breakpoint]['font-size']}
+                                value={trim(value[breakpoint]['font-size'])}
                                 onChange={e => {
                                     value[breakpoint]['font-size'] = isEmpty(e.target.value) ? '' : Number(e.target.value);
                                     updateTypography();
@@ -146,7 +132,7 @@ const TextOptions = props => {
                         >
                             <input
                                 type='number'
-                                value={value[breakpoint]['line-height']}
+                                value={trim(value[breakpoint]['line-height'])}
                                 onChange={e => {
                                     value[breakpoint]['line-height'] = isEmpty(e.target.value) ? '' : Number(e.target.value);
                                     updateTypography();
@@ -176,7 +162,7 @@ const TextOptions = props => {
                         >
                             <input
                                 type='number'
-                                value={value[breakpoint]['letter-spacing']}
+                                value={trim(value[breakpoint]['letter-spacing'])}
                                 onChange={e => {
                                     value[breakpoint]['letter-spacing'] = isEmpty(e.target.value) ? '' : Number(e.target.value);
                                     updateTypography();

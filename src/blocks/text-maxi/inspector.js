@@ -365,19 +365,12 @@ const Inspector = props => {
                                 {
                                     deviceType === 'general' &&
                                     <Fragment>
-                                        <HoverAnimationControl
-                                            hoverAnimation={hoverAnimation}
-                                            onChangeHoverAnimation={hoverAnimation => setAttributes({ hoverAnimation })}
-                                            hoverAnimationDuration={hoverAnimationDuration}
-                                            onChangeHoverAnimationDuration={hoverAnimationDuration => setAttributes({ hoverAnimationDuration })}
-                                        />
                                         <TextControl
                                             label={__('Additional CSS Classes', 'maxi-blocks')}
                                             className='maxi-additional__css-classes'
                                             value={extraClassName}
                                             onChange={extraClassName => setAttributes({ extraClassName })}
                                         />
-
                                         <HoverAnimationControl
                                             hoverAnimation={hoverAnimation}
                                             onChangeHoverAnimation={hoverAnimation => setAttributes({ hoverAnimation })}

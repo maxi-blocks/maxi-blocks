@@ -1,6 +1,7 @@
 /**
  * WordPress dependencies
  */
+const { dispatch } = wp.data;
 const {
     Fragment,
     Component
@@ -8,9 +9,17 @@ const {
 const {
     Button,
     Icon,
+    IconButton,
     Popover,
-    withFocusOutside
+    withFocusOutside,
+    Tooltip
 } = wp.components;
+
+/**
+ * Internal dependencies
+ */
+import openSidebar from '../../../../extensions/dom';
+import { toolbarAdvancedSettings } from '../../../../icons';
 
 /**
  * External dependencies
@@ -40,11 +49,17 @@ class ToolbarPopover extends Component {
     render() {
         const {
             className,
+            tooltip,
             icon,
-            content
+            content,
+            advancedOptions = false,
         } = this.props;
 
         const { isOpen } = this.state;
+
+        const { openGeneralSidebar } = dispatch(
+            'core/edit-post'
+        );
 
         const classes = classnames(
             'toolbar-item',
@@ -54,17 +69,22 @@ class ToolbarPopover extends Component {
 
         return (
             <Fragment>
-                <Button
-                    className={classes}
-                    onClick={() => this.onToggle()}
-                    aria-expanded={isOpen}
-                    action="popup"
+                <Tooltip
+                    text={tooltip}
+                    position="bottom center"
                 >
-                    <Icon
-                        className='toolbar-item__icon'
-                        icon={icon}
-                    />
-                </Button>
+                    <Button
+                        className={classes}
+                        onClick={() => this.onToggle()}
+                        aria-expanded={isOpen}
+                        action="popup"
+                    >
+                        <Icon
+                            className='toolbar-item__icon'
+                            icon={icon}
+                        />
+                    </Button>
+                </Tooltip>
                 {
                     isOpen &&
                     <Popover
@@ -74,11 +94,22 @@ class ToolbarPopover extends Component {
                         focusOnMount={true}
                         isAlternate
                         // anchorRef= anchorRef
-                        __unstableSticky={true}
+                        // __unstableSticky={true}
                         // __unstableSlotName= "block-toolbar"
                         shouldAnchorIncludePadding={true}
                     >
                         {content}
+                        {
+                            !!advancedOptions &&
+                            <IconButton
+                                className='toolbar-item__popover__advanced-button'
+                                icon={toolbarAdvancedSettings}
+                                onClick={() =>
+                                    openGeneralSidebar('edit-post/block')
+                                        .then(() => openSidebar(advancedOptions))
+                                }
+                            />
+                        }
                     </Popover>
                 }
             </Fragment>

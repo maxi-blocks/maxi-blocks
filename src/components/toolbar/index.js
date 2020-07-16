@@ -30,6 +30,7 @@ import {
     TextColor,
     TextItalic,
     TextLevel,
+    TextLink,
     TextOptions,
     PaddingMargin,
     Size
@@ -231,6 +232,12 @@ const MaxiToolbar = props => {
                             blockName={name}
                             linkSettings={linkSettings}
                             onChange={linkSettings => setAttributes({ linkSettings })}
+                        />
+                        <TextLink
+                            blockName={name}
+                            content={content}
+                            onChange={content => setAttributes({ content })}
+                            node={anchorRef}
                         />
                         <BackgroundColor
                             blockName={name}

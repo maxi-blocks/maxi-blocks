@@ -59,8 +59,9 @@ class ResponsiveFrontendStyles
             $styles['_maxi_blocks_styles_preview'] :
             $styles['_maxi_blocks_styles'];
 
-        if (!!$meta && empty($meta))
+        if (!$meta || empty($meta))
             return;
+
         $meta = json_decode($meta);
         return $this->organizeMeta($meta);
     }
@@ -172,11 +173,10 @@ class ResponsiveFrontendStyles
     public function getStyles($styles)
     {
         $response = '';
-        $important = ' !important';
         foreach ($styles as $property => $value) {
             if ($property === 'font-options')
                 continue;
-            $response .= "{$property}: {$value}{$important};";
+            $response .= "{$property}: {$value};";
         }
         return $response;
     }

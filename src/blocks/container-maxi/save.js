@@ -12,6 +12,11 @@ import { isNil } from 'lodash';
 import Scripts from '../../extensions/styles/hoverAnimations.js';
 
 /**
+ * Internal dependencies
+ */
+import { __experimentalShapeDivider } from '../../components';
+
+/**
  * Save
  */
 const save = props => {
@@ -33,6 +38,7 @@ const save = props => {
             hoverBackground,
             hoverAnimationCustomBorder,
             hoverPadding,
+            shapeDivider,
         },
         className,
     } = props;
@@ -51,7 +57,7 @@ const save = props => {
             null,
         !isNil(uniqueID) ?
             uniqueID :
-            null        
+            null
     );
 
     return (
@@ -62,11 +68,22 @@ const save = props => {
                     className={classes}
                     data-gx_initial_block_class={defaultBlockStyle}
                 >
+                    <__experimentalShapeDivider
+                        shapeDividerOptions={shapeDivider}
+                    />
                     <div
-                        className='maxi-container-block__container'
+                        className='maxi-container-block__wrapper'
                     >
-                        <InnerBlocks.Content />
+                        <div
+                            className='maxi-container-block__container'
+                        >
+                            <InnerBlocks.Content />
+                        </div>
                     </div>
+                    <__experimentalShapeDivider
+                        position='bottom'
+                        shapeDividerOptions={shapeDivider}
+                    />
                 </section>
             }
             {
@@ -75,7 +92,14 @@ const save = props => {
                     className={classes}
                     data-gx_initial_block_class={defaultBlockStyle}
                 >
-                    <InnerBlocks.Content />
+                    <__experimentalShapeDivider
+                        shapeDividerOptions={shapeDivider}
+                    />
+                    <div
+                        className='maxi-container-block__wrapper'
+                    >
+                        <InnerBlocks.Content />
+                    </div>
                     {hoverAnimation === 'text' &&
                         <div className='maxi-block-text-hover'>
                             {hoverAnimationTitle !== '' &&
@@ -100,6 +124,10 @@ const save = props => {
                         >
                         </Scripts>
                     }
+                    <__experimentalShapeDivider
+                        position='bottom'
+                        shapeDividerOptions={shapeDivider}
+                    />
                 </div>
             }
         </Fragment>

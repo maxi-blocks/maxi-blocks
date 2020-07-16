@@ -39,3 +39,5 @@ export { default as __experimentalResponsiveControl } from './responsive-control
 export { default as __experimentalOpacityControl } from './opacity-control';
 export { default as __experimentalAxisControl } from './axis-control';
 export { default as __experimentalMarginPaddingControl } from './margin-padding-control';
+export { default as __experimentalShapeDividerControl } from './shape-divider-control';
+export { default as __experimentalShapeDivider } from './shape-divider';

@@ -1066,10 +1066,10 @@ export const __experimentalShapeDivider = {
 export const __experimentalMotion = {
     "label": "Motion Effects",
     "vertical": {
-        "status": "no",
+        "status": 0,
         "direction": "up",
-        "speed": 5,
-        "viewportTop": "100",
-        "viewportBottom": "0",
+        "speed": 1,
+        "viewportTop": 100,
+        "viewportBottom": 0,
     },
 }

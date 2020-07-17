@@ -77,14 +77,15 @@ const ShapeDividerControl = props => {
             {
             motionStatus === 'vertical' &&
                 <Fragment>
+            {console.log(typeof verticalOptions.status, verticalOptions.status)}
                     <div className='maxi-fancy-radio-control'>
                         <RadioControl
                             label={__('Enable Vertical', 'maxi-block')}
-                            selected={verticalOptions.status}
+                            selected={parseInt(verticalOptions.status)}
                             options={
                                 [
-                                    { label: __('Yes', 'maxi-block'), value: 'yes' },
-                                    { label: __('No', 'maxi-block'), value: 'no' },
+                                    { label: __('Yes', 'maxi-block'), value: 1 },
+                                    { label: __('No', 'maxi-block'), value: 0 },
                                 ]
                             }
                             onChange={val => {

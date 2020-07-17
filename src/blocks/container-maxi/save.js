@@ -8,7 +8,10 @@ const { Fragment } = wp.element;
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
+import {
+    isNil,
+    uniqueId,
+} from 'lodash';
 import Scripts from '../../extensions/styles/hoverAnimations.js';
 
 /**
@@ -39,11 +42,13 @@ const save = props => {
             hoverAnimationCustomBorder,
             hoverPadding,
             shapeDivider,
+            motion,
         },
         className,
     } = props;
 
     let classes = classnames(
+        `maxi-motion-effect maxi-motion-effect-${uniqueID}`,
         'maxi-block maxi-container-block',
         blockStyle,
         extraClassName,
@@ -67,6 +72,8 @@ const save = props => {
                 <section
                     className={classes}
                     data-gx_initial_block_class={defaultBlockStyle}
+                    data-motion={motion}
+                    data-motion-id={uniqueID}
                 >
                     <__experimentalShapeDivider
                         shapeDividerOptions={shapeDivider}

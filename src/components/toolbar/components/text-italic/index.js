@@ -115,9 +115,10 @@ const TextItalic = props => {
 
     return (
         <Tooltip
-            text={__('Bold', 'maxi-blocks')}
+            text={__('Italic', 'maxi-blocks')}
             position='bottom center'
-        >            <Button
+        >
+            <Button
                 className='toolbar-item toolbar-item__italic'
                 onClick={onClick}
                 aria-pressed={isActive}

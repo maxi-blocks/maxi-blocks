@@ -44,8 +44,12 @@ const Inspector = props => {
             isFirstOnHierarchy,
             blockStyle,
             defaultBlockStyle,
-            textLevel,
             alignment,
+            textLevel,
+            isList,
+            typeOfList,
+            listStart,
+            listReversed,
             typography,
             background,
             opacity,
@@ -148,25 +152,65 @@ const Inspector = props => {
                                         },
                                         function () {
                                             if (deviceType === 'general') {
-                                                return {
-                                                    label: __('Level', 'maxi-blocks'),
-                                                    content: (
-                                                        <FontLevelControl
-                                                            value={textLevel}
-                                                            onChange={(textLevel, typography, typographyHover, margin) =>
-                                                                setAttributes({
-                                                                    textLevel,
-                                                                    typography,
-                                                                    typographyHover,
-                                                                    margin
-                                                                })
-                                                            }
-                                                            fontOptions={typography}
-                                                            fontOptionsHover={typographyHover}
-                                                            marginOptions={margin}
-                                                        />
-                                                    )
-                                                }
+                                                if (!isList)
+                                                    return {
+                                                        label: __('Level', 'maxi-blocks'),
+                                                        content: (
+                                                            <FontLevelControl
+                                                                value={textLevel}
+                                                                onChange={(textLevel, typography, typographyHover, margin) =>
+                                                                    setAttributes({
+                                                                        textLevel,
+                                                                        typography,
+                                                                        typographyHover,
+                                                                        margin
+                                                                    })
+                                                                }
+                                                                fontOptions={typography}
+                                                                fontOptionsHover={typographyHover}
+                                                                marginOptions={margin}
+                                                            />
+                                                        )
+                                                    }
+                                                if (isList)
+                                                    return {
+                                                        label: __('List Options', 'maxi-blocks'),
+                                                        content: (
+                                                            <Fragment>
+                                                                <SelectControl
+                                                                    label={__('Type of list', 'maxi-blocks')}
+                                                                    value={typeOfList}
+                                                                    options={[
+                                                                        { label: __('Unorganized', 'maxi-blocks'), value: 'ul' },
+                                                                        { label: __('Organized', 'maxi-blocks'), value: 'ol' }
+                                                                    ]}
+                                                                    onChange={typeOfList => setAttributes({ typeOfList })}
+                                                                />
+                                                                {
+                                                                    typeOfList === 'ol' &&
+                                                                    <Fragment>
+                                                                        <__experimentalNumberControl
+                                                                            label={__('Start from', 'maxi-blocks')}
+                                                                            value={listStart}
+                                                                            onChange={listStart => setAttributes({ listStart })}
+                                                                        />
+                                                                        <SelectControl 
+                                                                            label={__('Reverse order', 'maxi-blocks')}
+                                                                            value={listReversed}
+                                                                            options={[
+                                                                                { label: __('Yes', 'maxi-blocks'), value: 1 },
+                                                                                { label: __('No', 'maxi-blocks'), value: 0 }
+                                                                            ]}
+                                                                            onChange={value => {
+                                                                                console.log(Number(value), !!Number(value));
+                                                                                setAttributes({ listReversed: Number(value) })
+                                                                            }}
+                                                                        />
+                                                                    </Fragment>
+                                                                }
+                                                            </Fragment>
+                                                        )
+                                                    }
                                             }
 
                                             return null;

@@ -25,10 +25,11 @@ const TextLevel = props => {
         typography,
         typographyHover,
         margin,
+        isList,
         onChange
     } = props;
 
-    if (blockName != 'maxi-blocks/text-maxi')
+    if (blockName != 'maxi-blocks/text-maxi' || isList)
         return null;
 
     return (

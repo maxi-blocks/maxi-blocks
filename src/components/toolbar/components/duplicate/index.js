@@ -26,7 +26,7 @@ const Duplicate = props => {
 
     return (
         <Tooltip
-            text={_('Duplicate', 'maxi-blocks')}
+            text={__('Duplicate', 'maxi-blocks')}
             position='bottom center'
         >
             <Button

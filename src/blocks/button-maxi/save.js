@@ -7,7 +7,7 @@ const { Button } = wp.components;
  * External dependencies
  */
 import classnames from 'classnames';
-import { 
+import {
     isObject,
     isNil
 } from 'lodash';
@@ -57,7 +57,7 @@ const save = props => {
     return (
         <div
             className={classes}
-            data-gx_initial_block_class={defaultBlockStyle}
+            data-maxi_initial_block_class={defaultBlockStyle}
         >
             <Button
                 className="maxi-button-extra__button"

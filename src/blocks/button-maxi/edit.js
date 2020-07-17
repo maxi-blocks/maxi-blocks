@@ -139,7 +139,7 @@ class edit extends MaxiBlock {
             <__experimentalToolbar {...this.props} />,
             <__experimentalBlock
                 className={classes}
-                data-gx_initial_block_class={defaultBlockStyle}
+                data-maxi_initial_block_class={defaultBlockStyle}
             >
                 <RichText
                     className="maxi-button-extra__button"

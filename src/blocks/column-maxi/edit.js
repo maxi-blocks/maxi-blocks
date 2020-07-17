@@ -343,7 +343,7 @@ class edit extends MaxiBlock {
                             __experimentalTagName={__experimentalBlock.div}
                             __experimentalPassedProps={{
                                 className: classes,
-                                ['data-gx_initial_block_class']: defaultBlockStyle,
+                                ['data-maxi_initial_block_class']: defaultBlockStyle,
                             }}
                             renderAppender={
                                 !hasInnerBlock ?

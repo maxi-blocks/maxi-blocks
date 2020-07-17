@@ -247,8 +247,6 @@ class edit extends MaxiBlock {
             className
         );
 
-        console.log(content)
-
         return [
             <Inspector {...this.props} />,
             <__experimentalToolbar {...this.props} />,
@@ -292,7 +290,6 @@ class edit extends MaxiBlock {
                     >
                         {
                             ({ value, onChange, onFocus }) => {
-                                console.log('value', value)
                                 if (isSelected)
                                     return (
                                         <Fragment>
@@ -316,7 +313,6 @@ class edit extends MaxiBlock {
                                                 type="primary"
                                                 character="m"
                                                 onUse={() => {
-                                                    console.log( onChange )
                                                     onChange(
                                                         __unstableIndentListItems(value, { type: typeOfList })
                                                     );

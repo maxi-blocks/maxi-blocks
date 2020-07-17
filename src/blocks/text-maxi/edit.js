@@ -2,10 +2,16 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
+const { Fragment } = wp.element;
 const { select } = wp.data;
+const {
+    __unstableIndentListItems,
+    __unstableOutdentListItems,
+} = wp.richText;
 const {
     __experimentalBlock,
     RichText,
+    RichTextShortcut
 } = wp.blockEditor;
 
 /**
@@ -27,9 +33,6 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
-
-import Scripts from '../../extensions/styles/hoverAnimations.js';
 
 /**
  * Content
@@ -223,7 +226,12 @@ class edit extends MaxiBlock {
                 hoverAnimationTypeText,
                 textLevel,
                 content,
+                isList,
+                typeOfList,
+                listStart,
+                listReversed,
             },
+            isSelected,
             setAttributes,
         } = this.props;
 
@@ -239,19 +247,95 @@ class edit extends MaxiBlock {
             className
         );
 
+        console.log(content)
+
         return [
             <Inspector {...this.props} />,
             <__experimentalToolbar {...this.props} />,
-            <RichText
-                value={content}
-                onChange={content => setAttributes({ content })}
-                tagName={__experimentalBlock[textLevel]}
-                className={classes}
-                placeholder={__('Set your Maxi Text here...', 'maxi-blocks')}
-                keepPlaceholderOnFocus
-                __unstableEmbedURLOnPaste
-				__unstableAllowPrefixTransformations
-            />
+            <Fragment>
+                {
+                    !isList &&
+                    <RichText
+                        value={content}
+                        onChange={content => setAttributes({ content })}
+                        tagName={__experimentalBlock[textLevel]}
+                        className={classes}
+                        placeholder={__('Set your Maxi Text here...', 'maxi-blocks')}
+                        keepPlaceholderOnFocus
+                        __unstableEmbedURLOnPaste
+                        __unstableAllowPrefixTransformations
+                    />
+                }
+                {
+                    isList &&
+                    <RichText
+                        className={classes}
+                        identifier="values"
+                        multiline="li"
+                        __unstableMultilineRootTag={typeOfList}
+                        tagName={__experimentalBlock[typeOfList]}
+                        onChange={content => setAttributes({ content })}
+                        value={content}
+                        placeholder={__('Write list…')}
+                        // onMerge={mergeBlocks}
+                        onSplit={(value) =>
+                            createBlock(name, { ...attributes, values: value })
+                        }
+                        __unstableOnSplitMiddle={() =>
+                            createBlock('core/paragraph')
+                        }
+                        // onReplace={onReplace}
+                        // onRemove={() => onReplace([])}
+                        start={listStart}
+                        reversed={!!listReversed}
+                        type={typeOfList}
+                    >
+                        {
+                            ({ value, onChange, onFocus }) => {
+                                console.log('value', value)
+                                if (isSelected)
+                                    return (
+                                        <Fragment>
+                                            <RichTextShortcut
+                                                type="primary"
+                                                character="["
+                                                onUse={() => {
+                                                    onChange(__unstableOutdentListItems(value));
+                                                }}
+                                            />
+                                            <RichTextShortcut
+                                                type="primary"
+                                                character="]"
+                                                onUse={() => {
+                                                    onChange(
+                                                        __unstableIndentListItems(value, { type: typeOfList })
+                                                    );
+                                                }}
+                                            />
+                                            <RichTextShortcut
+                                                type="primary"
+                                                character="m"
+                                                onUse={() => {
+                                                    console.log( onChange )
+                                                    onChange(
+                                                        __unstableIndentListItems(value, { type: typeOfList })
+                                                    );
+                                                }}
+                                            />
+                                            <RichTextShortcut
+                                                type="primaryShift"
+                                                character="m"
+                                                onUse={() => {
+                                                    onChange(__unstableOutdentListItems(value));
+                                                }}
+                                            />
+                                        </Fragment>
+                                    )
+                            }
+                        }
+                    </RichText>
+                }
+            </Fragment>
         ];
     }
 }

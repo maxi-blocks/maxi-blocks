@@ -311,20 +311,12 @@ const Inspector = props => {
                                 <div className='maxi-tab-content__box'>
                                     {
                                         deviceType === 'general' &&
-                                        <Fragment>
-                                            <HoverAnimationControl
-                                                hoverAnimation={hoverAnimation}
-                                                onChangeHoverAnimation={hoverAnimation => setAttributes({ hoverAnimation })}
-                                                hoverAnimationDuration={hoverAnimationDuration}
-                                                onChangeHoverAnimationDuration={hoverAnimationDuration => setAttributes({ hoverAnimationDuration })}
-                                            />
-                                            <TextControl
-                                                label={__('Additional CSS Classes', 'maxi-blocks')}
-                                                className='maxi-additional__css-classes'
-                                                value={extraClassName}
-                                                onChange={extraClassName => setAttributes({ extraClassName })}
-                                            />
-                                        </Fragment>
+                                        <TextControl
+                                            label={__('Additional CSS Classes', 'maxi-blocks')}
+                                            className='maxi-additional__css-classes'
+                                            value={extraClassName}
+                                            onChange={extraClassName => setAttributes({ extraClassName })}
+                                        />
                                     }
                                     <HoverAnimationControl
                                         hoverAnimation={hoverAnimation}
@@ -357,37 +349,33 @@ const Inspector = props => {
                                         onChangeHoverAnimationTypeOpacityColor={hoverAnimationTypeOpacityColor => setAttributes({ hoverAnimationTypeOpacityColor })}
 
                                     />
-                                    {hoverAnimation === 'text' && hoverCustomTextTitle === 'yes' &&
+                                    {
+                                        hoverAnimation === 'text' &&
+                                        hoverCustomTextTitle === 'yes' &&
                                         <TypographyControl
                                             fontOptions={hoverAnimationTitleTypography}
                                             onChange={hoverAnimationTitleTypography => setAttributes({ hoverAnimationTitleTypography })}
-                                            target='>.maxi-block-text-hover .maxi-block-text-hover__title'
                                         />}
-                                    {hoverAnimation === 'text' && hoverCustomTextContent === 'yes' &&
+                                    {
+                                        hoverAnimation === 'text' &&
+                                        hoverCustomTextContent === 'yes' &&
                                         <TypographyControl
                                             fontOptions={hoverAnimationContentTypography}
                                             onChange={hoverAnimationContentTypography => setAttributes({ hoverAnimationContentTypography })}
                                             target='>.maxi-block-text-hover .maxi-block-text-hover__content'
                                         />}
-                                    {hoverAnimation === 'text' &&
+                                    {
+                                        hoverAnimation === 'text' &&
                                         <Fragment>
-                                            <RangeControl
-                                                label={__('Opacity', 'maxi-blocks')}
-                                                className='maxi-opacity-control'
-                                                value={hoverOpacity * 100}
-                                                onChange={value => setAttributes({ hoverOpacity: value / 100 })}
-                                                min={0}
-                                                max={100}
-                                                allowReset={true}
-                                                initialPosition={0}
+                                            <__experimentalOpacityControl
+                                                opacity={hoverOpacity}
+                                                onChange={hoverOpacity => setAttributes({ hoverOpacity })}
                                             />
                                             <BackgroundControl
                                                 backgroundOptions={hoverBackground}
                                                 onChange={hoverBackground => setAttributes({ hoverBackground })}
                                                 disableImage
-                                                target='.maxi-block-text-hover'
                                             />
-
                                             <RadioControl
                                                 label={__('Custom Border', 'maxi-blocks')}
                                                 className={'maxi-hover-animation-custom-border'}
@@ -397,14 +385,17 @@ const Inspector = props => {
                                             />
                                         </Fragment>
                                     }
-                                    {hoverAnimationCustomBorder === 'yes' && hoverAnimation === 'text' &&
+                                    {
+                                        hoverAnimationCustomBorder === 'yes' &&
+                                        hoverAnimation === 'text' &&
                                         <BorderControl
                                             borderOptions={hoverBorder}
                                             onChange={hoverBorder => setAttributes({ hoverBorder })}
                                             target='.maxi-block-text-hover'
                                         />
                                     }
-                                    {hoverAnimation === 'text' &&
+                                    {
+                                        hoverAnimation === 'text' &&
                                         <Fragment>
                                             <__experimentalMarginPaddingControl
                                                 value={hoverPadding}
@@ -412,7 +403,8 @@ const Inspector = props => {
                                             />
                                         </Fragment>
                                     }
-                                    {hoverAnimationType === 'opacity-with-colour' &&
+                                    {
+                                        hoverAnimationType === 'opacity-with-colour' &&
                                         <BackgroundControl
                                             backgroundOptions={hoverAnimationTypeOpacityColorBackground}
                                             onChange={hoverAnimationTypeOpacityColorBackground => setAttributes({ hoverAnimationTypeOpacityColorBackground })}

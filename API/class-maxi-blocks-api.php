@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Maxi Blocks styles API 
+ * Maxi Blocks styles API
  */
 
 if (!defined('ABSPATH')) {
@@ -106,6 +106,28 @@ if (!class_exists('MaxiBlocksAPI')) :
                     },
                 )
             );
+            register_rest_route(
+                $this->namespace,
+                '/global-styles',
+                array(
+                    'methods'             => 'GET',
+                    'callback'            => array($this, 'get_maxi_blocks_current_global_styles'),
+                    'permission_callback' => function () {
+                        return current_user_can('edit_posts');
+                    },
+                )
+            );
+            register_rest_route(
+                $this->namespace,
+                '/global-styles',
+                array(
+                    'methods'             => 'POST',
+                    'callback'            => array($this, 'set_maxi_blocks_current_global_styles'),
+                    'permission_callback' => function () {
+                        return current_user_can('edit_posts');
+                    },
+                )
+            );
         }
 
         /**
@@ -160,6 +182,25 @@ if (!class_exists('MaxiBlocksAPI')) :
         public function mb_delete_register($postId)
         {
             delete_option("mb_post_api$postId");
+        }
+
+        public function get_maxi_blocks_current_global_styles() {
+            global $wpdb;
+            $table_name = $wpdb->prefix . 'maxi_blocks_general';  // table name
+            $query = "SELECT object FROM ".$table_name." where id = style_cards_current_global_styles";
+            $maxi_blocks_current_global_styles = $wpdb->get_var($query);
+            if ($maxi_blocks_current_global_styles) {
+                return $maxi_blocks_current_global_styles;
+            }
+        }
+
+        public function set_maxi_blocks_current_global_styles($styles) {
+            global $wpdb;
+            $table_name = $wpdb->prefix . 'maxi_blocks_general';  // table name
+            $wpdb->replace($table_name, array(
+                'id' => 'style_cards_current_global_styles',
+                'object' => $styles,
+            ));
         }
     }
 

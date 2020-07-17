@@ -53,9 +53,9 @@ class edit extends MaxiBlock {
         const videoOptions = JSON.parse(this.props.attributes.background).videoOptions;
         if(!isNil(videoOptions) && !isEmpty(videoOptions.mediaURL))
             Object.assign(
-                response, 
+                response,
                 {
-                    [`${this.props.attributes.uniqueID} .maxi-video-player video`]: 
+                    [`${this.props.attributes.uniqueID} .maxi-video-player video`]:
                         { videoBackground: { ...getVideoBackgroundObject(videoOptions) } }
                 }
             )
@@ -122,7 +122,7 @@ class edit extends MaxiBlock {
 
         return response;
     }
-    
+
     get getHoverAnimationMainObject() {
         const {
             hoverOpacity,
@@ -254,7 +254,7 @@ class edit extends MaxiBlock {
                     <__experimentalBlock.section
                         className={classes}
                         data-align={fullWidth}
-                        data-gx_initial_block_class={defaultBlockStyle}
+                        data-maxi_initial_block_class={defaultBlockStyle}
                     >
                         <InnerBlocks
                             templateLock={false}
@@ -287,7 +287,7 @@ class edit extends MaxiBlock {
                         __experimentalPassedProps={{
                             className: classes,
                             ['data-align']: fullWidth,
-                            ['data-gx_initial_block_class']: defaultBlockStyle
+                            ['data-maxi_initial_block_class']: defaultBlockStyle
                         }}
                         renderAppender={
                             !hasInnerBlock ?

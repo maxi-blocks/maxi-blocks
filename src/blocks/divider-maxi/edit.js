@@ -5,7 +5,7 @@ const { Fragment } = wp.element;
 const { __experimentalBlock } = wp.blockEditor;
 const { ResizableBox } = wp.components;
 const { compose } = wp.compose;
-const { 
+const {
     withSelect,
     withDispatch
 } = wp.data;
@@ -197,7 +197,7 @@ class edit extends MaxiBlock {
             >
                 <__experimentalBlock
                     className={classes}
-                    data-gx_initial_block_class={defaultBlockStyle}
+                    data-maxi_initial_block_class={defaultBlockStyle}
                     data-align={fullWidth}
                 >
                     {
@@ -232,8 +232,8 @@ const editDispatch = withDispatch((dispatch, ownProps, { select }) => {
 
     const onDeviceTypeChange = function() {
         let newDeviceType = select('core/edit-post').__experimentalGetPreviewDeviceType();
-        newDeviceType = newDeviceType === 'Desktop' ? 
-            'general' : 
+        newDeviceType = newDeviceType === 'Desktop' ?
+            'general' :
             newDeviceType;
 
         const allowedDeviceTypes = [

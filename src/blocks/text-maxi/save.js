@@ -38,7 +38,6 @@ const save = props => {
 
     let classes = classnames(
         'maxi-block maxi-text-block',
-        blockStyle,
         extraClassName,
         uniqueID,
         'hover-animation-' + hoverAnimation,
@@ -54,14 +53,18 @@ const save = props => {
             null
     );
 
+    let wrap_classes = classnames(
+        'maxi-text-block-wrap',
+        blockStyle);
+
+
     return (
         <Fragment>
-            <div className='maxi-text-block-wrap'>
+            <div className={wrap_classes} data-maxi_initial_block_class={defaultBlockStyle}>
                 <RichText.Content
                     value={content}
                     tagName={textLevel}
                     className={classes}
-                    data-gx_initial_block_class={defaultBlockStyle}
                 />
                 {
                     hoverAnimation === 'text' &&

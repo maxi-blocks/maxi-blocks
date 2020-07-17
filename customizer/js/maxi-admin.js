@@ -71,7 +71,7 @@ jQuery(function($) {
 
         var loader = '<div class="wrap-loader" id="page-loader">' +
                         '<div class="loading">' +
-                        '<div class="text"><img src="/wp-content/plugins/maxi-blocks/img/loader.svg"></div>' +
+                        '<div class="text"><img src="'+ maxi_ajax_object.maxi_plugin_url + '/maxi-blocks/img/loader.svg"></div>' +
                     '</div>'+
                 '</div>';
         $('body').append(loader);
@@ -103,7 +103,7 @@ jQuery(function($) {
             $.each(iframe.find('.global.block'), function (block) {
                 $(this).removeClass('dark');
                 $(this).removeClass('light');
-                $(this).addClass(($(this).attr('data-gx_initial_block_class')).replace('-def', ''));
+                $(this).addClass(($(this).attr('data-maxi_initial_block_class')).replace('-def', ''));
             })
 
         }
@@ -156,7 +156,7 @@ jQuery(function($) {
         var selectedTheme = $('#_customize-input-color_scheme').val();
         let tagName = id.substring(0, 2);
         let thememod = id.startsWith('p') ? id.substring(1) : id.substring(2); // for p block cut first letter
-        let defaultThemeOptions = JSON.parse(gx_ajax_object.defaultThemeOptions);
+        let defaultThemeOptions = JSON.parse(maxi_ajax_object.defaultThemeOptions);
         let domElements = defaultThemeOptions[selectedTheme][thememod]['domElements'];
 
         let lightOpt = defaultThemeOptions[selectedTheme]['Light']['domElements'];
@@ -194,7 +194,7 @@ jQuery(function($) {
         let activelineHgtType = getTextFromString(lineHgtValue);
         let activeletterSpcType = getTextFromString(letterSpcValue);
         console.log('value h'+activelineHgtType);
-        let list = gx_ajax_object.list;
+        let list = maxi_ajax_object.list;
         let tag = tagName.includes('p') ? 'p' : tagName;
 
 
@@ -202,17 +202,17 @@ jQuery(function($) {
         let activeFontFamily = $('#customize-control-'+id+'Font'+selectedTheme+'-'+device+' input').val();
         //weight related to active font
 
-        let initWeightsRelFont = gx_ajax_object.font_info[activeFontFamily] ? Object.values(gx_ajax_object.font_info[activeFontFamily].weights) : ['100', '200', '300', '400', '500', '600', '700', '800', '900'];
+        let initWeightsRelFont = maxi_ajax_object.font_info[activeFontFamily] ? Object.values(maxi_ajax_object.font_info[activeFontFamily].weights) : ['100', '200', '300', '400', '500', '600', '700', '800', '900'];
         let initweightsRelFontHtml = (initWeightsRelFont.map(item => `<option ${weightValue == item ? 'selected' : ''} value="${item}">${item}</option>`)).join();
 
-        let initStylesRelFont = gx_ajax_object.font_info[activeFontFamily] ? gx_ajax_object.font_info[activeFontFamily].styles : ['normal', 'italic', 'oblique'];
+        let initStylesRelFont = maxi_ajax_object.font_info[activeFontFamily] ? maxi_ajax_object.font_info[activeFontFamily].styles : ['normal', 'italic', 'oblique'];
         let initStylesRelFontHtml = (initStylesRelFont.map(item => `<option ${styleValue == item ? 'selected' : ''} value="${item}">${item}</option>`)).join();
 
         let html = '<div class="heading-pop-up">' +
             '        <div class="close-pop-up"><span class="dashicons dashicons-no"></span></div>'+
             '        <div class="row">' +
             '            <span>Family</span> <div class="reset" data-default="' + domElements[tag]['font-family'] + '"></div>' +
-            '            <select class="font-family-select" data-id='+id+'Font'+selectedTheme+'-'+device+'><img src="/wp-content/plugins/maxi-blocks/img/reset.svg" />';
+            '            <select class="font-family-select" data-id='+id+'Font'+selectedTheme+'-'+device+'><img src="'+ maxi_ajax_object.maxi_plugin_url + '/maxi-blocks/img/reset.svg" />';
         for(let i in list){
             if(list[i].replace(/\ /g, '+') === activeFontFamily){
                 html+= '<option selected value='+list[i].replace(/\ /g, '+')+'>'+list[i]+'</option>';
@@ -224,19 +224,19 @@ jQuery(function($) {
         html+='</select>' +
             '            <div class="devices">';
         if(device == 'desktop'){
-            html+=' <div data-type="desktop" class="device active"><img src="/wp-content/plugins/maxi-blocks/img/desktop.svg"></div>';
+            html+=' <div data-type="desktop" class="device active"><img src="'+ maxi_ajax_object.maxi_plugin_url + '/maxi-blocks/img/desktop.svg"></div>';
         } else {
-            html+=' <div data-type="desktop" class="device"><img src="/wp-content/plugins/maxi-blocks/img/desktop.svg"></div>';
+            html+=' <div data-type="desktop" class="device"><img src="'+ maxi_ajax_object.maxi_plugin_url + '/maxi-blocks/img/desktop.svg"></div>';
         }
         if(device == 'tablet') {
-            html+='<div data-type="tablet" class="device active"><img src="/wp-content/plugins/maxi-blocks/img/tablet.svg"></div>';
+            html+='<div data-type="tablet" class="device active"><img src="'+ maxi_ajax_object.maxi_plugin_url + '/maxi-blocks/img/tablet.svg"></div>';
         } else {
-            html+='<div data-type="tablet" class="device"><img src="/wp-content/plugins/maxi-blocks/img/tablet.svg"></div>';
+            html+='<div data-type="tablet" class="device"><img src="'+ maxi_ajax_object.maxi_plugin_url + '/maxi-blocks/img/tablet.svg"></div>';
         }
         if(device == 'mobile'){
-            html+= ' <div data-type="mobile" class="device active"><img src="/wp-content/plugins/maxi-blocks/img/mobile.svg"></div>';
+            html+= ' <div data-type="mobile" class="device active"><img src="'+ maxi_ajax_object.maxi_plugin_url + '/maxi-blocks/img/mobile.svg"></div>';
         }else {
-            html+= ' <div data-type="mobile" class="device"><img src="/wp-content/plugins/maxi-blocks/img/mobile.svg"></div>';
+            html+= ' <div data-type="mobile" class="device"><img src="'+ maxi_ajax_object.maxi_plugin_url + '/maxi-blocks/img/mobile.svg"></div>';
         }
         html+='</div>'+
             '        </div>' +
@@ -254,7 +254,7 @@ jQuery(function($) {
             '                    </div>' +
             '                    <div class="block-row">' +
             '                        <input type="number" data-id="'+id+'FS'+selectedTheme+'-'+device+'" value="'+fsInput+'" min="0" step="' + (activeFStype == 'px' ? 1 : '0.1') + '">' +
-            '                        <div class="reset" data-default="'+defaultFontSizes[tagName]+'"><img src="/wp-content/plugins/maxi-blocks/img/reset.svg" /></div>' +
+            '                        <div class="reset" data-default="'+defaultFontSizes[tagName]+'"><img src="'+ maxi_ajax_object.maxi_plugin_url + '/maxi-blocks/img/reset.svg" /></div>' +
             '                    </div>' +
             '                </div>' +
             '                <div class="block">' +
@@ -269,7 +269,7 @@ jQuery(function($) {
             '                    </div>' +
             '                    <div class="block-row">' +
             '                        <input type="number" data-id="'+id+'LineHgt'+selectedTheme+'-'+device+'" value="'+lineHgtInput+'" min="0" step="' + (activelineHgtType == 'px' ? 1 : '0.1') + '">' +
-            '                        <div class="reset" data-default="15px"><img src="/wp-content/plugins/maxi-blocks/img/reset.svg" /></div>' +
+            '                        <div class="reset" data-default="15px"><img src="'+ maxi_ajax_object.maxi_plugin_url + '/maxi-blocks/img/reset.svg" /></div>' +
             '                    </div>' +
             '                </div>' +
             '                <div class="block">' +
@@ -283,7 +283,7 @@ jQuery(function($) {
             '                    </div>' +
             '                    <div class="block-row">' +
             '                        <input type="number" data-id="'+id+'LetterSpc'+selectedTheme+'-'+device+'" value="'+letterSpcInput+'" min="0" step="' + (activeletterSpcType == 'px' ? 1 : '0.1') + '">' +
-            '                        <div class="reset" data-default="0px"><img src="/wp-content/plugins/maxi-blocks/img/reset.svg" /></div>' +
+            '                        <div class="reset" data-default="0px"><img src="'+ maxi_ajax_object.maxi_plugin_url + '/maxi-blocks/img/reset.svg" /></div>' +
             '                    </div>' +
             '                </div>' +
             '            </div>' +
@@ -376,17 +376,16 @@ jQuery(function($) {
         // 'Natural', 'Admiral', 'Peach', hided themes
         var $themes = ['Default', 'Mint', 'Elegance', 'Candy', 'Bumblebee'];
         $.each($themes, function( key, theme ) {
-
-            $(`#customize-control-body_background_color${theme}-color-dark .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Background" src="/wp-content/plugins/maxi-blocks/img/fill.svg" />')
-                        $(`#customize-control-p_color${theme}-color-dark .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Text" src="/wp-content/plugins/maxi-blocks/img/edit-tool.svg" />')
-                        $(`#customize-control-a_color${theme}-color-dark .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Link" src="/wp-content/plugins/maxi-blocks/img/broken-link.svg" />')
-                        $(`#customize-control-highlight${theme}-color-dark .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Highlight" src="/wp-content/plugins/maxi-blocks/img/permanent.svg" />')
-                        $(`#customize-control-hover${theme}-color-dark .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Hover" src="/wp-content/plugins/maxi-blocks/img/cursor.svg" />')
-                        $(`#customize-control-body_background_color${theme}-color-light .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Background" src="/wp-content/plugins/maxi-blocks/img/fill.svg" />')
-                        $(`#customize-control-p_color${theme}-color-light .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Text" src="/wp-content/plugins/maxi-blocks/img/edit-tool.svg" />')
-                        $(`#customize-control-a_color${theme}-color-light .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Link" src="/wp-content/plugins/maxi-blocks/img/broken-link.svg" />')
-                        $(`#customize-control-highlight${theme}-color-light .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Highlight" src="/wp-content/plugins/maxi-blocks/img/permanent.svg" />')
-                        $(`#customize-control-hover${theme}-color-light .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Hover" src="/wp-content/plugins/maxi-blocks/img/cursor.svg" />')
+            $(`#customize-control-body_background_color${theme}-color-dark .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Background" src="'+ maxi_ajax_object.maxi_plugin_url + '/maxi-blocks/img/fill.svg" />')
+                $(`#customize-control-p_color${theme}-color-dark .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Text" src="'+ maxi_ajax_object.maxi_plugin_url + '/maxi-blocks/img/edit-tool.svg" />')
+                $(`#customize-control-a_color${theme}-color-dark .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Link" src="'+ maxi_ajax_object.maxi_plugin_url + '/maxi-blocks/img/broken-link.svg" />')
+                $(`#customize-control-highlight${theme}-color-dark .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Highlight" src="'+ maxi_ajax_object.maxi_plugin_url + '/maxi-blocks/img/permanent.svg" />')
+                $(`#customize-control-hover${theme}-color-dark .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Hover" src="'+ maxi_ajax_object.maxi_plugin_url + '/maxi-blocks/img/cursor.svg" />')
+                $(`#customize-control-body_background_color${theme}-color-light .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Background" src="'+ maxi_ajax_object.maxi_plugin_url + '/maxi-blocks/img/fill.svg" />')
+                $(`#customize-control-p_color${theme}-color-light .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Text" src="'+ maxi_ajax_object.maxi_plugin_url + '/maxi-blocks/img/edit-tool.svg" />')
+                $(`#customize-control-a_color${theme}-color-light .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Link" src="'+ maxi_ajax_object.maxi_plugin_url + '/maxi-blocks/img/broken-link.svg" />')
+                $(`#customize-control-highlight${theme}-color-light .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Highlight" src="'+ maxi_ajax_object.maxi_plugin_url + '/maxi-blocks/img/permanent.svg" />')
+                $(`#customize-control-hover${theme}-color-light .customize-control-title`).html('<img class="icon-color showTooltip" data-title="Hover" src="'+ maxi_ajax_object.maxi_plugin_url + '/maxi-blocks/img/cursor.svg" />')
         })
     }
 
@@ -554,18 +553,18 @@ jQuery(function($) {
 
             let iframe = $("iframe").contents();
             let classes = {
-                '.dark h1' : 'h1Dark',
-                '.light h1': 'h1Light',
-                '.dark h2' : 'h2Dark',
-                '.light h2': 'h2Light',
-                '.dark h3' : 'h3Dark',
-                '.light h3': 'h3Light',
-                '.dark h4' : 'h4Dark',
-                '.light h4': 'h4Light',
-                '.dark h5' : 'h5Dark',
-                '.light h5': 'h5Light',
-                '.dark h6' : 'h6Dark',
-                '.light h6': 'h6Light',
+                '.maxi-dark h1' : 'h1Dark',
+                '.maxi-light h1': 'h1Light',
+                '.maxi-dark h2' : 'h2Dark',
+                '.maxi-light h2': 'h2Light',
+                '.maxi-dark h3' : 'h3Dark',
+                '.maxi-light h3': 'h3Light',
+                '.maxi-dark h4' : 'h4Dark',
+                '.maxi-light h4': 'h4Light',
+                '.maxi-dark h5' : 'h5Dark',
+                '.maxi-light h5': 'h5Light',
+                '.maxi-dark h6' : 'h6Dark',
+                '.maxi-light h6': 'h6Light',
             }
             for (let i in classes) {
                 iframe.find(i).css({
@@ -744,7 +743,7 @@ jQuery(function($) {
                         let styleValue = $('#customize-control-'+id+'Style'+selectedTheme+'-'+device+' input').val();
 
                         wp.customize(styleControl, function (styleVal) {
-                            let stylesRelFont = gx_ajax_object.font_info[newFontVal] ? gx_ajax_object.font_info[newFontVal].styles : ['normal', 'italic', 'oblique'];
+                            let stylesRelFont = maxi_ajax_object.font_info[newFontVal] ? maxi_ajax_object.font_info[newFontVal].styles : ['normal', 'italic', 'oblique'];
                             let stylesRelFontHtml = stylesRelFont.map(item => `<option ${styleValue == item ? 'selected' : ''} value="${item}">${item}</option>`);
                             stylesRelFontHtml = stylesRelFontHtml.join();
                             $(`select[data-id="${styleControl}"]`).html(stylesRelFontHtml);
@@ -754,7 +753,7 @@ jQuery(function($) {
                         })
 
                         wp.customize(weightcontrol, function (weightVal) {
-                            let weightsRelFont = gx_ajax_object.font_info[newFontVal] ? Object.values(gx_ajax_object.font_info[newFontVal].weights) : ['100', '200', '300', '400', '500', '600', '700', '800', '900'];
+                            let weightsRelFont = maxi_ajax_object.font_info[newFontVal] ? Object.values(maxi_ajax_object.font_info[newFontVal].weights) : ['100', '200', '300', '400', '500', '600', '700', '800', '900'];
                             let weightsRelFontHtml = (weightsRelFont.map(item => `<option ${weightValue == item ? 'selected' : ''} value="${item}">${item}</option>`)).join();
                             $(`select[data-id="${weightcontrol}"]`).html(weightsRelFontHtml);
                         })
@@ -826,7 +825,7 @@ jQuery(function($) {
         $(this).attr('disabled', 'disabled')
         // if (confirm('Are you sure you want to do this? All your setting with be restored back to default settings.')){
             let currentTheme = wp.customize('color_scheme').get();
-            let defaultThemeOptions = JSON.parse(gx_ajax_object.defaultThemeOptions);
+            let defaultThemeOptions = JSON.parse(maxi_ajax_object.defaultThemeOptions);
 
             let device = $('#customize-footer-actions .devices .active').attr('data-device');
 

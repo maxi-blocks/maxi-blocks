@@ -12,7 +12,7 @@ class GXCustomizer
         // Enqueue styles and js
         add_action('admin_enqueue_scripts', array($this, 'gx_customizer_css_file'));
         add_action('admin_enqueue_scripts', array($this, 'gx_admin_js_file'));
-        //add_action('wp_head', array($this, 'gx_customizer_style_tag'));
+        add_action('wp_head', array($this, 'gx_customizer_style_tag'));
         require_once plugin_dir_path( __FILE__ ) . '/class_customizer_model.php';
 
         // Set default settings
@@ -84,13 +84,14 @@ class GXCustomizer
             wp_enqueue_script('theme-customizer', plugin_dir_url(__FILE__) . "/js/maxi-admin.js?v=" . rand(), ['jquery', 'customize-preview'], '', true);
             wp_localize_script(
                 'theme-customizer',
-                'gx_ajax_object',
+                'maxi_ajax_object',
                 array(
                     'defaultThemeOptions' => json_encode(require_once('theme_default_styles.php')),
                     'bodyClass' => ''/*get_theme_mod( 'color_scheme' )*/,
                     'list' => $list,
                     'font_info' => $font_info,
                     'ajax_url' => admin_url() . '../wp-content/plugins/gutenberg-extra/customizer/customizer.php',
+                    'maxi_plugin_url' => plugins_url(),
                 )
             );
         }
@@ -138,7 +139,7 @@ class GXCustomizer
             wp_enqueue_script('theme-customizerc', plugin_dir_url(__FILE__) . "/js/maxi-customizer.js?v=" . rand(), ['jquery', 'customize-preview'], '', true);
             wp_localize_script(
                 'theme-customizerc',
-                'gx_ajax_object',
+                'maxi_ajax_object',
                 array(
                     'bodyClass' => '' . strtolower(get_theme_mod('color_scheme')),
                     'font_info' => $font_info,
@@ -186,46 +187,46 @@ class GXCustomizer
         for ($i = 0; $i < $themeClassesCount; $i++) {
             $themeClassBody = 'body.' . $themeClasses[$i] . ' ';
             if (get_theme_mod('body_background_color' . $themeClasses[$i] . '-color-dark'))
-                $style[] = $themeClassBody . '.dark { background-color : ' . get_theme_mod('body_background_color' . $themeClasses[$i] . '-color-dark') . ' !important;}';
+                $style[] = $themeClassBody . '.maxi-dark { background-color : ' . get_theme_mod('body_background_color' . $themeClasses[$i] . '-color-dark') . ' !important;}';
             if (get_theme_mod('body_background_color' . $themeClasses[$i] . '-color-light')) {
-                $style[] = $themeClassBody . '.light { background-color : ' . get_theme_mod('body_background_color' . $themeClasses[$i] . '-color-light') . ' !important;}';
+                $style[] = $themeClassBody . '.maxi-light { background-color : ' . get_theme_mod('body_background_color' . $themeClasses[$i] . '-color-light') . ' !important;}';
                 $style[] = $themeClassBody . '.default { background-color : ' . get_theme_mod('body_background_color' . $themeClasses[$i] . '-color-light') . ' !important;}';
             }
 
             for ($m = 0; $m < $tagsCount; $m++) {
-                $style[] = $themeClassBody . '.dark ' . $tags[$m] . ' {' . self::checkThemeMod($tags[$m], 'Dark', $themeClasses[$i], 'desktop') . '}';
-                $style[] = $themeClassBody . '.light ' . $tags[$m] . ' {' . self::checkThemeMod($tags[$m], 'Light', $themeClasses[$i], 'desktop') . '}';
+                $style[] = $themeClassBody . '.maxi-dark ' . $tags[$m] . ' {' . self::checkThemeMod($tags[$m], 'Dark', $themeClasses[$i], 'desktop') . '}';
+                $style[] = $themeClassBody . '.maxi-light ' . $tags[$m] . ' {' . self::checkThemeMod($tags[$m], 'Light', $themeClasses[$i], 'desktop') . '}';
 
                 // make responsive design
-                $style[] = '@media screen and (max-width:980px) { ' . $themeClassBody . '.dark ' . $tags[$m] . ' {' . self::checkThemeMod($tags[$m], 'Dark', $themeClasses[$i], 'tablet') . '}' . $themeClassBody . '.light ' . $tags[$m] . ' {' . self::checkThemeMod($tags[$m], 'Light', $themeClasses[$i], 'tablet') . '}' . '}';
-                $style[] = '@media screen and (max-width:480px) { ' . $themeClassBody . '.dark ' . $tags[$m] . ' {'  . self::checkThemeMod($tags[$m], 'Dark', $themeClasses[$i], 'mobile') . '}' . $themeClassBody . '.light ' . $tags[$m] . ' {' . self::checkThemeMod($tags[$m], 'Light', $themeClasses[$i], 'mobile') . '}' . '}';
+                $style[] = '@media screen and (max-width:980px) { ' . $themeClassBody . '.maxi-dark ' . $tags[$m] . ' {' . self::checkThemeMod($tags[$m], 'Dark', $themeClasses[$i], 'tablet') . '}' . $themeClassBody . '.maxi-light ' . $tags[$m] . ' {' . self::checkThemeMod($tags[$m], 'Light', $themeClasses[$i], 'tablet') . '}' . '}';
+                $style[] = '@media screen and (max-width:480px) { ' . $themeClassBody . '.maxi-dark ' . $tags[$m] . ' {'  . self::checkThemeMod($tags[$m], 'Dark', $themeClasses[$i], 'mobile') . '}' . $themeClassBody . '.maxi-light ' . $tags[$m] . ' {' . self::checkThemeMod($tags[$m], 'Light', $themeClasses[$i], 'mobile') . '}' . '}';
             }
 
             //        add body class
             if (get_theme_mod('a_color' . $themeClasses[$i] . '-color-dark')) {
-                $style[] = $themeClassBody . '.dark a { color : ' . get_theme_mod('a_color' . $themeClasses[$i] . '-color-dark') . ' !important;}';
+                $style[] = $themeClassBody . '.maxi-dark a { color : ' . get_theme_mod('a_color' . $themeClasses[$i] . '-color-dark') . ' !important;}';
             }
             if (get_theme_mod('a_color' . $themeClasses[$i] . '-color-light')) {
-                $style[] = $themeClassBody . '.light a { color : ' . get_theme_mod('a_color' . $themeClasses[$i] . '-color-light') . ' !important;}';
+                $style[] = $themeClassBody . '.maxi-light a { color : ' . get_theme_mod('a_color' . $themeClasses[$i] . '-color-light') . ' !important;}';
                 $style[] = $themeClassBody . 'default a { color : ' . get_theme_mod('a_color' . $themeClasses[$i] . '-color-light') . ' !important;}';
             }
 
             if (get_theme_mod('hover' . $themeClasses[$i] . '-color-dark')) {
-                $style[] = $themeClassBody . '.dark a:hover { color : ' . get_theme_mod('hover' . $themeClasses[$i] . '-color-dark') . ' !important;}';
+                $style[] = $themeClassBody . '.maxi-dark a:hover { color : ' . get_theme_mod('hover' . $themeClasses[$i] . '-color-dark') . ' !important;}';
             }
             if (get_theme_mod('hover' . $themeClasses[$i] . '-color-light')) {
-                $style[] = $themeClassBody . '.light a:hover { color : ' . get_theme_mod('hover' . $themeClasses[$i] . '-color-light') . ' !important;}';
+                $style[] = $themeClassBody . '.maxi-light a:hover { color : ' . get_theme_mod('hover' . $themeClasses[$i] . '-color-light') . ' !important;}';
                 $style[] = $themeClassBody . '.default a:hover { color : ' . get_theme_mod('hover' . $themeClasses[$i] . '-color-light') . ' !important;}';
             }
 
             if (get_theme_mod('highlight' . $themeClasses[$i] . '-color-dark')) {
-                $style[] = $themeClassBody . '.dark .highlight { color : ' . get_theme_mod('highlight' . $themeClasses[$i] . '-color-dark') . ' !important;}';
-                $style[] = $themeClassBody . '.dark .divider { border-color : ' . get_theme_mod('highlight' . $themeClasses[$i] . '-color-dark') . ' !important;}';
+                $style[] = $themeClassBody . '.maxi-dark .highlight { color : ' . get_theme_mod('highlight' . $themeClasses[$i] . '-color-dark') . ' !important;}';
+                $style[] = $themeClassBody . '.maxi-dark .divider { border-color : ' . get_theme_mod('highlight' . $themeClasses[$i] . '-color-dark') . ' !important;}';
             }
             if (get_theme_mod('highlight' . $themeClasses[$i] . '-color-light')) {
-                $style[] = $themeClassBody . '.light .highlight { color : ' . get_theme_mod('highlight' . $themeClasses[$i] . '-color-light') . ' !important;}';
+                $style[] = $themeClassBody . '.maxi-light .highlight { color : ' . get_theme_mod('highlight' . $themeClasses[$i] . '-color-light') . ' !important;}';
                 $style[] = $themeClassBody . '.default .highlight { color : ' . get_theme_mod('highlight' . $themeClasses[$i] . '-color-light') . ' !important;}';
-                $style[] = $themeClassBody . '.light .divider { border-color : ' . get_theme_mod('highlight' . $themeClasses[$i] . '-color-light') . ' !important;}';
+                $style[] = $themeClassBody . '.maxi-light .divider { border-color : ' . get_theme_mod('highlight' . $themeClasses[$i] . '-color-light') . ' !important;}';
                 $style[] = $themeClassBody . '.default .divider { border-color : ' . get_theme_mod('highlight' . $themeClasses[$i] . '-color-light') . ' !important;}';
             }
         }
@@ -292,9 +293,13 @@ class GXCustomizer
         //    $currentThemeName = get_theme_mod('themeSwitch'.$currentThemeName) ?? 'default';
         $themes = require_once('theme_default_styles.php');
 
+        //  echo '<pre>';
+        // print_r( $themes);
+        // echo '</pre>';
+
         $themesKeys = array_keys($themes);
         $themesValues = array_values($themes);
-        $themesCount = SplFixedArray::fromArray($themesKeys)->count();
+        if($themesKeys != 0) $themesCount = SplFixedArray::fromArray($themesKeys)->count();
 
         $devices = SplFixedArray::fromArray(['desktop', 'tablet', 'mobile']);
         $devicesCount = $devices->count();
@@ -383,10 +388,13 @@ class GXCustomizer
 
     public function gx_customizer_style_tag()
     {
-
         $style = self::makeStyle();
         // we need to print block styles for each of them, they should be with different names
         // f.e. h1DarkElegance
+
+        echo '<pre>';
+        print_r($style);
+        echo '</pre>';
 
         $headingSections = ['pDark', 'pLight', 'h1Dark', 'h1Light', 'h2Dark', 'h2Light', 'h3Dark', 'h3Light', 'h4Dark', 'h4Light', 'h5Dark', 'h5Light', 'h6Dark', 'h6Light'];
         $headingSections = SplFixedArray::fromArray($headingSections);
@@ -437,7 +445,7 @@ class GXCustomizer
             }
         }
 
-        echo "<style id='styles'>\n" . implode("\n", $style) . "\n</style>\n";
+        echo "<style id='maxi-global-styles'>\n" . implode("\n", $style) . "\n</style>\n";
     }
 }
 

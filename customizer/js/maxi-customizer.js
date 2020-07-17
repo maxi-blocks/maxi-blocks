@@ -37,8 +37,8 @@ jQuery(function ($) {
                 function (value) {
                     value.bind(function (newVal) {
                         document.documentElement.style.setProperty(`--${theme}-dark-background`, newVal, "important");
-                        //$('head').append('<style type="text/css">' + 'body.'+theme+' .dark { background-color: ' + newVal + ' !important; }</style>');
-                        // $('body.'+theme+' .dark').css('background-color', newVal)
+                        //$('head').append('<style type="text/css">' + 'body.'+theme+' .maxi-dark { background-color: ' + newVal + ' !important; }</style>');
+                        // $('body.'+theme+' .maxi-dark').css('background-color', newVal)
                     });
                 }
             );
@@ -46,158 +46,158 @@ jQuery(function ($) {
             // wp.customize('body_background_color'+theme+'-color-dark', function(value) {
             //     value.bind(function (newVal) {
             //         document.documentElement.style.setProperty(`--${theme}-dark-background`, newVal, "important");
-            //         //$('head').append('<style type="text/css">' + 'body.'+theme+' .dark { background-color: ' + newVal + ' !important; }</style>');
-            //         // $('body.'+theme+' .dark').css('background-color', newVal)
+            //         //$('head').append('<style type="text/css">' + 'body.'+theme+' .maxi-dark { background-color: ' + newVal + ' !important; }</style>');
+            //         // $('body.'+theme+' .maxi-dark').css('background-color', newVal)
             //     });
             // });
             wp.customize('body_background_color' + theme + '-color-light', function (value) {
                 value.bind(function (newVal) {
                     document.documentElement.style.setProperty(`--${theme}-light-background`, newVal, "important");
-                    // $('head').append('<style type="text/css">' + 'body.'+theme+' .light { background-color: ' + newVal + ' !important; }</style>');
-                    // $('body.'+theme+' .light').css('background-color', newVal)
+                    // $('head').append('<style type="text/css">' + 'body.'+theme+' .maxi-light { background-color: ' + newVal + ' !important; }</style>');
+                    // $('body.'+theme+' .maxi-light').css('background-color', newVal)
                 });
             });
             wp.customize('hover' + theme + '-color-dark', function (value) {
                 value.bind(function (newVal) {
                     document.documentElement.style.setProperty(`--${theme}-dark-hover`, newVal, "important");
                     // $('#color-dark-hover').remove();
-                    // $('head').append('<style id="color-dark-hover"> body.'+theme+' .dark a:hover{ color: ' +newVal+' !important; }</style>');
+                    // $('head').append('<style id="color-dark-hover"> body.'+theme+' .maxi-dark a:hover{ color: ' +newVal+' !important; }</style>');
                 });
             });
             wp.customize('hover' + theme + '-color-light', function (value) {
                 value.bind(function (newVal) {
                     document.documentElement.style.setProperty(`--${theme}-light-hover`, newVal, "important");
                     $('#color-light-hover').remove();
-                    $('head').append('<style id="color-light-hover"> body.' + theme + ' .light a:hover{ color: ' + newVal + ' !important; }</style>');
+                    $('head').append('<style id="color-light-hover"> body.' + theme + ' .maxi-light a:hover{ color: ' + newVal + ' !important; }</style>');
                 });
             });
             wp.customize('highlight' + theme + '-color-dark', function (value) {
                 value.bind(function (newVal) {
                     document.documentElement.style.setProperty(`--${theme}-dark-hightlight`, newVal, "important");
-                    // $('head').append('<style type="text/css">' + 'body.'+theme+' .dark .highlight { color: ' + newVal + ' !important; }</style>');
-                    // $('head').append('<style type="text/css">' + 'body.'+theme+' .dark .divider { border-color: ' + newVal + ' !important; }</style>');
-                    // $('body.'+theme+' .dark .highlight').css('color', newVal)
+                    // $('head').append('<style type="text/css">' + 'body.'+theme+' .maxi-dark .highlight { color: ' + newVal + ' !important; }</style>');
+                    // $('head').append('<style type="text/css">' + 'body.'+theme+' .maxi-dark .divider { border-color: ' + newVal + ' !important; }</style>');
+                    // $('body.'+theme+' .maxi-dark .highlight').css('color', newVal)
                 });
             });
             wp.customize('highlight' + theme + '-color-light', function (value) {
                 value.bind(function (newVal) {
                     document.documentElement.style.setProperty(`--${theme}-light-highlight`, newVal, "important");
 
-                    // $('head').append('<style type="text/css">' + 'body.'+theme+' .light .highlight { color: ' + newVal + ' !important; }</style>');
-                    // $('head').append('<style type="text/css">' + 'body.'+theme+' .light .divider { border-color: ' + newVal + ' !important; }</style>');
-                    // $('body.'+theme+' .light .highlight').css('color', newVal)
+                    // $('head').append('<style type="text/css">' + 'body.'+theme+' .maxi-light .highlight { color: ' + newVal + ' !important; }</style>');
+                    // $('head').append('<style type="text/css">' + 'body.'+theme+' .maxi-light .divider { border-color: ' + newVal + ' !important; }</style>');
+                    // $('body.'+theme+' .maxi-light .highlight').css('color', newVal)
                 });
             });
             wp.customize('p_color' + theme + '-color-dark', function (value) {
                 value.bind(function (newVal) {
                     document.documentElement.style.setProperty(`--${theme}-dark-p-color`, newVal, "important");
-                    // $('head').append('<style type="text/css">' + 'body.'+theme+' .dark p, .dark li { color: ' + newVal + ' !important; }</style>');
-                    // $('body.'+theme+' .dark p, .dark li').css('color', newVal)
+                    // $('head').append('<style type="text/css">' + 'body.'+theme+' .maxi-dark p, .maxi-dark li { color: ' + newVal + ' !important; }</style>');
+                    // $('body.'+theme+' .maxi-dark p, .maxi-dark li').css('color', newVal)
                 });
             });
             wp.customize('p_color' + theme + '-color-light', function (value) {
                 value.bind(function (newVal) {
                     document.documentElement.style.setProperty(`--${theme}-light-p-color`, newVal, "important");
-                    // $('head').append('<style type="text/css">' + 'body.'+theme+' .light p, .light li { color: ' + newVal + ' !important; }</style>');
-                    // $('body.'+theme+' .light p, .light li').css('color', newVal)
+                    // $('head').append('<style type="text/css">' + 'body.'+theme+' .maxi-light p, .maxi-light li { color: ' + newVal + ' !important; }</style>');
+                    // $('body.'+theme+' .maxi-light p, .maxi-light li').css('color', newVal)
                 });
             });
             wp.customize('a_color' + theme + '-color-dark', function (value) {
                 value.bind(function (newVal) {
                     document.documentElement.style.setProperty(`--${theme}-dark-a-color`, newVal, "important");
-                    // $('head').append('<style type="text/css">' + 'body.'+theme+' .dark a { color: ' + newVal + ' !important; }</style>');
-                    // $('body.'+theme+' .dark a').css('color', newVal)
+                    // $('head').append('<style type="text/css">' + 'body.'+theme+' .maxi-dark a { color: ' + newVal + ' !important; }</style>');
+                    // $('body.'+theme+' .maxi-dark a').css('color', newVal)
                 });
             });
             wp.customize('a_color' + theme + '-color-light', function (value) {
                 value.bind(function (newVal) {
                     document.documentElement.style.setProperty(`--${theme}-light-a-color`, newVal, "important");
-                    // $('head').append('<style type="text/css">' + 'body.'+theme+' .light a { color: ' + newVal + ' !important; }</style>');
-                    // $('body.'+theme+' .light a').css('color', newVal)
+                    // $('head').append('<style type="text/css">' + 'body.'+theme+' .maxi-light a { color: ' + newVal + ' !important; }</style>');
+                    // $('body.'+theme+' .maxi-light a').css('color', newVal)
                 });
             });
             wp.customize('h1_color' + theme + '-color-dark', function (value) {
                 value.bind(function (newVal) {
                     document.documentElement.style.setProperty(`--${theme}-dark-h1-color`, newVal, "important");
-                    $('head').append('<style type="text/css">' + 'body.' + theme + ' .dark h1 { color: ' + newVal + ' !important; }</style>');
-                    // $('body.'+theme+' .dark h1').css('color', newVal)
+                    $('head').append('<style type="text/css">' + 'body.' + theme + ' .maxi-dark h1 { color: ' + newVal + ' !important; }</style>');
+                    // $('body.'+theme+' .maxi-dark h1').css('color', newVal)
                 });
             });
             wp.customize('h1_color' + theme + '-color-light', function (value) {
                 value.bind(function (newVal) {
                     document.documentElement.style.setProperty(`--${theme}-light-h1-color`, newVal, "important");
-                    $('head').append('<style type="text/css">' + 'body.' + theme + ' .light h1 { color: ' + newVal + ' !important; }</style>');
-                    // $('body.'+theme+' .light h1').css('color', newVal)
+                    $('head').append('<style type="text/css">' + 'body.' + theme + ' .maxi-light h1 { color: ' + newVal + ' !important; }</style>');
+                    // $('body.'+theme+' .maxi-light h1').css('color', newVal)
                 });
             });
             wp.customize('h2_color' + theme + '-color-dark', function (value) {
                 value.bind(function (newVal) {
                     document.documentElement.style.setProperty(`--${theme}-dark-h2-color`, newVal, "important");
-                    // $('head').append('<style type="text/css">' + 'body.'+theme+' .dark h2 { color: ' + newVal + ' !important; }</style>');
-                    // $('body.'+theme+' .dark h2').css('color', newVal)
+                    // $('head').append('<style type="text/css">' + 'body.'+theme+' .maxi-dark h2 { color: ' + newVal + ' !important; }</style>');
+                    // $('body.'+theme+' .maxi-dark h2').css('color', newVal)
                 });
             });
             wp.customize('h2_color' + theme + '-color-light', function (value) {
                 value.bind(function (newVal) {
                     document.documentElement.style.setProperty(`--${theme}-light-h2-color`, newVal, "important");
-                    // $('head').append('<style type="text/css">' + 'body.'+theme+' .light h2 { color: ' + newVal + ' !important; }</style>');
-                    // $('body.'+theme+' .light h2').css('color', newVal)
+                    // $('head').append('<style type="text/css">' + 'body.'+theme+' .maxi-light h2 { color: ' + newVal + ' !important; }</style>');
+                    // $('body.'+theme+' .maxi-light h2').css('color', newVal)
                 });
             });
             wp.customize('h3_color' + theme + '-color-dark', function (value) {
                 value.bind(function (newVal) {
                     document.documentElement.style.setProperty(`--${theme}-dark-h3-color`, newVal, "important");
-                    // $('head').append('<style type="text/css">' + 'body.'+theme+' .dark h3 { color: ' + newVal + ' !important; }</style>');
-                    // $('body.'+theme+' .dark h3').css('color', newVal)
+                    // $('head').append('<style type="text/css">' + 'body.'+theme+' .maxi-dark h3 { color: ' + newVal + ' !important; }</style>');
+                    // $('body.'+theme+' .maxi-dark h3').css('color', newVal)
                 });
             });
             wp.customize('h3_color' + theme + '-color-light', function (value) {
                 value.bind(function (newVal) {
                     document.documentElement.style.setProperty(`--${theme}-light-h3-color`, newVal, "important");
-                    // $('head').append('<style type="text/css">' + 'body.'+theme+' .light h3 { color: ' + newVal + ' !important; }</style>');
-                    // $('body.'+theme+' .light h3').css('color', newVal)
+                    // $('head').append('<style type="text/css">' + 'body.'+theme+' .maxi-light h3 { color: ' + newVal + ' !important; }</style>');
+                    // $('body.'+theme+' .maxi-light h3').css('color', newVal)
                 });
             });
             wp.customize('h4_color' + theme + '-color-dark', function (value) {
                 value.bind(function (newVal) {
                     document.documentElement.style.setProperty(`--${theme}-dark-h4-color`, newVal, "important");
-                    // $('head').append('<style type="text/css">' + 'body.'+theme+' .dark h4 { color: ' + newVal + ' !important; }</style>');
-                    // $('body.'+theme+' .dark h4').css('color', newVal)
+                    // $('head').append('<style type="text/css">' + 'body.'+theme+' .maxi-dark h4 { color: ' + newVal + ' !important; }</style>');
+                    // $('body.'+theme+' .maxi-dark h4').css('color', newVal)
                 });
             });
             wp.customize('h4_color' + theme + '-color-light', function (value) {
                 value.bind(function (newVal) {
                     document.documentElement.style.setProperty(`--${theme}-light-h4-color`, newVal, "important");
-                    // $('head').append('<style type="text/css">' + 'body.'+theme+' .light h4 { color: ' + newVal + ' !important; }</style>');
-                    // $('body.'+theme+' .light h4').css('color', newVal)
+                    // $('head').append('<style type="text/css">' + 'body.'+theme+' .maxi-light h4 { color: ' + newVal + ' !important; }</style>');
+                    // $('body.'+theme+' .maxi-light h4').css('color', newVal)
                 });
             });
             wp.customize('h5_color' + theme + '-color-dark', function (value) {
                 value.bind(function (newVal) {
                     document.documentElement.style.setProperty(`--${theme}-dark-h5-color`, newVal, "important");
-                    // $('head').append('<style type="text/css">' + 'body.'+theme+' .dark h5 { color: ' + newVal + ' !important; }</style>');
-                    // $('body.'+theme+' .dark h5').css('color', newVal)
+                    // $('head').append('<style type="text/css">' + 'body.'+theme+' .maxi-dark h5 { color: ' + newVal + ' !important; }</style>');
+                    // $('body.'+theme+' .maxi-dark h5').css('color', newVal)
                 });
             });
             wp.customize('h5_color' + theme + '-color-light', function (value) {
                 value.bind(function (newVal) {
                     document.documentElement.style.setProperty(`--${theme}-light-ph5color`, newVal, "important");
-                    // $('head').append('<style type="text/css">' + 'body.'+theme+' .light h5 { color: ' + newVal + ' !important; }</style>');
-                    // $('body.'+theme+' .light h5').css('color', newVal)
+                    // $('head').append('<style type="text/css">' + 'body.'+theme+' .maxi-light h5 { color: ' + newVal + ' !important; }</style>');
+                    // $('body.'+theme+' .maxi-light h5').css('color', newVal)
                 });
             });
             wp.customize('h6_color' + theme + '-color-dark', function (value) {
                 value.bind(function (newVal) {
                     document.documentElement.style.setProperty(`--${theme}-dark-h6-color`, newVal, "important");
-                    // $('head').append('<style type="text/css">' + 'body.'+theme+' .dark h6 { color: ' + newVal + ' !important; }</style>');
-                    // $('body.'+theme+' .dark h6').css('color', newVal)
+                    // $('head').append('<style type="text/css">' + 'body.'+theme+' .maxi-dark h6 { color: ' + newVal + ' !important; }</style>');
+                    // $('body.'+theme+' .maxi-dark h6').css('color', newVal)
                 });
             });
             wp.customize('h6_color' + theme + '-color-light', function (value) {
                 value.bind(function (newVal) {
                     document.documentElement.style.setProperty(`--${theme}-light-h6-color`, newVal, "important");
-                    // $('head').append('<style type="text/css">' + 'body.'+theme+' .light h6 { color: ' + newVal + ' !important; }</style>');
-                    // $('body.'+theme+' .light h6').css('color', newVal)
+                    // $('head').append('<style type="text/css">' + 'body.'+theme+' .maxi-light h6 { color: ' + newVal + ' !important; }</style>');
+                    // $('body.'+theme+' .maxi-light h6').css('color', newVal)
                 });
             });
 
@@ -228,9 +228,9 @@ jQuery(function ($) {
                                 // $(elem)[0].setAttribute('style', current_css + elemStyle + ":" + newVal + " !important");
                                 if (elemStyle == 'font-family') {
                                     console.log('font family!!');
-                                    let styles = (gx_ajax_object.font_info[newVal].subsets).join(',');
+                                    let styles = (maxi_ajax_object.font_info[newVal].subsets).join(',');
                                     console.log("styles " + styles);
-                                    let weights = Object.values(gx_ajax_object.font_info[newVal].weights).join(',');
+                                    let weights = Object.values(maxi_ajax_object.font_info[newVal].weights).join(',');
                                     console.log("weights " + weights);
                                     let fontURL = newVal + ':' + weights + '&subset=' + styles;
                                     console.log('fontURL: ' + fontURL);
@@ -271,7 +271,7 @@ jQuery(function ($) {
             $.each($('.global.block'), function (block) {
                 $(this).removeClass('dark');
                 $(this).removeClass('light');
-                $(this).addClass(($(this).attr('data-gx_initial_block_class')).replace('-def', ''));
+                $(this).addClass(($(this).attr('data-maxi_initial_block_class')).replace('-def', ''));
             })
 
         }

@@ -51,7 +51,7 @@ const save = props => {
             null,
         !isNil(uniqueID) ?
             uniqueID :
-            null        
+            null
     );
 
     return (
@@ -60,7 +60,7 @@ const save = props => {
                 isFirstOnHierarchy &&
                 <section
                     className={classes}
-                    data-gx_initial_block_class={defaultBlockStyle}
+                    data-maxi_initial_block_class={defaultBlockStyle}
                 >
                     <div
                         className='maxi-container-block__container'
@@ -73,7 +73,7 @@ const save = props => {
                 !isFirstOnHierarchy &&
                 <div
                     className={classes}
-                    data-gx_initial_block_class={defaultBlockStyle}
+                    data-maxi_initial_block_class={defaultBlockStyle}
                 >
                     <InnerBlocks.Content />
                     {hoverAnimation === 'text' &&

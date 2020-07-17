@@ -44,10 +44,18 @@ const ContainerInnerBlocks = props => {
     const {
         children,
         shapeDivider,
+        className,
+        dataAlign,
+        maxiBlockClass
     } = props;
+    console.log(props)
 
     return (
-        <__experimentalBlock>
+        <__experimentalBlock
+            className={className}
+            data-align={dataAlign}
+            data-gx_initial_block_class={maxiBlockClass}
+        >
             <__experimentalShapeDivider
                 shapeDividerOptions={shapeDivider}
             />
@@ -284,7 +292,7 @@ class edit extends MaxiBlock {
             hasInnerBlock,
         } = this.props;
 
-        let classes = classnames(
+        const classes = classnames(
             'maxi-block maxi-container-block',
             uniqueID,
             blockStyle,
@@ -349,8 +357,8 @@ class edit extends MaxiBlock {
                         __experimentalTagName={ContainerInnerBlocks}
                         __experimentalPassedProps={{
                             className: classes,
-                            ['data-align']: fullWidth,
-                            ['data-gx_initial_block_class']: defaultBlockStyle,
+                            dataAlign: fullWidth,
+                            maxiBlockClass: defaultBlockStyle,
                             shapeDivider: shapeDivider,
                         }}
                         renderAppender={

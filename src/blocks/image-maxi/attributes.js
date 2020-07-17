@@ -49,7 +49,8 @@ const attributes = {
         default: JSON.stringify(attributesData.opacityHover)
     },
     hoverOpacity: {
-        type: 'number',
+        type: 'string',
+        default: JSON.stringify(attributesData.opacityHover)
     },
     hoverAnimationTypeOpacity: {
         type: 'number',

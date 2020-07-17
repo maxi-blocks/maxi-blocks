@@ -94,7 +94,7 @@ const Inspector = props => {
 
     return (
         <InspectorControls>
-        <__experimentalResponsiveSelector />
+            <__experimentalResponsiveSelector />
             <SettingTabsControl
                 disablePadding
                 items={[
@@ -164,15 +164,10 @@ const Inspector = props => {
                                                             label: __('Normal', 'gutenberg-extra'),
                                                             content: (
                                                                 <Fragment>
-                                                                    <RangeControl
-                                                                        label={__('Opacity', 'maxi-blocks')}
-                                                                        className='maxi-opacity-control'
-                                                                        value={opacity * 100}
-                                                                        onChange={value => setAttributes({ opacity: value / 100 })}
-                                                                        min={0}
-                                                                        max={100}
-                                                                        allowReset={true}
-                                                                        initialPosition={0}
+                                                                    <__experimentalOpacityControl
+                                                                        opacity={opacity}
+                                                                        onChange={opacity => setAttributes({ opacity })}
+                                                                        breakpoint={deviceType}
                                                                     />
                                                                     <BackgroundControl
                                                                         backgroundOptions={background}
@@ -186,15 +181,10 @@ const Inspector = props => {
                                                             label: __('Hover', 'gutenberg-extra'),
                                                             content: (
                                                                 <Fragment>
-                                                                    <RangeControl
-                                                                        label={__('Opacity', 'maxi-blocks')}
-                                                                        className='maxi-opacity-control'
-                                                                        value={opacityHover * 100}
-                                                                        onChange={value => setAttributes({ opacityHover: value / 100 })}
-                                                                        min={0}
-                                                                        max={100}
-                                                                        allowReset={true}
-                                                                        initialPosition={0}
+                                                                    <__experimentalOpacityControl
+                                                                        opacity={opacityHover}
+                                                                        onChange={opacityHover => setAttributes({ opacityHover })}
+                                                                        breakpoint={deviceType}
                                                                     />
                                                                     <BackgroundControl
                                                                         backgroundOptions={backgroundHover}
@@ -283,19 +273,19 @@ const Inspector = props => {
                             </div>
                         )
                     }
-                    <__experimentalZIndexControl
-                        zindex={zIndex}
-                        onChange={zIndex => setAttributes({ zIndex })}
+                    < __experimentalZIndexControl
+                        zindex = { zIndex }
+                        onChange = { zIndex => {zIndex})}
                         breakpoint={deviceType}
                     />
-                    {
-                        deviceType != 'general' &&
-                        <__experimentalResponsiveControl
-                            breakpoints={breakpoints}
-                            onChange={breakpoints => setAttributes({ breakpoints })}
-                            breakpoint={deviceType}
-                        />
-                    }
+            {
+                deviceType != 'general' &&
+                <__experimentalResponsiveControl
+                    breakpoints={breakpoints}
+                    onChange={breakpoints => setAttributes({ breakpoints })}
+                    breakpoint={deviceType}
+                />
+            }
                 ]}
             />
         </InspectorControls >

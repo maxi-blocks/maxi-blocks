@@ -115,6 +115,10 @@ const attributes = {
         type: 'string',
         default: 'no'
     },
+    hoverOpacity: {
+        type: 'string',
+        default: JSON.stringify(attributesData.opacityHover)
+    },
     hoverBorder: {
         type: 'string',
         default: JSON.stringify(attributesData.border)

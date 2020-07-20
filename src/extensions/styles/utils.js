@@ -287,3 +287,31 @@ export const getColumnSizeObject = columnSize => {
 
     return response;
 }
+
+export const getShapeDividerObject = shapeDivider => {
+    const response = {
+        label: 'Shape Divider',
+        general: {}
+    }
+
+    if (!isNil(shapeDivider.opacity))
+        response.general['opacity'] = shapeDivider.opacity;
+
+    if (!isNil(shapeDivider.height))
+        response.general['height'] = `${shapeDivider.height}${shapeDivider.heightUnit}`;
+
+    return response;
+}
+
+export const getShapeDividerSVGObject = shapeDivider => {
+    const response = {
+        label: 'Shape Divider SVG',
+        general: {}
+    }
+
+    if (!isEmpty(shapeDivider.colorOptions.color)) {
+        response.general['fill'] = shapeDivider.colorOptions.color;
+    }
+
+    return response;
+}

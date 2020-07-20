@@ -23,6 +23,8 @@ const save = props => {
             fullWidth,
             extraClassName,
             textLevel,
+            isList,
+            typeOfList,
             content,
             hoverAnimation,
             hoverAnimationType,
@@ -63,7 +65,7 @@ const save = props => {
             <div className={wrap_classes} data-maxi_initial_block_class={defaultBlockStyle}>
                 <RichText.Content
                     value={content}
-                    tagName={textLevel}
+                    tagName={isList ? typeOfList : textLevel}
                     className={classes}
                 />
                 {

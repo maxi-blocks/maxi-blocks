@@ -1,6 +1,7 @@
 /**
  * WordPress dependencies
  */
+const { __ } = wp.i18n;
 const { __experimentalLinkControl } = wp.blockEditor;
 
 /**
@@ -24,17 +25,35 @@ const Link = props => {
         onChange
     } = props;
 
-    if (blockName == 'maxi-blocks/divider-maxi')
+    if (blockName == 'maxi-blocks/divider-maxi' || blockName == 'maxi-blocks/text-maxi')
         return null;
 
     return (
         <ToolbarPopover
             icon={toolbarLink}
+            tooltip={__('Link', 'maxi-blocks')}
             content={(
                 <__experimentalLinkControl
                     value={JSON.parse(linkSettings)}
-                    onChange={value => onChange(JSON.stringify(value))
-                    }
+                    onChange={value => onChange(JSON.stringify(value))}
+                    settings={[
+                        {
+                            id: 'opensInNewTab',
+                            title: __('Open in new tab', 'maxi-blocks'),
+                        },
+                        {
+                            id: 'noFollow',
+                            title: __('Add "nofollow" rel', 'maxi-blocks'),
+                        },
+                        {
+                            id: 'sponsored',
+                            title: __('Add "sponsored" rel', 'maxi-blocks'),
+                        },
+                        {
+                            id: 'ugc',
+                            title: __('Add "sponsored" rel', 'maxi-blocks'),
+                        },
+                    ]}
                 />
             )}
         />

@@ -60,14 +60,12 @@ const controls = {
 		return await apiFetch({ path: '/maxi-blocks/v1.0/global-styles/' })
 	},
 	async SAVE_GLOBAL_STYLES(action) {
-		const id = select('core/editor').getCurrentPostId();
 
 		await apiFetch(
 			{
 				path: '/maxi-blocks/v1.0/global-styles/',
 				method: 'POST',
 				data: {
-					id,
 					meta: JSON.stringify(action.meta),
 					update: action.update
 				}

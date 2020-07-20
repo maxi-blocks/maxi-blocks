@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies
+ */
+const { __ } = wp.i18n;
+
+/**
  * Internal dependencies
  */
 import FontLevelControl from '../../../font-level-control';
@@ -20,15 +25,17 @@ const TextLevel = props => {
         typography,
         typographyHover,
         margin,
+        isList,
         onChange
     } = props;
 
-    if (blockName != 'maxi-blocks/text-maxi')
+    if (blockName != 'maxi-blocks/text-maxi' || isList)
         return null;
 
     return (
         <ToolbarPopover
             className='toolbar-item__text-level'
+            tooltip={__('Text level', 'maxi-blocks')}
             icon={toolbarHeadingsLevel}
             content={(
                 <FontLevelControl

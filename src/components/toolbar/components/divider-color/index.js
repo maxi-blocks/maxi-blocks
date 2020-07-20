@@ -1,6 +1,7 @@
 /**
  * WordPress dependencies
  */
+const { __ } = wp.i18n;
 const {
     ColorPicker,
     Icon,
@@ -47,6 +48,7 @@ const DividerColor = props => {
     return (
         <ToolbarPopover
             className='toolbar-item__text-options'
+            tooltip={__('Divider color', 'maxi-blocks')}
             icon={(
                 <div
                     className='toolbar-item__text-options__icon'

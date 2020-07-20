@@ -30,6 +30,9 @@ import {
     TextColor,
     TextItalic,
     TextLevel,
+    TextLink,
+    TextList,
+    TextListOptions,
     TextOptions,
     PaddingMargin,
     Size
@@ -86,6 +89,8 @@ const MaxiToolbar = props => {
             lineVertical,
             lineHorizontal,
             content,
+            isList,
+            typeOfList
         },
         clientId,
         isSelected,
@@ -195,6 +200,7 @@ const MaxiToolbar = props => {
                             typography={typography}
                             typographyHover={typographyHover}
                             margin={margin}
+                            isList={isList}
                             onChange={
                                 (
                                     textLevel,
@@ -231,6 +237,30 @@ const MaxiToolbar = props => {
                             blockName={name}
                             linkSettings={linkSettings}
                             onChange={linkSettings => setAttributes({ linkSettings })}
+                        />
+                        <TextLink
+                            blockName={name}
+                            content={content}
+                            onChange={content => setAttributes({ content })}
+                            node={anchorRef}
+                        />
+                        <TextList
+                            blockName={name}
+                            isList={isList}
+                            content={content}
+                            onChange={(isList, content) =>
+                                setAttributes({
+                                    isList,
+                                    content
+                                })}
+                        />
+                        <TextListOptions
+                            blockName={name}
+                            isList={isList}
+                            content={content}
+                            typeOfList={typeOfList}
+                            onChange={content => setAttributes({ content })}
+                            node={anchorRef}
                         />
                         <BackgroundColor
                             blockName={name}

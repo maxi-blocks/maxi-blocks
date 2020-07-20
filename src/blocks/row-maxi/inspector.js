@@ -368,15 +368,9 @@ const Inspector = props => {
                                         {
                                             hoverAnimation === 'text' &&
                                             <Fragment>
-                                                <RangeControl
-                                                    label={__('Opacity', 'maxi-blocks')}
-                                                    className='maxi-opacity-control'
-                                                    value={hoverOpacity * 100}
-                                                    onChange={value => setAttributes({ hoverOpacity: value / 100 })}
-                                                    min={0}
-                                                    max={100}
-                                                    allowReset={true}
-                                                    initialPosition={0}
+                                                <__experimentalOpacityControl
+                                                    opacity={hoverOpacity}
+                                                    onChange={hoverOpacity => setAttributes({ hoverOpacity })}
                                                 />
                                                 <BackgroundControl
                                                     backgroundOptions={hoverBackground}
@@ -405,8 +399,7 @@ const Inspector = props => {
                                         {
                                             hoverAnimation === 'text' &&
                                             <Fragment>
-                                                <DimensionsControl
-                                                    label={__('Padding', 'maxi-blocks')}
+                                                <__experimentalMarginPaddingControl
                                                     value={hoverPadding}
                                                     onChange={hoverPadding => setAttributes({ hoverPadding })}
                                                 />

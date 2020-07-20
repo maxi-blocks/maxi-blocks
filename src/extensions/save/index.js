@@ -30,12 +30,21 @@ const withSave = (element, blockType, attributes) => {
 		!!JSON.parse(attributes.linkSettings).url
 	) {
 		const linkSettings = JSON.parse(attributes.linkSettings);
+		
+		let rel = '';
+		if(linkSettings.nofollow)
+			rel += ' nofollow';
+		if(linkSettings.sponsored)
+			rel += ' sponsored';
+		if(linkSettings.ugc)
+			rel += ' ugc';
 
 		return (
 			<a
 				className="maxi-link-wrapper"
 				href={linkSettings.url}
 				target={!!linkSettings.opensInNewTab ? '_blank' : '_self'}
+				rel={rel}
 			>
 				{element}
 			</a>

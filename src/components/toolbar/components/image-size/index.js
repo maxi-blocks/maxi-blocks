@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 const { Fragment } = wp.element;
+const { __ } = wp.i18n;
 const {
     Button,
     SelectControl,
@@ -11,20 +12,21 @@ const {
     useSelect,
     useDispatch,
 } = wp.data;
-import openSidebar from '../../../../extensions/dom';
 
 /**
  * Internal dependencies
  */
 import { getDefaultProp } from '../../../../extensions/styles/utils';
 import ToolbarPopover from '../toolbar-popover';
+import openSidebar from '../../../../extensions/dom';
 
 /**
  * External dependencies
  */
 import {
     capitalize,
-    isNil
+    isNil,
+    trim
 } from 'lodash';
 
 /**
@@ -92,6 +94,7 @@ const ImageSize = props => {
     return (
         <ToolbarPopover
             className='toolbar-item__image-size'
+            tooltip={__('Image size', 'maxi-blocks')}
             icon={toolbarSizing}
             content={(
                 <Fragment>
@@ -115,7 +118,7 @@ const ImageSize = props => {
                     }
                     <RangeControl
                         label={__('Width', 'maxi-blocks')}
-                        value={width}
+                        value={trim(width)}
                         onChange={width => {
                             if (isNil(width))
                                 onChangeWidth(getDefaultProp(clientId, 'width'))

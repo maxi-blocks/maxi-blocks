@@ -19,5 +19,8 @@ export { default as TextBold } from './text-bold/';
 export { default as TextColor } from './text-color/';
 export { default as TextItalic } from './text-italic/';
 export { default as TextLevel } from './text-level/';
+export { default as TextLink } from './text-link';
+export { default as TextList } from './text-list';
+export { default as TextListOptions } from './text-list-options';
 export { default as TextOptions } from './text-options/';
 export { default as TextShadow } from './text-shadow/';

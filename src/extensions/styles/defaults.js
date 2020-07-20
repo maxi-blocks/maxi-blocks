@@ -462,6 +462,7 @@ export const background = {
 export const boxShadow = {
     "label": "Box Shadow",
     "general": {
+        "shadowType": "none",
         "shadowColor": "#ffffff",
         "defaultShadowColor": "#ffffff",
         "shadowHorizontal": 0,
@@ -1031,4 +1032,34 @@ export const __experimentalColumn = {
     xs: {
         "size": ""
     },
+}
+
+export const __experimentalShapeDivider = {
+    "label": "Shape Divider",
+    "top": {
+        "height": "100",
+        "heightUnit": "px",
+        "opacity": 1,
+        "shapeStyle": "",
+        "colorOptions": {
+            "color": "#000000",
+            "defultColor": "#000000",
+            "gradient": "",
+            "defaultGradient": "",
+            "gradientAboveBackground": false
+        }
+    },
+    "bottom": {
+        "height": "100",
+        "heightUnit": "px",
+        "opacity": 1,
+        "shapeStyle": "",
+        "colorOptions": {
+            "color": "#000000",
+            "defultColor": "#000000",
+            "gradient": "",
+            "defaultGradient": "",
+            "gradientAboveBackground": false
+        }
+    }
 }

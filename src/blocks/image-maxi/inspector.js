@@ -32,6 +32,7 @@ import {
     __experimentalZIndexControl,
     __experimentalMarginPaddingControl,
     __experimentalResponsiveControl,
+    __experimentalOpacityControl
 } from '../../components';
 
 /**
@@ -269,15 +270,10 @@ const Inspector = props => {
                                                             label: __('Normal', 'gutenberg-extra'),
                                                             content: (
                                                                 <Fragment>
-                                                                    <RangeControl
-                                                                        label={__('Opacity', 'maxi-blocks')}
-                                                                        className='maxi-opacity-control'
-                                                                        value={opacity * 100}
-                                                                        onChange={value => setAttributes({ opacity: value / 100 })}
-                                                                        min={0}
-                                                                        max={100}
-                                                                        allowReset={true}
-                                                                        initialPosition={0}
+                                                                    <__experimentalOpacityControl
+                                                                        opacity={opacity}
+                                                                        onChange={opacity => setAttributes({ opacity })}
+                                                                        breakpoint={deviceType}
                                                                     />
                                                                     <BackgroundControl
                                                                         backgroundOptions={background}
@@ -291,15 +287,10 @@ const Inspector = props => {
                                                             label: __('Hover', 'gutenberg-extra'),
                                                             content: (
                                                                 <Fragment>
-                                                                    <RangeControl
-                                                                        label={__('Opacity', 'maxi-blocks')}
-                                                                        className='maxi-opacity-control'
-                                                                        value={opacityHover * 100}
-                                                                        onChange={value => setAttributes({ opacityHover: value / 100 })}
-                                                                        min={0}
-                                                                        max={100}
-                                                                        allowReset={true}
-                                                                        initialPosition={0}
+                                                                    <__experimentalOpacityControl
+                                                                        opacity={opacityHover}
+                                                                        onChange={opacityHover => setAttributes({ opacityHover })}
+                                                                        breakpoint={deviceType}
                                                                     />
                                                                     <BackgroundControl
                                                                         backgroundOptions={backgroundHover}
@@ -481,15 +472,9 @@ const Inspector = props => {
                                         {
                                             hoverAnimation === 'text' &&
                                             <Fragment>
-                                                <RangeControl
-                                                    label={__('Opacity', 'maxi-blocks')}
-                                                    className='maxi-opacity-control'
-                                                    value={hoverOpacity * 100}
-                                                    onChange={value => setAttributes({ hoverOpacity: value / 100 })}
-                                                    min={0}
-                                                    max={100}
-                                                    allowReset={true}
-                                                    initialPosition={0}
+                                                <__experimentalOpacityControl
+                                                    opacity={hoverOpacity}
+                                                    onChange={hoverOpacity => setAttributes({ hoverOpacity })}
                                                 />
                                                 <BackgroundControl
                                                     backgroundOptions={hoverBackground}

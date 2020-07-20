@@ -180,6 +180,102 @@ body.Elegance .default .highlight { color : #dec79b !important;}
 body.Elegance .maxi-light .divider { border-color : #dec79b !important;}
 body.Elegance .default .divider { border-color : #dec79b !important;}';
 
+$defaulThemeStylesCandy = 'body.Candy .maxi-dark { background-color : #eaf4f9 !important;}
+body.Candy .maxi-light { background-color : #ffffff !important;}
+body.Candy .default { background-color : #ffffff !important;}
+body.Candy .maxi-dark h1 {color : #2b2b33 !important;}
+body.Candy .maxi-light h1 {color : #2b2b33 !important;}
+@media screen and (max-width:980px) { body.Candy .maxi-dark h1 {color : #2b2b33 !important;}body.Candy .maxi-light h1 {color : #2b2b33 !important;}}
+@media screen and (max-width:480px) { body.Candy .maxi-dark h1 {color : #2b2b33 !important;}body.Candy .maxi-light h1 {color : #2b2b33 !important;}}
+body.Candy .maxi-dark h2 {color : #64c2ec !important;}
+body.Candy .maxi-light h2 {color : #64c2ec !important;}
+@media screen and (max-width:980px) { body.Candy .maxi-dark h2 {color : #64c2ec !important;}body.Candy .maxi-light h2 {color : #64c2ec !important;}}
+@media screen and (max-width:480px) { body.Candy .maxi-dark h2 {color : #64c2ec !important;}body.Candy .maxi-light h2 {color : #64c2ec !important;}}
+body.Candy .maxi-dark h3 {color : #f74356 !important;}
+body.Candy .maxi-light h3 {color : #f74356 !important;}
+@media screen and (max-width:980px) { body.Candy .maxi-dark h3 {color : #f74356 !important;}body.Candy .maxi-light h3 {color : #f74356 !important;}}
+@media screen and (max-width:480px) { body.Candy .maxi-dark h3 {color : #f74356 !important;}body.Candy .maxi-light h3 {color : #f74356 !important;}}
+body.Candy .maxi-dark h4 {color : #2b2b33 !important;}
+body.Candy .maxi-light h4 {color : #2b2b33 !important;}
+@media screen and (max-width:980px) { body.Candy .maxi-dark h4 {color : #2b2b33 !important;}body.Candy .maxi-light h4 {color : #2b2b33 !important;}}
+@media screen and (max-width:480px) { body.Candy .maxi-dark h4 {color : #2b2b33 !important;}body.Candy .maxi-light h4 {color : #2b2b33 !important;}}
+body.Candy .maxi-dark h5 {color : #f74356 !important;}
+body.Candy .maxi-light h5 {color : #f74356 !important;}
+@media screen and (max-width:980px) { body.Candy .maxi-dark h5 {color : #f74356 !important;}body.Candy .maxi-light h5 {color : #f74356 !important;}}
+@media screen and (max-width:480px) { body.Candy .maxi-dark h5 {color : #f74356 !important;}body.Candy .maxi-light h5 {color : #f74356 !important;}}
+body.Candy .maxi-dark h6 {color : #f74356 !important;}
+body.Candy .maxi-light h6 {color : #f74356 !important;}
+@media screen and (max-width:980px) { body.Candy .maxi-dark h6 {color : #f74356 !important;}body.Candy .maxi-light h6 {color : #f74356 !important;}}
+@media screen and (max-width:480px) { body.Candy .maxi-dark h6 {color : #f74356 !important;}body.Candy .maxi-light h6 {color : #f74356 !important;}}
+body.Candy .maxi-dark p {color : #666666 !important;}
+body.Candy .maxi-light p {color : #666666 !important;}
+@media screen and (max-width:980px) { body.Candy .maxi-dark p {color : #666666 !important;}body.Candy .maxi-light p {color : #666666 !important;}}
+@media screen and (max-width:480px) { body.Candy .maxi-dark p {color : #666666 !important;}body.Candy .maxi-light p {color : #666666 !important;}}
+body.Candy .maxi-dark li {color : #666666 !important;}
+body.Candy .maxi-light li {color : #666666 !important;}
+@media screen and (max-width:980px) { body.Candy .maxi-dark li {color : #666666 !important;}body.Candy .maxi-light li {color : #666666 !important;}}
+@media screen and (max-width:480px) { body.Candy .maxi-dark li {color : #666666 !important;}body.Candy .maxi-light li {color : #666666 !important;}}
+body.Candy .maxi-dark a { color : #f74356 !important;}
+body.Candy .maxi-light a { color : #f74356 !important;}
+body.Candy default a { color : #f74356 !important;}
+body.Candy .maxi-dark a:hover { color : #64c2ec !important;}
+body.Candy .maxi-light a:hover { color : #64c2ec !important;}
+body.Candy .default a:hover { color : #64c2ec !important;}
+body.Candy .maxi-dark .highlight { color : #f74356 !important;}
+body.Candy .maxi-dark .divider { border-color : #f74356 !important;}
+body.Candy .maxi-light .highlight { color : #f74356 !important;}
+body.Candy .default .highlight { color : #f74356 !important;}
+body.Candy .maxi-light .divider { border-color : #f74356 !important;}
+body.Candy .default .divider { border-color : #f74356 !important;}';
+
+$defaulThemeStylesBumblebee = 'body.Bumblebee .maxi-dark { background-color : #323c47 !important;}
+body.Bumblebee .maxi-light { background-color : #ffffff !important;}
+body.Bumblebee .default { background-color : #ffffff !important;}
+body.Bumblebee .maxi-dark h1 {color : #ffffff !important;}
+body.Bumblebee .maxi-light h1 {color : #323c47 !important;}
+@media screen and (max-width:980px) { body.Bumblebee .maxi-dark h1 {color : #ffffff !important;}body.Bumblebee .maxi-light h1 {color : #323c47 !important;}}
+@media screen and (max-width:480px) { body.Bumblebee .maxi-dark h1 {color : #ffffff !important;}body.Bumblebee .maxi-light h1 {color : #323c47 !important;}}
+body.Bumblebee .maxi-dark h2 {color : #64c2ec !important;}
+body.Bumblebee .maxi-light h2 {color : #323c47 !important;}
+@media screen and (max-width:980px) { body.Bumblebee .maxi-dark h2 {color : #64c2ec !important;}body.Bumblebee .maxi-light h2 {color : #323c47 !important;}}
+@media screen and (max-width:480px) { body.Bumblebee .maxi-dark h2 {color : #64c2ec !important;}body.Bumblebee .maxi-light h2 {color : #323c47 !important;}}
+body.Bumblebee .maxi-dark h3 {color : #f74356 !important;}
+body.Bumblebee .maxi-light h3 {color : #323c47 !important;}
+@media screen and (max-width:980px) { body.Bumblebee .maxi-dark h3 {color : #f74356 !important;}body.Bumblebee .maxi-light h3 {color : #323c47 !important;}}
+@media screen and (max-width:480px) { body.Bumblebee .maxi-dark h3 {color : #f74356 !important;}body.Bumblebee .maxi-light h3 {color : #323c47 !important;}}
+body.Bumblebee .maxi-dark h4 {color : #ffffff !important;}
+body.Bumblebee .maxi-light h4 {color : #323c47 !important;}
+@media screen and (max-width:980px) { body.Bumblebee .maxi-dark h4 {color : #ffffff !important;}body.Bumblebee .maxi-light h4 {color : #323c47 !important;}}
+@media screen and (max-width:480px) { body.Bumblebee .maxi-dark h4 {color : #ffffff !important;}body.Bumblebee .maxi-light h4 {color : #323c47 !important;}}
+body.Bumblebee .maxi-dark h5 {color : #f74356 !important;}
+body.Bumblebee .maxi-light h5 {color : #ffd012 !important;}
+@media screen and (max-width:980px) { body.Bumblebee .maxi-dark h5 {color : #f74356 !important;}body.Bumblebee .maxi-light h5 {color : #ffd012 !important;}}
+@media screen and (max-width:480px) { body.Bumblebee .maxi-dark h5 {color : #f74356 !important;}body.Bumblebee .maxi-light h5 {color : #ffd012 !important;}}
+body.Bumblebee .maxi-dark h6 {color : #ffd012 !important;}
+body.Bumblebee .maxi-light h6 {color : #ffd012 !important;}
+@media screen and (max-width:980px) { body.Bumblebee .maxi-dark h6 {color : #ffd012 !important;}body.Bumblebee .maxi-light h6 {color : #ffd012 !important;}}
+@media screen and (max-width:480px) { body.Bumblebee .maxi-dark h6 {color : #ffd012 !important;}body.Bumblebee .maxi-light h6 {color : #ffd012 !important;}}
+body.Bumblebee .maxi-dark p {color : #a7a7a7 !important;}
+body.Bumblebee .maxi-light p {color : #666666 !important;}
+@media screen and (max-width:980px) { body.Bumblebee .maxi-dark p {color : #a7a7a7 !important;}body.Bumblebee .maxi-light p {color : #666666 !important;}}
+@media screen and (max-width:480px) { body.Bumblebee .maxi-dark p {color : #a7a7a7 !important;}body.Bumblebee .maxi-light p {color : #666666 !important;}}
+body.Bumblebee .maxi-dark li {color : #a7a7a7 !important;}
+body.Bumblebee .maxi-light li {color : #666666 !important;}
+@media screen and (max-width:980px) { body.Bumblebee .maxi-dark li {color : #a7a7a7 !important;}body.Bumblebee .maxi-light li {color : #666666 !important;}}
+@media screen and (max-width:480px) { body.Bumblebee .maxi-dark li {color : #a7a7a7 !important;}body.Bumblebee .maxi-light li {color : #666666 !important;}}
+body.Bumblebee .maxi-dark a { color : #ffd012 !important;}
+body.Bumblebee .maxi-light a { color : #ffd012 !important;}
+body.Bumblebee default a { color : #ffd012 !important;}
+body.Bumblebee .maxi-dark a:hover { color : #ff9212 !important;}
+body.Bumblebee .maxi-light a:hover { color : #ff9212 !important;}
+body.Bumblebee .default a:hover { color : #ff9212 !important;}
+body.Bumblebee .maxi-dark .highlight { color : #ffd012 !important;}
+body.Bumblebee .maxi-dark .divider { border-color : #ffd012 !important;}
+body.Bumblebee .maxi-light .highlight { color : #ffd012 !important;}
+body.Bumblebee .default .highlight { color : #ffd012 !important;}
+body.Bumblebee .maxi-light .divider { border-color : #ffd012 !important;}
+body.Bumblebee .default .divider { border-color : #ffd012 !important;}';
+
 global $wpdb;
 
 $table_name = $wpdb->prefix . 'maxi_blocks_general';  // table name

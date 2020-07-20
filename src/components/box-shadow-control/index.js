@@ -2,6 +2,7 @@
  * Wordpress dependencies
  */
 const { __ } = wp.i18n;
+const { Fragment } = wp.element;
 const {
     RangeControl,
     Icon
@@ -12,7 +13,6 @@ const {
  */
 import ColorControl from '../color-control';
 import DefaultStylesControl from '../default-styles-control';
-import { getDefaultProp } from '../../extensions/styles/utils';
 import {
     boxShadowNone,
     boxShadowTotal,
@@ -24,7 +24,10 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject } from 'lodash';
+import { 
+    isObject,
+    trim
+} from 'lodash';
 
 /**
  * Styles and icons
@@ -40,7 +43,8 @@ const BoxShadowControl = props => {
         boxShadow,
         onChange,
         className,
-        breakpoint
+        breakpoint,
+        disableAdvanced = false
     } = props;
 
     let value = !isObject(boxShadow) ?
@@ -68,7 +72,7 @@ const BoxShadowControl = props => {
             <DefaultStylesControl
                 items={[
                     {
-                        activeItem: ( value[breakpoint].shadowType === 'none' ),
+                        activeItem: (value[breakpoint].shadowType === 'none'),
                         content: (
                             <Icon
                                 className='maxi-defaultstyles-control__button__icon'
@@ -78,7 +82,7 @@ const BoxShadowControl = props => {
                         onChange: () => onChangeDefault(boxShadowNone)
                     },
                     {
-                        activeItem: ( value[breakpoint].shadowType === 'total' ),
+                        activeItem: (value[breakpoint].shadowType === 'total'),
                         content: (
                             <div
                                 className='maxi-shadow-control__default maxi-shadow-control__default__total'
@@ -88,7 +92,7 @@ const BoxShadowControl = props => {
 
                     },
                     {
-                        activeItem: ( value[breakpoint].shadowType === 'bottom' ),
+                        activeItem: (value[breakpoint].shadowType === 'bottom'),
                         content: (
                             <div
                                 className='maxi-shadow-control__default maxi-shadow-control__default__bottom'
@@ -97,7 +101,7 @@ const BoxShadowControl = props => {
                         onChange: () => onChangeDefault(boxShadowBottom)
                     },
                     {
-                        activeItem: ( value[breakpoint].shadowType === 'solid' ),
+                        activeItem: (value[breakpoint].shadowType === 'solid'),
                         content: (
                             <div
                                 className='maxi-shadow-control__default maxi-shadow-control__default__solid'
@@ -118,46 +122,51 @@ const BoxShadowControl = props => {
                 disableVideo
                 disableGradientAboveBackground
             />
-            <RangeControl
-                label={__('Horizontal', 'maxi-blocks')}
-                className={'maxi-shadow-control__horizontal'}
-                value={value[breakpoint].shadowHorizontal}
-                onChange={val => onChangeValue('shadowHorizontal', val)}
-                min={-100}
-                max={100}
-                allowReset={true}
-                initialPosition={0}
-            />
-            <RangeControl
-                label={__('Vertical', 'maxi-blocks')}
-                className={'maxi-shadow-control__vertical'}
-                value={value[breakpoint].shadowVertical}
-                onChange={val => onChangeValue('shadowVertical', val)}
-                min={-100}
-                max={100}
-                allowReset={true}
-                initialPosition={0}
-            />
-            <RangeControl
-                label={__('Blur', 'maxi-blocks')}
-                className={'maxi-shadow-control__blur'}
-                value={value[breakpoint].shadowBlur}
-                onChange={val => onChangeValue('shadowBlur', val)}
-                min={0}
-                max={100}
-                allowReset={true}
-                initialPosition={0}
-            />
-            <RangeControl
-                label={__('Spread', 'maxi-blocks')}
-                className={'maxi-shadow-control__spread-control'}
-                value={value[breakpoint].shadowSpread}
-                onChange={val => onChangeValue('shadowSpread', val)}
-                min={-100}
-                max={100}
-                allowReset={true}
-                initialPosition={0}
-            />
+            {
+                !disableAdvanced &&
+                <Fragment>
+                    <RangeControl
+                        label={__('Horizontal', 'maxi-blocks')}
+                        className={'maxi-shadow-control__horizontal'}
+                        value={trim(value[breakpoint].shadowHorizontal)}
+                        onChange={val => onChangeValue('shadowHorizontal', val)}
+                        min={-100}
+                        max={100}
+                        allowReset={true}
+                        initialPosition={0}
+                    />
+                    <RangeControl
+                        label={__('Vertical', 'maxi-blocks')}
+                        className={'maxi-shadow-control__vertical'}
+                        value={trim(value[breakpoint].shadowVertical)}
+                        onChange={val => onChangeValue('shadowVertical', val)}
+                        min={-100}
+                        max={100}
+                        allowReset={true}
+                        initialPosition={0}
+                    />
+                    <RangeControl
+                        label={__('Blur', 'maxi-blocks')}
+                        className={'maxi-shadow-control__blur'}
+                        value={trim(value[breakpoint].shadowBlur)}
+                        onChange={val => onChangeValue('shadowBlur', val)}
+                        min={0}
+                        max={100}
+                        allowReset={true}
+                        initialPosition={0}
+                    />
+                    <RangeControl
+                        label={__('Spread', 'maxi-blocks')}
+                        className={'maxi-shadow-control__spread-control'}
+                        value={trim(value[breakpoint].shadowSpread)}
+                        onChange={val => onChangeValue('shadowSpread', val)}
+                        min={-100}
+                        max={100}
+                        allowReset={true}
+                        initialPosition={0}
+                    />
+                </Fragment>
+            }
         </div>
     )
 }

@@ -1,6 +1,7 @@
 /**
  * WordPress dependencies
  */
+const { __ } = wp.i18n;
 const { ColorPicker } = wp.components;
 
 /**
@@ -18,7 +19,7 @@ const BackgroundColor = props => {
         onChange
     } = props;
 
-    if (blockName === 'maxi-blocks/divider-maxi')
+    if (blockName === 'maxi-blocks/divider-maxi' || blockName === 'maxi-blocks/text-maxi')
         return null;
 
     let value = typeof background != 'object' ?
@@ -38,6 +39,7 @@ const BackgroundColor = props => {
     return (
         <ToolbarPopover
             className='toolbar-item__background'
+            tooltip={__('Background color', 'maxi-blocks')}
             icon={(
                 <div
                     className='toolbar-item__icon'

@@ -2,14 +2,12 @@
  * Internal dependencies
  */
 const { Fragment } = wp.element;
+const { __ } = wp.i18n;
 const {
     SelectControl,
     RadioControl,
-    IconButton,
 } = wp.components;
-const { useDispatch } = wp.data;
 import ToolbarPopover from '../toolbar-popover';
-import openSidebar from '../../../../extensions/dom';
 
 /**
  * Icons
@@ -20,7 +18,6 @@ import {
     alignCenter,
     alignRight,
     toolbarDividerAlign,
-    toolbarAdvancedSettings,
 } from '../../../../icons';
 import { Icon } from '@wordpress/icons';
 
@@ -40,10 +37,6 @@ const DividerAlignment = props => {
 
     if (blockName != 'maxi-blocks/divider-maxi')
         return null;
-
-    const { openGeneralSidebar } = useDispatch(
-        'core/edit-post'
-    );
 
     const getHorizontalOptions = () => {
         let options = [];
@@ -65,19 +58,11 @@ const DividerAlignment = props => {
     return (
         <ToolbarPopover
             className='toolbar-item__alignment'
+            tooltip={__('Divider aligment', 'maxi-blocks')}
             icon={toolbarDividerAlign}
+            advancedOptions='line'
             content={(
                 <Fragment>
-                    <div className='toolbar-item__popover__dropdown-options'>
-                        <IconButton
-                            className='toolbar-item__popover__dropdown-options__advanced-button'
-                            icon={toolbarAdvancedSettings}
-                            onClick={() =>
-                                openGeneralSidebar('edit-post/block')
-                                    .then(() => openSidebar('line'))
-                            }
-                        />
-                    </div>
                     <SelectControl
                             label={__('Line Orientation', 'maxi-blocks')}
                             options={[

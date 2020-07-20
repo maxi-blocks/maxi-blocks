@@ -16,7 +16,10 @@ const {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject } from 'lodash';
+import { 
+    isObject,
+    trim
+} from 'lodash';
 
 /**
  * Styles and icons
@@ -131,7 +134,7 @@ const AxisControl = props => {
                             className="maxi-axis-control__number"
                             type="number"
                             placeholder='auto'
-                            value={value[breakpoint][getKey(value[breakpoint], 0)]}
+                            value={trim(value[breakpoint][getKey(value[breakpoint], 0)])}
                             onChange={e => onChangeValue(e, 0)}
                             aria-label={sprintf(
                                 __('%s Top', 'maxi-blocks'),
@@ -144,7 +147,7 @@ const AxisControl = props => {
                             className="maxi-axis-control__number"
                             type="number"
                             placeholder='auto'
-                            value={value[breakpoint][getKey(value[breakpoint], 1)]}
+                            value={trim(value[breakpoint][getKey(value[breakpoint], 1)])}
                             onChange={e => onChangeValue(e, 1)}
                             aria-label={sprintf(
                                 __('%s Right', 'maxi-blocks'),
@@ -157,7 +160,7 @@ const AxisControl = props => {
                             className="maxi-axis-control__number"
                             type="number"
                             placeholder='auto'
-                            value={value[breakpoint][getKey(value[breakpoint], 2)]}
+                            value={trim(value[breakpoint][getKey(value[breakpoint], 2)])}
                             onChange={e => onChangeValue(e, 2)}
                             aria-label={sprintf(
                                 __('%s Bottom', 'maxi-blocks'),
@@ -170,7 +173,7 @@ const AxisControl = props => {
                             className="maxi-axis-control__number"
                             type="number"
                             placeholder='auto'
-                            value={value[breakpoint][getKey(value[breakpoint], 3)]}
+                            value={trim(value[breakpoint][getKey(value[breakpoint], 3)])}
                             onChange={e => onChangeValue(e, 3)}
                             aria-label={sprintf(
                                 __('%s Left', 'maxi-blocks'),

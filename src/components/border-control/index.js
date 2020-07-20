@@ -156,6 +156,7 @@ const BorderControl = props => {
                             onChange(JSON.stringify(value));
                         }}
                         breakpoint={breakpoint}
+                        disableAuto
                     />
                     <__experimentalAxisControl
                         values={value.borderRadius}
@@ -165,6 +166,7 @@ const BorderControl = props => {
                             onChange(JSON.stringify(value));
                         }}
                         breakpoint={breakpoint}
+                        disableAuto
                     />
                 </Fragment>
             }

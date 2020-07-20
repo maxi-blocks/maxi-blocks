@@ -1,6 +1,7 @@
 /**
  * WordPress dependencies
  */
+const { useInstanceId } = wp.compose;
 const {
     __,
     sprintf
@@ -16,7 +17,7 @@ const {
  * External dependencies
  */
 import classnames from 'classnames';
-import { 
+import {
     isObject,
     trim
 } from 'lodash';
@@ -38,13 +39,16 @@ const AxisControl = props => {
         values,
         className,
         onChange,
-        breakpoint
+        breakpoint,
+        disableAuto = false
     } = props;
+
+    const instanceId = useInstanceId(AxisControl);
 
     const value = !isObject(values) ?
         JSON.parse(values) :
         values;
-    
+
     const classes = classnames(
         'maxi-axis-control',
         className
@@ -54,12 +58,15 @@ const AxisControl = props => {
         return Object.keys(obj)[target];
     }
 
-    const onChangeValue = (e, target) => {
-        const newValue = e.target.value;
+    const getValue = key => {
+        const inputValue = trim(value[breakpoint][getKey(value[breakpoint], key)]);
+        return inputValue;
+    }
 
+    const onChangeValue = (newValue, target) => {
         if (value[breakpoint].sync === true) {
             for (let key of Object.keys(value[breakpoint])) {
-                key != 'sync' ?
+                key != 'sync' && key != 'unit' ?
                     value[breakpoint][key] = !!Number(newValue) || newValue === '0' ?
                         Number(newValue) :
                         newValue :
@@ -67,9 +74,10 @@ const AxisControl = props => {
             }
         }
         else {
-            value[breakpoint][getKey(value[breakpoint], target)] = !!Number(newValue) || newValue === '0' ?
-                Number(newValue) :
-                newValue;
+            value[breakpoint][getKey(value[breakpoint], target)] =
+                !!Number(newValue) || newValue === '0' ?
+                    Number(newValue) :
+                    newValue;
         }
 
         onChange(JSON.stringify(value));
@@ -77,10 +85,11 @@ const AxisControl = props => {
 
     const onReset = () => {
         for (let key of Object.keys(value[breakpoint])) {
-            key != 'sync' ?
-                value[breakpoint][key] = '' :
-                value[breakpoint][sync] = true;
+            if (key != 'sync' && key != 'unit')
+                value[breakpoint][key] = '';
         }
+        value[breakpoint]['sync'] = true;
+        value[breakpoint]['unit'] = 'px';
 
         onChange(JSON.stringify(value));
     }
@@ -91,125 +100,237 @@ const AxisControl = props => {
     }
 
     return (
-        <BaseControl>
-            <div className={classes}>
-                <div className="maxi-axis-control__header components-base-control">
-                    <p className='maxi-axis-control__label'>
-                        {value.label}
+        <div
+            className={classes}
+        >
+            <BaseControl
+                label={__(value.label, 'maxi-blocks')}
+                className='maxi-axis-control__header'
+            >
+                <SelectControl
+                    className="maxi-axis-control__units"
+                    options={[
+                        { label: 'PX', value: 'px' },
+                        { label: 'EM', value: 'em' },
+                        { label: 'VW', value: 'vw' },
+                        { label: '%', value: '%' },
+                    ]}
+                    value={value[breakpoint].unit}
+                    onChange={val => {
+                        value[breakpoint].unit = val;
+                        onChange(JSON.stringify(value))
+                    }}
+                />
+                <Button
+                    className="components-maxi-control__reset-button"
+                    onClick={onReset}
+                    aria-label={sprintf(
+                        __('Reset %s settings', 'maxi-blocks'),
+                        value.label.toLowerCase()
+                    )}
+                    action="reset"
+                    type="reset"
+                >
+                    {reset}
+                </Button>
+            </BaseControl>
+            <div
+                className='maxi-axis-control__content'
+            >
+                <div
+                    className='maxi-axis-control__content__item maxi-axis-control__content__item__top'
+                >
+                    <p
+                        className='maxi-axis-control__content__item__label'
+                    >
+                        Top
                     </p>
-                    <div className="maxi-axis-control__actions">
-                        <SelectControl
-                            className="maxi-axis-control__units"
-                            options={[
-                                { label: 'PX', value: 'px' },
-                                { label: 'EM', value: 'em' },
-                                { label: 'VW', value: 'vw' },
-                                { label: '%', value: '%' },
-                            ]}
-                            value={value.unit}
-                            onChange={val => {
-                                value.unit = val;
-                                onChange(JSON.stringify(value))
-                            }}
-                        />
-                        <Button
-                            className="components-maxi-control__reset-button"
-                            onClick={onReset}
-                            aria-label={sprintf(
-                                __('Reset %s settings', 'maxi-blocks'),
-                                value.label.toLowerCase()
-                            )}
-                            action="reset"
-                            type="reset"
-                        >
-                            {reset}
-                        </Button>
-                    </div>
+                    <input
+                        className="maxi-axis-control__content__item__input"
+                        type="number"
+                        placeholder={
+                            getValue(0) === 'auto' ?
+                                'auto' :
+                                ''
+                        }
+                        value={!!Number(getValue(0)) ? getValue(0) : ''}
+                        onChange={e => onChangeValue(e.target.value, 0)}
+                        aria-label={sprintf(
+                            __('%s Top', 'maxi-blocks'),
+                            value.label
+                        )}
+                        min={value.min ? value.min : 0}
+                        max={value.max ? value.max : 'none'}
+                    />
+                    {
+                        !disableAuto &&
+                        <label
+                            className="maxi-axis-control__content__item__checkbox"
+                            for={`${instanceId}-top`}>
+                            <input
+                                type="checkbox"
+                                checked={getValue(0) === 'auto'}
+                                onChange={e => {
+                                    const newValue = e.target.checked ? 'auto' : '';
+                                    onChangeValue(newValue, 0)
+                                }}
+                                id={`${instanceId}-top`}
+                            />
+                            auto
+                        </label>
+                    }
                 </div>
                 <div
-                    className="maxi-axis-control__mobile-controls"
+                    className='maxi-axis-control__content__item maxi-axis-control__content__item__right'
                 >
-                    <div className="maxi-axis-control__inputs">
-                        <input
-                            className="maxi-axis-control__number"
-                            type="number"
-                            placeholder='auto'
-                            value={trim(value[breakpoint][getKey(value[breakpoint], 0)])}
-                            onChange={e => onChangeValue(e, 0)}
-                            aria-label={sprintf(
-                                __('%s Top', 'maxi-blocks'),
-                                value.label
-                            )}
-                            min={value.min ? value.min : 0}
-                            max={value.max ? value.max : 'none'}
-                        />
-                        <input
-                            className="maxi-axis-control__number"
-                            type="number"
-                            placeholder='auto'
-                            value={trim(value[breakpoint][getKey(value[breakpoint], 1)])}
-                            onChange={e => onChangeValue(e, 1)}
-                            aria-label={sprintf(
-                                __('%s Right', 'maxi-blocks'),
-                                value.label
-                            )}
-                            min={value.min ? value.min : 0}
-                            max={value.max ? value.max : 'none'}
-                        />
-                        <input
-                            className="maxi-axis-control__number"
-                            type="number"
-                            placeholder='auto'
-                            value={trim(value[breakpoint][getKey(value[breakpoint], 2)])}
-                            onChange={e => onChangeValue(e, 2)}
-                            aria-label={sprintf(
-                                __('%s Bottom', 'maxi-blocks'),
-                                value.label
-                            )}
-                            min={value.min ? value.min : 0}
-                            max={value.max ? value.max : 'none'}
-                        />
-                        <input
-                            className="maxi-axis-control__number"
-                            type="number"
-                            placeholder='auto'
-                            value={trim(value[breakpoint][getKey(value[breakpoint], 3)])}
-                            onChange={e => onChangeValue(e, 3)}
-                            aria-label={sprintf(
-                                __('%s Left', 'maxi-blocks'),
-                                value.label
-                            )}
-                            min={value.min ? value.min : 0}
-                            max={value.max ? value.max : 'none'}
-                        />
-                        <Tooltip
-                            text={
-                                !!value[breakpoint].sync ?
-                                    __('Unsync', 'maxi-blocks') :
-                                    __('Sync', 'maximaxi-blocks')}
-                        >
-                            <Button
-                                className="maxi-axis-control_sync"
-                                aria-label={__('Sync Units', 'maxi-blocks')}
-                                isPrimary={value[breakpoint].sync}
-                                aria-pressed={value[breakpoint].sync}
-                                onClick={onChangeSync}
-                                isSmall
-                            >
-                                {sync}
-                            </Button>
-                        </Tooltip>
-                    </div>
+                    <p
+                        className='maxi-axis-control__content__item__label'
+                    >
+                        Right
+                    </p>
+                    <input
+                        className="maxi-axis-control__content__item__input"
+                        type="number"
+                        placeholder={
+                            getValue(1) === 'auto' ?
+                                'auto' :
+                                ''
+                        }
+                        value={!!Number(getValue(2)) ? getValue(2) : ''}
+                        onChange={e => onChangeValue(e.target.value, 1)}
+                        aria-label={sprintf(
+                            __('%s Right', 'maxi-blocks'),
+                            value.label
+                        )}
+                        min={value.min ? value.min : 0}
+                        max={value.max ? value.max : 'none'}
+                    />
+                    {
+                        !disableAuto &&
+                        <label
+                            className="maxi-axis-control__content__item__checkbox"
+                            for={`${instanceId}-right`}>
+                            <input
+                                type="checkbox"
+                                checked={getValue(2) === 'auto'}
+                                onChange={e => {
+                                    const newValue = e.target.checked ? 'auto' : '';
+                                    onChangeValue(newValue, 1)
+                                }}
+                                id={`${instanceId}-right`}
+                            />
+                            auto
+                        </label>
+                    }
                 </div>
-                <div className="maxi-axis-control__input-labels">
-                    <span className="maxi-axis-control__number-label">{__('Top', 'maxi-blocks')}</span>
-                    <span className="maxi-axis-control__number-label">{__('Right', 'maxi-blocks')}</span>
-                    <span className="maxi-axis-control__number-label">{__('Bottom', 'maxi-blocks')}</span>
-                    <span className="maxi-axis-control__number-label">{__('Left', 'maxi-blocks')}</span>
-                    <span className="maxi-axis-control__number-label-blank"></span>
+                <div
+                    className='maxi-axis-control__content__item maxi-axis-control__content__item__bottom'
+                >
+                    <p
+                        className='maxi-axis-control__content__item__label'
+                    >
+                        Bottom
+                    </p>
+                    <input
+                        className="maxi-axis-control__content__item__input"
+                        type="number"
+                        placeholder={
+                            getValue(2) === 'auto' ?
+                                'auto' :
+                                ''
+                        }
+                        value={!!Number(getValue(2)) ? getValue(2) : ''}
+                        onChange={e => onChangeValue(e.target.value, 2)}
+                        aria-label={sprintf(
+                            __('%s Bottom', 'maxi-blocks'),
+                            value.label
+                        )}
+                        min={value.min ? value.min : 0}
+                        max={value.max ? value.max : 'none'}
+                    />
+                    {
+                        !disableAuto &&
+                        <label
+                            className="maxi-axis-control__content__item__checkbox"
+                            for={`${instanceId}-bottom`}>
+                            <input
+                                type="checkbox"
+                                checked={getValue(2) === 'auto'}
+                                onChange={e => {
+                                    const newValue = e.target.checked ? 'auto' : '';
+                                    onChangeValue(newValue, 2)
+                                }}
+                                id={`${instanceId}-bottom`}
+                            />
+                            auto
+                        </label>
+                    }
+                </div>
+                <div
+                    className='maxi-axis-control__content__item maxi-axis-control__content__item__left'
+                >
+                    <p
+                        className='maxi-axis-control__content__item__label'
+                    >
+                        Left
+                    </p>
+                    <input
+                        className="maxi-axis-control__content__item__input"
+                        type="number"
+                        placeholder={
+                            getValue(3) === 'auto' ?
+                                'auto' :
+                                ''
+                        }
+                        value={!!Number(getValue(3)) ? getValue(3) : ''}
+                        onChange={e => onChangeValue(e.target.value, 3)}
+                        aria-label={sprintf(
+                            __('%s Left', 'maxi-blocks'),
+                            value.label
+                        )}
+                        min={value.min ? value.min : 0}
+                        max={value.max ? value.max : 'none'}
+                    />
+                    {
+                        !disableAuto &&
+                        <label
+                            className="maxi-axis-control__content__item__checkbox"
+                            for={`${instanceId}-left`}>
+                            <input
+                                type="checkbox"
+                                checked={getValue(3) === 'auto'}
+                                onChange={e => {
+                                    const newValue = e.target.checked ? 'auto' : '';
+                                    onChangeValue(newValue, 3)
+                                }}
+                                id={`${instanceId}-left`}
+                            />
+                            auto
+                        </label>
+                    }
+                </div>
+                <div
+                    className='maxi-axis-control__content__item maxi-axis-control__content__item__sync'
+                >
+                    <Tooltip
+                        text={
+                            !!value[breakpoint].sync ?
+                                __('Unsync', 'maxi-blocks') :
+                                __('Sync', 'maximaxi-blocks')}
+                    >
+                        <Button
+                            aria-label={__('Sync Units', 'maxi-blocks')}
+                            isPrimary={value[breakpoint].sync}
+                            aria-pressed={value[breakpoint].sync}
+                            onClick={onChangeSync}
+                            isSmall
+                        >
+                            {sync}
+                        </Button>
+                    </Tooltip>
                 </div>
             </div>
-        </BaseControl>
+        </div>
     );
 }
 

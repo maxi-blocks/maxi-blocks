@@ -28,7 +28,7 @@ import {
     TypographyControl,
     __experimentalResponsiveSelector,
     __experimentalZIndexControl,
-    __experimentalMarginPaddingControl,
+    __experimentalAxisControl,
     __experimentalResponsiveControl,
     __experimentalOpacityControl,
     __experimentalShapeDividerControl,
@@ -286,13 +286,14 @@ const Inspector = props => {
                                             label: __('Padding & Margin', 'maxi-blocks'),
                                             content: (
                                                 <Fragment>
-                                                    <__experimentalMarginPaddingControl
-                                                        value={padding}
+                                                    <__experimentalAxisControl
+                                                        values={padding}
                                                         onChange={padding => setAttributes({ padding })}
                                                         breakpoint={deviceType}
+                                                        disableAuto
                                                     />
-                                                    <__experimentalMarginPaddingControl
-                                                        value={margin}
+                                                    <__experimentalAxisControl
+                                                        values={margin}
                                                         onChange={margin => setAttributes({ margin })}
                                                         breakpoint={deviceType}
                                                     />
@@ -397,8 +398,8 @@ const Inspector = props => {
                                     {
                                         hoverAnimation === 'text' &&
                                         <Fragment>
-                                            <__experimentalMarginPaddingControl
-                                                value={hoverPadding}
+                                            <__experimentalAxisControl
+                                                values={hoverPadding}
                                                 onChange={hoverPadding => setAttributes({ hoverPadding })}
                                             />
                                         </Fragment>

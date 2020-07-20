@@ -66,13 +66,20 @@ export class ResponsiveStylesResolver {
         const object = value[breakpoint];
         newObject[breakpoint] = {};
         let unitChecker = '';
-        let unit = value.unit ? value.unit : '';
+        let unit = !isNil(object.unit) ? object.unit : '';
+
+        const nonAllowedProps = [
+            'font-options',
+            'unit'
+        ]
 
         for (let [target, prop] of Object.entries(object)) {
             if (isNil(prop)) {
                 console.error(`Undefined property. Property: ${target}`);
                 continue;
             }
+            if(nonAllowedProps.includes(target))
+                continue;
             // values with dimensions
             if (
                 isNumber(prop) ||

@@ -25,7 +25,7 @@ import {
     TypographyControl,
     __experimentalResponsiveSelector,
     __experimentalZIndexControl,
-    __experimentalMarginPaddingControl,
+    __experimentalAxisControl,
     __experimentalResponsiveControl,
 } from '../../components';
 
@@ -185,6 +185,7 @@ const Inspector = props => {
                                                                         opacity={opacityHover}
                                                                         onChange={opacityHover => setAttributes({ opacityHover })}
                                                                         breakpoint={deviceType}
+                                                                        disableAuto
                                                                     />
                                                                     <BackgroundControl
                                                                         backgroundOptions={backgroundHover}
@@ -270,22 +271,22 @@ const Inspector = props => {
                                     hoverAnimationDuration={hoverAnimationDuration}
                                     onChangeHoverAnimationDuration={hoverAnimationDuration => setAttributes({ hoverAnimationDuration })}
                                 />
+                                <__experimentalZIndexControl
+                                    zindex={zIndex}
+                                    onChange={zIndex => setAttributes({ zIndex })}
+                                    breakpoint={deviceType}
+                                />
+                                {
+                                    deviceType != 'general' &&
+                                    <__experimentalResponsiveControl
+                                        breakpoints={breakpoints}
+                                        onChange={breakpoints => setAttributes({ breakpoints })}
+                                        breakpoint={deviceType}
+                                    />
+                                }
                             </div>
                         )
                     }
-                    < __experimentalZIndexControl
-                        zindex = { zIndex }
-                        onChange = { zIndex => {zIndex})}
-                        breakpoint={deviceType}
-                    />
-            {
-                deviceType != 'general' &&
-                <__experimentalResponsiveControl
-                    breakpoints={breakpoints}
-                    onChange={breakpoints => setAttributes({ breakpoints })}
-                    breakpoint={deviceType}
-                />
-            }
                 ]}
             />
         </InspectorControls >

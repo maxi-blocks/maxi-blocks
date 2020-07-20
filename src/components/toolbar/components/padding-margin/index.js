@@ -8,7 +8,7 @@ const { Fragment } = wp.element;
  * Internal dependencies
  */
 import ToolbarPopover from '../toolbar-popover';
-import __experimentalMarginPaddingControl from '../../../margin-padding-control';
+import __experimentalAxisControl from '../../../axis-control';
 
 /**
  * Icons
@@ -35,15 +35,16 @@ const PaddingMargin = props => {
             icon={toolbarPadding}
             content={(
                 <Fragment>
-                    <__experimentalMarginPaddingControl
-                        value={padding}
+                    <__experimentalAxisControl
+                        values={padding}
                         onChange={padding => onChangePadding(padding)}
                         breakpoint={breakpoint}
+                        disableAuto
                     />
                     {
                         blockName != 'maxi-blocks/column-maxi' &&
-                        <__experimentalMarginPaddingControl
-                            value={margin}
+                        <__experimentalAxisControl
+                            values={margin}
                             onChange={margin => onChangeMargin(margin)}
                             breakpoint={breakpoint}
                         />

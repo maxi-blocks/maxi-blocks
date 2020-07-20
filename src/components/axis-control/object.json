@@ -1,0 +1,51 @@
+{
+    "label": "Some label",
+    "general": {
+        "option-top": "",
+        "option-right": "",
+        "option-bottom": "",
+        "option-left": "",
+        "sync": true,
+        "unit": "px"
+    },
+    "xl": {
+        "option-top": "",
+        "option-right": "",
+        "option-bottom": "",
+        "option-left": "",
+        "sync": true,
+        "unit": "px"
+    },
+    "l": {
+        "option-top": "",
+        "option-right": "",
+        "option-bottom": "",
+        "option-left": "",
+        "sync": true,
+        "unit": "px"
+    },
+    "m": {
+        "option-top": "",
+        "option-right": "",
+        "option-bottom": "",
+        "option-left": "",
+        "sync": true,
+        "unit": "px"
+    },
+    "s": {
+        "option-top": "",
+        "option-right": "",
+        "option-bottom": "",
+        "option-left": "",
+        "sync": true,
+        "unit": "px"
+    },
+    "xs": {
+        "option-top": "",
+        "option-right": "",
+        "option-bottom": "",
+        "option-left": "",
+        "sync": true,
+        "unit": "px"
+    }
+}

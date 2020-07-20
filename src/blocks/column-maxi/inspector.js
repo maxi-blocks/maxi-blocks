@@ -27,7 +27,7 @@ import {
     __experimentalResponsiveControl,
     __experimentalNumberControl,
     __experimentalOpacityControl,
-    __experimentalMarginPaddingControl,
+    __experimentalAxisControl,
 } from '../../components';
 
 /**
@@ -278,13 +278,14 @@ const Inspector = props => {
                                             label: __('Padding / Margin', 'maxi-blocks'),
                                             content: (
                                                 <Fragment>
-                                                    <__experimentalMarginPaddingControl
-                                                        value={padding}
+                                                    <__experimentalAxisControl
+                                                        values={padding}
                                                         onChange={padding => setAttributes({ padding })}
                                                         breakpoint={deviceType}
+                                                        disableAuto
                                                     />
-                                                    <__experimentalMarginPaddingControl
-                                                        value={margin}
+                                                    <__experimentalAxisControl
+                                                        values={margin}
                                                         onChange={margin => setAttributes({ margin })}
                                                         breakpoint={deviceType}
                                                     />

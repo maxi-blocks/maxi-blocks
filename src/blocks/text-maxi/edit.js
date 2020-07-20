@@ -138,14 +138,8 @@ class edit extends MaxiBlock {
             borderWidth: { ...JSON.parse(hoverBorder).borderWidth },
             borderRadius: { ...JSON.parse(hoverBorder).borderRadius },
             padding: { ...JSON.parse(hoverPadding) },
-            animationHover: {
-                label: 'Animation Hover',
-                general: {}
-            }
+            opacity: { ...getOpacityObject(hoverOpacity) },
         };
-
-        if (hoverOpacity)
-            response.animationHover.general['opacity'] = hoverOpacity;
 
         return response
     }

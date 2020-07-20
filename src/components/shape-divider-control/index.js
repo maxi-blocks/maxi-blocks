@@ -205,6 +205,22 @@ const ShapeDividerControl = props => {
             {
             shapeDividerStatus === 'top' &&
                 <Fragment>
+                    <div className='maxi-fancy-radio-control'>
+                        <RadioControl
+                            label={__('Enable Scroll Effect', 'maxi-block')}
+                            selected={parseInt(shapeDividerTopOptions.effects.status)}
+                            options={
+                                [
+                                    { label: __('No', 'maxi-block'), value: 0 },
+                                    { label: __('Yes', 'maxi-block'), value: 1 },
+                                ]
+                            }
+                            onChange={val => {
+                                shapeDividerTopOptions.effects.status = val;
+                                onChange(JSON.stringify(value));
+                            }}
+                        />
+                    </div>
                     <Dropdown
                         className="maxi-shapedividercontrol__shape-selector"
                         contentClassName="maxi-shapedividercontrol_popover"
@@ -270,6 +286,22 @@ const ShapeDividerControl = props => {
             {
             shapeDividerStatus === 'bottom' &&
                 <Fragment>
+                    <div className='maxi-fancy-radio-control'>
+                        <RadioControl
+                            label={__('Enable Scroll Effect', 'maxi-block')}
+                            selected={parseInt(shapeDividerBottomOptions.effects.status)}
+                            options={
+                                [
+                                    { label: __('No', 'maxi-block'), value: 0 },
+                                    { label: __('Yes', 'maxi-block'), value: 1 },
+                                ]
+                            }
+                            onChange={val => {
+                                shapeDividerBottomOptions.effects.status = val;
+                                onChange(JSON.stringify(value));
+                            }}
+                        />
+                    </div>
                     <Dropdown
                         className="maxi-shapedividercontrol__shape-selector"
                         contentClassName="maxi-shapedividercontrol_popover"

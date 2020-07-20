@@ -73,6 +73,7 @@ const save = props => {
                     className={classes}
                     data-gx_initial_block_class={defaultBlockStyle}
                     data-motion={motion}
+                    data-shape-divider={shapeDivider}
                     data-motion-id={uniqueID}
                 >
                     <__experimentalShapeDivider

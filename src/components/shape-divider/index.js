@@ -130,14 +130,7 @@ const ShapeDivider = props => {
 
     return (
         !isEmpty(showShapes(position)) &&
-            <div
-                className={classes}
-                data-height={
-                position === 'top' ?
-                    shapeDividerTopOptions.height :
-                    shapeDividerBottomOptions.height
-                }
-            >
+            <div className={classes}>
                 {showShapes(position)}
             </div>
     )

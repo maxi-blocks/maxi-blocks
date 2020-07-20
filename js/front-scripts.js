@@ -1,29 +1,7 @@
+// GSAP PLugins
 gsap.registerPlugin(ScrollTrigger);
 
-// Shape Divider Effects
-ScrollTrigger.matchMedia({
-
-    "all": function() {
-        ScrollTrigger.batch(".maxi-shape-divider", {
-            start: "-150",
-            onEnter: (batch) => gsap.to(batch, {
-                height: 0
-            }),
-            onLeave: (batch) => gsap.to(batch, {
-                height: batch[0].getAttribute('data-height')
-            }),
-            onEnterBack: (batch) => gsap.to(batch, {
-                height: 0
-            }),
-            onLeaveBack: (batch) => gsap.to(batch, {
-                height: batch[0].getAttribute('data-height')
-            })
-        });
-    }
-
-});
-
-// Motion Effects
+// Get Width & Height Screen
 let vw = Math.max(
     document.documentElement.clientWidth || 0,
     window.innerWidth || 0
@@ -35,13 +13,62 @@ window.addEventListener("resize", function() {
     );
 });
 
+// Shape Divider Effects
+// ScrollTrigger.matchMedia({
+//     "all": function() {
+//         ScrollTrigger.batch(".maxi-shape-divider", {
+//             start: "-150",
+//             onEnter: (batch) => gsap.to(batch, {
+//                 height: 0
+//             }),
+//             onLeave: (batch) => gsap.to(batch, {
+//                 height: batch[0].getAttribute('data-height')
+//             }),
+//             onEnterBack: (batch) => gsap.to(batch, {
+//                 height: 0
+//             }),
+//             onLeaveBack: (batch) => gsap.to(batch, {
+//                 height: batch[0].getAttribute('data-height')
+//             })
+//         });
+//     }
+// });
+
+// Motion Effects
 const motionElems = document.querySelectorAll(".maxi-motion-effect");
 motionElems.forEach(function(elem) {
 
 	const motionID = elem.getAttribute('data-motion-id');
 	const motionData = JSON.parse(elem.getAttribute('data-motion'));
+	const shapeDividerData = JSON.parse(elem.getAttribute('data-shape-divider'));
 
-	if( "vertical" in motionData ) {
+	const motionTimeLine = gsap.timeline({
+		scrollTrigger: {
+			trigger: ".maxi-motion-effect-"+ motionID +" > .maxi-shape-divider",
+			start: "-150",
+			scrub: 1,
+			//markers: true,
+			onEnter: self => {
+				self.trigger = elem;
+			},
+		}
+	});
+	if(("top" in shapeDividerData) && !!parseInt(shapeDividerData.top.effects.status)) {
+		motionTimeLine.to(".maxi-motion-effect-"+ motionID +" > .maxi-shape-divider.maxi-shape-divider__top", {
+			height: 0,
+			duration: 1,
+			ease: "power1.out"
+		});
+	}
+	if(("bottom" in shapeDividerData) && !!parseInt(shapeDividerData.bottom.effects.status)) {
+		motionTimeLine.to(".maxi-motion-effect-"+ motionID +" > .maxi-shape-divider.maxi-shape-divider__bottom", {
+			height: 0,
+			duration: 1,
+			ease: "power1.out"
+		});
+	}
+
+	if("vertical" in motionData) {
 
 		const maxSpeed = 10;
 		const currentSpeed = motionData.vertical.speed;
@@ -57,7 +84,7 @@ motionElems.forEach(function(elem) {
 					start: "top "+ viewportTop +"%",
 					end: "bottom "+ viewportBottom +"%",
 					scrub: 1,
-					markers: true,
+					//markers: true,
 					onEnter: self => {
 						self.trigger = elem;
 					},
@@ -73,7 +100,7 @@ motionElems.forEach(function(elem) {
 		}
 	}
 
-	if( "horizontal" in motionData ) {
+	if("horizontal" in motionData) {
 
 		const maxSpeed = 10;
 		const currentSpeed = motionData.horizontal.speed;
@@ -89,7 +116,7 @@ motionElems.forEach(function(elem) {
 					start: "top "+ viewportTop +"%",
 					end: "bottom "+ viewportBottom +"%",
 					scrub: 1,
-					markers: true,
+					//markers: true,
 					onEnter: self => {
 						self.trigger = elem;
 					},
@@ -105,7 +132,7 @@ motionElems.forEach(function(elem) {
 		}
 	}
 
-	if( "rotate" in motionData ) {
+	if("rotate" in motionData) {
 
 		const maxSpeed = 10;
 		const currentSpeed = motionData.rotate.speed;
@@ -121,7 +148,7 @@ motionElems.forEach(function(elem) {
 					start: "top "+ viewportTop +"%",
 					end: "bottom "+ viewportBottom +"%",
 					scrub: 1,
-					markers: true,
+					//markers: true,
 					onEnter: self => {
 						self.trigger = elem;
 					},
@@ -137,7 +164,7 @@ motionElems.forEach(function(elem) {
 		}
 	}
 
-	if( "scale" in motionData ) {
+	if("scale" in motionData) {
 
 		const currentSpeed = motionData.scale.speed;
 		const direction = motionData.scale.direction;
@@ -152,7 +179,7 @@ motionElems.forEach(function(elem) {
 					start: "top "+ viewportTop +"%",
 					end: "bottom "+ viewportBottom +"%",
 					scrub: 1,
-					markers: true,
+					//markers: true,
 					onEnter: self => {
 						self.trigger = elem;
 					},
@@ -166,7 +193,7 @@ motionElems.forEach(function(elem) {
 		}
 	}
 
-	if( "fade" in motionData ) {
+	if("fade" in motionData) {
 
 		const currentSpeed = motionData.fade.speed;
 		const direction = motionData.fade.direction;
@@ -181,7 +208,7 @@ motionElems.forEach(function(elem) {
 					start: "top "+ viewportTop +"%",
 					end: "bottom "+ viewportBottom +"%",
 					scrub: 1,
-					markers: true,
+					//markers: true,
 					onEnter: self => {
 						self.trigger = elem;
 					},
@@ -203,7 +230,7 @@ motionElems.forEach(function(elem) {
 		}
 	}
 
-	if( "blur" in motionData ) {
+	if("blur" in motionData) {
 
 		const currentSpeed = motionData.blur.speed;
 		const direction = motionData.blur.direction;
@@ -218,7 +245,7 @@ motionElems.forEach(function(elem) {
 					start: "top "+ viewportTop +"%",
 					end: "bottom "+ viewportBottom +"%",
 					scrub: 1,
-					markers: true,
+					//markers: true,
 					onEnter: self => {
 						self.trigger = elem;
 					},

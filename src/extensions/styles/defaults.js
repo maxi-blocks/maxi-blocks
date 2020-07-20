@@ -1046,6 +1046,9 @@ export const __experimentalShapeDivider = {
             "gradient": "",
             "defaultGradient": "",
             "gradientAboveBackground": false
+        },
+        "effects": {
+            "status": 0
         }
     },
     "bottom": {
@@ -1059,6 +1062,9 @@ export const __experimentalShapeDivider = {
             "gradient": "",
             "defaultGradient": "",
             "gradientAboveBackground": false
+        },
+        "effects": {
+            "status": 0
         }
     }
 }

@@ -32,7 +32,8 @@ import {
     __experimentalResponsiveControl,
     __experimentalNumberControl,
     __experimentalOpacityControl,
-    __experimentalAxisControl
+    __experimentalAxisControl,
+    __experimentalPositionControl
 } from '../../components';
 
 /**
@@ -87,7 +88,8 @@ const Inspector = props => {
             hoverAnimationTypeColor,
             hoverAnimationTypeOpacityColor,
             onChangeHoverAnimationTypeOpacityColor,
-            hoverAnimationTypeOpacityColorBackground
+            hoverAnimationTypeOpacityColorBackground,
+            position
         },
         setAttributes,
     } = props;
@@ -116,7 +118,6 @@ const Inspector = props => {
         { label: __('Yes', 'maxi-blocks'), value: 'yes' },
         { label: __('No', 'maxi-blocks'), value: 'no' },
     ]
-
 
     return (
         <InspectorControls>
@@ -513,6 +514,11 @@ const Inspector = props => {
                                         breakpoint={deviceType}
                                     />
                                 }
+                                <__experimentalPositionControl 
+                                    position={position}
+                                    onChange={position => setAttributes({ position })}
+                                    breakpoint={deviceType}
+                                />
                             </div>
                         )
                     }

@@ -57,7 +57,8 @@ class edit extends MaxiBlock {
             size,
             padding,
             margin,
-            zIndex
+            zIndex,
+            position
         } = this.props.attributes;
 
         const response = {
@@ -68,6 +69,8 @@ class edit extends MaxiBlock {
             margin: { ...JSON.parse(margin) },
             opacity: { ...JSON.parse(opacity) },
             zindex: { ...JSON.parse(zIndex) },
+            position: { ...JSON.parse(position) },
+            positionOptions: { ...JSON.parse(position).options },
             divider: {
                 label: 'Divider',
                 general: {}

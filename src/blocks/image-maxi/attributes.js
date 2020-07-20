@@ -171,8 +171,11 @@ const attributes = {
     hoverAnimationTypeColor: {
         type: 'string',
         default: '#000'
+    },
+    position: {
+        type: 'string',
+        default: JSON.stringify(attributesData.__experimentalPosition)
     }
-
 }
 
 export default attributes;

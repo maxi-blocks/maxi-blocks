@@ -27,6 +27,7 @@ import {
     __experimentalZIndexControl,
     __experimentalAxisControl,
     __experimentalResponsiveControl,
+    __experimentalPositionControl
 } from '../../components';
 
 /**
@@ -85,7 +86,8 @@ const Inspector = props => {
             hoverAnimationTypeColor,
             hoverAnimationTypeOpacityColor,
             onChangeHoverAnimationTypeOpacityColor,
-            hoverAnimationTypeOpacityColorBackground
+            hoverAnimationTypeOpacityColorBackground,
+            position
         },
         clientId,
         setAttributes,
@@ -284,6 +286,11 @@ const Inspector = props => {
                                         breakpoint={deviceType}
                                     />
                                 }
+                                <__experimentalPositionControl
+                                    position={position}
+                                    onChange={position => setAttributes({ position })}
+                                    breakpoint={deviceType}
+                                />
                             </div>
                         )
                     }

@@ -144,6 +144,10 @@ const attributes = {
         type: 'string',
         default: JSON.stringify(attributesData.background)
     },
+    position: {
+        type: 'string',
+        default: JSON.stringify(attributesData.__experimentalPosition)
+    }
 }
 
 export default attributes;

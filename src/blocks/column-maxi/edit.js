@@ -90,7 +90,8 @@ class edit extends MaxiBlock {
                 size,
                 margin,
                 padding,
-                zIndex
+                zIndex,
+                position
             },
         } = this.props;
 
@@ -106,6 +107,8 @@ class edit extends MaxiBlock {
             opacity: { ...getOpacityObject(JSON.parse(opacity)) },
             zindex: { ...JSON.parse(zIndex) },
             columnSize: { ...getColumnSizeObject(JSON.parse(columnSize)) },
+            position: { ...JSON.parse(position) },
+            positionOptions: { ...JSON.parse(position).options },
             column: {
                 label: "Column",
                 general: {},

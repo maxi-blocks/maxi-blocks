@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
+const { Fragment } = wp.element;
 const {
     SelectControl,
     Icon,
@@ -44,7 +45,8 @@ const BorderControl = props => {
         border,
         className,
         onChange,
-        breakpoint = 'general'
+        breakpoint = 'general',
+        disableAdvanced = false
     } = props;
 
     let value = !isObject(border) ?
@@ -123,44 +125,49 @@ const BorderControl = props => {
                 disableGradient
                 disableGradientAboveBackground
             />
-            <SelectControl
-                label={__('Border Type', 'maxi-blocks')}
-                className='maxi-border-control__type'
-                value={value[breakpoint]['border-style']}
-                options={[
-                    { label: 'None', value: 'none' },
-                    { label: 'Dotted', value: 'dotted' },
-                    { label: 'Dashed', value: 'dashed' },
-                    { label: 'Solid', value: 'solid' },
-                    { label: 'Double', value: 'double' },
-                    { label: 'Groove', value: 'groove' },
-                    { label: 'Ridge', value: 'ridge' },
-                    { label: 'Inset', value: 'inset' },
-                    { label: 'Outset', value: 'outset' },
-                ]}
-                onChange={val => {
-                    value[breakpoint]['border-style'] = val;
-                    onChange(JSON.stringify(value));
-                }}
-            />
-            <__experimentalAxisControl
-                values={value.borderWidth}
-                onChange={val => {
-                    console.log('axiscontrol', val)
-                    value.borderWidth = JSON.parse(val);
-                    onChange(JSON.stringify(value));
-                }}
-                breakpoint={breakpoint}
-            />
-            <__experimentalAxisControl
-                values={value.borderRadius}
-                onChange={val => {
-                    console.log('axiscontrol', val)
-                    value.borderRadius = JSON.parse(val);
-                    onChange(JSON.stringify(value));
-                }}
-                breakpoint={breakpoint}
-            />
+            {
+                !disableAdvanced &&
+                <Fragment>
+                    <SelectControl
+                        label={__('Border Type', 'maxi-blocks')}
+                        className='maxi-border-control__type'
+                        value={value[breakpoint]['border-style']}
+                        options={[
+                            { label: 'None', value: 'none' },
+                            { label: 'Dotted', value: 'dotted' },
+                            { label: 'Dashed', value: 'dashed' },
+                            { label: 'Solid', value: 'solid' },
+                            { label: 'Double', value: 'double' },
+                            { label: 'Groove', value: 'groove' },
+                            { label: 'Ridge', value: 'ridge' },
+                            { label: 'Inset', value: 'inset' },
+                            { label: 'Outset', value: 'outset' },
+                        ]}
+                        onChange={val => {
+                            value[breakpoint]['border-style'] = val;
+                            onChange(JSON.stringify(value));
+                        }}
+                    />
+                    <__experimentalAxisControl
+                        values={value.borderWidth}
+                        onChange={val => {
+                            console.log('axiscontrol', val)
+                            value.borderWidth = JSON.parse(val);
+                            onChange(JSON.stringify(value));
+                        }}
+                        breakpoint={breakpoint}
+                    />
+                    <__experimentalAxisControl
+                        values={value.borderRadius}
+                        onChange={val => {
+                            console.log('axiscontrol', val)
+                            value.borderRadius = JSON.parse(val);
+                            onChange(JSON.stringify(value));
+                        }}
+                        breakpoint={breakpoint}
+                    />
+                </Fragment>
+            }
         </div>
     )
 }

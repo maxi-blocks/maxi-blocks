@@ -16,13 +16,16 @@ import {
     __experimentalVideoPlayer,
     __experimentalToolbar,
     __experimentalBreadcrumbs,
-    __experimentalBlockPlaceholder
+    __experimentalBlockPlaceholder,
+    __experimentalShapeDivider
 } from '../../components';
 import Inspector from './inspector';
 import {
     getBackgroundObject,
     getBoxShadowObject,
-    getVideoBackgroundObject
+    getVideoBackgroundObject,
+    getShapeDividerObject,
+    getShapeDividerSVGObject,
 } from '../../extensions/styles/utils'
 
 /**
@@ -35,19 +38,61 @@ import {
 } from 'lodash';
 
 /**
+ * InnerBlocks version
+ */
+const ContainerInnerBlocks = props => {
+    const {
+        children,
+        shapeDivider,
+        className,
+        dataAlign,
+        maxiBlockClass
+    } = props;
+    console.log(props)
+
+    return (
+        <__experimentalBlock
+            className={className}
+            data-align={dataAlign}
+            data-gx_initial_block_class={maxiBlockClass}
+        >
+            <__experimentalShapeDivider
+                shapeDividerOptions={shapeDivider}
+            />
+            <div
+                className='maxi-container-block__wrapper'
+            >
+                {children}
+            </div>
+            <__experimentalShapeDivider
+                position='bottom'
+                shapeDividerOptions={shapeDivider}
+            />
+        </__experimentalBlock>
+    )
+}
+
+/**
  * Edit
  */
 class edit extends MaxiBlock {
     get getObject() {
+
         let response = {
             [this.props.attributes.uniqueID]: this.getNormalObject,
             [`${this.props.attributes.uniqueID}:hover`]: this.getHoverObject,
-            [`${this.props.attributes.uniqueID}>.maxi-container-block__container`]: this.getContainerObject,
+            [`${this.props.attributes.uniqueID}>.maxi-container-block__wrapper`]: this.getWrapperObject,
+            [`${this.props.attributes.uniqueID}>.maxi-container-block__wrapper>.maxi-container-block__container`]: this.getContainerObject,
             [`${this.props.attributes.uniqueID} .maxi-block-text-hover .maxi-block-text-hover__content`]: this.getHoverAnimationTextContentObject,
             [`${this.props.attributes.uniqueID} .maxi-block-text-hover .maxi-block-text-hover__title`]: this.getHoverAnimationTextTitleObject,
             [`${this.props.attributes.uniqueID} .maxi-block-text-hover`]: this.getHoverAnimationMainObject,
             [`${this.props.attributes.uniqueID}.hover-animation-basic.hover-animation-type-opacity:hover .hover_el`]: this.getHoverAnimationTypeOpacityObject,
             [`${this.props.attributes.uniqueID}.hover-animation-basic.hover-animation-type-opacity-with-colour:hover .hover_el:before`]: this.getHoverAnimationTypeOpacityColorObject,
+            [`${this.props.attributes.uniqueID} .maxi-video-player video`]: { videoBackground: { ...getVideoBackgroundObject(JSON.parse(this.props.attributes.background).videoOptions) } },
+            [`${this.props.attributes.uniqueID} .maxi-shape-divider__top`]: { shapeDivider: { ...getShapeDividerObject(JSON.parse(this.props.attributes.shapeDivider).top) } },
+            [`${this.props.attributes.uniqueID} .maxi-shape-divider__top svg`]: { shapeDivider: { ...getShapeDividerSVGObject(JSON.parse(this.props.attributes.shapeDivider).top) } },
+            [`${this.props.attributes.uniqueID} .maxi-shape-divider__bottom`]: { shapeDivider: { ...getShapeDividerObject(JSON.parse(this.props.attributes.shapeDivider).bottom) } },
+            [`${this.props.attributes.uniqueID} .maxi-shape-divider__bottom svg`]: { shapeDivider: { ...getShapeDividerSVGObject(JSON.parse(this.props.attributes.shapeDivider).bottom) } },
         }
 
         const videoOptions = JSON.parse(this.props.attributes.background).videoOptions;
@@ -67,25 +112,23 @@ class edit extends MaxiBlock {
         const {
             size,
             opacity,
-            background,
             border,
             boxShadow,
-            margin,
-            padding,
             zIndex
         } = this.props.attributes;
 
         const response = {
             size: { ...JSON.parse(size) },
-            background: { ...getBackgroundObject(JSON.parse(background)) },
             border: { ...JSON.parse(border) },
             boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
             borderWidth: { ...JSON.parse(border).borderWidth },
             borderRadius: { ...JSON.parse(border).borderRadius },
-            margin: { ...JSON.parse(margin) },
-            padding: { ...JSON.parse(padding) },
             opacity: { ...JSON.parse(opacity) },
             zindex: { ...JSON.parse(zIndex) },
+            container: {
+                label: 'Container',
+                general: {},
+            }
         };
 
         return response;
@@ -106,6 +149,22 @@ class edit extends MaxiBlock {
             borderWidthHover: { ...JSON.parse(borderHover).borderWidth },
             borderRadiusHover: { ...JSON.parse(borderHover).borderRadius },
             opacityHover: { ...JSON.parse(opacityHover) }
+        };
+
+        return response;
+    }
+
+    get getWrapperObject() {
+        const {
+            background,
+            margin,
+            padding,
+        } = this.props.attributes;
+
+        const response = {
+            background: { ...getBackgroundObject(JSON.parse(background)) },
+            margin: { ...JSON.parse(margin) },
+            padding: { ...JSON.parse(padding) },
         };
 
         return response;
@@ -226,21 +285,22 @@ class edit extends MaxiBlock {
                 hoverAnimationType,
                 hoverAnimationTypeText,
                 hoverAnimationDuration,
+                shapeDivider,
             },
             className,
             clientId,
             hasInnerBlock,
         } = this.props;
 
-        let classes = classnames(
+        const classes = classnames(
             'maxi-block maxi-container-block',
             uniqueID,
             blockStyle,
             extraClassName,
-            'hover-animation-'+hoverAnimation,
-            'hover-animation-type-'+hoverAnimationType,
-            'hover-animation-type-text-'+hoverAnimationTypeText,
-            'hover-animation-duration-'+hoverAnimationDuration,
+            'hover-animation-' + hoverAnimation,
+            'hover-animation-type-' + hoverAnimationType,
+            'hover-animation-type-text-' + hoverAnimationTypeText,
+            'hover-animation-duration-' + hoverAnimationDuration,
             className
         );
 
@@ -256,38 +316,50 @@ class edit extends MaxiBlock {
                         data-align={fullWidth}
                         data-maxi_initial_block_class={defaultBlockStyle}
                     >
-                        <InnerBlocks
-                            templateLock={false}
-                            __experimentalTagName='div'
-                            __experimentalPassedProps={{
-                                className: 'maxi-container-block__container',
-                            }}
-                            renderAppender={
-                                !hasInnerBlock ?
-                                    () => (
-                                        <__experimentalBlockPlaceholder
-                                            clientId={clientId}
-                                        />
-                                    ) :
-                                    true ?
-                                        () => (
-                                            <InnerBlocks.ButtonBlockAppender />
-                                        ) :
-                                        false
-                            }
+                        <__experimentalShapeDivider
+                            shapeDividerOptions={shapeDivider}
                         />
+                        <div
+                            className='maxi-container-block__wrapper'
+                        >
+                            <InnerBlocks
+                                templateLock={false}
+                                __experimentalTagName='div'
+                                __experimentalPassedProps={{
+                                    className: 'maxi-container-block__container',
+                                }}
+                                renderAppender={
+                                    !hasInnerBlock ?
+                                        () => (
+                                            <__experimentalBlockPlaceholder
+                                                clientId={clientId}
+                                            />
+                                        ) :
+                                        true ?
+                                            () => (
+                                                <InnerBlocks.ButtonBlockAppender />
+                                            ) :
+                                            false
+                                }
+                            />
+                        </div>
                         <__experimentalVideoPlayer videoOptions={background} />
+                        <__experimentalShapeDivider
+                            position='bottom'
+                            shapeDividerOptions={shapeDivider}
+                        />
                     </__experimentalBlock.section>
                 }
                 {
                     (!isFirstOnHierarchy || !fullWidth) &&
                     <InnerBlocks
                         templateLock={false}
-                        __experimentalTagName={__experimentalBlock}
+                        __experimentalTagName={ContainerInnerBlocks}
                         __experimentalPassedProps={{
                             className: classes,
-                            ['data-align']: fullWidth,
-                            ['data-maxi_initial_block_class']: defaultBlockStyle
+                            dataAlign: fullWidth,
+                            maxiBlockClass: defaultBlockStyle,
+                            shapeDivider: shapeDivider,
                         }}
                         renderAppender={
                             !hasInnerBlock ?

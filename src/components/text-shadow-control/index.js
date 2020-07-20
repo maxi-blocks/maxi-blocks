@@ -24,7 +24,8 @@ import DefaultStylesControl from '../default-styles-control';
 import classnames from 'classnames';
 import {
     isNil,
-    isEmpty
+    isEmpty,
+    trim
 } from 'lodash';
 
 /**
@@ -122,7 +123,7 @@ const TextShadow = props => {
             />
             <RangeControl
                 label={__('X-axis', 'maxi-blocks')}
-                value={x}
+                value={trim(x)}
                 onChange={val => onChangeValue(0, val)}
                 min={0}
                 max={100}
@@ -130,7 +131,7 @@ const TextShadow = props => {
             />
             <RangeControl
                 label={__('Y-axis', 'maxi-blocks')}
-                value={y}
+                value={trim(y)}
                 onChange={val => onChangeValue(1, val)}
                 min={0}
                 max={100}
@@ -138,7 +139,7 @@ const TextShadow = props => {
             />
             <RangeControl
                 label={__('Blur', 'maxi-blocks')}
-                value={blur}
+                value={trim(blur)}
                 onChange={val => onChangeValue(2, val)}
                 min={0}
                 max={100}

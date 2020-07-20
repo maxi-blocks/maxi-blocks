@@ -20,6 +20,22 @@ const attributes = {
         type: 'string',
         default: 'p'
     },
+    isList: {
+        type: 'boolean',
+        default: false
+    },
+    typeOfList: {
+        type: 'string',
+        default: 'ul'
+    },
+    listStart: {
+        type: 'number',
+        default: 1
+    },
+    listReversed: {
+        type: 'number',
+        default: 0
+    },
     typography: {
         type: 'string',
         default: JSON.stringify(attributesData.typography)
@@ -151,6 +167,10 @@ const attributes = {
     hoverCustomTextTitle: {
         type: 'string',
         default: 'no'
+    },
+    hoverOpacity: {
+        type: 'string',
+        default: JSON.stringify(attributesData.opacityHover)
     },
     hoverBorder: {
         type: 'string',

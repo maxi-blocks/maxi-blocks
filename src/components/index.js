@@ -13,9 +13,7 @@ export { default as BlockStylesControl } from './block-styles-control';
 export { default as BoxShadowControl } from './box-shadow-control';
 export { default as CheckBoxControl } from './checkbox-control';
 export { default as ColorControl } from './color-control';
-export { default as CustomCSSControl } from './custom-css-control';
 export { default as DefaultStylesControl } from './default-styles-control';
-export { default as DimensionsControl } from './dimensions-control';
 export { default as FontFamilySelector } from './font-family-selector';
 export { default as FontLevelControl } from './font-level-control';
 export { default as HoverAnimationControl } from './hover-animation-control';
@@ -39,3 +37,5 @@ export { default as __experimentalResponsiveControl } from './responsive-control
 export { default as __experimentalOpacityControl } from './opacity-control';
 export { default as __experimentalAxisControl } from './axis-control';
 export { default as __experimentalMarginPaddingControl } from './margin-padding-control';
+export { default as __experimentalShapeDividerControl } from './shape-divider-control';
+export { default as __experimentalShapeDivider } from './shape-divider';

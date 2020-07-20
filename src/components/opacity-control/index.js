@@ -18,7 +18,7 @@ const OpacityControl = props => {
         opacity,
         className,
         onChange,
-        breakpoint
+        breakpoint = 'general'
     } = props;
 
     const value = !isObject(opacity) ?

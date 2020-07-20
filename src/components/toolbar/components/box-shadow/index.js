@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies
+ */
+const { __ } = wp.i18n;
+
+/**
  * Internal dependencies
  */
 import BoxShadowControl from '../../../box-shadow-control';
@@ -35,12 +40,15 @@ const BoxShadow = props => {
     return (
         <ToolbarPopover
             className='toolbar-item__box-shadow'
+            tooltip={__('Drop shadow', 'maxi-blocks')}
             icon={toolbarDropShadow}
+            advancedOptions='box shadow'
             content={(
                 <BoxShadowControl
                     boxShadow={boxShadow}
                     onChange={boxShadow => onChange(boxShadow)}
                     breakpoint={breakpoint}
+                    disableAdvanced
                 />
             )}
         />

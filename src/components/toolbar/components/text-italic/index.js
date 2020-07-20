@@ -1,11 +1,12 @@
 /**
  * WordPress dependencies
  */
-const { Fragment } = wp.element;
+const { __ } = wp.i18n;
 const { useSelect } = wp.data;
 const {
     Icon,
     Button,
+    Tooltip
 } = wp.components;
 const {
     toggleFormat,
@@ -113,7 +114,10 @@ const TextItalic = props => {
     }
 
     return (
-        <Fragment>
+        <Tooltip
+            text={__('Italic', 'maxi-blocks')}
+            position='bottom center'
+        >
             <Button
                 className='toolbar-item toolbar-item__italic'
                 onClick={onClick}
@@ -124,7 +128,7 @@ const TextItalic = props => {
                     icon={toolbarItalic}
                 />
             </Button>
-        </Fragment>
+        </Tooltip>
     )
 }
 

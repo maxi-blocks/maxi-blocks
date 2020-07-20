@@ -40,6 +40,7 @@ const save = props => {
 
     let classes = classnames(
         'maxi-block maxi-text-block',
+        'maxi-text-block-wrap',
         blockStyle,
         extraClassName,
         uniqueID,
@@ -58,11 +59,11 @@ const save = props => {
 
     return (
         <Fragment>
-            <div className='maxi-text-block-wrap'>
+            <div className={classes}>
                 <RichText.Content
                     value={content}
                     tagName={isList ? typeOfList : textLevel}
-                    className={classes}
+                    // className={classes}
                     data-gx_initial_block_class={defaultBlockStyle}
                 />
                 {

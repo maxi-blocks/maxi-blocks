@@ -114,7 +114,8 @@ class edit extends MaxiBlock {
             opacity,
             border,
             boxShadow,
-            zIndex
+            zIndex,
+            position
         } = this.props.attributes;
 
         const response = {
@@ -125,6 +126,8 @@ class edit extends MaxiBlock {
             borderRadius: { ...JSON.parse(border).borderRadius },
             opacity: { ...JSON.parse(opacity) },
             zindex: { ...JSON.parse(zIndex) },
+            position: { ...JSON.parse(position) },
+            positionOptions: { ...JSON.parse(position).options },
             container: {
                 label: 'Container',
                 general: {},

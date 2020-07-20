@@ -1093,3 +1093,76 @@ export const __experimentalShapeDivider = {
         }
     }
 }
+
+export const __experimentalPosition = {
+    "label": "Position",
+    "general": {
+        "position": ""
+    },
+    "xl": {
+        "position": ""
+    },
+    "l": {
+        "position": ""
+    },
+    "m": {
+        "position": ""
+    },
+    "s": {
+        "position": ""
+    },
+    "xs": {
+        "position": ""
+    },
+    "options": {
+        "label": "Position options",
+        "general": {
+                "top": "",
+                "right": "",
+                "bottom": "",
+                "left": "",
+                "sync": false,
+                "unit": "px"
+        },
+        "xl": {
+                "top": "",
+                "right": "",
+                "bottom": "",
+                "left": "",
+                "sync": false,
+                "unit": ""
+        },
+        "l": {
+                "top": "",
+                "right": "",
+                "bottom": "",
+                "left": "",
+                "sync": false,
+                "unit": ""
+        },
+        "m": {
+                "top": "",
+                "right": "",
+                "bottom": "",
+                "left": "",
+                "sync": false,
+                "unit": ""
+        },
+        "s": {
+                "top": "",
+                "right": "",
+                "bottom": "",
+                "left": "",
+                "sync": false,
+                "unit": ""
+        },
+        "xs": {
+                "top": "",
+                "right": "",
+                "bottom": "",
+                "left": "",
+                "sync": false,
+                "unit": ""
+        }
+    }
+}

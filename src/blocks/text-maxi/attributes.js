@@ -90,7 +90,7 @@ const attributes = {
     },
     hoverPadding: {
         type: 'string',
-        default: JSON.stringify(attributesData.padding)
+        default: JSON.stringify(attributesData.padding) 
     },
     typographyHover: {
         type: 'string',
@@ -186,6 +186,10 @@ const attributes = {
         type: 'string',
         default: JSON.stringify(attributesData.background)
     },
+    position: {
+        type: 'string',
+        default: JSON.stringify(attributesData.__experimentalPosition)
+    }
 }
 
 

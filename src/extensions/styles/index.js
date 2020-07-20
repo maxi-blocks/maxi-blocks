@@ -158,47 +158,47 @@ export class BackEndResponsiveStyles {
                         continue;
 
                     if (breakpoint === 'general') {
-                        response += `.${target}{`;
+                        response += `body.maxi-blocks--active .${target}{`;
                         response += this.getResponsiveStyles(content);
                         response += '}';
                     }
                     if (breakpoint === 'xl') {
                         response += `
-                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xl"] .${target},
-                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="l"] .${target},
-                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="m"] .${target},
-                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .${target},
-                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .${target}{`;
+                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xl"] .${target},
+                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="l"] .${target},
+                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="m"] .${target},
+                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .${target},
+                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .${target}{`;
                         response += this.getResponsiveStyles(content);
                         response += '}';
                     }
                     if (breakpoint === 'l') {
                         response += `
-                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="l"] .${target},
-                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="m"] .${target},
-                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .${target},
-                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .${target}{`;
+                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="l"] .${target},
+                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="m"] .${target},
+                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .${target},
+                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .${target}{`;
                         response += this.getResponsiveStyles(content);
                         response += '}';
                     }
                     if (breakpoint === 'm') {
                         response += `
-                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="m"] .${target},
-                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .${target},
-                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .${target}{`;
+                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="m"] .${target},
+                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .${target},
+                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .${target}{`;
                         response += this.getResponsiveStyles(content);
                         response += '}';
                     }
                     if (breakpoint === 's') {
                         response += `
-                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .${target},
-                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .${target}{`;
+                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .${target},
+                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .${target}{`;
                         response += this.getResponsiveStyles(content);
                         response += '}';
                     }
                     if (breakpoint === 'xs') {
                         response += `
-                            .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .${target}{`;
+                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .${target}{`;
                         response += this.getResponsiveStyles(content);
                         response += '}';
                     }

@@ -392,9 +392,9 @@ class GXCustomizer
         // we need to print block styles for each of them, they should be with different names
         // f.e. h1DarkElegance
 
-        echo '<pre>';
-        print_r($style);
-        echo '</pre>';
+        // echo '<pre>';
+        // print_r($style);
+        // echo '</pre>';
 
         $headingSections = ['pDark', 'pLight', 'h1Dark', 'h1Light', 'h2Dark', 'h2Light', 'h3Dark', 'h3Light', 'h4Dark', 'h4Light', 'h5Dark', 'h5Light', 'h6Dark', 'h6Light'];
         $headingSections = SplFixedArray::fromArray($headingSections);

@@ -168,7 +168,6 @@ motionElems.forEach(function(elem) {
 
 	if( "fade" in motionData ) {
 
-		const maxSpeed = 10;
 		const currentSpeed = motionData.fade.speed;
 		const direction = motionData.fade.direction;
 		const status = motionData.fade.status;
@@ -197,6 +196,43 @@ motionElems.forEach(function(elem) {
 			} else {
 				motionTimeLine.from(".maxi-motion-effect-"+ motionID +"", {
 					opacity: (10 - currentSpeed) / 10,
+					duration: 1,
+					ease: "power1.out"
+				});
+			}
+		}
+	}
+
+	if( "blur" in motionData ) {
+
+		const currentSpeed = motionData.blur.speed;
+		const direction = motionData.blur.direction;
+		const status = motionData.blur.status;
+		const viewportTop = motionData.blur.viewportTop;
+		const viewportBottom = motionData.blur.viewportBottom;
+
+		if(!!parseInt(status)) {
+			const motionTimeLine = gsap.timeline({
+				scrollTrigger: {
+					trigger: ".maxi-motion-effect-"+ motionID +"",
+					start: "top "+ viewportTop +"%",
+					end: "bottom "+ viewportBottom +"%",
+					scrub: 1,
+					markers: true,
+					onEnter: self => {
+						self.trigger = elem;
+					},
+				}
+			});
+			if((direction === 'in')) {
+				motionTimeLine.to(".maxi-motion-effect-"+ motionID +"", {
+					filter: "-webkit-filter-blur("+ currentSpeed +"px); blur("+ currentSpeed +"px)",
+					duration: 1,
+					ease: "power1.out"
+				});
+			} else {
+				motionTimeLine.from(".maxi-motion-effect-"+ motionID +"", {
+					filter: "blur("+ currentSpeed +"px)",
 					duration: 1,
 					ease: "power1.out"
 				});

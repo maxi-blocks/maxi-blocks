@@ -1166,3 +1166,25 @@ export const __experimentalPosition = {
         }
     }
 }
+
+export const __experimentalDisplay = {
+    "label": "Display block",
+    "general": {
+        "display": ""
+    },
+    "xl": {
+        "display": ""
+    },
+    "l": {
+        "display": ""
+    },
+    "m": {
+        "display": ""
+    },
+    "s": {
+        "display": ""
+    },
+    "xs": {
+        "display": ""
+    }
+}

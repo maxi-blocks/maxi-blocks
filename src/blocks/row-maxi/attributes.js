@@ -147,6 +147,10 @@ const attributes = {
     position: {
         type: 'string',
         default: JSON.stringify(attributesData.__experimentalPosition)
+    },
+    display: {
+        type: 'string',
+        default: JSON.stringify(attributesData.__experimentalDisplay)
     }
 }
 

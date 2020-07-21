@@ -32,7 +32,8 @@ import {
     __experimentalResponsiveControl,
     __experimentalOpacityControl,
     __experimentalShapeDividerControl,
-    __experimentalPositionControl
+    __experimentalPositionControl,
+    __experimentalDisplayControl
 } from '../../components';
 
 /**
@@ -87,7 +88,8 @@ const Inspector = props => {
             onChangeHoverAnimationTypeOpacityColor,
             hoverAnimationTypeOpacityColorBackground,
             shapeDivider,
-            position
+            position,
+            display
         },
         deviceType,
         setAttributes,
@@ -430,6 +432,11 @@ const Inspector = props => {
                                     <__experimentalPositionControl
                                         position={position}
                                         onChange={position => setAttributes({ position })}
+                                        breakpoint={deviceType}
+                                    />
+                                    <__experimentalDisplayControl
+                                        display={display}
+                                        onChange={display => setAttributes({ display })}
                                         breakpoint={deviceType}
                                     />
                                 </div>

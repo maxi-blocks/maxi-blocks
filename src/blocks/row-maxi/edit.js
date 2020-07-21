@@ -77,7 +77,8 @@ class edit extends MaxiBlock {
             margin,
             padding,
             zIndex,
-            position
+            position,
+            display
         } = this.props.attributes;
 
         let response = {
@@ -93,6 +94,7 @@ class edit extends MaxiBlock {
             zindex: { ...JSON.parse(zIndex) },
             position: { ...JSON.parse(position) },
             positionOptions: { ...JSON.parse(position).options },
+            display: { ...JSON.parse(display) },
             row: {
                 label: "Row",
                 general: {},

@@ -90,7 +90,9 @@ class edit extends MaxiBlock {
                 size,
                 margin,
                 padding,
-                zIndex
+                zIndex,
+                position,
+                display
             },
         } = this.props;
 
@@ -106,6 +108,9 @@ class edit extends MaxiBlock {
             opacity: { ...getOpacityObject(JSON.parse(opacity)) },
             zindex: { ...JSON.parse(zIndex) },
             columnSize: { ...getColumnSizeObject(JSON.parse(columnSize)) },
+            position: { ...JSON.parse(position) },
+            positionOptions: { ...JSON.parse(position).options },
+            display: { ...JSON.parse(display) },
             column: {
                 label: "Column",
                 general: {},
@@ -139,10 +144,14 @@ class edit extends MaxiBlock {
     }
 
     get getResizerObject() {
-        const { margin } = this.props.attributes;
+        const { 
+            margin,
+            display
+        } = this.props.attributes;
 
         let response = {
             margin: { ...JSON.parse(margin) },
+            display: { ...JSON.parse(display) }
         };
 
         return response;

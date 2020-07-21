@@ -39,11 +39,13 @@ const save = props => {
             hoverAnimationCustomBorder,
             hoverPadding,
             shapeDivider,
+            motion,
         },
         className,
     } = props;
 
     let classes = classnames(
+        `maxi-motion-effect maxi-motion-effect-${uniqueID}`,
         'maxi-block maxi-container-block',
         blockStyle,
         extraClassName,
@@ -66,7 +68,10 @@ const save = props => {
                 isFirstOnHierarchy &&
                 <section
                     className={classes}
-                    data-maxi_initial_block_class={defaultBlockStyle}
+                    data-gx_initial_block_class={defaultBlockStyle}
+                    data-motion={motion}
+                    data-shape-divider={shapeDivider}
+                    data-motion-id={uniqueID}
                 >
                     <__experimentalShapeDivider
                         shapeDividerOptions={shapeDivider}
@@ -90,7 +95,7 @@ const save = props => {
                 !isFirstOnHierarchy &&
                 <div
                     className={classes}
-                    data-maxi_initial_block_class={defaultBlockStyle}
+                    data-gx_initial_block_class={defaultBlockStyle}
                 >
                     <__experimentalShapeDivider
                         shapeDividerOptions={shapeDivider}

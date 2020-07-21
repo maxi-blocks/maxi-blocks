@@ -39,7 +39,7 @@ const AxisControl = props => {
         values,
         className,
         onChange,
-        breakpoint,
+        breakpoint = 'general',
         disableAuto = false
     } = props;
 
@@ -196,7 +196,7 @@ const AxisControl = props => {
                                 'auto' :
                                 ''
                         }
-                        value={!!Number(getValue(2)) ? getValue(2) : ''}
+                        value={!!Number(getValue(1)) ? getValue(1) : ''}
                         onChange={e => onChangeValue(e.target.value, 1)}
                         aria-label={sprintf(
                             __('%s Right', 'maxi-blocks'),
@@ -212,7 +212,7 @@ const AxisControl = props => {
                             for={`${instanceId}-right`}>
                             <input
                                 type="checkbox"
-                                checked={getValue(2) === 'auto'}
+                                checked={getValue(1) === 'auto'}
                                 onChange={e => {
                                     const newValue = e.target.checked ? 'auto' : '';
                                     onChangeValue(newValue, 1)

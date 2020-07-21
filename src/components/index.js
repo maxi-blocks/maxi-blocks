@@ -35,3 +35,6 @@ export { default as __experimentalOpacityControl } from './opacity-control';
 export { default as __experimentalAxisControl } from './axis-control';
 export { default as __experimentalShapeDividerControl } from './shape-divider-control';
 export { default as __experimentalShapeDivider } from './shape-divider';
+export { default as __experimentalPositionControl } from './position-control';
+export { default as __experimentalDisplayControl } from './display-control';
+export { default as __experimentalMotionControl } from './motion-control';

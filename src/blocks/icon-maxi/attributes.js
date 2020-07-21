@@ -119,6 +119,10 @@ const attributes = {
     resizableHeight: {
         type: 'number',
         default: 100
+    },
+    position: {
+        type: 'string',
+        default: JSON.stringify(attributesData.__experimentalPosition)
     }
 }
 

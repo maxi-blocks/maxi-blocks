@@ -1077,6 +1077,9 @@ export const __experimentalShapeDivider = {
             "gradient": "",
             "defaultGradient": "",
             "gradientAboveBackground": false
+        },
+        "effects": {
+            "status": 0
         }
     },
     "bottom": {
@@ -1090,6 +1093,150 @@ export const __experimentalShapeDivider = {
             "gradient": "",
             "defaultGradient": "",
             "gradientAboveBackground": false
+        },
+        "effects": {
+            "status": 0
         }
     }
+}
+
+export const __experimentalPosition = {
+    "label": "Position",
+    "general": {
+        "position": ""
+    },
+    "xl": {
+        "position": ""
+    },
+    "l": {
+        "position": ""
+    },
+    "m": {
+        "position": ""
+    },
+    "s": {
+        "position": ""
+    },
+    "xs": {
+        "position": ""
+    },
+    "options": {
+        "label": "Position options",
+        "general": {
+                "top": "",
+                "right": "",
+                "bottom": "",
+                "left": "",
+                "sync": false,
+                "unit": "px"
+        },
+        "xl": {
+                "top": "",
+                "right": "",
+                "bottom": "",
+                "left": "",
+                "sync": false,
+                "unit": ""
+        },
+        "l": {
+                "top": "",
+                "right": "",
+                "bottom": "",
+                "left": "",
+                "sync": false,
+                "unit": ""
+        },
+        "m": {
+                "top": "",
+                "right": "",
+                "bottom": "",
+                "left": "",
+                "sync": false,
+                "unit": ""
+        },
+        "s": {
+                "top": "",
+                "right": "",
+                "bottom": "",
+                "left": "",
+                "sync": false,
+                "unit": ""
+        },
+        "xs": {
+                "top": "",
+                "right": "",
+                "bottom": "",
+                "left": "",
+                "sync": false,
+                "unit": ""
+        }
+    }
+}
+
+export const __experimentalDisplay = {
+    "label": "Display block",
+    "general": {
+        "display": ""
+    },
+    "xl": {
+        "display": ""
+    },
+    "l": {
+        "display": ""
+    },
+    "m": {
+        "display": ""
+    },
+    "s": {
+        "display": ""
+    },
+    "xs": {
+        "display": ""
+    }
+}
+
+export const __experimentalMotion = {
+    "label": "Motion Effects",
+    "vertical": {
+        "status": 0,
+        "direction": "up",
+        "speed": 1,
+        "viewportTop": 100,
+        "viewportBottom": 0,
+    },
+    "horizontal": {
+        "status": 0,
+        "direction": "left",
+        "speed": 5,
+        "viewportTop": 100,
+        "viewportBottom": 0,
+    },
+    "rotate": {
+        "status": 0,
+        "direction": "left",
+        "speed": 0.3,
+        "viewportTop": 100,
+        "viewportBottom": 0,
+    },
+    "scale": {
+        "status": 0,
+        "direction": "up",
+        "speed": 5,
+        "viewportTop": 100,
+        "viewportBottom": 0,
+    },
+    "fade": {
+        "status": 0,
+        "direction": "in",
+        "speed": 5,
+        "viewportTop": 100,
+        "viewportBottom": 0,
+    },
+    "blur": {
+        "status": 0,
+        "direction": "in",
+        "speed": 5,
+        "viewportTop": 100,
+        "viewportBottom": 0,
+    },
 }

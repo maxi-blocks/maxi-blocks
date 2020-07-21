@@ -28,6 +28,8 @@ import {
     __experimentalNumberControl,
     __experimentalOpacityControl,
     __experimentalAxisControl,
+    __experimentalPositionControl,
+    __experimentalDisplayControl
 } from '../../components';
 
 /**
@@ -81,7 +83,9 @@ const Inspector = props => {
             hoverAnimationTypeColor,
             hoverAnimationTypeOpacityColor,
             onChangeHoverAnimationTypeOpacityColor,
-            hoverAnimationTypeOpacityColorBackground
+            hoverAnimationTypeOpacityColorBackground,
+            position,
+            display
         },
         deviceType,
         setAttributes
@@ -91,13 +95,13 @@ const Inspector = props => {
         JSON.parse(columnSize) :
         columnSize;
     const hoverAnimationCustomOptions = [
-            { label: __('Yes', 'maxi-blocks'), value: 'yes' },
-            { label: __('No', 'maxi-blocks'), value: 'no' },
-        ]
+        { label: __('Yes', 'maxi-blocks'), value: 'yes' },
+        { label: __('No', 'maxi-blocks'), value: 'no' },
+    ]
     const hoverCustomTextOptions = [
-            { label: __('Yes', 'maxi-blocks'), value: 'yes' },
-            { label: __('No', 'maxi-blocks'), value: 'no' },
-        ]
+        { label: __('Yes', 'maxi-blocks'), value: 'yes' },
+        { label: __('No', 'maxi-blocks'), value: 'no' },
+    ]
 
     return (
         <InspectorControls>
@@ -331,6 +335,17 @@ const Inspector = props => {
                                         breakpoint={deviceType}
                                     />
                                 }
+                                <__experimentalPositionControl
+                                    position={position}
+                                    onChange={position => setAttributes({ position })}
+                                    breakpoint={deviceType}
+                                />
+                                <__experimentalDisplayControl 
+                                    display={display}
+                                    onChange={display => setAttributes({ display })}
+                                    breakpoint={deviceType}
+                                    defaultDisplay='inline-flex'
+                                />
                             </div>
                         )
                     }

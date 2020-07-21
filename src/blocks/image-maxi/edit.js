@@ -86,7 +86,9 @@ class edit extends MaxiBlock {
             boxShadow,
             padding,
             margin,
-            zIndex
+            zIndex,
+            position,
+            display
         } = this.props.attributes;
 
         const response = {
@@ -96,7 +98,10 @@ class edit extends MaxiBlock {
             background: { ...getBackgroundObject(JSON.parse(background)) },
             opacity: { ...JSON.parse(opacity) },
             zindex: { ...JSON.parse(zIndex) },
-            alignment: { ...getAlignmentFlexObject(JSON.parse(alignment)) }
+            alignment: { ...getAlignmentFlexObject(JSON.parse(alignment)) },
+            position: { ...JSON.parse(position) },
+            positionOptions: { ...JSON.parse(position).options },
+            display: { ...JSON.parse(display) }
         };
 
         return response;

@@ -25,6 +25,9 @@ const save = props => {
             mediaWidth,
             mediaHeight,
             mediaALT,
+            mediaALTwp,
+            mediaALTtitle,
+            altSelector,
             hoverAnimation,
             hoverAnimationType,
             hoverAnimationTypeText,
@@ -36,6 +39,7 @@ const save = props => {
             hoverAnimationCustomBorder,
             hoverPadding,
         },
+        imageData
     } = props;
 
     let classes = classnames(
@@ -56,6 +60,15 @@ const save = props => {
             null
     );
 
+     const imageALT = () => {
+      switch(altSelector) {
+        case "wordpress":   return mediaALTwp;
+        case "title":   return mediaALTtitle;
+        case "custom": return mediaALT;
+        default:      return '';
+      }
+    }
+
     return (
         <figure
             className={classes}
@@ -66,7 +79,8 @@ const save = props => {
                 src={mediaURL}
                 width={mediaWidth}
                 height={mediaHeight}
-                alt={mediaALT}
+                alt={imageALT()}
+
             />
             {
                 captionType !== 'none' &&

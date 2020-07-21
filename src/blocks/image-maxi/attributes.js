@@ -115,6 +115,17 @@ const attributes = {
     mediaALT: {
         type: 'string'
     },
+    mediaALTwp: {
+        type: 'string'
+    },
+    mediaALTtitle: {
+        type: 'string'
+    },
+    altSelector: {
+        type: 'string',
+        default: 'wordpress',
+
+    },
     mediaURL: {
         type: 'string'
     },

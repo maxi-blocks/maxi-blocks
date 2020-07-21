@@ -7,7 +7,7 @@ const { Button } = wp.components;
  * External dependencies
  */
 import classnames from 'classnames';
-import { 
+import {
     isObject,
     isNil
 } from 'lodash';
@@ -27,11 +27,13 @@ const save = props => {
             hoverAnimation,
             hoverAnimationType,
             hoverAnimationDuration,
+            motion
         },
         className
     } = props;
 
     const classes = classnames(
+        `maxi-motion-effect maxi-motion-effect-${uniqueID}`,
         'maxi-block maxi-button-extra',
         blockStyle,
         extraClassName,
@@ -58,6 +60,8 @@ const save = props => {
         <div
             className={classes}
             data-gx_initial_block_class={defaultBlockStyle}
+            data-motion={motion}
+            data-motion-id={uniqueID}
         >
             <Button
                 className="maxi-button-extra__button"

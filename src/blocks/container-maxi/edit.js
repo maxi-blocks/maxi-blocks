@@ -285,6 +285,7 @@ class edit extends MaxiBlock {
         } = this.props;
 
         let classes = classnames(
+            'maxi-block maxi-container-block',
             `maxi-motion-effect maxi-motion-effect-${uniqueID}`,
             uniqueID,
             blockStyle,

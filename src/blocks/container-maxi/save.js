@@ -8,10 +8,7 @@ const { Fragment } = wp.element;
  * External dependencies
  */
 import classnames from 'classnames';
-import {
-    isNil,
-    uniqueId,
-} from 'lodash';
+import { isNil } from 'lodash';
 import Scripts from '../../extensions/styles/hoverAnimations.js';
 
 /**

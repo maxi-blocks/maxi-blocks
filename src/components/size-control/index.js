@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
+const { Fragment } = wp.element;
 const {
     RangeControl,
     SelectControl,
@@ -13,13 +14,13 @@ const {
  * External dependencies
  */
 import classnames from 'classnames';
+import { trim } from 'lodash';
 
 /**
  * Styles
  */
 import './editor.scss';
 import { reset } from '../../icons';
-import { Fragment } from 'react';
 
 /**
  * Component
@@ -83,7 +84,7 @@ const SizeControl = props => {
                     <input
                         type='number'
                         className='maxi-size-control__value'
-                        value={value}
+                        value={trim(value)}
                         onChange={e => onChangeValue(Number(e.target.value))}
                         min={min}
                         max={max}
@@ -95,7 +96,7 @@ const SizeControl = props => {
                         <input
                             type='number'
                             className='maxi-size-control__value'
-                            value={value}
+                            value={trim(value)}
                             onChange={e => onChangeValue(Number(e.target.value))}
                             min={minMaxSettings[unit].min}
                             max={minMaxSettings[unit].max}

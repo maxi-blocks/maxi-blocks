@@ -26,7 +26,8 @@ import {
     __experimentalAxisControl,
     __experimentalResponsiveControl,
     __experimentalOpacityControl,
-    __experimentalPositionControl
+    __experimentalPositionControl,
+    __experimentalDisplayControl
 } from '../../components';
 
 /**
@@ -58,7 +59,8 @@ const Inspector = props => {
             extraClassName,
             zIndex,
             breakpoints,
-            position
+            position,
+            display
         },
         setAttributes,
     } = props;
@@ -323,6 +325,12 @@ const Inspector = props => {
                                     position={position}
                                     onChange={position => setAttributes({ position })}
                                     breakpoint={deviceType}
+                                />
+                                <__experimentalDisplayControl 
+                                    display={display}
+                                    onChange={display => setAttributes({ display })}
+                                    breakpoint={deviceType}
+                                    defaultDisplay='flex'
                                 />
                             </div>
                         )

@@ -82,7 +82,8 @@ class edit extends MaxiBlock {
             padding,
             hoverPadding,
             zIndex,
-            position
+            position,
+            display
         } = this.props.attributes;
 
         const response = {
@@ -99,7 +100,8 @@ class edit extends MaxiBlock {
             opacity: { ...getOpacityObject(JSON.parse(opacity)) },
             zindex: { ...JSON.parse(zIndex) },
             position: { ...JSON.parse(position) },
-            positionOptions: { ...JSON.parse(position).options }
+            positionOptions: { ...JSON.parse(position).options },
+            display: { ...JSON.parse(display) }
         };
 
         return response;

@@ -33,7 +33,8 @@ import {
     __experimentalNumberControl,
     __experimentalOpacityControl,
     __experimentalAxisControl,
-    __experimentalPositionControl
+    __experimentalPositionControl,
+    __experimentalDisplayControl
 } from '../../components';
 
 /**
@@ -89,7 +90,8 @@ const Inspector = props => {
             hoverAnimationTypeOpacityColor,
             onChangeHoverAnimationTypeOpacityColor,
             hoverAnimationTypeOpacityColorBackground,
-            position
+            position,
+            display
         },
         setAttributes,
     } = props;
@@ -517,6 +519,11 @@ const Inspector = props => {
                                 <__experimentalPositionControl 
                                     position={position}
                                     onChange={position => setAttributes({ position })}
+                                    breakpoint={deviceType}
+                                />
+                                <__experimentalDisplayControl 
+                                    display={display}
+                                    onChange={display => setAttributes({ display })}
                                     breakpoint={deviceType}
                                 />
                             </div>

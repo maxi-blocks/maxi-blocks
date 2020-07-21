@@ -98,9 +98,9 @@ class edit extends MaxiBlock {
         const videoOptions = JSON.parse(this.props.attributes.background).videoOptions;
         if(!isNil(videoOptions) && !isEmpty(videoOptions.mediaURL))
             Object.assign(
-                response, 
+                response,
                 {
-                    [`${this.props.attributes.uniqueID} .maxi-video-player video`]: 
+                    [`${this.props.attributes.uniqueID} .maxi-video-player video`]:
                         { videoBackground: { ...getVideoBackgroundObject(videoOptions) } }
                 }
             )
@@ -299,6 +299,7 @@ class edit extends MaxiBlock {
 
         const classes = classnames(
             'maxi-block maxi-container-block',
+            `maxi-motion-effect maxi-motion-effect-${uniqueID}`,
             uniqueID,
             blockStyle,
             extraClassName,

@@ -37,3 +37,4 @@ export { default as __experimentalShapeDividerControl } from './shape-divider-co
 export { default as __experimentalShapeDivider } from './shape-divider';
 export { default as __experimentalPositionControl } from './position-control';
 export { default as __experimentalDisplayControl } from './display-control';
+export { default as __experimentalMotionControl } from './motion-control';

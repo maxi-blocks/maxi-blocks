@@ -75,7 +75,11 @@ const attributes = {
     display: {
         type: 'string',
         default: JSON.stringify(attributesData.__experimentalDisplay)
-    }
+    },
+    motion: {
+        type: 'string',
+        default: JSON.stringify(attributesData.__experimentalMotion)
+    },
 }
 
 export default attributes;

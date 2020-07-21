@@ -1077,6 +1077,9 @@ export const __experimentalShapeDivider = {
             "gradient": "",
             "defaultGradient": "",
             "gradientAboveBackground": false
+        },
+        "effects": {
+            "status": 0
         }
     },
     "bottom": {
@@ -1090,6 +1093,9 @@ export const __experimentalShapeDivider = {
             "gradient": "",
             "defaultGradient": "",
             "gradientAboveBackground": false
+        },
+        "effects": {
+            "status": 0
         }
     }
 }
@@ -1187,4 +1193,50 @@ export const __experimentalDisplay = {
     "xs": {
         "display": ""
     }
+}
+
+export const __experimentalMotion = {
+    "label": "Motion Effects",
+    "vertical": {
+        "status": 0,
+        "direction": "up",
+        "speed": 1,
+        "viewportTop": 100,
+        "viewportBottom": 0,
+    },
+    "horizontal": {
+        "status": 0,
+        "direction": "left",
+        "speed": 5,
+        "viewportTop": 100,
+        "viewportBottom": 0,
+    },
+    "rotate": {
+        "status": 0,
+        "direction": "left",
+        "speed": 0.3,
+        "viewportTop": 100,
+        "viewportBottom": 0,
+    },
+    "scale": {
+        "status": 0,
+        "direction": "up",
+        "speed": 5,
+        "viewportTop": 100,
+        "viewportBottom": 0,
+    },
+    "fade": {
+        "status": 0,
+        "direction": "in",
+        "speed": 5,
+        "viewportTop": 100,
+        "viewportBottom": 0,
+    },
+    "blur": {
+        "status": 0,
+        "direction": "in",
+        "speed": 5,
+        "viewportTop": 100,
+        "viewportBottom": 0,
+    },
 }

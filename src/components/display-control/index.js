@@ -41,7 +41,6 @@ const DisplayControl = props => {
         let i = breakpointIndex;
 
         do {
-            console.log(value[objectKeys[i]], value[objectKeys[i]].display === 'none');
             if (value[objectKeys[i]].display === 'none')
                 return true;
             if (value[objectKeys[i]].display === defaultDisplay)
@@ -56,20 +55,10 @@ const DisplayControl = props => {
 
     const getValue = () => {
         const isPrevHide = isHide();
-        console.log(isPrevHide)
 
         return isPrevHide && value[breakpoint].display === '' ?
             'none' :
             value[breakpoint].display;
-    }
-
-    const getNewValue = val => {
-        const isPrevHide = isHide();
-
-        if (isPrevHide)
-            return val ? 'none' : defaultDisplay;
-        else
-            return val ? 'none' : '';
     }
 
     const getOptions = () => {

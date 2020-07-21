@@ -322,12 +322,10 @@ class edit extends MaxiBlock {
                         data-align={fullWidth}
                         data-gx_initial_block_class={defaultBlockStyle}
                     >
-                        <__experimentalShapeDivider
-                            shapeDividerOptions={shapeDivider}
-                        />
-                        <div
-                            className='maxi-container-block__wrapper'
-                        >
+                        <div className='maxi-container-block__wrapper'>
+                            <__experimentalShapeDivider
+                                shapeDividerOptions={shapeDivider}
+                            />
                             <InnerBlocks
                                 templateLock={false}
                                 __experimentalTagName='div'
@@ -348,12 +346,12 @@ class edit extends MaxiBlock {
                                             false
                                 }
                             />
+                            <__experimentalShapeDivider
+                                position='bottom'
+                                shapeDividerOptions={shapeDivider}
+                            />
                         </div>
                         <__experimentalVideoPlayer videoOptions={background} />
-                        <__experimentalShapeDivider
-                            position='bottom'
-                            shapeDividerOptions={shapeDivider}
-                        />
                     </__experimentalBlock.section>
                 }
                 {

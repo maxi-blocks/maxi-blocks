@@ -1,10 +1,14 @@
 .maxi-container-block {
     margin: auto;
 
-    .maxi-container-block__container {
+    &__container {
         border: 1px solid #7fbddc;
-    }
+        z-index: 1;
 
+        .block-list-appender {
+            width: 100%;
+        }
+    }
     &[data-align="full"] {
         width: auto;
     }

@@ -41,11 +41,11 @@ motionElems.forEach(function(elem) {
 	const motionID = elem.getAttribute('data-motion-id');
 	const motionData = JSON.parse(elem.getAttribute('data-motion'));
 	const shapeDividerData = JSON.parse(elem.getAttribute('data-shape-divider'));
-
 	if(shapeDividerData !== null) {
+		console.log(shapeDividerData);
 		const motionTimeLine = gsap.timeline({
 			scrollTrigger: {
-				trigger: ".maxi-motion-effect-"+ motionID +" > .maxi-shape-divider",
+				trigger: ".maxi-motion-effect-"+ motionID +" > .maxi-container-block__wrapper .maxi-shape-divider",
 				start: "-150",
 				scrub: 1,
 				//markers: true,
@@ -55,14 +55,14 @@ motionElems.forEach(function(elem) {
 			}
 		});
 		if(("top" in shapeDividerData) && !!parseInt(shapeDividerData.top.effects.status)) {
-			motionTimeLine.to(".maxi-motion-effect-"+ motionID +" > .maxi-shape-divider.maxi-shape-divider__top", {
+			motionTimeLine.to(".maxi-motion-effect-"+ motionID +" > .maxi-container-block__wrapper .maxi-shape-divider.maxi-shape-divider__top", {
 				height: 0,
 				duration: 1,
 				ease: "power1.out"
 			});
 		}
 		if(("bottom" in shapeDividerData) && !!parseInt(shapeDividerData.bottom.effects.status)) {
-			motionTimeLine.to(".maxi-motion-effect-"+ motionID +" > .maxi-shape-divider.maxi-shape-divider__bottom", {
+			motionTimeLine.to(".maxi-motion-effect-"+ motionID +" > .maxi-container-block__wrapper .maxi-shape-divider.maxi-shape-divider__bottom", {
 				height: 0,
 				duration: 1,
 				ease: "power1.out"

@@ -46,6 +46,7 @@ export class ResponsiveStylesResolver {
             let newObject = {};
 
             newObject = this.propsObjectManipulator(value, newObject, 'general');
+            newObject = this.propsObjectManipulator(value, newObject, 'xxl');
             newObject = this.propsObjectManipulator(value, newObject, 'xl');
             newObject = this.propsObjectManipulator(value, newObject, 'l');
             newObject = this.propsObjectManipulator(value, newObject, 'm');
@@ -166,6 +167,17 @@ export class BackEndResponsiveStyles {
 
                     if (breakpoint === 'general') {
                         response += `body.maxi-blocks--active .${target}{`;
+                        response += this.getResponsiveStyles(content);
+                        response += '}';
+                    }
+                    if (breakpoint === 'xxl') {
+                        response += `
+                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xxl"] .${target},
+                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xl"] .${target},
+                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="l"] .${target},
+                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="m"] .${target},
+                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .${target},
+                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .${target}{`;
                         response += this.getResponsiveStyles(content);
                         response += '}';
                     }

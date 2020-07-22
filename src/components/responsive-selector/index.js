@@ -98,6 +98,13 @@ const ResponsiveSelector = props => {
             </Button>
             <Button
                 className='maxi-responsive-selector__button'
+                onClick={() => onChangeSize('xxl')}
+                aria-pressed={'xxl' === deviceType}
+            >
+                XXL
+            </Button>
+            <Button
+                className='maxi-responsive-selector__button'
                 onClick={() => onChangeSize('xl')}
                 aria-pressed={'xl' === deviceType}
             >

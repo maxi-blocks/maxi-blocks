@@ -123,6 +123,11 @@ class ResponsiveFrontendStyles
                 $response .= self::getStyles($content['general']);
                 $response .= '}';
             }
+            if (isset($content['xxl']) && !empty($content['xxl'])) {
+                $response .= "@media only screen and (min-width: {$breakpoints->xl}px) {body.maxi-blocks--active .$target{";
+                $response .= self::getStyles($content['xxl']);
+                $response .= '}}';
+            }
             if (isset($content['xl']) && !empty($content['xl'])) {
                 $response .= "@media only screen and (max-width: {$breakpoints->xl}px) {body.maxi-blocks--active .$target{";
                 $response .= self::getStyles($content['xl']);

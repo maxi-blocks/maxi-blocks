@@ -3,6 +3,9 @@ export const alignment = {
     "general": {
         "alignment": "center"
     },
+    "xxl": {
+        "alignment": ""
+    },
     "xl": {
         "alignment": ""
     },

@@ -166,6 +166,7 @@ export const getAlignmentTextObject = alignment => {
     const response = {
         label: alignment.label,
         general: {},
+        xxl: {},
         xl: {},
         l: {},
         m: {},
@@ -199,6 +200,7 @@ export const getAlignmentFlexObject = alignment => {
     const response = {
         label: alignment.label,
         general: {},
+        xxl: {},
         xl: {},
         l: {},
         m: {},

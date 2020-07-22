@@ -31,6 +31,7 @@ const allowedBlocks = [
 	'maxi-blocks/section-maxi',
 	'maxi-blocks/container-maxi',
 	'maxi-blocks/icon-maxi',
+	'maxi-blocks/test-maxi',
 ];
 
 /**

@@ -41,11 +41,11 @@ motionElems.forEach(function(elem) {
 	const motionID = elem.getAttribute('data-motion-id');
 	const motionData = JSON.parse(elem.getAttribute('data-motion'));
 	const shapeDividerData = JSON.parse(elem.getAttribute('data-shape-divider'));
-
 	if(shapeDividerData !== null) {
+		console.log(shapeDividerData);
 		const motionTimeLine = gsap.timeline({
 			scrollTrigger: {
-				trigger: ".maxi-motion-effect-"+ motionID +" > .maxi-shape-divider",
+				trigger: ".maxi-motion-effect-"+ motionID +" > .maxi-container-block__wrapper .maxi-shape-divider",
 				start: "-150",
 				scrub: 1,
 				//markers: true,

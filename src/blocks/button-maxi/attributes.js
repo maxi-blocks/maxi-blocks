@@ -3,6 +3,7 @@
  */
 import * as attributesData from '../../extensions/styles/defaults';
 import * as buttonAttributesData from './data';
+import { alignmentText } from './data';
 
 /**
  * Attributes
@@ -11,6 +12,10 @@ const attributes = {
     alignment: {
         type: 'string',
         default: JSON.stringify(attributesData.alignment)
+    },
+    alignmentText: {
+        type: 'string',
+        default: JSON.stringify(alignmentText)
     },
     typography: {
         type: 'string',

@@ -40,6 +40,7 @@ const Inspector = props => {
             blockStyle,
             defaultBlockStyle,
             alignment,
+            alignmentText,
             typography,
             typographyHover,
             background,
@@ -107,11 +108,21 @@ const Inspector = props => {
                                         {
                                             label: __('Alignment', 'maxi-blocks'),
                                             content: (
+                                                <Fragment>
                                                 <AlignmentControl
+                                                    label={__('Button', 'maxi-blocks')}
                                                     alignment={alignment}
                                                     onChange={alignment => setAttributes({ alignment })}
                                                     breakpoint={deviceType}
+                                                    disableJustify={true}
                                                 />
+                                                <AlignmentControl
+                                                    label={__('Text', 'maxi-blocks')}
+                                                    alignment={alignmentText}
+                                                    onChange={alignmentText => setAttributes({ alignmentText })}
+                                                    breakpoint={deviceType}
+                                                />
+                                                </Fragment>
                                             )
                                         },
                                         {
@@ -326,7 +337,7 @@ const Inspector = props => {
                                     onChange={position => setAttributes({ position })}
                                     breakpoint={deviceType}
                                 />
-                                <__experimentalDisplayControl 
+                                <__experimentalDisplayControl
                                     display={display}
                                     onChange={display => setAttributes({ display })}
                                     breakpoint={deviceType}

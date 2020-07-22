@@ -55,14 +55,14 @@ motionElems.forEach(function(elem) {
 			}
 		});
 		if(("top" in shapeDividerData) && !!parseInt(shapeDividerData.top.effects.status)) {
-			motionTimeLine.to(".maxi-motion-effect-"+ motionID +" > .maxi-container-block__wrapper .maxi-shape-divider.maxi-shape-divider__top", {
+			motionTimeLine.to(".maxi-motion-effect-"+ motionID +" > .maxi-shape-divider.maxi-shape-divider__top", {
 				height: 0,
 				duration: 1,
 				ease: "power1.out"
 			});
 		}
 		if(("bottom" in shapeDividerData) && !!parseInt(shapeDividerData.bottom.effects.status)) {
-			motionTimeLine.to(".maxi-motion-effect-"+ motionID +" > .maxi-container-block__wrapper .maxi-shape-divider.maxi-shape-divider__bottom", {
+			motionTimeLine.to(".maxi-motion-effect-"+ motionID +" > .maxi-shape-divider.maxi-shape-divider__bottom", {
 				height: 0,
 				duration: 1,
 				ease: "power1.out"

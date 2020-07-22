@@ -2,20 +2,9 @@
     position: relative;
     margin-top: 0;
     margin-bottom: 0;
-    box-sizing: content-box;
-    height: 350px;
 
-    &__wrapper {
-        height: 100%;
-        position: relative;
-        display: flex;
-        align-items: center;
-    }
     &__container {
         margin-right: auto;
         margin-left: auto;
-        width: 100%;
-        display: flex;
-        align-items: center;
     }
 }

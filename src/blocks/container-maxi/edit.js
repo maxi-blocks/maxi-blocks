@@ -116,7 +116,8 @@ class edit extends MaxiBlock {
             boxShadow,
             zIndex,
             position,
-            display
+            display,
+            background
         } = this.props.attributes;
 
         const response = {
@@ -130,6 +131,7 @@ class edit extends MaxiBlock {
             position: { ...JSON.parse(position) },
             positionOptions: { ...JSON.parse(position).options },
             display: { ...JSON.parse(display) },
+            background: { ...getBackgroundObject(JSON.parse(background)) },
             container: {
                 label: 'Container',
                 general: {},
@@ -161,13 +163,11 @@ class edit extends MaxiBlock {
 
     get getWrapperObject() {
         const {
-            background,
             margin,
             padding,
         } = this.props.attributes;
 
         const response = {
-            background: { ...getBackgroundObject(JSON.parse(background)) },
             margin: { ...JSON.parse(margin) },
             padding: { ...JSON.parse(padding) },
         };
@@ -322,10 +322,12 @@ class edit extends MaxiBlock {
                         data-align={fullWidth}
                         data-gx_initial_block_class={defaultBlockStyle}
                     >
-                        <div className='maxi-container-block__wrapper'>
-                            <__experimentalShapeDivider
-                                shapeDividerOptions={shapeDivider}
-                            />
+                        <__experimentalShapeDivider
+                            shapeDividerOptions={shapeDivider}
+                        />
+                        <div
+                            className='maxi-container-block__wrapper'
+                        >
                             <InnerBlocks
                                 templateLock={false}
                                 __experimentalTagName='div'
@@ -346,12 +348,12 @@ class edit extends MaxiBlock {
                                             false
                                 }
                             />
-                            <__experimentalShapeDivider
-                                position='bottom'
-                                shapeDividerOptions={shapeDivider}
-                            />
                         </div>
                         <__experimentalVideoPlayer videoOptions={background} />
+                        <__experimentalShapeDivider
+                            position='bottom'
+                            shapeDividerOptions={shapeDivider}
+                        />
                     </__experimentalBlock.section>
                 }
                 {

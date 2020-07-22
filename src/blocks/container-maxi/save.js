@@ -73,20 +73,22 @@ const save = props => {
                     data-shape-divider={shapeDivider}
                     data-motion-id={uniqueID}
                 >
-                    <div className='maxi-container-block__wrapper'>
-                        <__experimentalShapeDivider
-                            shapeDividerOptions={shapeDivider}
-                        />
+                    <__experimentalShapeDivider
+                        shapeDividerOptions={shapeDivider}
+                    />
+                    <div
+                        className='maxi-container-block__wrapper'
+                    >
                         <div
                             className='maxi-container-block__container'
                         >
                             <InnerBlocks.Content />
                         </div>
-                        <__experimentalShapeDivider
-                            position='bottom'
-                            shapeDividerOptions={shapeDivider}
-                        />
                     </div>
+                    <__experimentalShapeDivider
+                        position='bottom'
+                        shapeDividerOptions={shapeDivider}
+                    />
                 </section>
             }
             {

@@ -11,7 +11,6 @@ import {
  * Styles and icons
  */
 import './editor.scss';
-import './style.scss';
 import {
     wavesTop,
     wavesBottom,

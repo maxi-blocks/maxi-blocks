@@ -20,7 +20,10 @@ const {
 /**
  * Internal dependencies
  */
-import { SizeControl } from '../../components';
+import {
+    SizeControl,
+    __experimentalAdvancedRangeControl
+} from '../../components';
 
 /**
  * Styles and icons
@@ -120,6 +123,13 @@ const ShapeDividerControl = props => {
                         value={verticalOptions.speed}
                         onChangeValue={val => {
                             verticalOptions.speed = val;
+                            onChange(JSON.stringify(value));
+                        }}
+                    />
+                    <__experimentalAdvancedRangeControl
+                        value={verticalOptions.viewport}
+                        onChangeValue={val => {
+                            verticalOptions.viewport = val;
                             onChange(JSON.stringify(value));
                         }}
                     />

@@ -1201,8 +1201,8 @@ export const __experimentalMotion = {
         "status": 0,
         "direction": "up",
         "speed": 1,
-        "viewportTop": 100,
-        "viewportBottom": 0,
+        "viewport": [0, 50, 50, 100],
+        "values": [0, 0, 0],
     },
     "horizontal": {
         "status": 0,

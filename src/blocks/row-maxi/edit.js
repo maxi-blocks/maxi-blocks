@@ -263,7 +263,7 @@ class edit extends MaxiBlock {
                 __experimentalPassedProps={{
                     className: classes,
                     ['data-align']: fullWidth,
-                    ['data-gx_initial_block_class']: defaultBlockStyle
+                    ['data-maxi_initial_block_class']: defaultBlockStyle
                 }}
                 allowedBlocks={ALLOWED_BLOCKS}
                 renderAppender={

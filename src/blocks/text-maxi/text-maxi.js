@@ -47,7 +47,7 @@ registerBlockType( 'maxi-blocks/text-maxi', {
 
         return {
 			'uniqueid': uniqueID,
-			'data-gx_initial_block_class': defaultBlockStyle,
+			'data-maxi_initial_block_class': defaultBlockStyle,
         };
     },
 	edit,

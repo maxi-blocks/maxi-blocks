@@ -59,7 +59,7 @@ const save = props => {
     return (
         <div
             className={classes}
-            data-gx_initial_block_class={defaultBlockStyle}
+            data-maxi_initial_block_class={defaultBlockStyle}
             data-motion={motion}
             data-motion-id={uniqueID}
         >

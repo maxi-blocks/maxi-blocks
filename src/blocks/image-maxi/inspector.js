@@ -34,7 +34,8 @@ import {
     __experimentalResponsiveControl,
     __experimentalOpacityControl,
     __experimentalPositionControl,
-    __experimentalDisplayControl
+    __experimentalDisplayControl,
+    __experimentalClipPath
 } from '../../components';
 
 /**
@@ -100,7 +101,8 @@ const Inspector = props => {
             onChangeHoverAnimationTypeOpacityColor,
             hoverAnimationTypeOpacityColorBackground,
             position,
-            display
+            display,
+            clipPath
         },
         imageData,
         clientId,
@@ -548,6 +550,10 @@ const Inspector = props => {
                                     onChange={display => setAttributes({ display })}
                                     breakpoint={deviceType}
                                     defaultDisplay='flex'
+                                />
+                                <__experimentalClipPath 
+                                    clipPath={clipPath}
+                                    onChange={clipPath => setAttributes({ clipPath })}
                                 />
                             </div>
                         )

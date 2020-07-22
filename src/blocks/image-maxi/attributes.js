@@ -179,6 +179,10 @@ const attributes = {
     display: {
         type: 'string',
         default: JSON.stringify(attributesData.__experimentalDisplay)
+    },
+    clipPath: {
+        type: 'string',
+        default: ''
     }
 }
 

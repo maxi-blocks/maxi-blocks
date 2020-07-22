@@ -82,6 +82,8 @@ const Inspector = props => {
             mediaID,
             extraClassName,
             zIndex,
+            mediaALT,
+            altSelector,
             breakpoints,
             hoverAnimationTitle,
             hoverAnimationContent,
@@ -120,6 +122,13 @@ const Inspector = props => {
     const hoverCustomTextOptions = [
         { label: __('Yes', 'maxi-blocks'), value: 'yes' },
         { label: __('No', 'maxi-blocks'), value: 'no' },
+    ]
+
+    const altSelectorOptions = [
+        { label: __('WordPress ALT', 'maxi-blocks'), value: 'wordpress' },
+        { label: __('Image Title', 'maxi-blocks'), value: 'title' },
+        { label: __('Custom', 'maxi-blocks'), value: 'custom' },
+        { label: __('None', 'maxi-blocks'), value: 'none' },
     ]
 
     const getSizeOptions = () => {
@@ -533,6 +542,23 @@ const Inspector = props => {
                                         onChange={zIndex => setAttributes({ zIndex })}
                                         breakpoint={deviceType}
                                     />
+                                    <SelectControl
+                                        label={__('Image ALT Tag', 'maxi-blocks')}
+                                        value={altSelector}
+                                        options={altSelectorOptions}
+                                        onChange={altSelector => {
+                                            setAttributes({ altSelector });
+                                        }}
+                                    />
+                                    {
+                                        altSelector == 'custom' &&
+                                        <TextControl
+                                            placeHolder={__('Add Your ALT Tag Here', 'maxi-blocks')}
+                                            className='maxi-image__alt'
+                                            value={mediaALT}
+                                            onChange={mediaALT => setAttributes({ mediaALT })}
+                                        />
+                                    }
                                     {
                                         deviceType != 'general' &&
                                         <__experimentalResponsiveControl

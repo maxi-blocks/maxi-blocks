@@ -2,6 +2,7 @@
  * Wordpress dependencies
  */
 const { RadioControl } = wp.components;
+const { Fragment } = wp.element;
 
 /**
  * External dependencies

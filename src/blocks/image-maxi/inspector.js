@@ -11,6 +11,7 @@ const {
     TextControl,
     RadioControl,
 } = wp.components;
+const { useSelect } = wp.data;
 
 /**
  * Internal dependencies
@@ -106,7 +107,6 @@ const Inspector = props => {
         },
         imageData,
         clientId,
-        deviceType,
         setAttributes,
     } = props;
 
@@ -128,6 +128,23 @@ const Inspector = props => {
         { label: __('Custom', 'maxi-blocks'), value: 'custom' },
         { label: __('None', 'maxi-blocks'), value: 'none' },
     ]
+
+    const { deviceType } = useSelect(
+        select => {
+            const {
+                __experimentalGetPreviewDeviceType
+            } = select(
+                'core/edit-post'
+            );
+            let deviceType = __experimentalGetPreviewDeviceType();
+            deviceType = deviceType === 'Desktop' ?
+                'general' :
+                deviceType;
+            return {
+                deviceType,
+            }
+        }
+    );
 
     const getSizeOptions = () => {
         let response = [];
@@ -263,9 +280,11 @@ const Inspector = props => {
                                                             {
                                                                 captionType != 'none' &&
                                                                 <TypographyControl
-                                                                    fontOptions={captionTypography}
+                                                                    breakpoint= 'general'
+                                                                    typography={captionTypography}
                                                                     onChange={captionTypography => setAttributes({ captionTypography })}
                                                                     target='>figcaption'
+                                                                    hideAlignment
                                                                 />
                                                             }
                                                         </Fragment>
@@ -472,16 +491,20 @@ const Inspector = props => {
                                         {
                                             hoverAnimation === 'text' && hoverCustomTextTitle === 'yes' &&
                                             <TypographyControl
-                                                fontOptions={hoverAnimationTitleTypography}
+                                                typography={hoverAnimationTitleTypography}
                                                 onChange={hoverAnimationTitleTypography => setAttributes({ hoverAnimationTitleTypography })}
                                                 target='>.maxi-block-text-hover .maxi-block-text-hover__title'
+                                                hideAlignment
+                                                breakpoint={deviceType}
                                             />}
                                         {
                                             hoverAnimation === 'text' && hoverCustomTextContent === 'yes' &&
                                             <TypographyControl
-                                                fontOptions={hoverAnimationContentTypography}
+                                                typography={hoverAnimationContentTypography}
                                                 onChange={hoverAnimationContentTypography => setAttributes({ hoverAnimationContentTypography })}
                                                 target='>.maxi-block-text-hover .maxi-block-text-hover__content'
+                                                hideAlignment
+                                                breakpoint={deviceType}
                                             />}
                                         {
                                             hoverAnimation === 'text' &&
@@ -568,7 +591,7 @@ const Inspector = props => {
                                     onChange={position => setAttributes({ position })}
                                     breakpoint={deviceType}
                                 />
-                                <__experimentalDisplayControl 
+                                <__experimentalDisplayControl
                                     display={display}
                                     onChange={display => setAttributes({ display })}
                                     breakpoint={deviceType}

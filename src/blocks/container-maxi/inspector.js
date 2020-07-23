@@ -360,16 +360,20 @@ const Inspector = props => {
                                         hoverAnimation === 'text' &&
                                         hoverCustomTextTitle === 'yes' &&
                                         <TypographyControl
-                                            fontOptions={hoverAnimationTitleTypography}
+                                            typography={hoverAnimationTitleTypography}
                                             onChange={hoverAnimationTitleTypography => setAttributes({ hoverAnimationTitleTypography })}
+                                            hideAlignment
+                                            breakpoint={deviceType}
                                         />}
                                     {
                                         hoverAnimation === 'text' &&
                                         hoverCustomTextContent === 'yes' &&
                                         <TypographyControl
-                                            fontOptions={hoverAnimationContentTypography}
+                                            typography={hoverAnimationContentTypography}
                                             onChange={hoverAnimationContentTypography => setAttributes({ hoverAnimationContentTypography })}
                                             target='>.maxi-block-text-hover .maxi-block-text-hover__content'
+                                            hideAlignment
+                                            breakpoint={deviceType}
                                         />}
                                     {
                                         hoverAnimation === 'text' &&

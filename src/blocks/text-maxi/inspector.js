@@ -197,7 +197,7 @@ const Inspector = props => {
                                                                             value={listStart}
                                                                             onChange={listStart => setAttributes({ listStart })}
                                                                         />
-                                                                        <SelectControl 
+                                                                        <SelectControl
                                                                             label={__('Reverse order', 'maxi-blocks')}
                                                                             value={listReversed}
                                                                             options={[
@@ -446,13 +446,13 @@ const Inspector = props => {
                                         />
                                         {hoverAnimation === 'text' && hoverCustomTextTitle === 'yes' &&
                                             <TypographyControl
-                                                fontOptions={hoverAnimationTitleTypography}
+                                                typography={hoverAnimationTitleTypography}
                                                 onChange={hoverAnimationTitleTypography => setAttributes({ hoverAnimationTitleTypography })}
                                                 target='>.maxi-block-text-hover .maxi-block-text-hover__title'
                                             />}
                                         {hoverAnimation === 'text' && hoverCustomTextContent === 'yes' &&
                                             <TypographyControl
-                                                fontOptions={hoverAnimationContentTypography}
+                                                typography={hoverAnimationContentTypography}
                                                 onChange={hoverAnimationContentTypography => setAttributes({ hoverAnimationContentTypography })}
                                                 target='>.maxi-block-text-hover .maxi-block-text-hover__content'
                                             />}
@@ -516,12 +516,12 @@ const Inspector = props => {
                                         breakpoint={deviceType}
                                     />
                                 }
-                                <__experimentalPositionControl 
+                                <__experimentalPositionControl
                                     position={position}
                                     onChange={position => setAttributes({ position })}
                                     breakpoint={deviceType}
                                 />
-                                <__experimentalDisplayControl 
+                                <__experimentalDisplayControl
                                     display={display}
                                     onChange={display => setAttributes({ display })}
                                     breakpoint={deviceType}

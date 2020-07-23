@@ -485,7 +485,7 @@ function maxi_save_metabox( $post_id, $post ) {
 	update_post_meta( $post->ID, 'maxi_blocks_custom_ccs_page', $sanitized );
 
 }
-// add_action( 'save_post', 'maxi_save_metabox', 1, 2 );
+add_action( 'save_post', 'maxi_save_metabox', 1, 2 );
 
 add_action( 'wp_head', 'maxi_output_css', 10, 2 );
 add_action( 'admin_head', 'maxi_output_css', 10, 2 );

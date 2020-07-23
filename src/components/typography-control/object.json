@@ -30,6 +30,23 @@
         "text-decoration": "none",
         "text-shadow": ""
     },
+    "xxl": {
+        "font-family": "",
+        "font-options": {},
+        "color": "",
+        "text-align": "",
+        "font-sizeUnit": "px",
+        "font-size": "",
+        "line-heightUnit": "%",
+        "line-height": "",
+        "letter-spacingUnit": "px",
+        "letter-spacing": "",
+        "font-weight": "",
+        "text-transform": "none",
+        "font-style": "normal",
+        "text-decoration": "none",
+        "text-shadow": "none"
+    },
     "xl": {
         "font-family": "",
         "font-options": {},

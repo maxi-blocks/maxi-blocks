@@ -345,7 +345,7 @@ class edit extends MaxiBlock {
 
         return [
             <Inspector {...this.props} />,
-            <__experimentalToolbar {...this.props} />,
+            // <__experimentalToolbar {...this.props} />,
             <__experimentalBlock.figure
                 className={classes}
                 data-maxi_initial_block_class={defaultBlockStyle}

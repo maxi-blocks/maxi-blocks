@@ -28,6 +28,9 @@ export const opacity = {
     "general": {
         "opacity": 1
     },
+    "xxl": {
+        "opacity": ""
+    },
     "xl": {
         "opacity": ""
     },
@@ -48,6 +51,9 @@ export const opacity = {
 export const opacityHover = {
     "label": "Opacity",
     "general": {
+        "opacity": ""
+    },
+    "xxl": {
         "opacity": ""
     },
     "xl": {
@@ -72,6 +78,10 @@ export const border = {
     "general": {
         "border-color": "#ffffff",
         "border-style": "none"
+    },
+    "xxl": {
+        "border-color": "",
+        "border-style": ""
     },
     "xl": {
         "border-color": "",
@@ -102,6 +112,14 @@ export const border = {
             "border-left-width": 0,
             "sync": true,
             "unit": "px"
+        },
+        "xxl": {
+            "border-top-width": "",
+            "border-right-width": "",
+            "border-bottom-width": "",
+            "border-left-width": "",
+            "sync": true,
+            "unit": ""
         },
         "xl": {
             "border-top-width": "",
@@ -154,6 +172,14 @@ export const border = {
             "sync": true,
             "unit": "px"
         },
+        "xxl": {
+            "border-top-left-radius": "",
+            "border-top-right-radius": "",
+            "border-bottom-right-radius": "",
+            "border-bottom-left-radius": "",
+            "sync": true,
+            "unit": ""
+        },
         "xl": {
             "border-top-left-radius": "",
             "border-top-right-radius": "",
@@ -203,6 +229,10 @@ export const borderHover = {
         "border-color": "",
         "border-style": ""
     },
+    "xxl": {
+        "border-color": "",
+        "border-style": ""
+    },
     "xl": {
         "border-color": "",
         "border-style": ""
@@ -232,6 +262,14 @@ export const borderHover = {
             "border-left-width": "",
             "sync": true,
             "unit": "px"
+        },
+        "xxl": {
+            "border-top-width": "",
+            "border-right-width": "",
+            "border-bottom-width": "",
+            "border-left-width": "",
+            "sync": true,
+            "unit": ""
         },
         "xl": {
             "border-top-width": "",
@@ -284,6 +322,14 @@ export const borderHover = {
             "sync": true,
             "unit": "px"
         },
+        "xxl": {
+            "border-top-left-radius": "",
+            "border-top-right-radius": "",
+            "border-bottom-right-radius": "",
+            "border-bottom-left-radius": "",
+            "sync": true,
+            "unit": ""
+        },
         "xl": {
             "border-top-left-radius": "",
             "border-top-right-radius": "",
@@ -330,6 +376,20 @@ export const borderHover = {
 export const size = {
     "label": "Size",
     "general": {
+        "max-widthUnit": "px",
+        "max-width": "",
+        "widthUnit": "px",
+        "width": "",
+        "min-widthUnit": "px",
+        "min-width": "",
+        "max-heightUnit": "px",
+        "max-height": "",
+        "heightUnit": "px",
+        "height": "",
+        "min-heightUnit": "px",
+        "min-height": ""
+    },
+    "xxl": {
         "max-widthUnit": "px",
         "max-width": "",
         "widthUnit": "px",
@@ -493,6 +553,14 @@ export const boxShadow = {
         "shadowBlur": 0,
         "shadowSpread": 0
     },
+    "xxl": {
+        "shadowColor": "",
+        "defaultShadowColor": "",
+        "shadowHorizontal": "",
+        "shadowVertical": "",
+        "shadowBlur": "",
+        "shadowSpread": ""
+    },
     "xl": {
         "shadowColor": "",
         "defaultShadowColor": "",
@@ -538,6 +606,14 @@ export const boxShadow = {
 export const boxShadowHover = {
     "label": "Box Shadow",
     "general": {
+        "shadowColor": "",
+        "defaultShadowColor": "",
+        "shadowHorizontal": "",
+        "shadowVertical": "",
+        "shadowBlur": "",
+        "shadowSpread": ""
+    },
+    "xxl": {
         "shadowColor": "",
         "defaultShadowColor": "",
         "shadowHorizontal": "",
@@ -617,6 +693,23 @@ export const typography = {
         "text-transform": "none",
         "font-style": "normal",
         "text-decoration": "none",
+        "text-shadow": ""
+    },
+    "xxl": {
+        "font-family": "",
+        "font-options": {},
+        "color": "",
+        "text-align": "",
+        "font-sizeUnit": "px",
+        "font-size": "",
+        "line-heightUnit": "%",
+        "line-height": "",
+        "letter-spacingUnit": "px",
+        "letter-spacing": "",
+        "font-weight": "",
+        "text-transform": "",
+        "font-style": "",
+        "text-decoration": "",
         "text-shadow": ""
     },
     "xl": {
@@ -709,6 +802,23 @@ export const typography = {
 export const typographyHover = {
     "label": "Typography",
     "general": {
+        "font-family": "",
+        "font-options": {},
+        "color": "",
+        "text-align": "",
+        "font-sizeUnit": "px",
+        "font-size": "",
+        "line-heightUnit": "%",
+        "line-height": "",
+        "letter-spacingUnit": "px",
+        "letter-spacing": "",
+        "font-weight": "",
+        "text-transform": "",
+        "font-style": "",
+        "text-decoration": "",
+        "text-shadow": ""
+    },
+    "xxl": {
         "font-family": "",
         "font-options": {},
         "color": "",
@@ -822,6 +932,14 @@ export const margin = {
         "sync": true,
         "unit": "px"
     },
+    "xxl": {
+        "margin-top": "",
+        "margin-right": "",
+        "margin-bottom": "",
+        "margin-left": "",
+        "sync": true,
+        "unit": ""
+    },
     "xl": {
         "margin-top": "",
         "margin-right": "",
@@ -873,6 +991,14 @@ export const padding = {
         "padding-left": "",
         "sync": true,
         "unit": "px"
+    },
+    "xxl": {
+        "padding-top": "",
+        "padding-right": "",
+        "padding-bottom": "",
+        "padding-left": "",
+        "sync": true,
+        "unit": ""
     },
     "xl": {
         "padding-top": "",
@@ -1023,6 +1149,10 @@ export const __experimentalContainer = {
         "max-widthUnit": "%",
         "max-width": "90"
     },
+    xxl: {
+        "max-widthUnit": "%",
+        "max-width": ""
+    },
     xl: {
         "max-widthUnit": "%",
         "max-width": ""
@@ -1049,6 +1179,9 @@ export const __experimentalColumn = {
     label: "Column size",
     general: {
         "size": 90
+    },
+    xxl: {
+        "size": ""
     },
     xl: {
         "size": ""
@@ -1108,6 +1241,9 @@ export const __experimentalPosition = {
     "general": {
         "position": ""
     },
+    "xxl": {
+        "position": ""
+    },
     "xl": {
         "position": ""
     },
@@ -1132,6 +1268,14 @@ export const __experimentalPosition = {
                 "left": "",
                 "sync": false,
                 "unit": "px"
+        },
+        "xxl": {
+                "top": "",
+                "right": "",
+                "bottom": "",
+                "left": "",
+                "sync": false,
+                "unit": ""
         },
         "xl": {
                 "top": "",
@@ -1179,6 +1323,9 @@ export const __experimentalPosition = {
 export const __experimentalDisplay = {
     "label": "Display block",
     "general": {
+        "display": ""
+    },
+    "xxl": {
         "display": ""
     },
     "xl": {

@@ -38,6 +38,10 @@ const TEMPLATES = [
                                 "fullwidth": true,
                                 "size": 100
                             },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
                             xl: {
                                 "fullwidth": false,
                                 "size": ""
@@ -83,6 +87,10 @@ const TEMPLATES = [
                                 "fullwidth": false,
                                 "size": 47.5
                             },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
                             xl: {
                                 "fullwidth": false,
                                 "size": ""
@@ -116,7 +124,11 @@ const TEMPLATES = [
                             label: "Column size",
                             general: {
                                 "fullwidth": false,
-                                "size": 45
+                                "size": 47.5
+                            },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
                             },
                             xl: {
                                 "fullwidth": false,
@@ -163,6 +175,10 @@ const TEMPLATES = [
                                 "fullwidth": false,
                                 "size": 23.7
                             },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
                             xl: {
                                 "fullwidth": false,
                                 "size": ""
@@ -197,6 +213,10 @@ const TEMPLATES = [
                             general: {
                                 "fullwidth": false,
                                 "size": 71.3
+                            },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
                             },
                             xl: {
                                 "fullwidth": false,
@@ -243,6 +263,10 @@ const TEMPLATES = [
                                 "fullwidth": false,
                                 "size": 71.3,
                             },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
                             xl: {
                                 "fullwidth": false,
                                 "size": ""
@@ -277,6 +301,10 @@ const TEMPLATES = [
                             general: {
                                 "fullwidth": false,
                                 "size": 23.7,
+                            },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
                             },
                             xl: {
                                 "fullwidth": false,
@@ -323,6 +351,10 @@ const TEMPLATES = [
                                 "fullwidth": false,
                                 "size": 19
                             },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
                             xl: {
                                 "fullwidth": false,
                                 "size": ""
@@ -357,6 +389,10 @@ const TEMPLATES = [
                             general: {
                                 "fullwidth": false,
                                 "size": 76
+                            },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
                             },
                             xl: {
                                 "fullwidth": false,
@@ -403,6 +439,10 @@ const TEMPLATES = [
                                 "fullwidth": false,
                                 "size": 76,
                             },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
                             xl: {
                                 "fullwidth": false,
                                 "size": ""
@@ -437,6 +477,10 @@ const TEMPLATES = [
                             general: {
                                 "fullwidth": false,
                                 "size": 19,
+                            },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
                             },
                             xl: {
                                 "fullwidth": false,
@@ -483,6 +527,10 @@ const TEMPLATES = [
                                 "fullwidth": false,
                                 "size": 30,
                             },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
                             xl: {
                                 "fullwidth": false,
                                 "size": ""
@@ -518,6 +566,10 @@ const TEMPLATES = [
                                 "fullwidth": false,
                                 "size": 30,
                             },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
                             xl: {
                                 "fullwidth": false,
                                 "size": ""
@@ -552,6 +604,10 @@ const TEMPLATES = [
                             general: {
                                 "fullwidth": false,
                                 "size": 30,
+                            },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
                             },
                             xl: {
                                 "fullwidth": false,
@@ -598,6 +654,10 @@ const TEMPLATES = [
                                 "fullwidth": false,
                                 "size": 22.5
                             },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
                             xl: {
                                 "fullwidth": false,
                                 "size": ""
@@ -633,6 +693,10 @@ const TEMPLATES = [
                                 "fullwidth": false,
                                 "size": 22.5
                             },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
                             xl: {
                                 "fullwidth": false,
                                 "size": ""
@@ -667,6 +731,10 @@ const TEMPLATES = [
                             general: {
                                 "fullwidth": false,
                                 "size": 45
+                            },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
                             },
                             xl: {
                                 "fullwidth": false,
@@ -713,6 +781,10 @@ const TEMPLATES = [
                                 "fullwidth": false,
                                 "size": 15
                             },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
                             xl: {
                                 "fullwidth": false,
                                 "size": ""
@@ -748,6 +820,10 @@ const TEMPLATES = [
                                 "fullwidth": false,
                                 "size": 15
                             },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
                             xl: {
                                 "fullwidth": false,
                                 "size": ""
@@ -782,6 +858,10 @@ const TEMPLATES = [
                             general: {
                                 "fullwidth": false,
                                 "size": 60
+                            },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
                             },
                             xl: {
                                 "fullwidth": false,
@@ -828,6 +908,10 @@ const TEMPLATES = [
                                 "fullwidth": false,
                                 "size": 15
                             },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
                             xl: {
                                 "fullwidth": false,
                                 "size": ""
@@ -863,6 +947,10 @@ const TEMPLATES = [
                                 "fullwidth": false,
                                 "size": 60
                             },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
                             xl: {
                                 "fullwidth": false,
                                 "size": ""
@@ -897,6 +985,10 @@ const TEMPLATES = [
                             general: {
                                 "fullwidth": false,
                                 "size": 15
+                            },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
                             },
                             xl: {
                                 "fullwidth": false,
@@ -943,6 +1035,10 @@ const TEMPLATES = [
                                 "fullwidth": false,
                                 "size": 45,
                             },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
                             xl: {
                                 "fullwidth": false,
                                 "size": ""
@@ -978,6 +1074,10 @@ const TEMPLATES = [
                                 "fullwidth": false,
                                 "size": 22.5,
                             },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
                             xl: {
                                 "fullwidth": false,
                                 "size": ""
@@ -1012,6 +1112,10 @@ const TEMPLATES = [
                             general: {
                                 "fullwidth": false,
                                 "size": 22.5,
+                            },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
                             },
                             xl: {
                                 "fullwidth": false,
@@ -1058,6 +1162,10 @@ const TEMPLATES = [
                                 "fullwidth": false,
                                 "size": 60,
                             },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
                             xl: {
                                 "fullwidth": false,
                                 "size": ""
@@ -1093,6 +1201,10 @@ const TEMPLATES = [
                                 "fullwidth": false,
                                 "size": 15,
                             },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
                             xl: {
                                 "fullwidth": false,
                                 "size": ""
@@ -1127,6 +1239,10 @@ const TEMPLATES = [
                             general: {
                                 "fullwidth": false,
                                 "size": 15,
+                            },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
                             },
                             xl: {
                                 "fullwidth": false,
@@ -1173,6 +1289,10 @@ const TEMPLATES = [
                                 "fullwidth": false,
                                 "size": 21.3,
                             },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
                             xl: {
                                 "fullwidth": false,
                                 "size": ""
@@ -1208,6 +1328,10 @@ const TEMPLATES = [
                                 "fullwidth": false,
                                 "size": 21.3,
                             },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
                             xl: {
                                 "fullwidth": false,
                                 "size": ""
@@ -1243,6 +1367,10 @@ const TEMPLATES = [
                                 "fullwidth": false,
                                 "size": 21.3,
                             },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
                             xl: {
                                 "fullwidth": false,
                                 "size": ""
@@ -1277,6 +1405,10 @@ const TEMPLATES = [
                             general: {
                                 "fullwidth": false,
                                 "size": 21.3,
+                            },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
                             },
                             xl: {
                                 "fullwidth": false,
@@ -1323,75 +1455,9 @@ const TEMPLATES = [
                                 "fullwidth": false,
                                 "size": 16,
                             },
-                            xl: {
+                            xxl: {
                                 "fullwidth": false,
                                 "size": ""
-                            },
-                            l: {
-                                "fullwidth": false,
-                                "size": ""
-                            },
-                            m: {
-                                "fullwidth": false,
-                                "size": ""
-                            },
-                            s: {
-                                "fullwidth": false,
-                                "size": ""
-                            },
-                            xs: {
-                                "fullwidth": false,
-                                "size": ""
-                            },
-                        }
-                    )
-                }
-            ],
-            [
-                'maxi-blocks/column-maxi',
-                {
-                    uniqueID: 'maxi-column-maxi-1',
-                    columnSize: JSON.stringify(
-                        {
-                            label: "Column size",
-                            general: {
-                                "fullwidth": false,
-                                "size": 16,
-                            },
-                            xl: {
-                                "fullwidth": false,
-                                "size": ""
-                            },
-                            l: {
-                                "fullwidth": false,
-                                "size": ""
-                            },
-                            m: {
-                                "fullwidth": false,
-                                "size": ""
-                            },
-                            s: {
-                                "fullwidth": false,
-                                "size": ""
-                            },
-                            xs: {
-                                "fullwidth": false,
-                                "size": ""
-                            },
-                        }
-                    )
-                }
-            ],
-            [
-                'maxi-blocks/column-maxi',
-                {
-                    uniqueID: 'maxi-column-maxi-1',
-                    columnSize: JSON.stringify(
-                        {
-                            label: "Column size",
-                            general: {
-                                "fullwidth": false,
-                                "size": 16,
                             },
                             xl: {
                                 "fullwidth": false,
@@ -1428,6 +1494,10 @@ const TEMPLATES = [
                                 "fullwidth": false,
                                 "size": 16,
                             },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
                             xl: {
                                 "fullwidth": false,
                                 "size": ""
@@ -1462,6 +1532,88 @@ const TEMPLATES = [
                             general: {
                                 "fullwidth": false,
                                 "size": 16,
+                            },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
+                }
+            ],
+            [
+                'maxi-blocks/column-maxi',
+                {
+                    uniqueID: 'maxi-column-maxi-1',
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 16,
+                            },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
+                }
+            ],
+            [
+                'maxi-blocks/column-maxi',
+                {
+                    uniqueID: 'maxi-column-maxi-1',
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 16,
+                            },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
                             },
                             xl: {
                                 "fullwidth": false,
@@ -1508,75 +1660,9 @@ const TEMPLATES = [
                                 "fullwidth": false,
                                 "size": 12.5,
                             },
-                            xl: {
+                            xxl: {
                                 "fullwidth": false,
                                 "size": ""
-                            },
-                            l: {
-                                "fullwidth": false,
-                                "size": ""
-                            },
-                            m: {
-                                "fullwidth": false,
-                                "size": ""
-                            },
-                            s: {
-                                "fullwidth": false,
-                                "size": ""
-                            },
-                            xs: {
-                                "fullwidth": false,
-                                "size": ""
-                            },
-                        }
-                    )
-                }
-            ],
-            [
-                'maxi-blocks/column-maxi',
-                {
-                    uniqueID: 'maxi-column-maxi-1',
-                    columnSize: JSON.stringify(
-                        {
-                            label: "Column size",
-                            general: {
-                                "fullwidth": false,
-                                "size": 12.5,
-                            },
-                            xl: {
-                                "fullwidth": false,
-                                "size": ""
-                            },
-                            l: {
-                                "fullwidth": false,
-                                "size": ""
-                            },
-                            m: {
-                                "fullwidth": false,
-                                "size": ""
-                            },
-                            s: {
-                                "fullwidth": false,
-                                "size": ""
-                            },
-                            xs: {
-                                "fullwidth": false,
-                                "size": ""
-                            },
-                        }
-                    )
-                }
-            ],
-            [
-                'maxi-blocks/column-maxi',
-                {
-                    uniqueID: 'maxi-column-maxi-1',
-                    columnSize: JSON.stringify(
-                        {
-                            label: "Column size",
-                            general: {
-                                "fullwidth": false,
-                                "size": 12.5,
                             },
                             xl: {
                                 "fullwidth": false,
@@ -1613,6 +1699,10 @@ const TEMPLATES = [
                                 "fullwidth": false,
                                 "size": 12.5,
                             },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
                             xl: {
                                 "fullwidth": false,
                                 "size": ""
@@ -1648,6 +1738,10 @@ const TEMPLATES = [
                                 "fullwidth": false,
                                 "size": 12.5,
                             },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
                             xl: {
                                 "fullwidth": false,
                                 "size": ""
@@ -1682,6 +1776,88 @@ const TEMPLATES = [
                             general: {
                                 "fullwidth": false,
                                 "size": 12.5,
+                            },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
+                }
+            ],
+            [
+                'maxi-blocks/column-maxi',
+                {
+                    uniqueID: 'maxi-column-maxi-1',
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 12.5,
+                            },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xl: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            l: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            m: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            s: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                            xs: {
+                                "fullwidth": false,
+                                "size": ""
+                            },
+                        }
+                    )
+                }
+            ],
+            [
+                'maxi-blocks/column-maxi',
+                {
+                    uniqueID: 'maxi-column-maxi-1',
+                    columnSize: JSON.stringify(
+                        {
+                            label: "Column size",
+                            general: {
+                                "fullwidth": false,
+                                "size": 12.5,
+                            },
+                            xxl: {
+                                "fullwidth": false,
+                                "size": ""
                             },
                             xl: {
                                 "fullwidth": false,

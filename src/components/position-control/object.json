@@ -3,6 +3,9 @@
     "general": {
         "position": ""
     },
+    "xxl": {
+        "position": ""
+    },
     "xl": {
         "position": ""
     },
@@ -27,6 +30,14 @@
                 "left": "",
                 "sync": false,
                 "unit": "px"
+        },
+        "xxl": {
+                "top": "",
+                "right": "",
+                "bottom": "",
+                "left": "",
+                "sync": false,
+                "unit": ""
         },
         "xl": {
                 "top": "",

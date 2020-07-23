@@ -31,7 +31,6 @@ const allowedBlocks = [
 	'maxi-blocks/section-maxi',
 	'maxi-blocks/container-maxi',
 	'maxi-blocks/icon-maxi',
-	'maxi-blocks/test-maxi',
 ];
 
 /**
@@ -76,7 +75,7 @@ function addAttributes(settings) {
 			},
 			zIndex: {
 				type: 'string',
-				default: '{"label":"ZIndex","general":{"z-index":""},"xl":{"z-index":""},"l":{"z-index":""},"m":{"z-index":""},"s":{"z-index":""},"xs":{"z-index":""}}'
+				default: '{"label":"ZIndex","general":{"z-index":""},"xxl":{"z-index":""},"xl":{"z-index":""},"l":{"z-index":""},"m":{"z-index":""},"s":{"z-index":""},"xs":{"z-index":""}}'
 			},
 			breakpoints: {
 				type: 'string',

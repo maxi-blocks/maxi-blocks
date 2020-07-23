@@ -313,7 +313,6 @@ class edit extends MaxiBlock {
                 {
                     rowBlockWidth != 0 &&
                     <ResizableBox
-                        ref={ref => console.log('ref', ref)}
                         className={classnames(
                             'maxi-block__resizer',
                             "maxi-column-block__resizer",

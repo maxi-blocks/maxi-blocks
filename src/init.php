@@ -453,15 +453,9 @@ function maxi_add_metaboxes() {
 
 function maxi_metabox_content() {
 	global $post; // Get the current post data
-	$maxi_blocks_custom_ccs_page = normalize_whitespace(get_post_meta( $post->ID, 'maxi_blocks_custom_ccs_page', true )); // Get the saved values
+	$maxi_blocks_custom_ccs_page = get_post_meta( $post->ID, 'maxi_blocks_custom_ccs_page', true ); // Get the saved values
 	echo '<div>
-        <textarea style="width: 100%"
-        	rows="5"
-        	id="maxi_blocks_custom_ccs_page"
-        	name="maxi_blocks_custom_ccs_page"
-        	val="'.$maxi_blocks_custom_ccs_page.'"
-        	>'.$maxi_blocks_custom_ccs_page.'
-        </textarea>
+        <textarea style="width: 100%" rows="5" id="maxi_blocks_custom_ccs_page" name="maxi_blocks_custom_ccs_page" val="'.$maxi_blocks_custom_ccs_page.'">'.$maxi_blocks_custom_ccs_page.'</textarea>
     	</div>';
 
     wp_nonce_field( 'maxi_blocks_custom_ccs_page_nonce', 'maxi_blocks_custom_ccs_page_process' );
@@ -494,7 +488,7 @@ function maxi_output_css() {
 	global $post; // Get the current post data
 	$maxi_blocks_custom_ccs_page = '';
 	if($post && $post->ID) $maxi_blocks_custom_ccs_page = get_post_meta( $post->ID, 'maxi_blocks_custom_ccs_page', true ); // Get the saved values
-	if($maxi_blocks_custom_ccs_page != '') echo '<style id="maxi-blocks-custom-ccs-page">'.$maxi_blocks_custom_ccs_page.'</style>';
+	if($maxi_blocks_custom_ccs_page != '') echo '<style id="maxi-blocks-custom-ccs-page">'.$maxi_blocks_custom_ccs_page.'</style><br>';
 
    //wp_nonce_field( 'maxi_blocks_custom_ccs_page_nonce', 'maxi_blocks_custom_ccs_page_process' );
 }

@@ -52,33 +52,93 @@ motionElems.forEach(function(elem) {
 	if(motionData !== null) {
 		if("vertical" in motionData) {
 
-			const maxSpeed = 10;
-			const currentSpeed = motionData.vertical.speed;
 			const direction = motionData.vertical.direction;
 			const status = motionData.vertical.status;
-			const viewportTop = motionData.vertical.viewportTop;
-			const viewportBottom = motionData.vertical.viewportBottom;
+			const viewport = motionData.vertical.viewport;
+			const startValue = motionData.vertical.startValue;
+			const midValue = motionData.vertical.midValue;
+			const endValue = motionData.vertical.endValue;
 
 			if(!!parseInt(status)) {
-				const motionTimeLine = gsap.timeline({
+				const motionTimeLineTop = gsap.timeline({
 					scrollTrigger: {
 						trigger: ".maxi-motion-effect-"+ motionID +"",
-						start: "top "+ viewportTop +"%",
-						end: "bottom "+ viewportBottom +"%",
+						start: "top "+ viewport[2] +"%",
 						scrub: 1,
-						//markers: true,
+						markers: true,
 						onEnter: self => {
 							self.trigger = elem;
 						},
 					}
 				});
-				motionTimeLine.to(".maxi-motion-effect-"+ motionID +"", {
-					y: (direction === 'up') ?
-						((currentSpeed * vw) / maxSpeed) :
-						-((currentSpeed * vw) / maxSpeed),
-					duration: 1,
-					ease: "power1.out"
+				const motionTimeLineMid = gsap.timeline({
+					scrollTrigger: {
+						trigger: ".maxi-motion-effect-"+ motionID +"",
+						start: "center "+ viewport[1] +"%",
+						scrub: 1,
+						markers: true,
+						onEnter: self => {
+							self.trigger = elem;
+						},
+					}
 				});
+				const motionTimeLineBottom = gsap.timeline({
+					scrollTrigger: {
+						trigger: ".maxi-motion-effect-"+ motionID +"",
+						start: "bottom "+ viewport[0] +"%",
+						scrub: 1,
+						markers: true,
+						onEnter: self => {
+							self.trigger = elem;
+						},
+					}
+				});
+				if(direction === 'up') {
+					if(startValue !== 0) {
+						motionTimeLineTop.to(".maxi-motion-effect-"+ motionID +"", {
+							y: startValue * 100,
+							duration: 1,
+							ease: "power1.out"
+						})
+					}
+					if(midValue !== 0) {
+						motionTimeLineMid.to(".maxi-motion-effect-"+ motionID +"", {
+							y: midValue * 100,
+							duration: 1,
+							ease: "power1.out"
+						})
+					}
+					if(endValue !== 0) {
+						motionTimeLineBottom.to(".maxi-motion-effect-"+ motionID +"", {
+							y: endValue * 100,
+							duration: 1,
+							ease: "power1.out"
+						})
+					}
+				}
+				if(direction === 'down') {
+					if(startValue !== 0) {
+						motionTimeLineTop.to(".maxi-motion-effect-"+ motionID +"", {
+							y: -(startValue * 100),
+							duration: 1,
+							ease: "power1.out"
+						})
+					}
+					if(midValue !== 0) {
+						motionTimeLineMid.to(".maxi-motion-effect-"+ motionID +"", {
+							y: -(midValue * 100),
+							duration: 1,
+							ease: "power1.out"
+						})
+					}
+					if(endValue !== 0) {
+						motionTimeLineBottom.to(".maxi-motion-effect-"+ motionID +"", {
+							y: -(endValue * 100),
+							duration: 1,
+							ease: "power1.out"
+						})
+					}
+				}
 			}
 		}
 

@@ -41,7 +41,7 @@ import {
 /**
  * Component
  */
-const ShapeDividerControl = props => {
+const MotionControl = props => {
 
     const {
         motionOptions,
@@ -113,19 +113,6 @@ const ShapeDividerControl = props => {
                             onChange(JSON.stringify(value));
                         }}
                     />
-                    <SizeControl
-                        label={__('Speed', 'maxi-blocks')}
-                        disableUnit
-                        min={0}
-                        max={10}
-                        initial={1}
-                        step={0.1}
-                        value={verticalOptions.speed}
-                        onChangeValue={val => {
-                            verticalOptions.speed = val;
-                            onChange(JSON.stringify(value));
-                        }}
-                    />
                     <__experimentalAdvancedRangeControl
                         value={verticalOptions.viewport}
                         onChangeValue={val => {
@@ -133,30 +120,47 @@ const ShapeDividerControl = props => {
                             onChange(JSON.stringify(value));
                         }}
                     />
-                    <SizeControl
-                        label={__('Viewport Top', 'maxi-blocks')}
-                        disableUnit
-                        min={0}
-                        max={100}
-                        initial={100}
-                        value={verticalOptions.viewportTop}
-                        onChangeValue={val => {
-                            verticalOptions.viewportTop = val;
-                            onChange(JSON.stringify(value));
-                        }}
-                    />
-                    <SizeControl
-                        label={__('Viewport Bottom', 'maxi-blocks')}
-                        disableUnit
-                        min={0}
-                        max={100}
-                        initial={0}
-                        value={verticalOptions.viewportBottom}
-                        onChangeValue={val => {
-                            verticalOptions.viewportBottom = val;
-                            onChange(JSON.stringify(value));
-                        }}
-                    />
+                    <div className='maxi-motion-amounts-control'>
+                        <div className='maxi-motion-amounts-control__input'>
+                            <input
+                                type="number"
+                                min={0}
+                                max={10}
+                                value={verticalOptions.startValue}
+                                onChange={e => {
+                                    verticalOptions.startValue = e.target.value;
+                                    onChange(JSON.stringify(value));
+                                }}
+                            />
+                            <label>{__('Starting Scale', 'maxi-blocks')}</label>
+                        </div>
+                        <div className='maxi-motion-amounts-control__input'>
+                            <input
+                                type="number"
+                                min={0}
+                                max={10}
+                                value={verticalOptions.midValue}
+                                onChange={e => {
+                                    verticalOptions.midValue = e.target.value;
+                                    onChange(JSON.stringify(value));
+                                }}
+                            />
+                            <label>{__('Mid Scale', 'maxi-blocks')}</label>
+                        </div>
+                        <div className='maxi-motion-amounts-control__input'>
+                            <input
+                                type="number"
+                                min={0}
+                                max={10}
+                                value={verticalOptions.endtValue}
+                                onChange={e => {
+                                    verticalOptions.endtValue = e.target.value;
+                                    onChange(JSON.stringify(value));
+                                }}
+                            />
+                            <label>{__('End Scale', 'maxi-blocks')}</label>
+                        </div>
+                    </div>
                 </Fragment>
             }
             {
@@ -514,4 +518,4 @@ const ShapeDividerControl = props => {
 
 }
 
-export default ShapeDividerControl;
+export default MotionControl;

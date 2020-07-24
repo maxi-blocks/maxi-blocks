@@ -1,0 +1,33 @@
+.maxi-advanced-range-control {
+    .slider-handles {
+        & > div {
+            width: 15px !important;
+            height: 15px !important;
+            background-color: #464a53 !important;
+            margin-left: -7px !important;
+            margin-top: 29px !important;
+        }
+    }
+    .slider-tracks {
+       & > div {
+            height: 4px !important;
+            background-color: #464a53 !important;
+            border-radius: 0 !important;
+        }
+    }
+    .slider-ticks {
+        &__tick:first-of-type {
+            position: absolute;
+            left: 0;
+            bottom: -6px;
+            width: 60px;
+        }
+        &__tick:last-of-type {
+            position: absolute;
+            right: 0;
+            bottom: -6px;
+            width: 60px;
+            text-align: right;
+        }
+    }
+}

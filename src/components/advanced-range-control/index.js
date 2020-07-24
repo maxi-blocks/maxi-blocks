@@ -8,37 +8,6 @@ import { Slider, Rail, Handles, Tracks, Ticks } from 'react-compound-slider'
  */
 import './editor.scss';
 
-function Tick({ tick, count }) {
-    return (
-      <div>
-        <div
-          style={{
-            position: 'absolute',
-            marginTop: 52,
-            marginLeft: -0.5,
-            width: 1,
-            height: 8,
-            backgroundColor: 'silver',
-            left: `${tick.percent}%`,
-          }}
-        />
-        <div
-          style={{
-            position: 'absolute',
-            marginTop: 60,
-            fontSize: 10,
-            textAlign: 'center',
-            marginLeft: `${-(100 / count) / 2}%`,
-            width: `${100 / count}%`,
-            left: `${tick.percent}%`,
-          }}
-        >
-          {tick.value}
-        </div>
-      </div>
-    )
-  }
-
 function Track({ source, target, getTrackProps }) {
     return (
       <div
@@ -97,16 +66,17 @@ const AdvancedRangeControl = props => {
         position: 'relative',
         width: '100%',
         height: 80,
-        border: '1px solid steelblue',
+        marginTop: 15,
+        marginBottom: 15,
     }
 
     const railStyle = {
         position: 'absolute',
         width: '100%',
-        height: 10,
+        height: 4,
         marginTop: 35,
         borderRadius: 5,
-        backgroundColor: '#8B9CB6',
+        backgroundColor: '#dddfe1',
     }
 
     const {
@@ -118,6 +88,7 @@ const AdvancedRangeControl = props => {
         <div className="maxi-advanced-range-control">
 
             <Slider
+                className='maxi-advanced-range-control__slider'
                 rootStyle={sliderStyle}
                 domain={[0, 100]}
                 step={1}
@@ -159,12 +130,12 @@ const AdvancedRangeControl = props => {
                     </div>
                 )}
                 </Tracks>
-                <Ticks values={[0, 50, 100]}>
+                <Ticks values={['Viewport Bottom', 'Viewport Top']}>
                 {({ ticks }) => (
                     <div className="slider-ticks">
-                    {ticks.map(tick => (
-                        <Tick key={tick.id} tick={tick} count={ticks.length} />
-                    ))}
+                      {ticks.map(tick => (
+                        <div className='slider-ticks__tick'>{tick.value}</div>
+                      ))}
                     </div>
                 )}
                 </Ticks>

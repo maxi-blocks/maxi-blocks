@@ -22,11 +22,13 @@ const save = props => {
             extraClassName,
             fullWidth,
             showLine,
-            lineOrientation
+            lineOrientation,
+            motion
         },
     } = props;
 
     let classes = classnames(
+        `maxi-motion-effect maxi-motion-effect-${uniqueID}`,
         'maxi-block maxi-divider-block',
         blockStyle,
         extraClassName,
@@ -47,6 +49,8 @@ const save = props => {
         <div
             className={classes}
             data-maxi_initial_block_class={defaultBlockStyle}
+            data-motion={motion}
+            data-motion-id={uniqueID}
         >
             {
                 !!showLine &&

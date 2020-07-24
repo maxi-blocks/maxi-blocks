@@ -38,11 +38,13 @@ const save = props => {
             hoverBackground,
             hoverAnimationCustomBorder,
             hoverPadding,
+            motion,
         },
         imageData
     } = props;
 
     let classes = classnames(
+        `maxi-motion-effect maxi-motion-effect-${uniqueID}`,
         'maxi-block maxi-image-block',
         blockStyle,
         extraClassName,
@@ -73,6 +75,8 @@ const save = props => {
         <figure
             className={classes}
             data-maxi_initial_block_class={defaultBlockStyle}
+            data-motion={motion}
+            data-motion-id={uniqueID}
         >
             <img
                 className={"wp-image-" + mediaID}

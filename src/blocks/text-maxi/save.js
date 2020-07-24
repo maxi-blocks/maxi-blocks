@@ -35,10 +35,12 @@ const save = props => {
             hoverOpacity,
             hoverBackground,
             hoverAnimationCustomBorder,
+            motion,
         },
     } = props;
 
     let classes = classnames(
+        `maxi-motion-effect maxi-motion-effect-${uniqueID}`,
         'maxi-block maxi-text-block',
         'maxi-text-block-wrap',
         blockStyle,
@@ -59,11 +61,14 @@ const save = props => {
 
     return (
         <Fragment>
-            <div className={classes}>
+            <div
+                className={classes}
+                data-motion={motion}
+                data-motion-id={uniqueID}
+            >
                 <RichText.Content
                     value={content}
                     tagName={isList ? typeOfList : textLevel}
-                    // className={classes}
                     data-gx_initial_block_class={defaultBlockStyle}
                 />
                 {

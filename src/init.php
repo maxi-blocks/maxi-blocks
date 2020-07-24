@@ -453,7 +453,7 @@ function maxi_add_metaboxes() {
 
 function maxi_metabox_content() {
 	global $post; // Get the current post data
-	$maxi_blocks_custom_ccs_page = get_post_meta( $post->ID, 'maxi_blocks_custom_ccs_page', true ); // Get the saved values
+	$maxi_blocks_custom_ccs_page = normalize_whitespace(get_post_meta( $post->ID, 'maxi_blocks_custom_ccs_page', true )); // Get the saved values
 	echo '<div>
         <textarea style="width: 100%"
         	rows="5"
@@ -485,7 +485,7 @@ function maxi_save_metabox( $post_id, $post ) {
 	update_post_meta( $post->ID, 'maxi_blocks_custom_ccs_page', $sanitized );
 
 }
-// add_action( 'save_post', 'maxi_save_metabox', 1, 2 );
+add_action( 'save_post', 'maxi_save_metabox', 1, 2 );
 
 add_action( 'wp_head', 'maxi_output_css', 10, 2 );
 add_action( 'admin_head', 'maxi_output_css', 10, 2 );

@@ -21,7 +21,8 @@ import Inspector from './inspector';
 import {
     getBackgroundObject,
     getBoxShadowObject,
-    getAlignmentFlexObject
+    getAlignmentFlexObject,
+    getAlignmentTextObject
 } from '../../extensions/styles/utils';
 import {
     MaxiBlock,
@@ -169,7 +170,8 @@ class edit extends MaxiBlock {
         } = this.props.attributes;
 
         const response = {
-            captionTypography: { ...JSON.parse(captionTypography) }
+            captionTypography: { ...JSON.parse(captionTypography) },
+            alignmentTypography: { ...getAlignmentTextObject(JSON.parse(captionTypography).textAlign) }
         };
 
         return response
@@ -329,11 +331,11 @@ class edit extends MaxiBlock {
 
         const image = getImage();
         if (image && imageData) {
-            if(imageData.alt_text) setAttributes({ mediaALTwp: imageData.alt_text })
+            if (imageData.alt_text) setAttributes({ mediaALTwp: imageData.alt_text })
 
-            if(mediaALT) setAttributes({ mediaALT: mediaALT })
+            if (mediaALT) setAttributes({ mediaALT: mediaALT })
 
-            if(imageData.title.rendered) setAttributes({ mediaALTtitle: imageData.title.rendered })
+            if (imageData.title.rendered) setAttributes({ mediaALTtitle: imageData.title.rendered })
 
             if (mediaURL != image.source_url)
                 setAttributes({ mediaURL: image.source_url })

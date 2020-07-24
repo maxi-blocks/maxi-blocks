@@ -27,7 +27,8 @@ import {
     __experimentalResponsiveControl,
     __experimentalOpacityControl,
     __experimentalPositionControl,
-    __experimentalDisplayControl
+    __experimentalDisplayControl,
+    __experimentalMotionControl
 } from '../../components';
 
 /**
@@ -61,7 +62,8 @@ const Inspector = props => {
             zIndex,
             breakpoints,
             position,
-            display
+            display,
+            motion
         },
         setAttributes,
     } = props;
@@ -301,49 +303,65 @@ const Inspector = props => {
                     {
                         label: __('Advanced', 'maxi-blocks'),
                         content: (
-                            <div className='maxi-tab-content__box'>
-                                {
-                                    deviceType === 'general' &&
-                                    <Fragment>
-                                        <HoverAnimationControl
-                                            hoverAnimation={hoverAnimation}
-                                            onChangeHoverAnimation={hoverAnimation => setAttributes({ hoverAnimation })}
-                                            hoverAnimationDuration={hoverAnimationDuration}
-                                            onChangeHoverAnimationDuration={hoverAnimationDuration => setAttributes({ hoverAnimationDuration })}
-                                        />
-                                        <TextControl
-                                            label={__('Additional CSS Classes', 'maxi-blocks')}
-                                            className='maxi-additional__css-classes'
-                                            value={extraClassName}
-                                            onChange={extraClassName => setAttributes({ extraClassName })}
-                                        />
-                                    </Fragment>
-                                }
-                                <__experimentalZIndexControl
-                                    zindex={zIndex}
-                                    onChange={zIndex => setAttributes({ zIndex })}
-                                    breakpoint={deviceType}
-                                />
-                                {
-                                    deviceType != 'general' &&
-                                    <__experimentalResponsiveControl
-                                        breakpoints={breakpoints}
-                                        onChange={breakpoints => setAttributes({ breakpoints })}
+                            <Fragment>
+                                <div className='maxi-tab-content__box'>
+                                    {
+                                        deviceType === 'general' &&
+                                        <Fragment>
+                                            <HoverAnimationControl
+                                                hoverAnimation={hoverAnimation}
+                                                onChangeHoverAnimation={hoverAnimation => setAttributes({ hoverAnimation })}
+                                                hoverAnimationDuration={hoverAnimationDuration}
+                                                onChangeHoverAnimationDuration={hoverAnimationDuration => setAttributes({ hoverAnimationDuration })}
+                                            />
+                                            <TextControl
+                                                label={__('Additional CSS Classes', 'maxi-blocks')}
+                                                className='maxi-additional__css-classes'
+                                                value={extraClassName}
+                                                onChange={extraClassName => setAttributes({ extraClassName })}
+                                            />
+                                        </Fragment>
+                                    }
+                                    <__experimentalZIndexControl
+                                        zindex={zIndex}
+                                        onChange={zIndex => setAttributes({ zIndex })}
                                         breakpoint={deviceType}
                                     />
-                                }
-                                <__experimentalPositionControl
-                                    position={position}
-                                    onChange={position => setAttributes({ position })}
-                                    breakpoint={deviceType}
+                                    {
+                                        deviceType != 'general' &&
+                                        <__experimentalResponsiveControl
+                                            breakpoints={breakpoints}
+                                            onChange={breakpoints => setAttributes({ breakpoints })}
+                                            breakpoint={deviceType}
+                                        />
+                                    }
+                                    <__experimentalPositionControl
+                                        position={position}
+                                        onChange={position => setAttributes({ position })}
+                                        breakpoint={deviceType}
+                                    />
+                                    <__experimentalDisplayControl
+                                        display={display}
+                                        onChange={display => setAttributes({ display })}
+                                        breakpoint={deviceType}
+                                        defaultDisplay='flex'
+                                    />
+                                </div>
+                                <AccordionControl
+                                    isPrimary
+                                    items={[
+                                        {
+                                            label: __('Motion Effects', 'maxi-blocks'),
+                                            content: (
+                                                <__experimentalMotionControl
+                                                    motionOptions={motion}
+                                                    onChange={motion => setAttributes({ motion })}
+                                                />
+                                            )
+                                        }
+                                    ]}
                                 />
-                                <__experimentalDisplayControl
-                                    display={display}
-                                    onChange={display => setAttributes({ display })}
-                                    breakpoint={deviceType}
-                                    defaultDisplay='flex'
-                                />
-                            </div>
+                            </Fragment>
                         )
                     }
                 ]}

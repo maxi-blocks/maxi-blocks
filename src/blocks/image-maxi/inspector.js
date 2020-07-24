@@ -109,6 +109,7 @@ const Inspector = props => {
         },
         imageData,
         clientId,
+        deviceType,
         setAttributes,
     } = props;
 
@@ -130,23 +131,6 @@ const Inspector = props => {
         { label: __('Custom', 'maxi-blocks'), value: 'custom' },
         { label: __('None', 'maxi-blocks'), value: 'none' },
     ]
-
-    const { deviceType } = useSelect(
-        select => {
-            const {
-                __experimentalGetPreviewDeviceType
-            } = select(
-                'core/edit-post'
-            );
-            let deviceType = __experimentalGetPreviewDeviceType();
-            deviceType = deviceType === 'Desktop' ?
-                'general' :
-                deviceType;
-            return {
-                deviceType,
-            }
-        }
-    );
 
     const getSizeOptions = () => {
         let response = [];
@@ -282,11 +266,9 @@ const Inspector = props => {
                                                             {
                                                                 captionType != 'none' &&
                                                                 <TypographyControl
-                                                                    breakpoint= 'general'
                                                                     typography={captionTypography}
                                                                     onChange={captionTypography => setAttributes({ captionTypography })}
-                                                                    target='>figcaption'
-                                                                    hideAlignment
+                                                                    breakpoint={deviceType}
                                                                 />
                                                             }
                                                         </Fragment>

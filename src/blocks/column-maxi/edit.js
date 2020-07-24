@@ -144,7 +144,7 @@ class edit extends MaxiBlock {
     }
 
     get getResizerObject() {
-        const { 
+        const {
             margin,
             display
         } = this.props.attributes;
@@ -229,7 +229,8 @@ class edit extends MaxiBlock {
         } = this.props.attributes;
 
         const response = {
-            hoverAnimationTitleTypography: { ...JSON.parse(hoverAnimationTitleTypography) }
+            hoverAnimationTitleTypography: { ...JSON.parse(hoverAnimationTitleTypography) },
+            hoverAnimationTitleAlignmentTypography: { ...getAlignmentTextObject(JSON.parse(hoverAnimationTitleTypography).textAlign) }
         };
 
         return response
@@ -240,8 +241,9 @@ class edit extends MaxiBlock {
             hoverAnimationContentTypography
         } = this.props.attributes;
 
-        const response = {
-            hoverAnimationContentTypography: { ...JSON.parse(hoverAnimationContentTypography) }
+         const response = {
+            hoverAnimationContentTypography: { ...JSON.parse(hoverAnimationContentTypography) },
+            hoverAnimationContentAlignmentTypography: { ...getAlignmentTextObject(JSON.parse(hoverAnimationContentTypography).textAlign) }
         };
 
         return response

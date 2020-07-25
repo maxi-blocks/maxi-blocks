@@ -28,7 +28,8 @@ import {
     __experimentalOpacityControl,
     __experimentalPositionControl,
     __experimentalDisplayControl,
-    __experimentalMotionControl
+    __experimentalMotionControl,
+    __experimentalTransformControl
 } from '../../components';
 
 /**
@@ -37,6 +38,7 @@ import {
 const Inspector = props => {
     const {
         attributes: {
+            uniqueID,
             isFirstOnHierarchy,
             blockStyle,
             defaultBlockStyle,
@@ -62,7 +64,8 @@ const Inspector = props => {
             breakpoints,
             position,
             display,
-            motion
+            motion,
+            transform
         },
         setAttributes,
     } = props;
@@ -345,6 +348,17 @@ const Inspector = props => {
                                                 <__experimentalMotionControl
                                                     motionOptions={motion}
                                                     onChange={motion => setAttributes({ motion })}
+                                                />
+                                            )
+                                        },
+                                        {
+                                            label: __('Transform', 'maxi-blocks'),
+                                            content: (
+                                                <__experimentalTransformControl
+                                                    transform={transform}
+                                                    onChange={transform => setAttributes({ transform })}
+                                                    uniqueID={uniqueID}
+                                                    breakpoint={deviceType}
                                                 />
                                             )
                                         }

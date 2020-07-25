@@ -30,7 +30,8 @@ import {
     __experimentalOpacityControl,
     __experimentalAxisControl,
     __experimentalPositionControl,
-    __experimentalDisplayControl
+    __experimentalDisplayControl,
+    __experimentalTransformControl
 } from '../../components';
 
 /**
@@ -39,6 +40,7 @@ import {
 const Inspector = props => {
     const {
         attributes: {
+            uniqueID,
             isFirstOnHierarchy,
             blockStyle,
             defaultBlockStyle,
@@ -81,7 +83,8 @@ const Inspector = props => {
             onChangeHoverAnimationTypeOpacityColor,
             hoverAnimationTypeOpacityColorBackground,
             position,
-            display
+            display,
+            transform
         },
         deviceType,
         setAttributes,
@@ -439,11 +442,17 @@ const Inspector = props => {
                                     onChange={position => setAttributes({ position })}
                                     breakpoint={deviceType}
                                 />
-                                <__experimentalDisplayControl 
+                                <__experimentalDisplayControl
                                     display={display}
                                     onChange={display => setAttributes({ display })}
                                     breakpoint={deviceType}
                                     defaultDisplay='flex'
+                                />
+                                <__experimentalTransformControl
+                                    transform={transform}
+                                    onChange={transform => setAttributes({ transform })}
+                                    uniqueID={uniqueID}
+                                    breakpoint={deviceType}
                                 />
                             </div>
                         )

@@ -35,6 +35,7 @@ import {
     __experimentalPositionControl,
     __experimentalDisplayControl,
     __experimentalMotionControl,
+    __experimentalTransformControl
 } from '../../components';
 
 /**
@@ -44,6 +45,7 @@ const Inspector = props => {
     const {
         attributes: {
             isFirstOnHierarchy,
+            uniqueID,
             blockStyle,
             defaultBlockStyle,
             alignment,
@@ -92,7 +94,8 @@ const Inspector = props => {
             hoverAnimationTypeOpacityColorBackground,
             position,
             display,
-            motion
+            motion,
+            transform
         },
         setAttributes,
     } = props;
@@ -539,6 +542,17 @@ const Inspector = props => {
                                                     motionOptions={motion}
                                                     onChange={motion => setAttributes({ motion })}
                                                 />
+                                            )
+                                        },
+                                        {
+                                            label: __('Transform', 'maxi-blocks'),
+                                            content: (
+                                                <__experimentalTransformControl 
+                                                    transform={transform}
+                                                    onChange={transform => setAttributes({ transform })}
+                                                    uniqueID={uniqueID}
+                                                    breakpoint={deviceType}
+                                                /> 
                                             )
                                         }
                                     ]}

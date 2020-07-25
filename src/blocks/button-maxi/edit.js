@@ -15,7 +15,8 @@ import {
     getBackgroundObject,
     getBoxShadowObject,
     getAlignmentFlexObject,
-    getOpacityObject
+    getOpacityObject,
+    getTransfromObject
 } from '../../extensions/styles/utils';
 import {
     MaxiBlock,
@@ -44,12 +45,14 @@ class edit extends MaxiBlock {
     get getWrapperObject() {
         const {
             alignment,
-            zIndex
+            zIndex,
+            transform
         } = this.props.attributes;
 
         const response = {
             alignment: { ...getAlignmentFlexObject(JSON.parse(alignment)) },
             zindex: { ...JSON.parse(zIndex) },
+            transform: { ...getTransfromObject(JSON.parse(transform)) }
         };
 
         return response;

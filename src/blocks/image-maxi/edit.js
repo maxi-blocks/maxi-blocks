@@ -21,7 +21,8 @@ import Inspector from './inspector';
 import {
     getBackgroundObject,
     getBoxShadowObject,
-    getAlignmentFlexObject
+    getAlignmentFlexObject,
+    getTransfromObject
 } from '../../extensions/styles/utils';
 import {
     MaxiBlock,
@@ -88,7 +89,8 @@ class edit extends MaxiBlock {
             margin,
             zIndex,
             position,
-            display
+            display,
+            transform
         } = this.props.attributes;
 
         const response = {
@@ -101,7 +103,8 @@ class edit extends MaxiBlock {
             alignment: { ...getAlignmentFlexObject(JSON.parse(alignment)) },
             position: { ...JSON.parse(position) },
             positionOptions: { ...JSON.parse(position).options },
-            display: { ...JSON.parse(display) }
+            display: { ...JSON.parse(display) },
+            transform: { ...getTransfromObject(JSON.parse(transform)) }
         };
 
         return response;

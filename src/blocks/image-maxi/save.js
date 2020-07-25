@@ -25,6 +25,9 @@ const save = props => {
             mediaWidth,
             mediaHeight,
             mediaALT,
+            mediaALTwp,
+            mediaALTtitle,
+            altSelector,
             hoverAnimation,
             hoverAnimationType,
             hoverAnimationTypeText,
@@ -35,10 +38,13 @@ const save = props => {
             hoverBackground,
             hoverAnimationCustomBorder,
             hoverPadding,
+            motion,
         },
+        imageData
     } = props;
 
     let classes = classnames(
+        `maxi-motion-effect maxi-motion-effect-${uniqueID}`,
         'maxi-block maxi-image-block',
         blockStyle,
         extraClassName,
@@ -56,17 +62,29 @@ const save = props => {
             null
     );
 
+     const imageALT = () => {
+      switch(altSelector) {
+        case "wordpress":   return mediaALTwp;
+        case "title":   return mediaALTtitle;
+        case "custom": return mediaALT;
+        default:      return '';
+      }
+    }
+
     return (
         <figure
             className={classes}
             data-maxi_initial_block_class={defaultBlockStyle}
+            data-motion={motion}
+            data-motion-id={uniqueID}
         >
             <img
                 className={"wp-image-" + mediaID}
                 src={mediaURL}
                 width={mediaWidth}
                 height={mediaHeight}
-                alt={mediaALT}
+                alt={imageALT()}
+
             />
             {
                 captionType !== 'none' &&

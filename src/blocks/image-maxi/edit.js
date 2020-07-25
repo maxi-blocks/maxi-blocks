@@ -293,6 +293,7 @@ class edit extends MaxiBlock {
                 imageSize,
                 mediaID,
                 mediaALT,
+                mediaALTwp,
                 mediaURL,
                 mediaWidth,
                 mediaHeight,
@@ -339,8 +340,12 @@ class edit extends MaxiBlock {
 
         const image = getImage();
         if (image && imageData) {
-            if (mediaALT != imageData.alt_text)
-                setAttributes({ mediaALT: imageData.alt_text })
+            if(imageData.alt_text) setAttributes({ mediaALTwp: imageData.alt_text })
+
+            if(mediaALT) setAttributes({ mediaALT: mediaALT })
+
+            if(imageData.title.rendered) setAttributes({ mediaALTtitle: imageData.title.rendered })
+
             if (mediaURL != image.source_url)
                 setAttributes({ mediaURL: image.source_url })
             if (mediaWidth != image.width)
@@ -354,7 +359,7 @@ class edit extends MaxiBlock {
             <__experimentalToolbar {...this.props} />,
             <__experimentalBlock.figure
                 className={classes}
-                data-gx_initial_block_class={defaultBlockStyle}
+                data-maxi_initial_block_class={defaultBlockStyle}
                 data-align={fullWidth}
             >
                 <MediaUpload

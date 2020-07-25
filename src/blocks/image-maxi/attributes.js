@@ -115,6 +115,17 @@ const attributes = {
     mediaALT: {
         type: 'string'
     },
+    mediaALTwp: {
+        type: 'string'
+    },
+    mediaALTtitle: {
+        type: 'string'
+    },
+    altSelector: {
+        type: 'string',
+        default: 'wordpress',
+
+    },
     mediaURL: {
         type: 'string'
     },
@@ -183,7 +194,11 @@ const attributes = {
     clipPath: {
         type: 'string',
         default: ''
-    }
+    },
+    motion: {
+        type: 'string',
+        default: JSON.stringify(attributesData.__experimentalMotion)
+    },
 }
 
 export default attributes;

@@ -8,6 +8,10 @@ import { alignment, margin } from './data';
  * Attributes
  */
 const attributes = {
+    blogStyle: {
+        type: 'string',
+        default: 'maxi-custom'
+    },
     alignment: {
         type: 'string',
         default: JSON.stringify(alignment)
@@ -90,7 +94,7 @@ const attributes = {
     },
     hoverPadding: {
         type: 'string',
-        default: JSON.stringify(attributesData.padding) 
+        default: JSON.stringify(attributesData.padding)
     },
     typographyHover: {
         type: 'string',
@@ -193,7 +197,11 @@ const attributes = {
     display: {
         type: 'string',
         default: JSON.stringify(attributesData.__experimentalDisplay)
-    }
+    },
+    motion: {
+        type: 'string',
+        default: JSON.stringify(attributesData.__experimentalMotion)
+    },
 }
 
 

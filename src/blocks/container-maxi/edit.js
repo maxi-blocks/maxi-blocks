@@ -116,7 +116,8 @@ class edit extends MaxiBlock {
             boxShadow,
             zIndex,
             position,
-            display
+            display,
+            background
         } = this.props.attributes;
 
         const response = {
@@ -130,6 +131,7 @@ class edit extends MaxiBlock {
             position: { ...JSON.parse(position) },
             positionOptions: { ...JSON.parse(position).options },
             display: { ...JSON.parse(display) },
+            background: { ...getBackgroundObject(JSON.parse(background)) },
             container: {
                 label: 'Container',
                 general: {},
@@ -161,13 +163,11 @@ class edit extends MaxiBlock {
 
     get getWrapperObject() {
         const {
-            background,
             margin,
             padding,
         } = this.props.attributes;
 
         const response = {
-            background: { ...getBackgroundObject(JSON.parse(background)) },
             margin: { ...JSON.parse(margin) },
             padding: { ...JSON.parse(padding) },
         };
@@ -320,7 +320,7 @@ class edit extends MaxiBlock {
                     <__experimentalBlock.section
                         className={classes}
                         data-align={fullWidth}
-                        data-gx_initial_block_class={defaultBlockStyle}
+                        data-maxi_initial_block_class={defaultBlockStyle}
                     >
                         <__experimentalShapeDivider
                             shapeDividerOptions={shapeDivider}

@@ -35,7 +35,8 @@ import {
     __experimentalOpacityControl,
     __experimentalPositionControl,
     __experimentalDisplayControl,
-    __experimentalClipPath
+    __experimentalClipPath,
+    __experimentalMotionControl
 } from '../../components';
 
 /**
@@ -82,6 +83,8 @@ const Inspector = props => {
             mediaID,
             extraClassName,
             zIndex,
+            mediaALT,
+            altSelector,
             breakpoints,
             hoverAnimationTitle,
             hoverAnimationContent,
@@ -102,7 +105,8 @@ const Inspector = props => {
             hoverAnimationTypeOpacityColorBackground,
             position,
             display,
-            clipPath
+            clipPath,
+            motion
         },
         imageData,
         clientId,
@@ -120,6 +124,13 @@ const Inspector = props => {
     const hoverCustomTextOptions = [
         { label: __('Yes', 'maxi-blocks'), value: 'yes' },
         { label: __('No', 'maxi-blocks'), value: 'no' },
+    ]
+
+    const altSelectorOptions = [
+        { label: __('WordPress ALT', 'maxi-blocks'), value: 'wordpress' },
+        { label: __('Image Title', 'maxi-blocks'), value: 'title' },
+        { label: __('Custom', 'maxi-blocks'), value: 'custom' },
+        { label: __('None', 'maxi-blocks'), value: 'none' },
     ]
 
     const getSizeOptions = () => {
@@ -421,141 +432,174 @@ const Inspector = props => {
                     {
                         label: __('Advanced', 'maxi-blocks'),
                         content: (
-                            <div className='maxi-tab-content__box'>
-                                {
-                                    deviceType === 'general' &&
-                                    <Fragment>
-                                        <TextControl
-                                            label={__('Additional CSS Classes', 'maxi-blocks')}
-                                            className='maxi-additional__css-classes'
-                                            value={extraClassName}
-                                            onChange={extraClassName => setAttributes({ extraClassName })}
-                                        />
-                                        <HoverAnimationControl
-                                            hoverAnimation={hoverAnimation}
-                                            onChangeHoverAnimation={hoverAnimation => setAttributes({ hoverAnimation })}
+                            <Fragment>
+                                <div className='maxi-tab-content__box'>
+                                    {
+                                        deviceType === 'general' &&
+                                        <Fragment>
+                                            <TextControl
+                                                label={__('Additional CSS Classes', 'maxi-blocks')}
+                                                className='maxi-additional__css-classes'
+                                                value={extraClassName}
+                                                onChange={extraClassName => setAttributes({ extraClassName })}
+                                            />
+                                            <HoverAnimationControl
+                                                hoverAnimation={hoverAnimation}
+                                                onChangeHoverAnimation={hoverAnimation => setAttributes({ hoverAnimation })}
 
-                                            hoverAnimationType={hoverAnimationType}
-                                            onChangeHoverAnimationType={hoverAnimationType => setAttributes({ hoverAnimationType })}
+                                                hoverAnimationType={hoverAnimationType}
+                                                onChangeHoverAnimationType={hoverAnimationType => setAttributes({ hoverAnimationType })}
 
-                                            hoverAnimationTypeText={hoverAnimationTypeText}
-                                            onChangeHoverAnimationTypeText={hoverAnimationTypeText => setAttributes({ hoverAnimationTypeText })}
+                                                hoverAnimationTypeText={hoverAnimationTypeText}
+                                                onChangeHoverAnimationTypeText={hoverAnimationTypeText => setAttributes({ hoverAnimationTypeText })}
 
-                                            hoverAnimationDuration={hoverAnimationDuration}
-                                            onChangeHoverAnimationDuration={hoverAnimationDuration => setAttributes({ hoverAnimationDuration })}
+                                                hoverAnimationDuration={hoverAnimationDuration}
+                                                onChangeHoverAnimationDuration={hoverAnimationDuration => setAttributes({ hoverAnimationDuration })}
 
-                                            hoverAnimationTitle={hoverAnimationTitle}
-                                            onChangeHoverAnimationTitle={hoverAnimationTitle => setAttributes({ hoverAnimationTitle })}
-                                            hoverAnimationContent={hoverAnimationContent}
-                                            onChangeHoverAnimationContent={hoverAnimationContent => setAttributes({ hoverAnimationContent })}
+                                                hoverAnimationTitle={hoverAnimationTitle}
+                                                onChangeHoverAnimationTitle={hoverAnimationTitle => setAttributes({ hoverAnimationTitle })}
+                                                hoverAnimationContent={hoverAnimationContent}
+                                                onChangeHoverAnimationContent={hoverAnimationContent => setAttributes({ hoverAnimationContent })}
 
-                                            hoverCustomTextContent={hoverCustomTextContent}
-                                            onChangeHoverAnimationCustomContent={hoverCustomTextContent => setAttributes({ hoverCustomTextContent })}
+                                                hoverCustomTextContent={hoverCustomTextContent}
+                                                onChangeHoverAnimationCustomContent={hoverCustomTextContent => setAttributes({ hoverCustomTextContent })}
 
-                                            hoverCustomTextTitle={hoverCustomTextTitle}
-                                            onChangeHoverAnimationCustomTitle={hoverCustomTextTitle => setAttributes({ hoverCustomTextTitle })}
+                                                hoverCustomTextTitle={hoverCustomTextTitle}
+                                                onChangeHoverAnimationCustomTitle={hoverCustomTextTitle => setAttributes({ hoverCustomTextTitle })}
 
-                                            hoverAnimationTypeOpacity={hoverAnimationTypeOpacity}
-                                            onChangeHoverAnimationTypeOpacity={hoverAnimationTypeOpacity => setAttributes({ hoverAnimationTypeOpacity })}
+                                                hoverAnimationTypeOpacity={hoverAnimationTypeOpacity}
+                                                onChangeHoverAnimationTypeOpacity={hoverAnimationTypeOpacity => setAttributes({ hoverAnimationTypeOpacity })}
 
-                                            hoverAnimationTypeOpacityColor={hoverAnimationTypeOpacityColor}
-                                            onChangeHoverAnimationTypeOpacityColor={hoverAnimationTypeOpacityColor => setAttributes({ hoverAnimationTypeOpacityColor })}
+                                                hoverAnimationTypeOpacityColor={hoverAnimationTypeOpacityColor}
+                                                onChangeHoverAnimationTypeOpacityColor={hoverAnimationTypeOpacityColor => setAttributes({ hoverAnimationTypeOpacityColor })}
 
-                                        />
-                                        {
-                                            hoverAnimation === 'text' && hoverCustomTextTitle === 'yes' &&
-                                            <TypographyControl
-                                                fontOptions={hoverAnimationTitleTypography}
-                                                onChange={hoverAnimationTitleTypography => setAttributes({ hoverAnimationTitleTypography })}
-                                                target='>.maxi-block-text-hover .maxi-block-text-hover__title'
-                                            />}
-                                        {
-                                            hoverAnimation === 'text' && hoverCustomTextContent === 'yes' &&
-                                            <TypographyControl
-                                                fontOptions={hoverAnimationContentTypography}
-                                                onChange={hoverAnimationContentTypography => setAttributes({ hoverAnimationContentTypography })}
-                                                target='>.maxi-block-text-hover .maxi-block-text-hover__content'
-                                            />}
-                                        {
-                                            hoverAnimation === 'text' &&
-                                            <Fragment>
-                                                <__experimentalOpacityControl
-                                                    opacity={hoverOpacity}
-                                                    onChange={hoverOpacity => setAttributes({ hoverOpacity })}
+                                            />
+                                            {
+                                                hoverAnimation === 'text' && hoverCustomTextTitle === 'yes' &&
+                                                <TypographyControl
+                                                    fontOptions={hoverAnimationTitleTypography}
+                                                    onChange={hoverAnimationTitleTypography => setAttributes({ hoverAnimationTitleTypography })}
+                                                    target='>.maxi-block-text-hover .maxi-block-text-hover__title'
+                                                />}
+                                            {
+                                                hoverAnimation === 'text' && hoverCustomTextContent === 'yes' &&
+                                                <TypographyControl
+                                                    fontOptions={hoverAnimationContentTypography}
+                                                    onChange={hoverAnimationContentTypography => setAttributes({ hoverAnimationContentTypography })}
+                                                    target='>.maxi-block-text-hover .maxi-block-text-hover__content'
+                                                />}
+                                            {
+                                                hoverAnimation === 'text' &&
+                                                <Fragment>
+                                                    <__experimentalOpacityControl
+                                                        opacity={hoverOpacity}
+                                                        onChange={hoverOpacity => setAttributes({ hoverOpacity })}
+                                                    />
+                                                    <BackgroundControl
+                                                        backgroundOptions={hoverBackground}
+                                                        onChange={hoverBackground => setAttributes({ hoverBackground })}
+                                                        disableImage
+                                                        target='.maxi-block-text-hover'
+                                                    />
+
+                                                    <RadioControl
+                                                        label={__('Custom Border', 'maxi-blocks')}
+                                                        className={'maxi-hover-animation-custom-border'}
+                                                        selected={hoverAnimationCustomBorder}
+                                                        options={hoverAnimationCustomOptions}
+                                                        onChange={hoverAnimationCustomBorder => setAttributes({ hoverAnimationCustomBorder })}
+                                                    />
+                                                </Fragment>
+                                            }
+                                            {
+                                                hoverAnimationCustomBorder === 'yes' && hoverAnimation === 'text' &&
+                                                <BorderControl
+                                                    border={hoverBorder}
+                                                    onChange={hoverBorder => setAttributes({ hoverBorder })}
+                                                    breakpoint={deviceType}
                                                 />
+                                            }
+                                            {
+                                                hoverAnimation === 'text' &&
+                                                <Fragment>
+                                                    <__experimentalAxisControl
+                                                        values={hoverPadding}
+                                                        onChange={hoverPadding => setAttributes({ hoverPadding })}
+                                                        disableAuto
+                                                    />
+                                                </Fragment>
+                                            }
+                                            {
+                                                hoverAnimationType === 'opacity-with-colour' &&
                                                 <BackgroundControl
-                                                    backgroundOptions={hoverBackground}
-                                                    onChange={hoverBackground => setAttributes({ hoverBackground })}
+                                                    backgroundOptions={hoverAnimationTypeOpacityColorBackground}
+                                                    onChange={hoverAnimationTypeOpacityColorBackground => setAttributes({ hoverAnimationTypeOpacityColorBackground })}
                                                     disableImage
-                                                    target='.maxi-block-text-hover'
                                                 />
-
-                                                <RadioControl
-                                                    label={__('Custom Border', 'maxi-blocks')}
-                                                    className={'maxi-hover-animation-custom-border'}
-                                                    selected={hoverAnimationCustomBorder}
-                                                    options={hoverAnimationCustomOptions}
-                                                    onChange={hoverAnimationCustomBorder => setAttributes({ hoverAnimationCustomBorder })}
-                                                />
-                                            </Fragment>
-                                        }
-                                        {
-                                            hoverAnimationCustomBorder === 'yes' && hoverAnimation === 'text' &&
-                                            <BorderControl
-                                                border={hoverBorder}
-                                                onChange={hoverBorder => setAttributes({ hoverBorder })}
-                                                breakpoint={deviceType}
-                                            />
-                                        }
-                                        {
-                                            hoverAnimation === 'text' &&
-                                            <Fragment>
-                                                <__experimentalAxisControl
-                                                    values={hoverPadding}
-                                                    onChange={hoverPadding => setAttributes({ hoverPadding })}
-                                                    disableAuto
-                                                />
-                                            </Fragment>
-                                        }
-                                        {
-                                            hoverAnimationType === 'opacity-with-colour' &&
-                                            <BackgroundControl
-                                                backgroundOptions={hoverAnimationTypeOpacityColorBackground}
-                                                onChange={hoverAnimationTypeOpacityColorBackground => setAttributes({ hoverAnimationTypeOpacityColorBackground })}
-                                                disableImage
-                                            />
-                                        }
-                                    </Fragment>
-                                }
-                                <__experimentalZIndexControl
-                                    zindex={zIndex}
-                                    onChange={zIndex => setAttributes({ zIndex })}
-                                    breakpoint={deviceType}
-                                />
-                                {
-                                    deviceType != 'general' &&
-                                    <__experimentalResponsiveControl
-                                        breakpoints={breakpoints}
-                                        onChange={breakpoints => setAttributes({ breakpoints })}
+                                            }
+                                        </Fragment>
+                                    }
+                                    <__experimentalZIndexControl
+                                        zindex={zIndex}
+                                        onChange={zIndex => setAttributes({ zIndex })}
                                         breakpoint={deviceType}
                                     />
-                                }
-                                <__experimentalPositionControl
-                                    position={position}
-                                    onChange={position => setAttributes({ position })}
-                                    breakpoint={deviceType}
+                                    <SelectControl
+                                        label={__('Image ALT Tag', 'maxi-blocks')}
+                                        value={altSelector}
+                                        options={altSelectorOptions}
+                                        onChange={altSelector => {
+                                            setAttributes({ altSelector });
+                                        }}
+                                    />
+                                    {
+                                        altSelector == 'custom' &&
+                                        <TextControl
+                                            placeHolder={__('Add Your ALT Tag Here', 'maxi-blocks')}
+                                            className='maxi-image__alt'
+                                            value={mediaALT}
+                                            onChange={mediaALT => setAttributes({ mediaALT })}
+                                        />
+                                    }
+                                    {
+                                        deviceType != 'general' &&
+                                        <__experimentalResponsiveControl
+                                            breakpoints={breakpoints}
+                                            onChange={breakpoints => setAttributes({ breakpoints })}
+                                            breakpoint={deviceType}
+                                        />
+                                    }
+                                    <__experimentalPositionControl
+                                        position={position}
+                                        onChange={position => setAttributes({ position })}
+                                        breakpoint={deviceType}
+                                    />
+                                    <__experimentalDisplayControl
+                                        display={display}
+                                        onChange={display => setAttributes({ display })}
+                                        breakpoint={deviceType}
+                                        defaultDisplay='flex'
+                                    />
+                                    <__experimentalClipPath
+                                        clipPath={clipPath}
+                                        onChange={clipPath => setAttributes({ clipPath })}
+                                    />
+                                </div>
+                                <AccordionControl
+                                    isPrimary
+                                    items={[
+                                        {
+                                            label: __('Motion Effects', 'maxi-blocks'),
+                                            content: (
+                                                <__experimentalMotionControl
+                                                    motionOptions={motion}
+                                                    onChange={motion => setAttributes({ motion })}
+                                                />
+                                            )
+                                        }
+                                    ]}
                                 />
-                                <__experimentalDisplayControl 
-                                    display={display}
-                                    onChange={display => setAttributes({ display })}
-                                    breakpoint={deviceType}
-                                    defaultDisplay='flex'
-                                />
-                                <__experimentalClipPath 
-                                    clipPath={clipPath}
-                                    onChange={clipPath => setAttributes({ clipPath })}
-                                />
-                            </div>
+                            </Fragment>
                         )
                     }
                 ]}

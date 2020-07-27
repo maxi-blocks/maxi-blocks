@@ -50,10 +50,12 @@ motionElems.forEach(function(elem) {
 	}
 
 	if(motionData !== null) {
+
 		if("vertical" in motionData) {
 
 			const direction = motionData.vertical.direction;
 			const status = motionData.vertical.status;
+			const speed = motionData.vertical.speed;
 			const viewport = motionData.vertical.viewport;
 			const startValue = motionData.vertical.startValue;
 			const midValue = motionData.vertical.midValue;
@@ -96,21 +98,21 @@ motionElems.forEach(function(elem) {
 				if(direction === 'up') {
 					if(startValue !== 0) {
 						motionTimeLineTop.to(".maxi-motion-effect-"+ motionID +"", {
-							y: startValue * 100,
+							y: startValue * speed,
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
 					if(midValue !== 0) {
 						motionTimeLineMid.to(".maxi-motion-effect-"+ motionID +"", {
-							y: midValue * 100,
+							y: midValue * speed,
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
 					if(endValue !== 0) {
 						motionTimeLineBottom.to(".maxi-motion-effect-"+ motionID +"", {
-							y: endValue * 100,
+							y: endValue * speed,
 							duration: 1,
 							ease: "power1.out"
 						})
@@ -119,206 +121,504 @@ motionElems.forEach(function(elem) {
 				if(direction === 'down') {
 					if(startValue !== 0) {
 						motionTimeLineTop.to(".maxi-motion-effect-"+ motionID +"", {
-							y: -(startValue * 100),
+							y: -(startValue * speed),
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
 					if(midValue !== 0) {
 						motionTimeLineMid.to(".maxi-motion-effect-"+ motionID +"", {
-							y: -(midValue * 100),
+							y: -(midValue * speed),
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
 					if(endValue !== 0) {
 						motionTimeLineBottom.to(".maxi-motion-effect-"+ motionID +"", {
-							y: -(endValue * 100),
+							y: -(endValue * speed),
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
 				}
 			}
+
 		}
 
 		if("horizontal" in motionData) {
 
-			const maxSpeed = 10;
-			const currentSpeed = motionData.horizontal.speed;
 			const direction = motionData.horizontal.direction;
 			const status = motionData.horizontal.status;
-			const viewportTop = motionData.horizontal.viewportTop;
-			const viewportBottom = motionData.horizontal.viewportBottom;
+			const speed = motionData.horizontal.speed;
+			const viewport = motionData.horizontal.viewport;
+			const startValue = motionData.horizontal.startValue;
+			const midValue = motionData.horizontal.midValue;
+			const endValue = motionData.horizontal.endValue;
 
 			if(!!parseInt(status)) {
-				const motionTimeLine = gsap.timeline({
+				const motionTimeLineTop = gsap.timeline({
 					scrollTrigger: {
 						trigger: ".maxi-motion-effect-"+ motionID +"",
-						start: "top "+ viewportTop +"%",
-						end: "bottom "+ viewportBottom +"%",
+						start: "top "+ viewport[2] +"%",
 						scrub: 1,
-						//markers: true,
+						markers: true,
 						onEnter: self => {
 							self.trigger = elem;
 						},
 					}
 				});
-				motionTimeLine.to(".maxi-motion-effect-"+ motionID +"", {
-					x: (direction === 'left') ?
-						-((currentSpeed * vw) / maxSpeed) :
-						((currentSpeed * vw) / maxSpeed),
-					duration: 1,
-					ease: "power1.out"
+				const motionTimeLineMid = gsap.timeline({
+					scrollTrigger: {
+						trigger: ".maxi-motion-effect-"+ motionID +"",
+						start: "center "+ viewport[1] +"%",
+						scrub: 1,
+						markers: true,
+						onEnter: self => {
+							self.trigger = elem;
+						},
+					}
 				});
+				const motionTimeLineBottom = gsap.timeline({
+					scrollTrigger: {
+						trigger: ".maxi-motion-effect-"+ motionID +"",
+						start: "bottom "+ viewport[0] +"%",
+						scrub: 1,
+						markers: true,
+						onEnter: self => {
+							self.trigger = elem;
+						},
+					}
+				});
+				if(direction === 'left') {
+					if(startValue !== 0) {
+						motionTimeLineTop.to(".maxi-motion-effect-"+ motionID +"", {
+							x: startValue * speed,
+							duration: 1,
+							ease: "power1.out"
+						})
+					}
+					if(midValue !== 0) {
+						motionTimeLineMid.to(".maxi-motion-effect-"+ motionID +"", {
+							x: midValue * speed,
+							duration: 1,
+							ease: "power1.out"
+						})
+					}
+					if(endValue !== 0) {
+						motionTimeLineBottom.to(".maxi-motion-effect-"+ motionID +"", {
+							x: endValue * speed,
+							duration: 1,
+							ease: "power1.out"
+						})
+					}
+				}
+				if(direction === 'right') {
+					if(startValue !== 0) {
+						motionTimeLineTop.to(".maxi-motion-effect-"+ motionID +"", {
+							x: -(startValue * speed),
+							duration: 1,
+							ease: "power1.out"
+						})
+					}
+					if(midValue !== 0) {
+						motionTimeLineMid.to(".maxi-motion-effect-"+ motionID +"", {
+							x: -(midValue * speed),
+							duration: 1,
+							ease: "power1.out"
+						})
+					}
+					if(endValue !== 0) {
+						motionTimeLineBottom.to(".maxi-motion-effect-"+ motionID +"", {
+							x: -(endValue * speed),
+							duration: 1,
+							ease: "power1.out"
+						})
+					}
+				}
 			}
+
 		}
 
 		if("rotate" in motionData) {
 
-			const maxSpeed = 10;
-			const currentSpeed = motionData.rotate.speed;
 			const direction = motionData.rotate.direction;
 			const status = motionData.rotate.status;
-			const viewportTop = motionData.rotate.viewportTop;
-			const viewportBottom = motionData.rotate.viewportBottom;
+			const speed = motionData.rotate.speed;
+			const viewport = motionData.rotate.viewport;
+			const startValue = motionData.rotate.startValue;
+			const midValue = motionData.rotate.midValue;
+			const endValue = motionData.rotate.endValue;
 
 			if(!!parseInt(status)) {
-				const motionTimeLine = gsap.timeline({
+				const motionTimeLineTop = gsap.timeline({
 					scrollTrigger: {
 						trigger: ".maxi-motion-effect-"+ motionID +"",
-						start: "top "+ viewportTop +"%",
-						end: "bottom "+ viewportBottom +"%",
+						start: "top "+ viewport[2] +"%",
 						scrub: 1,
-						//markers: true,
+						markers: true,
 						onEnter: self => {
 							self.trigger = elem;
 						},
 					}
 				});
-				motionTimeLine.to(".maxi-motion-effect-"+ motionID +"", {
-					rotation: (direction === 'left') ?
-						-((currentSpeed * vw) / maxSpeed) :
-						((currentSpeed * vw) / maxSpeed),
-					duration: 1,
-					ease: "power1.out"
+				const motionTimeLineMid = gsap.timeline({
+					scrollTrigger: {
+						trigger: ".maxi-motion-effect-"+ motionID +"",
+						start: "center "+ viewport[1] +"%",
+						scrub: 1,
+						markers: true,
+						onEnter: self => {
+							self.trigger = elem;
+						},
+					}
 				});
+				const motionTimeLineBottom = gsap.timeline({
+					scrollTrigger: {
+						trigger: ".maxi-motion-effect-"+ motionID +"",
+						start: "bottom "+ viewport[0] +"%",
+						scrub: 1,
+						markers: true,
+						onEnter: self => {
+							self.trigger = elem;
+						},
+					}
+				});
+				if(direction === 'left') {
+					if(startValue !== 0) {
+						motionTimeLineTop.to(".maxi-motion-effect-"+ motionID +"", {
+							rotation: startValue * speed,
+							duration: 1,
+							ease: "power1.out"
+						})
+					}
+					if(midValue !== 0) {
+						motionTimeLineMid.to(".maxi-motion-effect-"+ motionID +"", {
+							rotation: midValue * speed,
+							duration: 1,
+							ease: "power1.out"
+						})
+					}
+					if(endValue !== 0) {
+						motionTimeLineBottom.to(".maxi-motion-effect-"+ motionID +"", {
+							rotation: endValue * speed,
+							duration: 1,
+							ease: "power1.out"
+						})
+					}
+				}
+				if(direction === 'right') {
+					if(startValue !== 0) {
+						motionTimeLineTop.to(".maxi-motion-effect-"+ motionID +"", {
+							rotation: -(startValue * speed),
+							duration: 1,
+							ease: "power1.out"
+						})
+					}
+					if(midValue !== 0) {
+						motionTimeLineMid.to(".maxi-motion-effect-"+ motionID +"", {
+							rotation: -(midValue * speed),
+							duration: 1,
+							ease: "power1.out"
+						})
+					}
+					if(endValue !== 0) {
+						motionTimeLineBottom.to(".maxi-motion-effect-"+ motionID +"", {
+							rotation: -(endValue * speed),
+							duration: 1,
+							ease: "power1.out"
+						})
+					}
+				}
 			}
+
 		}
 
 		if("scale" in motionData) {
 
-			const currentSpeed = motionData.scale.speed;
 			const direction = motionData.scale.direction;
 			const status = motionData.scale.status;
-			const viewportTop = motionData.scale.viewportTop;
-			const viewportBottom = motionData.scale.viewportBottom;
+			const speed = motionData.scale.speed;
+			const viewport = motionData.scale.viewport;
+			const startValue = motionData.scale.startValue;
+			const midValue = motionData.scale.midValue;
+			const endValue = motionData.scale.endValue;
 
 			if(!!parseInt(status)) {
-				const motionTimeLine = gsap.timeline({
+				const motionTimeLineTop = gsap.timeline({
 					scrollTrigger: {
 						trigger: ".maxi-motion-effect-"+ motionID +"",
-						start: "top "+ viewportTop +"%",
-						end: "bottom "+ viewportBottom +"%",
+						start: "top "+ viewport[2] +"%",
 						scrub: 1,
-						//markers: true,
+						markers: true,
+						onEnter: self => {
+							self.trigger = elem;
+						},
+					}
+				});
+				const motionTimeLineMid = gsap.timeline({
+					scrollTrigger: {
+						trigger: ".maxi-motion-effect-"+ motionID +"",
+						start: "center "+ viewport[1] +"%",
+						scrub: 1,
+						markers: true,
+						onEnter: self => {
+							self.trigger = elem;
+						},
+					}
+				});
+				const motionTimeLineBottom = gsap.timeline({
+					scrollTrigger: {
+						trigger: ".maxi-motion-effect-"+ motionID +"",
+						start: "bottom "+ viewport[0] +"%",
+						scrub: 1,
+						markers: true,
 						onEnter: self => {
 							self.trigger = elem;
 						},
 					}
 				});
 				if(direction === 'up') {
-					motionTimeLine.to(".maxi-motion-effect-"+ motionID +"", {
-						scale: currentSpeed,
-						duration: 1,
-						ease: "power1.out"
-					});
+					if(startValue !== 0) {
+						motionTimeLineTop.to(".maxi-motion-effect-"+ motionID +"", {
+							scale: startValue * speed,
+							duration: 1,
+							ease: "power1.out"
+						})
+					}
+					if(midValue !== 0) {
+						motionTimeLineMid.to(".maxi-motion-effect-"+ motionID +"", {
+							scale: midValue * speed,
+							duration: 1,
+							ease: "power1.out"
+						})
+					}
+					if(endValue !== 0) {
+						motionTimeLineBottom.to(".maxi-motion-effect-"+ motionID +"", {
+							scale: endValue * speed,
+							duration: 1,
+							ease: "power1.out"
+						})
+					}
 				}
 				if(direction === 'down') {
-					motionTimeLine.from(".maxi-motion-effect-"+ motionID +"", {
-						scale: currentSpeed,
-						duration: 1,
-						ease: "power1.out"
-					});
+					if(startValue !== 0) {
+						motionTimeLineTop.from(".maxi-motion-effect-"+ motionID +"", {
+							scale: startValue * speed,
+							duration: 1,
+							ease: "power1.out"
+						})
+					}
+					if(midValue !== 0) {
+						motionTimeLineMid.from(".maxi-motion-effect-"+ motionID +"", {
+							scale: midValue * speed,
+							duration: 1,
+							ease: "power1.out"
+						})
+					}
+					if(endValue !== 0) {
+						motionTimeLineBottom.from(".maxi-motion-effect-"+ motionID +"", {
+							scale: endValue * speed,
+							duration: 1,
+							ease: "power1.out"
+						})
+					}
 				}
 			}
+
 		}
 
 		if("fade" in motionData) {
 
-			const currentSpeed = motionData.fade.speed;
 			const direction = motionData.fade.direction;
 			const status = motionData.fade.status;
-			const viewportTop = motionData.fade.viewportTop;
-			const viewportBottom = motionData.fade.viewportBottom;
+			const viewport = motionData.fade.viewport;
+			const startValue = motionData.fade.startValue;
+			const midValue = motionData.fade.midValue;
+			const endValue = motionData.fade.endValue;
 
 			if(!!parseInt(status)) {
-				const motionTimeLine = gsap.timeline({
+				const motionTimeLineTop = gsap.timeline({
 					scrollTrigger: {
 						trigger: ".maxi-motion-effect-"+ motionID +"",
-						start: "top "+ viewportTop +"%",
-						end: "bottom "+ viewportBottom +"%",
+						start: "top "+ viewport[2] +"%",
 						scrub: 1,
-						//markers: true,
+						markers: true,
 						onEnter: self => {
 							self.trigger = elem;
 						},
 					}
 				});
-				if((direction === 'in')) {
-					motionTimeLine.to(".maxi-motion-effect-"+ motionID +"", {
-						opacity: (10 - currentSpeed) / 10,
-						duration: 1,
-						ease: "power1.out"
-					});
-				} else {
-					motionTimeLine.from(".maxi-motion-effect-"+ motionID +"", {
-						opacity: (10 - currentSpeed) / 10,
-						duration: 1,
-						ease: "power1.out"
-					});
+				const motionTimeLineMid = gsap.timeline({
+					scrollTrigger: {
+						trigger: ".maxi-motion-effect-"+ motionID +"",
+						start: "center "+ viewport[1] +"%",
+						scrub: 1,
+						markers: true,
+						onEnter: self => {
+							self.trigger = elem;
+						},
+					}
+				});
+				const motionTimeLineBottom = gsap.timeline({
+					scrollTrigger: {
+						trigger: ".maxi-motion-effect-"+ motionID +"",
+						start: "bottom "+ viewport[0] +"%",
+						scrub: 1,
+						markers: true,
+						onEnter: self => {
+							self.trigger = elem;
+						},
+					}
+				});
+				if(direction === 'in') {
+					if(startValue !== 0) {
+						motionTimeLineTop.to(".maxi-motion-effect-"+ motionID +"", {
+							opacity: startValue / 10,
+							duration: 1,
+							ease: "power1.out"
+						})
+					}
+					if(midValue !== 0) {
+						motionTimeLineMid.to(".maxi-motion-effect-"+ motionID +"", {
+							opacity: midValue / 10,
+							duration: 1,
+							ease: "power1.out"
+						})
+					}
+					if(endValue !== 0) {
+						motionTimeLineBottom.to(".maxi-motion-effect-"+ motionID +"", {
+							opacity: endValue / 10,
+							duration: 1,
+							ease: "power1.out"
+						})
+					}
+				}
+				if(direction === 'out') {
+					if(startValue !== 0) {
+						motionTimeLineTop.from(".maxi-motion-effect-"+ motionID +"", {
+							opacity: startValue / 10,
+							duration: 1,
+							ease: "power1.out"
+						})
+					}
+					if(midValue !== 0) {
+						motionTimeLineMid.from(".maxi-motion-effect-"+ motionID +"", {
+							opacity: midValue / 10,
+							duration: 1,
+							ease: "power1.out"
+						})
+					}
+					if(endValue !== 0) {
+						motionTimeLineBottom.from(".maxi-motion-effect-"+ motionID +"", {
+							opacity: endValue / 10,
+							duration: 1,
+							ease: "power1.out"
+						})
+					}
 				}
 			}
+
 		}
 
 		if("blur" in motionData) {
 
-			const currentSpeed = motionData.blur.speed;
 			const direction = motionData.blur.direction;
 			const status = motionData.blur.status;
-			const viewportTop = motionData.blur.viewportTop;
-			const viewportBottom = motionData.blur.viewportBottom;
+			const viewport = motionData.blur.viewport;
+			const startValue = motionData.blur.startValue;
+			const midValue = motionData.blur.midValue;
+			const endValue = motionData.blur.endValue;
 
 			if(!!parseInt(status)) {
-				const motionTimeLine = gsap.timeline({
+				const motionTimeLineTop = gsap.timeline({
 					scrollTrigger: {
 						trigger: ".maxi-motion-effect-"+ motionID +"",
-						start: "top "+ viewportTop +"%",
-						end: "bottom "+ viewportBottom +"%",
+						start: "top "+ viewport[2] +"%",
 						scrub: 1,
-						//markers: true,
+						markers: true,
 						onEnter: self => {
 							self.trigger = elem;
 						},
 					}
 				});
-				if((direction === 'in')) {
-					motionTimeLine.to(".maxi-motion-effect-"+ motionID +"", {
-						webkitFilter: "blur("+ currentSpeed +"px)",
-						filter: "blur("+ currentSpeed +"px)",
-						duration: 1,
-						ease: "power1.out"
-					});
-				} else {
-					motionTimeLine.from(".maxi-motion-effect-"+ motionID +"", {
-						webkitFilter: "blur("+ currentSpeed +"px)",
-						filter: "blur("+ currentSpeed +"px)",
-						duration: 1,
-						ease: "power1.out"
-					});
+				const motionTimeLineMid = gsap.timeline({
+					scrollTrigger: {
+						trigger: ".maxi-motion-effect-"+ motionID +"",
+						start: "center "+ viewport[1] +"%",
+						scrub: 1,
+						markers: true,
+						onEnter: self => {
+							self.trigger = elem;
+						},
+					}
+				});
+				const motionTimeLineBottom = gsap.timeline({
+					scrollTrigger: {
+						trigger: ".maxi-motion-effect-"+ motionID +"",
+						start: "bottom "+ viewport[0] +"%",
+						scrub: 1,
+						markers: true,
+						onEnter: self => {
+							self.trigger = elem;
+						},
+					}
+				});
+				if(direction === 'in') {
+					if(startValue !== 0) {
+						motionTimeLineTop.to(".maxi-motion-effect-"+ motionID +"", {
+							webkitFilter: "blur("+ startValue +"px)",
+							filter: "blur("+ startValue +"px)",
+							duration: 1,
+							ease: "power1.out"
+						})
+					}
+					if(midValue !== 0) {
+						motionTimeLineMid.to(".maxi-motion-effect-"+ motionID +"", {
+							webkitFilter: "blur("+ midValue +"px)",
+							filter: "blur("+ midValue +"px)",
+							duration: 1,
+							ease: "power1.out"
+						})
+					}
+					if(endValue !== 0) {
+						motionTimeLineBottom.to(".maxi-motion-effect-"+ motionID +"", {
+							webkitFilter: "blur("+ endValue +"px)",
+							filter: "blur("+ endValue +"px)",
+							duration: 1,
+							ease: "power1.out"
+						})
+					}
+				}
+				if(direction === 'out') {
+					if(startValue !== 0) {
+						motionTimeLineTop.from(".maxi-motion-effect-"+ motionID +"", {
+							webkitFilter: "blur("+ startValue +"px)",
+							filter: "blur("+ startValue +"px)",
+							duration: 1,
+							ease: "power1.out"
+						})
+					}
+					if(midValue !== 0) {
+						motionTimeLineMid.from(".maxi-motion-effect-"+ motionID +"", {
+							webkitFilter: "blur("+ midValue +"px)",
+							filter: "blur("+ midValue +"px)",
+							duration: 1,
+							ease: "power1.out"
+						})
+					}
+					if(endValue !== 0) {
+						motionTimeLineBottom.from(".maxi-motion-effect-"+ motionID +"", {
+							webkitFilter: "blur("+ endValue +"px)",
+							filter: "blur("+ endValue +"px)",
+							duration: 1,
+							ease: "power1.out"
+						})
+					}
 				}
 			}
+
 		}
+
 	}
 
 });

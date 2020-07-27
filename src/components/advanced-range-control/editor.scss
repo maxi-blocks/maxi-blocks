@@ -1,5 +1,40 @@
 .maxi-advanced-range-control {
-    .slider-handles {
+    &__track {
+        position: absolute;
+        height: 10px;
+        z-index: 1;
+        margin-top: 35px;
+        background-color: #546C91;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    &__rail {
+		position: absolute;
+		width: 100%;
+		height: 4px;
+		margin-top: 35px;
+		border-radius: 5px;
+		background-color: #dddfe1;
+    }
+    &__handle {
+        position: absolute;
+        margin-left: -15px;
+        margin-top: 25px;
+        z-index: 2;
+        width: 30px;
+        height: 30px;
+        border: 0;
+        textAlign: center;
+        cursor: pointer;
+        border-radius: 50%;
+        backgroundColor: #2C4870;
+        color: #333;
+        &__label {
+            margin-top: -35px;
+            font-size: 11px;
+        }
+    }
+    &__handles {
         & > div {
             width: 15px !important;
             height: 15px !important;
@@ -8,14 +43,14 @@
             margin-top: 29px !important;
         }
     }
-    .slider-tracks {
+    &__tracks {
        & > div {
             height: 4px !important;
             background-color: #464a53 !important;
             border-radius: 0 !important;
         }
     }
-    .slider-ticks {
+    &__ticks {
         &__tick:first-of-type {
             position: absolute;
             left: 0;

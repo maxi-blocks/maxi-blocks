@@ -15,8 +15,9 @@ import {
     getBackgroundObject,
     getBoxShadowObject,
     getAlignmentFlexObject,
+    getTransfromObject,
+    getAlignmentTextObject,
     getOpacityObject,
-    getTransfromObject
 } from '../../extensions/styles/utils';
 import {
     MaxiBlock,
@@ -61,6 +62,7 @@ class edit extends MaxiBlock {
     get getNormalObject() {
         const {
             background,
+            alignmentText,
             opacity,
             typography,
             boxShadow,
@@ -75,6 +77,7 @@ class edit extends MaxiBlock {
 
         const response = {
             typography: { ...JSON.parse(typography) },
+            alignmentText: { ...getAlignmentTextObject(JSON.parse(alignmentText)) },
             background: { ...getBackgroundObject(JSON.parse(background)) },
             boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
             border: { ...JSON.parse(border) },

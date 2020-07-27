@@ -3,6 +3,9 @@
     "general": {
         "alignment": "left"
     },
+    "xxl": {
+        "alignment": ""
+    },
     "xl": {
         "alignment": ""
     },

@@ -36,7 +36,8 @@ import {
     __experimentalPositionControl,
     __experimentalDisplayControl,
     __experimentalMotionControl,
-    __experimentalTransformControl
+    __experimentalTransformControl,
+    __experimentalClipPath,
 } from '../../components';
 
 /**
@@ -107,7 +108,8 @@ const Inspector = props => {
             position,
             display,
             motion,
-            transform
+            transform,
+            clipPath,
         },
         imageData,
         clientId,
@@ -268,9 +270,9 @@ const Inspector = props => {
                                                             {
                                                                 captionType != 'none' &&
                                                                 <TypographyControl
-                                                                    fontOptions={captionTypography}
+                                                                    typography={captionTypography}
                                                                     onChange={captionTypography => setAttributes({ captionTypography })}
-                                                                    target='>figcaption'
+                                                                    breakpoint={deviceType}
                                                                 />
                                                             }
                                                         </Fragment>
@@ -473,34 +475,32 @@ const Inspector = props => {
 
                                                 hoverAnimationTypeOpacityColor={hoverAnimationTypeOpacityColor}
                                                 onChangeHoverAnimationTypeOpacityColor={hoverAnimationTypeOpacityColor => setAttributes({ hoverAnimationTypeOpacityColor })}
-
+                                        />
+                                        {
+                                            hoverAnimation === 'text' && hoverCustomTextTitle === 'yes' &&
+                                            <TypographyControl
+                                                typography={hoverAnimationTitleTypography}
+                                                onChange={hoverAnimationTitleTypography => setAttributes({ hoverAnimationTitleTypography })}
+                                                breakpoint={deviceType}
+                                            />}
+                                        {
+                                            hoverAnimation === 'text' && hoverCustomTextContent === 'yes' &&
+                                            <TypographyControl
+                                                typography={hoverAnimationContentTypography}
+                                                onChange={hoverAnimationContentTypography => setAttributes({ hoverAnimationContentTypography })}
+                                                breakpoint={deviceType}
+                                            />}
+                                        {
+                                            hoverAnimation === 'text' &&
+                                            <Fragment>
+                                                <__experimentalOpacityControl
+                                                    opacity={hoverOpacity}
+                                                    onChange={hoverOpacity => setAttributes({ hoverOpacity })}
                                             />
-                                            {
-                                                hoverAnimation === 'text' && hoverCustomTextTitle === 'yes' &&
-                                                <TypographyControl
-                                                    fontOptions={hoverAnimationTitleTypography}
-                                                    onChange={hoverAnimationTitleTypography => setAttributes({ hoverAnimationTitleTypography })}
-                                                    target='>.maxi-block-text-hover .maxi-block-text-hover__title'
-                                                />}
-                                            {
-                                                hoverAnimation === 'text' && hoverCustomTextContent === 'yes' &&
-                                                <TypographyControl
-                                                    fontOptions={hoverAnimationContentTypography}
-                                                    onChange={hoverAnimationContentTypography => setAttributes({ hoverAnimationContentTypography })}
-                                                    target='>.maxi-block-text-hover .maxi-block-text-hover__content'
-                                                />}
-                                            {
-                                                hoverAnimation === 'text' &&
-                                                <Fragment>
-                                                    <__experimentalOpacityControl
-                                                        opacity={hoverOpacity}
-                                                        onChange={hoverOpacity => setAttributes({ hoverOpacity })}
-                                                    />
                                                     <BackgroundControl
                                                         backgroundOptions={hoverBackground}
                                                         onChange={hoverBackground => setAttributes({ hoverBackground })}
                                                         disableImage
-                                                        target='.maxi-block-text-hover'
                                                     />
 
                                                     <RadioControl
@@ -540,7 +540,7 @@ const Inspector = props => {
                                             }
                                         </Fragment>
                                     }
-                                    <__experimentalZIndexControl
+                                     <__experimentalZIndexControl
                                         zindex={zIndex}
                                         onChange={zIndex => setAttributes({ zIndex })}
                                         breakpoint={deviceType}
@@ -580,6 +580,10 @@ const Inspector = props => {
                                         onChange={display => setAttributes({ display })}
                                         breakpoint={deviceType}
                                         defaultDisplay='flex'
+                                    />
+                                    <__experimentalClipPath
+                                        clipPath={clipPath}
+                                        onChange={clipPath => setAttributes({ clipPath })}
                                     />
                                 </div>
                                 <AccordionControl

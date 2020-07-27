@@ -245,7 +245,6 @@ const Inspector = props => {
                                                                 <TypographyControl
                                                                     typography={typographyHover}
                                                                     onChange={typographyHover => setAttributes({ typographyHover })}
-                                                                    target=':hover'
                                                                     hideAlignment
                                                                     breakpoint={deviceType}
                                                                 />
@@ -447,31 +446,27 @@ const Inspector = props => {
 
                                                 hoverCustomTextTitle={hoverCustomTextTitle}
                                                 onChangeHoverAnimationCustomTitle={hoverCustomTextTitle => setAttributes({ hoverCustomTextTitle })}
-
+                                        />
+                                        {hoverAnimation === 'text' && hoverCustomTextTitle === 'yes' &&
+                                            <TypographyControl
+                                                typography={hoverAnimationTitleTypography}
+                                                onChange={hoverAnimationTitleTypography => setAttributes({ hoverAnimationTitleTypography })}
+                                            />}
+                                        {hoverAnimation === 'text' && hoverCustomTextContent === 'yes' &&
+                                            <TypographyControl
+                                                typography={hoverAnimationContentTypography}
+                                                onChange={hoverAnimationContentTypography => setAttributes({ hoverAnimationContentTypography })}
+                                            />}
+                                        {hoverAnimation === 'text' &&
+                                            <Fragment>
+                                                <__experimentalOpacityControl
+                                                    opacity={hoverOpacity}
+                                                    onChange={hoverOpacity => setAttributes({ hoverOpacity })}
                                             />
-                                            {hoverAnimation === 'text' && hoverCustomTextTitle === 'yes' &&
-                                                <TypographyControl
-                                                    fontOptions={hoverAnimationTitleTypography}
-                                                    onChange={hoverAnimationTitleTypography => setAttributes({ hoverAnimationTitleTypography })}
-                                                    target='>.maxi-block-text-hover .maxi-block-text-hover__title'
-                                                />}
-                                            {hoverAnimation === 'text' && hoverCustomTextContent === 'yes' &&
-                                                <TypographyControl
-                                                    fontOptions={hoverAnimationContentTypography}
-                                                    onChange={hoverAnimationContentTypography => setAttributes({ hoverAnimationContentTypography })}
-                                                    target='>.maxi-block-text-hover .maxi-block-text-hover__content'
-                                                />}
-                                            {hoverAnimation === 'text' &&
-                                                <Fragment>
-                                                    <__experimentalOpacityControl
-                                                        opacity={hoverOpacity}
-                                                        onChange={hoverOpacity => setAttributes({ hoverOpacity })}
-                                                    />
                                                     <BackgroundControl
                                                         backgroundOptions={hoverBackground}
                                                         onChange={hoverBackground => setAttributes({ hoverBackground })}
                                                         disableImage
-                                                        target='.maxi-block-text-hover'
                                                     />
 
                                                     <RadioControl

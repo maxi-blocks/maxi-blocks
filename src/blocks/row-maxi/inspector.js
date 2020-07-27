@@ -362,16 +362,14 @@ const Inspector = props => {
                                         {
                                             hoverAnimation === 'text' && hoverCustomTextTitle === 'yes' &&
                                             <TypographyControl
-                                                fontOptions={hoverAnimationTitleTypography}
+                                                typography={hoverAnimationTitleTypography}
                                                 onChange={hoverAnimationTitleTypography => setAttributes({ hoverAnimationTitleTypography })}
-                                                target='>.maxi-block-text-hover .maxi-block-text-hover__title'
                                             />}
                                         {
                                             hoverAnimation === 'text' && hoverCustomTextContent === 'yes' &&
                                             <TypographyControl
-                                                fontOptions={hoverAnimationContentTypography}
+                                                typography={hoverAnimationContentTypography}
                                                 onChange={hoverAnimationContentTypography => setAttributes({ hoverAnimationContentTypography })}
-                                                target='>.maxi-block-text-hover .maxi-block-text-hover__content'
                                             />}
                                         {
                                             hoverAnimation === 'text' &&
@@ -384,7 +382,6 @@ const Inspector = props => {
                                                     backgroundOptions={hoverBackground}
                                                     onChange={hoverBackground => setAttributes({ hoverBackground })}
                                                     disableImage
-                                                    target='.maxi-block-text-hover'
                                                 />
 
                                                 <RadioControl

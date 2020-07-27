@@ -26,7 +26,8 @@ import {
     getVideoBackgroundObject,
     getShapeDividerObject,
     getShapeDividerSVGObject,
-    getTransfromObject
+    getTransfromObject,
+    getAlignmentTextObject
 } from '../../extensions/styles/utils'
 
 /**
@@ -261,7 +262,8 @@ class edit extends MaxiBlock {
         } = this.props.attributes;
 
         const response = {
-            hoverAnimationTitleTypography: { ...JSON.parse(hoverAnimationTitleTypography) }
+            hoverAnimationTitleTypography: { ...JSON.parse(hoverAnimationTitleTypography) },
+            hoverAnimationTitleAlignmentTypography: { ...getAlignmentTextObject(JSON.parse(hoverAnimationTitleTypography).textAlign) }
         };
 
         return response
@@ -273,7 +275,8 @@ class edit extends MaxiBlock {
         } = this.props.attributes;
 
         const response = {
-            hoverAnimationContentTypography: { ...JSON.parse(hoverAnimationContentTypography) }
+            hoverAnimationContentTypography: { ...JSON.parse(hoverAnimationContentTypography) },
+            hoverAnimationContentAlignmentTypography: { ...getAlignmentTextObject(JSON.parse(hoverAnimationContentTypography).textAlign) }
         };
 
         return response

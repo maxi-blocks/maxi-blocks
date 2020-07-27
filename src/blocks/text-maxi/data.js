@@ -3,6 +3,9 @@ export const alignment = {
     "general": {
         "alignment": "left"
     },
+    "xxl": {
+        "alignment": ""
+    },
     "xl": {
         "alignment": ""
     },
@@ -29,6 +32,13 @@ export const margin = {
         "margin-bottom": 1,
         "margin-left": "",
         "sync": false
+    },
+    "xxl": {
+        "margin-top": "",
+        "margin-right": "",
+        "margin-bottom": "",
+        "margin-left": "",
+        "sync": true
     },
     "xl": {
         "margin-top": "",

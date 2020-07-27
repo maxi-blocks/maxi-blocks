@@ -191,6 +191,10 @@ const attributes = {
         type: 'string',
         default: JSON.stringify(attributesData.__experimentalDisplay)
     },
+    clipPath: {
+        type: 'string',
+        default: ''
+    },
     motion: {
         type: 'string',
         default: JSON.stringify(attributesData.__experimentalMotion)

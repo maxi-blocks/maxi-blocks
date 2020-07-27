@@ -35,6 +35,7 @@ import {
     __experimentalOpacityControl,
     __experimentalPositionControl,
     __experimentalDisplayControl,
+    __experimentalClipPath,
     __experimentalMotionControl
 } from '../../components';
 
@@ -104,6 +105,7 @@ const Inspector = props => {
             hoverAnimationTypeOpacityColorBackground,
             position,
             display,
+            clipPath,
             motion
         },
         imageData,
@@ -575,6 +577,10 @@ const Inspector = props => {
                                         onChange={display => setAttributes({ display })}
                                         breakpoint={deviceType}
                                         defaultDisplay='flex'
+                                    />
+                                    <__experimentalClipPath
+                                        clipPath={clipPath}
+                                        onChange={clipPath => setAttributes({ clipPath })}
                                     />
                                 </div>
                                 <AccordionControl

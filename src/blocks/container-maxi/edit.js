@@ -26,6 +26,7 @@ import {
     getVideoBackgroundObject,
     getShapeDividerObject,
     getShapeDividerSVGObject,
+    getTransfromObject,
     getAlignmentTextObject
 } from '../../extensions/styles/utils'
 
@@ -118,7 +119,8 @@ class edit extends MaxiBlock {
             zIndex,
             position,
             display,
-            background
+            background,
+            transform
         } = this.props.attributes;
 
         const response = {
@@ -133,6 +135,7 @@ class edit extends MaxiBlock {
             positionOptions: { ...JSON.parse(position).options },
             display: { ...JSON.parse(display) },
             background: { ...getBackgroundObject(JSON.parse(background)) },
+            transform: { ...getTransfromObject(JSON.parse(transform)) },
             container: {
                 label: 'Container',
                 general: {},

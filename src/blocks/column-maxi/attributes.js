@@ -155,6 +155,10 @@ const attributes = {
     display: {
         type: 'string',
         default: JSON.stringify(attributesData.__experimentalDisplay)
+    },
+    transform: {
+        type: 'string',
+        default: JSON.stringify(attributesData.__experimentalTransform)
     }
 }
 

@@ -7,13 +7,17 @@ const { Fragment } = wp.element;
 /**
  * Internal dependencies
  */
+import { getLastBreakpointValue } from '../../extensions/styles/utils';
 import SizeControl from '../size-control';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject } from 'lodash';
+import {
+    isObject,
+    isNil
+} from 'lodash';
 
 /**
  * Styles
@@ -23,71 +27,6 @@ import './editor.scss';
 /**
  * Component
  */
-const FullSizeControlSing = props => {
-    const {
-        size,
-        onChange,
-        hideWidth = false
-    } = props;
-
-    const onChangeValue = (target, val) => {
-        if (typeof val === 'undefined')
-            val = '';
-        size[target] = val;
-        onChange(size);
-    }
-
-    return (
-        <Fragment>
-            <SizeControl
-                label={__('Max Width', 'maxi-blocks')}
-                unit={size['max-widthUnit']}
-                onChangeUnit={value => onChangeValue('max-widthUnit', value)}
-                value={size['max-width']}
-                onChangeValue={value => onChangeValue('max-width', value)}
-            />
-            {
-                !hideWidth &&
-                <SizeControl
-                    label={__('Width', 'maxi-blocks')}
-                    unit={size.widthUnit}
-                    onChangeUnit={value => onChangeValue('widthUnit', value)}
-                    value={size.width}
-                    onChangeValue={value => onChangeValue('width', value)}
-                />
-            }
-            <SizeControl
-                label={__('Min Width', 'maxi-blocks')}
-                unit={size['min-widthUnit']}
-                onChangeUnit={value => onChangeValue('min-widthUnit', value)}
-                value={size['min-width']}
-                onChangeValue={value => onChangeValue('min-width', value)}
-            />
-            <SizeControl
-                label={__('Max Height', 'maxi-blocks')}
-                unit={size['max-heightUnit']}
-                onChangeUnit={value => onChangeValue('max-heightUnit', value)}
-                value={size['max-height']}
-                onChangeValue={value => onChangeValue('max-height', value)}
-            />
-            <SizeControl
-                label={__('Height', 'maxi-blocks')}
-                unit={size.heightUnit}
-                onChangeUnit={value => onChangeValue('heightUnit', value)}
-                value={size.height}
-                onChangeValue={value => onChangeValue('height', value)}
-            />
-            <SizeControl
-                label={__('Min Height', 'maxi-blocks')}
-                unit={size['min-heightUnit']}
-                onChangeUnit={value => onChangeValue('min-heightUnit', value)}
-                value={size['min-height']}
-                onChangeValue={value => onChangeValue('min-height', value)}
-            />
-        </Fragment>
-    )
-}
-
 const FullSizeControl = props => {
     const {
         size,
@@ -106,16 +45,60 @@ const FullSizeControl = props => {
         className
     )
 
+    const onChangeValue = (target, val) => {
+        if (isNil(val))
+            val = '';
+        value[breakpoint][target] = val;
+        onChange(JSON.stringify(value));
+    }
+
     return (
         <div className={classes}>
-            <FullSizeControlSing
-                size={value[breakpoint]}
-                onChange={val => {
-                    value[breakpoint] = val;
-                    onChange(JSON.stringify(value))
-                }}
-                hideWidth={hideWidth}
+            <SizeControl
+                label={__('Max Width', 'maxi-blocks')}
+                unit={getLastBreakpointValue(value, 'max-widthUnit', breakpoint)}
+                onChangeUnit={val => onChangeValue('max-widthUnit', val)}
+                value={getLastBreakpointValue(value, 'max-width', breakpoint)}
+                onChangeValue={val => onChangeValue('max-width', val)}
             />
+            {
+                !hideWidth &&
+                <SizeControl
+                    label={__('Width', 'maxi-blocks')}
+                    unit={getLastBreakpointValue(value, 'widthUnit', breakpoint)}
+                    onChangeUnit={val => onChangeValue('widthUnit', val)}
+                    value={getLastBreakpointValue(value, 'width', breakpoint)}
+                    onChangeValue={val => onChangeValue('width', val)}
+                />
+            }
+            <SizeControl
+                label={__('Min Width', 'maxi-blocks')}
+                unit={getLastBreakpointValue(value, 'min-widthUnit', breakpoint)}
+                onChangeUnit={val => onChangeValue('min-widthUnit', val)}
+                value={getLastBreakpointValue(value, 'min-width', breakpoint)}
+                onChangeValue={val => onChangeValue('min-width', val)}
+            />
+            <SizeControl
+                label={__('Max Height', 'maxi-blocks')}
+                unit={getLastBreakpointValue(value, 'max-heightUnit', breakpoint)}
+                onChangeUnit={val => onChangeValue('max-heightUnit', val)}
+                value={getLastBreakpointValue(value, 'max-height', breakpoint)}
+                onChangeValue={val => onChangeValue('max-height', val)}
+            />
+            <SizeControl
+                label={__('Height', 'maxi-blocks')}
+                unit={getLastBreakpointValue(value, 'heightUnit', breakpoint)}
+                onChangeUnit={val => onChangeValue('heightUnit', val)}
+                value={getLastBreakpointValue(value, 'heigh', breakpoint)}
+                onChangeValue={val => onChangeValue('height', val)}
+            />
+            <SizeControl
+                label={__('Min Height', 'maxi-blocks')}
+                unit={getLastBreakpointValue(value, 'min-heightUnit', breakpoint)}
+                onChangeUnit={val => onChangeValue('min-heightUnit', val)}
+                value={getLastBreakpointValue(value, 'min-height', breakpoint)}
+                onChangeValue={val => onChangeValue('min-height', val)}
+            />∆
         </div>
     )
 }

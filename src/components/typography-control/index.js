@@ -7,6 +7,7 @@ const { SelectControl } = wp.components;
 /**
  * Internal dependencies
  */
+import { getLastBreakpointValue } from '../../extensions/styles/utils';
 import AlignmentControl from '../alignment-control';
 import ColorControl from '../color-control';
 import FontFamilySelector from '../font-family-selector';
@@ -100,7 +101,7 @@ const TypographyControl = props => {
         <div className={classes}>
             <FontFamilySelector
                 className="maxi-typography-control__font-family"
-                font={value[breakpoint]['font-family']}
+                font={getLastBreakpointValue(value, 'font-family', breakpoint)}
                 onChange={font => {
                     value[breakpoint]['font-family'] = font.value;
                     value[breakpoint]['font-options'] = font.files;
@@ -110,7 +111,7 @@ const TypographyControl = props => {
             <ColorControl
                 label={__('Font', 'maxi-blocks')}
                 className="maxi-typography-control__color"
-                color={value[breakpoint].color}
+                color={getLastBreakpointValue(value, 'color', breakpoint)}
                 defaultColor={defaultColor} // #128
                 onColorChange={val => {
                     value[breakpoint].color = val;
@@ -133,12 +134,12 @@ const TypographyControl = props => {
             <SizeControl
                 className={'maxi-typography-control__size'}
                 label={__('Size', 'maxi-blocks')}
-                unit={value[breakpoint]['font-sizeUnit']}
+                unit={getLastBreakpointValue(value, 'font-sizeUnit', breakpoint)}
                 onChangeUnit={val => {
                     value[breakpoint]['font-sizeUnit'] = val;
                     onChange(JSON.stringify(value))
                 }}
-                value={trim(value[breakpoint]['font-size'])}
+                value={trim(getLastBreakpointValue(value, 'font-size', breakpoint))}
                 onChangeValue={val => {
                     value[breakpoint]['font-size'] = val;
                     onChange(JSON.stringify(value))
@@ -147,12 +148,12 @@ const TypographyControl = props => {
             <SizeControl
                 className={'maxi-typography-control__line-height'}
                 label={__('Line Height', 'maxi-blocks')}
-                unit={value[breakpoint]['line-heightUnit']}
+                unit={getLastBreakpointValue(value, 'line-heightUnit', breakpoint)}
                 onChangeUnit={val => {
                     value[breakpoint]['line-heightUnit'] = val;
                     onChange(JSON.stringify(value))
                 }}
-                value={trim(value[breakpoint]['line-height'])}
+                value={trim(getLastBreakpointValue(value, 'line-height', breakpoint))}
                 onChangeValue={val => {
                     value[breakpoint]['line-height'] = val;
                     onChange(JSON.stringify(value))
@@ -161,12 +162,12 @@ const TypographyControl = props => {
             <SizeControl
                 className={'maxi-typography-control__letter-spacing'}
                 label={__('Letter Spacing', 'maxi-blocks')}
-                unit={value[breakpoint]['letter-spacingUnit']}
+                unit={getLastBreakpointValue(value, 'letter-spacingUnit', breakpoint)}
                 onChangeUnit={val => {
                     value[breakpoint]['letter-spacingUnit'] = val;
                     onChange(JSON.stringify(value))
                 }}
-                value={trim(value[breakpoint]['letter-spacing'])}
+                value={trim(getLastBreakpointValue(value, 'letter-spacing', breakpoint))}
                 onChangeValue={val => {
                     value[breakpoint]['letter-spacing'] = val;
                     onChange(JSON.stringify(value))
@@ -176,7 +177,7 @@ const TypographyControl = props => {
             <SelectControl
                 label={__('Weight', 'maxi-blocks')}
                 className='maxi-typography-control__weight'
-                value={value[breakpoint]['font-weight']}
+                value={getLastBreakpointValue(value, 'font-weight', breakpoint)}
                 options={getWeightOptions()}
                 onChange={val => {
                     value[breakpoint]['font-weight'] = val;
@@ -186,7 +187,7 @@ const TypographyControl = props => {
             <SelectControl
                 label={__('Transform', 'maxi-blocks')}
                 className='maxi-typography-control__transform'
-                value={value[breakpoint]['text-transform']}
+                value={getLastBreakpointValue(value, 'text-transform', breakpoint)}
                 options={[
                     { label: __('Default', 'maxi-blocks'), value: 'none' },
                     { label: __('Capitilize', 'maxi-blocks'), value: 'capitalize' },
@@ -201,7 +202,7 @@ const TypographyControl = props => {
             <SelectControl
                 label={__('Style', 'maxi-blocks')}
                 className='maxi-typography-control__font-style'
-                value={value[breakpoint]['font-style']}
+                value={getLastBreakpointValue(value, 'font-style', breakpoint)}
                 options={[
                     { label: __('Default', 'maxi-blocks'), value: 'normal' },
                     { label: __('Italic', 'maxi-blocks'), value: 'italic' },
@@ -215,7 +216,7 @@ const TypographyControl = props => {
             <SelectControl
                 label={__('Decoration', 'maxi-blocks')}
                 className='maxi-typography-control__decoration'
-                value={value[breakpoint]['text-decoration']}
+                value={getLastBreakpointValue(value, 'text-decoration', breakpoint)}
                 options={[
                     { label: __('Default', 'maxi-blocks'), value: 'none' },
                     { label: __('Overline', 'maxi-blocks'), value: 'overline' },
@@ -230,7 +231,7 @@ const TypographyControl = props => {
             />
             <TextShadowControl
                 className="maxi-typography-control__text-shadow"
-                value={value[breakpoint]['text-shadow']}
+                value={getLastBreakpointValue(value, 'text-shadow', breakpoint)}
                 onChange={val => {
                     value[breakpoint]['text-shadow'] = val;
                     onChange(JSON.stringify(value))

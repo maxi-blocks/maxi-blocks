@@ -1123,52 +1123,52 @@ export const __experimentalPosition = {
     "options": {
         "label": "Position options",
         "general": {
-                "top": "",
-                "right": "",
-                "bottom": "",
-                "left": "",
-                "sync": false,
-                "unit": "px"
+            "top": "",
+            "right": "",
+            "bottom": "",
+            "left": "",
+            "sync": false,
+            "unit": "px"
         },
         "xl": {
-                "top": "",
-                "right": "",
-                "bottom": "",
-                "left": "",
-                "sync": false,
-                "unit": ""
+            "top": "",
+            "right": "",
+            "bottom": "",
+            "left": "",
+            "sync": false,
+            "unit": ""
         },
         "l": {
-                "top": "",
-                "right": "",
-                "bottom": "",
-                "left": "",
-                "sync": false,
-                "unit": ""
+            "top": "",
+            "right": "",
+            "bottom": "",
+            "left": "",
+            "sync": false,
+            "unit": ""
         },
         "m": {
-                "top": "",
-                "right": "",
-                "bottom": "",
-                "left": "",
-                "sync": false,
-                "unit": ""
+            "top": "",
+            "right": "",
+            "bottom": "",
+            "left": "",
+            "sync": false,
+            "unit": ""
         },
         "s": {
-                "top": "",
-                "right": "",
-                "bottom": "",
-                "left": "",
-                "sync": false,
-                "unit": ""
+            "top": "",
+            "right": "",
+            "bottom": "",
+            "left": "",
+            "sync": false,
+            "unit": ""
         },
         "xs": {
-                "top": "",
-                "right": "",
-                "bottom": "",
-                "left": "",
-                "sync": false,
-                "unit": ""
+            "top": "",
+            "right": "",
+            "bottom": "",
+            "left": "",
+            "sync": false,
+            "unit": ""
         }
     }
 }
@@ -1239,4 +1239,80 @@ export const __experimentalMotion = {
         "viewportTop": 100,
         "viewportBottom": 0,
     },
+}
+
+export const __experimentalArrow = {
+    "label": "Arrow",
+    "active": 0,
+    "general": {
+        "active": 0,
+        "side": "bottom",
+        "position": 50,
+        "color": "#fff",
+        "widthUnit": "px",
+        "width": 20,
+        "heightUnit": "px",
+        "height": 20,
+        "border": ""
+    },
+    "xxl": {
+        "side": "",
+        "position": "",
+        "color": "",
+        "widthUnit": "",
+        "width": "",
+        "heightUnit": "",
+        "height": "",
+        "border": ""
+    },
+    "xl": {
+        "side": "",
+        "position": "",
+        "color": "",
+        "widthUnit": "",
+        "width": "",
+        "heightUnit": "",
+        "height": "",
+        "border": ""
+    },
+    "l": {
+        "side": "",
+        "position": "",
+        "color": "",
+        "widthUnit": "",
+        "width": "",
+        "heightUnit": "",
+        "height": "",
+        "border": ""
+    },
+    "m": {
+        "side": "",
+        "position": "",
+        "color": "",
+        "widthUnit": "",
+        "width": "",
+        "heightUnit": "",
+        "height": "",
+        "border": ""
+    },
+    "s": {
+        "side": "",
+        "position": "",
+        "color": "",
+        "widthUnit": "",
+        "width": "",
+        "heightUnit": "",
+        "height": "",
+        "border": ""
+    },
+    "xs": {
+        "side": "",
+        "position": "",
+        "color": "",
+        "widthUnit": "",
+        "width": "",
+        "heightUnit": "",
+        "height": "",
+        "border": ""
+    }
 }

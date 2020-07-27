@@ -6,6 +6,7 @@ const { __ } = wp.i18n;
 /**
  * Internal dependencies
  */
+import { getLastBreakpointValue } from '../../extensions/styles/utils';
 import __experimentalNumberControl from '../number-control';
 
 /**
@@ -38,7 +39,7 @@ const ZIndexControl = props => {
         <__experimentalNumberControl 
             label={__('Z-index', 'maxi-blocks')}
             className={classes}
-            value={value[breakpoint]['z-index']}
+            value={getLastBreakpointValue(value, 'z-index', breakpoint)}
             onChange={val => {
                 value[breakpoint]['z-index'] = val;
                 onChange(JSON.stringify(value))

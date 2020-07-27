@@ -11,6 +11,7 @@ const {
 /**
  * Internal dependencies
  */
+import { getLastBreakpointValue } from '../../extensions/styles/utils';
 import ColorControl from '../color-control';
 import DefaultStylesControl from '../default-styles-control';
 import __experimentalAxisControl from '../axis-control';
@@ -71,7 +72,7 @@ const BorderControl = props => {
             <DefaultStylesControl
                 items={[
                     {
-                        activeItem: (value[breakpoint]['border-style'] === 'none'),
+                        activeItem: (getLastBreakpointValue(value, 'border-style', breakpoint) === 'none'),
                         content: (
                             <Icon
                                 className='maxi-defaultstyles-control__button__icon'
@@ -81,7 +82,7 @@ const BorderControl = props => {
                         onChange: () => onChangeDefault(borderNone)
                     },
                     {
-                        activeItem: (value[breakpoint]['border-style'] === 'solid'),
+                        activeItem: (getLastBreakpointValue(value, 'border-style', breakpoint) === 'solid'),
                         content: (
                             <Icon
                                 className='maxi-defaultstyles-control__button__icon'
@@ -91,7 +92,7 @@ const BorderControl = props => {
                         onChange: () => onChangeDefault(borderSolid)
                     },
                     {
-                        activeItem: (value[breakpoint]['border-style'] === 'dashed'),
+                        activeItem: (getLastBreakpointValue(value, 'border-style', breakpoint) === 'dashed'),
                         content: (
                             <Icon
                                 className='maxi-defaultstyles-control__button__icon'
@@ -101,7 +102,7 @@ const BorderControl = props => {
                         onChange: () => onChangeDefault(borderDashed)
                     },
                     {
-                        activeItem: (value[breakpoint]['border-style'] === 'dotted'),
+                        activeItem: (getLastBreakpointValue(value, 'border-style', breakpoint) === 'dotted'),
                         content: (
                             <Icon
                                 className='maxi-defaultstyles-control__button__icon'
@@ -114,7 +115,7 @@ const BorderControl = props => {
             />
             <ColorControl
                 label={__('Border', 'maxi-blocks')}
-                color={value[breakpoint]['border-color']}
+                color={getLastBreakpointValue(value, 'border-color', breakpoint)}
                 defaultColor={value['defaultBorderColor']}
                 onColorChange={val => {
                     value[breakpoint]['border-color'] = val;
@@ -131,7 +132,7 @@ const BorderControl = props => {
                     <SelectControl
                         label={__('Border Type', 'maxi-blocks')}
                         className='maxi-border-control__type'
-                        value={value[breakpoint]['border-style']}
+                        value={getLastBreakpointValue(value, 'border-style', breakpoint)}
                         options={[
                             { label: 'None', value: 'none' },
                             { label: 'Dotted', value: 'dotted' },

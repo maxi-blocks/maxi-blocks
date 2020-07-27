@@ -32,6 +32,38 @@ export const getDefaultProp = (clientId, prop) => {
 }
 
 /**
+ * Gets an object base on Maxi Blocks breakpoints schema and looks for the last set value
+ * for a concrete property in case is not set for the requested breakpoint
+ */
+export const getLastBreakpointValue = (obj, prop, breakpoint) => {
+    if (!isNil(obj[breakpoint][prop]) && !isEmpty(obj[breakpoint][prop]))
+        return obj[breakpoint][prop];
+    if (!isNil(obj[breakpoint][prop]) && isNumber(obj[breakpoint][prop]))
+        return obj[breakpoint][prop];
+    else {
+        const objectKeys = Object.keys(obj);
+        const breakpointIndex = objectKeys.indexOf(breakpoint) - 1;
+
+        if (breakpointIndex === 0)
+            return false;
+
+        let i = breakpointIndex;
+
+        do {
+            if (!isNil(obj[objectKeys[i]][prop]) && !isEmpty(obj[objectKeys[i]][prop]))
+                return obj[objectKeys[i]][prop];
+            if (!isNil(obj[objectKeys[i]][prop]) && isNumber(obj[objectKeys[i]][prop]))
+                return obj[objectKeys[i]][prop];
+            else
+                i--;
+        }
+        while (i > 0);
+    }
+
+    return obj[breakpoint][prop];
+}
+
+/**
  * Clean BackgroundControl object for being delivered for styling
  *
  * @param {object} background BackgroundControl related object
@@ -309,8 +341,98 @@ export const getShapeDividerSVGObject = shapeDivider => {
         general: {}
     }
 
-    if (!isEmpty(shapeDivider.colorOptions.color)) {
+    if (!isEmpty(shapeDivider.colorOptions.color))
         response.general['fill'] = shapeDivider.colorOptions.color;
+
+    return response;
+}
+
+export const getArrowObject = arrow => {
+    const response = {
+        label: arrow.label,
+        general: {},
+        xxl: {},
+        xl: {},
+        l: {},
+        m: {},
+        s: {},
+        xs: {}
+    }
+
+    if (!arrow.active)
+        return response;
+
+    for (let [key, value] of Object.entries(arrow)) {
+        if (key === 'label' || key === 'active')
+            continue;
+
+        response[key].visibility = 'visible';
+        if (!isEmpty(value.side)) {
+            switch (value.side) {
+                case 'top':
+                    response[key].bottom = '100%';
+                    break;
+                case 'right':
+                    response[key].left = '100%';
+                    break;
+                case 'bottom':
+                    response[key].top = '100%';
+                    break;
+                case 'left':
+                    response[key].right = '0%';
+                    break;
+            }
+        }
+        if (isNumber(value.position))
+            switch (value.side) {
+                case 'top':
+                    response[key].left = `${value.position}%`;
+                    break;
+                case 'right':
+                    response[key].top = `${value.position}%`;
+                    break;
+                case 'bottom':
+                    response[key].left = `${value.position}%`;
+                    break;
+                case 'left':
+                    response[key].top = `${value.position}%`;
+                    break;
+            }
+        if (!isEmpty(value.color)) {
+            switch (value.side) {
+                case 'top':
+                    response[key]['border-color'] = `transparent transparent ${value.color} transparent`;
+                    break;
+                case 'right':
+                    response[key]['border-color'] = `transparent transparent transparent ${value.color}`;
+                    break;
+                case 'bottom':
+                    response[key]['border-color'] = `${value.color} transparent transparent transparent`;
+                    break;
+                case 'left':
+                    response[key]['border-color'] = `transparent ${value.color} transparent transparent`;
+                    break;
+            }
+            if (isNumber(value.width) && isNumber(value.height)) {
+                const width = `${value.width / 2}${value.widthUnit}`;
+                const height = `${value.height}${value.heightUnit}`;
+
+                switch (value.side) {
+                    case 'top':
+                        response[key]['border-width'] = `0 ${width} ${height} ${width}`;
+                        break;
+                    case 'right':
+                        response[key]['border-width'] = `${width} 0 ${width} ${height}`;
+                        break;
+                    case 'bottom':
+                        response[key]['border-width'] = `${height} ${width} 0 ${width}`;
+                        break;
+                    case 'left':
+                        response[key]['border-width'] = `${width} ${height} ${width} 0`;
+                        break;
+                }
+            }
+        }
     }
 
     return response;

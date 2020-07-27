@@ -7,6 +7,7 @@ const { RangeControl } = wp.components;
 /**
  * External dependencies
  */
+import { getLastBreakpointValue } from '../../extensions/styles/utils';
 import classnames from 'classnames';
 import { isObject } from 'lodash';
 
@@ -34,7 +35,7 @@ const OpacityControl = props => {
         <RangeControl
             label={__('Opacity', 'maxi-blocks')}
             className={classes}
-            value={value[breakpoint].opacity * 100}
+            value={getLastBreakpointValue(value, 'opacity', breakpoint) * 100}
             onChange={val => {
                 value[breakpoint].opacity = val / 100;
                 onChange(JSON.stringify(value))

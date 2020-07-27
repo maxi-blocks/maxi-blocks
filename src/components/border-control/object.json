@@ -4,6 +4,10 @@
         "border-color": "#ffffff",
         "border-style": "none"
     },
+    "xxl": {
+        "border-color": "",
+        "border-style": ""
+    },
     "xl": {
         "border-color": "",
         "border-style": ""
@@ -32,6 +36,13 @@
             "border-right-width": 0,
             "border-bottom-width": 0,
             "border-left-width": 0,
+            "sync": true
+        },
+        "xxl": {
+            "border-top-width": "",
+            "border-right-width": "",
+            "border-bottom-width": "",
+            "border-left-width": "",
             "sync": true
         },
         "xl": {
@@ -78,6 +89,13 @@
             "border-top-right-radius": 0,
             "border-bottom-right-radius": 0,
             "border-bottom-left-radius": 0,
+            "sync": true
+        },
+        "xxl": {
+            "border-top-left-radius": "",
+            "border-top-right-radius": "",
+            "border-bottom-right-radius": "",
+            "border-bottom-left-radius": "",
             "sync": true
         },
         "xl": {

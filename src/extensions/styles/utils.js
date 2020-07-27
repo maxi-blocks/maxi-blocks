@@ -139,6 +139,7 @@ export const getBoxShadowObject = boxShadow => {
     const response = {
         label: boxShadow.label,
         general: {},
+        xxl: {},
         xl: {},
         l: {},
         m: {},
@@ -166,6 +167,7 @@ export const getAlignmentTextObject = alignment => {
     const response = {
         label: alignment.label,
         general: {},
+        xxl: {},
         xl: {},
         l: {},
         m: {},
@@ -199,6 +201,7 @@ export const getAlignmentFlexObject = alignment => {
     const response = {
         label: alignment.label,
         general: {},
+        xxl: {},
         xl: {},
         l: {},
         m: {},
@@ -230,6 +233,7 @@ export const getOpacityObject = opacity => {
     const response = {
         label: opacity.label,
         general: {},
+        xxl: {},
         xl: {},
         l: {},
         m: {},
@@ -271,6 +275,7 @@ export const getColumnSizeObject = columnSize => {
     const response = {
         label: columnSize.label,
         general: {},
+        xxl: {},
         xl: {},
         l: {},
         m: {},

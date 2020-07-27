@@ -171,11 +171,11 @@ if (!class_exists('MaxiBlocksAPI')) :
         public function get_maxi_blocks_breakpoints()
         {
             return [
-                'xs'    => 568,
+                'xs'    => 480,
                 's'     => 768,
                 'm'     => 1024,
                 'l'     => 1366,
-                'xl'    => 1680
+                'xl'    => 1920
             ];
         }
 

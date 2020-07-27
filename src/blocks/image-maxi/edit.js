@@ -89,7 +89,8 @@ class edit extends MaxiBlock {
             margin,
             zIndex,
             position,
-            display
+            display,
+            clipPath
         } = this.props.attributes;
 
         const response = {
@@ -102,7 +103,7 @@ class edit extends MaxiBlock {
             alignment: { ...getAlignmentFlexObject(JSON.parse(alignment)) },
             position: { ...JSON.parse(position) },
             positionOptions: { ...JSON.parse(position).options },
-            display: { ...JSON.parse(display) }
+            display: { ...JSON.parse(display) },
         };
 
         return response;
@@ -133,6 +134,8 @@ class edit extends MaxiBlock {
             imageSize: { ...JSON.parse(size) }
         };
 
+
+
         return response
     }
 
@@ -152,14 +155,22 @@ class edit extends MaxiBlock {
 
     get getImageBackendObject() {
         const {
-            border
+            border,
+            clipPath
         } = this.props.attributes;
 
         const response = {
             border: { ...JSON.parse(border) },
             borderWidth: { ...JSON.parse(border).borderWidth },
             borderRadius: { ...JSON.parse(border).borderRadius },
+            image: {
+                label: 'Image settings',
+                general: {}
+            }
         };
+
+        if (!isNil(clipPath))
+            response.image.general['clip-path'] = clipPath;
 
         return response
     }

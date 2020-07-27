@@ -33,6 +33,7 @@ import {
     __experimentalPositionControl,
     __experimentalDisplayControl,
     __experimentalMotionControl,
+    __experimentalTransformControl
 } from '../../components';
 
 /**
@@ -46,6 +47,7 @@ import { isObject } from 'lodash';
 const Inspector = props => {
     const {
         attributes: {
+            uniqueID,
             isFirstOnHierarchy,
             blockStyle,
             defaultBlockStyle,
@@ -90,6 +92,7 @@ const Inspector = props => {
             position,
             display,
             motion,
+            transform
         },
         deviceType,
         setAttributes,
@@ -461,6 +464,17 @@ const Inspector = props => {
                                                     motionOptions={motion}
                                                     onChange={motion => setAttributes({ motion })}
                                                 />
+                                            )
+                                        },
+                                        {
+                                            label: __('Transform', 'maxi-blocks'),
+                                            content: (
+                                                <__experimentalTransformControl 
+                                                    transform={transform}
+                                                    onChange={transform => setAttributes({ transform })}
+                                                    uniqueID={uniqueID}
+                                                    breakpoint={deviceType}
+                                                /> 
                                             )
                                         }
                                     ]}

@@ -1280,12 +1280,12 @@ export const __experimentalPosition = {
     "options": {
         "label": "Position options",
         "general": {
-                "top": "",
-                "right": "",
-                "bottom": "",
-                "left": "",
-                "sync": false,
-                "unit": "px"
+            "top": "",
+            "right": "",
+            "bottom": "",
+            "left": "",
+            "sync": false,
+            "unit": "px"
         },
         "xxl": {
                 "top": "",
@@ -1296,44 +1296,44 @@ export const __experimentalPosition = {
                 "unit": ""
         },
         "xl": {
-                "top": "",
-                "right": "",
-                "bottom": "",
-                "left": "",
-                "sync": false,
-                "unit": ""
+            "top": "",
+            "right": "",
+            "bottom": "",
+            "left": "",
+            "sync": false,
+            "unit": ""
         },
         "l": {
-                "top": "",
-                "right": "",
-                "bottom": "",
-                "left": "",
-                "sync": false,
-                "unit": ""
+            "top": "",
+            "right": "",
+            "bottom": "",
+            "left": "",
+            "sync": false,
+            "unit": ""
         },
         "m": {
-                "top": "",
-                "right": "",
-                "bottom": "",
-                "left": "",
-                "sync": false,
-                "unit": ""
+            "top": "",
+            "right": "",
+            "bottom": "",
+            "left": "",
+            "sync": false,
+            "unit": ""
         },
         "s": {
-                "top": "",
-                "right": "",
-                "bottom": "",
-                "left": "",
-                "sync": false,
-                "unit": ""
+            "top": "",
+            "right": "",
+            "bottom": "",
+            "left": "",
+            "sync": false,
+            "unit": ""
         },
         "xs": {
-                "top": "",
-                "right": "",
-                "bottom": "",
-                "left": "",
-                "sync": false,
-                "unit": ""
+            "top": "",
+            "right": "",
+            "bottom": "",
+            "left": "",
+            "sync": false,
+            "unit": ""
         }
     }
 }
@@ -1407,4 +1407,155 @@ export const __experimentalMotion = {
         "viewportTop": 100,
         "viewportBottom": 0,
     },
+}
+
+export const __experimentalTransform = {
+    "label": "Transform",
+    "general": {
+        "scale": {
+            "scaleX": "",
+            "scaleY": ""
+        },
+        "translate": {
+            "translateXUnit": "%",
+            "translateX": "",
+            "translateYUnit": "%",
+            "translateY": ""
+        },
+        "rotate": {
+            "rotateX": "",
+            "rotateY": "",
+            "rotateZ": ""
+        },
+        "origin": {
+            "originX": "center",
+            "originY": "center"
+        }
+    },
+    "xxl": {
+        "scale": {
+            "scaleX": "",
+            "scaleY": ""
+        },
+        "translate": {
+            "translateXUnit": "%",
+            "translateX": "",
+            "translateYUnit": "%",
+            "translateY": ""
+        },
+        "rotate": {
+            "rotateX": "",
+            "rotateY": "",
+            "rotateZ": ""
+        },
+        "origin": {
+            "originX": "",
+            "originY": ""
+        }
+    },
+    "xl": {
+        "scale": {
+            "scaleX": "",
+            "scaleY": ""
+        },
+        "translate": {
+            "translateXUnit": "%",
+            "translateX": "",
+            "translateYUnit": "%",
+            "translateY": ""
+        },
+        "rotate": {
+            "rotateX": "",
+            "rotateY": "",
+            "rotateZ": ""
+        },
+        "origin": {
+            "originX": "",
+            "originY": ""
+        }
+    },
+    "l": {
+        "scale": {
+            "scaleX": "",
+            "scaleY": ""
+        },
+        "translate": {
+            "translateXUnit": "%",
+            "translateX": "",
+            "translateYUnit": "%",
+            "translateY": ""
+        },
+        "rotate": {
+            "rotateX": "",
+            "rotateY": "",
+            "rotateZ": ""
+        },
+        "origin": {
+            "originX": "",
+            "originY": ""
+        }
+    },
+    "m": {
+        "scale": {
+            "scaleX": "",
+            "scaleY": ""
+        },
+        "translate": {
+            "translateXUnit": "%",
+            "translateX": "",
+            "translateYUnit": "%",
+            "translateY": ""
+        },
+        "rotate": {
+            "rotateX": "",
+            "rotateY": "",
+            "rotateZ": ""
+        },
+        "origin": {
+            "originX": "",
+            "originY": ""
+        }
+    },
+    "s": {
+        "scale": {
+            "scaleX": "",
+            "scaleY": ""
+        },
+        "translate": {
+            "translateXUnit": "%",
+            "translateX": "",
+            "translateYUnit": "%",
+            "translateY": ""
+        },
+        "rotate": {
+            "rotateX": "",
+            "rotateY": "",
+            "rotateZ": ""
+        },
+        "origin": {
+            "originX": "",
+            "originY": ""
+        }
+    },
+    "xs": {
+        "scale": {
+            "scaleX": "",
+            "scaleY": ""
+        },
+        "translate": {
+            "translateXUnit": "%",
+            "translateX": "",
+            "translateYUnit": "%",
+            "translateY": ""
+        },
+        "rotate": {
+            "rotateX": "",
+            "rotateY": "",
+            "rotateZ": ""
+        },
+        "origin": {
+            "originX": "",
+            "originY": ""
+        }
+    }
 }

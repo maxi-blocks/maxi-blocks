@@ -10,7 +10,8 @@ const { getBlockAttributes } = wp.blocks;
 import {
     isEmpty,
     isNil,
-    isNumber
+    isNumber,
+    isString
 } from 'lodash'
 
 /**
@@ -314,8 +315,71 @@ export const getShapeDividerSVGObject = shapeDivider => {
         general: {}
     }
 
-    if (!isEmpty(shapeDivider.colorOptions.color)) {
+    if (!isEmpty(shapeDivider.colorOptions.color))
         response.general['fill'] = shapeDivider.colorOptions.color;
+
+    return response;
+}
+
+export const getTransfromObject = transform => {
+    const response = {
+        label: 'Transform',
+        general: {
+            transform: '',
+            'transform-origin': ''
+        },
+        xxl: {
+            transform: '',
+            'transform-origin': ''
+        },
+        xl: {
+            transform: '',
+            'transform-origin': ''
+        },
+        l: {
+            transform: '',
+            'transform-origin': ''
+        },
+        m: {
+            transform: '',
+            'transform-origin': ''
+        },
+        s: {
+            transform: '',
+            'transform-origin': ''
+        },
+        xs: {
+            transform: '',
+            'transform-origin': ''
+        }
+    }
+
+    for (let [key, value] of Object.entries(transform)) {
+        if(key === 'label')
+            continue;
+
+        if (isNumber(value.scale.scaleX))
+            response[key].transform += `scaleX(${value.scale.scaleX / 100}) `;
+        if (isNumber(value.scale.scaleY))
+            response[key].transform += `scaleY(${value.scale.scaleY / 100}) `;
+        if (isNumber(value.translate.translateX))
+            response[key].transform += `translateX(${value.translate.translateX}${value.translate.translateXUnit}) `;
+        if (isNumber(value.translate.translateY))
+            response[key].transform += `translateY(${value.translate.translateY}${value.translate.translateYUnit}) `;
+        if (isNumber(value.rotate.rotateX))
+            response[key].transform += `rotateX(${value.rotate.rotateX}deg) `;
+        if (isNumber(value.rotate.rotateY))
+            response[key].transform += `rotateY(${value.rotate.rotateY}deg) `;
+        if (isNumber(value.rotate.rotateZ))
+            response[key].transform += `rotateZ(${value.rotate.rotateZ}deg) `;
+        if (isNumber(value.origin.originX))
+            response[key]['transform-origin'] += `${value.origin.originX}% `;
+        if (isNumber(value.origin.originY))
+            response[key]['transform-origin'] += `${value.origin.originY}% `;
+        if (isString(value.origin.originX))
+            response[key]['transform-origin'] += `${value.origin.originX} `;
+        if (isString(value.origin.originY))
+            response[key]['transform-origin'] += `${value.origin.originY} `;
     }
 
     return response;

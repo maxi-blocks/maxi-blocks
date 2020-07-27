@@ -33,6 +33,7 @@ import {
     getVideoBackgroundObject,
     getOpacityObject,
     getColumnSizeObject,
+    getTransfromObject,
     getAlignmentTextObject
 } from '../../extensions/styles/utils';
 
@@ -93,7 +94,8 @@ class edit extends MaxiBlock {
                 padding,
                 zIndex,
                 position,
-                display
+                display,
+                transform
             },
         } = this.props;
 
@@ -112,6 +114,7 @@ class edit extends MaxiBlock {
             position: { ...JSON.parse(position) },
             positionOptions: { ...JSON.parse(position).options },
             display: { ...JSON.parse(display) },
+            transform: { ...getTransfromObject(JSON.parse(transform)) },
             column: {
                 label: "Column",
                 general: {},

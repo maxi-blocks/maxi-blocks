@@ -21,7 +21,6 @@ const {
  * Internal dependencies
  */
 import {
-    SizeControl,
     __experimentalAdvancedRangeControl,
     __experimentalGroupInputControl
 } from '../../components';
@@ -117,19 +116,6 @@ const MotionControl = props => {
                                     onChange(JSON.stringify(value));
                                 }}
                             />
-                            <SizeControl
-                                label={__('Speed', 'maxi-blocks')}
-                                disableUnit
-                                min={0.1}
-                                max={10}
-                                initial={1}
-                                step={0.1}
-                                value={verticalOptions.speed}
-                                onChangeValue={val => {
-                                    verticalOptions.speed = val;
-                                    onChange(JSON.stringify(value));
-                                }}
-                            />
                             <__experimentalAdvancedRangeControl
                                 options={verticalOptions.viewport}
                                 onChange={val => {
@@ -180,19 +166,6 @@ const MotionControl = props => {
                                 ]}
                                 onChange={val => {
                                     horizontalOptions.direction = val;
-                                    onChange(JSON.stringify(value));
-                                }}
-                            />
-                            <SizeControl
-                                label={__('Speed', 'maxi-blocks')}
-                                disableUnit
-                                min={0}
-                                max={10}
-                                initial={5}
-                                step={0.1}
-                                value={horizontalOptions.speed}
-                                onChangeValue={val => {
-                                    horizontalOptions.speed = val;
                                     onChange(JSON.stringify(value));
                                 }}
                             />
@@ -249,19 +222,6 @@ const MotionControl = props => {
                                     onChange(JSON.stringify(value));
                                 }}
                             />
-                            <SizeControl
-                                label={__('Speed', 'maxi-blocks')}
-                                disableUnit
-                                min={0}
-                                max={10}
-                                initial={0.3}
-                                step={0.1}
-                                value={rotateOptions.speed}
-                                onChangeValue={val => {
-                                    rotateOptions.speed = val;
-                                    onChange(JSON.stringify(value));
-                                }}
-                            />
                             <__experimentalAdvancedRangeControl
                                 options={rotateOptions.viewport}
                                 onChange={val => {
@@ -270,7 +230,7 @@ const MotionControl = props => {
                                 }}
                             />
                             <__experimentalGroupInputControl
-                                label={__('Rotate', 'maxi-blocks')}
+                                label={__('Rotation', 'maxi-blocks')}
                                 options={rotateOptions}
                                 onChange={val => {
                                     rotateOptions = val;
@@ -312,19 +272,6 @@ const MotionControl = props => {
                                 ]}
                                 onChange={val => {
                                     scaleOptions.direction = val;
-                                    onChange(JSON.stringify(value));
-                                }}
-                            />
-                            <SizeControl
-                                label={__('Speed', 'maxi-blocks')}
-                                disableUnit
-                                min={0}
-                                max={10}
-                                initial={5}
-                                step={0.1}
-                                value={scaleOptions.speed}
-                                onChangeValue={val => {
-                                    scaleOptions.speed = val;
                                     onChange(JSON.stringify(value));
                                 }}
                             />

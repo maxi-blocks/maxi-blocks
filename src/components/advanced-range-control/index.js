@@ -35,7 +35,7 @@ function Handle({ handle: { id, value, percent }, getHandleProps }) {
 			{...getHandleProps(id)}
 		>
 			<div className='maxi-advanced-range-control__handle__label'>
-				{value}
+				{`${value}%`}
 			</div>
 		</div>
 	);

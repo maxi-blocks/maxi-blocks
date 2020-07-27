@@ -34,7 +34,7 @@ const GroupInputControl = props => {
                 <input
                     type="number"
                     min={0}
-                    max={99}
+                    max={999}
                     step={0.1}
                     value={value.startValue}
                     onChange={e => {
@@ -48,7 +48,7 @@ const GroupInputControl = props => {
                 <input
                     type="number"
                     min={0}
-                    max={99}
+                    max={999}
                     step={0.1}
                     value={value.midValue}
                     onChange={e => {
@@ -62,7 +62,7 @@ const GroupInputControl = props => {
                 <input
                     type="number"
                     min={0}
-                    max={99}
+                    max={999}
                     step={0.1}
                     value={value.endValue}
                     onChange={e => {

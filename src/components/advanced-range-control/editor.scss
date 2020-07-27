@@ -29,9 +29,20 @@
         border-radius: 50%;
         backgroundColor: #2C4870;
         color: #333;
+        &:first-child {
+            div {
+                left: 5px;
+            }
+        }
+        &:last-child {
+            div {
+                right: 10px;
+            }
+        }
         &__label {
             margin-top: -35px;
             font-size: 11px;
+            position: relative;
         }
     }
     &__handles {

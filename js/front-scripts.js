@@ -1,18 +1,6 @@
 // GSAP PLugins
 gsap.registerPlugin(ScrollTrigger);
 
-// Get Width & Height Screen
-let vw = Math.max(
-    document.documentElement.clientWidth || 0,
-    window.innerWidth || 0
-);
-window.addEventListener("resize", function() {
-    vw = Math.max(
-        document.documentElement.clientWidth || 0,
-        window.innerWidth || 0
-    );
-});
-
 // Motion Effects
 const motionElems = document.querySelectorAll(".maxi-motion-effect");
 motionElems.forEach(function(elem) {
@@ -26,8 +14,8 @@ motionElems.forEach(function(elem) {
 			scrollTrigger: {
 				trigger: ".maxi-motion-effect-"+ motionID +" > .maxi-shape-divider",
 				start: "-150",
-				scrub: 1,
-				//markers: true,
+				scrub: true,
+				markers: false,
 				onEnter: self => {
 					self.trigger = elem;
 				},
@@ -51,11 +39,11 @@ motionElems.forEach(function(elem) {
 
 	if(motionData !== null) {
 
+		// Vertical Effect
 		if("vertical" in motionData) {
 
 			const direction = motionData.vertical.direction;
 			const status = motionData.vertical.status;
-			const speed = motionData.vertical.speed;
 			const viewport = motionData.vertical.viewport;
 			const startValue = motionData.vertical.startValue;
 			const midValue = motionData.vertical.midValue;
@@ -66,8 +54,8 @@ motionElems.forEach(function(elem) {
 					scrollTrigger: {
 						trigger: ".maxi-motion-effect-"+ motionID +"",
 						start: "top "+ viewport[2] +"%",
-						scrub: 1,
-						markers: true,
+						scrub: true,
+						markers: false,
 						onEnter: self => {
 							self.trigger = elem;
 						},
@@ -77,8 +65,8 @@ motionElems.forEach(function(elem) {
 					scrollTrigger: {
 						trigger: ".maxi-motion-effect-"+ motionID +"",
 						start: "center "+ viewport[1] +"%",
-						scrub: 1,
-						markers: true,
+						scrub: true,
+						markers: false,
 						onEnter: self => {
 							self.trigger = elem;
 						},
@@ -88,8 +76,8 @@ motionElems.forEach(function(elem) {
 					scrollTrigger: {
 						trigger: ".maxi-motion-effect-"+ motionID +"",
 						start: "bottom "+ viewport[0] +"%",
-						scrub: 1,
-						markers: true,
+						scrub: true,
+						markers: false,
 						onEnter: self => {
 							self.trigger = elem;
 						},
@@ -98,21 +86,21 @@ motionElems.forEach(function(elem) {
 				if(direction === 'up') {
 					if(startValue !== 0) {
 						motionTimeLineTop.to(".maxi-motion-effect-"+ motionID +"", {
-							y: startValue * speed,
+							y: startValue,
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
 					if(midValue !== 0) {
 						motionTimeLineMid.to(".maxi-motion-effect-"+ motionID +"", {
-							y: midValue * speed,
+							y: midValue,
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
 					if(endValue !== 0) {
 						motionTimeLineBottom.to(".maxi-motion-effect-"+ motionID +"", {
-							y: endValue * speed,
+							y: endValue,
 							duration: 1,
 							ease: "power1.out"
 						})
@@ -121,21 +109,21 @@ motionElems.forEach(function(elem) {
 				if(direction === 'down') {
 					if(startValue !== 0) {
 						motionTimeLineTop.to(".maxi-motion-effect-"+ motionID +"", {
-							y: -(startValue * speed),
+							y: -(startValue),
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
 					if(midValue !== 0) {
 						motionTimeLineMid.to(".maxi-motion-effect-"+ motionID +"", {
-							y: -(midValue * speed),
+							y: -(midValue),
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
 					if(endValue !== 0) {
 						motionTimeLineBottom.to(".maxi-motion-effect-"+ motionID +"", {
-							y: -(endValue * speed),
+							y: -(endValue),
 							duration: 1,
 							ease: "power1.out"
 						})
@@ -145,11 +133,11 @@ motionElems.forEach(function(elem) {
 
 		}
 
+		// Horizontal Effect
 		if("horizontal" in motionData) {
 
 			const direction = motionData.horizontal.direction;
 			const status = motionData.horizontal.status;
-			const speed = motionData.horizontal.speed;
 			const viewport = motionData.horizontal.viewport;
 			const startValue = motionData.horizontal.startValue;
 			const midValue = motionData.horizontal.midValue;
@@ -160,8 +148,8 @@ motionElems.forEach(function(elem) {
 					scrollTrigger: {
 						trigger: ".maxi-motion-effect-"+ motionID +"",
 						start: "top "+ viewport[2] +"%",
-						scrub: 1,
-						markers: true,
+						scrub: true,
+						markers: false,
 						onEnter: self => {
 							self.trigger = elem;
 						},
@@ -171,8 +159,8 @@ motionElems.forEach(function(elem) {
 					scrollTrigger: {
 						trigger: ".maxi-motion-effect-"+ motionID +"",
 						start: "center "+ viewport[1] +"%",
-						scrub: 1,
-						markers: true,
+						scrub: true,
+						markers: false,
 						onEnter: self => {
 							self.trigger = elem;
 						},
@@ -182,8 +170,8 @@ motionElems.forEach(function(elem) {
 					scrollTrigger: {
 						trigger: ".maxi-motion-effect-"+ motionID +"",
 						start: "bottom "+ viewport[0] +"%",
-						scrub: 1,
-						markers: true,
+						scrub: true,
+						markers: false,
 						onEnter: self => {
 							self.trigger = elem;
 						},
@@ -192,21 +180,21 @@ motionElems.forEach(function(elem) {
 				if(direction === 'left') {
 					if(startValue !== 0) {
 						motionTimeLineTop.to(".maxi-motion-effect-"+ motionID +"", {
-							x: startValue * speed,
+							x: startValue,
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
 					if(midValue !== 0) {
 						motionTimeLineMid.to(".maxi-motion-effect-"+ motionID +"", {
-							x: midValue * speed,
+							x: midValue,
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
 					if(endValue !== 0) {
 						motionTimeLineBottom.to(".maxi-motion-effect-"+ motionID +"", {
-							x: endValue * speed,
+							x: endValue,
 							duration: 1,
 							ease: "power1.out"
 						})
@@ -215,21 +203,21 @@ motionElems.forEach(function(elem) {
 				if(direction === 'right') {
 					if(startValue !== 0) {
 						motionTimeLineTop.to(".maxi-motion-effect-"+ motionID +"", {
-							x: -(startValue * speed),
+							x: -(startValue),
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
 					if(midValue !== 0) {
 						motionTimeLineMid.to(".maxi-motion-effect-"+ motionID +"", {
-							x: -(midValue * speed),
+							x: -(midValue),
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
 					if(endValue !== 0) {
 						motionTimeLineBottom.to(".maxi-motion-effect-"+ motionID +"", {
-							x: -(endValue * speed),
+							x: -(endValue),
 							duration: 1,
 							ease: "power1.out"
 						})
@@ -239,11 +227,11 @@ motionElems.forEach(function(elem) {
 
 		}
 
+		// Rotation Effect
 		if("rotate" in motionData) {
 
 			const direction = motionData.rotate.direction;
 			const status = motionData.rotate.status;
-			const speed = motionData.rotate.speed;
 			const viewport = motionData.rotate.viewport;
 			const startValue = motionData.rotate.startValue;
 			const midValue = motionData.rotate.midValue;
@@ -254,8 +242,8 @@ motionElems.forEach(function(elem) {
 					scrollTrigger: {
 						trigger: ".maxi-motion-effect-"+ motionID +"",
 						start: "top "+ viewport[2] +"%",
-						scrub: 1,
-						markers: true,
+						scrub: true,
+						markers: false,
 						onEnter: self => {
 							self.trigger = elem;
 						},
@@ -265,8 +253,8 @@ motionElems.forEach(function(elem) {
 					scrollTrigger: {
 						trigger: ".maxi-motion-effect-"+ motionID +"",
 						start: "center "+ viewport[1] +"%",
-						scrub: 1,
-						markers: true,
+						scrub: true,
+						markers: false,
 						onEnter: self => {
 							self.trigger = elem;
 						},
@@ -276,8 +264,8 @@ motionElems.forEach(function(elem) {
 					scrollTrigger: {
 						trigger: ".maxi-motion-effect-"+ motionID +"",
 						start: "bottom "+ viewport[0] +"%",
-						scrub: 1,
-						markers: true,
+						scrub: true,
+						markers: false,
 						onEnter: self => {
 							self.trigger = elem;
 						},
@@ -286,21 +274,21 @@ motionElems.forEach(function(elem) {
 				if(direction === 'left') {
 					if(startValue !== 0) {
 						motionTimeLineTop.to(".maxi-motion-effect-"+ motionID +"", {
-							rotation: startValue * speed,
+							rotation: startValue,
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
 					if(midValue !== 0) {
 						motionTimeLineMid.to(".maxi-motion-effect-"+ motionID +"", {
-							rotation: midValue * speed,
+							rotation: midValue,
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
 					if(endValue !== 0) {
 						motionTimeLineBottom.to(".maxi-motion-effect-"+ motionID +"", {
-							rotation: endValue * speed,
+							rotation: endValue,
 							duration: 1,
 							ease: "power1.out"
 						})
@@ -309,21 +297,21 @@ motionElems.forEach(function(elem) {
 				if(direction === 'right') {
 					if(startValue !== 0) {
 						motionTimeLineTop.to(".maxi-motion-effect-"+ motionID +"", {
-							rotation: -(startValue * speed),
+							rotation: -(startValue),
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
 					if(midValue !== 0) {
 						motionTimeLineMid.to(".maxi-motion-effect-"+ motionID +"", {
-							rotation: -(midValue * speed),
+							rotation: -(midValue),
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
 					if(endValue !== 0) {
 						motionTimeLineBottom.to(".maxi-motion-effect-"+ motionID +"", {
-							rotation: -(endValue * speed),
+							rotation: -(endValue),
 							duration: 1,
 							ease: "power1.out"
 						})
@@ -333,11 +321,11 @@ motionElems.forEach(function(elem) {
 
 		}
 
+		// Scale Effect
 		if("scale" in motionData) {
 
 			const direction = motionData.scale.direction;
 			const status = motionData.scale.status;
-			const speed = motionData.scale.speed;
 			const viewport = motionData.scale.viewport;
 			const startValue = motionData.scale.startValue;
 			const midValue = motionData.scale.midValue;
@@ -348,8 +336,8 @@ motionElems.forEach(function(elem) {
 					scrollTrigger: {
 						trigger: ".maxi-motion-effect-"+ motionID +"",
 						start: "top "+ viewport[2] +"%",
-						scrub: 1,
-						markers: true,
+						scrub: true,
+						markers: false,
 						onEnter: self => {
 							self.trigger = elem;
 						},
@@ -359,8 +347,8 @@ motionElems.forEach(function(elem) {
 					scrollTrigger: {
 						trigger: ".maxi-motion-effect-"+ motionID +"",
 						start: "center "+ viewport[1] +"%",
-						scrub: 1,
-						markers: true,
+						scrub: true,
+						markers: false,
 						onEnter: self => {
 							self.trigger = elem;
 						},
@@ -370,8 +358,8 @@ motionElems.forEach(function(elem) {
 					scrollTrigger: {
 						trigger: ".maxi-motion-effect-"+ motionID +"",
 						start: "bottom "+ viewport[0] +"%",
-						scrub: 1,
-						markers: true,
+						scrub: true,
+						markers: false,
 						onEnter: self => {
 							self.trigger = elem;
 						},
@@ -380,21 +368,21 @@ motionElems.forEach(function(elem) {
 				if(direction === 'up') {
 					if(startValue !== 0) {
 						motionTimeLineTop.to(".maxi-motion-effect-"+ motionID +"", {
-							scale: startValue * speed,
+							scale: startValue,
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
 					if(midValue !== 0) {
 						motionTimeLineMid.to(".maxi-motion-effect-"+ motionID +"", {
-							scale: midValue * speed,
+							scale: midValue,
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
 					if(endValue !== 0) {
 						motionTimeLineBottom.to(".maxi-motion-effect-"+ motionID +"", {
-							scale: endValue * speed,
+							scale: endValue,
 							duration: 1,
 							ease: "power1.out"
 						})
@@ -403,21 +391,21 @@ motionElems.forEach(function(elem) {
 				if(direction === 'down') {
 					if(startValue !== 0) {
 						motionTimeLineTop.from(".maxi-motion-effect-"+ motionID +"", {
-							scale: startValue * speed,
+							scale: startValue,
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
 					if(midValue !== 0) {
 						motionTimeLineMid.from(".maxi-motion-effect-"+ motionID +"", {
-							scale: midValue * speed,
+							scale: midValue,
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
 					if(endValue !== 0) {
 						motionTimeLineBottom.from(".maxi-motion-effect-"+ motionID +"", {
-							scale: endValue * speed,
+							scale: endValue,
 							duration: 1,
 							ease: "power1.out"
 						})
@@ -427,6 +415,7 @@ motionElems.forEach(function(elem) {
 
 		}
 
+		// Fade Effect
 		if("fade" in motionData) {
 
 			const direction = motionData.fade.direction;
@@ -441,8 +430,8 @@ motionElems.forEach(function(elem) {
 					scrollTrigger: {
 						trigger: ".maxi-motion-effect-"+ motionID +"",
 						start: "top "+ viewport[2] +"%",
-						scrub: 1,
-						markers: true,
+						scrub: true,
+						markers: false,
 						onEnter: self => {
 							self.trigger = elem;
 						},
@@ -452,8 +441,8 @@ motionElems.forEach(function(elem) {
 					scrollTrigger: {
 						trigger: ".maxi-motion-effect-"+ motionID +"",
 						start: "center "+ viewport[1] +"%",
-						scrub: 1,
-						markers: true,
+						scrub: true,
+						markers: false,
 						onEnter: self => {
 							self.trigger = elem;
 						},
@@ -463,8 +452,8 @@ motionElems.forEach(function(elem) {
 					scrollTrigger: {
 						trigger: ".maxi-motion-effect-"+ motionID +"",
 						start: "bottom "+ viewport[0] +"%",
-						scrub: 1,
-						markers: true,
+						scrub: true,
+						markers: false,
 						onEnter: self => {
 							self.trigger = elem;
 						},
@@ -520,6 +509,7 @@ motionElems.forEach(function(elem) {
 
 		}
 
+		// Blur Effect
 		if("blur" in motionData) {
 
 			const direction = motionData.blur.direction;
@@ -534,8 +524,8 @@ motionElems.forEach(function(elem) {
 					scrollTrigger: {
 						trigger: ".maxi-motion-effect-"+ motionID +"",
 						start: "top "+ viewport[2] +"%",
-						scrub: 1,
-						markers: true,
+						scrub: true,
+						markers: false,
 						onEnter: self => {
 							self.trigger = elem;
 						},
@@ -545,8 +535,8 @@ motionElems.forEach(function(elem) {
 					scrollTrigger: {
 						trigger: ".maxi-motion-effect-"+ motionID +"",
 						start: "center "+ viewport[1] +"%",
-						scrub: 1,
-						markers: true,
+						scrub: true,
+						markers: false,
 						onEnter: self => {
 							self.trigger = elem;
 						},
@@ -556,8 +546,8 @@ motionElems.forEach(function(elem) {
 					scrollTrigger: {
 						trigger: ".maxi-motion-effect-"+ motionID +"",
 						start: "bottom "+ viewport[0] +"%",
-						scrub: 1,
-						markers: true,
+						scrub: true,
+						markers: false,
 						onEnter: self => {
 							self.trigger = elem;
 						},

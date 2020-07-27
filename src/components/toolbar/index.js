@@ -70,6 +70,7 @@ const MaxiToolbar = props => {
             typography,
             typographyHover,
             alignment,
+            alignmentText,
             background,
             border,
             size,

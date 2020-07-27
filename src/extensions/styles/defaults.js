@@ -682,7 +682,6 @@ export const typography = {
             "900italic": "http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TLBBc9AMX6lJBP.ttf"
         },
         "color": "#9b9b9b",
-        "text-align": "left",
         "font-sizeUnit": "px",
         "font-size": 16,
         "line-heightUnit": "%",
@@ -716,7 +715,6 @@ export const typography = {
         "font-family": "",
         "font-options": {},
         "color": "",
-        "text-align": "",
         "font-sizeUnit": "px",
         "font-size": "",
         "line-heightUnit": "%",
@@ -724,16 +722,15 @@ export const typography = {
         "letter-spacingUnit": "px",
         "letter-spacing": "",
         "font-weight": "",
-        "text-transform": "",
-        "font-style": "",
-        "text-decoration": "",
+        "text-transform": "none",
+        "font-style": "normal",
+        "text-decoration": "none",
         "text-shadow": ""
     },
     "l": {
         "font-family": "",
         "font-options": {},
         "color": "",
-        "text-align": "",
         "font-sizeUnit": "px",
         "font-size": "",
         "line-heightUnit": "%",
@@ -741,16 +738,15 @@ export const typography = {
         "letter-spacingUnit": "px",
         "letter-spacing": "",
         "font-weight": "",
-        "text-transform": "",
-        "font-style": "",
-        "text-decoration": "",
+        "text-transform": "none",
+        "font-style": "normal",
+        "text-decoration": "none",
         "text-shadow": ""
     },
     "m": {
         "font-family": "",
         "font-options": {},
         "color": "",
-        "text-align": "",
         "font-sizeUnit": "px",
         "font-size": "",
         "line-heightUnit": "%",
@@ -758,16 +754,15 @@ export const typography = {
         "letter-spacingUnit": "px",
         "letter-spacing": "",
         "font-weight": "",
-        "text-transform": "",
-        "font-style": "",
-        "text-decoration": "",
+        "text-transform": "none",
+        "font-style": "normal",
+        "text-decoration": "none",
         "text-shadow": ""
     },
     "s": {
         "font-family": "",
         "font-options": {},
         "color": "",
-        "text-align": "",
         "font-sizeUnit": "px",
         "font-size": "",
         "line-heightUnit": "%",
@@ -775,16 +770,15 @@ export const typography = {
         "letter-spacingUnit": "px",
         "letter-spacing": "",
         "font-weight": "",
-        "text-transform": "",
-        "font-style": "",
-        "text-decoration": "",
+        "text-transform": "none",
+        "font-style": "normal",
+        "text-decoration": "none",
         "text-shadow": ""
     },
     "xs": {
         "font-family": "",
         "font-options": {},
         "color": "",
-        "text-align": "",
         "font-sizeUnit": "px",
         "font-size": "",
         "line-heightUnit": "%",
@@ -792,10 +786,34 @@ export const typography = {
         "letter-spacingUnit": "px",
         "letter-spacing": "",
         "font-weight": "",
-        "text-transform": "",
-        "font-style": "",
-        "text-decoration": "",
+        "text-transform": "none",
+        "font-style": "normal",
+        "text-decoration": "none",
         "text-shadow": ""
+    },
+    "textAlign": {
+        "label": "Alignment",
+        "general": {
+            "alignment": "left"
+        },
+        "xxl": {
+            "alignment": ""
+        },
+        "xl": {
+            "alignment": ""
+        },
+        "l": {
+            "alignment": ""
+        },
+        "m": {
+            "alignment": ""
+        },
+        "s": {
+            "alignment": ""
+        },
+        "xs": {
+            "alignment": ""
+        }
     }
 }
 

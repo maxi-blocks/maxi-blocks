@@ -32,7 +32,8 @@ import TEMPLATES from './templates';
 import {
     getBackgroundObject,
     getBoxShadowObject,
-    getOpacityObject
+    getOpacityObject,
+    getAlignmentTextObject
 } from '../../extensions/styles/utils'
 
 /**
@@ -201,7 +202,8 @@ class edit extends MaxiBlock {
         } = this.props.attributes;
 
         const response = {
-            hoverAnimationTitleTypography: { ...JSON.parse(hoverAnimationTitleTypography) }
+            hoverAnimationTitleTypography: { ...JSON.parse(hoverAnimationTitleTypography) },
+            hoverAnimationTitleAlignmentTypography: { ...getAlignmentTextObject(JSON.parse(hoverAnimationTitleTypography).textAlign) }
         };
 
         return response
@@ -213,7 +215,8 @@ class edit extends MaxiBlock {
         } = this.props.attributes;
 
         const response = {
-            hoverAnimationContentTypography: { ...JSON.parse(hoverAnimationContentTypography) }
+            hoverAnimationContentTypography: { ...JSON.parse(hoverAnimationContentTypography) },
+            hoverAnimationContentAlignmentTypography: { ...getAlignmentTextObject(JSON.parse(hoverAnimationContentTypography).textAlign) }
         };
 
         return response

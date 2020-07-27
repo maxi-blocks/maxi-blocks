@@ -41,6 +41,7 @@ const Inspector = props => {
             blockStyle,
             defaultBlockStyle,
             alignment,
+            alignmentText,
             typography,
             typographyHover,
             background,
@@ -109,11 +110,21 @@ const Inspector = props => {
                                         {
                                             label: __('Alignment', 'maxi-blocks'),
                                             content: (
+                                                <Fragment>
                                                 <AlignmentControl
+                                                    label={__('Button', 'maxi-blocks')}
                                                     alignment={alignment}
                                                     onChange={alignment => setAttributes({ alignment })}
                                                     breakpoint={deviceType}
+                                                    disableJustify
                                                 />
+                                                <AlignmentControl
+                                                    label={__('Text', 'maxi-blocks')}
+                                                    alignment={alignmentText}
+                                                    onChange={alignmentText => setAttributes({ alignmentText })}
+                                                    breakpoint={deviceType}
+                                                />
+                                                </Fragment>
                                             )
                                         },
                                         {
@@ -139,7 +150,6 @@ const Inspector = props => {
                                                                 <TypographyControl
                                                                     typography={typographyHover}
                                                                     onChange={typographyHover => setAttributes({ typographyHover })}
-                                                                    target=':hover'
                                                                     hideAlignment
                                                                     breakpoint={deviceType}
                                                                 />

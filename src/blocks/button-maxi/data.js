@@ -17,7 +17,6 @@ export const typography = {
             "900italic": "http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TLBBc9AMX6lJBP.ttf"
         },
         "color": "#fff",
-        "text-align": "left",
         "font-sizeUnit": "px",
         "font-size": 16,
         "line-heightUnit": "px",
@@ -51,7 +50,6 @@ export const typography = {
         "font-family": "",
         "font-options": {},
         "color": "",
-        "text-align": "",
         "font-sizeUnit": "px",
         "font-size": "",
         "line-heightUnit": "px",
@@ -68,7 +66,6 @@ export const typography = {
         "font-family": "",
         "font-options": {},
         "color": "",
-        "text-align": "",
         "font-sizeUnit": "px",
         "font-size": "",
         "line-heightUnit": "px",
@@ -85,7 +82,6 @@ export const typography = {
         "font-family": "",
         "font-options": {},
         "color": "",
-        "text-align": "",
         "font-sizeUnit": "px",
         "font-size": "",
         "line-heightUnit": "px",
@@ -102,7 +98,6 @@ export const typography = {
         "font-family": "",
         "font-options": {},
         "color": "",
-        "text-align": "",
         "font-sizeUnit": "px",
         "font-size": "",
         "line-heightUnit": "px",
@@ -119,7 +114,6 @@ export const typography = {
         "font-family": "",
         "font-options": {},
         "color": "",
-        "text-align": "",
         "font-sizeUnit": "px",
         "font-size": "",
         "line-heightUnit": "px",
@@ -131,6 +125,30 @@ export const typography = {
         "font-style": "",
         "text-decoration": "",
         "text-shadow": ""
+    },
+    "textAlign": {
+        "label": "Alignment",
+        "general": {
+            "alignment": "left"
+        },
+        "xxl": {
+            "alignment": ""
+        },
+        "xl": {
+            "alignment": ""
+        },
+        "l": {
+            "alignment": ""
+        },
+        "m": {
+            "alignment": ""
+        },
+        "s": {
+            "alignment": ""
+        },
+        "xs": {
+            "alignment": ""
+        }
     }
 }
 
@@ -343,8 +361,8 @@ export const padding = {
         "padding-right": 20,
         "padding-bottom": 10,
         "padding-left": 10,
-        "sync": false,
-        "unit": "px",
+        "sync": true,
+        "unit": "px"
     },
     "xxl": {
         "padding-top": "",
@@ -393,5 +411,29 @@ export const padding = {
         "padding-left": "",
         "sync": true,
         "unit": ""
+    }
+}
+
+export const alignmentText = {
+    "general": {
+        "alignment": "left"
+    },
+    "xxl": {
+        "alignment": ""
+    },
+    "xl": {
+        "alignment": ""
+    },
+    "l": {
+        "alignment": ""
+    },
+    "m": {
+        "alignment": ""
+    },
+    "s": {
+        "alignment": ""
+    },
+    "xs": {
+        "alignment": ""
     }
 }

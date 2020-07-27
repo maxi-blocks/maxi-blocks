@@ -32,7 +32,8 @@ import {
     getBoxShadowObject,
     getVideoBackgroundObject,
     getOpacityObject,
-    getColumnSizeObject
+    getColumnSizeObject,
+    getAlignmentTextObject
 } from '../../extensions/styles/utils';
 
 /**

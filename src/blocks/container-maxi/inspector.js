@@ -369,7 +369,6 @@ const Inspector = props => {
                                         <TypographyControl
                                             typography={hoverAnimationContentTypography}
                                             onChange={hoverAnimationContentTypography => setAttributes({ hoverAnimationContentTypography })}
-                                            target='>.maxi-block-text-hover .maxi-block-text-hover__content'
                                             hideAlignment
                                             breakpoint={deviceType}
                                         />}
@@ -400,7 +399,6 @@ const Inspector = props => {
                                         <BorderControl
                                             borderOptions={hoverBorder}
                                             onChange={hoverBorder => setAttributes({ hoverBorder })}
-                                            target='.maxi-block-text-hover'
                                         />
                                     }
                                     {

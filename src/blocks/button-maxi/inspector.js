@@ -116,7 +116,7 @@ const Inspector = props => {
                                                     alignment={alignment}
                                                     onChange={alignment => setAttributes({ alignment })}
                                                     breakpoint={deviceType}
-                                                    disableJustify={true}
+                                                    disableJustify
                                                 />
                                                 <AlignmentControl
                                                     label={__('Text', 'maxi-blocks')}
@@ -150,7 +150,6 @@ const Inspector = props => {
                                                                 <TypographyControl
                                                                     typography={typographyHover}
                                                                     onChange={typographyHover => setAttributes({ typographyHover })}
-                                                                    target=':hover'
                                                                     hideAlignment
                                                                     breakpoint={deviceType}
                                                                 />

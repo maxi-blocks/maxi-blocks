@@ -32,7 +32,8 @@ import TEMPLATES from './templates';
 import {
     getBackgroundObject,
     getBoxShadowObject,
-    getOpacityObject
+    getOpacityObject,
+    getAlignmentTextObject
 } from '../../extensions/styles/utils'
 
 /**

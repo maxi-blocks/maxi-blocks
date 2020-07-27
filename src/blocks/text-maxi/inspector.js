@@ -242,7 +242,6 @@ const Inspector = props => {
                                                                 <TypographyControl
                                                                     typography={typographyHover}
                                                                     onChange={typographyHover => setAttributes({ typographyHover })}
-                                                                    target=':hover'
                                                                     hideAlignment
                                                                     breakpoint={deviceType}
                                                                 />
@@ -449,13 +448,11 @@ const Inspector = props => {
                                             <TypographyControl
                                                 typography={hoverAnimationTitleTypography}
                                                 onChange={hoverAnimationTitleTypography => setAttributes({ hoverAnimationTitleTypography })}
-                                                target='>.maxi-block-text-hover .maxi-block-text-hover__title'
                                             />}
                                         {hoverAnimation === 'text' && hoverCustomTextContent === 'yes' &&
                                             <TypographyControl
                                                 typography={hoverAnimationContentTypography}
                                                 onChange={hoverAnimationContentTypography => setAttributes({ hoverAnimationContentTypography })}
-                                                target='>.maxi-block-text-hover .maxi-block-text-hover__content'
                                             />}
                                         {hoverAnimation === 'text' &&
                                             <Fragment>
@@ -467,7 +464,6 @@ const Inspector = props => {
                                                         backgroundOptions={hoverBackground}
                                                         onChange={hoverBackground => setAttributes({ hoverBackground })}
                                                         disableImage
-                                                        target='.maxi-block-text-hover'
                                                     />
 
                                                     <RadioControl

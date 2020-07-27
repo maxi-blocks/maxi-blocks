@@ -11,7 +11,6 @@ const {
     TextControl,
     RadioControl,
 } = wp.components;
-const { useSelect } = wp.data;
 
 /**
  * Internal dependencies
@@ -497,7 +496,6 @@ const Inspector = props => {
                                                         backgroundOptions={hoverBackground}
                                                         onChange={hoverBackground => setAttributes({ hoverBackground })}
                                                         disableImage
-                                                        target='.maxi-block-text-hover'
                                                     />
 
                                                     <RadioControl

@@ -252,7 +252,6 @@ const Inspector = props => {
                                                                 <BoxShadowControl
                                                                     boxShadowOptions={boxShadowHover}
                                                                     onChange={boxShadowHover => setAttributes({ boxShadowHover })}
-                                                                    target=':hover'
                                                                 />
                                                             )
                                                         },

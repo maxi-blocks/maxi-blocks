@@ -26,6 +26,7 @@ import {
     getVideoBackgroundObject,
     getShapeDividerObject,
     getShapeDividerSVGObject,
+    getAlignmentTextObject
 } from '../../extensions/styles/utils'
 
 /**

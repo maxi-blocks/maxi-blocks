@@ -17,7 +17,7 @@ import TextShadowControl from '../text-shadow-control';
  * External dependencies
  */
 import classnames from 'classnames';
-import { 
+import {
     isObject,
     trim
 } from 'lodash';
@@ -123,9 +123,9 @@ const TypographyControl = props => {
                 <AlignmentControl
                     className="maxi-typography-control__text-alignment"
                     label={__('Alignment', 'maxi-blocks')}
-                    value={value.general['text-align']}
+                    alignment={value.textAlign}
                     onChange={val => {
-                        value.general['text-align'] = val;
+                        value.textAlign = JSON.parse(val);
                         onChange(JSON.stringify(value))
                     }}
                 />

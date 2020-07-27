@@ -2,6 +2,7 @@
  * Wordpress dependencies
  */
 const { RadioControl } = wp.components;
+const { Fragment } = wp.element;
 
 /**
  * External dependencies
@@ -37,7 +38,7 @@ const AlignmentControl = props => {
         disableCenter = false,
         disableRight = false,
         disableJustify = false,
-        breakpoint
+        breakpoint = 'general'
     } = props;
 
     const getOptions = () => {

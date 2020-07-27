@@ -21,7 +21,8 @@ import Inspector from './inspector';
 import {
     getBackgroundObject,
     getBoxShadowObject,
-    getAlignmentFlexObject
+    getAlignmentFlexObject,
+    getAlignmentTextObject
 } from '../../extensions/styles/utils';
 import {
     MaxiBlock,
@@ -67,7 +68,7 @@ class edit extends MaxiBlock {
             [`${this.props.attributes.uniqueID}>img`]: this.getImageFrontendObject,
             [`${this.props.attributes.uniqueID} img:hover`]: this.getImageHoverObject,
             [`${this.props.attributes.uniqueID} img`]: this.getImageBackendObject,
-            [`${this.props.attributes.uniqueID}>figcaption`]: this.getFigcaptionObject,
+            [`${this.props.attributes.uniqueID} figcaption`]: this.getFigcaptionObject,
             [`${this.props.attributes.uniqueID} .maxi-block-text-hover .maxi-block-text-hover__content`]: this.getHoverAnimationTextContentObject,
             [`${this.props.attributes.uniqueID} .maxi-block-text-hover .maxi-block-text-hover__title`]: this.getHoverAnimationTextTitleObject,
             [`${this.props.attributes.uniqueID} .maxi-block-text-hover`]: this.getHoverAnimationMainObject,
@@ -169,7 +170,8 @@ class edit extends MaxiBlock {
         } = this.props.attributes;
 
         const response = {
-            captionTypography: { ...JSON.parse(captionTypography) }
+            captionTypography: { ...JSON.parse(captionTypography) },
+            alignmentTypography: { ...getAlignmentTextObject(JSON.parse(captionTypography).textAlign) }
         };
 
         return response
@@ -248,7 +250,8 @@ class edit extends MaxiBlock {
         } = this.props.attributes;
 
         const response = {
-            hoverAnimationTitleTypography: { ...JSON.parse(hoverAnimationTitleTypography) }
+            hoverAnimationTitleTypography: { ...JSON.parse(hoverAnimationTitleTypography) },
+            hoverAnimationTitleAlignmentTypography: { ...getAlignmentTextObject(JSON.parse(hoverAnimationTitleTypography).textAlign) }
         };
 
         return response
@@ -260,7 +263,8 @@ class edit extends MaxiBlock {
         } = this.props.attributes;
 
         const response = {
-            hoverAnimationContentTypography: { ...JSON.parse(hoverAnimationContentTypography) }
+            hoverAnimationContentTypography: { ...JSON.parse(hoverAnimationContentTypography) },
+            hoverAnimationContentAlignmentTypography: { ...getAlignmentTextObject(JSON.parse(hoverAnimationContentTypography).textAlign) }
         };
 
         return response
@@ -329,11 +333,11 @@ class edit extends MaxiBlock {
 
         const image = getImage();
         if (image && imageData) {
-            if(imageData.alt_text) setAttributes({ mediaALTwp: imageData.alt_text })
+            if (imageData.alt_text) setAttributes({ mediaALTwp: imageData.alt_text })
 
-            if(mediaALT) setAttributes({ mediaALT: mediaALT })
+            if (mediaALT) setAttributes({ mediaALT: mediaALT })
 
-            if(imageData.title.rendered) setAttributes({ mediaALTtitle: imageData.title.rendered })
+            if (imageData.title.rendered) setAttributes({ mediaALTtitle: imageData.title.rendered })
 
             if (mediaURL != image.source_url)
                 setAttributes({ mediaURL: image.source_url })

@@ -20,7 +20,10 @@ const {
 /**
  * Internal dependencies
  */
-import { SizeControl } from '../../components';
+import {
+    __experimentalAdvancedRangeControl,
+    __experimentalGroupInputControl
+} from '../../components';
 
 /**
  * Styles and icons
@@ -38,7 +41,7 @@ import {
 /**
  * Component
  */
-const ShapeDividerControl = props => {
+const MotionControl = props => {
 
     const {
         motionOptions,
@@ -46,8 +49,8 @@ const ShapeDividerControl = props => {
     } = props;
 
     let value = !isObject(motionOptions) ?
-    JSON.parse(motionOptions) :
-    motionOptions;
+        JSON.parse(motionOptions) :
+        motionOptions;
 
     let {
         vertical: verticalOptions,
@@ -98,55 +101,38 @@ const ShapeDividerControl = props => {
                             }}
                         />
                     </div>
-                    <SelectControl
-                        label={__('Direction', 'maxi-blocks')}
-                        value={verticalOptions.direction}
-                        options={[
-                            { label: 'Up', value: 'up' },
-                            { label: 'Down', value: 'down' },
-                        ]}
-                        onChange={val => {
-                            verticalOptions.direction = val;
-                            onChange(JSON.stringify(value));
-                        }}
-                    />
-                    <SizeControl
-                        label={__('Speed', 'maxi-blocks')}
-                        disableUnit
-                        min={0}
-                        max={10}
-                        initial={1}
-                        step={0.1}
-                        value={verticalOptions.speed}
-                        onChangeValue={val => {
-                            verticalOptions.speed = val;
-                            onChange(JSON.stringify(value));
-                        }}
-                    />
-                    <SizeControl
-                        label={__('Viewport Top', 'maxi-blocks')}
-                        disableUnit
-                        min={0}
-                        max={100}
-                        initial={100}
-                        value={verticalOptions.viewportTop}
-                        onChangeValue={val => {
-                            verticalOptions.viewportTop = val;
-                            onChange(JSON.stringify(value));
-                        }}
-                    />
-                    <SizeControl
-                        label={__('Viewport Bottom', 'maxi-blocks')}
-                        disableUnit
-                        min={0}
-                        max={100}
-                        initial={0}
-                        value={verticalOptions.viewportBottom}
-                        onChangeValue={val => {
-                            verticalOptions.viewportBottom = val;
-                            onChange(JSON.stringify(value));
-                        }}
-                    />
+                    {
+                    !!parseInt(verticalOptions.status) &&
+                        <Fragment>
+                            <SelectControl
+                                label={__('Direction', 'maxi-blocks')}
+                                value={verticalOptions.direction}
+                                options={[
+                                    { label: 'Up', value: 'up' },
+                                    { label: 'Down', value: 'down' },
+                                ]}
+                                onChange={val => {
+                                    verticalOptions.direction = val;
+                                    onChange(JSON.stringify(value));
+                                }}
+                            />
+                            <__experimentalAdvancedRangeControl
+                                options={verticalOptions.viewport}
+                                onChange={val => {
+                                    verticalOptions.viewport = val;
+                                    onChange(JSON.stringify(value));
+                                }}
+                            />
+                            <__experimentalGroupInputControl
+                                label={__('Vertical', 'maxi-blocks')}
+                                options={verticalOptions}
+                                onChange={val => {
+                                    verticalOptions = val;
+                                    onChange(JSON.stringify(value));
+                                }}
+                            />
+                        </Fragment>
+                    }
                 </Fragment>
             }
             {
@@ -168,55 +154,38 @@ const ShapeDividerControl = props => {
                             }}
                         />
                     </div>
-                    <SelectControl
-                        label={__('Direction', 'maxi-blocks')}
-                        value={horizontalOptions.direction}
-                        options={[
-                            { label: 'To left', value: 'left' },
-                            { label: 'To Right', value: 'right' },
-                        ]}
-                        onChange={val => {
-                            horizontalOptions.direction = val;
-                            onChange(JSON.stringify(value));
-                        }}
-                    />
-                    <SizeControl
-                        label={__('Speed', 'maxi-blocks')}
-                        disableUnit
-                        min={0}
-                        max={10}
-                        initial={5}
-                        step={0.1}
-                        value={horizontalOptions.speed}
-                        onChangeValue={val => {
-                            horizontalOptions.speed = val;
-                            onChange(JSON.stringify(value));
-                        }}
-                    />
-                    <SizeControl
-                        label={__('Viewport Top', 'maxi-blocks')}
-                        disableUnit
-                        min={0}
-                        max={100}
-                        initial={100}
-                        value={horizontalOptions.viewportTop}
-                        onChangeValue={val => {
-                            horizontalOptions.viewportTop = val;
-                            onChange(JSON.stringify(value));
-                        }}
-                    />
-                    <SizeControl
-                        label={__('Viewport Bottom', 'maxi-blocks')}
-                        disableUnit
-                        min={0}
-                        max={100}
-                        initial={0}
-                        value={horizontalOptions.viewportBottom}
-                        onChangeValue={val => {
-                            horizontalOptions.viewportBottom = val;
-                            onChange(JSON.stringify(value));
-                        }}
-                    />
+                    {
+                    !!parseInt(horizontalOptions.status) &&
+                        <Fragment>
+                            <SelectControl
+                                label={__('Direction', 'maxi-blocks')}
+                                value={horizontalOptions.direction}
+                                options={[
+                                    { label: 'To left', value: 'left' },
+                                    { label: 'To Right', value: 'right' },
+                                ]}
+                                onChange={val => {
+                                    horizontalOptions.direction = val;
+                                    onChange(JSON.stringify(value));
+                                }}
+                            />
+                            <__experimentalAdvancedRangeControl
+                                options={horizontalOptions.viewport}
+                                onChange={val => {
+                                    horizontalOptions.viewport = val;
+                                    onChange(JSON.stringify(value));
+                                }}
+                            />
+                            <__experimentalGroupInputControl
+                                label={__('Horizontal', 'maxi-blocks')}
+                                options={horizontalOptions}
+                                onChange={val => {
+                                    horizontalOptions = val;
+                                    onChange(JSON.stringify(value));
+                                }}
+                            />
+                        </Fragment>
+                    }
                 </Fragment>
             }
             {
@@ -238,55 +207,38 @@ const ShapeDividerControl = props => {
                             }}
                         />
                     </div>
-                    <SelectControl
-                        label={__('Direction', 'maxi-blocks')}
-                        value={rotateOptions.direction}
-                        options={[
-                            { label: 'To left', value: 'left' },
-                            { label: 'To Right', value: 'right' },
-                        ]}
-                        onChange={val => {
-                            rotateOptions.direction = val;
-                            onChange(JSON.stringify(value));
-                        }}
-                    />
-                    <SizeControl
-                        label={__('Speed', 'maxi-blocks')}
-                        disableUnit
-                        min={0}
-                        max={10}
-                        initial={0.3}
-                        step={0.1}
-                        value={rotateOptions.speed}
-                        onChangeValue={val => {
-                            rotateOptions.speed = val;
-                            onChange(JSON.stringify(value));
-                        }}
-                    />
-                    <SizeControl
-                        label={__('Viewport Top', 'maxi-blocks')}
-                        disableUnit
-                        min={0}
-                        max={100}
-                        initial={100}
-                        value={rotateOptions.viewportTop}
-                        onChangeValue={val => {
-                            rotateOptions.viewportTop = val;
-                            onChange(JSON.stringify(value));
-                        }}
-                    />
-                    <SizeControl
-                        label={__('Viewport Bottom', 'maxi-blocks')}
-                        disableUnit
-                        min={0}
-                        max={100}
-                        initial={0}
-                        value={rotateOptions.viewportBottom}
-                        onChangeValue={val => {
-                            rotateOptions.viewportBottom = val;
-                            onChange(JSON.stringify(value));
-                        }}
-                    />
+                    {
+                    !!parseInt(rotateOptions.status) &&
+                        <Fragment>
+                            <SelectControl
+                                label={__('Direction', 'maxi-blocks')}
+                                value={rotateOptions.direction}
+                                options={[
+                                    { label: 'To left', value: 'left' },
+                                    { label: 'To Right', value: 'right' },
+                                ]}
+                                onChange={val => {
+                                    rotateOptions.direction = val;
+                                    onChange(JSON.stringify(value));
+                                }}
+                            />
+                            <__experimentalAdvancedRangeControl
+                                options={rotateOptions.viewport}
+                                onChange={val => {
+                                    rotateOptions.viewport = val;
+                                    onChange(JSON.stringify(value));
+                                }}
+                            />
+                            <__experimentalGroupInputControl
+                                label={__('Rotation', 'maxi-blocks')}
+                                options={rotateOptions}
+                                onChange={val => {
+                                    rotateOptions = val;
+                                    onChange(JSON.stringify(value));
+                                }}
+                            />
+                        </Fragment>
+                    }
                 </Fragment>
             }
             {
@@ -308,55 +260,38 @@ const ShapeDividerControl = props => {
                             }}
                         />
                     </div>
-                    <SelectControl
-                        label={__('Direction', 'maxi-blocks')}
-                        value={scaleOptions.direction}
-                        options={[
-                            { label: 'Scale Up', value: 'up' },
-                            { label: 'Scale Down', value: 'down' },
-                        ]}
-                        onChange={val => {
-                            scaleOptions.direction = val;
-                            onChange(JSON.stringify(value));
-                        }}
-                    />
-                    <SizeControl
-                        label={__('Speed', 'maxi-blocks')}
-                        disableUnit
-                        min={0}
-                        max={10}
-                        initial={5}
-                        step={0.1}
-                        value={scaleOptions.speed}
-                        onChangeValue={val => {
-                            scaleOptions.speed = val;
-                            onChange(JSON.stringify(value));
-                        }}
-                    />
-                    <SizeControl
-                        label={__('Viewport Top', 'maxi-blocks')}
-                        disableUnit
-                        min={0}
-                        max={100}
-                        initial={100}
-                        value={scaleOptions.viewportTop}
-                        onChangeValue={val => {
-                            scaleOptions.viewportTop = val;
-                            onChange(JSON.stringify(value));
-                        }}
-                    />
-                    <SizeControl
-                        label={__('Viewport Bottom', 'maxi-blocks')}
-                        disableUnit
-                        min={0}
-                        max={100}
-                        initial={0}
-                        value={scaleOptions.viewportBottom}
-                        onChangeValue={val => {
-                            scaleOptions.viewportBottom = val;
-                            onChange(JSON.stringify(value));
-                        }}
-                    />
+                    {
+                    !!parseInt(scaleOptions.status) &&
+                        <Fragment>
+                            <SelectControl
+                                label={__('Direction', 'maxi-blocks')}
+                                value={scaleOptions.direction}
+                                options={[
+                                    { label: 'Scale Up', value: 'up' },
+                                    { label: 'Scale Down', value: 'down' },
+                                ]}
+                                onChange={val => {
+                                    scaleOptions.direction = val;
+                                    onChange(JSON.stringify(value));
+                                }}
+                            />
+                            <__experimentalAdvancedRangeControl
+                                options={scaleOptions.viewport}
+                                onChange={val => {
+                                    scaleOptions.viewport = val;
+                                    onChange(JSON.stringify(value));
+                                }}
+                            />
+                            <__experimentalGroupInputControl
+                                label={__('Scale', 'maxi-blocks')}
+                                options={scaleOptions}
+                                onChange={val => {
+                                    scaleOptions = val;
+                                    onChange(JSON.stringify(value));
+                                }}
+                            />
+                        </Fragment>
+                    }
                 </Fragment>
             }
             {
@@ -378,55 +313,38 @@ const ShapeDividerControl = props => {
                             }}
                         />
                     </div>
-                    <SelectControl
-                        label={__('Direction', 'maxi-blocks')}
-                        value={fadeOptions.direction}
-                        options={[
-                            { label: 'Fade In', value: 'in' },
-                            { label: 'Fade Out', value: 'out' },
-                        ]}
-                        onChange={val => {
-                            fadeOptions.direction = val;
-                            onChange(JSON.stringify(value));
-                        }}
-                    />
-                    <SizeControl
-                        label={__('Level', 'maxi-blocks')}
-                        disableUnit
-                        min={0}
-                        max={10}
-                        initial={5}
-                        step={0.1}
-                        value={fadeOptions.speed}
-                        onChangeValue={val => {
-                            fadeOptions.speed = val;
-                            onChange(JSON.stringify(value));
-                        }}
-                    />
-                    <SizeControl
-                        label={__('Viewport Top', 'maxi-blocks')}
-                        disableUnit
-                        min={0}
-                        max={100}
-                        initial={100}
-                        value={fadeOptions.viewportTop}
-                        onChangeValue={val => {
-                            fadeOptions.viewportTop = val;
-                            onChange(JSON.stringify(value));
-                        }}
-                    />
-                    <SizeControl
-                        label={__('Viewport Bottom', 'maxi-blocks')}
-                        disableUnit
-                        min={0}
-                        max={100}
-                        initial={0}
-                        value={fadeOptions.viewportBottom}
-                        onChangeValue={val => {
-                            fadeOptions.viewportBottom = val;
-                            onChange(JSON.stringify(value));
-                        }}
-                    />
+                    {
+                    !!parseInt(fadeOptions.status) &&
+                        <Fragment>
+                            <SelectControl
+                                label={__('Direction', 'maxi-blocks')}
+                                value={fadeOptions.direction}
+                                options={[
+                                    { label: 'Fade In', value: 'in' },
+                                    { label: 'Fade Out', value: 'out' },
+                                ]}
+                                onChange={val => {
+                                    fadeOptions.direction = val;
+                                    onChange(JSON.stringify(value));
+                                }}
+                            />
+                            <__experimentalAdvancedRangeControl
+                                options={fadeOptions.viewport}
+                                onChange={val => {
+                                    fadeOptions.viewport = val;
+                                    onChange(JSON.stringify(value));
+                                }}
+                            />
+                            <__experimentalGroupInputControl
+                                label={__('Fade', 'maxi-blocks')}
+                                options={fadeOptions}
+                                onChange={val => {
+                                    fadeOptions = val;
+                                    onChange(JSON.stringify(value));
+                                }}
+                            />
+                        </Fragment>
+                    }
                 </Fragment>
             }
             {
@@ -448,55 +366,38 @@ const ShapeDividerControl = props => {
                             }}
                         />
                     </div>
-                    <SelectControl
-                        label={__('Direction', 'maxi-blocks')}
-                        value={blurOptions.direction}
-                        options={[
-                            { label: 'Blur In', value: 'in' },
-                            { label: 'Blur Out', value: 'out' },
-                        ]}
-                        onChange={val => {
-                            blurOptions.direction = val;
-                            onChange(JSON.stringify(value));
-                        }}
-                    />
-                    <SizeControl
-                        label={__('Level', 'maxi-blocks')}
-                        disableUnit
-                        min={0}
-                        max={10}
-                        initial={5}
-                        step={0.1}
-                        value={blurOptions.speed}
-                        onChangeValue={val => {
-                            blurOptions.speed = val;
-                            onChange(JSON.stringify(value));
-                        }}
-                    />
-                    <SizeControl
-                        label={__('Viewport Top', 'maxi-blocks')}
-                        disableUnit
-                        min={0}
-                        max={100}
-                        initial={100}
-                        value={blurOptions.viewportTop}
-                        onChangeValue={val => {
-                            blurOptions.viewportTop = val;
-                            onChange(JSON.stringify(value));
-                        }}
-                    />
-                    <SizeControl
-                        label={__('Viewport Bottom', 'maxi-blocks')}
-                        disableUnit
-                        min={0}
-                        max={100}
-                        initial={0}
-                        value={blurOptions.viewportBottom}
-                        onChangeValue={val => {
-                            blurOptions.viewportBottom = val;
-                            onChange(JSON.stringify(value));
-                        }}
-                    />
+                    {
+                    !!parseInt(blurOptions.status) &&
+                        <Fragment>
+                            <SelectControl
+                                label={__('Direction', 'maxi-blocks')}
+                                value={blurOptions.direction}
+                                options={[
+                                    { label: 'Blur In', value: 'in' },
+                                    { label: 'Blur Out', value: 'out' },
+                                ]}
+                                onChange={val => {
+                                    blurOptions.direction = val;
+                                    onChange(JSON.stringify(value));
+                                }}
+                            />
+                            <__experimentalAdvancedRangeControl
+                                options={blurOptions.viewport}
+                                onChange={val => {
+                                    blurOptions.viewport = val;
+                                    onChange(JSON.stringify(value));
+                                }}
+                            />
+                            <__experimentalGroupInputControl
+                                label={__('Blur', 'maxi-blocks')}
+                                options={blurOptions}
+                                onChange={val => {
+                                    blurOptions = val;
+                                    onChange(JSON.stringify(value));
+                                }}
+                            />
+                        </Fragment>
+                    }
                 </Fragment>
             }
         </div>
@@ -504,4 +405,4 @@ const ShapeDividerControl = props => {
 
 }
 
-export default ShapeDividerControl;
+export default MotionControl;

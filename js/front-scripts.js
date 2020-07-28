@@ -8,8 +8,9 @@ motionElems.forEach(function(elem) {
 	const motionID = elem.getAttribute('data-motion-id');
 	const motionData = JSON.parse(elem.getAttribute('data-motion'));
 	const shapeDividerData = JSON.parse(elem.getAttribute('data-shape-divider'));
+
+	// Shape Divider
 	if(shapeDividerData !== null) {
-		console.log(shapeDividerData);
 		const motionTimeLine = gsap.timeline({
 			scrollTrigger: {
 				trigger: ".maxi-motion-effect-"+ motionID +" > .maxi-container-block__wrapper .maxi-shape-divider",
@@ -38,6 +39,33 @@ motionElems.forEach(function(elem) {
 	}
 
 	if(motionData !== null) {
+
+		// Entrance Animation
+		if("entrance" in motionData) {
+
+			const entranceElem = document.querySelector(".maxi-motion-effect-"+ motionID +"");
+			const entranceType = motionData.entrance.type;
+			const entranceDuration = (motionData.entrance.duration === '') ? 1 : motionData.entrance.duration;
+			const entranceDelay= (motionData.entrance.delay === '') ? 1 : motionData.entrance.delay;
+
+			if(entranceType !== '') {
+
+				entranceElem.style.opacity = "0";
+
+				var waypoint = new Waypoint({
+				  element: entranceElem,
+				  handler: function () {
+					entranceElem.style.opacity = "1";
+					entranceElem.style.setProperty("--animate-duration", ""+ entranceDuration +"s");
+					entranceElem.style.setProperty("animation-delay", ""+ entranceDelay +"s");
+					entranceElem.classList.add("animate__animated", "animate__"+ entranceType +"");
+				  },
+				  offset: "100%"
+				});
+
+			}
+
+		}
 
 		// Vertical Effect
 		if("vertical" in motionData) {

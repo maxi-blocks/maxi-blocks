@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 const { synchronizeBlocksWithTemplate } = wp.blocks;
+const { Fragment } = wp.element;
 const {
     compose,
     withInstanceId
@@ -25,7 +26,8 @@ const {
 import {
     MaxiBlock,
     __experimentalToolbar,
-    __experimentalBreadcrumbs
+    __experimentalBreadcrumbs,
+    __experimentalBackgroundDisplayer
 } from '../../components';
 import Inspector from './inspector';
 import TEMPLATES from './templates';
@@ -34,7 +36,8 @@ import {
     getBoxShadowObject,
     getOpacityObject,
     getTransfromObject,
-    getAlignmentTextObject
+    getAlignmentTextObject,
+    setBackgroundStyles
 } from '../../utils'
 
 /**
@@ -48,21 +51,58 @@ import {
 } from 'lodash';
 
 /**
+ * InnerBlocks version
+ */
+const ContainerInnerBlocks = props => {
+    const {
+        children,
+        background,
+        className,
+        maxiBlockClass
+    } = props;
+
+    return (
+        <__experimentalBlock
+            className={className}
+            data-gx_initial_block_class={maxiBlockClass}
+        >
+            <Fragment>
+                <__experimentalBackgroundDisplayer
+                    backgroundOptions={background}
+                />
+                {children}
+            </Fragment>
+        </__experimentalBlock>
+    )
+}
+
+/**
  * Edit
  */
 const ALLOWED_BLOCKS = ['maxi-blocks/column-maxi'];
 
 class edit extends MaxiBlock {
     get getObject() {
+        const {
+            uniqueID,
+            background,
+            backgroundHover
+        } = this.props.attributes;
+
         let response = {
-            [this.props.attributes.uniqueID]: this.getNormalObject,
-            [`${this.props.attributes.uniqueID}:hover`]: this.getHoverObject,
-            [`${this.props.attributes.uniqueID} .maxi-block-text-hover .maxi-block-text-hover__content`]: this.getHoverAnimationTextContentObject,
-            [`${this.props.attributes.uniqueID} .maxi-block-text-hover .maxi-block-text-hover__title`]: this.getHoverAnimationTextTitleObject,
-            [`${this.props.attributes.uniqueID} .maxi-block-text-hover`]: this.getHoverAnimationMainObject,
-            [`${this.props.attributes.uniqueID}.hover-animation-basic.hover-animation-type-opacity:hover .hover_el`]: this.getHoverAnimationTypeOpacityObject,
-            [`${this.props.attributes.uniqueID}.hover-animation-basic.hover-animation-type-opacity-with-colour:hover .hover_el:before`]: this.getHoverAnimationTypeOpacityColorObject,
+            [uniqueID]: this.getNormalObject,
+            [`${uniqueID}:hover`]: this.getHoverObject,
+            [`${uniqueID} .maxi-block-text-hover .maxi-block-text-hover__content`]: this.getHoverAnimationTextContentObject,
+            [`${uniqueID} .maxi-block-text-hover .maxi-block-text-hover__title`]: this.getHoverAnimationTextTitleObject,
+            [`${uniqueID} .maxi-block-text-hover`]: this.getHoverAnimationMainObject,
+            [`${uniqueID}.hover-animation-basic.hover-animation-type-opacity:hover .hover_el`]: this.getHoverAnimationTypeOpacityObject,
+            [`${uniqueID}.hover-animation-basic.hover-animation-type-opacity-with-colour:hover .hover_el:before`]: this.getHoverAnimationTypeOpacityColorObject,
         }
+
+        response = Object.assign(
+            response,
+            setBackgroundStyles(uniqueID, background, backgroundHover) 
+        )
 
         return response;
     }
@@ -72,7 +112,6 @@ class edit extends MaxiBlock {
             horizontalAlign,
             verticalAlign,
             opacity,
-            background,
             border,
             size,
             boxShadow,
@@ -85,7 +124,6 @@ class edit extends MaxiBlock {
         } = this.props.attributes;
 
         let response = {
-            background: { ...getBackgroundObject(JSON.parse(background)) },
             boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
             border: { ...JSON.parse(border) },
             borderWidth: { ...JSON.parse(border).borderWidth },
@@ -116,13 +154,11 @@ class edit extends MaxiBlock {
     get getHoverObject() {
         const {
             opacityHover,
-            backgroundHover,
             boxShadowHover,
             borderHover,
         } = this.props.attributes;
 
         let response = {
-            backgroundHover: { ...getBackgroundObject(JSON.parse(backgroundHover)) },
             boxShadowHover: { ...getBoxShadowObject(JSON.parse(boxShadowHover)) },
             borderHover: { ...JSON.parse(borderHover) },
             borderWidthHover: { ...JSON.parse(borderHover).borderWidth },
@@ -197,8 +233,6 @@ class edit extends MaxiBlock {
         return response
     }
 
-
-
     get getHoverAnimationTextTitleObject() {
         const {
             hoverAnimationTitleTypography
@@ -233,6 +267,7 @@ class edit extends MaxiBlock {
                 extraClassName,
                 defaultBlockStyle,
                 fullWidth,
+                background,
                 hoverAnimation,
                 hoverAnimationType,
                 hoverAnimationTypeText,
@@ -251,10 +286,10 @@ class edit extends MaxiBlock {
             'maxi-block maxi-row-block',
             uniqueID,
             blockStyle,
-            'hover-animation-'+hoverAnimation,
-            'hover-animation-type-'+hoverAnimationType,
-            'hover-animation-type-text-'+hoverAnimationTypeText,
-            'hover-animation-duration-'+hoverAnimationDuration,
+            'hover-animation-' + hoverAnimation,
+            'hover-animation-type-' + hoverAnimationType,
+            'hover-animation-type-text-' + hoverAnimationTypeText,
+            'hover-animation-duration-' + hoverAnimationDuration,
             extraClassName,
             className,
         );
@@ -265,11 +300,11 @@ class edit extends MaxiBlock {
             <__experimentalBreadcrumbs />,
             <InnerBlocks
                 // templateLock={'insert'}
-                __experimentalTagName={__experimentalBlock.div}
+                __experimentalTagName={ContainerInnerBlocks}
                 __experimentalPassedProps={{
                     className: classes,
-                    ['data-align']: fullWidth,
-                    ['data-maxi_initial_block_class']: defaultBlockStyle
+                    maxiBlockClass: defaultBlockStyle,
+                    background: background,
                 }}
                 allowedBlocks={ALLOWED_BLOCKS}
                 renderAppender={

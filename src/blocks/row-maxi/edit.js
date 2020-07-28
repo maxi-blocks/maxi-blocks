@@ -32,7 +32,9 @@ import TEMPLATES from './templates';
 import {
     getBackgroundObject,
     getBoxShadowObject,
-    getOpacityObject
+    getOpacityObject,
+    getTransfromObject,
+    getAlignmentTextObject
 } from '../../extensions/styles/utils'
 
 /**
@@ -78,7 +80,8 @@ class edit extends MaxiBlock {
             padding,
             zIndex,
             position,
-            display
+            display,
+            transform
         } = this.props.attributes;
 
         let response = {
@@ -95,6 +98,7 @@ class edit extends MaxiBlock {
             position: { ...JSON.parse(position) },
             positionOptions: { ...JSON.parse(position).options },
             display: { ...JSON.parse(display) },
+            transform: { ...getTransfromObject(JSON.parse(transform)) },
             row: {
                 label: "Row",
                 general: {},
@@ -201,7 +205,8 @@ class edit extends MaxiBlock {
         } = this.props.attributes;
 
         const response = {
-            hoverAnimationTitleTypography: { ...JSON.parse(hoverAnimationTitleTypography) }
+            hoverAnimationTitleTypography: { ...JSON.parse(hoverAnimationTitleTypography) },
+            hoverAnimationTitleAlignmentTypography: { ...getAlignmentTextObject(JSON.parse(hoverAnimationTitleTypography).textAlign) }
         };
 
         return response
@@ -213,7 +218,8 @@ class edit extends MaxiBlock {
         } = this.props.attributes;
 
         const response = {
-            hoverAnimationContentTypography: { ...JSON.parse(hoverAnimationContentTypography) }
+            hoverAnimationContentTypography: { ...JSON.parse(hoverAnimationContentTypography) },
+            hoverAnimationContentAlignmentTypography: { ...getAlignmentTextObject(JSON.parse(hoverAnimationContentTypography).textAlign) }
         };
 
         return response

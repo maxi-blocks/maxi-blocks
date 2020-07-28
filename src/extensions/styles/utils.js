@@ -10,7 +10,8 @@ const { getBlockAttributes } = wp.blocks;
 import {
     isEmpty,
     isNil,
-    isNumber
+    isNumber,
+    isString
 } from 'lodash'
 
 /**
@@ -171,6 +172,7 @@ export const getBoxShadowObject = boxShadow => {
     const response = {
         label: boxShadow.label,
         general: {},
+        xxl: {},
         xl: {},
         l: {},
         m: {},
@@ -198,6 +200,7 @@ export const getAlignmentTextObject = alignment => {
     const response = {
         label: alignment.label,
         general: {},
+        xxl: {},
         xl: {},
         l: {},
         m: {},
@@ -231,6 +234,7 @@ export const getAlignmentFlexObject = alignment => {
     const response = {
         label: alignment.label,
         general: {},
+        xxl: {},
         xl: {},
         l: {},
         m: {},
@@ -262,6 +266,7 @@ export const getOpacityObject = opacity => {
     const response = {
         label: opacity.label,
         general: {},
+        xxl: {},
         xl: {},
         l: {},
         m: {},
@@ -303,6 +308,7 @@ export const getColumnSizeObject = columnSize => {
     const response = {
         label: columnSize.label,
         general: {},
+        xxl: {},
         xl: {},
         l: {},
         m: {},
@@ -413,26 +419,88 @@ export const getArrowObject = arrow => {
                     response[key]['border-color'] = `transparent ${value.color} transparent transparent`;
                     break;
             }
-            if (isNumber(value.width) && isNumber(value.height)) {
-                const width = `${value.width / 2}${value.widthUnit}`;
-                const height = `${value.height}${value.heightUnit}`;
+        }
+        if (isNumber(value.width) && isNumber(value.height)) {
+            const width = `${value.width / 2}${value.widthUnit}`;
+            const height = `${value.height}${value.heightUnit}`;
 
-                switch (value.side) {
-                    case 'top':
-                        response[key]['border-width'] = `0 ${width} ${height} ${width}`;
-                        break;
-                    case 'right':
-                        response[key]['border-width'] = `${width} 0 ${width} ${height}`;
-                        break;
-                    case 'bottom':
-                        response[key]['border-width'] = `${height} ${width} 0 ${width}`;
-                        break;
-                    case 'left':
-                        response[key]['border-width'] = `${width} ${height} ${width} 0`;
-                        break;
-                }
+            switch (value.side) {
+                case 'top':
+                    response[key]['border-width'] = `0 ${width} ${height} ${width}`;
+                    break;
+                case 'right':
+                    response[key]['border-width'] = `${width} 0 ${width} ${height}`;
+                    break;
+                case 'bottom':
+                    response[key]['border-width'] = `${height} ${width} 0 ${width}`;
+                    break;
+                case 'left':
+                    response[key]['border-width'] = `${width} ${height} ${width} 0`;
+                    break;
             }
         }
+    }
+}
+
+export const getTransfromObject = transform => {
+    const response = {
+        label: 'Transform',
+        general: {
+            transform: '',
+            'transform-origin': ''
+        },
+        xxl: {
+            transform: '',
+            'transform-origin': ''
+        },
+        xl: {
+            transform: '',
+            'transform-origin': ''
+        },
+        l: {
+            transform: '',
+            'transform-origin': ''
+        },
+        m: {
+            transform: '',
+            'transform-origin': ''
+        },
+        s: {
+            transform: '',
+            'transform-origin': ''
+        },
+        xs: {
+            transform: '',
+            'transform-origin': ''
+        }
+    }
+
+    for (let key of Object.keys(transform)) {
+        if (key === 'label')
+            continue;
+
+        if (isNumber(getLastBreakpointValue(transform, 'scaleX', key)))
+            response[key].transform += `scaleX(${getLastBreakpointValue(transform, 'scaleX', key) / 100}) `;
+        if (isNumber(getLastBreakpointValue(transform, 'scaleY', key)))
+            response[key].transform += `scaleY(${getLastBreakpointValue(transform, 'scaleY', key) / 100}) `;
+        if (isNumber(getLastBreakpointValue(transform, 'translateX', key)))
+            response[key].transform += `translateX(${getLastBreakpointValue(transform, 'translateX', key)}${getLastBreakpointValue(transform, 'translateXUnit', key)}) `;
+        if (isNumber(getLastBreakpointValue(transform, 'translateY', key)))
+            response[key].transform += `translateY(${getLastBreakpointValue(transform, 'translateY', key)}${getLastBreakpointValue(transform, 'translateYUnit', key)}) `;
+        if (isNumber(getLastBreakpointValue(transform, 'rotateX', key)))
+            response[key].transform += `rotateX(${getLastBreakpointValue(transform, 'rotateX', key)}deg) `;
+        if (isNumber(getLastBreakpointValue(transform, 'rotateY', key)))
+            response[key].transform += `rotateY(${getLastBreakpointValue(transform, 'rotateY', key)}deg) `;
+        if (isNumber(getLastBreakpointValue(transform, 'rotateZ', key)))
+            response[key].transform += `rotateZ(${getLastBreakpointValue(transform, 'rotateZ', key)}deg) `;
+        if (isNumber(getLastBreakpointValue(transform, 'originX', key)))
+            response[key]['transform-origin'] += `${getLastBreakpointValue(transform, 'originX', key)}% `;
+        if (isNumber(getLastBreakpointValue(transform, 'originY', key)))
+            response[key]['transform-origin'] += `${getLastBreakpointValue(transform, 'originY', key)}% `;
+        if (isString(getLastBreakpointValue(transform, 'originX', key)))
+            response[key]['transform-origin'] += `${getLastBreakpointValue(transform, 'originX', key)} `;
+        if (isString(getLastBreakpointValue(transform, 'originY', key)))
+            response[key]['transform-origin'] += `${getLastBreakpointValue(transform, 'originY', key)} `;
     }
 
     return response;

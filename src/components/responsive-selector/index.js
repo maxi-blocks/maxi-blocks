@@ -77,7 +77,11 @@ const ResponsiveSelector = props => {
             editorWrapper.style.margin = '';
         }
         else {
-            editorWrapper.style.width = `${breakpoints[size]}px`;
+            if(size != 'xxl')
+                editorWrapper.style.width = `${breakpoints[size]}px`;
+            else 
+                editorWrapper.style.width = `2000px`;   // !!!
+
             if (winHeight > breakpoints[size])
                 editorWrapper.style.margin = '36px auto';
             else
@@ -95,6 +99,13 @@ const ResponsiveSelector = props => {
                 aria-pressed={'Desktop' === deviceType}
             >
                 G
+            </Button>
+            <Button
+                className='maxi-responsive-selector__button'
+                onClick={() => onChangeSize('xxl')}
+                aria-pressed={'xxl' === deviceType}
+            >
+                XXL
             </Button>
             <Button
                 className='maxi-responsive-selector__button'

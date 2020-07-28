@@ -42,7 +42,7 @@ const AlignmentControl = props => {
         disableCenter = false,
         disableRight = false,
         disableJustify = false,
-        breakpoint
+        breakpoint = 'general'
     } = props;
 
     const getOptions = () => {

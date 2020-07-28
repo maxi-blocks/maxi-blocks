@@ -8,6 +8,14 @@
         "sync": true,
         "unit": "px"
     },
+    "xxl": {
+        "option-top": "",
+        "option-right": "",
+        "option-bottom": "",
+        "option-left": "",
+        "sync": true,
+        "unit": "px"
+    },
     "xl": {
         "option-top": "",
         "option-right": "",

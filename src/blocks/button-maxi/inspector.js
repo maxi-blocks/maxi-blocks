@@ -28,7 +28,8 @@ import {
     __experimentalOpacityControl,
     __experimentalPositionControl,
     __experimentalDisplayControl,
-    __experimentalMotionControl
+    __experimentalMotionControl,
+    __experimentalTransformControl
 } from '../../components';
 
 /**
@@ -37,10 +38,12 @@ import {
 const Inspector = props => {
     const {
         attributes: {
+            uniqueID,
             isFirstOnHierarchy,
             blockStyle,
             defaultBlockStyle,
             alignment,
+            alignmentText,
             typography,
             typographyHover,
             background,
@@ -62,7 +65,8 @@ const Inspector = props => {
             breakpoints,
             position,
             display,
-            motion
+            motion,
+            transform
         },
         setAttributes,
     } = props;
@@ -109,11 +113,21 @@ const Inspector = props => {
                                         {
                                             label: __('Alignment', 'maxi-blocks'),
                                             content: (
+                                                <Fragment>
                                                 <AlignmentControl
+                                                    label={__('Button', 'maxi-blocks')}
                                                     alignment={alignment}
                                                     onChange={alignment => setAttributes({ alignment })}
                                                     breakpoint={deviceType}
+                                                    disableJustify
                                                 />
+                                                <AlignmentControl
+                                                    label={__('Text', 'maxi-blocks')}
+                                                    alignment={alignmentText}
+                                                    onChange={alignmentText => setAttributes({ alignmentText })}
+                                                    breakpoint={deviceType}
+                                                />
+                                                </Fragment>
                                             )
                                         },
                                         {
@@ -139,7 +153,6 @@ const Inspector = props => {
                                                                 <TypographyControl
                                                                     typography={typographyHover}
                                                                     onChange={typographyHover => setAttributes({ typographyHover })}
-                                                                    target=':hover'
                                                                     hideAlignment
                                                                     breakpoint={deviceType}
                                                                 />
@@ -345,6 +358,17 @@ const Inspector = props => {
                                                 <__experimentalMotionControl
                                                     motionOptions={motion}
                                                     onChange={motion => setAttributes({ motion })}
+                                                />
+                                            )
+                                        },
+                                        {
+                                            label: __('Transform', 'maxi-blocks'),
+                                            content: (
+                                                <__experimentalTransformControl
+                                                    transform={transform}
+                                                    onChange={transform => setAttributes({ transform })}
+                                                    uniqueID={uniqueID}
+                                                    breakpoint={deviceType}
                                                 />
                                             )
                                         }

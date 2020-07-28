@@ -7,6 +7,7 @@ const { SelectControl } = wp.components;
 /**
  * Internal dependencies
  */
+import { getLastBreakpointValue } from '../../extensions/styles/utils';
 import __experimentalAxisControl from '../axis-control';
 
 /**
@@ -59,7 +60,7 @@ const PositionControl = props => {
                     { label: 'Absolute', value: 'absolute' },
                     { label: 'Fixed', value: 'fixed' },
                 ]}
-                value={value[breakpoint].position}
+                value={getLastBreakpointValue(value, 'position', breakpoint)}
                 onChange={val => {
                     value[breakpoint].position = val;
                     if (isEmpty(val))
@@ -68,7 +69,7 @@ const PositionControl = props => {
                 }}
             />
             {
-                !isEmpty(value[breakpoint].position) &&
+                !isEmpty(getLastBreakpointValue(value, 'position', breakpoint)) &&
                 <__experimentalAxisControl
                     values={value.options}
                     onChange={val => {

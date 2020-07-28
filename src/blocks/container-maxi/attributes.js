@@ -160,6 +160,10 @@ const attributes = {
     arrow: {
         type: 'string',
         default: JSON.stringify(attributesData.__experimentalArrow)
+    },
+    transform: {
+        type: 'string',
+        default: JSON.stringify(attributesData.__experimentalTransform)
     }
 }
 

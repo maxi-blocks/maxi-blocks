@@ -134,7 +134,7 @@ class edit extends MaxiBlock {
             hoverAnimationDuration,
         } = this.props;
 
-        let classes = classnames(
+        const classes = classnames(
             'maxi-block maxi-button-extra',
             blockStyle,
             extraClassName,

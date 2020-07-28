@@ -5,16 +5,19 @@ const { InnerBlocks } = wp.blockEditor;
 const { Fragment } = wp.element;
 
 /**
+ * Internal dependencies
+ */
+import { 
+    __experimentalShapeDivider,
+    __experimentalBackground
+} from '../../components';
+
+/**
  * External dependencies
  */
 import classnames from 'classnames';
 import { isNil } from 'lodash';
 import Scripts from '../../extensions/styles/hoverAnimations.js';
-
-/**
- * Internal dependencies
- */
-import { __experimentalShapeDivider } from '../../components';
 
 /**
  * Save
@@ -27,6 +30,7 @@ const save = props => {
             blockStyle,
             defaultBlockStyle,
             fullWidth,
+            background,
             extraClassName,
             hoverAnimation,
             hoverAnimationType,
@@ -73,6 +77,9 @@ const save = props => {
                     data-shape-divider={shapeDivider}
                     data-motion-id={uniqueID}
                 >
+                    <__experimentalBackground
+                        backgroundOptions={background}
+                    />
                     <__experimentalShapeDivider
                         shapeDividerOptions={shapeDivider}
                     />
@@ -97,6 +104,9 @@ const save = props => {
                     className={classes}
                     data-gx_initial_block_class={defaultBlockStyle}
                 >
+                    <__experimentalBackground
+                        backgroundOptions={background}
+                    />
                     <__experimentalShapeDivider
                         shapeDividerOptions={shapeDivider}
                     />

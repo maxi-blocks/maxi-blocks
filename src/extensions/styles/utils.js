@@ -45,15 +45,14 @@ export const getBackgroundObject = background => {
         general: {}
     }
 
-    if (!isEmpty(background.colorOptions.color)) {
+    if (!isEmpty(background.colorOptions.color))
         response.general['background-color'] = background.colorOptions.color;
-    }
-    if (!isEmpty(background.colorOptions.gradient)) {
+    if (!isEmpty(background.colorOptions.gradient))
         response.general['background'] = background.colorOptions.gradient;
-    }
-    if (!isEmpty(background.blendMode)) {
+    if (!isEmpty(background.blendMode))
         response.general['background-blend-mode'] = background.blendMode;
-    }
+    if (!isEmpty(background.clipPath))
+        response.general['clip-path'] = background.clipPath;
 
     background.backgroundOptions.map(option => {
         if (isNil(option) || isEmpty(option.imageOptions.mediaURL))
@@ -355,7 +354,7 @@ export const getTransfromObject = transform => {
     }
 
     for (let [key, value] of Object.entries(transform)) {
-        if(key === 'label')
+        if (key === 'label')
             continue;
 
         if (isNumber(value.scale.scaleX))
@@ -383,4 +382,25 @@ export const getTransfromObject = transform => {
     }
 
     return response;
+}
+
+export const setBackgroundStyles = (target, background, backgroundHover) => {
+    return {
+        [`${target} .maxi-background`]: {
+            background: { ...getBackgroundObject(JSON.parse(background)) }
+        },
+        [`${target}:hover .maxi-background`]: {
+            backgroundHover: { ...getBackgroundObject(JSON.parse(backgroundHover)) }
+        },
+        [`${target} .maxi-background .maxi-background__video-player video`]: {
+            videoBackground: { 
+                ...getVideoBackgroundObject(JSON.parse(background).videoOptions) 
+            }
+        },
+        [`${target}:hover .maxi-background .maxi-background__video-player video`]: {
+            videoBackgroundHover: { 
+                ...getVideoBackgroundObject(JSON.parse(backgroundHover).videoOptions) 
+            }
+        }
+    }
 }

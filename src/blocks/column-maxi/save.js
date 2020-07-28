@@ -4,6 +4,11 @@
 const { InnerBlocks } = wp.blockEditor;
 
 /**
+ * Internal dependencies
+ */
+import { __experimentalBackground } from '../../components';
+
+/**
  * External dependencies
  */
 import classnames from 'classnames';
@@ -20,6 +25,7 @@ const save = props => {
             blockStyle,
             extraClassName,
             defaultBlockStyle,
+            background,
             hoverAnimation,
             hoverAnimationType,
             hoverAnimationTypeText,
@@ -34,7 +40,7 @@ const save = props => {
         className
     } = props;
 
-    let classes = classnames(
+    const classes = classnames(
         'maxi-block maxi-column-block',
         blockStyle,
         extraClassName,
@@ -53,6 +59,9 @@ const save = props => {
             className={classes}
             data-maxi_initial_block_class={defaultBlockStyle}
         >
+            <__experimentalBackground
+                backgroundOptions={background}
+            />
             <InnerBlocks.Content />
             {
                 hoverAnimation === 'text' &&

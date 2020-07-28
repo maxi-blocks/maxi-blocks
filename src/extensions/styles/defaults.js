@@ -539,7 +539,8 @@ export const background = {
         "gradient": "",
         "defaultGradient": "",
         "gradientAboveBackground": false
-    }
+    },
+    "clipPath": ""
 };
 
 export const boxShadow = {
@@ -1140,7 +1141,8 @@ export const backgroundHover = {
         "gradient": "",
         "defaultGradient": "",
         "gradientAboveBackground": false
-    }
+    },
+    "clipPath": ""
 };
 
 export const __experimentalDivider = {

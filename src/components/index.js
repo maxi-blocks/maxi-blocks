@@ -22,7 +22,6 @@ export { default as TextShadowControl } from './text-shadow-control';
 export { default as TypographyControl } from './typography-control';
 
 // Experimental
-export { default as __experimentalVideoPlayer } from './video-player';
 export { default as __experimentalToolbar } from './toolbar';
 export { default as __experimentalDividerControl } from './divider-control';
 export { default as __experimentalBreadcrumbs } from './breadcrumbs';
@@ -42,3 +41,4 @@ export { default as __experimentalAdvancedRangeControl } from './advanced-range-
 export { default as __experimentalGroupInputControl } from './group-input-control';
 export { default as __experimentalTransformControl } from './transform-control';
 export { default as __experimentalClipPath } from './clip-path-control';
+export { default as __experimentalBackground } from './background';

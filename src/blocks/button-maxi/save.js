@@ -4,6 +4,11 @@
 const { Button } = wp.components;
 
 /**
+ * Internal dependencies
+ */
+import { __experimentalBackground } from '../../components';
+
+/**
  * External dependencies
  */
 import classnames from 'classnames';
@@ -37,9 +42,9 @@ const save = props => {
         'maxi-block maxi-button-extra',
         blockStyle,
         extraClassName,
-        'hover-animation-'+hoverAnimation,
-        'hover-animation-type-'+hoverAnimationType,
-        'hover-animation-duration-'+hoverAnimationDuration,
+        'hover-animation-' + hoverAnimation,
+        'hover-animation-type-' + hoverAnimationType,
+        'hover-animation-duration-' + hoverAnimationDuration,
         uniqueID,
         className,
         !isNil(uniqueID) ?
@@ -63,6 +68,9 @@ const save = props => {
             data-motion={motion}
             data-motion-id={uniqueID}
         >
+            <__experimentalBackground
+                backgroundOptions={background}
+            />
             <Button
                 className="maxi-button-extra__button"
                 {...linkProps}

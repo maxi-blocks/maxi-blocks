@@ -3,6 +3,12 @@
  */
 const { RichText } = wp.blockEditor;
 const { Fragment } = wp.element;
+
+/**
+ * Internal dependencies
+ */
+import { __experimentalBackground } from '../../components';
+
 /**
  * External dependencies
  */
@@ -21,6 +27,7 @@ const save = props => {
             blockStyle,
             defaultBlockStyle,
             fullWidth,
+            background,
             extraClassName,
             textLevel,
             isList,
@@ -39,7 +46,7 @@ const save = props => {
         },
     } = props;
 
-    let classes = classnames(
+    const classes = classnames(
         `maxi-motion-effect maxi-motion-effect-${uniqueID}`,
         'maxi-block maxi-text-block',
         'maxi-text-block-wrap',
@@ -66,7 +73,11 @@ const save = props => {
                 data-motion={motion}
                 data-motion-id={uniqueID}
             >
+                <__experimentalBackground
+                    backgroundOptions={background}
+                />
                 <RichText.Content
+                    className='maxi-text-block__content'
                     value={content}
                     tagName={isList ? typeOfList : textLevel}
                     data-gx_initial_block_class={defaultBlockStyle}

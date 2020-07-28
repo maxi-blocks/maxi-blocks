@@ -17,11 +17,13 @@ import Inspector from './inspector';
 import {
     getBackgroundObject,
     getBoxShadowObject,
-    getTransfromObject
+    getTransfromObject,
+    setBackgroundStyles
 } from '../../extensions/styles/utils';
 import {
     MaxiBlock,
-    __experimentalToolbar
+    __experimentalToolbar,
+    __experimentalBackground
 } from '../../components';
 
 /**
@@ -38,11 +40,22 @@ import {
  */
 class edit extends MaxiBlock {
     get getObject() {
+        const {
+            uniqueID,
+            background,
+            backgroundHover
+        } = this.props.attributes;
+
         let response = {
-            [this.props.attributes.uniqueID]: this.getNormalObject,
-            [`${this.props.attributes.uniqueID}:hover`]: this.getHoverObject,
-            [`${this.props.attributes.uniqueID} > hr.maxi-divider-block__divider`]: this.getDividerObject,
+            [uniqueID]: this.getNormalObject,
+            [`${uniqueID}:hover`]: this.getHoverObject,
+            [`${uniqueID} > hr.maxi-divider-block__divider`]: this.getDividerObject,
         }
+
+        response = Object.assign(
+            response,
+            setBackgroundStyles(uniqueID, background, backgroundHover)
+        )
 
         return response;
     }
@@ -53,7 +66,6 @@ class edit extends MaxiBlock {
             lineHorizontal,
             linesAlign,
             opacity,
-            background,
             boxShadow,
             size,
             padding,
@@ -65,7 +77,6 @@ class edit extends MaxiBlock {
         } = this.props.attributes;
 
         const response = {
-            background: { ...getBackgroundObject(JSON.parse(background)) },
             boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
             size: { ...JSON.parse(size) },
             padding: { ...JSON.parse(padding) },
@@ -104,13 +115,11 @@ class edit extends MaxiBlock {
     get getHoverObject() {
         const {
             opacityHover,
-            backgroundHover,
             boxShadowHover
         } = this.props.attributes;
 
         const response = {
             backgroundHover: { ...getBackgroundObject(JSON.parse(backgroundHover)) },
-            boxShadowHover: { ...getBoxShadowObject(JSON.parse(boxShadowHover)) },
             opacityHover: { ...JSON.parse(opacityHover) }
         };
 
@@ -137,7 +146,8 @@ class edit extends MaxiBlock {
                 lineOrientation,
                 extraClassName,
                 fullWidth,
-                size
+                size,
+                background
             },
             className,
             isSelected,
@@ -208,6 +218,9 @@ class edit extends MaxiBlock {
                     data-maxi_initial_block_class={defaultBlockStyle}
                     data-align={fullWidth}
                 >
+                    <__experimentalBackground
+                        backgroundOptions={background}
+                    />
                     {
                         !!showLine &&
                         <Fragment>
@@ -238,7 +251,7 @@ const editDispatch = withDispatch((dispatch, ownProps, { select }) => {
         deviceType,
     } = ownProps;
 
-    const onDeviceTypeChange = function() {
+    const onDeviceTypeChange = function () {
         let newDeviceType = select('core/edit-post').__experimentalGetPreviewDeviceType();
         newDeviceType = newDeviceType === 'Desktop' ?
             'general' :

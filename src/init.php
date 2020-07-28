@@ -120,6 +120,12 @@ add_action( 'admin_enqueue_scripts', 'gutenberg_extra_load_custom_wp_admin_style
 
 function maxi_load_custom_wp_front_script() {
 
+	wp_enqueue_style(
+		'maxi-animations-styles',
+		plugins_url( '/css/animate.min.css', dirname( __FILE__ ) ),
+		false
+	);
+
 	wp_enqueue_script(
 		'maxi-gsap-lib-js',
 		plugins_url( '/js/gsap.min.js', dirname( __FILE__ ) )
@@ -127,7 +133,12 @@ function maxi_load_custom_wp_front_script() {
 
 	wp_enqueue_script(
 		'maxi-gsap-scroll-trigger-js',
-		plugins_url( '/js/ScrollTrigger.min.js', dirname( __FILE__ ) )
+		plugins_url( '/js/scroll-trigger.min.js', dirname( __FILE__ ) )
+	);
+
+	wp_enqueue_script(
+		'maxi-waypoints-js',
+		plugins_url( '/js/waypoints.min.js', dirname( __FILE__ ) )
 	);
 
 	wp_enqueue_script(
@@ -136,7 +147,6 @@ function maxi_load_custom_wp_front_script() {
 		array(), false, true
 	);
 }
-
 add_action( 'wp_enqueue_scripts', 'maxi_load_custom_wp_front_script' );
 
 add_filter( 'block_categories', 'gutenberg_extra_block_category' );

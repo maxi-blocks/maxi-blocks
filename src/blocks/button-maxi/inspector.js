@@ -362,6 +362,15 @@ const Inspector = props => {
                                             )
                                         },
                                         {
+                                            label: __('Entrance Animation', 'maxi-blocks'),
+                                            content: (
+                                                <__experimentalEntranceAnimationControl
+                                                    motionOptions={motion}
+                                                    onChange={motion => setAttributes({ motion })}
+                                                />
+                                            )
+                                        },
+                                        {
                                             label: __('Transform', 'maxi-blocks'),
                                             content: (
                                                 <__experimentalTransformControl

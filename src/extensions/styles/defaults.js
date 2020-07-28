@@ -1413,6 +1413,11 @@ export const __experimentalMotion = {
         "midValue": 0,
         "endValue": 0,
     },
+    "entrance": {
+        "type": "",
+        "duration": 1,
+        "delay": 1,
+    },
 }
 
 export const __experimentalTransform = {

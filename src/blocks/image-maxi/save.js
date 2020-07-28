@@ -1,9 +1,13 @@
 /**
+ * Internal dependencies
+ */
+import { __experimentalBackgroundDisplayer } from '../../components';
+
+/**
  * External dependencies
  */
 import classnames from 'classnames';
 import { isNil } from 'lodash';
-// import postscribe from 'postscribe';
 import Scripts from '../../extensions/styles/hoverAnimations.js';
 
 /**
@@ -17,6 +21,7 @@ const save = props => {
             blockStyle,
             defaultBlockStyle,
             fullWidth,
+            background,
             extraClassName,
             captionType,
             captionContent,
@@ -62,13 +67,13 @@ const save = props => {
             null
     );
 
-     const imageALT = () => {
-      switch(altSelector) {
-        case "wordpress":   return mediaALTwp;
-        case "title":   return mediaALTtitle;
-        case "custom": return mediaALT;
-        default:      return '';
-      }
+    const imageALT = () => {
+        switch (altSelector) {
+            case "wordpress": return mediaALTwp;
+            case "title": return mediaALTtitle;
+            case "custom": return mediaALT;
+            default: return '';
+        }
     }
 
     return (
@@ -78,6 +83,9 @@ const save = props => {
             data-motion={motion}
             data-motion-id={uniqueID}
         >
+            <__experimentalBackgroundDisplayer
+                backgroundOptions={background}
+            />
             <img
                 className={"wp-image-" + mediaID}
                 src={mediaURL}

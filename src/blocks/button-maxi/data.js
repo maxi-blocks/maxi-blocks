@@ -201,7 +201,8 @@ export const background = {
         "gradient": "",
         "defaultGradient": "",
         "gradientAboveBackground": false
-    }
+    },
+    "clipPath": ""
 };
 
 export const border = {

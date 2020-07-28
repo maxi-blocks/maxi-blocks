@@ -24,6 +24,7 @@ import MediaUploaderControl from '../media-uploader-control';
 import ImageCropControl from '../image-crop-control';
 import SettingTabsControl from '../setting-tabs-control';
 import SizeControl from '../size-control';
+import __experimentalClipPath from '../clip-path-control';
 
 /**
  * External dependencies
@@ -59,6 +60,7 @@ const BackgroundControl = props => {
         disableVideo = false,
         disableGradient = false,
         disableColor = false,
+        disableClipPath = false,
         onChange
     } = props;
 
@@ -607,6 +609,16 @@ const BackgroundControl = props => {
                             )
                         }
                     ]}
+                />
+            }
+            {
+                !disableClipPath &&
+                <__experimentalClipPath
+                    clipPath={value.clipPath}
+                    onChange={val => {
+                        value.clipPath = val;
+                        onChange(JSON.stringify(value))
+                    }}
                 />
             }
         </div>

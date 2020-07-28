@@ -387,6 +387,9 @@ export const getArrowObject = arrow => {
                 case 'left':
                     response[key].right = '0%';
                     break;
+                default:
+                    response[key].bottom = '100%';
+                    break;
             }
         }
         if (isNumber(value.position))
@@ -403,6 +406,9 @@ export const getArrowObject = arrow => {
                 case 'left':
                     response[key].top = `${value.position}%`;
                     break;
+                default:
+                    response[key].left = `50%`;
+                    break;
             }
         if (!isEmpty(value.color)) {
             switch (value.side) {
@@ -417,6 +423,9 @@ export const getArrowObject = arrow => {
                     break;
                 case 'left':
                     response[key]['border-color'] = `transparent ${value.color} transparent transparent`;
+                    break;
+                default:
+                    response[key]['border-color'] = `transparent transparent ${value.color} transparent`;
                     break;
             }
         }
@@ -436,6 +445,9 @@ export const getArrowObject = arrow => {
                     break;
                 case 'left':
                     response[key]['border-width'] = `${width} ${height} ${width} 0`;
+                    break;
+                default:
+                    response[key]['border-width'] = `0 ${width} ${height} ${width}`;
                     break;
             }
         }

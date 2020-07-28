@@ -98,7 +98,7 @@ const FullSizeControl = props => {
                 onChangeUnit={val => onChangeValue('min-heightUnit', val)}
                 value={getLastBreakpointValue(value, 'min-height', breakpoint)}
                 onChangeValue={val => onChangeValue('min-height', val)}
-            />∆
+            />
         </div>
     )
 }

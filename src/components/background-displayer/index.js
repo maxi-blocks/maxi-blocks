@@ -12,7 +12,7 @@ import { isObject } from 'lodash';
 /**
  * Component
  */
-const Background = props => {
+const BackgroundDisplayer = props => {
     const {
         backgroundOptions,
         className,
@@ -23,7 +23,7 @@ const Background = props => {
         backgroundOptions
 
     const classes = classnames(
-        'maxi-background',
+        'maxi-background-displayer',
         className
     )
 
@@ -33,7 +33,7 @@ const Background = props => {
         >
             {
                 value.videoOptions.mediaURL &&
-                <div class="maxi-background__video-player">
+                <div class="maxi-background-displayer__video-player">
                     <video
                         controls={!!parseInt(value.videoOptions.controls)}
                         autoplay={!!parseInt(value.videoOptions.autoplay)}
@@ -48,4 +48,4 @@ const Background = props => {
     )
 }
 
-export default Background;
+export default BackgroundDisplayer;

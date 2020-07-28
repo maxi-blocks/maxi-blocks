@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { __experimentalBackground } from '../../components';
+import { __experimentalBackgroundDisplayer } from '../../components';
 
 /**
  * External dependencies
@@ -83,7 +83,7 @@ const save = props => {
             data-motion={motion}
             data-motion-id={uniqueID}
         >
-            <__experimentalBackground
+            <__experimentalBackgroundDisplayer
                 backgroundOptions={background}
             />
             <img

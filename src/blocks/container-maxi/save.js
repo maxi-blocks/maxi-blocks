@@ -9,7 +9,7 @@ const { Fragment } = wp.element;
  */
 import { 
     __experimentalShapeDivider,
-    __experimentalBackground
+    __experimentalBackgroundDisplayer
 } from '../../components';
 
 /**
@@ -77,7 +77,7 @@ const save = props => {
                     data-shape-divider={shapeDivider}
                     data-motion-id={uniqueID}
                 >
-                    <__experimentalBackground
+                    <__experimentalBackgroundDisplayer
                         backgroundOptions={background}
                     />
                     <__experimentalShapeDivider
@@ -104,7 +104,7 @@ const save = props => {
                     className={classes}
                     data-gx_initial_block_class={defaultBlockStyle}
                 >
-                    <__experimentalBackground
+                    <__experimentalBackgroundDisplayer
                         backgroundOptions={background}
                     />
                     <__experimentalShapeDivider

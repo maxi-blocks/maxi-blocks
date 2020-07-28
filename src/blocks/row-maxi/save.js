@@ -6,7 +6,7 @@ const { InnerBlocks } = wp.blockEditor;
 /**
  * Internal dependencies
  */
-import { __experimentalBackground } from '../../components';
+import { __experimentalBackgroundDisplayer } from '../../components';
 
 /**
  * External dependencies
@@ -63,7 +63,7 @@ const save = props => {
             className={classes}
             data-maxi_initial_block_class={defaultBlockStyle}
         >
-            <__experimentalBackground
+            <__experimentalBackgroundDisplayer
                 backgroundOptions={background}
             />
             <InnerBlocks.Content />

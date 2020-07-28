@@ -17,7 +17,7 @@ import {
     __experimentalBreadcrumbs,
     __experimentalBlockPlaceholder,
     __experimentalShapeDivider,
-    __experimentalBackground,
+    __experimentalBackgroundDisplayer,
     __experimentalArrowControl
 } from '../../components';
 import Inspector from './inspector';
@@ -336,7 +336,7 @@ class edit extends MaxiBlock {
                         data-align={fullWidth}
                         data-maxi_initial_block_class={defaultBlockStyle}
                     >
-                        <__experimentalBackground
+                        <__experimentalBackgroundDisplayer
                             backgroundOptions={background}
                         />
                         <__experimentalShapeDivider

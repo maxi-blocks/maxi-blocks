@@ -42,5 +42,5 @@ export { default as __experimentalAdvancedRangeControl } from './advanced-range-
 export { default as __experimentalGroupInputControl } from './group-input-control';
 export { default as __experimentalTransformControl } from './transform-control';
 export { default as __experimentalClipPath } from './clip-path-control';
-export { default as __experimentalBackground } from './background';
+export { default as __experimentalBackgroundDisplayer } from './background-displayer';
 export { default as __experimentalEntranceAnimationControl } from './entrance-animation-control';

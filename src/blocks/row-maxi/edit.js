@@ -27,7 +27,7 @@ import {
     MaxiBlock,
     __experimentalToolbar,
     __experimentalBreadcrumbs,
-    __experimentalBackground
+    __experimentalBackgroundDisplayer
 } from '../../components';
 import Inspector from './inspector';
 import TEMPLATES from './templates';
@@ -67,7 +67,7 @@ const ContainerInnerBlocks = props => {
             data-gx_initial_block_class={maxiBlockClass}
         >
             <Fragment>
-                <__experimentalBackground
+                <__experimentalBackgroundDisplayer
                     backgroundOptions={background}
                 />
                 {children}

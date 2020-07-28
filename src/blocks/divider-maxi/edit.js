@@ -22,7 +22,7 @@ import {
 import {
     MaxiBlock,
     __experimentalToolbar,
-    __experimentalBackground
+    __experimentalBackgroundDisplayer
 } from '../../components';
 
 /**
@@ -217,7 +217,7 @@ class edit extends MaxiBlock {
                     data-maxi_initial_block_class={defaultBlockStyle}
                     data-align={fullWidth}
                 >
-                    <__experimentalBackground
+                    <__experimentalBackgroundDisplayer
                         backgroundOptions={background}
                     />
                     {

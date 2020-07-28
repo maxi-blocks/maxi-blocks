@@ -25,7 +25,7 @@ import {
     getTransfromObject,
     getAlignmentTextObject,
     setBackgroundStyles
-} from '../../extensions/styles/utils';
+} from '../../utils';
 import {
     MaxiBlock,
     __experimentalToolbar,
@@ -203,13 +203,11 @@ class edit extends MaxiBlock {
     get getHoverAnimationMainObject() {
         const {
             hoverOpacity,
-            hoverBackground,
             hoverBorder,
             hoverPadding,
         } = this.props.attributes;
 
         const response = {
-            background: { ...getBackgroundObject(JSON.parse(hoverBackground)) },
             border: { ...JSON.parse(hoverBorder) },
             borderWidth: { ...JSON.parse(hoverBorder).borderWidth },
             borderRadius: { ...JSON.parse(hoverBorder).borderRadius },

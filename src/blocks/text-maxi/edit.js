@@ -25,7 +25,7 @@ import {
     getOpacityObject,
     getTransfromObject,
     setBackgroundStyles,
-} from '../../extensions/styles/utils';
+} from '../../utils';
 import {
     MaxiBlock,
     __experimentalToolbar,

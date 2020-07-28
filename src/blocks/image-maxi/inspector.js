@@ -15,7 +15,7 @@ const {
 /**
  * Internal dependencies
  */
-import { getDefaultProp } from '../../extensions/styles/utils'
+import { getDefaultProp } from '../../utils'
 import {
     AccordionControl,
     AlignmentControl,
@@ -38,6 +38,7 @@ import {
     __experimentalMotionControl,
     __experimentalTransformControl,
     __experimentalClipPath,
+    __experimentalEntranceAnimationControl,
 } from '../../components';
 
 /**
@@ -593,6 +594,15 @@ const Inspector = props => {
                                             label: __('Motion Effects', 'maxi-blocks'),
                                             content: (
                                                 <__experimentalMotionControl
+                                                    motionOptions={motion}
+                                                    onChange={motion => setAttributes({ motion })}
+                                                />
+                                            )
+                                        },
+                                        {
+                                            label: __('Entrance Animation', 'maxi-blocks'),
+                                            content: (
+                                                <__experimentalEntranceAnimationControl
                                                     motionOptions={motion}
                                                     onChange={motion => setAttributes({ motion })}
                                                 />

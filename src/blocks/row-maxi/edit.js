@@ -38,7 +38,7 @@ import {
     getTransfromObject,
     getAlignmentTextObject,
     setBackgroundStyles
-} from '../../extensions/styles/utils'
+} from '../../utils'
 
 /**
  * External dependencies

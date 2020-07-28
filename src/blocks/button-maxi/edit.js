@@ -18,7 +18,7 @@ import {
     getTransfromObject,
     getAlignmentTextObject,
     getOpacityObject,
-} from '../../extensions/styles/utils';
+} from '../../utils';
 import {
     MaxiBlock,
     __experimentalToolbar

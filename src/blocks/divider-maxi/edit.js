@@ -15,11 +15,10 @@ const {
  */
 import Inspector from './inspector';
 import {
-    getBackgroundObject,
     getBoxShadowObject,
     getTransfromObject,
     setBackgroundStyles
-} from '../../extensions/styles/utils';
+} from '../../utils';
 import {
     MaxiBlock,
     __experimentalToolbar,

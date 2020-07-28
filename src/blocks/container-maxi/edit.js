@@ -17,7 +17,8 @@ import {
     __experimentalBreadcrumbs,
     __experimentalBlockPlaceholder,
     __experimentalShapeDivider,
-    __experimentalBackground
+    __experimentalBackground,
+    __experimentalArrowControl
 } from '../../components';
 import Inspector from './inspector';
 import {
@@ -25,10 +26,11 @@ import {
     getBoxShadowObject,
     getShapeDividerObject,
     getShapeDividerSVGObject,
+    getArrowObject,
     getTransfromObject,
     getAlignmentTextObject,
     setBackgroundStyles
-} from '../../extensions/styles/utils'
+} from '../../utils'
 
 /**
  * External dependencies
@@ -60,7 +62,11 @@ const ContainerInnerBlocks = props => {
             <div
                 className='maxi-container-block__wrapper'
             >
-                {children}
+                <div
+                    className='maxi-container-block__container'
+                >
+                    {children}
+                </div>
             </div>
             <__experimentalShapeDivider
                 position='bottom'
@@ -84,6 +90,7 @@ class edit extends MaxiBlock {
         let response = {
             [uniqueID]: this.getNormalObject,
             [`${uniqueID}:hover`]: this.getHoverObject,
+            [`${this.props.attributes.uniqueID}:before`]: this.getBeforeObject,
             [`${uniqueID}>.maxi-container-block__wrapper`]: this.getWrapperObject,
             [`${uniqueID}>.maxi-container-block__wrapper>.maxi-container-block__container`]: this.getContainerObject,
             [`${uniqueID} .maxi-block-text-hover .maxi-block-text-hover__content`]: this.getHoverAnimationTextContentObject,
@@ -134,6 +141,16 @@ class edit extends MaxiBlock {
                 general: {},
             }
         };
+
+        return response;
+    }
+    get getBeforeObject() {
+
+        const { arrow } = this.props.attributes;
+
+        const response = {
+            arrow: { ...getArrowObject(JSON.parse(arrow)) }
+        }
 
         return response;
     }

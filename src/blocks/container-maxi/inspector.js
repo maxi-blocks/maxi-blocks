@@ -33,7 +33,9 @@ import {
     __experimentalPositionControl,
     __experimentalDisplayControl,
     __experimentalMotionControl,
-    __experimentalTransformControl
+    __experimentalTransformControl,
+    __experimentalEntranceAnimationControl,
+    __experimentalArrowControl,
 } from '../../components';
 
 /**
@@ -92,6 +94,7 @@ const Inspector = props => {
             position,
             display,
             motion,
+            arrow,
             transform
         },
         deviceType,
@@ -306,6 +309,17 @@ const Inspector = props => {
                                                     />
                                                 </Fragment>
                                             )
+                                        },
+                                        {
+                                            label: __('Arrow', 'maxi-blocks'),
+                                            content: (
+                                                <__experimentalArrowControl
+                                                    arrow={arrow}
+                                                    onChange={arrow => setAttributes({ arrow })}
+                                                    breakpoint={deviceType}
+                                                    isFirstOnHierarchy={isFirstOnHierarchy}
+                                                />
+                                            )
                                         }
                                     ]}
                                 />
@@ -467,14 +481,23 @@ const Inspector = props => {
                                             )
                                         },
                                         {
+                                            label: __('Entrance Animation', 'maxi-blocks'),
+                                            content: (
+                                                <__experimentalEntranceAnimationControl
+                                                    motionOptions={motion}
+                                                    onChange={motion => setAttributes({ motion })}
+                                                />
+                                            )
+                                        },
+                                        {
                                             label: __('Transform', 'maxi-blocks'),
                                             content: (
-                                                <__experimentalTransformControl 
+                                                <__experimentalTransformControl
                                                     transform={transform}
                                                     onChange={transform => setAttributes({ transform })}
                                                     uniqueID={uniqueID}
                                                     breakpoint={deviceType}
-                                                /> 
+                                                />
                                             )
                                         }
                                     ]}

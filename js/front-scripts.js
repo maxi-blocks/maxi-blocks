@@ -60,7 +60,7 @@ motionElems.forEach(function(elem) {
 					entranceElem.style.setProperty("animation-delay", ""+ entranceDelay +"s");
 					entranceElem.classList.add("animate__animated", "animate__"+ entranceType +"");
 				  },
-				  offset: "50%"
+				  offset: "100%"
 				});
 
 			}

@@ -119,7 +119,7 @@ class edit extends MaxiBlock {
         } = this.props.attributes;
 
         const response = {
-            backgroundHover: { ...getBackgroundObject(JSON.parse(backgroundHover)) },
+            boxShadowHover: { ...getBoxShadowObject(JSON.parse(boxShadowHover)) },
             opacityHover: { ...JSON.parse(opacityHover) }
         };
 

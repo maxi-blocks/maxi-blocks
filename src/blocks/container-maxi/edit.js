@@ -99,7 +99,7 @@ class edit extends MaxiBlock {
 
         response = Object.assign(
             response, 
-            setBackgroundStyles(uniqueID, background)
+            setBackgroundStyles(uniqueID, background, backgroundHover)
         )
 
         return response;

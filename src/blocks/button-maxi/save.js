@@ -26,6 +26,7 @@ const save = props => {
             uniqueID,
             blockStyle,
             defaultBlockStyle,
+            background,
             linkSettings,
             buttonText,
             extraClassName,

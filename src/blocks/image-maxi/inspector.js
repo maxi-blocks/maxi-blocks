@@ -15,7 +15,7 @@ const {
 /**
  * Internal dependencies
  */
-import { getDefaultProp } from '../../extensions/styles/utils'
+import { getDefaultProp } from '../../utils'
 import {
     AccordionControl,
     AlignmentControl,

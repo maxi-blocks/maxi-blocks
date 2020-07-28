@@ -17,7 +17,8 @@ import {
     __experimentalToolbar,
     __experimentalBreadcrumbs,
     __experimentalBlockPlaceholder,
-    __experimentalShapeDivider
+    __experimentalShapeDivider,
+    __experimentalArrowControl
 } from '../../components';
 import Inspector from './inspector';
 import {
@@ -26,9 +27,10 @@ import {
     getVideoBackgroundObject,
     getShapeDividerObject,
     getShapeDividerSVGObject,
+    getArrowObject,
     getTransfromObject,
     getAlignmentTextObject
-} from '../../extensions/styles/utils'
+} from '../../utils'
 
 /**
  * External dependencies
@@ -50,7 +52,6 @@ const ContainerInnerBlocks = props => {
         dataAlign,
         maxiBlockClass
     } = props;
-    console.log(props)
 
     return (
         <__experimentalBlock
@@ -64,7 +65,11 @@ const ContainerInnerBlocks = props => {
             <div
                 className='maxi-container-block__wrapper'
             >
-                {children}
+                <div
+                    className='maxi-container-block__container'
+                >
+                    {children}
+                </div>
             </div>
             <__experimentalShapeDivider
                 position='bottom'
@@ -82,6 +87,7 @@ class edit extends MaxiBlock {
 
         let response = {
             [this.props.attributes.uniqueID]: this.getNormalObject,
+            [`${this.props.attributes.uniqueID}:before`]: this.getBeforeObject,
             [`${this.props.attributes.uniqueID}:hover`]: this.getHoverObject,
             [`${this.props.attributes.uniqueID}>.maxi-container-block__wrapper`]: this.getWrapperObject,
             [`${this.props.attributes.uniqueID}>.maxi-container-block__wrapper>.maxi-container-block__container`]: this.getContainerObject,
@@ -98,7 +104,7 @@ class edit extends MaxiBlock {
         }
 
         const videoOptions = JSON.parse(this.props.attributes.background).videoOptions;
-        if(!isNil(videoOptions) && !isEmpty(videoOptions.mediaURL))
+        if (!isNil(videoOptions) && !isEmpty(videoOptions.mediaURL))
             Object.assign(
                 response,
                 {
@@ -141,6 +147,16 @@ class edit extends MaxiBlock {
                 general: {},
             }
         };
+
+        return response;
+    }
+    get getBeforeObject() {
+
+        const { arrow } = this.props.attributes;
+
+        const response = {
+            arrow: { ...getArrowObject(JSON.parse(arrow)) }
+        }
 
         return response;
     }

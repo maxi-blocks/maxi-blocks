@@ -10,6 +10,7 @@ const {
 /**
  * Internal dependencies
  */
+import { getLastBreakpointValue } from '../../../../utils';
 import ToolbarPopover from '../toolbar-popover';
 
 /**
@@ -60,7 +61,7 @@ const TextColor = props => {
                 <div
                     className='toolbar-item__text-options__icon'
                     style={{
-                        background: value[breakpoint].color,
+                        background: getLastBreakpointValue(value, 'color', breakpoint),
                         borderWidth: '1px',
                         borderColor: '#fff',
                         borderStyle: 'solid',
@@ -74,7 +75,7 @@ const TextColor = props => {
             )}
             content={(
                 <ColorPicker
-                    color={value[breakpoint].color}
+                    color={getLastBreakpointValue(value, 'color', breakpoint)}
                     onChangeComplete={val => updateTypography(val)}
                 />
             )}

@@ -3,12 +3,12 @@
  */
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
-const { useDispatch } = wp.data;
 const { RadioControl } = wp.components;
 
 /**
  * Internal dependencies
  */
+import { getLastBreakpointValue } from '../../../../utils';
 import SizeControl from '../../../size-control';
 import ToolbarPopover from '../toolbar-popover';
 
@@ -39,10 +39,6 @@ const Size = props => {
     if (blockName === 'maxi-blocks/image-maxi' || blockName === 'maxi-blocks/divider-maxi')
         return null;
 
-    const { openGeneralSidebar } = useDispatch(
-        'core/edit-post'
-    );
-
     let value = !isObject(size) ?
         JSON.parse(size) :
         size;
@@ -70,12 +66,12 @@ const Size = props => {
                     }
                     <SizeControl
                         label={__('Width', 'maxi-blocks')}
-                        unit={value[breakpoint].widthUnit}
+                        unit={getLastBreakpointValue(value, 'widthUnit', breakpoint)}
                         onChangeUnit={val => {
                             value[breakpoint].widthUnit = val;
                             onChangeSize(JSON.stringify(value));
                         }}
-                        value={value[breakpoint].width}
+                        value={getLastBreakpointValue(value, 'width', breakpoint)}
                         onChangeValue={val => {
                             value[breakpoint].width = val;
                             onChangeSize(JSON.stringify(value));
@@ -83,12 +79,12 @@ const Size = props => {
                     />
                     <SizeControl
                         label={__('Max Width', 'maxi-blocks')}
-                        unit={value[breakpoint]['max-widthUnit']}
+                        unit={getLastBreakpointValue(value, 'max-widthUnit', breakpoint)}
                         onChangeUnit={val => {
                             value[breakpoint]['max-widthUnit'] = val;
                             onChangeSize(JSON.stringify(value));
                         }}
-                        value={value[breakpoint]['max-width']}
+                        value={getLastBreakpointValue(value, 'max-width', breakpoint)}
                         onChangeValue={val => {
                             value[breakpoint]['max-width'] = val;
                             onChangeSize(JSON.stringify(value));

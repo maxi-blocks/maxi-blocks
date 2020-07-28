@@ -5,26 +5,29 @@ const { __ } = wp.i18n;
 const { Icon } = wp.components;
 
 /**
+ * External dependencies
+ */
+import { isObject } from 'lodash';
+
+/**
  * Internal dependencies
  */
 import BorderControl from '../../../border-control';
 import ToolbarPopover from '../toolbar-popover';
 
 /**
+ * Icons
+ */
+import { toolbarBorder } from '../../../../icons';
+import { getLastBreakpointValue } from '../../../../utils';
+
+/**
  * Border
  */
 const ALLOWED_BLOCKS = [
-    // 'maxi-blocks/text-maxi',
     'maxi-blocks/button-maxi',
     'maxi-blocks/image-maxi',
 ]
-
-/**
- * Icons
- */
-import {
-    toolbarBorder,
-} from '../../../../icons';
 
 /**
  * Component
@@ -40,6 +43,10 @@ const Border = props => {
     if (!ALLOWED_BLOCKS.includes(blockName))
         return null;
 
+    const value = !isObject(border) ?
+        JSON.parse(border) :
+        border;
+
     return (
         <ToolbarPopover
             className='toolbar-item__border'
@@ -49,10 +56,10 @@ const Border = props => {
                 <div
                     className='toolbar-item__border__icon'
                     style={{
-                        borderStyle: JSON.parse(border)[breakpoint]['border-style'],
-                        background: JSON.parse(border)[breakpoint]['border-style'] === 'none'? 
-                            'transparent' : 
-                            JSON.parse(border)[breakpoint]['border-color'],
+                        borderStyle: getLastBreakpointValue(value, 'border-style', breakpoint),
+                        background: getLastBreakpointValue(value, 'border-style', breakpoint) === 'none' ?
+                            'transparent' :
+                            getLastBreakpointValue(value, 'border-style', breakpoint),
                         borderWidth: '1px',
                         borderStyle: 'solid',
                         borderColor: '#fff'

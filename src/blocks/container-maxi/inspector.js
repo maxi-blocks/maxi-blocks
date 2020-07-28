@@ -33,6 +33,7 @@ import {
     __experimentalPositionControl,
     __experimentalDisplayControl,
     __experimentalMotionControl,
+    __experimentalTransformControl
 } from '../../components';
 
 /**
@@ -46,6 +47,7 @@ import { isObject } from 'lodash';
 const Inspector = props => {
     const {
         attributes: {
+            uniqueID,
             isFirstOnHierarchy,
             blockStyle,
             defaultBlockStyle,
@@ -90,6 +92,7 @@ const Inspector = props => {
             position,
             display,
             motion,
+            transform
         },
         deviceType,
         setAttributes,
@@ -358,16 +361,19 @@ const Inspector = props => {
                                         hoverAnimation === 'text' &&
                                         hoverCustomTextTitle === 'yes' &&
                                         <TypographyControl
-                                            fontOptions={hoverAnimationTitleTypography}
+                                            typography={hoverAnimationTitleTypography}
                                             onChange={hoverAnimationTitleTypography => setAttributes({ hoverAnimationTitleTypography })}
+                                            hideAlignment
+                                            breakpoint={deviceType}
                                         />}
                                     {
                                         hoverAnimation === 'text' &&
                                         hoverCustomTextContent === 'yes' &&
                                         <TypographyControl
-                                            fontOptions={hoverAnimationContentTypography}
+                                            typography={hoverAnimationContentTypography}
                                             onChange={hoverAnimationContentTypography => setAttributes({ hoverAnimationContentTypography })}
-                                            target='>.maxi-block-text-hover .maxi-block-text-hover__content'
+                                            hideAlignment
+                                            breakpoint={deviceType}
                                         />}
                                     {
                                         hoverAnimation === 'text' &&
@@ -396,7 +402,6 @@ const Inspector = props => {
                                         <BorderControl
                                             borderOptions={hoverBorder}
                                             onChange={hoverBorder => setAttributes({ hoverBorder })}
-                                            target='.maxi-block-text-hover'
                                         />
                                     }
                                     {
@@ -459,6 +464,17 @@ const Inspector = props => {
                                                     motionOptions={motion}
                                                     onChange={motion => setAttributes({ motion })}
                                                 />
+                                            )
+                                        },
+                                        {
+                                            label: __('Transform', 'maxi-blocks'),
+                                            content: (
+                                                <__experimentalTransformControl 
+                                                    transform={transform}
+                                                    onChange={transform => setAttributes({ transform })}
+                                                    uniqueID={uniqueID}
+                                                    breakpoint={deviceType}
+                                                /> 
                                             )
                                         }
                                     ]}

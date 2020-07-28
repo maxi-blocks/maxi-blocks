@@ -26,6 +26,8 @@ import {
     getVideoBackgroundObject,
     getShapeDividerObject,
     getShapeDividerSVGObject,
+    getTransfromObject,
+    getAlignmentTextObject
 } from '../../extensions/styles/utils'
 
 /**
@@ -116,7 +118,9 @@ class edit extends MaxiBlock {
             boxShadow,
             zIndex,
             position,
-            display
+            display,
+            background,
+            transform
         } = this.props.attributes;
 
         const response = {
@@ -130,6 +134,8 @@ class edit extends MaxiBlock {
             position: { ...JSON.parse(position) },
             positionOptions: { ...JSON.parse(position).options },
             display: { ...JSON.parse(display) },
+            background: { ...getBackgroundObject(JSON.parse(background)) },
+            transform: { ...getTransfromObject(JSON.parse(transform)) },
             container: {
                 label: 'Container',
                 general: {},
@@ -161,13 +167,11 @@ class edit extends MaxiBlock {
 
     get getWrapperObject() {
         const {
-            background,
             margin,
             padding,
         } = this.props.attributes;
 
         const response = {
-            background: { ...getBackgroundObject(JSON.parse(background)) },
             margin: { ...JSON.parse(margin) },
             padding: { ...JSON.parse(padding) },
         };
@@ -258,7 +262,8 @@ class edit extends MaxiBlock {
         } = this.props.attributes;
 
         const response = {
-            hoverAnimationTitleTypography: { ...JSON.parse(hoverAnimationTitleTypography) }
+            hoverAnimationTitleTypography: { ...JSON.parse(hoverAnimationTitleTypography) },
+            hoverAnimationTitleAlignmentTypography: { ...getAlignmentTextObject(JSON.parse(hoverAnimationTitleTypography).textAlign) }
         };
 
         return response
@@ -270,7 +275,8 @@ class edit extends MaxiBlock {
         } = this.props.attributes;
 
         const response = {
-            hoverAnimationContentTypography: { ...JSON.parse(hoverAnimationContentTypography) }
+            hoverAnimationContentTypography: { ...JSON.parse(hoverAnimationContentTypography) },
+            hoverAnimationContentAlignmentTypography: { ...getAlignmentTextObject(JSON.parse(hoverAnimationContentTypography).textAlign) }
         };
 
         return response

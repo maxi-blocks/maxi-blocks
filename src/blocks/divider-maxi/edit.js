@@ -17,6 +17,7 @@ import Inspector from './inspector';
 import {
     getBackgroundObject,
     getBoxShadowObject,
+    getTransfromObject
 } from '../../extensions/styles/utils';
 import {
     MaxiBlock,
@@ -59,7 +60,8 @@ class edit extends MaxiBlock {
             margin,
             zIndex,
             position,
-            display
+            display,
+            transform
         } = this.props.attributes;
 
         const response = {
@@ -73,6 +75,7 @@ class edit extends MaxiBlock {
             position: { ...JSON.parse(position) },
             positionOptions: { ...JSON.parse(position).options },
             display: { ...JSON.parse(display) },
+            transform: { ...getTransfromObject(JSON.parse(transform)) },
             divider: {
                 label: 'Divider',
                 general: {}

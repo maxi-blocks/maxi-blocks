@@ -35,6 +35,7 @@ import {
     __experimentalPositionControl,
     __experimentalDisplayControl,
     __experimentalMotionControl,
+    __experimentalTransformControl
 } from '../../components';
 
 /**
@@ -44,6 +45,7 @@ const Inspector = props => {
     const {
         attributes: {
             isFirstOnHierarchy,
+            uniqueID,
             blockStyle,
             defaultBlockStyle,
             alignment,
@@ -92,7 +94,8 @@ const Inspector = props => {
             hoverAnimationTypeOpacityColorBackground,
             position,
             display,
-            motion
+            motion,
+            transform
         },
         setAttributes,
     } = props;
@@ -242,7 +245,6 @@ const Inspector = props => {
                                                                 <TypographyControl
                                                                     typography={typographyHover}
                                                                     onChange={typographyHover => setAttributes({ typographyHover })}
-                                                                    target=':hover'
                                                                     hideAlignment
                                                                     breakpoint={deviceType}
                                                                 />
@@ -444,31 +446,27 @@ const Inspector = props => {
 
                                                 hoverCustomTextTitle={hoverCustomTextTitle}
                                                 onChangeHoverAnimationCustomTitle={hoverCustomTextTitle => setAttributes({ hoverCustomTextTitle })}
-
+                                        />
+                                        {hoverAnimation === 'text' && hoverCustomTextTitle === 'yes' &&
+                                            <TypographyControl
+                                                typography={hoverAnimationTitleTypography}
+                                                onChange={hoverAnimationTitleTypography => setAttributes({ hoverAnimationTitleTypography })}
+                                            />}
+                                        {hoverAnimation === 'text' && hoverCustomTextContent === 'yes' &&
+                                            <TypographyControl
+                                                typography={hoverAnimationContentTypography}
+                                                onChange={hoverAnimationContentTypography => setAttributes({ hoverAnimationContentTypography })}
+                                            />}
+                                        {hoverAnimation === 'text' &&
+                                            <Fragment>
+                                                <__experimentalOpacityControl
+                                                    opacity={hoverOpacity}
+                                                    onChange={hoverOpacity => setAttributes({ hoverOpacity })}
                                             />
-                                            {hoverAnimation === 'text' && hoverCustomTextTitle === 'yes' &&
-                                                <TypographyControl
-                                                    fontOptions={hoverAnimationTitleTypography}
-                                                    onChange={hoverAnimationTitleTypography => setAttributes({ hoverAnimationTitleTypography })}
-                                                    target='>.maxi-block-text-hover .maxi-block-text-hover__title'
-                                                />}
-                                            {hoverAnimation === 'text' && hoverCustomTextContent === 'yes' &&
-                                                <TypographyControl
-                                                    fontOptions={hoverAnimationContentTypography}
-                                                    onChange={hoverAnimationContentTypography => setAttributes({ hoverAnimationContentTypography })}
-                                                    target='>.maxi-block-text-hover .maxi-block-text-hover__content'
-                                                />}
-                                            {hoverAnimation === 'text' &&
-                                                <Fragment>
-                                                    <__experimentalOpacityControl
-                                                        opacity={hoverOpacity}
-                                                        onChange={hoverOpacity => setAttributes({ hoverOpacity })}
-                                                    />
                                                     <BackgroundControl
                                                         backgroundOptions={hoverBackground}
                                                         onChange={hoverBackground => setAttributes({ hoverBackground })}
                                                         disableImage
-                                                        target='.maxi-block-text-hover'
                                                     />
 
                                                     <RadioControl
@@ -539,6 +537,17 @@ const Inspector = props => {
                                                     motionOptions={motion}
                                                     onChange={motion => setAttributes({ motion })}
                                                 />
+                                            )
+                                        },
+                                        {
+                                            label: __('Transform', 'maxi-blocks'),
+                                            content: (
+                                                <__experimentalTransformControl 
+                                                    transform={transform}
+                                                    onChange={transform => setAttributes({ transform })}
+                                                    uniqueID={uniqueID}
+                                                    breakpoint={deviceType}
+                                                /> 
                                             )
                                         }
                                     ]}

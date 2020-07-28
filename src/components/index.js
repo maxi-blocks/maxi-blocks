@@ -44,3 +44,4 @@ export { default as __experimentalGroupInputControl } from './group-input-contro
 export { default as __experimentalTransformControl } from './transform-control';
 export { default as __experimentalClipPath } from './clip-path-control';
 export { default as __experimentalEntranceAnimationControl } from './entrance-animation-control';
+export { default as __experimentalParallaxControl } from './parallax-control';

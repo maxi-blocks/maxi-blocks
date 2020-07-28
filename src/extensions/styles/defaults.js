@@ -1418,6 +1418,10 @@ export const __experimentalMotion = {
         "duration": 1,
         "delay": 1,
     },
+    "parallax": {
+        "status": 0,
+        "effect": "scroll",
+    },
 }
 
 export const __experimentalArrow = {

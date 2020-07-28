@@ -6,7 +6,7 @@ const { __ } = wp.i18n;
 /**
  * Internal dependencies
  */
-import { getLastBreakpointValue } from '../../extensions/styles/utils';
+import { getLastBreakpointValue } from '../../utils';
 import __experimentalNumberControl from '../number-control';
 
 /**

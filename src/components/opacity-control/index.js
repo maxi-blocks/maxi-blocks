@@ -7,7 +7,7 @@ const { RangeControl } = wp.components;
 /**
  * External dependencies
  */
-import { getLastBreakpointValue } from '../../extensions/styles/utils';
+import { getLastBreakpointValue } from '../../utils';
 import classnames from 'classnames';
 import { isObject } from 'lodash';
 

@@ -16,7 +16,7 @@ const {
 /**
  * Internal dependencies
  */
-import { getLastBreakpointValue } from '../../extensions/styles/utils';
+import { getLastBreakpointValue } from '../../utils';
 
 /**
  * External dependencies

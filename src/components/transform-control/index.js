@@ -7,7 +7,7 @@ const { useEffect } = wp.element;
 /**
  * Internal dependencies
  */
-import { getLastBreakpointValue } from '../../extensions/styles/utils';
+import { getLastBreakpointValue } from '../../utils';
 import SettingTabsControl from '../setting-tabs-control';
 import SquareControl from './square-control';
 import RotateControl from './rotate-control';

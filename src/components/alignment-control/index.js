@@ -6,7 +6,7 @@ const { RadioControl } = wp.components;
 /**
  * Internal dependencies
  */
-import { getLastBreakpointValue } from '../../extensions/styles/utils';
+import { getLastBreakpointValue } from '../../utils';
 
 /**
  * External dependencies

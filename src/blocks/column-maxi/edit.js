@@ -35,7 +35,7 @@ import {
     getColumnSizeObject,
     getTransfromObject,
     getAlignmentTextObject
-} from '../../extensions/styles/utils';
+} from '../../utils';
 
 /**
  * External dependencies

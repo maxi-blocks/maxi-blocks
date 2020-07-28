@@ -7,7 +7,7 @@ const { Fragment } = wp.element;
 /**
  * Internal dependencies
  */
-import { getLastBreakpointValue } from '../../extensions/styles/utils';
+import { getLastBreakpointValue } from '../../utils';
 import SizeControl from '../size-control';
 
 /**

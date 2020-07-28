@@ -19,7 +19,7 @@ import ToolbarPopover from '../toolbar-popover';
  * Icons
  */
 import { toolbarBorder } from '../../../../icons';
-import { getLastBreakpointValue } from '../../../../extensions/styles/utils';
+import { getLastBreakpointValue } from '../../../../utils';
 
 /**
  * Border

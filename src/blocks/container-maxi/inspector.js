@@ -33,7 +33,8 @@ import {
     __experimentalPositionControl,
     __experimentalDisplayControl,
     __experimentalMotionControl,
-    __experimentalTransformControl
+    __experimentalTransformControl,
+    __experimentalEntranceAnimationControl
 } from '../../components';
 
 /**

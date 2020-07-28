@@ -33,6 +33,38 @@ export const getDefaultProp = (clientId, prop) => {
 }
 
 /**
+ * Gets an object base on Maxi Blocks breakpoints schema and looks for the last set value
+ * for a concrete property in case is not set for the requested breakpoint
+ */
+export const getLastBreakpointValue = (obj, prop, breakpoint) => {
+    if (!isNil(obj[breakpoint][prop]) && !isEmpty(obj[breakpoint][prop]))
+        return obj[breakpoint][prop];
+    if (!isNil(obj[breakpoint][prop]) && isNumber(obj[breakpoint][prop]))
+        return obj[breakpoint][prop];
+    else {
+        const objectKeys = Object.keys(obj);
+        const breakpointIndex = objectKeys.indexOf(breakpoint) - 1;
+
+        if (breakpointIndex === 0)
+            return false;
+
+        let i = breakpointIndex;
+
+        do {
+            if (!isNil(obj[objectKeys[i]][prop]) && !isEmpty(obj[objectKeys[i]][prop]))
+                return obj[objectKeys[i]][prop];
+            if (!isNil(obj[objectKeys[i]][prop]) && isNumber(obj[objectKeys[i]][prop]))
+                return obj[objectKeys[i]][prop];
+            else
+                i--;
+        }
+        while (i > 0);
+    }
+
+    return obj[breakpoint][prop];
+}
+
+/**
  * Clean BackgroundControl object for being delivered for styling
  *
  * @param {object} background BackgroundControl related object
@@ -321,6 +353,107 @@ export const getShapeDividerSVGObject = shapeDivider => {
     return response;
 }
 
+export const getArrowObject = arrow => {
+    const response = {
+        label: arrow.label,
+        general: {},
+        xxl: {},
+        xl: {},
+        l: {},
+        m: {},
+        s: {},
+        xs: {}
+    }
+
+    if (!arrow.active)
+        return response;
+
+    for (let [key, value] of Object.entries(arrow)) {
+        if (key === 'label' || key === 'active')
+            continue;
+
+        response[key].visibility = 'visible';
+        if (!isEmpty(value.side)) {
+            switch (value.side) {
+                case 'top':
+                    response[key].bottom = '100%';
+                    break;
+                case 'right':
+                    response[key].left = '100%';
+                    break;
+                case 'bottom':
+                    response[key].top = '100%';
+                    break;
+                case 'left':
+                    response[key].right = '0%';
+                    break;
+                default:
+                    response[key].bottom = '100%';
+                    break;
+            }
+        }
+        if (isNumber(value.position))
+            switch (value.side) {
+                case 'top':
+                    response[key].left = `${value.position}%`;
+                    break;
+                case 'right':
+                    response[key].top = `${value.position}%`;
+                    break;
+                case 'bottom':
+                    response[key].left = `${value.position}%`;
+                    break;
+                case 'left':
+                    response[key].top = `${value.position}%`;
+                    break;
+                default:
+                    response[key].left = `50%`;
+                    break;
+            }
+        if (!isEmpty(value.color)) {
+            switch (value.side) {
+                case 'top':
+                    response[key]['border-color'] = `transparent transparent ${value.color} transparent`;
+                    break;
+                case 'right':
+                    response[key]['border-color'] = `transparent transparent transparent ${value.color}`;
+                    break;
+                case 'bottom':
+                    response[key]['border-color'] = `${value.color} transparent transparent transparent`;
+                    break;
+                case 'left':
+                    response[key]['border-color'] = `transparent ${value.color} transparent transparent`;
+                    break;
+                default:
+                    response[key]['border-color'] = `transparent transparent ${value.color} transparent`;
+                    break;
+            }
+        }
+        if (isNumber(value.width) && isNumber(value.height)) {
+            const width = `${value.width / 2}${value.widthUnit}`;
+            const height = `${value.height}${value.heightUnit}`;
+
+            switch (value.side) {
+                case 'top':
+                    response[key]['border-width'] = `0 ${width} ${height} ${width}`;
+                    break;
+                case 'right':
+                    response[key]['border-width'] = `${width} 0 ${width} ${height}`;
+                    break;
+                case 'bottom':
+                    response[key]['border-width'] = `${height} ${width} 0 ${width}`;
+                    break;
+                case 'left':
+                    response[key]['border-width'] = `${width} ${height} ${width} 0`;
+                    break;
+                default:
+                    response[key]['border-width'] = `0 ${width} ${height} ${width}`;
+                    break;
+            }
+        }
+    }
+}
+
 export const getTransfromObject = transform => {
     const response = {
         label: 'Transform',
@@ -354,32 +487,32 @@ export const getTransfromObject = transform => {
         }
     }
 
-    for (let [key, value] of Object.entries(transform)) {
-        if(key === 'label')
+    for (let key of Object.keys(transform)) {
+        if (key === 'label')
             continue;
 
-        if (isNumber(value.scale.scaleX))
-            response[key].transform += `scaleX(${value.scale.scaleX / 100}) `;
-        if (isNumber(value.scale.scaleY))
-            response[key].transform += `scaleY(${value.scale.scaleY / 100}) `;
-        if (isNumber(value.translate.translateX))
-            response[key].transform += `translateX(${value.translate.translateX}${value.translate.translateXUnit}) `;
-        if (isNumber(value.translate.translateY))
-            response[key].transform += `translateY(${value.translate.translateY}${value.translate.translateYUnit}) `;
-        if (isNumber(value.rotate.rotateX))
-            response[key].transform += `rotateX(${value.rotate.rotateX}deg) `;
-        if (isNumber(value.rotate.rotateY))
-            response[key].transform += `rotateY(${value.rotate.rotateY}deg) `;
-        if (isNumber(value.rotate.rotateZ))
-            response[key].transform += `rotateZ(${value.rotate.rotateZ}deg) `;
-        if (isNumber(value.origin.originX))
-            response[key]['transform-origin'] += `${value.origin.originX}% `;
-        if (isNumber(value.origin.originY))
-            response[key]['transform-origin'] += `${value.origin.originY}% `;
-        if (isString(value.origin.originX))
-            response[key]['transform-origin'] += `${value.origin.originX} `;
-        if (isString(value.origin.originY))
-            response[key]['transform-origin'] += `${value.origin.originY} `;
+        if (isNumber(getLastBreakpointValue(transform, 'scaleX', key)))
+            response[key].transform += `scaleX(${getLastBreakpointValue(transform, 'scaleX', key) / 100}) `;
+        if (isNumber(getLastBreakpointValue(transform, 'scaleY', key)))
+            response[key].transform += `scaleY(${getLastBreakpointValue(transform, 'scaleY', key) / 100}) `;
+        if (isNumber(getLastBreakpointValue(transform, 'translateX', key)))
+            response[key].transform += `translateX(${getLastBreakpointValue(transform, 'translateX', key)}${getLastBreakpointValue(transform, 'translateXUnit', key)}) `;
+        if (isNumber(getLastBreakpointValue(transform, 'translateY', key)))
+            response[key].transform += `translateY(${getLastBreakpointValue(transform, 'translateY', key)}${getLastBreakpointValue(transform, 'translateYUnit', key)}) `;
+        if (isNumber(getLastBreakpointValue(transform, 'rotateX', key)))
+            response[key].transform += `rotateX(${getLastBreakpointValue(transform, 'rotateX', key)}deg) `;
+        if (isNumber(getLastBreakpointValue(transform, 'rotateY', key)))
+            response[key].transform += `rotateY(${getLastBreakpointValue(transform, 'rotateY', key)}deg) `;
+        if (isNumber(getLastBreakpointValue(transform, 'rotateZ', key)))
+            response[key].transform += `rotateZ(${getLastBreakpointValue(transform, 'rotateZ', key)}deg) `;
+        if (isNumber(getLastBreakpointValue(transform, 'originX', key)))
+            response[key]['transform-origin'] += `${getLastBreakpointValue(transform, 'originX', key)}% `;
+        if (isNumber(getLastBreakpointValue(transform, 'originY', key)))
+            response[key]['transform-origin'] += `${getLastBreakpointValue(transform, 'originY', key)}% `;
+        if (isString(getLastBreakpointValue(transform, 'originX', key)))
+            response[key]['transform-origin'] += `${getLastBreakpointValue(transform, 'originX', key)} `;
+        if (isString(getLastBreakpointValue(transform, 'originY', key)))
+            response[key]['transform-origin'] += `${getLastBreakpointValue(transform, 'originY', key)} `;
     }
 
     return response;

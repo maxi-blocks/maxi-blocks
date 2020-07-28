@@ -24,7 +24,7 @@ import {
     getAlignmentFlexObject,
     getTransfromObject,
     getAlignmentTextObject
-} from '../../extensions/styles/utils';
+} from '../../utils';
 import {
     MaxiBlock,
     __experimentalToolbar,

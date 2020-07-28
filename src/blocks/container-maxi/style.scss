@@ -6,10 +6,20 @@
     flex-direction: column;
     padding: 0;
 
-    &__wrapper {
-        margin: auto;
-        width: 100%;
+    &:before {
+        visibility: hidden;
+        content: "";
+        position: absolute;
+        transform: translateX(-50%);
+        border-style: solid;
+        width: 0;
+        height: 0;
     }
+
+    &__wrapper {
+        margin: auto 0;
+    }
+
     &__container {
         margin-right: auto;
         margin-left: auto;

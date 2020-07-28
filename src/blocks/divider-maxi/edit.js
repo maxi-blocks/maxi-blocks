@@ -18,7 +18,7 @@ import {
     getBackgroundObject,
     getBoxShadowObject,
     getTransfromObject
-} from '../../extensions/styles/utils';
+} from '../../utils';
 import {
     MaxiBlock,
     __experimentalToolbar

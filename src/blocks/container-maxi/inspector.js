@@ -34,7 +34,8 @@ import {
     __experimentalDisplayControl,
     __experimentalMotionControl,
     __experimentalTransformControl,
-    __experimentalEntranceAnimationControl
+    __experimentalEntranceAnimationControl,
+    __experimentalArrowControl,
 } from '../../components';
 
 /**
@@ -93,6 +94,7 @@ const Inspector = props => {
             position,
             display,
             motion,
+            arrow,
             transform
         },
         deviceType,
@@ -306,6 +308,17 @@ const Inspector = props => {
                                                         breakpoint={deviceType}
                                                     />
                                                 </Fragment>
+                                            )
+                                        },
+                                        {
+                                            label: __('Arrow', 'maxi-blocks'),
+                                            content: (
+                                                <__experimentalArrowControl
+                                                    arrow={arrow}
+                                                    onChange={arrow => setAttributes({ arrow })}
+                                                    breakpoint={deviceType}
+                                                    isFirstOnHierarchy={isFirstOnHierarchy}
+                                                />
                                             )
                                         }
                                     ]}

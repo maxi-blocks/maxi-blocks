@@ -7,6 +7,7 @@ const { useEffect } = wp.element;
 /**
  * Internal dependencies
  */
+import { getLastBreakpointValue } from '../../utils';
 import SettingTabsControl from '../setting-tabs-control';
 import SquareControl from './square-control';
 import RotateControl from './rotate-control';
@@ -51,28 +52,28 @@ const TransformControl = props => {
         let transformStr = '';
         let originStr = '';
 
-        if (isNumber(value[breakpoint].scale.scaleX))
-            transformStr += `scaleX(${value[breakpoint].scale.scaleX / 100}) `;
-        if (isNumber(value[breakpoint].scale.scaleY))
-            transformStr += `scaleY(${value[breakpoint].scale.scaleY / 100}) `;
-        if (isNumber(value[breakpoint].translate.translateX))
-            transformStr += `translateX(${value[breakpoint].translate.translateX}${value[breakpoint].translate.translateXUnit}) `;
-        if (isNumber(value[breakpoint].translate.translateY))
-            transformStr += `translateY(${value[breakpoint].translate.translateY}${value[breakpoint].translate.translateYUnit}) `;
-        if (isNumber(value[breakpoint].rotate.rotateX))
-            transformStr += `rotateX(${value[breakpoint].rotate.rotateX}deg) `;
-        if (isNumber(value[breakpoint].rotate.rotateY))
-            transformStr += `rotateY(${value[breakpoint].rotate.rotateY}deg) `;
-        if (isNumber(value[breakpoint].rotate.rotateZ))
-            transformStr += `rotateZ(${value[breakpoint].rotate.rotateZ}deg) `;
-        if (isNumber(value[breakpoint].origin.originX))
-            originStr += `${value[breakpoint].origin.originX}% `;
-        if (isNumber(value[breakpoint].origin.originY))
-            originStr += `${value[breakpoint].origin.originY}% `;
-        if (isString(value[breakpoint].origin.originX))
-            originStr += `${value[breakpoint].origin.originX} `;
-        if (isString(value[breakpoint].origin.originY))
-            originStr += `${value[breakpoint].origin.originY} `;
+        if (isNumber(getLastBreakpointValue(value, 'scaleX', breakpoint)))
+            transformStr += `scaleX(${getLastBreakpointValue(value, 'scaleX', breakpoint) / 100}) `;
+        if (isNumber(getLastBreakpointValue(value, 'scaleY', breakpoint)))
+            transformStr += `scaleY(${getLastBreakpointValue(value, 'scaleY', breakpoint) / 100}) `;
+        if (isNumber(getLastBreakpointValue(value, 'translateX', breakpoint)))
+            transformStr += `translateX(${getLastBreakpointValue(value, 'translateX', breakpoint)}${getLastBreakpointValue(value, 'translateXUnit', breakpoint)}) `;
+        if (isNumber(getLastBreakpointValue(value, 'translateY', breakpoint)))
+            transformStr += `translateY(${getLastBreakpointValue(value, 'translateY', breakpoint)}${getLastBreakpointValue(value, 'translateYUnit', breakpoint)}) `;
+        if (isNumber(getLastBreakpointValue(value, 'rotateX', breakpoint)))
+            transformStr += `rotateX(${getLastBreakpointValue(value, 'rotateX', breakpoint)}deg) `;
+        if (isNumber(getLastBreakpointValue(value, 'rotateY', breakpoint)))
+            transformStr += `rotateY(${getLastBreakpointValue(value, 'rotateY', breakpoint)}deg) `;
+        if (isNumber(getLastBreakpointValue(value, 'rotateZ', breakpoint)))
+            transformStr += `rotateZ(${getLastBreakpointValue(value, 'rotateZ', breakpoint)}deg) `;
+        if (isNumber(getLastBreakpointValue(value, 'originX', breakpoint)))
+            originStr += `${getLastBreakpointValue(value, 'originX', breakpoint)}% `;
+        if (isNumber(getLastBreakpointValue(value, 'originY', breakpoint)))
+            originStr += `${getLastBreakpointValue(value, 'originY', breakpoint)}% `;
+        if (isString(getLastBreakpointValue(value, 'originX', breakpoint)))
+            originStr += `${getLastBreakpointValue(value, 'originX', breakpoint)} `;
+        if (isString(getLastBreakpointValue(value, 'originY', breakpoint)))
+            originStr += `${getLastBreakpointValue(value, 'originY', breakpoint)} `;
 
         const node = document.querySelector(`.maxi-block[uniqueid="${uniqueID}"]`);
         if (node) {
@@ -94,16 +95,16 @@ const TransformControl = props => {
                         label: __('Scale', 'maxi-blocks'),
                         content: (
                             <SquareControl
-                                x={value[breakpoint].scale.scaleX}
-                                y={value[breakpoint].scale.scaleY}
+                                x={getLastBreakpointValue(value, 'scaleX', breakpoint)}
+                                y={getLastBreakpointValue(value, 'scaleY', breakpoint)}
                                 onChange={(x, y) => {
-                                    value[breakpoint].scale.scaleX = x;
-                                    value[breakpoint].scale.scaleY = y;
+                                    value[breakpoint].scaleX = x;
+                                    value[breakpoint].scaleY = y;
                                     forceStyles();
                                 }}
                                 onSave={(x, y) => {
-                                    value[breakpoint].scale.scaleX = x;
-                                    value[breakpoint].scale.scaleY = y;
+                                    value[breakpoint].scaleX = x;
+                                    value[breakpoint].scaleY = y;
                                     onChange(JSON.stringify(value));
                                     forceStyles();
                                 }}
@@ -115,22 +116,22 @@ const TransformControl = props => {
                         content: (
                             <SquareControl
                                 type='drag'
-                                x={value[breakpoint].translate.translateX}
-                                y={value[breakpoint].translate.translateY}
-                                xUnit={value[breakpoint].translate.translateXUnit}
-                                yUnit={value[breakpoint].translate.translateYUnit}
+                                x={getLastBreakpointValue(value, 'translateX', breakpoint)}
+                                y={getLastBreakpointValue(value, 'translateY', breakpoint)}
+                                xUnit={getLastBreakpointValue(value, 'translateXUnit', breakpoint)}
+                                yUnit={getLastBreakpointValue(value, 'translateYUnit', breakpoint)}
                                 onChange={(x, y, xUnit, yUnit) => {
-                                    value[breakpoint].translate.translateX = x;
-                                    value[breakpoint].translate.translateY = y;
-                                    value[breakpoint].translate.translateXUnit = xUnit;
-                                    value[breakpoint].translate.translateYUnit = yUnit;
+                                    value[breakpoint].translateX = x;
+                                    value[breakpoint].translateY = y;
+                                    value[breakpoint].translateXUnit = xUnit;
+                                    value[breakpoint].translateYUnit = yUnit;
                                     forceStyles();
                                 }}
                                 onSave={(x, y, xUnit, yUnit) => {
-                                    value[breakpoint].translate.translateX = x;
-                                    value[breakpoint].translate.translateY = y;
-                                    value[breakpoint].translate.translateXUnit = xUnit;
-                                    value[breakpoint].translate.translateYUnit = yUnit;
+                                    value[breakpoint].translateX = x;
+                                    value[breakpoint].translateY = y;
+                                    value[breakpoint].translateXUnit = xUnit;
+                                    value[breakpoint].translateYUnit = yUnit;
                                     onChange(JSON.stringify(value));
                                     forceStyles();
                                 }}
@@ -141,13 +142,13 @@ const TransformControl = props => {
                         label: __('Rotate', 'maxi-blocks'),
                         content: (
                             <RotateControl
-                                x={value[breakpoint].rotate.rotateX}
-                                y={value[breakpoint].rotate.rotateY}
-                                z={value[breakpoint].rotate.rotateZ}
+                                x={getLastBreakpointValue(value, 'rotateX', breakpoint)}
+                                y={getLastBreakpointValue(value, 'rotateY', breakpoint)}
+                                z={getLastBreakpointValue(value, 'rotateZ', breakpoint)}
                                 onChange={(x, y, z) => {
-                                    value[breakpoint].rotate.rotateX = x;
-                                    value[breakpoint].rotate.rotateY = y;
-                                    value[breakpoint].rotate.rotateZ = z;
+                                    value[breakpoint].rotateX = x;
+                                    value[breakpoint].rotateY = y;
+                                    value[breakpoint].rotateZ = z;
                                     onChange(JSON.stringify(value));
                                     forceStyles();
                                 }}
@@ -159,11 +160,11 @@ const TransformControl = props => {
                         content: (
                             <SquareControl
                                 type='origin'
-                                x={value[breakpoint].origin.originX}
-                                y={value[breakpoint].origin.originY}
+                                x={getLastBreakpointValue(value, 'originX', breakpoint)}
+                                y={getLastBreakpointValue(value, 'originY', breakpoint)}
                                 onChange={(x, y) => {
-                                    value[breakpoint].origin.originX = x;
-                                    value[breakpoint].origin.originY = y;
+                                    value[breakpoint].originX = x;
+                                    value[breakpoint].originY = y;
                                     onChange(JSON.stringify(value));
                                     forceStyles();
                                 }}

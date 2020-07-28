@@ -31,7 +31,8 @@ export const margin = {
         "margin-right": "",
         "margin-bottom": 1,
         "margin-left": "",
-        "sync": false
+        "sync": false,
+        "unit": "em",
     },
     "xxl": {
         "margin-top": "",
@@ -45,34 +46,39 @@ export const margin = {
         "margin-right": "",
         "margin-bottom": "",
         "margin-left": "",
-        "sync": true
+        "sync": true,
+        "unit": "",
     },
     "l": {
         "margin-top": "",
         "margin-right": "",
         "margin-bottom": "",
         "margin-left": "",
-        "sync": true
+        "sync": true,
+        "unit": "",
     },
     "m": {
         "margin-top": "",
         "margin-right": "",
         "margin-bottom": "",
         "margin-left": "",
-        "sync": true
+        "sync": true,
+        "unit": "",
     },
     "s": {
         "margin-top": "",
         "margin-right": "",
         "margin-bottom": "",
         "margin-left": "",
-        "sync": true
+        "sync": true,
+        "unit": "",
     },
     "xs": {
         "margin-top": "",
         "margin-right": "",
         "margin-bottom": "",
         "margin-left": "",
-        "sync": true
+        "sync": true,
+        "unit": "",
     }
 }

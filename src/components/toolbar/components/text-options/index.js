@@ -12,8 +12,13 @@ const {
 /**
  * Internal dependencies
  */
+import { getLastBreakpointValue } from '../../../../utils';
 import FontFamilySelector from '../../../font-family-selector';
 import ToolbarPopover from '../toolbar-popover';
+
+/**
+ * External dependencies
+ */
 import { 
     isEmpty,
     trim
@@ -71,7 +76,7 @@ const TextOptions = props => {
                     >
                         <FontFamilySelector
                             className="toolbar-item__popover__font-options__font__selector"
-                            font={value[breakpoint]['font-family']}
+                            font={getLastBreakpointValue(value, 'font-family', breakpoint)}
                             onChange={font => {
                                 value[breakpoint]['font-family'] = font.value;
                                 value.options = font.files;
@@ -102,7 +107,7 @@ const TextOptions = props => {
                         >
                             <input
                                 type='number'
-                                value={trim(value[breakpoint]['font-size'])}
+                                value={trim(getLastBreakpointValue(value, 'font-size', breakpoint))}
                                 onChange={e => {
                                     value[breakpoint]['font-size'] = isEmpty(e.target.value) ? '' : Number(e.target.value);
                                     updateTypography();
@@ -132,7 +137,7 @@ const TextOptions = props => {
                         >
                             <input
                                 type='number'
-                                value={trim(value[breakpoint]['line-height'])}
+                                value={trim(getLastBreakpointValue(value, 'line-height', breakpoint))}
                                 onChange={e => {
                                     value[breakpoint]['line-height'] = isEmpty(e.target.value) ? '' : Number(e.target.value);
                                     updateTypography();
@@ -162,7 +167,7 @@ const TextOptions = props => {
                         >
                             <input
                                 type='number'
-                                value={trim(value[breakpoint]['letter-spacing'])}
+                                value={trim(getLastBreakpointValue(value, 'letter-spacing', breakpoint))}
                                 onChange={e => {
                                     value[breakpoint]['letter-spacing'] = isEmpty(e.target.value) ? '' : Number(e.target.value);
                                     updateTypography();

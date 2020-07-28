@@ -16,7 +16,7 @@ const {
 /**
  * Internal dependencies
  */
-import { getDefaultProp } from '../../../../extensions/styles/utils';
+import { getDefaultProp } from '../../../../utils';
 import ToolbarPopover from '../toolbar-popover';
 import openSidebar from '../../../../extensions/dom';
 

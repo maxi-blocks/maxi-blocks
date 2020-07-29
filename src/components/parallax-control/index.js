@@ -7,10 +7,7 @@ import { isObject } from 'lodash';
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const {
-    SelectControl,
-    RadioControl,
-} = wp.components;
+const { RadioControl } = wp.components;
 
 /**
  * Styles and icons
@@ -20,7 +17,7 @@ import './editor.scss';
 /**
  * Component
  */
-const EntranceAnimationControl = props => {
+const ParallaxControl = props => {
 
     const {
         motionOptions,
@@ -54,24 +51,9 @@ const EntranceAnimationControl = props => {
                     }}
                 />
             </div>
-            {
-            !!parseInt(parallaxOptions.status) &&
-                <SelectControl
-                    label={__('Parallax Effect', 'maxi-blocks')}
-                    value={parallaxOptions.effect}
-                    options={[
-                        { label: 'Scroll', value: 'scroll' },
-                        { label: 'Mouse Movement', value: 'mouse' },
-                    ]}
-                    onChange={val => {
-                        parallaxOptions.effect = val;
-                        onChange(JSON.stringify(value));
-                    }}
-                />
-            }
         </div>
     )
 
 }
 
-export default EntranceAnimationControl;
+export default ParallaxControl;

@@ -1420,8 +1420,7 @@ export const __experimentalMotion = {
     },
     "parallax": {
         "status": 0,
-        "effect": "scroll",
-    },
+    }
 }
 
 export const __experimentalArrow = {

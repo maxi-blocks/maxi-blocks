@@ -121,6 +121,12 @@ add_action( 'admin_enqueue_scripts', 'gutenberg_extra_load_custom_wp_admin_style
 function maxi_load_custom_wp_front_script() {
 
 	wp_enqueue_style(
+		'maxi-blocks-frontend',
+		plugins_url( '/css/maxi-frontend.css', dirname( __FILE__ ) ),
+		false
+	);
+
+	wp_enqueue_style(
 		'maxi-animations-styles',
 		plugins_url( '/css/animate.min.css', dirname( __FILE__ ) ),
 		false

@@ -723,9 +723,9 @@ export const typography = {
         "letter-spacingUnit": "px",
         "letter-spacing": "",
         "font-weight": "",
-        "text-transform": "none",
-        "font-style": "normal",
-        "text-decoration": "none",
+        "text-transform": "",
+        "font-style": "",
+        "text-decoration": "",
         "text-shadow": ""
     },
     "l": {
@@ -739,9 +739,9 @@ export const typography = {
         "letter-spacingUnit": "px",
         "letter-spacing": "",
         "font-weight": "",
-        "text-transform": "none",
-        "font-style": "normal",
-        "text-decoration": "none",
+        "text-transform": "",
+        "font-style": "",
+        "text-decoration": "",
         "text-shadow": ""
     },
     "m": {
@@ -755,9 +755,9 @@ export const typography = {
         "letter-spacingUnit": "px",
         "letter-spacing": "",
         "font-weight": "",
-        "text-transform": "none",
-        "font-style": "normal",
-        "text-decoration": "none",
+        "text-transform": "",
+        "font-style": "",
+        "text-decoration": "",
         "text-shadow": ""
     },
     "s": {
@@ -771,9 +771,9 @@ export const typography = {
         "letter-spacingUnit": "px",
         "letter-spacing": "",
         "font-weight": "",
-        "text-transform": "none",
-        "font-style": "normal",
-        "text-decoration": "none",
+        "text-transform": "",
+        "font-style": "",
+        "text-decoration": "",
         "text-shadow": ""
     },
     "xs": {
@@ -787,9 +787,9 @@ export const typography = {
         "letter-spacingUnit": "px",
         "letter-spacing": "",
         "font-weight": "",
-        "text-transform": "none",
-        "font-style": "normal",
-        "text-decoration": "none",
+        "text-transform": "",
+        "font-style": "",
+        "text-decoration": "",
         "text-shadow": ""
     },
     "textAlign": {
@@ -822,9 +822,8 @@ export const typographyHover = {
     "label": "Typography",
     "general": {
         "font-family": "",
-        "font-options": {},
-        "color": "",
-        "text-align": "",
+        "font-options": "",
+        "color": "#",
         "font-sizeUnit": "px",
         "font-size": "",
         "line-heightUnit": "%",
@@ -858,7 +857,6 @@ export const typographyHover = {
         "font-family": "",
         "font-options": {},
         "color": "",
-        "text-align": "",
         "font-sizeUnit": "px",
         "font-size": "",
         "line-heightUnit": "%",
@@ -875,7 +873,6 @@ export const typographyHover = {
         "font-family": "",
         "font-options": {},
         "color": "",
-        "text-align": "",
         "font-sizeUnit": "px",
         "font-size": "",
         "line-heightUnit": "%",
@@ -892,7 +889,6 @@ export const typographyHover = {
         "font-family": "",
         "font-options": {},
         "color": "",
-        "text-align": "",
         "font-sizeUnit": "px",
         "font-size": "",
         "line-heightUnit": "%",
@@ -909,7 +905,6 @@ export const typographyHover = {
         "font-family": "",
         "font-options": {},
         "color": "",
-        "text-align": "",
         "font-sizeUnit": "px",
         "font-size": "",
         "line-heightUnit": "%",
@@ -926,7 +921,6 @@ export const typographyHover = {
         "font-family": "",
         "font-options": {},
         "color": "",
-        "text-align": "",
         "font-sizeUnit": "px",
         "font-size": "",
         "line-heightUnit": "%",
@@ -938,6 +932,30 @@ export const typographyHover = {
         "font-style": "",
         "text-decoration": "",
         "text-shadow": ""
+    },
+    "textAlign": {
+        "label": "Alignment",
+        "general": {
+            "alignment": "left"
+        },
+        "xxl": {
+            "alignment": ""
+        },
+        "xl": {
+            "alignment": ""
+        },
+        "l": {
+            "alignment": ""
+        },
+        "m": {
+            "alignment": ""
+        },
+        "s": {
+            "alignment": ""
+        },
+        "xs": {
+            "alignment": ""
+        }
     }
 }
 
@@ -1166,32 +1184,46 @@ export const __experimentalDivider = {
 export const __experimentalContainer = {
     label: "Container size",
     general: {
-        "max-widthUnit": "%",
-        "max-width": "90"
+        "max-widthUnit": "px",
+        "max-width": 1784,
+        "widthUnit": "%",
+        "width": 92.9
     },
     xxl: {
-        "max-widthUnit": "%",
-        "max-width": ""
+        "max-widthUnit": "px",
+        "max-width": 1784,
+        "widthUnit": "%",
+        "width": 92.9
     },
     xl: {
-        "max-widthUnit": "%",
-        "max-width": ""
+        "max-widthUnit": "px",
+        "max-width": 1784,
+        "widthUnit": "%",
+        "width": 92.9
     },
     l: {
-        "max-widthUnit": "%",
-        "max-width": ""
+        "max-widthUnit": "px",
+        "max-width": 1170,
+        "widthUnit": "%",
+        "width": 85.65
     },
     m: {
-        "max-widthUnit": "%",
-        "max-width": ""
+        "max-widthUnit": "px",
+        "max-width": 940,
+        "widthUnit": "%",
+        "width": 91.8
     },
     s: {
-        "max-widthUnit": "%",
-        "max-width": ""
+        "max-widthUnit": "px",
+        "max-width": 720,
+        "widthUnit": "%",
+        "width": 93.75
     },
     xs: {
-        "max-widthUnit": "%",
-        "max-width": ""
+        "max-widthUnit": "px",
+        "max-width": 426,
+        "widthUnit": "%",
+        "width": 88.75
     },
 }
 

@@ -16,7 +16,7 @@ const {
 /**
  * Internal dependencies
  */
-import TEMPLATES from '../../../../blocks/row-maxi/templates';
+import TEMPLATES from '../../../../extensions/defaults/column-templates';
 import ToolbarPopover from '../toolbar-popover';
 
 /**

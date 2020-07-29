@@ -30,7 +30,7 @@ import {
     __experimentalBackgroundDisplayer
 } from '../../components';
 import Inspector from './inspector';
-import TEMPLATES from './templates';
+import TEMPLATES from '../../extensions/defaults/column-templates';
 import {
     getBackgroundObject,
     getBoxShadowObject,

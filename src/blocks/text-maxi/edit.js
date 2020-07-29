@@ -75,8 +75,6 @@ class edit extends MaxiBlock {
             boxShadow,
             border,
             size,
-            margin,
-            padding,
             zIndex,
             position,
             display,
@@ -90,8 +88,6 @@ class edit extends MaxiBlock {
             borderWidth: { ...JSON.parse(border).borderWidth },
             borderRadius: { ...JSON.parse(border).borderRadius },
             size: { ...JSON.parse(size) },
-            margin: { ...JSON.parse(margin) },
-            padding: { ...JSON.parse(padding) },
             opacity: { ...getOpacityObject(JSON.parse(opacity)) },
             zindex: { ...JSON.parse(zIndex) },
             position: { ...JSON.parse(position) },
@@ -122,10 +118,16 @@ class edit extends MaxiBlock {
     }
 
     get getTypographyObject() {
-        const { typography } = this.props.attributes;
+        const { 
+            typography,
+            margin,
+            padding
+        } = this.props.attributes;
 
         const response = {
             typography: { ...JSON.parse(typography) },
+            margin: { ...JSON.parse(margin) },
+            padding: { ...JSON.parse(padding) },
         }
 
         return response;

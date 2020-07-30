@@ -36,6 +36,7 @@ import {
     __experimentalTransformControl,
     __experimentalEntranceAnimationControl,
     __experimentalArrowControl,
+    __experimentalParallaxControl,
 } from '../../components';
 
 /**
@@ -184,6 +185,10 @@ const Inspector = props => {
                                                                     value[deviceType]['width'] = val;
                                                                     setAttributes({ sizeContainer: JSON.stringify(value) })
                                                                 }}
+                                                            />
+                                                            <__experimentalParallaxControl
+                                                                motionOptions={motion}
+                                                                onChange={motion => setAttributes({ motion })}
                                                             />
                                                         </Fragment>
                                                     )

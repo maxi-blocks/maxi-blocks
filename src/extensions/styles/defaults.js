@@ -1406,6 +1406,29 @@ export const __experimentalMotion = {
         "startValue": 50,
         "midValue": 0,
         "endValue": 0,
+        "preset": "",
+        "presets": {
+            "preset_1": {
+                "direction" : "up",
+                "viewport": [10, 20, 80],
+                "values": [20, 10, 5],
+            },
+            "preset_2": {
+                "direction" : "down",
+                "viewport": [50, 60, 100],
+                "values": [5, 3.5, 10],
+            },
+            "preset_3": {
+                "direction" : "up",
+                "viewport": [25, 65, 95],
+                "values": [30, 9, 5.5],
+            },
+            "preset_4": {
+                "direction" : "up",
+                "viewport": [10, 20, 80],
+                "values": [20, 10, 5],
+            },
+        },
     },
     "horizontal": {
         "status": 0,

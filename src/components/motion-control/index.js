@@ -1,9 +1,4 @@
 /**
- * External dependencies
- */
-import { isObject } from 'lodash';
-
-/**
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
@@ -26,6 +21,12 @@ import {
 } from '../../components';
 
 /**
+ * External dependencies
+ */
+import classnames from 'classnames';
+import { isObject } from 'lodash';
+
+/**
  * Styles and icons
  */
 import './editor.scss';
@@ -36,6 +37,7 @@ import {
     motionScale,
     motionFade,
     motionBlur,
+    reset,
 } from '../../icons';
 
 /**
@@ -44,6 +46,7 @@ import {
 const MotionControl = props => {
 
     const {
+        className,
         motionOptions,
         onChange,
     } = props;
@@ -63,8 +66,13 @@ const MotionControl = props => {
 
     const [motionStatus, setMotionStatus] = useState('vertical');
 
+    let classes = classnames(
+        'maxi-motion-control',
+        className,
+    );
+
     return (
-        <div className="maxi-motion-control">
+        <div className={classes}>
             <div className='maxi-fancy-radio-control'>
                 <RadioControl
                     label=''
@@ -104,6 +112,26 @@ const MotionControl = props => {
                     {
                     !!parseInt(verticalOptions.status) &&
                         <Fragment>
+                            <div className='maxi-fancy-radio-control'>
+                                <RadioControl
+                                    label=''
+                                    selected={verticalOptions.preset}
+                                    options={
+                                        [
+                                            { label: <Icon icon={reset} />, value: '' },
+                                            { label: <Icon icon={motionVertical} />, value: 'preset_1' },
+                                            { label: <Icon icon={motionVertical} />, value: 'preset_2' },
+                                            { label: <Icon icon={motionVertical} />, value: 'preset_3' },
+                                            { label: <Icon icon={motionVertical} />, value: 'preset_4' },
+                                        ]
+                                    }
+                                    onChange={val => {
+                                        verticalOptions.preset = val;
+                                        verticalOptions.direction = verticalOptions.presets[verticalOptions.preset].direction;
+                                        onChange(JSON.stringify(value));
+                                    }}
+                                />
+                            </div>
                             <SelectControl
                                 label={__('Direction', 'maxi-blocks')}
                                 value={verticalOptions.direction}

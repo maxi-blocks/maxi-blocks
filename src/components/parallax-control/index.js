@@ -11,11 +11,6 @@ import classnames from 'classnames';
 import { isObject } from 'lodash';
 
 /**
- * Styles and icons
- */
-import './editor.scss';
-
-/**
  * Component
  */
 const ParallaxControl = props => {

@@ -1,13 +1,14 @@
 /**
- * External dependencies
- */
-import { isObject } from 'lodash';
-
-/**
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
 const { RadioControl } = wp.components;
+
+/**
+ * External dependencies
+ */
+import classnames from 'classnames';
+import { isObject } from 'lodash';
 
 /**
  * Styles and icons
@@ -20,6 +21,7 @@ import './editor.scss';
 const ParallaxControl = props => {
 
     const {
+        className,
         motionOptions,
         onChange,
     } = props;
@@ -32,9 +34,13 @@ const ParallaxControl = props => {
         parallax:parallaxOptions,
     } = value;
 
+    let classes = classnames(
+        'maxi-parallax-control',
+        className,
+    );
 
     return (
-        <div className="maxi-parallax-control">
+        <div className={classes}>
             <div className='maxi-fancy-radio-control'>
                 <RadioControl
                     label={__('Use Parallax Effect', 'maxi-block')}

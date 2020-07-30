@@ -4,6 +4,11 @@
 const { Fragment } = wp.element;
 
 /**
+ * Internal dependencies
+ */
+import { __experimentalBackgroundDisplayer } from '../../components';
+
+/**
  * External dependencies
  */
 import classnames from 'classnames';
@@ -19,6 +24,7 @@ const save = props => {
             uniqueID,
             blockStyle,
             defaultBlockStyle,
+            background,
             extraClassName,
             fullWidth,
             showLine,
@@ -27,7 +33,7 @@ const save = props => {
         },
     } = props;
 
-    let classes = classnames(
+    const classes = classnames(
         `maxi-motion-effect maxi-motion-effect-${uniqueID}`,
         'maxi-block maxi-divider-block',
         blockStyle,
@@ -52,6 +58,9 @@ const save = props => {
             data-motion={motion}
             data-motion-id={uniqueID}
         >
+            <__experimentalBackgroundDisplayer
+                backgroundOptions={background}
+            />
             {
                 !!showLine &&
                 <Fragment>

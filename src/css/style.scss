@@ -1,31 +1,7 @@
-/********
-* General
-********/
+.maxi-block {
+    position: relative;
+}
+
 .maxi-link-wrapper {
     display: block;
-}
-
-.maxi-block{
-    position: relative;
-
-    &:not([data-align="full"]) {
-        // margin-right: auto;
-        // margin-left: auto;
-    }
-}
-.maxi-container-block {
-    &__wrapper {
-        overflow: hidden;
-    }
-    &__container {
-        &:empty {
-            min-height: 132px;
-        }
-    }
-}
-.maxi-shape-divider {
-    svg {
-        width: 100%;
-        height: 100%;
-    }
 }

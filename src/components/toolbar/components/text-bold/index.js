@@ -88,7 +88,7 @@ const TextBold = props => {
                 getSelectionEnd
             } = select('core/block-editor');
             const formatValue = create({
-                element: node,
+                element: node.querySelector('p'),
                 html: content,
             });
             formatValue['start'] = getSelectionStart().offset;

@@ -154,6 +154,37 @@ const Inspector = props => {
                                                                     value[deviceType]['max-width'] = val;
                                                                     setAttributes({ sizeContainer: JSON.stringify(value) })
                                                                 }}
+                                                                minMaxSettings={{
+                                                                    'px': {
+                                                                        min: 0,
+                                                                        max: 3999
+                                                                    },
+                                                                    'em': {
+                                                                        min: 0,
+                                                                        max: 999
+                                                                    },
+                                                                    'vw': {
+                                                                        min: 0,
+                                                                        max: 999
+                                                                    },
+                                                                    '%': {
+                                                                        min: 0,
+                                                                        max: 100
+                                                                    }
+                                                                }}
+                                                            />
+                                                            <SizeControl
+                                                                label={__('Width', 'maxi-blocks')}
+                                                                unit={value[deviceType]['widthUnit']}
+                                                                onChangeUnit={val => {
+                                                                    value[deviceType]['widthUnit'] = val;
+                                                                    setAttributes({ sizeContainer: JSON.stringify(value) })
+                                                                }}
+                                                                value={value[deviceType]['width']}
+                                                                onChangeValue={val => {
+                                                                    value[deviceType]['width'] = val;
+                                                                    setAttributes({ sizeContainer: JSON.stringify(value) })
+                                                                }}
                                                             />
                                                             <__experimentalParallaxControl
                                                                 motionOptions={motion}

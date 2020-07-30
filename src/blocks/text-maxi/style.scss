@@ -1,5 +1,7 @@
 .maxi-text-block {
-    // margin-right: 0 !important;
-    // margin-left: 0 !important;
-    width: 100%;
+    margin: auto;
+
+    &__content {
+        position: relative;
+    }
 }

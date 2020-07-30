@@ -23,11 +23,13 @@ import {
     getBoxShadowObject,
     getAlignmentTextObject,
     getOpacityObject,
-    getTransfromObject
+    getTransfromObject,
+    setBackgroundStyles,
 } from '../../utils';
 import {
     MaxiBlock,
-    __experimentalToolbar
+    __experimentalToolbar,
+    __experimentalBackgroundDisplayer
 } from '../../components';
 
 /**
@@ -39,33 +41,29 @@ import classnames from 'classnames';
  * Content
  */
 class edit extends MaxiBlock {
-    componentDidUpdate() {
-        this.fullWidthSetter();
-        this.displayStyles();
-
-        if (!select('core/editor').isSavingPost() && this.state.updating) {
-            this.setState({
-                updating: false
-            })
-            this.saveProps();
-        }
-    }
-
-    fullWidthSetter() {
-        if (!!document.getElementById(`block-${this.props.clientId}`))
-            document.getElementById(`block-${this.props.clientId}`).setAttribute('data-align', this.props.attributes.fullWidth);
-    }
-
     get getObject() {
+        const {
+            uniqueID,
+            background,
+            backgroundHover
+        } = this.props.attributes;
+
         let response = {
-            [this.props.attributes.uniqueID]: this.getNormalObject,
-            [`${this.props.attributes.uniqueID}:hover`]: this.getHoverObject,
-            [`${this.props.attributes.uniqueID} .maxi-block-text-hover .maxi-block-text-hover__content`]: this.getHoverAnimationTextContentObject,
-            [`${this.props.attributes.uniqueID} .maxi-block-text-hover .maxi-block-text-hover__title`]: this.getHoverAnimationTextTitleObject,
-            [`${this.props.attributes.uniqueID} .maxi-block-text-hover`]: this.getHoverAnimationMainObject,
-            [`${this.props.attributes.uniqueID}.hover-animation-basic.hover-animation-type-opacity:hover .hover_el`]: this.getHoverAnimationTypeOpacityObject,
-            [`${this.props.attributes.uniqueID}.hover-animation-basic.hover-animation-type-opacity-with-colour:hover .hover_el:before`]: this.getHoverAnimationTypeOpacityColorObject,
+            [uniqueID]: this.getNormalObject,
+            [`${uniqueID}:hover`]: this.getHoverObject,
+            [`${uniqueID} .maxi-text-block__content`]: this.getTypographyObject,
+            [`${uniqueID} .maxi-text-block__content:hover`]: this.getTypographyHoverObject,
+            [`${uniqueID} .maxi-block-text-hover .maxi-block-text-hover__content`]: this.getHoverAnimationTextContentObject,
+            [`${uniqueID} .maxi-block-text-hover .maxi-block-text-hover__title`]: this.getHoverAnimationTextTitleObject,
+            [`${uniqueID} .maxi-block-text-hover`]: this.getHoverAnimationMainObject,
+            [`${uniqueID}.hover-animation-basic.hover-animation-type-opacity:hover .hover_el`]: this.getHoverAnimationTypeOpacityObject,
+            [`${uniqueID}.hover-animation-basic.hover-animation-type-opacity-with-colour:hover .hover_el:before`]: this.getHoverAnimationTypeOpacityColorObject,
         }
+
+        response = Object.assign(
+            response,
+            setBackgroundStyles(uniqueID, background, backgroundHover)
+        )
 
         return response;
     }
@@ -73,15 +71,10 @@ class edit extends MaxiBlock {
     get getNormalObject() {
         const {
             alignment,
-            typography,
-            background,
             opacity,
             boxShadow,
             border,
             size,
-            margin,
-            padding,
-            hoverPadding,
             zIndex,
             position,
             display,
@@ -89,16 +82,12 @@ class edit extends MaxiBlock {
         } = this.props.attributes;
 
         const response = {
-            typography: { ...JSON.parse(typography) },
             alignment: { ...getAlignmentTextObject(JSON.parse(alignment)) },
-            background: { ...getBackgroundObject(JSON.parse(background)) },
             boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
             border: { ...JSON.parse(border) },
             borderWidth: { ...JSON.parse(border).borderWidth },
             borderRadius: { ...JSON.parse(border).borderRadius },
             size: { ...JSON.parse(size) },
-            margin: { ...JSON.parse(margin) },
-            padding: { ...JSON.parse(padding) },
             opacity: { ...getOpacityObject(JSON.parse(opacity)) },
             zindex: { ...JSON.parse(zIndex) },
             position: { ...JSON.parse(position) },
@@ -112,22 +101,44 @@ class edit extends MaxiBlock {
 
     get getHoverObject() {
         const {
-            typographyHover,
-            backgroundHover,
             opacityHover,
             boxShadowHover,
             borderHover,
         } = this.props.attributes;
 
         const response = {
-            typographyHover: { ...JSON.parse(typographyHover) },
-            backgroundHover: { ...getBackgroundObject(JSON.parse(backgroundHover)) },
             boxShadowHover: { ...getBoxShadowObject(JSON.parse(boxShadowHover)) },
             borderHover: { ...JSON.parse(borderHover) },
             borderWidth: { ...JSON.parse(borderHover).borderWidth },
             borderRadius: { ...JSON.parse(borderHover).borderRadius },
             opacity: { ...getOpacityObject(JSON.parse(opacityHover)) },
         };
+
+        return response;
+    }
+
+    get getTypographyObject() {
+        const { 
+            typography,
+            margin,
+            padding
+        } = this.props.attributes;
+
+        const response = {
+            typography: { ...JSON.parse(typography) },
+            margin: { ...JSON.parse(margin) },
+            padding: { ...JSON.parse(padding) },
+        }
+
+        return response;
+    }
+
+    get getTypographyHoverObject() {
+        const { typographyHover } = this.props.attributes;
+
+        const response = {
+            typographyHover: { ...JSON.parse(typographyHover) },
+        }
 
         return response;
     }
@@ -223,7 +234,9 @@ class edit extends MaxiBlock {
             attributes: {
                 uniqueID,
                 blockStyle,
+                defaultBlockStyle,
                 extraClassName,
+                background,
                 hoverAnimation,
                 hoverAnimationDuration,
                 hoverAnimationType,
@@ -234,12 +247,13 @@ class edit extends MaxiBlock {
                 typeOfList,
                 listStart,
                 listReversed,
+                fullWidth
             },
             isSelected,
             setAttributes,
         } = this.props;
 
-        let classes = classnames(
+        const classes = classnames(
             'maxi-block maxi-text-block',
             blockStyle,
             extraClassName,
@@ -254,14 +268,21 @@ class edit extends MaxiBlock {
         return [
             <Inspector {...this.props} />,
             <__experimentalToolbar {...this.props} />,
-            <Fragment>
+            <__experimentalBlock
+                className={classes}
+                data-maxi_initial_block_class={defaultBlockStyle}
+                data-align={fullWidth}
+            >
+                <__experimentalBackgroundDisplayer
+                    backgroundOptions={background}
+                />
                 {
                     !isList &&
                     <RichText
+                        className='maxi-text-block__content'
                         value={content}
                         onChange={content => setAttributes({ content })}
-                        tagName={__experimentalBlock[textLevel]}
-                        className={classes}
+                        tagName={textLevel}
                         placeholder={__('Set your Maxi Text here...', 'maxi-blocks')}
                         keepPlaceholderOnFocus
                         __unstableEmbedURLOnPaste
@@ -271,11 +292,11 @@ class edit extends MaxiBlock {
                 {
                     isList &&
                     <RichText
-                        className={classes}
+                        className='maxi-text-block__content'
                         identifier="values"
                         multiline="li"
                         __unstableMultilineRootTag={typeOfList}
-                        tagName={__experimentalBlock[typeOfList]}
+                        tagName={typeOfList}
                         onChange={content => setAttributes({ content })}
                         value={content}
                         placeholder={__('Write list…')}
@@ -335,7 +356,7 @@ class edit extends MaxiBlock {
                         }
                     </RichText>
                 }
-            </Fragment>
+            </__experimentalBlock>
         ];
     }
 }

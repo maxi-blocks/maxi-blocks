@@ -22,19 +22,19 @@ const {
  */
 import {
     MaxiBlock,
-    __experimentalVideoPlayer,
     __experimentalToolbar,
-    __experimentalBlockPlaceholder
+    __experimentalBlockPlaceholder,
+    __experimentalBackgroundDisplayer
 } from '../../components';
 import Inspector from './inspector';
 import {
     getBackgroundObject,
     getBoxShadowObject,
-    getVideoBackgroundObject,
     getOpacityObject,
     getColumnSizeObject,
     getTransfromObject,
-    getAlignmentTextObject
+    getAlignmentTextObject,
+    setBackgroundStyles
 } from '../../utils';
 
 /**
@@ -45,34 +45,60 @@ import {
     isNil,
     round,
     isObject,
-    isEmpty
 } from 'lodash';
+
+/**
+ * InnerBlocks version
+ */
+const ContainerInnerBlocks = props => {
+    const {
+        children,
+        background,
+        className,
+        maxiBlockClass
+    } = props;
+
+    return (
+        <__experimentalBlock
+            className={className}
+            data-gx_initial_block_class={maxiBlockClass}
+        >
+            <Fragment>
+                <__experimentalBackgroundDisplayer
+                    backgroundOptions={background}
+                />
+                {children}
+            </Fragment>
+        </__experimentalBlock>
+    )
+}
 
 /**
  * Editor
  */
 class edit extends MaxiBlock {
     get getObject() {
+        const {
+            uniqueID,
+            background,
+            backgroundHover
+        } = this.props.attributes;
+
         let response = {
-            [this.props.attributes.uniqueID]: this.getNormalObject,
-            [`${this.props.attributes.uniqueID}:hover`]: this.getHoverObject,
-            [`maxi-column-block__resizer__${this.props.attributes.uniqueID}`]: this.getResizerObject,
-            [`${this.props.attributes.uniqueID} .maxi-block-text-hover .maxi-block-text-hover__content`]: this.getHoverAnimationTextContentObject,
-            [`${this.props.attributes.uniqueID} .maxi-block-text-hover .maxi-block-text-hover__title`]: this.getHoverAnimationTextTitleObject,
-            [`${this.props.attributes.uniqueID} .maxi-block-text-hover`]: this.getHoverAnimationMainObject,
-            [`${this.props.attributes.uniqueID}.hover-animation-basic.hover-animation-type-opacity:hover .hover_el`]: this.getHoverAnimationTypeOpacityObject,
-            [`${this.props.attributes.uniqueID}.hover-animation-basic.hover-animation-type-opacity-with-colour:hover .hover_el:before`]: this.getHoverAnimationTypeOpacityColorObject,
+            [uniqueID]: this.getNormalObject,
+            [`${uniqueID}:hover`]: this.getHoverObject,
+            [`maxi-column-block__resizer__${uniqueID}`]: this.getResizerObject,
+            [`${uniqueID} .maxi-block-text-hover .maxi-block-text-hover__content`]: this.getHoverAnimationTextContentObject,
+            [`${uniqueID} .maxi-block-text-hover .maxi-block-text-hover__title`]: this.getHoverAnimationTextTitleObject,
+            [`${uniqueID} .maxi-block-text-hover`]: this.getHoverAnimationMainObject,
+            [`${uniqueID}.hover-animation-basic.hover-animation-type-opacity:hover .hover_el`]: this.getHoverAnimationTypeOpacityObject,
+            [`${uniqueID}.hover-animation-basic.hover-animation-type-opacity-with-colour:hover .hover_el:before`]: this.getHoverAnimationTypeOpacityColorObject,
         }
 
-        const videoOptions = JSON.parse(this.props.attributes.background).videoOptions;
-        if (!isNil(videoOptions) && !isEmpty(videoOptions.mediaURL))
-            Object.assign(
-                response,
-                {
-                    [`${this.props.attributes.uniqueID} .maxi-video-player video`]:
-                        { videoBackground: { ...getVideoBackgroundObject(videoOptions) } }
-                }
-            )
+        response = Object.assign(
+            response,
+            setBackgroundStyles(uniqueID, background, backgroundHover)
+        )
 
         return response;
     }
@@ -86,7 +112,6 @@ class edit extends MaxiBlock {
                 columnSize,
                 verticalAlign,
                 opacity,
-                background,
                 boxShadow,
                 border,
                 size,
@@ -100,7 +125,6 @@ class edit extends MaxiBlock {
         } = this.props;
 
         let response = {
-            background: { ...getBackgroundObject(JSON.parse(background)) },
             boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
             border: { ...JSON.parse(border) },
             borderWidth: { ...JSON.parse(border).borderWidth },
@@ -130,19 +154,27 @@ class edit extends MaxiBlock {
     get getHoverObject() {
         const {
             opacityHover,
-            backgroundHover,
             boxShadowHover,
             borderHover,
         } = this.props.attributes;
 
         let response = {
-            backgroundHover: { ...getBackgroundObject(JSON.parse(backgroundHover)) },
             boxShadowHover: { ...getBoxShadowObject(JSON.parse(boxShadowHover)) },
             borderHover: { ...JSON.parse(borderHover) },
             borderWidthHover: { ...JSON.parse(borderHover).borderWidth },
             borderRadiusHover: { ...JSON.parse(borderHover).borderRadius },
             opacity: { ...getOpacityObject(JSON.parse(opacityHover)) },
         };
+
+        return response;
+    }
+
+    get getBackgroundObject() {
+        const { background } = this.props.attributes;
+
+        const response = {
+            background: { ...getBackgroundObject(JSON.parse(background)) },
+        }
 
         return response;
     }
@@ -245,7 +277,7 @@ class edit extends MaxiBlock {
             hoverAnimationContentTypography
         } = this.props.attributes;
 
-         const response = {
+        const response = {
             hoverAnimationContentTypography: { ...JSON.parse(hoverAnimationContentTypography) },
             hoverAnimationContentAlignmentTypography: { ...getAlignmentTextObject(JSON.parse(hoverAnimationContentTypography).textAlign) }
         };
@@ -280,7 +312,7 @@ class edit extends MaxiBlock {
 
         onDeviceTypeChange();
 
-        let classes = classnames(
+        const classes = classnames(
             'maxi-block',
             'maxi-column-block',
             uniqueID,
@@ -354,10 +386,11 @@ class edit extends MaxiBlock {
                         <InnerBlocks
                             // allowedBlocks={ALLOWED_BLOCKS}
                             templateLock={false}
-                            __experimentalTagName={__experimentalBlock.div}
+                            __experimentalTagName={ContainerInnerBlocks}
                             __experimentalPassedProps={{
                                 className: classes,
-                                ['data-maxi_initial_block_class']: defaultBlockStyle,
+                                maxiBlockClass: defaultBlockStyle,
+                                background: background,
                             }}
                             renderAppender={
                                 !hasInnerBlock ?
@@ -373,7 +406,6 @@ class edit extends MaxiBlock {
                                         false
                             }
                         />
-                        <__experimentalVideoPlayer videoOptions={background} />
                     </ResizableBox>
                 }
             </Fragment>

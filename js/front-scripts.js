@@ -40,6 +40,26 @@ motionElems.forEach(function(elem) {
 
 	if(motionData !== null) {
 
+		// Parallax Effect
+		if("parallax" in motionData) {
+
+			const parallaxElem = document.querySelector(".maxi-motion-effect-"+ motionID +"");
+			const parallaxStatus = motionData.parallax.status;
+
+			if(!!parseInt(parallaxStatus)) {
+
+				gsap.to(parallaxElem, {
+					backgroundPosition: "50% "+ -innerHeight / 2 +"px",
+					ease: "none",
+					scrollTrigger: {
+						trigger: parallaxElem,
+						scrub: true
+					}
+				});
+
+			}
+		}
+
 		// Entrance Animation
 		if("entrance" in motionData) {
 

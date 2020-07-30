@@ -2,7 +2,10 @@
  * WordPress dependencies
  */
 const { withSelect } = wp.data;
-const { Fragment } = wp.element;
+const { 
+    Fragment,
+    forwardRef
+} = wp.element;
 const {
     InnerBlocks,
     __experimentalBlock
@@ -41,7 +44,7 @@ import { isEmpty } from 'lodash';
 /**
  * InnerBlocks version
  */
-const ContainerInnerBlocks = props => {
+const ContainerInnerBlocks = forwardRef((props, ref) => {
     const {
         children,
         shapeDivider,
@@ -52,6 +55,7 @@ const ContainerInnerBlocks = props => {
 
     return (
         <__experimentalBlock
+            ref={ref}
             className={className}
             data-align={dataAlign}
             data-gx_initial_block_class={maxiBlockClass}
@@ -74,7 +78,7 @@ const ContainerInnerBlocks = props => {
             />
         </__experimentalBlock>
     )
-}
+})
 
 /**
  * Edit
@@ -105,7 +109,7 @@ class edit extends MaxiBlock {
         }
 
         response = Object.assign(
-            response, 
+            response,
             setBackgroundStyles(uniqueID, background, backgroundHover)
         )
 
@@ -328,7 +332,9 @@ class edit extends MaxiBlock {
             <Inspector {...this.props} />,
             <__experimentalToolbar {...this.props} />,
             <__experimentalBreadcrumbs />,
-            <Fragment>
+            <
+                Fragment>
+                
                 {
                     isFirstOnHierarchy && fullWidth &&
                     <__experimentalBlock.section
@@ -398,7 +404,9 @@ class edit extends MaxiBlock {
                         }
                     />
                 }
-            </Fragment>
+            </
+            Fragment>
+            
         ];
     }
 }

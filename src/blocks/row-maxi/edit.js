@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 const { synchronizeBlocksWithTemplate } = wp.blocks;
-const { Fragment } = wp.element;
+const { forwardRef } = wp.element;
 const {
     compose,
     withInstanceId
@@ -53,7 +53,7 @@ import {
 /**
  * InnerBlocks version
  */
-const ContainerInnerBlocks = props => {
+const ContainerInnerBlocks = forwardRef((props, ref) => {
     const {
         children,
         background,
@@ -62,19 +62,18 @@ const ContainerInnerBlocks = props => {
     } = props;
 
     return (
-        <__experimentalBlock
+        <__experimentalBlock.div
+            ref={ref}
             className={className}
             data-gx_initial_block_class={maxiBlockClass}
         >
-            <Fragment>
-                <__experimentalBackgroundDisplayer
-                    backgroundOptions={background}
-                />
-                {children}
-            </Fragment>
-        </__experimentalBlock>
+            <__experimentalBackgroundDisplayer
+                backgroundOptions={background}
+            />
+            {children}
+        </__experimentalBlock.div>
     )
-}
+})
 
 /**
  * Edit
@@ -101,7 +100,7 @@ class edit extends MaxiBlock {
 
         response = Object.assign(
             response,
-            setBackgroundStyles(uniqueID, background, backgroundHover) 
+            setBackgroundStyles(uniqueID, background, backgroundHover)
         )
 
         return response;

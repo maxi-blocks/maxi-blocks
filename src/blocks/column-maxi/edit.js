@@ -2,7 +2,10 @@
  * WordPress dependencies
  */
 const { compose } = wp.compose;
-const { Fragment } = wp.element;
+const {
+    Fragment,
+    forwardRef
+} = wp.element;
 const {
     ResizableBox,
     Spinner,
@@ -50,7 +53,7 @@ import {
 /**
  * InnerBlocks version
  */
-const ContainerInnerBlocks = props => {
+const ContainerInnerBlocks = forwardRef((props, ref) => {
     const {
         children,
         background,
@@ -59,19 +62,18 @@ const ContainerInnerBlocks = props => {
     } = props;
 
     return (
-        <__experimentalBlock
+        <__experimentalBlock.div
+            ref={ref}
             className={className}
             data-gx_initial_block_class={maxiBlockClass}
         >
-            <Fragment>
-                <__experimentalBackgroundDisplayer
-                    backgroundOptions={background}
-                />
-                {children}
-            </Fragment>
-        </__experimentalBlock>
+            <__experimentalBackgroundDisplayer
+                backgroundOptions={background}
+            />
+            {children}
+        </__experimentalBlock.div>
     )
-}
+})
 
 /**
  * Editor

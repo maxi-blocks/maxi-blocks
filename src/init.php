@@ -113,6 +113,12 @@ function gutenberg_extra_load_custom_wp_admin_style() {
 
 	wp_enqueue_style('gutenberg_extra-block-css-admin');
 
+	wp_enqueue_style(
+		'maxi-blocks-banner',
+		plugins_url( '/css/maxi-banner.css', dirname( __FILE__ ) ),
+		false
+	);
+
 }
 
 add_action( 'admin_enqueue_scripts', 'gutenberg_extra_load_custom_wp_admin_style' );
@@ -121,8 +127,8 @@ add_action( 'admin_enqueue_scripts', 'gutenberg_extra_load_custom_wp_admin_style
 function maxi_load_custom_wp_front_script() {
 
 	wp_enqueue_style(
-		'maxi-blocks-frontend',
-		plugins_url( '/css/maxi-frontend.css', dirname( __FILE__ ) ),
+		'maxi-blocks-banner',
+		plugins_url( '/css/maxi-banner.css', dirname( __FILE__ ) ),
 		false
 	);
 

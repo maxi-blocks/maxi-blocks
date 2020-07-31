@@ -1403,30 +1403,48 @@ export const __experimentalMotion = {
         "status": 0,
         "direction": "up",
         "viewport": [0, 50, 100],
-        "startValue": 50,
-        "midValue": 0,
-        "endValue": 0,
+        "amounts": [0, 0, 0],
         "preset": "",
         "presets": {
             "preset_1": {
-                "direction" : "up",
-                "viewport": [10, 20, 80],
-                "values": [20, 10, 5],
+                "viewport": [45, 50, 55],
+                "amounts": [0, 300, 0],
             },
             "preset_2": {
-                "direction" : "down",
-                "viewport": [50, 60, 100],
-                "values": [5, 3.5, 10],
+                "viewport": [35, 50, 65],
+                "amounts": [0, 300, 0],
             },
             "preset_3": {
-                "direction" : "up",
-                "viewport": [25, 65, 95],
-                "values": [30, 9, 5.5],
+                "viewport": [25, 50, 85],
+                "amounts": [0, 300, 0],
             },
             "preset_4": {
-                "direction" : "up",
-                "viewport": [10, 20, 80],
-                "values": [20, 10, 5],
+                "viewport": [15, 50, 95],
+                "amounts": [300, 0, 0],
+            },
+            "preset_5": {
+                "viewport": [0, 50, 100],
+                "amounts": [300, 0, 0],
+            },
+            "preset_6": {
+                "viewport": [45, 50, 55],
+                "amounts": [0, 300, 0],
+            },
+            "preset_7": {
+                "viewport": [35, 50, 65],
+                "amounts": [0, 300, 0],
+            },
+            "preset_8": {
+                "viewport": [25, 50, 85],
+                "amounts": [0, 300, 0],
+            },
+            "preset_9": {
+                "viewport": [15, 50, 95],
+                "amounts": [300, 0, 0],
+            },
+            "preset_10": {
+                "viewport": [0, 50, 100],
+                "amounts": [300, 0, 0],
             },
         },
     },
@@ -1434,41 +1452,246 @@ export const __experimentalMotion = {
         "status": 0,
         "direction": "left",
         "viewport": [0, 50, 100],
-        "startValue": 50,
-        "midValue": 0,
-        "endValue": 0,
+        "amounts": [0, 0, 0],
+        "preset": "",
+        "presets": {
+            "preset_1": {
+                "viewport": [45, 50, 55],
+                "amounts": [0, 300, 0],
+            },
+            "preset_2": {
+                "viewport": [35, 50, 65],
+                "amounts": [0, 300, 0],
+            },
+            "preset_3": {
+                "viewport": [25, 50, 85],
+                "amounts": [0, 300, 0],
+            },
+            "preset_4": {
+                "viewport": [15, 50, 95],
+                "amounts": [300, 0, 0],
+            },
+            "preset_5": {
+                "viewport": [0, 50, 100],
+                "amounts": [300, 0, 0],
+            },
+            "preset_6": {
+                "viewport": [45, 50, 55],
+                "amounts": [0, 300, 0],
+            },
+            "preset_7": {
+                "viewport": [35, 50, 65],
+                "amounts": [0, 300, 0],
+            },
+            "preset_8": {
+                "viewport": [25, 50, 85],
+                "amounts": [0, 300, 0],
+            },
+            "preset_9": {
+                "viewport": [15, 50, 95],
+                "amounts": [300, 0, 0],
+            },
+            "preset_10": {
+                "viewport": [0, 50, 100],
+                "amounts": [300, 0, 0],
+            },
+        },
     },
     "rotate": {
         "status": 0,
         "direction": "left",
         "viewport": [0, 50, 100],
-        "startValue": 10,
-        "midValue": 0,
-        "endValue": 0,
+        "amounts": [0, 0, 0],
+        "preset": "",
+        "presets": {
+            "preset_1": {
+                "viewport": [45, 50, 55],
+                "amounts": [0, 30, 0],
+            },
+            "preset_2": {
+                "viewport": [35, 50, 65],
+                "amounts": [0, 50, 0],
+            },
+            "preset_3": {
+                "viewport": [25, 50, 85],
+                "amounts": [0, 100, 0],
+            },
+            "preset_4": {
+                "viewport": [15, 50, 95],
+                "amounts": [200, 0, 0],
+            },
+            "preset_5": {
+                "viewport": [0, 50, 100],
+                "amounts": [300, 0, 0],
+            },
+            "preset_6": {
+                "viewport": [45, 50, 55],
+                "amounts": [0, 30, 0],
+            },
+            "preset_7": {
+                "viewport": [35, 50, 65],
+                "amounts": [0, 50, 0],
+            },
+            "preset_8": {
+                "viewport": [25, 50, 85],
+                "amounts": [0, 100, 0],
+            },
+            "preset_9": {
+                "viewport": [15, 50, 95],
+                "amounts": [200, 0, 0],
+            },
+            "preset_10": {
+                "viewport": [0, 50, 100],
+                "amounts": [300, 0, 0],
+            },
+        },
     },
     "scale": {
         "status": 0,
         "direction": "up",
         "viewport": [0, 50, 100],
-        "startValue": 4,
-        "midValue": 0,
-        "endValue": 0,
+        "amounts": [0, 0, 0],
+        "preset": "",
+        "presets": {
+            "preset_1": {
+                "viewport": [45, 50, 55],
+                "amounts": [0, 300, 0],
+            },
+            "preset_2": {
+                "viewport": [35, 50, 65],
+                "amounts": [0, 300, 0],
+            },
+            "preset_3": {
+                "viewport": [25, 50, 85],
+                "amounts": [0, 300, 0],
+            },
+            "preset_4": {
+                "viewport": [15, 50, 95],
+                "amounts": [300, 0, 0],
+            },
+            "preset_5": {
+                "viewport": [0, 50, 100],
+                "amounts": [300, 0, 0],
+            },
+            "preset_6": {
+                "viewport": [45, 50, 55],
+                "amounts": [0, 300, 0],
+            },
+            "preset_7": {
+                "viewport": [35, 50, 65],
+                "amounts": [0, 300, 0],
+            },
+            "preset_8": {
+                "viewport": [25, 50, 85],
+                "amounts": [0, 300, 0],
+            },
+            "preset_9": {
+                "viewport": [15, 50, 95],
+                "amounts": [300, 0, 0],
+            },
+            "preset_10": {
+                "viewport": [0, 50, 100],
+                "amounts": [300, 0, 0],
+            },
+        },
     },
     "fade": {
         "status": 0,
         "direction": "in",
         "viewport": [0, 50, 100],
-        "startValue": 3,
-        "midValue": 0,
-        "endValue": 0,
+        "amounts": [0, 0, 0],
+        "preset": "",
+        "presets": {
+            "preset_1": {
+                "viewport": [45, 50, 55],
+                "amounts": ['', 0.2, ''],
+            },
+            "preset_2": {
+                "viewport": [35, 50, 65],
+                "amounts": ['', 0.4, ''],
+            },
+            "preset_3": {
+                "viewport": [25, 50, 85],
+                "amounts": ['', 0.6, ''],
+            },
+            "preset_4": {
+                "viewport": [15, 50, 95],
+                "amounts": [0.8, '', ''],
+            },
+            "preset_5": {
+                "viewport": [0, 50, 100],
+                "amounts": [1, '', ''],
+            },
+            "preset_6": {
+                "viewport": [45, 50, 55],
+                "amounts": ['', 0.2, ''],
+            },
+            "preset_7": {
+                "viewport": [35, 50, 65],
+                "amounts": ['', 0.4, ''],
+            },
+            "preset_8": {
+                "viewport": [25, 50, 85],
+                "amounts": ['', 0.6, ''],
+            },
+            "preset_9": {
+                "viewport": [15, 50, 95],
+                "amounts": [0.8, '', ''],
+            },
+            "preset_10": {
+                "viewport": [0, 50, 100],
+                "amounts": [1, '', ''],
+            },
+        },
     },
     "blur": {
         "status": 0,
         "direction": "in",
         "viewport": [0, 50, 100],
-        "startValue": 10,
-        "midValue": 0,
-        "endValue": 0,
+        "amounts": [0, 0, 0],
+        "preset": "",
+        "presets": {
+            "preset_1": {
+                "viewport": [45, 50, 55],
+                "amounts": [0, 30, 0],
+            },
+            "preset_2": {
+                "viewport": [35, 50, 65],
+                "amounts": [0, 50, 0],
+            },
+            "preset_3": {
+                "viewport": [25, 50, 85],
+                "amounts": [0, 100, 0],
+            },
+            "preset_4": {
+                "viewport": [15, 50, 95],
+                "amounts": [200, 0, 0],
+            },
+            "preset_5": {
+                "viewport": [0, 50, 100],
+                "amounts": [300, 0, 0],
+            },
+            "preset_6": {
+                "viewport": [45, 50, 55],
+                "amounts": [0, 30, 0],
+            },
+            "preset_7": {
+                "viewport": [35, 50, 65],
+                "amounts": [0, 50, 0],
+            },
+            "preset_8": {
+                "viewport": [25, 50, 85],
+                "amounts": [0, 100, 0],
+            },
+            "preset_9": {
+                "viewport": [15, 50, 95],
+                "amounts": [200, 0, 0],
+            },
+            "preset_10": {
+                "viewport": [0, 50, 100],
+                "amounts": [300, 0, 0],
+            },
+        },
     },
     "entrance": {
         "type": "",

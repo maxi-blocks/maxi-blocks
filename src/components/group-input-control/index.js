@@ -1,12 +1,13 @@
 /**
- * External dependencies
- */
-import { isObject } from 'lodash';
-
-/**
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
+
+/**
+ * External dependencies
+ */
+import classnames from 'classnames';
+import { isObject } from 'lodash';
 
 /**
  * Styles and icons
@@ -19,7 +20,11 @@ import './editor.scss';
 const GroupInputControl = props => {
 
     const {
+        className,
         label,
+        min = 0,
+        max = 998,
+        step = 0.1,
         options,
         onChange,
     } = props;
@@ -28,17 +33,22 @@ const GroupInputControl = props => {
         JSON.parse(options) :
         options;
 
+    let classes = classnames(
+        'maxi-group-input-control',
+        className,
+    );
+
     return (
-        <div className='maxi-group-input-control'>
+        <div className={classes}>
             <div className='maxi-group-input-control__input'>
                 <input
                     type="number"
-                    min={0}
-                    max={999}
-                    step={0.1}
-                    value={value.startValue}
+                    min={min}
+                    max={max}
+                    step={step}
+                    value={value[0]}
                     onChange={e => {
-                        value.startValue = e.target.value;
+                        value[0] = e.target.value;
                         onChange(JSON.stringify(value));
                     }}
                 />
@@ -47,12 +57,12 @@ const GroupInputControl = props => {
             <div className='maxi-group-input-control__input'>
                 <input
                     type="number"
-                    min={0}
-                    max={999}
-                    step={0.1}
-                    value={value.midValue}
+                    min={min}
+                    max={max}
+                    step={step}
+                    value={value[1]}
                     onChange={e => {
-                        value.midValue = e.target.value;
+                        value[1] = e.target.value;
                         onChange(JSON.stringify(value));
                     }}
                 />
@@ -61,12 +71,12 @@ const GroupInputControl = props => {
             <div className='maxi-group-input-control__input'>
                 <input
                     type="number"
-                    min={0}
-                    max={999}
-                    step={0.1}
-                    value={value.endValue}
+                    min={min}
+                    max={max}
+                    step={step}
+                    value={value[2]}
                     onChange={e => {
-                        value.endValue = e.target.value;
+                        value[2] = e.target.value;
                         onChange(JSON.stringify(value));
                     }}
                 />

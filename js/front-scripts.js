@@ -110,21 +110,21 @@ motionElems.forEach(function(elem) {
 					}
 				});
 				if(direction === 'down') {
-					if(parseFloat(amounts[0]) !== 0 || amounts[0] !== '') {
+					if(parseFloat(amounts[0]) !== 0 && amounts[0] !== '') {
 						motionTimeLineTop.to(".maxi-motion-effect-"+ motionID +"", {
 							y: amounts[0],
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(parseFloat(amounts[1]) !== 0 || amounts[1] !== '') {
+					if(parseFloat(amounts[1]) !== 0 && amounts[1] !== '') {
 						motionTimeLineMid.to(".maxi-motion-effect-"+ motionID +"", {
 							y: amounts[1],
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(parseFloat(amounts[2]) !== 0 || amounts[2] !== '') {
+					if(parseFloat(amounts[2]) !== 0 && amounts[2] !== '') {
 						motionTimeLineBottom.to(".maxi-motion-effect-"+ motionID +"", {
 							y: amounts[2],
 							duration: 1,
@@ -133,21 +133,21 @@ motionElems.forEach(function(elem) {
 					}
 				}
 				if(direction === 'up') {
-					if(parseFloat(amounts[0]) !== 0 || amounts[0] !== '') {
+					if(parseFloat(amounts[0]) !== 0 && amounts[0] !== '') {
 						motionTimeLineTop.to(".maxi-motion-effect-"+ motionID +"", {
 							y: -(amounts[0]),
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(parseFloat(amounts[1]) !== 0 || amounts[1] !== '') {
+					if(parseFloat(amounts[1]) !== 0 && amounts[1] !== '') {
 						motionTimeLineMid.to(".maxi-motion-effect-"+ motionID +"", {
 							y: -(amounts[1]),
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(parseFloat(amounts[2]) !== 0 || amounts[2] !== '') {
+					if(parseFloat(amounts[2]) !== 0 && amounts[2] !== '') {
 						motionTimeLineBottom.to(".maxi-motion-effect-"+ motionID +"", {
 							y: -(amounts[2]),
 							duration: 1,
@@ -202,21 +202,21 @@ motionElems.forEach(function(elem) {
 					}
 				});
 				if(direction === 'left') {
-					if(parseFloat(amounts[0]) !== 0 || amounts[0] !== '') {
+					if(parseFloat(amounts[0]) !== 0 && amounts[0] !== '') {
 						motionTimeLineTop.to(".maxi-motion-effect-"+ motionID +"", {
 							x: amounts[0],
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(parseFloat(amounts[1]) !== 0 || amounts[1] !== '') {
+					if(parseFloat(amounts[1]) !== 0 && amounts[1] !== '') {
 						motionTimeLineMid.to(".maxi-motion-effect-"+ motionID +"", {
 							x: amounts[1],
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(parseFloat(amounts[2]) !== 0 || amounts[2] !== '') {
+					if(parseFloat(amounts[2]) !== 0 && amounts[2] !== '') {
 						motionTimeLineBottom.to(".maxi-motion-effect-"+ motionID +"", {
 							x: amounts[2],
 							duration: 1,
@@ -225,21 +225,21 @@ motionElems.forEach(function(elem) {
 					}
 				}
 				if(direction === 'right') {
-					if(parseFloat(amounts[0]) !== 0 || amounts[0] !== '') {
+					if(parseFloat(amounts[0]) !== 0 && amounts[0] !== '') {
 						motionTimeLineTop.to(".maxi-motion-effect-"+ motionID +"", {
 							x: -(amounts[0]),
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(parseFloat(amounts[1]) !== 0 || amounts[1] !== '') {
+					if(parseFloat(amounts[1]) !== 0 && amounts[1] !== '') {
 						motionTimeLineMid.to(".maxi-motion-effect-"+ motionID +"", {
 							x: -(amounts[1]),
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(parseFloat(amounts[2]) !== 0 || amounts[2] !== '') {
+					if(parseFloat(amounts[2]) !== 0 && amounts[2] !== '') {
 						motionTimeLineBottom.to(".maxi-motion-effect-"+ motionID +"", {
 							x: -(amounts[2]),
 							duration: 1,
@@ -294,21 +294,21 @@ motionElems.forEach(function(elem) {
 					}
 				});
 				if(direction === 'left') {
-					if(parseFloat(amounts[0]) !== 0 || amounts[0] !== '') {
+					if(parseFloat(amounts[0]) !== 0 && amounts[0] !== '') {
 						motionTimeLineTop.to(".maxi-motion-effect-"+ motionID +"", {
 							rotation: amounts[0],
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(parseFloat(amounts[1]) !== 0 || amounts[1] !== '') {
+					if(parseFloat(amounts[1]) !== 0 && amounts[1] !== '') {
 						motionTimeLineMid.to(".maxi-motion-effect-"+ motionID +"", {
 							rotation: amounts[1],
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(parseFloat(amounts[2]) !== 0 || amounts[2] !== '') {
+					if(parseFloat(amounts[2]) !== 0 && amounts[2] !== '') {
 						motionTimeLineBottom.to(".maxi-motion-effect-"+ motionID +"", {
 							rotation: amounts[2],
 							duration: 1,
@@ -317,21 +317,21 @@ motionElems.forEach(function(elem) {
 					}
 				}
 				if(direction === 'right') {
-					if(parseFloat(amounts[0]) !== 0 || amounts[0] !== '') {
+					if(parseFloat(amounts[0]) !== 0 && amounts[0] !== '') {
 						motionTimeLineTop.to(".maxi-motion-effect-"+ motionID +"", {
 							rotation: -(amounts[0]),
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(parseFloat(amounts[1]) !== 0 || amounts[1] !== '') {
+					if(parseFloat(amounts[1]) !== 0 && amounts[1] !== '') {
 						motionTimeLineMid.to(".maxi-motion-effect-"+ motionID +"", {
 							rotation: -(amounts[1]),
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(parseFloat(amounts[2]) !== 0 || amounts[2] !== '') {
+					if(parseFloat(amounts[2]) !== 0 && amounts[2] !== '') {
 						motionTimeLineBottom.to(".maxi-motion-effect-"+ motionID +"", {
 							rotation: -(amounts[2]),
 							duration: 1,
@@ -385,47 +385,47 @@ motionElems.forEach(function(elem) {
 						},
 					}
 				});
-				if(direction === 'up') {
-					if(parseFloat(amounts[0]) !== 0 || amounts[0] !== '') {
+				if(direction === 'down') {
+					if(amounts[0] !== '') {
 						motionTimeLineTop.to(".maxi-motion-effect-"+ motionID +"", {
-							scale: amounts[0],
+							scale: amounts[0] / 10,
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(parseFloat(amounts[1]) !== 0 || amounts[1] !== '') {
+					if(amounts[1] !== '') {
 						motionTimeLineMid.to(".maxi-motion-effect-"+ motionID +"", {
-							scale: amounts[1],
+							scale: amounts[1] / 10,
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(parseFloat(amounts[2]) !== 0 || amounts[2] !== '') {
+					if(amounts[2] !== '') {
 						motionTimeLineBottom.to(".maxi-motion-effect-"+ motionID +"", {
-							scale: amounts[2],
+							scale: amounts[2] / 10,
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
 				}
-				if(direction === 'down') {
-					if(parseFloat(amounts[0]) !== 0 || amounts[0] !== '') {
+				if(direction === 'up') {
+					if(amounts[0] !== '') {
 						motionTimeLineTop.from(".maxi-motion-effect-"+ motionID +"", {
-							scale: amounts[0],
+							scale: amounts[0] / 10,
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(parseFloat(amounts[1]) !== 0 || amounts[1] !== '') {
+					if(amounts[1] !== '') {
 						motionTimeLineMid.from(".maxi-motion-effect-"+ motionID +"", {
-							scale: amounts[1],
+							scale: amounts[1] / 10,
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(parseFloat(amounts[2]) !== 0 || amounts[2] !== '') {
+					if(amounts[2] !== '') {
 						motionTimeLineBottom.from(".maxi-motion-effect-"+ motionID +"", {
-							scale: amounts[2],
+							scale: amounts[2] / 10,
 							duration: 1,
 							ease: "power1.out"
 						})
@@ -570,7 +570,7 @@ motionElems.forEach(function(elem) {
 					}
 				});
 				if(direction === 'in') {
-					if(amounts[0] !== '') {
+					if(parseFloat(amounts[0]) !== 0 && amounts[0] !== '') {
 						motionTimeLineTop.to(".maxi-motion-effect-"+ motionID +"", {
 							webkitFilter: "blur("+ amounts[0] +"px)",
 							filter: "blur("+ amounts[0] +"px)",
@@ -578,7 +578,7 @@ motionElems.forEach(function(elem) {
 							ease: "power1.out"
 						})
 					}
-					if(amounts[1] !== '') {
+					if(parseFloat(amounts[1]) !== 0 && amounts[1] !== '') {
 						motionTimeLineMid.to(".maxi-motion-effect-"+ motionID +"", {
 							webkitFilter: "blur("+ amounts[1] +"px)",
 							filter: "blur("+ amounts[1] +"px)",
@@ -586,7 +586,7 @@ motionElems.forEach(function(elem) {
 							ease: "power1.out"
 						})
 					}
-					if(amounts[2] !== '') {
+					if(parseFloat(amounts[2]) !== 0 && amounts[2] !== '') {
 						motionTimeLineBottom.to(".maxi-motion-effect-"+ motionID +"", {
 							webkitFilter: "blur("+ amounts[2] +"px)",
 							filter: "blur("+ amounts[2] +"px)",
@@ -596,7 +596,7 @@ motionElems.forEach(function(elem) {
 					}
 				}
 				if(direction === 'out') {
-					if(amounts[0] !== '') {
+					if(parseFloat(amounts[0]) !== 0 && amounts[0] !== '') {
 						motionTimeLineTop.from(".maxi-motion-effect-"+ motionID +"", {
 							webkitFilter: "blur("+ amounts[0] +"px)",
 							filter: "blur("+ amounts[0] +"px)",
@@ -604,7 +604,7 @@ motionElems.forEach(function(elem) {
 							ease: "power1.out"
 						})
 					}
-					if(amounts[1] !== '') {
+					if(parseFloat(amounts[1]) !== 0 && amounts[1] !== '') {
 						motionTimeLineMid.from(".maxi-motion-effect-"+ motionID +"", {
 							webkitFilter: "blur("+ amounts[1] +"px)",
 							filter: "blur("+ amounts[1] +"px)",
@@ -612,7 +612,7 @@ motionElems.forEach(function(elem) {
 							ease: "power1.out"
 						})
 					}
-					if(amounts[2] !== '') {
+					if(parseFloat(amounts[2]) !== 0 && amounts[2] !== '') {
 						motionTimeLineBottom.from(".maxi-motion-effect-"+ motionID +"", {
 							webkitFilter: "blur("+ amounts[2] +"px)",
 							filter: "blur("+ amounts[2] +"px)",

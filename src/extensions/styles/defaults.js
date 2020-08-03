@@ -1408,19 +1408,19 @@ export const __experimentalMotion = {
         "presets": {
             "preset_1": {
                 "viewport": [45, 50, 55],
-                "amounts": [0, 300, 0],
+                "amounts": [0, 100, 0],
             },
             "preset_2": {
                 "viewport": [35, 50, 65],
-                "amounts": [0, 300, 0],
+                "amounts": [0, 150, 0],
             },
             "preset_3": {
                 "viewport": [25, 50, 85],
-                "amounts": [0, 300, 0],
+                "amounts": [0, 200, 0],
             },
             "preset_4": {
                 "viewport": [15, 50, 95],
-                "amounts": [300, 0, 0],
+                "amounts": [250, 0, 0],
             },
             "preset_5": {
                 "viewport": [0, 50, 100],
@@ -1428,19 +1428,19 @@ export const __experimentalMotion = {
             },
             "preset_6": {
                 "viewport": [45, 50, 55],
-                "amounts": [0, 300, 0],
+                "amounts": [0, 100, 0],
             },
             "preset_7": {
                 "viewport": [35, 50, 65],
-                "amounts": [0, 300, 0],
+                "amounts": [0, 150, 0],
             },
             "preset_8": {
                 "viewport": [25, 50, 85],
-                "amounts": [0, 300, 0],
+                "amounts": [0, 200, 0],
             },
             "preset_9": {
                 "viewport": [15, 50, 95],
-                "amounts": [300, 0, 0],
+                "amounts": [250, 0, 0],
             },
             "preset_10": {
                 "viewport": [0, 50, 100],
@@ -1457,15 +1457,15 @@ export const __experimentalMotion = {
         "presets": {
             "preset_1": {
                 "viewport": [45, 50, 55],
-                "amounts": [0, 300, 0],
+                "amounts": [0, 100, 0],
             },
             "preset_2": {
                 "viewport": [35, 50, 65],
-                "amounts": [0, 300, 0],
+                "amounts": [0, 150, 0],
             },
             "preset_3": {
                 "viewport": [25, 50, 85],
-                "amounts": [0, 300, 0],
+                "amounts": [0, 200, 0],
             },
             "preset_4": {
                 "viewport": [15, 50, 95],
@@ -1473,19 +1473,19 @@ export const __experimentalMotion = {
             },
             "preset_5": {
                 "viewport": [0, 50, 100],
-                "amounts": [300, 0, 0],
+                "amounts": [400, 0, 0],
             },
             "preset_6": {
                 "viewport": [45, 50, 55],
-                "amounts": [0, 300, 0],
+                "amounts": [0, 100, 0],
             },
             "preset_7": {
                 "viewport": [35, 50, 65],
-                "amounts": [0, 300, 0],
+                "amounts": [0, 150, 0],
             },
             "preset_8": {
                 "viewport": [25, 50, 85],
-                "amounts": [0, 300, 0],
+                "amounts": [0, 200, 0],
             },
             "preset_9": {
                 "viewport": [15, 50, 95],
@@ -1493,7 +1493,7 @@ export const __experimentalMotion = {
             },
             "preset_10": {
                 "viewport": [0, 50, 100],
-                "amounts": [300, 0, 0],
+                "amounts": [400, 0, 0],
             },
         },
     },
@@ -1505,24 +1505,24 @@ export const __experimentalMotion = {
         "preset": "",
         "presets": {
             "preset_1": {
-                "viewport": [45, 50, 55],
+                "viewport": [30, 50, 55],
                 "amounts": [0, 30, 0],
             },
             "preset_2": {
                 "viewport": [35, 50, 65],
-                "amounts": [0, 50, 0],
+                "amounts": [0, 45, 0],
             },
             "preset_3": {
                 "viewport": [25, 50, 85],
-                "amounts": [0, 100, 0],
+                "amounts": [0, 60, 0],
             },
             "preset_4": {
                 "viewport": [15, 50, 95],
-                "amounts": [200, 0, 0],
+                "amounts": [90, 0, 0],
             },
             "preset_5": {
                 "viewport": [0, 50, 100],
-                "amounts": [300, 0, 0],
+                "amounts": [180, 0, 0],
             },
             "preset_6": {
                 "viewport": [45, 50, 55],
@@ -1530,19 +1530,19 @@ export const __experimentalMotion = {
             },
             "preset_7": {
                 "viewport": [35, 50, 65],
-                "amounts": [0, 50, 0],
+                "amounts": [0, 45, 0],
             },
             "preset_8": {
                 "viewport": [25, 50, 85],
-                "amounts": [0, 100, 0],
+                "amounts": [0, 60, 0],
             },
             "preset_9": {
                 "viewport": [15, 50, 95],
-                "amounts": [200, 0, 0],
+                "amounts": [90, 0, 0],
             },
             "preset_10": {
                 "viewport": [0, 50, 100],
-                "amounts": [300, 0, 0],
+                "amounts": [180, 0, 0],
             },
         },
     },
@@ -1555,43 +1555,43 @@ export const __experimentalMotion = {
         "presets": {
             "preset_1": {
                 "viewport": [45, 50, 55],
-                "amounts": [0, 300, 0],
+                "amounts": ['', 0, ''],
             },
             "preset_2": {
                 "viewport": [35, 50, 65],
-                "amounts": [0, 300, 0],
+                "amounts": ['', 2, ''],
             },
             "preset_3": {
                 "viewport": [25, 50, 85],
-                "amounts": [0, 300, 0],
+                "amounts": ['', 4, ''],
             },
             "preset_4": {
                 "viewport": [15, 50, 95],
-                "amounts": [300, 0, 0],
+                "amounts": [6, '', ''],
             },
             "preset_5": {
                 "viewport": [0, 50, 100],
-                "amounts": [300, 0, 0],
+                "amounts": [8, '', ''],
             },
             "preset_6": {
                 "viewport": [45, 50, 55],
-                "amounts": [0, 300, 0],
+                "amounts": ['', 0, ''],
             },
             "preset_7": {
                 "viewport": [35, 50, 65],
-                "amounts": [0, 300, 0],
+                "amounts": ['', 2, ''],
             },
             "preset_8": {
                 "viewport": [25, 50, 85],
-                "amounts": [0, 300, 0],
+                "amounts": ['', 4, ''],
             },
             "preset_9": {
                 "viewport": [15, 50, 95],
-                "amounts": [300, 0, 0],
+                "amounts": [6, '', ''],
             },
             "preset_10": {
                 "viewport": [0, 50, 100],
-                "amounts": [300, 0, 0],
+                "amounts": [8, '', ''],
             },
         },
     },
@@ -1604,43 +1604,43 @@ export const __experimentalMotion = {
         "presets": {
             "preset_1": {
                 "viewport": [45, 50, 55],
-                "amounts": ['', 0.2, ''],
+                "amounts": ['', 0, ''],
             },
             "preset_2": {
                 "viewport": [35, 50, 65],
-                "amounts": ['', 0.4, ''],
+                "amounts": ['', 2, ''],
             },
             "preset_3": {
                 "viewport": [25, 50, 85],
-                "amounts": ['', 0.6, ''],
+                "amounts": ['', 4, ''],
             },
             "preset_4": {
                 "viewport": [15, 50, 95],
-                "amounts": [0.8, '', ''],
+                "amounts": [5, '', ''],
             },
             "preset_5": {
                 "viewport": [0, 50, 100],
-                "amounts": [1, '', ''],
+                "amounts": [6, '', ''],
             },
             "preset_6": {
                 "viewport": [45, 50, 55],
-                "amounts": ['', 0.2, ''],
+                "amounts": ['', 0, ''],
             },
             "preset_7": {
                 "viewport": [35, 50, 65],
-                "amounts": ['', 0.4, ''],
+                "amounts": ['', 2, ''],
             },
             "preset_8": {
                 "viewport": [25, 50, 85],
-                "amounts": ['', 0.6, ''],
+                "amounts": ['', 4, ''],
             },
             "preset_9": {
                 "viewport": [15, 50, 95],
-                "amounts": [0.8, '', ''],
+                "amounts": [5, '', ''],
             },
             "preset_10": {
                 "viewport": [0, 50, 100],
-                "amounts": [1, '', ''],
+                "amounts": [6, '', ''],
             },
         },
     },
@@ -1653,43 +1653,43 @@ export const __experimentalMotion = {
         "presets": {
             "preset_1": {
                 "viewport": [45, 50, 55],
-                "amounts": [0, 30, 0],
+                "amounts": ['', 1, ''],
             },
             "preset_2": {
                 "viewport": [35, 50, 65],
-                "amounts": [0, 50, 0],
+                "amounts": ['', 2, ''],
             },
             "preset_3": {
                 "viewport": [25, 50, 85],
-                "amounts": [0, 100, 0],
+                "amounts": ['', 3, ''],
             },
             "preset_4": {
                 "viewport": [15, 50, 95],
-                "amounts": [200, 0, 0],
+                "amounts": [4, '', ''],
             },
             "preset_5": {
                 "viewport": [0, 50, 100],
-                "amounts": [300, 0, 0],
+                "amounts": [8, '', ''],
             },
             "preset_6": {
                 "viewport": [45, 50, 55],
-                "amounts": [0, 30, 0],
+                "amounts": ['', 1, ''],
             },
             "preset_7": {
                 "viewport": [35, 50, 65],
-                "amounts": [0, 50, 0],
+                "amounts": ['', 2, ''],
             },
             "preset_8": {
                 "viewport": [25, 50, 85],
-                "amounts": [0, 100, 0],
+                "amounts": ['', 3, ''],
             },
             "preset_9": {
                 "viewport": [15, 50, 95],
-                "amounts": [200, 0, 0],
+                "amounts": [4, '', ''],
             },
             "preset_10": {
                 "viewport": [0, 50, 100],
-                "amounts": [300, 0, 0],
+                "amounts": [8, '', ''],
             },
         },
     },

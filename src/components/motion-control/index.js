@@ -546,6 +546,7 @@ const MotionControl = props => {
                             />
                             <__experimentalGroupInputControl
                                 label={__('Scale', 'maxi-blocks')}
+                                max={10}
                                 options={scaleOptions.amounts}
                                 onChange={val => {
                                     scaleOptions.amounts = val;

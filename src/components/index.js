@@ -45,3 +45,4 @@ export { default as __experimentalClipPath } from './clip-path-control';
 export { default as __experimentalEntranceAnimationControl } from './entrance-animation-control';
 export { default as __experimentalParallaxControl } from './parallax-control';
 export { default as __experimentalBackgroundDisplayer } from './background-displayer';
+export { default as __experimentalHoverEffectControl } from './hover-effect-control';

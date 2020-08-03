@@ -199,6 +199,10 @@ const attributes = {
         type: 'string',
         default: JSON.stringify(attributesData.__experimentalMotion)
     },
+    hover: {
+        type: 'string',
+        default: JSON.stringify(attributesData.__experimentalHover)
+    },
     transform: {
         type: 'string',
         default: JSON.stringify(attributesData.__experimentalTransform)

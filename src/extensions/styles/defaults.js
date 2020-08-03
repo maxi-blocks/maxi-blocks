@@ -1397,6 +1397,24 @@ export const __experimentalDisplay = {
     }
 }
 
+export const __experimentalHover = {
+    "label": "Hover Effects",
+    "type": "none",
+    "basic": {
+        "type": "none",
+        "duration": 1,
+    },
+    "text": {
+        "type": "none",
+        "duration": 1,
+        "title": {
+            "status": 0,
+            "titleText": "",
+        },
+        "content": "",
+    }
+}
+
 export const __experimentalMotion = {
     "label": "Motion Effects",
     "vertical": {

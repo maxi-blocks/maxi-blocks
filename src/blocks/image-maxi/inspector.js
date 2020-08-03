@@ -39,6 +39,7 @@ import {
     __experimentalTransformControl,
     __experimentalClipPath,
     __experimentalEntranceAnimationControl,
+    __experimentalHoverEffectControl,
 } from '../../components';
 
 /**
@@ -111,6 +112,7 @@ const Inspector = props => {
             motion,
             transform,
             clipPath,
+            hover,
         },
         imageData,
         clientId,
@@ -596,6 +598,15 @@ const Inspector = props => {
                                                 <__experimentalMotionControl
                                                     motionOptions={motion}
                                                     onChange={motion => setAttributes({ motion })}
+                                                />
+                                            )
+                                        },
+                                        {
+                                            label: __('Hover Effects', 'maxi-blocks'),
+                                            content: (
+                                                <__experimentalHoverEffectControl
+                                                    hoverOptions={hover}
+                                                    onChange={hover => setAttributes({ hover })}
                                                 />
                                             )
                                         },

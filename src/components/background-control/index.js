@@ -615,8 +615,10 @@ const BackgroundControl = props => {
                 !disableClipPath &&
                 <__experimentalClipPath
                     clipPath={value.clipPath}
-                    onChange={val => {
-                        value.clipPath = val;
+                    svgPath={value.svgPath}
+                    onChange={(clipPath, svgPath) => {
+                        value.clipPath = clipPath;
+                        value.svgPath = svgPath;
                         onChange(JSON.stringify(value))
                     }}
                 />

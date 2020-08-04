@@ -79,6 +79,7 @@ const save = props => {
                 >
                     <__experimentalBackgroundDisplayer
                         backgroundOptions={background}
+                        uniqueID={uniqueID}
                     />
                     <__experimentalShapeDivider
                         shapeDividerOptions={shapeDivider}
@@ -106,6 +107,7 @@ const save = props => {
                 >
                     <__experimentalBackgroundDisplayer
                         backgroundOptions={background}
+                        uniqueID={uniqueID}
                     />
                     <__experimentalShapeDivider
                         shapeDividerOptions={shapeDivider}

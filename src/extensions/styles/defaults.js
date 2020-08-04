@@ -540,7 +540,8 @@ export const background = {
         "defaultGradient": "",
         "gradientAboveBackground": false
     },
-    "clipPath": ""
+    "clipPath": "",
+    'svgPath': ""
 };
 
 export const boxShadow = {

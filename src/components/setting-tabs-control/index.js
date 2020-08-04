@@ -10,6 +10,7 @@ const {
  * External dependencies
  */
 import classnames from 'classnames';
+import { isNil } from 'lodash';
 
 /**
  * Styles and icons
@@ -24,10 +25,12 @@ const SettingTabsControl = props => {
     const {
         items,
         disablePadding = false,
-        className
+        selectedTab = 0,
+        className,
+        onChange
     } = props;
 
-    const [tab, setTab] = useState(0);
+    const [tab, setTab] = useState(selectedTab);
 
     const classes = classnames(
         'maxi-settingstab-control',
@@ -57,7 +60,11 @@ const SettingTabsControl = props => {
                     items.map((item, i) => (
                         <Button
                             className='maxi-tabs-control__button'
-                            onClick={() => setTab(i)}
+                            onClick={() => {
+                                if(!isNil(onChange))
+                                    onChange(item.label);
+                                setTab(i);
+                            }}
                             aria-pressed={tab === i}
                         >
                             {item.label}

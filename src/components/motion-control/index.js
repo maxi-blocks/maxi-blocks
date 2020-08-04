@@ -19,6 +19,14 @@ import {
     __experimentalAdvancedRangeControl,
     __experimentalGroupInputControl
 } from '../../components';
+import {
+    verticalPresets,
+    horizontalPresets,
+    scalePresets,
+    rotatePresets,
+    fadePresets,
+    blurPresets,
+} from './utils';
 
 /**
  * External dependencies
@@ -31,71 +39,11 @@ import { isObject } from 'lodash';
  */
 import {
     motionVertical,
-    motionVerticalTop1,
-    motionVerticalTop2,
-    motionVerticalTop3,
-    motionVerticalTop4,
-    motionVerticalTop5,
-    motionVerticalDown1,
-    motionVerticalDown2,
-    motionVerticalDown3,
-    motionVerticalDown4,
-    motionVerticalDown5,
     motionHorizontal,
-    motionHorizontalLeft1,
-    motionHorizontalLeft2,
-    motionHorizontalLeft3,
-    motionHorizontalLeft4,
-    motionHorizontalLeft5,
-    motionHorizontalRight1,
-    motionHorizontalRight2,
-    motionHorizontalRight3,
-    motionHorizontalRight4,
-    motionHorizontalRight5,
     motionRotate,
-    motionRotateLeft1,
-    motionRotateLeft2,
-    motionRotateLeft3,
-    motionRotateLeft4,
-    motionRotateLeft5,
-    motionRotateRight1,
-    motionRotateRight2,
-    motionRotateRight3,
-    motionRotateRight4,
-    motionRotateRight5,
     motionScale,
-    motionScaleUp1,
-    motionScaleUp2,
-    motionScaleUp3,
-    motionScaleUp4,
-    motionScaleUp5,
-    motionScaleDown1,
-    motionScaleDown2,
-    motionScaleDown3,
-    motionScaleDown4,
-    motionScaleDown5,
     motionFade,
-    motionFadeIn1,
-    motionFadeIn2,
-    motionFadeIn3,
-    motionFadeIn4,
-    motionFadeIn5,
-    motionFadeOut1,
-    motionFadeOut2,
-    motionFadeOut3,
-    motionFadeOut4,
-    motionFadeOut5,
     motionBlur,
-    motionBlurIn1,
-    motionBlurIn2,
-    motionBlurIn3,
-    motionBlurIn4,
-    motionBlurIn5,
-    motionBlurOut1,
-    motionBlurOut2,
-    motionBlurOut3,
-    motionBlurOut4,
-    motionBlurOut5,
 } from '../../icons';
 
 /**
@@ -113,7 +61,7 @@ const MotionControl = props => {
         JSON.parse(motionOptions) :
         motionOptions;
 
-    let {
+    const {
         vertical: verticalOptions,
         horizontal: horizontalOptions,
         rotate: rotateOptions,
@@ -122,153 +70,9 @@ const MotionControl = props => {
         blur: blurOptions,
     } = value;
 
-    const verticalPresets = () => {
-        let response = [];
-        if(verticalOptions.direction === 'up') {
-            response = [
-                { label: <Icon icon={motionVerticalTop1} />, value: 'preset_1' },
-                { label: <Icon icon={motionVerticalTop2} />, value: 'preset_2' },
-                { label: <Icon icon={motionVerticalTop3} />, value: 'preset_3' },
-                { label: <Icon icon={motionVerticalTop4} />, value: 'preset_4' },
-                { label: <Icon icon={motionVerticalTop5} />, value: 'preset_5' },
-            ];
-        }
-        if(verticalOptions.direction === 'down') {
-            response = [
-                { label: <Icon icon={motionVerticalDown1} />, value: 'preset_6' },
-                { label: <Icon icon={motionVerticalDown2} />, value: 'preset_7' },
-                { label: <Icon icon={motionVerticalDown3} />, value: 'preset_8' },
-                { label: <Icon icon={motionVerticalDown4} />, value: 'preset_9' },
-                { label: <Icon icon={motionVerticalDown5} />, value: 'preset_10' },
-            ];
-        }
-
-        return response;
-    }
-
-    const horizontalPresets = () => {
-        let response = [];
-        if(horizontalOptions.direction === 'left') {
-            response = [
-                { label: <Icon icon={motionHorizontalLeft1} />, value: 'preset_1' },
-                { label: <Icon icon={motionHorizontalLeft2} />, value: 'preset_2' },
-                { label: <Icon icon={motionHorizontalLeft3} />, value: 'preset_3' },
-                { label: <Icon icon={motionHorizontalLeft4} />, value: 'preset_4' },
-                { label: <Icon icon={motionHorizontalLeft5} />, value: 'preset_5' },
-            ];
-        }
-        if(horizontalOptions.direction === 'right') {
-            response = [
-                { label: <Icon icon={motionHorizontalRight1} />, value: 'preset_6' },
-                { label: <Icon icon={motionHorizontalRight2} />, value: 'preset_7' },
-                { label: <Icon icon={motionHorizontalRight3} />, value: 'preset_8' },
-                { label: <Icon icon={motionHorizontalRight4} />, value: 'preset_9' },
-                { label: <Icon icon={motionHorizontalRight5} />, value: 'preset_10' },
-            ];
-        }
-
-        return response;
-    }
-
-    const scalePresets = () => {
-        let response = [];
-        if(scaleOptions.direction === 'up') {
-            response = [
-                { label: <Icon icon={motionScaleUp1} />, value: 'preset_1' },
-                { label: <Icon icon={motionScaleUp2} />, value: 'preset_2' },
-                { label: <Icon icon={motionScaleUp3} />, value: 'preset_3' },
-                { label: <Icon icon={motionScaleUp4} />, value: 'preset_4' },
-                { label: <Icon icon={motionScaleUp5} />, value: 'preset_5' },
-            ];
-        }
-        if(scaleOptions.direction === 'down') {
-            response = [
-                { label: <Icon icon={motionScaleDown1} />, value: 'preset_6' },
-                { label: <Icon icon={motionScaleDown2} />, value: 'preset_7' },
-                { label: <Icon icon={motionScaleDown3} />, value: 'preset_8' },
-                { label: <Icon icon={motionScaleDown4} />, value: 'preset_9' },
-                { label: <Icon icon={motionScaleDown5} />, value: 'preset_10' },
-            ];
-        }
-
-        return response;
-    }
-
-    const rotatePresets = () => {
-        let response = [];
-        if(rotateOptions.direction === 'left') {
-            response = [
-                { label: <Icon icon={motionRotateLeft1} />, value: 'preset_1' },
-                { label: <Icon icon={motionRotateLeft2} />, value: 'preset_2' },
-                { label: <Icon icon={motionRotateLeft3} />, value: 'preset_3' },
-                { label: <Icon icon={motionRotateLeft4} />, value: 'preset_4' },
-                { label: <Icon icon={motionRotateLeft5} />, value: 'preset_5' },
-            ];
-        }
-        if(rotateOptions.direction === 'right') {
-            response = [
-                { label: <Icon icon={motionRotateRight1} />, value: 'preset_6' },
-                { label: <Icon icon={motionRotateRight2} />, value: 'preset_7' },
-                { label: <Icon icon={motionRotateRight3} />, value: 'preset_8' },
-                { label: <Icon icon={motionRotateRight4} />, value: 'preset_9' },
-                { label: <Icon icon={motionRotateRight5} />, value: 'preset_10' },
-            ];
-        }
-
-        return response;
-    }
-
-    const fadePresets = () => {
-        let response = [];
-        if(fadeOptions.direction === 'in') {
-            response = [
-                { label: <Icon icon={motionFadeIn1} />, value: 'preset_1' },
-                { label: <Icon icon={motionFadeIn2} />, value: 'preset_2' },
-                { label: <Icon icon={motionFadeIn3} />, value: 'preset_3' },
-                { label: <Icon icon={motionFadeIn4} />, value: 'preset_4' },
-                { label: <Icon icon={motionFadeIn5} />, value: 'preset_5' },
-            ];
-        }
-        if(fadeOptions.direction === 'out') {
-            response = [
-                { label: <Icon icon={motionFadeOut1} />, value: 'preset_6' },
-                { label: <Icon icon={motionFadeOut2} />, value: 'preset_7' },
-                { label: <Icon icon={motionFadeOut3} />, value: 'preset_8' },
-                { label: <Icon icon={motionFadeOut4} />, value: 'preset_9' },
-                { label: <Icon icon={motionFadeOut5} />, value: 'preset_10' },
-            ];
-        }
-
-        return response;
-    }
-
-    const blurPresets = () => {
-        let response = [];
-        if(blurOptions.direction === 'in') {
-            response = [
-                { label: <Icon icon={motionBlurIn1} />, value: 'preset_1' },
-                { label: <Icon icon={motionBlurIn2} />, value: 'preset_2' },
-                { label: <Icon icon={motionBlurIn3} />, value: 'preset_3' },
-                { label: <Icon icon={motionBlurIn4} />, value: 'preset_4' },
-                { label: <Icon icon={motionBlurIn5} />, value: 'preset_5' },
-            ];
-        }
-        if(blurOptions.direction === 'out') {
-            response = [
-                { label: <Icon icon={motionBlurOut1} />, value: 'preset_6' },
-                { label: <Icon icon={motionBlurOut2} />, value: 'preset_7' },
-                { label: <Icon icon={motionBlurOut3} />, value: 'preset_8' },
-                { label: <Icon icon={motionBlurOut4} />, value: 'preset_9' },
-                { label: <Icon icon={motionBlurOut5} />, value: 'preset_10' },
-            ];
-        }
-
-        return response;
-    }
-
     const [motionStatus, setMotionStatus] = useState('vertical');
 
-    let classes = classnames(
+    const classes = classnames(
         'maxi-motion-control',
         className,
     );
@@ -277,7 +81,6 @@ const MotionControl = props => {
         <div className={classes}>
             <div className='maxi-fancy-radio-control'>
                 <RadioControl
-                    label=''
                     selected={motionStatus}
                     options={
                         [
@@ -298,7 +101,7 @@ const MotionControl = props => {
                     <div className='maxi-fancy-radio-control'>
                         <RadioControl
                             label={__('Enable Vertical', 'maxi-block')}
-                            selected={parseInt(verticalOptions.status)}
+                            selected={verticalOptions.status}
                             options={
                                 [
                                     { label: __('Yes', 'maxi-block'), value: 1 },
@@ -306,13 +109,13 @@ const MotionControl = props => {
                                 ]
                             }
                             onChange={val => {
-                                verticalOptions.status = val;
+                                verticalOptions.status = parseInt(val);
                                 onChange(JSON.stringify(value));
                             }}
                         />
                     </div>
                     {
-                    !!parseInt(verticalOptions.status) &&
+                    !!verticalOptions.status &&
                         <Fragment>
                             <SelectControl
                                 label={__('Direction', 'maxi-blocks')}
@@ -330,7 +133,7 @@ const MotionControl = props => {
                                 <RadioControl
                                     label=''
                                     selected={verticalOptions.preset}
-                                    options={verticalPresets()}
+                                    options={verticalPresets(verticalOptions)}
                                     onChange={val => {
                                         verticalOptions.preset = val;
                                         verticalOptions.viewport = verticalOptions.presets[verticalOptions.preset].viewport;
@@ -364,7 +167,7 @@ const MotionControl = props => {
                     <div className='maxi-fancy-radio-control'>
                         <RadioControl
                             label={__('Enable Horizontal', 'maxi-block')}
-                            selected={parseInt(horizontalOptions.status)}
+                            selected={horizontalOptions.status}
                             options={
                                 [
                                     { label: __('Yes', 'maxi-block'), value: 1 },
@@ -372,13 +175,13 @@ const MotionControl = props => {
                                 ]
                             }
                             onChange={val => {
-                                horizontalOptions.status = val;
+                                horizontalOptions.status = parseInt(val);
                                 onChange(JSON.stringify(value));
                             }}
                         />
                     </div>
                     {
-                    !!parseInt(horizontalOptions.status) &&
+                    !!horizontalOptions.status &&
                         <Fragment>
                             <SelectControl
                                 label={__('Direction', 'maxi-blocks')}
@@ -396,7 +199,7 @@ const MotionControl = props => {
                                 <RadioControl
                                     label=''
                                     selected={horizontalOptions.preset}
-                                    options={horizontalPresets()}
+                                    options={horizontalPresets(horizontalOptions)}
                                     onChange={val => {
                                         horizontalOptions.preset = val;
                                         horizontalOptions.viewport = horizontalOptions.presets[horizontalOptions.preset].viewport;
@@ -430,7 +233,7 @@ const MotionControl = props => {
                     <div className='maxi-fancy-radio-control'>
                         <RadioControl
                             label={__('Enable Rotate', 'maxi-block')}
-                            selected={parseInt(rotateOptions.status)}
+                            selected={rotateOptions.status}
                             options={
                                 [
                                     { label: __('Yes', 'maxi-block'), value: 1 },
@@ -438,13 +241,13 @@ const MotionControl = props => {
                                 ]
                             }
                             onChange={val => {
-                                rotateOptions.status = val;
+                                rotateOptions.status = parseInt(val);
                                 onChange(JSON.stringify(value));
                             }}
                         />
                     </div>
                     {
-                    !!parseInt(rotateOptions.status) &&
+                    !!rotateOptions.status &&
                         <Fragment>
                             <SelectControl
                                 label={__('Direction', 'maxi-blocks')}
@@ -462,7 +265,7 @@ const MotionControl = props => {
                                 <RadioControl
                                     label=''
                                     selected={rotateOptions.preset}
-                                    options={rotatePresets()}
+                                    options={rotatePresets(rotateOptions)}
                                     onChange={val => {
                                         rotateOptions.preset = val;
                                         rotateOptions.viewport = rotateOptions.presets[rotateOptions.preset].viewport;
@@ -496,7 +299,7 @@ const MotionControl = props => {
                     <div className='maxi-fancy-radio-control'>
                         <RadioControl
                             label={__('Enable Scale', 'maxi-block')}
-                            selected={parseInt(scaleOptions.status)}
+                            selected={scaleOptions.status}
                             options={
                                 [
                                     { label: __('Yes', 'maxi-block'), value: 1 },
@@ -504,13 +307,13 @@ const MotionControl = props => {
                                 ]
                             }
                             onChange={val => {
-                                scaleOptions.status = val;
+                                scaleOptions.status = parseInt(val);
                                 onChange(JSON.stringify(value));
                             }}
                         />
                     </div>
                     {
-                    !!parseInt(scaleOptions.status) &&
+                    !!scaleOptions.status &&
                         <Fragment>
                             <SelectControl
                                 label={__('Direction', 'maxi-blocks')}
@@ -528,7 +331,7 @@ const MotionControl = props => {
                                 <RadioControl
                                     label=''
                                     selected={scaleOptions.preset}
-                                    options={scalePresets()}
+                                    options={scalePresets(scaleOptions)}
                                     onChange={val => {
                                         scaleOptions.preset = val;
                                         scaleOptions.viewport = scaleOptions.presets[scaleOptions.preset].viewport;
@@ -563,7 +366,7 @@ const MotionControl = props => {
                     <div className='maxi-fancy-radio-control'>
                         <RadioControl
                             label={__('Enable Fade', 'maxi-block')}
-                            selected={parseInt(fadeOptions.status)}
+                            selected={fadeOptions.status}
                             options={
                                 [
                                     { label: __('Yes', 'maxi-block'), value: 1 },
@@ -571,13 +374,13 @@ const MotionControl = props => {
                                 ]
                             }
                             onChange={val => {
-                                fadeOptions.status = val;
+                                fadeOptions.status = parseInt(val);
                                 onChange(JSON.stringify(value));
                             }}
                         />
                     </div>
                     {
-                    !!parseInt(fadeOptions.status) &&
+                    !!fadeOptions.status &&
                         <Fragment>
                             <SelectControl
                                 label={__('Direction', 'maxi-blocks')}
@@ -595,7 +398,7 @@ const MotionControl = props => {
                                 <RadioControl
                                     label=''
                                     selected={fadeOptions.preset}
-                                    options={fadePresets()}
+                                    options={fadePresets(fadeOptions)}
                                     onChange={val => {
                                         fadeOptions.preset = val;
                                         fadeOptions.viewport = fadeOptions.presets[fadeOptions.preset].viewport;
@@ -630,7 +433,7 @@ const MotionControl = props => {
                     <div className='maxi-fancy-radio-control'>
                         <RadioControl
                             label={__('Enable Blur', 'maxi-block')}
-                            selected={parseInt(blurOptions.status)}
+                            selected={blurOptions.status}
                             options={
                                 [
                                     { label: __('Yes', 'maxi-block'), value: 1 },
@@ -638,13 +441,13 @@ const MotionControl = props => {
                                 ]
                             }
                             onChange={val => {
-                                blurOptions.status = val;
+                                blurOptions.status = parseInt(val);
                                 onChange(JSON.stringify(value));
                             }}
                         />
                     </div>
                     {
-                    !!parseInt(blurOptions.status) &&
+                    !!blurOptions.status &&
                         <Fragment>
                             <SelectControl
                                 label={__('Direction', 'maxi-blocks')}
@@ -662,7 +465,7 @@ const MotionControl = props => {
                                 <RadioControl
                                     label=''
                                     selected={blurOptions.preset}
-                                    options={blurPresets()}
+                                    options={blurPresets(blurOptions)}
                                     onChange={val => {
                                         blurOptions.preset = val;
                                         blurOptions.viewport = blurOptions.presets[blurOptions.preset].viewport;

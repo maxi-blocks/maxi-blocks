@@ -1403,7 +1403,7 @@ export const __experimentalMotion = {
         "status": 0,
         "direction": "up",
         "viewport": [0, 50, 100],
-        "amounts": [0, 0, 0],
+        "amounts": [0, 100, 0],
         "preset": "",
         "presets": {
             "preset_1": {
@@ -1452,7 +1452,7 @@ export const __experimentalMotion = {
         "status": 0,
         "direction": "left",
         "viewport": [0, 50, 100],
-        "amounts": [0, 0, 0],
+        "amounts": [0, 100, 0],
         "preset": "",
         "presets": {
             "preset_1": {
@@ -1501,7 +1501,7 @@ export const __experimentalMotion = {
         "status": 0,
         "direction": "left",
         "viewport": [0, 50, 100],
-        "amounts": [0, 0, 0],
+        "amounts": [0, 30, 0],
         "preset": "",
         "presets": {
             "preset_1": {
@@ -1550,7 +1550,7 @@ export const __experimentalMotion = {
         "status": 0,
         "direction": "up",
         "viewport": [0, 50, 100],
-        "amounts": [0, 0, 0],
+        "amounts": ['', 0, ''],
         "preset": "",
         "presets": {
             "preset_1": {
@@ -1599,7 +1599,7 @@ export const __experimentalMotion = {
         "status": 0,
         "direction": "in",
         "viewport": [0, 50, 100],
-        "amounts": [0, 0, 0],
+        "amounts": ['', 0, ''],
         "preset": "",
         "presets": {
             "preset_1": {
@@ -1648,7 +1648,7 @@ export const __experimentalMotion = {
         "status": 0,
         "direction": "in",
         "viewport": [0, 50, 100],
-        "amounts": [0, 0, 0],
+        "amounts": ['', 2, ''],
         "preset": "",
         "presets": {
             "preset_1": {

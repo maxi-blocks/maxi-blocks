@@ -7,7 +7,10 @@ const { __ } = wp.i18n;
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject } from 'lodash';
+import {
+    isObject,
+    trim,
+} from 'lodash';
 
 /**
  * Styles and icons
@@ -33,7 +36,7 @@ const GroupInputControl = props => {
         JSON.parse(options) :
         options;
 
-    let classes = classnames(
+    const classes = classnames(
         'maxi-group-input-control',
         className,
     );
@@ -43,10 +46,10 @@ const GroupInputControl = props => {
             <div className='maxi-group-input-control__input'>
                 <input
                     type="number"
-                    min={min}
-                    max={max}
-                    step={step}
-                    value={value[0]}
+                    min={trim(min)}
+                    max={trim(max)}
+                    step={trim(step)}
+                    value={trim(value[0])}
                     onChange={e => {
                         value[0] = e.target.value;
                         onChange(JSON.stringify(value));
@@ -57,10 +60,10 @@ const GroupInputControl = props => {
             <div className='maxi-group-input-control__input'>
                 <input
                     type="number"
-                    min={min}
-                    max={max}
-                    step={step}
-                    value={value[1]}
+                    min={trim(min)}
+                    max={trim(max)}
+                    step={trim(step)}
+                    value={trim(value[1])}
                     onChange={e => {
                         value[1] = e.target.value;
                         onChange(JSON.stringify(value));
@@ -71,10 +74,10 @@ const GroupInputControl = props => {
             <div className='maxi-group-input-control__input'>
                 <input
                     type="number"
-                    min={min}
-                    max={max}
-                    step={step}
-                    value={value[2]}
+                    min={trim(min)}
+                    max={trim(max)}
+                    step={trim(step)}
+                    value={trim(value[2])}
                     onChange={e => {
                         value[2] = e.target.value;
                         onChange(JSON.stringify(value));

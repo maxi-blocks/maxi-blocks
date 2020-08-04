@@ -519,18 +519,18 @@ export const getTransfromObject = transform => {
 
 export const setBackgroundStyles = (target, background, backgroundHover) => {
     return {
-        [`${target} .maxi-background`]: {
+        [`${target}>.maxi-background-displayer`]: {
             background: { ...getBackgroundObject(JSON.parse(background)) }
         },
-        [`${target}:hover .maxi-background`]: {
+        [`${target}:hover>.maxi-background-displayer`]: {
             backgroundHover: { ...getBackgroundObject(JSON.parse(backgroundHover)) }
         },
-        [`${target} .maxi-background .maxi-background__video-player video`]: {
+        [`${target}>.maxi-background-displayer .maxi-background-displayer__video-player video`]: {
             videoBackground: { 
                 ...getVideoBackgroundObject(JSON.parse(background).videoOptions) 
             }
         },
-        [`${target}:hover .maxi-background .maxi-background__video-player video`]: {
+        [`${target}:hover>.maxi-background-displayer .maxi-background-displayer__video-player video`]: {
             videoBackgroundHover: { 
                 ...getVideoBackgroundObject(JSON.parse(backgroundHover).videoOptions) 
             }

@@ -298,5 +298,10 @@
         "type": "",
         "duration": 1,
         "delay": 1
+    },
+    "parallax": {
+        "status": 0,
+        "speed": 2,
+        "direction": "up"
     }
 }

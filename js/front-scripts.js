@@ -43,13 +43,22 @@ motionElems.forEach(function(elem) {
 		// Parallax Effect
 		if("parallax" in motionData) {
 
-			const parallaxElem = document.querySelector(".maxi-motion-effect-"+ motionID +"");
+			const parallaxElem = document.querySelector(`.maxi-motion-effect-${motionID} > .maxi-background-displayer`);
 			const parallaxStatus = motionData.parallax.status;
+			const parallaxSpeed = motionData.parallax.speed;
+			const parallaxDirection = motionData.parallax.direction;
+
+			const getBackgroundPosition = () => {
+				if(parallaxDirection === 'up')
+					return "50% "+ -innerHeight * parallaxSpeed +"px"
+				else
+					return "50% "+ -innerHeight / (11 - parallaxSpeed) +"px"
+			}
 
 			if(!!parseInt(parallaxStatus)) {
 
 				gsap.to(parallaxElem, {
-					backgroundPosition: "50% "+ -innerHeight / 2 +"px",
+					backgroundPosition: getBackgroundPosition(),
 					ease: "none",
 					scrollTrigger: {
 						trigger: parallaxElem,

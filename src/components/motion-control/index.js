@@ -100,12 +100,12 @@ const MotionControl = props => {
                 <Fragment>
                     <div className='maxi-fancy-radio-control'>
                         <RadioControl
-                            label={__('Enable Vertical', 'maxi-block')}
+                            label={__('Enable Vertical', 'maxi-blocks')}
                             selected={verticalOptions.status}
                             options={
                                 [
-                                    { label: __('Yes', 'maxi-block'), value: 1 },
-                                    { label: __('No', 'maxi-block'), value: 0 },
+                                    { label: __('Yes', 'maxi-blocks'), value: 1 },
+                                    { label: __('No', 'maxi-blocks'), value: 0 },
                                 ]
                             }
                             onChange={val => {
@@ -166,12 +166,12 @@ const MotionControl = props => {
                 <Fragment>
                     <div className='maxi-fancy-radio-control'>
                         <RadioControl
-                            label={__('Enable Horizontal', 'maxi-block')}
+                            label={__('Enable Horizontal', 'maxi-blocks')}
                             selected={horizontalOptions.status}
                             options={
                                 [
-                                    { label: __('Yes', 'maxi-block'), value: 1 },
-                                    { label: __('No', 'maxi-block'), value: 0 },
+                                    { label: __('Yes', 'maxi-blocks'), value: 1 },
+                                    { label: __('No', 'maxi-blocks'), value: 0 },
                                 ]
                             }
                             onChange={val => {
@@ -232,12 +232,12 @@ const MotionControl = props => {
                 <Fragment>
                     <div className='maxi-fancy-radio-control'>
                         <RadioControl
-                            label={__('Enable Rotate', 'maxi-block')}
+                            label={__('Enable Rotate', 'maxi-blocks')}
                             selected={rotateOptions.status}
                             options={
                                 [
-                                    { label: __('Yes', 'maxi-block'), value: 1 },
-                                    { label: __('No', 'maxi-block'), value: 0 },
+                                    { label: __('Yes', 'maxi-blocks'), value: 1 },
+                                    { label: __('No', 'maxi-blocks'), value: 0 },
                                 ]
                             }
                             onChange={val => {
@@ -298,12 +298,12 @@ const MotionControl = props => {
                 <Fragment>
                     <div className='maxi-fancy-radio-control'>
                         <RadioControl
-                            label={__('Enable Scale', 'maxi-block')}
+                            label={__('Enable Scale', 'maxi-blocks')}
                             selected={scaleOptions.status}
                             options={
                                 [
-                                    { label: __('Yes', 'maxi-block'), value: 1 },
-                                    { label: __('No', 'maxi-block'), value: 0 },
+                                    { label: __('Yes', 'maxi-blocks'), value: 1 },
+                                    { label: __('No', 'maxi-blocks'), value: 0 },
                                 ]
                             }
                             onChange={val => {
@@ -365,12 +365,12 @@ const MotionControl = props => {
                 <Fragment>
                     <div className='maxi-fancy-radio-control'>
                         <RadioControl
-                            label={__('Enable Fade', 'maxi-block')}
+                            label={__('Enable Fade', 'maxi-blocks')}
                             selected={fadeOptions.status}
                             options={
                                 [
-                                    { label: __('Yes', 'maxi-block'), value: 1 },
-                                    { label: __('No', 'maxi-block'), value: 0 },
+                                    { label: __('Yes', 'maxi-blocks'), value: 1 },
+                                    { label: __('No', 'maxi-blocks'), value: 0 },
                                 ]
                             }
                             onChange={val => {
@@ -432,12 +432,12 @@ const MotionControl = props => {
                 <Fragment>
                     <div className='maxi-fancy-radio-control'>
                         <RadioControl
-                            label={__('Enable Blur', 'maxi-block')}
+                            label={__('Enable Blur', 'maxi-blocks')}
                             selected={blurOptions.status}
                             options={
                                 [
-                                    { label: __('Yes', 'maxi-block'), value: 1 },
-                                    { label: __('No', 'maxi-block'), value: 0 },
+                                    { label: __('Yes', 'maxi-blocks'), value: 1 },
+                                    { label: __('No', 'maxi-blocks'), value: 0 },
                                 ]
                             }
                             onChange={val => {

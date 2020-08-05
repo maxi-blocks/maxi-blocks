@@ -210,12 +210,12 @@ const ShapeDividerControl = props => {
                 <Fragment>
                     <div className='maxi-fancy-radio-control'>
                         <RadioControl
-                            label={__('Enable Scroll Effect', 'maxi-block')}
+                            label={__('Enable Scroll Effect', 'maxi-blocks')}
                             selected={parseInt(shapeDividerTopOptions.effects.status)}
                             options={
                                 [
-                                    { label: __('No', 'maxi-block'), value: 0 },
-                                    { label: __('Yes', 'maxi-block'), value: 1 },
+                                    { label: __('No', 'maxi-blocks'), value: 0 },
+                                    { label: __('Yes', 'maxi-blocks'), value: 1 },
                                 ]
                             }
                             onChange={val => {
@@ -291,12 +291,12 @@ const ShapeDividerControl = props => {
                 <Fragment>
                     <div className='maxi-fancy-radio-control'>
                         <RadioControl
-                            label={__('Enable Scroll Effect', 'maxi-block')}
+                            label={__('Enable Scroll Effect', 'maxi-blocks')}
                             selected={parseInt(shapeDividerBottomOptions.effects.status)}
                             options={
                                 [
-                                    { label: __('No', 'maxi-block'), value: 0 },
-                                    { label: __('Yes', 'maxi-block'), value: 1 },
+                                    { label: __('No', 'maxi-blocks'), value: 0 },
+                                    { label: __('Yes', 'maxi-blocks'), value: 1 },
                                 ]
                             }
                             onChange={val => {

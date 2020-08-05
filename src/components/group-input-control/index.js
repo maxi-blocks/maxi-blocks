@@ -46,9 +46,9 @@ const GroupInputControl = props => {
             <div className='maxi-group-input-control__input'>
                 <input
                     type="number"
-                    min={trim(min)}
-                    max={trim(max)}
-                    step={trim(step)}
+                    min={min}
+                    max={max}
+                    step={step}
                     value={trim(value[0])}
                     onChange={e => {
                         value[0] = e.target.value;
@@ -60,9 +60,9 @@ const GroupInputControl = props => {
             <div className='maxi-group-input-control__input'>
                 <input
                     type="number"
-                    min={trim(min)}
-                    max={trim(max)}
-                    step={trim(step)}
+                    min={min}
+                    max={max}
+                    step={step}
                     value={trim(value[1])}
                     onChange={e => {
                         value[1] = e.target.value;
@@ -74,9 +74,9 @@ const GroupInputControl = props => {
             <div className='maxi-group-input-control__input'>
                 <input
                     type="number"
-                    min={trim(min)}
-                    max={trim(max)}
-                    step={trim(step)}
+                    min={min}
+                    max={max}
+                    step={step}
                     value={trim(value[2])}
                     onChange={e => {
                         value[2] = e.target.value;

@@ -1,9 +1,4 @@
 /**
- * External dependencies
- */
-import { isObject } from 'lodash';
-
-/**
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
@@ -17,7 +12,20 @@ const { Fragment } = wp.element;
 /**
  * Internal dependencies
  */
-import SizeControl from '../size-control';
+import {
+    TypographyControl,
+    SizeControl,
+    BackgroundControl,
+    BorderControl,
+    __experimentalOpacityControl,
+    __experimentalAxisControl,
+} from '../../components';
+
+/**
+ * External dependencies
+ */
+import { isObject } from 'lodash';
+import classnames from 'classnames';
 
 /**
  * Component
@@ -25,6 +33,7 @@ import SizeControl from '../size-control';
 const HoverEffectControl = props => {
 
     const {
+        className,
         hoverOptions,
         onChange,
     } = props;
@@ -33,17 +42,18 @@ const HoverEffectControl = props => {
         JSON.parse(hoverOptions) :
         hoverOptions;
 
-    let {
-        basic: basicOptions,
-        text: textOptions,
-    } = value;
+    const classes = classnames(
+        'maxi-hover-effect-control',
+        className
+    );
+
+    const { settings: hoverSettings } = value;
 
     return (
-        <div className="maxi-hover-effect-control">
+        <div className={classes}>
             <div className='maxi-fancy-radio-control'>
                 <RadioControl
-                    label=''
-                    selected={value.type}
+                    selected={hoverSettings.type}
                     options={
                         [
                             { label: __('None', 'maxi-blocks'), value: 'none' },
@@ -52,17 +62,17 @@ const HoverEffectControl = props => {
                         ]
                     }
                     onChange={val => {
-                        value.type = val;
+                        hoverSettings.type = val;
                         onChange(JSON.stringify(value));
                     }}
                 />
             </div>
             {
-                value.type === 'basic' &&
+                hoverSettings.type === 'basic' &&
                 <Fragment>
                     <SelectControl
                         label={__('Effect Type', 'maxi-blocks')}
-                        value={basicOptions.type}
+                        value={hoverSettings.effectType}
                         options={[
                             { label: 'None', value: 'none' },
                             { label: 'Zoom In', value: 'zoom-in' },
@@ -74,7 +84,7 @@ const HoverEffectControl = props => {
                             { label: 'Clear Gray Scale', value: 'clear-greay-scale' },
                         ]}
                         onChange={val => {
-                            basicOptions.type = val;
+                            hoverSettings.effectType = val;
                             onChange(JSON.stringify(value));
                         }}
                     />
@@ -85,122 +95,38 @@ const HoverEffectControl = props => {
                         max={10}
                         initial={1}
                         step={0.1}
-                        value={basicOptions.duration}
+                        value={hoverSettings.duration}
                         onChangeValue={val => {
-                            basicOptions.duration = val;
+                            hoverSettings.duration = val;
                             onChange(JSON.stringify(value));
                         }}
                     />
                 </Fragment>
             }
             {
-                value.type === 'text' &&
+                hoverSettings.type === 'text' &&
                 <Fragment>
                     <SelectControl
                         label={__('Animation Type', 'maxi-blocks')}
-                        value={textOptions.type}
+                        value={hoverSettings.effectType}
                         options={[
-                            { label: 'None', value: '' },
-                            { label: 'Bounce', value: 'bounce' },
-                            { label: 'Flash', value: 'flash' },
-                            { label: 'Pulse', value: 'pulse' },
-                            { label: 'Rubberband', value: 'rubberBand' },
-                            { label: 'Shakex', value: 'shakeX' },
-                            { label: 'Shakey', value: 'shakeY' },
-                            { label: 'Headshake', value: 'headShake' },
-                            { label: 'Swing', value: 'swing' },
-                            { label: 'Tada', value: 'tada' },
-                            { label: 'Wobble', value: 'wobble' },
-                            { label: 'Jello', value: 'jello' },
-                            { label: 'Heart Beat', value: 'heartBeat' },
-                            { label: 'Back In Down', value: 'backInDown' },
-                            { label: 'Back In Left', value: 'backInLeft' },
-                            { label: 'Back In Right', value: 'backInRight' },
-                            { label: 'Back In Up', value: 'backInUp' },
-                            { label: 'Backout Down', value: 'backOutDown' },
-                            { label: 'Backout Left', value: 'backOutLeft' },
-                            { label: 'Backout Right', value: 'backOutRight' },
-                            { label: 'Backout Up', value: 'backOutUp' },
-                            { label: 'Bounce In', value: 'bounceIn' },
-                            { label: 'Bounce In Down', value: 'bounceInDown' },
-                            { label: 'Bounce In Left', value: 'bounceInLeft' },
-                            { label: 'Bounce In Right', value: 'bounceInRight' },
-                            { label: 'Bounce In Up', value: 'bounceInUp' },
-                            { label: 'Bounce Out', value: 'bounceOut' },
-                            { label: 'Bounce Out Down', value: 'bounceOutDown' },
-                            { label: 'Bounce Out Left', value: 'bounceOutLeft' },
-                            { label: 'Bounce Out Right', value: 'bounceOutRight' },
-                            { label: 'Bounce Out Up', value: 'bounceOutUp' },
-                            { label: 'Fade In ', value: 'fadeIn' },
-                            { label: 'Fade In Down', value: 'fadeInDown' },
-                            { label: 'Fade In Down Big', value: 'fadeInDownBig' },
-                            { label: 'Fade In Left', value: 'fadeInLeft' },
-                            { label: 'Fade In Left Big', value: 'fadeInLeftBig' },
-                            { label: 'Fade In Right', value: 'fadeInRight' },
-                            { label: 'Fade In Right Big', value: 'fadeInRightBig' },
-                            { label: 'Fade In Up', value: 'fadeInUp' },
-                            { label: 'Fade In Up Big', value: 'fadeInUpBig' },
-                            { label: 'Fade In Top Left', value: 'fadeInTopLeft' },
-                            { label: 'Fade In Top Right', value: 'fadeInTopRight' },
-                            { label: 'Fade In Bottom Left', value: 'fadeInBottomLeft' },
-                            { label: 'Fade In Bottom Right', value: 'fadeInBottomRight' },
-                            { label: 'Fade Out', value: 'fadeOut' },
-                            { label: 'Fade Out Down', value: 'fadeOutDown' },
-                            { label: 'Fade Out Down Big', value: 'fadeOutDownBig' },
-                            { label: 'Fade Out Left', value: 'fadeOutLeft' },
-                            { label: 'Fade Out Left Big', value: 'fadeOutLeftBig' },
-                            { label: 'Fade Out Right', value: 'fadeOutRight' },
-                            { label: 'Fade Out Right Big', value: 'fadeOutRightBig' },
-                            { label: 'Fade Out Up', value: 'fadeOutUp' },
-                            { label: 'Fade Out Up Big', value: 'fadeOutUpBig' },
-                            { label: 'Fade Out Top Left', value: 'fadeOutTopLeft' },
-                            { label: 'Fade Out Top Right', value: 'fadeOutTopRight' },
-                            { label: 'Fade Out Bottom Right', value: 'fadeOutBottomRight' },
-                            { label: 'Fade Out Bottom Left', value: 'fadeOutBottomLeft' },
-                            { label: 'Flip', value: 'flip' },
-                            { label: 'Flip In X', value: 'flipInX' },
-                            { label: 'Flip In Y', value: 'flipInY' },
-                            { label: 'Flip Out X', value: 'flipOutX' },
-                            { label: 'Flip Out Y', value: 'flipOutY' },
-                            { label: 'Light Speed In Right', value: 'lightSpeedInRight' },
-                            { label: 'Light Speed In Left', value: 'lightSpeedInLeft' },
-                            { label: 'Light Speed Out Right', value: 'lightSpeedOutRight' },
-                            { label: 'Light Speed Out Left', value: 'lightSpeedOutLeft' },
-                            { label: 'Rotate In', value: 'rotateIn' },
-                            { label: 'Rotate In Down Left', value: 'rotateInDownLeft' },
-                            { label: 'Rotate In Down Right', value: 'rotateInDownRight' },
-                            { label: 'Rotate In Up Left', value: 'rotateInUpLeft' },
-                            { label: 'Rotate In Up Right', value: 'rotateInUpRight' },
-                            { label: 'Rotate Out', value: 'rotateOut' },
-                            { label: 'Rotate Out Down Left', value: 'rotateOutDownLeft' },
-                            { label: 'Rotate Out Down Right', value: 'rotateOutDownRight' },
-                            { label: 'Rotate Out Up Left', value: 'rotateOutUpLeft' },
-                            { label: 'Rotate Out Up Right', value: 'rotateOutUpRight' },
-                            { label: 'Hinge', value: 'hinge' },
-                            { label: 'Jack In The Box', value: 'jackInTheBox' },
-                            { label: 'Roll In', value: 'rollIn' },
-                            { label: 'Roll Out', value: 'rollOut' },
-                            { label: 'Zoom In', value: 'zoomIn' },
-                            { label: 'Zoom In Down', value: 'zoomInDown' },
-                            { label: 'Zoom In Left', value: 'zoomInLeft' },
-                            { label: 'Zoom In Right', value: 'zoomInRight' },
-                            { label: 'Zoom In Up', value: 'zoomInUp' },
-                            { label: 'Zoom Out', value: 'zoomOut' },
-                            { label: 'Zoom Out Down', value: 'zoomOutDown' },
-                            { label: 'Zoom Out Left', value: 'zoomOutLeft' },
-                            { label: 'Zoom Out Right', value: 'zoomOutRight' },
-                            { label: 'Zoom Out Up', value: 'zoomOutUp' },
-                            { label: 'Slide In Down', value: 'slideInDown' },
-                            { label: 'Slide In Left', value: 'slideInLeft' },
-                            { label: 'Slide In Right', value: 'slideInRight' },
-                            { label: 'Slide In Up', value: 'slideInUp' },
-                            { label: 'Slide Out Down', value: 'slideOutDown' },
-                            { label: 'Slide Out Left', value: 'slideOutLeft' },
-                            { label: 'Slide Out Right', value: 'slideOutRight' },
-                            { label: 'Slide Out Up', value: 'slideOutUp' }
+                            { label: 'None', value: 'none' },
+                            { label: 'Fade', value: 'fade' },
+                            { label: 'Push Up', value: 'push-up' },
+                            { label: 'Push Right', value: 'push-right' },
+                            { label: 'Push Bottom', value: 'push-bottom' },
+                            { label: 'Push Left', value: 'push-left' },
+                            { label: 'Slide Up', value: 'slide-up' },
+                            { label: 'Slide Right', value: 'slide-right' },
+                            { label: 'Slide Bottom', value: 'slide-bottom' },
+                            { label: 'Slide Left', value: 'slide-left' },
+                            { label: 'Hinge Up', value: 'hinge-up' },
+                            { label: 'Hinge Right', value: 'hinge-right' },
+                            { label: 'Hinge Bottom', value: 'hinge-bottom' },
+                            { label: 'Hinge Left', value: 'hinge-left' },
                         ]}
                         onChange={val => {
-                            textOptions.type = val;
+                            hoverSettings.effectType = val;
                             onChange(JSON.stringify(value));
                         }}
                     />
@@ -211,20 +137,25 @@ const HoverEffectControl = props => {
                         max={10}
                         initial={1}
                         step={0.1}
-                        value={textOptions.duration}
+                        value={hoverSettings.duration}
                         onChangeValue={val => {
-                            textOptions.duration = val;
+                            hoverSettings.duration = val;
                             onChange(JSON.stringify(value));
                         }}
                     />
                     <TextareaControl
-                        label="Hover Title Text"
-                        value={textOptions.title.textTitle}
+                        placeholder={__('Add your Hover Title Text here', 'maxi-blocks')}
+                        value={value.titleText}
+                        onChange={val => {
+                            value.titleText = val;
+                            onChange(JSON.stringify(value));
+                        }}
                     />
+                    <hr/>
                     <div className='maxi-fancy-radio-control'>
                         <RadioControl
-                            label={__('Enable Custom Style (Title Text)', 'maxi-block')}
-                            selected={parseInt(textOptions.title.status)}
+                            label={__('Custom Hover Text', 'maxi-block')}
+                            selected={value.titleStatus}
                             options={
                                 [
                                     { label: __('No', 'maxi-block'), value: 0 },
@@ -232,19 +163,156 @@ const HoverEffectControl = props => {
                                 ]
                             }
                             onChange={val => {
-                                textOptions.title.status = val;
+                                value.titleStatus = parseInt(val);
                                 onChange(JSON.stringify(value));
                             }}
                         />
                     </div>
                     {
-                    !!parseInt(textOptions.title.status) &&
-                        <Fragment><p>settings</p></Fragment>
+                    !!value.titleStatus &&
+                        <TypographyControl
+                            typography={value.titleTypography}
+                            hideAlignment
+                            onChange={val => {
+                                value.titleTypography = val;
+                                onChange(JSON.stringify(value));
+                            }}
+                        />
                     }
                     <TextareaControl
-                        label="Hover Content Text"
-                        value={textOptions.content}
+                    placeholder={__('Add your Hover Content Text here', 'maxi-blocks')}
+                        value={value.contentText}
+                        onChange={val => {
+                            value.contentText = val;
+                            onChange(JSON.stringify(value));
+                        }}
                     />
+                    <hr/>
+                    <div className='maxi-fancy-radio-control'>
+                        <RadioControl
+                            label={__('Custom Content Text', 'maxi-block')}
+                            selected={value.contentStatus}
+                            options={
+                                [
+                                    { label: __('No', 'maxi-block'), value: 0 },
+                                    { label: __('Yes', 'maxi-block'), value: 1 },
+                                ]
+                            }
+                            onChange={val => {
+                                value.contentStatus = parseInt(val);
+                                onChange(JSON.stringify(value));
+                            }}
+                        />
+                    </div>
+                    {
+                    !!value.contentStatus &&
+                        <TypographyControl
+                            typography={value.contentTypography}
+                            hideAlignment
+                            onChange={val => {
+                                value.contentTypography = val;
+                                onChange(JSON.stringify(value));
+                            }}
+                        />
+                    }
+                    <hr/>
+                    <__experimentalOpacityControl
+                        opacity={value.opacity}
+                        onChange={val => {
+                            value.opacity = val;
+                            onChange(JSON.stringify(value));
+                        }}
+                    />
+                    <hr/>
+                    <BackgroundControl
+                        backgroundOptions={value.background}
+                        onChange={val => {
+                            value.background = val;
+                            onChange(JSON.stringify(value))
+                        }}
+                        disableImage
+                        disableVideo
+                    />
+                    <div className='maxi-fancy-radio-control'>
+                        <RadioControl
+                            label={__('Custom Border', 'maxi-block')}
+                            selected={value.border.status}
+                            options={
+                                [
+                                    { label: __('No', 'maxi-block'), value: 0 },
+                                    { label: __('Yes', 'maxi-block'), value: 1 },
+                                ]
+                            }
+                            onChange={val => {
+                                value.border.status = parseInt(val);
+                                onChange(JSON.stringify(value));
+                            }}
+                        />
+                    </div>
+                    {
+                    !!value.border.status &&
+                        <BorderControl
+                            border={value.border}
+                            onChange={val => {
+                                value.border = val;
+                                onChange(JSON.stringify(value));
+                            }}
+                        />
+                    }
+                    <div className='maxi-fancy-radio-control'>
+                        <RadioControl
+                            label={__('Custom Padding', 'maxi-block')}
+                            selected={value.padding.status}
+                            options={
+                                [
+                                    { label: __('No', 'maxi-block'), value: 0 },
+                                    { label: __('Yes', 'maxi-block'), value: 1 },
+                                ]
+                            }
+                            onChange={val => {
+                                value.padding.status = parseInt(val);
+                                onChange(JSON.stringify(value));
+                            }}
+                        />
+                    </div>
+                    {
+                    !!value.padding.status &&
+                        <__experimentalAxisControl
+                            values={value.padding}
+                            disableAuto
+                            onChange={val => {
+                                value.padding = val;
+                                onChange(JSON.stringify(value));
+                            }}
+                        />
+                    }
+                    <div className='maxi-fancy-radio-control'>
+                        <RadioControl
+                            label={__('Custom Margin', 'maxi-block')}
+                            selected={value.margin.status}
+                            options={
+                                [
+                                    { label: __('No', 'maxi-block'), value: 0 },
+                                    { label: __('Yes', 'maxi-block'), value: 1 },
+                                ]
+                            }
+                            onChange={val => {
+                                value.margin.status = parseInt(val);
+                                onChange(JSON.stringify(value));
+                            }}
+                        />
+                    </div>
+                    {
+                    !!value.margin.status &&
+                        <__experimentalAxisControl
+                            values={value.margin}
+                            disableAuto
+                            onChange={val => {
+                                value.margin = val;
+                                onChange(JSON.stringify(value));
+                            }}
+                        />
+                    }
                 </Fragment>
             }
         </div>

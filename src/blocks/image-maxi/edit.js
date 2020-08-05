@@ -83,6 +83,8 @@ class edit extends MaxiBlock {
             [`${uniqueID} .maxi-block-text-hover`]: this.getHoverAnimationMainObject,
             [`${uniqueID}.hover-animation-basic.hover-animation-type-opacity:hover .hover_el`]: this.getHoverAnimationTypeOpacityObject,
             [`${uniqueID}.hover-animation-basic.hover-animation-type-opacity-with-colour:hover .hover_el:before`]: this.getHoverAnimationTypeOpacityColorObject,
+            [`${uniqueID} .maxi-hover-details .maxi-hover-details__content h3`]: this.getHoverEffectTitleTextObject,
+            [`${uniqueID} .maxi-hover-details .maxi-hover-details__content p`]: this.getHoverEffectContentTextObject,
         }
 
         response = Object.assign(
@@ -118,6 +120,38 @@ class edit extends MaxiBlock {
             display: { ...JSON.parse(display) },
             transform: { ...getTransfromObject(JSON.parse(transform)) }
         };
+
+        return response;
+    }
+
+    get getHoverEffectTitleTextObject() {
+        const {
+            hover,
+        } = this.props.attributes;
+
+        let value = !isObject(JSON.parse(hover).titleTypography) ?
+            JSON.parse(JSON.parse(hover).titleTypography) :
+            JSON.parse(hover).titleTypography;
+
+        const response = {
+            typography: {...value}
+        }
+
+        return response;
+    }
+
+    get getHoverEffectContentTextObject() {
+        const {
+            hover,
+        } = this.props.attributes;
+
+        let value = !isObject(JSON.parse(hover).contentTypography) ?
+            JSON.parse(JSON.parse(hover).contentTypography) :
+            JSON.parse(hover).contentTypography;
+
+        const response = {
+            typography: {...value}
+        }
 
         return response;
     }

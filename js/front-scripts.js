@@ -8,6 +8,62 @@ motionElems.forEach(function(elem) {
 	const motionID = elem.getAttribute('data-motion-id');
 	const motionData = JSON.parse(elem.getAttribute('data-motion'));
 	const shapeDividerData = JSON.parse(elem.getAttribute('data-shape-divider'));
+	const hoverData = JSON.parse(elem.getAttribute('data-hover'));
+
+	// Hover Effect
+	if(hoverData !== null) {
+		if(("type" in hoverData) && hoverData.type !== 'none') {
+			const hoverElem = document.querySelector(".maxi-motion-effect-"+ motionID +"");
+			hoverElem.style.overflow = 'hidden';
+			const hoverElemAct = document.querySelector(".maxi-motion-effect-"+ motionID +" .maxi-block-hover-element");
+			const hoverElemDetails = document.querySelector(".maxi-motion-effect-"+ motionID +" .maxi-hover-details");
+			const hoverElemHeight = hoverElemAct.clientHeight;
+
+			hoverElem.addEventListener('mouseenter', function(){ doHoverEffect() });
+			hoverElem.addEventListener('mouseleave', function(){ doHoverEffect() });
+			const hoverTl = gsap.timeline();
+
+			if(hoverData.type === 'text') {
+				switch(hoverData.effectType) {
+					case 'fade':
+						hoverTl.to(hoverElemDetails, hoverData.duration, {opacity: 1});
+						break;
+					case 'push-up':
+						gsap.set(hoverElemDetails, {opacity: 1, y: hoverElemHeight});
+						hoverTl.to(hoverElemAct, hoverData.duration, {y: -hoverElemHeight}, "move")
+						  .to(hoverElemDetails, hoverData.duration, {y: 0}, "move");
+						break;
+					case 'slide-up':
+						gsap.set(hoverElemDetails, {opacity: 1, y: hoverElemHeight});
+						hoverTl.to(hoverElemDetails, hoverData.duration, {y: 0});
+						break;
+				}
+			}
+
+			if(hoverData.type === 'basic') {
+				switch(hoverData.effectType) {
+					case 'zoom-in':
+						hoverTl.to(hoverElemAct, hoverData.duration, {transformOrigin:'50% 50%', scale: 1.2, ease: Power2.easeInOut, force3D :true});
+						break;
+					case 'zoom-out':
+						hoverTl.from(hoverElemAct, hoverData.duration, {transformOrigin:'50% 50%', scale: 1.2, ease: Power2.easeInOut, force3D :true});
+						break;
+					case 'slide':
+						gsap.set(hoverElemAct, {scale: 1.3});
+						hoverTl.to(hoverElemAct, hoverData.duration, {transformOrigin:'50% 50%', x: 70, ease: Power2.easeInOut, force3D :true});
+						break;
+					case 'rotate':
+						hoverTl.to(hoverElemAct, hoverData.duration, {transformOrigin:'50% 50%', rotate: 5, scale: 1.2, ease: Power2.easeInOut, force3D :true});
+						break;
+				}
+			}
+
+			hoverTl.reversed(true);
+			function doHoverEffect() {
+				hoverTl.reversed(!hoverTl.reversed());
+			}
+		}
+	}
 
 	// Shape Divider
 	if(shapeDividerData !== null) {

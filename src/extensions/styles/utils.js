@@ -526,13 +526,13 @@ export const setBackgroundStyles = (target, background, backgroundHover) => {
             backgroundHover: { ...getBackgroundObject(JSON.parse(backgroundHover)) }
         },
         [`${target} .maxi-background .maxi-background__video-player video`]: {
-            videoBackground: { 
-                ...getVideoBackgroundObject(JSON.parse(background).videoOptions) 
+            videoBackground: {
+                ...getVideoBackgroundObject(JSON.parse(background).videoOptions)
             }
         },
         [`${target}:hover .maxi-background .maxi-background__video-player video`]: {
-            videoBackgroundHover: { 
-                ...getVideoBackgroundObject(JSON.parse(backgroundHover).videoOptions) 
+            videoBackgroundHover: {
+                ...getVideoBackgroundObject(JSON.parse(backgroundHover).videoOptions)
             }
         }
     }

@@ -177,6 +177,7 @@ const Inspector = props => {
                                                                         backgroundOptions={background}
                                                                         onChange={background => setAttributes({ background })}
                                                                         disableImage
+                                                                        disableVideo
                                                                     />
                                                                 </Fragment>
                                                             )
@@ -195,6 +196,7 @@ const Inspector = props => {
                                                                         backgroundOptions={backgroundHover}
                                                                         onChange={backgroundHover => setAttributes({ backgroundHover })}
                                                                         disableImage
+                                                                        disableVideo
                                                                     />
                                                                 </Fragment>
                                                             )
@@ -292,7 +294,7 @@ const Inspector = props => {
                                     onChange={position => setAttributes({ position })}
                                     breakpoint={deviceType}
                                 />
-                                <__experimentalDisplayControl 
+                                <__experimentalDisplayControl
                                     display={display}
                                     onChange={display => setAttributes({ display })}
                                     breakpoint={deviceType}

@@ -126,6 +126,8 @@ add_action( 'admin_enqueue_scripts', 'gutenberg_extra_load_custom_wp_admin_style
 
 function maxi_load_custom_wp_front_script() {
 
+	wp_enqueue_script('jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js', array(), null, true);
+
 	wp_enqueue_style(
 		'maxi-blocks-banner',
 		plugins_url( '/css/maxi-banner.css', dirname( __FILE__ ) ),

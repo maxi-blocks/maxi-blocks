@@ -7,7 +7,10 @@ import { __experimentalBackgroundDisplayer } from '../../components';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
+import {
+    isNil,
+    isEmpty,
+} from 'lodash';
 import Scripts from '../../extensions/styles/hoverAnimations.js';
 
 /**
@@ -44,9 +47,16 @@ const save = props => {
             hoverAnimationCustomBorder,
             hoverPadding,
             motion,
+            hover,
         },
         imageData
     } = props;
+
+    const {
+        settings: hoverSettings,
+        titleText: hoverTitleText,
+        contentText: hoverContentText,
+    } = JSON.parse(hover);
 
     let classes = classnames(
         `maxi-motion-effect maxi-motion-effect-${uniqueID}`,
@@ -82,18 +92,36 @@ const save = props => {
             data-maxi_initial_block_class={defaultBlockStyle}
             data-motion={motion}
             data-motion-id={uniqueID}
+            data-hover={JSON.stringify(hoverSettings)}
         >
             <__experimentalBackgroundDisplayer
                 backgroundOptions={background}
             />
-            <img
-                className={"wp-image-" + mediaID}
-                src={mediaURL}
-                width={mediaWidth}
-                height={mediaHeight}
-                alt={imageALT()}
+            <div className="maxi-block-hover-element">
+                <img
+                    className={"wp-image-" + mediaID}
+                    src={mediaURL}
+                    width={mediaWidth}
+                    height={mediaHeight}
+                    alt={imageALT()}
 
-            />
+                />
+            </div>
+            {
+            hoverSettings.type !== 'none' &&
+                <div className="maxi-hover-details">
+                    <div className="maxi-hover-details__content">
+                        {
+                            !isEmpty(hoverTitleText) &&
+                            <h3>{hoverTitleText}</h3>
+                        }
+                        {
+                            !isEmpty(hoverContentText) &&
+                            <p>{hoverContentText}</p>
+                        }
+                    </div>
+                </div>
+            }
             {
                 captionType !== 'none' &&
                 <figcaption>

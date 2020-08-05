@@ -1698,6 +1698,9 @@ export const __experimentalMotion = {
         "duration": 1,
         "delay": 1,
     },
+    "parallax": {
+        "status": 0,
+    }
 }
 
 export const __experimentalArrow = {

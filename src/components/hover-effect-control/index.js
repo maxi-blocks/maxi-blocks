@@ -6,6 +6,7 @@ const {
     RadioControl,
     SelectControl,
     TextareaControl,
+    Icon,
 } = wp.components;
 const { Fragment } = wp.element;
 
@@ -17,7 +18,6 @@ import {
     SizeControl,
     BackgroundControl,
     BorderControl,
-    __experimentalOpacityControl,
     __experimentalAxisControl,
 } from '../../components';
 
@@ -26,6 +26,15 @@ import {
  */
 import { isObject } from 'lodash';
 import classnames from 'classnames';
+
+/**
+ * Styles and icons
+ */
+import {
+    hoverNone,
+    hoverBasic,
+    hoverText,
+} from '../../icons';
 
 /**
  * Component
@@ -53,12 +62,13 @@ const HoverEffectControl = props => {
         <div className={classes}>
             <div className='maxi-fancy-radio-control'>
                 <RadioControl
+                    label={__('Hover Animation', 'maxi-blocks')}
                     selected={hoverSettings.type}
                     options={
                         [
-                            { label: __('None', 'maxi-blocks'), value: 'none' },
-                            { label: __('Basic', 'maxi-blocks'), value: 'basic' },
-                            { label: __('Text', 'maxi-blocks'), value: 'text' },
+                            { label: <Icon icon={hoverNone} />, value: 'none' },
+                            { label: <Icon icon={hoverBasic} />, value: 'basic' },
+                            { label: <Icon icon={hoverText} />, value: 'text' },
                         ]
                     }
                     onChange={val => {
@@ -74,12 +84,13 @@ const HoverEffectControl = props => {
                         label={__('Effect Type', 'maxi-blocks')}
                         value={hoverSettings.effectType}
                         options={[
-                            { label: 'None', value: 'none' },
+                            { label: 'Tilt', value: 'tilt' },
                             { label: 'Zoom In', value: 'zoom-in' },
                             { label: 'Zoom Out', value: 'zoom-out' },
                             { label: 'Slide', value: 'slide' },
                             { label: 'Rotate', value: 'rotate' },
                             { label: 'Blur', value: 'blur' },
+                            { label: 'Clear Blur', value: 'clear-blur' },
                             { label: 'Gray Scale', value: 'greay-scale' },
                             { label: 'Clear Gray Scale', value: 'clear-greay-scale' },
                         ]}
@@ -110,7 +121,6 @@ const HoverEffectControl = props => {
                         label={__('Animation Type', 'maxi-blocks')}
                         value={hoverSettings.effectType}
                         options={[
-                            { label: 'None', value: 'none' },
                             { label: 'Fade', value: 'fade' },
                             { label: 'Push Up', value: 'push-up' },
                             { label: 'Push Right', value: 'push-right' },
@@ -120,10 +130,6 @@ const HoverEffectControl = props => {
                             { label: 'Slide Right', value: 'slide-right' },
                             { label: 'Slide Bottom', value: 'slide-bottom' },
                             { label: 'Slide Left', value: 'slide-left' },
-                            { label: 'Hinge Up', value: 'hinge-up' },
-                            { label: 'Hinge Right', value: 'hinge-right' },
-                            { label: 'Hinge Bottom', value: 'hinge-bottom' },
-                            { label: 'Hinge Left', value: 'hinge-left' },
                         ]}
                         onChange={val => {
                             hoverSettings.effectType = val;
@@ -215,28 +221,20 @@ const HoverEffectControl = props => {
                             }}
                         />
                     }
-                    <hr/>
-                    <__experimentalOpacityControl
-                        opacity={value.opacity}
-                        onChange={val => {
-                            value.opacity = val;
-                            onChange(JSON.stringify(value));
-                        }}
-                    />
-                    <hr/>
                     <BackgroundControl
                         backgroundOptions={value.background}
                         onChange={val => {
                             value.background = val;
                             onChange(JSON.stringify(value))
                         }}
+                        disableClipPath
                         disableImage
                         disableVideo
                     />
                     <div className='maxi-fancy-radio-control'>
                         <RadioControl
                             label={__('Custom Border', 'maxi-block')}
-                            selected={value.border.status}
+                            selected={value.borderStatus}
                             options={
                                 [
                                     { label: __('No', 'maxi-block'), value: 0 },
@@ -244,13 +242,13 @@ const HoverEffectControl = props => {
                                 ]
                             }
                             onChange={val => {
-                                value.border.status = parseInt(val);
+                                value.borderStatus = parseInt(val);
                                 onChange(JSON.stringify(value));
                             }}
                         />
                     </div>
                     {
-                    !!value.border.status &&
+                    !!value.borderStatus &&
                         <BorderControl
                             border={value.border}
                             onChange={val => {
@@ -262,7 +260,7 @@ const HoverEffectControl = props => {
                     <div className='maxi-fancy-radio-control'>
                         <RadioControl
                             label={__('Custom Padding', 'maxi-block')}
-                            selected={value.padding.status}
+                            selected={value.paddingStatus}
                             options={
                                 [
                                     { label: __('No', 'maxi-block'), value: 0 },
@@ -270,13 +268,13 @@ const HoverEffectControl = props => {
                                 ]
                             }
                             onChange={val => {
-                                value.padding.status = parseInt(val);
+                                value.paddingStatus = parseInt(val);
                                 onChange(JSON.stringify(value));
                             }}
                         />
                     </div>
                     {
-                    !!value.padding.status &&
+                    !!value.paddingStatus &&
                         <__experimentalAxisControl
                             values={value.padding}
                             disableAuto
@@ -289,7 +287,7 @@ const HoverEffectControl = props => {
                     <div className='maxi-fancy-radio-control'>
                         <RadioControl
                             label={__('Custom Margin', 'maxi-block')}
-                            selected={value.margin.status}
+                            selected={value.marginStatus}
                             options={
                                 [
                                     { label: __('No', 'maxi-block'), value: 0 },
@@ -297,13 +295,13 @@ const HoverEffectControl = props => {
                                 ]
                             }
                             onChange={val => {
-                                value.margin.status = parseInt(val);
+                                value.marginStatus = parseInt(val);
                                 onChange(JSON.stringify(value));
                             }}
                         />
                     </div>
                     {
-                    !!value.margin.status &&
+                    !!value.marginStatus &&
                         <__experimentalAxisControl
                             values={value.margin}
                             disableAuto

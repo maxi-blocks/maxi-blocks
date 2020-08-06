@@ -20,6 +20,7 @@ const {
 import Inspector from './inspector';
 import {
     getBackgroundObject,
+    getOpacityObject,
     getBoxShadowObject,
     getAlignmentFlexObject,
     getTransfromObject,
@@ -85,6 +86,7 @@ class edit extends MaxiBlock {
             [`${uniqueID}.hover-animation-basic.hover-animation-type-opacity-with-colour:hover .hover_el:before`]: this.getHoverAnimationTypeOpacityColorObject,
             [`${uniqueID} .maxi-hover-details .maxi-hover-details__content h3`]: this.getHoverEffectTitleTextObject,
             [`${uniqueID} .maxi-hover-details .maxi-hover-details__content p`]: this.getHoverEffectContentTextObject,
+            [`${uniqueID} .maxi-hover-details`]: this.getHoverEffectDetailsBoxObject,
         }
 
         response = Object.assign(
@@ -124,17 +126,48 @@ class edit extends MaxiBlock {
         return response;
     }
 
+    get getHoverEffectDetailsBoxObject() {
+        const {
+            hover,
+        } = this.props.attributes;
+
+        let background = !isObject(JSON.parse(hover).background) ?
+            JSON.parse(JSON.parse(hover).background) :
+            JSON.parse(hover).background;
+
+        let border = !isObject(JSON.parse(hover).border) ?
+            JSON.parse(JSON.parse(hover).border) :
+            JSON.parse(hover).border;
+
+        let padding = !isObject(JSON.parse(hover).padding) ?
+            JSON.parse(JSON.parse(hover).padding) :
+            JSON.parse(hover).padding;
+
+        let margin = !isObject(JSON.parse(hover).margin) ?
+            JSON.parse(JSON.parse(hover).margin) :
+            JSON.parse(hover).margin;
+
+        const response = {
+            background: { ...getBackgroundObject(background) },
+            border: { ...border },
+            padding: { ...padding },
+            margin: { ...margin },
+        }
+
+        return response;
+    }
+
     get getHoverEffectTitleTextObject() {
         const {
             hover,
         } = this.props.attributes;
 
-        let value = !isObject(JSON.parse(hover).titleTypography) ?
+        let titleTypography = !isObject(JSON.parse(hover).titleTypography) ?
             JSON.parse(JSON.parse(hover).titleTypography) :
             JSON.parse(hover).titleTypography;
 
         const response = {
-            typography: {...value}
+            typography: {...titleTypography}
         }
 
         return response;
@@ -145,12 +178,12 @@ class edit extends MaxiBlock {
             hover,
         } = this.props.attributes;
 
-        let value = !isObject(JSON.parse(hover).contentTypography) ?
+        let contentTypography = !isObject(JSON.parse(hover).contentTypography) ?
             JSON.parse(JSON.parse(hover).contentTypography) :
             JSON.parse(hover).contentTypography;
 
         const response = {
-            typography: {...value}
+            typography: {...contentTypography}
         }
 
         return response;

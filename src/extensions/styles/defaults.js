@@ -1400,13 +1400,15 @@ export const __experimentalDisplay = {
 export const __experimentalHover = {
     "label": "Hover Effects",
     "settings": {
-        "type": "none",
-        "effectType": "none",
+        "type": "zoom-in",
+        "effectType": "fade",
         "duration": 1,
     },
+    "borderStatus": 0,
+    "paddingStatus": 0,
+    "marginStatus": 0,
     "border": {
         "label": "Border",
-        "status": 0,
         "general": {
             "border-color": "#ffffff",
             "border-style": "none"
@@ -1739,30 +1741,6 @@ export const __experimentalHover = {
             "padding-left": "",
             "sync": true,
             "unit": ""
-        }
-    },
-    "opacity": {
-        "label": "Opacity",
-        "general": {
-            "opacity": 1
-        },
-        "xxl": {
-            "opacity": ""
-        },
-        "xl": {
-            "opacity": ""
-        },
-        "l": {
-            "opacity": ""
-        },
-        "m": {
-            "opacity": ""
-        },
-        "s": {
-            "opacity": ""
-        },
-        "xs": {
-            "opacity": ""
         }
     },
     "titleStatus": 0,

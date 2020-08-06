@@ -11,7 +11,6 @@ import {
     isNil,
     isEmpty,
 } from 'lodash';
-import Scripts from '../../extensions/styles/hoverAnimations.js';
 
 /**
  * Save
@@ -36,20 +35,9 @@ const save = props => {
             mediaALTwp,
             mediaALTtitle,
             altSelector,
-            hoverAnimation,
-            hoverAnimationType,
-            hoverAnimationTypeText,
-            hoverAnimationDuration,
-            hoverAnimationTitle,
-            hoverAnimationContent,
-            hoverOpacity,
-            hoverBackground,
-            hoverAnimationCustomBorder,
-            hoverPadding,
             motion,
             hover,
         },
-        imageData
     } = props;
 
     const {
@@ -63,10 +51,6 @@ const save = props => {
         'maxi-block maxi-image-block',
         blockStyle,
         extraClassName,
-        'hover-animation-' + hoverAnimation,
-        'hover-animation-type-' + hoverAnimationType,
-        'hover-animation-type-text-' + hoverAnimationTypeText,
-        'hover-animation-duration-' + hoverAnimationDuration,
         uniqueID,
         className,
         fullWidth === 'full' ?
@@ -127,39 +111,6 @@ const save = props => {
                 <figcaption>
                     {captionContent}
                 </figcaption>
-            }
-            {
-                hoverAnimation === 'text' &&
-                <div className='maxi-block-text-hover'>
-                    {
-                        hoverAnimationTitle !== '' &&
-                        <h3 className='maxi-block-text-hover__title'>
-                            {hoverAnimationTitle}
-                        </h3>
-                    }
-                    {
-                        hoverAnimationContent !== '' &&
-                        <div className='maxi-block-text-hover__content'>
-                            {hoverAnimationContent}
-                        </div>
-                    }
-                </div>
-            }
-            {
-                hoverAnimation === 'basic' &&
-                <Scripts
-                    hover_animation={hoverAnimationType}
-                    hover_animation_type={hoverAnimation}
-                >
-                </Scripts>
-            }
-            {
-                hoverAnimation === 'text' &&
-                <Scripts
-                    hover_animation={hoverAnimationTypeText}
-                    hover_animation_type={hoverAnimation}
-                >
-                </Scripts>
             }
         </figure>
     );

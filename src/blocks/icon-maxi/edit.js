@@ -23,10 +23,6 @@ library.add( fas, fab, far );
  * External dependencies
  */
 import classnames from 'classnames';
-import {
-    isEmpty,
-    isNil,
-} from 'lodash';
 
 /**
  * Content

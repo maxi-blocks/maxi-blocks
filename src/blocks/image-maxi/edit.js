@@ -20,7 +20,6 @@ const {
 import Inspector from './inspector';
 import {
     getBackgroundObject,
-    getOpacityObject,
     getBoxShadowObject,
     getAlignmentFlexObject,
     getTransfromObject,
@@ -51,8 +50,6 @@ import {
     placeholderImage
 } from '../../icons';
 
-import Scripts from '../../extensions/styles/hoverAnimations.js';
-
 /**
  * Content
  */
@@ -79,11 +76,6 @@ class edit extends MaxiBlock {
             [`${uniqueID} img:hover`]: this.getImageHoverObject,
             [`${uniqueID} img`]: this.getImageBackendObject,
             [`${uniqueID} figcaption`]: this.getFigcaptionObject,
-            [`${uniqueID} .maxi-block-text-hover .maxi-block-text-hover__content`]: this.getHoverAnimationTextContentObject,
-            [`${uniqueID} .maxi-block-text-hover .maxi-block-text-hover__title`]: this.getHoverAnimationTextTitleObject,
-            [`${uniqueID} .maxi-block-text-hover`]: this.getHoverAnimationMainObject,
-            [`${uniqueID}.hover-animation-basic.hover-animation-type-opacity:hover .hover_el`]: this.getHoverAnimationTypeOpacityObject,
-            [`${uniqueID}.hover-animation-basic.hover-animation-type-opacity-with-colour:hover .hover_el:before`]: this.getHoverAnimationTypeOpacityColorObject,
             [`${uniqueID} .maxi-hover-details .maxi-hover-details__content h3`]: this.getHoverEffectTitleTextObject,
             [`${uniqueID} .maxi-hover-details .maxi-hover-details__content p`]: this.getHoverEffectContentTextObject,
             [`${uniqueID} .maxi-hover-details`]: this.getHoverEffectDetailsBoxObject,
@@ -212,8 +204,6 @@ class edit extends MaxiBlock {
             imageSize: { ...JSON.parse(size) }
         };
 
-
-
         return response
     }
 
@@ -266,97 +256,6 @@ class edit extends MaxiBlock {
         return response
     }
 
-
-    get getHoverAnimationMainObject() {
-        const {
-            hoverOpacity,
-            hoverBorder,
-            hoverPadding,
-        } = this.props.attributes;
-
-        const response = {
-            border: { ...JSON.parse(hoverBorder) },
-            borderWidth: { ...JSON.parse(hoverBorder).borderWidth },
-            borderRadius: { ...JSON.parse(hoverBorder).borderRadius },
-            padding: { ...JSON.parse(hoverPadding) },
-            animationHover: {
-                label: 'Animation Hover',
-                general: {}
-            }
-        };
-
-        if (hoverOpacity)
-            response.animationHover.general['opacity'] = hoverOpacity;
-
-        return response
-    }
-
-    get getHoverAnimationTypeOpacityObject() {
-        const {
-            hoverAnimationTypeOpacity,
-        } = this.props.attributes;
-
-        const response = {
-            animationTypeOpacityHover: {
-                label: 'Animation Type Opacity Hover',
-                general: {}
-            }
-        };
-
-        if (hoverAnimationTypeOpacity)
-            response.animationTypeOpacityHover.general['opacity'] = hoverAnimationTypeOpacity;
-
-        return response
-    }
-
-    get getHoverAnimationTypeOpacityColorObject() {
-        const {
-            hoverAnimationTypeOpacityColor,
-            hoverAnimationTypeOpacityColorBackground,
-        } = this.props.attributes;
-
-        const response = {
-            background: { ...getBackgroundObject(JSON.parse(hoverAnimationTypeOpacityColorBackground)) },
-            animationTypeOpacityHoverColor: {
-                label: 'Animation Type Opacity Color Hover',
-                general: {}
-            }
-        };
-
-        if (hoverAnimationTypeOpacityColor)
-            response.animationTypeOpacityHoverColor.general['opacity'] = hoverAnimationTypeOpacityColor;
-
-        return response
-    }
-
-
-
-    get getHoverAnimationTextTitleObject() {
-        const {
-            hoverAnimationTitleTypography
-        } = this.props.attributes;
-
-        const response = {
-            hoverAnimationTitleTypography: { ...JSON.parse(hoverAnimationTitleTypography) },
-            hoverAnimationTitleAlignmentTypography: { ...getAlignmentTextObject(JSON.parse(hoverAnimationTitleTypography).textAlign) }
-        };
-
-        return response
-    }
-
-    get getHoverAnimationTextContentObject() {
-        const {
-            hoverAnimationContentTypography
-        } = this.props.attributes;
-
-        const response = {
-            hoverAnimationContentTypography: { ...JSON.parse(hoverAnimationContentTypography) },
-            hoverAnimationContentAlignmentTypography: { ...getAlignmentTextObject(JSON.parse(hoverAnimationContentTypography).textAlign) }
-        };
-
-        return response
-    }
-
     render() {
         const {
             className,
@@ -378,10 +277,6 @@ class edit extends MaxiBlock {
                 mediaURL,
                 mediaWidth,
                 mediaHeight,
-                hoverAnimation,
-                hoverAnimationType,
-                hoverAnimationTypeText,
-                hoverAnimationDuration,
             },
             imageData,
             setAttributes,
@@ -391,10 +286,6 @@ class edit extends MaxiBlock {
             'maxi-block maxi-image-block',
             blockStyle,
             extraClassName,
-            'hover-animation-' + hoverAnimation,
-            'hover-animation-type-' + hoverAnimationType,
-            'hover-animation-type-text-' + hoverAnimationTypeText,
-            'hover-animation-duration-' + hoverAnimationDuration,
             uniqueID,
             className,
             fullWidth === 'full' ?
@@ -523,20 +414,6 @@ class edit extends MaxiBlock {
                         </Fragment>
                     )}
                 />
-                {hoverAnimation === 'basic' &&
-                    <Scripts
-                        hover_animation={hoverAnimationType}
-                        hover_animation_type={hoverAnimation}
-                    >
-                    </Scripts>
-                }
-                {hoverAnimation === 'text' &&
-                    <Scripts
-                        hover_animation={hoverAnimationTypeText}
-                        hover_animation_type={hoverAnimation}
-                    >
-                    </Scripts>
-                }
             </__experimentalBlock.figure>
         ];
     }

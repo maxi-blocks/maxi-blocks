@@ -20,9 +20,7 @@ import {
     BorderControl,
     BlockStylesControl,
     BoxShadowControl,
-    HoverAnimationControl,
     SettingTabsControl,
-    TypographyControl,
     __experimentalResponsiveSelector,
     __experimentalZIndexControl,
     __experimentalAxisControl,
@@ -65,29 +63,10 @@ const Inspector = props => {
             opacityHover,
             boxShadowHover,
             borderHover,
-            hoverAnimation,
-            hoverAnimationDuration,
             extraClassName,
             extraStyles,
             zIndex,
             breakpoints,
-            hoverAnimationTitle,
-            hoverAnimationContent,
-            hoverOpacity,
-            hoverBackground,
-            hoverAnimationCustomBorder,
-            hoverAnimationContentTypography,
-            hoverAnimationTitleTypography,
-            hoverCustomTextContent,
-            hoverCustomTextTitle,
-            hoverBorder,
-            hoverPadding,
-            hoverAnimationTypeOpacity,
-            onChangeHoverAnimationTypeOpacity,
-            hoverAnimationTypeColor,
-            hoverAnimationTypeOpacityColor,
-            onChangeHoverAnimationTypeOpacityColor,
-            hoverAnimationTypeOpacityColorBackground,
             position,
             display
         },
@@ -270,12 +249,6 @@ const Inspector = props => {
                         label: __('Advanced', 'maxi-blocks'),
                         content: (
                             <div className='maxi-tab-content__box'>
-                                <HoverAnimationControl
-                                    hoverAnimation={hoverAnimation}
-                                    onChangeHoverAnimation={hoverAnimation => setAttributes({ hoverAnimation })}
-                                    hoverAnimationDuration={hoverAnimationDuration}
-                                    onChangeHoverAnimationDuration={hoverAnimationDuration => setAttributes({ hoverAnimationDuration })}
-                                />
                                 <__experimentalZIndexControl
                                     zindex={zIndex}
                                     onChange={zIndex => setAttributes({ zIndex })}

@@ -332,3 +332,45 @@ body {
 		}
 	}
 }
+
+.maxi-classic-radio-control {
+	margin-bottom: 5px;
+
+	.components-radio-control {
+		width: 100%;
+
+		.components-base-control__field {
+			flex-wrap: wrap;
+		}
+		&__option {
+			opacity: 1 !important;
+			width: 20%;
+
+			input {
+				display: none;
+
+				&:checked ~ label {
+					background-color: #f2f2f2;
+					outline: 1px solid transparent;
+					position: relative;
+					z-index: 1;
+				}
+			}
+			label {
+				height: 100%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				padding: 6px;
+				border-radius: 5px;
+				margin-bottom: 5px;
+			}
+			svg {
+				display: block;
+				height: 100%;
+				width: 100%;
+				margin: auto;
+			}
+		}
+	}
+}

@@ -54,7 +54,8 @@ import { ReactSVG } from 'react-svg'
 import {
     isNil,
     isObject,
-    isArray
+    isArray,
+    isNumber
 } from 'lodash';
 
 /**
@@ -67,12 +68,10 @@ const Inspector = props => {
             isFirstOnHierarchy,
             blockStyle,
             defaultBlockStyle,
+            SVGElement,
             SVGData,
             SVGMediaID,
             SVGMediaURL,
-            imgMediaID,
-            imgMediaURL,
-            colorSVG,
             fullWidth,
             alignment,
             background,
@@ -101,77 +100,90 @@ const Inspector = props => {
     } = props;
 
     const [customSVG, changeCustomSVG] = useState(
-        !!SVGMediaID ? 0 : 1
+        isNumber(SVGMediaID) ? 1 : 0
     )
 
     const sizeValue = !isObject(size) ?
         JSON.parse(size) :
         size;
 
-    const SVGValue = !isArray(SVGData) ?
+    const SVGValue = !isObject(SVGData) ?
         JSON.parse(SVGData) :
         SVGData
 
     const getFillItems = () => {
         const response = [];
 
-        SVGValue.map((value, i) => {
+        Object.entries(SVGValue).map(([value, id], i) => {
             response.push({
                 label: i,
-                content: getFillItem(value, i)
+                content: getFillItem([value, id], i)
             })
         })
 
         return response;
     }
 
-    const getFillItem = (value, i = 0) => (
-        <Fragment>
-            <SettingTabsControl
-                disablePadding
-                items={[
-                    {
-                        label: __('Color', 'maxi-blocks'),
-                        content: (
-                            <ColorControl
-                                label={__('Fill', 'maxi-blocks')}
-                                color={value.color}
-                                onColorChange={val => {
-                                    SVGValue[i].color = val;
-                                    setAttributes({
-                                        SVGData: JSON.stringify(SVGValue)
-                                    })
-                                }}
-                            />
-                        )
-                    },
-                    {
-                        label: __('Image', 'maxi-blocks'),
-                        content: (
-                            <MediaUploaderControl
-                                allowedTypes={['image']}
-                                mediaID={value.imageID}
-                                onSelectImage={imageData => {
-                                    SVGValue[i].imageID = imageData.id;
-                                    SVGValue[i].imageURL = imageData.url;
-                                    setAttributes({
-                                        SVGData: JSON.stringify(SVGValue)
-                                    })
-                                }}
-                                onRemoveImage={() => {
-                                    SVGValue[i].imageID = '';
-                                    SVGValue[i].imageURL = '';
-                                    setAttributes({
-                                        SVGData: JSON.stringify(SVGValue)
-                                    })
-                                }}
-                            />
-                        )
-                    }
-                ]}
-            />
-        </Fragment>
-    )
+    const getFillItem = ([value, id], i = 0) => {
+        console.log(value, id, SVGValue[id], SVGValue)
+
+        return (
+            <Fragment>
+                <SettingTabsControl
+                    disablePadding
+                    items={[
+                        {
+                            label: __('Color', 'maxi-blocks'),
+                            content: (
+                                <ColorControl
+                                    label={__('Fill', 'maxi-blocks')}
+                                    color={value.color}
+                                    onColorChange={val => {
+                                        SVGValue[id].color = val;
+                                        const resEl = injectImgSVG(SVGElement, uniqueID, SVGValue);
+
+                                        setAttributes({
+                                            SVGElement: resEl.outerHTML,
+                                            SVGData: JSON.stringify(SVGValue)
+                                        })
+                                    }}
+                                />
+                            )
+                        },
+                        {
+                            label: __('Image', 'maxi-blocks'),
+                            content: (
+                                <MediaUploaderControl
+                                    allowedTypes={['image']}
+                                    mediaID={value.imageID}
+                                    onSelectImage={imageData => {
+                                        SVGValue[id].imageID = imageData.id;
+                                        SVGValue[id].imageURL = imageData.url;
+                                        const resEl = injectImgSVG(SVGElement, uniqueID, SVGValue);
+
+                                        setAttributes({
+                                            SVGElement: resEl.outerHTML,
+                                            SVGData: JSON.stringify(SVGValue)
+                                        })
+                                    }}
+                                    onRemoveImage={() => {
+                                        SVGValue[id].imageID = '';
+                                        SVGValue[id].imageURL = '';
+                                        const resEl = injectImgSVG(SVGElement, uniqueID, SVGValue);
+
+                                        setAttributes({
+                                            SVGElement: resEl.outerHTML,
+                                            SVGData: JSON.stringify(SVGValue)
+                                        })
+                                    }}
+                                />
+                            )
+                        }
+                    ]}
+                />
+            </Fragment>
+        )
+    }
 
     return (
         <InspectorControls>
@@ -227,8 +239,8 @@ const Inspector = props => {
                                                                 }}
                                                                 onRemoveImage={() =>
                                                                     setAttributes({
-                                                                        SVGMediaID: '',
-                                                                        SVGMediaURL: '',
+                                                                        SVGMediaID: null,
+                                                                        SVGMediaURL: null,
                                                                     })
                                                                 }
                                                                 placeholder={__('Set SVG', 'maxi-blocks')}
@@ -266,15 +278,15 @@ const Inspector = props => {
                                             content: (
                                                 <Fragment>
                                                     {
-                                                        SVGValue.length > 1 &&
+                                                        Object.keys(SVGValue).length > 1 &&
                                                         <SettingTabsControl
                                                             items={getFillItems()}
                                                         />
                                                     }
-                                                    {
-                                                        SVGValue.length === 1 &&
-                                                        getFillItem(SVGValue[0])
-                                                    }
+                                                    {/* {
+                                                        Object.keys(SVGValue).length === 1 &&
+                                                        getFillItem(Object.entries(SVGValue)[0])
+                                                    } */}
                                                 </Fragment>
                                             )
                                         },

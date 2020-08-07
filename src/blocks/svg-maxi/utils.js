@@ -10,28 +10,31 @@ import { ReactSVG } from 'react-svg';
 import {
     uniqueId,
     isObject,
-    isArray,
-    isEmpty
+    isEmpty,
+    isElement
 } from 'lodash';
 
 /**
  * Utils
  */
-export const injectImgSVG = (svg, uniqueID, SVGData) => {
-    const SVGValue = !isArray(SVGData) ?
+export const injectImgSVG = (svg, uniqueID, SVGData = {}) => {
+    console.log(SVGData)
+    const SVGValue = !isObject(SVGData) ?
         JSON.parse(SVGData) :
         SVGData;
 
-    console.log(SVGData)
+    const SVGElement = !isElement(svg) ?
+        new DOMParser().parseFromString(svg, "text/xml").firstChild :
+        svg;
 
     const SVGLayers = Array.from(
-        svg.querySelectorAll('path, circle, rect, polygon, line, ellipse')
+        SVGElement.querySelectorAll('path, circle, rect, polygon, line, ellipse')
     );
 
-    SVGValue.forEach((el, i) => {
+    Object.entries(SVGValue).forEach(([id, el], i) => {
         if (!isEmpty(el.imageURL)) {
             let pattern = document.createElement('pattern');
-            pattern.id = `${el.id}__img`;
+            pattern.id = `${id}__img`;
             pattern.classList.add('maxi-svg-block__pattern');
             pattern.setAttribute('width', '100%');
             pattern.setAttribute('height', '100%');
@@ -48,10 +51,10 @@ export const injectImgSVG = (svg, uniqueID, SVGData) => {
             image.setAttribute('xlink:href', el.imageURL);
 
             pattern.append(image);
-            svg.prepend(pattern)
+            SVGElement.prepend(pattern)
 
-            SVGLayers[i].style.fill = `url(#${el.id}__img)`;
-            SVGLayers[i].setAttribute('fill', `url(#${el.id}__img)`)
+            SVGLayers[i].style.fill = `url(#${id}__img)`;
+            SVGLayers[i].setAttribute('fill', `url(#${id}__img)`)
         }
         else if (!isEmpty(el.color)) {
             SVGLayers[i].style.fill = el.color;
@@ -59,9 +62,9 @@ export const injectImgSVG = (svg, uniqueID, SVGData) => {
         }
     })
 
-    svg.dataset.item = `${uniqueID}__svg`;
+    SVGElement.dataset.item = `${uniqueID}__svg`;
 
-    return svg;
+    return SVGElement;
 }
 
 export const generateDataObject = (data, svg) => {
@@ -70,9 +73,8 @@ export const generateDataObject = (data, svg) => {
             !isObject(data) ?
                 JSON.parse(data) :
                 data :
-            [];
+            {};
     const obj = {
-        id: '',
         color: '',
         imageID: '',
         imageURL: '',
@@ -81,17 +83,23 @@ export const generateDataObject = (data, svg) => {
         svg.querySelectorAll('path, circle, rect, polygon, line, ellipse')
     );
 
-    if (response.length >= SVGLayers.length)
-        response.splice(-(response.length - SVGLayers.length), response.length - SVGLayers.length);
+    debugger;
+
+    if (Object.keys(response).length >= SVGLayers.length)
+        do {
+            delete response[Object.keys(response)[Object.keys(response).length]];
+            console.log(response)
+        }
+        while (Object.keys(response).length >= SVGLayers.length)
     else
         SVGLayers.forEach((layer, i) => {
             if (response.length > i)
                 return;
 
-            const newObj = { ...obj };
-            newObj.id = `${svg.dataset.item}__${uniqueId()}`;
-            response.push(newObj)
+            response[`${svg.dataset.item}__${uniqueId()}`] = obj;
         })
+
+    console.log('dataObject', response)
 
     return response;
 }
@@ -100,8 +108,6 @@ export const getSVGDefaults = props => {
     const {
         attributes: {
             uniqueID,
-            imgMediaURL,
-            colorSVG,
             SVGData
         },
         setAttributes

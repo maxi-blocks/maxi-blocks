@@ -31,7 +31,8 @@ import {
     uniqueId,
     isEqual,
     isNil,
-    isObject
+    isObject,
+    isArray
 } from 'lodash';
 
 /**
@@ -93,7 +94,7 @@ class MaxiBlock extends Component {
                 return;
             }
 
-            if (!isObject(obj))
+            if (!isObject(obj) && !isArray(obj))
                 return;
 
             const defaultObj = JSON.parse(getDefaultProp(this.props.clientId, key));

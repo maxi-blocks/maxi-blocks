@@ -514,3 +514,14 @@ function maxi_output_css() {
 
    //wp_nonce_field( 'maxi_blocks_custom_ccs_page_nonce', 'maxi_blocks_custom_ccs_page_process' );
 }
+
+/**
+ * Allow SVG mime type 
+ */
+function maxi_allow_svg_mime_type($mimes) {
+	if(!in_array('svg', $mimes))
+		$mimes['svg'] = 'image/svg+xml';
+		
+	return $mimes;
+}
+add_filter('upload_mimes', 'maxi_allow_svg_mime_type');

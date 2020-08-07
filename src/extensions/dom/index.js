@@ -1,11 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { Component } = wp.element;
-const {
-    select,
-    subscribe
-} = wp.data;
+const { select } = wp.data;
 
 /**
  * General
@@ -22,6 +18,7 @@ const allowedBlocks = [
     'maxi-blocks/image-maxi',
     'maxi-blocks/section-maxi',
     'maxi-blocks/container-maxi',
+    'maxi-blocks/svg-maxi',
 ];
 
 document.addEventListener(

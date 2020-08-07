@@ -27,7 +27,7 @@ import './editor.scss';
 /**
  * Component
  */
-const MediaUploader = props => {
+const MediaUploaderControl = props => {
     const {
         className,
         mediaType = 'image',
@@ -175,13 +175,12 @@ const MediaUploader = props => {
     )
 };
 
-const MediaUploaderControl = withSelect((select, props) => {
+export default withSelect((select, props) => {
     const { getMedia } = select('core');
     const { mediaID } = props;
 
     return {
         imageData: mediaID ? getMedia(mediaID) : null,
     };
-})(MediaUploader)
+})(MediaUploaderControl)
 
-export default MediaUploaderControl;

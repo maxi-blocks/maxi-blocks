@@ -79,7 +79,7 @@ const ResponsiveSelector = props => {
         else {
             if(size != 'xxl')
                 editorWrapper.style.width = `${breakpoints[size]}px`;
-            else 
+            else
                 editorWrapper.style.width = `2000px`;   // !!!
 
             if (winHeight > breakpoints[size])
@@ -93,12 +93,15 @@ const ResponsiveSelector = props => {
         <div
             className={classes}
         >
+            <label className='maxi-responsive-selector__label'>
+                {__('Display', 'maxi-blocks')}
+            </label>
             <Button
                 className='maxi-responsive-selector__button'
                 onClick={() => onChangeSize('general')}
                 aria-pressed={'Desktop' === deviceType}
             >
-                G
+                {__('Base', 'maxi-blocks')}
             </Button>
             <Button
                 className='maxi-responsive-selector__button'

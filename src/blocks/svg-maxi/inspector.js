@@ -107,26 +107,26 @@ const Inspector = props => {
         JSON.parse(size) :
         size;
 
-    const SVGValue = !isObject(SVGData) ?
-        JSON.parse(SVGData) :
-        SVGData
+    const SVGValue = !isNil(SVGData) ?
+        !isObject(SVGData) ?
+            JSON.parse(SVGData) :
+            SVGData :
+        {};
 
     const getFillItems = () => {
         const response = [];
 
-        Object.entries(SVGValue).map(([value, id], i) => {
+        Object.entries(SVGValue).map(([id, value], i) => {
             response.push({
                 label: i,
-                content: getFillItem([value, id], i)
+                content: getFillItem([id, value], i)
             })
         })
 
         return response;
     }
 
-    const getFillItem = ([value, id], i = 0) => {
-        console.log(value, id, SVGValue[id], SVGValue)
-
+    const getFillItem = ([id, value], i = 0) => {
         return (
             <Fragment>
                 <SettingTabsControl
@@ -260,10 +260,11 @@ const Inspector = props => {
                                                                             const resData = generateDataObject(SVGData, svg);
                                                                             const resEl = injectImgSVG(svg, uniqueID, resData);
 
-                                                                            setAttributes({
-                                                                                SVGElement: resEl.outerHTML,
-                                                                                SVGData: JSON.stringify(resData)
-                                                                            })
+                                                                            if (SVGElement != resEl.outerHTML)
+                                                                                setAttributes({
+                                                                                    SVGElement: resEl.outerHTML,
+                                                                                    SVGData: JSON.stringify(resData)
+                                                                                })
                                                                         }
                                                                     }}
                                                                 />
@@ -283,10 +284,10 @@ const Inspector = props => {
                                                             items={getFillItems()}
                                                         />
                                                     }
-                                                    {/* {
+                                                    {
                                                         Object.keys(SVGValue).length === 1 &&
                                                         getFillItem(Object.entries(SVGValue)[0])
-                                                    } */}
+                                                    }
                                                 </Fragment>
                                             )
                                         },

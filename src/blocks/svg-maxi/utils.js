@@ -18,7 +18,6 @@ import {
  * Utils
  */
 export const injectImgSVG = (svg, uniqueID, SVGData = {}) => {
-    console.log(SVGData)
     const SVGValue = !isObject(SVGData) ?
         JSON.parse(SVGData) :
         SVGData;
@@ -83,23 +82,16 @@ export const generateDataObject = (data, svg) => {
         svg.querySelectorAll('path, circle, rect, polygon, line, ellipse')
     );
 
-    debugger;
-
-    if (Object.keys(response).length >= SVGLayers.length)
+    if (Object.keys(response).length > SVGLayers.length)
         do {
-            delete response[Object.keys(response)[Object.keys(response).length]];
-            console.log(response)
+            delete response[Object.keys(response)[Object.keys(response).length - 1]];
         }
-        while (Object.keys(response).length >= SVGLayers.length)
-    else
+        while (Object.keys(response).length !== SVGLayers.length)
+    else if (Object.keys(response).length < SVGLayers.length)
         SVGLayers.forEach((layer, i) => {
-            if (response.length > i)
-                return;
-
-            response[`${svg.dataset.item}__${uniqueId()}`] = obj;
+            if (Object.keys(response).length <= i || Object.keys(response).length === 0)
+                response[`${svg.dataset.item}__${uniqueId()}`] = obj;
         })
-
-    console.log('dataObject', response)
 
     return response;
 }
@@ -131,6 +123,7 @@ export const getSVGDefaults = props => {
                                 setAttributes({
                                     SVGElement: resEl.outerHTML,
                                     SVGMediaID: null,
+                                    SVGMediaURL: null,
                                     SVGData: JSON.stringify(resData)
                                 })
                             }

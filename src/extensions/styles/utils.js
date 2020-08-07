@@ -451,6 +451,8 @@ export const getArrowObject = arrow => {
             }
         }
     }
+
+    return response;
 }
 
 export const getTransfromObject = transform => {

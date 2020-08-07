@@ -156,10 +156,6 @@ const Inspector = props => {
                                                                     setAttributes({ sizeContainer: JSON.stringify(value) })
                                                                 }}
                                                             />
-                                                            <__experimentalParallaxControl
-                                                                motionOptions={motion}
-                                                                onChange={motion => setAttributes({ motion })}
-                                                            />
                                                         </Fragment>
                                                     )
                                                 }
@@ -211,6 +207,10 @@ const Inspector = props => {
                                                                             <BackgroundControl
                                                                                 backgroundOptions={background}
                                                                                 onChange={background => setAttributes({ background })}
+                                                                            />
+                                                                            <__experimentalParallaxControl
+                                                                                motionOptions={motion}
+                                                                                onChange={motion => setAttributes({ motion })}
                                                                             />
                                                                         </Fragment>
                                                                     )

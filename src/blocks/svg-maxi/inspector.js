@@ -243,16 +243,13 @@ const Inspector = props => {
                                                             >
                                                                 <ReactSVG
                                                                     src={SVGMediaURL}
-                                                                    beforeInjection={svg => {
-                                                                        if (!!imgMediaURL)
-                                                                            injectImgSVG(svg, uniqueID, imgMediaURL);
-                                                                    }}
                                                                     afterInjection={(err, svg) => {
                                                                         if (!!svg) {
                                                                             const resData = generateDataObject(SVGData, svg);
+                                                                            const resEl = injectImgSVG(svg, uniqueID, resData);
 
                                                                             setAttributes({
-                                                                                SVGElement: svg.outerHTML,
+                                                                                SVGElement: resEl.outerHTML,
                                                                                 SVGData: JSON.stringify(resData)
                                                                             })
                                                                         }
@@ -323,7 +320,7 @@ const Inspector = props => {
                                                 <SettingTabsControl
                                                     items={[
                                                         {
-                                                            label: __('Normal', 'gutenberg-extra'),
+                                                            label: __('Normal', 'maxi-blocks'),
                                                             content: (
                                                                 <Fragment>
                                                                     <__experimentalOpacityControl
@@ -340,7 +337,7 @@ const Inspector = props => {
                                                             )
                                                         },
                                                         {
-                                                            label: __('Hover', 'gutenberg-extra'),
+                                                            label: __('Hover', 'maxi-blocks'),
                                                             content: (
                                                                 <Fragment>
                                                                     <__experimentalOpacityControl
@@ -367,7 +364,7 @@ const Inspector = props => {
                                                 <SettingTabsControl
                                                     items={[
                                                         {
-                                                            label: __('Normal', 'gutenberg-extra'),
+                                                            label: __('Normal', 'maxi-blocks'),
                                                             content: (
                                                                 <BorderControl
                                                                     border={border}
@@ -377,7 +374,7 @@ const Inspector = props => {
                                                             )
                                                         },
                                                         {
-                                                            label: __('Hover', 'gutenberg-extra'),
+                                                            label: __('Hover', 'maxi-blocks'),
                                                             content: (
                                                                 <BorderControl
                                                                     border={borderHover}
@@ -422,7 +419,7 @@ const Inspector = props => {
                                                 <SettingTabsControl
                                                     items={[
                                                         {
-                                                            label: __('Normal', 'gutenberg-extra'),
+                                                            label: __('Normal', 'maxi-blocks'),
                                                             content: (
                                                                 <BoxShadowControl
                                                                     boxShadow={boxShadow}
@@ -432,7 +429,7 @@ const Inspector = props => {
                                                             )
                                                         },
                                                         {
-                                                            label: __('Hover', 'gutenberg-extra'),
+                                                            label: __('Hover', 'maxi-blocks'),
                                                             content: (
                                                                 <BoxShadowControl
                                                                     boxShadow={boxShadowHover}

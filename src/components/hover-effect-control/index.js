@@ -24,7 +24,10 @@ import {
 /**
  * External dependencies
  */
-import { isObject } from 'lodash';
+import {
+    isObject,
+    trim,
+} from 'lodash';
 import classnames from 'classnames';
 
 /**
@@ -111,7 +114,7 @@ const HoverEffectControl = props => {
                         max={10}
                         initial={1}
                         step={0.1}
-                        value={hoverSettings.duration}
+                        value={trim(hoverSettings.duration)}
                         onChangeValue={val => {
                             hoverSettings.duration = val;
                             onChange(JSON.stringify(value));
@@ -166,7 +169,7 @@ const HoverEffectControl = props => {
                         max={10}
                         initial={1}
                         step={0.1}
-                        value={hoverSettings.duration}
+                        value={trim(hoverSettings.duration)}
                         onChangeValue={val => {
                             hoverSettings.duration = val;
                             onChange(JSON.stringify(value));

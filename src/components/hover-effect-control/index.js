@@ -34,6 +34,11 @@ import {
     hoverNone,
     hoverBasic,
     hoverText,
+    alignCenterCenter,
+    alignLeftTop,
+    alignLeftBottom,
+    alignRightTop,
+    alignRightBottom,
 } from '../../icons';
 
 /**
@@ -136,6 +141,24 @@ const HoverEffectControl = props => {
                             onChange(JSON.stringify(value));
                         }}
                     />
+                    <div className='maxi-classic-radio-control maxi-classic-radio-control__bordered'>
+                        <RadioControl
+                            selected={value.textPreset}
+                            options={
+                                [
+                                    { label: <Icon icon={alignLeftTop} />, value: 'left-top' },
+                                    { label: <Icon icon={alignRightTop} />, value: 'right-top' },
+                                    { label: <Icon icon={alignCenterCenter} />, value: 'center-center' },
+                                    { label: <Icon icon={alignLeftBottom} />, value: 'left-bottom' },
+                                    { label: <Icon icon={alignRightBottom} />, value: 'right-bottom' },
+                                ]
+                            }
+                            onChange={val => {
+                                value.textPreset = val;
+                                onChange(JSON.stringify(value));
+                            }}
+                        />
+                    </div>
                     <SizeControl
                         label={__('Duration (s)', 'maxi-blocks')}
                         disableUnit
@@ -157,7 +180,6 @@ const HoverEffectControl = props => {
                             onChange(JSON.stringify(value));
                         }}
                     />
-                    <hr/>
                     <div className='maxi-fancy-radio-control'>
                         <RadioControl
                             label={__('Custom Hover Text', 'maxi-block')}
@@ -185,6 +207,7 @@ const HoverEffectControl = props => {
                             }}
                         />
                     }
+                    <hr/>
                     <TextareaControl
                     placeholder={__('Add your Hover Content Text here', 'maxi-blocks')}
                         value={value.contentText}
@@ -193,7 +216,6 @@ const HoverEffectControl = props => {
                             onChange(JSON.stringify(value));
                         }}
                     />
-                    <hr/>
                     <div className='maxi-fancy-radio-control'>
                         <RadioControl
                             label={__('Custom Content Text', 'maxi-block')}
@@ -221,6 +243,7 @@ const HoverEffectControl = props => {
                             }}
                         />
                     }
+                    <hr/>
                     <BackgroundControl
                         backgroundOptions={value.background}
                         onChange={val => {

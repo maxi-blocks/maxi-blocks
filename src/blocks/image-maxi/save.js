@@ -44,6 +44,7 @@ const save = props => {
         settings: hoverSettings,
         titleText: hoverTitleText,
         contentText: hoverContentText,
+        textPreset: hoverTextPreset,
     } = JSON.parse(hover);
 
     let classes = classnames(
@@ -94,7 +95,7 @@ const save = props => {
             {
             hoverSettings.type !== 'none' &&
                 <div className="maxi-hover-details">
-                    <div className="maxi-hover-details__content">
+                    <div className={`maxi-hover-details__content maxi-hover-details__content--${hoverTextPreset}`}>
                         {
                             !isEmpty(hoverTitleText) &&
                             <h3>{hoverTitleText}</h3>

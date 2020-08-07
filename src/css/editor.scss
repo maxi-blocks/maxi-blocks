@@ -336,6 +336,17 @@ body {
 .maxi-classic-radio-control {
 	margin-bottom: 5px;
 
+	&__bordered {
+		.components-radio-control {
+			&__option {
+				label {
+					border: 2px solid #dddfe1;
+					border-radius: 2px;
+					margin: 0 2px;
+				}
+			}
+		}
+	}
 	.components-radio-control {
 		width: 100%;
 

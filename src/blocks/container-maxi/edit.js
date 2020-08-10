@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 const { withSelect } = wp.data;
-const { 
+const {
     Fragment,
     forwardRef
 } = wp.element;
@@ -332,9 +332,7 @@ class edit extends MaxiBlock {
             <Inspector {...this.props} />,
             <__experimentalToolbar {...this.props} />,
             <__experimentalBreadcrumbs />,
-            <
-                Fragment>
-                
+            <Fragment>
                 {
                     isFirstOnHierarchy && fullWidth &&
                     <__experimentalBlock.section
@@ -344,6 +342,8 @@ class edit extends MaxiBlock {
                     >
                         <__experimentalBackgroundDisplayer
                             backgroundOptions={background}
+                            uniqueID={uniqueID}
+
                         />
                         <__experimentalShapeDivider
                             shapeDividerOptions={shapeDivider}
@@ -406,7 +406,7 @@ class edit extends MaxiBlock {
                 }
             </
             Fragment>
-            
+
         ];
     }
 }

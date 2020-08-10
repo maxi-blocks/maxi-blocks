@@ -219,6 +219,7 @@ class edit extends MaxiBlock {
                 >
                     <__experimentalBackgroundDisplayer
                         backgroundOptions={background}
+                        uniqueID={uniqueID}
                     />
                     {
                         !!showLine &&

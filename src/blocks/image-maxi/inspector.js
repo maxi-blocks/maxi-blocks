@@ -111,6 +111,7 @@ const Inspector = props => {
             motion,
             transform,
             clipPath,
+            svgPath
         },
         imageData,
         clientId,
@@ -476,28 +477,28 @@ const Inspector = props => {
 
                                                 hoverAnimationTypeOpacityColor={hoverAnimationTypeOpacityColor}
                                                 onChangeHoverAnimationTypeOpacityColor={hoverAnimationTypeOpacityColor => setAttributes({ hoverAnimationTypeOpacityColor })}
-                                        />
-                                        {
-                                            hoverAnimation === 'text' && hoverCustomTextTitle === 'yes' &&
-                                            <TypographyControl
-                                                typography={hoverAnimationTitleTypography}
-                                                onChange={hoverAnimationTitleTypography => setAttributes({ hoverAnimationTitleTypography })}
-                                                breakpoint={deviceType}
-                                            />}
-                                        {
-                                            hoverAnimation === 'text' && hoverCustomTextContent === 'yes' &&
-                                            <TypographyControl
-                                                typography={hoverAnimationContentTypography}
-                                                onChange={hoverAnimationContentTypography => setAttributes({ hoverAnimationContentTypography })}
-                                                breakpoint={deviceType}
-                                            />}
-                                        {
-                                            hoverAnimation === 'text' &&
-                                            <Fragment>
-                                                <__experimentalOpacityControl
-                                                    opacity={hoverOpacity}
-                                                    onChange={hoverOpacity => setAttributes({ hoverOpacity })}
                                             />
+                                            {
+                                                hoverAnimation === 'text' && hoverCustomTextTitle === 'yes' &&
+                                                <TypographyControl
+                                                    typography={hoverAnimationTitleTypography}
+                                                    onChange={hoverAnimationTitleTypography => setAttributes({ hoverAnimationTitleTypography })}
+                                                    breakpoint={deviceType}
+                                                />}
+                                            {
+                                                hoverAnimation === 'text' && hoverCustomTextContent === 'yes' &&
+                                                <TypographyControl
+                                                    typography={hoverAnimationContentTypography}
+                                                    onChange={hoverAnimationContentTypography => setAttributes({ hoverAnimationContentTypography })}
+                                                    breakpoint={deviceType}
+                                                />}
+                                            {
+                                                hoverAnimation === 'text' &&
+                                                <Fragment>
+                                                    <__experimentalOpacityControl
+                                                        opacity={hoverOpacity}
+                                                        onChange={hoverOpacity => setAttributes({ hoverOpacity })}
+                                                    />
                                                     <BackgroundControl
                                                         backgroundOptions={hoverBackground}
                                                         onChange={hoverBackground => setAttributes({ hoverBackground })}
@@ -541,7 +542,7 @@ const Inspector = props => {
                                             }
                                         </Fragment>
                                     }
-                                     <__experimentalZIndexControl
+                                    <__experimentalZIndexControl
                                         zindex={zIndex}
                                         onChange={zIndex => setAttributes({ zIndex })}
                                         breakpoint={deviceType}
@@ -582,10 +583,6 @@ const Inspector = props => {
                                         breakpoint={deviceType}
                                         defaultDisplay='flex'
                                     />
-                                    <__experimentalClipPath
-                                        clipPath={clipPath}
-                                        onChange={clipPath => setAttributes({ clipPath })}
-                                    />
                                 </div>
                                 <AccordionControl
                                     isPrimary
@@ -616,6 +613,18 @@ const Inspector = props => {
                                                     onChange={transform => setAttributes({ transform })}
                                                     uniqueID={uniqueID}
                                                     breakpoint={deviceType}
+                                                />
+                                            )
+                                        },
+                                        {
+                                            label: __('Clip-path', 'maxi-blocks'),
+                                            content: (
+                                                <__experimentalClipPath
+                                                    clipPath={clipPath}
+                                                    svgPath={svgPath}
+                                                    onChange={(clipPath, svgPath) =>
+                                                        setAttributes({ clipPath, svgPath })
+                                                    }
                                                 />
                                             )
                                         }

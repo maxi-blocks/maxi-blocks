@@ -1,0 +1,24 @@
+.maxi-clip-path-control {
+    &__defaults {
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+
+        button {
+            width: 3rem;
+            padding: .25rem;
+        }
+
+        &__item:not(svg) {
+            background-color: #464a53;
+        }
+
+        &__item {
+            width: 2rem;
+            height: 2rem;
+
+            path {
+                fill: #464a53;
+            }
+        }
+    }
+}

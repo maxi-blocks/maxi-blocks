@@ -65,6 +65,7 @@ const save = props => {
         >
             <__experimentalBackgroundDisplayer
                 backgroundOptions={background}
+                uniqueID={uniqueID}
             />
             <InnerBlocks.Content />
             {

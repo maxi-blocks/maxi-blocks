@@ -48,5 +48,6 @@
     "defaultGradient": "",
     "gradientAboveBackground": false
   },
-  "clipPath": ""
+  "clipPath": "",
+  "svgPath": ""
 }

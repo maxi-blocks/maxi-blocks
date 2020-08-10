@@ -69,6 +69,7 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
         >
             <__experimentalBackgroundDisplayer
                 backgroundOptions={background}
+                uniqueID={uniqueID}
             />
             {children}
         </__experimentalBlock.div>
@@ -304,6 +305,7 @@ class edit extends MaxiBlock {
                     className: classes,
                     maxiBlockClass: defaultBlockStyle,
                     background: background,
+                    uniqueID: uniqueID
                 }}
                 allowedBlocks={ALLOWED_BLOCKS}
                 renderAppender={

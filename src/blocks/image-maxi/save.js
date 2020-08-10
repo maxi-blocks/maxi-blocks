@@ -1,4 +1,13 @@
 /**
+ * WordPress dependencies
+ */
+const {
+    SVG,
+    Path,
+    Defs,
+} = wp.primitives;
+
+/**
  * Internal dependencies
  */
 import { __experimentalBackgroundDisplayer } from '../../components';
@@ -7,7 +16,10 @@ import { __experimentalBackgroundDisplayer } from '../../components';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
+import { 
+    isNil,
+    isEmpty
+} from 'lodash';
 import Scripts from '../../extensions/styles/hoverAnimations.js';
 
 /**
@@ -44,6 +56,7 @@ const save = props => {
             hoverAnimationCustomBorder,
             hoverPadding,
             motion,
+            svgPath
         },
         imageData
     } = props;
@@ -85,15 +98,52 @@ const save = props => {
         >
             <__experimentalBackgroundDisplayer
                 backgroundOptions={background}
+                uniqueID={uniqueID}
             />
-            <img
-                className={"wp-image-" + mediaID}
-                src={mediaURL}
-                width={mediaWidth}
-                height={mediaHeight}
-                alt={imageALT()}
-
-            />
+            {
+                !isEmpty(svgPath) &&
+                <SVG
+                    x="0px"
+                    y="0px"
+                    viewBox="0 0 36.1 36.1"
+                    xmlSpace="preserve"
+                    className={`maxi-image-block__image wp-image-${mediaID}`}
+                >
+                    <Defs>
+                        <pattern
+                            id={`maxi-background-displayer__svg__${uniqueID}`}
+                            x="0"
+                            y="0"
+                            patternUnits="userSpaceOnUse"
+                            width='100%'
+                            height='100%'
+                        >
+                            <image
+                                className="maxi-image-block__image__pattern"
+                                href={mediaURL}
+                                width={100}
+                                height={100}
+                                alt={mediaALT}
+                                preserveAspectRatio="xMinYMin meet"
+                            />
+                        </pattern>
+                    </Defs>
+                    <Path
+                        d={svgPath}
+                        fill={`url(#maxi-background-displayer__svg__${uniqueID})`}
+                    />
+                </SVG>
+            }
+            {
+                isEmpty(svgPath) &&
+                <img
+                    className={`maxi-image-block__image wp-image-${mediaID}`}
+                    src={mediaURL}
+                    width={mediaWidth}
+                    height={mediaHeight}
+                    alt={mediaALT}
+                />
+            }
             {
                 captionType !== 'none' &&
                 <figcaption>

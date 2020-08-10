@@ -71,6 +71,7 @@ const save = props => {
         >
             <__experimentalBackgroundDisplayer
                 backgroundOptions={background}
+                uniqueID={uniqueID}
             />
             <Button
                 className="maxi-button-extra__button"

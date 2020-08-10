@@ -3,7 +3,6 @@
  */
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
-const { select } = wp.data;
 const {
     __unstableIndentListItems,
     __unstableOutdentListItems,
@@ -275,6 +274,7 @@ class edit extends MaxiBlock {
             >
                 <__experimentalBackgroundDisplayer
                     backgroundOptions={background}
+                    uniqueID={uniqueID}
                 />
                 {
                     !isList &&

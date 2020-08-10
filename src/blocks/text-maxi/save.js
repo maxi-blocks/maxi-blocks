@@ -75,6 +75,7 @@ const save = props => {
             >
                 <__experimentalBackgroundDisplayer
                     backgroundOptions={background}
+                    uniqueID={uniqueID}
                 />
                 <RichText.Content
                     className='maxi-text-block__content'

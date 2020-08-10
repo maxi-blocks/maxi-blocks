@@ -13,6 +13,11 @@ const {
     __experimentalBlock,
     MediaUpload
 } = wp.blockEditor;
+const {
+    SVG,
+    Path,
+    Defs,
+} = wp.primitives;
 
 /**
  * Internal dependencies
@@ -74,9 +79,9 @@ class edit extends MaxiBlock {
         let response = {
             [uniqueID]: this.getNormalObject,
             [`${uniqueID}:hover`]: this.getHoverObject,
-            [`${uniqueID}>img`]: this.getImageFrontendObject,
-            [`${uniqueID} img:hover`]: this.getImageHoverObject,
-            [`${uniqueID} img`]: this.getImageBackendObject,
+            [`${uniqueID}>.maxi-image-block__image`]: this.getImageFrontendObject,
+            [`${uniqueID} .maxi-image-block__image:hover`]: this.getImageHoverObject,
+            [`${uniqueID} .maxi-image-block__image`]: this.getImageBackendObject,
             [`${uniqueID} figcaption`]: this.getFigcaptionObject,
             [`${uniqueID} .maxi-block-text-hover .maxi-block-text-hover__content`]: this.getHoverAnimationTextContentObject,
             [`${uniqueID} .maxi-block-text-hover .maxi-block-text-hover__title`]: this.getHoverAnimationTextTitleObject,
@@ -311,6 +316,7 @@ class edit extends MaxiBlock {
                 mediaURL,
                 mediaWidth,
                 mediaHeight,
+                svgPath,
                 hoverAnimation,
                 hoverAnimationType,
                 hoverAnimationTypeText,
@@ -378,6 +384,7 @@ class edit extends MaxiBlock {
             >
                 <__experimentalBackgroundDisplayer
                     backgroundOptions={background}
+                    uniqueID={uniqueID}
                 />
                 <MediaUpload
                     onSelect={media => setAttributes({ mediaID: media.id })}
@@ -422,13 +429,50 @@ class edit extends MaxiBlock {
                                                 icon={toolbarReplaceImage}
                                             />
                                         </div>
-                                        <img
-                                            className={`maxi-image-block__image wp-image-${mediaID}`}
-                                            src={mediaURL}
-                                            width={mediaWidth}
-                                            height={mediaHeight}
-                                            alt={mediaALT}
-                                        />
+                                        {
+                                            !isEmpty(svgPath) &&
+                                            <SVG
+                                                x="0px"
+                                                y="0px"
+                                                viewBox="0 0 36.1 36.1"
+                                                xmlSpace="preserve"
+                                                className={`maxi-image-block__image wp-image-${mediaID}`}
+                                            >
+                                                <Defs>
+                                                    <pattern
+                                                        id={`maxi-background-displayer__svg__${uniqueID}`}
+                                                        x="0"
+                                                        y="0"
+                                                        patternUnits="userSpaceOnUse"
+                                                        width='100%'
+                                                        height='100%'
+                                                    >
+                                                        <image
+                                                            className="maxi-image-block__image__pattern"
+                                                            xlinkHref={mediaURL}
+                                                            width={100}
+                                                            height={100}
+                                                            alt={mediaALT}
+                                                            preserveAspectRatio="xMinYMin meet"
+                                                        />
+                                                    </pattern>
+                                                </Defs>
+                                                <Path
+                                                    d={svgPath}
+                                                    fill={`url(#maxi-background-displayer__svg__${uniqueID})`}
+                                                />
+                                            </SVG>
+                                        }
+                                        {
+                                            isEmpty(svgPath) &&
+                                            <img
+                                                className={`maxi-image-block__image wp-image-${mediaID}`}
+                                                src={mediaURL}
+                                                width={mediaWidth}
+                                                height={mediaHeight}
+                                                alt={mediaALT}
+                                            />
+                                        }
                                     </ResizableBox>
                                     {captionType !== 'none' &&
                                         <figcaption

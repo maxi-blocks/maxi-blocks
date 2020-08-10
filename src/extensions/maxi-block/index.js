@@ -31,7 +31,8 @@ import {
     uniqueId,
     isEqual,
     isNil,
-    isObject
+    isObject,
+    isArray
 } from 'lodash';
 
 /**
@@ -86,24 +87,23 @@ class MaxiBlock extends Component {
      */
     fixProps() {
         Object.entries(this.props.attributes).map(([key, value]) => {
-            let obj;
             try {
-                obj = JSON.parse(value);
+                const obj = JSON.parse(value);
+
+                if (!isObject(obj) && !isArray(obj))
+                    return;
+
+                const defaultObj = JSON.parse(getDefaultProp(this.props.clientId, key));
+
+                const objKeys = Object.keys(obj).sort();
+                const defaultObjKeys = Object.keys(defaultObj).sort();
+                if (JSON.stringify(objKeys) != JSON.stringify(defaultObjKeys)) {
+                    const newObject = this.generalToDesktop(obj, defaultObj);
+                    this.props.setAttributes({ [key]: JSON.stringify(newObject) });
+                    this.props.attributes[key] = JSON.stringify(newObject);
+                }
             } catch (error) {
                 return;
-            }
-
-            if (!isObject(obj))
-                return;
-
-            const defaultObj = JSON.parse(getDefaultProp(this.props.clientId, key));
-
-            const objKeys = Object.keys(obj).sort();
-            const defaultObjKeys = Object.keys(defaultObj).sort();
-            if (JSON.stringify(objKeys) != JSON.stringify(defaultObjKeys)) {
-                const newObject = this.generalToDesktop(obj, defaultObj);
-                this.props.setAttributes({ [key]: JSON.stringify(newObject) });
-                this.props.attributes[key] = JSON.stringify(newObject);
             }
         })
     }
@@ -139,7 +139,7 @@ class MaxiBlock extends Component {
 
         switch (typeof meta) {
             case 'string':
-                if(!isEmpty(meta))
+                if (!isEmpty(meta))
                     return JSON.parse(meta);
                 else
                     return {};

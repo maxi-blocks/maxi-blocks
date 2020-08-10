@@ -15,6 +15,7 @@ export { default as FontFamilySelector } from './font-family-selector';
 export { default as FontLevelControl } from './font-level-control';
 export { default as HoverAnimationControl } from './hover-animation-control';
 export { default as ImageCropControl } from './image-crop-control';
+export { default as MediaUploaderControl } from './media-uploader-control';
 export { default as SettingTabsControl } from './setting-tabs-control';
 export { default as SizeControl } from './size-control';
 export { default as FullSizeControl } from './full-size-control';

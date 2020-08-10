@@ -190,7 +190,7 @@ const Inspector = props => {
                                                         <SettingTabsControl
                                                             items={[
                                                                 {
-                                                                    label: __('Normal', 'gutenberg-extra'),
+                                                                    label: __('Normal', 'maxi-blocks'),
                                                                     content: (
                                                                         <Fragment>
                                                                             <__experimentalOpacityControl
@@ -207,7 +207,7 @@ const Inspector = props => {
                                                                     )
                                                                 },
                                                                 {
-                                                                    label: __('Hover', 'gutenberg-extra'),
+                                                                    label: __('Hover', 'maxi-blocks'),
                                                                     content: (
                                                                         <Fragment>
                                                                             <__experimentalOpacityControl
@@ -235,7 +235,7 @@ const Inspector = props => {
                                                 <SettingTabsControl
                                                     items={[
                                                         {
-                                                            label: __('Normal', 'gutenberg-extra'),
+                                                            label: __('Normal', 'maxi-blocks'),
                                                             content: (
                                                                 <BoxShadowControl
                                                                     boxShadow={boxShadow}
@@ -245,7 +245,7 @@ const Inspector = props => {
                                                             )
                                                         },
                                                         {
-                                                            label: __('Hover', 'gutenberg-extra'),
+                                                            label: __('Hover', 'maxi-blocks'),
                                                             content: (
                                                                 <BoxShadowControl
                                                                     boxShadow={boxShadowHover}

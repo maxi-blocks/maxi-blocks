@@ -92,11 +92,6 @@ class edit extends MaxiBlock {
         let response = {
             [uniqueID]: this.getNormalObject,
             [`${uniqueID}:hover`]: this.getHoverObject,
-            [`${uniqueID} .maxi-block-text-hover .maxi-block-text-hover__content`]: this.getHoverAnimationTextContentObject,
-            [`${uniqueID} .maxi-block-text-hover .maxi-block-text-hover__title`]: this.getHoverAnimationTextTitleObject,
-            [`${uniqueID} .maxi-block-text-hover`]: this.getHoverAnimationMainObject,
-            [`${uniqueID}.hover-animation-basic.hover-animation-type-opacity:hover .hover_el`]: this.getHoverAnimationTypeOpacityObject,
-            [`${uniqueID}.hover-animation-basic.hover-animation-type-opacity-with-colour:hover .hover_el:before`]: this.getHoverAnimationTypeOpacityColorObject,
         }
 
         response = Object.assign(
@@ -169,96 +164,6 @@ class edit extends MaxiBlock {
         return response;
     }
 
-    get getHoverAnimationMainObject() {
-        const {
-            hoverOpacity,
-            hoverBackground,
-            hoverBorder,
-            hoverPadding,
-        } = this.props.attributes;
-
-        const response = {
-            background: { ...getBackgroundObject(JSON.parse(hoverBackground)) },
-            border: { ...JSON.parse(hoverBorder) },
-            borderWidth: { ...JSON.parse(hoverBorder).borderWidth },
-            borderRadius: { ...JSON.parse(hoverBorder).borderRadius },
-            padding: { ...JSON.parse(hoverPadding) },
-            animationHover: {
-                label: 'Animation Hover',
-                general: {}
-            }
-        };
-
-        if (hoverOpacity)
-            response.animationHover.general['opacity'] = hoverOpacity;
-
-        return response
-    }
-
-    get getHoverAnimationTypeOpacityObject() {
-        const {
-            hoverAnimationTypeOpacity,
-        } = this.props.attributes;
-
-        const response = {
-            animationTypeOpacityHover: {
-                label: 'Animation Type Opacity Hover',
-                general: {}
-            }
-        };
-
-        if (hoverAnimationTypeOpacity)
-            response.animationTypeOpacityHover.general['opacity'] = hoverAnimationTypeOpacity;
-
-        return response
-    }
-
-    get getHoverAnimationTypeOpacityColorObject() {
-        const {
-            hoverAnimationTypeOpacityColor,
-            hoverAnimationTypeOpacityColorBackground,
-        } = this.props.attributes;
-
-        const response = {
-            background: { ...getBackgroundObject(JSON.parse(hoverAnimationTypeOpacityColorBackground)) },
-            animationTypeOpacityHoverColor: {
-                label: 'Animation Type Opacity Color Hover',
-                general: {}
-            }
-        };
-
-        if (hoverAnimationTypeOpacityColor)
-            response.animationTypeOpacityHoverColor.general['opacity'] = hoverAnimationTypeOpacityColor;
-
-        return response
-    }
-
-    get getHoverAnimationTextTitleObject() {
-        const {
-            hoverAnimationTitleTypography
-        } = this.props.attributes;
-
-        const response = {
-            hoverAnimationTitleTypography: { ...JSON.parse(hoverAnimationTitleTypography) },
-            hoverAnimationTitleAlignmentTypography: { ...getAlignmentTextObject(JSON.parse(hoverAnimationTitleTypography).textAlign) }
-        };
-
-        return response
-    }
-
-    get getHoverAnimationTextContentObject() {
-        const {
-            hoverAnimationContentTypography
-        } = this.props.attributes;
-
-        const response = {
-            hoverAnimationContentTypography: { ...JSON.parse(hoverAnimationContentTypography) },
-            hoverAnimationContentAlignmentTypography: { ...getAlignmentTextObject(JSON.parse(hoverAnimationContentTypography).textAlign) }
-        };
-
-        return response
-    }
-
     render() {
         const {
             attributes: {
@@ -268,10 +173,6 @@ class edit extends MaxiBlock {
                 defaultBlockStyle,
                 fullWidth,
                 background,
-                hoverAnimation,
-                hoverAnimationType,
-                hoverAnimationTypeText,
-                hoverAnimationDuration,
             },
             clientId,
             loadTemplate,
@@ -286,10 +187,6 @@ class edit extends MaxiBlock {
             'maxi-block maxi-row-block',
             uniqueID,
             blockStyle,
-            'hover-animation-' + hoverAnimation,
-            'hover-animation-type-' + hoverAnimationType,
-            'hover-animation-type-text-' + hoverAnimationTypeText,
-            'hover-animation-duration-' + hoverAnimationDuration,
             extraClassName,
             className,
         );

@@ -9,9 +9,8 @@ import { __experimentalBackgroundDisplayer } from '../../components';
 import classnames from 'classnames';
 import {
     isNil,
-    isEmpty
+    isEmpty,
 } from 'lodash';
-import Scripts from '../../extensions/styles/hoverAnimations.js';
 
 /**
  * Save
@@ -36,30 +35,23 @@ const save = props => {
             mediaALTwp,
             mediaALTtitle,
             altSelector,
-            hoverAnimation,
-            hoverAnimationType,
-            hoverAnimationTypeText,
-            hoverAnimationDuration,
-            hoverAnimationTitle,
-            hoverAnimationContent,
-            hoverOpacity,
-            hoverBackground,
-            hoverAnimationCustomBorder,
-            hoverPadding,
             motion,
+            hover,
         },
-        imageData
     } = props;
+
+    const {
+        settings: hoverSettings,
+        titleText: hoverTitleText,
+        contentText: hoverContentText,
+        textPreset: hoverTextPreset,
+    } = JSON.parse(hover);
 
     let classes = classnames(
         `maxi-motion-effect maxi-motion-effect-${uniqueID}`,
         'maxi-block maxi-image-block',
         blockStyle,
         extraClassName,
-        'hover-animation-' + hoverAnimation,
-        'hover-animation-type-' + hoverAnimationType,
-        'hover-animation-type-text-' + hoverAnimationTypeText,
-        'hover-animation-duration-' + hoverAnimationDuration,
         uniqueID,
         className,
         fullWidth === 'full' ?
@@ -85,56 +77,42 @@ const save = props => {
             data-maxi_initial_block_class={defaultBlockStyle}
             data-motion={motion}
             data-motion-id={uniqueID}
+            data-hover={JSON.stringify(hoverSettings)}
         >
             <__experimentalBackgroundDisplayer
                 backgroundOptions={background}
                 uniqueID={uniqueID}
             />
-            <img
-                className={`maxi-image-block__image wp-image-${mediaID}`}
-                src={mediaURL}
-                width={mediaWidth}
-                height={mediaHeight}
-                alt={mediaALT}
-            />
+            <div className="maxi-block-hover-element">
+                <img
+                    className={"wp-image-" + mediaID}
+                    src={mediaURL}
+                    width={mediaWidth}
+                    height={mediaHeight}
+                    alt={imageALT()}
+
+                />
+            </div>
+            {
+            hoverSettings.type !== 'none' &&
+                <div className="maxi-hover-details">
+                    <div className={`maxi-hover-details__content maxi-hover-details__content--${hoverTextPreset}`}>
+                        {
+                            !isEmpty(hoverTitleText) &&
+                            <h3>{hoverTitleText}</h3>
+                        }
+                        {
+                            !isEmpty(hoverContentText) &&
+                            <p>{hoverContentText}</p>
+                        }
+                    </div>
+                </div>
+            }
             {
                 captionType !== 'none' &&
                 <figcaption>
                     {captionContent}
                 </figcaption>
-            }
-            {
-                hoverAnimation === 'text' &&
-                <div className='maxi-block-text-hover'>
-                    {
-                        hoverAnimationTitle !== '' &&
-                        <h3 className='maxi-block-text-hover__title'>
-                            {hoverAnimationTitle}
-                        </h3>
-                    }
-                    {
-                        hoverAnimationContent !== '' &&
-                        <div className='maxi-block-text-hover__content'>
-                            {hoverAnimationContent}
-                        </div>
-                    }
-                </div>
-            }
-            {
-                hoverAnimation === 'basic' &&
-                <Scripts
-                    hover_animation={hoverAnimationType}
-                    hover_animation_type={hoverAnimation}
-                >
-                </Scripts>
-            }
-            {
-                hoverAnimation === 'text' &&
-                <Scripts
-                    hover_animation={hoverAnimationTypeText}
-                    hover_animation_type={hoverAnimation}
-                >
-                </Scripts>
             }
         </figure>
     );

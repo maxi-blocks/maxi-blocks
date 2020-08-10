@@ -27,7 +27,7 @@ const PositionControl = props => {
         position,
         className,
         onChange,
-        breakpoint
+        breakpoint = 'general'
     } = props;
 
     let value = !isObject(position) ?

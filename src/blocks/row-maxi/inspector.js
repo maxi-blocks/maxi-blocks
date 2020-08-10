@@ -21,7 +21,6 @@ import {
     BorderControl,
     BoxShadowControl,
     FullSizeControl,
-    HoverAnimationControl,
     SettingTabsControl,
     __experimentalZIndexControl,
     __experimentalResponsiveSelector,
@@ -58,30 +57,9 @@ const Inspector = props => {
             boxShadowHover,
             padding,
             margin,
-            hoverAnimation,
-            hoverAnimationType,
-            hoverAnimationTypeText,
-            hoverAnimationDuration,
             extraClassName,
             zIndex,
             breakpoints,
-            hoverAnimationTitle,
-            hoverAnimationContent,
-            hoverOpacity,
-            hoverBackground,
-            hoverAnimationCustomBorder,
-            hoverAnimationContentTypography,
-            hoverAnimationTitleTypography,
-            hoverCustomTextContent,
-            hoverCustomTextTitle,
-            hoverBorder,
-            hoverPadding,
-            hoverAnimationTypeOpacity,
-            onChangeHoverAnimationTypeOpacity,
-            hoverAnimationTypeColor,
-            hoverAnimationTypeOpacityColor,
-            onChangeHoverAnimationTypeOpacityColor,
-            hoverAnimationTypeOpacityColorBackground,
             position,
             display,
             transform
@@ -89,15 +67,6 @@ const Inspector = props => {
         deviceType,
         setAttributes,
     } = props;
-
-    const hoverAnimationCustomOptions = [
-        { label: __('Yes', 'maxi-blocks'), value: 'yes' },
-        { label: __('No', 'maxi-blocks'), value: 'no' },
-    ]
-    const hoverCustomTextOptions = [
-        { label: __('Yes', 'maxi-blocks'), value: 'yes' },
-        { label: __('No', 'maxi-blocks'), value: 'no' },
-    ]
 
     return (
         <InspectorControls>
@@ -316,109 +285,12 @@ const Inspector = props => {
                                 {
                                     deviceType === 'general' &&
                                     <Fragment>
-                                        <HoverAnimationControl
-                                            hoverAnimation={hoverAnimation}
-                                            onChangeHoverAnimation={hoverAnimation => setAttributes({ hoverAnimation })}
-                                            hoverAnimationDuration={hoverAnimationDuration}
-                                            onChangeHoverAnimationDuration={hoverAnimationDuration => setAttributes({ hoverAnimationDuration })}
-                                        />
                                         <TextControl
                                             label={__('Additional CSS Classes', 'maxi-blocks')}
                                             className='maxi-additional__css-classes'
                                             value={extraClassName}
                                             onChange={extraClassName => setAttributes({ extraClassName })}
                                         />
-                                        <HoverAnimationControl
-                                            hoverAnimation={hoverAnimation}
-                                            onChangeHoverAnimation={hoverAnimation => setAttributes({ hoverAnimation })}
-
-                                            hoverAnimationType={hoverAnimationType}
-                                            onChangeHoverAnimationType={hoverAnimationType => setAttributes({ hoverAnimationType })}
-
-                                            hoverAnimationTypeText={hoverAnimationTypeText}
-                                            onChangeHoverAnimationTypeText={hoverAnimationTypeText => setAttributes({ hoverAnimationTypeText })}
-
-                                            hoverAnimationDuration={hoverAnimationDuration}
-                                            onChangeHoverAnimationDuration={hoverAnimationDuration => setAttributes({ hoverAnimationDuration })}
-
-                                            hoverAnimationTitle={hoverAnimationTitle}
-                                            onChangeHoverAnimationTitle={hoverAnimationTitle => setAttributes({ hoverAnimationTitle })}
-                                            hoverAnimationContent={hoverAnimationContent}
-                                            onChangeHoverAnimationContent={hoverAnimationContent => setAttributes({ hoverAnimationContent })}
-
-                                            hoverCustomTextContent={hoverCustomTextContent}
-                                            onChangeHoverAnimationCustomContent={hoverCustomTextContent => setAttributes({ hoverCustomTextContent })}
-
-                                            hoverCustomTextTitle={hoverCustomTextTitle}
-                                            onChangeHoverAnimationCustomTitle={hoverCustomTextTitle => setAttributes({ hoverCustomTextTitle })}
-
-                                            hoverAnimationTypeOpacity={hoverAnimationTypeOpacity}
-                                            onChangeHoverAnimationTypeOpacity={hoverAnimationTypeOpacity => setAttributes({ hoverAnimationTypeOpacity })}
-
-                                            hoverAnimationTypeOpacityColor={hoverAnimationTypeOpacityColor}
-                                            onChangeHoverAnimationTypeOpacityColor={hoverAnimationTypeOpacityColor => setAttributes({ hoverAnimationTypeOpacityColor })}
-
-                                        />
-                                        {
-                                            hoverAnimation === 'text' && hoverCustomTextTitle === 'yes' &&
-                                            <TypographyControl
-                                                typography={hoverAnimationTitleTypography}
-                                                onChange={hoverAnimationTitleTypography => setAttributes({ hoverAnimationTitleTypography })}
-                                            />}
-                                        {
-                                            hoverAnimation === 'text' && hoverCustomTextContent === 'yes' &&
-                                            <TypographyControl
-                                                typography={hoverAnimationContentTypography}
-                                                onChange={hoverAnimationContentTypography => setAttributes({ hoverAnimationContentTypography })}
-                                            />}
-                                        {
-                                            hoverAnimation === 'text' &&
-                                            <Fragment>
-                                                <__experimentalOpacityControl
-                                                    opacity={hoverOpacity}
-                                                    onChange={hoverOpacity => setAttributes({ hoverOpacity })}
-                                                />
-                                                <BackgroundControl
-                                                    backgroundOptions={hoverBackground}
-                                                    onChange={hoverBackground => setAttributes({ hoverBackground })}
-                                                    disableImage
-                                                />
-
-                                                <RadioControl
-                                                    label={__('Custom Border', 'maxi-blocks')}
-                                                    className={'maxi-hover-animation-custom-border'}
-                                                    selected={hoverAnimationCustomBorder}
-                                                    options={hoverAnimationCustomOptions}
-                                                    onChange={hoverAnimationCustomBorder => setAttributes({ hoverAnimationCustomBorder })}
-                                                />
-                                            </Fragment>
-                                        }
-                                        {
-                                            hoverAnimationCustomBorder === 'yes' && hoverAnimation === 'text' &&
-                                            <BorderControl
-                                                border={hoverBorder}
-                                                onChange={hoverBorder => setAttributes({ hoverBorder })}
-                                                breakpoint={deviceType}
-                                            />
-                                        }
-                                        {
-                                            hoverAnimation === 'text' &&
-                                            <Fragment>
-                                                <__experimentalAxisControl
-                                                    values={hoverPadding}
-                                                    onChange={hoverPadding => setAttributes({ hoverPadding })}
-                                                    disableAuto
-                                                />
-                                            </Fragment>
-                                        }
-                                        {
-                                            hoverAnimationType === 'opacity-with-colour' &&
-                                            <BackgroundControl
-                                                backgroundOptions={hoverAnimationTypeOpacityColorBackground}
-                                                onChange={hoverAnimationTypeOpacityColorBackground => setAttributes({ hoverAnimationTypeOpacityColorBackground })}
-                                                disableImage
-                                            />
-                                        }
                                     </Fragment>
                                 }
                                 <__experimentalZIndexControl

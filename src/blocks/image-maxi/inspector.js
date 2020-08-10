@@ -9,7 +9,6 @@ const {
     SelectControl,
     TextareaControl,
     TextControl,
-    RadioControl,
 } = wp.components;
 
 /**
@@ -24,7 +23,6 @@ import {
     BlockStylesControl,
     BoxShadowControl,
     FullSizeControl,
-    HoverAnimationControl,
     ImageCropControl,
     SettingTabsControl,
     TypographyControl,
@@ -39,6 +37,7 @@ import {
     __experimentalTransformControl,
     __experimentalClipPath,
     __experimentalEntranceAnimationControl,
+    __experimentalHoverEffectControl,
 } from '../../components';
 
 /**
@@ -79,39 +78,18 @@ const Inspector = props => {
             opacityHover,
             boxShadowHover,
             borderHover,
-            hoverAnimation,
-            hoverAnimationType,
-            hoverAnimationTypeText,
-            hoverAnimationDuration,
             mediaID,
             extraClassName,
             zIndex,
             mediaALT,
             altSelector,
             breakpoints,
-            hoverAnimationTitle,
-            hoverAnimationContent,
-            hoverOpacity,
-            hoverBackground,
-            hoverAnimationCustomBorder,
-            hoverAnimationContentTypography,
-            hoverAnimationTitleTypography,
-            hoverCustomTextContent,
-            hoverCustomTextTitle,
-            hoverBorder,
-            hoverPadding,
-            hoverAnimationTypeOpacity,
-            onChangeHoverAnimationTypeOpacity,
-            hoverAnimationTypeColor,
-            hoverAnimationTypeOpacityColor,
-            onChangeHoverAnimationTypeOpacityColor,
-            hoverAnimationTypeOpacityColorBackground,
             position,
             display,
             motion,
             transform,
             clipPath,
-            svgPath
+            hover,
         },
         imageData,
         clientId,
@@ -122,14 +100,6 @@ const Inspector = props => {
     const sizeValue = !isObject(size) ?
         JSON.parse(size) :
         size;
-    const hoverAnimationCustomOptions = [
-        { label: __('Yes', 'maxi-blocks'), value: 'yes' },
-        { label: __('No', 'maxi-blocks'), value: 'no' },
-    ]
-    const hoverCustomTextOptions = [
-        { label: __('Yes', 'maxi-blocks'), value: 'yes' },
-        { label: __('No', 'maxi-blocks'), value: 'no' },
-    ]
 
     const altSelectorOptions = [
         { label: __('WordPress ALT', 'maxi-blocks'), value: 'wordpress' },
@@ -301,6 +271,8 @@ const Inspector = props => {
                                                                         backgroundOptions={background}
                                                                         onChange={background => setAttributes({ background })}
                                                                         disableImage
+                                                                        disableVideo
+                                                                        disableGradient
                                                                     />
                                                                 </Fragment>
                                                             )
@@ -318,6 +290,8 @@ const Inspector = props => {
                                                                         backgroundOptions={backgroundHover}
                                                                         onChange={backgroundHover => setAttributes({ backgroundHover })}
                                                                         disableImage
+                                                                        disableVideo
+                                                                        disableGradient
                                                                     />
                                                                 </Fragment>
                                                             )
@@ -448,98 +422,6 @@ const Inspector = props => {
                                                 value={extraClassName}
                                                 onChange={extraClassName => setAttributes({ extraClassName })}
                                             />
-                                            <HoverAnimationControl
-                                                hoverAnimation={hoverAnimation}
-                                                onChangeHoverAnimation={hoverAnimation => setAttributes({ hoverAnimation })}
-
-                                                hoverAnimationType={hoverAnimationType}
-                                                onChangeHoverAnimationType={hoverAnimationType => setAttributes({ hoverAnimationType })}
-
-                                                hoverAnimationTypeText={hoverAnimationTypeText}
-                                                onChangeHoverAnimationTypeText={hoverAnimationTypeText => setAttributes({ hoverAnimationTypeText })}
-
-                                                hoverAnimationDuration={hoverAnimationDuration}
-                                                onChangeHoverAnimationDuration={hoverAnimationDuration => setAttributes({ hoverAnimationDuration })}
-
-                                                hoverAnimationTitle={hoverAnimationTitle}
-                                                onChangeHoverAnimationTitle={hoverAnimationTitle => setAttributes({ hoverAnimationTitle })}
-                                                hoverAnimationContent={hoverAnimationContent}
-                                                onChangeHoverAnimationContent={hoverAnimationContent => setAttributes({ hoverAnimationContent })}
-
-                                                hoverCustomTextContent={hoverCustomTextContent}
-                                                onChangeHoverAnimationCustomContent={hoverCustomTextContent => setAttributes({ hoverCustomTextContent })}
-
-                                                hoverCustomTextTitle={hoverCustomTextTitle}
-                                                onChangeHoverAnimationCustomTitle={hoverCustomTextTitle => setAttributes({ hoverCustomTextTitle })}
-
-                                                hoverAnimationTypeOpacity={hoverAnimationTypeOpacity}
-                                                onChangeHoverAnimationTypeOpacity={hoverAnimationTypeOpacity => setAttributes({ hoverAnimationTypeOpacity })}
-
-                                                hoverAnimationTypeOpacityColor={hoverAnimationTypeOpacityColor}
-                                                onChangeHoverAnimationTypeOpacityColor={hoverAnimationTypeOpacityColor => setAttributes({ hoverAnimationTypeOpacityColor })}
-                                            />
-                                            {
-                                                hoverAnimation === 'text' && hoverCustomTextTitle === 'yes' &&
-                                                <TypographyControl
-                                                    typography={hoverAnimationTitleTypography}
-                                                    onChange={hoverAnimationTitleTypography => setAttributes({ hoverAnimationTitleTypography })}
-                                                    breakpoint={deviceType}
-                                                />}
-                                            {
-                                                hoverAnimation === 'text' && hoverCustomTextContent === 'yes' &&
-                                                <TypographyControl
-                                                    typography={hoverAnimationContentTypography}
-                                                    onChange={hoverAnimationContentTypography => setAttributes({ hoverAnimationContentTypography })}
-                                                    breakpoint={deviceType}
-                                                />}
-                                            {
-                                                hoverAnimation === 'text' &&
-                                                <Fragment>
-                                                    <__experimentalOpacityControl
-                                                        opacity={hoverOpacity}
-                                                        onChange={hoverOpacity => setAttributes({ hoverOpacity })}
-                                                    />
-                                                    <BackgroundControl
-                                                        backgroundOptions={hoverBackground}
-                                                        onChange={hoverBackground => setAttributes({ hoverBackground })}
-                                                        disableImage
-                                                    />
-
-                                                    <RadioControl
-                                                        label={__('Custom Border', 'maxi-blocks')}
-                                                        className={'maxi-hover-animation-custom-border'}
-                                                        selected={hoverAnimationCustomBorder}
-                                                        options={hoverAnimationCustomOptions}
-                                                        onChange={hoverAnimationCustomBorder => setAttributes({ hoverAnimationCustomBorder })}
-                                                    />
-                                                </Fragment>
-                                            }
-                                            {
-                                                hoverAnimationCustomBorder === 'yes' && hoverAnimation === 'text' &&
-                                                <BorderControl
-                                                    border={hoverBorder}
-                                                    onChange={hoverBorder => setAttributes({ hoverBorder })}
-                                                    breakpoint={deviceType}
-                                                />
-                                            }
-                                            {
-                                                hoverAnimation === 'text' &&
-                                                <Fragment>
-                                                    <__experimentalAxisControl
-                                                        values={hoverPadding}
-                                                        onChange={hoverPadding => setAttributes({ hoverPadding })}
-                                                        disableAuto
-                                                    />
-                                                </Fragment>
-                                            }
-                                            {
-                                                hoverAnimationType === 'opacity-with-colour' &&
-                                                <BackgroundControl
-                                                    backgroundOptions={hoverAnimationTypeOpacityColorBackground}
-                                                    onChange={hoverAnimationTypeOpacityColorBackground => setAttributes({ hoverAnimationTypeOpacityColorBackground })}
-                                                    disableImage
-                                                />
-                                            }
                                         </Fragment>
                                     }
                                     <__experimentalZIndexControl
@@ -593,6 +475,15 @@ const Inspector = props => {
                                                 <__experimentalMotionControl
                                                     motionOptions={motion}
                                                     onChange={motion => setAttributes({ motion })}
+                                                />
+                                            )
+                                        },
+                                        {
+                                            label: __('Hover Effects', 'maxi-blocks'),
+                                            content: (
+                                                <__experimentalHoverEffectControl
+                                                    hoverOptions={hover}
+                                                    onChange={hover => setAttributes({ hover })}
                                                 />
                                             )
                                         },

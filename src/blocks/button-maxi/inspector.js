@@ -18,7 +18,6 @@ import {
     BlockStylesControl,
     BoxShadowControl,
     FullSizeControl,
-    HoverAnimationControl,
     SettingTabsControl,
     TypographyControl,
     __experimentalResponsiveSelector,
@@ -58,9 +57,6 @@ const Inspector = props => {
             boxShadowHover,
             margin,
             padding,
-            hoverAnimation,
-            hoverAnimationDuration,
-            hoverAnimationType,
             extraClassName,
             zIndex,
             breakpoints,
@@ -184,6 +180,7 @@ const Inspector = props => {
                                                                                 backgroundOptions={background}
                                                                                 onChange={background => setAttributes({ background })}
                                                                                 disableImage
+                                                                                disableVideo
                                                                                 disableClipPath
                                                                             />
                                                                         </Fragment>
@@ -202,6 +199,7 @@ const Inspector = props => {
                                                                                 backgroundOptions={backgroundHover}
                                                                                 onChange={backgroundHover => setAttributes({ backgroundHover })}
                                                                                 disableImage
+                                                                                disableVideo
                                                                                 disableClipPath
                                                                             />
                                                                         </Fragment>
@@ -313,12 +311,6 @@ const Inspector = props => {
                                     {
                                         deviceType === 'general' &&
                                         <Fragment>
-                                            <HoverAnimationControl
-                                                hoverAnimation={hoverAnimation}
-                                                onChangeHoverAnimation={hoverAnimation => setAttributes({ hoverAnimation })}
-                                                hoverAnimationDuration={hoverAnimationDuration}
-                                                onChangeHoverAnimationDuration={hoverAnimationDuration => setAttributes({ hoverAnimationDuration })}
-                                            />
                                             <TextControl
                                                 label={__('Additional CSS Classes', 'maxi-blocks')}
                                                 className='maxi-additional__css-classes'

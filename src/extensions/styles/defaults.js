@@ -1398,6 +1398,41 @@ export const __experimentalDisplay = {
     }
 }
 
+export const __experimentalHover = {
+    "label": "Hover Effects",
+    "settings": {
+        "type": "zoom-in",
+        "effectType": "fade",
+        "duration": 1,
+    },
+    "textPreset": "center-center",
+    "borderStatus": 0,
+    "paddingStatus": 0,
+    "marginStatus": 0,
+    "border": {...border},
+    "background": {...background},
+    "margin": {...margin},
+    "padding": {...padding},
+    "titleTypography": {
+        ...typography,
+        "general" : {
+            ...typography["general"],
+            "font-size": 33
+        }
+    },
+    "contentTypography": {
+        ...typography,
+        "general" : {
+            ...typography["general"],
+            "font-size": 18
+        }
+    },
+    "titleStatus": 0,
+    "titleText": "",
+    "contentStatus": 0,
+    "contentText": "",
+}
+
 export const __experimentalMotion = {
     "label": "Motion Effects",
     "vertical": {

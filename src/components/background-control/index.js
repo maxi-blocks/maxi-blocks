@@ -80,20 +80,6 @@ const BackgroundControl = props => {
             null
     );
 
-    const allowedBlocks = [
-        'maxi-blocks/column-maxi',
-        'maxi-blocks/row-maxi',
-        'maxi-blocks/container-maxi',
-    ]
-    const backgroundVideoAllowedBlocks = [...allowedBlocks]
-    const backgroundImageAllowedBlocks = [...allowedBlocks]
-    const backgroundGradientAllowedBlocks = [
-        ...allowedBlocks,
-        'maxi-blocks/button-maxi',
-    ]
-
-    const currentBlockName = select('core/block-editor').getSelectedBlock().name;
-
     const onAddBackground = () => {
         value.backgroundOptions.push(background.backgroundOptions[0])
     }
@@ -130,12 +116,9 @@ const BackgroundControl = props => {
     const getOptions = () => {
         let options = [];
         !disableColor && options.push({ label: <Icon icon={backgroundColor} />, value: 'color' });
-        !disableImage && backgroundImageAllowedBlocks.includes(currentBlockName) &&
-            options.push({ label: <Icon icon={backgroundImage} />, value: 'image' });
-        !disableVideo && backgroundVideoAllowedBlocks.includes(currentBlockName) &&
-            options.push({ label: <Icon icon={backgroundVideo} />, value: 'video' });
-        !disableImage && backgroundGradientAllowedBlocks.includes(currentBlockName) &&
-            options.push({ label: <Icon icon={backgroundGradient()} />, value: 'gradient' })
+        !disableImage && options.push({ label: <Icon icon={backgroundImage} />, value: 'image' });
+        !disableVideo && options.push({ label: <Icon icon={backgroundVideo} />, value: 'video' });
+        !disableGradient && options.push({ label: <Icon icon={backgroundGradient()} />, value: 'gradient' })
 
         return options;
     }

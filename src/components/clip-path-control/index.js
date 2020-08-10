@@ -11,19 +11,11 @@ const {
     BaseControl,
     Button,
 } = wp.components;
-const {
-    SVG,
-    Path,
-    Defs,
-} = wp.primitives;
 
 /**
  * Internal dependencies
  */
-import {
-    polygonDefaults,
-    SVGDefaults
-} from './defaults';
+import { polygonDefaults } from './defaults';
 import DefaultStylesControl from '../default-styles-control';
 import SettingTabsControl from '../setting-tabs-control';
 
@@ -92,20 +84,18 @@ const ClipPathOption = props => {
 const ClipPathControl = props => {
     const {
         clipPath,
-        svgPath = '',
-        mediaURL = '',
         className,
         onChange,
     } = props;
 
     const [hasClipPath, changeHasClipPath] = useState(
-        isEmpty(clipPath) && isEmpty(svgPath) ? 0 : 1
+        isEmpty(clipPath) ? 0 : 1
     )
 
     const [customPolygon, changeCustomPolygon] = useState(
         !isEmpty(clipPath) &&
-        clipPath.indexOf('polygon') >= 0 && 
-        !Object.values(polygonDefaults).includes(clipPath) ?
+            clipPath.indexOf('polygon') >= 0 &&
+            !Object.values(polygonDefaults).includes(clipPath) ?
             1 : 0
     )
 
@@ -160,7 +150,7 @@ const ClipPathControl = props => {
         let newContent = '';
 
         if (isEmpty(cp.content)) {
-            onChange('', '');
+            onChange('');
             return;
         }
 
@@ -185,7 +175,7 @@ const ClipPathControl = props => {
         }
         const newCP = `${cp.type}(${newContent})`;
 
-        onChange(newCP, '');
+        onChange(newCP);
     }
 
     const onChangeType = newType => {
@@ -226,9 +216,6 @@ const ClipPathControl = props => {
                     ]
                     generateCP(newType);
                     break;
-                case 'svg':
-                    onChange('');
-                    break;
             }
 
         cp.type = newType.toLowerCase();
@@ -260,60 +247,7 @@ const ClipPathControl = props => {
         return response;
     }
 
-    const getSVGDefaults = () => {
-        const SVGArray = Object.values(SVGDefaults);
-        const response = [];
-
-        SVGArray.map(svg => {
-            response.push(
-                {
-                    activeItem: svg === svgPath,
-                    content: (
-                        <SVG
-                            x="0px"
-                            y="0px"
-                            viewBox="0 0 36.1 36.1"
-                            xmlSpace="preserve"
-                            className='maxi-clip-path-control__defaults__item'
-                        >
-                            {
-                                !isEmpty(mediaURL) &&
-                                <Defs>
-                                    <pattern
-                                        id="a"
-                                        x="0"
-                                        y="0"
-                                        patternUnits="userSpaceOnUse"
-                                        width={100}
-                                        height={100}
-                                    >
-                                        <image
-                                            className="maxi-image-block__image__pattern"
-                                            xlinkHref={mediaURL}
-                                            width={100}
-                                            height={100}
-                                        />
-                                    </pattern>
-                                </Defs>
-                            }
-                            <Path
-                                d={svg}
-                                fill="url(#a)"
-                            />
-                        </SVG>
-                    ),
-                    onChange: () => onChange('', svg)
-                }
-            )
-        })
-
-        return response;
-    }
-
     const getSelectedTab = () => {
-        if (!isEmpty(svgPath))
-            return 4;
-
         switch (cp.type) {
             case 'polygon':
                 return 0;
@@ -348,7 +282,7 @@ const ClipPathControl = props => {
                 ]}
                 onChange={value => {
                     if (!value)
-                        onChange('', '')
+                        onChange('')
 
                     changeHasClipPath(Number(value))
                 }}
@@ -462,15 +396,6 @@ const ClipPathControl = props => {
                                         number={i}
                                     />
                                 ))
-                            )
-                        },
-                        {
-                            label: __('SVG', 'maxi-blocks'),
-                            content: (
-                                <DefaultStylesControl
-                                    className='maxi-clip-path-control__defaults'
-                                    items={getSVGDefaults()}
-                                />
                             )
                         }
                     ]}

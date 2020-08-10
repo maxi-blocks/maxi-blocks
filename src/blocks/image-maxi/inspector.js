@@ -621,9 +621,8 @@ const Inspector = props => {
                                             content: (
                                                 <__experimentalClipPath
                                                     clipPath={clipPath}
-                                                    svgPath={svgPath}
-                                                    onChange={(clipPath, svgPath) =>
-                                                        setAttributes({ clipPath, svgPath })
+                                                    onChange={clipPath =>
+                                                        setAttributes({ clipPath })
                                                     }
                                                 />
                                             )

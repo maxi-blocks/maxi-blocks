@@ -18,6 +18,14 @@ import classnames from 'classnames';
  * Styles
  */
 import './editor.scss';
+import {
+    xsMode,
+    xlMode,
+    xllMode,
+    largeMode,
+    mediumMode,
+    smallMode,
+} from '../../icons';
 
 /**
  * Components
@@ -79,7 +87,7 @@ const ResponsiveSelector = props => {
         else {
             if(size != 'xxl')
                 editorWrapper.style.width = `${breakpoints[size]}px`;
-            else 
+            else
                 editorWrapper.style.width = `2000px`;   // !!!
 
             if (winHeight > breakpoints[size])
@@ -93,54 +101,57 @@ const ResponsiveSelector = props => {
         <div
             className={classes}
         >
+            <label className='maxi-responsive-selector__label'>
+                {__('Display', 'maxi-blocks')}
+            </label>
             <Button
                 className='maxi-responsive-selector__button'
                 onClick={() => onChangeSize('general')}
                 aria-pressed={'Desktop' === deviceType}
             >
-                G
+                {__('Base', 'maxi-blocks')}
             </Button>
             <Button
                 className='maxi-responsive-selector__button'
                 onClick={() => onChangeSize('xxl')}
                 aria-pressed={'xxl' === deviceType}
             >
-                XXL
+            {   xllMode}
             </Button>
             <Button
                 className='maxi-responsive-selector__button'
                 onClick={() => onChangeSize('xl')}
                 aria-pressed={'xl' === deviceType}
             >
-                XL
+                {xlMode}
             </Button>
             <Button
                 className='maxi-responsive-selector__button'
                 onClick={() => onChangeSize('l')}
                 aria-pressed={'l' === deviceType}
             >
-                L
+                {largeMode}
             </Button>
             <Button
                 className='maxi-responsive-selector__button'
                 onClick={() => onChangeSize('m')}
                 aria-pressed={'m' === deviceType}
             >
-                M
+                {mediumMode}
             </Button>
             <Button
                 className='maxi-responsive-selector__button'
                 onClick={() => onChangeSize('s')}
                 aria-pressed={'s' === deviceType}
             >
-                S
+                {smallMode}
             </Button>
             <Button
                 className='maxi-responsive-selector__button'
                 onClick={() => onChangeSize('xs')}
                 aria-pressed={'xs' === deviceType}
             >
-                XS
+                {xsMode}
             </Button>
         </div>
     )

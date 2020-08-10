@@ -13,6 +13,12 @@
                 border: none;
                 border-right: 1px solid #ff4a17;
             }
+            &__handle-right {
+                right: -9.5px;
+            }
+            &__handle-left {
+                left: -15.5px;
+            }
             &__handle:after {
                 opacity: 1 !important;
                 background-color: #ff4a17;

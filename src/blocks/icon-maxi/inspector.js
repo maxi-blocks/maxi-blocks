@@ -20,9 +20,7 @@ import {
     BorderControl,
     BlockStylesControl,
     BoxShadowControl,
-    HoverAnimationControl,
     SettingTabsControl,
-    TypographyControl,
     __experimentalResponsiveSelector,
     __experimentalZIndexControl,
     __experimentalAxisControl,
@@ -65,29 +63,10 @@ const Inspector = props => {
             opacityHover,
             boxShadowHover,
             borderHover,
-            hoverAnimation,
-            hoverAnimationDuration,
             extraClassName,
             extraStyles,
             zIndex,
             breakpoints,
-            hoverAnimationTitle,
-            hoverAnimationContent,
-            hoverOpacity,
-            hoverBackground,
-            hoverAnimationCustomBorder,
-            hoverAnimationContentTypography,
-            hoverAnimationTitleTypography,
-            hoverCustomTextContent,
-            hoverCustomTextTitle,
-            hoverBorder,
-            hoverPadding,
-            hoverAnimationTypeOpacity,
-            onChangeHoverAnimationTypeOpacity,
-            hoverAnimationTypeColor,
-            hoverAnimationTypeOpacityColor,
-            onChangeHoverAnimationTypeOpacityColor,
-            hoverAnimationTypeOpacityColorBackground,
             position,
             display
         },
@@ -177,6 +156,7 @@ const Inspector = props => {
                                                                         backgroundOptions={background}
                                                                         onChange={background => setAttributes({ background })}
                                                                         disableImage
+                                                                        disableVideo
                                                                     />
                                                                 </Fragment>
                                                             )
@@ -195,6 +175,7 @@ const Inspector = props => {
                                                                         backgroundOptions={backgroundHover}
                                                                         onChange={backgroundHover => setAttributes({ backgroundHover })}
                                                                         disableImage
+                                                                        disableVideo
                                                                     />
                                                                 </Fragment>
                                                             )
@@ -268,12 +249,6 @@ const Inspector = props => {
                         label: __('Advanced', 'maxi-blocks'),
                         content: (
                             <div className='maxi-tab-content__box'>
-                                <HoverAnimationControl
-                                    hoverAnimation={hoverAnimation}
-                                    onChangeHoverAnimation={hoverAnimation => setAttributes({ hoverAnimation })}
-                                    hoverAnimationDuration={hoverAnimationDuration}
-                                    onChangeHoverAnimationDuration={hoverAnimationDuration => setAttributes({ hoverAnimationDuration })}
-                                />
                                 <__experimentalZIndexControl
                                     zindex={zIndex}
                                     onChange={zIndex => setAttributes({ zIndex })}
@@ -292,7 +267,7 @@ const Inspector = props => {
                                     onChange={position => setAttributes({ position })}
                                     breakpoint={deviceType}
                                 />
-                                <__experimentalDisplayControl 
+                                <__experimentalDisplayControl
                                     display={display}
                                     onChange={display => setAttributes({ display })}
                                     breakpoint={deviceType}

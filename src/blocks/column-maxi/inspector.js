@@ -20,7 +20,6 @@ import {
     BorderControl,
     BoxShadowControl,
     FullSizeControl,
-    HoverAnimationControl,
     SettingTabsControl,
     __experimentalZIndexControl,
     __experimentalResponsiveSelector,
@@ -61,30 +60,9 @@ const Inspector = props => {
             boxShadowHover,
             padding,
             margin,
-            hoverAnimation,
-            hoverAnimationType,
-            hoverAnimationTypeText,
-            hoverAnimationDuration,
             extraClassName,
             zIndex,
             breakpoints,
-            hoverAnimationTitle,
-            hoverAnimationContent,
-            hoverOpacity,
-            hoverBackground,
-            hoverAnimationCustomBorder,
-            hoverAnimationContentTypography,
-            hoverAnimationTitleTypography,
-            hoverCustomTextContent,
-            hoverCustomTextTitle,
-            hoverBorder,
-            hoverPadding,
-            hoverAnimationTypeOpacity,
-            onChangeHoverAnimationTypeOpacity,
-            hoverAnimationTypeColor,
-            hoverAnimationTypeOpacityColor,
-            onChangeHoverAnimationTypeOpacityColor,
-            hoverAnimationTypeOpacityColorBackground,
             position,
             display,
             transform
@@ -96,14 +74,6 @@ const Inspector = props => {
     const columnSizeValue = !isObject(columnSize) ?
         JSON.parse(columnSize) :
         columnSize;
-    const hoverAnimationCustomOptions = [
-        { label: __('Yes', 'maxi-blocks'), value: 'yes' },
-        { label: __('No', 'maxi-blocks'), value: 'no' },
-    ]
-    const hoverCustomTextOptions = [
-        { label: __('Yes', 'maxi-blocks'), value: 'yes' },
-        { label: __('No', 'maxi-blocks'), value: 'no' },
-    ]
 
     return (
         <InspectorControls>
@@ -310,12 +280,6 @@ const Inspector = props => {
                                 {
                                     deviceType === 'general' &&
                                     <Fragment>
-                                        <HoverAnimationControl
-                                            hoverAnimation={hoverAnimation}
-                                            onChangeHoverAnimation={hoverAnimation => setAttributes({ hoverAnimation })}
-                                            hoverAnimationDuration={hoverAnimationDuration}
-                                            onChangeHoverAnimationDuration={hoverAnimationDuration => setAttributes({ hoverAnimationDuration })}
-                                        />
                                         <TextControl
                                             label={__('Additional CSS Classes', 'maxi-blocks')}
                                             className='maxi-additional__css-classes'

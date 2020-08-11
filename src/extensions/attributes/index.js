@@ -61,14 +61,6 @@ function addAttributes(settings) {
 				type: 'string',
 				default: '{}'
 			},
-			hoverAnimation: {
-				type: 'string',
-				default: 'none',
-			},
-			hoverAnimationDuration: {
-				type: 'string',
-				default: 'normal',
-			},
 			extraClassName: {
 				type: 'string',
 				default: ''

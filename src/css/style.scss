@@ -5,3 +5,41 @@
 .maxi-link-wrapper {
     display: block;
 }
+
+body .maxi-hover-details {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	&__content {
+		display: flex;
+		flex-direction: column;
+		padding: 2rem;
+		height: 100%;
+
+		&--center-center {
+			justify-content: center;
+			align-items: center;
+		}
+		&--left-top {
+			align-items: flex-start;
+		}
+		&--right-top {
+			align-items: flex-end;
+		}
+		&--left-bottom {
+			align-items: flex-start;
+			justify-content: flex-end;
+		}
+		&--right-bottom {
+			align-items: flex-end;
+			justify-content: flex-end;
+		}
+		h3,
+		p {
+			margin: 0;
+			padding: 0;
+		}
+	}
+}

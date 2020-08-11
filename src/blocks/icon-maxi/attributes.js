@@ -96,14 +96,6 @@ const attributes = {
         type: 'string',
         default: JSON.stringify(attributesData.border)
     },
-    hoverAnimation: {
-        type: 'string',
-        default: 'none',
-    },
-    hoverAnimationDuration: {
-        type: 'string',
-        default: 'normal',
-    },
     extraClassName: {
         type: 'string',
         default: ''

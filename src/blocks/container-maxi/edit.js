@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 const { withSelect } = wp.data;
-const { 
+const {
     Fragment,
     forwardRef
 } = wp.element;
@@ -97,11 +97,6 @@ class edit extends MaxiBlock {
             [`${this.props.attributes.uniqueID}:before`]: this.getBeforeObject,
             [`${uniqueID}>.maxi-container-block__wrapper`]: this.getWrapperObject,
             [`${uniqueID}>.maxi-container-block__wrapper>.maxi-container-block__container`]: this.getContainerObject,
-            [`${uniqueID} .maxi-block-text-hover .maxi-block-text-hover__content`]: this.getHoverAnimationTextContentObject,
-            [`${uniqueID} .maxi-block-text-hover .maxi-block-text-hover__title`]: this.getHoverAnimationTextTitleObject,
-            [`${uniqueID} .maxi-block-text-hover`]: this.getHoverAnimationMainObject,
-            [`${uniqueID}.hover-animation-basic.hover-animation-type-opacity:hover .hover_el`]: this.getHoverAnimationTypeOpacityObject,
-            [`${uniqueID}.hover-animation-basic.hover-animation-type-opacity-with-colour:hover .hover_el:before`]: this.getHoverAnimationTypeOpacityColorObject,
             [`${uniqueID} .maxi-shape-divider__top`]: { shapeDivider: { ...getShapeDividerObject(JSON.parse(this.props.attributes.shapeDivider).top) } },
             [`${uniqueID} .maxi-shape-divider__top svg`]: { shapeDivider: { ...getShapeDividerSVGObject(JSON.parse(this.props.attributes.shapeDivider).top) } },
             [`${uniqueID} .maxi-shape-divider__bottom`]: { shapeDivider: { ...getShapeDividerObject(JSON.parse(this.props.attributes.shapeDivider).bottom) } },
@@ -203,97 +198,6 @@ class edit extends MaxiBlock {
         return response;
     }
 
-    get getHoverAnimationMainObject() {
-        const {
-            hoverOpacity,
-            hoverBackground,
-            hoverBorder,
-            hoverPadding,
-        } = this.props.attributes;
-
-        const response = {
-            background: { ...getBackgroundObject(JSON.parse(hoverBackground)) },
-            border: { ...JSON.parse(hoverBorder) },
-            borderWidth: { ...JSON.parse(hoverBorder).borderWidth },
-            borderRadius: { ...JSON.parse(hoverBorder).borderRadius },
-            padding: { ...JSON.parse(hoverPadding) },
-            animationHover: {
-                label: 'Animation Hover',
-                general: {}
-            }
-        };
-
-        if (hoverOpacity)
-            response.animationHover.general['opacity'] = hoverOpacity;
-
-        return response
-    }
-
-    get getHoverAnimationTypeOpacityObject() {
-        const {
-            hoverAnimationTypeOpacity,
-        } = this.props.attributes;
-
-        const response = {
-            animationTypeOpacityHover: {
-                label: 'Animation Type Opacity Hover',
-                general: {}
-            }
-        };
-
-        if (hoverAnimationTypeOpacity)
-            response.animationTypeOpacityHover.general['opacity'] = hoverAnimationTypeOpacity;
-
-        return response
-    }
-
-    get getHoverAnimationTypeOpacityColorObject() {
-        const {
-            hoverAnimationTypeOpacityColor,
-            hoverAnimationTypeOpacityColorBackground,
-        } = this.props.attributes;
-
-        const response = {
-            background: { ...getBackgroundObject(JSON.parse(hoverAnimationTypeOpacityColorBackground)) },
-            animationTypeOpacityHoverColor: {
-                label: 'Animation Type Opacity Color Hover',
-                general: {}
-            }
-        };
-
-        if (hoverAnimationTypeOpacityColor)
-            response.animationTypeOpacityHoverColor.general['opacity'] = hoverAnimationTypeOpacityColor;
-
-        return response
-    }
-
-
-    get getHoverAnimationTextTitleObject() {
-        const {
-            hoverAnimationTitleTypography
-        } = this.props.attributes;
-
-        const response = {
-            hoverAnimationTitleTypography: { ...JSON.parse(hoverAnimationTitleTypography) },
-            hoverAnimationTitleAlignmentTypography: { ...getAlignmentTextObject(JSON.parse(hoverAnimationTitleTypography).textAlign) }
-        };
-
-        return response
-    }
-
-    get getHoverAnimationTextContentObject() {
-        const {
-            hoverAnimationContentTypography
-        } = this.props.attributes;
-
-        const response = {
-            hoverAnimationContentTypography: { ...JSON.parse(hoverAnimationContentTypography) },
-            hoverAnimationContentAlignmentTypography: { ...getAlignmentTextObject(JSON.parse(hoverAnimationContentTypography).textAlign) }
-        };
-
-        return response
-    }
-
     render() {
         const {
             attributes: {
@@ -304,10 +208,6 @@ class edit extends MaxiBlock {
                 fullWidth,
                 extraClassName,
                 background,
-                hoverAnimation,
-                hoverAnimationType,
-                hoverAnimationTypeText,
-                hoverAnimationDuration,
                 shapeDivider,
             },
             className,
@@ -321,10 +221,6 @@ class edit extends MaxiBlock {
             uniqueID,
             blockStyle,
             extraClassName,
-            'hover-animation-' + hoverAnimation,
-            'hover-animation-type-' + hoverAnimationType,
-            'hover-animation-type-text-' + hoverAnimationTypeText,
-            'hover-animation-duration-' + hoverAnimationDuration,
             className
         );
 
@@ -334,7 +230,7 @@ class edit extends MaxiBlock {
             <__experimentalBreadcrumbs />,
             <
                 Fragment>
-                
+
                 {
                     isFirstOnHierarchy && fullWidth &&
                     <__experimentalBlock.section
@@ -406,7 +302,7 @@ class edit extends MaxiBlock {
                 }
             </
             Fragment>
-            
+
         ];
     }
 }

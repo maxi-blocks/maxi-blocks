@@ -99,6 +99,20 @@ function gutenberg_extra_load_custom_wp_admin_script() {
 
 	wp_enqueue_script('maxi-blocks-gutenberg-ui-js');
 
+	// Inline feedback script
+	wp_register_script('maxi-blocks-feedback-script', false);
+	wp_add_inline_script('maxi-blocks-feedback-script',
+		"Userback = window.Userback || {};
+		Userback.access_token = '9457|18147|FC9chXgenIsR4uvctylhyvdDUG8lONFvGLTuPRwULwnG7LREge';
+		(function(id) {
+			var s = document.createElement('script');
+			s.async = 1;s.src = 'https://static.userback.io/widget/v1.js';
+			var parent_node = document.head || document.body;parent_node.appendChild(s);
+		})('userback-sdk');"
+	);
+	wp_enqueue_script(
+		'maxi-blocks-feedback-script'
+	);
 }
 
 add_action( 'admin_enqueue_scripts', 'gutenberg_extra_load_custom_wp_admin_script' );

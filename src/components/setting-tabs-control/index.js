@@ -10,7 +10,10 @@ const {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
+import { 
+    isNil,
+    compact
+} from 'lodash';
 
 /**
  * Styles and icons
@@ -21,7 +24,6 @@ import './editor.scss';
  * Component
  */
 const SettingTabsControl = props => {
-
     const {
         items,
         disablePadding = false,
@@ -57,7 +59,7 @@ const SettingTabsControl = props => {
                 className={classesControl}
             >
                 {
-                    items.map((item, i) => (
+                    compact(items).map((item, i) => (
                         <Button
                             className='maxi-tabs-control__button'
                             onClick={() => {
@@ -76,7 +78,7 @@ const SettingTabsControl = props => {
                 className={classesContent}
             >
                 {
-                    items.map((item, i) => {
+                    compact(items).map((item, i) => {
                         const classesItemContent = classnames(
                             'maxi-tab-content',
                             tab === i ? 'maxi-tab-content--selected' : ''

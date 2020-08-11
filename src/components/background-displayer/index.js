@@ -1,11 +1,7 @@
 /**
  * WordPress dependencies
  */
-const {
-    SVG,
-    Path,
-    Defs,
-} = wp.primitives;
+const { RawHTML } = wp.element;
 
 /**
  * External dependencies
@@ -13,7 +9,7 @@ const {
 import classnames from 'classnames';
 import {
     isObject,
-    isEmpty
+    isNil
 } from 'lodash';
 
 /**
@@ -40,15 +36,6 @@ const BackgroundDisplayer = props => {
         className
     )
 
-    const mediaURL = value.backgroundOptions[0].imageOptions.mediaURL;
-
-    const getFill = () => {
-        if (!isEmpty(mediaURL))
-            return `url(#maxi-background-displayer__svg__${uniqueID})`;
-        if (!isEmpty(value.colorOptions.color))
-            return value.colorOptions.color;
-    }
-
     return (
         <div
             className={classes}
@@ -67,36 +54,12 @@ const BackgroundDisplayer = props => {
                 </div>
             }
             {
-                !isEmpty(value.svgPath) &&
-                <SVG
-                    x="0px"
-                    y="0px"
-                    viewBox="0 0 36.1 36.1"
-                    xmlSpace="preserve"
-                    className={`maxi-background-displayer__svg`}
+                !isNil(value.SVG.SVGElement) &&
+                <RawHTML
+                    className='maxi-background-displayer__svg-wrapper'
                 >
-                    <Defs>
-                        <pattern
-                            id={`maxi-background-displayer__svg__${uniqueID}`}
-                            x="0"
-                            y="0"
-                            patternUnits="userSpaceOnUse"
-                            width={100}
-                            height={100}
-                        >
-                            <image
-                                className="maxi-background-displayer__svg__image"
-                                xlinkHref={mediaURL}
-                                width={100}
-                                height={100}
-                            />
-                        </pattern>
-                    </Defs>
-                    <Path
-                        d={value.svgPath}
-                        fill={getFill()}
-                    />
-                </SVG>
+                    {value.SVG.SVGElement}
+                </RawHTML>
             }
         </div>
     )

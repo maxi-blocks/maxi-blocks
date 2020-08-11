@@ -3,6 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
+const { useSelect } = wp.data;
 const {
     Fragment,
     useState
@@ -16,12 +17,6 @@ const {
 /**
  * Internal dependencies
  */
-import SVGDefaults from './defaults';
-import {
-    getSVGDefaults,
-    injectImgSVG,
-    generateDataObject
-} from './utils';
 import { getDefaultProp } from '../../utils'
 import {
     AccordionControl,
@@ -30,9 +25,7 @@ import {
     BorderControl,
     BlockStylesControl,
     BoxShadowControl,
-    ColorControl,
     FullSizeControl,
-    MediaUploaderControl,
     SettingTabsControl,
     __experimentalResponsiveSelector,
     __experimentalZIndexControl,
@@ -45,17 +38,16 @@ import {
     __experimentalTransformControl,
     __experimentalClipPath,
     __experimentalEntranceAnimationControl,
+    __experimentalSVGControl,
+    __experimentalSVGFillControl
 } from '../../components';
 
 /**
  * External dependencies
  */
-import { ReactSVG } from 'react-svg'
 import {
     isNil,
     isObject,
-    isArray,
-    isNumber
 } from 'lodash';
 
 /**
@@ -95,95 +87,28 @@ const Inspector = props => {
             clipPath,
         },
         clientId,
-        deviceType,
         setAttributes,
     } = props;
 
-    const [customSVG, changeCustomSVG] = useState(
-        isNumber(SVGMediaID) ? 1 : 0
-    )
-
+    const { deviceType } = useSelect(
+        select => {
+            const {
+                __experimentalGetPreviewDeviceType
+            } = select(
+                'core/edit-post'
+            );
+            let deviceType = __experimentalGetPreviewDeviceType();
+            deviceType = deviceType === 'Desktop' ?
+                'general' :
+                deviceType;
+            return {
+                deviceType,
+            }
+        }
+    );
     const sizeValue = !isObject(size) ?
         JSON.parse(size) :
         size;
-
-    const SVGValue = !isNil(SVGData) ?
-        !isObject(SVGData) ?
-            JSON.parse(SVGData) :
-            SVGData :
-        {};
-
-    const getFillItems = () => {
-        const response = [];
-
-        Object.entries(SVGValue).map(([id, value], i) => {
-            response.push({
-                label: i,
-                content: getFillItem([id, value], i)
-            })
-        })
-
-        return response;
-    }
-
-    const getFillItem = ([id, value], i = 0) => {
-        return (
-            <Fragment>
-                <SettingTabsControl
-                    disablePadding
-                    items={[
-                        {
-                            label: __('Color', 'maxi-blocks'),
-                            content: (
-                                <ColorControl
-                                    label={__('Fill', 'maxi-blocks')}
-                                    color={value.color}
-                                    onColorChange={val => {
-                                        SVGValue[id].color = val;
-                                        const resEl = injectImgSVG(SVGElement, uniqueID, SVGValue);
-
-                                        setAttributes({
-                                            SVGElement: resEl.outerHTML,
-                                            SVGData: JSON.stringify(SVGValue)
-                                        })
-                                    }}
-                                />
-                            )
-                        },
-                        {
-                            label: __('Image', 'maxi-blocks'),
-                            content: (
-                                <MediaUploaderControl
-                                    allowedTypes={['image']}
-                                    mediaID={value.imageID}
-                                    onSelectImage={imageData => {
-                                        SVGValue[id].imageID = imageData.id;
-                                        SVGValue[id].imageURL = imageData.url;
-                                        const resEl = injectImgSVG(SVGElement, uniqueID, SVGValue);
-
-                                        setAttributes({
-                                            SVGElement: resEl.outerHTML,
-                                            SVGData: JSON.stringify(SVGValue)
-                                        })
-                                    }}
-                                    onRemoveImage={() => {
-                                        SVGValue[id].imageID = '';
-                                        SVGValue[id].imageURL = '';
-                                        const resEl = injectImgSVG(SVGElement, uniqueID, SVGValue);
-
-                                        setAttributes({
-                                            SVGElement: resEl.outerHTML,
-                                            SVGData: JSON.stringify(SVGValue)
-                                        })
-                                    }}
-                                />
-                            )
-                        }
-                    ]}
-                />
-            </Fragment>
-        )
-    }
 
     return (
         <InspectorControls>
@@ -210,85 +135,22 @@ const Inspector = props => {
                                         {
                                             label: __('SVG', 'maxi-blocks'),
                                             content: (
-                                                <Fragment>
-                                                    <SelectControl
-                                                        label={__('Custom SVG', 'maxi-blocks')}
-                                                        value={customSVG}
-                                                        options={[
-                                                            { label: __('Yes', 'maxi-blocks'), value: 1 },
-                                                            { label: __('No', 'maxi-blocks'), value: 0 }
-                                                        ]}
-                                                        onChange={value => changeCustomSVG(Number(value))}
-                                                    />
-                                                    {
-                                                        !customSVG &&
-                                                        getSVGDefaults(props)
-                                                    }
-                                                    {
-                                                        !!customSVG &&
-                                                        <Fragment>
-                                                            <MediaUploaderControl
-                                                                className='maxi-svg-block__svg-uploader'
-                                                                allowedTypes={['image/svg+xml']}
-                                                                mediaID={SVGMediaID}
-                                                                onSelectImage={imageData => {
-                                                                    setAttributes({
-                                                                        SVGMediaID: imageData.id,
-                                                                        SVGMediaURL: imageData.url
-                                                                    });
-                                                                }}
-                                                                onRemoveImage={() =>
-                                                                    setAttributes({
-                                                                        SVGMediaID: null,
-                                                                        SVGMediaURL: null,
-                                                                    })
-                                                                }
-                                                                placeholder={__('Set SVG', 'maxi-blocks')}
-                                                                replaceButton={__('Replace SVG', 'maxi-blocks')}
-                                                                removeButton={__('Remove SVG', 'maxi-blocks')}
-                                                            />
-                                                            <div
-                                                                style={{
-                                                                    display: 'none',
-                                                                    visibility: 'hidden',
-                                                                }}
-                                                            >
-                                                                <ReactSVG
-                                                                    src={SVGMediaURL}
-                                                                    afterInjection={(err, svg) => {
-                                                                        if (!!svg) {
-                                                                            const resData = generateDataObject(SVGData, svg);
-                                                                            const resEl = injectImgSVG(svg, uniqueID, resData);
-
-                                                                            if (SVGElement != resEl.outerHTML)
-                                                                                setAttributes({
-                                                                                    SVGElement: resEl.outerHTML,
-                                                                                    SVGData: JSON.stringify(resData)
-                                                                                })
-                                                                        }
-                                                                    }}
-                                                                />
-                                                            </div>
-                                                        </Fragment>
-                                                    }
-                                                </Fragment>
+                                                <__experimentalSVGControl
+                                                    SVGData={SVGData}
+                                                    SVGMediaID={SVGMediaID}
+                                                    SVGMediaURL={SVGMediaURL}
+                                                    onChange={obj => setAttributes(obj)}
+                                                />
                                             )
                                         },
                                         {
                                             label: __('Fill', 'maxi-blocks'),
                                             content: (
-                                                <Fragment>
-                                                    {
-                                                        Object.keys(SVGValue).length > 1 &&
-                                                        <SettingTabsControl
-                                                            items={getFillItems()}
-                                                        />
-                                                    }
-                                                    {
-                                                        Object.keys(SVGValue).length === 1 &&
-                                                        getFillItem(Object.entries(SVGValue)[0])
-                                                    }
-                                                </Fragment>
+                                                <__experimentalSVGFillControl 
+                                                SVGData={SVGData}
+                                                SVGElement={SVGElement}
+                                                onChange={obj => setAttributes(obj)}
+                                                />
                                             )
                                         },
                                         {

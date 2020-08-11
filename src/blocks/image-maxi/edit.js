@@ -382,7 +382,7 @@ class edit extends MaxiBlock {
                                             />
                                         </div>
                                         <img
-                                            className={`maxi-image-block__image wp-image-${mediaID}`}
+                                            className={`wp-image-${mediaID}`}
                                             src={mediaURL}
                                             width={mediaWidth}
                                             height={mediaHeight}

@@ -12,7 +12,7 @@
         &__button {
             display: flex;
             flex-direction: column;
-            width: 50%;
+            width: 100%;
             height: auto;
             font-size: 13px;
             color: #000;
@@ -22,7 +22,7 @@
             border-radius: 0;
             padding-top: 10px;
             padding-bottom: 10px;
-            background-color: #fff;
+            background-color: #fff; 
 
             &:hover {
                 cursor: pointer;

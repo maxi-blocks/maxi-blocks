@@ -1,51 +1,35 @@
 /**
  * WordPress dependencies
  */
-const { __ } = wp.i18n;
-const { withSelect } = wp.data;
-const { 
+const {
     RawHTML,
     Fragment
 } = wp.element;
-const {
-    Spinner,
-    IconButton,
-    ResizableBox
-} = wp.components;
-const {
-    __experimentalBlock,
-    MediaUpload
-} = wp.blockEditor;
+const { ResizableBox } = wp.components;
+const { __experimentalBlock } = wp.blockEditor;
 
 /**
  * Internal dependencies
  */
-import { getSVGDefaults } from './utils';
 import Inspector from './inspector';
 import {
-    getBackgroundObject,
     getBoxShadowObject,
     getAlignmentFlexObject,
     getTransfromObject,
-    getAlignmentTextObject,
     setBackgroundStyles
 } from '../../utils';
 import {
     MaxiBlock,
     __experimentalToolbar,
-    __experimentalBackgroundDisplayer
+    __experimentalBackgroundDisplayer,
+    __experimentalSVGDefaultsDisplayer
 } from '../../components';
 
 /**
  * External dependencies
  */
-import { ReactSVG } from 'react-svg'
 import classnames from 'classnames';
-import {
-    isEmpty,
-    isNil,
-    isObject
-} from 'lodash';
+import { isObject } from 'lodash';
 
 /**
  * Content
@@ -131,6 +115,7 @@ class edit extends MaxiBlock {
                 defaultBlockStyle,
                 extraClassName,
                 SVGElement,
+                SVGData,
                 fullWidth,
                 size,
                 background,
@@ -163,7 +148,10 @@ class edit extends MaxiBlock {
             >
                 {
                     !SVGElement &&
-                    getSVGDefaults(this.props)
+                    <__experimentalSVGDefaultsDisplayer
+                        SVGData={SVGData}
+                        onChange={obj => setAttributes(obj)}
+                    />
                 }
                 {
                     !!SVGElement &&
@@ -207,22 +195,4 @@ class edit extends MaxiBlock {
     }
 }
 
-export default withSelect((select, ownProps) => {
-    const {
-        SVGMediaID,
-        imgMediaID
-    } = ownProps.attributes;
-
-    const SVGData = select('core').getMedia(SVGMediaID);
-    const imgData = select('core').getMedia(imgMediaID);
-    let deviceType = select('core/edit-post').__experimentalGetPreviewDeviceType();
-    deviceType = deviceType === 'Desktop' ?
-        'general' :
-        deviceType;
-
-    return {
-        SVGData,
-        imgData,
-        deviceType
-    }
-})(edit);
+export default edit;

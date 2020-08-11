@@ -45,7 +45,8 @@ const AxisControl = props => {
         className,
         onChange,
         breakpoint = 'general',
-        disableAuto = false
+        disableAuto = false,
+        disableUnit = false
     } = props;
 
     const instanceId = useInstanceId(AxisControl);
@@ -112,20 +113,23 @@ const AxisControl = props => {
                 label={__(value.label, 'maxi-blocks')}
                 className='maxi-axis-control__header'
             >
-                <SelectControl
-                    className="maxi-axis-control__units"
-                    options={[
-                        { label: 'PX', value: 'px' },
-                        { label: 'EM', value: 'em' },
-                        { label: 'VW', value: 'vw' },
-                        { label: '%', value: '%' },
-                    ]}
-                    value={getLastBreakpointValue(value, 'unit', breakpoint)}
-                    onChange={val => {
-                        value[breakpoint].unit = val;
-                        onChange(JSON.stringify(value))
-                    }}
-                />
+                {
+                    !disableUnit &&
+                    <SelectControl
+                        className="maxi-axis-control__units"
+                        options={[
+                            { label: 'PX', value: 'px' },
+                            { label: 'EM', value: 'em' },
+                            { label: 'VW', value: 'vw' },
+                            { label: '%', value: '%' },
+                        ]}
+                        value={getLastBreakpointValue(value, 'unit', breakpoint)}
+                        onChange={val => {
+                            value[breakpoint].unit = val;
+                            onChange(JSON.stringify(value))
+                        }}
+                    />
+                }
                 <Button
                     className="components-maxi-control__reset-button"
                     onClick={onReset}

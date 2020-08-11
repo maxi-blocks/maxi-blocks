@@ -256,6 +256,7 @@ const HoverEffectControl = props => {
                         disableClipPath
                         disableImage
                         disableVideo
+                        disableSVG
                     />
                     <div className='maxi-fancy-radio-control'>
                         <RadioControl

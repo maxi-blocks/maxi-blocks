@@ -21,15 +21,6 @@ const attributes = {
     SVGMediaURL: {
         type: 'string'
     },
-    imgMediaID: {
-        type: 'number'
-    },
-    imgMediaURL: {
-        type: 'string'
-    },
-    colorSVG: {
-        type: 'string'
-    },
     alignment: {
         type: 'string',
         default: JSON.stringify(attributesData.alignment)

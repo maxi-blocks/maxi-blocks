@@ -481,22 +481,7 @@ export const background = {
         {
             "imageOptions": {
                 "mediaID": "",
-                "mediaURL": "",
-                "cropOptions": {
-                    "image": {
-                        "source_url": "",
-                        "width": "",
-                        "height": "",
-                    },
-                    "crop": {
-                        "unit": "",
-                        "x": 0,
-                        "y": 0,
-                        "width": 0,
-                        "height": 0,
-                        "scale": 100
-                    }
-                }
+                "mediaURL": ""
             },
             "sizeSettings": {
                 "size": "cover",
@@ -540,9 +525,31 @@ export const background = {
         "defaultGradient": "",
         "gradientAboveBackground": false
     },
-    "clipPath": "",
-    'svgPath': ""
-};
+    "SVG": {
+        "SVGElement": "",
+        "SVGData": "{}",
+        "SVGMediaID": "",
+        "SVGMediaURL": "",
+        "position": {
+            "label": "Background SVG position",
+            "general": {
+                "top": "",
+                "right": "",
+                "bottom": "",
+                "left": "",
+                "sync": true,
+                "unit": "%"
+            }
+        },
+        "size": {
+            "max-widthUnit": "px",
+            "max-width": "",
+            "widthUnit": "px",
+            "width": ""
+        }
+    },
+    "clipPath": ""
+}
 
 export const boxShadow = {
     "label": "Box Shadow",
@@ -1102,22 +1109,7 @@ export const backgroundHover = {
         {
             "imageOptions": {
                 "mediaID": "",
-                "mediaURL": "",
-                "cropOptions": {
-                    "image": {
-                        "source_url": "",
-                        "width": "",
-                        "height": "",
-                    },
-                    "crop": {
-                        "unit": "",
-                        "x": 0,
-                        "y": 0,
-                        "width": 0,
-                        "height": 0,
-                        "scale": 100
-                    }
-                }
+                "mediaURL": ""
             },
             "sizeSettings": {
                 "size": "cover",
@@ -1161,8 +1153,14 @@ export const backgroundHover = {
         "defaultGradient": "",
         "gradientAboveBackground": false
     },
+    "SVG": {
+        "SVGElement": "",
+        "SVGData": "{}",
+        "SVGMediaID": "",
+        "SVGMediaURL": ""
+    },
     "clipPath": ""
-};
+}
 
 export const __experimentalDivider = {
     "label": "Divider",
@@ -1323,12 +1321,12 @@ export const __experimentalPosition = {
             "unit": "px"
         },
         "xxl": {
-                "top": "",
-                "right": "",
-                "bottom": "",
-                "left": "",
-                "sync": false,
-                "unit": ""
+            "top": "",
+            "right": "",
+            "bottom": "",
+            "left": "",
+            "sync": false,
+            "unit": ""
         },
         "xl": {
             "top": "",
@@ -1399,38 +1397,79 @@ export const __experimentalDisplay = {
 }
 
 export const __experimentalHover = {
-    "label": "Hover Effects",
-    "settings": {
-        "type": "zoom-in",
-        "effectType": "fade",
-        "duration": 1,
+    "label": "Background",
+    "backgroundOptions": [
+        {
+            "imageOptions": {
+                "mediaID": "",
+                "mediaURL": ""
+            },
+            "sizeSettings": {
+                "size": "cover",
+                "widthUnit": "%",
+                "width": 100,
+                "heightUnit": "%",
+                "height": 100
+            },
+            "repeat": "no-repeat",
+            "positionOptions": {
+                "position": "center center",
+                "widthUnit": "%",
+                "width": 0,
+                "heightUnit": "%",
+                "height": 0
+            },
+            "origin": "padding-box",
+            "clip": "border-box",
+            "attachment": "scroll"
+        }
+    ],
+    "videoOptions": {
+        "mediaID": "",
+        "mediaURL": "",
+        "width": "100",
+        "widthUnit": "%",
+        "height": "100",
+        "heightUnit": "%",
+        "fill": "cover",
+        "position": "unset",
+        "autoplay": 0,
+        "loop": 0,
+        "muted": 0,
+        "controls": 0,
+        "preload": "metadata"
     },
-    "textPreset": "center-center",
-    "borderStatus": 0,
-    "paddingStatus": 0,
-    "marginStatus": 0,
-    "border": {...border},
-    "background": {...background},
-    "margin": {...margin},
-    "padding": {...padding},
-    "titleTypography": {
-        ...typography,
-        "general" : {
-            ...typography["general"],
-            "font-size": 33
+    "colorOptions": {
+        "color": "",
+        "defultColor": "",
+        "gradient": "",
+        "defaultGradient": "",
+        "gradientAboveBackground": false
+    },
+    "SVG": {
+        "SVGElement": "",
+        "SVGData": "{}",
+        "SVGMediaID": "",
+        "SVGMediaURL": "",
+        "position": {
+            "label": "Background SVG position",
+            "general": {
+                "top": "",
+                "right": "",
+                "bottom": "",
+                "left": "",
+                "sync": true,
+                "unit": "%"
+            }
+        },
+        "size": {
+            "max-widthUnit": "px",
+            "max-width": "",
+            "widthUnit": "px",
+            "width": ""
         }
     },
-    "contentTypography": {
-        ...typography,
-        "general" : {
-            ...typography["general"],
-            "font-size": 18
-        }
-    },
-    "titleStatus": 0,
-    "titleText": "",
-    "contentStatus": 0,
-    "contentText": "",
+    "clipPath": ""
 }
 
 export const __experimentalMotion = {

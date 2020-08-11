@@ -22,7 +22,7 @@ import save from './save.js';
  * Styles and icons
  */
 import './style.scss';
-import './editor.scss';
+// import './editor.scss';
 import { imageBox } from '../../icons';
 
 /**

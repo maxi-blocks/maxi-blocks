@@ -57,6 +57,7 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
     const {
         children,
         background,
+        uniqueID,
         className,
         maxiBlockClass
     } = props;

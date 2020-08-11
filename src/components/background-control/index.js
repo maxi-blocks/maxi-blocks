@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { select } = wp.data;
 const {
     Fragment,
     useState
@@ -25,6 +24,9 @@ import ImageCropControl from '../image-crop-control';
 import SettingTabsControl from '../setting-tabs-control';
 import SizeControl from '../size-control';
 import __experimentalClipPath from '../clip-path-control';
+import __experimentalSVGControl from '../SVGControl';
+import __experimentalAxisControl from '../axis-control';
+import __experimentalSVGFillControl from '../SVGFillControl';
 
 /**
  * External dependencies
@@ -47,6 +49,7 @@ import {
     backgroundImage,
     backgroundVideo,
     backgroundGradient,
+    shape
 } from '../../icons';
 
 /**
@@ -61,6 +64,7 @@ const BackgroundControl = props => {
         disableGradient = false,
         disableColor = false,
         disableClipPath = false,
+        disableSVG = false,
         onChange
     } = props;
 
@@ -118,7 +122,8 @@ const BackgroundControl = props => {
         !disableColor && options.push({ label: <Icon icon={backgroundColor} />, value: 'color' });
         !disableImage && options.push({ label: <Icon icon={backgroundImage} />, value: 'image' });
         !disableVideo && options.push({ label: <Icon icon={backgroundVideo} />, value: 'video' });
-        !disableGradient && options.push({ label: <Icon icon={backgroundGradient()} />, value: 'gradient' })
+        !disableGradient && options.push({ label: <Icon icon={backgroundGradient()} />, value: 'gradient' });
+        !disableSVG && options.push({ label: <Icon icon={shape} />, value: 'svg' })
 
         return options;
     }
@@ -373,54 +378,6 @@ const BackgroundControl = props => {
                             uuid: 'maxi-background-control__image-tab',
                             content: (
                                 <MediaUploaderControl
-                                    mediaID={value.backgroundOptions[i].imageOptions.mediaID}
-                                    onSelectImage={imageData => {
-                                        if (!isNumber(value.backgroundOptions[i].imageOptions.mediaID))
-                                            onAddBackground()
-                                        value.backgroundOptions[i].imageOptions.mediaID = imageData.id;
-                                        value.backgroundOptions[i].imageOptions.mediaURL = imageData.url;
-                                        onChange(JSON.stringify(value));
-                                    }}
-                                    onRemoveImage={() => {
-                                        value.backgroundOptions[selector].imageOptions.mediaID = '';
-                                        value.backgroundOptions[selector].imageOptions.mediaURL = '';
-                                        onRemoveImage();
-                                        onChange(JSON.stringify(value));
-                                    }}
-                                    placeholder={
-                                        value.backgroundOptions.length - 1 === 0 ?
-                                            __('Set image', 'maxi-blocks') :
-                                            __('Add Another Image', 'maxi-blocks')
-                                    }
-                                    extendSelector={
-                                        value.backgroundOptions[i].imageOptions.mediaID &&
-                                        <Button
-                                            isSecondary
-                                            onClick={(e) => onOpenOptions(e, i)}
-                                            className='maxi-background-control__image-edit'
-                                        >
-                                            {__('Edit image', 'maxi-blocks')}
-                                        </Button>
-                                    }
-                                    alternativeImage={getAlternativeImage(i)}
-                                    removeButton={__('Remove', 'maxi-blocks')}
-                                />
-                            )
-                        }
-                    ]}
-                />
-            }
-            {
-                isOpen &&
-                backgroundItems === 'image' &&
-                <SettingTabsControl
-                    items={[
-                        {
-                            label: __('Image', 'maxi-blocks'),
-                            className: 'maxi-background-control__image-tab',
-                            uuid: 'maxi-background-control__image-tab',
-                            content: (
-                                <MediaUploaderControl
                                     mediaID={value.backgroundOptions[selector].imageOptions.mediaID}
                                     onSelectImage={imageData => {
                                         value.backgroundOptions[selector].imageOptions.mediaID = imageData.id;
@@ -593,6 +550,99 @@ const BackgroundControl = props => {
                         }
                     ]}
                 />
+            }
+            {
+                !disableSVG &&
+                backgroundItems === 'svg' &&
+                <Fragment>
+                    <SettingTabsControl
+                        disablePaddient
+                        items={[
+                            {
+                                label: __('Shape', 'maxi-blocks'),
+                                content: (
+                                    <__experimentalSVGControl
+                                        SVGData={value.SVG.SVGData}
+                                        SVGMediaID={value.SVG.SVGMediaID}
+                                        SVGMediaURL={value.SVG.SVGMediaURL}
+                                        onChange={obj => {
+                                            value.SVG.SVGElement = obj.SVGElement;
+                                            value.SVG.SVGMediaID = obj.SVGMediaID;
+                                            value.SVG.SVGMediaURL = obj.SVGMediaURL;
+                                            value.SVG.SVGData = obj.SVGData;
+
+                                            onChange(JSON.stringify(value))
+                                        }}
+                                    />
+                                )
+                            },
+                            !isEmpty(value.SVG.SVGElement) &&
+                            {
+                                label: __('Fill', 'maxi-blocks'),
+                                content: (
+                                    <__experimentalSVGFillControl
+                                        SVGData={value.SVG.SVGData}
+                                        SVGElement={value.SVG.SVGElement}
+                                        onChange={obj => {
+                                            value.SVG.SVGData = obj.SVGData;
+                                            value.SVG.SVGElement = obj.SVGElement;
+                                            onChange(JSON.stringify(value))
+                                        }}
+                                    />
+                                )
+                            },
+                            !isEmpty(value.SVG.SVGElement) &&
+                            {
+                                label: __('Position', 'maxi-blocks'),
+                                content: (
+                                    <__experimentalAxisControl
+                                        values={value.SVG.position}
+                                        onChange={val => {
+                                            value.SVG.position = JSON.parse(val);
+                                            onChange(JSON.stringify(value))
+                                        }}
+                                        disableAuto
+                                        disableUnit
+                                    />
+                                )
+                            },
+                            !isEmpty(value.SVG.SVGElement) &&
+                            {
+                                label: __('Width', 'maxi-blocks'),
+                                content: (
+                                    <Fragment>
+                                        <SizeControl
+                                            label={__('Width', 'maxi-blocks')}
+                                            value={value.SVG.size.width}
+                                            unit={value.SVG.size.widthUnit}
+                                            onChangeValue={val => {
+                                                value.SVG.size.width = val;
+                                                onChange(JSON.stringify(value))
+                                            }}
+                                            onChangeUnit={val => {
+                                                value.SVG.size.widthUnit = val;
+                                                onChange(JSON.stringify(value))
+                                            }}
+                                        />
+                                        <SizeControl
+                                            label={__('Max width', 'maxi-blocks')}
+                                            value={value.SVG.size['max-width']}
+                                            unit={value.SVG.size['max-widthUnit']}
+                                            onChangeValue={val => {
+                                                value.SVG.size['max-width'] = val;
+                                                onChange(JSON.stringify(value))
+                                            }}
+                                            onChangeUnit={val => {
+                                                value.SVG.size['max-widthUnit'] = val;
+                                                onChange(JSON.stringify(value))
+                                            }}
+                                        />
+                                    </Fragment>
+                                )
+                            }
+                        ]}
+                    />
+                </Fragment>
             }
             {
                 !disableClipPath &&

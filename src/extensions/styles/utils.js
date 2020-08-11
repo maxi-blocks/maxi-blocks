@@ -523,22 +523,6 @@ export const setBackgroundStyles = (target, background, backgroundHover) => {
     const value = JSON.parse(background);
     const valueHover = JSON.parse(backgroundHover);
 
-    if(!isEmpty(value.svgPath))
-        return {
-            [`${target}>.maxi-background-displayer`]: {
-                background: {}
-            },
-            [`${target}:hover>.maxi-background-displayer`]: {
-                backgroundHover: {}
-            },
-            [`${target}>.maxi-background-displayer .maxi-background-displayer__video-player video`]: {
-                videoBackground: {}
-            },
-            [`${target}:hover>.maxi-background-displayer .maxi-background-displayer__video-player video`]: {
-                videoBackgroundHover: {}
-            }
-        };
-
     return {
         [`${target}>.maxi-background-displayer`]: {
             background: { ...getBackgroundObject(value) }
@@ -547,14 +531,21 @@ export const setBackgroundStyles = (target, background, backgroundHover) => {
             backgroundHover: { ...getBackgroundObject(valueHover) }
         },
         [`${target}>.maxi-background-displayer .maxi-background-displayer__video-player video`]: {
-            videoBackground: { 
-                ...getVideoBackgroundObject(value.videoOptions) 
+            videoBackground: {
+                ...getVideoBackgroundObject(value.videoOptions)
             }
         },
         [`${target}:hover>.maxi-background-displayer .maxi-background-displayer__video-player video`]: {
-            videoBackgroundHover: { 
-                ...getVideoBackgroundObject(valueHover.videoOptions) 
+            videoBackgroundHover: {
+                ...getVideoBackgroundObject(valueHover.videoOptions)
             }
-        }
+        },
+        [`${target}>.maxi-background-displayer>.maxi-background-displayer__svg-wrapper`]: {
+            position: { ...value.SVG.position },
+            size: {
+                label: 'Background SVG size',
+                general: { ...value.SVG.size }
+            }
+        },
     }
 }

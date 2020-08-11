@@ -1,12 +1,11 @@
 /**
- * Internal dependencies
+ * WordPress dependencies
  */
-import SVGDefaults from './defaults';
+const { select } = wp.data;
 
 /**
  * External dependencies
  */
-import { ReactSVG } from 'react-svg';
 import {
     uniqueId,
     isObject,
@@ -17,7 +16,15 @@ import {
 /**
  * Utils
  */
-export const injectImgSVG = (svg, uniqueID, SVGData = {}) => {
+export const injectImgSVG = (svg, SVGData = {}) => {
+
+    const {
+        getBlockAttributes,
+        getSelectedBlockClientId
+    } = select('core/block-editor');
+
+    const uniqueID = getBlockAttributes(getSelectedBlockClientId()).uniqueID;
+
     const SVGValue = !isObject(SVGData) ?
         JSON.parse(SVGData) :
         SVGData;
@@ -94,43 +101,4 @@ export const generateDataObject = (data, svg) => {
         })
 
     return response;
-}
-
-export const getSVGDefaults = props => {
-    const {
-        attributes: {
-            uniqueID,
-            SVGData
-        },
-        setAttributes
-    } = props;
-
-    return (
-        <div
-            className='maxi-svg-block__defaults'
-        >
-            {
-                SVGDefaults.map(svgEl => (
-                    <ReactSVG
-                        src={svgEl}
-                        className='maxi-svg-block__defaults__item'
-                        onClick={e => {
-                            if (!!e.target.ownerSVGElement) {
-                                const svg = e.target.ownerSVGElement;
-                                const resData = generateDataObject(SVGData, svg);
-                                const resEl = injectImgSVG(svg, uniqueID, resData);
-
-                                setAttributes({
-                                    SVGElement: resEl.outerHTML,
-                                    SVGMediaID: null,
-                                    SVGMediaURL: null,
-                                    SVGData: JSON.stringify(resData)
-                                })
-                            }
-                        }}
-                    />
-                ))
-            }
-        </div>
-    )
 }

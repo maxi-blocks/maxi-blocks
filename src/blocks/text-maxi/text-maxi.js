@@ -10,6 +10,7 @@
  */
 const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
+const { registerFormatType } = wp.richText;
 
 /**
  * Block dependencies
@@ -27,7 +28,7 @@ import { textIcon } from '../../icons';
 /**
  * Block
  */
-registerBlockType( 'maxi-blocks/text-maxi', {
+registerBlockType('maxi-blocks/text-maxi', {
 	title: __('Text Maxi', 'maxi-blocks'),
 	icon: textIcon,
 	description: 'Insert, modify or style text',
@@ -40,16 +41,27 @@ registerBlockType( 'maxi-blocks/text-maxi', {
 		...attributes
 	},
 	getEditWrapperProps(attributes) {
-        const {
+		const {
 			uniqueID,
 			defaultBlockStyle,
-        } = attributes;
+		} = attributes;
 
-        return {
+		return {
 			'uniqueid': uniqueID,
 			'data-maxi_initial_block_class': defaultBlockStyle,
-        };
-    },
+		};
+	},
 	edit,
 	save
-} );
+});
+
+for (let i = 1; i <= 6; i++) {
+	registerFormatType(
+		`h${i}`,
+		{
+			title: `H${i}`,
+			tagName: `h${i}`,
+			className: null,
+		}
+	);
+}

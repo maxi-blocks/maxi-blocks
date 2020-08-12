@@ -24,3 +24,6 @@ export { default as TextList } from './text-list';
 export { default as TextListOptions } from './text-list-options';
 export { default as TextOptions } from './text-options/';
 export { default as TextShadow } from './text-shadow/';
+
+// Experimental
+export { default as __experimentalTextH1 } from './text-h1';

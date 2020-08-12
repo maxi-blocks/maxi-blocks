@@ -3,7 +3,8 @@
  */
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
-const { select } = wp.data;
+const { createBlock } = wp.blocks;
+const { dispatch } = wp.data;
 const {
     __unstableIndentListItems,
     __unstableOutdentListItems,
@@ -40,6 +41,8 @@ import classnames from 'classnames';
 /**
  * Content
  */
+const name = 'maxi-blocks/text-maxi';
+
 class edit extends MaxiBlock {
     get getObject() {
         const {
@@ -140,7 +143,6 @@ class edit extends MaxiBlock {
 
     render() {
         const {
-            className,
             attributes: {
                 uniqueID,
                 blockStyle,
@@ -155,9 +157,17 @@ class edit extends MaxiBlock {
                 listReversed,
                 fullWidth
             },
+            className,
+            clientId,
             isSelected,
             setAttributes,
+            mergeBlocks,
+            insertBlocksAfter,
+            onReplace,
+            onRemove
         } = this.props;
+
+        console.log(this.props)
 
         const classes = classnames(
             'maxi-block maxi-text-block',
@@ -166,6 +176,8 @@ class edit extends MaxiBlock {
             uniqueID,
             className
         );
+
+        const { insertBlock } = dispatch('core/block-editor');
 
         return [
             <Inspector {...this.props} />,
@@ -185,6 +197,41 @@ class edit extends MaxiBlock {
                         value={content}
                         onChange={content => setAttributes({ content })}
                         tagName={textLevel}
+                        onSplit={value => {
+                            if (!value)
+                                return createBlock(name);
+
+                            return createBlock(
+                                name,
+                                {
+                                    ...this.props.attributes,
+                                    content: value
+                                }
+                            );
+                        }}
+                        // onSplit={value => {
+                        //     const { insertBlock } = dispatch('core/block-editor');
+                        //     if (!value)
+                        //         insertBlock(createBlock(name));
+
+                        //     insertBlock(createBlock(
+                        //         name,
+                        //         {
+                        //             ...this.props.attributes,
+                        //             content: value
+                        //         }
+                        //     ));
+                        // }}
+                        // onReplace={blocks => {
+                        //     blocks.map(block => {
+                        //         console.log(block.clientId, block)
+                        //         if (block.clientId === clientId)
+                        //             insertBlock(block);
+                        //     })
+                        // }}
+                        onReplace={onReplace}
+                        onMerge={mergeBlocks}
+                        onRemove={onRemove}
                         placeholder={__('Set your Maxi Text here...', 'maxi-blocks')}
                         keepPlaceholderOnFocus
                         __unstableEmbedURLOnPaste
@@ -204,10 +251,16 @@ class edit extends MaxiBlock {
                         placeholder={__('Write list…')}
                         // onMerge={mergeBlocks}
                         onSplit={(value) =>
-                            createBlock(name, { ...attributes, values: value })
+                            createBlock(
+                                name,
+                                {
+                                    ...this.props.attributes,
+                                    values: value
+                                }
+                            )
                         }
                         __unstableOnSplitMiddle={() =>
-                            createBlock('core/paragraph')
+                            createBlock(name)
                         }
                         // onReplace={onReplace}
                         // onRemove={() => onReplace([])}

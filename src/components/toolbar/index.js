@@ -35,7 +35,8 @@ import {
     TextListOptions,
     TextOptions,
     PaddingMargin,
-    Size
+    Size,
+    __experimentalTextH1
 } from './components/';
 
 /**
@@ -217,6 +218,12 @@ const MaxiToolbar = props => {
                             }
                         />
                         <TextBold
+                            blockName={name}
+                            content={content}
+                            onChange={content => setAttributes({ content })}
+                            node={anchorRef}
+                        />
+                        <__experimentalTextH1
                             blockName={name}
                             content={content}
                             onChange={content => setAttributes({ content })}

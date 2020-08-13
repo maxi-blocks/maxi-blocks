@@ -60,7 +60,7 @@ const save = props => {
                 data-motion-id={uniqueID}
             >
                 <__experimentalBackgroundDisplayer
-                    backgroundOptions={background}
+                    background={background}
                 />
                 <RichText.Content
                     className='maxi-text-block__content'

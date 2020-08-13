@@ -45,25 +45,29 @@ const ColorControl = props => {
     return (
         <div className={classes}>
             <BaseControl
-                    className='maxi-colorcontrol__display'
-                    label={`${label} ${__('Colour', 'maxi-blocks')}`}
-                >
-                    <div className='maxi-colorcontrol__display__color'>
-                        <span style={{background: color}}></span>
-                        <Button
-                            className="components-maxi-control__reset-button"
-                            onClick={() => onReset()}
-                            aria-label={sprintf(
-                                /* translators: %s: a texual label  */
-                                __('Reset %s settings', 'maxi-blocks'),
-                                'font size'
-                            )}
-                            type="reset"
-                        >
-                            {reset}
-                        </Button>
-                    </div>
-                </BaseControl>
+                className='maxi-colorcontrol__display'
+                label={`${label} ${__('Colour', 'maxi-blocks')}`}
+            >
+                <div className='maxi-colorcontrol__display__color'>
+                    <span
+                        style={{
+                            background: color
+                        }}
+                    />
+                    <Button
+                        className="components-maxi-control__reset-button"
+                        onClick={() => onReset()}
+                        aria-label={sprintf(
+                            /* translators: %s: a texual label  */
+                            __('Reset %s settings', 'maxi-blocks'),
+                            'font size'
+                        )}
+                        type="reset"
+                    >
+                        {reset}
+                    </Button>
+                </div>
+            </BaseControl>
             <div className="maxi-colorcontrol__color">
                 <ColorPicker
                     color={color}

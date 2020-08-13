@@ -7,7 +7,6 @@ const { Fragment } = wp.element;
 const {
     TextControl,
     SelectControl,
-    RadioControl,
 } = wp.components;
 
 /**
@@ -22,7 +21,6 @@ import {
     FullSizeControl,
     SettingTabsControl,
     SizeControl,
-    TypographyControl,
     __experimentalResponsiveSelector,
     __experimentalZIndexControl,
     __experimentalAxisControl,
@@ -37,6 +35,7 @@ import {
     __experimentalArrowControl,
     __experimentalParallaxControl,
 } from '../../components';
+import { getDefaultProp } from '../../utils';
 
 /**
  * External dependencies
@@ -78,11 +77,31 @@ const Inspector = props => {
         },
         deviceType,
         setAttributes,
+        clientId
     } = props;
 
-    let value = !isObject(sizeContainer) ?
+    const value = !isObject(sizeContainer) ?
         JSON.parse(sizeContainer) :
         sizeContainer;
+
+    const minMaxSettings = {
+        'px': {
+            min: 0,
+            max: 3999
+        },
+        'em': {
+            min: 0,
+            max: 999
+        },
+        'vw': {
+            min: 0,
+            max: 999
+        },
+        '%': {
+            min: 0,
+            max: 100
+        }
+    }
 
     return (
         <InspectorControls>
@@ -115,46 +134,34 @@ const Inspector = props => {
                                                             <SizeControl
                                                                 label={__('Max Width', 'maxi-blocks')}
                                                                 unit={value[deviceType]['max-widthUnit']}
+                                                                defaultUnit={JSON.parse(getDefaultProp(clientId, 'sizeContainer'))[deviceType]['max-widthUnit']}
                                                                 onChangeUnit={val => {
                                                                     value[deviceType]['max-widthUnit'] = val;
                                                                     setAttributes({ sizeContainer: JSON.stringify(value) })
                                                                 }}
                                                                 value={value[deviceType]['max-width']}
+                                                                defaultValue={JSON.parse(getDefaultProp(clientId, 'sizeContainer'))[deviceType]['max-width']}
                                                                 onChangeValue={val => {
                                                                     value[deviceType]['max-width'] = val;
                                                                     setAttributes({ sizeContainer: JSON.stringify(value) })
                                                                 }}
-                                                                minMaxSettings={{
-                                                                    'px': {
-                                                                        min: 0,
-                                                                        max: 3999
-                                                                    },
-                                                                    'em': {
-                                                                        min: 0,
-                                                                        max: 999
-                                                                    },
-                                                                    'vw': {
-                                                                        min: 0,
-                                                                        max: 999
-                                                                    },
-                                                                    '%': {
-                                                                        min: 0,
-                                                                        max: 100
-                                                                    }
-                                                                }}
+                                                                minMaxSettings={minMaxSettings}
                                                             />
                                                             <SizeControl
                                                                 label={__('Width', 'maxi-blocks')}
                                                                 unit={value[deviceType]['widthUnit']}
+                                                                defaultUnit={JSON.parse(getDefaultProp(clientId, 'sizeContainer'))[deviceType]['widthUnit']}
                                                                 onChangeUnit={val => {
                                                                     value[deviceType]['widthUnit'] = val;
                                                                     setAttributes({ sizeContainer: JSON.stringify(value) })
                                                                 }}
                                                                 value={value[deviceType]['width']}
+                                                                defaultValue={JSON.parse(getDefaultProp(clientId, 'sizeContainer'))[deviceType]['width']}
                                                                 onChangeValue={val => {
                                                                     value[deviceType]['width'] = val;
                                                                     setAttributes({ sizeContainer: JSON.stringify(value) })
                                                                 }}
+                                                                minMaxSettings={minMaxSettings}
                                                             />
                                                         </Fragment>
                                                     )
@@ -181,6 +188,7 @@ const Inspector = props => {
                                                     }
                                                     <FullSizeControl
                                                         size={size}
+                                                        defaultSize={getDefaultProp(clientId, 'size')}
                                                         onChange={size => setAttributes({ size })}
                                                         breakpoint={deviceType}
                                                     />
@@ -201,11 +209,13 @@ const Inspector = props => {
                                                                         <Fragment>
                                                                             <__experimentalOpacityControl
                                                                                 opacity={opacity}
+                                                                                defaultOpacity={getDefaultProp(clientId, 'opacity')}
                                                                                 onChange={opacity => setAttributes({ opacity })}
                                                                                 breakpoint={deviceType}
                                                                             />
                                                                             <BackgroundControl
-                                                                                backgroundOptions={background}
+                                                                                background={background}
+                                                                                defaultBackground={getDefaultProp(clientId, 'background')}
                                                                                 onChange={background => setAttributes({ background })}
                                                                             />
                                                                             <__experimentalParallaxControl
@@ -221,11 +231,13 @@ const Inspector = props => {
                                                                         <Fragment>
                                                                             <__experimentalOpacityControl
                                                                                 opacity={opacityHover}
+                                                                                defaultOpacity={getDefaultProp(clientId, 'opacityHover')}
                                                                                 onChange={opacityHover => setAttributes({ opacityHover })}
                                                                                 breakpoint={deviceType}
                                                                             />
                                                                             <BackgroundControl
-                                                                                backgroundOptions={backgroundHover}
+                                                                                background={backgroundHover}
+                                                                                defaultBackground={getDefaultProp(clientId, 'backgroundHover')}
                                                                                 onChange={backgroundHover => setAttributes({ backgroundHover })}
                                                                                 disableImage
                                                                                 disableVideo
@@ -249,6 +261,7 @@ const Inspector = props => {
                                                             content: (
                                                                 <BorderControl
                                                                     border={border}
+                                                                    defaultBorder={getDefaultProp(clientId, 'border')}
                                                                     onChange={border => setAttributes({ border })}
                                                                     breakpoint={deviceType}
                                                                 />
@@ -259,6 +272,7 @@ const Inspector = props => {
                                                             content: (
                                                                 <BorderControl
                                                                     border={borderHover}
+                                                                    defaultBorder={getDefaultProp(clientId, 'borderHover')}
                                                                     onChange={borderHover => setAttributes({ borderHover })}
                                                                     breakpoint={deviceType}
                                                                 />
@@ -279,6 +293,7 @@ const Inspector = props => {
                                                             content: (
                                                                 <BoxShadowControl
                                                                     boxShadow={boxShadow}
+                                                                    defaultBoxShadow={getDefaultProp(clientId, 'boxShadow')}
                                                                     onChange={boxShadow => setAttributes({ boxShadow })}
                                                                     breakpoint={deviceType}
                                                                 />
@@ -289,6 +304,7 @@ const Inspector = props => {
                                                             content: (
                                                                 <BoxShadowControl
                                                                     boxShadow={boxShadowHover}
+                                                                    defaultBoxShadow={getDefaultProp(clientId, 'boxShadowHover')}
                                                                     onChange={boxShadowHover => setAttributes({ boxShadowHover })}
                                                                     breakpoint={deviceType}
                                                                 />
@@ -304,12 +320,14 @@ const Inspector = props => {
                                                 <Fragment>
                                                     <__experimentalAxisControl
                                                         values={padding}
+                                                        defaultValues={getDefaultProp(clientId, 'padding')}
                                                         onChange={padding => setAttributes({ padding })}
                                                         breakpoint={deviceType}
                                                         disableAuto
                                                     />
                                                     <__experimentalAxisControl
                                                         values={margin}
+                                                        defaultValues={getDefaultProp(clientId, 'margin')}
                                                         onChange={margin => setAttributes({ margin })}
                                                         breakpoint={deviceType}
                                                     />
@@ -321,6 +339,7 @@ const Inspector = props => {
                                             content: (
                                                 <__experimentalArrowControl
                                                     arrow={arrow}
+                                                    defaultArrow={getDefaultProp(clientId, 'arrow')}
                                                     onChange={arrow => setAttributes({ arrow })}
                                                     breakpoint={deviceType}
                                                     isFirstOnHierarchy={isFirstOnHierarchy}
@@ -347,7 +366,8 @@ const Inspector = props => {
                                         />
                                     }
                                     <__experimentalZIndexControl
-                                        zindex={zIndex}
+                                        zIndex={zIndex}
+                                        defaultZIndex={getDefaultProp(clientId, 'zIndex')}
                                         onChange={zIndex => setAttributes({ zIndex })}
                                         breakpoint={deviceType}
                                     />
@@ -355,12 +375,14 @@ const Inspector = props => {
                                         deviceType != 'general' &&
                                         <__experimentalResponsiveControl
                                             breakpoints={breakpoints}
+                                            defaultBreakpoints={getDefaultProp(clientId, 'breakpoints')}
                                             onChange={breakpoints => setAttributes({ breakpoints })}
                                             breakpoint={deviceType}
                                         />
                                     }
                                     <__experimentalPositionControl
                                         position={position}
+                                        defaultPosition={getDefaultProp(clientId, 'position')}
                                         onChange={position => setAttributes({ position })}
                                         breakpoint={deviceType}
                                     />
@@ -378,6 +400,7 @@ const Inspector = props => {
                                             content: (
                                                 <__experimentalShapeDividerControl
                                                     shapeDividerOptions={shapeDivider}
+                                                    defaultShapeDividerOptions={getDefaultProp(clientId, 'shapeDivider')}
                                                     onChange={shapeDivider => setAttributes({ shapeDivider })}
                                                 />
                                             )
@@ -396,6 +419,7 @@ const Inspector = props => {
                                             content: (
                                                 <__experimentalEntranceAnimationControl
                                                     motionOptions={motion}
+                                                    defaultMotionOptions={getDefaultProp(clientId, 'motion')}
                                                     onChange={motion => setAttributes({ motion })}
                                                 />
                                             )

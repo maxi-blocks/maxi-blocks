@@ -14,13 +14,13 @@ import { isObject } from 'lodash';
  */
 const BackgroundDisplayer = props => {
     const {
-        backgroundOptions,
+        background,
         className,
     } = props;
 
-    const value = !isObject(backgroundOptions) ?
-        JSON.parse(backgroundOptions) :
-        backgroundOptions
+    const value = !isObject(background) ?
+        JSON.parse(background) :
+        background
 
     const classes = classnames(
         'maxi-background-displayer',

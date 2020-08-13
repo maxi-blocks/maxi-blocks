@@ -17,7 +17,6 @@ import './editor.scss';
  * Component
  */
 const DefaultStylesControl = props => {
-
     const {
         className,
         items,
@@ -37,7 +36,7 @@ const DefaultStylesControl = props => {
                     const classesItem = classnames(
                         'maxi-defaultstyles-control__button',
                         item.className,
-                        (item.activeItem) && 'maxi-defaultstyles-control__button--active',
+                        item.activeItem && 'maxi-defaultstyles-control__button--active',
                     );
 
                     return (

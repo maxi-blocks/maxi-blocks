@@ -31,6 +31,7 @@ import {
     __experimentalTransformControl,
     __experimentalEntranceAnimationControl
 } from '../../components';
+import { getDefaultProp } from '../../utils';
 
 /**
  * Inspector
@@ -67,6 +68,7 @@ const Inspector = props => {
         },
         deviceType,
         setAttributes,
+        clientId
     } = props;
 
     return (
@@ -171,6 +173,7 @@ const Inspector = props => {
                                                     }
                                                     <FullSizeControl
                                                         size={size}
+                                                        defaultSize={getDefaultProp(clientId, 'size')}
                                                         onChange={size => setAttributes({ size })}
                                                         breakpoint={deviceType}
                                                     />
@@ -192,11 +195,12 @@ const Inspector = props => {
                                                                         <Fragment>
                                                                             <__experimentalOpacityControl
                                                                                 opacity={opacity}
+                                                                                defaultOpacity={getDefaultProp(clientId, 'opacity')}
                                                                                 onChange={opacity => setAttributes({ opacity })}
                                                                                 breakpoint={deviceType}
                                                                             />
                                                                             <BackgroundControl
-                                                                                backgroundOptions={background}
+                                                                                background={background}
                                                                                 onChange={background => setAttributes({ background })}
                                                                                 disableImage
                                                                                 disableVideo
@@ -210,11 +214,12 @@ const Inspector = props => {
                                                                         <Fragment>
                                                                             <__experimentalOpacityControl
                                                                                 opacity={opacityHover}
+                                                                                defaultOpacity={getDefaultProp(clientId, 'opacityHover')}
                                                                                 onChange={opacityHover => setAttributes({ opacityHover })}
                                                                                 breakpoint={deviceType}
                                                                             />
                                                                             <BackgroundControl
-                                                                                backgroundOptions={backgroundHover}
+                                                                                background={backgroundHover}
                                                                                 onChange={backgroundHover => setAttributes({ backgroundHover })}
                                                                                 disableImage
                                                                                 disableVideo
@@ -297,7 +302,7 @@ const Inspector = props => {
                                         </Fragment>
                                     }
                                     <__experimentalZIndexControl
-                                        zindex={zIndex}
+                                        zIndex={zIndex}
                                         onChange={zIndex => setAttributes({ zIndex })}
                                         breakpoint={deviceType}
                                     />

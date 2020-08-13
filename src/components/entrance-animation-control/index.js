@@ -26,16 +26,25 @@ const EntranceAnimationControl = props => {
 
     const {
         motionOptions,
+        defaultMotionOptions,
         onChange,
     } = props;
 
-    let value = !isObject(motionOptions) ?
+    const value = !isObject(motionOptions) ?
         JSON.parse(motionOptions) :
         motionOptions;
 
     let {
         entrance: entranceAnimationOptions,
     } = value;
+
+    const defaultValue = !isObject(defaultMotionOptions) ?
+        JSON.parse(defaultMotionOptions) :
+        defaultMotionOptions;
+
+    let {
+        entrance: defaultEntranceAnimationOptions,
+    } = defaultValue;
 
     return (
         <div className="maxi-entrance-animation-control">
@@ -155,6 +164,7 @@ const EntranceAnimationControl = props => {
                 initial={1}
                 step={0.1}
                 value={entranceAnimationOptions.duration}
+                defaultValue={defaultEntranceAnimationOptions.duration}
                 onChangeValue={val => {
                     entranceAnimationOptions.duration = val;
                     onChange(JSON.stringify(value));
@@ -168,6 +178,7 @@ const EntranceAnimationControl = props => {
                 initial={1}
                 step={0.1}
                 value={entranceAnimationOptions.delay}
+                defaultValue={defaultEntranceAnimationOptions.delay}
                 onChangeValue={val => {
                     entranceAnimationOptions.delay = val;
                     onChange(JSON.stringify(value));

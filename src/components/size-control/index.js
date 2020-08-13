@@ -14,7 +14,10 @@ const {
  * External dependencies
  */
 import classnames from 'classnames';
-import { trim } from 'lodash';
+import {
+    trim,
+    isNil
+} from 'lodash';
 
 /**
  * Styles
@@ -31,13 +34,15 @@ const SizeControl = props => {
         label,
         className,
         unit,
-        disableUnit = false,
         onChangeUnit,
+        defaultUnit,
+        disableUnit = false,
         min = 0,
         max = 999,
         initial = 0,
         step = 1,
         value,
+        defaultValue,
         onChangeValue,
         allowedUnits = ['px', 'em', 'vw', '%'],
         minMaxSettings = {
@@ -67,10 +72,10 @@ const SizeControl = props => {
 
     const getOptions = () => {
         let options = [];
-            allowedUnits.includes('px') && options.push({label: 'PX', value: 'px'});
-            allowedUnits.includes('em') && options.push({label: 'EM', value: 'em'});
-            allowedUnits.includes('vw') && options.push({label: 'VW', value: 'vw'});
-            allowedUnits.includes('%') && options.push({label: '%', value: '%'});
+        allowedUnits.includes('px') && options.push({ label: 'PX', value: 'px' });
+        allowedUnits.includes('em') && options.push({ label: 'EM', value: 'em' });
+        allowedUnits.includes('vw') && options.push({ label: 'VW', value: 'vw' });
+        allowedUnits.includes('%') && options.push({ label: '%', value: '%' });
         return options;
     };
 
@@ -91,7 +96,7 @@ const SizeControl = props => {
                         step={step}
                         placeholder='auto'
                     />
-                :
+                    :
                     <Fragment>
                         <input
                             type='number'
@@ -113,7 +118,14 @@ const SizeControl = props => {
             }
             <Button
                 className='components-maxi-control__reset-button'
-                onClick={() => onChangeValue('')}
+                onClick={() => {
+                    if (isNil(defaultValue))
+                        onChangeValue('');
+                    else {
+                        onChangeValue(defaultValue);
+                        onChangeUnit(defaultUnit);
+                    }
+                }}
                 isSmall
                 aria-label={sprintf(
                     /* translators: %s: a texual label  */
@@ -125,9 +137,9 @@ const SizeControl = props => {
                 {reset}
             </Button>
             {
-                (disableUnit) ?
+                disableUnit ?
                     <RangeControl
-                        value={Number(value)}
+                        value={value}
                         onChange={val => onChangeValue(Number(val))}
                         min={min}
                         max={max}
@@ -136,9 +148,9 @@ const SizeControl = props => {
                         withInputField={false}
                         initialPosition={initial}
                     />
-                :
+                    :
                     <RangeControl
-                        value={Number(value)}
+                        value={value}
                         onChange={val => onChangeValue(Number(val))}
                         min={unit ? minMaxSettings[unit].min : null}
                         max={unit ? minMaxSettings[unit].max : null}

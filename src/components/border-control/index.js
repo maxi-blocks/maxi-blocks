@@ -37,6 +37,7 @@ import {
     dotted,
     solid
 } from '../../icons';
+import { getDefaultProp } from '../../extensions/styles/utils';
 
 /**
  * Component
@@ -44,15 +45,20 @@ import {
 const BorderControl = props => {
     const {
         border,
+        defaultBorder,
         className,
         onChange,
         breakpoint = 'general',
         disableAdvanced = false
     } = props;
 
-    let value = !isObject(border) ?
+    const value = !isObject(border) ?
         JSON.parse(border) :
         border;
+
+    const defaultValue = !isObject(defaultBorder) ?
+        JSON.parse(defaultBorder) :
+        defaultBorder;
 
     const classes = classnames(
         'maxi-border-control',
@@ -116,9 +122,10 @@ const BorderControl = props => {
             <ColorControl
                 label={__('Border', 'maxi-blocks')}
                 color={getLastBreakpointValue(value, 'border-color', breakpoint)}
-                defaultColor={value['defaultBorderColor']}
+                defaultColor={defaultValue[breakpoint]['border-color']}
                 onColorChange={val => {
                     value[breakpoint]['border-color'] = val;
+
                     onChange(JSON.stringify(value));
                 }}
                 disableImage
@@ -151,6 +158,7 @@ const BorderControl = props => {
                     />
                     <__experimentalAxisControl
                         values={value.borderWidth}
+                        defaultValues={defaultValue.borderWidth}
                         onChange={val => {
                             console.log('axiscontrol', val)
                             value.borderWidth = JSON.parse(val);
@@ -161,6 +169,7 @@ const BorderControl = props => {
                     />
                     <__experimentalAxisControl
                         values={value.borderRadius}
+                        defaultValues={defaultValue.borderRadius}
                         onChange={val => {
                             console.log('axiscontrol', val)
                             value.borderRadius = JSON.parse(val);

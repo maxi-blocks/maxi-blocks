@@ -45,7 +45,7 @@ const save = props => {
             data-maxi_initial_block_class={defaultBlockStyle}
         >
             <__experimentalBackgroundDisplayer
-                backgroundOptions={background}
+                background={background}
             />
             <InnerBlocks.Content />
         </div>

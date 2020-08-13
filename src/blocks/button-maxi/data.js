@@ -197,9 +197,7 @@ export const background = {
     },
     "colorOptions": {
         "color": "#ff4a17",
-        "defultColor": "",
         "gradient": "",
-        "defaultGradient": "",
         "gradientAboveBackground": false
     },
     "clipPath": ""

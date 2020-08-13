@@ -80,7 +80,7 @@ const save = props => {
             data-hover={JSON.stringify(hoverSettings)}
         >
             <__experimentalBackgroundDisplayer
-                backgroundOptions={background}
+                background={background}
             />
             <div className="maxi-block-hover-element">
                 <img
@@ -93,7 +93,7 @@ const save = props => {
                 />
             </div>
             {
-            hoverSettings.type !== 'none' &&
+                hoverSettings.type !== 'none' &&
                 <div className="maxi-hover-details">
                     <div className={`maxi-hover-details__content maxi-hover-details__content--${hoverTextPreset}`}>
                         {

@@ -81,7 +81,7 @@ class edit extends MaxiBlock {
             padding: { ...JSON.parse(padding) },
             margin: { ...JSON.parse(margin) },
             opacity: { ...JSON.parse(opacity) },
-            zindex: { ...JSON.parse(zIndex) },
+            zIndex: { ...JSON.parse(zIndex) },
             position: { ...JSON.parse(position) },
             positionOptions: { ...JSON.parse(position).options },
             display: { ...JSON.parse(display) },
@@ -218,7 +218,7 @@ class edit extends MaxiBlock {
                     data-align={fullWidth}
                 >
                     <__experimentalBackgroundDisplayer
-                        backgroundOptions={background}
+                        background={background}
                     />
                     {
                         !!showLine &&

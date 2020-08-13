@@ -26,6 +26,7 @@ const NumberControl = props => {
         label,
         className,
         value,
+        defaultValue,
         min = -999,
         max = 999,
         onChange
@@ -50,7 +51,7 @@ const NumberControl = props => {
             />
             <Button
                 className="components-maxi-control__reset-button"
-                onClick={() => onChange(undefined)}
+                onClick={() => onChange(Number(defaultValue))}
                 action="reset"
                 type="reset"
             >

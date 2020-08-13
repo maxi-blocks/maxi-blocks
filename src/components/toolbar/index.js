@@ -10,6 +10,11 @@ const {
 } = wp.element;
 
 /**
+ * Internal dependencies
+ */
+import { getDefaultProp } from '../../utils';
+
+/**
  * Utils
  */
 import {
@@ -280,6 +285,7 @@ const MaxiToolbar = props => {
                                 clientId={clientId}
                                 blockName={name}
                                 size={size}
+                                defaultSize={getDefaultProp(clientId, 'size')}
                                 onChangeSize={size => setAttributes({ size })}
                                 width={width}
                                 onChangeWidth={width => setAttributes({ width })}
@@ -294,6 +300,7 @@ const MaxiToolbar = props => {
                             clientId={clientId}
                             blockName={name}
                             size={size}
+                            defaultSize={getDefaultProp(clientId, 'size')}
                             onChangeSize={size => setAttributes({ size })}
                             fullWidth={fullWidth}
                             onChangeFullWidth={fullWidth => setAttributes({ fullWidth })}

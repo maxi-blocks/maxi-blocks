@@ -535,9 +535,7 @@ export const background = {
     },
     "colorOptions": {
         "color": "",
-        "defultColor": "",
         "gradient": "",
-        "defaultGradient": "",
         "gradientAboveBackground": false
     },
     "clipPath": ""
@@ -555,6 +553,7 @@ export const boxShadow = {
         "shadowSpread": 0
     },
     "xxl": {
+        "shadowType": false,
         "shadowColor": "",
         "defaultShadowColor": "",
         "shadowHorizontal": "",
@@ -563,6 +562,7 @@ export const boxShadow = {
         "shadowSpread": ""
     },
     "xl": {
+        "shadowType": false,
         "shadowColor": "",
         "defaultShadowColor": "",
         "shadowHorizontal": "",
@@ -571,6 +571,7 @@ export const boxShadow = {
         "shadowSpread": ""
     },
     "l": {
+        "shadowType": false,
         "shadowColor": "",
         "defaultShadowColor": "",
         "shadowHorizontal": "",
@@ -579,6 +580,7 @@ export const boxShadow = {
         "shadowSpread": ""
     },
     "m": {
+        "shadowType": false,
         "shadowColor": "",
         "defaultShadowColor": "",
         "shadowHorizontal": "",
@@ -587,6 +589,7 @@ export const boxShadow = {
         "shadowSpread": ""
     },
     "s": {
+        "shadowType": false,
         "shadowColor": "",
         "defaultShadowColor": "",
         "shadowHorizontal": "",
@@ -595,6 +598,7 @@ export const boxShadow = {
         "shadowSpread": ""
     },
     "xs": {
+        "shadowType": false,
         "shadowColor": "",
         "defaultShadowColor": "",
         "shadowHorizontal": "",
@@ -607,7 +611,8 @@ export const boxShadow = {
 export const boxShadowHover = {
     "label": "Box Shadow",
     "general": {
-        "shadowColor": "",
+        "shadowType": false,
+        "shadowColor": "#",
         "defaultShadowColor": "",
         "shadowHorizontal": "",
         "shadowVertical": "",
@@ -615,6 +620,7 @@ export const boxShadowHover = {
         "shadowSpread": ""
     },
     "xxl": {
+        "shadowType": false,
         "shadowColor": "",
         "defaultShadowColor": "",
         "shadowHorizontal": "",
@@ -623,6 +629,7 @@ export const boxShadowHover = {
         "shadowSpread": ""
     },
     "xl": {
+        "shadowType": false,
         "shadowColor": "",
         "defaultShadowColor": "",
         "shadowHorizontal": "",
@@ -631,6 +638,7 @@ export const boxShadowHover = {
         "shadowSpread": ""
     },
     "l": {
+        "shadowType": false,
         "shadowColor": "",
         "defaultShadowColor": "",
         "shadowHorizontal": "",
@@ -639,6 +647,7 @@ export const boxShadowHover = {
         "shadowSpread": ""
     },
     "m": {
+        "shadowType": false,
         "shadowColor": "",
         "defaultShadowColor": "",
         "shadowHorizontal": "",
@@ -647,6 +656,7 @@ export const boxShadowHover = {
         "shadowSpread": ""
     },
     "s": {
+        "shadowType": false,
         "shadowColor": "",
         "defaultShadowColor": "",
         "shadowHorizontal": "",
@@ -655,6 +665,7 @@ export const boxShadowHover = {
         "shadowSpread": ""
     },
     "xs": {
+        "shadowType": false,
         "shadowColor": "",
         "defaultShadowColor": "",
         "shadowHorizontal": "",
@@ -1155,9 +1166,7 @@ export const backgroundHover = {
     },
     "colorOptions": {
         "color": "",
-        "defultColor": "",
         "gradient": "",
-        "defaultGradient": "",
         "gradientAboveBackground": false
     },
     "clipPath": ""
@@ -1255,15 +1264,18 @@ export const __experimentalColumn = {
 export const __experimentalShapeDivider = {
     "label": "Shape Divider",
     "top": {
-        "height": "100",
+        "height": 100,
         "heightUnit": "px",
-        "opacity": 1,
+        "opacity": {
+            "label": "Opacity",
+            "general": {
+                "opacity": 1
+            }
+        },
         "shapeStyle": "",
         "colorOptions": {
             "color": "#000000",
-            "defultColor": "#000000",
             "gradient": "",
-            "defaultGradient": "",
             "gradientAboveBackground": false
         },
         "effects": {
@@ -1271,15 +1283,18 @@ export const __experimentalShapeDivider = {
         }
     },
     "bottom": {
-        "height": "100",
+        "height": 100,
         "heightUnit": "px",
-        "opacity": 1,
+        "opacity": {
+            "label": "Opacity",
+            "general": {
+                "opacity": 1
+            }
+        },
         "shapeStyle": "",
         "colorOptions": {
             "color": "#000000",
-            "defultColor": "#000000",
             "gradient": "",
-            "defaultGradient": "",
             "gradientAboveBackground": false
         },
         "effects": {
@@ -1322,12 +1337,12 @@ export const __experimentalPosition = {
             "unit": "px"
         },
         "xxl": {
-                "top": "",
-                "right": "",
-                "bottom": "",
-                "left": "",
-                "sync": false,
-                "unit": ""
+            "top": "",
+            "right": "",
+            "bottom": "",
+            "left": "",
+            "sync": false,
+            "unit": ""
         },
         "xl": {
             "top": "",
@@ -1408,20 +1423,20 @@ export const __experimentalHover = {
     "borderStatus": 0,
     "paddingStatus": 0,
     "marginStatus": 0,
-    "border": {...border},
-    "background": {...background},
-    "margin": {...margin},
-    "padding": {...padding},
+    "border": { ...border },
+    "background": { ...background },
+    "margin": { ...margin },
+    "padding": { ...padding },
     "titleTypography": {
         ...typography,
-        "general" : {
+        "general": {
             ...typography["general"],
             "font-size": 33
         }
     },
     "contentTypography": {
         ...typography,
-        "general" : {
+        "general": {
             ...typography["general"],
             "font-size": 18
         }
@@ -1747,7 +1762,7 @@ export const __experimentalArrow = {
         "active": 0,
         "side": "bottom",
         "position": 50,
-        "color": "#fff",
+        "color": "#ffffff",
         "widthUnit": "px",
         "width": 20,
         "heightUnit": "px",

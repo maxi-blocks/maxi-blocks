@@ -45,10 +45,10 @@ const GradientControl = props => {
     );
 
     const onReset = () => {
-        if (!disableGradient)
-            onGradientChange(defaultGradient);
-        if (!disableGradient && !disableGradientAboveBackground)
+        if (!disableGradientAboveBackground)
             onGradientAboveBackgroundChange(false);
+
+        onGradientChange(defaultGradient);
     }
 
     return (
@@ -58,7 +58,7 @@ const GradientControl = props => {
                 label={`${label} ${__('Color', 'maxi-blocks')}`}
             >
                 <div className='maxi-gradientcontrol__display__color'>
-                    <span style={{background: gradient}}></span>
+                    <span style={{ background: gradient }}></span>
                     <Button
                         className="components-maxi-control__reset-button"
                         onClick={() => onReset()}

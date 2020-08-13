@@ -68,7 +68,7 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
             data-gx_initial_block_class={maxiBlockClass}
         >
             <__experimentalBackgroundDisplayer
-                backgroundOptions={background}
+                background={background}
             />
             {children}
         </__experimentalBlock.div>
@@ -126,7 +126,7 @@ class edit extends MaxiBlock {
             margin: { ...JSON.parse(margin) },
             padding: { ...JSON.parse(padding) },
             opacity: { ...getOpacityObject(JSON.parse(opacity)) },
-            zindex: { ...JSON.parse(zIndex) },
+            zIndex: { ...JSON.parse(zIndex) },
             position: { ...JSON.parse(position) },
             positionOptions: { ...JSON.parse(position).options },
             display: { ...JSON.parse(display) },

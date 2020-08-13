@@ -10,6 +10,7 @@
         "shadowSpread": 0
     },
     "xxl": {
+        "shadowType": false,
         "shadowColor": "",
         "defaultShadowColor": "",
         "shadowHorizontal": "",
@@ -18,6 +19,7 @@
         "shadowSpread": ""
     },
     "xl": {
+        "shadowType": false,
         "shadowColor": "",
         "defaultShadowColor": "",
         "shadowHorizontal": "",
@@ -26,6 +28,7 @@
         "shadowSpread": ""
     },
     "l": {
+        "shadowType": false,
         "shadowColor": "",
         "defaultShadowColor": "",
         "shadowHorizontal": "",
@@ -34,6 +37,7 @@
         "shadowSpread": ""
     },
     "m": {
+        "shadowType": false,
         "shadowColor": "",
         "defaultShadowColor": "",
         "shadowHorizontal": "",
@@ -42,6 +46,7 @@
         "shadowSpread": ""
     },
     "s": {
+        "shadowType": false,
         "shadowColor": "",
         "defaultShadowColor": "",
         "shadowHorizontal": "",
@@ -50,6 +55,7 @@
         "shadowSpread": ""
     },
     "xs": {
+        "shadowType": false,
         "shadowColor": "",
         "defaultShadowColor": "",
         "shadowHorizontal": "",

@@ -51,9 +51,6 @@ export const getLastBreakpointValue = (obj, prop, breakpoint) => {
         let i = breakpointIndex;
 
         do {
-            if (prop === 'width')
-                console.log(obj[objectKeys[i]][prop])
-
             if (!isNil(obj[objectKeys[i]][prop]) && !isEmpty(obj[objectKeys[i]][prop]))
                 return obj[objectKeys[i]][prop];
             if (!isNil(obj[objectKeys[i]][prop]) && isNumber(obj[objectKeys[i]][prop]))

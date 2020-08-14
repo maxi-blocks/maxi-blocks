@@ -101,6 +101,8 @@ const Inspector = props => {
         JSON.parse(size) :
         size;
 
+    const defaultSize = JSON.parse(getDefaultProp(clientId, 'size'));
+
     const altSelectorOptions = [
         { label: __('WordPress ALT', 'maxi-blocks'), value: 'wordpress' },
         { label: __('Image Title', 'maxi-blocks'), value: 'title' },
@@ -199,16 +201,15 @@ const Inspector = props => {
                                                                 label={__('Width', 'maxi-blocks')}
                                                                 value={sizeValue.general.width}
                                                                 onChange={val => {
-                                                                    if (isNil(val)) {
-                                                                        const defaultSize = getDefaultProp(clientId, 'size');
+                                                                    if (isNil(val))
                                                                         sizeValue.general.width = defaultSize.general.width;
-                                                                    }
-                                                                    else {
+                                                                    else
                                                                         sizeValue.general.width = val;
-                                                                    }
+
                                                                     setAttributes({ size: JSON.stringify(sizeValue) })
                                                                 }}
                                                                 allowReset
+                                                                initialPosition={defaultSize.general.width}
                                                             />
                                                         </Fragment>
                                                     )
@@ -243,6 +244,7 @@ const Inspector = props => {
                                                                 captionType != 'none' &&
                                                                 <TypographyControl
                                                                     typography={captionTypography}
+                                                                    defaultTypography={getDefaultProp(clientId, 'captionTypography')}
                                                                     onChange={captionTypography => setAttributes({ captionTypography })}
                                                                     breakpoint={deviceType}
                                                                 />
@@ -491,7 +493,7 @@ const Inspector = props => {
                                             label: __('Motion Effects', 'maxi-blocks'),
                                             content: (
                                                 <__experimentalMotionControl
-                                                    motionOptions={motion}
+                                                    motion={motion}
                                                     onChange={motion => setAttributes({ motion })}
                                                 />
                                             )
@@ -510,8 +512,8 @@ const Inspector = props => {
                                             label: __('Entrance Animation', 'maxi-blocks'),
                                             content: (
                                                 <__experimentalEntranceAnimationControl
-                                                    motionOptions={motion}
-                                                    defaultMotionOptions={getDefaultProp(clientId, 'motion')}
+                                                    motion={motion}
+                                                    defaultMotion={getDefaultProp(clientId, 'motion')}
                                                     onChange={motion => setAttributes({ motion })}
                                                 />
                                             )

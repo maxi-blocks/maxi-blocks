@@ -59,26 +59,25 @@ import {
  * Component
  */
 const ShapeDivider = props => {
-
     const {
         position = 'top',
         shapeDividerOptions,
     } = props;
 
-    let value = !isObject(shapeDividerOptions) ?
-        JSON.parse(shapeDividerOptions):
+    const value = !isObject(shapeDividerOptions) ?
+        JSON.parse(shapeDividerOptions) :
         shapeDividerOptions;
 
     const {
-        top:shapeDividerTopOptions,
-        bottom:shapeDividerBottomOptions
+        top: shapeDividerTopOptions,
+        bottom: shapeDividerBottomOptions
     } = value;
 
     const showShapes = (position) => {
-        switch(
-            position === 'top' ?
-                shapeDividerTopOptions.shapeStyle :
-                shapeDividerBottomOptions.shapeStyle
+        switch (
+        position === 'top' ?
+            shapeDividerTopOptions.shapeStyle :
+            shapeDividerBottomOptions.shapeStyle
         ) {
             case 'waves-top': return wavesTop;
             case 'waves-bottom': return wavesBottom;
@@ -131,9 +130,9 @@ const ShapeDivider = props => {
 
     return (
         !isEmpty(showShapes(position)) &&
-            <div className={classes}>
-                {showShapes(position)}
-            </div>
+        <div className={classes}>
+            {showShapes(position)}
+        </div>
     )
 }
 

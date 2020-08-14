@@ -127,12 +127,13 @@ const ArrowControl = props => {
                             onChange(JSON.stringify(value))
                         }}
                         allowReset
+                        initialPosition={defaultValue[breakpoint].position}
                     />
                     <ColorControl
                         label={__('Arrow', 'maxi-blocks')}
                         color={getLastBreakpointValue(value, 'color', breakpoint)}
                         defaultColor={defaultValue[breakpoint].color}
-                        onColorChange={val => {
+                        onChange={val => {
                             isNil(val) ?
                                 value[breakpoint].color = defaultValue[breakpoint].color :
                                 value[breakpoint].color = val;

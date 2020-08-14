@@ -140,6 +140,7 @@ const Inspector = props => {
                                                             content: (
                                                                 <TypographyControl
                                                                     typography={typography}
+                                                                    defaultTypography={getDefaultProp(clientId, 'typography')}
                                                                     onChange={typography => setAttributes({ typography })}
                                                                     hideAlignment
                                                                     breakpoint={deviceType}
@@ -151,6 +152,7 @@ const Inspector = props => {
                                                             content: (
                                                                 <TypographyControl
                                                                     typography={typographyHover}
+                                                                    defaultTypography={getDefaultProp(clientId, 'typographyHover')}
                                                                     onChange={typographyHover => setAttributes({ typographyHover })}
                                                                     hideAlignment
                                                                     breakpoint={deviceType}
@@ -181,6 +183,7 @@ const Inspector = props => {
                                                                             />
                                                                             <BackgroundControl
                                                                                 background={background}
+                                                                                defaultBackground={getDefaultProp(clientId, 'background')}
                                                                                 onChange={background => setAttributes({ background })}
                                                                                 disableImage
                                                                                 disableVideo
@@ -201,6 +204,7 @@ const Inspector = props => {
                                                                             />
                                                                             <BackgroundControl
                                                                                 background={backgroundHover}
+                                                                                defaultBackground={getDefaultProp(clientId, 'backgroundHover')}
                                                                                 onChange={backgroundHover => setAttributes({ backgroundHover })}
                                                                                 disableImage
                                                                                 disableVideo
@@ -225,6 +229,7 @@ const Inspector = props => {
                                                             content: (
                                                                 <BorderControl
                                                                     border={border}
+                                                                    defaultBorder={getDefaultProp(clientId, 'border')}
                                                                     onChange={border => setAttributes({ border })}
                                                                     breakpoint={deviceType}
                                                                 />
@@ -235,6 +240,7 @@ const Inspector = props => {
                                                             content: (
                                                                 <BorderControl
                                                                     border={borderHover}
+                                                                    defaultBorder={getDefaultProp(clientId, 'borderHover')}
                                                                     onChange={borderHover => setAttributes({ borderHover })}
                                                                     breakpoint={deviceType}
                                                                 />
@@ -266,6 +272,7 @@ const Inspector = props => {
                                                             content: (
                                                                 <BoxShadowControl
                                                                     boxShadow={boxShadow}
+                                                                    defaultBoxShadow={getDefaultProp(clientId, 'boxShadow')}
                                                                     onChange={boxShadow => setAttributes({ boxShadow })}
                                                                     breakpoint={deviceType}
                                                                 />
@@ -276,6 +283,7 @@ const Inspector = props => {
                                                             content: (
                                                                 <BoxShadowControl
                                                                     boxShadow={boxShadowHover}
+                                                                    defaultBoxShadow={getDefaultProp(clientId, 'boxShadowHover')}
                                                                     onChange={boxShadowHover => setAttributes({ boxShadowHover })}
                                                                     breakpoint={deviceType}
                                                                 />
@@ -291,12 +299,14 @@ const Inspector = props => {
                                                 <Fragment>
                                                     <__experimentalAxisControl
                                                         values={padding}
+                                                        defaultValues={getDefaultProp(clientId, 'padding')}
                                                         onChange={padding => setAttributes({ padding })}
                                                         breakpoint={deviceType}
                                                         disableAuto
                                                     />
                                                     <__experimentalAxisControl
                                                         values={margin}
+                                                        defaultValues={getDefaultProp(clientId, 'margin')}
                                                         onChange={margin => setAttributes({ margin })}
                                                         breakpoint={deviceType}
                                                     />
@@ -326,6 +336,7 @@ const Inspector = props => {
                                     }
                                     <__experimentalZIndexControl
                                         zIndex={zIndex}
+                                        defaultZIndex={getDefaultProp(clientId, 'zIndex')}
                                         onChange={zIndex => setAttributes({ zIndex })}
                                         breakpoint={deviceType}
                                     />
@@ -333,12 +344,14 @@ const Inspector = props => {
                                         deviceType != 'general' &&
                                         <__experimentalResponsiveControl
                                             breakpoints={breakpoints}
+                                            defaultBreakpoints={getDefaultProp(clientId, 'breakpoints')}
                                             onChange={breakpoints => setAttributes({ breakpoints })}
                                             breakpoint={deviceType}
                                         />
                                     }
                                     <__experimentalPositionControl
                                         position={position}
+                                        defaultPosition={getDefaultProp(clientId, 'position')}
                                         onChange={position => setAttributes({ position })}
                                         breakpoint={deviceType}
                                     />
@@ -356,7 +369,7 @@ const Inspector = props => {
                                             label: __('Motion Effects', 'maxi-blocks'),
                                             content: (
                                                 <__experimentalMotionControl
-                                                    motionOptions={motion}
+                                                    motion={motion}
                                                     onChange={motion => setAttributes({ motion })}
                                                 />
                                             )
@@ -365,7 +378,8 @@ const Inspector = props => {
                                             label: __('Entrance Animation', 'maxi-blocks'),
                                             content: (
                                                 <__experimentalEntranceAnimationControl
-                                                    motionOptions={motion}
+                                                    motion={motion}
+                                                    defaultMotion={getDefaultProp(clientId, 'motion')}
                                                     onChange={motion => setAttributes({ motion })}
                                                 />
                                             )

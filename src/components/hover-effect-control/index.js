@@ -212,6 +212,7 @@ const HoverEffectControl = props => {
                         !!value.titleStatus &&
                         <TypographyControl
                             typography={value.titleTypography}
+                            defaultTypography={defaultValue.titleTypography}
                             hideAlignment
                             onChange={val => {
                                 value.titleTypography = val;
@@ -248,6 +249,7 @@ const HoverEffectControl = props => {
                         !!value.contentStatus &&
                         <TypographyControl
                             typography={value.contentTypography}
+                            defaultTypography={defaultValue.contentTypography}
                             hideAlignment
                             onChange={val => {
                                 value.contentTypography = val;

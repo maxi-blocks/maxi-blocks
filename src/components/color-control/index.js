@@ -28,7 +28,7 @@ const ColorControl = props => {
         className,
         color,
         defaultColor = '',
-        onColorChange,
+        onChange,
     } = props;
 
     const classes = classnames(
@@ -40,7 +40,7 @@ const ColorControl = props => {
         return `rgba(${val.rgb.r},${val.rgb.g},${val.rgb.b},${val.rgb.a})`;
     }
 
-    const onReset = () => onColorChange(defaultColor);
+    const onReset = () => onChange(defaultColor);
 
     return (
         <div className={classes}>
@@ -71,7 +71,7 @@ const ColorControl = props => {
             <div className="maxi-colorcontrol__color">
                 <ColorPicker
                     color={color}
-                    onChangeComplete={val => onColorChange(returnColor(val))}
+                    onChangeComplete={val => onChange(returnColor(val))}
                 />
             </div>
         </div>

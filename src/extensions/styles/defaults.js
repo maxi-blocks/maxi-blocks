@@ -106,10 +106,10 @@ export const border = {
     "borderWidth": {
         "label": "Border width",
         "general": {
-            "border-top-width": 0,
-            "border-right-width": 0,
-            "border-bottom-width": 0,
-            "border-left-width": 0,
+            "border-top-width": "",
+            "border-right-width": "",
+            "border-bottom-width": "",
+            "border-left-width": "",
             "sync": true,
             "unit": "px"
         },
@@ -544,63 +544,49 @@ export const background = {
 export const boxShadow = {
     "label": "Box Shadow",
     "general": {
-        "shadowType": "none",
         "shadowColor": "#ffffff",
-        "defaultShadowColor": "#ffffff",
         "shadowHorizontal": 0,
         "shadowVertical": 0,
         "shadowBlur": 0,
         "shadowSpread": 0
     },
     "xxl": {
-        "shadowType": false,
         "shadowColor": "",
-        "defaultShadowColor": "",
         "shadowHorizontal": "",
         "shadowVertical": "",
         "shadowBlur": "",
         "shadowSpread": ""
     },
     "xl": {
-        "shadowType": false,
         "shadowColor": "",
-        "defaultShadowColor": "",
         "shadowHorizontal": "",
         "shadowVertical": "",
         "shadowBlur": "",
         "shadowSpread": ""
     },
     "l": {
-        "shadowType": false,
         "shadowColor": "",
-        "defaultShadowColor": "",
         "shadowHorizontal": "",
         "shadowVertical": "",
         "shadowBlur": "",
         "shadowSpread": ""
     },
     "m": {
-        "shadowType": false,
         "shadowColor": "",
-        "defaultShadowColor": "",
         "shadowHorizontal": "",
         "shadowVertical": "",
         "shadowBlur": "",
         "shadowSpread": ""
     },
     "s": {
-        "shadowType": false,
         "shadowColor": "",
-        "defaultShadowColor": "",
         "shadowHorizontal": "",
         "shadowVertical": "",
         "shadowBlur": "",
         "shadowSpread": ""
     },
     "xs": {
-        "shadowType": false,
         "shadowColor": "",
-        "defaultShadowColor": "",
         "shadowHorizontal": "",
         "shadowVertical": "",
         "shadowBlur": "",
@@ -611,63 +597,49 @@ export const boxShadow = {
 export const boxShadowHover = {
     "label": "Box Shadow",
     "general": {
-        "shadowType": false,
         "shadowColor": "#",
-        "defaultShadowColor": "",
         "shadowHorizontal": "",
         "shadowVertical": "",
         "shadowBlur": "",
         "shadowSpread": ""
     },
     "xxl": {
-        "shadowType": false,
         "shadowColor": "",
-        "defaultShadowColor": "",
         "shadowHorizontal": "",
         "shadowVertical": "",
         "shadowBlur": "",
         "shadowSpread": ""
     },
     "xl": {
-        "shadowType": false,
         "shadowColor": "",
-        "defaultShadowColor": "",
         "shadowHorizontal": "",
         "shadowVertical": "",
         "shadowBlur": "",
         "shadowSpread": ""
     },
     "l": {
-        "shadowType": false,
         "shadowColor": "",
-        "defaultShadowColor": "",
         "shadowHorizontal": "",
         "shadowVertical": "",
         "shadowBlur": "",
         "shadowSpread": ""
     },
     "m": {
-        "shadowType": false,
         "shadowColor": "",
-        "defaultShadowColor": "",
         "shadowHorizontal": "",
         "shadowVertical": "",
         "shadowBlur": "",
         "shadowSpread": ""
     },
     "s": {
-        "shadowType": false,
         "shadowColor": "",
-        "defaultShadowColor": "",
         "shadowHorizontal": "",
         "shadowVertical": "",
         "shadowBlur": "",
         "shadowSpread": ""
     },
     "xs": {
-        "shadowType": false,
         "shadowColor": "",
-        "defaultShadowColor": "",
         "shadowHorizontal": "",
         "shadowVertical": "",
         "shadowBlur": "",
@@ -1186,7 +1158,12 @@ export const __experimentalDivider = {
         "border-right-widthUnit": "px",
         "border-right-width": "",
         "border-radius": "",
-        "opacity": 1
+        "opacity": {
+            "label": "Opacity",
+            "general": {
+                "opacity": 1
+            }
+        }
     }
 }
 

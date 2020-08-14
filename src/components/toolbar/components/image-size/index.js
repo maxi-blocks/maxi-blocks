@@ -26,6 +26,7 @@ import openSidebar from '../../../../extensions/dom';
 import {
     capitalize,
     isNil,
+    isObject,
     trim
 } from 'lodash';
 
@@ -39,17 +40,25 @@ import { toolbarSizing } from '../../../../icons';
  */
 const ImageSize = props => {
     const {
-        clientId,
         blockName,
         size,
+        defaultSize,
         onChangeSize,
-        width,
-        onChangeWidth,
+        imageSize,
+        onChangeImageSize,
         mediaID,
         fullWidth,
         onChangeFullWidth,
         isFirstOnHierarchy,
     } = props;
+
+    const sizeValue = !isObject(size) ?
+        JSON.parse(size) :
+        size;
+
+    const defaultSizeValue = !isObject(defaultSize) ?
+        JSON.parse(defaultSize) :
+        defaultSize;
 
     if (blockName != 'maxi-blocks/image-maxi')
         return null;
@@ -69,7 +78,7 @@ const ImageSize = props => {
         'core/edit-post'
     );
 
-    const getSizeOptions = () => {
+    const getImageSizeOptions = () => {
         let response = [];
         if (imageData) {
             let sizes = imageData.media_details.sizes;
@@ -91,6 +100,8 @@ const ImageSize = props => {
         return response;
     }
 
+    console.log(sizeValue.general.width)
+
     return (
         <ToolbarPopover
             className='toolbar-item__image-size'
@@ -100,9 +111,9 @@ const ImageSize = props => {
                 <Fragment>
                     <SelectControl
                         label={__('Image Size', 'maxi-blocks')}
-                        value={size || size == 'custom' ? size : 'full'} // is still necessary?
-                        options={getSizeOptions()}
-                        onChange={size => onChangeSize(size)}
+                        value={imageSize || imageSize == 'custom' ? imageSize : 'full'} // is still necessary?
+                        options={getImageSizeOptions()}
+                        onChange={imageSize => onChangeImageSize(imageSize)}
                     />
                     {
                         isFirstOnHierarchy &&
@@ -118,14 +129,16 @@ const ImageSize = props => {
                     }
                     <RangeControl
                         label={__('Width', 'maxi-blocks')}
-                        value={trim(width)}
+                        value={Number(trim(sizeValue.general.width))}
                         onChange={width => {
-                            if (isNil(width))
-                                onChangeWidth(getDefaultProp(clientId, 'width'))
-                            else
-                                onChangeWidth(width)
+                            isNil(width) ?
+                                sizeValue.general.width = defaultSizeValue.general.width :
+                                sizeValue.general.width = width;
+
+                            onChangeSize(JSON.stringify(sizeValue))
                         }}
                         allowReset
+                    // initialPosition={}
                     />
                     <div
                         className='toolbar-item__popover__dropdown-options'

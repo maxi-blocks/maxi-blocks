@@ -219,7 +219,8 @@ const Inspector = props => {
                                                                                 onChange={background => setAttributes({ background })}
                                                                             />
                                                                             <__experimentalParallaxControl
-                                                                                motionOptions={motion}
+                                                                                motion={motion}
+                                                                                defaultMotion={getDefaultProp(clientId, 'motion')}
                                                                                 onChange={motion => setAttributes({ motion })}
                                                                             />
                                                                         </Fragment>
@@ -299,17 +300,17 @@ const Inspector = props => {
                                                                 />
                                                             )
                                                         },
-                                                        {
-                                                            label: __('Hover', 'maxi-blocks'),
-                                                            content: (
-                                                                <BoxShadowControl
-                                                                    boxShadow={boxShadowHover}
-                                                                    defaultBoxShadow={getDefaultProp(clientId, 'boxShadowHover')}
-                                                                    onChange={boxShadowHover => setAttributes({ boxShadowHover })}
-                                                                    breakpoint={deviceType}
-                                                                />
-                                                            )
-                                                        },
+                                                        // {
+                                                        //     label: __('Hover', 'maxi-blocks'),
+                                                        //     content: (
+                                                        //         <BoxShadowControl
+                                                        //             boxShadow={boxShadowHover}
+                                                        //             defaultBoxShadow={getDefaultProp(clientId, 'boxShadowHover')}
+                                                        //             onChange={boxShadowHover => setAttributes({ boxShadowHover })}
+                                                        //             breakpoint={deviceType}
+                                                        //         />
+                                                        //     )
+                                                        // },
                                                     ]}
                                                 />
                                             )
@@ -409,7 +410,7 @@ const Inspector = props => {
                                             label: __('Motion Effects', 'maxi-blocks'),
                                             content: (
                                                 <__experimentalMotionControl
-                                                    motionOptions={motion}
+                                                    motion={motion}
                                                     onChange={motion => setAttributes({ motion })}
                                                 />
                                             )
@@ -418,8 +419,8 @@ const Inspector = props => {
                                             label: __('Entrance Animation', 'maxi-blocks'),
                                             content: (
                                                 <__experimentalEntranceAnimationControl
-                                                    motionOptions={motion}
-                                                    defaultMotionOptions={getDefaultProp(clientId, 'motion')}
+                                                    motion={motion}
+                                                    defaultMotion={getDefaultProp(clientId, 'motion')}
                                                     onChange={motion => setAttributes({ motion })}
                                                 />
                                             )

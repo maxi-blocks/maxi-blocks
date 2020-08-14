@@ -277,6 +277,7 @@ const ShapeDividerControl = props => {
                         }}
                         disableImage
                         disableVideo
+                        disableClipPath
                     />
                     <SizeControl
                         label={__('Divider Height', 'maxi-blocks')}
@@ -356,6 +357,7 @@ const ShapeDividerControl = props => {
                         }}
                         disableImage
                         disableVideo
+                        disableClipPath
                     />
                     <SizeControl
                         label={__('Divider Height', 'maxi-blocks')}

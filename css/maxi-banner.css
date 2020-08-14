@@ -14,6 +14,7 @@ body.maxi-blocks--active .maxi-block {
 	height: inherit;
 	min-height: 0;
 	border: none;
+	border-width: 0;
 	border-radius: 0;
 	outline: none;
 	vertical-align: inherit;

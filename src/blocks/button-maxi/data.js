@@ -236,10 +236,10 @@ export const border = {
     "borderWidth": {
         "label": "Border width",
         "general": {
-            "border-top-width": 0,
-            "border-right-width": 0,
-            "border-bottom-width": 0,
-            "border-left-width": 0,
+            "border-top-width": "",
+            "border-right-width": "",
+            "border-bottom-width": "",
+            "border-left-width": "",
             "sync": true,
             "unit": "px"
         },
@@ -360,7 +360,7 @@ export const padding = {
         "padding-right": 20,
         "padding-bottom": 10,
         "padding-left": 10,
-        "sync": true,
+        "sync": false,
         "unit": "px"
     },
     "xxl": {

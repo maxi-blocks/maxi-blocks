@@ -1,7 +1,6 @@
 /**
  * WordPress dependencies
  */
-const { __ } = wp.i18n;
 const {
     BaseControl,
     Button
@@ -51,7 +50,7 @@ const NumberControl = props => {
             />
             <Button
                 className="components-maxi-control__reset-button"
-                onClick={() => onChange(Number(defaultValue))}
+                onClick={() => onChange(defaultValue)}
                 action="reset"
                 type="reset"
             >

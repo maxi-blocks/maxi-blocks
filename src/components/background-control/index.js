@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { select } = wp.data;
 const {
     Fragment,
     useState
@@ -17,7 +16,6 @@ const {
 /**
  * Internal dependencies
  */
-import { background } from '../../extensions/styles/defaults';
 import ColorControl from '../color-control';
 import GradientControl from '../gradient-control';
 import MediaUploaderControl from '../media-uploader-control';
@@ -302,7 +300,7 @@ const BackgroundControl = props => {
                             label={__('Background', 'maxi-blocks')}
                             gradient={value.colorOptions.gradient}
                             defaultGradient={defaultValue.colorOptions.gradient}
-                            onGradientChange={val => {
+                            onChange={val => {
                                 value.colorOptions.gradient = val;
                                 onChange(JSON.stringify(value))
                             }}
@@ -320,7 +318,7 @@ const BackgroundControl = props => {
                             label={__('Background', 'maxi-blocks')}
                             color={value.colorOptions.color}
                             defaultColor={defaultValue.colorOptions.color}
-                            onColorChange={val => {
+                            onChange={val => {
                                 value.colorOptions.color = val;
                                 onChange(JSON.stringify(value))
                             }}

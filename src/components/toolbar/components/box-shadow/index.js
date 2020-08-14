@@ -30,6 +30,7 @@ const BoxShadow = props => {
     const {
         blockName,
         boxShadow,
+        defaultBoxShadow,
         onChange,
         breakpoint
     } = props;
@@ -46,6 +47,7 @@ const BoxShadow = props => {
             content={(
                 <BoxShadowControl
                     boxShadow={boxShadow}
+                    defaultBoxShadow={defaultBoxShadow}
                     onChange={boxShadow => onChange(boxShadow)}
                     breakpoint={breakpoint}
                     disableAdvanced

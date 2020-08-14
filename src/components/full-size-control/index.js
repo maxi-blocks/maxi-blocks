@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { Fragment } = wp.element;
 
 /**
  * Internal dependencies
@@ -37,7 +36,7 @@ const FullSizeControl = props => {
         hideWidth
     } = props;
 
-    let value = isObject(size) ?
+    const value = isObject(size) ?
         size :
         JSON.parse(size);
 

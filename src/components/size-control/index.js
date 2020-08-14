@@ -2,7 +2,10 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { Fragment } = wp.element;
+const {
+    Fragment,
+    useRef,
+} = wp.element;
 const {
     RangeControl,
     SelectControl,
@@ -16,7 +19,7 @@ const {
 import classnames from 'classnames';
 import {
     trim,
-    isNil
+    isNumber
 } from 'lodash';
 
 /**
@@ -29,7 +32,6 @@ import { reset } from '../../icons';
  * Component
  */
 const SizeControl = props => {
-
     const {
         label,
         className,
@@ -65,6 +67,8 @@ const SizeControl = props => {
         }
     } = props;
 
+    const rangeRef = useRef(null);
+
     const classes = classnames(
         'maxi-size-control',
         className
@@ -79,13 +83,36 @@ const SizeControl = props => {
         return options;
     };
 
+    const onReset = () => {
+        onChangeValue(defaultValue);
+        if (!disableUnit)
+            onChangeUnit(defaultUnit);
+
+        rangeRef.current.setAttribute('value', defaultValue);
+
+        if (!isNumber(defaultValue)) {
+            // RangeControl needs a number or to press its own reset button to put the range
+            // into beginning again. So we do manually
+            const rangeWrapper = rangeRef.current.parentNode;
+            const rangeItems = Array.from(rangeWrapper.children);
+
+            rangeItems.forEach(el => {
+                el.classList.forEach(elClass => {
+                    elClass.indexOf('ThumbWrapper') != -1 ?
+                        el.style.left = 0 :
+                        null
+                })
+            })
+        }
+    }
+
     return (
         <BaseControl
             label={label}
             className={classes}
         >
             {
-                (disableUnit) ?
+                disableUnit ?
                     <input
                         type='number'
                         className='maxi-size-control__value'
@@ -118,14 +145,7 @@ const SizeControl = props => {
             }
             <Button
                 className='components-maxi-control__reset-button'
-                onClick={() => {
-                    if (isNil(defaultValue))
-                        onChangeValue('');
-                    else {
-                        onChangeValue(defaultValue);
-                        onChangeUnit(defaultUnit);
-                    }
-                }}
+                onClick={onReset}
                 isSmall
                 aria-label={sprintf(
                     /* translators: %s: a texual label  */
@@ -139,23 +159,23 @@ const SizeControl = props => {
             {
                 disableUnit ?
                     <RangeControl
+                        ref={e => rangeRef.current = e}
                         value={value}
                         onChange={val => onChangeValue(Number(val))}
                         min={min}
                         max={max}
                         step={step}
-                        allowReset={false}
                         withInputField={false}
                         initialPosition={initial}
                     />
                     :
                     <RangeControl
+                        ref={e => rangeRef.current = e}
                         value={value}
                         onChange={val => onChangeValue(Number(val))}
                         min={unit ? minMaxSettings[unit].min : null}
                         max={unit ? minMaxSettings[unit].max : null}
                         step={step}
-                        allowReset={false}
                         withInputField={false}
                         initialPosition={initial}
                     />

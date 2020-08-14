@@ -26,7 +26,10 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject } from 'lodash';
+import {
+    isObject,
+    isNumber
+} from 'lodash';
 
 /**
  * Icons
@@ -37,7 +40,6 @@ import {
     dotted,
     solid
 } from '../../icons';
-import { getDefaultProp } from '../../extensions/styles/utils';
 
 /**
  * Component
@@ -73,12 +75,30 @@ const BorderControl = props => {
         onChange(JSON.stringify(value))
     }
 
+    const getIsActive = () => {
+        const items = [
+            "border-top-width",
+            "border-right-width",
+            "border-bottom-width",
+            "border-left-width",
+        ];
+
+        const hasBorderWidth = items.some(item => {
+            return isNumber(getLastBreakpointValue(value.borderWidth, item, breakpoint))
+        })
+
+        if (hasBorderWidth)
+            return getLastBreakpointValue(value, 'border-style', breakpoint);
+        else
+            return 'none'
+    }
+
     return (
         <div className={classes}>
             <DefaultStylesControl
                 items={[
                     {
-                        activeItem: (getLastBreakpointValue(value, 'border-style', breakpoint) === 'none'),
+                        activeItem: getIsActive() === 'none',
                         content: (
                             <Icon
                                 className='maxi-defaultstyles-control__button__icon'
@@ -88,7 +108,7 @@ const BorderControl = props => {
                         onChange: () => onChangeDefault(borderNone)
                     },
                     {
-                        activeItem: (getLastBreakpointValue(value, 'border-style', breakpoint) === 'solid'),
+                        activeItem: getIsActive() === 'solid',
                         content: (
                             <Icon
                                 className='maxi-defaultstyles-control__button__icon'
@@ -98,7 +118,7 @@ const BorderControl = props => {
                         onChange: () => onChangeDefault(borderSolid)
                     },
                     {
-                        activeItem: (getLastBreakpointValue(value, 'border-style', breakpoint) === 'dashed'),
+                        activeItem: getIsActive() === 'dashed',
                         content: (
                             <Icon
                                 className='maxi-defaultstyles-control__button__icon'
@@ -108,7 +128,7 @@ const BorderControl = props => {
                         onChange: () => onChangeDefault(borderDashed)
                     },
                     {
-                        activeItem: (getLastBreakpointValue(value, 'border-style', breakpoint) === 'dotted'),
+                        activeItem: getIsActive() === 'dotted',
                         content: (
                             <Icon
                                 className='maxi-defaultstyles-control__button__icon'
@@ -123,7 +143,7 @@ const BorderControl = props => {
                 label={__('Border', 'maxi-blocks')}
                 color={getLastBreakpointValue(value, 'border-color', breakpoint)}
                 defaultColor={defaultValue[breakpoint]['border-color']}
-                onColorChange={val => {
+                onChange={val => {
                     value[breakpoint]['border-color'] = val;
 
                     onChange(JSON.stringify(value));
@@ -160,7 +180,6 @@ const BorderControl = props => {
                         values={value.borderWidth}
                         defaultValues={defaultValue.borderWidth}
                         onChange={val => {
-                            console.log('axiscontrol', val)
                             value.borderWidth = JSON.parse(val);
                             onChange(JSON.stringify(value));
                         }}
@@ -171,7 +190,6 @@ const BorderControl = props => {
                         values={value.borderRadius}
                         defaultValues={defaultValue.borderRadius}
                         onChange={val => {
-                            console.log('axiscontrol', val)
                             value.borderRadius = JSON.parse(val);
                             onChange(JSON.stringify(value));
                         }}

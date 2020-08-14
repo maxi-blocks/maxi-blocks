@@ -1,9 +1,4 @@
 /**
- * External dependencies
- */
-import { isObject } from 'lodash';
-
-/**
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
@@ -15,6 +10,11 @@ const { SelectControl } = wp.components;
 import SizeControl from '../size-control';
 
 /**
+ * External dependencies
+ */
+import { isObject } from 'lodash';
+
+/**
  * Styles and icons
  */
 import './editor.scss';
@@ -23,24 +23,23 @@ import './editor.scss';
  * Component
  */
 const EntranceAnimationControl = props => {
-
     const {
-        motionOptions,
-        defaultMotionOptions,
+        motion,
+        defaultMotion,
         onChange,
     } = props;
 
-    const value = !isObject(motionOptions) ?
-        JSON.parse(motionOptions) :
-        motionOptions;
+    const value = !isObject(motion) ?
+        JSON.parse(motion) :
+        motion;
 
     let {
         entrance: entranceAnimationOptions,
     } = value;
 
-    const defaultValue = !isObject(defaultMotionOptions) ?
-        JSON.parse(defaultMotionOptions) :
-        defaultMotionOptions;
+    const defaultValue = !isObject(defaultMotion) ?
+        JSON.parse(defaultMotion) :
+        defaultMotion;
 
     let {
         entrance: defaultEntranceAnimationOptions,

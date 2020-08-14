@@ -12,6 +12,7 @@ import classnames from 'classnames';
 import {
     isObject,
     isNil,
+    isNumber
 } from 'lodash';
 
 /**
@@ -39,21 +40,31 @@ const OpacityControl = props => {
         className
     );
 
+    const getValue = () => {
+        const response = getLastBreakpointValue(value, 'opacity', breakpoint);
+
+        if (!isNumber(response))
+            return response;
+
+        return response * 100;
+    }
+
     return (
         <RangeControl
             label={__('Opacity', 'maxi-blocks')}
             className={classes}
-            value={Number(getLastBreakpointValue(value, 'opacity', breakpoint) * 100)}
+            value={getValue()}
             onChange={val => {
                 isNil(val) ?
-                    value[breakpoint].opacity = Number(defaultValue[breakpoint].opacity) :
+                    value[breakpoint].opacity = defaultValue[breakpoint].opacity :
                     value[breakpoint].opacity = Number(val / 100);
 
                 onChange(JSON.stringify(value))
             }}
             min={0}
             max={100}
-            allowReset={true}
+            allowReset
+            initialPosition={defaultValue[breakpoint].opacity}
         />
     )
 }

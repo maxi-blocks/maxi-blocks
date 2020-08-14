@@ -1,63 +1,49 @@
 {
     "label": "Box Shadow",
     "general": {
-        "shadowType": "none",
         "shadowColor": "#ffffff",
-        "defaultShadowColor": "#ffffff",
         "shadowHorizontal": 0,
         "shadowVertical": 0,
         "shadowBlur": 0,
         "shadowSpread": 0
     },
     "xxl": {
-        "shadowType": false,
         "shadowColor": "",
-        "defaultShadowColor": "",
         "shadowHorizontal": "",
         "shadowVertical": "",
         "shadowBlur": "",
         "shadowSpread": ""
     },
     "xl": {
-        "shadowType": false,
         "shadowColor": "",
-        "defaultShadowColor": "",
         "shadowHorizontal": "",
         "shadowVertical": "",
         "shadowBlur": "",
         "shadowSpread": ""
     },
     "l": {
-        "shadowType": false,
         "shadowColor": "",
-        "defaultShadowColor": "",
         "shadowHorizontal": "",
         "shadowVertical": "",
         "shadowBlur": "",
         "shadowSpread": ""
     },
     "m": {
-        "shadowType": false,
         "shadowColor": "",
-        "defaultShadowColor": "",
         "shadowHorizontal": "",
         "shadowVertical": "",
         "shadowBlur": "",
         "shadowSpread": ""
     },
     "s": {
-        "shadowType": false,
         "shadowColor": "",
-        "defaultShadowColor": "",
         "shadowHorizontal": "",
         "shadowVertical": "",
         "shadowBlur": "",
         "shadowSpread": ""
     },
     "xs": {
-        "shadowType": false,
         "shadowColor": "",
-        "defaultShadowColor": "",
         "shadowHorizontal": "",
         "shadowVertical": "",
         "shadowBlur": "",

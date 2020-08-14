@@ -20,7 +20,6 @@ const {
  */
 import Inspector from './inspector';
 import {
-    getBackgroundObject,
     getBoxShadowObject,
     getAlignmentTextObject,
     getOpacityObject,
@@ -37,6 +36,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
+import { isEmpty } from 'lodash';
 
 /**
  * Content
@@ -155,19 +155,16 @@ class edit extends MaxiBlock {
                 typeOfList,
                 listStart,
                 listReversed,
-                fullWidth
+                fullWidth,
+                typography,
             },
             className,
-            clientId,
             isSelected,
             setAttributes,
             mergeBlocks,
-            insertBlocksAfter,
+            onRemove,
             onReplace,
-            onRemove
         } = this.props;
-
-        console.log(this.props)
 
         const classes = classnames(
             'maxi-block maxi-text-block',
@@ -198,38 +195,38 @@ class edit extends MaxiBlock {
                         onChange={content => setAttributes({ content })}
                         tagName={textLevel}
                         onSplit={value => {
-                            if (!value)
-                                return createBlock(name);
-
-                            return createBlock(
-                                name,
-                                {
-                                    ...this.props.attributes,
-                                    content: value
-                                }
-                            );
+                            if (!isEmpty(value) ) {
+                                return createBlock(
+                                    name,
+                                    {
+                                        ...this.props.attributes,
+                                        content: ''
+                                    }
+                                );
+                            }
                         }}
-                        // onSplit={value => {
-                        //     const { insertBlock } = dispatch('core/block-editor');
-                        //     if (!value)
-                        //         insertBlock(createBlock(name));
+                        onReplace={(blocks)=>{
+                            const currentBlocks = blocks.filter(item => Boolean(item));
+                            isEmpty(currentBlocks) && insertBlock(createBlock('maxi-blocks/text-maxi'));
+                            currentBlocks.map(block => {
+                                insertBlock(createBlock(
+                                    'maxi-blocks/text-maxi',
+                                    (block.name === 'core/list') ?
+                                    {
+                                        ...this.props.attributes,
+                                        textLevel: 'ul',
+                                        content: block.attributes.values,
+                                        isList: true,
+                                    } :
+                                    {
+                                        ...this.props.attributes,
+                                        textLevel: (block.name === 'core/heading') ? `h${block.attributes.level}` : 'p',
+                                        content: block.attributes.content,
+                                    }
+                                ))
 
-                        //     insertBlock(createBlock(
-                        //         name,
-                        //         {
-                        //             ...this.props.attributes,
-                        //             content: value
-                        //         }
-                        //     ));
-                        // }}
-                        // onReplace={blocks => {
-                        //     blocks.map(block => {
-                        //         console.log(block.clientId, block)
-                        //         if (block.clientId === clientId)
-                        //             insertBlock(block);
-                        //     })
-                        // }}
-                        onReplace={onReplace}
+                            })
+                        }}
                         onMerge={mergeBlocks}
                         onRemove={onRemove}
                         placeholder={__('Set your Maxi Text here...', 'maxi-blocks')}
@@ -246,24 +243,20 @@ class edit extends MaxiBlock {
                         multiline="li"
                         __unstableMultilineRootTag={typeOfList}
                         tagName={typeOfList}
-                        onChange={content => setAttributes({ content })}
+                        onChange={ ( nextValues ) =>
+                            setAttributes( { values: nextValues } )
+				        }
                         value={content}
                         placeholder={__('Write list…')}
-                        // onMerge={mergeBlocks}
-                        onSplit={(value) =>
-                            createBlock(
-                                name,
-                                {
-                                    ...this.props.attributes,
-                                    values: value
-                                }
-                            )
+                        onMerge={ mergeBlocks }
+                        onSplit={ ( value ) =>
+                            createBlock( name, { ...this.props.attributes, values: value } )
                         }
-                        __unstableOnSplitMiddle={() =>
-                            createBlock(name)
+                        __unstableOnSplitMiddle={ (value) =>
+                            createBlock( 'maxi-blocks/text-maxi', { ...this.props.attributes, values: value } )
                         }
-                        // onReplace={onReplace}
-                        // onRemove={() => onReplace([])}
+                        onReplace={ onReplace }
+                        onRemove={ () => onReplace( [] ) }
                         start={listStart}
                         reversed={!!listReversed}
                         type={typeOfList}

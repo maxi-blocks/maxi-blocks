@@ -18,6 +18,7 @@ const {
 /**
  * Internal dependencies
  */
+import defaultTypography from '../../extensions/defaults/typography';
 import Inspector from './inspector';
 import {
     getBoxShadowObject,
@@ -195,7 +196,7 @@ class edit extends MaxiBlock {
                         onChange={content => setAttributes({ content })}
                         tagName={textLevel}
                         onSplit={value => {
-                            if (!isEmpty(value) ) {
+                            if (!isEmpty(value)) {
                                 return createBlock(
                                     name,
                                     {
@@ -205,25 +206,33 @@ class edit extends MaxiBlock {
                                 );
                             }
                         }}
-                        onReplace={(blocks)=>{
+                        onReplace={(blocks) => {
                             const currentBlocks = blocks.filter(item => Boolean(item));
                             isEmpty(currentBlocks) && insertBlock(createBlock('maxi-blocks/text-maxi'));
+
                             currentBlocks.map(block => {
-                                insertBlock(createBlock(
+                                const newBlock = createBlock(
                                     'maxi-blocks/text-maxi',
                                     (block.name === 'core/list') ?
-                                    {
-                                        ...this.props.attributes,
-                                        textLevel: 'ul',
-                                        content: block.attributes.values,
-                                        isList: true,
-                                    } :
-                                    {
-                                        ...this.props.attributes,
-                                        textLevel: (block.name === 'core/heading') ? `h${block.attributes.level}` : 'p',
-                                        content: block.attributes.content,
-                                    }
-                                ))
+                                        {
+                                            ...this.props.attributes,
+                                            textLevel: 'ul',
+                                            content: block.attributes.values,
+                                            isList: true,
+                                        } :
+                                        {
+                                            ...this.props.attributes,
+                                            textLevel: (block.name === 'core/heading') ?
+                                                `h${block.attributes.level}` :
+                                                'p',
+                                            content: block.attributes.content,
+                                            typography: (block.name === 'core/heading') ?
+                                                JSON.stringify(Object.assign(JSON.parse(this.props.attributes.typography), defaultTypography[`h${block.attributes.level}`])) :
+                                                this.props.attributes.typography,
+                                        }
+                                )
+
+                                insertBlock(newBlock)
 
                             })
                         }}
@@ -243,20 +252,20 @@ class edit extends MaxiBlock {
                         multiline="li"
                         __unstableMultilineRootTag={typeOfList}
                         tagName={typeOfList}
-                        onChange={ ( nextValues ) =>
-                            setAttributes( { values: nextValues } )
-				        }
+                        onChange={(nextValues) =>
+                            setAttributes({ values: nextValues })
+                        }
                         value={content}
                         placeholder={__('Write list…')}
-                        onMerge={ mergeBlocks }
-                        onSplit={ ( value ) =>
-                            createBlock( name, { ...this.props.attributes, values: value } )
+                        onMerge={mergeBlocks}
+                        onSplit={(value) =>
+                            createBlock(name, { ...this.props.attributes, values: value })
                         }
-                        __unstableOnSplitMiddle={ (value) =>
-                            createBlock( 'maxi-blocks/text-maxi', { ...this.props.attributes, values: value } )
+                        __unstableOnSplitMiddle={(value) =>
+                            createBlock('maxi-blocks/text-maxi', { ...this.props.attributes, values: value })
                         }
-                        onReplace={ onReplace }
-                        onRemove={ () => onReplace( [] ) }
+                        onReplace={onReplace}
+                        onRemove={() => onReplace([])}
                         start={listStart}
                         reversed={!!listReversed}
                         type={typeOfList}

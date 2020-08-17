@@ -24,7 +24,7 @@ export { default as TypographyControl } from './typography-control';
 export { default as __experimentalToolbar } from './toolbar';
 export { default as __experimentalDividerControl } from './divider-control';
 export { default as __experimentalBreadcrumbs } from './breadcrumbs';
-export { default as __experimentalZIndexControl } from './zindex-control';
+export { default as __experimentalZIndexControl } from './zIndex-control';
 export { default as __experimentalBlockPlaceholder } from './block-placeholder';
 export { default as __experimentalResponsiveSelector } from './responsive-selector';
 export { default as __experimentalNumberControl } from './number-control';

@@ -42,6 +42,7 @@ import {
 const AxisControl = props => {
     const {
         values,
+        defaultValues,
         className,
         onChange,
         breakpoint = 'general',
@@ -53,6 +54,10 @@ const AxisControl = props => {
     const value = !isObject(values) ?
         JSON.parse(values) :
         values;
+
+    const defaultValue = !isObject(defaultValues) ?
+        JSON.parse(defaultValues) :
+        defaultValues;
 
     const classes = classnames(
         'maxi-axis-control',
@@ -89,12 +94,9 @@ const AxisControl = props => {
     }
 
     const onReset = () => {
-        for (let key of Object.keys(value[breakpoint])) {
-            if (key != 'sync' && key != 'unit')
-                value[breakpoint][key] = '';
+        for (let key of Object.keys(defaultValue[breakpoint])) {
+            value[breakpoint][key] = defaultValue[breakpoint][key]
         }
-        value[breakpoint]['sync'] = true;
-        value[breakpoint]['unit'] = 'px';
 
         onChange(JSON.stringify(value));
     }

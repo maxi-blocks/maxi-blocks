@@ -50,21 +50,28 @@ import {
 const HoverEffectControl = props => {
 
     const {
+        hover,
+        defaultHover,
         className,
-        hoverOptions,
         onChange,
     } = props;
 
-    let value = !isObject(hoverOptions) ?
-        JSON.parse(hoverOptions) :
-        hoverOptions;
+    const value = !isObject(hover) ?
+        JSON.parse(hover) :
+        hover;
+
+    const { settings: hoverSettings } = value;
+
+    const defaultValue = !isObject(defaultHover) ?
+        JSON.parse(defaultHover) :
+        defaultHover;
+
+    const { settings: defaultHoverSettings } = defaultValue;
 
     const classes = classnames(
         'maxi-hover-effect-control',
         className
     );
-
-    const { settings: hoverSettings } = value;
 
     return (
         <div className={classes}>
@@ -114,7 +121,8 @@ const HoverEffectControl = props => {
                         max={10}
                         initial={1}
                         step={0.1}
-                        value={trim(hoverSettings.duration)}
+                        value={hoverSettings.duration}
+                        defaultValue={defaultHoverSettings.duration}
                         onChangeValue={val => {
                             hoverSettings.duration = val;
                             onChange(JSON.stringify(value));
@@ -169,7 +177,8 @@ const HoverEffectControl = props => {
                         max={10}
                         initial={1}
                         step={0.1}
-                        value={trim(hoverSettings.duration)}
+                        value={hoverSettings.duration}
+                        defaultValue={defaultHoverSettings.duration}
                         onChangeValue={val => {
                             hoverSettings.duration = val;
                             onChange(JSON.stringify(value));
@@ -200,9 +209,10 @@ const HoverEffectControl = props => {
                         />
                     </div>
                     {
-                    !!value.titleStatus &&
+                        !!value.titleStatus &&
                         <TypographyControl
                             typography={value.titleTypography}
+                            defaultTypography={defaultValue.titleTypography}
                             hideAlignment
                             onChange={val => {
                                 value.titleTypography = val;
@@ -210,9 +220,9 @@ const HoverEffectControl = props => {
                             }}
                         />
                     }
-                    <hr/>
+                    <hr />
                     <TextareaControl
-                    placeholder={__('Add your Hover Content Text here', 'maxi-blocks')}
+                        placeholder={__('Add your Hover Content Text here', 'maxi-blocks')}
                         value={value.contentText}
                         onChange={val => {
                             value.contentText = val;
@@ -236,9 +246,10 @@ const HoverEffectControl = props => {
                         />
                     </div>
                     {
-                    !!value.contentStatus &&
+                        !!value.contentStatus &&
                         <TypographyControl
                             typography={value.contentTypography}
+                            defaultTypography={defaultValue.contentTypography}
                             hideAlignment
                             onChange={val => {
                                 value.contentTypography = val;
@@ -246,9 +257,10 @@ const HoverEffectControl = props => {
                             }}
                         />
                     }
-                    <hr/>
+                    <hr />
                     <BackgroundControl
-                        backgroundOptions={value.background}
+                        background={value.background}
+                        defaultBackground={defaultValue.background}
                         onChange={val => {
                             value.background = val;
                             onChange(JSON.stringify(value))
@@ -274,9 +286,10 @@ const HoverEffectControl = props => {
                         />
                     </div>
                     {
-                    !!value.borderStatus &&
+                        !!value.borderStatus &&
                         <BorderControl
                             border={value.border}
+                            defaultBorder={defaultValue.border}
                             onChange={val => {
                                 value.border = val;
                                 onChange(JSON.stringify(value));
@@ -300,9 +313,10 @@ const HoverEffectControl = props => {
                         />
                     </div>
                     {
-                    !!value.paddingStatus &&
+                        !!value.paddingStatus &&
                         <__experimentalAxisControl
                             values={value.padding}
+                            defaultValues={defaultValue.padding}
                             disableAuto
                             onChange={val => {
                                 value.padding = val;
@@ -327,9 +341,10 @@ const HoverEffectControl = props => {
                         />
                     </div>
                     {
-                    !!value.marginStatus &&
+                        !!value.marginStatus &&
                         <__experimentalAxisControl
                             values={value.margin}
+                            defaultValues={defaultValue.margin}
                             disableAuto
                             onChange={val => {
                                 value.margin = val;

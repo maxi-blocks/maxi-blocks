@@ -15,10 +15,8 @@ const {
 /**
  * Internal dependencies
  */
-import {
-    __experimentalAdvancedRangeControl,
-    __experimentalGroupInputControl
-} from '../../components';
+import __experimentalAdvancedRangeControl from '../advanced-range-control';
+import __experimentalGroupInputControl from '../group-input-control';
 import {
     verticalPresets,
     horizontalPresets,
@@ -35,7 +33,7 @@ import classnames from 'classnames';
 import { isObject } from 'lodash';
 
 /**
- * Styles and icons
+ * Icons
  */
 import {
     motionVertical,
@@ -50,16 +48,15 @@ import {
  * Component
  */
 const MotionControl = props => {
-
     const {
         className,
-        motionOptions,
+        motion,
         onChange,
     } = props;
 
-    let value = !isObject(motionOptions) ?
-        JSON.parse(motionOptions) :
-        motionOptions;
+    const value = !isObject(motion) ?
+        JSON.parse(motion) :
+        motion;
 
     const {
         vertical: verticalOptions,
@@ -96,7 +93,7 @@ const MotionControl = props => {
                 />
             </div>
             {
-            motionStatus === 'vertical' &&
+                motionStatus === 'vertical' &&
                 <Fragment>
                     <div className='maxi-fancy-radio-control'>
                         <RadioControl
@@ -115,7 +112,7 @@ const MotionControl = props => {
                         />
                     </div>
                     {
-                    !!verticalOptions.status &&
+                        !!verticalOptions.status &&
                         <Fragment>
                             <SelectControl
                                 label={__('Direction', 'maxi-blocks')}
@@ -162,7 +159,7 @@ const MotionControl = props => {
                 </Fragment>
             }
             {
-            motionStatus === 'horizontal' &&
+                motionStatus === 'horizontal' &&
                 <Fragment>
                     <div className='maxi-fancy-radio-control'>
                         <RadioControl
@@ -181,7 +178,7 @@ const MotionControl = props => {
                         />
                     </div>
                     {
-                    !!horizontalOptions.status &&
+                        !!horizontalOptions.status &&
                         <Fragment>
                             <SelectControl
                                 label={__('Direction', 'maxi-blocks')}
@@ -228,7 +225,7 @@ const MotionControl = props => {
                 </Fragment>
             }
             {
-            motionStatus === 'rotate' &&
+                motionStatus === 'rotate' &&
                 <Fragment>
                     <div className='maxi-fancy-radio-control'>
                         <RadioControl
@@ -247,7 +244,7 @@ const MotionControl = props => {
                         />
                     </div>
                     {
-                    !!rotateOptions.status &&
+                        !!rotateOptions.status &&
                         <Fragment>
                             <SelectControl
                                 label={__('Direction', 'maxi-blocks')}
@@ -294,7 +291,7 @@ const MotionControl = props => {
                 </Fragment>
             }
             {
-            motionStatus === 'scale' &&
+                motionStatus === 'scale' &&
                 <Fragment>
                     <div className='maxi-fancy-radio-control'>
                         <RadioControl
@@ -313,7 +310,7 @@ const MotionControl = props => {
                         />
                     </div>
                     {
-                    !!scaleOptions.status &&
+                        !!scaleOptions.status &&
                         <Fragment>
                             <SelectControl
                                 label={__('Direction', 'maxi-blocks')}
@@ -361,7 +358,7 @@ const MotionControl = props => {
                 </Fragment>
             }
             {
-            motionStatus === 'fade' &&
+                motionStatus === 'fade' &&
                 <Fragment>
                     <div className='maxi-fancy-radio-control'>
                         <RadioControl
@@ -380,7 +377,7 @@ const MotionControl = props => {
                         />
                     </div>
                     {
-                    !!fadeOptions.status &&
+                        !!fadeOptions.status &&
                         <Fragment>
                             <SelectControl
                                 label={__('Direction', 'maxi-blocks')}
@@ -428,7 +425,7 @@ const MotionControl = props => {
                 </Fragment>
             }
             {
-            motionStatus === 'blur' &&
+                motionStatus === 'blur' &&
                 <Fragment>
                     <div className='maxi-fancy-radio-control'>
                         <RadioControl
@@ -447,7 +444,7 @@ const MotionControl = props => {
                         />
                     </div>
                     {
-                    !!blurOptions.status &&
+                        !!blurOptions.status &&
                         <Fragment>
                             <SelectControl
                                 label={__('Direction', 'maxi-blocks')}

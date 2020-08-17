@@ -1,9 +1,7 @@
 {
     "label": "Box Shadow",
     "general": {
-        "shadowType": "none",
         "shadowColor": "#ffffff",
-        "defaultShadowColor": "#ffffff",
         "shadowHorizontal": 0,
         "shadowVertical": 0,
         "shadowBlur": 0,
@@ -11,7 +9,6 @@
     },
     "xxl": {
         "shadowColor": "",
-        "defaultShadowColor": "",
         "shadowHorizontal": "",
         "shadowVertical": "",
         "shadowBlur": "",
@@ -19,7 +16,6 @@
     },
     "xl": {
         "shadowColor": "",
-        "defaultShadowColor": "",
         "shadowHorizontal": "",
         "shadowVertical": "",
         "shadowBlur": "",
@@ -27,7 +23,6 @@
     },
     "l": {
         "shadowColor": "",
-        "defaultShadowColor": "",
         "shadowHorizontal": "",
         "shadowVertical": "",
         "shadowBlur": "",
@@ -35,7 +30,6 @@
     },
     "m": {
         "shadowColor": "",
-        "defaultShadowColor": "",
         "shadowHorizontal": "",
         "shadowVertical": "",
         "shadowBlur": "",
@@ -43,7 +37,6 @@
     },
     "s": {
         "shadowColor": "",
-        "defaultShadowColor": "",
         "shadowHorizontal": "",
         "shadowVertical": "",
         "shadowBlur": "",
@@ -51,7 +44,6 @@
     },
     "xs": {
         "shadowColor": "",
-        "defaultShadowColor": "",
         "shadowHorizontal": "",
         "shadowVertical": "",
         "shadowBlur": "",

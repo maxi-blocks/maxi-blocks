@@ -28,7 +28,7 @@ const ColorControl = props => {
         className,
         color,
         defaultColor = '',
-        onColorChange,
+        onChange,
     } = props;
 
     const classes = classnames(
@@ -40,34 +40,38 @@ const ColorControl = props => {
         return `rgba(${val.rgb.r},${val.rgb.g},${val.rgb.b},${val.rgb.a})`;
     }
 
-    const onReset = () => onColorChange(defaultColor);
+    const onReset = () => onChange(defaultColor);
 
     return (
         <div className={classes}>
             <BaseControl
-                    className='maxi-colorcontrol__display'
-                    label={`${label} ${__('Colour', 'maxi-blocks')}`}
-                >
-                    <div className='maxi-colorcontrol__display__color'>
-                        <span style={{background: color}}></span>
-                        <Button
-                            className="components-maxi-control__reset-button"
-                            onClick={() => onReset()}
-                            aria-label={sprintf(
-                                /* translators: %s: a texual label  */
-                                __('Reset %s settings', 'maxi-blocks'),
-                                'font size'
-                            )}
-                            type="reset"
-                        >
-                            {reset}
-                        </Button>
-                    </div>
-                </BaseControl>
+                className='maxi-colorcontrol__display'
+                label={`${label} ${__('Colour', 'maxi-blocks')}`}
+            >
+                <div className='maxi-colorcontrol__display__color'>
+                    <span
+                        style={{
+                            background: color
+                        }}
+                    />
+                    <Button
+                        className="components-maxi-control__reset-button"
+                        onClick={() => onReset()}
+                        aria-label={sprintf(
+                            /* translators: %s: a texual label  */
+                            __('Reset %s settings', 'maxi-blocks'),
+                            'font size'
+                        )}
+                        type="reset"
+                    >
+                        {reset}
+                    </Button>
+                </div>
+            </BaseControl>
             <div className="maxi-colorcontrol__color">
                 <ColorPicker
                     color={color}
-                    onChangeComplete={val => onColorChange(returnColor(val))}
+                    onChangeComplete={val => onChange(returnColor(val))}
                 />
             </div>
         </div>

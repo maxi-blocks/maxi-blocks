@@ -20,16 +20,19 @@ import { isObject } from 'lodash';
 const ResponsiveControl = props => {
     const {
         breakpoints,
+        defaultBreakpoints,
         onChange,
         className,
         breakpoint
     } = props;
 
-    const value = !isObject(breakpoints) ? 
+    const value = !isObject(breakpoints) ?
         JSON.parse(breakpoints) :
         breakpoints;
 
-    // console.log(value)
+    const defaultValue = !isObject(defaultBreakpoints) ?
+        JSON.parse(defaultBreakpoints) :
+        defaultBreakpoints;
 
     const classes = classnames(
         'maxi-responsive-control',
@@ -40,10 +43,11 @@ const ResponsiveControl = props => {
         <div
             className={classes}
         >
-            <__experimentalNumberControl 
+            <__experimentalNumberControl
                 label={__('Breakpoint', 'maxi-blocks')}
                 className='maxi-responsive-control__breakpoint'
                 value={value[breakpoint]}
+                defaultValue={defaultValue[breakpoint]}
                 onChange={val => {
                     value[breakpoint] = val;
                     onChange(JSON.stringify(value))

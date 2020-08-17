@@ -59,7 +59,7 @@ const save = props => {
             data-motion-id={uniqueID}
         >
             <__experimentalBackgroundDisplayer
-                backgroundOptions={background}
+                background={background}
             />
             {
                 !!showLine &&

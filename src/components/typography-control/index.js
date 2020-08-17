@@ -7,6 +7,7 @@ const { SelectControl } = wp.components;
 /**
  * Internal dependencies
  */
+import defaultTypographies from '../../extensions/defaults/typography';
 import { getLastBreakpointValue } from '../../utils';
 import AlignmentControl from '../alignment-control';
 import ColorControl from '../color-control';
@@ -35,7 +36,8 @@ const TypographyControl = props => {
     const {
         className,
         typography,
-        defaultColor = '#9b9b9b',
+        defaultTypography,
+        textLevel = 'p',
         hideAlignment = false,
         onChange,
         breakpoint = 'general'
@@ -45,6 +47,10 @@ const TypographyControl = props => {
         JSON.parse(typography) :
         typography;
 
+    const defaultValue = !isObject(defaultTypography) ?
+        JSON.parse(defaultTypography) :
+        defaultTypography;
+
     const classes = classnames(
         'maxi-typography-control',
         className
@@ -53,6 +59,25 @@ const TypographyControl = props => {
     const Divider = () => (
         <hr style={{ margin: '15px 0' }} />
     );
+
+    const minMaxSettings = {
+        'px': {
+            min: 0,
+            max: 99
+        },
+        'em': {
+            min: 0,
+            max: 99
+        },
+        'vw': {
+            min: 0,
+            max: 99
+        },
+        '%': {
+            min: 0,
+            max: 100
+        }
+    }
 
     const getWeightOptions = () => {
         const fontOptions = Object.keys(value[breakpoint]['font-options']);
@@ -97,6 +122,13 @@ const TypographyControl = props => {
         return response;
     }
 
+    const getDefault = prop => {
+        if (textLevel === 'p')
+            return defaultValue[breakpoint][prop];
+        else
+            return defaultTypographies[textLevel][breakpoint][prop];
+    }
+
     return (
         <div className={classes}>
             <FontFamilySelector
@@ -112,8 +144,8 @@ const TypographyControl = props => {
                 label={__('Font', 'maxi-blocks')}
                 className="maxi-typography-control__color"
                 color={getLastBreakpointValue(value, 'color', breakpoint)}
-                defaultColor={defaultColor} // #128
-                onColorChange={val => {
+                defaultColor={getDefault('color')}
+                onChange={val => {
                     value[breakpoint].color = val;
                     onChange(JSON.stringify(value));
                 }}
@@ -135,43 +167,52 @@ const TypographyControl = props => {
                 className={'maxi-typography-control__size'}
                 label={__('Size', 'maxi-blocks')}
                 unit={getLastBreakpointValue(value, 'font-sizeUnit', breakpoint)}
+                defaultUnit={getDefault('font-sizeUnit')}
                 onChangeUnit={val => {
                     value[breakpoint]['font-sizeUnit'] = val;
                     onChange(JSON.stringify(value))
                 }}
                 value={trim(getLastBreakpointValue(value, 'font-size', breakpoint))}
+                defaultValue={getDefault('font-size')}
                 onChangeValue={val => {
                     value[breakpoint]['font-size'] = val;
                     onChange(JSON.stringify(value))
                 }}
+                minMaxSettings={minMaxSettings}
             />
             <SizeControl
                 className={'maxi-typography-control__line-height'}
                 label={__('Line Height', 'maxi-blocks')}
                 unit={getLastBreakpointValue(value, 'line-heightUnit', breakpoint)}
+                defaultUnit={getDefault('line-heightUnit')}
                 onChangeUnit={val => {
                     value[breakpoint]['line-heightUnit'] = val;
                     onChange(JSON.stringify(value))
                 }}
                 value={trim(getLastBreakpointValue(value, 'line-height', breakpoint))}
+                defaultValue={getDefault('line-height')}
                 onChangeValue={val => {
                     value[breakpoint]['line-height'] = val;
                     onChange(JSON.stringify(value))
                 }}
+                minMaxSettings={minMaxSettings}
             />
             <SizeControl
                 className={'maxi-typography-control__letter-spacing'}
                 label={__('Letter Spacing', 'maxi-blocks')}
                 unit={getLastBreakpointValue(value, 'letter-spacingUnit', breakpoint)}
+                defaultUnit={getDefault('letter-spacingUnit')}
                 onChangeUnit={val => {
                     value[breakpoint]['letter-spacingUnit'] = val;
                     onChange(JSON.stringify(value))
                 }}
                 value={trim(getLastBreakpointValue(value, 'letter-spacing', breakpoint))}
+                defaultValue={getDefault('letter-spacing')}
                 onChangeValue={val => {
                     value[breakpoint]['letter-spacing'] = val;
                     onChange(JSON.stringify(value))
                 }}
+                minMaxSettings={minMaxSettings}
             />
             <Divider />
             <SelectControl
@@ -231,12 +272,12 @@ const TypographyControl = props => {
             />
             <TextShadowControl
                 className="maxi-typography-control__text-shadow"
-                value={getLastBreakpointValue(value, 'text-shadow', breakpoint)}
+                textShadow={getLastBreakpointValue(value, 'text-shadow', breakpoint)}
                 onChange={val => {
                     value[breakpoint]['text-shadow'] = val;
                     onChange(JSON.stringify(value))
                 }}
-                defaultColor={defaultColor} // #128
+                defaultColor={getLastBreakpointValue(value, 'color', breakpoint)}
             />
         </div>
     )

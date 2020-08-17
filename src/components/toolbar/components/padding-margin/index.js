@@ -22,8 +22,10 @@ const PaddingMargin = props => {
     const {
         blockName,
         margin,
+        defaultMargin,
         onChangeMargin,
         padding,
+        defaultPadding,
         onChangePadding,
         breakpoint
     } = props;
@@ -37,6 +39,7 @@ const PaddingMargin = props => {
                 <Fragment>
                     <__experimentalAxisControl
                         values={padding}
+                        defaultValues={defaultPadding}
                         onChange={padding => onChangePadding(padding)}
                         breakpoint={breakpoint}
                         disableAuto
@@ -45,6 +48,7 @@ const PaddingMargin = props => {
                         blockName != 'maxi-blocks/column-maxi' &&
                         <__experimentalAxisControl
                             values={margin}
+                            defaultValues={defaultMargin}
                             onChange={margin => onChangeMargin(margin)}
                             breakpoint={breakpoint}
                         />

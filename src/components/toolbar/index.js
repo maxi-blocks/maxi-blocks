@@ -36,7 +36,8 @@ import {
     TextOptions,
     PaddingMargin,
     Size,
-    __experimentalColumnMover
+    __experimentalColumnMover,
+    __experimentalRowSettings
 } from './components/';
 
 /**
@@ -71,7 +72,6 @@ const MaxiToolbar = props => {
             typography,
             typographyHover,
             alignment,
-            alignmentText,
             background,
             border,
             size,
@@ -83,6 +83,8 @@ const MaxiToolbar = props => {
             margin,
             padding,
             rowPattern,
+            horizontalAlign,
+            verticalAlign,
             linkSettings,
             boxShadow,
             showLine,
@@ -233,6 +235,12 @@ const MaxiToolbar = props => {
                             content={content}
                             onChange={content => setAttributes({ content })}
                             node={anchorRef}
+                        />
+                        <__experimentalRowSettings
+                            blockName={name}
+                            horizontalAlign={horizontalAlign}
+                            verticalAlign={verticalAlign}
+                            onChange={obj => setAttributes(obj)}
                         />
                         <ColumnPattern
                             clientId={clientId}

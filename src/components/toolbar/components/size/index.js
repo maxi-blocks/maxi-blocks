@@ -48,7 +48,7 @@ const Size = props => {
             className='toolbar-item__size'
             tooltip={__('Size', 'maxi-blocks')}
             icon={toolbarSizing}
-            advancedoptions='width height'
+            advancedOptions='width height'
             content={(
                 <Fragment>
                     {

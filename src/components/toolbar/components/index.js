@@ -27,3 +27,4 @@ export { default as TextShadow } from './text-shadow/';
 
 // Experimental
 export { default as __experimentalColumnMover } from './column-mover';
+export { default as __experimentalRowSettings } from './row-settings';

@@ -35,7 +35,7 @@ import {
     getBoxShadowObject,
     getOpacityObject,
     getColumnSizeObject,
-    getTransfromObject,
+    getTransformObject,
     getAlignmentTextObject,
     setBackgroundStyles
 } from '../../utils';
@@ -132,10 +132,8 @@ class edit extends MaxiBlock {
             opacity: { ...getOpacityObject(JSON.parse(opacity)) },
             zIndex: { ...JSON.parse(zIndex) },
             columnSize: { ...getColumnSizeObject(JSON.parse(columnSize)) },
-            position: { ...JSON.parse(position) },
-            positionOptions: { ...JSON.parse(position).options },
             display: { ...JSON.parse(display) },
-            transform: { ...getTransfromObject(JSON.parse(transform)) },
+            transform: { ...getTransformObject(JSON.parse(transform)) },
             column: {
                 label: "Column",
                 general: {},
@@ -179,12 +177,13 @@ class edit extends MaxiBlock {
     get getResizerObject() {
         const {
             margin,
-            display
+            display,
+            position
         } = this.props.attributes;
 
         let response = {
             margin: { ...JSON.parse(margin) },
-            display: { ...JSON.parse(display) }
+            display: { ...JSON.parse(display) },
         };
 
         return response;

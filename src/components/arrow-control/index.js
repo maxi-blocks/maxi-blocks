@@ -19,7 +19,10 @@ import SizeControl from '../size-control';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject } from 'lodash';
+import {
+    isObject,
+    isNil
+} from 'lodash';
 
 /**
  * Component
@@ -27,15 +30,20 @@ import { isObject } from 'lodash';
 const ArrowControl = props => {
     const {
         arrow,
+        defaultArrow,
         className,
         onChange,
         breakpoint = 'general',
         isFirstOnHierarchy
     } = props;
 
-    let value = !isObject(arrow) ?
+    const value = !isObject(arrow) ?
         JSON.parse(arrow) :
         arrow;
+
+    const defaultValue = !isObject(defaultArrow) ?
+        JSON.parse(defaultArrow) :
+        defaultArrow;
 
     const classes = classnames(
         'maxi-arrow-control',
@@ -55,6 +63,25 @@ const ArrowControl = props => {
             ])
 
         return response;
+    }
+
+    const minMaxSettings = {
+        'px': {
+            min: 0,
+            max: 3999
+        },
+        'em': {
+            min: 0,
+            max: 999
+        },
+        'vw': {
+            min: 0,
+            max: 999
+        },
+        '%': {
+            min: 0,
+            max: 100
+        }
     }
 
     return (
@@ -93,43 +120,58 @@ const ArrowControl = props => {
                         min='0'
                         max='100'
                         onChange={val => {
-                            value[breakpoint].position = val;
+                            isNil(val) ?
+                                value[breakpoint].position = defaultValue[breakpoint].position :
+                                value[breakpoint].position = val;
+
                             onChange(JSON.stringify(value))
                         }}
+                        allowReset
+                        initialPosition={defaultValue[breakpoint].position}
                     />
                     <ColorControl
                         label={__('Arrow', 'maxi-blocks')}
                         color={getLastBreakpointValue(value, 'color', breakpoint)}
-                        onColorChange={val => {
-                            value[breakpoint].color = val;
+                        defaultColor={defaultValue[breakpoint].color}
+                        onChange={val => {
+                            isNil(val) ?
+                                value[breakpoint].color = defaultValue[breakpoint].color :
+                                value[breakpoint].color = val;
+
                             onChange(JSON.stringify(value))
                         }}
                     />
                     <SizeControl
                         label={__('Width', 'maxi-blocks')}
                         unit={getLastBreakpointValue(value, 'widthUnit', breakpoint)}
+                        defaultUnit={defaultValue[breakpoint].widthUnit}
                         onChangeUnit={val => {
                             value[breakpoint].widthUnit = val;
                             onChange(JSON.stringify(value))
                         }}
                         value={getLastBreakpointValue(value, 'width', breakpoint)}
+                        defaultValue={defaultValue[breakpoint].width}
                         onChangeValue={val => {
                             value[breakpoint].width = val;
                             onChange(JSON.stringify(value))
                         }}
+                        minMaxSettings={minMaxSettings}
                     />
                     <SizeControl
                         label={__('Height', 'maxi-blocks')}
                         unit={getLastBreakpointValue(value, 'heightUnit', breakpoint)}
+                        defaultUnit={defaultValue[breakpoint].heightUnit}
                         onChangeUnit={val => {
                             value[breakpoint].heightUnit = val;
                             onChange(JSON.stringify(value))
                         }}
                         value={getLastBreakpointValue(value, 'height', breakpoint)}
+                        defaultValue={defaultValue[breakpoint].height}
                         onChangeValue={val => {
                             value[breakpoint].height = val;
                             onChange(JSON.stringify(value))
                         }}
+                        minMaxSettings={minMaxSettings}
                     />
                 </Fragment>
             }

@@ -33,7 +33,7 @@ const GradientControl = props => {
         className,
         gradient,
         defaultGradient = '',
-        onGradientChange,
+        onChange,
         disableGradientAboveBackground = false,
         gradientAboveBackground,
         onGradientAboveBackgroundChange,
@@ -45,10 +45,10 @@ const GradientControl = props => {
     );
 
     const onReset = () => {
-        if (!disableGradient)
-            onGradientChange(defaultGradient);
-        if (!disableGradient && !disableGradientAboveBackground)
+        if (!disableGradientAboveBackground)
             onGradientAboveBackgroundChange(false);
+
+        onChange(defaultGradient);
     }
 
     return (
@@ -58,7 +58,7 @@ const GradientControl = props => {
                 label={`${label} ${__('Color', 'maxi-blocks')}`}
             >
                 <div className='maxi-gradientcontrol__display__color'>
-                    <span style={{background: gradient}}></span>
+                    <span style={{ background: gradient }}></span>
                     <Button
                         className="components-maxi-control__reset-button"
                         onClick={() => onReset()}
@@ -76,9 +76,10 @@ const GradientControl = props => {
             <div className="maxi-gradientcontrol__gradient">
                 <__experimentalGradientPicker
                     value={gradient}
-                    onChange={val => onGradientChange(val)}
+                    onChange={val => onChange(val)}
                 />
-                {disableGradientAboveBackground &&
+                {
+                    disableGradientAboveBackground &&
                     <CheckBoxControl
                         label={__('Above Background Image', 'maxi-blocks')}
                         checked={gradientAboveBackground}

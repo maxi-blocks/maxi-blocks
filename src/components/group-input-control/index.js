@@ -13,7 +13,7 @@ import {
 } from 'lodash';
 
 /**
- * Styles and icons
+ * Styles
  */
 import './editor.scss';
 

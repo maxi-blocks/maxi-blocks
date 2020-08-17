@@ -2,7 +2,10 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { Fragment } = wp.element;
+const {
+    Fragment,
+    useRef,
+} = wp.element;
 const {
     RangeControl,
     SelectControl,
@@ -14,7 +17,10 @@ const {
  * External dependencies
  */
 import classnames from 'classnames';
-import { trim } from 'lodash';
+import {
+    trim,
+    isNumber
+} from 'lodash';
 
 /**
  * Styles
@@ -26,18 +32,19 @@ import { reset } from '../../icons';
  * Component
  */
 const SizeControl = props => {
-
     const {
         label,
         className,
         unit,
-        disableUnit = false,
         onChangeUnit,
+        defaultUnit,
+        disableUnit = false,
         min = 0,
         max = 999,
         initial = 0,
         step = 1,
         value,
+        defaultValue,
         onChangeValue,
         allowedUnits = ['px', 'em', 'vw', '%'],
         minMaxSettings = {
@@ -60,6 +67,8 @@ const SizeControl = props => {
         }
     } = props;
 
+    const rangeRef = useRef(null);
+
     const classes = classnames(
         'maxi-size-control',
         className
@@ -67,12 +76,35 @@ const SizeControl = props => {
 
     const getOptions = () => {
         let options = [];
-            allowedUnits.includes('px') && options.push({label: 'PX', value: 'px'});
-            allowedUnits.includes('em') && options.push({label: 'EM', value: 'em'});
-            allowedUnits.includes('vw') && options.push({label: 'VW', value: 'vw'});
-            allowedUnits.includes('%') && options.push({label: '%', value: '%'});
+        allowedUnits.includes('px') && options.push({ label: 'PX', value: 'px' });
+        allowedUnits.includes('em') && options.push({ label: 'EM', value: 'em' });
+        allowedUnits.includes('vw') && options.push({ label: 'VW', value: 'vw' });
+        allowedUnits.includes('%') && options.push({ label: '%', value: '%' });
         return options;
     };
+
+    const onReset = () => {
+        onChangeValue(defaultValue);
+        if (!disableUnit)
+            onChangeUnit(defaultUnit);
+
+        rangeRef.current.setAttribute('value', defaultValue);
+
+        if (!isNumber(defaultValue)) {
+            // RangeControl needs a number or to press its own reset button to put the range
+            // into beginning again. So we do manually
+            const rangeWrapper = rangeRef.current.parentNode;
+            const rangeItems = Array.from(rangeWrapper.children);
+
+            rangeItems.forEach(el => {
+                el.classList.forEach(elClass => {
+                    elClass.indexOf('ThumbWrapper') != -1 ?
+                        el.style.left = 0 :
+                        null
+                })
+            })
+        }
+    }
 
     return (
         <BaseControl
@@ -80,7 +112,7 @@ const SizeControl = props => {
             className={classes}
         >
             {
-                (disableUnit) ?
+                disableUnit ?
                     <input
                         type='number'
                         className='maxi-size-control__value'
@@ -91,7 +123,7 @@ const SizeControl = props => {
                         step={step}
                         placeholder='auto'
                     />
-                :
+                    :
                     <Fragment>
                         <input
                             type='number'
@@ -113,7 +145,7 @@ const SizeControl = props => {
             }
             <Button
                 className='components-maxi-control__reset-button'
-                onClick={() => onChangeValue('')}
+                onClick={onReset}
                 isSmall
                 aria-label={sprintf(
                     /* translators: %s: a texual label  */
@@ -125,25 +157,25 @@ const SizeControl = props => {
                 {reset}
             </Button>
             {
-                (disableUnit) ?
+                disableUnit ?
                     <RangeControl
-                        value={Number(value)}
+                        ref={e => rangeRef.current = e}
+                        value={value}
                         onChange={val => onChangeValue(Number(val))}
                         min={min}
                         max={max}
                         step={step}
-                        allowReset={false}
                         withInputField={false}
                         initialPosition={initial}
                     />
-                :
+                    :
                     <RangeControl
-                        value={Number(value)}
+                        ref={e => rangeRef.current = e}
+                        value={value}
                         onChange={val => onChangeValue(Number(val))}
                         min={unit ? minMaxSettings[unit].min : null}
                         max={unit ? minMaxSettings[unit].max : null}
                         step={step}
-                        allowReset={false}
                         withInputField={false}
                         initialPosition={initial}
                     />

@@ -25,13 +25,11 @@ import {
 } from '../../components';
 import Inspector from './inspector';
 import {
-    getBackgroundObject,
     getBoxShadowObject,
     getShapeDividerObject,
     getShapeDividerSVGObject,
     getArrowObject,
     getTransfromObject,
-    getAlignmentTextObject,
     setBackgroundStyles
 } from '../../utils'
 
@@ -130,7 +128,7 @@ class edit extends MaxiBlock {
             borderWidth: { ...JSON.parse(border).borderWidth },
             borderRadius: { ...JSON.parse(border).borderRadius },
             opacity: { ...JSON.parse(opacity) },
-            zindex: { ...JSON.parse(zIndex) },
+            zIndex: { ...JSON.parse(zIndex) },
             position: { ...JSON.parse(position) },
             positionOptions: { ...JSON.parse(position).options },
             display: { ...JSON.parse(display) },
@@ -230,7 +228,6 @@ class edit extends MaxiBlock {
             <__experimentalBreadcrumbs />,
             <
                 Fragment>
-
                 {
                     isFirstOnHierarchy && fullWidth &&
                     <__experimentalBlock.section
@@ -239,7 +236,7 @@ class edit extends MaxiBlock {
                         data-maxi_initial_block_class={defaultBlockStyle}
                     >
                         <__experimentalBackgroundDisplayer
-                            backgroundOptions={background}
+                            background={background}
                         />
                         <__experimentalShapeDivider
                             shapeDividerOptions={shapeDivider}

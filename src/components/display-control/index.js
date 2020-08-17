@@ -22,7 +22,7 @@ const DisplayControl = props => {
         defaultDisplay = 'inherit'
     } = props;
 
-    let value = !isObject(display) ?
+    const value = !isObject(display) ?
         JSON.parse(display) :
         display
 

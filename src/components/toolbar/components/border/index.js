@@ -36,6 +36,7 @@ const Border = props => {
     const {
         blockName,
         border,
+        defaultBorder,
         onChange,
         breakpoint
     } = props;
@@ -74,6 +75,7 @@ const Border = props => {
             content={(
                 <BorderControl
                     border={border}
+                    defaultBorder={defaultBorder}
                     onChange={value => onChange(value)}
                     breakpoint={breakpoint}
                     disableAdvanced

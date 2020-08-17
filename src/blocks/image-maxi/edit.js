@@ -107,7 +107,7 @@ class edit extends MaxiBlock {
             padding: { ...JSON.parse(padding) },
             margin: { ...JSON.parse(margin) },
             opacity: { ...JSON.parse(opacity) },
-            zindex: { ...JSON.parse(zIndex) },
+            zIndex: { ...JSON.parse(zIndex) },
             alignment: { ...getAlignmentFlexObject(JSON.parse(alignment)) },
             position: { ...JSON.parse(position) },
             positionOptions: { ...JSON.parse(position).options },
@@ -159,7 +159,7 @@ class edit extends MaxiBlock {
             JSON.parse(hover).titleTypography;
 
         const response = {
-            typography: {...titleTypography}
+            typography: { ...titleTypography }
         }
 
         return response;
@@ -175,7 +175,7 @@ class edit extends MaxiBlock {
             JSON.parse(hover).contentTypography;
 
         const response = {
-            typography: {...contentTypography}
+            typography: { ...contentTypography }
         }
 
         return response;
@@ -335,7 +335,7 @@ class edit extends MaxiBlock {
                 data-align={fullWidth}
             >
                 <__experimentalBackgroundDisplayer
-                    backgroundOptions={background}
+                    background={background}
                 />
                 <MediaUpload
                     onSelect={media => setAttributes({ mediaID: media.id })}

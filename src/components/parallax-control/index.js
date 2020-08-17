@@ -12,7 +12,10 @@ const {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject } from 'lodash';
+import {
+    isObject,
+    isNil
+} from 'lodash';
 
 /**
  * Component
@@ -21,17 +24,26 @@ const ParallaxControl = props => {
 
     const {
         className,
-        motionOptions,
+        motion,
+        defaultMotion,
         onChange,
     } = props;
 
-    let value = !isObject(motionOptions) ?
-        JSON.parse(motionOptions) :
-        motionOptions;
+    const value = !isObject(motion) ?
+        JSON.parse(motion) :
+        motion;
 
-    let {
+    const {
         parallax: parallaxOptions,
     } = value;
+
+    const defaultValue = !isObject(defaultMotion) ?
+        JSON.parse(defaultMotion) :
+        defaultMotion;
+
+    const {
+        parallax: defaultParallaxOptions,
+    } = defaultValue;
 
     const classes = classnames(
         'maxi-parallax-control',
@@ -75,11 +87,16 @@ const ParallaxControl = props => {
                         label={__('Speed', 'maxi-blocks')}
                         value={parallaxOptions.speed}
                         onChange={val => {
-                            parallaxOptions.speed = Number(val);
+                            isNil(val) ?
+                                parallaxOptions.speed = defaultParallaxOptions.speed :
+                                parallaxOptions.speed = Number(val);
+
                             onChange(JSON.stringify(value))
                         }}
                         min={1}
                         max={10}
+                        allowReset
+                        initialPosition={defaultParallaxOptions.speed}
                     />
                 </Fragment>
             }

@@ -10,6 +10,11 @@ const {
 } = wp.element;
 
 /**
+ * Internal dependencies
+ */
+import { getDefaultProp } from '../../utils';
+
+/**
  * Utils
  */
 import {
@@ -75,7 +80,7 @@ const MaxiToolbar = props => {
             background,
             border,
             size,
-            width,
+            imageSize,
             mediaID,
             fullWidth,
             isFirstOnHierarchy,
@@ -167,6 +172,7 @@ const MaxiToolbar = props => {
                             blockName={name}
                             showLine={showLine}
                             divider={divider}
+                            defaultDivider={getDefaultProp(clientId, 'divider')}
                             lineOrientation={lineOrientation}
                             onChange={(showLine, divider) =>
                                 setAttributes({
@@ -188,6 +194,7 @@ const MaxiToolbar = props => {
                         <TextOptions
                             blockName={name}
                             typography={typography}
+                            defaultTypography={getDefaultProp(clientId, 'typography')}
                             onChange={typography => setAttributes({ typography })}
                             breakpoint={deviceType}
                         />
@@ -285,18 +292,19 @@ const MaxiToolbar = props => {
                         <Border
                             blockName={name}
                             border={border}
+                            defaultBorder={getDefaultProp(clientId, 'border')}
                             onChange={border => setAttributes({ border })}
                             breakpoint={deviceType}
                         />
                         {
                             deviceType === 'general' &&
                             <ImageSize
-                                clientId={clientId}
                                 blockName={name}
                                 size={size}
+                                defaultSize={getDefaultProp(clientId, 'size')}
                                 onChangeSize={size => setAttributes({ size })}
-                                width={width}
-                                onChangeWidth={width => setAttributes({ width })}
+                                imageSize={imageSize}
+                                onChangeImageSize={imageSize => setAttributes({ imageSize })}
                                 mediaID={mediaID}
                                 fullWidth={fullWidth}
                                 onChangeFullWidth={fullWidth => setAttributes({ fullWidth })}
@@ -308,6 +316,7 @@ const MaxiToolbar = props => {
                             clientId={clientId}
                             blockName={name}
                             size={size}
+                            defaultSize={getDefaultProp(clientId, 'size')}
                             onChangeSize={size => setAttributes({ size })}
                             fullWidth={fullWidth}
                             onChangeFullWidth={fullWidth => setAttributes({ fullWidth })}
@@ -317,14 +326,17 @@ const MaxiToolbar = props => {
                         <BoxShadow
                             blockName={name}
                             boxShadow={boxShadow}
+                            defaultBoxShadow={getDefaultProp(clientId, 'boxShadow')}
                             onChange={boxShadow => setAttributes({ boxShadow })}
                             breakpoint={deviceType}
                         />
                         <PaddingMargin
                             blockName={name}
                             margin={margin}
+                            defaultMargin={getDefaultProp(clientId, 'margin')}
                             onChangeMargin={margin => setAttributes({ margin })}
                             padding={padding}
+                            defaultPadding={getDefaultProp(clientId, 'padding')}
                             onChangePadding={padding => setAttributes({ padding })}
                             breakpoint={deviceType}
                         />

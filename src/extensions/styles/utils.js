@@ -46,7 +46,7 @@ export const getLastBreakpointValue = (obj, prop, breakpoint) => {
         const breakpointIndex = objectKeys.indexOf(breakpoint) - 1;
 
         if (breakpointIndex === 0)
-            return false;
+            return obj[breakpoint][prop];
 
         let i = breakpointIndex;
 
@@ -332,7 +332,7 @@ export const getShapeDividerObject = shapeDivider => {
     }
 
     if (!isNil(shapeDivider.opacity))
-        response.general['opacity'] = shapeDivider.opacity;
+        response.general['opacity'] = shapeDivider.opacity.general.opacity;
 
     if (!isNil(shapeDivider.height))
         response.general['height'] = `${shapeDivider.height}${shapeDivider.heightUnit}`;

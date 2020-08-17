@@ -1,4 +1,9 @@
 /**
+ * Internal dependencies
+ */
+import { getLastBreakpointValue } from './utils';
+
+/**
  * External dependencies
  */
 import {
@@ -67,7 +72,7 @@ export class ResponsiveStylesResolver {
         const object = value[breakpoint];
         newObject[breakpoint] = {};
         let unitChecker = '';
-        let unit = !isNil(object.unit) ? object.unit : '';
+        let unit = getLastBreakpointValue(value, 'unit', breakpoint) || '';
 
         const nonAllowedProps = [
             'font-options',
@@ -79,7 +84,7 @@ export class ResponsiveStylesResolver {
                 console.error(`Undefined property. Property: ${target}`);
                 continue;
             }
-            if(nonAllowedProps.includes(target))
+            if (nonAllowedProps.includes(target))
                 continue;
             // values with dimensions
             if (

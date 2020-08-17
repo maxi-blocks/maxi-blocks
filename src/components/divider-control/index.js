@@ -16,10 +16,9 @@ const {
 /**
  * Internal dependencies
  */
-import {
-    ColorControl,
-    DefaultStylesControl,
-} from '../../components';
+import ColorControl from '../color-control';
+import DefaultStylesControl from '../default-styles-control';
+import __experimentalOpacityControl from '../opacity-control';
 import {
     dividerSolidHorizontal,
     dividerDottedHorizontal,
@@ -33,10 +32,9 @@ import {
 /**
  * External dependencies
  */
-import { 
+import {
     isNil,
     isObject,
-    trim
 } from 'lodash';
 
 /**
@@ -54,7 +52,8 @@ import {
  */
 const DividerControl = props => {
     const {
-        dividerOptions,
+        divider,
+        defaultDivider,
         onChange,
         lineOrientation,
         disableColor = false,
@@ -66,10 +65,13 @@ const DividerControl = props => {
         lineOrientation
     )
 
-    const value = !isObject(dividerOptions) ?
-        JSON.parse(dividerOptions) :
-        dividerOptions
+    const value = !isObject(divider) ?
+        JSON.parse(divider) :
+        divider
 
+    const defaultValue = !isObject(defaultDivider) ?
+        JSON.parse(defaultDivider) :
+        defaultDivider
 
     useEffect(
         () => {
@@ -167,7 +169,8 @@ const DividerControl = props => {
                 <ColorControl
                     label={__('Color', 'maxi-blocks')}
                     color={value.general['border-color']}
-                    onColorChange={val => {
+                    defaultColor={defaultValue.general['border-color']}
+                    onChange={val => {
                         value.general['border-color'] = val;
                         onChange(JSON.stringify(value))
                     }}
@@ -216,25 +219,27 @@ const DividerControl = props => {
                         label={__('Size', 'maxi-blocks')}
                         value={Number(value.general.width)}
                         onChange={val => {
-                            if (!!val)
+                            isNil(val) ?
+                                value.general.width = defaultValue.general.width :
                                 value.general.width = Number(val);
-                            else
-                                value.general.width = '';
+
                             onChange(JSON.stringify(value));
                         }}
                         allowReset
+                        initialPosition={defaultValue.general.width}
                     />
                     <RangeControl
                         label={__('Weight', 'maxi-blocks')}
                         value={Number(value.general['border-top-width'])}
                         onChange={val => {
-                            if (!!val)
+                            isNil(val) ?
+                                value.general['border-top-width'] = defaultValue.general['border-top-width'] :
                                 value.general['border-top-width'] = Number(val);
-                            else
-                                value.general['border-top-width'] = '';
+
                             onChange(JSON.stringify(value));
                         }}
                         allowReset
+                        initialPosition={defaultValue.general['border-top-width']}
                     />
                 </Fragment>
             }
@@ -245,45 +250,39 @@ const DividerControl = props => {
                         label={__('Size', 'maxi-blocks')}
                         value={Number(value.general.height)}
                         onChange={val => {
-                            if (!!val)
+                            isNil(val) ?
+                                value.general.height = defaultValue.general.height :
                                 value.general.height = Number(val);
-                            else
-                                value.general.height = '';
+
                             onChange(JSON.stringify(value));
                         }}
                         max={100}
                         allowReset
+                        initialPosition={defaultValue.general.height}
                     />
                     <RangeControl
                         label={__('Weight', 'maxi-blocks')}
                         value={Number(value.general['border-right-width'])}
                         onChange={val => {
-                            if (!!val)
+                            isNil(val) ?
+                                value.general['border-right-width'] = defaultValue.general['border-right-width'] :
                                 value.general['border-right-width'] = Number(val);
-                            else
-                                value.general['border-right-width'] = '';
+
                             onChange(JSON.stringify(value));
                         }}
                         max={100}
                         allowReset
+                        initialPosition={defaultValue.general['border-right-width']}
                     />
                 </Fragment>
             }
-            <RangeControl
-                label={__("Opacity", "maxi-blocks")}
-                className={"maxi-opacity-control"}
-                value={trim(value.general.opacity * 100)}
+            <__experimentalOpacityControl
+                opacity={value.general.opacity}
+                defaultOpacity={defaultValue.general.opacity}
                 onChange={val => {
-                    if (!!val)
-                        value.general.opacity = Number(val) / 100;
-                    else
-                        value.general.opacity = '';
+                    value.general.opacity = val;
                     onChange(JSON.stringify(value))
                 }}
-                min={0}
-                max={100}
-                allowReset={true}
-                initialPosition={0}
             />
         </Fragment>
     )

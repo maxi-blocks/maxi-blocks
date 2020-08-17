@@ -63,7 +63,7 @@ const save = props => {
                     data-motion-id={uniqueID}
                 >
                     <__experimentalBackgroundDisplayer
-                        backgroundOptions={background}
+                        background={background}
                     />
                     <__experimentalShapeDivider
                         shapeDividerOptions={shapeDivider}
@@ -90,7 +90,7 @@ const save = props => {
                     data-gx_initial_block_class={defaultBlockStyle}
                 >
                     <__experimentalBackgroundDisplayer
-                        backgroundOptions={background}
+                        background={background}
                     />
                     <__experimentalShapeDivider
                         shapeDividerOptions={shapeDivider}

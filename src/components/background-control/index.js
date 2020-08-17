@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { select } = wp.data;
 const {
     Fragment,
     useState
@@ -17,7 +16,6 @@ const {
 /**
  * Internal dependencies
  */
-import { background } from '../../extensions/styles/defaults';
 import ColorControl from '../color-control';
 import GradientControl from '../gradient-control';
 import MediaUploaderControl from '../media-uploader-control';
@@ -55,7 +53,8 @@ import {
 const BackgroundControl = props => {
     const {
         className,
-        backgroundOptions,
+        background,
+        defaultBackground,
         disableImage = false,
         disableVideo = false,
         disableGradient = false,
@@ -68,9 +67,13 @@ const BackgroundControl = props => {
     const [selector, setSelector] = useState(0);
     const [backgroundItems, setBackgroundItems] = useState('color');
 
-    let value = !isObject(backgroundOptions) ?
-        JSON.parse(backgroundOptions) :
-        backgroundOptions;
+    const value = !isObject(background) ?
+        JSON.parse(background) :
+        background;
+
+    const defaultValue = !isObject(defaultBackground) ?
+        JSON.parse(defaultBackground) :
+        defaultBackground;
 
     const classes = classnames(
         'maxi-background-control',
@@ -167,11 +170,13 @@ const BackgroundControl = props => {
                                     <SizeControl
                                         label={__('Width', 'maxi-blocks')}
                                         unit={value.videoOptions.widthUnit}
+                                        defaultUnit={defaultValue.videoOptions.widthUnit}
                                         onChangeUnit={val => {
                                             value.videoOptions.widthUnit = val;
                                             onChange(JSON.stringify(value));
                                         }}
                                         value={value.videoOptions.width}
+                                        defaultValue={defaultValue.videoOptions.width}
                                         onChangeValue={val => {
                                             value.videoOptions.width = val;
                                             onChange(JSON.stringify(value));
@@ -180,11 +185,13 @@ const BackgroundControl = props => {
                                     <SizeControl
                                         label={__('Height', 'maxi-blocks')}
                                         unit={value.videoOptions.heightUnit}
+                                        defaultUnit={defaultValue.videoOptions.heightUnit}
                                         onChangeUnit={val => {
                                             value.videoOptions.heightUnit = val;
                                             onChange(JSON.stringify(value));
                                         }}
                                         value={value.videoOptions.height}
+                                        defaultValue={defaultValue.videoOptions.height}
                                         onChangeValue={val => {
                                             value.videoOptions.height = val;
                                             onChange(JSON.stringify(value));
@@ -292,8 +299,8 @@ const BackgroundControl = props => {
                         <GradientControl
                             label={__('Background', 'maxi-blocks')}
                             gradient={value.colorOptions.gradient}
-                            defaultGradient={value.colorOptions.defaultGradient}
-                            onGradientChange={val => {
+                            defaultGradient={defaultValue.colorOptions.gradient}
+                            onChange={val => {
                                 value.colorOptions.gradient = val;
                                 onChange(JSON.stringify(value))
                             }}
@@ -310,8 +317,8 @@ const BackgroundControl = props => {
                         <ColorControl
                             label={__('Background', 'maxi-blocks')}
                             color={value.colorOptions.color}
-                            defaultColor={value.colorOptions.defaultColor}
-                            onColorChange={val => {
+                            defaultColor={defaultValue.colorOptions.color}
+                            onChange={val => {
                                 value.colorOptions.color = val;
                                 onChange(JSON.stringify(value))
                             }}
@@ -524,11 +531,13 @@ const BackgroundControl = props => {
                                             <SizeControl
                                                 label={__('Y-axis', 'maxi-blocks')}
                                                 unit={value.backgroundOptions[selector].positionOptions.widthUnit}
+                                                defaultUnit={defaultValue.backgroundOptions[0].positionOptions.widthUnit}
                                                 onChangeUnit={val => {
                                                     value.backgroundOptions[selector].positionOptions.widthUnit = val;
                                                     onChange(JSON.stringify(value));
                                                 }}
                                                 value={value.backgroundOptions[selector].positionOptions.width}
+                                                defaultValue={defaultValue.backgroundOptions[0].positionOptions.width}
                                                 onChangeValue={val => {
                                                     value.backgroundOptions[selector].positionOptions.width = val;
                                                     onChange(JSON.stringify(value));
@@ -537,11 +546,13 @@ const BackgroundControl = props => {
                                             <SizeControl
                                                 label={__('X-axis', 'maxi-blocks')}
                                                 unit={value.backgroundOptions[selector].positionOptions.heightUnit}
+                                                defaultUnit={defaultValue.backgroundOptions[0].positionOptions.heightUnit}
                                                 onChangeUnit={val => {
                                                     value.backgroundOptions[selector].positionOptions.heightUnit = val;
                                                     onChange(JSON.stringify(value));
                                                 }}
                                                 value={value.backgroundOptions[selector].positionOptions.height}
+                                                defaultValue={defaultValue.backgroundOptions[0].positionOptions.height}
                                                 onChangeValue={val => {
                                                     value.backgroundOptions[selector].positionOptions.height = val;
                                                     onChange(JSON.stringify(value));

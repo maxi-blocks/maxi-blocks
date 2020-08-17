@@ -20,26 +20,32 @@ import { isObject } from 'lodash';
  */
 const ZIndexControl = props => {
     const {
-        zindex,
+        zIndex,
+        defaultZIndex,
         onChange,
         className,
         breakpoint
     } = props;
 
     const classes = classnames(
-        'maxi-zindex-control',
+        'maxi-zIndex-control',
         className
     )
 
-    const value = !isObject(zindex) ?
-        JSON.parse(zindex) :
-        zindex;
+    const value = !isObject(zIndex) ?
+        JSON.parse(zIndex) :
+        zIndex;
+
+    const defaultValue = !isObject(defaultZIndex) ?
+        JSON.parse(defaultZIndex) :
+        defaultZIndex;
 
     return (
-        <__experimentalNumberControl 
+        <__experimentalNumberControl
             label={__('Z-index', 'maxi-blocks')}
             className={classes}
             value={getLastBreakpointValue(value, 'z-index', breakpoint)}
+            defaultValue={defaultValue[breakpoint]['z-index']}
             onChange={val => {
                 value[breakpoint]['z-index'] = val;
                 onChange(JSON.stringify(value))

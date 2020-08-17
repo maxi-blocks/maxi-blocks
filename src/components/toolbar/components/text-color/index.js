@@ -49,7 +49,7 @@ const TextColor = props => {
         return `rgba(${val.rgb.r},${val.rgb.g},${val.rgb.b},${val.rgb.a})`;
     }
 
-    let value = !isObject(typography) ?
+    const value = !isObject(typography) ?
         JSON.parse(typography) :
         typography;
 

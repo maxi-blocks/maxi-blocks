@@ -35,7 +35,8 @@ import {
     TextListOptions,
     TextOptions,
     PaddingMargin,
-    Size
+    Size,
+    __experimentalColumnMover
 } from './components/';
 
 /**
@@ -149,6 +150,11 @@ const MaxiToolbar = props => {
                     >
                         <Mover
                             clientId={clientId}
+                            blockName={name}
+                        />
+                        <__experimentalColumnMover
+                            clientId={clientId}
+                            blockName={name}
                         />
                         <DividerColor
                             blockName={name}

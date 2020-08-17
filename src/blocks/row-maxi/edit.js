@@ -203,6 +203,7 @@ class edit extends MaxiBlock {
                     background: background,
                 }}
                 allowedBlocks={ALLOWED_BLOCKS}
+                orientation="horizontal"
                 renderAppender={
                     !hasInnerBlock ?
                         () => (

@@ -1,11 +1,16 @@
 /**
  * WordPress dependencies
  */
-const { Component } = wp.element;
+const { useState } = wp.element;
 const {
     select,
     subscribe
 } = wp.data;
+
+/**
+ * External dependencies
+ */
+import { isObject } from 'lodash';
 
 /**
  * General
@@ -79,30 +84,56 @@ document.addEventListener(
         window.addEventListener(
             'mouseover',
             e => {
+                let pathItem = null;
+
                 if (
-                    e.target.classList.contains('wp-block-maxi-blocks-column-maxi') &&
-                    e.target.querySelector('.block-list-appender')
+                    Array.from(e.path).some((path, i) => {
+                        try {
+                            if (
+                                path.classList.contains('maxi-column-block') ||
+                                path.classList.contains('maxi-container-block')
+                            ) {
+                                pathItem = i;
+                                return true;
+                            }
+                        } catch (error) {
+                            pathItem = null;
+                            return false;
+                        }
+                    })
                 ) {
-                    Array.from(e.target.children).map(child =>
-                        child.classList.contains('block-list-appender') ?
-                            child.classList.add('block-list-appender--show') :
-                            null
-                    )
+                    e.path[pathItem].classList.add('maxi-block--hovered')
+                    const blockListAppenders = Array.from(e.path[pathItem].getElementsByClassName('block-list-appender'));
+                    blockListAppenders[blockListAppenders.length - 1]
+                        .classList.add('block-list-appender--show')
                 }
-            }
+            },
         )
         window.addEventListener(
             'mouseout',
             e => {
+                let pathItem = null;
+
                 if (
-                    e.target.classList.contains('maxi-block') &&
-                    e.target.querySelector('.block-list-appender')
+                    Array.from(e.path).some((path, i) => {
+                        try {
+                            if (
+                                path.classList.contains('maxi-column-block') ||
+                                path.classList.contains('maxi-container-block')
+                            ) {
+                                pathItem = i;
+                                return true;
+                            }
+                        } catch (error) {
+                            pathItem = null;
+                            return false;
+                        }
+                    })
                 ) {
-                    Array.from(e.target.children).map(child =>
-                        child.classList.contains('block-list-appender') ?
-                            child.classList.remove('block-list-appender--show') :
-                            null
-                    )
+                    e.path[pathItem].classList.remove('maxi-block--hovered')
+                    const blockListAppenders = Array.from(e.path[pathItem].getElementsByClassName('block-list-appender'));
+                    blockListAppenders[blockListAppenders.length - 1]
+                        .classList.remove('block-list-appender--show')
                 }
             }
         )

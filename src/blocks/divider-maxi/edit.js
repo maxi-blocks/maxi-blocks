@@ -223,7 +223,7 @@ class edit extends MaxiBlock {
                     {
                         !!showLine &&
                         <Fragment>
-                            <hr class="maxi-divider-block__divider" />
+                            <hr className="maxi-divider-block__divider" />
                         </Fragment>
                     }
                 </__experimentalBlock>

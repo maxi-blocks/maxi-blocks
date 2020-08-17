@@ -216,6 +216,7 @@ class edit extends MaxiBlock {
                                     TEMPLATES.map((template, i) => {
                                         return (
                                             <Button
+                                                key={`maxi-row-block--${instanceId}--${i}`}
                                                 className="maxi-row-block__template__button"
                                                 onClick={() => {
                                                     setAttributes({ rowPattern: i });

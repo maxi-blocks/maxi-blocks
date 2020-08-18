@@ -449,7 +449,7 @@ const SquareControl = props => {
                     text={
                         sync ?
                             __('Unsync', 'maxi-blocks') :
-                            __('Sync', 'maximaxi-blocks')}
+                            __('Sync', 'maxi-blocks')}
                 >
                     <Button
                         aria-label={__('Sync Units', 'maxi-blocks')}

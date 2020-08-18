@@ -85,6 +85,7 @@ class edit extends MaxiBlock {
     get getObject() {
         const {
             uniqueID,
+            isFirstOnHierarchy,
             background,
             backgroundHover
         } = this.props.attributes;
@@ -186,6 +187,7 @@ class edit extends MaxiBlock {
 
     get getContainerObject() {
         const {
+            isFirstOnHierarchy,
             sizeContainer,
         } = this.props.attributes;
 
@@ -193,7 +195,10 @@ class edit extends MaxiBlock {
             sizeContainer: { ...JSON.parse(sizeContainer) }
         };
 
-        return response;
+        if (isFirstOnHierarchy)
+            return response;
+
+        return {};
     }
 
     render() {
@@ -226,8 +231,7 @@ class edit extends MaxiBlock {
             <Inspector {...this.props} />,
             <__experimentalToolbar {...this.props} />,
             <__experimentalBreadcrumbs />,
-            <
-                Fragment>
+            <Fragment>
                 {
                     isFirstOnHierarchy && fullWidth &&
                     <__experimentalBlock.section

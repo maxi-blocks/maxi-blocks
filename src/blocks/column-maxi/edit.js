@@ -31,12 +31,12 @@ import {
 } from '../../components';
 import Inspector from './inspector';
 import {
+    getLastBreakpointValue,
     getBackgroundObject,
     getBoxShadowObject,
     getOpacityObject,
     getColumnSizeObject,
     getTransformObject,
-    getAlignmentTextObject,
     setBackgroundStyles
 } from '../../utils';
 
@@ -115,7 +115,6 @@ class edit extends MaxiBlock {
                 margin,
                 padding,
                 zIndex,
-                position,
                 display,
                 transform
             },
@@ -178,7 +177,6 @@ class edit extends MaxiBlock {
         const {
             margin,
             display,
-            position
         } = this.props.attributes;
 
         let response = {
@@ -230,8 +228,8 @@ class edit extends MaxiBlock {
             columnSize;
 
         const getColumnWidthDefault = () => {
-            if (columnValue[deviceType].size)
-                return `${columnValue[deviceType].size}%`;
+            if (getLastBreakpointValue(columnValue, 'size', deviceType))
+                return `${getLastBreakpointValue(columnValue, 'size', deviceType)}%`;
 
             return `${100 / originalNestedColumns.length}%`;
         }

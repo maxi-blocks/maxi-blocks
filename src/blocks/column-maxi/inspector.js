@@ -64,7 +64,6 @@ const Inspector = props => {
             extraClassName,
             zIndex,
             breakpoints,
-            position,
             display,
             transform
         },
@@ -323,17 +322,6 @@ const Inspector = props => {
                                             <__experimentalDisplayControl
                                                 display={display}
                                                 onChange={display => setAttributes({ display })}
-                                                breakpoint={deviceType}
-                                            />
-                                        )
-                                    },
-                                    {
-                                        label: __('Position', 'maxi-blocks'),
-                                        content: (
-                                            <__experimentalPositionControl
-                                                position={position}
-                                                defaultPosition={getDefaultProp(clientId, 'position')}
-                                                onChange={position => setAttributes({ position })}
                                                 breakpoint={deviceType}
                                             />
                                         )

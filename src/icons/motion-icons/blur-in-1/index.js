@@ -15,8 +15,8 @@ const motionBlurIn1 = () => {
     <SVG xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 72.75 65.25">
       <defs>
         <radialGradient id={uniqueID} cx="-546.03" cy="402.22" r="10.45" gradientTransform="matrix(1 0 0 -1 596.15 432.2)" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stop-color="#999" />
-          <stop offset="1" stop-color="#fff" stop-opacity="0" />
+          <stop offset="0" stopColor="#999" />
+          <stop offset="1" stopColor="#fff" stop-opacity="0" />
         </radialGradient>
       </defs>
       <Path fill={`url(#${uniqueID})`} d="M57.47 37.32V22.57H42.72v14.75z" data-name="Layer1 19 FILL" transform="translate(-.47 -.42)" />

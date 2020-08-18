@@ -171,53 +171,53 @@ export class BackEndResponsiveStyles {
                         continue;
 
                     if (breakpoint === 'general') {
-                        response += `body.maxi-blocks--active .${target}{`;
+                        response += `body.maxi-blocks--active .maxi-block.${target}{`;
                         response += this.getResponsiveStyles(content);
                         response += '}';
                     }
                     if (breakpoint === 'xxl') {
                         response += `
-                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xxl"] .${target}{`;
+                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xxl"] .maxi-block.${target}{`;
                         response += this.getResponsiveStyles(content);
                         response += '}';
                     }
                     if (breakpoint === 'xl') {
                         response += `
-                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xl"] .${target},
-                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="l"] .${target},
-                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="m"] .${target},
-                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .${target},
-                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .${target}{`;
+                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xl"] .maxi-block.${target},
+                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="l"] .maxi-block.${target},
+                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="m"] .maxi-block.${target},
+                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .maxi-block.${target},
+                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block.${target}{`;
                         response += this.getResponsiveStyles(content);
                         response += '}';
                     }
                     if (breakpoint === 'l') {
                         response += `
-                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="l"] .${target},
-                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="m"] .${target},
-                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .${target},
-                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .${target}{`;
+                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="l"] .maxi-block.${target},
+                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="m"] .maxi-block.${target},
+                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .maxi-block.${target},
+                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block.${target}{`;
                         response += this.getResponsiveStyles(content);
                         response += '}';
                     }
                     if (breakpoint === 'm') {
                         response += `
-                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="m"] .${target},
-                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .${target},
-                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .${target}{`;
+                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="m"] .maxi-block.${target},
+                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .maxi-block.${target},
+                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block.${target}{`;
                         response += this.getResponsiveStyles(content);
                         response += '}';
                     }
                     if (breakpoint === 's') {
                         response += `
-                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .${target},
-                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .${target}{`;
+                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .maxi-block.${target},
+                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block.${target}{`;
                         response += this.getResponsiveStyles(content);
                         response += '}';
                     }
                     if (breakpoint === 'xs') {
                         response += `
-                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .${target}{`;
+                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block.${target}{`;
                         response += this.getResponsiveStyles(content);
                         response += '}';
                     }

@@ -14,7 +14,7 @@ const motionFade = () => {
     return (
         <SVG xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <linearGradient id={uniqueID} gradientUnits="userSpaceOnUse" x1=".54" y1="12" x2="23.46" y2="12">
-                <stop offset="0" stop-color="#fff" />
+                <stop offset="0" stopColor="#fff" />
                 <stop offset="1" />
             </linearGradient>
             <circle cx="12" cy="12" r="11.5" opacity=".2" fill={`url(#${uniqueID})`} />

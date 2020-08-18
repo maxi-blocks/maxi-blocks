@@ -15,8 +15,8 @@ const motionBlurIn5 = () => {
     <SVG id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 0 73.92 65.71">
       <defs>
         <radialGradient id={uniqueID} cx="-881.34" cy="401.99" r="38.6" gradientTransform="matrix(1, 0, 0, -1, 926.4, 431.45)" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stop-color="#999" />
-          <stop offset="1" stop-color="#fff" stop-opacity="0" />
+          <stop offset="0" stopColor="#999" />
+          <stop offset="1" stopColor="#fff" stop-opacity="0" />
         </radialGradient>
       </defs>
       <g id="Layer1_16_FILL" data-name="Layer1 16 FILL">

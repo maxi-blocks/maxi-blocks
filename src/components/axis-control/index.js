@@ -185,7 +185,7 @@ const AxisControl = props => {
                         !disableAuto &&
                         <label
                             className="maxi-axis-control__content__item__checkbox"
-                            for={`${instanceId}-top`}>
+                            htmlFor={`${instanceId}-top`}>
                             <input
                                 type="checkbox"
                                 checked={getValue(0) === 'auto'}
@@ -228,7 +228,7 @@ const AxisControl = props => {
                         !disableAuto &&
                         <label
                             className="maxi-axis-control__content__item__checkbox"
-                            for={`${instanceId}-right`}>
+                            htmlFor={`${instanceId}-right`}>
                             <input
                                 type="checkbox"
                                 checked={getValue(1) === 'auto'}
@@ -271,7 +271,7 @@ const AxisControl = props => {
                         !disableAuto &&
                         <label
                             className="maxi-axis-control__content__item__checkbox"
-                            for={`${instanceId}-bottom`}>
+                            htmlFor={`${instanceId}-bottom`}>
                             <input
                                 type="checkbox"
                                 checked={getValue(2) === 'auto'}
@@ -314,7 +314,7 @@ const AxisControl = props => {
                         !disableAuto &&
                         <label
                             className="maxi-axis-control__content__item__checkbox"
-                            for={`${instanceId}-left`}>
+                            htmlFor={`${instanceId}-left`}>
                             <input
                                 type="checkbox"
                                 checked={getValue(3) === 'auto'}

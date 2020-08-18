@@ -248,12 +248,12 @@ class edit extends MaxiBlock {
                     isList &&
                     <RichText
                         className='maxi-text-block__content'
-                        identifier="values"
+                        identifier="content"
                         multiline="li"
                         __unstableMultilineRootTag={typeOfList}
                         tagName={typeOfList}
-                        onChange={(nextValues) =>
-                            setAttributes({ values: nextValues })
+                        onChange={content =>
+                            setAttributes({ content })
                         }
                         value={content}
                         placeholder={__('Write list…')}

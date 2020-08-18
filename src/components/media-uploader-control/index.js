@@ -46,16 +46,15 @@ const MediaUploader = props => {
     } = props;
 
     const classes = classnames(
-        mediaType === 'image' ? 'maxi-mediauploader-control' :'maxi-mediauploader-control__video' ,
+        'maxi-mediauploader-control',
+        `maxi-mediauploader-control__${mediaType}`,
         className
     );
 
+    `editor-post-featured-image__${!mediaID ? 'toggle' : 'preview'}`
     const mediaClasses = classnames(
-        mediaType === 'image' &&
-            `editor-post-featured-image__${!mediaID ? 'toggle' : 'preview'}`
-        ,
-        mediaType === 'video' &&
-            `maxi-mediauploader-control__video__${!mediaID ? 'toggle' : 'preview'}`
+        `maxi-mediauploader-control__${mediaID ? 'preview' : 'toggle'}`,
+        `maxi-mediauploader-control__${mediaType}__${mediaID ? 'preview' : 'toggle'}`
     );
 
     const onOpenImageModal = () => {
@@ -76,7 +75,11 @@ const MediaUploader = props => {
                 }
             >
                 <MediaUpload
-                    title={mediaType === 'image' ? __('Background image', 'maxi-blocks') : __('Background Video', 'maxi-blocks')}
+                    title={
+                        mediaType === 'image' ?
+                            __('Background image', 'maxi-blocks') :
+                            __('Background Video', 'maxi-blocks')
+                    }
                     onSelect={onSelectImage}
                     allowedTypes={allowedTypes}
                     value={mediaID}
@@ -124,6 +127,37 @@ const MediaUploader = props => {
                                     />
                                 </ResponsiveWrapper>
                             }
+                            {
+                                mediaType === 'video' &&
+                                !!mediaID &&
+                                imageData &&
+                                <ResponsiveWrapper
+                                    naturalWidth={
+                                        alternativeImage ?
+                                            alternativeImage.width :
+                                            imageData.media_details.width
+                                    }
+                                    naturalHeight={
+                                        alternativeImage ?
+                                            alternativeImage.height :
+                                            imageData.media_details.height
+                                    }
+                                    className='maxi-imageuploader-control__responsive-wrapper'
+                                >
+                                    <video
+                                        controls={true}
+                                        autoplay={false}
+                                        loop={false}
+                                        muted={true}
+                                        preload={true}
+                                        src={
+                                            !isNil(alternativeImage) ?
+                                                alternativeImage.source_url :
+                                                imageData.source_url
+                                        }
+                                    />
+                                </ResponsiveWrapper>
+                            }
                         </Button>
                     )}
                 />
@@ -133,7 +167,11 @@ const MediaUploader = props => {
                 imageData &&
                 <MediaUploadCheck>
                     <MediaUpload
-                        title={mediaType === 'image' ? __('Image', 'maxi-blocks') : __('Video', 'maxi-blocks')}
+                        title={
+                            mediaType === 'image' ?
+                                __('Image', 'maxi-blocks') :
+                                __('Video', 'maxi-blocks')
+                        }
                         onSelect={onSelectImage}
                         allowedTypes={allowedTypes}
                         value={mediaID}
@@ -143,8 +181,8 @@ const MediaUploader = props => {
                                 isDefault
                                 isLarge
                                 className={mediaType === 'image'
-                                ? 'maxi-mediauploader-control__replace'
-                                : 'maxi-mediauploader-control__video__replace'
+                                    ? 'maxi-mediauploader-control__replace'
+                                    : 'maxi-mediauploader-control__video__replace'
                                 }
                             >
                                 {replaceButton}
@@ -160,8 +198,8 @@ const MediaUploader = props => {
                         onClick={onRemoveImage}
                         isDestructive
                         className={mediaType === 'image'
-                        ? 'maxi-mediauploader-control__remove'
-                        : 'maxi-mediauploader-control__video__remove'
+                            ? 'maxi-mediauploader-control__remove'
+                            : 'maxi-mediauploader-control__video__remove'
                         }
                     >
                         {removeButton}

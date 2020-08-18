@@ -1,8 +1,8 @@
 {
   "label": "Background",
-  "backgroundOptions": [
+  "imageOptions": [
     {
-      "imageOptions": {
+      "imageData": {
         "mediaID": "",
         "mediaURL": ""
       },
@@ -26,12 +26,13 @@
       "attachment": "scroll"
     }
   ],
+  "clipPathImage": "",
   "videoOptions": {
     "mediaID": "",
     "mediaURL": "",
-    "width": "100",
+    "width": 100,
     "widthUnit": "%",
-    "height": "100",
+    "height": 100,
     "heightUnit": "%",
     "fill": "cover",
     "position": "unset",
@@ -39,12 +40,14 @@
     "loop": 0,
     "muted": 0,
     "controls": 0,
-    "preload": "metadata"
+    "preload": "metadata",
+    "clipPath": ""
   },
   "colorOptions": {
+    "colorPosition": "back",
     "color": "",
     "gradient": "",
-    "gradientAboveBackground": false
-  },
-  "clipPath": ""
+    "gradientAboveBackground": false,
+    "clipPath": ""
+  }
 }

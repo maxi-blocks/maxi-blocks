@@ -32,6 +32,11 @@ const BackgroundDisplayer = props => {
             className={classes}
         >
             {
+                value.colorOptions.colorPosition === 'back' &&
+                <div className='maxi-background-displayer__color' />
+            }
+            <div className='maxi-background-displayer__images' />
+            {
                 value.videoOptions.mediaURL &&
                 <div class="maxi-background-displayer__video-player">
                     <video
@@ -43,6 +48,10 @@ const BackgroundDisplayer = props => {
                         src={value.videoOptions.mediaURL}
                     />
                 </div>
+            }
+            {
+                value.colorOptions.colorPosition === 'front' &&
+                <div className='maxi-background-displayer__color' />
             }
         </div>
     )

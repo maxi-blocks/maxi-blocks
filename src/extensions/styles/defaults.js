@@ -477,26 +477,11 @@ export const size = {
 
 export const background = {
     "label": "Background",
-    "backgroundOptions": [
+    "imageOptions": [
         {
-            "imageOptions": {
+            "imageData": {
                 "mediaID": "",
-                "mediaURL": "",
-                "cropOptions": {
-                    "image": {
-                        "source_url": "",
-                        "width": "",
-                        "height": "",
-                    },
-                    "crop": {
-                        "unit": "",
-                        "x": 0,
-                        "y": 0,
-                        "width": 0,
-                        "height": 0,
-                        "scale": 100
-                    }
-                }
+                "mediaURL": ""
             },
             "sizeSettings": {
                 "size": "cover",
@@ -518,12 +503,13 @@ export const background = {
             "attachment": "scroll"
         }
     ],
+    "clipPathImage": "",
     "videoOptions": {
         "mediaID": "",
         "mediaURL": "",
-        "width": "100",
+        "width": 100,
         "widthUnit": "%",
-        "height": "100",
+        "height": 100,
         "heightUnit": "%",
         "fill": "cover",
         "position": "unset",
@@ -531,14 +517,71 @@ export const background = {
         "loop": 0,
         "muted": 0,
         "controls": 0,
-        "preload": "metadata"
+        "preload": "metadata",
+        "clipPath": ""
     },
     "colorOptions": {
+        "colorPosition": "back",
         "color": "",
         "gradient": "",
-        "gradientAboveBackground": false
+        "gradientAboveBackground": false,
+        "clipPath": ""
+    }
+}
+
+
+export const backgroundHover = {
+    "label": "Background",
+    "imageOptions": [
+        {
+            "imageData": {
+                "mediaID": "",
+                "mediaURL": ""
+            },
+            "sizeSettings": {
+                "size": "",
+                "widthUnit": "",
+                "width": "",
+                "heightUnit": "",
+                "height": ""
+            },
+            "repeat": "",
+            "positionOptions": {
+                "position": "",
+                "widthUnit": "",
+                "width": "",
+                "heightUnit": "",
+                "height": ""
+            },
+            "origin": "",
+            "clip": "",
+            "attachment": ""
+        }
+    ],
+    "clipPathImage": "",
+    "videoOptions": {
+        "mediaID": "",
+        "mediaURL": "",
+        "width": "",
+        "widthUnit": "",
+        "height": "",
+        "heightUnit": "",
+        "fill": "",
+        "position": "",
+        "autoplay": "",
+        "loop": "",
+        "muted": "",
+        "controls": "",
+        "preload": "",
+        "clipPath": ""
     },
-    "clipPath": ""
+    "colorOptions": {
+        "colorPosition": "",
+        "color": "",
+        "gradient": "",
+        "gradientAboveBackground": "",
+        "clipPath": ""
+    }
 };
 
 export const boxShadow = {
@@ -1077,72 +1120,6 @@ export const cropOptions = {
         "scale": 100
     }
 }
-
-export const backgroundHover = {
-    "label": "Background",
-    "backgroundOptions": [
-        {
-            "imageOptions": {
-                "mediaID": "",
-                "mediaURL": "",
-                "cropOptions": {
-                    "image": {
-                        "source_url": "",
-                        "width": "",
-                        "height": "",
-                    },
-                    "crop": {
-                        "unit": "",
-                        "x": 0,
-                        "y": 0,
-                        "width": 0,
-                        "height": 0,
-                        "scale": 100
-                    }
-                }
-            },
-            "sizeSettings": {
-                "size": "cover",
-                "widthUnit": "%",
-                "width": 100,
-                "heightUnit": "%",
-                "height": 100
-            },
-            "repeat": "no-repeat",
-            "positionOptions": {
-                "position": "center center",
-                "widthUnit": "%",
-                "width": 0,
-                "heightUnit": "%",
-                "height": 0
-            },
-            "origin": "padding-box",
-            "clip": "border-box",
-            "attachment": "scroll"
-        }
-    ],
-    "videoOptions": {
-        "mediaID": "",
-        "mediaURL": "",
-        "width": "100",
-        "widthUnit": "%",
-        "height": "100",
-        "heightUnit": "%",
-        "fill": "cover",
-        "position": "unset",
-        "autoplay": 0,
-        "loop": 0,
-        "muted": 0,
-        "controls": 0,
-        "preload": "metadata"
-    },
-    "colorOptions": {
-        "color": "",
-        "gradient": "",
-        "gradientAboveBackground": false
-    },
-    "clipPath": ""
-};
 
 export const __experimentalDivider = {
     "label": "Divider",

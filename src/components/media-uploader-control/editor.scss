@@ -2,44 +2,62 @@
     position: relative;
     margin-bottom: 8px;
 
-    &__video {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        &__replace,
-        &__remove
-        {
-            border: 2px solid #dddfe1;
-            color: #000 !important;
-            border-radius: 5px;
-            flex: 1;
-            text-align: center;
-            display: block;
-            box-shadow: none !important;
-            margin: 0 5px 10px 0;
-
-            &:last-child {
-                margin-right: 0;
-            }
-            &:hover {
-                border: 2px solid #dddfe1;
-                color: #000;
-            }
-        }
-        &__preview {
-            display: none;
-        }
-        &__toggle {
-            border: 1px dashed #a2aab2;
-            background-color: #edeff0;
-            min-height: 90px;
-            line-height: 20px;
-            padding: 8px 0;
-            width: 100%;
-            text-align: center;
-            display: block;
-            margin-bottom: 10px;
-        }
+    .maxi-mediauploader-control__toggle {
+        display: block;
+        width: 100%;
+        min-height: 90px;
+        background-color: #f0f0f0;
+        line-height: 20px;
+        border-radius: 2px;
+        padding: 8px 0;
+        text-align: center;
     }
+
+    .maxi-mediauploader-control__preview {
+        display: block;
+        width: 100%;
+        height: auto;
+        padding: 0;
+        transition: all 0.1s ease-out;
+    }
+
+    // &__video {
+    //     display: flex;
+    //     justify-content: space-between;
+    //     align-items: center;
+
+    //     &__replace,
+    //     &__remove {
+    //         border: 2px solid #dddfe1;
+    //         color: #000 !important;
+    //         border-radius: 5px;
+    //         flex: 1;
+    //         text-align: center;
+    //         display: block;
+    //         box-shadow: none !important;
+    //         margin: 0 5px 10px 0;
+
+    //         &:last-child {
+    //             margin-right: 0;
+    //         }
+    //         &:hover {
+    //             border: 2px solid #dddfe1;
+    //             color: #000;
+    //         }
+    //     }
+    //     &__preview {
+    //         // display: none;
+    //     }
+    //     &__toggle {
+    //         border: 1px dashed #a2aab2;
+    //         background-color: #edeff0;
+    //         min-height: 90px;
+    //         line-height: 20px;
+    //         padding: 8px 0;
+    //         width: 100%;
+    //         text-align: center;
+    //         display: block;
+    //         margin-bottom: 10px;
+    //     }
+    // }
 }

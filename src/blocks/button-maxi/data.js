@@ -154,9 +154,9 @@ export const typography = {
 
 export const background = {
     "label": "Background",
-    "backgroundOptions": [
+    "imageOptions": [
         {
-            "imageOptions": {
+            "imageData": {
                 "mediaID": "",
                 "mediaURL": ""
             },

@@ -19,7 +19,7 @@ import ToolbarPopover from '../toolbar-popover';
 /**
  * External dependencies
  */
-import { 
+import {
     isEmpty,
     trim
 } from 'lodash';

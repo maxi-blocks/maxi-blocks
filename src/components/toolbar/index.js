@@ -31,12 +31,10 @@ import {
     TextItalic,
     TextLevel,
     TextLink,
-    TextList,
     TextListOptions,
     TextOptions,
     PaddingMargin,
     Size,
-    __experimentalTextH1
 } from './components/';
 
 /**
@@ -223,12 +221,6 @@ const MaxiToolbar = props => {
                             onChange={content => setAttributes({ content })}
                             node={anchorRef}
                         />
-                        <__experimentalTextH1
-                            blockName={name}
-                            content={content}
-                            onChange={content => setAttributes({ content })}
-                            node={anchorRef}
-                        />
                         <TextItalic
                             blockName={name}
                             content={content}
@@ -252,22 +244,16 @@ const MaxiToolbar = props => {
                             onChange={content => setAttributes({ content })}
                             node={anchorRef}
                         />
-                        <TextList
-                            blockName={name}
-                            isList={isList}
-                            content={content}
-                            onChange={(isList, content) =>
-                                setAttributes({
-                                    isList,
-                                    content
-                                })}
-                        />
                         <TextListOptions
                             blockName={name}
                             isList={isList}
                             content={content}
                             typeOfList={typeOfList}
-                            onChange={content => setAttributes({ content })}
+                            onChange={(isList, typeOfList, content) => setAttributes({
+                                isList,
+                                typeOfList,
+                                content,
+                            })}
                             node={anchorRef}
                         />
                         <BackgroundColor

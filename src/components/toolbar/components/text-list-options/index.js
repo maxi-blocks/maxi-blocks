@@ -3,7 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
-const { Button } = wp.components;
+const { IconButton } = wp.components;
 const { useSelect } = wp.data;
 const {
     __unstableIndentListItems,
@@ -18,10 +18,20 @@ const {
 import ToolbarPopover from '../toolbar-popover';
 
 /**
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
+
+/**
  * Styles and icons
  */
 import './editor.scss';
-import { toolbarType } from '../../../../icons';
+import {
+    toolbarIndentList,
+    toolbarOutdentList,
+    toolbarOrderedList,
+    toolbarUnorderedList,
+} from '../../../../icons';
 
 /**
  * TextListOptions
@@ -36,8 +46,7 @@ const TextListOptions = props => {
         node
     } = props;
 
-
-    if (blockName != 'maxi-blocks/text-maxi' || !isList)
+    if (blockName != 'maxi-blocks/text-maxi')
         return null;
 
     const { formatValue } = useSelect(
@@ -63,43 +72,72 @@ const TextListOptions = props => {
         [node, content]
     )
 
-    const onClick = type => {
+    const getContent = content => {
+
+        let newContent = content;
+
+        // if (isList) {
+        //     newContent = content
+        //         .replace(/<li>/gi, '')
+        //         .replace(/<\/li>(?=.*<\/li>)/gi, '<br>')
+        //         .replace(/<\/li>/gi, '');
+        // }
+
+        if (!isList) {
+            newContent = '';
+            newContent = `<li>${content.replace(/<br>/gi, '</li><li>')}</li>`;
+        }
+
+        return newContent;
+    }
+
+    const onChangeIndent = type => {
         let newFormat = '';
 
         if (type === 'indent')
             newFormat = __unstableIndentListItems(formatValue, { type: typeOfList });
+
         if (type === 'outdent')
-            newFormat = __unstableOutdentListItems(formatValue);
+            newFormat = __unstableOutdentListItems(formatValue, { type: typeOfList });
 
         const newContent = toHTMLString({
             value: newFormat,
             multilineTag: 'li',
-
         })
 
-        onChange(newContent)
+        onChange(true, typeOfList, newContent)
     }
 
     return (
         <ToolbarPopover
             className='toolbar-item__list-options'
             tooltip={__('Text options', 'maxi-blocks')}
-            icon={toolbarType}
+            icon={toolbarUnorderedList}
             content={(
-                <Fragment>
-                    <Button
+                <div className='toolbar-item__list-options__items'>
+                    <IconButton
                         className='toolbar-item__list-options__button'
-                        onClick={() => onClick('indent')}
-                    >
-                        Right
-                    </Button>
-                    <Button
+                        icon={toolbarOrderedList}
+                        onClick={() => onChange(true, 'ol', getContent(content))}
+                        aria-pressed={isList && typeOfList === 'ol'}
+                    />
+                    <IconButton
                         className='toolbar-item__list-options__button'
-                        onClick={() => onClick('outdent')}
-                    >
-                        Left
-                    </Button>
-                </Fragment>
+                        icon={toolbarUnorderedList}
+                        onClick={() => onChange(true, 'ul', getContent(content))}
+                        aria-pressed={isList && typeOfList === 'ul'}
+                    />
+                    <IconButton
+                        className='toolbar-item__list-options__button'
+                        icon={toolbarOutdentList}
+                        onClick={() => onChangeIndent('outdent')}
+                    />
+                    <IconButton
+                        className='toolbar-item__list-options__button'
+                        icon={toolbarIndentList}
+                        onClick={() => onChangeIndent('indent')}
+                    />
+                </div>
             )}
         />
     )

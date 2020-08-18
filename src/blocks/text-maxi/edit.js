@@ -227,8 +227,8 @@ class edit extends MaxiBlock {
                                                 'p',
                                             content: block.attributes.content,
                                             typography: (block.name === 'core/heading') ?
-                                                JSON.stringify(Object.assign(JSON.parse(this.props.attributes.typography), defaultTypography[`h${block.attributes.level}`])) :
-                                                this.props.attributes.typography,
+                                                JSON.stringify(Object.assign(JSON.parse(typography), defaultTypography[`h${block.attributes.level}`])) :
+                                                typography,
                                         }
                                 )
 

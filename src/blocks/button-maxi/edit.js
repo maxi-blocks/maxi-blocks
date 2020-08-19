@@ -15,7 +15,7 @@ import {
     getBackgroundObject,
     getBoxShadowObject,
     getAlignmentFlexObject,
-    getTransfromObject,
+    getTransformObject,
     getAlignmentTextObject,
     getOpacityObject,
 } from '../../utils';
@@ -53,7 +53,7 @@ class edit extends MaxiBlock {
         const response = {
             alignment: { ...getAlignmentFlexObject(JSON.parse(alignment)) },
             zIndex: { ...JSON.parse(zIndex) },
-            transform: { ...getTransfromObject(JSON.parse(transform)) }
+            transform: { ...getTransformObject(JSON.parse(transform)) }
         };
 
         return response;

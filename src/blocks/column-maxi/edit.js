@@ -31,12 +31,12 @@ import {
 } from '../../components';
 import Inspector from './inspector';
 import {
+    getLastBreakpointValue,
     getBackgroundObject,
     getBoxShadowObject,
     getOpacityObject,
     getColumnSizeObject,
-    getTransfromObject,
-    getAlignmentTextObject,
+    getTransformObject,
     setBackgroundStyles
 } from '../../utils';
 
@@ -115,7 +115,6 @@ class edit extends MaxiBlock {
                 margin,
                 padding,
                 zIndex,
-                position,
                 display,
                 transform
             },
@@ -132,10 +131,8 @@ class edit extends MaxiBlock {
             opacity: { ...getOpacityObject(JSON.parse(opacity)) },
             zIndex: { ...JSON.parse(zIndex) },
             columnSize: { ...getColumnSizeObject(JSON.parse(columnSize)) },
-            position: { ...JSON.parse(position) },
-            positionOptions: { ...JSON.parse(position).options },
             display: { ...JSON.parse(display) },
-            transform: { ...getTransfromObject(JSON.parse(transform)) },
+            transform: { ...getTransformObject(JSON.parse(transform)) },
             column: {
                 label: "Column",
                 general: {},
@@ -179,12 +176,12 @@ class edit extends MaxiBlock {
     get getResizerObject() {
         const {
             margin,
-            display
+            display,
         } = this.props.attributes;
 
         let response = {
             margin: { ...JSON.parse(margin) },
-            display: { ...JSON.parse(display) }
+            display: { ...JSON.parse(display) },
         };
 
         return response;
@@ -231,8 +228,8 @@ class edit extends MaxiBlock {
             columnSize;
 
         const getColumnWidthDefault = () => {
-            if (columnValue[deviceType].size)
-                return `${columnValue[deviceType].size}%`;
+            if (getLastBreakpointValue(columnValue, 'size', deviceType))
+                return `${getLastBreakpointValue(columnValue, 'size', deviceType)}%`;
 
             return `${100 / originalNestedColumns.length}%`;
         }

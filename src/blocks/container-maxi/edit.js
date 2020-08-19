@@ -29,7 +29,7 @@ import {
     getShapeDividerObject,
     getShapeDividerSVGObject,
     getArrowObject,
-    getTransfromObject,
+    getTransformObject,
     setBackgroundStyles
 } from '../../utils'
 
@@ -85,6 +85,7 @@ class edit extends MaxiBlock {
     get getObject() {
         const {
             uniqueID,
+            isFirstOnHierarchy,
             background,
             backgroundHover
         } = this.props.attributes;
@@ -132,7 +133,7 @@ class edit extends MaxiBlock {
             position: { ...JSON.parse(position) },
             positionOptions: { ...JSON.parse(position).options },
             display: { ...JSON.parse(display) },
-            transform: { ...getTransfromObject(JSON.parse(transform)) },
+            transform: { ...getTransformObject(JSON.parse(transform)) },
             container: {
                 label: 'Container',
                 general: {},
@@ -186,6 +187,7 @@ class edit extends MaxiBlock {
 
     get getContainerObject() {
         const {
+            isFirstOnHierarchy,
             sizeContainer,
         } = this.props.attributes;
 
@@ -193,7 +195,10 @@ class edit extends MaxiBlock {
             sizeContainer: { ...JSON.parse(sizeContainer) }
         };
 
-        return response;
+        if (isFirstOnHierarchy)
+            return response;
+
+        return {};
     }
 
     render() {
@@ -226,8 +231,7 @@ class edit extends MaxiBlock {
             <Inspector {...this.props} />,
             <__experimentalToolbar {...this.props} />,
             <__experimentalBreadcrumbs />,
-            <
-                Fragment>
+            <Fragment>
                 {
                     isFirstOnHierarchy && fullWidth &&
                     <__experimentalBlock.section

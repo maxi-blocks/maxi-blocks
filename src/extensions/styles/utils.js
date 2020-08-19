@@ -331,7 +331,7 @@ export const getArrowObject = arrow => {
     return response;
 }
 
-export const getTransfromObject = transform => {
+export const getTransformObject = transform => {
     const response = {
         label: 'Transform',
         general: {

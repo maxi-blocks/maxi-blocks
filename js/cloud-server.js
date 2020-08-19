@@ -6,7 +6,6 @@ if (typeof ajaxurl === 'undefined') { ajaxurl = gx_wl_options_for_js.gx_ajax_url
 
 
 jQuery(document).ready(function($) {
-  console.log('START');
   function isEmpty(obj) {
       for(var key in obj) {
           if(obj.hasOwnProperty(key))
@@ -77,9 +76,7 @@ jQuery(document).ready(function($) {
     // main function
 
     $('.components-button.maxi-block-library__modal-button').on('click', function() {
-      console.log('button clicked');
       setTimeout(function(){
-          console.log('iframe loaded');
           onIframeLoad();
       }, 3000);
     });
@@ -87,8 +84,6 @@ jQuery(document).ready(function($) {
     function onIframeLoad() {
       let frame = document.getElementById('maxi-block-library__modal-iframe');
       if(typeof(frame) != 'undefined' && frame != null) {
-
-          console.log('iframe loaded !!!');
 
         jQuery.ajax({
             type: 'GET',
@@ -144,7 +139,7 @@ jQuery(document).ready(function($) {
            // console.log('jQuery.type(e.data) '+jQuery.type(e.data) );
            // console.log('RESPONSE '+e.data);
             if (jQuery.type(e.data) === 'object') { // check if the response is text
-              console.log('e.data: ' + JSON.stringify(e.data));
+              //console.log('e.data: ' + JSON.stringify(e.data));
               let action_type = e.data.action;
               if (action_type === 'import') {
                 jQuery('.maxi-block-library__modal__loading_message p').text('Saving...');
@@ -207,7 +202,7 @@ jQuery(document).ready(function($) {
                             let results_uniq_json = JSON.stringify(results_uniq);
 
                             //console.log('external url '+external_url);
-                          //  console.log('results_uniq_json ' + results_uniq_json);
+                            //console.log('results_uniq_json ' + results_uniq_json);
 
                             const {
                                 getBlock,
@@ -226,7 +221,7 @@ jQuery(document).ready(function($) {
                                     'maxi_images_to_upload': results_uniq_json,
                                 },
                                 success: function(data) {
-                                    console.log('AJAX ok');
+                                    //AJAX ok');
                                     // console.log(data);
                                     let data_array = data.split(',');
                                    // console.log(data_array);
@@ -249,7 +244,7 @@ jQuery(document).ready(function($) {
                                    // console.log('final JSON content: ' + final_json_content);
 
                                     if(action_type === 'insert') {
-                                      console.log('INSERTING BLOCKS');
+                                      //console.log('INSERTING BLOCKS');
                                       jQuery('.maxi-block-library__modal__loading_message p').text('Done!');
                                       wp.data.dispatch('core/block-editor').replaceBlocks(
                                         clientId,
@@ -263,7 +258,7 @@ jQuery(document).ready(function($) {
                                     else if(action_type === 'import') {
                                       let new_reusable_block_title = response.title;
                                       //console.log('title: '+new_reusable_block_title);
-                                      console.log('Import to the library!');
+                                      //console.log('Import to the library!');
                                       jQuery.ajax({
                                           type: 'POST',
                                           url: ajaxurl,
@@ -274,38 +269,38 @@ jQuery(document).ready(function($) {
                                           },
                                           success: function(data) {
                                            // console.log(data);
-                                            console.log('Imported');
+                                            //console.log('Imported');
                                             jQuery('.maxi-block-library__modal__loading_message p').text('Saved to Re-usable Blocks Library');
                                             setTimeout(function(){ jQuery('.maxi-block-library__modal__loading_message').addClass('maxi-block__item--hidden'); }, 3000);
                                           },
                                           error: function(data) {
-                                              console.log('Re-usable import error');
-                                              console.log(data);
+                                              //console.log('Re-usable import error');
+                                              //console.log(data);
                                           }
                                       }); //jQuery.ajax({
                                     } // else if(action_type === 'import')
                                     else {
-                                      console.log('Error: no action to do');
+                                      //console.log('Error: no action to do');
                                     }
 
                                 },
                                 error: function(data) {
-                                    console.log('AJAX error');
-                                    console.log(data);
+                                    //console.log('AJAX error');
+                                    //console.log(data);
                                 }
                             }); // ajax
                         //}
                     } //  if (response)
                 } // if (~e.data.indexOf('wp_block'))
               else if (~e.data.json.indexOf('svg') && full_stop !== 1) { // svg icon
-                  console.log('INSERTING SVG');
+                  //console.log('INSERTING SVG');
                   const {
                       canUserUseUnfilteredHTML
                   } = wp.data.select('core/editor');
                   const clientId = wp.data.select('core/block-editor').getSelectedBlock().clientId;
                   let final_svg_content = JSON.parse(e.data.json);
                   jQuery('.maxi-block-library__modal__loading_message p').text('Done!');
-                  console.log(final_svg_content);
+                  //console.log(final_svg_content);
                  // final_svg_content = '<!-- wp:maxi-blocks/icon-maxi {"content":"'+final_svg_content +'}<!-- /wp:maxi-blocks/icon-maxi -->';
                   if(full_stop !== 1) {
                     wp.data.dispatch('core/block-editor').replaceBlocks(
@@ -320,12 +315,10 @@ jQuery(document).ready(function($) {
                   full_stop = 1;
               }
               else { // FA icon
-                console.log('FA icon!');
                 const {
                     canUserUseUnfilteredHTML
                 } = wp.data.select('core/editor');
                 const clientId = wp.data.select('core/block-editor').getSelectedBlock().clientId;
-                console.log('e.data.fatype '+e.data.fatype);
                 final_fa_content = '<i class="maxi-fa-icon ' + e.data.fatype +' '+ e.data.json +'"></i>';
                 final_fa_block = '<!-- wp:maxi-blocks/icon-maxi -->' + final_fa_content +'<!-- /wp:maxi-blocks/icon-maxi -->';
                 if(full_stop !== 1) {
@@ -348,7 +341,6 @@ jQuery(document).ready(function($) {
   //  ddd_full_stop = 0;
 
     $('.maxi-cloud-modal .components-button.components-icon-button').on('click', function() {
-        console.log('close');
         $('.components-modal__screen-overlay').remove();
     });
 

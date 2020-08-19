@@ -1,4 +1,7 @@
 .toolbar-item__popover {
+    &__alignment {
+        min-width: 300px;
+    }
     .maxi-alignment-control {
         .components-radio-control__option {
             border-color: #7a7c85;

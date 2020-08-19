@@ -252,18 +252,12 @@ class edit extends MaxiBlock {
                         multiline="li"
                         __unstableMultilineRootTag={typeOfList}
                         tagName={typeOfList}
-                        onChange={content =>
-                            setAttributes({ content })
-                        }
+                        onChange={content =>setAttributes({ content })}
                         value={content}
                         placeholder={__('Write list…')}
                         onMerge={mergeBlocks}
-                        onSplit={(value) =>
-                            createBlock(name, { ...this.props.attributes, values: value })
-                        }
-                        __unstableOnSplitMiddle={(value) =>
-                            createBlock('maxi-blocks/text-maxi', { ...this.props.attributes, values: value })
-                        }
+                        onSplit={(value) => createBlock(name, { ...this.props.attributes, values: value })}
+                        __unstableOnSplitMiddle={() => createBlock('maxi-blocks/text-maxi')}
                         onReplace={onReplace}
                         onRemove={() => onReplace([])}
                         start={listStart}
@@ -271,7 +265,7 @@ class edit extends MaxiBlock {
                         type={typeOfList}
                     >
                         {
-                            ({ value, onChange, onFocus }) => {
+                            ({ value, onChange }) => {
                                 if (isSelected)
                                     return (
                                         <Fragment>

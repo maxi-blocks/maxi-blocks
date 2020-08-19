@@ -11,8 +11,9 @@ import ToolbarPopover from '../toolbar-popover';
 import __experimentalAxisControl from '../../../axis-control';
 
 /**
- * Icons
+ * Styles & Icons
  */
+import './editor.scss';
 import { toolbarPadding } from '../../../../icons';
 
 /**
@@ -34,7 +35,7 @@ const PaddingMargin = props => {
             tooltip={__('Padding & Margin', 'maxi-blocks')}
             icon={toolbarPadding}
             content={(
-                <Fragment>
+                <div className='toolbar-item__popover__padding-margin'>
                     <__experimentalAxisControl
                         values={padding}
                         onChange={padding => onChangePadding(padding)}
@@ -49,7 +50,7 @@ const PaddingMargin = props => {
                             breakpoint={breakpoint}
                         />
                     }
-                </Fragment>
+                </div>
             )}
         />
     )

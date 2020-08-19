@@ -1,5 +1,7 @@
 .toolbar-item__popover {
     &__column-pattern {
+        min-width: 300px;
+
         &__template-button {
             flex: 33.33%;
             width: 33.33%;

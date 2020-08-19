@@ -62,35 +62,35 @@ const DividerAlignment = props => {
             icon={toolbarDividerAlign}
             advancedOptions='line'
             content={(
-                <Fragment>
+                <div className='toolbar-item__popover__alignment'>
                     <SelectControl
-                            label={__('Line Orientation', 'maxi-blocks')}
-                            options={[
-                                { label: __('Horizontal', 'maxi-blocks'), value: 'horizontal' },
-                                { label: __('Vertical', 'maxi-blocks'), value: 'vertical' },
-                            ]}
-                            value={lineOrientation}
-                            onChange={(value) => onChangeOrientation(value) }
-                        />
-                        {
-                            ( lineOrientation === 'vertical' ) &&
-                                <SelectControl
-                                    label={__('Vertical Position', 'maxi-blocks')}
-                                    options={getVerticalOptions()}
-                                    value={lineVertical}
-                                    onChange={(value) => onChangeVertical(value) }
-                                />
-                        }
-                        {
-                            ( lineOrientation === 'horizontal' ) &&
-                                <RadioControl
-                                    className='maxi-alignment-control'
-                                    selected={lineHorizontal}
-                                    options={getHorizontalOptions()}
-                                    onChange={(value) => onChangeHorizontal(value) }
-                                />
-                        }
-                    </Fragment>
+                        label={__('Line Orientation', 'maxi-blocks')}
+                        options={[
+                            { label: __('Horizontal', 'maxi-blocks'), value: 'horizontal' },
+                            { label: __('Vertical', 'maxi-blocks'), value: 'vertical' },
+                        ]}
+                        value={lineOrientation}
+                        onChange={(value) => onChangeOrientation(value) }
+                    />
+                    {
+                        ( lineOrientation === 'vertical' ) &&
+                            <SelectControl
+                                label={__('Vertical Position', 'maxi-blocks')}
+                                options={getVerticalOptions()}
+                                value={lineVertical}
+                                onChange={(value) => onChangeVertical(value) }
+                            />
+                    }
+                    {
+                        ( lineOrientation === 'horizontal' ) &&
+                            <RadioControl
+                                className='maxi-alignment-control'
+                                selected={lineHorizontal}
+                                options={getHorizontalOptions()}
+                                onChange={(value) => onChangeHorizontal(value) }
+                            />
+                    }
+                </div>
             )}
         />
     )

@@ -18,8 +18,9 @@ import ToolbarPopover from '../toolbar-popover';
 import { isObject } from 'lodash';
 
 /**
- * Icons
+ * Styles & Icons
  */
+import './editor.scss';
 import { toolbarSizing } from '../../../../icons';
 
 /**
@@ -50,7 +51,7 @@ const Size = props => {
             icon={toolbarSizing}
             advancedoptions='width height'
             content={(
-                <Fragment>
+                <div className='toolbar-item__popover__size'>
                     {
                         isFirstOnHierarchy &&
                         <RadioControl
@@ -90,7 +91,7 @@ const Size = props => {
                             onChangeSize(JSON.stringify(value));
                         }}
                     />
-                </Fragment>
+                </div>
             )}
         />
     )

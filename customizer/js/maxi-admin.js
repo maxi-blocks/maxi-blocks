@@ -175,7 +175,6 @@ jQuery(function($) {
 
 
         let device = $('#customize-footer-actions .devices .active').attr('data-device');
-        console.log('value '+$('#customize-control-'+id+'FS'+selectedTheme+'-'+device+' input').val());
         let fsValue = $('#customize-control-'+id+'FS'+selectedTheme+'-'+device+' input').val();
         let weightValue = $('#customize-control-'+id+'Weight'+selectedTheme+'-'+device+' input').val();
         let transformValue = $('#customize-control-'+id+'Transform'+selectedTheme+'-'+device+' input').val();
@@ -190,10 +189,8 @@ jQuery(function($) {
         let letterSpcInput = parseFloat(letterSpcValue);
 
         let activeFStype =  getTextFromString(fsValue) ? getTextFromString(fsValue) : 'px';
-        console.log('value 2'+activeFStype);
         let activelineHgtType = getTextFromString(lineHgtValue);
         let activeletterSpcType = getTextFromString(letterSpcValue);
-        console.log('value h'+activelineHgtType);
         let list = maxi_ajax_object.list;
         let tag = tagName.includes('p') ? 'p' : tagName;
 
@@ -420,7 +417,6 @@ jQuery(function($) {
     $(document).ready(function () {
         var ready = 'pending';
         // initHeadingBlocksBGColors();
-        console.log('before wp.customize.bind');
         wp.customize.bind('pane-contents-reflowed', function () { // listen rebuilding event
             // this will get only those which are for selected theme
             if ( wp.customize.previewer.deferred.active.state() === 'pending') {

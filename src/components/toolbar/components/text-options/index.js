@@ -69,7 +69,7 @@ const TextOptions = props => {
             advancedOptions='typography'
             content={(
                 <div
-                    class="toolbar-item__popover__wrapper toolbar-item__popover__font-options"
+                    class="toolbar-item__popover__font-options"
                 >
                     <div
                         className="toolbar-item__popover__font-options__font"

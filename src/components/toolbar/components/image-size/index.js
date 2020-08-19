@@ -30,8 +30,9 @@ import {
 } from 'lodash';
 
 /**
- * Icons
+ * Styles & Icons
  */
+import './editor.scss';
 import { toolbarSizing } from '../../../../icons';
 
 /**
@@ -97,7 +98,7 @@ const ImageSize = props => {
             tooltip={__('Image size', 'maxi-blocks')}
             icon={toolbarSizing}
             content={(
-                <Fragment>
+                <div className='toolbar-item__popover__image-size'>
                     <SelectControl
                         label={__('Image Size', 'maxi-blocks')}
                         value={size || size == 'custom' ? size : 'full'} // is still necessary?
@@ -149,7 +150,7 @@ const ImageSize = props => {
                             Add Caption
                     </Button>
                     </div>
-                </Fragment>
+                </div>
             )}
         />
     )

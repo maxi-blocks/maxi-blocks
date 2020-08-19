@@ -111,29 +111,30 @@ const TextListOptions = props => {
     return (
         <ToolbarPopover
             className='toolbar-item__list-options'
-            tooltip={__('Text options', 'maxi-blocks')}
+            tooltip={__('List options', 'maxi-blocks')}
             icon={toolbarUnorderedList}
+            advancedOptions='list options'
             content={(
-                <div className='toolbar-item__list-options__items'>
+                <div className='toolbar-item__popover__list-options'>
                     <IconButton
-                        className='toolbar-item__list-options__button'
+                        className='toolbar-item__popover__list-options__button'
                         icon={toolbarOrderedList}
                         onClick={() => onChange(true, 'ol', getContent(content))}
                         aria-pressed={isList && typeOfList === 'ol'}
                     />
                     <IconButton
-                        className='toolbar-item__list-options__button'
+                        className='toolbar-item__popover__list-options__button'
                         icon={toolbarUnorderedList}
                         onClick={() => onChange(true, 'ul', getContent(content))}
                         aria-pressed={isList && typeOfList === 'ul'}
                     />
                     <IconButton
-                        className='toolbar-item__list-options__button'
+                        className='toolbar-item__popover__list-options__button'
                         icon={toolbarOutdentList}
                         onClick={() => onChangeIndent('outdent')}
                     />
                     <IconButton
-                        className='toolbar-item__list-options__button'
+                        className='toolbar-item__popover__list-options__button'
                         icon={toolbarIndentList}
                         onClick={() => onChangeIndent('indent')}
                     />

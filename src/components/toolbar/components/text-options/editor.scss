@@ -1,5 +1,10 @@
 .toolbar-item__popover {
+    &__advanced-button {
+        top: -20px !important;
+        left: 105% !important;
+    }
     &__font-options {
+        min-width: 310px;
         &__font {
             display: flex;
             width: 100%;

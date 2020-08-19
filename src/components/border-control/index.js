@@ -152,7 +152,6 @@ const BorderControl = props => {
                     <__experimentalAxisControl
                         values={value.borderWidth}
                         onChange={val => {
-                            console.log('axiscontrol', val)
                             value.borderWidth = JSON.parse(val);
                             onChange(JSON.stringify(value));
                         }}
@@ -162,7 +161,6 @@ const BorderControl = props => {
                     <__experimentalAxisControl
                         values={value.borderRadius}
                         onChange={val => {
-                            console.log('axiscontrol', val)
                             value.borderRadius = JSON.parse(val);
                             onChange(JSON.stringify(value));
                         }}

@@ -42,7 +42,8 @@ import {
     PaddingMargin,
     Size,
     __experimentalColumnMover,
-    __experimentalRowSettings
+    __experimentalRowSettings,
+    __experimentalColumnSize
 } from './components/';
 
 /**
@@ -80,6 +81,7 @@ const MaxiToolbar = props => {
             background,
             border,
             size,
+            columnSize,
             imageSize,
             mediaID,
             fullWidth,
@@ -321,6 +323,15 @@ const MaxiToolbar = props => {
                             fullWidth={fullWidth}
                             onChangeFullWidth={fullWidth => setAttributes({ fullWidth })}
                             isFirstOnHierarchy={isFirstOnHierarchy}
+                            breakpoint={deviceType}
+                        />
+                        <__experimentalColumnSize
+                            clientId={clientId}
+                            blockName={name}
+                            columnSize={columnSize}
+                            verticalAlign={verticalAlign}
+                            uniqueID={uniqueID}
+                            onChange={columnSize => setAttributes({ columnSize })}
                             breakpoint={deviceType}
                         />
                         <BoxShadow

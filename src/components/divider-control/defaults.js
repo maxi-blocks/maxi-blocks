@@ -11,8 +11,13 @@ export const dividerSolidHorizontal = {
         "border-top-width": 2,
         "border-right-widthUnit": "px",
         "border-right-width": "",
-        "border-radius": "",
-        "opacity": 1
+        "border-radius": ""
+    },
+    "opacity": {
+        "label": "Opacity",
+        "general": {
+            "opacity": 1
+        }
     }
 }
 
@@ -29,8 +34,13 @@ export const dividerDottedHorizontal = {
         "border-top-width": 2,
         "border-right-widthUnit": "px",
         "border-right-width": "",
-        "border-radius": "",
-        "opacity": 1
+        "border-radius": ""
+    },
+    "opacity": {
+        "label": "Opacity",
+        "general": {
+            "opacity": 1
+        }
     }
 }
 
@@ -47,8 +57,13 @@ export const dividerDashedHorizontal = {
         "border-top-width": 2,
         "border-right-widthUnit": "px",
         "border-right-width": "",
-        "border-radius": "",
-        "opacity": 1
+        "border-radius": ""
+    },
+    "opacity": {
+        "label": "Opacity",
+        "general": {
+            "opacity": 1
+        }
     }
 }
 
@@ -65,8 +80,13 @@ export const dividerSolidVertical = {
         "border-top-width": "",
         "border-right-widthUnit": "px",
         "border-right-width": 2,
-        "border-radius": "",
-        "opacity": 1
+        "border-radius": ""
+    },
+    "opacity": {
+        "label": "Opacity",
+        "general": {
+            "opacity": 1
+        }
     }
 }
 
@@ -83,8 +103,13 @@ export const dividerDottedVertical = {
         "border-top-width": "",
         "border-right-widthUnit": "px",
         "border-right-width": 2,
-        "border-radius": "",
-        "opacity": 1
+        "border-radius": ""
+    },
+    "opacity": {
+        "label": "Opacity",
+        "general": {
+            "opacity": 1
+        }
     }
 }
 
@@ -101,8 +126,13 @@ export const dividerDashedVertical = {
         "border-top-width": "",
         "border-right-widthUnit": "px",
         "border-right-width": 2,
-        "border-radius": "",
-        "opacity": 1
+        "border-radius": ""
+    },
+    "opacity": {
+        "label": "Opacity",
+        "general": {
+            "opacity": 1
+        }
     }
 }
 
@@ -119,7 +149,12 @@ export const dividerNone = {
         "border-top-width": "",
         "border-right-widthUnit": "px",
         "border-right-width": "",
-        "border-radius": "",
-        "opacity": 1
+        "border-radius": ""
+    },
+    "opacity": {
+        "label": "Opacity",
+        "general": {
+            "opacity": 1
+        }
     }
 }

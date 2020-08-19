@@ -300,17 +300,17 @@ const Inspector = props => {
                                                                 />
                                                             )
                                                         },
-                                                        // {
-                                                        //     label: __('Hover', 'maxi-blocks'),
-                                                        //     content: (
-                                                        //         <BoxShadowControl
-                                                        //             boxShadow={boxShadowHover}
-                                                        //             defaultBoxShadow={getDefaultProp(clientId, 'boxShadowHover')}
-                                                        //             onChange={boxShadowHover => setAttributes({ boxShadowHover })}
-                                                        //             breakpoint={deviceType}
-                                                        //         />
-                                                        //     )
-                                                        // },
+                                                        {
+                                                            label: __('Hover', 'maxi-blocks'),
+                                                            content: (
+                                                                <BoxShadowControl
+                                                                    boxShadow={boxShadowHover}
+                                                                    defaultBoxShadow={getDefaultProp(clientId, 'boxShadowHover')}
+                                                                    onChange={boxShadowHover => setAttributes({ boxShadowHover })}
+                                                                    breakpoint={deviceType}
+                                                                />
+                                                            )
+                                                        },
                                                     ]}
                                                 />
                                             )
@@ -355,90 +355,107 @@ const Inspector = props => {
                     {
                         label: __('Advanced', 'maxi-blocks'),
                         content: (
-                            <Fragment>
-                                <div className='maxi-tab-content__box'>
+                            <AccordionControl
+                                isPrimary
+                                items={[
+                                    deviceType === 'general' &&
                                     {
-                                        deviceType === 'general' &&
-                                        <TextControl
-                                            label={__('Additional CSS Classes', 'maxi-blocks')}
-                                            className='maxi-additional__css-classes'
-                                            value={extraClassName}
-                                            onChange={extraClassName => setAttributes({ extraClassName })}
-                                        />
-                                    }
-                                    <__experimentalZIndexControl
-                                        zIndex={zIndex}
-                                        defaultZIndex={getDefaultProp(clientId, 'zIndex')}
-                                        onChange={zIndex => setAttributes({ zIndex })}
-                                        breakpoint={deviceType}
-                                    />
+                                        label: __('Custom classes', 'maxi-blocks'),
+                                        content: (
+                                            <TextControl
+                                                label={__('Additional CSS Classes', 'maxi-blocks')}
+                                                className='maxi-additional__css-classes'
+                                                value={extraClassName}
+                                                onChange={extraClassName => setAttributes({ extraClassName })}
+                                            />
+                                        )
+                                    },
                                     {
-                                        deviceType != 'general' &&
-                                        <__experimentalResponsiveControl
-                                            breakpoints={breakpoints}
-                                            defaultBreakpoints={getDefaultProp(clientId, 'breakpoints')}
-                                            onChange={breakpoints => setAttributes({ breakpoints })}
-                                            breakpoint={deviceType}
-                                        />
+                                        label: __('Shape Divider', 'maxi-blocks'),
+                                        content: (
+                                            <__experimentalShapeDividerControl
+                                                shapeDividerOptions={shapeDivider}
+                                                defaultShapeDividerOptions={getDefaultProp(clientId, 'shapeDivider')}
+                                                onChange={shapeDivider => setAttributes({ shapeDivider })}
+                                            />
+                                        )
+                                    },
+                                    {
+                                        label: __('Motion Effects', 'maxi-blocks'),
+                                        content: (
+                                            <__experimentalMotionControl
+                                                motion={motion}
+                                                onChange={motion => setAttributes({ motion })}
+                                            />
+                                        )
+                                    },
+                                    {
+                                        label: __('Entrance Animation', 'maxi-blocks'),
+                                        content: (
+                                            <__experimentalEntranceAnimationControl
+                                                motion={motion}
+                                                defaultMotion={getDefaultProp(clientId, 'motion')}
+                                                onChange={motion => setAttributes({ motion })}
+                                            />
+                                        )
+                                    },
+                                    {
+                                        label: __('Transform', 'maxi-blocks'),
+                                        content: (
+                                            <__experimentalTransformControl
+                                                transform={transform}
+                                                onChange={transform => setAttributes({ transform })}
+                                                uniqueID={uniqueID}
+                                                breakpoint={deviceType}
+                                            />
+                                        )
+                                    },
+                                    {
+                                        label: __('Display', 'maxi-blocks'),
+                                        content: (
+                                            <__experimentalDisplayControl
+                                                display={display}
+                                                onChange={display => setAttributes({ display })}
+                                                breakpoint={deviceType}
+                                            />
+                                        )
+                                    },
+                                    {
+                                        label: __('Position', 'maxi-blocks'),
+                                        content: (
+                                            <__experimentalPositionControl
+                                                position={position}
+                                                defaultPosition={getDefaultProp(clientId, 'position')}
+                                                onChange={position => setAttributes({ position })}
+                                                breakpoint={deviceType}
+                                            />
+                                        )
+                                    },
+                                    deviceType != 'general' &&
+                                    {
+                                        label: __('Breakpoint', 'maxi-blocks'),
+                                        content: (
+                                            <__experimentalResponsiveControl
+                                                breakpoints={breakpoints}
+                                                defaultBreakpoints={getDefaultProp(clientId, 'breakpoints')}
+                                                onChange={breakpoints => setAttributes({ breakpoints })}
+                                                breakpoint={deviceType}
+                                            />
+                                        )
+                                    },
+                                    {
+                                        label: __('Z-index', 'maxi-blocks'),
+                                        content: (
+                                            <__experimentalZIndexControl
+                                                zIndex={zIndex}
+                                                defaultZIndex={getDefaultProp(clientId, 'zIndex')}
+                                                onChange={zIndex => setAttributes({ zIndex })}
+                                                breakpoint={deviceType}
+                                            />
+                                        )
                                     }
-                                    <__experimentalPositionControl
-                                        position={position}
-                                        defaultPosition={getDefaultProp(clientId, 'position')}
-                                        onChange={position => setAttributes({ position })}
-                                        breakpoint={deviceType}
-                                    />
-                                    <__experimentalDisplayControl
-                                        display={display}
-                                        onChange={display => setAttributes({ display })}
-                                        breakpoint={deviceType}
-                                    />
-                                </div>
-                                <AccordionControl
-                                    isPrimary
-                                    items={[
-                                        {
-                                            label: __('Shape Divider', 'maxi-blocks'),
-                                            content: (
-                                                <__experimentalShapeDividerControl
-                                                    shapeDividerOptions={shapeDivider}
-                                                    defaultShapeDividerOptions={getDefaultProp(clientId, 'shapeDivider')}
-                                                    onChange={shapeDivider => setAttributes({ shapeDivider })}
-                                                />
-                                            )
-                                        },
-                                        {
-                                            label: __('Motion Effects', 'maxi-blocks'),
-                                            content: (
-                                                <__experimentalMotionControl
-                                                    motion={motion}
-                                                    onChange={motion => setAttributes({ motion })}
-                                                />
-                                            )
-                                        },
-                                        {
-                                            label: __('Entrance Animation', 'maxi-blocks'),
-                                            content: (
-                                                <__experimentalEntranceAnimationControl
-                                                    motion={motion}
-                                                    defaultMotion={getDefaultProp(clientId, 'motion')}
-                                                    onChange={motion => setAttributes({ motion })}
-                                                />
-                                            )
-                                        },
-                                        {
-                                            label: __('Transform', 'maxi-blocks'),
-                                            content: (
-                                                <__experimentalTransformControl
-                                                    transform={transform}
-                                                    onChange={transform => setAttributes({ transform })}
-                                                    uniqueID={uniqueID}
-                                                    breakpoint={deviceType}
-                                                />
-                                            )
-                                        }
-                                    ]}
-                                />
-                            </Fragment>
+                                ]}
+                            />
                         )
                     }
                 ]}

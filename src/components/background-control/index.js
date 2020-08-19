@@ -84,7 +84,7 @@ const BackgroundControl = props => {
     );
 
     const onAddBackground = () => {
-        value.backgroundOptions.push(background.backgroundOptions[0])
+        value.backgroundOptions.push(defaultValue.backgroundOptions[0])
     }
 
     const onOpenOptions = (e, i) => {
@@ -328,20 +328,21 @@ const BackgroundControl = props => {
                         !disableImage &&
                         backgroundItems === 'image' &&
                         value.backgroundOptions.map((option, i) => {
+
                             return (
                                 <Fragment>
                                     <MediaUploaderControl
-                                        mediaID={value.backgroundOptions[i].imageOptions.mediaID}
+                                        mediaID={option.imageOptions.mediaID}
                                         onSelectImage={imageData => {
-                                            if (!isNumber(value.backgroundOptions[i].imageOptions.mediaID))
+                                            if (!isNumber(option.imageOptions.mediaID))
                                                 onAddBackground()
-                                            value.backgroundOptions[i].imageOptions.mediaID = imageData.id;
-                                            value.backgroundOptions[i].imageOptions.mediaURL = imageData.url;
+                                            option.imageOptions.mediaID = imageData.id;
+                                            option.imageOptions.mediaURL = imageData.url;
                                             onChange(JSON.stringify(value));
                                         }}
                                         onRemoveImage={() => {
-                                            value.backgroundOptions[selector].imageOptions.mediaID = '';
-                                            value.backgroundOptions[selector].imageOptions.mediaURL = '';
+                                            option.imageOptions.mediaID = '';
+                                            option.imageOptions.mediaURL = '';
                                             onRemoveImage();
                                             onChange(JSON.stringify(value));
                                         }}
@@ -351,10 +352,10 @@ const BackgroundControl = props => {
                                                 __('Add Another Image', 'maxi-blocks')
                                         }
                                         extendSelector={
-                                            value.backgroundOptions[i].imageOptions.mediaID &&
+                                            option.imageOptions.mediaID &&
                                             <Button
                                                 isSecondary
-                                                onClick={(e) => onOpenOptions(e, i)}
+                                                onClick={e => onOpenOptions(e, i)}
                                                 className='maxi-background-control__image-edit'
                                             >
                                                 {__('Edit image', 'maxi-blocks')}
@@ -365,58 +366,11 @@ const BackgroundControl = props => {
                                     />
                                 </Fragment>
                             )
-                        })
+                        }
+                        )
                     }
                 </Fragment>
-            }
-            {
-                isOpen &&
-                backgroundItems === 'image' &&
-                <SettingTabsControl
-                    items={[
-                        {
-                            label: __('Image', 'maxi-blocks'),
-                            className: 'maxi-background-control__image-tab',
-                            uuid: 'maxi-background-control__image-tab',
-                            content: (
-                                <MediaUploaderControl
-                                    mediaID={value.backgroundOptions[i].imageOptions.mediaID}
-                                    onSelectImage={imageData => {
-                                        if (!isNumber(value.backgroundOptions[i].imageOptions.mediaID))
-                                            onAddBackground()
-                                        value.backgroundOptions[i].imageOptions.mediaID = imageData.id;
-                                        value.backgroundOptions[i].imageOptions.mediaURL = imageData.url;
-                                        onChange(JSON.stringify(value));
-                                    }}
-                                    onRemoveImage={() => {
-                                        value.backgroundOptions[selector].imageOptions.mediaID = '';
-                                        value.backgroundOptions[selector].imageOptions.mediaURL = '';
-                                        onRemoveImage();
-                                        onChange(JSON.stringify(value));
-                                    }}
-                                    placeholder={
-                                        value.backgroundOptions.length - 1 === 0 ?
-                                            __('Set image', 'maxi-blocks') :
-                                            __('Add Another Image', 'maxi-blocks')
-                                    }
-                                    extendSelector={
-                                        value.backgroundOptions[i].imageOptions.mediaID &&
-                                        <Button
-                                            isSecondary
-                                            onClick={(e) => onOpenOptions(e, i)}
-                                            className='maxi-background-control__image-edit'
-                                        >
-                                            {__('Edit image', 'maxi-blocks')}
-                                        </Button>
-                                    }
-                                    alternativeImage={getAlternativeImage(i)}
-                                    removeButton={__('Remove', 'maxi-blocks')}
-                                />
-                            )
-                        }
-                    ]}
-                />
-            }
+            },
             {
                 isOpen &&
                 backgroundItems === 'image' &&

@@ -22,7 +22,7 @@ import {
     getBackgroundObject,
     getBoxShadowObject,
     getAlignmentFlexObject,
-    getTransfromObject,
+    getTransformObject,
     getAlignmentTextObject,
     setBackgroundStyles
 } from '../../utils';
@@ -112,7 +112,7 @@ class edit extends MaxiBlock {
             position: { ...JSON.parse(position) },
             positionOptions: { ...JSON.parse(position).options },
             display: { ...JSON.parse(display) },
-            transform: { ...getTransfromObject(JSON.parse(transform)) }
+            transform: { ...getTransformObject(JSON.parse(transform)) }
         };
 
         return response;

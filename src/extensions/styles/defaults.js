@@ -1157,12 +1157,12 @@ export const __experimentalDivider = {
         "border-top-width": 2,
         "border-right-widthUnit": "px",
         "border-right-width": "",
-        "border-radius": "",
-        "opacity": {
-            "label": "Opacity",
-            "general": {
-                "opacity": 1
-            }
+        "border-radius": ""
+    },
+    "opacity": {
+        "label": "Opacity",
+        "general": {
+            "opacity": 1
         }
     }
 }

@@ -16,7 +16,7 @@ const {
 import Inspector from './inspector';
 import {
     getBoxShadowObject,
-    getTransfromObject,
+    getTransformObject,
     setBackgroundStyles
 } from '../../utils';
 import {
@@ -85,7 +85,7 @@ class edit extends MaxiBlock {
             position: { ...JSON.parse(position) },
             positionOptions: { ...JSON.parse(position).options },
             display: { ...JSON.parse(display) },
-            transform: { ...getTransfromObject(JSON.parse(transform)) },
+            transform: { ...getTransformObject(JSON.parse(transform)) },
             divider: {
                 label: 'Divider',
                 general: {}
@@ -223,7 +223,7 @@ class edit extends MaxiBlock {
                     {
                         !!showLine &&
                         <Fragment>
-                            <hr class="maxi-divider-block__divider" />
+                            <hr className="maxi-divider-block__divider" />
                         </Fragment>
                     }
                 </__experimentalBlock>

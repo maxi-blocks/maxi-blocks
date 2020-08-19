@@ -3,6 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { synchronizeBlocksWithTemplate } = wp.blocks;
+const { useInstanceId } = wp.compose;
 const {
     Icon,
     Button
@@ -25,14 +26,15 @@ import ToolbarPopover from '../toolbar-popover';
 import {
     uniqueId,
     isEmpty,
-    isNil
+    isNil,
+    cloneDeep
 } from 'lodash'
 
 /**
  * Styles and icons
  */
 import './editor.scss';
-import { toolbarColumnPattern }  from '../../../../icons';
+import { toolbarColumnPattern } from '../../../../icons';
 
 /**
  * Column patterns
@@ -40,8 +42,8 @@ import { toolbarColumnPattern }  from '../../../../icons';
  * @todo Shows just row patterns with same existing number of columns
  */
 const ColumnPatterns = props => {
-    const { 
-        clientId, 
+    const {
+        clientId,
         blockName,
         rowPattern,
         onChange,
@@ -49,6 +51,14 @@ const ColumnPatterns = props => {
 
     if (blockName != 'maxi-blocks/row-maxi')
         return null;
+
+    const instanceId = useInstanceId(ColumnPatterns);
+
+    const {
+        getBlockName,
+        getBlockAttributes,
+        getBlockOrder
+    } = select('core/block-editor');
 
     const { innerBlocks } = useSelect(
         select => {
@@ -77,23 +87,23 @@ const ColumnPatterns = props => {
      * 
      * @returns {array} Array with saved content
      */
-    const getcurrentContent = (blockIds, newTemplate = []) => {
+    const getCurrentContent = (blockIds, newTemplate = []) => {
         if (isNil(blockIds) || isEmpty(blockIds))
             return null;
 
-        blockIds.map(id => {
-            const blockName = select('core/block-editor').getBlockName(id);
-            const blockAttributes = select('core/block-editor').getBlockAttributes(id);
-            const innerBlocks = select('core/block-editor').getBlockOrder(id);
+        blockIds.forEach(id => {
+            const blockName = getBlockName(id);
+            const blockAttributes = getBlockAttributes(id);
+            const innerBlocks = getBlockOrder(id);
 
             let response;
             if (blockName === 'maxi-blocks/column-maxi')
-                newTemplate.push(getcurrentContent(innerBlocks, response));
+                newTemplate.push(getCurrentContent(innerBlocks, response));
             else
                 newTemplate.push([
                     blockName,
                     blockAttributes,
-                    getcurrentContent(innerBlocks, response)
+                    getCurrentContent(innerBlocks, response)
                 ]);
         })
 
@@ -109,8 +119,8 @@ const ColumnPatterns = props => {
      * @returns {array} Merged array with column template and current content
      */
     const expandWithNewContent = (template, currentContent) => {
-        currentContent.map((content, i) => {
-            if (!isNil(template[i]) && isNil(template[2]))
+        currentContent.forEach((content, i) => {
+            if (!isNil(template[i]))
                 template[i].push(content);
         })
 
@@ -128,6 +138,12 @@ const ColumnPatterns = props => {
         return newID;
     }
 
+    const getCurrentAttributes = blockIds => {
+        return blockIds.map(id => {
+            return getBlockAttributes(id);
+        })
+    }
+
     /**
      * Loads template into InnerBlocks
      * 
@@ -135,13 +151,17 @@ const ColumnPatterns = props => {
      * @param {function} callback 
      */
     const loadTemplate = i => {
-        const currentContent = getcurrentContent(innerBlocks);
-        const template = TEMPLATES[i];
-        template.content.map(column => {
+        const currentContent = getCurrentContent(innerBlocks);
+        const currentAttributes = getCurrentAttributes(innerBlocks);
+
+        const template = cloneDeep(TEMPLATES[i]);
+        template.content.forEach((column, i) => {
             column[1].uniqueID = uniqueIdCreator();
+            if (currentAttributes.length > i)
+                column[1] = Object.assign(currentAttributes[i], column[1]);
         })
 
-        const newAttributes = template.attributes;
+        const newAttributes = Object.assign(getBlockAttributes(clientId), template.attributes);
         updateBlockAttributes(clientId, newAttributes);
 
         const newTemplateContent = expandWithNewContent(template.content, currentContent);
@@ -157,11 +177,12 @@ const ColumnPatterns = props => {
             tooltip={__('Column pattern', 'maxi-blocks')}
             content={(
                 <div
-                    class="toolbar-item__popover__wrapper toolbar-item__popover__column-pattern"
+                    className="toolbar-item__popover__wrapper toolbar-item__popover__column-pattern"
                 >
                     {
                         TEMPLATES.map((template, i) => (
                             <Button
+                                key={`toolbar-item__column-pattern--${instanceId}--${i}`}
                                 className="toolbar-item__popover__column-pattern__template-button"
                                 aria-pressed={rowPattern === i}
                                 onClick={() => {
@@ -174,8 +195,7 @@ const ColumnPatterns = props => {
                                     icon={template.icon}
                                 />
                             </Button>
-                        )
-                        )
+                        ))
                     }
                 </div>
             )}

@@ -35,7 +35,7 @@ import {
     getBackgroundObject,
     getBoxShadowObject,
     getOpacityObject,
-    getTransfromObject,
+    getTransformObject,
     getAlignmentTextObject,
     setBackgroundStyles
 } from '../../utils'
@@ -130,7 +130,7 @@ class edit extends MaxiBlock {
             position: { ...JSON.parse(position) },
             positionOptions: { ...JSON.parse(position).options },
             display: { ...JSON.parse(display) },
-            transform: { ...getTransfromObject(JSON.parse(transform)) },
+            transform: { ...getTransformObject(JSON.parse(transform)) },
             row: {
                 label: "Row",
                 general: {},
@@ -203,6 +203,7 @@ class edit extends MaxiBlock {
                     background: background,
                 }}
                 allowedBlocks={ALLOWED_BLOCKS}
+                orientation="horizontal"
                 renderAppender={
                     !hasInnerBlock ?
                         () => (
@@ -215,6 +216,7 @@ class edit extends MaxiBlock {
                                     TEMPLATES.map((template, i) => {
                                         return (
                                             <Button
+                                                key={`maxi-row-block--${instanceId}--${i}`}
                                                 className="maxi-row-block__template__button"
                                                 onClick={() => {
                                                     setAttributes({ rowPattern: i });

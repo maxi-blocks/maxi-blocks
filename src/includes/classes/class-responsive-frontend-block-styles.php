@@ -119,37 +119,37 @@ class ResponsiveFrontendStyles
             $content = $element['content'];
 
             if (isset($content['general']) && !empty($content['general'])) {
-                $response .= "body.maxi-blocks--active .$target{";
+                $response .= "body.maxi-blocks--active .maxi-block.$target{";
                 $response .= self::getStyles($content['general']);
                 $response .= '}';
             }
             if (isset($content['xxl']) && !empty($content['xxl'])) {
-                $response .= "@media only screen and (min-width: {$breakpoints->xl}px) {body.maxi-blocks--active .$target{";
+                $response .= "@media only screen and (min-width: {$breakpoints->xl}px) {body.maxi-blocks--active .maxi-block.$target{";
                 $response .= self::getStyles($content['xxl']);
                 $response .= '}}';
             }
             if (isset($content['xl']) && !empty($content['xl'])) {
-                $response .= "@media only screen and (max-width: {$breakpoints->xl}px) {body.maxi-blocks--active .$target{";
+                $response .= "@media only screen and (max-width: {$breakpoints->xl}px) {body.maxi-blocks--active .maxi-block.$target{";
                 $response .= self::getStyles($content['xl']);
                 $response .= '}}';
             }
             if (isset($content['l']) && !empty($content['l'])) {
-                $response .= "@media only screen and (max-width: {$breakpoints->l}px) {body.maxi-blocks--active .$target{";
+                $response .= "@media only screen and (max-width: {$breakpoints->l}px) {body.maxi-blocks--active .maxi-block.$target{";
                 $response .= self::getStyles($content['l']);
                 $response .= '}}';
             }
             if (isset($content['m']) && !empty($content['m'])) {
-                $response .= "@media only screen and (max-width: {$breakpoints->m}px) {body.maxi-blocks--active .$target{";
+                $response .= "@media only screen and (max-width: {$breakpoints->m}px) {body.maxi-blocks--active .maxi-block.$target{";
                 $response .= self::getStyles($content['m']);
                 $response .= '}}';
             }
             if (isset($content['s']) && !empty($content['s'])) {
-                $response .= "@media only screen and (max-width: {$breakpoints->s}px) {body.maxi-blocks--active .$target{";
+                $response .= "@media only screen and (max-width: {$breakpoints->s}px) {body.maxi-blocks--active .maxi-block.$target{";
                 $response .= self::getStyles($content['s']);
                 $response .= '}}';
             }
             if (isset($content['xs']) && !empty($content['xs'])) {
-                $response .= "@media only screen and (max-width: {$breakpoints->xs}px) {body.maxi-blocks--active .$target{";
+                $response .= "@media only screen and (max-width: {$breakpoints->xs}px) {body.maxi-blocks--active .maxi-block.$target{";
                 $response .= self::getStyles($content['xs']);
                 $response .= '}}';
             }

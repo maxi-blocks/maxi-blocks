@@ -100,8 +100,6 @@ const ImageSize = props => {
         return response;
     }
 
-    console.log(sizeValue.general.width)
-
     return (
         <ToolbarPopover
             className='toolbar-item__image-size'

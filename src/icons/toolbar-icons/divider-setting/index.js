@@ -9,8 +9,8 @@ const toolbarDividerSetting = (
             <Path
                 fill="none"
                 stroke="#fff"
-                stroke-width="1.5"
-                stroke-linecap="round"
+                strokeWidth="1.5"
+                strokeLinecap="round"
                 join="round"
                 d="M12.1 15.1l-.1 7.3m.1-13.3L12 1.9"
             />
@@ -19,8 +19,8 @@ const toolbarDividerSetting = (
             <Path
                 fill="none"
                 stroke="#fff"
-                stroke-width="1.5"
-                stroke-linecap="round"
+                strokeWidth="1.5"
+                strokeLinecap="round"
                 join="round"
                 d="M1.3 14.1h19.9M1.3 11.6h19.9"
             />
@@ -29,8 +29,8 @@ const toolbarDividerSetting = (
             <Path
                 fill="none"
                 stroke="#fff"
-                stroke-width="1.5"
-                stroke-linecap="round"
+                strokeWidth="1.5"
+                strokeLinecap="round"
                 join="round"
                 d="M11.8 7.6l-1.4-1.7m3.2 0l-1.5 1.7"
             />
@@ -39,8 +39,8 @@ const toolbarDividerSetting = (
             <Path
                 fill="none"
                 stroke="#fff"
-                stroke-width="1.5"
-                stroke-linecap="round"
+                strokeWidth="1.5"
+                strokeLinecap="round"
                 join="round"
                 d="M11.8 7.6l-1.4-1.7m3.2 0l-1.5 1.7"
             />

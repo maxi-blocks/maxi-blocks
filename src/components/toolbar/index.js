@@ -40,7 +40,9 @@ import {
     TextListOptions,
     TextOptions,
     PaddingMargin,
-    Size
+    Size,
+    __experimentalColumnMover,
+    __experimentalRowSettings
 } from './components/';
 
 /**
@@ -86,6 +88,8 @@ const MaxiToolbar = props => {
             margin,
             padding,
             rowPattern,
+            horizontalAlign,
+            verticalAlign,
             linkSettings,
             boxShadow,
             showLine,
@@ -153,6 +157,11 @@ const MaxiToolbar = props => {
                     >
                         <Mover
                             clientId={clientId}
+                            blockName={name}
+                        />
+                        <__experimentalColumnMover
+                            clientId={clientId}
+                            blockName={name}
                         />
                         <DividerColor
                             blockName={name}
@@ -233,6 +242,12 @@ const MaxiToolbar = props => {
                             content={content}
                             onChange={content => setAttributes({ content })}
                             node={anchorRef}
+                        />
+                        <__experimentalRowSettings
+                            blockName={name}
+                            horizontalAlign={horizontalAlign}
+                            verticalAlign={verticalAlign}
+                            onChange={obj => setAttributes(obj)}
                         />
                         <ColumnPattern
                             clientId={clientId}

@@ -38,7 +38,6 @@ h2.gx_error {
 	}
 }
 
-
 /*****************
 * Editor settings
 ******************/
@@ -77,7 +76,7 @@ body.maxi-blocks--active {
 * Maxi Blocks
 ******************/
 body {
-	.maxi-container-block  {
+	.maxi-container-block {
 		.maxi-container-block__container {
 			padding-right: 0 !important;
 			padding-left: 0 !important;
@@ -120,6 +119,7 @@ body {
 			margin: auto;
 			padding: 0;
 			background: #1e1e1e;
+			z-index: 9;
 
 			&:hover {
 				visibility: visible;

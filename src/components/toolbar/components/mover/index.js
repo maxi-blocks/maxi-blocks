@@ -27,8 +27,12 @@ import { toolbarMove } from '../../../../icons';
  */
 const Mover = props => {
     const {
-        clientId
+        clientId,
+        blockName
     } = props;
+
+    if (blockName === 'maxi-blocks/column-maxi')
+        return null;
 
     const { srcRootClientId, index, isDraggable } = useSelect(
         (select) => {
@@ -69,6 +73,7 @@ const Mover = props => {
         type: 'block',
         srcIndex: index,
         srcClientId: clientId,
+        srcClientIds: [clientId],
         srcRootClientId,
     };
 

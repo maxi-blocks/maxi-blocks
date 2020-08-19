@@ -219,7 +219,7 @@ const BackgroundControl = props => {
                                             option.imageData.mediaID &&
                                             <Button
                                                 isSecondary
-                                                onClick={(e) => onOpenOptions(e, i)}
+                                                onClick={e => onOpenOptions(e, i)}
                                                 className='maxi-background-control__image-edit'
                                             >
                                                 {__('Edit image', 'maxi-blocks')}

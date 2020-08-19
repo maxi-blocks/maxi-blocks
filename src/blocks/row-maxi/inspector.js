@@ -128,55 +128,53 @@ const Inspector = props => {
                                                 </Fragment>
                                             )
                                         },
-                                        function () {
-                                            if (deviceType === 'general')
-                                                return {
-                                                    label: __('Background', 'maxi-blocks'),
-                                                    disablePadding: true,
-                                                    content: (
-                                                        <SettingTabsControl
-                                                            items={[
-                                                                {
-                                                                    label: __('Normal', 'gutenberg-extra'),
-                                                                    content: (
-                                                                        <Fragment>
-                                                                            <__experimentalOpacityControl
-                                                                                opacity={opacity}
-                                                                                defaultOpacity={getDefaultProp(clientId, 'opacity')}
-                                                                                onChange={opacity => setAttributes({ opacity })}
-                                                                                breakpoint={deviceType}
-                                                                            />
-                                                                            <BackgroundControl
-                                                                                background={background}
-                                                                                defaultBackground={getDefaultProp(clientId, 'background')}
-                                                                                onChange={background => setAttributes({ background })}
-                                                                            />
-                                                                        </Fragment>
-                                                                    )
-                                                                },
-                                                                {
-                                                                    label: __('Hover', 'gutenberg-extra'),
-                                                                    content: (
-                                                                        <Fragment>
-                                                                            <__experimentalOpacityControl
-                                                                                opacity={opacityHover}
-                                                                                defaultOpacity={getDefaultProp(clientId, 'opacityHover')}
-                                                                                onChange={opacityHover => setAttributes({ opacityHover })}
-                                                                                breakpoint={deviceType}
-                                                                            />
-                                                                            <BackgroundControl
-                                                                                background={backgroundHover}
-                                                                                defaultBackground={getDefaultProp(clientId, 'backgroundHover')}
-                                                                                onChange={backgroundHover => setAttributes({ backgroundHover })}
-                                                                            />
-                                                                        </Fragment>
-                                                                    )
-                                                                },
-                                                            ]}
-                                                        />
-                                                    )
-                                                }
-                                        }(),
+                                        deviceType === 'general' &&
+                                        {
+                                            label: __('Background', 'maxi-blocks'),
+                                            disablePadding: true,
+                                            content: (
+                                                <SettingTabsControl
+                                                    items={[
+                                                        {
+                                                            label: __('Normal', 'gutenberg-extra'),
+                                                            content: (
+                                                                <Fragment>
+                                                                    <__experimentalOpacityControl
+                                                                        opacity={opacity}
+                                                                        defaultOpacity={getDefaultProp(clientId, 'opacity')}
+                                                                        onChange={opacity => setAttributes({ opacity })}
+                                                                        breakpoint={deviceType}
+                                                                    />
+                                                                    <BackgroundControl
+                                                                        background={background}
+                                                                        defaultBackground={getDefaultProp(clientId, 'background')}
+                                                                        onChange={background => setAttributes({ background })}
+                                                                    />
+                                                                </Fragment>
+                                                            )
+                                                        },
+                                                        {
+                                                            label: __('Hover', 'gutenberg-extra'),
+                                                            content: (
+                                                                <Fragment>
+                                                                    <__experimentalOpacityControl
+                                                                        opacity={opacityHover}
+                                                                        defaultOpacity={getDefaultProp(clientId, 'opacityHover')}
+                                                                        onChange={opacityHover => setAttributes({ opacityHover })}
+                                                                        breakpoint={deviceType}
+                                                                    />
+                                                                    <BackgroundControl
+                                                                        background={backgroundHover}
+                                                                        defaultBackground={getDefaultProp(clientId, 'backgroundHover')}
+                                                                        onChange={backgroundHover => setAttributes({ backgroundHover })}
+                                                                    />
+                                                                </Fragment>
+                                                            )
+                                                        },
+                                                    ]}
+                                                />
+                                            )
+                                        },
                                         {
                                             label: __('Border', 'maxi-blocks'),
                                             disablePadding: true,

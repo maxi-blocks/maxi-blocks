@@ -277,10 +277,10 @@ const DividerControl = props => {
                 </Fragment>
             }
             <__experimentalOpacityControl
-                opacity={value.general.opacity}
-                defaultOpacity={defaultValue.general.opacity}
+                opacity={value.opacity}
+                defaultOpacity={defaultValue.opacity}
                 onChange={val => {
-                    value.general.opacity = val;
+                    value.opacity = val;
                     onChange(JSON.stringify(value))
                 }}
             />

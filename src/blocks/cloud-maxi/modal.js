@@ -35,16 +35,16 @@ const {
 class MaxiModal extends Component {
 
 
-        // this.state = {
-        //     modalOpen: true,
-        //     currentTab: 'maxi-cloud-tab-sections',
-        //     loadGlobalStyles: false,
-        // };
+    // this.state = {
+    //     modalOpen: true,
+    //     currentTab: 'maxi-cloud-tab-sections',
+    //     loadGlobalStyles: false,
+    // };
 
-        state = {
-            isOpen: false,
-            loadGlobalStyles: false,
-        }
+    state = {
+        isOpen: false,
+        loadGlobalStyles: false,
+    }
 
     render() {
 
@@ -63,44 +63,44 @@ class MaxiModal extends Component {
         //console.log("isOpen: "+ isOpen);
 
         return (
-            <Fragment key={ 'maxi-block-library__fragment--' + this.props.clientId }>
-                { /* Launch the layout modal window */ }
+            <Fragment key={'maxi-block-library__fragment--' + this.props.clientId}>
+                { /* Launch the layout modal window */}
                 <Button
-                    key={ 'maxi-block-library__modal-button--' + this.props.clientId }
+                    key={'maxi-block-library__modal-button--' + this.props.clientId}
                     isPrimary
                     isLarge
                     className='maxi-block-library__modal-button'
-                    onClick={ onClick }
+                    onClick={onClick}
                 >
-                    { __( 'Launch the Library', 'maxi-blocks' ) }
+                    {__('Launch the Library', 'maxi-blocks')}
                 </Button>
-                { isOpen ?
-                    <MaxiContext.Consumer key={ 'maxi-block-library__context-provider--' + this.props.clientId }>
-                        { ( context ) => (
+                {isOpen ?
+                    <MaxiContext.Consumer key={'maxi-block-library__context-provider--' + this.props.clientId}>
+                        {(context) => (
                             <Modal
-                                key={ 'maxi-block-library__modal--' + this.props.clientId }
+                                key={'maxi-block-library__modal--' + this.props.clientId}
                                 className="maxi-block-library__modal"
-                                title={ __( 'Maxi Cloud Library', 'maxi-blocks' ) }
-                                shouldCloseOnEsc = {true}
+                                title={__('Maxi Cloud Library', 'maxi-blocks')}
+                                shouldCloseOnEsc={true}
                                 shouldCloseOnClickOutside={false}
-                                onRequestClose={ onClick }
+                                onRequestClose={onClick}
                             >
                                 <Iframe url="https://ge-library.dev700.com/?_sft_gutenberg_type=block-patterns&_sft_light_or_dark=light"
-                                width="100%"
-                                height="90%"
-                                id="maxi-block-library__modal-iframe"
-                                className="maxi-block-library__modal-iframe"
-                                display="initial"
-                                position="relative"/>
+                                    width="100%"
+                                    height="90%"
+                                    id="maxi-block-library__modal-iframe"
+                                    className="maxi-block-library__modal-iframe"
+                                    display="initial"
+                                    position="relative" />
                                 <Fragment>
-                                    <div class='maxi-block-library__modal__loading_message maxi-block__item--hidden'>
+                                    <div className='maxi-block-library__modal__loading_message maxi-block__item--hidden'>
                                         <p>Saving...</p>
                                     </div>
                                 </Fragment>
                             </Modal>
                         )}
                     </MaxiContext.Consumer>
-                    : null }
+                    : null}
             </Fragment>
         );
     }

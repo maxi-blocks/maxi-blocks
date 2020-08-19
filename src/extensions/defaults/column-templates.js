@@ -1,6 +1,6 @@
 /**
  * Icons
- */
+*/
 import {
     oneColumn,
     oneOneThree,
@@ -23,115 +23,110 @@ import {
  * Helpers
  */
 const generateDefaultColumns = (columns, gap1 = 2.5, gap2 = 2.1) => {
-    const total1 = 100 - (gap1 * columns.length - 1);
-    const total2 = 100 - (gap2 * columns.length - 1);
+    const totalColumns = columns.length - 1;
+    const total1 = 100 - (gap1 * totalColumns);
+    const total2 = 100 - (gap2 * totalColumns);
 
-    const response = [];
-
-    columns.map((column, i) => {
-        response.push([
-            'maxi-blocks/column-maxi',
-            {
-                uniqueID: 'maxi-column-maxi-1',
-                columnSize: JSON.stringify(
-                    {
-                        label: "Column size",
-                        general: {
-                            "fullwidth": false,
-                            "size": total1 * column,
-                        },
-                        xxl: {
-                            "fullwidth": false,
-                            "size": ""
-                        },
-                        xl: {
-                            "fullwidth": false,
-                            "size": ""
-                        },
-                        l: {
-                            "fullwidth": false,
-                            "size": ""
-                        },
-                        m: {
-                            "fullwidth": false,
-                            "size": total2 * column
-                        },
-                        s: {
-                            "fullwidth": false,
-                            "size": 100
-                        },
-                        xs: {
-                            "fullwidth": false,
-                            "size": 100
-                        },
+    return columns.map((column, i) => ([
+        'maxi-blocks/column-maxi',
+        {
+            uniqueID: 'maxi-column-maxi-1',
+            columnSize: JSON.stringify(
+                {
+                    label: "Column size",
+                    general: {
+                        "fullwidth": false,
+                        "size": total1 * column,
+                    },
+                    xxl: {
+                        "fullwidth": false,
+                        "size": ""
+                    },
+                    xl: {
+                        "fullwidth": false,
+                        "size": ""
+                    },
+                    l: {
+                        "fullwidth": false,
+                        "size": ""
+                    },
+                    m: {
+                        "fullwidth": false,
+                        "size": total2 * column
+                    },
+                    s: {
+                        "fullwidth": false,
+                        "size": 100
+                    },
+                    xs: {
+                        "fullwidth": false,
+                        "size": 100
+                    },
+                }
+            ),
+            margin: JSON.stringify(
+                {
+                    "label": "Margin",
+                    "general": {
+                        "margin-top": "",
+                        "margin-right": "",
+                        "margin-bottom": "",
+                        "margin-left": "",
+                        "sync": true,
+                        "unit": "px"
+                    },
+                    "xxl": {
+                        "margin-top": "",
+                        "margin-right": "",
+                        "margin-bottom": "",
+                        "margin-left": "",
+                        "sync": true,
+                        "unit": ""
+                    },
+                    "xl": {
+                        "margin-top": "",
+                        "margin-right": "",
+                        "margin-bottom": "",
+                        "margin-left": "",
+                        "sync": true,
+                        "unit": ""
+                    },
+                    "l": {
+                        "margin-top": "",
+                        "margin-right": "",
+                        "margin-bottom": "",
+                        "margin-left": "",
+                        "sync": true,
+                        "unit": ""
+                    },
+                    "m": {
+                        "margin-top": "",
+                        "margin-right": "",
+                        "margin-bottom": "",
+                        "margin-left": "",
+                        "sync": true,
+                        "unit": ""
+                    },
+                    "s": {
+                        "margin-top": i != 0 ? .5 : "",
+                        "margin-right": "",
+                        "margin-bottom": i != columns.length - 1 ? .5 : "",
+                        "margin-left": "",
+                        "sync": true,
+                        "unit": 'em'
+                    },
+                    "xs": {
+                        "margin-top": "",
+                        "margin-right": "",
+                        "margin-bottom": "",
+                        "margin-left": "",
+                        "sync": true,
+                        "unit": ""
                     }
-                ),
-                margin: JSON.stringify(
-                    {
-                        "label": "Margin",
-                        "general": {
-                            "margin-top": "",
-                            "margin-right": "",
-                            "margin-bottom": "",
-                            "margin-left": "",
-                            "sync": true,
-                            "unit": "px"
-                        },
-                        "xxl": {
-                            "margin-top": "",
-                            "margin-right": "",
-                            "margin-bottom": "",
-                            "margin-left": "",
-                            "sync": true,
-                            "unit": ""
-                        },
-                        "xl": {
-                            "margin-top": "",
-                            "margin-right": "",
-                            "margin-bottom": "",
-                            "margin-left": "",
-                            "sync": true,
-                            "unit": ""
-                        },
-                        "l": {
-                            "margin-top": "",
-                            "margin-right": "",
-                            "margin-bottom": "",
-                            "margin-left": "",
-                            "sync": true,
-                            "unit": ""
-                        },
-                        "m": {
-                            "margin-top": "",
-                            "margin-right": "",
-                            "margin-bottom": "",
-                            "margin-left": "",
-                            "sync": true,
-                            "unit": ""
-                        },
-                        "s": {
-                            "margin-top": i != 0 ? .5 : "",
-                            "margin-right": "",
-                            "margin-bottom": i != columns.length - 1 ? .5 : "",
-                            "margin-left": "",
-                            "sync": true,
-                            "unit": 'em'
-                        },
-                        "xs": {
-                            "margin-top": "",
-                            "margin-right": "",
-                            "margin-bottom": "",
-                            "margin-left": "",
-                            "sync": true,
-                            "unit": ""
-                        }
-                    }
-                )
-            }
-        ])
-    })
-
-    return response;
+                }
+            )
+        }
+    ]))
 }
 
 /**

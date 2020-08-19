@@ -74,10 +74,6 @@ const attributes = {
     zIndex: {
         type: 'number'
     },
-    position: {
-        type: 'string',
-        default: JSON.stringify(attributesData.__experimentalPosition)
-    },
     display: {
         type: 'string',
         default: JSON.stringify(attributesData.__experimentalDisplay)

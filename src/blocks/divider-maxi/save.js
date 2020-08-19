@@ -64,7 +64,7 @@ const save = props => {
             {
                 !!showLine &&
                 <Fragment>
-                    <hr class="maxi-divider-block__divider" />
+                    <hr className="maxi-divider-block__divider" />
                 </Fragment>
             }
         </div>

@@ -31,7 +31,10 @@ import {
     __experimentalDisplayControl,
     __experimentalTransformControl
 } from '../../components';
-import { getDefaultProp } from '../../utils';
+import {
+    getDefaultProp,
+    getLastBreakpointValue
+} from '../../utils';
 
 /**
  * External dependencies
@@ -104,7 +107,7 @@ const Inspector = props => {
                                                 <Fragment>
                                                     <RangeControl
                                                         label={__('Column Size', 'maxi-blocks')}
-                                                        value={columnSizeValue[deviceType].size}
+                                                        value={getLastBreakpointValue(columnSizeValue, 'size', deviceType)}
                                                         onChange={val => {
                                                             columnSizeValue[deviceType].size = val;
                                                             document.querySelector(`.maxi-column-block__resizer__${uniqueID}`)

@@ -15,9 +15,10 @@ import {
     getBackgroundObject,
     getBoxShadowObject,
     getAlignmentFlexObject,
+    getTransfromObject,
     getAlignmentTextObject,
     getOpacityObject,
-} from '../../extensions/styles/utils';
+} from '../../utils';
 import {
     MaxiBlock,
     __experimentalToolbar
@@ -45,12 +46,14 @@ class edit extends MaxiBlock {
     get getWrapperObject() {
         const {
             alignment,
-            zIndex
+            zIndex,
+            transform
         } = this.props.attributes;
 
         const response = {
             alignment: { ...getAlignmentFlexObject(JSON.parse(alignment)) },
             zindex: { ...JSON.parse(zIndex) },
+            transform: { ...getTransfromObject(JSON.parse(transform)) }
         };
 
         return response;
@@ -131,7 +134,7 @@ class edit extends MaxiBlock {
             hoverAnimationDuration,
         } = this.props;
 
-        let classes = classnames(
+        const classes = classnames(
             'maxi-block maxi-button-extra',
             blockStyle,
             extraClassName,

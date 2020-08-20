@@ -3,6 +3,9 @@
     "general": {
         "opacity": 1
     },
+    "xxl": {
+        "opacity": ""
+    },
     "xl": {
         "opacity": ""
     },

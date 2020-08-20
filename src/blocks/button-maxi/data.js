@@ -29,6 +29,23 @@ export const typography = {
         "text-decoration": "none",
         "text-shadow": ""
     },
+    "xxl": {
+        "font-family": "",
+        "font-options": {},
+        "color": "",
+        "text-align": "",
+        "font-sizeUnit": "px",
+        "font-size": "",
+        "line-heightUnit": "px",
+        "line-height": "",
+        "letter-spacingUnit": "px",
+        "letter-spacing": "",
+        "font-weight": "",
+        "text-transform": "",
+        "font-style": "",
+        "text-decoration": "",
+        "text-shadow": ""
+    },
     "xl": {
         "font-family": "",
         "font-options": {},
@@ -108,6 +125,30 @@ export const typography = {
         "font-style": "",
         "text-decoration": "",
         "text-shadow": ""
+    },
+    "textAlign": {
+        "label": "Alignment",
+        "general": {
+            "alignment": "left"
+        },
+        "xxl": {
+            "alignment": ""
+        },
+        "xl": {
+            "alignment": ""
+        },
+        "l": {
+            "alignment": ""
+        },
+        "m": {
+            "alignment": ""
+        },
+        "s": {
+            "alignment": ""
+        },
+        "xs": {
+            "alignment": ""
+        }
     }
 }
 
@@ -160,7 +201,8 @@ export const background = {
         "gradient": "",
         "defaultGradient": "",
         "gradientAboveBackground": false
-    }
+    },
+    "clipPath": ""
 };
 
 export const border = {
@@ -168,6 +210,10 @@ export const border = {
     "general": {
         "border-color": "#ffffff",
         "border-style": "none"
+    },
+    "xxl": {
+        "border-color": "",
+        "border-style": ""
     },
     "xl": {
         "border-color": "",
@@ -191,100 +237,126 @@ export const border = {
     },
     "borderWidth": {
         "label": "Border width",
-        "unit": "px",
         "general": {
             "border-top-width": 0,
             "border-right-width": 0,
             "border-bottom-width": 0,
             "border-left-width": 0,
-            "sync": true
+            "sync": true,
+            "unit": "px"
+        },
+        "xxl": {
+            "border-top-width": "",
+            "border-right-width": "",
+            "border-bottom-width": "",
+            "border-left-width": "",
+            "sync": true,
+            "unit": ""
         },
         "xl": {
             "border-top-width": "",
             "border-right-width": "",
             "border-bottom-width": "",
             "border-left-width": "",
-            "sync": true
+            "sync": true,
+            "unit": ""
         },
         "l": {
             "border-top-width": "",
             "border-right-width": "",
             "border-bottom-width": "",
             "border-left-width": "",
-            "sync": true
+            "sync": true,
+            "unit": ""
         },
         "m": {
             "border-top-width": "",
             "border-right-width": "",
             "border-bottom-width": "",
             "border-left-width": "",
-            "sync": true
+            "sync": true,
+            "unit": ""
         },
         "s": {
             "border-top-width": "",
             "border-right-width": "",
             "border-bottom-width": "",
             "border-left-width": "",
-            "sync": true
+            "sync": true,
+            "unit": ""
         },
         "xs": {
             "border-top-width": "",
             "border-right-width": "",
             "border-bottom-width": "",
             "border-left-width": "",
-            "sync": true
+            "sync": true,
+            "unit": ""
         }
     },
     "borderRadius": {
         "label": "Border radius",
-        "unit": "px",
         "general": {
             "border-top-left-radius": 25,
             "border-top-right-radius": 25,
             "border-bottom-right-radius": 25,
             "border-bottom-left-radius": 25,
-            "sync": false
+            "sync": false,
+            "unit": "px"
+        },
+        "xxl": {
+            "border-top-left-radius": "",
+            "border-top-right-radius": "",
+            "border-bottom-right-radius": "",
+            "border-bottom-left-radius": "",
+            "sync": true,
+            "unit": ""
         },
         "xl": {
             "border-top-left-radius": "",
             "border-top-right-radius": "",
             "border-bottom-right-radius": "",
             "border-bottom-left-radius": "",
-            "sync": true
+            "sync": true,
+            "unit": ""
         },
         "l": {
             "border-top-left-radius": "",
             "border-top-right-radius": "",
             "border-bottom-right-radius": "",
             "border-bottom-left-radius": "",
-            "sync": true
+            "sync": true,
+            "unit": ""
         },
         "m": {
             "border-top-left-radius": "",
             "border-top-right-radius": "",
             "border-bottom-right-radius": "",
             "border-bottom-left-radius": "",
-            "sync": true
+            "sync": true,
+            "unit": ""
         },
         "s": {
             "border-top-left-radius": "",
             "border-top-right-radius": "",
             "border-bottom-right-radius": "",
             "border-bottom-left-radius": "",
-            "sync": true
+            "sync": true,
+            "unit": ""
         },
         "xs": {
             "border-top-left-radius": "",
             "border-top-right-radius": "",
             "border-bottom-right-radius": "",
             "border-bottom-left-radius": "",
-            "sync": true
+            "sync": true,
+            "unit": ""
         }
     }
 }
 
 export const padding = {
-"label": "Padding",
+    "label": "Padding",
     "general": {
         "padding-top": 10,
         "padding-right": 20,
@@ -292,6 +364,14 @@ export const padding = {
         "padding-left": 10,
         "sync": true,
         "unit": "px"
+    },
+    "xxl": {
+        "padding-top": "",
+        "padding-right": "",
+        "padding-bottom": "",
+        "padding-left": "",
+        "sync": true,
+        "unit": ""
     },
     "xl": {
         "padding-top": "",
@@ -338,6 +418,9 @@ export const padding = {
 export const alignmentText = {
     "general": {
         "alignment": "left"
+    },
+    "xxl": {
+        "alignment": ""
     },
     "xl": {
         "alignment": ""

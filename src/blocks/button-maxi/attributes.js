@@ -15,7 +15,7 @@ const attributes = {
     },
     alignmentText: {
         type: 'string',
-        default: JSON.stringify(alignmentText)
+        default: JSON.stringify(buttonAttributesData.alignmentText)
     },
     typography: {
         type: 'string',
@@ -85,6 +85,10 @@ const attributes = {
         type: 'string',
         default: JSON.stringify(attributesData.__experimentalMotion)
     },
+    transform: {
+        type: 'string',
+        default: JSON.stringify(attributesData.__experimentalTransform)
+    }
 }
 
 export default attributes;

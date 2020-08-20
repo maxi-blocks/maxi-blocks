@@ -157,6 +157,14 @@ const attributes = {
         type: 'string',
         default: JSON.stringify(attributesData.__experimentalMotion)
     },
+    arrow: {
+        type: 'string',
+        default: JSON.stringify(attributesData.__experimentalArrow)
+    },
+    transform: {
+        type: 'string',
+        default: JSON.stringify(attributesData.__experimentalTransform)
+    }
 }
 
 export default attributes;

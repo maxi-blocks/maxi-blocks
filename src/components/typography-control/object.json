@@ -20,13 +20,30 @@
         "font-sizeUnit": "px",
         "font-size": 16,
         "line-heightUnit": "%",
-        "line-height": 150,
+        "line-height": 156,
         "letter-spacingUnit": "px",
         "letter-spacing": 0,
         "font-weight": 400,
         "text-transform": "none",
         "font-style": "normal",
         "text-decoration": "none",
+        "text-shadow": ""
+    },
+    "xxl": {
+        "font-family": "",
+        "font-options": {},
+        "color": "",
+        "text-align": "",
+        "font-sizeUnit": "px",
+        "font-size": 24,
+        "line-heightUnit": "%",
+        "line-height": 142,
+        "letter-spacingUnit": "px",
+        "letter-spacing": "",
+        "font-weight": "",
+        "text-transform": "",
+        "font-style": "",
+        "text-decoration": "",
         "text-shadow": ""
     },
     "xl": {
@@ -40,10 +57,10 @@
         "letter-spacingUnit": "px",
         "letter-spacing": "",
         "font-weight": "",
-        "text-transform": "none",
-        "font-style": "normal",
-        "text-decoration": "none",
-        "text-shadow": "none"
+        "text-transform": "",
+        "font-style": "",
+        "text-decoration": "",
+        "text-shadow": ""
     },
     "l": {
         "font-family": "",
@@ -56,10 +73,10 @@
         "letter-spacingUnit": "px",
         "letter-spacing": "",
         "font-weight": "",
-        "text-transform": "none",
-        "font-style": "normal",
-        "text-decoration": "none",
-        "text-shadow": "none"
+        "text-transform": "",
+        "font-style": "",
+        "text-decoration": "",
+        "text-shadow": ""
     },
     "m": {
         "font-family": "",
@@ -72,10 +89,10 @@
         "letter-spacingUnit": "px",
         "letter-spacing": "",
         "font-weight": "",
-        "text-transform": "none",
-        "font-style": "normal",
-        "text-decoration": "none",
-        "text-shadow": "none"
+        "text-transform": "",
+        "font-style": "",
+        "text-decoration": "",
+        "text-shadow": ""
     },
     "s": {
         "font-family": "",
@@ -88,10 +105,10 @@
         "letter-spacingUnit": "px",
         "letter-spacing": "",
         "font-weight": "",
-        "text-transform": "none",
-        "font-style": "normal",
-        "text-decoration": "none",
-        "text-shadow": "none"
+        "text-transform": "",
+        "font-style": "",
+        "text-decoration": "",
+        "text-shadow": ""
     },
     "xs": {
         "font-family": "",
@@ -104,15 +121,18 @@
         "letter-spacingUnit": "px",
         "letter-spacing": "",
         "font-weight": "",
-        "text-transform": "none",
-        "font-style": "normal",
-        "text-decoration": "none",
-        "text-shadow": "none"
+        "text-transform": "",
+        "font-style": "",
+        "text-decoration": "",
+        "text-shadow": ""
     },
     "textAlign": {
         "label": "Alignment",
         "general": {
             "alignment": "left"
+        },
+        "xxl": {
+            "alignment": ""
         },
         "xl": {
             "alignment": ""

@@ -33,6 +33,10 @@ import {
     __experimentalPositionControl,
     __experimentalDisplayControl,
     __experimentalMotionControl,
+    __experimentalTransformControl,
+    __experimentalEntranceAnimationControl,
+    __experimentalArrowControl,
+    __experimentalParallaxControl,
 } from '../../components';
 
 /**
@@ -46,6 +50,7 @@ import { isObject } from 'lodash';
 const Inspector = props => {
     const {
         attributes: {
+            uniqueID,
             isFirstOnHierarchy,
             blockStyle,
             defaultBlockStyle,
@@ -90,6 +95,8 @@ const Inspector = props => {
             position,
             display,
             motion,
+            arrow,
+            transform
         },
         deviceType,
         setAttributes,
@@ -147,6 +154,41 @@ const Inspector = props => {
                                                                     value[deviceType]['max-width'] = val;
                                                                     setAttributes({ sizeContainer: JSON.stringify(value) })
                                                                 }}
+                                                                minMaxSettings={{
+                                                                    'px': {
+                                                                        min: 0,
+                                                                        max: 3999
+                                                                    },
+                                                                    'em': {
+                                                                        min: 0,
+                                                                        max: 999
+                                                                    },
+                                                                    'vw': {
+                                                                        min: 0,
+                                                                        max: 999
+                                                                    },
+                                                                    '%': {
+                                                                        min: 0,
+                                                                        max: 100
+                                                                    }
+                                                                }}
+                                                            />
+                                                            <SizeControl
+                                                                label={__('Width', 'maxi-blocks')}
+                                                                unit={value[deviceType]['widthUnit']}
+                                                                onChangeUnit={val => {
+                                                                    value[deviceType]['widthUnit'] = val;
+                                                                    setAttributes({ sizeContainer: JSON.stringify(value) })
+                                                                }}
+                                                                value={value[deviceType]['width']}
+                                                                onChangeValue={val => {
+                                                                    value[deviceType]['width'] = val;
+                                                                    setAttributes({ sizeContainer: JSON.stringify(value) })
+                                                                }}
+                                                            />
+                                                            <__experimentalParallaxControl
+                                                                motionOptions={motion}
+                                                                onChange={motion => setAttributes({ motion })}
                                                             />
                                                         </Fragment>
                                                     )
@@ -303,6 +345,17 @@ const Inspector = props => {
                                                     />
                                                 </Fragment>
                                             )
+                                        },
+                                        {
+                                            label: __('Arrow', 'maxi-blocks'),
+                                            content: (
+                                                <__experimentalArrowControl
+                                                    arrow={arrow}
+                                                    onChange={arrow => setAttributes({ arrow })}
+                                                    breakpoint={deviceType}
+                                                    isFirstOnHierarchy={isFirstOnHierarchy}
+                                                />
+                                            )
                                         }
                                     ]}
                                 />
@@ -369,7 +422,6 @@ const Inspector = props => {
                                         <TypographyControl
                                             typography={hoverAnimationContentTypography}
                                             onChange={hoverAnimationContentTypography => setAttributes({ hoverAnimationContentTypography })}
-                                            target='>.maxi-block-text-hover .maxi-block-text-hover__content'
                                             hideAlignment
                                             breakpoint={deviceType}
                                         />}
@@ -400,7 +452,6 @@ const Inspector = props => {
                                         <BorderControl
                                             borderOptions={hoverBorder}
                                             onChange={hoverBorder => setAttributes({ hoverBorder })}
-                                            target='.maxi-block-text-hover'
                                         />
                                     }
                                     {
@@ -462,6 +513,26 @@ const Inspector = props => {
                                                 <__experimentalMotionControl
                                                     motionOptions={motion}
                                                     onChange={motion => setAttributes({ motion })}
+                                                />
+                                            )
+                                        },
+                                        {
+                                            label: __('Entrance Animation', 'maxi-blocks'),
+                                            content: (
+                                                <__experimentalEntranceAnimationControl
+                                                    motionOptions={motion}
+                                                    onChange={motion => setAttributes({ motion })}
+                                                />
+                                            )
+                                        },
+                                        {
+                                            label: __('Transform', 'maxi-blocks'),
+                                            content: (
+                                                <__experimentalTransformControl
+                                                    transform={transform}
+                                                    onChange={transform => setAttributes({ transform })}
+                                                    uniqueID={uniqueID}
+                                                    breakpoint={deviceType}
                                                 />
                                             )
                                         }

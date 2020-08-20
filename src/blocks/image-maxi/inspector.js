@@ -16,7 +16,7 @@ const { useSelect } = wp.data;
 /**
  * Internal dependencies
  */
-import { getDefaultProp } from '../../extensions/styles/utils'
+import { getDefaultProp } from '../../utils'
 import {
     AccordionControl,
     AlignmentControl,
@@ -36,7 +36,10 @@ import {
     __experimentalOpacityControl,
     __experimentalPositionControl,
     __experimentalDisplayControl,
-    __experimentalMotionControl
+    __experimentalMotionControl,
+    __experimentalTransformControl,
+    __experimentalClipPath,
+    __experimentalEntranceAnimationControl,
 } from '../../components';
 
 /**
@@ -55,6 +58,7 @@ import {
 const Inspector = props => {
     const {
         attributes: {
+            uniqueID,
             isFirstOnHierarchy,
             blockStyle,
             defaultBlockStyle,
@@ -105,7 +109,9 @@ const Inspector = props => {
             hoverAnimationTypeOpacityColorBackground,
             position,
             display,
-            motion
+            motion,
+            transform,
+            clipPath,
         },
         imageData,
         clientId,
@@ -497,7 +503,6 @@ const Inspector = props => {
                                                         backgroundOptions={hoverBackground}
                                                         onChange={hoverBackground => setAttributes({ hoverBackground })}
                                                         disableImage
-                                                        target='.maxi-block-text-hover'
                                                     />
 
                                                     <RadioControl
@@ -578,6 +583,10 @@ const Inspector = props => {
                                         breakpoint={deviceType}
                                         defaultDisplay='flex'
                                     />
+                                    <__experimentalClipPath
+                                        clipPath={clipPath}
+                                        onChange={clipPath => setAttributes({ clipPath })}
+                                    />
                                 </div>
                                 <AccordionControl
                                     isPrimary
@@ -588,6 +597,26 @@ const Inspector = props => {
                                                 <__experimentalMotionControl
                                                     motionOptions={motion}
                                                     onChange={motion => setAttributes({ motion })}
+                                                />
+                                            )
+                                        },
+                                        {
+                                            label: __('Entrance Animation', 'maxi-blocks'),
+                                            content: (
+                                                <__experimentalEntranceAnimationControl
+                                                    motionOptions={motion}
+                                                    onChange={motion => setAttributes({ motion })}
+                                                />
+                                            )
+                                        },
+                                        {
+                                            label: __('Transform', 'maxi-blocks'),
+                                            content: (
+                                                <__experimentalTransformControl
+                                                    transform={transform}
+                                                    onChange={transform => setAttributes({ transform })}
+                                                    uniqueID={uniqueID}
+                                                    breakpoint={deviceType}
                                                 />
                                             )
                                         }

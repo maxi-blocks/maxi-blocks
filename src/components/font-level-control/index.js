@@ -10,7 +10,7 @@ const { Component } = wp.element;
  */
 import defaultTypography from '../../extensions/defaults/typography';
 import defaultMargin from '../../extensions/defaults/margin';
-import { getDefaultProp } from '../../extensions/styles/utils';
+import { getDefaultProp } from '../../utils';
 
 /**
  * External dependencies

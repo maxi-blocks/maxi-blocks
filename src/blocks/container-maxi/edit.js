@@ -2,7 +2,10 @@
  * WordPress dependencies
  */
 const { withSelect } = wp.data;
-const { Fragment } = wp.element;
+const { 
+    Fragment,
+    forwardRef
+} = wp.element;
 const {
     InnerBlocks,
     __experimentalBlock
@@ -13,34 +16,35 @@ const {
  */
 import {
     MaxiBlock,
-    __experimentalVideoPlayer,
     __experimentalToolbar,
     __experimentalBreadcrumbs,
     __experimentalBlockPlaceholder,
-    __experimentalShapeDivider
+    __experimentalShapeDivider,
+    __experimentalBackgroundDisplayer,
+    __experimentalArrowControl
 } from '../../components';
 import Inspector from './inspector';
 import {
     getBackgroundObject,
     getBoxShadowObject,
-    getVideoBackgroundObject,
     getShapeDividerObject,
     getShapeDividerSVGObject,
-} from '../../extensions/styles/utils'
+    getArrowObject,
+    getTransfromObject,
+    getAlignmentTextObject,
+    setBackgroundStyles
+} from '../../utils'
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import {
-    isEmpty,
-    isNil,
-} from 'lodash';
+import { isEmpty } from 'lodash';
 
 /**
  * InnerBlocks version
  */
-const ContainerInnerBlocks = props => {
+const ContainerInnerBlocks = forwardRef((props, ref) => {
     const {
         children,
         shapeDivider,
@@ -48,10 +52,10 @@ const ContainerInnerBlocks = props => {
         dataAlign,
         maxiBlockClass
     } = props;
-    console.log(props)
 
     return (
         <__experimentalBlock
+            ref={ref}
             className={className}
             data-align={dataAlign}
             data-gx_initial_block_class={maxiBlockClass}
@@ -62,7 +66,11 @@ const ContainerInnerBlocks = props => {
             <div
                 className='maxi-container-block__wrapper'
             >
-                {children}
+                <div
+                    className='maxi-container-block__container'
+                >
+                    {children}
+                </div>
             </div>
             <__experimentalShapeDivider
                 position='bottom'
@@ -70,40 +78,40 @@ const ContainerInnerBlocks = props => {
             />
         </__experimentalBlock>
     )
-}
+})
 
 /**
  * Edit
  */
 class edit extends MaxiBlock {
     get getObject() {
+        const {
+            uniqueID,
+            background,
+            backgroundHover
+        } = this.props.attributes;
 
         let response = {
-            [this.props.attributes.uniqueID]: this.getNormalObject,
-            [`${this.props.attributes.uniqueID}:hover`]: this.getHoverObject,
-            [`${this.props.attributes.uniqueID}>.maxi-container-block__wrapper`]: this.getWrapperObject,
-            [`${this.props.attributes.uniqueID}>.maxi-container-block__wrapper>.maxi-container-block__container`]: this.getContainerObject,
-            [`${this.props.attributes.uniqueID} .maxi-block-text-hover .maxi-block-text-hover__content`]: this.getHoverAnimationTextContentObject,
-            [`${this.props.attributes.uniqueID} .maxi-block-text-hover .maxi-block-text-hover__title`]: this.getHoverAnimationTextTitleObject,
-            [`${this.props.attributes.uniqueID} .maxi-block-text-hover`]: this.getHoverAnimationMainObject,
-            [`${this.props.attributes.uniqueID}.hover-animation-basic.hover-animation-type-opacity:hover .hover_el`]: this.getHoverAnimationTypeOpacityObject,
-            [`${this.props.attributes.uniqueID}.hover-animation-basic.hover-animation-type-opacity-with-colour:hover .hover_el:before`]: this.getHoverAnimationTypeOpacityColorObject,
-            [`${this.props.attributes.uniqueID} .maxi-video-player video`]: { videoBackground: { ...getVideoBackgroundObject(JSON.parse(this.props.attributes.background).videoOptions) } },
-            [`${this.props.attributes.uniqueID} .maxi-shape-divider__top`]: { shapeDivider: { ...getShapeDividerObject(JSON.parse(this.props.attributes.shapeDivider).top) } },
-            [`${this.props.attributes.uniqueID} .maxi-shape-divider__top svg`]: { shapeDivider: { ...getShapeDividerSVGObject(JSON.parse(this.props.attributes.shapeDivider).top) } },
-            [`${this.props.attributes.uniqueID} .maxi-shape-divider__bottom`]: { shapeDivider: { ...getShapeDividerObject(JSON.parse(this.props.attributes.shapeDivider).bottom) } },
-            [`${this.props.attributes.uniqueID} .maxi-shape-divider__bottom svg`]: { shapeDivider: { ...getShapeDividerSVGObject(JSON.parse(this.props.attributes.shapeDivider).bottom) } },
+            [uniqueID]: this.getNormalObject,
+            [`${uniqueID}:hover`]: this.getHoverObject,
+            [`${this.props.attributes.uniqueID}:before`]: this.getBeforeObject,
+            [`${uniqueID}>.maxi-container-block__wrapper`]: this.getWrapperObject,
+            [`${uniqueID}>.maxi-container-block__wrapper>.maxi-container-block__container`]: this.getContainerObject,
+            [`${uniqueID} .maxi-block-text-hover .maxi-block-text-hover__content`]: this.getHoverAnimationTextContentObject,
+            [`${uniqueID} .maxi-block-text-hover .maxi-block-text-hover__title`]: this.getHoverAnimationTextTitleObject,
+            [`${uniqueID} .maxi-block-text-hover`]: this.getHoverAnimationMainObject,
+            [`${uniqueID}.hover-animation-basic.hover-animation-type-opacity:hover .hover_el`]: this.getHoverAnimationTypeOpacityObject,
+            [`${uniqueID}.hover-animation-basic.hover-animation-type-opacity-with-colour:hover .hover_el:before`]: this.getHoverAnimationTypeOpacityColorObject,
+            [`${uniqueID} .maxi-shape-divider__top`]: { shapeDivider: { ...getShapeDividerObject(JSON.parse(this.props.attributes.shapeDivider).top) } },
+            [`${uniqueID} .maxi-shape-divider__top svg`]: { shapeDivider: { ...getShapeDividerSVGObject(JSON.parse(this.props.attributes.shapeDivider).top) } },
+            [`${uniqueID} .maxi-shape-divider__bottom`]: { shapeDivider: { ...getShapeDividerObject(JSON.parse(this.props.attributes.shapeDivider).bottom) } },
+            [`${uniqueID} .maxi-shape-divider__bottom svg`]: { shapeDivider: { ...getShapeDividerSVGObject(JSON.parse(this.props.attributes.shapeDivider).bottom) } },
         }
 
-        const videoOptions = JSON.parse(this.props.attributes.background).videoOptions;
-        if(!isNil(videoOptions) && !isEmpty(videoOptions.mediaURL))
-            Object.assign(
-                response,
-                {
-                    [`${this.props.attributes.uniqueID} .maxi-video-player video`]:
-                        { videoBackground: { ...getVideoBackgroundObject(videoOptions) } }
-                }
-            )
+        response = Object.assign(
+            response,
+            setBackgroundStyles(uniqueID, background, backgroundHover)
+        )
 
         return response;
     }
@@ -117,7 +125,7 @@ class edit extends MaxiBlock {
             zIndex,
             position,
             display,
-            background
+            transform
         } = this.props.attributes;
 
         const response = {
@@ -131,7 +139,7 @@ class edit extends MaxiBlock {
             position: { ...JSON.parse(position) },
             positionOptions: { ...JSON.parse(position).options },
             display: { ...JSON.parse(display) },
-            background: { ...getBackgroundObject(JSON.parse(background)) },
+            transform: { ...getTransfromObject(JSON.parse(transform)) },
             container: {
                 label: 'Container',
                 general: {},
@@ -140,17 +148,25 @@ class edit extends MaxiBlock {
 
         return response;
     }
+    get getBeforeObject() {
+
+        const { arrow } = this.props.attributes;
+
+        const response = {
+            arrow: { ...getArrowObject(JSON.parse(arrow)) }
+        }
+
+        return response;
+    }
 
     get getHoverObject() {
         const {
             opacityHover,
-            backgroundHover,
             borderHover,
             boxShadowHover,
         } = this.props.attributes;
 
         const response = {
-            backgroundHover: { ...getBackgroundObject(JSON.parse(backgroundHover)) },
             boxShadowHover: { ...getBoxShadowObject(JSON.parse(boxShadowHover)) },
             borderHover: { ...JSON.parse(borderHover) },
             borderWidthHover: { ...JSON.parse(borderHover).borderWidth },
@@ -316,7 +332,9 @@ class edit extends MaxiBlock {
             <Inspector {...this.props} />,
             <__experimentalToolbar {...this.props} />,
             <__experimentalBreadcrumbs />,
-            <Fragment>
+            <
+                Fragment>
+                
                 {
                     isFirstOnHierarchy && fullWidth &&
                     <__experimentalBlock.section
@@ -324,6 +342,9 @@ class edit extends MaxiBlock {
                         data-align={fullWidth}
                         data-maxi_initial_block_class={defaultBlockStyle}
                     >
+                        <__experimentalBackgroundDisplayer
+                            backgroundOptions={background}
+                        />
                         <__experimentalShapeDivider
                             shapeDividerOptions={shapeDivider}
                         />
@@ -351,7 +372,6 @@ class edit extends MaxiBlock {
                                 }
                             />
                         </div>
-                        <__experimentalVideoPlayer videoOptions={background} />
                         <__experimentalShapeDivider
                             position='bottom'
                             shapeDividerOptions={shapeDivider}
@@ -384,7 +404,9 @@ class edit extends MaxiBlock {
                         }
                     />
                 }
-            </Fragment>
+            </
+            Fragment>
+            
         ];
     }
 }

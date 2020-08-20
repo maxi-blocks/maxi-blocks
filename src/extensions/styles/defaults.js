@@ -3,6 +3,9 @@ export const alignment = {
     "general": {
         "alignment": "center"
     },
+    "xxl": {
+        "alignment": ""
+    },
     "xl": {
         "alignment": ""
     },
@@ -25,6 +28,9 @@ export const opacity = {
     "general": {
         "opacity": 1
     },
+    "xxl": {
+        "opacity": ""
+    },
     "xl": {
         "opacity": ""
     },
@@ -45,6 +51,9 @@ export const opacity = {
 export const opacityHover = {
     "label": "Opacity",
     "general": {
+        "opacity": ""
+    },
+    "xxl": {
         "opacity": ""
     },
     "xl": {
@@ -69,6 +78,10 @@ export const border = {
     "general": {
         "border-color": "#ffffff",
         "border-style": "none"
+    },
+    "xxl": {
+        "border-color": "",
+        "border-style": ""
     },
     "xl": {
         "border-color": "",
@@ -99,6 +112,14 @@ export const border = {
             "border-left-width": 0,
             "sync": true,
             "unit": "px"
+        },
+        "xxl": {
+            "border-top-width": "",
+            "border-right-width": "",
+            "border-bottom-width": "",
+            "border-left-width": "",
+            "sync": true,
+            "unit": ""
         },
         "xl": {
             "border-top-width": "",
@@ -151,6 +172,14 @@ export const border = {
             "sync": true,
             "unit": "px"
         },
+        "xxl": {
+            "border-top-left-radius": "",
+            "border-top-right-radius": "",
+            "border-bottom-right-radius": "",
+            "border-bottom-left-radius": "",
+            "sync": true,
+            "unit": ""
+        },
         "xl": {
             "border-top-left-radius": "",
             "border-top-right-radius": "",
@@ -200,6 +229,10 @@ export const borderHover = {
         "border-color": "",
         "border-style": ""
     },
+    "xxl": {
+        "border-color": "",
+        "border-style": ""
+    },
     "xl": {
         "border-color": "",
         "border-style": ""
@@ -229,6 +262,14 @@ export const borderHover = {
             "border-left-width": "",
             "sync": true,
             "unit": "px"
+        },
+        "xxl": {
+            "border-top-width": "",
+            "border-right-width": "",
+            "border-bottom-width": "",
+            "border-left-width": "",
+            "sync": true,
+            "unit": ""
         },
         "xl": {
             "border-top-width": "",
@@ -281,6 +322,14 @@ export const borderHover = {
             "sync": true,
             "unit": "px"
         },
+        "xxl": {
+            "border-top-left-radius": "",
+            "border-top-right-radius": "",
+            "border-bottom-right-radius": "",
+            "border-bottom-left-radius": "",
+            "sync": true,
+            "unit": ""
+        },
         "xl": {
             "border-top-left-radius": "",
             "border-top-right-radius": "",
@@ -327,6 +376,20 @@ export const borderHover = {
 export const size = {
     "label": "Size",
     "general": {
+        "max-widthUnit": "px",
+        "max-width": "",
+        "widthUnit": "px",
+        "width": "",
+        "min-widthUnit": "px",
+        "min-width": "",
+        "max-heightUnit": "px",
+        "max-height": "",
+        "heightUnit": "px",
+        "height": "",
+        "min-heightUnit": "px",
+        "min-height": ""
+    },
+    "xxl": {
         "max-widthUnit": "px",
         "max-width": "",
         "widthUnit": "px",
@@ -476,7 +539,8 @@ export const background = {
         "gradient": "",
         "defaultGradient": "",
         "gradientAboveBackground": false
-    }
+    },
+    "clipPath": ""
 };
 
 export const boxShadow = {
@@ -489,6 +553,14 @@ export const boxShadow = {
         "shadowVertical": 0,
         "shadowBlur": 0,
         "shadowSpread": 0
+    },
+    "xxl": {
+        "shadowColor": "",
+        "defaultShadowColor": "",
+        "shadowHorizontal": "",
+        "shadowVertical": "",
+        "shadowBlur": "",
+        "shadowSpread": ""
     },
     "xl": {
         "shadowColor": "",
@@ -535,6 +607,14 @@ export const boxShadow = {
 export const boxShadowHover = {
     "label": "Box Shadow",
     "general": {
+        "shadowColor": "",
+        "defaultShadowColor": "",
+        "shadowHorizontal": "",
+        "shadowVertical": "",
+        "shadowBlur": "",
+        "shadowSpread": ""
+    },
+    "xxl": {
         "shadowColor": "",
         "defaultShadowColor": "",
         "shadowHorizontal": "",
@@ -615,6 +695,23 @@ export const typography = {
         "text-decoration": "none",
         "text-shadow": ""
     },
+    "xxl": {
+        "font-family": "",
+        "font-options": {},
+        "color": "",
+        "text-align": "",
+        "font-sizeUnit": "px",
+        "font-size": "",
+        "line-heightUnit": "%",
+        "line-height": "",
+        "letter-spacingUnit": "px",
+        "letter-spacing": "",
+        "font-weight": "",
+        "text-transform": "",
+        "font-style": "",
+        "text-decoration": "",
+        "text-shadow": ""
+    },
     "xl": {
         "font-family": "",
         "font-options": {},
@@ -626,9 +723,9 @@ export const typography = {
         "letter-spacingUnit": "px",
         "letter-spacing": "",
         "font-weight": "",
-        "text-transform": "none",
-        "font-style": "normal",
-        "text-decoration": "none",
+        "text-transform": "",
+        "font-style": "",
+        "text-decoration": "",
         "text-shadow": ""
     },
     "l": {
@@ -642,9 +739,9 @@ export const typography = {
         "letter-spacingUnit": "px",
         "letter-spacing": "",
         "font-weight": "",
-        "text-transform": "none",
-        "font-style": "normal",
-        "text-decoration": "none",
+        "text-transform": "",
+        "font-style": "",
+        "text-decoration": "",
         "text-shadow": ""
     },
     "m": {
@@ -658,9 +755,9 @@ export const typography = {
         "letter-spacingUnit": "px",
         "letter-spacing": "",
         "font-weight": "",
-        "text-transform": "none",
-        "font-style": "normal",
-        "text-decoration": "none",
+        "text-transform": "",
+        "font-style": "",
+        "text-decoration": "",
         "text-shadow": ""
     },
     "s": {
@@ -674,9 +771,9 @@ export const typography = {
         "letter-spacingUnit": "px",
         "letter-spacing": "",
         "font-weight": "",
-        "text-transform": "none",
-        "font-style": "normal",
-        "text-decoration": "none",
+        "text-transform": "",
+        "font-style": "",
+        "text-decoration": "",
         "text-shadow": ""
     },
     "xs": {
@@ -690,15 +787,18 @@ export const typography = {
         "letter-spacingUnit": "px",
         "letter-spacing": "",
         "font-weight": "",
-        "text-transform": "none",
-        "font-style": "normal",
-        "text-decoration": "none",
+        "text-transform": "",
+        "font-style": "",
+        "text-decoration": "",
         "text-shadow": ""
     },
     "textAlign": {
         "label": "Alignment",
         "general": {
             "alignment": "left"
+        },
+        "xxl": {
+            "alignment": ""
         },
         "xl": {
             "alignment": ""
@@ -722,6 +822,22 @@ export const typographyHover = {
     "label": "Typography",
     "general": {
         "font-family": "",
+        "font-options": "",
+        "color": "#",
+        "font-sizeUnit": "px",
+        "font-size": "",
+        "line-heightUnit": "%",
+        "line-height": "",
+        "letter-spacingUnit": "px",
+        "letter-spacing": "",
+        "font-weight": "",
+        "text-transform": "",
+        "font-style": "",
+        "text-decoration": "",
+        "text-shadow": ""
+    },
+    "xxl": {
+        "font-family": "",
         "font-options": {},
         "color": "",
         "text-align": "",
@@ -741,7 +857,6 @@ export const typographyHover = {
         "font-family": "",
         "font-options": {},
         "color": "",
-        "text-align": "",
         "font-sizeUnit": "px",
         "font-size": "",
         "line-heightUnit": "%",
@@ -758,7 +873,6 @@ export const typographyHover = {
         "font-family": "",
         "font-options": {},
         "color": "",
-        "text-align": "",
         "font-sizeUnit": "px",
         "font-size": "",
         "line-heightUnit": "%",
@@ -775,7 +889,6 @@ export const typographyHover = {
         "font-family": "",
         "font-options": {},
         "color": "",
-        "text-align": "",
         "font-sizeUnit": "px",
         "font-size": "",
         "line-heightUnit": "%",
@@ -792,7 +905,6 @@ export const typographyHover = {
         "font-family": "",
         "font-options": {},
         "color": "",
-        "text-align": "",
         "font-sizeUnit": "px",
         "font-size": "",
         "line-heightUnit": "%",
@@ -809,7 +921,6 @@ export const typographyHover = {
         "font-family": "",
         "font-options": {},
         "color": "",
-        "text-align": "",
         "font-sizeUnit": "px",
         "font-size": "",
         "line-heightUnit": "%",
@@ -821,6 +932,30 @@ export const typographyHover = {
         "font-style": "",
         "text-decoration": "",
         "text-shadow": ""
+    },
+    "textAlign": {
+        "label": "Alignment",
+        "general": {
+            "alignment": "left"
+        },
+        "xxl": {
+            "alignment": ""
+        },
+        "xl": {
+            "alignment": ""
+        },
+        "l": {
+            "alignment": ""
+        },
+        "m": {
+            "alignment": ""
+        },
+        "s": {
+            "alignment": ""
+        },
+        "xs": {
+            "alignment": ""
+        }
     }
 }
 
@@ -833,6 +968,14 @@ export const margin = {
         "margin-left": "",
         "sync": true,
         "unit": "px"
+    },
+    "xxl": {
+        "margin-top": "",
+        "margin-right": "",
+        "margin-bottom": "",
+        "margin-left": "",
+        "sync": true,
+        "unit": ""
     },
     "xl": {
         "margin-top": "",
@@ -885,6 +1028,14 @@ export const padding = {
         "padding-left": "",
         "sync": true,
         "unit": "px"
+    },
+    "xxl": {
+        "padding-top": "",
+        "padding-right": "",
+        "padding-bottom": "",
+        "padding-left": "",
+        "sync": true,
+        "unit": ""
     },
     "xl": {
         "padding-top": "",
@@ -1008,7 +1159,8 @@ export const backgroundHover = {
         "gradient": "",
         "defaultGradient": "",
         "gradientAboveBackground": false
-    }
+    },
+    "clipPath": ""
 };
 
 export const __experimentalDivider = {
@@ -1032,28 +1184,46 @@ export const __experimentalDivider = {
 export const __experimentalContainer = {
     label: "Container size",
     general: {
-        "max-widthUnit": "%",
-        "max-width": "90"
+        "max-widthUnit": "px",
+        "max-width": 1784,
+        "widthUnit": "%",
+        "width": 92.9
+    },
+    xxl: {
+        "max-widthUnit": "px",
+        "max-width": 1784,
+        "widthUnit": "%",
+        "width": 92.9
     },
     xl: {
-        "max-widthUnit": "%",
-        "max-width": ""
+        "max-widthUnit": "px",
+        "max-width": 1784,
+        "widthUnit": "%",
+        "width": 92.9
     },
     l: {
-        "max-widthUnit": "%",
-        "max-width": ""
+        "max-widthUnit": "px",
+        "max-width": 1170,
+        "widthUnit": "%",
+        "width": 85.65
     },
     m: {
-        "max-widthUnit": "%",
-        "max-width": ""
+        "max-widthUnit": "px",
+        "max-width": 940,
+        "widthUnit": "%",
+        "width": 91.8
     },
     s: {
-        "max-widthUnit": "%",
-        "max-width": ""
+        "max-widthUnit": "px",
+        "max-width": 720,
+        "widthUnit": "%",
+        "width": 93.75
     },
     xs: {
-        "max-widthUnit": "%",
-        "max-width": ""
+        "max-widthUnit": "px",
+        "max-width": 426,
+        "widthUnit": "%",
+        "width": 88.75
     },
 }
 
@@ -1061,6 +1231,9 @@ export const __experimentalColumn = {
     label: "Column size",
     general: {
         "size": 90
+    },
+    xxl: {
+        "size": ""
     },
     xl: {
         "size": ""
@@ -1120,6 +1293,9 @@ export const __experimentalPosition = {
     "general": {
         "position": ""
     },
+    "xxl": {
+        "position": ""
+    },
     "xl": {
         "position": ""
     },
@@ -1138,52 +1314,60 @@ export const __experimentalPosition = {
     "options": {
         "label": "Position options",
         "general": {
+            "top": "",
+            "right": "",
+            "bottom": "",
+            "left": "",
+            "sync": false,
+            "unit": "px"
+        },
+        "xxl": {
                 "top": "",
                 "right": "",
                 "bottom": "",
                 "left": "",
                 "sync": false,
-                "unit": "px"
+                "unit": ""
         },
         "xl": {
-                "top": "",
-                "right": "",
-                "bottom": "",
-                "left": "",
-                "sync": false,
-                "unit": ""
+            "top": "",
+            "right": "",
+            "bottom": "",
+            "left": "",
+            "sync": false,
+            "unit": ""
         },
         "l": {
-                "top": "",
-                "right": "",
-                "bottom": "",
-                "left": "",
-                "sync": false,
-                "unit": ""
+            "top": "",
+            "right": "",
+            "bottom": "",
+            "left": "",
+            "sync": false,
+            "unit": ""
         },
         "m": {
-                "top": "",
-                "right": "",
-                "bottom": "",
-                "left": "",
-                "sync": false,
-                "unit": ""
+            "top": "",
+            "right": "",
+            "bottom": "",
+            "left": "",
+            "sync": false,
+            "unit": ""
         },
         "s": {
-                "top": "",
-                "right": "",
-                "bottom": "",
-                "left": "",
-                "sync": false,
-                "unit": ""
+            "top": "",
+            "right": "",
+            "bottom": "",
+            "left": "",
+            "sync": false,
+            "unit": ""
         },
         "xs": {
-                "top": "",
-                "right": "",
-                "bottom": "",
-                "left": "",
-                "sync": false,
-                "unit": ""
+            "top": "",
+            "right": "",
+            "bottom": "",
+            "left": "",
+            "sync": false,
+            "unit": ""
         }
     }
 }
@@ -1191,6 +1375,9 @@ export const __experimentalPosition = {
 export const __experimentalDisplay = {
     "label": "Display block",
     "general": {
+        "display": ""
+    },
+    "xxl": {
         "display": ""
     },
     "xl": {
@@ -1215,43 +1402,228 @@ export const __experimentalMotion = {
     "vertical": {
         "status": 0,
         "direction": "up",
-        "speed": 1,
-        "viewportTop": 100,
-        "viewportBottom": 0,
+        "viewport": [0, 50, 100],
+        "startValue": 50,
+        "midValue": 0,
+        "endValue": 0,
     },
     "horizontal": {
         "status": 0,
         "direction": "left",
-        "speed": 5,
-        "viewportTop": 100,
-        "viewportBottom": 0,
+        "viewport": [0, 50, 100],
+        "startValue": 50,
+        "midValue": 0,
+        "endValue": 0,
     },
     "rotate": {
         "status": 0,
         "direction": "left",
-        "speed": 0.3,
-        "viewportTop": 100,
-        "viewportBottom": 0,
+        "viewport": [0, 50, 100],
+        "startValue": 10,
+        "midValue": 0,
+        "endValue": 0,
     },
     "scale": {
         "status": 0,
         "direction": "up",
-        "speed": 5,
-        "viewportTop": 100,
-        "viewportBottom": 0,
+        "viewport": [0, 50, 100],
+        "startValue": 4,
+        "midValue": 0,
+        "endValue": 0,
     },
     "fade": {
         "status": 0,
         "direction": "in",
-        "speed": 5,
-        "viewportTop": 100,
-        "viewportBottom": 0,
+        "viewport": [0, 50, 100],
+        "startValue": 3,
+        "midValue": 0,
+        "endValue": 0,
     },
     "blur": {
         "status": 0,
         "direction": "in",
-        "speed": 5,
-        "viewportTop": 100,
-        "viewportBottom": 0,
+        "viewport": [0, 50, 100],
+        "startValue": 10,
+        "midValue": 0,
+        "endValue": 0,
     },
+    "entrance": {
+        "type": "",
+        "duration": 1,
+        "delay": 1,
+    },
+    "parallax": {
+        "status": 0,
+    }
+}
+
+export const __experimentalArrow = {
+    "label": "Arrow",
+    "active": 0,
+    "general": {
+        "active": 0,
+        "side": "bottom",
+        "position": 50,
+        "color": "#fff",
+        "widthUnit": "px",
+        "width": 20,
+        "heightUnit": "px",
+        "height": 20,
+        "border": ""
+    },
+    "xxl": {
+        "side": "",
+        "position": "",
+        "color": "",
+        "widthUnit": "",
+        "width": "",
+        "heightUnit": "",
+        "height": "",
+        "border": ""
+    },
+    "xl": {
+        "side": "",
+        "position": "",
+        "color": "",
+        "widthUnit": "",
+        "width": "",
+        "heightUnit": "",
+        "height": "",
+        "border": ""
+    },
+    "l": {
+        "side": "",
+        "position": "",
+        "color": "",
+        "widthUnit": "",
+        "width": "",
+        "heightUnit": "",
+        "height": "",
+        "border": ""
+    },
+    "m": {
+        "side": "",
+        "position": "",
+        "color": "",
+        "widthUnit": "",
+        "width": "",
+        "heightUnit": "",
+        "height": "",
+        "border": ""
+    },
+    "s": {
+        "side": "",
+        "position": "",
+        "color": "",
+        "widthUnit": "",
+        "width": "",
+        "heightUnit": "",
+        "height": "",
+        "border": ""
+    },
+    "xs": {
+        "side": "",
+        "position": "",
+        "color": "",
+        "widthUnit": "",
+        "width": "",
+        "heightUnit": "",
+        "height": "",
+        "border": ""
+    },
+}
+
+export const __experimentalTransform = {
+    "label": "Transform",
+    "general": {
+        "scaleX": "",
+        "scaleY": "",
+        "translateXUnit": "%",
+        "translateX": "",
+        "translateYUnit": "%",
+        "translateY": "",
+        "rotateX": "",
+        "rotateY": "",
+        "rotateZ": "",
+        "originX": "center",
+        "originY": "center"
+    },
+    "xxl": {
+        "scaleX": "",
+        "scaleY": "",
+        "translateXUnit": "%",
+        "translateX": "",
+        "translateYUnit": "%",
+        "translateY": "",
+        "rotateX": "",
+        "rotateY": "",
+        "rotateZ": "",
+        "originX": "",
+        "originY": ""
+    },
+    "xl": {
+        "scaleX": "",
+        "scaleY": "",
+        "translateXUnit": "%",
+        "translateX": "",
+        "translateYUnit": "%",
+        "translateY": "",
+        "rotateX": "",
+        "rotateY": "",
+        "rotateZ": "",
+        "originX": "",
+        "originY": ""
+    },
+    "l": {
+        "scaleX": "",
+        "scaleY": "",
+        "translateXUnit": "%",
+        "translateX": "",
+        "translateYUnit": "%",
+        "translateY": "",
+        "rotateX": "",
+        "rotateY": "",
+        "rotateZ": "",
+        "originX": "",
+        "originY": ""
+    },
+    "m": {
+        "scaleX": "",
+        "scaleY": "",
+        "translateXUnit": "%",
+        "translateX": "",
+        "translateYUnit": "%",
+        "translateY": "",
+        "rotateX": "",
+        "rotateY": "",
+        "rotateZ": "",
+        "originX": "",
+        "originY": ""
+    },
+    "s": {
+        "scaleX": "",
+        "scaleY": "",
+        "translateXUnit": "%",
+        "translateX": "",
+        "translateYUnit": "%",
+        "translateY": "",
+        "rotateX": "",
+        "rotateY": "",
+        "rotateZ": "",
+        "originX": "",
+        "originY": ""
+    },
+    "xs": {
+        "scaleX": "",
+        "scaleY": "",
+        "translateXUnit": "%",
+        "translateX": "",
+        "translateYUnit": "%",
+        "translateY": "",
+        "rotateX": "",
+        "rotateY": "",
+        "rotateZ": "",
+        "originX": "",
+        "originY": ""
+    }
 }

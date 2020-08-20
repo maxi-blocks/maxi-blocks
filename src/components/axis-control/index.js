@@ -14,6 +14,11 @@ const {
 } = wp.components;
 
 /**
+ * Internal dependencies
+ */
+import { getLastBreakpointValue } from '../../utils';
+
+/**
  * External dependencies
  */
 import classnames from 'classnames';
@@ -59,7 +64,7 @@ const AxisControl = props => {
     }
 
     const getValue = key => {
-        const inputValue = trim(value[breakpoint][getKey(value[breakpoint], key)]);
+        const inputValue = trim(getLastBreakpointValue(value, [getKey(value[breakpoint], key)], breakpoint));
         return inputValue;
     }
 
@@ -115,7 +120,7 @@ const AxisControl = props => {
                         { label: 'VW', value: 'vw' },
                         { label: '%', value: '%' },
                     ]}
-                    value={value[breakpoint].unit}
+                    value={getLastBreakpointValue(value, 'unit', breakpoint)}
                     onChange={val => {
                         value[breakpoint].unit = val;
                         onChange(JSON.stringify(value))
@@ -314,14 +319,14 @@ const AxisControl = props => {
                 >
                     <Tooltip
                         text={
-                            !!value[breakpoint].sync ?
+                            !!getLastBreakpointValue(value, 'sync', breakpoint) ?
                                 __('Unsync', 'maxi-blocks') :
                                 __('Sync', 'maximaxi-blocks')}
                     >
                         <Button
                             aria-label={__('Sync Units', 'maxi-blocks')}
-                            isPrimary={value[breakpoint].sync}
-                            aria-pressed={value[breakpoint].sync}
+                            isPrimary={getLastBreakpointValue(value, 'sync', breakpoint)}
+                            aria-pressed={getLastBreakpointValue(value, 'sync', breakpoint)}
                             onClick={onChangeSync}
                             isSmall
                         >

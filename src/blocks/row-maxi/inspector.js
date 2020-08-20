@@ -30,7 +30,8 @@ import {
     __experimentalOpacityControl,
     __experimentalAxisControl,
     __experimentalPositionControl,
-    __experimentalDisplayControl
+    __experimentalDisplayControl,
+    __experimentalTransformControl
 } from '../../components';
 
 /**
@@ -39,6 +40,7 @@ import {
 const Inspector = props => {
     const {
         attributes: {
+            uniqueID,
             isFirstOnHierarchy,
             blockStyle,
             defaultBlockStyle,
@@ -81,7 +83,8 @@ const Inspector = props => {
             onChangeHoverAnimationTypeOpacityColor,
             hoverAnimationTypeOpacityColorBackground,
             position,
-            display
+            display,
+            transform
         },
         deviceType,
         setAttributes,
@@ -361,14 +364,12 @@ const Inspector = props => {
                                             <TypographyControl
                                                 typography={hoverAnimationTitleTypography}
                                                 onChange={hoverAnimationTitleTypography => setAttributes({ hoverAnimationTitleTypography })}
-                                                target='>.maxi-block-text-hover .maxi-block-text-hover__title'
                                             />}
                                         {
                                             hoverAnimation === 'text' && hoverCustomTextContent === 'yes' &&
                                             <TypographyControl
                                                 typography={hoverAnimationContentTypography}
                                                 onChange={hoverAnimationContentTypography => setAttributes({ hoverAnimationContentTypography })}
-                                                target='>.maxi-block-text-hover .maxi-block-text-hover__content'
                                             />}
                                         {
                                             hoverAnimation === 'text' &&
@@ -381,7 +382,6 @@ const Inspector = props => {
                                                     backgroundOptions={hoverBackground}
                                                     onChange={hoverBackground => setAttributes({ hoverBackground })}
                                                     disableImage
-                                                    target='.maxi-block-text-hover'
                                                 />
 
                                                 <RadioControl
@@ -444,6 +444,12 @@ const Inspector = props => {
                                     onChange={display => setAttributes({ display })}
                                     breakpoint={deviceType}
                                     defaultDisplay='flex'
+                                />
+                                <__experimentalTransformControl
+                                    transform={transform}
+                                    onChange={transform => setAttributes({ transform })}
+                                    uniqueID={uniqueID}
+                                    breakpoint={deviceType}
                                 />
                             </div>
                         )

@@ -1,0 +1,28 @@
+/********
+* This styles should provide not just a base for all Maxi Block blocks,
+* it has the objective to remove other theme/plugins styles that can affect them
+********/
+
+body.maxi-blocks--active .maxi-block {
+	position: relative;
+	margin: 0 auto;
+	padding: 0;
+	/* max-width: none; */ /* Not sure if it can create and interfer with theme styles */
+	width: 100%;
+	min-width: 0;
+	max-height: none;
+	height: inherit;
+	min-height: 0;
+	border: none;
+	border-radius: 0;
+	outline: none;
+	vertical-align: inherit;
+	background: none;
+	box-shadow: none;
+	text-shadow: inherit;
+	transition: none;
+}
+
+body.maxi-blocks--active .maxi-block[data-align="full"] {
+	width: auto;
+}

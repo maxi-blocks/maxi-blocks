@@ -40,21 +40,11 @@
         width: auto;
     }
 
-    div.maxi-column-block {
-        margin: 0 !important;
-        // &--left {
-        //     margin-left: 0 !important;
-        // }
-
-        // &--right {
-        //     margin-right: 0 !important;
-        // }
-    }
-
     .block-list-appender {
         margin: 0;
         padding: 0;
         width: 100%;
+        z-index: 1;
     }
 
     &__template {

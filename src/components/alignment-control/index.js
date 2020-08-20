@@ -5,6 +5,11 @@ const { RadioControl } = wp.components;
 const { Fragment } = wp.element;
 
 /**
+ * Internal dependencies
+ */
+import { getLastBreakpointValue } from '../../utils';
+
+/**
  * External dependencies
  */
 import classnames from 'classnames';
@@ -70,7 +75,7 @@ const AlignmentControl = props => {
         <RadioControl
             label={label}
             className={classes}
-            selected={value[breakpoint].alignment}
+            selected={getLastBreakpointValue(value, 'alignment', breakpoint)}
             options={getOptions()}
             onChange={val => {
                 value[breakpoint].alignment = val;

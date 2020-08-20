@@ -4,13 +4,13 @@ export const borderNone = {
         "border-style": "none"
     },
     "borderWidth": {
-        "unit": "px",
         "width": {
             "border-top-width": "",
             "border-right-width": "",
             "border-bottom-width": "",
             "border-left-width": "",
-            "sync": true
+            "sync": true,
+            "unit": "px",
         }
     }
 }
@@ -27,7 +27,8 @@ export const borderSolid = {
             "border-right-width": 2,
             "border-bottom-width": 2,
             "border-left-width": 2,
-            "sync": true
+            "sync": true,
+            "unit": "px",
         }
     }
 }
@@ -44,7 +45,8 @@ export const borderDashed = {
             "border-right-width": 2,
             "border-bottom-width": 2,
             "border-left-width": 2,
-            "sync": true
+            "sync": true,
+            "unit": "px",
         }
     }
 }
@@ -61,7 +63,8 @@ export const borderDotted = {
             "border-right-width": 2,
             "border-bottom-width": 2,
             "border-left-width": 2,
-            "sync": true
+            "sync": true,
+            "unit": "px",
         }
     }
 }

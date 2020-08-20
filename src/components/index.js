@@ -22,7 +22,6 @@ export { default as TextShadowControl } from './text-shadow-control';
 export { default as TypographyControl } from './typography-control';
 
 // Experimental
-export { default as __experimentalVideoPlayer } from './video-player';
 export { default as __experimentalToolbar } from './toolbar';
 export { default as __experimentalDividerControl } from './divider-control';
 export { default as __experimentalBreadcrumbs } from './breadcrumbs';
@@ -38,3 +37,11 @@ export { default as __experimentalShapeDivider } from './shape-divider';
 export { default as __experimentalPositionControl } from './position-control';
 export { default as __experimentalDisplayControl } from './display-control';
 export { default as __experimentalMotionControl } from './motion-control';
+export { default as __experimentalArrowControl } from './arrow-control';
+export { default as __experimentalAdvancedRangeControl } from './advanced-range-control';
+export { default as __experimentalGroupInputControl } from './group-input-control';
+export { default as __experimentalTransformControl } from './transform-control';
+export { default as __experimentalClipPath } from './clip-path-control';
+export { default as __experimentalEntranceAnimationControl } from './entrance-animation-control';
+export { default as __experimentalParallaxControl } from './parallax-control';
+export { default as __experimentalBackgroundDisplayer } from './background-displayer';

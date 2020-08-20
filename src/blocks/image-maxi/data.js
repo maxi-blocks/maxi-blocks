@@ -14,6 +14,20 @@ export const size = {
         "min-heightUnit": "px",
         "min-height": ""
     },
+    "xxl": {
+        "max-widthUnit": "px",
+        "max-width": "",
+        "widthUnit": "px",
+        "width": "",
+        "min-widthUnit": "px",
+        "min-width": "",
+        "max-heightUnit": "px",
+        "max-height": "",
+        "heightUnit": "px",
+        "height": "",
+        "min-heightUnit": "px",
+        "min-height": ""
+    },
     "xl": {
         "max-widthUnit": "px",
         "max-width": "",

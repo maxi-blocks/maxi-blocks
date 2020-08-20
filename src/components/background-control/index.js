@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { select } = wp.data;
 const {
     Fragment,
     useState
@@ -17,7 +16,6 @@ const {
 /**
  * Internal dependencies
  */
-import { background } from '../../extensions/styles/defaults';
 import ColorControl from '../color-control';
 import GradientControl from '../gradient-control';
 import MediaUploaderControl from '../media-uploader-control';
@@ -55,7 +53,8 @@ import {
 const BackgroundControl = props => {
     const {
         className,
-        backgroundOptions,
+        background,
+        defaultBackground,
         disableImage = false,
         disableVideo = false,
         disableGradient = false,
@@ -68,9 +67,13 @@ const BackgroundControl = props => {
     const [selector, setSelector] = useState(0);
     const [backgroundItems, setBackgroundItems] = useState('color');
 
-    let value = !isObject(backgroundOptions) ?
-        JSON.parse(backgroundOptions) :
-        backgroundOptions;
+    const value = !isObject(background) ?
+        JSON.parse(background) :
+        background;
+
+    const defaultValue = !isObject(defaultBackground) ?
+        JSON.parse(defaultBackground) :
+        defaultBackground;
 
     const classes = classnames(
         'maxi-background-control',
@@ -80,22 +83,8 @@ const BackgroundControl = props => {
             null
     );
 
-    const allowedBlocks = [
-        'maxi-blocks/column-maxi',
-        'maxi-blocks/row-maxi',
-        'maxi-blocks/container-maxi',
-    ]
-    const backgroundVideoAllowedBlocks = [...allowedBlocks]
-    const backgroundImageAllowedBlocks = [...allowedBlocks]
-    const backgroundGradientAllowedBlocks = [
-        ...allowedBlocks,
-        'maxi-blocks/button-maxi',
-    ]
-
-    const currentBlockName = select('core/block-editor').getSelectedBlock().name;
-
     const onAddBackground = () => {
-        value.backgroundOptions.push(background.backgroundOptions[0])
+        value.backgroundOptions.push(defaultValue.backgroundOptions[0])
     }
 
     const onOpenOptions = (e, i) => {
@@ -130,12 +119,9 @@ const BackgroundControl = props => {
     const getOptions = () => {
         let options = [];
         !disableColor && options.push({ label: <Icon icon={backgroundColor} />, value: 'color' });
-        !disableImage && backgroundImageAllowedBlocks.includes(currentBlockName) &&
-            options.push({ label: <Icon icon={backgroundImage} />, value: 'image' });
-        !disableVideo && backgroundVideoAllowedBlocks.includes(currentBlockName) &&
-            options.push({ label: <Icon icon={backgroundVideo} />, value: 'video' });
-        !disableImage && backgroundGradientAllowedBlocks.includes(currentBlockName) &&
-            options.push({ label: <Icon icon={backgroundGradient()} />, value: 'gradient' })
+        !disableImage && options.push({ label: <Icon icon={backgroundImage} />, value: 'image' });
+        !disableVideo && options.push({ label: <Icon icon={backgroundVideo} />, value: 'video' });
+        !disableGradient && options.push({ label: <Icon icon={backgroundGradient()} />, value: 'gradient' })
 
         return options;
     }
@@ -184,11 +170,13 @@ const BackgroundControl = props => {
                                     <SizeControl
                                         label={__('Width', 'maxi-blocks')}
                                         unit={value.videoOptions.widthUnit}
+                                        defaultUnit={defaultValue.videoOptions.widthUnit}
                                         onChangeUnit={val => {
                                             value.videoOptions.widthUnit = val;
                                             onChange(JSON.stringify(value));
                                         }}
                                         value={value.videoOptions.width}
+                                        defaultValue={defaultValue.videoOptions.width}
                                         onChangeValue={val => {
                                             value.videoOptions.width = val;
                                             onChange(JSON.stringify(value));
@@ -197,11 +185,13 @@ const BackgroundControl = props => {
                                     <SizeControl
                                         label={__('Height', 'maxi-blocks')}
                                         unit={value.videoOptions.heightUnit}
+                                        defaultUnit={defaultValue.videoOptions.heightUnit}
                                         onChangeUnit={val => {
                                             value.videoOptions.heightUnit = val;
                                             onChange(JSON.stringify(value));
                                         }}
                                         value={value.videoOptions.height}
+                                        defaultValue={defaultValue.videoOptions.height}
                                         onChangeValue={val => {
                                             value.videoOptions.height = val;
                                             onChange(JSON.stringify(value));
@@ -309,8 +299,8 @@ const BackgroundControl = props => {
                         <GradientControl
                             label={__('Background', 'maxi-blocks')}
                             gradient={value.colorOptions.gradient}
-                            defaultGradient={value.colorOptions.defaultGradient}
-                            onGradientChange={val => {
+                            defaultGradient={defaultValue.colorOptions.gradient}
+                            onChange={val => {
                                 value.colorOptions.gradient = val;
                                 onChange(JSON.stringify(value))
                             }}
@@ -327,8 +317,8 @@ const BackgroundControl = props => {
                         <ColorControl
                             label={__('Background', 'maxi-blocks')}
                             color={value.colorOptions.color}
-                            defaultColor={value.colorOptions.defaultColor}
-                            onColorChange={val => {
+                            defaultColor={defaultValue.colorOptions.color}
+                            onChange={val => {
                                 value.colorOptions.color = val;
                                 onChange(JSON.stringify(value))
                             }}
@@ -338,20 +328,21 @@ const BackgroundControl = props => {
                         !disableImage &&
                         backgroundItems === 'image' &&
                         value.backgroundOptions.map((option, i) => {
+
                             return (
                                 <Fragment>
                                     <MediaUploaderControl
-                                        mediaID={value.backgroundOptions[i].imageOptions.mediaID}
+                                        mediaID={option.imageOptions.mediaID}
                                         onSelectImage={imageData => {
-                                            if (!isNumber(value.backgroundOptions[i].imageOptions.mediaID))
+                                            if (!isNumber(option.imageOptions.mediaID))
                                                 onAddBackground()
-                                            value.backgroundOptions[i].imageOptions.mediaID = imageData.id;
-                                            value.backgroundOptions[i].imageOptions.mediaURL = imageData.url;
+                                            option.imageOptions.mediaID = imageData.id;
+                                            option.imageOptions.mediaURL = imageData.url;
                                             onChange(JSON.stringify(value));
                                         }}
                                         onRemoveImage={() => {
-                                            value.backgroundOptions[selector].imageOptions.mediaID = '';
-                                            value.backgroundOptions[selector].imageOptions.mediaURL = '';
+                                            option.imageOptions.mediaID = '';
+                                            option.imageOptions.mediaURL = '';
                                             onRemoveImage();
                                             onChange(JSON.stringify(value));
                                         }}
@@ -361,10 +352,10 @@ const BackgroundControl = props => {
                                                 __('Add Another Image', 'maxi-blocks')
                                         }
                                         extendSelector={
-                                            value.backgroundOptions[i].imageOptions.mediaID &&
+                                            option.imageOptions.mediaID &&
                                             <Button
                                                 isSecondary
-                                                onClick={(e) => onOpenOptions(e, i)}
+                                                onClick={e => onOpenOptions(e, i)}
                                                 className='maxi-background-control__image-edit'
                                             >
                                                 {__('Edit image', 'maxi-blocks')}
@@ -375,58 +366,11 @@ const BackgroundControl = props => {
                                     />
                                 </Fragment>
                             )
-                        })
+                        }
+                        )
                     }
                 </Fragment>
-            }
-            {
-                isOpen &&
-                backgroundItems === 'image' &&
-                <SettingTabsControl
-                    items={[
-                        {
-                            label: __('Image', 'maxi-blocks'),
-                            className: 'maxi-background-control__image-tab',
-                            uuid: 'maxi-background-control__image-tab',
-                            content: (
-                                <MediaUploaderControl
-                                    mediaID={value.backgroundOptions[i].imageOptions.mediaID}
-                                    onSelectImage={imageData => {
-                                        if (!isNumber(value.backgroundOptions[i].imageOptions.mediaID))
-                                            onAddBackground()
-                                        value.backgroundOptions[i].imageOptions.mediaID = imageData.id;
-                                        value.backgroundOptions[i].imageOptions.mediaURL = imageData.url;
-                                        onChange(JSON.stringify(value));
-                                    }}
-                                    onRemoveImage={() => {
-                                        value.backgroundOptions[selector].imageOptions.mediaID = '';
-                                        value.backgroundOptions[selector].imageOptions.mediaURL = '';
-                                        onRemoveImage();
-                                        onChange(JSON.stringify(value));
-                                    }}
-                                    placeholder={
-                                        value.backgroundOptions.length - 1 === 0 ?
-                                            __('Set image', 'maxi-blocks') :
-                                            __('Add Another Image', 'maxi-blocks')
-                                    }
-                                    extendSelector={
-                                        value.backgroundOptions[i].imageOptions.mediaID &&
-                                        <Button
-                                            isSecondary
-                                            onClick={(e) => onOpenOptions(e, i)}
-                                            className='maxi-background-control__image-edit'
-                                        >
-                                            {__('Edit image', 'maxi-blocks')}
-                                        </Button>
-                                    }
-                                    alternativeImage={getAlternativeImage(i)}
-                                    removeButton={__('Remove', 'maxi-blocks')}
-                                />
-                            )
-                        }
-                    ]}
-                />
-            }
+            },
             {
                 isOpen &&
                 backgroundItems === 'image' &&
@@ -541,11 +485,13 @@ const BackgroundControl = props => {
                                             <SizeControl
                                                 label={__('Y-axis', 'maxi-blocks')}
                                                 unit={value.backgroundOptions[selector].positionOptions.widthUnit}
+                                                defaultUnit={defaultValue.backgroundOptions[0].positionOptions.widthUnit}
                                                 onChangeUnit={val => {
                                                     value.backgroundOptions[selector].positionOptions.widthUnit = val;
                                                     onChange(JSON.stringify(value));
                                                 }}
                                                 value={value.backgroundOptions[selector].positionOptions.width}
+                                                defaultValue={defaultValue.backgroundOptions[0].positionOptions.width}
                                                 onChangeValue={val => {
                                                     value.backgroundOptions[selector].positionOptions.width = val;
                                                     onChange(JSON.stringify(value));
@@ -554,11 +500,13 @@ const BackgroundControl = props => {
                                             <SizeControl
                                                 label={__('X-axis', 'maxi-blocks')}
                                                 unit={value.backgroundOptions[selector].positionOptions.heightUnit}
+                                                defaultUnit={defaultValue.backgroundOptions[0].positionOptions.heightUnit}
                                                 onChangeUnit={val => {
                                                     value.backgroundOptions[selector].positionOptions.heightUnit = val;
                                                     onChange(JSON.stringify(value));
                                                 }}
                                                 value={value.backgroundOptions[selector].positionOptions.height}
+                                                defaultValue={defaultValue.backgroundOptions[0].positionOptions.height}
                                                 onChangeValue={val => {
                                                     value.backgroundOptions[selector].positionOptions.height = val;
                                                     onChange(JSON.stringify(value));

@@ -14,13 +14,13 @@ import { isObject } from 'lodash';
  */
 const BackgroundDisplayer = props => {
     const {
-        backgroundOptions,
+        background,
         className,
     } = props;
 
-    const value = !isObject(backgroundOptions) ?
-        JSON.parse(backgroundOptions) :
-        backgroundOptions
+    const value = !isObject(background) ?
+        JSON.parse(background) :
+        background
 
     const classes = classnames(
         'maxi-background-displayer',
@@ -33,7 +33,7 @@ const BackgroundDisplayer = props => {
         >
             {
                 value.videoOptions.mediaURL &&
-                <div class="maxi-background-displayer__video-player">
+                <div className="maxi-background-displayer__video-player">
                     <video
                         controls={!!parseInt(value.videoOptions.controls)}
                         autoplay={!!parseInt(value.videoOptions.autoplay)}

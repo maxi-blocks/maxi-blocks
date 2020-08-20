@@ -15,7 +15,7 @@ import {
     getBackgroundObject,
     getBoxShadowObject,
     getAlignmentFlexObject,
-    getTransfromObject,
+    getTransformObject,
     getAlignmentTextObject,
     getOpacityObject,
 } from '../../utils';
@@ -52,8 +52,8 @@ class edit extends MaxiBlock {
 
         const response = {
             alignment: { ...getAlignmentFlexObject(JSON.parse(alignment)) },
-            zindex: { ...JSON.parse(zIndex) },
-            transform: { ...getTransfromObject(JSON.parse(transform)) }
+            zIndex: { ...JSON.parse(zIndex) },
+            transform: { ...getTransformObject(JSON.parse(transform)) }
         };
 
         return response;
@@ -87,7 +87,7 @@ class edit extends MaxiBlock {
             padding: { ...JSON.parse(padding) },
             margin: { ...JSON.parse(margin) },
             opacity: { ...getOpacityObject(JSON.parse(opacity)) },
-            zindex: { ...JSON.parse(zIndex) },
+            zIndex: { ...JSON.parse(zIndex) },
             position: { ...JSON.parse(position) },
             positionOptions: { ...JSON.parse(position).options },
             display: { ...JSON.parse(display) }
@@ -129,18 +129,12 @@ class edit extends MaxiBlock {
                 buttonText,
             },
             setAttributes,
-            hoverAnimation,
-            hoverAnimationType,
-            hoverAnimationDuration,
         } = this.props;
 
         const classes = classnames(
             'maxi-block maxi-button-extra',
             blockStyle,
             extraClassName,
-            'hover-animation-'+hoverAnimation,
-            'hover-animation-type-'+hoverAnimationType,
-            'hover-animation-duration-'+hoverAnimationDuration,
             uniqueID,
             className
         );

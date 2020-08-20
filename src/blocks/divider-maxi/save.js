@@ -59,12 +59,12 @@ const save = props => {
             data-motion-id={uniqueID}
         >
             <__experimentalBackgroundDisplayer
-                backgroundOptions={background}
+                background={background}
             />
             {
                 !!showLine &&
                 <Fragment>
-                    <hr class="maxi-divider-block__divider" />
+                    <hr className="maxi-divider-block__divider" />
                 </Fragment>
             }
         </div>

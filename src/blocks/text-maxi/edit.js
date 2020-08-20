@@ -23,7 +23,7 @@ import {
     getBoxShadowObject,
     getAlignmentTextObject,
     getOpacityObject,
-    getTransfromObject,
+    getTransformObject,
     setBackgroundStyles,
 } from '../../utils';
 import {
@@ -53,11 +53,6 @@ class edit extends MaxiBlock {
             [`${uniqueID}:hover`]: this.getHoverObject,
             [`${uniqueID} .maxi-text-block__content`]: this.getTypographyObject,
             [`${uniqueID} .maxi-text-block__content:hover`]: this.getTypographyHoverObject,
-            [`${uniqueID} .maxi-block-text-hover .maxi-block-text-hover__content`]: this.getHoverAnimationTextContentObject,
-            [`${uniqueID} .maxi-block-text-hover .maxi-block-text-hover__title`]: this.getHoverAnimationTextTitleObject,
-            [`${uniqueID} .maxi-block-text-hover`]: this.getHoverAnimationMainObject,
-            [`${uniqueID}.hover-animation-basic.hover-animation-type-opacity:hover .hover_el`]: this.getHoverAnimationTypeOpacityObject,
-            [`${uniqueID}.hover-animation-basic.hover-animation-type-opacity-with-colour:hover .hover_el:before`]: this.getHoverAnimationTypeOpacityColorObject,
         }
 
         response = Object.assign(
@@ -89,11 +84,11 @@ class edit extends MaxiBlock {
             borderRadius: { ...JSON.parse(border).borderRadius },
             size: { ...JSON.parse(size) },
             opacity: { ...getOpacityObject(JSON.parse(opacity)) },
-            zindex: { ...JSON.parse(zIndex) },
+            zIndex: { ...JSON.parse(zIndex) },
             position: { ...JSON.parse(position) },
             positionOptions: { ...JSON.parse(position).options },
             display: { ...JSON.parse(display) },
-            transform: { ...getTransfromObject(JSON.parse(transform)) }
+            transform: { ...getTransformObject(JSON.parse(transform)) }
         };
 
         return response;
@@ -118,7 +113,7 @@ class edit extends MaxiBlock {
     }
 
     get getTypographyObject() {
-        const { 
+        const {
             typography,
             margin,
             padding
@@ -143,91 +138,6 @@ class edit extends MaxiBlock {
         return response;
     }
 
-    get getHoverAnimationMainObject() {
-        const {
-            hoverOpacity,
-            hoverBackground,
-            hoverBorder,
-            hoverPadding,
-        } = this.props.attributes;
-
-        const response = {
-            background: { ...getBackgroundObject(JSON.parse(hoverBackground)) },
-            border: { ...JSON.parse(hoverBorder) },
-            borderWidth: { ...JSON.parse(hoverBorder).borderWidth },
-            borderRadius: { ...JSON.parse(hoverBorder).borderRadius },
-            padding: { ...JSON.parse(hoverPadding) },
-            opacity: { ...getOpacityObject(hoverOpacity) },
-        };
-
-        return response
-    }
-
-    get getHoverAnimationTypeOpacityObject() {
-        const {
-            hoverAnimationTypeOpacity,
-        } = this.props.attributes;
-
-        const response = {
-            animationTypeOpacityHover: {
-                label: 'Animation Type Opacity Hover',
-                general: {}
-            }
-        };
-
-        if (hoverAnimationTypeOpacity)
-            response.animationTypeOpacityHover.general['opacity'] = hoverAnimationTypeOpacity;
-
-        return response
-    }
-
-    get getHoverAnimationTypeOpacityColorObject() {
-        const {
-            hoverAnimationTypeOpacityColor,
-            hoverAnimationTypeOpacityColorBackground,
-        } = this.props.attributes;
-
-        const response = {
-            background: { ...getBackgroundObject(JSON.parse(hoverAnimationTypeOpacityColorBackground)) },
-            animationTypeOpacityHoverColor: {
-                label: 'Animation Type Opacity Color Hover',
-                general: {}
-            }
-        };
-
-        if (hoverAnimationTypeOpacityColor)
-            response.animationTypeOpacityHoverColor.general['opacity'] = hoverAnimationTypeOpacityColor;
-
-        return response
-    }
-
-
-    get getHoverAnimationTextTitleObject() {
-        const {
-            hoverAnimationTitleTypography
-        } = this.props.attributes;
-
-        const response = {
-            hoverAnimationTitleTypography: { ...JSON.parse(hoverAnimationTitleTypography) },
-            hoverAnimationTitleAlignmentTypography: { ...getAlignmentTextObject(JSON.parse(hoverAnimationTitleTypography).textAlign) }
-        };
-
-        return response
-    }
-
-    get getHoverAnimationTextContentObject() {
-        const {
-            hoverAnimationContentTypography
-        } = this.props.attributes;
-
-        const response = {
-            hoverAnimationContentTypography: { ...JSON.parse(hoverAnimationContentTypography) },
-            hoverAnimationContentAlignmentTypography: { ...getAlignmentTextObject(JSON.parse(hoverAnimationContentTypography).textAlign) }
-        };
-
-        return response
-    }
-
     render() {
         const {
             className,
@@ -237,10 +147,6 @@ class edit extends MaxiBlock {
                 defaultBlockStyle,
                 extraClassName,
                 background,
-                hoverAnimation,
-                hoverAnimationDuration,
-                hoverAnimationType,
-                hoverAnimationTypeText,
                 textLevel,
                 content,
                 isList,
@@ -257,10 +163,6 @@ class edit extends MaxiBlock {
             'maxi-block maxi-text-block',
             blockStyle,
             extraClassName,
-            'hover-animation-' + hoverAnimation,
-            'hover-animation-type-' + hoverAnimationType,
-            'hover-animation-type-text-' + hoverAnimationTypeText,
-            'hover-animation-duration-' + hoverAnimationDuration,
             uniqueID,
             className
         );
@@ -274,7 +176,7 @@ class edit extends MaxiBlock {
                 data-align={fullWidth}
             >
                 <__experimentalBackgroundDisplayer
-                    backgroundOptions={background}
+                    background={background}
                 />
                 {
                     !isList &&

@@ -30,6 +30,7 @@ const Divider = props => {
         blockName,
         showLine,
         divider,
+        defaultDivider,
         lineOrientation,
         onChange
     } = props;
@@ -67,10 +68,8 @@ const Divider = props => {
                         !!showLine &&
                         <Fragment>
                             <__experimentalDividerControl
-                                disableColor
-                                disableLineStyle
-                                disableBorderRadius
-                                dividerOptions={divider}
+                                divider={divider}
+                                defaultDivider={defaultDivider}
                                 onChange={divider => {
                                     onChange(
                                         showLine,
@@ -78,6 +77,9 @@ const Divider = props => {
                                     )
                                 }}
                                 lineOrientation={lineOrientation}
+                                disableColor
+                                disableLineStyle
+                                disableBorderRadius
                             />
                         </Fragment>
                     }

@@ -30,9 +30,6 @@ const save = props => {
             linkSettings,
             buttonText,
             extraClassName,
-            hoverAnimation,
-            hoverAnimationType,
-            hoverAnimationDuration,
             motion
         },
         className
@@ -43,9 +40,6 @@ const save = props => {
         'maxi-block maxi-button-extra',
         blockStyle,
         extraClassName,
-        'hover-animation-' + hoverAnimation,
-        'hover-animation-type-' + hoverAnimationType,
-        'hover-animation-duration-' + hoverAnimationDuration,
         uniqueID,
         className,
         !isNil(uniqueID) ?
@@ -70,7 +64,7 @@ const save = props => {
             data-motion-id={uniqueID}
         >
             <__experimentalBackgroundDisplayer
-                backgroundOptions={background}
+                background={background}
             />
             <Button
                 className="maxi-button-extra__button"

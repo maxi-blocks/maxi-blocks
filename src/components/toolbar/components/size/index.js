@@ -23,6 +23,15 @@ import { isObject } from 'lodash';
 import { toolbarSizing } from '../../../../icons';
 
 /**
+ * General
+ */
+const EXCLUDED_BLOCKS = [
+    'maxi-blocks/image-maxi',
+    'maxi-blocks/divider-maxi',
+    'maxi-blocks/column-maxi'
+]
+
+/**
  * Size
  */
 const Size = props => {
@@ -36,10 +45,10 @@ const Size = props => {
         breakpoint
     } = props;
 
-    if (blockName === 'maxi-blocks/image-maxi' || blockName === 'maxi-blocks/divider-maxi')
+    if (EXCLUDED_BLOCKS.includes(blockName))
         return null;
 
-    let value = !isObject(size) ?
+    const value = !isObject(size) ?
         JSON.parse(size) :
         size;
 
@@ -48,7 +57,7 @@ const Size = props => {
             className='toolbar-item__size'
             tooltip={__('Size', 'maxi-blocks')}
             icon={toolbarSizing}
-            advancedoptions='width height'
+            advancedOptions='width height'
             content={(
                 <Fragment>
                     {

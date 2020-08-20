@@ -11,7 +11,12 @@
         "border-top-width": "",
         "border-right-widthUnit": "px",
         "border-right-width": "",
-        "border-radius": "",
-        "opacity": 1
+        "border-radius": ""
+    },
+    "opacity": {
+        "label": "Opacity",
+        "general": {
+            "opacity": 1
+        }
     }
 }

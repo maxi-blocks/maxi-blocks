@@ -7,7 +7,6 @@ const { Fragment } = wp.element;
 const {
     TextControl,
     SelectControl,
-    RadioControl,
 } = wp.components;
 
 /**
@@ -20,10 +19,8 @@ import {
     BorderControl,
     BoxShadowControl,
     FullSizeControl,
-    HoverAnimationControl,
     SettingTabsControl,
     SizeControl,
-    TypographyControl,
     __experimentalResponsiveSelector,
     __experimentalZIndexControl,
     __experimentalAxisControl,
@@ -38,6 +35,7 @@ import {
     __experimentalArrowControl,
     __experimentalParallaxControl,
 } from '../../components';
+import { getDefaultProp } from '../../utils';
 
 /**
  * External dependencies
@@ -67,30 +65,9 @@ const Inspector = props => {
             boxShadowHover,
             padding,
             margin,
-            hoverAnimation,
-            hoverAnimationDuration,
-            hoverAnimationType,
-            hoverAnimationTypeText,
             extraClassName,
             breakpoints,
             zIndex,
-            hoverAnimationTitle,
-            hoverAnimationContent,
-            hoverOpacity,
-            hoverBackground,
-            hoverAnimationCustomBorder,
-            hoverAnimationContentTypography,
-            hoverAnimationTitleTypography,
-            hoverCustomTextContent,
-            hoverCustomTextTitle,
-            hoverBorder,
-            hoverPadding,
-            hoverAnimationTypeOpacity,
-            onChangeHoverAnimationTypeOpacity,
-            hoverAnimationTypeColor,
-            hoverAnimationTypeOpacityColor,
-            onChangeHoverAnimationTypeOpacityColor,
-            hoverAnimationTypeOpacityColorBackground,
             shapeDivider,
             position,
             display,
@@ -100,19 +77,31 @@ const Inspector = props => {
         },
         deviceType,
         setAttributes,
+        clientId
     } = props;
 
-    let value = !isObject(sizeContainer) ?
+    const value = !isObject(sizeContainer) ?
         JSON.parse(sizeContainer) :
         sizeContainer;
-    const hoverAnimationCustomOptions = [
-        { label: __('Yes', 'maxi-blocks'), value: 'yes' },
-        { label: __('No', 'maxi-blocks'), value: 'no' },
-    ]
-    const hoverCustomTextOptions = [
-        { label: __('Yes', 'maxi-blocks'), value: 'yes' },
-        { label: __('No', 'maxi-blocks'), value: 'no' },
-    ]
+
+    const minMaxSettings = {
+        'px': {
+            min: 0,
+            max: 3999
+        },
+        'em': {
+            min: 0,
+            max: 999
+        },
+        'vw': {
+            min: 0,
+            max: 999
+        },
+        '%': {
+            min: 0,
+            max: 100
+        }
+    }
 
     return (
         <InspectorControls>
@@ -136,67 +125,47 @@ const Inspector = props => {
                                 <AccordionControl
                                     isPrimary
                                     items={[
-                                        function () {
-                                            if (isFirstOnHierarchy && fullWidth) {
-                                                return {
-                                                    label: __('Container', 'maxi-blocks'),
-                                                    content: (
-                                                        <Fragment>
-                                                            <SizeControl
-                                                                label={__('Max Width', 'maxi-blocks')}
-                                                                unit={value[deviceType]['max-widthUnit']}
-                                                                onChangeUnit={val => {
-                                                                    value[deviceType]['max-widthUnit'] = val;
-                                                                    setAttributes({ sizeContainer: JSON.stringify(value) })
-                                                                }}
-                                                                value={value[deviceType]['max-width']}
-                                                                onChangeValue={val => {
-                                                                    value[deviceType]['max-width'] = val;
-                                                                    setAttributes({ sizeContainer: JSON.stringify(value) })
-                                                                }}
-                                                                minMaxSettings={{
-                                                                    'px': {
-                                                                        min: 0,
-                                                                        max: 3999
-                                                                    },
-                                                                    'em': {
-                                                                        min: 0,
-                                                                        max: 999
-                                                                    },
-                                                                    'vw': {
-                                                                        min: 0,
-                                                                        max: 999
-                                                                    },
-                                                                    '%': {
-                                                                        min: 0,
-                                                                        max: 100
-                                                                    }
-                                                                }}
-                                                            />
-                                                            <SizeControl
-                                                                label={__('Width', 'maxi-blocks')}
-                                                                unit={value[deviceType]['widthUnit']}
-                                                                onChangeUnit={val => {
-                                                                    value[deviceType]['widthUnit'] = val;
-                                                                    setAttributes({ sizeContainer: JSON.stringify(value) })
-                                                                }}
-                                                                value={value[deviceType]['width']}
-                                                                onChangeValue={val => {
-                                                                    value[deviceType]['width'] = val;
-                                                                    setAttributes({ sizeContainer: JSON.stringify(value) })
-                                                                }}
-                                                            />
-                                                            <__experimentalParallaxControl
-                                                                motionOptions={motion}
-                                                                onChange={motion => setAttributes({ motion })}
-                                                            />
-                                                        </Fragment>
-                                                    )
-                                                }
-                                            }
-
-                                            return null;
-                                        }(),
+                                        isFirstOnHierarchy &&
+                                        fullWidth === 'full' &&
+                                        {
+                                            label: __('Container', 'maxi-blocks'),
+                                            content: (
+                                                <Fragment>
+                                                    <SizeControl
+                                                        label={__('Max Width', 'maxi-blocks')}
+                                                        unit={value[deviceType]['max-widthUnit']}
+                                                        defaultUnit={JSON.parse(getDefaultProp(clientId, 'sizeContainer'))[deviceType]['max-widthUnit']}
+                                                        onChangeUnit={val => {
+                                                            value[deviceType]['max-widthUnit'] = val;
+                                                            setAttributes({ sizeContainer: JSON.stringify(value) })
+                                                        }}
+                                                        value={value[deviceType]['max-width']}
+                                                        defaultValue={JSON.parse(getDefaultProp(clientId, 'sizeContainer'))[deviceType]['max-width']}
+                                                        onChangeValue={val => {
+                                                            value[deviceType]['max-width'] = val;
+                                                            setAttributes({ sizeContainer: JSON.stringify(value) })
+                                                        }}
+                                                        minMaxSettings={minMaxSettings}
+                                                    />
+                                                    <SizeControl
+                                                        label={__('Width', 'maxi-blocks')}
+                                                        unit={value[deviceType]['widthUnit']}
+                                                        defaultUnit={JSON.parse(getDefaultProp(clientId, 'sizeContainer'))[deviceType]['widthUnit']}
+                                                        onChangeUnit={val => {
+                                                            value[deviceType]['widthUnit'] = val;
+                                                            setAttributes({ sizeContainer: JSON.stringify(value) })
+                                                        }}
+                                                        value={value[deviceType]['width']}
+                                                        defaultValue={JSON.parse(getDefaultProp(clientId, 'sizeContainer'))[deviceType]['width']}
+                                                        onChangeValue={val => {
+                                                            value[deviceType]['width'] = val;
+                                                            setAttributes({ sizeContainer: JSON.stringify(value) })
+                                                        }}
+                                                        minMaxSettings={minMaxSettings}
+                                                    />
+                                                </Fragment>
+                                            )
+                                        },
                                         {
                                             label: __('Width / Height', 'maxi-blocks'),
                                             content: (
@@ -215,59 +184,67 @@ const Inspector = props => {
                                                     }
                                                     <FullSizeControl
                                                         size={size}
+                                                        defaultSize={getDefaultProp(clientId, 'size')}
                                                         onChange={size => setAttributes({ size })}
                                                         breakpoint={deviceType}
                                                     />
                                                 </Fragment>
                                             ),
                                         },
-                                        function () {
-                                            if (deviceType === 'general')
-                                                return {
-                                                    label: __('Background', 'maxi-blocks'),
-                                                    disablePadding: true,
-                                                    content: (
-                                                        <SettingTabsControl
-                                                            items={[
-                                                                {
-                                                                    label: __('Normal', 'maxi-blocks'),
-                                                                    content: (
-                                                                        <Fragment>
-                                                                            <__experimentalOpacityControl
-                                                                                opacity={opacity}
-                                                                                onChange={opacity => setAttributes({ opacity })}
-                                                                                breakpoint={deviceType}
-                                                                            />
-                                                                            <BackgroundControl
-                                                                                backgroundOptions={background}
-                                                                                onChange={background => setAttributes({ background })}
-                                                                            />
-                                                                        </Fragment>
-                                                                    )
-                                                                },
-                                                                {
-                                                                    label: __('Hover', 'maxi-blocks'),
-                                                                    content: (
-                                                                        <Fragment>
-                                                                            <__experimentalOpacityControl
-                                                                                opacity={opacityHover}
-                                                                                onChange={opacityHover => setAttributes({ opacityHover })}
-                                                                                breakpoint={deviceType}
-                                                                            />
-                                                                            <BackgroundControl
-                                                                                backgroundOptions={backgroundHover}
-                                                                                onChange={backgroundHover => setAttributes({ backgroundHover })}
-                                                                                disableImage
-                                                                                disableVideo
-                                                                            />
-                                                                        </Fragment>
-                                                                    )
-                                                                },
-                                                            ]}
-                                                        />
-                                                    )
-                                                }
-                                        }(),
+                                        deviceType === 'general' &&
+                                        {
+                                            label: __('Background', 'maxi-blocks'),
+                                            disablePadding: true,
+                                            content: (
+                                                <SettingTabsControl
+                                                    items={[
+                                                        {
+                                                            label: __('Normal', 'maxi-blocks'),
+                                                            content: (
+                                                                <Fragment>
+                                                                    <__experimentalOpacityControl
+                                                                        opacity={opacity}
+                                                                        defaultOpacity={getDefaultProp(clientId, 'opacity')}
+                                                                        onChange={opacity => setAttributes({ opacity })}
+                                                                        breakpoint={deviceType}
+                                                                    />
+                                                                    <BackgroundControl
+                                                                        background={background}
+                                                                        defaultBackground={getDefaultProp(clientId, 'background')}
+                                                                        onChange={background => setAttributes({ background })}
+                                                                    />
+                                                                    <__experimentalParallaxControl
+                                                                        motion={motion}
+                                                                        defaultMotion={getDefaultProp(clientId, 'motion')}
+                                                                        onChange={motion => setAttributes({ motion })}
+                                                                    />
+                                                                </Fragment>
+                                                            )
+                                                        },
+                                                        {
+                                                            label: __('Hover', 'maxi-blocks'),
+                                                            content: (
+                                                                <Fragment>
+                                                                    <__experimentalOpacityControl
+                                                                        opacity={opacityHover}
+                                                                        defaultOpacity={getDefaultProp(clientId, 'opacityHover')}
+                                                                        onChange={opacityHover => setAttributes({ opacityHover })}
+                                                                        breakpoint={deviceType}
+                                                                    />
+                                                                    <BackgroundControl
+                                                                        background={backgroundHover}
+                                                                        defaultBackground={getDefaultProp(clientId, 'backgroundHover')}
+                                                                        onChange={backgroundHover => setAttributes({ backgroundHover })}
+                                                                        disableImage
+                                                                        disableVideo
+                                                                    />
+                                                                </Fragment>
+                                                            )
+                                                        },
+                                                    ]}
+                                                />
+                                            )
+                                        },
                                         {
                                             label: __('Border', 'maxi-blocks'),
                                             disablePadding: true,
@@ -279,6 +256,7 @@ const Inspector = props => {
                                                             content: (
                                                                 <BorderControl
                                                                     border={border}
+                                                                    defaultBorder={getDefaultProp(clientId, 'border')}
                                                                     onChange={border => setAttributes({ border })}
                                                                     breakpoint={deviceType}
                                                                 />
@@ -289,6 +267,7 @@ const Inspector = props => {
                                                             content: (
                                                                 <BorderControl
                                                                     border={borderHover}
+                                                                    defaultBorder={getDefaultProp(clientId, 'borderHover')}
                                                                     onChange={borderHover => setAttributes({ borderHover })}
                                                                     breakpoint={deviceType}
                                                                 />
@@ -309,6 +288,7 @@ const Inspector = props => {
                                                             content: (
                                                                 <BoxShadowControl
                                                                     boxShadow={boxShadow}
+                                                                    defaultBoxShadow={getDefaultProp(clientId, 'boxShadow')}
                                                                     onChange={boxShadow => setAttributes({ boxShadow })}
                                                                     breakpoint={deviceType}
                                                                 />
@@ -319,6 +299,7 @@ const Inspector = props => {
                                                             content: (
                                                                 <BoxShadowControl
                                                                     boxShadow={boxShadowHover}
+                                                                    defaultBoxShadow={getDefaultProp(clientId, 'boxShadowHover')}
                                                                     onChange={boxShadowHover => setAttributes({ boxShadowHover })}
                                                                     breakpoint={deviceType}
                                                                 />
@@ -334,12 +315,14 @@ const Inspector = props => {
                                                 <Fragment>
                                                     <__experimentalAxisControl
                                                         values={padding}
+                                                        defaultValues={getDefaultProp(clientId, 'padding')}
                                                         onChange={padding => setAttributes({ padding })}
                                                         breakpoint={deviceType}
                                                         disableAuto
                                                     />
                                                     <__experimentalAxisControl
                                                         values={margin}
+                                                        defaultValues={getDefaultProp(clientId, 'margin')}
                                                         onChange={margin => setAttributes({ margin })}
                                                         breakpoint={deviceType}
                                                     />
@@ -351,6 +334,7 @@ const Inspector = props => {
                                             content: (
                                                 <__experimentalArrowControl
                                                     arrow={arrow}
+                                                    defaultArrow={getDefaultProp(clientId, 'arrow')}
                                                     onChange={arrow => setAttributes({ arrow })}
                                                     breakpoint={deviceType}
                                                     isFirstOnHierarchy={isFirstOnHierarchy}
@@ -365,180 +349,107 @@ const Inspector = props => {
                     {
                         label: __('Advanced', 'maxi-blocks'),
                         content: (
-                            <Fragment>
-                                <div className='maxi-tab-content__box'>
+                            <AccordionControl
+                                isPrimary
+                                items={[
+                                    deviceType === 'general' &&
                                     {
-                                        deviceType === 'general' &&
-                                        <TextControl
-                                            label={__('Additional CSS Classes', 'maxi-blocks')}
-                                            className='maxi-additional__css-classes'
-                                            value={extraClassName}
-                                            onChange={extraClassName => setAttributes({ extraClassName })}
-                                        />
-                                    }
-                                    <HoverAnimationControl
-                                        hoverAnimation={hoverAnimation}
-                                        onChangeHoverAnimation={hoverAnimation => setAttributes({ hoverAnimation })}
-
-                                        hoverAnimationType={hoverAnimationType}
-                                        onChangeHoverAnimationType={hoverAnimationType => setAttributes({ hoverAnimationType })}
-
-                                        hoverAnimationTypeText={hoverAnimationTypeText}
-                                        onChangeHoverAnimationTypeText={hoverAnimationTypeText => setAttributes({ hoverAnimationTypeText })}
-
-                                        hoverAnimationDuration={hoverAnimationDuration}
-                                        onChangeHoverAnimationDuration={hoverAnimationDuration => setAttributes({ hoverAnimationDuration })}
-
-                                        hoverAnimationTitle={hoverAnimationTitle}
-                                        onChangeHoverAnimationTitle={hoverAnimationTitle => setAttributes({ hoverAnimationTitle })}
-                                        hoverAnimationContent={hoverAnimationContent}
-                                        onChangeHoverAnimationContent={hoverAnimationContent => setAttributes({ hoverAnimationContent })}
-
-                                        hoverCustomTextContent={hoverCustomTextContent}
-                                        onChangeHoverAnimationCustomContent={hoverCustomTextContent => setAttributes({ hoverCustomTextContent })}
-
-                                        hoverCustomTextTitle={hoverCustomTextTitle}
-                                        onChangeHoverAnimationCustomTitle={hoverCustomTextTitle => setAttributes({ hoverCustomTextTitle })}
-
-                                        hoverAnimationTypeOpacity={hoverAnimationTypeOpacity}
-                                        onChangeHoverAnimationTypeOpacity={hoverAnimationTypeOpacity => setAttributes({ hoverAnimationTypeOpacity })}
-
-                                        hoverAnimationTypeOpacityColor={hoverAnimationTypeOpacityColor}
-                                        onChangeHoverAnimationTypeOpacityColor={hoverAnimationTypeOpacityColor => setAttributes({ hoverAnimationTypeOpacityColor })}
-
-                                    />
-                                    {
-                                        hoverAnimation === 'text' &&
-                                        hoverCustomTextTitle === 'yes' &&
-                                        <TypographyControl
-                                            typography={hoverAnimationTitleTypography}
-                                            onChange={hoverAnimationTitleTypography => setAttributes({ hoverAnimationTitleTypography })}
-                                            hideAlignment
-                                            breakpoint={deviceType}
-                                        />}
-                                    {
-                                        hoverAnimation === 'text' &&
-                                        hoverCustomTextContent === 'yes' &&
-                                        <TypographyControl
-                                            typography={hoverAnimationContentTypography}
-                                            onChange={hoverAnimationContentTypography => setAttributes({ hoverAnimationContentTypography })}
-                                            hideAlignment
-                                            breakpoint={deviceType}
-                                        />}
-                                    {
-                                        hoverAnimation === 'text' &&
-                                        <Fragment>
-                                            <__experimentalOpacityControl
-                                                opacity={hoverOpacity}
-                                                onChange={hoverOpacity => setAttributes({ hoverOpacity })}
+                                        label: __('Custom classes', 'maxi-blocks'),
+                                        content: (
+                                            <TextControl
+                                                label={__('Additional CSS Classes', 'maxi-blocks')}
+                                                className='maxi-additional__css-classes'
+                                                value={extraClassName}
+                                                onChange={extraClassName => setAttributes({ extraClassName })}
                                             />
-                                            <BackgroundControl
-                                                backgroundOptions={hoverBackground}
-                                                onChange={hoverBackground => setAttributes({ hoverBackground })}
-                                                disableImage
+                                        )
+                                    },
+                                    {
+                                        label: __('Shape Divider', 'maxi-blocks'),
+                                        content: (
+                                            <__experimentalShapeDividerControl
+                                                shapeDividerOptions={shapeDivider}
+                                                defaultShapeDividerOptions={getDefaultProp(clientId, 'shapeDivider')}
+                                                onChange={shapeDivider => setAttributes({ shapeDivider })}
                                             />
-                                            <RadioControl
-                                                label={__('Custom Border', 'maxi-blocks')}
-                                                className={'maxi-hover-animation-custom-border'}
-                                                selected={hoverAnimationCustomBorder}
-                                                options={hoverAnimationCustomOptions}
-                                                onChange={hoverAnimationCustomBorder => setAttributes({ hoverAnimationCustomBorder })}
+                                        )
+                                    },
+                                    {
+                                        label: __('Motion Effects', 'maxi-blocks'),
+                                        content: (
+                                            <__experimentalMotionControl
+                                                motion={motion}
+                                                onChange={motion => setAttributes({ motion })}
                                             />
-                                        </Fragment>
-                                    }
+                                        )
+                                    },
                                     {
-                                        hoverAnimationCustomBorder === 'yes' &&
-                                        hoverAnimation === 'text' &&
-                                        <BorderControl
-                                            borderOptions={hoverBorder}
-                                            onChange={hoverBorder => setAttributes({ hoverBorder })}
-                                        />
-                                    }
-                                    {
-                                        hoverAnimation === 'text' &&
-                                        <Fragment>
-                                            <__experimentalAxisControl
-                                                values={hoverPadding}
-                                                onChange={hoverPadding => setAttributes({ hoverPadding })}
+                                        label: __('Entrance Animation', 'maxi-blocks'),
+                                        content: (
+                                            <__experimentalEntranceAnimationControl
+                                                motion={motion}
+                                                defaultMotion={getDefaultProp(clientId, 'motion')}
+                                                onChange={motion => setAttributes({ motion })}
                                             />
-                                        </Fragment>
-                                    }
+                                        )
+                                    },
                                     {
-                                        hoverAnimationType === 'opacity-with-colour' &&
-                                        <BackgroundControl
-                                            backgroundOptions={hoverAnimationTypeOpacityColorBackground}
-                                            onChange={hoverAnimationTypeOpacityColorBackground => setAttributes({ hoverAnimationTypeOpacityColorBackground })}
-                                            disableImage
-                                        />
-                                    }
-                                    <__experimentalZIndexControl
-                                        zindex={zIndex}
-                                        onChange={zIndex => setAttributes({ zIndex })}
-                                        breakpoint={deviceType}
-                                    />
+                                        label: __('Transform', 'maxi-blocks'),
+                                        content: (
+                                            <__experimentalTransformControl
+                                                transform={transform}
+                                                onChange={transform => setAttributes({ transform })}
+                                                uniqueID={uniqueID}
+                                                breakpoint={deviceType}
+                                            />
+                                        )
+                                    },
                                     {
-                                        deviceType != 'general' &&
-                                        <__experimentalResponsiveControl
-                                            breakpoints={breakpoints}
-                                            onChange={breakpoints => setAttributes({ breakpoints })}
-                                            breakpoint={deviceType}
-                                        />
+                                        label: __('Display', 'maxi-blocks'),
+                                        content: (
+                                            <__experimentalDisplayControl
+                                                display={display}
+                                                onChange={display => setAttributes({ display })}
+                                                breakpoint={deviceType}
+                                            />
+                                        )
+                                    },
+                                    {
+                                        label: __('Position', 'maxi-blocks'),
+                                        content: (
+                                            <__experimentalPositionControl
+                                                position={position}
+                                                defaultPosition={getDefaultProp(clientId, 'position')}
+                                                onChange={position => setAttributes({ position })}
+                                                breakpoint={deviceType}
+                                            />
+                                        )
+                                    },
+                                    deviceType != 'general' &&
+                                    {
+                                        label: __('Breakpoint', 'maxi-blocks'),
+                                        content: (
+                                            <__experimentalResponsiveControl
+                                                breakpoints={breakpoints}
+                                                defaultBreakpoints={getDefaultProp(clientId, 'breakpoints')}
+                                                onChange={breakpoints => setAttributes({ breakpoints })}
+                                                breakpoint={deviceType}
+                                            />
+                                        )
+                                    },
+                                    {
+                                        label: __('Z-index', 'maxi-blocks'),
+                                        content: (
+                                            <__experimentalZIndexControl
+                                                zIndex={zIndex}
+                                                defaultZIndex={getDefaultProp(clientId, 'zIndex')}
+                                                onChange={zIndex => setAttributes({ zIndex })}
+                                                breakpoint={deviceType}
+                                            />
+                                        )
                                     }
-                                    <__experimentalPositionControl
-                                        position={position}
-                                        onChange={position => setAttributes({ position })}
-                                        breakpoint={deviceType}
-                                    />
-                                    <__experimentalDisplayControl
-                                        display={display}
-                                        onChange={display => setAttributes({ display })}
-                                        breakpoint={deviceType}
-                                    />
-                                </div>
-                                <AccordionControl
-                                    isPrimary
-                                    items={[
-                                        {
-                                            label: __('Shape Divider', 'maxi-blocks'),
-                                            content: (
-                                                <__experimentalShapeDividerControl
-                                                    shapeDividerOptions={shapeDivider}
-                                                    onChange={shapeDivider => setAttributes({ shapeDivider })}
-                                                />
-                                            )
-                                        },
-                                        {
-                                            label: __('Motion Effects', 'maxi-blocks'),
-                                            content: (
-                                                <__experimentalMotionControl
-                                                    motionOptions={motion}
-                                                    onChange={motion => setAttributes({ motion })}
-                                                />
-                                            )
-                                        },
-                                        {
-                                            label: __('Entrance Animation', 'maxi-blocks'),
-                                            content: (
-                                                <__experimentalEntranceAnimationControl
-                                                    motionOptions={motion}
-                                                    onChange={motion => setAttributes({ motion })}
-                                                />
-                                            )
-                                        },
-                                        {
-                                            label: __('Transform', 'maxi-blocks'),
-                                            content: (
-                                                <__experimentalTransformControl
-                                                    transform={transform}
-                                                    onChange={transform => setAttributes({ transform })}
-                                                    uniqueID={uniqueID}
-                                                    breakpoint={deviceType}
-                                                />
-                                            )
-                                        }
-                                    ]}
-                                />
-                            </Fragment>
+                                ]}
+                            />
                         )
                     }
                 ]}

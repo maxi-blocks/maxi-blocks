@@ -13,6 +13,11 @@ const {
 import ToolbarPopover from '../toolbar-popover';
 
 /**
+ * External dependencies
+ */
+import { isObject } from 'lodash';
+
+/**
  * Icons
  */
 import { toolbarDividersetting } from '../../../../icons';
@@ -41,7 +46,7 @@ const DividerColor = props => {
         return val.hex;
     }
 
-    let value = typeof divider != 'object' ?
+    const value = !isObject(divider) ?
         JSON.parse(divider) :
         divider;
 

@@ -8,6 +8,172 @@ motionElems.forEach(function(elem) {
 	const motionID = elem.getAttribute('data-motion-id');
 	const motionData = JSON.parse(elem.getAttribute('data-motion'));
 	const shapeDividerData = JSON.parse(elem.getAttribute('data-shape-divider'));
+	const hoverData = JSON.parse(elem.getAttribute('data-hover'));
+
+	// Hover Effect
+	if(hoverData !== null) {
+		if(("type" in hoverData)) {
+			const hoverElem = document.querySelector(".maxi-motion-effect-"+ motionID +"");
+			hoverElem.style.overflow = 'hidden';
+			const hoverElemAct = document.querySelector(".maxi-motion-effect-"+ motionID +" .maxi-block-hover-element");
+			const hoverElemDetails = document.querySelector(".maxi-motion-effect-"+ motionID +" .maxi-hover-details");
+			const hoverElemHeight = hoverElemAct.clientHeight;
+			const hoverElemWidth = hoverElemAct.clientWidth;
+
+			hoverElem.addEventListener('mouseenter', function(){ doHoverEffect() });
+			hoverElem.addEventListener('mouseleave', function(){ doHoverEffect() });
+
+
+			// Tilt
+			if(hoverData.effectType === 'tilt') {
+				hoverElem.addEventListener('mousemove', function(e){
+
+					var xPos = (e.clientX/window.innerWidth)-0.5;
+					var yPos = (e.clientY/window.innerHeight)-0.5;
+
+					gsap.to(hoverElem, 0.6, {
+						rotationY: 30 * xPos,
+						rotationX: 30 * yPos,
+						ease: Power1.easeOut,
+						transformPerspective: 900,
+						transformOrigin: "center"
+					});
+
+				});
+				hoverElem.addEventListener('mouseleave', function(e){
+					gsap.to(hoverElem, 0.6, {
+						rotationY: 0,
+						rotationX: 0,
+					});
+				});
+			}
+
+			const hoverTl = gsap.timeline();
+
+			if(hoverData.type === 'text') {
+				switch(hoverData.effectType) {
+					case 'fade':
+						gsap.set(hoverElemDetails, {opacity: 0});
+						hoverTl.to(hoverElemDetails, hoverData.duration, {opacity: 1});
+						break;
+					case 'push-up':
+						gsap.set(hoverElemDetails, {y: hoverElemHeight});
+						hoverTl.to(hoverElemAct, hoverData.duration, {y: -hoverElemHeight}, "move")
+						  .to(hoverElemDetails, hoverData.duration, {y: 0}, "move");
+						break;
+					case 'push-bottom':
+						gsap.set(hoverElemDetails, {y: -hoverElemHeight});
+						hoverTl.to(hoverElemAct, hoverData.duration, {y: hoverElemHeight}, "move")
+						  .to(hoverElemDetails, hoverData.duration, {y: 0}, "move");
+						break;
+					case 'push-left':
+						gsap.set(hoverElemDetails, {x: hoverElemWidth});
+						hoverTl.to(hoverElemAct, hoverData.duration, {x: -hoverElemWidth}, "move")
+						  .to(hoverElemDetails, hoverData.duration, {x: 0}, "move");
+						break;
+					case 'push-right':
+						gsap.set(hoverElemDetails, {x: -hoverElemWidth});
+						hoverTl.to(hoverElemAct, hoverData.duration, {x: hoverElemWidth}, "move")
+						  .to(hoverElemDetails, hoverData.duration, {x: 0}, "move");
+						break;
+					case 'slide-up':
+						gsap.set(hoverElemDetails, {y: hoverElemHeight});
+						hoverTl.to(hoverElemDetails, hoverData.duration, {y: 0});
+						break;
+					case 'slide-bottom':
+						gsap.set(hoverElemDetails, {y: -hoverElemHeight});
+						hoverTl.to(hoverElemDetails, hoverData.duration, {y: 0});
+						break;
+					case 'slide-left':
+						gsap.set(hoverElemDetails, {x: hoverElemWidth});
+						hoverTl.to(hoverElemDetails, hoverData.duration, {x: 0});
+						break;
+					case 'slide-right':
+						gsap.set(hoverElemDetails, {x: -hoverElemWidth});
+						hoverTl.to(hoverElemDetails, hoverData.duration, {x: 0});
+						break;
+				}
+			}
+
+			if(hoverData.type === 'basic') {
+				switch(hoverData.effectType) {
+					case 'zoom-in':
+						hoverTl.to(hoverElemAct, hoverData.duration, {
+							transformOrigin:'50% 50%',
+							scale: 1.2,
+							ease: Power2.easeInOut,
+							force3D :true
+						});
+						break;
+					case 'zoom-out':
+						hoverTl.from(hoverElemAct, hoverData.duration, {
+							transformOrigin:'50% 50%',
+							scale: 1.2,
+							ease: Power2.easeInOut,
+							force3D :true
+						});
+						break;
+					case 'slide':
+						gsap.set(hoverElemAct, {scale: 1.3});
+						hoverTl.to(hoverElemAct, hoverData.duration, {
+							transformOrigin:'50% 50%',
+							x: 70,
+							ease: Power2.easeInOut,
+							force3D :true
+						});
+						break;
+					case 'rotate':
+						hoverTl.to(hoverElemAct, hoverData.duration, {
+							transformOrigin:'50% 50%',
+							rotate: 5,
+							scale: 1.2,
+							ease: Power2.easeInOut,
+							force3D :true
+						});
+						break;
+					case 'greay-scale':
+						hoverTl.to(hoverElemAct, hoverData.duration, {
+							webkitFilter: "grayscale(100%)",
+							filter: "grayscale(100%)",
+						});
+						break;
+					case 'clear-greay-scale':
+						gsap.set(hoverElemAct, {
+							webkitFilter: "grayscale(100%)",
+							filter: "grayscale(100%)",
+						});
+						hoverTl.to(hoverElemAct, hoverData.duration, {
+							webkitFilter: "grayscale(0%)",
+							filter: "grayscale(0%)",
+						});
+						break;
+					case 'blur':
+						hoverTl.to(hoverElemAct, hoverData.duration, {
+							webkitFilter: "blur(4px)",
+							filter: "blur(4px)",
+						});
+						break;
+					case 'clear-blur':
+						gsap.set(hoverElemAct, {
+							webkitFilter: "blur(4px)",
+							filter: "blur(4px)",
+						});
+						hoverTl.to(hoverElemAct, hoverData.duration, {
+							webkitFilter: "blur(0px)",
+							filter: "blur(0px)",
+						});
+						break;
+					case 'tilt':
+						break;
+				}
+			}
+
+			hoverTl.reversed(true);
+			function doHoverEffect() {
+				hoverTl.reversed(!hoverTl.reversed());
+			}
+		}
+	}
 
 	// Shape Divider
 	if(shapeDividerData !== null) {
@@ -43,13 +209,22 @@ motionElems.forEach(function(elem) {
 		// Parallax Effect
 		if("parallax" in motionData) {
 
-			const parallaxElem = document.querySelector(".maxi-motion-effect-"+ motionID +"");
+			const parallaxElem = document.querySelector(`.maxi-motion-effect-${motionID} > .maxi-background-displayer`);
 			const parallaxStatus = motionData.parallax.status;
+			const parallaxSpeed = motionData.parallax.speed;
+			const parallaxDirection = motionData.parallax.direction;
+
+			const getBackgroundPosition = () => {
+				if(parallaxDirection === 'up')
+					return "50% "+ -innerHeight * parallaxSpeed +"px"
+				else
+					return "50% "+ -innerHeight / (11 - parallaxSpeed) +"px"
+			}
 
 			if(!!parseInt(parallaxStatus)) {
 
 				gsap.to(parallaxElem, {
-					backgroundPosition: "50% "+ -innerHeight / 2 +"px",
+					backgroundPosition: getBackgroundPosition(),
 					ease: "none",
 					scrollTrigger: {
 						trigger: parallaxElem,
@@ -93,9 +268,7 @@ motionElems.forEach(function(elem) {
 			const direction = motionData.vertical.direction;
 			const status = motionData.vertical.status;
 			const viewport = motionData.vertical.viewport;
-			const startValue = motionData.vertical.startValue;
-			const midValue = motionData.vertical.midValue;
-			const endValue = motionData.vertical.endValue;
+			const amounts = (typeof motionData.vertical.amounts === 'string') ? JSON.parse(motionData.vertical.amounts) : motionData.vertical.amounts;
 
 			if(!!parseInt(status)) {
 				const motionTimeLineTop = gsap.timeline({
@@ -131,47 +304,47 @@ motionElems.forEach(function(elem) {
 						},
 					}
 				});
-				if(direction === 'up') {
-					if(startValue !== 0) {
+				if(direction === 'down') {
+					if(parseFloat(amounts[0]) !== 0 && amounts[0] !== '') {
 						motionTimeLineTop.to(".maxi-motion-effect-"+ motionID +"", {
-							y: startValue,
+							y: amounts[0],
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(midValue !== 0) {
+					if(parseFloat(amounts[1]) !== 0 && amounts[1] !== '') {
 						motionTimeLineMid.to(".maxi-motion-effect-"+ motionID +"", {
-							y: midValue,
+							y: amounts[1],
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(endValue !== 0) {
+					if(parseFloat(amounts[2]) !== 0 && amounts[2] !== '') {
 						motionTimeLineBottom.to(".maxi-motion-effect-"+ motionID +"", {
-							y: endValue,
+							y: amounts[2],
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
 				}
-				if(direction === 'down') {
-					if(startValue !== 0) {
+				if(direction === 'up') {
+					if(parseFloat(amounts[0]) !== 0 && amounts[0] !== '') {
 						motionTimeLineTop.to(".maxi-motion-effect-"+ motionID +"", {
-							y: -(startValue),
+							y: -(amounts[0]),
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(midValue !== 0) {
+					if(parseFloat(amounts[1]) !== 0 && amounts[1] !== '') {
 						motionTimeLineMid.to(".maxi-motion-effect-"+ motionID +"", {
-							y: -(midValue),
+							y: -(amounts[1]),
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(endValue !== 0) {
+					if(parseFloat(amounts[2]) !== 0 && amounts[2] !== '') {
 						motionTimeLineBottom.to(".maxi-motion-effect-"+ motionID +"", {
-							y: -(endValue),
+							y: -(amounts[2]),
 							duration: 1,
 							ease: "power1.out"
 						})
@@ -187,9 +360,7 @@ motionElems.forEach(function(elem) {
 			const direction = motionData.horizontal.direction;
 			const status = motionData.horizontal.status;
 			const viewport = motionData.horizontal.viewport;
-			const startValue = motionData.horizontal.startValue;
-			const midValue = motionData.horizontal.midValue;
-			const endValue = motionData.horizontal.endValue;
+			const amounts = (typeof motionData.horizontal.amounts === 'string') ? JSON.parse(motionData.horizontal.amounts) : motionData.horizontal.amounts;
 
 			if(!!parseInt(status)) {
 				const motionTimeLineTop = gsap.timeline({
@@ -226,46 +397,46 @@ motionElems.forEach(function(elem) {
 					}
 				});
 				if(direction === 'left') {
-					if(startValue !== 0) {
+					if(parseFloat(amounts[0]) !== 0 && amounts[0] !== '') {
 						motionTimeLineTop.to(".maxi-motion-effect-"+ motionID +"", {
-							x: startValue,
+							x: amounts[0],
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(midValue !== 0) {
+					if(parseFloat(amounts[1]) !== 0 && amounts[1] !== '') {
 						motionTimeLineMid.to(".maxi-motion-effect-"+ motionID +"", {
-							x: midValue,
+							x: amounts[1],
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(endValue !== 0) {
+					if(parseFloat(amounts[2]) !== 0 && amounts[2] !== '') {
 						motionTimeLineBottom.to(".maxi-motion-effect-"+ motionID +"", {
-							x: endValue,
+							x: amounts[2],
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
 				}
 				if(direction === 'right') {
-					if(startValue !== 0) {
+					if(parseFloat(amounts[0]) !== 0 && amounts[0] !== '') {
 						motionTimeLineTop.to(".maxi-motion-effect-"+ motionID +"", {
-							x: -(startValue),
+							x: -(amounts[0]),
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(midValue !== 0) {
+					if(parseFloat(amounts[1]) !== 0 && amounts[1] !== '') {
 						motionTimeLineMid.to(".maxi-motion-effect-"+ motionID +"", {
-							x: -(midValue),
+							x: -(amounts[1]),
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(endValue !== 0) {
+					if(parseFloat(amounts[2]) !== 0 && amounts[2] !== '') {
 						motionTimeLineBottom.to(".maxi-motion-effect-"+ motionID +"", {
-							x: -(endValue),
+							x: -(amounts[2]),
 							duration: 1,
 							ease: "power1.out"
 						})
@@ -281,9 +452,7 @@ motionElems.forEach(function(elem) {
 			const direction = motionData.rotate.direction;
 			const status = motionData.rotate.status;
 			const viewport = motionData.rotate.viewport;
-			const startValue = motionData.rotate.startValue;
-			const midValue = motionData.rotate.midValue;
-			const endValue = motionData.rotate.endValue;
+			const amounts = (typeof motionData.rotate.amounts === 'string') ? JSON.parse(motionData.rotate.amounts) : motionData.rotate.amounts;
 
 			if(!!parseInt(status)) {
 				const motionTimeLineTop = gsap.timeline({
@@ -320,46 +489,46 @@ motionElems.forEach(function(elem) {
 					}
 				});
 				if(direction === 'left') {
-					if(startValue !== 0) {
+					if(parseFloat(amounts[0]) !== 0 && amounts[0] !== '') {
 						motionTimeLineTop.to(".maxi-motion-effect-"+ motionID +"", {
-							rotation: startValue,
+							rotation: amounts[0],
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(midValue !== 0) {
+					if(parseFloat(amounts[1]) !== 0 && amounts[1] !== '') {
 						motionTimeLineMid.to(".maxi-motion-effect-"+ motionID +"", {
-							rotation: midValue,
+							rotation: amounts[1],
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(endValue !== 0) {
+					if(parseFloat(amounts[2]) !== 0 && amounts[2] !== '') {
 						motionTimeLineBottom.to(".maxi-motion-effect-"+ motionID +"", {
-							rotation: endValue,
+							rotation: amounts[2],
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
 				}
 				if(direction === 'right') {
-					if(startValue !== 0) {
+					if(parseFloat(amounts[0]) !== 0 && amounts[0] !== '') {
 						motionTimeLineTop.to(".maxi-motion-effect-"+ motionID +"", {
-							rotation: -(startValue),
+							rotation: -(amounts[0]),
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(midValue !== 0) {
+					if(parseFloat(amounts[1]) !== 0 && amounts[1] !== '') {
 						motionTimeLineMid.to(".maxi-motion-effect-"+ motionID +"", {
-							rotation: -(midValue),
+							rotation: -(amounts[1]),
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(endValue !== 0) {
+					if(parseFloat(amounts[2]) !== 0 && amounts[2] !== '') {
 						motionTimeLineBottom.to(".maxi-motion-effect-"+ motionID +"", {
-							rotation: -(endValue),
+							rotation: -(amounts[2]),
 							duration: 1,
 							ease: "power1.out"
 						})
@@ -375,9 +544,7 @@ motionElems.forEach(function(elem) {
 			const direction = motionData.scale.direction;
 			const status = motionData.scale.status;
 			const viewport = motionData.scale.viewport;
-			const startValue = motionData.scale.startValue;
-			const midValue = motionData.scale.midValue;
-			const endValue = motionData.scale.endValue;
+			const amounts = (typeof motionData.scale.amounts === 'string') ? JSON.parse(motionData.scale.amounts) : motionData.scale.amounts;
 
 			if(!!parseInt(status)) {
 				const motionTimeLineTop = gsap.timeline({
@@ -413,47 +580,47 @@ motionElems.forEach(function(elem) {
 						},
 					}
 				});
-				if(direction === 'up') {
-					if(startValue !== 0) {
+				if(direction === 'down') {
+					if(amounts[0] !== '') {
 						motionTimeLineTop.to(".maxi-motion-effect-"+ motionID +"", {
-							scale: startValue,
+							scale: amounts[0] / 10,
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(midValue !== 0) {
+					if(amounts[1] !== '') {
 						motionTimeLineMid.to(".maxi-motion-effect-"+ motionID +"", {
-							scale: midValue,
+							scale: amounts[1] / 10,
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(endValue !== 0) {
+					if(amounts[2] !== '') {
 						motionTimeLineBottom.to(".maxi-motion-effect-"+ motionID +"", {
-							scale: endValue,
+							scale: amounts[2] / 10,
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
 				}
-				if(direction === 'down') {
-					if(startValue !== 0) {
+				if(direction === 'up') {
+					if(amounts[0] !== '') {
 						motionTimeLineTop.from(".maxi-motion-effect-"+ motionID +"", {
-							scale: startValue,
+							scale: amounts[0] / 10,
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(midValue !== 0) {
+					if(amounts[1] !== '') {
 						motionTimeLineMid.from(".maxi-motion-effect-"+ motionID +"", {
-							scale: midValue,
+							scale: amounts[1] / 10,
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(endValue !== 0) {
+					if(amounts[2] !== '') {
 						motionTimeLineBottom.from(".maxi-motion-effect-"+ motionID +"", {
-							scale: endValue,
+							scale: amounts[2] / 10,
 							duration: 1,
 							ease: "power1.out"
 						})
@@ -469,9 +636,7 @@ motionElems.forEach(function(elem) {
 			const direction = motionData.fade.direction;
 			const status = motionData.fade.status;
 			const viewport = motionData.fade.viewport;
-			const startValue = motionData.fade.startValue;
-			const midValue = motionData.fade.midValue;
-			const endValue = motionData.fade.endValue;
+			const amounts = (typeof motionData.fade.amounts === 'string') ? JSON.parse(motionData.fade.amounts) : motionData.fade.amounts;
 
 			if(!!parseInt(status)) {
 				const motionTimeLineTop = gsap.timeline({
@@ -507,47 +672,47 @@ motionElems.forEach(function(elem) {
 						},
 					}
 				});
-				if(direction === 'in') {
-					if(startValue !== 0) {
+				if(direction === 'out') {
+					if(amounts[0] !== '') {
 						motionTimeLineTop.to(".maxi-motion-effect-"+ motionID +"", {
-							opacity: startValue / 10,
+							opacity: parseFloat(amounts[0]) / 10,
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(midValue !== 0) {
+					if(amounts[1] !== '') {
 						motionTimeLineMid.to(".maxi-motion-effect-"+ motionID +"", {
-							opacity: midValue / 10,
+							opacity: parseFloat(amounts[1]) / 10,
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(endValue !== 0) {
+					if(amounts[2] !== '') {
 						motionTimeLineBottom.to(".maxi-motion-effect-"+ motionID +"", {
-							opacity: endValue / 10,
+							opacity: parseFloat(amounts[2]) / 10,
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
 				}
-				if(direction === 'out') {
-					if(startValue !== 0) {
+				if(direction === 'in') {
+					if(amounts[0] !== '') {
 						motionTimeLineTop.from(".maxi-motion-effect-"+ motionID +"", {
-							opacity: startValue / 10,
+							opacity: parseFloat(amounts[0]) / 10,
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(midValue !== 0) {
+					if(amounts[1] !== '') {
 						motionTimeLineMid.from(".maxi-motion-effect-"+ motionID +"", {
-							opacity: midValue / 10,
+							opacity: parseFloat(amounts[1]) / 10,
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(endValue !== 0) {
+					if(amounts[2] !== '') {
 						motionTimeLineBottom.from(".maxi-motion-effect-"+ motionID +"", {
-							opacity: endValue / 10,
+							opacity: parseFloat(amounts[2]) / 10,
 							duration: 1,
 							ease: "power1.out"
 						})
@@ -563,9 +728,7 @@ motionElems.forEach(function(elem) {
 			const direction = motionData.blur.direction;
 			const status = motionData.blur.status;
 			const viewport = motionData.blur.viewport;
-			const startValue = motionData.blur.startValue;
-			const midValue = motionData.blur.midValue;
-			const endValue = motionData.blur.endValue;
+			const amounts = (typeof motionData.blur.amounts === 'string') ? JSON.parse(motionData.blur.amounts) : motionData.blur.amounts;
 
 			if(!!parseInt(status)) {
 				const motionTimeLineTop = gsap.timeline({
@@ -602,52 +765,52 @@ motionElems.forEach(function(elem) {
 					}
 				});
 				if(direction === 'in') {
-					if(startValue !== 0) {
+					if(parseFloat(amounts[0]) !== 0 && amounts[0] !== '') {
 						motionTimeLineTop.to(".maxi-motion-effect-"+ motionID +"", {
-							webkitFilter: "blur("+ startValue +"px)",
-							filter: "blur("+ startValue +"px)",
+							webkitFilter: "blur("+ amounts[0] +"px)",
+							filter: "blur("+ amounts[0] +"px)",
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(midValue !== 0) {
+					if(parseFloat(amounts[1]) !== 0 && amounts[1] !== '') {
 						motionTimeLineMid.to(".maxi-motion-effect-"+ motionID +"", {
-							webkitFilter: "blur("+ midValue +"px)",
-							filter: "blur("+ midValue +"px)",
+							webkitFilter: "blur("+ amounts[1] +"px)",
+							filter: "blur("+ amounts[1] +"px)",
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(endValue !== 0) {
+					if(parseFloat(amounts[2]) !== 0 && amounts[2] !== '') {
 						motionTimeLineBottom.to(".maxi-motion-effect-"+ motionID +"", {
-							webkitFilter: "blur("+ endValue +"px)",
-							filter: "blur("+ endValue +"px)",
+							webkitFilter: "blur("+ amounts[2] +"px)",
+							filter: "blur("+ amounts[2] +"px)",
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
 				}
 				if(direction === 'out') {
-					if(startValue !== 0) {
+					if(parseFloat(amounts[0]) !== 0 && amounts[0] !== '') {
 						motionTimeLineTop.from(".maxi-motion-effect-"+ motionID +"", {
-							webkitFilter: "blur("+ startValue +"px)",
-							filter: "blur("+ startValue +"px)",
+							webkitFilter: "blur("+ amounts[0] +"px)",
+							filter: "blur("+ amounts[0] +"px)",
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(midValue !== 0) {
+					if(parseFloat(amounts[1]) !== 0 && amounts[1] !== '') {
 						motionTimeLineMid.from(".maxi-motion-effect-"+ motionID +"", {
-							webkitFilter: "blur("+ midValue +"px)",
-							filter: "blur("+ midValue +"px)",
+							webkitFilter: "blur("+ amounts[1] +"px)",
+							filter: "blur("+ amounts[1] +"px)",
 							duration: 1,
 							ease: "power1.out"
 						})
 					}
-					if(endValue !== 0) {
+					if(parseFloat(amounts[2]) !== 0 && amounts[2] !== '') {
 						motionTimeLineBottom.from(".maxi-motion-effect-"+ motionID +"", {
-							webkitFilter: "blur("+ endValue +"px)",
-							filter: "blur("+ endValue +"px)",
+							webkitFilter: "blur("+ amounts[2] +"px)",
+							filter: "blur("+ amounts[2] +"px)",
 							duration: 1,
 							ease: "power1.out"
 						})

@@ -25,14 +25,19 @@ import {
 const PositionControl = props => {
     const {
         position,
+        defaultPosition,
         className,
         onChange,
-        breakpoint
+        breakpoint = 'general'
     } = props;
 
-    let value = !isObject(position) ?
+    const value = !isObject(position) ?
         JSON.parse(position) :
         position;
+
+    const defaultValues = !isObject(defaultPosition) ?
+        JSON.parse(defaultPosition) :
+        defaultPosition;
 
     const classes = classnames(
         'maxi-position-control',
@@ -72,6 +77,7 @@ const PositionControl = props => {
                 !isEmpty(getLastBreakpointValue(value, 'position', breakpoint)) &&
                 <__experimentalAxisControl
                     values={value.options}
+                    defaultValues={defaultValues.options}
                     onChange={val => {
                         value.options = JSON.parse(val);
                         onChange(JSON.stringify(value))

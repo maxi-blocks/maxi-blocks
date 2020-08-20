@@ -42,6 +42,7 @@ import {
 const AxisControl = props => {
     const {
         values,
+        defaultValues,
         className,
         onChange,
         breakpoint = 'general',
@@ -54,6 +55,10 @@ const AxisControl = props => {
         JSON.parse(values) :
         values;
 
+    const defaultValue = !isObject(defaultValues) ?
+        JSON.parse(defaultValues) :
+        defaultValues;
+
     const classes = classnames(
         'maxi-axis-control',
         className
@@ -64,23 +69,26 @@ const AxisControl = props => {
     }
 
     const getValue = key => {
-        const inputValue = trim(getLastBreakpointValue(value, [getKey(value[breakpoint], key)], breakpoint));
-        return inputValue;
+        const inputValue = getLastBreakpointValue(value, [getKey(value[breakpoint], key)], breakpoint);
+
+        if (!!Number(inputValue) || parseInt(inputValue) === 0)
+            return Number(inputValue);
+        else
+            return inputValue
     }
 
     const onChangeValue = (newValue, target) => {
         if (value[breakpoint].sync === true) {
             for (let key of Object.keys(value[breakpoint])) {
-                key != 'sync' && key != 'unit' ?
-                    value[breakpoint][key] = !!Number(newValue) || newValue === '0' ?
+                if (key != 'sync' && key != 'unit')
+                    value[breakpoint][key] = !!Number(newValue) || parseInt(newValue) === 0 ?
                         Number(newValue) :
-                        newValue :
-                    null;
+                        newValue;
             }
         }
         else {
             value[breakpoint][getKey(value[breakpoint], target)] =
-                !!Number(newValue) || newValue === '0' ?
+                !!Number(newValue) || parseInt(newValue) === 0 ?
                     Number(newValue) :
                     newValue;
         }
@@ -89,12 +97,9 @@ const AxisControl = props => {
     }
 
     const onReset = () => {
-        for (let key of Object.keys(value[breakpoint])) {
-            if (key != 'sync' && key != 'unit')
-                value[breakpoint][key] = '';
+        for (let key of Object.keys(defaultValue[breakpoint])) {
+            value[breakpoint][key] = defaultValue[breakpoint][key]
         }
-        value[breakpoint]['sync'] = true;
-        value[breakpoint]['unit'] = 'px';
 
         onChange(JSON.stringify(value));
     }
@@ -102,6 +107,15 @@ const AxisControl = props => {
     const onChangeSync = () => {
         value[breakpoint].sync = !value[breakpoint].sync;
         onChange(JSON.stringify(value))
+    }
+
+    const getDisplayValue = key => {
+        const inputValue = getValue(key);
+
+        if (!!Number(inputValue) || parseInt(inputValue) === 0)
+            return Number(inputValue);
+
+        return inputValue;
     }
 
     return (
@@ -158,7 +172,7 @@ const AxisControl = props => {
                                 'auto' :
                                 ''
                         }
-                        value={!!Number(getValue(0)) ? getValue(0) : ''}
+                        value={getDisplayValue(0)}
                         onChange={e => onChangeValue(e.target.value, 0)}
                         aria-label={sprintf(
                             __('%s Top', 'maxi-blocks'),
@@ -171,7 +185,7 @@ const AxisControl = props => {
                         !disableAuto &&
                         <label
                             className="maxi-axis-control__content__item__checkbox"
-                            for={`${instanceId}-top`}>
+                            htmlFor={`${instanceId}-top`}>
                             <input
                                 type="checkbox"
                                 checked={getValue(0) === 'auto'}
@@ -201,7 +215,7 @@ const AxisControl = props => {
                                 'auto' :
                                 ''
                         }
-                        value={!!Number(getValue(1)) ? getValue(1) : ''}
+                        value={getDisplayValue(1)}
                         onChange={e => onChangeValue(e.target.value, 1)}
                         aria-label={sprintf(
                             __('%s Right', 'maxi-blocks'),
@@ -214,7 +228,7 @@ const AxisControl = props => {
                         !disableAuto &&
                         <label
                             className="maxi-axis-control__content__item__checkbox"
-                            for={`${instanceId}-right`}>
+                            htmlFor={`${instanceId}-right`}>
                             <input
                                 type="checkbox"
                                 checked={getValue(1) === 'auto'}
@@ -244,7 +258,7 @@ const AxisControl = props => {
                                 'auto' :
                                 ''
                         }
-                        value={!!Number(getValue(2)) ? getValue(2) : ''}
+                        value={getDisplayValue(2)}
                         onChange={e => onChangeValue(e.target.value, 2)}
                         aria-label={sprintf(
                             __('%s Bottom', 'maxi-blocks'),
@@ -257,7 +271,7 @@ const AxisControl = props => {
                         !disableAuto &&
                         <label
                             className="maxi-axis-control__content__item__checkbox"
-                            for={`${instanceId}-bottom`}>
+                            htmlFor={`${instanceId}-bottom`}>
                             <input
                                 type="checkbox"
                                 checked={getValue(2) === 'auto'}
@@ -287,7 +301,7 @@ const AxisControl = props => {
                                 'auto' :
                                 ''
                         }
-                        value={!!Number(getValue(3)) ? getValue(3) : ''}
+                        value={getDisplayValue(3)}
                         onChange={e => onChangeValue(e.target.value, 3)}
                         aria-label={sprintf(
                             __('%s Left', 'maxi-blocks'),
@@ -300,7 +314,7 @@ const AxisControl = props => {
                         !disableAuto &&
                         <label
                             className="maxi-axis-control__content__item__checkbox"
-                            for={`${instanceId}-left`}>
+                            htmlFor={`${instanceId}-left`}>
                             <input
                                 type="checkbox"
                                 checked={getValue(3) === 'auto'}
@@ -321,7 +335,7 @@ const AxisControl = props => {
                         text={
                             !!getLastBreakpointValue(value, 'sync', breakpoint) ?
                                 __('Unsync', 'maxi-blocks') :
-                                __('Sync', 'maximaxi-blocks')}
+                                __('Sync', 'maxi-blocks')}
                     >
                         <Button
                             aria-label={__('Sync Units', 'maxi-blocks')}

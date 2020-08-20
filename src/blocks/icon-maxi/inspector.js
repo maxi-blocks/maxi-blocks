@@ -20,9 +20,7 @@ import {
     BorderControl,
     BlockStylesControl,
     BoxShadowControl,
-    HoverAnimationControl,
     SettingTabsControl,
-    TypographyControl,
     __experimentalResponsiveSelector,
     __experimentalZIndexControl,
     __experimentalAxisControl,
@@ -65,29 +63,10 @@ const Inspector = props => {
             opacityHover,
             boxShadowHover,
             borderHover,
-            hoverAnimation,
-            hoverAnimationDuration,
             extraClassName,
             extraStyles,
             zIndex,
             breakpoints,
-            hoverAnimationTitle,
-            hoverAnimationContent,
-            hoverOpacity,
-            hoverBackground,
-            hoverAnimationCustomBorder,
-            hoverAnimationContentTypography,
-            hoverAnimationTitleTypography,
-            hoverCustomTextContent,
-            hoverCustomTextTitle,
-            hoverBorder,
-            hoverPadding,
-            hoverAnimationTypeOpacity,
-            onChangeHoverAnimationTypeOpacity,
-            hoverAnimationTypeColor,
-            hoverAnimationTypeOpacityColor,
-            onChangeHoverAnimationTypeOpacityColor,
-            hoverAnimationTypeOpacityColorBackground,
             position,
             display
         },
@@ -170,13 +149,15 @@ const Inspector = props => {
                                                                 <Fragment>
                                                                     <__experimentalOpacityControl
                                                                         opacity={opacity}
+                                                                        defaultOpacity={getDefaultProp(clientId, 'opacity')}
                                                                         onChange={opacity => setAttributes({ opacity })}
                                                                         breakpoint={deviceType}
                                                                     />
                                                                     <BackgroundControl
-                                                                        backgroundOptions={background}
+                                                                        background={background}
                                                                         onChange={background => setAttributes({ background })}
                                                                         disableImage
+                                                                        disableVideo
                                                                     />
                                                                 </Fragment>
                                                             )
@@ -187,14 +168,16 @@ const Inspector = props => {
                                                                 <Fragment>
                                                                     <__experimentalOpacityControl
                                                                         opacity={opacityHover}
+                                                                        defaultOpacity={getDefaultProp(clientId, 'opacityHover')}
                                                                         onChange={opacityHover => setAttributes({ opacityHover })}
                                                                         breakpoint={deviceType}
                                                                         disableAuto
                                                                     />
                                                                     <BackgroundControl
-                                                                        backgroundOptions={backgroundHover}
+                                                                        background={backgroundHover}
                                                                         onChange={backgroundHover => setAttributes({ backgroundHover })}
                                                                         disableImage
+                                                                        disableVideo
                                                                     />
                                                                 </Fragment>
                                                             )
@@ -268,14 +251,8 @@ const Inspector = props => {
                         label: __('Advanced', 'maxi-blocks'),
                         content: (
                             <div className='maxi-tab-content__box'>
-                                <HoverAnimationControl
-                                    hoverAnimation={hoverAnimation}
-                                    onChangeHoverAnimation={hoverAnimation => setAttributes({ hoverAnimation })}
-                                    hoverAnimationDuration={hoverAnimationDuration}
-                                    onChangeHoverAnimationDuration={hoverAnimationDuration => setAttributes({ hoverAnimationDuration })}
-                                />
                                 <__experimentalZIndexControl
-                                    zindex={zIndex}
+                                    zIndex={zIndex}
                                     onChange={zIndex => setAttributes({ zIndex })}
                                     breakpoint={deviceType}
                                 />
@@ -292,7 +269,7 @@ const Inspector = props => {
                                     onChange={position => setAttributes({ position })}
                                     breakpoint={deviceType}
                                 />
-                                <__experimentalDisplayControl 
+                                <__experimentalDisplayControl
                                     display={display}
                                     onChange={display => setAttributes({ display })}
                                     breakpoint={deviceType}

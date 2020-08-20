@@ -19,9 +19,10 @@ import ToolbarPopover from '../toolbar-popover';
 /**
  * External dependencies
  */
-import { 
+import {
     isEmpty,
-    trim
+    trim,
+    isObject
 } from 'lodash';
 
 /**
@@ -40,26 +41,21 @@ const TextOptions = props => {
     const {
         blockName,
         typography,
+        defaultTypography,
         onChange,
         breakpoint
     } = props;
 
-    const defaultRawTypography = getBlockAttributes('maxi-blocks/text-maxi').typography;
-
     if (blockName != 'maxi-blocks/text-maxi')
         return null;
 
-    const updateTypography = () => {
-        onChange(JSON.stringify(value))
-    }
-
-    let value = typeof typography != 'object' ?
+    const value = !isObject(typography) ?
         JSON.parse(typography) :
         typography;
 
-    let defaultTypography = typeof defaultRawTypography != 'object' ?
-        JSON.parse(defaultRawTypography) :
-        defaultRawTypography;
+    const defaultValue = !isObject(defaultTypography) ?
+        JSON.parse(defaultTypography) :
+        defaultTypography;
 
     return (
         <ToolbarPopover
@@ -69,7 +65,7 @@ const TextOptions = props => {
             advancedOptions='typography'
             content={(
                 <div
-                    class="toolbar-item__popover__wrapper toolbar-item__popover__font-options"
+                    className="toolbar-item__popover__wrapper toolbar-item__popover__font-options"
                 >
                     <div
                         className="toolbar-item__popover__font-options__font"
@@ -80,14 +76,14 @@ const TextOptions = props => {
                             onChange={font => {
                                 value[breakpoint]['font-family'] = font.value;
                                 value.options = font.files;
-                                updateTypography();
+                                onChange(JSON.stringify(value));
                             }}
                         />
                         <Button
                             className="components-maxi-control__reset-button"
                             onClick={() => {
-                                value[breakpoint]['font-family'] = defaultRawTypography.font;
-                                updateTypography();
+                                value[breakpoint]['font-family'] = defaultValue.font;
+                                onChange(JSON.stringify(value));
                             }}
                             isSmall
                             aria-label={sprintf(
@@ -110,15 +106,15 @@ const TextOptions = props => {
                                 value={trim(getLastBreakpointValue(value, 'font-size', breakpoint))}
                                 onChange={e => {
                                     value[breakpoint]['font-size'] = isEmpty(e.target.value) ? '' : Number(e.target.value);
-                                    updateTypography();
+                                    onChange(JSON.stringify(value));
                                 }}
 
                             />
                             <Button
                                 className="components-maxi-control__reset-button"
                                 onClick={() => {
-                                    value[breakpoint]['font-size'] = defaultTypography[breakpoint]['font-size'];
-                                    updateTypography();
+                                    value[breakpoint]['font-size'] = defaultValue[breakpoint]['font-size'];
+                                    onChange(JSON.stringify(value));
                                 }}
                                 isSmall
                                 aria-label={sprintf(
@@ -140,15 +136,15 @@ const TextOptions = props => {
                                 value={trim(getLastBreakpointValue(value, 'line-height', breakpoint))}
                                 onChange={e => {
                                     value[breakpoint]['line-height'] = isEmpty(e.target.value) ? '' : Number(e.target.value);
-                                    updateTypography();
+                                    onChange(JSON.stringify(value));
                                 }}
 
                             />
                             <Button
                                 className="components-maxi-control__reset-button"
                                 onClick={() => {
-                                    value[breakpoint]['line-height'] = defaultTypography[breakpoint]['line-height'];
-                                    updateTypography();
+                                    value[breakpoint]['line-height'] = defaultValue[breakpoint]['line-height'];
+                                    onChange(JSON.stringify(value));
                                 }}
                                 isSmall
                                 aria-label={sprintf(
@@ -169,16 +165,18 @@ const TextOptions = props => {
                                 type='number'
                                 value={trim(getLastBreakpointValue(value, 'letter-spacing', breakpoint))}
                                 onChange={e => {
-                                    value[breakpoint]['letter-spacing'] = isEmpty(e.target.value) ? '' : Number(e.target.value);
-                                    updateTypography();
+                                    value[breakpoint]['letter-spacing'] = isEmpty(e.target.value) ?
+                                        '' :
+                                        Number(e.target.value);
+                                    onChange(JSON.stringify(value));
                                 }}
 
                             />
                             <Button
                                 className="components-maxi-control__reset-button"
                                 onClick={() => {
-                                    value[breakpoint]['letter-spacing'] = defaultTypography[breakpoint]['letter-spacing'];
-                                    updateTypography();
+                                    value[breakpoint]['letter-spacing'] = defaultValue[breakpoint]['letter-spacing'];
+                                    onChange(JSON.stringify(value));
                                 }}
                                 isSmall
                                 aria-label={sprintf(

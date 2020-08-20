@@ -1,5 +1,4 @@
 export const boxShadowNone = {
-    "shadowType": "none",
     "shadowColor": "#ffffff",
     "defaultShadowColor": "#ffffff",
     "shadowHorizontal": 0,
@@ -9,7 +8,6 @@ export const boxShadowNone = {
 }
 
 export const boxShadowTotal = {
-    "shadowType": "total",
     "shadowColor": "#A2A2A2",
     "defaultShadowColor": "#000",
     "shadowHorizontal": 0,
@@ -19,7 +17,6 @@ export const boxShadowTotal = {
 }
 
 export const boxShadowBottom = {
-    "shadowType": "bottom",
     "shadowColor": "#A2A2A2",
     "defaultShadowColor": "#000",
     "shadowHorizontal": 0,
@@ -29,7 +26,6 @@ export const boxShadowBottom = {
 }
 
 export const boxShadowSolid = {
-    "shadowType": "solid",
     "shadowColor": "#A2A2A2",
     "defaultShadowColor": "#000",
     "shadowHorizontal": 12,

@@ -106,10 +106,10 @@ export const border = {
     "borderWidth": {
         "label": "Border width",
         "general": {
-            "border-top-width": 0,
-            "border-right-width": 0,
-            "border-bottom-width": 0,
-            "border-left-width": 0,
+            "border-top-width": "",
+            "border-right-width": "",
+            "border-bottom-width": "",
+            "border-left-width": "",
             "sync": true,
             "unit": "px"
         },
@@ -535,9 +535,7 @@ export const background = {
     },
     "colorOptions": {
         "color": "",
-        "defultColor": "",
         "gradient": "",
-        "defaultGradient": "",
         "gradientAboveBackground": false
     },
     "clipPath": ""
@@ -546,9 +544,7 @@ export const background = {
 export const boxShadow = {
     "label": "Box Shadow",
     "general": {
-        "shadowType": "none",
         "shadowColor": "#ffffff",
-        "defaultShadowColor": "#ffffff",
         "shadowHorizontal": 0,
         "shadowVertical": 0,
         "shadowBlur": 0,
@@ -556,7 +552,6 @@ export const boxShadow = {
     },
     "xxl": {
         "shadowColor": "",
-        "defaultShadowColor": "",
         "shadowHorizontal": "",
         "shadowVertical": "",
         "shadowBlur": "",
@@ -564,7 +559,6 @@ export const boxShadow = {
     },
     "xl": {
         "shadowColor": "",
-        "defaultShadowColor": "",
         "shadowHorizontal": "",
         "shadowVertical": "",
         "shadowBlur": "",
@@ -572,7 +566,6 @@ export const boxShadow = {
     },
     "l": {
         "shadowColor": "",
-        "defaultShadowColor": "",
         "shadowHorizontal": "",
         "shadowVertical": "",
         "shadowBlur": "",
@@ -580,7 +573,6 @@ export const boxShadow = {
     },
     "m": {
         "shadowColor": "",
-        "defaultShadowColor": "",
         "shadowHorizontal": "",
         "shadowVertical": "",
         "shadowBlur": "",
@@ -588,7 +580,6 @@ export const boxShadow = {
     },
     "s": {
         "shadowColor": "",
-        "defaultShadowColor": "",
         "shadowHorizontal": "",
         "shadowVertical": "",
         "shadowBlur": "",
@@ -596,7 +587,6 @@ export const boxShadow = {
     },
     "xs": {
         "shadowColor": "",
-        "defaultShadowColor": "",
         "shadowHorizontal": "",
         "shadowVertical": "",
         "shadowBlur": "",
@@ -607,8 +597,7 @@ export const boxShadow = {
 export const boxShadowHover = {
     "label": "Box Shadow",
     "general": {
-        "shadowColor": "",
-        "defaultShadowColor": "",
+        "shadowColor": "#",
         "shadowHorizontal": "",
         "shadowVertical": "",
         "shadowBlur": "",
@@ -616,7 +605,6 @@ export const boxShadowHover = {
     },
     "xxl": {
         "shadowColor": "",
-        "defaultShadowColor": "",
         "shadowHorizontal": "",
         "shadowVertical": "",
         "shadowBlur": "",
@@ -624,7 +612,6 @@ export const boxShadowHover = {
     },
     "xl": {
         "shadowColor": "",
-        "defaultShadowColor": "",
         "shadowHorizontal": "",
         "shadowVertical": "",
         "shadowBlur": "",
@@ -632,7 +619,6 @@ export const boxShadowHover = {
     },
     "l": {
         "shadowColor": "",
-        "defaultShadowColor": "",
         "shadowHorizontal": "",
         "shadowVertical": "",
         "shadowBlur": "",
@@ -640,7 +626,6 @@ export const boxShadowHover = {
     },
     "m": {
         "shadowColor": "",
-        "defaultShadowColor": "",
         "shadowHorizontal": "",
         "shadowVertical": "",
         "shadowBlur": "",
@@ -648,7 +633,6 @@ export const boxShadowHover = {
     },
     "s": {
         "shadowColor": "",
-        "defaultShadowColor": "",
         "shadowHorizontal": "",
         "shadowVertical": "",
         "shadowBlur": "",
@@ -656,7 +640,6 @@ export const boxShadowHover = {
     },
     "xs": {
         "shadowColor": "",
-        "defaultShadowColor": "",
         "shadowHorizontal": "",
         "shadowVertical": "",
         "shadowBlur": "",
@@ -1155,9 +1138,7 @@ export const backgroundHover = {
     },
     "colorOptions": {
         "color": "",
-        "defultColor": "",
         "gradient": "",
-        "defaultGradient": "",
         "gradientAboveBackground": false
     },
     "clipPath": ""
@@ -1176,8 +1157,13 @@ export const __experimentalDivider = {
         "border-top-width": 2,
         "border-right-widthUnit": "px",
         "border-right-width": "",
-        "border-radius": "",
-        "opacity": 1
+        "border-radius": ""
+    },
+    "opacity": {
+        "label": "Opacity",
+        "general": {
+            "opacity": 1
+        }
     }
 }
 
@@ -1255,15 +1241,18 @@ export const __experimentalColumn = {
 export const __experimentalShapeDivider = {
     "label": "Shape Divider",
     "top": {
-        "height": "100",
+        "height": 100,
         "heightUnit": "px",
-        "opacity": 1,
+        "opacity": {
+            "label": "Opacity",
+            "general": {
+                "opacity": 1
+            }
+        },
         "shapeStyle": "",
         "colorOptions": {
             "color": "#000000",
-            "defultColor": "#000000",
             "gradient": "",
-            "defaultGradient": "",
             "gradientAboveBackground": false
         },
         "effects": {
@@ -1271,15 +1260,18 @@ export const __experimentalShapeDivider = {
         }
     },
     "bottom": {
-        "height": "100",
+        "height": 100,
         "heightUnit": "px",
-        "opacity": 1,
+        "opacity": {
+            "label": "Opacity",
+            "general": {
+                "opacity": 1
+            }
+        },
         "shapeStyle": "",
         "colorOptions": {
             "color": "#000000",
-            "defultColor": "#000000",
             "gradient": "",
-            "defaultGradient": "",
             "gradientAboveBackground": false
         },
         "effects": {
@@ -1322,12 +1314,12 @@ export const __experimentalPosition = {
             "unit": "px"
         },
         "xxl": {
-                "top": "",
-                "right": "",
-                "bottom": "",
-                "left": "",
-                "sync": false,
-                "unit": ""
+            "top": "",
+            "right": "",
+            "bottom": "",
+            "left": "",
+            "sync": false,
+            "unit": ""
         },
         "xl": {
             "top": "",
@@ -1397,63 +1389,346 @@ export const __experimentalDisplay = {
     }
 }
 
+export const __experimentalHover = {
+    "label": "Hover Effects",
+    "settings": {
+        "type": "zoom-in",
+        "effectType": "fade",
+        "duration": 1,
+    },
+    "textPreset": "center-center",
+    "borderStatus": 0,
+    "paddingStatus": 0,
+    "marginStatus": 0,
+    "border": { ...border },
+    "background": { ...background },
+    "margin": { ...margin },
+    "padding": { ...padding },
+    "titleTypography": {
+        ...typography,
+        "general": {
+            ...typography["general"],
+            "font-size": 33
+        }
+    },
+    "contentTypography": {
+        ...typography,
+        "general": {
+            ...typography["general"],
+            "font-size": 18
+        }
+    },
+    "titleStatus": 0,
+    "titleText": "",
+    "contentStatus": 0,
+    "contentText": "",
+}
+
 export const __experimentalMotion = {
     "label": "Motion Effects",
     "vertical": {
         "status": 0,
         "direction": "up",
         "viewport": [0, 50, 100],
-        "startValue": 50,
-        "midValue": 0,
-        "endValue": 0,
+        "amounts": [0, 100, 0],
+        "preset": "",
+        "presets": {
+            "preset_1": {
+                "viewport": [45, 50, 55],
+                "amounts": [0, 100, 0]
+            },
+            "preset_2": {
+                "viewport": [35, 50, 65],
+                "amounts": [0, 150, 0]
+            },
+            "preset_3": {
+                "viewport": [25, 50, 85],
+                "amounts": [0, 200, 0]
+            },
+            "preset_4": {
+                "viewport": [15, 50, 95],
+                "amounts": [250, 0, 0]
+            },
+            "preset_5": {
+                "viewport": [0, 50, 100],
+                "amounts": [300, 0, 0]
+            },
+            "preset_6": {
+                "viewport": [45, 50, 55],
+                "amounts": [0, 100, 0]
+            },
+            "preset_7": {
+                "viewport": [35, 50, 65],
+                "amounts": [0, 150, 0]
+            },
+            "preset_8": {
+                "viewport": [25, 50, 85],
+                "amounts": [0, 200, 0]
+            },
+            "preset_9": {
+                "viewport": [15, 50, 95],
+                "amounts": [250, 0, 0]
+            },
+            "preset_10": {
+                "viewport": [0, 50, 100],
+                "amounts": [300, 0, 0]
+            }
+        }
     },
     "horizontal": {
         "status": 0,
         "direction": "left",
         "viewport": [0, 50, 100],
-        "startValue": 50,
-        "midValue": 0,
-        "endValue": 0,
+        "amounts": [0, 100, 0],
+        "preset": "",
+        "presets": {
+            "preset_1": {
+                "viewport": [45, 50, 55],
+                "amounts": [0, 100, 0]
+            },
+            "preset_2": {
+                "viewport": [35, 50, 65],
+                "amounts": [0, 150, 0]
+            },
+            "preset_3": {
+                "viewport": [25, 50, 85],
+                "amounts": [0, 200, 0]
+            },
+            "preset_4": {
+                "viewport": [15, 50, 95],
+                "amounts": [300, 0, 0]
+            },
+            "preset_5": {
+                "viewport": [0, 50, 100],
+                "amounts": [400, 0, 0]
+            },
+            "preset_6": {
+                "viewport": [45, 50, 55],
+                "amounts": [0, 100, 0]
+            },
+            "preset_7": {
+                "viewport": [35, 50, 65],
+                "amounts": [0, 150, 0]
+            },
+            "preset_8": {
+                "viewport": [25, 50, 85],
+                "amounts": [0, 200, 0]
+            },
+            "preset_9": {
+                "viewport": [15, 50, 95],
+                "amounts": [300, 0, 0]
+            },
+            "preset_10": {
+                "viewport": [0, 50, 100],
+                "amounts": [400, 0, 0]
+            }
+        }
     },
     "rotate": {
         "status": 0,
         "direction": "left",
         "viewport": [0, 50, 100],
-        "startValue": 10,
-        "midValue": 0,
-        "endValue": 0,
+        "amounts": [0, 30, 0],
+        "preset": "",
+        "presets": {
+            "preset_1": {
+                "viewport": [30, 50, 55],
+                "amounts": [0, 30, 0]
+            },
+            "preset_2": {
+                "viewport": [35, 50, 65],
+                "amounts": [0, 45, 0]
+            },
+            "preset_3": {
+                "viewport": [25, 50, 85],
+                "amounts": [0, 60, 0]
+            },
+            "preset_4": {
+                "viewport": [15, 50, 95],
+                "amounts": [90, 0, 0]
+            },
+            "preset_5": {
+                "viewport": [0, 50, 100],
+                "amounts": [180, 0, 0]
+            },
+            "preset_6": {
+                "viewport": [45, 50, 55],
+                "amounts": [0, 30, 0]
+            },
+            "preset_7": {
+                "viewport": [35, 50, 65],
+                "amounts": [0, 45, 0]
+            },
+            "preset_8": {
+                "viewport": [25, 50, 85],
+                "amounts": [0, 60, 0]
+            },
+            "preset_9": {
+                "viewport": [15, 50, 95],
+                "amounts": [90, 0, 0]
+            },
+            "preset_10": {
+                "viewport": [0, 50, 100],
+                "amounts": [180, 0, 0]
+            }
+        }
     },
     "scale": {
         "status": 0,
         "direction": "up",
         "viewport": [0, 50, 100],
-        "startValue": 4,
-        "midValue": 0,
-        "endValue": 0,
+        "amounts": ["", 0, ""],
+        "preset": "",
+        "presets": {
+            "preset_1": {
+                "viewport": [45, 50, 55],
+                "amounts": ["", 0, ""]
+            },
+            "preset_2": {
+                "viewport": [35, 50, 65],
+                "amounts": ["", 2, ""]
+            },
+            "preset_3": {
+                "viewport": [25, 50, 85],
+                "amounts": ["", 4, ""]
+            },
+            "preset_4": {
+                "viewport": [15, 50, 95],
+                "amounts": [6, "", ""]
+            },
+            "preset_5": {
+                "viewport": [0, 50, 100],
+                "amounts": [8, "", ""]
+            },
+            "preset_6": {
+                "viewport": [45, 50, 55],
+                "amounts": ["", 0, ""]
+            },
+            "preset_7": {
+                "viewport": [35, 50, 65],
+                "amounts": ["", 2, ""]
+            },
+            "preset_8": {
+                "viewport": [25, 50, 85],
+                "amounts": ["", 4, ""]
+            },
+            "preset_9": {
+                "viewport": [15, 50, 95],
+                "amounts": [6, "", ""]
+            },
+            "preset_10": {
+                "viewport": [0, 50, 100],
+                "amounts": [8, "", ""]
+            }
+        }
     },
     "fade": {
         "status": 0,
         "direction": "in",
         "viewport": [0, 50, 100],
-        "startValue": 3,
-        "midValue": 0,
-        "endValue": 0,
+        "amounts": ["", 0, ""],
+        "preset": "",
+        "presets": {
+            "preset_1": {
+                "viewport": [45, 50, 55],
+                "amounts": ["", 0, ""]
+            },
+            "preset_2": {
+                "viewport": [35, 50, 65],
+                "amounts": ["", 2, ""]
+            },
+            "preset_3": {
+                "viewport": [25, 50, 85],
+                "amounts": ["", 4, ""]
+            },
+            "preset_4": {
+                "viewport": [15, 50, 95],
+                "amounts": [5, "", ""]
+            },
+            "preset_5": {
+                "viewport": [0, 50, 100],
+                "amounts": [6, "", ""]
+            },
+            "preset_6": {
+                "viewport": [45, 50, 55],
+                "amounts": ["", 0, ""]
+            },
+            "preset_7": {
+                "viewport": [35, 50, 65],
+                "amounts": ["", 2, ""]
+            },
+            "preset_8": {
+                "viewport": [25, 50, 85],
+                "amounts": ["", 4, ""]
+            },
+            "preset_9": {
+                "viewport": [15, 50, 95],
+                "amounts": [5, "", ""]
+            },
+            "preset_10": {
+                "viewport": [0, 50, 100],
+                "amounts": [6, "", ""]
+            }
+        }
     },
     "blur": {
         "status": 0,
         "direction": "in",
         "viewport": [0, 50, 100],
-        "startValue": 10,
-        "midValue": 0,
-        "endValue": 0,
+        "amounts": ["", 2, ""],
+        "preset": "",
+        "presets": {
+            "preset_1": {
+                "viewport": [45, 50, 55],
+                "amounts": ["", 1, ""]
+            },
+            "preset_2": {
+                "viewport": [35, 50, 65],
+                "amounts": ["", 2, ""]
+            },
+            "preset_3": {
+                "viewport": [25, 50, 85],
+                "amounts": ["", 3, ""]
+            },
+            "preset_4": {
+                "viewport": [15, 50, 95],
+                "amounts": [4, "", ""]
+            },
+            "preset_5": {
+                "viewport": [0, 50, 100],
+                "amounts": [8, "", ""]
+            },
+            "preset_6": {
+                "viewport": [45, 50, 55],
+                "amounts": ["", 1, ""]
+            },
+            "preset_7": {
+                "viewport": [35, 50, 65],
+                "amounts": ["", 2, ""]
+            },
+            "preset_8": {
+                "viewport": [25, 50, 85],
+                "amounts": ["", 3, ""]
+            },
+            "preset_9": {
+                "viewport": [15, 50, 95],
+                "amounts": [4, "", ""]
+            },
+            "preset_10": {
+                "viewport": [0, 50, 100],
+                "amounts": [8, "", ""]
+            }
+        }
     },
     "entrance": {
         "type": "",
         "duration": 1,
-        "delay": 1,
+        "delay": 1
     },
     "parallax": {
         "status": 0,
+        "speed": 2,
+        "direction": "up"
     }
 }
 
@@ -1464,7 +1739,7 @@ export const __experimentalArrow = {
         "active": 0,
         "side": "bottom",
         "position": 50,
-        "color": "#fff",
+        "color": "#ffffff",
         "widthUnit": "px",
         "width": 20,
         "heightUnit": "px",

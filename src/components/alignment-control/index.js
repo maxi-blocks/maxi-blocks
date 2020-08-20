@@ -36,6 +36,7 @@ const AlignmentControl = props => {
 
     const {
         alignment,
+        className,
         onChange,
         label = '',
         disableLeft = false,
@@ -61,9 +62,8 @@ const AlignmentControl = props => {
 
     const classes = classnames(
         'maxi-alignment-control',
-        isEmpty(label) ?
-            'maxi-alignment-control__no-label' :
-            ''
+        isEmpty(label) ? 'maxi-alignment-control__no-label' : '',
+        className
     );
 
     const value = !isObject(alignment) ?

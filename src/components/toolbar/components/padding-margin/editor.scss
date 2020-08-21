@@ -1,0 +1,32 @@
+.toolbar-item__popover {
+    .maxi-axis-control {
+        color: #fff;
+
+        &__content {
+            &__item {
+                &__checkbox {
+                    input {
+                        border: 2px solid #80828a;
+                        background-color: #242433;
+                        &:focus {
+                            border-color: #80828a;
+                        }
+                    }
+                }
+                &__sync {
+                    margin-top: 35px;
+                    border-color: #80828a;
+
+                    button {
+                        &[aria-pressed="true"] {
+                            background: #4f515c !important;
+                        }
+                        svg {
+                            fill: #fff;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

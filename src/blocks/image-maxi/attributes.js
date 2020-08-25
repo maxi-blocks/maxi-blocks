@@ -10,27 +10,27 @@ import { size } from './data';
 const attributes = {
     imageSize: {
         type: 'string',
-        default: 'full'
+        default: 'full',
     },
     cropOptions: {
         type: 'string',
-        default: JSON.stringify(attributesData.cropOptions)
+        default: JSON.stringify(attributesData.cropOptions),
     },
     alignment: {
         type: 'string',
-        default: JSON.stringify(attributesData.alignment)
+        default: JSON.stringify(attributesData.alignment),
     },
     captionType: {
         type: 'string',
-        default: 'none'
+        default: 'none',
     },
     captionContent: {
         type: 'string',
-        default: ''
+        default: '',
     },
     captionTypography: {
         type: 'string',
-        default: JSON.stringify(attributesData.typography)
+        default: JSON.stringify(attributesData.typography),
     },
     fullWidth: {
         type: 'string',
@@ -38,101 +38,100 @@ const attributes = {
     },
     size: {
         type: 'string',
-        default: JSON.stringify(size)
+        default: JSON.stringify(size),
     },
     opacity: {
         type: 'string',
-        default: JSON.stringify(attributesData.opacity)
+        default: JSON.stringify(attributesData.opacity),
     },
     opacityHover: {
         type: 'string',
-        default: JSON.stringify(attributesData.opacityHover)
+        default: JSON.stringify(attributesData.opacityHover),
     },
     background: {
         type: 'string',
-        default: JSON.stringify(attributesData.background)
+        default: JSON.stringify(attributesData.background),
     },
     backgroundHover: {
         type: 'string',
-        default: JSON.stringify(attributesData.backgroundHover)
+        default: JSON.stringify(attributesData.backgroundHover),
     },
     boxShadow: {
         type: 'string',
-        default: JSON.stringify(attributesData.boxShadow)
+        default: JSON.stringify(attributesData.boxShadow),
     },
     boxShadowHover: {
         type: 'string',
-        default: JSON.stringify(attributesData.boxShadowHover)
+        default: JSON.stringify(attributesData.boxShadowHover),
     },
     border: {
         type: 'string',
-        default: JSON.stringify(attributesData.border)
+        default: JSON.stringify(attributesData.border),
     },
     borderHover: {
         type: 'string',
-        default: JSON.stringify(attributesData.borderHover)
+        default: JSON.stringify(attributesData.borderHover),
     },
     padding: {
         type: 'string',
-        default: JSON.stringify(attributesData.padding)
+        default: JSON.stringify(attributesData.padding),
     },
     margin: {
         type: 'string',
-        default: JSON.stringify(attributesData.margin)
+        default: JSON.stringify(attributesData.margin),
     },
     mediaID: {
         type: 'number',
     },
     mediaURL: {
-        type: 'string'
+        type: 'string',
     },
     mediaALT: {
-        type: 'string'
+        type: 'string',
     },
     mediaALTwp: {
-        type: 'string'
+        type: 'string',
     },
     mediaALTtitle: {
-        type: 'string'
+        type: 'string',
     },
     altSelector: {
         type: 'string',
         default: 'wordpress',
-
     },
     mediaURL: {
-        type: 'string'
+        type: 'string',
     },
     mediaWidth: {
-        type: 'number'
+        type: 'number',
     },
     mediaHeight: {
-        type: 'number'
+        type: 'number',
     },
     position: {
         type: 'string',
-        default: JSON.stringify(attributesData.__experimentalPosition)
+        default: JSON.stringify(attributesData.__experimentalPosition),
     },
     display: {
         type: 'string',
-        default: JSON.stringify(attributesData.__experimentalDisplay)
+        default: JSON.stringify(attributesData.__experimentalDisplay),
     },
     clipPath: {
         type: 'string',
-        default: ''
+        default: '',
     },
     motion: {
         type: 'string',
-        default: JSON.stringify(attributesData.__experimentalMotion)
+        default: JSON.stringify(attributesData.__experimentalMotion),
     },
     hover: {
         type: 'string',
-        default: JSON.stringify(attributesData.__experimentalHover)
+        default: JSON.stringify(attributesData.__experimentalHover),
     },
     transform: {
         type: 'string',
-        default: JSON.stringify(attributesData.__experimentalTransform)
-    }
-}
+        default: JSON.stringify(attributesData.__experimentalTransform),
+    },
+};
 
 export default attributes;

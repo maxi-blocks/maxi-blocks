@@ -2,16 +2,8 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const {
-    Fragment,
-    useState,
-    useEffect
-} = wp.element;
-const {
-    RangeControl,
-    SelectControl,
-    Icon
-} = wp.components;
+const { Fragment, useState, useEffect } = wp.element;
+const { RangeControl, SelectControl, Icon } = wp.components;
 
 /**
  * Internal dependencies
@@ -32,20 +24,12 @@ import {
 /**
  * External dependencies
  */
-import {
-    isNil,
-    isObject,
-} from 'lodash';
+import { isNil, isObject } from 'lodash';
 
 /**
  * Icons
  */
-import {
-    styleNone,
-    dashed,
-    dotted,
-    solid
-} from '../../icons';
+import { styleNone, dashed, dotted, solid } from '../../icons';
 
 /**
  * Component
@@ -61,65 +45,59 @@ const DividerControl = props => {
         disableBorderRadius = false,
     } = props;
 
-    const [orientation, changeOrientation] = useState(
-        lineOrientation
-    )
+    const [orientation, changeOrientation] = useState(lineOrientation);
 
-    const value = !isObject(divider) ?
-        JSON.parse(divider) :
-        divider
+    const value = !isObject(divider) ? JSON.parse(divider) : divider;
 
-    const defaultValue = !isObject(defaultDivider) ?
-        JSON.parse(defaultDivider) :
-        defaultDivider
+    const defaultValue = !isObject(defaultDivider)
+        ? JSON.parse(defaultDivider)
+        : defaultDivider;
 
-    useEffect(
-        () => {
-            if (lineOrientation != orientation) {
-                changeOrientation(lineOrientation);
-                if (lineOrientation === 'vertical') {
-                    if (!isNil(value.general.width)) {
-                        value.general.height = value.general.width;
-                        value.general.width = '';
-                    }
-                    if (!isNil(value.general['border-top-width'])) {
-                        value.general['border-right-width'] = value.general['border-top-width'];
-                        value.general['border-top-width'] = '';
-                    }
+    useEffect(() => {
+        if (lineOrientation !== orientation) {
+            changeOrientation(lineOrientation);
+            if (lineOrientation === 'vertical') {
+                if (!isNil(value.general.width)) {
+                    value.general.height = value.general.width;
+                    value.general.width = '';
                 }
-                else {
-                    if (!isNil(value.general.height)) {
-                        value.general.width = value.general.height;
-                        value.general.height = '';
-                    }
-                    if (!isNil(value.general['border-top-width'])) {
-                        value.general['border-top-width'] = value.general['border-right-width'];
-                        value.general['border-right-width'] = '';
-                    }
+                if (!isNil(value.general['border-top-width'])) {
+                    value.general['border-right-width'] =
+                        value.general['border-top-width'];
+                    value.general['border-top-width'] = '';
                 }
-
-                onChange(JSON.stringify(value));
+            } else {
+                if (!isNil(value.general.height)) {
+                    value.general.width = value.general.height;
+                    value.general.height = '';
+                }
+                if (!isNil(value.general['border-top-width'])) {
+                    value.general['border-top-width'] =
+                        value.general['border-right-width'];
+                    value.general['border-right-width'] = '';
+                }
             }
-        },
-        [lineOrientation, orientation, value, onChange]
-    );
+
+            onChange(JSON.stringify(value));
+        }
+    }, [lineOrientation, orientation, value, onChange]);
 
     return (
         <Fragment>
             <DefaultStylesControl
                 items={[
                     {
-                        activeItem: (value.general['border-style'] === 'none'),
+                        activeItem: value.general['border-style'] === 'none',
                         content: (
                             <Icon
                                 className='maxi-defaultstyles-control__button__icon'
                                 icon={styleNone}
                             />
                         ),
-                        onChange: () => onChange(JSON.stringify(dividerNone))
+                        onChange: () => onChange(JSON.stringify(dividerNone)),
                     },
                     {
-                        activeItem: (value.general['border-style'] === 'solid'),
+                        activeItem: value.general['border-style'] === 'solid',
                         content: (
                             <Icon
                                 className='maxi-defaultstyles-control__button__icon'
@@ -128,13 +106,14 @@ const DividerControl = props => {
                         ),
                         onChange: () => {
                             if (lineOrientation === 'horizontal')
-                                onChange(JSON.stringify(dividerSolidHorizontal));
-                            else
-                                onChange(JSON.stringify(dividerSolidVertical));
-                        }
+                                onChange(
+                                    JSON.stringify(dividerSolidHorizontal)
+                                );
+                            else onChange(JSON.stringify(dividerSolidVertical));
+                        },
                     },
                     {
-                        activeItem: (value.general['border-style'] === 'dashed'),
+                        activeItem: value.general['border-style'] === 'dashed',
                         content: (
                             <Icon
                                 className='maxi-defaultstyles-control__button__icon'
@@ -143,13 +122,15 @@ const DividerControl = props => {
                         ),
                         onChange: () => {
                             if (lineOrientation === 'horizontal')
-                                onChange(JSON.stringify(dividerDashedHorizontal));
+                                onChange(
+                                    JSON.stringify(dividerDashedHorizontal)
+                                );
                             else
                                 onChange(JSON.stringify(dividerDashedVertical));
-                        }
+                        },
                     },
                     {
-                        activeItem: (value.general['border-style'] === 'dotted'),
+                        activeItem: value.general['border-style'] === 'dotted',
                         content: (
                             <Icon
                                 className='maxi-defaultstyles-control__button__icon'
@@ -158,26 +139,28 @@ const DividerControl = props => {
                         ),
                         onChange: () => {
                             if (lineOrientation === 'horizontal')
-                                onChange(JSON.stringify(dividerDottedHorizontal));
+                                onChange(
+                                    JSON.stringify(dividerDottedHorizontal)
+                                );
                             else
                                 onChange(JSON.stringify(dividerDottedVertical));
-                        }
+                        },
                     },
                 ]}
             />
-            {!disableColor &&
+            {!disableColor && (
                 <ColorControl
                     label={__('Color', 'maxi-blocks')}
                     color={value.general['border-color']}
                     defaultColor={defaultValue.general['border-color']}
                     onChange={val => {
                         value.general['border-color'] = val;
-                        onChange(JSON.stringify(value))
+                        onChange(JSON.stringify(value));
                     }}
                     disableGradient
                 />
-            }
-            {!disableLineStyle &&
+            )}
+            {!disableLineStyle && (
                 <SelectControl
                     label={__('Line Style', 'maxi-blocks')}
                     options={[
@@ -190,20 +173,17 @@ const DividerControl = props => {
                     value={value.general['border-style']}
                     onChange={val => {
                         value.general['border-style'] = val;
-                        if (val === 'none')
-                            value.general.width = 0;
-                        onChange(JSON.stringify(value))
+                        if (val === 'none') value.general.width = 0;
+                        onChange(JSON.stringify(value));
                     }}
                 />
-            }
-            {
-                !disableBorderRadius &&
-                value.general['border-style'] === 'solid' &&
+            )}
+            {!disableBorderRadius && value.general['border-style'] === 'solid' && (
                 <SelectControl
                     label={__('Border Radius', 'maxi-blocks')}
                     options={[
                         { label: __('No', 'maxi-blocks'), value: '' },
-                        { label: __('Yes', 'maxi-blocks'), value: '20px' }
+                        { label: __('Yes', 'maxi-blocks'), value: '20px' },
                     ]}
                     value={value.general['border-radius']}
                     onChange={val => {
@@ -211,17 +191,17 @@ const DividerControl = props => {
                         onChange(JSON.stringify(value));
                     }}
                 />
-            }
-            {
-                orientation === 'horizontal' &&
+            )}
+            {orientation === 'horizontal' && (
                 <Fragment>
                     <RangeControl
                         label={__('Size', 'maxi-blocks')}
                         value={Number(value.general.width)}
                         onChange={val => {
-                            isNil(val) ?
-                                value.general.width = defaultValue.general.width :
-                                value.general.width = Number(val);
+                            isNil(val)
+                                ? (value.general.width =
+                                      defaultValue.general.width)
+                                : (value.general.width = Number(val));
 
                             onChange(JSON.stringify(value));
                         }}
@@ -232,27 +212,32 @@ const DividerControl = props => {
                         label={__('Weight', 'maxi-blocks')}
                         value={Number(value.general['border-top-width'])}
                         onChange={val => {
-                            isNil(val) ?
-                                value.general['border-top-width'] = defaultValue.general['border-top-width'] :
-                                value.general['border-top-width'] = Number(val);
+                            isNil(val)
+                                ? (value.general['border-top-width'] =
+                                      defaultValue.general['border-top-width'])
+                                : (value.general['border-top-width'] = Number(
+                                      val
+                                  ));
 
                             onChange(JSON.stringify(value));
                         }}
                         allowReset
-                        initialPosition={defaultValue.general['border-top-width']}
+                        initialPosition={
+                            defaultValue.general['border-top-width']
+                        }
                     />
                 </Fragment>
-            }
-            {
-                orientation === 'vertical' &&
+            )}
+            {orientation === 'vertical' && (
                 <Fragment>
                     <RangeControl
                         label={__('Size', 'maxi-blocks')}
                         value={Number(value.general.height)}
                         onChange={val => {
-                            isNil(val) ?
-                                value.general.height = defaultValue.general.height :
-                                value.general.height = Number(val);
+                            isNil(val)
+                                ? (value.general.height =
+                                      defaultValue.general.height)
+                                : (value.general.height = Number(val));
 
                             onChange(JSON.stringify(value));
                         }}
@@ -264,28 +249,35 @@ const DividerControl = props => {
                         label={__('Weight', 'maxi-blocks')}
                         value={Number(value.general['border-right-width'])}
                         onChange={val => {
-                            isNil(val) ?
-                                value.general['border-right-width'] = defaultValue.general['border-right-width'] :
-                                value.general['border-right-width'] = Number(val);
+                            isNil(val)
+                                ? (value.general['border-right-width'] =
+                                      defaultValue.general[
+                                          'border-right-width'
+                                      ])
+                                : (value.general['border-right-width'] = Number(
+                                      val
+                                  ));
 
                             onChange(JSON.stringify(value));
                         }}
                         max={100}
                         allowReset
-                        initialPosition={defaultValue.general['border-right-width']}
+                        initialPosition={
+                            defaultValue.general['border-right-width']
+                        }
                     />
                 </Fragment>
-            }
+            )}
             <__experimentalOpacityControl
                 opacity={value.opacity}
                 defaultOpacity={defaultValue.opacity}
                 onChange={val => {
                     value.opacity = val;
-                    onChange(JSON.stringify(value))
+                    onChange(JSON.stringify(value));
                 }}
             />
         </Fragment>
-    )
-}
+    );
+};
 
 export default DividerControl;

@@ -29,7 +29,7 @@ const save = props => {
             fullWidth,
             showLine,
             lineOrientation,
-            motion
+            motion,
         },
     } = props;
 
@@ -40,15 +40,11 @@ const save = props => {
         extraClassName,
         uniqueID,
         className,
-        fullWidth === 'full' ?
-            'alignfull' :
-            null,
-        lineOrientation === 'vertical' ?
-            'maxi-divider-block--vertical' :
-            'maxi-divider-block--horizontal',
-        !isNil(uniqueID) ?
-            uniqueID :
-            null
+        fullWidth === 'full' ? 'alignfull' : null,
+        lineOrientation === 'vertical'
+            ? 'maxi-divider-block--vertical'
+            : 'maxi-divider-block--horizontal',
+        !isNil(uniqueID) ? uniqueID : null
     );
 
     return (
@@ -58,17 +54,14 @@ const save = props => {
             data-motion={motion}
             data-motion-id={uniqueID}
         >
-            <__experimentalBackgroundDisplayer
-                background={background}
-            />
-            {
-                !!showLine &&
+            <__experimentalBackgroundDisplayer background={background} />
+            {!!showLine && (
                 <Fragment>
-                    <hr className="maxi-divider-block__divider" />
+                    <hr className='maxi-divider-block__divider' />
                 </Fragment>
-            }
+            )}
         </div>
     );
-}
+};
 
 export default save;

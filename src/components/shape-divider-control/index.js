@@ -2,32 +2,19 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const {
-    RangeControl,
-    RadioControl,
-    Dropdown,
-} = wp.components;
-const {
-    Fragment,
-    useState,
-} = wp.element;
+const { RangeControl, RadioControl, Dropdown } = wp.components;
+const { Fragment, useState } = wp.element;
 
 /**
  * Internal dependencies
  */
 import __experimentalOpacityControl from '../opacity-control';
-import {
-    BackgroundControl,
-    SizeControl,
-} from '../../components';
+import { BackgroundControl, SizeControl } from '../../components';
 
 /**
  * External dependencies
  */
-import {
-    isObject,
-    trim
-} from 'lodash';
+import { isObject, trim } from 'lodash';
 
 /**
  * Styles and icons
@@ -81,29 +68,24 @@ import { getLastBreakpointValue } from '../../extensions/styles/utils';
  * Component
  */
 const ShapeDividerControl = props => {
+    const { shapeDividerOptions, defaultShapeDividerOptions, onChange } = props;
 
-    const {
-        shapeDividerOptions,
-        defaultShapeDividerOptions,
-        onChange,
-    } = props;
-
-    const value = !isObject(shapeDividerOptions) ?
-        JSON.parse(shapeDividerOptions) :
-        shapeDividerOptions;
+    const value = !isObject(shapeDividerOptions)
+        ? JSON.parse(shapeDividerOptions)
+        : shapeDividerOptions;
 
     let {
         top: shapeDividerTopOptions,
-        bottom: shapeDividerBottomOptions
+        bottom: shapeDividerBottomOptions,
     } = value;
 
-    const defaultValue = !isObject(defaultShapeDividerOptions) ?
-        JSON.parse(defaultShapeDividerOptions) :
-        defaultShapeDividerOptions;
+    const defaultValue = !isObject(defaultShapeDividerOptions)
+        ? JSON.parse(defaultShapeDividerOptions)
+        : defaultShapeDividerOptions;
 
-    let {
+    const {
         top: defaultShapeDividerTopOptions,
-        bottom: defaultShapeDividerBottomOptions
+        bottom: defaultShapeDividerBottomOptions,
     } = defaultValue;
 
     const shapeItems = [
@@ -147,89 +129,127 @@ const ShapeDividerControl = props => {
         { label: cloudTop, value: 'cloud-top' },
         { label: cloudBottom, value: 'cloud-bottom' },
         { label: cloudTopOpacity, value: 'cloud-top-opacity' },
-        { label: cloudBottomOpacity, value: 'cloud-bottom-opacity' }
+        { label: cloudBottomOpacity, value: 'cloud-bottom-opacity' },
     ];
 
-    const showShapes = (position) => {
+    const showShapes = position => {
         switch (
-        position === 'top' ?
-            shapeDividerTopOptions.shapeStyle :
-            shapeDividerBottomOptions.shapeStyle
+            position === 'top'
+                ? shapeDividerTopOptions.shapeStyle
+                : shapeDividerBottomOptions.shapeStyle
         ) {
-            case 'waves-top': return wavesTop;
-            case 'waves-bottom': return wavesBottom;
-            case 'waves-top-opacity': return wavesTopOpacity;
-            case 'waves-bottom-opacity': return wavesBottomOpacity;
-            case 'wave-top': return waveTop;
-            case 'wave-bottom': return waveBottom;
-            case 'wave-top-opacity': return waveTopOpacity;
-            case 'wave-bottom-opacity': return waveBottomOpacity;
-            case 'triangle-top': return triangleTop;
-            case 'triangle-bottom': return triangleBottom;
-            case 'swish-top': return swishTop;
-            case 'swish-bottom': return swishBottom;
-            case 'swish-top-opacity': return swishTopOpacity;
-            case 'swish-bottom-opacity': return swishBottomOpacity;
-            case 'slant-top': return slantTop;
-            case 'slant-bottom': return slantBottom;
-            case 'slant-top-opacity': return slantTopOpacity;
-            case 'slant-bottom-opacity': return slantBottomOpacity;
-            case 'peak-top': return peakTop;
-            case 'peak-bottom': return peakBottom;
-            case 'mountains-top': return mountainsTop;
-            case 'mountains-bottom': return mountainsBottom;
-            case 'mountains-top-opacity': return mountainsTopOpacity;
-            case 'mountains-bottom-opacity': return mountainsBottomOpacity;
-            case 'curve-top': return curveTop;
-            case 'curve-bottom': return curveBottom;
-            case 'curve-top-opacity': return curveTopOpacity;
-            case 'curve-bottom-opacity': return curveBottomOpacity;
-            case 'arrow-top': return arrowTop;
-            case 'arrow-bottom': return arrowBottom;
-            case 'arrow-top-opacity': return arrowTopOpacity;
-            case 'arrow-bottom-opacity': return arrowBottomOpacity;
-            case 'asymmetric-top': return asymmetricTop;
-            case 'asymmetric-bottom': return asymmetricBottom;
-            case 'asymmetric-top-opacity': return asymmetricTopOpacity;
-            case 'asymmetric-bottom-opacity': return asymmetricBottomOpacity;
-            case 'cloud-top': return cloudTop;
-            case 'cloud-bottom': return cloudBottom;
-            case 'cloud-top-opacity': return cloudTopOpacity;
-            case 'cloud-bottom-opacity': return cloudBottomOpacity;
-            default: return __('Divider Style', 'max-block');
+            case 'waves-top':
+                return wavesTop;
+            case 'waves-bottom':
+                return wavesBottom;
+            case 'waves-top-opacity':
+                return wavesTopOpacity;
+            case 'waves-bottom-opacity':
+                return wavesBottomOpacity;
+            case 'wave-top':
+                return waveTop;
+            case 'wave-bottom':
+                return waveBottom;
+            case 'wave-top-opacity':
+                return waveTopOpacity;
+            case 'wave-bottom-opacity':
+                return waveBottomOpacity;
+            case 'triangle-top':
+                return triangleTop;
+            case 'triangle-bottom':
+                return triangleBottom;
+            case 'swish-top':
+                return swishTop;
+            case 'swish-bottom':
+                return swishBottom;
+            case 'swish-top-opacity':
+                return swishTopOpacity;
+            case 'swish-bottom-opacity':
+                return swishBottomOpacity;
+            case 'slant-top':
+                return slantTop;
+            case 'slant-bottom':
+                return slantBottom;
+            case 'slant-top-opacity':
+                return slantTopOpacity;
+            case 'slant-bottom-opacity':
+                return slantBottomOpacity;
+            case 'peak-top':
+                return peakTop;
+            case 'peak-bottom':
+                return peakBottom;
+            case 'mountains-top':
+                return mountainsTop;
+            case 'mountains-bottom':
+                return mountainsBottom;
+            case 'mountains-top-opacity':
+                return mountainsTopOpacity;
+            case 'mountains-bottom-opacity':
+                return mountainsBottomOpacity;
+            case 'curve-top':
+                return curveTop;
+            case 'curve-bottom':
+                return curveBottom;
+            case 'curve-top-opacity':
+                return curveTopOpacity;
+            case 'curve-bottom-opacity':
+                return curveBottomOpacity;
+            case 'arrow-top':
+                return arrowTop;
+            case 'arrow-bottom':
+                return arrowBottom;
+            case 'arrow-top-opacity':
+                return arrowTopOpacity;
+            case 'arrow-bottom-opacity':
+                return arrowBottomOpacity;
+            case 'asymmetric-top':
+                return asymmetricTop;
+            case 'asymmetric-bottom':
+                return asymmetricBottom;
+            case 'asymmetric-top-opacity':
+                return asymmetricTopOpacity;
+            case 'asymmetric-bottom-opacity':
+                return asymmetricBottomOpacity;
+            case 'cloud-top':
+                return cloudTop;
+            case 'cloud-bottom':
+                return cloudBottom;
+            case 'cloud-top-opacity':
+                return cloudTopOpacity;
+            case 'cloud-bottom-opacity':
+                return cloudBottomOpacity;
+            default:
+                return __('Divider Style', 'max-block');
         }
-    }
+    };
 
     const [shapeDividerStatus, setShapeDividerStatus] = useState('top');
 
     return (
-        <div className="maxi-shapedividercontrol">
+        <div className='maxi-shapedividercontrol'>
             <div className='maxi-fancy-radio-control'>
                 <RadioControl
                     label=''
                     selected={shapeDividerStatus}
-                    options={
-                        [
-                            { label: __('Top', 'maxi-blocks'), value: 'top' },
-                            { label: __('Bottom', 'maxi-blocks'), value: 'bottom' }
-                        ]
-                    }
+                    options={[
+                        { label: __('Top', 'maxi-blocks'), value: 'top' },
+                        { label: __('Bottom', 'maxi-blocks'), value: 'bottom' },
+                    ]}
                     onChange={value => setShapeDividerStatus(value)}
                 />
             </div>
-            {
-                shapeDividerStatus === 'top' &&
+            {shapeDividerStatus === 'top' && (
                 <Fragment>
                     <div className='maxi-fancy-radio-control'>
                         <RadioControl
                             label={__('Enable Scroll Effect', 'maxi-blocks')}
-                            selected={parseInt(shapeDividerTopOptions.effects.status)}
-                            options={
-                                [
-                                    { label: __('No', 'maxi-blocks'), value: 0 },
-                                    { label: __('Yes', 'maxi-blocks'), value: 1 },
-                                ]
-                            }
+                            selected={parseInt(
+                                shapeDividerTopOptions.effects.status
+                            )}
+                            options={[
+                                { label: __('No', 'maxi-blocks'), value: 0 },
+                                { label: __('Yes', 'maxi-blocks'), value: 1 },
+                            ]}
                             onChange={val => {
                                 shapeDividerTopOptions.effects.status = val;
                                 onChange(JSON.stringify(value));
@@ -237,9 +257,9 @@ const ShapeDividerControl = props => {
                         />
                     </div>
                     <Dropdown
-                        className="maxi-shapedividercontrol__shape-selector"
-                        contentClassName="maxi-shapedividercontrol_popover"
-                        position="bottom center"
+                        className='maxi-shapedividercontrol__shape-selector'
+                        contentClassName='maxi-shapedividercontrol_popover'
+                        position='bottom center'
                         renderToggle={({ isOpen, onToggle }) => (
                             <div
                                 className='maxi-shapedividercontrol__shape-selector__display'
@@ -265,7 +285,7 @@ const ShapeDividerControl = props => {
                         defaultOpacity={defaultShapeDividerTopOptions.opacity}
                         onChange={val => {
                             shapeDividerTopOptions.opacity = JSON.parse(val);
-                            onChange(JSON.stringify(value))
+                            onChange(JSON.stringify(value));
                         }}
                     />
                     <BackgroundControl
@@ -273,7 +293,7 @@ const ShapeDividerControl = props => {
                         defaultBackground={defaultShapeDividerTopOptions}
                         onChange={val => {
                             shapeDividerTopOptions = val;
-                            onChange(JSON.stringify(value))
+                            onChange(JSON.stringify(value));
                         }}
                         disableImage
                         disableVideo
@@ -286,30 +306,29 @@ const ShapeDividerControl = props => {
                         allowedUnits={['px']}
                         onChangeUnit={val => {
                             shapeDividerTopOptions.heightUnit = val;
-                            onChange(JSON.stringify(value))
+                            onChange(JSON.stringify(value));
                         }}
                         value={shapeDividerTopOptions.height}
                         defaultValue={defaultShapeDividerTopOptions.height}
                         onChangeValue={val => {
                             shapeDividerTopOptions.height = val;
-                            onChange(JSON.stringify(value))
+                            onChange(JSON.stringify(value));
                         }}
                     />
                 </Fragment>
-            }
-            {
-                shapeDividerStatus === 'bottom' &&
+            )}
+            {shapeDividerStatus === 'bottom' && (
                 <Fragment>
                     <div className='maxi-fancy-radio-control'>
                         <RadioControl
                             label={__('Enable Scroll Effect', 'maxi-blocks')}
-                            selected={parseInt(shapeDividerBottomOptions.effects.status)}
-                            options={
-                                [
-                                    { label: __('No', 'maxi-blocks'), value: 0 },
-                                    { label: __('Yes', 'maxi-blocks'), value: 1 },
-                                ]
-                            }
+                            selected={parseInt(
+                                shapeDividerBottomOptions.effects.status
+                            )}
+                            options={[
+                                { label: __('No', 'maxi-blocks'), value: 0 },
+                                { label: __('Yes', 'maxi-blocks'), value: 1 },
+                            ]}
                             onChange={val => {
                                 shapeDividerBottomOptions.effects.status = val;
                                 onChange(JSON.stringify(value));
@@ -317,9 +336,9 @@ const ShapeDividerControl = props => {
                         />
                     </div>
                     <Dropdown
-                        className="maxi-shapedividercontrol__shape-selector"
-                        contentClassName="maxi-shapedividercontrol_popover"
-                        position="bottom center"
+                        className='maxi-shapedividercontrol__shape-selector'
+                        contentClassName='maxi-shapedividercontrol_popover'
+                        position='bottom center'
                         renderToggle={({ isOpen, onToggle }) => (
                             <div
                                 className='maxi-shapedividercontrol__shape-selector__display'
@@ -342,10 +361,12 @@ const ShapeDividerControl = props => {
                     />
                     <__experimentalOpacityControl
                         opacity={shapeDividerBottomOptions.opacity}
-                        defaultOpacity={defaultShapeDividerBottomOptions.opacity}
+                        defaultOpacity={
+                            defaultShapeDividerBottomOptions.opacity
+                        }
                         onChange={val => {
                             shapeDividerBottomOptions.opacity = JSON.parse(val);
-                            onChange(JSON.stringify(value))
+                            onChange(JSON.stringify(value));
                         }}
                     />
                     <BackgroundControl
@@ -353,7 +374,7 @@ const ShapeDividerControl = props => {
                         defaultBackground={defaultShapeDividerBottomOptions}
                         onChange={val => {
                             shapeDividerBottomOptions = val;
-                            onChange(JSON.stringify(value))
+                            onChange(JSON.stringify(value));
                         }}
                         disableImage
                         disableVideo
@@ -362,25 +383,26 @@ const ShapeDividerControl = props => {
                     <SizeControl
                         label={__('Divider Height', 'maxi-blocks')}
                         unit={shapeDividerBottomOptions.heightUnit}
-                        defaultUnit={defaultShapeDividerBottomOptions.heightUnit}
+                        defaultUnit={
+                            defaultShapeDividerBottomOptions.heightUnit
+                        }
                         allowedUnits={['px']}
                         onChangeUnit={val => {
                             shapeDividerBottomOptions.heightUnit = val;
-                            onChange(JSON.stringify(value))
+                            onChange(JSON.stringify(value));
                         }}
                         value={shapeDividerBottomOptions.height}
                         defaultValue={defaultShapeDividerBottomOptions.height}
                         onChangeValue={val => {
-                            console.log(val)
+                            console.log(val);
                             shapeDividerBottomOptions.height = val;
-                            onChange(JSON.stringify(value))
+                            onChange(JSON.stringify(value));
                         }}
                     />
                 </Fragment>
-            }
+            )}
         </div>
-    )
-
-}
+    );
+};
 
 export default ShapeDividerControl;

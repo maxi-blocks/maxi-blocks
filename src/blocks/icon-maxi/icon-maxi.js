@@ -16,7 +16,7 @@ const { registerBlockType } = wp.blocks;
  */
 import attributes from './attributes.js';
 import edit from './edit.js';
-//import save from './save.js';
+// import save from './save.js';
 
 /**
  * Styles and icons
@@ -28,29 +28,27 @@ import { iconBox } from '../../icons';
 /**
  * Block
  */
-registerBlockType( 'maxi-blocks/icon-maxi', {
-	title: __('Icon Maxi', 'maxi-blocks'),
-	icon: iconBox,
-	description: "Insert, modify or style an icon",
-	category: 'maxi-blocks',
-	supports: {
-		align: true,
-		lightBlockWrapper: true
+registerBlockType('maxi-blocks/icon-maxi', {
+    title: __('Icon Maxi', 'maxi-blocks'),
+    icon: iconBox,
+    description: 'Insert, modify or style an icon',
+    category: 'maxi-blocks',
+    supports: {
+        align: true,
+        lightBlockWrapper: true,
     },
-	attributes: {
-		...attributes
-	},
-	getEditWrapperProps(attributes) {
-        const {
-			uniqueID
-        } = attributes;
+    attributes: {
+        ...attributes,
+    },
+    getEditWrapperProps(attributes) {
+        const { uniqueID } = attributes;
 
         return {
-			'uniqueid': uniqueID
+            uniqueid: uniqueID,
         };
     },
-	edit,
-	save: () => {
-		return null;
-	}
-} );
+    edit,
+    save: () => {
+        return null;
+    },
+});

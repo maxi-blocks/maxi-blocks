@@ -4,11 +4,7 @@
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
 const { Fragment } = wp.element;
-const {
-    RangeControl,
-    SelectControl,
-    TextareaControl,
-} = wp.components;
+const { RangeControl, SelectControl, TextareaControl } = wp.components;
 
 /**
  * Internal dependencies
@@ -26,17 +22,13 @@ import {
     __experimentalAxisControl,
     __experimentalResponsiveControl,
     __experimentalPositionControl,
-    __experimentalDisplayControl
+    __experimentalDisplayControl,
 } from '../../components';
 
 /**
  * External dependencies
  */
-import {
-    capitalize,
-    isEmpty,
-    isNil
-} from 'lodash';
+import { capitalize, isEmpty, isNil } from 'lodash';
 
 /**
  * Inspector
@@ -68,7 +60,7 @@ const Inspector = props => {
             zIndex,
             breakpoints,
             position,
-            display
+            display,
         },
         clientId,
         setAttributes,
@@ -88,9 +80,13 @@ const Inspector = props => {
                                 <div className='maxi-tab-content__box'>
                                     <BlockStylesControl
                                         blockStyle={blockStyle}
-                                        onChangeBlockStyle={blockStyle => setAttributes({ blockStyle })}
+                                        onChangeBlockStyle={blockStyle =>
+                                            setAttributes({ blockStyle })
+                                        }
                                         defaultBlockStyle={defaultBlockStyle}
-                                        onChangeDefaultBlockStyle={defaultBlockStyle => setAttributes({ defaultBlockStyle })}
+                                        onChangeDefaultBlockStyle={defaultBlockStyle =>
+                                            setAttributes({ defaultBlockStyle })
+                                        }
                                         isFirstOnHierarchy={isFirstOnHierarchy}
                                     />
                                 </div>
@@ -98,93 +94,180 @@ const Inspector = props => {
                                     isSecondary
                                     items={[
                                         {
-                                            label: __('Alignment', 'maxi-blocks'),
+                                            label: __(
+                                                'Alignment',
+                                                'maxi-blocks'
+                                            ),
                                             disablePadding: true,
                                             content: (
                                                 <SettingTabsControl
                                                     items={[
                                                         {
-                                                            label: __('Desktop', 'maxi-blocks'),
+                                                            label: __(
+                                                                'Desktop',
+                                                                'maxi-blocks'
+                                                            ),
                                                             content: (
                                                                 <AlignmentControl
-                                                                    value={alignmentDesktop}
-                                                                    onChange={alignmentDesktop => setAttributes({ alignmentDesktop })}
+                                                                    value={
+                                                                        alignmentDesktop
+                                                                    }
+                                                                    onChange={alignmentDesktop =>
+                                                                        setAttributes(
+                                                                            {
+                                                                                alignmentDesktop,
+                                                                            }
+                                                                        )
+                                                                    }
                                                                     disableJustify
                                                                 />
-                                                            )
+                                                            ),
                                                         },
                                                         {
-                                                            label: __('Tablet', 'maxi-blocks'),
+                                                            label: __(
+                                                                'Tablet',
+                                                                'maxi-blocks'
+                                                            ),
                                                             content: (
                                                                 <AlignmentControl
-                                                                    value={alignmentTablet}
-                                                                    onChange={alignmentTablet => setAttributes({ alignmentTablet })}
+                                                                    value={
+                                                                        alignmentTablet
+                                                                    }
+                                                                    onChange={alignmentTablet =>
+                                                                        setAttributes(
+                                                                            {
+                                                                                alignmentTablet,
+                                                                            }
+                                                                        )
+                                                                    }
                                                                     disableJustify
                                                                 />
-                                                            )
+                                                            ),
                                                         },
                                                         {
-                                                            label: __('Mobile', 'maxi-blocks'),
+                                                            label: __(
+                                                                'Mobile',
+                                                                'maxi-blocks'
+                                                            ),
                                                             content: (
                                                                 <AlignmentControl
-                                                                    value={alignmentMobile}
-                                                                    onChange={alignmentMobile => setAttributes({ alignmentMobile })}
+                                                                    value={
+                                                                        alignmentMobile
+                                                                    }
+                                                                    onChange={alignmentMobile =>
+                                                                        setAttributes(
+                                                                            {
+                                                                                alignmentMobile,
+                                                                            }
+                                                                        )
+                                                                    }
                                                                     disableJustify
                                                                 />
-                                                            )
+                                                            ),
                                                         },
                                                     ]}
                                                 />
-                                            )
+                                            ),
                                         },
                                         {
-                                            label: __('Background', 'maxi-blocks'),
+                                            label: __(
+                                                'Background',
+                                                'maxi-blocks'
+                                            ),
                                             disablePadding: true,
                                             content: (
                                                 <SettingTabsControl
                                                     items={[
                                                         {
-                                                            label: __('Normal', 'gutenberg-extra'),
+                                                            label: __(
+                                                                'Normal',
+                                                                'gutenberg-extra'
+                                                            ),
                                                             content: (
                                                                 <Fragment>
                                                                     <__experimentalOpacityControl
-                                                                        opacity={opacity}
-                                                                        defaultOpacity={getDefaultProp(clientId, 'opacity')}
-                                                                        onChange={opacity => setAttributes({ opacity })}
-                                                                        breakpoint={deviceType}
+                                                                        opacity={
+                                                                            opacity
+                                                                        }
+                                                                        defaultOpacity={getDefaultProp(
+                                                                            clientId,
+                                                                            'opacity'
+                                                                        )}
+                                                                        onChange={opacity =>
+                                                                            setAttributes(
+                                                                                {
+                                                                                    opacity,
+                                                                                }
+                                                                            )
+                                                                        }
+                                                                        breakpoint={
+                                                                            deviceType
+                                                                        }
                                                                     />
                                                                     <BackgroundControl
-                                                                        background={background}
-                                                                        onChange={background => setAttributes({ background })}
+                                                                        background={
+                                                                            background
+                                                                        }
+                                                                        onChange={background =>
+                                                                            setAttributes(
+                                                                                {
+                                                                                    background,
+                                                                                }
+                                                                            )
+                                                                        }
                                                                         disableImage
                                                                         disableVideo
                                                                     />
                                                                 </Fragment>
-                                                            )
+                                                            ),
                                                         },
                                                         {
-                                                            label: __('Hover', 'gutenberg-extra'),
+                                                            label: __(
+                                                                'Hover',
+                                                                'gutenberg-extra'
+                                                            ),
                                                             content: (
                                                                 <Fragment>
                                                                     <__experimentalOpacityControl
-                                                                        opacity={opacityHover}
-                                                                        defaultOpacity={getDefaultProp(clientId, 'opacityHover')}
-                                                                        onChange={opacityHover => setAttributes({ opacityHover })}
-                                                                        breakpoint={deviceType}
+                                                                        opacity={
+                                                                            opacityHover
+                                                                        }
+                                                                        defaultOpacity={getDefaultProp(
+                                                                            clientId,
+                                                                            'opacityHover'
+                                                                        )}
+                                                                        onChange={opacityHover =>
+                                                                            setAttributes(
+                                                                                {
+                                                                                    opacityHover,
+                                                                                }
+                                                                            )
+                                                                        }
+                                                                        breakpoint={
+                                                                            deviceType
+                                                                        }
                                                                         disableAuto
                                                                     />
                                                                     <BackgroundControl
-                                                                        background={backgroundHover}
-                                                                        onChange={backgroundHover => setAttributes({ backgroundHover })}
+                                                                        background={
+                                                                            backgroundHover
+                                                                        }
+                                                                        onChange={backgroundHover =>
+                                                                            setAttributes(
+                                                                                {
+                                                                                    backgroundHover,
+                                                                                }
+                                                                            )
+                                                                        }
                                                                         disableImage
                                                                         disableVideo
                                                                     />
                                                                 </Fragment>
-                                                            )
+                                                            ),
                                                         },
                                                     ]}
                                                 />
-                                            )
+                                            ),
                                         },
                                         {
                                             label: __('Border', 'maxi-blocks'),
@@ -193,59 +276,106 @@ const Inspector = props => {
                                                 <SettingTabsControl
                                                     items={[
                                                         {
-                                                            label: __('Normal', 'gutenberg-extra'),
+                                                            label: __(
+                                                                'Normal',
+                                                                'gutenberg-extra'
+                                                            ),
                                                             content: (
                                                                 <BorderControl
-                                                                    border={border}
-                                                                    onChange={border => setAttributes({ border })}
+                                                                    border={
+                                                                        border
+                                                                    }
+                                                                    onChange={border =>
+                                                                        setAttributes(
+                                                                            {
+                                                                                border,
+                                                                            }
+                                                                        )
+                                                                    }
                                                                 />
-                                                            )
+                                                            ),
                                                         },
                                                         {
-                                                            label: __('Hover', 'gutenberg-extra'),
+                                                            label: __(
+                                                                'Hover',
+                                                                'gutenberg-extra'
+                                                            ),
                                                             content: (
                                                                 <BorderControl
-                                                                    border={borderHover}
-                                                                    onChange={borderHover => setAttributes({ borderHover })}
+                                                                    border={
+                                                                        borderHover
+                                                                    }
+                                                                    onChange={borderHover =>
+                                                                        setAttributes(
+                                                                            {
+                                                                                borderHover,
+                                                                            }
+                                                                        )
+                                                                    }
                                                                 />
-                                                            )
+                                                            ),
                                                         },
                                                     ]}
                                                 />
-                                            )
+                                            ),
                                         },
                                         {
-                                            label: __('Box Shadow', 'maxi-blocks'),
+                                            label: __(
+                                                'Box Shadow',
+                                                'maxi-blocks'
+                                            ),
                                             disablePadding: true,
                                             content: (
                                                 <SettingTabsControl
                                                     items={[
                                                         {
-                                                            label: __('Normal', 'gutenberg-extra'),
+                                                            label: __(
+                                                                'Normal',
+                                                                'gutenberg-extra'
+                                                            ),
                                                             content: (
                                                                 <BoxShadowControl
-                                                                    boxShadowOptions={boxShadow}
-                                                                    onChange={boxShadow => setAttributes({ boxShadow })}
+                                                                    boxShadowOptions={
+                                                                        boxShadow
+                                                                    }
+                                                                    onChange={boxShadow =>
+                                                                        setAttributes(
+                                                                            {
+                                                                                boxShadow,
+                                                                            }
+                                                                        )
+                                                                    }
                                                                 />
-                                                            )
+                                                            ),
                                                         },
                                                         {
-                                                            label: __('Hover', 'gutenberg-extra'),
+                                                            label: __(
+                                                                'Hover',
+                                                                'gutenberg-extra'
+                                                            ),
                                                             content: (
                                                                 <BoxShadowControl
-                                                                    boxShadowOptions={boxShadowHover}
-                                                                    onChange={boxShadowHover => setAttributes({ boxShadowHover })}
+                                                                    boxShadowOptions={
+                                                                        boxShadowHover
+                                                                    }
+                                                                    onChange={boxShadowHover =>
+                                                                        setAttributes(
+                                                                            {
+                                                                                boxShadowHover,
+                                                                            }
+                                                                        )
+                                                                    }
                                                                 />
-                                                            )
+                                                            ),
                                                         },
                                                     ]}
                                                 />
-                                            )
+                                            ),
                                         },
                                     ]}
                                 />
                             </Fragment>
-                        )
+                        ),
                     },
                     {
                         label: __('Advanced', 'maxi-blocks'),
@@ -253,34 +383,41 @@ const Inspector = props => {
                             <div className='maxi-tab-content__box'>
                                 <__experimentalZIndexControl
                                     zIndex={zIndex}
-                                    onChange={zIndex => setAttributes({ zIndex })}
+                                    onChange={zIndex =>
+                                        setAttributes({ zIndex })
+                                    }
                                     breakpoint={deviceType}
                                 />
-                                {
-                                    deviceType != 'general' &&
+                                {deviceType !== 'general' && (
                                     <__experimentalResponsiveControl
                                         breakpoints={breakpoints}
-                                        onChange={breakpoints => setAttributes({ breakpoints })}
+                                        onChange={breakpoints =>
+                                            setAttributes({ breakpoints })
+                                        }
                                         breakpoint={deviceType}
                                     />
-                                }
+                                )}
                                 <__experimentalPositionControl
                                     position={position}
-                                    onChange={position => setAttributes({ position })}
+                                    onChange={position =>
+                                        setAttributes({ position })
+                                    }
                                     breakpoint={deviceType}
                                 />
                                 <__experimentalDisplayControl
                                     display={display}
-                                    onChange={display => setAttributes({ display })}
+                                    onChange={display =>
+                                        setAttributes({ display })
+                                    }
                                     breakpoint={deviceType}
                                 />
                             </div>
-                        )
-                    }
+                        ),
+                    },
                 ]}
             />
-        </InspectorControls >
-    )
-}
+        </InspectorControls>
+    );
+};
 
 export default Inspector;

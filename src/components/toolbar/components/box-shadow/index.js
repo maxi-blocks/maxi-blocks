@@ -24,7 +24,7 @@ const ALLOWED_BLOCKS = [
     'maxi-blocks/image-maxi',
     'maxi-blocks/divider-maxi',
     'maxi-blocks/section-maxi',
-]
+];
 
 const BoxShadow = props => {
     const {
@@ -32,11 +32,10 @@ const BoxShadow = props => {
         boxShadow,
         defaultBoxShadow,
         onChange,
-        breakpoint
+        breakpoint,
     } = props;
 
-    if (!ALLOWED_BLOCKS.includes(blockName))
-        return null;
+    if (!ALLOWED_BLOCKS.includes(blockName)) return null;
 
     return (
         <ToolbarPopover
@@ -44,7 +43,7 @@ const BoxShadow = props => {
             tooltip={__('Drop shadow', 'maxi-blocks')}
             icon={toolbarDropShadow}
             advancedOptions='box shadow'
-            content={(
+            content={
                 <BoxShadowControl
                     boxShadow={boxShadow}
                     defaultBoxShadow={defaultBoxShadow}
@@ -52,9 +51,9 @@ const BoxShadow = props => {
                     breakpoint={breakpoint}
                     disableAdvanced
                 />
-            )}
+            }
         />
-    )
-}
+    );
+};
 
 export default BoxShadow;

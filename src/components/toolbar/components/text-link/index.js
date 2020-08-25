@@ -4,11 +4,7 @@
 const { __ } = wp.i18n;
 const { __experimentalLinkControl } = wp.blockEditor;
 const { useSelect } = wp.data;
-const {
-    applyFormat,
-    create,
-    toHTMLString
-} = wp.richText;
+const { applyFormat, create, toHTMLString } = wp.richText;
 
 /**
  * Internal dependencies
@@ -30,28 +26,20 @@ import { toolbarLink } from '../../../../icons';
  * Link
  */
 const Link = props => {
-    const {
-        blockName,
-        content,
-        onChange,
-        node
-    } = props;
+    const { blockName, content, onChange, node } = props;
 
-    if (blockName != 'maxi-blocks/text-maxi')
-        return null;
+    if (blockName !== 'maxi-blocks/text-maxi') return null;
 
     /**
- * Gets the all format objects at the start of the selection.
- * 
- * @param {Object} value                Value to inspect.
- * @param {Array}  EMPTY_ACTIVE_FORMATS Array to return if there are no active
- *                                      formats.
- *
- * @return {?Object} Active format objects.
- * 
- * @package Gutenberg
- * @see packages/rich-text/src/get-active-formats.js
- */
+     * Gets the all format objects at the start of the selection.
+     *
+     * @param {Object} value                Value to inspect.
+     * @param {Array} EMPTY_ACTIVE_FORMATS Array to return if there are no active
+     * formats.
+     * @return {?Object} Active format objects.
+     * @package
+     * @see packages/rich-text/src/get-active-formats.js
+     */
     const getActiveFormats = (
         { formats, start, end, activeFormats },
         EMPTY_ACTIVE_FORMATS = []
@@ -80,20 +68,19 @@ const Link = props => {
         }
 
         return formats[start] || EMPTY_ACTIVE_FORMATS;
-    }
+    };
 
     const { formatValue, isActive, formatOptions } = useSelect(
         select => {
-            const {
-                getSelectionStart,
-                getSelectionEnd
-            } = select('core/block-editor');
+            const { getSelectionStart, getSelectionEnd } = select(
+                'core/block-editor'
+            );
             const formatValue = create({
                 element: node,
                 html: content,
             });
-            formatValue['start'] = getSelectionStart().offset;
-            formatValue['end'] = getSelectionEnd().offset;
+            formatValue.start = getSelectionStart().offset;
+            formatValue.end = getSelectionEnd().offset;
 
             let formatOptions = {};
             const isActive = getActiveFormats(formatValue).some(type => {
@@ -101,64 +88,55 @@ const Link = props => {
                     formatOptions = type;
                     return true;
                 }
-                return false
+                return false;
             });
 
             return {
                 formatValue,
                 isActive,
-                formatOptions
-            }
+                formatOptions,
+            };
         },
         [getActiveFormats, node, content]
-    )
+    );
 
     const createLinkValue = formatOptions => {
-        if(isEmpty(formatOptions))
-            return;
+        if (isEmpty(formatOptions)) return;
 
         const {
-            attributes: {
-                url,
-                target,
-                id
-            },
-            unregisteredAttributes: {
-                rel
-            }
+            attributes: { url, target, id },
+            unregisteredAttributes: { rel },
         } = formatOptions;
 
         const value = {
             url,
-            opensInNewTab: target === '_blank' ? true : false,
+            opensInNewTab: target === '_blank',
             id,
         };
 
-        if(!!rel){
-            value.noFollow = rel.indexOf('nofollow') >= 0 ? true : false;
-            value.sponsored = rel.indexOf('sponsored') >= 0 ? true : false;
-            value.ugc = rel.indexOf('ugc') >= 0 ? true : false;
+        if (rel) {
+            value.noFollow = rel.indexOf('nofollow') >= 0;
+            value.sponsored = rel.indexOf('sponsored') >= 0;
+            value.ugc = rel.indexOf('ugc') >= 0;
         }
 
         return value;
-    }
+    };
 
-    const createLinkAttribute = (
-        {
-            url,
-            type,
-            id,
-            opensInNewTab,
-            noFollow,
-            sponsored,
-            ugc
-        }
-    ) => {
+    const createLinkAttribute = ({
+        url,
+        type,
+        id,
+        opensInNewTab,
+        noFollow,
+        sponsored,
+        ugc,
+    }) => {
         const format = {
             type: 'core/link',
             attributes: {
                 url,
-                rel: ''
+                rel: '',
             },
         };
 
@@ -169,41 +147,38 @@ const Link = props => {
             format.attributes.target = '_blank';
             format.attributes.rel += 'noreferrer noopener';
         }
-        if (noFollow)
-            format.attributes.rel += ' nofollow';
-        if (sponsored)
-            format.attributes.rel += ' sponsored';
-        if (ugc)
-            format.attributes.rel += ' ugc';
+        if (noFollow) format.attributes.rel += ' nofollow';
+        if (sponsored) format.attributes.rel += ' sponsored';
+        if (ugc) format.attributes.rel += ' ugc';
 
         return format;
-    }
+    };
 
     const formatChecker = format => {
-        if(!isActive && format.start === format.end){
+        if (!isActive && format.start === format.end) {
             format.start = 0;
             format.end = content.length;
         }
 
         return format;
-    }
+    };
 
     const onClick = attributes => {
         const newAttribute = createLinkAttribute(attributes);
         const newFormat = applyFormat(formatChecker(formatValue), newAttribute);
 
         const newContent = toHTMLString({
-            value: newFormat
-        })
+            value: newFormat,
+        });
 
-        onChange(newContent)
-    }
+        onChange(newContent);
+    };
 
     return (
         <ToolbarPopover
             icon={toolbarLink}
             tooltip={__('Link', 'maxi-blocks')}
-            content={(
+            content={
                 <__experimentalLinkControl
                     value={createLinkValue(formatOptions)}
                     onChange={onClick}
@@ -226,9 +201,9 @@ const Link = props => {
                         },
                     ]}
                 />
-            )}
+            }
         />
-    )
-}
+    );
+};
 
 export default Link;

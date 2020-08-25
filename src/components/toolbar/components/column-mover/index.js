@@ -3,15 +3,8 @@
  */
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
-const {
-    useSelect,
-    useDispatch
-} = wp.data;
-const {
-    Icon,
-    Button,
-    Tooltip
-} = wp.components;
+const { useSelect, useDispatch } = wp.data;
+const { Icon, Button, Tooltip } = wp.components;
 
 /**
  * Styles and icons
@@ -23,21 +16,13 @@ import { toolbarMove } from '../../../../icons';
  * ColumnMover
  */
 const ColumnMover = props => {
-    const {
-        clientId,
-        blockName,
-    } = props;
+    const { clientId, blockName } = props;
 
-    if (blockName != 'maxi-blocks/column-maxi')
-        return null;
+    if (blockName !== 'maxi-blocks/column-maxi') return null;
 
-    const {
-        rootClientId,
-    } = useSelect(
+    const { rootClientId } = useSelect(
         select => {
-            const {
-                getBlockRootClientId,
-            } = select('core/block-editor');
+            const { getBlockRootClientId } = select('core/block-editor');
             const blockRootClientId = getBlockRootClientId(clientId);
 
             return {
@@ -47,9 +32,7 @@ const ColumnMover = props => {
         [clientId]
     );
 
-    const { moveBlocksDown, moveBlocksUp } = useDispatch(
-        'core/block-editor'
-    );
+    const { moveBlocksDown, moveBlocksUp } = useDispatch('core/block-editor');
 
     return (
         <Fragment>
@@ -61,10 +44,7 @@ const ColumnMover = props => {
                     className='toolbar-item toolbar-item__bold'
                     onClick={() => moveBlocksUp([clientId], rootClientId)}
                 >
-                    <Icon
-                        className='toolbar-item__icon'
-                        icon={toolbarMove}
-                    />
+                    <Icon className='toolbar-item__icon' icon={toolbarMove} />
                 </Button>
             </Tooltip>
             <Tooltip
@@ -75,14 +55,11 @@ const ColumnMover = props => {
                     className='toolbar-item toolbar-item__bold'
                     onClick={() => moveBlocksDown([clientId], rootClientId)}
                 >
-                    <Icon
-                        className='toolbar-item__icon'
-                        icon={toolbarMove}
-                    />
+                    <Icon className='toolbar-item__icon' icon={toolbarMove} />
                 </Button>
             </Tooltip>
         </Fragment>
-    )
-}
+    );
+};
 
 export default ColumnMover;

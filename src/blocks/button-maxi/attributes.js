@@ -10,84 +10,84 @@ import * as buttonAttributesData from './data';
 const attributes = {
     alignment: {
         type: 'string',
-        default: JSON.stringify(attributesData.alignment)
+        default: JSON.stringify(attributesData.alignment),
     },
     alignmentText: {
         type: 'string',
-        default: JSON.stringify(buttonAttributesData.alignmentText)
+        default: JSON.stringify(buttonAttributesData.alignmentText),
     },
     typography: {
         type: 'string',
-        default: JSON.stringify(buttonAttributesData.typography)
+        default: JSON.stringify(buttonAttributesData.typography),
     },
     typographyHover: {
         type: 'string',
-        default: JSON.stringify(attributesData.typographyHover)
+        default: JSON.stringify(attributesData.typographyHover),
     },
     background: {
         type: 'string',
-        default: JSON.stringify(buttonAttributesData.background)
+        default: JSON.stringify(buttonAttributesData.background),
     },
     backgroundHover: {
         type: 'string',
-        default: JSON.stringify(attributesData.backgroundHover)
+        default: JSON.stringify(attributesData.backgroundHover),
     },
     opacity: {
         type: 'number',
-        default: JSON.stringify(attributesData.opacity)
+        default: JSON.stringify(attributesData.opacity),
     },
     opacityHover: {
         type: 'number',
-        default: JSON.stringify(attributesData.opacityHover)
+        default: JSON.stringify(attributesData.opacityHover),
     },
     border: {
         type: 'string',
-        default: JSON.stringify(buttonAttributesData.border)
+        default: JSON.stringify(buttonAttributesData.border),
     },
     borderHover: {
         type: 'string',
-        default: JSON.stringify(attributesData.borderHover)
+        default: JSON.stringify(attributesData.borderHover),
     },
     size: {
         type: 'string',
-        default: JSON.stringify(attributesData.size)
+        default: JSON.stringify(attributesData.size),
     },
     boxShadow: {
         type: 'string',
-        default: JSON.stringify(attributesData.boxShadow)
+        default: JSON.stringify(attributesData.boxShadow),
     },
     boxShadowHover: {
         type: 'string',
-        default: JSON.stringify(attributesData.boxShadowHover)
+        default: JSON.stringify(attributesData.boxShadowHover),
     },
     margin: {
         type: 'string',
-        default: JSON.stringify(attributesData.margin)
+        default: JSON.stringify(attributesData.margin),
     },
     padding: {
         type: 'string',
-        default: JSON.stringify(buttonAttributesData.padding)
+        default: JSON.stringify(buttonAttributesData.padding),
     },
     buttonText: {
         type: 'string',
-        default: ''
+        default: '',
     },
     position: {
         type: 'string',
-        default: JSON.stringify(attributesData.__experimentalPosition)
+        default: JSON.stringify(attributesData.__experimentalPosition),
     },
     display: {
         type: 'string',
-        default: JSON.stringify(attributesData.__experimentalDisplay)
+        default: JSON.stringify(attributesData.__experimentalDisplay),
     },
     motion: {
         type: 'string',
-        default: JSON.stringify(attributesData.__experimentalMotion)
+        default: JSON.stringify(attributesData.__experimentalMotion),
     },
     transform: {
         type: 'string',
-        default: JSON.stringify(attributesData.__experimentalTransform)
-    }
-}
+        default: JSON.stringify(attributesData.__experimentalTransform),
+    },
+};
 
 export default attributes;

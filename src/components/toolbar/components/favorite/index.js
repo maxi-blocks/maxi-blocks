@@ -1,10 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { 
-    Button,
-    Icon 
-} = wp.components;
+const { Button, Icon } = wp.components;
 
 /**
  * Icons
@@ -16,15 +13,10 @@ import { toolbarFavorite } from '../../../../icons';
  */
 const Favorite = props => {
     return (
-        <Button
-            className='toolbar-item toolbar-item__favorite'
-        >
-            <Icon
-                className='toolbar-item__icon'
-                icon={toolbarFavorite}
-            />
+        <Button className='toolbar-item toolbar-item__favorite'>
+            <Icon className='toolbar-item__icon' icon={toolbarFavorite} />
         </Button>
-    )
-}
+    );
+};
 
 export default Favorite;

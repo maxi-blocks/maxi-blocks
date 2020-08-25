@@ -2,10 +2,7 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const {
-    __experimentalBlock,
-    RichText,
-} = wp.blockEditor;
+const { __experimentalBlock, RichText } = wp.blockEditor;
 
 /**
  * Internal dependencies
@@ -19,10 +16,7 @@ import {
     getAlignmentTextObject,
     getOpacityObject,
 } from '../../utils';
-import {
-    MaxiBlock,
-    __experimentalToolbar
-} from '../../components';
+import { MaxiBlock, __experimentalToolbar } from '../../components';
 
 /**
  * External dependencies
@@ -34,26 +28,24 @@ import classnames from 'classnames';
  */
 class edit extends MaxiBlock {
     get getObject() {
-        let response = {
+        const response = {
             [this.props.attributes.uniqueID]: this.getWrapperObject,
-            [`${this.props.attributes.uniqueID} .maxi-button-extra__button`]: this.getNormalObject,
-            [`${this.props.attributes.uniqueID} .maxi-button-extra__button:hover`]: this.getHoverObject
-        }
+            [`${this.props.attributes.uniqueID} .maxi-button-extra__button`]: this
+                .getNormalObject,
+            [`${this.props.attributes.uniqueID} .maxi-button-extra__button:hover`]: this
+                .getHoverObject,
+        };
 
         return response;
     }
 
     get getWrapperObject() {
-        const {
-            alignment,
-            zIndex,
-            transform
-        } = this.props.attributes;
+        const { alignment, zIndex, transform } = this.props.attributes;
 
         const response = {
             alignment: { ...getAlignmentFlexObject(JSON.parse(alignment)) },
             zIndex: { ...JSON.parse(zIndex) },
-            transform: { ...getTransformObject(JSON.parse(transform)) }
+            transform: { ...getTransformObject(JSON.parse(transform)) },
         };
 
         return response;
@@ -72,12 +64,14 @@ class edit extends MaxiBlock {
             margin,
             zIndex,
             position,
-            display
+            display,
         } = this.props.attributes;
 
         const response = {
             typography: { ...JSON.parse(typography) },
-            alignmentText: { ...getAlignmentTextObject(JSON.parse(alignmentText)) },
+            alignmentText: {
+                ...getAlignmentTextObject(JSON.parse(alignmentText)),
+            },
             background: { ...getBackgroundObject(JSON.parse(background)) },
             boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
             border: { ...JSON.parse(border) },
@@ -90,8 +84,8 @@ class edit extends MaxiBlock {
             zIndex: { ...JSON.parse(zIndex) },
             position: { ...JSON.parse(position) },
             positionOptions: { ...JSON.parse(position).options },
-            display: { ...JSON.parse(display) }
-        }
+            display: { ...JSON.parse(display) },
+        };
 
         return response;
     }
@@ -107,13 +101,17 @@ class edit extends MaxiBlock {
 
         const response = {
             typographyHover: { ...JSON.parse(typographyHover) },
-            backgroundHover: { ...getBackgroundObject(JSON.parse(backgroundHover)) },
-            boxShadowHover: { ...getBoxShadowObject(JSON.parse(boxShadowHover)) },
+            backgroundHover: {
+                ...getBackgroundObject(JSON.parse(backgroundHover)),
+            },
+            boxShadowHover: {
+                ...getBoxShadowObject(JSON.parse(boxShadowHover)),
+            },
             borderHover: { ...JSON.parse(borderHover) },
             borderWidth: { ...JSON.parse(borderHover).borderWidth },
             borderRadius: { ...JSON.parse(borderHover).borderRadius },
             opacity: { ...getOpacityObject(JSON.parse(opacityHover)) },
-        }
+        };
 
         return response;
     }
@@ -147,14 +145,14 @@ class edit extends MaxiBlock {
                 data-maxi_initial_block_class={defaultBlockStyle}
             >
                 <RichText
-                    className="maxi-button-extra__button"
+                    className='maxi-button-extra__button'
                     withoutInteractiveFormatting
-                    placeholder={__('Set some text...', 'maxi-blocks')}
+                    placeholder={__('Set some text…', 'maxi-blocks')}
                     value={buttonText}
                     onChange={buttonText => setAttributes({ buttonText })}
-                    identifier="text"
+                    identifier='text'
                 />
-            </__experimentalBlock>
+            </__experimentalBlock>,
         ];
     }
 }

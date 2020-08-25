@@ -2,20 +2,9 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const {
-    Draggable,
-    Icon,
-    Button,
-    Tooltip
-} = wp.components;
-const {
-    useSelect,
-    useDispatch
-} = wp.data;
-const {
-    useEffect,
-    useRef,
-} = wp.element;
+const { Draggable, Icon, Button, Tooltip } = wp.components;
+const { useSelect, useDispatch } = wp.data;
+const { useEffect, useRef } = wp.element;
 
 /**
  * Icons
@@ -26,22 +15,18 @@ import { toolbarMove } from '../../../../icons';
  * Mover
  */
 const Mover = props => {
-    const {
-        clientId,
-        blockName
-    } = props;
+    const { clientId, blockName } = props;
 
-    if (blockName === 'maxi-blocks/column-maxi')
-        return null;
+    if (blockName === 'maxi-blocks/column-maxi') return null;
 
     const { srcRootClientId, index, isDraggable } = useSelect(
-        (select) => {
+        select => {
             const {
                 getBlockIndex,
                 getBlockRootClientId,
                 getTemplateLock,
             } = select('core/block-editor');
-            const rootClientId = getBlockRootClientId(clientId)
+            const rootClientId = getBlockRootClientId(clientId);
             const templateLock = rootClientId
                 ? getTemplateLock(rootClientId)
                 : null;
@@ -49,7 +34,7 @@ const Mover = props => {
             return {
                 index: getBlockIndex(clientId, rootClientId),
                 srcRootClientId: rootClientId,
-                isDraggable: 'all' !== templateLock,
+                isDraggable: templateLock !== 'all',
             };
         },
         [clientId]
@@ -109,7 +94,7 @@ const Mover = props => {
                 </Tooltip>
             )}
         </Draggable>
-    )
-}
+    );
+};
 
 export default Mover;

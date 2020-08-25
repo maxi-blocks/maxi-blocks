@@ -2,11 +2,7 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const {
-    Icon,
-    Button,
-    Tooltip
-} = wp.components;
+const { Icon, Button, Tooltip } = wp.components;
 
 /**
  * Styles and icons
@@ -18,15 +14,9 @@ import { toolbarBold } from '../../../../icons';
  * TextList
  */
 const TextList = props => {
-    const {
-        blockName,
-        isList,
-        content,
-        onChange,
-    } = props;
+    const { blockName, isList, content, onChange } = props;
 
-    if (blockName != 'maxi-blocks/text-maxi')
-        return null;
+    if (blockName !== 'maxi-blocks/text-maxi') return null;
 
     const getContent = content => {
         let newContent = '';
@@ -41,25 +31,19 @@ const TextList = props => {
             newContent = `<li>${content.replace(/<br>/gi, '</li><li>')}</li>`;
 
         return newContent;
-    }
+    };
 
     return (
-        <Tooltip
-            text={__('List', 'maxi-blocks')}
-            position='bottom center'
-        >
+        <Tooltip text={__('List', 'maxi-blocks')} position='bottom center'>
             <Button
                 className='toolbar-item toolbar-item__list'
                 onClick={() => onChange(!isList, getContent(content))}
                 aria-pressed={isList}
             >
-                <Icon
-                    className='toolbar-item__icon'
-                    icon={toolbarBold}
-                />
+                <Icon className='toolbar-item__icon' icon={toolbarBold} />
             </Button>
         </Tooltip>
-    )
-}
+    );
+};
 
 export default TextList;

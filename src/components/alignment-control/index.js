@@ -12,28 +12,19 @@ import { getLastBreakpointValue } from '../../utils';
  * External dependencies
  */
 import classnames from 'classnames';
-import {
-    isObject,
-    isEmpty
-} from 'lodash';
+import { isObject, isEmpty } from 'lodash';
 
 /**
  * Styles and Icons
  */
 import './editor.scss';
-import {
-    alignLeft,
-    alignCenter,
-    alignRight,
-    alignJustify
-} from '../../icons';
+import { alignLeft, alignCenter, alignRight, alignJustify } from '../../icons';
 import { Icon } from '@wordpress/icons';
 
 /**
  * Component
  */
 const AlignmentControl = props => {
-
     const {
         alignment,
         onChange,
@@ -42,33 +33,35 @@ const AlignmentControl = props => {
         disableCenter = false,
         disableRight = false,
         disableJustify = false,
-        breakpoint = 'general'
+        breakpoint = 'general',
     } = props;
 
     const getOptions = () => {
-        let options = [];
+        const options = [];
         if (!disableLeft)
             options.push({ label: <Icon icon={alignLeft} />, value: 'left' });
         if (!disableCenter)
-            options.push({ label: <Icon icon={alignCenter} />, value: 'center' });
+            options.push({
+                label: <Icon icon={alignCenter} />,
+                value: 'center',
+            });
         if (!disableRight)
             options.push({ label: <Icon icon={alignRight} />, value: 'right' });
         if (!disableJustify)
-            options.push({ label: <Icon icon={alignJustify} />, value: 'justify' })
+            options.push({
+                label: <Icon icon={alignJustify} />,
+                value: 'justify',
+            });
 
         return options;
-    }
+    };
 
     const classes = classnames(
         'maxi-alignment-control',
-        isEmpty(label) ?
-            'maxi-alignment-control__no-label' :
-            ''
+        isEmpty(label) ? 'maxi-alignment-control__no-label' : ''
     );
 
-    const value = !isObject(alignment) ?
-        JSON.parse(alignment) :
-        alignment;
+    const value = !isObject(alignment) ? JSON.parse(alignment) : alignment;
 
     return (
         <RadioControl
@@ -81,7 +74,7 @@ const AlignmentControl = props => {
                 onChange(JSON.stringify(value));
             }}
         />
-    )
-}
+    );
+};
 
 export default AlignmentControl;

@@ -2,10 +2,7 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const {
-    ColorPicker,
-    Icon,
-} = wp.components;
+const { ColorPicker, Icon } = wp.components;
 
 /**
  * Internal dependencies
@@ -28,40 +25,35 @@ import { toolbarType } from '../../../../icons';
  * TextColor
  */
 const TextColor = props => {
-    const {
-        blockName,
-        typography,
-        onChange,
-        breakpoint
-    } = props;
+    const { blockName, typography, onChange, breakpoint } = props;
 
-
-    if (blockName != 'maxi-blocks/text-maxi')
-        return null;
+    if (blockName !== 'maxi-blocks/text-maxi') return null;
 
     const updateTypography = val => {
-        value[breakpoint].color = returnColor(val)
+        value[breakpoint].color = returnColor(val);
 
-        onChange(JSON.stringify(value))
-    }
+        onChange(JSON.stringify(value));
+    };
 
     const returnColor = val => {
         return `rgba(${val.rgb.r},${val.rgb.g},${val.rgb.b},${val.rgb.a})`;
-    }
+    };
 
-    const value = !isObject(typography) ?
-        JSON.parse(typography) :
-        typography;
+    const value = !isObject(typography) ? JSON.parse(typography) : typography;
 
     return (
         <ToolbarPopover
             className='toolbar-item__text-options'
             tooltip={__('Text options', 'maxi-blocks')}
-            icon={(
+            icon={
                 <div
                     className='toolbar-item__text-options__icon'
                     style={{
-                        background: getLastBreakpointValue(value, 'color', breakpoint),
+                        background: getLastBreakpointValue(
+                            value,
+                            'color',
+                            breakpoint
+                        ),
                         borderWidth: '1px',
                         borderColor: '#fff',
                         borderStyle: 'solid',
@@ -72,15 +64,15 @@ const TextColor = props => {
                         icon={toolbarType}
                     />
                 </div>
-            )}
-            content={(
+            }
+            content={
                 <ColorPicker
                     color={getLastBreakpointValue(value, 'color', breakpoint)}
                     onChangeComplete={val => updateTypography(val)}
                 />
-            )}
+            }
         />
-    )
-}
+    );
+};
 
 export default TextColor;

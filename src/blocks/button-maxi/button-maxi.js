@@ -27,27 +27,25 @@ import { buttonIcon } from '../../icons';
 /**
  * Block
  */
-registerBlockType( 'maxi-blocks/button-maxi', {
-	title: __('Button Maxi', 'maxi-blocks'),
-	icon: buttonIcon,
-	description: "Insert, modify or style a button",
-	category: 'maxi-blocks',
-	supports: {
-		align: true,
-		lightBlockWrapper: true
+registerBlockType('maxi-blocks/button-maxi', {
+    title: __('Button Maxi', 'maxi-blocks'),
+    icon: buttonIcon,
+    description: 'Insert, modify or style a button',
+    category: 'maxi-blocks',
+    supports: {
+        align: true,
+        lightBlockWrapper: true,
     },
-	attributes: {
-		...attributes
-	},
-	getEditWrapperProps(attributes) {
-        const {
-			uniqueID
-        } = attributes;
+    attributes: {
+        ...attributes,
+    },
+    getEditWrapperProps(attributes) {
+        const { uniqueID } = attributes;
 
         return {
-			'uniqueid': uniqueID
+            uniqueid: uniqueID,
         };
     },
-	edit,
-	save
-} );
+    edit,
+    save,
+});

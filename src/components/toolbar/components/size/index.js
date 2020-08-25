@@ -28,8 +28,8 @@ import { toolbarSizing } from '../../../../icons';
 const EXCLUDED_BLOCKS = [
     'maxi-blocks/image-maxi',
     'maxi-blocks/divider-maxi',
-    'maxi-blocks/column-maxi'
-]
+    'maxi-blocks/column-maxi',
+];
 
 /**
  * Size
@@ -42,15 +42,12 @@ const Size = props => {
         size,
         onChangeSize,
         isFirstOnHierarchy,
-        breakpoint
+        breakpoint,
     } = props;
 
-    if (EXCLUDED_BLOCKS.includes(blockName))
-        return null;
+    if (EXCLUDED_BLOCKS.includes(blockName)) return null;
 
-    const value = !isObject(size) ?
-        JSON.parse(size) :
-        size;
+    const value = !isObject(size) ? JSON.parse(size) : size;
 
     return (
         <ToolbarPopover
@@ -58,29 +55,42 @@ const Size = props => {
             tooltip={__('Size', 'maxi-blocks')}
             icon={toolbarSizing}
             advancedOptions='width height'
-            content={(
+            content={
                 <Fragment>
-                    {
-                        isFirstOnHierarchy &&
+                    {isFirstOnHierarchy && (
                         <RadioControl
                             className='toolbar-item__popover__toggle-btn'
                             label={__('Full Width', 'maxi-blocks')}
                             selected={fullWidth}
                             options={[
-                                { label: __('No', 'maxi-blocks'), value: 'normal' },
-                                { label: __('Yes', 'maxi-blocks'), value: 'full' }
+                                {
+                                    label: __('No', 'maxi-blocks'),
+                                    value: 'normal',
+                                },
+                                {
+                                    label: __('Yes', 'maxi-blocks'),
+                                    value: 'full',
+                                },
                             ]}
                             onChange={fullWidth => onChangeFullWidth(fullWidth)}
                         />
-                    }
+                    )}
                     <SizeControl
                         label={__('Width', 'maxi-blocks')}
-                        unit={getLastBreakpointValue(value, 'widthUnit', breakpoint)}
+                        unit={getLastBreakpointValue(
+                            value,
+                            'widthUnit',
+                            breakpoint
+                        )}
                         onChangeUnit={val => {
                             value[breakpoint].widthUnit = val;
                             onChangeSize(JSON.stringify(value));
                         }}
-                        value={getLastBreakpointValue(value, 'width', breakpoint)}
+                        value={getLastBreakpointValue(
+                            value,
+                            'width',
+                            breakpoint
+                        )}
                         onChangeValue={val => {
                             value[breakpoint].width = val;
                             onChangeSize(JSON.stringify(value));
@@ -88,21 +98,29 @@ const Size = props => {
                     />
                     <SizeControl
                         label={__('Max Width', 'maxi-blocks')}
-                        unit={getLastBreakpointValue(value, 'max-widthUnit', breakpoint)}
+                        unit={getLastBreakpointValue(
+                            value,
+                            'max-widthUnit',
+                            breakpoint
+                        )}
                         onChangeUnit={val => {
                             value[breakpoint]['max-widthUnit'] = val;
                             onChangeSize(JSON.stringify(value));
                         }}
-                        value={getLastBreakpointValue(value, 'max-width', breakpoint)}
+                        value={getLastBreakpointValue(
+                            value,
+                            'max-width',
+                            breakpoint
+                        )}
                         onChangeValue={val => {
                             value[breakpoint]['max-width'] = val;
                             onChangeSize(JSON.stringify(value));
                         }}
                     />
                 </Fragment>
-            )}
+            }
         />
-    )
-}
+    );
+};
 
 export default Size;

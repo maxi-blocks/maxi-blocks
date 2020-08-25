@@ -19,7 +19,7 @@ const save = props => {
             blockStyle,
             defaultBlockStyle,
             fullWidth,
-            extraClassName
+            extraClassName,
         },
     } = props;
 
@@ -29,17 +29,12 @@ const save = props => {
         extraClassName,
         uniqueID,
         className,
-        fullWidth === 'full' ?
-            'alignfull' :
-            '',
+        fullWidth === 'full' ? 'alignfull' : ''
     );
-    if (uniqueID && (typeof uniqueID !== 'undefined'))
+    if (uniqueID && typeof uniqueID !== 'undefined')
         classes = classnames(classes, uniqueID);
 
-    return (
-        <figure>
-        </figure>
-    );
-}
+    return <figure />;
+};
 
 export default save;

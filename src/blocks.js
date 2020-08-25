@@ -29,6 +29,6 @@ import './blocks/cloud-maxi/cloud-maxi.js';
 import './blocks/container-maxi/container-maxi.js';
 import './blocks/icon-maxi/icon-maxi.js';
 
-//Sidebar
+// Sidebar
 
 import './blocks/customizer-maxi/index';

@@ -28,27 +28,25 @@ import { dividerIcon } from '../../icons';
 /**
  * Block
  */
-registerBlockType( 'maxi-blocks/divider-maxi', {
-	title: __('Divider Maxi', 'maxi-blocks'),
-	icon: dividerIcon,
-	description: "Create a horizontal divider between visual elements",
-	category: 'maxi-blocks',
-	supports: {
-		align: true,
-		lightBlockWrapper: true
+registerBlockType('maxi-blocks/divider-maxi', {
+    title: __('Divider Maxi', 'maxi-blocks'),
+    icon: dividerIcon,
+    description: 'Create a horizontal divider between visual elements',
+    category: 'maxi-blocks',
+    supports: {
+        align: true,
+        lightBlockWrapper: true,
     },
-	attributes: {
-		...attributes
-	},
-	getEditWrapperProps(attributes) {
-        const {
-			uniqueID
-        } = attributes;
+    attributes: {
+        ...attributes,
+    },
+    getEditWrapperProps(attributes) {
+        const { uniqueID } = attributes;
 
         return {
-			'uniqueid': uniqueID
+            uniqueid: uniqueID,
         };
     },
-	edit,
-	save
-} );
+    edit,
+    save,
+});

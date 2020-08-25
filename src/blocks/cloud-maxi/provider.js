@@ -10,51 +10,50 @@ import React, { createContext, Component } from 'react';
 const { apiFetch } = wp;
 
 export const MaxiContext = createContext({
-	layouts: '',
-	sections: '',
-	all: '',
+    layouts: '',
+    sections: '',
+    all: '',
 });
 
 export default class MaxiProvider extends Component {
-	state = {
-		layouts: '',
-		sections: '',
-		all: '',
-	}
+    state = {
+        layouts: '',
+        sections: '',
+        all: '',
+    };
 
-	async componentDidMount() {
+    async componentDidMount() {
+        async components => {
+            const layouts = [];
+            const sections = [];
 
+            Object.values(components).forEach(function (item) {
+                if (item.type === 'layout') {
+                    layouts.push(item);
+                } else {
+                    sections.push(item);
+                }
+            });
 
-		async components => {
-			let layouts   = [];
-			let sections  = [];
+            this.setState({
+                all: components,
+                layouts,
+                sections,
+            });
+        };
+    }
 
-			Object.values( components ).forEach( function( item ) {
-				if ( item.type === 'layout' ) {
-					layouts.push( item );
-				} else {
-					sections.push( item );
-				}
-
-			} );
-
-			this.setState( {
-				all: components,
-				layouts: layouts,
-				sections: sections,
-			} );
-		}
-	}
-
-	render() {
-		return (
-				<MaxiContext.Provider value={{
-					layouts: this.state.layouts,
-					sections: this.state.sections,
-					all: this.state.all,
-				}}>
-					{this.props.children}
-				</MaxiContext.Provider>
-		);
-	}
+    render() {
+        return (
+            <MaxiContext.Provider
+                value={{
+                    layouts: this.state.layouts,
+                    sections: this.state.sections,
+                    all: this.state.all,
+                }}
+            >
+                {this.props.children}
+            </MaxiContext.Provider>
+        );
+    }
 }

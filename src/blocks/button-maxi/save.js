@@ -12,10 +12,7 @@ import { __experimentalBackgroundDisplayer } from '../../components';
  * External dependencies
  */
 import classnames from 'classnames';
-import {
-    isObject,
-    isNil
-} from 'lodash';
+import { isObject, isNil } from 'lodash';
 
 /**
  * Save
@@ -30,9 +27,9 @@ const save = props => {
             linkSettings,
             buttonText,
             extraClassName,
-            motion
+            motion,
         },
-        className
+        className,
     } = props;
 
     const classes = classnames(
@@ -42,19 +39,17 @@ const save = props => {
         extraClassName,
         uniqueID,
         className,
-        !isNil(uniqueID) ?
-            uniqueID :
-            null
+        !isNil(uniqueID) ? uniqueID : null
     );
 
-    const linkOpt = !isObject(linkSettings) ?
-        JSON.parse(linkSettings) :
-        linkSettings;
+    const linkOpt = !isObject(linkSettings)
+        ? JSON.parse(linkSettings)
+        : linkSettings;
 
     const linkProps = {
         href: linkOpt.url || '',
-        target: linkOpt.opensInNewTab ? '_blank' : '_self'
-    }
+        target: linkOpt.opensInNewTab ? '_blank' : '_self',
+    };
 
     return (
         <div
@@ -63,17 +58,12 @@ const save = props => {
             data-motion={motion}
             data-motion-id={uniqueID}
         >
-            <__experimentalBackgroundDisplayer
-                background={background}
-            />
-            <Button
-                className="maxi-button-extra__button"
-                {...linkProps}
-            >
+            <__experimentalBackgroundDisplayer background={background} />
+            <Button className='maxi-button-extra__button' {...linkProps}>
                 {buttonText}
             </Button>
         </div>
     );
-}
+};
 
 export default save;

@@ -2,15 +2,8 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const {
-    Fragment,
-    useState
-} = wp.element;
-const {
-    RangeControl,
-    SelectControl,
-    Icon
-} = wp.components;
+const { Fragment, useState } = wp.element;
+const { RangeControl, SelectControl, Icon } = wp.components;
 
 /**
  * Internal dependencies
@@ -22,11 +15,7 @@ import DefaultStylesControl from '../default-styles-control';
  * External dependencies
  */
 import classnames from 'classnames';
-import {
-    isNil,
-    isEmpty,
-    trim
-} from 'lodash';
+import { isNil, isEmpty, trim } from 'lodash';
 
 /**
  * Styles and icons
@@ -38,25 +27,20 @@ import { styleNone } from '../../icons';
  * Component
  */
 const TextShadow = props => {
-    const {
-        value,
-        onChange,
-        defaultColor,
-    } = props;
+    const { value, onChange, defaultColor } = props;
 
-    const valueDecomposed = !isEmpty(value) && value != 'none' ?
-        value.split(' ') :
-        `0px 0px 0px ${defaultColor}`.split(' ');
+    const valueDecomposed =
+        !isEmpty(value) && value !== 'none'
+            ? value.split(' ')
+            : `0px 0px 0px ${defaultColor}`.split(' ');
     const x = Number(valueDecomposed[0].match(/[-?0-9\d*]+|\D+/g)[0]);
     const y = Number(valueDecomposed[1].match(/[-?0-9\d*]+|\D+/g)[0]);
     const blur = Number(valueDecomposed[2].match(/[-?0-9\d*]+|\D+/g)[0]);
     const color = valueDecomposed[3];
 
     const onChangeValue = (i, val) => {
-        if (isNil(val))
-            valueDecomposed[i] = 0 + 'px';
-        else
-            valueDecomposed[i] = val + 'px';
+        if (isNil(val)) valueDecomposed[i] = `${0}px`;
+        else valueDecomposed[i] = `${val}px`;
 
         if (
             valueDecomposed[0] === '0px' &&
@@ -64,26 +48,23 @@ const TextShadow = props => {
             valueDecomposed[2] === '0px'
         )
             onChange('none');
-        else
-            onChange(valueDecomposed.join(' '));
-    }
+        else onChange(valueDecomposed.join(' '));
+    };
 
     const getActiveItem = prop => {
-        if (isEmpty(value) && isEmpty(prop))
-            return true;
-        else if (isEmpty(prop))
-            return false
+        if (isEmpty(value) && isEmpty(prop)) return true;
+        if (isEmpty(prop)) return false;
 
         const decomposedProp = prop.split(' ');
-        if (Number(decomposedProp[0].match(/[-?0-9\d*]+|\D+/g)[0]) != x)
+        if (Number(decomposedProp[0].match(/[-?0-9\d*]+|\D+/g)[0]) !== x)
             return false;
-        if (Number(decomposedProp[1].match(/[-?0-9\d*]+|\D+/g)[0]) != y)
+        if (Number(decomposedProp[1].match(/[-?0-9\d*]+|\D+/g)[0]) !== y)
             return false;
-        if (Number(decomposedProp[2].match(/[-?0-9\d*]+|\D+/g)[0]) != blur)
+        if (Number(decomposedProp[2].match(/[-?0-9\d*]+|\D+/g)[0]) !== blur)
             return false;
 
         return true;
-    }
+    };
 
     return (
         <Fragment>
@@ -97,40 +78,34 @@ const TextShadow = props => {
                                 icon={styleNone}
                             />
                         ),
-                        onChange: () => onChange('')
+                        onChange: () => onChange(''),
                     },
                     {
                         activeItem: getActiveItem('0px 0px 5px #A2A2A2'),
                         content: (
-                            <span
-                                className='maxi-textshadow-control__default maxi-textshadow-control__default__total'
-                            >
+                            <span className='maxi-textshadow-control__default maxi-textshadow-control__default__total'>
                                 Maxi
                             </span>
                         ),
-                        onChange: () => onChange('0px 0px 5px #A2A2A2')
+                        onChange: () => onChange('0px 0px 5px #A2A2A2'),
                     },
                     {
                         activeItem: getActiveItem('5px 0px 3px #A2A2A2'),
                         content: (
-                            <span
-                                className='maxi-textshadow-control__default maxi-textshadow-control__default__bottom'
-                            >
+                            <span className='maxi-textshadow-control__default maxi-textshadow-control__default__bottom'>
                                 Maxi
                             </span>
                         ),
-                        onChange: () => onChange('5px 0px 3px #A2A2A2')
+                        onChange: () => onChange('5px 0px 3px #A2A2A2'),
                     },
                     {
                         activeItem: getActiveItem('2px 4px 0px #A2A2A2'),
                         content: (
-                            <span
-                                className='maxi-textshadow-control__default maxi-textshadow-control__default__solid'
-                            >
+                            <span className='maxi-textshadow-control__default maxi-textshadow-control__default__solid'>
                                 Maxi
                             </span>
                         ),
-                        onChange: () => onChange('2px 4px 0px #A2A2A2')
+                        onChange: () => onChange('2px 4px 0px #A2A2A2'),
                     },
                 ]}
             />
@@ -167,29 +142,21 @@ const TextShadow = props => {
                 allowReset
             />
         </Fragment>
-    )
-}
+    );
+};
 
 /**
  * Control
  */
 const TextShadowControl = props => {
-    const {
-        textShadow,
-        onChange,
-        defaultColor,
-        className
-    } = props;
+    const { textShadow, onChange, defaultColor, className } = props;
 
     const [showOptions, changeShowOptions] = useState(
         !isEmpty(textShadow) ? 1 : 0
     );
     const [lastValue, changeLastValue] = useState(textShadow);
 
-    const classes = classnames(
-        'maxi-textshadow-control',
-        className
-    )
+    const classes = classnames('maxi-textshadow-control', className);
 
     return (
         <div className={classes}>
@@ -198,31 +165,28 @@ const TextShadowControl = props => {
                 value={showOptions}
                 options={[
                     { label: __('No', 'maxi-blocks'), value: 0 },
-                    { label: __('Yes', 'maxi-blocks'), value: 1 }
+                    { label: __('Yes', 'maxi-blocks'), value: 1 },
                 ]}
                 onChange={() => {
                     changeShowOptions(!showOptions);
                     if (showOptions) {
                         changeLastValue(textShadow);
                         onChange('');
-                    }
-                    else
-                        onChange(lastValue)
+                    } else onChange(lastValue);
                 }}
             />
-            {
-                !!showOptions &&
+            {!!showOptions && (
                 <TextShadow
                     value={lastValue}
                     onChange={val => {
                         changeLastValue(val);
-                        onChange(val)
+                        onChange(val);
                     }}
                     defaultColor={defaultColor}
                 />
-            }
+            )}
         </div>
-    )
-}
+    );
+};
 
 export default TextShadowControl;

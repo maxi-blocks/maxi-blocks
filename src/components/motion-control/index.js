@@ -2,15 +2,8 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const {
-    RadioControl,
-    SelectControl,
-    Icon,
-} = wp.components;
-const {
-    Fragment,
-    useState,
-} = wp.element;
+const { RadioControl, SelectControl, Icon } = wp.components;
+const { Fragment, useState } = wp.element;
 
 /**
  * Internal dependencies
@@ -48,15 +41,9 @@ import {
  * Component
  */
 const MotionControl = props => {
-    const {
-        className,
-        motion,
-        onChange,
-    } = props;
+    const { className, motion, onChange } = props;
 
-    const value = !isObject(motion) ?
-        JSON.parse(motion) :
-        motion;
+    const value = !isObject(motion) ? JSON.parse(motion) : motion;
 
     const {
         vertical: verticalOptions,
@@ -69,50 +56,50 @@ const MotionControl = props => {
 
     const [motionStatus, setMotionStatus] = useState('vertical');
 
-    const classes = classnames(
-        'maxi-motion-control',
-        className,
-    );
+    const classes = classnames('maxi-motion-control', className);
 
     return (
         <div className={classes}>
             <div className='maxi-fancy-radio-control'>
                 <RadioControl
                     selected={motionStatus}
-                    options={
-                        [
-                            { label: <Icon icon={motionVertical} />, value: 'vertical' },
-                            { label: <Icon icon={motionHorizontal} />, value: 'horizontal' },
-                            { label: <Icon icon={motionRotate} />, value: 'rotate' },
-                            { label: <Icon icon={motionScale} />, value: 'scale' },
-                            { label: <Icon icon={motionFade()} />, value: 'fade' },
-                            { label: <Icon icon={motionBlur()} />, value: 'blur' },
-                        ]
-                    }
+                    options={[
+                        {
+                            label: <Icon icon={motionVertical} />,
+                            value: 'vertical',
+                        },
+                        {
+                            label: <Icon icon={motionHorizontal} />,
+                            value: 'horizontal',
+                        },
+                        {
+                            label: <Icon icon={motionRotate} />,
+                            value: 'rotate',
+                        },
+                        { label: <Icon icon={motionScale} />, value: 'scale' },
+                        { label: <Icon icon={motionFade()} />, value: 'fade' },
+                        { label: <Icon icon={motionBlur()} />, value: 'blur' },
+                    ]}
                     onChange={value => setMotionStatus(value)}
                 />
             </div>
-            {
-                motionStatus === 'vertical' &&
+            {motionStatus === 'vertical' && (
                 <Fragment>
                     <div className='maxi-fancy-radio-control'>
                         <RadioControl
                             label={__('Enable Vertical', 'maxi-blocks')}
                             selected={verticalOptions.status}
-                            options={
-                                [
-                                    { label: __('Yes', 'maxi-blocks'), value: 1 },
-                                    { label: __('No', 'maxi-blocks'), value: 0 },
-                                ]
-                            }
+                            options={[
+                                { label: __('Yes', 'maxi-blocks'), value: 1 },
+                                { label: __('No', 'maxi-blocks'), value: 0 },
+                            ]}
                             onChange={val => {
                                 verticalOptions.status = parseInt(val);
                                 onChange(JSON.stringify(value));
                             }}
                         />
                     </div>
-                    {
-                        !!verticalOptions.status &&
+                    {!!verticalOptions.status && (
                         <Fragment>
                             <SelectControl
                                 label={__('Direction', 'maxi-blocks')}
@@ -133,8 +120,14 @@ const MotionControl = props => {
                                     options={verticalPresets(verticalOptions)}
                                     onChange={val => {
                                         verticalOptions.preset = val;
-                                        verticalOptions.viewport = verticalOptions.presets[verticalOptions.preset].viewport;
-                                        verticalOptions.amounts = verticalOptions.presets[verticalOptions.preset].amounts;
+                                        verticalOptions.viewport =
+                                            verticalOptions.presets[
+                                                verticalOptions.preset
+                                            ].viewport;
+                                        verticalOptions.amounts =
+                                            verticalOptions.presets[
+                                                verticalOptions.preset
+                                            ].amounts;
                                         onChange(JSON.stringify(value));
                                     }}
                                 />
@@ -155,30 +148,26 @@ const MotionControl = props => {
                                 }}
                             />
                         </Fragment>
-                    }
+                    )}
                 </Fragment>
-            }
-            {
-                motionStatus === 'horizontal' &&
+            )}
+            {motionStatus === 'horizontal' && (
                 <Fragment>
                     <div className='maxi-fancy-radio-control'>
                         <RadioControl
                             label={__('Enable Horizontal', 'maxi-blocks')}
                             selected={horizontalOptions.status}
-                            options={
-                                [
-                                    { label: __('Yes', 'maxi-blocks'), value: 1 },
-                                    { label: __('No', 'maxi-blocks'), value: 0 },
-                                ]
-                            }
+                            options={[
+                                { label: __('Yes', 'maxi-blocks'), value: 1 },
+                                { label: __('No', 'maxi-blocks'), value: 0 },
+                            ]}
                             onChange={val => {
                                 horizontalOptions.status = parseInt(val);
                                 onChange(JSON.stringify(value));
                             }}
                         />
                     </div>
-                    {
-                        !!horizontalOptions.status &&
+                    {!!horizontalOptions.status && (
                         <Fragment>
                             <SelectControl
                                 label={__('Direction', 'maxi-blocks')}
@@ -196,11 +185,19 @@ const MotionControl = props => {
                                 <RadioControl
                                     label=''
                                     selected={horizontalOptions.preset}
-                                    options={horizontalPresets(horizontalOptions)}
+                                    options={horizontalPresets(
+                                        horizontalOptions
+                                    )}
                                     onChange={val => {
                                         horizontalOptions.preset = val;
-                                        horizontalOptions.viewport = horizontalOptions.presets[horizontalOptions.preset].viewport;
-                                        horizontalOptions.amounts = horizontalOptions.presets[horizontalOptions.preset].amounts;
+                                        horizontalOptions.viewport =
+                                            horizontalOptions.presets[
+                                                horizontalOptions.preset
+                                            ].viewport;
+                                        horizontalOptions.amounts =
+                                            horizontalOptions.presets[
+                                                horizontalOptions.preset
+                                            ].amounts;
                                         onChange(JSON.stringify(value));
                                     }}
                                 />
@@ -221,30 +218,26 @@ const MotionControl = props => {
                                 }}
                             />
                         </Fragment>
-                    }
+                    )}
                 </Fragment>
-            }
-            {
-                motionStatus === 'rotate' &&
+            )}
+            {motionStatus === 'rotate' && (
                 <Fragment>
                     <div className='maxi-fancy-radio-control'>
                         <RadioControl
                             label={__('Enable Rotate', 'maxi-blocks')}
                             selected={rotateOptions.status}
-                            options={
-                                [
-                                    { label: __('Yes', 'maxi-blocks'), value: 1 },
-                                    { label: __('No', 'maxi-blocks'), value: 0 },
-                                ]
-                            }
+                            options={[
+                                { label: __('Yes', 'maxi-blocks'), value: 1 },
+                                { label: __('No', 'maxi-blocks'), value: 0 },
+                            ]}
                             onChange={val => {
                                 rotateOptions.status = parseInt(val);
                                 onChange(JSON.stringify(value));
                             }}
                         />
                     </div>
-                    {
-                        !!rotateOptions.status &&
+                    {!!rotateOptions.status && (
                         <Fragment>
                             <SelectControl
                                 label={__('Direction', 'maxi-blocks')}
@@ -265,8 +258,14 @@ const MotionControl = props => {
                                     options={rotatePresets(rotateOptions)}
                                     onChange={val => {
                                         rotateOptions.preset = val;
-                                        rotateOptions.viewport = rotateOptions.presets[rotateOptions.preset].viewport;
-                                        rotateOptions.amounts = rotateOptions.presets[rotateOptions.preset].amounts;
+                                        rotateOptions.viewport =
+                                            rotateOptions.presets[
+                                                rotateOptions.preset
+                                            ].viewport;
+                                        rotateOptions.amounts =
+                                            rotateOptions.presets[
+                                                rotateOptions.preset
+                                            ].amounts;
                                         onChange(JSON.stringify(value));
                                     }}
                                 />
@@ -287,30 +286,26 @@ const MotionControl = props => {
                                 }}
                             />
                         </Fragment>
-                    }
+                    )}
                 </Fragment>
-            }
-            {
-                motionStatus === 'scale' &&
+            )}
+            {motionStatus === 'scale' && (
                 <Fragment>
                     <div className='maxi-fancy-radio-control'>
                         <RadioControl
                             label={__('Enable Scale', 'maxi-blocks')}
                             selected={scaleOptions.status}
-                            options={
-                                [
-                                    { label: __('Yes', 'maxi-blocks'), value: 1 },
-                                    { label: __('No', 'maxi-blocks'), value: 0 },
-                                ]
-                            }
+                            options={[
+                                { label: __('Yes', 'maxi-blocks'), value: 1 },
+                                { label: __('No', 'maxi-blocks'), value: 0 },
+                            ]}
                             onChange={val => {
                                 scaleOptions.status = parseInt(val);
                                 onChange(JSON.stringify(value));
                             }}
                         />
                     </div>
-                    {
-                        !!scaleOptions.status &&
+                    {!!scaleOptions.status && (
                         <Fragment>
                             <SelectControl
                                 label={__('Direction', 'maxi-blocks')}
@@ -331,8 +326,14 @@ const MotionControl = props => {
                                     options={scalePresets(scaleOptions)}
                                     onChange={val => {
                                         scaleOptions.preset = val;
-                                        scaleOptions.viewport = scaleOptions.presets[scaleOptions.preset].viewport;
-                                        scaleOptions.amounts = scaleOptions.presets[scaleOptions.preset].amounts;
+                                        scaleOptions.viewport =
+                                            scaleOptions.presets[
+                                                scaleOptions.preset
+                                            ].viewport;
+                                        scaleOptions.amounts =
+                                            scaleOptions.presets[
+                                                scaleOptions.preset
+                                            ].amounts;
                                         onChange(JSON.stringify(value));
                                     }}
                                 />
@@ -354,30 +355,26 @@ const MotionControl = props => {
                                 }}
                             />
                         </Fragment>
-                    }
+                    )}
                 </Fragment>
-            }
-            {
-                motionStatus === 'fade' &&
+            )}
+            {motionStatus === 'fade' && (
                 <Fragment>
                     <div className='maxi-fancy-radio-control'>
                         <RadioControl
                             label={__('Enable Fade', 'maxi-blocks')}
                             selected={fadeOptions.status}
-                            options={
-                                [
-                                    { label: __('Yes', 'maxi-blocks'), value: 1 },
-                                    { label: __('No', 'maxi-blocks'), value: 0 },
-                                ]
-                            }
+                            options={[
+                                { label: __('Yes', 'maxi-blocks'), value: 1 },
+                                { label: __('No', 'maxi-blocks'), value: 0 },
+                            ]}
                             onChange={val => {
                                 fadeOptions.status = parseInt(val);
                                 onChange(JSON.stringify(value));
                             }}
                         />
                     </div>
-                    {
-                        !!fadeOptions.status &&
+                    {!!fadeOptions.status && (
                         <Fragment>
                             <SelectControl
                                 label={__('Direction', 'maxi-blocks')}
@@ -398,8 +395,14 @@ const MotionControl = props => {
                                     options={fadePresets(fadeOptions)}
                                     onChange={val => {
                                         fadeOptions.preset = val;
-                                        fadeOptions.viewport = fadeOptions.presets[fadeOptions.preset].viewport;
-                                        fadeOptions.amounts = fadeOptions.presets[fadeOptions.preset].amounts;
+                                        fadeOptions.viewport =
+                                            fadeOptions.presets[
+                                                fadeOptions.preset
+                                            ].viewport;
+                                        fadeOptions.amounts =
+                                            fadeOptions.presets[
+                                                fadeOptions.preset
+                                            ].amounts;
                                         onChange(JSON.stringify(value));
                                     }}
                                 />
@@ -421,30 +424,26 @@ const MotionControl = props => {
                                 }}
                             />
                         </Fragment>
-                    }
+                    )}
                 </Fragment>
-            }
-            {
-                motionStatus === 'blur' &&
+            )}
+            {motionStatus === 'blur' && (
                 <Fragment>
                     <div className='maxi-fancy-radio-control'>
                         <RadioControl
                             label={__('Enable Blur', 'maxi-blocks')}
                             selected={blurOptions.status}
-                            options={
-                                [
-                                    { label: __('Yes', 'maxi-blocks'), value: 1 },
-                                    { label: __('No', 'maxi-blocks'), value: 0 },
-                                ]
-                            }
+                            options={[
+                                { label: __('Yes', 'maxi-blocks'), value: 1 },
+                                { label: __('No', 'maxi-blocks'), value: 0 },
+                            ]}
                             onChange={val => {
                                 blurOptions.status = parseInt(val);
                                 onChange(JSON.stringify(value));
                             }}
                         />
                     </div>
-                    {
-                        !!blurOptions.status &&
+                    {!!blurOptions.status && (
                         <Fragment>
                             <SelectControl
                                 label={__('Direction', 'maxi-blocks')}
@@ -465,8 +464,14 @@ const MotionControl = props => {
                                     options={blurPresets(blurOptions)}
                                     onChange={val => {
                                         blurOptions.preset = val;
-                                        blurOptions.viewport = blurOptions.presets[blurOptions.preset].viewport;
-                                        blurOptions.amounts = blurOptions.presets[blurOptions.preset].amounts;
+                                        blurOptions.viewport =
+                                            blurOptions.presets[
+                                                blurOptions.preset
+                                            ].viewport;
+                                        blurOptions.amounts =
+                                            blurOptions.presets[
+                                                blurOptions.preset
+                                            ].amounts;
                                         onChange(JSON.stringify(value));
                                     }}
                                 />
@@ -487,12 +492,11 @@ const MotionControl = props => {
                                 }}
                             />
                         </Fragment>
-                    }
+                    )}
                 </Fragment>
-            }
+            )}
         </div>
-    )
-
-}
+    );
+};
 
 export default MotionControl;

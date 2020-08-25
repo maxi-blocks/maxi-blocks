@@ -5,34 +5,21 @@
  */
 
 /**
-* WordPress dependencies
-*/
+ * WordPress dependencies
+ */
 const { Component } = wp.element;
-const {
-    dispatch,
-    select,
-    subscribe
-} = wp.data;
+const { dispatch, select, subscribe } = wp.data;
 
 /**
  * Internal dependencies
  */
-import {
-    ResponsiveStylesResolver,
-    BackEndResponsiveStyles
-} from '../styles';
+import { ResponsiveStylesResolver, BackEndResponsiveStyles } from '../styles';
 import { getDefaultProp } from '../styles/utils';
 
 /**
  * External dependencies
  */
-import {
-    isEmpty,
-    uniqueId,
-    isEqual,
-    isNil,
-    isObject
-} from 'lodash';
+import { isEmpty, uniqueId, isEqual, isNil, isObject } from 'lodash';
 
 /**
  * Class
@@ -42,7 +29,7 @@ class MaxiBlock extends Component {
         styles: {},
         updating: false,
         breakpoints: this.getBreakpoints,
-    }
+    };
 
     constructor() {
         super(...arguments);
@@ -60,8 +47,8 @@ class MaxiBlock extends Component {
 
         if (!select('core/editor').isSavingPost() && this.state.updating) {
             this.setState({
-                updating: false
-            })
+                updating: false,
+            });
             this.saveProps();
         }
     }
@@ -72,11 +59,13 @@ class MaxiBlock extends Component {
 
     uniqueIDChecker(idToCheck) {
         if (!isEmpty(document.getElementsByClassName(idToCheck))) {
-            const newUniqueId = uniqueId(idToCheck.replace(idToCheck.match(/(\d+)(?!.*\d)/)[0], ''));
+            const newUniqueId = uniqueId(
+                idToCheck.replace(idToCheck.match(/(\d+)(?!.*\d)/)[0], '')
+            );
 
             this.uniqueIDChecker(newUniqueId);
 
-            this.props.setAttributes({ uniqueID: newUniqueId })
+            this.props.setAttributes({ uniqueID: newUniqueId });
         }
     }
 
@@ -93,19 +82,20 @@ class MaxiBlock extends Component {
                 return;
             }
 
-            if (!isObject(obj))
-                return;
+            if (!isObject(obj)) return;
 
-            const defaultObj = JSON.parse(getDefaultProp(this.props.clientId, key));
+            const defaultObj = JSON.parse(
+                getDefaultProp(this.props.clientId, key)
+            );
 
             const objKeys = Object.keys(obj).sort();
             const defaultObjKeys = Object.keys(defaultObj).sort();
-            if (JSON.stringify(objKeys) != JSON.stringify(defaultObjKeys)) {
+            if (JSON.stringify(objKeys) !== JSON.stringify(defaultObjKeys)) {
                 const newObject = this.generalToDesktop(obj, defaultObj);
                 this.props.setAttributes({ [key]: JSON.stringify(newObject) });
                 this.props.attributes[key] = JSON.stringify(newObject);
             }
-        })
+        });
     }
 
     generalToDesktop(obj, defaultObj) {
@@ -125,28 +115,26 @@ class MaxiBlock extends Component {
 
             if (isSavingPost && !isPreviewing && !this.state.updating) {
                 this.setState({
-                    updating: true
-                })
+                    updating: true,
+                });
                 unsubscribe();
 
-                dispatch('maxiBlocks').saveMaxiStyles(this.getMeta, true)
+                dispatch('maxiBlocks').saveMaxiStyles(this.getMeta, true);
             }
-        })
+        });
     }
 
     get getMeta() {
-        let meta = select('maxiBlocks').receiveMaxiStyles();
+        const meta = select('maxiBlocks').receiveMaxiStyles();
 
         switch (typeof meta) {
             case 'string':
-                if(!isEmpty(meta))
-                    return JSON.parse(meta);
-                else
-                    return {};
+                if (!isEmpty(meta)) return JSON.parse(meta);
+                return {};
             case 'object':
                 return meta;
             case 'undefined':
-                return {}
+                return {};
         }
     }
 
@@ -164,43 +152,45 @@ class MaxiBlock extends Component {
         const obj = this.getObject;
         const breakpoints = this.getBreakpoints;
 
-        if (isEqual(obj, this.state.styles) && isEqual(breakpoints, this.state.breakpoints))
+        if (
+            isEqual(obj, this.state.styles) &&
+            isEqual(breakpoints, this.state.breakpoints)
+        )
             return null;
 
         const meta = this.getMeta;
 
         this.setState({
             styles: obj,
-            breakpoints
-        })
+            breakpoints,
+        });
 
         return new ResponsiveStylesResolver(obj, meta, breakpoints);
     }
 
     /**
-    * Refresh the styles on Editor
-    */
+     * Refresh the styles on Editor
+     */
     displayStyles() {
         const newMeta = this.metaValue();
 
-        if (isNil(newMeta))
-            return;
+        if (isNil(newMeta)) return;
         this.saveMeta(newMeta);
     }
 
     removeStyle(target = this.props.attributes.uniqueID) {
-        let cleanMeta = { ...this.getMeta };
+        const cleanMeta = { ...this.getMeta };
         Object.keys(this.getMeta).map(key => {
-            if (key.indexOf(target) >= 0)
-                delete cleanMeta[key]
-        })
+            if (key.indexOf(target) >= 0) delete cleanMeta[key];
+        });
 
-        this.saveMeta(cleanMeta)
+        this.saveMeta(cleanMeta);
     }
 
     saveMeta(newMeta) {
-        dispatch('maxiBlocks').saveMaxiStyles(newMeta)
-            .then(new BackEndResponsiveStyles(newMeta))
+        dispatch('maxiBlocks')
+            .saveMaxiStyles(newMeta)
+            .then(new BackEndResponsiveStyles(newMeta));
     }
 }
 

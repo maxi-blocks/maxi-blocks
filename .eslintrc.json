@@ -1,0 +1,62 @@
+{
+  "env": {
+    "browser": true,
+    "es2020": true
+  },
+  "extends": [
+    "plugin:@wordpress/eslint-plugin/recommended",
+    "plugin:react/recommended",
+    "airbnb",
+    "plugin:prettier/recommended"
+  ],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 11,
+    "sourceType": "module"
+  },
+  "plugins": ["react", "import"],
+  "rules": {
+    "semi": "error",
+    "indent": ["warn", 4],
+    "no-shadow": "warn",
+    "object-curly-spacing": ["error", "always"],
+    "array-bracket-spacing": ["error", "always"],
+    "arrow-body-style": ["error", "as-needed"],
+    "arrow-parens": ["error", "as-needed"],
+    "quotes": ["warn", "single", { "avoidEscape": true }],
+    "space-before-function-paren": ["error", "always"],
+    "jsx-quotes": ["warn", "prefer-single"],
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [".js", ".jsx"]
+      }
+    ],
+    "react/jsx-indent": ["error", 4],
+    "react/jsx-indent-props": ["error", 4],
+    "prettier/prettier": [
+      "error",
+      {
+        "prettier": "@wordpress/prettier-config",
+        "useTabs": false,
+        // "tabWidth": 2,
+        "singleQuote": true,
+        "jsxSingleQuote": true,
+        "bracketSpacing": true,
+        "arrowParens": "avoid"
+      }
+    ],
+    "react/jsx-pascal-case": ["off", { "allowAllCaps": "true", "ignore": [] }], // Temporary deactivate
+    "react/jsx-curly-newline": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/prop-types": "off", // Temporary deactivate
+    "react/jsx-props-no-spreading": "off", // Temporary deactivate
+    "import/first": "off", // Temporary deactivate
+    "import/order": "off", // Needs to be organized
+    "require-jsdoc": "off", // Temporary deactivate
+    "jsdoc/require-param": "off", // Temporary deactivate
+    "jsdoc/check-tag-names": "off" // Temporary deactivate
+  }
+}

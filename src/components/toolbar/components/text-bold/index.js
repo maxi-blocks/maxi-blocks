@@ -3,16 +3,8 @@
  */
 const { __ } = wp.i18n;
 const { useSelect } = wp.data;
-const {
-    Icon,
-    Button,
-    Tooltip
-} = wp.components;
-const {
-    toggleFormat,
-    create,
-    toHTMLString
-} = wp.richText;
+const { Icon, Button, Tooltip } = wp.components;
+const { toggleFormat, create, toHTMLString } = wp.richText;
 
 /**
  * External dependencies
@@ -29,26 +21,18 @@ import { toolbarBold } from '../../../../icons';
  * TextBold
  */
 const TextBold = props => {
-    const {
-        blockName,
-        content,
-        onChange,
-        node
-    } = props;
+    const { blockName, content, onChange, node } = props;
 
-    if (blockName != 'maxi-blocks/text-maxi')
-        return null;
+    if (blockName !== 'maxi-blocks/text-maxi') return null;
 
     /**
      * Gets the all format objects at the start of the selection.
-     * 
-     * @param {Object} value                Value to inspect.
-     * @param {Array}  EMPTY_ACTIVE_FORMATS Array to return if there are no active
-     *                                      formats.
      *
+     * @param {Object} value                Value to inspect.
+     * @param {Array} EMPTY_ACTIVE_FORMATS Array to return if there are no active
+     * formats.
      * @return {?Object} Active format objects.
-     * 
-     * @package Gutenberg
+     * @package
      * @see packages/rich-text/src/get-active-formats.js
      */
     const getActiveFormats = (
@@ -79,57 +63,52 @@ const TextBold = props => {
         }
 
         return formats[start] || EMPTY_ACTIVE_FORMATS;
-    }
+    };
 
     const { formatValue, isActive } = useSelect(
         select => {
-            const {
-                getSelectionStart,
-                getSelectionEnd
-            } = select('core/block-editor');
+            const { getSelectionStart, getSelectionEnd } = select(
+                'core/block-editor'
+            );
             const formatValue = create({
                 element: node.querySelector('p'),
                 html: content,
             });
-            formatValue['start'] = getSelectionStart().offset;
-            formatValue['end'] = getSelectionEnd().offset;
+            formatValue.start = getSelectionStart().offset;
+            formatValue.end = getSelectionEnd().offset;
 
-            const isActive = !!find(getActiveFormats(formatValue), { type: 'core/bold' });
+            const isActive = !!find(getActiveFormats(formatValue), {
+                type: 'core/bold',
+            });
             return {
                 formatValue,
-                isActive
-            }
+                isActive,
+            };
         },
         [getActiveFormats, node, content]
-    )
+    );
 
     const onClick = () => {
         const newFormat = toggleFormat(formatValue, { type: 'core/bold' });
 
         const newContent = toHTMLString({
-            value: newFormat
-        })
+            value: newFormat,
+        });
 
-        onChange(newContent)
-    }
+        onChange(newContent);
+    };
 
     return (
-        <Tooltip
-            text={__('Bold', 'maxi-blocks')}
-            position='bottom center'
-        >
+        <Tooltip text={__('Bold', 'maxi-blocks')} position='bottom center'>
             <Button
                 className='toolbar-item toolbar-item__bold'
                 onClick={onClick}
                 aria-pressed={isActive}
             >
-                <Icon
-                    className='toolbar-item__icon'
-                    icon={toolbarBold}
-                />
+                <Icon className='toolbar-item__icon' icon={toolbarBold} />
             </Button>
         </Tooltip>
-    )
-}
+    );
+};
 
 export default TextBold;

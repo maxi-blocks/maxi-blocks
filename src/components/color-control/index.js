@@ -2,11 +2,7 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const {
-    ColorPicker,
-    BaseControl,
-    Button,
-} = wp.components;
+const { ColorPicker, BaseControl, Button } = wp.components;
 
 /**
  * External dependencies
@@ -23,22 +19,13 @@ import { reset } from '../../icons';
  * Component
  */
 const ColorControl = props => {
-    const {
-        label,
-        className,
-        color,
-        defaultColor = '',
-        onChange,
-    } = props;
+    const { label, className, color, defaultColor = '', onChange } = props;
 
-    const classes = classnames(
-        'maxi-colorcontrol',
-        className
-    );
+    const classes = classnames('maxi-colorcontrol', className);
 
     const returnColor = val => {
         return `rgba(${val.rgb.r},${val.rgb.g},${val.rgb.b},${val.rgb.a})`;
-    }
+    };
 
     const onReset = () => onChange(defaultColor);
 
@@ -51,31 +38,31 @@ const ColorControl = props => {
                 <div className='maxi-colorcontrol__display__color'>
                     <span
                         style={{
-                            background: color
+                            background: color,
                         }}
                     />
                     <Button
-                        className="components-maxi-control__reset-button"
+                        className='components-maxi-control__reset-button'
                         onClick={() => onReset()}
                         aria-label={sprintf(
                             /* translators: %s: a texual label  */
                             __('Reset %s settings', 'maxi-blocks'),
                             'font size'
                         )}
-                        type="reset"
+                        type='reset'
                     >
                         {reset}
                     </Button>
                 </div>
             </BaseControl>
-            <div className="maxi-colorcontrol__color">
+            <div className='maxi-colorcontrol__color'>
                 <ColorPicker
                     color={color}
                     onChangeComplete={val => onChange(returnColor(val))}
                 />
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default ColorControl;

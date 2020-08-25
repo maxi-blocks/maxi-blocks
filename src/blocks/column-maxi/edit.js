@@ -2,23 +2,10 @@
  * WordPress dependencies
  */
 const { compose } = wp.compose;
-const {
-    Fragment,
-    forwardRef
-} = wp.element;
-const {
-    ResizableBox,
-    Spinner,
-} = wp.components;
-const {
-    withSelect,
-    withDispatch,
-    select,
-} = wp.data;
-const {
-    InnerBlocks,
-    __experimentalBlock
-} = wp.blockEditor;
+const { Fragment, forwardRef } = wp.element;
+const { ResizableBox, Spinner } = wp.components;
+const { withSelect, withDispatch, select } = wp.data;
+const { InnerBlocks, __experimentalBlock } = wp.blockEditor;
 
 /**
  * Internal dependencies
@@ -27,7 +14,7 @@ import {
     MaxiBlock,
     __experimentalToolbar,
     __experimentalBlockPlaceholder,
-    __experimentalBackgroundDisplayer
+    __experimentalBackgroundDisplayer,
 } from '../../components';
 import Inspector from './inspector';
 import {
@@ -37,29 +24,20 @@ import {
     getOpacityObject,
     getColumnSizeObject,
     getTransformObject,
-    setBackgroundStyles
+    setBackgroundStyles,
 } from '../../utils';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import {
-    isNil,
-    round,
-    isObject,
-} from 'lodash';
+import { isNil, round, isObject } from 'lodash';
 
 /**
  * InnerBlocks version
  */
 const ContainerInnerBlocks = forwardRef((props, ref) => {
-    const {
-        children,
-        background,
-        className,
-        maxiBlockClass
-    } = props;
+    const { children, background, className, maxiBlockClass } = props;
 
     return (
         <__experimentalBlock.div
@@ -67,35 +45,29 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
             className={className}
             data-gx_initial_block_class={maxiBlockClass}
         >
-            <__experimentalBackgroundDisplayer
-                background={background}
-            />
+            <__experimentalBackgroundDisplayer background={background} />
             {children}
         </__experimentalBlock.div>
-    )
-})
+    );
+});
 
 /**
  * Editor
  */
 class edit extends MaxiBlock {
     get getObject() {
-        const {
-            uniqueID,
-            background,
-            backgroundHover
-        } = this.props.attributes;
+        const { uniqueID, background, backgroundHover } = this.props.attributes;
 
         let response = {
             [uniqueID]: this.getNormalObject,
             [`${uniqueID}:hover`]: this.getHoverObject,
             [`maxi-column-block__resizer__${uniqueID}`]: this.getResizerObject,
-        }
+        };
 
         response = Object.assign(
             response,
             setBackgroundStyles(uniqueID, background, backgroundHover)
-        )
+        );
 
         return response;
     }
@@ -116,11 +88,11 @@ class edit extends MaxiBlock {
                 padding,
                 zIndex,
                 display,
-                transform
+                transform,
             },
         } = this.props;
 
-        let response = {
+        const response = {
             boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
             border: { ...JSON.parse(border) },
             borderWidth: { ...JSON.parse(border).borderWidth },
@@ -134,9 +106,9 @@ class edit extends MaxiBlock {
             display: { ...JSON.parse(display) },
             transform: { ...getTransformObject(JSON.parse(transform)) },
             column: {
-                label: "Column",
+                label: 'Column',
                 general: {},
-            }
+            },
         };
 
         if (!isNil(verticalAlign))
@@ -152,8 +124,10 @@ class edit extends MaxiBlock {
             borderHover,
         } = this.props.attributes;
 
-        let response = {
-            boxShadowHover: { ...getBoxShadowObject(JSON.parse(boxShadowHover)) },
+        const response = {
+            boxShadowHover: {
+                ...getBoxShadowObject(JSON.parse(boxShadowHover)),
+            },
             borderHover: { ...JSON.parse(borderHover) },
             borderWidthHover: { ...JSON.parse(borderHover).borderWidth },
             borderRadiusHover: { ...JSON.parse(borderHover).borderRadius },
@@ -168,18 +142,15 @@ class edit extends MaxiBlock {
 
         const response = {
             background: { ...getBackgroundObject(JSON.parse(background)) },
-        }
+        };
 
         return response;
     }
 
     get getResizerObject() {
-        const {
-            margin,
-            display,
-        } = this.props.attributes;
+        const { margin, display } = this.props.attributes;
 
-        let response = {
+        const response = {
             margin: { ...JSON.parse(margin) },
             display: { ...JSON.parse(display) },
         };
@@ -216,48 +187,46 @@ class edit extends MaxiBlock {
             uniqueID,
             blockStyle,
             extraClassName,
-            className,
+            className
         );
 
-        const sizeValue = !isObject(size) ?
-            JSON.parse(size) :
-            size;
+        const sizeValue = !isObject(size) ? JSON.parse(size) : size;
 
-        const columnValue = !isObject(columnSize) ?
-            JSON.parse(columnSize) :
-            columnSize;
+        const columnValue = !isObject(columnSize)
+            ? JSON.parse(columnSize)
+            : columnSize;
 
         const getColumnWidthDefault = () => {
             if (getLastBreakpointValue(columnValue, 'size', deviceType))
-                return `${getLastBreakpointValue(columnValue, 'size', deviceType)}%`;
+                return `${getLastBreakpointValue(
+                    columnValue,
+                    'size',
+                    deviceType
+                )}%`;
 
             return `${100 / originalNestedColumns.length}%`;
-        }
+        };
 
         return [
             <Inspector {...this.props} />,
             <__experimentalToolbar {...this.props} />,
             <Fragment>
-                {
-                    rowBlockWidth === 0 &&
-                    <Spinner />
-                }
-                {
-                    rowBlockWidth != 0 &&
+                {rowBlockWidth === 0 && <Spinner />}
+                {rowBlockWidth !== 0 && (
                     <ResizableBox
                         className={classnames(
                             'maxi-block__resizer',
-                            "maxi-column-block__resizer",
-                            `maxi-column-block__resizer__${uniqueID}`,
+                            'maxi-column-block__resizer',
+                            `maxi-column-block__resizer__${uniqueID}`
                         )}
                         defaultSize={{
-                            width: getColumnWidthDefault()
+                            width: getColumnWidthDefault(),
                         }}
                         minWidth='1%'
                         maxWidth={
-                            !!sizeValue[deviceType]['max-width'] ?
-                                `${sizeValue[deviceType]['max-width']}${sizeValue[deviceType]['max-widthUnit']}` :
-                                '100%'
+                            (sizeValue[deviceType]['max-width'] &&
+                                `${sizeValue[deviceType]['max-width']}${sizeValue[deviceType]['max-widthUnit']}`) ||
+                            '100%'
                         }
                         enable={{
                             top: false,
@@ -269,8 +238,10 @@ class edit extends MaxiBlock {
                             bottomLeft: false,
                             topLeft: false,
                         }}
-                        onResizeStop={(event, direction, elt, delta) => {
-                            columnValue[deviceType].size = round(Number(elt.style.width.replace('%', '')));
+                        onResizeStop={(event, direction, elt) => {
+                            columnValue[deviceType].size = round(
+                                Number(elt.style.width.replace('%', ''))
+                            );
 
                             setAttributes({
                                 columnSize: JSON.stringify(columnValue),
@@ -284,88 +255,88 @@ class edit extends MaxiBlock {
                             __experimentalPassedProps={{
                                 className: classes,
                                 maxiBlockClass: defaultBlockStyle,
-                                background: background,
+                                background,
                             }}
                             renderAppender={
-                                !hasInnerBlock ?
-                                    () => (
-                                        <__experimentalBlockPlaceholder
-                                            clientId={clientId}
-                                        />
-                                    ) :
-                                    true ?
-                                        () => (
-                                            <InnerBlocks.ButtonBlockAppender />
-                                        ) :
-                                        false
+                                !hasInnerBlock
+                                    ? () => (
+                                          <__experimentalBlockPlaceholder
+                                              clientId={clientId}
+                                          />
+                                      )
+                                    : true
+                                    ? () => <InnerBlocks.ButtonBlockAppender />
+                                    : false
                             }
                         />
                     </ResizableBox>
-                }
-            </Fragment>
+                )}
+            </Fragment>,
         ];
     }
 }
 
 const editSelect = withSelect((select, ownProps) => {
-    const {
-        clientId
-    } = ownProps;
+    const { clientId } = ownProps;
 
-    const rowBlockId = select('core/block-editor').getBlockRootClientId(clientId); // getBlockHierarchyRootClientId
-    const rowBlockNode = document.querySelector(`div[data-block="${rowBlockId}"]`);
-    const rowBlockWidth = !isNil(rowBlockNode) ? rowBlockNode.getBoundingClientRect().width : 0;
-    const hasInnerBlock = select('core/block-editor').getBlockOrder(clientId).length >= 1;
-    const originalNestedColumns = select('core/block-editor').getBlockOrder(rowBlockId);
-    let deviceType = select('core/edit-post').__experimentalGetPreviewDeviceType();
-    deviceType = deviceType === 'Desktop' ?
-        'general' :
-        deviceType;
+    const rowBlockId = select('core/block-editor').getBlockRootClientId(
+        clientId
+    ); // getBlockHierarchyRootClientId
+    const rowBlockNode = document.querySelector(
+        `div[data-block="${rowBlockId}"]`
+    );
+    const rowBlockWidth = !isNil(rowBlockNode)
+        ? rowBlockNode.getBoundingClientRect().width
+        : 0;
+    const hasInnerBlock =
+        select('core/block-editor').getBlockOrder(clientId).length >= 1;
+    const originalNestedColumns = select('core/block-editor').getBlockOrder(
+        rowBlockId
+    );
+    let deviceType = select(
+        'core/edit-post'
+    ).__experimentalGetPreviewDeviceType();
+    deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
 
     return {
         rowBlockId,
         rowBlockWidth,
         hasInnerBlock,
         originalNestedColumns,
-        deviceType
-    }
+        deviceType,
+    };
 });
 
 const editDispatch = withDispatch((dispatch, ownProps) => {
     const {
-        attributes: {
-            uniqueID,
-            columnSize
-        },
+        attributes: { uniqueID, columnSize },
         deviceType,
     } = ownProps;
 
-    const onDeviceTypeChange = function () {
-        let newDeviceType = select('core/edit-post').__experimentalGetPreviewDeviceType();
-        newDeviceType = newDeviceType === 'Desktop' ?
-            'general' :
-            newDeviceType;
+    const onDeviceTypeChange = () => {
+        let newDeviceType = select(
+            'core/edit-post'
+        ).__experimentalGetPreviewDeviceType();
+        newDeviceType = newDeviceType === 'Desktop' ? 'general' : newDeviceType;
 
-        const allowedDeviceTypes = [
-            'general',
-            'xl',
-            'l',
-            'm',
-            's',
-        ];
+        const allowedDeviceTypes = ['general', 'xl', 'l', 'm', 's'];
 
-        if (allowedDeviceTypes.includes(newDeviceType) && deviceType != newDeviceType) {
-            const node = document.querySelector(`.maxi-column-block__resizer__${uniqueID}`);
-            if (isNil(node))
-                return;
+        if (
+            allowedDeviceTypes.includes(newDeviceType) &&
+            deviceType !== newDeviceType
+        ) {
+            const node = document.querySelector(
+                `.maxi-column-block__resizer__${uniqueID}`
+            );
+            if (isNil(node)) return;
             const newColumnSize = JSON.parse(columnSize);
             node.style.width = `${newColumnSize[newDeviceType].size}%`;
         }
     };
 
     return {
-        onDeviceTypeChange
-    }
+        onDeviceTypeChange,
+    };
 });
 
 export default compose(editSelect, editDispatch)(edit);

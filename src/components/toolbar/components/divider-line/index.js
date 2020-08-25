@@ -32,22 +32,19 @@ const Divider = props => {
         divider,
         defaultDivider,
         lineOrientation,
-        onChange
+        onChange,
     } = props;
 
-    if (blockName != 'maxi-blocks/divider-maxi')
-        return null;
+    if (blockName !== 'maxi-blocks/divider-maxi') return null;
 
-    const classes = classnames(
-        'toolbar-item__popover__toggle-btn',
-    );
+    const classes = classnames('toolbar-item__popover__toggle-btn');
 
     return (
         <ToolbarPopover
             className='toolbar-item__divider'
             tooltip={__('Divider', 'maxi-blocks')}
             icon={toolbarDividersetting}
-            content={(
+            content={
                 <Fragment>
                     <RadioControl
                         className={classes}
@@ -57,24 +54,15 @@ const Divider = props => {
                             { label: __('No', 'maxi-blocks'), value: 'no' },
                             { label: __('Yes', 'maxi-blocks'), value: 'yes' },
                         ]}
-                        onChange={showLine =>
-                            onChange(
-                                showLine,
-                                divider,
-                            )
-                        }
+                        onChange={showLine => onChange(showLine, divider)}
                     />
-                    {
-                        !!showLine &&
+                    {!!showLine && (
                         <Fragment>
                             <__experimentalDividerControl
                                 divider={divider}
                                 defaultDivider={defaultDivider}
                                 onChange={divider => {
-                                    onChange(
-                                        showLine,
-                                        divider,
-                                    )
+                                    onChange(showLine, divider);
                                 }}
                                 lineOrientation={lineOrientation}
                                 disableColor
@@ -82,11 +70,11 @@ const Divider = props => {
                                 disableBorderRadius
                             />
                         </Fragment>
-                    }
+                    )}
                 </Fragment>
-            )}
+            }
         />
-    )
-}
+    );
+};
 
 export default Divider;

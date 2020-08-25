@@ -28,23 +28,15 @@ const CheckBoxControl = props => {
         onChange,
     } = props;
 
-    const instanceId = useInstanceId( CheckBoxControl );
+    const instanceId = useInstanceId(CheckBoxControl);
     const checkboxId = `maxi-checkbox-control__${instanceId}`;
 
-    const classes = classnames(
-        'maxi-checkbox-control',
-        className
-    );
+    const classes = classnames('maxi-checkbox-control', className);
 
     return (
-        <BaseControl
-            id={id}
-            label={title}
-            help={help}
-            className={classes}
-        >
+        <BaseControl id={id} label={title} help={help} className={classes}>
             <label
-                for={checkboxId}
+                htmlFor={checkboxId}
                 className='maxi-checkbox-control__label'
             >
                 <input
@@ -58,7 +50,7 @@ const CheckBoxControl = props => {
                 {label}
             </label>
         </BaseControl>
-    )
-}
+    );
+};
 
 export default CheckBoxControl;

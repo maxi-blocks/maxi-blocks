@@ -43,6 +43,13 @@
         "react/react-in-jsx-scope": "off",
         "no-underscore-dangle": "off",
         "no-nested-ternary": "off",
+        "import/named": "off",
+        "no-restricted-syntax": "off", //Temporary
+        "radix": "off", // Temporary
+        "@wordpress/no-base-control-with-label-without-id": "off", // Temporary
+        "@wordpress/i18n-translator-comments": "off", // Temporary
+        "@wordpress/i18n-no-variables": "off", // Temporary
+        ////
         "react/jsx-pascal-case": "off", // Temporary deactivate
         "react/prop-types": "off", // Temporary deactivate
         "react/jsx-props-no-spreading": "off", // Temporary deactivate

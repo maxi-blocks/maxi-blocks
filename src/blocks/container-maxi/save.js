@@ -9,7 +9,7 @@ const { Fragment } = wp.element;
  */
 import {
     __experimentalShapeDivider,
-    __experimentalBackgroundDisplayer
+    __experimentalBackgroundDisplayer,
 } from '../../components';
 
 /**
@@ -37,24 +37,19 @@ const save = props => {
         className,
     } = props;
 
-    let classes = classnames(
+    const classes = classnames(
         `maxi-motion-effect maxi-motion-effect-${uniqueID}`,
         'maxi-block maxi-container-block',
         blockStyle,
         extraClassName,
         className,
-        fullWidth === 'full' ?
-            'alignfull' :
-            null,
-        !isNil(uniqueID) ?
-            uniqueID :
-            null
+        fullWidth === 'full' ? 'alignfull' : null,
+        !isNil(uniqueID) ? uniqueID : null
     );
 
     return (
         <Fragment>
-            {
-                isFirstOnHierarchy &&
+            {isFirstOnHierarchy && (
                 <section
                     className={classes}
                     data-gx_initial_block_class={defaultBlockStyle}
@@ -68,12 +63,8 @@ const save = props => {
                     <__experimentalShapeDivider
                         shapeDividerOptions={shapeDivider}
                     />
-                    <div
-                        className='maxi-container-block__wrapper'
-                    >
-                        <div
-                            className='maxi-container-block__container'
-                        >
+                    <div className='maxi-container-block__wrapper'>
+                        <div className='maxi-container-block__container'>
                             <InnerBlocks.Content />
                         </div>
                     </div>
@@ -82,9 +73,8 @@ const save = props => {
                         shapeDividerOptions={shapeDivider}
                     />
                 </section>
-            }
-            {
-                !isFirstOnHierarchy &&
+            )}
+            {!isFirstOnHierarchy && (
                 <div
                     className={classes}
                     data-gx_initial_block_class={defaultBlockStyle}
@@ -95,9 +85,7 @@ const save = props => {
                     <__experimentalShapeDivider
                         shapeDividerOptions={shapeDivider}
                     />
-                    <div
-                        className='maxi-container-block__wrapper'
-                    >
+                    <div className='maxi-container-block__wrapper'>
                         <InnerBlocks.Content />
                     </div>
                     <__experimentalShapeDivider
@@ -105,9 +93,9 @@ const save = props => {
                         shapeDividerOptions={shapeDivider}
                     />
                 </div>
-            }
+            )}
         </Fragment>
     );
-}
+};
 
 export default save;

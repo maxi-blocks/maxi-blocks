@@ -23,30 +23,20 @@ import './editor.scss';
  * Component
  */
 const EntranceAnimationControl = props => {
-    const {
-        motion,
-        defaultMotion,
-        onChange,
-    } = props;
+    const { motion, defaultMotion, onChange } = props;
 
-    const value = !isObject(motion) ?
-        JSON.parse(motion) :
-        motion;
+    const value = !isObject(motion) ? JSON.parse(motion) : motion;
 
-    let {
-        entrance: entranceAnimationOptions,
-    } = value;
+    const { entrance: entranceAnimationOptions } = value;
 
-    const defaultValue = !isObject(defaultMotion) ?
-        JSON.parse(defaultMotion) :
-        defaultMotion;
+    const defaultValue = !isObject(defaultMotion)
+        ? JSON.parse(defaultMotion)
+        : defaultMotion;
 
-    let {
-        entrance: defaultEntranceAnimationOptions,
-    } = defaultValue;
+    const { entrance: defaultEntranceAnimationOptions } = defaultValue;
 
     return (
-        <div className="maxi-entrance-animation-control">
+        <div className='maxi-entrance-animation-control'>
             <SelectControl
                 label={__('Animation Type', 'maxi-blocks')}
                 value={entranceAnimationOptions.type}
@@ -94,7 +84,10 @@ const EntranceAnimationControl = props => {
                     { label: 'Fade In Top Left', value: 'fadeInTopLeft' },
                     { label: 'Fade In Top Right', value: 'fadeInTopRight' },
                     { label: 'Fade In Bottom Left', value: 'fadeInBottomLeft' },
-                    { label: 'Fade In Bottom Right', value: 'fadeInBottomRight' },
+                    {
+                        label: 'Fade In Bottom Right',
+                        value: 'fadeInBottomRight',
+                    },
                     { label: 'Fade Out', value: 'fadeOut' },
                     { label: 'Fade Out Down', value: 'fadeOutDown' },
                     { label: 'Fade Out Down Big', value: 'fadeOutDownBig' },
@@ -106,25 +99,49 @@ const EntranceAnimationControl = props => {
                     { label: 'Fade Out Up Big', value: 'fadeOutUpBig' },
                     { label: 'Fade Out Top Left', value: 'fadeOutTopLeft' },
                     { label: 'Fade Out Top Right', value: 'fadeOutTopRight' },
-                    { label: 'Fade Out Bottom Right', value: 'fadeOutBottomRight' },
-                    { label: 'Fade Out Bottom Left', value: 'fadeOutBottomLeft' },
+                    {
+                        label: 'Fade Out Bottom Right',
+                        value: 'fadeOutBottomRight',
+                    },
+                    {
+                        label: 'Fade Out Bottom Left',
+                        value: 'fadeOutBottomLeft',
+                    },
                     { label: 'Flip', value: 'flip' },
                     { label: 'Flip In X', value: 'flipInX' },
                     { label: 'Flip In Y', value: 'flipInY' },
                     { label: 'Flip Out X', value: 'flipOutX' },
                     { label: 'Flip Out Y', value: 'flipOutY' },
-                    { label: 'Light Speed In Right', value: 'lightSpeedInRight' },
+                    {
+                        label: 'Light Speed In Right',
+                        value: 'lightSpeedInRight',
+                    },
                     { label: 'Light Speed In Left', value: 'lightSpeedInLeft' },
-                    { label: 'Light Speed Out Right', value: 'lightSpeedOutRight' },
-                    { label: 'Light Speed Out Left', value: 'lightSpeedOutLeft' },
+                    {
+                        label: 'Light Speed Out Right',
+                        value: 'lightSpeedOutRight',
+                    },
+                    {
+                        label: 'Light Speed Out Left',
+                        value: 'lightSpeedOutLeft',
+                    },
                     { label: 'Rotate In', value: 'rotateIn' },
                     { label: 'Rotate In Down Left', value: 'rotateInDownLeft' },
-                    { label: 'Rotate In Down Right', value: 'rotateInDownRight' },
+                    {
+                        label: 'Rotate In Down Right',
+                        value: 'rotateInDownRight',
+                    },
                     { label: 'Rotate In Up Left', value: 'rotateInUpLeft' },
                     { label: 'Rotate In Up Right', value: 'rotateInUpRight' },
                     { label: 'Rotate Out', value: 'rotateOut' },
-                    { label: 'Rotate Out Down Left', value: 'rotateOutDownLeft' },
-                    { label: 'Rotate Out Down Right', value: 'rotateOutDownRight' },
+                    {
+                        label: 'Rotate Out Down Left',
+                        value: 'rotateOutDownLeft',
+                    },
+                    {
+                        label: 'Rotate Out Down Right',
+                        value: 'rotateOutDownRight',
+                    },
                     { label: 'Rotate Out Up Left', value: 'rotateOutUpLeft' },
                     { label: 'Rotate Out Up Right', value: 'rotateOutUpRight' },
                     { label: 'Hinge', value: 'hinge' },
@@ -148,7 +165,7 @@ const EntranceAnimationControl = props => {
                     { label: 'Slide Out Down', value: 'slideOutDown' },
                     { label: 'Slide Out Left', value: 'slideOutLeft' },
                     { label: 'Slide Out Right', value: 'slideOutRight' },
-                    { label: 'Slide Out Up', value: 'slideOutUp' }
+                    { label: 'Slide Out Up', value: 'slideOutUp' },
                 ]}
                 onChange={val => {
                     entranceAnimationOptions.type = val;
@@ -184,8 +201,7 @@ const EntranceAnimationControl = props => {
                 }}
             />
         </div>
-    )
-
-}
+    );
+};
 
 export default EntranceAnimationControl;

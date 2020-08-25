@@ -5,10 +5,7 @@ const { __ } = wp.i18n;
 const { Fragment } = wp.element;
 const { Placeholder } = wp.components;
 
-import {
-    MaxiBlock,
-    __experimentalToolbar
-} from '../../components';
+import { MaxiBlock, __experimentalToolbar } from '../../components';
 import MaxiModal from './modal';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -17,7 +14,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 
-library.add( fas, fab, far );
+library.add(fas, fab, far);
 
 /**
  * External dependencies
@@ -39,14 +36,14 @@ class edit extends MaxiBlock {
                 fullWidth,
                 size,
                 width,
-                content
+                content,
             },
             setAttributes,
             clientId,
             attributes,
         } = this.props;
 
-        let classes = classnames(
+        const classes = classnames(
             'maxi-block maxi-icon-block',
             blockStyle,
             extraClassName,
@@ -55,16 +52,19 @@ class edit extends MaxiBlock {
         );
 
         return [
-               <Fragment key={ this.props.clientId }>
+            <Fragment key={this.props.clientId}>
                 <Placeholder
-                    key="placeholder"
-                    label={ __( 'Cloud Library Maxi', 'gutenberg-extra-blocks' ) }
-                    instructions={ __( 'Launch the library to browse pre-designed blocks and templates.', 'gutenberg-extra-blocks' ) }
-                    className={ 'maxi-block-library__placeholder' }
+                    key='placeholder'
+                    label={__('Cloud Library Maxi', 'gutenberg-extra-blocks')}
+                    instructions={__(
+                        'Launch the library to browse pre-designed blocks and templates.',
+                        'gutenberg-extra-blocks'
+                    )}
+                    className='maxi-block-library__placeholder'
                 >
-                    <MaxiModal clientId={ clientId } />
+                    <MaxiModal clientId={clientId} />
                 </Placeholder>
-            </Fragment>
+            </Fragment>,
         ];
     }
 }

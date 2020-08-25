@@ -7,10 +7,7 @@ const { __ } = wp.i18n;
  * External dependencies
  */
 import classnames from 'classnames';
-import {
-    isObject,
-    trim,
-} from 'lodash';
+import { isObject, trim } from 'lodash';
 
 /**
  * Styles
@@ -21,7 +18,6 @@ import './editor.scss';
  * Component
  */
 const GroupInputControl = props => {
-
     const {
         className,
         label,
@@ -32,20 +28,15 @@ const GroupInputControl = props => {
         onChange,
     } = props;
 
-    let value = !isObject(options) ?
-        JSON.parse(options) :
-        options;
+    const value = !isObject(options) ? JSON.parse(options) : options;
 
-    const classes = classnames(
-        'maxi-group-input-control',
-        className,
-    );
+    const classes = classnames('maxi-group-input-control', className);
 
     return (
         <div className={classes}>
             <div className='maxi-group-input-control__input'>
                 <input
-                    type="number"
+                    type='number'
                     min={min}
                     max={max}
                     step={step}
@@ -59,7 +50,7 @@ const GroupInputControl = props => {
             </div>
             <div className='maxi-group-input-control__input'>
                 <input
-                    type="number"
+                    type='number'
                     min={min}
                     max={max}
                     step={step}
@@ -73,7 +64,7 @@ const GroupInputControl = props => {
             </div>
             <div className='maxi-group-input-control__input'>
                 <input
-                    type="number"
+                    type='number'
                     min={min}
                     max={max}
                     step={step}
@@ -86,8 +77,7 @@ const GroupInputControl = props => {
                 <label>{__(`End ${label}`, 'maxi-blocks')}</label>
             </div>
         </div>
-    )
-
-}
+    );
+};
 
 export default GroupInputControl;

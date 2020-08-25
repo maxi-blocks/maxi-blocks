@@ -9,19 +9,19 @@ import * as attributesData from '../../extensions/styles/defaults';
 const attributes = {
     blockStyle: {
         type: 'string',
-        default: 'maxi-custom'
+        default: 'maxi-custom',
     },
     defaultBlockStyle: {
         type: 'string',
-        default: 'maxi-def-light'
+        default: 'maxi-def-light',
     },
     icon: {
         type: 'string',
-        default: 'android'
+        default: 'android',
     },
     size: {
         type: 'string',
-        default: 'full'
+        default: 'full',
     },
     sizeOptions: {
         type: 'string',
@@ -32,90 +32,90 @@ const attributes = {
     },
     alignmentDesktop: {
         type: 'string',
-        default: 'center'
+        default: 'center',
     },
     alignmentTablet: {
         type: 'string',
-        default: 'center'
+        default: 'center',
     },
     alignmentMobile: {
         type: 'string',
-        default: 'center'
+        default: 'center',
     },
     maxWidthUnit: {
         type: 'string',
-        default: 'px'
+        default: 'px',
     },
     maxWidth: {
         type: 'number',
     },
     widthUnit: {
         type: 'string',
-        default: 'px'
+        default: 'px',
     },
     width: {
         type: 'number',
-        default: 100
+        default: 100,
     },
     background: {
         type: 'string',
-        default: JSON.stringify(attributesData.background)
+        default: JSON.stringify(attributesData.background),
     },
     opacity: {
         type: 'number',
-        default: 1
+        default: 1,
     },
     boxShadow: {
         type: 'string',
-        default: JSON.stringify(attributesData.boxShadow)
+        default: JSON.stringify(attributesData.boxShadow),
     },
     border: {
         type: 'string',
-        default: JSON.stringify(attributesData.border)
+        default: JSON.stringify(attributesData.border),
     },
     padding: {
         type: 'string',
-        default: JSON.stringify(attributesData.padding)
+        default: JSON.stringify(attributesData.padding),
     },
     margin: {
         type: 'string',
-        default: JSON.stringify(attributesData.margin)
+        default: JSON.stringify(attributesData.margin),
     },
     backgroundHover: {
         type: 'string',
-        default: JSON.stringify(attributesData.backgroundHover)
+        default: JSON.stringify(attributesData.backgroundHover),
     },
     opacityHover: {
         type: 'number',
     },
     boxShadowHover: {
         type: 'string',
-        default: JSON.stringify(attributesData.boxShadowHover)
+        default: JSON.stringify(attributesData.boxShadowHover),
     },
     borderHover: {
         type: 'string',
-        default: JSON.stringify(attributesData.border)
+        default: JSON.stringify(attributesData.border),
     },
     extraClassName: {
         type: 'string',
-        default: ''
+        default: '',
     },
     extraStyles: {
         type: 'string',
-        default: ''
+        default: '',
     },
     resizableWidth: {
         type: 'number',
-        default: 100
+        default: 100,
     },
     resizableHeight: {
         type: 'number',
-        default: 100
+        default: 100,
     },
     position: {
         type: 'string',
-        default: JSON.stringify(attributesData.__experimentalPosition)
-    }
-}
+        default: JSON.stringify(attributesData.__experimentalPosition),
+    },
+};
 
 export default attributes;

@@ -4,10 +4,7 @@
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
 const { getBlockAttributes } = wp.blocks;
-const {
-    Button,
-    BaseControl,
-} = wp.components;
+const { Button, BaseControl } = wp.components;
 
 /**
  * Internal dependencies
@@ -19,20 +16,13 @@ import ToolbarPopover from '../toolbar-popover';
 /**
  * External dependencies
  */
-import {
-    isEmpty,
-    trim,
-    isObject
-} from 'lodash';
+import { isEmpty, trim, isObject } from 'lodash';
 
 /**
  * Styles and icons
  */
 import './editor.scss';
-import {
-    toolbarType,
-    reset,
-} from '../../../../icons';
+import { toolbarType, reset } from '../../../../icons';
 
 /**
  * TextOptions
@@ -43,19 +33,16 @@ const TextOptions = props => {
         typography,
         defaultTypography,
         onChange,
-        breakpoint
+        breakpoint,
     } = props;
 
-    if (blockName != 'maxi-blocks/text-maxi')
-        return null;
+    if (blockName !== 'maxi-blocks/text-maxi') return null;
 
-    const value = !isObject(typography) ?
-        JSON.parse(typography) :
-        typography;
+    const value = !isObject(typography) ? JSON.parse(typography) : typography;
 
-    const defaultValue = !isObject(defaultTypography) ?
-        JSON.parse(defaultTypography) :
-        defaultTypography;
+    const defaultValue = !isObject(defaultTypography)
+        ? JSON.parse(defaultTypography)
+        : defaultTypography;
 
     return (
         <ToolbarPopover
@@ -63,16 +50,16 @@ const TextOptions = props => {
             tooltip={__('Text options', 'maxi-blocks')}
             icon={toolbarType}
             advancedOptions='typography'
-            content={(
-                <div
-                    className="toolbar-item__popover__wrapper toolbar-item__popover__font-options"
-                >
-                    <div
-                        className="toolbar-item__popover__font-options__font"
-                    >
+            content={
+                <div className='toolbar-item__popover__wrapper toolbar-item__popover__font-options'>
+                    <div className='toolbar-item__popover__font-options__font'>
                         <FontFamilySelector
-                            className="toolbar-item__popover__font-options__font__selector"
-                            font={getLastBreakpointValue(value, 'font-family', breakpoint)}
+                            className='toolbar-item__popover__font-options__font__selector'
+                            font={getLastBreakpointValue(
+                                value,
+                                'font-family',
+                                breakpoint
+                            )}
                             onChange={font => {
                                 value[breakpoint]['font-family'] = font.value;
                                 value.options = font.files;
@@ -80,9 +67,10 @@ const TextOptions = props => {
                             }}
                         />
                         <Button
-                            className="components-maxi-control__reset-button"
+                            className='components-maxi-control__reset-button'
                             onClick={() => {
-                                value[breakpoint]['font-family'] = defaultValue.font;
+                                value[breakpoint]['font-family'] =
+                                    defaultValue.font;
                                 onChange(JSON.stringify(value));
                             }}
                             isSmall
@@ -91,7 +79,7 @@ const TextOptions = props => {
                                 __('Reset %s settings', 'maxi-blocks'),
                                 'font size'
                             )}
-                            type="reset"
+                            type='reset'
                         >
                             {reset}
                         </Button>
@@ -103,17 +91,27 @@ const TextOptions = props => {
                         >
                             <input
                                 type='number'
-                                value={trim(getLastBreakpointValue(value, 'font-size', breakpoint))}
+                                value={trim(
+                                    getLastBreakpointValue(
+                                        value,
+                                        'font-size',
+                                        breakpoint
+                                    )
+                                )}
                                 onChange={e => {
-                                    value[breakpoint]['font-size'] = isEmpty(e.target.value) ? '' : Number(e.target.value);
+                                    value[breakpoint]['font-size'] = isEmpty(
+                                        e.target.value
+                                    )
+                                        ? ''
+                                        : Number(e.target.value);
                                     onChange(JSON.stringify(value));
                                 }}
-
                             />
                             <Button
-                                className="components-maxi-control__reset-button"
+                                className='components-maxi-control__reset-button'
                                 onClick={() => {
-                                    value[breakpoint]['font-size'] = defaultValue[breakpoint]['font-size'];
+                                    value[breakpoint]['font-size'] =
+                                        defaultValue[breakpoint]['font-size'];
                                     onChange(JSON.stringify(value));
                                 }}
                                 isSmall
@@ -122,7 +120,7 @@ const TextOptions = props => {
                                     __('Reset %s settings', 'maxi-blocks'),
                                     'size'
                                 )}
-                                type="reset"
+                                type='reset'
                             >
                                 {reset}
                             </Button>
@@ -133,17 +131,27 @@ const TextOptions = props => {
                         >
                             <input
                                 type='number'
-                                value={trim(getLastBreakpointValue(value, 'line-height', breakpoint))}
+                                value={trim(
+                                    getLastBreakpointValue(
+                                        value,
+                                        'line-height',
+                                        breakpoint
+                                    )
+                                )}
                                 onChange={e => {
-                                    value[breakpoint]['line-height'] = isEmpty(e.target.value) ? '' : Number(e.target.value);
+                                    value[breakpoint]['line-height'] = isEmpty(
+                                        e.target.value
+                                    )
+                                        ? ''
+                                        : Number(e.target.value);
                                     onChange(JSON.stringify(value));
                                 }}
-
                             />
                             <Button
-                                className="components-maxi-control__reset-button"
+                                className='components-maxi-control__reset-button'
                                 onClick={() => {
-                                    value[breakpoint]['line-height'] = defaultValue[breakpoint]['line-height'];
+                                    value[breakpoint]['line-height'] =
+                                        defaultValue[breakpoint]['line-height'];
                                     onChange(JSON.stringify(value));
                                 }}
                                 isSmall
@@ -152,7 +160,7 @@ const TextOptions = props => {
                                     __('Reset %s settings', 'maxi-blocks'),
                                     'line height'
                                 )}
-                                type="reset"
+                                type='reset'
                             >
                                 {reset}
                             </Button>
@@ -163,19 +171,29 @@ const TextOptions = props => {
                         >
                             <input
                                 type='number'
-                                value={trim(getLastBreakpointValue(value, 'letter-spacing', breakpoint))}
+                                value={trim(
+                                    getLastBreakpointValue(
+                                        value,
+                                        'letter-spacing',
+                                        breakpoint
+                                    )
+                                )}
                                 onChange={e => {
-                                    value[breakpoint]['letter-spacing'] = isEmpty(e.target.value) ?
-                                        '' :
-                                        Number(e.target.value);
+                                    value[breakpoint][
+                                        'letter-spacing'
+                                    ] = isEmpty(e.target.value)
+                                        ? ''
+                                        : Number(e.target.value);
                                     onChange(JSON.stringify(value));
                                 }}
-
                             />
                             <Button
-                                className="components-maxi-control__reset-button"
+                                className='components-maxi-control__reset-button'
                                 onClick={() => {
-                                    value[breakpoint]['letter-spacing'] = defaultValue[breakpoint]['letter-spacing'];
+                                    value[breakpoint]['letter-spacing'] =
+                                        defaultValue[breakpoint][
+                                            'letter-spacing'
+                                        ];
                                     onChange(JSON.stringify(value));
                                 }}
                                 isSmall
@@ -184,16 +202,16 @@ const TextOptions = props => {
                                     __('Reset %s settings', 'maxi-blocks'),
                                     'letter spacing'
                                 )}
-                                type="reset"
+                                type='reset'
                             >
                                 {reset}
                             </Button>
                         </BaseControl>
                     </Fragment>
                 </div>
-            )}
+            }
         />
-    )
-}
+    );
+};
 
 export default TextOptions;

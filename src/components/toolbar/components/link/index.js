@@ -19,20 +19,19 @@ import { toolbarLink } from '../../../../icons';
  * Link
  */
 const Link = props => {
-    const {
-        blockName,
-        linkSettings,
-        onChange
-    } = props;
+    const { blockName, linkSettings, onChange } = props;
 
-    if (blockName == 'maxi-blocks/divider-maxi' || blockName == 'maxi-blocks/text-maxi')
+    if (
+        blockName == 'maxi-blocks/divider-maxi' ||
+        blockName == 'maxi-blocks/text-maxi'
+    )
         return null;
 
     return (
         <ToolbarPopover
             icon={toolbarLink}
             tooltip={__('Link', 'maxi-blocks')}
-            content={(
+            content={
                 <__experimentalLinkControl
                     value={JSON.parse(linkSettings)}
                     onChange={value => onChange(JSON.stringify(value))}
@@ -55,9 +54,9 @@ const Link = props => {
                         },
                     ]}
                 />
-            )}
+            }
         />
-    )
-}
+    );
+};
 
 export default Link;

@@ -27,25 +27,15 @@ import { toolbarType } from '../../../../icons';
  * TextListOptions
  */
 const TextListOptions = props => {
-    const {
-        blockName,
-        content,
-        typeOfList,
-        isList,
-        onChange,
-        node
-    } = props;
+    const { blockName, content, typeOfList, isList, onChange, node } = props;
 
-
-    if (blockName != 'maxi-blocks/text-maxi' || !isList)
-        return null;
+    if (blockName !== 'maxi-blocks/text-maxi' || !isList) return null;
 
     const { formatValue } = useSelect(
         select => {
-            const {
-                getSelectionStart,
-                getSelectionEnd
-            } = select('core/block-editor');
+            const { getSelectionStart, getSelectionEnd } = select(
+                'core/block-editor'
+            );
             const formatValue = create({
                 element: node,
                 html: content,
@@ -53,39 +43,40 @@ const TextListOptions = props => {
                 multilineWrapperTags: typeOfList,
                 // __unstableIsEditableTree: true
             });
-            formatValue['start'] = getSelectionStart().offset;
-            formatValue['end'] = getSelectionEnd().offset;
+            formatValue.start = getSelectionStart().offset;
+            formatValue.end = getSelectionEnd().offset;
 
             return {
                 formatValue,
-            }
+            };
         },
         [node, content]
-    )
+    );
 
     const onClick = type => {
         let newFormat = '';
 
         if (type === 'indent')
-            newFormat = __unstableIndentListItems(formatValue, { type: typeOfList });
+            newFormat = __unstableIndentListItems(formatValue, {
+                type: typeOfList,
+            });
         if (type === 'outdent')
             newFormat = __unstableOutdentListItems(formatValue);
 
         const newContent = toHTMLString({
             value: newFormat,
             multilineTag: 'li',
+        });
 
-        })
-
-        onChange(newContent)
-    }
+        onChange(newContent);
+    };
 
     return (
         <ToolbarPopover
             className='toolbar-item__list-options'
             tooltip={__('Text options', 'maxi-blocks')}
             icon={toolbarType}
-            content={(
+            content={
                 <Fragment>
                     <Button
                         className='toolbar-item__list-options__button'
@@ -100,9 +91,9 @@ const TextListOptions = props => {
                         Left
                     </Button>
                 </Fragment>
-            )}
+            }
         />
-    )
-}
+    );
+};
 
 export default TextListOptions;

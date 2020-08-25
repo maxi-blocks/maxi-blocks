@@ -6,11 +6,7 @@ import { getLastBreakpointValue } from './utils';
 /**
  * External dependencies
  */
-import {
-    isNil,
-    isNumber,
-    isEmpty,
-} from 'lodash';
+import { isNil, isNumber, isEmpty } from 'lodash';
 
 /**
  * Responsive Frontend Styles resolver
@@ -30,9 +26,9 @@ export class ResponsiveStylesResolver {
     }
 
     init() {
-        for (let [target, props] of Object.entries(this.object)) {
+        for (const [target, props] of Object.entries(this.object)) {
             const newEntry = {
-                [target]: this.objectManipulator(props)
+                [target]: this.objectManipulator(props),
             };
             this.meta = Object.assign(this.meta, newEntry);
 
@@ -42,15 +38,19 @@ export class ResponsiveStylesResolver {
     }
 
     objectManipulator(props) {
-        let response = {
+        const response = {
             breakpoints: this.breakpoints,
-            content: {}
+            content: {},
         };
 
-        for (let [key, value] of Object.entries(props)) {
+        for (const [key, value] of Object.entries(props)) {
             let newObject = {};
 
-            newObject = this.propsObjectManipulator(value, newObject, 'general');
+            newObject = this.propsObjectManipulator(
+                value,
+                newObject,
+                'general'
+            );
             newObject = this.propsObjectManipulator(value, newObject, 'xxl');
             newObject = this.propsObjectManipulator(value, newObject, 'xl');
             newObject = this.propsObjectManipulator(value, newObject, 'l');
@@ -59,45 +59,41 @@ export class ResponsiveStylesResolver {
             newObject = this.propsObjectManipulator(value, newObject, 'xs');
 
             if (!isNil(newObject))
-                Object.assign(response.content, { [props[key].label]: newObject })
+                Object.assign(response.content, {
+                    [props[key].label]: newObject,
+                });
         }
 
         return response;
     }
 
     propsObjectManipulator(value, newObject, breakpoint) {
-        if (isNil(value[breakpoint]))
-            return newObject;
+        if (isNil(value[breakpoint])) return newObject;
 
         const object = value[breakpoint];
         newObject[breakpoint] = {};
         let unitChecker = '';
         let unit = getLastBreakpointValue(value, 'unit', breakpoint) || '';
 
-        const nonAllowedProps = [
-            'font-options',
-            'unit'
-        ]
+        const nonAllowedProps = ['font-options', 'unit'];
 
-        for (let [target, prop] of Object.entries(object)) {
+        for (const [target, prop] of Object.entries(object)) {
             if (isNil(prop)) {
                 console.error(`Undefined property. Property: ${target}`);
                 continue;
             }
-            if (nonAllowedProps.includes(target))
-                continue;
+            if (nonAllowedProps.includes(target)) continue;
             // values with dimensions
             if (
                 isNumber(prop) ||
-                unitChecker.indexOf(target) == 0 && !isEmpty(prop)
+                (unitChecker.indexOf(target) == 0 && !isEmpty(prop))
             )
                 newObject[breakpoint][target] = prop + unit;
             // avoid numbers with no related metric
-            if (unitChecker.indexOf(target) == 0)
-                unit = '';
+            if (unitChecker.indexOf(target) == 0) unit = '';
             // values with metrics
             if (prop.length <= 2 && !isEmpty(prop))
-                unitChecker = target, unit = prop;
+                (unitChecker = target), (unit = prop);
             // values with strings && font-options object
             if (prop.length > 2 || target === 'font-options')
                 newObject[breakpoint][target] = prop;
@@ -107,8 +103,7 @@ export class ResponsiveStylesResolver {
     }
 
     breakpointsObjectManipulator(props, newObject, key, type) {
-        if (isNil(props[key][type]))
-            return newObject;
+        if (isNil(props[key][type])) return newObject;
 
         newObject.breakpoints = { ...props[key][type] };
 
@@ -124,15 +119,11 @@ export class BackEndResponsiveStyles {
         this.meta = meta;
         // Uses serverside loaded inline css
         this.target = document.getElementById('maxi-blocks-inline-css');
-        !isNil(this.meta) ?
-            this.initEvents() :
-            null;
+        !isNil(this.meta) ? this.initEvents() : null;
     }
 
     initEvents() {
-        this.target == null ?
-            this.createElement() :
-            this.addValues();
+        this.target == null ? this.createElement() : this.addValues();
     }
 
     /**
@@ -160,15 +151,13 @@ export class BackEndResponsiveStyles {
     createContent() {
         let response = '';
         for (let [target, prop] of Object.entries(this.meta)) {
-            if (isNil(prop.content))
-                continue;
+            if (isNil(prop.content)) continue;
 
             target = this.getTarget(target);
 
-            for (let value of Object.values(prop.content)) {
-                for (let [breakpoint, content] of Object.entries(value)) {
-                    if (isEmpty(content))
-                        continue;
+            for (const value of Object.values(prop.content)) {
+                for (const [breakpoint, content] of Object.entries(value)) {
+                    if (isEmpty(content)) continue;
 
                     if (breakpoint === 'general') {
                         response += `body.maxi-blocks--active .maxi-block.${target}{`;
@@ -234,12 +223,9 @@ export class BackEndResponsiveStyles {
      * @param {string} target style target for scoping
      */
     getTarget(target) {
-        if (target.indexOf('__$:') != -1)
-            return target.replace('__$', '');
-        if (target.indexOf('__$>') != -1)
-            return target.replace('__$', '');
-        if (target.indexOf('__$#') != -1)
-            return target.replace('__$', '');
+        if (target.indexOf('__$:') !== -1) return target.replace('__$', '');
+        if (target.indexOf('__$>') !== -1) return target.replace('__$', '');
+        if (target.indexOf('__$#') !== -1) return target.replace('__$', '');
         return target.replace('__$', ' .');
     }
 
@@ -250,10 +236,9 @@ export class BackEndResponsiveStyles {
      */
     getResponsiveStyles(styles) {
         let responsiveStyles = '';
-        for (let [key, value] of Object.entries(styles)) {
+        for (const [key, value] of Object.entries(styles)) {
             responsiveStyles += ` ${key}: ${value};`;
         }
         return responsiveStyles;
     }
-
 }

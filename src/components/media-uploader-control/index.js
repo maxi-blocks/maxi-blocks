@@ -3,15 +3,8 @@
  */
 const { __ } = wp.i18n;
 const { withSelect } = wp.data;
-const {
-    MediaUpload,
-    MediaUploadCheck
-} = wp.blockEditor;
-const {
-    Button,
-    ResponsiveWrapper,
-    Spinner,
-} = wp.components;
+const { MediaUpload, MediaUploadCheck } = wp.blockEditor;
+const { Button, ResponsiveWrapper, Spinner } = wp.components;
 
 /**
  * External dependencies
@@ -46,37 +39,43 @@ const MediaUploader = props => {
     } = props;
 
     const classes = classnames(
-        mediaType === 'image' ? 'maxi-mediauploader-control' :'maxi-mediauploader-control__video' ,
+        mediaType === 'image'
+            ? 'maxi-mediauploader-control'
+            : 'maxi-mediauploader-control__video',
         className
     );
 
     const mediaClasses = classnames(
         mediaType === 'image' &&
-            `editor-post-featured-image__${!mediaID ? 'toggle' : 'preview'}`
-        ,
+            `editor-post-featured-image__${!mediaID ? 'toggle' : 'preview'}`,
         mediaType === 'video' &&
-            `maxi-mediauploader-control__video__${!mediaID ? 'toggle' : 'preview'}`
+            `maxi-mediauploader-control__video__${
+                !mediaID ? 'toggle' : 'preview'
+            }`
     );
 
     const onOpenImageModal = () => {
-        !isNil(onOpenImageModal) && !isNil(onOpen) ?
-            onOpen() :
-            null
-    }
+        !isNil(onOpenImageModal) && !isNil(onOpen) ? onOpen() : null;
+    };
 
     return (
-        <div
-            className={classes}
-        >
+        <div className={classes}>
             <MediaUploadCheck
                 fallback={
                     <p>
-                        {__('To edit this field, you need permission to upload media.', 'maxi-blocks')}
+                        {__(
+                            'To edit this field, you need permission to upload media.',
+                            'maxi-blocks'
+                        )}
                     </p>
                 }
             >
                 <MediaUpload
-                    title={mediaType === 'image' ? __('Background image', 'maxi-blocks') : __('Background Video', 'maxi-blocks')}
+                    title={
+                        mediaType === 'image'
+                            ? __('Background image', 'maxi-blocks')
+                            : __('Background Video', 'maxi-blocks')
+                    }
                     onSelect={onSelectImage}
                     allowedTypes={allowedTypes}
                     value={mediaID}
@@ -87,53 +86,46 @@ const MediaUploader = props => {
                             onClick={() => {
                                 open();
                                 onOpenImageModal();
-                            }}>
-                            {
-                                !mediaID &&
-                                placeholder
-                            }
-                            {
-                                !!mediaID &&
-                                !imageData &&
-                                <Spinner />
-                            }
-                            {
-                                mediaType === 'image' &&
-                                !!mediaID &&
-                                imageData &&
+                            }}
+                        >
+                            {!mediaID && placeholder}
+                            {!!mediaID && !imageData && <Spinner />}
+                            {mediaType === 'image' && !!mediaID && imageData && (
                                 <ResponsiveWrapper
                                     naturalWidth={
-                                        alternativeImage ?
-                                            alternativeImage.width :
-                                            imageData.media_details.width
+                                        alternativeImage
+                                            ? alternativeImage.width
+                                            : imageData.media_details.width
                                     }
                                     naturalHeight={
-                                        alternativeImage ?
-                                            alternativeImage.height :
-                                            imageData.media_details.height
+                                        alternativeImage
+                                            ? alternativeImage.height
+                                            : imageData.media_details.height
                                     }
                                     className='maxi-imageuploader-control__responsive-wrapper'
                                 >
                                     <img
                                         src={
-                                            !isNil(alternativeImage) ?
-                                                alternativeImage.source_url :
-                                                imageData.source_url
+                                            !isNil(alternativeImage)
+                                                ? alternativeImage.source_url
+                                                : imageData.source_url
                                         }
                                         alt={__('Image', 'maxi-blocks')}
                                     />
                                 </ResponsiveWrapper>
-                            }
+                            )}
                         </Button>
                     )}
                 />
             </MediaUploadCheck>
-            {
-                !!mediaID &&
-                imageData &&
+            {!!mediaID && imageData && (
                 <MediaUploadCheck>
                     <MediaUpload
-                        title={mediaType === 'image' ? __('Image', 'maxi-blocks') : __('Video', 'maxi-blocks')}
+                        title={
+                            mediaType === 'image'
+                                ? __('Image', 'maxi-blocks')
+                                : __('Video', 'maxi-blocks')
+                        }
                         onSelect={onSelectImage}
                         allowedTypes={allowedTypes}
                         value={mediaID}
@@ -142,9 +134,10 @@ const MediaUploader = props => {
                                 onClick={open}
                                 isDefault
                                 isLarge
-                                className={mediaType === 'image'
-                                ? 'maxi-mediauploader-control__replace'
-                                : 'maxi-mediauploader-control__video__replace'
+                                className={
+                                    mediaType === 'image'
+                                        ? 'maxi-mediauploader-control__replace'
+                                        : 'maxi-mediauploader-control__video__replace'
                                 }
                             >
                                 {replaceButton}
@@ -152,27 +145,25 @@ const MediaUploader = props => {
                         )}
                     />
                 </MediaUploadCheck>
-            }
-            {
-                !!mediaID &&
+            )}
+            {!!mediaID && (
                 <MediaUploadCheck>
                     <Button
                         onClick={onRemoveImage}
                         isDestructive
-                        className={mediaType === 'image'
-                        ? 'maxi-mediauploader-control__remove'
-                        : 'maxi-mediauploader-control__video__remove'
+                        className={
+                            mediaType === 'image'
+                                ? 'maxi-mediauploader-control__remove'
+                                : 'maxi-mediauploader-control__video__remove'
                         }
                     >
                         {removeButton}
                     </Button>
                 </MediaUploadCheck>
-            }
-            {
-                extendSelector
-            }
+            )}
+            {extendSelector}
         </div>
-    )
+    );
 };
 
 const MediaUploaderControl = withSelect((select, props) => {
@@ -182,6 +173,6 @@ const MediaUploaderControl = withSelect((select, props) => {
     return {
         imageData: mediaID ? getMedia(mediaID) : null,
     };
-})(MediaUploader)
+})(MediaUploader);
 
 export default MediaUploaderControl;

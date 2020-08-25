@@ -35,12 +35,8 @@ const save = props => {
         blockStyle,
         extraClassName,
         className,
-        fullWidth === 'full' ?
-            'alignfull' :
-            null,
-        !isNil(uniqueID) ?
-            uniqueID :
-            null
+        fullWidth === 'full' ? 'alignfull' : null,
+        !isNil(uniqueID) ? uniqueID : null
     );
 
     return (
@@ -48,12 +44,10 @@ const save = props => {
             className={classes}
             data-maxi_initial_block_class={defaultBlockStyle}
         >
-            <__experimentalBackgroundDisplayer
-                background={background}
-            />
+            <__experimentalBackgroundDisplayer background={background} />
             <InnerBlocks.Content />
         </div>
     );
-}
+};
 
 export default save;

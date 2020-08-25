@@ -3,52 +3,31 @@
  */
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
-const {
-    RadioControl,
-    RangeControl
-} = wp.components;
+const { RadioControl, RangeControl } = wp.components;
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import {
-    isObject,
-    isNil
-} from 'lodash';
+import { isObject, isNil } from 'lodash';
 
 /**
  * Component
  */
 const ParallaxControl = props => {
+    const { className, motion, defaultMotion, onChange } = props;
 
-    const {
-        className,
-        motion,
-        defaultMotion,
-        onChange,
-    } = props;
+    const value = !isObject(motion) ? JSON.parse(motion) : motion;
 
-    const value = !isObject(motion) ?
-        JSON.parse(motion) :
-        motion;
+    const { parallax: parallaxOptions } = value;
 
-    const {
-        parallax: parallaxOptions,
-    } = value;
+    const defaultValue = !isObject(defaultMotion)
+        ? JSON.parse(defaultMotion)
+        : defaultMotion;
 
-    const defaultValue = !isObject(defaultMotion) ?
-        JSON.parse(defaultMotion) :
-        defaultMotion;
+    const { parallax: defaultParallaxOptions } = defaultValue;
 
-    const {
-        parallax: defaultParallaxOptions,
-    } = defaultValue;
-
-    const classes = classnames(
-        'maxi-parallax-control',
-        className,
-    );
+    const classes = classnames('maxi-parallax-control', className);
 
     return (
         <div className={classes}>
@@ -66,8 +45,7 @@ const ParallaxControl = props => {
                     }}
                 />
             </div>
-            {
-                !!parallaxOptions.status &&
+            {!!parallaxOptions.status && (
                 <Fragment>
                     <div className='maxi-fancy-radio-control'>
                         <RadioControl
@@ -75,7 +53,10 @@ const ParallaxControl = props => {
                             selected={parallaxOptions.direction}
                             options={[
                                 { label: __('Up', 'maxi-blocks'), value: 'up' },
-                                { label: __('Down', 'maxi-blocks'), value: 'down' },
+                                {
+                                    label: __('Down', 'maxi-blocks'),
+                                    value: 'down',
+                                },
                             ]}
                             onChange={val => {
                                 parallaxOptions.direction = val;
@@ -87,11 +68,12 @@ const ParallaxControl = props => {
                         label={__('Speed', 'maxi-blocks')}
                         value={parallaxOptions.speed}
                         onChange={val => {
-                            isNil(val) ?
-                                parallaxOptions.speed = defaultParallaxOptions.speed :
-                                parallaxOptions.speed = Number(val);
+                            isNil(val)
+                                ? (parallaxOptions.speed =
+                                      defaultParallaxOptions.speed)
+                                : (parallaxOptions.speed = Number(val));
 
-                            onChange(JSON.stringify(value))
+                            onChange(JSON.stringify(value));
                         }}
                         min={1}
                         max={10}
@@ -99,10 +81,9 @@ const ParallaxControl = props => {
                         initialPosition={defaultParallaxOptions.speed}
                     />
                 </Fragment>
-            }
+            )}
         </div>
-    )
-
-}
+    );
+};
 
 export default ParallaxControl;

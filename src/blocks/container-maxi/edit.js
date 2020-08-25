@@ -2,14 +2,8 @@
  * WordPress dependencies
  */
 const { withSelect } = wp.data;
-const {
-    Fragment,
-    forwardRef
-} = wp.element;
-const {
-    InnerBlocks,
-    __experimentalBlock
-} = wp.blockEditor;
+const { Fragment, forwardRef } = wp.element;
+const { InnerBlocks, __experimentalBlock } = wp.blockEditor;
 
 /**
  * Internal dependencies
@@ -21,7 +15,7 @@ import {
     __experimentalBlockPlaceholder,
     __experimentalShapeDivider,
     __experimentalBackgroundDisplayer,
-    __experimentalArrowControl
+    __experimentalArrowControl,
 } from '../../components';
 import Inspector from './inspector';
 import {
@@ -30,8 +24,8 @@ import {
     getShapeDividerSVGObject,
     getArrowObject,
     getTransformObject,
-    setBackgroundStyles
-} from '../../utils'
+    setBackgroundStyles,
+} from '../../utils';
 
 /**
  * External dependencies
@@ -48,7 +42,7 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
         shapeDivider,
         className,
         dataAlign,
-        maxiBlockClass
+        maxiBlockClass,
     } = props;
 
     return (
@@ -58,15 +52,9 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
             data-align={dataAlign}
             data-gx_initial_block_class={maxiBlockClass}
         >
-            <__experimentalShapeDivider
-                shapeDividerOptions={shapeDivider}
-            />
-            <div
-                className='maxi-container-block__wrapper'
-            >
-                <div
-                    className='maxi-container-block__container'
-                >
+            <__experimentalShapeDivider shapeDividerOptions={shapeDivider} />
+            <div className='maxi-container-block__wrapper'>
+                <div className='maxi-container-block__container'>
                     {children}
                 </div>
             </div>
@@ -75,8 +63,8 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
                 shapeDividerOptions={shapeDivider}
             />
         </__experimentalBlock>
-    )
-})
+    );
+});
 
 /**
  * Edit
@@ -87,25 +75,51 @@ class edit extends MaxiBlock {
             uniqueID,
             isFirstOnHierarchy,
             background,
-            backgroundHover
+            backgroundHover,
         } = this.props.attributes;
 
         let response = {
             [uniqueID]: this.getNormalObject,
             [`${uniqueID}:hover`]: this.getHoverObject,
             [`${this.props.attributes.uniqueID}:before`]: this.getBeforeObject,
-            [`${uniqueID}>.maxi-container-block__wrapper`]: this.getWrapperObject,
-            [`${uniqueID}>.maxi-container-block__wrapper>.maxi-container-block__container`]: this.getContainerObject,
-            [`${uniqueID} .maxi-shape-divider__top`]: { shapeDivider: { ...getShapeDividerObject(JSON.parse(this.props.attributes.shapeDivider).top) } },
-            [`${uniqueID} .maxi-shape-divider__top svg`]: { shapeDivider: { ...getShapeDividerSVGObject(JSON.parse(this.props.attributes.shapeDivider).top) } },
-            [`${uniqueID} .maxi-shape-divider__bottom`]: { shapeDivider: { ...getShapeDividerObject(JSON.parse(this.props.attributes.shapeDivider).bottom) } },
-            [`${uniqueID} .maxi-shape-divider__bottom svg`]: { shapeDivider: { ...getShapeDividerSVGObject(JSON.parse(this.props.attributes.shapeDivider).bottom) } },
-        }
+            [`${uniqueID}>.maxi-container-block__wrapper`]: this
+                .getWrapperObject,
+            [`${uniqueID}>.maxi-container-block__wrapper>.maxi-container-block__container`]: this
+                .getContainerObject,
+            [`${uniqueID} .maxi-shape-divider__top`]: {
+                shapeDivider: {
+                    ...getShapeDividerObject(
+                        JSON.parse(this.props.attributes.shapeDivider).top
+                    ),
+                },
+            },
+            [`${uniqueID} .maxi-shape-divider__top svg`]: {
+                shapeDivider: {
+                    ...getShapeDividerSVGObject(
+                        JSON.parse(this.props.attributes.shapeDivider).top
+                    ),
+                },
+            },
+            [`${uniqueID} .maxi-shape-divider__bottom`]: {
+                shapeDivider: {
+                    ...getShapeDividerObject(
+                        JSON.parse(this.props.attributes.shapeDivider).bottom
+                    ),
+                },
+            },
+            [`${uniqueID} .maxi-shape-divider__bottom svg`]: {
+                shapeDivider: {
+                    ...getShapeDividerSVGObject(
+                        JSON.parse(this.props.attributes.shapeDivider).bottom
+                    ),
+                },
+            },
+        };
 
         response = Object.assign(
             response,
             setBackgroundStyles(uniqueID, background, backgroundHover)
-        )
+        );
 
         return response;
     }
@@ -119,7 +133,7 @@ class edit extends MaxiBlock {
             zIndex,
             position,
             display,
-            transform
+            transform,
         } = this.props.attributes;
 
         const response = {
@@ -137,18 +151,18 @@ class edit extends MaxiBlock {
             container: {
                 label: 'Container',
                 general: {},
-            }
+            },
         };
 
         return response;
     }
-    get getBeforeObject() {
 
+    get getBeforeObject() {
         const { arrow } = this.props.attributes;
 
         const response = {
-            arrow: { ...getArrowObject(JSON.parse(arrow)) }
-        }
+            arrow: { ...getArrowObject(JSON.parse(arrow)) },
+        };
 
         return response;
     }
@@ -161,21 +175,20 @@ class edit extends MaxiBlock {
         } = this.props.attributes;
 
         const response = {
-            boxShadowHover: { ...getBoxShadowObject(JSON.parse(boxShadowHover)) },
+            boxShadowHover: {
+                ...getBoxShadowObject(JSON.parse(boxShadowHover)),
+            },
             borderHover: { ...JSON.parse(borderHover) },
             borderWidthHover: { ...JSON.parse(borderHover).borderWidth },
             borderRadiusHover: { ...JSON.parse(borderHover).borderRadius },
-            opacityHover: { ...JSON.parse(opacityHover) }
+            opacityHover: { ...JSON.parse(opacityHover) },
         };
 
         return response;
     }
 
     get getWrapperObject() {
-        const {
-            margin,
-            padding,
-        } = this.props.attributes;
+        const { margin, padding } = this.props.attributes;
 
         const response = {
             margin: { ...JSON.parse(margin) },
@@ -186,17 +199,13 @@ class edit extends MaxiBlock {
     }
 
     get getContainerObject() {
-        const {
-            isFirstOnHierarchy,
-            sizeContainer,
-        } = this.props.attributes;
+        const { isFirstOnHierarchy, sizeContainer } = this.props.attributes;
 
         const response = {
-            sizeContainer: { ...JSON.parse(sizeContainer) }
+            sizeContainer: { ...JSON.parse(sizeContainer) },
         };
 
-        if (isFirstOnHierarchy)
-            return response;
+        if (isFirstOnHierarchy) return response;
 
         return {};
     }
@@ -232,8 +241,7 @@ class edit extends MaxiBlock {
             <__experimentalToolbar {...this.props} />,
             <__experimentalBreadcrumbs />,
             <Fragment>
-                {
-                    isFirstOnHierarchy && fullWidth &&
+                {isFirstOnHierarchy && fullWidth && (
                     <__experimentalBlock.section
                         className={classes}
                         data-align={fullWidth}
@@ -245,27 +253,26 @@ class edit extends MaxiBlock {
                         <__experimentalShapeDivider
                             shapeDividerOptions={shapeDivider}
                         />
-                        <div
-                            className='maxi-container-block__wrapper'
-                        >
+                        <div className='maxi-container-block__wrapper'>
                             <InnerBlocks
                                 templateLock={false}
                                 __experimentalTagName='div'
                                 __experimentalPassedProps={{
-                                    className: 'maxi-container-block__container',
+                                    className:
+                                        'maxi-container-block__container',
                                 }}
                                 renderAppender={
-                                    !hasInnerBlock ?
-                                        () => (
-                                            <__experimentalBlockPlaceholder
-                                                clientId={clientId}
-                                            />
-                                        ) :
-                                        true ?
-                                            () => (
-                                                <InnerBlocks.ButtonBlockAppender />
-                                            ) :
-                                            false
+                                    !hasInnerBlock
+                                        ? () => (
+                                              <__experimentalBlockPlaceholder
+                                                  clientId={clientId}
+                                              />
+                                          )
+                                        : true
+                                        ? () => (
+                                              <InnerBlocks.ButtonBlockAppender />
+                                          )
+                                        : false
                                 }
                             />
                         </div>
@@ -274,9 +281,8 @@ class edit extends MaxiBlock {
                             shapeDividerOptions={shapeDivider}
                         />
                     </__experimentalBlock.section>
-                }
-                {
-                    (!isFirstOnHierarchy || !fullWidth) &&
+                )}
+                {(!isFirstOnHierarchy || !fullWidth) && (
                     <InnerBlocks
                         templateLock={false}
                         __experimentalTagName={ContainerInnerBlocks}
@@ -284,26 +290,22 @@ class edit extends MaxiBlock {
                             className: classes,
                             dataAlign: fullWidth,
                             maxiBlockClass: defaultBlockStyle,
-                            shapeDivider: shapeDivider,
+                            shapeDivider,
                         }}
                         renderAppender={
-                            !hasInnerBlock ?
-                                () => (
-                                    <__experimentalBlockPlaceholder
-                                        clientId={clientId}
-                                    />
-                                ) :
-                                true ?
-                                    () => (
-                                        <InnerBlocks.ButtonBlockAppender />
-                                    ) :
-                                    false
+                            !hasInnerBlock
+                                ? () => (
+                                      <__experimentalBlockPlaceholder
+                                          clientId={clientId}
+                                      />
+                                  )
+                                : true
+                                ? () => <InnerBlocks.ButtonBlockAppender />
+                                : false
                         }
                     />
-                }
-            </
-            Fragment>
-
+                )}
+            </Fragment>,
         ];
     }
 }
@@ -311,14 +313,16 @@ class edit extends MaxiBlock {
 export default withSelect((select, ownProps) => {
     const { clientId } = ownProps;
 
-    const hasInnerBlock = !isEmpty(select('core/block-editor').getBlockOrder(clientId));
-    let deviceType = select('core/edit-post').__experimentalGetPreviewDeviceType();
-    deviceType = deviceType === 'Desktop' ?
-        'general' :
-        deviceType;
+    const hasInnerBlock = !isEmpty(
+        select('core/block-editor').getBlockOrder(clientId)
+    );
+    let deviceType = select(
+        'core/edit-post'
+    ).__experimentalGetPreviewDeviceType();
+    deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
 
     return {
         hasInnerBlock,
-        deviceType
-    }
-})(edit)
+        deviceType,
+    };
+})(edit);

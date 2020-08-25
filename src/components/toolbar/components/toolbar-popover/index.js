@@ -2,17 +2,14 @@
  * WordPress dependencies
  */
 const { dispatch } = wp.data;
-const {
-    Fragment,
-    Component
-} = wp.element;
+const { Fragment, Component } = wp.element;
 const {
     Button,
     Icon,
     IconButton,
     Popover,
     withFocusOutside,
-    Tooltip
+    Tooltip,
 } = wp.components;
 
 /**
@@ -31,19 +28,19 @@ import classnames from 'classnames';
  */
 class ToolbarPopover extends Component {
     state = {
-        isOpen: false
-    }
+        isOpen: false,
+    };
 
     handleFocusOutside() {
         this.setState({
-            isOpen: false
-        })
+            isOpen: false,
+        });
     }
 
     onToggle() {
         this.setState({
-            isOpen: !this.state.isOpen
-        })
+            isOpen: !this.state.isOpen,
+        });
     }
 
     render() {
@@ -57,9 +54,7 @@ class ToolbarPopover extends Component {
 
         const { isOpen } = this.state;
 
-        const { openGeneralSidebar } = dispatch(
-            'core/edit-post'
-        );
+        const { openGeneralSidebar } = dispatch('core/edit-post');
 
         const classes = classnames(
             'toolbar-item',
@@ -69,51 +64,44 @@ class ToolbarPopover extends Component {
 
         return (
             <Fragment>
-                <Tooltip
-                    text={tooltip}
-                    position="bottom center"
-                >
+                <Tooltip text={tooltip} position='bottom center'>
                     <Button
                         className={classes}
                         onClick={() => this.onToggle()}
                         aria-expanded={isOpen}
-                        action="popup"
+                        action='popup'
                     >
-                        <Icon
-                            className='toolbar-item__icon'
-                            icon={icon}
-                        />
+                        <Icon className='toolbar-item__icon' icon={icon} />
                     </Button>
                 </Tooltip>
-                {
-                    isOpen &&
+                {isOpen && (
                     <Popover
                         className='toolbar-item__popover'
                         noArrow={false}
                         position='top center'
-                        focusOnMount={true}
+                        focusOnMount
                         isAlternate
                         // anchorRef= anchorRef
                         // __unstableSticky={true}
                         // __unstableSlotName= "block-toolbar"
-                        shouldAnchorIncludePadding={true}
+                        shouldAnchorIncludePadding
                     >
                         {content}
-                        {
-                            !!advancedOptions &&
+                        {!!advancedOptions && (
                             <IconButton
                                 className='toolbar-item__popover__advanced-button'
                                 icon={toolbarAdvancedSettings}
                                 onClick={() =>
-                                    openGeneralSidebar('edit-post/block')
-                                        .then(() => openSidebar(advancedOptions))
+                                    openGeneralSidebar(
+                                        'edit-post/block'
+                                    ).then(() => openSidebar(advancedOptions))
                                 }
                             />
-                        }
+                        )}
                     </Popover>
-                }
+                )}
             </Fragment>
-        )
+        );
     }
 }
 

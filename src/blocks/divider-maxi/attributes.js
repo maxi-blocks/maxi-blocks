@@ -10,27 +10,27 @@ import { size } from './data';
 const attributes = {
     showLine: {
         type: 'number',
-        default: 1
+        default: 1,
     },
     lineVertical: {
         type: 'string',
-        default: 'center'
+        default: 'center',
     },
     lineHorizontal: {
         type: 'string',
-        default: 'center'
+        default: 'center',
     },
     lineOrientation: {
         type: 'string',
-        default: 'horizontal'
+        default: 'horizontal',
     },
     linesAlign: {
         type: 'string',
-        default: 'row'
+        default: 'row',
     },
     divider: {
         type: 'string',
-        default: JSON.stringify(attributesData.__experimentalDivider)
+        default: JSON.stringify(attributesData.__experimentalDivider),
     },
     fullWidth: {
         type: 'string',
@@ -38,60 +38,60 @@ const attributes = {
     },
     size: {
         type: 'string',
-        default: JSON.stringify(size)
+        default: JSON.stringify(size),
     },
     opacity: {
         type: 'number',
-        default: JSON.stringify(attributesData.opacity)
+        default: JSON.stringify(attributesData.opacity),
     },
     opacityHover: {
         type: 'number',
-        default: JSON.stringify(attributesData.opacityHover)
+        default: JSON.stringify(attributesData.opacityHover),
     },
     background: {
         type: 'string',
-        default: JSON.stringify(attributesData.background)
+        default: JSON.stringify(attributesData.background),
     },
     backgroundHover: {
         type: 'string',
-        default: JSON.stringify(attributesData.backgroundHover)
+        default: JSON.stringify(attributesData.backgroundHover),
     },
     boxShadow: {
         type: 'string',
-        default: JSON.stringify(attributesData.boxShadow)
+        default: JSON.stringify(attributesData.boxShadow),
     },
     boxShadowHover: {
         type: 'string',
-        default: JSON.stringify(attributesData.boxShadowHover)
+        default: JSON.stringify(attributesData.boxShadowHover),
     },
     padding: {
         type: 'string',
-        default: JSON.stringify(attributesData.padding)
+        default: JSON.stringify(attributesData.padding),
     },
     margin: {
         type: 'string',
-        default: JSON.stringify(attributesData.margin)
+        default: JSON.stringify(attributesData.margin),
     },
     position: {
         type: 'string',
-        default: JSON.stringify(attributesData.__experimentalPosition)
+        default: JSON.stringify(attributesData.__experimentalPosition),
     },
     display: {
         type: 'string',
-        default: JSON.stringify(attributesData.__experimentalDisplay)
+        default: JSON.stringify(attributesData.__experimentalDisplay),
     },
     display: {
         type: 'string',
-        default: JSON.stringify(attributesData.__experimentalDisplay)
+        default: JSON.stringify(attributesData.__experimentalDisplay),
     },
     motion: {
         type: 'string',
-        default: JSON.stringify(attributesData.__experimentalMotion)
+        default: JSON.stringify(attributesData.__experimentalMotion),
     },
     transform: {
         type: 'string',
-        default: JSON.stringify(attributesData.__experimentalTransform)
+        default: JSON.stringify(attributesData.__experimentalTransform),
     },
-}
+};
 
 export default attributes;

@@ -44,12 +44,8 @@ const save = props => {
         extraClassName,
         uniqueID,
         className,
-        fullWidth === 'full' ?
-            'alignfull' :
-            null,
-        !isNil(uniqueID) ?
-            uniqueID :
-            null
+        fullWidth === 'full' ? 'alignfull' : null,
+        !isNil(uniqueID) ? uniqueID : null
     );
 
     return (
@@ -59,9 +55,7 @@ const save = props => {
                 data-motion={motion}
                 data-motion-id={uniqueID}
             >
-                <__experimentalBackgroundDisplayer
-                    background={background}
-                />
+                <__experimentalBackgroundDisplayer background={background} />
                 <RichText.Content
                     className='maxi-text-block__content'
                     value={content}
@@ -71,6 +65,6 @@ const save = props => {
             </div>
         </Fragment>
     );
-}
+};
 
 export default save;

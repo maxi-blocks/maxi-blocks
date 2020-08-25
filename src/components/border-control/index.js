@@ -3,10 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
-const {
-    SelectControl,
-    Icon,
-} = wp.components;
+const { SelectControl, Icon } = wp.components;
 
 /**
  * Internal dependencies
@@ -19,27 +16,19 @@ import {
     borderNone,
     borderSolid,
     borderDashed,
-    borderDotted
-} from './defaults'
+    borderDotted,
+} from './defaults';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import {
-    isObject,
-    isNumber
-} from 'lodash';
+import { isObject, isNumber } from 'lodash';
 
 /**
  * Icons
  */
-import {
-    styleNone,
-    dashed,
-    dotted,
-    solid
-} from '../../icons';
+import { styleNone, dashed, dotted, solid } from '../../icons';
 
 /**
  * Component
@@ -51,47 +40,43 @@ const BorderControl = props => {
         className,
         onChange,
         breakpoint = 'general',
-        disableAdvanced = false
+        disableAdvanced = false,
     } = props;
 
-    const value = !isObject(border) ?
-        JSON.parse(border) :
-        border;
+    const value = !isObject(border) ? JSON.parse(border) : border;
 
-    const defaultValue = !isObject(defaultBorder) ?
-        JSON.parse(defaultBorder) :
-        defaultBorder;
+    const defaultValue = !isObject(defaultBorder)
+        ? JSON.parse(defaultBorder)
+        : defaultBorder;
 
-    const classes = classnames(
-        'maxi-border-control',
-        className
-    );
+    const classes = classnames('maxi-border-control', className);
 
     const onChangeDefault = defaultProp => {
         value[breakpoint] = defaultProp.border;
         value.borderWidth.unit = defaultProp.borderWidth.unit;
         value.borderWidth[breakpoint] = defaultProp.borderWidth.width;
 
-        onChange(JSON.stringify(value))
-    }
+        onChange(JSON.stringify(value));
+    };
 
     const getIsActive = () => {
         const items = [
-            "border-top-width",
-            "border-right-width",
-            "border-bottom-width",
-            "border-left-width",
+            'border-top-width',
+            'border-right-width',
+            'border-bottom-width',
+            'border-left-width',
         ];
 
         const hasBorderWidth = items.some(item => {
-            return isNumber(getLastBreakpointValue(value.borderWidth, item, breakpoint))
-        })
+            return isNumber(
+                getLastBreakpointValue(value.borderWidth, item, breakpoint)
+            );
+        });
 
         if (hasBorderWidth)
             return getLastBreakpointValue(value, 'border-style', breakpoint);
-        else
-            return 'none'
-    }
+        return 'none';
+    };
 
     return (
         <div className={classes}>
@@ -105,7 +90,7 @@ const BorderControl = props => {
                                 icon={styleNone}
                             />
                         ),
-                        onChange: () => onChangeDefault(borderNone)
+                        onChange: () => onChangeDefault(borderNone),
                     },
                     {
                         activeItem: getIsActive() === 'solid',
@@ -115,7 +100,7 @@ const BorderControl = props => {
                                 icon={solid}
                             />
                         ),
-                        onChange: () => onChangeDefault(borderSolid)
+                        onChange: () => onChangeDefault(borderSolid),
                     },
                     {
                         activeItem: getIsActive() === 'dashed',
@@ -125,7 +110,7 @@ const BorderControl = props => {
                                 icon={dashed}
                             />
                         ),
-                        onChange: () => onChangeDefault(borderDashed)
+                        onChange: () => onChangeDefault(borderDashed),
                     },
                     {
                         activeItem: getIsActive() === 'dotted',
@@ -135,13 +120,17 @@ const BorderControl = props => {
                                 icon={dotted}
                             />
                         ),
-                        onChange: () => onChangeDefault(borderDotted)
+                        onChange: () => onChangeDefault(borderDotted),
                     },
                 ]}
             />
             <ColorControl
                 label={__('Border', 'maxi-blocks')}
-                color={getLastBreakpointValue(value, 'border-color', breakpoint)}
+                color={getLastBreakpointValue(
+                    value,
+                    'border-color',
+                    breakpoint
+                )}
                 defaultColor={defaultValue[breakpoint]['border-color']}
                 onChange={val => {
                     value[breakpoint]['border-color'] = val;
@@ -153,13 +142,16 @@ const BorderControl = props => {
                 disableGradient
                 disableGradientAboveBackground
             />
-            {
-                !disableAdvanced &&
+            {!disableAdvanced && (
                 <Fragment>
                     <SelectControl
                         label={__('Border Type', 'maxi-blocks')}
                         className='maxi-border-control__type'
-                        value={getLastBreakpointValue(value, 'border-style', breakpoint)}
+                        value={getLastBreakpointValue(
+                            value,
+                            'border-style',
+                            breakpoint
+                        )}
                         options={[
                             { label: 'None', value: 'none' },
                             { label: 'Dotted', value: 'dotted' },
@@ -197,9 +189,9 @@ const BorderControl = props => {
                         disableAuto
                     />
                 </Fragment>
-            }
+            )}
         </div>
-    )
-}
+    );
+};
 
 export default BorderControl;

@@ -27,8 +27,8 @@ import './editor.scss';
  */
 export default class AccordionControl extends Component {
     state = {
-        currentOpen: this.props.preExpanded ? this.props.preExpanded : []
-    }
+        currentOpen: this.props.preExpanded ? this.props.preExpanded : [],
+    };
 
     render() {
         const {
@@ -38,27 +38,21 @@ export default class AccordionControl extends Component {
             items,
             isPrimary = false,
             isSecondary = false,
-            disablePadding = false
+            disablePadding = false,
         } = this.props;
 
-        const {
-            currentOpen
-        } = this.state;
+        const { currentOpen } = this.state;
 
-        let classes = classnames(
+        const classes = classnames(
             'maxi-accordion-control',
             className,
-            isPrimary ?
-                'is-primary' :
-                '',
-            isSecondary ?
-                'is-secondary' :
-                '',
+            isPrimary ? 'is-primary' : '',
+            isSecondary ? 'is-secondary' : ''
         );
 
         const onOpen = value => {
-            this.setState({ currentOpen: value })
-        }
+            this.setState({ currentOpen: value });
+        };
 
         return (
             <Accordion
@@ -68,56 +62,49 @@ export default class AccordionControl extends Component {
                 preExpanded={currentOpen}
                 onChange={onOpen}
             >
-                {
-                    items.map(item => {
-                        if(!item)
-                            return null;
+                {items.map(item => {
+                    if (!item) return null;
 
-                        const classesItem = classnames(
-                            'maxi-accordion-control__item',
-                            item.classNameItem
-                        );
-                        const classesItemHeading = classnames(
-                            'maxi-accordion-tab',
-                            item.classNameHeading
-                        );
+                    const classesItem = classnames(
+                        'maxi-accordion-control__item',
+                        item.classNameItem
+                    );
+                    const classesItemHeading = classnames(
+                        'maxi-accordion-tab',
+                        item.classNameHeading
+                    );
 
-                        const classesItemPanel = classnames(
-                            'maxi-accordion-control__item__panel',
-                            disablePadding || item.disablePadding ?
-                                'maxi-accordion-control__item__panel--disable-padding' :
-                                ''
-                        )
+                    const classesItemPanel = classnames(
+                        'maxi-accordion-control__item__panel',
+                        disablePadding || item.disablePadding
+                            ? 'maxi-accordion-control__item__panel--disable-padding'
+                            : ''
+                    );
 
-                        return (
-                            <AccordionItem
-                                uuid={item.uuid ? item.uuid : undefined}
-                                className={classesItem}
-                                data-name={lowerCase(item.label)}
+                    return (
+                        <AccordionItem
+                            uuid={item.uuid ? item.uuid : undefined}
+                            className={classesItem}
+                            data-name={lowerCase(item.label)}
+                        >
+                            <AccordionItemHeading
+                                className={classesItemHeading}
                             >
-                                <AccordionItemHeading
-                                    className={classesItemHeading}
-                                >
-                                    <AccordionItemButton
-                                        className='maxi-accordion-control__item__button'
-                                    >
-                                        <Icon
-                                            className='maxi-accordion-icon'
-                                            icon={item.icon}
-                                        />
-                                        {item.label}
-                                    </AccordionItemButton>
-                                </AccordionItemHeading>
-                                <AccordionItemPanel
-                                    className={classesItemPanel}
-                                >
-                                    {item.content}
-                                </AccordionItemPanel>
-                            </AccordionItem>
-                        )
-                    })
-                }
+                                <AccordionItemButton className='maxi-accordion-control__item__button'>
+                                    <Icon
+                                        className='maxi-accordion-icon'
+                                        icon={item.icon}
+                                    />
+                                    {item.label}
+                                </AccordionItemButton>
+                            </AccordionItemHeading>
+                            <AccordionItemPanel className={classesItemPanel}>
+                                {item.content}
+                            </AccordionItemPanel>
+                        </AccordionItem>
+                    );
+                })}
             </Accordion>
-        )
+        );
     }
 }

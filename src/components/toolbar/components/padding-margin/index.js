@@ -27,7 +27,7 @@ const PaddingMargin = props => {
         padding,
         defaultPadding,
         onChangePadding,
-        breakpoint
+        breakpoint,
     } = props;
 
     return (
@@ -35,7 +35,7 @@ const PaddingMargin = props => {
             className='toolbar-item__padding-margin'
             tooltip={__('Padding & Margin', 'maxi-blocks')}
             icon={toolbarPadding}
-            content={(
+            content={
                 <Fragment>
                     <__experimentalAxisControl
                         values={padding}
@@ -44,19 +44,18 @@ const PaddingMargin = props => {
                         breakpoint={breakpoint}
                         disableAuto
                     />
-                    {
-                        blockName != 'maxi-blocks/column-maxi' &&
+                    {blockName !== 'maxi-blocks/column-maxi' && (
                         <__experimentalAxisControl
                             values={margin}
                             defaultValues={defaultMargin}
                             onChange={margin => onChangeMargin(margin)}
                             breakpoint={breakpoint}
                         />
-                    }
+                    )}
                 </Fragment>
-            )}
+            }
         />
-    )
-}
+    );
+};
 
 export default PaddingMargin;

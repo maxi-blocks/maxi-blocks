@@ -14,10 +14,7 @@ import __experimentalAxisControl from '../axis-control';
  * External dependencies
  */
 import classnames from 'classnames';
-import {
-    isObject,
-    isEmpty
-} from 'lodash';
+import { isObject, isEmpty } from 'lodash';
 
 /**
  * Component
@@ -28,35 +25,28 @@ const PositionControl = props => {
         defaultPosition,
         className,
         onChange,
-        breakpoint = 'general'
+        breakpoint = 'general',
     } = props;
 
-    const value = !isObject(position) ?
-        JSON.parse(position) :
-        position;
+    const value = !isObject(position) ? JSON.parse(position) : position;
 
-    const defaultValues = !isObject(defaultPosition) ?
-        JSON.parse(defaultPosition) :
-        defaultPosition;
+    const defaultValues = !isObject(defaultPosition)
+        ? JSON.parse(defaultPosition)
+        : defaultPosition;
 
-    const classes = classnames(
-        'maxi-position-control',
-        className
-    );
+    const classes = classnames('maxi-position-control', className);
 
     const cleanOptions = {
-        "top": "",
-        "right": "",
-        "bottom": "",
-        "left": "",
-        "sync": false,
-        "unit": ""
+        top: '',
+        right: '',
+        bottom: '',
+        left: '',
+        sync: false,
+        unit: '',
     };
 
     return (
-        <div
-            className={classes}
-        >
+        <div className={classes}>
             <SelectControl
                 label={__('Position', 'maxi-blocks')}
                 options={[
@@ -68,26 +58,26 @@ const PositionControl = props => {
                 value={getLastBreakpointValue(value, 'position', breakpoint)}
                 onChange={val => {
                     value[breakpoint].position = val;
-                    if (isEmpty(val))
-                        value.options[breakpoint] = cleanOptions;
-                    onChange(JSON.stringify(value))
+                    if (isEmpty(val)) value.options[breakpoint] = cleanOptions;
+                    onChange(JSON.stringify(value));
                 }}
             />
-            {
-                !isEmpty(getLastBreakpointValue(value, 'position', breakpoint)) &&
+            {!isEmpty(
+                getLastBreakpointValue(value, 'position', breakpoint)
+            ) && (
                 <__experimentalAxisControl
                     values={value.options}
                     defaultValues={defaultValues.options}
                     onChange={val => {
                         value.options = JSON.parse(val);
-                        onChange(JSON.stringify(value))
+                        onChange(JSON.stringify(value));
                     }}
                     breakpoint={breakpoint}
                     disableAuto
                 />
-            }
+            )}
         </div>
-    )
-}
+    );
+};
 
 export default PositionControl;

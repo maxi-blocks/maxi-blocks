@@ -27,29 +27,26 @@ import { textIcon } from '../../icons';
 /**
  * Block
  */
-registerBlockType( 'maxi-blocks/text-maxi', {
-	title: __('Text Maxi', 'maxi-blocks'),
-	icon: textIcon,
-	description: 'Insert, modify or style text',
-	category: 'maxi-blocks',
-	supports: {
-		align: false,
-		lightBlockWrapper: true
-	},
-	attributes: {
-		...attributes
-	},
-	getEditWrapperProps(attributes) {
-        const {
-			uniqueID,
-			defaultBlockStyle,
-        } = attributes;
+registerBlockType('maxi-blocks/text-maxi', {
+    title: __('Text Maxi', 'maxi-blocks'),
+    icon: textIcon,
+    description: 'Insert, modify or style text',
+    category: 'maxi-blocks',
+    supports: {
+        align: false,
+        lightBlockWrapper: true,
+    },
+    attributes: {
+        ...attributes,
+    },
+    getEditWrapperProps(attributes) {
+        const { uniqueID, defaultBlockStyle } = attributes;
 
         return {
-			'uniqueid': uniqueID,
-			'data-maxi_initial_block_class': defaultBlockStyle,
+            uniqueid: uniqueID,
+            'data-maxi_initial_block_class': defaultBlockStyle,
         };
     },
-	edit,
-	save
-} );
+    edit,
+    save,
+});

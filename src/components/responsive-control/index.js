@@ -23,26 +23,21 @@ const ResponsiveControl = props => {
         defaultBreakpoints,
         onChange,
         className,
-        breakpoint
+        breakpoint,
     } = props;
 
-    const value = !isObject(breakpoints) ?
-        JSON.parse(breakpoints) :
-        breakpoints;
+    const value = !isObject(breakpoints)
+        ? JSON.parse(breakpoints)
+        : breakpoints;
 
-    const defaultValue = !isObject(defaultBreakpoints) ?
-        JSON.parse(defaultBreakpoints) :
-        defaultBreakpoints;
+    const defaultValue = !isObject(defaultBreakpoints)
+        ? JSON.parse(defaultBreakpoints)
+        : defaultBreakpoints;
 
-    const classes = classnames(
-        'maxi-responsive-control',
-        className
-    )
+    const classes = classnames('maxi-responsive-control', className);
 
     return (
-        <div
-            className={classes}
-        >
+        <div className={classes}>
             <__experimentalNumberControl
                 label={__('Breakpoint', 'maxi-blocks')}
                 className='maxi-responsive-control__breakpoint'
@@ -50,13 +45,13 @@ const ResponsiveControl = props => {
                 defaultValue={defaultValue[breakpoint]}
                 onChange={val => {
                     value[breakpoint] = val;
-                    onChange(JSON.stringify(value))
+                    onChange(JSON.stringify(value));
                 }}
                 min={0}
                 max={9999}
             />
         </div>
-    )
-}
+    );
+};
 
 export default ResponsiveControl;

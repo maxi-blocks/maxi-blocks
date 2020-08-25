@@ -12,20 +12,24 @@ export class FontFamilyResolver {
         this.elements = this.elemensGetter;
         this.onLoadPage();
         document.body.classList.contains('block-editor-page') &&
-            !document.getElementById('fontOptions') ?   
-            this.getJSON() :
-            null;
+        !document.getElementById('fontOptions')
+            ? this.getJSON()
+            : null;
     }
 
     /**
      * Returns an array with all the elements with a font-family CSS style option
      *
-     * @return {array} elements with font-family on inline style
+     * @return {Array} elements with font-family on inline style
      */
     get elemensGetter() {
         return Array.from(document.querySelectorAll('[style]')).filter(e => {
-            return typeof window.getComputedStyle(e).getPropertyValue('font-family') !== '';
-        })
+            return (
+                typeof window
+                    .getComputedStyle(e)
+                    .getPropertyValue('font-family') !== ''
+            );
+        });
     }
 
     /**
@@ -36,33 +40,34 @@ export class FontFamilyResolver {
     get DOMFontList() {
         let list = new Set();
         this.elements.map(e => {
-            const fonts = window.getComputedStyle(e).getPropertyValue('font-family');
+            const fonts = window
+                .getComputedStyle(e)
+                .getPropertyValue('font-family');
             fonts.split(',').map(font => {
                 list = list.add(font.replace('"', '').trim());
-            })
-        })
+            });
+        });
         return list;
     }
 
     /**
      * Retrieve an object with all the GFonts options
      *
-     * @returns {object} GFonts options
+     * @returns {Object} GFonts options
      * @returns {null}
      */
     get optionsGetter() {
         if (document.getElementById('fontOptions')) {
             return JSON.parse(document.getElementById('fontOptions').innerHTML);
-        } else {
-            return null;
         }
+        return null;
     }
 
     /**
      * Fetchs the JSON file with all the GFonts options
      */
     getJSON() {
-        let script = document.createElement('script');
+        const script = document.createElement('script');
         script.id = 'fontOptions';
         script.innerHTML = JSON.stringify(this.getFontFamilyOptions(fontsJSON));
         document.body.appendChild(script);
@@ -72,9 +77,9 @@ export class FontFamilyResolver {
      * Loads the non-loaded fonts on backend and frontend
      */
     onLoadPage() {
-        if (typeof fontsToLoad != 'undefined') {
-            for (let [fontName, fontOptions] of Object.entries(fontsToLoad)) {
-                this.loadFonts(fontName, fontOptions)
+        if (typeof fontsToLoad !== 'undefined') {
+            for (const [fontName, fontOptions] of Object.entries(fontsToLoad)) {
+                this.loadFonts(fontName, fontOptions);
             }
         }
     }
@@ -83,16 +88,16 @@ export class FontFamilyResolver {
      * Get font families from GFonts JSON file
      *
      * @param {JSON} data Recibes JSON data with the fonts variants and properties
-     * @returns {array} Options ready for React-Select
+     * @returns {Array} Options ready for React-Select
      */
     getFontFamilyOptions(data) {
-        let options = [];
-        let items = data.items;
+        const options = [];
+        const { items } = data;
         items.map(item => {
             options.push({
                 label: item.family,
                 value: item.family,
-                files: item.files
+                files: item.files,
             });
         });
         return options;
@@ -107,18 +112,24 @@ export class FontFamilyResolver {
      * @param {obj} files Different variations of the font
      */
     loadFonts = (font, files) => {
-        if (document.fonts && !document.fonts.check(`12px ${font}`)) {   // FontFace API
+        if (document.fonts && !document.fonts.check(`12px ${font}`)) {
+            // FontFace API
             Object.entries(files).map(variant => {
                 const style = this.getFontStyle(variant[0]);
-                const fontLoad = new FontFace(font, `url(${variant[1]})`, style);
+                const fontLoad = new FontFace(
+                    font,
+                    `url(${variant[1]})`,
+                    style
+                );
                 document.fonts.add(fontLoad);
-                fontLoad.loaded
-                    .catch((err) => {
-                        console.info(__(`Font hasn't been able to download: ${err}`))
-                    })
-            })
+                fontLoad.loaded.catch(err => {
+                    console.info(
+                        __(`Font hasn't been able to download: ${err}`)
+                    );
+                });
+            });
         }
-    }
+    };
 
     /**
      * Prepares the styles to be ready for JS FontFace API
@@ -126,26 +137,25 @@ export class FontFamilyResolver {
      * @param {obj} variant Concrete variant of the font with name and url
      * @returns {obj} Styles options for load the font on FontFace API
      */
-    getFontStyle = (variant) => {
+    getFontStyle = variant => {
         const styles = variant.split(/([0-9]+)/).filter(Boolean);
         if (styles.length > 1) {
             return {
                 style: `${styles[1]}`,
-                weight: `${styles[0]}`
+                weight: `${styles[0]}`,
             };
-        } else {
-            const regExp = new RegExp('([0-9]+)', 'gm');
-            if (styles[0].search(regExp) >= 0) {  // number
-                return { weight: `${styles[0]}` };
-            } else {
-                return { style: `${styles[0]}` };
-            }
         }
-    }
+        const regExp = new RegExp('([0-9]+)', 'gm');
+        if (styles[0].search(regExp) >= 0) {
+            // number
+            return { weight: `${styles[0]}` };
+        }
+        return { style: `${styles[0]}` };
+    };
 }
 
 document.onreadystatechange = function () {
     if (document.readyState === 'complete') {
-        new FontFamilyResolver;
+        new FontFamilyResolver();
     }
-}
+};

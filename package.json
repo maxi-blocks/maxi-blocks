@@ -5,7 +5,8 @@
   "scripts": {
     "start": "cgb-scripts start",
     "build": "cgb-scripts build",
-    "eject": "cgb-scripts eject"
+    "eject": "cgb-scripts eject",
+    "lint": "eslint --fix src/*"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.13.1",

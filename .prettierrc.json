@@ -1,7 +1,7 @@
 {
     "prettier": "@wordpress/prettier-config",
     "useTabs": false,
-    "tabWidth": 2,
+    "tabWidth": 4,
     "singleQuote": true,
     "jsxSingleQuote": true,
     "arrowParens": "avoid",

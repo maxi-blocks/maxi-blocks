@@ -19,14 +19,14 @@
   "plugins": ["react", "import"],
   "rules": {
     "semi": "error",
-    "indent": ["warn", 4],
+    "indent": ["warn", 2],
     "no-shadow": "warn",
     "object-curly-spacing": ["error", "always"],
     "array-bracket-spacing": ["error", "always"],
     "arrow-body-style": ["error", "as-needed"],
     "arrow-parens": ["error", "as-needed"],
     "quotes": ["warn", "single", { "avoidEscape": true }],
-    "space-before-function-paren": ["error", "always"],
+    // "space-before-function-paren": ["error", "always"],
     "jsx-quotes": ["warn", "prefer-single"],
     "react/jsx-filename-extension": [
       1,
@@ -34,14 +34,14 @@
         "extensions": [".js", ".jsx"]
       }
     ],
-    "react/jsx-indent": ["error", 4],
-    "react/jsx-indent-props": ["error", 4],
+    "react/jsx-indent": ["error", 2],
+    "react/jsx-indent-props": ["error", 2],
     "prettier/prettier": [
       "error",
       {
         "prettier": "@wordpress/prettier-config",
         "useTabs": false,
-        // "tabWidth": 2,
+        "tabWidth": 2,
         "singleQuote": true,
         "jsxSingleQuote": true,
         "bracketSpacing": true,
@@ -51,8 +51,10 @@
     "react/jsx-pascal-case": ["off", { "allowAllCaps": "true", "ignore": [] }], // Temporary deactivate
     "react/jsx-curly-newline": "off",
     "react/react-in-jsx-scope": "off",
+    "no-underscore-dangle": "off",
     "react/prop-types": "off", // Temporary deactivate
     "react/jsx-props-no-spreading": "off", // Temporary deactivate
+    "import/no-extraneous-dependencies": "off", // Temporary deactivate
     "import/first": "off", // Temporary deactivate
     "import/order": "off", // Needs to be organized
     "require-jsdoc": "off", // Temporary deactivate

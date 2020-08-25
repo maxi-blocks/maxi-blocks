@@ -40,16 +40,13 @@
 	min-height: 45px;
 	transition: all 0.5s;
 }
-#maxi-button__layout:before,
-#maxi-button__go-to-customizer:before {
-	display: inline-block;
-	content: '';
-	background-image: url('../img/maxi-logo.svg');
-    background-size: 18px 18px;
-    height: 18px;
-    width: 18px;
-    margin: 0 5px 2px 0;
+#maxi-button__layout img,
+#maxi-button__go-to-customizer img {
+	width: 18px;
+	height: 18px;
+	margin: 0 5px 0 0;
 }
+
 #maxi-button__layout:hover,
 #maxi-button__go-to-customizer:hover {
 	border-color: #ff4a17;

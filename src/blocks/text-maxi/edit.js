@@ -254,7 +254,7 @@ class edit extends MaxiBlock {
                         tagName={typeOfList}
                         onChange={content =>setAttributes({ content })}
                         value={content}
-                        placeholder={__('Write list…')}
+                        placeholder={__('Write list…', 'maxi-blocks')}
                         onMerge={mergeBlocks}
                         onSplit={(value) => createBlock(name, { ...this.props.attributes, values: value })}
                         __unstableOnSplitMiddle={() => createBlock('maxi-blocks/text-maxi')}

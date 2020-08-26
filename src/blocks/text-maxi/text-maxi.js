@@ -10,7 +10,6 @@
  */
 const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
-const { registerFormatType } = wp.richText;
 
 /**
  * Block dependencies
@@ -54,14 +53,3 @@ registerBlockType('maxi-blocks/text-maxi', {
 	edit,
 	save
 });
-
-for (let i = 1; i <= 6; i++) {
-	registerFormatType(
-		`h${i}`,
-		{
-			title: `H${i}`,
-			tagName: `h${i}`,
-			className: null,
-		}
-	);
-}

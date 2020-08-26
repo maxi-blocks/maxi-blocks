@@ -76,13 +76,6 @@ const TextListOptions = props => {
 
         let newContent = content;
 
-        // if (isList) {
-        //     newContent = content
-        //         .replace(/<li>/gi, '')
-        //         .replace(/<\/li>(?=.*<\/li>)/gi, '<br>')
-        //         .replace(/<\/li>/gi, '');
-        // }
-
         if (!isList) {
             newContent = '';
             newContent = `<li>${content.replace(/<br>/gi, '</li><li>')}</li>`;

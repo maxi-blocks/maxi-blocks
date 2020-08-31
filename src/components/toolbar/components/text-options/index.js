@@ -8,6 +8,14 @@ const {
     Button,
     BaseControl,
 } = wp.components;
+const { useSelect } = wp.data;
+const {
+    applyFormat,
+    create,
+    toHTMLString,
+    getActiveFormat,
+    registerFormatType
+} = wp.richText;
 
 /**
  * Internal dependencies
@@ -20,7 +28,9 @@ import ToolbarPopover from '../toolbar-popover';
  * External dependencies
  */
 import {
+    isObject,
     isEmpty,
+    isNil,
     trim
 } from 'lodash';
 
@@ -34,6 +44,19 @@ import {
 } from '../../../../icons';
 
 /**
+ * Register format
+ */
+registerFormatType('maxi-blocks/text-size', {
+    title: 'Text color',
+    tagName: 'span',
+    className: 'maxi-text-block--has-size',
+    attributes: {
+        style: 'style',
+        size: 'number'
+    },
+});
+
+/**
  * TextOptions
  */
 const TextOptions = props => {
@@ -41,24 +64,77 @@ const TextOptions = props => {
         blockName,
         typography,
         onChange,
+        node,
+        content,
         breakpoint
     } = props;
-
-    const defaultRawTypography = getBlockAttributes('maxi-blocks/text-maxi').typography;
 
     if (blockName != 'maxi-blocks/text-maxi')
         return null;
 
+    const defaultRawTypography = getBlockAttributes('maxi-blocks/text-maxi').typography;
+    const formatName = 'maxi-blocks/text-size';
+
+    const { formatValue, isActive, currentSize } = useSelect(
+        (select) => {
+            const { getSelectionStart, getSelectionEnd } = select(
+                'core/block-editor'
+            );
+            const formatValue = create({
+                element: node.querySelector('p'),
+                html: content,
+            });
+            formatValue['start'] = getSelectionStart().offset;
+            formatValue['end'] = getSelectionEnd().offset;
+
+            const activeFormat = getActiveFormat(formatValue, formatName);
+            const isActive =
+                !isNil(activeFormat) && activeFormat.type === formatName || false;
+
+            const currentSize =
+                isActive && activeFormat.attributes.size || '';
+
+            return {
+                formatValue,
+                isActive,
+                currentSize
+            };
+        },
+        [getActiveFormat, node, content]
+    );
+
+    const onChangeSize = (val) => {
+        if (formatValue.start === formatValue.end) {
+            value[breakpoint]['font-size'] = isEmpty(val) ? '' : Number(val);
+            updateTypography();
+            return;
+        }
+
+        const newFormat = applyFormat(formatValue, {
+            type: formatName,
+            isActive: isActive,
+            attributes: {
+                style: `font-size: ${isEmpty(val) ? '' : Number(val)}${value[breakpoint]['font-sizeUnit']}`,
+                size: val
+            }
+        });
+
+        const newContent = toHTMLString({
+            value: newFormat,
+        });
+
+        onChange({ typography: JSON.stringify(value), content: newContent });
+    };
+
     const updateTypography = () => {
-        onChange(JSON.stringify(value))
-    }
+        onChange({ typography: JSON.stringify(value), content: content });
+    };
 
-    let value = typeof typography != 'object' ?
-        JSON.parse(typography) :
-        typography;
+    const value =
+        (!isObject(typography) && JSON.parse(typography)) || typography;
 
-    let defaultTypography = typeof defaultRawTypography != 'object' ?
-        JSON.parse(defaultRawTypography) :
+    const defaultTypography = typeof defaultRawTypography != 'object' &&
+        JSON.parse(defaultRawTypography) ||
         defaultRawTypography;
 
     return (
@@ -107,10 +183,9 @@ const TextOptions = props => {
                         >
                             <input
                                 type='number'
-                                value={trim(getLastBreakpointValue(value, 'font-size', breakpoint))}
+                                value={trim(isActive && Number(currentSize) || getLastBreakpointValue(value, 'font-size', breakpoint))}
                                 onChange={e => {
-                                    value[breakpoint]['font-size'] = isEmpty(e.target.value) ? '' : Number(e.target.value);
-                                    updateTypography();
+                                    onChangeSize(e.target.value);
                                 }}
 
                             />
@@ -118,7 +193,7 @@ const TextOptions = props => {
                                 className="components-maxi-control__reset-button"
                                 onClick={() => {
                                     value[breakpoint]['font-size'] = defaultTypography[breakpoint]['font-size'];
-                                    updateTypography();
+                                    onChangeSize(null);
                                 }}
                                 isSmall
                                 aria-label={sprintf(

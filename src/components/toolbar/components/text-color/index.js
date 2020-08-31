@@ -21,7 +21,7 @@ import ToolbarPopover from '../toolbar-popover';
 /**
  * External dependencies
  */
-import { isObject, find } from 'lodash';
+import { isObject, isNil } from 'lodash';
 
 /**
  * Icons
@@ -59,7 +59,7 @@ const TextColor = (props) => {
 
     const formatName = 'maxi-blocks/text-color';
 
-    const { formatValue, isActive } = useSelect(
+    const { formatValue, isActive, currentColor } = useSelect(
         (select) => {
             const { getSelectionStart, getSelectionEnd } = select(
                 'core/block-editor'
@@ -71,12 +71,17 @@ const TextColor = (props) => {
             formatValue['start'] = getSelectionStart().offset;
             formatValue['end'] = getSelectionEnd().offset;
 
+            const activeFormat = getActiveFormat(formatValue, formatName);
             const isActive =
-                find(getActiveFormat(formatValue, formatName)) === formatName;
+                !isNil(activeFormat) && activeFormat.type === formatName || false;
+
+            const currentColor =
+                isActive && activeFormat.attributes.color || '';
 
             return {
                 formatValue,
                 isActive,
+                currentColor
             };
         },
         [getActiveFormat, node, content]
@@ -92,8 +97,8 @@ const TextColor = (props) => {
             type: formatName,
             isActive: isActive,
             attributes: {
-                color: val.hex,
-                style: `color: ${val.hex}`
+                style: `color: ${val.hex}`,
+                color: val.hex
             }
         });
 
@@ -116,11 +121,6 @@ const TextColor = (props) => {
 
     const value =
         (!isObject(typography) && JSON.parse(typography)) || typography;
-
-    const currentColor = isActive && formatValue.formats[formatValue.start].map(format => {
-        if (format.type === 'maxi-blocks/text-color')
-            return format.attributes.color;
-    })[0] || '';
 
     return (
         <ToolbarPopover

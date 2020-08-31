@@ -166,9 +166,9 @@ const MaxiToolbar = (props) => {
                         <TextOptions
                             blockName={name}
                             typography={typography}
-                            onChange={(typography) =>
-                                setAttributes({ typography })
-                            }
+                            onChange={(obj) => setAttributes(obj)}
+                            node={anchorRef}
+                            content={content}
                             breakpoint={deviceType}
                         />
                         <TextColor

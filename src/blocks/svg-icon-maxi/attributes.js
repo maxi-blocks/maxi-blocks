@@ -12,25 +12,17 @@ const attributes = {
         type: 'string',
         default: 'full'
     },
-    cropOptions: {
-        type: 'string',
-        default: JSON.stringify(attributesData.cropOptions)
-    },
     alignment: {
         type: 'string',
         default: JSON.stringify(attributesData.alignment)
     },
-    captionType: {
-        type: 'string',
-        default: 'none'
-    },
-    captionContent: {
+    content: {
         type: 'string',
         default: ''
     },
-    captionTypography: {
+    hoverContent: {
         type: 'string',
-        default: JSON.stringify(attributesData.typography)
+        default: ''
     },
     fullWidth: {
         type: 'string',
@@ -51,6 +43,18 @@ const attributes = {
     background: {
         type: 'string',
         default: JSON.stringify(attributesData.background)
+    },
+    svgColorOrange: {
+        type: 'string',
+        default: '#FF4A17'
+    },
+    svgColorBlack: {
+        type: 'string',
+        default: '#081219'
+    },
+    svgColorWhite: {
+        type: 'string',
+        default: '#FFF'
     },
     backgroundHover: {
         type: 'string',
@@ -80,35 +84,6 @@ const attributes = {
         type: 'string',
         default: JSON.stringify(attributesData.margin)
     },
-    mediaID: {
-        type: 'number',
-    },
-    mediaURL: {
-        type: 'string'
-    },
-    mediaALT: {
-        type: 'string'
-    },
-    mediaALTwp: {
-        type: 'string'
-    },
-    mediaALTtitle: {
-        type: 'string'
-    },
-    altSelector: {
-        type: 'string',
-        default: 'wordpress',
-
-    },
-    mediaURL: {
-        type: 'string'
-    },
-    mediaWidth: {
-        type: 'number'
-    },
-    mediaHeight: {
-        type: 'number'
-    },
     position: {
         type: 'string',
         default: JSON.stringify(attributesData.__experimentalPosition)
@@ -117,9 +92,9 @@ const attributes = {
         type: 'string',
         default: JSON.stringify(attributesData.__experimentalDisplay)
     },
-    clipPath: {
+    motion: {
         type: 'string',
-        default: ''
+        default: JSON.stringify(attributesData.__experimentalMotion)
     },
     hover: {
         type: 'string',
@@ -129,9 +104,33 @@ const attributes = {
         type: 'string',
         default: JSON.stringify(attributesData.__experimentalTransform)
     },
-    content: {
+    scale: {
+        type: 'number',
+        default: 1.0,
+    },
+    stroke: {
+        type: 'number',
+        default: 2.0,
+    },
+    defaultStroke: {
+        type: 'number',
+        default: 2.0,
+    },
+    animation: {
         type: 'string',
-        default: ''
+        default: 'loop',
+    },
+    duration: {
+        type: 'number',
+        default: 3.7,
+    },
+    size: {
+        type: 'string',
+        default: JSON.stringify(size)
+    },
+    width: {
+        type: 'number',
+        default: 64
     }
 }
 

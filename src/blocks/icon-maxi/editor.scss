@@ -1,11 +1,11 @@
-.maxi-image-block {
+.maxi-icon-block {
 	.maxi-imageupload-button {
 		height: 100%;
 	}
 
 	&__resizer {
 		&:hover {
-			.maxi-image-block__settings {
+			.maxi-icon-block__settings {
 				&__upload-button {
 					opacity: 0.6;
 					visibility: visible;
@@ -14,22 +14,6 @@
 						opacity: 1;
 					}
 				}
-			}
-		}
-
-		.components-resizable-box__handle {
-			display: none;
-			visibility: hidden;
-
-			&:after {
-				background: #ff4a17;
-			}
-		}
-
-		&:hover {
-			.components-resizable-box__handle {
-				display: block;
-				visibility: visible;
 			}
 		}
 	}
@@ -60,18 +44,19 @@
 	}
 
 	.maxi-imageupload-button {
+		z-index: 1;
 		svg {
 			max-width: 100%;
 			height: auto;
 		}
 	}
 
-	img {
+	&__image {
 		display: block;
-		width: 100%;
+		width: 100% !important;
 	}
 
-	figcaption {
+	&__caption {
 		width: 100%;
 	}
 }

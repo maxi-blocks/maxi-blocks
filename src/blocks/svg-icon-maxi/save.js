@@ -7,6 +7,7 @@ import { __experimentalBackgroundDisplayer } from '../../components';
  * External dependencies
  */
 import classnames from 'classnames';
+import { RawHTML } from '@wordpress/element';
 import {
     isNil,
     isEmpty,
@@ -25,18 +26,10 @@ const save = props => {
             fullWidth,
             background,
             extraClassName,
-            captionType,
-            captionContent,
-            mediaID,
-            mediaURL,
-            mediaWidth,
-            mediaHeight,
-            mediaALT,
-            mediaALTwp,
-            mediaALTtitle,
-            altSelector,
+            motion,
             hover,
-            content
+            content,
+            hoverContent
         },
     } = props;
 
@@ -48,7 +41,8 @@ const save = props => {
     } = JSON.parse(hover);
 
     let classes = classnames(
-        'maxi-block maxi-icon-block',
+        `maxi-motion-effect maxi-motion-effect-${uniqueID}`,
+        `maxi-block maxi-svg-icon-block`,
         blockStyle,
         extraClassName,
         uniqueID,
@@ -61,30 +55,17 @@ const save = props => {
             null
     );
 
-    const imageALT = () => {
-        switch (altSelector) {
-            case "wordpress": return mediaALTwp;
-            case "title": return mediaALTtitle;
-            case "custom": return mediaALT;
-            default: return '';
-        }
-    }
-
     return (
-        <div
-            className={classes}
+        <div className={classes}
             data-maxi_initial_block_class={defaultBlockStyle}
-            data-hover={JSON.stringify(hoverSettings)}
-        >
+            data-motion={motion}
+            data-motion-id={uniqueID}
+            >
+
+            <RawHTML>{ content }</RawHTML>
             <__experimentalBackgroundDisplayer
                 background={background}
             />
-             <div className={`maxi-icon-block__icon`} >
-                <div
-                    className={`maxi-icon-block__icon_content`}>
-                    {content}
-                </div>
-            </div>
         </div>
     );
 }

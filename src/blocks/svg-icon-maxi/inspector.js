@@ -24,9 +24,12 @@ import {
     BlockStylesControl,
     BoxShadowControl,
     FullSizeControl,
-    ImageCropControl,
     SettingTabsControl,
     TypographyControl,
+    SvgStrokeWidthControl,
+    SvgAnimationControl,
+    SvgAnimationDurationControl,
+    SvgWidthControl,
     __experimentalResponsiveSelector,
     __experimentalZIndexControl,
     __experimentalAxisControl,
@@ -34,6 +37,7 @@ import {
     __experimentalOpacityControl,
     __experimentalPositionControl,
     __experimentalDisplayControl,
+    __experimentalMotionControl,
     __experimentalTransformControl,
     __experimentalClipPath,
     __experimentalEntranceAnimationControl,
@@ -60,13 +64,10 @@ const Inspector = props => {
             isFirstOnHierarchy,
             blockStyle,
             defaultBlockStyle,
-            imageSize,
-            cropOptions,
             fullWidth,
             alignment,
-            captionType,
-            captionContent,
-            captionTypography,
+            content,
+            hoverContent,
             background,
             opacity,
             boxShadow,
@@ -78,11 +79,8 @@ const Inspector = props => {
             opacityHover,
             boxShadowHover,
             borderHover,
-            mediaID,
             extraClassName,
             zIndex,
-            mediaALT,
-            altSelector,
             breakpoints,
             position,
             display,
@@ -90,9 +88,17 @@ const Inspector = props => {
             transform,
             clipPath,
             hover,
-            content
+            scale,
+            svgColorOrange,
+            svgColorBlack,
+            svgColorWhite,
+            stroke,
+            defaultStroke,
+            animation,
+            duration,
+            isHovered,
+            width,
         },
-        imageData,
         clientId,
         deviceType,
         setAttributes,
@@ -102,47 +108,110 @@ const Inspector = props => {
         JSON.parse(size) :
         size;
 
-    const defaultSize = JSON.parse(getDefaultProp(clientId, 'size'));
-
-    const altSelectorOptions = [
-        { label: __('WordPress ALT', 'maxi-blocks'), value: 'wordpress' },
-        { label: __('Image Title', 'maxi-blocks'), value: 'title' },
-        { label: __('Custom', 'maxi-blocks'), value: 'custom' },
-        { label: __('None', 'maxi-blocks'), value: 'none' },
-    ]
-
-    const getSizeOptions = () => {
-        let response = [];
-        if (imageData) {
-            let sizes = imageData.media_details.sizes;
-            sizes = Object.entries(sizes).sort((a, b) => {
-                return a[1].width - b[1].width;
-            })
-            sizes.map(size => {
-                const name = capitalize(size[0]);
-                const val = size[1];
-                response.push({
-                    label: `${name} - ${val.width}x${val.height}`,
-                    value: size[0]
-                })
-            })
+    function isAnimatedSvg() {
+        if(wp.data.select( 'core/block-editor' ).getSelectedBlock() !== null) {
+            let clientId = wp.data.select('core/block-editor').getSelectedBlock().clientId;
+            let current_content = wp.data.select( 'core/block-editor' ).getSelectedBlock().attributes.content;
+            if (current_content.indexOf('<animate') !== -1 || current_content.indexOf('<!--animate') !== -1) {
+                let new_content = current_content.replace(/animatetransform'/g, 'animatetransform');
+                wp.data.dispatch('core/block-editor').updateBlockAttributes(clientId, {content: new_content})
+                return true;
+            }
+            else return false;
         }
-        response.push({
-            label: 'Custom', value: 'custom'
-        });
-        return response;
+        else return false;
     }
 
-    const getCaptionOptions = () => {
-        let response = [
-            { label: 'None', value: 'none' },
-            { label: 'Custom Caption', value: 'custom' },
-        ];
-        if (imageData && !isEmpty(imageData.caption.rendered)) {
-            const newCaption = { label: 'Attachment Caption', value: 'attachment' };
-            response.splice(1, 0, newCaption)
+    function changeSvgStrokeWidth(width) {
+
+        if(width) {
+            let clientId = wp.data.select('core/block-editor').getSelectedBlock().clientId;
+            let current_content = wp.data.select( 'core/block-editor' ).getSelectedBlock().attributes.content;
+            let regex_line_to_change = new RegExp('stroke-width=".+?(?= )', 'g');
+            let change_to = 'stroke-width="' + width+'"';
+            let new_content = current_content.replace(regex_line_to_change, change_to);
+
+            wp.data.dispatch('core/block-editor').updateBlockAttributes(clientId, {content: new_content})
         }
-        return response;
+    }
+
+    function changeSvgAnimation(animation) {
+        let clientId = wp.data.select('core/block-editor').getSelectedBlock().clientId;
+        let current_content = wp.data.select( 'core/block-editor' ).getSelectedBlock().attributes.content;
+        let new_content = '';
+        let hover_content = '';
+
+        switch(animation){
+            case 'loop':
+                new_content = current_content.replace(/repeatCount="1"/g,  'repeatCount="indefinite"');
+                new_content = new_content.replace(/dur="0"/g, 'dur="3.667s"');
+                break;
+            case 'load-once':
+                new_content = current_content.replace(/repeatCount="indefinite"/g,  'repeatCount="1"');
+                new_content = new_content.replace(/dur="0"/g, 'dur="3.667s"');
+                break;
+            case 'hover-loop':
+                new_content = current_content.replace(new RegExp('dur=".+?(?= )', 'g'), 'dur="0"');
+               // hover_content = current_content.replace(/repeatCount="1"/g,  'repeatCount="indefinite"');
+                //hover_content = hover_content.replace(/dur="0"/g, 'dur="3.667s"');
+                break;
+            case 'hover-once':
+                break;
+            case 'hover-off':
+                break;
+            case 'off':
+                new_content = current_content.replace(new RegExp('dur=".+?(?= )', 'g'), 'dur="0"');
+                break;
+            default:
+                return;
+        }
+
+        console.log('animation: '+animation);
+
+        if(new_content !== '') wp.data.dispatch('core/block-editor').updateBlockAttributes(clientId, {content: new_content})
+
+    }
+
+    function changeSvgAnimationDuration(duration) {
+        let clientId = wp.data.select('core/block-editor').getSelectedBlock().clientId;
+        let current_content = wp.data.select( 'core/block-editor' ).getSelectedBlock().attributes.content;
+        let new_content = '';
+
+        let regex_line_to_change = new RegExp('dur=".+?(?= )', 'g');
+        let change_to = 'dur="' + duration+'s"';
+        new_content = current_content.replace(regex_line_to_change, change_to );
+
+        if(new_content !== '') wp.data.dispatch('core/block-editor').updateBlockAttributes(clientId, {content: new_content})
+
+    }
+
+    function changeSvgSize(width) {
+        let clientId = wp.data.select('core/block-editor').getSelectedBlock().clientId;
+        let current_content = wp.data.select( 'core/block-editor' ).getSelectedBlock().attributes.content;
+        let new_content = '';
+
+        let regex_line_to_change = new RegExp('width=".+?(?=")');
+        let change_to = 'width="' +width;
+
+        let regex_line_to_change2 = new RegExp('height=".+?(?=")');
+        let change_to2 = 'height="' +width;
+
+        new_content = current_content.replace(regex_line_to_change, change_to );
+        new_content = new_content.replace(regex_line_to_change2, change_to2 );
+
+        if (new_content.indexOf('viewBox') !== -1) {
+            // let regex_line_to_change3 = new RegExp('viewBox=".+?(?=")');
+            // let change_to3 = 'viewBox="0 0 ' +width+' '+ width;
+
+            // new_content = new_content.replace(regex_line_to_change3, change_to3 );
+        }
+        else {
+            let change_to3 = ' viewBox="0 0 64 64"><defs>';
+            new_content = new_content.replace(/><defs>/, change_to3 );
+        }
+
+        if(new_content !== '') wp.data.dispatch('core/block-editor').updateBlockAttributes(clientId, {content: new_content})
+
     }
 
     return (
@@ -178,83 +247,6 @@ const Inspector = props => {
                                                 />
                                             )
                                         },
-                                        function () {
-                                            if (deviceType === 'general') {
-                                                return {
-                                                    label: __('Width / Height', 'maxi-blocks'),
-                                                    content: (
-                                                        <Fragment>
-                                                            <SelectControl
-                                                                label={__('Image Size', 'maxi-blocks')}
-                                                                value={imageSize || imageSize == 'custom' ? imageSize : 'full'} // is still necessary?
-                                                                options={getSizeOptions()}
-                                                                onChange={imageSize => setAttributes({ imageSize })}
-                                                            />
-                                                            {
-                                                                imageSize === 'custom' &&
-                                                                <ImageCropControl
-                                                                    mediaID={mediaID}
-                                                                    cropOptions={JSON.parse(cropOptions)}
-                                                                    onChange={cropOptions => setAttributes({ cropOptions: JSON.stringify(cropOptions) })}
-                                                                />
-                                                            }
-                                                            <RangeControl
-                                                                label={__('Width', 'maxi-blocks')}
-                                                                value={sizeValue.general.width}
-                                                                onChange={val => {
-                                                                    if (isNil(val))
-                                                                        sizeValue.general.width = defaultSize.general.width;
-                                                                    else
-                                                                        sizeValue.general.width = val;
-
-                                                                    setAttributes({ size: JSON.stringify(sizeValue) })
-                                                                }}
-                                                                allowReset
-                                                                initialPosition={defaultSize.general.width}
-                                                            />
-                                                        </Fragment>
-                                                    )
-                                                }
-                                            }
-                                        }(),
-                                        function () {
-                                            if (deviceType === 'general') {
-                                                return {
-                                                    label: __('Caption', 'maxi-blocks'),
-                                                    content: (
-                                                        <Fragment>
-                                                            <SelectControl
-                                                                value={captionType}
-                                                                options={getCaptionOptions()}
-                                                                onChange={captionType => {
-                                                                    setAttributes({ captionType });
-                                                                    if (imageData && captionType === 'attachment')
-                                                                        setAttributes({ captionContent: imageData.caption.raw })
-                                                                }}
-                                                            />
-                                                            {
-                                                                captionType === 'custom' &&
-                                                                <TextareaControl
-                                                                    className='custom-caption'
-                                                                    placeHolder={__('Add you Custom Caption here', 'maxi-blocks')}
-                                                                    value={captionContent}
-                                                                    onChange={captionContent => setAttributes({ captionContent })}
-                                                                />
-                                                            }
-                                                            {
-                                                                captionType != 'none' &&
-                                                                <TypographyControl
-                                                                    typography={captionTypography}
-                                                                    defaultTypography={getDefaultProp(clientId, 'captionTypography')}
-                                                                    onChange={captionTypography => setAttributes({ captionTypography })}
-                                                                    breakpoint={deviceType}
-                                                                />
-                                                            }
-                                                        </Fragment>
-                                                    )
-                                                }
-                                            }
-                                        }(),
                                         {
                                             label: __('Background', 'maxi-blocks'),
                                             disablePadding: true,
@@ -340,29 +332,35 @@ const Inspector = props => {
                                             )
                                         },
                                         {
+                                            label: __('Line Width', 'maxi-blocks'),
+                                            content: (
+                                                <SvgStrokeWidthControl
+                                                    stroke={stroke}
+                                                    defaultStroke={defaultStroke}
+                                                    onChange={stroke => {setAttributes({ stroke }); changeSvgStrokeWidth(stroke)}}
+                                                    breakpoint={deviceType}
+                                                />
+                                            )
+                                        },
+                                        {
                                             label: __('Width / Height', 'maxi-blocks'),
                                             content: (
-                                                <Fragment>
-                                                    {
-                                                        isFirstOnHierarchy &&
-                                                        <SelectControl
-                                                            label={__('Full Width', 'maxi-blocks')}
-                                                            value={fullWidth}
-                                                            options={[
-                                                                { label: __('No', 'maxi-blocks'), value: 'normal' },
-                                                                { label: __('Yes', 'maxi-blocks'), value: 'full' }
-                                                            ]}
-                                                            onChange={fullWidth => setAttributes({ fullWidth })}
-                                                        />
-                                                    }
-                                                    <FullSizeControl
-                                                        size={size}
-                                                        defaultSize={getDefaultProp(clientId, 'size')}
-                                                        onChange={size => setAttributes({ size })}
-                                                        breakpoint={deviceType}
-                                                        hideWidth
-                                                    />
-                                                </Fragment>
+                                                <FullSizeControl
+                                                    size={size}
+                                                    defaultSize={getDefaultProp(clientId, 'size')}
+                                                    onChange={size => {setAttributes({ size }); changeSvgSize(size)}}
+                                                    breakpoint={deviceType}
+                                                />
+                                            )
+                                        },
+                                        {
+                                            label: __('Width', 'maxi-blocks'),
+                                            content: (
+                                                <SvgWidthControl
+                                                    width={width}
+                                                    onChange={width => {setAttributes({ width }); changeSvgSize(width)}}
+                                                    breakpoint={deviceType}
+                                                />
                                             )
                                         },
                                         {
@@ -416,7 +414,25 @@ const Inspector = props => {
                                                     />
                                                 </Fragment>
                                             )
-                                        }
+                                        },
+                                        isAnimatedSvg() &&
+                                            {
+                                                label: __('SVG Animation', 'maxi-blocks'),
+                                                content: (
+                                                    <Fragment>
+                                                    <SvgAnimationControl
+                                                        animation={animation}
+                                                        onChange={animation => {setAttributes({ animation }); changeSvgAnimation(animation)}}
+
+                                                    />
+                                                    <SvgAnimationDurationControl
+                                                        duration={duration}
+                                                        onChange={duration =>{setAttributes({ duration }); changeSvgAnimationDuration(duration)} }
+
+                                                    />
+                                                    </Fragment>
+                                                )
+                                            },
                                     ]}
                                 />
                             </Fragment>
@@ -444,23 +460,6 @@ const Inspector = props => {
                                         onChange={zIndex => setAttributes({ zIndex })}
                                         breakpoint={deviceType}
                                     />
-                                    <SelectControl
-                                        label={__('Image ALT Tag', 'maxi-blocks')}
-                                        value={altSelector}
-                                        options={altSelectorOptions}
-                                        onChange={altSelector => {
-                                            setAttributes({ altSelector });
-                                        }}
-                                    />
-                                    {
-                                        altSelector == 'custom' &&
-                                        <TextControl
-                                            placeHolder={__('Add Your ALT Tag Here', 'maxi-blocks')}
-                                            className='maxi-image__alt'
-                                            value={mediaALT}
-                                            onChange={mediaALT => setAttributes({ mediaALT })}
-                                        />
-                                    }
                                     {
                                         deviceType != 'general' &&
                                         <__experimentalResponsiveControl
@@ -491,12 +490,31 @@ const Inspector = props => {
                                     isPrimary
                                     items={[
                                         {
+                                            label: __('Motion Effects', 'maxi-blocks'),
+                                            content: (
+                                                <__experimentalMotionControl
+                                                    motion={motion}
+                                                    onChange={motion => setAttributes({ motion })}
+                                                />
+                                            )
+                                        },
+                                        {
                                             label: __('Hover Effects', 'maxi-blocks'),
                                             content: (
                                                 <__experimentalHoverEffectControl
                                                     hover={hover}
                                                     defaultHover={getDefaultProp(clientId, 'hover')}
                                                     onChange={hover => setAttributes({ hover })}
+                                                />
+                                            )
+                                        },
+                                        {
+                                            label: __('Entrance Animation', 'maxi-blocks'),
+                                            content: (
+                                                <__experimentalEntranceAnimationControl
+                                                    motion={motion}
+                                                    defaultMotion={getDefaultProp(clientId, 'motion')}
+                                                    onChange={motion => setAttributes({ motion })}
                                                 />
                                             )
                                         },

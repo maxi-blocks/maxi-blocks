@@ -24,6 +24,7 @@ const ALLOWED_BLOCKS = [
     'maxi-blocks/image-maxi',
     'maxi-blocks/divider-maxi',
     'maxi-blocks/section-maxi',
+    'maxi-blocks/svg-icon-maxi',
 ]
 
 const BoxShadow = props => {

@@ -1,8 +1,8 @@
 /**
- * BLOCK: maxi-blocks/icon-maxi
+ * BLOCK: maxi-blocks/image-maxi
  *
- * Registering an icon block with Gutenberg.
- * Shows an icon and a description. A test block.
+ * Registering an image block with Gutenberg.
+ * Shows an image and a description. A test block.
  */
 
 /**
@@ -28,10 +28,10 @@ import { iconBox } from '../../icons';
 /**
  * Block
  */
-registerBlockType( 'maxi-blocks/icon-maxi', {
-	title: __('Icon Maxi', 'maxi-blocks'),
+registerBlockType( 'maxi-blocks/svg-icon-maxi', {
+	title: __('SVG Icon Maxi', 'maxi-blocks'),
 	icon: iconBox,
-	description: "Insert, modify or style an icon",
+	description: "Insert, modify or style SVG icons",
 	category: 'maxi-blocks',
 	supports: {
 		align: true,

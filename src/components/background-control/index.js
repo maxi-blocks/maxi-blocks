@@ -370,7 +370,7 @@ const BackgroundControl = props => {
                         )
                     }
                 </Fragment>
-            },
+            }
             {
                 isOpen &&
                 backgroundItems === 'image' &&

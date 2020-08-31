@@ -3,11 +3,7 @@
  */
 const { Popover } = wp.components;
 const { useSelect } = wp.data;
-const {
-    Fragment,
-    useEffect,
-    useState
-} = wp.element;
+const { Fragment, useEffect, useState } = wp.element;
 
 /**
  * Utils
@@ -62,7 +58,7 @@ const allowedBlocks = [
 /**
  * Component
  */
-const MaxiToolbar = props => {
+const MaxiToolbar = (props) => {
     const {
         attributes: {
             uniqueID,
@@ -90,69 +86,54 @@ const MaxiToolbar = props => {
             lineHorizontal,
             content,
             isList,
-            typeOfList
+            typeOfList,
         },
         clientId,
         isSelected,
         name,
-        setAttributes
+        setAttributes,
     } = props;
 
-    const { deviceType } = useSelect(
-        select => {
-            const {
-                __experimentalGetPreviewDeviceType
-            } = select(
-                'core/edit-post'
-            );
-            let deviceType = __experimentalGetPreviewDeviceType();
-            deviceType = deviceType === 'Desktop' ?
-                'general' :
-                deviceType;
-            return {
-                deviceType,
-            }
-        }
-    );
+    const { deviceType } = useSelect((select) => {
+        const { __experimentalGetPreviewDeviceType } = select('core/edit-post');
+        let deviceType = __experimentalGetPreviewDeviceType();
+        deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
+        return {
+            deviceType,
+        };
+    });
 
     const [anchorRef, setAnchorRef] = useState(
         document.getElementById(`block-${clientId}`)
-    )
+    );
 
     useEffect(() => {
         setAnchorRef(document.getElementById(`block-${clientId}`));
-    })
+    });
 
-    if (!allowedBlocks.includes(name))
-        return null;
+    if (!allowedBlocks.includes(name)) return null;
 
     return (
         <Fragment>
-            {
-                isSelected &&
-                anchorRef &&
+            {isSelected && anchorRef && (
                 <Popover
                     noArrow
                     animate={false}
                     position='top center right'
                     focusOnMount={false}
                     anchorRef={anchorRef}
-                    className="maxi-toolbar__popover"
+                    className='maxi-toolbar__popover'
                     uniqueid={uniqueID}
                     __unstableSticky={true}
-                    __unstableSlotName="block-toolbar"
+                    __unstableSlotName='block-toolbar'
                     shouldAnchorIncludePadding
                 >
-                    <div
-                        className='toolbar-wrapper'
-                    >
-                        <Mover
-                            clientId={clientId}
-                        />
+                    <div className='toolbar-wrapper'>
+                        <Mover clientId={clientId} />
                         <DividerColor
                             blockName={name}
                             divider={divider}
-                            onChange={divider => setAttributes({ divider })}
+                            onChange={(divider) => setAttributes({ divider })}
                         />
                         <Divider
                             blockName={name}
@@ -172,26 +153,38 @@ const MaxiToolbar = props => {
                             lineHorizontal={lineHorizontal}
                             divider={divider}
                             blockName={name}
-                            onChangeOrientation={(lineOrientation) => setAttributes({ lineOrientation })}
-                            onChangeHorizontal={(lineHorizontal) => setAttributes({ lineHorizontal })}
-                            onChangeVertical={(lineVertical) => setAttributes({ lineVertical })}
+                            onChangeOrientation={(lineOrientation) =>
+                                setAttributes({ lineOrientation })
+                            }
+                            onChangeHorizontal={(lineHorizontal) =>
+                                setAttributes({ lineHorizontal })
+                            }
+                            onChangeVertical={(lineVertical) =>
+                                setAttributes({ lineVertical })
+                            }
                         />
                         <TextOptions
                             blockName={name}
                             typography={typography}
-                            onChange={typography => setAttributes({ typography })}
+                            onChange={(typography) =>
+                                setAttributes({ typography })
+                            }
                             breakpoint={deviceType}
                         />
                         <TextColor
                             blockName={name}
                             typography={typography}
-                            onChange={typography => setAttributes({ typography })}
+                            onChange={(obj) => setAttributes(obj)}
+                            node={anchorRef}
+                            content={content}
                             breakpoint={deviceType}
                         />
                         <Alignment
                             blockName={name}
                             alignment={alignment}
-                            onChange={alignment => setAttributes({ alignment })}
+                            onChange={(alignment) =>
+                                setAttributes({ alignment })
+                            }
                             breakpoint={deviceType}
                         />
                         <TextLevel
@@ -201,47 +194,51 @@ const MaxiToolbar = props => {
                             typographyHover={typographyHover}
                             margin={margin}
                             isList={isList}
-                            onChange={
-                                (
+                            onChange={(
+                                textLevel,
+                                typography,
+                                typographyHover,
+                                margin
+                            ) =>
+                                setAttributes({
                                     textLevel,
                                     typography,
                                     typographyHover,
-                                    margin
-                                ) => setAttributes({
-                                    textLevel,
-                                    typography,
-                                    typographyHover,
-                                    margin
+                                    margin,
                                 })
                             }
                         />
                         <TextBold
                             blockName={name}
                             content={content}
-                            onChange={content => setAttributes({ content })}
+                            onChange={(content) => setAttributes({ content })}
                             node={anchorRef}
                         />
                         <TextItalic
                             blockName={name}
                             content={content}
-                            onChange={content => setAttributes({ content })}
+                            onChange={(content) => setAttributes({ content })}
                             node={anchorRef}
                         />
                         <ColumnPattern
                             clientId={clientId}
                             blockName={name}
                             rowPattern={rowPattern}
-                            onChange={rowPattern => setAttributes({ rowPattern })}
+                            onChange={(rowPattern) =>
+                                setAttributes({ rowPattern })
+                            }
                         />
                         <Link
                             blockName={name}
                             linkSettings={linkSettings}
-                            onChange={linkSettings => setAttributes({ linkSettings })}
+                            onChange={(linkSettings) =>
+                                setAttributes({ linkSettings })
+                            }
                         />
                         <TextLink
                             blockName={name}
                             content={content}
-                            onChange={content => setAttributes({ content })}
+                            onChange={(content) => setAttributes({ content })}
                             node={anchorRef}
                         />
                         <TextListOptions
@@ -249,75 +246,88 @@ const MaxiToolbar = props => {
                             isList={isList}
                             content={content}
                             typeOfList={typeOfList}
-                            onChange={(isList, typeOfList, content) => setAttributes({
-                                isList,
-                                typeOfList,
-                                content,
-                            })}
+                            onChange={(isList, typeOfList, content) =>
+                                setAttributes({
+                                    isList,
+                                    typeOfList,
+                                    content,
+                                })
+                            }
                             node={anchorRef}
                         />
                         <BackgroundColor
                             blockName={name}
                             background={background}
-                            onChange={background => setAttributes({ background })}
+                            onChange={(background) =>
+                                setAttributes({ background })
+                            }
                         />
                         <Border
                             blockName={name}
                             border={border}
-                            onChange={border => setAttributes({ border })}
+                            onChange={(border) => setAttributes({ border })}
                             breakpoint={deviceType}
                         />
-                        {
-                            deviceType === 'general' &&
+                        {deviceType === 'general' && (
                             <ImageSize
                                 clientId={clientId}
                                 blockName={name}
                                 size={size}
-                                onChangeSize={size => setAttributes({ size })}
+                                onChangeSize={(size) => setAttributes({ size })}
                                 width={width}
-                                onChangeWidth={width => setAttributes({ width })}
+                                onChangeWidth={(width) =>
+                                    setAttributes({ width })
+                                }
                                 mediaID={mediaID}
                                 fullWidth={fullWidth}
-                                onChangeFullWidth={fullWidth => setAttributes({ fullWidth })}
+                                onChangeFullWidth={(fullWidth) =>
+                                    setAttributes({ fullWidth })
+                                }
                                 isFirstOnHierarchy={isFirstOnHierarchy}
-                                onChangeCaption={captionType => setAttributes({ captionType })}
+                                onChangeCaption={(captionType) =>
+                                    setAttributes({ captionType })
+                                }
                             />
-                        }
+                        )}
                         <Size
                             clientId={clientId}
                             blockName={name}
                             size={size}
-                            onChangeSize={size => setAttributes({ size })}
+                            onChangeSize={(size) => setAttributes({ size })}
                             fullWidth={fullWidth}
-                            onChangeFullWidth={fullWidth => setAttributes({ fullWidth })}
+                            onChangeFullWidth={(fullWidth) =>
+                                setAttributes({ fullWidth })
+                            }
                             isFirstOnHierarchy={isFirstOnHierarchy}
                             breakpoint={deviceType}
                         />
                         <BoxShadow
                             blockName={name}
                             boxShadow={boxShadow}
-                            onChange={boxShadow => setAttributes({ boxShadow })}
+                            onChange={(boxShadow) =>
+                                setAttributes({ boxShadow })
+                            }
                             breakpoint={deviceType}
                         />
                         <PaddingMargin
                             blockName={name}
                             margin={margin}
-                            onChangeMargin={margin => setAttributes({ margin })}
+                            onChangeMargin={(margin) =>
+                                setAttributes({ margin })
+                            }
                             padding={padding}
-                            onChangePadding={padding => setAttributes({ padding })}
+                            onChangePadding={(padding) =>
+                                setAttributes({ padding })
+                            }
                             breakpoint={deviceType}
                         />
-                        <Duplicate
-                            clientId={clientId}
-                        />
-                        <Delete
-                            clientId={clientId}
-                        />
+                        <Duplicate clientId={clientId} />
+                        <Delete clientId={clientId} />
                     </div>
                 </Popover>
-            }
+            )}
         </Fragment>
-    )
-}
+    );
+};
 
 export default MaxiToolbar;

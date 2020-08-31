@@ -252,7 +252,7 @@ class edit extends MaxiBlock {
                         multiline="li"
                         __unstableMultilineRootTag={typeOfList}
                         tagName={typeOfList}
-                        onChange={content =>setAttributes({ content })}
+                        onChange={content => setAttributes({ content })}
                         value={content}
                         placeholder={__('Write list…', 'maxi-blocks')}
                         onMerge={mergeBlocks}

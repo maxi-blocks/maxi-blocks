@@ -1,21 +1,9 @@
-.toolbar-item__popover {
-    .components-color-picker__inputs-toggle {
-        border: 0;
-
-        &:focus {
-            outline: none !important;
-            box-shadow: none !important;
-        }
-
-        svg {
-            fill: #fff;
-        }
-    }
-    .components-color-picker__inputs-field {
-        .components-text-control__input {
-            background-color: transparent;
-            color: #fff;
-            border: 2px solid #dddfe1 !important;
+.toolbar-item {
+    &__text-options {
+        .toolbar-item__icon {
+            border-width: 1px;
+            border-color: #fff;
+            border-style: solid;
         }
     }
 }

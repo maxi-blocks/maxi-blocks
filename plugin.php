@@ -55,7 +55,7 @@ require_once plugin_dir_path( __FILE__ ) . 'src/init.php';
 // CUSTOMIZER
 //======================================================================
 
-require_once plugin_dir_path( __FILE__ ) . 'customizer/customizer.php';
+// require_once plugin_dir_path( __FILE__ ) . 'customizer/customizer.php';
 
 
 //======================================================================

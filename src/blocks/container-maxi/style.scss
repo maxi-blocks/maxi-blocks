@@ -16,8 +16,18 @@ body.maxi-blocks--active .maxi-container-block {
         height: 0;
     }
 
+    &__overlay {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+    }
+
     &__wrapper {
         margin: auto 0;
+        z-index: 2;
         //overflow: hidden;
     }
 

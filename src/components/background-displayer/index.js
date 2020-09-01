@@ -2,12 +2,13 @@
  * External dependencies
  */
 import classnames from 'classnames';
+import { isObject } from 'lodash';
 
 /**
  * Styles
  */
+import './editor.scss';
 import './style.scss';
-import { isObject } from 'lodash';
 
 /**
  * Component

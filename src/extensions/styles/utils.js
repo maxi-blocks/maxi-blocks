@@ -167,6 +167,21 @@ export const getBackgroundObject = background => {
     return response;
 }
 
+export const getOverlayObject = background => {
+    const response = {
+        label: background.label,
+        general: {}
+    }
+
+    if (!isEmpty(background.colorOptions.color))
+        response.general['background-color'] = background.colorOptions.color;
+
+    if (!isEmpty(background.colorOptions.gradient))
+        response.general['background'] = background.colorOptions.gradient;
+
+    return response;
+}
+
 export const getBoxShadowObject = boxShadow => {
     const response = {
         label: boxShadow.label,

@@ -62,6 +62,7 @@ const save = props => {
                     data-shape-divider={shapeDivider}
                     data-motion-id={uniqueID}
                 >
+                    <div className="maxi-container-block__overlay"></div>
                     <__experimentalBackgroundDisplayer
                         background={background}
                     />

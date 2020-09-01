@@ -1,6 +1,13 @@
 .maxi-container-block {
     margin: auto;
 
+    &__overlay {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
     &__container {
         border: 1px solid #7fbddc;
     }

@@ -25,6 +25,7 @@ import {
 } from '../../components';
 import Inspector from './inspector';
 import {
+    getOverlayObject,
     getBoxShadowObject,
     getShapeDividerObject,
     getShapeDividerSVGObject,
@@ -100,6 +101,7 @@ class edit extends MaxiBlock {
             [`${uniqueID} .maxi-shape-divider__top svg`]: { shapeDivider: { ...getShapeDividerSVGObject(JSON.parse(this.props.attributes.shapeDivider).top) } },
             [`${uniqueID} .maxi-shape-divider__bottom`]: { shapeDivider: { ...getShapeDividerObject(JSON.parse(this.props.attributes.shapeDivider).bottom) } },
             [`${uniqueID} .maxi-shape-divider__bottom svg`]: { shapeDivider: { ...getShapeDividerSVGObject(JSON.parse(this.props.attributes.shapeDivider).bottom) } },
+            [`${uniqueID} .maxi-container-block__overlay`]: { background: { ...getOverlayObject(JSON.parse(background)) } },
         }
 
         response = Object.assign(
@@ -142,6 +144,7 @@ class edit extends MaxiBlock {
 
         return response;
     }
+
     get getBeforeObject() {
 
         const { arrow } = this.props.attributes;
@@ -242,6 +245,7 @@ class edit extends MaxiBlock {
                         <__experimentalBackgroundDisplayer
                             background={background}
                         />
+                        <div className="maxi-container-block__overlay"></div>
                         <__experimentalShapeDivider
                             shapeDividerOptions={shapeDivider}
                         />

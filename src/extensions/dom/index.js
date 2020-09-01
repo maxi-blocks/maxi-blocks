@@ -27,6 +27,8 @@ const allowedBlocks = [
     'maxi-blocks/image-maxi',
     'maxi-blocks/section-maxi',
     'maxi-blocks/container-maxi',
+    'maxi-blocks/svg-icon-maxi',
+    'maxi-blocks/icon-maxi',
 ];
 
 document.addEventListener(

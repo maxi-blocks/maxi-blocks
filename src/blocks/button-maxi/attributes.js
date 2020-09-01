@@ -3,6 +3,7 @@
  */
 import * as attributesData from '../../extensions/styles/defaults';
 import * as buttonAttributesData from './data';
+import { alignmentText } from './data';
 
 /**
  * Attributes

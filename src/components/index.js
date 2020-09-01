@@ -19,6 +19,10 @@ export { default as SizeControl } from './size-control';
 export { default as FullSizeControl } from './full-size-control';
 export { default as TextShadowControl } from './text-shadow-control';
 export { default as TypographyControl } from './typography-control';
+export { default as SvgStrokeWidthControl } from './svg-stroke-width-control';
+export { default as SvgWidthControl } from './svg-width-control';
+export { default as SvgAnimationControl } from './svg-animation-control';
+export { default as SvgAnimationDurationControl } from './svg-animation-duration-control';
 
 // Experimental
 export { default as __experimentalToolbar } from './toolbar';
@@ -45,3 +49,6 @@ export { default as __experimentalEntranceAnimationControl } from './entrance-an
 export { default as __experimentalParallaxControl } from './parallax-control';
 export { default as __experimentalBackgroundDisplayer } from './background-displayer';
 export { default as __experimentalHoverEffectControl } from './hover-effect-control';
+export { default as __experimentalSVGControl } from './SVGControl';
+export { default as __experimentalSVGFillControl } from './SVGFillControl';
+export { default as __experimentalSVGDefaultsDisplayer } from './SVGDefaultsDisplayer';

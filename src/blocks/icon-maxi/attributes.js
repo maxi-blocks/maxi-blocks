@@ -2,76 +2,75 @@
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults';
+import { size } from './data';
 
 /**
  * Attributes
  */
 const attributes = {
-    blockStyle: {
-        type: 'string',
-        default: 'maxi-custom'
-    },
-    defaultBlockStyle: {
-        type: 'string',
-        default: 'maxi-def-light'
-    },
-    icon: {
-        type: 'string',
-        default: 'android'
-    },
-    size: {
+    imageSize: {
         type: 'string',
         default: 'full'
     },
-    sizeOptions: {
+    cropOptions: {
         type: 'string',
+        default: JSON.stringify(attributesData.cropOptions)
+    },
+    alignment: {
+        type: 'string',
+        default: JSON.stringify(attributesData.alignment)
+    },
+    captionType: {
+        type: 'string',
+        default: 'none'
+    },
+    captionContent: {
+        type: 'string',
+        default: ''
+    },
+    captionTypography: {
+        type: 'string',
+        default: JSON.stringify(attributesData.typography)
     },
     fullWidth: {
         type: 'string',
         default: 'normal',
     },
-    alignmentDesktop: {
+    size: {
         type: 'string',
-        default: 'center'
+        default: JSON.stringify(size)
     },
-    alignmentTablet: {
+    opacity: {
         type: 'string',
-        default: 'center'
+        default: JSON.stringify(attributesData.opacity)
     },
-    alignmentMobile: {
+    opacityHover: {
         type: 'string',
-        default: 'center'
-    },
-    maxWidthUnit: {
-        type: 'string',
-        default: 'px'
-    },
-    maxWidth: {
-        type: 'number',
-    },
-    widthUnit: {
-        type: 'string',
-        default: 'px'
-    },
-    width: {
-        type: 'number',
-        default: 100
+        default: JSON.stringify(attributesData.opacityHover)
     },
     background: {
         type: 'string',
         default: JSON.stringify(attributesData.background)
     },
-    opacity: {
-        type: 'number',
-        default: 1
+    backgroundHover: {
+        type: 'string',
+        default: JSON.stringify(attributesData.backgroundHover)
     },
     boxShadow: {
         type: 'string',
         default: JSON.stringify(attributesData.boxShadow)
     },
+    boxShadowHover: {
+        type: 'string',
+        default: JSON.stringify(attributesData.boxShadowHover)
+    },
     border: {
         type: 'string',
         default: JSON.stringify(attributesData.border)
+    },
+    borderHover: {
+        type: 'string',
+        default: JSON.stringify(attributesData.borderHover)
     },
     padding: {
         type: 'string',
@@ -81,40 +80,58 @@ const attributes = {
         type: 'string',
         default: JSON.stringify(attributesData.margin)
     },
-    backgroundHover: {
-        type: 'string',
-        default: JSON.stringify(attributesData.backgroundHover)
-    },
-    opacityHover: {
+    mediaID: {
         type: 'number',
     },
-    boxShadowHover: {
+    mediaURL: {
+        type: 'string'
+    },
+    mediaALT: {
+        type: 'string'
+    },
+    mediaALTwp: {
+        type: 'string'
+    },
+    mediaALTtitle: {
+        type: 'string'
+    },
+    altSelector: {
         type: 'string',
-        default: JSON.stringify(attributesData.boxShadowHover)
+        default: 'wordpress',
+
     },
-    borderHover: {
-        type: 'string',
-        default: JSON.stringify(attributesData.border)
+    mediaURL: {
+        type: 'string'
     },
-    extraClassName: {
-        type: 'string',
-        default: ''
+    mediaWidth: {
+        type: 'number'
     },
-    extraStyles: {
-        type: 'string',
-        default: ''
-    },
-    resizableWidth: {
-        type: 'number',
-        default: 100
-    },
-    resizableHeight: {
-        type: 'number',
-        default: 100
+    mediaHeight: {
+        type: 'number'
     },
     position: {
         type: 'string',
         default: JSON.stringify(attributesData.__experimentalPosition)
+    },
+    display: {
+        type: 'string',
+        default: JSON.stringify(attributesData.__experimentalDisplay)
+    },
+    clipPath: {
+        type: 'string',
+        default: ''
+    },
+    hover: {
+        type: 'string',
+        default: JSON.stringify(attributesData.__experimentalHover)
+    },
+    transform: {
+        type: 'string',
+        default: JSON.stringify(attributesData.__experimentalTransform)
+    },
+    content: {
+        type: 'string',
+        default: ''
     }
 }
 

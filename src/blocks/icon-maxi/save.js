@@ -1,12 +1,16 @@
 /**
- * WordPress dependencies
+ * Internal dependencies
  */
-const { Button } = wp.components;
+import { __experimentalBackgroundDisplayer } from '../../components';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
+import {
+    isNil,
+    isEmpty,
+} from 'lodash';
 
 /**
  * Save
@@ -19,9 +23,29 @@ const save = props => {
             blockStyle,
             defaultBlockStyle,
             fullWidth,
-            extraClassName
+            background,
+            extraClassName,
+            captionType,
+            captionContent,
+            mediaID,
+            mediaURL,
+            mediaWidth,
+            mediaHeight,
+            mediaALT,
+            mediaALTwp,
+            mediaALTtitle,
+            altSelector,
+            hover,
+            content
         },
     } = props;
+
+    const {
+        settings: hoverSettings,
+        titleText: hoverTitleText,
+        contentText: hoverContentText,
+        textPreset: hoverTextPreset,
+    } = JSON.parse(hover);
 
     let classes = classnames(
         'maxi-block maxi-icon-block',
@@ -31,14 +55,37 @@ const save = props => {
         className,
         fullWidth === 'full' ?
             'alignfull' :
-            '',
+            null,
+        !isNil(uniqueID) ?
+            uniqueID :
+            null
     );
-    if (uniqueID && (typeof uniqueID !== 'undefined'))
-        classes = classnames(classes, uniqueID);
+
+    const imageALT = () => {
+        switch (altSelector) {
+            case "wordpress": return mediaALTwp;
+            case "title": return mediaALTtitle;
+            case "custom": return mediaALT;
+            default: return '';
+        }
+    }
 
     return (
-        <figure>
-        </figure>
+        <div
+            className={classes}
+            data-maxi_initial_block_class={defaultBlockStyle}
+            data-hover={JSON.stringify(hoverSettings)}
+        >
+            <__experimentalBackgroundDisplayer
+                background={background}
+            />
+             <div className={`maxi-icon-block__icon`} >
+                <div
+                    className={`maxi-icon-block__icon_content`}>
+                    {content}
+                </div>
+            </div>
+        </div>
     );
 }
 

@@ -1,0 +1,12 @@
+body.maxi-blocks--active .maxi-svg-icon-block{
+	display: flex;
+    flex-direction: column;
+
+    svg {
+    	z-index: 20;
+    }
+
+    .maxi-background-displayer {
+    	z-index: 10;
+    }
+}

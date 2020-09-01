@@ -336,21 +336,25 @@ const MaxiToolbar = props => {
                             background={background}
                             onChange={background => setAttributes({ background })}
                         />
-                        <SvgColor
-                            blockName={name}
-                            svgColor={svgColorOrange}
-                            onChange={svgColorOrange => {setAttributes({ svgColorOrange }); changeContent(svgColorOrange, 1)}}
-                        />
-                         <SvgColor
-                            blockName={name}
-                            svgColor={svgColorBlack}
-                            onChange={svgColorBlack => {setAttributes({ svgColorBlack }); changeContent(svgColorBlack, 2)}}
-                        />
-                        { getThirdSvgColor() && <SvgColor
-                            blockName={name}
-                            svgColor={svgColorWhite}
-                            onChange={svgColorWhite => {setAttributes({ svgColorWhite }); changeContent(svgColorWhite, 3)}}
-                        />
+                        { name === 'maxi-blocks/svg-icon-maxi' &&
+                        <Fragment>
+                            <SvgColor
+                                blockName={name}
+                                svgColor={svgColorOrange}
+                                onChange={svgColorOrange => {setAttributes({ svgColorOrange }); changeContent(svgColorOrange, 1)}}
+                            />
+                             <SvgColor
+                                blockName={name}
+                                svgColor={svgColorBlack}
+                                onChange={svgColorBlack => {setAttributes({ svgColorBlack }); changeContent(svgColorBlack, 2)}}
+                            />
+                            { getThirdSvgColor() && <SvgColor
+                                blockName={name}
+                                svgColor={svgColorWhite}
+                                onChange={svgColorWhite => {setAttributes({ svgColorWhite }); changeContent(svgColorWhite, 3)}}
+                            />
+                            }
+                        </Fragment>
                         }
 
                         <Border

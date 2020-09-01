@@ -538,6 +538,29 @@ export const background = {
         "gradient": "",
         "gradientAboveBackground": false
     },
+    "SVG": {
+        "SVGElement": "",
+        "SVGData": "{}",
+        "SVGMediaID": "",
+        "SVGMediaURL": "",
+        "position": {
+            "label": "Background SVG position",
+            "general": {
+                "top": "",
+                "right": "",
+                "bottom": "",
+                "left": "",
+                "sync": true,
+                "unit": "%"
+            }
+        },
+        "size": {
+            "max-widthUnit": "px",
+            "max-width": "",
+            "widthUnit": "px",
+            "width": ""
+        }
+    },
     "clipPath": ""
 };
 

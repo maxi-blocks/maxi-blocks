@@ -13,6 +13,7 @@ const {
     __experimentalBlock,
     MediaUpload
 } = wp.blockEditor;
+import { RawHTML } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -29,7 +30,8 @@ import {
 import {
     MaxiBlock,
     __experimentalToolbar,
-    __experimentalBackgroundDisplayer
+    __experimentalBackgroundDisplayer,
+    __experimentalSVGDefaultsDisplayer
 } from '../../components';
 
 /**
@@ -277,6 +279,8 @@ class edit extends MaxiBlock {
                 mediaURL,
                 mediaWidth,
                 mediaHeight,
+                SVGElement,
+                SVGData,
             },
             imageData,
             setAttributes,
@@ -334,9 +338,50 @@ class edit extends MaxiBlock {
                 data-maxi_initial_block_class={defaultBlockStyle}
                 data-align={fullWidth}
             >
-                <__experimentalBackgroundDisplayer
-                    background={background}
-                />
+                {/*
+                    !SVGElement &&
+                    <__experimentalSVGDefaultsDisplayer
+                        SVGData={SVGData}
+                        onChange={obj => setAttributes(obj)}
+                    />*/
+                }
+                {
+                    !!SVGElement &&
+                    <Fragment>
+                        <__experimentalBackgroundDisplayer
+                            backgroundOptions={background}
+                        />
+                        <ResizableBox
+                            className='maxi-block__resizer maxi-svg-block__resizer'
+                            size={{
+                                width: `${sizeValue.general.width}%`,
+                                height: '100%'
+                            }}
+                            maxWidth='100%'
+                            enable={{
+                                top: false,
+                                right: false,
+                                bottom: false,
+                                left: false,
+                                topRight: true,
+                                bottomRight: true,
+                                bottomLeft: true,
+                                topLeft: true,
+                            }}
+                            onResizeStop={(event, direction, elt, delta) => {
+                                const newScale = Number(((elt.getBoundingClientRect().width / this.getWrapperWidth) * 100).toFixed());
+                                sizeValue.general.width = newScale
+                                setAttributes({
+                                    size: JSON.stringify(sizeValue),
+                                });
+                            }}
+                        >
+                            <RawHTML>
+                                {SVGElement}
+                            </RawHTML>
+                        </ResizableBox>
+                    </Fragment>
+                }
                 <MediaUpload
                     onSelect={media => setAttributes({ mediaID: media.id })}
                     allowedTypes="image"

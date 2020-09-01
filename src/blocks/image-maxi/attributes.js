@@ -8,6 +8,19 @@ import { size } from './data';
  * Attributes
  */
 const attributes = {
+    SVGElement: {
+        type: 'string'
+    },
+    SVGData: {
+        type: 'string',
+        // default: '{}'
+    },
+    SVGMediaID: {
+        type: 'number',
+    },
+    SVGMediaURL: {
+        type: 'string'
+    },
     imageSize: {
         type: 'string',
         default: 'full'

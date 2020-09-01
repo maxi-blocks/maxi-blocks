@@ -1,13 +1,21 @@
 /**
+ * WordPress dependencies
+ */
+const { RawHTML } = wp.element;
+
+/**
  * External dependencies
  */
 import classnames from 'classnames';
+import {
+    isObject,
+    isNil
+} from 'lodash';
 
 /**
  * Styles
  */
 import './style.scss';
-import { isObject } from 'lodash';
 
 /**
  * Component
@@ -16,6 +24,7 @@ const BackgroundDisplayer = props => {
     const {
         background,
         className,
+        uniqueID
     } = props;
 
     const value = !isObject(background) ?
@@ -33,7 +42,7 @@ const BackgroundDisplayer = props => {
         >
             {
                 value.videoOptions.mediaURL &&
-                <div className="maxi-background-displayer__video-player">
+                <div class="maxi-background-displayer__video-player">
                     <video
                         controls={!!parseInt(value.videoOptions.controls)}
                         autoplay={!!parseInt(value.videoOptions.autoplay)}
@@ -43,6 +52,14 @@ const BackgroundDisplayer = props => {
                         src={value.videoOptions.mediaURL}
                     />
                 </div>
+            }
+            {
+                !isNil(value.SVG.SVGElement) &&
+                <RawHTML
+                    className='maxi-background-displayer__svg-wrapper'
+                >
+                    {value.SVG.SVGElement}
+                </RawHTML>
             }
         </div>
     )

@@ -109,7 +109,7 @@ const Inspector = props => {
         size;
 
     function isAnimatedSvg() {
-        if(wp.data.select( 'core/block-editor' ).getSelectedBlock() !== null) {
+        if(wp.data.select( 'core/block-editor' ).getSelectedBlock() !== null && wp.data.select( 'core/block-editor' ).getSelectedBlock().name === 'maxi-blocks/svg-icon-maxi') {
             let clientId = wp.data.select('core/block-editor').getSelectedBlock().clientId;
             let current_content = wp.data.select( 'core/block-editor' ).getSelectedBlock().attributes.content;
             if (current_content.indexOf('<animate') !== -1 || current_content.indexOf('<!--animate') !== -1) {
@@ -338,17 +338,6 @@ const Inspector = props => {
                                                     stroke={stroke}
                                                     defaultStroke={defaultStroke}
                                                     onChange={stroke => {setAttributes({ stroke }); changeSvgStrokeWidth(stroke)}}
-                                                    breakpoint={deviceType}
-                                                />
-                                            )
-                                        },
-                                        {
-                                            label: __('Width / Height', 'maxi-blocks'),
-                                            content: (
-                                                <FullSizeControl
-                                                    size={size}
-                                                    defaultSize={getDefaultProp(clientId, 'size')}
-                                                    onChange={size => {setAttributes({ size }); changeSvgSize(size)}}
                                                     breakpoint={deviceType}
                                                 />
                                             )

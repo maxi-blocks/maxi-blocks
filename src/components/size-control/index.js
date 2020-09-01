@@ -32,6 +32,7 @@ import { reset } from '../../icons';
  * Component
  */
 const SizeControl = props => {
+
     const {
         label,
         className,

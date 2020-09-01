@@ -28,7 +28,8 @@ import { toolbarSizing } from '../../../../icons';
 const EXCLUDED_BLOCKS = [
     'maxi-blocks/image-maxi',
     'maxi-blocks/divider-maxi',
-    'maxi-blocks/column-maxi'
+    'maxi-blocks/column-maxi',
+    'maxi-blocks/svg-icon-maxi'
 ]
 
 /**

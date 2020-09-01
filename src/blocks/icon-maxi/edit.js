@@ -3,31 +3,260 @@
  */
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
-const { Placeholder } = wp.components;
+const { withSelect } = wp.data;
+const {
+    Spinner,
+    IconButton,
+    ResizableBox
+} = wp.components;
+const {
+    __experimentalBlock,
+    MediaUpload,
+    HTMLEdit
+} = wp.blockEditor;
 
+/**
+ * Internal dependencies
+ */
+import Inspector from './inspector';
+import {
+    getBackgroundObject,
+    getBoxShadowObject,
+    getAlignmentFlexObject,
+    getTransformObject,
+    getAlignmentTextObject,
+    setBackgroundStyles
+} from '../../utils';
 import {
     MaxiBlock,
-    __experimentalToolbar
+    __experimentalToolbar,
+    __experimentalBackgroundDisplayer
 } from '../../components';
-import MaxiModal from './modal';
-
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { fas } from '@fortawesome/free-solid-svg-icons';
-import { fab } from '@fortawesome/free-brands-svg-icons';
-import { far } from '@fortawesome/free-regular-svg-icons';
-
-library.add( fas, fab, far );
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
+import {
+    isEmpty,
+    isNil,
+    isObject
+} from 'lodash';
+
+/**
+ * Icons
+ */
+import {
+    toolbarReplaceImage,
+    placeholderImage
+} from '../../icons';
 
 /**
  * Content
  */
 class edit extends MaxiBlock {
+    get getWrapperWidth() {
+        const target = document.getElementById(`block-${this.props.clientId}`);
+        if (!target)
+            return;
+
+        return target.getBoundingClientRect().width;
+    }
+
+    get getObject() {
+        const {
+            uniqueID,
+            background,
+            backgroundHover
+        } = this.props.attributes;
+
+        let response = {
+            [uniqueID]: this.getNormalObject,
+            [`${uniqueID}:hover`]: this.getHoverObject,
+            [`${uniqueID}>img`]: this.getImageFrontendObject,
+            [`${uniqueID} img:hover`]: this.getImageHoverObject,
+            [`${uniqueID} img`]: this.getImageBackendObject,
+            [`${uniqueID} figcaption`]: this.getFigcaptionObject,
+            [`${uniqueID} .maxi-hover-details .maxi-hover-details__content h3`]: this.getHoverEffectTitleTextObject,
+            [`${uniqueID} .maxi-hover-details .maxi-hover-details__content p`]: this.getHoverEffectContentTextObject,
+            [`${uniqueID} .maxi-hover-details`]: this.getHoverEffectDetailsBoxObject,
+        }
+
+        response = Object.assign(
+            response,
+            setBackgroundStyles(uniqueID, background, backgroundHover)
+        )
+
+        return response;
+    }
+
+    get getNormalObject() {
+        const {
+            alignment,
+            opacity,
+            boxShadow,
+            padding,
+            margin,
+            zIndex,
+            position,
+            display,
+            transform,
+        } = this.props.attributes;
+
+        const response = {
+            boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
+            padding: { ...JSON.parse(padding) },
+            margin: { ...JSON.parse(margin) },
+            opacity: { ...JSON.parse(opacity) },
+            zIndex: { ...JSON.parse(zIndex) },
+            alignment: { ...getAlignmentFlexObject(JSON.parse(alignment)) },
+            position: { ...JSON.parse(position) },
+            positionOptions: { ...JSON.parse(position).options },
+            display: { ...JSON.parse(display) },
+            transform: { ...getTransformObject(JSON.parse(transform)) }
+        };
+
+        return response;
+    }
+
+    get getHoverEffectDetailsBoxObject() {
+        const {
+            hover,
+        } = this.props.attributes;
+
+        let background = !isObject(JSON.parse(hover).background) ?
+            JSON.parse(JSON.parse(hover).background) :
+            JSON.parse(hover).background;
+
+        let border = !isObject(JSON.parse(hover).border) ?
+            JSON.parse(JSON.parse(hover).border) :
+            JSON.parse(hover).border;
+
+        let padding = !isObject(JSON.parse(hover).padding) ?
+            JSON.parse(JSON.parse(hover).padding) :
+            JSON.parse(hover).padding;
+
+        let margin = !isObject(JSON.parse(hover).margin) ?
+            JSON.parse(JSON.parse(hover).margin) :
+            JSON.parse(hover).margin;
+
+        const response = {
+            background: { ...getBackgroundObject(background) },
+            border: { ...border },
+            padding: { ...padding },
+            margin: { ...margin },
+        }
+
+        return response;
+    }
+
+    get getHoverEffectTitleTextObject() {
+        const {
+            hover,
+        } = this.props.attributes;
+
+        let titleTypography = !isObject(JSON.parse(hover).titleTypography) ?
+            JSON.parse(JSON.parse(hover).titleTypography) :
+            JSON.parse(hover).titleTypography;
+
+        const response = {
+            typography: { ...titleTypography }
+        }
+
+        return response;
+    }
+
+    get getHoverEffectContentTextObject() {
+        const {
+            hover,
+        } = this.props.attributes;
+
+        let contentTypography = !isObject(JSON.parse(hover).contentTypography) ?
+            JSON.parse(JSON.parse(hover).contentTypography) :
+            JSON.parse(hover).contentTypography;
+
+        const response = {
+            typography: { ...contentTypography }
+        }
+
+        return response;
+    }
+
+    get getHoverObject() {
+        const {
+            opacityHover,
+            boxShadowHover
+        } = this.props.attributes;
+
+        const response = {
+            boxShadowHover: { ...getBoxShadowObject(JSON.parse(boxShadowHover)) },
+            opacityHover: { ...JSON.parse(opacityHover) }
+        }
+
+        return response;
+    }
+
+    get getImageFrontendObject() {
+        const {
+            size,
+        } = this.props.attributes;
+
+        const response = {
+            imageSize: { ...JSON.parse(size) }
+        };
+
+        return response
+    }
+
+    get getImageHoverObject() {
+        const {
+            borderHover
+        } = this.props.attributes;
+
+        const response = {
+            borderHover: { ...JSON.parse(borderHover) },
+            borderWidth: { ...JSON.parse(borderHover).borderWidth },
+            borderRadius: { ...JSON.parse(borderHover).borderRadius },
+        };
+
+        return response
+    }
+
+    get getImageBackendObject() {
+        const {
+            border,
+            clipPath
+        } = this.props.attributes;
+
+        const response = {
+            border: { ...JSON.parse(border) },
+            borderWidth: { ...JSON.parse(border).borderWidth },
+            borderRadius: { ...JSON.parse(border).borderRadius },
+            image: {
+                label: 'Image settings',
+                general: {}
+            }
+        };
+
+        if (!isNil(clipPath))
+            response.image.general['clip-path'] = clipPath;
+
+        return response
+    }
+
+    get getFigcaptionObject() {
+        const {
+            captionTypography
+        } = this.props.attributes;
+
+        const response = {
+            captionTypography: { ...JSON.parse(captionTypography) },
+            alignmentTypography: { ...getAlignmentTextObject(JSON.parse(captionTypography).textAlign) }
+        };
+
+        return response
+    }
+
     render() {
         const {
             className,
@@ -38,35 +267,105 @@ class edit extends MaxiBlock {
                 extraClassName,
                 fullWidth,
                 size,
-                width,
+                background,
+                cropOptions,
+                captionType,
+                captionContent,
+                imageSize,
+                mediaID,
+                mediaALT,
+                mediaALTwp,
+                mediaURL,
+                mediaWidth,
+                mediaHeight,
                 content
             },
+            imageData,
             setAttributes,
-            clientId,
-            attributes,
         } = this.props;
 
-        let classes = classnames(
+        const classes = classnames(
             'maxi-block maxi-icon-block',
             blockStyle,
             extraClassName,
             uniqueID,
-            className
+            className,
+            fullWidth === 'full' ?
+                'alignfull' :
+                '',
         );
 
+        const cropOptionsValue = !isObject(cropOptions) ?
+            JSON.parse(cropOptions) :
+            cropOptions;
+
+        const sizeValue = !isObject(size) ?
+            JSON.parse(size) :
+            size;
+
+        const getImage = () => {
+            if (imageSize === 'custom' && !isEmpty(cropOptionsValue.image.source_url))
+                return cropOptionsValue.image;
+            if (imageData && imageSize)
+                return imageData.media_details.sizes[imageSize];
+            if (imageData)
+                return imageData.media_details.sizes.full;
+        }
+
+        const image = getImage();
+        if (image && imageData) {
+            if (imageData.alt_text) setAttributes({ mediaALTwp: imageData.alt_text })
+
+            if (mediaALT) setAttributes({ mediaALT: mediaALT })
+
+            if (imageData.title.rendered) setAttributes({ mediaALTtitle: imageData.title.rendered })
+
+            if (mediaURL != image.source_url)
+                setAttributes({ mediaURL: image.source_url })
+            if (mediaWidth != image.width)
+                setAttributes({ mediaWidth: image.width })
+            if (mediaHeight != image.height)
+                setAttributes({ mediaHeight: image.height })
+        }
+
         return [
-               <Fragment key={ this.props.clientId }>
-                <Placeholder
-                    key="placeholder"
-                    label={ __( 'Cloud Library Maxi', 'gutenberg-extra-blocks' ) }
-                    instructions={ __( 'Launch the library to browse pre-designed blocks and templates.', 'gutenberg-extra-blocks' ) }
-                    className={ 'maxi-block-library__placeholder' }
-                >
-                    <MaxiModal clientId={ clientId } />
-                </Placeholder>
-            </Fragment>
+            <Inspector {...this.props} />,
+            <__experimentalToolbar {...this.props} />,
+            <div
+                className={classes}
+                data-maxi_initial_block_class={defaultBlockStyle}
+                data-align={fullWidth}
+            >
+                <__experimentalBackgroundDisplayer
+                    background={background}
+                />
+                <Fragment>
+                    <div className={`maxi-icon-block__icon`} >
+                        <div
+                            className={`maxi-icon-block__icon_content` }>
+                            <HTMLEdit
+                             onChange={content => setAttributes({ content })}
+                             content={content}
+                            />
+                        </div>
+                    </div>
+                </Fragment>
+            </div>
         ];
     }
 }
 
-export default edit;
+export default withSelect((select, ownProps) => {
+    const { mediaID } = ownProps.attributes;
+
+    const imageData = select('core').getMedia(mediaID);
+    let deviceType = select('core/edit-post').__experimentalGetPreviewDeviceType();
+    deviceType = deviceType === 'Desktop' ?
+        'general' :
+        deviceType;
+
+    return {
+        imageData,
+        deviceType
+    }
+})(edit);

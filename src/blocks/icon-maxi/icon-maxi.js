@@ -1,8 +1,8 @@
 /**
- * BLOCK: maxi-blocks/image-maxi
+ * BLOCK: maxi-blocks/icon-maxi
  *
- * Registering an image block with Gutenberg.
- * Shows an image and a description. A test block.
+ * Registering an icon block with Gutenberg.
+ * Shows an icon and a description. A test block.
  */
 
 /**
@@ -16,7 +16,7 @@ const { registerBlockType } = wp.blocks;
  */
 import attributes from './attributes.js';
 import edit from './edit.js';
-//import save from './save.js';
+import save from './save.js';
 
 /**
  * Styles and icons
@@ -50,7 +50,5 @@ registerBlockType( 'maxi-blocks/icon-maxi', {
         };
     },
 	edit,
-	save: () => {
-		return null;
-	}
+	save
 } );

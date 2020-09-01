@@ -84,7 +84,8 @@ class MaxiModalIcon extends Component {
                                     id="maxi-block-library__modal-iframe"
                                     className="maxi-block-library__modal-iframe"
                                     display="initial"
-                                    position="relative" />
+                                    position="relative"
+                                />
                                 <Fragment>
                                     <div className='maxi-block-library__modal__loading_message maxi-block__item--hidden'>
                                         <p>Saving...</p>

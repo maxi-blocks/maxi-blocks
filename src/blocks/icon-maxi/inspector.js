@@ -8,11 +8,14 @@ const {
     RangeControl,
     SelectControl,
     TextareaControl,
+    TextControl,
 } = wp.components;
+const { useSelect } = wp.data;
 
 /**
  * Internal dependencies
  */
+import { getDefaultProp } from '../../utils'
 import {
     AccordionControl,
     AlignmentControl,
@@ -20,13 +23,21 @@ import {
     BorderControl,
     BlockStylesControl,
     BoxShadowControl,
+    FullSizeControl,
+    ImageCropControl,
     SettingTabsControl,
+    TypographyControl,
     __experimentalResponsiveSelector,
     __experimentalZIndexControl,
     __experimentalAxisControl,
     __experimentalResponsiveControl,
+    __experimentalOpacityControl,
     __experimentalPositionControl,
-    __experimentalDisplayControl
+    __experimentalDisplayControl,
+    __experimentalTransformControl,
+    __experimentalClipPath,
+    __experimentalEntranceAnimationControl,
+    __experimentalHoverEffectControl,
 } from '../../components';
 
 /**
@@ -35,7 +46,8 @@ import {
 import {
     capitalize,
     isEmpty,
-    isNil
+    isNil,
+    isObject
 } from 'lodash';
 
 /**
@@ -44,36 +56,94 @@ import {
 const Inspector = props => {
     const {
         attributes: {
+            uniqueID,
             isFirstOnHierarchy,
             blockStyle,
             defaultBlockStyle,
-            size,
+            imageSize,
+            cropOptions,
             fullWidth,
-            alignmentDesktop,
-            alignmentTablet,
-            alignmentMobile,
-            width,
+            alignment,
+            captionType,
+            captionContent,
+            captionTypography,
             background,
             opacity,
             boxShadow,
             border,
+            size,
             padding,
             margin,
             backgroundHover,
             opacityHover,
             boxShadowHover,
             borderHover,
+            mediaID,
             extraClassName,
-            extraStyles,
             zIndex,
+            mediaALT,
+            altSelector,
             breakpoints,
             position,
-            display
+            display,
+            motion,
+            transform,
+            clipPath,
+            hover,
+            content
         },
+        imageData,
         clientId,
-        setAttributes,
         deviceType,
+        setAttributes,
     } = props;
+
+    const sizeValue = !isObject(size) ?
+        JSON.parse(size) :
+        size;
+
+    const defaultSize = JSON.parse(getDefaultProp(clientId, 'size'));
+
+    const altSelectorOptions = [
+        { label: __('WordPress ALT', 'maxi-blocks'), value: 'wordpress' },
+        { label: __('Image Title', 'maxi-blocks'), value: 'title' },
+        { label: __('Custom', 'maxi-blocks'), value: 'custom' },
+        { label: __('None', 'maxi-blocks'), value: 'none' },
+    ]
+
+    const getSizeOptions = () => {
+        let response = [];
+        if (imageData) {
+            let sizes = imageData.media_details.sizes;
+            sizes = Object.entries(sizes).sort((a, b) => {
+                return a[1].width - b[1].width;
+            })
+            sizes.map(size => {
+                const name = capitalize(size[0]);
+                const val = size[1];
+                response.push({
+                    label: `${name} - ${val.width}x${val.height}`,
+                    value: size[0]
+                })
+            })
+        }
+        response.push({
+            label: 'Custom', value: 'custom'
+        });
+        return response;
+    }
+
+    const getCaptionOptions = () => {
+        let response = [
+            { label: 'None', value: 'none' },
+            { label: 'Custom Caption', value: 'custom' },
+        ];
+        if (imageData && !isEmpty(imageData.caption.rendered)) {
+            const newCaption = { label: 'Attachment Caption', value: 'attachment' };
+            response.splice(1, 0, newCaption)
+        }
+        return response;
+    }
 
     return (
         <InspectorControls>
@@ -99,44 +169,92 @@ const Inspector = props => {
                                     items={[
                                         {
                                             label: __('Alignment', 'maxi-blocks'),
-                                            disablePadding: true,
                                             content: (
-                                                <SettingTabsControl
-                                                    items={[
-                                                        {
-                                                            label: __('Desktop', 'maxi-blocks'),
-                                                            content: (
-                                                                <AlignmentControl
-                                                                    value={alignmentDesktop}
-                                                                    onChange={alignmentDesktop => setAttributes({ alignmentDesktop })}
-                                                                    disableJustify
-                                                                />
-                                                            )
-                                                        },
-                                                        {
-                                                            label: __('Tablet', 'maxi-blocks'),
-                                                            content: (
-                                                                <AlignmentControl
-                                                                    value={alignmentTablet}
-                                                                    onChange={alignmentTablet => setAttributes({ alignmentTablet })}
-                                                                    disableJustify
-                                                                />
-                                                            )
-                                                        },
-                                                        {
-                                                            label: __('Mobile', 'maxi-blocks'),
-                                                            content: (
-                                                                <AlignmentControl
-                                                                    value={alignmentMobile}
-                                                                    onChange={alignmentMobile => setAttributes({ alignmentMobile })}
-                                                                    disableJustify
-                                                                />
-                                                            )
-                                                        },
-                                                    ]}
+                                                <AlignmentControl
+                                                    alignment={alignment}
+                                                    onChange={alignment => setAttributes({ alignment })}
+                                                    disableJustify
+                                                    breakpoint={deviceType}
                                                 />
                                             )
                                         },
+                                        function () {
+                                            if (deviceType === 'general') {
+                                                return {
+                                                    label: __('Width / Height', 'maxi-blocks'),
+                                                    content: (
+                                                        <Fragment>
+                                                            <SelectControl
+                                                                label={__('Image Size', 'maxi-blocks')}
+                                                                value={imageSize || imageSize == 'custom' ? imageSize : 'full'} // is still necessary?
+                                                                options={getSizeOptions()}
+                                                                onChange={imageSize => setAttributes({ imageSize })}
+                                                            />
+                                                            {
+                                                                imageSize === 'custom' &&
+                                                                <ImageCropControl
+                                                                    mediaID={mediaID}
+                                                                    cropOptions={JSON.parse(cropOptions)}
+                                                                    onChange={cropOptions => setAttributes({ cropOptions: JSON.stringify(cropOptions) })}
+                                                                />
+                                                            }
+                                                            <RangeControl
+                                                                label={__('Width', 'maxi-blocks')}
+                                                                value={sizeValue.general.width}
+                                                                onChange={val => {
+                                                                    if (isNil(val))
+                                                                        sizeValue.general.width = defaultSize.general.width;
+                                                                    else
+                                                                        sizeValue.general.width = val;
+
+                                                                    setAttributes({ size: JSON.stringify(sizeValue) })
+                                                                }}
+                                                                allowReset
+                                                                initialPosition={defaultSize.general.width}
+                                                            />
+                                                        </Fragment>
+                                                    )
+                                                }
+                                            }
+                                        }(),
+                                        function () {
+                                            if (deviceType === 'general') {
+                                                return {
+                                                    label: __('Caption', 'maxi-blocks'),
+                                                    content: (
+                                                        <Fragment>
+                                                            <SelectControl
+                                                                value={captionType}
+                                                                options={getCaptionOptions()}
+                                                                onChange={captionType => {
+                                                                    setAttributes({ captionType });
+                                                                    if (imageData && captionType === 'attachment')
+                                                                        setAttributes({ captionContent: imageData.caption.raw })
+                                                                }}
+                                                            />
+                                                            {
+                                                                captionType === 'custom' &&
+                                                                <TextareaControl
+                                                                    className='custom-caption'
+                                                                    placeHolder={__('Add you Custom Caption here', 'maxi-blocks')}
+                                                                    value={captionContent}
+                                                                    onChange={captionContent => setAttributes({ captionContent })}
+                                                                />
+                                                            }
+                                                            {
+                                                                captionType != 'none' &&
+                                                                <TypographyControl
+                                                                    typography={captionTypography}
+                                                                    defaultTypography={getDefaultProp(clientId, 'captionTypography')}
+                                                                    onChange={captionTypography => setAttributes({ captionTypography })}
+                                                                    breakpoint={deviceType}
+                                                                />
+                                                            }
+                                                        </Fragment>
+                                                    )
+                                                }
+                                            }
+                                        }(),
                                         {
                                             label: __('Background', 'maxi-blocks'),
                                             disablePadding: true,
@@ -155,9 +273,11 @@ const Inspector = props => {
                                                                     />
                                                                     <BackgroundControl
                                                                         background={background}
+                                                                        defaultBackground={getDefaultProp(clientId, 'background')}
                                                                         onChange={background => setAttributes({ background })}
                                                                         disableImage
                                                                         disableVideo
+                                                                        disableGradient
                                                                     />
                                                                 </Fragment>
                                                             )
@@ -171,13 +291,14 @@ const Inspector = props => {
                                                                         defaultOpacity={getDefaultProp(clientId, 'opacityHover')}
                                                                         onChange={opacityHover => setAttributes({ opacityHover })}
                                                                         breakpoint={deviceType}
-                                                                        disableAuto
                                                                     />
                                                                     <BackgroundControl
                                                                         background={backgroundHover}
+                                                                        defaultBackground={getDefaultProp(clientId, 'backgroundHover')}
                                                                         onChange={backgroundHover => setAttributes({ backgroundHover })}
                                                                         disableImage
                                                                         disableVideo
+                                                                        disableGradient
                                                                     />
                                                                 </Fragment>
                                                             )
@@ -197,7 +318,9 @@ const Inspector = props => {
                                                             content: (
                                                                 <BorderControl
                                                                     border={border}
+                                                                    defaultBorder={getDefaultProp(clientId, 'border')}
                                                                     onChange={border => setAttributes({ border })}
+                                                                    breakpoint={deviceType}
                                                                 />
                                                             )
                                                         },
@@ -206,12 +329,40 @@ const Inspector = props => {
                                                             content: (
                                                                 <BorderControl
                                                                     border={borderHover}
+                                                                    defaultBorder={getDefaultProp(clientId, 'borderHover')}
                                                                     onChange={borderHover => setAttributes({ borderHover })}
+                                                                    breakpoint={deviceType}
                                                                 />
                                                             )
                                                         },
                                                     ]}
                                                 />
+                                            )
+                                        },
+                                        {
+                                            label: __('Width / Height', 'maxi-blocks'),
+                                            content: (
+                                                <Fragment>
+                                                    {
+                                                        isFirstOnHierarchy &&
+                                                        <SelectControl
+                                                            label={__('Full Width', 'maxi-blocks')}
+                                                            value={fullWidth}
+                                                            options={[
+                                                                { label: __('No', 'maxi-blocks'), value: 'normal' },
+                                                                { label: __('Yes', 'maxi-blocks'), value: 'full' }
+                                                            ]}
+                                                            onChange={fullWidth => setAttributes({ fullWidth })}
+                                                        />
+                                                    }
+                                                    <FullSizeControl
+                                                        size={size}
+                                                        defaultSize={getDefaultProp(clientId, 'size')}
+                                                        onChange={size => setAttributes({ size })}
+                                                        breakpoint={deviceType}
+                                                        hideWidth
+                                                    />
+                                                </Fragment>
                                             )
                                         },
                                         {
@@ -224,8 +375,10 @@ const Inspector = props => {
                                                             label: __('Normal', 'gutenberg-extra'),
                                                             content: (
                                                                 <BoxShadowControl
-                                                                    boxShadowOptions={boxShadow}
+                                                                    boxShadow={boxShadow}
+                                                                    defaultBoxShadow={getDefaultProp(clientId, 'boxShadow')}
                                                                     onChange={boxShadow => setAttributes({ boxShadow })}
+                                                                    breakpoint={deviceType}
                                                                 />
                                                             )
                                                         },
@@ -233,8 +386,10 @@ const Inspector = props => {
                                                             label: __('Hover', 'gutenberg-extra'),
                                                             content: (
                                                                 <BoxShadowControl
-                                                                    boxShadowOptions={boxShadowHover}
+                                                                    boxShadow={boxShadowHover}
+                                                                    defaultBoxShadow={getDefaultProp(clientId, 'boxShadowHover')}
                                                                     onChange={boxShadowHover => setAttributes({ boxShadowHover })}
+                                                                    breakpoint={deviceType}
                                                                 />
                                                             )
                                                         },
@@ -242,6 +397,26 @@ const Inspector = props => {
                                                 />
                                             )
                                         },
+                                        {
+                                            label: __('Padding / Margin', 'maxi-blocks'),
+                                            content: (
+                                                <Fragment>
+                                                    <__experimentalAxisControl
+                                                        values={padding}
+                                                        defaultValues={getDefaultProp(clientId, 'padding')}
+                                                        onChange={padding => setAttributes({ padding })}
+                                                        breakpoint={deviceType}
+                                                        disableAuto
+                                                    />
+                                                    <__experimentalAxisControl
+                                                        values={margin}
+                                                        defaultValues={getDefaultProp(clientId, 'margin')}
+                                                        onChange={margin => setAttributes({ margin })}
+                                                        breakpoint={deviceType}
+                                                    />
+                                                </Fragment>
+                                            )
+                                        }
                                     ]}
                                 />
                             </Fragment>
@@ -250,31 +425,95 @@ const Inspector = props => {
                     {
                         label: __('Advanced', 'maxi-blocks'),
                         content: (
-                            <div className='maxi-tab-content__box'>
-                                <__experimentalZIndexControl
-                                    zIndex={zIndex}
-                                    onChange={zIndex => setAttributes({ zIndex })}
-                                    breakpoint={deviceType}
-                                />
-                                {
-                                    deviceType != 'general' &&
-                                    <__experimentalResponsiveControl
-                                        breakpoints={breakpoints}
-                                        onChange={breakpoints => setAttributes({ breakpoints })}
+                            <Fragment>
+                                <div className='maxi-tab-content__box'>
+                                    {
+                                        deviceType === 'general' &&
+                                        <Fragment>
+                                            <TextControl
+                                                label={__('Additional CSS Classes', 'maxi-blocks')}
+                                                className='maxi-additional__css-classes'
+                                                value={extraClassName}
+                                                onChange={extraClassName => setAttributes({ extraClassName })}
+                                            />
+                                        </Fragment>
+                                    }
+                                    <__experimentalZIndexControl
+                                        zIndex={zIndex}
+                                        defaultZIndex={getDefaultProp(clientId, 'zIndex')}
+                                        onChange={zIndex => setAttributes({ zIndex })}
                                         breakpoint={deviceType}
                                     />
-                                }
-                                <__experimentalPositionControl
-                                    position={position}
-                                    onChange={position => setAttributes({ position })}
-                                    breakpoint={deviceType}
+                                    <SelectControl
+                                        label={__('Image ALT Tag', 'maxi-blocks')}
+                                        value={altSelector}
+                                        options={altSelectorOptions}
+                                        onChange={altSelector => {
+                                            setAttributes({ altSelector });
+                                        }}
+                                    />
+                                    {
+                                        altSelector == 'custom' &&
+                                        <TextControl
+                                            placeHolder={__('Add Your ALT Tag Here', 'maxi-blocks')}
+                                            className='maxi-image__alt'
+                                            value={mediaALT}
+                                            onChange={mediaALT => setAttributes({ mediaALT })}
+                                        />
+                                    }
+                                    {
+                                        deviceType != 'general' &&
+                                        <__experimentalResponsiveControl
+                                            breakpoints={breakpoints}
+                                            defaultBreakpoints={getDefaultProp(clientId, 'breakpoints')}
+                                            onChange={breakpoints => setAttributes({ breakpoints })}
+                                            breakpoint={deviceType}
+                                        />
+                                    }
+                                    <__experimentalPositionControl
+                                        position={position}
+                                        defaultPosition={getDefaultProp(clientId, 'position')}
+                                        onChange={position => setAttributes({ position })}
+                                        breakpoint={deviceType}
+                                    />
+                                    <__experimentalDisplayControl
+                                        display={display}
+                                        onChange={display => setAttributes({ display })}
+                                        breakpoint={deviceType}
+                                        defaultDisplay='flex'
+                                    />
+                                    <__experimentalClipPath
+                                        clipPath={clipPath}
+                                        onChange={clipPath => setAttributes({ clipPath })}
+                                    />
+                                </div>
+                                <AccordionControl
+                                    isPrimary
+                                    items={[
+                                        {
+                                            label: __('Hover Effects', 'maxi-blocks'),
+                                            content: (
+                                                <__experimentalHoverEffectControl
+                                                    hover={hover}
+                                                    defaultHover={getDefaultProp(clientId, 'hover')}
+                                                    onChange={hover => setAttributes({ hover })}
+                                                />
+                                            )
+                                        },
+                                        {
+                                            label: __('Transform', 'maxi-blocks'),
+                                            content: (
+                                                <__experimentalTransformControl
+                                                    transform={transform}
+                                                    onChange={transform => setAttributes({ transform })}
+                                                    uniqueID={uniqueID}
+                                                    breakpoint={deviceType}
+                                                />
+                                            )
+                                        }
+                                    ]}
                                 />
-                                <__experimentalDisplayControl
-                                    display={display}
-                                    onChange={display => setAttributes({ display })}
-                                    breakpoint={deviceType}
-                                />
-                            </div>
+                            </Fragment>
                         )
                     }
                 ]}

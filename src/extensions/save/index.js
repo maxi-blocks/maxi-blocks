@@ -14,6 +14,8 @@ const allowedBlocks = [
 	'maxi-blocks/image-maxi',
 	'maxi-blocks/section-maxi',
 	'maxi-blocks/container-maxi',
+	'maxi-blocks/svg-icon-maxi',
+	'maxi-blocks/icon-maxi',
 ];
 
 /**
@@ -30,7 +32,7 @@ const withSave = (element, blockType, attributes) => {
 		!!JSON.parse(attributes.linkSettings).url
 	) {
 		const linkSettings = JSON.parse(attributes.linkSettings);
-		
+
 		let rel = '';
 		if(linkSettings.nofollow)
 			rel += ' nofollow';

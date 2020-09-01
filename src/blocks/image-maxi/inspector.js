@@ -10,6 +10,7 @@ const {
     TextareaControl,
     TextControl,
 } = wp.components;
+const { useSelect } = wp.data;
 
 /**
  * Internal dependencies
@@ -38,6 +39,7 @@ import {
     __experimentalClipPath,
     __experimentalEntranceAnimationControl,
     __experimentalHoverEffectControl,
+    __experimentalSVGControl,
 } from '../../components';
 
 /**
@@ -90,6 +92,10 @@ const Inspector = props => {
             transform,
             clipPath,
             hover,
+            SVGElement,
+            SVGData,
+            SVGMediaID,
+            SVGMediaURL,
         },
         imageData,
         clientId,
@@ -528,7 +534,18 @@ const Inspector = props => {
                                                     breakpoint={deviceType}
                                                 />
                                             )
-                                        }
+                                        },
+                                        {/*
+                                            label: __('SVG Background', 'maxi-blocks'),
+                                            content: (
+                                                <__experimentalSVGControl
+                                                    SVGData={SVGData}
+                                                    SVGMediaID={SVGMediaID}
+                                                    SVGMediaURL={SVGMediaURL}
+                                                    onChange={obj => setAttributes(obj)}
+                                                />
+                                            )*/
+                                        },
                                     ]}
                                 />
                             </Fragment>

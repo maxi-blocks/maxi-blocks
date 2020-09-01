@@ -21,31 +21,6 @@ export default class MaxiProvider extends Component {
 		sections: '',
 		all: '',
 	}
-
-	async componentDidMount() {
-
-
-		async components => {
-			let layouts   = [];
-			let sections  = [];
-
-			Object.values( components ).forEach( function( item ) {
-				if ( item.type === 'layout' ) {
-					layouts.push( item );
-				} else {
-					sections.push( item );
-				}
-
-			} );
-
-			this.setState( {
-				all: components,
-				layouts: layouts,
-				sections: sections,
-			} );
-		}
-	}
-
 	render() {
 		return (
 				<MaxiContext.Provider value={{

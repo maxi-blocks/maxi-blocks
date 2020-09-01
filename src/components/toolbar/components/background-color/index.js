@@ -19,7 +19,7 @@ const BackgroundColor = props => {
         onChange
     } = props;
 
-    if (blockName === 'maxi-blocks/divider-maxi' || blockName === 'maxi-blocks/text-maxi')
+    if (blockName === 'maxi-blocks/divider-maxi' || blockName === 'maxi-blocks/text-maxi' || blockName === 'maxi-blocks/svg-icon-maxi')
         return null;
 
     let value = typeof background != 'object' ?

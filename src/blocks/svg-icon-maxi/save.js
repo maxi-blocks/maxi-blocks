@@ -23,7 +23,6 @@ const save = props => {
             uniqueID,
             blockStyle,
             defaultBlockStyle,
-            fullWidth,
             background,
             extraClassName,
             motion,
@@ -47,9 +46,6 @@ const save = props => {
         extraClassName,
         uniqueID,
         className,
-        fullWidth === 'full' ?
-            'alignfull' :
-            null,
         !isNil(uniqueID) ?
             uniqueID :
             null

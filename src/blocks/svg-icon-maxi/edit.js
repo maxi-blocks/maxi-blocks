@@ -6,13 +6,7 @@ const { Fragment } = wp.element;
 const { Placeholder, SandBox } = wp.components;
 const { withSelect } = wp.data;
 const {
-    Spinner,
-    IconButton,
-    ResizableBox
-} = wp.components;
-const {
-    __experimentalBlock,
-    MediaUpload
+    __experimentalBlock
 } = wp.blockEditor;
 
 /**
@@ -57,13 +51,6 @@ import {
  * Content
  */
 class edit extends MaxiBlock {
-    get getWrapperWidth() {
-        const target = document.getElementById(`block-${this.props.uniqueID}`);
-        if (!target)
-            return;
-
-        return target.getBoundingClientRect().width;
-    }
 
     get getObject() {
         const {
@@ -74,8 +61,6 @@ class edit extends MaxiBlock {
 
         let response = {
             [uniqueID]: this.getNormalObject,
-            // [`${uniqueID} svg`]: this.getSvgObject,
-            // [`${uniqueID} iframe`]: this.getSvgObject,
             [`${uniqueID}:hover`]: this.getHoverObject,
             [`${uniqueID} .maxi-hover-details .maxi-hover-details__content h3`]: this.getHoverEffectTitleTextObject,
             [`${uniqueID} .maxi-hover-details .maxi-hover-details__content p`]: this.getHoverEffectContentTextObject,
@@ -120,18 +105,6 @@ class edit extends MaxiBlock {
             positionOptions: { ...JSON.parse(position).options },
             display: { ...JSON.parse(display) },
             transform: { ...getTransformObject(JSON.parse(transform)) }
-        };
-
-        return response;
-    }
-
-    get getSvgObject() {
-        const {
-            size
-        } = this.props.attributes;
-
-        const response = {
-            size: { ...JSON.parse(size) },
         };
 
         return response;
@@ -220,16 +193,6 @@ class edit extends MaxiBlock {
         return response;
     }
 
-    get changeColors(){
-        const {
-            content
-        } = this.props.attributes;
-
-        const modified_content = '';
-
-        return modified_content
-    }
-
     render() {
         const {
             className,
@@ -238,8 +201,6 @@ class edit extends MaxiBlock {
                 blockStyle,
                 defaultBlockStyle,
                 extraClassName,
-                fullWidth,
-                size,
                 background,
                 content,
                 hoverContent,
@@ -255,15 +216,7 @@ class edit extends MaxiBlock {
             extraClassName,
             uniqueID,
             className,
-            fullWidth === 'full' ?
-            'alignfull' :
-            '',
         );
-
-
-        const sizeValue = !isObject(size) ?
-            JSON.parse(size) :
-            size;
 
         return [
         <MaxiProvider>
@@ -272,11 +225,10 @@ class edit extends MaxiBlock {
             <__experimentalBlock
                 className={classes}
                 data-maxi_initial_block_class={defaultBlockStyle}
-                data-align={fullWidth}
-                key={ this.props.clientId }
+                key={clientId }
             >
             <Fragment>
-                {  content === '' && <Placeholder
+                {  isEmpty(content) && <Placeholder
                     key="placeholder"
                     label={ __( 'SVG Icon Cloud Library Maxi', 'maxi-blocks' ) }
                     instructions={ __( 'Launch the library to browse pre-designed SVGs.', 'maxi-blocks' ) }
@@ -285,7 +237,7 @@ class edit extends MaxiBlock {
                     <MaxiModal clientId={ clientId } />
                  </Placeholder>
                 }
-                {  content !== '' &&
+                {  !isEmpty(content) &&
                  <Fragment>
                     <SandBox
                     html={ content }

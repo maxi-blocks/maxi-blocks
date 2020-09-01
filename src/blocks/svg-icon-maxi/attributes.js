@@ -2,16 +2,11 @@
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults';
-import { size } from './data';
 
 /**
  * Attributes
  */
 const attributes = {
-    imageSize: {
-        type: 'string',
-        default: 'full'
-    },
     alignment: {
         type: 'string',
         default: JSON.stringify(attributesData.alignment)
@@ -23,14 +18,6 @@ const attributes = {
     hoverContent: {
         type: 'string',
         default: ''
-    },
-    fullWidth: {
-        type: 'string',
-        default: 'normal',
-    },
-    size: {
-        type: 'string',
-        default: JSON.stringify(size)
     },
     opacity: {
         type: 'string',
@@ -112,10 +99,6 @@ const attributes = {
         type: 'number',
         default: 2.0,
     },
-    defaultStroke: {
-        type: 'number',
-        default: 2.0,
-    },
     animation: {
         type: 'string',
         default: 'loop',
@@ -123,10 +106,6 @@ const attributes = {
     duration: {
         type: 'number',
         default: 3.7,
-    },
-    size: {
-        type: 'string',
-        default: JSON.stringify(size)
     },
     width: {
         type: 'number',

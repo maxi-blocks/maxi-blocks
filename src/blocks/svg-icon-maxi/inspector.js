@@ -5,9 +5,6 @@ const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
 const { Fragment } = wp.element;
 const {
-    RangeControl,
-    SelectControl,
-    TextareaControl,
     TextControl,
 } = wp.components;
 const { useSelect } = wp.data;
@@ -23,9 +20,7 @@ import {
     BorderControl,
     BlockStylesControl,
     BoxShadowControl,
-    FullSizeControl,
     SettingTabsControl,
-    TypographyControl,
     SvgStrokeWidthControl,
     SvgAnimationControl,
     SvgAnimationDurationControl,
@@ -48,7 +43,6 @@ import {
  * External dependencies
  */
 import {
-    capitalize,
     isEmpty,
     isNil,
     isObject
@@ -64,7 +58,6 @@ const Inspector = props => {
             isFirstOnHierarchy,
             blockStyle,
             defaultBlockStyle,
-            fullWidth,
             alignment,
             content,
             hoverContent,
@@ -72,7 +65,6 @@ const Inspector = props => {
             opacity,
             boxShadow,
             border,
-            size,
             padding,
             margin,
             backgroundHover,
@@ -104,17 +96,13 @@ const Inspector = props => {
         setAttributes,
     } = props;
 
-    const sizeValue = !isObject(size) ?
-        JSON.parse(size) :
-        size;
-
     function isAnimatedSvg() {
         if(wp.data.select( 'core/block-editor' ).getSelectedBlock() !== null && wp.data.select( 'core/block-editor' ).getSelectedBlock().name === 'maxi-blocks/svg-icon-maxi') {
             let clientId = wp.data.select('core/block-editor').getSelectedBlock().clientId;
-            let current_content = wp.data.select( 'core/block-editor' ).getSelectedBlock().attributes.content;
-            if (current_content.indexOf('<animate') !== -1 || current_content.indexOf('<!--animate') !== -1) {
-                let new_content = current_content.replace(/animatetransform'/g, 'animatetransform');
-                wp.data.dispatch('core/block-editor').updateBlockAttributes(clientId, {content: new_content})
+            let currentContent = wp.data.select( 'core/block-editor' ).getSelectedBlock().attributes.content;
+            if (currentContent.indexOf('<animate') !== -1 || currentContent.indexOf('<!--animate') !== -1) {
+                let newContent = currentContent.replace(/animateTransform'/g, 'animatetransform');
+                wp.data.dispatch('core/block-editor').updateBlockAttributes(clientId, {content: newContent})
                 return true;
             }
             else return false;
@@ -126,69 +114,67 @@ const Inspector = props => {
 
         if(width) {
             let clientId = wp.data.select('core/block-editor').getSelectedBlock().clientId;
-            let current_content = wp.data.select( 'core/block-editor' ).getSelectedBlock().attributes.content;
+            let currentContent = wp.data.select( 'core/block-editor' ).getSelectedBlock().attributes.content;
             let regex_line_to_change = new RegExp('stroke-width=".+?(?= )', 'g');
             let change_to = 'stroke-width="' + width+'"';
-            let new_content = current_content.replace(regex_line_to_change, change_to);
+            let newContent = currentContent.replace(regex_line_to_change, change_to);
 
-            wp.data.dispatch('core/block-editor').updateBlockAttributes(clientId, {content: new_content})
+            wp.data.dispatch('core/block-editor').updateBlockAttributes(clientId, {content: newContent})
         }
     }
 
     function changeSvgAnimation(animation) {
         let clientId = wp.data.select('core/block-editor').getSelectedBlock().clientId;
-        let current_content = wp.data.select( 'core/block-editor' ).getSelectedBlock().attributes.content;
-        let new_content = '';
-        let hover_content = '';
+        let currentContent = wp.data.select( 'core/block-editor' ).getSelectedBlock().attributes.content;
+        let newContent = '';
+        let hoverContent = '';
 
         switch(animation){
             case 'loop':
-                new_content = current_content.replace(/repeatCount="1"/g,  'repeatCount="indefinite"');
-                new_content = new_content.replace(/dur="0"/g, 'dur="3.667s"');
+                newContent = currentContent.replace(/repeatCount="1"/g,  'repeatCount="indefinite"');
+                newContent = newContent.replace(/dur="0"/g, 'dur="3.667s"');
                 break;
             case 'load-once':
-                new_content = current_content.replace(/repeatCount="indefinite"/g,  'repeatCount="1"');
-                new_content = new_content.replace(/dur="0"/g, 'dur="3.667s"');
+                newContent = currentContent.replace(/repeatCount="indefinite"/g,  'repeatCount="1"');
+                newContent = newContent.replace(/dur="0"/g, 'dur="3.667s"');
                 break;
             case 'hover-loop':
-                new_content = current_content.replace(new RegExp('dur=".+?(?= )', 'g'), 'dur="0"');
-               // hover_content = current_content.replace(/repeatCount="1"/g,  'repeatCount="indefinite"');
-                //hover_content = hover_content.replace(/dur="0"/g, 'dur="3.667s"');
+                newContent = currentContent.replace(new RegExp('dur=".+?(?= )', 'g'), 'dur="0"');
+               // hoverContent = currentContent.replace(/repeatCount="1"/g,  'repeatCount="indefinite"');
+                //hoverContent = hoverContent.replace(/dur="0"/g, 'dur="3.667s"');
                 break;
             case 'hover-once':
                 break;
             case 'hover-off':
                 break;
             case 'off':
-                new_content = current_content.replace(new RegExp('dur=".+?(?= )', 'g'), 'dur="0"');
+                newContent = currentContent.replace(new RegExp('dur=".+?(?= )', 'g'), 'dur="0"');
                 break;
             default:
                 return;
         }
 
-        console.log('animation: '+animation);
-
-        if(new_content !== '') wp.data.dispatch('core/block-editor').updateBlockAttributes(clientId, {content: new_content})
+        if(!isEmpty(newContent)) wp.data.dispatch('core/block-editor').updateBlockAttributes(clientId, {content: newContent})
 
     }
 
     function changeSvgAnimationDuration(duration) {
         let clientId = wp.data.select('core/block-editor').getSelectedBlock().clientId;
-        let current_content = wp.data.select( 'core/block-editor' ).getSelectedBlock().attributes.content;
-        let new_content = '';
+        let currentContent = wp.data.select( 'core/block-editor' ).getSelectedBlock().attributes.content;
+        let newContent = '';
 
         let regex_line_to_change = new RegExp('dur=".+?(?= )', 'g');
         let change_to = 'dur="' + duration+'s"';
-        new_content = current_content.replace(regex_line_to_change, change_to );
+        newContent = currentContent.replace(regex_line_to_change, change_to );
 
-        if(new_content !== '') wp.data.dispatch('core/block-editor').updateBlockAttributes(clientId, {content: new_content})
+        if(!isEmpty(newContent)) wp.data.dispatch('core/block-editor').updateBlockAttributes(clientId, {content: newContent})
 
     }
 
     function changeSvgSize(width) {
         let clientId = wp.data.select('core/block-editor').getSelectedBlock().clientId;
-        let current_content = wp.data.select( 'core/block-editor' ).getSelectedBlock().attributes.content;
-        let new_content = '';
+        let currentContent = wp.data.select( 'core/block-editor' ).getSelectedBlock().attributes.content;
+        let newContent = '';
 
         let regex_line_to_change = new RegExp('width=".+?(?=")');
         let change_to = 'width="' +width;
@@ -196,21 +182,15 @@ const Inspector = props => {
         let regex_line_to_change2 = new RegExp('height=".+?(?=")');
         let change_to2 = 'height="' +width;
 
-        new_content = current_content.replace(regex_line_to_change, change_to );
-        new_content = new_content.replace(regex_line_to_change2, change_to2 );
+        newContent = currentContent.replace(regex_line_to_change, change_to );
+        newContent = newContent.replace(regex_line_to_change2, change_to2 );
 
-        if (new_content.indexOf('viewBox') !== -1) {
-            // let regex_line_to_change3 = new RegExp('viewBox=".+?(?=")');
-            // let change_to3 = 'viewBox="0 0 ' +width+' '+ width;
-
-            // new_content = new_content.replace(regex_line_to_change3, change_to3 );
-        }
-        else {
+        if (newContent.indexOf('viewBox') === -1) {
             let change_to3 = ' viewBox="0 0 64 64"><defs>';
-            new_content = new_content.replace(/><defs>/, change_to3 );
+            newContent = newContent.replace(/><defs>/, change_to3 );
         }
 
-        if(new_content !== '') wp.data.dispatch('core/block-editor').updateBlockAttributes(clientId, {content: new_content})
+        if(!isEmpty(newContent)) wp.data.dispatch('core/block-editor').updateBlockAttributes(clientId, {content: newContent})
 
     }
 
@@ -414,11 +394,13 @@ const Inspector = props => {
                                                         onChange={animation => {setAttributes({ animation }); changeSvgAnimation(animation)}}
 
                                                     />
+                                                    { animation !== 'off' &&
                                                     <SvgAnimationDurationControl
                                                         duration={duration}
                                                         onChange={duration =>{setAttributes({ duration }); changeSvgAnimationDuration(duration)} }
 
                                                     />
+                                                    }
                                                     </Fragment>
                                                 )
                                             },

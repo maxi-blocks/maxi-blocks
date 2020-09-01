@@ -42,7 +42,7 @@ const BackgroundDisplayer = props => {
         >
             {
                 value.videoOptions.mediaURL &&
-                <div class="maxi-background-displayer__video-player">
+                <div className="maxi-background-displayer__video-player">
                     <video
                         controls={!!parseInt(value.videoOptions.controls)}
                         autoplay={!!parseInt(value.videoOptions.autoplay)}

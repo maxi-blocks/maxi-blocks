@@ -53,13 +53,13 @@ const BackgroundDisplayer = props => {
                     />
                 </div>
             }
-            {
+            {/*
                 !isNil(value.SVG.SVGElement) &&
                 <RawHTML
                     className='maxi-background-displayer__svg-wrapper'
                 >
                     {value.SVG.SVGElement}
-                </RawHTML>
+                </RawHTML>*/
             }
         </div>
     )

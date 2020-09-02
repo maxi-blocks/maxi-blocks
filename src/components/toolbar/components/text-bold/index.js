@@ -12,19 +12,34 @@ const {
     toggleFormat,
     create,
     toHTMLString,
-    getActiveFormat
+    getActiveFormat,
+    registerFormatType,
 } = wp.richText;
 
 /**
  * External dependencies
  */
-import { find } from 'lodash';
+import { isNil } from 'lodash';
 
 /**
  * Styles and icons
  */
 import './editor.scss';
 import { toolbarBold } from '../../../../icons';
+
+/**
+ * Register format
+ */
+const formatName = 'maxi-blocks/text-bold';
+
+registerFormatType(formatName, {
+    title: 'Text bold',
+    tagName: 'strong',
+    className: 'maxi-text-block--has-bold',
+    attributes: {
+        style: 'style'
+    },
+});
 
 /**
  * TextBold
@@ -34,11 +49,21 @@ const TextBold = props => {
         blockName,
         content,
         onChange,
-        node
+        node,
+        isList,
+        typeOfList
     } = props;
 
     if (blockName != 'maxi-blocks/text-maxi')
         return null;
+
+    const formatElement = {
+        element: node,
+        html: content,
+        multilineTag: isList ? 'li' : undefined,
+        multilineWrapperTags: isList ? typeOfList : undefined,
+        __unstableIsEditableTree: true
+    }
 
     const { formatValue, isActive } = useSelect(
         select => {
@@ -46,27 +71,35 @@ const TextBold = props => {
                 getSelectionStart,
                 getSelectionEnd
             } = select('core/block-editor');
-            const formatValue = create({
-                element: node.querySelector('p'),
-                html: content,
-            });
+
+            const formatValue = create(formatElement);
             formatValue['start'] = getSelectionStart().offset;
             formatValue['end'] = getSelectionEnd().offset;
 
-            const isActive = find(getActiveFormat(formatValue, 'core/bold')) === 'core/bold';
+            const activeFormat = getActiveFormat(formatValue, formatName);
+            const isActive =
+                !isNil(activeFormat) && activeFormat.type === formatName || false;
+
             return {
                 formatValue,
                 isActive
             }
         },
-        [getActiveFormat, node, content]
+        [getActiveFormat, formatElement]
     )
 
     const onClick = () => {
-        const newFormat = toggleFormat(formatValue, { type: 'core/bold' });
+        const newFormat = toggleFormat(formatValue, {
+            type: formatName,
+            isActive: isActive,
+            attributes: {
+                style: `font-weight: bold`,
+            }
+        });
 
         const newContent = toHTMLString({
-            value: newFormat
+            value: newFormat,
+            multilineTag: isList ? 'li' : null,
         })
 
         onChange(newContent)

@@ -46,7 +46,9 @@ import {
 /**
  * Register format
  */
-registerFormatType('maxi-blocks/text-size', {
+const formatName = 'maxi-blocks/text-size';
+
+registerFormatType(formatName, {
     title: 'Text color',
     tagName: 'span',
     className: 'maxi-text-block--has-size',
@@ -66,24 +68,30 @@ const TextOptions = props => {
         onChange,
         node,
         content,
-        breakpoint
+        breakpoint,
+        isList,
+        typeOfList
     } = props;
 
     if (blockName != 'maxi-blocks/text-maxi')
         return null;
 
-    const defaultRawTypography = getBlockAttributes('maxi-blocks/text-maxi').typography;
-    const formatName = 'maxi-blocks/text-size';
+    const defaultRawTypography = getBlockAttributes('maxi-blocks/text-maxi').typography;    // ??
+
+    const formatElement = {
+        element: node,
+        html: content,
+        multilineTag: isList ? 'li' : undefined,
+        multilineWrapperTags: isList ? typeOfList : undefined,
+        __unstableIsEditableTree: true
+    }
 
     const { formatValue, isActive, currentSize } = useSelect(
         (select) => {
             const { getSelectionStart, getSelectionEnd } = select(
                 'core/block-editor'
             );
-            const formatValue = create({
-                element: node.querySelector('p'),
-                html: content,
-            });
+            const formatValue = create(formatElement);
             formatValue['start'] = getSelectionStart().offset;
             formatValue['end'] = getSelectionEnd().offset;
 
@@ -100,7 +108,7 @@ const TextOptions = props => {
                 currentSize
             };
         },
-        [getActiveFormat, node, content]
+        [getActiveFormat, formatElement]
     );
 
     const onChangeSize = (val) => {
@@ -121,6 +129,7 @@ const TextOptions = props => {
 
         const newContent = toHTMLString({
             value: newFormat,
+            multilineTag: isList ? 'li' : null,
         });
 
         onChange({ typography: JSON.stringify(value), content: newContent });

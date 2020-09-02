@@ -170,6 +170,8 @@ const MaxiToolbar = (props) => {
                             node={anchorRef}
                             content={content}
                             breakpoint={deviceType}
+                            isList={isList}
+                            typeOfList={typeOfList}
                         />
                         <TextColor
                             blockName={name}
@@ -178,6 +180,8 @@ const MaxiToolbar = (props) => {
                             node={anchorRef}
                             content={content}
                             breakpoint={deviceType}
+                            isList={isList}
+                            typeOfList={typeOfList}
                         />
                         <Alignment
                             blockName={name}
@@ -213,12 +217,16 @@ const MaxiToolbar = (props) => {
                             content={content}
                             onChange={(content) => setAttributes({ content })}
                             node={anchorRef}
+                            isList={isList}
+                            typeOfList={typeOfList}
                         />
                         <TextItalic
                             blockName={name}
                             content={content}
                             onChange={(content) => setAttributes({ content })}
                             node={anchorRef}
+                            isList={isList}
+                            typeOfList={typeOfList}
                         />
                         <ColumnPattern
                             clientId={clientId}

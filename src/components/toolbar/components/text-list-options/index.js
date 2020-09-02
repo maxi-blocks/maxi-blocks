@@ -73,12 +73,16 @@ const TextListOptions = props => {
     )
 
     const getContent = content => {
-
         let newContent = content;
 
         if (!isList) {
             newContent = '';
             newContent = `<li>${content.replace(/<br>/gi, '</li><li>')}</li>`;
+        }
+        else {
+            newContent = '';
+            newContent = content.replace(/(<\/li><li>|<ol>|<ul>)/gi, '<br>')
+                .replace(/(<\/li>|<li>|<\/ul>|<\/ol>)/gi, '')
         }
 
         return newContent;
@@ -101,6 +105,12 @@ const TextListOptions = props => {
         onChange(true, typeOfList, newContent)
     }
 
+    const onChangeList = type => {
+        typeOfList === type ?
+            onChange(!isList, type, getContent(content)) :
+            onChange(isList, type, content)
+    }
+
     return (
         <ToolbarPopover
             className='toolbar-item__list-options'
@@ -112,13 +122,13 @@ const TextListOptions = props => {
                     <IconButton
                         className='toolbar-item__popover__list-options__button'
                         icon={toolbarOrderedList}
-                        onClick={() => onChange(true, 'ol', getContent(content))}
+                        onClick={() => onChangeList('ol')}
                         aria-pressed={isList && typeOfList === 'ol'}
                     />
                     <IconButton
                         className='toolbar-item__popover__list-options__button'
                         icon={toolbarUnorderedList}
-                        onClick={() => onChange(true, 'ul', getContent(content))}
+                        onClick={() => onChangeList('ul')}
                         aria-pressed={isList && typeOfList === 'ul'}
                     />
                     <IconButton

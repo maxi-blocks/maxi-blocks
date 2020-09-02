@@ -32,7 +32,9 @@ import { toolbarType } from '../../../../icons';
 /**
  * Register format
  */
-registerFormatType('maxi-blocks/text-color', {
+const formatName = 'maxi-blocks/text-color';
+
+registerFormatType(formatName, {
     title: 'Text color',
     tagName: 'span',
     className: 'maxi-text-block--has-color',
@@ -53,21 +55,26 @@ const TextColor = (props) => {
         node,
         content,
         breakpoint,
+        isList,
+        typeOfList
     } = props;
 
     if (blockName != 'maxi-blocks/text-maxi') return null;
 
-    const formatName = 'maxi-blocks/text-color';
+    const formatElement = {
+        element: node,
+        html: content,
+        multilineTag: isList ? 'li' : undefined,
+        multilineWrapperTags: isList ? typeOfList : undefined,
+        __unstableIsEditableTree: true
+    }
 
     const { formatValue, isActive, currentColor } = useSelect(
         (select) => {
             const { getSelectionStart, getSelectionEnd } = select(
                 'core/block-editor'
             );
-            const formatValue = create({
-                element: node.querySelector('p'),
-                html: content,
-            });
+            const formatValue = create(formatElement);
             formatValue['start'] = getSelectionStart().offset;
             formatValue['end'] = getSelectionEnd().offset;
 
@@ -84,7 +91,7 @@ const TextColor = (props) => {
                 currentColor
             };
         },
-        [getActiveFormat, node, content]
+        [getActiveFormat, formatElement]
     );
 
     const onClick = (val) => {
@@ -104,6 +111,7 @@ const TextColor = (props) => {
 
         const newContent = toHTMLString({
             value: newFormat,
+            multilineTag: isList ? 'li' : null,
         });
 
         onChange({ typography: JSON.stringify(value), content: newContent });

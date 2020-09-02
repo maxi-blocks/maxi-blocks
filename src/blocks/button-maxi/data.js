@@ -158,12 +158,10 @@ export const background = {
         {
             "imageData": {
                 "mediaID": "",
-                "mediaURL": ""
-            },
-            "sizeSettings": {
-                "size": "cover",
+                "mediaURL": "",
+                "width": "100",
                 "widthUnit": "%",
-                "width": 100,
+                "height": "100",
                 "heightUnit": "%",
                 "height": 100
             },
@@ -180,12 +178,13 @@ export const background = {
             "attachment": "scroll"
         }
     ],
+    "clipPathImage": "",
     "videoOptions": {
         "mediaID": "",
         "mediaURL": "",
-        "width": "100",
+        "width": 100,
         "widthUnit": "%",
-        "height": "100",
+        "height": 100,
         "heightUnit": "%",
         "fill": "cover",
         "position": "unset",
@@ -193,15 +192,18 @@ export const background = {
         "loop": 0,
         "muted": 0,
         "controls": 0,
-        "preload": "metadata"
+        "preload": "metadata",
+        "clipPath": ""
     },
     "colorOptions": {
+        "overlay": 0,
+        "activeColor": "#ff4a17",
         "color": "#ff4a17",
         "gradient": "",
-        "gradientAboveBackground": false
-    },
-    "clipPath": ""
-};
+        "gradientAboveBackground": false,
+        "clipPath": ""
+    }
+}
 
 export const border = {
     "label": "Border",

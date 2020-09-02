@@ -57,6 +57,8 @@ class edit extends MaxiBlock {
             [`${uniqueID}:hover`]: this.getHoverObject,
             [`${uniqueID} .maxi-text-block__content`]: this.getTypographyObject,
             [`${uniqueID} .maxi-text-block__content:hover`]: this.getTypographyHoverObject,
+            [`${uniqueID} .maxi-text-block__content li`]: this.getTypographyObject,
+            [`${uniqueID} .maxi-text-block__content li:hover`]: this.getTypographyHoverObject,
         }
 
         response = Object.assign(

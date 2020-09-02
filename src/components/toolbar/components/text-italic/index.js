@@ -13,7 +13,6 @@ const {
     create,
     toHTMLString,
     getActiveFormat,
-    registerFormatType,
 } = wp.richText;
 
 /**
@@ -26,20 +25,6 @@ import { isNil } from 'lodash';
  */
 import './editor.scss';
 import { toolbarItalic } from '../../../../icons';
-
-/**
- * Register format
- */
-const formatName = 'maxi-blocks/text-italic';
-
-registerFormatType(formatName, {
-    title: 'Text italic',
-    tagName: 'em',
-    className: 'maxi-text-block--has-italic',
-    attributes: {
-        style: 'style'
-    },
-});
 
 /**
  * TextItalic
@@ -56,6 +41,8 @@ const TextItalic = props => {
 
     if (blockName != 'maxi-blocks/text-maxi')
         return null;
+
+    const formatName = 'core/italic';
 
     const formatElement = {
         element: node,
@@ -92,9 +79,6 @@ const TextItalic = props => {
         const newFormat = toggleFormat(formatValue, {
             type: formatName,
             isActive: isActive,
-            attributes: {
-                style: `font-style: italic`,
-            }
         });
 
         const newContent = toHTMLString({

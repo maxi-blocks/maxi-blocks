@@ -13,7 +13,6 @@ const {
     create,
     toHTMLString,
     getActiveFormat,
-    registerFormatType,
 } = wp.richText;
 
 /**
@@ -26,20 +25,6 @@ import { isNil } from 'lodash';
  */
 import './editor.scss';
 import { toolbarBold } from '../../../../icons';
-
-/**
- * Register format
- */
-const formatName = 'maxi-blocks/text-bold';
-
-registerFormatType(formatName, {
-    title: 'Text bold',
-    tagName: 'strong',
-    className: 'maxi-text-block--has-bold',
-    attributes: {
-        style: 'style'
-    },
-});
 
 /**
  * TextBold
@@ -56,6 +41,8 @@ const TextBold = props => {
 
     if (blockName != 'maxi-blocks/text-maxi')
         return null;
+
+    const formatName = 'core/bold';
 
     const formatElement = {
         element: node,
@@ -92,9 +79,6 @@ const TextBold = props => {
         const newFormat = toggleFormat(formatValue, {
             type: formatName,
             isActive: isActive,
-            attributes: {
-                style: `font-weight: bold`,
-            }
         });
 
         const newContent = toHTMLString({

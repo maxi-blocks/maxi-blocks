@@ -248,6 +248,8 @@ const MaxiToolbar = (props) => {
                             content={content}
                             onChange={(content) => setAttributes({ content })}
                             node={anchorRef}
+                            isList={isList}
+                            typeOfList={typeOfList}
                         />
                         <TextListOptions
                             blockName={name}

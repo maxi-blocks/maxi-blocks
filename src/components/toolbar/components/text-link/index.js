@@ -5,9 +5,10 @@ const { __ } = wp.i18n;
 const { __experimentalLinkControl } = wp.blockEditor;
 const { useSelect } = wp.data;
 const {
-    applyFormat,
+    toggleFormat,
     create,
-    toHTMLString
+    toHTMLString,
+    getActiveFormat
 } = wp.richText;
 
 /**
@@ -18,7 +19,7 @@ import ToolbarPopover from '../toolbar-popover';
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
+import { isEmpty, isNil } from 'lodash';
 
 /**
  * Icons
@@ -34,52 +35,22 @@ const Link = props => {
         blockName,
         content,
         onChange,
-        node
+        node,
+        isList,
+        typeOfList
     } = props;
 
     if (blockName != 'maxi-blocks/text-maxi')
         return null;
 
-    /**
- * Gets the all format objects at the start of the selection.
- * 
- * @param {Object} value                Value to inspect.
- * @param {Array}  EMPTY_ACTIVE_FORMATS Array to return if there are no active
- *                                      formats.
- *
- * @return {?Object} Active format objects.
- * 
- * @package Gutenberg
- * @see packages/rich-text/src/get-active-formats.js
- */
-    const getActiveFormats = (
-        { formats, start, end, activeFormats },
-        EMPTY_ACTIVE_FORMATS = []
-    ) => {
-        if (start === undefined) {
-            return EMPTY_ACTIVE_FORMATS;
-        }
+    const formatName = 'core/link';
 
-        if (start === end) {
-            // For a collapsed caret, it is possible to override the active formats.
-            if (activeFormats) {
-                return activeFormats;
-            }
-
-            const formatsBefore = formats[start - 1] || EMPTY_ACTIVE_FORMATS;
-            const formatsAfter = formats[start] || EMPTY_ACTIVE_FORMATS;
-
-            // By default, select the lowest amount of formats possible (which means
-            // the caret is positioned outside the format boundary). The user can
-            // then use arrow keys to define `activeFormats`.
-            if (formatsBefore.length < formatsAfter.length) {
-                return formatsBefore;
-            }
-
-            return formatsAfter;
-        }
-
-        return formats[start] || EMPTY_ACTIVE_FORMATS;
+    const formatElement = {
+        element: node,
+        html: content,
+        multilineTag: isList ? 'li' : undefined,
+        multilineWrapperTags: isList ? typeOfList : undefined,
+        __unstableIsEditableTree: true
     }
 
     const { formatValue, isActive, formatOptions } = useSelect(
@@ -88,33 +59,26 @@ const Link = props => {
                 getSelectionStart,
                 getSelectionEnd
             } = select('core/block-editor');
-            const formatValue = create({
-                element: node,
-                html: content,
-            });
+            const formatValue = create(formatElement);
             formatValue['start'] = getSelectionStart().offset;
             formatValue['end'] = getSelectionEnd().offset;
 
-            let formatOptions = {};
-            const isActive = getActiveFormats(formatValue).some(type => {
-                if (type.type === 'core/link') {
-                    formatOptions = type;
-                    return true;
-                }
-                return false
-            });
+            const activeFormat = getActiveFormat(formatValue, formatName);
+
+            const isActive =
+                !isNil(activeFormat) && activeFormat.type === formatName || false;
 
             return {
                 formatValue,
                 isActive,
-                formatOptions
+                formatOptions: activeFormat
             }
         },
-        [getActiveFormats, node, content]
+        [getActiveFormat, formatElement]
     )
 
     const createLinkValue = formatOptions => {
-        if(isEmpty(formatOptions))
+        if (isEmpty(formatOptions))
             return;
 
         const {
@@ -134,7 +98,7 @@ const Link = props => {
             id,
         };
 
-        if(!!rel){
+        if (!!rel) {
             value.noFollow = rel.indexOf('nofollow') >= 0 ? true : false;
             value.sponsored = rel.indexOf('sponsored') >= 0 ? true : false;
             value.ugc = rel.indexOf('ugc') >= 0 ? true : false;
@@ -155,7 +119,7 @@ const Link = props => {
         }
     ) => {
         const format = {
-            type: 'core/link',
+            type: formatName,
             attributes: {
                 url,
                 rel: ''
@@ -180,7 +144,7 @@ const Link = props => {
     }
 
     const formatChecker = format => {
-        if(!isActive && format.start === format.end){
+        if (!isActive && format.start === format.end) {
             format.start = 0;
             format.end = content.length;
         }
@@ -190,10 +154,11 @@ const Link = props => {
 
     const onClick = attributes => {
         const newAttribute = createLinkAttribute(attributes);
-        const newFormat = applyFormat(formatChecker(formatValue), newAttribute);
+        const newFormat = toggleFormat(formatChecker(formatValue), newAttribute);
 
         const newContent = toHTMLString({
-            value: newFormat
+            value: newFormat,
+            multilineTag: isList ? 'li' : null,
         })
 
         onChange(newContent)
@@ -222,7 +187,7 @@ const Link = props => {
                         },
                         {
                             id: 'ugc',
-                            title: __('Add "sponsored" rel', 'maxi-blocks'),
+                            title: __('Add "UGC" rel', 'maxi-blocks'),
                         },
                     ]}
                 />

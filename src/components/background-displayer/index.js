@@ -9,7 +9,7 @@ const { RawHTML } = wp.element;
 import classnames from 'classnames';
 import {
     isObject,
-    isNil
+    isEmpty,
 } from 'lodash';
 
 /**
@@ -41,6 +41,11 @@ const BackgroundDisplayer = props => {
             className={classes}
         >
             {
+                isEmpty(value.colorOptions.overlay) &&
+                <div className='maxi-background-displayer__color' />
+            }
+            <div className='maxi-background-displayer__images' />
+            {
                 value.videoOptions.mediaURL &&
                 <div className="maxi-background-displayer__video-player">
                     <video
@@ -52,6 +57,10 @@ const BackgroundDisplayer = props => {
                         src={value.videoOptions.mediaURL}
                     />
                 </div>
+            }
+            {
+                !!value.colorOptions.overlay &&
+                <div className='maxi-background-displayer__color' />
             }
             {/*
                 !isNil(value.SVG.SVGElement) &&

@@ -23,6 +23,11 @@ const {
 import { getLastBreakpointValue } from '../../../../utils';
 import FontFamilySelector from '../../../font-family-selector';
 import ToolbarPopover from '../toolbar-popover';
+import TextFormatStrikethrough from '../text-format-strikethrough';
+import TextFormatUnderline from '../text-format-underline';
+import TextFormatSubscript from '../text-format-subscript';
+import TextFormatSuperscript from '../text-format-superscript';
+import TextFormatCode from '../text-format-code';
 
 /**
  * External dependencies
@@ -275,6 +280,43 @@ const TextOptions = props => {
                                 {reset}
                             </Button>
                         </BaseControl>
+                        <div>
+                            <TextFormatStrikethrough
+                                content={content}
+                                onChange={(content) => onChange({ content })}
+                                node={node}
+                                isList={isList}
+                                typeOfList={typeOfList}
+                            />
+                            <TextFormatUnderline
+                                content={content}
+                                onChange={(content) => onChange({ content })}
+                                node={node}
+                                isList={isList}
+                                typeOfList={typeOfList}
+                            />
+                            <TextFormatSubscript
+                                content={content}
+                                onChange={(content) => onChange({ content })}
+                                node={node}
+                                isList={isList}
+                                typeOfList={typeOfList}
+                            />
+                            <TextFormatSuperscript
+                                content={content}
+                                onChange={(content) => onChange({ content })}
+                                node={node}
+                                isList={isList}
+                                typeOfList={typeOfList}
+                            />
+                            <TextFormatCode
+                                content={content}
+                                onChange={(content) => onChange({ content })}
+                                node={node}
+                                isList={isList}
+                                typeOfList={typeOfList}
+                            />
+                        </div>
                     </Fragment>
                 </div>
             )}

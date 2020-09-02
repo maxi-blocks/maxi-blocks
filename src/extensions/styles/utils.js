@@ -64,109 +64,6 @@ export const getLastBreakpointValue = (obj, prop, breakpoint) => {
     return obj[breakpoint][prop];
 }
 
-/**
- * Clean BackgroundControl object for being delivered for styling
- *
- * @param {object} background BackgroundControl related object
- *
- * @return {object}
- */
-export const getBackgroundObject = background => {
-    const response = {
-        label: background.label,
-        general: {}
-    }
-
-    if (!isEmpty(background.colorOptions.color))
-        response.general['background-color'] = background.colorOptions.color;
-    if (!isEmpty(background.colorOptions.gradient))
-        response.general['background'] = background.colorOptions.gradient;
-    if (!isEmpty(background.blendMode))
-        response.general['background-blend-mode'] = background.blendMode;
-    if (!isEmpty(background.clipPath))
-        response.general['clip-path'] = background.clipPath;
-
-    background.backgroundOptions.map(option => {
-        if (isNil(option) || isEmpty(option.imageOptions.mediaURL))
-            return;
-        // Image
-        if (option.sizeSettings.size === 'custom' && !isNil(option.imageOptions.cropOptions)) {
-            if (!isNil(response.general['background-image']))
-                response.general['background-image'] = `${response.general['background-image']},url('${option.imageOptions.cropOptions.image.source_url}')`;
-            else
-                response.general['background-image'] = `url('${option.imageOptions.cropOptions.image.source_url}')`;
-            if (!isEmpty(background.colorOptions.gradient))
-                response.general['background-image'] = `${response.general['background-image']}, ${background.colorOptions.gradient}`;
-        }
-        else if (option.sizeSettings.size === 'custom' && isNil(option.imageOptions.cropOptions) || option.sizeSettings.size != 'custom' && !isNil(option.imageOptions.mediaURL)) {
-            if (!isNil(response.general['background-image']))
-                response.general['background-image'] = `${response.general['background-image']},url('${option.imageOptions.mediaURL}')`;
-            else
-                response.general['background-image'] = `url('${option.imageOptions.mediaURL}')`;
-            if (!isEmpty(background.colorOptions.gradient))
-                response.general['background-image'] = `${response.general['background-image']}, ${background.colorOptions.gradient}`;
-        }
-        // Size
-        if (option.sizeSettings.size != 'custom') {
-            if (!isNil(response.general['background-size']))
-                response.general['background-size'] = `${response.general['background-size']},${option.sizeSettings.size}`;
-            else
-                response.general['background-size'] = option.sizeSettings.size;
-        }
-        else {
-            if (!isNil(response.general['background-size']))
-                response.general['background-size'] = `${response.general['background-size']},cover`;
-            else
-                response.general['background-size'] = 'cover';
-        }
-        // Repeat
-        if (option.repeat) {
-            if (!isNil(response.general['background-repeat']))
-                response.general['background-repeat'] = `${response.general['background-repeat']},${option.repeat}`;
-            else
-                response.general['background-repeat'] = option.repeat;
-        }
-        // Position
-        if (option.positionOptions.position != 'custom') {
-            if (!isNil(response.general['background-position']))
-                response.general['background-position'] = `${response.general['background-position']},${option.positionOptions.position}`;
-            else
-                response.general['background-position'] = option.positionOptions.position;
-        }
-        else {
-            if (!isNil(response.general['background-position']))
-                response.general['background-position'] = `
-                        ${response.general['background-position']},
-                        ${option.positionOptions.width + option.positionOptions.widthUnit} ${option.positionOptions.height + option.positionOptions.heightUnit}`;
-            else
-                response.general['background-position'] = `${option.positionOptions.width + option.positionOptions.widthUnit} ${option.positionOptions.height + option.positionOptions.heightUnit}`;
-        }
-        // Origin
-        if (option.origin) {
-            if (!isNil(response.general['background-origin']))
-                response.general['background-origin'] = `${response.general['background-origin']},${option.origin}`;
-            else
-                response.general['background-origin'] = option.origin;
-        }
-        // Clip
-        if (option.clip) {
-            if (!isNil(response.general['background-clip']))
-                response.general['background-clip'] = `${response.general['background-clip']},${option.clip}`;
-            else
-                response.general['background-clip'] = option.clip;
-        }
-        // Attachment
-        if (option.attachment) {
-            if (!isNil(response.general['background-attachment']))
-                response.general['background-attachment'] = `${response.general['background-attachment']},${option.attachment}`;
-            else
-                response.general['background-attachment'] = option.attachment;
-        }
-    })
-
-    return response;
-}
-
 export const getBoxShadowObject = boxShadow => {
     const response = {
         label: boxShadow.label,
@@ -278,27 +175,6 @@ export const getOpacityObject = opacity => {
             response[key]['opacity'] = value.opacity;
         }
     }
-
-    return response;
-}
-
-export const getVideoBackgroundObject = videoOptions => {
-    const response = {
-        label: 'Video Background',
-        general: {}
-    }
-
-    if (!isNil(videoOptions.fill))
-        response.general['object-fit'] = videoOptions.fill;
-
-    if (!isNil(videoOptions.position))
-        response.general['object-position'] = videoOptions.position;
-
-    if (!isNil(videoOptions.width))
-        response.general['width'] = `${videoOptions.width}${videoOptions.widthUnit}`;
-
-    if (!isNil(videoOptions.height))
-        response.general['height'] = `${videoOptions.height}${videoOptions.heightUnit}`;
 
     return response;
 }
@@ -519,13 +395,156 @@ export const getTransformObject = transform => {
     return response;
 }
 
+/**
+ * Clean BackgroundControl object for being delivered for styling
+ *
+ * @param {object} background BackgroundControl related object
+ *
+ * @return {object}
+ */
+export const getColorBackgroundObject = background => {
+    const response = {
+        label: background.label,
+        general: {}
+    }
+
+    if (!isEmpty(background.colorOptions.gradient))
+        response.general['background'] = background.colorOptions.activeColor;
+    if (!isEmpty(background.colorOptions.color))
+        response.general['background-color'] = background.colorOptions.activeColor;;
+    if (!isEmpty(background.colorOptions.clipPath))
+        response.general['clip-path'] = background.colorOptions.clipPath;
+
+    return response;
+}
+
+export const getImageBackgroundObject = background => {
+    const response = {
+        label: background.label,
+        general: {}
+    }
+
+    if (!isEmpty(background.clipPathImage))
+        response.general['clip-path'] = background.clipPathImage;
+
+    background.imageOptions.forEach(option => {
+        if (isNil(option) || isEmpty(option.imageData.mediaURL))
+            return;
+        // Image
+        if (option.sizeSettings.size === 'custom' && !isNil(option.imageData.cropOptions)) {
+            if (!isNil(response.general['background-image']))
+                response.general['background-image'] = `${response.general['background-image']},url('${option.imageData.cropOptions.image.source_url}')`;
+            else
+                response.general['background-image'] = `url('${option.imageData.cropOptions.image.source_url}')`;
+            if (!isEmpty(background.colorOptions.gradient))
+                response.general['background-image'] = `${response.general['background-image']}, ${background.colorOptions.gradient}`;
+        }
+        else if (option.sizeSettings.size === 'custom' && isNil(option.imageData.cropOptions) || option.sizeSettings.size != 'custom' && !isNil(option.imageData.mediaURL)) {
+            if (!isNil(response.general['background-image']))
+                response.general['background-image'] = `${response.general['background-image']},url('${option.imageData.mediaURL}')`;
+            else
+                response.general['background-image'] = `url('${option.imageData.mediaURL}')`;
+            if (!isEmpty(background.colorOptions.gradient))
+                response.general['background-image'] = `${response.general['background-image']}, ${background.colorOptions.gradient}`;
+        }
+        // Size
+        if (option.sizeSettings.size != 'custom') {
+            if (!isNil(response.general['background-size']))
+                response.general['background-size'] = `${response.general['background-size']},${option.sizeSettings.size}`;
+            else
+                response.general['background-size'] = option.sizeSettings.size;
+        }
+        else {
+            if (!isNil(response.general['background-size']))
+                response.general['background-size'] = `${response.general['background-size']},cover`;
+            else
+                response.general['background-size'] = 'cover';
+        }
+        // Repeat
+        if (option.repeat) {
+            if (!isNil(response.general['background-repeat']))
+                response.general['background-repeat'] = `${response.general['background-repeat']},${option.repeat}`;
+            else
+                response.general['background-repeat'] = option.repeat;
+        }
+        // Position
+        if (option.positionOptions.position != 'custom') {
+            if (!isNil(response.general['background-position']))
+                response.general['background-position'] = `${response.general['background-position']},${option.positionOptions.position}`;
+            else
+                response.general['background-position'] = option.positionOptions.position;
+        }
+        else {
+            if (!isNil(response.general['background-position']))
+                response.general['background-position'] = `
+                        ${response.general['background-position']},
+                        ${option.positionOptions.width + option.positionOptions.widthUnit} ${option.positionOptions.height + option.positionOptions.heightUnit}`;
+            else
+                response.general['background-position'] = `${option.positionOptions.width + option.positionOptions.widthUnit} ${option.positionOptions.height + option.positionOptions.heightUnit}`;
+        }
+        // Origin
+        if (option.origin) {
+            if (!isNil(response.general['background-origin']))
+                response.general['background-origin'] = `${response.general['background-origin']},${option.origin}`;
+            else
+                response.general['background-origin'] = option.origin;
+        }
+        // Clip
+        if (option.clip) {
+            if (!isNil(response.general['background-clip']))
+                response.general['background-clip'] = `${response.general['background-clip']},${option.clip}`;
+            else
+                response.general['background-clip'] = option.clip;
+        }
+        // Attachment
+        if (option.attachment) {
+            if (!isNil(response.general['background-attachment']))
+                response.general['background-attachment'] = `${response.general['background-attachment']},${option.attachment}`;
+            else
+                response.general['background-attachment'] = option.attachment;
+        }
+    })
+
+    return response;
+}
+
+export const getVideoBackgroundObject = videoOptions => {
+    const response = {
+        label: 'Video Background',
+        general: {}
+    }
+
+    if (!isNil(videoOptions.fill))
+        response.general['object-fit'] = videoOptions.fill;
+
+    if (!isNil(videoOptions.position))
+        response.general['object-position'] = videoOptions.position;
+
+    if (!isNil(videoOptions.width))
+        response.general['width'] = `${videoOptions.width}${videoOptions.widthUnit}`;
+
+    if (!isNil(videoOptions.height))
+        response.general['height'] = `${videoOptions.height}${videoOptions.heightUnit}`;
+
+    if (!isEmpty(videoOptions.clipPath))
+        response.general['clip-path'] = videoOptions.clipPath;
+
+    return response;
+}
+
 export const setBackgroundStyles = (target, background, backgroundHover) => {
     return {
-        [`${target}>.maxi-background-displayer`]: {
-            background: { ...getBackgroundObject(JSON.parse(background)) }
+        [`${target}>.maxi-background-displayer .maxi-background-displayer__color`]: {
+            background: { ...getColorBackgroundObject(JSON.parse(background)) }
         },
-        [`${target}:hover>.maxi-background-displayer`]: {
-            backgroundHover: { ...getBackgroundObject(JSON.parse(backgroundHover)) }
+        [`${target}:hover>.maxi-background-displayer .maxi-background-displayer__color`]: {
+            backgroundHover: { ...getColorBackgroundObject(JSON.parse(backgroundHover)) }
+        },
+        [`${target}>.maxi-background-displayer .maxi-background-displayer__images`]: {
+            imageBackground: { ...getImageBackgroundObject(JSON.parse(background)) }
+        },
+        [`${target}:hover>.maxi-background-displayer .maxi-background-displayer__images`]: {
+            imageBackgroundHover: { ...getImageBackgroundObject(JSON.parse(backgroundHover)) }
         },
         [`${target}>.maxi-background-displayer .maxi-background-displayer__video-player video`]: {
             videoBackground: {

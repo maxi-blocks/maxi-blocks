@@ -20,7 +20,7 @@ import { RawHTML } from '@wordpress/element';
  */
 import Inspector from './inspector';
 import {
-    getBackgroundObject,
+    getColorBackgroundObject,
     getBoxShadowObject,
     getAlignmentFlexObject,
     getTransformObject,
@@ -142,7 +142,7 @@ class edit extends MaxiBlock {
             JSON.parse(hover).margin;
 
         const response = {
-            background: { ...getBackgroundObject(background) },
+            background: { ...getColorBackgroundObject(background) },
             border: { ...border },
             padding: { ...padding },
             margin: { ...margin },

@@ -521,7 +521,8 @@ export const background = {
         "clipPath": ""
     },
     "colorOptions": {
-        "colorPosition": "back",
+        "overlay": 0,
+        "activeColor": "",
         "color": "",
         "gradient": "",
         "gradientAboveBackground": false,
@@ -576,7 +577,8 @@ export const backgroundHover = {
         "clipPath": ""
     },
     "colorOptions": {
-        "colorPosition": "",
+        "overlay": 0,
+        "activeColor": "",
         "color": "",
         "gradient": "",
         "gradientAboveBackground": "",

@@ -39,7 +39,6 @@ import {
 /**
  * Styles and icons
  */
-import './editor.scss';
 import {
     backgroundColor,
     backgroundImage,
@@ -136,11 +135,15 @@ const BackgroundControl = props => {
                         label={__('Background', 'maxi-blocks')}
                         selected={backgroundItems}
                         options={getOptions()}
-                        onChange={value => {
-                            if (isOpen)
-                                setIsOpen(false);
-                            setBackgroundItems(value)
-                        }
+                        onChange={item => {
+                                isOpen && setIsOpen(false);
+                                setBackgroundItems(item);
+                                if(item === 'color')
+                                    value.colorOptions.activeColor = value.colorOptions.color;
+                                if(item === 'gradient')
+                                    value.colorOptions.activeColor = value.colorOptions.gradient;
+                                onChange(JSON.stringify(value));
+                            }
                         }
                     />
                 </div>
@@ -148,18 +151,20 @@ const BackgroundControl = props => {
             {
                 (!disableImage || !disableVideo) &&
                 (!disableColor || disableGradient) &&
-                <SelectControl
-                    label={__('Color position', 'maxi-blocks')}
-                    value={value.colorOptions.colorPosition}
-                    options={[
-                        { label: __('Back', 'maxi-blocks'), value: 'back' },
-                        { label: __('Front', 'maxi-blocks'), value: 'front' }
-                    ]}
-                    onChange={val => {
-                        value.colorOptions.colorPosition = val;
-                        onChange(JSON.stringify(value))
-                    }}
-                />
+                <div className='maxi-fancy-radio-control'>
+                    <RadioControl
+                        label={__('Use Overlay Color', 'maxi-blocks')}
+                        selected={value.colorOptions.overlay}
+                        options={[
+                            { label: __('No', 'maxi-blocks'), value: 0 },
+                            { label: __('Yes', 'maxi-blocks'), value: 1 },
+                        ]}
+                        onChange={val => {
+                            value.colorOptions.overlay = Number(val);
+                            onChange(JSON.stringify(value));
+                        }}
+                    />
+                </div>
             }
             {
                 !isOpen &&
@@ -174,6 +179,7 @@ const BackgroundControl = props => {
                                 defaultColor={defaultValue.colorOptions.color}
                                 onChange={val => {
                                     value.colorOptions.color = val;
+                                    value.colorOptions.activeColor = val;
                                     onChange(JSON.stringify(value))
                                 }}
                             />
@@ -222,7 +228,7 @@ const BackgroundControl = props => {
                                                 onClick={e => onOpenOptions(e, i)}
                                                 className='maxi-background-control__image-edit'
                                             >
-                                                {__('Edit image', 'maxi-blocks')}
+                                                {__('Edit', 'maxi-blocks')}
                                             </Button>
                                         }
                                         alternativeImage={getAlternativeImage(i)}
@@ -267,12 +273,12 @@ const BackgroundControl = props => {
                                         onClick={(e) => onOpenOptions(e)}
                                         className='maxi-background-control__video-edit'
                                     >
-                                        {__('Edit video', 'maxi-blocks')}
+                                        {__('Edit', 'maxi-blocks')}
                                     </Button>
                                 }
                                 placeholder={__('Set Video', 'maxi-blocks')}
-                                replaceButton={__('Replace Video', 'maxi-blocks')}
-                                removeButton={__('Remove Video', 'maxi-blocks')}
+                                replaceButton={__('Replace', 'maxi-blocks')}
+                                removeButton={__('Remove', 'maxi-blocks')}
                             />
                             {
                                 !disableClipPath &&
@@ -296,6 +302,7 @@ const BackgroundControl = props => {
                                 defaultGradient={defaultValue.colorOptions.gradient}
                                 onChange={val => {
                                     value.colorOptions.gradient = val;
+                                    value.colorOptions.activeColor = val;
                                     onChange(JSON.stringify(value))
                                 }}
                                 gradientAboveBackground={value.colorOptions.gradientAboveBackground}

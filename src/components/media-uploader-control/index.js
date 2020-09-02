@@ -39,8 +39,8 @@ const MediaUploader = props => {
         onClose = undefined,
         placeholder = __('Set image', 'maxi-blocks'),
         extendSelector,
-        replaceButton = __('Replace image', 'maxi-blocks'),
-        removeButton = __('Remove image', 'maxi-blocks'),
+        replaceButton = __('Replace', 'maxi-blocks'),
+        removeButton = __('Remove', 'maxi-blocks'),
         alternativeImage,
         allowedTypes = ['image'],
     } = props;

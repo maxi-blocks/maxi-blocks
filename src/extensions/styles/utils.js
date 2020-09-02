@@ -409,9 +409,9 @@ export const getColorBackgroundObject = background => {
     }
 
     if (!isEmpty(background.colorOptions.gradient))
-        response.general['background'] = background.colorOptions.gradient;
+        response.general['background'] = background.colorOptions.activeColor;
     if (!isEmpty(background.colorOptions.color))
-        response.general['background-color'] = background.colorOptions.color;
+        response.general['background-color'] = background.colorOptions.activeColor;;
     if (!isEmpty(background.colorOptions.clipPath))
         response.general['clip-path'] = background.colorOptions.clipPath;
 

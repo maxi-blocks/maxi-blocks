@@ -12,7 +12,7 @@ const {
  */
 import Inspector from './inspector';
 import {
-    getBackgroundObject,
+    getColorBackgroundObject,
     getBoxShadowObject,
     getAlignmentFlexObject,
     getTransformObject,
@@ -78,7 +78,7 @@ class edit extends MaxiBlock {
         const response = {
             typography: { ...JSON.parse(typography) },
             alignmentText: { ...getAlignmentTextObject(JSON.parse(alignmentText)) },
-            background: { ...getBackgroundObject(JSON.parse(background)) },
+            background: { ...getColorBackgroundObject(JSON.parse(background)) },
             boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
             border: { ...JSON.parse(border) },
             borderWidth: { ...JSON.parse(border).borderWidth },
@@ -107,7 +107,7 @@ class edit extends MaxiBlock {
 
         const response = {
             typographyHover: { ...JSON.parse(typographyHover) },
-            backgroundHover: { ...getBackgroundObject(JSON.parse(backgroundHover)) },
+            backgroundHover: { ...getColorBackgroundObject(JSON.parse(backgroundHover)) },
             boxShadowHover: { ...getBoxShadowObject(JSON.parse(boxShadowHover)) },
             borderHover: { ...JSON.parse(borderHover) },
             borderWidth: { ...JSON.parse(borderHover).borderWidth },

@@ -27,6 +27,8 @@ const BackgroundDisplayer = props => {
         uniqueID
     } = props;
 
+
+
     const value = !isObject(background) ?
         JSON.parse(background) :
         background

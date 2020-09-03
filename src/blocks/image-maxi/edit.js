@@ -268,7 +268,6 @@ class edit extends MaxiBlock {
                 extraClassName,
                 fullWidth,
                 size,
-                background,
                 cropOptions,
                 captionType,
                 captionContent,
@@ -281,6 +280,7 @@ class edit extends MaxiBlock {
                 mediaHeight,
                 SVGElement,
                 SVGData,
+                background
             },
             imageData,
             setAttributes,
@@ -349,7 +349,7 @@ class edit extends MaxiBlock {
                     !!SVGElement &&
                     <Fragment>
                         <__experimentalBackgroundDisplayer
-                            backgroundOptions={background}
+                            background={background}
                         />
                         <ResizableBox
                             className='maxi-block__resizer maxi-svg-block__resizer'
@@ -388,6 +388,9 @@ class edit extends MaxiBlock {
                     value={mediaID}
                     render={({ open }) => (
                         <Fragment>
+                            <__experimentalBackgroundDisplayer
+                                background={background}
+                            />
                             {!isNil(mediaID) && imageData ?
                                 <Fragment>
                                     <ResizableBox

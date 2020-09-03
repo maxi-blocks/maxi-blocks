@@ -162,7 +162,6 @@ class edit extends MaxiBlock {
             className,
             isSelected,
             setAttributes,
-            mergeBlocks,
             onRemove,
             onReplace,
             clientId
@@ -256,36 +255,45 @@ class edit extends MaxiBlock {
                 const nextBlockClientId = getNextBlockClientId(
                     clientId
                 );
-                const nextBlockAttributes = getBlockAttributes(
-                    nextBlockClientId
-                )
-                const nextBlockContent = nextBlockAttributes.content;
 
-                setAttributes(
-                    {
-                        content: content.concat(nextBlockContent)
-                    }
-                )
+                if (!!nextBlockClientId) {
+                    const nextBlockAttributes = getBlockAttributes(
+                        nextBlockClientId
+                    )
+                    const nextBlockContent = nextBlockAttributes.content;
 
-                removeBlock(nextBlockClientId)
+                    setAttributes(
+                        {
+                            content: content.concat(nextBlockContent)
+                        }
+                    )
+
+                    removeBlock(nextBlockClientId)
+                }
             }
             else {
                 const previousBlockClientId = getPreviousBlockClientId(
                     clientId
                 );
-                const previousBlockAttributes = getBlockAttributes(
-                    previousBlockClientId
-                )
-                const previousBlockContent = previousBlockAttributes.content;
 
-                updateBlockAttributes(
-                    previousBlockClientId,
-                    {
-                        content: previousBlockContent.concat(content)
-                    }
-                )
+                if (!previousBlockClientId) {
+                    removeBlock(clientId)
+                }
+                else {
+                    const previousBlockAttributes = getBlockAttributes(
+                        previousBlockClientId
+                    )
+                    const previousBlockContent = previousBlockAttributes.content;
 
-                removeBlock(clientId)
+                    updateBlockAttributes(
+                        previousBlockClientId,
+                        {
+                            content: previousBlockContent.concat(content)
+                        }
+                    )
+
+                    removeBlock(clientId)
+                }
             }
         }
 
@@ -353,7 +361,7 @@ class edit extends MaxiBlock {
                         }}
                         __unstableOnSplitMiddle={() => createBlock('maxi-blocks/text-maxi')}
                         onReplace={onReplaceTest}
-                        onRemove={() => onReplace([])}
+                        onRemove={onRemove}
                         start={listStart}
                         reversed={!!listReversed}
                         type={typeOfList}

@@ -16,7 +16,7 @@ import MaxiProvider from './provider';
 import MaxiModal from './modal';
 import Inspector from './inspector';
 import {
-    getBackgroundObject,
+    getColorBackgroundObject,
     getBoxShadowObject,
     getAlignmentFlexObject,
     getTransformObject,
@@ -132,7 +132,7 @@ class edit extends MaxiBlock {
             JSON.parse(hover).margin;
 
         const response = {
-            background: { ...getBackgroundObject(background) },
+            background: { ...getColorBackgroundObject(background) },
             border: { ...border },
             padding: { ...padding },
             margin: { ...margin },
@@ -219,36 +219,36 @@ class edit extends MaxiBlock {
         );
 
         return [
-        <MaxiProvider>
-            <Inspector {...this.props} />
-            <__experimentalToolbar {...this.props} />
-            <__experimentalBlock
-                className={classes}
-                data-maxi_initial_block_class={defaultBlockStyle}
-                key={clientId }
-            >
-            <Fragment>
-                {  isEmpty(content) && <Placeholder
-                    key="placeholder"
-                    label={ __( 'SVG Icon Cloud Library Maxi', 'maxi-blocks' ) }
-                    instructions={ __( 'Launch the library to browse pre-designed SVGs.', 'maxi-blocks' ) }
-                    className={ 'maxi-block-library__placeholder' }
-                >
-                    <MaxiModal clientId={ clientId } />
-                 </Placeholder>
-                }
-                {  !isEmpty(content) &&
-                 <Fragment>
-                    <SandBox
-                    html={ content }
+            <MaxiProvider>
+                <Inspector {...this.props} />
+                <__experimentalToolbar {...this.props} />
+                <__experimentalBlock
                     className={classes}
                     data-maxi_initial_block_class={defaultBlockStyle}
-                    />
-                    <div className="block-library-html__preview-overlay"></div>
-                </Fragment>
-                }
-            </Fragment>
-            </__experimentalBlock>
+                    key={clientId}
+                >
+                    <Fragment>
+                        {isEmpty(content) && <Placeholder
+                            key="placeholder"
+                            label={__('SVG Icon Cloud Library Maxi', 'maxi-blocks')}
+                            instructions={__('Launch the library to browse pre-designed SVGs.', 'maxi-blocks')}
+                            className={'maxi-block-library__placeholder'}
+                        >
+                            <MaxiModal clientId={clientId} />
+                        </Placeholder>
+                        }
+                        {!isEmpty(content) &&
+                            <Fragment>
+                                <SandBox
+                                    html={content}
+                                    className={classes}
+                                    data-maxi_initial_block_class={defaultBlockStyle}
+                                />
+                                <div className="block-library-html__preview-overlay"></div>
+                            </Fragment>
+                        }
+                    </Fragment>
+                </__experimentalBlock>
             </MaxiProvider>
         ];
     }

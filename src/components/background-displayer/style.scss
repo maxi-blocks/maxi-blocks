@@ -7,6 +7,10 @@
     height: 100%;
     overflow: hidden;
 
+    &__overlay {
+        z-index: 2;
+    }
+    &__overlay,
     &__color,
     &__images,
     &__video-player {
@@ -20,17 +24,17 @@
         }
     }
 
-    &__svg-wrapper {    
+    &__svg-wrapper {
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%);        
+        transform: translate(-50%, -50%);
         width: 100%;
         height: 100%;
 
         & svg {
             width: 100%;
-            height: 100%; 
+            height: 100%;
         }
     }
 }

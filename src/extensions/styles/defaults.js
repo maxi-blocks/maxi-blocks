@@ -477,6 +477,7 @@ export const size = {
 
 export const background = {
     "label": "Background",
+    "activeMedia": "",
     "imageOptions": [
         {
             "imageData": {
@@ -521,18 +522,30 @@ export const background = {
         "clipPath": ""
     },
     "colorOptions": {
-        "overlay": 0,
         "activeColor": "",
         "color": "",
         "gradient": "",
         "gradientAboveBackground": false,
         "clipPath": ""
+    },
+    "overlayOptions": {
+        "overlay": "",
+        "activeColor": "",
+        "color": "",
+        "gradient": "",
+        "gradientAboveBackground": false,
+        "opacity": {
+            "label": "Opacity",
+            "general": {
+                "opacity": 0.8
+            }
+        },
     }
 }
 
-
 export const backgroundHover = {
     "label": "Background",
+    "activeMedia": "",
     "imageOptions": [
         {
             "imageData": {
@@ -577,12 +590,24 @@ export const backgroundHover = {
         "clipPath": ""
     },
     "colorOptions": {
-        "overlay": 0,
         "activeColor": "",
         "color": "",
         "gradient": "",
         "gradientAboveBackground": "",
         "clipPath": ""
+    },
+    "overlayOptions": {
+        "overlay": "",
+        "activeColor": "",
+        "color": "",
+        "gradient": "",
+        "gradientAboveBackground": false,
+        "opacity": {
+            "label": "Opacity",
+            "general": {
+                "opacity": 0.8
+            }
+        },
     }
 };
 

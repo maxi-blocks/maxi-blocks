@@ -87,7 +87,7 @@ class edit extends MaxiBlock {
             uniqueID,
             isFirstOnHierarchy,
             background,
-            backgroundHover
+            backgroundHover,
         } = this.props.attributes;
 
         let response = {

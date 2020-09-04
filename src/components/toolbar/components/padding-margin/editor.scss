@@ -8,10 +8,6 @@
                     input {
                         border: 2px solid #80828a;
                         background-color: #242433;
-                        &:checked {
-                            border: 2px solid #80828a;
-                            background-color: #242433;
-                        }
                         &:focus {
                             border-color: #80828a;
                         }

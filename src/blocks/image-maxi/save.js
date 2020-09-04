@@ -85,7 +85,7 @@ const save = props => {
             <div className="maxi-block-hover-element">
                 <div className="maxi-image-block__image-container">
                     <img
-                        className={"wp-image-" + mediaID}
+                        className={`wp-image-${mediaID}`}
                         src={mediaURL}
                         width={mediaWidth}
                         height={mediaHeight}

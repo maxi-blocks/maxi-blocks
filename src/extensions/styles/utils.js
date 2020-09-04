@@ -411,11 +411,31 @@ export const getColorBackgroundObject = background => {
     if (!isEmpty(background.colorOptions.gradient))
         response.general['background'] = background.colorOptions.activeColor;
     if (!isEmpty(background.colorOptions.color))
-        response.general['background-color'] = background.colorOptions.activeColor;;
+        response.general['background-color'] = background.colorOptions.activeColor;
     if (!isEmpty(background.colorOptions.clipPath))
         response.general['clip-path'] = background.colorOptions.clipPath;
 
     return response;
+}
+
+export const getColorOverlayObject = background => {
+
+    const response = {
+        label: 'Overlay',
+        general: {}
+    }
+
+    if (!isNil(background.overlayOptions.opacity))
+        response.general['opacity'] = background.overlayOptions.opacity.general.opacity;
+
+    if (!isEmpty(background.overlayOptions.color))
+        response.general['background-color'] = background.overlayOptions.activeColor;
+
+    if (!isEmpty(background.overlayOptions.gradient))
+        response.general['background'] = background.overlayOptions.activeColor;
+
+    return response;
+
 }
 
 export const getImageBackgroundObject = background => {
@@ -534,6 +554,12 @@ export const getVideoBackgroundObject = videoOptions => {
 
 export const setBackgroundStyles = (target, background, backgroundHover) => {
     return {
+        [`${target}>.maxi-background-displayer .maxi-background-displayer__overlay`]: {
+            overlay: { ...getColorOverlayObject(JSON.parse(background))}
+        },
+        [`${target}:hover>.maxi-background-displayer .maxi-background-displayer__overlay`]: {
+            overlayHover: { ...getColorOverlayObject(JSON.parse(backgroundHover))}
+        },
         [`${target}>.maxi-background-displayer .maxi-background-displayer__color`]: {
             background: { ...getColorBackgroundObject(JSON.parse(background)) }
         },

@@ -52,3 +52,4 @@ export { default as __experimentalHoverEffectControl } from './hover-effect-cont
 export { default as __experimentalSVGControl } from './SVGControl';
 export { default as __experimentalSVGFillControl } from './SVGFillControl';
 export { default as __experimentalSVGDefaultsDisplayer } from './SVGDefaultsDisplayer';
+export { default as __experimentalOverlayControl } from './overlay-control';

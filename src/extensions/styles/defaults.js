@@ -605,7 +605,7 @@ export const backgroundHover = {
         "opacity": {
             "label": "Opacity",
             "general": {
-                "opacity": 1
+                "opacity": ""
             }
         },
     }

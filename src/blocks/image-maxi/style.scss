@@ -2,3 +2,10 @@ body.maxi-blocks--active figure.maxi-image-block {
 	display: flex;
     flex-direction: column;
 }
+
+.maxi-image-block {
+    
+    &__image-container {
+		position: relative;
+    }
+}

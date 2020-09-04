@@ -27,7 +27,8 @@ const BackgroundColor = props => {
         background;
 
     const updateBackground = val => {
-        value.colorOptions.color = returnColor(val)
+        value.colorOptions.color = returnColor(val);
+        value.colorOptions.activeColor = returnColor(val);
 
         onChange(JSON.stringify(value))
     }

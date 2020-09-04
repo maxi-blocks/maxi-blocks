@@ -159,7 +159,7 @@ class edit extends MaxiBlock {
             JSON.parse(hover).titleTypography;
 
         const response = {
-            typography: {...titleTypography}
+            typography: { ...titleTypography }
         }
 
         return response;
@@ -175,7 +175,7 @@ class edit extends MaxiBlock {
             JSON.parse(hover).contentTypography;
 
         const response = {
-            typography: {...contentTypography}
+            typography: { ...contentTypography }
         }
 
         return response;
@@ -343,7 +343,7 @@ class edit extends MaxiBlock {
                     value={mediaID}
                     render={({ open }) => (
                         <Fragment>
-                            {!isNil(mediaID) && imageData ?
+                            {(!isNil(mediaID) && imageData) || mediaURL ?
                                 <Fragment>
                                     <ResizableBox
                                         className='maxi-block__resizer maxi-image-block__resizer'

@@ -38,6 +38,7 @@ import {
  */
 import classnames from 'classnames';
 import { isEmpty } from 'lodash';
+import { heading } from '@wordpress/icons';
 
 /**
  * Content
@@ -205,42 +206,81 @@ class edit extends MaxiBlock {
             }
 
             currentBlocks.map((block, i) => {
+                console.log(block)
                 let newBlock = {};
-                if (block.name === 'core/list') {
-                    newBlock = createBlock(
-                        name,
-                        {
-                            ...this.props.attributes,
-                            textLevel: 'ul',
-                            content: block.attributes.values,
-                            isList: true,
+
+                switch (block.name) {
+                    case 'core/list':
+                        newBlock = createBlock(
+                            name,
+                            {
+                                ...this.props.attributes,
+                                textLevel: 'ul',
+                                content: block.attributes.values,
+                                isList: true,
+                            }
+                        );
+                        break;
+                    case 'core/image':
+                        newBlock = createBlock(
+                            'maxi-blocks/image-maxi',
+                            {
+                                ...getBlockAttributes('maxi-blocks/image-maxi'),
+                                mediaURL: block.attributes.url,
+                                altSelector: 'custom',
+                                mediaALT: block.attributes.alt,
+                                captionType: !isEmpty(block.attributes.caption) && 'custom' || 'none',
+                                captionContent: block.attributes.caption
+                            }
+                        );
+                        break;
+                    case 'core/heading':
+                        const headingLevel = block.attributes.level;
+                        const headingTypography = JSON.stringify(Object.assign(JSON.parse(typography), defaultTypography[`h${headingLevel}`]));
+                        newBlock = createBlock(
+                            name,
+                            {
+                                ...this.props.attributes,
+                                textLevel: `h${headingLevel}`,
+                                content: block.attributes.content,
+                                typography: headingTypography,
+                                isList: false
+                            }
+                        );
+                        break;
+                    case 'core/paragraph':
+                        newBlock = createBlock(
+                            name,
+                            {
+                                ...this.props.attributes,
+                                content: block.attributes.content,
+                            }
+                        );
+                        break;
+                    case 'maxi-blocks/text-maxi':
+                        if (block.attributes.isList) {
+                            newBlock = createBlock(
+                                name,
+                                {
+                                    ...block.attributes
+                                }
+                            );
                         }
-                    );
-                }
-                else if (block.attributes.isList) {
-                    newBlock = createBlock(
-                        name,
-                        {
-                            ...block.attributes
+                        else {
+                            newBlock = createBlock(
+                                name,
+                                {
+                                    ...this.props.attributes,
+                                    content: block.attributes.content,
+                                    isList: false
+                                }
+                            )
                         }
-                    );
-                }
-                else {
-                    newBlock = createBlock(
-                        name,
-                        {
-                            ...this.props.attributes,
-                            textLevel: (block.name === 'core/heading') ?
-                                `h${block.attributes.level}` :
-                                'p',
-                            content: block.attributes.content,
-                            typography: (block.name === 'core/heading') ?
-                                JSON.stringify(Object.assign(JSON.parse(typography), defaultTypography[`h${block.attributes.level}`])) :
-                                typography,
-                            isList: false
-                        }
-                    )
-                }
+                        break;
+                    default:
+                        newBlock = block;
+                        break;
+                };
 
                 insertBlock(newBlock, getBlockIndex(clientId), getBlockRootClientId(clientId))
 

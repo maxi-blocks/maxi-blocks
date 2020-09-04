@@ -98,7 +98,6 @@ const attributes = {
     altSelector: {
         type: 'string',
         default: 'wordpress',
-
     },
     mediaURL: {
         type: 'string'

@@ -40,6 +40,7 @@ import {
  * Styles and icons
  */
 import {
+    styleNone,
     backgroundColor,
     backgroundImage,
     backgroundVideo,
@@ -64,7 +65,6 @@ const BackgroundControl = props => {
 
     const [isOpen, setIsOpen] = useState(false);
     const [selector, setSelector] = useState(0);
-    const [backgroundItems, setBackgroundItems] = useState('color');
 
     const value = !isObject(background) ?
         JSON.parse(background) :
@@ -118,6 +118,7 @@ const BackgroundControl = props => {
 
     const getOptions = () => {
         let options = [];
+        options.push({ label: <Icon icon={styleNone} />, value: '' });
         !disableColor && options.push({ label: <Icon icon={backgroundColor} />, value: 'color' });
         !disableImage && options.push({ label: <Icon icon={backgroundImage} />, value: 'image' });
         !disableVideo && options.push({ label: <Icon icon={backgroundVideo} />, value: 'video' });
@@ -133,11 +134,13 @@ const BackgroundControl = props => {
                 <div className='maxi-fancy-radio-control'>
                     <RadioControl
                         label={__('Background', 'maxi-blocks')}
-                        selected={backgroundItems}
+                        selected={value.activeMedia}
                         options={getOptions()}
                         onChange={item => {
                                 isOpen && setIsOpen(false);
-                                setBackgroundItems(item);
+                                value.activeMedia = item;
+                                if(isEmpty(item))
+                                    value.colorOptions.activeColor = '';
                                 if(item === 'color')
                                     value.colorOptions.activeColor = value.colorOptions.color;
                                 if(item === 'gradient')
@@ -149,29 +152,11 @@ const BackgroundControl = props => {
                 </div>
             }
             {
-                (!disableImage || !disableVideo) &&
-                (!disableColor || disableGradient) &&
-                <div className='maxi-fancy-radio-control'>
-                    <RadioControl
-                        label={__('Use Overlay Color', 'maxi-blocks')}
-                        selected={value.colorOptions.overlay}
-                        options={[
-                            { label: __('No', 'maxi-blocks'), value: 0 },
-                            { label: __('Yes', 'maxi-blocks'), value: 1 },
-                        ]}
-                        onChange={val => {
-                            value.colorOptions.overlay = Number(val);
-                            onChange(JSON.stringify(value));
-                        }}
-                    />
-                </div>
-            }
-            {
                 !isOpen &&
                 <Fragment>
                     {
                         !disableColor &&
-                        backgroundItems === 'color' &&
+                        value.activeMedia === 'color' &&
                         <Fragment>
                             <ColorControl
                                 label={__('Background', 'maxi-blocks')}
@@ -197,7 +182,7 @@ const BackgroundControl = props => {
                     }
                     {
                         !disableImage &&
-                        backgroundItems === 'image' &&
+                        value.activeMedia === 'image' &&
                         <Fragment>
                             {
                                 value.imageOptions.map((option, i) => (
@@ -250,7 +235,7 @@ const BackgroundControl = props => {
                     }
                     {
                         !disableVideo &&
-                        backgroundItems === 'video' &&
+                        value.activeMedia === 'video' &&
                         <div className="maxi-background-control__video">
                             <MediaUploaderControl
                                 allowedTypes={['video']}
@@ -294,7 +279,7 @@ const BackgroundControl = props => {
                     }
                     {
                         !disableGradient &&
-                        backgroundItems === 'gradient' &&
+                        value.activeMedia === 'gradient' &&
                         <Fragment>
                             <GradientControl
                                 label={__('Background', 'maxi-blocks')}
@@ -327,7 +312,7 @@ const BackgroundControl = props => {
             }
             {
                 isOpen &&
-                backgroundItems === 'image' &&
+                value.activeMedia === 'image' &&
                 <SettingTabsControl
                     items={[
                         {
@@ -515,7 +500,7 @@ const BackgroundControl = props => {
             }
             {
                 isOpen &&
-                backgroundItems === 'video' &&
+                value.activeMedia === 'video' &&
                 value.videoOptions.mediaURL &&
                 <SettingTabsControl
                     items={[

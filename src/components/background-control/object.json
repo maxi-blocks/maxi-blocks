@@ -1,5 +1,6 @@
 {
   "label": "Background",
+  "activeMedia": "",
   "imageOptions": [
     {
       "imageData": {
@@ -42,11 +43,23 @@
     "clipPath": ""
   },
   "colorOptions": {
-    "overlay": 0,
     "activeColor": "",
     "color": "",
     "gradient": "",
     "gradientAboveBackground": false,
     "clipPath": ""
+  },
+  "overlayOptions": {
+    "overlay": "",
+    "activeColor": "",
+    "color": "",
+    "gradient": "",
+    "gradientAboveBackground": false,
+    "opacity": {
+        "label": "Opacity",
+        "general": {
+            "opacity": 0.8
+        }
+    }
   }
 }

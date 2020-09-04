@@ -196,7 +196,6 @@ export const background = {
         "clipPath": ""
     },
     "colorOptions": {
-        "overlay": 0,
         "activeColor": "#ff4a17",
         "color": "#ff4a17",
         "gradient": "",

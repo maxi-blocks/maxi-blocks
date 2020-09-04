@@ -34,6 +34,7 @@ import {
     __experimentalEntranceAnimationControl,
     __experimentalArrowControl,
     __experimentalParallaxControl,
+    __experimentalOverlayControl,
 } from '../../components';
 import { getDefaultProp } from '../../utils';
 
@@ -73,7 +74,7 @@ const Inspector = props => {
             display,
             motion,
             arrow,
-            transform
+            transform,
         },
         deviceType,
         setAttributes,
@@ -237,6 +238,41 @@ const Inspector = props => {
                                                                         onChange={backgroundHover => setAttributes({ backgroundHover })}
                                                                         disableImage
                                                                         disableVideo
+                                                                    />
+                                                                </Fragment>
+                                                            )
+                                                        },
+                                                    ]}
+                                                />
+                                            )
+                                        },
+                                        deviceType === 'general' &&
+                                        {
+                                            label: __('Overlay', 'maxi-blocks'),
+                                            disablePadding: true,
+                                            content: (
+                                                <SettingTabsControl
+                                                    items={[
+                                                        {
+                                                            label: __('Normal', 'maxi-blocks'),
+                                                            content: (
+                                                                <Fragment>
+                                                                    <__experimentalOverlayControl
+                                                                        overlay={background}
+                                                                        defaultOverlay={getDefaultProp(clientId, 'background')}
+                                                                        onChange={background => setAttributes({ background })}
+                                                                    />
+                                                                </Fragment>
+                                                            )
+                                                        },
+                                                        {
+                                                            label: __('Hover', 'maxi-blocks'),
+                                                            content: (
+                                                                <Fragment>
+                                                                    <__experimentalOverlayControl
+                                                                        overlay={backgroundHover}
+                                                                        defaultOverlay={getDefaultProp(clientId, 'backgroundHover')}
+                                                                        onChange={backgroundHover => setAttributes({ backgroundHover })}
                                                                     />
                                                                 </Fragment>
                                                             )

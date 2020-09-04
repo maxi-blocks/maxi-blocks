@@ -40,12 +40,14 @@ const BackgroundDisplayer = props => {
         <div
             className={classes}
         >
+            <div className='maxi-background-displayer__overlay' />
+            <div className='maxi-background-displayer__color' />
             {
-                isEmpty(value.colorOptions.overlay) &&
-                <div className='maxi-background-displayer__color' />
+                value.activeMedia === 'image' &&
+                    <div className='maxi-background-displayer__images' />
             }
-            <div className='maxi-background-displayer__images' />
             {
+                value.activeMedia === 'video' &&
                 value.videoOptions.mediaURL &&
                 <div className="maxi-background-displayer__video-player">
                     <video
@@ -57,10 +59,6 @@ const BackgroundDisplayer = props => {
                         src={value.videoOptions.mediaURL}
                     />
                 </div>
-            }
-            {
-                !!value.colorOptions.overlay &&
-                <div className='maxi-background-displayer__color' />
             }
             {/*
                 !isNil(value.SVG.SVGElement) &&

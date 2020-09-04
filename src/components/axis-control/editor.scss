@@ -46,6 +46,10 @@
                 input {
                     border: 2px solid #dddfe2;
                     box-shadow: none;
+                    &:checked {
+                        border: 2px solid #dddfe2;
+                        background-color: transparent;
+                    }
                     &:focus {
                         border-color: #b4b4b4;
                         box-shadow: none;

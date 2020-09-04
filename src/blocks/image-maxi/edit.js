@@ -338,48 +338,43 @@ class edit extends MaxiBlock {
                 data-maxi_initial_block_class={defaultBlockStyle}
                 data-align={fullWidth}
             >
-                {/*
-                    !SVGElement &&
-                    <__experimentalSVGDefaultsDisplayer
-                        SVGData={SVGData}
-                        onChange={obj => setAttributes(obj)}
-                    />*/
-                }
                 {
                     !!SVGElement &&
                     <Fragment>
                         <__experimentalBackgroundDisplayer
                             background={background}
                         />
-                        <ResizableBox
-                            className='maxi-block__resizer maxi-svg-block__resizer'
-                            size={{
-                                width: `${sizeValue.general.width}%`,
-                                height: '100%'
-                            }}
-                            maxWidth='100%'
-                            enable={{
-                                top: false,
-                                right: false,
-                                bottom: false,
-                                left: false,
-                                topRight: true,
-                                bottomRight: true,
-                                bottomLeft: true,
-                                topLeft: true,
-                            }}
-                            onResizeStop={(event, direction, elt, delta) => {
-                                const newScale = Number(((elt.getBoundingClientRect().width / this.getWrapperWidth) * 100).toFixed());
-                                sizeValue.general.width = newScale
-                                setAttributes({
-                                    size: JSON.stringify(sizeValue),
-                                });
-                            }}
-                        >
-                            <RawHTML>
-                                {SVGElement}
-                            </RawHTML>
-                        </ResizableBox>
+                        <div className="maxi-image-block__image-container">
+                            <ResizableBox
+                                className='maxi-block__resizer maxi-svg-block__resizer'
+                                size={{
+                                    width: `${sizeValue.general.width}%`,
+                                    height: '100%'
+                                }}
+                                maxWidth='100%'
+                                enable={{
+                                    top: false,
+                                    right: false,
+                                    bottom: false,
+                                    left: false,
+                                    topRight: true,
+                                    bottomRight: true,
+                                    bottomLeft: true,
+                                    topLeft: true,
+                                }}
+                                onResizeStop={(event, direction, elt, delta) => {
+                                    const newScale = Number(((elt.getBoundingClientRect().width / this.getWrapperWidth) * 100).toFixed());
+                                    sizeValue.general.width = newScale
+                                    setAttributes({
+                                        size: JSON.stringify(sizeValue),
+                                    });
+                                }}
+                            >
+                                <RawHTML>
+                                    {SVGElement}
+                                </RawHTML>
+                            </ResizableBox>
+                        </div>
                     </Fragment>
                 }
                 <MediaUpload
@@ -393,56 +388,58 @@ class edit extends MaxiBlock {
                             />
                             {!isNil(mediaID) && imageData ?
                                 <Fragment>
-                                    <ResizableBox
-                                        className='maxi-block__resizer maxi-image-block__resizer'
-                                        size={{
-                                            width: `${sizeValue.general.width}%`,
-                                            height: '100%'
-                                        }}
-                                        maxWidth='100%'
-                                        enable={{
-                                            top: false,
-                                            right: false,
-                                            bottom: false,
-                                            left: false,
-                                            topRight: true,
-                                            bottomRight: true,
-                                            bottomLeft: true,
-                                            topLeft: true,
-                                        }}
-                                        onResizeStop={(event, direction, elt, delta) => {
-                                            const newScale = Number(((elt.getBoundingClientRect().width / this.getWrapperWidth) * 100).toFixed());
-                                            sizeValue.general.width = newScale
-                                            setAttributes({
-                                                size: JSON.stringify(sizeValue),
-                                            });
-                                        }}
-                                    >
-                                        <div
-                                            className="maxi-image-block__settings"
+                                    <div className="maxi-image-block__image-container">
+                                        <ResizableBox
+                                            className='maxi-block__resizer maxi-image-block__resizer'
+                                            size={{
+                                                width: `${sizeValue.general.width}%`,
+                                                height: '100%'
+                                            }}
+                                            maxWidth='100%'
+                                            enable={{
+                                                top: false,
+                                                right: false,
+                                                bottom: false,
+                                                left: false,
+                                                topRight: true,
+                                                bottomRight: true,
+                                                bottomLeft: true,
+                                                topLeft: true,
+                                            }}
+                                            onResizeStop={(event, direction, elt, delta) => {
+                                                const newScale = Number(((elt.getBoundingClientRect().width / this.getWrapperWidth) * 100).toFixed());
+                                                sizeValue.general.width = newScale
+                                                setAttributes({
+                                                    size: JSON.stringify(sizeValue),
+                                                });
+                                            }}
                                         >
-                                            <IconButton
-                                                className='maxi-image-block__settings__upload-button'
-                                                showTooltip="true"
-                                                onClick={open}
-                                                icon={toolbarReplaceImage}
+                                            <div
+                                                className="maxi-image-block__settings"
+                                            >
+                                                <IconButton
+                                                    className='maxi-image-block__settings__upload-button'
+                                                    showTooltip="true"
+                                                    onClick={open}
+                                                    icon={toolbarReplaceImage}
+                                                />
+                                            </div>
+                                            <img
+                                                className={`maxi-image-block__image wp-image-${mediaID}`}
+                                                src={mediaURL}
+                                                width={mediaWidth}
+                                                height={mediaHeight}
+                                                alt={mediaALT}
                                             />
-                                        </div>
-                                        <img
-                                            className={`maxi-image-block__image wp-image-${mediaID}`}
-                                            src={mediaURL}
-                                            width={mediaWidth}
-                                            height={mediaHeight}
-                                            alt={mediaALT}
-                                        />
-                                    </ResizableBox>
-                                    {captionType !== 'none' &&
-                                        <figcaption
-                                            className="maxi-image-block__caption"
-                                        >
-                                            {captionContent}
-                                        </figcaption>
-                                    }
+                                        </ResizableBox>
+                                        {captionType !== 'none' &&
+                                            <figcaption
+                                                className="maxi-image-block__caption"
+                                            >
+                                                {captionContent}
+                                            </figcaption>
+                                        }
+                                    </div>
                                 </Fragment> :
                                 mediaID ?
                                     <Fragment>

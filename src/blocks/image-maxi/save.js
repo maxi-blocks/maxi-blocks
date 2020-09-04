@@ -83,14 +83,22 @@ const save = props => {
                 background={background}
             />
             <div className="maxi-block-hover-element">
-                <img
-                    className={"wp-image-" + mediaID}
-                    src={mediaURL}
-                    width={mediaWidth}
-                    height={mediaHeight}
-                    alt={imageALT()}
+                <div className="maxi-image-block__image-container">
+                    <img
+                        className={"wp-image-" + mediaID}
+                        src={mediaURL}
+                        width={mediaWidth}
+                        height={mediaHeight}
+                        alt={imageALT()}
 
-                />
+                    />
+                    {
+                        captionType !== 'none' &&
+                        <figcaption>
+                            {captionContent}
+                        </figcaption>
+                    }
+                </div>
             </div>
             {
                 hoverSettings.type !== 'none' &&
@@ -107,12 +115,7 @@ const save = props => {
                     </div>
                 </div>
             }
-            {
-                captionType !== 'none' &&
-                <figcaption>
-                    {captionContent}
-                </figcaption>
-            }
+
         </figure>
     );
 }

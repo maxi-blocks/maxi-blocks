@@ -163,7 +163,6 @@ class edit extends MaxiBlock {
             isSelected,
             setAttributes,
             onRemove,
-            onReplace,
             clientId
         } = this.props;
 
@@ -176,6 +175,8 @@ class edit extends MaxiBlock {
             uniqueID,
             className
         );
+
+        const { getFormatTypes } = select('core/rich-text');
 
         const {
             getBlockIndex,
@@ -192,7 +193,7 @@ class edit extends MaxiBlock {
             updateBlockAttributes,
         } = dispatch('core/block-editor');
 
-        const onReplaceTest = (blocks) => {
+        const onReplace = (blocks) => {
             const currentBlocks = blocks.filter(item => !!item);
 
             if (isEmpty(currentBlocks)) {
@@ -325,13 +326,18 @@ class edit extends MaxiBlock {
                                 content: value,
                             });
                         }}
-                        onReplace={onReplaceTest}
+                        onReplace={onReplace}
                         onMerge={onMerge}
                         onRemove={onRemove}
                         placeholder={__('Set your Maxi Text here...', 'maxi-blocks')}
                         keepPlaceholderOnFocus
                         __unstableEmbedURLOnPaste
                         __unstableAllowPrefixTransformations
+                        allowedFormats={
+                            getFormatTypes().filter(format => {
+                                return format.name != "core/link";
+                            })
+                        }
                     />
                 }
                 {
@@ -360,11 +366,16 @@ class edit extends MaxiBlock {
                             });
                         }}
                         __unstableOnSplitMiddle={() => createBlock('maxi-blocks/text-maxi')}
-                        onReplace={onReplaceTest}
+                        onReplace={onReplace}
                         onRemove={onRemove}
                         start={listStart}
                         reversed={!!listReversed}
                         type={typeOfList}
+                        allowedFormats={
+                            getFormatTypes().filter(format => {
+                                return format.name != "core/link";
+                            })
+                        }
                     >
                         {
                             ({ value, onChange }) => {

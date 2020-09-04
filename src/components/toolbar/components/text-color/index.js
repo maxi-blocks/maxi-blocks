@@ -35,9 +35,9 @@ import { toolbarType } from '../../../../icons';
 const formatName = 'maxi-blocks/text-color';
 
 registerFormatType(formatName, {
-    title: 'Text color',
+    title: __('Text color', 'maxi-blocks'),
     tagName: 'span',
-    className: 'maxi-text-block--has-color',
+    className: 'maxi-text-block--has-text-color',
     attributes: {
         color: 'color',
         style: 'style'

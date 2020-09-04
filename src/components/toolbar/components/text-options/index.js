@@ -54,9 +54,9 @@ import {
 const formatName = 'maxi-blocks/text-size';
 
 registerFormatType(formatName, {
-    title: 'Text color',
+    title: __('Font size', 'maxi-blocks'),
     tagName: 'span',
-    className: 'maxi-text-block--has-size',
+    className: 'maxi-text-block--has-font-size',
     attributes: {
         style: 'style',
         size: 'number'

@@ -8,7 +8,8 @@ const {
     toggleFormat,
     create,
     toHTMLString,
-    getActiveFormat
+    getActiveFormat,
+    registerFormatType
 } = wp.richText;
 
 /**
@@ -28,6 +29,29 @@ import './editor.scss';
 import { toolbarLink } from '../../../../icons';
 
 /**
+ * Register Format
+ * 
+ * Not setting '__unstablePasteRule' because is returning an element with 'core/link'
+ * format instead of 'maxi-blocks/text-link', even setting 'allowedFormats' without it.
+ * We'll cheat a little bit later to transform 'core/link' to 'maxi-blocks/text-link', but...
+ * who never cheated a little bit? lumberjack
+ * 
+ */
+const formatName = 'maxi-blocks/text-link';
+
+registerFormatType(formatName, {
+    title: __('Link', 'maxi-blocks'),
+    tagName: 'a',
+    className: 'maxi-text-block--link',
+    attributes: {
+        url: 'href',
+        type: 'data-type',
+        id: 'data-id',
+        target: 'target',
+    },
+})
+
+/**
  * Link
  */
 const Link = props => {
@@ -42,8 +66,6 @@ const Link = props => {
 
     if (blockName != 'maxi-blocks/text-maxi')
         return null;
-
-    const formatName = 'core/link';
 
     const formatElement = {
         element: node,
@@ -62,6 +84,19 @@ const Link = props => {
             const formatValue = create(formatElement);
             formatValue['start'] = getSelectionStart().offset;
             formatValue['end'] = getSelectionEnd().offset;
+
+            /**
+             * As '__unstablePasteRule' is not working correctly, let's do some cheats
+             */
+            formatValue.formats = formatValue.formats.map(formatEl => {
+                return formatEl.map(format => {
+                    if (format.type === 'core/link')
+                        format.type = formatName;
+
+                    return format;
+                })
+
+            })
 
             const activeFormat = getActiveFormat(formatValue, formatName);
 

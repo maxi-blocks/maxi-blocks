@@ -14,8 +14,8 @@ $white: #fff;
 		padding: 0;
 		overflow-x: hidden;
 		min-height: 100%;
-    	position: absolute;
-    	width: 100%;
+		position: absolute;
+		width: 100%;
 	}
 
 	.components-modal__header {
@@ -152,7 +152,7 @@ $white: #fff;
 	}
 
 	.maxi-cloud-design-inside {
-		transition: .2s ease;
+		transition: 0.2s ease;
 		border: solid 1px #cccccc;
 
 		&:hover {
@@ -195,11 +195,14 @@ $white: #fff;
 	button.maxi-cloud-favorite-button:hover {
 		background: $white;
 		border: none;
-		box-shadow: inset 0 0 0 1px #e2e4e7, inset 0 0 0 2px $white, 0 1px 1px rgba(25,30,35,.2);
+		box-shadow: inset 0 0 0 1px #e2e4e7, inset 0 0 0 2px $white,
+			0 1px 1px rgba(25, 30, 35, 0.2);
 	}
 
-	.components-button-group .components-button.maxi-cloud-favorite-button:focus {
-		box-shadow: inset 0 0 0 1px #e2e4e7, inset 0 0 0 2px $white, 0 1px 1px rgba(25,30,35,.2);
+	.components-button-group
+		.components-button.maxi-cloud-favorite-button:focus {
+		box-shadow: inset 0 0 0 1px #e2e4e7, inset 0 0 0 2px $white,
+			0 1px 1px rgba(25, 30, 35, 0.2);
 		background: $white;
 	}
 
@@ -221,7 +224,7 @@ $white: #fff;
 		right: 15px;
 		background: $white;
 		border-radius: 5px !important;
-		transition: .2s ease;
+		transition: 0.2s ease;
 		z-index: 10;
 		border-radius: 5px;
 		padding: 5px;
@@ -242,10 +245,10 @@ $white: #fff;
 
 	.maxi-block-library__modal__loading_message {
 		display: flex;
-	    justify-content: center;
-	    align-items: center;
+		justify-content: center;
+		align-items: center;
 		width: 100%;
-		background: rgba(0,0,0,0.7);
+		background: rgba(0, 0, 0, 0.7);
 		height: 100%;
 		position: absolute;
 		top: 0;
@@ -253,13 +256,14 @@ $white: #fff;
 		left: 0;
 		right: 0;
 
-
 		p {
 			font-size: 42px;
 			color: $white;
 		}
 	}
-	.maxi-block__item--hidden {display: none !important;}
+	.maxi-block__item--hidden {
+		display: none !important;
+	}
 }
 
 .maxi-block-library__placeholder {
@@ -274,23 +278,31 @@ $white: #fff;
 	}
 }
 
-
-
-[data-type="maxi-blocks/maxi-clouds"] {
+[data-type='maxi-blocks/maxi-clouds'] {
 	-webkit-animation: 2s ease 0s normal forwards 1 fadein;
 	animation: 2s ease 0s normal forwards 1 fadein;
 
-	@keyframes fadein{
-		0% { opacity:0; }
-		66% { opacity:0; }
-		100% { opacity:1; }
+	@keyframes fadein {
+		0% {
+			opacity: 0;
+		}
+		66% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
+		}
 	}
 
 	@-webkit-keyframes fadein {
-		0% { opacity:0; }
-		66% { opacity:0; }
-		100% { opacity:1; }
+		0% {
+			opacity: 0;
+		}
+		66% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
+		}
 	}
 }
-
-

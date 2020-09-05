@@ -2,14 +2,12 @@
 	.maxi-imageupload-button {
 		height: 100%;
 	}
-
 	&__resizer {
 		&:hover {
 			.maxi-image-block__settings {
 				&__upload-button {
 					opacity: 0.6;
 					visibility: visible;
-
 					&:hover {
 						opacity: 1;
 					}
@@ -17,7 +15,6 @@
 			}
 		}
 	}
-
 	&__settings {
 		position: absolute;
 		width: 2rem;
@@ -25,7 +22,6 @@
 		top: 2.5%;
 		left: 95%;
 		transform: translateX(-100%);
-
 		&__upload-button {
 			width: 100%;
 			height: 100%;
@@ -34,7 +30,6 @@
 			visibility: hidden;
 			transition: all 0.5s ease;
 			padding: 8px !important;
-
 			svg {
 				fill: #fff;
 				width: 20px;
@@ -42,7 +37,6 @@
 			}
 		}
 	}
-
 	.maxi-imageupload-button {
 		z-index: 1;
 		svg {
@@ -50,12 +44,10 @@
 			height: auto;
 		}
 	}
-
 	&__image {
 		display: block;
 		width: 100% !important;
 	}
-
 	&__caption {
 		width: 100%;
 	}

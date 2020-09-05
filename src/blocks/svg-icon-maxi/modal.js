@@ -10,31 +10,19 @@ import Iframe from 'react-iframe';
  */
 const { __ } = wp.i18n;
 const { Component, Fragment } = wp.element;
-const { Button, Modal, TabPanel, ToggleControl } = wp.components;
-
-/**
- * WordPress dependencies.
- */
-const { compose } = wp.compose;
-const { rawHandler } = wp.blocks;
-const { withSelect, withDispatch, clientId } = wp.data;
+const { Button, Modal } = wp.components;
 
 class MaxiModalIcon extends Component {
 	state = {
 		isOpen: false,
-		loadGlobalStyles: false,
 	};
 
 	render() {
-		const { className = '' } = this.props;
-
 		const { isOpen } = this.state;
 
 		const onClick = () => {
-			this.setState({ isOpen: !this.state.isOpen });
+			this.setState({ isOpen: !isOpen });
 		};
-
-		// console.log("isOpen: "+ isOpen);
 
 		return (
 			<Fragment

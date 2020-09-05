@@ -24,7 +24,6 @@ import {
 	MaxiBlock,
 	__experimentalToolbar,
 	__experimentalBackgroundDisplayer,
-	__experimentalSVGDefaultsDisplayer,
 } from '../../components';
 
 /**
@@ -44,9 +43,9 @@ import { toolbarReplaceImage, placeholderImage } from '../../icons';
 class edit extends MaxiBlock {
 	get getWrapperWidth() {
 		const target = document.getElementById(`block-${this.props.clientId}`);
-		if (!target) return;
+		if (target) return target.getBoundingClientRect().width;
 
-		return target.getBoundingClientRect().width;
+		return false;
 	}
 
 	get getObject() {
@@ -246,12 +245,10 @@ class edit extends MaxiBlock {
 				imageSize,
 				mediaID,
 				mediaALT,
-				mediaALTwp,
 				mediaURL,
 				mediaWidth,
 				mediaHeight,
 				SVGElement,
-				SVGData,
 			},
 			imageData,
 			setAttributes,
@@ -281,6 +278,8 @@ class edit extends MaxiBlock {
 			if (imageData && imageSize)
 				return imageData.media_details.sizes[imageSize];
 			if (imageData) return imageData.media_details.sizes.full;
+
+			return false;
 		};
 
 		const image = getImage();
@@ -309,12 +308,6 @@ class edit extends MaxiBlock {
 				data-maxi_initial_block_class={defaultBlockStyle}
 				data-align={fullWidth}
 			>
-				{/*
-                    !SVGElement &&
-                    <__experimentalSVGDefaultsDisplayer
-                        SVGData={SVGData}
-                        onChange={obj => setAttributes(obj)}
-                    /> */}
 				{!!SVGElement && (
 					<Fragment>
 						<__experimentalBackgroundDisplayer

@@ -20,13 +20,6 @@
 	},
 	"plugins": ["react", "import"],
 	"rules": {
-		"no-shadow": "warn",
-		"react/jsx-filename-extension": [
-			1,
-			{
-				"extensions": [".js", ".jsx"]
-			}
-		],
 		"prettier/prettier": [
 			"error",
 			{
@@ -38,12 +31,8 @@
 				"arrowParens": "avoid"
 			}
 		],
-		"quotes": [2, "single", { "avoidEscape": true }],
-		"no-unused-expressions": [
-			"error",
-			{ "allowTernary": true, "allowShortCircuit": true }
-		],
-		"jsx-quotes": [2, "prefer-single"],
+		"quotes": ["error", "single", { "avoidEscape": true }],
+		"jsx-quotes": ["error", "prefer-single"],
 		"no-param-reassign": ["error", { "props": false }],
 		"no-use-before-define": [
 			"error",
@@ -51,6 +40,16 @@
 		],
 		"no-console": ["error", { "allow": ["warn", "error"] }],
 		"no-unused-vars": ["error", { "args": "none" }],
+		"no-unused-expressions": [
+			"error",
+			{ "allowTernary": true, "allowShortCircuit": true }
+		],
+		"react/jsx-filename-extension": [
+			1,
+			{
+				"extensions": [".js", ".jsx"]
+			}
+		],
 		// Off //
 		"react/jsx-curly-newline": "off",
 		"react/react-in-jsx-scope": "off",
@@ -60,6 +59,7 @@
 		"import/named": "off",
 		"react/destructuring-assignment": "off",
 		// Short term deactivate rules //
+		"no-shadow": "off",
 		"no-restricted-syntax": "off",
 		"radix": "off",
 		"@wordpress/no-base-control-with-label-without-id": "off",

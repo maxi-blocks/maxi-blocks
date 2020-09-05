@@ -10,7 +10,6 @@ const {
 	TextareaControl,
 	TextControl,
 } = wp.components;
-const { useSelect } = wp.data;
 
 /**
  * Internal dependencies
@@ -39,7 +38,6 @@ import {
 	__experimentalClipPath,
 	__experimentalEntranceAnimationControl,
 	__experimentalHoverEffectControl,
-	__experimentalSVGControl,
 } from '../../components';
 
 /**
@@ -87,10 +85,6 @@ const Inspector = props => {
 			transform,
 			clipPath,
 			hover,
-			SVGElement,
-			SVGData,
-			SVGMediaID,
-			SVGMediaURL,
 		},
 		imageData,
 		clientId,
@@ -116,7 +110,7 @@ const Inspector = props => {
 			sizes = Object.entries(sizes).sort((a, b) => {
 				return a[1].width - b[1].width;
 			});
-			sizes.map(size => {
+			sizes.forEach(size => {
 				const name = capitalize(size[0]);
 				const val = size[1];
 				response.push({
@@ -191,179 +185,142 @@ const Inspector = props => {
 												/>
 											),
 										},
-										(function () {
-											if (deviceType === 'general') {
-												return {
-													label: __(
-														'Width / Height',
-														'maxi-blocks'
-													),
-													content: (
-														<Fragment>
-															<SelectControl
-																label={__(
-																	'Image Size',
-																	'maxi-blocks'
-																)}
-																value={
-																	imageSize ||
-																	imageSize ==
-																		'custom'
-																		? imageSize
-																		: 'full'
-																} // is still necessary?
-																options={getSizeOptions()}
-																onChange={imageSize =>
-																	setAttributes(
-																		{
-																			imageSize,
-																		}
-																	)
-																}
-															/>
-															{imageSize ===
-																'custom' && (
-																<ImageCropControl
-																	mediaID={
-																		mediaID
-																	}
-																	cropOptions={JSON.parse(
+										deviceType === 'general' && {
+											label: __(
+												'Width / Height',
+												'maxi-blocks'
+											),
+											content: (
+												<Fragment>
+													<SelectControl
+														label={__(
+															'Image Size',
+															'maxi-blocks'
+														)}
+														value={
+															imageSize ||
+															imageSize ===
+																'custom'
+																? imageSize
+																: 'full'
+														} // is still necessary?
+														options={getSizeOptions()}
+														onChange={imageSize =>
+															setAttributes({
+																imageSize,
+															})
+														}
+													/>
+													{imageSize === 'custom' && (
+														<ImageCropControl
+															mediaID={mediaID}
+															cropOptions={JSON.parse(
+																cropOptions
+															)}
+															onChange={cropOptions =>
+																setAttributes({
+																	cropOptions: JSON.stringify(
 																		cropOptions
-																	)}
-																	onChange={cropOptions =>
-																		setAttributes(
-																			{
-																				cropOptions: JSON.stringify(
-																					cropOptions
-																				),
-																			}
-																		)
-																	}
-																/>
-															)}
-															<RangeControl
-																label={__(
-																	'Width',
-																	'maxi-blocks'
-																)}
-																value={
-																	sizeValue
-																		.general
-																		.width
-																}
-																onChange={val => {
-																	if (
-																		isNil(
-																			val
-																		)
-																	)
-																		sizeValue.general.width =
-																			defaultSize.general.width;
-																	else
-																		sizeValue.general.width = val;
+																	),
+																})
+															}
+														/>
+													)}
+													<RangeControl
+														label={__(
+															'Width',
+															'maxi-blocks'
+														)}
+														value={
+															sizeValue.general
+																.width
+														}
+														onChange={val => {
+															if (isNil(val))
+																sizeValue.general.width =
+																	defaultSize.general.width;
+															else
+																sizeValue.general.width = val;
 
-																	setAttributes(
-																		{
-																			size: JSON.stringify(
-																				sizeValue
-																			),
-																		}
-																	);
-																}}
-																allowReset
-																initialPosition={
-																	defaultSize
-																		.general
-																		.width
-																}
-															/>
-														</Fragment>
-													),
-												};
-											}
-										})(),
-										(function () {
-											if (deviceType === 'general') {
-												return {
-													label: __(
-														'Caption',
-														'maxi-blocks'
-													),
-													content: (
-														<Fragment>
-															<SelectControl
-																value={
-																	captionType
-																}
-																options={getCaptionOptions()}
-																onChange={captionType => {
-																	setAttributes(
-																		{
-																			captionType,
-																		}
-																	);
-																	if (
-																		imageData &&
-																		captionType ===
-																			'attachment'
-																	)
-																		setAttributes(
-																			{
-																				captionContent:
-																					imageData
-																						.caption
-																						.raw,
-																			}
-																		);
-																}}
-															/>
-															{captionType ===
-																'custom' && (
-																<TextareaControl
-																	className='custom-caption'
-																	placeHolder={__(
-																		'Add you Custom Caption here',
-																		'maxi-blocks'
-																	)}
-																	value={
-																		captionContent
-																	}
-																	onChange={captionContent =>
-																		setAttributes(
-																			{
-																				captionContent,
-																			}
-																		)
-																	}
-																/>
+															setAttributes({
+																size: JSON.stringify(
+																	sizeValue
+																),
+															});
+														}}
+														allowReset
+														initialPosition={
+															defaultSize.general
+																.width
+														}
+													/>
+												</Fragment>
+											),
+										},
+										deviceType === 'general' && {
+											label: __('Caption', 'maxi-blocks'),
+											content: (
+												<Fragment>
+													<SelectControl
+														value={captionType}
+														options={getCaptionOptions()}
+														onChange={captionType => {
+															setAttributes({
+																captionType,
+															});
+															if (
+																imageData &&
+																captionType ===
+																	'attachment'
+															)
+																setAttributes({
+																	captionContent:
+																		imageData
+																			.caption
+																			.raw,
+																});
+														}}
+													/>
+													{captionType ===
+														'custom' && (
+														<TextareaControl
+															className='custom-caption'
+															placeHolder={__(
+																'Add you Custom Caption here',
+																'maxi-blocks'
 															)}
-															{captionType !=
-																'none' && (
-																<TypographyControl
-																	typography={
-																		captionTypography
-																	}
-																	defaultTypography={getDefaultProp(
-																		clientId,
-																		'captionTypography'
-																	)}
-																	onChange={captionTypography =>
-																		setAttributes(
-																			{
-																				captionTypography,
-																			}
-																		)
-																	}
-																	breakpoint={
-																		deviceType
-																	}
-																/>
+															value={
+																captionContent
+															}
+															onChange={captionContent =>
+																setAttributes({
+																	captionContent,
+																})
+															}
+														/>
+													)}
+													{captionType !== 'none' && (
+														<TypographyControl
+															typography={
+																captionTypography
+															}
+															defaultTypography={getDefaultProp(
+																clientId,
+																'captionTypography'
 															)}
-														</Fragment>
-													),
-												};
-											}
-										})(),
+															onChange={captionTypography =>
+																setAttributes({
+																	captionTypography,
+																})
+															}
+															breakpoint={
+																deviceType
+															}
+														/>
+													)}
+												</Fragment>
+											),
+										},
 										{
 											label: __(
 												'Background',
@@ -746,7 +703,7 @@ const Inspector = props => {
 											setAttributes({ altSelector });
 										}}
 									/>
-									{altSelector == 'custom' && (
+									{altSelector === 'custom' && (
 										<TextControl
 											placeHolder={__(
 												'Add Your ALT Tag Here',

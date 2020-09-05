@@ -14,9 +14,9 @@ const { registerBlockType } = wp.blocks;
 /**
  * Block dependencies
  */
-import attributes from './attributes.js';
-import edit from './edit.js';
-import save from './save.js';
+import attributes from './attributes';
+import edit from './edit';
+import save from './save';
 
 /**
  * Styles and icons
@@ -28,25 +28,25 @@ import { textIcon } from '../../icons';
  * Block
  */
 registerBlockType('maxi-blocks/text-maxi', {
-    title: __('Text Maxi', 'maxi-blocks'),
-    icon: textIcon,
-    description: 'Insert, modify or style text',
-    category: 'maxi-blocks',
-    supports: {
-        align: false,
-        lightBlockWrapper: true,
-    },
-    attributes: {
-        ...attributes,
-    },
-    getEditWrapperProps(attributes) {
-        const { uniqueID, defaultBlockStyle } = attributes;
+	title: __('Text Maxi', 'maxi-blocks'),
+	icon: textIcon,
+	description: 'Insert, modify or style text',
+	category: 'maxi-blocks',
+	supports: {
+		align: false,
+		lightBlockWrapper: true,
+	},
+	attributes: {
+		...attributes,
+	},
+	getEditWrapperProps(attributes) {
+		const { uniqueID, defaultBlockStyle } = attributes;
 
-        return {
-            uniqueid: uniqueID,
-            'data-maxi_initial_block_class': defaultBlockStyle,
-        };
-    },
-    edit,
-    save,
+		return {
+			uniqueid: uniqueID,
+			'data-maxi_initial_block_class': defaultBlockStyle,
+		};
+	},
+	edit,
+	save,
 });

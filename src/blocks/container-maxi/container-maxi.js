@@ -29,24 +29,24 @@ import { containerIcon } from '../../icons';
  */
 
 registerBlockType('maxi-blocks/container-maxi', {
-    title: __('Container Maxi', 'maxi-blocks'),
-    icon: containerIcon,
-    description: 'Group of blocks composed with a similar style or layout',
-    category: 'maxi-blocks',
-    supports: {
-        align: true,
-        lightBlockWrapper: true,
-    },
-    attributes: {
-        ...attributes,
-    },
-    getEditWrapperProps(attributes) {
-        const { uniqueID } = attributes;
+	title: __('Container Maxi', 'maxi-blocks'),
+	icon: containerIcon,
+	description: 'Group of blocks composed with a similar style or layout',
+	category: 'maxi-blocks',
+	supports: {
+		align: true,
+		lightBlockWrapper: true,
+	},
+	attributes: {
+		...attributes,
+	},
+	getEditWrapperProps(attributes) {
+		const { uniqueID } = attributes;
 
-        return {
-            uniqueid: uniqueID,
-        };
-    },
-    edit,
-    save,
+		return {
+			uniqueid: uniqueID,
+		};
+	},
+	edit,
+	save,
 });

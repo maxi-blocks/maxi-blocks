@@ -29,24 +29,24 @@ import save from './save';
  */
 
 registerBlockType('maxi-blocks/column-maxi', {
-    title: __('Column Maxi', 'maxi-blocks'),
-    icon: imageBox,
-    description: 'Stack one or more blocks, top-to-bottom (vertical)',
-    category: 'maxi-blocks',
-    supports: {
-        align: true,
-        lightBlockWrapper: true,
-    },
-    attributes: {
-        ...attributes,
-    },
-    parent: ['maxi-blocks/row-maxi'],
-    getEditWrapperProps(attributes) {
-        const { uniqueID } = attributes;
-        return {
-            uniqueid: uniqueID,
-        };
-    },
-    edit,
-    save,
+	title: __('Column Maxi', 'maxi-blocks'),
+	icon: imageBox,
+	description: 'Stack one or more blocks, top-to-bottom (vertical)',
+	category: 'maxi-blocks',
+	supports: {
+		align: true,
+		lightBlockWrapper: true,
+	},
+	attributes: {
+		...attributes,
+	},
+	parent: ['maxi-blocks/row-maxi'],
+	getEditWrapperProps(attributes) {
+		const { uniqueID } = attributes;
+		return {
+			uniqueid: uniqueID,
+		};
+	},
+	edit,
+	save,
 });

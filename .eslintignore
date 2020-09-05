@@ -4,5 +4,13 @@
 build
 node_modules
 
+API
+css
+customizer
+gx-plugin-update-checker
+img
+page-content-setting
+src/includes
+js
 customizer/js/maxi-admin.js
 js/cloud-server.js

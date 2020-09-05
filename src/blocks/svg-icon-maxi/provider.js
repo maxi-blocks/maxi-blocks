@@ -7,8 +7,6 @@
 
 import React, { createContext, Component } from 'react';
 
-const { apiFetch } = wp;
-
 export const MaxiContext = createContext({
 	layouts: '',
 	sections: '',

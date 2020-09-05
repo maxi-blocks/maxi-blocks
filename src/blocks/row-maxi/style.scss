@@ -1,10 +1,9 @@
 body.maxi-blocks--active .maxi-row-block {
-    position: relative;
-    display: flex;
-    flex-wrap: wrap;
-    margin: auto;
-
-    &.alignfull {
-        width: auto;
-    }
+	position: relative;
+	display: flex;
+	flex-wrap: wrap;
+	margin: auto;
+	&.alignfull {
+		width: auto;
+	}
 }

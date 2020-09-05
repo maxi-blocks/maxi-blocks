@@ -29,25 +29,25 @@ import save from './save';
  */
 
 registerBlockType('maxi-blocks/row-maxi', {
-    title: __('Row Maxi', 'maxi-blocks'),
-    icon: rowIcon,
-    description:
-        'Position one or more blocks, arranged side-by-side (horizontal)',
-    category: 'maxi-blocks',
-    supports: {
-        align: true,
-        lightBlockWrapper: true,
-    },
-    attributes: {
-        ...attributes,
-    },
-    getEditWrapperProps(attributes) {
-        const { uniqueID } = attributes;
+	title: __('Row Maxi', 'maxi-blocks'),
+	icon: rowIcon,
+	description:
+		'Position one or more blocks, arranged side-by-side (horizontal)',
+	category: 'maxi-blocks',
+	supports: {
+		align: true,
+		lightBlockWrapper: true,
+	},
+	attributes: {
+		...attributes,
+	},
+	getEditWrapperProps(attributes) {
+		const { uniqueID } = attributes;
 
-        return {
-            uniqueid: uniqueID,
-        };
-    },
-    edit,
-    save,
+		return {
+			uniqueid: uniqueID,
+		};
+	},
+	edit,
+	save,
 });

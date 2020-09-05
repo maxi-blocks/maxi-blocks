@@ -1,41 +1,41 @@
 {
-    "label": "Shape Divider",
-    "top": {
-        "height": 100,
-        "heightUnit": "px",
-        "opacity": {
-            "label": "Opacity",
-            "general": {
-                "opacity": 1
-            }
-        },
-        "shapeStyle": "",
-        "colorOptions": {
-            "color": "#000000",
-            "gradient": "",
-            "gradientAboveBackground": false
-        },
-        "effects": {
-            "status": 0
-        }
-    },
-    "bottom": {
-        "height": 100,
-        "heightUnit": "px",
-        "opacity": {
-            "label": "Opacity",
-            "general": {
-                "opacity": 1
-            }
-        },
-        "shapeStyle": "",
-        "colorOptions": {
-            "color": "#000000",
-            "gradient": "",
-            "gradientAboveBackground": false
-        },
-        "effects": {
-            "status": 0
-        }
-    }
+	"label": "Shape Divider",
+	"top": {
+		"height": 100,
+		"heightUnit": "px",
+		"opacity": {
+			"label": "Opacity",
+			"general": {
+				"opacity": 1
+			}
+		},
+		"shapeStyle": "",
+		"colorOptions": {
+			"color": "#000000",
+			"gradient": "",
+			"gradientAboveBackground": false
+		},
+		"effects": {
+			"status": 0
+		}
+	},
+	"bottom": {
+		"height": 100,
+		"heightUnit": "px",
+		"opacity": {
+			"label": "Opacity",
+			"general": {
+				"opacity": 1
+			}
+		},
+		"shapeStyle": "",
+		"colorOptions": {
+			"color": "#000000",
+			"gradient": "",
+			"gradientAboveBackground": false
+		},
+		"effects": {
+			"status": 0
+		}
+	}
 }

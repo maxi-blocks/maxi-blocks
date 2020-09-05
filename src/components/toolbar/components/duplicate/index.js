@@ -14,20 +14,20 @@ import { toolbarDuplicate } from '../../../../icons';
  * Duplicate
  */
 const Duplicate = props => {
-    const { clientId } = props;
+	const { clientId } = props;
 
-    const { duplicateBlocks } = useDispatch('core/block-editor');
+	const { duplicateBlocks } = useDispatch('core/block-editor');
 
-    return (
-        <Tooltip text={__('Duplicate', 'maxi-blocks')} position='bottom center'>
-            <Button
-                className='toolbar-item toolbar-item__duplicate'
-                onClick={() => duplicateBlocks([clientId])}
-            >
-                <Icon className='toolbar-item__icon' icon={toolbarDuplicate} />
-            </Button>
-        </Tooltip>
-    );
+	return (
+		<Tooltip text={__('Duplicate', 'maxi-blocks')} position='bottom center'>
+			<Button
+				className='toolbar-item toolbar-item__duplicate'
+				onClick={() => duplicateBlocks([clientId])}
+			>
+				<Icon className='toolbar-item__icon' icon={toolbarDuplicate} />
+			</Button>
+		</Tooltip>
+	);
 };
 
 export default Duplicate;

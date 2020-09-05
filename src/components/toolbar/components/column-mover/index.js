@@ -16,50 +16,50 @@ import { toolbarMove } from '../../../../icons';
  * ColumnMover
  */
 const ColumnMover = props => {
-    const { clientId, blockName } = props;
+	const { clientId, blockName } = props;
 
-    if (blockName !== 'maxi-blocks/column-maxi') return null;
+	if (blockName !== 'maxi-blocks/column-maxi') return null;
 
-    const { rootClientId } = useSelect(
-        select => {
-            const { getBlockRootClientId } = select('core/block-editor');
-            const blockRootClientId = getBlockRootClientId(clientId);
+	const { rootClientId } = useSelect(
+		select => {
+			const { getBlockRootClientId } = select('core/block-editor');
+			const blockRootClientId = getBlockRootClientId(clientId);
 
-            return {
-                rootClientId: blockRootClientId,
-            };
-        },
-        [clientId]
-    );
+			return {
+				rootClientId: blockRootClientId,
+			};
+		},
+		[clientId]
+	);
 
-    const { moveBlocksDown, moveBlocksUp } = useDispatch('core/block-editor');
+	const { moveBlocksDown, moveBlocksUp } = useDispatch('core/block-editor');
 
-    return (
-        <Fragment>
-            <Tooltip
-                text={__('Move left', 'maxi-blocks')}
-                position='bottom center'
-            >
-                <Button
-                    className='toolbar-item toolbar-item__bold'
-                    onClick={() => moveBlocksUp([clientId], rootClientId)}
-                >
-                    <Icon className='toolbar-item__icon' icon={toolbarMove} />
-                </Button>
-            </Tooltip>
-            <Tooltip
-                text={__('Move right', 'maxi-blocks')}
-                position='bottom center'
-            >
-                <Button
-                    className='toolbar-item toolbar-item__bold'
-                    onClick={() => moveBlocksDown([clientId], rootClientId)}
-                >
-                    <Icon className='toolbar-item__icon' icon={toolbarMove} />
-                </Button>
-            </Tooltip>
-        </Fragment>
-    );
+	return (
+		<Fragment>
+			<Tooltip
+				text={__('Move left', 'maxi-blocks')}
+				position='bottom center'
+			>
+				<Button
+					className='toolbar-item toolbar-item__bold'
+					onClick={() => moveBlocksUp([clientId], rootClientId)}
+				>
+					<Icon className='toolbar-item__icon' icon={toolbarMove} />
+				</Button>
+			</Tooltip>
+			<Tooltip
+				text={__('Move right', 'maxi-blocks')}
+				position='bottom center'
+			>
+				<Button
+					className='toolbar-item toolbar-item__bold'
+					onClick={() => moveBlocksDown([clientId], rootClientId)}
+				>
+					<Icon className='toolbar-item__icon' icon={toolbarMove} />
+				</Button>
+			</Tooltip>
+		</Fragment>
+	);
 };
 
 export default ColumnMover;

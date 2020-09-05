@@ -1,42 +1,42 @@
 .toolbar-item__popover {
-    .components-form-toggle {
-        &.is-checked {
-            .components-form-toggle__track {
-                background-color: #5f6063;
-            }
-        }
-        .components-form-toggle__track {
-            border: 0;
-            background-color: #fff;
-        }
-    }
-    .block-editor-url-input__input {
-        background-color: transparent;
-        color: #fff;
-        border: 2px solid #5f6063 !important;
+	.components-form-toggle {
+		&.is-checked {
+			.components-form-toggle__track {
+				background-color: #5f6063;
+			}
+		}
+		.components-form-toggle__track {
+			border: 0;
+			background-color: #fff;
+		}
+	}
+	.block-editor-url-input__input {
+		background-color: transparent;
+		color: #fff;
+		border: 2px solid #5f6063 !important;
 
-        &:focus {
-            outline: none !important;
-            box-shadow: none !important;
-        }
+		&:focus {
+			outline: none !important;
+			box-shadow: none !important;
+		}
 
-        &::placeholder {
-            color: #5f6063;
-        }
-    }
-    .block-editor-link-control__search-submit {
-        svg {
-            fill: #5f6063 !important;
-        }
-    }
-    .block-editor-link-control__settings {
-        border-top: 0;
-        padding: 0 18px 15px 18px;
-    }
+		&::placeholder {
+			color: #5f6063;
+		}
+	}
+	.block-editor-link-control__search-submit {
+		svg {
+			fill: #5f6063 !important;
+		}
+	}
+	.block-editor-link-control__settings {
+		border-top: 0;
+		padding: 0 18px 15px 18px;
+	}
 }
 
 .components-popover:not(.toolbar-item__popover) {
-    .block-editor-link-control {
-        display: none;
-    }
+	.block-editor-link-control {
+		display: none;
+	}
 }

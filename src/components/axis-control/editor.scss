@@ -1,39 +1,31 @@
 .maxi-axis-control {
-    margin-bottom: 8px;
-
-    &__units {
-        margin-bottom: 0 !important;
-
-        .components-base-control__field {
-            margin-bottom: 0 !important;
-        }
-    }
-
-    &__content {
-        display: flex;
-
-        &__item {
-            width: 20%;
-            flex-basis: 20%;
-
-            &__label,
-            &__input {
-                margin-bottom: 4px;
-            }
-
-            &__input,
-            &__checkbox {
-                display: block;
-                width: 100%;
-            }
-
-            &__sync {
-                padding-top: 23px;
-
-                & button {
-                    height: 30px !important;
-                }
-            }
-        }
-    }
+	margin-bottom: 8px;
+	&__units {
+		margin-bottom: 0 !important;
+		.components-base-control__field {
+			margin-bottom: 0 !important;
+		}
+	}
+	&__content {
+		display: flex;
+		&__item {
+			width: 20%;
+			flex-basis: 20%;
+			&__label,
+			&__input {
+				margin-bottom: 4px;
+			}
+			&__input,
+			&__checkbox {
+				display: block;
+				width: 100%;
+			}
+			&__sync {
+				padding-top: 23px;
+				& button {
+					height: 30px !important;
+				}
+			}
+		}
+	}
 }

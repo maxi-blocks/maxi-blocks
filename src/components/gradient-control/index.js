@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { __ } = wp.i18n;
+const { __, sprintf } = wp.i18n;
 const { BaseControl, Button, __experimentalGradientPicker } = wp.components;
 
 /**
@@ -24,63 +24,63 @@ import { reset } from '../../icons';
  * Component
  */
 const GradientControl = props => {
-    const {
-        label,
-        className,
-        gradient,
-        defaultGradient = '',
-        onChange,
-        disableGradientAboveBackground = false,
-        gradientAboveBackground,
-        onGradientAboveBackgroundChange,
-    } = props;
+	const {
+		label,
+		className,
+		gradient,
+		defaultGradient = '',
+		onChange,
+		disableGradientAboveBackground = false,
+		gradientAboveBackground,
+		onGradientAboveBackgroundChange,
+	} = props;
 
-    const classes = classnames('maxi-gradientcontrol', className);
+	const classes = classnames('maxi-gradientcontrol', className);
 
-    const onReset = () => {
-        if (!disableGradientAboveBackground)
-            onGradientAboveBackgroundChange(false);
+	const onReset = () => {
+		if (!disableGradientAboveBackground)
+			onGradientAboveBackgroundChange(false);
 
-        onChange(defaultGradient);
-    };
+		onChange(defaultGradient);
+	};
 
-    return (
-        <div className={classes}>
-            <BaseControl
-                className='maxi-gradientcontrol__display'
-                label={`${label} ${__('Color', 'maxi-blocks')}`}
-            >
-                <div className='maxi-gradientcontrol__display__color'>
-                    <span style={{ background: gradient }} />
-                    <Button
-                        className='components-maxi-control__reset-button'
-                        onClick={() => onReset()}
-                        aria-label={sprintf(
-                            /* translators: %s: a texual label  */
-                            __('Reset %s settings', 'maxi-blocks'),
-                            'font size'
-                        )}
-                        type='reset'
-                    >
-                        {reset}
-                    </Button>
-                </div>
-            </BaseControl>
-            <div className='maxi-gradientcontrol__gradient'>
-                <__experimentalGradientPicker
-                    value={gradient}
-                    onChange={val => onChange(val)}
-                />
-                {disableGradientAboveBackground && (
-                    <CheckBoxControl
-                        label={__('Above Background Image', 'maxi-blocks')}
-                        checked={gradientAboveBackground}
-                        onChange={val => onGradientAboveBackgroundChange(val)}
-                    />
-                )}
-            </div>
-        </div>
-    );
+	return (
+		<div className={classes}>
+			<BaseControl
+				className='maxi-gradientcontrol__display'
+				label={`${label} ${__('Color', 'maxi-blocks')}`}
+			>
+				<div className='maxi-gradientcontrol__display__color'>
+					<span style={{ background: gradient }} />
+					<Button
+						className='components-maxi-control__reset-button'
+						onClick={() => onReset()}
+						aria-label={sprintf(
+							/* translators: %s: a texual label  */
+							__('Reset %s settings', 'maxi-blocks'),
+							'font size'
+						)}
+						type='reset'
+					>
+						{reset}
+					</Button>
+				</div>
+			</BaseControl>
+			<div className='maxi-gradientcontrol__gradient'>
+				<__experimentalGradientPicker
+					value={gradient}
+					onChange={val => onChange(val)}
+				/>
+				{disableGradientAboveBackground && (
+					<CheckBoxControl
+						label={__('Above Background Image', 'maxi-blocks')}
+						checked={gradientAboveBackground}
+						onChange={val => onGradientAboveBackgroundChange(val)}
+					/>
+				)}
+			</div>
+		</div>
+	);
 };
 
 export default GradientControl;

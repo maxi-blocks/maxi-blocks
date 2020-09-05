@@ -32,26 +32,24 @@ const MediaUploader = props => {
 		onClose = undefined,
 		placeholder = __('Set image', 'maxi-blocks'),
 		extendSelector,
-		replaceButton = __('Replace image', 'maxi-blocks'),
-		removeButton = __('Remove image', 'maxi-blocks'),
+		replaceButton = __('Replace', 'maxi-blocks'),
+		removeButton = __('Remove', 'maxi-blocks'),
 		alternativeImage,
 		allowedTypes = ['image'],
 	} = props;
 
 	const classes = classnames(
-		mediaType === 'image'
-			? 'maxi-mediauploader-control'
-			: 'maxi-mediauploader-control__video',
+		'maxi-mediauploader-control',
+		`maxi-mediauploader-control__${mediaType}`,
 		className
 	);
 
+	`editor-post-featured-image__${!mediaID ? 'toggle' : 'preview'}`;
 	const mediaClasses = classnames(
-		mediaType === 'image' &&
-			`editor-post-featured-image__${!mediaID ? 'toggle' : 'preview'}`,
-		mediaType === 'video' &&
-			`maxi-mediauploader-control__video__${
-				!mediaID ? 'toggle' : 'preview'
-			}`
+		`maxi-mediauploader-control__${mediaID ? 'preview' : 'toggle'}`,
+		`maxi-mediauploader-control__${mediaType}__${
+			mediaID ? 'preview' : 'toggle'
+		}`
 	);
 
 	const onOpenImageModal = () => {
@@ -111,6 +109,34 @@ const MediaUploader = props => {
 												: imageData.source_url
 										}
 										alt={__('Image', 'maxi-blocks')}
+									/>
+								</ResponsiveWrapper>
+							)}
+							{mediaType === 'video' && !!mediaID && imageData && (
+								<ResponsiveWrapper
+									naturalWidth={
+										alternativeImage
+											? alternativeImage.width
+											: imageData.media_details.width
+									}
+									naturalHeight={
+										alternativeImage
+											? alternativeImage.height
+											: imageData.media_details.height
+									}
+									className='maxi-imageuploader-control__responsive-wrapper'
+								>
+									<video
+										controls
+										autoPlay={false}
+										loop={false}
+										muted
+										preload
+										src={
+											!isNil(alternativeImage)
+												? alternativeImage.source_url
+												: imageData.source_url
+										}
 									/>
 								</ResponsiveWrapper>
 							)}

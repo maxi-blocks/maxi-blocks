@@ -1,17 +1,15 @@
 {
 	"label": "Background",
-	"backgroundOptions": [
+	"activeMedia": "",
+	"imageOptions": [
 		{
-			"imageOptions": {
+			"imageData": {
 				"mediaID": "",
-				"mediaURL": ""
-			},
-			"sizeSettings": {
-				"size": "cover",
-				"widthUnit": "%",
+				"mediaURL": "",
 				"width": 100,
-				"heightUnit": "%",
-				"height": 100
+				"widthUnit": "%",
+				"height": 100,
+				"heightUnit": "%"
 			},
 			"repeat": "no-repeat",
 			"positionOptions": {
@@ -26,12 +24,13 @@
 			"attachment": "scroll"
 		}
 	],
+	"clipPathImage": "",
 	"videoOptions": {
 		"mediaID": "",
 		"mediaURL": "",
-		"width": "100",
+		"width": 100,
 		"widthUnit": "%",
-		"height": "100",
+		"height": 100,
 		"heightUnit": "%",
 		"fill": "cover",
 		"position": "unset",
@@ -39,12 +38,27 @@
 		"loop": 0,
 		"muted": 0,
 		"controls": 0,
-		"preload": "metadata"
+		"preload": "metadata",
+		"clipPath": ""
 	},
 	"colorOptions": {
+		"activeColor": "",
 		"color": "",
 		"gradient": "",
-		"gradientAboveBackground": false
+		"gradientAboveBackground": false,
+		"clipPath": ""
 	},
-	"clipPath": ""
+	"overlayOptions": {
+		"overlay": "",
+		"activeColor": "",
+		"color": "",
+		"gradient": "",
+		"gradientAboveBackground": false,
+		"opacity": {
+			"label": "Opacity",
+			"general": {
+				"opacity": 0.8
+			}
+		}
+	}
 }

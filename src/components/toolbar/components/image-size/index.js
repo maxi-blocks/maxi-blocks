@@ -39,13 +39,13 @@ const ImageSize = props => {
 		isFirstOnHierarchy,
 	} = props;
 
+	if (blockName !== 'maxi-blocks/image-maxi') return null;
+
 	const sizeValue = !isObject(size) ? JSON.parse(size) : size;
 
 	const defaultSizeValue = !isObject(defaultSize)
 		? JSON.parse(defaultSize)
 		: defaultSize;
-
-	if (blockName !== 'maxi-blocks/image-maxi') return null;
 
 	const { imageData } = useSelect(select => {
 		const { getMedia } = select('core');

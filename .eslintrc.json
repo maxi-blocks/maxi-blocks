@@ -1,63 +1,79 @@
 {
-    "env": {
-        "browser": true,
-        "es2020": true
-    },
-    "extends": [
-        "plugin:@wordpress/eslint-plugin/recommended",
-        "plugin:react/recommended",
-        "airbnb",
-        "plugin:prettier/recommended",
-        "prettier",
-        "prettier/react"
-    ],
-    "parserOptions": {
-        "ecmaFeatures": {
-            "jsx": true
-        },
-        "ecmaVersion": 11,
-        "sourceType": "module"
-    },
-    "plugins": ["react", "import"],
-    "rules": {
-        "no-shadow": "warn",
-        "react/jsx-filename-extension": [
-            1,
-            {
-                "extensions": [".js", ".jsx"]
-            }
-        ],
-        "prettier/prettier": [
-            "error",
-            {
-                "prettier": "@wordpress/prettier-config",
-                "useTabs": false,
-                // "tabWidth": 4,
-                "singleQuote": true,
-                "jsxSingleQuote": true,
-                "bracketSpacing": true,
-                "arrowParens": "avoid"
-            }
-        ],
-        "react/jsx-curly-newline": "off",
-        "react/react-in-jsx-scope": "off",
-        "no-underscore-dangle": "off",
-        "no-nested-ternary": "off",
-        "import/named": "off",
-        "no-restricted-syntax": "off", //Temporary
-        "radix": "off", // Temporary
-        "@wordpress/no-base-control-with-label-without-id": "off", // Temporary
-        "@wordpress/i18n-translator-comments": "off", // Temporary
-        "@wordpress/i18n-no-variables": "off", // Temporary
-        ////
-        "react/jsx-pascal-case": "off", // Temporary deactivate
-        "react/prop-types": "off", // Temporary deactivate
-        "react/jsx-props-no-spreading": "off", // Temporary deactivate
-        "import/no-extraneous-dependencies": "off", // Temporary deactivate
-        "import/first": "off", // Temporary deactivate
-        "import/order": "off", // Needs to be organized
-        "require-jsdoc": "off", // Temporary deactivate
-        "jsdoc/require-param": "off", // Temporary deactivate
-        "jsdoc/check-tag-names": "off" // Temporary deactivate
-    }
+	"env": {
+		"browser": true,
+		"es2020": true
+	},
+	"extends": [
+		"plugin:@wordpress/eslint-plugin/recommended",
+		"plugin:react/recommended",
+		"airbnb",
+		"plugin:prettier/recommended",
+		"prettier",
+		"prettier/react"
+	],
+	"parserOptions": {
+		"ecmaFeatures": {
+			"jsx": true
+		},
+		"ecmaVersion": 11,
+		"sourceType": "module"
+	},
+	"plugins": ["react", "import"],
+	"rules": {
+		"no-shadow": "warn",
+		"react/jsx-filename-extension": [
+			1,
+			{
+				"extensions": [".js", ".jsx"]
+			}
+		],
+		"prettier/prettier": [
+			"error",
+			{
+				"prettier": "@wordpress/prettier-config",
+				"useTabs": true,
+				"singleQuote": true,
+				"jsxSingleQuote": true,
+				"bracketSpacing": true,
+				"arrowParens": "avoid"
+			}
+		],
+		"quotes": [2, "single", { "avoidEscape": true }],
+		"no-unused-expressions": ["error", { "allowTernary": true }],
+		"jsx-quotes": [2, "prefer-single"],
+		"no-param-reassign": ["error", { "props": false }],
+		"no-use-before-define": [
+			"error",
+			{ "functions": false, "classes": true }
+		],
+		"no-console": ["error", { "allow": ["warn", "error"] }],
+		// Off //
+		"react/jsx-curly-newline": "off",
+		"react/react-in-jsx-scope": "off",
+		"react/state-in-constructor": "off",
+		"no-underscore-dangle": "off",
+		"no-nested-ternary": "off",
+		"import/named": "off",
+		"react/destructuring-assignment": "off",
+		// Short term deactivate rules //
+		"no-restricted-syntax": "off",
+		"radix": "off",
+		"@wordpress/no-base-control-with-label-without-id": "off",
+		"@wordpress/i18n-translator-comments": "off",
+		"@wordpress/i18n-no-variables": "off",
+		"jsx-a11y/no-static-element-interactions": "off",
+		"jsx-a11y/click-events-have-key-events": "off",
+		"jsx-a11y/mouse-events-have-key-events": "off",
+		"jsx-a11y/label-has-associated-control": "off",
+		// Long term deactivate rules //
+		"react/jsx-pascal-case": "off",
+		"react/prop-types": "off",
+		"react/jsx-props-no-spreading": "off",
+		"import/no-extraneous-dependencies": "off",
+		"import/first": "off",
+		"import/order": "off", // Needs to be organized
+		"require-jsdoc": "off",
+		"jsdoc/require-param": "off",
+		"jsdoc/check-tag-names": "off"
+	}
 }

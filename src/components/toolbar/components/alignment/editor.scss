@@ -1,19 +1,17 @@
 .toolbar-item__popover {
-    .maxi-alignment-control {
-        .components-radio-control__option {
-            border-color: #7a7c85;
-
-            .components-radio-control__input {
-                &:checked ~ label {
-                    svg {
-                        fill: #464a53;
-                    }
-                }
-            }
-
-            svg {
-                fill: #fff;
-            }
-        }
-    }
+	.maxi-alignment-control {
+		.components-radio-control__option {
+			border-color: #7a7c85;
+			.components-radio-control__input {
+				&:checked ~ label {
+					svg {
+						fill: #464a53;
+					}
+				}
+			}
+			svg {
+				fill: #fff;
+			}
+		}
+	}
 }

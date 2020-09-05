@@ -19,41 +19,41 @@ import { toolbarDropShadow } from '../../../../icons';
  * BoxShadow
  */
 const ALLOWED_BLOCKS = [
-    // 'maxi-blocks/text-maxi',
-    'maxi-blocks/button-maxi',
-    'maxi-blocks/image-maxi',
-    'maxi-blocks/divider-maxi',
-    'maxi-blocks/section-maxi',
+	// 'maxi-blocks/text-maxi',
+	'maxi-blocks/button-maxi',
+	'maxi-blocks/image-maxi',
+	'maxi-blocks/divider-maxi',
+	'maxi-blocks/section-maxi',
 ];
 
 const BoxShadow = props => {
-    const {
-        blockName,
-        boxShadow,
-        defaultBoxShadow,
-        onChange,
-        breakpoint,
-    } = props;
+	const {
+		blockName,
+		boxShadow,
+		defaultBoxShadow,
+		onChange,
+		breakpoint,
+	} = props;
 
-    if (!ALLOWED_BLOCKS.includes(blockName)) return null;
+	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
 
-    return (
-        <ToolbarPopover
-            className='toolbar-item__box-shadow'
-            tooltip={__('Drop shadow', 'maxi-blocks')}
-            icon={toolbarDropShadow}
-            advancedOptions='box shadow'
-            content={
-                <BoxShadowControl
-                    boxShadow={boxShadow}
-                    defaultBoxShadow={defaultBoxShadow}
-                    onChange={boxShadow => onChange(boxShadow)}
-                    breakpoint={breakpoint}
-                    disableAdvanced
-                />
-            }
-        />
-    );
+	return (
+		<ToolbarPopover
+			className='toolbar-item__box-shadow'
+			tooltip={__('Drop shadow', 'maxi-blocks')}
+			icon={toolbarDropShadow}
+			advancedOptions='box shadow'
+			content={
+				<BoxShadowControl
+					boxShadow={boxShadow}
+					defaultBoxShadow={defaultBoxShadow}
+					onChange={boxShadow => onChange(boxShadow)}
+					breakpoint={breakpoint}
+					disableAdvanced
+				/>
+			}
+		/>
+	);
 };
 
 export default BoxShadow;

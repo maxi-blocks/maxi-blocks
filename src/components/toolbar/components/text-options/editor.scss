@@ -1,28 +1,24 @@
 .toolbar-item__popover {
-    &__font-options {
-        &__font {
-            display: flex;
-            width: 100%;
-
-            &__selector {
-                flex-basis: 100%;
-            }
-
-            .maxi-font-family-selector {
-                &__button {
-                    color: #fff;
-                    border-color: #80828a;
-                }
-            }
-
-            .components-maxi-control__reset-button {
-                height: 31px;
-
-                svg {
-                    width: 14px;
-                    height: 14px;
-                }
-            }
-        }
-    }
+	&__font-options {
+		&__font {
+			display: flex;
+			width: 100%;
+			&__selector {
+				flex-basis: 100%;
+			}
+			.maxi-font-family-selector {
+				&__button {
+					color: #fff;
+					border-color: #80828a;
+				}
+			}
+			.components-maxi-control__reset-button {
+				height: 31px;
+				svg {
+					width: 14px;
+					height: 14px;
+				}
+			}
+		}
+	}
 }

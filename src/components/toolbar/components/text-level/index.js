@@ -45,7 +45,12 @@ const TextLevel = props => {
 						typographyHover,
 						margin
 					) =>
-						onChange(textLevel, typography, typographyHover, margin)
+						onChange({
+							textLevel,
+							typography,
+							typographyHover,
+							margin,
+						})
 					}
 					fontOptions={typography}
 					fontOptionsHover={typographyHover}

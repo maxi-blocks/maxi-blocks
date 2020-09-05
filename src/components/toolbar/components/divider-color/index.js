@@ -27,17 +27,13 @@ const DividerColor = props => {
 
 	if (blockName !== 'maxi-blocks/divider-maxi') return null;
 
+	const value = !isObject(divider) ? JSON.parse(divider) : divider;
+
 	const updateDivider = val => {
-		value.general['border-color'] = returnColor(val);
+		value.general['border-color'] = val.hex;
 
 		onChange(JSON.stringify(value));
 	};
-
-	const returnColor = val => {
-		return val.hex;
-	};
-
-	const value = !isObject(divider) ? JSON.parse(divider) : divider;
 
 	return (
 		<ToolbarPopover

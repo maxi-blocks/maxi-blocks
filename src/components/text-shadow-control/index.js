@@ -74,7 +74,7 @@ const TextShadow = props => {
 						activeItem: getActiveItem(''),
 						content: (
 							<Icon
-								className='maxi-defaultstyles-control__button__icon'
+								className='maxi-default-styles-control__button__icon'
 								icon={styleNone}
 							/>
 						),

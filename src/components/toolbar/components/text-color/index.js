@@ -29,14 +29,14 @@ const TextColor = props => {
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
+	const returnColor = val => {
+		return `rgba(${val.rgb.r},${val.rgb.g},${val.rgb.b},${val.rgb.a})`;
+	};
+
 	const updateTypography = val => {
 		value[breakpoint].color = returnColor(val);
 
 		onChange(JSON.stringify(value));
-	};
-
-	const returnColor = val => {
-		return `rgba(${val.rgb.r},${val.rgb.g},${val.rgb.b},${val.rgb.a})`;
 	};
 
 	const value = !isObject(typography) ? JSON.parse(typography) : typography;

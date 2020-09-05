@@ -29,8 +29,6 @@ import { toolbarType } from '../../../../icons';
 const TextListOptions = props => {
 	const { blockName, content, typeOfList, isList, onChange, node } = props;
 
-	if (blockName !== 'maxi-blocks/text-maxi' || !isList) return null;
-
 	const { formatValue } = useSelect(
 		select => {
 			const { getSelectionStart, getSelectionEnd } = select(
@@ -52,6 +50,8 @@ const TextListOptions = props => {
 		},
 		[node, content]
 	);
+
+	if (blockName !== 'maxi-blocks/text-maxi' || !isList) return null;
 
 	const onClick = type => {
 		let newFormat = '';

@@ -86,7 +86,7 @@ const BorderControl = props => {
 						activeItem: getIsActive() === 'none',
 						content: (
 							<Icon
-								className='maxi-defaultstyles-control__button__icon'
+								className='maxi-default-styles-control__button__icon'
 								icon={styleNone}
 							/>
 						),
@@ -96,7 +96,7 @@ const BorderControl = props => {
 						activeItem: getIsActive() === 'solid',
 						content: (
 							<Icon
-								className='maxi-defaultstyles-control__button__icon'
+								className='maxi-default-styles-control__button__icon'
 								icon={solid}
 							/>
 						),
@@ -106,7 +106,7 @@ const BorderControl = props => {
 						activeItem: getIsActive() === 'dashed',
 						content: (
 							<Icon
-								className='maxi-defaultstyles-control__button__icon'
+								className='maxi-default-styles-control__button__icon'
 								icon={dashed}
 							/>
 						),
@@ -116,7 +116,7 @@ const BorderControl = props => {
 						activeItem: getIsActive() === 'dotted',
 						content: (
 							<Icon
-								className='maxi-defaultstyles-control__button__icon'
+								className='maxi-default-styles-control__button__icon'
 								icon={dotted}
 							/>
 						),

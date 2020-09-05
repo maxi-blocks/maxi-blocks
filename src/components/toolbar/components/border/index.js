@@ -63,7 +63,6 @@ const Border = props => {
 										breakpoint
 								  ),
 						borderWidth: '1px',
-						borderStyle: 'solid',
 						borderColor: '#fff',
 					}}
 				>

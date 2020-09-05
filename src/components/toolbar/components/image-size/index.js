@@ -39,14 +39,6 @@ const ImageSize = props => {
 		isFirstOnHierarchy,
 	} = props;
 
-	if (blockName !== 'maxi-blocks/image-maxi') return null;
-
-	const sizeValue = !isObject(size) ? JSON.parse(size) : size;
-
-	const defaultSizeValue = !isObject(defaultSize)
-		? JSON.parse(defaultSize)
-		: defaultSize;
-
 	const { imageData } = useSelect(select => {
 		const { getMedia } = select('core');
 		return {
@@ -56,6 +48,14 @@ const ImageSize = props => {
 
 	const { openGeneralSidebar } = useDispatch('core/edit-post');
 
+	if (blockName !== 'maxi-blocks/image-maxi') return null;
+
+	const sizeValue = !isObject(size) ? JSON.parse(size) : size;
+
+	const defaultSizeValue = !isObject(defaultSize)
+		? JSON.parse(defaultSize)
+		: defaultSize;
+
 	const getImageSizeOptions = () => {
 		const response = [];
 		if (imageData) {
@@ -63,7 +63,7 @@ const ImageSize = props => {
 			sizes = Object.entries(sizes).sort((a, b) => {
 				return a[1].width - b[1].width;
 			});
-			sizes.map(size => {
+			sizes.forEach(size => {
 				const name = capitalize(size[0]);
 				const val = size[1];
 				response.push({

@@ -39,7 +39,10 @@
 			}
 		],
 		"quotes": [2, "single", { "avoidEscape": true }],
-		"no-unused-expressions": ["error", { "allowTernary": true }],
+		"no-unused-expressions": [
+			"error",
+			{ "allowTernary": true, "allowShortCircuit": true }
+		],
 		"jsx-quotes": [2, "prefer-single"],
 		"no-param-reassign": ["error", { "props": false }],
 		"no-use-before-define": [
@@ -47,6 +50,7 @@
 			{ "functions": false, "classes": true }
 		],
 		"no-console": ["error", { "allow": ["warn", "error"] }],
+		"no-unused-vars": ["error", { "args": "none" }],
 		// Off //
 		"react/jsx-curly-newline": "off",
 		"react/react-in-jsx-scope": "off",
@@ -65,15 +69,17 @@
 		"jsx-a11y/click-events-have-key-events": "off",
 		"jsx-a11y/mouse-events-have-key-events": "off",
 		"jsx-a11y/label-has-associated-control": "off",
+		"jsdoc/no-undefined-types": "off",
+		"jsdoc/check-param-names": "off",
+		"require-jsdoc": "off",
+		"jsdoc/require-param": "off",
+		"jsdoc/check-tag-names": "off",
 		// Long term deactivate rules //
 		"react/jsx-pascal-case": "off",
 		"react/prop-types": "off",
 		"react/jsx-props-no-spreading": "off",
 		"import/no-extraneous-dependencies": "off",
 		"import/first": "off",
-		"import/order": "off", // Needs to be organized
-		"require-jsdoc": "off",
-		"jsdoc/require-param": "off",
-		"jsdoc/check-tag-names": "off"
+		"import/order": "off" // Needs to be organized
 	}
 }

@@ -7,7 +7,7 @@ const { BaseControl, Button, __experimentalGradientPicker } = wp.components;
 /**
  * Internal dependencies
  */
-import { CheckBoxControl } from '../../components';
+import CheckBoxControl from '../checkbox-control';
 
 /**
  * External dependencies
@@ -35,7 +35,7 @@ const GradientControl = props => {
 		onGradientAboveBackgroundChange,
 	} = props;
 
-	const classes = classnames('maxi-gradientcontrol', className);
+	const classes = classnames('maxi-gradient-control', className);
 
 	const onReset = () => {
 		if (!disableGradientAboveBackground)
@@ -47,16 +47,16 @@ const GradientControl = props => {
 	return (
 		<div className={classes}>
 			<BaseControl
-				className='maxi-gradientcontrol__display'
+				className='maxi-gradient-control__display'
 				label={`${label} ${__('Colour', 'maxi-blocks')}`}
 			>
-				<div className='maxi-gradientcontrol__display__color'>
+				<div className='maxi-gradient-control__display__color'>
 					<span style={{ background: gradient }} />
 					<Button
 						className='components-maxi-control__reset-button'
 						onClick={() => onReset()}
 						aria-label={sprintf(
-							/* translators: %s: a texual label  */
+							/* translators: %s: a textual label  */
 							__('Reset %s settings', 'maxi-blocks'),
 							'font size'
 						)}
@@ -66,7 +66,7 @@ const GradientControl = props => {
 					</Button>
 				</div>
 			</BaseControl>
-			<div className='maxi-gradientcontrol__gradient'>
+			<div className='maxi-gradient-control__gradient'>
 				<__experimentalGradientPicker
 					value={gradient}
 					onChange={val => onChange(val)}

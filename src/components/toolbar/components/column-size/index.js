@@ -60,7 +60,10 @@ const ColumnSize = props => {
 								`.maxi-column-block__resizer__${uniqueID}`
 							).style.width = `${val}%`;
 
-							onChange(JSON.stringify(value));
+							onChange({
+								columnSize: JSON.stringify(value),
+								verticalAlign,
+							});
 						}}
 						min='0'
 						max='100'
@@ -98,7 +101,10 @@ const ColumnSize = props => {
 							},
 						]}
 						onChange={verticalAlign =>
-							setAttributes({ verticalAlign })
+							onChange({
+								columnSize: JSON.stringify(value),
+								verticalAlign,
+							})
 						}
 					/>
 				</Fragment>

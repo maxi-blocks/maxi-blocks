@@ -13,7 +13,7 @@ import { isNil } from 'lodash';
 import classnames from 'classnames';
 
 /**
- * Styless
+ * Styles
  */
 import './editor.scss';
 
@@ -44,7 +44,7 @@ const MediaUploader = props => {
 		className
 	);
 
-	`editor-post-featured-image__${!mediaID ? 'toggle' : 'preview'}`;
+	// `editor-post-featured-image__${!mediaID ? 'toggle' : 'preview'}`;	=> ????
 	const mediaClasses = classnames(
 		`maxi-mediauploader-control__${mediaID ? 'preview' : 'toggle'}`,
 		`maxi-mediauploader-control__${mediaType}__${
@@ -53,7 +53,7 @@ const MediaUploader = props => {
 	);
 
 	const onOpenImageModal = () => {
-		!isNil(onOpenImageModal) && !isNil(onOpen) ? onOpen() : null;
+		!isNil(onOpenImageModal) && !isNil(onOpen) && onOpen();
 	};
 
 	return (
@@ -100,7 +100,7 @@ const MediaUploader = props => {
 											? alternativeImage.height
 											: imageData.media_details.height
 									}
-									className='maxi-imageuploader-control__responsive-wrapper'
+									className='maxi-mediauploader-control__responsive-wrapper'
 								>
 									<img
 										src={
@@ -124,7 +124,7 @@ const MediaUploader = props => {
 											? alternativeImage.height
 											: imageData.media_details.height
 									}
-									className='maxi-imageuploader-control__responsive-wrapper'
+									className='maxi-mediauploader-control__responsive-wrapper'
 								>
 									<video
 										controls

@@ -9,7 +9,7 @@ const { SelectControl, BaseControl, Button } = wp.components;
  * External dependencies
  */
 import classnames from 'classnames';
-import { isArray, isEmpty, isNil, trim } from 'lodash';
+import { isArray, isEmpty, isNil, trim, uniqueid } from 'lodash';
 
 /**
  * Component
@@ -86,7 +86,7 @@ const ClipPathControl = props => {
 				content: [],
 			};
 
-		const cpType = clipPath.match(/^[^\(]+/gi)[0];
+		const cpType = clipPath.match(/^[^(]+/gi)[0];
 		const cpValues = [];
 		let cpContent = [];
 
@@ -97,9 +97,9 @@ const ClipPathControl = props => {
 					.replace('(', '')
 					.replace(')', '');
 
-				cpContent.split(', ').map(value => {
+				cpContent.split(', ').forEach(value => {
 					const newItem = value.replace(/%/g, '').split(' ');
-					newItem.map((item, i) => {
+					newItem.forEach((item, i) => {
 						newItem[i] = Number(item);
 					});
 					cpValues.push(newItem);
@@ -114,7 +114,7 @@ const ClipPathControl = props => {
 					.replace(')', '')
 					.replace('at ', '');
 
-				cpContent.split(' ').map(value => {
+				cpContent.split(' ').forEach(value => {
 					cpValues.push([Number(value.replace(/%/g, ''))]);
 				});
 				break;
@@ -127,6 +127,8 @@ const ClipPathControl = props => {
 			content: cpValues,
 		};
 	};
+
+	const cp = deconstructCP();
 
 	const generateCP = (type = cp.type) => {
 		let newContent = '';
@@ -154,6 +156,8 @@ const ClipPathControl = props => {
 		const newCP = `${cp.type}(${newContent})`;
 
 		onChange(newCP);
+
+		return true;
 	};
 
 	const onChangeType = newType => {
@@ -182,9 +186,9 @@ const ClipPathControl = props => {
 			default:
 				return false;
 		}
-	};
 
-	const cp = deconstructCP();
+		return undefined;
+	};
 
 	const classes = classnames('maxi-clip-path-control', className);
 
@@ -263,7 +267,7 @@ const ClipPathControl = props => {
 							/>
 							{cp.content.map((handle, i) => (
 								<ClipPathOption
-									key={`maxi-clip-path-control-${i}`}
+									key={uniqueid('maxi-clip-path-control-')}
 									values={handle}
 									onChange={value => {
 										cp.content[i] = value;

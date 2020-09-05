@@ -277,19 +277,7 @@ const MaxiToolbar = props => {
 							typographyHover={typographyHover}
 							margin={margin}
 							isList={isList}
-							onChange={(
-								textLevel,
-								typography,
-								typographyHover,
-								margin
-							) =>
-								setAttributes({
-									textLevel,
-									typography,
-									typographyHover,
-									margin,
-								})
-							}
+							onChange={obj => setAttributes(obj)}
 						/>
 						<TextBold
 							blockName={name}
@@ -434,9 +422,7 @@ const MaxiToolbar = props => {
 							columnSize={columnSize}
 							verticalAlign={verticalAlign}
 							uniqueID={uniqueID}
-							onChange={columnSize =>
-								setAttributes({ columnSize })
-							}
+							onChange={obj => setAttributes(obj)}
 							breakpoint={deviceType}
 						/>
 						<BoxShadow

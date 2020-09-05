@@ -83,23 +83,6 @@ class ImageCropComponent extends Component {
 			this.deleteFile(this.props.cropOptions);
 	}
 
-	checkNewImage() {
-		if (this.state.imageID !== this.props.mediaID) {
-			this.setState({
-				imageID: this.props.mediaID,
-				crop: {
-					x: 0,
-					y: 0,
-					width: 0,
-					height: 0,
-				},
-				scale: 100,
-			});
-			this.deleteFile();
-			this.props.onChange({});
-		}
-	}
-
 	get getScale() {
 		return this.cropOptions.crop.scale / 100;
 	}
@@ -170,6 +153,23 @@ class ImageCropComponent extends Component {
 	get getOldFile() {
 		if (isEmpty(this.props.cropOptions)) return '';
 		return this.props.cropOptions.image.source_url;
+	}
+
+	checkNewImage() {
+		if (this.state.imageID !== this.props.mediaID) {
+			this.setState({
+				imageID: this.props.mediaID,
+				crop: {
+					x: 0,
+					y: 0,
+					width: 0,
+					height: 0,
+				},
+				scale: 100,
+			});
+			this.deleteFile();
+			this.props.onChange({});
+		}
 	}
 
 	saveData(crop) {
@@ -279,7 +279,7 @@ class ImageCropComponent extends Component {
 					this.props.onChange(this.cropOptions);
 				})
 				.catch(err => {
-					console.log(
+					console.error(
 						__(`Error croping the image: ${err}`, 'maxi-blocks')
 					);
 				});

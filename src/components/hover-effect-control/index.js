@@ -8,13 +8,11 @@ const { Fragment } = wp.element;
 /**
  * Internal dependencies
  */
-import {
-	TypographyControl,
-	SizeControl,
-	BackgroundControl,
-	BorderControl,
-	__experimentalAxisControl,
-} from '../../components';
+import TypographyControl from '../typography-control';
+import SizeControl from '../size-control';
+import BackgroundControl from '../background-control';
+import BorderControl from '../border-control';
+import __experimentalAxisControl from '../axis-control';
 
 /**
  * External dependencies

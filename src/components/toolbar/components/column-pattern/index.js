@@ -32,8 +32,6 @@ import { toolbarColumnPattern } from '../../../../icons';
 const ColumnPatterns = props => {
 	const { clientId, blockName, rowPattern, onChange } = props;
 
-	if (blockName !== 'maxi-blocks/row-maxi') return null;
-
 	const instanceId = useInstanceId(ColumnPatterns);
 
 	const { getBlockName, getBlockAttributes, getBlockOrder } = select(
@@ -53,6 +51,8 @@ const ColumnPatterns = props => {
 	const { updateBlockAttributes, replaceInnerBlocks } = useDispatch(
 		'core/block-editor'
 	);
+
+	if (blockName !== 'maxi-blocks/row-maxi') return null;
 
 	/**
 	 * Creates a new array with columns content before loading template for saving
@@ -165,7 +165,9 @@ const ColumnPatterns = props => {
 				<div className='toolbar-item__popover__wrapper toolbar-item__popover__column-pattern'>
 					{TEMPLATES.map((template, i) => (
 						<Button
-							key={`toolbar-item__column-pattern--${instanceId}--${i}`}
+							key={uniqueId(
+								`toolbar-item__column-pattern--${instanceId}--`
+							)}
 							className='toolbar-item__popover__column-pattern__template-button'
 							aria-pressed={rowPattern === i}
 							onClick={() => {

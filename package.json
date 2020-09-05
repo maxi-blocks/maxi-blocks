@@ -18,6 +18,7 @@
     "@wordpress/compose": "^3.19.3",
     "@wordpress/icons": "^1.4.0",
     "@wordpress/media-utils": "^1.15.0",
+    "babel-eslint": "^10.1.0",
     "cgb-scripts": "1.23.1",
     "classnames": "^2.2.6",
     "css-to-react-native": "^3.0.0",

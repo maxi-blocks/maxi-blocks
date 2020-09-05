@@ -28,8 +28,6 @@ import { toolbarLink } from '../../../../icons';
 const Link = props => {
 	const { blockName, content, onChange, node } = props;
 
-	if (blockName !== 'maxi-blocks/text-maxi') return null;
-
 	/**
 	 * Gets the all format objects at the start of the selection.
 	 *
@@ -99,6 +97,8 @@ const Link = props => {
 		},
 		[getActiveFormats, node, content]
 	);
+
+	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
 	const createLinkValue = formatOptions => {
 		if (isEmpty(formatOptions)) return;

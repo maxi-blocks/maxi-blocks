@@ -23,8 +23,6 @@ import { toolbarBold } from '../../../../icons';
 const TextBold = props => {
 	const { blockName, content, onChange, node } = props;
 
-	if (blockName !== 'maxi-blocks/text-maxi') return null;
-
 	/**
 	 * Gets the all format objects at the start of the selection.
 	 *
@@ -87,6 +85,8 @@ const TextBold = props => {
 		},
 		[getActiveFormats, node, content]
 	);
+
+	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
 	const onClick = () => {
 		const newFormat = toggleFormat(formatValue, { type: 'core/bold' });

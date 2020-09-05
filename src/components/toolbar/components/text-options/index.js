@@ -74,7 +74,7 @@ const TextOptions = props => {
 							}}
 							isSmall
 							aria-label={sprintf(
-								/* translators: %s: a texual label  */
+								/* translators: %s: a textual label  */
 								__('Reset %s settings', 'maxi-blocks'),
 								'font size'
 							)}
@@ -115,7 +115,7 @@ const TextOptions = props => {
 								}}
 								isSmall
 								aria-label={sprintf(
-									/* translators: %s: a texual label  */
+									/* translators: %s: a textual label  */
 									__('Reset %s settings', 'maxi-blocks'),
 									'size'
 								)}
@@ -155,7 +155,7 @@ const TextOptions = props => {
 								}}
 								isSmall
 								aria-label={sprintf(
-									/* translators: %s: a texual label  */
+									/* translators: %s: a textual label  */
 									__('Reset %s settings', 'maxi-blocks'),
 									'line height'
 								)}
@@ -197,7 +197,7 @@ const TextOptions = props => {
 								}}
 								isSmall
 								aria-label={sprintf(
-									/* translators: %s: a texual label  */
+									/* translators: %s: a textual label  */
 									__('Reset %s settings', 'maxi-blocks'),
 									'letter spacing'
 								)}

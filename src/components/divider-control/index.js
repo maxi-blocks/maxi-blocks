@@ -90,7 +90,7 @@ const DividerControl = props => {
 						activeItem: value.general['border-style'] === 'none',
 						content: (
 							<Icon
-								className='maxi-defaultstyles-control__button__icon'
+								className='maxi-default-styles-control__button__icon'
 								icon={styleNone}
 							/>
 						),
@@ -100,7 +100,7 @@ const DividerControl = props => {
 						activeItem: value.general['border-style'] === 'solid',
 						content: (
 							<Icon
-								className='maxi-defaultstyles-control__button__icon'
+								className='maxi-default-styles-control__button__icon'
 								icon={solid}
 							/>
 						),
@@ -116,7 +116,7 @@ const DividerControl = props => {
 						activeItem: value.general['border-style'] === 'dashed',
 						content: (
 							<Icon
-								className='maxi-defaultstyles-control__button__icon'
+								className='maxi-default-styles-control__button__icon'
 								icon={dashed}
 							/>
 						),
@@ -133,7 +133,7 @@ const DividerControl = props => {
 						activeItem: value.general['border-style'] === 'dotted',
 						content: (
 							<Icon
-								className='maxi-defaultstyles-control__button__icon'
+								className='maxi-default-styles-control__button__icon'
 								icon={dotted}
 							/>
 						),

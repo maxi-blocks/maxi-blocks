@@ -19,16 +19,16 @@ import './editor.scss';
 const DefaultStylesControl = props => {
 	const { className, items } = props;
 
-	const classes = classnames('maxi-defaultstyles-control', className);
+	const classes = classnames('maxi-default-styles-control', className);
 
 	return (
 		<div className={classes}>
 			{items.map(item => {
 				const classesItem = classnames(
-					'maxi-defaultstyles-control__button',
+					'maxi-default-styles-control__button',
 					item.className,
 					item.activeItem &&
-						'maxi-defaultstyles-control__button--active'
+						'maxi-default-styles-control__button--active'
 				);
 
 				return (

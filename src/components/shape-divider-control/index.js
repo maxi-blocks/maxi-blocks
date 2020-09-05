@@ -9,7 +9,8 @@ const { Fragment, useState } = wp.element;
  * Internal dependencies
  */
 import __experimentalOpacityControl from '../opacity-control';
-import { BackgroundControl, SizeControl } from '../../components';
+import BackgroundControl from '../background-control';
+import SizeControl from '../size-control';
 
 /**
  * External dependencies

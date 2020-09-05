@@ -21,7 +21,7 @@ import { reset } from '../../icons';
 const ColorControl = props => {
 	const { label, className, color, defaultColor = '', onChange } = props;
 
-	const classes = classnames('maxi-colorcontrol', className);
+	const classes = classnames('maxi-color-control', className);
 
 	const returnColor = val => {
 		return `rgba(${val.rgb.r},${val.rgb.g},${val.rgb.b},${val.rgb.a})`;
@@ -32,10 +32,10 @@ const ColorControl = props => {
 	return (
 		<div className={classes}>
 			<BaseControl
-				className='maxi-colorcontrol__display'
+				className='maxi-color-control__display'
 				label={`${label} ${__('Colour', 'maxi-blocks')}`}
 			>
-				<div className='maxi-colorcontrol__display__color'>
+				<div className='maxi-color-control__display__color'>
 					<span
 						style={{
 							background: color,
@@ -45,7 +45,7 @@ const ColorControl = props => {
 						className='components-maxi-control__reset-button'
 						onClick={() => onReset()}
 						aria-label={sprintf(
-							/* translators: %s: a texual label  */
+							/* translators: %s: a textual label  */
 							__('Reset %s settings', 'maxi-blocks'),
 							'font size'
 						)}
@@ -55,7 +55,7 @@ const ColorControl = props => {
 					</Button>
 				</div>
 			</BaseControl>
-			<div className='maxi-colorcontrol__color'>
+			<div className='maxi-color-control__color'>
 				<ColorPicker
 					color={color}
 					onChangeComplete={val => onChange(returnColor(val))}

@@ -73,26 +73,29 @@ const MaxiBreadcrumbs = () => {
 								const blockName = select(
 									'core/block-editor'
 								).getBlockName(blockId);
-								if (isNil(blockName))
-									// Check setTimeOut on componentDidUpdate()
-									return;
-								const blockType = select(
-									'core/blocks'
-								).getBlockType(blockName);
-								const { title } = blockType;
+								if (!isNil(blockName)) {
+									const blockType = select(
+										'core/blocks'
+									).getBlockType(blockName);
+									const { title } = blockType;
 
-								return (
-									<li className='maxi-breadcrumbs__item'>
-										{i !== 0 && <span>{' > '}</span>}
-										<span
-											className='maxi-breadcrumbs__item__content'
-											target={blockId}
-											onClick={() => selectBlock(blockId)}
-										>
-											{title}
-										</span>
-									</li>
-								);
+									return (
+										<li className='maxi-breadcrumbs__item'>
+											{i !== 0 && <span>{' > '}</span>}
+											<span
+												className='maxi-breadcrumbs__item__content'
+												target={blockId}
+												onClick={() =>
+													selectBlock(blockId)
+												}
+											>
+												{title}
+											</span>
+										</li>
+									);
+								}
+
+								return null;
 							})}
 					</ul>
 				</Popover>

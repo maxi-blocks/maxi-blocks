@@ -1,13 +1,8 @@
 /**
- * WordPress dependencies
- */
-const { RawHTML } = wp.element;
-
-/**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject, isEmpty } from 'lodash';
+import { isObject } from 'lodash';
 
 /**
  * Styles
@@ -18,7 +13,7 @@ import './style.scss';
  * Component
  */
 const BackgroundDisplayer = props => {
-	const { background, className, uniqueID } = props;
+	const { background, className } = props;
 
 	const value = !isObject(background) ? JSON.parse(background) : background;
 
@@ -43,13 +38,6 @@ const BackgroundDisplayer = props => {
 					/>
 				</div>
 			)}
-			{/*
-                !isNil(value.SVG.SVGElement) &&
-                <RawHTML
-                    className='maxi-background-displayer__svg-wrapper'
-                >
-                    {value.SVG.SVGElement}
-                </RawHTML> */}
 		</div>
 	);
 };

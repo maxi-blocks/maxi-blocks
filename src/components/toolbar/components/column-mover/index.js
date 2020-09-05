@@ -7,9 +7,8 @@ const { useSelect, useDispatch } = wp.data;
 const { Icon, Button, Tooltip } = wp.components;
 
 /**
- * Styles and icons
+ * Icons
  */
-// import './editor.scss';
 import { toolbarMove } from '../../../../icons';
 
 /**
@@ -17,8 +16,6 @@ import { toolbarMove } from '../../../../icons';
  */
 const ColumnMover = props => {
 	const { clientId, blockName } = props;
-
-	if (blockName !== 'maxi-blocks/column-maxi') return null;
 
 	const { rootClientId } = useSelect(
 		select => {
@@ -33,6 +30,8 @@ const ColumnMover = props => {
 	);
 
 	const { moveBlocksDown, moveBlocksUp } = useDispatch('core/block-editor');
+
+	if (blockName !== 'maxi-blocks/column-maxi') return null;
 
 	return (
 		<Fragment>

@@ -86,9 +86,8 @@ const SizeControl = props => {
 
 			rangeItems.forEach(el => {
 				el.classList.forEach(elClass => {
-					elClass.indexOf('ThumbWrapper') !== -1
-						? (el.style.left = 0)
-						: null;
+					elClass.indexOf('ThumbWrapper') !== -1 &&
+						(el.style.left = 0);
 				});
 			});
 		}
@@ -132,7 +131,7 @@ const SizeControl = props => {
 				onClick={onReset}
 				isSmall
 				aria-label={sprintf(
-					/* translators: %s: a texual label  */
+					/* translators: %s: a textual label  */
 					__('Reset %s settings', 'maxi-blocks'),
 					label.toLowerCase()
 				)}
@@ -142,7 +141,7 @@ const SizeControl = props => {
 			</Button>
 			{disableUnit ? (
 				<RangeControl
-					ref={e => (rangeRef.current = e)}
+					ref={e => (rangeRef.current = e)} // ref={ ref }
 					value={value}
 					onChange={val => onChangeValue(Number(val))}
 					min={min}
@@ -153,7 +152,7 @@ const SizeControl = props => {
 				/>
 			) : (
 				<RangeControl
-					ref={e => (rangeRef.current = e)}
+					ref={e => (rangeRef.current = e)} // ref={ ref }
 					value={value}
 					onChange={val => onChangeValue(Number(val))}
 					min={unit ? minMaxSettings[unit].min : null}

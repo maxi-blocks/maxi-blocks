@@ -37,7 +37,7 @@ const DisplayControl = props => {
 		do {
 			if (value[objectKeys[i]].display === 'none') return true;
 			if (value[objectKeys[i]].display === defaultDisplay) return false;
-			i--;
+			i -= 1;
 		} while (i > 0);
 
 		return false;

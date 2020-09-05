@@ -51,7 +51,6 @@ const BackgroundControl = props => {
 
 	const [isOpen, setIsOpen] = useState(false);
 	const [selector, setSelector] = useState(0);
-	const [backgroundItems, setBackgroundItems] = useState('color');
 
 	const value = !isObject(background) ? JSON.parse(background) : background;
 
@@ -75,56 +74,55 @@ const BackgroundControl = props => {
 		if (i) setSelector(i);
 	};
 
+	const onDoneEdition = () => {
+		setIsOpen(false);
+		setSelector(0);
+	};
+
 	const onRemoveImage = () => {
 		pullAt(value.imageOptions, selector);
 		onChange(JSON.stringify(value));
 		onDoneEdition();
 	};
 
-	const onDoneEdition = () => {
-		setIsOpen(false);
-		setSelector(0);
-	};
-
 	const getAlternativeImage = i => {
-		if (isNil(value.imageOptions[i].imageData.cropOptions)) return;
-		if (
-			isEmpty(
-				value.imageOptions[i].imageData.cropOptions.image.source_url
-			)
-		)
-			return;
-		return {
-			source_url:
-				value.imageOptions[i].imageData.cropOptions.image.source_url,
-			width: value.imageOptions[i].imageData.cropOptions.image.width,
-			height: value.imageOptions[i].imageData.cropOptions.image.height,
-		};
+		const { cropOptions } = value.imageOptions[i].imageData;
+		const srcURL = cropOptions.image.source_url;
+
+		if (!isNil(cropOptions) && !isEmpty(srcURL))
+			return {
+				source_url:
+					value.imageOptions[i].imageData.cropOptions.image
+						.source_url,
+				width: value.imageOptions[i].imageData.cropOptions.image.width,
+				height:
+					value.imageOptions[i].imageData.cropOptions.image.height,
+			};
+
+		return false;
 	};
 
 	const getOptions = () => {
-		const options = [];
-		options.push({ label: <Icon icon={styleNone} />, value: '' });
-		!disableColor &&
-			options.push({
+		const options = [
+			{ label: <Icon icon={styleNone} />, value: '' },
+			!disableColor && {
 				label: <Icon icon={backgroundColor} />,
 				value: 'color',
-			});
-		!disableImage &&
-			options.push({
+			},
+			!disableImage && {
 				label: <Icon icon={backgroundImage} />,
 				value: 'image',
-			});
-		!disableVideo &&
-			options.push({
+			},
+			!disableVideo && {
 				label: <Icon icon={backgroundVideo} />,
 				value: 'video',
-			});
-		!disableGradient &&
-			options.push({
+			},
+			!disableGradient && {
 				label: <Icon icon={backgroundGradient()} />,
 				value: 'gradient',
-			});
+			},
+		];
+		options.push({ label: <Icon icon={styleNone} />, value: '' });
 
 		return options;
 	};

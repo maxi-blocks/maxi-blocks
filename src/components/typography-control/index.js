@@ -113,7 +113,7 @@ const TypographyControl = props => {
 		if (!fontOptions.includes('900')) {
 			fontOptions.push('900');
 		}
-		fontOptions.map(weight => {
+		fontOptions.forEach(weight => {
 			const weightOption = {};
 			if (weightOptions[weight]) {
 				weightOption.label = __(weightOptions[weight], 'maxi-blocks');

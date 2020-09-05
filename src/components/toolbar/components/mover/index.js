@@ -17,8 +17,6 @@ import { toolbarMove } from '../../../../icons';
 const Mover = props => {
 	const { clientId, blockName } = props;
 
-	if (blockName === 'maxi-blocks/column-maxi') return null;
-
 	const { srcRootClientId, index, isDraggable } = useSelect(
 		select => {
 			const {
@@ -52,6 +50,8 @@ const Mover = props => {
 			}
 		};
 	}, []);
+
+	if (blockName === 'maxi-blocks/column-maxi') return null;
 
 	const blockElementId = `block-${clientId}`;
 	const transferData = {

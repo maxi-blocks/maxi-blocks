@@ -65,7 +65,25 @@ export default class FontLevelControl extends Component {
 
 		const { lastLevel } = this.state;
 
-		const classes = classnames('maxi-fontlevel-control', className);
+		const classes = classnames('maxi-font-level-control', className);
+
+		const saveOldies = value => {
+			this.setState({
+				[lastLevel]:
+					typeof fontOptions === 'object'
+						? fontOptions
+						: JSON.parse(fontOptions),
+				[`${lastLevel}Hover`]:
+					typeof fontOptionsHover === 'object'
+						? fontOptionsHover
+						: JSON.parse(fontOptionsHover),
+				[`${lastLevel}Margin`]:
+					typeof marginOptions === 'object'
+						? marginOptions
+						: JSON.parse(marginOptions),
+				lastLevel: value,
+			});
+		};
 
 		const onChangeValue = value => {
 			saveOldies(value);
@@ -97,70 +115,52 @@ export default class FontLevelControl extends Component {
 			);
 		};
 
-		const saveOldies = value => {
-			this.setState({
-				[lastLevel]:
-					typeof fontOptions === 'object'
-						? fontOptions
-						: JSON.parse(fontOptions),
-				[`${lastLevel}Hover`]:
-					typeof fontOptionsHover === 'object'
-						? fontOptionsHover
-						: JSON.parse(fontOptionsHover),
-				[`${lastLevel}Margin`]:
-					typeof marginOptions === 'object'
-						? marginOptions
-						: JSON.parse(marginOptions),
-				lastLevel: value,
-			});
-		};
-
 		return (
 			<div className={classes}>
 				<Button
-					className='maxi-fontlevel-control__button'
+					className='maxi-font-level-control__button'
 					aria-pressed={value === 'p'}
 					onClick={() => onChangeValue('p')}
 				>
 					{__('P', 'maxi-blocks')}
 				</Button>
 				<Button
-					className='maxi-fontlevel-control__button'
+					className='maxi-font-level-control__button'
 					aria-pressed={value === 'h1'}
 					onClick={() => onChangeValue('h1')}
 				>
 					{__('H1', 'maxi-blocks')}
 				</Button>
 				<Button
-					className='maxi-fontlevel-control__button'
+					className='maxi-font-level-control__button'
 					aria-pressed={value === 'h2'}
 					onClick={() => onChangeValue('h2')}
 				>
 					{__('H2', 'maxi-blocks')}
 				</Button>
 				<Button
-					className='maxi-fontlevel-control__button'
+					className='maxi-font-level-control__button'
 					aria-pressed={value === 'h3'}
 					onClick={() => onChangeValue('h3')}
 				>
 					{__('H3', 'maxi-blocks')}
 				</Button>
 				<Button
-					className='maxi-fontlevel-control__button'
+					className='maxi-font-level-control__button'
 					aria-pressed={value === 'h4'}
 					onClick={() => onChangeValue('h4')}
 				>
 					{__('H4', 'maxi-blocks')}
 				</Button>
 				<Button
-					className='maxi-fontlevel-control__button'
+					className='maxi-font-level-control__button'
 					aria-pressed={value === 'h5'}
 					onClick={() => onChangeValue('h5')}
 				>
 					{__('H5', 'maxi-blocks')}
 				</Button>
 				<Button
-					className='maxi-fontlevel-control__button'
+					className='maxi-font-level-control__button'
 					aria-pressed={value === 'h6'}
 					onClick={() => onChangeValue('h6')}
 				>

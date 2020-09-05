@@ -39,11 +39,10 @@ const FullSizeControl = props => {
 		? defaultSize
 		: JSON.parse(defaultSize);
 
-	const classes = classnames('maxi-fullsize-control', className);
+	const classes = classnames('maxi-full-size-control', className);
 
 	const onChangeValue = (target, val) => {
-		if (isNil(val)) val = '';
-		value[breakpoint][target] = val;
+		value[breakpoint][target] = (!isNil(val) && val) || '';
 		onChange(JSON.stringify(value));
 	};
 

@@ -16,6 +16,7 @@ import { getDefaultProp } from '../../utils';
 import {
 	Alignment,
 	BackgroundColor,
+	SvgColor,
 	Border,
 	BoxShadow,
 	Mover,
@@ -62,6 +63,7 @@ const allowedBlocks = [
 	'maxi-blocks/image-maxi',
 	'maxi-blocks/section-maxi',
 	'maxi-blocks/container-maxi',
+	'maxi-blocks/svg-icon-maxi',
 ];
 
 /**
@@ -98,6 +100,9 @@ const MaxiToolbar = props => {
 			content,
 			isList,
 			typeOfList,
+			svgColorOrange,
+			svgColorBlack,
+			svgColorWhite,
 		},
 		clientId,
 		isSelected,
@@ -123,6 +128,66 @@ const MaxiToolbar = props => {
 	});
 
 	if (!allowedBlocks.includes(name)) return null;
+
+	function getThirdSvgColor() {
+		const { clientId } = wp.data
+			.select('core/block-editor')
+			.getSelectedBlock();
+		const current_content = wp.data
+			.select('core/block-editor')
+			.getSelectedBlock().attributes.content;
+
+		if (current_content.indexOf('maxi-svg-color-third') !== -1) return true;
+		return false;
+	}
+
+	function changeContent(color, colorNumber) {
+		let colorClass = '';
+		switch (colorNumber) {
+			case 1:
+				colorClass = 'maxi-svg-color-first';
+				break;
+			case 2:
+				colorClass = 'maxi-svg-color-second';
+				break;
+			case 3:
+				colorClass = 'maxi-svg-color-third';
+				break;
+			default:
+				return;
+		}
+
+		if (colorClass !== '') {
+			const { clientId } = wp.data
+				.select('core/block-editor')
+				.getSelectedBlock();
+			const current_content = wp.data
+				.select('core/block-editor')
+				.getSelectedBlock().attributes.content;
+			const regex_line_to_change = new RegExp(
+				`${colorClass}" fill=".+?(?= )`,
+				'g'
+			);
+			const regex_line_to_change2 = new RegExp(
+				`${colorClass}" stroke=".+?(?= )`,
+				'g'
+			);
+			const change_to = `${colorClass}" fill="${color}"`;
+			const change_to2 = `${colorClass}" stroke="${color}"`;
+			let new_content = current_content.replace(
+				regex_line_to_change,
+				change_to
+			);
+			new_content = new_content.replace(
+				regex_line_to_change2,
+				change_to2
+			);
+
+			wp.data
+				.dispatch('core/block-editor')
+				.updateBlockAttributes(clientId, { content: new_content });
+		}
+	}
 
 	return (
 		<Fragment>
@@ -291,6 +356,37 @@ const MaxiToolbar = props => {
 								setAttributes({ background })
 							}
 						/>
+						{name === 'maxi-blocks/svg-icon-maxi' && (
+							<Fragment>
+								<SvgColor
+									blockName={name}
+									svgColor={svgColorOrange}
+									onChange={svgColorOrange => {
+										setAttributes({ svgColorOrange });
+										changeContent(svgColorOrange, 1);
+									}}
+								/>
+								<SvgColor
+									blockName={name}
+									svgColor={svgColorBlack}
+									onChange={svgColorBlack => {
+										setAttributes({ svgColorBlack });
+										changeContent(svgColorBlack, 2);
+									}}
+								/>
+								{getThirdSvgColor() && (
+									<SvgColor
+										blockName={name}
+										svgColor={svgColorWhite}
+										onChange={svgColorWhite => {
+											setAttributes({ svgColorWhite });
+											changeContent(svgColorWhite, 3);
+										}}
+									/>
+								)}
+							</Fragment>
+						)}
+
 						<Border
 							blockName={name}
 							border={border}

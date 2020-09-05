@@ -1,0 +1,14 @@
+.maxi-svg-defaults {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+
+    &__item {
+        cursor: pointer;
+
+        & svg {
+            width: 5rem;
+            padding: 0 0.5rem;
+        }
+    }
+}

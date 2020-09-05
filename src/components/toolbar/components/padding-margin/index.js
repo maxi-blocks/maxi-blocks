@@ -13,6 +13,7 @@ import __experimentalAxisControl from '../../../axis-control';
 /**
  * Icons
  */
+import './editor.scss';
 import { toolbarPadding } from '../../../../icons';
 
 /**

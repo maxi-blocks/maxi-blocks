@@ -1,5 +1,6 @@
 export { default as Alignment } from './alignment';
 export { default as BackgroundColor } from './background-color';
+export { default as SvgColor } from './svg-colors';
 export { default as Border } from './border';
 export { default as BoxShadow } from './box-shadow';
 export { default as ColumnPattern } from './column-pattern';

@@ -27,6 +27,7 @@ import { Icon } from '@wordpress/icons';
 const AlignmentControl = props => {
 	const {
 		alignment,
+		className,
 		onChange,
 		label = '',
 		disableLeft = false,
@@ -56,12 +57,12 @@ const AlignmentControl = props => {
 		return options;
 	};
 
+	const value = !isObject(alignment) ? JSON.parse(alignment) : alignment;
 	const classes = classnames(
 		'maxi-alignment-control',
-		isEmpty(label) ? 'maxi-alignment-control__no-label' : ''
+		isEmpty(label) ? 'maxi-alignment-control__no-label' : '',
+		className
 	);
-
-	const value = !isObject(alignment) ? JSON.parse(alignment) : alignment;
 
 	return (
 		<RadioControl

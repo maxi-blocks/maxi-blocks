@@ -27,7 +27,8 @@ import './blocks/image-maxi/image-maxi';
 import './blocks/button-maxi/button-maxi.js';
 import './blocks/cloud-maxi/cloud-maxi.js';
 import './blocks/container-maxi/container-maxi.js';
-import './blocks/icon-maxi/icon-maxi.js';
+//import './blocks/icon-maxi/icon-maxi.js';
+import './blocks/svg-icon-maxi/svg-icon-maxi.js';
 
 // Sidebar
 

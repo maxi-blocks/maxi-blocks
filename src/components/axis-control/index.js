@@ -138,7 +138,7 @@ const AxisControl = props => {
 			<div className='maxi-axis-control__content'>
 				<div className='maxi-axis-control__content__item maxi-axis-control__content__item__top'>
 					<p className='maxi-axis-control__content__item__label'>
-						Top
+						{__('Top', 'maxi-blocks')}
 					</p>
 					<input
 						className='maxi-axis-control__content__item__input'
@@ -169,13 +169,13 @@ const AxisControl = props => {
 								}}
 								id={`${instanceId}-top`}
 							/>
-							auto
+							{__('auto', 'maxi-blocks')}
 						</label>
 					)}
 				</div>
 				<div className='maxi-axis-control__content__item maxi-axis-control__content__item__right'>
 					<p className='maxi-axis-control__content__item__label'>
-						Right
+						{__('Right', 'maxi-blocks')}
 					</p>
 					<input
 						className='maxi-axis-control__content__item__input'
@@ -206,13 +206,13 @@ const AxisControl = props => {
 								}}
 								id={`${instanceId}-right`}
 							/>
-							auto
+							{__('auto', 'maxi-blocks')}
 						</label>
 					)}
 				</div>
 				<div className='maxi-axis-control__content__item maxi-axis-control__content__item__bottom'>
 					<p className='maxi-axis-control__content__item__label'>
-						Bottom
+						{__('Bottom', 'maxi-blocks')}
 					</p>
 					<input
 						className='maxi-axis-control__content__item__input'
@@ -243,13 +243,13 @@ const AxisControl = props => {
 								}}
 								id={`${instanceId}-bottom`}
 							/>
-							auto
+							{__('auto', 'maxi-blocks')}
 						</label>
 					)}
 				</div>
 				<div className='maxi-axis-control__content__item maxi-axis-control__content__item__left'>
 					<p className='maxi-axis-control__content__item__label'>
-						Left
+						{__('Left', 'maxi-blocks')}
 					</p>
 					<input
 						className='maxi-axis-control__content__item__input'
@@ -280,7 +280,7 @@ const AxisControl = props => {
 								}}
 								id={`${instanceId}-left`}
 							/>
-							auto
+							{__('auto', 'maxi-blocks')}
 						</label>
 					)}
 				</div>

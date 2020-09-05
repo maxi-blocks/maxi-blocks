@@ -48,7 +48,7 @@ const GradientControl = props => {
 		<div className={classes}>
 			<BaseControl
 				className='maxi-gradientcontrol__display'
-				label={`${label} ${__('Color', 'maxi-blocks')}`}
+				label={`${label} ${__('Colour', 'maxi-blocks')}`}
 			>
 				<div className='maxi-gradientcontrol__display__color'>
 					<span style={{ background: gradient }} />

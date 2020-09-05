@@ -17,9 +17,9 @@ function addMaxiLayoutButton() {
 	let buttonDiv = document.createElement( 'div' );
 	let html = '<div class="maxi-toolbar-layout">';
 	html += `<a type="button" id="maxi-button__layout" class="button maxi-button maxi-button__toolbar" aria-label="${ __( 'Maxi Cloud Library', 'maxi-blocks' ) }">\
-	</i><img src="/wp-content/plugins/maxi-blocks/img/maxi-logo.svg" /> ${ __( 'Maxi Cloud Library', 'maxi-blocks') }</a>`;
+	</i><img src="../wp-content/plugins/maxi-blocks/img/maxi-logo.svg" />${ __( 'Maxi Cloud Library', 'maxi-blocks') }</a>`;
 	html += `<a type="button"  href="/wp-admin/customize.php" target="_blank" id="maxi-button__go-to-customizer" class="button maxi-button maxi-button__toolbar" aria-label="${ __( 'Global Styles', 'maxi-blocks' ) }">\
-	</i><img src="/wp-content/plugins/maxi-blocks/img/maxi-logo.svg" /> ${ __( 'Global Styles', 'maxi-blocks') }</a>`;
+	</i><img src="../wp-content/plugins/maxi-blocks/img/maxi-logo.svg" />${ __( 'Global Styles', 'maxi-blocks') }</a>`;
 	html += '</div>';
 	buttonDiv.innerHTML = html;
 	toolbar.appendChild( buttonDiv );

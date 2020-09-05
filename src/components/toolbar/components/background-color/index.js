@@ -17,21 +17,23 @@ const BackgroundColor = props => {
 
 	if (
 		blockName === 'maxi-blocks/divider-maxi' ||
-		blockName === 'maxi-blocks/text-maxi'
+		blockName === 'maxi-blocks/text-maxi' ||
+		blockName === 'maxi-blocks/svg-icon-maxi'
 	)
 		return null;
 
 	const value =
 		typeof background !== 'object' ? JSON.parse(background) : background;
 
-	const returnColor = val => {
-		return `rgba(${val.rgb.r},${val.rgb.g},${val.rgb.b},${val.rgb.a})`;
-	};
-
 	const updateBackground = val => {
 		value.colorOptions.color = returnColor(val);
+		value.colorOptions.activeColor = returnColor(val);
 
 		onChange(JSON.stringify(value));
+	};
+
+	const returnColor = val => {
+		return `rgba(${val.rgb.r},${val.rgb.g},${val.rgb.b},${val.rgb.a})`;
 	};
 
 	return (

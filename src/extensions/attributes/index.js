@@ -83,6 +83,18 @@ function addAttributes(settings) {
 	return settings;
 }
 
+const uniqueIdCreator = name => {
+	const newID = uniqueId(`${name.replace('maxi-blocks/', '')}-`);
+
+	if (
+		!isEmpty(document.getElementsByClassName(newID)) ||
+		!isNil(document.getElementById(newID))
+	)
+		uniqueIdCreator(name);
+
+	return newID;
+};
+
 /**
  * Add custom Maxi Blocks attributes to selected blocks
  *
@@ -139,18 +151,6 @@ const withAttributes = createHigherOrderComponent(
 	},
 	'withAttributes'
 );
-
-const uniqueIdCreator = name => {
-	const newID = uniqueId(`${name.replace('maxi-blocks/', '')}-`);
-
-	if (
-		!isEmpty(document.getElementsByClassName(newID)) ||
-		!isNil(document.getElementById(newID))
-	)
-		uniqueIdCreator(name);
-
-	return newID;
-};
 
 addFilter(
 	'blocks.registerBlockType',

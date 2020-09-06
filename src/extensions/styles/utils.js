@@ -1,4 +1,9 @@
 /**
+ * Some ESLint deactivated rules. This file needs to be refactored
+ */
+/* eslint-disable no-continue */
+
+/**
  * WordPress dependencies
  */
 const { select } = wp.data;
@@ -55,7 +60,7 @@ export const getLastBreakpointValue = (obj, prop, breakpoint) => {
 			isNumber(obj[objectKeys[i]][prop])
 		)
 			return obj[objectKeys[i]][prop];
-		i--;
+		i -= 1;
 	} while (i > 0);
 
 	return obj[breakpoint][prop];
@@ -76,22 +81,15 @@ export const getBoxShadowObject = boxShadow => {
 	for (const [key, value] of Object.entries(boxShadow)) {
 		if (key !== 'label') {
 			let boxShadowString = '';
-			isNumber(value.shadowHorizontal)
-				? (boxShadowString += `${value.shadowHorizontal}px `)
-				: null;
-			isNumber(value.shadowVertical)
-				? (boxShadowString += `${value.shadowVertical}px `)
-				: null;
-			isNumber(value.shadowBlur)
-				? (boxShadowString += `${value.shadowBlur}px `)
-				: null;
-			isNumber(value.shadowSpread)
-				? (boxShadowString += `${value.shadowSpread}px `)
-				: null;
-			!isNil(value.shadowColor)
-				? (boxShadowString += value.shadowColor)
-				: null;
-
+			isNumber(value.shadowHorizontal) &&
+				(boxShadowString += `${value.shadowHorizontal}px `);
+			isNumber(value.shadowVertical) &&
+				(boxShadowString += `${value.shadowVertical}px `);
+			isNumber(value.shadowBlur) &&
+				(boxShadowString += `${value.shadowBlur}px `);
+			isNumber(value.shadowSpread) &&
+				(boxShadowString += `${value.shadowSpread}px `);
+			!isNil(value.shadowColor) && (boxShadowString += value.shadowColor);
 			response[key]['box-shadow'] = boxShadowString.trim();
 		}
 	}
@@ -126,6 +124,8 @@ export const getAlignmentTextObject = alignment => {
 				case 'justify':
 					response[key]['text-align'] = 'justify';
 					break;
+				default:
+					return false;
 			}
 		}
 	}
@@ -158,6 +158,8 @@ export const getAlignmentFlexObject = alignment => {
 				case 'right':
 					response[key]['align-items'] = 'flex-end';
 					break;
+				default:
+					return false;
 			}
 		}
 	}
@@ -464,7 +466,6 @@ export const getTransformObject = transform => {
  *
  * @param {Object} background BackgroundControl related object
  *
- * @return {Object}
  */
 export const getColorBackgroundObject = background => {
 	const response = {
@@ -534,7 +535,7 @@ export const getImageBackgroundObject = background => {
 		} else if (
 			(option.sizeSettings.size === 'custom' &&
 				isNil(option.imageData.cropOptions)) ||
-			(option.sizeSettings.size != 'custom' &&
+			(option.sizeSettings.size !== 'custom' &&
 				!isNil(option.imageData.mediaURL))
 		) {
 			if (!isNil(response.general['background-image']))
@@ -551,7 +552,7 @@ export const getImageBackgroundObject = background => {
 				] = `${response.general['background-image']}, ${background.colorOptions.gradient}`;
 		}
 		// Size
-		if (option.sizeSettings.size != 'custom') {
+		if (option.sizeSettings.size !== 'custom') {
 			if (!isNil(response.general['background-size']))
 				response.general[
 					'background-size'
@@ -571,7 +572,7 @@ export const getImageBackgroundObject = background => {
 			else response.general['background-repeat'] = option.repeat;
 		}
 		// Position
-		if (option.positionOptions.position != 'custom') {
+		if (option.positionOptions.position !== 'custom') {
 			if (!isNil(response.general['background-position']))
 				response.general[
 					'background-position'

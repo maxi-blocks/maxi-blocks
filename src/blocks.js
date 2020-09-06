@@ -24,11 +24,11 @@ import './blocks/column-maxi/column-maxi';
 import './blocks/text-maxi/text-maxi';
 import './blocks/divider-maxi/divider-maxi';
 import './blocks/image-maxi/image-maxi';
-import './blocks/button-maxi/button-maxi.js';
-import './blocks/cloud-maxi/cloud-maxi.js';
-import './blocks/container-maxi/container-maxi.js';
-//import './blocks/icon-maxi/icon-maxi.js';
-import './blocks/svg-icon-maxi/svg-icon-maxi.js';
+import './blocks/button-maxi/button-maxi';
+import './blocks/cloud-maxi/cloud-maxi';
+import './blocks/container-maxi/container-maxi';
+// import './blocks/icon-maxi/icon-maxi';
+import './blocks/svg-icon-maxi/svg-icon-maxi';
 
 // Sidebar
 

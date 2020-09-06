@@ -1,1 +1,12 @@
-<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48.5 15.7"><defs><style>.cls-1{fill:#474a54;}</style></defs><g id="Layer1_0_MEMBER_0_FILL" data-name="Layer1 0 MEMBER 0 FILL"><path class="cls-1" d="M49.66,9.89V1.64H1.16V9.89Z" transform="translate(-1.16 -1.64)"/></g><g id="Layer1_0_MEMBER_1_FILL" data-name="Layer1 0 MEMBER 1 FILL"><path class="cls-1" d="M37.56,17.34V13.19H13.31v4.15Z" transform="translate(-1.16 -1.64)"/></g></svg>
+<svg id="Layer_1" data-name="Layer 1"
+	xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48.5 15.7">
+	<defs>
+		<style>.cls-1{fill:#474a54;}</style>
+	</defs>
+	<g id="Layer1_0_MEMBER_0_FILL" data-name="Layer1 0 MEMBER 0 FILL">
+		<path class="cls-1" d="M49.66,9.89V1.64H1.16V9.89Z" transform="translate(-1.16 -1.64)"/>
+	</g>
+	<g id="Layer1_0_MEMBER_1_FILL" data-name="Layer1 0 MEMBER 1 FILL">
+		<path class="cls-1" d="M37.56,17.34V13.19H13.31v4.15Z" transform="translate(-1.16 -1.64)"/>
+	</g>
+</svg>

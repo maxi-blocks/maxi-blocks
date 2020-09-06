@@ -86,10 +86,7 @@ const BackgroundControl = props => {
 	};
 
 	const getAlternativeImage = i => {
-		const { cropOptions } = value.imageOptions[i].imageData;
-		const srcURL = cropOptions.image.source_url;
-
-		if (!isNil(cropOptions) && !isEmpty(srcURL))
+		try {
 			return {
 				source_url:
 					value.imageOptions[i].imageData.cropOptions.image
@@ -98,31 +95,39 @@ const BackgroundControl = props => {
 				height:
 					value.imageOptions[i].imageData.cropOptions.image.height,
 			};
-
-		return false;
+		} catch (error) {
+			return false;
+		}
 	};
 
 	const getOptions = () => {
 		const options = [
 			{ label: <Icon icon={styleNone} />, value: '' },
-			!disableColor && {
-				label: <Icon icon={backgroundColor} />,
-				value: 'color',
-			},
-			!disableImage && {
-				label: <Icon icon={backgroundImage} />,
-				value: 'image',
-			},
-			!disableVideo && {
-				label: <Icon icon={backgroundVideo} />,
-				value: 'video',
-			},
-			!disableGradient && {
-				label: <Icon icon={backgroundGradient()} />,
-				value: 'gradient',
-			},
+			...(!disableColor && [
+				{
+					label: <Icon icon={backgroundColor} />,
+					value: 'color',
+				},
+			]),
+			...(!disableImage && [
+				{
+					label: <Icon icon={backgroundImage} />,
+					value: 'image',
+				},
+			]),
+			...(!disableVideo && [
+				{
+					label: <Icon icon={backgroundVideo} />,
+					value: 'video',
+				},
+			]),
+			...(!disableGradient && [
+				{
+					label: <Icon icon={backgroundGradient()} />,
+					value: 'gradient',
+				},
+			]),
 		];
-		options.push({ label: <Icon icon={styleNone} />, value: '' });
 
 		return options;
 	};

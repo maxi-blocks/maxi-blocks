@@ -1,40 +1,40 @@
-
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none" x="0px" y="0px" width="1280px" height="139px" viewBox="0 0 1280 139">
-<defs>
-<g id="Layer0_0_FILL">
-<path fill="#000000" fill-opacity="0.2980392156862745" stroke="none" d="
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1"
+	xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none" x="0px" y="0px" width="1280px" height="139px" viewBox="0 0 1280 139">
+	<defs>
+		<g id="Layer0_0_FILL">
+			<path fill="#000000" fill-opacity="0.2980392156862745" stroke="none" d="
 M 1280 140
 L 1280 3.45
 Q 1205.4 8.2 1138.05 22.3 1113.15 27.5 1081.7 35.6 1046.05 44.95 1028.05 49.6 961.85 66.6 907.6 74.2 831.05 84.85 734.4 84.85 627.7 84.85 544.4 71.7 511.05 66.4 475.65 58.2 454.4 53.25 414.4 42.75 374.4 32.2 353.15 27.25 317.75 19.05 284.4 13.75 201.05 0.6 94.4 0.6 44.65 0.6 0 3.45
 L 0 140 1280 140 Z"/>
-</g>
+		</g>
 
-<g id="Layer0_1_FILL">
-<path fill="#000000" fill-opacity="0.4980392156862745" stroke="none" d="
+		<g id="Layer0_1_FILL">
+			<path fill="#000000" fill-opacity="0.4980392156862745" stroke="none" d="
 M 1280 139.4
 L 1280 23.7
 Q 1240.7 21.95 1194.8 29.25 1164.9 34 1099.45 49.05 1021.25 67 974 76.1 889.4 92.5 798.4 103.65 688.8 117.1 614.3 111.3 581.45 108.75 549.8 102.25 524.35 97 492.1 87.45 453.7 75.55 432.6 69.05 394.3 57.35 362.65 49.35 270.85 26.25 156.65 14.5 115.9 10.35 70.8 14.55 55.15 16.05 33.9 19 10.85 22.35 0 23.75
 L 0 139.4 1280 139.4 Z"/>
-</g>
+		</g>
 
-<g id="Layer0_2_FILL">
-<path fill="#000000" stroke="none" d="
+		<g id="Layer0_2_FILL">
+			<path fill="#000000" stroke="none" d="
 M 1280 139.4
 L 1280 51.15
 Q 1215.65 55.15 1153.1 64.75 1131.65 68.05 1100.65 73.55 1055.4 81.55 1049.5 82.55 987.4 93.1 932.8 97.95 859 104.55 766.4 104.55 659.75 104.55 576.4 95.65 526.4 90.3 446.4 76.05 366.4 61.8 316.4 56.45 233.05 47.55 126.4 47.55 57.9 47.55 0 51.15
 L 0 139.4 1280 139.4 Z"/>
-</g>
-</defs>
+		</g>
+	</defs>
 
-<g transform="matrix( 1, 0, 0, 1, 0,-0.6) ">
-<use xlink:href="#Layer0_0_FILL"/>
-</g>
+	<g transform="matrix( 1, 0, 0, 1, 0,-0.6) ">
+		<use xlink:href="#Layer0_0_FILL"/>
+	</g>
 
-<g transform="matrix( 1, 0, 0, 1, 0,0) ">
-<use xlink:href="#Layer0_1_FILL"/>
-</g>
+	<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+		<use xlink:href="#Layer0_1_FILL"/>
+	</g>
 
-<g transform="matrix( 1, 0, 0, 1, 0,0) ">
-<use xlink:href="#Layer0_2_FILL"/>
-</g>
+	<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+		<use xlink:href="#Layer0_2_FILL"/>
+	</g>
 </svg>

@@ -1,1 +1,9 @@
-<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 23.75 17.95"><defs><style>.cls-1{fill:none;stroke:#464a53;stroke-linecap:round;stroke-linejoin:round;}.cls-2{fill:#464a53;}</style></defs><path id="Layer0_0_1_STROKES" data-name="Layer0 0 1 STROKES" class="cls-1" d="M14.72,17.47h7.75a.89.89,0,0,0,.66-.25.82.82,0,0,0,.25-.59V4.38a.82.82,0,0,0-.25-.6.89.89,0,0,0-.66-.25h-21a.82.82,0,0,0-.6.25.82.82,0,0,0-.25.6V16.63a.82.82,0,0,0,.25.59.82.82,0,0,0,.6.25H14.72v2.61H16c.09,0,.14.06.14.2s-.05.19-.14.19H8c-.14,0-.21-.06-.21-.19s.07-.2.21-.2H9.28V17.47m5,0v2.61H9.67V17.47" transform="translate(-0.12 -3.03)"/><path class="cls-2" d="M8.56,9.15l1.91-3.29H12.3L9.55,10.37,12.36,15H10.52l-2-3.34L6.6,15H4.76l2.82-4.59L4.82,5.86H6.65Z" transform="translate(-0.12 -3.03)"/><path class="cls-2" d="M15.11,13.7h4.13V15H13.53V5.86h1.58Z" transform="translate(-0.12 -3.03)"/></svg>
+<svg id="Layer_1" data-name="Layer 1"
+	xmlns="http://www.w3.org/2000/svg" viewBox="0 0 23.75 17.95">
+	<defs>
+		<style>.cls-1{fill:none;stroke:#464a53;stroke-linecap:round;stroke-linejoin:round;}.cls-2{fill:#464a53;}</style>
+	</defs>
+	<path id="Layer0_0_1_STROKES" data-name="Layer0 0 1 STROKES" class="cls-1" d="M14.72,17.47h7.75a.89.89,0,0,0,.66-.25.82.82,0,0,0,.25-.59V4.38a.82.82,0,0,0-.25-.6.89.89,0,0,0-.66-.25h-21a.82.82,0,0,0-.6.25.82.82,0,0,0-.25.6V16.63a.82.82,0,0,0,.25.59.82.82,0,0,0,.6.25H14.72v2.61H16c.09,0,.14.06.14.2s-.05.19-.14.19H8c-.14,0-.21-.06-.21-.19s.07-.2.21-.2H9.28V17.47m5,0v2.61H9.67V17.47" transform="translate(-0.12 -3.03)"/>
+	<path class="cls-2" d="M8.56,9.15l1.91-3.29H12.3L9.55,10.37,12.36,15H10.52l-2-3.34L6.6,15H4.76l2.82-4.59L4.82,5.86H6.65Z" transform="translate(-0.12 -3.03)"/>
+	<path class="cls-2" d="M15.11,13.7h4.13V15H13.53V5.86h1.58Z" transform="translate(-0.12 -3.03)"/>
+</svg>

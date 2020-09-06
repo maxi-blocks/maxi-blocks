@@ -1,24 +1,24 @@
-
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none" x="0px" y="0px" width="1280px" height="134px" viewBox="0 0 1280 134">
-<defs>
-<g id="Layer0_0_FILL">
-<path fill="#000000" fill-opacity="0.4980392156862745" stroke="none" d="
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1"
+	xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none" x="0px" y="0px" width="1280px" height="134px" viewBox="0 0 1280 134">
+	<defs>
+		<g id="Layer0_0_FILL">
+			<path fill="#000000" fill-opacity="0.4980392156862745" stroke="none" d="
 M 1279.95 35.85
 L 1280 0 0 0 0 126.7 60.6 134.1 156.25 131 242.6 117.1 321.3 126.85 411.4 109.75 505.85 117.45 582.8 105.6 665.45 119.55 742.4 111.05 816.1 88.95 913.7 96.25 997.35 73.3 1063.65 84.25 1134.45 66.05 1214.3 66.05 1279.95 35.85 Z"/>
-</g>
+		</g>
 
-<g id="Layer0_1_FILL">
-<path fill="#000000" stroke="none" d="
+		<g id="Layer0_1_FILL">
+			<path fill="#000000" stroke="none" d="
 M 1280 0.05
 L 1280 0 0 0 0 127.9 60.6 132.75 156.25 101.25 242.6 110.45 321.3 74.35 411.4 98.75 505.85 60.35 583.8 88.7 675.45 63.45 752.4 96.8 816.1 75.4 913.7 82.45 997.35 52.85 1063.65 64.55 1134.45 41.2 1209.3 36.6 1280 0.05 Z"/>
-</g>
-</defs>
+		</g>
+	</defs>
 
-<g transform="matrix( 1, 0, 0, 1, 0,0) ">
-<use xlink:href="#Layer0_0_FILL"/>
-</g>
+	<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+		<use xlink:href="#Layer0_0_FILL"/>
+	</g>
 
-<g transform="matrix( 1, 0, 0, 1, 0,0) ">
-<use xlink:href="#Layer0_1_FILL"/>
-</g>
+	<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+		<use xlink:href="#Layer0_1_FILL"/>
+	</g>
 </svg>

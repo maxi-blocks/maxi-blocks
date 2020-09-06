@@ -20,7 +20,7 @@ import __experimentalClipPath from '../clip-path-control';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNil, isObject, isNumber, pullAt } from 'lodash';
+import { isEmpty, isObject, isNumber, pullAt } from 'lodash';
 
 /**
  * Styles and icons

@@ -104,7 +104,7 @@ const MediaUploader = props => {
 								>
 									<img
 										src={
-											!isNil(alternativeImage)
+											alternativeImage
 												? alternativeImage.source_url
 												: imageData.source_url
 										}
@@ -133,7 +133,7 @@ const MediaUploader = props => {
 										muted
 										preload
 										src={
-											!isNil(alternativeImage)
+											alternativeImage
 												? alternativeImage.source_url
 												: imageData.source_url
 										}

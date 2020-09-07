@@ -17,6 +17,19 @@ import {
 	fourOneOne,
 	fiveColumns,
 	sixColumns,
+	oneOneTwo,
+	oneOneOne,
+	oneOneOneOne,
+	twoOneOneTwo,
+	oneOneTwoTwo,
+	twoTwoOneOne,
+	twoOneOneOneOne,
+	oneOneTwoOneOne,
+	oneOneOneOneTwo,
+	oneOneOneOneOne,
+	oneOneOneOneOneOne,
+	twoTwoTwoTwoTwoTwo,
+	twoTwoTwoTwo,
 } from '../../icons';
 
 /**
@@ -266,6 +279,127 @@ const TEMPLATES = [
 			1 / 6,
 			1 / 6,
 		]),
+		attributes: {
+			horizontalAlign: 'space-between',
+			verticalAlign: 'stretch',
+		},
+	},
+
+	// Stacked Layouts
+	{
+		name: '1-1-2',
+		icon: oneOneTwo,
+		content: generateDefaultColumns([1 / 2, 1 / 2, 1]),
+		attributes: {
+			horizontalAlign: 'space-between',
+			verticalAlign: 'stretch',
+		},
+	},
+	{
+		name: '1-1-1',
+		icon: oneOneOne,
+		content: generateDefaultColumns([1, 1, 1]),
+		attributes: {
+			horizontalAlign: 'space-between',
+			verticalAlign: 'stretch',
+		},
+	},
+	{
+		name: '1-1-1-1',
+		icon: oneOneOneOne,
+		content: generateDefaultColumns([1 / 2, 1 / 2, 1 / 2, 1 / 2]),
+		attributes: {
+			horizontalAlign: 'space-between',
+			verticalAlign: 'stretch',
+		},
+	},
+	{
+		name: '2-1-1-2',
+		icon: twoOneOneTwo,
+		content: generateDefaultColumns([1, 1 / 2, 1 / 2, 1]),
+		attributes: {
+			horizontalAlign: 'space-between',
+			verticalAlign: 'stretch',
+		},
+	},
+	{
+		name: '1-1-2-2',
+		icon: oneOneTwoTwo,
+		content: generateDefaultColumns([1 / 2, 1 / 2, 1, 1]),
+		attributes: {
+			horizontalAlign: 'space-between',
+			verticalAlign: 'stretch',
+		},
+	},
+
+	{
+		name: '2-2-1-1',
+		icon: twoTwoOneOne,
+		content: generateDefaultColumns([1, 1, 1 / 2, 1 / 2]),
+		attributes: {
+			horizontalAlign: 'space-between',
+			verticalAlign: 'stretch',
+		},
+	},
+	{
+		name: '2-2-2-2',
+		icon: twoTwoTwoTwo,
+		content: generateDefaultColumns([1, 1, 1, 1]),
+		attributes: {
+			horizontalAlign: 'space-between',
+			verticalAlign: 'stretch',
+		},
+	},
+
+	{
+		name: '2-1-1-1-1',
+		icon: twoOneOneOneOne,
+		content: generateDefaultColumns([1, 1 / 2, 1 / 2, 1 / 2, 1 / 2]),
+		attributes: {
+			horizontalAlign: 'space-between',
+			verticalAlign: 'stretch',
+		},
+	},
+	{
+		name: '1-1-2-1-1',
+		icon: oneOneTwoOneOne,
+		content: generateDefaultColumns([1 / 2, 1 / 2, 1, 1 / 2, 1 / 2]),
+		attributes: {
+			horizontalAlign: 'space-between',
+			verticalAlign: 'stretch',
+		},
+	},
+	{
+		name: '1-1-1-1-2',
+		icon: oneOneOneOneTwo,
+		content: generateDefaultColumns([1 / 2, 1 / 2, 1 / 2, 1 / 2, 1]),
+		attributes: {
+			horizontalAlign: 'space-between',
+			verticalAlign: 'stretch',
+		},
+	},
+	{
+		name: '1-1-1-1-1',
+		icon: oneOneOneOneOne,
+		content: generateDefaultColumns([1, 1, 1, 1, 1]),
+		attributes: {
+			horizontalAlign: 'space-between',
+			verticalAlign: 'stretch',
+		},
+	},
+	{
+		name: '1-1-1-1-1-1',
+		icon: oneOneOneOneOneOne,
+		content: generateDefaultColumns([1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2]),
+		attributes: {
+			horizontalAlign: 'space-between',
+			verticalAlign: 'stretch',
+		},
+	},
+	{
+		name: '2-2-2-2-2-2',
+		icon: twoTwoTwoTwoTwoTwo,
+		content: generateDefaultColumns([1, 1, 1, 1, 1, 1]),
 		attributes: {
 			horizontalAlign: 'space-between',
 			verticalAlign: 'stretch',

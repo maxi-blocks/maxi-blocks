@@ -2,120 +2,133 @@
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults';
+import { size } from './data';
 
 /**
  * Attributes
  */
 const attributes = {
-    blockStyle: {
-        type: 'string',
-        default: 'maxi-custom'
-    },
-    defaultBlockStyle: {
-        type: 'string',
-        default: 'maxi-def-light'
-    },
-    icon: {
-        type: 'string',
-        default: 'android'
-    },
-    size: {
-        type: 'string',
-        default: 'full'
-    },
-    sizeOptions: {
-        type: 'string',
-    },
-    fullWidth: {
-        type: 'string',
-        default: 'normal',
-    },
-    alignmentDesktop: {
-        type: 'string',
-        default: 'center'
-    },
-    alignmentTablet: {
-        type: 'string',
-        default: 'center'
-    },
-    alignmentMobile: {
-        type: 'string',
-        default: 'center'
-    },
-    maxWidthUnit: {
-        type: 'string',
-        default: 'px'
-    },
-    maxWidth: {
-        type: 'number',
-    },
-    widthUnit: {
-        type: 'string',
-        default: 'px'
-    },
-    width: {
-        type: 'number',
-        default: 100
-    },
-    background: {
-        type: 'string',
-        default: JSON.stringify(attributesData.background)
-    },
-    opacity: {
-        type: 'number',
-        default: 1
-    },
-    boxShadow: {
-        type: 'string',
-        default: JSON.stringify(attributesData.boxShadow)
-    },
-    border: {
-        type: 'string',
-        default: JSON.stringify(attributesData.border)
-    },
-    padding: {
-        type: 'string',
-        default: JSON.stringify(attributesData.padding)
-    },
-    margin: {
-        type: 'string',
-        default: JSON.stringify(attributesData.margin)
-    },
-    backgroundHover: {
-        type: 'string',
-        default: JSON.stringify(attributesData.backgroundHover)
-    },
-    opacityHover: {
-        type: 'number',
-    },
-    boxShadowHover: {
-        type: 'string',
-        default: JSON.stringify(attributesData.boxShadowHover)
-    },
-    borderHover: {
-        type: 'string',
-        default: JSON.stringify(attributesData.border)
-    },
-    extraClassName: {
-        type: 'string',
-        default: ''
-    },
-    extraStyles: {
-        type: 'string',
-        default: ''
-    },
-    resizableWidth: {
-        type: 'number',
-        default: 100
-    },
-    resizableHeight: {
-        type: 'number',
-        default: 100
-    },
-    position: {
-        type: 'string',
-        default: JSON.stringify(attributesData.__experimentalPosition)
-    }
-}
+	imageSize: {
+		type: 'string',
+		default: 'full',
+	},
+	cropOptions: {
+		type: 'string',
+		default: JSON.stringify(attributesData.cropOptions),
+	},
+	alignment: {
+		type: 'string',
+		default: JSON.stringify(attributesData.alignment),
+	},
+	captionType: {
+		type: 'string',
+		default: 'none',
+	},
+	captionContent: {
+		type: 'string',
+		default: '',
+	},
+	captionTypography: {
+		type: 'string',
+		default: JSON.stringify(attributesData.typography),
+	},
+	fullWidth: {
+		type: 'string',
+		default: 'normal',
+	},
+	size: {
+		type: 'string',
+		default: JSON.stringify(size),
+	},
+	opacity: {
+		type: 'string',
+		default: JSON.stringify(attributesData.opacity),
+	},
+	opacityHover: {
+		type: 'string',
+		default: JSON.stringify(attributesData.opacityHover),
+	},
+	background: {
+		type: 'string',
+		default: JSON.stringify(attributesData.background),
+	},
+	backgroundHover: {
+		type: 'string',
+		default: JSON.stringify(attributesData.backgroundHover),
+	},
+	boxShadow: {
+		type: 'string',
+		default: JSON.stringify(attributesData.boxShadow),
+	},
+	boxShadowHover: {
+		type: 'string',
+		default: JSON.stringify(attributesData.boxShadowHover),
+	},
+	border: {
+		type: 'string',
+		default: JSON.stringify(attributesData.border),
+	},
+	borderHover: {
+		type: 'string',
+		default: JSON.stringify(attributesData.borderHover),
+	},
+	padding: {
+		type: 'string',
+		default: JSON.stringify(attributesData.padding),
+	},
+	margin: {
+		type: 'string',
+		default: JSON.stringify(attributesData.margin),
+	},
+	mediaID: {
+		type: 'number',
+	},
+	mediaURL: {
+		type: 'string',
+	},
+	mediaALT: {
+		type: 'string',
+	},
+	mediaALTwp: {
+		type: 'string',
+	},
+	mediaALTtitle: {
+		type: 'string',
+	},
+	altSelector: {
+		type: 'string',
+		default: 'wordpress',
+	},
+	mediaWidth: {
+		type: 'number',
+	},
+	mediaHeight: {
+		type: 'number',
+	},
+	position: {
+		type: 'string',
+		default: JSON.stringify(attributesData.__experimentalPosition),
+	},
+	display: {
+		type: 'string',
+		default: JSON.stringify(attributesData.__experimentalDisplay),
+	},
+	clipPath: {
+		type: 'string',
+		default: '',
+	},
+	hover: {
+		type: 'string',
+		default: JSON.stringify(attributesData.__experimentalHover),
+	},
+	transform: {
+		type: 'string',
+		default: JSON.stringify(attributesData.__experimentalTransform),
+	},
+	content: {
+		type: 'string',
+		default: '',
+	},
+};
 
 export default attributes;

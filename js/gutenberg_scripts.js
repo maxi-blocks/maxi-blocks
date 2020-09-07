@@ -17,14 +17,13 @@
  */
 
 class FontFamilyResolver {
-
     constructor() {
         this.elements = this.elemensGetter;
         this.onLoadPage();
         document.body.classList.contains('block-editor-page') &&
-            !document.getElementById('fontOptions') ?   // WP editor
-            this.getJSON() :
-            null;
+        !document.getElementById('fontOptions') // WP editor
+            ? this.getJSON()
+            : null;
     }
 
     /**
@@ -34,8 +33,12 @@ class FontFamilyResolver {
      */
     get elemensGetter() {
         return Array.from(document.querySelectorAll('[style]')).filter(e => {
-            return typeof window.getComputedStyle(e).getPropertyValue('font-family') !== '';
-        })
+            return (
+                typeof window
+                    .getComputedStyle(e)
+                    .getPropertyValue('font-family') !== ''
+            );
+        });
     }
 
     /**
@@ -46,11 +49,13 @@ class FontFamilyResolver {
     get DOMFontList() {
         let list = new Set();
         this.elements.map(e => {
-            const fonts = window.getComputedStyle(e).getPropertyValue('font-family');
+            const fonts = window
+                .getComputedStyle(e)
+                .getPropertyValue('font-family');
             fonts.split(',').map(font => {
                 list = list.add(font.replace('"', '').trim());
-            })
-        })
+            });
+        });
         return list;
     }
 
@@ -72,7 +77,8 @@ class FontFamilyResolver {
      * Fetchs the JSON file with all the GFonts options
      */
     getJSON() {
-        const fontsUrl = 'https://storage.googleapis.com/plugin-files/maxi-blocks/fonts.json';
+        const fontsUrl =
+            'https://storage.googleapis.com/plugin-files/maxi-blocks/fonts.json';
         const options = {
             method: 'GET',
             mode: 'cors',
@@ -80,22 +86,22 @@ class FontFamilyResolver {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',
             },
-        }
+        };
         fetch(fontsUrl, options)
-            .then((result) => {
+            .then(result => {
                 return result.json();
             })
-            .then((data) => {
+            .then(data => {
                 this.options = this.getFontFamilyOptions(data);
                 this.stampOptions();
                 this.onLoadPage();
             })
             .catch(() => {
                 console.log(
-                    "%cAdvertise: If you are on local, allow CORS on your browser for a better and faster experience",
+                    '%cAdvertise: If you are on local, allow CORS on your browser for a better and faster experience',
                     'color: green; background: #222;'
                 );
-                this.localhostGetJSON()
+                this.localhostGetJSON();
             });
     }
 
@@ -103,7 +109,8 @@ class FontFamilyResolver {
      * In case that browser refuses JSON due to CORS, get it from proxy. Slowe process
      */
     localhostGetJSON() {
-        const fontsUrl = 'https://storage.googleapis.com/plugin-files/maxi-blocks/fonts.json';
+        const fontsUrl =
+            'https://storage.googleapis.com/plugin-files/maxi-blocks/fonts.json';
         const options = {
             method: 'GET',
             mode: 'cors',
@@ -111,18 +118,18 @@ class FontFamilyResolver {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',
             },
-        }
+        };
         fetch(fontsUrl, options)
-            .then((result) => {
+            .then(result => {
                 return result.json();
             })
-            .then((data) => {
+            .then(data => {
                 this.options = this.getFontFamilyOptions(data);
                 this.stampOptions();
                 this.onLoadPage();
             })
-            .catch((err) => {
-                console.log(err)
+            .catch(err => {
+                console.log(err);
             });
     }
 
@@ -140,9 +147,9 @@ class FontFamilyResolver {
      * Loads the non-loaded fonts on backend and frontend
      */
     onLoadPage() {
-        if (typeof fontsToLoad != 'undefined') {
+        if (typeof fontsToLoad !== 'undefined') {
             for (let [fontName, fontOptions] of Object.entries(fontsToLoad)) {
-                this.loadFonts(fontName, fontOptions)
+                this.loadFonts(fontName, fontOptions);
             }
         }
     }
@@ -160,7 +167,7 @@ class FontFamilyResolver {
             options.push({
                 label: item.family,
                 value: item.family,
-                files: item.files
+                files: item.files,
             });
         });
         return options;
@@ -175,18 +182,24 @@ class FontFamilyResolver {
      * @param {obj} files Different variations of the font
      */
     loadFonts = (font, files) => {
-        if (document.fonts && !document.fonts.check(`12px ${font}`)) {   // FontFace API
+        if (document.fonts && !document.fonts.check(`12px ${font}`)) {
+            // FontFace API
             Object.entries(files).map(variant => {
                 const style = this.getFontStyle(variant[0]);
-                const fontLoad = new FontFace(font, `url(${variant[1]})`, style);
+                const fontLoad = new FontFace(
+                    font,
+                    `url(${variant[1]})`,
+                    style
+                );
                 document.fonts.add(fontLoad);
-                fontLoad.loaded
-                    .catch((err) => {
-                        console.info(__(`Font hasn't been able to download: ${err}`))
-                    })
-            })
+                fontLoad.loaded.catch(err => {
+                    console.info(
+                        __(`Font hasn't been able to download: ${err}`)
+                    );
+                });
+            });
         }
-    }
+    };
 
     /**
      * Prepares the styles to be ready for JS FontFace API
@@ -194,29 +207,30 @@ class FontFamilyResolver {
      * @param {obj} variant Concrete variant of the font with name and url
      * @returns {obj} Styles options for load the font on FontFace API
      */
-    getFontStyle = (variant) => {
+    getFontStyle = variant => {
         const styles = variant.split(/([0-9]+)/).filter(Boolean);
         if (styles.length > 1) {
             return {
                 style: `${styles[1]}`,
-                weight: `${styles[0]}`
+                weight: `${styles[0]}`,
             };
         } else {
             const regExp = new RegExp('([0-9]+)', 'gm');
-            if (styles[0].search(regExp) >= 0) {  // number
+            if (styles[0].search(regExp) >= 0) {
+                // number
                 return { weight: `${styles[0]}` };
             } else {
                 return { style: `${styles[0]}` };
             }
         }
-    }
+    };
 }
 
 document.onreadystatechange = function () {
     if (document.readyState === 'complete') {
-        new FontFamilyResolver;
+        new FontFamilyResolver();
     }
-}
+};
 
 /**
  * Responsive Frontend Styles resolver
@@ -236,10 +250,13 @@ class ResponsiveStylesResolver {
         this.initEvents();
     }
     initEvents() {
-        if (Object.entries(this.meta).length > 0 && this.meta.hasOwnProperty(this.target)) {
-            this.hasTarget()
+        if (
+            Object.entries(this.meta).length > 0 &&
+            this.meta.hasOwnProperty(this.target)
+        ) {
+            this.hasTarget();
         } else {
-            this.noHasTarget()
+            this.noHasTarget();
         }
     }
 
@@ -250,8 +267,8 @@ class ResponsiveStylesResolver {
     noHasTarget() {
         const newEntry = {
             [this.target]: {
-                [this.object.label]: this.newObject
-            }
+                [this.object.label]: this.newObject,
+            },
         };
 
         this.meta = Object.assign(this.meta, newEntry);
@@ -279,40 +296,35 @@ class ResponsiveStylesResolver {
             return newObject;
         }
         const object = this.object[device];
-        if (device === 'general')
-            device = 'desktop'
-        if (typeof newObject[device] === 'undefined')
-            newObject[device] = {};
+        if (device === 'general') device = 'desktop';
+        if (typeof newObject[device] === 'undefined') newObject[device] = {};
         let unitChecker = '';
         let unit = this.object.unit ? this.object.unit : '';
 
         for (let [target, prop] of Object.entries(object)) {
-            if (typeof prop === 'undefined')
-                return;
+            if (typeof prop === 'undefined') return;
             // values with dimensions
-            if (this.avoidZero){
+            if (this.avoidZero) {
                 if (
-                    target != 'sync' && prop != 0 && typeof prop === 'number' ||
-                    unitChecker.indexOf(target) == 0 && prop != 0
+                    (target !== 'sync' &&
+                        prop !== 0 &&
+                        typeof prop === 'number') ||
+                    (unitChecker.indexOf(target) == 0 && prop !== 0)
                 )
                     newObject[device][target] = prop + unit;
-            }
-            else{
+            } else {
                 if (
-                    target != 'sync' && typeof prop === 'number' ||
+                    (target !== 'sync' && typeof prop === 'number') ||
                     unitChecker.indexOf(target) == 0
                 )
                     newObject[device][target] = prop + unit;
             }
             // avoid numbers with no related metric
-            if (unitChecker.indexOf(target) == 0)
-                unit = '';
+            if (unitChecker.indexOf(target) == 0) unit = '';
             // values with metrics
-            if (prop.length <= 2)
-                unitChecker = target, unit = prop;
+            if (prop.length <= 2) (unitChecker = target), (unit = prop);
             // values with strings
-            if (prop.length > 2)
-                newObject[device][target] = prop;
+            if (prop.length > 2) newObject[device][target] = prop;
         }
 
         return newObject;
@@ -333,15 +345,11 @@ class BackEndResponsiveStyles {
         this.meta = meta;
         // Uses serverside loaded inline css
         this.target = document.getElementById('maxi-blocks-inline-css');
-        typeof this.meta != 'undefined' ?
-            this.initEvents() :
-            null;
+        typeof this.meta !== 'undefined' ? this.initEvents() : null;
     }
 
     initEvents() {
-        this.target == null ?
-            this.createElement() :
-            this.addValues();
+        this.target == null ? this.createElement() : this.addValues();
     }
 
     /**
@@ -371,7 +379,11 @@ class BackEndResponsiveStyles {
         for (let [target, prop] of Object.entries(this.meta)) {
             target = this.getTarget(target);
             for (let value of Object.values(prop)) {
-                if ((typeof value.desktop != 'undefined' && Object.entries(value.desktop).length != 0) || value.hasOwnProperty('font')) {
+                if (
+                    (typeof value.desktop !== 'undefined' &&
+                        Object.entries(value.desktop).length !== 0) ||
+                    value.hasOwnProperty('font')
+                ) {
                     content += `.${target}{`;
                     content += this.getResponsiveStyles(value.desktop);
                     if (value.hasOwnProperty('font')) {
@@ -379,12 +391,18 @@ class BackEndResponsiveStyles {
                     }
                     content += '}';
                 }
-                if (typeof value.tablet != 'undefined' && Object.entries(value.tablet).length != 0) {
+                if (
+                    typeof value.tablet !== 'undefined' &&
+                    Object.entries(value.tablet).length !== 0
+                ) {
                     content += `@media only screen and (max-width: 768px){.${target}{`;
                     content += this.getResponsiveStyles(value.tablet);
                     content += '}}';
                 }
-                if (typeof value.mobile != 'undefined' && Object.entries(value.mobile).length != 0) {
+                if (
+                    typeof value.mobile !== 'undefined' &&
+                    Object.entries(value.mobile).length !== 0
+                ) {
                     content += `@media only screen and (max-width: 768px){.${target}{`;
                     content += this.getResponsiveStyles(value.mobile);
                     content += '}}';
@@ -400,12 +418,9 @@ class BackEndResponsiveStyles {
      * @param {string} target style target for scoping
      */
     getTarget(target) {
-        if(target.indexOf('__$:') != -1)
-            return target.replace('__$', '');
-        if(target.indexOf('__$>') != -1)
-            return target.replace('__$', '');
-        if(target.indexOf('__$#') != -1)
-            return target.replace('__$', '');
+        if (target.indexOf('__$:') !== -1) return target.replace('__$', '');
+        if (target.indexOf('__$>') !== -1) return target.replace('__$', '');
+        if (target.indexOf('__$#') !== -1) return target.replace('__$', '');
         return target.replace('__$', ' .');
     }
 
@@ -421,7 +436,6 @@ class BackEndResponsiveStyles {
         }
         return responsiveStyles;
     }
-
 }
 
 /**
@@ -444,31 +458,16 @@ class FixObjectFollower {
 
     initEvents() {
         this.getPosition();
-        this.scrollEl.addEventListener(
-            'scroll',
-            this.getPosition.bind(this)
-        )
-        this.scrollEl.addEventListener(
-            'resize',
-            this.getPosition.bind(this)
-        )
-        this.scrollEl.addEventListener(
-            'change',
-            this.getPosition.bind(this)
-        )
-        window.addEventListener(
-            'resize',
-            this.getPosition.bind(this)
-        )
-        document.addEventListener(
-            'click',
-            this.onClick.bind(this)
-        )
+        this.scrollEl.addEventListener('scroll', this.getPosition.bind(this));
+        this.scrollEl.addEventListener('resize', this.getPosition.bind(this));
+        this.scrollEl.addEventListener('change', this.getPosition.bind(this));
+        window.addEventListener('resize', this.getPosition.bind(this));
+        document.addEventListener('click', this.onClick.bind(this));
     }
 
     onClick() {
         setTimeout(() => {
-            this.getPosition()
+            this.getPosition();
         }, 500);
     }
 
@@ -477,17 +476,21 @@ class FixObjectFollower {
         const position = {
             top: this.getTop(posData),
             left: posData.left + posData.width,
-        }
+        };
 
-        this.setPosition(position)
+        this.setPosition(position);
     }
 
     getTop(posData) {
-        switch(this.position){
+        switch (this.position) {
             case 'top':
                 return posData.top;
             case 'middle':
-                return posData.top + (posData.height / 2) - (this.target.clientHeight / 2);
+                return (
+                    posData.top +
+                    posData.height / 2 -
+                    this.target.clientHeight / 2
+                );
             case 'down':
                 return posData.top + posData.height - this.target.clientHeight;
         }

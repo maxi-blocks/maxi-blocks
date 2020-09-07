@@ -2,17 +2,14 @@
  * WordPress dependencies
  */
 const { dispatch } = wp.data;
+const { Fragment, Component } = wp.element;
 const {
-    Fragment,
-    Component
-} = wp.element;
-const {
-    Button,
-    Icon,
-    IconButton,
-    Popover,
-    withFocusOutside,
-    Tooltip
+	Button,
+	Icon,
+	IconButton,
+	Popover,
+	withFocusOutside,
+	Tooltip,
 } = wp.components;
 
 /**
@@ -35,91 +32,84 @@ import './editor.scss';
  * Component
  */
 class ToolbarPopover extends Component {
-    state = {
-        isOpen: false
-    }
+	state = {
+		isOpen: false,
+	};
 
-    handleFocusOutside() {
-        this.setState({
-            isOpen: false
-        })
-    }
+	onToggle() {
+		const { isOpen } = this.state;
 
-    onToggle() {
-        this.setState({
-            isOpen: !this.state.isOpen
-        })
-    }
+		this.setState({
+			isOpen: !isOpen,
+		});
+	}
 
-    render() {
-        const {
-            className,
-            tooltip,
-            icon,
-            content,
-            advancedOptions = false,
-        } = this.props;
+	handleFocusOutside() {
+		this.setState({
+			isOpen: false,
+		});
+	}
 
-        const { isOpen } = this.state;
+	render() {
+		const {
+			className,
+			tooltip,
+			icon,
+			content,
+			advancedOptions = false,
+		} = this.props;
 
-        const { openGeneralSidebar } = dispatch(
-            'core/edit-post'
-        );
+		const { isOpen } = this.state;
 
-        const classes = classnames(
-            'toolbar-item',
-            'toolbar-item__button',
-            className
-        );
+		const { openGeneralSidebar } = dispatch('core/edit-post');
 
-        return (
-            <Fragment>
-                <Tooltip
-                    text={tooltip}
-                    position="bottom center"
-                >
-                    <Button
-                        className={classes}
-                        onClick={() => this.onToggle()}
-                        aria-expanded={isOpen}
-                        action="popup"
-                    >
-                        <Icon
-                            className='toolbar-item__icon'
-                            icon={icon}
-                        />
-                    </Button>
-                </Tooltip>
-                {
-                    isOpen &&
-                    <Popover
-                        className='toolbar-item__popover'
-                        noArrow={false}
-                        position='top center'
-                        focusOnMount={true}
-                        isAlternate
-                        // anchorRef= anchorRef
-                        // __unstableSticky={true}
-                        // __unstableSlotName= "block-toolbar"
-                        shouldAnchorIncludePadding={true}
-                    >
-                        {content}
-                        {
-                            !!advancedOptions &&
-                            <IconButton
-                                className='toolbar-item__popover__advanced-button'
-                                icon={toolbarAdvancedSettings}
-                                onClick={() =>
-                                    openGeneralSidebar('edit-post/block')
-                                        .then(() => openSidebar(advancedOptions))
-                                }
-                            />
-                        }
-                    </Popover>
-                }
-            </Fragment>
-        )
-    }
+		const classes = classnames(
+			'toolbar-item',
+			'toolbar-item__button',
+			className
+		);
+
+		return (
+			<Fragment>
+				<Tooltip text={tooltip} position='bottom center'>
+					<Button
+						className={classes}
+						onClick={() => this.onToggle()}
+						aria-expanded={isOpen}
+						action='popup'
+					>
+						<Icon className='toolbar-item__icon' icon={icon} />
+					</Button>
+				</Tooltip>
+				{isOpen && (
+					<Popover
+						className='toolbar-item__popover'
+						noArrow={false}
+						position='top center'
+						focusOnMount
+						isAlternate
+						// anchorRef= anchorRef
+						// __unstableSticky={true}
+						// __unstableSlotName= "block-toolbar"
+						shouldAnchorIncludePadding
+					>
+						{content}
+						{!!advancedOptions && (
+							<IconButton
+								className='toolbar-item__popover__advanced-button'
+								icon={toolbarAdvancedSettings}
+								onClick={() =>
+									openGeneralSidebar(
+										'edit-post/block'
+									).then(() => openSidebar(advancedOptions))
+								}
+							/>
+						)}
+					</Popover>
+				)}
+			</Fragment>
+		);
+	}
 }
 
 export default withFocusOutside(ToolbarPopover);

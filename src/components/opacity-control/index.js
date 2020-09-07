@@ -9,42 +9,55 @@ const { RangeControl } = wp.components;
  */
 import { getLastBreakpointValue } from '../../utils';
 import classnames from 'classnames';
-import { isObject } from 'lodash';
+import { isObject, isNil, isNumber } from 'lodash';
 
 /**
  * Component
  */
 const OpacityControl = props => {
-    const {
-        opacity,
-        className,
-        onChange,
-        breakpoint = 'general'
-    } = props;
+	const {
+		opacity,
+		defaultOpacity,
+		className,
+		onChange,
+		breakpoint = 'general',
+	} = props;
 
-    const value = !isObject(opacity) ?
-        JSON.parse(opacity) : 
-        opacity;
+	const value = !isObject(opacity) ? JSON.parse(opacity) : opacity;
 
-    const classes = classnames(
-        'maxi-opacity-control',
-        className
-    );
+	const defaultValue = !isObject(defaultOpacity)
+		? JSON.parse(defaultOpacity)
+		: defaultOpacity;
 
-    return (
-        <RangeControl
-            label={__('Opacity', 'maxi-blocks')}
-            className={classes}
-            value={getLastBreakpointValue(value, 'opacity', breakpoint) * 100}
-            onChange={val => {
-                value[breakpoint].opacity = val / 100;
-                onChange(JSON.stringify(value))
-            }}
-            min={0}
-            max={100}
-            allowReset={true}
-        />
-    )
-}
+	const classes = classnames('maxi-opacity-control', className);
+
+	const getValue = () => {
+		const response = getLastBreakpointValue(value, 'opacity', breakpoint);
+
+		if (!isNumber(response)) return response;
+
+		return response * 100;
+	};
+
+	return (
+		<RangeControl
+			label={__('Opacity', 'maxi-blocks')}
+			className={classes}
+			value={getValue()}
+			onChange={val => {
+				isNil(val)
+					? (value[breakpoint].opacity =
+							defaultValue[breakpoint].opacity)
+					: (value[breakpoint].opacity = Number(val / 100));
+
+				onChange(JSON.stringify(value));
+			}}
+			min={0}
+			max={100}
+			allowReset
+			initialPosition={defaultValue[breakpoint].opacity}
+		/>
+	);
+};
 
 export default OpacityControl;

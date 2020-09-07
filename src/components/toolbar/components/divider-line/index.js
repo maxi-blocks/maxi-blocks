@@ -26,65 +26,55 @@ import { toolbarDividersetting } from '../../../../icons';
  */
 
 const Divider = props => {
-    const {
-        blockName,
-        showLine,
-        divider,
-        lineOrientation,
-        onChange
-    } = props;
+	const {
+		blockName,
+		showLine,
+		divider,
+		defaultDivider,
+		lineOrientation,
+		onChange,
+	} = props;
 
-    if (blockName != 'maxi-blocks/divider-maxi')
-        return null;
+	if (blockName !== 'maxi-blocks/divider-maxi') return null;
 
-    const classes = classnames(
-        'toolbar-item__popover__toggle-btn',
-    );
+	const classes = classnames('toolbar-item__popover__toggle-btn');
 
-    return (
-        <ToolbarPopover
-            className='toolbar-item__divider'
-            tooltip={__('Divider', 'maxi-blocks')}
-            icon={toolbarDividersetting}
-            content={(
-                <Fragment>
-                    <RadioControl
-                        className={classes}
-                        label={__('Show Line', 'maxi-blocks')}
-                        selected={showLine}
-                        options={[
-                            { label: __('No', 'maxi-blocks'), value: 'no' },
-                            { label: __('Yes', 'maxi-blocks'), value: 'yes' },
-                        ]}
-                        onChange={showLine =>
-                            onChange(
-                                showLine,
-                                divider,
-                            )
-                        }
-                    />
-                    {
-                        !!showLine &&
-                        <Fragment>
-                            <__experimentalDividerControl
-                                disableColor
-                                disableLineStyle
-                                disableBorderRadius
-                                dividerOptions={divider}
-                                onChange={divider => {
-                                    onChange(
-                                        showLine,
-                                        divider,
-                                    )
-                                }}
-                                lineOrientation={lineOrientation}
-                            />
-                        </Fragment>
-                    }
-                </Fragment>
-            )}
-        />
-    )
-}
+	return (
+		<ToolbarPopover
+			className='toolbar-item__divider'
+			tooltip={__('Divider', 'maxi-blocks')}
+			icon={toolbarDividersetting}
+			content={
+				<Fragment>
+					<RadioControl
+						className={classes}
+						label={__('Show Line', 'maxi-blocks')}
+						selected={showLine}
+						options={[
+							{ label: __('No', 'maxi-blocks'), value: 'no' },
+							{ label: __('Yes', 'maxi-blocks'), value: 'yes' },
+						]}
+						onChange={showLine => onChange(showLine, divider)}
+					/>
+					{!!showLine && (
+						<Fragment>
+							<__experimentalDividerControl
+								divider={divider}
+								defaultDivider={defaultDivider}
+								onChange={divider => {
+									onChange(showLine, divider);
+								}}
+								lineOrientation={lineOrientation}
+								disableColor
+								disableLineStyle
+								disableBorderRadius
+							/>
+						</Fragment>
+					)}
+				</Fragment>
+			}
+		/>
+	);
+};
 
 export default Divider;

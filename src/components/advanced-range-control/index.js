@@ -1,13 +1,12 @@
 /**
+ * WordPress dependencies
+ */
+const { __ } = wp.i18n;
+
+/**
  * External dependencies
  */
-import {
-	Slider,
-	Rail,
-	Handles,
-	Tracks,
-	Ticks
-} from 'react-compound-slider';
+import { Slider, Rail, Handles, Tracks, Ticks } from 'react-compound-slider';
 
 /**
  * Styles and icons
@@ -31,7 +30,7 @@ function Handle({ handle: { id, value, percent }, getHandleProps }) {
 	return (
 		<div
 			className='maxi-advanced-range-control__handle'
-			style={{left: `${percent}%`}}
+			style={{ left: `${percent}%` }}
 			{...getHandleProps(id)}
 		>
 			<div className='maxi-advanced-range-control__handle__label'>
@@ -44,8 +43,7 @@ function Handle({ handle: { id, value, percent }, getHandleProps }) {
 /**
  * Component
  */
-const AdvancedRangeControl = (props) => {
-
+const AdvancedRangeControl = props => {
 	const sliderStyle = {
 		position: 'relative',
 		width: '100%',
@@ -65,24 +63,22 @@ const AdvancedRangeControl = (props) => {
 				step={1}
 				mode={3}
 				values={options}
-				onChange={(values) => {
+				onChange={values => {
 					onChange(values);
 				}}
 			>
 				<Rail>
-					{
-						({ getRailProps }) => (
-							<div
-								className='maxi-advanced-range-control__rail'
-								{...getRailProps()}
-							/>
-						)
-					}
+					{({ getRailProps }) => (
+						<div
+							className='maxi-advanced-range-control__rail'
+							{...getRailProps()}
+						/>
+					)}
 				</Rail>
 				<Handles>
 					{({ handles, getHandleProps }) => (
 						<div className='maxi-advanced-range-control__handles'>
-							{handles.map((handle) => (
+							{handles.map(handle => (
 								<Handle
 									key={handle.id}
 									handle={handle}
@@ -106,11 +102,18 @@ const AdvancedRangeControl = (props) => {
 						</div>
 					)}
 				</Tracks>
-				<Ticks values={[__('Viewport Bottom', 'maxi-blocks'), __('Viewport Top', 'maxi-blocks')]}>
+				<Ticks
+					values={[
+						__('Viewport Bottom', 'maxi-blocks'),
+						__('Viewport Top', 'maxi-blocks'),
+					]}
+				>
 					{({ ticks }) => (
 						<div className='maxi-advanced-range-control__ticks'>
-							{ticks.map((tick) => (
-								<div className='maxi-advanced-range-control__ticks__tick'>{tick.value}</div>
+							{ticks.map(tick => (
+								<div className='maxi-advanced-range-control__ticks__tick'>
+									{tick.value}
+								</div>
 							))}
 						</div>
 					)}

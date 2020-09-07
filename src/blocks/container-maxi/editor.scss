@@ -1,10 +1,9 @@
 .maxi-container-block {
-    margin: auto;
-
-    &__container {
-        border: 1px solid #7fbddc;
-    }
-    &[data-align="full"] {
-        width: auto;
-    }
+	margin: auto;
+	&__container {
+		border: 1px solid #7fbddc;
+	}
+	&[data-align='full'] {
+		width: auto;
+	}
 }

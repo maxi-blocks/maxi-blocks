@@ -8,12 +8,7 @@ const { select } = wp.data;
 /**
  * External Dependencies
  */
-import {
-	uniqueId,
-	isEmpty,
-	isNil,
-	isNumber
-} from 'lodash';
+import { uniqueId, isEmpty, isNil, isNumber } from 'lodash';
 
 /**
  * General
@@ -30,6 +25,7 @@ const allowedBlocks = [
 	'maxi-blocks/image-maxi',
 	'maxi-blocks/section-maxi',
 	'maxi-blocks/container-maxi',
+	'maxi-blocks/svg-icon-maxi',
 	'maxi-blocks/icon-maxi',
 ];
 
@@ -45,11 +41,11 @@ function addAttributes(settings) {
 		settings.attributes = Object.assign(settings.attributes, {
 			blockStyle: {
 				type: 'string',
-				default: 'maxi-custom'
+				default: 'maxi-custom',
 			},
 			defaultBlockStyle: {
 				type: 'string',
-				default: 'maxi-def-light'
+				default: 'maxi-def-light',
 			},
 			uniqueID: {
 				type: 'string',
@@ -59,75 +55,93 @@ function addAttributes(settings) {
 			},
 			linkSettings: {
 				type: 'string',
-				default: '{}'
+				default: '{}',
 			},
 			extraClassName: {
 				type: 'string',
-				default: ''
+				default: '',
 			},
 			zIndex: {
 				type: 'string',
-				default: '{"label":"ZIndex","general":{"z-index":""},"xxl":{"z-index":""},"xl":{"z-index":""},"l":{"z-index":""},"m":{"z-index":""},"s":{"z-index":""},"xs":{"z-index":""}}'
+				default:
+					'{"label":"ZIndex","general":{"z-index":""},"xxl":{"z-index":""},"xl":{"z-index":""},"l":{"z-index":""},"m":{"z-index":""},"s":{"z-index":""},"xs":{"z-index":""}}',
 			},
 			breakpoints: {
 				type: 'string',
-				default: '{"label":"Breakpoints","general":"","xl":"","l":"","m":"","s":"","xs":""}'
+				default:
+					'{"label":"Breakpoints","general":"","xl":"","l":"","m":"","s":"","xs":""}',
 			},
 		});
 	}
 
 	if (allowedBlocks.includes(settings.name) && !isNil(settings.support)) {
 		settings.support = Object.assign(settings.support, {
-			customClassName: false
-		})
+			customClassName: false,
+		});
 	}
 
 	return settings;
 }
 
+const uniqueIdCreator = name => {
+	const newID = uniqueId(`${name.replace('maxi-blocks/', '')}-`);
+
+	if (
+		!isEmpty(document.getElementsByClassName(newID)) ||
+		!isNil(document.getElementById(newID))
+	)
+		uniqueIdCreator(name);
+
+	return newID;
+};
+
 /**
  * Add custom Maxi Blocks attributes to selected blocks
  *
- * @param {function|Component} BlockEdit Original component.
+ * @param {Function|Component} BlockEdit Original component.
  * @return {string} Wrapped component.
  */
 const withAttributes = createHigherOrderComponent(
 	BlockEdit => props => {
 		const {
-			attributes: {
-				uniqueID,
-				breakpoints,
-			},
+			attributes: { uniqueID, breakpoints },
 			name,
-			clientId
+			clientId,
 		} = props;
 
 		if (allowedBlocks.includes(name)) {
 			// uniqueID
-			if (isNil(uniqueID) || document.getElementsByClassName(uniqueID).length > 1)
+			if (
+				isNil(uniqueID) ||
+				document.getElementsByClassName(uniqueID).length > 1
+			)
 				props.attributes.uniqueID = uniqueIdCreator(name);
 
 			// isFirstOnHierarchy
-			let parentBlocks = select('core/block-editor').getBlockParents(clientId)
-				.filter(el => { return el != clientId });
+			const parentBlocks = select('core/block-editor')
+				.getBlockParents(clientId)
+				.filter(el => {
+					return el !== clientId;
+				});
 
-			if (parentBlocks.includes(clientId))
-				parentBlocks.pop()
+			if (parentBlocks.includes(clientId)) parentBlocks.pop();
 
 			props.attributes.isFirstOnHierarchy = isEmpty(parentBlocks);
 
 			// Breakpoints
-			const defaultBreakpoints = select('maxiBlocks').receiveMaxiBreakpoints();
+			const defaultBreakpoints = select(
+				'maxiBlocks'
+			).receiveMaxiBreakpoints();
 			const value = JSON.parse(breakpoints);
 
 			if (!isNumber(value.xl) && !isEmpty(defaultBreakpoints)) {
 				const response = {
-					xl: defaultBreakpoints['xl'],
-					l: defaultBreakpoints['l'],
-					m: defaultBreakpoints['m'],
-					s: defaultBreakpoints['s'],
-					xs: defaultBreakpoints['xs'],
-				}
+					xl: defaultBreakpoints.xl,
+					l: defaultBreakpoints.l,
+					m: defaultBreakpoints.m,
+					s: defaultBreakpoints.s,
+					xs: defaultBreakpoints.xs,
+				};
 
 				props.attributes.breakpoints = JSON.stringify(response);
 			}
@@ -138,23 +152,10 @@ const withAttributes = createHigherOrderComponent(
 	'withAttributes'
 );
 
-const uniqueIdCreator = name => {
-	let newID = uniqueId(`${name.replace('maxi-blocks/', '')}-`);
-
-	if (!isEmpty(document.getElementsByClassName(newID)) || !isNil(document.getElementById(newID)))
-		uniqueIdCreator(name);
-
-	return newID;
-}
-
 addFilter(
 	'blocks.registerBlockType',
 	'maxi-blocks/custom/attributes',
 	addAttributes
 );
 
-addFilter(
-	'editor.BlockEdit',
-	'maxi-blocks/attributes',
-	withAttributes
-);
+addFilter('editor.BlockEdit', 'maxi-blocks/attributes', withAttributes);

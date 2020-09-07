@@ -1,24 +1,24 @@
 {
-    "label": "Display block",
-    "general": {
-        "display": ""
-    },
-    "xxl": {
-        "display": ""
-    },
-    "xl": {
-        "display": ""
-    },
-    "l": {
-        "display": ""
-    },
-    "m": {
-        "display": ""
-    },
-    "s": {
-        "display": ""
-    },
-    "xs": {
-        "display": ""
-    }
+	"label": "Display block",
+	"general": {
+		"display": ""
+	},
+	"xxl": {
+		"display": ""
+	},
+	"xl": {
+		"display": ""
+	},
+	"l": {
+		"display": ""
+	},
+	"m": {
+		"display": ""
+	},
+	"s": {
+		"display": ""
+	},
+	"xs": {
+		"display": ""
+	}
 }

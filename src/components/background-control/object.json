@@ -1,52 +1,64 @@
 {
-  "label": "Background",
-  "backgroundOptions": [
-    {
-      "imageOptions": {
-        "mediaID": "",
-        "mediaURL": ""
-      },
-      "sizeSettings": {
-        "size": "cover",
-        "widthUnit": "%",
-        "width": 100,
-        "heightUnit": "%",
-        "height": 100
-      },
-      "repeat": "no-repeat",
-      "positionOptions": {
-        "position": "center center",
-        "widthUnit": "%",
-        "width": 0,
-        "heightUnit": "%",
-        "height": 0
-      },
-      "origin": "padding-box",
-      "clip": "border-box",
-      "attachment": "scroll"
-    }
-  ],
-  "videoOptions": {
-    "mediaID": "",
-    "mediaURL": "",
-    "width": "100",
-    "widthUnit": "%",
-    "height": "100",
-    "heightUnit": "%",
-    "fill": "cover",
-    "position": "unset",
-    "autoplay": 0,
-    "loop": 0,
-    "muted": 0,
-    "controls": 0,
-    "preload": "metadata"
-  },
-  "colorOptions": {
-    "color": "",
-    "defultColor": "",
-    "gradient": "",
-    "defaultGradient": "",
-    "gradientAboveBackground": false
-  },
-  "clipPath": ""
+	"label": "Background",
+	"activeMedia": "",
+	"imageOptions": [
+		{
+			"imageData": {
+				"mediaID": "",
+				"mediaURL": "",
+				"width": 100,
+				"widthUnit": "%",
+				"height": 100,
+				"heightUnit": "%"
+			},
+			"repeat": "no-repeat",
+			"positionOptions": {
+				"position": "center center",
+				"widthUnit": "%",
+				"width": 0,
+				"heightUnit": "%",
+				"height": 0
+			},
+			"origin": "padding-box",
+			"clip": "border-box",
+			"attachment": "scroll"
+		}
+	],
+	"clipPathImage": "",
+	"videoOptions": {
+		"mediaID": "",
+		"mediaURL": "",
+		"width": 100,
+		"widthUnit": "%",
+		"height": 100,
+		"heightUnit": "%",
+		"fill": "cover",
+		"position": "unset",
+		"autoplay": 0,
+		"loop": 0,
+		"muted": 0,
+		"controls": 0,
+		"preload": "metadata",
+		"clipPath": ""
+	},
+	"colorOptions": {
+		"activeColor": "",
+		"color": "",
+		"gradient": "",
+		"gradientAboveBackground": false,
+		"clipPath": ""
+	},
+	"overlayOptions": {
+		"overlay": "",
+		"activeColor": "",
+		"color": "",
+		"gradient": "",
+		"gradientAboveBackground": false,
+		"opacity": {
+			"label": "Opacity",
+			"general": {
+				"opacity": 0.8
+			}
+		}
+	}
 }

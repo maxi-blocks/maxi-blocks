@@ -28,27 +28,26 @@ import save from './save';
  * Block
  */
 
-registerBlockType( 'maxi-blocks/row-maxi', {
+registerBlockType('maxi-blocks/row-maxi', {
 	title: __('Row Maxi', 'maxi-blocks'),
 	icon: rowIcon,
-	description: "Position one or more blocks, arranged side-by-side (horizontal)",
+	description:
+		'Position one or more blocks, arranged side-by-side (horizontal)',
 	category: 'maxi-blocks',
 	supports: {
 		align: true,
-		lightBlockWrapper: true
-    },
+		lightBlockWrapper: true,
+	},
 	attributes: {
-		...attributes
+		...attributes,
 	},
 	getEditWrapperProps(attributes) {
-        const {
-			uniqueID
-        } = attributes;
+		const { uniqueID } = attributes;
 
-        return {
-			'uniqueid': uniqueID
-        };
-    },
+		return {
+			uniqueid: uniqueID,
+		};
+	},
 	edit,
-	save
-} );
+	save,
+});

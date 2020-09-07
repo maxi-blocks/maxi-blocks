@@ -1,52 +1,52 @@
 .maxi-responsive-selector {
-    position: fixed;
-    transform: translateX(-100%);
-    display: flex;
-    flex-direction: column;
-    background: #fff;
-    padding: 15px;
-    border-right: 2px solid #e8eaeb;
-
-    &__label {
-        display: inline-block;
-        text-align: center;
-        margin: 0 0 5px 0;
-    }
-    &__button {
-        display: flex;
-        border-radius: 5px;
-        margin: 0 0 5px 0;
-        background-color: #f8f8f8;
-        border: 2px solid #f8f8f8;
-        transition: border-color 0.5s;
-        height: 45px;
-        width: 60px;
-        justify-content: center;
-        align-items: center;
-
-        svg {
-            width: 100%;
-            height: 100%;
-        }
-        &:hover {
-            border-color: #b4b4b4;
-            color: #464a53 !important;
-        }
-        &:first-of-type {
-            height: 35px;
-        }
-        &:nth-child(2),
-        &:nth-child(3) {
-            padding: 4px 8px;
-        }
-        &:nth-last-child(1),
-        &:nth-last-child(2),
-        &:nth-last-child(3) {
-            padding: 4px 10px;
-        }
-        &[aria-pressed="true"] {
-            border-color: #b4b4b4;
-            border-bottom-color: #ff4a17;
-        }
-    }
+	position: fixed;
+	top: 93px;
+	transform: translateX(-100%);
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	background: #fff;
+	padding: 10px;
+	border-right: 2px solid #e8eaeb;
+	box-shadow: 0 5px 15px 0 rgba(119, 119, 119, 0.1);
+	&__button {
+		display: flex;
+		border-radius: 5px;
+		margin: 0 0 0 8px;
+		background-color: #f8f8f8;
+		border: 2px solid #f8f8f8;
+		transition: border-color 0.5s;
+		height: 45px;
+		width: 60px;
+		justify-content: center;
+		align-items: center;
+		svg {
+			width: 100%;
+			height: 100%;
+		}
+		&:hover {
+			border-color: #e8eaeb;
+			color: #464a53 !important;
+		}
+		&:first-of-type {
+			margin-left: 0;
+			font-size: 1rem;
+		}
+		&:nth-child(2),
+		&:nth-child(3) {
+			padding: 4px 8px;
+		}
+		&:nth-last-child(1),
+		&:nth-last-child(2),
+		&:nth-last-child(3) {
+			padding: 4px 10px;
+		}
+		&[aria-pressed='true'] {
+			border-color: #e8eaeb;
+			border-bottom-color: #ff4a17;
+			background-color: #fff;
+			border-bottom-left-radius: 0;
+			border-bottom-right-radius: 0;
+		}
+	}
 }

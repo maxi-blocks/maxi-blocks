@@ -3,21 +3,22 @@
  * Loads on front end and back end
  */
 
-
 .components-panel__body.padding-setting .components-base-control {
 	max-width: 100px;
 }
 
 .components-panel__body.padding-setting .components-base-control:first-of-type {
-    margin: 0 auto;
+	margin: 0 auto;
 }
 
-.components-panel__body.padding-setting .components-base-control:nth-of-type(2) {
+.components-panel__body.padding-setting
+	.components-base-control:nth-of-type(2) {
 	float: right;
 	margin-bottom: 0;
 }
 
-.components-panel__body.padding-setting .components-base-control:nth-of-type(3) {
+.components-panel__body.padding-setting
+	.components-base-control:nth-of-type(3) {
 	float: left;
 	margin-bottom: 0;
 }
@@ -76,31 +77,33 @@
  * This probably belongs in a theme!
  */
 
- .maxi-cloud-team-1 {
+.maxi-cloud-team-1 {
 	.ab-profile-column {
 		flex: 100%;
 	}
 	.ab-social-links {
 		padding-top: 25px;
 	}
- }
+}
 
- .maxi-cloud-hero-cover {
-	 .wp-block-cover__inner-container {
+.maxi-cloud-hero-cover {
+	.wp-block-cover__inner-container {
 		max-width: 800px;
-	 }
+	}
 
-	 h2, h3, h4 {
+	h2,
+	h3,
+	h4 {
 		max-width: 100%;
-	 }
- }
+	}
+}
 
- .ab-white-text,
- .wp-block-heading .ab-white-text {
-	 color: #fff;
- }
+.ab-white-text,
+.wp-block-heading .ab-white-text {
+	color: #fff;
+}
 
- .maxi-cloud-landing-2 {
+.maxi-cloud-landing-2 {
 	.ab-block-profile {
 		padding: 0;
 		text-align: center;
@@ -116,30 +119,34 @@
 	.ab-block-cta {
 		.ab-cta-content {
 			max-width: 700px;
-    		margin: 0 auto;
+			margin: 0 auto;
 		}
 
 		.ab-button {
 			font-weight: normal;
 		}
 	}
- }
+}
 
- .maxi-cloud-landing-3 {
-	 .maxi-cloud-landing-3-cover {
-		 h2, h3, h4, h5, h6 {
-			 margin-left: auto;
-			 margin-right: auto;
+.maxi-cloud-landing-3 {
+	.maxi-cloud-landing-3-cover {
+		h2,
+		h3,
+		h4,
+		h5,
+		h6 {
+			margin-left: auto;
+			margin-right: auto;
 
 			@media only screen and (min-width: 600px) {
 				font-size: 42px;
 			}
-		 }
-	 }
+		}
+	}
 
-	 @media only screen and (min-width: 600px) {
+	@media only screen and (min-width: 600px) {
 		.ab-block-post-grid header .ab-block-post-grid-title {
 			font-size: 24px;
 		}
 	}
- }
+}

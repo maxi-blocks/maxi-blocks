@@ -1,8 +1,8 @@
 /**
- * BLOCK: maxi-blocks/image-maxi
+ * BLOCK: maxi-blocks/icon-maxi
  *
- * Registering an image block with Gutenberg.
- * Shows an image and a description. A test block.
+ * Registering an icon block with Gutenberg.
+ * Shows an icon and a description. A test block.
  */
 
 /**
@@ -16,7 +16,7 @@ const { registerBlockType } = wp.blocks;
  */
 import attributes from './attributes.js';
 import edit from './edit.js';
-//import save from './save.js';
+import save from './save.js';
 
 /**
  * Styles and icons
@@ -28,29 +28,25 @@ import { iconBox } from '../../icons';
 /**
  * Block
  */
-registerBlockType( 'maxi-blocks/icon-maxi', {
+registerBlockType('maxi-blocks/icon-maxi', {
 	title: __('Icon Maxi', 'maxi-blocks'),
 	icon: iconBox,
-	description: "Insert, modify or style an icon",
+	description: 'Insert, modify or style an icon',
 	category: 'maxi-blocks',
 	supports: {
 		align: true,
-		lightBlockWrapper: true
-    },
+		lightBlockWrapper: true,
+	},
 	attributes: {
-		...attributes
+		...attributes,
 	},
 	getEditWrapperProps(attributes) {
-        const {
-			uniqueID
-        } = attributes;
+		const { uniqueID } = attributes;
 
-        return {
-			'uniqueid': uniqueID
-        };
-    },
+		return {
+			uniqueid: uniqueID,
+		};
+	},
 	edit,
-	save: () => {
-		return null;
-	}
-} );
+	save,
+});

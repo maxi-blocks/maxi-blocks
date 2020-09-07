@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="1280px" height="140px" viewBox="0 0 1280 140" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 58 (84663) - https://sketch.com -->
-    <title>triangle-top</title>
-    <desc>Created with Sketch.</desc>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="triangle-top" transform="translate(640.000000, 70.000000) scale(1, -1) translate(-640.000000, -70.000000) " fill="#000000" fill-rule="nonzero">
-            <path d="M560,140 L640,0 L0,0 L0,140 L560,140 M1280,140 L1280,0 L640,0 L720,140 L1280,140 Z" id="Shape"></path>
-        </g>
-    </g>
+<svg width="1280px" height="140px" viewBox="0 0 1280 140" version="1.1"
+	xmlns="http://www.w3.org/2000/svg"
+	xmlns:xlink="http://www.w3.org/1999/xlink">
+	<!-- Generator: Sketch 58 (84663) - https://sketch.com -->
+	<title>triangle-top</title>
+	<desc>Created with Sketch.</desc>
+	<g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+		<g id="triangle-top" transform="translate(640.000000, 70.000000) scale(1, -1) translate(-640.000000, -70.000000) " fill="#000000" fill-rule="nonzero">
+			<path d="M560,140 L640,0 L0,0 L0,140 L560,140 M1280,140 L1280,0 L640,0 L720,140 L1280,140 Z" id="Shape"></path>
+		</g>
+	</g>
 </svg>

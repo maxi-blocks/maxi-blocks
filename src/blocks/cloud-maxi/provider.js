@@ -20,41 +20,40 @@ export default class MaxiProvider extends Component {
 		layouts: '',
 		sections: '',
 		all: '',
-	}
+	};
 
 	async componentDidMount() {
-
-
 		async components => {
-			let layouts   = [];
-			let sections  = [];
+			const layouts = [];
+			const sections = [];
 
-			Object.values( components ).forEach( function( item ) {
-				if ( item.type === 'layout' ) {
-					layouts.push( item );
+			Object.values(components).forEach(function (item) {
+				if (item.type === 'layout') {
+					layouts.push(item);
 				} else {
-					sections.push( item );
+					sections.push(item);
 				}
+			});
 
-			} );
-
-			this.setState( {
+			this.setState({
 				all: components,
-				layouts: layouts,
-				sections: sections,
-			} );
-		}
+				layouts,
+				sections,
+			});
+		};
 	}
 
 	render() {
 		return (
-				<MaxiContext.Provider value={{
+			<MaxiContext.Provider
+				value={{
 					layouts: this.state.layouts,
 					sections: this.state.sections,
 					all: this.state.all,
-				}}>
-					{this.props.children}
-				</MaxiContext.Provider>
+				}}
+			>
+				{this.props.children}
+			</MaxiContext.Provider>
 		);
 	}
 }

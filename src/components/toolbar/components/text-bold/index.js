@@ -4,12 +4,14 @@
 const { __ } = wp.i18n;
 const { useSelect } = wp.data;
 const { Icon, Button, Tooltip } = wp.components;
-const { toggleFormat, create, toHTMLString, getActiveFormat } = wp.richText;
 
 /**
- * External dependencies
+ * Internal dependencies
  */
-import { isNil } from 'lodash';
+import {
+	getFormatSettings,
+	getFormattedString,
+} from '../../../../extensions/text/formats';
 
 /**
  * Styles and icons
@@ -33,40 +35,26 @@ const TextBold = props => {
 		__unstableIsEditableTree: true,
 	};
 
-	const { formatValue, isActive } = useSelect(
-		select => {
-			const { getSelectionStart, getSelectionEnd } = select(
-				'core/block-editor'
-			);
+	const { formatValue, isActive } = useSelect(() => {
+		const { formatValue, isActive } = getFormatSettings(
+			formatElement,
+			formatName
+		);
 
-			const formatValue = create(formatElement);
-			formatValue.start = getSelectionStart().offset;
-			formatValue.end = getSelectionEnd().offset;
-
-			const activeFormat = getActiveFormat(formatValue, formatName);
-			const isActive =
-				(!isNil(activeFormat) && activeFormat.type === formatName) ||
-				false;
-
-			return {
-				formatValue,
-				isActive,
-			};
-		},
-		[getActiveFormat, formatElement]
-	);
+		return {
+			formatValue,
+			isActive,
+		};
+	}, [getFormatSettings, formatElement, formatName]);
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
 	const onClick = () => {
-		const newFormat = toggleFormat(formatValue, {
-			type: formatName,
+		const newContent = getFormattedString({
+			formatValue,
+			formatName,
 			isActive,
-		});
-
-		const newContent = toHTMLString({
-			value: newFormat,
-			multilineTag: isList ? 'li' : null,
+			isList,
 		});
 
 		onChange(newContent);

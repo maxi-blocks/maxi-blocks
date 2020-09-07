@@ -4,18 +4,9 @@
 const { __, sprintf } = wp.i18n;
 const { Fragment } = wp.element;
 const { getBlockAttributes } = wp.blocks;
-const {
-	Button,
-	BaseControl,
-} = wp.components;
+const { Button, BaseControl } = wp.components;
 const { useSelect } = wp.data;
-const {
-	applyFormat,
-	create,
-	toHTMLString,
-	getActiveFormat,
-	registerFormatType
-} = wp.richText;
+const { applyFormat, create, toHTMLString, getActiveFormat } = wp.richText;
 
 /**
  * Internal dependencies
@@ -28,37 +19,21 @@ import TextFormatUnderline from '../text-format-underline';
 import TextFormatSubscript from '../text-format-subscript';
 import TextFormatSuperscript from '../text-format-superscript';
 import TextFormatCode from '../text-format-code';
+import {
+	getFormatSettings,
+	getFormattedString,
+} from '../../../../extensions/text/formats';
 
 /**
  * External dependencies
  */
-import {
-	isObject,
-	isEmpty,
-	isNil,
-	trim
-} from 'lodash';
+import { isObject, isEmpty, trim } from 'lodash';
 
 /**
  * Styles and icons
  */
 import './editor.scss';
 import { toolbarType, reset } from '../../../../icons';
-
-/**
- * Register format
- */
-const formatName = 'maxi-blocks/text-size';
-
-registerFormatType(formatName, {
-	title: __('Font size', 'maxi-blocks'),
-	tagName: 'span',
-	className: 'maxi-text-block--has-font-size',
-	attributes: {
-		style: 'style',
-		size: 'number'
-	},
-});
 
 /**
  * TextOptions
@@ -72,81 +47,77 @@ const TextOptions = props => {
 		content,
 		breakpoint,
 		isList,
-		typeOfList
+		typeOfList,
 	} = props;
 
-	if (blockName != 'maxi-blocks/text-maxi')
-		return null;
+	const defaultRawTypography = getBlockAttributes('maxi-blocks/text-maxi')
+		.typography; // ??
 
-	const defaultRawTypography = getBlockAttributes('maxi-blocks/text-maxi').typography;    // ??
+	const formatName = 'maxi-blocks/text-size';
 
 	const formatElement = {
 		element: node,
 		html: content,
 		multilineTag: isList ? 'li' : undefined,
 		multilineWrapperTags: isList ? typeOfList : undefined,
-		__unstableIsEditableTree: true
-	}
+		__unstableIsEditableTree: true,
+	};
 
-	const { formatValue, isActive, currentSize } = useSelect(
-		(select) => {
-			const { getSelectionStart, getSelectionEnd } = select(
-				'core/block-editor'
-			);
-			const formatValue = create(formatElement);
-			formatValue['start'] = getSelectionStart().offset;
-			formatValue['end'] = getSelectionEnd().offset;
+	const { formatValue, isActive, currentSize } = useSelect(() => {
+		const { formatValue, isActive } = getFormatSettings(
+			formatElement,
+			formatName
+		);
 
-			const activeFormat = getActiveFormat(formatValue, formatName);
-			const isActive =
-				!isNil(activeFormat) && activeFormat.type === formatName || false;
+		const activeFormat = getActiveFormat(formatValue, formatName);
 
-			const currentSize =
-				isActive && activeFormat.attributes.size || '';
+		const currentSize = (isActive && activeFormat.attributes.size) || '';
 
-			return {
-				formatValue,
-				isActive,
-				currentSize
-			};
-		},
-		[getActiveFormat, formatElement]
-	);
+		return {
+			formatValue,
+			isActive,
+			currentSize,
+		};
+	}, [getActiveFormat, formatElement]);
 
-	const onChangeSize = (val) => {
+	if (blockName !== 'maxi-blocks/text-maxi') return null;
+
+	const value =
+		(!isObject(typography) && JSON.parse(typography)) || typography;
+
+	const defaultTypography =
+		(typeof defaultRawTypography !== 'object' &&
+			JSON.parse(defaultRawTypography)) ||
+		defaultRawTypography;
+
+	const updateTypography = () => {
+		onChange({ typography: JSON.stringify(value), content });
+	};
+
+	const onChangeSize = val => {
 		if (formatValue.start === formatValue.end) {
 			value[breakpoint]['font-size'] = isEmpty(val) ? '' : Number(val);
 			updateTypography();
 			return;
 		}
 
-		const newFormat = applyFormat(formatValue, {
-			type: formatName,
-			isActive: isActive,
+		const newContent = getFormattedString({
+			formatValue,
+			formatName,
+			isActive,
+			isList,
 			attributes: {
-				style: `font-size: ${isEmpty(val) ? '' : Number(val)}${value[breakpoint]['font-sizeUnit']}`,
-				size: val
-			}
-		});
-
-		const newContent = toHTMLString({
-			value: newFormat,
-			multilineTag: isList ? 'li' : null,
+				attributes: {
+					style: `font-size: ${isEmpty(val) ? '' : Number(val)}${
+						value[breakpoint]['font-sizeUnit']
+					}`,
+					size: val,
+				},
+			},
 		});
 
 		onChange({ typography: JSON.stringify(value), content: newContent });
 	};
-
-	const updateTypography = () => {
-		onChange({ typography: JSON.stringify(value), content: content });
-	};
-
-	const value =
-		(!isObject(typography) && JSON.parse(typography)) || typography;
-
-	const defaultTypography = typeof defaultRawTypography != 'object' &&
-		JSON.parse(defaultRawTypography) ||
-		defaultRawTypography;
 
 	return (
 		<ToolbarPopover
@@ -154,16 +125,16 @@ const TextOptions = props => {
 			tooltip={__('Text options', 'maxi-blocks')}
 			icon={toolbarType}
 			advancedOptions='typography'
-			content={(
-				<div
-					class="toolbar-item__popover__font-options"
-				>
-					<div
-						className="toolbar-item__popover__font-options__font"
-					>
+			content={
+				<div className='toolbar-item__popover__font-options'>
+					<div className='toolbar-item__popover__font-options__font'>
 						<FontFamilySelector
-							className="toolbar-item__popover__font-options__font__selector"
-							font={getLastBreakpointValue(value, 'font-family', breakpoint)}
+							className='toolbar-item__popover__font-options__font__selector'
+							font={getLastBreakpointValue(
+								value,
+								'font-family',
+								breakpoint
+							)}
 							onChange={font => {
 								value[breakpoint]['font-family'] = font.value;
 								value.options = font.files;
@@ -171,9 +142,10 @@ const TextOptions = props => {
 							}}
 						/>
 						<Button
-							className="components-maxi-control__reset-button"
+							className='components-maxi-control__reset-button'
 							onClick={() => {
-								value[breakpoint]['font-family'] = defaultTypography.font;
+								value[breakpoint]['font-family'] =
+									defaultTypography.font;
 								updateTypography();
 							}}
 							isSmall
@@ -182,7 +154,7 @@ const TextOptions = props => {
 								__('Reset %s settings', 'maxi-blocks'),
 								'font size'
 							)}
-							type="reset"
+							type='reset'
 						>
 							{reset}
 						</Button>
@@ -194,16 +166,25 @@ const TextOptions = props => {
 						>
 							<input
 								type='number'
-								value={trim(isActive && Number(currentSize) || getLastBreakpointValue(value, 'font-size', breakpoint))}
+								value={trim(
+									(isActive && Number(currentSize)) ||
+										getLastBreakpointValue(
+											value,
+											'font-size',
+											breakpoint
+										)
+								)}
 								onChange={e => {
 									onChangeSize(e.target.value);
 								}}
-
 							/>
 							<Button
-								className="components-maxi-control__reset-button"
+								className='components-maxi-control__reset-button'
 								onClick={() => {
-									value[breakpoint]['font-size'] = defaultTypography[breakpoint]['font-size'];
+									value[breakpoint]['font-size'] =
+										defaultTypography[breakpoint][
+											'font-size'
+										];
 									onChangeSize(null);
 								}}
 								isSmall
@@ -212,7 +193,7 @@ const TextOptions = props => {
 									__('Reset %s settings', 'maxi-blocks'),
 									'size'
 								)}
-								type="reset"
+								type='reset'
 							>
 								{reset}
 							</Button>
@@ -223,17 +204,29 @@ const TextOptions = props => {
 						>
 							<input
 								type='number'
-								value={trim(getLastBreakpointValue(value, 'line-height', breakpoint))}
+								value={trim(
+									getLastBreakpointValue(
+										value,
+										'line-height',
+										breakpoint
+									)
+								)}
 								onChange={e => {
-									value[breakpoint]['line-height'] = isEmpty(e.target.value) ? '' : Number(e.target.value);
+									value[breakpoint]['line-height'] = isEmpty(
+										e.target.value
+									)
+										? ''
+										: Number(e.target.value);
 									updateTypography();
 								}}
-
 							/>
 							<Button
-								className="components-maxi-control__reset-button"
+								className='components-maxi-control__reset-button'
 								onClick={() => {
-									value[breakpoint]['line-height'] = defaultTypography[breakpoint]['line-height'];
+									value[breakpoint]['line-height'] =
+										defaultTypography[breakpoint][
+											'line-height'
+										];
 									updateTypography();
 								}}
 								isSmall
@@ -242,7 +235,7 @@ const TextOptions = props => {
 									__('Reset %s settings', 'maxi-blocks'),
 									'line height'
 								)}
-								type="reset"
+								type='reset'
 							>
 								{reset}
 							</Button>
@@ -253,17 +246,29 @@ const TextOptions = props => {
 						>
 							<input
 								type='number'
-								value={trim(getLastBreakpointValue(value, 'letter-spacing', breakpoint))}
+								value={trim(
+									getLastBreakpointValue(
+										value,
+										'letter-spacing',
+										breakpoint
+									)
+								)}
 								onChange={e => {
-									value[breakpoint]['letter-spacing'] = isEmpty(e.target.value) ? '' : Number(e.target.value);
+									value[breakpoint][
+										'letter-spacing'
+									] = isEmpty(e.target.value)
+										? ''
+										: Number(e.target.value);
 									updateTypography();
 								}}
-
 							/>
 							<Button
-								className="components-maxi-control__reset-button"
+								className='components-maxi-control__reset-button'
 								onClick={() => {
-									value[breakpoint]['letter-spacing'] = defaultTypography[breakpoint]['letter-spacing'];
+									value[breakpoint]['letter-spacing'] =
+										defaultTypography[breakpoint][
+											'letter-spacing'
+										];
 									updateTypography();
 								}}
 								isSmall
@@ -272,7 +277,7 @@ const TextOptions = props => {
 									__('Reset %s settings', 'maxi-blocks'),
 									'letter spacing'
 								)}
-								type="reset"
+								type='reset'
 							>
 								{reset}
 							</Button>
@@ -280,35 +285,35 @@ const TextOptions = props => {
 						<div>
 							<TextFormatStrikethrough
 								content={content}
-								onChange={(content) => onChange({ content })}
+								onChange={content => onChange({ content })}
 								node={node}
 								isList={isList}
 								typeOfList={typeOfList}
 							/>
 							<TextFormatUnderline
 								content={content}
-								onChange={(content) => onChange({ content })}
+								onChange={content => onChange({ content })}
 								node={node}
 								isList={isList}
 								typeOfList={typeOfList}
 							/>
 							<TextFormatSubscript
 								content={content}
-								onChange={(content) => onChange({ content })}
+								onChange={content => onChange({ content })}
 								node={node}
 								isList={isList}
 								typeOfList={typeOfList}
 							/>
 							<TextFormatSuperscript
 								content={content}
-								onChange={(content) => onChange({ content })}
+								onChange={content => onChange({ content })}
 								node={node}
 								isList={isList}
 								typeOfList={typeOfList}
 							/>
 							<TextFormatCode
 								content={content}
-								onChange={(content) => onChange({ content })}
+								onChange={content => onChange({ content })}
 								node={node}
 								isList={isList}
 								typeOfList={typeOfList}
@@ -316,9 +321,9 @@ const TextOptions = props => {
 						</div>
 					</Fragment>
 				</div>
-			)}
+			}
 		/>
-	)
-}
+	);
+};
 
 export default TextOptions;

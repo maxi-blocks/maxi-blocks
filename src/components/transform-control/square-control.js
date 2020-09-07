@@ -38,6 +38,7 @@ const SquareControl = props => {
 	const [isMoving, changeIsMoving] = useState(false);
 	const [clientX, changeClientX] = useState(0);
 	const [clientY, changeClientY] = useState(0);
+	const [currentOrigin, changeCurrentOrigin] = useState('center');
 
 	const percentToPx = value => {
 		return round((value / 100) * 40, 1);
@@ -217,6 +218,9 @@ const SquareControl = props => {
 				{type === 'origin' && (
 					<div className='maxi-transform-control__square-control__canvas__origin'>
 						<Button
+							aria-pressed={
+								currentOrigin === 'left-top' ? 'active' : ''
+							}
 							className={classnames(
 								'maxi-transform-control__square-control__canvas__origin',
 								'maxi-transform-control__square-control__canvas__origin__button',
@@ -227,9 +231,13 @@ const SquareControl = props => {
 								changeXAxis('left');
 								changeYAxis('top');
 								onChange('left', 'top');
+								changeCurrentOrigin('left-top');
 							}}
 						/>
 						<Button
+							aria-pressed={
+								currentOrigin === 'center-top' ? 'active' : ''
+							}
 							className={classnames(
 								'maxi-transform-control__square-control__canvas__origin',
 								'maxi-transform-control__square-control__canvas__origin__button',
@@ -240,9 +248,13 @@ const SquareControl = props => {
 								changeXAxis('middle');
 								changeYAxis('top');
 								onChange('center', 'top');
+								changeCurrentOrigin('center-top');
 							}}
 						/>
 						<Button
+							aria-pressed={
+								currentOrigin === 'right-top' ? 'active' : ''
+							}
 							className={classnames(
 								'maxi-transform-control__square-control__canvas__origin',
 								'maxi-transform-control__square-control__canvas__origin__button',
@@ -253,9 +265,13 @@ const SquareControl = props => {
 								changeXAxis('right');
 								changeYAxis('top');
 								onChange('right', 'top');
+								changeCurrentOrigin('right-top');
 							}}
 						/>
 						<Button
+							aria-pressed={
+								currentOrigin === 'left-center' ? 'active' : ''
+							}
 							className={classnames(
 								'maxi-transform-control__square-control__canvas__origin',
 								'maxi-transform-control__square-control__canvas__origin__button',
@@ -266,9 +282,15 @@ const SquareControl = props => {
 								changeXAxis('left');
 								changeYAxis('center');
 								onChange('left', 'center');
+								changeCurrentOrigin('left-center');
 							}}
 						/>
 						<Button
+							aria-pressed={
+								currentOrigin === 'center-center'
+									? 'active'
+									: ''
+							}
 							className={classnames(
 								'maxi-transform-control__square-control__canvas__origin',
 								'maxi-transform-control__square-control__canvas__origin__button',
@@ -279,9 +301,13 @@ const SquareControl = props => {
 								changeXAxis('middle');
 								changeYAxis('center');
 								onChange('center', 'center');
+								changeCurrentOrigin('center-center');
 							}}
 						/>
 						<Button
+							aria-pressed={
+								currentOrigin === 'right-center' ? 'active' : ''
+							}
 							className={classnames(
 								'maxi-transform-control__square-control__canvas__origin',
 								'maxi-transform-control__square-control__canvas__origin__button',
@@ -292,9 +318,13 @@ const SquareControl = props => {
 								changeXAxis('right');
 								changeYAxis('center');
 								onChange('right', 'center');
+								changeCurrentOrigin('right-center');
 							}}
 						/>
 						<Button
+							aria-pressed={
+								currentOrigin === 'left-bottom' ? 'active' : ''
+							}
 							className={classnames(
 								'maxi-transform-control__square-control__canvas__origin',
 								'maxi-transform-control__square-control__canvas__origin__button',
@@ -305,9 +335,15 @@ const SquareControl = props => {
 								changeXAxis('left');
 								changeYAxis('bottom');
 								onChange('left', 'bottom');
+								changeCurrentOrigin('left-bottom');
 							}}
 						/>
 						<Button
+							aria-pressed={
+								currentOrigin === 'center-bottom'
+									? 'active'
+									: ''
+							}
 							className={classnames(
 								'maxi-transform-control__square-control__canvas__origin',
 								'maxi-transform-control__square-control__canvas__origin__button',
@@ -318,9 +354,13 @@ const SquareControl = props => {
 								changeXAxis('middle');
 								changeYAxis('bottom');
 								onChange('center', 'bottom');
+								changeCurrentOrigin('center-bottom');
 							}}
 						/>
 						<Button
+							aria-pressed={
+								currentOrigin === 'right-bottom' ? 'active' : ''
+							}
 							className={classnames(
 								'maxi-transform-control__square-control__canvas__origin',
 								'maxi-transform-control__square-control__canvas__origin__button',
@@ -331,6 +371,7 @@ const SquareControl = props => {
 								changeXAxis('right');
 								changeYAxis('bottom');
 								onChange('right', 'bottom');
+								changeCurrentOrigin('right-bottom');
 							}}
 						/>
 					</div>
@@ -348,7 +389,6 @@ const SquareControl = props => {
 					}}
 					min={getMinMax().min}
 					max={getMinMax().max}
-					orient='vertical'
 					step='.5'
 				/>
 				<div className='maxi-transform-control__square-control__y-control__value'>

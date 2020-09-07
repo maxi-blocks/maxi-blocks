@@ -1,0 +1,29 @@
+.components-column-pattern {
+	min-height: 125px;
+
+	&__icon {
+		width: 100%;
+		height: 100%;
+		path {
+			fill: #ffffff;
+			stroke: #464a53;
+			stroke-width: 4px !important;
+		}
+	}
+
+	&__template-button {
+		flex: 32%;
+		width: 32%;
+		padding: 0px 8px;
+		&:hover {
+			svg path {
+				stroke: #ff4a17 !important;
+			}
+		}
+		&[aria-pressed='true'] {
+			svg path {
+				stroke-width: 4;
+			}
+		}
+	}
+}

@@ -4,23 +4,21 @@
 const { __ } = wp.i18n;
 const { __experimentalLinkControl } = wp.blockEditor;
 const { useSelect } = wp.data;
-const {
-	toggleFormat,
-	create,
-	toHTMLString,
-	getActiveFormat,
-	registerFormatType,
-} = wp.richText;
+const { getActiveFormat } = wp.richText;
 
 /**
  * Internal dependencies
  */
+import {
+	getFormatSettings,
+	getFormattedString,
+} from '../../../../extensions/text/formats';
 import ToolbarPopover from '../toolbar-popover';
 
 /**
  * External dependencies
  */
-import { isEmpty, isNil } from 'lodash';
+import { isEmpty } from 'lodash';
 
 /**
  * Icons
@@ -29,33 +27,12 @@ import './editor.scss';
 import { toolbarLink } from '../../../../icons';
 
 /**
- * Register Format
- *
- * Not setting '__unstablePasteRule' because is returning an element with 'core/link'
- * format instead of 'maxi-blocks/text-link', even setting 'allowedFormats' without it.
- * We'll cheat a little bit later to transform 'core/link' to 'maxi-blocks/text-link', but...
- * who never cheated a little bit? lumberjack
- *
- */
-const formatName = 'maxi-blocks/text-link';
-
-registerFormatType(formatName, {
-	title: __('Link', 'maxi-blocks'),
-	tagName: 'a',
-	className: 'maxi-text-block--link',
-	attributes: {
-		url: 'href',
-		type: 'data-type',
-		id: 'data-id',
-		target: 'target',
-	},
-});
-
-/**
  * Link
  */
 const Link = props => {
 	const { blockName, content, onChange, node, isList, typeOfList } = props;
+
+	const formatName = 'maxi-blocks/text-link';
 
 	const formatElement = {
 		element: node,
@@ -65,40 +42,31 @@ const Link = props => {
 		__unstableIsEditableTree: true,
 	};
 
-	const { formatValue, isActive, formatOptions } = useSelect(
-		select => {
-			const { getSelectionStart, getSelectionEnd } = select(
-				'core/block-editor'
-			);
-			const formatValue = create(formatElement);
-			formatValue.start = getSelectionStart().offset;
-			formatValue.end = getSelectionEnd().offset;
+	const { formatValue, isActive, formatOptions } = useSelect(() => {
+		const { formatValue, isActive } = getFormatSettings(
+			formatElement,
+			formatName
+		);
 
-			/**
-			 * As '__unstablePasteRule' is not working correctly, let's do some cheats
-			 */
-			formatValue.formats = formatValue.formats.map(formatEl => {
-				return formatEl.map(format => {
-					if (format.type === 'core/link') format.type = formatName;
+		/**
+		 * As '__unstablePasteRule' is not working correctly, let's do some cheats
+		 */
+		formatValue.formats = formatValue.formats.map(formatEl => {
+			return formatEl.map(format => {
+				if (format.type === 'core/link') format.type = formatName;
 
-					return format;
-				});
+				return format;
 			});
+		});
 
-			const activeFormat = getActiveFormat(formatValue, formatName);
+		const formatOptions = getActiveFormat(formatValue, formatName);
 
-			const isActive =
-				(!isNil(activeFormat) && activeFormat.type === formatName) ||
-				false;
-
-			return {
-				formatValue,
-				isActive,
-				formatOptions: activeFormat,
-			};
-		},
-		[getActiveFormat, formatElement]
-	);
+		return {
+			formatValue,
+			isActive,
+			formatOptions,
+		};
+	}, [getActiveFormat, formatElement]);
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
@@ -156,25 +124,13 @@ const Link = props => {
 		return format;
 	};
 
-	const formatChecker = format => {
-		if (!isActive && format.start === format.end) {
-			format.start = 0;
-			format.end = content.length;
-		}
-
-		return format;
-	};
-
 	const onClick = attributes => {
-		const newAttribute = createLinkAttribute(attributes);
-		const newFormat = toggleFormat(
-			formatChecker(formatValue),
-			newAttribute
-		);
-
-		const newContent = toHTMLString({
-			value: newFormat,
-			multilineTag: isList ? 'li' : null,
+		const newContent = getFormattedString({
+			formatValue,
+			formatName,
+			isActive,
+			isList,
+			attributes: createLinkAttribute(attributes),
 		});
 
 		onChange(newContent);

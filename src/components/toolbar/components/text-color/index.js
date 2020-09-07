@@ -4,13 +4,7 @@
 const { __ } = wp.i18n;
 const { ColorPicker, Icon } = wp.components;
 const { useSelect } = wp.data;
-const {
-	toggleFormat,
-	create,
-	toHTMLString,
-	getActiveFormat,
-	registerFormatType,
-} = wp.richText;
+const { toggleFormat, create, toHTMLString, getActiveFormat } = wp.richText;
 
 /**
  * Internal dependencies
@@ -30,21 +24,6 @@ import './editor.scss';
 import { toolbarType } from '../../../../icons';
 
 /**
- * Register format
- */
-const formatName = 'maxi-blocks/text-color';
-
-registerFormatType(formatName, {
-	title: __('Text color', 'maxi-blocks'),
-	tagName: 'span',
-	className: 'maxi-text-block--has-text-color',
-	attributes: {
-		color: 'color',
-		style: 'style',
-	},
-});
-
-/**
  * TextColor
  */
 const TextColor = props => {
@@ -58,6 +37,8 @@ const TextColor = props => {
 		isList,
 		typeOfList,
 	} = props;
+
+	const formatName = 'maxi-blocks/text-color';
 
 	const formatElement = {
 		element: node,

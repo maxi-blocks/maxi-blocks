@@ -694,3 +694,35 @@ export const setBackgroundStyles = (target, background, backgroundHover) => {
 		},
 	};
 };
+
+export const setTextCustomFormats = (target, typography, typographyHover) => {
+	let response = {};
+
+	const { customFormats } = JSON.parse(typography);
+	const { customFormatsHover } = JSON.parse(typographyHover);
+
+	Object.entries(customFormats).forEach(([key, value]) => {
+		target.forEach(el => {
+			const format = {
+				[`${el} .${key}`]: {
+					customFormat: value,
+				},
+			};
+
+			response = Object.assign(response, format);
+		});
+	});
+	Object.entries(customFormatsHover).forEach(([key, value]) => {
+		target.forEach(el => {
+			const format = {
+				[`${el} .${key}`]: {
+					customFormat: value,
+				},
+			};
+
+			response = Object.assign(response, format);
+		});
+	});
+
+	return response;
+};

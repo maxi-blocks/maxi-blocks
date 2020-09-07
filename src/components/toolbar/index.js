@@ -250,9 +250,7 @@ const MaxiToolbar = props => {
 								clientId,
 								'typography'
 							)}
-							onChange={typography =>
-								setAttributes({ typography })
-							}
+							onChange={obj => setAttributes(obj)}
 							node={anchorRef}
 							content={content}
 							breakpoint={deviceType}

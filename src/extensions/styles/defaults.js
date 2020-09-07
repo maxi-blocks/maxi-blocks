@@ -875,6 +875,7 @@ export const typography = {
 			alignment: '',
 		},
 	},
+	customFormats: {},
 };
 
 export const typographyHover = {
@@ -1016,6 +1017,7 @@ export const typographyHover = {
 			alignment: '',
 		},
 	},
+	customFormats: {},
 };
 
 export const margin = {

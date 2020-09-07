@@ -3,17 +3,10 @@
  */
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
-const { createBlock, getBlockAttributes } = wp.blocks;
+const { createBlock } = wp.blocks;
 const { dispatch, select } = wp.data;
-const {
-	__unstableIndentListItems,
-	__unstableOutdentListItems,
-} = wp.richText;
-const {
-	__experimentalBlock,
-	RichText,
-	RichTextShortcut
-} = wp.blockEditor;
+const { __unstableIndentListItems, __unstableOutdentListItems } = wp.richText;
+const { __experimentalBlock, RichText, RichTextShortcut } = wp.blockEditor;
 
 /**
  * Internal dependencies
@@ -26,6 +19,7 @@ import {
 	getOpacityObject,
 	getTransformObject,
 	setBackgroundStyles,
+	setTextCustomFormats,
 } from '../../utils';
 import {
 	MaxiBlock,
@@ -44,20 +38,41 @@ import { isEmpty } from 'lodash';
  */
 class edit extends MaxiBlock {
 	get getObject() {
-		const { uniqueID, background, backgroundHover } = this.props.attributes;
+		const {
+			uniqueID,
+			background,
+			backgroundHover,
+			typography,
+			typographyHover,
+		} = this.props.attributes;
 
 		let response = {
 			[uniqueID]: this.getNormalObject,
 			[`${uniqueID}:hover`]: this.getHoverObject,
 			[`${uniqueID} .maxi-text-block__content`]: this.getTypographyObject,
-			[`${uniqueID} .maxi-text-block__content:hover`]: this.getTypographyHoverObject,
-			[`${uniqueID} .maxi-text-block__content li`]: this.getTypographyObject,
-			[`${uniqueID} .maxi-text-block__content li:hover`]: this.getTypographyHoverObject,
-		}
+			[`${uniqueID} .maxi-text-block__content:hover`]: this
+				.getTypographyHoverObject,
+			[`${uniqueID} .maxi-text-block__content li`]: this
+				.getTypographyObject,
+			[`${uniqueID} .maxi-text-block__content li:hover`]: this
+				.getTypographyHoverObject,
+		};
 
 		response = Object.assign(
 			response,
 			setBackgroundStyles(uniqueID, background, backgroundHover)
+		);
+
+		response = Object.assign(
+			response,
+			setTextCustomFormats(
+				[
+					`${uniqueID} .maxi-text-block__content`,
+					`${uniqueID} .maxi-text-block__content li`,
+				],
+				typography,
+				typographyHover
+			)
 		);
 
 		return response;
@@ -157,7 +172,7 @@ class edit extends MaxiBlock {
 			isSelected,
 			setAttributes,
 			onRemove,
-			clientId
+			clientId,
 		} = this.props;
 
 		const name = 'maxi-blocks/text-maxi';
@@ -177,7 +192,7 @@ class edit extends MaxiBlock {
 			getBlockRootClientId,
 			getNextBlockClientId,
 			getPreviousBlockClientId,
-			getBlockAttributes
+			getBlockAttributes,
 		} = select('core/block-editor');
 
 		const {
@@ -187,149 +202,130 @@ class edit extends MaxiBlock {
 			updateBlockAttributes,
 		} = dispatch('core/block-editor');
 
-		const onReplace = (blocks) => {
+		const onReplace = blocks => {
 			const currentBlocks = blocks.filter(item => !!item);
 
 			if (isEmpty(currentBlocks)) {
-				insertBlock(createBlock(
-					name,
-					getBlockAttributes(name)
-				));
+				insertBlock(createBlock(name, getBlockAttributes(name)));
 				return;
 			}
 
-			currentBlocks.map((block, i) => {
-				console.log(block)
+			currentBlocks.forEach((block, i) => {
 				let newBlock = {};
 
 				switch (block.name) {
 					case 'core/list':
-						newBlock = createBlock(
-							name,
-							{
-								...this.props.attributes,
-								textLevel: 'ul',
-								content: block.attributes.values,
-								isList: true,
-							}
-						);
+						newBlock = createBlock(name, {
+							...this.props.attributes,
+							textLevel: 'ul',
+							content: block.attributes.values,
+							isList: true,
+						});
 						break;
 					case 'core/image':
-						newBlock = createBlock(
-							'maxi-blocks/image-maxi',
-							{
-								...getBlockAttributes('maxi-blocks/image-maxi'),
-								mediaURL: block.attributes.url,
-								altSelector: 'custom',
-								mediaALT: block.attributes.alt,
-								captionType: !isEmpty(block.attributes.caption) && 'custom' || 'none',
-								captionContent: block.attributes.caption
-							}
-						);
+						newBlock = createBlock('maxi-blocks/image-maxi', {
+							...getBlockAttributes('maxi-blocks/image-maxi'),
+							mediaURL: block.attributes.url,
+							altSelector: 'custom',
+							mediaALT: block.attributes.alt,
+							captionType:
+								(!isEmpty(block.attributes.caption) &&
+									'custom') ||
+								'none',
+							captionContent: block.attributes.caption,
+						});
 						break;
-					case 'core/heading':
+					case 'core/heading': {
 						const headingLevel = block.attributes.level;
-						const headingTypography = JSON.stringify(Object.assign(JSON.parse(typography), defaultTypography[`h${headingLevel}`]));
-						newBlock = createBlock(
-							name,
-							{
-								...this.props.attributes,
-								textLevel: `h${headingLevel}`,
-								content: block.attributes.content,
-								typography: headingTypography,
-								isList: false
-							}
+						const headingTypography = JSON.stringify(
+							Object.assign(
+								JSON.parse(typography),
+								defaultTypography[`h${headingLevel}`]
+							)
 						);
+						newBlock = createBlock(name, {
+							...this.props.attributes,
+							textLevel: `h${headingLevel}`,
+							content: block.attributes.content,
+							typography: headingTypography,
+							isList: false,
+						});
 						break;
+					}
 					case 'core/paragraph':
-						newBlock = createBlock(
-							name,
-							{
-								...this.props.attributes,
-								content: block.attributes.content,
-							}
-						);
+						newBlock = createBlock(name, {
+							...this.props.attributes,
+							content: block.attributes.content,
+						});
 						break;
 					case 'maxi-blocks/text-maxi':
 						if (block.attributes.isList) {
-							newBlock = createBlock(
-								name,
-								{
-									...block.attributes
-								}
-							);
-						}
-						else {
-							newBlock = createBlock(
-								name,
-								{
-									...this.props.attributes,
-									content: block.attributes.content,
-									isList: false
-								}
-							)
+							newBlock = createBlock(name, {
+								...block.attributes,
+							});
+						} else {
+							newBlock = createBlock(name, {
+								...this.props.attributes,
+								content: block.attributes.content,
+								isList: false,
+							});
 						}
 						break;
 					default:
 						newBlock = block;
 						break;
-				};
+				}
 
-				insertBlock(newBlock, getBlockIndex(clientId), getBlockRootClientId(clientId))
+				insertBlock(
+					newBlock,
+					getBlockIndex(clientId),
+					getBlockRootClientId(clientId)
+				);
 
-				i === currentBlocks.length - 1 &&
-					selectBlock(block.clientId);
-			})
+				i === currentBlocks.length - 1 && selectBlock(block.clientId);
+			});
 
 			removeBlock(clientId);
-		}
+		};
 
 		const onMerge = forward => {
 			if (forward) {
-				const nextBlockClientId = getNextBlockClientId(
-					clientId
-				);
+				const nextBlockClientId = getNextBlockClientId(clientId);
 
-				if (!!nextBlockClientId) {
+				if (nextBlockClientId) {
 					const nextBlockAttributes = getBlockAttributes(
 						nextBlockClientId
-					)
+					);
 					const nextBlockContent = nextBlockAttributes.content;
 
-					setAttributes(
-						{
-							content: content.concat(nextBlockContent)
-						}
-					)
+					setAttributes({
+						content: content.concat(nextBlockContent),
+					});
 
-					removeBlock(nextBlockClientId)
+					removeBlock(nextBlockClientId);
 				}
-			}
-			else {
+			} else {
 				const previousBlockClientId = getPreviousBlockClientId(
 					clientId
 				);
 
 				if (!previousBlockClientId) {
-					removeBlock(clientId)
-				}
-				else {
+					removeBlock(clientId);
+				} else {
 					const previousBlockAttributes = getBlockAttributes(
 						previousBlockClientId
-					)
-					const previousBlockContent = previousBlockAttributes.content;
+					);
+					const previousBlockContent =
+						previousBlockAttributes.content;
 
-					updateBlockAttributes(
-						previousBlockClientId,
-						{
-							content: previousBlockContent.concat(content)
-						}
-					)
+					updateBlockAttributes(previousBlockClientId, {
+						content: previousBlockContent.concat(content),
+					});
 
-					removeBlock(clientId)
+					removeBlock(clientId);
 				}
 			}
-		}
+		};
 
 		return [
 			<Inspector {...this.props} />,
@@ -339,11 +335,8 @@ class edit extends MaxiBlock {
 				data-maxi_initial_block_class={defaultBlockStyle}
 				data-align={fullWidth}
 			>
-				<__experimentalBackgroundDisplayer
-					background={background}
-				/>
-				{
-					!isList &&
+				<__experimentalBackgroundDisplayer background={background} />
+				{!isList && (
 					<RichText
 						className='maxi-text-block__content'
 						value={content}
@@ -362,23 +355,23 @@ class edit extends MaxiBlock {
 						onReplace={onReplace}
 						onMerge={onMerge}
 						onRemove={onRemove}
-						placeholder={__('Set your Maxi Text here...', 'maxi-blocks')}
+						placeholder={__(
+							'Set your Maxi Text here…',
+							'maxi-blocks'
+						)}
 						keepPlaceholderOnFocus
 						__unstableEmbedURLOnPaste
 						__unstableAllowPrefixTransformations
-						allowedFormats={
-							getFormatTypes().filter(format => {
-								return format.name != "core/link";
-							})
-						}
+						allowedFormats={getFormatTypes().filter(format => {
+							return format.name !== 'core/link';
+						})}
 					/>
-				}
-				{
-					isList &&
+				)}
+				{isList && (
 					<RichText
 						className='maxi-text-block__content'
-						identifier="content"
-						multiline="li"
+						identifier='content'
+						multiline='li'
 						__unstableMultilineRootTag={typeOfList}
 						tagName={typeOfList}
 						onChange={content => setAttributes({ content })}
@@ -389,7 +382,7 @@ class edit extends MaxiBlock {
 							if (!value) {
 								return createBlock(name, {
 									...this.props.attributes,
-									isList: false
+									isList: false,
 								});
 							}
 
@@ -398,62 +391,73 @@ class edit extends MaxiBlock {
 								content: value,
 							});
 						}}
-						__unstableOnSplitMiddle={() => createBlock('maxi-blocks/text-maxi')}
+						__unstableOnSplitMiddle={() =>
+							createBlock('maxi-blocks/text-maxi')
+						}
 						onReplace={onReplace}
 						onRemove={onRemove}
 						start={listStart}
 						reversed={!!listReversed}
 						type={typeOfList}
-						allowedFormats={
-							getFormatTypes().filter(format => {
-								return format.name != "core/link";
-							})
-						}
+						allowedFormats={getFormatTypes().filter(format => {
+							return format.name !== 'core/link';
+						})}
 					>
-						{
-							({ value, onChange }) => {
-								if (isSelected)
-									return (
-										<Fragment>
-											<RichTextShortcut
-												type="primary"
-												character="["
-												onUse={() => {
-													onChange(__unstableOutdentListItems(value));
-												}}
-											/>
-											<RichTextShortcut
-												type="primary"
-												character="]"
-												onUse={() => {
-													onChange(
-														__unstableIndentListItems(value, { type: typeOfList })
-													);
-												}}
-											/>
-											<RichTextShortcut
-												type="primary"
-												character="m"
-												onUse={() => {
-													onChange(
-														__unstableIndentListItems(value, { type: typeOfList })
-													);
-												}}
-											/>
-											<RichTextShortcut
-												type="primaryShift"
-												character="m"
-												onUse={() => {
-													onChange(__unstableOutdentListItems(value));
-												}}
-											/>
-										</Fragment>
-									)
-							}
+						{({ value, onChange }) =>
+							isSelected && (
+								<Fragment>
+									<RichTextShortcut
+										type='primary'
+										character='['
+										onUse={() => {
+											onChange(
+												__unstableOutdentListItems(
+													value
+												)
+											);
+										}}
+									/>
+									<RichTextShortcut
+										type='primary'
+										character=']'
+										onUse={() => {
+											onChange(
+												__unstableIndentListItems(
+													value,
+													{ type: typeOfList }
+												)
+											);
+										}}
+									/>
+									<RichTextShortcut
+										type='primary'
+										character='m'
+										onUse={() => {
+											onChange(
+												__unstableIndentListItems(
+													value,
+													{ type: typeOfList }
+												)
+											);
+										}}
+									/>
+									<RichTextShortcut
+										type='primaryShift'
+										character='m'
+										onUse={() => {
+											onChange(
+												__unstableOutdentListItems(
+													value
+												)
+											);
+										}}
+									/>
+								</Fragment>
+							)
 						}
 					</RichText>
-				}
-			</__experimentalBlock>
+				)}
+			</__experimentalBlock>,
 		];
 	}
 }

@@ -10,7 +10,7 @@ const { select, useSelect, useDispatch } = wp.data;
 /**
  * Internal dependencies
  */
-import TEMPLATES from '../../../../extensions/defaults/column-templates';
+import { TEMPLATES } from '../../../../extensions/defaults/column-templates';
 import ToolbarPopover from '../toolbar-popover';
 
 /**

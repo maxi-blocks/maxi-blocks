@@ -4,7 +4,7 @@ import { useState } from '@wordpress/element';
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-
+const { Fragment } = wp.element;
 const { synchronizeBlocksWithTemplate } = wp.blocks;
 const { useInstanceId } = wp.compose;
 const { Icon, Button } = wp.components;
@@ -13,7 +13,10 @@ const { select, useSelect, useDispatch } = wp.data;
 /**
  * Internal dependencies
  */
-import TEMPLATES from '../../extensions/defaults/column-templates';
+import {
+	TEMPLATES,
+	RESPONSIVE_TEMPLATES,
+} from '../../extensions/defaults/column-templates';
 
 import SizeControl from '../size-control';
 
@@ -36,7 +39,7 @@ const ColumnPatternsInspector = props => {
 	const { clientId, blockName, rowPattern, onChange } = props;
 
 	const [numCol, setNumCol] = useState(1);
-	const [FILTERED_TEMPLATES, setFilterdTemplates] = useState([TEMPLATES[0]]);
+	const [FILTERED_TEMPLATES, setFilterdTemplates] = useState([]);
 
 	const instanceId = useInstanceId(ColumnPatternsInspector);
 
@@ -177,16 +180,32 @@ const ColumnPatternsInspector = props => {
 				setFilterdTemplates(TEMPLATES.slice(1, 5));
 				break;
 			case 3:
-				setFilterdTemplates(TEMPLATES.slice(5, 12));
+				setFilterdTemplates(
+					TEMPLATES.slice(5, 12).concat(
+						RESPONSIVE_TEMPLATES.slice(0, 2)
+					)
+				);
 				break;
 			case 4:
-				setFilterdTemplates(TEMPLATES.slice(12, 13));
+				setFilterdTemplates(
+					TEMPLATES.slice(12, 13).concat(
+						RESPONSIVE_TEMPLATES.slice(2, 7)
+					)
+				);
 				break;
 			case 5:
-				setFilterdTemplates(TEMPLATES.slice(13, 14));
+				setFilterdTemplates(
+					TEMPLATES.slice(13, 14).concat(
+						RESPONSIVE_TEMPLATES.slice(7, 11)
+					)
+				);
 				break;
 			case 6:
-				setFilterdTemplates(TEMPLATES.slice(14, 15));
+				setFilterdTemplates(
+					TEMPLATES.slice(14, 15).concat(
+						RESPONSIVE_TEMPLATES.slice(11)
+					)
+				);
 				break;
 			default:
 				break;
@@ -194,7 +213,7 @@ const ColumnPatternsInspector = props => {
 	};
 
 	return (
-		<div className=''>
+		<Fragment>
 			<div>
 				<SizeControl
 					label={__('Columns', 'maxi-blocks')}
@@ -231,7 +250,7 @@ const ColumnPatternsInspector = props => {
 					);
 				})}
 			</div>
-		</div>
+		</Fragment>
 	);
 };
 

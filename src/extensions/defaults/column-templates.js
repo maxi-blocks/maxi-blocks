@@ -141,7 +141,7 @@ const generateDefaultColumns = (columns, gap1 = 2.5, gap2 = 2.1) => {
 /**
  * Templates
  */
-const TEMPLATES = [
+export const TEMPLATES = [
 	{
 		name: '1',
 		icon: oneColumn,
@@ -284,8 +284,12 @@ const TEMPLATES = [
 			verticalAlign: 'stretch',
 		},
 	},
+];
 
-	// Stacked Layouts
+/**
+ * Responsive Templates: templates for tablets and phones
+ */
+export const RESPONSIVE_TEMPLATES = [
 	{
 		name: '1-1-2',
 		icon: oneOneTwo,
@@ -331,7 +335,6 @@ const TEMPLATES = [
 			verticalAlign: 'stretch',
 		},
 	},
-
 	{
 		name: '2-2-1-1',
 		icon: twoTwoOneOne,
@@ -406,5 +409,3 @@ const TEMPLATES = [
 		},
 	},
 ];
-
-export default TEMPLATES;

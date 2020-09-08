@@ -3,7 +3,6 @@
  */
 const { __, sprintf } = wp.i18n;
 const { Fragment } = wp.element;
-const { getBlockAttributes } = wp.blocks;
 const { Button, BaseControl } = wp.components;
 const { useSelect } = wp.data;
 const { getActiveFormat } = wp.richText;
@@ -43,6 +42,7 @@ const TextOptions = props => {
 	const {
 		blockName,
 		typography,
+		defaultTypography,
 		onChange,
 		node,
 		content,
@@ -50,9 +50,6 @@ const TextOptions = props => {
 		isList,
 		typeOfList,
 	} = props;
-
-	const defaultRawTypography = getBlockAttributes('maxi-blocks/text-maxi')
-		.typography; // ??
 
 	const formatName = 'maxi-blocks/text-size';
 
@@ -87,10 +84,10 @@ const TextOptions = props => {
 	const value =
 		(!isObject(typography) && JSON.parse(typography)) || typography;
 
-	const defaultTypography =
-		(typeof defaultRawTypography !== 'object' &&
-			JSON.parse(defaultRawTypography)) ||
-		defaultRawTypography;
+	const defaultValue =
+		(typeof defaultTypography !== 'object' &&
+			JSON.parse(defaultTypography)) ||
+		defaultTypography;
 
 	const updateTypography = () => {
 		onChange({ typography: JSON.stringify(value), content });
@@ -181,7 +178,7 @@ const TextOptions = props => {
 							className='components-maxi-control__reset-button'
 							onClick={() => {
 								value[breakpoint]['font-family'] =
-									defaultTypography.font;
+									defaultValue.font;
 								updateTypography();
 							}}
 							isSmall
@@ -225,9 +222,7 @@ const TextOptions = props => {
 								className='components-maxi-control__reset-button'
 								onClick={() => {
 									value[breakpoint]['font-size'] =
-										defaultTypography[breakpoint][
-											'font-size'
-										];
+										defaultValue[breakpoint]['font-size'];
 									onChangeSize(null);
 								}}
 								isSmall
@@ -267,9 +262,7 @@ const TextOptions = props => {
 								className='components-maxi-control__reset-button'
 								onClick={() => {
 									value[breakpoint]['line-height'] =
-										defaultTypography[breakpoint][
-											'line-height'
-										];
+										defaultValue[breakpoint]['line-height'];
 									updateTypography();
 								}}
 								isSmall
@@ -309,7 +302,7 @@ const TextOptions = props => {
 								className='components-maxi-control__reset-button'
 								onClick={() => {
 									value[breakpoint]['letter-spacing'] =
-										defaultTypography[breakpoint][
+										defaultValue[breakpoint][
 											'letter-spacing'
 										];
 									updateTypography();

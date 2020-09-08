@@ -183,10 +183,12 @@
 			right: 0;
 			display: flex;
 			align-items: flex-end;
+			width: 69px;
 
 			.components-maxi-control__reset-button {
 				width: 31px;
 				height: 31px;
+				margin: 0;
 			}
 			button[type='button'] {
 				border: 2px solid #dddfe1;
@@ -197,6 +199,7 @@
 				display: inline-flex;
 				align-items: center;
 				justify-content: center;
+				margin-right: 5px;
 				&[aria-pressed='true'] {
 					background: #f2f2f2 !important;
 				}

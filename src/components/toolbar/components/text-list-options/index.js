@@ -91,7 +91,7 @@ const TextListOptions = props => {
 			multilineTag: 'li',
 		});
 
-		onChange(true, typeOfList, newContent);
+		onChange({ isList: true, typeOfList, content: newContent });
 	};
 
 	const onChangeList = type => {

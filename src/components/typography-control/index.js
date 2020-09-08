@@ -125,7 +125,14 @@ const TypographyControl = props => {
 	};
 
 	const getDefault = prop => {
-		if (textLevel === 'p') return defaultValue[breakpoint][prop];
+		const sameDefaultLevels = ['p', 'ul', 'ol'];
+		if (
+			sameDefaultLevels.some(level => {
+				return level === textLevel;
+			})
+		)
+			return defaultValue[breakpoint][prop];
+
 		return defaultTypographies[textLevel][breakpoint][prop];
 	};
 

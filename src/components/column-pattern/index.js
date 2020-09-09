@@ -145,7 +145,8 @@ const ColumnPatternsInspector = props => {
 		const currentAttributes = getCurrentAttributes(innerBlocks);
 
 		const template = cloneDeep(DISPLAYED_TEMPLATES[i]);
-		const { sizes } = DISPLAYED_TEMPLATES[i];
+
+		/* const { sizes } = DISPLAYED_TEMPLATES[i]; */
 
 		template.content.forEach((column, i) => {
 			column[1].uniqueID = uniqueIdCreator();
@@ -153,13 +154,13 @@ const ColumnPatternsInspector = props => {
 			if (currentAttributes.length > i)
 				column[1] = Object.assign(currentAttributes[i], column[1]);
 
-			// Update the columns sizes
+			/* Update the columns sizes
 			const newColumnSize = JSON.parse(column[1].columnSize);
 
 			if (deviceType !== 'Desktop') {
 				newColumnSize[deviceType].size = sizes[i] * 100;
 			}
-			column[1].columnSize = JSON.stringify(newColumnSize);
+			column[1].columnSize = JSON.stringify(newColumnSize); */
 		});
 
 		const newAttributes = Object.assign(
@@ -180,6 +181,37 @@ const ColumnPatternsInspector = props => {
 		);
 
 		replaceInnerBlocks(clientId, newTemplate, false);
+	};
+
+	/**
+	 * Update Columns Sizes
+	 *
+	 * @param {integer} i Element of object DISPLAYED_TEMPLATES
+	 * @param {Function} callback
+	 */
+	const updateTemplate = i => {
+		const { getBlock } = select('core/block-editor');
+
+		// Get Current Columns in the editor
+		const columnsBlockObjects = getBlock(clientId).innerBlocks;
+
+		// New Column Sizes
+		const { sizes } = DISPLAYED_TEMPLATES[i];
+
+		// Update the columns Attributes with the new sizes
+		for (const [j, block] of columnsBlockObjects.entries()) {
+			const columnClientId = block.clientId;
+			const columnAttributes = block.attributes;
+
+			// Update Column Attribute
+			const newColumnSize = JSON.parse(columnAttributes.columnSize);
+			newColumnSize[deviceType].size = sizes[j] * 100;
+
+			columnAttributes.columnSize = JSON.stringify(newColumnSize);
+
+			// Update the column attributes
+			updateBlockAttributes(columnClientId, columnAttributes);
+		}
 	};
 	return (
 		<Fragment>
@@ -206,7 +238,12 @@ const ColumnPatternsInspector = props => {
 							className='components-column-pattern__template-button'
 							aria-pressed={rowPattern === i}
 							onClick={() => {
-								loadTemplate(i);
+								if (deviceType === 'Desktop') {
+									loadTemplate(i);
+								} else {
+									updateTemplate(i);
+								}
+
 								onChange(i);
 							}}
 						>

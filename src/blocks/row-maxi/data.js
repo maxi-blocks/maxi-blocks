@@ -2,24 +2,24 @@
 export const rowPattern = {
 	label: 'Row Pattern',
 	general: {
-		rowPattern: null,
+		rowPattern: '',
 	},
 	xxl: {
-		rowPattern: null,
+		rowPattern: '',
 	},
 	xl: {
-		rowPattern: null,
+		rowPattern: '',
 	},
 	l: {
-		rowPattern: null,
+		rowPattern: '',
 	},
 	m: {
-		rowPattern: null,
+		rowPattern: '',
 	},
 	s: {
-		rowPattern: null,
+		rowPattern: '',
 	},
 	xs: {
-		rowPattern: null,
+		rowPattern: '',
 	},
 };

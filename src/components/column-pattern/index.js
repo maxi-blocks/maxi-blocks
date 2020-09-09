@@ -146,21 +146,11 @@ const ColumnPatternsInspector = props => {
 
 		const template = cloneDeep(DISPLAYED_TEMPLATES[i]);
 
-		/* const { sizes } = DISPLAYED_TEMPLATES[i]; */
-
 		template.content.forEach((column, i) => {
 			column[1].uniqueID = uniqueIdCreator();
 
 			if (currentAttributes.length > i)
 				column[1] = Object.assign(currentAttributes[i], column[1]);
-
-			/* Update the columns sizes
-			const newColumnSize = JSON.parse(column[1].columnSize);
-
-			if (deviceType !== 'Desktop') {
-				newColumnSize[deviceType].size = sizes[i] * 100;
-			}
-			column[1].columnSize = JSON.stringify(newColumnSize); */
 		});
 
 		const newAttributes = Object.assign(
@@ -195,13 +185,13 @@ const ColumnPatternsInspector = props => {
 		// Get Current Columns in the editor
 		const columnsBlockObjects = getBlock(clientId).innerBlocks;
 
-		// New Column Sizes
+		// New Column Sizes Array
 		const { sizes } = DISPLAYED_TEMPLATES[i];
 
 		// Update the columns Attributes with the new sizes
-		for (const [j, block] of columnsBlockObjects.entries()) {
-			const columnClientId = block.clientId;
-			const columnAttributes = block.attributes;
+		columnsBlockObjects.forEach((column, j) => {
+			const columnClientId = column.clientId;
+			const columnAttributes = column.attributes;
 
 			// Update Column Attribute
 			const newColumnSize = JSON.parse(columnAttributes.columnSize);
@@ -211,7 +201,9 @@ const ColumnPatternsInspector = props => {
 
 			// Update the column attributes
 			updateBlockAttributes(columnClientId, columnAttributes);
-		}
+		});
+
+		replaceInnerBlocks(clientId, columnsBlockObjects);
 	};
 	return (
 		<Fragment>

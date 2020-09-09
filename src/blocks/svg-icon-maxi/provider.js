@@ -7,8 +7,6 @@
 
 import React, { createContext, Component } from 'react';
 
-const { apiFetch } = wp;
-
 export const MaxiContext = createContext({
 	layouts: '',
 	sections: '',
@@ -20,16 +18,19 @@ export default class MaxiProvider extends Component {
 		layouts: '',
 		sections: '',
 		all: '',
-	}
+	};
+
 	render() {
 		return (
-				<MaxiContext.Provider value={{
+			<MaxiContext.Provider
+				value={{
 					layouts: this.state.layouts,
 					sections: this.state.sections,
 					all: this.state.all,
-				}}>
-					{this.props.children}
-				</MaxiContext.Provider>
+				}}
+			>
+				{this.props.children}
+			</MaxiContext.Provider>
 		);
 	}
 }

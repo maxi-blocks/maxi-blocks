@@ -28,27 +28,25 @@ import save from './save';
  * Block
  */
 
-registerBlockType( 'maxi-blocks/column-maxi', {
+registerBlockType('maxi-blocks/column-maxi', {
 	title: __('Column Maxi', 'maxi-blocks'),
 	icon: imageBox,
-	description: "Stack one or more blocks, top-to-bottom (vertical)",
+	description: 'Stack one or more blocks, top-to-bottom (vertical)',
 	category: 'maxi-blocks',
 	supports: {
 		align: true,
-		lightBlockWrapper: true
-    },
+		lightBlockWrapper: true,
+	},
 	attributes: {
-		...attributes
+		...attributes,
 	},
 	parent: ['maxi-blocks/row-maxi'],
 	getEditWrapperProps(attributes) {
-        const {
-			uniqueID
-		} = attributes;
-        return {
-			'uniqueid': uniqueID,
-        };
-    },
+		const { uniqueID } = attributes;
+		return {
+			uniqueid: uniqueID,
+		};
+	},
 	edit,
-	save
-} );
+	save,
+});

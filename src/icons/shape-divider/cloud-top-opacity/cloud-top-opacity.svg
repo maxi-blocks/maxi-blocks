@@ -1,15 +1,15 @@
-
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none" x="0px" y="0px" width="1351px" height="148px" viewBox="0 0 1351 148">
-<defs>
-<g id="Layer1_0_FILL">
-<path fill="#000000" stroke="none" d="
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1"
+	xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none" x="0px" y="0px" width="1351px" height="148px" viewBox="0 0 1351 148">
+	<defs>
+		<g id="Layer1_0_FILL">
+			<path fill="#000000" stroke="none" d="
 M 0.05 130.1
 Q 0 131.25 0 132.45 0 133.35 0.05 134.15
 L 0.05 130.1 Z"/>
-</g>
+		</g>
 
-<g id="Layer1_1_FILL">
-<path fill="#000000" stroke="none" d="
+		<g id="Layer1_1_FILL">
+			<path fill="#000000" stroke="none" d="
 M 1350.45 130
 L 1351.65 130 1351.65 0 0.05 0 0.05 130
 Q 0.833984375 112.762109375 12.55 99.7 25.1 85.8 43.6 84
@@ -28,10 +28,10 @@ Q 1131.5 25.4 1143.55 13.3 1151.95 4.95 1162.6 2.35
 L 1183.05 2.35
 Q 1193.7 4.95 1201.95 13.3 1214.15 25.4 1214.15 42.5 1214.15 49.85 1211.45 57.05 1218.15 50.2 1226.95 46.4 1236 42.5 1245.95 42.5 1266.1 42.5 1280.3 56.7 1294.55 70.85 1294.55 90.9 1294.55 96.1 1293.55 100.6 1303.45 90.9 1317.15 90.9 1331.2 90.9 1341.2 100.9 1348.65 108.45 1350.45 118.35
 L 1350.45 130 Z"/>
-</g>
+		</g>
 
-<g id="Layer1_2_FILL">
-<path fill="#252525" fill-opacity="0.4980392156862745" stroke="none" d="
+		<g id="Layer1_2_FILL">
+			<path fill="#252525" fill-opacity="0.4980392156862745" stroke="none" d="
 M 1287.8 118.05
 Q 1288.45 117.9 1287.05 117.85 1286.95 117.8 1286.9 117.8 1287.1 118 1287.35 118.05 1287.55 118.1 1287.8 118.05
 M 1336.75 114
@@ -44,18 +44,18 @@ L 1072.35 99.9
 Q 1064.85 77.2 1075.2 62.55 1085.55 47.85 1102.4 47.8 1119.25 47.7 1131.5 56.5
 L 1138.05 61.9
 Q 1137.7 41.35 1144.85 30.15 1151.95 18.9 1162.6 16.3 1172.85 12.5 1183.05 16.3 1193.7 18.9 1199.9 29.6 1206.1 40.25 1204.3 52.15 1202.5 64 1197.25 74.85 1218.15 64.15 1226.95 60.35 1236 56.45 1245.95 56.45 1266.1 56.45 1275.1 75.1 1284.1 93.75 1284.85 108 1285 111.9 1285.5 114.3 1286.85 112.4 1303.95 109.35 1324.8 105.55 1336.75 114 Z"/>
-</g>
-</defs>
+		</g>
+	</defs>
 
-<g transform="matrix( 1, 0, 0, 1, 0,0) ">
-<use xlink:href="#Layer1_0_FILL"/>
-</g>
+	<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+		<use xlink:href="#Layer1_0_FILL"/>
+	</g>
 
-<g transform="matrix( 1, 0, 0, 1, 0,0) ">
-<use xlink:href="#Layer1_1_FILL"/>
-</g>
+	<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+		<use xlink:href="#Layer1_1_FILL"/>
+	</g>
 
-<g transform="matrix( 1, 0, 0, 1, 0,0) ">
-<use xlink:href="#Layer1_2_FILL"/>
-</g>
+	<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+		<use xlink:href="#Layer1_2_FILL"/>
+	</g>
 </svg>

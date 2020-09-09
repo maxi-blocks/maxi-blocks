@@ -1,52 +1,51 @@
 .maxi-mediauploader-control {
-    position: relative;
-    margin-bottom: 8px;
-
-    &__image,
-    &__video {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        align-items: center;
-        &:last-child {
-            margin-right: 0;
-        }
-    }
-    .components-button:not(.maxi-mediauploader-control__preview) {
-        flex: 1;
-        margin: 0 10px 0 0;
-        display: block;
-        text-align: center;
-        box-shadow: none !important;
-        border: 2px solid #dddfe2;
-        border-radius: 5px;
-        color: #464a53;
-        transition: all 0.5s;
-        &.is-destructive {
-            color: #cc1818;
-        }
-        &:hover {
-            border: 2px solid #dddfe2;
-            color: #464a53;
-            background-color: #f2f2f2;
-        }
-    }
-    &__toggle {
-        display: block;
-        width: 100%;
-        min-height: 90px;
-        background-color: #f0f0f0;
-        line-height: 20px;
-        border-radius: 2px;
-        padding: 8px 0;
-        text-align: center;
-    }
-    &__preview {
-        display: block;
-        width: 100%;
-        height: auto;
-        padding: 0;
-        transition: all 0.1s ease-out;
-        margin-bottom: 10px;
-    }
+	position: relative;
+	margin-bottom: 8px;
+	&__image,
+	&__video {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		align-items: center;
+		&:last-child {
+			margin-right: 0;
+		}
+	}
+	.components-button:not(.maxi-mediauploader-control__preview) {
+		flex: 1;
+		margin: 0 10px 0 0;
+		display: block;
+		text-align: center;
+		box-shadow: none !important;
+		border: 2px solid #dddfe2;
+		border-radius: 5px;
+		color: #464a53;
+		transition: all 0.5s;
+		&.is-destructive {
+			color: #cc1818;
+		}
+		&:hover {
+			border: 2px solid #dddfe2;
+			color: #464a53;
+			background-color: #f2f2f2;
+		}
+	}
+	&__toggle {
+		display: block;
+		width: 100%;
+		min-height: 90px;
+		background-color: #f0f0f0;
+		line-height: 20px;
+		border-radius: 2px;
+		padding: 8px 0;
+		text-align: center;
+	}
+	&__preview {
+		display: block;
+		width: 100%;
+		height: auto;
+		padding: 0;
+		transition: all 0.1s ease-out;
+		margin-bottom: 10px;
+	}
 }

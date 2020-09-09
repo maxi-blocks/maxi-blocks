@@ -1,24 +1,24 @@
 {
-    "label": "Alignment",
-    "general": {
-        "alignment": "left"
-    },
-    "xxl": {
-        "alignment": ""
-    },
-    "xl": {
-        "alignment": ""
-    },
-    "l": {
-        "alignment": ""
-    },
-    "m": {
-        "alignment": ""
-    },
-    "s": {
-        "alignment": ""
-    },
-    "xs": {
-        "alignment": ""
-    }
+	"label": "Alignment",
+	"general": {
+		"alignment": "left"
+	},
+	"xxl": {
+		"alignment": ""
+	},
+	"xl": {
+		"alignment": ""
+	},
+	"l": {
+		"alignment": ""
+	},
+	"m": {
+		"alignment": ""
+	},
+	"s": {
+		"alignment": ""
+	},
+	"xs": {
+		"alignment": ""
+	}
 }

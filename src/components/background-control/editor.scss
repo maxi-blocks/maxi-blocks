@@ -1,0 +1,37 @@
+.maxi-background-control {
+	.maxi-mediauploader-control {
+		&__replace {
+			display: none;
+		}
+		.maxi-background-control__image-edit,
+		.maxi-background-control__done-edition,
+		&__remove {
+			display: block;
+			position: absolute;
+			top: 100%;
+			transform: translateY(calc(-100% - 20px));
+			width: 40%;
+			height: 2rem;
+			background: #fff;
+			border: 1px solid #dddfe1;
+			border-radius: 2px;
+			box-shadow: none;
+			outline: none;
+			color: #000 !important;
+			font-size: 13px;
+			text-align: center;
+			text-decoration: none;
+			&:hover {
+				outline: none;
+				box-shadow: none;
+			}
+		}
+		.maxi-background-control__done-edition,
+		.maxi-background-control__image-edit {
+			right: 5%;
+		}
+		&__remove {
+			left: 5%;
+		}
+	}
+}

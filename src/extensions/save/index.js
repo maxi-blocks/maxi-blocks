@@ -21,7 +21,7 @@ const allowedBlocks = [
 /**
  * Add hyperlink element on Maxi Blocks with toolbar link activated
  *
- * @param {object} BlockSave Original saved object.
+ * @param {Object} BlockSave Original saved object.
  * @return {string} Wrapped component.
  */
 
@@ -34,30 +34,23 @@ const withSave = (element, blockType, attributes) => {
 		const linkSettings = JSON.parse(attributes.linkSettings);
 
 		let rel = '';
-		if(linkSettings.nofollow)
-			rel += ' nofollow';
-		if(linkSettings.sponsored)
-			rel += ' sponsored';
-		if(linkSettings.ugc)
-			rel += ' ugc';
+		if (linkSettings.nofollow) rel += ' nofollow';
+		if (linkSettings.sponsored) rel += ' sponsored';
+		if (linkSettings.ugc) rel += ' ugc';
 
 		return (
 			<a
-				className="maxi-link-wrapper"
+				className='maxi-link-wrapper'
 				href={linkSettings.url}
-				target={!!linkSettings.opensInNewTab ? '_blank' : '_self'}
+				target={linkSettings.opensInNewTab ? '_blank' : '_self'}
 				rel={rel}
 			>
 				{element}
 			</a>
-		)
+		);
 	}
 
 	return element;
-}
+};
 
-addFilter(
-	'blocks.getSaveElement',
-	'maxi-blocks/save',
-	withSave
-);
+addFilter('blocks.getSaveElement', 'maxi-blocks/save', withSave);

@@ -19,39 +19,28 @@ import { isObject } from 'lodash';
  * Component
  */
 const ZIndexControl = props => {
-    const {
-        zIndex,
-        defaultZIndex,
-        onChange,
-        className,
-        breakpoint
-    } = props;
+	const { zIndex, defaultZIndex, onChange, className, breakpoint } = props;
 
-    const classes = classnames(
-        'maxi-zIndex-control',
-        className
-    )
+	const classes = classnames('maxi-zIndex-control', className);
 
-    const value = !isObject(zIndex) ?
-        JSON.parse(zIndex) :
-        zIndex;
+	const value = !isObject(zIndex) ? JSON.parse(zIndex) : zIndex;
 
-    const defaultValue = !isObject(defaultZIndex) ?
-        JSON.parse(defaultZIndex) :
-        defaultZIndex;
+	const defaultValue = !isObject(defaultZIndex)
+		? JSON.parse(defaultZIndex)
+		: defaultZIndex;
 
-    return (
-        <__experimentalNumberControl
-            label={__('Z-index', 'maxi-blocks')}
-            className={classes}
-            value={getLastBreakpointValue(value, 'z-index', breakpoint)}
-            defaultValue={defaultValue[breakpoint]['z-index']}
-            onChange={val => {
-                value[breakpoint]['z-index'] = val;
-                onChange(JSON.stringify(value))
-            }}
-        />
-    )
-}
+	return (
+		<__experimentalNumberControl
+			label={__('Z-index', 'maxi-blocks')}
+			className={classes}
+			value={getLastBreakpointValue(value, 'z-index', breakpoint)}
+			defaultValue={defaultValue[breakpoint]['z-index']}
+			onChange={val => {
+				value[breakpoint]['z-index'] = val;
+				onChange(JSON.stringify(value));
+			}}
+		/>
+	);
+};
 
 export default ZIndexControl;

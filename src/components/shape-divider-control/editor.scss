@@ -1,46 +1,45 @@
 .maxi-shapedividercontrol {
+	&__shape-list {
+		.components-radio-control {
+			&__input {
+				display: none;
+			}
+			&__option {
+				margin-bottom: 0;
+				display: block;
 
-    &__shape-list {
-        .components-radio-control {
-            &__input {
-                display: none;
-            }
-            &__option {
-                margin-bottom: 0;
-                display: block;
+				label {
+					display: block;
+					padding: 10px;
+					margin-bottom: 5px;
+				}
+				input {
+					&:checked ~ label {
+						background: #eee;
+					}
+				}
+				&:hover {
+					background: #eee;
+				}
+			}
+		}
+	}
+	&__shape-selector {
+		width: 100%;
+		margin-bottom: 10px;
 
-                label {
-                    display: block;
-                    padding: 10px;
-                    margin-bottom: 5px;
-                }
-                input {
-                    &:checked ~ label {
-                        background: #eee;
-                    }
-                }
-                &:hover {
-                    background: #eee;
-                }
-            }
-        }
-    }
-    &__shape-selector {
-        width: 100%;
-        margin-bottom: 10px;
+		&__display {
+			display: block;
+			border: 2px solid #ebeced;
+			background-color: #fff;
+			border-radius: 5px;
+			width: 100%;
+			padding: 8px 0;
+			text-align: center;
 
-        &__display {
-            display: block;
-            border: 2px solid #ebeced;
-            background-color: #fff;
-            border-radius: 5px;
-            width: 100%;
-            padding: 8px 0;
-            text-align: center;
-
-            &:hover {
-                color: #464a53;
-            }
-        }
-    }
+			&:hover {
+				color: #464a53;
+			}
+		}
+	}
 }

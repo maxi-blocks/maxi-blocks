@@ -28,27 +28,25 @@ import { iconBox } from '../../icons';
 /**
  * Block
  */
-registerBlockType( 'maxi-blocks/icon-maxi', {
+registerBlockType('maxi-blocks/icon-maxi', {
 	title: __('Icon Maxi', 'maxi-blocks'),
 	icon: iconBox,
-	description: "Insert, modify or style an icon",
+	description: 'Insert, modify or style an icon',
 	category: 'maxi-blocks',
 	supports: {
 		align: true,
-		lightBlockWrapper: true
-    },
+		lightBlockWrapper: true,
+	},
 	attributes: {
-		...attributes
+		...attributes,
 	},
 	getEditWrapperProps(attributes) {
-        const {
-			uniqueID
-        } = attributes;
+		const { uniqueID } = attributes;
 
-        return {
-			'uniqueid': uniqueID
-        };
-    },
+		return {
+			uniqueid: uniqueID,
+		};
+	},
 	edit,
-	save
-} );
+	save,
+});

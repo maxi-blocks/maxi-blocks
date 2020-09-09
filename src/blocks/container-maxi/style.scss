@@ -1,32 +1,28 @@
 body.maxi-blocks--active .maxi-container-block {
-    position: relative;
-    margin-top: 0;
-    margin-bottom: 0;
-    display: flex;
-    flex-direction: column;
-    padding: 0;
-
-    &:before {
-        visibility: hidden;
-        content: "";
-        position: absolute;
-        transform: translateX(-50%);
-        border-style: solid;
-        width: 0;
-        height: 0;
-    }
-
-    &__wrapper {
-        margin: auto 0;
-        //overflow: hidden;
-    }
-
-    &__container {
-        margin-right: auto;
-        margin-left: auto;
-
-        &:empty {
-            min-height: 132px;
-        }
-    }
+	position: relative;
+	margin-top: 0;
+	margin-bottom: 0;
+	display: flex;
+	flex-direction: column;
+	padding: 0;
+	&:before {
+		visibility: hidden;
+		content: '';
+		position: absolute;
+		transform: translateX(-50%);
+		border-style: solid;
+		width: 0;
+		height: 0;
+	}
+	&__wrapper {
+		margin: auto 0;
+		//overflow: hidden;
+	}
+	&__container {
+		margin-right: auto;
+		margin-left: auto;
+		&:empty {
+			min-height: 132px;
+		}
+	}
 }

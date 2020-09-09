@@ -1,6 +1,6 @@
-export { default as accordion} from './accordion';
-export { default as backToTop} from './back-to-top';
-export { default as basicGallery} from './basic-gallery';
+export { default as accordion } from './accordion';
+export { default as backToTop } from './back-to-top';
+export { default as basicGallery } from './basic-gallery';
 export { default as blog } from './blog';
 export { default as button } from './button';
 export { default as callToAction } from './call-to-action';

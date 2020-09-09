@@ -1,15 +1,36 @@
 /**
  * WordPress dependencies
  */
-const apiFetch = wp.apiFetch;
-const {
-	registerStore,
-	select
-} = wp.data;
+const { apiFetch } = wp;
+const { registerStore, select } = wp.data;
 
 /**
  * Register Store
  */
+
+const controls = {
+	async RECEIVE_POST_STYLES() {
+		const id = select('core/editor').getCurrentPostId();
+
+		return apiFetch({ path: `/maxi-blocks/v1.0/post/${id}` });
+	},
+	async RECEIVE_BREAKPOINTS() {
+		return apiFetch({ path: '/maxi-blocks/v1.0/breakpoints/' });
+	},
+	async SAVE_POST_STYLES(action) {
+		const id = select('core/editor').getCurrentPostId();
+
+		await apiFetch({
+			path: '/maxi-blocks/v1.0/post',
+			method: 'POST',
+			data: {
+				id,
+				meta: JSON.stringify(action.meta),
+				update: action.update,
+			},
+		});
+	},
+};
 
 const reducer = (state = { breakpoints: {}, meta: {} }, action) => {
 	switch (action.type) {
@@ -17,21 +38,21 @@ const reducer = (state = { breakpoints: {}, meta: {} }, action) => {
 			return {
 				...state,
 				meta: action.meta,
-			}
+			};
 		case 'SEND_BREAKPOINTS':
 			return {
 				...state,
 				breakpoints: action.breakpoints,
-			}
+			};
 		case 'SAVE_POST_STYLES':
 			controls.SAVE_POST_STYLES(action);
 			return {
 				...state,
-				meta: action.meta
-			}
+				meta: action.meta,
+			};
+		default:
+			return state;
 	}
-
-	return state;
 };
 
 const actions = {
@@ -43,7 +64,7 @@ const actions = {
 	sendMaxiStyles(meta) {
 		return {
 			type: 'SEND_POST_STYLES',
-			meta
+			meta,
 		};
 	},
 	receiveMaxiBreakpoints() {
@@ -54,70 +75,44 @@ const actions = {
 	sendMaxiBreakpoints(breakpoints) {
 		return {
 			type: 'SEND_BREAKPOINTS',
-			breakpoints
+			breakpoints,
 		};
 	},
 	saveMaxiStyles(meta, update = false) {
 		return {
 			type: 'SAVE_POST_STYLES',
 			meta,
-			update
-		}
-	}
+			update,
+		};
+	},
 };
-
-const controls = {
-	async RECEIVE_POST_STYLES() {
-		const id = select('core/editor').getCurrentPostId();
-
-		return await apiFetch({ path: '/maxi-blocks/v1.0/post/' + id })
-	},
-	async RECEIVE_BREAKPOINTS() {
-		return await apiFetch({ path: '/maxi-blocks/v1.0/breakpoints/' })
-	},
-	async SAVE_POST_STYLES(action) {
-		const id = select('core/editor').getCurrentPostId();
-
-		await apiFetch(
-			{
-				path: '/maxi-blocks/v1.0/post',
-				method: 'POST',
-				data: {
-					id,
-					meta: JSON.stringify(action.meta),
-					update: action.update
-				}
-			}
-		)
-	}
-}
 
 const selectors = {
 	receiveMaxiStyles(state) {
-		if (!!state)
-			return state.meta;
+		if (state) return state.meta;
+		return false;
 	},
 	receiveMaxiBreakpoints(state) {
-		if (!!state)
-			return state.breakpoints;
+		if (state) return state.breakpoints;
+		return false;
 	},
 };
 
 const resolvers = {
-	* receiveMaxiStyles() {
+	*receiveMaxiStyles() {
 		const maxiStyles = yield actions.receiveMaxiStyles();
 		return actions.sendMaxiStyles(maxiStyles);
 	},
-	* receiveMaxiBreakpoints() {
+	*receiveMaxiBreakpoints() {
 		const maxiBreakpoints = yield actions.receiveMaxiBreakpoints();
 		return actions.sendMaxiBreakpoints(maxiBreakpoints);
-	}
+	},
 };
 
-const store = registerStore('maxiBlocks', {
+registerStore('maxiBlocks', {
 	reducer,
 	actions,
 	selectors,
 	controls,
-	resolvers
+	resolvers,
 });

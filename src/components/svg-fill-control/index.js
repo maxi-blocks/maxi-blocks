@@ -9,7 +9,7 @@ const { __ } = wp.i18n;
 import ColorControl from '../color-control';
 import MediaUploaderControl from '../media-uploader-control';
 import SettingTabsControl from '../setting-tabs-control';
-import { injectImgSVG } from '../SVGControl/utils';
+import { injectImgSVG } from '../svg-control/utils';
 
 /**
  * External dependencies

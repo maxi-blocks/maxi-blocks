@@ -8,7 +8,7 @@ const { Button, Dropdown, Spinner, Icon } = wp.components;
 /**
  * Internal dependencies
  */
-import { FontFamilyResolver } from '../../extensions/styles/fonts';
+import FontFamilyResolver from '../../extensions/styles/fonts';
 
 /**
  * External dependencies

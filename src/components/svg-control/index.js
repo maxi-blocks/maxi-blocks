@@ -9,7 +9,7 @@ const { Fragment, useState } = wp.element;
  * Internal dependencies
  */
 import MediaUploaderControl from '../media-uploader-control';
-import __experimentalSVGDefaultsDisplayer from '../SVGDefaultsDisplayer';
+import __experimentalSVGDefaultsDisplayer from '../svg-default-displayer';
 import { generateDataObject, injectImgSVG } from './utils';
 
 /**

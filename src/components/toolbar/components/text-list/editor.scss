@@ -1,7 +1,7 @@
 .toolbar-item__list {
-    &[aria-pressed="true"] {
-        svg path {
-            fill: #ff4a17;
-        }
-    }
+	&[aria-pressed='true'] {
+		svg path {
+			fill: #ff4a17;
+		}
+	}
 }

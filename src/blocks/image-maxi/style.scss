@@ -1,11 +1,10 @@
 body.maxi-blocks--active figure.maxi-image-block {
 	display: flex;
-    flex-direction: column;
+	flex-direction: column;
 }
 
 .maxi-image-block {
-    
-    &__image-container {
+	&__image-container {
 		position: relative;
-    }
+	}
 }

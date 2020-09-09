@@ -1,37 +1,37 @@
-
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none" x="0px" y="0px" width="1280px" height="105px" viewBox="0 0 1280 105">
-<defs>
-<g id="Layer0_0_FILL">
-<path fill="#000000" fill-opacity="0.2980392156862745" stroke="none" d="
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1"
+	xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none" x="0px" y="0px" width="1280px" height="105px" viewBox="0 0 1280 105">
+	<defs>
+		<g id="Layer0_0_FILL">
+			<path fill="#000000" fill-opacity="0.2980392156862745" stroke="none" d="
 M 1280 51.75
 L 1280 0 0 0 0 51.75
 Q 57.9 48.15 126.4 48.15 233.05 48.15 316.4 57.05 366.4 62.4 446.4 76.65 526.4 90.9 576.4 96.25 659.75 105.15 766.4 105.15 859 105.15 932.8 98.55 987.4 93.7 1049.5 83.15 1055.4 82.15 1100.65 74.15 1131.65 68.65 1153.1 65.35 1215.65 55.75 1280 51.75 Z"/>
-</g>
+		</g>
 
-<g id="Layer0_1_FILL">
-<path fill="#000000" fill-opacity="0.4980392156862745" stroke="none" d="
+		<g id="Layer0_1_FILL">
+			<path fill="#000000" fill-opacity="0.4980392156862745" stroke="none" d="
 M 1280 24.3
 L 1280 0 0 0 0 24.35
 Q 70.5 15.1 158.4 15.1 265.05 15.1 348.4 29.05 381.75 34.6 417.15 43.3 438.4 48.55 478.4 59.7 518.4 70.8 539.65 76.05 575.05 84.75 608.4 90.3 691.7 104.25 798.4 104.25 886.45 104.25 957.2 94.95 1011.6 87.85 1069.9 72.85 1086.5 68.55 1118.55 59.6 1150.5 50.7 1167.2 46.4 1225.5 31.45 1280 24.3 Z"/>
-</g>
+		</g>
 
-<g id="Layer0_2_FILL">
-<path fill="#000000" stroke="none" d="
+		<g id="Layer0_2_FILL">
+			<path fill="#000000" stroke="none" d="
 M 1280 3.45
 L 1280 0 0 0 0 3.45
 Q 44.65 0.6 94.4 0.6 201.05 0.6 284.65 11.15 334.75 17.5 415.15 34.45 455.35 42.9 476.7 46.85 512.25 53.45 545.65 57.7 629.2 68.25 735.9 68.25 832.9 68.25 908.9 60.2 963.85 54.35 1028.8 41.35 1046.7 37.75 1082.15 30.35 1114.05 23.9 1138.25 19.75 1205.85 8.15 1280 3.45 Z"/>
-</g>
-</defs>
+		</g>
+	</defs>
 
-<g transform="matrix( 1, 0, 0, 1, 0,0) ">
-<use xlink:href="#Layer0_0_FILL"/>
-</g>
+	<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+		<use xlink:href="#Layer0_0_FILL"/>
+	</g>
 
-<g transform="matrix( 1, 0, 0, 1, 0,0) ">
-<use xlink:href="#Layer0_1_FILL"/>
-</g>
+	<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+		<use xlink:href="#Layer0_1_FILL"/>
+	</g>
 
-<g transform="matrix( 1, 0, 0, 1, 0,0) ">
-<use xlink:href="#Layer0_2_FILL"/>
-</g>
+	<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+		<use xlink:href="#Layer0_2_FILL"/>
+	</g>
 </svg>

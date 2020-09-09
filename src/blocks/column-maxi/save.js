@@ -18,38 +18,34 @@ import { isNil } from 'lodash';
  * Save
  */
 const save = props => {
-    const {
-        attributes: {
-            uniqueID,
-            blockStyle,
-            extraClassName,
-            defaultBlockStyle,
-            background,
-        },
-        className
-    } = props;
+	const {
+		attributes: {
+			uniqueID,
+			blockStyle,
+			extraClassName,
+			defaultBlockStyle,
+			background,
+		},
+		className,
+	} = props;
 
-    const classes = classnames(
-        'maxi-block maxi-column-block',
-        blockStyle,
-        extraClassName,
-        className,
-        !isNil(uniqueID) ?
-            uniqueID :
-            null
-    );
+	const classes = classnames(
+		'maxi-block maxi-column-block',
+		blockStyle,
+		extraClassName,
+		className,
+		!isNil(uniqueID) ? uniqueID : null
+	);
 
-    return (
-        <div
-            className={classes}
-            data-maxi_initial_block_class={defaultBlockStyle}
-        >
-            <__experimentalBackgroundDisplayer
-                background={background}
-            />
-            <InnerBlocks.Content />
-        </div>
-    );
-}
+	return (
+		<div
+			className={classes}
+			data-maxi_initial_block_class={defaultBlockStyle}
+		>
+			<__experimentalBackgroundDisplayer background={background} />
+			<InnerBlocks.Content />
+		</div>
+	);
+};
 
 export default save;

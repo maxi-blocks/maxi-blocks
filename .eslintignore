@@ -1,0 +1,17 @@
+**/*.min.js
+**/*.build.js
+**/node_modules/**
+build
+node_modules
+
+API
+css
+customizer
+gx-plugin-update-checker
+img
+page-content-setting
+src/includes
+js
+customizer/js/maxi-admin.js
+js/cloud-server.js
+src/extensions/styles/font.js

@@ -14,9 +14,9 @@ const { registerBlockType } = wp.blocks;
 /**
  * Block dependencies
  */
-import attributes from './attributes.js';
-import edit from './edit.js';
-import save from './save.js';
+import attributes from './attributes';
+import edit from './edit';
+import save from './save';
 
 /**
  * Styles and icons
@@ -28,27 +28,25 @@ import { imageBox } from '../../icons';
 /**
  * Block
  */
-registerBlockType( 'maxi-blocks/image-maxi', {
+registerBlockType('maxi-blocks/image-maxi', {
 	title: __('Image Maxi', 'maxi-blocks'),
 	icon: imageBox,
-	description: "Insert, modify or style an image",
+	description: 'Insert, modify or style an image',
 	category: 'maxi-blocks',
 	supports: {
 		align: true,
-		lightBlockWrapper: true
-    },
+		lightBlockWrapper: true,
+	},
 	attributes: {
-		...attributes
+		...attributes,
 	},
 	getEditWrapperProps(attributes) {
-        const {
-			uniqueID
-        } = attributes;
+		const { uniqueID } = attributes;
 
-        return {
-			'uniqueid': uniqueID
-        };
-    },
+		return {
+			uniqueid: uniqueID,
+		};
+	},
 	edit,
-	save
-} );
+	save,
+});

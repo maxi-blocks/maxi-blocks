@@ -1,1 +1,12 @@
-<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72.75 65.25"><defs><style>.cls-1,.cls-3,.cls-4{fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}.cls-1{stroke:#464a53;}.cls-2{fill:#dcdfdf;}.cls-3{stroke:#ff4a17;}.cls-4{stroke:#081219;}</style></defs><path id="Layer1_38_1_STROKES" data-name="Layer1 38 1 STROKES" class="cls-1" d="M46.13,55.77H69a3.25,3.25,0,0,0,2.41-.85,2.74,2.74,0,0,0,.84-2V4.47a4,4,0,0,0-.84-2.2A4.26,4.26,0,0,0,69,1.42H4.17a2.63,2.63,0,0,0-1.84.85,3,3,0,0,0-.86,2.2V52.92a2.35,2.35,0,0,0,.86,2,2.25,2.25,0,0,0,1.84.85h42v8.9h4.45m-27.3,0h4.3v-8.9m18.55,8.9H27.58" transform="translate(-0.47 -0.42)"/><g id="Layer1_38_MEMBER_0_FILL" data-name="Layer1 38 MEMBER 0 FILL"><path class="cls-2" d="M24,26.23h6v25H24v-25m19.9,0h6v25h-6Z" transform="translate(-0.47 -0.42)"/></g><path id="Layer1_38_MEMBER_0_1_STROKES" data-name="Layer1 38 MEMBER 0 1 STROKES" class="cls-3" d="M40.63,9.92l7.19.1-2.39,2.25m-.11-5L48,9.82l-.2.2m-21.3,2.45L24,9.92h7.11M24,9.92l-.2-.2,2.7-2.35" transform="translate(-0.47 -0.42)"/><path id="Layer1_38_MEMBER_0_MEMBER_0_1_STROKES" data-name="Layer1 38 MEMBER 0 MEMBER 0 1 STROKES" class="cls-4" d="M35.9,41.62l-2.5-2.55h7.1m-7.1,0-.2-.2,2.7-2.35" transform="translate(-0.47 -0.42)"/></svg>
+<svg id="Layer_1" data-name="Layer 1"
+	xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72.75 65.25">
+	<defs>
+		<style>.cls-1,.cls-3,.cls-4{fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}.cls-1{stroke:#464a53;}.cls-2{fill:#dcdfdf;}.cls-3{stroke:#ff4a17;}.cls-4{stroke:#081219;}</style>
+	</defs>
+	<path id="Layer1_38_1_STROKES" data-name="Layer1 38 1 STROKES" class="cls-1" d="M46.13,55.77H69a3.25,3.25,0,0,0,2.41-.85,2.74,2.74,0,0,0,.84-2V4.47a4,4,0,0,0-.84-2.2A4.26,4.26,0,0,0,69,1.42H4.17a2.63,2.63,0,0,0-1.84.85,3,3,0,0,0-.86,2.2V52.92a2.35,2.35,0,0,0,.86,2,2.25,2.25,0,0,0,1.84.85h42v8.9h4.45m-27.3,0h4.3v-8.9m18.55,8.9H27.58" transform="translate(-0.47 -0.42)"/>
+	<g id="Layer1_38_MEMBER_0_FILL" data-name="Layer1 38 MEMBER 0 FILL">
+		<path class="cls-2" d="M24,26.23h6v25H24v-25m19.9,0h6v25h-6Z" transform="translate(-0.47 -0.42)"/>
+	</g>
+	<path id="Layer1_38_MEMBER_0_1_STROKES" data-name="Layer1 38 MEMBER 0 1 STROKES" class="cls-3" d="M40.63,9.92l7.19.1-2.39,2.25m-.11-5L48,9.82l-.2.2m-21.3,2.45L24,9.92h7.11M24,9.92l-.2-.2,2.7-2.35" transform="translate(-0.47 -0.42)"/>
+	<path id="Layer1_38_MEMBER_0_MEMBER_0_1_STROKES" data-name="Layer1 38 MEMBER 0 MEMBER 0 1 STROKES" class="cls-4" d="M35.9,41.62l-2.5-2.55h7.1m-7.1,0-.2-.2,2.7-2.35" transform="translate(-0.47 -0.42)"/>
+</svg>

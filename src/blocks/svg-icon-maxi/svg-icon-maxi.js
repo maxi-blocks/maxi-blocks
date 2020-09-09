@@ -14,9 +14,9 @@ const { registerBlockType } = wp.blocks;
 /**
  * Block dependencies
  */
-import attributes from './attributes.js';
-import edit from './edit.js';
-import save from './save.js';
+import attributes from './attributes';
+import edit from './edit';
+import save from './save';
 
 /**
  * Styles and icons
@@ -28,27 +28,25 @@ import { iconBox } from '../../icons';
 /**
  * Block
  */
-registerBlockType( 'maxi-blocks/svg-icon-maxi', {
+registerBlockType('maxi-blocks/svg-icon-maxi', {
 	title: __('SVG Icon Maxi', 'maxi-blocks'),
 	icon: iconBox,
-	description: "Insert, modify or style SVG icons",
+	description: 'Insert, modify or style SVG icons',
 	category: 'maxi-blocks',
 	supports: {
 		align: true,
-		lightBlockWrapper: true
-    },
+		lightBlockWrapper: true,
+	},
 	attributes: {
-		...attributes
+		...attributes,
 	},
 	getEditWrapperProps(attributes) {
-        const {
-			uniqueID
-        } = attributes;
+		const { uniqueID } = attributes;
 
-        return {
-			'uniqueid': uniqueID
-        };
-    },
+		return {
+			uniqueid: uniqueID,
+		};
+	},
 	edit,
-	save
-} );
+	save,
+});

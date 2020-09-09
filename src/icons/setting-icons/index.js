@@ -1,4 +1,4 @@
-export { default as advanced} from './advanced';
+export { default as advanced } from './advanced';
 export { default as box } from './box';
 export { default as brokenLink } from './broken-link';
 export { default as boxSettings } from './box-settings';

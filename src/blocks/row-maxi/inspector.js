@@ -104,11 +104,20 @@ const Inspector = props => {
 														clientId={clientId}
 														blockName={name}
 														rowPattern={rowPattern}
-														onChange={rowPattern =>
+														onChange={value => {
+															const newRowPattern = JSON.parse(
+																rowPattern
+															);
+
+															newRowPattern[
+																deviceType
+															].rowPattern = value;
 															setAttributes({
-																rowPattern,
-															})
-														}
+																rowPattern: JSON.stringify(
+																	newRowPattern
+																),
+															});
+														}}
 													/>
 													<SelectControl
 														label={__(

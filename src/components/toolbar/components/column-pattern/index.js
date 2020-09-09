@@ -13,6 +13,8 @@ const { select, useSelect, useDispatch } = wp.data;
 import { TEMPLATES } from '../../../../extensions/defaults/column-templates';
 import ToolbarPopover from '../toolbar-popover';
 
+console.log(TEMPLATES);
+
 /**
  * External dependencies
  */

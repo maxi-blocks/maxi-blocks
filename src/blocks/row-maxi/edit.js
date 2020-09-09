@@ -18,7 +18,7 @@ import {
 	__experimentalBackgroundDisplayer,
 } from '../../components';
 import Inspector from './inspector';
-import TEMPLATES from '../../extensions/defaults/column-templates';
+import { TEMPLATES } from '../../extensions/defaults/column-templates';
 import {
 	getBoxShadowObject,
 	getOpacityObject,
@@ -144,6 +144,7 @@ class edit extends MaxiBlock {
 				extraClassName,
 				defaultBlockStyle,
 				background,
+				rowPattern,
 			},
 			clientId,
 			loadTemplate,
@@ -152,6 +153,7 @@ class edit extends MaxiBlock {
 			className,
 			setAttributes,
 			instanceId,
+			deviceType,
 		} = this.props;
 
 		const classes = classnames(
@@ -192,9 +194,19 @@ class edit extends MaxiBlock {
 												)}
 												className='maxi-row-block__template__button'
 												onClick={() => {
+													const newRowPattern = JSON.parse(
+														rowPattern
+													);
+
+													newRowPattern[
+														deviceType
+													].rowPattern = i;
 													setAttributes({
-														rowPattern: i,
+														rowPattern: JSON.stringify(
+															newRowPattern
+														),
 													});
+
 													loadTemplate(i);
 												}}
 											>

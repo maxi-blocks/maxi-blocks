@@ -1,5 +1,3 @@
-import { useState } from '@wordpress/element';
-
 /**
  * WordPress dependencies
  */
@@ -9,14 +7,12 @@ const { synchronizeBlocksWithTemplate } = wp.blocks;
 const { useInstanceId } = wp.compose;
 const { Icon, Button } = wp.components;
 const { select, useSelect, useDispatch } = wp.data;
+import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
-import {
-	TEMPLATES,
-	RESPONSIVE_TEMPLATES,
-} from '../../extensions/defaults/column-templates';
+import { filterTemplates } from '../../extensions/defaults/column-templates';
 
 import SizeControl from '../size-control';
 
@@ -39,7 +35,7 @@ const ColumnPatternsInspector = props => {
 	const { clientId, blockName, rowPattern, onChange } = props;
 
 	const [numCol, setNumCol] = useState(1);
-	const [FILTERED_TEMPLATES, setFilterdTemplates] = useState([]);
+	const [DISPLAYED_TEMPLATES, setDisplayedTemplates] = useState([]);
 
 	const instanceId = useInstanceId(ColumnPatternsInspector);
 
@@ -60,6 +56,14 @@ const ColumnPatternsInspector = props => {
 	const { updateBlockAttributes, replaceInnerBlocks } = useDispatch(
 		'core/block-editor'
 	);
+
+	const deviceType = select(
+		'core/edit-post'
+	).__experimentalGetPreviewDeviceType();
+
+	useEffect(() => {
+		setDisplayedTemplates(filterTemplates(numCol, deviceType));
+	}, [deviceType, setDisplayedTemplates, numCol]);
 
 	if (blockName !== 'maxi-blocks/row-maxi') return null;
 
@@ -133,24 +137,36 @@ const ColumnPatternsInspector = props => {
 	/**
 	 * Loads template into InnerBlocks
 	 *
-	 * @param {integer} i Element of object FILTERED_TEMPLATES
+	 * @param {integer} i Element of object DISPLAYED_TEMPLATES
 	 * @param {Function} callback
 	 */
 	const loadTemplate = i => {
 		const currentContent = getCurrentContent(innerBlocks);
 		const currentAttributes = getCurrentAttributes(innerBlocks);
 
-		const template = cloneDeep(FILTERED_TEMPLATES[i]);
+		const template = cloneDeep(DISPLAYED_TEMPLATES[i]);
+		const { sizes } = DISPLAYED_TEMPLATES[i];
+
 		template.content.forEach((column, i) => {
 			column[1].uniqueID = uniqueIdCreator();
+
 			if (currentAttributes.length > i)
 				column[1] = Object.assign(currentAttributes[i], column[1]);
+
+			// Update the columns sizes
+			const newColumnSize = JSON.parse(column[1].columnSize);
+
+			if (deviceType !== 'Desktop') {
+				newColumnSize[deviceType].size = sizes[i] * 100;
+			}
+			column[1].columnSize = JSON.stringify(newColumnSize);
 		});
 
 		const newAttributes = Object.assign(
 			getBlockAttributes(clientId),
 			template.attributes
 		);
+
 		updateBlockAttributes(clientId, newAttributes);
 
 		const newTemplateContent = expandWithNewContent(
@@ -162,74 +178,26 @@ const ColumnPatternsInspector = props => {
 			[],
 			newTemplateContent
 		);
+
 		replaceInnerBlocks(clientId, newTemplate, false);
 	};
-
-	/**
-	 * Filter TEMPLATE Array Accroding to the number of columns
-	 *
-	 * @param {integer} numCol Number of Columns
-	 * @param {Function} callback
-	 */
-	const filterTemplate = numCol => {
-		switch (numCol) {
-			case 1:
-				setFilterdTemplates(TEMPLATES.slice(0, 1));
-				break;
-			case 2:
-				setFilterdTemplates(TEMPLATES.slice(1, 5));
-				break;
-			case 3:
-				setFilterdTemplates(
-					TEMPLATES.slice(5, 12).concat(
-						RESPONSIVE_TEMPLATES.slice(0, 2)
-					)
-				);
-				break;
-			case 4:
-				setFilterdTemplates(
-					TEMPLATES.slice(12, 13).concat(
-						RESPONSIVE_TEMPLATES.slice(2, 7)
-					)
-				);
-				break;
-			case 5:
-				setFilterdTemplates(
-					TEMPLATES.slice(13, 14).concat(
-						RESPONSIVE_TEMPLATES.slice(7, 11)
-					)
-				);
-				break;
-			case 6:
-				setFilterdTemplates(
-					TEMPLATES.slice(14, 15).concat(
-						RESPONSIVE_TEMPLATES.slice(11)
-					)
-				);
-				break;
-			default:
-				break;
-		}
-	};
-
 	return (
 		<Fragment>
 			<div>
-				<SizeControl
-					label={__('Columns', 'maxi-blocks')}
-					disableUnit
-					value={numCol}
-					defaultValue={numCol}
-					onChangeValue={numCol => {
-						setNumCol(numCol);
-						filterTemplate(numCol);
-					}}
-					min={1}
-					max={6}
-				/>
+				{deviceType === 'Desktop' && (
+					<SizeControl
+						label={__('Columns', 'maxi-blocks')}
+						disableUnit
+						value={numCol}
+						defaultValue={numCol}
+						onChangeValue={numCol => setNumCol(numCol)}
+						min={1}
+						max={6}
+					/>
+				)}
 			</div>
 			<div className='components-column-pattern'>
-				{FILTERED_TEMPLATES.map((template, i) => {
+				{DISPLAYED_TEMPLATES.map((template, i) => {
 					return (
 						<Button
 							key={uniqueId(

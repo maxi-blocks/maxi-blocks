@@ -1,6 +1,11 @@
 .maxi-axis-control {
 	margin-bottom: 8px;
 
+	input[type='checkbox']:checked::before {
+		content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M14.83 4.89l1.34.94-5.81 8.38H9.02L5.78 9.67l1.34-1.25 2.57 2.4z' fill='%2380828a'/%3E%3C/svg%3E");
+		margin: -0.2rem 0 0 -0.34rem;
+	}
+
 	&__units {
 		margin-bottom: 0 !important;
 		select:focus {
@@ -49,10 +54,6 @@
 					&:checked {
 						border: 2px solid #dddfe2;
 						background-color: transparent;
-						&::before {
-							content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M14.83 4.89l1.34.94-5.81 8.38H9.02L5.78 9.67l1.34-1.25 2.57 2.4z' fill='%2380828a'/%3E%3C/svg%3E");
-							margin: -0.2rem 0 0 -0.34rem !important;
-						}
 					}
 
 					&:focus {

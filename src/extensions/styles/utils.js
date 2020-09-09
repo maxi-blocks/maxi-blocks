@@ -1,5 +1,6 @@
 /**
  * Some ESLint deactivated rules. This file needs to be refactored
+ * 1. All for loops need to be transformed on other iterator forms
  */
 /* eslint-disable no-continue */
 
@@ -145,7 +146,7 @@ export const getAlignmentFlexObject = alignment => {
 		xs: {},
 	};
 
-	for (const [key, value] of Object.entries(alignment)) {
+	Object.entries(alignment).forEach(([key, value]) => {
 		if (!isNil(value.alignment)) {
 			switch (value.alignment) {
 				case 'left':
@@ -162,7 +163,9 @@ export const getAlignmentFlexObject = alignment => {
 					return false;
 			}
 		}
-	}
+
+		return false;
+	});
 
 	return response;
 };
@@ -179,11 +182,11 @@ export const getOpacityObject = opacity => {
 		xs: {},
 	};
 
-	for (const [key, value] of Object.entries(opacity)) {
+	Object.entries(opacity).forEach(([key, value]) => {
 		if (isNumber(value.opacity)) {
 			response[key].opacity = value.opacity;
 		}
-	}
+	});
 
 	return response;
 };
@@ -200,12 +203,12 @@ export const getColumnSizeObject = columnSize => {
 		xs: {},
 	};
 
-	for (const [key, value] of Object.entries(columnSize)) {
+	Object.entries(columnSize).forEach(([key, value]) => {
 		if (isNumber(value.size)) {
 			response[key].width = `${value.size}%`;
 			response[key]['flex-basis'] = `${value.size}%`;
 		}
-	}
+	});
 
 	return response;
 };

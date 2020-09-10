@@ -1,8 +1,8 @@
 /**
  * Internal dependencies
  */
-import SVGDefaults from '../SVGControl/defaults';
-import { generateDataObject, injectImgSVG } from '../SVGControl/utils';
+import SVGDefaults from '../svg-control/defaults';
+import { generateDataObject, injectImgSVG } from '../svg-control/utils';
 
 /**
  * External dependencies

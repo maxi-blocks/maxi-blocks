@@ -79,18 +79,18 @@ const save = props => {
 			<__experimentalBackgroundDisplayer background={background} />
 
 			<div className='maxi-block-hover-element'>
-				<div className='maxi-image-block__image-container'>
-					<img
-						className={`wp-image-${mediaID}`}
-						src={mediaURL}
-						width={mediaWidth}
-						height={mediaHeight}
-						alt={imageALT()}
-					/>
-					{captionType !== 'none' && (
-						<figcaption>{captionContent}</figcaption>
-					)}
-				</div>
+				<img
+					className={`wp-image-${mediaID}`}
+					src={mediaURL}
+					width={mediaWidth}
+					height={mediaHeight}
+					alt={imageALT()}
+				/>
+				{captionType !== 'none' && (
+					<figcaption className='maxi-image-block__caption'>
+						{captionContent}
+					</figcaption>
+				)}
 			</div>
 			{hoverSettings.type !== 'none' && (
 				<div className='maxi-hover-details'>

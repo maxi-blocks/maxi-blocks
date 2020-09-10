@@ -24,6 +24,10 @@
 			svg path {
 				stroke-width: 4;
 			}
+
+			&--active {
+				stroke: #ff4a17 !important;
+			}
 		}
 	}
 }

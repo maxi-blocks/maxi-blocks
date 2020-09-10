@@ -12,7 +12,11 @@ import { useState, useEffect } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { filterTemplates } from '../../extensions/defaults/column-templates';
+import {
+	filterTemplates,
+	getNumCol,
+	RESPONSIVE_TEMPLATES,
+} from '../../extensions/defaults/column-templates';
 
 import SizeControl from '../size-control';
 
@@ -33,11 +37,11 @@ import './editor.scss';
  */
 const ColumnPatternsInspector = props => {
 	const { clientId, blockName, rowPattern, onChange } = props;
-
 	const [numCol, setNumCol] = useState(1);
 	const [DISPLAYED_TEMPLATES, setDisplayedTemplates] = useState([]);
 
 	const instanceId = useInstanceId(ColumnPatternsInspector);
+	const rowPatternObject = JSON.parse(rowPattern);
 
 	const { getBlockName, getBlockAttributes, getBlockOrder } = select(
 		'core/block-editor'
@@ -61,6 +65,14 @@ const ColumnPatternsInspector = props => {
 		'core/edit-post'
 	).__experimentalGetPreviewDeviceType();
 
+	// Change Number of columns state depending on the pattern
+	useEffect(() => {
+		if (rowPatternObject.general.rowPattern) {
+			setNumCol(getNumCol(rowPatternObject.general.rowPattern));
+		}
+	}, [deviceType, rowPatternObject.general.rowPattern]);
+
+	// Change the patterns displayed based on the number of columns
 	useEffect(() => {
 		setDisplayedTemplates(filterTemplates(numCol, deviceType));
 	}, [deviceType, setDisplayedTemplates, numCol]);
@@ -173,6 +185,10 @@ const ColumnPatternsInspector = props => {
 		replaceInnerBlocks(clientId, newTemplate, false);
 	};
 
+	const patternButtonClassName = 'components-column-pattern__template-button';
+	if (deviceType === 'Desktop') {
+	}
+
 	/**
 	 * Update Columns Sizes
 	 *
@@ -184,6 +200,7 @@ const ColumnPatternsInspector = props => {
 
 		// Get Current Columns in the editor
 		const columnsBlockObjects = getBlock(clientId).innerBlocks;
+		const totalColumns = columnsBlockObjects.length - 1;
 
 		// New Column Sizes Array
 		const { sizes } = DISPLAYED_TEMPLATES[i];
@@ -207,8 +224,6 @@ const ColumnPatternsInspector = props => {
 				`.maxi-column-block__resizer__${columnUniqueID}`
 			).style.width = `${sizes[j] * 100}%`;
 		});
-
-		// replaceInnerBlocks(clientId, columnsBlockObjects);
 	};
 	return (
 		<Fragment>

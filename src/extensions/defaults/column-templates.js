@@ -501,4 +501,14 @@ const filterTemplates = (numCol, deviceType, screens = ['m', 's', 'xs']) => {
 	}
 };
 
-export { TEMPLATES, RESPONSIVE_TEMPLATES, filterTemplates };
+/**
+ * Get columns Number
+ *
+ * @param {string} rowPattern number of columns
+ * @return {Integer} Number of Columns of the pattern
+ */
+const getNumCol = rowPattern => {
+	return TEMPLATES[rowPattern].sizes.length;
+};
+
+export { TEMPLATES, RESPONSIVE_TEMPLATES, filterTemplates, getNumCol };

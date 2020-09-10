@@ -77,6 +77,7 @@ const save = props => {
 			data-hover={JSON.stringify(hoverSettings)}
 		>
 			<__experimentalBackgroundDisplayer background={background} />
+
 			<div className='maxi-block-hover-element'>
 				<img
 					className={`wp-image-${mediaID}`}
@@ -85,6 +86,11 @@ const save = props => {
 					height={mediaHeight}
 					alt={imageALT()}
 				/>
+				{captionType !== 'none' && (
+					<figcaption className='maxi-image-block__caption'>
+						{captionContent}
+					</figcaption>
+				)}
 			</div>
 			{hoverSettings.type !== 'none' && (
 				<div className='maxi-hover-details'>
@@ -97,9 +103,6 @@ const save = props => {
 						)}
 					</div>
 				</div>
-			)}
-			{captionType !== 'none' && (
-				<figcaption>{captionContent}</figcaption>
 			)}
 		</figure>
 	);

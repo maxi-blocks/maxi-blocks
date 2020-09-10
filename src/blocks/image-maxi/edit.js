@@ -311,7 +311,7 @@ class edit extends MaxiBlock {
 				{!!SVGElement && (
 					<Fragment>
 						<__experimentalBackgroundDisplayer
-							backgroundOptions={background}
+							background={background}
 						/>
 						<ResizableBox
 							className='maxi-block__resizer maxi-svg-block__resizer'
@@ -356,6 +356,9 @@ class edit extends MaxiBlock {
 						<Fragment>
 							{!isNil(mediaID) && imageData ? (
 								<Fragment>
+									<__experimentalBackgroundDisplayer
+										background={background}
+									/>
 									<ResizableBox
 										className='maxi-block__resizer maxi-image-block__resizer'
 										size={{
@@ -401,6 +404,7 @@ class edit extends MaxiBlock {
 												icon={toolbarReplaceImage}
 											/>
 										</div>
+
 										<img
 											className={`maxi-image-block__image wp-image-${mediaID}`}
 											src={mediaURL}
@@ -408,12 +412,12 @@ class edit extends MaxiBlock {
 											height={mediaHeight}
 											alt={mediaALT}
 										/>
+										{captionType !== 'none' && (
+											<figcaption className='maxi-image-block__caption'>
+												{captionContent}
+											</figcaption>
+										)}
 									</ResizableBox>
-									{captionType !== 'none' && (
-										<figcaption className='maxi-image-block__caption'>
-											{captionContent}
-										</figcaption>
-									)}
 								</Fragment>
 							) : mediaID ? (
 								<Fragment>

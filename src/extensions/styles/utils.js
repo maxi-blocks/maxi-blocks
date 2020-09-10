@@ -701,28 +701,30 @@ export const setTextCustomFormats = (target, typography, typographyHover) => {
 	const { customFormats } = JSON.parse(typography);
 	const { customFormats: customFormatsHover } = JSON.parse(typographyHover);
 
-	Object.entries(customFormats).forEach(([key, value]) => {
-		target.forEach(el => {
-			const format = {
-				[`${el} .${key}`]: {
-					customFormat: value,
-				},
-			};
+	customFormats &&
+		Object.entries(customFormats).forEach(([key, value]) => {
+			target.forEach(el => {
+				const format = {
+					[`${el} .${key}`]: {
+						customFormat: value,
+					},
+				};
 
-			response = Object.assign(response, format);
+				response = Object.assign(response, format);
+			});
 		});
-	});
-	Object.entries(customFormatsHover).forEach(([key, value]) => {
-		target.forEach(el => {
-			const format = {
-				[`${el} .${key}`]: {
-					customFormat: value,
-				},
-			};
+	customFormatsHover &&
+		Object.entries(customFormatsHover).forEach(([key, value]) => {
+			target.forEach(el => {
+				const format = {
+					[`${el} .${key}`]: {
+						customFormat: value,
+					},
+				};
 
-			response = Object.assign(response, format);
+				response = Object.assign(response, format);
+			});
 		});
-	});
 
 	return response;
 };

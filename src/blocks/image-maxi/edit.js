@@ -354,7 +354,7 @@ class edit extends MaxiBlock {
 					value={mediaID}
 					render={({ open }) => (
 						<Fragment>
-							{!isNil(mediaID) && imageData || mediaURL ? (
+							{(!isNil(mediaID) && imageData) || mediaURL ? (
 								<Fragment>
 									<ResizableBox
 										className='maxi-block__resizer maxi-image-block__resizer'
@@ -421,13 +421,13 @@ class edit extends MaxiBlock {
 									<p>{__('Loading…', 'maxi-blocks')}</p>
 								</Fragment>
 							) : (
-										<IconButton
-											className='maxi-imageupload-button'
-											showTooltip='true'
-											onClick={open}
-											icon={placeholderImage}
-										/>
-									)}
+								<IconButton
+									className='maxi-imageupload-button'
+									showTooltip='true'
+									onClick={open}
+									icon={placeholderImage}
+								/>
+							)}
 						</Fragment>
 					)}
 				/>

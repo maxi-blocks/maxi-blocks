@@ -192,6 +192,7 @@ const ColumnPatternsInspector = props => {
 		columnsBlockObjects.forEach((column, j) => {
 			const columnClientId = column.clientId;
 			const columnAttributes = column.attributes;
+			const columnUniqueID = columnAttributes.uniqueID;
 
 			// Update Column Attribute
 			const newColumnSize = JSON.parse(columnAttributes.columnSize);
@@ -201,9 +202,13 @@ const ColumnPatternsInspector = props => {
 
 			// Update the column attributes
 			updateBlockAttributes(columnClientId, columnAttributes);
+
+			document.querySelector(
+				`.maxi-column-block__resizer__${columnUniqueID}`
+			).style.width = `${sizes[j] * 100}%`;
 		});
 
-		replaceInnerBlocks(clientId, columnsBlockObjects);
+		// replaceInnerBlocks(clientId, columnsBlockObjects);
 	};
 	return (
 		<Fragment>

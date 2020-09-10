@@ -10,6 +10,11 @@ const { ColorPicker } = wp.components;
 import ToolbarPopover from '../toolbar-popover';
 
 /**
+ * Styles
+ */
+import './editor.scss';
+
+/**
  * BackgroundColor
  */
 const BackgroundColor = props => {
@@ -51,6 +56,7 @@ const BackgroundColor = props => {
 			}
 			content={
 				<ColorPicker
+					className='toolbar-item__background-content'
 					color={value.colorOptions.color}
 					onChangeComplete={val => updateBackground(val)}
 				/>

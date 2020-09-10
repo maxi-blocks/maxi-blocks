@@ -359,8 +359,8 @@
 
 	&__advanced-button {
 		position: absolute;
-		top: 0;
-		left: 100%;
+		top: 0 !important;
+		left: 100% !important;
 		transform: translate(0, -100%);
 		background-color: #ff4a17;
 		border-radius: 50%;

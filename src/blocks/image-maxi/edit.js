@@ -404,20 +404,19 @@ class edit extends MaxiBlock {
 												icon={toolbarReplaceImage}
 											/>
 										</div>
-										<div className='maxi-image-block__image-container'>
-											<img
-												className={`maxi-image-block__image wp-image-${mediaID}`}
-												src={mediaURL}
-												width={mediaWidth}
-												height={mediaHeight}
-												alt={mediaALT}
-											/>
-											{captionType !== 'none' && (
-												<figcaption className='maxi-image-block__caption'>
-													{captionContent}
-												</figcaption>
-											)}
-										</div>
+
+										<img
+											className={`maxi-image-block__image wp-image-${mediaID}`}
+											src={mediaURL}
+											width={mediaWidth}
+											height={mediaHeight}
+											alt={mediaALT}
+										/>
+										{captionType !== 'none' && (
+											<figcaption className='maxi-image-block__caption'>
+												{captionContent}
+											</figcaption>
+										)}
 									</ResizableBox>
 								</Fragment>
 							) : mediaID ? (

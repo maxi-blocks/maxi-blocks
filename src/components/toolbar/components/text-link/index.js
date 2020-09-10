@@ -2,23 +2,33 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
+const { Fragment } = wp.element;
 const { __experimentalLinkControl } = wp.blockEditor;
 const { useSelect } = wp.data;
-const { getActiveFormat } = wp.richText;
+const { getActiveFormat, applyFormat, removeFormat } = wp.richText;
+const { Button } = wp.components;
 
 /**
  * Internal dependencies
  */
 import {
-	getFormatSettings,
-	getFormattedString,
+	__experimentalIsFormatActive,
+	__experimentalGetFormattedString,
+	__experimentalGetUpdatedString,
+	__experimentalSetFormatWithClass,
+	__experimentalRemoveFormatWithClass,
+	__experimentalApplyLinkFormat,
 } from '../../../../extensions/text/formats';
 import ToolbarPopover from '../toolbar-popover';
+import {
+	defaultFontColorObject,
+	defaultFontUnderlineObject,
+} from '../../../../extensions/text/formats/formats';
 
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
+import { isEmpty, isObject } from 'lodash';
 
 /**
  * Icons
@@ -30,65 +40,67 @@ import { toolbarLink } from '../../../../icons';
  * Link
  */
 const Link = props => {
-	const { blockName, content, onChange, node, isList, typeOfList } = props;
+	const {
+		blockName,
+		onChange,
+		isList,
+		formatValue,
+		typography,
+		breakpoint,
+		linkSettings,
+	} = props;
 
 	const formatName = 'maxi-blocks/text-link';
 
-	const formatElement = {
-		element: node,
-		html: content,
-		multilineTag: isList ? 'li' : undefined,
-		multilineWrapperTags: isList ? typeOfList : undefined,
-		__unstableIsEditableTree: true,
-	};
-
-	const { formatValue, isActive, formatOptions } = useSelect(() => {
-		const { formatValue, isActive } = getFormatSettings(
-			formatElement,
-			formatName
-		);
-
-		/**
-		 * As '__unstablePasteRule' is not working correctly, let's do some cheats
-		 */
-		formatValue.formats = formatValue.formats.map(formatEl => {
-			return formatEl.map(format => {
-				if (format.type === 'core/link') format.type = formatName;
-
-				return format;
-			});
-		});
-
+	const {
+		formatOptions,
+		currentColorClassName,
+		currentUnderlineClassName,
+	} = useSelect(() => {
 		const formatOptions = getActiveFormat(formatValue, formatName);
 
-		return {
+		const isColorActive = getActiveFormat(
 			formatValue,
-			isActive,
+			'maxi-blocks/text-color'
+		);
+		const currentColorClassName =
+			(isColorActive && isColorActive.attributes.className) || '';
+
+		const isUnderlineActive = getActiveFormat(
+			formatValue,
+			'maxi-blocks/text-underline'
+		);
+		const currentUnderlineClassName =
+			(isUnderlineActive && isUnderlineActive.attributes.className) || '';
+
+		return {
 			formatOptions,
+			currentColorClassName,
+			currentUnderlineClassName,
 		};
-	}, [getActiveFormat, formatElement]);
+	}, [getActiveFormat, formatValue, formatName]);
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
+	const typographyValue = !isObject(typography)
+		? JSON.parse(typography)
+		: typography;
+
 	const createLinkValue = formatOptions => {
-		if (isEmpty(formatOptions)) return;
+		if (!formatOptions || isEmpty(formatValue)) return {};
 
 		const {
-			attributes: { url, target, id },
-			unregisteredAttributes: { rel },
+			attributes: { url, target, id, rel },
 		} = formatOptions;
 
 		const value = {
 			url,
 			opensInNewTab: target === '_blank',
 			id,
+			noFollow: rel && rel.indexOf('nofollow') >= 0,
+			sponsored: rel && rel.indexOf('sponsored') >= 0,
+			ugc: rel && rel.indexOf('ugc') >= 0,
 		};
-
-		if (rel) {
-			value.noFollow = rel.indexOf('nofollow') >= 0;
-			value.sponsored = rel.indexOf('sponsored') >= 0;
-			value.ugc = rel.indexOf('ugc') >= 0;
-		}
 
 		return value;
 	};
@@ -102,38 +114,114 @@ const Link = props => {
 		sponsored,
 		ugc,
 	}) => {
-		const format = {
-			type: formatName,
-			attributes: {
-				url,
-				rel: '',
-			},
+		const attributes = {
+			url,
+			rel: '',
 		};
 
-		if (type) format.attributes.type = type;
-		if (id) format.attributes.type = id;
+		if (type) attributes.type = type;
+		if (id) attributes.id = id;
 
 		if (opensInNewTab) {
-			format.attributes.target = '_blank';
-			format.attributes.rel += 'noreferrer noopener';
+			attributes.target = '_blank';
+			attributes.rel += 'noreferrer noopener';
 		}
-		if (noFollow) format.attributes.rel += ' nofollow';
-		if (sponsored) format.attributes.rel += ' sponsored';
-		if (ugc) format.attributes.rel += ' ugc';
+		if (noFollow) attributes.rel += ' nofollow';
+		if (sponsored) attributes.rel += ' sponsored';
+		if (ugc) attributes.rel += ' ugc';
 
-		return format;
+		return attributes;
+	};
+
+	const getUpdatedFormatValue = (formatValue, attributes) => {
+		formatValue.formats = formatValue.formats.map(formatEl => {
+			return formatEl.map(format => {
+				if (format.type === 'maxi-blocks/text-link') {
+					format.attributes = attributes;
+				}
+
+				return format;
+			});
+		});
+
+		return formatValue;
+	};
+
+	const setLinkFormat = attributes => {
+		const {
+			typography: newTypography,
+			content: newContent,
+		} = __experimentalApplyLinkFormat({
+			formatValue,
+			typography: typographyValue,
+			currentColorClassName,
+			currentUnderlineClassName,
+			linkAttributes: createLinkAttribute(attributes),
+			isList,
+		});
+
+		onChange({
+			typography: JSON.stringify(newTypography),
+			content: newContent,
+		});
+	};
+
+	const removeLinkFormat = () => {
+		const linkFormatValue = removeFormat(formatValue, formatName);
+
+		const {
+			formatValue: colorFormatValue,
+			typography: cleanColorTypography,
+		} = __experimentalRemoveFormatWithClass({
+			formatValue: linkFormatValue,
+			formatName: 'maxi-blocks/text-color',
+			typography: typographyValue,
+			formatClassName: currentColorClassName,
+		});
+
+		const {
+			formatValue: underlineFormatValue,
+			typography: cleanUnderlineFormatValue,
+		} = __experimentalRemoveFormatWithClass({
+			formatValue: colorFormatValue,
+			formatName: 'maxi-blocks/text-underline',
+			typography: cleanColorTypography,
+			formatClassName: currentUnderlineClassName,
+		});
+
+		const newFormatValue = underlineFormatValue;
+		const newTypography = cleanUnderlineFormatValue;
+
+		const newContent = __experimentalGetUpdatedString({
+			formatValue: newFormatValue,
+			isList,
+		});
+
+		onChange({
+			typography: JSON.stringify(newTypography),
+			content: newContent,
+		});
+	};
+
+	const updateLinkString = attributes => {
+		const newContent = __experimentalGetUpdatedString({
+			formatValue: getUpdatedFormatValue(
+				formatValue,
+				createLinkAttribute(attributes)
+			),
+			isList,
+		});
+
+		onChange({
+			typography: JSON.stringify(typographyValue),
+			content: newContent,
+		});
 	};
 
 	const onClick = attributes => {
-		const newContent = getFormattedString({
-			formatValue,
-			formatName,
-			isActive,
-			isList,
-			attributes: createLinkAttribute(attributes),
-		});
-
-		onChange(newContent);
+		if (!formatOptions) setLinkFormat(attributes);
+		else if (isEmpty(attributes.url)) removeLinkFormat();
+		else updateLinkString(attributes);
 	};
 
 	return (
@@ -141,28 +229,38 @@ const Link = props => {
 			icon={toolbarLink}
 			tooltip={__('Link', 'maxi-blocks')}
 			content={
-				<__experimentalLinkControl
-					value={createLinkValue(formatOptions)}
-					onChange={onClick}
-					settings={[
-						{
-							id: 'opensInNewTab',
-							title: __('Open in new tab', 'maxi-blocks'),
-						},
-						{
-							id: 'noFollow',
-							title: __('Add "nofollow" rel', 'maxi-blocks'),
-						},
-						{
-							id: 'sponsored',
-							title: __('Add "sponsored" rel', 'maxi-blocks'),
-						},
-						{
-							id: 'ugc',
-							title: __('Add "UGC" rel', 'maxi-blocks'),
-						},
-					]}
-				/>
+				<Fragment>
+					<__experimentalLinkControl
+						value={createLinkValue(formatOptions)}
+						onChange={onClick}
+						settings={[
+							{
+								id: 'opensInNewTab',
+								title: __('Open in new tab', 'maxi-blocks'),
+							},
+							{
+								id: 'noFollow',
+								title: __('Add "nofollow" rel', 'maxi-blocks'),
+							},
+							{
+								id: 'sponsored',
+								title: __('Add "sponsored" rel', 'maxi-blocks'),
+							},
+							{
+								id: 'ugc',
+								title: __('Add "UGC" rel', 'maxi-blocks'),
+							},
+						]}
+					/>
+					<Fragment>
+						<Button
+							className='toolbar-popover-link-destroyer'
+							onClick={() => onClick({ url: '' })}
+						>
+							Remove link
+						</Button>
+					</Fragment>
+				</Fragment>
 			}
 		/>
 	);

@@ -9,8 +9,8 @@ const { Icon, Button, Tooltip } = wp.components;
  * Internal dependencies
  */
 import {
-	getFormatSettings,
-	getFormattedString,
+	__experimentalIsFormatActive,
+	__experimentalGetFormattedString,
 } from '../../../../extensions/text/formats';
 
 /**
@@ -22,32 +22,20 @@ import { toolbarItalic } from '../../../../icons';
  * TextFormatUnderline
  */
 const TextFormatUnderline = props => {
-	const { content, onChange, node, isList, typeOfList } = props;
+	const { onChange, isList, formatValue } = props;
 
 	const formatName = 'core/underline';
 
-	const formatElement = {
-		element: node,
-		html: content,
-		multilineTag: isList ? 'li' : undefined,
-		multilineWrapperTags: isList ? typeOfList : undefined,
-		__unstableIsEditableTree: true,
-	};
-
-	const { formatValue, isActive } = useSelect(() => {
-		const { formatValue, isActive } = getFormatSettings(
-			formatElement,
-			formatName
-		);
+	const { isActive } = useSelect(() => {
+		const isActive = __experimentalIsFormatActive(formatValue, formatName);
 
 		return {
-			formatValue,
 			isActive,
 		};
-	}, [getFormatSettings, formatElement, formatName]);
+	}, [__experimentalIsFormatActive, formatValue, formatName]);
 
 	const onClick = () => {
-		const newContent = getFormattedString({
+		const newContent = __experimentalGetFormattedString({
 			formatValue,
 			formatName,
 			isActive,

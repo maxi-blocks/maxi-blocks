@@ -19,10 +19,10 @@ import TextFormatSubscript from '../text-format-subscript';
 import TextFormatSuperscript from '../text-format-superscript';
 import TextFormatCode from '../text-format-code';
 import {
-	getFormatSettings,
-	getFormattedString,
+	__experimentalIsFormatActive,
+	__experimentalSetFormatWithClass,
 } from '../../../../extensions/text/formats';
-import defaultFontSize from './default';
+import { defaultFontSizeObject } from '../../../../extensions/text/formats/formats';
 
 /**
  * External dependencies
@@ -44,28 +44,16 @@ const TextOptions = props => {
 		typography,
 		defaultTypography,
 		onChange,
-		node,
 		content,
 		breakpoint,
 		isList,
-		typeOfList,
+		formatValue,
 	} = props;
 
 	const formatName = 'maxi-blocks/text-size';
 
-	const formatElement = {
-		element: node,
-		html: content,
-		multilineTag: isList ? 'li' : undefined,
-		multilineWrapperTags: isList ? typeOfList : undefined,
-		__unstableIsEditableTree: true,
-	};
-
-	const { formatValue, isActive, currentClassName } = useSelect(() => {
-		const { formatValue, isActive } = getFormatSettings(
-			formatElement,
-			formatName
-		);
+	const { isActive, currentClassName } = useSelect(() => {
+		const isActive = __experimentalIsFormatActive(formatValue, formatName);
 
 		const activeFormat = getActiveFormat(formatValue, formatName);
 
@@ -73,11 +61,15 @@ const TextOptions = props => {
 			(isActive && activeFormat.attributes.className) || '';
 
 		return {
-			formatValue,
 			isActive,
 			currentClassName,
 		};
-	}, [getActiveFormat, formatElement]);
+	}, [
+		getActiveFormat,
+		__experimentalIsFormatActive,
+		formatValue,
+		formatName,
+	]);
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
@@ -93,20 +85,6 @@ const TextOptions = props => {
 		onChange({ typography: JSON.stringify(value), content });
 	};
 
-	const toggleFormat = (formatClassName, fontSize) => {
-		return getFormattedString({
-			formatValue,
-			formatName,
-			isActive,
-			isList,
-			attributes: {
-				attributes: {
-					className: formatClassName,
-					size: fontSize,
-				},
-			},
-		});
-	};
 	const onChangeSize = val => {
 		if (formatValue.start === formatValue.end) {
 			value[breakpoint]['font-size'] = isEmpty(val) ? '' : Number(val);
@@ -114,42 +92,34 @@ const TextOptions = props => {
 			return;
 		}
 
-		const formatClassName = `maxi-text-block__custom-font-size--${
-			Object.keys(value.customFormats).length
-		}`;
 		const newFontSize = isEmpty(val) ? '' : Number(val);
 
-		const newContent =
-			((isEmpty(currentClassName) ||
-				value[breakpoint]['font-size'] === newFontSize) &&
-				toggleFormat(formatClassName, val)) ||
-			content;
+		const {
+			typography: newTypography,
+			newContent,
+		} = __experimentalSetFormatWithClass({
+			currentClassName,
+			formatClassNamePrefix: 'maxi-text-block__custom-font-size--',
+			defaultObject: defaultFontSizeObject,
+			formatValue,
+			formatName,
+			isActive,
+			isList,
+			content,
+			typography: value,
+			value: {
+				'font-sizeUnit': value[breakpoint]['font-sizeUnit'],
+				'font-size': newFontSize,
+			},
+			breakpoint,
+			toggleConditional: isEmpty(currentClassName) || isEmpty(val),
+			deleteConditional: isEmpty(val),
+		});
 
-		if (!value.customFormats[currentClassName]) {
-			const newCustomFormat = {
-				[formatClassName]: {
-					...defaultFontSize,
-					[breakpoint]: {
-						'font-sizeUnit': value[breakpoint]['font-sizeUnit'],
-						'font-size': newFontSize,
-					},
-				},
-			};
-
-			value.customFormats = Object.assign(value.customFormats, {
-				...newCustomFormat,
-			});
-		} else if (value[breakpoint]['font-size'] === newFontSize) {
-			delete value.customFormats[currentClassName];
-		} else {
-			value.customFormats[currentClassName][breakpoint]['font-sizeUnit'] =
-				value[breakpoint]['font-sizeUnit'];
-			value.customFormats[currentClassName][breakpoint][
-				'font-size'
-			] = newFontSize;
-		}
-
-		onChange({ typography: JSON.stringify(value), content: newContent });
+		onChange({
+			typography: JSON.stringify(newTypography),
+			content: newContent,
+		});
 	};
 
 	return (
@@ -320,39 +290,29 @@ const TextOptions = props => {
 						</BaseControl>
 						<div>
 							<TextFormatStrikethrough
-								content={content}
 								onChange={content => onChange({ content })}
-								node={node}
 								isList={isList}
-								typeOfList={typeOfList}
+								formatValue={formatValue}
 							/>
 							<TextFormatUnderline
-								content={content}
 								onChange={content => onChange({ content })}
-								node={node}
 								isList={isList}
-								typeOfList={typeOfList}
+								formatValue={formatValue}
 							/>
 							<TextFormatSubscript
-								content={content}
 								onChange={content => onChange({ content })}
-								node={node}
 								isList={isList}
-								typeOfList={typeOfList}
+								formatValue={formatValue}
 							/>
 							<TextFormatSuperscript
-								content={content}
 								onChange={content => onChange({ content })}
-								node={node}
 								isList={isList}
-								typeOfList={typeOfList}
+								formatValue={formatValue}
 							/>
 							<TextFormatCode
-								content={content}
 								onChange={content => onChange({ content })}
-								node={node}
 								isList={isList}
-								typeOfList={typeOfList}
+								formatValue={formatValue}
 							/>
 						</div>
 					</Fragment>

@@ -107,24 +107,10 @@ const MaxiToolbar = props => {
 		isSelected,
 		name,
 		setAttributes,
+		formatValue,
+		node,
+		deviceType,
 	} = props;
-
-	const { deviceType } = useSelect(select => {
-		const { __experimentalGetPreviewDeviceType } = select('core/edit-post');
-		let deviceType = __experimentalGetPreviewDeviceType();
-		deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
-		return {
-			deviceType,
-		};
-	});
-
-	const [anchorRef, setAnchorRef] = useState(
-		document.getElementById(`block-${clientId}`)
-	);
-
-	useEffect(() => {
-		setAnchorRef(document.getElementById(`block-${clientId}`));
-	});
 
 	if (!allowedBlocks.includes(name)) return null;
 
@@ -190,13 +176,13 @@ const MaxiToolbar = props => {
 
 	return (
 		<Fragment>
-			{isSelected && anchorRef && (
+			{isSelected && node && (
 				<Popover
 					noArrow
 					animate={false}
 					position='top center right'
 					focusOnMount={false}
-					anchorRef={anchorRef}
+					node={node}
 					className='maxi-toolbar__popover'
 					uniqueid={uniqueID}
 					__unstableSticky
@@ -251,11 +237,12 @@ const MaxiToolbar = props => {
 								'typography'
 							)}
 							onChange={obj => setAttributes(obj)}
-							node={anchorRef}
+							node={node}
 							content={content}
 							breakpoint={deviceType}
 							isList={isList}
 							typeOfList={typeOfList}
+							formatValue={formatValue}
 						/>
 						<TextColor
 							blockName={name}
@@ -263,9 +250,10 @@ const MaxiToolbar = props => {
 							content={content}
 							onChange={obj => setAttributes(obj)}
 							breakpoint={deviceType}
-							node={anchorRef}
+							node={node}
 							isList={isList}
 							typeOfList={typeOfList}
+							formatValue={formatValue}
 						/>
 						<Alignment
 							blockName={name}
@@ -286,17 +274,19 @@ const MaxiToolbar = props => {
 							blockName={name}
 							content={content}
 							onChange={content => setAttributes({ content })}
-							node={anchorRef}
+							node={node}
 							isList={isList}
 							typeOfList={typeOfList}
+							formatValue={formatValue}
 						/>
 						<TextItalic
 							blockName={name}
 							content={content}
 							onChange={content => setAttributes({ content })}
-							node={anchorRef}
+							node={node}
 							isList={isList}
 							typeOfList={typeOfList}
+							formatValue={formatValue}
 						/>
 						<__experimentalRowSettings
 							blockName={name}
@@ -321,11 +311,12 @@ const MaxiToolbar = props => {
 						/>
 						<TextLink
 							blockName={name}
-							content={content}
-							onChange={content => setAttributes({ content })}
-							node={anchorRef}
+							onChange={obj => setAttributes(obj)}
 							isList={isList}
-							typeOfList={typeOfList}
+							formatValue={formatValue}
+							linkSettings={linkSettings}
+							typography={typography}
+							breakpoint={deviceType}
 						/>
 						<TextListOptions
 							blockName={name}
@@ -333,7 +324,7 @@ const MaxiToolbar = props => {
 							isList={isList}
 							typeOfList={typeOfList}
 							onChange={obj => setAttributes(obj)}
-							node={anchorRef}
+							node={node}
 						/>
 						<BackgroundColor
 							blockName={name}
@@ -372,7 +363,6 @@ const MaxiToolbar = props => {
 								)}
 							</Fragment>
 						)}
-
 						<Border
 							blockName={name}
 							border={border}

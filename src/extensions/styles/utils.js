@@ -1,6 +1,5 @@
 /**
  * Some ESLint deactivated rules. This file needs to be refactored
- * 1. All for loops need to be transformed on other iterator forms
  */
 /* eslint-disable no-continue */
 
@@ -110,7 +109,7 @@ export const getAlignmentTextObject = alignment => {
 		xs: {},
 	};
 
-	for (const [key, value] of Object.entries(alignment)) {
+	Object.entries(alignment).forEach(([key, value]) => {
 		if (!isNil(value.alignment)) {
 			switch (value.alignment) {
 				case 'left':
@@ -129,7 +128,9 @@ export const getAlignmentTextObject = alignment => {
 					return false;
 			}
 		}
-	}
+
+		return false;
+	});
 
 	return response;
 };
@@ -254,8 +255,8 @@ export const getArrowObject = arrow => {
 
 	if (!arrow.active) return response;
 
-	for (const [key, value] of Object.entries(arrow)) {
-		if (key === 'label' || key === 'active') continue;
+	Object.entries(arrow).forEach(([key, value]) => {
+		if (key === 'label' || key === 'active') return;
 
 		response[key].visibility = 'visible';
 		if (!isEmpty(value.side)) {
@@ -356,7 +357,7 @@ export const getArrowObject = arrow => {
 					break;
 			}
 		}
-	}
+	});
 
 	return response;
 };
@@ -394,8 +395,8 @@ export const getTransformObject = transform => {
 		},
 	};
 
-	for (const key of Object.keys(transform)) {
-		if (key === 'label') continue;
+	Object.keys(transform).forEach(key => {
+		if (key === 'label') return;
 
 		if (isNumber(getLastBreakpointValue(transform, 'scaleX', key)))
 			response[key].transform += `scaleX(${
@@ -459,7 +460,7 @@ export const getTransformObject = transform => {
 				'originY',
 				key
 			)} `;
-	}
+	});
 
 	return response;
 };
@@ -711,6 +712,9 @@ export const setTextCustomFormats = (target, typography, typographyHover) => {
 					[`${el} .${key}`]: {
 						customFormat: value,
 					},
+					[`${el} .${key} *`]: {
+						customFormat: value,
+					},
 				};
 
 				response = Object.assign(response, format);
@@ -720,7 +724,10 @@ export const setTextCustomFormats = (target, typography, typographyHover) => {
 		Object.entries(customFormatsHover).forEach(([key, value]) => {
 			target.forEach(el => {
 				const format = {
-					[`${el} .${key}`]: {
+					[`${el} .${key}:hover`]: {
+						customFormat: value,
+					},
+					[`${el} .${key}:hover *`]: {
 						customFormat: value,
 					},
 				};

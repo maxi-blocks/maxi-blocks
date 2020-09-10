@@ -4,7 +4,7 @@
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
 const { createBlock } = wp.blocks;
-const { dispatch, select } = wp.data;
+const { dispatch, select, withSelect } = wp.data;
 const { __unstableIndentListItems, __unstableOutdentListItems } = wp.richText;
 const { __experimentalBlock, RichText, RichTextShortcut } = wp.blockEditor;
 
@@ -26,6 +26,11 @@ import {
 	__experimentalToolbar,
 	__experimentalBackgroundDisplayer,
 } from '../../components';
+import {
+	__experimentalGetFormatValue,
+	__experimentalApplyLinkFormat,
+	__experimentalGetFormatClassName,
+} from '../../extensions/text/formats';
 
 /**
  * External dependencies
@@ -55,6 +60,10 @@ class edit extends MaxiBlock {
 			[`${uniqueID} .maxi-text-block__content li`]: this
 				.getTypographyObject,
 			[`${uniqueID} .maxi-text-block__content li:hover`]: this
+				.getTypographyHoverObject,
+			[`${uniqueID} .maxi-text-block__content a`]: this
+				.getTypographyObject,
+			[`${uniqueID} .maxi-text-block__content a:hover`]: this
 				.getTypographyHoverObject,
 		};
 
@@ -173,6 +182,9 @@ class edit extends MaxiBlock {
 			setAttributes,
 			onRemove,
 			clientId,
+			formatValue,
+			currentColorClassName,
+			currentUnderlineClassName,
 		} = this.props;
 
 		const name = 'maxi-blocks/text-maxi';
@@ -327,6 +339,39 @@ class edit extends MaxiBlock {
 			}
 		};
 
+		/**
+		 * As Gutenberg doesn't allow to modify pasted content, let's do some cheats
+		 * and add some coding manually
+		 * This next script will check if there is any format directly related with
+		 * native format 'core/link' and if it's so, will format it in Maxi Blocks way
+		 */
+		const isTextMaxiFormatted = formatValue.formats.some(formatEl => {
+			return formatEl.some(format => {
+				return format.type === 'core/link';
+			});
+		});
+
+		const formatMaxiText = formatValue => {
+			const {
+				typography: newTypography,
+				content: newContent,
+			} = __experimentalApplyLinkFormat({
+				formatValue,
+				typography: JSON.parse(typography),
+				currentColorClassName,
+				currentUnderlineClassName,
+				linkAttributes: {},
+				isList,
+			});
+
+			setAttributes({
+				typography: JSON.stringify(newTypography),
+				content: newContent,
+			});
+		};
+
+		if (isTextMaxiFormatted) formatMaxiText(formatValue);
+
 		return [
 			<Inspector {...this.props} />,
 			<__experimentalToolbar {...this.props} />,
@@ -462,4 +507,40 @@ class edit extends MaxiBlock {
 	}
 }
 
-export default edit;
+export default withSelect((select, ownProps) => {
+	const {
+		attributes: { content, isList, typeOfList },
+		clientId,
+	} = ownProps;
+	const node = document.getElementById(`block-${clientId}`);
+
+	const formatElement = {
+		element: node,
+		html: content,
+		multilineTag: isList ? 'li' : undefined,
+		multilineWrapperTags: isList ? typeOfList : undefined,
+		__unstableIsEditableTree: true,
+	};
+	const formatValue = __experimentalGetFormatValue(formatElement);
+	const currentColorClassName = __experimentalGetFormatClassName(
+		formatValue,
+		'maxi-blocks/text-color'
+	);
+	const currentUnderlineClassName = __experimentalGetFormatClassName(
+		formatValue,
+		'maxi-blocks/text-underline'
+	);
+
+	let deviceType = select(
+		'core/edit-post'
+	).__experimentalGetPreviewDeviceType();
+	deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
+
+	return {
+		node,
+		formatValue,
+		deviceType,
+		currentColorClassName,
+		currentUnderlineClassName,
+	};
+})(edit);

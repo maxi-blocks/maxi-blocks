@@ -15,8 +15,7 @@ const color = {
 	tagName: 'span',
 	className: 'maxi-text-block--has-text-color',
 	attributes: {
-		color: 'color',
-		style: 'style',
+		className: 'class',
 	},
 };
 

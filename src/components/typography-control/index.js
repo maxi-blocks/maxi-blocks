@@ -214,6 +214,7 @@ const TypographyControl = props => {
 					onChange(JSON.stringify(value));
 				}}
 				minMaxSettings={minMaxSettings}
+				allowedUnits={['px', 'em', 'vw', '%', 'empty']}
 			/>
 			<SizeControl
 				className='maxi-typography-control__letter-spacing'

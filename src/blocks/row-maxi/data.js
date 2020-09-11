@@ -1,5 +1,4 @@
-// eslint-disable-next-line import/prefer-default-export
-export const rowPattern = {
+const rowPattern = {
 	label: 'Row Pattern',
 	general: {
 		rowPattern: '',
@@ -23,3 +22,5 @@ export const rowPattern = {
 		rowPattern: '',
 	},
 };
+
+export default rowPattern;

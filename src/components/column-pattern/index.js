@@ -36,7 +36,13 @@ import './editor.scss';
  * @todo Shows just row patterns with same existing number of columns
  */
 const ColumnPatternsInspector = props => {
-	const { clientId, blockName, rowPattern, onChange } = props;
+	const {
+		clientId,
+		blockName,
+		rowPattern,
+		onChange,
+		breakpoint = 'general',
+	} = props;
 	const [numCol, setNumCol] = useState(1);
 	const [DISPLAYED_TEMPLATES, setDisplayedTemplates] = useState([]);
 
@@ -61,21 +67,17 @@ const ColumnPatternsInspector = props => {
 		'core/block-editor'
 	);
 
-	const deviceType = select(
-		'core/edit-post'
-	).__experimentalGetPreviewDeviceType();
-
 	// Change Number of columns state depending on the pattern
 	useEffect(() => {
 		if (rowPatternObject.general.rowPattern) {
 			setNumCol(getNumCol(rowPatternObject.general.rowPattern));
 		}
-	}, [deviceType, rowPatternObject.general.rowPattern]);
+	}, [breakpoint, rowPatternObject.general.rowPattern]);
 
 	// Change the patterns displayed based on the number of columns
 	useEffect(() => {
-		setDisplayedTemplates(filterTemplates(numCol, deviceType));
-	}, [deviceType, setDisplayedTemplates, numCol]);
+		setDisplayedTemplates(filterTemplates(numCol, breakpoint));
+	}, [breakpoint, setDisplayedTemplates, numCol]);
 
 	if (blockName !== 'maxi-blocks/row-maxi') return null;
 
@@ -185,9 +187,22 @@ const ColumnPatternsInspector = props => {
 		replaceInnerBlocks(clientId, newTemplate, false);
 	};
 
-	const patternButtonClassName = 'components-column-pattern__template-button';
-	if (deviceType === 'Desktop') {
-	}
+	// const patternButtonClassName = 'components-column-pattern__template-button';
+	// if (breakpoint === 'Desktop') {
+	// }
+
+	const setRowPatternAttribute = (clientId, i) => {
+		// const rowAttributes = getBlockAttributes(clientId);
+		// const rowPattern = JSON.parse(rowAttributes.rowPattern);
+
+		rowPatternObject[breakpoint].rowPattern = i;
+
+		// rowAttributes.rowPattern = JSON.stringify(rowPattern);
+
+		updateBlockAttributes(clientId, {
+			rowPattern: JSON.stringify(rowPatternObject),
+		});
+	};
 
 	/**
 	 * Update Columns Sizes
@@ -200,7 +215,7 @@ const ColumnPatternsInspector = props => {
 
 		// Get Current Columns in the editor
 		const columnsBlockObjects = getBlock(clientId).innerBlocks;
-		const totalColumns = columnsBlockObjects.length - 1;
+		// const totalColumns = columnsBlockObjects.length - 1;
 
 		// New Column Sizes Array
 		const { sizes } = DISPLAYED_TEMPLATES[i];
@@ -213,7 +228,7 @@ const ColumnPatternsInspector = props => {
 
 			// Update Column Attribute
 			const newColumnSize = JSON.parse(columnAttributes.columnSize);
-			newColumnSize[deviceType].size = sizes[j] * 100;
+			newColumnSize[breakpoint].size = sizes[j] * 100;
 
 			columnAttributes.columnSize = JSON.stringify(newColumnSize);
 
@@ -224,11 +239,16 @@ const ColumnPatternsInspector = props => {
 				`.maxi-column-block__resizer__${columnUniqueID}`
 			).style.width = `${sizes[j] * 100}%`;
 		});
+
+		setRowPatternAttribute(clientId, i);
 	};
+
+	console.log(rowPatternObject);
+
 	return (
 		<Fragment>
 			<div>
-				{deviceType === 'Desktop' && (
+				{breakpoint === 'Desktop' && (
 					<SizeControl
 						label={__('Columns', 'maxi-blocks')}
 						disableUnit
@@ -242,15 +262,22 @@ const ColumnPatternsInspector = props => {
 			</div>
 			<div className='components-column-pattern'>
 				{DISPLAYED_TEMPLATES.map((template, i) => {
+					console.log(
+						rowPatternObject[breakpoint].rowPattern,
+						i,
+						rowPatternObject[breakpoint].rowPattern === i
+					);
 					return (
 						<Button
 							key={uniqueId(
 								`components-column-pattern--${instanceId}--`
 							)}
 							className='components-column-pattern__template-button'
-							aria-pressed={rowPattern === i}
+							aria-pressed={
+								rowPatternObject[breakpoint].rowPattern === i
+							}
 							onClick={() => {
-								if (deviceType === 'Desktop') {
+								if (breakpoint === 'Desktop') {
 									loadTemplate(i);
 								} else {
 									updateTemplate(i);

@@ -2,7 +2,7 @@
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults';
-import { rowPattern } from './data';
+import rowPattern from './data';
 
 /**
  * Attributes

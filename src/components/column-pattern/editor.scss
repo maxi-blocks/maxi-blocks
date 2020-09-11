@@ -7,7 +7,7 @@
 		path {
 			fill: #ffffff;
 			stroke: #464a53;
-			stroke-width: 4px !important;
+			stroke-width: 4px;
 		}
 	}
 
@@ -20,13 +20,29 @@
 				stroke: #ff4a17 !important;
 			}
 		}
+
 		&[aria-pressed='true'] {
 			svg path {
-				stroke-width: 4;
+				stroke: #ff4a17;
+			}
+		}
+
+		&--toolbar {
+			&:hover {
+				svg path {
+					fill: #ff4a17;
+				}
 			}
 
-			&--active {
-				stroke: #ff4a17 !important;
+			&[aria-pressed='true'] {
+				svg path {
+					fill: #ff4a17;
+				}
+			}
+
+			svg path {
+				stroke: unset;
+				stroke-width: unset;
 			}
 		}
 	}

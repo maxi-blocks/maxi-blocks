@@ -104,18 +104,9 @@ const Inspector = props => {
 														clientId={clientId}
 														blockName={name}
 														rowPattern={rowPattern}
-														onChange={value => {
-															const newRowPattern = JSON.parse(
-																rowPattern
-															);
-
-															newRowPattern[
-																deviceType
-															].rowPattern = value;
+														onChange={rowPattern => {
 															setAttributes({
-																rowPattern: JSON.stringify(
-																	newRowPattern
-																),
+																rowPattern,
 															});
 														}}
 														breakpoint={deviceType}

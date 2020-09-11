@@ -14,8 +14,8 @@ import { useState, useEffect } from '@wordpress/element';
  */
 import {
 	filterTemplates,
+	TEMPLATES,
 	getNumCol,
-	RESPONSIVE_TEMPLATES,
 } from '../../extensions/defaults/column-templates';
 
 import SizeControl from '../size-control';
@@ -33,7 +33,7 @@ import './editor.scss';
 /**
  * Column patterns
  *
- * @todo Shows just row patterns with same existing number of columns
+ * @todo Shows just row patterns with DisplayedTemplates existing number of columns
  */
 const ColumnPatternsInspector = props => {
 	const {
@@ -42,9 +42,13 @@ const ColumnPatternsInspector = props => {
 		rowPattern,
 		onChange,
 		breakpoint = 'general',
+		toolbar = false,
 	} = props;
 	const [numCol, setNumCol] = useState(1);
-	const [DISPLAYED_TEMPLATES, setDisplayedTemplates] = useState([]);
+	const [FILTERED_TEMPLATES, setFilteredTemplates] = useState([]);
+	const [DISPLAYED_TEMPLATES, setDisplayedTemplates] = useState(
+		TEMPLATES.slice(0, 15)
+	);
 
 	const instanceId = useInstanceId(ColumnPatternsInspector);
 	const rowPatternObject = JSON.parse(rowPattern);
@@ -67,17 +71,23 @@ const ColumnPatternsInspector = props => {
 		'core/block-editor'
 	);
 
+	useEffect(() => {
+		if (!toolbar) {
+			setDisplayedTemplates(FILTERED_TEMPLATES);
+		}
+	}, [FILTERED_TEMPLATES]);
+
 	// Change Number of columns state depending on the pattern
 	useEffect(() => {
 		if (rowPatternObject.general.rowPattern) {
 			setNumCol(getNumCol(rowPatternObject.general.rowPattern));
 		}
-	}, [breakpoint, rowPatternObject.general.rowPattern]);
+	}, [breakpoint, rowPatternObject[breakpoint].rowPattern]);
 
 	// Change the patterns displayed based on the number of columns
 	useEffect(() => {
-		setDisplayedTemplates(filterTemplates(numCol, breakpoint));
-	}, [breakpoint, setDisplayedTemplates, numCol]);
+		setFilteredTemplates(filterTemplates(numCol, breakpoint));
+	}, [breakpoint, setFilteredTemplates, numCol]);
 
 	if (blockName !== 'maxi-blocks/row-maxi') return null;
 
@@ -151,14 +161,14 @@ const ColumnPatternsInspector = props => {
 	/**
 	 * Loads template into InnerBlocks
 	 *
-	 * @param {integer} i Element of object DISPLAYED_TEMPLATES
+	 * @param {integer} i Element of object FILTERED_TEMPLATES
 	 * @param {Function} callback
 	 */
 	const loadTemplate = i => {
 		const currentContent = getCurrentContent(innerBlocks);
 		const currentAttributes = getCurrentAttributes(innerBlocks);
 
-		const template = cloneDeep(DISPLAYED_TEMPLATES[i]);
+		const template = cloneDeep(TEMPLATES[i]);
 
 		template.content.forEach((column, i) => {
 			column[1].uniqueID = uniqueIdCreator();
@@ -207,18 +217,22 @@ const ColumnPatternsInspector = props => {
 	/**
 	 * Update Columns Sizes
 	 *
-	 * @param {integer} i Element of object DISPLAYED_TEMPLATES
+	 * @param {integer} i Element of object FILTERED_TEMPLATES
 	 * @param {Function} callback
 	 */
 	const updateTemplate = i => {
 		const { getBlock } = select('core/block-editor');
 
+		const gap2 = 2.1;
+
 		// Get Current Columns in the editor
 		const columnsBlockObjects = getBlock(clientId).innerBlocks;
-		// const totalColumns = columnsBlockObjects.length - 1;
+		const totalColumns = columnsBlockObjects.length - 1;
+
+		const total2 = 100 - gap2 * totalColumns;
 
 		// New Column Sizes Array
-		const { sizes } = DISPLAYED_TEMPLATES[i];
+		const { sizes } = TEMPLATES[i];
 
 		// Update the columns Attributes with the new sizes
 		columnsBlockObjects.forEach((column, j) => {
@@ -228,7 +242,7 @@ const ColumnPatternsInspector = props => {
 
 			// Update Column Attribute
 			const newColumnSize = JSON.parse(columnAttributes.columnSize);
-			newColumnSize[breakpoint].size = sizes[j] * 100;
+			newColumnSize[breakpoint].size = sizes[j] * total2;
 
 			columnAttributes.columnSize = JSON.stringify(newColumnSize);
 
@@ -237,53 +251,60 @@ const ColumnPatternsInspector = props => {
 
 			document.querySelector(
 				`.maxi-column-block__resizer__${columnUniqueID}`
-			).style.width = `${sizes[j] * 100}%`;
+			).style.width = `${sizes[j] * total2}%`;
 		});
 
 		setRowPatternAttribute(clientId, i);
 	};
 
-	console.log(rowPatternObject);
+	let patternButtonClassName = 'components-column-pattern__template-button';
+	if (toolbar) {
+		patternButtonClassName +=
+			' components-column-pattern__template-button--toolbar';
+	}
 
 	return (
 		<Fragment>
-			<div>
-				{breakpoint === 'Desktop' && (
-					<SizeControl
-						label={__('Columns', 'maxi-blocks')}
-						disableUnit
-						value={numCol}
-						defaultValue={numCol}
-						onChangeValue={numCol => setNumCol(numCol)}
-						min={1}
-						max={6}
-					/>
-				)}
-			</div>
+			{!toolbar && (
+				<div>
+					{breakpoint === 'general' && (
+						<SizeControl
+							label={__('Columns', 'maxi-blocks')}
+							disableUnit
+							value={numCol}
+							defaultValue={numCol}
+							onChangeValue={numCol => setNumCol(numCol)}
+							min={1}
+							max={6}
+						/>
+					)}
+				</div>
+			)}
 			<div className='components-column-pattern'>
-				{DISPLAYED_TEMPLATES.map((template, i) => {
-					console.log(
-						rowPatternObject[breakpoint].rowPattern,
-						i,
-						rowPatternObject[breakpoint].rowPattern === i
+				{DISPLAYED_TEMPLATES.map(template => {
+					// Find the index of the template on TEMPLATES Array
+					const i = TEMPLATES.findIndex(
+						newTemplate => template.name === newTemplate.name
 					);
 					return (
 						<Button
 							key={uniqueId(
 								`components-column-pattern--${instanceId}--`
 							)}
-							className='components-column-pattern__template-button'
+							className={patternButtonClassName}
 							aria-pressed={
 								rowPatternObject[breakpoint].rowPattern === i
 							}
 							onClick={() => {
-								if (breakpoint === 'Desktop') {
+								if (breakpoint === 'general') {
 									loadTemplate(i);
 								} else {
 									updateTemplate(i);
 								}
 
-								onChange(i);
+								rowPatternObject[breakpoint].rowPattern = i;
+
+								onChange(JSON.stringify(rowPatternObject));
 							}}
 						>
 							<Icon

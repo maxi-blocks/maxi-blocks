@@ -304,12 +304,8 @@ const TEMPLATES = [
 			verticalAlign: 'stretch',
 		},
 	},
-];
 
-/**
- * Responsive Templates: templates for tablets and phones
- */
-const RESPONSIVE_TEMPLATES = [
+	// Responsive Templates
 	{
 		name: '1-1-2',
 		icon: oneOneTwo,
@@ -459,19 +455,19 @@ const filterTemplates = (numCol, deviceType, screens = ['m', 's', 'xs']) => {
 
 	if (screens.includes(deviceType)) {
 		templates.threeColumns = TEMPLATES.slice(6, 12).concat(
-			RESPONSIVE_TEMPLATES.slice(0, 2)
+			TEMPLATES.slice(15, 17)
 		);
 
 		templates.fourColumns = TEMPLATES.slice(12, 13).concat(
-			RESPONSIVE_TEMPLATES.slice(2, 7)
+			TEMPLATES.slice(17, 22)
 		);
 
 		templates.fiveColumns = TEMPLATES.slice(13, 14).concat(
-			RESPONSIVE_TEMPLATES.slice(7, 11)
+			TEMPLATES.slice(22, 26)
 		);
 
 		templates.sixColumns = TEMPLATES.slice(14, 15).concat(
-			RESPONSIVE_TEMPLATES.slice(11)
+			TEMPLATES.slice(26)
 		);
 	} else {
 		templates.threeColumns = TEMPLATES.slice(6, 12);

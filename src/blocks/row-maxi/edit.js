@@ -186,37 +186,39 @@ class edit extends MaxiBlock {
 									onClick={() => selectOnClick(clientId)}
 									key={`maxi-row-block--${instanceId}`}
 								>
-									{TEMPLATES.map((template, i) => {
-										return (
-											<Button
-												key={uniqueId(
-													`maxi-row-block--${instanceId}--`
-												)}
-												className='maxi-row-block__template__button'
-												onClick={() => {
-													const newRowPattern = JSON.parse(
-														rowPattern
-													);
+									{TEMPLATES.slice(0, 15).map(
+										(template, i) => {
+											return (
+												<Button
+													key={uniqueId(
+														`maxi-row-block--${instanceId}--`
+													)}
+													className='maxi-row-block__template__button'
+													onClick={() => {
+														const newRowPattern = JSON.parse(
+															rowPattern
+														);
 
-													newRowPattern[
-														deviceType
-													].rowPattern = i;
-													setAttributes({
-														rowPattern: JSON.stringify(
-															newRowPattern
-														),
-													});
+														newRowPattern[
+															deviceType
+														].rowPattern = i;
+														setAttributes({
+															rowPattern: JSON.stringify(
+																newRowPattern
+															),
+														});
 
-													loadTemplate(i);
-												}}
-											>
-												<Icon
-													className='maxi-row-block__template__icon'
-													icon={template.icon}
-												/>
-											</Button>
-										);
-									})}
+														loadTemplate(i);
+													}}
+												>
+													<Icon
+														className='maxi-row-block__template__icon'
+														icon={template.icon}
+													/>
+												</Button>
+											);
+										}
+									)}
 								</div>
 						  )
 						: false

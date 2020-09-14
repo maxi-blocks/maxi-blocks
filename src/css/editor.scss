@@ -255,8 +255,14 @@ body .toolbar-item__popover {
 		padding-right: 0;
 	}
 	.components-range-control__number {
-		.components-input-control__input {
-			border-color: #80828a;
+		.components-input-control {
+			&__container {
+				background-color: transparent;
+			}
+			&__input {
+				border-color: #80828a;
+				color: #fff;
+			}
 		}
 	}
 }

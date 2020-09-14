@@ -36,6 +36,11 @@ const PaddingMargin = props => {
 			className='toolbar-item__padding-margin'
 			tooltip={__('Padding & Margin', 'maxi-blocks')}
 			icon={toolbarPadding}
+			advancedOptions={
+				blockName === 'maxi-blocks/column-maxi'
+					? 'padding margin'
+					: null
+			}
 			content={
 				<Fragment>
 					<__experimentalAxisControl

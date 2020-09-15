@@ -41,7 +41,7 @@ const ColumnPatternsInspector = props => {
 		blockName,
 		rowPattern,
 		onChange,
-		breakpoint = 'general',
+		breakpoint,
 		toolbar = false,
 	} = props;
 	const [numCol, setNumCol] = useState(1);
@@ -72,10 +72,18 @@ const ColumnPatternsInspector = props => {
 	);
 
 	useEffect(() => {
-		if (!toolbar) {
+		if (toolbar) {
+			if (breakpoint === "general") {
+				setDisplayedTemplates(TEMPLATES.slice(0, 15))
+			} else {
+				setDisplayedTemplates(FILTERED_TEMPLATES);
+			}
+		}
+		else {
 			setDisplayedTemplates(FILTERED_TEMPLATES);
 		}
-	}, [FILTERED_TEMPLATES]);
+		console.log(breakpoint);
+	}, [FILTERED_TEMPLATES, breakpoint]);
 
 	// Change Number of columns state depending on the pattern
 	useEffect(() => {

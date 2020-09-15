@@ -24,7 +24,7 @@ import { toolbarColumnPattern } from '../../../../icons';
  * @todo Shows just row patterns with same existing number of columns
  */
 const ColumnPatterns = props => {
-	const { clientId, blockName, rowPattern, onChange, deviceType } = props;
+	const { clientId, blockName, rowPattern, onChange, breakpoint } = props;
 
 	return (
 		<ToolbarPopover
@@ -40,7 +40,7 @@ const ColumnPatterns = props => {
 						onChange(rowPattern);
 					}}
 					toolbar
-					breakpoint={deviceType}
+					breakpoint={breakpoint}
 				/>
 			}
 		/>

@@ -197,17 +197,13 @@ const ColumnPatternsInspector = props => {
 		replaceInnerBlocks(clientId, newTemplate, false);
 	};
 
-	// const patternButtonClassName = 'components-column-pattern__template-button';
-	// if (breakpoint === 'Desktop') {
-	// }
+
 
 	const setRowPatternAttribute = (clientId, i) => {
-		// const rowAttributes = getBlockAttributes(clientId);
-		// const rowPattern = JSON.parse(rowAttributes.rowPattern);
+
 
 		rowPatternObject[breakpoint].rowPattern = i;
 
-		// rowAttributes.rowPattern = JSON.stringify(rowPattern);
 
 		updateBlockAttributes(clientId, {
 			rowPattern: JSON.stringify(rowPatternObject),

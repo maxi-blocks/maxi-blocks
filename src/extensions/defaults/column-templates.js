@@ -57,15 +57,15 @@ const generateDefaultColumns = (columns, gap1 = 2.5, gap2 = 2.1) => {
 				},
 				xxl: {
 					fullwidth: false,
-					size: '',
+					size: total1 * column,
 				},
 				xl: {
 					fullwidth: false,
-					size: '',
+					size: total1 * column,
 				},
 				l: {
 					fullwidth: false,
-					size: '',
+					size: total1 * column,
 				},
 				m: {
 					fullwidth: false,

@@ -218,6 +218,22 @@ body .toolbar-item__popover {
 	}
 
 	.components-color-picker {
+		&__inputs-fields {
+			.components-base-control {
+				margin-bottom: 0;
+				&__field {
+					flex-direction: column;
+					align-items: flex-start !important;
+					.components-text-control__input {
+						padding: 0 0 0 8px !important;
+						line-height: 2;
+					}
+				}
+				&__label {
+					padding: 0 0 5px 3px;
+				}
+			}
+		}
 		&__body {
 			padding-right: 0;
 			padding-left: 0;
@@ -257,6 +273,17 @@ body .toolbar-item__popover {
 	.components-range-control__number {
 		.components-input-control__input {
 			border-color: #80828a;
+		}
+	}
+	.components-color-picker {
+		&__inputs-fields {
+			.components-base-control {
+				&__field {
+					.components-text-control__input {
+                        border-color: #80828a !important;
+					}
+				}
+			}
 		}
 	}
 }

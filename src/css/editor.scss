@@ -198,6 +198,10 @@ body .toolbar-item__popover {
 		font-weight: 500;
 		flex: 1;
 	}
+	input[type="number"] {
+		padding: 0 0 0 8px;
+		height: auto;
+	}
 
 	.components-range-control__number {
 		.components-input-control__backdrop {

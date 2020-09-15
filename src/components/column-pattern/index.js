@@ -85,14 +85,14 @@ const ColumnPatternsInspector = props => {
 		console.log(breakpoint);
 	}, [FILTERED_TEMPLATES, breakpoint]);
 
-	// Change Number of columns state depending on the pattern
+
 	useEffect(() => {
 		if (rowPatternObject.general.rowPattern) {
 			setNumCol(getNumCol(rowPatternObject.general.rowPattern));
 		}
 	}, [breakpoint, rowPatternObject[breakpoint].rowPattern]);
 
-	// Change the patterns displayed based on the number of columns
+
 	useEffect(() => {
 		setFilteredTemplates(filterTemplates(numCol, breakpoint));
 	}, [breakpoint, setFilteredTemplates, numCol]);
@@ -227,28 +227,20 @@ const ColumnPatternsInspector = props => {
 	const updateTemplate = i => {
 		const { getBlock } = select('core/block-editor');
 
-
-		// Get Current Columns in the editor
 		const columnsBlockObjects = getBlock(clientId).innerBlocks;
-		const totalColumns = columnsBlockObjects.length - 1;
 
-
-		// New Column Sizes Array
 		const { sizes } = TEMPLATES[i];
 
-		// Update the columns Attributes with the new sizes
 		columnsBlockObjects.forEach((column, j) => {
 			const columnClientId = column.clientId;
 			const columnAttributes = column.attributes;
 			const columnUniqueID = columnAttributes.uniqueID;
 
-			// Update Column Attribute
 			const newColumnSize = JSON.parse(columnAttributes.columnSize);
 			newColumnSize[breakpoint].size = sizes[j] * 100;
 
 			columnAttributes.columnSize = JSON.stringify(newColumnSize);
 
-			// Update the column attributes
 			updateBlockAttributes(columnClientId, columnAttributes);
 
 			document.querySelector(

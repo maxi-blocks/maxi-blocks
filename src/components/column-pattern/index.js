@@ -219,13 +219,11 @@ const ColumnPatternsInspector = props => {
 	const updateTemplate = i => {
 		const { getBlock } = select('core/block-editor');
 
-		const gap2 = 2.1;
 
 		// Get Current Columns in the editor
 		const columnsBlockObjects = getBlock(clientId).innerBlocks;
 		const totalColumns = columnsBlockObjects.length - 1;
 
-		const total2 = 100 - gap2 * totalColumns;
 
 		// New Column Sizes Array
 		const { sizes } = TEMPLATES[i];
@@ -238,7 +236,7 @@ const ColumnPatternsInspector = props => {
 
 			// Update Column Attribute
 			const newColumnSize = JSON.parse(columnAttributes.columnSize);
-			newColumnSize[breakpoint].size = sizes[j] * total2;
+			newColumnSize[breakpoint].size = sizes[j] * 100;
 
 			columnAttributes.columnSize = JSON.stringify(newColumnSize);
 
@@ -247,7 +245,7 @@ const ColumnPatternsInspector = props => {
 
 			document.querySelector(
 				`.maxi-column-block__resizer__${columnUniqueID}`
-			).style.width = `${sizes[j] * total2}%`;
+			).style.width = `${sizes[j] * 100}%`;
 		});
 
 		setRowPatternAttribute(clientId, i);

@@ -7,7 +7,7 @@ const { __ } = wp.i18n;
  * Internal dependencies
  */
 import ToolbarPopover from '../toolbar-popover';
-import { __experimentalColumnPattern } from '../../../';
+import { __experimentalColumnPattern } from '../../..';
 
 /**
  * External dependencies
@@ -23,7 +23,7 @@ import { toolbarColumnPattern } from '../../../../icons';
  *
  * @todo Shows just row patterns with same existing number of columns
  */
-const ColumnPatterns = props => {
+const ColumnPattern = props => {
 	const { clientId, blockName, rowPattern, onChange, breakpoint } = props;
 
 	return (
@@ -47,4 +47,4 @@ const ColumnPatterns = props => {
 	);
 };
 
-export default ColumnPatterns;
+export default ColumnPattern;

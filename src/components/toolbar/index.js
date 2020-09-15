@@ -20,7 +20,7 @@ import {
 	Border,
 	BoxShadow,
 	Mover,
-	ColumnPatternPopover,
+	ColumnPattern,
 	Divider,
 	DividerColor,
 	DividerAlignment,
@@ -297,7 +297,7 @@ const MaxiToolbar = props => {
 							verticalAlign={verticalAlign}
 							onChange={obj => setAttributes(obj)}
 						/>
-						<ColumnPatternPopover
+						<ColumnPattern
 							clientId={clientId}
 							blockName={name}
 							rowPattern={rowPattern}

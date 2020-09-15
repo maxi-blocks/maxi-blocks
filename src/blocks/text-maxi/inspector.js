@@ -5,7 +5,7 @@ const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
 const { Fragment } = wp.element;
 const { useSelect } = wp.data;
-const { TextControl, SelectControl } = wp.components;
+const { TextControl, RadioControl, SelectControl } = wp.components;
 
 /**
  * Internal dependencies
@@ -507,36 +507,42 @@ const Inspector = props => {
 											content: (
 												<Fragment>
 													{isFirstOnHierarchy && (
-														<SelectControl
-															label={__(
-																'Full Width',
-																'maxi-blocks'
-															)}
-															value={fullWidth}
-															options={[
-																{
-																	label: __(
-																		'No',
-																		'maxi-blocks'
-																	),
-																	value:
-																		'normal',
-																},
-																{
-																	label: __(
-																		'Yes',
-																		'maxi-blocks'
-																	),
-																	value:
-																		'full',
-																},
-															]}
-															onChange={fullWidth =>
-																setAttributes({
-																	fullWidth,
-																})
-															}
-														/>
+														<div className='maxi-fancy-radio-control'>
+															<RadioControl
+																label={__(
+																	'Full Width',
+																	'maxi-blocks'
+																)}
+																selected={
+																	fullWidth
+																}
+																options={[
+																	{
+																		label: __(
+																			'No',
+																			'maxi-blocks'
+																		),
+																		value:
+																			'normal',
+																	},
+																	{
+																		label: __(
+																			'Yes',
+																			'maxi-blocks'
+																		),
+																		value:
+																			'full',
+																	},
+																]}
+																onChange={fullWidth =>
+																	setAttributes(
+																		{
+																			fullWidth,
+																		}
+																	)
+																}
+															/>
+														</div>
 													)}
 													<FullSizeControl
 														size={size}

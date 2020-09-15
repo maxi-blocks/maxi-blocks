@@ -36,6 +36,7 @@ import './editor.scss';
  * @todo Shows just row patterns with DisplayedTemplates existing number of columns
  */
 const ColumnPatternsInspector = props => {
+
 	const {
 		clientId,
 		blockName,
@@ -44,11 +45,17 @@ const ColumnPatternsInspector = props => {
 		breakpoint,
 		toolbar = false,
 	} = props;
+
+	if (blockName !== 'maxi-blocks/row-maxi')
+		return null
+
+
 	const [numCol, setNumCol] = useState(1);
 	const [FILTERED_TEMPLATES, setFilteredTemplates] = useState([]);
 	const [DISPLAYED_TEMPLATES, setDisplayedTemplates] = useState(
 		TEMPLATES.slice(0, 15)
 	);
+
 
 	const instanceId = useInstanceId(ColumnPatternsInspector);
 	const rowPatternObject = JSON.parse(rowPattern);

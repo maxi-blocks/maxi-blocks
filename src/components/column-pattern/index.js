@@ -17,6 +17,9 @@ import {
 	TEMPLATES,
 	getNumCol,
 } from '../../extensions/defaults/column-templates';
+import {
+	getLastBreakpointValue
+} from "../../utils";
 
 import SizeControl from '../size-control';
 
@@ -56,7 +59,6 @@ const ColumnPatternsInspector = props => {
 		TEMPLATES.slice(0, 15)
 	);
 
-
 	const instanceId = useInstanceId(ColumnPatternsInspector);
 	const rowPatternObject = JSON.parse(rowPattern);
 
@@ -89,7 +91,6 @@ const ColumnPatternsInspector = props => {
 		else {
 			setDisplayedTemplates(FILTERED_TEMPLATES);
 		}
-		console.log(breakpoint);
 	}, [FILTERED_TEMPLATES, breakpoint]);
 
 
@@ -263,7 +264,17 @@ const ColumnPatternsInspector = props => {
 		patternButtonClassName +=
 			' components-column-pattern__template-button--toolbar';
 	}
+	/* IMPORTANT!!! 
+		Problem
+		Currently the active pattern for [xxl, xl, l, m, s, xs] is not working when the user doesn't 
+		choose a pattern for those 	after inserting the block and choosed a pattern for Desktop 
 
+		Solution: 
+		 - set the same pattern choosed for Desktop for screens: xxl, xl, l, m 
+		 - set the corresponding stacked pattern for s and xs 
+
+	
+	*/
 	return (
 		<Fragment>
 			{!toolbar && (
@@ -293,8 +304,10 @@ const ColumnPatternsInspector = props => {
 								`components-column-pattern--${instanceId}--`
 							)}
 							className={patternButtonClassName}
-							aria-pressed={
-								rowPatternObject[breakpoint].rowPattern === i
+							aria-pressed={getLastBreakpointValue(
+								rowPatternObject,
+								'rowPattern',
+								breakpoint) === i
 							}
 							onClick={() => {
 								if (breakpoint === 'general') {
@@ -316,7 +329,7 @@ const ColumnPatternsInspector = props => {
 					);
 				})}
 			</div>
-		</Fragment>
+		</Fragment >
 	);
 };
 

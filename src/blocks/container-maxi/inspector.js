@@ -704,7 +704,7 @@ const Inspector = props => {
 								items={[
 									deviceType === 'general' && {
 										label: __(
-											'Custom classes',
+											'Custom Classes',
 											'maxi-blocks'
 										),
 										content: (

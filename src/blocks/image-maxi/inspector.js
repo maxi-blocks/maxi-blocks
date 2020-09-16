@@ -837,18 +837,6 @@ const Inspector = props => {
 												/>
 											),
 										},
-										{
-											/*
-                                            label: __('SVG Background', 'maxi-blocks'),
-                                            content: (
-                                                <__experimentalSVGControl
-                                                    SVGData={SVGData}
-                                                    SVGMediaID={SVGMediaID}
-                                                    SVGMediaURL={SVGMediaURL}
-                                                    onChange={obj => setAttributes(obj)}
-                                                />
-                                            ) */
-										},
 									]}
 								/>
 							</Fragment>

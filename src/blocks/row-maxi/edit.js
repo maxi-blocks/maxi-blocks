@@ -201,14 +201,17 @@ class edit extends MaxiBlock {
 
 														newRowPattern[
 															deviceType
-														].rowPattern = i;
+														].rowPattern =
+															template.name;
 														setAttributes({
 															rowPattern: JSON.stringify(
 																newRowPattern
 															),
 														});
 
-														loadTemplate(i);
+														loadTemplate(
+															template.name
+														);
 													}}
 												>
 													<Icon
@@ -276,8 +279,10 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	 * @param {integer} i Element of object TEMPLATES
 	 * @param {Function} callback
 	 */
-	const loadTemplate = i => {
-		const template = TEMPLATES[i];
+	const loadTemplate = templateName => {
+		const template = TEMPLATES.filter(
+			template => template.name === templateName
+		)[0];
 		template.content.forEach(column => {
 			column[1].uniqueID = uniqueIdCreator();
 		});

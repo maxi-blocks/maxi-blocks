@@ -13,9 +13,9 @@ import { useState, useEffect } from '@wordpress/element';
  * Internal dependencies
  */
 import {
-	filterTemplates,
-	TEMPLATES,
 	getNumCol,
+	getTemplates,
+	getTemplateObject,
 } from '../../extensions/defaults/column-templates';
 import { getLastBreakpointValue } from '../../utils';
 
@@ -50,9 +50,7 @@ const ColumnPatternsInspector = props => {
 
 	const [numCol, setNumCol] = useState(1);
 	const [FILTERED_TEMPLATES, setFilteredTemplates] = useState([]);
-	const [DISPLAYED_TEMPLATES, setDisplayedTemplates] = useState(
-		TEMPLATES.slice(0, 15)
-	);
+	const [DISPLAYED_TEMPLATES, setDisplayedTemplates] = useState([]);
 
 	const instanceId = useInstanceId(ColumnPatternsInspector);
 	const rowPatternObject = JSON.parse(rowPattern);
@@ -78,7 +76,7 @@ const ColumnPatternsInspector = props => {
 	useEffect(() => {
 		if (toolbar) {
 			if (breakpoint === 'general') {
-				setDisplayedTemplates(TEMPLATES.slice(0, 15));
+				setDisplayedTemplates(getTemplates());
 			} else {
 				setDisplayedTemplates(FILTERED_TEMPLATES);
 			}
@@ -89,13 +87,14 @@ const ColumnPatternsInspector = props => {
 
 	useEffect(() => {
 		if (rowPatternObject.general.rowPattern) {
+			console.log(rowPatternObject.general.rowPattern);
 			setNumCol(getNumCol(rowPatternObject.general.rowPattern));
 		}
 	}, [breakpoint, rowPatternObject[breakpoint].rowPattern]);
 
 	useEffect(() => {
-		setFilteredTemplates(filterTemplates(numCol, breakpoint));
-	}, [breakpoint, setFilteredTemplates, numCol]);
+		setFilteredTemplates(getTemplates(numCol));
+	}, [setFilteredTemplates, numCol]);
 
 	if (blockName !== 'maxi-blocks/row-maxi') return null;
 
@@ -176,9 +175,7 @@ const ColumnPatternsInspector = props => {
 		const currentContent = getCurrentContent(innerBlocks);
 		const currentAttributes = getCurrentAttributes(innerBlocks);
 
-		const template = cloneDeep(
-			TEMPLATES.filter(template => template.name === templateName)[0]
-		);
+		const template = cloneDeep(getTemplateObject(templateName));
 
 		template.content.forEach((column, i) => {
 			column[1].uniqueID = uniqueIdCreator();
@@ -226,9 +223,7 @@ const ColumnPatternsInspector = props => {
 
 		const columnsBlockObjects = getBlock(clientId).innerBlocks;
 
-		const { sizes } = TEMPLATES.filter(
-			template => template.name === templateName
-		)[0];
+		const { sizes } = getTemplateObject(templateName);
 
 		columnsBlockObjects.forEach((column, j) => {
 			const columnClientId = column.clientId;
@@ -285,10 +280,6 @@ const ColumnPatternsInspector = props => {
 			)}
 			<div className='components-column-pattern'>
 				{DISPLAYED_TEMPLATES.map(template => {
-					// Find the index of the template on TEMPLATES Array
-					// const i = TEMPLATES.findIndex(
-					//	newTemplate => template.name === newTemplate.name
-					// );
 					return (
 						<Button
 							key={uniqueId(

@@ -18,7 +18,10 @@ import {
 	__experimentalBackgroundDisplayer,
 } from '../../components';
 import Inspector from './inspector';
-import { TEMPLATES } from '../../extensions/defaults/column-templates';
+import {
+	getTemplates,
+	getTemplateObject,
+} from '../../extensions/defaults/column-templates';
 import {
 	getBoxShadowObject,
 	getOpacityObject,
@@ -186,42 +189,38 @@ class edit extends MaxiBlock {
 									onClick={() => selectOnClick(clientId)}
 									key={`maxi-row-block--${instanceId}`}
 								>
-									{TEMPLATES.slice(0, 15).map(
-										(template, i) => {
-											return (
-												<Button
-													key={uniqueId(
-														`maxi-row-block--${instanceId}--`
-													)}
-													className='maxi-row-block__template__button'
-													onClick={() => {
-														const newRowPattern = JSON.parse(
-															rowPattern
-														);
+									{getTemplates().map((template, i) => {
+										return (
+											<Button
+												key={uniqueId(
+													`maxi-row-block--${instanceId}--`
+												)}
+												className='maxi-row-block__template__button'
+												onClick={() => {
+													const newRowPattern = JSON.parse(
+														rowPattern
+													);
 
-														newRowPattern[
-															deviceType
-														].rowPattern =
-															template.name;
-														setAttributes({
-															rowPattern: JSON.stringify(
-																newRowPattern
-															),
-														});
+													newRowPattern[
+														deviceType
+													].rowPattern =
+														template.name;
+													setAttributes({
+														rowPattern: JSON.stringify(
+															newRowPattern
+														),
+													});
 
-														loadTemplate(
-															template.name
-														);
-													}}
-												>
-													<Icon
-														className='maxi-row-block__template__icon'
-														icon={template.icon}
-													/>
-												</Button>
-											);
-										}
-									)}
+													loadTemplate(template.name);
+												}}
+											>
+												<Icon
+													className='maxi-row-block__template__icon'
+													icon={template.icon}
+												/>
+											</Button>
+										);
+									})}
 								</div>
 						  )
 						: false
@@ -280,9 +279,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	 * @param {Function} callback
 	 */
 	const loadTemplate = templateName => {
-		const template = TEMPLATES.filter(
-			template => template.name === templateName
-		)[0];
+		const template = getTemplateObject(templateName);
 		template.content.forEach(column => {
 			column[1].uniqueID = uniqueIdCreator();
 		});

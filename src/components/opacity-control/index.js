@@ -9,7 +9,7 @@ const { RangeControl } = wp.components;
  */
 import { getLastBreakpointValue } from '../../utils';
 import classnames from 'classnames';
-import { isObject, isNil, isNumber } from 'lodash';
+import { isObject, isNil, isNumber, round } from 'lodash';
 
 /**
  * Component
@@ -36,7 +36,7 @@ const OpacityControl = props => {
 
 		if (!isNumber(response)) return response;
 
-		return response * 100;
+		return round(response * 100);
 	};
 
 	return (
@@ -49,7 +49,6 @@ const OpacityControl = props => {
 					? (value[breakpoint].opacity =
 							defaultValue[breakpoint].opacity)
 					: (value[breakpoint].opacity = Number(val / 100));
-
 				onChange(JSON.stringify(value));
 			}}
 			min={0}

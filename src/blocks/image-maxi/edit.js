@@ -244,7 +244,7 @@ class edit extends MaxiBlock {
 				captionContent,
 				imageSize,
 				mediaID,
-				mediaALT,
+				mediaAlt,
 				mediaURL,
 				mediaWidth,
 				mediaHeight,
@@ -285,12 +285,12 @@ class edit extends MaxiBlock {
 		const image = getImage();
 		if (image && imageData) {
 			if (imageData.alt_text)
-				setAttributes({ mediaALTwp: imageData.alt_text });
+				setAttributes({ mediaAltWp: imageData.alt_text });
 
-			if (mediaALT) setAttributes({ mediaALT });
+			if (mediaAlt) setAttributes({ mediaAlt });
 
 			if (imageData.title.rendered)
-				setAttributes({ mediaALTtitle: imageData.title.rendered });
+				setAttributes({ mediaAltTitle: imageData.title.rendered });
 
 			if (mediaURL !== image.source_url)
 				setAttributes({ mediaURL: image.source_url });
@@ -410,7 +410,7 @@ class edit extends MaxiBlock {
 											src={mediaURL}
 											width={mediaWidth}
 											height={mediaHeight}
-											alt={mediaALT}
+											alt={mediaAlt}
 										/>
 										{captionType !== 'none' && (
 											<figcaption className='maxi-image-block__caption'>

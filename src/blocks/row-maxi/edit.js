@@ -21,6 +21,7 @@ import Inspector from './inspector';
 import {
 	getTemplates,
 	getTemplateObject,
+	setRowPatternAttribute,
 } from '../../extensions/defaults/column-templates';
 import {
 	getBoxShadowObject,
@@ -189,7 +190,7 @@ class edit extends MaxiBlock {
 									onClick={() => selectOnClick(clientId)}
 									key={`maxi-row-block--${instanceId}`}
 								>
-									{getTemplates().map((template, i) => {
+									{getTemplates().map(template => {
 										return (
 											<Button
 												key={uniqueId(
@@ -197,20 +198,13 @@ class edit extends MaxiBlock {
 												)}
 												className='maxi-row-block__template__button'
 												onClick={() => {
-													const newRowPattern = JSON.parse(
-														rowPattern
-													);
-
-													newRowPattern[
+													setRowPatternAttribute(
+														clientId,
+														rowPattern,
+														'rowPattern',
+														template.name,
 														deviceType
-													].rowPattern =
-														template.name;
-													setAttributes({
-														rowPattern: JSON.stringify(
-															newRowPattern
-														),
-													});
-
+													);
 													loadTemplate(template.name);
 												}}
 											>

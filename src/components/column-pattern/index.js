@@ -46,8 +46,6 @@ const ColumnPatternsInspector = props => {
 		toolbar = false,
 	} = props;
 
-	if (blockName !== 'maxi-blocks/row-maxi') return null;
-
 	const [numCol, setNumCol] = useState(1);
 	const [FILTERED_TEMPLATES, setFilteredTemplates] = useState([]);
 	const [DISPLAYED_TEMPLATES, setDisplayedTemplates] = useState([]);
@@ -87,7 +85,6 @@ const ColumnPatternsInspector = props => {
 
 	useEffect(() => {
 		if (rowPatternObject.general.rowPattern) {
-			console.log(rowPatternObject.general.rowPattern);
 			setNumCol(getNumCol(rowPatternObject.general.rowPattern));
 		}
 	}, [breakpoint, rowPatternObject[breakpoint].rowPattern]);
@@ -168,7 +165,7 @@ const ColumnPatternsInspector = props => {
 	/**
 	 * Loads template into InnerBlocks
 	 *
-	 * @param {integer} templateName Element of object FILTERED_TEMPLATES
+	 * @param {integer} templateName the name of template
 	 * @param {Function} callback
 	 */
 	const loadTemplate = templateName => {
@@ -253,7 +250,7 @@ const ColumnPatternsInspector = props => {
 	/* IMPORTANT!!! 
 		Problem
 		Currently the active pattern for [xxl, xl, l, m, s, xs] is not working when the user doesn't 
-		choose a pattern for those 	after inserting the block and choosed a pattern for Desktop 
+		choose a pattern for those after inserting the block and choosed a pattern for Desktop 
 
 		Solution: 
 		 - set the same pattern choosed for Desktop for screens: xxl, xl, l, m 
@@ -287,11 +284,8 @@ const ColumnPatternsInspector = props => {
 							)}
 							className={patternButtonClassName}
 							aria-pressed={
-								getLastBreakpointValue(
-									rowPatternObject,
-									'rowPattern',
-									breakpoint
-								) === template.name
+								rowPatternObject[breakpoint].rowPattern ===
+								template.name
 							}
 							onClick={() => {
 								if (breakpoint === 'general') {

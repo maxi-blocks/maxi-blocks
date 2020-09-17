@@ -33,6 +33,13 @@ import {
 } from '../../icons';
 
 /**
+ * WordPress Dependencies
+ */
+const { dispatch } = wp.data;
+
+const { updateBlockAttributes } = dispatch('core/block-editor');
+
+/**
  * Helpers
  */
 /**
@@ -535,11 +542,62 @@ function getTemplateObject(templateName) {
  * @param {string} tempalteName name of the template
  * @return {Integer} Number of Columns for the corresponding template
  */
-const getNumCol = templateName => {
+function getNumCol(templateName) {
 	const template = getTemplateObject(templateName);
 
 	return template.sizes.length;
-};
+}
+
+/**
+ * Set Row Pattern Attribute
+ *
+ * @param {string} clientId client id of the row block
+ * @param {string} rowPatternAttribute the row pattern attribute
+ * @param {string} rowPatternAttributeName the row pattern attribute name
+ * @param {string} templateName the template name to set
+ * @return {Object} Block Object
+ *
+ */
+function setRowPatternAttribute(
+	clientId,
+	rowPatternAttribute,
+	rowPatternAttributeName,
+	templateName,
+	deviceType
+) {
+	const largeDevices = ['general', 'xxl', 'xl', 'l', 'm'];
+
+	const smallDevices = ['s', 'xs'];
+
+	const rowPatternObject = JSON.parse(rowPatternAttribute);
+
+	const numCols = getNumCol(templateName);
+	const templatesValues = Object.values(templates);
+
+	if (largeDevices.includes(deviceType)) {
+		for (const device of largeDevices) {
+			rowPatternObject[device].rowPattern = templateName;
+		}
+
+		// set stacked template for small screens
+		const stackedTemplateIndex =
+			templatesValues[numCols - 1].responsive.length - 1;
+		if (stackedTemplateIndex !== -1) {
+			const stackedTemplate =
+				templatesValues[numCols - 1].responsive[stackedTemplateIndex];
+
+			for (const device of smallDevices) {
+				rowPatternObject[device].rowPattern = stackedTemplate.name;
+			}
+		}
+	}
+
+	updateBlockAttributes(clientId, {
+		[rowPatternAttributeName]: JSON.stringify(rowPatternObject),
+	});
+
+	return rowPatternObject;
+}
 
 /**
  * Get columns Array based on the template name
@@ -590,4 +648,4 @@ function getTemplates(columnsNumber = undefined) {
 	}
 }
 
-export { getTemplates, getTemplateObject, getNumCol };
+export { getTemplates, getTemplateObject, getNumCol, setRowPatternAttribute };

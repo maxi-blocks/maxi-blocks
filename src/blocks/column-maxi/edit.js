@@ -260,13 +260,13 @@ class edit extends MaxiBlock {
 							renderAppender={
 								!hasInnerBlock
 									? () => (
-										<__experimentalBlockPlaceholder
-											clientId={clientId}
-										/>
-									)
+											<__experimentalBlockPlaceholder
+												clientId={clientId}
+											/>
+									  )
 									: true
-										? () => <InnerBlocks.ButtonBlockAppender />
-										: false
+									? () => <InnerBlocks.ButtonBlockAppender />
+									: false
 							}
 						/>
 					</ResizableBox>
@@ -319,7 +319,15 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 		).__experimentalGetPreviewDeviceType();
 		newDeviceType = newDeviceType === 'Desktop' ? 'general' : newDeviceType;
 
-		const allowedDeviceTypes = ['general', 'xxl', 'xl', 'l', 'm', 's'];
+		const allowedDeviceTypes = [
+			'general',
+			'xxl',
+			'xl',
+			'l',
+			'm',
+			's',
+			'xs',
+		];
 
 		if (
 			allowedDeviceTypes.includes(newDeviceType) &&

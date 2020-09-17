@@ -7,7 +7,7 @@ import { __experimentalBackgroundDisplayer } from '../../components';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, isEmpty } from 'lodash';
+import { isNil } from 'lodash';
 
 /**
  * Save
@@ -22,27 +22,12 @@ const save = props => {
 			fullWidth,
 			background,
 			extraClassName,
-			captionType,
-			captionContent,
-			mediaID,
-			mediaURL,
-			mediaWidth,
-			mediaHeight,
-			mediaALT,
-			mediaALTwp,
-			mediaALTtitle,
-			altSelector,
 			hover,
 			content,
 		},
 	} = props;
 
-	const {
-		settings: hoverSettings,
-		titleText: hoverTitleText,
-		contentText: hoverContentText,
-		textPreset: hoverTextPreset,
-	} = JSON.parse(hover);
+	const { settings: hoverSettings } = JSON.parse(hover);
 
 	const classes = classnames(
 		'maxi-block maxi-icon-block',
@@ -53,19 +38,6 @@ const save = props => {
 		fullWidth === 'full' ? 'alignfull' : null,
 		!isNil(uniqueID) ? uniqueID : null
 	);
-
-	const imageALT = () => {
-		switch (altSelector) {
-			case 'wordpress':
-				return mediaALTwp;
-			case 'title':
-				return mediaALTtitle;
-			case 'custom':
-				return mediaALT;
-			default:
-				return '';
-		}
-	};
 
 	return (
 		<div

@@ -53,3 +53,4 @@ export { default as __experimentalSVGControl } from './svg-control';
 export { default as __experimentalSVGFillControl } from './svg-fill-control';
 export { default as __experimentalSVGDefaultsDisplayer } from './svg-default-displayer';
 export { default as __experimentalOverlayControl } from './overlay-control';
+export { default as __experimentalImageAltControl } from './image-alt-control';

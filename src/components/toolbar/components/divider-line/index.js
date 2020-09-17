@@ -51,10 +51,12 @@ const Divider = props => {
 						label={__('Show Line', 'maxi-blocks')}
 						selected={showLine}
 						options={[
-							{ label: __('No', 'maxi-blocks'), value: 'no' },
-							{ label: __('Yes', 'maxi-blocks'), value: 'yes' },
+							{ label: __('No', 'maxi-blocks'), value: 0 },
+							{ label: __('Yes', 'maxi-blocks'), value: 1 },
 						]}
-						onChange={showLine => onChange(showLine, divider)}
+						onChange={val => {
+							onChange(Number(val), divider);
+						}}
 					/>
 					{!!showLine && (
 						<Fragment>

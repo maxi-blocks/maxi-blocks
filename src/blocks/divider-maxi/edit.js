@@ -118,9 +118,9 @@ class edit extends MaxiBlock {
 
 	get getDividerObject() {
 		const { divider } = this.props.attributes;
-
 		const response = {
 			divider: { ...JSON.parse(divider) },
+			opacity: { ...JSON.parse(divider).opacity },
 		};
 
 		return response;

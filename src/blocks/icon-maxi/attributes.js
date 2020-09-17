@@ -86,13 +86,13 @@ const attributes = {
 	mediaURL: {
 		type: 'string',
 	},
-	mediaALT: {
+	mediaAlt: {
 		type: 'string',
 	},
-	mediaALTwp: {
+	mediaAltWp: {
 		type: 'string',
 	},
-	mediaALTtitle: {
+	mediaAltTitle: {
 		type: 'string',
 	},
 	altSelector: {

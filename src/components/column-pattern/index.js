@@ -17,7 +17,6 @@ import {
 	getTemplates,
 	getTemplateObject,
 } from '../../extensions/defaults/column-templates';
-import { getLastBreakpointValue } from '../../utils';
 
 import SizeControl from '../size-control';
 
@@ -47,7 +46,6 @@ const ColumnPatternsInspector = props => {
 	} = props;
 
 	const [numCol, setNumCol] = useState(1);
-	const [FILTERED_TEMPLATES, setFilteredTemplates] = useState([]);
 	const [DISPLAYED_TEMPLATES, setDisplayedTemplates] = useState([]);
 
 	const instanceId = useInstanceId(ColumnPatternsInspector);
@@ -76,22 +74,18 @@ const ColumnPatternsInspector = props => {
 			if (breakpoint === 'general') {
 				setDisplayedTemplates(getTemplates());
 			} else {
-				setDisplayedTemplates(FILTERED_TEMPLATES);
+				setDisplayedTemplates(getTemplates(breakpoint, numCol));
 			}
 		} else {
-			setDisplayedTemplates(FILTERED_TEMPLATES);
+			setDisplayedTemplates(getTemplates(breakpoint, numCol));
 		}
-	}, [FILTERED_TEMPLATES, breakpoint]);
+	}, [breakpoint, numCol]);
 
 	useEffect(() => {
 		if (rowPatternObject.general.rowPattern) {
 			setNumCol(getNumCol(rowPatternObject.general.rowPattern));
 		}
 	}, [breakpoint, rowPatternObject[breakpoint].rowPattern]);
-
-	useEffect(() => {
-		setFilteredTemplates(getTemplates(numCol));
-	}, [setFilteredTemplates, numCol]);
 
 	if (blockName !== 'maxi-blocks/row-maxi') return null;
 
@@ -247,17 +241,7 @@ const ColumnPatternsInspector = props => {
 		patternButtonClassName +=
 			' components-column-pattern__template-button--toolbar';
 	}
-	/* IMPORTANT!!! 
-		Problem
-		Currently the active pattern for [xxl, xl, l, m, s, xs] is not working when the user doesn't 
-		choose a pattern for those after inserting the block and choosed a pattern for Desktop 
 
-		Solution: 
-		 - set the same pattern choosed for Desktop for screens: xxl, xl, l, m 
-		 - set the corresponding stacked pattern for s and xs 
-
-	
-	*/
 	return (
 		<Fragment>
 			{!toolbar && (

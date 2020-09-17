@@ -605,7 +605,8 @@ function setRowPatternAttribute(
  * @param {Integer} columnsNumber Number of columns
  * @return {Array} Array of templates for the corresponding columns number
  */
-function getTemplates(columnsNumber = undefined) {
+function getTemplates(deviceType = 'general', columnsNumber = undefined) {
+	const responsiveSnappingScreens = ['m', 's', 'xs'];
 	switch (columnsNumber) {
 		case 1:
 			return templates.oneColumn.default.concat(
@@ -618,24 +619,35 @@ function getTemplates(columnsNumber = undefined) {
 			);
 
 		case 3:
-			return templates.threeColumns.default.concat(
-				templates.threeColumns.responsive
-			);
+			if (responsiveSnappingScreens.includes(deviceType)) {
+				return templates.threeColumns.default.concat(
+					templates.threeColumns.responsive
+				);
+			}
+			return templates.threeColumns.default;
 
 		case 4:
-			return templates.fourColumns.default.concat(
-				templates.fourColumns.responsive
-			);
+			if (responsiveSnappingScreens.includes(deviceType)) {
+				return templates.fourColumns.default.concat(
+					templates.fourColumns.responsive
+				);
+			}
+			return templates.fourColumns.default;
 
 		case 5:
-			return templates.fiveColumns.default.concat(
-				templates.fiveColumns.responsive
-			);
-
+			if (responsiveSnappingScreens.includes(deviceType)) {
+				return templates.fiveColumns.default.concat(
+					templates.fiveColumns.responsive
+				);
+			}
+			return templates.fiveColumns.default;
 		case 6:
-			return templates.sixColumns.default.concat(
-				templates.sixColumns.responsive
-			);
+			if (responsiveSnappingScreens.includes(deviceType)) {
+				return templates.sixColumns.default.concat(
+					templates.sixColumns.responsive
+				);
+			}
+			return templates.sixColumns.default;
 
 		default:
 			return templates.oneColumn.default.concat(

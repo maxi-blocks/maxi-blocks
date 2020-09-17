@@ -158,16 +158,6 @@ const Inspector = props => {
 										}
 										isFirstOnHierarchy={isFirstOnHierarchy}
 									/>
-									<__experimentalImageAltControl
-										mediaAlt={mediaAlt}
-										altSelector={altSelector}
-										onChangeAltSelector={altSelector => {
-											setAttributes({ altSelector });
-										}}
-										onChangeMediaAlt={mediaAlt =>
-											setAttributes({ mediaAlt })
-										}
-									/>
 								</div>
 								<AccordionControl
 									isSecondary
@@ -260,6 +250,28 @@ const Inspector = props => {
 														}
 													/>
 												</Fragment>
+											),
+										},
+										deviceType === 'general' && {
+											label: __(
+												'Image Alt Tag',
+												'maxi-blocks'
+											),
+											content: (
+												<__experimentalImageAltControl
+													mediaAlt={mediaAlt}
+													altSelector={altSelector}
+													onChangeAltSelector={altSelector => {
+														setAttributes({
+															altSelector,
+														});
+													}}
+													onChangeMediaAlt={mediaAlt =>
+														setAttributes({
+															mediaAlt,
+														})
+													}
+												/>
 											),
 										},
 										deviceType === 'general' && {

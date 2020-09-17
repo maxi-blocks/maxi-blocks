@@ -232,7 +232,7 @@ class edit extends MaxiBlock {
 							top: false,
 							right: true,
 							bottom: false,
-							left: true,
+							left: false,
 							topRight: false,
 							bottomRight: false,
 							bottomLeft: false,

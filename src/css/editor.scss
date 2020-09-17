@@ -53,20 +53,13 @@ body.maxi-blocks--active {
 
 			&__resizer {
 				.components-resizable-box__handle {
-					display: none;
-					visibility: hidden;
-
 					&:before,
 					&:after {
 						background: #ff4a17;
-					}
-				}
 
-				&:hover {
-					.components-resizable-box__handle {
-						display: block;
-						visibility: visible;
 					}
+
+
 				}
 			}
 		}

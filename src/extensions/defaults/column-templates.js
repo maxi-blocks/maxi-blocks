@@ -483,7 +483,7 @@ const templates = {
 			{
 				name: '1-1-1-1-1-1',
 				icon: oneOneOneOneOneOne,
-				sizes: [1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2],
+				sizes: [1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2],
 				content: generateDefaultColumns([
 					1 / 2,
 					1 / 2,

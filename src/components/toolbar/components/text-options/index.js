@@ -96,24 +96,17 @@ const TextOptions = props => {
 
 		const {
 			typography: newTypography,
-			newContent,
+			content: newContent,
 		} = __experimentalSetFormatWithClass({
-			currentClassName,
-			formatClassNamePrefix: 'maxi-text-block__custom-font-size--',
-			defaultObject: defaultFontSizeObject,
 			formatValue,
-			formatName,
 			isActive,
 			isList,
-			content,
 			typography: value,
 			value: {
 				'font-sizeUnit': value[breakpoint]['font-sizeUnit'],
 				'font-size': newFontSize,
 			},
 			breakpoint,
-			toggleConditional: isEmpty(currentClassName) || isEmpty(val),
-			deleteConditional: isEmpty(val),
 		});
 
 		onChange({
@@ -185,6 +178,7 @@ const TextOptions = props => {
 										)
 								)}
 								onChange={e => {
+									console.log('clicking?');
 									onChangeSize(e.target.value);
 								}}
 							/>

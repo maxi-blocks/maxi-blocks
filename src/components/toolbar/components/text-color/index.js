@@ -14,13 +14,13 @@ import ToolbarPopover from '../toolbar-popover';
 import {
 	__experimentalIsFormatActive,
 	__experimentalSetFormatWithClass,
+	__experimentalGetFormatClassName,
 } from '../../../../extensions/text/formats';
-import { defaultFontColorObject } from '../../../../extensions/text/formats/formats';
 
 /**
  * External dependencies
  */
-import { isObject, isEmpty } from 'lodash';
+import { isObject } from 'lodash';
 
 /**
  * Icons
@@ -42,7 +42,7 @@ const TextColor = props => {
 		formatValue,
 	} = props;
 
-	const formatName = 'maxi-blocks/text-color';
+	const formatName = 'maxi-blocks/text-custom';
 
 	const value =
 		(!isObject(typography) && JSON.parse(typography)) || typography;
@@ -50,10 +50,10 @@ const TextColor = props => {
 	const { isActive, currentClassName } = useSelect(() => {
 		const isActive = __experimentalIsFormatActive(formatValue, formatName);
 
-		const activeFormat = getActiveFormat(formatValue, formatName);
-
-		const currentClassName =
-			(isActive && activeFormat.attributes.className) || '';
+		const currentClassName = __experimentalGetFormatClassName(
+			formatValue,
+			formatName
+		);
 
 		return {
 			isActive,
@@ -86,25 +86,16 @@ const TextColor = props => {
 
 		const {
 			typography: newTypography,
-			newContent,
+			content: newContent,
 		} = __experimentalSetFormatWithClass({
-			currentClassName,
-			formatClassNamePrefix: 'maxi-text-block__custom-font-color--',
-			defaultObject: defaultFontColorObject,
 			formatValue,
-			formatName,
 			isActive,
 			isList,
-			content,
 			typography: value,
 			value: {
 				color: val.hex,
 			},
 			breakpoint,
-			toggleConditional:
-				isEmpty(currentClassName) ||
-				value[breakpoint].color === val.hex,
-			deleteConditional: value[breakpoint].color === val.hex,
 		});
 
 		onChange({

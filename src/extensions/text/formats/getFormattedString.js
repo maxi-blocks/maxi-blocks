@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { toggleFormat, toHTMLString } = wp.richText;
+const { applyFormat, toHTMLString } = wp.richText;
 
 /**
  * @param {Object} param0 Data for generating a new string
@@ -13,7 +13,7 @@ const getFormattedString = ({
 	isList,
 	attributes,
 }) => {
-	const newFormat = toggleFormat(formatValue, {
+	const newFormat = applyFormat(formatValue, {
 		type: formatName,
 		isActive,
 		...attributes,

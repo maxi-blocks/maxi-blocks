@@ -44,6 +44,7 @@ const Divider = props => {
 			className='toolbar-item__divider'
 			tooltip={__('Divider', 'maxi-blocks')}
 			icon={toolbarDividersetting}
+			advancedOptions='line'
 			content={
 				<Fragment>
 					<RadioControl

@@ -212,9 +212,14 @@ const ColumnPatternsInspector = props => {
 	const updateTemplate = templateName => {
 		const { getBlock } = select('core/block-editor');
 
+		const gap1 = 2.5;
+		const gap2 = 2.1;
+
 		const columnsBlockObjects = getBlock(clientId).innerBlocks;
 
-		const { sizes } = getTemplateObject(templateName);
+		const template = getTemplateObject(templateName);
+
+		const { sizes } = template;
 
 		columnsBlockObjects.forEach((column, j) => {
 			const columnClientId = column.clientId;
@@ -222,15 +227,43 @@ const ColumnPatternsInspector = props => {
 			const columnUniqueID = columnAttributes.uniqueID;
 
 			const newColumnSize = JSON.parse(columnAttributes.columnSize);
-			newColumnSize[breakpoint].size = sizes[j] * 100;
 
-			columnAttributes.columnSize = JSON.stringify(newColumnSize);
+			const newColumnMargin = JSON.parse(columnAttributes.margin);
 
-			updateBlockAttributes(columnClientId, columnAttributes);
+			const totalColumnsInRow = template.rowLengths[j];
+			let total = 100 - gap1 * totalColumnsInRow;
+
+			if (['m', 's', 'xs'].includes(breakpoint)) {
+				total = 100 - gap2 * totalColumnsInRow;
+			}
+
+			if (template.rowLengths[j] === 1) {
+				total = 100;
+			}
+
+			// Setting marginTop for stacked column
+			if (
+				template.spacing[j] === 'marginTop' ||
+				template.spacing[j] === 'gap-marginTop'
+			) {
+				newColumnMargin[breakpoint]['margin-top'] = 1;
+
+				document.querySelector(
+					`.maxi-column-block__resizer__${columnUniqueID}`
+				).style.marginTop = '1em';
+			}
+
+			// Setting new columns width
+			newColumnSize[breakpoint].size = sizes[j] * total;
 
 			document.querySelector(
 				`.maxi-column-block__resizer__${columnUniqueID}`
-			).style.width = `${sizes[j] * 100}%`;
+			).style.width = `${sizes[j] * total}%`;
+
+			columnAttributes.columnSize = JSON.stringify(newColumnSize);
+			columnAttributes.newColumnMargin = JSON.stringify(newColumnMargin);
+
+			updateBlockAttributes(columnClientId, columnAttributes);
 		});
 
 		setRowPatternAttribute(clientId, templateName);

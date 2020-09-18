@@ -38,6 +38,7 @@ import {
 	__experimentalClipPath,
 	__experimentalEntranceAnimationControl,
 	__experimentalHoverEffectControl,
+	__experimentalImageAltControl,
 } from '../../components';
 
 /**
@@ -76,12 +77,11 @@ const Inspector = props => {
 			mediaID,
 			extraClassName,
 			zIndex,
-			mediaALT,
+			mediaAlt,
 			altSelector,
 			breakpoints,
 			position,
 			display,
-			motion,
 			transform,
 			clipPath,
 			hover,
@@ -96,13 +96,6 @@ const Inspector = props => {
 	const sizeValue = !isObject(size) ? JSON.parse(size) : size;
 
 	const defaultSize = JSON.parse(getDefaultProp(clientId, 'size'));
-
-	const altSelectorOptions = [
-		{ label: __('WordPress ALT', 'maxi-blocks'), value: 'wordpress' },
-		{ label: __('Image Title', 'maxi-blocks'), value: 'title' },
-		{ label: __('Custom', 'maxi-blocks'), value: 'custom' },
-		{ label: __('None', 'maxi-blocks'), value: 'none' },
-	];
 
 	const getSizeOptions = () => {
 		const response = [];
@@ -163,6 +156,16 @@ const Inspector = props => {
 											setAttributes({ defaultBlockStyle })
 										}
 										isFirstOnHierarchy={isFirstOnHierarchy}
+									/>
+									<__experimentalImageAltControl
+										mediaAlt={mediaAlt}
+										altSelector={altSelector}
+										onChangeAltSelector={altSelector => {
+											setAttributes({ altSelector });
+										}}
+										onChangeMediaAlt={mediaAlt =>
+											setAttributes({ mediaAlt })
+										}
 									/>
 								</div>
 								<AccordionControl
@@ -736,30 +739,6 @@ const Inspector = props => {
 										}
 										breakpoint={deviceType}
 									/>
-									<SelectControl
-										label={__(
-											'Image ALT Tag',
-											'maxi-blocks'
-										)}
-										value={altSelector}
-										options={altSelectorOptions}
-										onChange={altSelector => {
-											setAttributes({ altSelector });
-										}}
-									/>
-									{altSelector == 'custom' && (
-										<TextControl
-											placeHolder={__(
-												'Add Your ALT Tag Here',
-												'maxi-blocks'
-											)}
-											className='maxi-image__alt'
-											value={mediaALT}
-											onChange={mediaALT =>
-												setAttributes({ mediaALT })
-											}
-										/>
-									)}
 									{deviceType != 'general' && (
 										<__experimentalResponsiveControl
 											breakpoints={breakpoints}

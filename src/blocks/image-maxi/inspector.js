@@ -39,6 +39,7 @@ import {
 	__experimentalClipPath,
 	__experimentalEntranceAnimationControl,
 	__experimentalHoverEffectControl,
+	__experimentalImageAltControl,
 } from '../../components';
 
 /**
@@ -77,7 +78,7 @@ const Inspector = props => {
 			mediaID,
 			extraClassName,
 			zIndex,
-			mediaALT,
+			mediaAlt,
 			altSelector,
 			breakpoints,
 			position,
@@ -96,13 +97,6 @@ const Inspector = props => {
 	const sizeValue = !isObject(size) ? JSON.parse(size) : size;
 
 	const defaultSize = JSON.parse(getDefaultProp(clientId, 'size'));
-
-	const altSelectorOptions = [
-		{ label: __('WordPress ALT', 'maxi-blocks'), value: 'wordpress' },
-		{ label: __('Image Title', 'maxi-blocks'), value: 'title' },
-		{ label: __('Custom', 'maxi-blocks'), value: 'custom' },
-		{ label: __('None', 'maxi-blocks'), value: 'none' },
-	];
 
 	const getSizeOptions = () => {
 		const response = [];
@@ -256,6 +250,28 @@ const Inspector = props => {
 														}
 													/>
 												</Fragment>
+											),
+										},
+										deviceType === 'general' && {
+											label: __(
+												'Image Alt Tag',
+												'maxi-blocks'
+											),
+											content: (
+												<__experimentalImageAltControl
+													mediaAlt={mediaAlt}
+													altSelector={altSelector}
+													onChangeAltSelector={altSelector => {
+														setAttributes({
+															altSelector,
+														});
+													}}
+													onChangeMediaAlt={mediaAlt =>
+														setAttributes({
+															mediaAlt,
+														})
+													}
+												/>
 											),
 										},
 										deviceType === 'general' && {
@@ -670,32 +686,6 @@ const Inspector = props => {
 						label: __('Advanced', 'maxi-blocks'),
 						content: (
 							<Fragment>
-								<div className='maxi-tab-content__box'>
-									<SelectControl
-										label={__(
-											'Image ALT Tag',
-											'maxi-blocks'
-										)}
-										value={altSelector}
-										options={altSelectorOptions}
-										onChange={altSelector => {
-											setAttributes({ altSelector });
-										}}
-									/>
-									{altSelector === 'custom' && (
-										<TextControl
-											placeHolder={__(
-												'Add Your Alt Tag Here',
-												'maxi-blocks'
-											)}
-											className='maxi-image__alt'
-											value={mediaALT}
-											onChange={mediaALT =>
-												setAttributes({ mediaALT })
-											}
-										/>
-									)}
-								</div>
 								<AccordionControl
 									isPrimary
 									items={[

@@ -9,7 +9,8 @@ const { Icon, Button, Tooltip } = wp.components;
 /**
  * Icons
  */
-import { toolbarMove } from '../../../../icons';
+import './editor.scss';
+import { moveTop, moveRight, moveBottom, moveLeft } from '../../../../icons';
 
 /**
  * ColumnMover
@@ -35,28 +36,28 @@ const ColumnMover = props => {
 
 	return (
 		<Fragment>
-			<Tooltip
-				text={__('Move left', 'maxi-blocks')}
-				position='bottom center'
-			>
-				<Button
-					className='toolbar-item toolbar-item__bold'
-					onClick={() => moveBlocksUp([clientId], rootClientId)}
+			<div className='toolbar-item-move toolbar-item-move__horizontally'>
+				<Tooltip
+					text={__('Move left', 'maxi-blocks')}
+					position='bottom center'
 				>
-					<Icon className='toolbar-item__icon' icon={toolbarMove} />
-				</Button>
-			</Tooltip>
-			<Tooltip
-				text={__('Move right', 'maxi-blocks')}
-				position='bottom center'
-			>
-				<Button
-					className='toolbar-item toolbar-item__bold'
-					onClick={() => moveBlocksDown([clientId], rootClientId)}
+					<Button
+						onClick={() => moveBlocksUp([clientId], rootClientId)}
+					>
+						<Icon className='toolbar-item__icon' icon={moveLeft} />
+					</Button>
+				</Tooltip>
+				<Tooltip
+					text={__('Move right', 'maxi-blocks')}
+					position='bottom center'
 				>
-					<Icon className='toolbar-item__icon' icon={toolbarMove} />
-				</Button>
-			</Tooltip>
+					<Button
+						onClick={() => moveBlocksDown([clientId], rootClientId)}
+					>
+						<Icon className='toolbar-item__icon' icon={moveRight} />
+					</Button>
+				</Tooltip>
+			</div>
 		</Fragment>
 	);
 };

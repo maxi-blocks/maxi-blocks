@@ -1,0 +1,11 @@
+.toolbar-item-move__horizontally {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 7px !important;
+
+	.components-button {
+		width: 6px;
+		padding: 0;
+	}
+}

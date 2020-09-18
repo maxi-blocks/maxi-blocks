@@ -241,7 +241,13 @@ const ColumnPatternsInspector = props => {
 				total = 100;
 			}
 
-			// Setting marginTop for stacked column
+			newColumnMargin[breakpoint]['margin-top'] = 0;
+
+			document.querySelector(
+				`.maxi-column-block__resizer__${columnUniqueID} > div`
+			).style.marginTop = '0';
+
+			/* Setting marginTop for stacked columns */
 			if (
 				template.spacing[j] === 'marginTop' ||
 				template.spacing[j] === 'gap-marginTop'
@@ -249,11 +255,11 @@ const ColumnPatternsInspector = props => {
 				newColumnMargin[breakpoint]['margin-top'] = 1;
 
 				document.querySelector(
-					`.maxi-column-block__resizer__${columnUniqueID}`
+					`.maxi-column-block__resizer__${columnUniqueID} > div`
 				).style.marginTop = '1em';
 			}
 
-			// Setting new columns width
+			// Setting new columns widths
 			newColumnSize[breakpoint].size = sizes[j] * total;
 
 			document.querySelector(

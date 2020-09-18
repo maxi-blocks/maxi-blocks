@@ -162,6 +162,7 @@ const mergeNewFormat = ({
 	return {
 		typography: newTypography,
 		content: newContent,
+		formatValue: newFormatValue,
 	};
 };
 
@@ -174,6 +175,7 @@ const mergeMultipleFormats = ({
 }) => {
 	let newTypography = { ...typography };
 	let newContent = '';
+	let newFormatValue = { ...formatValue };
 
 	const formatsCurrentClassName = getFormatsClassName(formatValue);
 
@@ -185,9 +187,10 @@ const mergeMultipleFormats = ({
 		const {
 			typography: newCustomTypography,
 			content: newCustomContent,
+			formatValue: newCustomFormatValue,
 		} = mergeNewFormat({
 			typography: newTypography,
-			formatValue,
+			formatValue: newFormatValue,
 			currentClassName: oldFormatClassName,
 			formatClassName,
 			breakpoint,
@@ -197,11 +200,13 @@ const mergeMultipleFormats = ({
 
 		newTypography = newCustomTypography;
 		newContent = newCustomContent;
+		newFormatValue = newCustomFormatValue;
 	});
 
 	return {
 		typography: newTypography,
 		content: newContent,
+		formatValue: newFormatValue,
 	};
 };
 
@@ -213,16 +218,24 @@ const setNewFormat = ({
 	breakpoint,
 	value,
 }) => {
-	const newCustomFormat = {
+	const newCustomStyle = {
 		[formatClassName]: {
 			...defaultCustomFormat,
 			[breakpoint]: { ...defaultCustomFormat[breakpoint], ...value },
 		},
 	};
 
+	const newFormatValue = applyFormat(formatValue, {
+		type: formatName,
+		// isActive,
+		attributes: {
+			className: formatClassName,
+		},
+	});
+
 	typography.customFormats = {
 		...typography.customFormats,
-		...newCustomFormat,
+		...newCustomStyle,
 	};
 
 	const newContent = applyCustomFormat({
@@ -236,6 +249,7 @@ const setNewFormat = ({
 	return {
 		typography,
 		content: newContent,
+		formatValue: newFormatValue,
 	};
 };
 
@@ -266,7 +280,11 @@ const setFormatWithClass = ({
 
 	const hasMultiCustomFormat = getFormatsClassName(formatValue).length > 1;
 
-	const { typography: preformattedTypography, content: newContent } =
+	const {
+		typography: preformattedTypography,
+		content: newContent,
+		formatValue: newFormatValue,
+	} =
 		(!hasCustomFormat &&
 			setNewFormat({
 				typography,
@@ -298,6 +316,7 @@ const setFormatWithClass = ({
 	return {
 		typography: preformattedTypography,
 		content: newContent,
+		formatValue: newFormatValue,
 	};
 };
 

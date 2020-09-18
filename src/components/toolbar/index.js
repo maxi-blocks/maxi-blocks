@@ -271,22 +271,20 @@ const MaxiToolbar = props => {
 							onChange={obj => setAttributes(obj)}
 						/>
 						<TextBold
-							blockName={name}
-							content={content}
-							onChange={content => setAttributes({ content })}
-							node={node}
-							isList={isList}
-							typeOfList={typeOfList}
+							typography={typography}
 							formatValue={formatValue}
+							blockName={name}
+							onChange={obj => setAttributes(obj)}
+							isList={isList}
+							breakpoint={deviceType}
 						/>
 						<TextItalic
-							blockName={name}
-							content={content}
-							onChange={content => setAttributes({ content })}
-							node={node}
-							isList={isList}
-							typeOfList={typeOfList}
+							typography={typography}
 							formatValue={formatValue}
+							blockName={name}
+							onChange={obj => setAttributes(obj)}
+							isList={isList}
+							breakpoint={deviceType}
 						/>
 						<__experimentalRowSettings
 							blockName={name}

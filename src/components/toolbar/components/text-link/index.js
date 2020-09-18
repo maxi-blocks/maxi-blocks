@@ -5,25 +5,18 @@ const { __ } = wp.i18n;
 const { Fragment } = wp.element;
 const { __experimentalLinkControl } = wp.blockEditor;
 const { useSelect } = wp.data;
-const { getActiveFormat, applyFormat, removeFormat } = wp.richText;
+const { getActiveFormat, removeFormat } = wp.richText;
 const { Button } = wp.components;
 
 /**
  * Internal dependencies
  */
 import {
-	__experimentalIsFormatActive,
-	__experimentalGetFormattedString,
 	__experimentalGetUpdatedString,
-	__experimentalSetFormatWithClass,
 	__experimentalRemoveFormatWithClass,
 	__experimentalApplyLinkFormat,
 } from '../../../../extensions/text/formats';
 import ToolbarPopover from '../toolbar-popover';
-import {
-	defaultFontColorObject,
-	defaultFontUnderlineObject,
-} from '../../../../extensions/text/formats/formats';
 
 /**
  * External dependencies
@@ -154,14 +147,12 @@ const Link = props => {
 		} = __experimentalApplyLinkFormat({
 			formatValue,
 			typography: typographyValue,
-			currentColorClassName,
-			currentUnderlineClassName,
 			linkAttributes: createLinkAttribute(attributes),
 			isList,
 		});
 
 		onChange({
-			typography: JSON.stringify(newTypography),
+			typography: newTypography,
 			content: newContent,
 		});
 	};

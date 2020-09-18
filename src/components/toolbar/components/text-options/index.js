@@ -4,8 +4,6 @@
 const { __, sprintf } = wp.i18n;
 const { Fragment } = wp.element;
 const { Button, BaseControl } = wp.components;
-const { useSelect } = wp.data;
-const { getActiveFormat } = wp.richText;
 
 /**
  * Internal dependencies
@@ -19,10 +17,9 @@ import TextFormatSubscript from '../text-format-subscript';
 import TextFormatSuperscript from '../text-format-superscript';
 import TextFormatCode from '../text-format-code';
 import {
-	__experimentalIsFormatActive,
 	__experimentalSetFormatWithClass,
+	__experimentalGetCustomFormatValue,
 } from '../../../../extensions/text/formats';
-import { defaultFontSizeObject } from '../../../../extensions/text/formats/formats';
 
 /**
  * External dependencies
@@ -50,27 +47,6 @@ const TextOptions = props => {
 		formatValue,
 	} = props;
 
-	const formatName = 'maxi-blocks/text-size';
-
-	const { isActive, currentClassName } = useSelect(() => {
-		const isActive = __experimentalIsFormatActive(formatValue, formatName);
-
-		const activeFormat = getActiveFormat(formatValue, formatName);
-
-		const currentClassName =
-			(isActive && activeFormat.attributes.className) || '';
-
-		return {
-			isActive,
-			currentClassName,
-		};
-	}, [
-		getActiveFormat,
-		__experimentalIsFormatActive,
-		formatValue,
-		formatName,
-	]);
-
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
 	const value =
@@ -80,6 +56,13 @@ const TextOptions = props => {
 		(typeof defaultTypography !== 'object' &&
 			JSON.parse(defaultTypography)) ||
 		defaultTypography;
+
+	const fontSize = __experimentalGetCustomFormatValue({
+		typography: value,
+		formatValue,
+		prop: 'font-size',
+		breakpoint,
+	});
 
 	const updateTypography = () => {
 		onChange({ typography: JSON.stringify(value), content });
@@ -99,7 +82,6 @@ const TextOptions = props => {
 			content: newContent,
 		} = __experimentalSetFormatWithClass({
 			formatValue,
-			isActive,
 			isList,
 			typography: value,
 			value: {
@@ -163,14 +145,7 @@ const TextOptions = props => {
 							<input
 								type='number'
 								value={trim(
-									(isActive &&
-										getLastBreakpointValue(
-											value.customFormats[
-												currentClassName
-											],
-											'font-size',
-											breakpoint
-										)) ||
+									fontSize ||
 										getLastBreakpointValue(
 											value,
 											'font-size',
@@ -178,7 +153,6 @@ const TextOptions = props => {
 										)
 								)}
 								onChange={e => {
-									console.log('clicking?');
 									onChangeSize(e.target.value);
 								}}
 							/>
@@ -289,9 +263,11 @@ const TextOptions = props => {
 								formatValue={formatValue}
 							/>
 							<TextFormatUnderline
-								onChange={content => onChange({ content })}
-								isList={isList}
+								typography={value}
 								formatValue={formatValue}
+								onChange={obj => onChange(obj)}
+								isList={isList}
+								breakpoint={breakpoint}
 							/>
 							<TextFormatSubscript
 								onChange={content => onChange({ content })}

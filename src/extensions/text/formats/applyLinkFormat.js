@@ -6,19 +6,12 @@ const { applyFormat } = wp.richText;
 /**
  * Internal dependencies
  */
-import __experimentalGetUpdatedString from './getUpdatedString';
-import defaultFontColorObject from './color/default';
-import defaultFontUnderlineObject from './underline/default';
+import __experimentalSetFormatWithClass from './setFormatWithClass';
 
 /**
  *
  */
-const getNewFormatValue = ({
-	formatValue,
-	linkAttributes,
-	colorFormatClassName,
-	underlineFormatClassName,
-}) => {
+const getNewFormatValue = ({ formatValue, linkAttributes }) => {
 	const isFromPaste = formatValue.formats.some(formatEl => {
 		return formatEl.some(format => {
 			return format.type === 'core/link';
@@ -27,26 +20,6 @@ const getNewFormatValue = ({
 
 	if (isFromPaste) {
 		formatValue.formats = formatValue.formats.map(formatEl => {
-			if (
-				formatEl.some(format => {
-					return format.type === 'core/link';
-				})
-			) {
-				formatEl.push({
-					type: 'maxi-blocks/text-color',
-					attributes: {
-						className: colorFormatClassName,
-					},
-				});
-
-				formatEl.push({
-					type: 'maxi-blocks/text-underline',
-					attributes: {
-						className: underlineFormatClassName,
-					},
-				});
-			}
-
 			return formatEl.map(format => {
 				if (format.type === 'core/link') {
 					format.type = 'maxi-blocks/text-link';
@@ -59,86 +32,43 @@ const getNewFormatValue = ({
 		return formatValue;
 	}
 
-	const linkFormatValue = applyFormat(formatValue, {
+	const newFormatValue = applyFormat(formatValue, {
 		type: 'maxi-blocks/text-link',
 		attributes: linkAttributes,
 	});
 
-	const colorFormatValue = applyFormat(linkFormatValue, {
-		type: 'maxi-blocks/text-color',
-		attributes: {
-			className: colorFormatClassName,
-		},
-	});
-
-	const underlineFormatValue = applyFormat(colorFormatValue, {
-		type: 'maxi-blocks/text-underline',
-		attributes: {
-			className: underlineFormatClassName,
-		},
-	});
-
-	return underlineFormatValue;
+	return newFormatValue;
 };
 
 const applyLinkFormat = ({
 	formatValue,
 	typography,
-	currentColorClassName,
-	currentUnderlineClassName,
-	linkAttributes,
+	linkAttributes = {},
 	isList,
 }) => {
-	// Set classNames on Typography objet and delete old ones if exists
-	if (typography.customFormats[currentColorClassName])
-		delete typography.customFormats[currentColorClassName];
-
-	const colorFormatClassName = `maxi-text-block__custom-font-color--${
-		Object.keys(typography.customFormats).length
-	}`;
-
-	typography.customFormats[colorFormatClassName] = {
-		...defaultFontColorObject,
-		general: {
-			color: '#ff4a17',
-		},
-	};
-
-	if (typography.customFormats[currentUnderlineClassName])
-		delete typography.customFormats[currentUnderlineClassName];
-
-	const underlineFormatClassName = `maxi-text-block__custom-font-underline--${
-		Object.keys(typography.customFormats).length
-	}`;
-
-	typography.customFormats[underlineFormatClassName] = {
-		...defaultFontUnderlineObject,
-		general: {
-			'text-decoration': 'underline',
-		},
-	};
-
-	const newFormatValue = getNewFormatValue({
+	const linkCustomFormatValue = getNewFormatValue({
 		formatValue,
 		linkAttributes,
-		colorFormatClassName,
-		underlineFormatClassName,
 	});
 
-	const newContent = __experimentalGetUpdatedString({
+	const {
+		typography: newTypography,
+		content: newContent,
 		formatValue: newFormatValue,
-		formatName: 'maxi-blocks/text-link',
+	} = __experimentalSetFormatWithClass({
+		formatValue: linkCustomFormatValue,
 		isList,
-		...(linkAttributes && {
-			attributes: {
-				attributes: linkAttributes,
-			},
-		}),
+		typography,
+		value: {
+			color: '#ff4a17',
+			'text-decoration': 'underline',
+		},
 	});
 
 	return {
-		typography,
+		typography: JSON.stringify(newTypography),
 		content: newContent,
+		formatValue: newFormatValue,
 	};
 };
 

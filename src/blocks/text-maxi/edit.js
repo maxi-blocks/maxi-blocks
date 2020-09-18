@@ -28,8 +28,8 @@ import {
 } from '../../components';
 import {
 	__experimentalGetFormatValue,
-	__experimentalApplyLinkFormat,
 	__experimentalGetFormatClassName,
+	__experimentalSetCustomFormatsWhenPaste,
 } from '../../extensions/text/formats';
 
 /**
@@ -183,8 +183,6 @@ class edit extends MaxiBlock {
 			onRemove,
 			clientId,
 			formatValue,
-			currentColorClassName,
-			currentUnderlineClassName,
 		} = this.props;
 
 		const name = 'maxi-blocks/text-maxi';
@@ -345,32 +343,17 @@ class edit extends MaxiBlock {
 		 * This next script will check if there is any format directly related with
 		 * native format 'core/link' and if it's so, will format it in Maxi Blocks way
 		 */
-		const isTextMaxiFormatted = formatValue.formats.some(formatEl => {
-			return formatEl.some(format => {
-				return format.type === 'core/link';
-			});
+		const cleanCustomProps = __experimentalSetCustomFormatsWhenPaste({
+			formatValue,
+			typography: JSON.parse(typography),
+			isList,
 		});
 
-		const formatMaxiText = formatValue => {
-			const {
-				typography: newTypography,
-				content: newContent,
-			} = __experimentalApplyLinkFormat({
-				formatValue,
-				typography: JSON.parse(typography),
-				currentColorClassName,
-				currentUnderlineClassName,
-				linkAttributes: {},
-				isList,
-			});
-
+		if (cleanCustomProps)
 			setAttributes({
-				typography: JSON.stringify(newTypography),
-				content: newContent,
+				typography: JSON.stringify(cleanCustomProps.typography),
+				content: cleanCustomProps.content,
 			});
-		};
-
-		if (isTextMaxiFormatted) formatMaxiText(formatValue);
 
 		return [
 			<Inspector {...this.props} />,
@@ -385,7 +368,9 @@ class edit extends MaxiBlock {
 					<RichText
 						className='maxi-text-block__content'
 						value={content}
-						onChange={content => setAttributes({ content })}
+						onChange={content => {
+							setAttributes({ content });
+						}}
 						tagName={textLevel}
 						onSplit={value => {
 							if (!value) {

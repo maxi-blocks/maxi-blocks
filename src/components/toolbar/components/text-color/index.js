@@ -3,8 +3,6 @@
  */
 const { __ } = wp.i18n;
 const { ColorPicker, Icon } = wp.components;
-const { useSelect } = wp.data;
-const { getActiveFormat } = wp.richText;
 
 /**
  * Internal dependencies
@@ -12,9 +10,8 @@ const { getActiveFormat } = wp.richText;
 import { getLastBreakpointValue } from '../../../../utils';
 import ToolbarPopover from '../toolbar-popover';
 import {
-	__experimentalIsFormatActive,
 	__experimentalSetFormatWithClass,
-	__experimentalGetFormatClassName,
+	__experimentalGetCustomFormatValue,
 } from '../../../../extensions/text/formats';
 
 /**
@@ -42,31 +39,17 @@ const TextColor = props => {
 		formatValue,
 	} = props;
 
-	const formatName = 'maxi-blocks/text-custom';
+	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
 	const value =
 		(!isObject(typography) && JSON.parse(typography)) || typography;
 
-	const { isActive, currentClassName } = useSelect(() => {
-		const isActive = __experimentalIsFormatActive(formatValue, formatName);
-
-		const currentClassName = __experimentalGetFormatClassName(
-			formatValue,
-			formatName
-		);
-
-		return {
-			isActive,
-			currentClassName,
-		};
-	}, [
-		getActiveFormat,
-		__experimentalIsFormatActive,
+	const color = __experimentalGetCustomFormatValue({
+		typography: value,
 		formatValue,
-		formatName,
-	]);
-
-	if (blockName !== 'maxi-blocks/text-maxi') return null;
+		prop: 'color',
+		breakpoint,
+	});
 
 	const returnColor = val => {
 		return `rgba(${val.rgb.r},${val.rgb.g},${val.rgb.b},${val.rgb.a})`;
@@ -89,7 +72,6 @@ const TextColor = props => {
 			content: newContent,
 		} = __experimentalSetFormatWithClass({
 			formatValue,
-			isActive,
 			isList,
 			typography: value,
 			value: {
@@ -112,11 +94,8 @@ const TextColor = props => {
 				<div
 					className='toolbar-item__text-options__icon'
 					style={
-						(isActive && {
-							background:
-								value.customFormats[currentClassName][
-									breakpoint
-								].color,
+						(color && {
+							background: color,
 						}) || {
 							background: getLastBreakpointValue(
 								value,
@@ -135,9 +114,7 @@ const TextColor = props => {
 			content={
 				<ColorPicker
 					color={
-						(isActive &&
-							value.customFormats[currentClassName][breakpoint]
-								.color) ||
+						color ||
 						getLastBreakpointValue(value, 'color', breakpoint)
 					}
 					onChangeComplete={val => onClick(val)}

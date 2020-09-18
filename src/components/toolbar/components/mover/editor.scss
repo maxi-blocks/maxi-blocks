@@ -1,0 +1,14 @@
+.toolbar-item-move__vertically {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	padding-right: 2px !important;
+	padding-bottom: 2px !important;
+
+	.components-button {
+		width: 9px;
+		padding: 0;
+		height: 12px;
+	}
+}

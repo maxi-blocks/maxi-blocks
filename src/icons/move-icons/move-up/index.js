@@ -3,7 +3,7 @@
  */
 const { SVG, Path } = wp.primitives;
 
-const moveTop = (
+const moveUp = (
 	<SVG xmlns='http://www.w3.org/2000/svg' viewBox='0 0 15.094 9.375'>
 		<Path
 			fill='#fff'
@@ -13,4 +13,4 @@ const moveTop = (
 	</SVG>
 );
 
-export default moveTop;
+export default moveUp;

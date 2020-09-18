@@ -10,7 +10,7 @@ const { Icon, Button, Tooltip } = wp.components;
  * Icons
  */
 import './editor.scss';
-import { moveTop, moveRight, moveBottom, moveLeft } from '../../../../icons';
+import { moveRight, moveLeft } from '../../../../icons';
 
 /**
  * ColumnMover
@@ -36,7 +36,7 @@ const ColumnMover = props => {
 
 	return (
 		<Fragment>
-			<div className='toolbar-item-move toolbar-item-move__horizontally'>
+			<div className='toolbar-item-move__horizontally'>
 				<Tooltip
 					text={__('Move left', 'maxi-blocks')}
 					position='bottom center'

@@ -5,7 +5,7 @@ const { __ } = wp.i18n;
 const { Fragment } = wp.element;
 const { __experimentalLinkControl } = wp.blockEditor;
 const { useSelect } = wp.data;
-const { getActiveFormat, removeFormat } = wp.richText;
+const { getActiveFormat } = wp.richText;
 const { Button } = wp.components;
 
 /**
@@ -13,8 +13,8 @@ const { Button } = wp.components;
  */
 import {
 	__experimentalGetUpdatedString,
-	__experimentalRemoveFormatWithClass,
 	__experimentalApplyLinkFormat,
+	__experimentalRemoveLinkFormat,
 } from '../../../../extensions/text/formats';
 import ToolbarPopover from '../toolbar-popover';
 
@@ -33,43 +33,15 @@ import { toolbarLink } from '../../../../icons';
  * Link
  */
 const Link = props => {
-	const {
-		blockName,
-		onChange,
-		isList,
-		formatValue,
-		typography,
-		breakpoint,
-		linkSettings,
-	} = props;
+	const { blockName, onChange, isList, formatValue, typography } = props;
 
 	const formatName = 'maxi-blocks/text-link';
 
-	const {
-		formatOptions,
-		currentColorClassName,
-		currentUnderlineClassName,
-	} = useSelect(() => {
+	const { formatOptions } = useSelect(() => {
 		const formatOptions = getActiveFormat(formatValue, formatName);
-
-		const isColorActive = getActiveFormat(
-			formatValue,
-			'maxi-blocks/text-color'
-		);
-		const currentColorClassName =
-			(isColorActive && isColorActive.attributes.className) || '';
-
-		const isUnderlineActive = getActiveFormat(
-			formatValue,
-			'maxi-blocks/text-underline'
-		);
-		const currentUnderlineClassName =
-			(isUnderlineActive && isUnderlineActive.attributes.className) || '';
 
 		return {
 			formatOptions,
-			currentColorClassName,
-			currentUnderlineClassName,
 		};
 	}, [getActiveFormat, formatValue, formatName]);
 
@@ -141,6 +113,13 @@ const Link = props => {
 	};
 
 	const setLinkFormat = attributes => {
+		const { start, end } = formatValue;
+
+		if (start === end) {
+			formatValue.start = 0;
+			formatValue.end = formatValue.formats.length;
+		}
+
 		const {
 			typography: newTypography,
 			content: newContent,
@@ -158,34 +137,13 @@ const Link = props => {
 	};
 
 	const removeLinkFormat = () => {
-		const linkFormatValue = removeFormat(formatValue, formatName);
-
 		const {
-			formatValue: colorFormatValue,
-			typography: cleanColorTypography,
-		} = __experimentalRemoveFormatWithClass({
-			formatValue: linkFormatValue,
-			formatName: 'maxi-blocks/text-color',
-			typography: typographyValue,
-			formatClassName: currentColorClassName,
-		});
-
-		const {
-			formatValue: underlineFormatValue,
-			typography: cleanUnderlineFormatValue,
-		} = __experimentalRemoveFormatWithClass({
-			formatValue: colorFormatValue,
-			formatName: 'maxi-blocks/text-underline',
-			typography: cleanColorTypography,
-			formatClassName: currentUnderlineClassName,
-		});
-
-		const newFormatValue = underlineFormatValue;
-		const newTypography = cleanUnderlineFormatValue;
-
-		const newContent = __experimentalGetUpdatedString({
-			formatValue: newFormatValue,
+			typography: newTypography,
+			content: newContent,
+		} = __experimentalRemoveLinkFormat({
+			formatValue,
 			isList,
+			typography: typographyValue,
 		});
 
 		onChange({

@@ -11,3 +11,4 @@ export { default as __experimentalGetFormatClassName } from './getCurrentFormatC
 export { default as __experimentalGetCustomFormatValue } from './getCustomFormatValue';
 export { default as __experimentalSetCustomFormatsWhenPaste } from './setCustomFormatsWhenPaste';
 export { default as __experimentalSetFormat } from './setFormat';
+export { default as __experimentalRemoveLinkFormat } from './removeLinkFormat';

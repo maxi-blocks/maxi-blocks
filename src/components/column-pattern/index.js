@@ -250,20 +250,16 @@ const ColumnPatternsInspector = props => {
 
 	return (
 		<div className='components-column-pattern'>
-			{!toolbar && (
-				<div className='components-column-pattern__size-control'>
-					{breakpoint === 'general' && (
-						<SizeControl
-							label={__('Columns', 'maxi-blocks')}
-							disableUnit
-							value={numCol}
-							defaultValue={numCol}
-							onChangeValue={numCol => setNumCol(numCol)}
-							min={1}
-							max={6}
-						/>
-					)}
-				</div>
+			{!toolbar && breakpoint === 'general' && (
+				<SizeControl
+					label={__('Columns', 'maxi-blocks')}
+					disableUnit
+					value={numCol}
+					defaultValue={numCol}
+					onChangeValue={numCol => setNumCol(numCol)}
+					min={1}
+					max={6}
+				/>
 			)}
 			<div className='components-column-pattern__templates'>
 				{DISPLAYED_TEMPLATES.map(template => {

@@ -7,7 +7,7 @@ const { synchronizeBlocksWithTemplate } = wp.blocks;
 const { useInstanceId } = wp.compose;
 const { Icon, Button } = wp.components;
 const { select, useSelect, useDispatch } = wp.data;
-import { useState, useEffect } from '@wordpress/element';
+const { useState, useEffect } = wp.element;
 
 /**
  * Internal dependencies

@@ -1,5 +1,7 @@
 .components-column-pattern {
-	min-height: 125px;
+	.components-column-pattern__templates {
+		min-height: 125px;
+	}
 
 	&__icon {
 		width: 100%;

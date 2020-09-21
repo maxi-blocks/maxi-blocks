@@ -46,7 +46,6 @@ const ColumnPatternsInspector = props => {
 		breakpoint,
 		toolbar = false,
 	} = props;
-
 	const [numCol, setNumCol] = useState(1);
 	const [DISPLAYED_TEMPLATES, setDisplayedTemplates] = useState([]);
 
@@ -248,9 +247,9 @@ const ColumnPatternsInspector = props => {
 	}
 
 	return (
-		<Fragment>
+		<div className='components-column-pattern'>
 			{!toolbar && (
-				<div>
+				<div className='components-column-pattern__size-control'>
 					{breakpoint === 'general' && (
 						<SizeControl
 							label={__('Columns', 'maxi-blocks')}
@@ -264,7 +263,7 @@ const ColumnPatternsInspector = props => {
 					)}
 				</div>
 			)}
-			<div className='components-column-pattern'>
+			<div className='components-column-pattern__templates'>
 				{DISPLAYED_TEMPLATES.map(template => {
 					return (
 						<Button
@@ -300,7 +299,7 @@ const ColumnPatternsInspector = props => {
 					);
 				})}
 			</div>
-		</Fragment>
+		</div>
 	);
 };
 

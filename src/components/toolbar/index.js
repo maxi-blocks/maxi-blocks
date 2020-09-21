@@ -340,6 +340,10 @@ const MaxiToolbar = props => {
 						<BackgroundColor
 							blockName={name}
 							background={background}
+							defaultBackground={getDefaultProp(
+								clientId,
+								'background'
+							)}
 							onChange={background =>
 								setAttributes({ background })
 							}

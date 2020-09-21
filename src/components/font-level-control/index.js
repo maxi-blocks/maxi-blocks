@@ -16,7 +16,7 @@ import { getDefaultProp } from '../../utils';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, isEmpty } from 'lodash';
+import { isNil, isEmpty, isObject } from 'lodash';
 
 /**
  * Styles
@@ -69,18 +69,18 @@ export default class FontLevelControl extends Component {
 
 		const saveOldies = value => {
 			this.setState({
-				[lastLevel]:
-					typeof fontOptions === 'object'
-						? fontOptions
-						: JSON.parse(fontOptions),
-				[`${lastLevel}Hover`]:
-					typeof fontOptionsHover === 'object'
-						? fontOptionsHover
-						: JSON.parse(fontOptionsHover),
-				[`${lastLevel}Margin`]:
-					typeof marginOptions === 'object'
-						? marginOptions
-						: JSON.parse(marginOptions),
+				[lastLevel]: !isObject(fontOptions)
+					? JSON.parse(fontOptions)
+					: fontOptions,
+
+				[`${lastLevel}Hover`]: !isObject(fontOptionsHover)
+					? JSON.parse(fontOptionsHover)
+					: fontOptionsHover,
+
+				[`${lastLevel}Margin`]: !isObject(marginOptions)
+					? JSON.parse(marginOptions)
+					: marginOptions,
+
 				lastLevel: value,
 			});
 		};
@@ -95,10 +95,10 @@ export default class FontLevelControl extends Component {
 				fontOptResponseHover = this.state[`${value}Hover`];
 				marginOptResponse = this.state[`${value}Margin`];
 			} else if (!isNil(fontOptions)) {
-				const oldFontOptions =
-					typeof fontOptions === 'object'
-						? fontOptions
-						: JSON.parse(fontOptions);
+				const oldFontOptions = !isObject(fontOptions)
+					? JSON.parse(fontOptions)
+					: fontOptions;
+
 				fontOptResponse.label = oldFontOptions.label;
 				Object.assign(fontOptResponse, defaultTypography[value]);
 				fontOptResponseHover = JSON.parse(

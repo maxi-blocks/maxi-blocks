@@ -21,7 +21,6 @@ import Inspector from './inspector';
 import {
 	getTemplates,
 	getTemplateObject,
-	setRowPatternAttribute,
 } from '../../extensions/defaults/column-templates';
 import {
 	getBoxShadowObject,
@@ -155,9 +154,8 @@ class edit extends MaxiBlock {
 			selectOnClick,
 			hasInnerBlock,
 			className,
-			setAttributes,
 			instanceId,
-			deviceType,
+			setAttributes,
 		} = this.props;
 
 		const classes = classnames(
@@ -198,13 +196,20 @@ class edit extends MaxiBlock {
 												)}
 												className='maxi-row-block__template__button'
 												onClick={() => {
-													setRowPatternAttribute(
-														clientId,
-														rowPattern,
-														'rowPattern',
-														template.name,
-														deviceType
+													const rowPatternObject = JSON.parse(
+														rowPattern
 													);
+
+													rowPatternObject.general.rowPattern =
+														template.name;
+													rowPatternObject.m.rowPattern =
+														template.responsiveLayout;
+
+													setAttributes({
+														rowPattern: JSON.stringify(
+															rowPatternObject
+														),
+													});
 													loadTemplate(template.name);
 												}}
 											>

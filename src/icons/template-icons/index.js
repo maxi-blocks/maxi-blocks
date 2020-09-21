@@ -1,5 +1,7 @@
 export { default as oneColumn } from './1';
+export { default as twoTwo } from './2-2';
 export { default as oneOneThree } from './1-1-3';
+export { default as oneTwoTwo } from './1-2-2';
 export { default as oneOneFour } from './1-1-4';
 export { default as oneThree } from './1-3';
 export { default as oneFour } from './1-4';

@@ -20,6 +20,8 @@ import {
 
 import SizeControl from '../size-control';
 
+import { getLastBreakpointValue } from '../../utils';
+
 /**
  * External dependencies
  */
@@ -212,9 +214,6 @@ const ColumnPatternsInspector = props => {
 	const updateTemplate = templateName => {
 		const { getBlock } = select('core/block-editor');
 
-		const gap1 = 2.5;
-		const gap2 = 2.1;
-
 		const columnsBlockObjects = getBlock(clientId).innerBlocks;
 
 		const template = getTemplateObject(templateName);
@@ -274,8 +273,11 @@ const ColumnPatternsInspector = props => {
 							)}
 							className={patternButtonClassName}
 							aria-pressed={
-								rowPatternObject[breakpoint].rowPattern ===
-								template.name
+								getLastBreakpointValue(
+									rowPatternObject,
+									'rowPattern',
+									breakpoint
+								) === template.name
 							}
 							onClick={() => {
 								if (breakpoint === 'general') {

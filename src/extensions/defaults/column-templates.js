@@ -135,7 +135,7 @@ const TEMPLATES = [
 		content: generateDefaultColumns([1]),
 		attributes: {
 			horizontalAlign: 'space-between',
-			verticalAlign: 'flex-start',
+			verticalAlign: 'stretch',
 		},
 	},
 	{
@@ -144,7 +144,7 @@ const TEMPLATES = [
 		content: generateDefaultColumns([1 / 2, 1 / 2]),
 		attributes: {
 			horizontalAlign: 'space-between',
-			verticalAlign: 'flex-start',
+			verticalAlign: 'stretch',
 		},
 	},
 	{
@@ -153,7 +153,7 @@ const TEMPLATES = [
 		content: generateDefaultColumns([1 / 4, 3 / 4]),
 		attributes: {
 			horizontalAlign: 'space-between',
-			verticalAlign: 'flex-start',
+			verticalAlign: 'stretch',
 		},
 	},
 	{
@@ -162,7 +162,7 @@ const TEMPLATES = [
 		content: generateDefaultColumns([3 / 4, 1 / 4]),
 		attributes: {
 			horizontalAlign: 'space-between',
-			verticalAlign: 'flex-start',
+			verticalAlign: 'stretch',
 		},
 	},
 	{
@@ -171,7 +171,7 @@ const TEMPLATES = [
 		content: generateDefaultColumns([1 / 5, 4 / 5]),
 		attributes: {
 			horizontalAlign: 'space-between',
-			verticalAlign: 'flex-start',
+			verticalAlign: 'stretch',
 		},
 	},
 	{
@@ -180,7 +180,7 @@ const TEMPLATES = [
 		content: generateDefaultColumns([4 / 5, 1 / 5]),
 		attributes: {
 			horizontalAlign: 'space-between',
-			verticalAlign: 'flex-start',
+			verticalAlign: 'stretch',
 		},
 	},
 	{
@@ -189,7 +189,7 @@ const TEMPLATES = [
 		content: generateDefaultColumns([1 / 3, 1 / 3, 1 / 3]),
 		attributes: {
 			horizontalAlign: 'space-between',
-			verticalAlign: 'flex-start',
+			verticalAlign: 'stretch',
 		},
 	},
 	{
@@ -198,7 +198,7 @@ const TEMPLATES = [
 		content: generateDefaultColumns([1 / 5, 1 / 5, 3 / 5]),
 		attributes: {
 			horizontalAlign: 'space-between',
-			verticalAlign: 'flex-start',
+			verticalAlign: 'stretch',
 		},
 	},
 	{
@@ -207,7 +207,7 @@ const TEMPLATES = [
 		content: generateDefaultColumns([1 / 6, 1 / 6, 4 / 6]),
 		attributes: {
 			horizontalAlign: 'space-between',
-			verticalAlign: 'flex-start',
+			verticalAlign: 'stretch',
 		},
 	},
 	{
@@ -216,7 +216,7 @@ const TEMPLATES = [
 		content: generateDefaultColumns([1 / 6, 4 / 6, 1 / 6]),
 		attributes: {
 			horizontalAlign: 'space-between',
-			verticalAlign: 'flex-start',
+			verticalAlign: 'stretch',
 		},
 	},
 	{
@@ -225,7 +225,7 @@ const TEMPLATES = [
 		content: generateDefaultColumns([3 / 5, 1 / 5, 1 / 5]),
 		attributes: {
 			horizontalAlign: 'space-between',
-			verticalAlign: 'flex-start',
+			verticalAlign: 'stretch',
 		},
 	},
 	{
@@ -234,7 +234,7 @@ const TEMPLATES = [
 		content: generateDefaultColumns([4 / 6, 1 / 6, 1 / 6]),
 		attributes: {
 			horizontalAlign: 'space-between',
-			verticalAlign: 'flex-start',
+			verticalAlign: 'stretch',
 		},
 	},
 	{
@@ -243,7 +243,7 @@ const TEMPLATES = [
 		content: generateDefaultColumns([1 / 4, 1 / 4, 1 / 4, 1 / 4]),
 		attributes: {
 			horizontalAlign: 'space-between',
-			verticalAlign: 'flex-start',
+			verticalAlign: 'stretch',
 		},
 	},
 	{
@@ -252,7 +252,7 @@ const TEMPLATES = [
 		content: generateDefaultColumns([1 / 5, 1 / 5, 1 / 5, 1 / 5, 1 / 5]),
 		attributes: {
 			horizontalAlign: 'space-between',
-			verticalAlign: 'flex-start',
+			verticalAlign: 'stretch',
 		},
 	},
 	{
@@ -268,7 +268,7 @@ const TEMPLATES = [
 		]),
 		attributes: {
 			horizontalAlign: 'space-between',
-			verticalAlign: 'flex-start',
+			verticalAlign: 'stretch',
 		},
 	},
 ];

@@ -13,7 +13,7 @@ const attributes = {
 	},
 	verticalAlign: {
 		type: 'string',
-		default: 'flex-start',
+		default: 'stretch',
 	},
 	opacity: {
 		type: 'number',

@@ -282,9 +282,11 @@ const TextOptions = props => {
 						</BaseControl>
 						<div>
 							<TextFormatStrikethrough
-								onChange={content => onChange({ content })}
-								isList={isList}
+								typography={typographyValue}
 								formatValue={formatValue}
+								onChange={obj => onChange(obj)}
+								isList={isList}
+								breakpoint={breakpoint}
 							/>
 							<TextFormatUnderline
 								typography={typographyValue}
@@ -294,14 +296,18 @@ const TextOptions = props => {
 								breakpoint={breakpoint}
 							/>
 							<TextFormatSubscript
-								onChange={content => onChange({ content })}
-								isList={isList}
+								typography={typographyValue}
 								formatValue={formatValue}
+								onChange={obj => onChange(obj)}
+								isList={isList}
+								breakpoint={breakpoint}
 							/>
 							<TextFormatSuperscript
-								onChange={content => onChange({ content })}
-								isList={isList}
+								typography={typographyValue}
 								formatValue={formatValue}
+								onChange={obj => onChange(obj)}
+								isList={isList}
+								breakpoint={breakpoint}
 							/>
 							<TextFormatCode
 								onChange={content => onChange({ content })}

@@ -31,14 +31,24 @@ const TextFormatUnderline = props => {
 	const typographyValue =
 		(!isObject(typography) && JSON.parse(typography)) || typography;
 
-	const underlineValue = __experimentalGetCustomFormatValue({
+	const textDecorationValue = __experimentalGetCustomFormatValue({
 		typography: typographyValue,
 		formatValue,
 		prop: 'text-decoration',
 		breakpoint,
 	});
 
-	const isActive = (underlineValue === 'underline' && true) || false;
+	const isActive = textDecorationValue.indexOf('underline') >= 0;
+
+	const getTextDecorationValue = () => {
+		if (textDecorationValue === 'none') return 'underline';
+
+		const response = isActive
+			? textDecorationValue.replace('underline', '')
+			: `${textDecorationValue} underline`;
+
+		return response;
+	};
 
 	const onClick = () => {
 		const {
@@ -50,10 +60,9 @@ const TextFormatUnderline = props => {
 			isList,
 			typography: typographyValue,
 			value: {
-				'text-decoration': isActive ? '' : 'underline',
+				'text-decoration': getTextDecorationValue(),
 			},
 			breakpoint,
-			// isHover,
 		});
 
 		onChange({

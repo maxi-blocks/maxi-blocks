@@ -2,16 +2,21 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { useSelect } = wp.data;
 const { Icon, Button, Tooltip } = wp.components;
 
 /**
  * Internal dependencies
  */
 import {
-	__experimentalIsFormatActive,
-	__experimentalGetFormattedString,
+	__experimentalSetFormat,
+	__experimentalGetCustomFormatValue,
 } from '../../../../extensions/text/formats';
+
+/**
+ * External dependencies
+ */
+import { isObject } from 'lodash';
+
 /**
  * Styles and icons
  */
@@ -21,27 +26,49 @@ import { toolbarItalic } from '../../../../icons';
  * TextFormatStrikethrough
  */
 const TextFormatStrikethrough = props => {
-	const { onChange, isList, formatValue } = props;
+	const { typography, formatValue, onChange, isList, breakpoint } = props;
 
-	const formatName = 'core/strikethrough';
+	const typographyValue =
+		(!isObject(typography) && JSON.parse(typography)) || typography;
 
-	const { isActive } = useSelect(() => {
-		const isActive = __experimentalIsFormatActive(formatValue, formatName);
+	const textDecorationValue = __experimentalGetCustomFormatValue({
+		typography: typographyValue,
+		formatValue,
+		prop: 'text-decoration',
+		breakpoint,
+	});
 
-		return {
-			isActive,
-		};
-	}, [__experimentalIsFormatActive, formatValue, formatName]);
+	const isActive = textDecorationValue.indexOf('line-through') >= 0;
+
+	const getTextDecorationValue = () => {
+		if (textDecorationValue === 'none') return 'line-through';
+
+		const response = isActive
+			? textDecorationValue.replace('line-through', '')
+			: `${textDecorationValue} line-through`;
+
+		return response;
+	};
 
 	const onClick = () => {
-		const newContent = __experimentalGetFormattedString({
+		const {
+			typography: newTypography,
+			content: newContent,
+		} = __experimentalSetFormat({
 			formatValue,
-			formatName,
 			isActive,
 			isList,
+			typography: typographyValue,
+			value: {
+				'text-decoration': getTextDecorationValue(),
+			},
+			breakpoint,
 		});
 
-		onChange(newContent);
+		onChange({
+			typography: JSON.stringify(newTypography),
+			...(newContent && { content: newContent }),
+		});
 	};
 
 	return (

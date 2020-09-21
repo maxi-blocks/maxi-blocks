@@ -158,8 +158,6 @@ const templates = {
 				name: '1',
 				icon: oneColumn,
 				sizes: [1],
-				spacing: [''],
-				rowLengths: [1],
 				content: generateDefaultColumns([1]),
 				attributes: {
 					horizontalAlign: 'space-between',
@@ -176,8 +174,6 @@ const templates = {
 				name: '1-1',
 				icon: twoColumns,
 				sizes: [1 / 2, 1 / 2],
-				spacing: ['gap', 'gap'],
-				rowLengths: [2, 2],
 				content: generateDefaultColumns([1 / 2, 1 / 2]),
 				attributes: {
 					horizontalAlign: 'space-between',
@@ -188,8 +184,6 @@ const templates = {
 				name: '1-3',
 				icon: oneThree,
 				sizes: [1 / 4, 3 / 4],
-				spacing: ['gap', 'gap'],
-				rowLengths: [2, 2],
 				content: generateDefaultColumns([1 / 4, 3 / 4]),
 				attributes: {
 					horizontalAlign: 'space-between',
@@ -200,8 +194,6 @@ const templates = {
 				name: '3-1',
 				icon: threeOne,
 				sizes: [3 / 4, 1 / 4],
-				spacing: ['gap', 'gap'],
-				rowLengths: [2, 2],
 				content: generateDefaultColumns([3 / 4, 1 / 4]),
 				attributes: {
 					horizontalAlign: 'space-between',
@@ -212,8 +204,6 @@ const templates = {
 				name: '1-4',
 				icon: oneFour,
 				sizes: [1 / 5, 4 / 5],
-				spacing: ['gap', 'gap'],
-				rowLengths: [2, 2],
 				content: generateDefaultColumns([1 / 5, 4 / 5]),
 				attributes: {
 					horizontalAlign: 'space-between',
@@ -224,8 +214,6 @@ const templates = {
 				name: '4-1',
 				icon: fourOne,
 				sizes: [4 / 5, 1 / 5],
-				spacing: ['gap', 'gap'],
-				rowLengths: [2, 2],
 				content: generateDefaultColumns([4 / 5, 1 / 5]),
 				attributes: {
 					horizontalAlign: 'space-between',
@@ -242,8 +230,6 @@ const templates = {
 				name: '3 columns',
 				icon: threeColumns,
 				sizes: [1 / 3, 1 / 3, 1 / 3],
-				spacing: ['gap', 'gap', 'gap'],
-				rowLengths: [3, 3, 3],
 				content: generateDefaultColumns([1 / 3, 1 / 3, 1 / 3]),
 				attributes: {
 					horizontalAlign: 'space-between',
@@ -254,8 +240,6 @@ const templates = {
 				name: '1-1-3',
 				icon: oneOneThree,
 				sizes: [1 / 5, 1 / 5, 3 / 5],
-				spacing: ['gap', 'gap', 'gap'],
-				rowLengths: [3, 3, 3],
 				content: generateDefaultColumns([1 / 5, 1 / 5, 3 / 5]),
 				attributes: {
 					horizontalAlign: 'space-between',
@@ -266,8 +250,6 @@ const templates = {
 				name: '1-1-4',
 				icon: oneOneFour,
 				sizes: [1 / 6, 1 / 6, 4 / 6],
-				spacing: ['gap', 'gap', 'gap'],
-				rowLengths: [3, 3, 3],
 				content: generateDefaultColumns([1 / 6, 1 / 6, 4 / 6]),
 				attributes: {
 					horizontalAlign: 'space-between',
@@ -278,8 +260,6 @@ const templates = {
 				name: '1-4-1',
 				icon: oneFourOne,
 				sizes: [1 / 6, 4 / 6, 1 / 6],
-				spacing: ['gap', 'gap', 'gap'],
-				rowLengths: [3, 3, 3],
 				content: generateDefaultColumns([1 / 6, 4 / 6, 1 / 6]),
 				attributes: {
 					horizontalAlign: 'space-between',
@@ -290,8 +270,6 @@ const templates = {
 				name: '3-1-1',
 				icon: threeOneOne,
 				sizes: [3 / 5, 1 / 5, 1 / 5],
-				spacing: ['gap', 'gap', 'gap'],
-				rowLengths: [3, 3, 3],
 				content: generateDefaultColumns([3 / 5, 1 / 5, 1 / 5]),
 				attributes: {
 					horizontalAlign: 'space-between',
@@ -302,8 +280,6 @@ const templates = {
 				name: '4-1-1',
 				icon: fourOneOne,
 				sizes: [4 / 6, 1 / 6, 1 / 6],
-				spacing: ['gap', 'gap', 'gap'],
-				rowLengths: [3, 3, 3],
 				content: generateDefaultColumns([4 / 6, 1 / 6, 1 / 6]),
 				attributes: {
 					horizontalAlign: 'space-between',
@@ -316,8 +292,6 @@ const templates = {
 				name: '1-1-2',
 				icon: oneOneTwo,
 				sizes: [1 / 2, 1 / 2, 1],
-				spacing: ['gap', 'gap', 'marginTop'],
-				rowLengths: [2, 2, 1],
 				content: generateDefaultColumns([1 / 2, 1 / 2, 1]),
 				attributes: {
 					horizontalAlign: 'space-between',
@@ -328,8 +302,6 @@ const templates = {
 				name: '1-1-1',
 				icon: oneOneOne,
 				sizes: [1, 1, 1],
-				spacing: ['', 'marginTop', 'marginTop'],
-				rowLengths: [1, 1, 1],
 				content: generateDefaultColumns([1, 1, 1]),
 				attributes: {
 					horizontalAlign: 'space-between',
@@ -345,8 +317,6 @@ const templates = {
 				name: '4 columns',
 				icon: fourColumns,
 				sizes: [1 / 4, 1 / 4, 1 / 4, 1 / 4],
-				spacing: ['gap', 'gap', 'gap', 'gap'],
-				rowLengths: [4, 4, 4, 4],
 				content: generateDefaultColumns([1 / 4, 1 / 4, 1 / 4, 1 / 4]),
 				attributes: {
 					horizontalAlign: 'space-between',
@@ -359,8 +329,6 @@ const templates = {
 				name: '1-1-1-1',
 				icon: oneOneOneOne,
 				sizes: [1 / 2, 1 / 2, 1 / 2, 1 / 2],
-				spacing: ['gap', 'gap', 'gap-marginTop', 'gap-marginTop'],
-				rowLengths: [2, 2, 2, 2],
 				content: generateDefaultColumns([1 / 2, 1 / 2, 1 / 2, 1 / 2]),
 				attributes: {
 					horizontalAlign: 'space-between',
@@ -371,8 +339,6 @@ const templates = {
 				name: '2-1-1-2',
 				icon: twoOneOneTwo,
 				sizes: [1, 1 / 2, 1 / 2, 1],
-				spacing: ['', 'gap-marginTop', 'gap-marginTop', 'marginTop'],
-				rowLengths: [1, 2, 2, 1],
 				content: generateDefaultColumns([1, 1 / 2, 1 / 2, 1]),
 				attributes: {
 					horizontalAlign: 'space-between',
@@ -383,8 +349,6 @@ const templates = {
 				name: '1-1-2-2',
 				icon: oneOneTwoTwo,
 				sizes: [1 / 2, 1 / 2, 1, 1],
-				spacing: ['gap', 'gap', 'marginTop', 'marginTop'],
-				rowLengths: [2, 2, 1, 1],
 				content: generateDefaultColumns([1 / 2, 1 / 2, 1, 1]),
 				attributes: {
 					horizontalAlign: 'space-between',
@@ -395,8 +359,6 @@ const templates = {
 				name: '2-2-1-1',
 				icon: twoTwoOneOne,
 				sizes: [1, 1, 1 / 2, 1 / 2],
-				spacing: ['', 'marginTop', 'gap-marginTop', 'gap-marginTop'],
-				rowLengths: [1, 1, 2, 2],
 				content: generateDefaultColumns([1, 1, 1 / 2, 1 / 2]),
 				attributes: {
 					horizontalAlign: 'space-between',
@@ -407,8 +369,6 @@ const templates = {
 				name: '2-2-2-2',
 				icon: twoTwoTwoTwo,
 				sizes: [1, 1, 1, 1],
-				spacing: ['', 'marginTop', 'marginTop', 'marginTop'],
-				rowLengths: [1, 1, 1, 1],
 				content: generateDefaultColumns([1, 1, 1, 1]),
 				attributes: {
 					horizontalAlign: 'space-between',
@@ -424,7 +384,6 @@ const templates = {
 				name: '5 columns',
 				icon: fiveColumns,
 				sizes: [1 / 5, 1 / 5, 1 / 5, 1 / 5, 1 / 5],
-				spacing: ['gap', 'gap', 'gap', 'gap'],
 				content: generateDefaultColumns([
 					1 / 5,
 					1 / 5,
@@ -432,7 +391,7 @@ const templates = {
 					1 / 5,
 					1 / 5,
 				]),
-				rowLengths: [5, 5, 5, 5, 5],
+
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -451,14 +410,6 @@ const templates = {
 					1 / 2,
 					1 / 2,
 				]),
-				spacing: [
-					'',
-					'gap-marginTop',
-					'gap-marginTop',
-					'gap-marginTop',
-					'gap-marginTop',
-				],
-				rowLengths: [1, 2, 2, 2, 2],
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -475,14 +426,6 @@ const templates = {
 					1 / 2,
 					1 / 2,
 				]),
-				spacing: [
-					'gap',
-					'gap',
-					'marginTop',
-					'gap-marginTop',
-					'gap-marginTop',
-				],
-				rowLengths: [2, 2, 1, 2, 2],
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -499,14 +442,6 @@ const templates = {
 					1 / 2,
 					1,
 				]),
-				spacing: [
-					'gap',
-					'gap',
-					'gap-marginTop',
-					'gap-marginTop',
-					'marginTop',
-				],
-				rowLengths: [2, 2, 2, 2, 1],
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -516,14 +451,6 @@ const templates = {
 				name: '1-1-1-1-1',
 				icon: oneOneOneOneOne,
 				sizes: [1, 1, 1, 1, 1],
-				spacing: [
-					'',
-					'marginTop',
-					'marginTop',
-					'marginTop',
-					'marginTop',
-				],
-				rowLengths: [1, 1, 1, 1, 1],
 				content: generateDefaultColumns([1, 1, 1, 1, 1]),
 				attributes: {
 					horizontalAlign: 'space-between',
@@ -539,7 +466,6 @@ const templates = {
 				name: '6 columns',
 				icon: sixColumns,
 				sizes: [1 / 6, 1 / 6, 1 / 6, 1 / 6, 1 / 6, 1 / 6],
-				spacing: ['gap', 'gap', 'gap', 'gap', 'gap', 'gap'],
 				content: generateDefaultColumns([
 					1 / 6,
 					1 / 6,
@@ -548,7 +474,6 @@ const templates = {
 					1 / 6,
 					1 / 6,
 				]),
-				rowLengths: [6, 6, 6, 6, 6, 6],
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -560,14 +485,6 @@ const templates = {
 				name: '1-1-1-1-1-1',
 				icon: oneOneOneOneOneOne,
 				sizes: [1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2],
-				spacing: [
-					'gap',
-					'gap',
-					'gap-marginTop',
-					'gap-marginTop',
-					'gap-marginTop',
-					'gap-marginTop',
-				],
 				content: generateDefaultColumns([
 					1 / 2,
 					1 / 2,
@@ -575,7 +492,6 @@ const templates = {
 					1 / 2,
 					1 / 2,
 				]),
-				rowLengths: [2, 2, 2, 2, 2, 2],
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -586,15 +502,6 @@ const templates = {
 				icon: twoTwoTwoTwoTwoTwo,
 				sizes: [1, 1, 1, 1, 1, 1],
 				content: generateDefaultColumns([1, 1, 1, 1, 1, 1]),
-				spacing: [
-					'',
-					'marginTop',
-					'marginTop',
-					'marginTop',
-					'marginTop',
-					'marginTop',
-				],
-				rowLengths: [1, 1, 1, 1, 1, 1],
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',

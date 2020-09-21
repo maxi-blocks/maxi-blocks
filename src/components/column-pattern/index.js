@@ -228,46 +228,13 @@ const ColumnPatternsInspector = props => {
 
 			const newColumnSize = JSON.parse(columnAttributes.columnSize);
 
-			const newColumnMargin = JSON.parse(columnAttributes.margin);
-
-			const totalColumnsInRow = template.rowLengths[j];
-			let total = 100 - gap1 * totalColumnsInRow;
-
-			if (['m', 's', 'xs'].includes(breakpoint)) {
-				total = 100 - gap2 * totalColumnsInRow;
-			}
-
-			if (template.rowLengths[j] === 1) {
-				total = 100;
-			}
-
-			newColumnMargin[breakpoint]['margin-top'] = 0;
-
-			document.querySelector(
-				`.maxi-column-block__resizer__${columnUniqueID} > div`
-			).style.marginTop = '0';
-
-			/* Setting marginTop for stacked columns */
-			if (
-				template.spacing[j] === 'marginTop' ||
-				template.spacing[j] === 'gap-marginTop'
-			) {
-				newColumnMargin[breakpoint]['margin-top'] = 1;
-
-				document.querySelector(
-					`.maxi-column-block__resizer__${columnUniqueID} > div`
-				).style.marginTop = '1em';
-			}
-
-			// Setting new columns widths
-			newColumnSize[breakpoint].size = sizes[j] * total;
+			newColumnSize[breakpoint].size = sizes[j] * 100;
 
 			document.querySelector(
 				`.maxi-column-block__resizer__${columnUniqueID}`
-			).style.width = `${sizes[j] * total}%`;
+			).style.width = `${sizes[j] * 100}%`;
 
 			columnAttributes.columnSize = JSON.stringify(newColumnSize);
-			columnAttributes.newColumnMargin = JSON.stringify(newColumnMargin);
 
 			updateBlockAttributes(columnClientId, columnAttributes);
 		});

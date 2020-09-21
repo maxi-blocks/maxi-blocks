@@ -319,20 +319,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 		).__experimentalGetPreviewDeviceType();
 		newDeviceType = newDeviceType === 'Desktop' ? 'general' : newDeviceType;
 
-		const allowedDeviceTypes = [
-			'general',
-			'xxl',
-			'xl',
-			'l',
-			'm',
-			's',
-			'xs',
-		];
-
-		if (
-			allowedDeviceTypes.includes(newDeviceType) &&
-			deviceType !== newDeviceType
-		) {
+		if (deviceType !== newDeviceType) {
 			const node = document.querySelector(
 				`.maxi-column-block__resizer__${uniqueID}`
 			);

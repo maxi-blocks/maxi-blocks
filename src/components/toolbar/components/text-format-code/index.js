@@ -4,18 +4,16 @@
 const { __ } = wp.i18n;
 const { useSelect } = wp.data;
 const { Icon, Button, Tooltip } = wp.components;
+const { applyFormat, toHTMLString, removeFormat } = wp.richText;
 
 /**
  * Internal dependencies
  */
-import {
-	__experimentalIsFormatActive,
-	__experimentalGetFormattedString,
-} from '../../../../extensions/text/formats';
+import { __experimentalIsFormatActive } from '../../../../extensions/text/formats';
 /**
  * Styles and icons
  */
-import { toolbarItalic } from '../../../../icons';
+import { toolbarCode } from '../../../../icons';
 
 /**
  * TextFormatCode
@@ -34,11 +32,16 @@ const TextFormatCode = props => {
 	}, [__experimentalIsFormatActive, formatValue, formatName]);
 
 	const onClick = () => {
-		const newContent = __experimentalGetFormattedString({
-			formatValue,
-			formatName,
-			isActive,
-			isList,
+		const newFormat = isActive
+			? removeFormat(formatValue, formatName)
+			: applyFormat(formatValue, {
+					type: formatName,
+					isActive,
+			  });
+
+		const newContent = toHTMLString({
+			value: newFormat,
+			multilineTag: (isList && 'li') || null,
 		});
 
 		onChange(newContent);
@@ -51,7 +54,7 @@ const TextFormatCode = props => {
 				onClick={onClick}
 				aria-pressed={isActive}
 			>
-				<Icon className='toolbar-item__icon' icon={toolbarItalic} />
+				<Icon className='toolbar-item__icon' icon={toolbarCode} />
 			</Button>
 		</Tooltip>
 	);

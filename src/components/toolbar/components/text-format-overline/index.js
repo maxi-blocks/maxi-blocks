@@ -20,12 +20,12 @@ import { isObject } from 'lodash';
 /**
  * Styles and icons
  */
-import { toolbarStrikethrough } from '../../../../icons';
+import { toolbarOverline } from '../../../../icons';
 
 /**
- * TextFormatStrikethrough
+ * TextFormatOverline
  */
-const TextFormatStrikethrough = props => {
+const TextFormatOverline = props => {
 	const { typography, formatValue, onChange, isList, breakpoint } = props;
 
 	const typographyValue =
@@ -38,14 +38,14 @@ const TextFormatStrikethrough = props => {
 		breakpoint,
 	});
 
-	const isActive = textDecorationValue.indexOf('line-through') >= 0;
+	const isActive = textDecorationValue.indexOf('overline') >= 0;
 
 	const getTextDecorationValue = () => {
-		if (textDecorationValue === 'none') return 'line-through';
+		if (textDecorationValue === 'none') return 'overline';
 
 		const response = isActive
-			? textDecorationValue.replace('line-through', '')
-			: `${textDecorationValue} line-through`;
+			? textDecorationValue.replace('overline', '')
+			: `${textDecorationValue} overline`;
 
 		return response;
 	};
@@ -72,22 +72,16 @@ const TextFormatStrikethrough = props => {
 	};
 
 	return (
-		<Tooltip
-			text={__('Strikethrough', 'maxi-blocks')}
-			position='bottom center'
-		>
+		<Tooltip text={__('Overline', 'maxi-blocks')} position='bottom center'>
 			<Button
-				className='toolbar-item toolbar-item__strikethrough'
+				className='toolbar-item toolbar-item__overline'
 				onClick={onClick}
 				aria-pressed={isActive}
 			>
-				<Icon
-					className='toolbar-item__icon'
-					icon={toolbarStrikethrough}
-				/>
+				<Icon className='toolbar-item__icon' icon={toolbarOverline} />
 			</Button>
 		</Tooltip>
 	);
 };
 
-export default TextFormatStrikethrough;
+export default TextFormatOverline;

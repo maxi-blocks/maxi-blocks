@@ -12,6 +12,7 @@ import FontFamilySelector from '../../../font-family-selector';
 import ToolbarPopover from '../toolbar-popover';
 import TextFormatStrikethrough from '../text-format-strikethrough';
 import TextFormatUnderline from '../text-format-underline';
+import TextFormatOverline from '../text-format-overline';
 import TextFormatSubscript from '../text-format-subscript';
 import TextFormatSuperscript from '../text-format-superscript';
 import TextFormatCode from '../text-format-code';
@@ -281,6 +282,13 @@ const TextOptions = props => {
 							</Button>
 						</BaseControl>
 						<div>
+							<TextFormatOverline
+								typography={typographyValue}
+								formatValue={formatValue}
+								onChange={obj => onChange(obj)}
+								isList={isList}
+								breakpoint={breakpoint}
+							/>
 							<TextFormatStrikethrough
 								typography={typographyValue}
 								formatValue={formatValue}

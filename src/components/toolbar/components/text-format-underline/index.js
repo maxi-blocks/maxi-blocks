@@ -20,7 +20,7 @@ import { isObject } from 'lodash';
 /**
  * Styles and icons
  */
-import { toolbarItalic } from '../../../../icons';
+import { toolbarUnderline } from '../../../../icons';
 
 /**
  * TextFormatUnderline
@@ -78,7 +78,7 @@ const TextFormatUnderline = props => {
 				onClick={onClick}
 				aria-pressed={isActive}
 			>
-				<Icon className='toolbar-item__icon' icon={toolbarItalic} />
+				<Icon className='toolbar-item__icon' icon={toolbarUnderline} />
 			</Button>
 		</Tooltip>
 	);

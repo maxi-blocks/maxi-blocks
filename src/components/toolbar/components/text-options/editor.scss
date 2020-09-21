@@ -29,5 +29,9 @@
 				}
 			}
 		}
+
+		.toolbar-item[aria-pressed='true'] svg path {
+			fill: #ff4a17;
+		}
 	}
 }

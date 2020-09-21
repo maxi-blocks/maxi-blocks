@@ -12,7 +12,7 @@
 			box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.2);
 			border-radius: 5px;
 			&:after {
-				content: "";
+				content: '';
 				border-left: 0.5rem solid transparent;
 				border-right: 0.5rem solid transparent;
 				border-top: 0.5rem solid #232533;
@@ -36,7 +36,7 @@
 				position: relative;
 				padding-right: 2px;
 				&:after {
-					content: "";
+					content: '';
 					position: absolute;
 					top: 50%;
 					right: 0;
@@ -103,7 +103,7 @@
 	button.components-range-control__reset,
 	button.components-circular-option-picker__clear {
 		&:before {
-			content: url("../img/maxi-reset-white.svg") !important;
+			content: url('../img/maxi-reset-white.svg') !important;
 		}
 	}
 
@@ -297,7 +297,7 @@
 		flex-wrap: wrap;
 	}
 
-	input[type="number"] {
+	input[type='number'] {
 		color: #fff;
 		border-color: #80828a;
 		&::placeholder {
@@ -335,7 +335,7 @@
 			&:hover {
 				background-color: transparent !important;
 			}
-			&[aria-pressed="true"] {
+			&[aria-pressed='true'] {
 				border-color: #fff;
 				svg {
 					fill: #fff;
@@ -404,7 +404,7 @@
 			&:last-of-type {
 				border: 2px solid #5b5d68;
 			}
-			&[aria-pressed="true"] {
+			&[aria-pressed='true'] {
 				background: #4c4e59;
 				border: 3px solid #dddfe1;
 				border-bottom: 3px solid #ff4a17;
@@ -420,7 +420,7 @@
 		.components-base-control__label {
 			flex-basis: 100%;
 		}
-		input[type="number"] {
+		input[type='number'] {
 			width: 3.5rem;
 		}
 	}

@@ -7,6 +7,11 @@ const { useSelect, useDispatch } = wp.data;
 const { useEffect, useRef, Fragment } = wp.element;
 
 /**
+ * External dependencies
+ */
+import { castArray, first, last } from 'lodash';
+
+/**
  * Icons
  */
 import './editor.scss';
@@ -19,36 +24,49 @@ import { moveUp, moveDown } from '../../../../icons';
 const Mover = props => {
 	const { clientId, blockName } = props;
 
-	const { rootClientId } = useSelect(
-		select => {
-			const { getBlockRootClientId } = select('core/block-editor');
-			const blockRootClientId = getBlockRootClientId(clientId);
-
-			return {
-				rootClientId: blockRootClientId,
-			};
-		},
-		[clientId]
-	);
-
 	const { moveBlocksDown, moveBlocksUp } = useDispatch('core/block-editor');
 
-	const { srcRootClientId, index, isDraggable } = useSelect(
+	const {
+		srcRootClientId,
+		index,
+		isDraggable,
+		isTopDisabled,
+		isDownDisabled,
+	} = useSelect(
 		select => {
 			const {
 				getBlockIndex,
 				getBlockRootClientId,
 				getTemplateLock,
+				getBlockOrder,
+				getSelectedBlockClientIds,
 			} = select('core/block-editor');
 			const rootClientId = getBlockRootClientId(clientId);
 			const templateLock = rootClientId
 				? getTemplateLock(rootClientId)
 				: null;
+			const clientIds = getSelectedBlockClientIds();
+			const blockOrder = getBlockOrder(blockRootClientId);
+			const normalizedClientIds = castArray(clientIds);
+			const firstClientId = first(normalizedClientIds);
+			const blockRootClientId = getBlockRootClientId(firstClientId);
+			const firstBlockIndex = getBlockIndex(
+				firstClientId,
+				blockRootClientId
+			);
+			const lastBlockIndex = getBlockIndex(
+				last(normalizedClientIds),
+				blockRootClientId
+			);
+			const isFirstBlock = firstBlockIndex === 0;
+			const isLastBlock = lastBlockIndex === blockOrder.length - 1;
 
 			return {
 				index: getBlockIndex(clientId, rootClientId),
 				srcRootClientId: rootClientId,
 				isDraggable: templateLock !== 'all',
+				isTopDisabled: isFirstBlock,
+				isDownDisabled: isLastBlock,
 			};
 		},
 		[clientId]
@@ -58,7 +76,6 @@ const Mover = props => {
 		'core/block-editor'
 	);
 
-	// Stop dragging blocks if the block draggable is unmounted
 	useEffect(() => {
 		return () => {
 			if (isDragging.current) {
@@ -117,7 +134,10 @@ const Mover = props => {
 					position='bottom center'
 				>
 					<Button
-						onClick={() => moveBlocksUp([clientId], rootClientId)}
+						aria-disabled={isTopDisabled}
+						onClick={() => {
+							moveBlocksUp([clientId], srcRootClientId);
+						}}
 					>
 						<Icon className='toolbar-item__icon' icon={moveUp} />
 					</Button>
@@ -127,7 +147,10 @@ const Mover = props => {
 					position='bottom center'
 				>
 					<Button
-						onClick={() => moveBlocksDown([clientId], rootClientId)}
+						aria-disabled={isDownDisabled}
+						onClick={() =>
+							moveBlocksDown([clientId], srcRootClientId)
+						}
 					>
 						<Icon className='toolbar-item__icon' icon={moveDown} />
 					</Button>

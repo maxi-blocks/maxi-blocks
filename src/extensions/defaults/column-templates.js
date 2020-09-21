@@ -576,9 +576,9 @@ function setRowPatternAttribute(
 	const templatesValues = Object.values(templates);
 
 	if (largeDevices.includes(deviceType)) {
-		for (const device of largeDevices) {
+		largeDevices.forEach(device => {
 			rowPatternObject[device].rowPattern = templateName;
-		}
+		});
 
 		// set stacked template for small screens
 		const stackedTemplateIndex =

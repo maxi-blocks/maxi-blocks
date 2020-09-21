@@ -82,7 +82,6 @@ const generateNewCustomFormat = ({
 	formatClassName,
 	breakpoint,
 	value,
-	isHover,
 }) => {
 	const newFormatValue = applyFormat(formatValue, {
 		type: formatName,
@@ -118,6 +117,7 @@ const mergeNewFormat = ({
 	breakpoint,
 	value,
 	isHover,
+	isList,
 }) => {
 	const { start, end, formats } = formatValue;
 
@@ -154,8 +154,7 @@ const mergeNewFormat = ({
 	const newContent = applyCustomFormat({
 		formatValue: newFormatValue || formatValue,
 		formatName,
-		// isActive,
-		// isList,
+		isList,
 		formatClassName: (isFullFormat && currentClassName) || formatClassName,
 	});
 
@@ -172,6 +171,7 @@ const mergeMultipleFormats = ({
 	breakpoint,
 	value,
 	isHover = false,
+	isList,
 }) => {
 	let newTypography = { ...typography };
 	let newContent = '';
@@ -196,6 +196,7 @@ const mergeMultipleFormats = ({
 			breakpoint,
 			value,
 			isHover,
+			isList,
 		});
 
 		newTypography = newCustomTypography;
@@ -217,6 +218,7 @@ const setNewFormat = ({
 	defaultCustomFormat,
 	breakpoint,
 	value,
+	isList,
 }) => {
 	const newCustomStyle = {
 		[formatClassName]: {
@@ -227,7 +229,6 @@ const setNewFormat = ({
 
 	const newFormatValue = applyFormat(formatValue, {
 		type: formatName,
-		// isActive,
 		attributes: {
 			className: formatClassName,
 		},
@@ -241,8 +242,7 @@ const setNewFormat = ({
 	const newContent = applyCustomFormat({
 		formatValue,
 		formatName,
-		// isActive,
-		// isList,
+		isList,
 		formatClassName,
 	});
 
@@ -255,7 +255,6 @@ const setNewFormat = ({
 
 const setFormatWithClass = ({
 	formatValue,
-	isActive,
 	isList,
 	typography,
 	value,
@@ -293,6 +292,7 @@ const setFormatWithClass = ({
 				defaultCustomFormat,
 				breakpoint,
 				value,
+				isList,
 			})) ||
 		(hasCustomFormat &&
 			!hasMultiCustomFormat &&
@@ -303,6 +303,7 @@ const setFormatWithClass = ({
 				formatClassName,
 				breakpoint,
 				value,
+				isList,
 			})) ||
 		(hasCustomFormat &&
 			hasMultiCustomFormat &&
@@ -311,6 +312,7 @@ const setFormatWithClass = ({
 				formatValue,
 				breakpoint,
 				value,
+				isList,
 			}));
 
 	return {

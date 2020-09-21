@@ -25,6 +25,7 @@ import { getLastBreakpointValue } from '../../utils';
  * External dependencies
  */
 import { uniqueId, isEmpty, isNil, cloneDeep } from 'lodash';
+import classnames from 'classnames';
 
 /**
  * Styles and icons
@@ -241,8 +242,10 @@ const ColumnPatternsInspector = props => {
 
 	let patternButtonClassName = 'components-column-pattern__template-button';
 	if (toolbar) {
-		patternButtonClassName +=
-			' components-column-pattern__template-button--toolbar';
+		patternButtonClassName = classnames(
+			patternButtonClassName,
+			'components-column-pattern__template-button--toolbar'
+		);
 	}
 
 	return (

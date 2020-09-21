@@ -162,7 +162,7 @@ const mergeNewFormat = ({
 	return {
 		typography: newTypography,
 		content: newContent,
-		formatValue: newFormatValue,
+		formatValue: newFormatValue || formatValue,
 	};
 };
 
@@ -281,7 +281,7 @@ const setFormatWithClass = ({
 	const hasMultiCustomFormat = getFormatsClassName(formatValue).length > 1;
 
 	const {
-		typography: preformattedTypography,
+		typography: newTypography,
 		content: newContent,
 		formatValue: newFormatValue,
 	} =
@@ -314,7 +314,7 @@ const setFormatWithClass = ({
 			}));
 
 	return {
-		typography: preformattedTypography,
+		typography: newTypography,
 		content: newContent,
 		formatValue: newFormatValue,
 	};

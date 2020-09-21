@@ -10,7 +10,7 @@ const { ColorPicker, Icon } = wp.components;
 import { getLastBreakpointValue } from '../../../../utils';
 import ToolbarPopover from '../toolbar-popover';
 import {
-	__experimentalSetFormatWithClass,
+	__experimentalSetFormat,
 	__experimentalGetCustomFormatValue,
 } from '../../../../extensions/text/formats';
 
@@ -33,7 +33,7 @@ const TextColor = props => {
 		blockName,
 		typography,
 		onChange,
-		content,
+
 		breakpoint,
 		isList,
 		formatValue,
@@ -55,34 +55,25 @@ const TextColor = props => {
 		return `rgba(${val.rgb.r},${val.rgb.g},${val.rgb.b},${val.rgb.a})`;
 	};
 
-	const updateTypography = val => {
-		value[breakpoint].color = returnColor(val);
-
-		onChange({ typography: JSON.stringify(value), content });
-	};
-
 	const onClick = val => {
-		if (formatValue.start === formatValue.end) {
-			updateTypography(val);
-			return;
-		}
-
 		const {
 			typography: newTypography,
 			content: newContent,
-		} = __experimentalSetFormatWithClass({
+		} = __experimentalSetFormat({
 			formatValue,
+			// isActive,
 			isList,
 			typography: value,
 			value: {
-				color: val.hex,
+				color: returnColor(val),
 			},
 			breakpoint,
+			// isHover,
 		});
 
 		onChange({
 			typography: JSON.stringify(newTypography),
-			content: newContent,
+			...(newContent && { content: newContent }),
 		});
 	};
 

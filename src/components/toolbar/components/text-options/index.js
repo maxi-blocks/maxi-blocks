@@ -8,7 +8,6 @@ const { Button, BaseControl } = wp.components;
 /**
  * Internal dependencies
  */
-import { getLastBreakpointValue } from '../../../../utils';
 import FontFamilySelector from '../../../font-family-selector';
 import ToolbarPopover from '../toolbar-popover';
 import TextFormatStrikethrough from '../text-format-strikethrough';
@@ -17,7 +16,7 @@ import TextFormatSubscript from '../text-format-subscript';
 import TextFormatSuperscript from '../text-format-superscript';
 import TextFormatCode from '../text-format-code';
 import {
-	__experimentalSetFormatWithClass,
+	__experimentalSetFormat,
 	__experimentalGetCustomFormatValue,
 } from '../../../../extensions/text/formats';
 
@@ -41,7 +40,6 @@ const TextOptions = props => {
 		typography,
 		defaultTypography,
 		onChange,
-		content,
 		breakpoint,
 		isList,
 		formatValue,
@@ -49,51 +47,31 @@ const TextOptions = props => {
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
-	const value =
+	const typographyValue =
 		(!isObject(typography) && JSON.parse(typography)) || typography;
 
-	const defaultValue =
+	const defaultTypographyValue =
 		(typeof defaultTypography !== 'object' &&
 			JSON.parse(defaultTypography)) ||
 		defaultTypography;
 
-	const fontSize = __experimentalGetCustomFormatValue({
-		typography: value,
-		formatValue,
-		prop: 'font-size',
-		breakpoint,
-	});
-
-	const updateTypography = () => {
-		onChange({ typography: JSON.stringify(value), content });
-	};
-
-	const onChangeSize = val => {
-		if (formatValue.start === formatValue.end) {
-			value[breakpoint]['font-size'] = isEmpty(val) ? '' : Number(val);
-			updateTypography();
-			return;
-		}
-
-		const newFontSize = isEmpty(val) ? '' : Number(val);
-
+	const onChangeFormat = value => {
 		const {
 			typography: newTypography,
 			content: newContent,
-		} = __experimentalSetFormatWithClass({
+		} = __experimentalSetFormat({
 			formatValue,
+			// isActive,
 			isList,
-			typography: value,
-			value: {
-				'font-sizeUnit': value[breakpoint]['font-sizeUnit'],
-				'font-size': newFontSize,
-			},
+			typography: typographyValue,
+			value,
 			breakpoint,
+			// isHover,
 		});
 
 		onChange({
 			typography: JSON.stringify(newTypography),
-			content: newContent,
+			...(newContent && { content: newContent }),
 		});
 	};
 
@@ -108,27 +86,32 @@ const TextOptions = props => {
 					<div className='toolbar-item__popover__font-options__font'>
 						<FontFamilySelector
 							className='toolbar-item__popover__font-options__font__selector'
-							font={getLastBreakpointValue(
-								value,
-								'font-family',
-								breakpoint
-							)}
+							font={__experimentalGetCustomFormatValue({
+								typography: typographyValue,
+								formatValue,
+								prop: 'font-family',
+								breakpoint,
+							})}
 							onChange={font => {
-								value[breakpoint]['font-family'] = font.value;
-								value.options = font.files;
-								updateTypography();
+								onChangeFormat({
+									'font-family': font.value,
+									'font-options': font.files,
+								});
 							}}
 						/>
 						<Button
 							className='components-maxi-control__reset-button'
 							onClick={() => {
-								value[breakpoint]['font-family'] =
-									defaultValue.font;
-								updateTypography();
+								onChangeFormat({
+									'font-family':
+										defaultTypographyValue['font-family'],
+									'font-options':
+										defaultTypographyValue['font-options'],
+								});
 							}}
 							isSmall
 							aria-label={sprintf(
-								/* translators: %s: a texual label  */
+								/* translators: %s: a textual label  */
 								__('Reset %s settings', 'maxi-blocks'),
 								'font size'
 							)}
@@ -145,27 +128,44 @@ const TextOptions = props => {
 							<input
 								type='number'
 								value={trim(
-									fontSize ||
-										getLastBreakpointValue(
-											value,
-											'font-size',
-											breakpoint
-										)
+									__experimentalGetCustomFormatValue({
+										typography: typographyValue,
+										formatValue,
+										prop: 'font-size',
+										breakpoint,
+									})
 								)}
 								onChange={e => {
-									onChangeSize(e.target.value);
+									const newFontSize = isEmpty(e.target.value)
+										? ''
+										: Number(e.target.value);
+
+									onChangeFormat({
+										'font-sizeUnit':
+											typographyValue[breakpoint][
+												'font-sizeUnit'
+											],
+										'font-size': newFontSize,
+									});
 								}}
 							/>
 							<Button
 								className='components-maxi-control__reset-button'
 								onClick={() => {
-									value[breakpoint]['font-size'] =
-										defaultValue[breakpoint]['font-size'];
-									onChangeSize(null);
+									onChangeFormat({
+										'font-sizeUnit':
+											defaultTypographyValue[breakpoint][
+												'font-sizeUnit'
+											],
+										'font-size':
+											defaultTypographyValue[breakpoint][
+												'font-size'
+											],
+									});
 								}}
 								isSmall
 								aria-label={sprintf(
-									/* translators: %s: a texual label  */
+									/* translators: %s: a textual label  */
 									__('Reset %s settings', 'maxi-blocks'),
 									'size'
 								)}
@@ -181,31 +181,44 @@ const TextOptions = props => {
 							<input
 								type='number'
 								value={trim(
-									getLastBreakpointValue(
-										value,
-										'line-height',
-										breakpoint
-									)
+									__experimentalGetCustomFormatValue({
+										typography: typographyValue,
+										formatValue,
+										prop: 'line-height',
+										breakpoint,
+									})
 								)}
 								onChange={e => {
-									value[breakpoint]['line-height'] = isEmpty(
-										e.target.value
-									)
+									const newFontSize = isEmpty(e.target.value)
 										? ''
 										: Number(e.target.value);
-									updateTypography();
+
+									onChangeFormat({
+										'line-heightUnit':
+											typographyValue[breakpoint][
+												'line-heightUnit'
+											],
+										'line-height': newFontSize,
+									});
 								}}
 							/>
 							<Button
 								className='components-maxi-control__reset-button'
 								onClick={() => {
-									value[breakpoint]['line-height'] =
-										defaultValue[breakpoint]['line-height'];
-									updateTypography();
+									onChangeFormat({
+										'line-heightUnit':
+											defaultTypographyValue[breakpoint][
+												'line-heightUnit'
+											],
+										'line-height':
+											defaultTypographyValue[breakpoint][
+												'line-height'
+											],
+									});
 								}}
 								isSmall
 								aria-label={sprintf(
-									/* translators: %s: a texual label  */
+									/* translators: %s: a textual label  */
 									__('Reset %s settings', 'maxi-blocks'),
 									'line height'
 								)}
@@ -221,33 +234,44 @@ const TextOptions = props => {
 							<input
 								type='number'
 								value={trim(
-									getLastBreakpointValue(
-										value,
-										'letter-spacing',
-										breakpoint
-									)
+									__experimentalGetCustomFormatValue({
+										typography: typographyValue,
+										formatValue,
+										prop: 'letter-spacing',
+										breakpoint,
+									})
 								)}
 								onChange={e => {
-									value[breakpoint][
-										'letter-spacing'
-									] = isEmpty(e.target.value)
+									const newFontSize = isEmpty(e.target.value)
 										? ''
 										: Number(e.target.value);
-									updateTypography();
+
+									onChangeFormat({
+										'letter-spacingUnit':
+											typographyValue[breakpoint][
+												'letter-spacingUnit'
+											],
+										'letter-spacing': newFontSize,
+									});
 								}}
 							/>
 							<Button
 								className='components-maxi-control__reset-button'
 								onClick={() => {
-									value[breakpoint]['letter-spacing'] =
-										defaultValue[breakpoint][
-											'letter-spacing'
-										];
-									updateTypography();
+									onChangeFormat({
+										'letter-spacingUnit':
+											defaultTypographyValue[breakpoint][
+												'letter-spacingUnit'
+											],
+										'letter-spacing':
+											defaultTypographyValue[breakpoint][
+												'letter-spacing'
+											],
+									});
 								}}
 								isSmall
 								aria-label={sprintf(
-									/* translators: %s: a texual label  */
+									/* translators: %s: a textual label  */
 									__('Reset %s settings', 'maxi-blocks'),
 									'letter spacing'
 								)}
@@ -263,7 +287,7 @@ const TextOptions = props => {
 								formatValue={formatValue}
 							/>
 							<TextFormatUnderline
-								typography={value}
+								typography={typographyValue}
 								formatValue={formatValue}
 								onChange={obj => onChange(obj)}
 								isList={isList}

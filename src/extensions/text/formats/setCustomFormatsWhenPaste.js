@@ -59,7 +59,7 @@ const setLinkFormats = ({ formatValue, typography, isList }) => {
 		newFormatValue = {
 			...newFormatValue,
 			start: pos[0],
-			end: pos[1],
+			end: pos[1] + 1,
 		};
 
 		const {

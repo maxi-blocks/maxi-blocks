@@ -7,7 +7,15 @@ const { Icon, Button, Tooltip } = wp.components;
 /**
  * Internal dependencies
  */
-import { __experimentalSetFormatWithClass } from '../../../../extensions/text/formats';
+import {
+	__experimentalSetFormat,
+	__experimentalGetCustomFormatValue,
+} from '../../../../extensions/text/formats';
+
+/**
+ * External dependencies
+ */
+import { isObject } from 'lodash';
 
 /**
  * Styles and icons
@@ -20,23 +28,37 @@ import { toolbarItalic } from '../../../../icons';
 const TextFormatUnderline = props => {
 	const { typography, formatValue, onChange, isList, breakpoint } = props;
 
+	const typographyValue =
+		(!isObject(typography) && JSON.parse(typography)) || typography;
+
+	const underlineValue = __experimentalGetCustomFormatValue({
+		typography: typographyValue,
+		formatValue,
+		prop: 'text-decoration',
+		breakpoint,
+	});
+
+	const isActive = (underlineValue === 'underline' && true) || false;
+
 	const onClick = () => {
 		const {
 			typography: newTypography,
 			content: newContent,
-		} = __experimentalSetFormatWithClass({
+		} = __experimentalSetFormat({
 			formatValue,
+			isActive,
 			isList,
-			typography,
+			typography: typographyValue,
 			value: {
-				'text-decoration': 'underline',
+				'text-decoration': isActive ? '' : 'underline',
 			},
 			breakpoint,
+			// isHover,
 		});
 
 		onChange({
 			typography: JSON.stringify(newTypography),
-			content: newContent,
+			...(newContent && { content: newContent }),
 		});
 	};
 
@@ -45,7 +67,7 @@ const TextFormatUnderline = props => {
 			<Button
 				className='toolbar-item toolbar-item__underline'
 				onClick={onClick}
-				// aria-pressed={isActive}
+				aria-pressed={isActive}
 			>
 				<Icon className='toolbar-item__icon' icon={toolbarItalic} />
 			</Button>

@@ -9,7 +9,7 @@ const { Icon, Button, Tooltip } = wp.components;
  */
 import {
 	__experimentalGetCustomFormatValue,
-	__experimentalSetFormatWithClass,
+	__experimentalSetFormat,
 } from '../../../../extensions/text/formats';
 
 /**
@@ -52,19 +52,21 @@ const TextBold = ({
 		const {
 			typography: newTypography,
 			content: newContent,
-		} = __experimentalSetFormatWithClass({
+		} = __experimentalSetFormat({
 			formatValue,
+			isActive,
 			isList,
 			typography: typographyValue,
 			value: {
 				'font-weight': (isActive && 400) || 800,
 			},
 			breakpoint,
+			// isHover,
 		});
 
 		onChange({
 			typography: JSON.stringify(newTypography),
-			content: newContent,
+			...(newContent && { content: newContent }),
 		});
 	};
 

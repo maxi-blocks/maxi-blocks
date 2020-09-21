@@ -4,7 +4,6 @@
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
 const { Fragment } = wp.element;
-const { useSelect } = wp.data;
 const { TextControl, SelectControl } = wp.components;
 
 /**
@@ -75,16 +74,9 @@ const Inspector = props => {
 		},
 		setAttributes,
 		clientId,
+		deviceType,
+		formatValue,
 	} = props;
-
-	const { deviceType } = useSelect(select => {
-		const { __experimentalGetPreviewDeviceType } = select('core/edit-post');
-		let deviceType = __experimentalGetPreviewDeviceType();
-		deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
-		return {
-			deviceType,
-		};
-	});
 
 	return (
 		<InspectorControls>
@@ -279,16 +271,20 @@ const Inspector = props => {
 																	textLevel={
 																		textLevel
 																	}
-																	onChange={typography =>
+																	onChange={obj =>
 																		setAttributes(
-																			{
-																				typography,
-																			}
+																			obj
 																		)
 																	}
 																	hideAlignment
 																	breakpoint={
 																		deviceType
+																	}
+																	formatValue={
+																		formatValue
+																	}
+																	isList={
+																		isList
 																	}
 																/>
 															),
@@ -310,17 +306,22 @@ const Inspector = props => {
 																	textLevel={
 																		textLevel
 																	}
-																	onChange={typographyHover =>
+																	onChange={obj =>
 																		setAttributes(
-																			{
-																				typographyHover,
-																			}
+																			obj
 																		)
 																	}
 																	hideAlignment
 																	breakpoint={
 																		deviceType
 																	}
+																	formatValue={
+																		formatValue
+																	}
+																	isList={
+																		isList
+																	}
+																	isHover
 																/>
 															),
 														},

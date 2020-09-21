@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { Fragment } = wp.element;
 const { synchronizeBlocksWithTemplate } = wp.blocks;
 const { useInstanceId } = wp.compose;
 const { Icon, Button } = wp.components;
@@ -35,8 +34,7 @@ import './editor.scss';
 /**
  * Column patterns
  *
- * @todo Shows just row patterns with DisplayedTemplates existing number of columns
- */
+ * */
 const ColumnPatternsInspector = props => {
 	const {
 		clientId,
@@ -46,6 +44,7 @@ const ColumnPatternsInspector = props => {
 		breakpoint,
 		toolbar = false,
 	} = props;
+
 	const [numCol, setNumCol] = useState(1);
 	const [DISPLAYED_TEMPLATES, setDisplayedTemplates] = useState([]);
 
@@ -86,7 +85,7 @@ const ColumnPatternsInspector = props => {
 		if (rowPatternObject.general.rowPattern) {
 			setNumCol(getNumCol(rowPatternObject.general.rowPattern));
 		}
-	}, [breakpoint, rowPatternObject[breakpoint].rowPattern]);
+	}, [breakpoint, rowPatternObject.general.rowPattern]);
 
 	if (blockName !== 'maxi-blocks/row-maxi') return null;
 

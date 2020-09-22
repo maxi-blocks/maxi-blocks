@@ -51,7 +51,7 @@ export const opacity = {
 export const opacityHover = {
 	label: 'Opacity',
 	general: {
-		opacity: 1,
+		opacity: '',
 	},
 	xxl: {
 		opacity: '',

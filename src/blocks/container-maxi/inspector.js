@@ -416,6 +416,7 @@ const Inspector = props => {
 																		breakpoint={
 																			deviceType
 																		}
+																		displayToggle
 																	/>
 																	<BackgroundControl
 																		background={

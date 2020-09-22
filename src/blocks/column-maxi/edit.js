@@ -319,13 +319,29 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 		).__experimentalGetPreviewDeviceType();
 		newDeviceType = newDeviceType === 'Desktop' ? 'general' : newDeviceType;
 
-		if (deviceType !== newDeviceType) {
-			const node = document.querySelector(
-				`.maxi-column-block__resizer__${uniqueID}`
-			);
-			if (isNil(node)) return;
-			const newColumnSize = JSON.parse(columnSize);
-			node.style.width = `${newColumnSize[newDeviceType].size}%`;
+		const node = document.querySelector(
+			`.maxi-column-block__resizer__${uniqueID}`
+		);
+		if (isNil(node)) return;
+
+		const newColumnSize = JSON.parse(columnSize);
+
+		const newSize = newColumnSize[newDeviceType].size;
+
+		if (['xxl', 'xl', 'l'].includes(newDeviceType)) {
+			if (newSize === '') {
+				node.style.width = `${newColumnSize.general.size}%`;
+			} else {
+				node.style.width = `${newSize}%`;
+			}
+		} else if (['s', 'xs'].includes(newDeviceType)) {
+			if (newSize === '') {
+				node.style.width = `${newColumnSize.m.size}%`;
+			} else {
+				node.style.width = `${newSize}%`;
+			}
+		} else {
+			node.style.width = `${newSize}%`;
 		}
 	};
 

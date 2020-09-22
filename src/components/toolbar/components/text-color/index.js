@@ -61,14 +61,12 @@ const TextColor = props => {
 			content: newContent,
 		} = __experimentalSetFormat({
 			formatValue,
-			// isActive,
 			isList,
 			typography: value,
 			value: {
 				color: returnColor(val),
 			},
 			breakpoint,
-			// isHover,
 		});
 
 		onChange({

@@ -1,7 +1,13 @@
 /**
+ * WordPress dependencies
+ */
+const { removeFormat } = wp.richText;
+
+/**
  * Internal dependencies
  */
 import __experimentalApplyLinkFormat from './applyLinkFormat';
+import __experimentalSetFormatWithClass from './setFormatWithClass';
 
 /**
  * External dependencies
@@ -16,23 +22,13 @@ const isFormattedWithType = (formatValue, type) => {
 	});
 };
 
-const setLinkFormats = ({ formatValue, typography, isList }) => {
-	formatValue.formats = formatValue.formats.map(formatEl => {
-		return formatEl.map(format => {
-			if (format.type === 'core/link') {
-				format.type = 'maxi-blocks/text-link';
-			}
-
-			return format;
-		});
-	});
-
-	const linkInstancePositions = chunk(
+const getInstancePositions = (formatValue, formatName) => {
+	return chunk(
 		formatValue.formats
 			.map((formatEl, i) => {
 				if (
 					formatEl.some(format => {
-						return format.type === 'maxi-blocks/text-link';
+						return format.type === formatName;
 					})
 				)
 					return i;
@@ -49,6 +45,23 @@ const setLinkFormats = ({ formatValue, typography, isList }) => {
 				);
 			}),
 		2
+	);
+};
+
+const setLinkFormats = ({ formatValue, typography, isList }) => {
+	formatValue.formats = formatValue.formats.map(formatEl => {
+		return formatEl.map(format => {
+			if (format.type === 'core/link') {
+				format.type = 'maxi-blocks/text-link';
+			}
+
+			return format;
+		});
+	});
+
+	const linkInstancePositions = getInstancePositions(
+		formatValue,
+		'maxi-blocks/text-link'
 	);
 
 	let newContent = formatValue.html;
@@ -84,16 +97,183 @@ const setLinkFormats = ({ formatValue, typography, isList }) => {
 	};
 };
 
-const setCustomFormatsWhenPaste = ({ formatValue, typography, isList }) => {
-	const isLinkUnformatted = isFormattedWithType(formatValue, 'core/link');
+const setFormat = ({ formatValue, typography, oldFormat, value, isList }) => {
+	const boldInstancePositions = getInstancePositions(formatValue, oldFormat);
 
-	const {
+	let newContent = formatValue.html;
+	let newTypography = { ...typography };
+	let newFormatValue = { ...formatValue };
+
+	boldInstancePositions.forEach(pos => {
+		newFormatValue = {
+			...newFormatValue,
+			start: pos[0],
+			end: pos[1] + 1,
+		};
+
+		newFormatValue = removeFormat(newFormatValue, oldFormat);
+
+		const {
+			typography: preformattedTypography,
+			content: preformattedContent,
+			formatValue: preformattedFormatValue,
+		} = __experimentalSetFormatWithClass({
+			formatValue: newFormatValue,
+			typography: newTypography,
+			value,
+			isList,
+		});
+
+		newTypography = preformattedTypography;
+		newContent = preformattedContent;
+		newFormatValue = preformattedFormatValue;
+	});
+
+	return {
 		typography: newTypography,
 		content: newContent,
 		formatValue: newFormatValue,
-	} =
-		isLinkUnformatted &&
-		setLinkFormats({ formatValue, typography, isList });
+	};
+};
+
+const setCustomFormatsWhenPaste = ({ formatValue, typography, isList }) => {
+	const isLinkUnformatted = isFormattedWithType(formatValue, 'core/link');
+	const isBoldUnformatted = isFormattedWithType(formatValue, 'core/bold');
+	const isItalicUnformatted = isFormattedWithType(formatValue, 'core/italic');
+	const isUnderlineUnformatted = isFormattedWithType(
+		formatValue,
+		'core/underline'
+	);
+	const isStrikethroughUnformatted = isFormattedWithType(
+		formatValue,
+		'core/strikethrough'
+	);
+	const isSubscriptUnformatted = isFormattedWithType(
+		formatValue,
+		'core/subscript'
+	);
+	const isSuperscriptUnformatted = isFormattedWithType(
+		formatValue,
+		'core/superscript'
+	);
+
+	let newTypography = { ...typography };
+	let newContent = '';
+	let newFormatValue = { ...formatValue };
+
+	if (isLinkUnformatted) {
+		const {
+			typography: linkFormattedTypography,
+			content: linkFormattedContent,
+			formatValue: linkFormattedFormatValue,
+		} = setLinkFormats({ formatValue, typography, isList });
+
+		newTypography = linkFormattedTypography;
+		newContent = linkFormattedContent;
+		newFormatValue = linkFormattedFormatValue;
+	}
+	if (isBoldUnformatted) {
+		const {
+			typography: boldFormattedTypography,
+			content: boldFormattedContent,
+			formatValue: boldFormattedFormatValue,
+		} = setFormat({
+			formatValue,
+			typography,
+			oldFormat: 'core/bold',
+			value: { 'font-weight': 800 },
+			isList,
+		});
+
+		newTypography = boldFormattedTypography;
+		newContent = boldFormattedContent;
+		newFormatValue = boldFormattedFormatValue;
+	}
+	if (isItalicUnformatted) {
+		const {
+			typography: italicFormattedTypography,
+			content: italicFormattedContent,
+			formatValue: italicFormattedFormatValue,
+		} = setFormat({
+			formatValue,
+			typography,
+			oldFormat: 'core/italic',
+			value: { 'font-style': 'italic' },
+			isList,
+		});
+
+		newTypography = italicFormattedTypography;
+		newContent = italicFormattedContent;
+		newFormatValue = italicFormattedFormatValue;
+	}
+	if (isUnderlineUnformatted) {
+		const {
+			typography: underlineFormattedTypography,
+			content: underlineFormattedContent,
+			formatValue: underlineFormattedFormatValue,
+		} = setFormat({
+			formatValue,
+			typography,
+			oldFormat: 'core/underline',
+			value: { 'font-decoration': 'underline' },
+			isList,
+		});
+
+		newTypography = underlineFormattedTypography;
+		newContent = underlineFormattedContent;
+		newFormatValue = underlineFormattedFormatValue;
+	}
+	if (isStrikethroughUnformatted) {
+		const {
+			typography: strikethroughFormattedTypography,
+			content: strikethroughFormattedContent,
+			formatValue: strikethroughFormattedFormatValue,
+		} = setFormat({
+			formatValue,
+			typography,
+			oldFormat: 'core/strikethrough',
+			value: { 'font-decoration': 'strikethrough' },
+			isList,
+		});
+
+		newTypography = strikethroughFormattedTypography;
+		newContent = strikethroughFormattedContent;
+		newFormatValue = strikethroughFormattedFormatValue;
+	}
+	if (isSubscriptUnformatted) {
+		const {
+			typography: subscriptFormattedTypography,
+			content: subscriptFormattedContent,
+			formatValue: subscriptFormattedFormatValue,
+		} = setFormat({
+			formatValue,
+			typography,
+			oldFormat: 'core/subscript',
+			value: { 'vertical-align': 'sub' },
+			isList,
+		});
+
+		newTypography = subscriptFormattedTypography;
+		newContent = subscriptFormattedContent;
+		newFormatValue = subscriptFormattedFormatValue;
+	}
+	if (isSuperscriptUnformatted) {
+		const {
+			typography: superscriptFormattedTypography,
+			content: superscriptFormattedContent,
+			formatValue: superscriptFormattedFormatValue,
+		} = setFormat({
+			formatValue,
+			typography,
+			oldFormat: 'core/superscript',
+			value: { 'vertical-align': 'super' },
+			isList,
+		});
+
+		newTypography = superscriptFormattedTypography;
+		newContent = superscriptFormattedContent;
+		newFormatValue = superscriptFormattedFormatValue;
+	}
 
 	if (newContent) {
 		return {

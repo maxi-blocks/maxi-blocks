@@ -8,7 +8,6 @@ import __experimentalSetFormatWithClass from './setFormatWithClass';
  */
 const setFormat = ({
 	formatValue,
-	isActive,
 	isList,
 	typography,
 	value,
@@ -31,6 +30,7 @@ const setFormat = ({
 		typography,
 		value,
 		breakpoint,
+		isHover,
 	});
 };
 

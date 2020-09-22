@@ -37,8 +37,9 @@ class edit extends MaxiBlock {
 
 		let response = {
 			[uniqueID]: this.getNormalObject,
-			[`${uniqueID}:hover`]: this.getHoverObject,
-			[`${uniqueID} > hr.maxi-divider-block__divider`]: this
+			[`${uniqueID}:hover hr.maxi-divider-block__divider`]: this
+				.getHoverObject,
+			[`${uniqueID} hr.maxi-divider-block__divider`]: this
 				.getDividerObject,
 		};
 

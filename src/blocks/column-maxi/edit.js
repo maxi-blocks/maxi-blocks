@@ -310,7 +310,6 @@ const editSelect = withSelect((select, ownProps) => {
 const editDispatch = withDispatch((dispatch, ownProps) => {
 	const {
 		attributes: { uniqueID, columnSize },
-		deviceType,
 	} = ownProps;
 
 	const onDeviceTypeChange = () => {

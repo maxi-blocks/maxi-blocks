@@ -10,6 +10,11 @@ import TextShadowControl from '../../../text-shadow-control';
 import ToolbarPopover from '../toolbar-popover';
 
 /**
+ * External dependencies
+ */
+import { isObject } from 'lodash';
+
+/**
  * Icons
  */
 import './editor.scss';
@@ -23,8 +28,7 @@ const TextShadow = props => {
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
-	const value =
-		typeof typography !== 'object' ? JSON.parse(typography) : typography;
+	const value = !isObject(typography) ? JSON.parse(typography) : typography;
 
 	return (
 		<ToolbarPopover

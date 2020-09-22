@@ -35,13 +35,6 @@ import {
 } from '../../icons';
 
 /**
- * WordPress Dependencies
- */
-const { dispatch } = wp.data;
-
-const { updateBlockAttributes } = dispatch('core/block-editor');
-
-/**
  * Helpers
  */
 /**
@@ -52,7 +45,6 @@ const { updateBlockAttributes } = dispatch('core/block-editor');
 const generateDefaultColumns = (columns, gap1 = 2.5, gap2 = 2.1) => {
 	const totalColumns = columns.length - 1;
 	const total1 = 100 - gap1 * totalColumns;
-	const total2 = 100 - gap2 * totalColumns;
 
 	return columns.map((column, i) => [
 		'maxi-blocks/column-maxi',

@@ -56,7 +56,6 @@ class edit extends MaxiBlock {
 			lineHorizontal,
 			linesAlign,
 			opacity,
-			boxShadow,
 			size,
 			padding,
 			margin,
@@ -67,7 +66,6 @@ class edit extends MaxiBlock {
 		} = this.props.attributes;
 
 		const response = {
-			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
 			size: { ...JSON.parse(size) },
 			padding: { ...JSON.parse(padding) },
 			margin: { ...JSON.parse(margin) },
@@ -117,8 +115,9 @@ class edit extends MaxiBlock {
 	}
 
 	get getDividerObject() {
-		const { divider } = this.props.attributes;
+		const { divider, boxShadow } = this.props.attributes;
 		const response = {
+			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
 			divider: { ...JSON.parse(divider) },
 			opacity: { ...JSON.parse(divider).opacity },
 		};

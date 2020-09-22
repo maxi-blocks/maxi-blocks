@@ -12,25 +12,25 @@ import __experimentalSetFormatWithClass from './setFormatWithClass';
  *
  */
 const getNewFormatValue = ({ formatValue, linkAttributes }) => {
-	const isFromPaste = formatValue.formats.some(formatEl => {
-		return formatEl.some(format => {
-			return format.type === 'core/link';
-		});
-	});
+	// const isFromPaste = formatValue.formats.some(formatEl => {
+	// 	return formatEl.some(format => {
+	// 		return format.type === 'core/link';
+	// 	});
+	// });
 
-	if (isFromPaste) {
-		formatValue.formats = formatValue.formats.map(formatEl => {
-			return formatEl.map(format => {
-				if (format.type === 'core/link') {
-					format.type = 'maxi-blocks/text-link';
-				}
+	// if (isFromPaste) {
+	// 	formatValue.formats = formatValue.formats.map(formatEl => {
+	// 		return formatEl.map(format => {
+	// 			if (format.type === 'core/link') {
+	// 				format.type = 'maxi-blocks/text-link';
+	// 			}
 
-				return format;
-			});
-		});
+	// 			return format;
+	// 		});
+	// 	});
 
-		return formatValue;
-	}
+	// 	return formatValue;
+	// }
 
 	const newFormatValue = applyFormat(formatValue, {
 		type: 'maxi-blocks/text-link',

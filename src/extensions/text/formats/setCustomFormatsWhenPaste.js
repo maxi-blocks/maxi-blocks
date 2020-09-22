@@ -49,19 +49,19 @@ const getInstancePositions = (formatValue, formatName) => {
 };
 
 const setLinkFormats = ({ formatValue, typography, isList }) => {
-	formatValue.formats = formatValue.formats.map(formatEl => {
-		return formatEl.map(format => {
-			if (format.type === 'core/link') {
-				format.type = 'maxi-blocks/text-link';
-			}
+	// formatValue.formats = formatValue.formats.map(formatEl => {
+	// 	return formatEl.map(format => {
+	// 		if (format.type === 'core/link') {
+	// 			format.type = 'maxi-blocks/text-link';
+	// 		}
 
-			return format;
-		});
-	});
+	// 		return format;
+	// 	});
+	// });
 
 	const linkInstancePositions = getInstancePositions(
 		formatValue,
-		'maxi-blocks/text-link'
+		'core/link'
 	);
 
 	let newContent = formatValue.html;
@@ -75,6 +75,11 @@ const setLinkFormats = ({ formatValue, typography, isList }) => {
 			end: pos[1] + 1,
 		};
 
+		const newAttributes = newFormatValue.formats[pos[0]].filter(format => {
+			return format.type === 'core/link';
+		})[0].attributes;
+		newFormatValue = removeFormat(newFormatValue, 'core/link');
+
 		const {
 			typography: preformattedTypography,
 			content: preformattedContent,
@@ -82,6 +87,7 @@ const setLinkFormats = ({ formatValue, typography, isList }) => {
 		} = __experimentalApplyLinkFormat({
 			formatValue: newFormatValue,
 			typography: newTypography || typography,
+			linkAttributes: newAttributes,
 			isList,
 		});
 

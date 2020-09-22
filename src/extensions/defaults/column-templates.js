@@ -65,28 +65,28 @@ const generateDefaultColumns = (columns, gap1 = 2.5, gap2 = 2.1) => {
 					size: total1 * column,
 				},
 				xxl: {
-					fullwidth: false,
-					size: total1 * column,
+					fullwidth: '',
+					size: '',
 				},
 				xl: {
-					fullwidth: false,
-					size: total1 * column,
+					fullwidth: '',
+					size: '',
 				},
 				l: {
-					fullwidth: false,
-					size: total1 * column,
+					fullwidth: '',
+					size: '',
 				},
 				m: {
 					fullwidth: false,
 					size: 100,
 				},
 				s: {
-					fullwidth: false,
-					size: 100,
+					fullwidth: '',
+					size: '',
 				},
 				xs: {
-					fullwidth: false,
-					size: 100,
+					fullwidth: '',
+					size: '',
 				},
 			}),
 			margin: JSON.stringify({

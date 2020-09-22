@@ -76,7 +76,6 @@ class edit extends MaxiBlock {
 
 	get getNormalObject() {
 		const {
-			size,
 			alignment,
 			opacity,
 			boxShadow,
@@ -89,7 +88,6 @@ class edit extends MaxiBlock {
 		} = this.props.attributes;
 
 		const response = {
-			size: { ...JSON.parse(size) },
 			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
 			padding: { ...JSON.parse(padding) },
 			margin: { ...JSON.parse(margin) },
@@ -198,9 +196,10 @@ class edit extends MaxiBlock {
 	}
 
 	get getImageBackendObject() {
-		const { border, clipPath } = this.props.attributes;
+		const { border, clipPath, size } = this.props.attributes;
 
 		const response = {
+			size: { ...JSON.parse(size) },
 			border: { ...JSON.parse(border) },
 			borderWidth: { ...JSON.parse(border).borderWidth },
 			borderRadius: { ...JSON.parse(border).borderRadius },

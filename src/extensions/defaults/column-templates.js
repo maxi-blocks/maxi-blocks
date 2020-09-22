@@ -588,57 +588,6 @@ function getNumCol(templateName) {
 }
 
 /**
- * Set Row Pattern Attribute
- *
- * @param {string} clientId client id of the row block
- * @param {string} rowPatternAttribute the row pattern attribute
- * @param {string} rowPatternAttributeName the row pattern attribute name
- * @param {string} templateName the template name to set
- * @return {Object} Block Object
- *
- */
-function setRowPatternAttribute(
-	clientId,
-	rowPatternAttribute,
-	rowPatternAttributeName,
-	templateName,
-	deviceType
-) {
-	const largeDevices = ['general', 'xxl', 'xl', 'l', 'm'];
-
-	const smallDevices = ['s', 'xs'];
-
-	const rowPatternObject = JSON.parse(rowPatternAttribute);
-
-	const numCols = getNumCol(templateName);
-	const templatesValues = Object.values(templates);
-
-	if (largeDevices.includes(deviceType)) {
-		largeDevices.forEach(device => {
-			rowPatternObject[device].rowPattern = templateName;
-		});
-
-		// set stacked template for small screens
-		const stackedTemplateIndex =
-			templatesValues[numCols - 1].responsive.length - 1;
-		if (stackedTemplateIndex !== -1) {
-			const stackedTemplate =
-				templatesValues[numCols - 1].responsive[stackedTemplateIndex];
-
-			for (const device of smallDevices) {
-				rowPatternObject[device].rowPattern = stackedTemplate.name;
-			}
-		}
-	}
-
-	updateBlockAttributes(clientId, {
-		[rowPatternAttributeName]: JSON.stringify(rowPatternObject),
-	});
-
-	return rowPatternObject;
-}
-
-/**
  * get templates based on the number of columns and device
  *
  * @param {Integer} columnsNumber Number of columns
@@ -700,4 +649,4 @@ function getTemplates(deviceType = 'general', columnsNumber = undefined) {
 	}
 }
 
-export { getTemplates, getTemplateObject, getNumCol, setRowPatternAttribute };
+export { getTemplates, getTemplateObject, getNumCol };

@@ -18,7 +18,12 @@ import './editor.scss';
  * Component
  */
 const SettingTabsControl = props => {
-	const { items, disablePadding = false, className } = props;
+	const {
+		items,
+		disablePadding = false,
+		className,
+		disableHorizontalPadding = false,
+	} = props;
 
 	const [tab, setTab] = useState(0);
 
@@ -31,7 +36,10 @@ const SettingTabsControl = props => {
 
 	const classesContent = classnames(
 		'maxi-tabs-content',
-		disablePadding ? 'maxi-tabs-content--disable-padding' : null
+		disablePadding ? 'maxi-tabs-content--disable-padding' : null,
+		disableHorizontalPadding
+			? 'maxi-tabs-content--disable-horizontal-padding'
+			: null
 	);
 
 	return (

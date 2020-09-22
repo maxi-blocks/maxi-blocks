@@ -40,13 +40,19 @@
 		}
 	}
 	.maxi-tabs-content {
-		&:not(.maxi-tabs-content--disable-padding) {
+		&:not(.maxi-tabs-content--disable-padding, .maxi-tabs-content--disable-horizontal-padding) {
 			padding-top: 12px !important;
 			padding-left: 12px !important;
 			padding-right: 12px !important;
 			padding-bottom: 12px !important;
 			background-color: #fff;
 		}
+
+		&--disable-horizontal-padding {
+			padding-right: 0px !important;
+			padding-left: 0px !important;
+		}
+
 		.maxi-tab-content {
 			display: none;
 			.maxi-tab-content__box {
@@ -60,6 +66,7 @@
 					width: 50%;
 				}
 			}
+
 			&--selected {
 				display: block;
 			}

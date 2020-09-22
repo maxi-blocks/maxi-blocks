@@ -318,6 +318,7 @@ const BackgroundControl = props => {
 			)}
 			{isOpen && value.activeMedia === 'image' && (
 				<SettingTabsControl
+					disableHorizontalPadding
 					items={[
 						{
 							label: __('Image', 'maxi-blocks'),

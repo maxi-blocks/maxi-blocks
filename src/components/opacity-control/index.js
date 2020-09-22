@@ -52,7 +52,7 @@ const OpacityControl = props => {
 	};
 
 	return (
-		<Fragment>
+		<div className={classes}>
 			{!!displayToggle && (
 				<div className='maxi-fancy-radio-control'>
 					<RadioControl
@@ -77,7 +77,6 @@ const OpacityControl = props => {
 			{(!!isEnabled() || !displayToggle) && (
 				<RangeControl
 					label={__('Opacity', 'maxi-blocks')}
-					className={classes}
 					value={getOpacityValue()}
 					onChange={val => {
 						isNil(val)
@@ -92,7 +91,7 @@ const OpacityControl = props => {
 					initialPosition={defaultValue[breakpoint].opacity}
 				/>
 			)}
-		</Fragment>
+		</div>
 	);
 };
 

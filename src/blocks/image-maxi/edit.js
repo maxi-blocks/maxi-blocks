@@ -54,9 +54,9 @@ class edit extends MaxiBlock {
 		let response = {
 			[uniqueID]: this.getNormalObject,
 			[`${uniqueID}:hover`]: this.getHoverObject,
-			[`${uniqueID} .maxi-background-displayer`]: this
+			[`${uniqueID} .maxi-block-hover-wrapper`]: this
 				.getImageFrontendObject,
-			[`${uniqueID}:hover .maxi-background-displayer`]: this
+			[`${uniqueID}:hover .maxi-block-hover-wrapper`]: this
 				.getImageHoverObject,
 			[`${uniqueID} img`]: this.getImageBackendObject,
 			[`${uniqueID} figcaption`]: this.getFigcaptionObject,
@@ -183,7 +183,6 @@ class edit extends MaxiBlock {
 
 	get getImageHoverObject() {
 		const { boxShadowHover, borderHover } = this.props.attributes;
-
 		const response = {
 			boxShadowHover: {
 				...getBoxShadowObject(JSON.parse(boxShadowHover)),
@@ -406,14 +405,15 @@ class edit extends MaxiBlock {
 												icon={toolbarReplaceImage}
 											/>
 										</div>
-
-										<img
-											className={`maxi-image-block__image wp-image-${mediaID}`}
-											src={mediaURL}
-											width={mediaWidth}
-											height={mediaHeight}
-											alt={mediaAlt}
-										/>
+										<div className='maxi-block-hover-wrapper'>
+											<img
+												className={`maxi-image-block__image wp-image-${mediaID}`}
+												src={mediaURL}
+												width={mediaWidth}
+												height={mediaHeight}
+												alt={mediaAlt}
+											/>
+										</div>
 										{captionType !== 'none' && (
 											<figcaption className='maxi-image-block__caption'>
 												{captionContent}

@@ -23,7 +23,7 @@ motionElems.forEach(function (elem) {
 			const hoverElemAct = document.querySelector(
 				'.maxi-motion-effect-' +
 					motionID +
-					' .maxi-block-hover-wrapper > .maxi-block-hover-element'
+					' .maxi-block-hover-wrapper > img'
 			);
 			const hoverElemDetails = document.querySelector(
 				'.maxi-motion-effect-' +

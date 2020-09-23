@@ -18,7 +18,10 @@ import {
 	__experimentalBackgroundDisplayer,
 } from '../../components';
 import Inspector from './inspector';
-import TEMPLATES from '../../extensions/defaults/column-templates';
+import {
+	getTemplates,
+	getTemplateObject,
+} from '../../extensions/defaults/column-templates';
 import {
 	getBoxShadowObject,
 	getOpacityObject,
@@ -144,14 +147,15 @@ class edit extends MaxiBlock {
 				extraClassName,
 				defaultBlockStyle,
 				background,
+				rowPattern,
 			},
 			clientId,
 			loadTemplate,
 			selectOnClick,
 			hasInnerBlock,
 			className,
-			setAttributes,
 			instanceId,
+			setAttributes,
 		} = this.props;
 
 		const classes = classnames(
@@ -161,6 +165,8 @@ class edit extends MaxiBlock {
 			extraClassName,
 			className
 		);
+
+		const rowPatternObject = JSON.parse(rowPattern);
 
 		return [
 			<Inspector {...this.props} />,
@@ -184,7 +190,7 @@ class edit extends MaxiBlock {
 									onClick={() => selectOnClick(clientId)}
 									key={`maxi-row-block--${instanceId}`}
 								>
-									{TEMPLATES.map((template, i) => {
+									{getTemplates().map(template => {
 										return (
 											<Button
 												key={uniqueId(
@@ -192,10 +198,17 @@ class edit extends MaxiBlock {
 												)}
 												className='maxi-row-block__template__button'
 												onClick={() => {
+													rowPatternObject.general.rowPattern =
+														template.name;
+													rowPatternObject.m.rowPattern =
+														template.responsiveLayout;
+
 													setAttributes({
-														rowPattern: i,
+														rowPattern: JSON.stringify(
+															rowPatternObject
+														),
 													});
-													loadTemplate(i);
+													loadTemplate(template.name);
 												}}
 											>
 												<Icon
@@ -262,8 +275,8 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	 * @param {integer} i Element of object TEMPLATES
 	 * @param {Function} callback
 	 */
-	const loadTemplate = i => {
-		const template = TEMPLATES[i];
+	const loadTemplate = templateName => {
+		const template = getTemplateObject(templateName);
 		template.content.forEach(column => {
 			column[1].uniqueID = uniqueIdCreator();
 		});

@@ -25,6 +25,7 @@ import {
 	__experimentalPositionControl,
 	__experimentalDisplayControl,
 	__experimentalTransformControl,
+	__experimentalColumnPattern,
 } from '../../components';
 import { getDefaultProp } from '../../utils';
 
@@ -58,10 +59,12 @@ const Inspector = props => {
 			position,
 			display,
 			transform,
+			rowPattern,
 		},
 		deviceType,
 		setAttributes,
 		clientId,
+		name,
 	} = props;
 
 	return (
@@ -97,6 +100,18 @@ const Inspector = props => {
 											),
 											content: (
 												<Fragment>
+													<__experimentalColumnPattern
+														clientId={clientId}
+														blockName={name}
+														rowPattern={rowPattern}
+														onChange={rowPattern => {
+															setAttributes({
+																rowPattern,
+															});
+														}}
+														breakpoint={deviceType}
+														{...props}
+													/>
 													<SelectControl
 														label={__(
 															'Horizontal align',

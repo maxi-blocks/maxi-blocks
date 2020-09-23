@@ -2,13 +2,15 @@
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults';
+import rowPattern from './data';
 
 /**
  * Attributes
  */
 const attributes = {
 	rowPattern: {
-		type: 'number',
+		type: 'string',
+		default: JSON.stringify(rowPattern),
 	},
 	horizontalAlign: {
 		type: 'string',
@@ -19,11 +21,11 @@ const attributes = {
 		default: 'stretch',
 	},
 	opacity: {
-		type: 'number',
+		type: 'string',
 		default: JSON.stringify(attributesData.opacity),
 	},
 	opacityHover: {
-		type: 'number',
+		type: 'string',
 		default: JSON.stringify(attributesData.opacityHover),
 	},
 	background: {

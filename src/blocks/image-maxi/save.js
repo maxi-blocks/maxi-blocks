@@ -78,32 +78,36 @@ const save = props => {
 		>
 			<__experimentalBackgroundDisplayer background={background} />
 
-			<div className='maxi-block-hover-element'>
-				<img
-					className={`wp-image-${mediaID}`}
-					src={mediaURL}
-					width={mediaWidth}
-					height={mediaHeight}
-					alt={imageAlt()}
-				/>
-				{captionType !== 'none' && (
-					<figcaption className='maxi-image-block__caption'>
-						{captionContent}
-					</figcaption>
+			<div className='maxi-block-hover-wrapper'>
+				<div className='maxi-block-hover-element'>
+					<img
+						className={`wp-image-${mediaID}`}
+						src={mediaURL}
+						width={mediaWidth}
+						height={mediaHeight}
+						alt={imageAlt()}
+					/>
+					{captionType !== 'none' && (
+						<figcaption className='maxi-image-block__caption'>
+							{captionContent}
+						</figcaption>
+					)}
+				</div>
+				{hoverSettings.type !== 'none' && (
+					<div className='maxi-hover-details'>
+						<div
+							className={`maxi-hover-details__content maxi-hover-details__content--${hoverTextPreset}`}
+						>
+							{!isEmpty(hoverTitleText) && (
+								<h3>{hoverTitleText}</h3>
+							)}
+							{!isEmpty(hoverContentText) && (
+								<p>{hoverContentText}</p>
+							)}
+						</div>
+					</div>
 				)}
 			</div>
-			{hoverSettings.type !== 'none' && (
-				<div className='maxi-hover-details'>
-					<div
-						className={`maxi-hover-details__content maxi-hover-details__content--${hoverTextPreset}`}
-					>
-						{!isEmpty(hoverTitleText) && <h3>{hoverTitleText}</h3>}
-						{!isEmpty(hoverContentText) && (
-							<p>{hoverContentText}</p>
-						)}
-					</div>
-				</div>
-			)}
 		</figure>
 	);
 };

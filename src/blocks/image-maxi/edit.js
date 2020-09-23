@@ -54,8 +54,10 @@ class edit extends MaxiBlock {
 		let response = {
 			[uniqueID]: this.getNormalObject,
 			[`${uniqueID}:hover`]: this.getHoverObject,
-			[`${uniqueID}>img`]: this.getImageFrontendObject,
-			[`${uniqueID} img:hover`]: this.getImageHoverObject,
+			[`${uniqueID} .maxi-background-displayer`]: this
+				.getImageFrontendObject,
+			[`${uniqueID}:hover .maxi-background-displayer`]: this
+				.getImageHoverObject,
 			[`${uniqueID} img`]: this.getImageBackendObject,
 			[`${uniqueID} figcaption`]: this.getFigcaptionObject,
 			[`${uniqueID} .maxi-hover-details .maxi-hover-details__content h3`]: this
@@ -78,7 +80,6 @@ class edit extends MaxiBlock {
 		const {
 			alignment,
 			opacity,
-			boxShadow,
 			padding,
 			margin,
 			zIndex,
@@ -88,7 +89,6 @@ class edit extends MaxiBlock {
 		} = this.props.attributes;
 
 		const response = {
-			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
 			padding: { ...JSON.parse(padding) },
 			margin: { ...JSON.parse(margin) },
 			opacity: { ...JSON.parse(opacity) },
@@ -161,12 +161,9 @@ class edit extends MaxiBlock {
 	}
 
 	get getHoverObject() {
-		const { opacityHover, boxShadowHover } = this.props.attributes;
+		const { opacityHover } = this.props.attributes;
 
 		const response = {
-			boxShadowHover: {
-				...getBoxShadowObject(JSON.parse(boxShadowHover)),
-			},
 			opacityHover: { ...JSON.parse(opacityHover) },
 		};
 
@@ -174,9 +171,10 @@ class edit extends MaxiBlock {
 	}
 
 	get getImageFrontendObject() {
-		const { size } = this.props.attributes;
+		const { boxShadow, size } = this.props.attributes;
 
 		const response = {
+			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
 			imageSize: { ...JSON.parse(size) },
 		};
 
@@ -184,9 +182,12 @@ class edit extends MaxiBlock {
 	}
 
 	get getImageHoverObject() {
-		const { borderHover } = this.props.attributes;
+		const { boxShadowHover, borderHover } = this.props.attributes;
 
 		const response = {
+			boxShadowHover: {
+				...getBoxShadowObject(JSON.parse(boxShadowHover)),
+			},
 			borderHover: { ...JSON.parse(borderHover) },
 			borderWidth: { ...JSON.parse(borderHover).borderWidth },
 			borderRadius: { ...JSON.parse(borderHover).borderRadius },
@@ -196,9 +197,10 @@ class edit extends MaxiBlock {
 	}
 
 	get getImageBackendObject() {
-		const { border, clipPath } = this.props.attributes;
+		const { boxShadow, border, clipPath } = this.props.attributes;
 
 		const response = {
+			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
 			border: { ...JSON.parse(border) },
 			borderWidth: { ...JSON.parse(border).borderWidth },
 			borderRadius: { ...JSON.parse(border).borderRadius },

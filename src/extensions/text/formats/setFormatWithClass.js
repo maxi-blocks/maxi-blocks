@@ -13,12 +13,97 @@ import defaultCustomFormat from './custom/default';
 /**
  * External dependencies
  */
-import { flattenDeep, uniq, compact } from 'lodash';
+import { inRange } from 'lodash';
 
 /**
  * Content
  */
 const formatName = 'maxi-blocks/text-custom';
+
+const generateMultiFormatObj = formatValue => {
+	const { start, end } = formatValue;
+	const formatArray = new Array([...formatValue.formats])[0];
+
+	const response = formatArray.map((formatEl, i) => {
+		if (formatEl)
+			return formatEl.map(format => {
+				if (format.type === formatName && i >= start && i < end)
+					return format.attributes.className;
+
+				return null;
+			});
+
+		return [null];
+	});
+
+	const obj = {};
+	let array = [];
+	response.forEach((format, i) => {
+		if (!inRange(i, start, end)) return true;
+
+		const prev = response[i - 1] ? response[i - 1][0] : null;
+		const next = response[i + 1] ? response[i + 1][0] : null;
+		const current = format ? format[0] : null;
+
+		if (current === null && i === start) {
+			array.push(i);
+			return true;
+		}
+		if (current === null && i + 1 === end) {
+			array.push(i);
+			if (array.length === 2) {
+				obj[Object.keys(obj).length] = {
+					className: current || null,
+					start: array[0],
+					end: array[1],
+				};
+				array = [];
+			}
+		}
+
+		if (array.length === 1 && i + 1 === end) {
+			array.push(end);
+			obj[Object.keys(obj).length] = {
+				className: current || null,
+				start: array[0],
+				end: array[1],
+			};
+			array = [];
+
+			return true;
+		}
+		if (prev === current && current === next) return true;
+		if (prev !== current && !array.includes(i)) {
+			array.push(i);
+			if (current !== next && array.length !== 2) array.push(i + 1);
+			if (array.length === 2) {
+				obj[Object.keys(obj).length] = {
+					className: current || null,
+					start: array[0],
+					end: array[1],
+				};
+				array = [];
+			}
+			return true;
+		}
+		if (prev === current && current !== next) {
+			array.push(i + 1);
+			if (array.length === 2) {
+				obj[Object.keys(obj).length] = {
+					className: current || null,
+					start: array[0],
+					end: array[1],
+				};
+				array = [];
+			}
+			return true;
+		}
+
+		return false;
+	});
+
+	return obj;
+};
 
 const applyCustomFormat = ({
 	formatValue,
@@ -40,25 +125,46 @@ const applyCustomFormat = ({
 	});
 };
 
-const getFormatsClassName = ({ formats, start, end }) => {
-	return compact(
-		uniq(
-			flattenDeep(
-				formats.map((formatEl, i) => {
-					return formatEl.map(format => {
-						if (
-							format.type === formatName &&
-							i >= start &&
-							i <= end
-						)
-							return format.attributes.className;
+const setNewFormat = ({
+	typography,
+	formatValue,
+	formatClassName,
+	defaultCustomFormat,
+	breakpoint,
+	value,
+	isList,
+}) => {
+	const newCustomStyle = {
+		[formatClassName]: {
+			...defaultCustomFormat,
+			[breakpoint]: { ...defaultCustomFormat[breakpoint], ...value },
+		},
+	};
 
-						return null;
-					});
-				})
-			)
-		)
-	);
+	const newFormatValue = applyFormat(formatValue, {
+		type: formatName,
+		attributes: {
+			className: formatClassName,
+		},
+	});
+
+	typography.customFormats = {
+		...typography.customFormats,
+		...newCustomStyle,
+	};
+
+	const newContent = applyCustomFormat({
+		formatValue,
+		formatName,
+		isList,
+		formatClassName,
+	});
+
+	return {
+		typography,
+		content: newContent,
+		formatValue: newFormatValue,
+	};
 };
 
 const updateCustomFormat = ({
@@ -86,9 +192,7 @@ const generateNewCustomFormat = ({
 	const newFormatValue = applyFormat(formatValue, {
 		type: formatName,
 		attributes: {
-			attributes: {
-				className: formatClassName,
-			},
+			className: formatClassName,
 		},
 	});
 
@@ -125,7 +229,7 @@ const mergeNewFormat = ({
 		return formatEl.some(format => {
 			return (
 				format.attributes.className === currentClassName &&
-				(i < start || i >= end)
+				!inRange(i, start, end)
 			);
 		});
 	});
@@ -177,27 +281,44 @@ const mergeMultipleFormats = ({
 	let newContent = '';
 	let newFormatValue = { ...formatValue };
 
-	const formatsCurrentClassName = getFormatsClassName(formatValue);
+	const multiFormatObj = generateMultiFormatObj(formatValue);
 
-	formatsCurrentClassName.forEach(oldFormatClassName => {
+	Object.values(multiFormatObj).forEach(format => {
 		const formatClassName = `maxi-text-block__custom-format--${
 			Object.keys(newTypography.customFormats).length
 		}${(isHover && ':hover') || ''}`;
+		const { className, start, end } = format;
+
+		newFormatValue = {
+			...newFormatValue,
+			start,
+			end,
+		};
 
 		const {
 			typography: newCustomTypography,
 			content: newCustomContent,
 			formatValue: newCustomFormatValue,
-		} = mergeNewFormat({
-			typography: newTypography,
-			formatValue: newFormatValue,
-			currentClassName: oldFormatClassName,
-			formatClassName,
-			breakpoint,
-			value,
-			isHover,
-			isList,
-		});
+		} = className
+			? mergeNewFormat({
+					typography: newTypography,
+					formatValue: newFormatValue,
+					currentClassName: className,
+					formatClassName,
+					breakpoint,
+					value,
+					isHover,
+					isList,
+			  })
+			: setNewFormat({
+					typography: newTypography,
+					formatValue: newFormatValue,
+					formatClassName,
+					defaultCustomFormat,
+					breakpoint,
+					value,
+					isList,
+			  });
 
 		newTypography = newCustomTypography;
 		newContent = newCustomContent;
@@ -206,48 +327,6 @@ const mergeMultipleFormats = ({
 
 	return {
 		typography: newTypography,
-		content: newContent,
-		formatValue: newFormatValue,
-	};
-};
-
-const setNewFormat = ({
-	typography,
-	formatValue,
-	formatClassName,
-	defaultCustomFormat,
-	breakpoint,
-	value,
-	isList,
-}) => {
-	const newCustomStyle = {
-		[formatClassName]: {
-			...defaultCustomFormat,
-			[breakpoint]: { ...defaultCustomFormat[breakpoint], ...value },
-		},
-	};
-
-	const newFormatValue = applyFormat(formatValue, {
-		type: formatName,
-		attributes: {
-			className: formatClassName,
-		},
-	});
-
-	typography.customFormats = {
-		...typography.customFormats,
-		...newCustomStyle,
-	};
-
-	const newContent = applyCustomFormat({
-		formatValue,
-		formatName,
-		isList,
-		formatClassName,
-	});
-
-	return {
-		typography,
 		content: newContent,
 		formatValue: newFormatValue,
 	};
@@ -277,7 +356,8 @@ const setFormatWithClass = ({
 		});
 	});
 
-	const hasMultiCustomFormat = getFormatsClassName(formatValue).length > 1;
+	const hasMultiCustomFormat =
+		Object.keys(generateMultiFormatObj(formatValue)).length > 1;
 
 	const {
 		typography: newTypography,

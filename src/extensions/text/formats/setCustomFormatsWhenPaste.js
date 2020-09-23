@@ -49,16 +49,6 @@ const getInstancePositions = (formatValue, formatName) => {
 };
 
 const setLinkFormats = ({ formatValue, typography, isList }) => {
-	// formatValue.formats = formatValue.formats.map(formatEl => {
-	// 	return formatEl.map(format => {
-	// 		if (format.type === 'core/link') {
-	// 			format.type = 'maxi-blocks/text-link';
-	// 		}
-
-	// 		return format;
-	// 	});
-	// });
-
 	const linkInstancePositions = getInstancePositions(
 		formatValue,
 		'core/link'
@@ -91,7 +81,7 @@ const setLinkFormats = ({ formatValue, typography, isList }) => {
 			isList,
 		});
 
-		newTypography = JSON.parse(preformattedTypography);
+		newTypography = preformattedTypography;
 		newContent = preformattedContent;
 		newFormatValue = preformattedFormatValue;
 	});

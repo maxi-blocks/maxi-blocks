@@ -131,7 +131,7 @@ const Link = props => {
 		});
 
 		onChange({
-			typography: newTypography,
+			typography: JSON.stringify(newTypography),
 			content: newContent,
 		});
 	};

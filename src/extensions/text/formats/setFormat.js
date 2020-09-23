@@ -17,6 +17,7 @@ const setFormat = ({
 	const { start, end } = formatValue;
 
 	if (start === end) {
+		console.log('no selected values => General', formatValue);
 		Object.entries(value).forEach(([key, val]) => {
 			typography[breakpoint][key] = val;
 		});

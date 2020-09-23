@@ -37,8 +37,9 @@ class edit extends MaxiBlock {
 
 		let response = {
 			[uniqueID]: this.getNormalObject,
+			[`${uniqueID}:hover`]: this.getHoverObject,
 			[`${uniqueID}:hover hr.maxi-divider-block__divider`]: this
-				.getHoverObject,
+				.getDividerHoverObject,
 			[`${uniqueID} hr.maxi-divider-block__divider`]: this
 				.getDividerObject,
 		};
@@ -103,13 +104,22 @@ class edit extends MaxiBlock {
 	}
 
 	get getHoverObject() {
-		const { opacityHover, boxShadowHover } = this.props.attributes;
+		const { opacityHover } = this.props.attributes;
+
+		const response = {
+			opacityHover: { ...JSON.parse(opacityHover) },
+		};
+
+		return response;
+	}
+
+	get getDividerHoverObject() {
+		const { boxShadowHover } = this.props.attributes;
 
 		const response = {
 			boxShadowHover: {
 				...getBoxShadowObject(JSON.parse(boxShadowHover)),
 			},
-			opacityHover: { ...JSON.parse(opacityHover) },
 		};
 
 		return response;

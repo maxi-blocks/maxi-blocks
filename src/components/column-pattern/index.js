@@ -39,7 +39,6 @@ import './editor.scss';
 const ColumnPatternsInspector = props => {
 	const {
 		clientId,
-		blockName,
 		rowPattern,
 		onChange,
 		breakpoint,
@@ -87,8 +86,6 @@ const ColumnPatternsInspector = props => {
 			setNumCol(getNumCol(rowPatternObject.general.rowPattern));
 		}
 	}, [breakpoint, rowPatternObject.general.rowPattern]);
-
-	if (blockName !== 'maxi-blocks/row-maxi') return null;
 
 	/**
 	 * Creates a new array with columns content before loading template for saving
@@ -196,14 +193,6 @@ const ColumnPatternsInspector = props => {
 		replaceInnerBlocks(clientId, newTemplate, false);
 	};
 
-	const setRowPatternAttribute = (clientId, templateName) => {
-		rowPatternObject[breakpoint].rowPattern = templateName;
-
-		updateBlockAttributes(clientId, {
-			rowPattern: JSON.stringify(rowPatternObject),
-		});
-	};
-
 	/**
 	 * Update Columns Sizes
 	 *
@@ -236,8 +225,6 @@ const ColumnPatternsInspector = props => {
 
 			updateBlockAttributes(columnClientId, columnAttributes);
 		});
-
-		setRowPatternAttribute(clientId, templateName);
 	};
 
 	const patternButtonClassName = classnames(

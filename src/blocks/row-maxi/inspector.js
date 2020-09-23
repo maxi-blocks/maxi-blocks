@@ -110,6 +110,7 @@ const Inspector = props => {
 															});
 														}}
 														breakpoint={deviceType}
+														{...props}
 													/>
 													<SelectControl
 														label={__(

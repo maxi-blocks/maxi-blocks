@@ -43,6 +43,7 @@ const ColumnPattern = props => {
 					}}
 					toolbar
 					breakpoint={breakpoint}
+					{...props}
 				/>
 			}
 		/>

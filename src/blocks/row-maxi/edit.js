@@ -166,6 +166,8 @@ class edit extends MaxiBlock {
 			className
 		);
 
+		const rowPatternObject = JSON.parse(rowPattern);
+
 		return [
 			<Inspector {...this.props} />,
 			<__experimentalToolbar {...this.props} />,
@@ -196,10 +198,6 @@ class edit extends MaxiBlock {
 												)}
 												className='maxi-row-block__template__button'
 												onClick={() => {
-													const rowPatternObject = JSON.parse(
-														rowPattern
-													);
-
 													rowPatternObject.general.rowPattern =
 														template.name;
 													rowPatternObject.m.rowPattern =

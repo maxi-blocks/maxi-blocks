@@ -28,9 +28,9 @@ const save = props => {
 			mediaURL,
 			mediaWidth,
 			mediaHeight,
-			mediaALT,
-			mediaALTwp,
-			mediaALTtitle,
+			mediaAlt,
+			mediaAltWp,
+			mediaAltTitle,
 			altSelector,
 			motion,
 			hover,
@@ -55,14 +55,14 @@ const save = props => {
 		!isNil(uniqueID) ? uniqueID : null
 	);
 
-	const imageALT = () => {
+	const imageAlt = () => {
 		switch (altSelector) {
 			case 'wordpress':
-				return mediaALTwp;
+				return mediaAltWp;
 			case 'title':
-				return mediaALTtitle;
+				return mediaAltTitle;
 			case 'custom':
-				return mediaALT;
+				return mediaAlt;
 			default:
 				return '';
 		}
@@ -77,14 +77,20 @@ const save = props => {
 			data-hover={JSON.stringify(hoverSettings)}
 		>
 			<__experimentalBackgroundDisplayer background={background} />
+
 			<div className='maxi-block-hover-element'>
 				<img
 					className={`wp-image-${mediaID}`}
 					src={mediaURL}
 					width={mediaWidth}
 					height={mediaHeight}
-					alt={imageALT()}
+					alt={imageAlt()}
 				/>
+				{captionType !== 'none' && (
+					<figcaption className='maxi-image-block__caption'>
+						{captionContent}
+					</figcaption>
+				)}
 			</div>
 			{hoverSettings.type !== 'none' && (
 				<div className='maxi-hover-details'>
@@ -97,9 +103,6 @@ const save = props => {
 						)}
 					</div>
 				</div>
-			)}
-			{captionType !== 'none' && (
-				<figcaption>{captionContent}</figcaption>
 			)}
 		</figure>
 	);

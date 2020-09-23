@@ -7,9 +7,15 @@ const { useSelect, useDispatch } = wp.data;
 const { Icon, Button, Tooltip } = wp.components;
 
 /**
+ * External dependencies
+ */
+import { castArray, first, last } from 'lodash';
+
+/**
  * Icons
  */
-import { toolbarMove } from '../../../../icons';
+import './editor.scss';
+import { moveRight, moveLeft } from '../../../../icons';
 
 /**
  * ColumnMover
@@ -17,13 +23,34 @@ import { toolbarMove } from '../../../../icons';
 const ColumnMover = props => {
 	const { clientId, blockName } = props;
 
-	const { rootClientId } = useSelect(
+	const { rootClientId, isLeftDisabled, isRightDisabled } = useSelect(
 		select => {
-			const { getBlockRootClientId } = select('core/block-editor');
-			const blockRootClientId = getBlockRootClientId(clientId);
+			const {
+				getBlockRootClientId,
+				getBlockIndex,
+				getBlockOrder,
+				getSelectedBlockClientIds,
+			} = select('core/block-editor');
+			const clientIds = getSelectedBlockClientIds();
+			const blockOrder = getBlockOrder(blockRootClientId);
+			const normalizedClientIds = castArray(clientIds);
+			const firstClientId = first(normalizedClientIds);
+			const blockRootClientId = getBlockRootClientId(firstClientId);
+			const firstBlockIndex = getBlockIndex(
+				firstClientId,
+				blockRootClientId
+			);
+			const lastBlockIndex = getBlockIndex(
+				last(normalizedClientIds),
+				blockRootClientId
+			);
+			const isFirstBlock = firstBlockIndex === 0;
+			const isLastBlock = lastBlockIndex === blockOrder.length - 1;
 
 			return {
 				rootClientId: blockRootClientId,
+				isLeftDisabled: isFirstBlock,
+				isRightDisabled: isLastBlock,
 			};
 		},
 		[clientId]
@@ -35,28 +62,30 @@ const ColumnMover = props => {
 
 	return (
 		<Fragment>
-			<Tooltip
-				text={__('Move left', 'maxi-blocks')}
-				position='bottom center'
-			>
-				<Button
-					className='toolbar-item toolbar-item__bold'
-					onClick={() => moveBlocksUp([clientId], rootClientId)}
+			<div className='toolbar-item-move__horizontally'>
+				<Tooltip
+					text={__('Move left', 'maxi-blocks')}
+					position='bottom center'
 				>
-					<Icon className='toolbar-item__icon' icon={toolbarMove} />
-				</Button>
-			</Tooltip>
-			<Tooltip
-				text={__('Move right', 'maxi-blocks')}
-				position='bottom center'
-			>
-				<Button
-					className='toolbar-item toolbar-item__bold'
-					onClick={() => moveBlocksDown([clientId], rootClientId)}
+					<Button
+						aria-disabled={isLeftDisabled}
+						onClick={() => moveBlocksUp([clientId], rootClientId)}
+					>
+						<Icon className='toolbar-item__icon' icon={moveLeft} />
+					</Button>
+				</Tooltip>
+				<Tooltip
+					text={__('Move right', 'maxi-blocks')}
+					position='bottom center'
 				>
-					<Icon className='toolbar-item__icon' icon={toolbarMove} />
-				</Button>
-			</Tooltip>
+					<Button
+						aria-disabled={isRightDisabled}
+						onClick={() => moveBlocksDown([clientId], rootClientId)}
+					>
+						<Icon className='toolbar-item__icon' icon={moveRight} />
+					</Button>
+				</Tooltip>
+			</div>
 		</Fragment>
 	);
 };

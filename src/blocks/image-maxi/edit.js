@@ -196,9 +196,10 @@ class edit extends MaxiBlock {
 	}
 
 	get getImageBackendObject() {
-		const { border, clipPath } = this.props.attributes;
+		const { border, clipPath, size } = this.props.attributes;
 
 		const response = {
+			size: { ...JSON.parse(size) },
 			border: { ...JSON.parse(border) },
 			borderWidth: { ...JSON.parse(border).borderWidth },
 			borderRadius: { ...JSON.parse(border).borderRadius },
@@ -244,7 +245,7 @@ class edit extends MaxiBlock {
 				captionContent,
 				imageSize,
 				mediaID,
-				mediaALT,
+				mediaAlt,
 				mediaURL,
 				mediaWidth,
 				mediaHeight,
@@ -285,12 +286,12 @@ class edit extends MaxiBlock {
 		const image = getImage();
 		if (image && imageData) {
 			if (imageData.alt_text)
-				setAttributes({ mediaALTwp: imageData.alt_text });
+				setAttributes({ mediaAltWp: imageData.alt_text });
 
-			if (mediaALT) setAttributes({ mediaALT });
+			if (mediaAlt) setAttributes({ mediaAlt });
 
 			if (imageData.title.rendered)
-				setAttributes({ mediaALTtitle: imageData.title.rendered });
+				setAttributes({ mediaAltTitle: imageData.title.rendered });
 
 			if (mediaURL !== image.source_url)
 				setAttributes({ mediaURL: image.source_url });
@@ -311,7 +312,7 @@ class edit extends MaxiBlock {
 				{!!SVGElement && (
 					<Fragment>
 						<__experimentalBackgroundDisplayer
-							backgroundOptions={background}
+							background={background}
 						/>
 						<ResizableBox
 							className='maxi-block__resizer maxi-svg-block__resizer'
@@ -356,6 +357,9 @@ class edit extends MaxiBlock {
 						<Fragment>
 							{!isNil(mediaID) && imageData ? (
 								<Fragment>
+									<__experimentalBackgroundDisplayer
+										background={background}
+									/>
 									<ResizableBox
 										className='maxi-block__resizer maxi-image-block__resizer'
 										size={{
@@ -401,19 +405,20 @@ class edit extends MaxiBlock {
 												icon={toolbarReplaceImage}
 											/>
 										</div>
+
 										<img
 											className={`maxi-image-block__image wp-image-${mediaID}`}
 											src={mediaURL}
 											width={mediaWidth}
 											height={mediaHeight}
-											alt={mediaALT}
+											alt={mediaAlt}
 										/>
+										{captionType !== 'none' && (
+											<figcaption className='maxi-image-block__caption'>
+												{captionContent}
+											</figcaption>
+										)}
 									</ResizableBox>
-									{captionType !== 'none' && (
-										<figcaption className='maxi-image-block__caption'>
-											{captionContent}
-										</figcaption>
-									)}
 								</Fragment>
 							) : mediaID ? (
 								<Fragment>

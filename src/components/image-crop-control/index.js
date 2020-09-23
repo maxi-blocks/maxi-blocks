@@ -11,7 +11,7 @@ const { withSelect, select } = wp.data;
  */
 import ReactCrop from 'react-image-crop';
 import classnames from 'classnames';
-import { debounce, capitalize, isNil, isEmpty } from 'lodash';
+import { debounce, capitalize, isNil, isEmpty, isObject } from 'lodash';
 
 /**
  * Styles
@@ -60,10 +60,9 @@ class ImageCropComponent extends Component {
 			: 100,
 	};
 
-	cropOptions =
-		typeof this.props.cropOptions !== 'object'
-			? JSON.parse(this.props.cropOptions)
-			: this.props.cropOptions;
+	cropOptions = !isObject(this.props.cropOptions)
+		? JSON.parse(this.props.cropOptions)
+		: this.props.cropOptions;
 
 	componentDidMount() {
 		this.forceUpdate(); // solves issue when diselecting and selecting block again
@@ -311,10 +310,9 @@ class ImageCropComponent extends Component {
 
 		const classes = classnames('maxi-imagecrop-control', className);
 
-		this.cropOptions =
-			typeof this.props.cropOptions !== 'object'
-				? JSON.parse(this.props.cropOptions)
-				: this.props.cropOptions;
+		this.cropOptions = !isObject(this.props.cropOptions)
+			? JSON.parse(this.props.cropOptions)
+			: this.props.cropOptions;
 
 		return (
 			<div className={classes}>

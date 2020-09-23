@@ -109,7 +109,7 @@ export const getAlignmentTextObject = alignment => {
 		xs: {},
 	};
 
-	for (const [key, value] of Object.entries(alignment)) {
+	Object.entries(alignment).forEach(([key, value]) => {
 		if (!isNil(value.alignment)) {
 			switch (value.alignment) {
 				case 'left':
@@ -128,7 +128,9 @@ export const getAlignmentTextObject = alignment => {
 					return false;
 			}
 		}
-	}
+
+		return false;
+	});
 
 	return response;
 };
@@ -145,7 +147,7 @@ export const getAlignmentFlexObject = alignment => {
 		xs: {},
 	};
 
-	for (const [key, value] of Object.entries(alignment)) {
+	Object.entries(alignment).forEach(([key, value]) => {
 		if (!isNil(value.alignment)) {
 			switch (value.alignment) {
 				case 'left':
@@ -162,7 +164,9 @@ export const getAlignmentFlexObject = alignment => {
 					return false;
 			}
 		}
-	}
+
+		return false;
+	});
 
 	return response;
 };
@@ -179,11 +183,11 @@ export const getOpacityObject = opacity => {
 		xs: {},
 	};
 
-	for (const [key, value] of Object.entries(opacity)) {
+	Object.entries(opacity).forEach(([key, value]) => {
 		if (isNumber(value.opacity)) {
 			response[key].opacity = value.opacity;
 		}
-	}
+	});
 
 	return response;
 };
@@ -200,12 +204,12 @@ export const getColumnSizeObject = columnSize => {
 		xs: {},
 	};
 
-	for (const [key, value] of Object.entries(columnSize)) {
+	Object.entries(columnSize).forEach(([key, value]) => {
 		if (isNumber(value.size)) {
 			response[key].width = `${value.size}%`;
 			response[key]['flex-basis'] = `${value.size}%`;
 		}
-	}
+	});
 
 	return response;
 };
@@ -251,8 +255,8 @@ export const getArrowObject = arrow => {
 
 	if (!arrow.active) return response;
 
-	for (const [key, value] of Object.entries(arrow)) {
-		if (key === 'label' || key === 'active') continue;
+	Object.entries(arrow).forEach(([key, value]) => {
+		if (key === 'label' || key === 'active') return;
 
 		response[key].visibility = 'visible';
 		if (!isEmpty(value.side)) {
@@ -353,7 +357,7 @@ export const getArrowObject = arrow => {
 					break;
 			}
 		}
-	}
+	});
 
 	return response;
 };
@@ -391,8 +395,8 @@ export const getTransformObject = transform => {
 		},
 	};
 
-	for (const key of Object.keys(transform)) {
-		if (key === 'label') continue;
+	Object.keys(transform).forEach(key => {
+		if (key === 'label') return;
 
 		if (isNumber(getLastBreakpointValue(transform, 'scaleX', key)))
 			response[key].transform += `scaleX(${
@@ -456,7 +460,7 @@ export const getTransformObject = transform => {
 				'originY',
 				key
 			)} `;
-	}
+	});
 
 	return response;
 };

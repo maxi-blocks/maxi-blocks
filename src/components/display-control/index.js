@@ -65,16 +65,18 @@ const DisplayControl = props => {
 		];
 	};
 	return (
-		<div className={classes}>
-			<RadioControl
-				label={__('Display block', 'maxi-blocks')}
-				selected={getValue()}
-				options={getOptions()}
-				onChange={val => {
-					value[breakpoint].display = val;
-					onChange(JSON.stringify(value));
-				}}
-			/>
+		<div className='maxi-fancy-radio-control'>
+			<div className={classes}>
+				<RadioControl
+					label={__('Display block', 'maxi-blocks')}
+					selected={getValue()}
+					options={getOptions()}
+					onChange={val => {
+						value[breakpoint].display = val;
+						onChange(JSON.stringify(value));
+					}}
+				/>
+			</div>
 		</div>
 	);
 };

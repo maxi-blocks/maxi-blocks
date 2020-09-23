@@ -274,7 +274,7 @@ const DividerControl = props => {
 				opacity={value.opacity}
 				defaultOpacity={defaultValue.opacity}
 				onChange={val => {
-					value.opacity = val;
+					value.opacity = JSON.parse(val);
 					onChange(JSON.stringify(value));
 				}}
 			/>

@@ -196,9 +196,10 @@ class edit extends MaxiBlock {
 	}
 
 	get getImageBackendObject() {
-		const { border, clipPath } = this.props.attributes;
+		const { border, clipPath, size } = this.props.attributes;
 
 		const response = {
+			size: { ...JSON.parse(size) },
 			border: { ...JSON.parse(border) },
 			borderWidth: { ...JSON.parse(border).borderWidth },
 			borderRadius: { ...JSON.parse(border).borderRadius },

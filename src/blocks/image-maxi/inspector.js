@@ -182,7 +182,7 @@ const Inspector = props => {
 										},
 										deviceType === 'general' && {
 											label: __(
-												'Width / Height',
+												'Image Dimension',
 												'maxi-blocks'
 											),
 											content: (

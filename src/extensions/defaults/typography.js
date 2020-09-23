@@ -36,6 +36,7 @@ const DefaultTypography = {
 			'font-style': 'normal',
 			'text-decoration': 'none',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		xxl: {
 			'font-family': '',
@@ -53,6 +54,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		xl: {
 			'font-family': '',
@@ -70,6 +72,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		l: {
 			'font-family': '',
@@ -87,6 +90,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		m: {
 			'font-family': '',
@@ -104,6 +108,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		s: {
 			'font-family': '',
@@ -121,6 +126,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		xs: {
 			'font-family': '',
@@ -138,6 +144,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 	},
 	link: {
@@ -177,6 +184,7 @@ const DefaultTypography = {
 			'font-style': 'normal',
 			'text-decoration': 'underline',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		xxl: {
 			'font-family': '',
@@ -194,6 +202,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		xl: {
 			'font-family': '',
@@ -211,6 +220,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		l: {
 			'font-family': '',
@@ -228,6 +238,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		m: {
 			'font-family': '',
@@ -245,6 +256,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		s: {
 			'font-family': '',
@@ -262,6 +274,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		xs: {
 			'font-family': '',
@@ -279,6 +292,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 	},
 	h1: {
@@ -318,6 +332,7 @@ const DefaultTypography = {
 			'font-style': 'normal',
 			'text-decoration': 'none',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		xl: {
 			'font-family': '',
@@ -335,6 +350,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		xxl: {
 			'font-family': '',
@@ -352,6 +368,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		l: {
 			'font-family': '',
@@ -369,6 +386,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		m: {
 			'font-family': '',
@@ -386,6 +404,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		s: {
 			'font-family': '',
@@ -403,6 +422,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		xs: {
 			'font-family': '',
@@ -420,6 +440,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 	},
 	h2: {
@@ -459,6 +480,7 @@ const DefaultTypography = {
 			'font-style': 'normal',
 			'text-decoration': 'none',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		xxl: {
 			'font-family': '',
@@ -476,6 +498,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		xl: {
 			'font-family': '',
@@ -493,6 +516,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		l: {
 			'font-family': '',
@@ -510,6 +534,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		m: {
 			'font-family': '',
@@ -527,6 +552,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		s: {
 			'font-family': '',
@@ -544,6 +570,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		xs: {
 			'font-family': '',
@@ -561,6 +588,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 	},
 	h3: {
@@ -600,6 +628,7 @@ const DefaultTypography = {
 			'font-style': 'normal',
 			'text-decoration': 'none',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		xxl: {
 			'font-family': '',
@@ -617,6 +646,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		xl: {
 			'font-family': '',
@@ -634,6 +664,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		l: {
 			'font-family': '',
@@ -651,6 +682,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		m: {
 			'font-family': '',
@@ -668,6 +700,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		s: {
 			'font-family': '',
@@ -685,6 +718,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		xs: {
 			'font-family': '',
@@ -702,6 +736,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 	},
 	h4: {
@@ -741,6 +776,7 @@ const DefaultTypography = {
 			'font-style': 'normal',
 			'text-decoration': 'none',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		xxl: {
 			'font-family': '',
@@ -758,6 +794,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		xl: {
 			'font-family': '',
@@ -775,6 +812,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		l: {
 			'font-family': '',
@@ -792,6 +830,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		m: {
 			'font-family': '',
@@ -809,6 +848,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		s: {
 			'font-family': '',
@@ -826,6 +866,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		xs: {
 			'font-family': '',
@@ -843,6 +884,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 	},
 	h5: {
@@ -882,6 +924,7 @@ const DefaultTypography = {
 			'font-style': 'normal',
 			'text-decoration': 'none',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		xxl: {
 			'font-family': '',
@@ -899,6 +942,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		xl: {
 			'font-family': '',
@@ -916,6 +960,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		l: {
 			'font-family': '',
@@ -933,6 +978,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		m: {
 			'font-family': '',
@@ -950,6 +996,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		s: {
 			'font-family': '',
@@ -967,6 +1014,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		xs: {
 			'font-family': '',
@@ -984,6 +1032,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 	},
 	h6: {
@@ -1023,6 +1072,7 @@ const DefaultTypography = {
 			'font-style': 'normal',
 			'text-decoration': 'none',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		xxl: {
 			'font-family': '',
@@ -1040,6 +1090,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		xl: {
 			'font-family': '',
@@ -1057,6 +1108,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		l: {
 			'font-family': '',
@@ -1074,6 +1126,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		m: {
 			'font-family': '',
@@ -1091,6 +1144,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		s: {
 			'font-family': '',
@@ -1108,6 +1162,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 		xs: {
 			'font-family': '',
@@ -1125,6 +1180,7 @@ const DefaultTypography = {
 			'font-style': '',
 			'text-decoration': '',
 			'text-shadow': '',
+			'vertical-align': '',
 		},
 	},
 };

@@ -753,6 +753,7 @@ export const typography = {
 		'font-style': 'normal',
 		'text-decoration': 'none',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	xxl: {
 		'font-family': '',
@@ -770,6 +771,7 @@ export const typography = {
 		'font-style': '',
 		'text-decoration': '',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	xl: {
 		'font-family': '',
@@ -786,6 +788,7 @@ export const typography = {
 		'font-style': '',
 		'text-decoration': '',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	l: {
 		'font-family': '',
@@ -802,6 +805,7 @@ export const typography = {
 		'font-style': '',
 		'text-decoration': '',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	m: {
 		'font-family': '',
@@ -818,6 +822,7 @@ export const typography = {
 		'font-style': '',
 		'text-decoration': '',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	s: {
 		'font-family': '',
@@ -834,6 +839,7 @@ export const typography = {
 		'font-style': '',
 		'text-decoration': '',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	xs: {
 		'font-family': '',
@@ -850,6 +856,7 @@ export const typography = {
 		'font-style': '',
 		'text-decoration': '',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	textAlign: {
 		label: 'Alignment',
@@ -895,6 +902,7 @@ export const typographyHover = {
 		'font-style': '',
 		'text-decoration': '',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	xxl: {
 		'font-family': '',
@@ -912,6 +920,7 @@ export const typographyHover = {
 		'font-style': '',
 		'text-decoration': '',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	xl: {
 		'font-family': '',
@@ -928,6 +937,7 @@ export const typographyHover = {
 		'font-style': '',
 		'text-decoration': '',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	l: {
 		'font-family': '',
@@ -944,6 +954,7 @@ export const typographyHover = {
 		'font-style': '',
 		'text-decoration': '',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	m: {
 		'font-family': '',
@@ -960,6 +971,7 @@ export const typographyHover = {
 		'font-style': '',
 		'text-decoration': '',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	s: {
 		'font-family': '',
@@ -976,6 +988,7 @@ export const typographyHover = {
 		'font-style': '',
 		'text-decoration': '',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	xs: {
 		'font-family': '',
@@ -992,6 +1005,7 @@ export const typographyHover = {
 		'font-style': '',
 		'text-decoration': '',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	textAlign: {
 		label: 'Alignment',

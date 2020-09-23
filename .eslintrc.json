@@ -40,6 +40,8 @@
 		],
 		"no-console": ["error", { "allow": ["warn", "error"] }],
 		"no-unused-vars": ["error", { "args": "none" }],
+		"consistent-return": ["error", { "treatUndefinedAsUnspecified": true }],
+		"array-callback-return": ["error", { "allowImplicit": true }],
 		"no-unused-expressions": [
 			"error",
 			{ "allowTernary": true, "allowShortCircuit": true }

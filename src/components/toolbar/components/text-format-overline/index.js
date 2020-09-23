@@ -15,7 +15,7 @@ import {
 /**
  * External dependencies
  */
-import { isObject } from 'lodash';
+import { isObject, trim } from 'lodash';
 
 /**
  * Styles and icons
@@ -47,7 +47,7 @@ const TextFormatOverline = props => {
 			? textDecorationValue.replace('overline', '')
 			: `${textDecorationValue} overline`;
 
-		return response;
+		return trim(response);
 	};
 
 	const onClick = () => {

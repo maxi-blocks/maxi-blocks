@@ -8,6 +8,8 @@ const { applyFormat } = wp.richText;
  */
 import __experimentalGetFormattedString from './getFormattedString';
 import __experimentalGetCurrentFormatClassName from './getCurrentFormatClassName';
+import flatFormatsWithClass from './flatFormatsWithClass';
+import getMultiFormatObj from './getMultiFormatObj';
 import defaultCustomFormat from './custom/default';
 
 /**
@@ -20,89 +22,19 @@ import { inRange } from 'lodash';
  */
 const formatName = 'maxi-blocks/text-custom';
 
-const generateMultiFormatObj = formatValue => {
-	const { start, end } = formatValue;
-	const formatArray = new Array([...formatValue.formats])[0];
+const getFormatClassName = (typography, isHover, multiFormatObj) => {
+	let className = `maxi-text-block__custom-format--${
+		Object.keys(typography.customFormats).length
+	}`;
 
-	const response = formatArray.map((formatEl, i) => {
-		if (formatEl)
-			return formatEl.map(format => {
-				if (format.type === formatName && i >= start && i < end)
-					return format.attributes.className;
-
-				return null;
-			});
-
-		return [null];
+	const isRepeat = Object.values(multiFormatObj).some(value => {
+		return value.className === className;
 	});
 
-	const obj = {};
-	let array = [];
-	response.forEach((format, i) => {
-		if (!inRange(i, start, end)) return true;
+	if (isRepeat) className += Object.keys(typography.customFormats).length;
+	if (isHover) className += ':hover';
 
-		const prev = response[i - 1] ? response[i - 1][0] : null;
-		const next = response[i + 1] ? response[i + 1][0] : null;
-		const current = format ? format[0] : null;
-
-		if (current === null && i === start) {
-			array.push(i);
-			return true;
-		}
-		if (current === null && i + 1 === end) {
-			array.push(i);
-			if (array.length === 2) {
-				obj[Object.keys(obj).length] = {
-					className: current || null,
-					start: array[0],
-					end: array[1],
-				};
-				array = [];
-			}
-		}
-
-		if (array.length === 1 && i + 1 === end) {
-			array.push(end);
-			obj[Object.keys(obj).length] = {
-				className: current || null,
-				start: array[0],
-				end: array[1],
-			};
-			array = [];
-
-			return true;
-		}
-		if (prev === current && current === next) return true;
-		if (prev !== current && !array.includes(i)) {
-			array.push(i);
-			if (current !== next && array.length !== 2) array.push(i + 1);
-			if (array.length === 2) {
-				obj[Object.keys(obj).length] = {
-					className: current || null,
-					start: array[0],
-					end: array[1],
-				};
-				array = [];
-			}
-			return true;
-		}
-		if (prev === current && current !== next) {
-			array.push(i + 1);
-			if (array.length === 2) {
-				obj[Object.keys(obj).length] = {
-					className: current || null,
-					start: array[0],
-					end: array[1],
-				};
-				array = [];
-			}
-			return true;
-		}
-
-		return false;
-	});
-
-	return obj;
+	return className;
 };
 
 const applyCustomFormat = ({
@@ -125,6 +57,15 @@ const applyCustomFormat = ({
 	});
 };
 
+const mergeNewValue = (value, typography, breakpoint) => {
+	Object.entries(value).forEach(([target, val]) => {
+		if (typography[breakpoint][target] === val)
+			value[target] = defaultCustomFormat[breakpoint][target];
+	});
+
+	return value;
+};
+
 const setNewFormat = ({
 	typography,
 	formatValue,
@@ -137,7 +78,10 @@ const setNewFormat = ({
 	const newCustomStyle = {
 		[formatClassName]: {
 			...defaultCustomFormat,
-			[breakpoint]: { ...defaultCustomFormat[breakpoint], ...value },
+			[breakpoint]: {
+				...defaultCustomFormat[breakpoint],
+				...mergeNewValue(value, typography, breakpoint),
+			},
 		},
 	};
 
@@ -175,7 +119,7 @@ const updateCustomFormat = ({
 }) => {
 	typography.customFormats[currentClassName][breakpoint] = {
 		...typography.customFormats[currentClassName][breakpoint],
-		...value,
+		...mergeNewValue(value, typography, breakpoint),
 	};
 
 	return { typography };
@@ -276,18 +220,24 @@ const mergeMultipleFormats = ({
 	value,
 	isHover = false,
 	isList,
+	multiFormatObj,
 }) => {
 	let newTypography = { ...typography };
 	let newContent = '';
 	let newFormatValue = { ...formatValue };
 
-	const multiFormatObj = generateMultiFormatObj(formatValue);
-
-	Object.values(multiFormatObj).forEach(format => {
-		const formatClassName = `maxi-text-block__custom-format--${
-			Object.keys(newTypography.customFormats).length
-		}${(isHover && ':hover') || ''}`;
-		const { className, start, end } = format;
+	Object.values(multiFormatObj).forEach((format, i) => {
+		const newMultiFormatObj = getMultiFormatObj({
+			...newFormatValue,
+			start: formatValue.start,
+			end: formatValue.end,
+		});
+		const formatClassName = getFormatClassName(
+			newTypography,
+			isHover,
+			newMultiFormatObj
+		);
+		const { className, start, end } = Object.values(newMultiFormatObj)[i];
 
 		newFormatValue = {
 			...newFormatValue,
@@ -322,7 +272,11 @@ const mergeMultipleFormats = ({
 
 		newTypography = newCustomTypography;
 		newContent = newCustomContent;
-		newFormatValue = newCustomFormatValue;
+		newFormatValue = {
+			...newCustomFormatValue,
+			start: formatValue.start,
+			end: formatValue.end,
+		};
 	});
 
 	return {
@@ -340,13 +294,16 @@ const setFormatWithClass = ({
 	breakpoint = 'general',
 	isHover = false,
 }) => {
+	const multiFormatObj = getMultiFormatObj(formatValue);
 	const currentClassName = __experimentalGetCurrentFormatClassName(
 		formatValue,
 		formatName
 	);
-	const formatClassName = `maxi-text-block__custom-format--${
-		Object.keys(typography.customFormats).length
-	}${(isHover && ':hover') || ''}`;
+	const formatClassName = getFormatClassName(
+		typography,
+		isHover,
+		multiFormatObj
+	);
 
 	const { start, end, formats } = formatValue;
 
@@ -355,14 +312,12 @@ const setFormatWithClass = ({
 			return format.type === formatName && i >= start && i <= end;
 		});
 	});
-
-	const hasMultiCustomFormat =
-		Object.keys(generateMultiFormatObj(formatValue)).length > 1;
+	const hasMultiCustomFormat = Object.keys(multiFormatObj).length > 1;
 
 	const {
-		typography: newTypography,
-		content: newContent,
-		formatValue: newFormatValue,
+		typography: preformattedTypography,
+		content: preformattedContent,
+		formatValue: preformattedFormatValue,
 	} =
 		(!hasCustomFormat &&
 			setNewFormat({
@@ -393,7 +348,21 @@ const setFormatWithClass = ({
 				breakpoint,
 				value,
 				isList,
+				multiFormatObj,
 			}));
+
+	const {
+		typography: newTypography,
+		content: newContent,
+		formatValue: newFormatValue,
+	} = flatFormatsWithClass(
+		{
+			typography: preformattedTypography,
+			content: preformattedContent,
+			formatValue: preformattedFormatValue,
+		},
+		isList
+	);
 
 	return {
 		typography: newTypography,

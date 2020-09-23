@@ -15,7 +15,7 @@ import {
 /**
  * External dependencies
  */
-import { isObject } from 'lodash';
+import { isObject, trim } from 'lodash';
 
 /**
  * Styles and icons
@@ -47,7 +47,7 @@ const TextFormatUnderline = props => {
 			? textDecorationValue.replace('underline', '')
 			: `${textDecorationValue} underline`;
 
-		return response;
+		return trim(response);
 	};
 
 	const onClick = () => {

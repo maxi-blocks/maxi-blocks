@@ -15,6 +15,7 @@ const defaultCustomFormat = {
 		'font-style': '',
 		'text-decoration': '',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	xxl: {
 		'font-family': '',
@@ -31,6 +32,7 @@ const defaultCustomFormat = {
 		'font-style': '',
 		'text-decoration': '',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	xl: {
 		'font-family': '',
@@ -47,6 +49,7 @@ const defaultCustomFormat = {
 		'font-style': '',
 		'text-decoration': '',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	l: {
 		'font-family': '',
@@ -63,6 +66,7 @@ const defaultCustomFormat = {
 		'font-style': '',
 		'text-decoration': '',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	m: {
 		'font-family': '',
@@ -79,6 +83,7 @@ const defaultCustomFormat = {
 		'font-style': '',
 		'text-decoration': '',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	s: {
 		'font-family': '',
@@ -95,6 +100,7 @@ const defaultCustomFormat = {
 		'font-style': '',
 		'text-decoration': '',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	xs: {
 		'font-family': '',
@@ -111,6 +117,7 @@ const defaultCustomFormat = {
 		'font-style': '',
 		'text-decoration': '',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	textAlign: {
 		label: 'Alignment',

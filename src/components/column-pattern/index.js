@@ -240,13 +240,10 @@ const ColumnPatternsInspector = props => {
 		setRowPatternAttribute(clientId, templateName);
 	};
 
-	let patternButtonClassName = 'components-column-pattern__template-button';
-	if (toolbar) {
-		patternButtonClassName = classnames(
-			patternButtonClassName,
-			'components-column-pattern__template-button--toolbar'
-		);
-	}
+	const patternButtonClassName = classnames(
+		'components-column-pattern__template-button',
+		toolbar && 'components-column-pattern__template-button--toolbar'
+	);
 
 	return (
 		<div className='components-column-pattern'>

@@ -93,8 +93,6 @@ const SizeControl = props => {
 		}
 	};
 
-	console.log(value);
-
 	return (
 		<BaseControl label={label} className={classes}>
 			{disableUnit ? (

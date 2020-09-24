@@ -165,6 +165,11 @@ class edit extends MaxiBlock {
 			<Inspector {...this.props} />,
 			<__experimentalToolbar {...this.props} />,
 			<ResizableBox
+				size={{
+					width: '100%',
+					height:
+						value[deviceType].height + value[deviceType].heightUnit,
+				}}
 				className={classnames(
 					'maxi-block__resizer',
 					'maxi-divider-block__resizer',

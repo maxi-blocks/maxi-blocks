@@ -130,7 +130,7 @@ const FullSizeControl = props => {
 				unit={getLastBreakpointValue(value, 'heightUnit', breakpoint)}
 				defaultUnit={defaultValue[breakpoint].heightUnit}
 				onChangeUnit={val => onChangeValue('heightUnit', val)}
-				value={getLastBreakpointValue(value, 'heigh', breakpoint)}
+				value={getLastBreakpointValue(value, 'height', breakpoint)}
 				defaultValue={defaultValue[breakpoint].heigh}
 				onChangeValue={val => onChangeValue('height', val)}
 				minMaxSettings={minMaxSettings}

@@ -1,0 +1,11 @@
+.components-popover {
+	.toolbar-item__popover__dropdown-options__button {
+		background: transparent;
+		border: 2px solid #5b5d68;
+		color: #fff;
+		&:hover {
+			color: #fff;
+			border: 2px solid #fff;
+		}
+	}
+}

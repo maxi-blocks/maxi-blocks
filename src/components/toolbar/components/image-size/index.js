@@ -18,9 +18,10 @@ import openSidebar from '../../../../extensions/dom';
 import { capitalize, isNil, isObject, trim } from 'lodash';
 
 /**
- * Icons
+ * Icons and styles
  */
 import { toolbarSizing } from '../../../../icons';
+import './editor.scss';
 
 /**
  * ImageSize

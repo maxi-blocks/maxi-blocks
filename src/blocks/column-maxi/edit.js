@@ -310,7 +310,6 @@ const editSelect = withSelect((select, ownProps) => {
 const editDispatch = withDispatch((dispatch, ownProps) => {
 	const {
 		attributes: { uniqueID, columnSize },
-		deviceType,
 	} = ownProps;
 
 	const onDeviceTypeChange = () => {
@@ -319,18 +318,29 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 		).__experimentalGetPreviewDeviceType();
 		newDeviceType = newDeviceType === 'Desktop' ? 'general' : newDeviceType;
 
-		const allowedDeviceTypes = ['general', 'xl', 'l', 'm', 's'];
+		const node = document.querySelector(
+			`.maxi-column-block__resizer__${uniqueID}`
+		);
+		if (isNil(node)) return;
 
-		if (
-			allowedDeviceTypes.includes(newDeviceType) &&
-			deviceType !== newDeviceType
-		) {
-			const node = document.querySelector(
-				`.maxi-column-block__resizer__${uniqueID}`
-			);
-			if (isNil(node)) return;
-			const newColumnSize = JSON.parse(columnSize);
-			node.style.width = `${newColumnSize[newDeviceType].size}%`;
+		const newColumnSize = JSON.parse(columnSize);
+
+		const newSize = newColumnSize[newDeviceType].size;
+
+		if (['xxl', 'xl', 'l'].includes(newDeviceType)) {
+			if (newSize === '') {
+				node.style.width = `${newColumnSize.general.size}%`;
+			} else {
+				node.style.width = `${newSize}%`;
+			}
+		} else if (['s', 'xs'].includes(newDeviceType)) {
+			if (newSize === '') {
+				node.style.width = `${newColumnSize.m.size}%`;
+			} else {
+				node.style.width = `${newSize}%`;
+			}
+		} else {
+			node.style.width = `${newSize}%`;
 		}
 	};
 

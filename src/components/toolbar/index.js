@@ -304,6 +304,7 @@ const MaxiToolbar = props => {
 							onChange={rowPattern =>
 								setAttributes({ rowPattern })
 							}
+							breakpoint={deviceType}
 						/>
 						<Link
 							blockName={name}

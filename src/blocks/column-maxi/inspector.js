@@ -17,6 +17,7 @@ import {
 	BoxShadowControl,
 	FullSizeControl,
 	SettingTabsControl,
+	SizeControl,
 	__experimentalZIndexControl,
 	__experimentalResponsiveSelector,
 	__experimentalResponsiveControl,
@@ -105,7 +106,7 @@ const Inspector = props => {
 												<Fragment>
 													<RangeControl
 														label={__(
-															'Column Size',
+															'Column Size (%)',
 															'maxi-blocks'
 														)}
 														value={getLastBreakpointValue(

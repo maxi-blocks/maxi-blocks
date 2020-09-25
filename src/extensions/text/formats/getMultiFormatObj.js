@@ -1,4 +1,4 @@
-import { inRange } from 'lodash';
+import { inRange, compact } from 'lodash';
 
 const getMultiFormatObj = formatValue => {
 	const { start, end } = formatValue;
@@ -6,16 +6,18 @@ const getMultiFormatObj = formatValue => {
 
 	const response = formatArray.map((formatEl, i) => {
 		if (formatEl)
-			return formatEl.map(format => {
-				if (
-					format.type === 'maxi-blocks/text-custom' &&
-					i >= start &&
-					i < end
-				)
-					return format.attributes.className;
+			return compact(
+				formatEl.map(format => {
+					if (
+						format.type === 'maxi-blocks/text-custom' &&
+						i >= start &&
+						i < end
+					)
+						return format.attributes.className;
 
-				return null;
-			});
+					return null;
+				})
+			);
 
 		return [null];
 	});

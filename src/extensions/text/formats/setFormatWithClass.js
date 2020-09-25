@@ -22,7 +22,13 @@ import { inRange } from 'lodash';
  */
 const formatName = 'maxi-blocks/text-custom';
 
-const getFormatClassName = (typography, isHover, multiFormatObj) => {
+const getFormatClassName = (typography, isHover, formatValue) => {
+	const multiFormatObj = getMultiFormatObj({
+		...formatValue,
+		start: 0,
+		end: formatValue.formats.length,
+	});
+
 	let className = `maxi-text-block__custom-format--${
 		Object.keys(typography.customFormats).length
 	}`;
@@ -248,7 +254,7 @@ const mergeMultipleFormats = ({
 		const formatClassName = getFormatClassName(
 			newTypography,
 			isHover,
-			newMultiFormatObj
+			newFormatValue
 		);
 		const { className, start, end } = Object.values(newMultiFormatObj)[i];
 
@@ -307,6 +313,11 @@ const setFormatWithClass = ({
 	breakpoint = 'general',
 	isHover = false,
 }) => {
+	// const multiFormatObj = getMultiFormatObj({
+	// 	...formatValue,
+	// 	start: 0,
+	// 	end: formatValue.formats.length,
+	// });
 	const multiFormatObj = getMultiFormatObj(formatValue);
 	const currentClassName = __experimentalGetCurrentFormatClassName(
 		formatValue,
@@ -315,7 +326,7 @@ const setFormatWithClass = ({
 	const formatClassName = getFormatClassName(
 		typography,
 		isHover,
-		multiFormatObj
+		formatValue
 	);
 
 	const { start, end, formats } = formatValue;

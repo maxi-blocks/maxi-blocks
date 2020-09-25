@@ -76,7 +76,7 @@ const setLinkFormats = ({ formatValue, typography, isList }) => {
 			formatValue: preformattedFormatValue,
 		} = __experimentalApplyLinkFormat({
 			formatValue: newFormatValue,
-			typography: newTypography || typography,
+			typography: newTypography,
 			linkAttributes: newAttributes,
 			isList,
 		});
@@ -94,13 +94,13 @@ const setLinkFormats = ({ formatValue, typography, isList }) => {
 };
 
 const setFormat = ({ formatValue, typography, oldFormat, value, isList }) => {
-	const boldInstancePositions = getInstancePositions(formatValue, oldFormat);
+	const instancePositions = getInstancePositions(formatValue, oldFormat);
 
 	let newContent = formatValue.html;
 	let newTypography = { ...typography };
 	let newFormatValue = { ...formatValue };
 
-	boldInstancePositions.forEach(pos => {
+	instancePositions.forEach(pos => {
 		newFormatValue = {
 			...newFormatValue,
 			start: pos[0],
@@ -162,7 +162,11 @@ const setCustomFormatsWhenPaste = ({ formatValue, typography, isList }) => {
 			typography: linkFormattedTypography,
 			content: linkFormattedContent,
 			formatValue: linkFormattedFormatValue,
-		} = setLinkFormats({ formatValue, typography, isList });
+		} = setLinkFormats({
+			formatValue: newFormatValue,
+			typography: newTypography,
+			isList,
+		});
 
 		newTypography = linkFormattedTypography;
 		newContent = linkFormattedContent;
@@ -174,8 +178,8 @@ const setCustomFormatsWhenPaste = ({ formatValue, typography, isList }) => {
 			content: boldFormattedContent,
 			formatValue: boldFormattedFormatValue,
 		} = setFormat({
-			formatValue,
-			typography,
+			formatValue: newFormatValue,
+			typography: newTypography,
 			oldFormat: 'core/bold',
 			value: { 'font-weight': 800 },
 			isList,
@@ -191,8 +195,8 @@ const setCustomFormatsWhenPaste = ({ formatValue, typography, isList }) => {
 			content: italicFormattedContent,
 			formatValue: italicFormattedFormatValue,
 		} = setFormat({
-			formatValue,
-			typography,
+			formatValue: newFormatValue,
+			typography: newTypography,
 			oldFormat: 'core/italic',
 			value: { 'font-style': 'italic' },
 			isList,
@@ -208,8 +212,8 @@ const setCustomFormatsWhenPaste = ({ formatValue, typography, isList }) => {
 			content: underlineFormattedContent,
 			formatValue: underlineFormattedFormatValue,
 		} = setFormat({
-			formatValue,
-			typography,
+			formatValue: newFormatValue,
+			typography: newTypography,
 			oldFormat: 'core/underline',
 			value: { 'font-decoration': 'underline' },
 			isList,
@@ -225,8 +229,8 @@ const setCustomFormatsWhenPaste = ({ formatValue, typography, isList }) => {
 			content: strikethroughFormattedContent,
 			formatValue: strikethroughFormattedFormatValue,
 		} = setFormat({
-			formatValue,
-			typography,
+			formatValue: newFormatValue,
+			typography: newTypography,
 			oldFormat: 'core/strikethrough',
 			value: { 'font-decoration': 'strikethrough' },
 			isList,
@@ -242,8 +246,8 @@ const setCustomFormatsWhenPaste = ({ formatValue, typography, isList }) => {
 			content: subscriptFormattedContent,
 			formatValue: subscriptFormattedFormatValue,
 		} = setFormat({
-			formatValue,
-			typography,
+			formatValue: newFormatValue,
+			typography: newTypography,
 			oldFormat: 'core/subscript',
 			value: { 'vertical-align': 'sub' },
 			isList,
@@ -259,8 +263,8 @@ const setCustomFormatsWhenPaste = ({ formatValue, typography, isList }) => {
 			content: superscriptFormattedContent,
 			formatValue: superscriptFormattedFormatValue,
 		} = setFormat({
-			formatValue,
-			typography,
+			formatValue: newFormatValue,
+			typography: newTypography,
 			oldFormat: 'core/superscript',
 			value: { 'vertical-align': 'super' },
 			isList,

@@ -896,6 +896,28 @@ const BackgroundControl = props => {
 											]}
 											onChange={val => {
 												value.videoOptions.autoplay = val;
+												if (val === '1') {
+													value.videoOptions.muted = 1;
+												}
+												onChange(JSON.stringify(value));
+											}}
+										/>
+										<SelectControl
+											label={__('Muted', 'maxi-blocks')}
+											value={value.videoOptions.muted}
+											disabled={
+												value.videoOptions.autoplay ===
+												'1'
+											}
+											options={[
+												{
+													label: 'No',
+													value: 0,
+												},
+												{ label: 'Yes', value: 1 },
+											]}
+											onChange={val => {
+												value.videoOptions.muted = val;
 												onChange(JSON.stringify(value));
 											}}
 										/>
@@ -923,18 +945,6 @@ const BackgroundControl = props => {
 											]}
 											onChange={val => {
 												value.videoOptions.loop = val;
-												onChange(JSON.stringify(value));
-											}}
-										/>
-										<SelectControl
-											label={__('Muted', 'maxi-blocks')}
-											value={value.videoOptions.muted}
-											options={[
-												{ label: 'No', value: 0 },
-												{ label: 'Yes', value: 1 },
-											]}
-											onChange={val => {
-												value.videoOptions.muted = val;
 												onChange(JSON.stringify(value));
 											}}
 										/>

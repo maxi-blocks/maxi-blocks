@@ -735,6 +735,7 @@ const BackgroundControl = props => {
 										alternativeImage={getAlternativeImage(
 											selector
 										)}
+										allowedTypes={['video']}
 									/>
 								),
 							},
@@ -918,21 +919,6 @@ const BackgroundControl = props => {
 											]}
 											onChange={val => {
 												value.videoOptions.muted = val;
-												onChange(JSON.stringify(value));
-											}}
-										/>
-										<SelectControl
-											label={__(
-												'Playback Controls',
-												'maxi-blocks'
-											)}
-											value={value.videoOptions.controls}
-											options={[
-												{ label: 'No', value: 0 },
-												{ label: 'Yes', value: 1 },
-											]}
-											onChange={val => {
-												value.videoOptions.controls = val;
 												onChange(JSON.stringify(value));
 											}}
 										/>

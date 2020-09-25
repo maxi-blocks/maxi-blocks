@@ -381,14 +381,20 @@ const BackgroundControl = props => {
 												.sizeSettings.size
 										}
 										options={[
-											{ label: 'Auto', value: 'auto' },
-											{ label: 'Cover', value: 'cover' },
 											{
-												label: 'Contain',
+												label: __('Auto'),
+												value: 'auto',
+											},
+											{
+												label: __('Cover'),
+												value: 'cover',
+											},
+											{
+												label: __('Contain'),
 												value: 'contain',
 											},
 											{
-												label: 'Custom',
+												label: __('Custom'),
 												value: 'custom',
 											},
 										]}
@@ -432,23 +438,29 @@ const BackgroundControl = props => {
 										}
 										options={[
 											{
-												label: 'Repeat',
+												label: __('Repeat'),
 												value: 'repeat',
 											},
 											{
-												label: 'No repeat',
+												label: __('No repeat'),
 												value: 'no-repeat',
 											},
 											{
-												label: 'Repeat X',
+												label: __('Repeat X'),
 												value: 'repeat-x',
 											},
 											{
-												label: 'Repeat Y',
+												label: __('Repeat Y'),
 												value: 'repeat-y',
 											},
-											{ label: 'Space', value: 'space' },
-											{ label: 'Round', value: 'round' },
+											{
+												label: __('Space'),
+												value: 'space',
+											},
+											{
+												label: __('Round'),
+												value: 'round',
+											},
 										]}
 										onChange={val => {
 											value.imageOptions[
@@ -468,43 +480,43 @@ const BackgroundControl = props => {
 										}
 										options={[
 											{
-												label: 'Left top',
+												label: __('Left top'),
 												value: 'left top',
 											},
 											{
-												label: 'Left center',
+												label: __('Left center'),
 												value: 'left center',
 											},
 											{
-												label: 'Left bottom',
+												label: __('Left bottom'),
 												value: 'left bottom',
 											},
 											{
-												label: 'Right top',
+												label: __('Right top'),
 												value: 'right top',
 											},
 											{
-												label: 'Right center',
+												label: __('Right center'),
 												value: 'right center',
 											},
 											{
-												label: 'Right bottom',
+												label: __('Right bottom'),
 												value: 'right bottom',
 											},
 											{
-												label: 'Center top',
+												label: __('Center top'),
 												value: 'center top',
 											},
 											{
-												label: 'Center center',
+												label: __('Center center'),
 												value: 'center center',
 											},
 											{
-												label: 'Center bottom',
+												label: __('Center bottom'),
 												value: 'center bottom',
 											},
 											{
-												label: 'Custom',
+												label: __('Custom'),
 												value: 'custom',
 											},
 										]}
@@ -611,15 +623,15 @@ const BackgroundControl = props => {
 										}
 										options={[
 											{
-												label: 'Padding',
+												label: __('Padding'),
 												value: 'padding-box',
 											},
 											{
-												label: 'Border',
+												label: __('Border'),
 												value: 'border-box',
 											},
 											{
-												label: 'Content',
+												label: __('Content'),
 												value: 'content-box',
 											},
 										]}
@@ -640,15 +652,15 @@ const BackgroundControl = props => {
 										}
 										options={[
 											{
-												label: 'Border',
+												label: __('Border'),
 												value: 'border-box',
 											},
 											{
-												label: 'Padding',
+												label: __('Padding'),
 												value: 'padding-box',
 											},
 											{
-												label: 'Content',
+												label: __('Content'),
 												value: 'content-box',
 											},
 										]}
@@ -670,11 +682,17 @@ const BackgroundControl = props => {
 										}
 										options={[
 											{
-												label: 'Scroll',
-												value: 'scroll',
+												label: __('Scroll'),
+												value: __('scroll'),
 											},
-											{ label: 'Fixed', value: 'fixed' },
-											{ label: 'Local', value: 'local' },
+											{
+												label: __('Fixed'),
+												value: 'fixed',
+											},
+											{
+												label: __('Local'),
+												value: 'local',
+											},
 										]}
 										onChange={val => {
 											value.imageOptions[
@@ -826,23 +844,23 @@ const BackgroundControl = props => {
 											value={value.videoOptions.fill}
 											options={[
 												{
-													label: 'Cover',
+													label: __('Cover'),
 													value: 'cover',
 												},
 												{
-													label: 'Contain',
+													label: __('Contain'),
 													value: 'contain',
 												},
 												{
-													label: 'Fill',
+													label: __('Fill'),
 													value: 'fill',
 												},
 												{
-													label: 'Scale-down',
+													label: __('Scale-down'),
 													value: 'scale-down',
 												},
 												{
-													label: 'None',
+													label: __('None'),
 													value: 'none',
 												},
 											]}
@@ -859,24 +877,27 @@ const BackgroundControl = props => {
 											value={value.videoOptions.position}
 											options={[
 												{
-													label: 'Unset',
+													label: __('Unset'),
 													value: 'unset',
 												},
-												{ label: 'Top', value: 'top' },
 												{
-													label: 'Right',
+													label: __('Top'),
+													value: 'top',
+												},
+												{
+													label: __('Right'),
 													value: 'right',
 												},
 												{
-													label: 'Bottom',
+													label: __('Bottom'),
 													value: 'bottom',
 												},
 												{
-													label: 'Left',
+													label: __('Left'),
 													value: 'left',
 												},
 												{
-													label: 'Center',
+													label: __('Center'),
 													value: 'center',
 												},
 											]}
@@ -892,8 +913,8 @@ const BackgroundControl = props => {
 											)}
 											value={value.videoOptions.autoplay}
 											options={[
-												{ label: 'No', value: 0 },
-												{ label: 'Yes', value: 1 },
+												{ label: __('No'), value: 0 },
+												{ label: __('Yes'), value: 1 },
 											]}
 											onChange={val => {
 												value.videoOptions.autoplay = val;
@@ -912,10 +933,10 @@ const BackgroundControl = props => {
 											}
 											options={[
 												{
-													label: 'No',
+													label: __('No'),
 													value: 0,
 												},
-												{ label: 'Yes', value: 1 },
+												{ label: __('Yes'), value: 1 },
 											]}
 											onChange={val => {
 												value.videoOptions.muted = val;
@@ -926,8 +947,8 @@ const BackgroundControl = props => {
 											label={__('Loop', 'maxi-blocks')}
 											value={value.videoOptions.loop}
 											options={[
-												{ label: 'No', value: 0 },
-												{ label: 'Yes', value: 1 },
+												{ label: __('No'), value: 0 },
+												{ label: __('Yes'), value: 1 },
 											]}
 											onChange={val => {
 												value.videoOptions.loop = val;
@@ -939,15 +960,15 @@ const BackgroundControl = props => {
 											value={value.videoOptions.muted}
 											options={[
 												{
-													label: 'MetaData',
+													label: __('MetaData'),
 													value: 'metadata',
 												},
 												{
-													label: 'Auto',
+													label: __('Auto'),
 													value: 'auto',
 												},
 												{
-													label: 'None',
+													label: __('None'),
 													value: 'none',
 												},
 											]}

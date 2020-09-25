@@ -477,6 +477,8 @@ export const getColorBackgroundObject = background => {
 		general: {},
 	};
 
+	if (!isNil(background.colorOptions.gradientOpacity))
+		response.general.opacity = background.colorOptions.gradientOpacity;
 	if (!isEmpty(background.colorOptions.gradient))
 		response.general.background = background.colorOptions.activeColor;
 	if (!isEmpty(background.colorOptions.color))
@@ -513,6 +515,10 @@ export const getImageBackgroundObject = background => {
 		label: background.label,
 		general: {},
 	};
+
+	if (!isNil(background.imageOpacity))
+		response.general['opacity'] =
+			background.imageOpacity.opacity.general.opacity;
 
 	if (!isEmpty(background.clipPathImage))
 		response.general['clip-path'] = background.clipPathImage;
@@ -635,6 +641,9 @@ export const getVideoBackgroundObject = videoOptions => {
 		label: 'Video Background',
 		general: {},
 	};
+
+	if (!isNil(videoOptions.opacity))
+		response.general['opacity'] = videoOptions.opacity.general.opacity;
 
 	if (!isNil(videoOptions.fill))
 		response.general['object-fit'] = videoOptions.fill;

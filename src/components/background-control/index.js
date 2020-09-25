@@ -15,6 +15,7 @@ import ImageCropControl from '../image-crop-control';
 import SettingTabsControl from '../setting-tabs-control';
 import SizeControl from '../size-control';
 import __experimentalClipPath from '../clip-path-control';
+import __experimentalOpacityControl from '../opacity-control';
 
 /**
  * External dependencies
@@ -51,7 +52,6 @@ const BackgroundControl = props => {
 
 	const [isOpen, setIsOpen] = useState(false);
 	const [selector, setSelector] = useState(0);
-
 	const value = !isObject(background) ? JSON.parse(background) : background;
 
 	const defaultValue = !isObject(defaultBackground)
@@ -163,10 +163,15 @@ const BackgroundControl = props => {
 							<ColorControl
 								label={__('Background', 'maxi-blocks')}
 								color={value.colorOptions.color}
+								opacity={value.colorOptions.colorOpacity}
 								defaultColor={defaultValue.colorOptions.color}
 								onChange={val => {
 									value.colorOptions.color = val;
 									value.colorOptions.activeColor = val;
+									onChange(JSON.stringify(value));
+								}}
+								onChangeOpacity={val => {
+									value.colorOptions.colorOpacity = val;
 									onChange(JSON.stringify(value));
 								}}
 							/>
@@ -238,6 +243,19 @@ const BackgroundControl = props => {
 									}}
 								/>
 							)}
+							<__experimentalOpacityControl
+								label={__('Background Opacity', 'maxi-blocks')}
+								opacity={value.imageOpacity.opacity}
+								defaultOpacity={
+									defaultValue.imageOpacity.opacity
+								}
+								onChange={val => {
+									value.imageOpacity.opacity = JSON.parse(
+										val
+									);
+									onChange(JSON.stringify(value));
+								}}
+							/>
 						</Fragment>
 					)}
 					{!disableVideo && value.activeMedia === 'video' && (
@@ -271,6 +289,19 @@ const BackgroundControl = props => {
 								replaceButton={__('Replace', 'maxi-blocks')}
 								removeButton={__('Remove', 'maxi-blocks')}
 							/>
+							<__experimentalOpacityControl
+								label={__('Video Opacity', 'maxi-blocks')}
+								opacity={value.videoOptions.opacity}
+								defaultOpacity={
+									defaultValue.videoOptions.opacity
+								}
+								onChange={val => {
+									value.videoOptions.opacity = JSON.parse(
+										val
+									);
+									onChange(JSON.stringify(value));
+								}}
+							/>
 							{!disableClipPath && (
 								<__experimentalClipPath
 									clipPath={value.videoOptions.clipPath}
@@ -286,6 +317,7 @@ const BackgroundControl = props => {
 						<Fragment>
 							<GradientControl
 								label={__('Background', 'maxi-blocks')}
+								opacity={value.colorOptions.gradientOpacity}
 								gradient={value.colorOptions.gradient}
 								defaultGradient={
 									defaultValue.colorOptions.gradient
@@ -300,6 +332,10 @@ const BackgroundControl = props => {
 								}
 								onGradientAboveBackgroundChange={val => {
 									value.colorOptions.gradientAboveBackground = val;
+									onChange(JSON.stringify(value));
+								}}
+								onChangeOpacity={val => {
+									value.colorOptions.gradientOpacity = val;
 									onChange(JSON.stringify(value));
 								}}
 							/>

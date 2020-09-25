@@ -23,7 +23,8 @@ export const alignment = {
 	},
 };
 
-export const opacity = {
+// Should be removed, temporary !!!!!!!!!!!!
+export const opacityHover = {
 	label: 'Opacity',
 	general: {
 		opacity: 1,
@@ -48,7 +49,7 @@ export const opacity = {
 	},
 };
 
-export const opacityHover = {
+export const opacity = {
 	label: 'Opacity',
 	general: {
 		opacity: 1,
@@ -520,6 +521,12 @@ export const background = {
 		controls: 0,
 		preload: 'metadata',
 		clipPath: '',
+		opacity: {
+			label: 'Opacity',
+			general: {
+				opacity: 1,
+			},
+		},
 	},
 	colorOptions: {
 		activeColor: '',
@@ -527,6 +534,8 @@ export const background = {
 		gradient: '',
 		gradientAboveBackground: false,
 		clipPath: '',
+		colorOpacity: 1,
+		gradientOpacity: 1,
 	},
 	overlayOptions: {
 		overlay: '',
@@ -541,10 +550,18 @@ export const background = {
 			},
 		},
 	},
+	imageOpacity: {
+		opacity: {
+			label: 'Opacity',
+			general: {
+				opacity: 1,
+			},
+		},
+	},
 };
 
 export const backgroundHover = {
-	label: 'Background',
+	label: 'Background Hover',
 	activeMedia: '',
 	imageOptions: [
 		{
@@ -595,6 +612,7 @@ export const backgroundHover = {
 		gradient: '',
 		gradientAboveBackground: '',
 		clipPath: '',
+		opacity: 1,
 	},
 	overlayOptions: {
 		overlay: '',

@@ -39,14 +39,22 @@
 		"muted": 0,
 		"controls": 0,
 		"preload": "metadata",
-		"clipPath": ""
+		"clipPath": "",
+		"opacity": {
+			"label": "Opacity",
+			"general": {
+				"opacity": 1
+			}
+		}
 	},
 	"colorOptions": {
 		"activeColor": "",
 		"color": "",
 		"gradient": "",
 		"gradientAboveBackground": false,
-		"clipPath": ""
+		"clipPath": "",
+		"colorOpacity": 1,
+		"gradientOpacity": 1
 	},
 	"overlayOptions": {
 		"overlay": "",
@@ -58,6 +66,14 @@
 			"label": "Opacity",
 			"general": {
 				"opacity": 0.8
+			}
+		}
+	},
+	"imageOpacity": {
+		"opacity": {
+			"label": "Opacity",
+			"general": {
+				"opacity": 1
 			}
 		}
 	}

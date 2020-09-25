@@ -54,7 +54,6 @@ const Inspector = props => {
 			fullWidth,
 			size,
 			opacity,
-			opacityHover,
 			background,
 			backgroundHover,
 			border,
@@ -337,25 +336,6 @@ const Inspector = props => {
 															),
 															content: (
 																<Fragment>
-																	<__experimentalOpacityControl
-																		opacity={
-																			opacity
-																		}
-																		defaultOpacity={getDefaultProp(
-																			clientId,
-																			'opacity'
-																		)}
-																		onChange={opacity =>
-																			setAttributes(
-																				{
-																					opacity,
-																				}
-																			)
-																		}
-																		breakpoint={
-																			deviceType
-																		}
-																	/>
 																	<BackgroundControl
 																		background={
 																			background
@@ -398,25 +378,6 @@ const Inspector = props => {
 															),
 															content: (
 																<Fragment>
-																	<__experimentalOpacityControl
-																		opacity={
-																			opacityHover
-																		}
-																		defaultOpacity={getDefaultProp(
-																			clientId,
-																			'opacityHover'
-																		)}
-																		onChange={opacityHover =>
-																			setAttributes(
-																				{
-																					opacityHover,
-																				}
-																			)
-																		}
-																		breakpoint={
-																			deviceType
-																		}
-																	/>
 																	<BackgroundControl
 																		background={
 																			backgroundHover
@@ -847,6 +808,24 @@ const Inspector = props => {
 												)}
 												onChange={zIndex =>
 													setAttributes({ zIndex })
+												}
+												breakpoint={deviceType}
+											/>
+										),
+									},
+									{
+										label: __('Opacity', 'maxi-blocks'),
+										content: (
+											<__experimentalOpacityControl
+												opacity={opacity}
+												defaultOpacity={getDefaultProp(
+													clientId,
+													'opacity'
+												)}
+												onChange={opacity =>
+													setAttributes({
+														opacity,
+													})
 												}
 												breakpoint={deviceType}
 											/>

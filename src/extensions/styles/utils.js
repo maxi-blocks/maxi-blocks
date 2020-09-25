@@ -663,8 +663,13 @@ export const getVideoBackgroundObject = videoOptions => {
 	return response;
 };
 
-export const setBackgroundStyles = (target, background, backgroundHover) => {
-	return {
+export const setBackgroundStyles = (
+	target,
+	background,
+	backgroundHover,
+	backgroundHoverStatus
+) => {
+	const response = {
 		[`${target}>.maxi-background-displayer .maxi-background-displayer__overlay`]: {
 			overlay: { ...getColorOverlayObject(JSON.parse(background)) },
 		},
@@ -675,11 +680,6 @@ export const setBackgroundStyles = (target, background, backgroundHover) => {
 		},
 		[`${target}>.maxi-background-displayer .maxi-background-displayer__color`]: {
 			background: { ...getColorBackgroundObject(JSON.parse(background)) },
-		},
-		[`${target}:hover>.maxi-background-displayer .maxi-background-displayer__color`]: {
-			backgroundHover: {
-				...getColorBackgroundObject(JSON.parse(backgroundHover)),
-			},
 		},
 		[`${target}>.maxi-background-displayer .maxi-background-displayer__images`]: {
 			imageBackground: {
@@ -706,4 +706,21 @@ export const setBackgroundStyles = (target, background, backgroundHover) => {
 			},
 		},
 	};
+	if (!!backgroundHoverStatus) {
+		response[
+			`${target}:hover>.maxi-background-displayer .maxi-background-displayer__color`
+		] = {
+			backgroundHover: {
+				...getColorBackgroundObject(JSON.parse(backgroundHover)),
+			},
+		};
+	} else {
+		response[
+			`${target}:hover>.maxi-background-displayer .maxi-background-displayer__color`
+		] = {
+			backgroundHover: {},
+		};
+	}
+
+	return response;
 };

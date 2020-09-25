@@ -70,7 +70,12 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
  */
 class edit extends MaxiBlock {
 	get getObject() {
-		const { uniqueID, background, backgroundHover } = this.props.attributes;
+		const {
+			uniqueID,
+			background,
+			backgroundHover,
+			backgroundHoverStatus,
+		} = this.props.attributes;
 
 		let response = {
 			[uniqueID]: this.getNormalObject,
@@ -112,7 +117,12 @@ class edit extends MaxiBlock {
 
 		response = Object.assign(
 			response,
-			setBackgroundStyles(uniqueID, background, backgroundHover)
+			setBackgroundStyles(
+				uniqueID,
+				background,
+				backgroundHover,
+				backgroundHoverStatus
+			)
 		);
 
 		return response;

@@ -32,7 +32,7 @@ import { reset } from '../../icons';
 const GradientControl = props => {
 	const {
 		label,
-		opacity,
+		opacity = 1,
 		className,
 		gradient,
 		defaultGradient = '',

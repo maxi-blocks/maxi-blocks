@@ -15,6 +15,10 @@ const attributes = {
 		type: 'string',
 		default: 'full',
 	},
+	backgroundHoverStatus: {
+		type: 'number',
+		default: 0,
+	},
 	size: {
 		type: 'string',
 		default: JSON.stringify(attributesData.size),

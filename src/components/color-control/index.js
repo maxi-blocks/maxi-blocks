@@ -24,7 +24,7 @@ const ColorControl = props => {
 		label,
 		className,
 		color,
-		opacity,
+		opacity = 1,
 		defaultColor = '',
 		onChange,
 		onChangeOpacity,

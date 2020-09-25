@@ -56,6 +56,7 @@ const Inspector = props => {
 			opacity,
 			background,
 			backgroundHover,
+			backgroundHoverStatus,
 			border,
 			borderHover,
 			boxShadow,
@@ -378,24 +379,62 @@ const Inspector = props => {
 															),
 															content: (
 																<Fragment>
-																	<BackgroundControl
-																		background={
-																			backgroundHover
-																		}
-																		defaultBackground={getDefaultProp(
-																			clientId,
-																			'backgroundHover'
-																		)}
-																		onChange={backgroundHover =>
-																			setAttributes(
+																	<div className='maxi-fancy-radio-control'>
+																		<RadioControl
+																			label={__(
+																				'Enable Background Hover',
+																				'maxi-blocks'
+																			)}
+																			selected={
+																				backgroundHoverStatus
+																			}
+																			options={[
 																				{
-																					backgroundHover,
-																				}
-																			)
-																		}
-																		disableImage
-																		disableVideo
-																	/>
+																					label: __(
+																						'Yes',
+																						'maxi-blocks'
+																					),
+																					value: 1,
+																				},
+																				{
+																					label: __(
+																						'No',
+																						'maxi-blocks'
+																					),
+																					value: 0,
+																				},
+																			]}
+																			onChange={val => {
+																				setAttributes(
+																					{
+																						backgroundHoverStatus: Number(
+																							val
+																						),
+																					}
+																				);
+																			}}
+																		/>
+																	</div>
+																	{!!backgroundHoverStatus && (
+																		<BackgroundControl
+																			background={
+																				backgroundHover
+																			}
+																			defaultBackground={getDefaultProp(
+																				clientId,
+																				'backgroundHover'
+																			)}
+																			onChange={backgroundHover =>
+																				setAttributes(
+																					{
+																						backgroundHover,
+																					}
+																				)
+																			}
+																			disableImage
+																			disableVideo
+																		/>
+																	)}
 																</Fragment>
 															),
 														},

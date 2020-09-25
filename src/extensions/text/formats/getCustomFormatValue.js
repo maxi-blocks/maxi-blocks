@@ -9,15 +9,13 @@ const getCustomFormatValue = ({
 	formatValue,
 	prop,
 	breakpoint,
-	isHover = false,
 }) => {
-	let currentClassName = __experimentalGetFormatClassName(
+	const currentClassName = __experimentalGetFormatClassName(
 		formatValue,
 		'maxi-blocks/text-custom'
 	);
 
 	if (currentClassName) {
-		currentClassName += isHover ? ':hover' : '';
 		if (typography.customFormats[currentClassName]) {
 			const responsiveValue = getLastBreakpointValue(
 				typography.customFormats[currentClassName],

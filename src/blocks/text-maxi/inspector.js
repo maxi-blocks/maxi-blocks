@@ -306,11 +306,18 @@ const Inspector = props => {
 																	textLevel={
 																		textLevel
 																	}
-																	onChange={obj =>
+																	onChange={obj => {
 																		setAttributes(
-																			obj
-																		)
-																	}
+																			{
+																				typographyHover:
+																					obj.typography,
+																				...(obj.content && {
+																					content:
+																						obj.content,
+																				}),
+																			}
+																		);
+																	}}
 																	hideAlignment
 																	breakpoint={
 																		deviceType

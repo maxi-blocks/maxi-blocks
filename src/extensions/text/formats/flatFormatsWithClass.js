@@ -61,7 +61,13 @@ const flatRepeatedClassNames = (repeatedClasses, formatValue, typography) => {
 	};
 };
 
-const removeUnnecessaryFormats = (formatValue, typography, content, isList) => {
+const removeUnnecessaryFormats = ({
+	formatValue,
+	typography,
+	content,
+	isList,
+	isHover,
+}) => {
 	const multiFormatObj = getMultiFormatObj({
 		...formatValue,
 		start: 0,
@@ -74,7 +80,10 @@ const removeUnnecessaryFormats = (formatValue, typography, content, isList) => {
 	const someRemoved =
 		compact(
 			Object.entries(customFormats).map(([target, style]) => {
-				const format = find(multiFormatObj, { className: target });
+				// const targetName = `${target}${isHover ? ':hover' : ''}`;
+				const format = find(multiFormatObj, {
+					className: target,
+				});
 
 				/**
 				 * Exist on typography, not in content
@@ -129,7 +138,13 @@ const removeUnnecessaryFormats = (formatValue, typography, content, isList) => {
 	};
 };
 
-const flatFormatsWithClass = ({ typography, formatValue, content }, isList) => {
+const flatFormatsWithClass = ({
+	typography,
+	formatValue,
+	content,
+	isList,
+	isHover,
+}) => {
 	const { customFormats } = typography;
 	const repeatedClasses = getRepeatedClassNames(customFormats, formatValue);
 	let newContent = content;
@@ -155,12 +170,13 @@ const flatFormatsWithClass = ({ typography, formatValue, content }, isList) => {
 		formatValue: cleanedFormatValue,
 		typography: cleanedTypography,
 		content: cleanedContent,
-	} = removeUnnecessaryFormats(
-		newFormatValue,
-		newTypography,
-		newContent,
-		isList
-	);
+	} = removeUnnecessaryFormats({
+		formatValue: newFormatValue,
+		typography: newTypography,
+		content: newContent,
+		isList,
+		isHover,
+	});
 
 	return {
 		formatValue: cleanedFormatValue,

@@ -153,12 +153,11 @@ const TypographyControl = props => {
 			content: newContent,
 		} = __experimentalSetFormat({
 			formatValue,
-			// isActive,
 			isList,
 			typography: typographyValue,
 			value,
 			breakpoint,
-			// isHover,
+			isHover,
 		});
 
 		onChange({
@@ -176,7 +175,6 @@ const TypographyControl = props => {
 					formatValue,
 					prop: 'font-family',
 					breakpoint,
-					isHover,
 				})}
 				onChange={font => {
 					onChangeFormat({
@@ -193,7 +191,6 @@ const TypographyControl = props => {
 					formatValue,
 					prop: 'color',
 					breakpoint,
-					isHover,
 				})}
 				defaultColor={getDefault('color')}
 				onChange={val => {
@@ -220,7 +217,6 @@ const TypographyControl = props => {
 					formatValue,
 					prop: 'font-sizeUnit',
 					breakpoint,
-					isHover,
 				})}
 				defaultUnit={getDefault('font-sizeUnit')}
 				onChangeUnit={val => {
@@ -249,7 +245,6 @@ const TypographyControl = props => {
 					formatValue,
 					prop: 'line-heightUnit',
 					breakpoint,
-					isHover,
 				})}
 				defaultUnit={getDefault('line-heightUnit')}
 				onChangeUnit={val => {
@@ -279,7 +274,6 @@ const TypographyControl = props => {
 					formatValue,
 					prop: 'letter-spacingUnit',
 					breakpoint,
-					isHover,
 				})}
 				defaultUnit={getDefault('letter-spacingUnit')}
 				onChangeUnit={val => {
@@ -309,7 +303,6 @@ const TypographyControl = props => {
 					formatValue,
 					prop: 'font-weight',
 					breakpoint,
-					isHover,
 				})}
 				options={getWeightOptions()}
 				onChange={val => {
@@ -324,7 +317,6 @@ const TypographyControl = props => {
 					formatValue,
 					prop: 'text-transform',
 					breakpoint,
-					isHover,
 				})}
 				options={[
 					{ label: __('Default', 'maxi-blocks'), value: 'none' },
@@ -353,7 +345,6 @@ const TypographyControl = props => {
 					formatValue,
 					prop: 'font-style',
 					breakpoint,
-					isHover,
 				})}
 				options={[
 					{ label: __('Default', 'maxi-blocks'), value: 'normal' },
@@ -372,7 +363,6 @@ const TypographyControl = props => {
 					formatValue,
 					prop: 'text-decoration',
 					breakpoint,
-					isHover,
 				})}
 				options={[
 					{ label: __('Default', 'maxi-blocks'), value: 'none' },
@@ -401,7 +391,6 @@ const TypographyControl = props => {
 					formatValue,
 					prop: 'text-shadow',
 					breakpoint,
-					isHover,
 				})}
 				onChange={val => {
 					onChangeFormat({ 'text-shadow': val });

@@ -116,11 +116,21 @@ const updateCustomFormat = ({
 	currentClassName,
 	breakpoint,
 	value,
+	isHover,
 }) => {
-	typography.customFormats[currentClassName][breakpoint] = {
-		...typography.customFormats[currentClassName][breakpoint],
-		...mergeNewValue(value, typography, breakpoint),
-	};
+	if (isHover && !typography.customFormats[currentClassName])
+		typography.customFormats[currentClassName] = {
+			...defaultCustomFormat,
+			[breakpoint]: {
+				...defaultCustomFormat[breakpoint],
+				...mergeNewValue(value, typography, breakpoint),
+			},
+		};
+	else
+		typography.customFormats[currentClassName][breakpoint] = {
+			...typography.customFormats[currentClassName][breakpoint],
+			...mergeNewValue(value, typography, breakpoint),
+		};
 
 	return { typography };
 };
@@ -132,6 +142,7 @@ const generateNewCustomFormat = ({
 	formatClassName,
 	breakpoint,
 	value,
+	isHover,
 }) => {
 	const newFormatValue = applyFormat(formatValue, {
 		type: formatName,
@@ -149,6 +160,7 @@ const generateNewCustomFormat = ({
 		currentClassName: formatClassName,
 		breakpoint,
 		value,
+		isHover,
 	});
 
 	return {
@@ -188,6 +200,7 @@ const mergeNewFormat = ({
 				currentClassName,
 				breakpoint,
 				value,
+				isHover,
 		  })
 		: generateNewCustomFormat({
 				typography,
@@ -218,9 +231,9 @@ const mergeMultipleFormats = ({
 	formatValue,
 	breakpoint,
 	value,
-	isHover = false,
-	isList,
 	multiFormatObj,
+	isList,
+	isHover = false,
 }) => {
 	let newTypography = { ...typography };
 	let newContent = '';
@@ -339,6 +352,7 @@ const setFormatWithClass = ({
 				breakpoint,
 				value,
 				isList,
+				isHover,
 			})) ||
 		(hasCustomFormat &&
 			hasMultiCustomFormat &&
@@ -349,20 +363,20 @@ const setFormatWithClass = ({
 				value,
 				isList,
 				multiFormatObj,
+				isHover,
 			}));
 
 	const {
 		typography: newTypography,
 		content: newContent,
 		formatValue: newFormatValue,
-	} = flatFormatsWithClass(
-		{
-			typography: preformattedTypography,
-			content: preformattedContent,
-			formatValue: preformattedFormatValue,
-		},
-		isList
-	);
+	} = flatFormatsWithClass({
+		typography: preformattedTypography,
+		content: preformattedContent,
+		formatValue: preformattedFormatValue,
+		isHover,
+		isList,
+	});
 
 	return {
 		typography: newTypography,

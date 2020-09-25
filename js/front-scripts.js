@@ -15,14 +15,20 @@ motionElems.forEach(function (elem) {
 	if (hoverData !== null) {
 		if ('type' in hoverData) {
 			const hoverElem = document.querySelector(
-				'.maxi-motion-effect-' + motionID + ''
+				'.maxi-motion-effect-' + motionID + ' .maxi-block-hover-wrapper'
 			);
+
 			hoverElem.style.overflow = 'hidden';
+			hoverElem.style.position = 'relative';
 			const hoverElemAct = document.querySelector(
-				'.maxi-motion-effect-' + motionID + ' .maxi-block-hover-element'
+				'.maxi-motion-effect-' +
+					motionID +
+					' .maxi-block-hover-wrapper > img'
 			);
 			const hoverElemDetails = document.querySelector(
-				'.maxi-motion-effect-' + motionID + ' .maxi-hover-details'
+				'.maxi-motion-effect-' +
+					motionID +
+					' .maxi-block-hover-wrapper > .maxi-hover-details'
 			);
 			const hoverElemHeight = hoverElemAct.clientHeight;
 			const hoverElemWidth = hoverElemAct.clientWidth;

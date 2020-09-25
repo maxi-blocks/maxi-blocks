@@ -17,7 +17,6 @@ import {
 	BoxShadowControl,
 	FullSizeControl,
 	SettingTabsControl,
-	SizeControl,
 	__experimentalZIndexControl,
 	__experimentalResponsiveSelector,
 	__experimentalResponsiveControl,

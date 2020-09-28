@@ -764,7 +764,7 @@ const BackgroundControl = props => {
 													'Scroll',
 													'maxi-blocks'
 												),
-												value: __('scroll'),
+												value: 'scroll',
 											},
 											{
 												label: __(

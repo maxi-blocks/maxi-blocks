@@ -1,0 +1,23 @@
+.toolbar-image-size-buttons {
+	display: flex;
+	&__add-caption,
+	&__edit-image {
+		background: transparent;
+		border: 2px solid #5b5d68;
+		color: #fff;
+		display: block;
+		width: 100%;
+		margin: 0 4px;
+		transition: all 0.5s ease;
+		&:hover {
+			color: #fff;
+			border: 2px solid #fff;
+		}
+		&:first-of-type {
+			margin-left: 0;
+		}
+		&:last-of-type {
+			margin-right: 0;
+		}
+	}
+}

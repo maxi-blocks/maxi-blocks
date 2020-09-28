@@ -10,7 +10,7 @@ const size = {
 		'max-heightUnit': 'px',
 		'max-height': '',
 		heightUnit: 'px',
-		height: 20,
+		height: 100,
 		'min-heightUnit': 'px',
 		'min-height': '',
 	},

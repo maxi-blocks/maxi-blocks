@@ -1418,7 +1418,7 @@ export const __experimentalDisplay = {
 export const __experimentalHover = {
 	label: 'Hover Effects',
 	settings: {
-		type: 'zoom-in',
+		type: 'none',
 		effectType: 'fade',
 		duration: 1,
 	},

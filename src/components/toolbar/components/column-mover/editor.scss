@@ -1,0 +1,15 @@
+.toolbar-item-move__horizontally {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 5px 0 5px !important;
+
+	.components-button {
+		padding: 0;
+		display: inline-block;
+		svg {
+			width: 11px !important;
+			height: 11px !important;
+		}
+	}
+}

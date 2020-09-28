@@ -38,7 +38,9 @@ class edit extends MaxiBlock {
 		let response = {
 			[uniqueID]: this.getNormalObject,
 			[`${uniqueID}:hover`]: this.getHoverObject,
-			[`${uniqueID} > hr.maxi-divider-block__divider`]: this
+			[`${uniqueID}:hover hr.maxi-divider-block__divider`]: this
+				.getDividerHoverObject,
+			[`${uniqueID} hr.maxi-divider-block__divider`]: this
 				.getDividerObject,
 		};
 
@@ -56,7 +58,6 @@ class edit extends MaxiBlock {
 			lineHorizontal,
 			linesAlign,
 			opacity,
-			boxShadow,
 			size,
 			padding,
 			margin,
@@ -67,7 +68,6 @@ class edit extends MaxiBlock {
 		} = this.props.attributes;
 
 		const response = {
-			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
 			size: { ...JSON.parse(size) },
 			padding: { ...JSON.parse(padding) },
 			margin: { ...JSON.parse(margin) },
@@ -104,23 +104,33 @@ class edit extends MaxiBlock {
 	}
 
 	get getHoverObject() {
-		const { opacityHover, boxShadowHover } = this.props.attributes;
+		const { opacityHover } = this.props.attributes;
 
 		const response = {
-			boxShadowHover: {
-				...getBoxShadowObject(JSON.parse(boxShadowHover)),
-			},
 			opacityHover: { ...JSON.parse(opacityHover) },
 		};
 
 		return response;
 	}
 
-	get getDividerObject() {
-		const { divider } = this.props.attributes;
+	get getDividerHoverObject() {
+		const { boxShadowHover } = this.props.attributes;
 
 		const response = {
+			boxShadowHover: {
+				...getBoxShadowObject(JSON.parse(boxShadowHover)),
+			},
+		};
+
+		return response;
+	}
+
+	get getDividerObject() {
+		const { divider, boxShadow } = this.props.attributes;
+		const response = {
+			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
 			divider: { ...JSON.parse(divider) },
+			opacity: { ...JSON.parse(divider).opacity },
 		};
 
 		return response;
@@ -165,6 +175,11 @@ class edit extends MaxiBlock {
 			<Inspector {...this.props} />,
 			<__experimentalToolbar {...this.props} />,
 			<ResizableBox
+				size={{
+					width: '100%',
+					height:
+						value[deviceType].height + value[deviceType].heightUnit,
+				}}
 				className={classnames(
 					'maxi-block__resizer',
 					'maxi-divider-block__resizer',

@@ -372,7 +372,7 @@ export const padding = {
 		'padding-top': 10,
 		'padding-right': 20,
 		'padding-bottom': 10,
-		'padding-left': 10,
+		'padding-left': 20,
 		sync: false,
 		unit: 'px',
 	},

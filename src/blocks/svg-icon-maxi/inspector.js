@@ -69,7 +69,6 @@ const Inspector = props => {
 			display,
 			motion,
 			transform,
-			clipPath,
 			hover,
 			stroke,
 			defaultStroke,
@@ -636,77 +635,30 @@ const Inspector = props => {
 						label: __('Advanced', 'maxi-blocks'),
 						content: (
 							<Fragment>
-								<div className='maxi-tab-content__box'>
-									{deviceType === 'general' && (
-										<Fragment>
-											<TextControl
-												label={__(
-													'Additional CSS Classes',
-													'maxi-blocks'
-												)}
-												className='maxi-additional__css-classes'
-												value={extraClassName}
-												onChange={extraClassName =>
-													setAttributes({
-														extraClassName,
-													})
-												}
-											/>
-										</Fragment>
-									)}
-									<__experimentalZIndexControl
-										zIndex={zIndex}
-										defaultZIndex={getDefaultProp(
-											clientId,
-											'zIndex'
-										)}
-										onChange={zIndex =>
-											setAttributes({ zIndex })
-										}
-										breakpoint={deviceType}
-									/>
-									{deviceType != 'general' && (
-										<__experimentalResponsiveControl
-											breakpoints={breakpoints}
-											defaultBreakpoints={getDefaultProp(
-												clientId,
-												'breakpoints'
-											)}
-											onChange={breakpoints =>
-												setAttributes({ breakpoints })
-											}
-											breakpoint={deviceType}
-										/>
-									)}
-									<__experimentalPositionControl
-										position={position}
-										defaultPosition={getDefaultProp(
-											clientId,
-											'position'
-										)}
-										onChange={position =>
-											setAttributes({ position })
-										}
-										breakpoint={deviceType}
-									/>
-									<__experimentalDisplayControl
-										display={display}
-										onChange={display =>
-											setAttributes({ display })
-										}
-										breakpoint={deviceType}
-										defaultDisplay='flex'
-									/>
-									<__experimentalClipPath
-										clipPath={clipPath}
-										onChange={clipPath =>
-											setAttributes({ clipPath })
-										}
-									/>
-								</div>
 								<AccordionControl
 									isPrimary
 									items={[
+										deviceType === 'general' && {
+											label: __(
+												'Custom Classes',
+												'maxi-blocks'
+											),
+											content: (
+												<TextControl
+													label={__(
+														'Additional CSS Classes',
+														'maxi-blocks'
+													)}
+													className='maxi-additional__css-classes'
+													value={extraClassName}
+													onChange={extraClassName =>
+														setAttributes({
+															extraClassName,
+														})
+													}
+												/>
+											),
+										},
 										{
 											label: __(
 												'Motion Effects',
@@ -775,6 +727,80 @@ const Inspector = props => {
 														})
 													}
 													uniqueID={uniqueID}
+													breakpoint={deviceType}
+												/>
+											),
+										},
+										{
+											label: __('Display', 'maxi-blocks'),
+											content: (
+												<__experimentalDisplayControl
+													display={display}
+													onChange={display =>
+														setAttributes({
+															display,
+														})
+													}
+													breakpoint={deviceType}
+												/>
+											),
+										},
+										{
+											label: __(
+												'Position',
+												'maxi-blocks'
+											),
+											content: (
+												<__experimentalPositionControl
+													position={position}
+													defaultPosition={getDefaultProp(
+														clientId,
+														'position'
+													)}
+													onChange={position =>
+														setAttributes({
+															position,
+														})
+													}
+													breakpoint={deviceType}
+												/>
+											),
+										},
+										deviceType !== 'general' && {
+											label: __(
+												'Breakpoint',
+												'maxi-blocks'
+											),
+											content: (
+												<__experimentalResponsiveControl
+													breakpoints={breakpoints}
+													defaultBreakpoints={getDefaultProp(
+														clientId,
+														'breakpoints'
+													)}
+													onChange={breakpoints =>
+														setAttributes({
+															breakpoints,
+														})
+													}
+													breakpoint={deviceType}
+												/>
+											),
+										},
+										{
+											label: __('Z-index', 'maxi-blocks'),
+											content: (
+												<__experimentalZIndexControl
+													zIndex={zIndex}
+													defaultZIndex={getDefaultProp(
+														clientId,
+														'zIndex'
+													)}
+													onChange={zIndex =>
+														setAttributes({
+															zIndex,
+														})
+													}
 													breakpoint={deviceType}
 												/>
 											),

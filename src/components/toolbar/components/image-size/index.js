@@ -120,17 +120,17 @@ const ImageSize = props => {
 						onChange={width => {
 							isNil(width)
 								? (sizeValue.general.width =
-									defaultSizeValue.general.width)
+										defaultSizeValue.general.width)
 								: (sizeValue.general.width = width);
 
 							onChangeSize(JSON.stringify(sizeValue));
 						}}
 						allowReset
-					// initialPosition={}
+						// initialPosition={}
 					/>
-					<div className='toolbar-item__popover__dropdown-options'>
+					<div className='toolbar-image-size-buttons'>
 						<Button
-							className='toolbar-item__popover__dropdown-options__button'
+							className='toolbar-image-size-buttons__edit-image'
 							onClick={() =>
 								openGeneralSidebar('edit-post/block').then(() =>
 									openSidebar('width height')
@@ -140,7 +140,7 @@ const ImageSize = props => {
 							Edit Image
 						</Button>
 						<Button
-							className='toolbar-item__popover__dropdown-options__button'
+							className='toolbar-image-size-buttons__add-caption'
 							onClick={() =>
 								openGeneralSidebar('edit-post/block').then(() =>
 									openSidebar('caption')

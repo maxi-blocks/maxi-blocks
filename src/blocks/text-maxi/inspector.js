@@ -4,7 +4,7 @@
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
 const { Fragment } = wp.element;
-const { TextControl, SelectControl } = wp.components;
+const { TextControl, RadioControl, SelectControl } = wp.components;
 
 /**
  * Internal dependencies
@@ -515,36 +515,42 @@ const Inspector = props => {
 											content: (
 												<Fragment>
 													{isFirstOnHierarchy && (
-														<SelectControl
-															label={__(
-																'Full Width',
-																'maxi-blocks'
-															)}
-															value={fullWidth}
-															options={[
-																{
-																	label: __(
-																		'No',
-																		'maxi-blocks'
-																	),
-																	value:
-																		'normal',
-																},
-																{
-																	label: __(
-																		'Yes',
-																		'maxi-blocks'
-																	),
-																	value:
-																		'full',
-																},
-															]}
-															onChange={fullWidth =>
-																setAttributes({
-																	fullWidth,
-																})
-															}
-														/>
+														<div className='maxi-fancy-radio-control'>
+															<RadioControl
+																label={__(
+																	'Full Width',
+																	'maxi-blocks'
+																)}
+																selected={
+																	fullWidth
+																}
+																options={[
+																	{
+																		label: __(
+																			'No',
+																			'maxi-blocks'
+																		),
+																		value:
+																			'normal',
+																	},
+																	{
+																		label: __(
+																			'Yes',
+																			'maxi-blocks'
+																		),
+																		value:
+																			'full',
+																	},
+																]}
+																onChange={fullWidth =>
+																	setAttributes(
+																		{
+																			fullWidth,
+																		}
+																	)
+																}
+															/>
+														</div>
 													)}
 													<FullSizeControl
 														size={size}
@@ -675,70 +681,30 @@ const Inspector = props => {
 						label: __('Advanced', 'maxi-blocks'),
 						content: (
 							<Fragment>
-								<div className='maxi-tab-content__box'>
-									{deviceType === 'general' && (
-										<Fragment>
-											<TextControl
-												label={__(
-													'Additional CSS Classes',
-													'maxi-blocks'
-												)}
-												className='maxi-additional__css-classes'
-												value={extraClassName}
-												onChange={extraClassName =>
-													setAttributes({
-														extraClassName,
-													})
-												}
-											/>
-										</Fragment>
-									)}
-									<__experimentalZIndexControl
-										zIndex={zIndex}
-										defaultZIndex={getDefaultProp(
-											clientId,
-											'zIndex'
-										)}
-										onChange={zIndex =>
-											setAttributes({ zIndex })
-										}
-										breakpoint={deviceType}
-									/>
-									{deviceType !== 'general' && (
-										<__experimentalResponsiveControl
-											breakpoints={breakpoints}
-											defaultBreakpoints={getDefaultProp(
-												clientId,
-												'breakpoints'
-											)}
-											onChange={breakpoints =>
-												setAttributes({ breakpoints })
-											}
-											breakpoint={deviceType}
-										/>
-									)}
-									<__experimentalPositionControl
-										position={position}
-										defaultPosition={getDefaultProp(
-											clientId,
-											'position'
-										)}
-										onChange={position =>
-											setAttributes({ position })
-										}
-										breakpoint={deviceType}
-									/>
-									<__experimentalDisplayControl
-										display={display}
-										onChange={display =>
-											setAttributes({ display })
-										}
-										breakpoint={deviceType}
-									/>
-								</div>
 								<AccordionControl
 									isPrimary
 									items={[
+										deviceType === 'general' && {
+											label: __(
+												'Custom Classes',
+												'maxi-blocks'
+											),
+											content: (
+												<TextControl
+													label={__(
+														'Additional CSS Classes',
+														'maxi-blocks'
+													)}
+													className='maxi-additional__css-classes'
+													value={extraClassName}
+													onChange={extraClassName =>
+														setAttributes({
+															extraClassName,
+														})
+													}
+												/>
+											),
+										},
 										{
 											label: __(
 												'Motion Effects',
@@ -789,6 +755,80 @@ const Inspector = props => {
 														})
 													}
 													uniqueID={uniqueID}
+													breakpoint={deviceType}
+												/>
+											),
+										},
+										{
+											label: __('Display', 'maxi-blocks'),
+											content: (
+												<__experimentalDisplayControl
+													display={display}
+													onChange={display =>
+														setAttributes({
+															display,
+														})
+													}
+													breakpoint={deviceType}
+												/>
+											),
+										},
+										{
+											label: __(
+												'Position',
+												'maxi-blocks'
+											),
+											content: (
+												<__experimentalPositionControl
+													position={position}
+													defaultPosition={getDefaultProp(
+														clientId,
+														'position'
+													)}
+													onChange={position =>
+														setAttributes({
+															position,
+														})
+													}
+													breakpoint={deviceType}
+												/>
+											),
+										},
+										deviceType !== 'general' && {
+											label: __(
+												'Breakpoint',
+												'maxi-blocks'
+											),
+											content: (
+												<__experimentalResponsiveControl
+													breakpoints={breakpoints}
+													defaultBreakpoints={getDefaultProp(
+														clientId,
+														'breakpoints'
+													)}
+													onChange={breakpoints =>
+														setAttributes({
+															breakpoints,
+														})
+													}
+													breakpoint={deviceType}
+												/>
+											),
+										},
+										{
+											label: __('Z-index', 'maxi-blocks'),
+											content: (
+												<__experimentalZIndexControl
+													zIndex={zIndex}
+													defaultZIndex={getDefaultProp(
+														clientId,
+														'zIndex'
+													)}
+													onChange={zIndex =>
+														setAttributes({
+															zIndex,
+														})
+													}
 													breakpoint={deviceType}
 												/>
 											),

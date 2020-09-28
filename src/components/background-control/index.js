@@ -33,6 +33,8 @@ import {
 	backgroundGradient,
 } from '../../icons';
 
+import './editor.scss';
+
 /**
  * Components
  */

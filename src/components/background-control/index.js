@@ -1087,8 +1087,20 @@ const BackgroundControl = props => {
 											label={__('Loop', 'maxi-blocks')}
 											value={value.videoOptions.loop}
 											options={[
-												{ label: __('No'), value: 0 },
-												{ label: __('Yes'), value: 1 },
+												{
+													label: __(
+														'No',
+														'maxi-blocks'
+													),
+													value: 0,
+												},
+												{
+													label: __(
+														'Yes',
+														'maxi-blocks'
+													),
+													value: 1,
+												},
 											]}
 											onChange={val => {
 												value.videoOptions.loop = val;

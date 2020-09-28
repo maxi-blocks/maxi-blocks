@@ -116,7 +116,7 @@ const generateDefaultColumns = (columns, gap1 = 2.5, gap2 = 2.1) => {
 					unit: '',
 				},
 				m: {
-					'margin-top': '',
+					'margin-top': 1,
 					'margin-right': '',
 					'margin-bottom': '',
 					'margin-left': '',
@@ -124,7 +124,7 @@ const generateDefaultColumns = (columns, gap1 = 2.5, gap2 = 2.1) => {
 					unit: '',
 				},
 				s: {
-					'margin-top': i !== 0 ? 1 : '',
+					'margin-top': '',
 					'margin-right': '',
 					'margin-bottom': '',
 					'margin-left': '',

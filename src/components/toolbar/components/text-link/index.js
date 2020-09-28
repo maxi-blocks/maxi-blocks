@@ -35,8 +35,11 @@ import { toolbarLink } from '../../../../icons';
 const Link = props => {
 	const { blockName, onChange, isList, formatValue, typography } = props;
 
+	if (blockName !== 'maxi-blocks/text-maxi') return null;
+
 	const formatName = 'maxi-blocks/text-link';
 
+	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const { formatOptions } = useSelect(() => {
 		const formatOptions = getActiveFormat(formatValue, formatName);
 
@@ -44,8 +47,6 @@ const Link = props => {
 			formatOptions,
 		};
 	}, [getActiveFormat, formatValue, formatName]);
-
-	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
 	const typographyValue = !isObject(typography)
 		? JSON.parse(typography)

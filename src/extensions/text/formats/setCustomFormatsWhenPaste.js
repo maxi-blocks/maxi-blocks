@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { removeFormat } = wp.richText;
+const { removeFormat, getActiveFormat } = wp.richText;
 
 /**
  * Internal dependencies
@@ -12,40 +12,40 @@ import __experimentalSetFormatWithClass from './setFormatWithClass';
 /**
  * External dependencies
  */
-import { chunk } from 'lodash';
+import { isNil, chunk } from 'lodash';
 
 const isFormattedWithType = (formatValue, type) => {
-	return formatValue.formats.some(formatEl => {
-		return formatEl.some(format => {
-			return format.type === type;
-		});
-	});
+	return getActiveFormat(
+		{ ...formatValue, start: 0, end: formatValue.formats.length },
+		type
+	);
 };
 
 const getInstancePositions = (formatValue, formatName) => {
-	return chunk(
-		formatValue.formats
-			.map((formatEl, i) => {
-				if (
-					formatEl.some(format => {
-						return format.type === formatName;
-					})
-				)
-					return i;
-
-				return null;
+	const locatedInstances = formatValue.formats.map((formatEl, i) => {
+		if (
+			formatEl.some(format => {
+				return format.type === formatName;
 			})
-			.filter((current, i, array) => {
-				const prev = array[i - 1];
-				const next = array[i + 1];
+		)
+			return i;
 
-				return (
-					(!prev && current + 1 === next) ||
-					(!next && current - 1 === prev)
-				);
-			}),
-		2
+		return null;
+	});
+
+	const filteredLocatedInstances = locatedInstances.filter(
+		(current, i, array) => {
+			const prev = array[i - 1];
+			const next = array[i + 1];
+
+			return (
+				(isNil(prev) && current + 1 === next) ||
+				(isNil(next) && current - 1 === prev)
+			);
+		}
 	);
+
+	return chunk(filteredLocatedInstances, 2);
 };
 
 const setLinkFormats = ({ formatValue, typography, isList }) => {

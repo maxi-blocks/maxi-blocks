@@ -158,7 +158,9 @@ const generateNewCustomFormat = ({
 	});
 
 	typography.customFormats[formatClassName] = {
-		...typography.customFormats[currentClassName],
+		...((currentClassName && {
+			...typography.customFormats[currentClassName],
+		}) || { ...defaultCustomFormat }),
 	};
 
 	const { typography: newTypography } = updateCustomFormat({
@@ -196,27 +198,25 @@ const mergeNewFormat = ({
 		});
 	});
 
-	const {
-		typography: newTypography,
-		formatValue: newFormatValue,
-	} = isFullFormat
-		? updateCustomFormat({
-				typography,
-				formatValue,
-				currentClassName,
-				breakpoint,
-				value,
-				isHover,
-		  })
-		: generateNewCustomFormat({
-				typography,
-				formatValue,
-				currentClassName,
-				formatClassName,
-				breakpoint,
-				value,
-				isHover,
-		  });
+	const { typography: newTypography, formatValue: newFormatValue } =
+		currentClassName && isFullFormat
+			? updateCustomFormat({
+					typography,
+					formatValue,
+					currentClassName,
+					breakpoint,
+					value,
+					isHover,
+			  })
+			: generateNewCustomFormat({
+					typography,
+					formatValue,
+					currentClassName,
+					formatClassName,
+					breakpoint,
+					value,
+					isHover,
+			  });
 
 	const newContent = applyCustomFormat({
 		formatValue: newFormatValue || formatValue,

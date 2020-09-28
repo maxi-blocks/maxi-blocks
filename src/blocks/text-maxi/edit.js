@@ -4,7 +4,8 @@
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
 const { createBlock } = wp.blocks;
-const { dispatch, select, withSelect } = wp.data;
+const { dispatch, select, withSelect, withDispatch } = wp.data;
+const { compose } = wp.compose;
 const { __unstableIndentListItems, __unstableOutdentListItems } = wp.richText;
 const { __experimentalBlock, RichText, RichTextShortcut } = wp.blockEditor;
 
@@ -28,7 +29,6 @@ import {
 } from '../../components';
 import {
 	__experimentalGetFormatValue,
-	__experimentalGetFormatClassName,
 	__experimentalSetCustomFormatsWhenPaste,
 } from '../../extensions/text/formats';
 
@@ -182,7 +182,6 @@ class edit extends MaxiBlock {
 			setAttributes,
 			onRemove,
 			clientId,
-			formatValue,
 		} = this.props;
 
 		const name = 'maxi-blocks/text-maxi';
@@ -227,7 +226,8 @@ class edit extends MaxiBlock {
 					case 'core/list':
 						newBlock = createBlock(name, {
 							...this.props.attributes,
-							textLevel: 'ul',
+							textLevel: block.attributes.ordered ? 'ol' : 'ul',
+							typeOfList: block.attributes.ordered ? 'ol' : 'ul',
 							content: block.attributes.values,
 							isList: true,
 						});
@@ -336,24 +336,6 @@ class edit extends MaxiBlock {
 				}
 			}
 		};
-
-		/**
-		 * As Gutenberg doesn't allow to modify pasted content, let's do some cheats
-		 * and add some coding manually
-		 * This next script will check if there is any format directly related with
-		 * native format 'core/link' and if it's so, will format it in Maxi Blocks way
-		 */
-		const cleanCustomProps = __experimentalSetCustomFormatsWhenPaste({
-			formatValue,
-			typography: JSON.parse(typography),
-			isList,
-		});
-
-		if (cleanCustomProps)
-			setAttributes({
-				typography: JSON.stringify(cleanCustomProps.typography),
-				content: cleanCustomProps.content,
-			});
 
 		return [
 			<Inspector {...this.props} />,
@@ -492,12 +474,14 @@ class edit extends MaxiBlock {
 	}
 }
 
-export default withSelect((select, ownProps) => {
+const editSelect = withSelect((select, ownProps) => {
 	const {
-		attributes: { content, isList, typeOfList },
+		attributes: { content, isList, typeOfList, node },
 		clientId,
 	} = ownProps;
-	const node = document.getElementById(`block-${clientId}`);
+
+	const selectedNode =
+		(!node && document.getElementById(`block-${clientId}`)) || node;
 
 	const formatElement = {
 		element: node,
@@ -507,14 +491,6 @@ export default withSelect((select, ownProps) => {
 		__unstableIsEditableTree: true,
 	};
 	const formatValue = __experimentalGetFormatValue(formatElement);
-	const currentColorClassName = __experimentalGetFormatClassName(
-		formatValue,
-		'maxi-blocks/text-color'
-	);
-	const currentUnderlineClassName = __experimentalGetFormatClassName(
-		formatValue,
-		'maxi-blocks/text-underline'
-	);
 
 	let deviceType = select(
 		'core/edit-post'
@@ -522,10 +498,36 @@ export default withSelect((select, ownProps) => {
 	deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
 
 	return {
-		node,
+		node: selectedNode,
 		formatValue,
 		deviceType,
-		currentColorClassName,
-		currentUnderlineClassName,
 	};
-})(edit);
+});
+
+const editDispatch = withDispatch((dispatch, ownProps) => {
+	const {
+		attributes: { isList, typography },
+		setAttributes,
+		formatValue,
+	} = ownProps;
+
+	/**
+	 * As Gutenberg doesn't allow to modify pasted content, let's do some cheats
+	 * and add some coding manually
+	 * This next script will check if there is any format directly related with
+	 * native format 'core/link' and if it's so, will format it in Maxi Blocks way
+	 */
+	const cleanCustomProps = __experimentalSetCustomFormatsWhenPaste({
+		formatValue,
+		typography: JSON.parse(typography),
+		isList,
+	});
+
+	if (cleanCustomProps)
+		setAttributes({
+			typography: JSON.stringify(cleanCustomProps.typography),
+			content: cleanCustomProps.content,
+		});
+});
+
+export default compose(editSelect, editDispatch)(edit);

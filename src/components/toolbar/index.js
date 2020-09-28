@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 const { Popover } = wp.components;
-const { useSelect } = wp.data;
 const { Fragment, useEffect, useState } = wp.element;
 
 /**
@@ -108,9 +107,17 @@ const MaxiToolbar = props => {
 		name,
 		setAttributes,
 		formatValue,
-		node,
+		// node,
 		deviceType,
 	} = props;
+
+	const [anchorRef, setAnchorRef] = useState(
+		document.getElementById(`block-${clientId}`)
+	);
+
+	useEffect(() => {
+		setAnchorRef(document.getElementById(`block-${clientId}`));
+	});
 
 	if (!allowedBlocks.includes(name)) return null;
 
@@ -176,13 +183,13 @@ const MaxiToolbar = props => {
 
 	return (
 		<Fragment>
-			{isSelected && node && (
+			{isSelected && anchorRef && (
 				<Popover
 					noArrow
 					animate={false}
 					position='top center right'
 					focusOnMount={false}
-					node={node}
+					anchorRef={anchorRef}
 					className='maxi-toolbar__popover'
 					uniqueid={uniqueID}
 					__unstableSticky
@@ -237,7 +244,7 @@ const MaxiToolbar = props => {
 								'typography'
 							)}
 							onChange={obj => setAttributes(obj)}
-							node={node}
+							node={anchorRef}
 							content={content}
 							breakpoint={deviceType}
 							isList={isList}
@@ -250,7 +257,7 @@ const MaxiToolbar = props => {
 							content={content}
 							onChange={obj => setAttributes(obj)}
 							breakpoint={deviceType}
-							node={node}
+							node={anchorRef}
 							isList={isList}
 							typeOfList={typeOfList}
 							formatValue={formatValue}
@@ -322,7 +329,7 @@ const MaxiToolbar = props => {
 							isList={isList}
 							typeOfList={typeOfList}
 							onChange={obj => setAttributes(obj)}
-							node={node}
+							node={anchorRef}
 						/>
 						<BackgroundColor
 							blockName={name}

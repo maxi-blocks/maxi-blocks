@@ -1050,9 +1050,8 @@ const BackgroundControl = props => {
 											]}
 											onChange={val => {
 												value.videoOptions.autoplay = val;
-												if (val === '1') {
+												if (Number(val))
 													value.videoOptions.muted = 1;
-												}
 												onChange(JSON.stringify(value));
 											}}
 										/>

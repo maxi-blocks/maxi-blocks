@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 const { __, sprintf } = wp.i18n;
-const { Fragment, useRef } = wp.element;
+const { Fragment, useRef, useState, useCallback } = wp.element;
 const { RangeControl, SelectControl, BaseControl, Button } = wp.components;
 
 /**
@@ -21,6 +21,9 @@ import { reset } from '../../icons';
  * Component
  */
 const SizeControl = props => {
+	const [, updateState] = useState();
+	const forceUpdate = useCallback(() => updateState({}), []);
+
 	const {
 		label,
 		className,
@@ -148,7 +151,7 @@ const SizeControl = props => {
 					max={max}
 					step={step}
 					withInputField={false}
-					initialPosition={initial}
+					initialPosition={value || initial}
 				/>
 			) : (
 				<RangeControl
@@ -159,7 +162,7 @@ const SizeControl = props => {
 					max={unit ? minMaxSettings[unit].max : null}
 					step={step}
 					withInputField={false}
-					initialPosition={initial}
+					initialPosition={value || initial}
 				/>
 			)}
 		</BaseControl>

@@ -382,19 +382,31 @@ const BackgroundControl = props => {
 										}
 										options={[
 											{
-												label: __('Auto'),
+												label: __(
+													'Auto',
+													'maxi-blocks'
+												),
 												value: 'auto',
 											},
 											{
-												label: __('Cover'),
+												label: __(
+													'Cover',
+													'maxi-blocks'
+												),
 												value: 'cover',
 											},
 											{
-												label: __('Contain'),
+												label: __(
+													'Contain',
+													'maxi-blocks'
+												),
 												value: 'contain',
 											},
 											{
-												label: __('Custom'),
+												label: __(
+													'Custom',
+													'maxi-blocks'
+												),
 												value: 'custom',
 											},
 										]}
@@ -438,27 +450,45 @@ const BackgroundControl = props => {
 										}
 										options={[
 											{
-												label: __('Repeat'),
+												label: __(
+													'Repeat',
+													'maxi-blocks'
+												),
 												value: 'repeat',
 											},
 											{
-												label: __('No repeat'),
+												label: __(
+													'No repeat',
+													'maxi-blocks'
+												),
 												value: 'no-repeat',
 											},
 											{
-												label: __('Repeat X'),
+												label: __(
+													'Repeat X',
+													'maxi-blocks'
+												),
 												value: 'repeat-x',
 											},
 											{
-												label: __('Repeat Y'),
+												label: __(
+													'Repeat Y',
+													'maxi-blocks'
+												),
 												value: 'repeat-y',
 											},
 											{
-												label: __('Space'),
+												label: __(
+													'Space',
+													'maxi-blocks'
+												),
 												value: 'space',
 											},
 											{
-												label: __('Round'),
+												label: __(
+													'Round',
+													'maxi-blocks'
+												),
 												value: 'round',
 											},
 										]}
@@ -480,43 +510,73 @@ const BackgroundControl = props => {
 										}
 										options={[
 											{
-												label: __('Left top'),
+												label: __(
+													'Left top',
+													'maxi-blocks'
+												),
 												value: 'left top',
 											},
 											{
-												label: __('Left center'),
+												label: __(
+													'Left center',
+													'maxi-blocks'
+												),
 												value: 'left center',
 											},
 											{
-												label: __('Left bottom'),
+												label: __(
+													'Left bottom',
+													'maxi-blocks'
+												),
 												value: 'left bottom',
 											},
 											{
-												label: __('Right top'),
+												label: __(
+													'Right top',
+													'maxi-blocks'
+												),
 												value: 'right top',
 											},
 											{
-												label: __('Right center'),
+												label: __(
+													'Right center',
+													'maxi-blocks'
+												),
 												value: 'right center',
 											},
 											{
-												label: __('Right bottom'),
+												label: __(
+													'Right bottom',
+													'maxi-blocks'
+												),
 												value: 'right bottom',
 											},
 											{
-												label: __('Center top'),
+												label: __(
+													'Center top',
+													'maxi-blocks'
+												),
 												value: 'center top',
 											},
 											{
-												label: __('Center center'),
+												label: __(
+													'Center center',
+													'maxi-blocks'
+												),
 												value: 'center center',
 											},
 											{
-												label: __('Center bottom'),
+												label: __(
+													'Center bottom',
+													'maxi-blocks'
+												),
 												value: 'center bottom',
 											},
 											{
-												label: __('Custom'),
+												label: __(
+													'Custom',
+													'maxi-blocks'
+												),
 												value: 'custom',
 											},
 										]}
@@ -623,15 +683,24 @@ const BackgroundControl = props => {
 										}
 										options={[
 											{
-												label: __('Padding'),
+												label: __(
+													'Padding',
+													'maxi-blocks'
+												),
 												value: 'padding-box',
 											},
 											{
-												label: __('Border'),
+												label: __(
+													'Border',
+													'maxi-blocks'
+												),
 												value: 'border-box',
 											},
 											{
-												label: __('Content'),
+												label: __(
+													'Content',
+													'maxi-blocks'
+												),
 												value: 'content-box',
 											},
 										]}
@@ -652,15 +721,24 @@ const BackgroundControl = props => {
 										}
 										options={[
 											{
-												label: __('Border'),
+												label: __(
+													'Border',
+													'maxi-blocks'
+												),
 												value: 'border-box',
 											},
 											{
-												label: __('Padding'),
+												label: __(
+													'Padding',
+													'maxi-blocks'
+												),
 												value: 'padding-box',
 											},
 											{
-												label: __('Content'),
+												label: __(
+													'Content',
+													'maxi-blocks'
+												),
 												value: 'content-box',
 											},
 										]}
@@ -682,15 +760,24 @@ const BackgroundControl = props => {
 										}
 										options={[
 											{
-												label: __('Scroll'),
+												label: __(
+													'Scroll',
+													'maxi-blocks'
+												),
 												value: __('scroll'),
 											},
 											{
-												label: __('Fixed'),
+												label: __(
+													'Fixed',
+													'maxi-blocks'
+												),
 												value: 'fixed',
 											},
 											{
-												label: __('Local'),
+												label: __(
+													'Local',
+													'maxi-blocks'
+												),
 												value: 'local',
 											},
 										]}
@@ -844,23 +931,38 @@ const BackgroundControl = props => {
 											value={value.videoOptions.fill}
 											options={[
 												{
-													label: __('Cover'),
+													label: __(
+														'Cover',
+														'maxi-blocks'
+													),
 													value: 'cover',
 												},
 												{
-													label: __('Contain'),
+													label: __(
+														'Contain',
+														'maxi-blocks'
+													),
 													value: 'contain',
 												},
 												{
-													label: __('Fill'),
+													label: __(
+														'Fill',
+														'maxi-blocks'
+													),
 													value: 'fill',
 												},
 												{
-													label: __('Scale-down'),
+													label: __(
+														'Scale-down',
+														'maxi-blocks'
+													),
 													value: 'scale-down',
 												},
 												{
-													label: __('None'),
+													label: __(
+														'None',
+														'maxi-blocks'
+													),
 													value: 'none',
 												},
 											]}
@@ -877,27 +979,45 @@ const BackgroundControl = props => {
 											value={value.videoOptions.position}
 											options={[
 												{
-													label: __('Unset'),
+													label: __(
+														'Unset',
+														'maxi-blocks'
+													),
 													value: 'unset',
 												},
 												{
-													label: __('Top'),
+													label: __(
+														'Top',
+														'maxi-blocks'
+													),
 													value: 'top',
 												},
 												{
-													label: __('Right'),
+													label: __(
+														'Right',
+														'maxi-blocks'
+													),
 													value: 'right',
 												},
 												{
-													label: __('Bottom'),
+													label: __(
+														'Bottom',
+														'maxi-blocks'
+													),
 													value: 'bottom',
 												},
 												{
-													label: __('Left'),
+													label: __(
+														'Left',
+														'maxi-blocks'
+													),
 													value: 'left',
 												},
 												{
-													label: __('Center'),
+													label: __(
+														'Center',
+														'maxi-blocks'
+													),
 													value: 'center',
 												},
 											]}
@@ -913,8 +1033,20 @@ const BackgroundControl = props => {
 											)}
 											value={value.videoOptions.autoplay}
 											options={[
-												{ label: __('No'), value: 0 },
-												{ label: __('Yes'), value: 1 },
+												{
+													label: __(
+														'No',
+														'maxi-blocks'
+													),
+													value: 0,
+												},
+												{
+													label: __(
+														'Yes',
+														'maxi-blocks'
+													),
+													value: 1,
+												},
 											]}
 											onChange={val => {
 												value.videoOptions.autoplay = val;
@@ -933,10 +1065,19 @@ const BackgroundControl = props => {
 											}
 											options={[
 												{
-													label: __('No'),
+													label: __(
+														'No',
+														'maxi-blocks'
+													),
 													value: 0,
 												},
-												{ label: __('Yes'), value: 1 },
+												{
+													label: __(
+														'Yes',
+														'maxi-blocks'
+													),
+													value: 1,
+												},
 											]}
 											onChange={val => {
 												value.videoOptions.muted = val;
@@ -960,15 +1101,24 @@ const BackgroundControl = props => {
 											value={value.videoOptions.muted}
 											options={[
 												{
-													label: __('MetaData'),
+													label: __(
+														'MetaData',
+														'maxi-blocks'
+													),
 													value: 'metadata',
 												},
 												{
-													label: __('Auto'),
+													label: __(
+														'Auto',
+														'maxi-blocks'
+													),
 													value: 'auto',
 												},
 												{
-													label: __('None'),
+													label: __(
+														'None',
+														'maxi-blocks'
+													),
 													value: 'none',
 												},
 											]}

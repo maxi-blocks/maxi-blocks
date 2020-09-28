@@ -288,7 +288,6 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 		);
 
 		const newTemplate = synchronizeBlocksWithTemplate([], template.content);
-		console.log(newTemplate);
 		dispatch('core/block-editor').replaceInnerBlocks(clientId, newTemplate);
 	};
 

@@ -309,6 +309,7 @@ const templates = {
 				name: '1-1-2',
 				icon: oneOneTwo,
 				sizes: [1 / 2, 1 / 2, 1],
+
 				content: generateDefaultColumns([1 / 2, 1 / 2, 1]),
 				attributes: {
 					horizontalAlign: 'space-between',

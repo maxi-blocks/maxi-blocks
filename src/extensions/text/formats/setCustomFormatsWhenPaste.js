@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { removeFormat, getActiveFormat } = wp.richText;
+const { removeFormat } = wp.richText;
 
 /**
  * Internal dependencies
@@ -15,10 +15,11 @@ import __experimentalSetFormatWithClass from './setFormatWithClass';
 import { isNil, chunk } from 'lodash';
 
 const isFormattedWithType = (formatValue, type) => {
-	return getActiveFormat(
-		{ ...formatValue, start: 0, end: formatValue.formats.length },
-		type
-	);
+	return formatValue.formats.some(formatEl => {
+		return formatEl.some(format => {
+			return format.type === type;
+		});
+	});
 };
 
 const getInstancePositions = (formatValue, formatName) => {

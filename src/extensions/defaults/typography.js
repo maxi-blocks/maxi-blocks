@@ -146,6 +146,31 @@ const DefaultTypography = {
 			'text-shadow': '',
 			'vertical-align': '',
 		},
+		textAlign: {
+			label: 'Alignment',
+			general: {
+				alignment: 'left',
+			},
+			xxl: {
+				alignment: '',
+			},
+			xl: {
+				alignment: '',
+			},
+			l: {
+				alignment: '',
+			},
+			m: {
+				alignment: '',
+			},
+			s: {
+				alignment: '',
+			},
+			xs: {
+				alignment: '',
+			},
+		},
+		customFormats: {},
 	},
 	link: {
 		label: 'Typography',
@@ -294,6 +319,31 @@ const DefaultTypography = {
 			'text-shadow': '',
 			'vertical-align': '',
 		},
+		textAlign: {
+			label: 'Alignment',
+			general: {
+				alignment: 'left',
+			},
+			xxl: {
+				alignment: '',
+			},
+			xl: {
+				alignment: '',
+			},
+			l: {
+				alignment: '',
+			},
+			m: {
+				alignment: '',
+			},
+			s: {
+				alignment: '',
+			},
+			xs: {
+				alignment: '',
+			},
+		},
+		customFormats: {},
 	},
 	h1: {
 		label: 'Typography',
@@ -442,6 +492,31 @@ const DefaultTypography = {
 			'text-shadow': '',
 			'vertical-align': '',
 		},
+		textAlign: {
+			label: 'Alignment',
+			general: {
+				alignment: 'left',
+			},
+			xxl: {
+				alignment: '',
+			},
+			xl: {
+				alignment: '',
+			},
+			l: {
+				alignment: '',
+			},
+			m: {
+				alignment: '',
+			},
+			s: {
+				alignment: '',
+			},
+			xs: {
+				alignment: '',
+			},
+		},
+		customFormats: {},
 	},
 	h2: {
 		label: 'Typography',
@@ -590,6 +665,31 @@ const DefaultTypography = {
 			'text-shadow': '',
 			'vertical-align': '',
 		},
+		textAlign: {
+			label: 'Alignment',
+			general: {
+				alignment: 'left',
+			},
+			xxl: {
+				alignment: '',
+			},
+			xl: {
+				alignment: '',
+			},
+			l: {
+				alignment: '',
+			},
+			m: {
+				alignment: '',
+			},
+			s: {
+				alignment: '',
+			},
+			xs: {
+				alignment: '',
+			},
+		},
+		customFormats: {},
 	},
 	h3: {
 		label: 'Typography',
@@ -738,6 +838,31 @@ const DefaultTypography = {
 			'text-shadow': '',
 			'vertical-align': '',
 		},
+		textAlign: {
+			label: 'Alignment',
+			general: {
+				alignment: 'left',
+			},
+			xxl: {
+				alignment: '',
+			},
+			xl: {
+				alignment: '',
+			},
+			l: {
+				alignment: '',
+			},
+			m: {
+				alignment: '',
+			},
+			s: {
+				alignment: '',
+			},
+			xs: {
+				alignment: '',
+			},
+		},
+		customFormats: {},
 	},
 	h4: {
 		label: 'Typography',
@@ -886,6 +1011,31 @@ const DefaultTypography = {
 			'text-shadow': '',
 			'vertical-align': '',
 		},
+		textAlign: {
+			label: 'Alignment',
+			general: {
+				alignment: 'left',
+			},
+			xxl: {
+				alignment: '',
+			},
+			xl: {
+				alignment: '',
+			},
+			l: {
+				alignment: '',
+			},
+			m: {
+				alignment: '',
+			},
+			s: {
+				alignment: '',
+			},
+			xs: {
+				alignment: '',
+			},
+		},
+		customFormats: {},
 	},
 	h5: {
 		label: 'Typography',
@@ -1034,6 +1184,31 @@ const DefaultTypography = {
 			'text-shadow': '',
 			'vertical-align': '',
 		},
+		textAlign: {
+			label: 'Alignment',
+			general: {
+				alignment: 'left',
+			},
+			xxl: {
+				alignment: '',
+			},
+			xl: {
+				alignment: '',
+			},
+			l: {
+				alignment: '',
+			},
+			m: {
+				alignment: '',
+			},
+			s: {
+				alignment: '',
+			},
+			xs: {
+				alignment: '',
+			},
+		},
+		customFormats: {},
 	},
 	h6: {
 		label: 'Typography',
@@ -1182,6 +1357,31 @@ const DefaultTypography = {
 			'text-shadow': '',
 			'vertical-align': '',
 		},
+		textAlign: {
+			label: 'Alignment',
+			general: {
+				alignment: 'left',
+			},
+			xxl: {
+				alignment: '',
+			},
+			xl: {
+				alignment: '',
+			},
+			l: {
+				alignment: '',
+			},
+			m: {
+				alignment: '',
+			},
+			s: {
+				alignment: '',
+			},
+			xs: {
+				alignment: '',
+			},
+		},
+		customFormats: {},
 	},
 };
 

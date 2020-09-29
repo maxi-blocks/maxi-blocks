@@ -4,7 +4,7 @@
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
 const { createBlock } = wp.blocks;
-const { dispatch, select, withSelect, withDispatch } = wp.data;
+const { select, withSelect, withDispatch } = wp.data;
 const { compose } = wp.compose;
 const { __unstableIndentListItems, __unstableOutdentListItems } = wp.richText;
 const { __experimentalBlock, RichText, RichTextShortcut } = wp.blockEditor;
@@ -177,11 +177,14 @@ class edit extends MaxiBlock {
 				fullWidth,
 				typography,
 			},
+			node,
 			className,
 			isSelected,
 			setAttributes,
 			onRemove,
-			clientId,
+			onMerge,
+			onSplit,
+			onReplace,
 		} = this.props;
 
 		const name = 'maxi-blocks/text-maxi';
@@ -195,147 +198,6 @@ class edit extends MaxiBlock {
 		);
 
 		const { getFormatTypes } = select('core/rich-text');
-
-		const {
-			getBlockIndex,
-			getBlockRootClientId,
-			getNextBlockClientId,
-			getPreviousBlockClientId,
-			getBlockAttributes,
-		} = select('core/block-editor');
-
-		const {
-			insertBlock,
-			removeBlock,
-			selectBlock,
-			updateBlockAttributes,
-		} = dispatch('core/block-editor');
-
-		const onReplace = blocks => {
-			const currentBlocks = blocks.filter(item => !!item);
-
-			if (isEmpty(currentBlocks)) {
-				insertBlock(createBlock(name, getBlockAttributes(name)));
-				return;
-			}
-
-			currentBlocks.forEach((block, i) => {
-				let newBlock = {};
-
-				switch (block.name) {
-					case 'core/list':
-						newBlock = createBlock(name, {
-							...this.props.attributes,
-							textLevel: block.attributes.ordered ? 'ol' : 'ul',
-							typeOfList: block.attributes.ordered ? 'ol' : 'ul',
-							content: block.attributes.values,
-							isList: true,
-						});
-						break;
-					case 'core/image':
-						newBlock = createBlock('maxi-blocks/image-maxi', {
-							...getBlockAttributes('maxi-blocks/image-maxi'),
-							mediaURL: block.attributes.url,
-							altSelector: 'custom',
-							mediaALT: block.attributes.alt,
-							captionType:
-								(!isEmpty(block.attributes.caption) &&
-									'custom') ||
-								'none',
-							captionContent: block.attributes.caption,
-						});
-						break;
-					case 'core/heading': {
-						const headingLevel = block.attributes.level;
-						const headingTypography = JSON.stringify(
-							Object.assign(
-								JSON.parse(typography),
-								defaultTypography[`h${headingLevel}`]
-							)
-						);
-						newBlock = createBlock(name, {
-							...this.props.attributes,
-							textLevel: `h${headingLevel}`,
-							content: block.attributes.content,
-							typography: headingTypography,
-							isList: false,
-						});
-						break;
-					}
-					case 'core/paragraph':
-						newBlock = createBlock(name, {
-							...this.props.attributes,
-							content: block.attributes.content,
-						});
-						break;
-					case 'maxi-blocks/text-maxi':
-						if (block.attributes.isList) {
-							newBlock = createBlock(name, {
-								...block.attributes,
-							});
-						} else {
-							newBlock = createBlock(name, {
-								...this.props.attributes,
-								content: block.attributes.content,
-								isList: false,
-							});
-						}
-						break;
-					default:
-						newBlock = block;
-						break;
-				}
-
-				insertBlock(
-					newBlock,
-					getBlockIndex(clientId),
-					getBlockRootClientId(clientId)
-				);
-
-				i === currentBlocks.length - 1 && selectBlock(block.clientId);
-			});
-
-			removeBlock(clientId);
-		};
-
-		const onMerge = forward => {
-			if (forward) {
-				const nextBlockClientId = getNextBlockClientId(clientId);
-
-				if (nextBlockClientId) {
-					const nextBlockAttributes = getBlockAttributes(
-						nextBlockClientId
-					);
-					const nextBlockContent = nextBlockAttributes.content;
-
-					setAttributes({
-						content: content.concat(nextBlockContent),
-					});
-
-					removeBlock(nextBlockClientId);
-				}
-			} else {
-				const previousBlockClientId = getPreviousBlockClientId(
-					clientId
-				);
-
-				if (!previousBlockClientId) {
-					removeBlock(clientId);
-				} else {
-					const previousBlockAttributes = getBlockAttributes(
-						previousBlockClientId
-					);
-					const previousBlockContent =
-						previousBlockAttributes.content;
-
-					updateBlockAttributes(previousBlockClientId, {
-						content: previousBlockContent.concat(content),
-					});
-
-					removeBlock(clientId);
-				}
-			}
-		};
 
 		return [
 			<Inspector {...this.props} />,
@@ -352,18 +214,44 @@ class edit extends MaxiBlock {
 						value={content}
 						onChange={content => {
 							setAttributes({ content });
+
+							const formatElement = {
+								element: node,
+								html: content,
+								multilineTag: isList ? 'li' : undefined,
+								multilineWrapperTags: isList
+									? typeOfList
+									: undefined,
+								__unstableIsEditableTree: true,
+							};
+							const formatValue = __experimentalGetFormatValue(
+								formatElement
+							);
+
+							/**
+							 * As Gutenberg doesn't allow to modify pasted content, let's do some cheats
+							 * and add some coding manually
+							 * This next script will check if there is any format directly related with
+							 * native format 'core/link' and if it's so, will format it in Maxi Blocks way
+							 */
+							const cleanCustomProps = __experimentalSetCustomFormatsWhenPaste(
+								{
+									formatValue,
+									typography: JSON.parse(typography),
+									isList,
+								}
+							);
+
+							if (cleanCustomProps)
+								setAttributes({
+									typography: JSON.stringify(
+										cleanCustomProps.typography
+									),
+									content: cleanCustomProps.content,
+								});
 						}}
 						tagName={textLevel}
-						onSplit={value => {
-							if (!value) {
-								return createBlock(name);
-							}
-
-							return createBlock(name, {
-								...this.props.attributes,
-								content: value,
-							});
-						}}
+						onSplit={onSplit}
 						onReplace={onReplace}
 						onMerge={onMerge}
 						onRemove={onRemove}
@@ -497,6 +385,7 @@ const editSelect = withSelect((select, ownProps) => {
 	deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
 
 	return {
+		node,
 		formatValue,
 		deviceType,
 	};
@@ -504,28 +393,217 @@ const editSelect = withSelect((select, ownProps) => {
 
 const editDispatch = withDispatch((dispatch, ownProps) => {
 	const {
-		attributes: { isList, typography },
+		attributes: { typography, content },
 		setAttributes,
-		formatValue,
+		clientId,
 	} = ownProps;
 
-	/**
-	 * As Gutenberg doesn't allow to modify pasted content, let's do some cheats
-	 * and add some coding manually
-	 * This next script will check if there is any format directly related with
-	 * native format 'core/link' and if it's so, will format it in Maxi Blocks way
-	 */
-	const cleanCustomProps = __experimentalSetCustomFormatsWhenPaste({
-		formatValue,
-		typography: JSON.parse(typography),
-		isList,
-	});
+	const name = 'maxi-blocks/text-maxi';
 
-	if (cleanCustomProps)
-		setAttributes({
-			typography: JSON.stringify(cleanCustomProps.typography),
-			content: cleanCustomProps.content,
+	const {
+		getBlockIndex,
+		getBlockRootClientId,
+		getNextBlockClientId,
+		getPreviousBlockClientId,
+		getBlockAttributes,
+	} = select('core/block-editor');
+
+	const {
+		insertBlock,
+		removeBlock,
+		selectBlock,
+		updateBlockAttributes,
+	} = dispatch('core/block-editor');
+
+	const onReplace = blocks => {
+		console.log('onReplace!');
+		const currentBlocks = blocks.filter(item => !!item);
+
+		if (isEmpty(currentBlocks)) {
+			insertBlock(createBlock(name, getBlockAttributes(name)));
+			return;
+		}
+
+		currentBlocks.forEach((block, i) => {
+			let newBlock = {};
+
+			switch (block.name) {
+				case 'core/list': {
+					const textTypography = JSON.stringify({
+						...JSON.parse(typography),
+						...defaultTypography.p,
+					});
+
+					newBlock = createBlock(name, {
+						...ownProps.attributes,
+						textLevel: block.attributes.ordered ? 'ol' : 'ul',
+						typeOfList: block.attributes.ordered ? 'ol' : 'ul',
+						content: block.attributes.values,
+						isList: true,
+						typography: textTypography,
+					});
+					break;
+				}
+				case 'core/image':
+					newBlock = createBlock('maxi-blocks/image-maxi', {
+						...getBlockAttributes('maxi-blocks/image-maxi'),
+						mediaURL: block.attributes.url,
+						altSelector: 'custom',
+						mediaALT: block.attributes.alt,
+						captionType:
+							(!isEmpty(block.attributes.caption) && 'custom') ||
+							'none',
+						captionContent: block.attributes.caption,
+					});
+					break;
+				case 'core/heading': {
+					const headingLevel = block.attributes.level;
+					const headingTypography = JSON.stringify({
+						...JSON.parse(typography),
+						...defaultTypography[`h${headingLevel}`],
+					});
+					newBlock = createBlock(name, {
+						...ownProps.attributes,
+						textLevel: `h${headingLevel}`,
+						content: block.attributes.content,
+						typography: headingTypography,
+						isList: false,
+					});
+					break;
+				}
+				case 'core/paragraph': {
+					const textTypography = JSON.stringify({
+						...JSON.parse(typography),
+						...defaultTypography.p,
+					});
+
+					newBlock = createBlock(name, {
+						...ownProps.attributes,
+						content: block.attributes.content,
+						textLevel: 'p',
+						typography: textTypography,
+					});
+					break;
+				}
+				case 'maxi-blocks/text-maxi':
+					if (block.attributes.isList) {
+						newBlock = createBlock(name, {
+							...block.attributes,
+						});
+					} else {
+						newBlock = createBlock(name, {
+							...ownProps.attributes,
+							content: block.attributes.content,
+							isList: false,
+						});
+					}
+					break;
+				default:
+					newBlock = block;
+					break;
+			}
+
+			insertBlock(
+				newBlock,
+				getBlockIndex(clientId),
+				getBlockRootClientId(clientId)
+			).then(block => {
+				const {
+					attributes: { content, isList, typeOfList },
+					clientId,
+				} = block.blocks[0];
+				const node = document.getElementById(`block-${clientId}`);
+
+				const formatElement = {
+					element: node,
+					html: content,
+					multilineTag: isList ? 'li' : undefined,
+					multilineWrapperTags: isList ? typeOfList : undefined,
+					__unstableIsEditableTree: true,
+				};
+				const formatValue = __experimentalGetFormatValue(formatElement);
+
+				/**
+				 * As Gutenberg doesn't allow to modify pasted content, let's do some cheats
+				 * and add some coding manually
+				 * This next script will check if there is any format directly related with
+				 * native format 'core/link' and if it's so, will format it in Maxi Blocks way
+				 */
+				const cleanCustomProps = __experimentalSetCustomFormatsWhenPaste(
+					{
+						formatValue,
+						typography: JSON.parse(typography),
+						isList,
+					}
+				);
+
+				if (cleanCustomProps)
+					updateBlockAttributes(clientId, {
+						typography: JSON.stringify(cleanCustomProps.typography),
+						content: cleanCustomProps.content,
+					});
+			});
+
+			i === currentBlocks.length - 1 && selectBlock(block.clientId);
 		});
+
+		removeBlock(clientId);
+	};
+
+	const onMerge = forward => {
+		console.log('onMerge');
+		if (forward) {
+			const nextBlockClientId = getNextBlockClientId(clientId);
+
+			if (nextBlockClientId) {
+				const nextBlockAttributes = getBlockAttributes(
+					nextBlockClientId
+				);
+				const nextBlockContent = nextBlockAttributes.content;
+
+				setAttributes({
+					content: content.concat(nextBlockContent),
+				});
+
+				removeBlock(nextBlockClientId);
+			}
+		} else {
+			const previousBlockClientId = getPreviousBlockClientId(clientId);
+
+			if (!previousBlockClientId) {
+				removeBlock(clientId);
+			} else {
+				const previousBlockAttributes = getBlockAttributes(
+					previousBlockClientId
+				);
+				const previousBlockContent = previousBlockAttributes.content;
+
+				updateBlockAttributes(previousBlockClientId, {
+					content: previousBlockContent.concat(content),
+				});
+
+				removeBlock(clientId);
+			}
+		}
+	};
+
+	const onSplit = value => {
+		console.log('onSplit');
+		if (!value) {
+			return createBlock(name);
+		}
+
+		return createBlock(name, {
+			...this.props.attributes,
+			content: value,
+		});
+	};
+
+	return {
+		onReplace,
+		onMerge,
+		onSplit,
+	};
 });
 
 export default compose(editSelect, editDispatch)(edit);

@@ -3,11 +3,11 @@
  */
 const { __ } = wp.i18n;
 const { IconButton } = wp.components;
-const { useSelect } = wp.data;
 const {
 	__unstableIndentListItems,
+	__unstableCanIndentListItems,
 	__unstableOutdentListItems,
-	create,
+	__unstableCanOutdentListItems,
 	toHTMLString,
 } = wp.richText;
 
@@ -31,29 +31,14 @@ import {
  * TextListOptions
  */
 const TextListOptions = props => {
-	const { blockName, content, typeOfList, isList, onChange, node } = props;
-
-	const { formatValue } = useSelect(
-		select => {
-			const { getSelectionStart, getSelectionEnd } = select(
-				'core/block-editor'
-			);
-			const formatValue = create({
-				element: node,
-				html: content,
-				multilineTag: 'li',
-				multilineWrapperTags: typeOfList,
-				// __unstableIsEditableTree: true
-			});
-			formatValue.start = getSelectionStart().offset;
-			formatValue.end = getSelectionEnd().offset;
-
-			return {
-				formatValue,
-			};
-		},
-		[node, content]
-	);
+	const {
+		blockName,
+		formatValue,
+		isList,
+		typeOfList,
+		content,
+		onChange,
+	} = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
@@ -129,16 +114,20 @@ const TextListOptions = props => {
 						onClick={() => onChangeList('ul')}
 						aria-pressed={isList && typeOfList === 'ul'}
 					/>
-					<IconButton
-						className='toolbar-item__popover__list-options__button'
-						icon={toolbarOutdentList}
-						onClick={() => onChangeIndent('outdent')}
-					/>
-					<IconButton
-						className='toolbar-item__popover__list-options__button'
-						icon={toolbarIndentList}
-						onClick={() => onChangeIndent('indent')}
-					/>
+					{__unstableCanOutdentListItems(formatValue) && (
+						<IconButton
+							className='toolbar-item__popover__list-options__button'
+							icon={toolbarOutdentList}
+							onClick={() => onChangeIndent('outdent')}
+						/>
+					)}
+					{__unstableCanIndentListItems(formatValue) && (
+						<IconButton
+							className='toolbar-item__popover__list-options__button'
+							icon={toolbarIndentList}
+							onClick={() => onChangeIndent('indent')}
+						/>
+					)}
 				</div>
 			}
 		/>

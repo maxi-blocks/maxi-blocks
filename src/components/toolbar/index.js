@@ -326,11 +326,11 @@ const MaxiToolbar = props => {
 						/>
 						<TextListOptions
 							blockName={name}
+							formatValue={formatValue}
 							content={content}
 							isList={isList}
 							typeOfList={typeOfList}
 							onChange={obj => setAttributes(obj)}
-							node={anchorRef}
 						/>
 						<BackgroundColor
 							blockName={name}

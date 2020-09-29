@@ -27,9 +27,9 @@ import { toolbarItalic } from '../../../../icons';
  * TextItalic
  */
 const TextItalic = ({
+	blockName,
 	typography,
 	formatValue,
-	blockName,
 	onChange,
 	isList,
 	breakpoint,

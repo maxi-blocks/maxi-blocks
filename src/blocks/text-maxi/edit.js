@@ -416,7 +416,6 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	} = dispatch('core/block-editor');
 
 	const onReplace = blocks => {
-		console.log('onReplace!');
 		const currentBlocks = blocks.filter(item => !!item);
 
 		if (isEmpty(currentBlocks)) {
@@ -551,7 +550,6 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	};
 
 	const onMerge = forward => {
-		console.log('onMerge');
 		if (forward) {
 			const nextBlockClientId = getNextBlockClientId(clientId);
 
@@ -588,7 +586,6 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	};
 
 	const onSplit = value => {
-		console.log('onSplit');
 		if (!value) {
 			return createBlock(name);
 		}

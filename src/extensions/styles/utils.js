@@ -669,19 +669,9 @@ export const setBackgroundStyles = (
 	background,
 	backgroundHover,
 	overlay,
-	overlayHover,
-	clientId
+	overlayHover
 ) => {
-	const backgroundHoverStatus =
-		backgroundHover !== getDefaultProp(clientId, 'backgroundHover') ? 1 : 0;
-
-	const overlayHoverStatus =
-		overlayHover !== getDefaultProp(clientId, 'overlayHover') ? 1 : 0;
-
 	const response = {
-		[`${target}>.maxi-background-displayer .maxi-background-displayer__overlay`]: {
-			overlay: { ...getColorOverlayObject(JSON.parse(overlay)) },
-		},
 		[`${target}>.maxi-background-displayer .maxi-background-displayer__color`]: {
 			background: { ...getColorBackgroundObject(JSON.parse(background)) },
 		},
@@ -711,7 +701,15 @@ export const setBackgroundStyles = (
 		},
 	};
 
-	if (!!backgroundHoverStatus) {
+	if (!isNil(overlay)) {
+		response[
+			`${target}>.maxi-background-displayer .maxi-background-displayer__overlay`
+		] = {
+			overlay: { ...getColorOverlayObject(JSON.parse(overlay)) },
+		};
+	}
+
+	if (!!JSON.parse(backgroundHover).status) {
 		response[
 			`${target}:hover>.maxi-background-displayer .maxi-background-displayer__color`
 		] = {
@@ -727,7 +725,7 @@ export const setBackgroundStyles = (
 		};
 	}
 
-	if (!!overlayHoverStatus) {
+	if (!isNil(overlay) && !!JSON.parse(overlayHover).status) {
 		response[
 			`${target}:hover>.maxi-background-displayer .maxi-background-displayer__overlay`
 		] = {

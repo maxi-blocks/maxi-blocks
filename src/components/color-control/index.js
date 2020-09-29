@@ -95,6 +95,7 @@ const ColorControl = props => {
 					onChangeComplete={val => {
 						onChange(returnColor(val, colorAlpha));
 					}}
+					disableAlpha
 				/>
 			</div>
 		</div>

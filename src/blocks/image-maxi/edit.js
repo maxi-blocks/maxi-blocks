@@ -77,7 +77,6 @@ class edit extends MaxiBlock {
 	get getNormalObject() {
 		const {
 			alignment,
-			opacity,
 			boxShadow,
 			padding,
 			margin,
@@ -91,7 +90,6 @@ class edit extends MaxiBlock {
 			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
 			padding: { ...JSON.parse(padding) },
 			margin: { ...JSON.parse(margin) },
-			opacity: { ...JSON.parse(opacity) },
 			zIndex: { ...JSON.parse(zIndex) },
 			alignment: { ...getAlignmentFlexObject(JSON.parse(alignment)) },
 			position: { ...JSON.parse(position) },
@@ -161,23 +159,23 @@ class edit extends MaxiBlock {
 	}
 
 	get getHoverObject() {
-		const { opacityHover, boxShadowHover } = this.props.attributes;
+		const { boxShadowHover } = this.props.attributes;
 
 		const response = {
 			boxShadowHover: {
 				...getBoxShadowObject(JSON.parse(boxShadowHover)),
 			},
-			opacityHover: { ...JSON.parse(opacityHover) },
 		};
 
 		return response;
 	}
 
 	get getImageFrontendObject() {
-		const { size } = this.props.attributes;
+		const { size, opacity } = this.props.attributes;
 
 		const response = {
 			imageSize: { ...JSON.parse(size) },
+			opacity: { ...JSON.parse(opacity) },
 		};
 
 		return response;
@@ -196,9 +194,10 @@ class edit extends MaxiBlock {
 	}
 
 	get getImageBackendObject() {
-		const { border, clipPath, size } = this.props.attributes;
+		const { opacity, border, clipPath, size } = this.props.attributes;
 
 		const response = {
+			opacity: { ...JSON.parse(opacity) },
 			size: { ...JSON.parse(size) },
 			border: { ...JSON.parse(border) },
 			borderWidth: { ...JSON.parse(border).borderWidth },

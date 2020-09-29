@@ -221,21 +221,6 @@ export const background = {
 			},
 		},
 	},
-	overlayOptions: {
-		overlay: '',
-		activeColor: '',
-		color: '',
-		gradient: '',
-		gradientAboveBackground: false,
-		gradientOpacity: {
-			opacity: {
-				label: 'Opacity',
-				general: {
-					opacity: 1,
-				},
-			},
-		},
-	},
 	imageOpacity: {
 		opacity: {
 			label: 'Opacity',

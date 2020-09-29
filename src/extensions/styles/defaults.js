@@ -23,32 +23,6 @@ export const alignment = {
 	},
 };
 
-// Should be removed, temporary !!!!!!!!!!!!
-export const opacityHover = {
-	label: 'Opacity',
-	general: {
-		opacity: 1,
-	},
-	xxl: {
-		opacity: '',
-	},
-	xl: {
-		opacity: '',
-	},
-	l: {
-		opacity: '',
-	},
-	m: {
-		opacity: '',
-	},
-	s: {
-		opacity: '',
-	},
-	xs: {
-		opacity: '',
-	},
-};
-
 export const opacity = {
 	label: 'Opacity',
 	general: {
@@ -556,6 +530,7 @@ export const background = {
 export const backgroundHover = {
 	label: 'Background Hover',
 	activeMedia: '',
+	status: 0,
 	imageOptions: [
 		{
 			imageData: {
@@ -614,21 +589,6 @@ export const backgroundHover = {
 			},
 		},
 	},
-	overlayOptions: {
-		overlay: '',
-		activeColor: '',
-		color: '',
-		gradient: '',
-		gradientAboveBackground: false,
-		gradientOpacity: {
-			opacity: {
-				label: 'Opacity',
-				general: {
-					opacity: 1,
-				},
-			},
-		},
-	},
 };
 
 export const overlay = {
@@ -652,6 +612,7 @@ export const overlay = {
 
 export const overlayHover = {
 	label: 'Overlay Hover',
+	status: 0,
 	...overlay,
 };
 

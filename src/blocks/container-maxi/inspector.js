@@ -3,7 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
-const { Fragment, useState } = wp.element;
+const { Fragment } = wp.element;
 const { TextControl, RadioControl } = wp.components;
 
 /**
@@ -102,13 +102,13 @@ const Inspector = props => {
 		},
 	};
 
-	const [backgroundHoverStatus, toggleBackgroundHoverStatus] = useState(
-		backgroundHover !== getDefaultProp(clientId, 'backgroundHover') ? 1 : 0
-	);
+	const backgroundHoverValue = !isObject(backgroundHover)
+		? JSON.parse(backgroundHover)
+		: backgroundHover;
 
-	const [overlayHoverStatus, toggleOverlayHoverStatus] = useState(
-		overlayHover !== getDefaultProp(clientId, 'overlayHover') ? 1 : 0
-	);
+	const overlayHoverValue = !isObject(overlayHover)
+		? JSON.parse(overlayHover)
+		: overlayHover;
 
 	return (
 		<InspectorControls>
@@ -395,7 +395,7 @@ const Inspector = props => {
 																				'maxi-blocks'
 																			)}
 																			selected={
-																				backgroundHoverStatus
+																				backgroundHoverValue.status
 																			}
 																			options={[
 																				{
@@ -414,15 +414,20 @@ const Inspector = props => {
 																				},
 																			]}
 																			onChange={val => {
-																				toggleBackgroundHoverStatus(
-																					Number(
-																						val
-																					)
+																				backgroundHoverValue.status = Number(
+																					val
+																				);
+																				setAttributes(
+																					{
+																						backgroundHover: JSON.stringify(
+																							backgroundHoverValue
+																						),
+																					}
 																				);
 																			}}
 																		/>
 																	</div>
-																	{!!backgroundHoverStatus && (
+																	{!!backgroundHoverValue.status && (
 																		<BackgroundControl
 																			background={
 																				backgroundHover
@@ -491,11 +496,11 @@ const Inspector = props => {
 																	<div className='maxi-fancy-radio-control'>
 																		<RadioControl
 																			label={__(
-																				'Enable Overly Hover',
+																				'Enable Background Hover',
 																				'maxi-blocks'
 																			)}
 																			selected={
-																				overlayHoverStatus
+																				overlayHoverValue.status
 																			}
 																			options={[
 																				{
@@ -514,15 +519,20 @@ const Inspector = props => {
 																				},
 																			]}
 																			onChange={val => {
-																				toggleOverlayHoverStatus(
-																					Number(
-																						val
-																					)
+																				overlayHoverValue.status = Number(
+																					val
+																				);
+																				setAttributes(
+																					{
+																						overlayHover: JSON.stringify(
+																							overlayHoverValue
+																						),
+																					}
 																				);
 																			}}
 																		/>
 																	</div>
-																	{!!overlayHoverStatus && (
+																	{!!overlayHoverValue.status && (
 																		<__experimentalOverlayControl
 																			overlay={
 																				overlayHover

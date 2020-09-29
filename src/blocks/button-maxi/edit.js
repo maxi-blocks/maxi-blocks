@@ -14,7 +14,6 @@ import {
 	getAlignmentFlexObject,
 	getTransformObject,
 	getAlignmentTextObject,
-	getOpacityObject,
 } from '../../utils';
 import { MaxiBlock, __experimentalToolbar } from '../../components';
 
@@ -22,6 +21,7 @@ import { MaxiBlock, __experimentalToolbar } from '../../components';
  * External dependencies
  */
 import classnames from 'classnames';
+import { isNil } from 'lodash';
 
 /**
  * Content
@@ -55,7 +55,6 @@ class edit extends MaxiBlock {
 		const {
 			background,
 			alignmentText,
-			opacity,
 			typography,
 			boxShadow,
 			border,
@@ -80,7 +79,6 @@ class edit extends MaxiBlock {
 			size: { ...JSON.parse(size) },
 			padding: { ...JSON.parse(padding) },
 			margin: { ...JSON.parse(margin) },
-			opacity: { ...getOpacityObject(JSON.parse(opacity)) },
 			zIndex: { ...JSON.parse(zIndex) },
 			position: { ...JSON.parse(position) },
 			positionOptions: { ...JSON.parse(position).options },
@@ -93,7 +91,6 @@ class edit extends MaxiBlock {
 	get getHoverObject() {
 		const {
 			backgroundHover,
-			opacityHover,
 			typographyHover,
 			boxShadowHover,
 			borderHover,
@@ -101,17 +98,19 @@ class edit extends MaxiBlock {
 
 		const response = {
 			typographyHover: { ...JSON.parse(typographyHover) },
-			backgroundHover: {
-				...getColorBackgroundObject(JSON.parse(backgroundHover)),
-			},
 			boxShadowHover: {
 				...getBoxShadowObject(JSON.parse(boxShadowHover)),
 			},
 			borderHover: { ...JSON.parse(borderHover) },
 			borderWidth: { ...JSON.parse(borderHover).borderWidth },
 			borderRadius: { ...JSON.parse(borderHover).borderRadius },
-			opacity: { ...getOpacityObject(JSON.parse(opacityHover)) },
 		};
+
+		if (!isNil(backgroundHover) && !!JSON.parse(backgroundHover).status) {
+			response['backgroundHover'] = {
+				...getColorBackgroundObject(JSON.parse(backgroundHover)),
+			};
+		}
 
 		return response;
 	}

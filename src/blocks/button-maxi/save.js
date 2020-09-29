@@ -25,7 +25,7 @@ const save = props => {
 			defaultBlockStyle,
 			background,
 			linkSettings,
-			buttonText,
+			content,
 			extraClassName,
 			motion,
 		},
@@ -60,7 +60,7 @@ const save = props => {
 		>
 			<__experimentalBackgroundDisplayer background={background} />
 			<Button className='maxi-button-extra__button' {...linkProps}>
-				{buttonText}
+				{content}
 			</Button>
 		</div>
 	);

@@ -68,7 +68,7 @@ const attributes = {
 		type: 'string',
 		default: JSON.stringify(buttonAttributesData.padding),
 	},
-	buttonText: {
+	content: {
 		type: 'string',
 		default: '',
 	},

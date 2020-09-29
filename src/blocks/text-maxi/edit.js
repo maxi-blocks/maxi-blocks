@@ -476,12 +476,11 @@ class edit extends MaxiBlock {
 
 const editSelect = withSelect((select, ownProps) => {
 	const {
-		attributes: { content, isList, typeOfList, node },
+		attributes: { content, isList, typeOfList },
 		clientId,
 	} = ownProps;
 
-	const selectedNode =
-		(!node && document.getElementById(`block-${clientId}`)) || node;
+	const node = document.getElementById(`block-${clientId}`);
 
 	const formatElement = {
 		element: node,
@@ -498,7 +497,6 @@ const editSelect = withSelect((select, ownProps) => {
 	deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
 
 	return {
-		node: selectedNode,
 		formatValue,
 		deviceType,
 	};

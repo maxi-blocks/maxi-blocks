@@ -5,7 +5,6 @@ const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
 const { TextControl } = wp.components;
 const { Fragment } = wp.element;
-const { useSelect } = wp.data;
 
 /**
  * Internal dependencies
@@ -68,16 +67,9 @@ const Inspector = props => {
 		},
 		setAttributes,
 		clientId,
+		formatValue,
+		deviceType,
 	} = props;
-
-	const { deviceType } = useSelect(select => {
-		const { __experimentalGetPreviewDeviceType } = select('core/edit-post');
-		let deviceType = __experimentalGetPreviewDeviceType();
-		deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
-		return {
-			deviceType,
-		};
-	});
 
 	return (
 		<InspectorControls>
@@ -167,16 +159,17 @@ const Inspector = props => {
 																		clientId,
 																		'typography'
 																	)}
-																	onChange={typography =>
+																	onChange={obj =>
 																		setAttributes(
-																			{
-																				typography,
-																			}
+																			obj
 																		)
 																	}
 																	hideAlignment
 																	breakpoint={
 																		deviceType
+																	}
+																	formatValue={
+																		formatValue
 																	}
 																/>
 															),
@@ -195,17 +188,26 @@ const Inspector = props => {
 																		clientId,
 																		'typographyHover'
 																	)}
-																	onChange={typographyHover =>
+																	onChange={obj => {
 																		setAttributes(
 																			{
-																				typographyHover,
+																				typographyHover:
+																					obj.typography,
+																				...(obj.content && {
+																					content:
+																						obj.content,
+																				}),
 																			}
-																		)
-																	}
+																		);
+																	}}
 																	hideAlignment
 																	breakpoint={
 																		deviceType
 																	}
+																	formatValue={
+																		formatValue
+																	}
+																	isHover
 																/>
 															),
 														},

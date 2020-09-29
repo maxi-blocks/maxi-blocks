@@ -163,6 +163,7 @@ export const typography = {
 			alignment: '',
 		},
 	},
+	customFormats: {},
 };
 
 export const background = {

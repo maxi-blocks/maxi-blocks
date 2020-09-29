@@ -3,6 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { __experimentalBlock, RichText } = wp.blockEditor;
+const { withSelect } = wp.data;
 
 /**
  * Internal dependencies
@@ -15,8 +16,10 @@ import {
 	getTransformObject,
 	getAlignmentTextObject,
 	getOpacityObject,
+	setTextCustomFormats,
 } from '../../utils';
 import { MaxiBlock, __experimentalToolbar } from '../../components';
+import { __experimentalGetFormatValue } from '../../extensions/text/formats';
 
 /**
  * External dependencies
@@ -28,13 +31,27 @@ import classnames from 'classnames';
  */
 class edit extends MaxiBlock {
 	get getObject() {
-		const response = {
+		const { uniqueID, typography, typographyHover } = this.props.attributes;
+
+		let response = {
 			[this.props.attributes.uniqueID]: this.getWrapperObject,
 			[`${this.props.attributes.uniqueID} .maxi-button-extra__button`]: this
 				.getNormalObject,
 			[`${this.props.attributes.uniqueID} .maxi-button-extra__button:hover`]: this
 				.getHoverObject,
 		};
+
+		response = Object.assign(
+			response,
+			setTextCustomFormats(
+				[
+					`${uniqueID} .maxi-button-extra__button`,
+					`${uniqueID} .maxi-button-extra__button li`,
+				],
+				typography,
+				typographyHover
+			)
+		);
 
 		return response;
 	}
@@ -124,7 +141,7 @@ class edit extends MaxiBlock {
 				blockStyle,
 				defaultBlockStyle,
 				extraClassName,
-				buttonText,
+				content,
 			},
 			setAttributes,
 		} = this.props;
@@ -148,8 +165,8 @@ class edit extends MaxiBlock {
 					className='maxi-button-extra__button'
 					withoutInteractiveFormatting
 					placeholder={__('Set some text…', 'maxi-blocks')}
-					value={buttonText}
-					onChange={buttonText => setAttributes({ buttonText })}
+					value={content}
+					onChange={content => setAttributes({ content })}
 					identifier='text'
 				/>
 			</__experimentalBlock>,
@@ -157,4 +174,30 @@ class edit extends MaxiBlock {
 	}
 }
 
-export default edit;
+export default withSelect((select, ownProps) => {
+	const {
+		attributes: { content, isList, typeOfList },
+		clientId,
+	} = ownProps;
+
+	const node = document.getElementById(`block-${clientId}`);
+
+	const formatElement = {
+		element: node,
+		html: content,
+		multilineTag: isList ? 'li' : undefined,
+		multilineWrapperTags: isList ? typeOfList : undefined,
+		__unstableIsEditableTree: true,
+	};
+	const formatValue = __experimentalGetFormatValue(formatElement);
+
+	let deviceType = select(
+		'core/edit-post'
+	).__experimentalGetPreviewDeviceType();
+	deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
+
+	return {
+		formatValue,
+		deviceType,
+	};
+})(edit);

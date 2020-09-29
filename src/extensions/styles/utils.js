@@ -36,7 +36,7 @@ export const getDefaultProp = (clientId, prop) => {
  * Gets an object base on Maxi Blocks breakpoints schema and looks for the last set value
  * for a concrete property in case is not set for the requested breakpoint
  */
-export const getLastBreakpointValue = (obj, prop, breakpoint) => {
+export const getLastBreakpointValue = (obj, prop, breakpoint = 'general') => {
 	if (!isNil(obj[breakpoint][prop]) && !isEmpty(obj[breakpoint][prop]))
 		return obj[breakpoint][prop];
 	if (!isNil(obj[breakpoint][prop]) && isNumber(obj[breakpoint][prop]))

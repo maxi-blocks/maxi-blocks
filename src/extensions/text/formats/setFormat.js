@@ -1,3 +1,4 @@
+import { form } from '../../../icons';
 /**
  * Internal dependencies
  */
@@ -14,10 +15,7 @@ const setFormat = ({
 	breakpoint = 'general',
 	isHover = false,
 }) => {
-	const { start, end } = formatValue;
-
-	if (start === end) {
-		console.log('no selected values => General', formatValue);
+	if (!formatValue || formatValue.start === formatValue.end) {
 		Object.entries(value).forEach(([key, val]) => {
 			typography[breakpoint][key] = val;
 		});

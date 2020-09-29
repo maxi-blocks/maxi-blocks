@@ -205,8 +205,10 @@ const HoverEffectControl = props => {
 							typography={value.titleTypography}
 							defaultTypography={defaultValue.titleTypography}
 							hideAlignment
-							onChange={val => {
-								value.titleTypography = val;
+							onChange={obj => {
+								value.titleTypography = JSON.parse(
+									obj.typography
+								);
 								onChange(JSON.stringify(value));
 							}}
 						/>
@@ -242,8 +244,10 @@ const HoverEffectControl = props => {
 							typography={value.contentTypography}
 							defaultTypography={defaultValue.contentTypography}
 							hideAlignment
-							onChange={val => {
-								value.contentTypography = val;
+							onChange={obj => {
+								value.contentTypography = JSON.parse(
+									obj.typography
+								);
 								onChange(JSON.stringify(value));
 							}}
 						/>

@@ -43,7 +43,7 @@ const TypographyControl = props => {
 		onChange,
 		breakpoint = 'general',
 		formatValue,
-		isList,
+		isList = false,
 		isHover = false,
 	} = props;
 
@@ -159,7 +159,6 @@ const TypographyControl = props => {
 			breakpoint,
 			isHover,
 		});
-
 		onChange({
 			typography: JSON.stringify(newTypography),
 			...(newContent && { content: newContent }),
@@ -321,7 +320,7 @@ const TypographyControl = props => {
 				options={[
 					{ label: __('Default', 'maxi-blocks'), value: 'none' },
 					{
-						label: __('Capitilize', 'maxi-blocks'),
+						label: __('Capitalize', 'maxi-blocks'),
 						value: 'capitalize',
 					},
 					{

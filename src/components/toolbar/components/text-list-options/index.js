@@ -15,6 +15,10 @@ const {
  * Internal dependencies
  */
 import ToolbarPopover from '../toolbar-popover';
+import {
+	__experimentalFromListToText,
+	__experimentalFromTextToList,
+} from '../../../../extensions/text/formats';
 
 /**
  * Styles and icons
@@ -43,19 +47,18 @@ const TextListOptions = props => {
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
 	const getContent = content => {
-		let newContent = content;
+		// let newContent = content;
 
-		if (!isList) {
-			newContent = '';
-			newContent = `<li>${content.replace(/<br>/gi, '</li><li>')}</li>`;
-		} else {
-			newContent = '';
-			newContent = content
-				.replace(/(<\/li><li>|<ol>|<ul>)/gi, '<br>')
-				.replace(/(<\/li>|<li>|<\/ul>|<\/ol>)/gi, '');
-		}
+		if (!isList) return __experimentalFromTextToList(content);
+		// newContent = '';
+		// newContent = `<li>${content.replace(/<br>/gi, '</li><li>')}</li>`;
+		return __experimentalFromListToText(content);
+		// newContent = '';
+		// newContent = content
+		// 	.replace(/(<\/li><li>|<ol>|<ul>)/gi, '<br>')
+		// 	.replace(/(<\/li>|<li>|<\/ul>|<\/ol>)/gi, '');
 
-		return newContent;
+		// return newContent;
 	};
 
 	const onChangeIndent = type => {

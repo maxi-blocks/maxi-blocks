@@ -12,3 +12,5 @@ export { default as __experimentalGetCustomFormatValue } from './getCustomFormat
 export { default as __experimentalSetCustomFormatsWhenPaste } from './setCustomFormatsWhenPaste';
 export { default as __experimentalSetFormat } from './setFormat';
 export { default as __experimentalRemoveLinkFormat } from './removeLinkFormat';
+export { fromListToText as __experimentalFromListToText } from './listUtils';
+export { fromTextToList as __experimentalFromTextToList } from './listUtils';

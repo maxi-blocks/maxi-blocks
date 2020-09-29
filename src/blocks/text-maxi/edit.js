@@ -30,6 +30,8 @@ import {
 import {
 	__experimentalGetFormatValue,
 	__experimentalSetCustomFormatsWhenPaste,
+	__experimentalFromListToText,
+	__experimentalFromTextToList,
 } from '../../extensions/text/formats';
 
 /**
@@ -558,9 +560,14 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 					nextBlockClientId
 				);
 				const nextBlockContent = nextBlockAttributes.content;
+				const newBlockIsList = nextBlockAttributes.isList;
 
 				setAttributes({
-					content: content.concat(nextBlockContent),
+					content: content.concat(
+						newBlockIsList
+							? __experimentalFromListToText(nextBlockContent)
+							: __experimentalFromTextToList(nextBlockContent)
+					),
 				});
 
 				removeBlock(nextBlockClientId);
@@ -577,7 +584,11 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 				const previousBlockContent = previousBlockAttributes.content;
 
 				updateBlockAttributes(previousBlockClientId, {
-					content: previousBlockContent.concat(content),
+					content: previousBlockContent.concat(
+						ownProps.attributes.isList
+							? __experimentalFromListToText(content)
+							: content
+					),
 				});
 
 				removeBlock(clientId);
@@ -591,7 +602,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 		}
 
 		return createBlock(name, {
-			...this.props.attributes,
+			...ownProps.attributes,
 			content: value,
 		});
 	};

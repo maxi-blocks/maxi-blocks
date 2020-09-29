@@ -108,6 +108,7 @@ const MaxiToolbar = props => {
 		isSelected,
 		name,
 		setAttributes,
+		toggleHandlers,
 	} = props;
 
 	const { deviceType } = useSelect(select => {
@@ -305,6 +306,7 @@ const MaxiToolbar = props => {
 								setAttributes({ rowPattern })
 							}
 							breakpoint={deviceType}
+							toggleHandlers={toggleHandlers}
 						/>
 						<Link
 							blockName={name}

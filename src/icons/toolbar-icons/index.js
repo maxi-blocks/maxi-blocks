@@ -20,3 +20,4 @@ export { default as toolbarHeadingsLevel } from './headings-level';
 export { default as toolbarBorder } from './border';
 export { default as toolbarDividersetting } from './divider-setting';
 export { default as toolbarDividerAlign } from './divider-align';
+export { default as handlers } from './handlers';

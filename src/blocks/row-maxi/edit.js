@@ -28,6 +28,7 @@ import {
 	getTransformObject,
 	setBackgroundStyles,
 } from '../../utils';
+import RowContext from './context';
 
 /**
  * External dependencies
@@ -59,6 +60,21 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
 const ALLOWED_BLOCKS = ['maxi-blocks/column-maxi'];
 
 class edit extends MaxiBlock {
+	constructor(props) {
+		super(props);
+		this.state = {
+			displayHandlers: false,
+		};
+
+		this.toggleHandlers = this.toggleHandlers.bind(this);
+	}
+
+	toggleHandlers() {
+		this.setState({
+			displayHandlers: !this.state.displayHandlers,
+		});
+	}
+
 	get getObject() {
 		const { uniqueID, background, backgroundHover } = this.props.attributes;
 
@@ -170,59 +186,67 @@ class edit extends MaxiBlock {
 
 		return [
 			<Inspector {...this.props} />,
-			<__experimentalToolbar {...this.props} />,
-			<__experimentalBreadcrumbs />,
-			<InnerBlocks
-				// templateLock={'insert'}
-				__experimentalTagName={ContainerInnerBlocks}
-				__experimentalPassedProps={{
-					className: classes,
-					maxiBlockClass: defaultBlockStyle,
-					background,
-				}}
-				allowedBlocks={ALLOWED_BLOCKS}
-				orientation='horizontal'
-				renderAppender={
-					!hasInnerBlock
-						? () => (
-								<div
-									className='maxi-row-block__template'
-									onClick={() => selectOnClick(clientId)}
-									key={`maxi-row-block--${instanceId}`}
-								>
-									{getTemplates().map(template => {
-										return (
-											<Button
-												key={uniqueId(
-													`maxi-row-block--${instanceId}--`
-												)}
-												className='maxi-row-block__template__button'
-												onClick={() => {
-													rowPatternObject.general.rowPattern =
-														template.name;
-													rowPatternObject.m.rowPattern =
-														template.responsiveLayout;
-
-													setAttributes({
-														rowPattern: JSON.stringify(
-															rowPatternObject
-														),
-													});
-													loadTemplate(template.name);
-												}}
-											>
-												<Icon
-													className='maxi-row-block__template__icon'
-													icon={template.icon}
-												/>
-											</Button>
-										);
-									})}
-								</div>
-						  )
-						: false
-				}
+			<__experimentalToolbar
+				toggleHandlers={this.toggleHandlers}
+				{...this.props}
 			/>,
+			<__experimentalBreadcrumbs />,
+			<RowContext.Provider value={this.state.displayHandlers}>
+				<InnerBlocks
+					// templateLock={'insert'}
+					__experimentalTagName={ContainerInnerBlocks}
+					__experimentalPassedProps={{
+						className: classes,
+						maxiBlockClass: defaultBlockStyle,
+						background,
+					}}
+					allowedBlocks={ALLOWED_BLOCKS}
+					orientation='horizontal'
+					renderAppender={
+						!hasInnerBlock
+							? () => (
+									<div
+										className='maxi-row-block__template'
+										onClick={() => selectOnClick(clientId)}
+										key={`maxi-row-block--${instanceId}`}
+									>
+										{getTemplates().map(template => {
+											return (
+												<Button
+													key={uniqueId(
+														`maxi-row-block--${instanceId}--`
+													)}
+													className='maxi-row-block__template__button'
+													onClick={() => {
+														rowPatternObject.general.rowPattern =
+															template.name;
+														rowPatternObject.m.rowPattern =
+															template.responsiveLayout;
+
+														setAttributes({
+															rowPattern: JSON.stringify(
+																rowPatternObject
+															),
+														});
+														loadTemplate(
+															template.name
+														);
+													}}
+												>
+													<Icon
+														className='maxi-row-block__template__icon'
+														icon={template.icon}
+													/>
+												</Button>
+											);
+										})}
+									</div>
+							  )
+							: false
+					}
+				/>
+				,
+			</RowContext.Provider>,
 		];
 	}
 }

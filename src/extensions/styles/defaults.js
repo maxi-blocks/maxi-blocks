@@ -534,19 +534,12 @@ export const background = {
 		gradient: '',
 		gradientAboveBackground: false,
 		clipPath: '',
-		colorOpacity: 1,
-		gradientOpacity: 1,
-	},
-	overlayOptions: {
-		overlay: '',
-		activeColor: '',
-		color: '',
-		gradient: '',
-		gradientAboveBackground: false,
-		opacity: {
-			label: 'Opacity',
-			general: {
-				opacity: 0.8,
+		gradientOpacity: {
+			opacity: {
+				label: 'Opacity',
+				general: {
+					opacity: 1,
+				},
 			},
 		},
 	},
@@ -612,7 +605,14 @@ export const backgroundHover = {
 		gradient: '',
 		gradientAboveBackground: '',
 		clipPath: '',
-		opacity: 1,
+		gradientOpacity: {
+			opacity: {
+				label: 'Opacity',
+				general: {
+					opacity: 1,
+				},
+			},
+		},
 	},
 	overlayOptions: {
 		overlay: '',
@@ -620,13 +620,39 @@ export const backgroundHover = {
 		color: '',
 		gradient: '',
 		gradientAboveBackground: false,
-		opacity: {
-			label: 'Opacity',
-			general: {
-				opacity: '',
+		gradientOpacity: {
+			opacity: {
+				label: 'Opacity',
+				general: {
+					opacity: 1,
+				},
 			},
 		},
 	},
+};
+
+export const overlay = {
+	label: 'Overlay',
+	overlayOptions: {
+		overlay: '',
+		activeColor: '',
+		color: '',
+		gradient: '',
+		gradientAboveBackground: false,
+		gradientOpacity: {
+			opacity: {
+				label: 'Opacity',
+				general: {
+					opacity: 1,
+				},
+			},
+		},
+	},
+};
+
+export const overlayHover = {
+	label: 'Overlay Hover',
+	...overlay,
 };
 
 export const boxShadow = {

@@ -53,19 +53,12 @@
 		"gradient": "",
 		"gradientAboveBackground": false,
 		"clipPath": "",
-		"colorOpacity": 1,
-		"gradientOpacity": 1
-	},
-	"overlayOptions": {
-		"overlay": "",
-		"activeColor": "",
-		"color": "",
-		"gradient": "",
-		"gradientAboveBackground": false,
-		"opacity": {
-			"label": "Opacity",
-			"general": {
-				"opacity": 0.8
+		"gradientOpacity": {
+			"opacity": {
+				"label": "Opacity",
+				"general": {
+					"opacity": 1
+				}
 			}
 		}
 	},

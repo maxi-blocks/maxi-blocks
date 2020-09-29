@@ -7,7 +7,6 @@ const { RadioControl, Icon } = wp.components;
 /**
  * Internal dependencies
  */
-import __experimentalOpacityControl from '../opacity-control';
 import ColorControl from '../color-control';
 import GradientControl from '../gradient-control';
 
@@ -68,27 +67,20 @@ const OverlayControl = props => {
 					}}
 				/>
 			</div>
-			{(value.overlayOptions.overlay === 'gradient' ||
-				value.overlayOptions.overlay === 'color') && (
-				<__experimentalOpacityControl
-					opacity={value.overlayOptions.opacity}
-					defaultOpacity={defaultValue.overlayOptions.opacity}
-					onChange={val => {
-						value.overlayOptions.opacity = JSON.parse(val);
-						onChange(JSON.stringify(value));
-					}}
-				/>
-			)}
 			{value.overlayOptions.overlay === 'gradient' && (
 				<GradientControl
 					label={__('Overlay Gradient', 'maxi-blocks')}
 					gradient={value.overlayOptions.gradient}
-					defaultGradient={defaultValue.overlayOptions.gradient}
+					gradientOpacity={value.overlayOptions.gradientOpacity}
+					defaultGradient={
+						defaultValue.overlayOptions.gradientOpacity.opacity
+					}
 					onChange={val => {
 						value.overlayOptions.gradient = val;
 						value.overlayOptions.activeColor = val;
 						onChange(JSON.stringify(value));
 					}}
+					onChangeOpacity={() => onChange(JSON.stringify(value))}
 					gradientAboveBackground={
 						value.overlayOptions.gradientAboveBackground
 					}

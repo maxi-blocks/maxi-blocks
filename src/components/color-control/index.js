@@ -3,11 +3,12 @@
  */
 const { __, sprintf } = wp.i18n;
 const { ColorPicker, RangeControl, BaseControl, Button } = wp.components;
+const { useState } = wp.element;
 
 /**
  * External dependencies
  */
-import { isEmpty, round } from 'lodash';
+import { isEmpty } from 'lodash';
 import classnames from 'classnames';
 
 /**
@@ -20,31 +21,18 @@ import { reset } from '../../icons';
  * Component
  */
 const ColorControl = props => {
-	const {
-		label,
-		className,
-		color,
-		opacity = 1,
-		defaultColor = '',
-		onChange,
-		onChangeOpacity,
-	} = props;
+	const { label, className, color, defaultColor = '', onChange } = props;
 
 	const classes = classnames('maxi-color-control', className);
 
-	const getRGB = color => {
-		var match = color.match(
-			/rgba?\((\d{1,3}), ?(\d{1,3}), ?(\d{1,3})\)?(?:, ?(\d(?:\.\d?))\))?/
-		);
-		return match
-			? {
-					rgb: {
-						r: match[1],
-						g: match[2],
-						b: match[3],
-					},
-			  }
-			: {};
+	const getRGB = colorString => {
+		const rgbKeys = ['r', 'g', 'b', 'a'];
+		let output = {};
+		let color = colorString.replace(/^rgba?\(|\s+|\)$/g, '').split(',');
+
+		for (let i in rgbKeys) output[rgbKeys[i]] = color[i] || 1;
+
+		return { rgb: { ...output } };
 	};
 
 	const returnColor = (val, alpha) => {
@@ -55,8 +43,11 @@ const ColorControl = props => {
 
 	const onReset = () => {
 		onChange(defaultColor);
-		onChangeOpacity(100);
+		setColorAlpha(100);
+		if (!isEmpty(color)) onChange(returnColor(getRGB(color), 1));
 	};
+
+	const [colorAlpha, setColorAlpha] = useState(getRGB(color).rgb.a * 100);
 
 	return (
 		<div className={classes}>
@@ -87,11 +78,12 @@ const ColorControl = props => {
 			<RangeControl
 				label={__('Colour Opacity', 'maxi-blocks')}
 				className='maxi-color-control__opacity'
-				value={round(opacity * 100)}
+				value={colorAlpha}
 				onChange={val => {
-					let opacityVal = Number(val / 100);
-					onChange(returnColor(getRGB(color), opacityVal));
-					onChangeOpacity(opacityVal);
+					if (!isEmpty(color)) {
+						onChange(returnColor(getRGB(color), Number(val / 100)));
+					}
+					setColorAlpha(val);
 				}}
 				min={0}
 				max={100}
@@ -100,10 +92,9 @@ const ColorControl = props => {
 			<div className='maxi-color-control__color'>
 				<ColorPicker
 					color={color}
-					onChangeComplete={val =>
-						onChange(returnColor(val, opacity))
-					}
-					disableAlpha
+					onChangeComplete={val => {
+						onChange(returnColor(val, colorAlpha));
+					}}
 				/>
 			</div>
 		</div>

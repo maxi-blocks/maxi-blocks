@@ -3,7 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
-const { Fragment } = wp.element;
+const { Fragment, useState } = wp.element;
 const { TextControl, RadioControl } = wp.components;
 
 /**
@@ -56,7 +56,8 @@ const Inspector = props => {
 			opacity,
 			background,
 			backgroundHover,
-			backgroundHoverStatus,
+			overlay,
+			overlayHover,
 			border,
 			borderHover,
 			boxShadow,
@@ -100,6 +101,14 @@ const Inspector = props => {
 			max: 100,
 		},
 	};
+
+	const [backgroundHoverStatus, toggleBackgroundHoverStatus] = useState(
+		backgroundHover !== getDefaultProp(clientId, 'backgroundHover') ? 1 : 0
+	);
+
+	const [overlayHoverStatus, toggleOverlayHoverStatus] = useState(
+		overlayHover !== getDefaultProp(clientId, 'overlayHover') ? 1 : 0
+	);
 
 	return (
 		<InspectorControls>
@@ -405,12 +414,10 @@ const Inspector = props => {
 																				},
 																			]}
 																			onChange={val => {
-																				setAttributes(
-																					{
-																						backgroundHoverStatus: Number(
-																							val
-																						),
-																					}
+																				toggleBackgroundHoverStatus(
+																					Number(
+																						val
+																					)
 																				);
 																			}}
 																		/>
@@ -457,16 +464,16 @@ const Inspector = props => {
 																<Fragment>
 																	<__experimentalOverlayControl
 																		overlay={
-																			background
+																			overlay
 																		}
 																		defaultOverlay={getDefaultProp(
 																			clientId,
-																			'background'
+																			'overlay'
 																		)}
-																		onChange={background =>
+																		onChange={overlay =>
 																			setAttributes(
 																				{
-																					background,
+																					overlay,
 																				}
 																			)
 																		}
@@ -481,22 +488,58 @@ const Inspector = props => {
 															),
 															content: (
 																<Fragment>
-																	<__experimentalOverlayControl
-																		overlay={
-																			backgroundHover
-																		}
-																		defaultOverlay={getDefaultProp(
-																			clientId,
-																			'backgroundHover'
-																		)}
-																		onChange={backgroundHover =>
-																			setAttributes(
+																	<div className='maxi-fancy-radio-control'>
+																		<RadioControl
+																			label={__(
+																				'Enable Overly Hover',
+																				'maxi-blocks'
+																			)}
+																			selected={
+																				overlayHoverStatus
+																			}
+																			options={[
 																				{
-																					backgroundHover,
-																				}
-																			)
-																		}
-																	/>
+																					label: __(
+																						'Yes',
+																						'maxi-blocks'
+																					),
+																					value: 1,
+																				},
+																				{
+																					label: __(
+																						'No',
+																						'maxi-blocks'
+																					),
+																					value: 0,
+																				},
+																			]}
+																			onChange={val => {
+																				toggleOverlayHoverStatus(
+																					Number(
+																						val
+																					)
+																				);
+																			}}
+																		/>
+																	</div>
+																	{!!overlayHoverStatus && (
+																		<__experimentalOverlayControl
+																			overlay={
+																				overlayHover
+																			}
+																			defaultOverlay={getDefaultProp(
+																				clientId,
+																				'overlayHover'
+																			)}
+																			onChange={overlayHover =>
+																				setAttributes(
+																					{
+																						overlayHover,
+																					}
+																				)
+																			}
+																		/>
+																	)}
 																</Fragment>
 															),
 														},

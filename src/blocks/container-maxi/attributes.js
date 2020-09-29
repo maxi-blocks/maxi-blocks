@@ -15,10 +15,6 @@ const attributes = {
 		type: 'string',
 		default: 'full',
 	},
-	backgroundHoverStatus: {
-		type: 'number',
-		default: 0,
-	},
 	size: {
 		type: 'string',
 		default: JSON.stringify(attributesData.size),
@@ -38,6 +34,14 @@ const attributes = {
 	backgroundHover: {
 		type: 'string',
 		default: JSON.stringify(attributesData.backgroundHover),
+	},
+	overlay: {
+		type: 'string',
+		default: JSON.stringify(attributesData.overlay),
+	},
+	overlayHover: {
+		type: 'string',
+		default: JSON.stringify(attributesData.overlayHover),
 	},
 	border: {
 		type: 'string',

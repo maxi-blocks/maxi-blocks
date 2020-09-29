@@ -163,15 +163,10 @@ const BackgroundControl = props => {
 							<ColorControl
 								label={__('Background', 'maxi-blocks')}
 								color={value.colorOptions.color}
-								opacity={value.colorOptions.colorOpacity}
 								defaultColor={defaultValue.colorOptions.color}
 								onChange={val => {
 									value.colorOptions.color = val;
 									value.colorOptions.activeColor = val;
-									onChange(JSON.stringify(value));
-								}}
-								onChangeOpacity={val => {
-									value.colorOptions.colorOpacity = val;
 									onChange(JSON.stringify(value));
 								}}
 							/>
@@ -317,25 +312,27 @@ const BackgroundControl = props => {
 						<Fragment>
 							<GradientControl
 								label={__('Background', 'maxi-blocks')}
-								opacity={value.colorOptions.gradientOpacity}
 								gradient={value.colorOptions.gradient}
+								gradientOpacity={
+									value.colorOptions.gradientOpacity
+								}
 								defaultGradient={
-									defaultValue.colorOptions.gradient
+									defaultValue.colorOptions.gradientOpacity
+										.opacity
 								}
 								onChange={val => {
 									value.colorOptions.gradient = val;
 									value.colorOptions.activeColor = val;
 									onChange(JSON.stringify(value));
 								}}
+								onChangeOpacity={() =>
+									onChange(JSON.stringify(value))
+								}
 								gradientAboveBackground={
 									value.colorOptions.gradientAboveBackground
 								}
 								onGradientAboveBackgroundChange={val => {
 									value.colorOptions.gradientAboveBackground = val;
-									onChange(JSON.stringify(value));
-								}}
-								onChangeOpacity={val => {
-									value.colorOptions.gradientOpacity = val;
 									onChange(JSON.stringify(value));
 								}}
 							/>

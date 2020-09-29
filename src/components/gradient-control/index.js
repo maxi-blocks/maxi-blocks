@@ -2,23 +2,19 @@
  * WordPress dependencies
  */
 const { __, sprintf } = wp.i18n;
-const {
-	BaseControl,
-	Button,
-	RangeControl,
-	__experimentalGradientPicker,
-} = wp.components;
+const { BaseControl, Button, __experimentalGradientPicker } = wp.components;
 
 /**
  * Internal dependencies
  */
 import CheckBoxControl from '../checkbox-control';
+import __experimentalOpacityControl from '../opacity-control';
 
 /**
  * External dependencies
  */
-import { round } from 'lodash';
 import classnames from 'classnames';
+import { isObject } from 'lodash';
 
 /**
  * Styles and icons
@@ -32,9 +28,9 @@ import { reset } from '../../icons';
 const GradientControl = props => {
 	const {
 		label,
-		opacity = 1,
 		className,
 		gradient,
+		gradientOpacity,
 		defaultGradient = '',
 		onChange,
 		disableGradientAboveBackground = false,
@@ -42,6 +38,10 @@ const GradientControl = props => {
 		onGradientAboveBackgroundChange,
 		onChangeOpacity,
 	} = props;
+
+	const gradientOpacityValue = !isObject(gradientOpacity)
+		? JSON.parse(gradientOpacity)
+		: gradientOpacity;
 
 	const classes = classnames('maxi-gradient-control', className);
 
@@ -74,17 +74,14 @@ const GradientControl = props => {
 					</Button>
 				</div>
 			</BaseControl>
-			<RangeControl
+			<__experimentalOpacityControl
 				label={__('Gradient Opacity', 'maxi-blocks')}
-				className='maxi-color-control__opacity'
-				value={round(opacity * 100)}
+				opacity={gradientOpacityValue.opacity}
+				defaultOpacity={defaultGradient}
 				onChange={val => {
-					let opacityVal = Number(val / 100);
-					onChangeOpacity(opacityVal);
+					gradientOpacityValue.opacity = JSON.parse(val);
+					onChangeOpacity(JSON.stringify(gradientOpacityValue));
 				}}
-				min={0}
-				max={100}
-				initialPosition={100}
 			/>
 			<div className='maxi-gradient-control__gradient'>
 				<__experimentalGradientPicker

@@ -212,8 +212,29 @@ export const background = {
 		gradient: '',
 		gradientAboveBackground: false,
 		clipPath: '',
-		colorOpacity: 1,
-		gradientOpacity: 1,
+		gradientOpacity: {
+			opacity: {
+				label: 'Opacity',
+				general: {
+					opacity: 1,
+				},
+			},
+		},
+	},
+	overlayOptions: {
+		overlay: '',
+		activeColor: '',
+		color: '',
+		gradient: '',
+		gradientAboveBackground: false,
+		gradientOpacity: {
+			opacity: {
+				label: 'Opacity',
+				general: {
+					opacity: 1,
+				},
+			},
+		},
 	},
 	imageOpacity: {
 		opacity: {

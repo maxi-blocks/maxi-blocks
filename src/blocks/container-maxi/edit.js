@@ -31,6 +31,7 @@ import {
  */
 import classnames from 'classnames';
 import { isEmpty } from 'lodash';
+import { overlay } from '../../extensions/styles/defaults';
 
 /**
  * InnerBlocks version
@@ -74,8 +75,11 @@ class edit extends MaxiBlock {
 			uniqueID,
 			background,
 			backgroundHover,
-			backgroundHoverStatus,
+			overlay,
+			overlayHover,
 		} = this.props.attributes;
+
+		const { clientId } = this.props;
 
 		let response = {
 			[uniqueID]: this.getNormalObject,
@@ -121,7 +125,9 @@ class edit extends MaxiBlock {
 				uniqueID,
 				background,
 				backgroundHover,
-				backgroundHoverStatus
+				overlay,
+				overlayHover,
+				clientId
 			)
 		);
 

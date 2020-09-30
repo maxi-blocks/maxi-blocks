@@ -7,7 +7,7 @@ const { removeFormat } = wp.richText;
  * Internal dependencies
  */
 import __experimentalApplyLinkFormat from './applyLinkFormat';
-import __experimentalSetFormatWithClass from './setFormatWithClass';
+import setFormatWithClass from './setFormatWithClass';
 
 /**
  * External dependencies
@@ -114,7 +114,7 @@ const setFormat = ({ formatValue, typography, oldFormat, value, isList }) => {
 			typography: preformattedTypography,
 			content: preformattedContent,
 			formatValue: preformattedFormatValue,
-		} = __experimentalSetFormatWithClass({
+		} = setFormatWithClass({
 			formatValue: newFormatValue,
 			typography: newTypography,
 			value,
@@ -133,7 +133,22 @@ const setFormat = ({ formatValue, typography, oldFormat, value, isList }) => {
 	};
 };
 
-const setCustomFormatsWhenPaste = ({ formatValue, typography, isList }) => {
+const cleanListContent = (content, isList, typeOfList) => {
+	if (isList && typeOfList === 'ol')
+		return content.replace(/<ul>/gi, '<ol>').replace(/<\/ul>/gi, '</ol>');
+	if (isList && typeOfList === 'ul')
+		return content.replace(/<ol>/gi, '<ul>').replace(/<\/ol>/gi, '</ul>');
+
+	return content;
+};
+
+const setCustomFormatsWhenPaste = ({
+	formatValue,
+	typography,
+	isList,
+	typeOfList,
+	content,
+}) => {
 	const isLinkUnformatted = isFormattedWithType(formatValue, 'core/link');
 	const isBoldUnformatted = isFormattedWithType(formatValue, 'core/bold');
 	const isItalicUnformatted = isFormattedWithType(formatValue, 'core/italic');
@@ -275,6 +290,8 @@ const setCustomFormatsWhenPaste = ({ formatValue, typography, isList }) => {
 		newContent = superscriptFormattedContent;
 		newFormatValue = superscriptFormattedFormatValue;
 	}
+
+	newContent = cleanListContent(newContent || content, isList, typeOfList);
 
 	if (newContent) {
 		return {

@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 import { getLastBreakpointValue } from '../../styles/utils';
-import __experimentalGetFormatClassName from './getCurrentFormatClassName';
+import getFormatClassName from './getCurrentFormatClassName';
 
 const getCustomFormatValue = ({
 	typography,
@@ -11,7 +11,7 @@ const getCustomFormatValue = ({
 	breakpoint,
 }) => {
 	if (formatValue) {
-		const currentClassName = __experimentalGetFormatClassName(
+		const currentClassName = getFormatClassName(
 			formatValue,
 			'maxi-blocks/text-custom'
 		);

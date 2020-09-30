@@ -224,7 +224,7 @@ class edit extends MaxiBlock {
 								multilineWrapperTags: isList
 									? typeOfList
 									: undefined,
-								__unstableIsEditableTree: true,
+								__unstableIsEditableTree: false,
 							};
 							const formatValue = __experimentalGetFormatValue(
 								formatElement
@@ -241,6 +241,8 @@ class edit extends MaxiBlock {
 									formatValue,
 									typography: JSON.parse(typography),
 									isList,
+									typeOfList,
+									content,
 								}
 							);
 
@@ -377,7 +379,7 @@ const editSelect = withSelect((select, ownProps) => {
 		html: content,
 		multilineTag: isList ? 'li' : undefined,
 		multilineWrapperTags: isList ? typeOfList : undefined,
-		__unstableIsEditableTree: true,
+		__unstableIsEditableTree: false,
 	};
 	const formatValue = __experimentalGetFormatValue(formatElement);
 
@@ -520,7 +522,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 					html: content,
 					multilineTag: isList ? 'li' : undefined,
 					multilineWrapperTags: isList ? typeOfList : undefined,
-					__unstableIsEditableTree: true,
+					__unstableIsEditableTree: false,
 				};
 				const formatValue = __experimentalGetFormatValue(formatElement);
 
@@ -535,6 +537,8 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 						formatValue,
 						typography: JSON.parse(typography),
 						isList,
+						typeOfList,
+						content,
 					}
 				);
 

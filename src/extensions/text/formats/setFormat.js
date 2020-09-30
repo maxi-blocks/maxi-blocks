@@ -2,7 +2,7 @@ import { form } from '../../../icons';
 /**
  * Internal dependencies
  */
-import __experimentalSetFormatWithClass from './setFormatWithClass';
+import setFormatWithClass from './setFormatWithClass';
 
 /**
  * Content
@@ -23,7 +23,7 @@ const setFormat = ({
 		return { typography };
 	}
 
-	return __experimentalSetFormatWithClass({
+	return setFormatWithClass({
 		formatValue,
 		isList,
 		typography,

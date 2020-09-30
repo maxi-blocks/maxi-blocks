@@ -6,7 +6,7 @@ const { applyFormat } = wp.richText;
 /**
  * Internal dependencies
  */
-import __experimentalGetFormattedString from './getFormattedString';
+import getFormattedString from './getFormattedString';
 import __experimentalGetCurrentFormatClassName from './getCurrentFormatClassName';
 import flatFormatsWithClass from './flatFormatsWithClass';
 import getMultiFormatObj from './getMultiFormatObj';
@@ -50,7 +50,7 @@ const applyCustomFormat = ({
 	isList,
 	formatClassName,
 }) => {
-	return __experimentalGetFormattedString({
+	return getFormattedString({
 		formatValue,
 		formatName,
 		isActive,
@@ -192,6 +192,7 @@ const mergeNewFormat = ({
 	const isFullFormat = !formats.some((formatEl, i) => {
 		return formatEl.some(format => {
 			return (
+				format.type === formatName &&
 				format.attributes.className === currentClassName &&
 				!inRange(i, start, end)
 			);

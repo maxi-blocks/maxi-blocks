@@ -47,18 +47,8 @@ const TextListOptions = props => {
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
 	const getContent = content => {
-		// let newContent = content;
-
 		if (!isList) return __experimentalFromTextToList(content);
-		// newContent = '';
-		// newContent = `<li>${content.replace(/<br>/gi, '</li><li>')}</li>`;
 		return __experimentalFromListToText(content);
-		// newContent = '';
-		// newContent = content
-		// 	.replace(/(<\/li><li>|<ol>|<ul>)/gi, '<br>')
-		// 	.replace(/(<\/li>|<li>|<\/ul>|<\/ol>)/gi, '');
-
-		// return newContent;
 	};
 
 	const onChangeIndent = type => {

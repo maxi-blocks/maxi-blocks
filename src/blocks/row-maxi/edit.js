@@ -5,7 +5,7 @@ const { synchronizeBlocksWithTemplate } = wp.blocks;
 const { forwardRef } = wp.element;
 const { compose, withInstanceId } = wp.compose;
 const { withSelect, withDispatch } = wp.data;
-const { Button, Icon } = wp.components;
+const { Button, Icon, withFocusOutside } = wp.components;
 const { InnerBlocks, __experimentalBlock } = wp.blockEditor;
 
 /**
@@ -72,6 +72,12 @@ class edit extends MaxiBlock {
 	toggleHandlers() {
 		this.setState({
 			displayHandlers: !this.state.displayHandlers,
+		});
+	}
+
+	handleFocusOutside() {
+		this.setState({
+			displayHandlers: false,
 		});
 	}
 
@@ -330,4 +336,8 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	};
 });
 
-export default compose(editSelect, editDispatch, withInstanceId)(edit);
+export default compose(
+	editSelect,
+	editDispatch,
+	withInstanceId
+)(withFocusOutside(edit));

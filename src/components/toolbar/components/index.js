@@ -30,3 +30,4 @@ export { default as TextShadow } from './text-shadow';
 export { default as __experimentalColumnMover } from './column-mover';
 export { default as __experimentalRowSettings } from './row-settings';
 export { default as __experimentalColumnSize } from './column-size';
+export { default as __experimentalColumnsHandlers } from './columns-handlers';

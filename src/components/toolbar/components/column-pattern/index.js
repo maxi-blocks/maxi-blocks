@@ -3,7 +3,6 @@
  */
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
-const { Button, Icon, Tooltip } = wp.components;
 
 /**
  * Internal dependencies
@@ -12,14 +11,9 @@ import ToolbarPopover from '../toolbar-popover';
 import { __experimentalColumnPattern } from '../../..';
 
 /**
- * External dependencies
- */
-import classnames from 'classnames';
-
-/**
  * Styles and icons
  */
-import { handlers, toolbarColumnPattern } from '../../../../icons';
+import { toolbarColumnPattern } from '../../../../icons';
 
 /**
  * Column patterns
@@ -27,23 +21,9 @@ import { handlers, toolbarColumnPattern } from '../../../../icons';
  * @todo Shows just row patterns with same existing number of columns
  */
 const ColumnPattern = props => {
-	const {
-		clientId,
-		blockName,
-		rowPattern,
-		onChange,
-		breakpoint,
-		className,
-		toggleHandlers,
-	} = props;
+	const { clientId, blockName, rowPattern, onChange, breakpoint } = props;
 
 	if (blockName !== 'maxi-blocks/row-maxi') return null;
-
-	const classes = classnames(
-		'toolbar-item',
-		'toolbar-item__button',
-		className
-	);
 
 	return (
 		<Fragment>
@@ -65,13 +45,6 @@ const ColumnPattern = props => {
 					/>
 				}
 			/>
-			<Tooltip text={__('Columns Handlers', 'maxi-blocks')}>
-				<div>
-					<Button className={classes} onClick={toggleHandlers}>
-						<Icon className='toolbar-item__icon' icon={handlers} />
-					</Button>
-				</div>
-			</Tooltip>
 		</Fragment>
 	);
 };

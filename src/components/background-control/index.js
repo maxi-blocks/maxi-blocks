@@ -1058,10 +1058,7 @@ const BackgroundControl = props => {
 										<SelectControl
 											label={__('Muted', 'maxi-blocks')}
 											value={value.videoOptions.muted}
-											disabled={
-												value.videoOptions.autoplay ===
-												'1'
-											}
+	disabled={Number(value.videoOptions.autoplay)} // !!Number(value.videoOptions.autoplay)
 											options={[
 												{
 													label: __(

@@ -81,19 +81,28 @@ const SizeControl = props => {
 
 		rangeRef.current.setAttribute('value', defaultValue);
 
-		if (!isNumber(defaultValue)) {
-			// RangeControl needs a number or to press its own reset button to put the range
-			// into beginning again. So we do manually
-			const rangeWrapper = rangeRef.current.parentNode;
-			const rangeItems = Array.from(rangeWrapper.children);
+		const rangeWrapper = rangeRef.current.parentNode;
+		const rangeItems = Array.from(rangeWrapper.children);
 
-			rangeItems.forEach(el => {
-				el.classList.forEach(elClass => {
-					elClass.indexOf('ThumbWrapper') !== -1 &&
-						(el.style.left = 0);
-				});
+		// RangeControl needs a number or to press its own reset button to put the range
+		// into the default value again. So we do it manually
+		let leftOffset = 0;
+		if (isNumber(defaultValue))
+			leftOffset = (defaultValue * 100) / (max - min);
+
+		if (!disableUnit)
+			leftOffset =
+				(defaultValue * 100) /
+				(minMaxSettings[unit].max - minMaxSettings[unit].min);
+
+		if (leftOffset > 100) leftOffset = 100;
+
+		rangeItems.forEach(el => {
+			el.classList.forEach(elClass => {
+				elClass.indexOf('ThumbWrapper') !== -1 &&
+					(el.style.left = `${leftOffset}%`);
 			});
-		}
+		});
 	};
 
 	return (

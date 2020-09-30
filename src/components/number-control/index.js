@@ -34,8 +34,10 @@ const NumberControl = props => {
 		<BaseControl label={label} className={classes}>
 			<input
 				type='number'
-				value={value ? trim(value) : ''}
-				onChange={e => onChange(Number(e.target.value))}
+				value={value || value === 0 ? trim(value) : ''}
+				onChange={e => {
+					onChange(Number(e.target.value));
+				}}
 				min={min}
 				max={max}
 			/>

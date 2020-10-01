@@ -60,20 +60,12 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
 const ALLOWED_BLOCKS = ['maxi-blocks/column-maxi'];
 
 class edit extends MaxiBlock {
-	constructor(props) {
-		super(props);
-		this.state = {
-			displayHandlers: false,
-		};
-
-		this.toggleHandlers = this.toggleHandlers.bind(this);
-	}
-
-	toggleHandlers() {
-		this.setState({
-			displayHandlers: !this.state.displayHandlers,
-		});
-	}
+	state = {
+		styles: {},
+		updating: false,
+		breakpoints: this.getBreakpoints,
+		displayHandlers: false,
+	};
 
 	handleFocusOutside() {
 		this.setState({
@@ -193,7 +185,11 @@ class edit extends MaxiBlock {
 		return [
 			<Inspector {...this.props} />,
 			<__experimentalToolbar
-				toggleHandlers={this.toggleHandlers}
+				toggleHandlers={() => {
+					this.setState({
+						displayHandlers: !this.state.displayHandlers,
+					});
+				}}
 				{...this.props}
 			/>,
 			<__experimentalBreadcrumbs />,
@@ -251,7 +247,6 @@ class edit extends MaxiBlock {
 							: false
 					}
 				/>
-				,
 			</RowContext.Provider>,
 		];
 	}
@@ -336,8 +331,4 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	};
 });
 
-export default compose(
-	editSelect,
-	editDispatch,
-	withInstanceId
-)(withFocusOutside(edit));
+export default compose(editSelect, editDispatch, withInstanceId)(edit);

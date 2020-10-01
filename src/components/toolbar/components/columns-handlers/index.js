@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { Fragment } = wp.element;
 const { Button, Icon, Tooltip } = wp.components;
 
 /**
@@ -15,11 +14,6 @@ import classnames from 'classnames';
  */
 import { handlers } from '../../../../icons';
 
-/**
- * Column patterns
- *
- * @todo Shows just row patterns with same existing number of columns
- */
 const ColumnPattern = props => {
 	const { blockName, className, toggleHandlers } = props;
 
@@ -32,15 +26,16 @@ const ColumnPattern = props => {
 	);
 
 	return (
-		<Fragment>
-			<Tooltip text={__('Columns Handlers', 'maxi-blocks')}>
-				<div>
-					<Button className={classes} onClick={toggleHandlers}>
-						<Icon className='toolbar-item__icon' icon={handlers} />
-					</Button>
-				</div>
-			</Tooltip>
-		</Fragment>
+		<Tooltip
+			text={__('Columns Handlers', 'maxi-blocks')}
+			position='bottom center'
+		>
+			<div>
+				<Button className={classes} onClick={toggleHandlers}>
+					<Icon className='toolbar-item__icon' icon={handlers} />
+				</Button>
+			</div>
+		</Tooltip>
 	);
 };
 

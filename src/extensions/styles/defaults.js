@@ -1249,6 +1249,7 @@ export const __experimentalColumn = {
 export const __experimentalShapeDivider = {
 	label: 'Shape Divider',
 	top: {
+		status: 0,
 		height: 100,
 		heightUnit: 'px',
 		opacity: {
@@ -1268,6 +1269,7 @@ export const __experimentalShapeDivider = {
 		},
 	},
 	bottom: {
+		status: 0,
 		height: 100,
 		heightUnit: 'px',
 		opacity: {
@@ -1400,7 +1402,7 @@ export const __experimentalDisplay = {
 export const __experimentalHover = {
 	label: 'Hover Effects',
 	settings: {
-		type: 'zoom-in',
+		type: 'none',
 		effectType: 'fade',
 		duration: 1,
 	},

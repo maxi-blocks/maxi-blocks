@@ -34,6 +34,8 @@ import {
 } from '../../icons';
 import './editor.scss';
 
+import './editor.scss';
+
 /**
  * Components
  */

@@ -194,6 +194,44 @@ const ColumnPatternsInspector = props => {
 	};
 
 	/**
+	 * Get columns positions (Row number and the number of columns in the row)
+	 *
+	 * @param {Array} sizes array of columns widths
+	 * @return {Array} Array of objects
+	 */
+
+	const getColumnsPositions = sizes => {
+		const columnsPositions = [];
+
+		let columnsSizeSum = 0;
+		let columnsNumberInOneRow = 0;
+		let rowsCount = 1;
+
+		sizes.forEach(size => {
+			columnsSizeSum += size;
+			columnsNumberInOneRow += 1;
+
+			columnsPositions.push({
+				rowNumber: rowsCount,
+			});
+
+			if (Math.round(columnsSizeSum * 100 + Number.EPSILON) / 100 === 1) {
+				columnsPositions.forEach(column => {
+					if (!column.columnsNumber) {
+						column.columnsNumber = columnsNumberInOneRow;
+					}
+				});
+
+				rowsCount += 1;
+				columnsSizeSum = 0;
+				columnsNumberInOneRow = 0;
+			}
+		});
+
+		return columnsPositions;
+	};
+
+	/**
 	 * Update Columns Sizes
 	 *
 	 * @param {integer} i Element of object FILTERED_TEMPLATES
@@ -208,20 +246,45 @@ const ColumnPatternsInspector = props => {
 
 		const { sizes } = template;
 
+		const columnsPositions = getColumnsPositions(sizes);
+
+		const gap = 2.5;
+
 		columnsBlockObjects.forEach((column, j) => {
 			const columnClientId = column.clientId;
 			const columnAttributes = column.attributes;
 			const columnUniqueID = columnAttributes.uniqueID;
 
 			const newColumnSize = JSON.parse(columnAttributes.columnSize);
+			const newColumnMargin = JSON.parse(columnAttributes.margin);
 
-			newColumnSize[breakpoint].size = sizes[j] * 100;
+			if (columnsPositions[j].columnsNumber > 1) {
+				const total = 100 - gap * columnsPositions[j].columnsNumber;
+				newColumnSize[breakpoint].size = sizes[j] * total;
+				document.querySelector(
+					`.maxi-column-block__resizer__${columnUniqueID}`
+				).style.width = sizes[j] * total;
+			}
 
-			document.querySelector(
-				`.maxi-column-block__resizer__${columnUniqueID}`
-			).style.width = `${sizes[j] * 100}%`;
+			if (columnsPositions[j].columnsNumber === 1) {
+				newColumnSize[breakpoint].size = 100;
+				document.querySelector(
+					`.maxi-column-block__resizer__${columnUniqueID}`
+				).style.width = '100%';
+			}
+
+			if (columnsPositions[j].rowNumber > 1) {
+				newColumnMargin[breakpoint]['margin-top'] = 1;
+				newColumnMargin[breakpoint].unit = 'em';
+			}
+
+			if (columnsPositions[j].rowNumber === 1) {
+				newColumnMargin[breakpoint]['margin-top'] = 0;
+				newColumnMargin[breakpoint].unit = '';
+			}
 
 			columnAttributes.columnSize = JSON.stringify(newColumnSize);
+			columnAttributes.margin = JSON.stringify(newColumnMargin);
 
 			updateBlockAttributes(columnClientId, columnAttributes);
 		});
@@ -243,6 +306,7 @@ const ColumnPatternsInspector = props => {
 					onChangeValue={numCol => setNumCol(numCol)}
 					min={1}
 					max={6}
+					disableReset
 				/>
 			)}
 			<div className='components-column-pattern__templates'>

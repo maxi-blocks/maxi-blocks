@@ -35,6 +35,7 @@ const SizeControl = props => {
 		value,
 		defaultValue,
 		onChangeValue,
+		disableReset = false,
 		allowedUnits = ['px', 'em', 'vw', '%'],
 		minMaxSettings = {
 			px: {
@@ -126,19 +127,21 @@ const SizeControl = props => {
 					/>
 				</Fragment>
 			)}
-			<Button
-				className='components-maxi-control__reset-button'
-				onClick={onReset}
-				isSmall
-				aria-label={sprintf(
-					/* translators: %s: a textual label  */
-					__('Reset %s settings', 'maxi-blocks'),
-					label.toLowerCase()
-				)}
-				type='reset'
-			>
-				{reset}
-			</Button>
+			{!disableReset && (
+				<Button
+					className='components-maxi-control__reset-button'
+					onClick={onReset}
+					isSmall
+					aria-label={sprintf(
+						/* translators: %s: a textual label  */
+						__('Reset %s settings', 'maxi-blocks'),
+						label.toLowerCase()
+					)}
+					type='reset'
+				>
+					{reset}
+				</Button>
+			)}
 			{disableUnit ? (
 				<RangeControl
 					ref={e => (rangeRef.current = e)} // ref={ ref }

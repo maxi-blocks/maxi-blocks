@@ -291,6 +291,19 @@ body .toolbar-item__popover {
 	}
 }
 
+
+.components-base-control {
+	&__field {
+		.components-select-control {
+			&__input {
+				&:disabled {
+					background-color: #f2f2f2 !important;
+				}
+			}
+		}
+	}
+}
+
 /************
 * Unit Select
 ************/

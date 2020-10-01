@@ -1,5 +1,16 @@
+/**
+ * External dependencies
+ */
 import { inRange, compact } from 'lodash';
 
+/**
+ * Generates an object with the Maxi Custom format and its different classes
+ * and the positions for every one of each
+ *
+ * @param {Object} formatValue 			RichText format value
+ *
+ * @returns {Object} Classes with its positions
+ */
 const getMultiFormatObj = formatValue => {
 	const { start, end } = formatValue;
 	const formatArray = new Array([...formatValue.formats])[0];

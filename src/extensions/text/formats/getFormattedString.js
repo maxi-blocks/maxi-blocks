@@ -4,18 +4,24 @@
 const { applyFormat, toHTMLString } = wp.richText;
 
 /**
- * @param {Object} param0 Data for generating a new string
+ * Applies requested format and returns new content
+ *
+ * @param {Object} 	[$0]					Optional named arguments.
+ * @param {Object} 	[$0.formatValue]		RichText format value
+ * @param {Object} 	[$0.formatName]			MaxiBlocks typography
+ * @param {Object} 	[$0.isList]				Text Maxi block has list mode active
+ * @param {boolean} [$0.attributes]			RichText format attributes
+ *
+ * @returns {string} Format applied content
  */
 const getFormattedString = ({
 	formatValue,
 	formatName,
-	isActive,
 	isList,
 	attributes,
 }) => {
 	const newFormat = applyFormat(formatValue, {
 		type: formatName,
-		isActive,
 		...attributes,
 	});
 

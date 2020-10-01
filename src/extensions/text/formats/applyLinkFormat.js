@@ -9,7 +9,15 @@ const { applyFormat } = wp.richText;
 import setFormatWithClass from './setFormatWithClass';
 
 /**
+ * Generates formats for links
  *
+ * @param {Object} 	[$0]					Optional named arguments.
+ * @param {Object} 	[$0.formatValue]		RichText format value
+ * @param {Object} 	[$0.typography]			MaxiBlocks typography
+ * @param {Object} 	[$0.linkAttributes]		Link properties based on Maxi Link format
+ * @param {boolean} [$0.isList]				Text Maxi block has list mode active
+ *
+ * @returns {Object} Link customized typography, RichText format value and content
  */
 const applyLinkFormat = ({
 	formatValue,

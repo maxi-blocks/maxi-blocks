@@ -18,11 +18,20 @@ import defaultCustomFormat from './custom/default';
 import { inRange } from 'lodash';
 
 /**
- * Content
+ * General
  */
 const formatName = 'maxi-blocks/text-custom';
 
-const getFormatClassName = (typography, isHover, formatValue) => {
+/**
+ * Generates a format and unique className
+ *
+ * @param {Object} 	formatValue 		RichText format value
+ * @param {Object} 	typography 			Text Maxi typography
+ * @param {boolean} isHover 			Is the requested typography under hover state
+ *
+ * @returns {string} New format and unique className
+ */
+const getFormatClassName = (formatValue, typography, isHover) => {
 	const multiFormatObj = getMultiFormatObj({
 		...formatValue,
 		start: 0,
@@ -43,17 +52,26 @@ const getFormatClassName = (typography, isHover, formatValue) => {
 	return className;
 };
 
+/**
+ * Applies a new custom format
+ *
+ * @param {Object} 	[$0]					Optional named arguments.
+ * @param {Object} 	[$0.formatValue]		RichText format value
+ * @param {string} 	[$0.formatName]			RichText format type
+ * @param {boolean} [$0.isList]				Text Maxi block has list mode active
+ * @param {string} 	[$0.formatClassName]	Maxi Custom format className
+ *
+ * @returns {string} Format applied content
+ */
 const applyCustomFormat = ({
 	formatValue,
 	formatName,
-	isActive,
 	isList,
 	formatClassName,
 }) => {
 	return getFormattedString({
 		formatValue,
 		formatName,
-		isActive,
 		isList,
 		attributes: {
 			attributes: {
@@ -63,7 +81,17 @@ const applyCustomFormat = ({
 	});
 };
 
-const mergeNewValue = (value, typography, breakpoint) => {
+/**
+ * Merges a new value comparing with the default typography object
+ *
+ * @param {Object} 	typography				MaxiBlocks typography
+ * @param {Object} 	value 					Requested values to implement
+ * 											on typography object
+ * @param {string} 	breakpoint				Device type breakpoint
+ *
+ * @returns {Object} Cleaned value
+ */
+const mergeNewValue = (typography, value, breakpoint) => {
 	Object.entries(value).forEach(([target, val]) => {
 		if (typography[breakpoint][target] === val)
 			value[target] = defaultCustomFormat[breakpoint][target];
@@ -72,9 +100,24 @@ const mergeNewValue = (value, typography, breakpoint) => {
 	return value;
 };
 
+/**
+ * Sets a new custom format
+ *
+ * @param {Object} 	[$0]						Optional named arguments.
+ * @param {Object} 	[$0.formatValue]			RichText format value
+ * @param {Object} 	[$0.typography]				MaxiBlocks typography
+ * @param {string} 	[$0.formatClassName]		Maxi Custom format className
+ * @param {Object} 	[$0.defaultCustomFormat]	Maxi Custom format className
+ * @param {string} 	[$0.breakpoint]				Device type breakpoint
+ * @param {Object}	[$0.value]					Requested values to implement
+ * 												on typography object
+ * @param {Object} 	[$0.isList]					Text Maxi block has list mode active
+ *
+ * @returns {Object} Formatted typography, content and RichText format
+ */
 const setNewFormat = ({
-	typography,
 	formatValue,
+	typography,
 	formatClassName,
 	defaultCustomFormat,
 	breakpoint,
@@ -86,7 +129,7 @@ const setNewFormat = ({
 			...defaultCustomFormat,
 			[breakpoint]: {
 				...defaultCustomFormat[breakpoint],
-				...mergeNewValue(value, typography, breakpoint),
+				...mergeNewValue(typography, value, breakpoint),
 			},
 		},
 	};
@@ -117,6 +160,19 @@ const setNewFormat = ({
 	};
 };
 
+/**
+ * Updates the existent custom format
+ *
+ * @param {Object} 	[$0]						Optional named arguments.
+ * @param {Object} 	[$0.typography]				MaxiBlocks typography
+ * @param {string} 	[$0.currentClassName]		Maxi Custom format className
+ * @param {string} 	[$0.breakpoint]				Device type breakpoint
+ * @param {Object}	[$0.value]					Requested values to implement
+ * 												on typography object
+ * @param {Object} 	[$0.isHover]				Is the requested typography under hover state
+ *
+ * @returns {Object} Updated Maxi typography object
+ */
 const updateCustomFormat = ({
 	typography,
 	currentClassName,
@@ -129,21 +185,36 @@ const updateCustomFormat = ({
 			...defaultCustomFormat,
 			[breakpoint]: {
 				...defaultCustomFormat[breakpoint],
-				...mergeNewValue(value, typography, breakpoint),
+				...mergeNewValue(typography, value, breakpoint),
 			},
 		};
 	else
 		typography.customFormats[currentClassName][breakpoint] = {
 			...typography.customFormats[currentClassName][breakpoint],
-			...mergeNewValue(value, typography, breakpoint),
+			...mergeNewValue(typography, value, breakpoint),
 		};
 
 	return { typography };
 };
 
+/**
+ * Generates new custom format
+ *
+ * @param {Object} 	[$0]						Optional named arguments.
+ * @param {Object} 	[$0.formatValue]			RichText format value
+ * @param {Object} 	[$0.typography]				MaxiBlocks typography
+ * @param {string} 	[$0.currentClassName]		Maxi Custom format className
+ * @param {string} 	[$0.formatClassName]		Maxi Custom format className
+ * @param {string} 	[$0.breakpoint]				Device type breakpoint
+ * @param {Object}	[$0.value]					Requested values to implement
+ * 												on typography object
+ * @param {Object} 	[$0.isHover]				Is the requested typography under hover state
+ *
+ * @returns {Object} Maxi typography and RichText format value with new custom format instance
+ */
 const generateNewCustomFormat = ({
-	typography,
 	formatValue,
+	typography,
 	currentClassName,
 	formatClassName,
 	breakpoint,
@@ -177,6 +248,23 @@ const generateNewCustomFormat = ({
 	};
 };
 
+/**
+ * Merge new custom format
+ *
+ * @param {Object} 	[$0]						Optional named arguments.
+ * @param {Object} 	[$0.formatValue]			RichText format value
+ * @param {Object} 	[$0.typography]				MaxiBlocks typography
+ * @param {string} 	[$0.currentClassName]		Maxi Custom format className
+ * @param {string} 	[$0.formatClassName]		Maxi Custom format className
+ * @param {string} 	[$0.breakpoint]				Device type breakpoint
+ * @param {Object}	[$0.value]					Requested values to implement
+ * 												on typography object
+ * @param {Object} 	[$0.isHover]				Is the requested typography under hover state
+ * @param {Object} 	[$0.isList]					Text Maxi block has list mode active
+ *
+ * @returns {Object} Maxi typography, Text Maxi content and RichText format value
+ * 					 with new custom format instance
+ */
 const mergeNewFormat = ({
 	typography,
 	formatValue,
@@ -233,9 +321,25 @@ const mergeNewFormat = ({
 	};
 };
 
+/**
+ * Merge new custom format
+ *
+ * @param {Object} 	[$0]						Optional named arguments.
+ * @param {Object} 	[$0.formatValue]			RichText format value
+ * @param {Object} 	[$0.typography]				MaxiBlocks typography
+ * @param {string} 	[$0.breakpoint]				Device type breakpoint
+ * @param {Object}	[$0.value]					Requested values to implement
+ * 												on typography object
+ * @param {Object}	[$0.multiFormatObj]			Classes with its positions
+ * @param {Object} 	[$0.isList]					Text Maxi block has list mode active
+ * @param {Object} 	[$0.isHover]				Is the requested typography under hover state
+ *
+ * @returns {Object} Maxi typography, Text Maxi content and RichText format value
+ * 					 with new custom format instance
+ */
 const mergeMultipleFormats = ({
-	typography,
 	formatValue,
+	typography,
 	breakpoint,
 	value,
 	multiFormatObj,
@@ -253,9 +357,9 @@ const mergeMultipleFormats = ({
 			end: formatValue.end,
 		});
 		const formatClassName = getFormatClassName(
+			newFormatValue,
 			newTypography,
-			isHover,
-			newFormatValue
+			isHover
 		);
 		const { className, start, end } = Object.values(newMultiFormatObj)[i];
 
@@ -306,28 +410,37 @@ const mergeMultipleFormats = ({
 	};
 };
 
+/**
+ * Sets Maxi Custom format
+ *
+ * @param {Object} 	[$0]						Optional named arguments.
+ * @param {Object} 	[$0.formatValue]			RichText format value
+ * @param {Object} 	[$0.typography]				MaxiBlocks typography
+ * @param {string} 	[$0.breakpoint]				Device type breakpoint
+ * @param {Object}	[$0.value]					Requested values to implement
+ * 												on typography object
+ * @param {Object} 	[$0.isList]					Text Maxi block has list mode active
+ * @param {Object} 	[$0.isHover]				Is the requested typography under hover state
+ *
+ * @returns {Object} Maxi typography, Text Maxi content and RichText format value
+ * 					 with new custom format instance
+ */
 const setFormatWithClass = ({
 	formatValue,
-	isList,
 	typography,
-	value,
 	breakpoint = 'general',
+	value,
+	isList,
 	isHover = false,
 }) => {
-	// const multiFormatObj = getMultiFormatObj({
-	// 	...formatValue,
-	// 	start: 0,
-	// 	end: formatValue.formats.length,
-	// });
 	const multiFormatObj = getMultiFormatObj(formatValue);
 	const currentClassName = __experimentalGetCurrentFormatClassName(
-		formatValue,
-		formatName
+		formatValue
 	);
 	const formatClassName = getFormatClassName(
+		formatValue,
 		typography,
-		isHover,
-		formatValue
+		isHover
 	);
 
 	const { start, end, formats } = formatValue;

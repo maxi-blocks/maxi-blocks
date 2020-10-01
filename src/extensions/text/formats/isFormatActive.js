@@ -9,8 +9,12 @@ const { getActiveFormat } = wp.richText;
 import { isNil } from 'lodash';
 
 /**
- * @param {Object} formatValue Format object for RichText
- * @param {string} formatName Format type
+ * Check if requested format type is active
+ *
+ * @param {Object} formatValue 			Format object for RichText
+ * @param {string} formatName 			Format type
+ *
+ * @returns {boolean} Is the requested format active
  */
 const isFormatActive = (formatValue, formatName) => {
 	const activeFormat = getActiveFormat(formatValue, formatName);

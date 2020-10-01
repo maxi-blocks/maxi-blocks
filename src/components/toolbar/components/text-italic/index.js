@@ -61,7 +61,6 @@ const TextItalic = ({
 				'font-style': isActive ? '' : 'italic',
 			},
 			breakpoint,
-			// isHover,
 		});
 
 		onChange({

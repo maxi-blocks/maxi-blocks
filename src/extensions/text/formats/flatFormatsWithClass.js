@@ -1,10 +1,28 @@
+/**
+ * WordPress dependencies
+ */
 const { toHTMLString, removeFormat } = wp.richText;
 
+/**
+ * Internal dependencies
+ */
 import defaultCustomFormat from './custom/default';
 import getMultiFormatObj from './getMultiFormatObj';
 
+/**
+ * External dependencies
+ */
 import { isEqual, compact, uniq, flattenDeep, find } from 'lodash';
 
+/**
+ * Get the classes from custom formats that shares the same
+ * typography object on the Maxi typography object
+ *
+ * @param {Object} customFormats 	Custom formats from typography object
+ * @param {Object} formatValue 		RichText format value
+ *
+ * @returns {Array} Repeated classNames
+ */
 const getRepeatedClassNames = (customFormats, formatValue) => {
 	const multiFormatObj = getMultiFormatObj({
 		...formatValue,
@@ -35,6 +53,16 @@ const getRepeatedClassNames = (customFormats, formatValue) => {
 	return compact(uniq(flattenDeep(repeatedClasses)));
 };
 
+/**
+ * In case some custom format classes shares the same format, this function
+ * reduces to just one class
+ *
+ * @param {Array} repeatedClasses 		Repeated classes
+ * @param {Object} formatValue 			RichText format value
+ * @param {Object} typography 			Maxi typography object
+ *
+ * @returns {Object} Cleaned RichText format value and Maxi typography
+ */
 const flatRepeatedClassNames = (repeatedClasses, formatValue, typography) => {
 	const newClassName = repeatedClasses[0];
 	repeatedClasses.shift();
@@ -61,12 +89,22 @@ const flatRepeatedClassNames = (repeatedClasses, formatValue, typography) => {
 	};
 };
 
+/**
+ * Removes custom formats when are equal to the default typography object
+ *
+ * @param {Object} 	[$0]					Optional named arguments.
+ * @param {Object} 	[$0.formatValue]		RichText format value
+ * @param {Object} 	[$0.typography]			MaxiBlocks typography
+ * @param {Object} 	[$0.content]			Text Maxi block content
+ * @param {boolean} [$0.isList]				Text Maxi block has list mode active
+ *
+ * @returns {Object} Cleaned RichText format value, content and Maxi typography
+ */
 const removeUnnecessaryFormats = ({
 	formatValue,
 	typography,
 	content,
 	isList,
-	isHover,
 }) => {
 	const multiFormatObj = getMultiFormatObj({
 		...formatValue,
@@ -80,7 +118,6 @@ const removeUnnecessaryFormats = ({
 	const someRemoved =
 		compact(
 			Object.entries(customFormats).map(([target, style]) => {
-				// const targetName = `${target}${isHover ? ':hover' : ''}`;
 				const format = find(multiFormatObj, {
 					className: target,
 				});
@@ -132,19 +169,25 @@ const removeUnnecessaryFormats = ({
 		});
 
 	return {
-		typography,
 		formatValue: newFormatValue,
+		typography,
 		content: newContent,
 	};
 };
 
-const flatFormatsWithClass = ({
-	typography,
-	formatValue,
-	content,
-	isList,
-	isHover,
-}) => {
+/**
+ * Clean and flat the custom formats
+ *
+ * @param {Object} 	[$0]					Optional named arguments.
+ * @param {Object} 	[$0.formatValue]		RichText format value
+ * @param {Object} 	[$0.typography]			MaxiBlocks typography
+ * @param {Object} 	[$0.content]			Text Maxi block content
+ * @param {boolean} [$0.isList]				Text Maxi block has list mode active
+ *
+ * @returns {Object} Cleaned RichText format value, content and Maxi typography
+ */
+
+const flatFormatsWithClass = ({ formatValue, typography, content, isList }) => {
 	const { customFormats } = typography;
 	const repeatedClasses = getRepeatedClassNames(customFormats, formatValue);
 	let newContent = content;
@@ -175,7 +218,6 @@ const flatFormatsWithClass = ({
 		typography: newTypography,
 		content: newContent,
 		isList,
-		isHover,
 	});
 
 	return {

@@ -14,14 +14,30 @@ import setFormatWithClass from './setFormatWithClass';
  */
 import { isNil, chunk } from 'lodash';
 
-const isFormattedWithType = (formatValue, type) => {
+/**
+ * Check if the RichText format value is formatted with requested format
+ *
+ * @param {Object} formatValue 			RichText format value
+ * @param {string} formatName 			RichText format type
+ *
+ * @returns {boolean} Is formatted with requested type
+ */
+const isFormattedWithType = (formatValue, formatName) => {
 	return formatValue.formats.some(formatEl => {
 		return formatEl.some(format => {
-			return format.type === type;
+			return format.type === formatName;
 		});
 	});
 };
 
+/**
+ * Check for the requested format type positions
+ *
+ * @param {Object} formatValue 			RichText format value
+ * @param {string} formatName 			RichText format type
+ *
+ * @returns {Array} Array with pairs of position for start and end
+ */
 const getInstancePositions = (formatValue, formatName) => {
 	const locatedInstances = formatValue.formats.map((formatEl, i) => {
 		if (
@@ -49,6 +65,16 @@ const getInstancePositions = (formatValue, formatName) => {
 	return chunk(filteredLocatedInstances, 2);
 };
 
+/**
+ * Formats the link instances
+ *
+ * @param {Object} 	[$0]					Optional named arguments.
+ * @param {Object} 	[$0.formatValue]		RichText format value
+ * @param {Object} 	[$0.typography]			MaxiBlocks typography
+ * @param {Object} 	[$0.isList]				Text Maxi block has list mode active
+ *
+ * @returns {Object} Formatted typography, content and RichText format
+ */
 const setLinkFormats = ({ formatValue, typography, isList }) => {
 	const linkInstancePositions = getInstancePositions(
 		formatValue,
@@ -94,6 +120,19 @@ const setLinkFormats = ({ formatValue, typography, isList }) => {
 	};
 };
 
+/**
+ * Replace core formats for Maxi Custom format
+ *
+ * @param {Object} 	[$0]					Optional named arguments.
+ * @param {Object} 	[$0.formatValue]		RichText format value
+ * @param {Object} 	[$0.typography]			MaxiBlocks typography
+ * @param {string} 	[$0.oldFormat]			Core format to remove
+ * @param {Object}	[$0.value]				Requested values to implement
+ * 											on typography object
+ * @param {Object} 	[$0.isList]				Text Maxi block has list mode active
+ *
+ * @returns {Object} Formatted typography, content and RichText format
+ */
 const setFormat = ({ formatValue, typography, oldFormat, value, isList }) => {
 	const instancePositions = getInstancePositions(formatValue, oldFormat);
 
@@ -133,6 +172,15 @@ const setFormat = ({ formatValue, typography, oldFormat, value, isList }) => {
 	};
 };
 
+/**
+ * Ensures organized/unorganized list content
+ *
+ * @param {string} content 				Text Maxi content
+ * @param {boolean} isList 				Text Maxi block has list mode active
+ * @param {string} typeOfList 			Text Maxi block list type
+ *
+ * @returns {string} New formatted content
+ */
 const cleanListContent = (content, isList, typeOfList) => {
 	if (isList && typeOfList === 'ol')
 		return content.replace(/<ul>/gi, '<ol>').replace(/<\/ul>/gi, '</ol>');
@@ -142,6 +190,18 @@ const cleanListContent = (content, isList, typeOfList) => {
 	return content;
 };
 
+/**
+ * Check and transform core formats to Maxi formats after pasting content
+ *
+ * @param {Object} 	[$0]					Optional named arguments.
+ * @param {Object} 	[$0.formatValue]		RichText format value
+ * @param {Object} 	[$0.typography]			MaxiBlocks typography
+ * @param {Object} 	[$0.isList]				Text Maxi block has list mode active
+ * @param {string} 	[$0.typeOfList]			Text Maxi block list type
+ * @param {string} 	[$0.content]			Text Maxi content
+ *
+ * @returns {Object} Formatted typography, content and RichText format
+ */
 const setCustomFormatsWhenPaste = ({
 	formatValue,
 	typography,

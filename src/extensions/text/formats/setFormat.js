@@ -1,16 +1,25 @@
-import { form } from '../../../icons';
 /**
  * Internal dependencies
  */
 import setFormatWithClass from './setFormatWithClass';
 
 /**
- * Content
+ *
+ * @param {Object} 	[$0]					Optional named arguments.
+ * @param {Object} 	[$0.formatValue]		RichText format value
+ * @param {Object} 	[$0.typography]			MaxiBlocks typography
+ * @param {boolean} [$0.isList]				Text Maxi block has list mode active
+ * @param {Object}	[$0.value]				Requested values to implement
+ * 											on typography object
+ * @param {string} 	[$0.breakpoint]			Device type breakpoint
+ * @param {boolean}	[$0.isHover]			Is the requested typography under hover state
+ *
+ * @returns {Object} Formatted object
  */
 const setFormat = ({
 	formatValue,
-	isList,
 	typography,
+	isList,
 	value,
 	breakpoint = 'general',
 	isHover = false,

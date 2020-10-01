@@ -5,7 +5,11 @@ const { select } = wp.data;
 const { create } = wp.richText;
 
 /**
- * @param {Object} formatElement Format object for RichText
+ * Generates RichText format value
+ *
+ * @param {Object} formatElement 		Preformatted object for RichText
+ *
+ * @returns {string} RichText format value
  */
 const getFormatValue = formatElement => {
 	const { getSelectionStart, getSelectionEnd } = select('core/block-editor');

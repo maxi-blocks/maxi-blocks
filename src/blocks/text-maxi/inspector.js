@@ -5,7 +5,7 @@ const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
 const { Fragment } = wp.element;
 const { useSelect } = wp.data;
-const { TextControl, RadioControl, SelectControl } = wp.components;
+const { TextControl, SelectControl } = wp.components;
 
 /**
  * Internal dependencies
@@ -32,6 +32,7 @@ import {
 	__experimentalMotionControl,
 	__experimentalTransformControl,
 	__experimentalEntranceAnimationControl,
+	__experimentalFancyRadioControl,
 } from '../../components';
 import { getDefaultProp } from '../../utils';
 
@@ -507,42 +508,36 @@ const Inspector = props => {
 											content: (
 												<Fragment>
 													{isFirstOnHierarchy && (
-														<div className='maxi-fancy-radio-control'>
-															<RadioControl
-																label={__(
-																	'Full Width',
-																	'maxi-blocks'
-																)}
-																selected={
-																	fullWidth
-																}
-																options={[
-																	{
-																		label: __(
-																			'No',
-																			'maxi-blocks'
-																		),
-																		value:
-																			'normal',
-																	},
-																	{
-																		label: __(
-																			'Yes',
-																			'maxi-blocks'
-																		),
-																		value:
-																			'full',
-																	},
-																]}
-																onChange={fullWidth =>
-																	setAttributes(
-																		{
-																			fullWidth,
-																		}
-																	)
-																}
-															/>
-														</div>
+														<__experimentalFancyRadioControl
+															label={__(
+																'Full Width',
+																'maxi-blocks'
+															)}
+															selected={fullWidth}
+															options={[
+																{
+																	label: __(
+																		'No',
+																		'maxi-blocks'
+																	),
+																	value:
+																		'normal',
+																},
+																{
+																	label: __(
+																		'Yes',
+																		'maxi-blocks'
+																	),
+																	value:
+																		'full',
+																},
+															]}
+															onChange={fullWidth =>
+																setAttributes({
+																	fullWidth,
+																})
+															}
+														/>
 													)}
 													<FullSizeControl
 														size={size}

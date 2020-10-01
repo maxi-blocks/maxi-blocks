@@ -3,7 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { Fragment, useState } = wp.element;
-const { SelectControl, RadioControl, Button, Icon } = wp.components;
+const { SelectControl, Button, Icon } = wp.components;
 
 /**
  * Internal dependencies
@@ -15,6 +15,7 @@ import ImageCropControl from '../image-crop-control';
 import SettingTabsControl from '../setting-tabs-control';
 import SizeControl from '../size-control';
 import __experimentalClipPath from '../clip-path-control';
+import __experimentalFancyRadioControl from '../fancy-radio-control';
 
 /**
  * External dependencies
@@ -137,26 +138,23 @@ const BackgroundControl = props => {
 	return (
 		<div className={classes}>
 			{getOptions().length > 1 && (
-				<div className='maxi-fancy-radio-control'>
-					<RadioControl
-						label={__('Background', 'maxi-blocks')}
-						selected={value.activeMedia}
-						options={getOptions()}
-						onChange={item => {
-							isOpen && setIsOpen(false);
-							value.activeMedia = item;
-							if (isEmpty(item))
-								value.colorOptions.activeColor = '';
-							if (item === 'color')
-								value.colorOptions.activeColor =
-									value.colorOptions.color;
-							if (item === 'gradient')
-								value.colorOptions.activeColor =
-									value.colorOptions.gradient;
-							onChange(JSON.stringify(value));
-						}}
-					/>
-				</div>
+				<__experimentalFancyRadioControl
+					label={__('Background', 'maxi-blocks')}
+					selected={value.activeMedia}
+					options={getOptions()}
+					onChange={item => {
+						isOpen && setIsOpen(false);
+						value.activeMedia = item;
+						if (isEmpty(item)) value.colorOptions.activeColor = '';
+						if (item === 'color')
+							value.colorOptions.activeColor =
+								value.colorOptions.color;
+						if (item === 'gradient')
+							value.colorOptions.activeColor =
+								value.colorOptions.gradient;
+						onChange(JSON.stringify(value));
+					}}
+				/>
 			)}
 			{!isOpen && (
 				<Fragment>

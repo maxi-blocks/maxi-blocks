@@ -3,7 +3,12 @@
  */
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
-const { RadioControl, RangeControl } = wp.components;
+const { RangeControl } = wp.components;
+
+/**
+ * Internal dependencies
+ */
+import __experimentalFancyRadioControl from '../fancy-radio-control';
 
 /**
  * External dependencies
@@ -31,39 +36,35 @@ const ParallaxControl = props => {
 
 	return (
 		<div className={classes}>
-			<div className='maxi-fancy-radio-control'>
-				<RadioControl
-					label={__('Use Parallax Effect', 'maxi-blocks')}
-					selected={parallaxOptions.status}
-					options={[
-						{ label: __('Yes', 'maxi-blocks'), value: 1 },
-						{ label: __('No', 'maxi-blocks'), value: 0 },
-					]}
-					onChange={val => {
-						parallaxOptions.status = Number(val);
-						onChange(JSON.stringify(value));
-					}}
-				/>
-			</div>
+			<__experimentalFancyRadioControl
+				label={__('Use Parallax Effect', 'maxi-blocks')}
+				selected={parallaxOptions.status}
+				options={[
+					{ label: __('Yes', 'maxi-blocks'), value: 1 },
+					{ label: __('No', 'maxi-blocks'), value: 0 },
+				]}
+				onChange={val => {
+					parallaxOptions.status = Number(val);
+					onChange(JSON.stringify(value));
+				}}
+			/>
 			{!!parallaxOptions.status && (
 				<Fragment>
-					<div className='maxi-fancy-radio-control'>
-						<RadioControl
-							label={__('Direction', 'maxi-blocks')}
-							selected={parallaxOptions.direction}
-							options={[
-								{ label: __('Up', 'maxi-blocks'), value: 'up' },
-								{
-									label: __('Down', 'maxi-blocks'),
-									value: 'down',
-								},
-							]}
-							onChange={val => {
-								parallaxOptions.direction = val;
-								onChange(JSON.stringify(value));
-							}}
-						/>
-					</div>
+					<__experimentalFancyRadioControl
+						label={__('Direction', 'maxi-blocks')}
+						selected={parallaxOptions.direction}
+						options={[
+							{ label: __('Up', 'maxi-blocks'), value: 'up' },
+							{
+								label: __('Down', 'maxi-blocks'),
+								value: 'down',
+							},
+						]}
+						onChange={val => {
+							parallaxOptions.direction = val;
+							onChange(JSON.stringify(value));
+						}}
+					/>
 					<RangeControl
 						label={__('Speed', 'maxi-blocks')}
 						value={parallaxOptions.speed}

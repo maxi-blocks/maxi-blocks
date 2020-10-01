@@ -306,6 +306,7 @@ const ColumnPatternsInspector = props => {
 					onChangeValue={numCol => setNumCol(numCol)}
 					min={1}
 					max={6}
+					disableReset
 				/>
 			)}
 			<div className='components-column-pattern__templates'>

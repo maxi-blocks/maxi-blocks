@@ -44,7 +44,7 @@ const TextColor = props => {
 	return (
 		<ToolbarPopover
 			className='toolbar-item__text-options'
-			tooltip={__('Text options', 'maxi-blocks')}
+			tooltip={__('Text Color', 'maxi-blocks')}
 			icon={
 				<div
 					className='toolbar-item__text-options__icon'

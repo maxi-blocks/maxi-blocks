@@ -30,7 +30,7 @@ const ColumnPattern = props => {
 			<ToolbarPopover
 				className='toolbar-item__column-pattern'
 				icon={toolbarColumnPattern}
-				tooltip={__('Column pattern', 'maxi-blocks')}
+				tooltip={__('Column Pattern', 'maxi-blocks')}
 				content={
 					<__experimentalColumnPattern
 						clientId={clientId}

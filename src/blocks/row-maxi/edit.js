@@ -68,9 +68,11 @@ class edit extends MaxiBlock {
 	};
 
 	handleFocusOutside() {
-		this.setState({
-			displayHandlers: false,
-		});
+		if (this.state.displayHandlers) {
+			this.setState({
+				displayHandlers: false,
+			});
+		}
 	}
 
 	get getObject() {
@@ -331,4 +333,8 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	};
 });
 
-export default compose(editSelect, editDispatch, withInstanceId)(edit);
+export default compose(
+	editSelect,
+	editDispatch,
+	withInstanceId
+)(withFocusOutside(edit));

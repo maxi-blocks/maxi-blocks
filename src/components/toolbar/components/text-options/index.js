@@ -52,8 +52,7 @@ const TextOptions = props => {
 		(!isObject(typography) && JSON.parse(typography)) || typography;
 
 	const defaultTypographyValue =
-		(typeof defaultTypography !== 'object' &&
-			JSON.parse(defaultTypography)) ||
+		(!isObject(defaultTypography) && JSON.parse(defaultTypography)) ||
 		defaultTypography;
 
 	const onChangeFormat = value => {
@@ -62,12 +61,10 @@ const TextOptions = props => {
 			content: newContent,
 		} = __experimentalSetFormat({
 			formatValue,
-			// isActive,
 			isList,
 			typography: typographyValue,
 			value,
 			breakpoint,
-			// isHover,
 		});
 
 		onChange({

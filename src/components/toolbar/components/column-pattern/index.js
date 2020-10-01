@@ -13,6 +13,7 @@ import { __experimentalColumnPattern } from '../../..';
 /**
  * External dependencies
  */
+import { isObject } from 'lodash';
 
 /**
  * Styles and icons
@@ -29,7 +30,9 @@ const ColumnPattern = props => {
 
 	if (blockName !== 'maxi-blocks/row-maxi') return null;
 
-	const rowPatternObject = JSON.parse(rowPattern);
+	const rowPatternObject = !isObject(rowPattern)
+		? JSON.parse(rowPattern)
+		: rowPattern;
 
 	return (
 		<Fragment>

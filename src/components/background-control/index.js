@@ -32,6 +32,7 @@ import {
 	backgroundVideo,
 	backgroundGradient,
 } from '../../icons';
+import './editor.scss';
 
 /**
  * Components

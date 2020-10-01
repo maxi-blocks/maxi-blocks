@@ -196,7 +196,6 @@ export const background = {
 		autoplay: 0,
 		loop: 0,
 		muted: 0,
-		controls: 0,
 		preload: 'metadata',
 		clipPath: '',
 	},

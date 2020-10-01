@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 const { __, sprintf } = wp.i18n;
-const { Fragment, useRef, useState, useCallback } = wp.element;
+const { Fragment, useRef } = wp.element;
 const { RangeControl, SelectControl, BaseControl, Button } = wp.components;
 
 /**
@@ -21,9 +21,6 @@ import { reset } from '../../icons';
  * Component
  */
 const SizeControl = props => {
-	const [, updateState] = useState();
-	const forceUpdate = useCallback(() => updateState({}), []);
-
 	const {
 		label,
 		className,

@@ -59,9 +59,9 @@ class edit extends MaxiBlock {
 		const { uniqueID, background, backgroundHover } = this.props.attributes;
 
 		let response = {
+			[`maxi-column-block__resizer__${uniqueID}`]: this.getResizerObject,
 			[uniqueID]: this.getNormalObject,
 			[`${uniqueID}:hover`]: this.getHoverObject,
-			[`maxi-column-block__resizer__${uniqueID}`]: this.getResizerObject,
 		};
 
 		response = Object.assign(
@@ -215,6 +215,7 @@ class edit extends MaxiBlock {
 				{rowBlockWidth !== 0 && (
 					<ResizableBox
 						className={classnames(
+							'maxi-block', // Required by BackEndResponsiveStyles class to apply the styles
 							'maxi-block__resizer',
 							'maxi-column-block__resizer',
 							`maxi-column-block__resizer__${uniqueID}`

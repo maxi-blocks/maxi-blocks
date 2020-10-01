@@ -1,17 +1,16 @@
 .edit-post-visual-editor.editor-styles-wrapper {
 	.maxi-column-block__resizer {
-		height: 100% !important;
 		div.maxi-column-block {
 			width: 100% !important;
 			max-width: 100% !important;
 			flex-basis: 100% !important;
 			margin: auto;
 			height: 100%;
+			margin: 0px !important;
 			&__resizer {
 				line-height: 0;
 				outline: 1px solid #7fbddc;
 				position: relative;
-
 				&:hover {
 					outline: 2px solid #83605d;
 				}

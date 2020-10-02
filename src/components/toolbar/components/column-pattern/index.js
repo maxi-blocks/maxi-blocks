@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
+const { Fragment } = wp.element;
 
 /**
  * Internal dependencies
@@ -12,6 +13,7 @@ import { __experimentalColumnPattern } from '../../..';
 /**
  * External dependencies
  */
+import { isObject } from 'lodash';
 
 /**
  * Styles and icons
@@ -28,25 +30,33 @@ const ColumnPattern = props => {
 
 	if (blockName !== 'maxi-blocks/row-maxi') return null;
 
+	const rowPatternObject = !isObject(rowPattern)
+		? JSON.parse(rowPattern)
+		: rowPattern;
+
 	return (
-		<ToolbarPopover
-			className='toolbar-item__column-pattern'
-			icon={toolbarColumnPattern}
-			tooltip={__('Column pattern', 'maxi-blocks')}
-			content={
-				<__experimentalColumnPattern
-					clientId={clientId}
-					blockName={blockName}
-					rowPattern={rowPattern}
-					onChange={rowPattern => {
-						onChange(rowPattern);
-					}}
-					toolbar
-					breakpoint={breakpoint}
-					{...props}
+		<Fragment>
+			{rowPatternObject.general.rowPattern && (
+				<ToolbarPopover
+					className='toolbar-item__column-pattern'
+					icon={toolbarColumnPattern}
+					tooltip={__('Column pattern', 'maxi-blocks')}
+					content={
+						<__experimentalColumnPattern
+							clientId={clientId}
+							blockName={blockName}
+							rowPattern={rowPattern}
+							onChange={rowPattern => {
+								onChange(rowPattern);
+							}}
+							toolbar
+							breakpoint={breakpoint}
+							{...props}
+						/>
+					}
 				/>
-			}
-		/>
+			)}
+		</Fragment>
 	);
 };
 

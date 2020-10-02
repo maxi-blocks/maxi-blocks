@@ -41,6 +41,7 @@ import {
 	__experimentalColumnMover,
 	__experimentalRowSettings,
 	__experimentalColumnSize,
+	__experimentalColumnsHandlers,
 } from './components';
 
 /**
@@ -107,6 +108,7 @@ const MaxiToolbar = props => {
 		isSelected,
 		name,
 		setAttributes,
+		toggleHandlers,
 	} = props;
 
 	const { deviceType } = useSelect(select => {
@@ -302,6 +304,11 @@ const MaxiToolbar = props => {
 								setAttributes({ rowPattern })
 							}
 							breakpoint={deviceType}
+						/>
+
+						<__experimentalColumnsHandlers
+							toggleHandlers={toggleHandlers}
+							blockName={name}
 						/>
 						<Link
 							blockName={name}

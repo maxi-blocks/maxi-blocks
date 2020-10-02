@@ -1,6 +1,7 @@
 {
 	"label": "Shape Divider",
 	"top": {
+		"status": 0,
 		"height": 100,
 		"heightUnit": "px",
 		"opacity": {
@@ -20,6 +21,7 @@
 		}
 	},
 	"bottom": {
+		"status": 0,
 		"height": 100,
 		"heightUnit": "px",
 		"opacity": {

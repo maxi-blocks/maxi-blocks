@@ -517,7 +517,6 @@ export const background = {
 		autoplay: 0,
 		loop: 0,
 		muted: 0,
-		controls: 0,
 		preload: 'metadata',
 		clipPath: '',
 	},
@@ -585,7 +584,6 @@ export const backgroundHover = {
 		autoplay: '',
 		loop: '',
 		muted: '',
-		controls: '',
 		preload: '',
 		clipPath: '',
 	},
@@ -1251,6 +1249,7 @@ export const __experimentalColumn = {
 export const __experimentalShapeDivider = {
 	label: 'Shape Divider',
 	top: {
+		status: 0,
 		height: 100,
 		heightUnit: 'px',
 		opacity: {
@@ -1270,6 +1269,7 @@ export const __experimentalShapeDivider = {
 		},
 	},
 	bottom: {
+		status: 0,
 		height: 100,
 		heightUnit: 'px',
 		opacity: {

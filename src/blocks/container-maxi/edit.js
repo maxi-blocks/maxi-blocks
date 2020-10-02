@@ -30,7 +30,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
+import { isEmpty, isObject } from 'lodash';
 
 /**
  * InnerBlocks version
@@ -44,6 +44,10 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
 		maxiBlockClass,
 	} = props;
 
+	const shapeDividerValue = !isObject(shapeDivider)
+		? JSON.parse(shapeDivider)
+		: shapeDivider;
+
 	return (
 		<__experimentalBlock
 			ref={ref}
@@ -51,16 +55,22 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
 			data-align={dataAlign}
 			data-gx_initial_block_class={maxiBlockClass}
 		>
-			<__experimentalShapeDivider shapeDividerOptions={shapeDivider} />
+			{!!shapeDividerValue.top.status && (
+				<__experimentalShapeDivider
+					shapeDividerOptions={shapeDivider}
+				/>
+			)}
 			<div className='maxi-container-block__wrapper'>
 				<div className='maxi-container-block__container'>
 					{children}
 				</div>
 			</div>
-			<__experimentalShapeDivider
-				position='bottom'
-				shapeDividerOptions={shapeDivider}
-			/>
+			{!!shapeDividerValue.bottom.status && (
+				<__experimentalShapeDivider
+					position='bottom'
+					shapeDividerOptions={shapeDivider}
+				/>
+			)}
 		</__experimentalBlock>
 	);
 });
@@ -230,6 +240,10 @@ class edit extends MaxiBlock {
 			className
 		);
 
+		const shapeDividerValue = !isObject(shapeDivider)
+			? JSON.parse(shapeDivider)
+			: shapeDivider;
+
 		return [
 			<Inspector {...this.props} />,
 			<__experimentalToolbar {...this.props} />,
@@ -244,9 +258,13 @@ class edit extends MaxiBlock {
 						<__experimentalBackgroundDisplayer
 							background={background}
 						/>
-						<__experimentalShapeDivider
-							shapeDividerOptions={shapeDivider}
-						/>
+
+						{!!shapeDividerValue.top.status && (
+							<__experimentalShapeDivider
+								shapeDividerOptions={shapeDivider}
+							/>
+						)}
+
 						<div className='maxi-container-block__wrapper'>
 							<InnerBlocks
 								templateLock={false}
@@ -270,10 +288,12 @@ class edit extends MaxiBlock {
 								}
 							/>
 						</div>
-						<__experimentalShapeDivider
-							position='bottom'
-							shapeDividerOptions={shapeDivider}
-						/>
+						{!!shapeDividerValue.bottom.status && (
+							<__experimentalShapeDivider
+								position='bottom'
+								shapeDividerOptions={shapeDivider}
+							/>
+						)}
 					</__experimentalBlock.section>
 				)}
 				{(!isFirstOnHierarchy || !fullWidth) && (

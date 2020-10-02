@@ -35,7 +35,10 @@ const NumberControl = props => {
 			<input
 				type='number'
 				value={value ? trim(value) : ''}
-				onChange={e => onChange(Number(e.target.value))}
+				onChange={e => {
+					onChange(Number(e.target.value));
+				}}
+				placeholder={!value && '0'}
 				min={min}
 				max={max}
 			/>

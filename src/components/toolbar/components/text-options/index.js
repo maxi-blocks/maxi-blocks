@@ -46,7 +46,7 @@ const TextOptions = props => {
 	return (
 		<ToolbarPopover
 			className='toolbar-item__text-options'
-			tooltip={__('Text options', 'maxi-blocks')}
+			tooltip={__('Typography', 'maxi-blocks')}
 			icon={toolbarType}
 			advancedOptions='typography'
 			content={

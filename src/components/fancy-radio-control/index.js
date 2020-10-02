@@ -28,11 +28,10 @@ const FancyRadioControl = props => {
 	} = props;
 
 	const classes = classnames(
-		type === 'classic'
-			? 'maxi-classic-radio-control'
-			: type === 'classic-border'
-			? 'maxi-classic-radio-control maxi-classic-radio-control__border'
-			: 'maxi-fancy-radio-control',
+		type === 'classic' && 'maxi-classic-radio-control',
+		type === 'classic-border' &&
+			'maxi-classic-radio-control maxi-classic-radio-control__border',
+		type === 'fancy' && 'maxi-fancy-radio-control',
 		className
 	);
 

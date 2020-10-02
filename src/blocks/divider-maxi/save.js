@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies
+ */
+const { Fragment } = wp.element;
+
+/**
  * Internal dependencies
  */
 import { __experimentalBackgroundDisplayer } from '../../components';
@@ -7,7 +12,7 @@ import { __experimentalBackgroundDisplayer } from '../../components';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
+import { isNil, isObject } from 'lodash';
 
 /**
  * Save
@@ -24,8 +29,11 @@ const save = props => {
 			fullWidth,
 			lineOrientation,
 			motion,
+			divider,
 		},
 	} = props;
+
+	const Dividervalue = !isObject(divider) ? JSON.parse(divider) : divider;
 
 	const classes = classnames(
 		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
@@ -49,7 +57,11 @@ const save = props => {
 			data-motion-id={uniqueID}
 		>
 			<__experimentalBackgroundDisplayer background={background} />
-			<hr className='maxi-divider-block__divider' />
+			{Dividervalue.general['border-style'] !== 'none' && (
+				<Fragment>
+					<hr className='maxi-divider-block__divider' />
+				</Fragment>
+			)}
 		</div>
 	);
 };

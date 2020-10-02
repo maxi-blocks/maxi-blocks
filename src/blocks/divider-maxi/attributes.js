@@ -8,10 +8,6 @@ import size from './data';
  * Attributes
  */
 const attributes = {
-	showLine: {
-		type: 'number',
-		default: 1,
-	},
 	lineVertical: {
 		type: 'string',
 		default: 'center',

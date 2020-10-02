@@ -159,7 +159,7 @@ class edit extends MaxiBlock {
 		onDeviceTypeChange();
 
 		const classes = classnames(
-			'maxi-block maxi-divider-block',
+			'maxi-block__backend maxi-divider-block',
 			blockStyle,
 			extraClassName,
 			uniqueID,

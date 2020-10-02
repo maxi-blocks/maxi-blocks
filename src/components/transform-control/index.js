@@ -107,7 +107,7 @@ const TransformControl = props => {
 			)} `;
 
 		const node = document.querySelector(
-			`.maxi-block[uniqueid="${uniqueID}"]`
+			`.maxi-block__backend[uniqueid="${uniqueID}"]`
 		);
 		if (node) {
 			node.style.transform = transformStr;

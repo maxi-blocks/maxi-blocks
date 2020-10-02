@@ -44,7 +44,7 @@ h2.gx_error {
 ******************/
 body.maxi-blocks--active {
 	.block-editor-block-list__layout.is-root-container {
-		.maxi-block {
+		.maxi-block__backend {
 			&[data-align="full"] {
 				.wp-block {
 					max-width: none;
@@ -91,7 +91,7 @@ body {
 		}
 	}
 }
-.maxi-block {
+.maxi-block__backend {
 	.block-editor-block-list__layout {
 		// padding: 10px;
 		&:focus:after {

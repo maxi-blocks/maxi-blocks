@@ -130,7 +130,7 @@ class edit extends MaxiBlock {
 		} = this.props;
 
 		const classes = classnames(
-			'maxi-block maxi-button-extra',
+			'maxi-block__backend maxi-button-extra',
 			blockStyle,
 			extraClassName,
 			uniqueID,

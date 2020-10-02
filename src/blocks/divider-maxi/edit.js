@@ -169,8 +169,8 @@ class edit extends MaxiBlock {
 				: 'maxi-divider-block--horizontal'
 		);
 
-		const SizeValue = !isObject(size) ? JSON.parse(size) : size;
-		const Dividervalue = !isObject(divider) ? JSON.parse(divider) : divider;
+		const sizeValue = !isObject(size) ? JSON.parse(size) : size;
+		const dividerValue = !isObject(divider) ? JSON.parse(divider) : divider;
 
 		return [
 			<Inspector {...this.props} />,
@@ -179,8 +179,8 @@ class edit extends MaxiBlock {
 				size={{
 					width: '100%',
 					height:
-						SizeValue[deviceType].height +
-						SizeValue[deviceType].heightUnit,
+						sizeValue[deviceType].height +
+						sizeValue[deviceType].heightUnit,
 				}}
 				className={classnames(
 					'maxi-block__resizer',
@@ -190,8 +190,8 @@ class edit extends MaxiBlock {
 				defaultSize={{
 					width: '100%',
 					height:
-						SizeValue[deviceType].height +
-						SizeValue[deviceType].heightUnit,
+						sizeValue[deviceType].height +
+						sizeValue[deviceType].heightUnit,
 				}}
 				enable={{
 					top: false,
@@ -204,18 +204,18 @@ class edit extends MaxiBlock {
 					topLeft: false,
 				}}
 				onResizeStart={() => {
-					SizeValue[deviceType].heightUnit !== 'px' &&
-						(SizeValue[deviceType].heightUnit = 'px') &&
+					sizeValue[deviceType].heightUnit !== 'px' &&
+						(sizeValue[deviceType].heightUnit = 'px') &&
 						setAttributes({
-							size: JSON.stringify(SizeValue),
+							size: JSON.stringify(sizeValue),
 						});
 				}}
 				onResizeStop={(event, direction, elt) => {
-					SizeValue[
+					sizeValue[
 						deviceType
 					].height = elt.getBoundingClientRect().height;
 					setAttributes({
-						size: JSON.stringify(SizeValue),
+						size: JSON.stringify(sizeValue),
 					});
 				}}
 			>
@@ -227,7 +227,7 @@ class edit extends MaxiBlock {
 					<__experimentalBackgroundDisplayer
 						background={background}
 					/>
-					{Dividervalue.general['border-style'] !== 'none' && (
+					{dividerValue.general['border-style'] !== 'none' && (
 						<Fragment>
 							<hr className='maxi-divider-block__divider' />
 						</Fragment>

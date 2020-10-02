@@ -33,7 +33,7 @@ const save = props => {
 		},
 	} = props;
 
-	const Dividervalue = !isObject(divider) ? JSON.parse(divider) : divider;
+	const dividerValue = !isObject(divider) ? JSON.parse(divider) : divider;
 
 	const classes = classnames(
 		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
@@ -57,7 +57,7 @@ const save = props => {
 			data-motion-id={uniqueID}
 		>
 			<__experimentalBackgroundDisplayer background={background} />
-			{Dividervalue.general['border-style'] !== 'none' && (
+			{dividerValue.general['border-style'] !== 'none' && (
 				<Fragment>
 					<hr className='maxi-divider-block__divider' />
 				</Fragment>

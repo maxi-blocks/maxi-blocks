@@ -22,7 +22,6 @@ const save = props => {
 			background,
 			extraClassName,
 			fullWidth,
-			showLine,
 			lineOrientation,
 			motion,
 		},
@@ -50,7 +49,7 @@ const save = props => {
 			data-motion-id={uniqueID}
 		>
 			<__experimentalBackgroundDisplayer background={background} />
-			{!!showLine && <hr className='maxi-divider-block__divider' />}
+			<hr className='maxi-divider-block__divider' />
 		</div>
 	);
 };

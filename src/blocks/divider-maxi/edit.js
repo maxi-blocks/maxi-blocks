@@ -142,7 +142,6 @@ class edit extends MaxiBlock {
 				uniqueID,
 				blockStyle,
 				defaultBlockStyle,
-				showLine,
 				lineOrientation,
 				extraClassName,
 				fullWidth,
@@ -224,11 +223,8 @@ class edit extends MaxiBlock {
 					<__experimentalBackgroundDisplayer
 						background={background}
 					/>
-					{!!showLine && (
-						<Fragment>
-							<hr className='maxi-divider-block__divider' />
-						</Fragment>
-					)}
+
+					<hr className='maxi-divider-block__divider' />
 				</__experimentalBlock>
 			</ResizableBox>,
 		];

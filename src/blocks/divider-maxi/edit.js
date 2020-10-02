@@ -142,12 +142,12 @@ class edit extends MaxiBlock {
 				uniqueID,
 				blockStyle,
 				defaultBlockStyle,
-				showLine,
 				lineOrientation,
 				extraClassName,
 				fullWidth,
 				size,
 				background,
+				divider,
 			},
 			className,
 			isSelected,
@@ -169,7 +169,8 @@ class edit extends MaxiBlock {
 				: 'maxi-divider-block--horizontal'
 		);
 
-		const value = !isObject(size) ? JSON.parse(size) : size;
+		const sizeValue = !isObject(size) ? JSON.parse(size) : size;
+		const dividerValue = !isObject(divider) ? JSON.parse(divider) : divider;
 
 		return [
 			<Inspector {...this.props} />,
@@ -178,7 +179,8 @@ class edit extends MaxiBlock {
 				size={{
 					width: '100%',
 					height:
-						value[deviceType].height + value[deviceType].heightUnit,
+						sizeValue[deviceType].height +
+						sizeValue[deviceType].heightUnit,
 				}}
 				className={classnames(
 					'maxi-block__resizer',
@@ -188,7 +190,8 @@ class edit extends MaxiBlock {
 				defaultSize={{
 					width: '100%',
 					height:
-						value[deviceType].height + value[deviceType].heightUnit,
+						sizeValue[deviceType].height +
+						sizeValue[deviceType].heightUnit,
 				}}
 				enable={{
 					top: false,
@@ -201,18 +204,18 @@ class edit extends MaxiBlock {
 					topLeft: false,
 				}}
 				onResizeStart={() => {
-					value[deviceType].heightUnit !== 'px' &&
-						(value[deviceType].heightUnit = 'px') &&
+					sizeValue[deviceType].heightUnit !== 'px' &&
+						(sizeValue[deviceType].heightUnit = 'px') &&
 						setAttributes({
-							size: JSON.stringify(value),
+							size: JSON.stringify(sizeValue),
 						});
 				}}
 				onResizeStop={(event, direction, elt) => {
-					value[
+					sizeValue[
 						deviceType
 					].height = elt.getBoundingClientRect().height;
 					setAttributes({
-						size: JSON.stringify(value),
+						size: JSON.stringify(sizeValue),
 					});
 				}}
 			>
@@ -224,7 +227,7 @@ class edit extends MaxiBlock {
 					<__experimentalBackgroundDisplayer
 						background={background}
 					/>
-					{!!showLine && (
+					{dividerValue.general['border-style'] !== 'none' && (
 						<Fragment>
 							<hr className='maxi-divider-block__divider' />
 						</Fragment>

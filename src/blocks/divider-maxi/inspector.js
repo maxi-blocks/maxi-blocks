@@ -40,7 +40,6 @@ const Inspector = props => {
 			isFirstOnHierarchy,
 			blockStyle,
 			defaultBlockStyle,
-			showLine,
 			lineVertical,
 			lineHorizontal,
 			lineOrientation,
@@ -100,175 +99,123 @@ const Inspector = props => {
 												<Fragment>
 													<SelectControl
 														label={__(
-															'Show Line',
+															'Line Orientation',
 															'maxi-blocks'
 														)}
 														options={[
 															{
 																label: __(
-																	'No',
+																	'Horizontal',
 																	'maxi-blocks'
 																),
-																value: 0,
+																value:
+																	'horizontal',
 															},
 															{
 																label: __(
-																	'Yes',
+																	'Vertical',
 																	'maxi-blocks'
 																),
-																value: 1,
+																value:
+																	'vertical',
 															},
 														]}
-														value={showLine}
-														onChange={val =>
+														value={lineOrientation}
+														onChange={lineOrientation =>
 															setAttributes({
-																showLine: Number(
-																	val
-																),
+																lineOrientation,
 															})
 														}
 													/>
-													{!!showLine && (
-														<Fragment>
-															<SelectControl
-																label={__(
-																	'Line Orientation',
+													<SelectControl
+														label={__(
+															'Line Vertical Position',
+															'maxi-blocks'
+														)}
+														options={[
+															{
+																label: __(
+																	'Top',
 																	'maxi-blocks'
-																)}
-																options={[
-																	{
-																		label: __(
-																			'Horizontal',
-																			'maxi-blocks'
-																		),
-																		value:
-																			'horizontal',
-																	},
-																	{
-																		label: __(
-																			'Vertical',
-																			'maxi-blocks'
-																		),
-																		value:
-																			'vertical',
-																	},
-																]}
-																value={
-																	lineOrientation
-																}
-																onChange={lineOrientation =>
-																	setAttributes(
-																		{
-																			lineOrientation,
-																		}
-																	)
-																}
-															/>
-															<SelectControl
-																label={__(
-																	'Line Vertical Position',
+																),
+																value:
+																	'flex-start',
+															},
+															{
+																label: __(
+																	'Center',
 																	'maxi-blocks'
-																)}
-																options={[
-																	{
-																		label: __(
-																			'Top',
-																			'maxi-blocks'
-																		),
-																		value:
-																			'flex-start',
-																	},
-																	{
-																		label: __(
-																			'Center',
-																			'maxi-blocks'
-																		),
-																		value:
-																			'center',
-																	},
-																	{
-																		label: __(
-																			'Bottom',
-																			'maxi-blocks'
-																		),
-																		value:
-																			'flex-end',
-																	},
-																]}
-																value={
-																	lineVertical
-																}
-																onChange={lineVertical =>
-																	setAttributes(
-																		{
-																			lineVertical,
-																		}
-																	)
-																}
-															/>
-															<SelectControl
-																label={__(
-																	'Line Horizontal Position',
+																),
+																value: 'center',
+															},
+															{
+																label: __(
+																	'Bottom',
 																	'maxi-blocks'
-																)}
-																options={[
-																	{
-																		label: __(
-																			'Left',
-																			'maxi-blocks'
-																		),
-																		value:
-																			'flex-start',
-																	},
-																	{
-																		label: __(
-																			'Center',
-																			'maxi-blocks'
-																		),
-																		value:
-																			'center',
-																	},
-																	{
-																		label: __(
-																			'Right',
-																			'maxi-blocks'
-																		),
-																		value:
-																			'flex-end',
-																	},
-																]}
-																value={
-																	lineHorizontal
-																}
-																onChange={lineHorizontal =>
-																	setAttributes(
-																		{
-																			lineHorizontal,
-																		}
-																	)
-																}
-															/>
-															<__experimentalDividerControl
-																divider={
-																	divider
-																}
-																defaultDivider={getDefaultProp(
-																	clientId,
-																	'divider'
-																)}
-																onChange={divider =>
-																	setAttributes(
-																		{
-																			divider,
-																		}
-																	)
-																}
-																lineOrientation={
-																	lineOrientation
-																}
-															/>
-														</Fragment>
-													)}
+																),
+																value:
+																	'flex-end',
+															},
+														]}
+														value={lineVertical}
+														onChange={lineVertical =>
+															setAttributes({
+																lineVertical,
+															})
+														}
+													/>
+													<SelectControl
+														label={__(
+															'Line Horizontal Position',
+															'maxi-blocks'
+														)}
+														options={[
+															{
+																label: __(
+																	'Left',
+																	'maxi-blocks'
+																),
+																value:
+																	'flex-start',
+															},
+															{
+																label: __(
+																	'Center',
+																	'maxi-blocks'
+																),
+																value: 'center',
+															},
+															{
+																label: __(
+																	'Right',
+																	'maxi-blocks'
+																),
+																value:
+																	'flex-end',
+															},
+														]}
+														value={lineHorizontal}
+														onChange={lineHorizontal =>
+															setAttributes({
+																lineHorizontal,
+															})
+														}
+													/>
+													<__experimentalDividerControl
+														divider={divider}
+														defaultDivider={getDefaultProp(
+															clientId,
+															'divider'
+														)}
+														onChange={divider =>
+															setAttributes({
+																divider,
+															})
+														}
+														lineOrientation={
+															lineOrientation
+														}
+													/>
 												</Fragment>
 											),
 										},

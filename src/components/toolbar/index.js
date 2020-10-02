@@ -92,7 +92,6 @@ const MaxiToolbar = props => {
 			verticalAlign,
 			linkSettings,
 			boxShadow,
-			showLine,
 			divider,
 			lineOrientation,
 			lineVertical,
@@ -217,13 +216,11 @@ const MaxiToolbar = props => {
 						/>
 						<Divider
 							blockName={name}
-							showLine={showLine}
 							divider={divider}
 							defaultDivider={getDefaultProp(clientId, 'divider')}
 							lineOrientation={lineOrientation}
-							onChange={(showLine, divider) =>
+							onChange={divider =>
 								setAttributes({
-									showLine,
 									divider,
 								})
 							}

@@ -20,11 +20,6 @@ import { isObject } from 'lodash';
  */
 import { toolbarColumnPattern } from '../../../../icons';
 
-/**
- * Column patterns
- *
- * @todo Shows just row patterns with same existing number of columns
- */
 const ColumnPattern = props => {
 	const { clientId, blockName, rowPattern, onChange, breakpoint } = props;
 

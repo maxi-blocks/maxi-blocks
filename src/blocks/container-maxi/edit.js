@@ -24,6 +24,7 @@ import {
 	getArrowObject,
 	getTransformObject,
 	setBackgroundStyles,
+	setArrowStyles,
 } from '../../utils';
 
 /**
@@ -31,6 +32,7 @@ import {
  */
 import classnames from 'classnames';
 import { isEmpty } from 'lodash';
+import { boxShadow } from '../../extensions/styles/defaults';
 
 /**
  * InnerBlocks version
@@ -70,12 +72,18 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
  */
 class edit extends MaxiBlock {
 	get getObject() {
-		const { uniqueID, background, backgroundHover } = this.props.attributes;
+		const {
+			uniqueID,
+			background,
+			backgroundHover,
+			border,
+		} = this.props.attributes;
 
 		let response = {
 			[uniqueID]: this.getNormalObject,
 			[`${uniqueID}:hover`]: this.getHoverObject,
-			[`${this.props.attributes.uniqueID}:before`]: this.getBeforeObject,
+			[`${this.props.attributes.uniqueID} > .maxi-contianer-arrow`]: this
+				.getArrowObject,
 			[`${uniqueID}>.maxi-container-block__wrapper`]: this
 				.getWrapperObject,
 			[`${uniqueID}>.maxi-container-block__wrapper>.maxi-container-block__container`]: this
@@ -112,7 +120,8 @@ class edit extends MaxiBlock {
 
 		response = Object.assign(
 			response,
-			setBackgroundStyles(uniqueID, background, backgroundHover)
+			setBackgroundStyles(uniqueID, background, backgroundHover),
+			setArrowStyles(uniqueID, background, border)
 		);
 
 		return response;
@@ -151,7 +160,7 @@ class edit extends MaxiBlock {
 		return response;
 	}
 
-	get getBeforeObject() {
+	get getArrowObject() {
 		const { arrow } = this.props.attributes;
 
 		const response = {
@@ -215,6 +224,7 @@ class edit extends MaxiBlock {
 				extraClassName,
 				background,
 				shapeDivider,
+				border,
 			},
 			className,
 			clientId,
@@ -227,7 +237,12 @@ class edit extends MaxiBlock {
 			uniqueID,
 			blockStyle,
 			extraClassName,
-			className
+			className,
+			'maxi-contianer-normal-arrow',
+			'maxi-contianer-border-arrow'
+			// JSON.parse(border).general['border-style'] !== 'none'
+			// 	? 'border'
+			// 	: null
 		);
 
 		return [
@@ -270,6 +285,7 @@ class edit extends MaxiBlock {
 								}
 							/>
 						</div>
+						<div className='maxi-contianer-arrow'></div>
 						<__experimentalShapeDivider
 							position='bottom'
 							shapeDividerOptions={shapeDivider}

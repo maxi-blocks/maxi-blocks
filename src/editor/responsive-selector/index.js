@@ -66,7 +66,7 @@ const ResponsiveSelector = props => {
 
 			setMaxiDeviceType('general');
 		} else {
-			const xxlSize = 2000; // Temporary value, needs to be fixed
+			const xxlSize = 2000; // Temporary value, needs to be replaced
 
 			setMaxiDeviceType(
 				size,

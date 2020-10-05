@@ -54,8 +54,10 @@ class edit extends MaxiBlock {
 		let response = {
 			[uniqueID]: this.getNormalObject,
 			[`${uniqueID}:hover`]: this.getHoverObject,
-			[`${uniqueID}>img`]: this.getImageFrontendObject,
-			[`${uniqueID} img:hover`]: this.getImageHoverObject,
+			[`${uniqueID} .maxi-block-hover-wrapper`]: this
+				.getImageFrontendObject,
+			[`${uniqueID}:hover .maxi-block-hover-wrapper`]: this
+				.getImageHoverObject,
 			[`${uniqueID} img`]: this.getImageBackendObject,
 			[`${uniqueID} figcaption`]: this.getFigcaptionObject,
 			[`${uniqueID} .maxi-hover-details .maxi-hover-details__content h3`]: this
@@ -87,7 +89,6 @@ class edit extends MaxiBlock {
 		} = this.props.attributes;
 
 		const response = {
-			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
 			padding: { ...JSON.parse(padding) },
 			margin: { ...JSON.parse(margin) },
 			zIndex: { ...JSON.parse(zIndex) },
@@ -171,9 +172,10 @@ class edit extends MaxiBlock {
 	}
 
 	get getImageFrontendObject() {
-		const { size, opacity } = this.props.attributes;
+		const { boxShadow, size, opacity } = this.props.attributes;
 
 		const response = {
+			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
 			imageSize: { ...JSON.parse(size) },
 			opacity: { ...JSON.parse(opacity) },
 		};
@@ -182,9 +184,11 @@ class edit extends MaxiBlock {
 	}
 
 	get getImageHoverObject() {
-		const { borderHover } = this.props.attributes;
-
+		const { boxShadowHover, borderHover } = this.props.attributes;
 		const response = {
+			boxShadowHover: {
+				...getBoxShadowObject(JSON.parse(boxShadowHover)),
+			},
 			borderHover: { ...JSON.parse(borderHover) },
 			borderWidth: { ...JSON.parse(borderHover).borderWidth },
 			borderRadius: { ...JSON.parse(borderHover).borderRadius },
@@ -194,10 +198,11 @@ class edit extends MaxiBlock {
 	}
 
 	get getImageBackendObject() {
-		const { opacity, border, clipPath, size } = this.props.attributes;
+		const { boxShadow, opacity, border, clipPath, size } = this.props.attributes;
 
 		const response = {
-			opacity: { ...JSON.parse(opacity) },
+			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
+      opacity: { ...JSON.parse(opacity) },
 			size: { ...JSON.parse(size) },
 			border: { ...JSON.parse(border) },
 			borderWidth: { ...JSON.parse(border).borderWidth },
@@ -404,14 +409,15 @@ class edit extends MaxiBlock {
 												icon={toolbarReplaceImage}
 											/>
 										</div>
-
-										<img
-											className={`maxi-image-block__image wp-image-${mediaID}`}
-											src={mediaURL}
-											width={mediaWidth}
-											height={mediaHeight}
-											alt={mediaAlt}
-										/>
+										<div className='maxi-block-hover-wrapper'>
+											<img
+												className={`maxi-image-block__image wp-image-${mediaID}`}
+												src={mediaURL}
+												width={mediaWidth}
+												height={mediaHeight}
+												alt={mediaAlt}
+											/>
+										</div>
 										{captionType !== 'none' && (
 											<figcaption className='maxi-image-block__caption'>
 												{captionContent}

@@ -113,7 +113,7 @@ const Inspector = props => {
 												<Fragment>
 													<RangeControl
 														label={__(
-															'Column Size',
+															'Column Size (%)',
 															'maxi-blocks'
 														)}
 														value={getLastBreakpointValue(

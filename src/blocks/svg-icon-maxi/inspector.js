@@ -68,7 +68,6 @@ const Inspector = props => {
 			display,
 			motion,
 			transform,
-			clipPath,
 			hover,
 			stroke,
 			defaultStroke,

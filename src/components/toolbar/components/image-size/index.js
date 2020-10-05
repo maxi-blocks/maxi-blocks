@@ -18,9 +18,10 @@ import openSidebar from '../../../../extensions/dom';
 import { capitalize, isNil, isObject, trim } from 'lodash';
 
 /**
- * Icons
+ * Icons and styles
  */
 import { toolbarSizing } from '../../../../icons';
+import './editor.scss';
 
 /**
  * ImageSize
@@ -127,9 +128,9 @@ const ImageSize = props => {
 						allowReset
 						// initialPosition={}
 					/>
-					<div className='toolbar-item__popover__dropdown-options'>
+					<div className='toolbar-image-size-buttons'>
 						<Button
-							className='toolbar-item__popover__dropdown-options__button'
+							className='toolbar-image-size-buttons__edit-image'
 							onClick={() =>
 								openGeneralSidebar('edit-post/block').then(() =>
 									openSidebar('width height')
@@ -139,7 +140,7 @@ const ImageSize = props => {
 							Edit Image
 						</Button>
 						<Button
-							className='toolbar-item__popover__dropdown-options__button'
+							className='toolbar-image-size-buttons__add-caption'
 							onClick={() =>
 								openGeneralSidebar('edit-post/block').then(() =>
 									openSidebar('caption')

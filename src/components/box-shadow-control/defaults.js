@@ -8,25 +8,25 @@ export const boxShadowNone = {
 };
 
 export const boxShadowTotal = {
-	shadowColor: '#A2A2A2',
+	shadowColor: '#a2a2a2',
 	defaultShadowColor: '#000',
 	shadowHorizontal: 0,
 	shadowVertical: 0,
-	shadowBlur: 100,
-	shadowSpread: 0,
+	shadowBlur: 60,
+	shadowSpread: 30,
 };
 
 export const boxShadowBottom = {
-	shadowColor: '#A2A2A2',
+	shadowColor: '#a2a2a2',
 	defaultShadowColor: '#000',
 	shadowHorizontal: 0,
-	shadowVertical: 50,
-	shadowBlur: 100,
-	shadowSpread: -50,
+	shadowVertical: 20,
+	shadowBlur: 30,
+	shadowSpread: 10,
 };
 
 export const boxShadowSolid = {
-	shadowColor: '#A2A2A2',
+	shadowColor: '#a2a2a2',
 	defaultShadowColor: '#000',
 	shadowHorizontal: 12,
 	shadowVertical: 24,

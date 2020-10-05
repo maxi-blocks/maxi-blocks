@@ -242,162 +242,243 @@ const ShapeDividerControl = props => {
 				<Fragment>
 					<div className='maxi-fancy-radio-control'>
 						<RadioControl
-							label={__('Enable Scroll Effect', 'maxi-blocks')}
-							selected={parseInt(
-								shapeDividerTopOptions.effects.status
+							label={__(
+								'Enable Top Shape Divider',
+								'maxi-blocks'
 							)}
+							selected={shapeDividerTopOptions.status}
 							options={[
 								{ label: __('No', 'maxi-blocks'), value: 0 },
 								{ label: __('Yes', 'maxi-blocks'), value: 1 },
 							]}
 							onChange={val => {
-								shapeDividerTopOptions.effects.status = val;
+								shapeDividerTopOptions.status = Number(val);
 								onChange(JSON.stringify(value));
 							}}
 						/>
 					</div>
-					<Dropdown
-						className='maxi-shapedividercontrol__shape-selector'
-						contentClassName='maxi-shapedividercontrol_popover'
-						position='bottom center'
-						renderToggle={({ isOpen, onToggle }) => (
-							<div
-								className='maxi-shapedividercontrol__shape-selector__display'
-								onClick={onToggle}
-							>
-								{showShapes('top')}
+					{!!shapeDividerTopOptions.status && (
+						<Fragment>
+							<div className='maxi-fancy-radio-control'>
+								<RadioControl
+									label={__(
+										'Enable Scroll Effect',
+										'maxi-blocks'
+									)}
+									selected={parseInt(
+										shapeDividerTopOptions.effects.status
+									)}
+									options={[
+										{
+											label: __('No', 'maxi-blocks'),
+											value: 0,
+										},
+										{
+											label: __('Yes', 'maxi-blocks'),
+											value: 1,
+										},
+									]}
+									onChange={val => {
+										shapeDividerTopOptions.effects.status = val;
+										onChange(JSON.stringify(value));
+									}}
+								/>
 							</div>
-						)}
-						renderContent={() => (
-							<RadioControl
-								className='maxi-shapedividercontrol__shape-list'
-								selected={shapeDividerTopOptions.shapeStyle}
-								options={shapeItems}
+							<Dropdown
+								className='maxi-shapedividercontrol__shape-selector'
+								contentClassName='maxi-shapedividercontrol_popover'
+								position='bottom center'
+								renderToggle={({ isOpen, onToggle }) => (
+									<div
+										className='maxi-shapedividercontrol__shape-selector__display'
+										onClick={onToggle}
+									>
+										{showShapes('top')}
+									</div>
+								)}
+								renderContent={() => (
+									<RadioControl
+										className='maxi-shapedividercontrol__shape-list'
+										selected={
+											shapeDividerTopOptions.shapeStyle
+										}
+										options={shapeItems}
+										onChange={val => {
+											shapeDividerTopOptions.shapeStyle = val;
+											onChange(JSON.stringify(value));
+										}}
+									/>
+								)}
+							/>
+							<__experimentalOpacityControl
+								opacity={shapeDividerTopOptions.opacity}
+								defaultOpacity={
+									defaultShapeDividerTopOptions.opacity
+								}
 								onChange={val => {
-									shapeDividerTopOptions.shapeStyle = val;
+									shapeDividerTopOptions.opacity = JSON.parse(
+										val
+									);
 									onChange(JSON.stringify(value));
 								}}
 							/>
-						)}
-					/>
-					<__experimentalOpacityControl
-						opacity={shapeDividerTopOptions.opacity}
-						defaultOpacity={defaultShapeDividerTopOptions.opacity}
-						onChange={val => {
-							shapeDividerTopOptions.opacity = JSON.parse(val);
-							onChange(JSON.stringify(value));
-						}}
-					/>
-					<BackgroundControl
-						background={shapeDividerTopOptions}
-						defaultBackground={defaultShapeDividerTopOptions}
-						onChange={val => {
-							shapeDividerTopOptions = val;
-							onChange(JSON.stringify(value));
-						}}
-						disableImage
-						disableVideo
-						disableClipPath
-					/>
-					<SizeControl
-						label={__('Divider Height', 'maxi-blocks')}
-						unit={shapeDividerTopOptions.heightUnit}
-						defaultUnit={defaultShapeDividerTopOptions.heightUnit}
-						allowedUnits={['px']}
-						onChangeUnit={val => {
-							shapeDividerTopOptions.heightUnit = val;
-							onChange(JSON.stringify(value));
-						}}
-						value={shapeDividerTopOptions.height}
-						defaultValue={defaultShapeDividerTopOptions.height}
-						onChangeValue={val => {
-							shapeDividerTopOptions.height = val;
-							onChange(JSON.stringify(value));
-						}}
-					/>
+							<BackgroundControl
+								background={shapeDividerTopOptions}
+								defaultBackground={
+									defaultShapeDividerTopOptions
+								}
+								onChange={val => {
+									shapeDividerTopOptions = val;
+									onChange(JSON.stringify(value));
+								}}
+								disableImage
+								disableGradient
+								disableVideo
+								disableClipPath
+							/>
+							<SizeControl
+								label={__('Divider Height', 'maxi-blocks')}
+								unit={shapeDividerTopOptions.heightUnit}
+								defaultUnit={
+									defaultShapeDividerTopOptions.heightUnit
+								}
+								allowedUnits={['px']}
+								onChangeUnit={val => {
+									shapeDividerTopOptions.heightUnit = val;
+									onChange(JSON.stringify(value));
+								}}
+								value={shapeDividerTopOptions.height}
+								defaultValue={
+									defaultShapeDividerTopOptions.height
+								}
+								onChangeValue={val => {
+									shapeDividerTopOptions.height = val;
+									onChange(JSON.stringify(value));
+								}}
+							/>
+						</Fragment>
+					)}
 				</Fragment>
 			)}
 			{shapeDividerStatus === 'bottom' && (
 				<Fragment>
 					<div className='maxi-fancy-radio-control'>
 						<RadioControl
-							label={__('Enable Scroll Effect', 'maxi-blocks')}
-							selected={parseInt(
-								shapeDividerBottomOptions.effects.status
+							label={__(
+								'Enable Bottom Shape Divider',
+								'maxi-blocks'
 							)}
+							selected={shapeDividerBottomOptions.status}
 							options={[
 								{ label: __('No', 'maxi-blocks'), value: 0 },
 								{ label: __('Yes', 'maxi-blocks'), value: 1 },
 							]}
 							onChange={val => {
-								shapeDividerBottomOptions.effects.status = val;
+								shapeDividerBottomOptions.status = Number(val);
 								onChange(JSON.stringify(value));
 							}}
 						/>
 					</div>
-					<Dropdown
-						className='maxi-shapedividercontrol__shape-selector'
-						contentClassName='maxi-shapedividercontrol_popover'
-						position='bottom center'
-						renderToggle={({ isOpen, onToggle }) => (
-							<div
-								className='maxi-shapedividercontrol__shape-selector__display'
-								onClick={onToggle}
-							>
-								{showShapes('bottom')}
+					{!!shapeDividerBottomOptions.status && (
+						<Fragment>
+							<div className='maxi-fancy-radio-control'>
+								<RadioControl
+									label={__(
+										'Enable Scroll Effect',
+										'maxi-blocks'
+									)}
+									selected={parseInt(
+										shapeDividerBottomOptions.effects.status
+									)}
+									options={[
+										{
+											label: __('No', 'maxi-blocks'),
+											value: 0,
+										},
+										{
+											label: __('Yes', 'maxi-blocks'),
+											value: 1,
+										},
+									]}
+									onChange={val => {
+										shapeDividerBottomOptions.effects.status = val;
+										onChange(JSON.stringify(value));
+									}}
+								/>
 							</div>
-						)}
-						renderContent={() => (
-							<RadioControl
-								className='maxi-shapedividercontrol__shape-list'
-								selected={shapeDividerBottomOptions.shapeStyle}
-								options={shapeItems}
+							<Dropdown
+								className='maxi-shapedividercontrol__shape-selector'
+								contentClassName='maxi-shapedividercontrol_popover'
+								position='bottom center'
+								renderToggle={({ isOpen, onToggle }) => (
+									<div
+										className='maxi-shapedividercontrol__shape-selector__display'
+										onClick={onToggle}
+									>
+										{showShapes('bottom')}
+									</div>
+								)}
+								renderContent={() => (
+									<RadioControl
+										className='maxi-shapedividercontrol__shape-list'
+										selected={
+											shapeDividerBottomOptions.shapeStyle
+										}
+										options={shapeItems}
+										onChange={val => {
+											shapeDividerBottomOptions.shapeStyle = val;
+											onChange(JSON.stringify(value));
+										}}
+									/>
+								)}
+							/>
+							<__experimentalOpacityControl
+								opacity={shapeDividerBottomOptions.opacity}
+								defaultOpacity={
+									defaultShapeDividerBottomOptions.opacity
+								}
 								onChange={val => {
-									shapeDividerBottomOptions.shapeStyle = val;
+									shapeDividerBottomOptions.opacity = JSON.parse(
+										val
+									);
 									onChange(JSON.stringify(value));
 								}}
 							/>
-						)}
-					/>
-					<__experimentalOpacityControl
-						opacity={shapeDividerBottomOptions.opacity}
-						defaultOpacity={
-							defaultShapeDividerBottomOptions.opacity
-						}
-						onChange={val => {
-							shapeDividerBottomOptions.opacity = JSON.parse(val);
-							onChange(JSON.stringify(value));
-						}}
-					/>
-					<BackgroundControl
-						background={shapeDividerBottomOptions}
-						defaultBackground={defaultShapeDividerBottomOptions}
-						onChange={val => {
-							shapeDividerBottomOptions = val;
-							onChange(JSON.stringify(value));
-						}}
-						disableImage
-						disableVideo
-						disableClipPath
-					/>
-					<SizeControl
-						label={__('Divider Height', 'maxi-blocks')}
-						unit={shapeDividerBottomOptions.heightUnit}
-						defaultUnit={
-							defaultShapeDividerBottomOptions.heightUnit
-						}
-						allowedUnits={['px']}
-						onChangeUnit={val => {
-							shapeDividerBottomOptions.heightUnit = val;
-							onChange(JSON.stringify(value));
-						}}
-						value={shapeDividerBottomOptions.height}
-						defaultValue={defaultShapeDividerBottomOptions.height}
-						onChangeValue={val => {
-							shapeDividerBottomOptions.height = val;
-							onChange(JSON.stringify(value));
-						}}
-					/>
+							<BackgroundControl
+								background={shapeDividerBottomOptions}
+								defaultBackground={
+									defaultShapeDividerBottomOptions
+								}
+								onChange={val => {
+									shapeDividerBottomOptions = val;
+									onChange(JSON.stringify(value));
+								}}
+								disableImage
+								disableVideo
+								disableClipPath
+							/>
+							<SizeControl
+								label={__('Divider Height', 'maxi-blocks')}
+								unit={shapeDividerBottomOptions.heightUnit}
+								defaultUnit={
+									defaultShapeDividerBottomOptions.heightUnit
+								}
+								allowedUnits={['px']}
+								onChangeUnit={val => {
+									shapeDividerBottomOptions.heightUnit = val;
+									onChange(JSON.stringify(value));
+								}}
+								value={shapeDividerBottomOptions.height}
+								defaultValue={
+									defaultShapeDividerBottomOptions.height
+								}
+								onChangeValue={val => {
+									shapeDividerBottomOptions.height = val;
+									onChange(JSON.stringify(value));
+								}}
+							/>
+						</Fragment>
+					)}
 				</Fragment>
 			)}
 		</div>

@@ -41,6 +41,7 @@ import {
 	__experimentalColumnMover,
 	__experimentalRowSettings,
 	__experimentalColumnSize,
+	__experimentalColumnsHandlers,
 } from './components';
 
 /**
@@ -92,7 +93,6 @@ const MaxiToolbar = props => {
 			verticalAlign,
 			linkSettings,
 			boxShadow,
-			showLine,
 			divider,
 			lineOrientation,
 			lineVertical,
@@ -108,6 +108,7 @@ const MaxiToolbar = props => {
 		isSelected,
 		name,
 		setAttributes,
+		toggleHandlers,
 	} = props;
 
 	const { deviceType } = useSelect(select => {
@@ -217,13 +218,11 @@ const MaxiToolbar = props => {
 						/>
 						<Divider
 							blockName={name}
-							showLine={showLine}
 							divider={divider}
 							defaultDivider={getDefaultProp(clientId, 'divider')}
 							lineOrientation={lineOrientation}
-							onChange={(showLine, divider) =>
+							onChange={divider =>
 								setAttributes({
-									showLine,
 									divider,
 								})
 							}
@@ -305,6 +304,11 @@ const MaxiToolbar = props => {
 								setAttributes({ rowPattern })
 							}
 							breakpoint={deviceType}
+						/>
+
+						<__experimentalColumnsHandlers
+							toggleHandlers={toggleHandlers}
+							blockName={name}
 						/>
 						<Link
 							blockName={name}

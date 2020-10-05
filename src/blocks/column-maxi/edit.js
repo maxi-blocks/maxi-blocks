@@ -4,7 +4,7 @@
 const { compose } = wp.compose;
 const { Fragment, forwardRef } = wp.element;
 const { ResizableBox, Spinner } = wp.components;
-const { withSelect, withDispatch, select } = wp.data;
+const { withSelect, withDispatch, select, dispatch } = wp.data;
 const { InnerBlocks, __experimentalBlock } = wp.blockEditor;
 
 /**
@@ -178,6 +178,7 @@ class edit extends MaxiBlock {
 			onDeviceTypeChange,
 			originalNestedColumns,
 			setAttributes,
+			rowBlockId,
 		} = this.props;
 
 		onDeviceTypeChange();
@@ -207,6 +208,9 @@ class edit extends MaxiBlock {
 
 			return `${100 / originalNestedColumns.length}%`;
 		};
+
+		const { getBlockAttributes } = select('core/block-editor');
+		const { updateBlockAttributes } = dispatch('core/block-editor');
 
 		return [
 			<Inspector {...this.props} />,
@@ -249,6 +253,31 @@ class edit extends MaxiBlock {
 
 									setAttributes({
 										columnSize: JSON.stringify(columnValue),
+									});
+
+									// Reset rowPattern attribute
+									const rowPatternAttribute = getBlockAttributes(
+										rowBlockId
+									).rowPattern;
+
+									const newRowPatternObject = JSON.parse(
+										rowPatternAttribute
+									);
+
+									const { rowPattern } = newRowPatternObject[
+										deviceType
+									];
+
+									if (rowPattern.indexOf('custom-') === -1) {
+										newRowPatternObject[
+											deviceType
+										].rowPattern = `custom-${rowPattern}`;
+									}
+
+									updateBlockAttributes(rowBlockId, {
+										rowPattern: JSON.stringify(
+											newRowPatternObject
+										),
 									});
 								}}
 							>

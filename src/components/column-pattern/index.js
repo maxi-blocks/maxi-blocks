@@ -19,8 +19,6 @@ import {
 
 import SizeControl from '../size-control';
 
-import { getLastBreakpointValue } from '../../utils';
-
 /**
  * External dependencies
  */
@@ -165,7 +163,6 @@ const ColumnPatternsInspector = props => {
 		const currentAttributes = getCurrentAttributes(innerBlocks);
 
 		const template = cloneDeep(getTemplateObject(templateName));
-
 		template.content.forEach((column, i) => {
 			column[1].uniqueID = uniqueIdCreator();
 
@@ -253,19 +250,21 @@ const ColumnPatternsInspector = props => {
 	};
 
 	/**
-	 * Apply gaps on columns sizs array
+	 * Apply gap on columns sizes array
 	 *
 	 * @param {Array} sizes array of columns widths
-	 * @return {Array} columns sizes after applying the gaps
+	 * @return {Array} columns sizes after applying the gap
 	 */
-	const applyGaps = sizes => {
+	const applyGap = sizes => {
 		const newColumnsSizes = [];
 		const columnsPositions = getColumnsPositions(sizes);
 
 		const gap = 2.5;
+
 		sizes.forEach((column, i) => {
 			if (columnsPositions[i].columnsNumber > 1) {
-				const total = 100 - gap * columnsPositions[i].columnsNumber;
+				const numberOfGaps = columnsPositions[i].columnsNumber - 1;
+				const total = 100 - gap * numberOfGaps;
 				newColumnsSizes.push(sizes[i] * total);
 			}
 
@@ -292,9 +291,9 @@ const ColumnPatternsInspector = props => {
 
 		const { sizes } = template;
 
-		const columnsPositions = getColumnsPositions(sizes);
+		const sizesWithGaps = applyGap(sizes);
 
-		const gap = 2.5;
+		const columnsPositions = getColumnsPositions(sizes);
 
 		columnsBlockObjects.forEach((column, j) => {
 			const columnClientId = column.clientId;
@@ -304,23 +303,14 @@ const ColumnPatternsInspector = props => {
 			const newColumnSize = JSON.parse(columnAttributes.columnSize);
 			const newColumnMargin = JSON.parse(columnAttributes.margin);
 
-			if (columnsPositions[j].columnsNumber > 1) {
-				const total = 100 - gap * columnsPositions[j].columnsNumber;
-				newColumnSize[breakpoint].size = sizes[j] * total;
-				document.querySelector(
-					`.maxi-column-block__resizer__${columnUniqueID}`
-				).style.width = sizes[j] * total;
-			}
+			newColumnSize[breakpoint].size = sizesWithGaps[j];
 
-			if (columnsPositions[j].columnsNumber === 1) {
-				newColumnSize[breakpoint].size = 100;
-				document.querySelector(
-					`.maxi-column-block__resizer__${columnUniqueID}`
-				).style.width = '100%';
-			}
+			document.querySelector(
+				`.maxi-column-block__resizer__${columnUniqueID}`
+			).style.width = sizesWithGaps[j];
 
 			if (columnsPositions[j].rowNumber > 1) {
-				newColumnMargin[breakpoint]['margin-top'] = 1;
+				newColumnMargin[breakpoint]['margin-top'] = 0.7;
 				newColumnMargin[breakpoint].unit = 'em';
 			}
 
@@ -357,10 +347,6 @@ const ColumnPatternsInspector = props => {
 			)}
 			<div className='components-column-pattern__templates'>
 				{DISPLAYED_TEMPLATES.map(template => {
-					console.log(
-						applyGaps(template.sizes),
-						getCurrentColumnsSizes()
-					);
 					return (
 						<Button
 							key={uniqueId(
@@ -369,7 +355,7 @@ const ColumnPatternsInspector = props => {
 							className={patternButtonClassName}
 							aria-pressed={
 								JSON.stringify(getCurrentColumnsSizes()) ===
-								JSON.stringify(template.sizes)
+								JSON.stringify(applyGap(template.sizes))
 							}
 							onClick={() => {
 								if (breakpoint === 'general') {

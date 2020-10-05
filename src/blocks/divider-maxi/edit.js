@@ -239,10 +239,7 @@ class edit extends MaxiBlock {
 }
 
 const editSelect = withSelect(select => {
-	let deviceType = select(
-		'core/edit-post'
-	).__experimentalGetPreviewDeviceType();
-	deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
+	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 	return {
 		deviceType,
@@ -256,10 +253,7 @@ const editDispatch = withDispatch((dispatch, ownProps, { select }) => {
 	} = ownProps;
 
 	const onDeviceTypeChange = function () {
-		let newDeviceType = select(
-			'core/edit-post'
-		).__experimentalGetPreviewDeviceType();
-		newDeviceType = newDeviceType === 'Desktop' ? 'general' : newDeviceType;
+		const newDeviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 		const allowedDeviceTypes = ['general', 'xl', 'l', 'm', 's'];
 

@@ -146,7 +146,9 @@ class edit extends MaxiBlock {
 		} = this.props;
 
 		const classes = classnames(
-			'maxi-block__backend maxi-text-block',
+			'maxi-block',
+			'maxi-block--backend',
+			'maxi-text-block',
 			blockStyle,
 			extraClassName,
 			uniqueID,

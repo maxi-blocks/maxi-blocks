@@ -182,7 +182,8 @@ class edit extends MaxiBlock {
 		onDeviceTypeChange();
 
 		const classes = classnames(
-			'maxi-block__backend',
+			'maxi-block',
+			'maxi-block--backend',
 			'maxi-column-block',
 			uniqueID,
 			blockStyle,
@@ -215,7 +216,7 @@ class edit extends MaxiBlock {
 				{rowBlockWidth !== 0 && (
 					<ResizableBox
 						className={classnames(
-							'maxi-block__backend', // Required by BackEndResponsiveStyles class to apply the styles
+							'maxi-block--backend', // Required by BackEndResponsiveStyles class to apply the styles
 							'maxi-block__resizer',
 							'maxi-column-block__resizer',
 							`maxi-column-block__resizer__${uniqueID}`

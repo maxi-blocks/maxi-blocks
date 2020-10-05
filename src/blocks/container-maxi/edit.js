@@ -31,8 +31,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
-import { boxShadow } from '../../extensions/styles/defaults';
+import { isEmpty, isObject } from 'lodash';
 
 /**
  * InnerBlocks version
@@ -77,6 +76,7 @@ class edit extends MaxiBlock {
 			background,
 			backgroundHover,
 			border,
+			boxShadow,
 		} = this.props.attributes;
 
 		let response = {
@@ -121,7 +121,7 @@ class edit extends MaxiBlock {
 		response = Object.assign(
 			response,
 			setBackgroundStyles(uniqueID, background, backgroundHover),
-			setArrowStyles(uniqueID, background, border)
+			setArrowStyles(uniqueID, background, border, boxShadow)
 		);
 
 		return response;
@@ -224,12 +224,14 @@ class edit extends MaxiBlock {
 				extraClassName,
 				background,
 				shapeDivider,
-				border,
+				arrow,
 			},
 			className,
 			clientId,
 			hasInnerBlock,
 		} = this.props;
+
+		const arrowValue = !isObject(arrow) ? JSON.parse(arrow) : arrow;
 
 		const classes = classnames(
 			'maxi-block maxi-container-block',
@@ -238,11 +240,8 @@ class edit extends MaxiBlock {
 			blockStyle,
 			extraClassName,
 			className,
-			'maxi-contianer-normal-arrow',
-			'maxi-contianer-border-arrow'
-			// JSON.parse(border).general['border-style'] !== 'none'
-			// 	? 'border'
-			// 	: null
+			!!arrowValue.active &&
+				`maxi-contianer-normal-arrow maxi-contianer-shadow-arrow maxi-contianer-border-arrow maxi-contianer-arrow-${arrowValue.general.side}`
 		);
 
 		return [

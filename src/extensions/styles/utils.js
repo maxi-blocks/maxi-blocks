@@ -67,6 +67,36 @@ export const getLastBreakpointValue = (obj, prop, breakpoint) => {
 	return obj[breakpoint][prop];
 };
 
+export const getDropShadowObject = boxShadow => {
+	const response = {
+		label: 'Drop Shadow',
+		general: {},
+		xxl: {},
+		xl: {},
+		l: {},
+		m: {},
+		s: {},
+		xs: {},
+	};
+
+	for (const [key, value] of Object.entries(boxShadow)) {
+		if (key !== 'label') {
+			let boxShadowString = '';
+			isNumber(value.shadowHorizontal) &&
+				(boxShadowString += `${value.shadowHorizontal}px `);
+			isNumber(value.shadowVertical) &&
+				(boxShadowString += `${value.shadowVertical}px `);
+			isNumber(value.shadowBlur) &&
+				(boxShadowString += `${value.shadowBlur}px `);
+			!isNil(value.shadowColor) && (boxShadowString += value.shadowColor);
+
+			response[key]['filter'] = `drop-shadow(${boxShadowString.trim()})`;
+		}
+	}
+
+	return response;
+};
+
 export const getBoxShadowObject = boxShadow => {
 	const response = {
 		label: boxShadow.label,
@@ -552,90 +582,51 @@ export const getArrowObject = arrow => {
 		if (key === 'label' || key === 'active') return;
 
 		response[key].display = 'block';
-		// 	if (!isEmpty(value.side)) {
-		// 		switch (value.side) {
-		// 			case 'top':
-		// 				response[key].bottom = '100%';
-		// 				break;
-		// 			case 'right':
-		// 				response[key].left = '100%';
-		// 				break;
-		// 			case 'bottom':
-		// 				response[key].top = '100%';
-		// 				break;
-		// 			case 'left':
-		// 				response[key].right = '0%';
-		// 				break;
-		// 			default:
-		// 				response[key].bottom = '100%';
-		// 				break;
-		// 		}
-		// 	}
-		if (isNumber(value.position))
-			switch (value.side) {
-				case 'top':
-					response[key].left = `${value.position}%`;
-					break;
-				case 'right':
-					response[key].top = `${value.position}%`;
-					break;
-				case 'bottom':
-					response[key].left = `${value.position}%`;
-					break;
-				case 'left':
-					response[key].top = `${value.position}%`;
-					break;
-				default:
-					response[key].left = '50%';
-					break;
-			}
-		// 	if (!isEmpty(value.color)) {
-		// 		switch (value.side) {
-		// 			case 'top':
-		// 				response[key][
-		// 					'border-color'
-		// 				] = `transparent transparent ${value.color} transparent`;
-		// 				break;
-		// 			case 'right':
-		// 				response[key][
-		// 					'border-color'
-		// 				] = `transparent transparent transparent ${value.color}`;
-		// 				break;
-		// 			case 'bottom':
-		// 				response[key][
-		// 					'border-color'
-		// 				] = `${value.color} transparent transparent transparent`;
-		// 				break;
-		// 			case 'left':
-		// 				response[key][
-		// 					'border-color'
-		// 				] = `transparent ${value.color} transparent transparent`;
-		// 				break;
-		// 			default:
-		// 				response[key][
-		// 					'border-color'
-		// 				] = `transparent transparent ${value.color} transparent`;
-		// 				break;
-		// 		}
-		// 	}
 
-		if (isNumber(value.width)) {
-			const width = `${value.width}${value.widthUnit}`;
+		const width = `${value.width}${value.widthUnit}`;
 
-			if (value.side === 'bottom') {
-				response[key]['width'] = `${width}`;
-				response[key]['height'] = `${width}`;
-				response[key]['top'] = `calc(100% + ${
+		response[key].display = 'block';
+		response[key]['width'] = `${width}`;
+		response[key]['height'] = `${width}`;
+
+		switch (value.side) {
+			case 'top':
+				response[key].left = `${value.position}%`;
+				response[key].top = `-${(Math.sqrt(2) * value.width) / 2}${
+					value.widthUnit
+				}`;
+				break;
+			case 'right':
+				response[key].top = `${value.position}%`;
+				response[key].left = `calc(100% + ${
 					(Math.sqrt(2) * value.width) / 2
-				}px)`;
-			}
+				}${value.widthUnit})`;
+				break;
+			case 'bottom':
+				response[key].left = `${value.position}%`;
+				response[key].top = `calc(100% + ${
+					(Math.sqrt(2) * value.width) / 2
+				}${value.widthUnit})`;
+				break;
+			case 'left':
+				response[key].top = `${value.position}%`;
+				response[key].left = `-${(Math.sqrt(2) * value.width) / 2}${
+					value.widthUnit
+				}`;
+				break;
+			default:
+				response[key].left = '50%';
+				response[key].top = `calc(100% + ${
+					(Math.sqrt(2) * value.width) / 2
+				}${value.widthUnit})`;
+				break;
 		}
 	});
 
 	return response;
 };
 
-export const getColorArrowObject = background => {
+export const getArrowColorObject = background => {
 	const response = {
 		label: 'Arrow Color',
 		general: {},
@@ -650,7 +641,7 @@ export const getColorArrowObject = background => {
 	return response;
 };
 
-export const getBorderArrowObject = border => {
+export const getArrowBorderObject = border => {
 	const response = {
 		label: 'Arrow Border',
 		general: {},
@@ -676,13 +667,16 @@ export const getBorderArrowObject = border => {
 	return response;
 };
 
-export const setArrowStyles = (target, background, border) => {
+export const setArrowStyles = (target, background, border, boxShadow) => {
 	return {
 		[`${target}.maxi-contianer-normal-arrow .maxi-contianer-arrow:after`]: {
-			background: { ...getColorArrowObject(JSON.parse(background)) },
+			background: { ...getArrowColorObject(JSON.parse(background)) },
 		},
 		[`${target}.maxi-contianer-border-arrow .maxi-contianer-arrow:before`]: {
-			background: { ...getBorderArrowObject(JSON.parse(border)) },
+			border: { ...getArrowBorderObject(JSON.parse(border)) },
+		},
+		[`${target}.maxi-contianer-shadow-arrow`]: {
+			shadow: { ...getDropShadowObject(JSON.parse(boxShadow)) },
 		},
 	};
 };

@@ -33,6 +33,7 @@ const save = props => {
 			extraClassName,
 			shapeDivider,
 			motion,
+			arrow,
 		},
 		className,
 	} = props;
@@ -43,6 +44,8 @@ const save = props => {
 		blockStyle,
 		extraClassName,
 		className,
+		!!JSON.parse(arrow).active &&
+			'maxi-contianer-normal-arrow maxi-contianer-shadow-arrow maxi-contianer-border-arrow',
 		fullWidth === 'full' ? 'alignfull' : null,
 		!isNil(uniqueID) ? uniqueID : null
 	);
@@ -68,6 +71,7 @@ const save = props => {
 							<InnerBlocks.Content />
 						</div>
 					</div>
+					<div className='maxi-contianer-arrow'></div>
 					<__experimentalShapeDivider
 						position='bottom'
 						shapeDividerOptions={shapeDivider}

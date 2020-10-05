@@ -3,7 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
-const { SelectControl, RangeControl, RadioControl } = wp.components;
+const { RangeControl, RadioControl } = wp.components;
 
 /**
  * Internal dependencies
@@ -32,7 +32,6 @@ const ArrowControl = props => {
 		className,
 		onChange,
 		breakpoint = 'general',
-		isFirstOnHierarchy,
 	} = props;
 
 	const value = !isObject(arrow) ? JSON.parse(arrow) : arrow;
@@ -47,13 +46,9 @@ const ArrowControl = props => {
 		let response = [
 			{ label: __('Top', 'maxi-blocks'), value: 'top' },
 			{ label: __('Bottom', 'maxi-blocks'), value: 'bottom' },
+			{ label: __('Right', 'maxi-blocks'), value: 'right' },
+			{ label: __('Left', 'maxi-blocks'), value: 'left' },
 		];
-
-		if (!isFirstOnHierarchy)
-			response = response.concat([
-				{ label: __('Right', 'maxi-blocks'), value: 'right' },
-				{ label: __('Left', 'maxi-blocks'), value: 'left' },
-			]);
 
 		return response;
 	};
@@ -97,19 +92,38 @@ const ArrowControl = props => {
 			}
 			{!!value.active && (
 				<Fragment>
-					<SelectControl
-						label={__('Side', 'maxi-blocks')}
-						options={getOptions()}
-						value={getLastBreakpointValue(
-							value,
-							'side',
-							breakpoint
-						)}
-						onChange={val => {
-							value[breakpoint].side = val;
-							onChange(JSON.stringify(value));
-						}}
-					/>
+					<div className='maxi-fancy-radio-control'>
+						<RadioControl
+							label=''
+							selected={getLastBreakpointValue(
+								value,
+								'side',
+								breakpoint
+							)}
+							options={[
+								{
+									label: __('Top', 'maxi-blocks'),
+									value: 'top',
+								},
+								{
+									label: __('Bottom', 'maxi-blocks'),
+									value: 'bottom',
+								},
+								{
+									label: __('Right', 'maxi-blocks'),
+									value: 'right',
+								},
+								{
+									label: __('Left', 'maxi-blocks'),
+									value: 'left',
+								},
+							]}
+							onChange={val => {
+								value[breakpoint].side = val;
+								onChange(JSON.stringify(value));
+							}}
+						/>
+					</div>
 					<RangeControl
 						label={__('Position', 'maxi-blocks')}
 						value={getLastBreakpointValue(

@@ -17,6 +17,7 @@ import {
 	FullSizeControl,
 	SettingTabsControl,
 	__experimentalDividerControl,
+	__experimentalResponsiveSelector,
 	__experimentalZIndexControl,
 	__experimentalAxisControl,
 	__experimentalResponsiveControl,
@@ -68,6 +69,7 @@ const Inspector = props => {
 
 	return (
 		<InspectorControls>
+			<__experimentalResponsiveSelector />
 			<SettingTabsControl
 				disablePadding
 				items={[

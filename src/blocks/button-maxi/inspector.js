@@ -20,6 +20,7 @@ import {
 	FullSizeControl,
 	SettingTabsControl,
 	TypographyControl,
+	__experimentalResponsiveSelector,
 	__experimentalZIndexControl,
 	__experimentalAxisControl,
 	__experimentalResponsiveControl,
@@ -70,8 +71,9 @@ const Inspector = props => {
 	} = props;
 
 	const { deviceType } = useSelect(select => {
-		const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
-
+		const { __experimentalGetPreviewDeviceType } = select('core/edit-post');
+		let deviceType = __experimentalGetPreviewDeviceType();
+		deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
 		return {
 			deviceType,
 		};
@@ -79,6 +81,7 @@ const Inspector = props => {
 
 	return (
 		<InspectorControls>
+			<__experimentalResponsiveSelector />
 			<SettingTabsControl
 				disablePadding
 				items={[

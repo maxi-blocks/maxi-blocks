@@ -2,11 +2,12 @@
  * WordPress dependencies
  */
 const { apiFetch } = wp;
-const { registerStore, select, dispatch } = wp.data;
+const { registerStore, select } = wp.data;
 
 /**
  * Register Store
  */
+
 const controls = {
 	async RECEIVE_POST_STYLES() {
 		const id = select('core/editor').getCurrentPostId();
@@ -29,21 +30,9 @@ const controls = {
 			},
 		});
 	},
-	async RECEIVE_DEVICE_TYPE() {
-		const originalDeviceType = select(
-			'core/edit-post'
-		).__experimentalGetPreviewDeviceType();
-
-		return originalDeviceType === 'Desktop'
-			? 'general'
-			: originalDeviceType;
-	},
 };
 
-const reducer = (
-	state = { breakpoints: {}, meta: {}, deviceType: 'general' },
-	action
-) => {
+const reducer = (state = { breakpoints: {}, meta: {} }, action) => {
 	switch (action.type) {
 		case 'SEND_POST_STYLES':
 			return {
@@ -60,16 +49,6 @@ const reducer = (
 			return {
 				...state,
 				meta: action.meta,
-			};
-		case 'SEND_DEVICE_TYPE':
-			return {
-				...state,
-				deviceType: action.deviceType,
-			};
-		case 'SET_DEVICE_TYPE':
-			return {
-				...state,
-				deviceType: action.deviceType,
 			};
 		default:
 			return state;
@@ -106,35 +85,6 @@ const actions = {
 			update,
 		};
 	},
-	receiveMaxiDeviceType() {
-		return {
-			type: 'RECEIVE_DEVICE_TYPE',
-		};
-	},
-	sendMaxiDeviceType(deviceType) {
-		return {
-			type: 'SEND_DEVICE_TYPE',
-			deviceType,
-		};
-	},
-	setMaxiDeviceType(deviceType, width) {
-		const {
-			__experimentalSetPreviewDeviceType: setPreviewDeviceType,
-		} = dispatch('core/edit-post');
-
-		const gutenbergDeviceType =
-			(deviceType === 'general' && 'Desktop') ||
-			(width >= 1024 && 'Desktop') ||
-			(width >= 768 && 'Tablet') ||
-			(width < 768 && 'Mobile');
-
-		setPreviewDeviceType(gutenbergDeviceType);
-
-		return {
-			type: 'SET_DEVICE_TYPE',
-			deviceType,
-		};
-	},
 };
 
 const selectors = {
@@ -144,10 +94,6 @@ const selectors = {
 	},
 	receiveMaxiBreakpoints(state) {
 		if (state) return state.breakpoints;
-		return false;
-	},
-	receiveMaxiDeviceType(state) {
-		if (state) return state.deviceType;
 		return false;
 	},
 };
@@ -160,10 +106,6 @@ const resolvers = {
 	*receiveMaxiBreakpoints() {
 		const maxiBreakpoints = yield actions.receiveMaxiBreakpoints();
 		return actions.sendMaxiBreakpoints(maxiBreakpoints);
-	},
-	*receiveMaxiDeviceType() {
-		const maxiDeviceType = yield actions.receiveMaxiDeviceType();
-		return actions.sendMaxiDeviceType(maxiDeviceType);
 	},
 };
 

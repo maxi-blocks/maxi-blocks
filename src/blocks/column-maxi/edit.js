@@ -301,10 +301,7 @@ const editSelect = withSelect((select, ownProps) => {
 	const originalNestedColumns = select('core/block-editor').getBlockOrder(
 		rowBlockId
 	);
-	let deviceType = select(
-		'core/edit-post'
-	).__experimentalGetPreviewDeviceType();
-	deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
+	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 	return {
 		rowBlockId,
@@ -321,10 +318,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	} = ownProps;
 
 	const onDeviceTypeChange = () => {
-		let newDeviceType = select(
-			'core/edit-post'
-		).__experimentalGetPreviewDeviceType();
-		newDeviceType = newDeviceType === 'Desktop' ? 'general' : newDeviceType;
+		const newDeviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 		const node = document.querySelector(
 			`.maxi-column-block__resizer__${uniqueID}`

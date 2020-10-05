@@ -194,6 +194,27 @@ const ColumnPatternsInspector = props => {
 	};
 
 	/**
+	 * Get current columns sizes
+	 *
+	 * @return {Array} Array of columns sizes
+	 */
+	const getCurrentColumnsSizes = () => {
+		const columnsSizes = [];
+		const { getBlock } = select('core/block-editor');
+
+		const columnsBlockObjects = getBlock(clientId).innerBlocks;
+
+		columnsBlockObjects.forEach(columnObject => {
+			const columnSizeObject = JSON.parse(
+				columnObject.attributes.columnSize
+			);
+			columnsSizes.push(columnSizeObject[breakpoint].size);
+		});
+
+		return columnsSizes;
+	};
+
+	/**
 	 * Get columns positions (Row number and the number of columns in the row)
 	 *
 	 * @param {Array} sizes array of columns widths
@@ -229,6 +250,31 @@ const ColumnPatternsInspector = props => {
 		});
 
 		return columnsPositions;
+	};
+
+	/**
+	 * Apply gaps on columns sizs array
+	 *
+	 * @param {Array} sizes array of columns widths
+	 * @return {Array} columns sizes after applying the gaps
+	 */
+	const applyGaps = sizes => {
+		const newColumnsSizes = [];
+		const columnsPositions = getColumnsPositions(sizes);
+
+		const gap = 2.5;
+		sizes.forEach((column, i) => {
+			if (columnsPositions[i].columnsNumber > 1) {
+				const total = 100 - gap * columnsPositions[i].columnsNumber;
+				newColumnsSizes.push(sizes[i] * total);
+			}
+
+			if (columnsPositions[i].columnsNumber === 1) {
+				newColumnsSizes.push(100);
+			}
+		});
+
+		return newColumnsSizes;
 	};
 
 	/**
@@ -311,6 +357,10 @@ const ColumnPatternsInspector = props => {
 			)}
 			<div className='components-column-pattern__templates'>
 				{DISPLAYED_TEMPLATES.map(template => {
+					console.log(
+						applyGaps(template.sizes),
+						getCurrentColumnsSizes()
+					);
 					return (
 						<Button
 							key={uniqueId(
@@ -318,11 +368,8 @@ const ColumnPatternsInspector = props => {
 							)}
 							className={patternButtonClassName}
 							aria-pressed={
-								getLastBreakpointValue(
-									rowPatternObject,
-									'rowPattern',
-									breakpoint
-								) === template.name
+								JSON.stringify(getCurrentColumnsSizes()) ===
+								JSON.stringify(template.sizes)
 							}
 							onClick={() => {
 								if (breakpoint === 'general') {

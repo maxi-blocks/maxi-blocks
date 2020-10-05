@@ -48,10 +48,6 @@ const attributes = {
 		type: 'number',
 		default: JSON.stringify(attributesData.opacity),
 	},
-	opacityHover: {
-		type: 'number',
-		default: JSON.stringify(attributesData.opacityHover),
-	},
 	background: {
 		type: 'string',
 		default: JSON.stringify(attributesData.background),

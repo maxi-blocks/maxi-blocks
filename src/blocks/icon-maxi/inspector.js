@@ -71,7 +71,6 @@ const Inspector = props => {
 			padding,
 			margin,
 			backgroundHover,
-			opacityHover,
 			boxShadowHover,
 			borderHover,
 			mediaID,
@@ -426,25 +425,6 @@ const Inspector = props => {
 															),
 															content: (
 																<Fragment>
-																	<__experimentalOpacityControl
-																		opacity={
-																			opacityHover
-																		}
-																		defaultOpacity={getDefaultProp(
-																			clientId,
-																			'opacityHover'
-																		)}
-																		onChange={opacityHover =>
-																			setAttributes(
-																				{
-																					opacityHover,
-																				}
-																			)
-																		}
-																		breakpoint={
-																			deviceType
-																		}
-																	/>
 																	<BackgroundControl
 																		background={
 																			backgroundHover

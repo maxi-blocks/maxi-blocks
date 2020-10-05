@@ -104,16 +104,6 @@ class edit extends MaxiBlock {
 	}
 
 	get getHoverObject() {
-		const { opacityHover } = this.props.attributes;
-
-		const response = {
-			opacityHover: { ...JSON.parse(opacityHover) },
-		};
-
-		return response;
-	}
-
-	get getDividerHoverObject() {
 		const { boxShadowHover } = this.props.attributes;
 
 		const response = {

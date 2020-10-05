@@ -48,31 +48,6 @@ export const opacity = {
 	},
 };
 
-export const opacityHover = {
-	label: 'Opacity',
-	general: {
-		opacity: 1,
-	},
-	xxl: {
-		opacity: '',
-	},
-	xl: {
-		opacity: '',
-	},
-	l: {
-		opacity: '',
-	},
-	m: {
-		opacity: '',
-	},
-	s: {
-		opacity: '',
-	},
-	xs: {
-		opacity: '',
-	},
-};
-
 export const border = {
 	label: 'Border',
 	general: {
@@ -519,6 +494,12 @@ export const background = {
 		muted: 0,
 		preload: 'metadata',
 		clipPath: '',
+		opacity: {
+			label: 'Opacity',
+			general: {
+				opacity: 1,
+			},
+		},
 	},
 	colorOptions: {
 		activeColor: '',
@@ -526,25 +507,29 @@ export const background = {
 		gradient: '',
 		gradientAboveBackground: false,
 		clipPath: '',
+		gradientOpacity: {
+			opacity: {
+				label: 'Opacity',
+				general: {
+					opacity: 1,
+				},
+			},
+		},
 	},
-	overlayOptions: {
-		overlay: '',
-		activeColor: '',
-		color: '',
-		gradient: '',
-		gradientAboveBackground: false,
+	imageOpacity: {
 		opacity: {
 			label: 'Opacity',
 			general: {
-				opacity: 0.8,
+				opacity: 1,
 			},
 		},
 	},
 };
 
 export const backgroundHover = {
-	label: 'Background',
+	label: 'Background Hover',
 	activeMedia: '',
+	status: 0,
 	imageOptions: [
 		{
 			imageData: {
@@ -593,20 +578,40 @@ export const backgroundHover = {
 		gradient: '',
 		gradientAboveBackground: '',
 		clipPath: '',
+		gradientOpacity: {
+			opacity: {
+				label: 'Opacity',
+				general: {
+					opacity: 1,
+				},
+			},
+		},
 	},
+};
+
+export const overlay = {
+	label: 'Overlay',
 	overlayOptions: {
 		overlay: '',
 		activeColor: '',
 		color: '',
 		gradient: '',
 		gradientAboveBackground: false,
-		opacity: {
-			label: 'Opacity',
-			general: {
-				opacity: '',
+		gradientOpacity: {
+			opacity: {
+				label: 'Opacity',
+				general: {
+					opacity: 1,
+				},
 			},
 		},
 	},
+};
+
+export const overlayHover = {
+	label: 'Overlay Hover',
+	status: 0,
+	...overlay,
 };
 
 export const boxShadow = {

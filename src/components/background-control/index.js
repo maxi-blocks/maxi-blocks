@@ -15,6 +15,7 @@ import ImageCropControl from '../image-crop-control';
 import SettingTabsControl from '../setting-tabs-control';
 import SizeControl from '../size-control';
 import __experimentalClipPath from '../clip-path-control';
+import __experimentalOpacityControl from '../opacity-control';
 
 /**
  * External dependencies
@@ -54,7 +55,6 @@ const BackgroundControl = props => {
 
 	const [isOpen, setIsOpen] = useState(false);
 	const [selector, setSelector] = useState(0);
-
 	const value = !isObject(background) ? JSON.parse(background) : background;
 
 	const defaultValue = !isObject(defaultBackground)
@@ -241,6 +241,19 @@ const BackgroundControl = props => {
 									}}
 								/>
 							)}
+							<__experimentalOpacityControl
+								label={__('Background Opacity', 'maxi-blocks')}
+								opacity={value.imageOpacity.opacity}
+								defaultOpacity={
+									defaultValue.imageOpacity.opacity
+								}
+								onChange={val => {
+									value.imageOpacity.opacity = JSON.parse(
+										val
+									);
+									onChange(JSON.stringify(value));
+								}}
+							/>
 						</Fragment>
 					)}
 					{!disableVideo && value.activeMedia === 'video' && (
@@ -274,6 +287,19 @@ const BackgroundControl = props => {
 								replaceButton={__('Replace', 'maxi-blocks')}
 								removeButton={__('Remove', 'maxi-blocks')}
 							/>
+							<__experimentalOpacityControl
+								label={__('Video Opacity', 'maxi-blocks')}
+								opacity={value.videoOptions.opacity}
+								defaultOpacity={
+									defaultValue.videoOptions.opacity
+								}
+								onChange={val => {
+									value.videoOptions.opacity = JSON.parse(
+										val
+									);
+									onChange(JSON.stringify(value));
+								}}
+							/>
 							{!disableClipPath && (
 								<__experimentalClipPath
 									clipPath={value.videoOptions.clipPath}
@@ -290,14 +316,21 @@ const BackgroundControl = props => {
 							<GradientControl
 								label={__('Background', 'maxi-blocks')}
 								gradient={value.colorOptions.gradient}
+								gradientOpacity={
+									value.colorOptions.gradientOpacity
+								}
 								defaultGradient={
-									defaultValue.colorOptions.gradient
+									defaultValue.colorOptions.gradientOpacity
+										.opacity
 								}
 								onChange={val => {
 									value.colorOptions.gradient = val;
 									value.colorOptions.activeColor = val;
 									onChange(JSON.stringify(value));
 								}}
+								onChangeOpacity={() =>
+									onChange(JSON.stringify(value))
+								}
 								gradientAboveBackground={
 									value.colorOptions.gradientAboveBackground
 								}

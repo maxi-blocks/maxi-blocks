@@ -3,7 +3,13 @@
  */
 const { __ } = wp.i18n;
 const { Fragment, useState } = wp.element;
-const { SelectControl, RadioControl, Button, Icon } = wp.components;
+const {
+	SelectControl,
+	RadioControl,
+	Button,
+	Icon,
+	TextControl,
+} = wp.components;
 
 /**
  * Internal dependencies
@@ -33,8 +39,6 @@ import {
 	backgroundVideo,
 	backgroundGradient,
 } from '../../icons';
-import './editor.scss';
-
 import './editor.scss';
 
 /**
@@ -258,35 +262,78 @@ const BackgroundControl = props => {
 					)}
 					{!disableVideo && value.activeMedia === 'video' && (
 						<div className='maxi-background-control__video'>
-							<MediaUploaderControl
-								allowedTypes={['video']}
-								mediaType='video'
-								mediaID={value.videoOptions.mediaID}
-								onSelectImage={videoData => {
-									value.videoOptions.mediaID = videoData.id;
-									value.videoOptions.mediaURL = videoData.url;
+							<SelectControl
+								value={value.videoOptions.type}
+								label={__('Video Source')}
+								options={[
+									{
+										label: __('Upload'),
+										value: 'upload',
+									},
+									{
+										label: __('Direct link'),
+										value: 'direct',
+									},
+									{
+										label: __('Youtube'),
+										value: 'youtube',
+									},
+									{
+										label: __('Vimeo'),
+										value: 'vimeo',
+									},
+								]}
+								onChange={val => {
+									value.videoOptions.type = val;
 									onChange(JSON.stringify(value));
+									console.log(value);
 								}}
-								onRemoveImage={() => {
-									value.videoOptions.mediaID = '';
-									value.videoOptions.mediaURL = '';
-									onChange(JSON.stringify(value));
-								}}
-								extendSelector={
-									value.videoOptions.mediaID && (
-										<Button
-											isSecondary
-											onClick={e => onOpenOptions(e)}
-											className='maxi-background-control__video-edit'
-										>
-											{__('Edit', 'maxi-blocks')}
-										</Button>
-									)
-								}
-								placeholder={__('Set Video', 'maxi-blocks')}
-								replaceButton={__('Replace', 'maxi-blocks')}
-								removeButton={__('Remove', 'maxi-blocks')}
 							/>
+
+							{value.videoOptions.type === 'upload' && (
+								<MediaUploaderControl
+									allowedTypes={['video']}
+									mediaType='video'
+									mediaID={value.videoOptions.mediaID}
+									onSelectImage={videoData => {
+										value.videoOptions.mediaID =
+											videoData.id;
+										value.videoOptions.mediaURL =
+											videoData.url;
+										onChange(JSON.stringify(value));
+									}}
+									onRemoveImage={() => {
+										value.videoOptions.mediaID = '';
+										value.videoOptions.mediaURL = '';
+										onChange(JSON.stringify(value));
+									}}
+									extendSelector={
+										value.videoOptions.mediaID && (
+											<Button
+												isSecondary
+												onClick={e => onOpenOptions(e)}
+												className='maxi-background-control__video-edit'
+											>
+												{__('Edit', 'maxi-blocks')}
+											</Button>
+										)
+									}
+									placeholder={__('Set Video', 'maxi-blocks')}
+									replaceButton={__('Replace', 'maxi-blocks')}
+									removeButton={__('Remove', 'maxi-blocks')}
+								/>
+							)}
+							{value.videoOptions.type !== 'upload' && (
+								<TextControl
+									type='url'
+									value={value.videoOptions.mediaURL}
+									placeholder={`Add ${value.videoOptions.type} video link`}
+									onChange={val => {
+										value.videoOptions.mediaURL = val;
+										onChange(JSON.stringify(value));
+									}}
+								/>
+							)}
 							<__experimentalOpacityControl
 								label={__('Video Opacity', 'maxi-blocks')}
 								opacity={value.videoOptions.opacity}
@@ -1094,7 +1141,9 @@ const BackgroundControl = props => {
 										<SelectControl
 											label={__('Muted', 'maxi-blocks')}
 											value={value.videoOptions.muted}
-	disabled={Number(value.videoOptions.autoplay)} // !!Number(value.videoOptions.autoplay)
+											disabled={Number(
+												value.videoOptions.autoplay
+											)} // !!Number(value.videoOptions.autoplay)
 											options={[
 												{
 													label: __(

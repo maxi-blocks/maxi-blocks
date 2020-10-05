@@ -16,7 +16,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
+import { isNil, isObject } from 'lodash';
 
 /**
  * Save
@@ -38,14 +38,16 @@ const save = props => {
 		className,
 	} = props;
 
+	const arrowValue = !isObject(arrow) ? JSON.parse(arrow) : arrow;
+
 	const classes = classnames(
 		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
 		'maxi-block maxi-container-block',
 		blockStyle,
 		extraClassName,
 		className,
-		!!JSON.parse(arrow).active &&
-			'maxi-contianer-normal-arrow maxi-contianer-shadow-arrow maxi-contianer-border-arrow',
+		!!arrowValue.active &&
+			`maxi-contianer-normal-arrow maxi-contianer-shadow-arrow maxi-contianer-border-arrow maxi-contianer-arrow-${arrowValue.general.side}`,
 		fullWidth === 'full' ? 'alignfull' : null,
 		!isNil(uniqueID) ? uniqueID : null
 	);

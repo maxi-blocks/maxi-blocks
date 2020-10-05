@@ -5,16 +5,12 @@
 }
 .maxi-contianer-arrow-left {
 	.maxi-contianer-arrow {
-		top: 50%;
 		transform: translate(-50%, -50%) rotate(135deg);
-		margin-left: 1px;
 	}
 }
 .maxi-contianer-arrow-right {
 	.maxi-contianer-arrow {
-		top: 50%;
 		transform: translate(-50%, -50%) rotate(-45deg);
-		margin-left: -1px;
 	}
 }
 .maxi-contianer-arrow {
@@ -23,7 +19,6 @@
 	height: 80px;
 	position: absolute;
 	top: calc(100% + 3.5355rem);
-	left: 50%;
 	transform: translate(-50%, -50%) rotate(45deg);
 
 	&:before {

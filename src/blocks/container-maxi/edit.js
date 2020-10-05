@@ -82,7 +82,7 @@ class edit extends MaxiBlock {
 		let response = {
 			[uniqueID]: this.getNormalObject,
 			[`${uniqueID}:hover`]: this.getHoverObject,
-			[`${this.props.attributes.uniqueID} > .maxi-contianer-arrow`]: this
+			[`${this.props.attributes.uniqueID} .maxi-contianer-arrow`]: this
 				.getArrowObject,
 			[`${uniqueID}>.maxi-container-block__wrapper`]: this
 				.getWrapperObject,

@@ -589,37 +589,29 @@ export const getArrowObject = arrow => {
 		response[key]['width'] = `${width}`;
 		response[key]['height'] = `${width}`;
 
-		switch (value.side) {
-			case 'top':
-				response[key].left = `${value.position}%`;
-				response[key].top = `-${(Math.sqrt(2) * value.width) / 2}${
-					value.widthUnit
-				}`;
-				break;
-			case 'right':
-				response[key].top = `${value.position}%`;
-				response[key].left = `calc(100% + ${
-					(Math.sqrt(2) * value.width) / 2
-				}${value.widthUnit})`;
-				break;
-			case 'bottom':
-				response[key].left = `${value.position}%`;
-				response[key].top = `calc(100% + ${
-					(Math.sqrt(2) * value.width) / 2
-				}${value.widthUnit})`;
-				break;
-			case 'left':
-				response[key].top = `${value.position}%`;
-				response[key].left = `-${(Math.sqrt(2) * value.width) / 2}${
-					value.widthUnit
-				}`;
-				break;
-			default:
-				response[key].left = '50%';
-				response[key].top = `calc(100% + ${
-					(Math.sqrt(2) * value.width) / 2
-				}${value.widthUnit})`;
-				break;
+		if (value.side === 'top') {
+			response[key].left = `${value.position}%`;
+			response[key].top = `-${(Math.sqrt(2) * value.width) / 2}${
+				value.widthUnit
+			}`;
+		}
+		if (value.side === 'right') {
+			response[key].top = `${value.position}%`;
+			response[key].left = `calc(100% + ${Math.floor(
+				(Math.sqrt(2) * value.width) / 2
+			)}${value.widthUnit})`;
+		}
+		if (value.side === 'bottom') {
+			response[key].left = `${value.position}%`;
+			response[key].top = `calc(100% + ${Math.floor(
+				(Math.sqrt(2) * value.width) / 2
+			)}${value.widthUnit})`;
+		}
+		if (value.side === 'left') {
+			response[key].top = `${value.position}%`;
+			response[key].left = `-${Math.floor(
+				(Math.sqrt(2) * value.width) / 2
+			)}${value.widthUnit}`;
 		}
 	});
 

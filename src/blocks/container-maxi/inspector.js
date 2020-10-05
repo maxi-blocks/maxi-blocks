@@ -54,9 +54,10 @@ const Inspector = props => {
 			fullWidth,
 			size,
 			opacity,
-			opacityHover,
 			background,
 			backgroundHover,
+			overlay,
+			overlayHover,
 			border,
 			borderHover,
 			boxShadow,
@@ -100,6 +101,14 @@ const Inspector = props => {
 			max: 100,
 		},
 	};
+
+	const backgroundHoverValue = !isObject(backgroundHover)
+		? JSON.parse(backgroundHover)
+		: backgroundHover;
+
+	const overlayHoverValue = !isObject(overlayHover)
+		? JSON.parse(overlayHover)
+		: overlayHover;
 
 	return (
 		<InspectorControls>
@@ -337,25 +346,6 @@ const Inspector = props => {
 															),
 															content: (
 																<Fragment>
-																	<__experimentalOpacityControl
-																		opacity={
-																			opacity
-																		}
-																		defaultOpacity={getDefaultProp(
-																			clientId,
-																			'opacity'
-																		)}
-																		onChange={opacity =>
-																			setAttributes(
-																				{
-																					opacity,
-																				}
-																			)
-																		}
-																		breakpoint={
-																			deviceType
-																		}
-																	/>
 																	<BackgroundControl
 																		background={
 																			background
@@ -398,43 +388,65 @@ const Inspector = props => {
 															),
 															content: (
 																<Fragment>
-																	<__experimentalOpacityControl
-																		opacity={
-																			opacityHover
-																		}
-																		defaultOpacity={getDefaultProp(
-																			clientId,
-																			'opacityHover'
-																		)}
-																		onChange={opacityHover =>
-																			setAttributes(
+																	<div className='maxi-fancy-radio-control'>
+																		<RadioControl
+																			label={__(
+																				'Enable Background Hover',
+																				'maxi-blocks'
+																			)}
+																			selected={
+																				backgroundHoverValue.status
+																			}
+																			options={[
 																				{
-																					opacityHover,
-																				}
-																			)
-																		}
-																		breakpoint={
-																			deviceType
-																		}
-																	/>
-																	<BackgroundControl
-																		background={
-																			backgroundHover
-																		}
-																		defaultBackground={getDefaultProp(
-																			clientId,
-																			'backgroundHover'
-																		)}
-																		onChange={backgroundHover =>
-																			setAttributes(
+																					label: __(
+																						'Yes',
+																						'maxi-blocks'
+																					),
+																					value: 1,
+																				},
 																				{
-																					backgroundHover,
-																				}
-																			)
-																		}
-																		disableImage
-																		disableVideo
-																	/>
+																					label: __(
+																						'No',
+																						'maxi-blocks'
+																					),
+																					value: 0,
+																				},
+																			]}
+																			onChange={val => {
+																				backgroundHoverValue.status = Number(
+																					val
+																				);
+																				setAttributes(
+																					{
+																						backgroundHover: JSON.stringify(
+																							backgroundHoverValue
+																						),
+																					}
+																				);
+																			}}
+																		/>
+																	</div>
+																	{!!backgroundHoverValue.status && (
+																		<BackgroundControl
+																			background={
+																				backgroundHover
+																			}
+																			defaultBackground={getDefaultProp(
+																				clientId,
+																				'backgroundHover'
+																			)}
+																			onChange={backgroundHover =>
+																				setAttributes(
+																					{
+																						backgroundHover,
+																					}
+																				)
+																			}
+																			disableImage
+																			disableVideo
+																		/>
+																	)}
 																</Fragment>
 															),
 														},
@@ -457,16 +469,16 @@ const Inspector = props => {
 																<Fragment>
 																	<__experimentalOverlayControl
 																		overlay={
-																			background
+																			overlay
 																		}
 																		defaultOverlay={getDefaultProp(
 																			clientId,
-																			'background'
+																			'overlay'
 																		)}
-																		onChange={background =>
+																		onChange={overlay =>
 																			setAttributes(
 																				{
-																					background,
+																					overlay,
 																				}
 																			)
 																		}
@@ -481,22 +493,63 @@ const Inspector = props => {
 															),
 															content: (
 																<Fragment>
-																	<__experimentalOverlayControl
-																		overlay={
-																			backgroundHover
-																		}
-																		defaultOverlay={getDefaultProp(
-																			clientId,
-																			'backgroundHover'
-																		)}
-																		onChange={backgroundHover =>
-																			setAttributes(
+																	<div className='maxi-fancy-radio-control'>
+																		<RadioControl
+																			label={__(
+																				'Enable Background Hover',
+																				'maxi-blocks'
+																			)}
+																			selected={
+																				overlayHoverValue.status
+																			}
+																			options={[
 																				{
-																					backgroundHover,
-																				}
-																			)
-																		}
-																	/>
+																					label: __(
+																						'Yes',
+																						'maxi-blocks'
+																					),
+																					value: 1,
+																				},
+																				{
+																					label: __(
+																						'No',
+																						'maxi-blocks'
+																					),
+																					value: 0,
+																				},
+																			]}
+																			onChange={val => {
+																				overlayHoverValue.status = Number(
+																					val
+																				);
+																				setAttributes(
+																					{
+																						overlayHover: JSON.stringify(
+																							overlayHoverValue
+																						),
+																					}
+																				);
+																			}}
+																		/>
+																	</div>
+																	{!!overlayHoverValue.status && (
+																		<__experimentalOverlayControl
+																			overlay={
+																				overlayHover
+																			}
+																			defaultOverlay={getDefaultProp(
+																				clientId,
+																				'overlayHover'
+																			)}
+																			onChange={overlayHover =>
+																				setAttributes(
+																					{
+																						overlayHover,
+																					}
+																				)
+																			}
+																		/>
+																	)}
 																</Fragment>
 															),
 														},
@@ -847,6 +900,24 @@ const Inspector = props => {
 												)}
 												onChange={zIndex =>
 													setAttributes({ zIndex })
+												}
+												breakpoint={deviceType}
+											/>
+										),
+									},
+									{
+										label: __('Opacity', 'maxi-blocks'),
+										content: (
+											<__experimentalOpacityControl
+												opacity={opacity}
+												defaultOpacity={getDefaultProp(
+													clientId,
+													'opacity'
+												)}
+												onChange={opacity =>
+													setAttributes({
+														opacity,
+													})
 												}
 												breakpoint={deviceType}
 											/>

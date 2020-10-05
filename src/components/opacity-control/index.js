@@ -9,13 +9,14 @@ const { RangeControl } = wp.components;
  */
 import { getLastBreakpointValue } from '../../utils';
 import classnames from 'classnames';
-import { isObject, isNil, isNumber, round } from 'lodash';
+import { isObject, isNil, isNumber, round, isEmpty } from 'lodash';
 
 /**
  * Component
  */
 const OpacityControl = props => {
 	const {
+		label,
 		opacity,
 		defaultOpacity,
 		className,
@@ -41,7 +42,7 @@ const OpacityControl = props => {
 
 	return (
 		<RangeControl
-			label={__('Opacity', 'maxi-blocks')}
+			label={isEmpty(label) ? __('Opacity', 'maxi-blocks') : label}
 			className={classes}
 			value={getValue()}
 			onChange={val => {

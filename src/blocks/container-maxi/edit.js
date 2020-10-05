@@ -80,7 +80,13 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
  */
 class edit extends MaxiBlock {
 	get getObject() {
-		const { uniqueID, background, backgroundHover } = this.props.attributes;
+		const {
+			uniqueID,
+			background,
+			backgroundHover,
+			overlay,
+			overlayHover,
+		} = this.props.attributes;
 
 		let response = {
 			[uniqueID]: this.getNormalObject,
@@ -122,7 +128,13 @@ class edit extends MaxiBlock {
 
 		response = Object.assign(
 			response,
-			setBackgroundStyles(uniqueID, background, backgroundHover)
+			setBackgroundStyles(
+				uniqueID,
+				background,
+				backgroundHover,
+				overlay,
+				overlayHover
+			)
 		);
 
 		return response;
@@ -172,11 +184,7 @@ class edit extends MaxiBlock {
 	}
 
 	get getHoverObject() {
-		const {
-			opacityHover,
-			borderHover,
-			boxShadowHover,
-		} = this.props.attributes;
+		const { borderHover, boxShadowHover } = this.props.attributes;
 
 		const response = {
 			boxShadowHover: {
@@ -185,7 +193,6 @@ class edit extends MaxiBlock {
 			borderHover: { ...JSON.parse(borderHover) },
 			borderWidthHover: { ...JSON.parse(borderHover).borderWidth },
 			borderRadiusHover: { ...JSON.parse(borderHover).borderRadius },
-			opacityHover: { ...JSON.parse(opacityHover) },
 		};
 
 		return response;

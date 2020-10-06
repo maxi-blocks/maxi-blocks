@@ -646,12 +646,6 @@ export const getVideoBackgroundObject = videoOptions => {
 	if (!isNil(videoOptions.opacity))
 		response.general.opacity = videoOptions.opacity.general.opacity;
 
-	if (!isNil(videoOptions.width))
-		response.general.width = `${videoOptions.width}${videoOptions.widthUnit}`;
-
-	if (!isNil(videoOptions.height))
-		response.general.height = `${videoOptions.height}${videoOptions.heightUnit}`;
-
 	if (!isEmpty(videoOptions.clipPath))
 		response.general['clip-path'] = videoOptions.clipPath;
 

@@ -483,10 +483,6 @@ export const background = {
 	videoOptions: {
 		mediaID: '',
 		mediaURL: '',
-		width: 100,
-		widthUnit: '%',
-		height: 100,
-		heightUnit: '%',
 		loop: 0,
 		preload: 'metadata',
 		clipPath: '',
@@ -556,10 +552,7 @@ export const backgroundHover = {
 	videoOptions: {
 		mediaID: '',
 		mediaURL: '',
-		width: '',
-		widthUnit: '',
-		height: '',
-		heightUnit: '',
+		loop: '',
 		muted: '',
 		preload: '',
 		clipPath: '',

@@ -275,23 +275,6 @@ const BackgroundControl = props => {
 
 							{value.videoOptions.mediaURL && (
 								<Fragment>
-									<__experimentalOpacityControl
-										label={__(
-											'Video Opacity',
-											'maxi-blocks'
-										)}
-										opacity={value.videoOptions.opacity}
-										defaultOpacity={
-											defaultValue.videoOptions.opacity
-										}
-										onChange={val => {
-											value.videoOptions.opacity = JSON.parse(
-												val
-											);
-											onChange(JSON.stringify(value));
-										}}
-									/>
-
 									<SelectControl
 										label={__('Loop', 'maxi-blocks')}
 										value={value.videoOptions.loop}
@@ -353,78 +336,20 @@ const BackgroundControl = props => {
 											onChange(JSON.stringify(value));
 										}}
 									/>
-									<SizeControl
-										label={__('Width', 'maxi-blocks')}
-										unit={value.videoOptions.widthUnit}
-										defaultUnit={
-											defaultValue.videoOptions.widthUnit
+									<__experimentalOpacityControl
+										label={__(
+											'Video Opacity',
+											'maxi-blocks'
+										)}
+										opacity={value.videoOptions.opacity}
+										defaultOpacity={
+											defaultValue.videoOptions.opacity
 										}
-										onChangeUnit={val => {
-											value.videoOptions.widthUnit = val;
+										onChange={val => {
+											value.videoOptions.opacity = JSON.parse(
+												val
+											);
 											onChange(JSON.stringify(value));
-										}}
-										value={value.videoOptions.width}
-										defaultValue={
-											defaultValue.videoOptions.width
-										}
-										onChangeValue={val => {
-											value.videoOptions.width = val;
-											onChange(JSON.stringify(value));
-										}}
-										minMaxSettings={{
-											px: {
-												min: 0,
-												max: 999,
-											},
-											em: {
-												min: 0,
-												max: 999,
-											},
-											vw: {
-												min: 0,
-												max: 999,
-											},
-											'%': {
-												min: 0,
-												max: 100,
-											},
-										}}
-									/>
-									<SizeControl
-										label={__('Height', 'maxi-blocks')}
-										unit={value.videoOptions.heightUnit}
-										defaultUnit={
-											defaultValue.videoOptions.heightUnit
-										}
-										onChangeUnit={val => {
-											value.videoOptions.heightUnit = val;
-											onChange(JSON.stringify(value));
-										}}
-										value={value.videoOptions.height}
-										defaultValue={
-											defaultValue.videoOptions.height
-										}
-										onChangeValue={val => {
-											value.videoOptions.height = val;
-											onChange(JSON.stringify(value));
-										}}
-										minMaxSettings={{
-											px: {
-												min: 0,
-												max: 999,
-											},
-											em: {
-												min: 0,
-												max: 999,
-											},
-											vw: {
-												min: 0,
-												max: 999,
-											},
-											'%': {
-												min: 0,
-												max: 100,
-											},
 										}}
 									/>
 								</Fragment>

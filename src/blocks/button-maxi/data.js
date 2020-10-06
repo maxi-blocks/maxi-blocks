@@ -187,10 +187,6 @@ export const background = {
 	videoOptions: {
 		mediaID: '',
 		mediaURL: '',
-		width: 100,
-		widthUnit: '%',
-		height: 100,
-		heightUnit: '%',
 		loop: 0,
 		preload: 'metadata',
 		clipPath: '',

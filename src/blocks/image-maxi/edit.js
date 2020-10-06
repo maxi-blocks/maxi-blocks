@@ -303,12 +303,16 @@ class edit extends MaxiBlock {
 			if (imageData.title.rendered)
 				setAttributes({ mediaAltTitle: imageData.title.rendered });
 
-			if (mediaURL !== image.source_url)
-				setAttributes({ mediaURL: image.source_url });
-			if (mediaWidth !== image.width)
-				setAttributes({ mediaWidth: image.width });
-			if (mediaHeight !== image.height)
-				setAttributes({ mediaHeight: image.height });
+			if (
+				mediaURL !== image.source_url ||
+				mediaWidth !== image.width ||
+				mediaHeight !== image.height
+			)
+				setAttributes({
+					mediaURL: image.source_url,
+					mediaHeight: image.height,
+					mediaWidth: image.width,
+				});
 		}
 
 		return [
@@ -418,7 +422,7 @@ class edit extends MaxiBlock {
 										<div className='maxi-block-hover-wrapper'>
 											<img
 												className={`maxi-image-block__image wp-image-${mediaID}`}
-												src={mediaURL}
+												src={image.source_url}
 												width={mediaWidth}
 												height={mediaHeight}
 												alt={mediaAlt}

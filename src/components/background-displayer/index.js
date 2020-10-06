@@ -5,6 +5,11 @@ import classnames from 'classnames';
 import { isObject } from 'lodash';
 
 /**
+ * Internal Dependencies
+ */
+import parseVideo from './utils';
+
+/**
  * Styles
  */
 import './style.scss';
@@ -21,18 +26,18 @@ const BackgroundDisplayer = props => {
 
 	let videoUrl = value.videoOptions.mediaURL;
 
-	const getYoutubeVideoId = url => {
-		const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+	const parsedVideo = parseVideo(videoUrl);
 
-		const match = url.match(regExp);
+	if (videoUrl && parsedVideo.type === 'youtube') {
+		videoUrl = `https://www.youtube.com/embed/${parsedVideo.id}?controls=0&showinfo=0&rel=0&autoplay=1&mute=1`;
 
-		return match && match[2].length === 11 ? match[2] : null;
-	};
+		if (parseInt(value.videoOptions.loop)) {
+			videoUrl += '?loop=1';
+		}
+	}
 
-	if (videoUrl && value.videoOptions.type === 'youtube') {
-		const videoId = getYoutubeVideoId(videoUrl);
-
-		videoUrl = `https://www.youtube.com/embed/${videoId}?controls=0&showinfo=0&rel=0&autoplay=1&mute=1`;
+	if (videoUrl && parsedVideo.type === 'vimeo') {
+		videoUrl = `https://player.vimeo.com/video/${parsedVideo.id}?controls=0&autoplay=1&mute=1?autopause=0`;
 
 		if (parseInt(value.videoOptions.loop)) {
 			videoUrl += '?loop=1';
@@ -48,24 +53,31 @@ const BackgroundDisplayer = props => {
 			)}
 			{value.activeMedia === 'video' && videoUrl && (
 				<div className='maxi-background-displayer__video-player'>
-					{(value.videoOptions.type === 'upload' ||
-						value.videoOptions.type === 'direct') && (
+					{parsedVideo.type === 'direct' && (
 						<video
-							autoPlay={!!parseInt(value.videoOptions.autoplay)}
 							loop={!!parseInt(value.videoOptions.loop)}
-							muted={!!parseInt(value.videoOptions.muted)}
 							preload={value.videoOptions.preload}
 							src={videoUrl}
+							autoPlay
+							muted
 						/>
 					)}
 
-					{value.videoOptions.type === 'youtube' && (
+					{parsedVideo.type === 'youtube' && (
 						<iframe
 							title='Youtube Video'
 							src={videoUrl}
 							frameBorder='0'
-							allowFullScreen='0'
-							allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+							allow='autoplay; fullscreen'
+						/>
+					)}
+
+					{parsedVideo.type === 'vimeo' && (
+						<iframe
+							title='Vimeo Video'
+							src={videoUrl}
+							frameBorder='0'
+							allow='autoplay; fullscreen'
 						/>
 					)}
 				</div>

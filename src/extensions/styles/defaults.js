@@ -481,7 +481,6 @@ export const background = {
 	],
 	clipPathImage: '',
 	videoOptions: {
-		type: 'upload',
 		mediaID: '',
 		mediaURL: '',
 		width: 100,
@@ -559,7 +558,6 @@ export const backgroundHover = {
 	],
 	clipPathImage: '',
 	videoOptions: {
-		type: 'upload',
 		mediaID: '',
 		mediaURL: '',
 		width: '',

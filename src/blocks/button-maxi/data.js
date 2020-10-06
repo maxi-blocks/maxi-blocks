@@ -185,7 +185,6 @@ export const background = {
 	],
 	clipPathImage: '',
 	videoOptions: {
-		type: 'upload',
 		mediaID: '',
 		mediaURL: '',
 		width: 100,

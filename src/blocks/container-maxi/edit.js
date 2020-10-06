@@ -80,13 +80,7 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
  */
 class edit extends MaxiBlock {
 	get getObject() {
-		const {
-			uniqueID,
-			background,
-			backgroundHover,
-			overlay,
-			overlayHover,
-		} = this.props.attributes;
+		const { uniqueID, background, backgroundHover } = this.props.attributes;
 
 		let response = {
 			[uniqueID]: this.getNormalObject,
@@ -128,13 +122,7 @@ class edit extends MaxiBlock {
 
 		response = Object.assign(
 			response,
-			setBackgroundStyles(
-				uniqueID,
-				background,
-				backgroundHover,
-				overlay,
-				overlayHover
-			)
+			setBackgroundStyles(uniqueID, background, backgroundHover)
 		);
 
 		return response;
@@ -184,7 +172,11 @@ class edit extends MaxiBlock {
 	}
 
 	get getHoverObject() {
-		const { borderHover, boxShadowHover } = this.props.attributes;
+		const {
+			opacityHover,
+			borderHover,
+			boxShadowHover,
+		} = this.props.attributes;
 
 		const response = {
 			boxShadowHover: {
@@ -193,6 +185,7 @@ class edit extends MaxiBlock {
 			borderHover: { ...JSON.parse(borderHover) },
 			borderWidthHover: { ...JSON.parse(borderHover).borderWidth },
 			borderRadiusHover: { ...JSON.parse(borderHover).borderRadius },
+			opacityHover: { ...JSON.parse(opacityHover) },
 		};
 
 		return response;
@@ -337,10 +330,7 @@ export default withSelect((select, ownProps) => {
 	const hasInnerBlock = !isEmpty(
 		select('core/block-editor').getBlockOrder(clientId)
 	);
-	let deviceType = select(
-		'core/edit-post'
-	).__experimentalGetPreviewDeviceType();
-	deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
+	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 	return {
 		hasInnerBlock,

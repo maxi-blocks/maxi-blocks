@@ -136,7 +136,11 @@ class edit extends MaxiBlock {
 	}
 
 	get getHoverObject() {
-		const { boxShadowHover, borderHover } = this.props.attributes;
+		const {
+			opacityHover,
+			boxShadowHover,
+			borderHover,
+		} = this.props.attributes;
 
 		const response = {
 			boxShadowHover: {
@@ -145,6 +149,7 @@ class edit extends MaxiBlock {
 			borderHover: { ...JSON.parse(borderHover) },
 			borderWidthHover: { ...JSON.parse(borderHover).borderWidth },
 			borderRadiusHover: { ...JSON.parse(borderHover).borderRadius },
+			opacity: { ...getOpacityObject(JSON.parse(opacityHover)) },
 		};
 
 		return response;
@@ -261,10 +266,7 @@ const editSelect = withSelect((select, ownProps) => {
 	const hasInnerBlock = !isEmpty(
 		select('core/block-editor').getBlockOrder(clientId)
 	);
-	let deviceType = select(
-		'core/edit-post'
-	).__experimentalGetPreviewDeviceType();
-	deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
+	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 	return {
 		selectedBlockId,

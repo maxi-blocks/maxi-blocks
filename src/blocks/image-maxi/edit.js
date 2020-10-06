@@ -79,7 +79,7 @@ class edit extends MaxiBlock {
 	get getNormalObject() {
 		const {
 			alignment,
-			boxShadow,
+			opacity,
 			padding,
 			margin,
 			zIndex,
@@ -91,6 +91,7 @@ class edit extends MaxiBlock {
 		const response = {
 			padding: { ...JSON.parse(padding) },
 			margin: { ...JSON.parse(margin) },
+			opacity: { ...JSON.parse(opacity) },
 			zIndex: { ...JSON.parse(zIndex) },
 			alignment: { ...getAlignmentFlexObject(JSON.parse(alignment)) },
 			position: { ...JSON.parse(position) },
@@ -160,24 +161,21 @@ class edit extends MaxiBlock {
 	}
 
 	get getHoverObject() {
-		const { boxShadowHover } = this.props.attributes;
+		const { opacityHover } = this.props.attributes;
 
 		const response = {
-			boxShadowHover: {
-				...getBoxShadowObject(JSON.parse(boxShadowHover)),
-			},
+			opacityHover: { ...JSON.parse(opacityHover) },
 		};
 
 		return response;
 	}
 
 	get getImageFrontendObject() {
-		const { boxShadow, size, opacity } = this.props.attributes;
+		const { boxShadow, size } = this.props.attributes;
 
 		const response = {
 			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
 			imageSize: { ...JSON.parse(size) },
-			opacity: { ...JSON.parse(opacity) },
 		};
 
 		return response;
@@ -198,11 +196,10 @@ class edit extends MaxiBlock {
 	}
 
 	get getImageBackendObject() {
-		const { boxShadow, opacity, border, clipPath, size } = this.props.attributes;
+		const { boxShadow, border, clipPath, size } = this.props.attributes;
 
 		const response = {
 			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
-      opacity: { ...JSON.parse(opacity) },
 			size: { ...JSON.parse(size) },
 			border: { ...JSON.parse(border) },
 			borderWidth: { ...JSON.parse(border).borderWidth },
@@ -450,10 +447,7 @@ export default withSelect((select, ownProps) => {
 	const { mediaID } = ownProps.attributes;
 
 	const imageData = select('core').getMedia(mediaID);
-	let deviceType = select(
-		'core/edit-post'
-	).__experimentalGetPreviewDeviceType();
-	deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
+	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 	return {
 		imageData,

@@ -684,6 +684,7 @@ const Inspector = props => {
 													onChange={arrow =>
 														setAttributes({ arrow })
 													}
+													isFullWidth={fullWidth}
 													breakpoint={deviceType}
 													isFirstOnHierarchy={
 														isFirstOnHierarchy

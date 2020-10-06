@@ -21,7 +21,6 @@ import {
 	getBoxShadowObject,
 	getShapeDividerObject,
 	getShapeDividerSVGObject,
-	getArrowObject,
 	getTransformObject,
 	setBackgroundStyles,
 	setArrowStyles,
@@ -73,6 +72,7 @@ class edit extends MaxiBlock {
 	get getObject() {
 		const {
 			uniqueID,
+			arrow,
 			background,
 			backgroundHover,
 			border,
@@ -82,8 +82,6 @@ class edit extends MaxiBlock {
 		let response = {
 			[uniqueID]: this.getNormalObject,
 			[`${uniqueID}:hover`]: this.getHoverObject,
-			[`${this.props.attributes.uniqueID} .maxi-contianer-arrow`]: this
-				.getArrowObject,
 			[`${uniqueID}>.maxi-container-block__wrapper`]: this
 				.getWrapperObject,
 			[`${uniqueID}>.maxi-container-block__wrapper>.maxi-container-block__container`]: this
@@ -121,7 +119,7 @@ class edit extends MaxiBlock {
 		response = Object.assign(
 			response,
 			setBackgroundStyles(uniqueID, background, backgroundHover),
-			setArrowStyles(uniqueID, background, border, boxShadow)
+			setArrowStyles(uniqueID, arrow, background, border, boxShadow)
 		);
 
 		return response;
@@ -155,16 +153,6 @@ class edit extends MaxiBlock {
 				label: 'Container',
 				general: {},
 			},
-		};
-
-		return response;
-	}
-
-	get getArrowObject() {
-		const { arrow } = this.props.attributes;
-
-		const response = {
-			arrow: { ...getArrowObject(JSON.parse(arrow)) },
 		};
 
 		return response;
@@ -241,7 +229,7 @@ class edit extends MaxiBlock {
 			extraClassName,
 			className,
 			!!arrowValue.active &&
-				`maxi-contianer-normal-arrow maxi-contianer-shadow-arrow maxi-contianer-border-arrow maxi-contianer-arrow-${arrowValue.general.side}`
+				`maxi-container-normal-arrow maxi-container-shadow-arrow maxi-container-border-arrow maxi-container-arrow-${arrowValue.general.side}`
 		);
 
 		return [
@@ -284,7 +272,8 @@ class edit extends MaxiBlock {
 								}
 							/>
 						</div>
-						<div className='maxi-contianer-arrow'></div>
+						<div className='maxi-container-arrow' />
+
 						<__experimentalShapeDivider
 							position='bottom'
 							shapeDividerOptions={shapeDivider}

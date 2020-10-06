@@ -47,7 +47,7 @@ const save = props => {
 		extraClassName,
 		className,
 		!!arrowValue.active &&
-			`maxi-contianer-normal-arrow maxi-contianer-shadow-arrow maxi-contianer-border-arrow maxi-contianer-arrow-${arrowValue.general.side}`,
+			`maxi-contianer-normal-arrow maxi-contianer-shadow-arrow maxi-contianer-border-arrow maxi-container-arrow-${arrowValue.general.side}`,
 		fullWidth === 'full' ? 'alignfull' : null,
 		!isNil(uniqueID) ? uniqueID : null
 	);
@@ -73,7 +73,7 @@ const save = props => {
 							<InnerBlocks.Content />
 						</div>
 					</div>
-					<div className='maxi-contianer-arrow'></div>
+					<div className='maxi-container-arrow' />
 					<__experimentalShapeDivider
 						position='bottom'
 						shapeDividerOptions={shapeDivider}

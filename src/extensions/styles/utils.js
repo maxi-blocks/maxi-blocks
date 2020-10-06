@@ -79,7 +79,7 @@ export const getDropShadowObject = boxShadow => {
 		xs: {},
 	};
 
-	for (const [key, value] of Object.entries(boxShadow)) {
+	Object.entries(boxShadow).forEach(([key, value]) => {
 		if (key !== 'label') {
 			let boxShadowString = '';
 			isNumber(value.shadowHorizontal) &&
@@ -92,7 +92,7 @@ export const getDropShadowObject = boxShadow => {
 
 			response[key]['filter'] = `drop-shadow(${boxShadowString.trim()})`;
 		}
-	}
+	});
 
 	return response;
 };
@@ -109,7 +109,7 @@ export const getBoxShadowObject = boxShadow => {
 		xs: {},
 	};
 
-	for (const [key, value] of Object.entries(boxShadow)) {
+	Object.entries(boxShadow).forEach(([key, value]) => {
 		if (key !== 'label') {
 			let boxShadowString = '';
 			isNumber(value.shadowHorizontal) &&
@@ -123,7 +123,7 @@ export const getBoxShadowObject = boxShadow => {
 			!isNil(value.shadowColor) && (boxShadowString += value.shadowColor);
 			response[key]['box-shadow'] = boxShadowString.trim();
 		}
-	}
+	});
 
 	return response;
 };
@@ -659,15 +659,24 @@ export const getArrowBorderObject = border => {
 	return response;
 };
 
-export const setArrowStyles = (target, background, border, boxShadow) => {
+export const setArrowStyles = (
+	target,
+	arrow,
+	background,
+	border,
+	boxShadow
+) => {
 	return {
-		[`${target}.maxi-contianer-normal-arrow .maxi-contianer-arrow:after`]: {
+		[`${target} .maxi-container-arrow`]: {
+			arrow: { ...getArrowObject(JSON.parse(arrow)) },
+		},
+		[`${target}.maxi-container-normal-arrow .maxi-container-arrow:after`]: {
 			background: { ...getArrowColorObject(JSON.parse(background)) },
 		},
-		[`${target}.maxi-contianer-border-arrow .maxi-contianer-arrow:before`]: {
+		[`${target}.maxi-container-border-arrow .maxi-container-arrow:before`]: {
 			border: { ...getArrowBorderObject(JSON.parse(border)) },
 		},
-		[`${target}.maxi-contianer-shadow-arrow`]: {
+		[`${target}.maxi-container-shadow-arrow`]: {
 			shadow: { ...getDropShadowObject(JSON.parse(boxShadow)) },
 		},
 	};

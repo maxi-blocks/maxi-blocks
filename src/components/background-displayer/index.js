@@ -57,7 +57,6 @@ const BackgroundDisplayer = props => {
 						<video
 							className='maxi-background-displayer__video-player__video'
 							loop={!!parseInt(value.videoOptions.loop)}
-							preload={value.videoOptions.preload}
 							src={videoUrl}
 							autoPlay
 							muted

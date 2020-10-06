@@ -305,37 +305,7 @@ const BackgroundControl = props => {
 											}}
 										/>
 									)}
-									<SelectControl
-										label={__('Preload', 'maxi-blocks')}
-										value={value.videoOptions.muted}
-										options={[
-											{
-												label: __(
-													'MetaData',
-													'maxi-blocks'
-												),
-												value: 'metadata',
-											},
-											{
-												label: __(
-													'Auto',
-													'maxi-blocks'
-												),
-												value: 'auto',
-											},
-											{
-												label: __(
-													'None',
-													'maxi-blocks'
-												),
-												value: 'none',
-											},
-										]}
-										onChange={val => {
-											value.videoOptions.muted = val;
-											onChange(JSON.stringify(value));
-										}}
-									/>
+
 									<__experimentalOpacityControl
 										label={__(
 											'Video Opacity',

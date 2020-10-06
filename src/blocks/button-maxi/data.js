@@ -188,7 +188,6 @@ export const background = {
 		mediaID: '',
 		mediaURL: '',
 		loop: 0,
-		preload: 'metadata',
 		clipPath: '',
 		opacity: {
 			label: 'Opacity',

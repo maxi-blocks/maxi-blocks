@@ -193,9 +193,7 @@ export const background = {
 		heightUnit: '%',
 		fill: 'cover',
 		position: 'unset',
-		autoplay: 0,
 		loop: 0,
-		muted: 0,
 		preload: 'metadata',
 		clipPath: '',
 		opacity: {

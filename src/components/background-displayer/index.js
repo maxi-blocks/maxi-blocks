@@ -55,6 +55,7 @@ const BackgroundDisplayer = props => {
 				<div className='maxi-background-displayer__video-player'>
 					{parsedVideo.type === 'direct' && (
 						<video
+							className='maxi-background-displayer__video-player__video'
 							loop={!!parseInt(value.videoOptions.loop)}
 							preload={value.videoOptions.preload}
 							src={videoUrl}
@@ -65,19 +66,21 @@ const BackgroundDisplayer = props => {
 
 					{parsedVideo.type === 'youtube' && (
 						<iframe
+							className='maxi-background-displayer__video-player__video'
 							title='Youtube Video'
 							src={videoUrl}
 							frameBorder='0'
-							allow='autoplay; fullscreen'
+							allow='autoplay'
 						/>
 					)}
 
 					{parsedVideo.type === 'vimeo' && (
 						<iframe
+							className='maxi-background-displayer__video-player__video'
 							title='Vimeo Video'
 							src={videoUrl}
 							frameBorder='0'
-							allow='autoplay; fullscreen'
+							allow='autoplay'
 						/>
 					)}
 				</div>

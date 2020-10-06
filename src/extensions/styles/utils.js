@@ -518,7 +518,7 @@ export const getImageBackgroundObject = background => {
 	};
 
 	if (!isNil(background.imageOpacity))
-		response.general['opacity'] =
+		response.general.opacity =
 			background.imageOpacity.opacity.general.opacity;
 
 	if (!isEmpty(background.clipPathImage))
@@ -644,7 +644,7 @@ export const getVideoBackgroundObject = videoOptions => {
 	};
 
 	if (!isNil(videoOptions.opacity))
-		response.general['opacity'] = videoOptions.opacity.general.opacity;
+		response.general.opacity = videoOptions.opacity.general.opacity;
 
 	if (!isNil(videoOptions.fill))
 		response.general['object-fit'] = videoOptions.fill;
@@ -685,14 +685,15 @@ export const setBackgroundStyles = (
 				...getImageBackgroundObject(JSON.parse(backgroundHover)),
 			},
 		},
-		[`${target}>.maxi-background-displayer .maxi-background-displayer__video-player video`]: {
+		[`${target}>.maxi-background-displayer .maxi-background-displayer__video-player .maxi-background-displayer__video-player__video`]: {
 			videoBackground: {
 				...getVideoBackgroundObject(
 					JSON.parse(background).videoOptions
 				),
 			},
 		},
-		[`${target}:hover>.maxi-background-displayer .maxi-background-displayer__video-player video`]: {
+
+		[`${target}:hover>.maxi-background-displayer .maxi-background-displayer__video-player .maxi-background-displayer__video-player__video`]: {
 			videoBackgroundHover: {
 				...getVideoBackgroundObject(
 					JSON.parse(backgroundHover).videoOptions
@@ -709,7 +710,7 @@ export const setBackgroundStyles = (
 		};
 	}
 
-	if (!!JSON.parse(backgroundHover).status) {
+	if (JSON.parse(backgroundHover).status) {
 		response[
 			`${target}:hover>.maxi-background-displayer .maxi-background-displayer__color`
 		] = {

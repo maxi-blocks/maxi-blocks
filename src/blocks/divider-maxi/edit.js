@@ -38,8 +38,8 @@ class edit extends MaxiBlock {
 		let response = {
 			[uniqueID]: this.getNormalObject,
 			[`${uniqueID}:hover`]: this.getHoverObject,
-			[`${uniqueID}:hover hr.maxi-divider-block__divider`]: this
-				.getDividerHoverObject,
+			// [`${uniqueID}:hover hr.maxi-divider-block__divider`]: this
+			// 	.getDividerHoverObject,
 			[`${uniqueID} hr.maxi-divider-block__divider`]: this
 				.getDividerObject,
 		};
@@ -104,16 +104,6 @@ class edit extends MaxiBlock {
 	}
 
 	get getHoverObject() {
-		const { opacityHover } = this.props.attributes;
-
-		const response = {
-			opacityHover: { ...JSON.parse(opacityHover) },
-		};
-
-		return response;
-	}
-
-	get getDividerHoverObject() {
 		const { boxShadowHover } = this.props.attributes;
 
 		const response = {
@@ -239,7 +229,10 @@ class edit extends MaxiBlock {
 }
 
 const editSelect = withSelect(select => {
-	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
+	let deviceType = select(
+		'core/edit-post'
+	).__experimentalGetPreviewDeviceType();
+	deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
 
 	return {
 		deviceType,
@@ -253,7 +246,10 @@ const editDispatch = withDispatch((dispatch, ownProps, { select }) => {
 	} = ownProps;
 
 	const onDeviceTypeChange = function () {
-		const newDeviceType = select('maxiBlocks').receiveMaxiDeviceType();
+		let newDeviceType = select(
+			'core/edit-post'
+		).__experimentalGetPreviewDeviceType();
+		newDeviceType = newDeviceType === 'Desktop' ? 'general' : newDeviceType;
 
 		const allowedDeviceTypes = ['general', 'xl', 'l', 'm', 's'];
 

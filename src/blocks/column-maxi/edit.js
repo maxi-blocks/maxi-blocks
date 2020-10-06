@@ -119,11 +119,7 @@ class edit extends MaxiBlock {
 	}
 
 	get getHoverObject() {
-		const {
-			opacityHover,
-			boxShadowHover,
-			borderHover,
-		} = this.props.attributes;
+		const { boxShadowHover, borderHover } = this.props.attributes;
 
 		const response = {
 			boxShadowHover: {
@@ -132,7 +128,6 @@ class edit extends MaxiBlock {
 			borderHover: { ...JSON.parse(borderHover) },
 			borderWidthHover: { ...JSON.parse(borderHover).borderWidth },
 			borderRadiusHover: { ...JSON.parse(borderHover).borderRadius },
-			opacity: { ...getOpacityObject(JSON.parse(opacityHover)) },
 		};
 
 		return response;
@@ -301,7 +296,10 @@ const editSelect = withSelect((select, ownProps) => {
 	const originalNestedColumns = select('core/block-editor').getBlockOrder(
 		rowBlockId
 	);
-	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
+	let deviceType = select(
+		'core/edit-post'
+	).__experimentalGetPreviewDeviceType();
+	deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
 
 	return {
 		rowBlockId,
@@ -318,6 +316,11 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	} = ownProps;
 
 	const onDeviceTypeChange = () => {
+		let newDeviceType = select(
+			'core/edit-post'
+		).__experimentalGetPreviewDeviceType();
+		newDeviceType = newDeviceType === 'Desktop' ? 'general' : newDeviceType;
+
 		const node = document.querySelector(
 			`.maxi-column-block__resizer__${uniqueID}`
 		);
@@ -325,7 +328,6 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 
 		const newColumnSize = JSON.parse(columnSize);
 
-		const newDeviceType = select('maxiBlocks').receiveMaxiDeviceType();
 		const newSize = newColumnSize[newDeviceType].size;
 
 		if (['xxl', 'xl', 'l'].includes(newDeviceType)) {

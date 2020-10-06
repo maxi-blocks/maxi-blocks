@@ -32,7 +32,7 @@ const BackgroundDisplayer = props => {
 		videoUrl = `https://www.youtube.com/embed/${parsedVideo.id}?controls=0&showinfo=0&rel=0&autoplay=1&mute=1`;
 
 		if (parseInt(value.videoOptions.loop)) {
-			videoUrl += '?loop=1';
+			videoUrl += `&loop=1&&playlist=${parsedVideo.id}`;
 		}
 	}
 
@@ -40,7 +40,7 @@ const BackgroundDisplayer = props => {
 		videoUrl = `https://player.vimeo.com/video/${parsedVideo.id}?controls=0&autoplay=1&mute=1?autopause=0`;
 
 		if (parseInt(value.videoOptions.loop)) {
-			videoUrl += '?loop=1';
+			videoUrl += '&loop=1';
 		}
 	}
 

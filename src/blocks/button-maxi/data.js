@@ -191,8 +191,6 @@ export const background = {
 		widthUnit: '%',
 		height: 100,
 		heightUnit: '%',
-		fill: 'cover',
-		position: 'unset',
 		loop: 0,
 		preload: 'metadata',
 		clipPath: '',

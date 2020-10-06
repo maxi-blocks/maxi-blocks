@@ -65,13 +65,15 @@ const BackgroundDisplayer = props => {
 					)}
 
 					{parsedVideo.type === 'youtube' && (
-						<iframe
-							className='maxi-background-displayer__video-player__video'
-							title='Youtube Video'
-							src={videoUrl}
-							frameBorder='0'
-							allow='autoplay'
-						/>
+						<div className='maxi-background-displayer__video-player__youtube-wrapper'>
+							<iframe
+								className='maxi-background-displayer__video-player__video'
+								title='Youtube Video'
+								src={videoUrl}
+								frameBorder='0'
+								allow='autoplay'
+							/>
+						</div>
 					)}
 
 					{parsedVideo.type === 'vimeo' && (

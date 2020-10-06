@@ -646,12 +646,6 @@ export const getVideoBackgroundObject = videoOptions => {
 	if (!isNil(videoOptions.opacity))
 		response.general.opacity = videoOptions.opacity.general.opacity;
 
-	if (!isNil(videoOptions.fill))
-		response.general['object-fit'] = videoOptions.fill;
-
-	if (!isNil(videoOptions.position))
-		response.general['object-position'] = videoOptions.position;
-
 	if (!isNil(videoOptions.width))
 		response.general.width = `${videoOptions.width}${videoOptions.widthUnit}`;
 

@@ -6,6 +6,7 @@
 	width: 100%;
 	height: 100%;
 	overflow: hidden;
+
 	&__overlay {
 		z-index: 2;
 	}
@@ -17,10 +18,26 @@
 		width: 100%;
 		height: 100%;
 
+		&__youtube-wrapper {
+			position: relative;
+			padding-bottom: 56.25%; /* 16:9 */
+			padding-top: 25px;
+			height: 0;
+			iframe {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+			}
+		}
+
 		video {
 			width: 100%;
 			height: auto;
+			object-fit: cover;
 		}
+
 		iframe {
 			height: 100%;
 		}

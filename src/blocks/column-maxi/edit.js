@@ -296,10 +296,7 @@ const editSelect = withSelect((select, ownProps) => {
 	const originalNestedColumns = select('core/block-editor').getBlockOrder(
 		rowBlockId
 	);
-	let deviceType = select(
-		'core/edit-post'
-	).__experimentalGetPreviewDeviceType();
-	deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
+	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 	return {
 		rowBlockId,

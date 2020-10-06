@@ -198,11 +198,17 @@ class edit extends MaxiBlock {
 	}
 
 	get getImageBackendObject() {
-		const { boxShadow, opacity, border, clipPath, size } = this.props.attributes;
+		const {
+			boxShadow,
+			opacity,
+			border,
+			clipPath,
+			size,
+		} = this.props.attributes;
 
 		const response = {
 			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
-      opacity: { ...JSON.parse(opacity) },
+			opacity: { ...JSON.parse(opacity) },
 			size: { ...JSON.parse(size) },
 			border: { ...JSON.parse(border) },
 			borderWidth: { ...JSON.parse(border).borderWidth },
@@ -450,10 +456,7 @@ export default withSelect((select, ownProps) => {
 	const { mediaID } = ownProps.attributes;
 
 	const imageData = select('core').getMedia(mediaID);
-	let deviceType = select(
-		'core/edit-post'
-	).__experimentalGetPreviewDeviceType();
-	deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
+	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 	return {
 		imageData,

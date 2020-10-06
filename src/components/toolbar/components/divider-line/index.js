@@ -35,8 +35,6 @@ const Divider = props => {
 
 	if (blockName !== 'maxi-blocks/divider-maxi') return null;
 
-	const classes = classnames('toolbar-item__popover__toggle-btn');
-
 	return (
 		<ToolbarPopover
 			className='toolbar-item__divider'

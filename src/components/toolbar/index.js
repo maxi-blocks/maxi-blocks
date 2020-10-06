@@ -38,6 +38,7 @@ import {
 	TextOptions,
 	PaddingMargin,
 	Size,
+	ToggleBlock,
 	__experimentalColumnMover,
 	__experimentalRowSettings,
 	__experimentalColumnSize,
@@ -103,6 +104,7 @@ const MaxiToolbar = props => {
 			svgColorOrange,
 			svgColorBlack,
 			svgColorWhite,
+			display,
 		},
 		clientId,
 		isSelected,
@@ -458,6 +460,11 @@ const MaxiToolbar = props => {
 						/>
 						<Duplicate clientId={clientId} />
 						<Delete clientId={clientId} />
+						<ToggleBlock
+							display={display}
+							breakpoint={deviceType}
+							onChange={display => setAttributes({ display })}
+						/>
 					</div>
 				</Popover>
 			)}

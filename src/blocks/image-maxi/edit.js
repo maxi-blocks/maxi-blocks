@@ -198,11 +198,17 @@ class edit extends MaxiBlock {
 	}
 
 	get getImageBackendObject() {
-		const { boxShadow, opacity, border, clipPath, size } = this.props.attributes;
+		const {
+			boxShadow,
+			opacity,
+			border,
+			clipPath,
+			size,
+		} = this.props.attributes;
 
 		const response = {
 			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
-      opacity: { ...JSON.parse(opacity) },
+			opacity: { ...JSON.parse(opacity) },
 			size: { ...JSON.parse(size) },
 			border: { ...JSON.parse(border) },
 			borderWidth: { ...JSON.parse(border).borderWidth },
@@ -254,13 +260,19 @@ class edit extends MaxiBlock {
 				mediaWidth,
 				mediaHeight,
 				SVGElement,
+				display,
 			},
 			imageData,
 			setAttributes,
+			deviceType,
 		} = this.props;
+
+		const displayValue = !isObject(display) ? JSON.parse(display) : display;
 
 		const classes = classnames(
 			'maxi-block maxi-image-block',
+			displayValue[deviceType].display === 'none' &&
+				'maxi-block-display-none',
 			blockStyle,
 			extraClassName,
 			uniqueID,

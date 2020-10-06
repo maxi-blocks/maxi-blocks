@@ -34,7 +34,7 @@ import RowContext from './context';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNil, uniqueId } from 'lodash';
+import { isEmpty, isNil, uniqueId, isObject } from 'lodash';
 
 /**
  * InnerBlocks version
@@ -159,6 +159,7 @@ class edit extends MaxiBlock {
 				defaultBlockStyle,
 				background,
 				rowPattern,
+				display,
 			},
 			clientId,
 			loadTemplate,
@@ -167,10 +168,15 @@ class edit extends MaxiBlock {
 			className,
 			instanceId,
 			setAttributes,
+			deviceType,
 		} = this.props;
+
+		const displayValue = !isObject(display) ? JSON.parse(display) : display;
 
 		const classes = classnames(
 			'maxi-block maxi-row-block',
+			displayValue[deviceType].display === 'none' &&
+				'maxi-block-display-none',
 			uniqueID,
 			blockStyle,
 			extraClassName,

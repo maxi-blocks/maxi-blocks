@@ -138,6 +138,7 @@ class edit extends MaxiBlock {
 				size,
 				background,
 				divider,
+				display,
 			},
 			className,
 			isSelected,
@@ -148,8 +149,12 @@ class edit extends MaxiBlock {
 
 		onDeviceTypeChange();
 
+		const displayValue = !isObject(display) ? JSON.parse(display) : display;
+
 		const classes = classnames(
 			'maxi-block maxi-divider-block',
+			displayValue[deviceType].display === 'none' &&
+				'maxi-block-display-none',
 			blockStyle,
 			extraClassName,
 			uniqueID,

@@ -2,11 +2,13 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { RadioControl, Icon } = wp.components;
+const { Icon } = wp.components;
 
 /**
  * Internal dependencies
  */
+import __experimentalOpacityControl from '../opacity-control';
+import __experimentalFancyRadioControl from '../fancy-radio-control';
 import ColorControl from '../color-control';
 import GradientControl from '../gradient-control';
 
@@ -37,36 +39,44 @@ const OverlayControl = props => {
 
 	return (
 		<div className={classes}>
-			<div className='maxi-fancy-radio-control'>
-				<RadioControl
-					label={__('Overlay Type', 'maxi-blocks')}
-					selected={value.overlayOptions.overlay}
-					options={[
-						{ label: <Icon icon={styleNone} />, value: '' },
-						{
-							label: <Icon icon={backgroundColor} />,
-							value: 'color',
-						},
-						{
-							label: <Icon icon={backgroundGradient} />,
-							value: 'gradient',
-						},
-					]}
-					onChange={item => {
-						value.overlayOptions.overlay = item;
-						onChange(JSON.stringify(value));
-						if (isEmpty(item))
-							value.overlayOptions.activeColor = '';
-						if (item === 'color')
-							value.overlayOptions.activeColor =
-								value.overlayOptions.color;
-						if (item === 'gradient')
-							value.overlayOptions.activeColor =
-								value.overlayOptions.gradient;
+			<__experimentalFancyRadioControl
+				label={__('Overlay Type', 'maxi-blocks')}
+				selected={value.overlayOptions.overlay}
+				options={[
+					{ label: <Icon icon={styleNone} />, value: '' },
+					{
+						label: <Icon icon={backgroundColor} />,
+						value: 'color',
+					},
+					{
+						label: <Icon icon={backgroundGradient} />,
+						value: 'gradient',
+					},
+				]}
+				onChange={item => {
+					value.overlayOptions.overlay = item;
+					onChange(JSON.stringify(value));
+					if (isEmpty(item)) value.overlayOptions.activeColor = '';
+					if (item === 'color')
+						value.overlayOptions.activeColor =
+							value.overlayOptions.color;
+					if (item === 'gradient')
+						value.overlayOptions.activeColor =
+							value.overlayOptions.gradient;
+					onChange(JSON.stringify(value));
+				}}
+			/>
+			{(value.overlayOptions.overlay === 'gradient' ||
+				value.overlayOptions.overlay === 'color') && (
+				<__experimentalOpacityControl
+					opacity={value.overlayOptions.opacity}
+					defaultOpacity={defaultValue.overlayOptions.opacity}
+					onChange={val => {
+						value.overlayOptions.opacity = JSON.parse(val);
 						onChange(JSON.stringify(value));
 					}}
 				/>
-			</div>
+			)}
 			{value.overlayOptions.overlay === 'gradient' && (
 				<GradientControl
 					label={__('Overlay Gradient', 'maxi-blocks')}

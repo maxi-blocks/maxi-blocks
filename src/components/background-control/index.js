@@ -36,8 +36,6 @@ import {
 } from '../../icons';
 import './editor.scss';
 
-import './editor.scss';
-
 /**
  * Components
  */
@@ -1092,7 +1090,9 @@ const BackgroundControl = props => {
 										<SelectControl
 											label={__('Muted', 'maxi-blocks')}
 											value={value.videoOptions.muted}
-	disabled={Number(value.videoOptions.autoplay)} // !!Number(value.videoOptions.autoplay)
+											disabled={Number(
+												value.videoOptions.autoplay
+											)} // !!Number(value.videoOptions.autoplay)
 											options={[
 												{
 													label: __(

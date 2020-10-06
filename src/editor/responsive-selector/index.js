@@ -2,8 +2,8 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { useSelect, useDispatch } = wp.data;
 const { Button } = wp.components;
+const { useSelect, useDispatch } = wp.data;
 
 /**
  * External dependencies
@@ -30,17 +30,17 @@ const ResponsiveSelector = props => {
 	const { className } = props;
 
 	const { deviceType, breakpoints } = useSelect(select => {
-		const { __experimentalGetPreviewDeviceType } = select('core/edit-post');
-		const { receiveMaxiBreakpoints } = select('maxiBlocks');
+		const { receiveMaxiDeviceType, receiveMaxiBreakpoints } = select(
+			'maxiBlocks'
+		);
+
 		return {
-			deviceType: __experimentalGetPreviewDeviceType(),
+			deviceType: receiveMaxiDeviceType(),
 			breakpoints: receiveMaxiBreakpoints(),
 		};
 	});
 
-	const {
-		__experimentalSetPreviewDeviceType: setPreviewDevice,
-	} = useDispatch('core/edit-post');
+	const { setMaxiDeviceType } = useDispatch('maxiBlocks');
 
 	const classes = classnames('maxi-responsive-selector', className);
 
@@ -49,16 +49,33 @@ const ResponsiveSelector = props => {
 			'.edit-post-visual-editor.editor-styles-wrapper'
 		);
 		const winHeight = window.outerWidth;
+		const responsiveWidth =
+			(size === 'general' && 'none') ||
+			(size === 'xxl' && 2000) ||
+			breakpoints[size];
 
 		editorWrapper.setAttribute('maxi-blocks-responsive', size);
+		editorWrapper.setAttribute(
+			'maxi-blocks-responsive-width',
+			responsiveWidth
+		);
 
 		if (size === 'general') {
 			editorWrapper.style.width = '';
 			editorWrapper.style.margin = '';
+
+			setMaxiDeviceType('general');
 		} else {
+			const xxlSize = 2000; // Temporary value, needs to be fixed
+
+			setMaxiDeviceType(
+				size,
+				size !== 'xxl' ? breakpoints[size] : xxlSize
+			);
+
 			if (size !== 'xxl')
 				editorWrapper.style.width = `${breakpoints[size]}px`;
-			else editorWrapper.style.width = '2000px'; // !!!
+			else editorWrapper.style.width = `${xxlSize}px`;
 
 			if (winHeight > breakpoints[size])
 				editorWrapper.style.margin = '36px auto';
@@ -66,60 +83,53 @@ const ResponsiveSelector = props => {
 		}
 	};
 
-	const onChangeSize = size => {
-		if (size === 'general') setPreviewDevice('Desktop');
-		else setPreviewDevice(size);
-
-		setScreenSize(size);
-	};
-
 	return (
 		<div className={classes}>
 			<Button
 				className='maxi-responsive-selector__button'
-				onClick={() => onChangeSize('general')}
-				aria-pressed={deviceType === 'Desktop'}
+				onClick={() => setScreenSize('general')}
+				aria-pressed={deviceType === 'general'}
 			>
 				{__('Base', 'maxi-blocks')}
 			</Button>
 			<Button
 				className='maxi-responsive-selector__button'
-				onClick={() => onChangeSize('xxl')}
+				onClick={() => setScreenSize('xxl')}
 				aria-pressed={deviceType === 'xxl'}
 			>
 				{xllMode}
 			</Button>
 			<Button
 				className='maxi-responsive-selector__button'
-				onClick={() => onChangeSize('xl')}
+				onClick={() => setScreenSize('xl')}
 				aria-pressed={deviceType === 'xl'}
 			>
 				{xlMode}
 			</Button>
 			<Button
 				className='maxi-responsive-selector__button'
-				onClick={() => onChangeSize('l')}
+				onClick={() => setScreenSize('l')}
 				aria-pressed={deviceType === 'l'}
 			>
 				{largeMode}
 			</Button>
 			<Button
 				className='maxi-responsive-selector__button'
-				onClick={() => onChangeSize('m')}
+				onClick={() => setScreenSize('m')}
 				aria-pressed={deviceType === 'm'}
 			>
 				{mediumMode}
 			</Button>
 			<Button
 				className='maxi-responsive-selector__button'
-				onClick={() => onChangeSize('s')}
+				onClick={() => setScreenSize('s')}
 				aria-pressed={deviceType === 's'}
 			>
 				{smallMode}
 			</Button>
 			<Button
 				className='maxi-responsive-selector__button'
-				onClick={() => onChangeSize('xs')}
+				onClick={() => setScreenSize('xs')}
 				aria-pressed={deviceType === 'xs'}
 			>
 				{xsMode}

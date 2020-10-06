@@ -198,11 +198,17 @@ class edit extends MaxiBlock {
 	}
 
 	get getImageBackendObject() {
-		const { boxShadow, opacity, border, clipPath, size } = this.props.attributes;
+		const {
+			boxShadow,
+			opacity,
+			border,
+			clipPath,
+			size,
+		} = this.props.attributes;
 
 		const response = {
 			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
-      opacity: { ...JSON.parse(opacity) },
+			opacity: { ...JSON.parse(opacity) },
 			size: { ...JSON.parse(size) },
 			border: { ...JSON.parse(border) },
 			borderWidth: { ...JSON.parse(border).borderWidth },
@@ -280,7 +286,7 @@ class edit extends MaxiBlock {
 				!isEmpty(cropOptionsValue.image.source_url)
 			)
 				return cropOptionsValue.image;
-			if (imageData && imageSize)
+			if (imageData && imageSize && imageSize !== 'custom')
 				return imageData.media_details.sizes[imageSize];
 			if (imageData) return imageData.media_details.sizes.full;
 

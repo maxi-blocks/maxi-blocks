@@ -103,18 +103,19 @@ document.addEventListener('DOMContentLoaded', () => {
 	window.addEventListener('mouseover', e => {
 		let pathItem = null;
 		const hasPath = Array.from(e.path).some((path, i) => {
-			try {
-				if (
-					path.classList.contains('maxi-column-block') ||
-					path.classList.contains('maxi-container-block')
-				) {
-					pathItem = i;
-					return true;
+			if (path && path.classList)
+				try {
+					if (
+						path.classList.contains('maxi-column-block') ||
+						path.classList.contains('maxi-container-block')
+					) {
+						pathItem = i;
+						return true;
+					}
+				} catch (error) {
+					pathItem = null;
+					return false;
 				}
-			} catch (error) {
-				pathItem = null;
-				return false;
-			}
 
 			return false;
 		});
@@ -132,18 +133,19 @@ document.addEventListener('DOMContentLoaded', () => {
 	window.addEventListener('mouseout', e => {
 		let pathItem = null;
 		const hasPath = Array.from(e.path).some((path, i) => {
-			try {
-				if (
-					path.classList.contains('maxi-column-block') ||
-					path.classList.contains('maxi-container-block')
-				) {
-					pathItem = i;
-					return true;
+			if (path && path.classList)
+				try {
+					if (
+						path.classList.contains('maxi-column-block') ||
+						path.classList.contains('maxi-container-block')
+					) {
+						pathItem = i;
+						return true;
+					}
+				} catch (error) {
+					pathItem = null;
+					return false;
 				}
-			} catch (error) {
-				pathItem = null;
-				return false;
-			}
 			return false;
 		});
 

@@ -81,12 +81,16 @@ const OverlayControl = props => {
 				<GradientControl
 					label={__('Overlay Gradient', 'maxi-blocks')}
 					gradient={value.overlayOptions.gradient}
-					defaultGradient={defaultValue.overlayOptions.gradient}
+					gradientOpacity={value.overlayOptions.gradientOpacity}
+					defaultGradient={
+						defaultValue.overlayOptions.gradientOpacity.opacity
+					}
 					onChange={val => {
 						value.overlayOptions.gradient = val;
 						value.overlayOptions.activeColor = val;
 						onChange(JSON.stringify(value));
 					}}
+					onChangeOpacity={() => onChange(JSON.stringify(value))}
 					gradientAboveBackground={
 						value.overlayOptions.gradientAboveBackground
 					}

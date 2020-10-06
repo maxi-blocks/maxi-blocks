@@ -16,7 +16,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
+import { isNil, isObject } from 'lodash';
 
 /**
  * Save
@@ -47,6 +47,10 @@ const save = props => {
 		!isNil(uniqueID) ? uniqueID : null
 	);
 
+	const shapeDividerValue = !isObject(shapeDivider)
+		? JSON.parse(shapeDivider)
+		: shapeDivider;
+
 	return (
 		<Fragment>
 			{isFirstOnHierarchy && (
@@ -60,18 +64,22 @@ const save = props => {
 					<__experimentalBackgroundDisplayer
 						background={background}
 					/>
-					<__experimentalShapeDivider
-						shapeDividerOptions={shapeDivider}
-					/>
+					{!!shapeDividerValue.top.status && (
+						<__experimentalShapeDivider
+							shapeDividerOptions={shapeDivider}
+						/>
+					)}
 					<div className='maxi-container-block__wrapper'>
 						<div className='maxi-container-block__container'>
 							<InnerBlocks.Content />
 						</div>
 					</div>
-					<__experimentalShapeDivider
-						position='bottom'
-						shapeDividerOptions={shapeDivider}
-					/>
+					{!!shapeDividerValue.bottom.status && (
+						<__experimentalShapeDivider
+							position='bottom'
+							shapeDividerOptions={shapeDivider}
+						/>
+					)}
 				</section>
 			)}
 			{!isFirstOnHierarchy && (
@@ -82,16 +90,20 @@ const save = props => {
 					<__experimentalBackgroundDisplayer
 						background={background}
 					/>
-					<__experimentalShapeDivider
-						shapeDividerOptions={shapeDivider}
-					/>
+					{!!shapeDividerValue.top.status && (
+						<__experimentalShapeDivider
+							shapeDividerOptions={shapeDivider}
+						/>
+					)}
 					<div className='maxi-container-block__wrapper'>
 						<InnerBlocks.Content />
 					</div>
-					<__experimentalShapeDivider
-						position='bottom'
-						shapeDividerOptions={shapeDivider}
-					/>
+					{!!shapeDividerValue.bottom.status && (
+						<__experimentalShapeDivider
+							position='bottom'
+							shapeDividerOptions={shapeDivider}
+						/>
+					)}
 				</div>
 			)}
 		</Fragment>

@@ -37,27 +37,35 @@
 		"autoplay": 0,
 		"loop": 0,
 		"muted": 0,
-		"controls": 0,
 		"preload": "metadata",
-		"clipPath": ""
+		"clipPath": "",
+		"opacity": {
+			"label": "Opacity",
+			"general": {
+				"opacity": 1
+			}
+		}
 	},
 	"colorOptions": {
 		"activeColor": "",
 		"color": "",
 		"gradient": "",
 		"gradientAboveBackground": false,
-		"clipPath": ""
+		"clipPath": "",
+		"gradientOpacity": {
+			"opacity": {
+				"label": "Opacity",
+				"general": {
+					"opacity": 1
+				}
+			}
+		}
 	},
-	"overlayOptions": {
-		"overlay": "",
-		"activeColor": "",
-		"color": "",
-		"gradient": "",
-		"gradientAboveBackground": false,
+	"imageOpacity": {
 		"opacity": {
 			"label": "Opacity",
 			"general": {
-				"opacity": 0.8
+				"opacity": 1
 			}
 		}
 	}

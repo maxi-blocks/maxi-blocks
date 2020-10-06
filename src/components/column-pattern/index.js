@@ -97,7 +97,7 @@ const ColumnPatternsInspector = props => {
 	 * @returns {Array} Array with saved content
 	 */
 	const getCurrentContent = (blockIds, newTemplate = []) => {
-		if (isNil(blockIds) || isEmpty(blockIds)) return null;
+		if (isNil(blockIds) || isEmpty(blockIds)) return [];
 
 		blockIds.forEach(id => {
 			const blockName = getBlockName(id);
@@ -306,6 +306,7 @@ const ColumnPatternsInspector = props => {
 					onChangeValue={numCol => setNumCol(numCol)}
 					min={1}
 					max={6}
+					disableReset
 				/>
 			)}
 			<div className='components-column-pattern__templates'>

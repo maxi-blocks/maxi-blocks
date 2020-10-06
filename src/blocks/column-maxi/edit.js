@@ -26,6 +26,7 @@ import {
 	getTransformObject,
 	setBackgroundStyles,
 } from '../../utils';
+import RowContext from '../row-maxi/context';
 
 /**
  * External dependencies
@@ -118,11 +119,7 @@ class edit extends MaxiBlock {
 	}
 
 	get getHoverObject() {
-		const {
-			opacityHover,
-			boxShadowHover,
-			borderHover,
-		} = this.props.attributes;
+		const { boxShadowHover, borderHover } = this.props.attributes;
 
 		const response = {
 			boxShadowHover: {
@@ -131,7 +128,6 @@ class edit extends MaxiBlock {
 			borderHover: { ...JSON.parse(borderHover) },
 			borderWidthHover: { ...JSON.parse(borderHover).borderWidth },
 			borderRadiusHover: { ...JSON.parse(borderHover).borderRadius },
-			opacity: { ...getOpacityObject(JSON.parse(opacityHover)) },
 		};
 
 		return response;
@@ -210,68 +206,75 @@ class edit extends MaxiBlock {
 		return [
 			<Inspector {...this.props} />,
 			<__experimentalToolbar {...this.props} />,
-			<Fragment>
-				{rowBlockWidth === 0 && <Spinner />}
-				{rowBlockWidth !== 0 && (
-					<ResizableBox
-						className={classnames(
-							'maxi-block__resizer',
-							'maxi-column-block__resizer',
-							`maxi-column-block__resizer__${uniqueID}`
-						)}
-						defaultSize={{
-							width: getColumnWidthDefault(),
-						}}
-						minWidth='1%'
-						maxWidth={
-							(sizeValue[deviceType]['max-width'] &&
-								`${sizeValue[deviceType]['max-width']}${sizeValue[deviceType]['max-widthUnit']}`) ||
-							'100%'
-						}
-						enable={{
-							top: false,
-							right: true,
-							bottom: false,
-							left: true,
-							topRight: false,
-							bottomRight: false,
-							bottomLeft: false,
-							topLeft: false,
-						}}
-						onResizeStop={(event, direction, elt) => {
-							columnValue[deviceType].size = round(
-								Number(elt.style.width.replace('%', ''))
-							);
+			<RowContext.Consumer>
+				{displayHandlers => (
+					<Fragment>
+						{rowBlockWidth === 0 && <Spinner />}
+						{rowBlockWidth !== 0 && (
+							<ResizableBox
+								showHandle={displayHandlers}
+								className={classnames(
+									'maxi-block__resizer',
+									'maxi-column-block__resizer',
+									`maxi-column-block__resizer__${uniqueID}`
+								)}
+								defaultSize={{
+									width: getColumnWidthDefault(),
+								}}
+								minWidth='1%'
+								maxWidth={
+									(sizeValue[deviceType]['max-width'] &&
+										`${sizeValue[deviceType]['max-width']}${sizeValue[deviceType]['max-widthUnit']}`) ||
+									'100%'
+								}
+								enable={{
+									top: false,
+									right: true,
+									bottom: false,
+									left: true,
+									topRight: false,
+									bottomRight: false,
+									bottomLeft: false,
+									topLeft: false,
+								}}
+								onResizeStop={(event, direction, elt) => {
+									columnValue[deviceType].size = round(
+										Number(elt.style.width.replace('%', ''))
+									);
 
-							setAttributes({
-								columnSize: JSON.stringify(columnValue),
-							});
-						}}
-					>
-						<InnerBlocks
-							// allowedBlocks={ALLOWED_BLOCKS}
-							templateLock={false}
-							__experimentalTagName={ContainerInnerBlocks}
-							__experimentalPassedProps={{
-								className: classes,
-								maxiBlockClass: defaultBlockStyle,
-								background,
-							}}
-							renderAppender={
-								!hasInnerBlock
-									? () => (
-											<__experimentalBlockPlaceholder
-												clientId={clientId}
-											/>
-									  )
-									: true
-									? () => <InnerBlocks.ButtonBlockAppender />
-									: false
-							}
-						/>
-					</ResizableBox>
+									setAttributes({
+										columnSize: JSON.stringify(columnValue),
+									});
+								}}
+							>
+								<InnerBlocks
+									// allowedBlocks={ALLOWED_BLOCKS}
+									templateLock={false}
+									__experimentalTagName={ContainerInnerBlocks}
+									__experimentalPassedProps={{
+										className: classes,
+										maxiBlockClass: defaultBlockStyle,
+										background,
+									}}
+									renderAppender={
+										!hasInnerBlock
+											? () => (
+													<__experimentalBlockPlaceholder
+														clientId={clientId}
+													/>
+											  )
+											: true
+											? () => (
+													<InnerBlocks.ButtonBlockAppender />
+											  )
+											: false
+									}
+								/>
+							</ResizableBox>
+						)}
+					</Fragment>
 				)}
-			</Fragment>,
+			</RowContext.Consumer>,
 		];
 	}
 }
@@ -293,10 +296,7 @@ const editSelect = withSelect((select, ownProps) => {
 	const originalNestedColumns = select('core/block-editor').getBlockOrder(
 		rowBlockId
 	);
-	let deviceType = select(
-		'core/edit-post'
-	).__experimentalGetPreviewDeviceType();
-	deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
+	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 	return {
 		rowBlockId,

@@ -337,10 +337,7 @@ export default withSelect((select, ownProps) => {
 	const hasInnerBlock = !isEmpty(
 		select('core/block-editor').getBlockOrder(clientId)
 	);
-	let deviceType = select(
-		'core/edit-post'
-	).__experimentalGetPreviewDeviceType();
-	deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
+	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 	return {
 		hasInnerBlock,

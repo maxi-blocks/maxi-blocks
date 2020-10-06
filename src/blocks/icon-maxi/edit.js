@@ -312,10 +312,7 @@ export default withSelect((select, ownProps) => {
 	const { mediaID } = ownProps.attributes;
 
 	const imageData = select('core').getMedia(mediaID);
-	let deviceType = select(
-		'core/edit-post'
-	).__experimentalGetPreviewDeviceType();
-	deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
+	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 	return {
 		imageData,

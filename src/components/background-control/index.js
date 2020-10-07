@@ -22,6 +22,7 @@ import SettingTabsControl from '../setting-tabs-control';
 import SizeControl from '../size-control';
 import __experimentalClipPath from '../clip-path-control';
 import __experimentalOpacityControl from '../opacity-control';
+import __experimentalNumberControl from '../number-control';
 
 /**
  * External dependencies
@@ -275,6 +276,39 @@ const BackgroundControl = props => {
 
 							{value.videoOptions.mediaURL && (
 								<Fragment>
+									<__experimentalNumberControl
+										label={__(
+											'Start Time (s)',
+											'maxi-blocks'
+										)}
+										min={0}
+										max={999}
+										defaultValue=''
+										value={value.videoOptions.startTime}
+										onChange={val => {
+											value.videoOptions.startTime = val;
+											onChange(JSON.stringify(value));
+										}}
+									/>
+									<__experimentalNumberControl
+										label={__(
+											'End Time (s)',
+											'maxi-blocks'
+										)}
+										min={0}
+										max={999}
+										defaultValue=''
+										value={value.videoOptions.endTime}
+										onChange={val => {
+											value.videoOptions.endTime = val;
+
+											if (val) {
+												value.videoOptions.loop = 0;
+											}
+
+											onChange(JSON.stringify(value));
+										}}
+									/>
 									<SelectControl
 										label={__('Loop', 'maxi-blocks')}
 										value={value.videoOptions.loop}
@@ -288,6 +322,9 @@ const BackgroundControl = props => {
 												value: 1,
 											},
 										]}
+										disabled={
+											!!Number(value.videoOptions.endTime)
+										}
 										onChange={val => {
 											value.videoOptions.loop = val;
 											onChange(JSON.stringify(value));

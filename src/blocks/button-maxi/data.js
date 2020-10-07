@@ -187,6 +187,8 @@ export const background = {
 	videoOptions: {
 		mediaID: '',
 		mediaURL: '',
+		startTime: '',
+		endTime: '',
 		loop: 0,
 		clipPath: '',
 		opacity: {

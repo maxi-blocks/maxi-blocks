@@ -34,13 +34,40 @@ const BackgroundDisplayer = props => {
 		if (parseInt(value.videoOptions.loop)) {
 			videoUrl += `&loop=1&&playlist=${parsedVideo.id}`;
 		}
+
+		if (value.videoOptions.startTime) {
+			videoUrl += `&start=${value.videoOptions.startTime}`;
+		}
+
+		if (value.videoOptions.endTime) {
+			videoUrl += `&end=${value.videoOptions.endTime}`;
+		}
 	}
 
 	if (videoUrl && parsedVideo.type === 'vimeo') {
-		videoUrl = `https://player.vimeo.com/video/${parsedVideo.id}?controls=0&autoplay=1&mute=1?autopause=0`;
+		videoUrl = `https://player.vimeo.com/video/${parsedVideo.id}?controls=0&autoplay=1&mute=1`;
 
 		if (parseInt(value.videoOptions.loop)) {
 			videoUrl += '&loop=1';
+		}
+
+		if (value.videoOptions.startTime) {
+			videoUrl += `#t=${value.videoOptions.startTime}`;
+		}
+
+		/*
+		 * TODO
+		 * Vimeo has no support for endTime parameter we need to set that on the front-end with JavaScript
+		 */
+	}
+
+	if (parsedVideo.type === 'direct') {
+		if (value.videoOptions.startTime && !value.videoOptions.endTime) {
+			videoUrl += `#t=${value.videoOptions.startTime}`;
+		}
+
+		if (value.videoOptions.endTime) {
+			videoUrl += `#t=${value.videoOptions.startTime},${value.videoOptions.endTime}`;
 		}
 	}
 

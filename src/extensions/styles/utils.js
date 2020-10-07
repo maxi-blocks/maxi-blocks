@@ -9,7 +9,6 @@
 const { select } = wp.data;
 const { getBlockAttributes } = wp.blocks;
 
-import { faChessKing } from '@fortawesome/free-solid-svg-icons';
 /**
  * External dependencies
  */
@@ -387,6 +386,9 @@ export const getColorBackgroundObject = background => {
 		general: {},
 	};
 
+	if (!isNil(background.colorOptions.gradientOpacity.opacity))
+		response.general.opacity =
+			background.colorOptions.gradientOpacity.opacity.general.opacity;
 	if (!isEmpty(background.colorOptions.gradient))
 		response.general.background = background.colorOptions.activeColor;
 	if (!isEmpty(background.colorOptions.color))
@@ -398,22 +400,22 @@ export const getColorBackgroundObject = background => {
 	return response;
 };
 
-export const getColorOverlayObject = background => {
+export const getColorOverlayObject = overlay => {
 	const response = {
 		label: 'Overlay',
 		general: {},
 	};
 
-	if (!isNil(background.overlayOptions.opacity))
+	if (!isNil(overlay.overlayOptions.gradientOpacity.opacity))
 		response.general.opacity =
-			background.overlayOptions.opacity.general.opacity;
+			overlay.overlayOptions.gradientOpacity.opacity.general.opacity;
 
-	if (!isEmpty(background.overlayOptions.color))
+	if (!isEmpty(overlay.overlayOptions.color))
 		response.general['background-color'] =
-			background.overlayOptions.activeColor;
+			overlay.overlayOptions.activeColor;
 
-	if (!isEmpty(background.overlayOptions.gradient))
-		response.general.background = background.overlayOptions.activeColor;
+	if (!isEmpty(overlay.overlayOptions.gradient))
+		response.general.background = overlay.overlayOptions.activeColor;
 
 	return response;
 };
@@ -423,6 +425,10 @@ export const getImageBackgroundObject = background => {
 		label: background.label,
 		general: {},
 	};
+
+	if (!isNil(background.imageOpacity))
+		response.general['opacity'] =
+			background.imageOpacity.opacity.general.opacity;
 
 	if (!isEmpty(background.clipPathImage))
 		response.general['clip-path'] = background.clipPathImage;
@@ -545,6 +551,9 @@ export const getVideoBackgroundObject = videoOptions => {
 		label: 'Video Background',
 		general: {},
 	};
+
+	if (!isNil(videoOptions.opacity))
+		response.general['opacity'] = videoOptions.opacity.general.opacity;
 
 	if (!isNil(videoOptions.fill))
 		response.general['object-fit'] = videoOptions.fill;
@@ -680,23 +689,16 @@ export const setArrowStyles = (
 	};
 };
 
-export const setBackgroundStyles = (target, background, backgroundHover) => {
-	return {
-		[`${target}>.maxi-background-displayer .maxi-background-displayer__overlay`]: {
-			overlay: { ...getColorOverlayObject(JSON.parse(background)) },
-		},
-		[`${target}:hover>.maxi-background-displayer .maxi-background-displayer__overlay`]: {
-			overlayHover: {
-				...getColorOverlayObject(JSON.parse(backgroundHover)),
-			},
-		},
+export const setBackgroundStyles = (
+	target,
+	background,
+	backgroundHover,
+	overlay,
+	overlayHover
+) => {
+	const response = {
 		[`${target}>.maxi-background-displayer .maxi-background-displayer__color`]: {
 			background: { ...getColorBackgroundObject(JSON.parse(background)) },
-		},
-		[`${target}:hover>.maxi-background-displayer .maxi-background-displayer__color`]: {
-			backgroundHover: {
-				...getColorBackgroundObject(JSON.parse(backgroundHover)),
-			},
 		},
 		[`${target}>.maxi-background-displayer .maxi-background-displayer__images`]: {
 			imageBackground: {
@@ -723,4 +725,46 @@ export const setBackgroundStyles = (target, background, backgroundHover) => {
 			},
 		},
 	};
+
+	if (!isNil(overlay)) {
+		response[
+			`${target}>.maxi-background-displayer .maxi-background-displayer__overlay`
+		] = {
+			overlay: { ...getColorOverlayObject(JSON.parse(overlay)) },
+		};
+	}
+
+	if (!!JSON.parse(backgroundHover).status) {
+		response[
+			`${target}:hover>.maxi-background-displayer .maxi-background-displayer__color`
+		] = {
+			backgroundHover: {
+				...getColorBackgroundObject(JSON.parse(backgroundHover)),
+			},
+		};
+	} else {
+		response[
+			`${target}:hover>.maxi-background-displayer .maxi-background-displayer__color`
+		] = {
+			backgroundHover: {},
+		};
+	}
+
+	if (!isNil(overlay) && !!JSON.parse(overlayHover).status) {
+		response[
+			`${target}:hover>.maxi-background-displayer .maxi-background-displayer__overlay`
+		] = {
+			overlayHover: {
+				...getColorOverlayObject(JSON.parse(overlayHover)),
+			},
+		};
+	} else {
+		response[
+			`${target}:hover>.maxi-background-displayer .maxi-background-displayer__overlay`
+		] = {
+			overlayHover: {},
+		};
+	}
+
+	return response;
 };

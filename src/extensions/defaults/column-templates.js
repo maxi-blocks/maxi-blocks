@@ -42,106 +42,108 @@ import {
  * We are generating new columns again each time the user changes the pattern and adding the new columns to them
  * it's better to update columns attributes in place rather than generating again
  */
-const generateDefaultColumns = (columns, gap1 = 2.5, gap2 = 2.1) => {
-	const totalColumns = columns.length - 1;
-	const total1 = 100 - gap1 * totalColumns;
+const generateDefaultColumns = (columns, gap1 = 2.5) => {
+	const numberOfGaps = columns.length - 1;
+	const total = 100 - gap1 * numberOfGaps;
 
-	return columns.map((column, i) => [
-		'maxi-blocks/column-maxi',
-		{
-			uniqueID: 'maxi-column-maxi-1',
-			columnSize: JSON.stringify({
-				label: 'Column size',
-				general: {
-					fullwidth: false,
-					size: total1 * column,
-				},
-				xxl: {
-					fullwidth: '',
-					size: '',
-				},
-				xl: {
-					fullwidth: '',
-					size: '',
-				},
-				l: {
-					fullwidth: '',
-					size: '',
-				},
-				m: {
-					fullwidth: false,
-					size: 100,
-				},
-				s: {
-					fullwidth: '',
-					size: '',
-				},
-				xs: {
-					fullwidth: '',
-					size: '',
-				},
-			}),
-			margin: JSON.stringify({
-				label: 'Margin',
-				general: {
-					'margin-top': '',
-					'margin-right': '',
-					'margin-bottom': '',
-					'margin-left': '',
-					sync: true,
-					unit: 'px',
-				},
-				xxl: {
-					'margin-top': '',
-					'margin-right': '',
-					'margin-bottom': '',
-					'margin-left': '',
-					sync: true,
-					unit: '',
-				},
-				xl: {
-					'margin-top': '',
-					'margin-right': '',
-					'margin-bottom': '',
-					'margin-left': '',
-					sync: true,
-					unit: '',
-				},
-				l: {
-					'margin-top': '',
-					'margin-right': '',
-					'margin-bottom': '',
-					'margin-left': '',
-					sync: true,
-					unit: '',
-				},
-				m: {
-					'margin-top': '',
-					'margin-right': '',
-					'margin-bottom': '',
-					'margin-left': '',
-					sync: true,
-					unit: '',
-				},
-				s: {
-					'margin-top': i !== 0 ? 1 : '',
-					'margin-right': '',
-					'margin-bottom': '',
-					'margin-left': '',
-					sync: true,
-					unit: 'em',
-				},
-				xs: {
-					'margin-top': '',
-					'margin-right': '',
-					'margin-bottom': '',
-					'margin-left': '',
-					sync: true,
-					unit: '',
-				},
-			}),
-		},
-	]);
+	return columns.map((column, i) => {
+		return [
+			'maxi-blocks/column-maxi',
+			{
+				uniqueID: 'maxi-column-maxi-1',
+				columnSize: JSON.stringify({
+					label: 'Column size',
+					general: {
+						fullwidth: false,
+						size: column * total,
+					},
+					xxl: {
+						fullwidth: '',
+						size: '',
+					},
+					xl: {
+						fullwidth: '',
+						size: '',
+					},
+					l: {
+						fullwidth: '',
+						size: '',
+					},
+					m: {
+						fullwidth: false,
+						size: 100,
+					},
+					s: {
+						fullwidth: '',
+						size: '',
+					},
+					xs: {
+						fullwidth: '',
+						size: '',
+					},
+				}),
+				margin: JSON.stringify({
+					label: 'Margin',
+					general: {
+						'margin-top': '',
+						'margin-right': '',
+						'margin-bottom': '',
+						'margin-left': '',
+						sync: true,
+						unit: 'px',
+					},
+					xxl: {
+						'margin-top': '',
+						'margin-right': '',
+						'margin-bottom': '',
+						'margin-left': '',
+						sync: true,
+						unit: '',
+					},
+					xl: {
+						'margin-top': '',
+						'margin-right': '',
+						'margin-bottom': '',
+						'margin-left': '',
+						sync: true,
+						unit: '',
+					},
+					l: {
+						'margin-top': '',
+						'margin-right': '',
+						'margin-bottom': '',
+						'margin-left': '',
+						sync: true,
+						unit: '',
+					},
+					m: {
+						'margin-top': i !== 0 ? 0.7 : '',
+						'margin-right': '',
+						'margin-bottom': '',
+						'margin-left': '',
+						sync: true,
+						unit: 'em',
+					},
+					s: {
+						'margin-top': '',
+						'margin-right': '',
+						'margin-bottom': '',
+						'margin-left': '',
+						sync: true,
+						unit: '',
+					},
+					xs: {
+						'margin-top': '',
+						'margin-right': '',
+						'margin-bottom': '',
+						'margin-left': '',
+						sync: true,
+						unit: '',
+					},
+				}),
+			},
+		];
+	});
 };
 
 // Array of all templates
@@ -170,7 +172,7 @@ const templates = {
 				icon: twoColumns,
 				sizes: [1 / 2, 1 / 2],
 				content: generateDefaultColumns([1 / 2, 1 / 2]),
-				responsiveLayout: '',
+				responsiveLayout: '2-2',
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -181,7 +183,7 @@ const templates = {
 				icon: oneThree,
 				sizes: [1 / 4, 3 / 4],
 				content: generateDefaultColumns([1 / 4, 3 / 4]),
-				responsiveLayout: '',
+				responsiveLayout: '2-2',
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -192,7 +194,7 @@ const templates = {
 				icon: threeOne,
 				sizes: [3 / 4, 1 / 4],
 				content: generateDefaultColumns([3 / 4, 1 / 4]),
-				responsiveLayout: '',
+				responsiveLayout: '2-2',
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -203,7 +205,7 @@ const templates = {
 				icon: oneFour,
 				sizes: [1 / 5, 4 / 5],
 				content: generateDefaultColumns([1 / 5, 4 / 5]),
-				responsiveLayout: '',
+				responsiveLayout: '2-2',
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -214,7 +216,7 @@ const templates = {
 				icon: fourOne,
 				sizes: [4 / 5, 1 / 5],
 				content: generateDefaultColumns([4 / 5, 1 / 5]),
-				responsiveLayout: '',
+				responsiveLayout: '2-2',
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -309,6 +311,7 @@ const templates = {
 				name: '1-1-2',
 				icon: oneOneTwo,
 				sizes: [1 / 2, 1 / 2, 1],
+
 				content: generateDefaultColumns([1 / 2, 1 / 2, 1]),
 				attributes: {
 					horizontalAlign: 'space-between',
@@ -574,7 +577,13 @@ function getTemplateObject(templateName) {
  * @return {Integer} Number of Columns for the corresponding template
  */
 function getNumCol(templateName) {
-	const template = getTemplateObject(templateName);
+	let newTemplateName = templateName;
+
+	if (templateName.indexOf('custom-') !== -1) {
+		newTemplateName = templateName.slice(7);
+	}
+
+	const template = getTemplateObject(newTemplateName);
 
 	return template.sizes.length;
 }

@@ -18,12 +18,12 @@ import {
 	FullSizeControl,
 	SettingTabsControl,
 	__experimentalZIndexControl,
-	__experimentalResponsiveSelector,
 	__experimentalResponsiveControl,
 	__experimentalOpacityControl,
 	__experimentalAxisControl,
 	__experimentalDisplayControl,
 	__experimentalTransformControl,
+	__experimentalFancyRadioControl,
 } from '../../components';
 import { getDefaultProp, getLastBreakpointValue } from '../../utils';
 
@@ -45,7 +45,6 @@ const Inspector = props => {
 			columnSize,
 			verticalAlign,
 			opacity,
-			opacityHover,
 			background,
 			backgroundHover,
 			border,
@@ -70,9 +69,12 @@ const Inspector = props => {
 		? JSON.parse(columnSize)
 		: columnSize;
 
+	const backgroundHoverValue = !isObject(backgroundHover)
+		? JSON.parse(backgroundHover)
+		: backgroundHover;
+
 	return (
 		<InspectorControls>
-			<__experimentalResponsiveSelector />
 			<SettingTabsControl
 				disablePadding
 				items={[
@@ -105,7 +107,7 @@ const Inspector = props => {
 												<Fragment>
 													<RangeControl
 														label={__(
-															'Column Size',
+															'Column Size (%)',
 															'maxi-blocks'
 														)}
 														value={getLastBreakpointValue(
@@ -212,25 +214,6 @@ const Inspector = props => {
 															),
 															content: (
 																<Fragment>
-																	<__experimentalOpacityControl
-																		opacity={
-																			opacity
-																		}
-																		defaultOpacity={getDefaultProp(
-																			clientId,
-																			'opacity'
-																		)}
-																		onChange={opacity =>
-																			setAttributes(
-																				{
-																					opacity,
-																				}
-																			)
-																		}
-																		breakpoint={
-																			deviceType
-																		}
-																	/>
 																	<BackgroundControl
 																		background={
 																			background
@@ -257,43 +240,63 @@ const Inspector = props => {
 															),
 															content: (
 																<Fragment>
-																	<__experimentalOpacityControl
-																		opacity={
-																			opacityHover
-																		}
-																		defaultOpacity={getDefaultProp(
-																			clientId,
-																			'opacityHover'
+																	<__experimentalFancyRadioControl
+																		label={__(
+																			'Enable Background Hover',
+																			'maxi-blocks'
 																		)}
-																		onChange={opacityHover =>
+																		selected={
+																			backgroundHoverValue.status
+																		}
+																		options={[
+																			{
+																				label: __(
+																					'Yes',
+																					'maxi-blocks'
+																				),
+																				value: 1,
+																			},
+																			{
+																				label: __(
+																					'No',
+																					'maxi-blocks'
+																				),
+																				value: 0,
+																			},
+																		]}
+																		onChange={val => {
+																			backgroundHoverValue.status = Number(
+																				val
+																			);
 																			setAttributes(
 																				{
-																					opacityHover,
+																					backgroundHover: JSON.stringify(
+																						backgroundHoverValue
+																					),
 																				}
-																			)
-																		}
-																		breakpoint={
-																			deviceType
-																		}
+																			);
+																		}}
 																	/>
-																	<BackgroundControl
-																		background={
-																			backgroundHover
-																		}
-																		defaultBackground={getDefaultProp(
-																			clientId,
-																			'backgroundHover'
-																		)}
-																		onChange={backgroundHover =>
-																			setAttributes(
-																				{
-																					backgroundHover,
-																				}
-																			)
-																		}
-																		disableImage
-																		disableVideo
-																	/>
+																	{!!backgroundHoverValue.status && (
+																		<BackgroundControl
+																			background={
+																				backgroundHover
+																			}
+																			defaultBackground={getDefaultProp(
+																				clientId,
+																				'backgroundHover'
+																			)}
+																			onChange={backgroundHover =>
+																				setAttributes(
+																					{
+																						backgroundHover,
+																					}
+																				)
+																			}
+																			disableImage
+																			disableVideo
+																		/>
+																	)}
 																</Fragment>
 															),
 														},
@@ -575,6 +578,24 @@ const Inspector = props => {
 												)}
 												onChange={zIndex =>
 													setAttributes({ zIndex })
+												}
+												breakpoint={deviceType}
+											/>
+										),
+									},
+									{
+										label: __('Opacity', 'maxi-blocks'),
+										content: (
+											<__experimentalOpacityControl
+												opacity={opacity}
+												defaultOpacity={getDefaultProp(
+													clientId,
+													'opacity'
+												)}
+												onChange={opacity =>
+													setAttributes({
+														opacity,
+													})
 												}
 												breakpoint={deviceType}
 											/>

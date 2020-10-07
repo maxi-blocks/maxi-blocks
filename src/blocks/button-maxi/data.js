@@ -196,9 +196,14 @@ export const background = {
 		autoplay: 0,
 		loop: 0,
 		muted: 0,
-		controls: 0,
 		preload: 'metadata',
 		clipPath: '',
+		opacity: {
+			label: 'Opacity',
+			general: {
+				opacity: 1,
+			},
+		},
 	},
 	colorOptions: {
 		activeColor: '#ff4a17',
@@ -206,6 +211,22 @@ export const background = {
 		gradient: '',
 		gradientAboveBackground: false,
 		clipPath: '',
+		gradientOpacity: {
+			opacity: {
+				label: 'Opacity',
+				general: {
+					opacity: 1,
+				},
+			},
+		},
+	},
+	imageOpacity: {
+		opacity: {
+			label: 'Opacity',
+			general: {
+				opacity: 1,
+			},
+		},
 	},
 };
 

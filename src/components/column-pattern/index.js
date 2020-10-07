@@ -19,8 +19,6 @@ import {
 
 import SizeControl from '../size-control';
 
-import { getLastBreakpointValue } from '../../utils';
-
 /**
  * External dependencies
  */
@@ -97,7 +95,7 @@ const ColumnPatternsInspector = props => {
 	 * @returns {Array} Array with saved content
 	 */
 	const getCurrentContent = (blockIds, newTemplate = []) => {
-		if (isNil(blockIds) || isEmpty(blockIds)) return null;
+		if (isNil(blockIds) || isEmpty(blockIds)) return [];
 
 		blockIds.forEach(id => {
 			const blockName = getBlockName(id);
@@ -165,7 +163,6 @@ const ColumnPatternsInspector = props => {
 		const currentAttributes = getCurrentAttributes(innerBlocks);
 
 		const template = cloneDeep(getTemplateObject(templateName));
-
 		template.content.forEach((column, i) => {
 			column[1].uniqueID = uniqueIdCreator();
 
@@ -194,6 +191,92 @@ const ColumnPatternsInspector = props => {
 	};
 
 	/**
+	 * Get current columns sizes
+	 *
+	 * @return {Array} Array of columns sizes
+	 */
+	const getCurrentColumnsSizes = () => {
+		const columnsSizes = [];
+		const { getBlock } = select('core/block-editor');
+
+		const columnsBlockObjects = getBlock(clientId).innerBlocks;
+
+		columnsBlockObjects.forEach(columnObject => {
+			const columnSizeObject = JSON.parse(
+				columnObject.attributes.columnSize
+			);
+			columnsSizes.push(columnSizeObject[breakpoint].size);
+		});
+
+		return columnsSizes;
+	};
+
+	/**
+	 * Get columns positions (Row number and the number of columns in the row)
+	 *
+	 * @param {Array} sizes array of columns widths
+	 * @return {Array} Array of objects
+	 */
+
+	const getColumnsPositions = sizes => {
+		const columnsPositions = [];
+
+		let columnsSizeSum = 0;
+		let columnsNumberInOneRow = 0;
+		let rowsCount = 1;
+
+		sizes.forEach(size => {
+			columnsSizeSum += size;
+			columnsNumberInOneRow += 1;
+
+			columnsPositions.push({
+				rowNumber: rowsCount,
+			});
+
+			if (Math.round(columnsSizeSum * 100 + Number.EPSILON) / 100 === 1) {
+				columnsPositions.forEach(column => {
+					if (!column.columnsNumber) {
+						column.columnsNumber = columnsNumberInOneRow;
+					}
+				});
+
+				rowsCount += 1;
+				columnsSizeSum = 0;
+				columnsNumberInOneRow = 0;
+			}
+		});
+
+		return columnsPositions;
+	};
+
+	/**
+	 * Apply gap on columns sizes array
+	 *
+	 * @param {Array} sizes array of columns widths
+	 * @return {Array} columns sizes after applying the gap
+	 */
+	const applyGap = sizes => {
+		const newColumnsSizes = [];
+		const columnsPositions = getColumnsPositions(sizes);
+
+		const gap = 2.5;
+
+		sizes.forEach((column, i) => {
+			if (columnsPositions[i].columnsNumber > 1) {
+				const numberOfGaps = columnsPositions[i].columnsNumber - 1;
+				const total = 100 - gap * numberOfGaps;
+				newColumnsSizes.push(sizes[i] * total);
+			}
+
+			if (columnsPositions[i].columnsNumber === 1) {
+				newColumnsSizes.push(100);
+			}
+		});
+
+		return newColumnsSizes;
+	};
+
+	/**
 	 * Update Columns Sizes
 	 *
 	 * @param {integer} i Element of object FILTERED_TEMPLATES
@@ -208,20 +291,36 @@ const ColumnPatternsInspector = props => {
 
 		const { sizes } = template;
 
+		const sizesWithGaps = applyGap(sizes);
+
+		const columnsPositions = getColumnsPositions(sizes);
+
 		columnsBlockObjects.forEach((column, j) => {
 			const columnClientId = column.clientId;
 			const columnAttributes = column.attributes;
 			const columnUniqueID = columnAttributes.uniqueID;
 
 			const newColumnSize = JSON.parse(columnAttributes.columnSize);
+			const newColumnMargin = JSON.parse(columnAttributes.margin);
 
-			newColumnSize[breakpoint].size = sizes[j] * 100;
+			newColumnSize[breakpoint].size = sizesWithGaps[j];
 
 			document.querySelector(
 				`.maxi-column-block__resizer__${columnUniqueID}`
-			).style.width = `${sizes[j] * 100}%`;
+			).style.width = sizesWithGaps[j];
+
+			if (columnsPositions[j].rowNumber > 1) {
+				newColumnMargin[breakpoint]['margin-top'] = 0.7;
+				newColumnMargin[breakpoint].unit = 'em';
+			}
+
+			if (columnsPositions[j].rowNumber === 1) {
+				newColumnMargin[breakpoint]['margin-top'] = 0;
+				newColumnMargin[breakpoint].unit = '';
+			}
 
 			columnAttributes.columnSize = JSON.stringify(newColumnSize);
+			columnAttributes.margin = JSON.stringify(newColumnMargin);
 
 			updateBlockAttributes(columnClientId, columnAttributes);
 		});
@@ -243,6 +342,7 @@ const ColumnPatternsInspector = props => {
 					onChangeValue={numCol => setNumCol(numCol)}
 					min={1}
 					max={6}
+					disableReset
 				/>
 			)}
 			<div className='components-column-pattern__templates'>
@@ -254,11 +354,8 @@ const ColumnPatternsInspector = props => {
 							)}
 							className={patternButtonClassName}
 							aria-pressed={
-								getLastBreakpointValue(
-									rowPatternObject,
-									'rowPattern',
-									breakpoint
-								) === template.name
+								JSON.stringify(getCurrentColumnsSizes()) ===
+								JSON.stringify(applyGap(template.sizes))
 							}
 							onClick={() => {
 								if (breakpoint === 'general') {

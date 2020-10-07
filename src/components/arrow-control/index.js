@@ -3,13 +3,14 @@
  */
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
-const { RangeControl, RadioControl } = wp.components;
+const { RangeControl } = wp.components;
 
 /**
  * Internal dependencies
  */
 import { getLastBreakpointValue } from '../../utils';
 import SizeControl from '../size-control';
+import { __experimentalFancyRadioControl } from '../../components';
 
 /**
  * External dependencies
@@ -76,38 +77,34 @@ const ArrowControl = props => {
 	return (
 		<div className={classes}>
 			{
-				<div className='maxi-fancy-radio-control'>
-					<RadioControl
-						label={__('Show Arrow', 'maxi-blocks')}
-						selected={value.active}
-						options={[
-							{ label: __('Yes', 'maxi-blocks'), value: 1 },
-							{ label: __('No', 'maxi-blocks'), value: 0 },
-						]}
-						onChange={val => {
-							value.active = Number(val);
-							onChange(JSON.stringify(value));
-						}}
-					/>
-				</div>
+				<__experimentalFancyRadioControl
+					label={__('Show Arrow', 'maxi-blocks')}
+					selected={value.active}
+					options={[
+						{ label: __('Yes', 'maxi-blocks'), value: 1 },
+						{ label: __('No', 'maxi-blocks'), value: 0 },
+					]}
+					onChange={val => {
+						value.active = Number(val);
+						onChange(JSON.stringify(value));
+					}}
+				/>
 			}
 			{!!value.active && (
 				<Fragment>
-					<div className='maxi-fancy-radio-control'>
-						<RadioControl
-							label=''
-							selected={getLastBreakpointValue(
-								value,
-								'side',
-								breakpoint
-							)}
-							options={getOptions()}
-							onChange={val => {
-								value[breakpoint].side = val;
-								onChange(JSON.stringify(value));
-							}}
-						/>
-					</div>
+					<__experimentalFancyRadioControl
+						label=''
+						selected={getLastBreakpointValue(
+							value,
+							'side',
+							breakpoint
+						)}
+						options={getOptions()}
+						onChange={val => {
+							value[breakpoint].side = val;
+							onChange(JSON.stringify(value));
+						}}
+					/>
 					<RangeControl
 						label={__('Position', 'maxi-blocks')}
 						value={getLastBreakpointValue(

@@ -2,7 +2,11 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { RadioControl } = wp.components;
+
+/**
+ * Internal dependencies
+ */
+import { __experimentalFancyRadioControl } from '../../components';
 
 /**
  * External dependencies
@@ -65,18 +69,16 @@ const DisplayControl = props => {
 		];
 	};
 	return (
-		<div className='maxi-fancy-radio-control'>
-			<div className={classes}>
-				<RadioControl
-					label={__('Display block', 'maxi-blocks')}
-					selected={getValue()}
-					options={getOptions()}
-					onChange={val => {
-						value[breakpoint].display = val;
-						onChange(JSON.stringify(value));
-					}}
-				/>
-			</div>
+		<div className={classes}>
+			<__experimentalFancyRadioControl
+				label={__('Display block', 'maxi-blocks')}
+				selected={getValue()}
+				options={getOptions()}
+				onChange={val => {
+					value[breakpoint].display = val;
+					onChange(JSON.stringify(value));
+				}}
+			/>
 		</div>
 	);
 };

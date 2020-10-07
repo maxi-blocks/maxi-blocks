@@ -4,7 +4,7 @@
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
 const { Fragment } = wp.element;
-const { SelectControl, RadioControl, TextControl } = wp.components;
+const { SelectControl, TextControl } = wp.components;
 
 /**
  * Internal dependencies
@@ -17,18 +17,22 @@ import {
 	FullSizeControl,
 	SettingTabsControl,
 	__experimentalDividerControl,
-	__experimentalResponsiveSelector,
 	__experimentalZIndexControl,
 	__experimentalAxisControl,
 	__experimentalResponsiveControl,
-	__experimentalOpacityControl,
 	__experimentalPositionControl,
 	__experimentalDisplayControl,
 	__experimentalMotionControl,
 	__experimentalTransformControl,
 	__experimentalEntranceAnimationControl,
+	__experimentalFancyRadioControl,
 } from '../../components';
 import { getDefaultProp } from '../../utils';
+
+/**
+ * External dependencies
+ */
+import { isObject } from 'lodash';
 
 /**
  * Inspector
@@ -40,15 +44,12 @@ const Inspector = props => {
 			isFirstOnHierarchy,
 			blockStyle,
 			defaultBlockStyle,
-			showLine,
 			lineVertical,
 			lineHorizontal,
 			lineOrientation,
 			divider,
 			fullWidth,
 			size,
-			opacity,
-			opacityHover,
 			background,
 			backgroundHover,
 			boxShadow,
@@ -68,9 +69,12 @@ const Inspector = props => {
 		clientId,
 	} = props;
 
+	const backgroundHoverValue = !isObject(backgroundHover)
+		? JSON.parse(backgroundHover)
+		: backgroundHover;
+
 	return (
 		<InspectorControls>
-			<__experimentalResponsiveSelector />
 			<SettingTabsControl
 				disablePadding
 				items={[
@@ -100,175 +104,123 @@ const Inspector = props => {
 												<Fragment>
 													<SelectControl
 														label={__(
-															'Show Line',
+															'Line Orientation',
 															'maxi-blocks'
 														)}
 														options={[
 															{
 																label: __(
-																	'No',
+																	'Horizontal',
 																	'maxi-blocks'
 																),
-																value: 0,
+																value:
+																	'horizontal',
 															},
 															{
 																label: __(
-																	'Yes',
+																	'Vertical',
 																	'maxi-blocks'
 																),
-																value: 1,
+																value:
+																	'vertical',
 															},
 														]}
-														value={showLine}
-														onChange={val =>
+														value={lineOrientation}
+														onChange={lineOrientation =>
 															setAttributes({
-																showLine: Number(
-																	val
-																),
+																lineOrientation,
 															})
 														}
 													/>
-													{!!showLine && (
-														<Fragment>
-															<SelectControl
-																label={__(
-																	'Line Orientation',
+													<SelectControl
+														label={__(
+															'Line Vertical Position',
+															'maxi-blocks'
+														)}
+														options={[
+															{
+																label: __(
+																	'Top',
 																	'maxi-blocks'
-																)}
-																options={[
-																	{
-																		label: __(
-																			'Horizontal',
-																			'maxi-blocks'
-																		),
-																		value:
-																			'horizontal',
-																	},
-																	{
-																		label: __(
-																			'Vertical',
-																			'maxi-blocks'
-																		),
-																		value:
-																			'vertical',
-																	},
-																]}
-																value={
-																	lineOrientation
-																}
-																onChange={lineOrientation =>
-																	setAttributes(
-																		{
-																			lineOrientation,
-																		}
-																	)
-																}
-															/>
-															<SelectControl
-																label={__(
-																	'Line Vertical Position',
+																),
+																value:
+																	'flex-start',
+															},
+															{
+																label: __(
+																	'Center',
 																	'maxi-blocks'
-																)}
-																options={[
-																	{
-																		label: __(
-																			'Top',
-																			'maxi-blocks'
-																		),
-																		value:
-																			'flex-start',
-																	},
-																	{
-																		label: __(
-																			'Center',
-																			'maxi-blocks'
-																		),
-																		value:
-																			'center',
-																	},
-																	{
-																		label: __(
-																			'Bottom',
-																			'maxi-blocks'
-																		),
-																		value:
-																			'flex-end',
-																	},
-																]}
-																value={
-																	lineVertical
-																}
-																onChange={lineVertical =>
-																	setAttributes(
-																		{
-																			lineVertical,
-																		}
-																	)
-																}
-															/>
-															<SelectControl
-																label={__(
-																	'Line Horizontal Position',
+																),
+																value: 'center',
+															},
+															{
+																label: __(
+																	'Bottom',
 																	'maxi-blocks'
-																)}
-																options={[
-																	{
-																		label: __(
-																			'Left',
-																			'maxi-blocks'
-																		),
-																		value:
-																			'flex-start',
-																	},
-																	{
-																		label: __(
-																			'Center',
-																			'maxi-blocks'
-																		),
-																		value:
-																			'center',
-																	},
-																	{
-																		label: __(
-																			'Right',
-																			'maxi-blocks'
-																		),
-																		value:
-																			'flex-end',
-																	},
-																]}
-																value={
-																	lineHorizontal
-																}
-																onChange={lineHorizontal =>
-																	setAttributes(
-																		{
-																			lineHorizontal,
-																		}
-																	)
-																}
-															/>
-															<__experimentalDividerControl
-																divider={
-																	divider
-																}
-																defaultDivider={getDefaultProp(
-																	clientId,
-																	'divider'
-																)}
-																onChange={divider =>
-																	setAttributes(
-																		{
-																			divider,
-																		}
-																	)
-																}
-																lineOrientation={
-																	lineOrientation
-																}
-															/>
-														</Fragment>
-													)}
+																),
+																value:
+																	'flex-end',
+															},
+														]}
+														value={lineVertical}
+														onChange={lineVertical =>
+															setAttributes({
+																lineVertical,
+															})
+														}
+													/>
+													<SelectControl
+														label={__(
+															'Line Horizontal Position',
+															'maxi-blocks'
+														)}
+														options={[
+															{
+																label: __(
+																	'Left',
+																	'maxi-blocks'
+																),
+																value:
+																	'flex-start',
+															},
+															{
+																label: __(
+																	'Center',
+																	'maxi-blocks'
+																),
+																value: 'center',
+															},
+															{
+																label: __(
+																	'Right',
+																	'maxi-blocks'
+																),
+																value:
+																	'flex-end',
+															},
+														]}
+														value={lineHorizontal}
+														onChange={lineHorizontal =>
+															setAttributes({
+																lineHorizontal,
+															})
+														}
+													/>
+													<__experimentalDividerControl
+														divider={divider}
+														defaultDivider={getDefaultProp(
+															clientId,
+															'divider'
+														)}
+														onChange={divider =>
+															setAttributes({
+																divider,
+															})
+														}
+														lineOrientation={
+															lineOrientation
+														}
+													/>
 												</Fragment>
 											),
 										},
@@ -280,42 +232,36 @@ const Inspector = props => {
 											content: (
 												<Fragment>
 													{isFirstOnHierarchy && (
-														<div className='maxi-fancy-radio-control'>
-															<RadioControl
-																label={__(
-																	'Full Width',
-																	'maxi-blocks'
-																)}
-																selected={
-																	fullWidth
-																}
-																options={[
-																	{
-																		label: __(
-																			'No',
-																			'maxi-blocks'
-																		),
-																		value:
-																			'normal',
-																	},
-																	{
-																		label: __(
-																			'Yes',
-																			'maxi-blocks'
-																		),
-																		value:
-																			'full',
-																	},
-																]}
-																onChange={fullWidth =>
-																	setAttributes(
-																		{
-																			fullWidth,
-																		}
-																	)
-																}
-															/>
-														</div>
+														<__experimentalFancyRadioControl
+															label={__(
+																'Full Width',
+																'maxi-blocks'
+															)}
+															selected={fullWidth}
+															options={[
+																{
+																	label: __(
+																		'No',
+																		'maxi-blocks'
+																	),
+																	value:
+																		'normal',
+																},
+																{
+																	label: __(
+																		'Yes',
+																		'maxi-blocks'
+																	),
+																	value:
+																		'full',
+																},
+															]}
+															onChange={fullWidth =>
+																setAttributes({
+																	fullWidth,
+																})
+															}
+														/>
 													)}
 													<FullSizeControl
 														size={size}
@@ -349,25 +295,6 @@ const Inspector = props => {
 															),
 															content: (
 																<Fragment>
-																	<__experimentalOpacityControl
-																		opacity={
-																			opacity
-																		}
-																		defaultOpacity={getDefaultProp(
-																			clientId,
-																			'opacity'
-																		)}
-																		onChange={opacity =>
-																			setAttributes(
-																				{
-																					opacity,
-																				}
-																			)
-																		}
-																		breakpoint={
-																			deviceType
-																		}
-																	/>
 																	<BackgroundControl
 																		background={
 																			background
@@ -396,43 +323,63 @@ const Inspector = props => {
 															),
 															content: (
 																<Fragment>
-																	<__experimentalOpacityControl
-																		opacity={
-																			opacityHover
-																		}
-																		defaultOpacity={getDefaultProp(
-																			clientId,
-																			'opacityHover'
+																	<__experimentalFancyRadioControl
+																		label={__(
+																			'Enable Background Hover',
+																			'maxi-blocks'
 																		)}
-																		onChange={opacityHover =>
+																		selected={
+																			backgroundHoverValue.status
+																		}
+																		options={[
+																			{
+																				label: __(
+																					'Yes',
+																					'maxi-blocks'
+																				),
+																				value: 1,
+																			},
+																			{
+																				label: __(
+																					'No',
+																					'maxi-blocks'
+																				),
+																				value: 0,
+																			},
+																		]}
+																		onChange={val => {
+																			backgroundHoverValue.status = Number(
+																				val
+																			);
 																			setAttributes(
 																				{
-																					opacityHover,
+																					backgroundHover: JSON.stringify(
+																						backgroundHoverValue
+																					),
 																				}
-																			)
-																		}
-																		breakpoint={
-																			deviceType
-																		}
+																			);
+																		}}
 																	/>
-																	<BackgroundControl
-																		background={
-																			backgroundHover
-																		}
-																		defaultBackground={getDefaultProp(
-																			clientId,
-																			'backgroundHover'
-																		)}
-																		onChange={backgroundHover =>
-																			setAttributes(
-																				{
-																					backgroundHover,
-																				}
-																			)
-																		}
-																		disableImage
-																		disableVideo
-																	/>
+																	{!!backgroundHoverValue.status && (
+																		<BackgroundControl
+																			background={
+																				backgroundHover
+																			}
+																			defaultBackground={getDefaultProp(
+																				clientId,
+																				'backgroundHover'
+																			)}
+																			onChange={backgroundHover =>
+																				setAttributes(
+																					{
+																						backgroundHover,
+																					}
+																				)
+																			}
+																			disableImage
+																			disableVideo
+																		/>
+																	)}
 																</Fragment>
 															),
 														},

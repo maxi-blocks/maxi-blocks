@@ -3,7 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
-const { TextControl, RadioControl } = wp.components;
+const { TextControl } = wp.components;
 const { Fragment } = wp.element;
 const { useSelect } = wp.data;
 
@@ -28,6 +28,7 @@ import {
 	__experimentalMotionControl,
 	__experimentalTransformControl,
 	__experimentalEntranceAnimationControl,
+	__experimentalFancyRadioControl,
 } from '../../components';
 import { getDefaultProp } from '../../utils';
 
@@ -261,45 +262,43 @@ const Inspector = props => {
 															),
 															content: (
 																<Fragment>
-																	<div className='maxi-fancy-radio-control'>
-																		<RadioControl
-																			label={__(
-																				'Enable Background Hover',
-																				'maxi-blocks'
-																			)}
-																			selected={
-																				backgroundHoverValue.status
-																			}
-																			options={[
+																	<__experimentalFancyRadioControl
+																		label={__(
+																			'Enable Background Hover',
+																			'maxi-blocks'
+																		)}
+																		selected={
+																			backgroundHoverValue.status
+																		}
+																		options={[
+																			{
+																				label: __(
+																					'Yes',
+																					'maxi-blocks'
+																				),
+																				value: 1,
+																			},
+																			{
+																				label: __(
+																					'No',
+																					'maxi-blocks'
+																				),
+																				value: 0,
+																			},
+																		]}
+																		onChange={val => {
+																			backgroundHoverValue.status = Number(
+																				val
+																			);
+																			setAttributes(
 																				{
-																					label: __(
-																						'Yes',
-																						'maxi-blocks'
+																					backgroundHover: JSON.stringify(
+																						backgroundHoverValue
 																					),
-																					value: 1,
-																				},
-																				{
-																					label: __(
-																						'No',
-																						'maxi-blocks'
-																					),
-																					value: 0,
-																				},
-																			]}
-																			onChange={val => {
-																				backgroundHoverValue.status = Number(
-																					val
-																				);
-																				setAttributes(
-																					{
-																						backgroundHover: JSON.stringify(
-																							backgroundHoverValue
-																						),
-																					}
-																				);
-																			}}
-																		/>
-																	</div>
+																				}
+																			);
+																		}}
+																	/>
 																	{!!backgroundHoverValue.status && (
 																		<BackgroundControl
 																			background={

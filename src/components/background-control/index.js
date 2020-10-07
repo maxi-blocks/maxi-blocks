@@ -321,6 +321,25 @@ const BackgroundControl = props => {
 								}}
 							/>
 
+							<SelectControl
+								label={__('Play on Mobile', 'maxi-blocks')}
+								value={value.videoOptions.playOnMobile}
+								options={[
+									{
+										label: __('No', 'maxi-blocks'),
+										value: 0,
+									},
+									{
+										label: __('Yes', 'maxi-blocks'),
+										value: 1,
+									},
+								]}
+								onChange={val => {
+									value.videoOptions.playOnMobile = val;
+									onChange(JSON.stringify(value));
+								}}
+							/>
+
 							{!disableClipPath && (
 								<__experimentalClipPath
 									clipPath={value.videoOptions.clipPath}

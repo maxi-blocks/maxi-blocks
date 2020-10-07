@@ -193,6 +193,7 @@ export const background = {
 		clipPath: '',
 		fallbackID: '',
 		fallbackURL: '',
+		playOnMobile: 0,
 		opacity: {
 			label: 'Opacity',
 			general: {

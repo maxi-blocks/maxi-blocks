@@ -489,6 +489,7 @@ export const background = {
 		clipPath: '',
 		fallbackID: '',
 		fallbackURL: '',
+		playOnMobile: 0,
 		opacity: {
 			label: 'Opacity',
 			general: {
@@ -562,6 +563,7 @@ export const backgroundHover = {
 		clipPath: '',
 		fallbackID: '',
 		fallbackURL: '',
+		playOnMobile: 0,
 	},
 	colorOptions: {
 		activeColor: '',

@@ -71,6 +71,12 @@ const BackgroundDisplayer = props => {
 		}
 	}
 
+	const videoPlayerClasses = classnames(
+		'maxi-background-displayer__video-player',
+		!value.videoOptions.playOnMobile &&
+			'maxi-background-displayer__video-player--mobile-hidden'
+	);
+
 	return (
 		<div className={classes}>
 			<div className='maxi-background-displayer__overlay' />
@@ -79,7 +85,7 @@ const BackgroundDisplayer = props => {
 				<div className='maxi-background-displayer__images' />
 			)}
 			{value.activeMedia === 'video' && videoUrl && (
-				<div className='maxi-background-displayer__video-player'>
+				<div className={videoPlayerClasses}>
 					{parsedVideo.type === 'direct' && (
 						<video
 							loop={!!parseInt(value.videoOptions.loop)}

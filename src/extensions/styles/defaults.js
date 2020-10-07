@@ -615,10 +615,10 @@ export const boxShadow = {
 	label: 'Box Shadow',
 	general: {
 		shadowColor: '#ffffff',
-		shadowHorizontal: 0,
-		shadowVertical: 0,
-		shadowBlur: 0,
-		shadowSpread: 0,
+		shadowHorizontal: '',
+		shadowVertical: '',
+		shadowBlur: '',
+		shadowSpread: '',
 	},
 	xxl: {
 		shadowColor: '',

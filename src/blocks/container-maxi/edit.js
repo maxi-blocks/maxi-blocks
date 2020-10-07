@@ -15,6 +15,7 @@ import {
 	__experimentalBlockPlaceholder,
 	__experimentalShapeDivider,
 	__experimentalBackgroundDisplayer,
+	__experimentalArrowDisplayer,
 } from '../../components';
 import Inspector from './inspector';
 import {
@@ -30,7 +31,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isObject } from 'lodash';
+import { isEmpty } from 'lodash';
 
 /**
  * InnerBlocks version
@@ -219,17 +220,13 @@ class edit extends MaxiBlock {
 			hasInnerBlock,
 		} = this.props;
 
-		const arrowValue = !isObject(arrow) ? JSON.parse(arrow) : arrow;
-
 		const classes = classnames(
 			'maxi-block maxi-container-block',
 			`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
 			uniqueID,
 			blockStyle,
 			extraClassName,
-			className,
-			!!arrowValue.active &&
-				`maxi-container-normal-arrow maxi-container-shadow-arrow maxi-container-border-arrow maxi-container-arrow-${arrowValue.general.side}`
+			className
 		);
 
 		return [
@@ -272,8 +269,7 @@ class edit extends MaxiBlock {
 								}
 							/>
 						</div>
-						<div className='maxi-container-arrow' />
-
+						<__experimentalArrowDisplayer arrow={arrow} />
 						<__experimentalShapeDivider
 							position='bottom'
 							shapeDividerOptions={shapeDivider}

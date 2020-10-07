@@ -10,13 +10,14 @@ const { Fragment } = wp.element;
 import {
 	__experimentalShapeDivider,
 	__experimentalBackgroundDisplayer,
+	__experimentalArrowDisplayer,
 } from '../../components';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, isObject } from 'lodash';
+import { isNil } from 'lodash';
 
 /**
  * Save
@@ -38,16 +39,12 @@ const save = props => {
 		className,
 	} = props;
 
-	const arrowValue = !isObject(arrow) ? JSON.parse(arrow) : arrow;
-
 	const classes = classnames(
 		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
 		'maxi-block maxi-container-block',
 		blockStyle,
 		extraClassName,
 		className,
-		!!arrowValue.active &&
-			`maxi-contianer-normal-arrow maxi-contianer-shadow-arrow maxi-contianer-border-arrow maxi-container-arrow-${arrowValue.general.side}`,
 		fullWidth === 'full' ? 'alignfull' : null,
 		!isNil(uniqueID) ? uniqueID : null
 	);
@@ -73,7 +70,7 @@ const save = props => {
 							<InnerBlocks.Content />
 						</div>
 					</div>
-					<div className='maxi-container-arrow' />
+					<__experimentalArrowDisplayer arrow={arrow} />
 					<__experimentalShapeDivider
 						position='bottom'
 						shapeDividerOptions={shapeDivider}

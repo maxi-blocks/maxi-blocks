@@ -18,11 +18,6 @@ import classnames from 'classnames';
 import { isObject, isNil } from 'lodash';
 
 /**
- * Styles
- */
-import './style.scss';
-
-/**
  * Component
  */
 const ArrowControl = props => {

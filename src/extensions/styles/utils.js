@@ -669,15 +669,13 @@ export const setArrowStyles = (
 	return {
 		[`${target} .maxi-container-arrow`]: {
 			arrow: { ...getArrowObject(JSON.parse(arrow)) },
+			shadow: { ...getDropShadowObject(JSON.parse(boxShadow)) },
 		},
-		[`${target}.maxi-container-normal-arrow .maxi-container-arrow:after`]: {
+		[`${target} .maxi-container-arrow:after`]: {
 			background: { ...getArrowColorObject(JSON.parse(background)) },
 		},
-		[`${target}.maxi-container-border-arrow .maxi-container-arrow:before`]: {
+		[`${target} .maxi-container-arrow:before`]: {
 			border: { ...getArrowBorderObject(JSON.parse(border)) },
-		},
-		[`${target}.maxi-container-shadow-arrow`]: {
-			shadow: { ...getDropShadowObject(JSON.parse(boxShadow)) },
 		},
 	};
 };

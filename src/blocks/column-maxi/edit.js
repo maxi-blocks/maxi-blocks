@@ -4,7 +4,7 @@
 const { compose } = wp.compose;
 const { Fragment, forwardRef } = wp.element;
 const { ResizableBox, Spinner } = wp.components;
-const { withSelect, withDispatch, select, dispatch } = wp.data;
+const { withSelect, withDispatch, select } = wp.data;
 const { InnerBlocks, __experimentalBlock } = wp.blockEditor;
 
 /**
@@ -179,6 +179,7 @@ class edit extends MaxiBlock {
 			originalNestedColumns,
 			setAttributes,
 			rowBlockId,
+			updateRowPattern,
 		} = this.props;
 
 		onDeviceTypeChange();
@@ -209,19 +210,16 @@ class edit extends MaxiBlock {
 			return `${100 / originalNestedColumns.length}%`;
 		};
 
-		const { getBlockAttributes } = select('core/block-editor');
-		const { updateBlockAttributes } = dispatch('core/block-editor');
-
 		return [
 			<Inspector {...this.props} />,
 			<__experimentalToolbar {...this.props} />,
 			<RowContext.Consumer>
-				{displayHandlers => (
+				{context => (
 					<Fragment>
 						{rowBlockWidth === 0 && <Spinner />}
 						{rowBlockWidth !== 0 && (
 							<ResizableBox
-								showHandle={displayHandlers}
+								showHandle={context.displayHandlers}
 								className={classnames(
 									'maxi-block__resizer',
 									'maxi-column-block__resizer',
@@ -251,33 +249,14 @@ class edit extends MaxiBlock {
 										Number(elt.style.width.replace('%', ''))
 									);
 
-									setAttributes({
-										columnSize: JSON.stringify(columnValue),
-									});
-
-									// Reset rowPattern attribute
-									const rowPatternAttribute = getBlockAttributes(
-										rowBlockId
-									).rowPattern;
-
-									const newRowPatternObject = JSON.parse(
-										rowPatternAttribute
+									updateRowPattern(
+										rowBlockId,
+										deviceType,
+										context.rowPattern
 									);
 
-									const { rowPattern } = newRowPatternObject[
-										deviceType
-									];
-
-									if (rowPattern.indexOf('custom-') === -1) {
-										newRowPatternObject[
-											deviceType
-										].rowPattern = `custom-${rowPattern}`;
-									}
-
-									updateBlockAttributes(rowBlockId, {
-										rowPattern: JSON.stringify(
-											newRowPatternObject
-										),
+									setAttributes({
+										columnSize: JSON.stringify(columnValue),
 									});
 								}}
 							>
@@ -381,8 +360,23 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 		}
 	};
 
+	const updateRowPattern = (rowBlockId, deviceType, rowPatternAttribute) => {
+		const newRowPatternObject = JSON.parse(rowPatternAttribute);
+
+		const { rowPattern } = newRowPatternObject[deviceType];
+
+		if (rowPattern.indexOf('custom-') === -1) {
+			newRowPatternObject[deviceType].rowPattern = `custom-${rowPattern}`;
+		}
+
+		dispatch('core/block-editor').updateBlockAttributes(rowBlockId, {
+			rowPattern: JSON.stringify(newRowPatternObject),
+		});
+	};
+
 	return {
 		onDeviceTypeChange,
+		updateRowPattern,
 	};
 });
 

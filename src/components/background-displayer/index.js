@@ -82,7 +82,6 @@ const BackgroundDisplayer = props => {
 				<div className='maxi-background-displayer__video-player'>
 					{parsedVideo.type === 'direct' && (
 						<video
-							className='maxi-background-displayer__video-player__video'
 							loop={!!parseInt(value.videoOptions.loop)}
 							src={videoUrl}
 							autoPlay
@@ -94,7 +93,6 @@ const BackgroundDisplayer = props => {
 						parsedVideo.type === 'vimeo') && (
 						<div className='maxi-background-displayer__video-player__iframe-wrapper'>
 							<iframe
-								className='maxi-background-displayer__video-player__video'
 								title={`${parsedVideo.type} video`}
 								src={videoUrl}
 								frameBorder='0'

@@ -274,93 +274,90 @@ const BackgroundControl = props => {
 								}}
 							/>
 
-							{value.videoOptions.mediaURL && (
-								<Fragment>
-									<__experimentalNumberControl
-										label={__(
-											'Start Time (s)',
-											'maxi-blocks'
-										)}
-										min={0}
-										max={999}
-										defaultValue=''
-										value={value.videoOptions.startTime}
-										onChange={val => {
-											value.videoOptions.startTime = val;
-											onChange(JSON.stringify(value));
-										}}
-									/>
-									<__experimentalNumberControl
-										label={__(
-											'End Time (s)',
-											'maxi-blocks'
-										)}
-										min={0}
-										max={999}
-										defaultValue=''
-										value={value.videoOptions.endTime}
-										onChange={val => {
-											value.videoOptions.endTime = val;
+							<__experimentalNumberControl
+								label={__('Start Time (s)', 'maxi-blocks')}
+								min={0}
+								max={999}
+								defaultValue=''
+								value={value.videoOptions.startTime}
+								onChange={val => {
+									value.videoOptions.startTime = val;
+									onChange(JSON.stringify(value));
+								}}
+							/>
+							<__experimentalNumberControl
+								label={__('End Time (s)', 'maxi-blocks')}
+								min={0}
+								max={999}
+								defaultValue=''
+								value={value.videoOptions.endTime}
+								onChange={val => {
+									value.videoOptions.endTime = val;
 
-											if (val) {
-												value.videoOptions.loop = 0;
-											}
+									if (val) {
+										value.videoOptions.loop = 0;
+									}
 
-											onChange(JSON.stringify(value));
-										}}
-									/>
-									<SelectControl
-										label={__('Loop', 'maxi-blocks')}
-										value={value.videoOptions.loop}
-										options={[
-											{
-												label: __('No', 'maxi-blocks'),
-												value: 0,
-											},
-											{
-												label: __('Yes', 'maxi-blocks'),
-												value: 1,
-											},
-										]}
-										disabled={
-											!!Number(value.videoOptions.endTime)
-										}
-										onChange={val => {
-											value.videoOptions.loop = val;
-											onChange(JSON.stringify(value));
-										}}
-									/>
+									onChange(JSON.stringify(value));
+								}}
+							/>
+							<SelectControl
+								label={__('Loop', 'maxi-blocks')}
+								value={value.videoOptions.loop}
+								options={[
+									{
+										label: __('No', 'maxi-blocks'),
+										value: 0,
+									},
+									{
+										label: __('Yes', 'maxi-blocks'),
+										value: 1,
+									},
+								]}
+								disabled={!!Number(value.videoOptions.endTime)}
+								onChange={val => {
+									value.videoOptions.loop = val;
+									onChange(JSON.stringify(value));
+								}}
+							/>
 
-									{!disableClipPath && (
-										<__experimentalClipPath
-											clipPath={
-												value.videoOptions.clipPath
-											}
-											onChange={val => {
-												value.videoOptions.clipPath = val;
-												onChange(JSON.stringify(value));
-											}}
-										/>
-									)}
-
-									<__experimentalOpacityControl
-										label={__(
-											'Video Opacity',
-											'maxi-blocks'
-										)}
-										opacity={value.videoOptions.opacity}
-										defaultOpacity={
-											defaultValue.videoOptions.opacity
-										}
-										onChange={val => {
-											value.videoOptions.opacity = JSON.parse(
-												val
-											);
-											onChange(JSON.stringify(value));
-										}}
-									/>
-								</Fragment>
+							{!disableClipPath && (
+								<__experimentalClipPath
+									clipPath={value.videoOptions.clipPath}
+									onChange={val => {
+										value.videoOptions.clipPath = val;
+										onChange(JSON.stringify(value));
+									}}
+								/>
 							)}
+
+							<__experimentalOpacityControl
+								label={__('Video Opacity', 'maxi-blocks')}
+								opacity={value.videoOptions.opacity}
+								defaultOpacity={
+									defaultValue.videoOptions.opacity
+								}
+								onChange={val => {
+									value.videoOptions.opacity = JSON.parse(
+										val
+									);
+									onChange(JSON.stringify(value));
+								}}
+							/>
+							<MediaUploaderControl
+								placeholder={__('Background Fallback')}
+								mediaID={value.videoOptions.fallbackID}
+								onSelectImage={val => {
+									value.videoOptions.fallbackID = val.id;
+									value.videoOptions.fallbackURL = val.url;
+									onChange(JSON.stringify(value));
+								}}
+								onRemoveImage={() => {
+									value.videoOptions.fallbackID = '';
+									value.videoOptions.fallbackURL = '';
+									onChange(JSON.stringify(value));
+								}}
+							/>
 						</div>
 					)}
 					{!disableGradient && value.activeMedia === 'gradient' && (

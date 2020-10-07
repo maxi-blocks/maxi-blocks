@@ -649,6 +649,11 @@ export const getVideoBackgroundObject = videoOptions => {
 	if (!isEmpty(videoOptions.clipPath))
 		response.general['clip-path'] = videoOptions.clipPath;
 
+	if (!isEmpty(videoOptions.fallbackURL)) {
+		response.general.background = `url(${videoOptions.fallbackURL})`;
+		response.general['background-size'] = 'cover';
+	}
+
 	return response;
 };
 
@@ -673,7 +678,7 @@ export const setBackgroundStyles = (
 				...getImageBackgroundObject(JSON.parse(backgroundHover)),
 			},
 		},
-		[`${target}>.maxi-background-displayer .maxi-background-displayer__video-player .maxi-background-displayer__video-player__video`]: {
+		[`${target}>.maxi-background-displayer .maxi-background-displayer__video-player`]: {
 			videoBackground: {
 				...getVideoBackgroundObject(
 					JSON.parse(background).videoOptions
@@ -681,7 +686,7 @@ export const setBackgroundStyles = (
 			},
 		},
 
-		[`${target}:hover>.maxi-background-displayer .maxi-background-displayer__video-player .maxi-background-displayer__video-player__video`]: {
+		[`${target}:hover>.maxi-background-displayer .maxi-background-displayer__video-player`]: {
 			videoBackgroundHover: {
 				...getVideoBackgroundObject(
 					JSON.parse(backgroundHover).videoOptions

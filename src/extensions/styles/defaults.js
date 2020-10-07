@@ -487,6 +487,8 @@ export const background = {
 		endTime: '',
 		loop: 0,
 		clipPath: '',
+		fallbackID: '',
+		fallbackURL: '',
 		opacity: {
 			label: 'Opacity',
 			general: {
@@ -558,6 +560,8 @@ export const backgroundHover = {
 		loop: '',
 		muted: '',
 		clipPath: '',
+		fallbackID: '',
+		fallbackURL: '',
 	},
 	colorOptions: {
 		activeColor: '',

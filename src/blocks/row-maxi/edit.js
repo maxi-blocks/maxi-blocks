@@ -16,6 +16,7 @@ import {
 	__experimentalToolbar,
 	__experimentalBreadcrumbs,
 	__experimentalBackgroundDisplayer,
+	getLastBreakpointValue,
 } from '../../components';
 import Inspector from './inspector';
 import {
@@ -175,8 +176,8 @@ class edit extends MaxiBlock {
 
 		const classes = classnames(
 			'maxi-block maxi-row-block',
-			displayValue[deviceType].display === 'none' &&
-				'maxi-block-display-none',
+			getLastBreakpointValue(displayValue, 'display', deviceType) ===
+				'none' && 'maxi-block-display-none',
 			uniqueID,
 			blockStyle,
 			extraClassName,
@@ -267,10 +268,7 @@ const editSelect = withSelect((select, ownProps) => {
 	const hasInnerBlock = !isEmpty(
 		select('core/block-editor').getBlockOrder(clientId)
 	);
-	let deviceType = select(
-		'core/edit-post'
-	).__experimentalGetPreviewDeviceType();
-	deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
+	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 	return {
 		selectedBlockId,

@@ -15,6 +15,7 @@ import {
 	getAlignmentFlexObject,
 	getTransformObject,
 	getAlignmentTextObject,
+	getLastBreakpointValue,
 } from '../../utils';
 import { MaxiBlock, __experimentalToolbar } from '../../components';
 
@@ -134,8 +135,8 @@ class edit extends MaxiBlock {
 
 		const classes = classnames(
 			'maxi-block maxi-button-extra',
-			displayValue[deviceType].display === 'none' &&
-				'maxi-block-display-none',
+			getLastBreakpointValue(displayValue, 'display', deviceType) ===
+				'none' && 'maxi-block-display-none',
 			blockStyle,
 			extraClassName,
 			uniqueID,
@@ -162,11 +163,8 @@ class edit extends MaxiBlock {
 	}
 }
 
-export default withSelect(select => {
-	let deviceType = select(
-		'core/edit-post'
-	).__experimentalGetPreviewDeviceType();
-	deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
+export default withSelect((select, ownProps) => {
+	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 	return {
 		deviceType,

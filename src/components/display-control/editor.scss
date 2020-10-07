@@ -9,4 +9,7 @@
 	&.maxi-button-extra {
 		display: flex !important;
 	}
+	& * {
+		pointer-events: none;
+	}
 }

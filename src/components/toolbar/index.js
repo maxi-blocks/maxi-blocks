@@ -114,9 +114,8 @@ const MaxiToolbar = props => {
 	} = props;
 
 	const { deviceType } = useSelect(select => {
-		const { __experimentalGetPreviewDeviceType } = select('core/edit-post');
-		let deviceType = __experimentalGetPreviewDeviceType();
-		deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
+		const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
+
 		return {
 			deviceType,
 		};
@@ -464,6 +463,7 @@ const MaxiToolbar = props => {
 							display={display}
 							breakpoint={deviceType}
 							onChange={display => setAttributes({ display })}
+							defaultDisplay='flex'
 						/>
 					</div>
 				</Popover>

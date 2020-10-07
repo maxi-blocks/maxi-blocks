@@ -15,6 +15,7 @@ import {
 	getBoxShadowObject,
 	getTransformObject,
 	setBackgroundStyles,
+	getLastBreakpointValue,
 } from '../../utils';
 import {
 	MaxiBlock,
@@ -153,8 +154,8 @@ class edit extends MaxiBlock {
 
 		const classes = classnames(
 			'maxi-block maxi-divider-block',
-			displayValue[deviceType].display === 'none' &&
-				'maxi-block-display-none',
+			getLastBreakpointValue(displayValue, 'display', deviceType) ===
+				'none' && 'maxi-block-display-none',
 			blockStyle,
 			extraClassName,
 			uniqueID,
@@ -234,10 +235,7 @@ class edit extends MaxiBlock {
 }
 
 const editSelect = withSelect(select => {
-	let deviceType = select(
-		'core/edit-post'
-	).__experimentalGetPreviewDeviceType();
-	deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
+	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 	return {
 		deviceType,

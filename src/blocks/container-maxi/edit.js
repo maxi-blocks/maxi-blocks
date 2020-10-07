@@ -24,6 +24,7 @@ import {
 	getArrowObject,
 	getTransformObject,
 	setBackgroundStyles,
+	getLastBreakpointValue,
 } from '../../utils';
 
 /**
@@ -245,8 +246,8 @@ class edit extends MaxiBlock {
 		const classes = classnames(
 			'maxi-block maxi-container-block',
 			`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
-			displayValue[deviceType].display === 'none' &&
-				'maxi-block-display-none',
+			getLastBreakpointValue(displayValue, 'display', deviceType) ===
+				'none' && 'maxi-block-display-none',
 			uniqueID,
 			blockStyle,
 			extraClassName,
@@ -343,10 +344,7 @@ export default withSelect((select, ownProps) => {
 	const hasInnerBlock = !isEmpty(
 		select('core/block-editor').getBlockOrder(clientId)
 	);
-	let deviceType = select(
-		'core/edit-post'
-	).__experimentalGetPreviewDeviceType();
-	deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
+	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 	return {
 		hasInnerBlock,

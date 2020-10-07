@@ -517,14 +517,15 @@ export const getImageBackgroundObject = background => {
 		general: {},
 	};
 
-	if (!isNil(background.imageOpacity))
-		response.general['opacity'] =
-			background.imageOpacity.opacity.general.opacity;
+	const { imageOptions } = background;
 
-	if (!isEmpty(background.clipPathImage))
-		response.general['clip-path'] = background.clipPathImage;
+	if (!isNil(imageOptions.opacity))
+		response.general.opacity = imageOptions.opacity.general.opacity;
 
-	background.imageOptions.forEach(option => {
+	if (!isEmpty(imageOptions.clipPath))
+		response.general['clip-path'] = imageOptions.clipPath;
+
+	imageOptions.items.forEach(option => {
 		if (isNil(option) || isEmpty(option.imageData.mediaURL)) return;
 		// Image
 		if (
@@ -644,7 +645,7 @@ export const getVideoBackgroundObject = videoOptions => {
 	};
 
 	if (!isNil(videoOptions.opacity))
-		response.general['opacity'] = videoOptions.opacity.general.opacity;
+		response.general.opacity = videoOptions.opacity.general.opacity;
 
 	if (!isNil(videoOptions.fill))
 		response.general['object-fit'] = videoOptions.fill;
@@ -709,7 +710,7 @@ export const setBackgroundStyles = (
 		};
 	}
 
-	if (!!JSON.parse(backgroundHover).status) {
+	if (JSON.parse(backgroundHover).status) {
 		response[
 			`${target}:hover>.maxi-background-displayer .maxi-background-displayer__color`
 		] = {

@@ -453,33 +453,60 @@ export const size = {
 export const background = {
 	label: 'Background',
 	activeMedia: '',
-	imageOptions: [
-		{
-			imageData: {
-				mediaID: '',
-				mediaURL: '',
+	colorOptions: {
+		activeColor: '',
+		color: '',
+		gradient: '',
+		gradientAboveBackground: false,
+		clipPath: '',
+		gradientOpacity: {
+			opacity: {
+				label: 'Opacity',
+				general: {
+					opacity: 1,
+				},
 			},
-			sizeSettings: {
-				size: 'cover',
-				widthUnit: '%',
-				width: 100,
-				heightUnit: '%',
-				height: 100,
-			},
-			repeat: 'no-repeat',
-			positionOptions: {
-				position: 'center center',
-				widthUnit: '%',
-				width: 0,
-				heightUnit: '%',
-				height: 0,
-			},
-			origin: 'padding-box',
-			clip: 'border-box',
-			attachment: 'scroll',
 		},
-	],
-	clipPathImage: '',
+	},
+	imageOptions: {
+		items: [
+			{
+				imageData: {
+					mediaID: '',
+					mediaURL: '',
+					width: 100,
+					widthUnit: '%',
+					height: 100,
+					heightUnit: '%',
+				},
+				sizeSettings: {
+					size: '',
+					widthUnit: '',
+					width: '',
+					heightUnit: '',
+					height: '',
+				},
+				repeat: 'no-repeat',
+				positionOptions: {
+					position: 'center center',
+					widthUnit: '%',
+					width: 0,
+					heightUnit: '%',
+					height: 0,
+				},
+				origin: 'padding-box',
+				clip: 'border-box',
+				attachment: 'scroll',
+			},
+		],
+		clipPath: '',
+		opacity: {
+			label: 'Opacity',
+			general: {
+				opacity: 1,
+			},
+		},
+	},
 	videoOptions: {
 		mediaID: '',
 		mediaURL: '',
@@ -501,11 +528,17 @@ export const background = {
 			},
 		},
 	},
+};
+
+export const backgroundHover = {
+	label: 'Background Hover',
+	activeMedia: '',
+	// status: 0,
 	colorOptions: {
 		activeColor: '',
 		color: '',
 		gradient: '',
-		gradientAboveBackground: false,
+		gradientAboveBackground: '',
 		clipPath: '',
 		gradientOpacity: {
 			opacity: {
@@ -516,7 +549,34 @@ export const background = {
 			},
 		},
 	},
-	imageOpacity: {
+	imageOptions: {
+		items: [
+			{
+				imageData: {
+					mediaID: '',
+					mediaURL: '',
+				},
+				sizeSettings: {
+					size: '',
+					widthUnit: '',
+					width: '',
+					heightUnit: '',
+					height: '',
+				},
+				repeat: '',
+				positionOptions: {
+					position: '',
+					widthUnit: '',
+					width: '',
+					heightUnit: '',
+					height: '',
+				},
+				origin: '',
+				clip: '',
+				attachment: '',
+			},
+		],
+		clipPath: '',
 		opacity: {
 			label: 'Opacity',
 			general: {
@@ -524,39 +584,6 @@ export const background = {
 			},
 		},
 	},
-};
-
-export const backgroundHover = {
-	label: 'Background Hover',
-	activeMedia: '',
-	status: 0,
-	imageOptions: [
-		{
-			imageData: {
-				mediaID: '',
-				mediaURL: '',
-			},
-			sizeSettings: {
-				size: '',
-				widthUnit: '',
-				width: '',
-				heightUnit: '',
-				height: '',
-			},
-			repeat: '',
-			positionOptions: {
-				position: '',
-				widthUnit: '',
-				width: '',
-				heightUnit: '',
-				height: '',
-			},
-			origin: '',
-			clip: '',
-			attachment: '',
-		},
-	],
-	clipPathImage: '',
 	videoOptions: {
 		mediaID: '',
 		mediaURL: '',
@@ -571,19 +598,10 @@ export const backgroundHover = {
 		muted: '',
 		preload: '',
 		clipPath: '',
-	},
-	colorOptions: {
-		activeColor: '',
-		color: '',
-		gradient: '',
-		gradientAboveBackground: '',
-		clipPath: '',
-		gradientOpacity: {
-			opacity: {
-				label: 'Opacity',
-				general: {
-					opacity: 1,
-				},
+		opacity: {
+			label: 'Opacity',
+			general: {
+				opacity: 1,
 			},
 		},
 	},

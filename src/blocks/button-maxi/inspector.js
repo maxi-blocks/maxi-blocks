@@ -67,17 +67,10 @@ const Inspector = props => {
 			motion,
 			transform,
 		},
+		deviceType,
 		setAttributes,
 		clientId,
 	} = props;
-
-	const { deviceType } = useSelect(select => {
-		const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
-
-		return {
-			deviceType,
-		};
-	});
 
 	const backgroundHoverValue = !isObject(backgroundHover)
 		? JSON.parse(backgroundHover)

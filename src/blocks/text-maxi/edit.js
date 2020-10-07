@@ -3,6 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
+const { withSelect } = wp.data;
 const { __unstableIndentListItems, __unstableOutdentListItems } = wp.richText;
 const { __experimentalBlock, RichText, RichTextShortcut } = wp.blockEditor;
 
@@ -16,6 +17,7 @@ import {
 	getOpacityObject,
 	getTransformObject,
 	setBackgroundStyles,
+	getLastBreakpointValue,
 } from '../../utils';
 import {
 	MaxiBlock,
@@ -27,6 +29,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
+import { isObject } from 'lodash';
 
 /**
  * Content
@@ -135,13 +138,19 @@ class edit extends MaxiBlock {
 				listStart,
 				listReversed,
 				fullWidth,
+				display,
 			},
 			isSelected,
 			setAttributes,
+			deviceType,
 		} = this.props;
+
+		const displayValue = !isObject(display) ? JSON.parse(display) : display;
 
 		const classes = classnames(
 			'maxi-block maxi-text-block',
+			getLastBreakpointValue(displayValue, 'display', deviceType) ===
+				'none' && 'maxi-block-display-none',
 			blockStyle,
 			extraClassName,
 			uniqueID,
@@ -255,4 +264,10 @@ class edit extends MaxiBlock {
 	}
 }
 
-export default edit;
+export default withSelect((select, ownProps) => {
+	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
+
+	return {
+		deviceType,
+	};
+})(edit);

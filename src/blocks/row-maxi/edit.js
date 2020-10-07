@@ -190,7 +190,12 @@ class edit extends MaxiBlock {
 				{...this.props}
 			/>,
 			<__experimentalBreadcrumbs />,
-			<RowContext.Provider value={this.state.displayHandlers}>
+			<RowContext.Provider
+				value={{
+					displayHandlers: this.state.displayHandlers,
+					rowPattern,
+				}}
+			>
 				<InnerBlocks
 					// templateLock={'insert'}
 					__experimentalTagName={ContainerInnerBlocks}

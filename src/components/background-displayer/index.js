@@ -54,11 +54,6 @@ const BackgroundDisplayer = props => {
 		if (value.videoOptions.startTime) {
 			videoUrl += `#t=${value.videoOptions.startTime}`;
 		}
-
-		/*
-		 * TODO
-		 * Vimeo has no support for endTime parameter we need to set that on the front-end with JavaScript
-		 */
 	}
 
 	if (parsedVideo.type === 'direct') {
@@ -85,7 +80,12 @@ const BackgroundDisplayer = props => {
 				<div className='maxi-background-displayer__images' />
 			)}
 			{value.activeMedia === 'video' && videoUrl && (
-				<div className={videoPlayerClasses}>
+				<div
+					className={videoPlayerClasses}
+					data-start={value.videoOptions.startTime}
+					data-end={value.videoOptions.endTime}
+					data-type={parsedVideo.type}
+				>
 					{parsedVideo.type === 'direct' && (
 						<video
 							loop={!!parseInt(value.videoOptions.loop)}

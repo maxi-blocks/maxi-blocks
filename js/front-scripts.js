@@ -1033,3 +1033,48 @@ motionElems.forEach(function (elem) {
 		}
 	}
 });
+
+// Background Video Effects
+const containerElems = document.querySelectorAll('.maxi-container-block');
+motionElems.forEach(function (elem) {
+	const videoPlayerElement = elem.querySelector(
+		'.maxi-background-displayer__video-player'
+	);
+	const videoStart = videoPlayerElement.getAttribute('data-start');
+	const videoEnd = videoPlayerElement.getAttribute('data-end');
+
+	const videoType = videoPlayerElement.getAttribute('data-type');
+	if (videoType === 'vimeo') {
+		const vimeoIsMounted = Array.from(window.document.scripts).findIndex(
+			script => {
+				console.log(script.getAttribute('id'));
+				script.getAttribute('id') == 'maxi-gsap-lib-js-js';
+			}
+		);
+		console.log(vimeoIsMounted);
+		let script = document.createElement('script');
+		script.src = 'https://player.vimeo.com/api/player.js';
+
+		script.id = 'maxi-vimeo-sdk';
+		script.async = true;
+		script.onload = function () {
+			// Cleanup onload handler
+			script.onload = null;
+
+			if (videoEnd) {
+				const player = new Vimeo.Player(
+					videoPlayerElement.querySelector('iframe')
+				);
+				console.log(videoPlayerElement.querySelector('iframe'));
+
+				player.on('timeupdate', function (data) {
+					if (data.seconds > videoEnd) {
+						player.pause();
+					}
+				});
+			}
+		};
+
+		document.body.appendChild(script);
+	}
+});

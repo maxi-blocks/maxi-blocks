@@ -60,6 +60,7 @@ const save = props => {
 					data-motion={motion}
 					data-shape-divider={shapeDivider}
 					data-motion-id={uniqueID}
+					data-background={background}
 				>
 					<__experimentalBackgroundDisplayer
 						background={background}

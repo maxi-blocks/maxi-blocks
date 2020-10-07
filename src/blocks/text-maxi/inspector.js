@@ -5,7 +5,7 @@ const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
 const { Fragment } = wp.element;
 const { useSelect } = wp.data;
-const { TextControl, SelectControl } = wp.components;
+const { TextControl, SelectControl, RadioControl } = wp.components;
 
 /**
  * Internal dependencies

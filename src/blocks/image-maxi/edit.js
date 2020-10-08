@@ -19,6 +19,7 @@ import {
 	getTransformObject,
 	getAlignmentTextObject,
 	setBackgroundStyles,
+	getLastBreakpointValue,
 } from '../../utils';
 import {
 	MaxiBlock,
@@ -260,13 +261,19 @@ class edit extends MaxiBlock {
 				mediaWidth,
 				mediaHeight,
 				SVGElement,
+				display,
 			},
 			imageData,
 			setAttributes,
+			deviceType,
 		} = this.props;
+
+		const displayValue = !isObject(display) ? JSON.parse(display) : display;
 
 		const classes = classnames(
 			'maxi-block maxi-image-block',
+			getLastBreakpointValue(displayValue, 'display', deviceType) ===
+				'none' && 'maxi-block-display-none',
 			blockStyle,
 			extraClassName,
 			uniqueID,
@@ -460,10 +467,7 @@ export default withSelect((select, ownProps) => {
 	const { mediaID } = ownProps.attributes;
 
 	const imageData = select('core').getMedia(mediaID);
-	let deviceType = select(
-		'core/edit-post'
-	).__experimentalGetPreviewDeviceType();
-	deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
+	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 	return {
 		imageData,

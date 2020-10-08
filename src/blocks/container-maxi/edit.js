@@ -15,15 +15,17 @@ import {
 	__experimentalBlockPlaceholder,
 	__experimentalShapeDivider,
 	__experimentalBackgroundDisplayer,
+	__experimentalArrowDisplayer,
 } from '../../components';
 import Inspector from './inspector';
 import {
 	getBoxShadowObject,
 	getShapeDividerObject,
 	getShapeDividerSVGObject,
-	getArrowObject,
 	getTransformObject,
 	setBackgroundStyles,
+	setArrowStyles,
+	getLastBreakpointValue,
 } from '../../utils';
 
 /**
@@ -82,16 +84,16 @@ class edit extends MaxiBlock {
 	get getObject() {
 		const {
 			uniqueID,
+			arrow,
 			background,
 			backgroundHover,
-			overlay,
-			overlayHover,
+			border,
+			boxShadow,
 		} = this.props.attributes;
 
 		let response = {
 			[uniqueID]: this.getNormalObject,
 			[`${uniqueID}:hover`]: this.getHoverObject,
-			[`${this.props.attributes.uniqueID}:before`]: this.getBeforeObject,
 			[`${uniqueID}>.maxi-container-block__wrapper`]: this
 				.getWrapperObject,
 			[`${uniqueID}>.maxi-container-block__wrapper>.maxi-container-block__container`]: this
@@ -128,13 +130,8 @@ class edit extends MaxiBlock {
 
 		response = Object.assign(
 			response,
-			setBackgroundStyles(
-				uniqueID,
-				background,
-				backgroundHover,
-				overlay,
-				overlayHover
-			)
+			setBackgroundStyles(uniqueID, background, backgroundHover),
+			setArrowStyles(uniqueID, arrow, background, border, boxShadow)
 		);
 
 		return response;
@@ -168,16 +165,6 @@ class edit extends MaxiBlock {
 				label: 'Container',
 				general: {},
 			},
-		};
-
-		return response;
-	}
-
-	get getBeforeObject() {
-		const { arrow } = this.props.attributes;
-
-		const response = {
-			arrow: { ...getArrowObject(JSON.parse(arrow)) },
 		};
 
 		return response;
@@ -232,15 +219,22 @@ class edit extends MaxiBlock {
 				extraClassName,
 				background,
 				shapeDivider,
+				arrow,
+				display,
 			},
 			className,
 			clientId,
 			hasInnerBlock,
+			deviceType,
 		} = this.props;
+
+		const displayValue = !isObject(display) ? JSON.parse(display) : display;
 
 		const classes = classnames(
 			'maxi-block maxi-container-block',
 			`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
+			getLastBreakpointValue(displayValue, 'display', deviceType) ===
+				'none' && 'maxi-block-display-none',
 			uniqueID,
 			blockStyle,
 			extraClassName,
@@ -265,6 +259,8 @@ class edit extends MaxiBlock {
 						<__experimentalBackgroundDisplayer
 							background={background}
 						/>
+
+						<__experimentalArrowDisplayer arrow={arrow} />
 
 						{!!shapeDividerValue.top.status && (
 							<__experimentalShapeDivider
@@ -337,10 +333,7 @@ export default withSelect((select, ownProps) => {
 	const hasInnerBlock = !isEmpty(
 		select('core/block-editor').getBlockOrder(clientId)
 	);
-	let deviceType = select(
-		'core/edit-post'
-	).__experimentalGetPreviewDeviceType();
-	deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
+	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 	return {
 		hasInnerBlock,

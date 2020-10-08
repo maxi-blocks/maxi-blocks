@@ -1,10 +1,15 @@
 /**
  * WordPress dependencies
  */
-const { select } = wp.data;
+const { select, dispatch } = wp.data;
 
 /**
+ * Internal dependencies
+ */
+import ResponsiveSelector from '../../editor/responsive-selector';
+/**
  * General
+ *
  */
 const allowedBlocks = [
 	'maxi-blocks/block-image-box',
@@ -27,16 +32,18 @@ document.addEventListener('DOMContentLoaded', () => {
 	 * Mutation Observer for:
 	 * - Add special classes on Settings Sidebar
 	 * - Hide original WP toolbar on selected Maxi Blocks
+	 * - Add Maxi responsive toolbar on Preview drop-down menu
 	 */
 	if (document.getElementsByClassName('edit-post-layout')) {
 		const targetNode = document.querySelector('.edit-post-layout');
 		const config = {
-			attributes: false,
+			attributes: true,
 			childList: true,
 			subtree: true,
 		};
 		const observer = new MutationObserver(mutationsList => {
 			for (const mutation of mutationsList) {
+				// Sidebar and Toolbar
 				if (
 					mutation.type === 'childList' &&
 					!!mutation.target.classList
@@ -93,6 +100,103 @@ document.addEventListener('DOMContentLoaded', () => {
 							blockToolbarEditor.style.display = null;
 					}
 				}
+
+				// Responsive toolbar
+				if (
+					mutation.type === 'attributes' &&
+					mutation.target.classList.contains(
+						'block-editor-post-preview__button-toggle'
+					)
+				) {
+					if (mutation.target.getAttribute('aria-expanded')) {
+						const node = document.querySelector(
+							'.edit-post-post-preview-dropdown'
+						);
+						const repeatedNode = document.querySelector(
+							'#maxi-blocks__responsive-toolbar'
+						);
+
+						if (node && !repeatedNode) {
+							// Insert responsive toolbar
+							const responsiveWrapper = document.createElement(
+								'div'
+							);
+							responsiveWrapper.id =
+								'maxi-blocks__responsive-toolbar';
+
+							const menuWrapper = node.querySelector(
+								'.components-menu-group'
+							).parentElement;
+
+							menuWrapper.appendChild(responsiveWrapper);
+
+							wp.element.render(
+								wp.element.createElement(
+									ResponsiveSelector,
+									{}
+								),
+								responsiveWrapper
+							);
+
+							// Actions on default responsive values
+							const responsiveButtons = Array.from(
+								node.querySelectorAll(
+									'.block-editor-post-preview__button-resize'
+								)
+							);
+
+							const { setMaxiDeviceType } = dispatch(
+								'maxiBlocks'
+							);
+
+							responsiveButtons.forEach(button => {
+								button.addEventListener('click', e => {
+									const { target } = e;
+									const value = target.innerText;
+									const maxiValue =
+										(value === 'Desktop' && 'general') ||
+										(value === 'Tablet' && 's') ||
+										(value === 'Mobile' && 'xs');
+
+									const editorWrapper = document.querySelector(
+										'.edit-post-visual-editor.editor-styles-wrapper'
+									);
+									editorWrapper.setAttribute(
+										'maxi-blocks-responsive',
+										maxiValue
+									);
+									editorWrapper.removeAttribute(
+										'maxi-blocks-responsive-width'
+									);
+
+									if (value === 'Desktop')
+										editorWrapper.style.width = '';
+
+									setMaxiDeviceType(maxiValue);
+								});
+							});
+						}
+					}
+				}
+
+				// Responsive editor
+				if (
+					mutation.type === 'attributes' &&
+					mutation.target.classList.contains(
+						'edit-post-visual-editor'
+					) &&
+					mutation.target.classList.contains('editor-styles-wrapper')
+				) {
+					const responsiveWidth = mutation.target.getAttribute(
+						'maxi-blocks-responsive-width'
+					);
+
+					if (
+						mutation.target.style.width !== `${responsiveWidth}px`
+					) {
+						mutation.target.style.width = `${responsiveWidth}px`;
+					}
+				}
 			}
 		});
 		observer.observe(targetNode, config);
@@ -102,25 +206,23 @@ document.addEventListener('DOMContentLoaded', () => {
 	 */
 	window.addEventListener('mouseover', e => {
 		let pathItem = null;
-		const hasPath = !e.path
-			? false
-			: Array.from(e.path).some((path, i) => {
-					if (path && path.classList)
-						try {
-							if (
-								path.classList.contains('maxi-column-block') ||
-								path.classList.contains('maxi-container-block')
-							) {
-								pathItem = i;
-								return true;
-							}
-						} catch (error) {
-							pathItem = null;
-							return false;
-						}
-
+		const hasPath = Array.from(e.path).some((path, i) => {
+			if (path && path.classList)
+				try {
+					if (
+						path.classList.contains('maxi-column-block') ||
+						path.classList.contains('maxi-container-block')
+					) {
+						pathItem = i;
+						return true;
+					}
+				} catch (error) {
+					pathItem = null;
 					return false;
-			  });
+				}
+
+			return false;
+		});
 
 		if (hasPath) {
 			e.path[pathItem].classList.add('maxi-block--hovered');
@@ -134,24 +236,22 @@ document.addEventListener('DOMContentLoaded', () => {
 	});
 	window.addEventListener('mouseout', e => {
 		let pathItem = null;
-		const hasPath = !e.path
-			? false
-			: Array.from(e.path).some((path, i) => {
-					if (path && path.classList)
-						try {
-							if (
-								path.classList.contains('maxi-column-block') ||
-								path.classList.contains('maxi-container-block')
-							) {
-								pathItem = i;
-								return true;
-							}
-						} catch (error) {
-							pathItem = null;
-							return false;
-						}
+		const hasPath = Array.from(e.path).some((path, i) => {
+			if (path && path.classList)
+				try {
+					if (
+						path.classList.contains('maxi-column-block') ||
+						path.classList.contains('maxi-container-block')
+					) {
+						pathItem = i;
+						return true;
+					}
+				} catch (error) {
+					pathItem = null;
 					return false;
-			  });
+				}
+			return false;
+		});
 
 		if (hasPath) {
 			e.path[pathItem].classList.remove('maxi-block--hovered');

@@ -30,7 +30,6 @@ export { default as __experimentalDividerControl } from './divider-control';
 export { default as __experimentalBreadcrumbs } from './breadcrumbs';
 export { default as __experimentalZIndexControl } from './zindex-control';
 export { default as __experimentalBlockPlaceholder } from './block-placeholder';
-export { default as __experimentalResponsiveSelector } from './responsive-selector';
 export { default as __experimentalNumberControl } from './number-control';
 export { default as __experimentalResponsiveControl } from './responsive-control';
 export { default as __experimentalOpacityControl } from './opacity-control';
@@ -55,3 +54,5 @@ export { default as __experimentalSVGDefaultsDisplayer } from './svg-default-dis
 export { default as __experimentalOverlayControl } from './overlay-control';
 export { default as __experimentalColumnPattern } from './column-pattern';
 export { default as __experimentalImageAltControl } from './image-alt-control';
+export { default as __experimentalArrowDisplayer } from './arrow-displayer';
+export { default as __experimentalFancyRadioControl } from './fancy-radio-control';

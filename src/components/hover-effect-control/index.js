@@ -13,6 +13,7 @@ import SizeControl from '../size-control';
 import BackgroundControl from '../background-control';
 import BorderControl from '../border-control';
 import __experimentalAxisControl from '../axis-control';
+import __experimentalFancyRadioControl from '../fancy-radio-control';
 
 /**
  * External dependencies
@@ -54,21 +55,19 @@ const HoverEffectControl = props => {
 
 	return (
 		<div className={classes}>
-			<div className='maxi-fancy-radio-control'>
-				<RadioControl
-					label={__('Hover Animation', 'maxi-blocks')}
-					selected={hoverSettings.type}
-					options={[
-						{ label: <Icon icon={hoverNone} />, value: 'none' },
-						{ label: <Icon icon={hoverBasic} />, value: 'basic' },
-						{ label: <Icon icon={hoverText} />, value: 'text' },
-					]}
-					onChange={val => {
-						hoverSettings.type = val;
-						onChange(JSON.stringify(value));
-					}}
-				/>
-			</div>
+			<__experimentalFancyRadioControl
+				label={__('Hover Animation', 'maxi-blocks')}
+				selected={hoverSettings.type}
+				options={[
+					{ label: <Icon icon={hoverNone} />, value: 'none' },
+					{ label: <Icon icon={hoverBasic} />, value: 'basic' },
+					{ label: <Icon icon={hoverText} />, value: 'text' },
+				]}
+				onChange={val => {
+					hoverSettings.type = val;
+					onChange(JSON.stringify(value));
+				}}
+			/>
 			{hoverSettings.type === 'basic' && (
 				<Fragment>
 					<SelectControl
@@ -130,37 +129,36 @@ const HoverEffectControl = props => {
 							onChange(JSON.stringify(value));
 						}}
 					/>
-					<div className='maxi-classic-radio-control maxi-classic-radio-control__bordered'>
-						<RadioControl
-							selected={value.textPreset}
-							options={[
-								{
-									label: <Icon icon={alignLeftTop} />,
-									value: 'left-top',
-								},
-								{
-									label: <Icon icon={alignRightTop} />,
-									value: 'right-top',
-								},
-								{
-									label: <Icon icon={alignCenterCenter} />,
-									value: 'center-center',
-								},
-								{
-									label: <Icon icon={alignLeftBottom} />,
-									value: 'left-bottom',
-								},
-								{
-									label: <Icon icon={alignRightBottom} />,
-									value: 'right-bottom',
-								},
-							]}
-							onChange={val => {
-								value.textPreset = val;
-								onChange(JSON.stringify(value));
-							}}
-						/>
-					</div>
+					<__experimentalFancyRadioControl
+						type='classic-border'
+						selected={value.textPreset}
+						options={[
+							{
+								label: <Icon icon={alignLeftTop} />,
+								value: 'left-top',
+							},
+							{
+								label: <Icon icon={alignRightTop} />,
+								value: 'right-top',
+							},
+							{
+								label: <Icon icon={alignCenterCenter} />,
+								value: 'center-center',
+							},
+							{
+								label: <Icon icon={alignLeftBottom} />,
+								value: 'left-bottom',
+							},
+							{
+								label: <Icon icon={alignRightBottom} />,
+								value: 'right-bottom',
+							},
+						]}
+						onChange={val => {
+							value.textPreset = val;
+							onChange(JSON.stringify(value));
+						}}
+					/>
 					<SizeControl
 						label={__('Duration (s)', 'maxi-blocks')}
 						disableUnit
@@ -186,20 +184,18 @@ const HoverEffectControl = props => {
 							onChange(JSON.stringify(value));
 						}}
 					/>
-					<div className='maxi-fancy-radio-control'>
-						<RadioControl
-							label={__('Custom Hover Text', 'maxi-block')}
-							selected={value.titleStatus}
-							options={[
-								{ label: __('No', 'maxi-block'), value: 0 },
-								{ label: __('Yes', 'maxi-block'), value: 1 },
-							]}
-							onChange={val => {
-								value.titleStatus = parseInt(val);
-								onChange(JSON.stringify(value));
-							}}
-						/>
-					</div>
+					<__experimentalFancyRadioControl
+						label={__('Custom Hover Text', 'maxi-block')}
+						selected={value.titleStatus}
+						options={[
+							{ label: __('No', 'maxi-block'), value: 0 },
+							{ label: __('Yes', 'maxi-block'), value: 1 },
+						]}
+						onChange={val => {
+							value.titleStatus = parseInt(val);
+							onChange(JSON.stringify(value));
+						}}
+					/>
 					{!!value.titleStatus && (
 						<TypographyControl
 							typography={value.titleTypography}
@@ -223,20 +219,18 @@ const HoverEffectControl = props => {
 							onChange(JSON.stringify(value));
 						}}
 					/>
-					<div className='maxi-fancy-radio-control'>
-						<RadioControl
-							label={__('Custom Content Text', 'maxi-block')}
-							selected={value.contentStatus}
-							options={[
-								{ label: __('No', 'maxi-block'), value: 0 },
-								{ label: __('Yes', 'maxi-block'), value: 1 },
-							]}
-							onChange={val => {
-								value.contentStatus = parseInt(val);
-								onChange(JSON.stringify(value));
-							}}
-						/>
-					</div>
+					<__experimentalFancyRadioControl
+						label={__('Custom Content Text', 'maxi-block')}
+						selected={value.contentStatus}
+						options={[
+							{ label: __('No', 'maxi-block'), value: 0 },
+							{ label: __('Yes', 'maxi-block'), value: 1 },
+						]}
+						onChange={val => {
+							value.contentStatus = parseInt(val);
+							onChange(JSON.stringify(value));
+						}}
+					/>
 					{!!value.contentStatus && (
 						<TypographyControl
 							typography={value.contentTypography}
@@ -260,20 +254,18 @@ const HoverEffectControl = props => {
 						disableImage
 						disableVideo
 					/>
-					<div className='maxi-fancy-radio-control'>
-						<RadioControl
-							label={__('Custom Border', 'maxi-block')}
-							selected={value.borderStatus}
-							options={[
-								{ label: __('No', 'maxi-block'), value: 0 },
-								{ label: __('Yes', 'maxi-block'), value: 1 },
-							]}
-							onChange={val => {
-								value.borderStatus = parseInt(val);
-								onChange(JSON.stringify(value));
-							}}
-						/>
-					</div>
+					<__experimentalFancyRadioControl
+						label={__('Custom Border', 'maxi-block')}
+						selected={value.borderStatus}
+						options={[
+							{ label: __('No', 'maxi-block'), value: 0 },
+							{ label: __('Yes', 'maxi-block'), value: 1 },
+						]}
+						onChange={val => {
+							value.borderStatus = parseInt(val);
+							onChange(JSON.stringify(value));
+						}}
+					/>
 					{!!value.borderStatus && (
 						<BorderControl
 							border={value.border}
@@ -284,20 +276,18 @@ const HoverEffectControl = props => {
 							}}
 						/>
 					)}
-					<div className='maxi-fancy-radio-control'>
-						<RadioControl
-							label={__('Custom Padding', 'maxi-block')}
-							selected={value.paddingStatus}
-							options={[
-								{ label: __('No', 'maxi-block'), value: 0 },
-								{ label: __('Yes', 'maxi-block'), value: 1 },
-							]}
-							onChange={val => {
-								value.paddingStatus = parseInt(val);
-								onChange(JSON.stringify(value));
-							}}
-						/>
-					</div>
+					<__experimentalFancyRadioControl
+						label={__('Custom Padding', 'maxi-block')}
+						selected={value.paddingStatus}
+						options={[
+							{ label: __('No', 'maxi-block'), value: 0 },
+							{ label: __('Yes', 'maxi-block'), value: 1 },
+						]}
+						onChange={val => {
+							value.paddingStatus = parseInt(val);
+							onChange(JSON.stringify(value));
+						}}
+					/>
 					{!!value.paddingStatus && (
 						<__experimentalAxisControl
 							values={value.padding}
@@ -309,20 +299,18 @@ const HoverEffectControl = props => {
 							}}
 						/>
 					)}
-					<div className='maxi-fancy-radio-control'>
-						<RadioControl
-							label={__('Custom Margin', 'maxi-block')}
-							selected={value.marginStatus}
-							options={[
-								{ label: __('No', 'maxi-block'), value: 0 },
-								{ label: __('Yes', 'maxi-block'), value: 1 },
-							]}
-							onChange={val => {
-								value.marginStatus = parseInt(val);
-								onChange(JSON.stringify(value));
-							}}
-						/>
-					</div>
+					<__experimentalFancyRadioControl
+						label={__('Custom Margin', 'maxi-block')}
+						selected={value.marginStatus}
+						options={[
+							{ label: __('No', 'maxi-block'), value: 0 },
+							{ label: __('Yes', 'maxi-block'), value: 1 },
+						]}
+						onChange={val => {
+							value.marginStatus = parseInt(val);
+							onChange(JSON.stringify(value));
+						}}
+					/>
 					{!!value.marginStatus && (
 						<__experimentalAxisControl
 							values={value.margin}

@@ -15,15 +15,16 @@ import {
 	__experimentalBlockPlaceholder,
 	__experimentalShapeDivider,
 	__experimentalBackgroundDisplayer,
+	__experimentalArrowDisplayer,
 } from '../../components';
 import Inspector from './inspector';
 import {
 	getBoxShadowObject,
 	getShapeDividerObject,
 	getShapeDividerSVGObject,
-	getArrowObject,
 	getTransformObject,
 	setBackgroundStyles,
+	setArrowStyles,
 	getLastBreakpointValue,
 } from '../../utils';
 
@@ -83,16 +84,16 @@ class edit extends MaxiBlock {
 	get getObject() {
 		const {
 			uniqueID,
+			arrow,
 			background,
 			backgroundHover,
-			overlay,
-			overlayHover,
+			border,
+			boxShadow,
 		} = this.props.attributes;
 
 		let response = {
 			[uniqueID]: this.getNormalObject,
 			[`${uniqueID}:hover`]: this.getHoverObject,
-			[`${this.props.attributes.uniqueID}:before`]: this.getBeforeObject,
 			[`${uniqueID}>.maxi-container-block__wrapper`]: this
 				.getWrapperObject,
 			[`${uniqueID}>.maxi-container-block__wrapper>.maxi-container-block__container`]: this
@@ -129,13 +130,8 @@ class edit extends MaxiBlock {
 
 		response = Object.assign(
 			response,
-			setBackgroundStyles(
-				uniqueID,
-				background,
-				backgroundHover,
-				overlay,
-				overlayHover
-			)
+			setBackgroundStyles(uniqueID, background, backgroundHover),
+			setArrowStyles(uniqueID, arrow, background, border, boxShadow)
 		);
 
 		return response;
@@ -169,16 +165,6 @@ class edit extends MaxiBlock {
 				label: 'Container',
 				general: {},
 			},
-		};
-
-		return response;
-	}
-
-	get getBeforeObject() {
-		const { arrow } = this.props.attributes;
-
-		const response = {
-			arrow: { ...getArrowObject(JSON.parse(arrow)) },
 		};
 
 		return response;
@@ -233,6 +219,7 @@ class edit extends MaxiBlock {
 				extraClassName,
 				background,
 				shapeDivider,
+				arrow,
 				display,
 			},
 			className,
@@ -272,6 +259,8 @@ class edit extends MaxiBlock {
 						<__experimentalBackgroundDisplayer
 							background={background}
 						/>
+
+						<__experimentalArrowDisplayer arrow={arrow} />
 
 						{!!shapeDividerValue.top.status && (
 							<__experimentalShapeDivider

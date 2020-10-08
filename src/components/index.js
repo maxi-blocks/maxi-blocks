@@ -54,4 +54,5 @@ export { default as __experimentalSVGDefaultsDisplayer } from './svg-default-dis
 export { default as __experimentalOverlayControl } from './overlay-control';
 export { default as __experimentalColumnPattern } from './column-pattern';
 export { default as __experimentalImageAltControl } from './image-alt-control';
+export { default as __experimentalArrowDisplayer } from './arrow-displayer';
 export { default as __experimentalFancyRadioControl } from './fancy-radio-control';

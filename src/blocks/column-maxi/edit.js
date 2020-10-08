@@ -164,6 +164,7 @@ class edit extends MaxiBlock {
 				background,
 				extraClassName,
 				defaultBlockStyle,
+				display,
 			},
 			clientId,
 			className,
@@ -179,9 +180,13 @@ class edit extends MaxiBlock {
 
 		onDeviceTypeChange();
 
+		const displayValue = !isObject(display) ? JSON.parse(display) : display;
+
 		const classes = classnames(
 			'maxi-block',
 			'maxi-column-block',
+			getLastBreakpointValue(displayValue, 'display', deviceType) ===
+				'none' && 'maxi-block-display-none',
 			uniqueID,
 			blockStyle,
 			extraClassName,

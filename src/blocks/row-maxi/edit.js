@@ -16,7 +16,6 @@ import {
 	__experimentalToolbar,
 	__experimentalBreadcrumbs,
 	__experimentalBackgroundDisplayer,
-	getLastBreakpointValue,
 } from '../../components';
 import Inspector from './inspector';
 import {
@@ -28,6 +27,7 @@ import {
 	getOpacityObject,
 	getTransformObject,
 	setBackgroundStyles,
+	getLastBreakpointValue,
 } from '../../utils';
 import RowContext from './context';
 

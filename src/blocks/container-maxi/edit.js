@@ -25,6 +25,7 @@ import {
 	getTransformObject,
 	setBackgroundStyles,
 	setArrowStyles,
+	getLastBreakpointValue,
 } from '../../utils';
 
 /**
@@ -219,15 +220,21 @@ class edit extends MaxiBlock {
 				background,
 				shapeDivider,
 				arrow,
+				display,
 			},
 			className,
 			clientId,
 			hasInnerBlock,
+			deviceType,
 		} = this.props;
+
+		const displayValue = !isObject(display) ? JSON.parse(display) : display;
 
 		const classes = classnames(
 			'maxi-block maxi-container-block',
 			`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
+			getLastBreakpointValue(displayValue, 'display', deviceType) ===
+				'none' && 'maxi-block-display-none',
 			uniqueID,
 			blockStyle,
 			extraClassName,

@@ -5,7 +5,6 @@ const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
 const { TextControl } = wp.components;
 const { Fragment } = wp.element;
-const { useSelect } = wp.data;
 
 /**
  * Internal dependencies
@@ -68,17 +67,10 @@ const Inspector = props => {
 			motion,
 			transform,
 		},
+		deviceType,
 		setAttributes,
 		clientId,
 	} = props;
-
-	const { deviceType } = useSelect(select => {
-		const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
-
-		return {
-			deviceType,
-		};
-	});
 
 	const backgroundHoverValue = !isObject(backgroundHover)
 		? JSON.parse(backgroundHover)

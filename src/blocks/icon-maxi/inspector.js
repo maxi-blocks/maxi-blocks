@@ -7,7 +7,6 @@ const { Fragment } = wp.element;
 const {
 	RangeControl,
 	SelectControl,
-	RadioControl,
 	TextareaControl,
 	TextControl,
 } = wp.components;

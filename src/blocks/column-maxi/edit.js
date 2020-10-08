@@ -174,6 +174,8 @@ class edit extends MaxiBlock {
 			onDeviceTypeChange,
 			originalNestedColumns,
 			setAttributes,
+			rowBlockId,
+			updateRowPattern,
 		} = this.props;
 
 		onDeviceTypeChange();
@@ -212,12 +214,12 @@ class edit extends MaxiBlock {
 			<Inspector {...this.props} />,
 			<__experimentalToolbar {...this.props} />,
 			<RowContext.Consumer>
-				{displayHandlers => (
+				{context => (
 					<Fragment>
 						{rowBlockWidth === 0 && <Spinner />}
 						{rowBlockWidth !== 0 && (
 							<ResizableBox
-								showHandle={displayHandlers}
+								showHandle={context.displayHandlers}
 								className={classnames(
 									'maxi-block__resizer',
 									'maxi-column-block__resizer',
@@ -245,6 +247,12 @@ class edit extends MaxiBlock {
 								onResizeStop={(event, direction, elt) => {
 									columnValue[deviceType].size = round(
 										Number(elt.style.width.replace('%', ''))
+									);
+
+									updateRowPattern(
+										rowBlockId,
+										deviceType,
+										context.rowPattern
 									);
 
 									setAttributes({
@@ -349,8 +357,23 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 		}
 	};
 
+	const updateRowPattern = (rowBlockId, deviceType, rowPatternAttribute) => {
+		const newRowPatternObject = JSON.parse(rowPatternAttribute);
+
+		const { rowPattern } = newRowPatternObject[deviceType];
+
+		if (rowPattern.indexOf('custom-') === -1) {
+			newRowPatternObject[deviceType].rowPattern = `custom-${rowPattern}`;
+		}
+
+		dispatch('core/block-editor').updateBlockAttributes(rowBlockId, {
+			rowPattern: JSON.stringify(newRowPatternObject),
+		});
+	};
+
 	return {
 		onDeviceTypeChange,
+		updateRowPattern,
 	};
 });
 

@@ -421,7 +421,6 @@ const Inspector = props => {
 																			);
 																		}}
 																	/>
-
 																	{!!backgroundHoverValue.status && (
 																		<BackgroundControl
 																			background={

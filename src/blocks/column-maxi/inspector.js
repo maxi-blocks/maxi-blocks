@@ -23,6 +23,7 @@ import {
 	__experimentalAxisControl,
 	__experimentalDisplayControl,
 	__experimentalTransformControl,
+	__experimentalFancyRadioControl,
 } from '../../components';
 import { getDefaultProp, getLastBreakpointValue } from '../../utils';
 

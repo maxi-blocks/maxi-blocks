@@ -4,7 +4,7 @@
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
 const { Fragment } = wp.element;
-const { TextControl, RadioControl } = wp.components;
+const { TextControl } = wp.components;
 
 /**
  * Internal dependencies

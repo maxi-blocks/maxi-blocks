@@ -37,5 +37,14 @@
 				box-shadow: none !important;
 			}
 		}
+		&__dark {
+			.components-popover {
+				&__content {
+					background-color: #232433;
+					color: #fff;
+					border: 2px solid #80828a;
+				}
+			}
+		}
 	}
 }

@@ -264,6 +264,7 @@ class edit extends MaxiBlock {
 					>
 						<__experimentalBackgroundDisplayer
 							background={background}
+							blockClassName={uniqueID}
 						/>
 
 						{!!shapeDividerValue.top.status && (

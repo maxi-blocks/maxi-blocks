@@ -18,9 +18,17 @@ import './style.scss';
  * Component
  */
 const BackgroundDisplayer = props => {
-	const { background, className } = props;
+	const { background, className, blockClassName } = props;
 
 	const value = !isObject(background) ? JSON.parse(background) : background;
+
+	const parentEl = document.querySelector(`.${blockClassName}`);
+
+	let iframeHeight = '100%';
+
+	if (parentEl) {
+		iframeHeight = `${parentEl.offsetWidth / 1.77}px`; // set the height of the iframe according to the aspect ratio 16:9
+	}
 
 	const classes = classnames('maxi-background-displayer', className);
 
@@ -45,7 +53,7 @@ const BackgroundDisplayer = props => {
 	}
 
 	if (videoUrl && parsedVideo.type === 'vimeo') {
-		videoUrl = `https://player.vimeo.com/video/${parsedVideo.id}?controls=0&autoplay=1&mute=1`;
+		videoUrl = `https://player.vimeo.com/video/${parsedVideo.id}?controls=0&autoplay=1&muted=1`;
 
 		if (parseInt(value.videoOptions.loop)) {
 			videoUrl += '&loop=1';
@@ -104,6 +112,7 @@ const BackgroundDisplayer = props => {
 								frameBorder='0'
 								allow='autoplay'
 								allowFullScreen='allowfullscreen'
+								style={{ height: iframeHeight }}
 							/>
 						</div>
 					)}

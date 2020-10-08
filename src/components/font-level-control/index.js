@@ -103,6 +103,7 @@ export default class FontLevelControl extends Component {
 				fontOptResponse = {
 					...oldFontOptions,
 					...defaultTypography[value],
+					customFormats: { ...oldFontOptions.customFormats },
 				};
 				fontOptResponseHover = JSON.parse(
 					getDefaultProp(null, 'typographyHover')

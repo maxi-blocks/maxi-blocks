@@ -1,0 +1,15 @@
+.maxi-block-display-none {
+	filter: blur(1px);
+	&:not(.maxi-button-extra, .maxi-divider-block, .maxi-row-block, .maxi-column-block) {
+		display: block !important;
+	}
+	&.maxi-column-block,
+	&.maxi-divider-block,
+	&.maxi-row-block,
+	&.maxi-button-extra {
+		display: flex !important;
+	}
+	& * {
+		pointer-events: none;
+	}
+}

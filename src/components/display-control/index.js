@@ -15,6 +15,11 @@ import classnames from 'classnames';
 import { isObject } from 'lodash';
 
 /**
+ * Styles
+ */
+import './editor.scss';
+
+/**
  * Component
  */
 const DisplayControl = props => {

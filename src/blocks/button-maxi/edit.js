@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
+const { withSelect } = wp.data;
 const { __experimentalBlock, RichText } = wp.blockEditor;
 
 /**
@@ -14,6 +15,7 @@ import {
 	getAlignmentFlexObject,
 	getTransformObject,
 	getAlignmentTextObject,
+	getLastBreakpointValue,
 } from '../../utils';
 import { MaxiBlock, __experimentalToolbar } from '../../components';
 
@@ -21,7 +23,7 @@ import { MaxiBlock, __experimentalToolbar } from '../../components';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
+import { isNil, isObject } from 'lodash';
 
 /**
  * Content
@@ -40,12 +42,13 @@ class edit extends MaxiBlock {
 	}
 
 	get getWrapperObject() {
-		const { alignment, zIndex, transform } = this.props.attributes;
+		const { alignment, zIndex, transform, display } = this.props.attributes;
 
 		const response = {
 			alignment: { ...getAlignmentFlexObject(JSON.parse(alignment)) },
 			zIndex: { ...JSON.parse(zIndex) },
 			transform: { ...getTransformObject(JSON.parse(transform)) },
+			display: { ...JSON.parse(display) },
 		};
 
 		return response;
@@ -63,7 +66,6 @@ class edit extends MaxiBlock {
 			margin,
 			zIndex,
 			position,
-			display,
 		} = this.props.attributes;
 
 		const response = {
@@ -82,7 +84,6 @@ class edit extends MaxiBlock {
 			zIndex: { ...JSON.parse(zIndex) },
 			position: { ...JSON.parse(position) },
 			positionOptions: { ...JSON.parse(position).options },
-			display: { ...JSON.parse(display) },
 		};
 
 		return response;
@@ -124,12 +125,18 @@ class edit extends MaxiBlock {
 				defaultBlockStyle,
 				extraClassName,
 				buttonText,
+				display,
 			},
 			setAttributes,
+			deviceType,
 		} = this.props;
+
+		const displayValue = !isObject(display) ? JSON.parse(display) : display;
 
 		const classes = classnames(
 			'maxi-block maxi-button-extra',
+			getLastBreakpointValue(displayValue, 'display', deviceType) ===
+				'none' && 'maxi-block-display-none',
 			blockStyle,
 			extraClassName,
 			uniqueID,
@@ -156,4 +163,10 @@ class edit extends MaxiBlock {
 	}
 }
 
-export default edit;
+export default withSelect((select, ownProps) => {
+	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
+
+	return {
+		deviceType,
+	};
+})(edit);

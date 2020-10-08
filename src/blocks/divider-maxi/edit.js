@@ -15,6 +15,7 @@ import {
 	getBoxShadowObject,
 	getTransformObject,
 	setBackgroundStyles,
+	getLastBreakpointValue,
 } from '../../utils';
 import {
 	MaxiBlock,
@@ -138,6 +139,7 @@ class edit extends MaxiBlock {
 				size,
 				background,
 				divider,
+				display,
 			},
 			className,
 			isSelected,
@@ -148,8 +150,12 @@ class edit extends MaxiBlock {
 
 		onDeviceTypeChange();
 
+		const displayValue = !isObject(display) ? JSON.parse(display) : display;
+
 		const classes = classnames(
 			'maxi-block maxi-divider-block',
+			getLastBreakpointValue(displayValue, 'display', deviceType) ===
+				'none' && 'maxi-block-display-none',
 			blockStyle,
 			extraClassName,
 			uniqueID,

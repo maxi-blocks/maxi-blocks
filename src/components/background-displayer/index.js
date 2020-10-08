@@ -27,7 +27,7 @@ const BackgroundDisplayer = props => {
 	let iframeHeight = '100%';
 
 	if (parentEl) {
-		iframeHeight = `${parentEl.offsetWidth / 1.77}px`; // set the height of the iframe according to the aspect ratio 16:9
+		iframeHeight = `${parentEl.offsetWidth / 1.77}px`; // Set the height of the iframe according to the aspect ratio 16:9
 	}
 
 	const classes = classnames('maxi-background-displayer', className);

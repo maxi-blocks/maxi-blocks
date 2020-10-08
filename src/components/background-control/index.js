@@ -364,6 +364,7 @@ const BackgroundControl = props => {
 								}}
 							/>
 							<MediaUploaderControl
+								className='maxi-mediauploader-control__video-fallback'
 								placeholder={__('Background Fallback')}
 								mediaID={value.videoOptions.fallbackID}
 								onSelectImage={val => {

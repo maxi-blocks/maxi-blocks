@@ -53,7 +53,7 @@ const BackgroundDisplayer = props => {
 	}
 
 	if (videoUrl && parsedVideo.type === 'vimeo') {
-		videoUrl = `https://player.vimeo.com/video/${parsedVideo.id}?controls=0&autoplay=1&muted=1`;
+		videoUrl = `https://player.vimeo.com/video/${parsedVideo.id}?controls=0&autoplay=1&muted=1&autopause=0`;
 
 		if (parseInt(value.videoOptions.loop)) {
 			videoUrl += '&loop=1';
@@ -79,6 +79,61 @@ const BackgroundDisplayer = props => {
 		!value.videoOptions.playOnMobile &&
 			'maxi-background-displayer__video-player--mobile-hidden'
 	);
+
+	// Pasue vimeo at the endTime
+	if (
+		parsedVideo.type === 'vimeo' &&
+		value.videoOptions.endTime &&
+		parentEl
+	) {
+		const scriptsArray = Array.from(window.document.scripts);
+
+		const vimeoIsMounted = scriptsArray.findIndex(
+			script => script.getAttribute('id') === 'maxi-vimeo-sdk'
+		);
+
+		if (vimeoIsMounted === -1) {
+			const script = document.createElement('script');
+			script.src = 'https://player.vimeo.com/api/player.js';
+			script.id = 'maxi-vimeo-sdk';
+			script.async = true;
+			script.onload = () => {
+				// Cleanup onload handler
+				script.onload = null;
+
+				// Pause all vimeo videos on the page at the endTime
+				const containerElems = document.querySelectorAll(
+					'.maxi-container-block'
+				);
+				containerElems.forEach(elem => {
+					const videoPlayerElement = elem.querySelector(
+						'.maxi-background-displayer__video-player'
+					);
+					const videoEnd = videoPlayerElement.getAttribute(
+						'data-end'
+					);
+					const videoType = videoPlayerElement.getAttribute(
+						'data-type'
+					);
+
+					if (videoType === 'vimeo' && videoEnd) {
+						// eslint-disable-next-line no-undef
+						const player = new Vimeo.Player(
+							videoPlayerElement.querySelector('iframe')
+						);
+
+						player.on('timeupdate', data => {
+							if (data.seconds > videoEnd) {
+								player.pause();
+							}
+						});
+					}
+				});
+			};
+
+			document.body.appendChild(script);
+		}
+	}
 
 	return (
 		<div className={classes}>

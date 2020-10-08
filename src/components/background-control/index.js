@@ -320,7 +320,6 @@ const BackgroundControl = props => {
 									onChange(JSON.stringify(value));
 								}}
 							/>
-
 							<SelectControl
 								label={__('Play on Mobile', 'maxi-blocks')}
 								value={value.videoOptions.playOnMobile}

@@ -1036,13 +1036,14 @@ motionElems.forEach(function (elem) {
 
 // Background Video Actions
 const containerElems = document.querySelectorAll('.maxi-container-block');
-motionElems.forEach(function (elem) {
+containerElems.forEach(function (elem) {
 	const videoPlayerElement = elem.querySelector(
 		'.maxi-background-displayer__video-player'
 	);
 	const videoEnd = videoPlayerElement.getAttribute('data-end');
 	const videoType = videoPlayerElement.getAttribute('data-type');
 
+	// Make youtube & vimeo videos cover the container
 	if (videoType === 'youtube' || videoType === 'vimeo') {
 		const iframeElement = videoPlayerElement.querySelector('iframe');
 		const iframeWidth = videoPlayerElement.offsetWidth;
@@ -1065,17 +1066,31 @@ motionElems.forEach(function (elem) {
 				// Cleanup onload handler
 				script.onload = null;
 
-				const player = new Vimeo.Player(
-					videoPlayerElement.querySelector('iframe')
-				);
+				// Pause all vimeo videos on the page at the endTime
+				containerElems.forEach(function (elem) {
+					const videoPlayerElement = elem.querySelector(
+						'.maxi-background-displayer__video-player'
+					);
+					const videoEnd = videoPlayerElement.getAttribute(
+						'data-end'
+					);
+					const videoType = videoPlayerElement.getAttribute(
+						'data-type'
+					);
 
-				player.on('timeupdate', function (data) {
-					if (data.seconds > videoEnd) {
-						player.pause();
+					if (videoType === 'vimeo' && videoEnd) {
+						const player = new Vimeo.Player(
+							videoPlayerElement.querySelector('iframe')
+						);
+
+						player.on('timeupdate', function (data) {
+							if (data.seconds > videoEnd) {
+								player.pause();
+							}
+						});
 					}
 				});
 			};
-
 			document.body.appendChild(script);
 		}
 	}

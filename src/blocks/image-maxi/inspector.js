@@ -753,6 +753,7 @@ const Inspector = props => {
 													onChange={hover =>
 														setAttributes({ hover })
 													}
+													uniqueID={uniqueID}
 												/>
 											),
 										},

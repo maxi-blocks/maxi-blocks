@@ -14,6 +14,7 @@ import BackgroundControl from '../background-control';
 import BorderControl from '../border-control';
 import __experimentalAxisControl from '../axis-control';
 import __experimentalFancyRadioControl from '../fancy-radio-control';
+import setHoverPreview from './setHoverPreview';
 
 /**
  * External dependencies
@@ -39,7 +40,7 @@ import {
  * Component
  */
 const HoverEffectControl = props => {
-	const { hover, defaultHover, className, onChange } = props;
+	const { hover, defaultHover, className, onChange, uniqueID } = props;
 
 	const value = !isObject(hover) ? JSON.parse(hover) : hover;
 
@@ -89,6 +90,8 @@ const HoverEffectControl = props => {
 						]}
 						onChange={val => {
 							hoverSettings.effectType = val;
+
+							setHoverPreview(hoverSettings, uniqueID);
 							onChange(JSON.stringify(value));
 						}}
 					/>

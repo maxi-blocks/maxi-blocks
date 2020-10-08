@@ -272,6 +272,7 @@ class edit extends MaxiBlock {
 
 		const classes = classnames(
 			'maxi-block maxi-image-block',
+			`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
 			getLastBreakpointValue(displayValue, 'display', deviceType) ===
 				'none' && 'maxi-block-display-none',
 			blockStyle,

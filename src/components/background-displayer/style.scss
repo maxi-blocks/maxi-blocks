@@ -19,15 +19,17 @@
 		height: 100%;
 
 		&__iframe-wrapper {
-			position: relative;
-			padding-bottom: 56.25%; /* 16:9 */
-			padding-top: 25px;
-			height: 0;
+			height: 100%;
+			width: 100%;
+			top: 0;
+			left: 0;
+			position: absolute;
+			overflow: hidden;
 			iframe {
 				position: absolute;
-				top: 0;
-				left: 0;
-				width: 100%;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
 				height: 100%;
 			}
 		}
@@ -35,11 +37,14 @@
 		video {
 			width: 100%;
 			height: auto;
-			object-fit: cover;
-		}
-
-		iframe {
 			height: 100%;
+			width: 177.77777778vh;
+			min-width: 100%;
+			min-height: 56.25vw;
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%, -50%);
 		}
 	}
 	&__svg-wrapper {

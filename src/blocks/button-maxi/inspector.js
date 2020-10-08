@@ -70,6 +70,7 @@ const Inspector = props => {
 		deviceType,
 		setAttributes,
 		clientId,
+		formatValue,
 	} = props;
 
 	const backgroundHoverValue = !isObject(backgroundHover)
@@ -163,16 +164,17 @@ const Inspector = props => {
 																		clientId,
 																		'typography'
 																	)}
-																	onChange={typography =>
+																	onChange={obj =>
 																		setAttributes(
-																			{
-																				typography,
-																			}
+																			obj
 																		)
 																	}
 																	hideAlignment
 																	breakpoint={
 																		deviceType
+																	}
+																	formatValue={
+																		formatValue
 																	}
 																/>
 															),
@@ -191,17 +193,26 @@ const Inspector = props => {
 																		clientId,
 																		'typographyHover'
 																	)}
-																	onChange={typographyHover =>
+																	onChange={obj => {
 																		setAttributes(
 																			{
-																				typographyHover,
+																				typographyHover:
+																					obj.typography,
+																				...(obj.content && {
+																					content:
+																						obj.content,
+																				}),
 																			}
-																		)
-																	}
+																		);
+																	}}
 																	hideAlignment
 																	breakpoint={
 																		deviceType
 																	}
+																	formatValue={
+																		formatValue
+																	}
+																	isHover
 																/>
 															),
 														},

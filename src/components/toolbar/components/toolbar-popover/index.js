@@ -24,6 +24,11 @@ import { toolbarAdvancedSettings } from '../../../../icons';
 import classnames from 'classnames';
 
 /**
+ * Styles
+ */
+import './editor.scss';
+
+/**
  * Component
  */
 class ToolbarPopover extends Component {

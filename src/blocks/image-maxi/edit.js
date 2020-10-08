@@ -376,7 +376,7 @@ class edit extends MaxiBlock {
 					value={mediaID}
 					render={({ open }) => (
 						<Fragment>
-							{!isNil(mediaID) && imageData ? (
+							{(!isNil(mediaID) && imageData) || mediaURL ? (
 								<Fragment>
 									<__experimentalBackgroundDisplayer
 										background={background}

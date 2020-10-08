@@ -36,10 +36,6 @@ const attributes = {
 		type: 'number',
 		default: JSON.stringify(attributesData.opacity),
 	},
-	opacityHover: {
-		type: 'number',
-		default: JSON.stringify(attributesData.opacityHover),
-	},
 	border: {
 		type: 'string',
 		default: JSON.stringify(buttonAttributesData.border),

@@ -11,6 +11,7 @@ const { RadioControl } = wp.components;
 import { getLastBreakpointValue } from '../../../../utils';
 import SizeControl from '../../../size-control';
 import ToolbarPopover from '../toolbar-popover';
+import { getDefaultProp } from '../../../../utils';
 
 /**
  * External dependencies
@@ -45,9 +46,12 @@ const Size = props => {
 		onChangeSize,
 		isFirstOnHierarchy,
 		breakpoint,
+		clientId,
 	} = props;
 
 	if (EXCLUDED_BLOCKS.includes(blockName)) return null;
+
+	const defaultSize = JSON.parse(getDefaultProp(clientId, 'size'));
 
 	const value = !isObject(size) ? JSON.parse(size) : size;
 
@@ -88,6 +92,8 @@ const Size = props => {
 							value[breakpoint].widthUnit = val;
 							onChangeSize(JSON.stringify(value));
 						}}
+						defaultValue={defaultSize[breakpoint]['width']}
+						defaultUnit={defaultSize[breakpoint]['widthUnit']}
 						value={getLastBreakpointValue(
 							value,
 							'width',
@@ -109,6 +115,8 @@ const Size = props => {
 							value[breakpoint]['max-widthUnit'] = val;
 							onChangeSize(JSON.stringify(value));
 						}}
+						defaultValue={defaultSize[breakpoint]['max-width']}
+						defaultUnit={defaultSize[breakpoint]['max-widthUnit']}
 						value={getLastBreakpointValue(
 							value,
 							'max-width',

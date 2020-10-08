@@ -1,0 +1,18 @@
+{
+	"label" : "overlay",
+	"overlayOptions": {
+		"overlay": "",
+		"activeColor": "",
+		"color": "",
+		"gradient": "",
+		"gradientAboveBackground": false,
+		"gradientOpacity": {
+			"opacity": {
+				"label": "Opacity",
+				"general": {
+					"opacity": 1
+				}
+			}
+		}
+	}
+}

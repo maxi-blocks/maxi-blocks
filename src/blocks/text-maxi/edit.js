@@ -2,12 +2,12 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
+const { compose } = wp.compose;
 const { Fragment } = wp.element;
 const { createBlock } = wp.blocks;
 const { select, withSelect, withDispatch } = wp.data;
-const { compose } = wp.compose;
-const { __unstableIndentListItems, __unstableOutdentListItems } = wp.richText;
 const { __experimentalBlock, RichText, RichTextShortcut } = wp.blockEditor;
+const { __unstableIndentListItems, __unstableOutdentListItems } = wp.richText;
 
 /**
  * Internal dependencies
@@ -21,6 +21,7 @@ import {
 	getTransformObject,
 	setBackgroundStyles,
 	setTextCustomFormats,
+	getLastBreakpointValue,
 } from '../../utils';
 import {
 	MaxiBlock,
@@ -38,7 +39,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
+import { isEmpty, isObject } from 'lodash';
 
 /**
  * Content
@@ -121,11 +122,7 @@ class edit extends MaxiBlock {
 	}
 
 	get getHoverObject() {
-		const {
-			opacityHover,
-			boxShadowHover,
-			borderHover,
-		} = this.props.attributes;
+		const { boxShadowHover, borderHover } = this.props.attributes;
 
 		const response = {
 			boxShadowHover: {
@@ -134,7 +131,6 @@ class edit extends MaxiBlock {
 			borderHover: { ...JSON.parse(borderHover) },
 			borderWidth: { ...JSON.parse(borderHover).borderWidth },
 			borderRadius: { ...JSON.parse(borderHover).borderRadius },
-			opacity: { ...getOpacityObject(JSON.parse(opacityHover)) },
 		};
 
 		return response;
@@ -178,6 +174,7 @@ class edit extends MaxiBlock {
 				listReversed,
 				fullWidth,
 				typography,
+				display,
 			},
 			node,
 			className,
@@ -187,12 +184,17 @@ class edit extends MaxiBlock {
 			onMerge,
 			onSplit,
 			onReplace,
+			deviceType,
 		} = this.props;
 
 		const name = 'maxi-blocks/text-maxi';
 
+		const displayValue = !isObject(display) ? JSON.parse(display) : display;
+
 		const classes = classnames(
 			'maxi-block maxi-text-block',
+			getLastBreakpointValue(displayValue, 'display', deviceType) ===
+				'none' && 'maxi-block-display-none',
 			blockStyle,
 			extraClassName,
 			uniqueID,
@@ -383,10 +385,7 @@ const editSelect = withSelect((select, ownProps) => {
 	};
 	const formatValue = __experimentalGetFormatValue(formatElement);
 
-	let deviceType = select(
-		'core/edit-post'
-	).__experimentalGetPreviewDeviceType();
-	deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
+	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 	return {
 		node,

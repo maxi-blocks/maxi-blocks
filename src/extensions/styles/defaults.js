@@ -48,31 +48,6 @@ export const opacity = {
 	},
 };
 
-export const opacityHover = {
-	label: 'Opacity',
-	general: {
-		opacity: 1,
-	},
-	xxl: {
-		opacity: '',
-	},
-	xl: {
-		opacity: '',
-	},
-	l: {
-		opacity: '',
-	},
-	m: {
-		opacity: '',
-	},
-	s: {
-		opacity: '',
-	},
-	xs: {
-		opacity: '',
-	},
-};
-
 export const border = {
 	label: 'Border',
 	general: {
@@ -517,9 +492,14 @@ export const background = {
 		autoplay: 0,
 		loop: 0,
 		muted: 0,
-		controls: 0,
 		preload: 'metadata',
 		clipPath: '',
+		opacity: {
+			label: 'Opacity',
+			general: {
+				opacity: 1,
+			},
+		},
 	},
 	colorOptions: {
 		activeColor: '',
@@ -527,25 +507,29 @@ export const background = {
 		gradient: '',
 		gradientAboveBackground: false,
 		clipPath: '',
+		gradientOpacity: {
+			opacity: {
+				label: 'Opacity',
+				general: {
+					opacity: 1,
+				},
+			},
+		},
 	},
-	overlayOptions: {
-		overlay: '',
-		activeColor: '',
-		color: '',
-		gradient: '',
-		gradientAboveBackground: false,
+	imageOpacity: {
 		opacity: {
 			label: 'Opacity',
 			general: {
-				opacity: 0.8,
+				opacity: 1,
 			},
 		},
 	},
 };
 
 export const backgroundHover = {
-	label: 'Background',
+	label: 'Background Hover',
 	activeMedia: '',
+	status: 0,
 	imageOptions: [
 		{
 			imageData: {
@@ -585,7 +569,6 @@ export const backgroundHover = {
 		autoplay: '',
 		loop: '',
 		muted: '',
-		controls: '',
 		preload: '',
 		clipPath: '',
 	},
@@ -595,30 +578,50 @@ export const backgroundHover = {
 		gradient: '',
 		gradientAboveBackground: '',
 		clipPath: '',
+		gradientOpacity: {
+			opacity: {
+				label: 'Opacity',
+				general: {
+					opacity: 1,
+				},
+			},
+		},
 	},
+};
+
+export const overlay = {
+	label: 'Overlay',
 	overlayOptions: {
 		overlay: '',
 		activeColor: '',
 		color: '',
 		gradient: '',
 		gradientAboveBackground: false,
-		opacity: {
-			label: 'Opacity',
-			general: {
-				opacity: '',
+		gradientOpacity: {
+			opacity: {
+				label: 'Opacity',
+				general: {
+					opacity: 1,
+				},
 			},
 		},
 	},
+};
+
+export const overlayHover = {
+	label: 'Overlay Hover',
+	status: 0,
+	...overlay,
 };
 
 export const boxShadow = {
 	label: 'Box Shadow',
 	general: {
 		shadowColor: '#ffffff',
-		shadowHorizontal: 0,
-		shadowVertical: 0,
-		shadowBlur: 0,
-		shadowSpread: 0,
+		shadowHorizontal: '',
+		shadowVertical: '',
+		shadowBlur: '',
+		shadowSpread: '',
 	},
 	xxl: {
 		shadowColor: '',
@@ -1267,6 +1270,7 @@ export const __experimentalColumn = {
 export const __experimentalShapeDivider = {
 	label: 'Shape Divider',
 	top: {
+		status: 0,
 		height: 100,
 		heightUnit: 'px',
 		opacity: {
@@ -1286,6 +1290,7 @@ export const __experimentalShapeDivider = {
 		},
 	},
 	bottom: {
+		status: 0,
 		height: 100,
 		heightUnit: 'px',
 		opacity: {
@@ -1765,72 +1770,44 @@ export const __experimentalArrow = {
 		active: 0,
 		side: 'bottom',
 		position: 50,
-		color: '#ffffff',
+		width: 80,
 		widthUnit: 'px',
-		width: 20,
-		heightUnit: 'px',
-		height: 20,
-		border: '',
 	},
 	xxl: {
 		side: '',
 		position: '',
-		color: '',
-		widthUnit: '',
 		width: '',
-		heightUnit: '',
-		height: '',
-		border: '',
+		widthUnit: '',
 	},
 	xl: {
 		side: '',
 		position: '',
-		color: '',
-		widthUnit: '',
 		width: '',
-		heightUnit: '',
-		height: '',
-		border: '',
+		widthUnit: '',
 	},
 	l: {
 		side: '',
 		position: '',
-		color: '',
-		widthUnit: '',
 		width: '',
-		heightUnit: '',
-		height: '',
-		border: '',
+		widthUnit: '',
 	},
 	m: {
 		side: '',
 		position: '',
-		color: '',
-		widthUnit: '',
 		width: '',
-		heightUnit: '',
-		height: '',
-		border: '',
+		widthUnit: '',
 	},
 	s: {
 		side: '',
 		position: '',
-		color: '',
-		widthUnit: '',
 		width: '',
-		heightUnit: '',
-		height: '',
-		border: '',
+		widthUnit: '',
 	},
 	xs: {
 		side: '',
 		position: '',
-		color: '',
-		widthUnit: '',
 		width: '',
-		heightUnit: '',
-		height: '',
-		border: '',
+		widthUnit: '',
 	},
 };
 

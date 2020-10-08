@@ -5,6 +5,10 @@
 		}
 		.components-angle-picker-control {
 			width: 100%;
+			&__input-field {
+				padding: 0 0 0 8px !important;
+				line-height: 2;
+			}
 			.components-angle-picker-control {
 				&__angle-circle-indicator,
 				&__angle-circle {
@@ -12,8 +16,6 @@
 				}
 			}
 			.components-base-control__field {
-				margin-bottom: 0;
-
 				&__label {
 					flex: 5 !important;
 				}

@@ -2,8 +2,8 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { __experimentalBlock, RichText } = wp.blockEditor;
 const { withSelect } = wp.data;
+const { __experimentalBlock, RichText } = wp.blockEditor;
 
 /**
  * Internal dependencies
@@ -15,8 +15,8 @@ import {
 	getAlignmentFlexObject,
 	getTransformObject,
 	getAlignmentTextObject,
-	getOpacityObject,
 	setTextCustomFormats,
+	getLastBreakpointValue,
 } from '../../utils';
 import { MaxiBlock, __experimentalToolbar } from '../../components';
 import { __experimentalGetFormatValue } from '../../extensions/text/formats';
@@ -25,6 +25,7 @@ import { __experimentalGetFormatValue } from '../../extensions/text/formats';
  * External dependencies
  */
 import classnames from 'classnames';
+import { isNil, isObject } from 'lodash';
 
 /**
  * Content
@@ -57,12 +58,13 @@ class edit extends MaxiBlock {
 	}
 
 	get getWrapperObject() {
-		const { alignment, zIndex, transform } = this.props.attributes;
+		const { alignment, zIndex, transform, display } = this.props.attributes;
 
 		const response = {
 			alignment: { ...getAlignmentFlexObject(JSON.parse(alignment)) },
 			zIndex: { ...JSON.parse(zIndex) },
 			transform: { ...getTransformObject(JSON.parse(transform)) },
+			display: { ...JSON.parse(display) },
 		};
 
 		return response;
@@ -72,7 +74,6 @@ class edit extends MaxiBlock {
 		const {
 			background,
 			alignmentText,
-			opacity,
 			typography,
 			boxShadow,
 			border,
@@ -81,7 +82,6 @@ class edit extends MaxiBlock {
 			margin,
 			zIndex,
 			position,
-			display,
 		} = this.props.attributes;
 
 		const response = {
@@ -97,11 +97,9 @@ class edit extends MaxiBlock {
 			size: { ...JSON.parse(size) },
 			padding: { ...JSON.parse(padding) },
 			margin: { ...JSON.parse(margin) },
-			opacity: { ...getOpacityObject(JSON.parse(opacity)) },
 			zIndex: { ...JSON.parse(zIndex) },
 			position: { ...JSON.parse(position) },
 			positionOptions: { ...JSON.parse(position).options },
-			display: { ...JSON.parse(display) },
 		};
 
 		return response;
@@ -110,7 +108,6 @@ class edit extends MaxiBlock {
 	get getHoverObject() {
 		const {
 			backgroundHover,
-			opacityHover,
 			typographyHover,
 			boxShadowHover,
 			borderHover,
@@ -118,17 +115,19 @@ class edit extends MaxiBlock {
 
 		const response = {
 			typographyHover: { ...JSON.parse(typographyHover) },
-			backgroundHover: {
-				...getColorBackgroundObject(JSON.parse(backgroundHover)),
-			},
 			boxShadowHover: {
 				...getBoxShadowObject(JSON.parse(boxShadowHover)),
 			},
 			borderHover: { ...JSON.parse(borderHover) },
 			borderWidth: { ...JSON.parse(borderHover).borderWidth },
 			borderRadius: { ...JSON.parse(borderHover).borderRadius },
-			opacity: { ...getOpacityObject(JSON.parse(opacityHover)) },
 		};
+
+		if (!isNil(backgroundHover) && !!JSON.parse(backgroundHover).status) {
+			response.backgroundHover = {
+				...getColorBackgroundObject(JSON.parse(backgroundHover)),
+			};
+		}
 
 		return response;
 	}
@@ -142,12 +141,18 @@ class edit extends MaxiBlock {
 				defaultBlockStyle,
 				extraClassName,
 				content,
+				display,
 			},
 			setAttributes,
+			deviceType,
 		} = this.props;
+
+		const displayValue = !isObject(display) ? JSON.parse(display) : display;
 
 		const classes = classnames(
 			'maxi-block maxi-button-extra',
+			getLastBreakpointValue(displayValue, 'display', deviceType) ===
+				'none' && 'maxi-block-display-none',
 			blockStyle,
 			extraClassName,
 			uniqueID,
@@ -191,10 +196,7 @@ export default withSelect((select, ownProps) => {
 	};
 	const formatValue = __experimentalGetFormatValue(formatElement);
 
-	let deviceType = select(
-		'core/edit-post'
-	).__experimentalGetPreviewDeviceType();
-	deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
+	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 	return {
 		formatValue,

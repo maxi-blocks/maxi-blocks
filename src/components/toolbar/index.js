@@ -36,9 +36,11 @@ import {
 	TextOptions,
 	PaddingMargin,
 	Size,
+	ToggleBlock,
 	__experimentalColumnMover,
 	__experimentalRowSettings,
 	__experimentalColumnSize,
+	__experimentalColumnsHandlers,
 } from './components';
 
 /**
@@ -90,7 +92,6 @@ const MaxiToolbar = props => {
 			verticalAlign,
 			linkSettings,
 			boxShadow,
-			showLine,
 			divider,
 			lineOrientation,
 			lineVertical,
@@ -101,6 +102,7 @@ const MaxiToolbar = props => {
 			svgColorOrange,
 			svgColorBlack,
 			svgColorWhite,
+			display,
 		},
 		clientId,
 		isSelected,
@@ -109,6 +111,7 @@ const MaxiToolbar = props => {
 		formatValue,
 		// node,
 		deviceType,
+		toggleHandlers,
 	} = props;
 
 	const [anchorRef, setAnchorRef] = useState(
@@ -209,13 +212,11 @@ const MaxiToolbar = props => {
 						/>
 						<Divider
 							blockName={name}
-							showLine={showLine}
 							divider={divider}
 							defaultDivider={getDefaultProp(clientId, 'divider')}
 							lineOrientation={lineOrientation}
-							onChange={(showLine, divider) =>
+							onChange={divider =>
 								setAttributes({
-									showLine,
 									divider,
 								})
 							}
@@ -307,6 +308,11 @@ const MaxiToolbar = props => {
 								setAttributes({ rowPattern })
 							}
 							breakpoint={deviceType}
+						/>
+
+						<__experimentalColumnsHandlers
+							toggleHandlers={toggleHandlers}
+							blockName={name}
 						/>
 						<Link
 							blockName={name}
@@ -447,6 +453,12 @@ const MaxiToolbar = props => {
 						/>
 						<Duplicate clientId={clientId} />
 						<Delete clientId={clientId} />
+						<ToggleBlock
+							display={display}
+							breakpoint={deviceType}
+							onChange={display => setAttributes({ display })}
+							defaultDisplay='flex'
+						/>
 					</div>
 				</Popover>
 			)}

@@ -56,10 +56,6 @@ const attributes = {
 		type: 'string',
 		default: JSON.stringify(attributesData.opacity),
 	},
-	opacityHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.opacityHover),
-	},
 	background: {
 		type: 'string',
 		default: JSON.stringify(attributesData.background),

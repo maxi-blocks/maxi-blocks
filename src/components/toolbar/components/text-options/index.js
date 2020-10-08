@@ -59,6 +59,7 @@ const TextOptions = props => {
 								'font-family',
 								breakpoint
 							)}
+							theme='dark'
 							onChange={font => {
 								value[breakpoint]['font-family'] = font.value;
 								value.options = font.files;

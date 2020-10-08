@@ -1034,47 +1034,43 @@ motionElems.forEach(function (elem) {
 	}
 });
 
-// Background Video Effects
+// Background Video Actions
 const containerElems = document.querySelectorAll('.maxi-container-block');
 motionElems.forEach(function (elem) {
 	const videoPlayerElement = elem.querySelector(
 		'.maxi-background-displayer__video-player'
 	);
-	const videoStart = videoPlayerElement.getAttribute('data-start');
 	const videoEnd = videoPlayerElement.getAttribute('data-end');
-
 	const videoType = videoPlayerElement.getAttribute('data-type');
-	if (videoType === 'vimeo') {
-		const vimeoIsMounted = Array.from(window.document.scripts).findIndex(
-			script => {
-				console.log(script.getAttribute('id'));
-				script.getAttribute('id') == 'maxi-gsap-lib-js-js';
-			}
+
+	if (videoType === 'vimeo' && videoEnd) {
+		const scriptsArray = Array.from(window.document.scripts);
+
+		const vimeoIsMounted = scriptsArray.findIndex(
+			script => script.getAttribute('id') === 'maxi-vimeo-sdk'
 		);
-		console.log(vimeoIsMounted);
-		let script = document.createElement('script');
-		script.src = 'https://player.vimeo.com/api/player.js';
 
-		script.id = 'maxi-vimeo-sdk';
-		script.async = true;
-		script.onload = function () {
-			// Cleanup onload handler
-			script.onload = null;
+		if (vimeoIsMounted === -1) {
+			let script = document.createElement('script');
+			script.src = 'https://player.vimeo.com/api/player.js';
+			script.id = 'maxi-vimeo-sdk';
+			script.async = true;
+			script.onload = () => {
+				// Cleanup onload handler
+				script.onload = null;
 
-			if (videoEnd) {
 				const player = new Vimeo.Player(
 					videoPlayerElement.querySelector('iframe')
 				);
-				console.log(videoPlayerElement.querySelector('iframe'));
 
 				player.on('timeupdate', function (data) {
 					if (data.seconds > videoEnd) {
 						player.pause();
 					}
 				});
-			}
-		};
+			};
 
-		document.body.appendChild(script);
+			document.body.appendChild(script);
+		}
 	}
 });

@@ -10,10 +10,8 @@ document.addEventListener( 'DOMContentLoaded', addMaxiLayoutButton );
 function addMaxiLayoutButton() {
 	let toolbar = document.querySelector( '.edit-post-header-toolbar' );
 	if ( ! toolbar ) {
-		console.log('no toolbar');
 		return;
 	}
-	console.log('toolbar');
 	let buttonDiv = document.createElement( 'div' );
 	let html = '<div class="maxi-toolbar-layout">';
 	html += `<a type="button" id="maxi-button__layout" class="button maxi-button maxi-button__toolbar" aria-label="${ __( 'Maxi Cloud Library', 'maxi-blocks' ) }">\
@@ -39,7 +37,6 @@ jQuery(document).ready(function($) {
 	$('textarea#maxi_blocks_custom_ccs_page').on('keyup', function(){
 		console.log("t change");
 		let custom_css_code = $('textarea#maxi_blocks_custom_ccs_page').val();
-		console.log('custom_css_code '+ $('style#maxi-blocks-custom-ccs-page').text());
 
 		$('style#maxi-blocks-custom-ccs-page').text(custom_css_code);
 		//wp.data.dispatch( 'core/editor' ).editPost( { maxi_custom_css_page: {custom_css_code} } );

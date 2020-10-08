@@ -15,9 +15,11 @@ import {
 	getAlignmentFlexObject,
 	getTransformObject,
 	getAlignmentTextObject,
+	setTextCustomFormats,
 	getLastBreakpointValue,
 } from '../../utils';
 import { MaxiBlock, __experimentalToolbar } from '../../components';
+import { __experimentalGetFormatValue } from '../../extensions/text/formats';
 
 /**
  * External dependencies
@@ -30,13 +32,27 @@ import { isNil, isObject } from 'lodash';
  */
 class edit extends MaxiBlock {
 	get getObject() {
-		const response = {
+		const { uniqueID, typography, typographyHover } = this.props.attributes;
+
+		let response = {
 			[this.props.attributes.uniqueID]: this.getWrapperObject,
 			[`${this.props.attributes.uniqueID} .maxi-button-extra__button`]: this
 				.getNormalObject,
 			[`${this.props.attributes.uniqueID} .maxi-button-extra__button:hover`]: this
 				.getHoverObject,
 		};
+
+		response = Object.assign(
+			response,
+			setTextCustomFormats(
+				[
+					`${uniqueID} .maxi-button-extra__button`,
+					`${uniqueID} .maxi-button-extra__button li`,
+				],
+				typography,
+				typographyHover
+			)
+		);
 
 		return response;
 	}
@@ -108,7 +124,7 @@ class edit extends MaxiBlock {
 		};
 
 		if (!isNil(backgroundHover) && !!JSON.parse(backgroundHover).status) {
-			response['backgroundHover'] = {
+			response.backgroundHover = {
 				...getColorBackgroundObject(JSON.parse(backgroundHover)),
 			};
 		}
@@ -124,7 +140,7 @@ class edit extends MaxiBlock {
 				blockStyle,
 				defaultBlockStyle,
 				extraClassName,
-				buttonText,
+				content,
 				display,
 			},
 			setAttributes,
@@ -154,8 +170,8 @@ class edit extends MaxiBlock {
 					className='maxi-button-extra__button'
 					withoutInteractiveFormatting
 					placeholder={__('Set some text…', 'maxi-blocks')}
-					value={buttonText}
-					onChange={buttonText => setAttributes({ buttonText })}
+					value={content}
+					onChange={content => setAttributes({ content })}
 					identifier='text'
 				/>
 			</__experimentalBlock>,
@@ -164,9 +180,26 @@ class edit extends MaxiBlock {
 }
 
 export default withSelect((select, ownProps) => {
+	const {
+		attributes: { content, isList, typeOfList },
+		clientId,
+	} = ownProps;
+
+	const node = document.getElementById(`block-${clientId}`);
+
+	const formatElement = {
+		element: node,
+		html: content,
+		multilineTag: isList ? 'li' : undefined,
+		multilineWrapperTags: isList ? typeOfList : undefined,
+		__unstableIsEditableTree: true,
+	};
+	const formatValue = __experimentalGetFormatValue(formatElement);
+
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 	return {
+		formatValue,
 		deviceType,
 	};
 })(edit);

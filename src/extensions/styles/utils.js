@@ -36,7 +36,7 @@ export const getDefaultProp = (clientId, prop) => {
  * Gets an object base on Maxi Blocks breakpoints schema and looks for the last set value
  * for a concrete property in case is not set for the requested breakpoint
  */
-export const getLastBreakpointValue = (obj, prop, breakpoint) => {
+export const getLastBreakpointValue = (obj, prop, breakpoint = 'general') => {
 	if (!isNil(obj[breakpoint][prop]) && !isEmpty(obj[breakpoint][prop]))
 		return obj[breakpoint][prop];
 	if (!isNil(obj[breakpoint][prop]) && isNumber(obj[breakpoint][prop]))
@@ -765,6 +765,46 @@ export const setBackgroundStyles = (
 			overlayHover: {},
 		};
 	}
+
+	return response;
+};
+
+export const setTextCustomFormats = (target, typography, typographyHover) => {
+	let response = {};
+
+	const { customFormats } = JSON.parse(typography);
+	const { customFormats: customFormatsHover } = JSON.parse(typographyHover);
+
+	customFormats &&
+		Object.entries(customFormats).forEach(([key, value]) => {
+			target.forEach(el => {
+				const format = {
+					[`${el} .${key}`]: {
+						customFormat: value,
+					},
+					[`${el} .${key} *`]: {
+						customFormat: value,
+					},
+				};
+
+				response = Object.assign(response, format);
+			});
+		});
+	customFormatsHover &&
+		Object.entries(customFormatsHover).forEach(([key, value]) => {
+			target.forEach(el => {
+				const format = {
+					[`${el} .${key}:hover`]: {
+						customFormat: value,
+					},
+					[`${el} .${key}:hover *`]: {
+						customFormat: value,
+					},
+				};
+
+				response = Object.assign(response, format);
+			});
+		});
 
 	return response;
 };

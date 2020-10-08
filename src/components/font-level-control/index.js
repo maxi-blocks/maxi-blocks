@@ -90,6 +90,7 @@ export default class FontLevelControl extends Component {
 			let fontOptResponse = {};
 			let fontOptResponseHover = {};
 			let marginOptResponse = {};
+
 			if (!isEmpty(this.state[value])) {
 				fontOptResponse = this.state[value];
 				fontOptResponseHover = this.state[`${value}Hover`];
@@ -99,8 +100,11 @@ export default class FontLevelControl extends Component {
 					? JSON.parse(fontOptions)
 					: fontOptions;
 
-				fontOptResponse.label = oldFontOptions.label;
-				Object.assign(fontOptResponse, defaultTypography[value]);
+				fontOptResponse = {
+					...oldFontOptions,
+					...defaultTypography[value],
+					customFormats: { ...oldFontOptions.customFormats },
+				};
 				fontOptResponseHover = JSON.parse(
 					getDefaultProp(null, 'typographyHover')
 				);

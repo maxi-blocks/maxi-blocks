@@ -176,6 +176,7 @@ const BorderControl = props => {
 							onChange(JSON.stringify(value));
 						}}
 						breakpoint={breakpoint}
+						allowedUnits={['px', 'em', 'vw']}
 						minMaxSettings={{
 							px: {
 								min: 0,
@@ -183,15 +184,11 @@ const BorderControl = props => {
 							},
 							em: {
 								min: 0,
-								max: 99,
+								max: 10,
 							},
 							vw: {
 								min: 0,
-								max: 99,
-							},
-							'%': {
-								min: 0,
-								max: 100,
+								max: 10,
 							},
 						}}
 						disableAuto

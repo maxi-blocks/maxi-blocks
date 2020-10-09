@@ -33,6 +33,24 @@ const AxisControl = props => {
 		onChange,
 		breakpoint = 'general',
 		disableAuto = false,
+		minMaxSettings = {
+			px: {
+				min: 0,
+				max: 999,
+			},
+			em: {
+				min: 0,
+				max: 999,
+			},
+			vw: {
+				min: 0,
+				max: 999,
+			},
+			'%': {
+				min: 0,
+				max: 999,
+			},
+		},
 	} = props;
 
 	const instanceId = useInstanceId(AxisControl);
@@ -61,25 +79,6 @@ const AxisControl = props => {
 		return inputValue;
 	};
 
-	const onChangeValue = (newValue, target) => {
-		if (value[breakpoint].sync === true) {
-			for (const key of Object.keys(value[breakpoint])) {
-				if (key !== 'sync' && key !== 'unit')
-					value[breakpoint][key] =
-						!!Number(newValue) || parseInt(newValue) === 0
-							? Number(newValue)
-							: newValue;
-			}
-		} else {
-			value[breakpoint][getKey(value[breakpoint], target)] =
-				!!Number(newValue) || parseInt(newValue) === 0
-					? Number(newValue)
-					: newValue;
-		}
-
-		onChange(JSON.stringify(value));
-	};
-
 	const onReset = () => {
 		for (const key of Object.keys(defaultValue[breakpoint])) {
 			value[breakpoint][key] = defaultValue[breakpoint][key];
@@ -102,6 +101,31 @@ const AxisControl = props => {
 		return inputValue;
 	};
 
+	const currentUnit = getLastBreakpointValue(value, 'unit', breakpoint);
+
+	const onChangeValue = (newValue, target) => {
+		let finalValue = newValue;
+		if (Number(newValue) > minMaxSettings[currentUnit].max) {
+			finalValue = minMaxSettings[currentUnit].max;
+		}
+		if (value[breakpoint].sync === true) {
+			for (const key of Object.keys(value[breakpoint])) {
+				if (key !== 'sync' && key !== 'unit')
+					value[breakpoint][key] =
+						!!Number(finalValue) || parseInt(finalValue) === 0
+							? Number(finalValue)
+							: finalValue;
+			}
+		} else {
+			value[breakpoint][getKey(value[breakpoint], target)] =
+				!!Number(finalValue) || parseInt(finalValue) === 0
+					? Number(finalValue)
+					: finalValue;
+		}
+
+		onChange(JSON.stringify(value));
+	};
+
 	return (
 		<div className={classes}>
 			<BaseControl
@@ -116,7 +140,7 @@ const AxisControl = props => {
 						{ label: 'VW', value: 'vw' },
 						{ label: '%', value: '%' },
 					]}
-					value={getLastBreakpointValue(value, 'unit', breakpoint)}
+					value={currentUnit}
 					onChange={val => {
 						value[breakpoint].unit = val;
 						onChange(JSON.stringify(value));
@@ -150,8 +174,8 @@ const AxisControl = props => {
 							__('%s Top', 'maxi-blocks'),
 							value.label
 						)}
-						min={value.min ? value.min : 0}
-						max={value.max ? value.max : 'none'}
+						min={minMaxSettings[currentUnit].min}
+						max={minMaxSettings[currentUnit].max}
 					/>
 					{!disableAuto && (
 						<label
@@ -187,8 +211,8 @@ const AxisControl = props => {
 							__('%s Right', 'maxi-blocks'),
 							value.label
 						)}
-						min={value.min ? value.min : 0}
-						max={value.max ? value.max : 'none'}
+						min={minMaxSettings[currentUnit].min}
+						max={minMaxSettings[currentUnit].max}
 					/>
 					{!disableAuto && (
 						<label
@@ -224,8 +248,8 @@ const AxisControl = props => {
 							__('%s Bottom', 'maxi-blocks'),
 							value.label
 						)}
-						min={value.min ? value.min : 0}
-						max={value.max ? value.max : 'none'}
+						min={minMaxSettings[currentUnit].min}
+						max={minMaxSettings[currentUnit].max}
 					/>
 					{!disableAuto && (
 						<label
@@ -261,8 +285,8 @@ const AxisControl = props => {
 							__('%s Left', 'maxi-blocks'),
 							value.label
 						)}
-						min={value.min ? value.min : 0}
-						max={value.max ? value.max : 'none'}
+						min={minMaxSettings[currentUnit].min}
+						max={minMaxSettings[currentUnit].max}
 					/>
 					{!disableAuto && (
 						<label

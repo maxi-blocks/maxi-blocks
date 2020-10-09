@@ -101,9 +101,7 @@ const SizeControl = props => {
 					className='maxi-size-control__value'
 					value={trim(value)}
 					onChange={e => {
-						let result = Number(e.target.value);
-						if (result > max) result = max;
-						onChangeValue(result);
+						onChangeValue(Number(e.target.value));
 					}}
 					min={min}
 					max={max}
@@ -117,10 +115,7 @@ const SizeControl = props => {
 						className='maxi-size-control__value'
 						value={trim(value)}
 						onChange={e => {
-							let result = Number(e.target.value);
-							if (result > minMaxSettings[unit].max)
-								result = minMaxSettings[unit].max;
-							onChangeValue(result);
+							onChangeValue(Number(e.target.value));
 						}}
 						min={unit ? minMaxSettings[unit].min : null}
 						max={unit ? minMaxSettings[unit].max : null}

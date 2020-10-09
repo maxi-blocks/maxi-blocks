@@ -117,15 +117,7 @@ const AxisControl = props => {
 	const currentUnit = getLastBreakpointValue(value, 'unit', breakpoint);
 
 	const onChangeValue = (newValue, target) => {
-		let finalValue = newValue;
-
-		if (Number(newValue) > minMaxSettings[currentUnit].max) {
-			finalValue = minMaxSettings[currentUnit].max;
-		}
-
-		if (Number(newValue) < minMaxSettings[currentUnit].min) {
-			finalValue = minMaxSettings[currentUnit].min;
-		}
+		const finalValue = newValue;
 
 		if (value[breakpoint].sync === true) {
 			for (const key of Object.keys(value[breakpoint])) {

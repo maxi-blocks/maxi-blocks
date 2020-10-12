@@ -170,14 +170,11 @@ export class BackEndResponsiveStyles {
 					if (isEmpty(content)) continue;
 
 					if (breakpoint === 'general') {
-						response += `body.maxi-blocks--active .maxi-block.${target},`;
 						response += `body.maxi-blocks--active .maxi-block--backend.${target}{`;
 						response += this.getResponsiveStyles(content);
 						response += '}';
 					}
 					if (breakpoint === 'xxl') {
-						response += `
-							body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xxl"] .maxi-block.${target},`;
 						response += `
 							body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xxl"] .maxi-block--backend.${target}{`;
 						response += this.getResponsiveStyles(content);
@@ -185,28 +182,15 @@ export class BackEndResponsiveStyles {
 					}
 					if (breakpoint === 'xl') {
 						response += `
-                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xl"] .maxi-block.${target},
-                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="l"] .maxi-block.${target},
-                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="m"] .maxi-block.${target},
-                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .maxi-block.${target},
-							body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block.${target},`;
-						response += `
                             body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xl"] .maxi-block--backend.${target},
                             body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="l"] .maxi-block--backend.${target},
                             body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="m"] .maxi-block--backend.${target},
                             body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .maxi-block--backend.${target},
 							body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block--backend.${target}{`;
-
 						response += this.getResponsiveStyles(content);
 						response += '}';
 					}
 					if (breakpoint === 'l') {
-						response += `
-                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="l"] .maxi-block.${target},
-                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="m"] .maxi-block.${target},
-                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .maxi-block.${target},
-							body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block.${target},`;
-
 						response += `
                             body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="l"] .maxi-block--backend.${target},
                             body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="m"] .maxi-block--backend.${target},
@@ -217,11 +201,6 @@ export class BackEndResponsiveStyles {
 					}
 					if (breakpoint === 'm') {
 						response += `
-                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="m"] .maxi-block.${target},
-                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .maxi-block.${target},
-							body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block.${target},`;
-
-						response += `
                             body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="m"] .maxi-block--backend.${target},
                             body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .maxi-block--backend.${target},
                             body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block--backend.${target}{`;
@@ -230,18 +209,12 @@ export class BackEndResponsiveStyles {
 					}
 					if (breakpoint === 's') {
 						response += `
-                            body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .maxi-block.${target},
-							body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block.${target},`;
-
-						response += `
                             body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .maxi-block--backend.${target},
                             body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block--backend.${target}{`;
 						response += this.getResponsiveStyles(content);
 						response += '}';
 					}
 					if (breakpoint === 'xs') {
-						response += `
-							body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block.${target},`;
 						response += `
                             body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block--backend.${target}{`;
 						response += this.getResponsiveStyles(content);

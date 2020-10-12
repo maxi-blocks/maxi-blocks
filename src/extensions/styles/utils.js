@@ -694,13 +694,15 @@ export const setBackgroundStyles = (
 	background,
 	backgroundHover,
 	overlay,
-	overlayHover
+	overlayHover,
+	border,
+	borderHover
 ) => {
 	const response = {
-		[`${target}>.maxi-background-displayer .maxi-background-displayer__color`]: {
+		[`${target} > .maxi-background-displayer .maxi-background-displayer__color`]: {
 			background: { ...getColorBackgroundObject(JSON.parse(background)) },
 		},
-		[`${target}>.maxi-background-displayer .maxi-background-displayer__images`]: {
+		[`${target} > .maxi-background-displayer .maxi-background-displayer__images`]: {
 			imageBackground: {
 				...getImageBackgroundObject(JSON.parse(background)),
 			},
@@ -731,6 +733,18 @@ export const setBackgroundStyles = (
 			`${target}>.maxi-background-displayer .maxi-background-displayer__overlay`
 		] = {
 			overlay: { ...getColorOverlayObject(JSON.parse(overlay)) },
+		};
+	}
+
+	if (!isNil(border)) {
+		response[`${target} > .maxi-background-displayer`] = {
+			borderRadius: { ...JSON.parse(border).borderRadius },
+		};
+	}
+
+	if (!isNil(borderHover)) {
+		response[`${target}:hover > .maxi-background-displayer`] = {
+			borderRadiusHover: { ...JSON.parse(borderHover).borderRadius },
 		};
 	}
 

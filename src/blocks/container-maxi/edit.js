@@ -87,7 +87,10 @@ class edit extends MaxiBlock {
 			arrow,
 			background,
 			backgroundHover,
+			overlay,
+			overlayHover,
 			border,
+			borderHover,
 			boxShadow,
 		} = this.props.attributes;
 
@@ -130,7 +133,15 @@ class edit extends MaxiBlock {
 
 		response = Object.assign(
 			response,
-			setBackgroundStyles(uniqueID, background, backgroundHover),
+			setBackgroundStyles(
+				uniqueID,
+				background,
+				backgroundHover,
+				overlay,
+				overlayHover,
+				border,
+				borderHover
+			),
 			setArrowStyles(uniqueID, arrow, background, border, boxShadow)
 		);
 

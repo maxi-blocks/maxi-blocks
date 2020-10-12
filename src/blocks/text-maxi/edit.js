@@ -52,6 +52,10 @@ class edit extends MaxiBlock {
 			backgroundHover,
 			typography,
 			typographyHover,
+			overlay,
+			overlayHover,
+			border,
+			borderHover,
 		} = this.props.attributes;
 
 		let response = {
@@ -72,7 +76,15 @@ class edit extends MaxiBlock {
 
 		response = Object.assign(
 			response,
-			setBackgroundStyles(uniqueID, background, backgroundHover)
+			setBackgroundStyles(
+				uniqueID,
+				background,
+				backgroundHover,
+				overlay,
+				overlayHover,
+				border,
+				borderHover
+			)
 		);
 
 		response = Object.assign(

@@ -28,6 +28,7 @@ import {
 	__experimentalTransformControl,
 	__experimentalEntranceAnimationControl,
 	__experimentalFancyRadioControl,
+	__experimentalFontIconControl,
 } from '../../components';
 import { getDefaultProp } from '../../utils';
 
@@ -66,6 +67,7 @@ const Inspector = props => {
 			display,
 			motion,
 			transform,
+			icon,
 		},
 		deviceType,
 		setAttributes,
@@ -391,6 +393,18 @@ const Inspector = props => {
 															),
 														},
 													]}
+												/>
+											),
+										},
+										{
+											label: __('Icon', 'maxi-blocks'),
+											disablePadding: true,
+											content: (
+												<__experimentalFontIconControl
+													icon={icon}
+													onChange={icon =>
+														setAttributes({ icon })
+													}
 												/>
 											),
 										},

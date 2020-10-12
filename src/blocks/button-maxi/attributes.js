@@ -84,6 +84,10 @@ const attributes = {
 		type: 'string',
 		default: JSON.stringify(attributesData.__experimentalTransform),
 	},
+	icon: {
+		type: 'string',
+		default: JSON.stringify(buttonAttributesData.icon),
+	},
 };
 
 export default attributes;

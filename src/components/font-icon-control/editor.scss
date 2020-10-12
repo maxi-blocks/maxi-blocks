@@ -1,0 +1,19 @@
+.maxi-font-icon-picker {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: center;
+	background: #fff;
+
+	&__upload {
+		flex: 1;
+		display: block;
+		text-align: center;
+		box-shadow: none !important;
+		border: 2px solid #dddfe2;
+		border-radius: 5px;
+		color: #464a53;
+		min-height: 90px;
+		background-color: #f2f2f2;
+	}
+}

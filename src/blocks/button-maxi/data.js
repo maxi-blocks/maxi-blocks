@@ -471,3 +471,8 @@ export const alignmentText = {
 		alignment: '',
 	},
 };
+
+export const icon = {
+	label: 'icon',
+	icon: '',
+};

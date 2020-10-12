@@ -163,7 +163,6 @@ class edit extends MaxiBlock {
 			attributes: {
 				uniqueID,
 				blockStyle,
-				size,
 				columnSize,
 				background,
 				extraClassName,
@@ -190,8 +189,6 @@ class edit extends MaxiBlock {
 			extraClassName,
 			className
 		);
-
-		const sizeValue = !isObject(size) ? JSON.parse(size) : size;
 
 		const columnValue = !isObject(columnSize)
 			? JSON.parse(columnSize)
@@ -225,11 +222,7 @@ class edit extends MaxiBlock {
 							width: getColumnWidthDefault(),
 						}}
 						minWidth='1%'
-						maxWidth={
-							(sizeValue[deviceType]['max-width'] &&
-								`${sizeValue[deviceType]['max-width']}${sizeValue[deviceType]['max-widthUnit']}`) ||
-							'100%'
-						}
+						maxWidth='100%'
 						enable={{
 							top: false,
 							right: true,

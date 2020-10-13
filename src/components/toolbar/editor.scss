@@ -11,6 +11,9 @@
 			position: relative;
 			box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.2);
 			border-radius: 5px;
+			@at-root .rtl #{&} {
+				flex-direction: row-reverse;
+			}
 			&:after {
 				content: '';
 				border-left: 0.5rem solid transparent;

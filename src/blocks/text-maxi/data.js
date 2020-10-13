@@ -27,9 +27,9 @@ export const margin = {
 	label: 'Margin',
 	unit: 'em',
 	general: {
-		'margin-top': 1,
+		'margin-top': 0,
 		'margin-right': '',
-		'margin-bottom': 1,
+		'margin-bottom': 0,
 		'margin-left': '',
 		sync: false,
 		unit: 'em',

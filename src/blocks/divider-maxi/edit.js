@@ -251,9 +251,7 @@ const editDispatch = withDispatch((dispatch, ownProps, { select }) => {
 	} = ownProps;
 
 	const onDeviceTypeChange = function () {
-		let newDeviceType = select(
-			'core/edit-post'
-		).__experimentalGetPreviewDeviceType();
+		let newDeviceType = select('maxiBlocks').receiveMaxiDeviceType();
 		newDeviceType = newDeviceType === 'Desktop' ? 'general' : newDeviceType;
 
 		const allowedDeviceTypes = ['general', 'xl', 'l', 'm', 's'];

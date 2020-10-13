@@ -319,9 +319,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	} = ownProps;
 
 	const onDeviceTypeChange = () => {
-		let newDeviceType = select(
-			'core/edit-post'
-		).__experimentalGetPreviewDeviceType();
+		let newDeviceType = select('maxiBlocks').receiveMaxiDeviceType();
 		newDeviceType = newDeviceType === 'Desktop' ? 'general' : newDeviceType;
 
 		const node = document.querySelector(

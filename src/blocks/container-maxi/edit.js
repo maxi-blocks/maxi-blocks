@@ -258,6 +258,7 @@ class edit extends MaxiBlock {
 					>
 						<__experimentalBackgroundDisplayer
 							background={background}
+							blockClassName={uniqueID}
 						/>
 
 						<__experimentalArrowDisplayer arrow={arrow} />

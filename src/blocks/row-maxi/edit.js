@@ -27,6 +27,7 @@ import {
 	getOpacityObject,
 	getTransformObject,
 	setBackgroundStyles,
+	getLastBreakpointValue,
 } from '../../utils';
 import RowContext from './context';
 
@@ -34,7 +35,7 @@ import RowContext from './context';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNil, uniqueId } from 'lodash';
+import { isEmpty, isNil, uniqueId, isObject } from 'lodash';
 
 /**
  * InnerBlocks version
@@ -159,6 +160,7 @@ class edit extends MaxiBlock {
 				defaultBlockStyle,
 				background,
 				rowPattern,
+				display,
 			},
 			clientId,
 			loadTemplate,
@@ -167,10 +169,15 @@ class edit extends MaxiBlock {
 			className,
 			instanceId,
 			setAttributes,
+			deviceType,
 		} = this.props;
+
+		const displayValue = !isObject(display) ? JSON.parse(display) : display;
 
 		const classes = classnames(
 			'maxi-block maxi-row-block',
+			getLastBreakpointValue(displayValue, 'display', deviceType) ===
+				'none' && 'maxi-block-display-none',
 			uniqueID,
 			blockStyle,
 			extraClassName,
@@ -190,7 +197,12 @@ class edit extends MaxiBlock {
 				{...this.props}
 			/>,
 			<__experimentalBreadcrumbs />,
-			<RowContext.Provider value={this.state.displayHandlers}>
+			<RowContext.Provider
+				value={{
+					displayHandlers: this.state.displayHandlers,
+					rowPattern,
+				}}
+			>
 				<InnerBlocks
 					// templateLock={'insert'}
 					__experimentalTagName={ContainerInnerBlocks}
@@ -261,10 +273,7 @@ const editSelect = withSelect((select, ownProps) => {
 	const hasInnerBlock = !isEmpty(
 		select('core/block-editor').getBlockOrder(clientId)
 	);
-	let deviceType = select(
-		'core/edit-post'
-	).__experimentalGetPreviewDeviceType();
-	deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
+	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 	return {
 		selectedBlockId,

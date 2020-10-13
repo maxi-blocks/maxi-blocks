@@ -27,7 +27,8 @@
 		"text-transform": "none",
 		"font-style": "normal",
 		"text-decoration": "none",
-		"text-shadow": ""
+		"text-shadow": "",
+		"vertical-align": ""
 	},
 	"xxl": {
 		"font-family": "",
@@ -44,7 +45,8 @@
 		"text-transform": "",
 		"font-style": "",
 		"text-decoration": "",
-		"text-shadow": ""
+		"text-shadow": "",
+		"vertical-align": ""
 	},
 	"xl": {
 		"font-family": "",
@@ -60,7 +62,8 @@
 		"text-transform": "",
 		"font-style": "",
 		"text-decoration": "",
-		"text-shadow": ""
+		"text-shadow": "",
+		"vertical-align": ""
 	},
 	"l": {
 		"font-family": "",
@@ -76,7 +79,8 @@
 		"text-transform": "",
 		"font-style": "",
 		"text-decoration": "",
-		"text-shadow": ""
+		"text-shadow": "",
+		"vertical-align": ""
 	},
 	"m": {
 		"font-family": "",
@@ -92,7 +96,8 @@
 		"text-transform": "",
 		"font-style": "",
 		"text-decoration": "",
-		"text-shadow": ""
+		"text-shadow": "",
+		"vertical-align": ""
 	},
 	"s": {
 		"font-family": "",
@@ -108,7 +113,8 @@
 		"text-transform": "",
 		"font-style": "",
 		"text-decoration": "",
-		"text-shadow": ""
+		"text-shadow": "",
+		"vertical-align": ""
 	},
 	"xs": {
 		"font-family": "",
@@ -124,7 +130,8 @@
 		"text-transform": "",
 		"font-style": "",
 		"text-decoration": "",
-		"text-shadow": ""
+		"text-shadow": "",
+		"vertical-align": ""
 	},
 	"textAlign": {
 		"label": "Alignment",
@@ -149,5 +156,6 @@
 		"xs": {
 			"alignment": ""
 		}
-	}
+	},
+	"customFormats": {}
 }

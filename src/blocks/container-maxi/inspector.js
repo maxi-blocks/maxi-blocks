@@ -4,7 +4,7 @@
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
 const { Fragment } = wp.element;
-const { TextControl, RadioControl } = wp.components;
+const { TextControl } = wp.components;
 
 /**
  * Internal dependencies
@@ -18,7 +18,6 @@ import {
 	FullSizeControl,
 	SettingTabsControl,
 	SizeControl,
-	__experimentalResponsiveSelector,
 	__experimentalZIndexControl,
 	__experimentalAxisControl,
 	__experimentalResponsiveControl,
@@ -32,6 +31,7 @@ import {
 	__experimentalArrowControl,
 	__experimentalParallaxControl,
 	__experimentalOverlayControl,
+	__experimentalFancyRadioControl,
 } from '../../components';
 import { getDefaultProp } from '../../utils';
 
@@ -115,7 +115,6 @@ const Inspector = props => {
 
 	return (
 		<InspectorControls>
-			<__experimentalResponsiveSelector />
 			<SettingTabsControl
 				disablePadding
 				items={[
@@ -280,42 +279,36 @@ const Inspector = props => {
 											content: (
 												<Fragment>
 													{isFirstOnHierarchy && (
-														<div className='maxi-fancy-radio-control'>
-															<RadioControl
-																label={__(
-																	'Full Width',
-																	'maxi-blocks'
-																)}
-																selected={
-																	fullWidth
-																}
-																options={[
-																	{
-																		label: __(
-																			'No',
-																			'maxi-blocks'
-																		),
-																		value:
-																			'normal',
-																	},
-																	{
-																		label: __(
-																			'Yes',
-																			'maxi-blocks'
-																		),
-																		value:
-																			'full',
-																	},
-																]}
-																onChange={fullWidth =>
-																	setAttributes(
-																		{
-																			fullWidth,
-																		}
-																	)
-																}
-															/>
-														</div>
+														<__experimentalFancyRadioControl
+															label={__(
+																'Full Width',
+																'maxi-blocks'
+															)}
+															selected={fullWidth}
+															options={[
+																{
+																	label: __(
+																		'No',
+																		'maxi-blocks'
+																	),
+																	value:
+																		'normal',
+																},
+																{
+																	label: __(
+																		'Yes',
+																		'maxi-blocks'
+																	),
+																	value:
+																		'full',
+																},
+															]}
+															onChange={fullWidth =>
+																setAttributes({
+																	fullWidth,
+																})
+															}
+														/>
 													)}
 													<FullSizeControl
 														size={size}
@@ -394,45 +387,43 @@ const Inspector = props => {
 															),
 															content: (
 																<Fragment>
-																	<div className='maxi-fancy-radio-control'>
-																		<RadioControl
-																			label={__(
-																				'Enable Background Hover',
-																				'maxi-blocks'
-																			)}
-																			selected={
-																				backgroundHoverValue.status
-																			}
-																			options={[
+																	<__experimentalFancyRadioControl
+																		label={__(
+																			'Enable Background Hover',
+																			'maxi-blocks'
+																		)}
+																		selected={
+																			backgroundHoverValue.status
+																		}
+																		options={[
+																			{
+																				label: __(
+																					'Yes',
+																					'maxi-blocks'
+																				),
+																				value: 1,
+																			},
+																			{
+																				label: __(
+																					'No',
+																					'maxi-blocks'
+																				),
+																				value: 0,
+																			},
+																		]}
+																		onChange={val => {
+																			backgroundHoverValue.status = Number(
+																				val
+																			);
+																			setAttributes(
 																				{
-																					label: __(
-																						'Yes',
-																						'maxi-blocks'
+																					backgroundHover: JSON.stringify(
+																						backgroundHoverValue
 																					),
-																					value: 1,
-																				},
-																				{
-																					label: __(
-																						'No',
-																						'maxi-blocks'
-																					),
-																					value: 0,
-																				},
-																			]}
-																			onChange={val => {
-																				backgroundHoverValue.status = Number(
-																					val
-																				);
-																				setAttributes(
-																					{
-																						backgroundHover: JSON.stringify(
-																							backgroundHoverValue
-																						),
-																					}
-																				);
-																			}}
-																		/>
-																	</div>
+																				}
+																			);
+																		}}
+																	/>
 																	{!!backgroundHoverValue.status && (
 																		<BackgroundControl
 																			background={
@@ -499,45 +490,43 @@ const Inspector = props => {
 															),
 															content: (
 																<Fragment>
-																	<div className='maxi-fancy-radio-control'>
-																		<RadioControl
-																			label={__(
-																				'Enable Background Hover',
-																				'maxi-blocks'
-																			)}
-																			selected={
-																				overlayHoverValue.status
-																			}
-																			options={[
+																	<__experimentalFancyRadioControl
+																		label={__(
+																			'Enable Background Hover',
+																			'maxi-blocks'
+																		)}
+																		selected={
+																			overlayHoverValue.status
+																		}
+																		options={[
+																			{
+																				label: __(
+																					'Yes',
+																					'maxi-blocks'
+																				),
+																				value: 1,
+																			},
+																			{
+																				label: __(
+																					'No',
+																					'maxi-blocks'
+																				),
+																				value: 0,
+																			},
+																		]}
+																		onChange={val => {
+																			overlayHoverValue.status = Number(
+																				val
+																			);
+																			setAttributes(
 																				{
-																					label: __(
-																						'Yes',
-																						'maxi-blocks'
+																					overlayHover: JSON.stringify(
+																						overlayHoverValue
 																					),
-																					value: 1,
-																				},
-																				{
-																					label: __(
-																						'No',
-																						'maxi-blocks'
-																					),
-																					value: 0,
-																				},
-																			]}
-																			onChange={val => {
-																				overlayHoverValue.status = Number(
-																					val
-																				);
-																				setAttributes(
-																					{
-																						overlayHover: JSON.stringify(
-																							overlayHoverValue
-																						),
-																					}
-																				);
-																			}}
-																		/>
-																	</div>
+																				}
+																			);
+																		}}
+																	/>
 																	{!!overlayHoverValue.status && (
 																		<__experimentalOverlayControl
 																			overlay={
@@ -743,6 +732,7 @@ const Inspector = props => {
 													onChange={arrow =>
 														setAttributes({ arrow })
 													}
+													isFullWidth={fullWidth}
 													breakpoint={deviceType}
 													isFirstOnHierarchy={
 														isFirstOnHierarchy

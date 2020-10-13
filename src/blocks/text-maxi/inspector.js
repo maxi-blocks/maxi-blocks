@@ -4,8 +4,7 @@
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
 const { Fragment } = wp.element;
-const { useSelect } = wp.data;
-const { TextControl, RadioControl, SelectControl } = wp.components;
+const { TextControl, SelectControl } = wp.components;
 
 /**
  * Internal dependencies
@@ -22,7 +21,6 @@ import {
 	SettingTabsControl,
 	TypographyControl,
 	__experimentalZIndexControl,
-	__experimentalResponsiveSelector,
 	__experimentalResponsiveControl,
 	__experimentalNumberControl,
 	__experimentalOpacityControl,
@@ -32,6 +30,7 @@ import {
 	__experimentalMotionControl,
 	__experimentalTransformControl,
 	__experimentalEntranceAnimationControl,
+	__experimentalFancyRadioControl,
 } from '../../components';
 import { getDefaultProp } from '../../utils';
 
@@ -77,18 +76,11 @@ const Inspector = props => {
 			motion,
 			transform,
 		},
+		deviceType,
 		setAttributes,
 		clientId,
+		formatValue,
 	} = props;
-
-	const { deviceType } = useSelect(select => {
-		const { __experimentalGetPreviewDeviceType } = select('core/edit-post');
-		let deviceType = __experimentalGetPreviewDeviceType();
-		deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
-		return {
-			deviceType,
-		};
-	});
 
 	const backgroundHoverValue = !isObject(backgroundHover)
 		? JSON.parse(backgroundHover)
@@ -96,7 +88,6 @@ const Inspector = props => {
 
 	return (
 		<InspectorControls>
-			<__experimentalResponsiveSelector />
 			<SettingTabsControl
 				disablePadding
 				items={[
@@ -287,16 +278,20 @@ const Inspector = props => {
 																	textLevel={
 																		textLevel
 																	}
-																	onChange={typography =>
+																	onChange={obj =>
 																		setAttributes(
-																			{
-																				typography,
-																			}
+																			obj
 																		)
 																	}
 																	hideAlignment
 																	breakpoint={
 																		deviceType
+																	}
+																	formatValue={
+																		formatValue
+																	}
+																	isList={
+																		isList
 																	}
 																/>
 															),
@@ -318,17 +313,29 @@ const Inspector = props => {
 																	textLevel={
 																		textLevel
 																	}
-																	onChange={typographyHover =>
+																	onChange={obj => {
 																		setAttributes(
 																			{
-																				typographyHover,
+																				typographyHover:
+																					obj.typography,
+																				...(obj.content && {
+																					content:
+																						obj.content,
+																				}),
 																			}
-																		)
-																	}
+																		);
+																	}}
 																	hideAlignment
 																	breakpoint={
 																		deviceType
 																	}
+																	formatValue={
+																		formatValue
+																	}
+																	isList={
+																		isList
+																	}
+																	isHover
 																/>
 															),
 														},
@@ -380,45 +387,43 @@ const Inspector = props => {
 															),
 															content: (
 																<Fragment>
-																	<div className='maxi-fancy-radio-control'>
-																		<RadioControl
-																			label={__(
-																				'Enable Background Hover',
-																				'maxi-blocks'
-																			)}
-																			selected={
-																				backgroundHoverValue.status
-																			}
-																			options={[
+																	<__experimentalFancyRadioControl
+																		label={__(
+																			'Enable Background Hover',
+																			'maxi-blocks'
+																		)}
+																		selected={
+																			backgroundHoverValue.status
+																		}
+																		options={[
+																			{
+																				label: __(
+																					'Yes',
+																					'maxi-blocks'
+																				),
+																				value: 1,
+																			},
+																			{
+																				label: __(
+																					'No',
+																					'maxi-blocks'
+																				),
+																				value: 0,
+																			},
+																		]}
+																		onChange={val => {
+																			backgroundHoverValue.status = Number(
+																				val
+																			);
+																			setAttributes(
 																				{
-																					label: __(
-																						'Yes',
-																						'maxi-blocks'
+																					backgroundHover: JSON.stringify(
+																						backgroundHoverValue
 																					),
-																					value: 1,
-																				},
-																				{
-																					label: __(
-																						'No',
-																						'maxi-blocks'
-																					),
-																					value: 0,
-																				},
-																			]}
-																			onChange={val => {
-																				backgroundHoverValue.status = Number(
-																					val
-																				);
-																				setAttributes(
-																					{
-																						backgroundHover: JSON.stringify(
-																							backgroundHoverValue
-																						),
-																					}
-																				);
-																			}}
-																		/>
-																	</div>
+																				}
+																			);
+																		}}
+																	/>
 																	{!!backgroundHoverValue.status && (
 																		<BackgroundControl
 																			background={
@@ -518,42 +523,36 @@ const Inspector = props => {
 											content: (
 												<Fragment>
 													{isFirstOnHierarchy && (
-														<div className='maxi-fancy-radio-control'>
-															<RadioControl
-																label={__(
-																	'Full Width',
-																	'maxi-blocks'
-																)}
-																selected={
-																	fullWidth
-																}
-																options={[
-																	{
-																		label: __(
-																			'No',
-																			'maxi-blocks'
-																		),
-																		value:
-																			'normal',
-																	},
-																	{
-																		label: __(
-																			'Yes',
-																			'maxi-blocks'
-																		),
-																		value:
-																			'full',
-																	},
-																]}
-																onChange={fullWidth =>
-																	setAttributes(
-																		{
-																			fullWidth,
-																		}
-																	)
-																}
-															/>
-														</div>
+														<__experimentalFancyRadioControl
+															label={__(
+																'Full Width',
+																'maxi-blocks'
+															)}
+															selected={fullWidth}
+															options={[
+																{
+																	label: __(
+																		'No',
+																		'maxi-blocks'
+																	),
+																	value:
+																		'normal',
+																},
+																{
+																	label: __(
+																		'Yes',
+																		'maxi-blocks'
+																	),
+																	value:
+																		'full',
+																},
+															]}
+															onChange={fullWidth =>
+																setAttributes({
+																	fullWidth,
+																})
+															}
+														/>
 													)}
 													<FullSizeControl
 														size={size}

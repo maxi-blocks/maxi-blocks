@@ -217,25 +217,18 @@ jQuery(function ($) {
                                 let elem = `body.${theme} .${controlBlock[1]} ${tagBlok}`;
 
                                 let elemStyle = controlBlock[2];
-                                console.log('elemStyle' + elemStyle);
                                 $(elem).css({ elemStyle: '' });
                                 //$(elem)[0].style[elemStyle] = '';
-                                console.log('remove ' + elemStyle);
                                 let current_css = $(elem).attr('style') ? ($(elem).attr('style') + '; ') : '';
 
 
-                                console.log('current_css: ' + current_css);
                                 // $(elem)[0].setAttribute('style', current_css + elemStyle + ":" + newVal + " !important");
                                 if (elemStyle == 'font-family') {
-                                    console.log('font family!!');
                                     let styles = (maxi_ajax_object.font_info[newVal].subsets).join(',');
                                     console.log("styles " + styles);
                                     let weights = Object.values(maxi_ajax_object.font_info[newVal].weights).join(',');
-                                    console.log("weights " + weights);
                                     let fontURL = newVal + ':' + weights + '&subset=' + styles;
-                                    console.log('fontURL: ' + fontURL);
                                     if (['Verdana', 'Arial'].includes(newVal) == false) {
-                                        console.log('before append');
                                         $('head').append('<link href="https://fonts.googleapis.com/css?family=' + fontURL + '" rel="stylesheet" type="text/css">');
                                         newVal = newVal.replace(/\+/g, ' ');
                                         $(elem)[0].setAttribute('style', current_css + elemStyle + ": \"" + newVal + "\" !important");

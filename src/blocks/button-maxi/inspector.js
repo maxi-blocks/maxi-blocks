@@ -3,9 +3,8 @@
  */
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
-const { TextControl, RadioControl } = wp.components;
+const { TextControl } = wp.components;
 const { Fragment } = wp.element;
-const { useSelect } = wp.data;
 
 /**
  * Internal dependencies
@@ -20,7 +19,6 @@ import {
 	FullSizeControl,
 	SettingTabsControl,
 	TypographyControl,
-	__experimentalResponsiveSelector,
 	__experimentalZIndexControl,
 	__experimentalAxisControl,
 	__experimentalResponsiveControl,
@@ -29,6 +27,7 @@ import {
 	__experimentalMotionControl,
 	__experimentalTransformControl,
 	__experimentalEntranceAnimationControl,
+	__experimentalFancyRadioControl,
 } from '../../components';
 import { getDefaultProp } from '../../utils';
 
@@ -68,18 +67,11 @@ const Inspector = props => {
 			motion,
 			transform,
 		},
+		deviceType,
 		setAttributes,
 		clientId,
+		formatValue,
 	} = props;
-
-	const { deviceType } = useSelect(select => {
-		const { __experimentalGetPreviewDeviceType } = select('core/edit-post');
-		let deviceType = __experimentalGetPreviewDeviceType();
-		deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
-		return {
-			deviceType,
-		};
-	});
 
 	const backgroundHoverValue = !isObject(backgroundHover)
 		? JSON.parse(backgroundHover)
@@ -87,7 +79,6 @@ const Inspector = props => {
 
 	return (
 		<InspectorControls>
-			<__experimentalResponsiveSelector />
 			<SettingTabsControl
 				disablePadding
 				items={[
@@ -173,16 +164,17 @@ const Inspector = props => {
 																		clientId,
 																		'typography'
 																	)}
-																	onChange={typography =>
+																	onChange={obj =>
 																		setAttributes(
-																			{
-																				typography,
-																			}
+																			obj
 																		)
 																	}
 																	hideAlignment
 																	breakpoint={
 																		deviceType
+																	}
+																	formatValue={
+																		formatValue
 																	}
 																/>
 															),
@@ -201,17 +193,26 @@ const Inspector = props => {
 																		clientId,
 																		'typographyHover'
 																	)}
-																	onChange={typographyHover =>
+																	onChange={obj => {
 																		setAttributes(
 																			{
-																				typographyHover,
+																				typographyHover:
+																					obj.typography,
+																				...(obj.content && {
+																					content:
+																						obj.content,
+																				}),
 																			}
-																		)
-																	}
+																		);
+																	}}
 																	hideAlignment
 																	breakpoint={
 																		deviceType
 																	}
+																	formatValue={
+																		formatValue
+																	}
+																	isHover
 																/>
 															),
 														},
@@ -264,45 +265,43 @@ const Inspector = props => {
 															),
 															content: (
 																<Fragment>
-																	<div className='maxi-fancy-radio-control'>
-																		<RadioControl
-																			label={__(
-																				'Enable Background Hover',
-																				'maxi-blocks'
-																			)}
-																			selected={
-																				backgroundHoverValue.status
-																			}
-																			options={[
+																	<__experimentalFancyRadioControl
+																		label={__(
+																			'Enable Background Hover',
+																			'maxi-blocks'
+																		)}
+																		selected={
+																			backgroundHoverValue.status
+																		}
+																		options={[
+																			{
+																				label: __(
+																					'Yes',
+																					'maxi-blocks'
+																				),
+																				value: 1,
+																			},
+																			{
+																				label: __(
+																					'No',
+																					'maxi-blocks'
+																				),
+																				value: 0,
+																			},
+																		]}
+																		onChange={val => {
+																			backgroundHoverValue.status = Number(
+																				val
+																			);
+																			setAttributes(
 																				{
-																					label: __(
-																						'Yes',
-																						'maxi-blocks'
+																					backgroundHover: JSON.stringify(
+																						backgroundHoverValue
 																					),
-																					value: 1,
-																				},
-																				{
-																					label: __(
-																						'No',
-																						'maxi-blocks'
-																					),
-																					value: 0,
-																				},
-																			]}
-																			onChange={val => {
-																				backgroundHoverValue.status = Number(
-																					val
-																				);
-																				setAttributes(
-																					{
-																						backgroundHover: JSON.stringify(
-																							backgroundHoverValue
-																						),
-																					}
-																				);
-																			}}
-																		/>
-																	</div>
+																				}
+																			);
+																		}}
+																	/>
 																	{!!backgroundHoverValue.status && (
 																		<BackgroundControl
 																			background={

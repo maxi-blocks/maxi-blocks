@@ -9,6 +9,7 @@ const { Fragment, useState } = wp.element;
  * Internal dependencies
  */
 import __experimentalOpacityControl from '../opacity-control';
+import __experimentalFancyRadioControl from '../fancy-radio-control';
 import BackgroundControl from '../background-control';
 import SizeControl from '../size-control';
 
@@ -227,63 +228,54 @@ const ShapeDividerControl = props => {
 
 	return (
 		<div className='maxi-shapedividercontrol'>
-			<div className='maxi-fancy-radio-control'>
-				<RadioControl
-					label=''
-					selected={shapeDividerStatus}
-					options={[
-						{ label: __('Top', 'maxi-blocks'), value: 'top' },
-						{ label: __('Bottom', 'maxi-blocks'), value: 'bottom' },
-					]}
-					onChange={value => setShapeDividerStatus(value)}
-				/>
-			</div>
+			<__experimentalFancyRadioControl
+				label=''
+				selected={shapeDividerStatus}
+				options={[
+					{ label: __('Top', 'maxi-blocks'), value: 'top' },
+					{ label: __('Bottom', 'maxi-blocks'), value: 'bottom' },
+				]}
+				onChange={value => setShapeDividerStatus(value)}
+			/>
 			{shapeDividerStatus === 'top' && (
 				<Fragment>
-					<div className='maxi-fancy-radio-control'>
-						<RadioControl
-							label={__(
-								'Enable Top Shape Divider',
-								'maxi-blocks'
-							)}
-							selected={shapeDividerTopOptions.status}
-							options={[
-								{ label: __('No', 'maxi-blocks'), value: 0 },
-								{ label: __('Yes', 'maxi-blocks'), value: 1 },
-							]}
-							onChange={val => {
-								shapeDividerTopOptions.status = Number(val);
-								onChange(JSON.stringify(value));
-							}}
-						/>
-					</div>
+					<__experimentalFancyRadioControl
+						label={__('Enable Top Shape Divider', 'maxi-blocks')}
+						selected={shapeDividerTopOptions.status}
+						options={[
+							{ label: __('No', 'maxi-blocks'), value: 0 },
+							{ label: __('Yes', 'maxi-blocks'), value: 1 },
+						]}
+						onChange={val => {
+							shapeDividerTopOptions.status = Number(val);
+							onChange(JSON.stringify(value));
+						}}
+					/>
 					{!!shapeDividerTopOptions.status && (
 						<Fragment>
-							<div className='maxi-fancy-radio-control'>
-								<RadioControl
-									label={__(
-										'Enable Scroll Effect',
-										'maxi-blocks'
-									)}
-									selected={parseInt(
-										shapeDividerTopOptions.effects.status
-									)}
-									options={[
-										{
-											label: __('No', 'maxi-blocks'),
-											value: 0,
-										},
-										{
-											label: __('Yes', 'maxi-blocks'),
-											value: 1,
-										},
-									]}
-									onChange={val => {
-										shapeDividerTopOptions.effects.status = val;
-										onChange(JSON.stringify(value));
-									}}
-								/>
-							</div>
+							<__experimentalFancyRadioControl
+								label={__(
+									'Enable Scroll Effect',
+									'maxi-blocks'
+								)}
+								selected={parseInt(
+									shapeDividerTopOptions.effects.status
+								)}
+								options={[
+									{
+										label: __('No', 'maxi-blocks'),
+										value: 0,
+									},
+									{
+										label: __('Yes', 'maxi-blocks'),
+										value: 1,
+									},
+								]}
+								onChange={val => {
+									shapeDividerTopOptions.effects.status = val;
+									onChange(JSON.stringify(value));
+								}}
+							/>
 							<Dropdown
 								className='maxi-shapedividercontrol__shape-selector'
 								contentClassName='maxi-shapedividercontrol_popover'
@@ -362,50 +354,43 @@ const ShapeDividerControl = props => {
 			)}
 			{shapeDividerStatus === 'bottom' && (
 				<Fragment>
-					<div className='maxi-fancy-radio-control'>
-						<RadioControl
-							label={__(
-								'Enable Bottom Shape Divider',
-								'maxi-blocks'
-							)}
-							selected={shapeDividerBottomOptions.status}
-							options={[
-								{ label: __('No', 'maxi-blocks'), value: 0 },
-								{ label: __('Yes', 'maxi-blocks'), value: 1 },
-							]}
-							onChange={val => {
-								shapeDividerBottomOptions.status = Number(val);
-								onChange(JSON.stringify(value));
-							}}
-						/>
-					</div>
+					<__experimentalFancyRadioControl
+						label={__('Enable Bottom Shape Divider', 'maxi-blocks')}
+						selected={shapeDividerBottomOptions.status}
+						options={[
+							{ label: __('No', 'maxi-blocks'), value: 0 },
+							{ label: __('Yes', 'maxi-blocks'), value: 1 },
+						]}
+						onChange={val => {
+							shapeDividerBottomOptions.status = Number(val);
+							onChange(JSON.stringify(value));
+						}}
+					/>
 					{!!shapeDividerBottomOptions.status && (
 						<Fragment>
-							<div className='maxi-fancy-radio-control'>
-								<RadioControl
-									label={__(
-										'Enable Scroll Effect',
-										'maxi-blocks'
-									)}
-									selected={parseInt(
-										shapeDividerBottomOptions.effects.status
-									)}
-									options={[
-										{
-											label: __('No', 'maxi-blocks'),
-											value: 0,
-										},
-										{
-											label: __('Yes', 'maxi-blocks'),
-											value: 1,
-										},
-									]}
-									onChange={val => {
-										shapeDividerBottomOptions.effects.status = val;
-										onChange(JSON.stringify(value));
-									}}
-								/>
-							</div>
+							<__experimentalFancyRadioControl
+								label={__(
+									'Enable Scroll Effect',
+									'maxi-blocks'
+								)}
+								selected={parseInt(
+									shapeDividerBottomOptions.effects.status
+								)}
+								options={[
+									{
+										label: __('No', 'maxi-blocks'),
+										value: 0,
+									},
+									{
+										label: __('Yes', 'maxi-blocks'),
+										value: 1,
+									},
+								]}
+								onChange={val => {
+									shapeDividerBottomOptions.effects.status = val;
+									onChange(JSON.stringify(value));
+								}}
+							/>
 							<Dropdown
 								className='maxi-shapedividercontrol__shape-selector'
 								contentClassName='maxi-shapedividercontrol_popover'

@@ -6,14 +6,25 @@ const { __ } = wp.i18n;
 /**
  * Internal dependencies
  */
+import { getLastBreakpointValue } from '../../../../utils';
 import AlignmentControl from '../../../alignment-control';
 import ToolbarPopover from '../toolbar-popover';
 
 /**
- * Icons
+ * External dependencies
+ */
+import { isObject } from 'lodash';
+
+/**
+ * Styles & Icons
  */
 import './editor.scss';
-import { toolbarAlign } from '../../../../icons';
+import {
+	alignLeft,
+	alignCenter,
+	alignRight,
+	alignJustify,
+} from '../../../../icons';
 
 /**
  * Alignment
@@ -29,11 +40,32 @@ const Alignment = props => {
 
 	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
 
+	const alignmentValue = !isObject(alignment)
+		? JSON.parse(alignment)
+		: alignment;
+
+	const alignIcon = CurrentAlignIcon => {
+		switch (CurrentAlignIcon) {
+			case 'left':
+				return alignLeft;
+			case 'right':
+				return alignRight;
+			case 'justify':
+				return alignJustify;
+			case 'center':
+				return alignCenter;
+			default:
+				return alignLeft;
+		}
+	};
+
 	return (
 		<ToolbarPopover
 			className='toolbar-item__alignment'
 			tooltip={__('Alignment', 'maxi-blocks')}
-			icon={toolbarAlign}
+			icon={alignIcon(
+				getLastBreakpointValue(alignmentValue, 'alignment', breakpoint)
+			)}
 			content={
 				<AlignmentControl
 					alignment={alignment}

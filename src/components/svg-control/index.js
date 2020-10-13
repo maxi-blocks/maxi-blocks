@@ -23,7 +23,14 @@ import { isNumber } from 'lodash';
  * Component
  */
 const SVGControl = props => {
-	const { SVGData, SVGMediaID, SVGMediaURL, onChange, className } = props;
+	const {
+		SVGData,
+		SVGMediaID,
+		SVGMediaURL,
+		onChange,
+		className,
+		disableCustom = true,
+	} = props;
 
 	const classes = classnames('maxi-svg-control', className);
 
@@ -31,22 +38,26 @@ const SVGControl = props => {
 
 	return (
 		<div className={classes}>
-			<SelectControl
-				label={__('Custom SVG', 'maxi-blocks')}
-				value={customSVG}
-				options={[
-					{ label: __('Yes', 'maxi-blocks'), value: 1 },
-					{ label: __('No', 'maxi-blocks'), value: 0 },
-				]}
-				onChange={value => changeCustomSVG(Number(value))}
-			/>
-			{!customSVG && (
-				<__experimentalSVGDefaultsDisplayer
-					SVGData={SVGData}
-					onChange={obj => onChange(obj)}
-				/>
-			)}
-			{!!customSVG && (
+			<Fragment>
+				{!disableCustom && (
+					<SelectControl
+						label={__('Custom SVG', 'maxi-blocks')}
+						value={customSVG}
+						options={[
+							{ label: __('Yes', 'maxi-blocks'), value: 1 },
+							{ label: __('No', 'maxi-blocks'), value: 0 },
+						]}
+						onChange={value => changeCustomSVG(Number(value))}
+					/>
+				)}
+				{!customSVG && (
+					<__experimentalSVGDefaultsDisplayer
+						SVGData={SVGData}
+						onChange={obj => onChange(obj)}
+					/>
+				)}
+			</Fragment>
+			{!disableCustom && !!customSVG && (
 				<Fragment>
 					<MediaUploaderControl
 						className='maxi-svg-block__svg-uploader'

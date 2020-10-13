@@ -39,7 +39,9 @@ import {
 	__experimentalHoverEffectControl,
 	__experimentalImageAltControl,
 	__experimentalFancyRadioControl,
+	__experimentalSVGControl,
 } from '../../components';
+import { injectImgSVG } from '../../components/svg-control/utils';
 
 /**
  * External dependencies
@@ -74,6 +76,7 @@ const Inspector = props => {
 			boxShadowHover,
 			borderHover,
 			mediaID,
+			mediaURL,
 			extraClassName,
 			zIndex,
 			mediaAlt,
@@ -85,6 +88,9 @@ const Inspector = props => {
 			transform,
 			clipPath,
 			hover,
+			SVGData,
+			SVGMediaID,
+			SVGMediaURL,
 		},
 		imageData,
 		clientId,
@@ -720,6 +726,44 @@ const Inspector = props => {
 															clipPath,
 														})
 													}
+												/>
+											),
+										},
+										{
+											label: __('Shape', 'maxi-blocks'),
+											content: (
+												<__experimentalSVGControl
+													SVGData={SVGData}
+													SVGMediaID={SVGMediaID}
+													SVGMediaURL={SVGMediaURL}
+													onChange={SVGOptions => {
+														const SVGValue = !isObject(
+															SVGOptions.SVGData
+														)
+															? JSON.parse(
+																	SVGOptions.SVGData
+															  )
+															: SVGOptions.SVGData;
+
+														const el = Object.keys(
+															SVGValue
+														)[0];
+
+														SVGValue[
+															el
+														].imageID = mediaID;
+														SVGValue[
+															el
+														].imageURL = mediaURL;
+
+														setAttributes({
+															...SVGOptions,
+															SVGElement: injectImgSVG(
+																SVGOptions.SVGElement,
+																SVGValue
+															).outerHTML,
+														});
+													}}
 												/>
 											),
 										},

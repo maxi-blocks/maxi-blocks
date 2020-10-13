@@ -4,7 +4,6 @@
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
 const { Fragment } = wp.element;
-const { useSelect } = wp.data;
 const { TextControl, SelectControl } = wp.components;
 
 /**
@@ -77,17 +76,11 @@ const Inspector = props => {
 			motion,
 			transform,
 		},
+		deviceType,
 		setAttributes,
 		clientId,
+		formatValue,
 	} = props;
-
-	const { deviceType } = useSelect(select => {
-		const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
-
-		return {
-			deviceType,
-		};
-	});
 
 	const backgroundHoverValue = !isObject(backgroundHover)
 		? JSON.parse(backgroundHover)
@@ -285,16 +278,20 @@ const Inspector = props => {
 																	textLevel={
 																		textLevel
 																	}
-																	onChange={typography =>
+																	onChange={obj =>
 																		setAttributes(
-																			{
-																				typography,
-																			}
+																			obj
 																		)
 																	}
 																	hideAlignment
 																	breakpoint={
 																		deviceType
+																	}
+																	formatValue={
+																		formatValue
+																	}
+																	isList={
+																		isList
 																	}
 																/>
 															),
@@ -316,17 +313,29 @@ const Inspector = props => {
 																	textLevel={
 																		textLevel
 																	}
-																	onChange={typographyHover =>
+																	onChange={obj => {
 																		setAttributes(
 																			{
-																				typographyHover,
+																				typographyHover:
+																					obj.typography,
+																				...(obj.content && {
+																					content:
+																						obj.content,
+																				}),
 																			}
-																		)
-																	}
+																		);
+																	}}
 																	hideAlignment
 																	breakpoint={
 																		deviceType
 																	}
+																	formatValue={
+																		formatValue
+																	}
+																	isList={
+																		isList
+																	}
+																	isHover
 																/>
 															),
 														},

@@ -11,7 +11,7 @@ const { Icon } = wp.components;
 import __experimentalFancyRadioControl from '../fancy-radio-control';
 import ColorLayer from './colorLayer';
 import { ImageLayerClosed, ImageLayerOpened } from './imageLayer';
-import { VideoLayerClosed, VideoLayerOpened } from './videoLayer';
+import VideoLayer from './videoLayer';
 import GradientLayer from './gradientLayer';
 import SVGLayer from './svgLayer';
 
@@ -192,7 +192,7 @@ const BackgroundControl = props => {
 						/>
 					)}
 					{!disableVideo && value.activeMedia === 'video' && (
-						<VideoLayerClosed
+						<VideoLayer
 							videoOptions={value.videoOptions}
 							defaultVideoOptions={defaultValue.videoOptions}
 							onChange={videoOptions => {
@@ -244,21 +244,6 @@ const BackgroundControl = props => {
 					selector={selector}
 				/>
 			)}
-			{isOpen &&
-				value.activeMedia === 'video' &&
-				value.videoOptions.mediaURL && (
-					<VideoLayerOpened
-						videoOptions={value.videoOptions}
-						defaultVideoOptions={defaultValue.videoOptions}
-						onChange={videoOptions => {
-							value.videoOptions = videoOptions;
-
-							onChange(JSON.stringify(value));
-						}}
-						onDoneEdition={onDoneEdition}
-						onRemoveImage={onRemoveImage}
-					/>
-				)}
 		</div>
 	);
 };

@@ -11,7 +11,7 @@ import ToolbarPopover from '../toolbar-popover';
 import __experimentalAxisControl from '../../../axis-control';
 
 /**
- * Icons
+ * Styles & Icons
  */
 import './editor.scss';
 import { toolbarPadding } from '../../../../icons';

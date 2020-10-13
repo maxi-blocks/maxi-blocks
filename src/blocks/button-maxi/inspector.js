@@ -5,7 +5,6 @@ const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
 const { TextControl } = wp.components;
 const { Fragment } = wp.element;
-const { useSelect } = wp.data;
 
 /**
  * Internal dependencies
@@ -68,17 +67,11 @@ const Inspector = props => {
 			motion,
 			transform,
 		},
+		deviceType,
 		setAttributes,
 		clientId,
+		formatValue,
 	} = props;
-
-	const { deviceType } = useSelect(select => {
-		const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
-
-		return {
-			deviceType,
-		};
-	});
 
 	const backgroundHoverValue = !isObject(backgroundHover)
 		? JSON.parse(backgroundHover)
@@ -171,16 +164,17 @@ const Inspector = props => {
 																		clientId,
 																		'typography'
 																	)}
-																	onChange={typography =>
+																	onChange={obj =>
 																		setAttributes(
-																			{
-																				typography,
-																			}
+																			obj
 																		)
 																	}
 																	hideAlignment
 																	breakpoint={
 																		deviceType
+																	}
+																	formatValue={
+																		formatValue
 																	}
 																/>
 															),
@@ -199,17 +193,26 @@ const Inspector = props => {
 																		clientId,
 																		'typographyHover'
 																	)}
-																	onChange={typographyHover =>
+																	onChange={obj => {
 																		setAttributes(
 																			{
-																				typographyHover,
+																				typographyHover:
+																					obj.typography,
+																				...(obj.content && {
+																					content:
+																						obj.content,
+																				}),
 																			}
-																		)
-																	}
+																		);
+																	}}
 																	hideAlignment
 																	breakpoint={
 																		deviceType
 																	}
+																	formatValue={
+																		formatValue
+																	}
+																	isHover
 																/>
 															),
 														},

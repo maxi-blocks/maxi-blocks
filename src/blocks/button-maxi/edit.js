@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
+const { withSelect } = wp.data;
 const { __experimentalBlock, RichText } = wp.blockEditor;
 
 /**
@@ -14,21 +15,26 @@ import {
 	getAlignmentFlexObject,
 	getTransformObject,
 	getAlignmentTextObject,
+	setTextCustomFormats,
+	getLastBreakpointValue,
 } from '../../utils';
 import { MaxiBlock, __experimentalToolbar } from '../../components';
+import { __experimentalGetFormatValue } from '../../extensions/text/formats';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
+import { isNil, isObject } from 'lodash';
 
 /**
  * Content
  */
 class edit extends MaxiBlock {
 	get getObject() {
-		const response = {
+		const { uniqueID, typography, typographyHover } = this.props.attributes;
+
+		let response = {
 			[this.props.attributes.uniqueID]: this.getWrapperObject,
 			[`${this.props.attributes.uniqueID} .maxi-button-extra__button`]: this
 				.getNormalObject,
@@ -36,16 +42,29 @@ class edit extends MaxiBlock {
 				.getHoverObject,
 		};
 
+		response = Object.assign(
+			response,
+			setTextCustomFormats(
+				[
+					`${uniqueID} .maxi-button-extra__button`,
+					`${uniqueID} .maxi-button-extra__button li`,
+				],
+				typography,
+				typographyHover
+			)
+		);
+
 		return response;
 	}
 
 	get getWrapperObject() {
-		const { alignment, zIndex, transform } = this.props.attributes;
+		const { alignment, zIndex, transform, display } = this.props.attributes;
 
 		const response = {
 			alignment: { ...getAlignmentFlexObject(JSON.parse(alignment)) },
 			zIndex: { ...JSON.parse(zIndex) },
 			transform: { ...getTransformObject(JSON.parse(transform)) },
+			display: { ...JSON.parse(display) },
 		};
 
 		return response;
@@ -63,7 +82,6 @@ class edit extends MaxiBlock {
 			margin,
 			zIndex,
 			position,
-			display,
 		} = this.props.attributes;
 
 		const response = {
@@ -82,7 +100,6 @@ class edit extends MaxiBlock {
 			zIndex: { ...JSON.parse(zIndex) },
 			position: { ...JSON.parse(position) },
 			positionOptions: { ...JSON.parse(position).options },
-			display: { ...JSON.parse(display) },
 		};
 
 		return response;
@@ -107,7 +124,7 @@ class edit extends MaxiBlock {
 		};
 
 		if (!isNil(backgroundHover) && !!JSON.parse(backgroundHover).status) {
-			response['backgroundHover'] = {
+			response.backgroundHover = {
 				...getColorBackgroundObject(JSON.parse(backgroundHover)),
 			};
 		}
@@ -123,13 +140,19 @@ class edit extends MaxiBlock {
 				blockStyle,
 				defaultBlockStyle,
 				extraClassName,
-				buttonText,
+				content,
+				display,
 			},
 			setAttributes,
+			deviceType,
 		} = this.props;
+
+		const displayValue = !isObject(display) ? JSON.parse(display) : display;
 
 		const classes = classnames(
 			'maxi-block maxi-button-extra',
+			getLastBreakpointValue(displayValue, 'display', deviceType) ===
+				'none' && 'maxi-block-display-none',
 			blockStyle,
 			extraClassName,
 			uniqueID,
@@ -147,8 +170,8 @@ class edit extends MaxiBlock {
 					className='maxi-button-extra__button'
 					withoutInteractiveFormatting
 					placeholder={__('Set some text…', 'maxi-blocks')}
-					value={buttonText}
-					onChange={buttonText => setAttributes({ buttonText })}
+					value={content}
+					onChange={content => setAttributes({ content })}
 					identifier='text'
 				/>
 			</__experimentalBlock>,
@@ -156,4 +179,27 @@ class edit extends MaxiBlock {
 	}
 }
 
-export default edit;
+export default withSelect((select, ownProps) => {
+	const {
+		attributes: { content, isList, typeOfList },
+		clientId,
+	} = ownProps;
+
+	const node = document.getElementById(`block-${clientId}`);
+
+	const formatElement = {
+		element: node,
+		html: content,
+		multilineTag: isList ? 'li' : undefined,
+		multilineWrapperTags: isList ? typeOfList : undefined,
+		__unstableIsEditableTree: true,
+	};
+	const formatValue = __experimentalGetFormatValue(formatElement);
+
+	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
+
+	return {
+		formatValue,
+		deviceType,
+	};
+})(edit);

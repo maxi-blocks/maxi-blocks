@@ -101,6 +101,9 @@ const Inspector = props => {
 			max: 100,
 		},
 	};
+	const backgroundValue = !isObject(background)
+		? JSON.parse(background)
+		: background;
 
 	const backgroundHoverValue = !isObject(backgroundHover)
 		? JSON.parse(backgroundHover)
@@ -355,22 +358,25 @@ const Inspector = props => {
 																			)
 																		}
 																	/>
-																	<__experimentalParallaxControl
-																		motion={
-																			motion
-																		}
-																		defaultMotion={getDefaultProp(
-																			clientId,
-																			'motion'
-																		)}
-																		onChange={motion =>
-																			setAttributes(
-																				{
-																					motion,
-																				}
-																			)
-																		}
-																	/>
+																	{backgroundValue.activeMedia ===
+																		'image' && (
+																		<__experimentalParallaxControl
+																			motion={
+																				motion
+																			}
+																			defaultMotion={getDefaultProp(
+																				clientId,
+																				'motion'
+																			)}
+																			onChange={motion =>
+																				setAttributes(
+																					{
+																						motion,
+																					}
+																				)
+																			}
+																		/>
+																	)}
 																</Fragment>
 															),
 														},
@@ -726,6 +732,7 @@ const Inspector = props => {
 													onChange={arrow =>
 														setAttributes({ arrow })
 													}
+													isFullWidth={fullWidth}
 													breakpoint={deviceType}
 													isFirstOnHierarchy={
 														isFirstOnHierarchy

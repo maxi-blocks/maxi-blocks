@@ -8,10 +8,6 @@ import { alignment, margin } from './data';
  * Attributes
  */
 const attributes = {
-	blogStyle: {
-		type: 'string',
-		default: 'maxi-custom',
-	},
 	alignment: {
 		type: 'string',
 		default: JSON.stringify(alignment),

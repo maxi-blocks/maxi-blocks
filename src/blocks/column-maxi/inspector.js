@@ -229,6 +229,7 @@ const Inspector = props => {
 																				}
 																			)
 																		}
+																		disableVideo
 																	/>
 																</Fragment>
 															),

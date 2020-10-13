@@ -1,16 +1,16 @@
 <?php
 
 /**
- * Todo: comment all functions and class
+ * Server side part of ImageCropControl Gutenberg component
+ *
+ * Generates a cropped image founded on ImageCropControl requirements
  */
-
-class ImageSize
+class MaxiImageCropper
 {
-
     /**
      * This plugin's instance.
      *
-     * @var ImageSize
+     * @var MaxiImageCropper
      */
     private static $instance;
 
@@ -20,7 +20,7 @@ class ImageSize
     public static function register()
     {
         if (null === self::$instance) {
-            self::$instance = new ImageSize();
+            self::$instance = new MaxiImageCropper();
         }
     }
 
@@ -29,17 +29,25 @@ class ImageSize
      */
     public function __construct()
     {
-        add_action("wp_ajax_gx_add_custom_image_size", array($this, "gx_add_custom_image_size"));
-        add_action("wp_ajax_gx_remove_custom_image_size", array($this, "gx_remove_custom_image_size"));
+        add_action("wp_ajax_maxi_add_custom_image_size", 		array($this, "maxi_add_custom_image_size"));
+        add_action("wp_ajax_maxi_remove_custom_image_size", 	array($this, "maxi_remove_custom_image_size"));
     }
 
-    public function gx_add_custom_image_size()
+    public function maxi_add_custom_image_size()
     {
-        $old_media = $_POST['old_media_src'];
-        $media_file = $_FILES['file'];
+		$old_media = $_POST['old_media_src'];
+        $new_media = [
+			'src'	=> $_POST['src'],
+			'src_x'	=> $_POST['src_x'],
+			'src_y'	=> $_POST['src_y'],
+			'src_w'	=> $_POST['src_w'],
+			'src_h'	=> $_POST['src_h'],
+			'dst_w'	=> $_POST['dst_w'],
+			'dst_h'	=> $_POST['dst_h'],
+		];
 
         self::delete_old_file($old_media);
-        self::upload_new_file($media_file);
+        self::upload_new_file($new_media);
 
         die();
     }
@@ -50,23 +58,19 @@ class ImageSize
         wp_delete_file(ABSPATH . $old_media);
     }
 
-    private function upload_new_file($media_file)
+    private function upload_new_file($new_media)
     {
-        $upload_overrides = array(
-            'test_form' => false,
-            'test_type' => false,
-        );
+        $upload_file = wp_crop_image($new_media['src'],$new_media['src_x'],$new_media['src_y'],$new_media['src_w'],$new_media['src_h'],$new_media['dst_w'],$new_media['dst_h']);
 
-        $upload_file = wp_handle_upload($media_file, $upload_overrides);
+		if(!$upload_file || isset($upload_file->errors))
+			echo wp_send_json_error( $upload_file->errors );
 
-        if ($upload_file && !isset($upload_file['error'])) {
-            echo json_encode($upload_file);
-        } else {
-            echo $upload_file['error'];
-        }
-    }
+		$file_url = str_replace(ABSPATH, site_url() . '/', $upload_file);
 
-    public function gx_remove_custom_image_size()
+        echo json_encode($file_url);
+	}
+
+    public function maxi_remove_custom_image_size()
     {
         $old_media = $_POST['old_media_src'];
         self::delete_old_file($old_media);
@@ -80,4 +84,4 @@ class ImageSize
     }
 }
 
-ImageSize::register();
+MaxiImageCropper::register();

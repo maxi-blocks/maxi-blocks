@@ -31,5 +31,7 @@ import './blocks/container-maxi/container-maxi';
 import './blocks/svg-icon-maxi/svg-icon-maxi';
 
 // Sidebar
-
 import './blocks/customizer-maxi/index';
+
+// Text
+import './extensions/text';

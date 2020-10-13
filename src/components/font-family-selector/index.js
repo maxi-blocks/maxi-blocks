@@ -35,13 +35,28 @@ export default class FontFamilySelector extends Component {
 	};
 
 	render() {
-		const { font, onChange, className } = this.props;
+		const { font, onChange, className, theme = 'light' } = this.props;
 
 		const selectFontFamilyStyles = {
-			control: provided => ({
-				...provided,
+			control: styles => ({
+				...styles,
 				minWidth: 240,
 				margin: 8,
+				backgroundColor: theme === 'dark' ? '#232433' : '#fff',
+				border:
+					theme === 'dark'
+						? '2px solid #80828a'
+						: '2px solid #dddfe2',
+				color: theme === 'dark' ? '#fff' : '#464a53',
+			}),
+			input: styles => ({
+				...styles,
+				color: theme === 'dark' ? '#fff' : '#464a53',
+			}),
+			option: (styles, { isFocused }) => ({
+				...styles,
+				backgroundColor:
+					isFocused && (theme === 'dark' ? '#4f515c' : '#f2f2f2'),
 			}),
 			indicatorsContainer: () => ({
 				display: 'none',
@@ -76,6 +91,11 @@ export default class FontFamilySelector extends Component {
 
 		const classes = classnames('maxi-font-family-selector', className);
 
+		const popoverClasses = classnames(
+			'maxi-font-family-selector__popover',
+			theme === 'dark' && 'maxi-font-family-selector__popover__dark'
+		);
+
 		return (
 			<Dropdown
 				className={classes}
@@ -93,7 +113,7 @@ export default class FontFamilySelector extends Component {
 					</Button>
 				)}
 				popoverProps={{
-					className: 'maxi-font-family-selector__popover',
+					className: popoverClasses,
 					noArrow: true,
 					position: 'middle center right',
 				}}

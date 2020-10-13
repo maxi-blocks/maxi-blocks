@@ -9,6 +9,10 @@ const { ColorPicker, Icon } = wp.components;
  */
 import { getLastBreakpointValue } from '../../../../utils';
 import ToolbarPopover from '../toolbar-popover';
+import {
+	__experimentalSetFormat,
+	__experimentalGetCustomFormatValue,
+} from '../../../../extensions/text/formats';
 
 /**
  * External dependencies
@@ -25,39 +29,70 @@ import { toolbarType } from '../../../../icons';
  * TextColor
  */
 const TextColor = props => {
-	const { blockName, typography, onChange, breakpoint } = props;
+	const {
+		blockName,
+		typography,
+		onChange,
+
+		breakpoint,
+		isList,
+		formatValue,
+	} = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
+
+	const value =
+		(!isObject(typography) && JSON.parse(typography)) || typography;
+
+	const color = __experimentalGetCustomFormatValue({
+		typography: value,
+		formatValue,
+		prop: 'color',
+		breakpoint,
+	});
 
 	const returnColor = val => {
 		return `rgba(${val.rgb.r},${val.rgb.g},${val.rgb.b},${val.rgb.a})`;
 	};
 
-	const updateTypography = val => {
-		value[breakpoint].color = returnColor(val);
+	const onClick = val => {
+		const {
+			typography: newTypography,
+			content: newContent,
+		} = __experimentalSetFormat({
+			formatValue,
+			isList,
+			typography: value,
+			value: {
+				color: returnColor(val),
+			},
+			breakpoint,
+		});
 
-		onChange(JSON.stringify(value));
+		onChange({
+			typography: JSON.stringify(newTypography),
+			...(newContent && { content: newContent }),
+		});
 	};
-
-	const value = !isObject(typography) ? JSON.parse(typography) : typography;
 
 	return (
 		<ToolbarPopover
 			className='toolbar-item__text-options'
-			tooltip={__('Text options', 'maxi-blocks')}
+			tooltip={__('Text Colour', 'maxi-blocks')}
 			icon={
 				<div
 					className='toolbar-item__text-options__icon'
-					style={{
-						background: getLastBreakpointValue(
-							value,
-							'color',
-							breakpoint
-						),
-						borderWidth: '1px',
-						borderColor: '#fff',
-						borderStyle: 'solid',
-					}}
+					style={
+						(color && {
+							background: color,
+						}) || {
+							background: getLastBreakpointValue(
+								value,
+								'color',
+								breakpoint
+							),
+						}
+					}
 				>
 					<Icon
 						className='toolbar-item__text-options__inner-icon'
@@ -67,8 +102,11 @@ const TextColor = props => {
 			}
 			content={
 				<ColorPicker
-					color={getLastBreakpointValue(value, 'color', breakpoint)}
-					onChangeComplete={val => updateTypography(val)}
+					color={
+						color ||
+						getLastBreakpointValue(value, 'color', breakpoint)
+					}
+					onChangeComplete={val => onClick(val)}
 				/>
 			}
 		/>

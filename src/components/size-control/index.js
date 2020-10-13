@@ -2,14 +2,14 @@
  * WordPress dependencies
  */
 const { __, sprintf } = wp.i18n;
-const { Fragment, useRef } = wp.element;
+const { Fragment } = wp.element;
 const { RangeControl, SelectControl, BaseControl, Button } = wp.components;
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { trim, isNumber } from 'lodash';
+import { trim } from 'lodash';
 
 /**
  * Styles
@@ -40,7 +40,7 @@ const SizeControl = props => {
 		minMaxSettings = {
 			px: {
 				min: 0,
-				max: 999,
+				max: 3999,
 			},
 			em: {
 				min: 0,
@@ -52,46 +52,27 @@ const SizeControl = props => {
 			},
 			'%': {
 				min: 0,
-				max: 999,
+				max: 100,
 			},
 		},
 	} = props;
 
-	const rangeRef = useRef(null);
-
 	const classes = classnames('maxi-size-control', className);
 
 	const getOptions = () => {
-		const options = [];
-		allowedUnits.includes('px') &&
-			options.push({ label: 'PX', value: 'px' });
-		allowedUnits.includes('em') &&
-			options.push({ label: 'EM', value: 'em' });
-		allowedUnits.includes('vw') &&
-			options.push({ label: 'VW', value: 'vw' });
-		allowedUnits.includes('%') && options.push({ label: '%', value: '%' });
+		const options = [
+			...(allowedUnits.includes('px') && [{ label: 'PX', value: 'px' }]),
+			...(allowedUnits.includes('em') && [{ label: 'EM', value: 'em' }]),
+			...(allowedUnits.includes('vw') && [{ label: 'VW', value: 'vw' }]),
+			...(allowedUnits.includes('%') && [{ label: '%', value: '%' }]),
+			...(allowedUnits.includes('empty') && [{ label: '-', value: '' }]),
+		];
 		return options;
 	};
 
 	const onReset = () => {
 		onChangeValue(defaultValue);
 		if (!disableUnit) onChangeUnit(defaultUnit);
-
-		rangeRef.current.setAttribute('value', defaultValue);
-
-		if (!isNumber(defaultValue)) {
-			// RangeControl needs a number or to press its own reset button to put the range
-			// into beginning again. So we do manually
-			const rangeWrapper = rangeRef.current.parentNode;
-			const rangeItems = Array.from(rangeWrapper.children);
-
-			rangeItems.forEach(el => {
-				el.classList.forEach(elClass => {
-					elClass.indexOf('ThumbWrapper') !== -1 &&
-						(el.style.left = 0);
-				});
-			});
-		}
 	};
 
 	return (
@@ -101,7 +82,9 @@ const SizeControl = props => {
 					type='number'
 					className='maxi-size-control__value'
 					value={trim(value)}
-					onChange={e => onChangeValue(Number(e.target.value))}
+					onChange={e => {
+						onChangeValue(Number(e.target.value));
+					}}
 					min={min}
 					max={max}
 					step={step}
@@ -113,7 +96,9 @@ const SizeControl = props => {
 						type='number'
 						className='maxi-size-control__value'
 						value={trim(value)}
-						onChange={e => onChangeValue(Number(e.target.value))}
+						onChange={e => {
+							onChangeValue(Number(e.target.value));
+						}}
 						min={unit ? minMaxSettings[unit].min : null}
 						max={unit ? minMaxSettings[unit].max : null}
 						step={step}
@@ -144,25 +129,31 @@ const SizeControl = props => {
 			)}
 			{disableUnit ? (
 				<RangeControl
-					ref={e => (rangeRef.current = e)} // ref={ ref }
-					value={value}
+					value={
+						Number(value) === '' || Number(value) === 0
+							? 0
+							: Number(trim(value))
+					}
 					onChange={val => onChangeValue(Number(val))}
 					min={min}
 					max={max}
 					step={step}
 					withInputField={false}
-					initialPosition={initial}
+					initialPosition={value || initial}
 				/>
 			) : (
 				<RangeControl
-					ref={e => (rangeRef.current = e)} // ref={ ref }
-					value={value}
+					value={
+						Number(value) === '' || Number(value) === 0
+							? 0
+							: Number(trim(value))
+					}
 					onChange={val => onChangeValue(Number(val))}
 					min={unit ? minMaxSettings[unit].min : null}
 					max={unit ? minMaxSettings[unit].max : null}
 					step={step}
 					withInputField={false}
-					initialPosition={initial}
+					initialPosition={value || initial}
 				/>
 			)}
 		</BaseControl>

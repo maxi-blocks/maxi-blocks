@@ -48,31 +48,6 @@ export const opacity = {
 	},
 };
 
-export const opacityHover = {
-	label: 'Opacity',
-	general: {
-		opacity: 1,
-	},
-	xxl: {
-		opacity: '',
-	},
-	xl: {
-		opacity: '',
-	},
-	l: {
-		opacity: '',
-	},
-	m: {
-		opacity: '',
-	},
-	s: {
-		opacity: '',
-	},
-	xs: {
-		opacity: '',
-	},
-};
-
 export const border = {
 	label: 'Border',
 	general: {
@@ -508,18 +483,19 @@ export const background = {
 	videoOptions: {
 		mediaID: '',
 		mediaURL: '',
-		width: 100,
-		widthUnit: '%',
-		height: 100,
-		heightUnit: '%',
-		fill: 'cover',
-		position: 'unset',
-		autoplay: 0,
+		startTime: '',
+		endTime: '',
 		loop: 0,
-		muted: 0,
-		controls: 0,
-		preload: 'metadata',
 		clipPath: '',
+		fallbackID: '',
+		fallbackURL: '',
+		playOnMobile: 0,
+		opacity: {
+			label: 'Opacity',
+			general: {
+				opacity: 1,
+			},
+		},
 	},
 	colorOptions: {
 		activeColor: '',
@@ -527,25 +503,29 @@ export const background = {
 		gradient: '',
 		gradientAboveBackground: false,
 		clipPath: '',
+		gradientOpacity: {
+			opacity: {
+				label: 'Opacity',
+				general: {
+					opacity: 1,
+				},
+			},
+		},
 	},
-	overlayOptions: {
-		overlay: '',
-		activeColor: '',
-		color: '',
-		gradient: '',
-		gradientAboveBackground: false,
+	imageOpacity: {
 		opacity: {
 			label: 'Opacity',
 			general: {
-				opacity: 0.8,
+				opacity: 1,
 			},
 		},
 	},
 };
 
 export const backgroundHover = {
-	label: 'Background',
+	label: 'Background Hover',
 	activeMedia: '',
+	status: 0,
 	imageOptions: [
 		{
 			imageData: {
@@ -576,18 +556,14 @@ export const backgroundHover = {
 	videoOptions: {
 		mediaID: '',
 		mediaURL: '',
-		width: '',
-		widthUnit: '',
-		height: '',
-		heightUnit: '',
-		fill: '',
-		position: '',
-		autoplay: '',
+		startTime: '',
+		endTime: '',
 		loop: '',
 		muted: '',
-		controls: '',
-		preload: '',
 		clipPath: '',
+		fallbackID: '',
+		fallbackURL: '',
+		playOnMobile: 0,
 	},
 	colorOptions: {
 		activeColor: '',
@@ -595,30 +571,50 @@ export const backgroundHover = {
 		gradient: '',
 		gradientAboveBackground: '',
 		clipPath: '',
+		gradientOpacity: {
+			opacity: {
+				label: 'Opacity',
+				general: {
+					opacity: 1,
+				},
+			},
+		},
 	},
+};
+
+export const overlay = {
+	label: 'Overlay',
 	overlayOptions: {
 		overlay: '',
 		activeColor: '',
 		color: '',
 		gradient: '',
 		gradientAboveBackground: false,
-		opacity: {
-			label: 'Opacity',
-			general: {
-				opacity: '',
+		gradientOpacity: {
+			opacity: {
+				label: 'Opacity',
+				general: {
+					opacity: 1,
+				},
 			},
 		},
 	},
+};
+
+export const overlayHover = {
+	label: 'Overlay Hover',
+	status: 0,
+	...overlay,
 };
 
 export const boxShadow = {
 	label: 'Box Shadow',
 	general: {
 		shadowColor: '#ffffff',
-		shadowHorizontal: 0,
-		shadowVertical: 0,
-		shadowBlur: 0,
-		shadowSpread: 0,
+		shadowHorizontal: '',
+		shadowVertical: '',
+		shadowBlur: '',
+		shadowSpread: '',
 	},
 	xxl: {
 		shadowColor: '',
@@ -744,8 +740,8 @@ export const typography = {
 		color: '#9b9b9b',
 		'font-sizeUnit': 'px',
 		'font-size': 16,
-		'line-heightUnit': '%',
-		'line-height': 150,
+		'line-heightUnit': '',
+		'line-height': 1.56,
 		'letter-spacingUnit': 'px',
 		'letter-spacing': 0,
 		'font-weight': 400,
@@ -753,6 +749,7 @@ export const typography = {
 		'font-style': 'normal',
 		'text-decoration': 'none',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	xxl: {
 		'font-family': '',
@@ -761,7 +758,7 @@ export const typography = {
 		'text-align': '',
 		'font-sizeUnit': 'px',
 		'font-size': '',
-		'line-heightUnit': '%',
+		'line-heightUnit': '',
 		'line-height': '',
 		'letter-spacingUnit': 'px',
 		'letter-spacing': '',
@@ -770,6 +767,7 @@ export const typography = {
 		'font-style': '',
 		'text-decoration': '',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	xl: {
 		'font-family': '',
@@ -777,7 +775,7 @@ export const typography = {
 		color: '',
 		'font-sizeUnit': 'px',
 		'font-size': '',
-		'line-heightUnit': '%',
+		'line-heightUnit': '',
 		'line-height': '',
 		'letter-spacingUnit': 'px',
 		'letter-spacing': '',
@@ -786,6 +784,7 @@ export const typography = {
 		'font-style': '',
 		'text-decoration': '',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	l: {
 		'font-family': '',
@@ -793,7 +792,7 @@ export const typography = {
 		color: '',
 		'font-sizeUnit': 'px',
 		'font-size': '',
-		'line-heightUnit': '%',
+		'line-heightUnit': '',
 		'line-height': '',
 		'letter-spacingUnit': 'px',
 		'letter-spacing': '',
@@ -802,6 +801,7 @@ export const typography = {
 		'font-style': '',
 		'text-decoration': '',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	m: {
 		'font-family': '',
@@ -809,7 +809,7 @@ export const typography = {
 		color: '',
 		'font-sizeUnit': 'px',
 		'font-size': '',
-		'line-heightUnit': '%',
+		'line-heightUnit': '',
 		'line-height': '',
 		'letter-spacingUnit': 'px',
 		'letter-spacing': '',
@@ -818,6 +818,7 @@ export const typography = {
 		'font-style': '',
 		'text-decoration': '',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	s: {
 		'font-family': '',
@@ -825,7 +826,7 @@ export const typography = {
 		color: '',
 		'font-sizeUnit': 'px',
 		'font-size': '',
-		'line-heightUnit': '%',
+		'line-heightUnit': '',
 		'line-height': '',
 		'letter-spacingUnit': 'px',
 		'letter-spacing': '',
@@ -834,6 +835,7 @@ export const typography = {
 		'font-style': '',
 		'text-decoration': '',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	xs: {
 		'font-family': '',
@@ -841,7 +843,7 @@ export const typography = {
 		color: '',
 		'font-sizeUnit': 'px',
 		'font-size': '',
-		'line-heightUnit': '%',
+		'line-heightUnit': '',
 		'line-height': '',
 		'letter-spacingUnit': 'px',
 		'letter-spacing': '',
@@ -850,6 +852,7 @@ export const typography = {
 		'font-style': '',
 		'text-decoration': '',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	textAlign: {
 		label: 'Alignment',
@@ -875,6 +878,7 @@ export const typography = {
 			alignment: '',
 		},
 	},
+	customFormats: {},
 };
 
 export const typographyHover = {
@@ -885,7 +889,7 @@ export const typographyHover = {
 		color: '#',
 		'font-sizeUnit': 'px',
 		'font-size': '',
-		'line-heightUnit': '%',
+		'line-heightUnit': '',
 		'line-height': '',
 		'letter-spacingUnit': 'px',
 		'letter-spacing': '',
@@ -894,6 +898,7 @@ export const typographyHover = {
 		'font-style': '',
 		'text-decoration': '',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	xxl: {
 		'font-family': '',
@@ -902,7 +907,7 @@ export const typographyHover = {
 		'text-align': '',
 		'font-sizeUnit': 'px',
 		'font-size': '',
-		'line-heightUnit': '%',
+		'line-heightUnit': '',
 		'line-height': '',
 		'letter-spacingUnit': 'px',
 		'letter-spacing': '',
@@ -911,6 +916,7 @@ export const typographyHover = {
 		'font-style': '',
 		'text-decoration': '',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	xl: {
 		'font-family': '',
@@ -918,7 +924,7 @@ export const typographyHover = {
 		color: '',
 		'font-sizeUnit': 'px',
 		'font-size': '',
-		'line-heightUnit': '%',
+		'line-heightUnit': '',
 		'line-height': '',
 		'letter-spacingUnit': 'px',
 		'letter-spacing': '',
@@ -927,6 +933,7 @@ export const typographyHover = {
 		'font-style': '',
 		'text-decoration': '',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	l: {
 		'font-family': '',
@@ -934,7 +941,7 @@ export const typographyHover = {
 		color: '',
 		'font-sizeUnit': 'px',
 		'font-size': '',
-		'line-heightUnit': '%',
+		'line-heightUnit': '',
 		'line-height': '',
 		'letter-spacingUnit': 'px',
 		'letter-spacing': '',
@@ -943,6 +950,7 @@ export const typographyHover = {
 		'font-style': '',
 		'text-decoration': '',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	m: {
 		'font-family': '',
@@ -950,7 +958,7 @@ export const typographyHover = {
 		color: '',
 		'font-sizeUnit': 'px',
 		'font-size': '',
-		'line-heightUnit': '%',
+		'line-heightUnit': '',
 		'line-height': '',
 		'letter-spacingUnit': 'px',
 		'letter-spacing': '',
@@ -959,6 +967,7 @@ export const typographyHover = {
 		'font-style': '',
 		'text-decoration': '',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	s: {
 		'font-family': '',
@@ -966,7 +975,7 @@ export const typographyHover = {
 		color: '',
 		'font-sizeUnit': 'px',
 		'font-size': '',
-		'line-heightUnit': '%',
+		'line-heightUnit': '',
 		'line-height': '',
 		'letter-spacingUnit': 'px',
 		'letter-spacing': '',
@@ -975,6 +984,7 @@ export const typographyHover = {
 		'font-style': '',
 		'text-decoration': '',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	xs: {
 		'font-family': '',
@@ -982,7 +992,7 @@ export const typographyHover = {
 		color: '',
 		'font-sizeUnit': 'px',
 		'font-size': '',
-		'line-heightUnit': '%',
+		'line-heightUnit': '',
 		'line-height': '',
 		'letter-spacingUnit': 'px',
 		'letter-spacing': '',
@@ -991,6 +1001,7 @@ export const typographyHover = {
 		'font-style': '',
 		'text-decoration': '',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	textAlign: {
 		label: 'Alignment',
@@ -1016,6 +1027,7 @@ export const typographyHover = {
 			alignment: '',
 		},
 	},
+	customFormats: {},
 };
 
 export const margin = {
@@ -1751,72 +1763,44 @@ export const __experimentalArrow = {
 		active: 0,
 		side: 'bottom',
 		position: 50,
-		color: '#ffffff',
+		width: 80,
 		widthUnit: 'px',
-		width: 20,
-		heightUnit: 'px',
-		height: 20,
-		border: '',
 	},
 	xxl: {
 		side: '',
 		position: '',
-		color: '',
-		widthUnit: '',
 		width: '',
-		heightUnit: '',
-		height: '',
-		border: '',
+		widthUnit: '',
 	},
 	xl: {
 		side: '',
 		position: '',
-		color: '',
-		widthUnit: '',
 		width: '',
-		heightUnit: '',
-		height: '',
-		border: '',
+		widthUnit: '',
 	},
 	l: {
 		side: '',
 		position: '',
-		color: '',
-		widthUnit: '',
 		width: '',
-		heightUnit: '',
-		height: '',
-		border: '',
+		widthUnit: '',
 	},
 	m: {
 		side: '',
 		position: '',
-		color: '',
-		widthUnit: '',
 		width: '',
-		heightUnit: '',
-		height: '',
-		border: '',
+		widthUnit: '',
 	},
 	s: {
 		side: '',
 		position: '',
-		color: '',
-		widthUnit: '',
 		width: '',
-		heightUnit: '',
-		height: '',
-		border: '',
+		widthUnit: '',
 	},
 	xs: {
 		side: '',
 		position: '',
-		color: '',
-		widthUnit: '',
 		width: '',
-		heightUnit: '',
-		height: '',
-		border: '',
+		widthUnit: '',
 	},
 };
 

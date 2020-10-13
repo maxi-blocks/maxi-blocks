@@ -24,6 +24,11 @@ import { toolbarAdvancedSettings } from '../../../../icons';
 import classnames from 'classnames';
 
 /**
+ * Styles
+ */
+import './editor.scss';
+
+/**
  * Component
  */
 class ToolbarPopover extends Component {
@@ -76,7 +81,7 @@ class ToolbarPopover extends Component {
 						<Icon className='toolbar-item__icon' icon={icon} />
 					</Button>
 				</Tooltip>
-				{isOpen && (
+				{isOpen && content && (
 					<Popover
 						className='toolbar-item__popover'
 						noArrow={false}

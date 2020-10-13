@@ -34,6 +34,7 @@ export const typography = {
 		'font-style': 'normal',
 		'text-decoration': 'none',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	xxl: {
 		'font-family': '',
@@ -51,6 +52,7 @@ export const typography = {
 		'font-style': '',
 		'text-decoration': '',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	xl: {
 		'font-family': '',
@@ -67,6 +69,7 @@ export const typography = {
 		'font-style': '',
 		'text-decoration': '',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	l: {
 		'font-family': '',
@@ -83,6 +86,7 @@ export const typography = {
 		'font-style': '',
 		'text-decoration': '',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	m: {
 		'font-family': '',
@@ -99,6 +103,7 @@ export const typography = {
 		'font-style': '',
 		'text-decoration': '',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	s: {
 		'font-family': '',
@@ -115,6 +120,7 @@ export const typography = {
 		'font-style': '',
 		'text-decoration': '',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	xs: {
 		'font-family': '',
@@ -131,6 +137,7 @@ export const typography = {
 		'font-style': '',
 		'text-decoration': '',
 		'text-shadow': '',
+		'vertical-align': '',
 	},
 	textAlign: {
 		label: 'Alignment',
@@ -156,6 +163,7 @@ export const typography = {
 			alignment: '',
 		},
 	},
+	customFormats: {},
 };
 
 export const background = {
@@ -187,18 +195,19 @@ export const background = {
 	videoOptions: {
 		mediaID: '',
 		mediaURL: '',
-		width: 100,
-		widthUnit: '%',
-		height: 100,
-		heightUnit: '%',
-		fill: 'cover',
-		position: 'unset',
-		autoplay: 0,
+		startTime: '',
+		endTime: '',
 		loop: 0,
-		muted: 0,
-		controls: 0,
-		preload: 'metadata',
 		clipPath: '',
+		fallbackID: '',
+		fallbackURL: '',
+		playOnMobile: 0,
+		opacity: {
+			label: 'Opacity',
+			general: {
+				opacity: 1,
+			},
+		},
 	},
 	colorOptions: {
 		activeColor: '#ff4a17',
@@ -206,6 +215,22 @@ export const background = {
 		gradient: '',
 		gradientAboveBackground: false,
 		clipPath: '',
+		gradientOpacity: {
+			opacity: {
+				label: 'Opacity',
+				general: {
+					opacity: 1,
+				},
+			},
+		},
+	},
+	imageOpacity: {
+		opacity: {
+			label: 'Opacity',
+			general: {
+				opacity: 1,
+			},
+		},
 	},
 };
 

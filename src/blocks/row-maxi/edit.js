@@ -5,7 +5,7 @@ const { synchronizeBlocksWithTemplate } = wp.blocks;
 const { forwardRef } = wp.element;
 const { compose, withInstanceId } = wp.compose;
 const { withSelect, withDispatch } = wp.data;
-const { Button, Icon } = wp.components;
+const { Button, Icon, withFocusOutside } = wp.components;
 const { InnerBlocks, __experimentalBlock } = wp.blockEditor;
 
 /**
@@ -27,13 +27,15 @@ import {
 	getOpacityObject,
 	getTransformObject,
 	setBackgroundStyles,
+	getLastBreakpointValue,
 } from '../../utils';
+import RowContext from './context';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNil, uniqueId } from 'lodash';
+import { isEmpty, isNil, uniqueId, isObject } from 'lodash';
 
 /**
  * InnerBlocks version
@@ -59,6 +61,21 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
 const ALLOWED_BLOCKS = ['maxi-blocks/column-maxi'];
 
 class edit extends MaxiBlock {
+	state = {
+		styles: {},
+		updating: false,
+		breakpoints: this.getBreakpoints,
+		displayHandlers: false,
+	};
+
+	handleFocusOutside() {
+		if (this.state.displayHandlers) {
+			this.setState({
+				displayHandlers: false,
+			});
+		}
+	}
+
 	get getObject() {
 		const { uniqueID, background, backgroundHover } = this.props.attributes;
 
@@ -120,11 +137,7 @@ class edit extends MaxiBlock {
 	}
 
 	get getHoverObject() {
-		const {
-			opacityHover,
-			boxShadowHover,
-			borderHover,
-		} = this.props.attributes;
+		const { boxShadowHover, borderHover } = this.props.attributes;
 
 		const response = {
 			boxShadowHover: {
@@ -133,7 +146,6 @@ class edit extends MaxiBlock {
 			borderHover: { ...JSON.parse(borderHover) },
 			borderWidthHover: { ...JSON.parse(borderHover).borderWidth },
 			borderRadiusHover: { ...JSON.parse(borderHover).borderRadius },
-			opacity: { ...getOpacityObject(JSON.parse(opacityHover)) },
 		};
 
 		return response;
@@ -148,6 +160,7 @@ class edit extends MaxiBlock {
 				defaultBlockStyle,
 				background,
 				rowPattern,
+				display,
 			},
 			clientId,
 			loadTemplate,
@@ -156,12 +169,17 @@ class edit extends MaxiBlock {
 			className,
 			instanceId,
 			setAttributes,
+			deviceType,
 		} = this.props;
+
+		const displayValue = !isObject(display) ? JSON.parse(display) : display;
 
 		const classes = classnames(
 			'maxi-block',
 			'maxi-block--backend',
 			'maxi-row-block',
+			getLastBreakpointValue(displayValue, 'display', deviceType) ===
+				'none' && 'maxi-block-display-none',
 			uniqueID,
 			blockStyle,
 			extraClassName,
@@ -172,59 +190,75 @@ class edit extends MaxiBlock {
 
 		return [
 			<Inspector {...this.props} />,
-			<__experimentalToolbar {...this.props} />,
-			<__experimentalBreadcrumbs />,
-			<InnerBlocks
-				// templateLock={'insert'}
-				__experimentalTagName={ContainerInnerBlocks}
-				__experimentalPassedProps={{
-					className: classes,
-					maxiBlockClass: defaultBlockStyle,
-					background,
+			<__experimentalToolbar
+				toggleHandlers={() => {
+					this.setState({
+						displayHandlers: !this.state.displayHandlers,
+					});
 				}}
-				allowedBlocks={ALLOWED_BLOCKS}
-				orientation='horizontal'
-				renderAppender={
-					!hasInnerBlock
-						? () => (
-								<div
-									className='maxi-row-block__template'
-									onClick={() => selectOnClick(clientId)}
-									key={`maxi-row-block--${instanceId}`}
-								>
-									{getTemplates().map(template => {
-										return (
-											<Button
-												key={uniqueId(
-													`maxi-row-block--${instanceId}--`
-												)}
-												className='maxi-row-block__template__button'
-												onClick={() => {
-													rowPatternObject.general.rowPattern =
-														template.name;
-													rowPatternObject.m.rowPattern =
-														template.responsiveLayout;
-
-													setAttributes({
-														rowPattern: JSON.stringify(
-															rowPatternObject
-														),
-													});
-													loadTemplate(template.name);
-												}}
-											>
-												<Icon
-													className='maxi-row-block__template__icon'
-													icon={template.icon}
-												/>
-											</Button>
-										);
-									})}
-								</div>
-						  )
-						: false
-				}
+				{...this.props}
 			/>,
+			<__experimentalBreadcrumbs />,
+			<RowContext.Provider
+				value={{
+					displayHandlers: this.state.displayHandlers,
+					rowPattern,
+				}}
+			>
+				<InnerBlocks
+					// templateLock={'insert'}
+					__experimentalTagName={ContainerInnerBlocks}
+					__experimentalPassedProps={{
+						className: classes,
+						maxiBlockClass: defaultBlockStyle,
+						background,
+					}}
+					allowedBlocks={ALLOWED_BLOCKS}
+					orientation='horizontal'
+					renderAppender={
+						!hasInnerBlock
+							? () => (
+									<div
+										className='maxi-row-block__template'
+										onClick={() => selectOnClick(clientId)}
+										key={`maxi-row-block--${instanceId}`}
+									>
+										{getTemplates().map(template => {
+											return (
+												<Button
+													key={uniqueId(
+														`maxi-row-block--${instanceId}--`
+													)}
+													className='maxi-row-block__template__button'
+													onClick={() => {
+														rowPatternObject.general.rowPattern =
+															template.name;
+														rowPatternObject.m.rowPattern =
+															template.responsiveLayout;
+
+														setAttributes({
+															rowPattern: JSON.stringify(
+																rowPatternObject
+															),
+														});
+														loadTemplate(
+															template.name
+														);
+													}}
+												>
+													<Icon
+														className='maxi-row-block__template__icon'
+														icon={template.icon}
+													/>
+												</Button>
+											);
+										})}
+									</div>
+							  )
+							: false
+					}
+				/>
+			</RowContext.Provider>,
 		];
 	}
 }
@@ -241,10 +275,7 @@ const editSelect = withSelect((select, ownProps) => {
 	const hasInnerBlock = !isEmpty(
 		select('core/block-editor').getBlockOrder(clientId)
 	);
-	let deviceType = select(
-		'core/edit-post'
-	).__experimentalGetPreviewDeviceType();
-	deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
+	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 	return {
 		selectedBlockId,
@@ -308,4 +339,8 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	};
 });
 
-export default compose(editSelect, editDispatch, withInstanceId)(edit);
+export default compose(
+	editSelect,
+	editDispatch,
+	withInstanceId
+)(withFocusOutside(edit));

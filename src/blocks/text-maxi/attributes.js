@@ -8,10 +8,6 @@ import { alignment, margin } from './data';
  * Attributes
  */
 const attributes = {
-	blogStyle: {
-		type: 'string',
-		default: 'maxi-custom',
-	},
 	alignment: {
 		type: 'string',
 		default: JSON.stringify(alignment),
@@ -47,10 +43,6 @@ const attributes = {
 	opacity: {
 		type: 'number',
 		default: JSON.stringify(attributesData.opacity),
-	},
-	opacityHover: {
-		type: 'number',
-		default: JSON.stringify(attributesData.opacityHover),
 	},
 	background: {
 		type: 'string',

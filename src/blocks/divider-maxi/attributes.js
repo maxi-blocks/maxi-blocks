@@ -8,10 +8,6 @@ import size from './data';
  * Attributes
  */
 const attributes = {
-	showLine: {
-		type: 'number',
-		default: 1,
-	},
 	lineVertical: {
 		type: 'string',
 		default: 'center',
@@ -43,10 +39,6 @@ const attributes = {
 	opacity: {
 		type: 'number',
 		default: JSON.stringify(attributesData.opacity),
-	},
-	opacityHover: {
-		type: 'number',
-		default: JSON.stringify(attributesData.opacityHover),
 	},
 	background: {
 		type: 'string',

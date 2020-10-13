@@ -4,7 +4,7 @@
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
 const { withSelect } = wp.data;
-const { Spinner, IconButton, ResizableBox } = wp.components;
+const { Spinner, IconButton, ResizableBox, Placeholder } = wp.components;
 const { __experimentalBlock, MediaUpload } = wp.blockEditor;
 import { RawHTML } from '@wordpress/element';
 
@@ -19,6 +19,7 @@ import {
 	getTransformObject,
 	getAlignmentTextObject,
 	setBackgroundStyles,
+	getLastBreakpointValue,
 } from '../../utils';
 import {
 	MaxiBlock,
@@ -79,7 +80,6 @@ class edit extends MaxiBlock {
 	get getNormalObject() {
 		const {
 			alignment,
-			opacity,
 			padding,
 			margin,
 			zIndex,
@@ -91,7 +91,6 @@ class edit extends MaxiBlock {
 		const response = {
 			padding: { ...JSON.parse(padding) },
 			margin: { ...JSON.parse(margin) },
-			opacity: { ...JSON.parse(opacity) },
 			zIndex: { ...JSON.parse(zIndex) },
 			alignment: { ...getAlignmentFlexObject(JSON.parse(alignment)) },
 			position: { ...JSON.parse(position) },
@@ -161,21 +160,24 @@ class edit extends MaxiBlock {
 	}
 
 	get getHoverObject() {
-		const { opacityHover } = this.props.attributes;
+		const { boxShadowHover } = this.props.attributes;
 
 		const response = {
-			opacityHover: { ...JSON.parse(opacityHover) },
+			boxShadowHover: {
+				...getBoxShadowObject(JSON.parse(boxShadowHover)),
+			},
 		};
 
 		return response;
 	}
 
 	get getImageFrontendObject() {
-		const { boxShadow, size } = this.props.attributes;
+		const { boxShadow, size, opacity } = this.props.attributes;
 
 		const response = {
 			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
 			imageSize: { ...JSON.parse(size) },
+			opacity: { ...JSON.parse(opacity) },
 		};
 
 		return response;
@@ -196,10 +198,17 @@ class edit extends MaxiBlock {
 	}
 
 	get getImageBackendObject() {
-		const { boxShadow, border, clipPath, size } = this.props.attributes;
+		const {
+			boxShadow,
+			opacity,
+			border,
+			clipPath,
+			size,
+		} = this.props.attributes;
 
 		const response = {
 			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
+			opacity: { ...JSON.parse(opacity) },
 			size: { ...JSON.parse(size) },
 			border: { ...JSON.parse(border) },
 			borderWidth: { ...JSON.parse(border).borderWidth },
@@ -251,15 +260,21 @@ class edit extends MaxiBlock {
 				mediaWidth,
 				mediaHeight,
 				SVGElement,
+				display,
 			},
 			imageData,
 			setAttributes,
+			deviceType,
 		} = this.props;
+
+		const displayValue = !isObject(display) ? JSON.parse(display) : display;
 
 		const classes = classnames(
 			'maxi-block',
 			'maxi-block--backend',
 			'maxi-image-block',
+			getLastBreakpointValue(displayValue, 'display', deviceType) ===
+				'none' && 'maxi-block-display-none',
 			blockStyle,
 			extraClassName,
 			uniqueID,
@@ -279,7 +294,7 @@ class edit extends MaxiBlock {
 				!isEmpty(cropOptionsValue.image.source_url)
 			)
 				return cropOptionsValue.image;
-			if (imageData && imageSize)
+			if (imageData && imageSize && imageSize !== 'custom')
 				return imageData.media_details.sizes[imageSize];
 			if (imageData) return imageData.media_details.sizes.full;
 
@@ -296,12 +311,16 @@ class edit extends MaxiBlock {
 			if (imageData.title.rendered)
 				setAttributes({ mediaAltTitle: imageData.title.rendered });
 
-			if (mediaURL !== image.source_url)
-				setAttributes({ mediaURL: image.source_url });
-			if (mediaWidth !== image.width)
-				setAttributes({ mediaWidth: image.width });
-			if (mediaHeight !== image.height)
-				setAttributes({ mediaHeight: image.height });
+			if (
+				mediaURL !== image.source_url ||
+				mediaWidth !== image.width ||
+				mediaHeight !== image.height
+			)
+				setAttributes({
+					mediaURL: image.source_url,
+					mediaHeight: image.height,
+					mediaWidth: image.width,
+				});
 		}
 
 		return [
@@ -358,7 +377,7 @@ class edit extends MaxiBlock {
 					value={mediaID}
 					render={({ open }) => (
 						<Fragment>
-							{!isNil(mediaID) && imageData ? (
+							{(!isNil(mediaID) && imageData) || mediaURL ? (
 								<Fragment>
 									<__experimentalBackgroundDisplayer
 										background={background}
@@ -411,7 +430,7 @@ class edit extends MaxiBlock {
 										<div className='maxi-block-hover-wrapper'>
 											<img
 												className={`maxi-image-block__image wp-image-${mediaID}`}
-												src={mediaURL}
+												src={image.source_url}
 												width={mediaWidth}
 												height={mediaHeight}
 												alt={mediaAlt}
@@ -430,12 +449,18 @@ class edit extends MaxiBlock {
 									<p>{__('Loading…', 'maxi-blocks')}</p>
 								</Fragment>
 							) : (
-								<IconButton
-									className='maxi-imageupload-button'
-									showTooltip='true'
-									onClick={open}
-									icon={placeholderImage}
-								/>
+								<div className='maxi-image-block__placeholder'>
+									<Placeholder
+										icon={placeholderImage}
+										label=''
+									/>
+									<IconButton
+										className='maxi-image-block__settings__upload-button'
+										showTooltip='true'
+										onClick={open}
+										icon={toolbarReplaceImage}
+									/>
+								</div>
 							)}
 						</Fragment>
 					)}
@@ -449,10 +474,7 @@ export default withSelect((select, ownProps) => {
 	const { mediaID } = ownProps.attributes;
 
 	const imageData = select('core').getMedia(mediaID);
-	let deviceType = select(
-		'core/edit-post'
-	).__experimentalGetPreviewDeviceType();
-	deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
+	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 	return {
 		imageData,

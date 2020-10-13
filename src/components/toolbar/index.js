@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 const { Popover } = wp.components;
-const { useSelect } = wp.data;
 const { Fragment, useEffect, useState } = wp.element;
 
 /**
@@ -33,14 +32,15 @@ import {
 	TextItalic,
 	TextLevel,
 	TextLink,
-	TextList,
 	TextListOptions,
 	TextOptions,
 	PaddingMargin,
 	Size,
+	ToggleBlock,
 	__experimentalColumnMover,
 	__experimentalRowSettings,
 	__experimentalColumnSize,
+	__experimentalColumnsHandlers,
 } from './components';
 
 /**
@@ -92,7 +92,6 @@ const MaxiToolbar = props => {
 			verticalAlign,
 			linkSettings,
 			boxShadow,
-			showLine,
 			divider,
 			lineOrientation,
 			lineVertical,
@@ -103,21 +102,17 @@ const MaxiToolbar = props => {
 			svgColorOrange,
 			svgColorBlack,
 			svgColorWhite,
+			display,
 		},
 		clientId,
 		isSelected,
 		name,
 		setAttributes,
+		formatValue,
+		// node,
+		deviceType,
+		toggleHandlers,
 	} = props;
-
-	const { deviceType } = useSelect(select => {
-		const { __experimentalGetPreviewDeviceType } = select('core/edit-post');
-		let deviceType = __experimentalGetPreviewDeviceType();
-		deviceType = deviceType === 'Desktop' ? 'general' : deviceType;
-		return {
-			deviceType,
-		};
-	});
 
 	const [anchorRef, setAnchorRef] = useState(
 		document.getElementById(`block-${clientId}`)
@@ -217,13 +212,11 @@ const MaxiToolbar = props => {
 						/>
 						<Divider
 							blockName={name}
-							showLine={showLine}
 							divider={divider}
 							defaultDivider={getDefaultProp(clientId, 'divider')}
 							lineOrientation={lineOrientation}
-							onChange={(showLine, divider) =>
+							onChange={divider =>
 								setAttributes({
-									showLine,
 									divider,
 								})
 							}
@@ -251,18 +244,24 @@ const MaxiToolbar = props => {
 								clientId,
 								'typography'
 							)}
-							onChange={typography =>
-								setAttributes({ typography })
-							}
+							onChange={obj => setAttributes(obj)}
+							node={anchorRef}
+							content={content}
 							breakpoint={deviceType}
+							isList={isList}
+							typeOfList={typeOfList}
+							formatValue={formatValue}
 						/>
 						<TextColor
 							blockName={name}
 							typography={typography}
-							onChange={typography =>
-								setAttributes({ typography })
-							}
+							content={content}
+							onChange={obj => setAttributes(obj)}
 							breakpoint={deviceType}
+							node={anchorRef}
+							isList={isList}
+							typeOfList={typeOfList}
+							formatValue={formatValue}
 						/>
 						<Alignment
 							blockName={name}
@@ -280,16 +279,20 @@ const MaxiToolbar = props => {
 							onChange={obj => setAttributes(obj)}
 						/>
 						<TextBold
+							typography={typography}
+							formatValue={formatValue}
 							blockName={name}
-							content={content}
-							onChange={content => setAttributes({ content })}
-							node={anchorRef}
+							onChange={obj => setAttributes(obj)}
+							isList={isList}
+							breakpoint={deviceType}
 						/>
 						<TextItalic
+							typography={typography}
+							formatValue={formatValue}
 							blockName={name}
-							content={content}
-							onChange={content => setAttributes({ content })}
-							node={anchorRef}
+							onChange={obj => setAttributes(obj)}
+							isList={isList}
+							breakpoint={deviceType}
 						/>
 						<__experimentalRowSettings
 							blockName={name}
@@ -306,6 +309,11 @@ const MaxiToolbar = props => {
 							}
 							breakpoint={deviceType}
 						/>
+
+						<__experimentalColumnsHandlers
+							toggleHandlers={toggleHandlers}
+							blockName={name}
+						/>
 						<Link
 							blockName={name}
 							linkSettings={linkSettings}
@@ -315,28 +323,20 @@ const MaxiToolbar = props => {
 						/>
 						<TextLink
 							blockName={name}
-							content={content}
-							onChange={content => setAttributes({ content })}
-							node={anchorRef}
-						/>
-						<TextList
-							blockName={name}
+							onChange={obj => setAttributes(obj)}
 							isList={isList}
-							content={content}
-							onChange={(isList, content) =>
-								setAttributes({
-									isList,
-									content,
-								})
-							}
+							formatValue={formatValue}
+							linkSettings={linkSettings}
+							typography={typography}
+							breakpoint={deviceType}
 						/>
 						<TextListOptions
 							blockName={name}
-							isList={isList}
+							formatValue={formatValue}
 							content={content}
+							isList={isList}
 							typeOfList={typeOfList}
-							onChange={content => setAttributes({ content })}
-							node={anchorRef}
+							onChange={obj => setAttributes(obj)}
 						/>
 						<BackgroundColor
 							blockName={name}
@@ -379,7 +379,6 @@ const MaxiToolbar = props => {
 								)}
 							</Fragment>
 						)}
-
 						<Border
 							blockName={name}
 							border={border}
@@ -454,6 +453,12 @@ const MaxiToolbar = props => {
 						/>
 						<Duplicate clientId={clientId} />
 						<Delete clientId={clientId} />
+						<ToggleBlock
+							display={display}
+							breakpoint={deviceType}
+							onChange={display => setAttributes({ display })}
+							defaultDisplay='flex'
+						/>
 					</div>
 				</Popover>
 			)}

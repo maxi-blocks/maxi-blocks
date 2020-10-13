@@ -3,7 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { Fragment, useState } = wp.element;
-const { SelectControl, RadioControl, Button, Icon } = wp.components;
+const { SelectControl, Button, Icon, TextControl } = wp.components;
 
 /**
  * Internal dependencies
@@ -15,6 +15,9 @@ import ImageCropControl from '../image-crop-control';
 import SettingTabsControl from '../setting-tabs-control';
 import SizeControl from '../size-control';
 import __experimentalClipPath from '../clip-path-control';
+import __experimentalFancyRadioControl from '../fancy-radio-control';
+import __experimentalOpacityControl from '../opacity-control';
+import __experimentalNumberControl from '../number-control';
 
 /**
  * External dependencies
@@ -32,7 +35,6 @@ import {
 	backgroundVideo,
 	backgroundGradient,
 } from '../../icons';
-
 import './editor.scss';
 
 /**
@@ -53,7 +55,6 @@ const BackgroundControl = props => {
 
 	const [isOpen, setIsOpen] = useState(false);
 	const [selector, setSelector] = useState(0);
-
 	const value = !isObject(background) ? JSON.parse(background) : background;
 
 	const defaultValue = !isObject(defaultBackground)
@@ -137,26 +138,23 @@ const BackgroundControl = props => {
 	return (
 		<div className={classes}>
 			{getOptions().length > 1 && (
-				<div className='maxi-fancy-radio-control'>
-					<RadioControl
-						label={__('Background', 'maxi-blocks')}
-						selected={value.activeMedia}
-						options={getOptions()}
-						onChange={item => {
-							isOpen && setIsOpen(false);
-							value.activeMedia = item;
-							if (isEmpty(item))
-								value.colorOptions.activeColor = '';
-							if (item === 'color')
-								value.colorOptions.activeColor =
-									value.colorOptions.color;
-							if (item === 'gradient')
-								value.colorOptions.activeColor =
-									value.colorOptions.gradient;
-							onChange(JSON.stringify(value));
-						}}
-					/>
-				</div>
+				<__experimentalFancyRadioControl
+					label={__('Background', 'maxi-blocks')}
+					selected={value.activeMedia}
+					options={getOptions()}
+					onChange={item => {
+						isOpen && setIsOpen(false);
+						value.activeMedia = item;
+						if (isEmpty(item)) value.colorOptions.activeColor = '';
+						if (item === 'color')
+							value.colorOptions.activeColor =
+								value.colorOptions.color;
+						if (item === 'gradient')
+							value.colorOptions.activeColor =
+								value.colorOptions.gradient;
+						onChange(JSON.stringify(value));
+					}}
+				/>
 			)}
 			{!isOpen && (
 				<Fragment>
@@ -240,39 +238,99 @@ const BackgroundControl = props => {
 									}}
 								/>
 							)}
+							<__experimentalOpacityControl
+								label={__('Background Opacity', 'maxi-blocks')}
+								opacity={value.imageOpacity.opacity}
+								defaultOpacity={
+									defaultValue.imageOpacity.opacity
+								}
+								onChange={val => {
+									value.imageOpacity.opacity = JSON.parse(
+										val
+									);
+									onChange(JSON.stringify(value));
+								}}
+							/>
 						</Fragment>
 					)}
 					{!disableVideo && value.activeMedia === 'video' && (
 						<div className='maxi-background-control__video'>
-							<MediaUploaderControl
-								allowedTypes={['video']}
-								mediaType='video'
-								mediaID={value.videoOptions.mediaID}
-								onSelectImage={videoData => {
-									value.videoOptions.mediaID = videoData.id;
-									value.videoOptions.mediaURL = videoData.url;
+							<TextControl
+								label='URL'
+								type='url'
+								value={value.videoOptions.mediaURL}
+								placeholder='Add Youtube, Vimeo, or Direct Link'
+								onChange={val => {
+									value.videoOptions.mediaURL = val;
 									onChange(JSON.stringify(value));
 								}}
-								onRemoveImage={() => {
-									value.videoOptions.mediaID = '';
-									value.videoOptions.mediaURL = '';
-									onChange(JSON.stringify(value));
-								}}
-								extendSelector={
-									value.videoOptions.mediaID && (
-										<Button
-											isSecondary
-											onClick={e => onOpenOptions(e)}
-											className='maxi-background-control__video-edit'
-										>
-											{__('Edit', 'maxi-blocks')}
-										</Button>
-									)
-								}
-								placeholder={__('Set Video', 'maxi-blocks')}
-								replaceButton={__('Replace', 'maxi-blocks')}
-								removeButton={__('Remove', 'maxi-blocks')}
 							/>
+
+							<__experimentalNumberControl
+								label={__('Start Time (s)', 'maxi-blocks')}
+								min={0}
+								max={999}
+								defaultValue=''
+								value={value.videoOptions.startTime}
+								onChange={val => {
+									value.videoOptions.startTime = val;
+									onChange(JSON.stringify(value));
+								}}
+							/>
+							<__experimentalNumberControl
+								label={__('End Time (s)', 'maxi-blocks')}
+								min={0}
+								max={999}
+								defaultValue=''
+								value={value.videoOptions.endTime}
+								onChange={val => {
+									value.videoOptions.endTime = val;
+
+									if (val) {
+										value.videoOptions.loop = 0;
+									}
+
+									onChange(JSON.stringify(value));
+								}}
+							/>
+							<SelectControl
+								label={__('Loop', 'maxi-blocks')}
+								value={value.videoOptions.loop}
+								options={[
+									{
+										label: __('No', 'maxi-blocks'),
+										value: 0,
+									},
+									{
+										label: __('Yes', 'maxi-blocks'),
+										value: 1,
+									},
+								]}
+								disabled={!!Number(value.videoOptions.endTime)}
+								onChange={val => {
+									value.videoOptions.loop = val;
+									onChange(JSON.stringify(value));
+								}}
+							/>
+							<SelectControl
+								label={__('Play on Mobile', 'maxi-blocks')}
+								value={value.videoOptions.playOnMobile}
+								options={[
+									{
+										label: __('No', 'maxi-blocks'),
+										value: 0,
+									},
+									{
+										label: __('Yes', 'maxi-blocks'),
+										value: 1,
+									},
+								]}
+								onChange={val => {
+									value.videoOptions.playOnMobile = val;
+									onChange(JSON.stringify(value));
+								}}
+							/>
+
 							{!disableClipPath && (
 								<__experimentalClipPath
 									clipPath={value.videoOptions.clipPath}
@@ -282,6 +340,35 @@ const BackgroundControl = props => {
 									}}
 								/>
 							)}
+
+							<__experimentalOpacityControl
+								label={__('Video Opacity', 'maxi-blocks')}
+								opacity={value.videoOptions.opacity}
+								defaultOpacity={
+									defaultValue.videoOptions.opacity
+								}
+								onChange={val => {
+									value.videoOptions.opacity = JSON.parse(
+										val
+									);
+									onChange(JSON.stringify(value));
+								}}
+							/>
+							<MediaUploaderControl
+								className='maxi-mediauploader-control__video-fallback'
+								placeholder={__('Background Fallback')}
+								mediaID={value.videoOptions.fallbackID}
+								onSelectImage={val => {
+									value.videoOptions.fallbackID = val.id;
+									value.videoOptions.fallbackURL = val.url;
+									onChange(JSON.stringify(value));
+								}}
+								onRemoveImage={() => {
+									value.videoOptions.fallbackID = '';
+									value.videoOptions.fallbackURL = '';
+									onChange(JSON.stringify(value));
+								}}
+							/>
 						</div>
 					)}
 					{!disableGradient && value.activeMedia === 'gradient' && (
@@ -289,14 +376,21 @@ const BackgroundControl = props => {
 							<GradientControl
 								label={__('Background', 'maxi-blocks')}
 								gradient={value.colorOptions.gradient}
+								gradientOpacity={
+									value.colorOptions.gradientOpacity
+								}
 								defaultGradient={
-									defaultValue.colorOptions.gradient
+									defaultValue.colorOptions.gradientOpacity
+										.opacity
 								}
 								onChange={val => {
 									value.colorOptions.gradient = val;
 									value.colorOptions.activeColor = val;
 									onChange(JSON.stringify(value));
 								}}
+								onChangeOpacity={() =>
+									onChange(JSON.stringify(value))
+								}
 								gradientAboveBackground={
 									value.colorOptions.gradientAboveBackground
 								}
@@ -383,14 +477,32 @@ const BackgroundControl = props => {
 												.sizeSettings.size
 										}
 										options={[
-											{ label: 'Auto', value: 'auto' },
-											{ label: 'Cover', value: 'cover' },
 											{
-												label: 'Contain',
+												label: __(
+													'Auto',
+													'maxi-blocks'
+												),
+												value: 'auto',
+											},
+											{
+												label: __(
+													'Cover',
+													'maxi-blocks'
+												),
+												value: 'cover',
+											},
+											{
+												label: __(
+													'Contain',
+													'maxi-blocks'
+												),
 												value: 'contain',
 											},
 											{
-												label: 'Custom',
+												label: __(
+													'Custom',
+													'maxi-blocks'
+												),
 												value: 'custom',
 											},
 										]}
@@ -434,23 +546,47 @@ const BackgroundControl = props => {
 										}
 										options={[
 											{
-												label: 'Repeat',
+												label: __(
+													'Repeat',
+													'maxi-blocks'
+												),
 												value: 'repeat',
 											},
 											{
-												label: 'No repeat',
+												label: __(
+													'No repeat',
+													'maxi-blocks'
+												),
 												value: 'no-repeat',
 											},
 											{
-												label: 'Repeat X',
+												label: __(
+													'Repeat X',
+													'maxi-blocks'
+												),
 												value: 'repeat-x',
 											},
 											{
-												label: 'Repeat Y',
+												label: __(
+													'Repeat Y',
+													'maxi-blocks'
+												),
 												value: 'repeat-y',
 											},
-											{ label: 'Space', value: 'space' },
-											{ label: 'Round', value: 'round' },
+											{
+												label: __(
+													'Space',
+													'maxi-blocks'
+												),
+												value: 'space',
+											},
+											{
+												label: __(
+													'Round',
+													'maxi-blocks'
+												),
+												value: 'round',
+											},
 										]}
 										onChange={val => {
 											value.imageOptions[
@@ -470,43 +606,73 @@ const BackgroundControl = props => {
 										}
 										options={[
 											{
-												label: 'Left top',
+												label: __(
+													'Left top',
+													'maxi-blocks'
+												),
 												value: 'left top',
 											},
 											{
-												label: 'Left center',
+												label: __(
+													'Left center',
+													'maxi-blocks'
+												),
 												value: 'left center',
 											},
 											{
-												label: 'Left bottom',
+												label: __(
+													'Left bottom',
+													'maxi-blocks'
+												),
 												value: 'left bottom',
 											},
 											{
-												label: 'Right top',
+												label: __(
+													'Right top',
+													'maxi-blocks'
+												),
 												value: 'right top',
 											},
 											{
-												label: 'Right center',
+												label: __(
+													'Right center',
+													'maxi-blocks'
+												),
 												value: 'right center',
 											},
 											{
-												label: 'Right bottom',
+												label: __(
+													'Right bottom',
+													'maxi-blocks'
+												),
 												value: 'right bottom',
 											},
 											{
-												label: 'Center top',
+												label: __(
+													'Center top',
+													'maxi-blocks'
+												),
 												value: 'center top',
 											},
 											{
-												label: 'Center center',
+												label: __(
+													'Center center',
+													'maxi-blocks'
+												),
 												value: 'center center',
 											},
 											{
-												label: 'Center bottom',
+												label: __(
+													'Center bottom',
+													'maxi-blocks'
+												),
 												value: 'center bottom',
 											},
 											{
-												label: 'Custom',
+												label: __(
+													'Custom',
+													'maxi-blocks'
+												),
 												value: 'custom',
 											},
 										]}
@@ -613,15 +779,24 @@ const BackgroundControl = props => {
 										}
 										options={[
 											{
-												label: 'Padding',
+												label: __(
+													'Padding',
+													'maxi-blocks'
+												),
 												value: 'padding-box',
 											},
 											{
-												label: 'Border',
+												label: __(
+													'Border',
+													'maxi-blocks'
+												),
 												value: 'border-box',
 											},
 											{
-												label: 'Content',
+												label: __(
+													'Content',
+													'maxi-blocks'
+												),
 												value: 'content-box',
 											},
 										]}
@@ -642,15 +817,24 @@ const BackgroundControl = props => {
 										}
 										options={[
 											{
-												label: 'Border',
+												label: __(
+													'Border',
+													'maxi-blocks'
+												),
 												value: 'border-box',
 											},
 											{
-												label: 'Padding',
+												label: __(
+													'Padding',
+													'maxi-blocks'
+												),
 												value: 'padding-box',
 											},
 											{
-												label: 'Content',
+												label: __(
+													'Content',
+													'maxi-blocks'
+												),
 												value: 'content-box',
 											},
 										]}
@@ -672,11 +856,26 @@ const BackgroundControl = props => {
 										}
 										options={[
 											{
-												label: 'Scroll',
+												label: __(
+													'Scroll',
+													'maxi-blocks'
+												),
 												value: 'scroll',
 											},
-											{ label: 'Fixed', value: 'fixed' },
-											{ label: 'Local', value: 'local' },
+											{
+												label: __(
+													'Fixed',
+													'maxi-blocks'
+												),
+												value: 'fixed',
+											},
+											{
+												label: __(
+													'Local',
+													'maxi-blocks'
+												),
+												value: 'local',
+											},
 										]}
 										onChange={val => {
 											value.imageOptions[
@@ -691,283 +890,6 @@ const BackgroundControl = props => {
 					]}
 				/>
 			)}
-			{isOpen &&
-				value.activeMedia === 'video' &&
-				value.videoOptions.mediaURL && (
-					<SettingTabsControl
-						items={[
-							{
-								label: __('Video', 'maxi-blocks'),
-								className: 'maxi-background-control__image-tab',
-								uuid: 'maxi-background-control__image-tab',
-								content: (
-									<MediaUploaderControl
-										mediaType='video'
-										mediaID={value.videoOptions.mediaID}
-										onSelectImage={imageData => {
-											value.videoOptions.mediaID =
-												imageData.id;
-											value.videoOptions.mediaURL =
-												imageData.url;
-											onChange(JSON.stringify(value));
-										}}
-										onRemoveImage={() => {
-											value.videoOptions.mediaID = '';
-											value.videoOptions.mediaURL = '';
-											onRemoveImage();
-											onChange(JSON.stringify(value));
-										}}
-										extendSelector={
-											<Button
-												isSecondary
-												onClick={onDoneEdition}
-												className='maxi-background-control__done-edition'
-											>
-												{__('Done', 'maxi-blocks')}
-											</Button>
-										}
-										replaceButton={__(
-											'Replace',
-											'maxi-blocks'
-										)}
-										removeButton={__(
-											'Delete',
-											'maxi-blocks'
-										)}
-										alternativeImage={getAlternativeImage(
-											selector
-										)}
-									/>
-								),
-							},
-							{
-								label: __('Settings', 'maxi-blocks'),
-								className:
-									'maxi-background-control__background-tab',
-								content: (
-									<Fragment>
-										<SizeControl
-											label={__('Width', 'maxi-blocks')}
-											unit={value.videoOptions.widthUnit}
-											defaultUnit={
-												defaultValue.videoOptions
-													.widthUnit
-											}
-											onChangeUnit={val => {
-												value.videoOptions.widthUnit = val;
-												onChange(JSON.stringify(value));
-											}}
-											value={value.videoOptions.width}
-											defaultValue={
-												defaultValue.videoOptions.width
-											}
-											onChangeValue={val => {
-												value.videoOptions.width = val;
-												onChange(JSON.stringify(value));
-											}}
-											minMaxSettings={{
-												px: {
-													min: 0,
-													max: 999,
-												},
-												em: {
-													min: 0,
-													max: 999,
-												},
-												vw: {
-													min: 0,
-													max: 999,
-												},
-												'%': {
-													min: 0,
-													max: 100,
-												},
-											}}
-										/>
-										<SizeControl
-											label={__('Height', 'maxi-blocks')}
-											unit={value.videoOptions.heightUnit}
-											defaultUnit={
-												defaultValue.videoOptions
-													.heightUnit
-											}
-											onChangeUnit={val => {
-												value.videoOptions.heightUnit = val;
-												onChange(JSON.stringify(value));
-											}}
-											value={value.videoOptions.height}
-											defaultValue={
-												defaultValue.videoOptions.height
-											}
-											onChangeValue={val => {
-												value.videoOptions.height = val;
-												onChange(JSON.stringify(value));
-											}}
-											minMaxSettings={{
-												px: {
-													min: 0,
-													max: 999,
-												},
-												em: {
-													min: 0,
-													max: 999,
-												},
-												vw: {
-													min: 0,
-													max: 999,
-												},
-												'%': {
-													min: 0,
-													max: 100,
-												},
-											}}
-										/>
-										<SelectControl
-											label={__('Fill', 'maxi-blocks')}
-											value={value.videoOptions.fill}
-											options={[
-												{
-													label: 'Cover',
-													value: 'cover',
-												},
-												{
-													label: 'Contain',
-													value: 'contain',
-												},
-												{
-													label: 'Fill',
-													value: 'fill',
-												},
-												{
-													label: 'Scale-down',
-													value: 'scale-down',
-												},
-												{
-													label: 'None',
-													value: 'none',
-												},
-											]}
-											onChange={val => {
-												value.videoOptions.fill = val;
-												onChange(JSON.stringify(value));
-											}}
-										/>
-										<SelectControl
-											label={__(
-												'Position',
-												'maxi-blocks'
-											)}
-											value={value.videoOptions.position}
-											options={[
-												{
-													label: 'Unset',
-													value: 'unset',
-												},
-												{ label: 'Top', value: 'top' },
-												{
-													label: 'Right',
-													value: 'right',
-												},
-												{
-													label: 'Bottom',
-													value: 'bottom',
-												},
-												{
-													label: 'Left',
-													value: 'left',
-												},
-												{
-													label: 'Center',
-													value: 'center',
-												},
-											]}
-											onChange={val => {
-												value.videoOptions.position = val;
-												onChange(JSON.stringify(value));
-											}}
-										/>
-										<SelectControl
-											label={__(
-												'Autoplay',
-												'maxi-blocks'
-											)}
-											value={value.videoOptions.autoplay}
-											options={[
-												{ label: 'No', value: 0 },
-												{ label: 'Yes', value: 1 },
-											]}
-											onChange={val => {
-												value.videoOptions.autoplay = val;
-												onChange(JSON.stringify(value));
-											}}
-										/>
-										<SelectControl
-											label={__(
-												'Playback Controls',
-												'maxi-blocks'
-											)}
-											value={value.videoOptions.controls}
-											options={[
-												{ label: 'No', value: 0 },
-												{ label: 'Yes', value: 1 },
-											]}
-											onChange={val => {
-												value.videoOptions.controls = val;
-												onChange(JSON.stringify(value));
-											}}
-										/>
-										<SelectControl
-											label={__('Loop', 'maxi-blocks')}
-											value={value.videoOptions.loop}
-											options={[
-												{ label: 'No', value: 0 },
-												{ label: 'Yes', value: 1 },
-											]}
-											onChange={val => {
-												value.videoOptions.loop = val;
-												onChange(JSON.stringify(value));
-											}}
-										/>
-										<SelectControl
-											label={__('Muted', 'maxi-blocks')}
-											value={value.videoOptions.muted}
-											options={[
-												{ label: 'No', value: 0 },
-												{ label: 'Yes', value: 1 },
-											]}
-											onChange={val => {
-												value.videoOptions.muted = val;
-												onChange(JSON.stringify(value));
-											}}
-										/>
-										<SelectControl
-											label={__('Preload', 'maxi-blocks')}
-											value={value.videoOptions.muted}
-											options={[
-												{
-													label: 'MetaData',
-													value: 'metadata',
-												},
-												{
-													label: 'Auto',
-													value: 'auto',
-												},
-												{
-													label: 'None',
-													value: 'none',
-												},
-											]}
-											onChange={val => {
-												value.videoOptions.muted = val;
-												onChange(JSON.stringify(value));
-											}}
-										/>
-									</Fragment>
-								),
-							},
-						]}
-					/>
-				)}
 		</div>
 	);
 };

@@ -23,10 +23,6 @@ const attributes = {
 		type: 'number',
 		default: JSON.stringify(attributesData.opacity),
 	},
-	opacityHover: {
-		type: 'number',
-		default: JSON.stringify(attributesData.opacityHover),
-	},
 	background: {
 		type: 'string',
 		default: JSON.stringify(attributesData.background),
@@ -34,6 +30,14 @@ const attributes = {
 	backgroundHover: {
 		type: 'string',
 		default: JSON.stringify(attributesData.backgroundHover),
+	},
+	overlay: {
+		type: 'string',
+		default: JSON.stringify(attributesData.overlay),
+	},
+	overlayHover: {
+		type: 'string',
+		default: JSON.stringify(attributesData.overlayHover),
 	},
 	border: {
 		type: 'string',

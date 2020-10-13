@@ -2,14 +2,20 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { useSelect } = wp.data;
 const { Icon, Button, Tooltip } = wp.components;
-const { toggleFormat, create, toHTMLString } = wp.richText;
+
+/**
+ * Internal dependencies
+ */
+import {
+	__experimentalGetCustomFormatValue,
+	__experimentalSetFormat,
+} from '../../../../extensions/text/formats';
 
 /**
  * External dependencies
  */
-import { find } from 'lodash';
+import { isObject } from 'lodash';
 
 /**
  * Styles and icons
@@ -20,82 +26,48 @@ import { toolbarBold } from '../../../../icons';
 /**
  * TextBold
  */
-const TextBold = props => {
-	const { blockName, content, onChange, node } = props;
-
-	/**
-	 * Gets the all format objects at the start of the selection.
-	 *
-	 * @param {Object} value                Value to inspect.
-	 * @param {Array} EMPTY_ACTIVE_FORMATS Array to return if there are no active
-	 * formats.
-	 * @return {?Object} Active format objects.
-	 * @package
-	 * @see packages/rich-text/src/get-active-formats.js
-	 */
-	const getActiveFormats = (
-		{ formats, start, end, activeFormats },
-		EMPTY_ACTIVE_FORMATS = []
-	) => {
-		if (start === undefined) {
-			return EMPTY_ACTIVE_FORMATS;
-		}
-
-		if (start === end) {
-			// For a collapsed caret, it is possible to override the active formats.
-			if (activeFormats) {
-				return activeFormats;
-			}
-
-			const formatsBefore = formats[start - 1] || EMPTY_ACTIVE_FORMATS;
-			const formatsAfter = formats[start] || EMPTY_ACTIVE_FORMATS;
-
-			// By default, select the lowest amount of formats possible (which means
-			// the caret is positioned outside the format boundary). The user can
-			// then use arrow keys to define `activeFormats`.
-			if (formatsBefore.length < formatsAfter.length) {
-				return formatsBefore;
-			}
-
-			return formatsAfter;
-		}
-
-		return formats[start] || EMPTY_ACTIVE_FORMATS;
-	};
-
-	const { formatValue, isActive } = useSelect(
-		select => {
-			const { getSelectionStart, getSelectionEnd } = select(
-				'core/block-editor'
-			);
-			const formatValue = create({
-				element: node.querySelector('p'),
-				html: content,
-			});
-			formatValue.start = getSelectionStart().offset;
-			formatValue.end = getSelectionEnd().offset;
-
-			const isActive = !!find(getActiveFormats(formatValue), {
-				type: 'core/bold',
-			});
-			return {
-				formatValue,
-				isActive,
-			};
-		},
-		[getActiveFormats, node, content]
-	);
-
+const TextBold = ({
+	typography,
+	formatValue,
+	blockName,
+	onChange,
+	isList,
+	breakpoint,
+}) => {
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
-	const onClick = () => {
-		const newFormat = toggleFormat(formatValue, { type: 'core/bold' });
+	const typographyValue =
+		(!isObject(typography) && JSON.parse(typography)) || typography;
 
-		const newContent = toHTMLString({
-			value: newFormat,
+	const boldValue = __experimentalGetCustomFormatValue({
+		typography: typographyValue,
+		formatValue,
+		prop: 'font-weight',
+		breakpoint,
+	});
+
+	const isActive = (boldValue > 400 && true) || false;
+
+	const onClick = () => {
+		const {
+			typography: newTypography,
+			content: newContent,
+		} = __experimentalSetFormat({
+			formatValue,
+			isActive,
+			isList,
+			typography: typographyValue,
+			value: {
+				'font-weight': (isActive && 400) || 800,
+			},
+			breakpoint,
+			// isHover,
 		});
 
-		onChange(newContent);
+		onChange({
+			typography: JSON.stringify(newTypography),
+			...(newContent && { content: newContent }),
+		});
 	};
 
 	return (

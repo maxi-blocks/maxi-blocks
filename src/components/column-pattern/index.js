@@ -19,8 +19,6 @@ import {
 
 import SizeControl from '../size-control';
 
-import { getLastBreakpointValue } from '../../utils';
-
 /**
  * External dependencies
  */
@@ -97,7 +95,7 @@ const ColumnPatternsInspector = props => {
 	 * @returns {Array} Array with saved content
 	 */
 	const getCurrentContent = (blockIds, newTemplate = []) => {
-		if (isNil(blockIds) || isEmpty(blockIds)) return null;
+		if (isNil(blockIds) || isEmpty(blockIds)) return [];
 
 		blockIds.forEach(id => {
 			const blockName = getBlockName(id);
@@ -165,7 +163,6 @@ const ColumnPatternsInspector = props => {
 		const currentAttributes = getCurrentAttributes(innerBlocks);
 
 		const template = cloneDeep(getTemplateObject(templateName));
-
 		template.content.forEach((column, i) => {
 			column[1].uniqueID = uniqueIdCreator();
 
@@ -191,6 +188,27 @@ const ColumnPatternsInspector = props => {
 		);
 
 		replaceInnerBlocks(clientId, newTemplate, false);
+	};
+
+	/**
+	 * Get current columns sizes
+	 *
+	 * @return {Array} Array of columns sizes
+	 */
+	const getCurrentColumnsSizes = () => {
+		const columnsSizes = [];
+		const { getBlock } = select('core/block-editor');
+
+		const columnsBlockObjects = getBlock(clientId).innerBlocks;
+
+		columnsBlockObjects.forEach(columnObject => {
+			const columnSizeObject = JSON.parse(
+				columnObject.attributes.columnSize
+			);
+			columnsSizes.push(columnSizeObject[breakpoint].size);
+		});
+
+		return columnsSizes;
 	};
 
 	/**
@@ -232,6 +250,33 @@ const ColumnPatternsInspector = props => {
 	};
 
 	/**
+	 * Apply gap on columns sizes array
+	 *
+	 * @param {Array} sizes array of columns widths
+	 * @return {Array} columns sizes after applying the gap
+	 */
+	const applyGap = sizes => {
+		const newColumnsSizes = [];
+		const columnsPositions = getColumnsPositions(sizes);
+
+		const gap = 2.5;
+
+		sizes.forEach((column, i) => {
+			if (columnsPositions[i].columnsNumber > 1) {
+				const numberOfGaps = columnsPositions[i].columnsNumber - 1;
+				const total = 100 - gap * numberOfGaps;
+				newColumnsSizes.push(sizes[i] * total);
+			}
+
+			if (columnsPositions[i].columnsNumber === 1) {
+				newColumnsSizes.push(100);
+			}
+		});
+
+		return newColumnsSizes;
+	};
+
+	/**
 	 * Update Columns Sizes
 	 *
 	 * @param {integer} i Element of object FILTERED_TEMPLATES
@@ -246,9 +291,9 @@ const ColumnPatternsInspector = props => {
 
 		const { sizes } = template;
 
-		const columnsPositions = getColumnsPositions(sizes);
+		const sizesWithGaps = applyGap(sizes);
 
-		const gap = 2.5;
+		const columnsPositions = getColumnsPositions(sizes);
 
 		columnsBlockObjects.forEach((column, j) => {
 			const columnClientId = column.clientId;
@@ -258,23 +303,14 @@ const ColumnPatternsInspector = props => {
 			const newColumnSize = JSON.parse(columnAttributes.columnSize);
 			const newColumnMargin = JSON.parse(columnAttributes.margin);
 
-			if (columnsPositions[j].columnsNumber > 1) {
-				const total = 100 - gap * columnsPositions[j].columnsNumber;
-				newColumnSize[breakpoint].size = sizes[j] * total;
-				document.querySelector(
-					`.maxi-column-block__resizer__${columnUniqueID}`
-				).style.width = sizes[j] * total;
-			}
+			newColumnSize[breakpoint].size = sizesWithGaps[j];
 
-			if (columnsPositions[j].columnsNumber === 1) {
-				newColumnSize[breakpoint].size = 100;
-				document.querySelector(
-					`.maxi-column-block__resizer__${columnUniqueID}`
-				).style.width = '100%';
-			}
+			document.querySelector(
+				`.maxi-column-block__resizer__${columnUniqueID}`
+			).style.width = sizesWithGaps[j];
 
 			if (columnsPositions[j].rowNumber > 1) {
-				newColumnMargin[breakpoint]['margin-top'] = 1;
+				newColumnMargin[breakpoint]['margin-top'] = 0.7;
 				newColumnMargin[breakpoint].unit = 'em';
 			}
 
@@ -318,11 +354,8 @@ const ColumnPatternsInspector = props => {
 							)}
 							className={patternButtonClassName}
 							aria-pressed={
-								getLastBreakpointValue(
-									rowPatternObject,
-									'rowPattern',
-									breakpoint
-								) === template.name
+								JSON.stringify(getCurrentColumnsSizes()) ===
+								JSON.stringify(applyGap(template.sizes))
 							}
 							onClick={() => {
 								if (breakpoint === 'general') {

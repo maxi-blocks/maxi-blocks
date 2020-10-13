@@ -8,11 +8,12 @@ const { Icon } = wp.components;
 /**
  * Internal dependencies
  */
+import __experimentalFancyRadioControl from '../fancy-radio-control';
 import ColorLayer from './colorLayer';
 import { ImageLayerClosed, ImageLayerOpened } from './imageLayer';
 import { VideoLayerClosed, VideoLayerOpened } from './videoLayer';
 import GradientLayer from './gradientLayer';
-import __experimentalFancyRadioControl from '../fancy-radio-control';
+import SVGLayer from './svgLayer';
 
 /**
  * External dependencies
@@ -29,6 +30,7 @@ import {
 	backgroundImage,
 	backgroundVideo,
 	backgroundGradient,
+	shape,
 } from '../../icons';
 import './editor.scss';
 
@@ -45,6 +47,7 @@ const BackgroundControl = props => {
 		disableGradient = false,
 		disableColor = false,
 		disableClipPath = false,
+		disableSVG = false,
 		onChange,
 	} = props;
 
@@ -123,6 +126,12 @@ const BackgroundControl = props => {
 				{
 					label: <Icon icon={backgroundGradient()} />,
 					value: 'gradient',
+				},
+			]),
+			...(!disableSVG && [
+				{
+					label: <Icon icon={shape} />,
+					value: 'svg',
 				},
 			]),
 		];
@@ -205,6 +214,17 @@ const BackgroundControl = props => {
 								onChange(JSON.stringify(value));
 							}}
 							disableClipPath={disableClipPath}
+						/>
+					)}
+					{!disableSVG && value.activeMedia === 'svg' && (
+						<SVGLayer
+							SVGOptions={value.SVGOptions}
+							defaultSVGOptions={defaultValue.SVGOptions}
+							onChange={SVGOptions => {
+								value.SVGOptions = SVGOptions;
+
+								onChange(JSON.stringify(value));
+							}}
 						/>
 					)}
 				</Fragment>

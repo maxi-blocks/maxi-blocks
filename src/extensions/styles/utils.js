@@ -665,6 +665,34 @@ export const getVideoBackgroundObject = videoOptions => {
 	return response;
 };
 
+const getSVGWrapperBackgroundObject = SVGOptions => {
+	const response = {
+		label: 'SVG Wrapper Background',
+		general: {},
+	};
+
+	if (SVGOptions.position)
+		response.general = {
+			...response.general,
+			...SVGOptions.position.general,
+		};
+	if (SVGOptions.size)
+		response.general = { ...response.general, ...SVGOptions.size.general };
+
+	return response;
+};
+
+const getSVGBackgroundObject = SVGOptions => {
+	const response = {
+		label: 'SVG Background',
+		general: {},
+	};
+
+	if (SVGOptions.size) response.general.height = `${SVGOptions.size}%`;
+
+	return response;
+};
+
 export const setBackgroundStyles = (
 	target,
 	background,
@@ -698,6 +726,18 @@ export const setBackgroundStyles = (
 				...getVideoBackgroundObject(
 					JSON.parse(backgroundHover).videoOptions
 				),
+			},
+		},
+		[`${target}>.maxi-background-displayer .maxi-background-displayer__svg`]: {
+			SVGBackground: {
+				...getSVGWrapperBackgroundObject(
+					JSON.parse(background).SVGOptions
+				),
+			},
+		},
+		[`${target}>.maxi-background-displayer .maxi-background-displayer__svg svg`]: {
+			SVGBackground: {
+				...getSVGBackgroundObject(JSON.parse(background).SVGOptions),
 			},
 		},
 	};

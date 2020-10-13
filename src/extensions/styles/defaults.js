@@ -528,6 +528,22 @@ export const background = {
 			},
 		},
 	},
+	SVGOptions: {
+		SVGElement: '',
+		SVGData: '{}',
+		SVGMediaID: '',
+		SVGMediaURL: '',
+		position: {
+			label: 'Background SVG position',
+			general: {
+				topUnit: '%',
+				top: '',
+				leftUnit: '%',
+				left: '',
+			},
+		},
+		size: '',
+	},
 };
 
 export const backgroundHover = {
@@ -604,6 +620,22 @@ export const backgroundHover = {
 				opacity: 1,
 			},
 		},
+	},
+	SVGOptions: {
+		SVGElement: '',
+		SVGData: '{}',
+		SVGMediaID: '',
+		SVGMediaURL: '',
+		position: {
+			label: 'Background SVG position',
+			general: {
+				topUnit: '%',
+				top: '',
+				leftUnit: '%',
+				left: '',
+			},
+		},
+		size: '',
 	},
 };
 

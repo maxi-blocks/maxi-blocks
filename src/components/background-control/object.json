@@ -75,5 +75,21 @@
 				"opacity": 1
 			}
 		}
+	},
+	"SVGOptions": {
+		"SVGElement": "",
+		"SVGData": "{}",
+		"SVGMediaID": "",
+		"SVGMediaURL": "",
+		"position": {
+			"label": "Background SVG position",
+			"general": {
+				"topUnit": "%",
+				"top": "",
+				"leftUnit": "%",
+				"left": ""
+			}
+		},
+		"size": ""
 	}
 }

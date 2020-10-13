@@ -31,17 +31,6 @@ const SVGFillControl = props => {
 			: SVGData
 		: {};
 
-	const getFillItems = () => {
-		const response = Object.entries(SVGValue).map(([id, value], i) => {
-			return {
-				label: i,
-				content: getFillItem([id, value], i),
-			};
-		});
-
-		return response;
-	};
-
 	const getFillItem = ([id, value], i = 0) => {
 		return (
 			<SettingTabsControl
@@ -53,7 +42,7 @@ const SVGFillControl = props => {
 							<ColorControl
 								label={__('Fill', 'maxi-blocks')}
 								color={value.color}
-								onColorChange={val => {
+								onChange={val => {
 									SVGValue[id].color = val;
 									const resEl = injectImgSVG(
 										SVGElement,
@@ -106,6 +95,17 @@ const SVGFillControl = props => {
 				]}
 			/>
 		);
+	};
+
+	const getFillItems = () => {
+		const response = Object.entries(SVGValue).map(([id, value], i) => {
+			return {
+				label: i,
+				content: getFillItem([id, value], i),
+			};
+		});
+
+		return response;
 	};
 
 	return (

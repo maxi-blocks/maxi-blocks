@@ -176,6 +176,21 @@ const BorderControl = props => {
 							onChange(JSON.stringify(value));
 						}}
 						breakpoint={breakpoint}
+						allowedUnits={['px', 'em', 'vw']}
+						minMaxSettings={{
+							px: {
+								min: 0,
+								max: 99,
+							},
+							em: {
+								min: 0,
+								max: 10,
+							},
+							vw: {
+								min: 0,
+								max: 10,
+							},
+						}}
 						disableAuto
 					/>
 					<__experimentalAxisControl
@@ -186,6 +201,24 @@ const BorderControl = props => {
 							onChange(JSON.stringify(value));
 						}}
 						breakpoint={breakpoint}
+						minMaxSettings={{
+							px: {
+								min: 0,
+								max: 999,
+							},
+							em: {
+								min: 0,
+								max: 999,
+							},
+							vw: {
+								min: 0,
+								max: 999,
+							},
+							'%': {
+								min: 0,
+								max: 100,
+							},
+						}}
 						disableAuto
 					/>
 				</Fragment>

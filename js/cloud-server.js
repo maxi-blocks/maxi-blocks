@@ -301,8 +301,12 @@ jQuery(document).ready(function ($) {
 							console.log('after insert');
 
 						} else { // FA icon
+							const iconAtrribute = frame.getAttribute("icon");
+							console.log(frame);
+							console.log(iconAtrribute);
 							console.log('FA icon!');
-							const {
+							console.log(e.data);
+						/*	const {
 								canUserUseUnfilteredHTML
 							} = wp.data.select('core/editor');
 							const clientId = wp.data.select('core/block-editor').getSelectedBlock().clientId;
@@ -317,8 +321,8 @@ jQuery(document).ready(function ($) {
 									mode: 'BLOCKS',
 									canUserUseUnfilteredHTML,
 								}),
-							);
-						}
+							);*/
+						} 
 					} //if jQuery.type(e.data) === 'string'
 				} //if (e.origin === 'https://ondemand.divi-den.com') {
 			}, false); // eventer(messageEvent, function(e) {

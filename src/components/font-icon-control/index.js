@@ -11,6 +11,11 @@ import classnames from 'classnames';
 import { isObject } from 'lodash';
 
 /**
+ * Internal dependencies
+ */
+import MaxiModal from './modal';
+
+/**
  * Styles
  */
 import './editor.scss';
@@ -30,11 +35,10 @@ const FontIconControl = props => {
 				<Button
 					className='maxi-font-icon-picker__upload'
 					onClick={() => {
-						value.icon = 'Hi';
-						onChange(JSON.stringify(value));
+						console.log('Button Clicked!');
 					}}
 				>
-					Set Icon
+					<MaxiModal icon={icon} />
 				</Button>
 			) : (
 				<div>

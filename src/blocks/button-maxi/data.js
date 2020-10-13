@@ -195,17 +195,13 @@ export const background = {
 	videoOptions: {
 		mediaID: '',
 		mediaURL: '',
-		width: 100,
-		widthUnit: '%',
-		height: 100,
-		heightUnit: '%',
-		fill: 'cover',
-		position: 'unset',
-		autoplay: 0,
+		startTime: '',
+		endTime: '',
 		loop: 0,
-		muted: 0,
-		preload: 'metadata',
 		clipPath: '',
+		fallbackID: '',
+		fallbackURL: '',
+		playOnMobile: 0,
 		opacity: {
 			label: 'Opacity',
 			general: {

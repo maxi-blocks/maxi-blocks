@@ -355,6 +355,10 @@ body .toolbar-item__popover {
 	box-shadow: none;
 	border: 2px solid #dddfe1;
 	margin-left: 5px;
+	@at-root .rtl #{&} {
+		margin-left: unset;
+		margin-right: 5px;
+	}
 
 	svg {
 		width: 14px;

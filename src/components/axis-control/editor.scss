@@ -25,8 +25,17 @@
 		&__item {
 			margin-right: 5px;
 
+			@at-root .rtl #{&} {
+				margin-right: 0;
+				margin-left: 5px;
+			}
+
 			&:last-of-type {
 				margin-right: 0;
+				@at-root .rtl #{&} {
+					margin-right: 5px;
+					margin-left: 0px;
+				}
 			}
 
 			&__label,
@@ -42,6 +51,10 @@
 
 			&__input {
 				padding-right: 0 !important;
+				@at-root .rtl #{&} {
+					padding-right: 8px !important;
+				}
+
 				&:focus {
 					border-color: #b4b4b4 !important;
 					box-shadow: none !important;

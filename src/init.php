@@ -133,16 +133,6 @@ function gutenberg_extra_load_custom_wp_admin_style() {
 		false
 	);
 
-	wp_enqueue_script(
-		'maxi-gsap-lib-js',
-		plugins_url( '/js/gsap.min.js', dirname( __FILE__ ) )
-	);
-
-	wp_enqueue_script(
-		'maxi-gsap-scroll-trigger-js',
-		plugins_url( '/js/scroll-trigger.min.js', dirname( __FILE__ ) )
-	);
-
 }
 
 add_action( 'admin_enqueue_scripts', 'gutenberg_extra_load_custom_wp_admin_style' );

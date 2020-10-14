@@ -1406,11 +1406,10 @@ export const __experimentalDisplay = {
 
 export const __experimentalHover = {
 	label: 'Hover Effects',
-	settings: {
-		type: 'none',
-		effectType: '',
-		duration: 1,
-	},
+	type: 'none',
+	basicEffectType: 'none',
+	textEffectType: 'none',
+	preview: 0,
 	textPreset: 'center-center',
 	borderStatus: 0,
 	paddingStatus: 0,

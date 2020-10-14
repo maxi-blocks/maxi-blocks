@@ -32,7 +32,6 @@ import {
  */
 import classnames from 'classnames';
 import { isEmpty, isNil, isObject } from 'lodash';
-import { Power2, TimelineLite } from 'gsap';
 
 /**
  * Icons
@@ -272,6 +271,18 @@ class edit extends MaxiBlock {
 
 		const displayValue = !isObject(display) ? JSON.parse(display) : display;
 
+		const hoverValue = !isObject(hover) ? JSON.parse(hover) : hover;
+
+		const hoverClasses = classnames(
+			'maxi-block-hover-wrapper',
+			hoverValue.type === 'basic'
+				? `maxi-hover-effect__${hoverValue.type}__${hoverValue.basicEffectType}`
+				: `maxi-hover-effect__${hoverValue.type}__${hoverValue.textEffectType}`,
+			`maxi-hover-effect__${
+				hoverValue.type === 'basic' ? 'basic' : 'text'
+			}`
+		);
+
 		const classes = classnames(
 			'maxi-block maxi-image-block',
 			`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
@@ -323,21 +334,6 @@ class edit extends MaxiBlock {
 					mediaWidth: image.width,
 				});
 		}
-
-		const {
-			settings: hoverSettings,
-			titleText: hoverTitleText,
-			contentText: hoverContentText,
-			textPreset: hoverTextPreset,
-		} = JSON.parse(hover);
-
-		const hoverClasses = classnames(
-			'maxi-block-hover-wrapper',
-			`maxi-hover-effect__${hoverSettings.type}__${hoverSettings.effectType}`,
-			`maxi-hover-effect__${
-				hoverSettings.type === 'basic' ? 'basic' : 'text'
-			}`
-		);
 
 		return [
 			<Inspector {...this.props} />,
@@ -443,44 +439,49 @@ class edit extends MaxiBlock {
 												icon={toolbarReplaceImage}
 											/>
 										</div>
-										<div className={hoverClasses}>
+										<div
+											className={
+												!!hoverValue.preview &&
+												hoverClasses
+											}
+										>
 											<img
-												style={{
-													transitionDuration: `${hoverSettings.duration}s`,
-												}}
 												className={`maxi-image-block__image wp-image-${mediaID}`}
 												src={image.source_url}
 												width={mediaWidth}
 												height={mediaHeight}
 												alt={mediaAlt}
 											/>
-											{hoverSettings.type !== 'none' && (
-												<div className='maxi-hover-details'>
-													<div
-														style={{
-															transitionDuration: `${hoverSettings.duration}s`,
-														}}
-														className={`maxi-hover-details__content maxi-hover-details__content--${hoverTextPreset}`}
-													>
-														{!isEmpty(
-															hoverTitleText
-														) && (
-															<h3>
-																{hoverTitleText}
-															</h3>
-														)}
-														{!isEmpty(
-															hoverContentText
-														) && (
-															<p>
-																{
-																	hoverContentText
-																}
-															</p>
-														)}
+											{hoverValue.type !== 'none' &&
+												hoverValue.type !== 'basic' &&
+												hoverValue.textEffectType !==
+													'none' &&
+												!!hoverValue.preview && (
+													<div className='maxi-hover-details'>
+														<div
+															className={`maxi-hover-details__content maxi-hover-details__content--${hoverValue.textPreset}`}
+														>
+															{!isEmpty(
+																hoverValue.titleText
+															) && (
+																<h3>
+																	{
+																		hoverValue.titleText
+																	}
+																</h3>
+															)}
+															{!isEmpty(
+																hoverValue.contentText
+															) && (
+																<p>
+																	{
+																		hoverValue.contentText
+																	}
+																</p>
+															)}
+														</div>
 													</div>
-												</div>
-											)}
+												)}
 										</div>
 										{captionType !== 'none' && (
 											<figcaption className='maxi-image-block__caption'>

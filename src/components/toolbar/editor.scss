@@ -136,6 +136,12 @@ body .toolbar-item__popover {
 					& ~ label {
 						border-top-left-radius: 5px;
 						border-bottom-left-radius: 5px;
+						@at-root .rtl #{&} {
+							border-top-left-radius: 0;
+							border-bottom-left-radius: 0;
+							border-top-right-radius: 5px;
+							border-bottom-right-radius: 5px;
+						}
 					}
 				}
 			}
@@ -144,6 +150,12 @@ body .toolbar-item__popover {
 					& ~ label {
 						border-top-right-radius: 5px;
 						border-bottom-right-radius: 5px;
+						@at-root .rtl #{&} {
+							border-top-right-radius: 0;
+							border-bottom-right-radius: 0;
+							border-top-left-radius: 5px;
+							border-bottom-left-radius: 5px;
+						}
 					}
 				}
 			}
@@ -426,6 +438,31 @@ body .toolbar-item__popover {
 		}
 		input[type='number'] {
 			width: 3.5rem;
+		}
+	}
+}
+
+body.rtl .toolbar-item__popover {
+	.components-radio-control__option {
+		&:first-of-type {
+			input {
+				& ~ label {
+					border-top-left-radius: 0;
+					border-bottom-left-radius: 0;
+					border-top-right-radius: 5px;
+					border-bottom-right-radius: 5px;
+				}
+			}
+		}
+		&:last-of-type {
+			input {
+				& ~ label {
+					border-top-right-radius: 0;
+					border-bottom-right-radius: 0;
+					border-top-left-radius: 5px;
+					border-bottom-left-radius: 5px;
+				}
+			}
 		}
 	}
 }

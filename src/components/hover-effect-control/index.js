@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { RadioControl, SelectControl, TextareaControl, Icon } = wp.components;
+const { SelectControl, TextareaControl, Icon } = wp.components;
 const { Fragment } = wp.element;
 
 /**
@@ -14,7 +14,6 @@ import BackgroundControl from '../background-control';
 import BorderControl from '../border-control';
 import __experimentalAxisControl from '../axis-control';
 import __experimentalFancyRadioControl from '../fancy-radio-control';
-import setHoverPreview from './setHoverPreview';
 
 /**
  * External dependencies
@@ -75,23 +74,31 @@ const HoverEffectControl = props => {
 						label={__('Effect Type', 'maxi-blocks')}
 						value={hoverSettings.effectType}
 						options={[
-							{ label: 'Tilt', value: 'tilt' },
 							{ label: 'Zoom In', value: 'zoom-in' },
 							{ label: 'Zoom Out', value: 'zoom-out' },
 							{ label: 'Slide', value: 'slide' },
 							{ label: 'Rotate', value: 'rotate' },
+							{ label: 'Flashing', value: 'flashing' },
 							{ label: 'Blur', value: 'blur' },
 							{ label: 'Clear Blur', value: 'clear-blur' },
+							{ label: 'Sepia', value: 'sepia' },
+							{ label: 'Clear Sepia', value: 'clear-sepia' },
 							{ label: 'Gray Scale', value: 'greay-scale' },
 							{
 								label: 'Clear Gray Scale',
 								value: 'clear-greay-scale',
 							},
+							{
+								label: 'Shine',
+								value: 'shine',
+							},
+							{
+								label: 'Circle Shine',
+								value: 'circle-shine',
+							},
 						]}
 						onChange={val => {
 							hoverSettings.effectType = val;
-
-							setHoverPreview(hoverSettings, uniqueID);
 							onChange(JSON.stringify(value));
 						}}
 					/>
@@ -120,12 +127,42 @@ const HoverEffectControl = props => {
 							{ label: 'Fade', value: 'fade' },
 							{ label: 'Push Up', value: 'push-up' },
 							{ label: 'Push Right', value: 'push-right' },
-							{ label: 'Push Bottom', value: 'push-bottom' },
+							{ label: 'Push Down', value: 'push-down' },
 							{ label: 'Push Left', value: 'push-left' },
 							{ label: 'Slide Up', value: 'slide-up' },
 							{ label: 'Slide Right', value: 'slide-right' },
-							{ label: 'Slide Bottom', value: 'slide-bottom' },
+							{ label: 'Slide Down', value: 'slide-down' },
 							{ label: 'Slide Left', value: 'slide-left' },
+							{ label: 'Hinge Up', value: 'hinge-up' },
+							{ label: 'Hinge Right', value: 'hinge-right' },
+							{ label: 'Hinge Down', value: 'hinge-down' },
+							{ label: 'Hinge Left', value: 'hinge-left' },
+							{ label: 'Flip Horizontal', value: 'flip-horiz' },
+							{ label: 'Flip Vertical', value: 'flip-vert' },
+							{ label: 'Flip Diag 1', value: 'flip-diag-1' },
+							{ label: 'Flip Diag 2', value: 'flip-diag-2' },
+							{ label: 'Fold Up', value: 'fold-up' },
+							{ label: 'Fold Right', value: 'fold-right' },
+							{ label: 'Fold Down', value: 'fold-down' },
+							{ label: 'Fold Left', value: 'fold-left' },
+							{ label: 'Zoom In', value: 'zoom-in' },
+							{ label: 'Zoom Out', value: 'zoom-out' },
+							{ label: 'Zoom Out Up', value: 'zoom-out-up' },
+							{ label: 'Zoom Out Down', value: 'zoom-out-down' },
+							{
+								label: 'Zoom Out Right',
+								value: 'zoom-out-right',
+							},
+							{ label: 'Zoom Out Left', value: 'zoom-out-left' },
+							{
+								label: 'Zoom Out Flip Horizontal',
+								value: 'zoom-out-flip-horiz',
+							},
+							{
+								label: 'Zoom Out Flip Vertical',
+								value: 'zoom-out-flip-vert',
+							},
+							{ label: 'Blur', value: 'blur' },
 						]}
 						onChange={val => {
 							hoverSettings.effectType = val;

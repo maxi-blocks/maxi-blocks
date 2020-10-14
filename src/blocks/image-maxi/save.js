@@ -44,6 +44,11 @@ const save = props => {
 		textPreset: hoverTextPreset,
 	} = JSON.parse(hover);
 
+	const hoverClasses = classnames(
+		'maxi-block-hover-wrapper',
+		`maxi-hover-effect__${hoverSettings.effectType}`
+	);
+
 	const classes = classnames(
 		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
 		'maxi-block maxi-image-block',
@@ -78,7 +83,7 @@ const save = props => {
 		>
 			<__experimentalBackgroundDisplayer background={background} />
 
-			<div className='maxi-block-hover-wrapper'>
+			<div className={hoverClasses}>
 				<img
 					className={`wp-image-${mediaID}`}
 					src={mediaURL}

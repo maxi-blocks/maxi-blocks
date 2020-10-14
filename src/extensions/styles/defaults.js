@@ -1408,7 +1408,7 @@ export const __experimentalHover = {
 	label: 'Hover Effects',
 	settings: {
 		type: 'none',
-		effectType: 'fade',
+		effectType: '',
 		duration: 1,
 	},
 	textPreset: 'center-center',

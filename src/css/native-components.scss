@@ -97,6 +97,10 @@
                 font-weight: 500;
                 height: 31px;
                 margin: 0 !important;
+                @at-root .rtl #{&} {
+                    background: #fff url(../img/arrow-down.svg) no-repeat left 7px top 50%;
+                    padding: 0 10px 0px 24px !important;
+                }
             }
 
             // RadioControl

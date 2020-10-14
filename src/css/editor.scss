@@ -256,6 +256,17 @@ body .toolbar-item__popover {
 		border: none;
 	}
 }
+
+
+
+body.maxi-blocks--active.rtl .maxi-sidebar,
+body.rtl .maxi-popover,
+body.rtl .toolbar-item__popover {
+	input[type="number"] {
+		padding: 0 8px 0 0px;
+	}
+}
+
 body .toolbar-item__popover {
 	input[type="text"],
 	input[type="number"],

@@ -1,0 +1,31 @@
+name: Update learndd
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v1
+              with:
+                  node-version: 12
+            - run: npm install
+            - run: npm run build
+            
+    FTP-Deploy-Action:
+        name: FTP-Deploy-Action
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2.1.0
+              with:
+                  fetch-depth: 2
+            - name: FTP-Deploy-Action
+              uses: SamKirkland/FTP-Deploy-Action@3.1.1
+              with:
+                  ftp-server: ftps://35.207.148.34:21/wp-content/plugins/
+                  ftp-username: learndd
+                  ftp-password: o1aEZIS2hyJ%uH0XexD8UF@&
+                  git-ftp-args: --insecure # test

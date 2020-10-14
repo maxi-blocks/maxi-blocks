@@ -212,7 +212,7 @@ class edit extends MaxiBlock {
 		const response = {
 			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
 			opacity: { ...JSON.parse(opacity) },
-			size: { ...JSON.parse(size) },
+			// size: { ...JSON.parse(size) },
 			border: { ...JSON.parse(border) },
 			borderWidth: { ...JSON.parse(border).borderWidth },
 			borderRadius: { ...JSON.parse(border).borderRadius },

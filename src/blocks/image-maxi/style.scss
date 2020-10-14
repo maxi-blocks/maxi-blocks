@@ -7,4 +7,9 @@ body.maxi-blocks--active figure.maxi-image-block {
 	&__caption {
 		position: relative;
 	}
+
+	svg {
+		display: block;
+		width: 100%;
+	}
 }

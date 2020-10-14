@@ -81,9 +81,9 @@ export const ImageLayerClosed = props => {
 			))}
 			{!disableClipPath && (
 				<__experimentalClipPath
-					clipPath={imageOptions.clipPathImage}
+					clipPath={imageOptions.clipPath}
 					onChange={val => {
-						imageOptions.clipPathImage = val;
+						imageOptions.clipPath = val;
 
 						onChange(imageOptions);
 					}}

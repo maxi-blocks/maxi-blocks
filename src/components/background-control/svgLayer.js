@@ -79,6 +79,7 @@ const SVGLayer = props => {
 
 										onChange(SVGOptions);
 									}}
+									initial={50}
 								/>
 								<SizeControl
 									label={__('X-axis', 'maxi-blocks')}
@@ -94,6 +95,7 @@ const SVGLayer = props => {
 
 										onChange(SVGOptions);
 									}}
+									initial={50}
 								/>
 							</Fragment>
 						),
@@ -113,6 +115,7 @@ const SVGLayer = props => {
 								min={0}
 								max={200}
 								disableUnit
+								initial={100}
 							/>
 						),
 					},

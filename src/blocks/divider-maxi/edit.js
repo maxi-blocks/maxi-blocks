@@ -153,7 +153,9 @@ class edit extends MaxiBlock {
 		const displayValue = !isObject(display) ? JSON.parse(display) : display;
 
 		const classes = classnames(
-			'maxi-block maxi-divider-block',
+			'maxi-block',
+			'maxi-block--backend',
+			'maxi-divider-block',
 			getLastBreakpointValue(displayValue, 'display', deviceType) ===
 				'none' && 'maxi-block-display-none',
 			blockStyle,
@@ -249,9 +251,7 @@ const editDispatch = withDispatch((dispatch, ownProps, { select }) => {
 	} = ownProps;
 
 	const onDeviceTypeChange = function () {
-		let newDeviceType = select(
-			'core/edit-post'
-		).__experimentalGetPreviewDeviceType();
+		let newDeviceType = select('maxiBlocks').receiveMaxiDeviceType();
 		newDeviceType = newDeviceType === 'Desktop' ? 'general' : newDeviceType;
 
 		const allowedDeviceTypes = ['general', 'xl', 'l', 'm', 's'];

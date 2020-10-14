@@ -231,10 +231,12 @@ body .toolbar-item__popover {
 				}
 			}
 		}
+
 		&__body {
 			padding-right: 0;
 			padding-left: 0;
 		}
+
 	}
 
 	button.components-range-control__reset,
@@ -298,6 +300,14 @@ body .toolbar-item__popover {
 					}
 				}
 			}
+		}
+	}
+}
+
+body.rtl {
+	.components-color-picker {
+		&__alpha-pointer, &__hue-pointer {
+			transform: translate(-7px,-1px);
 		}
 	}
 }

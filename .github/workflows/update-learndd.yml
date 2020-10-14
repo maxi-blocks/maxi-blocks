@@ -25,7 +25,7 @@ jobs:
             - name: FTP-Deploy-Action
               uses: SamKirkland/FTP-Deploy-Action@3.1.1
               with:
-                  ftp-server: ftp://35.207.148.34:21/
-                  ftp-username: learndd
-                  ftp-password: o1aEZIS2hyJ%uH0XexD8UF@&
+                  ftp-server: ftp://learndd.dev600.com/wp-content/plugins
+                  ftp-username: maxi-git-learndd
+                  ftp-password: W0G45_vvrpnUmkoj
                   git-ftp-args: --ssl # test

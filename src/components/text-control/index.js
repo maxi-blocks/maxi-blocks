@@ -10,6 +10,11 @@ const { useState } = wp.element;
 import classnames from 'classnames';
 
 /**
+ * Styles
+ */
+import './editor.scss';
+
+/**
  * Component
  */
 const TextControl = props => {
@@ -25,24 +30,41 @@ const TextControl = props => {
 
 	const classes = classnames('maxi-input-control', className);
 
+	const youtubeVimeoRegex = /(http:|https:|)\/\/(player.|www.)?(vimeo\.com|youtu(be\.com|\.be|be\.googleapis\.com))\/(video\/|embed\/|watch\?v=|v\/)?([A-Za-z0-9._%-]*)(&\S+)?/;
+
+	const directLinkRegex = /^(http(s)?:\/\/|www\.).*(\.mp4|\.mkv)$/;
+
+	// Validate Input on blur
 	const validateInput = target => {
 		const text = target.value;
+
+		// video-url type validation
 		if (type === 'video-url') {
-			const videoUrlRegex = /(http:|https:|)\/\/(player.|www.)?(vimeo\.com|youtu(be\.com|\.be|be\.googleapis\.com))\/(video\/|embed\/|watch\?v=|v\/)?([A-Za-z0-9._%-]*)(\&\S+)?/;
-			if (!text.match(videoUrlRegex)) {
-				setValidationText('Video Url is not valid');
+			if (!text.match(youtubeVimeoRegex)) {
+				setValidationText('Invalid video url');
 			} else {
 				setValidationText(null);
 			}
 		}
+
+		if (value === '') {
+			setValidationText(null);
+		}
 	};
 
+	// Validate Input onChange
 	const onChangeValue = value => {
 		if (type === 'video-url') {
-			const videoUrlRegex = /(http:|https:|)\/\/(player.|www.)?(vimeo\.com|youtu(be\.com|\.be|be\.googleapis\.com))\/(video\/|embed\/|watch\?v=|v\/)?([A-Za-z0-9._%-]*)(\&\S+)?/;
-			if (value.match(videoUrlRegex)) {
+			if (
+				value.match(youtubeVimeoRegex) ||
+				value.match(directLinkRegex)
+			) {
 				setValidationText(null);
 			}
+		}
+
+		if (value === '') {
+			setValidationText(null);
 		}
 	};
 
@@ -58,7 +80,11 @@ const TextControl = props => {
 				onBlur={value => validateInput(value.target)}
 				placeholder={placeholder}
 			/>
-			{!!validationText && validationText}
+			{!!validationText && (
+				<div className='maxi-input-control__validation-text'>
+					{validationText}
+				</div>
+			)}
 		</BaseControl>
 	);
 };

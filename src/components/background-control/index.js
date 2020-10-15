@@ -261,7 +261,7 @@ const BackgroundControl = props => {
 								type='video-url'
 								help='add video'
 								value={value.videoOptions.mediaURL}
-								placeholder='Add Youtube, Vimeo, or Direct Link'
+								placeholder='Youtube, Vimeo, or Direct Link'
 								onChange={val => {
 									value.videoOptions.mediaURL = val;
 									onChange(JSON.stringify(value));

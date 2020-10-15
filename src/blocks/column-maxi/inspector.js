@@ -15,7 +15,6 @@ import {
 	BlockStylesControl,
 	BorderControl,
 	BoxShadowControl,
-	FullSizeControl,
 	SettingTabsControl,
 	__experimentalZIndexControl,
 	__experimentalResponsiveControl,
@@ -49,7 +48,6 @@ const Inspector = props => {
 			backgroundHover,
 			border,
 			borderHover,
-			size,
 			boxShadow,
 			boxShadowHover,
 			padding,
@@ -366,26 +364,6 @@ const Inspector = props => {
 															),
 														},
 													]}
-												/>
-											),
-										},
-										{
-											label: __(
-												'Width / Height',
-												'maxi-blocks'
-											),
-											content: (
-												<FullSizeControl
-													size={size}
-													defaultSize={getDefaultProp(
-														clientId,
-														'size'
-													)}
-													onChange={size =>
-														setAttributes({ size })
-													}
-													breakpoint={deviceType}
-													hideWidth
 												/>
 											),
 										},

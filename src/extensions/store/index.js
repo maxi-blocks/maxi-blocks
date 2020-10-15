@@ -30,9 +30,7 @@ const controls = {
 		});
 	},
 	async RECEIVE_DEVICE_TYPE() {
-		const originalDeviceType = select(
-			'core/edit-post'
-		).__experimentalGetPreviewDeviceType();
+		const originalDeviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 		return originalDeviceType === 'Desktop'
 			? 'general'

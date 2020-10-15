@@ -178,7 +178,9 @@ class edit extends MaxiBlock {
 		} = this.props;
 
 		const classes = classnames(
-			'maxi-block maxi-svg-icon-block',
+			'maxi-block',
+			'maxi-block--backend',
+			'maxi-svg-icon-block',
 			blockStyle,
 			extraClassName,
 			uniqueID,

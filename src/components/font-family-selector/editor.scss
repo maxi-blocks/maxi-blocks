@@ -11,6 +11,9 @@
 		width: 100%;
 		margin-bottom: 8px;
 		padding: 0 0 0 0.5rem;
+		@at-root .rtl #{&} {
+			padding: 0 0.5rem 0 0;
+		}
 		&:focus,
 		&:hover {
 			color: inherit;
@@ -18,6 +21,9 @@
 		&__icon {
 			margin: auto 0 auto auto;
 			transition: 0.2s all ease;
+			@at-root .rtl #{&} {
+				margin: auto auto auto 0;
+			}
 		}
 		&[aria-expanded='true'] svg {
 			transform: rotate(90deg);

@@ -11,6 +11,9 @@
 			position: relative;
 			box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.2);
 			border-radius: 5px;
+			@at-root .rtl #{&} {
+				flex-direction: row-reverse;
+			}
 			&:after {
 				content: '';
 				border-left: 0.5rem solid transparent;
@@ -133,6 +136,12 @@ body .toolbar-item__popover {
 					& ~ label {
 						border-top-left-radius: 5px;
 						border-bottom-left-radius: 5px;
+						@at-root .rtl #{&} {
+							border-top-left-radius: 0;
+							border-bottom-left-radius: 0;
+							border-top-right-radius: 5px;
+							border-bottom-right-radius: 5px;
+						}
 					}
 				}
 			}
@@ -141,6 +150,12 @@ body .toolbar-item__popover {
 					& ~ label {
 						border-top-right-radius: 5px;
 						border-bottom-right-radius: 5px;
+						@at-root .rtl #{&} {
+							border-top-right-radius: 0;
+							border-bottom-right-radius: 0;
+							border-top-left-radius: 5px;
+							border-bottom-left-radius: 5px;
+						}
 					}
 				}
 			}
@@ -423,6 +438,31 @@ body .toolbar-item__popover {
 		}
 		input[type='number'] {
 			width: 3.5rem;
+		}
+	}
+}
+
+body.rtl .toolbar-item__popover {
+	.components-radio-control__option {
+		&:first-of-type {
+			input {
+				& ~ label {
+					border-top-left-radius: 0;
+					border-bottom-left-radius: 0;
+					border-top-right-radius: 5px;
+					border-bottom-right-radius: 5px;
+				}
+			}
+		}
+		&:last-of-type {
+			input {
+				& ~ label {
+					border-top-right-radius: 0;
+					border-bottom-right-radius: 0;
+					border-top-left-radius: 5px;
+					border-bottom-left-radius: 5px;
+				}
+			}
 		}
 	}
 }

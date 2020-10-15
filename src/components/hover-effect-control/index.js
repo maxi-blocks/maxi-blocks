@@ -17,7 +17,7 @@ import __experimentalFancyRadioControl from '../fancy-radio-control';
 /**
  * External dependencies
  */
-import { isObject } from 'lodash';
+import { isObject, isNil } from 'lodash';
 import classnames from 'classnames';
 
 /**
@@ -39,8 +39,6 @@ import {
  */
 const HoverEffectControl = props => {
 	const { hover, defaultHover, className, onChange } = props;
-
-	const value = !isObject(hover) ? JSON.parse(hover) : hover;
 
 	const hoverValue = !isObject(hover) ? JSON.parse(hover) : hover;
 
@@ -83,7 +81,6 @@ const HoverEffectControl = props => {
 						label={__('Effect Type', 'maxi-blocks')}
 						value={hoverValue.basicEffectType}
 						options={[
-							{ label: __('None', 'maxi-blocks'), value: 'none' },
 							{
 								label: __('Zoom In', 'maxi-blocks'),
 								value: 'zoom-in',
@@ -147,7 +144,6 @@ const HoverEffectControl = props => {
 						label={__('Animation Type', 'maxi-blocks')}
 						value={hoverValue.textEffectType}
 						options={[
-							{ label: __('None', 'maxi-blocks'), value: 'none' },
 							{ label: __('Fade', 'maxi-blocks'), value: 'fade' },
 							{
 								label: __('Push Up', 'maxi-blocks'),
@@ -311,7 +307,10 @@ const HoverEffectControl = props => {
 						)}
 						value={hoverValue.titleText}
 						onChange={val => {
-							hoverValue.titleText = val;
+							isNil(val)
+								? (hoverValue.titleText =
+										defaultValue.titleText)
+								: (hoverValue.titleText = val);
 							onChange(JSON.stringify(hoverValue));
 						}}
 					/>
@@ -346,7 +345,10 @@ const HoverEffectControl = props => {
 						)}
 						value={hoverValue.contentText}
 						onChange={val => {
-							hoverValue.contentText = val;
+							isNil(val)
+								? (hoverValue.contentText =
+										defaultValue.contentText)
+								: (hoverValue.contentText = val);
 							onChange(JSON.stringify(hoverValue));
 						}}
 					/>

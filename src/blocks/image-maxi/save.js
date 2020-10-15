@@ -93,8 +93,7 @@ const save = props => {
 						{captionContent}
 					</figcaption>
 				)}
-				{hoverValue.type !== 'none' &&
-					hoverValue.type !== 'basic' &&
+				{hoverValue.type !== 'basic' &&
 					hoverValue.textEffectType !== 'none' && (
 						<div className='maxi-hover-details'>
 							<div

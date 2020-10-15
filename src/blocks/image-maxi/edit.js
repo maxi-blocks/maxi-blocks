@@ -275,12 +275,16 @@ class edit extends MaxiBlock {
 
 		const hoverClasses = classnames(
 			'maxi-block-hover-wrapper',
-			hoverValue.type === 'basic'
-				? `maxi-hover-effect__${hoverValue.type}__${hoverValue.basicEffectType}`
-				: `maxi-hover-effect__${hoverValue.type}__${hoverValue.textEffectType}`,
-			`maxi-hover-effect__${
-				hoverValue.type === 'basic' ? 'basic' : 'text'
-			}`
+			hoverValue.type === 'basic' &&
+				!!hoverValue.preview &&
+				`maxi-hover-effect__${hoverValue.type}__${hoverValue.basicEffectType}`,
+			hoverValue.type === 'text' &&
+				!!hoverValue.preview &&
+				`maxi-hover-effect__${hoverValue.type}__${hoverValue.textEffectType}`,
+			hoverValue.type !== 'none' &&
+				`maxi-hover-effect__${
+					hoverValue.type === 'basic' ? 'basic' : 'text'
+				}`
 		);
 
 		const classes = classnames(
@@ -439,12 +443,7 @@ class edit extends MaxiBlock {
 												icon={toolbarReplaceImage}
 											/>
 										</div>
-										<div
-											className={
-												!!hoverValue.preview &&
-												hoverClasses
-											}
-										>
+										<div className={hoverClasses}>
 											<img
 												className={`maxi-image-block__image wp-image-${mediaID}`}
 												src={image.source_url}
@@ -452,10 +451,7 @@ class edit extends MaxiBlock {
 												height={mediaHeight}
 												alt={mediaAlt}
 											/>
-											{hoverValue.type !== 'none' &&
-												hoverValue.type !== 'basic' &&
-												hoverValue.textEffectType !==
-													'none' &&
+											{hoverValue.type !== 'basic' &&
 												!!hoverValue.preview && (
 													<div className='maxi-hover-details'>
 														<div

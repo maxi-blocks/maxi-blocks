@@ -30,9 +30,7 @@ const TextControl = props => {
 
 	const classes = classnames('maxi-input-control', className);
 
-	const youtubeVimeoRegex = /(http:|https:|)\/\/(player.|www.)?(vimeo\.com|youtu(be\.com|\.be|be\.googleapis\.com))\/(video\/|embed\/|watch\?v=|v\/)?([A-Za-z0-9._%-]*)(&\S+)?/;
-
-	const directLinkRegex = /^(http(s)?:\/\/|www\.).*(\.mp4|\.mkv)$/;
+	const videoUrlRegex = /(https?:\/\/)www.(youtube.com\/watch[?]v=([a-zA-Z0-9_-]{11}))|https?:\/\/(www.)?vimeo.com\/([0-9]{9})|https?:\/\/(www.)?[\w\/\.]*\.mp4|webm$/;
 
 	// Validate Input on blur
 	const validateInput = target => {
@@ -40,7 +38,7 @@ const TextControl = props => {
 
 		// video-url type validation
 		if (type === 'video-url') {
-			if (!text.match(youtubeVimeoRegex)) {
+			if (!videoUrlRegex.test(text)) {
 				setValidationText('Invalid video url');
 			} else {
 				setValidationText(null);
@@ -55,10 +53,7 @@ const TextControl = props => {
 	// Validate Input onChange
 	const onChangeValue = value => {
 		if (type === 'video-url') {
-			if (
-				value.match(youtubeVimeoRegex) ||
-				value.match(directLinkRegex)
-			) {
+			if (videoUrlRegex.test(value)) {
 				setValidationText(null);
 			}
 		}
@@ -74,6 +69,7 @@ const TextControl = props => {
 				type='text'
 				value={value}
 				onChange={e => {
+					e.preventDefault();
 					onChange(e.target.value);
 					onChangeValue(e.target.value);
 				}}

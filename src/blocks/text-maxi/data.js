@@ -1,8 +1,6 @@
 const isRTL =
 	document.querySelector('body').getAttribute('class').indexOf('rtl') !== -1;
 
-console.log(isRTL);
-
 export const alignment = {
 	label: 'Alignment',
 	general: {

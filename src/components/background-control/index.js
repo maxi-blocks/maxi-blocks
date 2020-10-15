@@ -18,6 +18,7 @@ import __experimentalClipPath from '../clip-path-control';
 import __experimentalFancyRadioControl from '../fancy-radio-control';
 import __experimentalOpacityControl from '../opacity-control';
 import __experimentalNumberControl from '../number-control';
+import __experimentalTextControl from '../text-control';
 
 /**
  * External dependencies
@@ -255,9 +256,10 @@ const BackgroundControl = props => {
 					)}
 					{!disableVideo && value.activeMedia === 'video' && (
 						<div className='maxi-background-control__video'>
-							<TextControl
+							<__experimentalTextControl
 								label='URL'
-								type='url'
+								type='video-url'
+								help='add video'
 								value={value.videoOptions.mediaURL}
 								placeholder='Add Youtube, Vimeo, or Direct Link'
 								onChange={val => {

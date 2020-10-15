@@ -49,7 +49,6 @@
 
 			&[aria-expanded='true'] {
 				margin-bottom: 0;
-
 				&:after {
 					content: url(../img/arrow-right.svg);
 					width: 6px;
@@ -58,6 +57,10 @@
 					right: 12px;
 					transform: rotate(90deg);
 					transition: transform 0.3s linear;
+					@at-root .rtl #{&} {
+						right: unset;
+						left: 12px;
+					}
 				}
 			}
 		}

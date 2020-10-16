@@ -13,7 +13,7 @@ import { isObject } from 'lodash';
 /**
  * Internal dependencies
  */
-import MaxiModal from './modal';
+import Modal from './modal';
 
 /**
  * Styles
@@ -28,21 +28,22 @@ const FontIconControl = props => {
 
 	const value = !isObject(icon) ? JSON.parse(icon) : icon;
 
-	const classes = classnames('maxi-font-icon-picker', className);
+	const classes = classnames('maxi-font-icon-control', className);
 	return (
 		<div className={classes}>
 			{!value.icon ? (
 				<Button
-					className='maxi-font-icon-picker__upload'
+					className='maxi-font-icon-control__upload'
 					onClick={() => {
 						console.log('Button Clicked!');
 					}}
 				>
-					<MaxiModal icon={icon} />
+					icon: <i className='far fa-user' />
+					<Modal />
 				</Button>
 			) : (
 				<div>
-					<div className='maxi-font-icon-picker__icon'>
+					<div className='maxi-font-icon-control__icon'>
 						Icon goes here!
 					</div>
 					<Button

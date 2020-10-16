@@ -1,4 +1,4 @@
-.maxi-font-icon-picker {
+.maxi-font-icon-control {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-between;
@@ -15,5 +15,29 @@
 		color: #464a53;
 		min-height: 90px;
 		background-color: #f2f2f2;
+	}
+
+	&__modal {
+		background: #f2f2f2;
+		padding: 0;
+		overflow-x: hidden;
+		min-height: 100%;
+		position: absolute;
+		width: 80%;
+		min-height: 90%;
+		max-width: 90%;
+	}
+
+	&__main-content {
+		display: flex;
+	}
+
+	&__categories {
+		flex-grow: 1;
+	}
+
+	&__icons {
+		flex-grow: 4;
+		display: flex;
 	}
 }

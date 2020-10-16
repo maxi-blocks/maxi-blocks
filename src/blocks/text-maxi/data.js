@@ -1,7 +1,7 @@
 export const alignment = {
 	label: 'Alignment',
 	general: {
-		alignment: 'left',
+		alignment: '',
 	},
 	xxl: {
 		alignment: '',

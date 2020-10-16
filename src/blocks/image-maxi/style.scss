@@ -843,4 +843,9 @@ body.maxi-blocks--active figure.maxi-image-block {
 		transform: scale(0.8) translateX(150%);
 		opacity: 0.5;
 	}
+
+	svg {
+		display: block;
+		width: 100%;
+	}
 }

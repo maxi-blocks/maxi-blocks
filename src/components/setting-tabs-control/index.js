@@ -37,26 +37,37 @@ const SettingTabsControl = props => {
 	return (
 		<div className={classes}>
 			<div className={classesControl}>
-				{items.map((item, i) => (
-					<Button
-						className='maxi-tabs-control__button'
-						onClick={() => setTab(i)}
-						aria-pressed={tab === i}
-					>
-						{item.label}
-					</Button>
-				))}
+				{items.map((item, i) => {
+					if (item)
+						return (
+							<Button
+								className='maxi-tabs-control__button'
+								onClick={() => setTab(i)}
+								aria-pressed={tab === i}
+							>
+								{item.label}
+							</Button>
+						);
+
+					return null;
+				})}
 			</div>
 			<div className={classesContent}>
 				{items.map((item, i) => {
-					const classesItemContent = classnames(
-						'maxi-tab-content',
-						tab === i ? 'maxi-tab-content--selected' : ''
-					);
+					if (item) {
+						const classesItemContent = classnames(
+							'maxi-tab-content',
+							tab === i ? 'maxi-tab-content--selected' : ''
+						);
 
-					return (
-						<div className={classesItemContent}>{item.content}</div>
-					);
+						return (
+							<div className={classesItemContent}>
+								{item.content}
+							</div>
+						);
+					}
+
+					return null;
 				})}
 			</div>
 		</div>

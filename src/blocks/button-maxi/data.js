@@ -168,30 +168,61 @@ export const typography = {
 
 export const background = {
 	label: 'Background',
-	imageOptions: [
-		{
-			imageData: {
-				mediaID: '',
-				mediaURL: '',
-				width: 100,
-				widthUnit: '%',
-				height: 100,
-				heightUnit: '%',
+	activeMedia: '',
+	colorOptions: {
+		activeColor: '#ff4a17',
+		color: '#ff4a17',
+		gradient: '',
+		gradientAboveBackground: false,
+		clipPath: '',
+		gradientOpacity: {
+			opacity: {
+				label: 'Opacity',
+				general: {
+					opacity: 1,
+				},
 			},
-			repeat: 'no-repeat',
-			positionOptions: {
-				position: 'center center',
-				widthUnit: '%',
-				width: 0,
-				heightUnit: '%',
-				height: 0,
-			},
-			origin: 'padding-box',
-			clip: 'border-box',
-			attachment: 'scroll',
 		},
-	],
-	clipPathImage: '',
+	},
+	imageOptions: {
+		items: [
+			{
+				imageData: {
+					mediaID: '',
+					mediaURL: '',
+					width: 100,
+					widthUnit: '%',
+					height: 100,
+					heightUnit: '%',
+				},
+				sizeSettings: {
+					size: '',
+					widthUnit: '',
+					width: '',
+					heightUnit: '',
+					height: '',
+				},
+				repeat: 'no-repeat',
+				positionOptions: {
+					position: 'center center',
+					widthUnit: '%',
+					width: 0,
+					heightUnit: '%',
+					height: 0,
+				},
+				origin: 'padding-box',
+				clip: 'border-box',
+				attachment: 'scroll',
+			},
+		],
+		clipPath: '',
+		opacity: {
+			label: 'Opacity',
+			general: {
+				opacity: 1,
+			},
+		},
+	},
 	videoOptions: {
 		mediaID: '',
 		mediaURL: '',
@@ -209,28 +240,21 @@ export const background = {
 			},
 		},
 	},
-	colorOptions: {
-		activeColor: '#ff4a17',
-		color: '#ff4a17',
-		gradient: '',
-		gradientAboveBackground: false,
-		clipPath: '',
-		gradientOpacity: {
-			opacity: {
-				label: 'Opacity',
-				general: {
-					opacity: 1,
-				},
-			},
-		},
-	},
-	imageOpacity: {
-		opacity: {
-			label: 'Opacity',
+	SVGOptions: {
+		SVGElement: '',
+		SVGData: '{}',
+		SVGMediaID: '',
+		SVGMediaURL: '',
+		position: {
+			label: 'Background SVG position',
 			general: {
-				opacity: 1,
+				topUnit: '%',
+				top: '',
+				leftUnit: '%',
+				left: '',
 			},
 		},
+		size: '',
 	},
 };
 

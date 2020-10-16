@@ -1,14 +1,20 @@
 /**
+ * WordPress dependencies
+ */
+const { Button } = wp.components;
+const { RawHTML } = wp.element;
+
+/**
  * Internal dependencies
  */
-import SVGDefaults from '../svg-control/defaults';
-import { generateDataObject, injectImgSVG } from '../svg-control/utils';
+import { generateDataObject, injectImgSVG } from '../../extensions/svg/utils';
+import * as SVGShapes from '../../icons/shape-icons';
 
 /**
  * External dependencies
  */
-import { ReactSVG } from 'react-svg';
 import classnames from 'classnames';
+import DOMPurify from 'dompurify';
 
 /**
  * Styles
@@ -25,13 +31,18 @@ const SVGDefaultsDisplayer = props => {
 
 	return (
 		<div className={classes}>
-			{SVGDefaults.map(svgEl => (
-				<ReactSVG
-					src={svgEl}
-					className='maxi-svg-defaults__item'
-					onClick={e => {
-						if (e.target.ownerSVGElement) {
-							const svg = e.target.ownerSVGElement;
+			{Object.values(SVGShapes).map(svgEl => {
+				const cleanedContent = DOMPurify.sanitize(svgEl);
+
+				return (
+					<Button
+						className='maxi-svg-defaults__item'
+						onClick={() => {
+							const svg = document
+								.createRange()
+								.createContextualFragment(cleanedContent)
+								.firstElementChild;
+
 							const resData = generateDataObject(SVGData, svg);
 							const resEl = injectImgSVG(svg, resData);
 
@@ -41,10 +52,12 @@ const SVGDefaultsDisplayer = props => {
 								SVGMediaURL: null,
 								SVGData: JSON.stringify(resData),
 							});
-						}
-					}}
-				/>
-			))}
+						}}
+					>
+						<RawHTML>{cleanedContent}</RawHTML>
+					</Button>
+				);
+			})}
 		</div>
 	);
 };

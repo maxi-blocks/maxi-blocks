@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies
+ */
+const { RawHTML } = wp.element;
+
+/**
  * External dependencies
  */
 import classnames from 'classnames';
@@ -172,6 +177,11 @@ const BackgroundDisplayer = props => {
 						</div>
 					)}
 				</div>
+			)}
+			{value.activeMedia === 'svg' && value.SVGOptions.SVGElement && (
+				<RawHTML className='maxi-background-displayer__svg'>
+					{value.SVGOptions.SVGElement}
+				</RawHTML>
 			)}
 		</div>
 	);

@@ -1,10 +1,7 @@
-const isRTL =
-	document.querySelector('body').getAttribute('class').indexOf('rtl') !== -1;
-
 export const alignment = {
 	label: 'Alignment',
 	general: {
-		alignment: !isRTL ? 'left' : 'right',
+		alignment: '',
 	},
 	xxl: {
 		alignment: '',

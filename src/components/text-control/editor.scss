@@ -1,0 +1,11 @@
+.maxi-input-control {
+	.components-base-control__field {
+		flex-wrap: wrap;
+	}
+
+	&__validation-text {
+		color: #ff0000;
+		width: 100%;
+		text-align: right;
+	}
+}

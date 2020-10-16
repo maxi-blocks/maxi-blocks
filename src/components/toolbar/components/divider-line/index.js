@@ -18,7 +18,7 @@ import classnames from 'classnames';
 /**
  * Icons
  */
-import { toolbarDividersetting } from '../../../../icons';
+import { toolbarDividerSetting } from '../../../../icons';
 
 /**
  * Divider
@@ -39,7 +39,7 @@ const Divider = props => {
 		<ToolbarPopover
 			className='toolbar-item__divider'
 			tooltip={__('Divider', 'maxi-blocks')}
-			icon={toolbarDividersetting}
+			icon={toolbarDividerSetting}
 			advancedOptions='line'
 			content={
 				<Fragment>

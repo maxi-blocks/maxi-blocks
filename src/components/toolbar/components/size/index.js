@@ -19,8 +19,9 @@ import { getDefaultProp } from '../../../../utils';
 import { isObject } from 'lodash';
 
 /**
- * Icons
+ * Styles & Icons
  */
+import './editor.scss';
 import { toolbarSizing } from '../../../../icons';
 
 /**

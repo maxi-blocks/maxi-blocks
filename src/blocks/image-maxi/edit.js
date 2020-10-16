@@ -4,7 +4,7 @@
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
 const { withSelect } = wp.data;
-const { Spinner, IconButton, ResizableBox } = wp.components;
+const { Spinner, IconButton, ResizableBox, Placeholder } = wp.components;
 const { __experimentalBlock, MediaUpload } = wp.blockEditor;
 import { RawHTML } from '@wordpress/element';
 
@@ -80,7 +80,6 @@ class edit extends MaxiBlock {
 	get getNormalObject() {
 		const {
 			alignment,
-			boxShadow,
 			padding,
 			margin,
 			zIndex,
@@ -290,6 +289,7 @@ class edit extends MaxiBlock {
 		const classes = classnames(
 			'maxi-block maxi-image-block',
 			`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
+			'maxi-block--backend',
 			getLastBreakpointValue(displayValue, 'display', deviceType) ===
 				'none' && 'maxi-block-display-none',
 			blockStyle,
@@ -393,7 +393,7 @@ class edit extends MaxiBlock {
 					value={mediaID}
 					render={({ open }) => (
 						<Fragment>
-							{!isNil(mediaID) && imageData ? (
+							{(!isNil(mediaID) && imageData) || mediaURL ? (
 								<Fragment>
 									<__experimentalBackgroundDisplayer
 										background={background}
@@ -451,7 +451,8 @@ class edit extends MaxiBlock {
 												height={mediaHeight}
 												alt={mediaAlt}
 											/>
-											{hoverValue.type !== 'basic' &&
+											{hoverValue.type !== 'none' &&
+												hoverValue.type !== 'basic' &&
 												!!hoverValue.preview && (
 													<div className='maxi-hover-details'>
 														<div
@@ -492,12 +493,18 @@ class edit extends MaxiBlock {
 									<p>{__('Loading…', 'maxi-blocks')}</p>
 								</Fragment>
 							) : (
-								<IconButton
-									className='maxi-imageupload-button'
-									showTooltip='true'
-									onClick={open}
-									icon={placeholderImage}
-								/>
+								<div className='maxi-image-block__placeholder'>
+									<Placeholder
+										icon={placeholderImage}
+										label=''
+									/>
+									<IconButton
+										className='maxi-image-block__settings__upload-button'
+										showTooltip='true'
+										onClick={open}
+										icon={toolbarReplaceImage}
+									/>
+								</div>
 							)}
 						</Fragment>
 					)}

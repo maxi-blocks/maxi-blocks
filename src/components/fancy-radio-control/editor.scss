@@ -25,15 +25,33 @@
 			flex: 1;
 			border: 2px solid #dddfe1;
 			border-right: 0;
+			@at-root .rtl #{&} {
+				border-right: 2px solid #dddfe1;
+				border-left: 0;
+			}
 
 			&:first-of-type {
 				border-top-left-radius: 5px;
 				border-bottom-left-radius: 5px;
+				@at-root .rtl #{&} {
+					border-top-left-radius: 0;
+					border-bottom-left-radius: 0;
+					border-top-right-radius: 5px;
+					border-bottom-right-radius: 5px;
+				}
 			}
+
 			&:last-of-type {
 				border-top-right-radius: 5px;
 				border-bottom-right-radius: 5px;
 				border-right: 2px solid #dddfe1;
+				@at-root .rtl #{&} {
+					border-top-right-radius: 0;
+					border-bottom-right-radius: 0;
+					border-top-left-radius: 5px;
+					border-bottom-left-radius: 5px;
+					border-left: 2px solid #dddfe1;
+				}
 			}
 			input {
 				display: none;

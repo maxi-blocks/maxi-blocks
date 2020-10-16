@@ -231,8 +231,11 @@ class edit extends MaxiBlock {
 		const displayValue = !isObject(display) ? JSON.parse(display) : display;
 
 		const classes = classnames(
-			'maxi-block maxi-container-block',
-			`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
+			'maxi-block',
+			'maxi-block--backend',
+			'maxi-container-block',
+			'maxi-motion-effect',
+			`maxi-motion-effect-${uniqueID}`,
 			getLastBreakpointValue(displayValue, 'display', deviceType) ===
 				'none' && 'maxi-block-display-none',
 			uniqueID,
@@ -258,6 +261,7 @@ class edit extends MaxiBlock {
 					>
 						<__experimentalBackgroundDisplayer
 							background={background}
+							blockClassName={uniqueID}
 						/>
 
 						<__experimentalArrowDisplayer arrow={arrow} />

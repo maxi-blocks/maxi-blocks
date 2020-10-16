@@ -130,11 +130,19 @@
 			top: 60px;
 			right: -30px;
 			width: 11rem;
+			@at-root .rtl #{&} {
+				left: -30px;
+				right: unset;
+			}
 
 			input[type='range'] {
 				position: relative;
 				right: 18px;
 				top: 18px;
+				@at-root .rtl #{&} {
+					left: 18px;
+					right: unset;
+				}
 			}
 			&__range {
 				transform: rotate(90deg);
@@ -144,6 +152,10 @@
 				top: 50%;
 				right: -85px;
 				transform: translateY(-50%);
+				@at-root .rtl #{&} {
+					left: -85px;
+					right: unset;
+				}
 				.components-base-control {
 					width: 60px;
 					margin-top: 5px;
@@ -151,6 +163,9 @@
 				&__input {
 					width: 60px;
 					padding-right: 0 !important;
+					@at-root .rtl #{&} {
+						padding-right: 8px !important;
+					}
 				}
 			}
 		}
@@ -174,6 +189,9 @@
 					width: 60px;
 					margin-left: 5px;
 					padding-right: 0 !important;
+					@at-root .rtl #{&} {
+						padding-right: 8px !important;
+					}
 				}
 			}
 		}
@@ -184,6 +202,10 @@
 			display: flex;
 			align-items: flex-end;
 			width: 69px;
+			@at-root .rtl #{&} {
+				right: unset;
+				left: 0;
+			}
 
 			.components-maxi-control__reset-button {
 				width: 31px;
@@ -235,6 +257,9 @@
 				margin: auto;
 				margin-left: 5px;
 				padding-right: 0 !important;
+				@at-root .rtl #{&} {
+					padding-right: 8px !important;
+				}
 			}
 			& .components-maxi-control__reset-button {
 				margin-left: 5px;

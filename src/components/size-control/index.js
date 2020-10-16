@@ -60,14 +60,13 @@ const SizeControl = props => {
 	const classes = classnames('maxi-size-control', className);
 
 	const getOptions = () => {
-		const options = [];
-		allowedUnits.includes('px') &&
-			options.push({ label: 'PX', value: 'px' });
-		allowedUnits.includes('em') &&
-			options.push({ label: 'EM', value: 'em' });
-		allowedUnits.includes('vw') &&
-			options.push({ label: 'VW', value: 'vw' });
-		allowedUnits.includes('%') && options.push({ label: '%', value: '%' });
+		const options = [
+			...(allowedUnits.includes('px') && [{ label: 'PX', value: 'px' }]),
+			...(allowedUnits.includes('em') && [{ label: 'EM', value: 'em' }]),
+			...(allowedUnits.includes('vw') && [{ label: 'VW', value: 'vw' }]),
+			...(allowedUnits.includes('%') && [{ label: '%', value: '%' }]),
+			...(allowedUnits.includes('empty') && [{ label: '-', value: '' }]),
+		];
 		return options;
 	};
 
@@ -83,7 +82,9 @@ const SizeControl = props => {
 					type='number'
 					className='maxi-size-control__value'
 					value={trim(value)}
-					onChange={e => onChangeValue(Number(e.target.value))}
+					onChange={e => {
+						onChangeValue(Number(e.target.value));
+					}}
 					min={min}
 					max={max}
 					step={step}
@@ -95,7 +96,9 @@ const SizeControl = props => {
 						type='number'
 						className='maxi-size-control__value'
 						value={trim(value)}
-						onChange={e => onChangeValue(Number(e.target.value))}
+						onChange={e => {
+							onChangeValue(Number(e.target.value));
+						}}
 						min={unit ? minMaxSettings[unit].min : null}
 						max={unit ? minMaxSettings[unit].max : null}
 						step={step}

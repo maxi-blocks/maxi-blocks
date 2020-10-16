@@ -3,6 +3,7 @@
 		justify-content: space-between;
 		border-radius: 5px;
 	}
+
 	.components-radio-control__option {
 		opacity: 1 !important;
 		min-width: 40px;
@@ -18,11 +19,26 @@
 		&:first-of-type {
 			border-top-left-radius: 5px;
 			border-bottom-left-radius: 5px;
+			@at-root .rtl #{&} {
+				border-top-right-radius: 5px;
+				border-bottom-right-radius: 5px;
+				border-top-left-radius: 0;
+				border-bottom-left-radius: 0;
+				border-right: 2px solid #dddfe1;
+			}
 		}
 		&:last-of-type {
 			border-top-right-radius: 5px;
 			border-bottom-right-radius: 5px;
 			border-right: 2px solid #dddfe1;
+			@at-root .rtl #{&} {
+				border-top-left-radius: 5px;
+				border-bottom-left-radius: 5px;
+				border-top-right-radius: 0;
+				border-bottom-right-radius: 0;
+				border-left: 2px solid #dddfe1;
+				border-right: unset;
+			}
 		}
 
 		input {

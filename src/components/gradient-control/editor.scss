@@ -8,6 +8,9 @@
 			&__input-field {
 				padding: 0 0 0 8px !important;
 				line-height: 2;
+				@at-root .rtl #{&} {
+					padding: 0 8px 0 0 !important;
+				}
 			}
 			.components-angle-picker-control {
 				&__angle-circle-indicator,
@@ -38,6 +41,12 @@
 					.components-toolbar__control {
 						border-top-right-radius: 0 !important;
 						border-bottom-right-radius: 0 !important;
+						@at-root .rtl #{&} {
+							border-top-left-radius: 0 !important;
+							border-bottom-left-radius: 0 !important;
+							border-top-right-radius: 5px !important;
+							border-bottom-right-radius: 5px !important;
+						}
 					}
 				}
 				& > div:last-of-type {
@@ -45,6 +54,13 @@
 						border-top-left-radius: 0 !important;
 						border-bottom-left-radius: 0 !important;
 						border-left: 0;
+						@at-root .rtl #{&} {
+							border-top-right-radius: 0 !important;
+							border-bottom-right-radius: 0 !important;
+							border-top-left-radius: 5px !important;
+							border-bottom-left-radius: 5px !important;
+							border-left: 2px solid #dddfe1;
+						}
 					}
 				}
 				button.components-toolbar__control {

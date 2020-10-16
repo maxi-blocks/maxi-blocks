@@ -175,7 +175,9 @@ class edit extends MaxiBlock {
 		const displayValue = !isObject(display) ? JSON.parse(display) : display;
 
 		const classes = classnames(
-			'maxi-block maxi-row-block',
+			'maxi-block',
+			'maxi-block--backend',
+			'maxi-row-block',
 			getLastBreakpointValue(displayValue, 'display', deviceType) ===
 				'none' && 'maxi-block-display-none',
 			uniqueID,

@@ -1,6 +1,15 @@
-.toolbar-item__list-options {
+.toolbar-item__popover__list-options {
 	display: flex;
+
 	&__button {
 		color: #fff;
+		padding: 0 !important;
+		height: 1.25rem;
+
+		&[aria-pressed="true"] {
+			svg path {
+				stroke: #ff4a17;
+			}
+		}
 	}
 }

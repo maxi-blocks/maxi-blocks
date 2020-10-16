@@ -18,7 +18,7 @@ import { isObject } from 'lodash';
  * Icons & Styles
  */
 import './editor.scss';
-import { ToolbarHide, ToolbarShow } from '../../../../icons';
+import { toolbarHide, toolbarShow } from '../../../../icons';
 import { Fragment } from 'react';
 
 /**
@@ -46,7 +46,7 @@ const ToggleBlock = props => {
 					>
 						<Icon
 							className='toolbar-item__icon'
-							icon={ToolbarShow}
+							icon={toolbarShow}
 						/>
 					</Button>
 				</Tooltip>
@@ -64,7 +64,7 @@ const ToggleBlock = props => {
 					>
 						<Icon
 							className='toolbar-item__icon'
-							icon={ToolbarHide}
+							icon={toolbarHide}
 						/>
 					</Button>
 				</Tooltip>

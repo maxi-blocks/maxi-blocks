@@ -17,7 +17,7 @@ import { isObject } from 'lodash';
 /**
  * Icons
  */
-import { toolbarDividersetting } from '../../../../icons';
+import { toolbarDividerSetting } from '../../../../icons';
 
 /**
  * DividerColor
@@ -51,7 +51,7 @@ const DividerColor = props => {
 				>
 					<Icon
 						className='toolbar-item__text-options__inner-icon'
-						icon={toolbarDividersetting}
+						icon={toolbarDividerSetting}
 					/>
 				</div>
 			}

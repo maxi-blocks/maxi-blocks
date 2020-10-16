@@ -79,6 +79,7 @@ const Inspector = props => {
 		deviceType,
 		setAttributes,
 		clientId,
+		formatValue,
 	} = props;
 
 	const backgroundHoverValue = !isObject(backgroundHover)
@@ -277,16 +278,20 @@ const Inspector = props => {
 																	textLevel={
 																		textLevel
 																	}
-																	onChange={typography =>
+																	onChange={obj =>
 																		setAttributes(
-																			{
-																				typography,
-																			}
+																			obj
 																		)
 																	}
 																	hideAlignment
 																	breakpoint={
 																		deviceType
+																	}
+																	formatValue={
+																		formatValue
+																	}
+																	isList={
+																		isList
 																	}
 																/>
 															),
@@ -308,17 +313,29 @@ const Inspector = props => {
 																	textLevel={
 																		textLevel
 																	}
-																	onChange={typographyHover =>
+																	onChange={obj => {
 																		setAttributes(
 																			{
-																				typographyHover,
+																				typographyHover:
+																					obj.typography,
+																				...(obj.content && {
+																					content:
+																						obj.content,
+																				}),
 																			}
-																		)
-																	}
+																		);
+																	}}
 																	hideAlignment
 																	breakpoint={
 																		deviceType
 																	}
+																	formatValue={
+																		formatValue
+																	}
+																	isList={
+																		isList
+																	}
+																	isHover
 																/>
 															),
 														},

@@ -40,6 +40,8 @@
 		],
 		"no-console": ["error", { "allow": ["warn", "error"] }],
 		"no-unused-vars": ["error", { "args": "none" }],
+		"consistent-return": ["error", { "treatUndefinedAsUnspecified": true }],
+		"array-callback-return": ["error", { "allowImplicit": true }],
 		"no-unused-expressions": [
 			"error",
 			{ "allowTernary": true, "allowShortCircuit": true }
@@ -58,6 +60,7 @@
 		"no-nested-ternary": "off",
 		"import/named": "off",
 		"react/destructuring-assignment": "off",
+		"jsx-a11y/anchor-is-valid": "off",
 		// Short term deactivate rules //
 		"no-shadow": "off",
 		"no-restricted-syntax": "off",

@@ -326,9 +326,10 @@ const Inspector = props => {
 																clientId,
 																'captionTypography'
 															)}
-															onChange={captionTypography =>
+															onChange={obj =>
 																setAttributes({
-																	captionTypography,
+																	captionTypography:
+																		obj.typography,
 																})
 															}
 															breakpoint={

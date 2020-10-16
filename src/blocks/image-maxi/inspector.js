@@ -39,9 +39,9 @@ import {
 	__experimentalHoverEffectControl,
 	__experimentalImageAltControl,
 	__experimentalFancyRadioControl,
-	__experimentalSVGControl,
+	__experimentalSVGDefaultsDisplayer,
 } from '../../components';
-import { injectImgSVG } from '../../components/svg-control/utils';
+import { injectImgSVG } from '../../extensions/svg/utils';
 
 /**
  * External dependencies
@@ -89,8 +89,6 @@ const Inspector = props => {
 			clipPath,
 			hover,
 			SVGData,
-			SVGMediaID,
-			SVGMediaURL,
 		},
 		imageData,
 		clientId,
@@ -732,10 +730,8 @@ const Inspector = props => {
 										{
 											label: __('Shape', 'maxi-blocks'),
 											content: (
-												<__experimentalSVGControl
+												<__experimentalSVGDefaultsDisplayer
 													SVGData={SVGData}
-													SVGMediaID={SVGMediaID}
-													SVGMediaURL={SVGMediaURL}
 													onChange={SVGOptions => {
 														const SVGValue = !isObject(
 															SVGOptions.SVGData

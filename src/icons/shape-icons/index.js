@@ -1,2 +1,13 @@
 export { default as shape1 } from './shape1';
 export { default as shape2 } from './shape2';
+export { default as shape3 } from './shape3';
+export { default as shape4 } from './shape4';
+export { default as shape5 } from './shape5';
+export { default as shape6 } from './shape6';
+export { default as shape7 } from './shape7';
+export { default as shape8 } from './shape8';
+export { default as shape9 } from './shape9';
+export { default as shape10 } from './shape10';
+export { default as shape11 } from './shape11';
+export { default as shape12 } from './shape12';
+export { default as shape13 } from './shape13';

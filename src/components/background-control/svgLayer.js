@@ -8,7 +8,7 @@ const { Fragment } = wp.element;
  *
  */
 import SettingTabsControl from '../setting-tabs-control';
-import __experimentalSVGControl from '../svg-control';
+import __experimentalSVGDefaultsDisplayer from '../svg-default-displayer';
 import __experimentalSVGFillControl from '../svg-fill-control';
 import SizeControl from '../size-control';
 
@@ -31,10 +31,8 @@ const SVGLayer = props => {
 					{
 						label: __('Shape', 'maxi-blocks'),
 						content: (
-							<__experimentalSVGControl
+							<__experimentalSVGDefaultsDisplayer
 								SVGData={SVGOptions.SVGData}
-								SVGMediaID={SVGOptions.SVGMediaID}
-								SVGMediaURL={SVGOptions.SVGMediaURL}
 								onChange={obj => {
 									SVGOptions.SVGElement = obj.SVGElement;
 									SVGOptions.SVGMediaID = obj.SVGMediaID;

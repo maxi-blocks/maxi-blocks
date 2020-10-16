@@ -10,7 +10,7 @@ const { RangeControl } = wp.components;
  */
 import { getLastBreakpointValue } from '../../utils';
 import SizeControl from '../size-control';
-import { __experimentalFancyRadioControl } from '../../components';
+import __experimentalFancyRadioControl from '../fancy-radio-control';
 
 /**
  * External dependencies

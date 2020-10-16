@@ -30,7 +30,7 @@ const TextControl = props => {
 
 	const classes = classnames('maxi-input-control', className);
 
-	const videoUrlRegex = /(https?:\/\/)www.(youtube.com\/watch[?]v=([a-zA-Z0-9_-]{11}))|https?:\/\/(www.)?vimeo.com\/([0-9]{9})|https?:\/\/(www.)?[\w\/\.]*\.mp4|webm$/;
+	const videoUrlRegex = /(https?:\/\/)www.(youtube.com\/watch[?]v=([a-zA-Z0-9_-]{11}))|https?:\/\/(www.)?vimeo.com\/([0-9]{9})|https?:\/\/.*\.(?:mp4|webm|ogg)$/g;
 
 	// Validate Input on blur
 	const validateInput = target => {

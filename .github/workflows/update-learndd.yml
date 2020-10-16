@@ -28,4 +28,4 @@ jobs:
                   ftp-server: ftp://learndd.dev600.com/wp-content/plugins
                   ftp-username: maxi-git-learndd
                   ftp-password: W0G45_vvrpnUmkoj
-                  git-ftp-args: --ssl # test
+                  git-ftp-args: --insecure # test

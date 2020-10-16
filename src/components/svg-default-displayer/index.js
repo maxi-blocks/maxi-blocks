@@ -1,13 +1,13 @@
 /**
  * Internal dependencies
  */
-import SVGDefaults from '../svg-control/defaults';
 import { generateDataObject, injectImgSVG } from '../svg-control/utils';
+import * as SVGShapes from '../../icons/shape-icons';
+import SVGButton from '../svg-button';
 
 /**
  * External dependencies
  */
-import { ReactSVG } from 'react-svg';
 import classnames from 'classnames';
 
 /**
@@ -25,13 +25,12 @@ const SVGDefaultsDisplayer = props => {
 
 	return (
 		<div className={classes}>
-			{SVGDefaults.map(svgEl => (
-				<ReactSVG
-					src={svgEl}
+			{Object.values(SVGShapes).map(svgEl => (
+				<SVGButton
+					content={svgEl}
 					className='maxi-svg-defaults__item'
-					onClick={e => {
-						if (e.target.ownerSVGElement) {
-							const svg = e.target.ownerSVGElement;
+					onClick={svg => {
+						if (svg) {
 							const resData = generateDataObject(SVGData, svg);
 							const resEl = injectImgSVG(svg, resData);
 

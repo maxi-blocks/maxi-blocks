@@ -10,12 +10,10 @@ const { Fragment, useState } = wp.element;
  */
 import MediaUploaderControl from '../media-uploader-control';
 import __experimentalSVGDefaultsDisplayer from '../svg-default-displayer';
-import { generateDataObject, injectImgSVG } from './utils';
 
 /**
  * External dependencies
  */
-import { ReactSVG } from 'react-svg';
 import classnames from 'classnames';
 import { isNumber } from 'lodash';
 
@@ -85,7 +83,7 @@ const SVGControl = props => {
 							visibility: 'hidden',
 						}}
 					>
-						<ReactSVG
+						{/* <ReactSVG
 							src={SVGMediaURL}
 							afterInjection={(err, svg) => {
 								if (svg) {
@@ -102,7 +100,7 @@ const SVGControl = props => {
 										});
 								}
 							}}
-						/>
+						/> */}
 					</div>
 				</Fragment>
 			)}

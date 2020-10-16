@@ -158,6 +158,19 @@ class edit extends MaxiBlock {
 		return response;
 	}
 
+	componentDidMount() {
+		const alignment = JSON.parse(this.props.attributes.alignment);
+		const { isRTL } = wp.data.select('core/editor').getEditorSettings();
+
+		if (isEmpty(alignment.general.alignment)) {
+			alignment.general.alignment = isRTL ? 'right' : 'left';
+			this.props.setAttributes({ alignment: JSON.stringify(alignment) });
+		}
+
+		this.displayStyles();
+		this.saveProps();
+	}
+
 	render() {
 		const {
 			attributes: {

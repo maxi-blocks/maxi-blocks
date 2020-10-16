@@ -1465,11 +1465,10 @@ export const __experimentalDisplay = {
 
 export const __experimentalHover = {
 	label: 'Hover Effects',
-	settings: {
-		type: 'none',
-		effectType: 'fade',
-		duration: 1,
-	},
+	type: 'none',
+	basicEffectType: 'zoom-in',
+	textEffectType: 'fade',
+	preview: 1,
 	textPreset: 'center-center',
 	borderStatus: 0,
 	paddingStatus: 0,
@@ -1493,9 +1492,9 @@ export const __experimentalHover = {
 		},
 	},
 	titleStatus: 0,
-	titleText: '',
+	titleText: 'Hello World',
 	contentStatus: 0,
-	contentText: '',
+	contentText: 'This is a new world',
 };
 
 export const __experimentalMotion = {

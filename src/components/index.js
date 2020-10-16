@@ -48,7 +48,6 @@ export { default as __experimentalEntranceAnimationControl } from './entrance-an
 export { default as __experimentalParallaxControl } from './parallax-control';
 export { default as __experimentalBackgroundDisplayer } from './background-displayer';
 export { default as __experimentalHoverEffectControl } from './hover-effect-control';
-export { default as __experimentalSVGControl } from './svg-control';
 export { default as __experimentalSVGFillControl } from './svg-fill-control';
 export { default as __experimentalSVGDefaultsDisplayer } from './svg-default-displayer';
 export { default as __experimentalOverlayControl } from './overlay-control';

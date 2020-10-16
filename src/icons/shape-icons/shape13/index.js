@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+const shape13 = `<?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 24.2.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.1" id="Layer_1"
 	xmlns="http://www.w3.org/2000/svg"
@@ -6,14 +6,15 @@
 	<style type="text/css">
 	.st0{fill:#464A53;}
 	</style>
-	<g id="Vector_Smart_Object_1_">
-		<g transform="matrix( 1, 0, 0, 1, 0,0) ">
+	<g id="Mask_3_">
+		<g id="Mask_4_">
 			<g>
-				<g id="Layer1_17_FILL_1_">
-					<path class="st0" d="M1,27.9l6.5,6.5l10-9.9l11.3,11.3l6.5-6.5L23.9,18L35.2,6.8l-6.5-6.5L17.4,11.5l-10-10L0.9,8l10,10L1,27.9z
-					"/>
-				</g>
+				<path class="st0" d="M6.5,6.5c3.9-3.9,10.2-3.9,14.1,0l8.8,8.8c3.9,3.9,3.9,10.2,0,14.1c-3.9,3.9-10.2,3.9-14.1,0l-8.8-8.8
+				C2.6,16.8,2.6,10.5,6.5,6.5z"/>
 			</g>
 		</g>
 	</g>
 </svg>
+`;
+
+export default shape13;

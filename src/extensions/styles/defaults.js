@@ -453,33 +453,60 @@ export const size = {
 export const background = {
 	label: 'Background',
 	activeMedia: '',
-	imageOptions: [
-		{
-			imageData: {
-				mediaID: '',
-				mediaURL: '',
+	colorOptions: {
+		activeColor: '',
+		color: '',
+		gradient: '',
+		gradientAboveBackground: false,
+		clipPath: '',
+		gradientOpacity: {
+			opacity: {
+				label: 'Opacity',
+				general: {
+					opacity: 1,
+				},
 			},
-			sizeSettings: {
-				size: 'cover',
-				widthUnit: '%',
-				width: 100,
-				heightUnit: '%',
-				height: 100,
-			},
-			repeat: 'no-repeat',
-			positionOptions: {
-				position: 'center center',
-				widthUnit: '%',
-				width: 0,
-				heightUnit: '%',
-				height: 0,
-			},
-			origin: 'padding-box',
-			clip: 'border-box',
-			attachment: 'scroll',
 		},
-	],
-	clipPathImage: '',
+	},
+	imageOptions: {
+		items: [
+			{
+				imageData: {
+					mediaID: '',
+					mediaURL: '',
+					width: 100,
+					widthUnit: '%',
+					height: 100,
+					heightUnit: '%',
+				},
+				sizeSettings: {
+					size: '',
+					widthUnit: '',
+					width: '',
+					heightUnit: '',
+					height: '',
+				},
+				repeat: 'no-repeat',
+				positionOptions: {
+					position: 'center center',
+					widthUnit: '%',
+					width: 0,
+					heightUnit: '%',
+					height: 0,
+				},
+				origin: 'padding-box',
+				clip: 'border-box',
+				attachment: 'scroll',
+			},
+		],
+		clipPath: '',
+		opacity: {
+			label: 'Opacity',
+			general: {
+				opacity: 1,
+			},
+		},
+	},
 	videoOptions: {
 		mediaID: '',
 		mediaURL: '',
@@ -497,74 +524,28 @@ export const background = {
 			},
 		},
 	},
-	colorOptions: {
-		activeColor: '',
-		color: '',
-		gradient: '',
-		gradientAboveBackground: false,
-		clipPath: '',
-		gradientOpacity: {
-			opacity: {
-				label: 'Opacity',
-				general: {
-					opacity: 1,
-				},
-			},
-		},
-	},
-	imageOpacity: {
-		opacity: {
-			label: 'Opacity',
+	SVGOptions: {
+		SVGElement: '',
+		SVGData: '{}',
+		SVGMediaID: '',
+		SVGMediaURL: '',
+		position: {
+			label: 'Background SVG position',
 			general: {
-				opacity: 1,
+				topUnit: '%',
+				top: '',
+				leftUnit: '%',
+				left: '',
 			},
 		},
+		size: '',
 	},
 };
 
 export const backgroundHover = {
 	label: 'Background Hover',
 	activeMedia: '',
-	status: 0,
-	imageOptions: [
-		{
-			imageData: {
-				mediaID: '',
-				mediaURL: '',
-			},
-			sizeSettings: {
-				size: '',
-				widthUnit: '',
-				width: '',
-				heightUnit: '',
-				height: '',
-			},
-			repeat: '',
-			positionOptions: {
-				position: '',
-				widthUnit: '',
-				width: '',
-				heightUnit: '',
-				height: '',
-			},
-			origin: '',
-			clip: '',
-			attachment: '',
-		},
-	],
-	clipPathImage: '',
-	videoOptions: {
-		mediaID: '',
-		mediaURL: '',
-		startTime: '',
-		endTime: '',
-		loop: '',
-		muted: '',
-		clipPath: '',
-		fallbackID: '',
-		fallbackURL: '',
-		playOnMobile: 0,
-	},
+	// status: 0,
 	colorOptions: {
 		activeColor: '',
 		color: '',
@@ -579,6 +560,75 @@ export const backgroundHover = {
 				},
 			},
 		},
+	},
+	imageOptions: {
+		items: [
+			{
+				imageData: {
+					mediaID: '',
+					mediaURL: '',
+				},
+				sizeSettings: {
+					size: '',
+					widthUnit: '',
+					width: '',
+					heightUnit: '',
+					height: '',
+				},
+				repeat: '',
+				positionOptions: {
+					position: '',
+					widthUnit: '',
+					width: '',
+					heightUnit: '',
+					height: '',
+				},
+				origin: '',
+				clip: '',
+				attachment: '',
+			},
+		],
+		clipPath: '',
+		opacity: {
+			label: 'Opacity',
+			general: {
+				opacity: 1,
+			},
+		},
+	},
+	videoOptions: {
+		mediaID: '',
+		mediaURL: '',
+		startTime: '',
+		endTime: '',
+		loop: '',
+		muted: '',
+		clipPath: '',
+		opacity: {
+			label: 'Opacity',
+			general: {
+				opacity: 1,
+			},
+		},
+		fallbackID: '',
+		fallbackURL: '',
+		playOnMobile: 0,
+	},
+	SVGOptions: {
+		SVGElement: '',
+		SVGData: '{}',
+		SVGMediaID: '',
+		SVGMediaURL: '',
+		position: {
+			label: 'Background SVG position',
+			general: {
+				topUnit: '%',
+				top: '',
+				leftUnit: '%',
+				left: '',
+			},
+		},
+		size: '',
 	},
 };
 

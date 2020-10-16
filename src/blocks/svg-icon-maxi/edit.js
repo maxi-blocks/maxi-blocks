@@ -20,7 +20,11 @@ import {
 	getTransformObject,
 	setBackgroundStyles,
 } from '../../utils';
-import { MaxiBlock, __experimentalToolbar } from '../../components';
+import {
+	MaxiBlock,
+	__experimentalToolbar,
+	__experimentalBackgroundDisplayer,
+} from '../../components';
 
 /**
  * External dependencies
@@ -168,6 +172,7 @@ class edit extends MaxiBlock {
 				defaultBlockStyle,
 				extraClassName,
 				content,
+				background,
 			},
 			clientId,
 		} = this.props;
@@ -210,6 +215,9 @@ class edit extends MaxiBlock {
 						)}
 						{!isEmpty(content) && (
 							<Fragment>
+								<__experimentalBackgroundDisplayer
+									background={background}
+								/>
 								<SandBox
 									html={content}
 									className={classes}

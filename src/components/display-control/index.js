@@ -6,7 +6,7 @@ const { __ } = wp.i18n;
 /**
  * Internal dependencies
  */
-import { __experimentalFancyRadioControl } from '../../components';
+import __experimentalFancyRadioControl from '../fancy-radio-control';
 
 /**
  * External dependencies

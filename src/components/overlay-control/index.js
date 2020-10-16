@@ -66,8 +66,8 @@ const OverlayControl = props => {
 					onChange(JSON.stringify(value));
 				}}
 			/>
-			{(value.overlayOptions.overlay === 'gradient' ||
-				value.overlayOptions.overlay === 'color') && (
+			{/* {value.overlayOptions.overlay === 'gradient' && (
+				// ||				value.overlayOptions.overlay === 'color')
 				<__experimentalOpacityControl
 					opacity={value.overlayOptions.opacity}
 					defaultOpacity={defaultValue.overlayOptions.opacity}
@@ -76,7 +76,7 @@ const OverlayControl = props => {
 						onChange(JSON.stringify(value));
 					}}
 				/>
-			)}
+			)} */}
 			{value.overlayOptions.overlay === 'gradient' && (
 				<GradientControl
 					label={__('Overlay Gradient', 'maxi-blocks')}

@@ -80,18 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
 						'.block-editor-block-list__block-popover'
 					);
 
-					if (!!blockName && allowedBlocks.includes(blockName)) {
-						if (blockToolbarUniversal)
-							blockToolbarUniversal.style.display = 'none';
-						if (blockToolbarEditor)
-							blockToolbarEditor.style.display = 'none';
-					} else {
-						if (blockToolbarUniversal)
-							blockToolbarUniversal.style.display = null;
-						if (blockToolbarEditor)
-							blockToolbarEditor.style.display = null;
-					}
-
 					if (
 						!isEmpty(blockNames) &&
 						selectedBlocks &&
@@ -112,6 +100,36 @@ document.addEventListener('DOMContentLoaded', () => {
 							blockEditorBlockInspectorNode.classList.remove(
 								'maxi-controls'
 							);
+					}
+
+					if (isEmpty(blockNames)) {
+						if (!!blockName && allowedBlocks.includes(blockName)) {
+							if (editPostSidebarNode)
+								editPostSidebarNode.classList.add(
+									'maxi-sidebar'
+								);
+							if (blockEditorBlockInspectorNode)
+								blockEditorBlockInspectorNode.classList.add(
+									'maxi-controls'
+								);
+							if (blockToolbarUniversal)
+								blockToolbarUniversal.style.display = 'none';
+							if (blockToolbarEditor)
+								blockToolbarEditor.style.display = 'none';
+						} else {
+							if (editPostSidebarNode)
+								editPostSidebarNode.classList.remove(
+									'maxi-sidebar'
+								);
+							if (blockEditorBlockInspectorNode)
+								blockEditorBlockInspectorNode.classList.remove(
+									'maxi-controls'
+								);
+							if (blockToolbarUniversal)
+								blockToolbarUniversal.style.display = null;
+							if (blockToolbarEditor)
+								blockToolbarEditor.style.display = null;
+						}
 					}
 				}
 

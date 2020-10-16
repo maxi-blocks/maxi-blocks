@@ -7,6 +7,12 @@ const { select, dispatch } = wp.data;
  * Internal dependencies
  */
 import ResponsiveSelector from '../../editor/responsive-selector';
+
+/**
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
+
 /**
  * General
  *
@@ -48,6 +54,16 @@ document.addEventListener('DOMContentLoaded', () => {
 					mutation.type === 'childList' &&
 					!!mutation.target.classList
 				) {
+					const blockNames = select(
+						'core/block-editor'
+					).getMultiSelectedBlocks();
+
+					const selectedBlocks =
+						!isEmpty(blockNames) &&
+						blockNames.every(item => {
+							return item.name === blockNames[0].name;
+						});
+
 					const blockName = select('core/block-editor').getBlockName(
 						select('core/block-editor').getSelectedBlockClientId()
 					);
@@ -65,39 +81,56 @@ document.addEventListener('DOMContentLoaded', () => {
 					);
 
 					if (!!blockName && allowedBlocks.includes(blockName)) {
+						if (blockToolbarUniversal)
+							blockToolbarUniversal.style.display = 'none';
+						if (blockToolbarEditor)
+							blockToolbarEditor.style.display = 'none';
+					} else {
+						if (blockToolbarUniversal)
+							blockToolbarUniversal.style.display = null;
+						if (blockToolbarEditor)
+							blockToolbarEditor.style.display = null;
+					}
+
+					if (
+						!isEmpty(blockNames) &&
+						selectedBlocks &&
+						allowedBlocks.includes(blockNames[0].name)
+					) {
 						if (editPostSidebarNode)
 							editPostSidebarNode.classList.add('maxi-sidebar');
 						if (blockEditorBlockInspectorNode)
 							blockEditorBlockInspectorNode.classList.add(
 								'maxi-controls'
 							);
-						if (blockToolbarUniversal)
-							blockToolbarUniversal.style.display = 'none';
-						if (blockToolbarEditor)
-							blockToolbarEditor.style.display = 'none';
 					} else {
-						if (
-							!!editPostSidebarNode &&
-							editPostSidebarNode.classList.contains(
-								'maxi-sidebar'
-							)
-						)
+						if (editPostSidebarNode)
 							editPostSidebarNode.classList.remove(
 								'maxi-sidebar'
 							);
-						if (
-							!!blockEditorBlockInspectorNode &&
-							blockEditorBlockInspectorNode.classList.contains(
-								'maxi-controls'
-							)
-						)
+						if (blockEditorBlockInspectorNode)
 							blockEditorBlockInspectorNode.classList.remove(
 								'maxi-controls'
 							);
-						if (blockToolbarUniversal)
-							blockToolbarUniversal.style.display = null;
-						if (blockToolbarEditor)
-							blockToolbarEditor.style.display = null;
+					}
+				}
+
+				// Responsive editor
+				if (
+					mutation.type === 'attributes' &&
+					mutation.target.classList.contains(
+						'edit-post-visual-editor'
+					) &&
+					mutation.target.classList.contains('editor-styles-wrapper')
+				) {
+					const responsiveWidth = mutation.target.getAttribute(
+						'maxi-blocks-responsive-width'
+					);
+
+					if (
+						mutation.target.style.width !== `${responsiveWidth}px`
+					) {
+						mutation.target.style.width = `${responsiveWidth}px`;
 					}
 				}
 
@@ -176,25 +209,6 @@ document.addEventListener('DOMContentLoaded', () => {
 								});
 							});
 						}
-					}
-				}
-
-				// Responsive editor
-				if (
-					mutation.type === 'attributes' &&
-					mutation.target.classList.contains(
-						'edit-post-visual-editor'
-					) &&
-					mutation.target.classList.contains('editor-styles-wrapper')
-				) {
-					const responsiveWidth = mutation.target.getAttribute(
-						'maxi-blocks-responsive-width'
-					);
-
-					if (
-						mutation.target.style.width !== `${responsiveWidth}px`
-					) {
-						mutation.target.style.width = `${responsiveWidth}px`;
 					}
 				}
 			}

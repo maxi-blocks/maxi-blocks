@@ -2,14 +2,13 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { RadioControl, SelectControl, TextareaControl, Icon } = wp.components;
+const { SelectControl, TextareaControl, Icon } = wp.components;
 const { Fragment } = wp.element;
 
 /**
  * Internal dependencies
  */
 import TypographyControl from '../typography-control';
-import SizeControl from '../size-control';
 import BackgroundControl from '../background-control';
 import BorderControl from '../border-control';
 import __experimentalAxisControl from '../axis-control';
@@ -18,7 +17,7 @@ import __experimentalFancyRadioControl from '../fancy-radio-control';
 /**
  * External dependencies
  */
-import { isObject } from 'lodash';
+import { isObject, isNil } from 'lodash';
 import classnames from 'classnames';
 
 /**
@@ -41,15 +40,11 @@ import {
 const HoverEffectControl = props => {
 	const { hover, defaultHover, className, onChange } = props;
 
-	const value = !isObject(hover) ? JSON.parse(hover) : hover;
-
-	const { settings: hoverSettings } = value;
+	const hoverValue = !isObject(hover) ? JSON.parse(hover) : hover;
 
 	const defaultValue = !isObject(defaultHover)
 		? JSON.parse(defaultHover)
 		: defaultHover;
-
-	const { settings: defaultHoverSettings } = defaultValue;
 
 	const classes = classnames('maxi-hover-effect-control', className);
 
@@ -57,81 +52,227 @@ const HoverEffectControl = props => {
 		<div className={classes}>
 			<__experimentalFancyRadioControl
 				label={__('Hover Animation', 'maxi-blocks')}
-				selected={hoverSettings.type}
+				selected={hoverValue.type}
 				options={[
 					{ label: <Icon icon={hoverNone} />, value: 'none' },
 					{ label: <Icon icon={hoverBasic} />, value: 'basic' },
 					{ label: <Icon icon={hoverText} />, value: 'text' },
 				]}
 				onChange={val => {
-					hoverSettings.type = val;
-					onChange(JSON.stringify(value));
+					hoverValue.type = val;
+					onChange(JSON.stringify(hoverValue));
 				}}
 			/>
-			{hoverSettings.type === 'basic' && (
+			<__experimentalFancyRadioControl
+				label={__('Preview', 'maxi-blocks')}
+				selected={hoverValue.preview}
+				options={[
+					{ label: __('Yes', 'maxi-blocks'), value: 1 },
+					{ label: __('No', 'maxi-blocks'), value: 0 },
+				]}
+				onChange={val => {
+					hoverValue.preview = Number(val);
+					onChange(JSON.stringify(hoverValue));
+				}}
+			/>
+			{hoverValue.type === 'basic' && (
 				<Fragment>
 					<SelectControl
 						label={__('Effect Type', 'maxi-blocks')}
-						value={hoverSettings.effectType}
+						value={hoverValue.basicEffectType}
 						options={[
-							{ label: 'Tilt', value: 'tilt' },
-							{ label: 'Zoom In', value: 'zoom-in' },
-							{ label: 'Zoom Out', value: 'zoom-out' },
-							{ label: 'Slide', value: 'slide' },
-							{ label: 'Rotate', value: 'rotate' },
-							{ label: 'Blur', value: 'blur' },
-							{ label: 'Clear Blur', value: 'clear-blur' },
-							{ label: 'Gray Scale', value: 'greay-scale' },
 							{
-								label: 'Clear Gray Scale',
+								label: __('Zoom In', 'maxi-blocks'),
+								value: 'zoom-in',
+							},
+							{
+								label: __('Zoom Out', 'maxi-blocks'),
+								value: 'zoom-out',
+							},
+							{
+								label: __('Slide', 'maxi-blocks'),
+								value: 'slide',
+							},
+							{
+								label: __('Rotate', 'maxi-blocks'),
+								value: 'rotate',
+							},
+							{
+								label: __('Flashing', 'maxi-blocks'),
+								value: 'flashing',
+							},
+							{ label: __('Blur', 'maxi-blocks'), value: 'blur' },
+							{
+								label: __('Clear Blur', 'maxi-blocks'),
+								value: 'clear-blur',
+							},
+							{
+								label: __('Sepia', 'maxi-blocks'),
+								value: 'sepia',
+							},
+							{
+								label: __('Clear Sepia', 'maxi-blocks'),
+								value: 'clear-sepia',
+							},
+							{
+								label: __('Gray Scale', 'maxi-blocks'),
+								value: 'greay-scale',
+							},
+							{
+								label: __('Clear Gray Scale', 'maxi-blocks'),
 								value: 'clear-greay-scale',
+							},
+							{
+								label: __('Shine', 'maxi-blocks'),
+								value: 'shine',
+							},
+							{
+								label: __('Circle Shine', 'maxi-blocks'),
+								value: 'circle-shine',
 							},
 						]}
 						onChange={val => {
-							hoverSettings.effectType = val;
-							onChange(JSON.stringify(value));
-						}}
-					/>
-					<SizeControl
-						label={__('Duration (s)', 'maxi-blocks')}
-						disableUnit
-						min={0}
-						max={10}
-						initial={1}
-						step={0.1}
-						value={hoverSettings.duration}
-						defaultValue={defaultHoverSettings.duration}
-						onChangeValue={val => {
-							hoverSettings.duration = val;
-							onChange(JSON.stringify(value));
+							hoverValue.basicEffectType = val;
+							onChange(JSON.stringify(hoverValue));
 						}}
 					/>
 				</Fragment>
 			)}
-			{hoverSettings.type === 'text' && (
+			{hoverValue.type === 'text' && (
 				<Fragment>
 					<SelectControl
 						label={__('Animation Type', 'maxi-blocks')}
-						value={hoverSettings.effectType}
+						value={hoverValue.textEffectType}
 						options={[
-							{ label: 'Fade', value: 'fade' },
-							{ label: 'Push Up', value: 'push-up' },
-							{ label: 'Push Right', value: 'push-right' },
-							{ label: 'Push Bottom', value: 'push-bottom' },
-							{ label: 'Push Left', value: 'push-left' },
-							{ label: 'Slide Up', value: 'slide-up' },
-							{ label: 'Slide Right', value: 'slide-right' },
-							{ label: 'Slide Bottom', value: 'slide-bottom' },
-							{ label: 'Slide Left', value: 'slide-left' },
+							{ label: __('Fade', 'maxi-blocks'), value: 'fade' },
+							{
+								label: __('Push Up', 'maxi-blocks'),
+								value: 'push-up',
+							},
+							{
+								label: __('Push Right', 'maxi-blocks'),
+								value: 'push-right',
+							},
+							{
+								label: __('Push Down', 'maxi-blocks'),
+								value: 'push-down',
+							},
+							{
+								label: __('Push Left', 'maxi-blocks'),
+								value: 'push-left',
+							},
+							{
+								label: __('Slide Up', 'maxi-blocks'),
+								value: 'slide-up',
+							},
+							{
+								label: __('Slide Right', 'maxi-blocks'),
+								value: 'slide-right',
+							},
+							{
+								label: __('Slide Down', 'maxi-blocks'),
+								value: 'slide-down',
+							},
+							{
+								label: __('Slide Left', 'maxi-blocks'),
+								value: 'slide-left',
+							},
+							{
+								label: __('Hinge Up', 'maxi-blocks'),
+								value: 'hinge-up',
+							},
+							{
+								label: __('Hinge Right', 'maxi-blocks'),
+								value: 'hinge-right',
+							},
+							{
+								label: __('Hinge Down', 'maxi-blocks'),
+								value: 'hinge-down',
+							},
+							{
+								label: __('Hinge Left', 'maxi-blocks'),
+								value: 'hinge-left',
+							},
+							{
+								label: __('Flip Horizontal', 'maxi-blocks'),
+								value: 'flip-horiz',
+							},
+							{
+								label: __('Flip Vertical', 'maxi-blocks'),
+								value: 'flip-vert',
+							},
+							{
+								label: __('Flip Diag 1', 'maxi-blocks'),
+								value: 'flip-diag-1',
+							},
+							{
+								label: __('Flip Diag 2', 'maxi-blocks'),
+								value: 'flip-diag-2',
+							},
+							{
+								label: __('Fold Up', 'maxi-blocks'),
+								value: 'fold-up',
+							},
+							{
+								label: __('Fold Right', 'maxi-blocks'),
+								value: 'fold-right',
+							},
+							{
+								label: __('Fold Down', 'maxi-blocks'),
+								value: 'fold-down',
+							},
+							{
+								label: __('Fold Left', 'maxi-blocks'),
+								value: 'fold-left',
+							},
+							{
+								label: __('Zoom In', 'maxi-blocks'),
+								value: 'zoom-in',
+							},
+							{
+								label: __('Zoom Out', 'maxi-blocks'),
+								value: 'zoom-out',
+							},
+							{
+								label: __('Zoom Out Up', 'maxi-blocks'),
+								value: 'zoom-out-up',
+							},
+							{
+								label: __('Zoom Out Down', 'maxi-blocks'),
+								value: 'zoom-out-down',
+							},
+							{
+								label: __('Zoom Out Right', 'maxi-blocks'),
+								value: 'zoom-out-right',
+							},
+							{
+								label: __('Zoom Out Left', 'maxi-blocks'),
+								value: 'zoom-out-left',
+							},
+							{
+								label: __(
+									'Zoom Out Flip Horizontal',
+									'maxi-blocks'
+								),
+								value: 'zoom-out-flip-horiz',
+							},
+							{
+								label: __(
+									'Zoom Out Flip Vertical',
+									'maxi-blocks'
+								),
+								value: 'zoom-out-flip-vert',
+							},
+							{ label: __('Blur', 'maxi-blocks'), value: 'blur' },
 						]}
 						onChange={val => {
-							hoverSettings.effectType = val;
-							onChange(JSON.stringify(value));
+							hoverValue.textEffectType = val;
+							onChange(JSON.stringify(hoverValue));
 						}}
 					/>
 					<__experimentalFancyRadioControl
 						type='classic-border'
-						selected={value.textPreset}
+						selected={hoverValue.textPreset}
 						options={[
 							{
 								label: <Icon icon={alignLeftTop} />,
@@ -155,22 +296,8 @@ const HoverEffectControl = props => {
 							},
 						]}
 						onChange={val => {
-							value.textPreset = val;
-							onChange(JSON.stringify(value));
-						}}
-					/>
-					<SizeControl
-						label={__('Duration (s)', 'maxi-blocks')}
-						disableUnit
-						min={0}
-						max={10}
-						initial={1}
-						step={0.1}
-						value={hoverSettings.duration}
-						defaultValue={defaultHoverSettings.duration}
-						onChangeValue={val => {
-							hoverSettings.duration = val;
-							onChange(JSON.stringify(value));
+							hoverValue.textPreset = val;
+							onChange(JSON.stringify(hoverValue));
 						}}
 					/>
 					<TextareaControl
@@ -178,34 +305,35 @@ const HoverEffectControl = props => {
 							'Add your Hover Title Text here',
 							'maxi-blocks'
 						)}
-						value={value.titleText}
+						value={hoverValue.titleText}
 						onChange={val => {
-							value.titleText = val;
-							onChange(JSON.stringify(value));
+							isNil(val)
+								? (hoverValue.titleText =
+										defaultValue.titleText)
+								: (hoverValue.titleText = val);
+							onChange(JSON.stringify(hoverValue));
 						}}
 					/>
 					<__experimentalFancyRadioControl
 						label={__('Custom Hover Text', 'maxi-block')}
-						selected={value.titleStatus}
+						selected={hoverValue.titleStatus}
 						options={[
 							{ label: __('No', 'maxi-block'), value: 0 },
 							{ label: __('Yes', 'maxi-block'), value: 1 },
 						]}
 						onChange={val => {
-							value.titleStatus = parseInt(val);
-							onChange(JSON.stringify(value));
+							hoverValue.titleStatus = parseInt(val);
+							onChange(JSON.stringify(hoverValue));
 						}}
 					/>
-					{!!value.titleStatus && (
+					{!!hoverValue.titleStatus && (
 						<TypographyControl
-							typography={value.titleTypography}
+							typography={hoverValue.titleTypography}
 							defaultTypography={defaultValue.titleTypography}
 							hideAlignment
-							onChange={obj => {
-								value.titleTypography = JSON.parse(
-									obj.typography
-								);
-								onChange(JSON.stringify(value));
+							onChange={val => {
+								hoverValue.titleTypography = val;
+								onChange(JSON.stringify(hoverValue));
 							}}
 						/>
 					)}
@@ -215,44 +343,45 @@ const HoverEffectControl = props => {
 							'Add your Hover Content Text here',
 							'maxi-blocks'
 						)}
-						value={value.contentText}
+						value={hoverValue.contentText}
 						onChange={val => {
-							value.contentText = val;
-							onChange(JSON.stringify(value));
+							isNil(val)
+								? (hoverValue.contentText =
+										defaultValue.contentText)
+								: (hoverValue.contentText = val);
+							onChange(JSON.stringify(hoverValue));
 						}}
 					/>
 					<__experimentalFancyRadioControl
 						label={__('Custom Content Text', 'maxi-block')}
-						selected={value.contentStatus}
+						selected={hoverValue.contentStatus}
 						options={[
 							{ label: __('No', 'maxi-block'), value: 0 },
 							{ label: __('Yes', 'maxi-block'), value: 1 },
 						]}
 						onChange={val => {
-							value.contentStatus = parseInt(val);
-							onChange(JSON.stringify(value));
+							hoverValue.contentStatus = parseInt(val);
+							onChange(JSON.stringify(hoverValue));
 						}}
 					/>
-					{!!value.contentStatus && (
+					{!!hoverValue.contentStatus && (
 						<TypographyControl
-							typography={value.contentTypography}
+							typography={hoverValue.contentTypography}
 							defaultTypography={defaultValue.contentTypography}
 							hideAlignment
-							onChange={obj => {
-								value.contentTypography = JSON.parse(
-									obj.typography
-								);
-								onChange(JSON.stringify(value));
+							onChange={val => {
+								hoverValue.contentTypography = val;
+								onChange(JSON.stringify(hoverValue));
 							}}
 						/>
 					)}
 					<hr />
 					<BackgroundControl
-						background={value.background}
+						background={hoverValue.background}
 						defaultBackground={defaultValue.background}
 						onChange={val => {
-							value.background = val;
-							onChange(JSON.stringify(value));
+							hoverValue.background = val;
+							onChange(JSON.stringify(hoverValue));
 						}}
 						disableClipPath
 						disableImage
@@ -260,69 +389,69 @@ const HoverEffectControl = props => {
 					/>
 					<__experimentalFancyRadioControl
 						label={__('Custom Border', 'maxi-block')}
-						selected={value.borderStatus}
+						selected={hoverValue.borderStatus}
 						options={[
 							{ label: __('No', 'maxi-block'), value: 0 },
 							{ label: __('Yes', 'maxi-block'), value: 1 },
 						]}
 						onChange={val => {
-							value.borderStatus = parseInt(val);
-							onChange(JSON.stringify(value));
+							hoverValue.borderStatus = parseInt(val);
+							onChange(JSON.stringify(hoverValue));
 						}}
 					/>
-					{!!value.borderStatus && (
+					{!!hoverValue.borderStatus && (
 						<BorderControl
-							border={value.border}
+							border={hoverValue.border}
 							defaultBorder={defaultValue.border}
 							onChange={val => {
-								value.border = val;
-								onChange(JSON.stringify(value));
+								hoverValue.border = val;
+								onChange(JSON.stringify(hoverValue));
 							}}
 						/>
 					)}
 					<__experimentalFancyRadioControl
 						label={__('Custom Padding', 'maxi-block')}
-						selected={value.paddingStatus}
+						selected={hoverValue.paddingStatus}
 						options={[
 							{ label: __('No', 'maxi-block'), value: 0 },
 							{ label: __('Yes', 'maxi-block'), value: 1 },
 						]}
 						onChange={val => {
-							value.paddingStatus = parseInt(val);
-							onChange(JSON.stringify(value));
+							hoverValue.paddingStatus = parseInt(val);
+							onChange(JSON.stringify(hoverValue));
 						}}
 					/>
-					{!!value.paddingStatus && (
+					{!!hoverValue.paddingStatus && (
 						<__experimentalAxisControl
-							values={value.padding}
+							values={hoverValue.padding}
 							defaultValues={defaultValue.padding}
 							disableAuto
 							onChange={val => {
-								value.padding = val;
-								onChange(JSON.stringify(value));
+								hoverValue.padding = val;
+								onChange(JSON.stringify(hoverValue));
 							}}
 						/>
 					)}
 					<__experimentalFancyRadioControl
 						label={__('Custom Margin', 'maxi-block')}
-						selected={value.marginStatus}
+						selected={hoverValue.marginStatus}
 						options={[
 							{ label: __('No', 'maxi-block'), value: 0 },
 							{ label: __('Yes', 'maxi-block'), value: 1 },
 						]}
 						onChange={val => {
-							value.marginStatus = parseInt(val);
-							onChange(JSON.stringify(value));
+							hoverValue.marginStatus = parseInt(val);
+							onChange(JSON.stringify(hoverValue));
 						}}
 					/>
-					{!!value.marginStatus && (
+					{!!hoverValue.marginStatus && (
 						<__experimentalAxisControl
-							values={value.margin}
+							values={hoverValue.margin}
 							defaultValues={defaultValue.margin}
 							disableAuto
 							onChange={val => {
-								value.margin = val;
-								onChange(JSON.stringify(value));
+								hoverValue.margin = val;
+								onChange(JSON.stringify(hoverValue));
 							}}
 						/>
 					)}

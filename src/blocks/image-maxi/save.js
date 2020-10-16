@@ -7,7 +7,7 @@ import { __experimentalBackgroundDisplayer } from '../../components';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, isEmpty } from 'lodash';
+import { isNil, isEmpty, isObject } from 'lodash';
 
 /**
  * Save
@@ -37,12 +37,15 @@ const save = props => {
 		},
 	} = props;
 
-	const {
-		settings: hoverSettings,
-		titleText: hoverTitleText,
-		contentText: hoverContentText,
-		textPreset: hoverTextPreset,
-	} = JSON.parse(hover);
+	const hoverValue = !isObject(hover) ? JSON.parse(hover) : hover;
+
+	const hoverClasses = classnames(
+		'maxi-block-hover-wrapper',
+		hoverValue.type === 'basic'
+			? `maxi-hover-effect__${hoverValue.type}__${hoverValue.basicEffectType}`
+			: `maxi-hover-effect__${hoverValue.type}__${hoverValue.textEffectType}`,
+		`maxi-hover-effect__${hoverValue.type === 'basic' ? 'basic' : 'text'}`
+	);
 
 	const classes = classnames(
 		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
@@ -74,11 +77,10 @@ const save = props => {
 			data-maxi_initial_block_class={defaultBlockStyle}
 			data-motion={motion}
 			data-motion-id={uniqueID}
-			data-hover={JSON.stringify(hoverSettings)}
 		>
 			<__experimentalBackgroundDisplayer background={background} />
 
-			<div className='maxi-block-hover-wrapper'>
+			<div className={hoverClasses}>
 				<img
 					className={`wp-image-${mediaID}`}
 					src={mediaURL}
@@ -91,20 +93,21 @@ const save = props => {
 						{captionContent}
 					</figcaption>
 				)}
-				{hoverSettings.type !== 'none' && (
-					<div className='maxi-hover-details'>
-						<div
-							className={`maxi-hover-details__content maxi-hover-details__content--${hoverTextPreset}`}
-						>
-							{!isEmpty(hoverTitleText) && (
-								<h3>{hoverTitleText}</h3>
-							)}
-							{!isEmpty(hoverContentText) && (
-								<p>{hoverContentText}</p>
-							)}
+				{hoverValue.type !== 'basic' &&
+					hoverValue.textEffectType !== 'none' && (
+						<div className='maxi-hover-details'>
+							<div
+								className={`maxi-hover-details__content maxi-hover-details__content--${hoverValue.textPreset}`}
+							>
+								{!isEmpty(hoverValue.titleText) && (
+									<h3>{hoverValue.titleText}</h3>
+								)}
+								{!isEmpty(hoverValue.contentText) && (
+									<p>{hoverValue.contentText}</p>
+								)}
+							</div>
 						</div>
-					</div>
-				)}
+					)}
 			</div>
 		</figure>
 	);

@@ -261,6 +261,7 @@ class edit extends MaxiBlock {
 				mediaHeight,
 				SVGElement,
 				display,
+				hover,
 			},
 			imageData,
 			setAttributes,
@@ -269,10 +270,26 @@ class edit extends MaxiBlock {
 
 		const displayValue = !isObject(display) ? JSON.parse(display) : display;
 
+		const hoverValue = !isObject(hover) ? JSON.parse(hover) : hover;
+
+		const hoverClasses = classnames(
+			'maxi-block-hover-wrapper',
+			hoverValue.type === 'basic' &&
+				!!hoverValue.preview &&
+				`maxi-hover-effect__${hoverValue.type}__${hoverValue.basicEffectType}`,
+			hoverValue.type === 'text' &&
+				!!hoverValue.preview &&
+				`maxi-hover-effect__${hoverValue.type}__${hoverValue.textEffectType}`,
+			hoverValue.type !== 'none' &&
+				`maxi-hover-effect__${
+					hoverValue.type === 'basic' ? 'basic' : 'text'
+				}`
+		);
+
 		const classes = classnames(
-			'maxi-block',
+			'maxi-block maxi-image-block',
+			`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
 			'maxi-block--backend',
-			'maxi-image-block',
 			getLastBreakpointValue(displayValue, 'display', deviceType) ===
 				'none' && 'maxi-block-display-none',
 			blockStyle,
@@ -281,7 +298,6 @@ class edit extends MaxiBlock {
 			className,
 			fullWidth === 'full' ? 'alignfull' : ''
 		);
-
 		const cropOptionsValue = !isObject(cropOptions)
 			? JSON.parse(cropOptions)
 			: cropOptions;
@@ -427,7 +443,7 @@ class edit extends MaxiBlock {
 												icon={toolbarReplaceImage}
 											/>
 										</div>
-										<div className='maxi-block-hover-wrapper'>
+										<div className={hoverClasses}>
 											<img
 												className={`maxi-image-block__image wp-image-${mediaID}`}
 												src={image.source_url}
@@ -435,6 +451,34 @@ class edit extends MaxiBlock {
 												height={mediaHeight}
 												alt={mediaAlt}
 											/>
+											{hoverValue.type !== 'none' &&
+												hoverValue.type !== 'basic' &&
+												!!hoverValue.preview && (
+													<div className='maxi-hover-details'>
+														<div
+															className={`maxi-hover-details__content maxi-hover-details__content--${hoverValue.textPreset}`}
+														>
+															{!isEmpty(
+																hoverValue.titleText
+															) && (
+																<h3>
+																	{
+																		hoverValue.titleText
+																	}
+																</h3>
+															)}
+															{!isEmpty(
+																hoverValue.contentText
+															) && (
+																<p>
+																	{
+																		hoverValue.contentText
+																	}
+																</p>
+															)}
+														</div>
+													</div>
+												)}
 										</div>
 										{captionType !== 'none' && (
 											<figcaption className='maxi-image-block__caption'>
@@ -472,7 +516,6 @@ class edit extends MaxiBlock {
 
 export default withSelect((select, ownProps) => {
 	const { mediaID } = ownProps.attributes;
-
 	const imageData = select('core').getMedia(mediaID);
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 

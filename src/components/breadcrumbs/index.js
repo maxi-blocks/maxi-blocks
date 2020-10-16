@@ -52,13 +52,15 @@ const MaxiBreadcrumbs = () => {
 
 	if (originalNestedBlocks[0] !== clientId) return null;
 
+	const { isRTL } = select('core/editor').getEditorSettings();
+
 	return (
 		<Fragment>
 			{anchorRef && (
 				<Popover
 					noArrow
 					animate={false}
-					position='top right left'
+					position={isRTL ? 'top left right' : 'top right left'}
 					focusOnMount={false}
 					anchorRef={anchorRef}
 					className='maxi-popover maxi-breadcrumbs__popover'

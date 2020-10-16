@@ -89,7 +89,7 @@ export const getDropShadowObject = boxShadow => {
 				(boxShadowString += `${value.shadowBlur}px `);
 			!isNil(value.shadowColor) && (boxShadowString += value.shadowColor);
 
-			response[key]['filter'] = `drop-shadow(${boxShadowString.trim()})`;
+			response[key].filter = `drop-shadow(${boxShadowString.trim()})`;
 		}
 	});
 
@@ -426,14 +426,15 @@ export const getImageBackgroundObject = background => {
 		general: {},
 	};
 
-	if (!isNil(background.imageOpacity))
-		response.general['opacity'] =
-			background.imageOpacity.opacity.general.opacity;
+	const { imageOptions } = background;
 
-	if (!isEmpty(background.clipPathImage))
-		response.general['clip-path'] = background.clipPathImage;
+	if (!isNil(imageOptions.opacity))
+		response.general.opacity = imageOptions.opacity.general.opacity;
 
-	background.imageOptions.forEach(option => {
+	if (!isEmpty(imageOptions.clipPath))
+		response.general['clip-path'] = imageOptions.clipPath;
+
+	imageOptions.items.forEach(option => {
 		if (isNil(option) || isEmpty(option.imageData.mediaURL)) return;
 		// Image
 		if (
@@ -553,140 +554,45 @@ export const getVideoBackgroundObject = videoOptions => {
 	};
 
 	if (!isNil(videoOptions.opacity))
-		response.general['opacity'] = videoOptions.opacity.general.opacity;
-
-	if (!isNil(videoOptions.fill))
-		response.general['object-fit'] = videoOptions.fill;
-
-	if (!isNil(videoOptions.position))
-		response.general['object-position'] = videoOptions.position;
-
-	if (!isNil(videoOptions.width))
-		response.general.width = `${videoOptions.width}${videoOptions.widthUnit}`;
-
-	if (!isNil(videoOptions.height))
-		response.general.height = `${videoOptions.height}${videoOptions.heightUnit}`;
+		response.general.opacity = videoOptions.opacity.general.opacity;
 
 	if (!isEmpty(videoOptions.clipPath))
 		response.general['clip-path'] = videoOptions.clipPath;
 
-	return response;
-};
-
-export const getArrowObject = arrow => {
-	const response = {
-		label: arrow.label,
-		general: {},
-		xxl: {},
-		xl: {},
-		l: {},
-		m: {},
-		s: {},
-		xs: {},
-	};
-
-	if (!arrow.active) return response;
-
-	Object.entries(arrow).forEach(([key, value]) => {
-		if (key === 'label' || key === 'active') return;
-
-		response[key].display = 'block';
-
-		const width = `${value.width}${value.widthUnit}`;
-
-		response[key].display = 'block';
-		response[key]['width'] = `${width}`;
-		response[key]['height'] = `${width}`;
-
-		if (value.side === 'top') {
-			response[key].left = `${value.position}%`;
-			response[key].top = `-${(Math.sqrt(2) * value.width) / 2}${
-				value.widthUnit
-			}`;
-		}
-		if (value.side === 'right') {
-			response[key].top = `${value.position}%`;
-			response[key].left = `calc(100% + ${Math.floor(
-				(Math.sqrt(2) * value.width) / 2
-			)}${value.widthUnit})`;
-		}
-		if (value.side === 'bottom') {
-			response[key].left = `${value.position}%`;
-			response[key].top = `calc(100% + ${Math.floor(
-				(Math.sqrt(2) * value.width) / 2
-			)}${value.widthUnit})`;
-		}
-		if (value.side === 'left') {
-			response[key].top = `${value.position}%`;
-			response[key].left = `-${Math.floor(
-				(Math.sqrt(2) * value.width) / 2
-			)}${value.widthUnit}`;
-		}
-	});
-
-	return response;
-};
-
-export const getArrowColorObject = background => {
-	const response = {
-		label: 'Arrow Color',
-		general: {},
-	};
-
-	if (!isEmpty(background.colorOptions.gradient))
-		response.general.background = background.colorOptions.activeColor;
-	if (!isEmpty(background.colorOptions.color))
-		response.general['background-color'] =
-			background.colorOptions.activeColor;
-
-	return response;
-};
-
-export const getArrowBorderObject = border => {
-	const response = {
-		label: 'Arrow Border',
-		general: {},
-	};
-
-	if (!isEmpty(border.general['border-color']))
-		response.general.background = border.general['border-color'];
-	if (border.borderWidth.general['border-bottom-width'] !== '') {
-		response.general.top = `calc(${
-			border.borderWidth.general['border-bottom-width'] / 2
-		}${border.borderWidth.general.unit})`;
-		response.general.left = `calc(${
-			border.borderWidth.general['border-bottom-width'] / 2
-		}${border.borderWidth.general.unit})`;
-		response.general.width = `calc(50% + ${
-			border.borderWidth.general['border-bottom-width'] * 2
-		}${border.borderWidth.general.unit})`;
-		response.general.height = `calc(50% + ${
-			border.borderWidth.general['border-bottom-width'] * 2
-		}${border.borderWidth.general.unit})`;
+	if (!isEmpty(videoOptions.fallbackURL)) {
+		response.general.background = `url(${videoOptions.fallbackURL})`;
+		response.general['background-size'] = 'cover';
 	}
 
 	return response;
 };
 
-export const setArrowStyles = (
-	target,
-	arrow,
-	background,
-	border,
-	boxShadow
-) => {
-	return {
-		[`${target} .maxi-container-arrow`]: {
-			arrow: { ...getArrowObject(JSON.parse(arrow)) },
-			shadow: { ...getDropShadowObject(JSON.parse(boxShadow)) },
-		},
-		[`${target} .maxi-container-arrow:after`]: {
-			background: { ...getArrowColorObject(JSON.parse(background)) },
-		},
-		[`${target} .maxi-container-arrow:before`]: {
-			border: { ...getArrowBorderObject(JSON.parse(border)) },
-		},
+const getSVGWrapperBackgroundObject = SVGOptions => {
+	const response = {
+		label: 'SVG Wrapper Background',
+		general: {},
 	};
+
+	if (SVGOptions.position)
+		response.general = {
+			...response.general,
+			...SVGOptions.position.general,
+		};
+	if (SVGOptions.size)
+		response.general = { ...response.general, ...SVGOptions.size.general };
+
+	return response;
+};
+
+const getSVGBackgroundObject = SVGOptions => {
+	const response = {
+		label: 'SVG Background',
+		general: {},
+	};
+
+	if (SVGOptions.size) response.general.height = `${SVGOptions.size}%`;
+
+	return response;
 };
 
 export const setBackgroundStyles = (
@@ -712,18 +618,31 @@ export const setBackgroundStyles = (
 				...getImageBackgroundObject(JSON.parse(backgroundHover)),
 			},
 		},
-		[`${target}>.maxi-background-displayer .maxi-background-displayer__video-player video`]: {
+		[`${target}>.maxi-background-displayer .maxi-background-displayer__video-player`]: {
 			videoBackground: {
 				...getVideoBackgroundObject(
 					JSON.parse(background).videoOptions
 				),
 			},
 		},
-		[`${target}:hover>.maxi-background-displayer .maxi-background-displayer__video-player video`]: {
+
+		[`${target}:hover>.maxi-background-displayer .maxi-background-displayer__video-player`]: {
 			videoBackgroundHover: {
 				...getVideoBackgroundObject(
 					JSON.parse(backgroundHover).videoOptions
 				),
+			},
+		},
+		[`${target}>.maxi-background-displayer .maxi-background-displayer__svg`]: {
+			SVGBackground: {
+				...getSVGWrapperBackgroundObject(
+					JSON.parse(background).SVGOptions
+				),
+			},
+		},
+		[`${target}>.maxi-background-displayer .maxi-background-displayer__svg svg`]: {
+			SVGBackground: {
+				...getSVGBackgroundObject(JSON.parse(background).SVGOptions),
 			},
 		},
 	};
@@ -821,4 +740,120 @@ export const setTextCustomFormats = (target, typography, typographyHover) => {
 		});
 
 	return response;
+};
+
+export const getArrowBorderObject = border => {
+	const response = {
+		label: 'Arrow Border',
+		general: {},
+	};
+
+	if (!isEmpty(border.general['border-color']))
+		response.general.background = border.general['border-color'];
+	if (border.borderWidth.general['border-bottom-width'] !== '') {
+		response.general.top = `calc(${
+			border.borderWidth.general['border-bottom-width'] / 2
+		}${border.borderWidth.general.unit})`;
+		response.general.left = `calc(${
+			border.borderWidth.general['border-bottom-width'] / 2
+		}${border.borderWidth.general.unit})`;
+		response.general.width = `calc(50% + ${
+			border.borderWidth.general['border-bottom-width'] * 2
+		}${border.borderWidth.general.unit})`;
+		response.general.height = `calc(50% + ${
+			border.borderWidth.general['border-bottom-width'] * 2
+		}${border.borderWidth.general.unit})`;
+	}
+
+	return response;
+};
+
+export const getArrowObject = arrow => {
+	const response = {
+		label: arrow.label,
+		general: {},
+		xxl: {},
+		xl: {},
+		l: {},
+		m: {},
+		s: {},
+		xs: {},
+	};
+
+	if (!arrow.active) return response;
+
+	Object.entries(arrow).forEach(([key, value]) => {
+		if (key === 'label' || key === 'active') return;
+
+		response[key].display = 'block';
+
+		const width = `${value.width}${value.widthUnit}`;
+
+		response[key].display = 'block';
+		response[key].width = `${width}`;
+		response[key].height = `${width}`;
+
+		if (value.side === 'top') {
+			response[key].left = `${value.position}%`;
+			response[key].top = `-${(Math.sqrt(2) * value.width) / 2}${
+				value.widthUnit
+			}`;
+		}
+		if (value.side === 'right') {
+			response[key].top = `${value.position}%`;
+			response[key].left = `calc(100% + ${Math.floor(
+				(Math.sqrt(2) * value.width) / 2
+			)}${value.widthUnit})`;
+		}
+		if (value.side === 'bottom') {
+			response[key].left = `${value.position}%`;
+			response[key].top = `calc(100% + ${Math.floor(
+				(Math.sqrt(2) * value.width) / 2
+			)}${value.widthUnit})`;
+		}
+		if (value.side === 'left') {
+			response[key].top = `${value.position}%`;
+			response[key].left = `-${Math.floor(
+				(Math.sqrt(2) * value.width) / 2
+			)}${value.widthUnit}`;
+		}
+	});
+
+	return response;
+};
+
+export const getArrowColorObject = background => {
+	const response = {
+		label: 'Arrow Color',
+		general: {},
+	};
+
+	if (!isEmpty(background.colorOptions.gradient))
+		response.general.background = background.colorOptions.activeColor;
+	if (!isEmpty(background.colorOptions.color))
+		response.general['background-color'] =
+			background.colorOptions.activeColor;
+
+	return response;
+};
+
+export const setArrowStyles = (
+	target,
+	arrow,
+	background,
+	border,
+	boxShadow
+) => {
+	return {
+		[`${target} .maxi-container-arrow`]: {
+			arrow: { ...getArrowObject(JSON.parse(arrow)) },
+			shadow: { ...getDropShadowObject(JSON.parse(boxShadow)) },
+		},
+		[`${target} .maxi-container-arrow:after`]: {
+			background: { ...getArrowColorObject(JSON.parse(background)) },
+		},
+		[`${target} .maxi-container-arrow:before`]: {
+			border: { ...getArrowBorderObject(JSON.parse(border)) },
+		},
+	};
 };

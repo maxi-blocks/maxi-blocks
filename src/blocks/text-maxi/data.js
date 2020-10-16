@@ -1,7 +1,7 @@
 export const alignment = {
 	label: 'Alignment',
 	general: {
-		alignment: 'left',
+		alignment: '',
 	},
 	xxl: {
 		alignment: '',
@@ -27,9 +27,9 @@ export const margin = {
 	label: 'Margin',
 	unit: 'em',
 	general: {
-		'margin-top': 0,
+		'margin-top': 1,
 		'margin-right': '',
-		'margin-bottom': 0,
+		'margin-bottom': 1,
 		'margin-left': '',
 		sync: false,
 		unit: 'em',

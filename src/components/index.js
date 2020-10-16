@@ -48,7 +48,6 @@ export { default as __experimentalEntranceAnimationControl } from './entrance-an
 export { default as __experimentalParallaxControl } from './parallax-control';
 export { default as __experimentalBackgroundDisplayer } from './background-displayer';
 export { default as __experimentalHoverEffectControl } from './hover-effect-control';
-export { default as __experimentalSVGControl } from './svg-control';
 export { default as __experimentalSVGFillControl } from './svg-fill-control';
 export { default as __experimentalSVGDefaultsDisplayer } from './svg-default-displayer';
 export { default as __experimentalOverlayControl } from './overlay-control';
@@ -56,3 +55,4 @@ export { default as __experimentalColumnPattern } from './column-pattern';
 export { default as __experimentalImageAltControl } from './image-alt-control';
 export { default as __experimentalArrowDisplayer } from './arrow-displayer';
 export { default as __experimentalFancyRadioControl } from './fancy-radio-control';
+export { default as __experimentalTextControl } from './text-control';

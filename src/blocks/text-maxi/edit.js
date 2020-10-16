@@ -19,7 +19,7 @@ import {
 	getAlignmentTextObject,
 	getOpacityObject,
 	getTransformObject,
-	setBackgroundStyles,
+	getColorBackgroundObject,
 	setTextCustomFormats,
 	getLastBreakpointValue,
 } from '../../utils';
@@ -46,21 +46,10 @@ import { isEmpty, isObject } from 'lodash';
  */
 class edit extends MaxiBlock {
 	get getObject() {
-		const {
-			uniqueID,
-			background,
-			backgroundHover,
-			typography,
-			typographyHover,
-			overlay,
-			overlayHover,
-			border,
-			borderHover,
-		} = this.props.attributes;
+		const { uniqueID, typography, typographyHover } = this.props.attributes;
 
 		let response = {
 			[uniqueID]: this.getNormalObject,
-			[`${uniqueID}:hover`]: this.getHoverObject,
 			[`${uniqueID} .maxi-text-block__content`]: this.getTypographyObject,
 			[`${uniqueID} .maxi-text-block__content:hover`]: this
 				.getTypographyHoverObject,
@@ -73,19 +62,6 @@ class edit extends MaxiBlock {
 			[`${uniqueID} .maxi-text-block__content a:hover`]: this
 				.getTypographyHoverObject,
 		};
-
-		response = Object.assign(
-			response,
-			setBackgroundStyles(
-				uniqueID,
-				background,
-				backgroundHover,
-				overlay,
-				overlayHover,
-				border,
-				borderHover
-			)
-		);
 
 		response = Object.assign(
 			response,
@@ -106,8 +82,6 @@ class edit extends MaxiBlock {
 		const {
 			alignment,
 			opacity,
-			boxShadow,
-			border,
 			size,
 			zIndex,
 			position,
@@ -117,10 +91,6 @@ class edit extends MaxiBlock {
 
 		const response = {
 			alignment: { ...getAlignmentTextObject(JSON.parse(alignment)) },
-			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
-			border: { ...JSON.parse(border) },
-			borderWidth: { ...JSON.parse(border).borderWidth },
-			borderRadius: { ...JSON.parse(border).borderRadius },
 			size: { ...JSON.parse(size) },
 			opacity: { ...getOpacityObject(JSON.parse(opacity)) },
 			zIndex: { ...JSON.parse(zIndex) },
@@ -133,41 +103,63 @@ class edit extends MaxiBlock {
 		return response;
 	}
 
-	get getHoverObject() {
-		const { boxShadowHover, borderHover } = this.props.attributes;
-
-		const response = {
-			boxShadowHover: {
-				...getBoxShadowObject(JSON.parse(boxShadowHover)),
-			},
-			borderHover: { ...JSON.parse(borderHover) },
-			borderWidth: { ...JSON.parse(borderHover).borderWidth },
-			borderRadius: { ...JSON.parse(borderHover).borderRadius },
-		};
-
-		return response;
-	}
-
 	get getTypographyObject() {
-		const { typography, margin, padding } = this.props.attributes;
+		const {
+			typography,
+			margin,
+			padding,
+			border,
+			background,
+			boxShadow,
+		} = this.props.attributes;
 
 		const response = {
 			typography: { ...JSON.parse(typography) },
 			margin: { ...JSON.parse(margin) },
 			padding: { ...JSON.parse(padding) },
+			border: { ...JSON.parse(border) },
+			borderWidth: { ...JSON.parse(border).borderWidth },
+			borderRadius: { ...JSON.parse(border).borderRadius },
+			background: { ...getColorBackgroundObject(JSON.parse(background)) },
+			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
 		};
 
 		return response;
 	}
 
 	get getTypographyHoverObject() {
-		const { typographyHover } = this.props.attributes;
+		const {
+			typographyHover,
+			borderHover,
+			backgroundHover,
+			boxShadowHover,
+		} = this.props.attributes;
 
 		const response = {
 			typographyHover: { ...JSON.parse(typographyHover) },
+			border: { ...JSON.parse(borderHover) },
+			borderWidth: { ...JSON.parse(borderHover).borderWidth },
+			borderRadius: { ...JSON.parse(borderHover).borderRadius },
+			background: {
+				...getColorBackgroundObject(JSON.parse(backgroundHover)),
+			},
+			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadowHover)) },
 		};
 
 		return response;
+	}
+
+	componentDidMount() {
+		const alignment = JSON.parse(this.props.attributes.alignment);
+		const { isRTL } = wp.data.select('core/editor').getEditorSettings();
+
+		if (isEmpty(alignment.general.alignment)) {
+			alignment.general.alignment = isRTL ? 'right' : 'left';
+			this.props.setAttributes({ alignment: JSON.stringify(alignment) });
+		}
+
+		this.displayStyles();
+		this.saveProps();
 	}
 
 	render() {
@@ -204,7 +196,9 @@ class edit extends MaxiBlock {
 		const displayValue = !isObject(display) ? JSON.parse(display) : display;
 
 		const classes = classnames(
-			'maxi-block maxi-text-block',
+			'maxi-block',
+			'maxi-block--backend',
+			'maxi-text-block',
 			getLastBreakpointValue(displayValue, 'display', deviceType) ===
 				'none' && 'maxi-block-display-none',
 			blockStyle,

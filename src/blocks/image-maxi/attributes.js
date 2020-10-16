@@ -13,6 +13,7 @@ const attributes = {
 	},
 	SVGData: {
 		type: 'string',
+		default: '{}',
 	},
 	SVGMediaID: {
 		type: 'number',

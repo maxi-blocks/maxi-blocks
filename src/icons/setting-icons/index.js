@@ -24,6 +24,7 @@ export { default as placeholderImage } from './placeholder-image';
 export { default as reset } from './reset';
 export { default as scale } from './scale';
 export { default as search } from './search';
+export { default as shape } from './shape';
 export { default as style } from './style';
 export { default as sync } from './sync';
 export { default as tablet } from './tablet';

@@ -68,9 +68,9 @@ class edit extends MaxiBlock {
 		} = this.props.attributes;
 
 		let response = {
+			[`maxi-column-block__resizer__${uniqueID}`]: this.getResizerObject,
 			[uniqueID]: this.getNormalObject,
 			[`${uniqueID}:hover`]: this.getHoverObject,
-			[`maxi-column-block__resizer__${uniqueID}`]: this.getResizerObject,
 		};
 
 		response = Object.assign(
@@ -100,7 +100,6 @@ class edit extends MaxiBlock {
 				opacity,
 				boxShadow,
 				border,
-				size,
 				margin,
 				padding,
 				zIndex,
@@ -114,7 +113,6 @@ class edit extends MaxiBlock {
 			border: { ...JSON.parse(border) },
 			borderWidth: { ...JSON.parse(border).borderWidth },
 			borderRadius: { ...JSON.parse(border).borderRadius },
-			size: { ...JSON.parse(size) },
 			margin: { ...JSON.parse(margin) },
 			padding: { ...JSON.parse(padding) },
 			opacity: { ...getOpacityObject(JSON.parse(opacity)) },
@@ -175,7 +173,6 @@ class edit extends MaxiBlock {
 			attributes: {
 				uniqueID,
 				blockStyle,
-				size,
 				columnSize,
 				background,
 				extraClassName,
@@ -200,6 +197,7 @@ class edit extends MaxiBlock {
 
 		const classes = classnames(
 			'maxi-block',
+			'maxi-block--backend',
 			'maxi-column-block',
 			getLastBreakpointValue(displayValue, 'display', deviceType) ===
 				'none' && 'maxi-block-display-none',
@@ -208,8 +206,6 @@ class edit extends MaxiBlock {
 			extraClassName,
 			className
 		);
-
-		const sizeValue = !isObject(size) ? JSON.parse(size) : size;
 
 		const columnValue = !isObject(columnSize)
 			? JSON.parse(columnSize)
@@ -237,6 +233,7 @@ class edit extends MaxiBlock {
 							<ResizableBox
 								showHandle={context.displayHandlers}
 								className={classnames(
+									'maxi-block--backend', // Required by BackEndResponsiveStyles class to apply the styles
 									'maxi-block__resizer',
 									'maxi-column-block__resizer',
 									`maxi-column-block__resizer__${uniqueID}`
@@ -245,11 +242,7 @@ class edit extends MaxiBlock {
 									width: getColumnWidthDefault(),
 								}}
 								minWidth='1%'
-								maxWidth={
-									(sizeValue[deviceType]['max-width'] &&
-										`${sizeValue[deviceType]['max-width']}${sizeValue[deviceType]['max-widthUnit']}`) ||
-									'100%'
-								}
+								maxWidth='100%'
 								enable={{
 									top: false,
 									right: true,
@@ -342,9 +335,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	} = ownProps;
 
 	const onDeviceTypeChange = () => {
-		let newDeviceType = select(
-			'core/edit-post'
-		).__experimentalGetPreviewDeviceType();
+		let newDeviceType = select('maxiBlocks').receiveMaxiDeviceType();
 		newDeviceType = newDeviceType === 'Desktop' ? 'general' : newDeviceType;
 
 		const node = document.querySelector(

@@ -3,7 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { Fragment, useState } = wp.element;
-const { SelectControl, Button, Icon, TextControl } = wp.components;
+const { SelectControl, Button, Icon } = wp.components;
 
 /**
  * Internal dependencies

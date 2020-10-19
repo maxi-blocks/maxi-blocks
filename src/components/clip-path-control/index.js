@@ -6,6 +6,11 @@ const { useState, Fragment } = wp.element;
 const { SelectControl, BaseControl, Button } = wp.components;
 
 /**
+ * Internal dependencies
+ */
+import __experimentalFancyRadioControl from '../fancy-radio-control';
+
+/**
  * External dependencies
  */
 import classnames from 'classnames';
@@ -194,9 +199,9 @@ const ClipPathControl = props => {
 
 	return (
 		<div className={classes}>
-			<SelectControl
+			<__experimentalFancyRadioControl
 				label={__('Use Clip-path', 'maxi-blocks')}
-				value={hasClipPath}
+				selected={Number(hasClipPath)}
 				options={[
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },
 					{ label: __('No', 'maxi-blocks'), value: 0 },

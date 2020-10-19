@@ -4,12 +4,8 @@
 const { SVG, Path } = wp.primitives;
 
 const oneOneTwoOneOne = (
-	<SVG id='Layer_1' data-name='Layer 1' viewBox='0 0 111.86 38'>
-		<Path className='cls-1' d='M1 14.8H110.86V23.19H1z' />
-		<Path className='cls-1' d='M58.8 29.79H110.86V37H58.8z' />
-		<Path className='cls-1' d='M1 29.79H53.06V37H1z' />
-		<Path className='cls-1' d='M58.8 1H110.86V8.21H58.8z' />
-		<Path className='cls-1' d='M1 1H53.06V8.21H1z' />
+	<SVG xmlns='http://www.w3.org/2000/svg' viewBox='0 0 111.86 38'>
+		<Path d='M1 14.8h109.86v8.39H1zM58.8 29.79h52.06V37H58.8zM1 29.79h52.06V37H1zM58.8 1h52.06v7.21H58.8zM1 1h52.06v7.21H1z' />
 	</SVG>
 );
 

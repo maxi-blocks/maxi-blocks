@@ -104,6 +104,7 @@ const Inspector = props => {
 											content: (
 												<Fragment>
 													<RangeControl
+														className='maxi-column-size-control'
 														label={__(
 															'Column Size (%)',
 															'maxi-blocks'

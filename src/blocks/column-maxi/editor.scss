@@ -1,3 +1,12 @@
+.maxi-column-size-control {
+	.components-base-control__field {
+		flex-direction: column;
+		align-items: flex-start !important;
+		&__label {
+			margin: 0;
+		}
+	}
+}
 .edit-post-visual-editor.editor-styles-wrapper {
 	.maxi-column-block__resizer {
 		div.maxi-column-block {

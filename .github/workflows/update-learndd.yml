@@ -8,24 +8,21 @@ jobs:
     build:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v2
-            - uses: actions/setup-node@v1
-              with:
-                  node-version: 12
-            - run: npm install
-            - run: npm run build
-
-    FTP-Deploy-Action:
-        name: FTP-Deploy-Action
-        runs-on: ubuntu-latest
-        steps:
             - uses: actions/checkout@v2.1.0
               with:
                   fetch-depth: 2
+            - name: Use Node.js
+              uses: actions/setup-node@v1
+              with:
+                node-version: 12
+            - name: Install dependencies
+              run: npm install
+            - name: Build
+              run: npm run build
             - name: FTP-Deploy-Action
               uses: SamKirkland/FTP-Deploy-Action@3.1.1
               with:
                   ftp-server: ftp://learndd.dev600.com/wp-content/plugins
                   ftp-username: maxi-git-learndd
                   ftp-password: ${{ secrets.FTP_PASSWORD }}
-                  git-ftp-args: --insecure # test
+                  git-ftp-args: --insecure

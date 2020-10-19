@@ -22,7 +22,7 @@ jobs:
             - name: FTP-Deploy-Action
               uses: SamKirkland/FTP-Deploy-Action@3.1.1
               with:
-                  ftp-server: ftp://learndd.dev600.com/
+                  ftp-server: ftp://learndd.dev600.com/maxi-blocks
                   ftp-username: maxi-git-learndd
                   ftp-password: ${{ secrets.FTP_PASSWORD }}
                   git-ftp-args: --insecure

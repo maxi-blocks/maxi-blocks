@@ -9,7 +9,7 @@ const { SelectControl, BaseControl, Button } = wp.components;
  * External dependencies
  */
 import classnames from 'classnames';
-import { isArray, isEmpty, isNil, trim, uniqueid } from 'lodash';
+import { isArray, isEmpty, isNil, trim, uniqueId } from 'lodash';
 
 /**
  * Component
@@ -187,7 +187,7 @@ const ClipPathControl = props => {
 				return false;
 		}
 
-		return undefined;
+		return false;
 	};
 
 	const classes = classnames('maxi-clip-path-control', className);
@@ -267,7 +267,7 @@ const ClipPathControl = props => {
 							/>
 							{cp.content.map((handle, i) => (
 								<ClipPathOption
-									key={uniqueid('maxi-clip-path-control-')}
+									key={uniqueId('maxi-clip-path-control-')}
 									values={handle}
 									onChange={value => {
 										cp.content[i] = value;

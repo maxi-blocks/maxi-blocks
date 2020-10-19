@@ -231,10 +231,12 @@ body .toolbar-item__popover {
 				}
 			}
 		}
+
 		&__body {
 			padding-right: 0;
 			padding-left: 0;
 		}
+
 	}
 
 	button.components-range-control__reset,
@@ -256,6 +258,17 @@ body .toolbar-item__popover {
 		border: none;
 	}
 }
+
+
+
+body.maxi-blocks--active.rtl .maxi-sidebar,
+body.rtl .maxi-popover,
+body.rtl .toolbar-item__popover {
+	input[type="number"] {
+		padding: 0 8px 0 0px;
+	}
+}
+
 body .toolbar-item__popover {
 	input[type="text"],
 	input[type="number"],
@@ -287,6 +300,14 @@ body .toolbar-item__popover {
 					}
 				}
 			}
+		}
+	}
+}
+
+body.rtl {
+	.components-color-picker {
+		&__alpha-pointer, &__hue-pointer {
+			transform: translate(-7px,-1px);
 		}
 	}
 }
@@ -344,6 +365,10 @@ body .toolbar-item__popover {
 	box-shadow: none;
 	border: 2px solid #dddfe1;
 	margin-left: 5px;
+	@at-root .rtl #{&} {
+		margin-left: unset;
+		margin-right: 5px;
+	}
 
 	svg {
 		width: 14px;

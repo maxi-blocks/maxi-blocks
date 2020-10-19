@@ -256,6 +256,7 @@ const Inspector = props => {
 																		disableImage
 																		disableVideo
 																		disableClipPath
+																		disableSVG
 																	/>
 																</Fragment>
 															),
@@ -323,6 +324,7 @@ const Inspector = props => {
 																			disableImage
 																			disableVideo
 																			disableClipPath
+																			disableSVG
 																		/>
 																	)}
 																</Fragment>

@@ -453,54 +453,6 @@ export const size = {
 export const background = {
 	label: 'Background',
 	activeMedia: '',
-	imageOptions: [
-		{
-			imageData: {
-				mediaID: '',
-				mediaURL: '',
-			},
-			sizeSettings: {
-				size: 'cover',
-				widthUnit: '%',
-				width: 100,
-				heightUnit: '%',
-				height: 100,
-			},
-			repeat: 'no-repeat',
-			positionOptions: {
-				position: 'center center',
-				widthUnit: '%',
-				width: 0,
-				heightUnit: '%',
-				height: 0,
-			},
-			origin: 'padding-box',
-			clip: 'border-box',
-			attachment: 'scroll',
-		},
-	],
-	clipPathImage: '',
-	videoOptions: {
-		mediaID: '',
-		mediaURL: '',
-		width: 100,
-		widthUnit: '%',
-		height: 100,
-		heightUnit: '%',
-		fill: 'cover',
-		position: 'unset',
-		autoplay: 0,
-		loop: 0,
-		muted: 0,
-		preload: 'metadata',
-		clipPath: '',
-		opacity: {
-			label: 'Opacity',
-			general: {
-				opacity: 1,
-			},
-		},
-	},
 	colorOptions: {
 		activeColor: '',
 		color: '',
@@ -516,7 +468,38 @@ export const background = {
 			},
 		},
 	},
-	imageOpacity: {
+	imageOptions: {
+		items: [
+			{
+				imageData: {
+					mediaID: '',
+					mediaURL: '',
+					width: 100,
+					widthUnit: '%',
+					height: 100,
+					heightUnit: '%',
+				},
+				sizeSettings: {
+					size: '',
+					widthUnit: '',
+					width: '',
+					heightUnit: '',
+					height: '',
+				},
+				repeat: 'no-repeat',
+				positionOptions: {
+					position: 'center center',
+					widthUnit: '%',
+					width: 0,
+					heightUnit: '%',
+					height: 0,
+				},
+				origin: 'padding-box',
+				clip: 'border-box',
+				attachment: 'scroll',
+			},
+		],
+		clipPath: '',
 		opacity: {
 			label: 'Opacity',
 			general: {
@@ -524,54 +507,45 @@ export const background = {
 			},
 		},
 	},
+	videoOptions: {
+		mediaID: '',
+		mediaURL: '',
+		startTime: '',
+		endTime: '',
+		loop: 0,
+		clipPath: '',
+		fallbackID: '',
+		fallbackURL: '',
+		playOnMobile: 0,
+		opacity: {
+			label: 'Opacity',
+			general: {
+				opacity: 1,
+			},
+		},
+	},
+	SVGOptions: {
+		SVGElement: '',
+		SVGData: '{}',
+		SVGMediaID: '',
+		SVGMediaURL: '',
+		position: {
+			label: 'Background SVG position',
+			general: {
+				topUnit: '%',
+				top: '',
+				leftUnit: '%',
+				left: '',
+			},
+		},
+		size: '',
+	},
 };
 
 export const backgroundHover = {
 	label: 'Background Hover',
 	activeMedia: '',
-	status: 0,
-	imageOptions: [
-		{
-			imageData: {
-				mediaID: '',
-				mediaURL: '',
-			},
-			sizeSettings: {
-				size: '',
-				widthUnit: '',
-				width: '',
-				heightUnit: '',
-				height: '',
-			},
-			repeat: '',
-			positionOptions: {
-				position: '',
-				widthUnit: '',
-				width: '',
-				heightUnit: '',
-				height: '',
-			},
-			origin: '',
-			clip: '',
-			attachment: '',
-		},
-	],
-	clipPathImage: '',
-	videoOptions: {
-		mediaID: '',
-		mediaURL: '',
-		width: '',
-		widthUnit: '',
-		height: '',
-		heightUnit: '',
-		fill: '',
-		position: '',
-		autoplay: '',
-		loop: '',
-		muted: '',
-		preload: '',
-		clipPath: '',
-	},
+	// status: 0,
 	colorOptions: {
 		activeColor: '',
 		color: '',
@@ -586,6 +560,75 @@ export const backgroundHover = {
 				},
 			},
 		},
+	},
+	imageOptions: {
+		items: [
+			{
+				imageData: {
+					mediaID: '',
+					mediaURL: '',
+				},
+				sizeSettings: {
+					size: '',
+					widthUnit: '',
+					width: '',
+					heightUnit: '',
+					height: '',
+				},
+				repeat: '',
+				positionOptions: {
+					position: '',
+					widthUnit: '',
+					width: '',
+					heightUnit: '',
+					height: '',
+				},
+				origin: '',
+				clip: '',
+				attachment: '',
+			},
+		],
+		clipPath: '',
+		opacity: {
+			label: 'Opacity',
+			general: {
+				opacity: 1,
+			},
+		},
+	},
+	videoOptions: {
+		mediaID: '',
+		mediaURL: '',
+		startTime: '',
+		endTime: '',
+		loop: '',
+		muted: '',
+		clipPath: '',
+		opacity: {
+			label: 'Opacity',
+			general: {
+				opacity: 1,
+			},
+		},
+		fallbackID: '',
+		fallbackURL: '',
+		playOnMobile: 0,
+	},
+	SVGOptions: {
+		SVGElement: '',
+		SVGData: '{}',
+		SVGMediaID: '',
+		SVGMediaURL: '',
+		position: {
+			label: 'Background SVG position',
+			general: {
+				topUnit: '%',
+				top: '',
+				leftUnit: '%',
+				left: '',
+			},
+		},
+		size: '',
 	},
 };
 
@@ -1422,11 +1465,10 @@ export const __experimentalDisplay = {
 
 export const __experimentalHover = {
 	label: 'Hover Effects',
-	settings: {
-		type: 'none',
-		effectType: 'fade',
-		duration: 1,
-	},
+	type: 'none',
+	basicEffectType: 'zoom-in',
+	textEffectType: 'fade',
+	preview: 1,
 	textPreset: 'center-center',
 	borderStatus: 0,
 	paddingStatus: 0,
@@ -1450,9 +1492,9 @@ export const __experimentalHover = {
 		},
 	},
 	titleStatus: 0,
-	titleText: '',
+	titleText: 'Hello World',
 	contentStatus: 0,
-	contentText: '',
+	contentText: 'This is a new world',
 };
 
 export const __experimentalMotion = {

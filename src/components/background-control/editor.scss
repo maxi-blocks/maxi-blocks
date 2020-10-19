@@ -1,10 +1,13 @@
 .maxi-background-control {
-	& .maxi-settingstab-control .maxi-tabs-content {
+	.maxi-settingstab-control .maxi-tabs-content {
 		padding-right: 0 !important;
 		padding-left: 0 !important;
 	}
 
-	& .maxi-mediauploader-control .maxi-mediauploader-control__toggle {
+	& .maxi-mediauploader-control .maxi-mediauploader-control__toggle,
+	&
+		.maxi-mediauploader-control.maxi-mediauploader-control__video-fallback
+		.maxi-mediauploader-control__remove {
 		margin-right: 0;
 	}
 

@@ -158,6 +158,19 @@ class edit extends MaxiBlock {
 		return response;
 	}
 
+	componentDidMount() {
+		const alignment = JSON.parse(this.props.attributes.alignment);
+		const { isRTL } = wp.data.select('core/editor').getEditorSettings();
+
+		if (isEmpty(alignment.general.alignment)) {
+			alignment.general.alignment = isRTL ? 'right' : 'left';
+			this.props.setAttributes({ alignment: JSON.stringify(alignment) });
+		}
+
+		this.displayStyles();
+		this.saveProps();
+	}
+
 	render() {
 		const {
 			attributes: {
@@ -192,7 +205,9 @@ class edit extends MaxiBlock {
 		const displayValue = !isObject(display) ? JSON.parse(display) : display;
 
 		const classes = classnames(
-			'maxi-block maxi-text-block',
+			'maxi-block',
+			'maxi-block--backend',
+			'maxi-text-block',
 			getLastBreakpointValue(displayValue, 'display', deviceType) ===
 				'none' && 'maxi-block-display-none',
 			blockStyle,

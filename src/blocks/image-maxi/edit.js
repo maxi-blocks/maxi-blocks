@@ -4,7 +4,7 @@
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
 const { withSelect } = wp.data;
-const { Spinner, IconButton, ResizableBox } = wp.components;
+const { Spinner, IconButton, ResizableBox, Placeholder } = wp.components;
 const { __experimentalBlock, MediaUpload } = wp.blockEditor;
 import { RawHTML } from '@wordpress/element';
 
@@ -59,7 +59,10 @@ class edit extends MaxiBlock {
 				.getImageFrontendObject,
 			[`${uniqueID}:hover .maxi-block-hover-wrapper`]: this
 				.getImageHoverObject,
-			[`${uniqueID} img`]: this.getImageBackendObject,
+			[`${uniqueID} .maxi-block-hover-wrapper img`]: this
+				.getImageBackendObject,
+			[`${uniqueID} .maxi-block-hover-wrapper svg`]: this
+				.getImageBackendObject,
 			[`${uniqueID} figcaption`]: this.getFigcaptionObject,
 			[`${uniqueID} .maxi-hover-details .maxi-hover-details__content h3`]: this
 				.getHoverEffectTitleTextObject,
@@ -80,7 +83,6 @@ class edit extends MaxiBlock {
 	get getNormalObject() {
 		const {
 			alignment,
-			boxShadow,
 			padding,
 			margin,
 			zIndex,
@@ -199,18 +201,11 @@ class edit extends MaxiBlock {
 	}
 
 	get getImageBackendObject() {
-		const {
-			boxShadow,
-			opacity,
-			border,
-			clipPath,
-			size,
-		} = this.props.attributes;
+		const { boxShadow, opacity, border, clipPath } = this.props.attributes;
 
 		const response = {
 			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
 			opacity: { ...JSON.parse(opacity) },
-			size: { ...JSON.parse(size) },
 			border: { ...JSON.parse(border) },
 			borderWidth: { ...JSON.parse(border).borderWidth },
 			borderRadius: { ...JSON.parse(border).borderRadius },
@@ -262,6 +257,7 @@ class edit extends MaxiBlock {
 				mediaHeight,
 				SVGElement,
 				display,
+				hover,
 			},
 			imageData,
 			setAttributes,
@@ -270,8 +266,26 @@ class edit extends MaxiBlock {
 
 		const displayValue = !isObject(display) ? JSON.parse(display) : display;
 
+		const hoverValue = !isObject(hover) ? JSON.parse(hover) : hover;
+
+		const hoverClasses = classnames(
+			'maxi-block-hover-wrapper',
+			hoverValue.type === 'basic' &&
+				!!hoverValue.preview &&
+				`maxi-hover-effect__${hoverValue.type}__${hoverValue.basicEffectType}`,
+			hoverValue.type === 'text' &&
+				!!hoverValue.preview &&
+				`maxi-hover-effect__${hoverValue.type}__${hoverValue.textEffectType}`,
+			hoverValue.type !== 'none' &&
+				`maxi-hover-effect__${
+					hoverValue.type === 'basic' ? 'basic' : 'text'
+				}`
+		);
+
 		const classes = classnames(
 			'maxi-block maxi-image-block',
+			`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
+			'maxi-block--backend',
 			getLastBreakpointValue(displayValue, 'display', deviceType) ===
 				'none' && 'maxi-block-display-none',
 			blockStyle,
@@ -280,7 +294,6 @@ class edit extends MaxiBlock {
 			className,
 			fullWidth === 'full' ? 'alignfull' : ''
 		);
-
 		const cropOptionsValue = !isObject(cropOptions)
 			? JSON.parse(cropOptions)
 			: cropOptions;
@@ -330,46 +343,6 @@ class edit extends MaxiBlock {
 				data-maxi_initial_block_class={defaultBlockStyle}
 				data-align={fullWidth}
 			>
-				{!!SVGElement && (
-					<Fragment>
-						<__experimentalBackgroundDisplayer
-							background={background}
-						/>
-						<ResizableBox
-							className='maxi-block__resizer maxi-svg-block__resizer'
-							size={{
-								width: `${sizeValue.general.width}%`,
-								height: '100%',
-							}}
-							maxWidth='100%'
-							enable={{
-								top: false,
-								right: false,
-								bottom: false,
-								left: false,
-								topRight: true,
-								bottomRight: true,
-								bottomLeft: true,
-								topLeft: true,
-							}}
-							onResizeStop={(event, direction, elt, delta) => {
-								const newScale = Number(
-									(
-										(elt.getBoundingClientRect().width /
-											this.getWrapperWidth) *
-										100
-									).toFixed()
-								);
-								sizeValue.general.width = newScale;
-								setAttributes({
-									size: JSON.stringify(sizeValue),
-								});
-							}}
-						>
-							<RawHTML>{SVGElement}</RawHTML>
-						</ResizableBox>
-					</Fragment>
-				)}
 				<MediaUpload
 					onSelect={media => setAttributes({ mediaID: media.id })}
 					allowedTypes='image'
@@ -426,14 +399,46 @@ class edit extends MaxiBlock {
 												icon={toolbarReplaceImage}
 											/>
 										</div>
-										<div className='maxi-block-hover-wrapper'>
-											<img
-												className={`maxi-image-block__image wp-image-${mediaID}`}
-												src={image.source_url}
-												width={mediaWidth}
-												height={mediaHeight}
-												alt={mediaAlt}
-											/>
+										<div className={hoverClasses}>
+											{(!SVGElement && (
+												<img
+													className={`maxi-image-block__image wp-image-${mediaID}`}
+													src={image.source_url}
+													width={mediaWidth}
+													height={mediaHeight}
+													alt={mediaAlt}
+												/>
+											)) || (
+												<RawHTML>{SVGElement}</RawHTML>
+											)}
+											{hoverValue.type !== 'none' &&
+												hoverValue.type !== 'basic' &&
+												!!hoverValue.preview && (
+													<div className='maxi-hover-details'>
+														<div
+															className={`maxi-hover-details__content maxi-hover-details__content--${hoverValue.textPreset}`}
+														>
+															{!isEmpty(
+																hoverValue.titleText
+															) && (
+																<h3>
+																	{
+																		hoverValue.titleText
+																	}
+																</h3>
+															)}
+															{!isEmpty(
+																hoverValue.contentText
+															) && (
+																<p>
+																	{
+																		hoverValue.contentText
+																	}
+																</p>
+															)}
+														</div>
+													</div>
+												)}
 										</div>
 										{captionType !== 'none' && (
 											<figcaption className='maxi-image-block__caption'>
@@ -448,12 +453,18 @@ class edit extends MaxiBlock {
 									<p>{__('Loading…', 'maxi-blocks')}</p>
 								</Fragment>
 							) : (
-								<IconButton
-									className='maxi-imageupload-button'
-									showTooltip='true'
-									onClick={open}
-									icon={placeholderImage}
-								/>
+								<div className='maxi-image-block__placeholder'>
+									<Placeholder
+										icon={placeholderImage}
+										label=''
+									/>
+									<IconButton
+										className='maxi-image-block__settings__upload-button'
+										showTooltip='true'
+										onClick={open}
+										icon={toolbarReplaceImage}
+									/>
+								</div>
 							)}
 						</Fragment>
 					)}
@@ -465,7 +476,6 @@ class edit extends MaxiBlock {
 
 export default withSelect((select, ownProps) => {
 	const { mediaID } = ownProps.attributes;
-
 	const imageData = select('core').getMedia(mediaID);
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 

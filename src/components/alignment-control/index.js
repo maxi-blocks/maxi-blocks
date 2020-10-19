@@ -7,6 +7,7 @@ const { RadioControl } = wp.components;
  * Internal dependencies
  */
 import { getLastBreakpointValue } from '../../utils';
+const { Icon } = wp.components;
 
 /**
  * External dependencies
@@ -19,7 +20,6 @@ import { isObject, isEmpty } from 'lodash';
  */
 import './editor.scss';
 import { alignLeft, alignCenter, alignRight, alignJustify } from '../../icons';
-import { Icon } from '@wordpress/icons';
 
 /**
  * Component

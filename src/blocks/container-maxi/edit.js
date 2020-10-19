@@ -87,6 +87,8 @@ class edit extends MaxiBlock {
 			arrow,
 			background,
 			backgroundHover,
+			overlay,
+			overlayHover,
 			border,
 			boxShadow,
 		} = this.props.attributes;
@@ -130,7 +132,13 @@ class edit extends MaxiBlock {
 
 		response = Object.assign(
 			response,
-			setBackgroundStyles(uniqueID, background, backgroundHover),
+			setBackgroundStyles(
+				uniqueID,
+				background,
+				backgroundHover,
+				overlay,
+				overlayHover
+			),
 			setArrowStyles(uniqueID, arrow, background, border, boxShadow)
 		);
 
@@ -231,8 +239,11 @@ class edit extends MaxiBlock {
 		const displayValue = !isObject(display) ? JSON.parse(display) : display;
 
 		const classes = classnames(
-			'maxi-block maxi-container-block',
-			`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
+			'maxi-block',
+			'maxi-block--backend',
+			'maxi-container-block',
+			'maxi-motion-effect',
+			`maxi-motion-effect-${uniqueID}`,
 			getLastBreakpointValue(displayValue, 'display', deviceType) ===
 				'none' && 'maxi-block-display-none',
 			uniqueID,
@@ -258,6 +269,7 @@ class edit extends MaxiBlock {
 					>
 						<__experimentalBackgroundDisplayer
 							background={background}
+							blockClassName={uniqueID}
 						/>
 
 						<__experimentalArrowDisplayer arrow={arrow} />

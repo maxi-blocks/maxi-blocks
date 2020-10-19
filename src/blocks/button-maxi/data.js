@@ -168,51 +168,7 @@ export const typography = {
 
 export const background = {
 	label: 'Background',
-	imageOptions: [
-		{
-			imageData: {
-				mediaID: '',
-				mediaURL: '',
-				width: 100,
-				widthUnit: '%',
-				height: 100,
-				heightUnit: '%',
-			},
-			repeat: 'no-repeat',
-			positionOptions: {
-				position: 'center center',
-				widthUnit: '%',
-				width: 0,
-				heightUnit: '%',
-				height: 0,
-			},
-			origin: 'padding-box',
-			clip: 'border-box',
-			attachment: 'scroll',
-		},
-	],
-	clipPathImage: '',
-	videoOptions: {
-		mediaID: '',
-		mediaURL: '',
-		width: 100,
-		widthUnit: '%',
-		height: 100,
-		heightUnit: '%',
-		fill: 'cover',
-		position: 'unset',
-		autoplay: 0,
-		loop: 0,
-		muted: 0,
-		preload: 'metadata',
-		clipPath: '',
-		opacity: {
-			label: 'Opacity',
-			general: {
-				opacity: 1,
-			},
-		},
-	},
+	activeMedia: '',
 	colorOptions: {
 		activeColor: '#ff4a17',
 		color: '#ff4a17',
@@ -228,13 +184,77 @@ export const background = {
 			},
 		},
 	},
-	imageOpacity: {
+	imageOptions: {
+		items: [
+			{
+				imageData: {
+					mediaID: '',
+					mediaURL: '',
+					width: 100,
+					widthUnit: '%',
+					height: 100,
+					heightUnit: '%',
+				},
+				sizeSettings: {
+					size: '',
+					widthUnit: '',
+					width: '',
+					heightUnit: '',
+					height: '',
+				},
+				repeat: 'no-repeat',
+				positionOptions: {
+					position: 'center center',
+					widthUnit: '%',
+					width: 0,
+					heightUnit: '%',
+					height: 0,
+				},
+				origin: 'padding-box',
+				clip: 'border-box',
+				attachment: 'scroll',
+			},
+		],
+		clipPath: '',
 		opacity: {
 			label: 'Opacity',
 			general: {
 				opacity: 1,
 			},
 		},
+	},
+	videoOptions: {
+		mediaID: '',
+		mediaURL: '',
+		startTime: '',
+		endTime: '',
+		loop: 0,
+		clipPath: '',
+		fallbackID: '',
+		fallbackURL: '',
+		playOnMobile: 0,
+		opacity: {
+			label: 'Opacity',
+			general: {
+				opacity: 1,
+			},
+		},
+	},
+	SVGOptions: {
+		SVGElement: '',
+		SVGData: '{}',
+		SVGMediaID: '',
+		SVGMediaURL: '',
+		position: {
+			label: 'Background SVG position',
+			general: {
+				topUnit: '%',
+				top: '',
+				leftUnit: '%',
+				left: '',
+			},
+		},
+		size: '',
 	},
 };
 

@@ -1,0 +1,35 @@
+name: Update learndd
+
+on:
+    push:
+        branches: [master]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2.1.0
+              with:
+                  fetch-depth: 2
+            - name: Use Node.js
+              uses: actions/setup-node@v1
+              with:
+                node-version: 12
+            - name: Install dependencies
+              run: npm install
+            - name: Build
+              run: npm run build
+            - name: FTP-Deploy-Action
+              uses: SamKirkland/FTP-Deploy-Action@3.1.1
+              with:
+                  ftp-server: ftp://learndd.dev600.com/maxi-blocks
+                  ftp-username: maxi-git-learndd
+                  ftp-password: ${{ secrets.FTP_PASSWORD }}
+                  git-ftp-args: --insecure
+            - name: Google Chat Notification
+              uses: Co-qn/google-chat-notification@releases/v1
+              with:
+                name: Update learndd.dev600.com
+                url: ${{ secrets.GOOGLE_CHAT_WEBHOOK }}
+                status: ${{ job.status }}
+              if: always()

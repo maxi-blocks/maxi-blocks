@@ -32,8 +32,10 @@ const SVGLayer = props => {
 						label: __('Shape', 'maxi-blocks'),
 						content: (
 							<__experimentalSVGDefaultsDisplayer
-								SVGData={SVGOptions.SVGData}
+								SVGOptions={SVGOptions}
 								onChange={obj => {
+									SVGOptions.SVGCurrentShape =
+										obj.SVGCurrentShape;
 									SVGOptions.SVGElement = obj.SVGElement;
 									SVGOptions.SVGMediaID = obj.SVGMediaID;
 									SVGOptions.SVGMediaURL = obj.SVGMediaURL;

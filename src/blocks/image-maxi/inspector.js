@@ -88,7 +88,7 @@ const Inspector = props => {
 			transform,
 			clipPath,
 			hover,
-			SVGData,
+			SVGOptions,
 		},
 		imageData,
 		clientId,
@@ -731,7 +731,6 @@ const Inspector = props => {
 											label: __('Shape', 'maxi-blocks'),
 											content: (
 												<__experimentalSVGDefaultsDisplayer
-													SVGData={SVGData}
 													onChange={SVGOptions => {
 														const SVGValue = !isObject(
 															SVGOptions.SVGData

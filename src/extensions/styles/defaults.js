@@ -525,6 +525,7 @@ export const background = {
 		},
 	},
 	SVGOptions: {
+		SVGCurrentShape: '',
 		SVGElement: '',
 		SVGData: '{}',
 		SVGMediaID: '',

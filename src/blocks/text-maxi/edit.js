@@ -19,9 +19,9 @@ import {
 	getAlignmentTextObject,
 	getOpacityObject,
 	getTransformObject,
-	getColorBackgroundObject,
 	setTextCustomFormats,
 	getLastBreakpointValue,
+	setBackgroundStyles,
 } from '../../utils';
 import {
 	MaxiBlock,
@@ -46,7 +46,15 @@ import { isEmpty, isObject } from 'lodash';
  */
 class edit extends MaxiBlock {
 	get getObject() {
-		const { uniqueID, typography, typographyHover } = this.props.attributes;
+		const {
+			uniqueID,
+			background,
+			backgroundHover,
+			typography,
+			typographyHover,
+			border,
+			borderHover,
+		} = this.props.attributes;
 
 		let response = {
 			[uniqueID]: this.getNormalObject,
@@ -62,6 +70,19 @@ class edit extends MaxiBlock {
 			[`${uniqueID} .maxi-text-block__content a:hover`]: this
 				.getTypographyHoverObject,
 		};
+
+		response = Object.assign(
+			response,
+			setBackgroundStyles(
+				uniqueID,
+				background,
+				backgroundHover,
+				null,
+				null,
+				border,
+				borderHover
+			)
+		);
 
 		response = Object.assign(
 			response,
@@ -109,7 +130,6 @@ class edit extends MaxiBlock {
 			margin,
 			padding,
 			border,
-			background,
 			boxShadow,
 		} = this.props.attributes;
 
@@ -120,7 +140,6 @@ class edit extends MaxiBlock {
 			border: { ...JSON.parse(border) },
 			borderWidth: { ...JSON.parse(border).borderWidth },
 			borderRadius: { ...JSON.parse(border).borderRadius },
-			background: { ...getColorBackgroundObject(JSON.parse(background)) },
 			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
 		};
 
@@ -131,7 +150,6 @@ class edit extends MaxiBlock {
 		const {
 			typographyHover,
 			borderHover,
-			backgroundHover,
 			boxShadowHover,
 		} = this.props.attributes;
 
@@ -140,9 +158,6 @@ class edit extends MaxiBlock {
 			border: { ...JSON.parse(borderHover) },
 			borderWidth: { ...JSON.parse(borderHover).borderWidth },
 			borderRadius: { ...JSON.parse(borderHover).borderRadius },
-			background: {
-				...getColorBackgroundObject(JSON.parse(backgroundHover)),
-			},
 			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadowHover)) },
 		};
 

@@ -3,7 +3,15 @@
  */
 const { __ } = wp.i18n;
 const { useState, Fragment } = wp.element;
-const { SelectControl, BaseControl, Button } = wp.components;
+const { SelectControl, BaseControl, Button, Tooltip } = wp.components;
+
+/**
+ * Internal dependencies
+ */
+import clipPathDefaults from './defaults';
+import ClipPathVisualEditor from './visualEditor';
+import __experimentalFancyRadioControl from '../fancy-radio-control';
+import SettingTabsControl from '../setting-tabs-control';
 
 /**
  * External dependencies
@@ -12,72 +20,84 @@ import classnames from 'classnames';
 import { isArray, isEmpty, isNil, trim, uniqueId } from 'lodash';
 
 /**
+ * Styles
+ */
+import './editor.scss';
+
+/**
  * Component
  */
-const ClipPathOption = props => {
-	const { values, onChange, number } = props;
+const optionColors = [
+	'red',
+	'blue',
+	'pink',
+	'green',
+	'yellow',
+	'grey',
+	'brown',
+	'orange',
+	'black',
+	'violet',
+];
 
-	const optionColors = ['red', 'blue', 'pink', 'green', 'yellow'];
+const ClipPathOption = props => {
+	const { values, onChange, onRemove, number } = props;
 
 	return (
-		<BaseControl
-			label={`${__('Point', 'maxi-blocks')} ${number + 1}`}
-			className='maxi-clip-path-control__item'
-		>
-			<div className='maxi-clip-path-control__item__options'>
-				<input
-					type='number'
-					value={trim(Number(values[0]))}
-					onChange={e => {
-						values[0] = Number(e.target.value);
-						onChange(values);
-					}}
-					min={0}
-					max={100}
-				/>
-				{!isNil(values[1]) && (
-					<input
-						type='number'
-						value={trim(Number(values[1]))}
-						onChange={e => {
-							values[1] = Number(e.target.value);
-							onChange(values);
-						}}
-						min={0}
-						max={100}
-					/>
-				)}
+		<div className='maxi-clip-path-controller'>
+			<div className='maxi-clip-path-controller__handle maxi-clip-path-color-handle'>
 				<span
-					className='maxi-clip-path-control__item__options__handle-color'
 					style={{
 						backgroundColor: optionColors[number],
 					}}
 				/>
 			</div>
-		</BaseControl>
+			<BaseControl
+				label={`${__('Point', 'maxi-blocks')} ${number + 1}`}
+				className='maxi-clip-path-controller__item'
+			>
+				<div className='maxi-clip-path-controller__settings'>
+					<input
+						type='number'
+						value={trim(Number(values[0]))}
+						onChange={e => {
+							values[0] = Number(e.target.value);
+							onChange(values);
+						}}
+						min={0}
+						max={100}
+					/>
+					{!isNil(values[1]) && (
+						<input
+							type='number'
+							value={trim(Number(values[1]))}
+							onChange={e => {
+								values[1] = Number(e.target.value);
+								onChange(values);
+							}}
+							min={0}
+							max={100}
+						/>
+					)}
+				</div>
+			</BaseControl>
+			<div className='maxi-clip-path-controller__handle maxi-clip-path-delete-handle'>
+				<span onClick={() => onRemove(number)} />
+			</div>
+		</div>
 	);
 };
 
 const ClipPathControl = props => {
 	const { clipPath, className, onChange } = props;
 
-	const defaultCP = {
-		triangle: 'polygon(50% 0%, 0% 100%, 100% 100%)',
-		trapezoid: 'polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)',
-		circle: 'circle(50% at 50% 50%)',
-		frame:
-			'polygon(0% 0%, 0% 100%, 25% 100%, 25% 25%, 75% 25%, 75% 75%, 25% 75%, 25% 100%, 100% 100%, 100% 0%)',
-	};
-
 	const [hasClipPath, changeHasClipPath] = useState(
 		isEmpty(clipPath) ? 0 : 1
 	);
-
-	const [selectedCP, changeSelectedCP] = useState(() => {
-		if (Object.values(defaultCP).includes(clipPath)) return clipPath;
-		if (!isEmpty(clipPath)) return 'custom';
-		return '';
-	});
+	console.log(Object.values(clipPathDefaults).includes(clipPath));
+	const [isCustom, changeIsCustom] = useState(
+		Object.values(clipPathDefaults).includes(clipPath) ? 0 : 1
+	);
 
 	const deconstructCP = () => {
 		if (isEmpty(clipPath))
@@ -194,9 +214,9 @@ const ClipPathControl = props => {
 
 	return (
 		<div className={classes}>
-			<SelectControl
+			<__experimentalFancyRadioControl
 				label={__('Use Clip-path', 'maxi-blocks')}
-				value={hasClipPath}
+				selected={hasClipPath}
 				options={[
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },
 					{ label: __('No', 'maxi-blocks'), value: 0 },
@@ -205,38 +225,38 @@ const ClipPathControl = props => {
 			/>
 			{!!hasClipPath && (
 				<Fragment>
-					<SelectControl
-						label={__('Clip path', 'maxi-blocks')}
-						value={selectedCP}
+					<__experimentalFancyRadioControl
+						label={__('Use custom', 'maxi-blocks')}
+						selected={isCustom}
 						options={[
-							{ label: __('None', 'maxi-blocks'), value: '' },
-							{
-								label: __('Triangle', 'maxi-blocks'),
-								value: defaultCP.triangle,
-							},
-							{
-								label: __('Trapezoid', 'maxi-blocks'),
-								value: defaultCP.trapezoid,
-							},
-							{
-								label: __('Circle', 'maxi-blocks'),
-								value: defaultCP.circle,
-							},
-							{
-								label: __('Frame', 'maxi-blocks'),
-								value: defaultCP.frame,
-							},
-							{
-								label: __('Custom', 'maxi-blocks'),
-								value: 'custom',
-							},
+							{ label: __('Yes', 'maxi-blocks'), value: 1 },
+							{ label: __('No', 'maxi-blocks'), value: 0 },
 						]}
-						onChange={value => {
-							changeSelectedCP(value);
-							if (value !== 'custom') onChange(value);
-						}}
+						onChange={value => changeIsCustom(Number(value))}
 					/>
-					{selectedCP === 'custom' && (
+					{!isCustom && (
+						<div className='clip-path-defaults'>
+							{Object.entries(clipPathDefaults).map(
+								([name, clipPath]) => (
+									<Tooltip
+										text={name}
+										position='bottom center'
+									>
+										<Button
+											className='clip-path-defaults__items'
+											onClick={() => onChange(clipPath)}
+										>
+											<span
+												className='clip-path-defaults__clip-path'
+												style={{ clipPath }}
+											/>
+										</Button>
+									</Tooltip>
+								)
+							)}
+						</div>
+					)}
+					{!!isCustom && (
 						<div className='maxi-clip-path-control__handles'>
 							<SelectControl
 								label={__('Type', 'maxi-blocks')}
@@ -265,28 +285,66 @@ const ClipPathControl = props => {
 									generateCP();
 								}}
 							/>
-							{cp.content.map((handle, i) => (
-								<ClipPathOption
-									key={uniqueId('maxi-clip-path-control-')}
-									values={handle}
-									onChange={value => {
-										cp.content[i] = value;
-										generateCP();
-									}}
-									number={i}
-								/>
-							))}
-							{cp.type === 'polygon' && cp.content.length < 10 && (
-								<Button
-									className='maxi-clip-path-control__handles'
-									onClick={() => {
-										cp.content.push([0, 0]);
-										generateCP();
-									}}
-								>
-									Add new point
-								</Button>
-							)}
+							<SettingTabsControl
+								items={[
+									{
+										label: __('Visual', 'maxi-blocks'),
+										content: (
+											<ClipPathVisualEditor
+												clipPathOptions={cp}
+												colors={optionColors}
+												onChange={clipPath =>
+													onChange(clipPath)
+												}
+											/>
+										),
+									},
+									{
+										label: __('Data', 'maxi-blocks'),
+										content: (
+											<Fragment>
+												{cp.content.map((handle, i) => (
+													<ClipPathOption
+														key={uniqueId(
+															'maxi-clip-path-control-'
+														)}
+														values={handle}
+														onChange={value => {
+															cp.content[
+																i
+															] = value;
+															generateCP();
+														}}
+														onRemove={number => {
+															if (cp.content < 2)
+																delete cp
+																	.content[
+																	number
+																];
+															generateCP();
+														}}
+														number={i}
+													/>
+												))}
+												{cp.type === 'polygon' &&
+													cp.content.length < 10 && (
+														<Button
+															className='maxi-clip-path-control__handles'
+															onClick={() => {
+																cp.content.push(
+																	[0, 0]
+																);
+																generateCP();
+															}}
+														>
+															Add new point
+														</Button>
+													)}
+											</Fragment>
+										),
+									},
+								]}
+							/>
 						</div>
 					)}
 				</Fragment>

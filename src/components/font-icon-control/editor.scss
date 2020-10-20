@@ -37,7 +37,23 @@
 	}
 
 	&__icons {
-		flex-grow: 4;
+		flex-grow: 3;
 		display: flex;
+		flex-wrap: wrap;
+		width: 80%;
+	}
+
+	&__card {
+		padding: 20px;
+		text-align: center;
+		i {
+			font-size: 32px;
+		}
+	}
+
+	&__insert {
+		display: block;
+		margin-top: 8px;
+		cursor: pointer;
 	}
 }

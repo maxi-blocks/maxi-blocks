@@ -404,9 +404,10 @@ const Inspector = props => {
 											content: (
 												<__experimentalFontIconControl
 													icon={icon}
-													onChange={icon =>
-														setAttributes({ icon })
-													}
+													onChange={icon => {
+														console.log(icon);
+														setAttributes({ icon });
+													}}
 												/>
 											),
 										},

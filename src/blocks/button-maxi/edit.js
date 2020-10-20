@@ -142,12 +142,15 @@ class edit extends MaxiBlock {
 				extraClassName,
 				content,
 				display,
+				icon,
 			},
 			setAttributes,
 			deviceType,
 		} = this.props;
 
 		const displayValue = !isObject(display) ? JSON.parse(display) : display;
+
+		const iconValue = !isObject(icon) ? JSON.parse(icon) : icon;
 
 		const classes = classnames(
 			'maxi-block',

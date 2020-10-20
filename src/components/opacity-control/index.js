@@ -38,7 +38,7 @@ const OpacityControl = props => {
 
 	const classes = classnames(
 		'maxi-opacity-control',
-		fullWidthMode && 'maxi-opacity-control__full-width',
+		fullWidthMode && 'maxi-opacity-control--full-width',
 		className
 	);
 

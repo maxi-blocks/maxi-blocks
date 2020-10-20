@@ -32,7 +32,7 @@ const FancyRadioControl = props => {
 		type === 'classic-border' &&
 			'maxi-classic-radio-control maxi-classic-radio-control__border',
 		type === 'fancy' && 'maxi-fancy-radio-control',
-		fullWidthMode && 'maxi-fancy-radio-control__full-width',
+		fullWidthMode && 'maxi-fancy-radio-control--full-width',
 		className
 	);
 

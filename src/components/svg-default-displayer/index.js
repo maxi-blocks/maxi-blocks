@@ -32,7 +32,7 @@ const SVGDefaultsDisplayer = props => {
 
 	return (
 		<div className={classes}>
-			{Object.values(SVGShapes).map((svgEl, idx) => {
+			{Object.values(SVGShapes).map((svgEl, i) => {
 				const cleanedContent = DOMPurify.sanitize(svgEl);
 
 				return (
@@ -40,7 +40,7 @@ const SVGDefaultsDisplayer = props => {
 						className='maxi-svg-defaults__item'
 						aria-pressed={
 							!isNil(SVGOptions) &&
-							SVGOptions.SVGCurrentShape === idx
+							SVGOptions.SVGCurrentShape === i
 						}
 						onClick={() => {
 							const svg = document
@@ -55,7 +55,7 @@ const SVGDefaultsDisplayer = props => {
 							const resEl = injectImgSVG(svg, resData);
 
 							onChange({
-								SVGCurrentShape: idx,
+								SVGCurrentShape: i,
 								SVGElement: resEl.outerHTML,
 								SVGMediaID: null,
 								SVGMediaURL: null,

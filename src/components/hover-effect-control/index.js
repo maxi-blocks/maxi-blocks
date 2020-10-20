@@ -386,6 +386,7 @@ const HoverEffectControl = props => {
 						disableClipPath
 						disableImage
 						disableVideo
+						disableSVG
 					/>
 					<__experimentalFancyRadioControl
 						label={__('Custom Border', 'maxi-block')}

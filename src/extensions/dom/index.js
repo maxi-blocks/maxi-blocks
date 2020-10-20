@@ -47,6 +47,23 @@ document.addEventListener('DOMContentLoaded', () => {
 			childList: true,
 			subtree: true,
 		};
+
+		// Insert Maxi responsive toolbar
+		const responsiveWrapper = document.createElement('div');
+
+		responsiveWrapper.id = 'maxi-blocks__responsive-toolbar';
+
+		const menuWrapper = targetNode.querySelector(
+			'.interface-interface-skeleton__header'
+		).parentElement;
+
+		menuWrapper.appendChild(responsiveWrapper);
+
+		wp.element.render(
+			wp.element.createElement(ResponsiveSelector, {}),
+			responsiveWrapper
+		);
+
 		const observer = new MutationObserver(mutationsList => {
 			for (const mutation of mutationsList) {
 				// Sidebar and Toolbar
@@ -168,27 +185,6 @@ document.addEventListener('DOMContentLoaded', () => {
 						);
 
 						if (node && !repeatedNode) {
-							// Insert responsive toolbar
-							const responsiveWrapper = document.createElement(
-								'div'
-							);
-							responsiveWrapper.id =
-								'maxi-blocks__responsive-toolbar';
-
-							const menuWrapper = node.querySelector(
-								'.components-menu-group'
-							).parentElement;
-
-							menuWrapper.appendChild(responsiveWrapper);
-
-							wp.element.render(
-								wp.element.createElement(
-									ResponsiveSelector,
-									{}
-								),
-								responsiveWrapper
-							);
-
 							// Actions on default responsive values
 							const responsiveButtons = Array.from(
 								node.querySelectorAll(

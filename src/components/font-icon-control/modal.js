@@ -17,40 +17,43 @@ const MaxiModalIcon = props => {
 
 	const onClick = () => setOpen(!open);
 
-	useEffect(async () => {
-		/* const response = await fetch(
-			'https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/metadata/icons.json'
-		);
+	useEffect(() => {
+		async function someName() {
+			/* const response = await fetch(
+				'https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/metadata/icons.json'
+			);
 
-		if (!response.ok) {
-			const message = `An error has occured: ${response.status}`;
-			throw new Error(message);
-		} */
+			if (!response.ok) {
+				const message = `An error has occured: ${response.status}`;
+				throw new Error(message);
+			} */
 
-		const loadData = () => JSON.parse(JSON.stringify(jsonData));
+			const loadData = () => JSON.parse(JSON.stringify(jsonData));
 
-		const icons = loadData();
-		const solidIcons = [];
-		const brandIcons = [];
-		const regularIcons = [];
+			const icons = loadData();
+			const solidIcons = [];
+			const brandIcons = [];
+			const regularIcons = [];
 
-		Object.keys(icons).forEach(iconName => {
-			if (icons[iconName].free.includes('brands')) {
-				brandIcons.push({ iconName, content: icons[iconName] });
-			}
+			Object.keys(icons).forEach(iconName => {
+				if (icons[iconName].free.includes('brands')) {
+					brandIcons.push({ iconName, content: icons[iconName] });
+				}
 
-			if (icons[iconName].free.includes('solid')) {
-				solidIcons.push({ iconName, content: icons[iconName] });
-			}
+				if (icons[iconName].free.includes('solid')) {
+					solidIcons.push({ iconName, content: icons[iconName] });
+				}
 
-			if (icons[iconName].free.includes('regular')) {
-				regularIcons.push({ iconName, content: icons[iconName] });
-			}
-		});
+				if (icons[iconName].free.includes('regular')) {
+					regularIcons.push({ iconName, content: icons[iconName] });
+				}
+			});
 
-		setSolidIcons(solidIcons);
-		setRegularIcons(regularIcons);
-		setBrandIcons(brandIcons);
+			setSolidIcons(solidIcons);
+			setRegularIcons(regularIcons);
+			setBrandIcons(brandIcons);
+		}
+		someName();
 	}, []);
 
 	return (

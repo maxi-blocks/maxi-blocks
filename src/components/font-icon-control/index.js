@@ -37,7 +37,6 @@ const FontIconControl = props => {
 						icon={icon}
 						onChange={icon => {
 							value.icon = icon;
-
 							onChange(JSON.stringify(value));
 						}}
 					/>
@@ -45,14 +44,21 @@ const FontIconControl = props => {
 			) : (
 				<div>
 					<div className='maxi-font-icon-control__icon'>
-						Icon goes here!
+						<i className={value.icon} />
 					</div>
 					<Button
 						isDefault
 						isLarge
 						className='maxi-mediauploader-control__replace'
 					>
-						Replace
+						<Modal
+							icon={icon}
+							onChange={icon => {
+								value.icon = icon;
+
+								onChange(JSON.stringify(value));
+							}}
+						/>
 					</Button>
 					<Button
 						isDefault

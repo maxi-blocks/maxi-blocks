@@ -12,49 +12,105 @@ const MaxiModalIcon = props => {
 	const [solidIcons, setSolidIcons] = useState([]);
 	const [regularIcons, setRegularIcons] = useState([]);
 	const [brandIcons, setBrandIcons] = useState([]);
+	const [isLoading, setIsLoading] = useState(true);
 
 	const { onChange } = props;
 
 	const onClick = () => setOpen(!open);
 
-	useEffect(() => {
-		async function someName() {
-			/* const response = await fetch(
-				'https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/metadata/icons.json'
-			);
+	const fetchFaIcons = async () => {
+		const iconsEndpoint =
+			'https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/metadata/icosns.json';
 
-			if (!response.ok) {
-				const message = `An error has occured: ${response.status}`;
-				throw new Error(message);
-			} */
+		const response = await fetch(iconsEndpoint);
 
-			const loadData = () => JSON.parse(JSON.stringify(jsonData));
+		if (response.ok) {
+			const data = await response.text();
+			const value = {
+				value: data,
+				timestamp: new Date().getTime(),
+			};
 
-			const icons = loadData();
-			const solidIcons = [];
-			const brandIcons = [];
-			const regularIcons = [];
+			localStorage.setItem('maxi-fa-icons', JSON.stringify(value));
 
-			Object.keys(icons).forEach(iconName => {
-				if (icons[iconName].free.includes('brands')) {
-					brandIcons.push({ iconName, content: icons[iconName] });
-				}
+			setIconsState(JSON.parse(data));
 
-				if (icons[iconName].free.includes('solid')) {
-					solidIcons.push({ iconName, content: icons[iconName] });
-				}
-
-				if (icons[iconName].free.includes('regular')) {
-					regularIcons.push({ iconName, content: icons[iconName] });
-				}
-			});
-
-			setSolidIcons(solidIcons);
-			setRegularIcons(regularIcons);
-			setBrandIcons(brandIcons);
+			console.log('Icons have been loaded from the API');
 		}
-		someName();
-	}, []);
+
+		if (!response.ok) {
+			const message = `Unable to load icons from github repository: ${response.status}, icons have been loaded from the local backup file`;
+
+			const value = {
+				value: JSON.stringify(jsonData),
+				timestamp: new Date().getTime(),
+			};
+
+			localStorage.setItem('maxi-fa-icons', JSON.stringify(value));
+
+			setIconsState(jsonData);
+
+			console.error(message);
+		}
+	};
+
+	function setIconsState(icons) {
+		const solidIcons = [];
+		const brandIcons = [];
+		const regularIcons = [];
+
+		Object.keys(icons).forEach(iconName => {
+			if (icons[iconName].free.includes('brands')) {
+				brandIcons.push({ iconName, content: icons[iconName] });
+			}
+
+			if (icons[iconName].free.includes('solid')) {
+				solidIcons.push({ iconName, content: icons[iconName] });
+			}
+
+			if (icons[iconName].free.includes('regular')) {
+				regularIcons.push({ iconName, content: icons[iconName] });
+			}
+		});
+
+		setSolidIcons(solidIcons);
+		setRegularIcons(regularIcons);
+		setBrandIcons(brandIcons);
+	}
+
+	useEffect(() => {
+		async function loadIcons() {
+			// Check if we have iconsData in localStorage
+			const iconsData = localStorage.getItem('maxi-fa-icons');
+
+			if (!iconsData) {
+				fetchFaIcons();
+				setIsLoading(false);
+			} else {
+				// Check if the data is expired
+				const object = JSON.parse(
+					localStorage.getItem('maxi-fa-icons')
+				);
+
+				const date = object.timestamp;
+				const now = new Date().getTime();
+				const day = 1000 * 60 * 60 * 24;
+
+				if (now - date > day) {
+					console.log(
+						'localStorage Data is Expired, fetching again...'
+					);
+					fetchFaIcons();
+					setIsLoading(false);
+				} else {
+					console.log('localStorage Data is not expired');
+					setIconsState(JSON.parse(object.value));
+					setIsLoading(false);
+				}
+			}
+		}
+		if (open) loadIcons();
+	}, [open]);
 
 	return (
 		<Fragment>
@@ -78,23 +134,31 @@ const MaxiModalIcon = props => {
 								<li>Font-Awesome - Brands</li>
 							</ul>
 						</div>
-						<div className='maxi-font-icon-control__icons'>
-							{brandIcons.map(icon => (
-								<span className='maxi-font-icon-control__card'>
-									<i className={`fab fa-${icon.iconName}`} />
-									<button
-										type='button'
-										className='maxi-font-icon-control__insert'
-										onClick={() => {
-											onChange(`fab fa-${icon.iconName}`);
-											setOpen(!open);
-										}}
-									>
-										Insert
-									</button>
-								</span>
-							))}
-						</div>
+						{!isLoading ? (
+							<div className='maxi-font-icon-control__icons'>
+								{brandIcons.map(icon => (
+									<span className='maxi-font-icon-control__card'>
+										<i
+											className={`fab fa-${icon.iconName}`}
+										/>
+										<button
+											type='button'
+											className='maxi-font-icon-control__insert'
+											onClick={() => {
+												onChange(
+													`fab fa-${icon.iconName}`
+												);
+												setOpen(!open);
+											}}
+										>
+											Insert
+										</button>
+									</span>
+								))}
+							</div>
+						) : (
+							<span>Loading...</span>
+						)}
 					</div>
 				</Modal>
 			)}

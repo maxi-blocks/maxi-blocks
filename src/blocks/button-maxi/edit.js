@@ -171,14 +171,16 @@ class edit extends MaxiBlock {
 				className={classes}
 				data-maxi_initial_block_class={defaultBlockStyle}
 			>
-				<RichText
-					className='maxi-button-extra__button'
-					withoutInteractiveFormatting
-					placeholder={__('Set some text…', 'maxi-blocks')}
-					value={content}
-					onChange={content => setAttributes({ content })}
-					identifier='text'
-				/>
+				<div className='maxi-button-extra__button'>
+					{iconValue.icon && <i className={iconValue.icon} />}
+					<RichText
+						withoutInteractiveFormatting
+						placeholder={__('Set some text…', 'maxi-blocks')}
+						value={content}
+						onChange={content => setAttributes({ content })}
+						identifier='text'
+					/>
+				</div>
 			</__experimentalBlock>,
 		];
 	}

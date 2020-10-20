@@ -28,9 +28,12 @@ const save = props => {
 			content,
 			extraClassName,
 			motion,
+			icon,
 		},
 		className,
 	} = props;
+
+	const iconValue = !isObject(icon) ? JSON.parse(icon) : icon;
 
 	const classes = classnames(
 		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
@@ -60,6 +63,7 @@ const save = props => {
 		>
 			<__experimentalBackgroundDisplayer background={background} />
 			<Button className='maxi-button-extra__button' {...linkProps}>
+				{iconValue.icon && <i className={iconValue.icon} />}
 				{content}
 			</Button>
 		</div>

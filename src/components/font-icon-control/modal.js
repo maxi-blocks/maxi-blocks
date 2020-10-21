@@ -9,6 +9,7 @@ const { Button, Modal } = wp.components;
  * External dependencies.
  */
 import classnames from 'classnames';
+import ReactPaginate from 'react-paginate';
 
 /**
  * Internal dependencies.
@@ -16,15 +17,26 @@ import classnames from 'classnames';
 import jsonData from './fa-icons.json';
 
 const MaxiModalIcon = props => {
+	// Number of icons to display per page
+	const perPage = 55;
+
+	// Component State
 	const [open, setOpen] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
-	const [iconsList, setIconsList] = useState({});
-	const [currentList, setCurrentList] = useState('regular');
+	const [iconsList, setIconsList] = useState([]);
+	const [filteredList, setFilteredList] = useState([]);
+	const [pageCount, setPageCount] = useState();
+	const [range, setRange] = useState({ start: 0, end: perPage });
+	const [filters, setFilters] = useState({});
+
+	// Icons to display
+	const displayedList = filteredList.length > 0 ? filteredList : iconsList;
 
 	const { onChange } = props;
 
 	const onClick = () => setOpen(!open);
 
+	// Fetch icons' list and store in in localStorage
 	const fetchFaIcons = async () => {
 		const iconsEndpoint =
 			'https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/metadata/icons.json';
@@ -62,29 +74,19 @@ const MaxiModalIcon = props => {
 	};
 
 	function setIconsState(icons) {
-		const solid = [];
-		const brand = [];
-		const regular = [];
+		const iconsList = [];
 
 		Object.keys(icons).forEach(iconName => {
-			if (icons[iconName].free.includes('brands')) {
-				brand.push({ iconName, content: icons[iconName] });
-			}
-
-			if (icons[iconName].free.includes('solid')) {
-				solid.push({ iconName, content: icons[iconName] });
-			}
-
-			if (icons[iconName].free.includes('regular')) {
-				regular.push({ iconName, content: icons[iconName] });
-			}
+			const iconObject = { iconName, content: icons[iconName] };
+			icons[iconName].free.forEach(cat => {
+				iconObject.cat = cat;
+				if (!iconsList.includes(iconObject)) {
+					iconsList.push(iconObject);
+				}
+			});
 		});
 
-		setIconsList({
-			solid,
-			regular,
-			brand,
-		});
+		setIconsList(iconsList);
 	}
 
 	useEffect(() => {
@@ -96,7 +98,7 @@ const MaxiModalIcon = props => {
 				fetchFaIcons();
 				setIsLoading(false);
 			} else {
-				// Check if the data is expired
+				// Check if the localStorage data is expired
 				const object = JSON.parse(
 					localStorage.getItem('maxi-fa-icons')
 				);
@@ -121,6 +123,25 @@ const MaxiModalIcon = props => {
 		if (open) loadIcons();
 	}, [open]);
 
+	useEffect(() => {
+		if (open) setPageCount(Math.round(displayedList.length / perPage));
+	}, [displayedList]);
+
+	useEffect(() => {
+		if (filters.cat) {
+			const filteredList = iconsList.filter(
+				icon => icon.cat === filters.cat
+			);
+			setFilteredList(filteredList);
+		}
+	}, [filters]);
+
+	const onPageChange = data => {
+		const { selected } = data;
+		const offset = Math.ceil(selected * perPage);
+		setRange({ start: offset, end: offset + perPage });
+	};
+
 	return (
 		<Fragment>
 			{/* Launch the layout modal window */}
@@ -142,11 +163,11 @@ const MaxiModalIcon = props => {
 									<button
 										type='button'
 										onClick={() =>
-											setCurrentList('regular')
+											setFilters({ cat: 'regular' })
 										}
 										className={classnames(
 											'maxi-font-icon-control__category-button',
-											currentList === 'regular' &&
+											filters.cat === 'regular' &&
 												'maxi-font-icon-control__category-button--active'
 										)}
 									>
@@ -156,10 +177,12 @@ const MaxiModalIcon = props => {
 								<li>
 									<button
 										type='button'
-										onClick={() => setCurrentList('solid')}
+										onClick={() =>
+											setFilters({ cat: 'solid' })
+										}
 										className={classnames(
 											'maxi-font-icon-control__category-button',
-											currentList === 'solid' &&
+											filters.cat === 'solid' &&
 												'maxi-font-icon-control__category-button--active'
 										)}
 									>
@@ -169,10 +192,12 @@ const MaxiModalIcon = props => {
 								<li>
 									<button
 										type='button'
-										onClick={() => setCurrentList('brand')}
+										onClick={() =>
+											setFilters({ cat: 'brands' })
+										}
 										className={classnames(
 											'maxi-font-icon-control__category-button',
-											currentList === 'brand' &&
+											filters.cat === 'brands' &&
 												'maxi-font-icon-control__category-button--active'
 										)}
 									>
@@ -182,31 +207,51 @@ const MaxiModalIcon = props => {
 							</ul>
 						</div>
 						{!isLoading ? (
-							<div className='maxi-font-icon-control__icons'>
-								{iconsList[currentList].map(icon => (
-									<span className='maxi-font-icon-control__card'>
-										<i
-											className={`fa${currentList.charAt(
-												0
-											)} fa-${icon.iconName}`}
-										/>
-										<button
-											type='button'
-											className='maxi-font-icon-control__insert'
-											onClick={() => {
-												onChange(
-													`fa${currentList.charAt(
-														0
-													)} fa-${icon.iconName}`
-												);
-												setOpen(!open);
-											}}
-										>
-											Insert
-										</button>
-									</span>
-								))}
-							</div>
+							<Fragment>
+								<div className='maxi-font-icon-control__icons'>
+									<div className='maxi-font-icon-control__icons-list'>
+										{displayedList
+											.slice(range.start, range.end)
+											.map(icon => (
+												<span className='maxi-font-icon-control__card'>
+													<i
+														className={`fa${icon.cat.charAt(
+															0
+														)} fa-${icon.iconName}`}
+													/>
+													<button
+														type='button'
+														className='maxi-font-icon-control__insert'
+														onClick={() => {
+															onChange(
+																`fa${icon.cat.charAt(
+																	0
+																)} fa-${
+																	icon.iconName
+																}`
+															);
+															setOpen(!open);
+														}}
+													>
+														Insert
+													</button>
+												</span>
+											))}
+									</div>
+									<ReactPaginate
+										previousLabel='Previous'
+										nextLabel='Next'
+										breakLabel='...'
+										breakClassName='maxi-font-icon-control__pagination-break'
+										pageCount={pageCount}
+										marginPagesDisplayed={2}
+										pageRangeDisplayed={5}
+										onPageChange={onPageChange}
+										containerClassName='maxi-font-icon-control__pagination'
+										activeClassName='maxi-font-icon-control__pagination--active'
+									/>
+								</div>
+							</Fragment>
 						) : (
 							<span>Loading...</span>
 						)}

@@ -52,8 +52,6 @@ class edit extends MaxiBlock {
 			backgroundHover,
 			typography,
 			typographyHover,
-			border,
-			borderHover,
 		} = this.props.attributes;
 
 		let response = {
@@ -73,15 +71,7 @@ class edit extends MaxiBlock {
 
 		response = Object.assign(
 			response,
-			setBackgroundStyles(
-				uniqueID,
-				background,
-				backgroundHover,
-				null,
-				null,
-				border,
-				borderHover
-			)
+			setBackgroundStyles(uniqueID, background, backgroundHover)
 		);
 
 		response = Object.assign(
@@ -108,6 +98,10 @@ class edit extends MaxiBlock {
 			position,
 			display,
 			transform,
+			margin,
+			padding,
+			border,
+			boxShadow,
 		} = this.props.attributes;
 
 		const response = {
@@ -119,22 +113,6 @@ class edit extends MaxiBlock {
 			positionOptions: { ...JSON.parse(position).options },
 			display: { ...JSON.parse(display) },
 			transform: { ...getTransformObject(JSON.parse(transform)) },
-		};
-
-		return response;
-	}
-
-	get getTypographyObject() {
-		const {
-			typography,
-			margin,
-			padding,
-			border,
-			boxShadow,
-		} = this.props.attributes;
-
-		const response = {
-			typography: { ...JSON.parse(typography) },
 			margin: { ...JSON.parse(margin) },
 			padding: { ...JSON.parse(padding) },
 			border: { ...JSON.parse(border) },
@@ -146,19 +124,21 @@ class edit extends MaxiBlock {
 		return response;
 	}
 
+	get getTypographyObject() {
+		const { typography } = this.props.attributes;
+
+		const response = {
+			typography: { ...JSON.parse(typography) },
+		};
+
+		return response;
+	}
+
 	get getTypographyHoverObject() {
-		const {
-			typographyHover,
-			borderHover,
-			boxShadowHover,
-		} = this.props.attributes;
+		const { typographyHover } = this.props.attributes;
 
 		const response = {
 			typographyHover: { ...JSON.parse(typographyHover) },
-			border: { ...JSON.parse(borderHover) },
-			borderWidth: { ...JSON.parse(borderHover).borderWidth },
-			borderRadius: { ...JSON.parse(borderHover).borderRadius },
-			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadowHover)) },
 		};
 
 		return response;

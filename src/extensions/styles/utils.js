@@ -600,9 +600,7 @@ export const setBackgroundStyles = (
 	background,
 	backgroundHover,
 	overlay,
-	overlayHover,
-	border,
-	borderHover
+	overlayHover
 ) => {
 	const response = {
 		[`${target} > .maxi-background-displayer .maxi-background-displayer__color`]: {
@@ -652,18 +650,6 @@ export const setBackgroundStyles = (
 			`${target}>.maxi-background-displayer .maxi-background-displayer__overlay`
 		] = {
 			overlay: { ...getColorOverlayObject(JSON.parse(overlay)) },
-		};
-	}
-
-	if (!isNil(border)) {
-		response[`${target} > .maxi-background-displayer`] = {
-			borderRadius: { ...JSON.parse(border).borderRadius },
-		};
-	}
-
-	if (!isNil(borderHover)) {
-		response[`${target}:hover > .maxi-background-displayer`] = {
-			borderRadiusHover: { ...JSON.parse(borderHover).borderRadius },
 		};
 	}
 

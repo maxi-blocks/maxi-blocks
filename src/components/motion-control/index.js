@@ -24,7 +24,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject, has, find, isNil, isEmpty } from 'lodash';
+import { isObject, has, find, isNil, isEmpty, filter } from 'lodash';
 
 /**
  * Styles and icons
@@ -37,6 +37,8 @@ import {
 	motionScale,
 	motionFade,
 	motionBlur,
+	toolbarDuplicate,
+	toolbarDelete,
 } from '../../icons';
 
 /**
@@ -57,13 +59,24 @@ const MotionControl = props => {
 	} = value;
 
 	const [motionStatus, setMotionStatus] = useState('vertical');
-	const [timeline, setTimeline] = useState({});
+	const [timeline, setTimeline] = useState({
+		5: [
+			{
+				type: 'rotate',
+				settings: {},
+			},
+			{
+				type: 'move',
+				settings: {},
+			},
+		],
+	});
 	const [timelineType, setTimelineType] = useState('move');
 	const [timelineTime, setTimelineTime] = useState(0);
 
 	const classes = classnames('maxi-motion-control', className);
 
-	const addTimeline = (type, time, settings = {}) => {
+	const addTimeline = (type = 'move', time = 0, settings = {}) => {
 		if (!has(timeline, time)) {
 			setTimeline({
 				...timeline,
@@ -82,6 +95,27 @@ const MotionControl = props => {
 				});
 				setTimeline({
 					...timeline,
+				});
+			}
+		}
+	};
+
+	const removeTimeline = (time, type) => {
+		if (has(timeline, time)) {
+			const result = filter(timeline[time], function (o) {
+				return o.type !== type;
+			});
+			setTimeline({
+				...timeline,
+				[time]: [...result],
+			});
+
+			if (isEmpty(result)) {
+				const result = filter(timeline, function (o) {
+					return o.time === time;
+				});
+				setTimeline({
+					...result,
 				});
 			}
 		}
@@ -123,7 +157,7 @@ const MotionControl = props => {
 						create a sequenced animation.
 					</div>
 				)}
-				{Object.entries(timeline).map((item, i, arr) => {
+				{Object.entries(timeline).map((time, i, arr) => {
 					let prevValue = !isNil(arr[i - 1]) ? arr[i - 1][0] : 0;
 
 					return (
@@ -132,15 +166,30 @@ const MotionControl = props => {
 								className='space'
 								style={{
 									flexGrow: `${parseFloat(
-										(Number(item[0]) - Number(prevValue)) /
+										(Number(time[0]) - Number(prevValue)) /
 											100
 									)}`,
 								}}
 							></div>
 							<div className='group'>
-								<div className='pos'>{item[0]}%</div>
-								{item[1].map(item => (
-									<div className='item'>{item.type}</div>
+								<div className='pos'>{time[0]}%</div>
+								{time[1].map(item => (
+									<div className='item'>
+										<span>{item.type}</span>
+										<div className='actions'>
+											<i
+												onClick={() =>
+													removeTimeline(
+														time[0],
+														item.type
+													)
+												}
+											>
+												{toolbarDelete}
+											</i>
+											<i>{toolbarDuplicate}</i>
+										</div>
+									</div>
 								))}
 							</div>
 						</Fragment>

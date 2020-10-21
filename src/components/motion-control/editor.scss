@@ -23,6 +23,20 @@
 		.item {
 			background: #c1c1c1;
 			padding: 0.5rem;
+			text-transform: capitalize;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			.actions {
+				display: flex;
+				align-items: center;
+				i {
+					width: 16px;
+					height: 16px;
+					margin-left: 5px;
+					cursor: pointer;
+				}
+			}
 		}
 	}
 }

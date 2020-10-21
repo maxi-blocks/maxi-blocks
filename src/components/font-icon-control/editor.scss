@@ -32,6 +32,16 @@
 		display: flex;
 	}
 
+	&__category-button {
+		background: transparent;
+		cursor: pointer;
+		border: 0;
+		outline: 0;
+		&--active {
+			color: #ff4a17;
+		}
+	}
+
 	&__categories {
 		flex-grow: 1;
 	}

@@ -5,14 +5,21 @@ const { __ } = wp.i18n;
 const { useState, useEffect, Fragment } = wp.element;
 const { Button, Modal } = wp.components;
 
+/**
+ * External dependencies.
+ */
+import classnames from 'classnames';
+
+/**
+ * Internal dependencies.
+ */
 import jsonData from './fa-icons.json';
 
 const MaxiModalIcon = props => {
 	const [open, setOpen] = useState(false);
-	const [solidIcons, setSolidIcons] = useState([]);
-	const [regularIcons, setRegularIcons] = useState([]);
-	const [brandIcons, setBrandIcons] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
+	const [iconsList, setIconsList] = useState({});
+	const [currentList, setCurrentList] = useState('regular');
 
 	const { onChange } = props;
 
@@ -20,7 +27,7 @@ const MaxiModalIcon = props => {
 
 	const fetchFaIcons = async () => {
 		const iconsEndpoint =
-			'https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/metadata/icosns.json';
+			'https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/metadata/icons.json';
 
 		const response = await fetch(iconsEndpoint);
 
@@ -55,27 +62,29 @@ const MaxiModalIcon = props => {
 	};
 
 	function setIconsState(icons) {
-		const solidIcons = [];
-		const brandIcons = [];
-		const regularIcons = [];
+		const solid = [];
+		const brand = [];
+		const regular = [];
 
 		Object.keys(icons).forEach(iconName => {
 			if (icons[iconName].free.includes('brands')) {
-				brandIcons.push({ iconName, content: icons[iconName] });
+				brand.push({ iconName, content: icons[iconName] });
 			}
 
 			if (icons[iconName].free.includes('solid')) {
-				solidIcons.push({ iconName, content: icons[iconName] });
+				solid.push({ iconName, content: icons[iconName] });
 			}
 
 			if (icons[iconName].free.includes('regular')) {
-				regularIcons.push({ iconName, content: icons[iconName] });
+				regular.push({ iconName, content: icons[iconName] });
 			}
 		});
 
-		setSolidIcons(solidIcons);
-		setRegularIcons(regularIcons);
-		setBrandIcons(brandIcons);
+		setIconsList({
+			solid,
+			regular,
+			brand,
+		});
 	}
 
 	useEffect(() => {
@@ -129,24 +138,66 @@ const MaxiModalIcon = props => {
 					<div className='maxi-font-icon-control__main-content'>
 						<div className='maxi-font-icon-control__categories'>
 							<ul>
-								<li>Font-Awesome - Regular</li>
-								<li>Font-Awesome - Solid</li>
-								<li>Font-Awesome - Brands</li>
+								<li>
+									<button
+										type='button'
+										onClick={() =>
+											setCurrentList('regular')
+										}
+										className={classnames(
+											'maxi-font-icon-control__category-button',
+											currentList === 'regular' &&
+												'maxi-font-icon-control__category-button--active'
+										)}
+									>
+										Font-Awesome - Regular
+									</button>
+								</li>
+								<li>
+									<button
+										type='button'
+										onClick={() => setCurrentList('solid')}
+										className={classnames(
+											'maxi-font-icon-control__category-button',
+											currentList === 'solid' &&
+												'maxi-font-icon-control__category-button--active'
+										)}
+									>
+										Font-Awesome - Solid
+									</button>
+								</li>
+								<li>
+									<button
+										type='button'
+										onClick={() => setCurrentList('brand')}
+										className={classnames(
+											'maxi-font-icon-control__category-button',
+											currentList === 'brand' &&
+												'maxi-font-icon-control__category-button--active'
+										)}
+									>
+										Font-Awesome - Brands
+									</button>
+								</li>
 							</ul>
 						</div>
 						{!isLoading ? (
 							<div className='maxi-font-icon-control__icons'>
-								{brandIcons.map(icon => (
+								{iconsList[currentList].map(icon => (
 									<span className='maxi-font-icon-control__card'>
 										<i
-											className={`fab fa-${icon.iconName}`}
+											className={`fa${currentList.charAt(
+												0
+											)} fa-${icon.iconName}`}
 										/>
 										<button
 											type='button'
 											className='maxi-font-icon-control__insert'
 											onClick={() => {
 												onChange(
-													`fab fa-${icon.iconName}`
+													`fa${currentList.charAt(
+														0
+													)} fa-${icon.iconName}`
 												);
 												setOpen(!open);
 											}}

@@ -28,6 +28,7 @@ const MaxiModalIcon = props => {
 	const [pageCount, setPageCount] = useState();
 	const [range, setRange] = useState({ start: 0, end: perPage });
 	const [filters, setFilters] = useState({});
+	const [currentPage, setCurrentPage] = useState(0);
 
 	// Icons to display
 	const displayedList = filteredList.length > 0 ? filteredList : iconsList;
@@ -124,7 +125,7 @@ const MaxiModalIcon = props => {
 	}, [open]);
 
 	useEffect(() => {
-		if (open) setPageCount(Math.round(displayedList.length / perPage));
+		setPageCount(Math.round(displayedList.length / perPage));
 	}, [displayedList]);
 
 	useEffect(() => {
@@ -134,12 +135,15 @@ const MaxiModalIcon = props => {
 			);
 			setFilteredList(filteredList);
 		}
+		setRange({ start: 0, end: perPage });
+		setCurrentPage(0);
 	}, [filters]);
 
 	const onPageChange = data => {
 		const { selected } = data;
 		const offset = Math.ceil(selected * perPage);
 		setRange({ start: offset, end: offset + perPage });
+		setCurrentPage(selected);
 	};
 
 	return (
@@ -249,6 +253,8 @@ const MaxiModalIcon = props => {
 										onPageChange={onPageChange}
 										containerClassName='maxi-font-icon-control__pagination'
 										activeClassName='maxi-font-icon-control__pagination--active'
+										forcePage={currentPage}
+										disableInitialCallback
 									/>
 								</div>
 							</Fragment>

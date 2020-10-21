@@ -3,7 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { useState, useEffect, Fragment } = wp.element;
-const { Button, Modal } = wp.components;
+const { Button, Modal, TextControl } = wp.components;
 
 /**
  * External dependencies.
@@ -28,8 +28,10 @@ const MaxiModalIcon = props => {
 	const [filteredList, setFilteredList] = useState([]);
 	const [pageCount, setPageCount] = useState();
 	const [range, setRange] = useState({ start: 0, end: perPage });
-	const [filters, setFilters] = useState({});
+	const [filters, setFilters] = useState({ search: '', cat: '' });
 	const [currentPage, setCurrentPage] = useState(0);
+
+	console.log(iconsList);
 
 	// Icons to display
 	const displayedList = filteredList.length > 0 ? filteredList : iconsList;
@@ -137,6 +139,17 @@ const MaxiModalIcon = props => {
 			setFilteredList(filteredList);
 		}
 
+		if (filters.search) {
+			const filteredList = iconsList.filter(icon => {
+				if (icon.content.label.search(filters.search) !== -1) {
+					return true;
+				}
+				return false;
+			});
+
+			setFilteredList(filteredList);
+		}
+
 		if (isEmpty(filters)) {
 			setFilteredList([]);
 		}
@@ -224,6 +237,13 @@ const MaxiModalIcon = props => {
 						{!isLoading ? (
 							<Fragment>
 								<div className='maxi-font-icon-control__icons'>
+									<TextControl
+										value={filters.search}
+										onChange={value => {
+											setFilters({ search: value });
+										}}
+										placeholder={__('Search for Icons…')}
+									/>
 									<div className='maxi-font-icon-control__icons-list'>
 										{displayedList
 											.slice(range.start, range.end)
@@ -253,20 +273,22 @@ const MaxiModalIcon = props => {
 												</span>
 											))}
 									</div>
-									<ReactPaginate
-										previousLabel='Previous'
-										nextLabel='Next'
-										breakLabel='...'
-										breakClassName='maxi-font-icon-control__pagination-break'
-										pageCount={pageCount}
-										marginPagesDisplayed={2}
-										pageRangeDisplayed={5}
-										onPageChange={onPageChange}
-										containerClassName='maxi-font-icon-control__pagination'
-										activeClassName='maxi-font-icon-control__pagination--active'
-										forcePage={currentPage}
-										disableInitialCallback
-									/>
+									{pageCount > 1 && (
+										<ReactPaginate
+											previousLabel='Previous'
+											nextLabel='Next'
+											breakLabel='...'
+											breakClassName='maxi-font-icon-control__pagination-break'
+											pageCount={pageCount}
+											marginPagesDisplayed={2}
+											pageRangeDisplayed={5}
+											onPageChange={onPageChange}
+											containerClassName='maxi-font-icon-control__pagination'
+											activeClassName='maxi-font-icon-control__pagination--active'
+											forcePage={currentPage}
+											disableInitialCallback
+										/>
+									)}
 								</div>
 							</Fragment>
 						) : (

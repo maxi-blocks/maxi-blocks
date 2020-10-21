@@ -88,7 +88,6 @@ const Inspector = props => {
 			transform,
 			clipPath,
 			hover,
-			SVGOptions,
 		},
 		imageData,
 		clientId,
@@ -97,6 +96,10 @@ const Inspector = props => {
 	} = props;
 
 	const sizeValue = !isObject(size) ? JSON.parse(size) : size;
+
+	const backgroundValue = !isObject(background)
+		? JSON.parse(background)
+		: background;
 
 	const defaultSize = JSON.parse(getDefaultProp(clientId, 'size'));
 
@@ -731,6 +734,9 @@ const Inspector = props => {
 											label: __('Shape', 'maxi-blocks'),
 											content: (
 												<__experimentalSVGDefaultsDisplayer
+													SVGOptions={
+														backgroundValue.SVGOptions
+													}
 													onChange={SVGOptions => {
 														const SVGValue = !isObject(
 															SVGOptions.SVGData

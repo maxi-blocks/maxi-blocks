@@ -1,0 +1,28 @@
+.box {
+	margin: 10px 0;
+	width: 90%;
+	min-height: 300px;
+	background-color: #eee;
+	position: relative;
+	display: flex;
+	flex: 1 1 auto;
+	flex-direction: column;
+	align-items: stretch;
+	.group {
+		position: relative;
+		width: 100%;
+		.pos {
+			position: absolute;
+			top: 50%;
+			right: -40px;
+			transform: translateY(-50%);
+			text-align: left;
+			display: inline-block;
+			width: 35px;
+		}
+		.item {
+			background: #c1c1c1;
+			padding: 0.5rem;
+		}
+	}
+}

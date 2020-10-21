@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { RadioControl, SelectControl, Icon } = wp.components;
+const { SelectControl, Icon } = wp.components;
 const { Fragment, useState } = wp.element;
 
 /**
@@ -24,11 +24,12 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject } from 'lodash';
+import { isObject, has, find, isNil, isEmpty } from 'lodash';
 
 /**
- * Icons
+ * Styles and icons
  */
+import './editor.scss';
 import {
 	motionVertical,
 	motionHorizontal,
@@ -56,11 +57,96 @@ const MotionControl = props => {
 	} = value;
 
 	const [motionStatus, setMotionStatus] = useState('vertical');
+	const [timeline, setTimeline] = useState({});
+	const [timelineType, setTimelineType] = useState('move');
+	const [timelineTime, setTimelineTime] = useState(0);
 
 	const classes = classnames('maxi-motion-control', className);
 
+	const addTimeline = (type, time, settings = {}) => {
+		if (!has(timeline, time)) {
+			setTimeline({
+				...timeline,
+				[time]: [
+					{
+						type,
+						settings,
+					},
+				],
+			});
+		} else {
+			if (isNil(find(timeline[time], { type }))) {
+				timeline[time].push({
+					type,
+					settings,
+				});
+				setTimeline({
+					...timeline,
+				});
+			}
+		}
+	};
+
 	return (
 		<div className={classes}>
+			<select
+				onChange={e => {
+					setTimelineType(e.target.value);
+				}}
+			>
+				<option value='move'>Move</option>
+				<option value='rotate'>Rotate</option>
+				<option value='skew'>Skew</option>
+				<option value='fade'>Fade</option>
+			</select>
+			<input
+				type='number'
+				placeholder='Time'
+				min={0}
+				max={100}
+				step={1}
+				onChange={e => {
+					setTimelineTime(e.target.value);
+				}}
+			/>
+			<button
+				onClick={() => {
+					addTimeline(timelineType, Number(timelineTime));
+				}}
+			>
+				Add +
+			</button>
+			<div className='box'>
+				{isEmpty(timeline) && (
+					<div>
+						Apply various actions on one or multiple elements to
+						create a sequenced animation.
+					</div>
+				)}
+				{Object.entries(timeline).map((item, i, arr) => {
+					let prevValue = !isNil(arr[i - 1]) ? arr[i - 1][0] : 0;
+
+					return (
+						<Fragment>
+							<div
+								className='space'
+								style={{
+									flexGrow: `${parseFloat(
+										(Number(item[0]) - Number(prevValue)) /
+											100
+									)}`,
+								}}
+							></div>
+							<div className='group'>
+								<div className='pos'>{item[0]}%</div>
+								{item[1].map(item => (
+									<div className='item'>{item.type}</div>
+								))}
+							</div>
+						</Fragment>
+					);
+				})}
+			</div>
 			<__experimentalFancyRadioControl
 				selected={motionStatus}
 				options={[

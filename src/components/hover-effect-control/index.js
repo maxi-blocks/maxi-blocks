@@ -202,14 +202,6 @@ const HoverEffectControl = props => {
 								value: 'flip-vert',
 							},
 							{
-								label: __('Flip Diag 1', 'maxi-blocks'),
-								value: 'flip-diag-1',
-							},
-							{
-								label: __('Flip Diag 2', 'maxi-blocks'),
-								value: 'flip-diag-2',
-							},
-							{
 								label: __('Fold Up', 'maxi-blocks'),
 								value: 'fold-up',
 							},
@@ -331,8 +323,7 @@ const HoverEffectControl = props => {
 							typography={hoverValue.titleTypography}
 							defaultTypography={defaultValue.titleTypography}
 							hideAlignment
-							onChange={val => {
-								hoverValue.titleTypography = val;
+							onChange={() => {
 								onChange(JSON.stringify(hoverValue));
 							}}
 						/>
@@ -369,8 +360,7 @@ const HoverEffectControl = props => {
 							typography={hoverValue.contentTypography}
 							defaultTypography={defaultValue.contentTypography}
 							hideAlignment
-							onChange={val => {
-								hoverValue.contentTypography = val;
+							onChange={() => {
 								onChange(JSON.stringify(hoverValue));
 							}}
 						/>

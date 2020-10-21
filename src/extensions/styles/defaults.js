@@ -1474,14 +1474,23 @@ export const __experimentalHover = {
 	paddingStatus: 0,
 	marginStatus: 0,
 	border: { ...border },
-	background: { ...background },
+	background: {
+		...background,
+		activeMedia: 'color',
+		colorOptions: {
+			...background.colorOptions,
+			activeColor: 'rgba(0,0,0, 0.6)',
+			color: 'rgba(0,0,0, 0.6)',
+		},
+	},
 	margin: { ...margin },
 	padding: { ...padding },
 	titleTypography: {
 		...typography,
 		general: {
 			...typography.general,
-			'font-size': 33,
+			'font-size': 30,
+			color: '#fff',
 		},
 	},
 	contentTypography: {
@@ -1489,12 +1498,13 @@ export const __experimentalHover = {
 		general: {
 			...typography.general,
 			'font-size': 18,
+			color: '#fff',
 		},
 	},
 	titleStatus: 0,
-	titleText: 'Hello World',
 	contentStatus: 0,
-	contentText: 'This is a new world',
+	titleText: 'Add your Hover Title here',
+	contentText: 'Add your Hover Content here',
 };
 
 export const __experimentalMotion = {

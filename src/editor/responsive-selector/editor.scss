@@ -1,47 +1,57 @@
-.maxi-responsive-selector {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	background: #fff;
-	padding: 10px 0px;
-	&__button {
+#maxi-blocks__responsive-toolbar {
+	position: absolute;
+	top: 61px;
+	left: 0;
+	z-index: 99999;
+	display: none;
+
+	.maxi-responsive-selector {
 		display: flex;
-		border-radius: 5px;
-		margin: 0 0 0 8px;
-		background-color: #f8f8f8;
-		border: 2px solid #f8f8f8;
-		transition: border-color 0.5s;
-		height: 45px;
-		width: 60px;
-		justify-content: center;
+		flex-direction: row;
 		align-items: center;
-		svg {
-			width: 100%;
-			height: 100%;
-		}
-		&:hover {
-			border-color: #e8eaeb;
-			color: #464a53 !important;
-		}
-		&:first-of-type {
-			margin-left: 0;
-			font-size: 1rem;
-		}
-		&:nth-child(2),
-		&:nth-child(3) {
-			padding: 4px 8px;
-		}
-		&:nth-last-child(1),
-		&:nth-last-child(2),
-		&:nth-last-child(3) {
-			padding: 4px 10px;
-		}
-		&[aria-pressed='true'] {
-			border-color: #e8eaeb;
-			border-bottom-color: #ff4a17;
-			background-color: #fff;
-			border-bottom-left-radius: 0;
-			border-bottom-right-radius: 0;
+		background: #fff;
+		padding: 10px 20px;
+		box-shadow: 0 5px 15px 0 rgba(119, 119, 119, 0.1);
+
+		&__button {
+			display: flex;
+			border-radius: 5px;
+			margin: 0 0 0 8px;
+			background-color: #f8f8f8;
+			border: 2px solid #f8f8f8;
+			transition: border-color 0.5s;
+			height: 45px;
+			width: 60px;
+			justify-content: center;
+			align-items: center;
+			svg {
+				width: 100%;
+				height: 100%;
+			}
+			&:hover {
+				border-color: #e8eaeb;
+				color: #464a53 !important;
+			}
+			&:first-of-type {
+				margin-left: 0;
+				font-size: 1rem;
+			}
+			&:nth-child(2),
+			&:nth-child(3) {
+				padding: 4px 8px;
+			}
+			&:nth-last-child(1),
+			&:nth-last-child(2),
+			&:nth-last-child(3) {
+				padding: 4px 10px;
+			}
+			&[aria-pressed='true'] {
+				border-color: #e8eaeb;
+				border-bottom-color: #ff4a17;
+				background-color: #fff;
+				border-bottom-left-radius: 0;
+				border-bottom-right-radius: 0;
+			}
 		}
 	}
 }

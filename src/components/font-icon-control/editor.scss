@@ -17,6 +17,24 @@
 		background-color: #f2f2f2;
 	}
 
+	.maxi-font-icon-control__icon {
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 40px;
+		i {
+			font-size: 42px;
+		}
+	}
+
+	.maxi-font-icon-control__control-buttons {
+		display: flex;
+		justify-content: space-around;
+		width: 100%;
+		margin-bottom: 8px;
+	}
+
 	&__modal {
 		background: #f2f2f2;
 		padding: 0;
@@ -58,17 +76,26 @@
 	}
 
 	&__card {
-		padding: 30px;
+		padding: 20px;
 		text-align: center;
 		i {
 			font-size: 42px;
+		}
+		&:hover {
+			.maxi-font-icon-control__insert {
+				opacity: 1;
+			}
 		}
 	}
 
 	&__insert {
 		display: block;
 		margin-top: 8px;
+		padding: 5px 12px;
+		font-size: 14px;
+		margin-top: 10px;
 		cursor: pointer;
+		opacity: 0;
 	}
 
 	&__pagination {
@@ -94,5 +121,13 @@
 		&--active a {
 			color: #ff4a17;
 		}
+	}
+
+	&__clear-filters {
+		padding: 10px;
+		font-size: 14px;
+		cursor: pointer;
+		width: 100%;
+		margin-top: 10px;
 	}
 }

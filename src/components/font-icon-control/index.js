@@ -3,6 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { Button } = wp.components;
+const { Fragment } = wp.element;
 
 /**
  * External dependencies
@@ -42,36 +43,39 @@ const FontIconControl = props => {
 					/>
 				</Button>
 			) : (
-				<div>
+				<Fragment>
 					<div className='maxi-font-icon-control__icon'>
 						<i className={value.icon} />
 					</div>
-					<Button
-						isDefault
-						isLarge
-						className='maxi-mediauploader-control__replace'
-					>
-						<Modal
-							icon={icon}
-							onChange={icon => {
-								value.icon = icon;
+					<div className='maxi-font-icon-control__control-buttons'>
+						<Button
+							isDefault
+							isLarge
+							className='maxi-mediauploader-control__replace'
+						>
+							<Modal
+								icon={icon}
+								onChange={icon => {
+									value.icon = icon;
 
+									onChange(JSON.stringify(value));
+								}}
+								btnText='Replace'
+							/>
+						</Button>
+						<Button
+							isDefault
+							isLarge
+							className='maxi-mediauploader-control__remove'
+							onClick={() => {
+								value.icon = '';
 								onChange(JSON.stringify(value));
 							}}
-						/>
-					</Button>
-					<Button
-						isDefault
-						isLarge
-						className='maxi-mediauploader-control__remove'
-						onClick={() => {
-							value.icon = '';
-							onChange(JSON.stringify(value));
-						}}
-					>
-						Remove
-					</Button>
-				</div>
+						>
+							Remove
+						</Button>
+					</div>
+				</Fragment>
 			)}
 		</div>
 	);

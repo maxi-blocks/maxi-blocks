@@ -10,6 +10,7 @@ const { Button, Modal } = wp.components;
  */
 import classnames from 'classnames';
 import ReactPaginate from 'react-paginate';
+import { isEmpty } from 'lodash';
 
 /**
  * Internal dependencies.
@@ -33,11 +34,11 @@ const MaxiModalIcon = props => {
 	// Icons to display
 	const displayedList = filteredList.length > 0 ? filteredList : iconsList;
 
-	const { onChange } = props;
+	const { onChange, btnText = 'Choose an Icon' } = props;
 
 	const onClick = () => setOpen(!open);
 
-	// Fetch icons' list and store in in localStorage
+	// Fetch icons' list and store it in localStorage
 	const fetchFaIcons = async () => {
 		const iconsEndpoint =
 			'https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/metadata/icons.json';
@@ -135,6 +136,11 @@ const MaxiModalIcon = props => {
 			);
 			setFilteredList(filteredList);
 		}
+
+		if (isEmpty(filters)) {
+			setFilteredList([]);
+		}
+
 		setRange({ start: 0, end: perPage });
 		setCurrentPage(0);
 	}, [filters]);
@@ -149,9 +155,7 @@ const MaxiModalIcon = props => {
 	return (
 		<Fragment>
 			{/* Launch the layout modal window */}
-			<Button onClick={onClick}>
-				{__('Choose an icon', 'maxi-blocks')}
-			</Button>
+			<Button onClick={onClick}>{btnText}</Button>
 			{open && (
 				<Modal
 					className='maxi-font-icon-control__modal'
@@ -209,6 +213,13 @@ const MaxiModalIcon = props => {
 									</button>
 								</li>
 							</ul>
+							<button
+								type='button'
+								onClick={() => setFilters({})}
+								className='maxi-font-icon-control__clear-filters'
+							>
+								Clear All Filters
+							</button>
 						</div>
 						{!isLoading ? (
 							<Fragment>

@@ -1,7 +1,7 @@
 .box {
 	margin: 10px 0;
 	width: 90%;
-	min-height: 300px;
+	min-height: 400px;
 	background-color: #eee;
 	position: relative;
 	display: flex;
@@ -22,11 +22,16 @@
 		}
 		.item {
 			background: #c1c1c1;
+			border-bottom: 1px solid #ababab;
 			padding: 0.5rem;
 			text-transform: capitalize;
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
+
+			&.active-item {
+				background-color: #c7b5a3;
+			}
 			.actions {
 				display: flex;
 				align-items: center;

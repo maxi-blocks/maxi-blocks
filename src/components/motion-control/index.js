@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { SelectControl, Icon } = wp.components;
+const { SelectControl, Icon, RangeControl } = wp.components;
 const { Fragment, useState } = wp.element;
 
 /**
@@ -10,7 +10,7 @@ const { Fragment, useState } = wp.element;
  */
 import __experimentalAdvancedRangeControl from '../advanced-range-control';
 import __experimentalGroupInputControl from '../group-input-control';
-import __experimentalFancyRadioControl from '../fancy-radio-control';
+import { __experimentalFancyRadioControl } from '../../components';
 import {
 	verticalPresets,
 	horizontalPresets,
@@ -37,7 +37,6 @@ import {
 	motionScale,
 	motionFade,
 	motionBlur,
-	toolbarDuplicate,
 	toolbarDelete,
 } from '../../icons';
 
@@ -63,16 +62,37 @@ const MotionControl = props => {
 		5: [
 			{
 				type: 'rotate',
-				settings: {},
+				settings: {
+					x: 0,
+					y: 0,
+				},
 			},
 			{
 				type: 'move',
-				settings: {},
+				settings: {
+					x: 0,
+					y: 0,
+					z: 0,
+				},
+			},
+		],
+		25: [
+			{
+				type: 'move',
+				settings: {
+					x: 0,
+					y: 0,
+					z: 0,
+				},
 			},
 		],
 	});
 	const [timelineType, setTimelineType] = useState('move');
 	const [timelineTime, setTimelineTime] = useState(0);
+	const [activeTimeline, setActiveTimeline] = useState({
+		time: 0,
+		index: 0,
+	});
 
 	const classes = classnames('maxi-motion-control', className);
 
@@ -89,12 +109,13 @@ const MotionControl = props => {
 			});
 		} else {
 			if (isNil(find(timeline[time], { type }))) {
-				timeline[time].push({
+				let newTimeline = { ...timeline };
+				newTimeline[time].push({
 					type,
 					settings,
 				});
 				setTimeline({
-					...timeline,
+					...newTimeline,
 				});
 			}
 		}
@@ -118,6 +139,28 @@ const MotionControl = props => {
 					...result,
 				});
 			}
+		}
+	};
+
+	const getCurrentTimelineItem = () => {
+		if (!isEmpty(timeline[activeTimeline.time])) {
+			return timeline[activeTimeline.time][activeTimeline.index];
+		}
+	};
+
+	const updateTimelineItemSettings = (value, name) => {
+		if (!isEmpty(timeline[activeTimeline.time])) {
+			let newTimeline = { ...timeline };
+			newTimeline[activeTimeline.time][0].settings[name] = value;
+			setTimeline({
+				...newTimeline,
+			});
+		}
+	};
+
+	const getTimelineItemSettingValue = name => {
+		if (!isEmpty(timeline[activeTimeline.time])) {
+			return timeline[activeTimeline.time][0].settings[name];
 		}
 	};
 
@@ -173,8 +216,21 @@ const MotionControl = props => {
 							></div>
 							<div className='group'>
 								<div className='pos'>{time[0]}%</div>
-								{time[1].map(item => (
-									<div className='item'>
+								{time[1].map((item, i) => (
+									<div
+										className={`item ${
+											activeTimeline.time === time[0] &&
+											activeTimeline.index === i
+												? 'active-item'
+												: null
+										}`}
+										onClick={() => {
+											setActiveTimeline({
+												time: time[0],
+												index: i,
+											});
+										}}
+									>
 										<span>{item.type}</span>
 										<div className='actions'>
 											<i
@@ -187,7 +243,6 @@ const MotionControl = props => {
 											>
 												{toolbarDelete}
 											</i>
-											<i>{toolbarDuplicate}</i>
 										</div>
 									</div>
 								))}
@@ -196,7 +251,38 @@ const MotionControl = props => {
 					);
 				})}
 			</div>
-			<__experimentalFancyRadioControl
+			{!isNil(getCurrentTimelineItem()) &&
+				getCurrentTimelineItem().type === 'move' && (
+					<Fragment>
+						<RangeControl
+							label='X'
+							value={getTimelineItemSettingValue('x')}
+							onChange={value =>
+								updateTimelineItemSettings(value, 'x')
+							}
+							min={-1000}
+							max={1000}
+						/>
+						<RangeControl
+							label='Y'
+							onChange={value =>
+								updateTimelineItemSettings(value, 'y')
+							}
+							min={-1000}
+							max={1000}
+						/>
+						<RangeControl
+							label='Z'
+							onChange={value =>
+								updateTimelineItemSettings(value, 'z')
+							}
+							min={-1000}
+							max={1000}
+						/>
+					</Fragment>
+				)}
+
+			{/* <__experimentalFancyRadioControl
 				selected={motionStatus}
 				options={[
 					{
@@ -608,7 +694,7 @@ const MotionControl = props => {
 						</Fragment>
 					)}
 				</Fragment>
-			)}
+			)}*/}
 		</div>
 	);
 };

@@ -34,6 +34,22 @@ const allowedBlocks = [
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
+	// Insert Maxi responsive toolbar
+	const responsiveWrapper = document.createElement('div');
+
+	responsiveWrapper.id = 'maxi-blocks__responsive-toolbar';
+
+	const menuWrapper = document.querySelector(
+		'.edit-post-layout .interface-interface-skeleton__header'
+	).parentElement;
+
+	menuWrapper.appendChild(responsiveWrapper);
+
+	wp.element.render(
+		wp.element.createElement(ResponsiveSelector, {}),
+		responsiveWrapper
+	);
+
 	/**
 	 * Mutation Observer for:
 	 * - Add special classes on Settings Sidebar
@@ -47,22 +63,6 @@ document.addEventListener('DOMContentLoaded', () => {
 			childList: true,
 			subtree: true,
 		};
-
-		// Insert Maxi responsive toolbar
-		const responsiveWrapper = document.createElement('div');
-
-		responsiveWrapper.id = 'maxi-blocks__responsive-toolbar';
-
-		const menuWrapper = targetNode.querySelector(
-			'.interface-interface-skeleton__header'
-		).parentElement;
-
-		menuWrapper.appendChild(responsiveWrapper);
-
-		wp.element.render(
-			wp.element.createElement(ResponsiveSelector, {}),
-			responsiveWrapper
-		);
 
 		const observer = new MutationObserver(mutationsList => {
 			for (const mutation of mutationsList) {

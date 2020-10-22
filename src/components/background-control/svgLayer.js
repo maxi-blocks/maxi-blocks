@@ -22,7 +22,6 @@ import { isEmpty } from 'lodash';
  */
 const SVGLayer = props => {
 	const { SVGOptions, defaultSVGOptions, onChange } = props;
-
 	return (
 		<Fragment>
 			<SettingTabsControl
@@ -33,6 +32,7 @@ const SVGLayer = props => {
 						content: (
 							<__experimentalSVGDefaultsDisplayer
 								SVGOptions={SVGOptions}
+								type='background'
 								onChange={obj => {
 									SVGOptions.SVGCurrentShape =
 										obj.SVGCurrentShape;

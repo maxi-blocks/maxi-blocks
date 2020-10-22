@@ -26,7 +26,7 @@ import './editor.scss';
  * Component
  */
 const SVGDefaultsDisplayer = props => {
-	const { SVGOptions, onChange, className } = props;
+	const { SVGOptions, type, SVGCurrentElement, onChange, className } = props;
 
 	const classes = classnames('maxi-svg-defaults', className);
 
@@ -34,14 +34,17 @@ const SVGDefaultsDisplayer = props => {
 		<div className={classes}>
 			{Object.values(SVGShapes).map((svgEl, i) => {
 				const cleanedContent = DOMPurify.sanitize(svgEl);
-
 				return (
 					<Button
-						className='maxi-svg-defaults__item'
-						aria-pressed={
-							!isNil(SVGOptions) &&
+						className={`maxi-svg-defaults__item ${
+							type === 'background' &&
 							SVGOptions.SVGCurrentShape === i
+								? 'maxi-svg-defaults__item--active'
+								: type === 'shape' && SVGCurrentElement === i
+								? 'maxi-svg-defaults__item--active'
+								: ''
 						}
+						`}
 						onClick={() => {
 							const svg = document
 								.createRange()

@@ -88,18 +88,16 @@ const Inspector = props => {
 			transform,
 			clipPath,
 			hover,
+			SVGData,
+			SVGCurrentElement,
 		},
 		imageData,
 		clientId,
 		deviceType,
 		setAttributes,
 	} = props;
-
+	console.log(SVGCurrentElement);
 	const sizeValue = !isObject(size) ? JSON.parse(size) : size;
-
-	const backgroundValue = !isObject(background)
-		? JSON.parse(background)
-		: background;
 
 	const defaultSize = JSON.parse(getDefaultProp(clientId, 'size'));
 
@@ -734,8 +732,10 @@ const Inspector = props => {
 											label: __('Shape', 'maxi-blocks'),
 											content: (
 												<__experimentalSVGDefaultsDisplayer
-													SVGOptions={
-														backgroundValue.SVGOptions
+													SVGOptions={SVGData}
+													type='shape'
+													SVGCurrentElement={
+														SVGCurrentElement
 													}
 													onChange={SVGOptions => {
 														const SVGValue = !isObject(
@@ -759,6 +759,8 @@ const Inspector = props => {
 
 														setAttributes({
 															...SVGOptions,
+															SVGCurrentElement:
+																SVGOptions.SVGCurrentShape,
 															SVGElement: injectImgSVG(
 																SVGOptions.SVGElement,
 																SVGValue

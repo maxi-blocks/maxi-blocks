@@ -74,7 +74,6 @@ const MotionControl = props => {
 					x: 0,
 					y: 0,
 					z: 0,
-					value: 0,
 				},
 			},
 		],
@@ -82,7 +81,7 @@ const MotionControl = props => {
 			{
 				type: 'opacity',
 				settings: {
-					value: 0,
+					opacity: 0,
 				},
 			},
 		],
@@ -96,7 +95,31 @@ const MotionControl = props => {
 
 	const classes = classnames('maxi-motion-control', className);
 
-	const addTimeline = (type = 'move', time = 0, settings = {}) => {
+	const addTimeline = (type = 'move', time = 0) => {
+		let settings = {};
+		switch (type) {
+			case 'move':
+			case 'rotate':
+			case 'skew':
+			case 'scale':
+				settings = {
+					x: 0,
+					y: 0,
+					z: 0,
+				};
+				break;
+			case 'opacity':
+				settings = {
+					opacity: 1,
+				};
+				break;
+			case 'blur':
+				settings = {
+					blur: 1,
+				};
+				break;
+		}
+
 		if (!has(timeline, time)) {
 			setTimeline({
 				...timeline,
@@ -152,7 +175,10 @@ const MotionControl = props => {
 	const updateTimelineItemSettings = (value, name) => {
 		if (!isEmpty(timeline[activeTimeline.time])) {
 			let newTimeline = { ...timeline };
-			newTimeline[activeTimeline.time][0].settings[name] = value;
+			newTimeline[activeTimeline.time][activeTimeline.index].settings[
+				name
+			] = value;
+
 			setTimeline({
 				...newTimeline,
 			});
@@ -161,7 +187,9 @@ const MotionControl = props => {
 
 	const getTimelineItemSettingValue = name => {
 		if (!isEmpty(timeline[activeTimeline.time])) {
-			return timeline[activeTimeline.time][0].settings[name];
+			return timeline[activeTimeline.time][activeTimeline.index].settings[
+				name
+			];
 		}
 	};
 
@@ -188,6 +216,7 @@ const MotionControl = props => {
 						/>
 						<RangeControl
 							label={__('Y', 'maxi-blocks')}
+							value={getTimelineItemSettingValue('y')}
 							onChange={value =>
 								updateTimelineItemSettings(value, 'y')
 							}
@@ -196,6 +225,7 @@ const MotionControl = props => {
 						/>
 						<RangeControl
 							label={__('Z', 'maxi-blocks')}
+							value={getTimelineItemSettingValue('z')}
 							onChange={value =>
 								updateTimelineItemSettings(value, 'z')
 							}
@@ -205,19 +235,34 @@ const MotionControl = props => {
 					</div>
 				);
 			}
-			if (
-				getCurrentTimelineItem().type === 'opacity' ||
-				getCurrentTimelineItem().type === 'blur'
-			) {
+			if (getCurrentTimelineItem().type === 'opacity') {
 				return (
 					<div className='maxi-motion-control__timeline-item-settings'>
 						<hr />
 
 						<RangeControl
-							label={__('Value', 'maxi-blocks')}
-							value={getTimelineItemSettingValue('value')}
+							label={__('Opacity', 'maxi-blocks')}
+							value={getTimelineItemSettingValue('opacity')}
 							onChange={value =>
-								updateTimelineItemSettings(value, 'value')
+								updateTimelineItemSettings(value, 'opacity')
+							}
+							min={0}
+							max={10}
+							step={0.1}
+						/>
+					</div>
+				);
+			}
+			if (getCurrentTimelineItem().type === 'blur') {
+				return (
+					<div className='maxi-motion-control__timeline-item-settings'>
+						<hr />
+
+						<RangeControl
+							label={__('Blur', 'maxi-blocks')}
+							value={getTimelineItemSettingValue('blur')}
+							onChange={value =>
+								updateTimelineItemSettings(value, 'blur')
 							}
 							min={0}
 							max={10}

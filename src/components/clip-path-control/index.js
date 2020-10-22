@@ -41,7 +41,16 @@ const optionColors = [
 ];
 
 const ClipPathOption = props => {
-	const { values, onChange, onRemove, number } = props;
+	const { values, onChange, onRemove, number, type } = props;
+
+	const getLabel = () => {
+		if (type === 'circle' && number === 0)
+			return `${__('Radius', 'maxi-blocks')}`;
+		if (type === 'circle' && number === 1)
+			return `${__('Center', 'maxi-blocks')}`;
+
+		return `${__('Point', 'maxi-blocks')} ${number + 1}`;
+	};
 
 	return (
 		<div className='maxi-clip-path-controller'>
@@ -53,7 +62,7 @@ const ClipPathOption = props => {
 				/>
 			</div>
 			<BaseControl
-				label={`${__('Point', 'maxi-blocks')} ${number + 1}`}
+				label={getLabel()}
 				className='maxi-clip-path-controller__item'
 			>
 				<div className='maxi-clip-path-controller__settings'>
@@ -81,9 +90,11 @@ const ClipPathOption = props => {
 					)}
 				</div>
 			</BaseControl>
-			<div className='maxi-clip-path-controller__handle maxi-clip-path-delete-handle'>
-				<span onClick={() => onRemove(number)} />
-			</div>
+			{type !== 'circle' && (
+				<div className='maxi-clip-path-controller__handle maxi-clip-path-delete-handle'>
+					<span onClick={() => onRemove(number)} />
+				</div>
+			)}
 		</div>
 	);
 };
@@ -94,9 +105,10 @@ const ClipPathControl = props => {
 	const [hasClipPath, changeHasClipPath] = useState(
 		isEmpty(clipPath) ? 0 : 1
 	);
-	console.log(Object.values(clipPathDefaults).includes(clipPath));
 	const [isCustom, changeIsCustom] = useState(
-		Object.values(clipPathDefaults).includes(clipPath) ? 0 : 1
+		Object.values(clipPathDefaults).includes(clipPath) || isEmpty(clipPath)
+			? 0
+			: 1
 	);
 
 	const deconstructCP = () => {
@@ -118,7 +130,7 @@ const ClipPathControl = props => {
 					.replace(')', '');
 
 				cpContent.split(', ').forEach(value => {
-					const newItem = value.replace(/%/g, '').split(' ');
+					const newItem = value.trim().replace(/%/g, '').split(' ');
 					newItem.forEach((item, i) => {
 						newItem[i] = Number(item);
 					});
@@ -126,7 +138,43 @@ const ClipPathControl = props => {
 				});
 				break;
 			case 'circle':
+				cpContent = clipPath
+					.replace(cpType, '')
+					.replace('(', '')
+					.replace(')', '');
+
+				cpContent.split('at ').forEach(value => {
+					const newItem = value.trim().replace(/%/g, '').split(' ');
+					newItem.forEach((item, i) => {
+						if (!isEmpty(item)) newItem[i] = Number(item);
+						else {
+							delete newItem[i];
+							newItem.length -= 1;
+						}
+					});
+					cpValues.push(newItem);
+				});
+				break;
 			case 'ellipse':
+				cpContent = clipPath
+					.replace(cpType, '')
+					.replace('(', '')
+					.replace(')', '');
+
+				cpContent.split('at ').forEach((value, i) => {
+					const newItem = value.trim().replace(/%/g, '').split(' ');
+					newItem.forEach((item, j) => {
+						if (i === 0) {
+							cpValues.push([Number(item)]);
+						} else if (!isEmpty(item)) newItem[j] = Number(item);
+						else {
+							delete newItem[j];
+							newItem.length -= 1;
+						}
+					});
+					if (i !== 0) cpValues.push(newItem);
+				});
+				break;
 			case 'inset':
 				cpContent = clipPath
 					.replace(cpType, '')
@@ -135,7 +183,7 @@ const ClipPathControl = props => {
 					.replace('at ', '');
 
 				cpContent.split(' ').forEach(value => {
-					cpValues.push([Number(value.replace(/%/g, ''))]);
+					cpValues.push([Number(value.trim().replace(/%/g, ''))]);
 				});
 				break;
 			default:
@@ -324,6 +372,7 @@ const ClipPathControl = props => {
 															generateCP();
 														}}
 														number={i}
+														type={cp.type}
 													/>
 												))}
 												{cp.type === 'polygon' &&

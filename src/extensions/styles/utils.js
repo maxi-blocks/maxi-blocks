@@ -843,3 +843,26 @@ export const setArrowStyles = (
 		},
 	};
 };
+
+export const getButtonIconObject = icon => {
+	const response = {
+		label: icon.label,
+		general: {},
+		xxl: {},
+		xl: {},
+		l: {},
+		m: {},
+		s: {},
+		xs: {},
+	};
+
+	Object.entries(icon).forEach(([key, value]) => {
+		Object.entries(value).forEach(([prop, propValue]) => {
+			if (!isNil(propValue)) {
+				response[key][prop] = propValue;
+			}
+		});
+	});
+
+	return response;
+};

@@ -56,6 +56,7 @@ class edit extends MaxiBlock {
 
 		let response = {
 			[uniqueID]: this.getNormalObject,
+			[`${uniqueID}:hover`]: this.getHoverObject,
 			[`${uniqueID} .maxi-text-block__content`]: this.getTypographyObject,
 			[`${uniqueID} .maxi-text-block__content:hover`]: this
 				.getTypographyHoverObject,
@@ -119,6 +120,21 @@ class edit extends MaxiBlock {
 			borderWidth: { ...JSON.parse(border).borderWidth },
 			borderRadius: { ...JSON.parse(border).borderRadius },
 			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
+		};
+
+		return response;
+	}
+
+	get getHoverObject() {
+		const { borderHover, boxShadowHover } = this.props.attributes;
+
+		const response = {
+			boxShadowHover: {
+				...getBoxShadowObject(JSON.parse(boxShadowHover)),
+			},
+			borderHover: { ...JSON.parse(borderHover) },
+			borderWidthHover: { ...JSON.parse(borderHover).borderWidth },
+			borderRadiusHover: { ...JSON.parse(borderHover).borderRadius },
 		};
 
 		return response;

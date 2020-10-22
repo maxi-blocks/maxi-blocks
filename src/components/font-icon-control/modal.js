@@ -21,6 +21,8 @@ const MaxiModalIcon = props => {
 	// Number of icons to display per page
 	const perPage = 55;
 
+	const { onChange, btnText = 'Choose an Icon' } = props;
+
 	// Component State
 	const [open, setOpen] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
@@ -31,12 +33,9 @@ const MaxiModalIcon = props => {
 	const [filters, setFilters] = useState({ search: '', cat: '' });
 	const [currentPage, setCurrentPage] = useState(0);
 
-	console.log(iconsList);
-
 	// Icons to display
-	const displayedList = filteredList.length > 0 ? filteredList : iconsList;
-
-	const { onChange, btnText = 'Choose an Icon' } = props;
+	const displayedList =
+		filters.search || filters.cat ? filteredList : iconsList;
 
 	const onClick = () => setOpen(!open);
 
@@ -62,7 +61,7 @@ const MaxiModalIcon = props => {
 		}
 
 		if (!response.ok) {
-			const message = `Unable to load icons from github repository: ${response.status}, icons have been loaded from the local backup file`;
+			const message = `Unable to load icons remotely: ${response.status}, icons have been loaded from the local backup file`;
 
 			const value = {
 				value: JSON.stringify(jsonData),
@@ -77,6 +76,13 @@ const MaxiModalIcon = props => {
 		}
 	};
 
+	/**
+	 *
+	 * Updates the full list of icons state
+	 *
+	 * @param {Array} icons Retrieved from localStorage
+	 *
+	 */
 	function setIconsState(icons) {
 		const iconsList = [];
 
@@ -93,6 +99,7 @@ const MaxiModalIcon = props => {
 		setIconsList(iconsList);
 	}
 
+	// Load icons List
 	useEffect(() => {
 		async function loadIcons() {
 			// Check if we have iconsData in localStorage
@@ -127,10 +134,12 @@ const MaxiModalIcon = props => {
 		if (open) loadIcons();
 	}, [open]);
 
+	// Setting Page count when the displayed list changes
 	useEffect(() => {
 		setPageCount(Math.round(displayedList.length / perPage));
 	}, [displayedList]);
 
+	// Filtering
 	useEffect(() => {
 		if (filters.cat) {
 			const filteredList = iconsList.filter(
@@ -141,29 +150,36 @@ const MaxiModalIcon = props => {
 
 		if (filters.search) {
 			const filteredList = iconsList.filter(icon => {
-				if (icon.content.label.search(filters.search) !== -1) {
-					return true;
+				let result = false;
+
+				if (
+					icon.content.label
+						.toLowerCase()
+						.search(filters.search.toLowerCase()) !== -1
+				) {
+					result = true;
 				}
-				return false;
+
+				icon.content.search.terms.forEach(term => {
+					if (
+						term
+							.toLowerCase()
+							.search(filters.search.toLowerCase()) !== -1
+					) {
+						result = true;
+					}
+				});
+
+				return result;
 			});
 
 			setFilteredList(filteredList);
 		}
 
-		if (isEmpty(filters)) {
-			setFilteredList([]);
-		}
-
 		setRange({ start: 0, end: perPage });
+
 		setCurrentPage(0);
 	}, [filters]);
-
-	const onPageChange = data => {
-		const { selected } = data;
-		const offset = Math.ceil(selected * perPage);
-		setRange({ start: offset, end: offset + perPage });
-		setCurrentPage(selected);
-	};
 
 	return (
 		<Fragment>
@@ -228,7 +244,10 @@ const MaxiModalIcon = props => {
 							</ul>
 							<button
 								type='button'
-								onClick={() => setFilters({})}
+								onClick={() => {
+									setFilters({ search: '', cat: '' });
+									set;
+								}}
 								className='maxi-font-icon-control__clear-filters'
 							>
 								Clear All Filters
@@ -245,33 +264,41 @@ const MaxiModalIcon = props => {
 										placeholder={__('Search for Icons…')}
 									/>
 									<div className='maxi-font-icon-control__icons-list'>
-										{displayedList
-											.slice(range.start, range.end)
-											.map(icon => (
-												<span className='maxi-font-icon-control__card'>
-													<i
-														className={`fa${icon.cat.charAt(
-															0
-														)} fa-${icon.iconName}`}
-													/>
-													<button
-														type='button'
-														className='maxi-font-icon-control__insert'
-														onClick={() => {
-															onChange(
-																`fa${icon.cat.charAt(
-																	0
-																)} fa-${
-																	icon.iconName
-																}`
-															);
-															setOpen(!open);
-														}}
-													>
-														Insert
-													</button>
-												</span>
-											))}
+										{displayedList.length ? (
+											displayedList
+												.slice(range.start, range.end)
+												.map(icon => (
+													<span className='maxi-font-icon-control__card'>
+														<i
+															className={`fa${icon.cat.charAt(
+																0
+															)} fa-${
+																icon.iconName
+															}`}
+														/>
+														<button
+															type='button'
+															className='maxi-font-icon-control__insert'
+															onClick={() => {
+																onChange(
+																	`fa${icon.cat.charAt(
+																		0
+																	)} fa-${
+																		icon.iconName
+																	}`
+																);
+																setOpen(!open);
+															}}
+														>
+															Insert
+														</button>
+													</span>
+												))
+										) : (
+											<span className='maxi-font-icon-control__no-icons'>
+												No Icons Found
+											</span>
+										)}
 									</div>
 									{pageCount > 1 && (
 										<ReactPaginate
@@ -282,7 +309,17 @@ const MaxiModalIcon = props => {
 											pageCount={pageCount}
 											marginPagesDisplayed={2}
 											pageRangeDisplayed={5}
-											onPageChange={onPageChange}
+											onPageChange={data => {
+												const { selected } = data;
+												const offset = Math.ceil(
+													selected * perPage
+												);
+												setRange({
+													start: offset,
+													end: offset + perPage,
+												});
+												setCurrentPage(selected);
+											}}
 											containerClassName='maxi-font-icon-control__pagination'
 											activeClassName='maxi-font-icon-control__pagination--active'
 											forcePage={currentPage}

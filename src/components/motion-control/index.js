@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { SelectControl, Icon, RangeControl } = wp.components;
+const { SelectControl, Icon, RangeControl, Button } = wp.components;
 const { Fragment, useState } = wp.element;
 
 /**
@@ -65,6 +65,7 @@ const MotionControl = props => {
 				settings: {
 					x: 0,
 					y: 0,
+					z: 0,
 				},
 			},
 			{
@@ -73,16 +74,15 @@ const MotionControl = props => {
 					x: 0,
 					y: 0,
 					z: 0,
+					value: 0,
 				},
 			},
 		],
 		25: [
 			{
-				type: 'move',
+				type: 'opacity',
 				settings: {
-					x: 0,
-					y: 0,
-					z: 0,
+					value: 0,
 				},
 			},
 		],
@@ -126,17 +126,18 @@ const MotionControl = props => {
 			const result = filter(timeline[time], function (o) {
 				return o.type !== type;
 			});
+
 			setTimeline({
 				...timeline,
 				[time]: [...result],
 			});
 
 			if (isEmpty(result)) {
-				const result = filter(timeline, function (o) {
-					return o.time === time;
-				});
+				let newTimeline = { ...timeline };
+				delete newTimeline[time];
+
 				setTimeline({
-					...result,
+					...newTimeline,
 				});
 			}
 		}
@@ -164,40 +165,132 @@ const MotionControl = props => {
 		}
 	};
 
-	return (
-		<div className={classes}>
-			<select
-				onChange={e => {
-					setTimelineType(e.target.value);
-				}}
-			>
-				<option value='move'>Move</option>
-				<option value='rotate'>Rotate</option>
-				<option value='skew'>Skew</option>
-				<option value='fade'>Fade</option>
-			</select>
-			<input
-				type='number'
-				placeholder='Time'
-				min={0}
-				max={100}
-				step={1}
-				onChange={e => {
-					setTimelineTime(e.target.value);
-				}}
-			/>
-			<button
-				onClick={() => {
-					addTimeline(timelineType, Number(timelineTime));
-				}}
-			>
-				Add +
-			</button>
-			<div className='box'>
+	function ShowTimelineSettings() {
+		if (!isNil(getCurrentTimelineItem())) {
+			if (
+				getCurrentTimelineItem().type === 'move' ||
+				getCurrentTimelineItem().type === 'scale' ||
+				getCurrentTimelineItem().type === 'rotate' ||
+				getCurrentTimelineItem().type === 'skew'
+			) {
+				return (
+					<div className='maxi-motion-control__timeline-item-settings'>
+						<hr />
+
+						<RangeControl
+							label={__('X', 'maxi-blocks')}
+							value={getTimelineItemSettingValue('x')}
+							onChange={value =>
+								updateTimelineItemSettings(value, 'x')
+							}
+							min={-1000}
+							max={1000}
+						/>
+						<RangeControl
+							label={__('Y', 'maxi-blocks')}
+							onChange={value =>
+								updateTimelineItemSettings(value, 'y')
+							}
+							min={-1000}
+							max={1000}
+						/>
+						<RangeControl
+							label={__('Z', 'maxi-blocks')}
+							onChange={value =>
+								updateTimelineItemSettings(value, 'z')
+							}
+							min={-1000}
+							max={1000}
+						/>
+					</div>
+				);
+			}
+			if (
+				getCurrentTimelineItem().type === 'opacity' ||
+				getCurrentTimelineItem().type === 'blur'
+			) {
+				return (
+					<div className='maxi-motion-control__timeline-item-settings'>
+						<hr />
+
+						<RangeControl
+							label={__('Value', 'maxi-blocks')}
+							value={getTimelineItemSettingValue('value')}
+							onChange={value =>
+								updateTimelineItemSettings(value, 'value')
+							}
+							min={0}
+							max={10}
+							step={0.1}
+						/>
+					</div>
+				);
+			}
+		}
+	}
+
+	function showAddTimelineSettings() {
+		return (
+			<Fragment>
+				<div className='maxi-motion-control__add-timeline'>
+					<select
+						onChange={e => {
+							setTimelineType(e.target.value);
+						}}
+					>
+						<option value='move'>
+							{__('Move', 'maxi-blocks')}
+						</option>
+						<option value='scale'>
+							{__('Scale', 'maxi-blocks')}
+						</option>
+						<option value='rotate'>
+							{__('Rotate', 'maxi-blocks')}
+						</option>
+						<option value='skew'>
+							{__('Skew', 'maxi-blocks')}
+						</option>
+						<option value='opacity'>
+							{__('Opacity', 'maxi-blocks')}
+						</option>
+						<option value='blur'>
+							{__('Blur', 'maxi-blocks')}
+						</option>
+					</select>
+					<input
+						type='number'
+						placeholder='Time'
+						min={0}
+						max={100}
+						step={1}
+						onChange={e => {
+							setTimelineTime(e.target.value);
+						}}
+					/>
+					<Button
+						onClick={() => {
+							addTimeline(timelineType, Number(timelineTime));
+						}}
+					>
+						{__('Add', 'maxi-blocks')}
+					</Button>
+				</div>
+				<hr />
+			</Fragment>
+		);
+	}
+
+	function showTimeline() {
+		return (
+			<div className='maxi-motion-control__timeline'>
 				{isEmpty(timeline) && (
-					<div>
-						Apply various actions on one or multiple elements to
-						create a sequenced animation.
+					<div className='maxi-motion-control__timeline__no-effects'>
+						<p>
+							{__(
+								'Please enter your first interaction effect',
+								'maxi-blocks'
+							)}
+						</p>
 					</div>
 				)}
 				{Object.entries(timeline).map((time, i, arr) => {
@@ -206,7 +299,7 @@ const MotionControl = props => {
 					return (
 						<Fragment>
 							<div
-								className='space'
+								className='maxi-motion-control__timeline__space'
 								style={{
 									flexGrow: `${parseFloat(
 										(Number(time[0]) - Number(prevValue)) /
@@ -214,15 +307,14 @@ const MotionControl = props => {
 									)}`,
 								}}
 							></div>
-							<div className='group'>
-								<div className='pos'>{time[0]}%</div>
+							<div className='maxi-motion-control__timeline__group'>
 								{time[1].map((item, i) => (
 									<div
-										className={`item ${
+										className={`maxi-motion-control__timeline__group__item ${
 											activeTimeline.time === time[0] &&
 											activeTimeline.index === i
-												? 'active-item'
-												: null
+												? 'maxi-motion-control__timeline__group__item--active-item'
+												: ''
 										}`}
 										onClick={() => {
 											setActiveTimeline({
@@ -232,7 +324,7 @@ const MotionControl = props => {
 										}}
 									>
 										<span>{item.type}</span>
-										<div className='actions'>
+										<div className='maxi-motion-control__timeline__group__item__actions'>
 											<i
 												onClick={() =>
 													removeTimeline(
@@ -246,41 +338,24 @@ const MotionControl = props => {
 										</div>
 									</div>
 								))}
+								<div className='maxi-motion-control__timeline__group__position'>
+									{time[0]}%
+								</div>
 							</div>
 						</Fragment>
 					);
 				})}
 			</div>
-			{!isNil(getCurrentTimelineItem()) &&
-				getCurrentTimelineItem().type === 'move' && (
-					<Fragment>
-						<RangeControl
-							label='X'
-							value={getTimelineItemSettingValue('x')}
-							onChange={value =>
-								updateTimelineItemSettings(value, 'x')
-							}
-							min={-1000}
-							max={1000}
-						/>
-						<RangeControl
-							label='Y'
-							onChange={value =>
-								updateTimelineItemSettings(value, 'y')
-							}
-							min={-1000}
-							max={1000}
-						/>
-						<RangeControl
-							label='Z'
-							onChange={value =>
-								updateTimelineItemSettings(value, 'z')
-							}
-							min={-1000}
-							max={1000}
-						/>
-					</Fragment>
-				)}
+		);
+	}
+
+	return (
+		<div className={classes}>
+			{showAddTimelineSettings()}
+
+			{showTimeline()}
+
+			{ShowTimelineSettings()}
 
 			{/* <__experimentalFancyRadioControl
 				selected={motionStatus}

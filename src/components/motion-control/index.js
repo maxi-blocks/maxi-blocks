@@ -23,52 +23,12 @@ import { toolbarDelete } from '../../icons';
 const MotionControl = props => {
 	const { className, motion, onChange } = props;
 
-	const [timeline, setTimeline] = useState({
-		5: [
-			{
-				type: 'rotate',
-				settings: {
-					effectPosition: 5,
-					x: 0,
-					y: 0,
-					z: 0,
-				},
-			},
-			{
-				type: 'move',
-				settings: {
-					effectPosition: 5,
-					x: 0,
-					y: 0,
-					z: 0,
-				},
-			},
-		],
-		24: [
-			{
-				type: 'blur',
-				settings: {
-					effectPosition: 24,
-					blur: 0,
-				},
-			},
-		],
-		25: [
-			{
-				type: 'opacity',
-				settings: {
-					effectPosition: 25,
-					opacity: 0,
-				},
-			},
-		],
-	});
+	const motionValue = !isObject(motion) ? JSON.parse(motion) : motion;
+
+	let { interaction } = motionValue;
+
 	const [timelineType, setTimelineType] = useState('move');
 	const [timelineTime, setTimelineTime] = useState(0);
-	const [activeTimeline, setActiveTimeline] = useState({
-		time: 0,
-		index: 0,
-	});
 
 	const classes = classnames('maxi-motion-control', className);
 
@@ -100,48 +60,50 @@ const MotionControl = props => {
 				break;
 		}
 
-		if (!has(timeline, time)) {
-			setTimeline({
-				...timeline,
+		if (!has(interaction.timeline, time)) {
+			interaction.timeline = {
+				...interaction.timeline,
 				[time]: [
 					{
 						type,
 						settings,
 					},
 				],
-			});
+			};
 		} else {
-			if (isNil(find(timeline[time], { type }))) {
-				let newTimeline = { ...timeline };
+			if (isNil(find(interaction.timeline[time], { type }))) {
+				let newTimeline = { ...interaction.timeline };
 				newTimeline[time].unshift({
 					type,
 					settings,
 				});
-				setTimeline({
+				interaction.timeline = {
 					...newTimeline,
-				});
+				};
 			}
 		}
 
-		setActiveTimeline({
+		interaction.activeTimeline = {
 			time,
 			index: 0,
-		});
+		};
+
+		onChange(JSON.stringify(motionValue));
 	};
 
 	const removeTimeline = (type, time) => {
-		if (has(timeline, time)) {
-			const result = filter(timeline[time], function (o) {
+		if (has(interaction.timeline, time)) {
+			const result = filter(interaction.timeline[time], function (o) {
 				return o.type !== type;
 			});
 
 			setTimeline({
-				...timeline,
+				...interaction.timeline,
 				[time]: [...result],
 			});
 
 			if (isEmpty(result)) {
-				let newTimeline = { ...timeline };
+				let newTimeline = { ...interaction.timeline };
 				delete newTimeline[time];
 
 				setTimeline({
@@ -149,17 +111,21 @@ const MotionControl = props => {
 				});
 			}
 		}
+
+		onChange(JSON.stringify(motionValue));
 	};
 
 	const getCurrentTimelineItem = () => {
-		if (!isEmpty(timeline[activeTimeline.time])) {
-			return timeline[activeTimeline.time][activeTimeline.index];
+		if (!isEmpty(interaction.timeline[interaction.activeTimeline.time])) {
+			return interaction.timeline[interaction.activeTimeline.time][
+				interaction.activeTimeline.index
+			];
 		}
 	};
 
 	const updateTimelineItemPosition = (prevTime, newTime) => {
-		let newTimeline = { ...timeline };
-		let prevItem = newTimeline[prevTime][activeTimeline.index];
+		let newTimeline = { ...interaction.timeline };
+		let prevItem = newTimeline[prevTime][interaction.activeTimeline.index];
 		prevItem.settings.effectPosition = newTime;
 
 		const result = filter(newTimeline[prevTime], function (o) {
@@ -186,34 +152,38 @@ const MotionControl = props => {
 			};
 		}
 
-		setTimeline({
+		interaction.timeline = {
 			...addResult,
-		});
+		};
 
-		setActiveTimeline({
+		interaction.activeTimeline = {
 			time: newTime,
 			index: 0,
-		});
+		};
+
+		onChange(JSON.stringify(motionValue));
 	};
 
 	const updateTimelineItemSettings = (value, name) => {
-		if (!isEmpty(timeline[activeTimeline.time])) {
-			let newTimeline = { ...timeline };
-			newTimeline[activeTimeline.time][activeTimeline.index].settings[
-				name
-			] = value;
+		if (!isEmpty(interaction.timeline[interaction.activeTimeline.time])) {
+			let newTimeline = { ...interaction.timeline };
+			newTimeline[interaction.activeTimeline.time][
+				interaction.activeTimeline.index
+			].settings[name] = value;
 
-			setTimeline({
+			interaction.timeline = {
 				...newTimeline,
-			});
+			};
+
+			onChange(JSON.stringify(motionValue));
 		}
 	};
 
 	const getTimelineItemSettingValue = name => {
-		if (!isEmpty(timeline[activeTimeline.time])) {
-			return timeline[activeTimeline.time][activeTimeline.index].settings[
-				name
-			];
+		if (!isEmpty(interaction.timeline[interaction.activeTimeline.time])) {
+			return interaction.timeline[interaction.activeTimeline.time][
+				interaction.activeTimeline.index
+			].settings[name];
 		}
 	};
 
@@ -261,7 +231,7 @@ const MotionControl = props => {
 	function showTimeline() {
 		return (
 			<Fragment>
-				{isEmpty(timeline) && (
+				{isEmpty(interaction.timeline) && (
 					<div className='maxi-motion-control__timeline__no-effects'>
 						<p>
 							{__(
@@ -271,7 +241,7 @@ const MotionControl = props => {
 						</p>
 					</div>
 				)}
-				{Object.entries(timeline).map((time, i, arr) => {
+				{Object.entries(interaction.timeline).map((time, i, arr) => {
 					let prevValue = !isNil(arr[i - 1]) ? arr[i - 1][0] : 0;
 
 					return (
@@ -289,17 +259,21 @@ const MotionControl = props => {
 								{time[1].map((item, i) => (
 									<div
 										className={`maxi-motion-control__timeline__group__item ${
-											activeTimeline.time ===
+											interaction.activeTimeline.time ===
 												Number(time[0]) &&
-											activeTimeline.index === i
+											interaction.activeTimeline.index ===
+												i
 												? 'maxi-motion-control__timeline__group__item--active-item'
 												: ''
 										}`}
 										onClick={() => {
-											setActiveTimeline({
+											interaction.activeTimeline = {
 												time: Number(time[0]),
 												index: i,
-											});
+											};
+											onChange(
+												JSON.stringify(motionValue)
+											);
 										}}
 									>
 										<span>{item.type}</span>

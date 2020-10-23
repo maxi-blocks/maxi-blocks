@@ -1499,7 +1499,13 @@ export const __experimentalHover = {
 
 export const __experimentalMotion = {
 	label: 'Motion Effects',
-	interaction: {},
+	interaction: {
+		timeline: {},
+		activeTimeline: {
+			time: 0,
+			inde: 0,
+		},
+	},
 	entrance: {
 		type: '',
 		duration: 1,

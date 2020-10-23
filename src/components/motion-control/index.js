@@ -148,7 +148,7 @@ const MotionControl = props => {
 		} else {
 			if (isNil(find(timeline[time], { type }))) {
 				let newTimeline = { ...timeline };
-				newTimeline[time].push({
+				newTimeline[time].unshift({
 					type,
 					settings,
 				});
@@ -157,6 +157,11 @@ const MotionControl = props => {
 				});
 			}
 		}
+
+		setActiveTimeline({
+			time,
+			index: 0,
+		});
 	};
 
 	const removeTimeline = (type, time) => {
@@ -210,7 +215,7 @@ const MotionControl = props => {
 				[newTime]: [prevItem],
 			};
 		} else {
-			removeResult[newTime].push(prevItem);
+			removeResult[newTime].unshift(prevItem);
 			addResult = {
 				...removeResult,
 			};

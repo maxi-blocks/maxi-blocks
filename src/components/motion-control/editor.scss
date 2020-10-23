@@ -14,6 +14,12 @@
 			border-radius: 5px;
 			color: #464a53;
 			height: 31px;
+			background-color: #f2f2f2;
+			transition: all 0.5s;
+
+			&:hover {
+				background-color: #e2e4e5;
+			}
 		}
 	}
 	&__timeline {
@@ -35,6 +41,10 @@
 			justify-content: center;
 			align-items: center;
 			text-align: center;
+
+			p {
+				color: #9c9c9c;
+			}
 		}
 		&__group {
 			position: relative;

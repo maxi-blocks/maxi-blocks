@@ -9,7 +9,6 @@ motionElems.forEach(function (elem) {
 	const shapeDividerData = JSON.parse(
 		elem.getAttribute('data-shape-divider')
 	);
-	const hoverData = JSON.parse(elem.getAttribute('data-hover'));
 
 	// Shape Divider
 	if (shapeDividerData !== null) {
@@ -127,6 +126,68 @@ motionElems.forEach(function (elem) {
 				});
 			}
 		}
+
+		Object.entries(motionData.interaction.timeline).forEach(
+			(item, index, array) => {
+				let actions = {};
+				item[1].forEach(act => {
+					if (act.type === 'move') {
+						actions = {
+							...actions,
+							x: act.settings.x,
+						};
+					}
+					if (act.type === 'rotate') {
+						actions = {
+							...actions,
+							rotate: act.settings.x,
+						};
+					}
+					if (act.type === 'scale') {
+						actions = {
+							...actions,
+							scale: act.settings.x,
+						};
+					}
+					if (act.type === 'skew') {
+						actions = {
+							...actions,
+							skew: act.settings.x,
+						};
+					}
+					if (act.type === 'opacity') {
+						actions = {
+							...actions,
+							opacity: act.settings.opacity,
+						};
+					}
+					if (act.type === 'blur') {
+						actions = {
+							...actions,
+							webkitFilter: 'blur(' + act.settings.blur + 'px)',
+							filter: 'blur(' + act.settings.blur + 'px)',
+						};
+					}
+				});
+
+				const startTime = item[0];
+				const endTime =
+					typeof array[index + 1] !== 'undefined'
+						? array[index + 1][0]
+						: 100;
+
+				ScrollTrigger.create({
+					trigger: document.body,
+					start: '' + startTime + '% ' + startTime + '%',
+					end: '' + endTime + '% ' + endTime + '%',
+					animation: gsap
+						.timeline({ paused: true, reversed: true })
+						.to('.maxi-motion-effect-' + motionID + '', actions),
+					markers: true,
+					scrub: true,
+				});
+			}
+		);
 
 		// Vertical Effect
 		if ('vertical' in motionData) {

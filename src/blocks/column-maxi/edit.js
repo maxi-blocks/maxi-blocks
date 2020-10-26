@@ -57,7 +57,15 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
  */
 class edit extends MaxiBlock {
 	get getObject() {
-		const { uniqueID, background, backgroundHover } = this.props.attributes;
+		const {
+			uniqueID,
+			background,
+			backgroundHover,
+			overlay,
+			overlayHover,
+			border,
+			borderHover,
+		} = this.props.attributes;
 
 		let response = {
 			[`maxi-column-block__resizer__${uniqueID}`]: this.getResizerObject,
@@ -67,7 +75,15 @@ class edit extends MaxiBlock {
 
 		response = Object.assign(
 			response,
-			setBackgroundStyles(uniqueID, background, backgroundHover)
+			setBackgroundStyles(
+				uniqueID,
+				background,
+				backgroundHover,
+				overlay,
+				overlayHover,
+				border,
+				borderHover
+			)
 		);
 
 		return response;

@@ -863,6 +863,10 @@ export const getButtonIconObject = icon => {
 			response[key]['font-size'] =
 				value['font-size'] + value['font-sizeUnit'];
 		}
+
+		if (value.color) {
+			response[key].color = value.color;
+		}
 	});
 	return response;
 };

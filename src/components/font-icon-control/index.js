@@ -17,6 +17,8 @@ import { isObject } from 'lodash';
 import Modal from './modal';
 import SizeControl from '../size-control';
 import { getLastBreakpointValue } from '../../utils';
+import ColorControl from '../color-control';
+
 /**
  * Styles
  */
@@ -110,6 +112,19 @@ const FontIconControl = props => {
 									min: 0,
 									max: 100,
 								},
+							}}
+						/>
+						<ColorControl
+							label={__('Icon', 'maxi-blocks')}
+							color={getLastBreakpointValue(
+								value,
+								'color',
+								breakpoint
+							)}
+							defaultColor='#fff'
+							onChange={val => {
+								value[breakpoint].color = val;
+								onChange(JSON.stringify(value));
 							}}
 						/>
 					</div>

@@ -1,13 +1,10 @@
-.maxi-font-icon-control {
+.maxi-font-icon-picker {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-between;
 	align-items: center;
 	background: #fff;
-
-	&__settings-container {
-		width: 100%;
-	}
+	width: 100%;
 
 	&__upload {
 		flex: 1;
@@ -86,7 +83,7 @@
 			font-size: 42px;
 		}
 		&:hover {
-			.maxi-font-icon-control__insert {
+			.maxi-font-icon-picker__insert {
 				opacity: 1;
 			}
 		}

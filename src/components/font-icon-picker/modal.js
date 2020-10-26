@@ -10,7 +10,6 @@ const { Button, Modal, TextControl } = wp.components;
  */
 import classnames from 'classnames';
 import ReactPaginate from 'react-paginate';
-import { isEmpty } from 'lodash';
 
 /**
  * Internal dependencies.
@@ -187,14 +186,14 @@ const MaxiModalIcon = props => {
 			<Button onClick={onClick}>{btnText}</Button>
 			{open && (
 				<Modal
-					className='maxi-font-icon-control__modal'
+					className='maxi-font-icon-picker__modal'
 					title={__('Maxi Font Icons', 'maxi-blocks')}
 					shouldCloseOnEsc
 					shouldCloseOnClickOutside={false}
 					onRequestClose={onClick}
 				>
-					<div className='maxi-font-icon-control__main-content'>
-						<div className='maxi-font-icon-control__categories'>
+					<div className='maxi-font-icon-picker__main-content'>
+						<div className='maxi-font-icon-picker__categories'>
 							<ul>
 								<li>
 									<button
@@ -203,9 +202,9 @@ const MaxiModalIcon = props => {
 											setFilters({ cat: 'regular' })
 										}
 										className={classnames(
-											'maxi-font-icon-control__category-button',
+											'maxi-font-icon-picker__category-button',
 											filters.cat === 'regular' &&
-												'maxi-font-icon-control__category-button--active'
+												'maxi-font-icon-picker__category-button--active'
 										)}
 									>
 										Font-Awesome - Regular
@@ -218,9 +217,9 @@ const MaxiModalIcon = props => {
 											setFilters({ cat: 'solid' })
 										}
 										className={classnames(
-											'maxi-font-icon-control__category-button',
+											'maxi-font-icon-picker__category-button',
 											filters.cat === 'solid' &&
-												'maxi-font-icon-control__category-button--active'
+												'maxi-font-icon-picker__category-button--active'
 										)}
 									>
 										Font-Awesome - Solid
@@ -233,9 +232,9 @@ const MaxiModalIcon = props => {
 											setFilters({ cat: 'brands' })
 										}
 										className={classnames(
-											'maxi-font-icon-control__category-button',
+											'maxi-font-icon-picker__category-button',
 											filters.cat === 'brands' &&
-												'maxi-font-icon-control__category-button--active'
+												'maxi-font-icon-picker__category-button--active'
 										)}
 									>
 										Font-Awesome - Brands
@@ -246,16 +245,15 @@ const MaxiModalIcon = props => {
 								type='button'
 								onClick={() => {
 									setFilters({ search: '', cat: '' });
-									set;
 								}}
-								className='maxi-font-icon-control__clear-filters'
+								className='maxi-font-icon-picker__clear-filters'
 							>
 								Clear All Filters
 							</button>
 						</div>
 						{!isLoading ? (
 							<Fragment>
-								<div className='maxi-font-icon-control__icons'>
+								<div className='maxi-font-icon-picker__icons'>
 									<TextControl
 										value={filters.search}
 										onChange={value => {
@@ -263,12 +261,12 @@ const MaxiModalIcon = props => {
 										}}
 										placeholder={__('Search for Icons…')}
 									/>
-									<div className='maxi-font-icon-control__icons-list'>
+									<div className='maxi-font-icon-picker__icons-list'>
 										{displayedList.length ? (
 											displayedList
 												.slice(range.start, range.end)
 												.map(icon => (
-													<span className='maxi-font-icon-control__card'>
+													<span className='maxi-font-icon-picker__card'>
 														<i
 															className={`fa${icon.cat.charAt(
 																0
@@ -278,7 +276,7 @@ const MaxiModalIcon = props => {
 														/>
 														<button
 															type='button'
-															className='maxi-font-icon-control__insert'
+															className='maxi-font-icon-picker__insert'
 															onClick={() => {
 																onChange(
 																	`fa${icon.cat.charAt(
@@ -295,7 +293,7 @@ const MaxiModalIcon = props => {
 													</span>
 												))
 										) : (
-											<span className='maxi-font-icon-control__no-icons'>
+											<span className='maxi-font-icon-picker__no-icons'>
 												No Icons Found
 											</span>
 										)}
@@ -305,7 +303,7 @@ const MaxiModalIcon = props => {
 											previousLabel='Previous'
 											nextLabel='Next'
 											breakLabel='...'
-											breakClassName='maxi-font-icon-control__pagination-break'
+											breakClassName='maxi-font-icon-picker__pagination-break'
 											pageCount={pageCount}
 											marginPagesDisplayed={2}
 											pageRangeDisplayed={5}
@@ -320,8 +318,8 @@ const MaxiModalIcon = props => {
 												});
 												setCurrentPage(selected);
 											}}
-											containerClassName='maxi-font-icon-control__pagination'
-											activeClassName='maxi-font-icon-control__pagination--active'
+											containerClassName='maxi-font-icon-picker__pagination'
+											activeClassName='maxi-font-icon-picker__pagination--active'
 											forcePage={currentPage}
 											disableInitialCallback
 										/>
@@ -336,6 +334,5 @@ const MaxiModalIcon = props => {
 			)}
 		</Fragment>
 	);
-	// render END
-}; // class MaxiModal END
+};
 export default MaxiModalIcon;

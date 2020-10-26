@@ -1,4 +1,4 @@
-body.maxi-blocks--active .maxi-button-extra {
+.maxi-button-extra {
 	display: flex;
 	flex-direction: column;
 	width: 100%;
@@ -11,12 +11,18 @@ body.maxi-blocks--active .maxi-button-extra {
 		&--icon-left {
 			i {
 				order: 0;
+				@at-root .rtl #{&} {
+					order: 1;
+				}
 			}
 		}
 
 		&--icon-right {
 			i {
 				order: 1;
+				@at-root .rtl #{&} {
+					order: 0;
+				}
 			}
 		}
 	}

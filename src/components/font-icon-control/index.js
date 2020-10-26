@@ -153,6 +153,28 @@ const FontIconControl = props => {
 								},
 							}}
 						/>
+
+						<SizeControl
+							label={__('Spacing', 'maxi-blocks')}
+							unit={getLastBreakpointValue(
+								value,
+								'spacing',
+								breakpoint
+							)}
+							disableUnit
+							defaultValue=''
+							value={getLastBreakpointValue(
+								value,
+								'spacing',
+								breakpoint
+							)}
+							onChangeValue={val => {
+								value[breakpoint].spacing = val;
+								onChange(JSON.stringify(value));
+							}}
+							min={0}
+							max={99}
+						/>
 					</div>
 				</Fragment>
 			)}

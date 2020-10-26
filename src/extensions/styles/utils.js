@@ -847,6 +847,7 @@ export const setArrowStyles = (
 export const getButtonIconObject = icon => {
 	const response = {
 		label: icon.label,
+		position: icon.position,
 		general: {},
 		xxl: {},
 		xl: {},
@@ -866,6 +867,16 @@ export const getButtonIconObject = icon => {
 
 		if (value.color) {
 			response[key].color = value.color;
+		}
+
+		if (value.spacing) {
+			if (icon.position === 'left') {
+				response[key]['margin-right'] = `${value.spacing}px`;
+			}
+
+			if (icon.position === 'right') {
+				response[key]['margin-left'] = `${value.spacing}px`;
+			}
 		}
 	});
 	return response;

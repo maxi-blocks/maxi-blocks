@@ -8,9 +8,11 @@
 		height: auto;
 		align-items: center;
 		display: flex;
+
 		&--icon-left {
 			i {
 				order: 0;
+				margin-right: 5px;
 				@at-root .rtl #{&} {
 					order: 1;
 				}
@@ -20,6 +22,7 @@
 		&--icon-right {
 			i {
 				order: 1;
+				margin-left: 5px;
 				@at-root .rtl #{&} {
 					order: 0;
 				}

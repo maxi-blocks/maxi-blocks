@@ -144,7 +144,6 @@ class edit extends MaxiBlock {
 			margin: { ...JSON.parse(margin) },
 			padding: { ...JSON.parse(padding) },
 		};
-
 		return response;
 	}
 

@@ -405,9 +405,9 @@ const Inspector = props => {
 												<__experimentalFontIconControl
 													icon={icon}
 													onChange={icon => {
-														console.log(icon);
 														setAttributes({ icon });
 													}}
+													breakpoint={deviceType}
 												/>
 											),
 										},

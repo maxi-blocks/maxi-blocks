@@ -857,12 +857,12 @@ export const getButtonIconObject = icon => {
 	};
 
 	Object.entries(icon).forEach(([key, value]) => {
-		Object.entries(value).forEach(([prop, propValue]) => {
-			if (!isNil(propValue)) {
-				response[key][prop] = propValue;
-			}
-		});
-	});
+		if (key === 'label') return;
 
+		if (value['font-size']) {
+			response[key]['font-size'] =
+				value['font-size'] + value['font-sizeUnit'];
+		}
+	});
 	return response;
 };

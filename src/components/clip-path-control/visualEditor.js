@@ -1,13 +1,14 @@
 /**
  * WordPress dependencies
  */
-const { __, sprintf } = wp.i18n;
-const { useState, Fragment } = wp.element;
-const { Tooltip } = wp.components;
+const { useState } = wp.element;
 
 /**
  * Internal dependencies
  */
+import ClipPathRadiusPoint from './radiusPoint';
+import ClipPathSinglePoint from './singlePoint';
+import ClipPathDoublePoint from './doublePoint';
 
 /**
  * External dependencies
@@ -18,258 +19,6 @@ import { round, isArray, isEmpty } from 'lodash';
 /**
  * Component
  */
-const ClipPathRadiusPoint = props => {
-	const { radius, color, onChangeMoving, number, position } = props;
-
-	const tooltipText = sprintf(__('Radius: %s', 'maxi-blocks'), radius);
-
-	return (
-		<Fragment>
-			<span
-				className={`maxi-clip-path-button maxi-clip-path-button--radius maxi-clip-path-visual-editor-${number}`}
-				onMouseDown={e => {
-					e.preventDefault();
-					onChangeMoving(true, number);
-				}}
-				onMouseOut={e => {
-					if (
-						e.relatedTarget &&
-						!(
-							e.relatedTarget.classList.contains(
-								'maxi-clip-path-button'
-							) ||
-							e.relatedTarget.classList.contains(
-								'maxi-clip-path-button--radius__hidden'
-							) ||
-							e.relatedTarget.classList.contains(
-								'maxi-clip-path-visual-editor'
-							) ||
-							e.relatedTarget.classList.contains(
-								'maxi-clip-path-visual-editor__preview'
-							)
-						)
-					)
-						onChangeMoving(false);
-				}}
-				onMouseUp={() => {
-					onChangeMoving(false);
-				}}
-				style={{
-					top: `${position[1]}%`,
-					left: `${position[0]}%`,
-					width: `${radius * 2}%`,
-					height: `${radius * 2}%`,
-					borderColor: color,
-				}}
-			>
-				<Tooltip text={tooltipText} position='bottom center'>
-					<span className='maxi-clip-path-button__hidden-tooltip' />
-				</Tooltip>
-			</span>
-			<span
-				className='maxi-clip-path-button--radius__hidden'
-				onMouseUp={() => {
-					onChangeMoving(false);
-				}}
-				style={{
-					top: `${position[1]}%`,
-					left: `${position[0]}%`,
-					width: `calc(${radius * 2}% - 1rem)`,
-					height: `calc(${radius * 2}% - 1rem)`,
-				}}
-			/>
-		</Fragment>
-	);
-};
-
-const ClipPathSinglePoint = props => {
-	const {
-		top,
-		left,
-		color,
-		isMoving,
-		onChangeMoving,
-		setOpposite,
-		number,
-		position,
-	} = props;
-
-	const tooltipText =
-		number === 0
-			? sprintf(__('Top: %s', 'maxi-blocks'), top)
-			: sprintf(__('Left: %s', 'maxi-blocks'), left);
-
-	return (
-		<Fragment>
-			<span
-				className={`maxi-clip-path-button maxi-clip-path-button--single maxi-clip-path-visual-editor-${number}`}
-				onMouseDown={e => {
-					e.preventDefault();
-					setOpposite(false);
-					onChangeMoving(true, number);
-				}}
-				onMouseOut={e => {
-					if (
-						e.relatedTarget &&
-						!(
-							e.relatedTarget.classList.contains(
-								'maxi-clip-path-button'
-							) ||
-							e.relatedTarget.classList.contains(
-								'maxi-clip-path-button--radius__hidden'
-							) ||
-							e.relatedTarget.classList.contains(
-								'maxi-clip-path-visual-editor'
-							) ||
-							e.relatedTarget.classList.contains(
-								'maxi-clip-path-visual-editor__preview'
-							) ||
-							e.relatedTarget.parentElement.classList.contains(
-								'components-popover__content'
-							)
-						)
-					)
-						onChangeMoving(false);
-				}}
-				onMouseUp={() => {
-					onChangeMoving(false);
-				}}
-				style={{
-					...(number === 0 && {
-						left: `${position[0] + left}%`,
-						top: `${top}%`,
-					}),
-					...(number === 1 && {
-						top: `${position[1] + top}%`,
-						left: `${left}%`,
-					}),
-					backgroundColor: color,
-				}}
-			>
-				{!isMoving && (
-					<Tooltip text={tooltipText} position='bottom center'>
-						<span className='maxi-clip-path-button__hidden-tooltip' />
-					</Tooltip>
-				)}
-			</span>
-			<span
-				className={`maxi-clip-path-button maxi-clip-path-button--single maxi-clip-path-button--opposite maxi-clip-path-visual-editor-${number}`}
-				onMouseDown={e => {
-					e.preventDefault();
-					setOpposite(true);
-					onChangeMoving(true, number);
-				}}
-				onMouseOut={e => {
-					if (
-						e.relatedTarget &&
-						!(
-							e.relatedTarget.classList.contains(
-								'maxi-clip-path-button'
-							) ||
-							e.relatedTarget.classList.contains(
-								'maxi-clip-path-button--radius__hidden'
-							) ||
-							e.relatedTarget.classList.contains(
-								'maxi-clip-path-visual-editor'
-							) ||
-							e.relatedTarget.classList.contains(
-								'maxi-clip-path-visual-editor__preview'
-							) ||
-							e.relatedTarget.parentElement.classList.contains(
-								'components-popover__content'
-							)
-						)
-					)
-						onChangeMoving(false);
-				}}
-				onMouseUp={() => {
-					onChangeMoving(false);
-				}}
-				style={{
-					...(number === 0 && {
-						// red
-						left: `${
-							(position[0] - 50) * 2 - (position[0] + left - 100)
-						}%`,
-						top: `${top}%`,
-					}),
-					...(number === 1 && {
-						// Blue
-						top: `${
-							(position[1] - 50) * 2 - (position[1] + top - 100)
-						}%`,
-						left: `${left}%`,
-					}),
-					backgroundColor: color,
-				}}
-			>
-				{!isMoving && (
-					<Tooltip text={tooltipText} position='bottom center'>
-						<span className='maxi-clip-path-button__hidden-tooltip' />
-					</Tooltip>
-				)}
-			</span>
-		</Fragment>
-	);
-};
-
-const ClipPathDoublePoint = props => {
-	const { handle, color, isMoving, onChangeMoving, number } = props;
-
-	const tooltipText = sprintf(
-		__('Top: %1$s Left: %2$s', 'maxi-blocks'),
-		handle[1],
-		handle[0]
-	);
-
-	return (
-		<span
-			className={`maxi-clip-path-button maxi-clip-path-visual-editor-${number}`}
-			onMouseDown={e => {
-				e.preventDefault();
-				onChangeMoving(true, number);
-			}}
-			onMouseOut={e => {
-				if (
-					e.relatedTarget &&
-					!(
-						e.relatedTarget.classList.contains(
-							'maxi-clip-path-button'
-						) ||
-						e.relatedTarget.classList.contains(
-							'maxi-clip-path-button--radius__hidden'
-						) ||
-						e.relatedTarget.classList.contains(
-							'maxi-clip-path-visual-editor'
-						) ||
-						e.relatedTarget.classList.contains(
-							'maxi-clip-path-visual-editor__preview'
-						) ||
-						e.relatedTarget.parentElement.classList.contains(
-							'components-popover__content'
-						)
-					)
-				)
-					onChangeMoving(false);
-			}}
-			onMouseUp={() => {
-				onChangeMoving(false);
-			}}
-			style={{
-				top: `${handle[1]}%`,
-				left: `${handle[0]}%`,
-				backgroundColor: color,
-			}}
-		>
-			{!isMoving && (
-				<Tooltip text={tooltipText} position='bottom center'>
-					<span className='maxi-clip-path-button__hidden-tooltip' />
-				</Tooltip>
-			)}
-		</span>
-	);
-};
-
 const ClipPathVisualEditor = props => {
 	const { clipPathOptions, colors, onChange, className } = props;
 
@@ -319,81 +68,100 @@ const ClipPathVisualEditor = props => {
 		return value;
 	};
 
+	const onMouseMove = e => {
+		const {
+			x: absXAxis,
+			y: absYAxis,
+			width: absWidth,
+			height: absHeight,
+		} = e.target.parentElement.getBoundingClientRect();
+		const newTop = round(((e.clientX - absXAxis) / absWidth) * 100);
+		const newLeft = round(((e.clientY - absYAxis) / absHeight) * 100);
+
+		if (clipPathOptions.type === 'circle' && selectedItem === 0) {
+			const posTop = clipPathOptions.content[1][1];
+			const posLeft = clipPathOptions.content[1][0];
+
+			clipPathOptions.content[selectedItem] = [
+				Math.min(
+					round(
+						Math.sqrt(
+							(newLeft - posLeft) ** 2 + (newTop - posTop) ** 2
+						)
+					),
+					50
+				),
+			];
+		} else if (
+			clipPathOptions.type === 'ellipse' &&
+			(selectedItem === 0 || selectedItem === 1)
+		) {
+			if (selectedItem === 0) {
+				clipPathOptions.content[selectedItem] = [
+					isOpposite
+						? Math.abs(
+								100 -
+									setAxisLimits(newTop) -
+									(100 - clipPathOptions.content[2][0])
+						  )
+						: setAxisLimits(newTop) - clipPathOptions.content[2][0],
+				];
+			}
+			if (selectedItem === 1) {
+				clipPathOptions.content[selectedItem] = [
+					isOpposite
+						? Math.abs(
+								100 -
+									setAxisLimits(newLeft) -
+									(100 - clipPathOptions.content[2][1])
+						  )
+						: setAxisLimits(newLeft) -
+						  clipPathOptions.content[2][1],
+				];
+			}
+		} else if (clipPathOptions.type === 'inset') {
+			switch (selectedItem) {
+				case 0:
+					clipPathOptions.content[selectedItem] = [
+						setAxisLimits(newLeft),
+					];
+					break;
+				case 1:
+					clipPathOptions.content[selectedItem] = [
+						100 - setAxisLimits(newTop),
+					];
+					break;
+				case 2:
+					clipPathOptions.content[selectedItem] = [
+						100 - setAxisLimits(newLeft),
+					];
+					break;
+				case 3:
+					clipPathOptions.content[selectedItem] = [
+						setAxisLimits(newTop),
+					];
+					break;
+				default:
+					break;
+			}
+		} else {
+			clipPathOptions.content[selectedItem] = [
+				setAxisLimits(newTop),
+				setAxisLimits(newLeft),
+			];
+		}
+
+		changeClipPath(getClipPath(clipPathOptions));
+	};
+
 	return (
 		<div
 			ref={e => e && !size && changeSize(e.getBoundingClientRect())}
 			className={classes}
 			onMouseMove={e => {
-				if (!isMoving) return;
-
-				const {
-					x: absXAxis,
-					y: absYAxis,
-					width: absWidth,
-					height: absHeight,
-				} = e.target.parentElement.getBoundingClientRect();
-				const newTop = round(((e.clientX - absXAxis) / absWidth) * 100);
-				const newLeft = round(
-					((e.clientY - absYAxis) / absHeight) * 100
-				);
-
-				if (clipPathOptions.type === 'circle' && selectedItem === 0) {
-					const posTop = clipPathOptions.content[1][1];
-					const posLeft = clipPathOptions.content[1][0];
-
-					clipPathOptions.content[selectedItem] = [
-						Math.min(
-							round(
-								Math.sqrt(
-									(newLeft - posLeft) ** 2 +
-										(newTop - posTop) ** 2
-								)
-							),
-							50
-						),
-					];
-				} else if (
-					clipPathOptions.type === 'ellipse' &&
-					(selectedItem === 0 || selectedItem === 1)
-				) {
-					if (selectedItem === 0) {
-						clipPathOptions.content[selectedItem] = [
-							isOpposite
-								? Math.abs(
-										100 -
-											setAxisLimits(newTop) -
-											(100 -
-												clipPathOptions.content[2][0])
-								  )
-								: setAxisLimits(newTop) -
-								  clipPathOptions.content[2][0],
-						];
-					}
-					if (selectedItem === 1) {
-						clipPathOptions.content[selectedItem] = [
-							isOpposite
-								? Math.abs(
-										100 -
-											setAxisLimits(newLeft) -
-											(100 -
-												clipPathOptions.content[2][1])
-								  )
-								: setAxisLimits(newLeft) -
-								  clipPathOptions.content[2][1],
-						];
-					}
-				} else {
-					clipPathOptions.content[selectedItem] = [
-						setAxisLimits(newTop),
-						setAxisLimits(newLeft),
-					];
-				}
-
-				changeClipPath(getClipPath(clipPathOptions));
+				if (isMoving) onMouseMove(e);
 			}}
-			onMouseUp={() => {
-				changeIsMoving(false);
-			}}
+			onMouseUp={() => changeIsMoving(false)}
 			style={{ ...(!!size && { height: size.width }) }}
 		>
 			{clipPathOptions.content.map((handle, i) => {
@@ -418,12 +186,12 @@ const ClipPathVisualEditor = props => {
 						<ClipPathSinglePoint
 							top={
 								i === 1
-									? handle[0]
+									? clipPathOptions.content[2][1] + handle[0]
 									: clipPathOptions.content[2][1]
 							}
 							left={
 								i === 0
-									? handle[0]
+									? clipPathOptions.content[2][0] + handle[0]
 									: clipPathOptions.content[2][0]
 							}
 							color={colors[i]}
@@ -441,6 +209,53 @@ const ClipPathVisualEditor = props => {
 							}}
 						/>
 					);
+				if (clipPathOptions.type === 'inset') {
+					const getInsetTop = num => {
+						if (num === 0) return handle[0];
+						if (num === 2) return 100 - handle[0];
+
+						return (
+							Math.abs(
+								clipPathOptions.content[2][0] +
+									clipPathOptions.content[0][0] -
+									100
+							) /
+								2 +
+							clipPathOptions.content[0][0]
+						);
+					};
+
+					const getInsetLeft = num => {
+						if (num === 1) return 100 - handle[0];
+						if (num === 3) return handle[0];
+
+						return (
+							Math.abs(
+								clipPathOptions.content[1][0] +
+									clipPathOptions.content[3][0] -
+									100
+							) /
+								2 +
+							clipPathOptions.content[3][0]
+						);
+					};
+
+					return (
+						<ClipPathSinglePoint
+							top={getInsetTop(i)}
+							left={getInsetLeft(i)}
+							color={colors[i]}
+							isMoving={isMoving}
+							onChangeMoving={(isMoving, item) => {
+								changeIsMoving(isMoving);
+								changeSelectedItem(item);
+
+								if (!isMoving) onChange(clipPath);
+							}}
+							number={i}
+						/>
+					);
+				}
 
 				return (
 					<ClipPathDoublePoint

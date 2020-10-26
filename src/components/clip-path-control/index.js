@@ -45,9 +45,29 @@ const ClipPathOption = props => {
 
 	const getLabel = () => {
 		if (type === 'circle' && number === 0)
-			return `${__('Radius', 'maxi-blocks')}`;
-		if (type === 'circle' && number === 1)
-			return `${__('Center', 'maxi-blocks')}`;
+			return __('Radius', 'maxi-blocks');
+		if (
+			(type === 'circle' && number === 1) ||
+			(type === 'ellipse' && number === 2)
+		)
+			return __('Center', 'maxi-blocks');
+		if (type === 'ellipse' && number === 0)
+			return __('Left', 'maxi-blocks');
+		if (type === 'ellipse' && number === 1) return __('Top', 'maxi-blocks');
+
+		if (type === 'inset')
+			switch (number) {
+				case 0:
+					return __('Top', 'maxi-blocks');
+				case 1:
+					return __('Right', 'maxi-blocks');
+				case 2:
+					return __('Bottom', 'maxi-blocks');
+				case 3:
+					return __('Left', 'maxi-blocks');
+				default:
+					break;
+			}
 
 		return `${__('Point', 'maxi-blocks')} ${number + 1}`;
 	};
@@ -90,7 +110,7 @@ const ClipPathOption = props => {
 					)}
 				</div>
 			</BaseControl>
-			{type !== 'circle' && (
+			{type === 'polygon' && (
 				<div className='maxi-clip-path-controller__handle maxi-clip-path-delete-handle'>
 					<span onClick={() => onRemove(number)} />
 				</div>

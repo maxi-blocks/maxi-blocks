@@ -7,6 +7,7 @@ import { __experimentalBackgroundDisplayer } from '../../components';
  * External dependencies
  */
 import classnames from 'classnames';
+import { isObject } from 'lodash';
 
 /**
  * Save
@@ -22,6 +23,7 @@ const save = props => {
 			extraClassName,
 			fullWidth,
 			motion,
+			icon,
 		},
 	} = props;
 
@@ -35,6 +37,8 @@ const save = props => {
 		fullWidth === 'full' ? 'alignfull' : null
 	);
 
+	const iconValue = !isObject(icon) ? JSON.parse(icon) : icon;
+
 	return (
 		<div
 			className={classes}
@@ -43,7 +47,9 @@ const save = props => {
 			data-motion-id={uniqueID}
 		>
 			<__experimentalBackgroundDisplayer background={background} />
-			Hi This is the font-icon block
+			<div className='maxi-font-icon-block__wrapper'>
+				{iconValue.icon && <i className={iconValue.icon} />}
+			</div>
 		</div>
 	);
 };

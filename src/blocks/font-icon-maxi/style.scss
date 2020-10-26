@@ -1,25 +1,5 @@
-body.maxi-blocks--active .maxi-divider-block {
-	display: flex;
-	justify-content: space-between;
-	// margin: auto;
-	width: 100%;
-	&--horizontal {
-		hr {
-			margin: 0.5rem 0 !important;
-		}
-	}
-	&--vertical {
-		hr {
-			margin: 0 0.5rem !important;
-		}
-	}
-	hr {
-		border: 0;
+body.maxi-blocks--active .maxi-font-icon-block {
+	&__wrapper {
 		position: relative;
-
-		&:before,
-		&:after {
-			content: none !important;
-		}
 	}
 }

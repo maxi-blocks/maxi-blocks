@@ -18,6 +18,7 @@ import {
 	MaxiBlock,
 	__experimentalToolbar,
 	__experimentalBackgroundDisplayer,
+	__experimentalFontIconPicker,
 } from '../../components';
 
 /**
@@ -85,18 +86,15 @@ class edit extends MaxiBlock {
 
 	render() {
 		const {
-			attributes: {
-				uniqueID,
-
-				extraClassName,
-				background,
-				display,
-			},
+			attributes: { uniqueID, extraClassName, background, display, icon },
 			className,
 			deviceType,
+			setAttributes,
 		} = this.props;
 
 		const displayValue = !isObject(display) ? JSON.parse(display) : display;
+
+		const iconValue = !isObject(icon) ? JSON.parse(icon) : icon;
 
 		const classes = classnames(
 			'maxi-block',
@@ -112,10 +110,22 @@ class edit extends MaxiBlock {
 		return [
 			<Inspector {...this.props} />,
 			<__experimentalToolbar {...this.props} />,
-
 			<__experimentalBlock className={classes}>
 				<__experimentalBackgroundDisplayer background={background} />
-				This is the font icon block
+				<div className='maxi-font-icon-block__wrapper'>
+					{iconValue.icon ? (
+						<i className={iconValue.icon} />
+					) : (
+						<__experimentalFontIconPicker
+							onChange={icon => {
+								iconValue.icon = icon;
+								setAttributes({
+									icon: JSON.stringify(iconValue),
+								});
+							}}
+						/>
+					)}
+				</div>
 			</__experimentalBlock>,
 		];
 	}

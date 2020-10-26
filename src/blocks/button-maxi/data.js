@@ -495,29 +495,26 @@ export const alignmentText = {
 export const icon = {
 	label: 'icon',
 	icon: '',
+	position: 'left',
 	general: {
-		position: 'left',
 		color: '',
 		'font-sizeUnit': 'px',
 		'font-size': '',
 		spacing: '',
 	},
 	xxl: {
-		position: '',
 		color: '',
 		'font-sizeUnit': '',
 		'font-size': '',
 		spacing: '',
 	},
 	xl: {
-		position: '',
 		color: '',
 		'font-sizeUnit': '',
 		'font-size': '',
 		spacing: '',
 	},
 	l: {
-		position: '',
 		color: '',
 		'font-sizeUnit': '',
 		'default-font-sizeUnit': 'px',
@@ -526,21 +523,18 @@ export const icon = {
 		spacing: '',
 	},
 	m: {
-		position: '',
 		color: '',
 		'font-sizeUnit': '',
 		'font-size': '',
 		spacing: '',
 	},
 	s: {
-		position: '',
 		color: '',
 		'font-sizeUnit': '',
 		'font-size': '',
 		spacing: '',
 	},
 	xs: {
-		position: '',
 		color: '',
 		'font-sizeUnit': '',
 		'font-size': '',

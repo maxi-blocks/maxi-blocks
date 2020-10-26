@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { Button } = wp.components;
+const { Button, SelectControl } = wp.components;
 const { Fragment } = wp.element;
 
 /**
@@ -79,6 +79,39 @@ const FontIconControl = props => {
 						</Button>
 					</div>
 					<div className='maxi-font-icon-control__settings-container'>
+						<ColorControl
+							label={__('Icon', 'maxi-blocks')}
+							color={getLastBreakpointValue(
+								value,
+								'color',
+								breakpoint
+							)}
+							defaultColor='#fff'
+							onChange={val => {
+								value[breakpoint].color = val;
+								onChange(JSON.stringify(value));
+							}}
+						/>
+
+						<SelectControl
+							label={__('Position', 'maxi-blocks')}
+							value={value.position}
+							options={[
+								{
+									label: __('Left', 'maxi-blocks'),
+									value: 'left',
+								},
+								{
+									label: __('Right', 'maxi-blocks'),
+									value: 'right',
+								},
+							]}
+							onChange={val => {
+								value.position = val;
+								onChange(JSON.stringify(value));
+							}}
+						/>
+
 						<SizeControl
 							label={__('Size', 'maxi-blocks')}
 							unit={getLastBreakpointValue(
@@ -118,19 +151,6 @@ const FontIconControl = props => {
 									min: 0,
 									max: 100,
 								},
-							}}
-						/>
-						<ColorControl
-							label={__('Icon', 'maxi-blocks')}
-							color={getLastBreakpointValue(
-								value,
-								'color',
-								breakpoint
-							)}
-							defaultColor='#fff'
-							onChange={val => {
-								value[breakpoint].color = val;
-								onChange(JSON.stringify(value));
 							}}
 						/>
 					</div>

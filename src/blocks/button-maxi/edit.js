@@ -68,7 +68,6 @@ class edit extends MaxiBlock {
 			icon: { ...getButtonIconObject(JSON.parse(icon)) },
 		};
 
-		console.log(JSON.parse(icon));
 		return response;
 	}
 
@@ -179,6 +178,13 @@ class edit extends MaxiBlock {
 			className
 		);
 
+		const buttonClasses = classnames(
+			'maxi-button-extra__button',
+			iconValue.position === 'left'
+				? 'maxi-button-extra__button--icon-left'
+				: 'maxi-button-extra__button--icon-right'
+		);
+
 		return [
 			<Inspector {...this.props} />,
 			<__experimentalToolbar {...this.props} />,
@@ -186,7 +192,7 @@ class edit extends MaxiBlock {
 				className={classes}
 				data-maxi_initial_block_class={defaultBlockStyle}
 			>
-				<div className='maxi-button-extra__button'>
+				<div className={buttonClasses}>
 					{iconValue.icon && <i className={iconValue.icon} />}
 					<RichText
 						withoutInteractiveFormatting

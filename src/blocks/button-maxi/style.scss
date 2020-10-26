@@ -8,8 +8,16 @@ body.maxi-blocks--active .maxi-button-extra {
 		height: auto;
 		align-items: center;
 		display: flex;
-	}
-	a {
-		display: inline-block;
+		&--icon-left {
+			i {
+				order: 0;
+			}
+		}
+
+		&--icon-right {
+			i {
+				order: 1;
+			}
+		}
 	}
 }

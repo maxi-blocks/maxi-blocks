@@ -60,16 +60,22 @@ const MaxiModalIcon = props => {
 		}
 
 		if (!response.ok) {
-			const message = `Unable to load icons remotely: ${response.status}, icons have been loaded from the local backup file`;
+			let message = `Unable to load icons remotely: ${response.status}, Icons have been loaded from the local backup file`;
 
-			const value = {
-				value: JSON.stringify(jsonData),
-				timestamp: new Date().getTime(),
-			};
+			const iconsData = localStorage.getItem('maxi-fa-icons');
 
-			localStorage.setItem('maxi-fa-icons', JSON.stringify(value));
+			if (!iconsData) {
+				const value = {
+					value: JSON.stringify(jsonData),
+					timestamp: new Date().getTime(),
+				};
 
-			setIconsState(jsonData);
+				localStorage.setItem('maxi-fa-icons', JSON.stringify(value));
+
+				setIconsState(jsonData);
+
+				message = `Unable to load icons remotely: ${response.status}, We've used the localStorage version`;
+			}
 
 			console.error(message);
 		}

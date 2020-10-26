@@ -67,6 +67,8 @@ class edit extends MaxiBlock {
 		const response = {
 			icon: { ...getButtonIconObject(JSON.parse(icon)) },
 		};
+
+		console.log(JSON.parse(icon));
 		return response;
 	}
 

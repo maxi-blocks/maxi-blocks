@@ -81,11 +81,17 @@ const FontIconControl = props => {
 					<div className='maxi-font-icon-control__settings-container'>
 						<SizeControl
 							label={__('Size', 'maxi-blocks')}
-							unit={value[breakpoint]['font-sizeUnit']}
+							unit={getLastBreakpointValue(
+								value,
+								'font-sizeUnit',
+								breakpoint
+							)}
+							defaultUnit='px'
 							onChangeUnit={val => {
 								value[breakpoint]['font-sizeUnit'] = val;
 								onChange(JSON.stringify(value));
 							}}
+							defaultValue=''
 							value={getLastBreakpointValue(
 								value,
 								'font-size',

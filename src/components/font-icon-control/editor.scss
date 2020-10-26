@@ -5,6 +5,10 @@
 	align-items: center;
 	background: #fff;
 
+	&__settings-container {
+		width: 100%;
+	}
+
 	&__upload {
 		flex: 1;
 		display: block;
@@ -17,7 +21,7 @@
 		background-color: #f2f2f2;
 	}
 
-	.maxi-font-icon-control__icon {
+	&__icon {
 		width: 100%;
 		display: flex;
 		justify-content: center;
@@ -28,7 +32,7 @@
 		}
 	}
 
-	.maxi-font-icon-control__control-buttons {
+	&__control-buttons {
 		display: flex;
 		justify-content: space-around;
 		width: 100%;

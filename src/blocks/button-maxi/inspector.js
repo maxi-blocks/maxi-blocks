@@ -400,7 +400,6 @@ const Inspector = props => {
 										},
 										{
 											label: __('Icon', 'maxi-blocks'),
-											disablePadding: true,
 											content: (
 												<__experimentalFontIconControl
 													icon={icon}

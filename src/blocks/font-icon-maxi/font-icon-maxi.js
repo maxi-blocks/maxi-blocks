@@ -23,14 +23,14 @@ import save from './save';
  */
 import './style.scss';
 import './editor.scss';
-import { dividerIcon } from '../../icons';
+import { fontIcon } from '../../icons';
 
 /**
  * Block
  */
 registerBlockType('maxi-blocks/font-icon-maxi', {
 	title: __('Font Icon Maxi', 'maxi-blocks'),
-	icon: dividerIcon,
+	icon: fontIcon,
 	description: 'Insert, modify or style a font icon',
 	category: 'maxi-blocks',
 	supports: {

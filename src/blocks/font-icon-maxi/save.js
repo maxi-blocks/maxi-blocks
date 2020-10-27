@@ -21,7 +21,6 @@ const save = props => {
 			defaultBlockStyle,
 			background,
 			extraClassName,
-			fullWidth,
 			motion,
 			icon,
 		},

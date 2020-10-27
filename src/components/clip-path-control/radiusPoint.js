@@ -9,7 +9,14 @@ const { Tooltip } = wp.components;
  * Component
  */
 const ClipPathRadiusPoint = props => {
-	const { radius, color, onChangeMoving, number, position } = props;
+	const {
+		radius,
+		color,
+		onMouseOut,
+		onChangeMoving,
+		number,
+		position,
+	} = props;
 
 	const tooltipText = sprintf(__('Radius: %s', 'maxi-blocks'), radius);
 
@@ -21,26 +28,7 @@ const ClipPathRadiusPoint = props => {
 					e.preventDefault();
 					onChangeMoving(true, number);
 				}}
-				onMouseOut={e => {
-					if (
-						e.relatedTarget &&
-						!(
-							e.relatedTarget.classList.contains(
-								'maxi-clip-path-button'
-							) ||
-							e.relatedTarget.classList.contains(
-								'maxi-clip-path-button--radius__hidden'
-							) ||
-							e.relatedTarget.classList.contains(
-								'maxi-clip-path-visual-editor'
-							) ||
-							e.relatedTarget.classList.contains(
-								'maxi-clip-path-visual-editor__preview'
-							)
-						)
-					)
-						onChangeMoving(false);
-				}}
+				onMouseOut={e => onMouseOut(e, () => onChangeMoving(false))}
 				onMouseUp={() => {
 					onChangeMoving(false);
 				}}

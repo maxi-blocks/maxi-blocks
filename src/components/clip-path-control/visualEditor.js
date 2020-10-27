@@ -6,6 +6,7 @@ const { useState } = wp.element;
 /**
  * Internal dependencies
  */
+import useDeepEffect from '../../extensions/hooks/useDeepEffect';
 import ClipPathRadiusPoint from './radiusPoint';
 import ClipPathSinglePoint from './singlePoint';
 import ClipPathDoublePoint from './doublePoint';
@@ -21,8 +22,6 @@ import { round, isArray, isEmpty } from 'lodash';
  */
 const ClipPathVisualEditor = props => {
 	const { clipPathOptions, colors, onChange, className } = props;
-
-	const [isOpposite, changeIsOpposite] = useState(false);
 
 	const classes = classnames('maxi-clip-path-visual-editor', className);
 
@@ -60,6 +59,7 @@ const ClipPathVisualEditor = props => {
 	const [selectedItem, changeSelectedItem] = useState(null);
 	const [isMoving, changeIsMoving] = useState(false);
 	const [size, changeSize] = useState(null);
+	const [isOpposite, changeIsOpposite] = useState(false);
 
 	const setAxisLimits = value => {
 		if (value <= 0) return 0;
@@ -154,15 +154,41 @@ const ClipPathVisualEditor = props => {
 		changeClipPath(getClipPath(clipPathOptions));
 	};
 
+	const onMouseOut = (e, callback) => {
+		if (
+			e.relatedTarget &&
+			!(
+				e.relatedTarget.classList.contains('maxi-clip-path-button') ||
+				e.relatedTarget.classList.contains(
+					'maxi-clip-path-button--radius__hidden'
+				) ||
+				e.relatedTarget.classList.contains(
+					'maxi-clip-path-visual-editor'
+				) ||
+				e.relatedTarget.classList.contains(
+					'maxi-clip-path-visual-editor__preview'
+				) ||
+				e.relatedTarget.parentElement.classList.contains(
+					'components-popover__content'
+				)
+			)
+		)
+			callback();
+	};
+
+	useDeepEffect(() => {
+		changeClipPath(getClipPath(clipPathOptions));
+	}, [clipPathOptions]);
+
 	return (
 		<div
-			ref={e => e && !size && changeSize(e.getBoundingClientRect())}
+			ref={e => e && !size && changeSize(e.offsetWidth)}
 			className={classes}
 			onMouseMove={e => {
 				if (isMoving) onMouseMove(e);
 			}}
 			onMouseUp={() => changeIsMoving(false)}
-			style={{ ...(!!size && { height: size.width }) }}
+			style={{ height: `${size}px` }}
 		>
 			{clipPathOptions.content.map((handle, i) => {
 				if (clipPathOptions.type === 'circle' && i === 0)
@@ -170,6 +196,7 @@ const ClipPathVisualEditor = props => {
 						<ClipPathRadiusPoint
 							radius={handle[0]}
 							color={colors[i]}
+							onMouseOut={onMouseOut}
 							onChangeMoving={(isMoving, item) => {
 								changeIsMoving(isMoving);
 								changeSelectedItem(item);
@@ -196,6 +223,7 @@ const ClipPathVisualEditor = props => {
 							}
 							color={colors[i]}
 							isMoving={isMoving}
+							onMouseOut={onMouseOut}
 							onChangeMoving={(isMoving, item) => {
 								changeIsMoving(isMoving);
 								changeSelectedItem(item);
@@ -246,6 +274,7 @@ const ClipPathVisualEditor = props => {
 							left={getInsetLeft(i)}
 							color={colors[i]}
 							isMoving={isMoving}
+							onMouseOut={onMouseOut}
 							onChangeMoving={(isMoving, item) => {
 								changeIsMoving(isMoving);
 								changeSelectedItem(item);
@@ -262,6 +291,7 @@ const ClipPathVisualEditor = props => {
 						handle={handle}
 						color={colors[i]}
 						isMoving={isMoving}
+						onMouseOut={onMouseOut}
 						onChangeMoving={(isMoving, item) => {
 							changeIsMoving(isMoving);
 							changeSelectedItem(item);

@@ -65,7 +65,7 @@
 	.maxi-clip-path-visual-editor {
 		position: relative;
 		width: 100%;
-		height: 12rem;
+		min-height: 291px;
 		border: 1px solid #000;
 		overflow: hidden;
 
@@ -75,7 +75,7 @@
 			left: 0.25px;
 			width: 100%;
 			height: 100%;
-			background-color: grey;
+			background-color: #464a53;
 		}
 	}
 

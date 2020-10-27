@@ -14,6 +14,7 @@ const ClipPathSinglePoint = props => {
 		left,
 		color,
 		isMoving,
+		onMouseOut,
 		onChangeMoving,
 		setOpposite = null,
 		number,
@@ -34,29 +35,7 @@ const ClipPathSinglePoint = props => {
 					setOpposite && setOpposite(false);
 					onChangeMoving(true, number);
 				}}
-				onMouseOut={e => {
-					if (
-						e.relatedTarget &&
-						!(
-							e.relatedTarget.classList.contains(
-								'maxi-clip-path-button'
-							) ||
-							e.relatedTarget.classList.contains(
-								'maxi-clip-path-button--radius__hidden'
-							) ||
-							e.relatedTarget.classList.contains(
-								'maxi-clip-path-visual-editor'
-							) ||
-							e.relatedTarget.classList.contains(
-								'maxi-clip-path-visual-editor__preview'
-							) ||
-							e.relatedTarget.parentElement.classList.contains(
-								'components-popover__content'
-							)
-						)
-					)
-						onChangeMoving(false);
-				}}
+				onMouseOut={e => onMouseOut(e, () => onChangeMoving(false))}
 				onMouseUp={() => {
 					onChangeMoving(false);
 				}}
@@ -80,29 +59,7 @@ const ClipPathSinglePoint = props => {
 						setOpposite && setOpposite(true);
 						onChangeMoving(true, number);
 					}}
-					onMouseOut={e => {
-						if (
-							e.relatedTarget &&
-							!(
-								e.relatedTarget.classList.contains(
-									'maxi-clip-path-button'
-								) ||
-								e.relatedTarget.classList.contains(
-									'maxi-clip-path-button--radius__hidden'
-								) ||
-								e.relatedTarget.classList.contains(
-									'maxi-clip-path-visual-editor'
-								) ||
-								e.relatedTarget.classList.contains(
-									'maxi-clip-path-visual-editor__preview'
-								) ||
-								e.relatedTarget.parentElement.classList.contains(
-									'components-popover__content'
-								)
-							)
-						)
-							onChangeMoving(false);
-					}}
+					onMouseOut={e => onMouseOut(e, () => onChangeMoving(false))}
 					onMouseUp={() => {
 						onChangeMoving(false);
 					}}

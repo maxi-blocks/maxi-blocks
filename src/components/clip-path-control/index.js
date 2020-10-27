@@ -110,7 +110,7 @@ const ClipPathOption = props => {
 					)}
 				</div>
 			</BaseControl>
-			{type === 'polygon' && (
+			{type === 'polygon' && number > 2 && (
 				<div className='maxi-clip-path-controller__handle maxi-clip-path-delete-handle'>
 					<span onClick={() => onRemove(number)} />
 				</div>
@@ -121,6 +121,8 @@ const ClipPathOption = props => {
 
 const ClipPathControl = props => {
 	const { clipPath, className, onChange } = props;
+
+	const classes = classnames('maxi-clip-path-control', className);
 
 	const [hasClipPath, changeHasClipPath] = useState(
 		isEmpty(clipPath) ? 0 : 1
@@ -278,8 +280,6 @@ const ClipPathControl = props => {
 		return false;
 	};
 
-	const classes = classnames('maxi-clip-path-control', className);
-
 	return (
 		<div className={classes}>
 			<__experimentalFancyRadioControl
@@ -384,11 +384,9 @@ const ClipPathControl = props => {
 															generateCP();
 														}}
 														onRemove={number => {
-															if (cp.content < 2)
-																delete cp
-																	.content[
-																	number
-																];
+															delete cp.content[
+																number
+															];
 															generateCP();
 														}}
 														number={i}

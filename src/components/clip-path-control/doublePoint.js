@@ -8,7 +8,14 @@ const { Tooltip } = wp.components;
  * Component
  */
 const ClipPathDoublePoint = props => {
-	const { handle, color, isMoving, onChangeMoving, number } = props;
+	const {
+		handle,
+		color,
+		isMoving,
+		onMouseOut,
+		onChangeMoving,
+		number,
+	} = props;
 
 	const tooltipText = sprintf(
 		__('Top: %1$s Left: %2$s', 'maxi-blocks'),
@@ -23,29 +30,7 @@ const ClipPathDoublePoint = props => {
 				e.preventDefault();
 				onChangeMoving(true, number);
 			}}
-			onMouseOut={e => {
-				if (
-					e.relatedTarget &&
-					!(
-						e.relatedTarget.classList.contains(
-							'maxi-clip-path-button'
-						) ||
-						e.relatedTarget.classList.contains(
-							'maxi-clip-path-button--radius__hidden'
-						) ||
-						e.relatedTarget.classList.contains(
-							'maxi-clip-path-visual-editor'
-						) ||
-						e.relatedTarget.classList.contains(
-							'maxi-clip-path-visual-editor__preview'
-						) ||
-						e.relatedTarget.parentElement.classList.contains(
-							'components-popover__content'
-						)
-					)
-				)
-					onChangeMoving(false);
-			}}
+			onMouseOut={e => onMouseOut(e, () => onChangeMoving(false))}
 			onMouseUp={() => {
 				onChangeMoving(false);
 			}}

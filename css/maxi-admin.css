@@ -43,6 +43,7 @@
 }
 #maxi-button__show-responsive {
 	padding: 5px 10px;
+	margin-left: 0;
 }
 #maxi-button__layout img,
 #maxi-button__go-to-customizer img {

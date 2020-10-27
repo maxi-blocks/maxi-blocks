@@ -13,6 +13,8 @@ function addMaxiLayoutButton() {
 
 	let buttonDiv = document.createElement('div');
 	let html = '<div class="maxi-toolbar-layout">';
+	html += `<a type="button" href="javascript:void(0)" target="_blank" id="maxi-button__show-responsive" class="button maxi-button maxi-button__toolbar">\
+	</i><img src="../wp-content/plugins/maxi-blocks/img/maxi-responsive.svg" /></a>`;
 	html += `<a type="button" id="maxi-button__layout" class="button maxi-button maxi-button__toolbar" aria-label="${__(
 		'Maxi Cloud Library',
 		'maxi-blocks'
@@ -29,8 +31,6 @@ function addMaxiLayoutButton() {
 		'Global Styles',
 		'maxi-blocks'
 	)}</a>`;
-	html += `<a type="button" href="javascript:void(0)" target="_blank" id="maxi-button__show-responsive" class="button maxi-button maxi-button__toolbar">\
-	</i><img src="../wp-content/plugins/maxi-blocks/img/maxi-responsive.svg" /></a>`;
 	html += '</div>';
 
 	buttonDiv.innerHTML = html;
@@ -41,6 +41,21 @@ function addMaxiLayoutButton() {
 		.addEventListener('click', MaxiInsertLayout);
 
 	document
+		.querySelector('.maxi-responsive-selector__close')
+		.addEventListener('click', function (e) {
+			e.preventDefault();
+
+			const responsiveToolbar = document.getElementById(
+				'maxi-blocks__responsive-toolbar'
+			);
+			const responsiveToolbarButton = document.getElementById(
+				'maxi-button__show-responsive'
+			);
+
+			responsiveToolbar.style.display = 'none';
+			responsiveToolbarButton.classList.remove('active-button');
+		});
+	document
 		.getElementById('maxi-button__show-responsive')
 		.addEventListener('click', function (e) {
 			e.preventDefault();
@@ -49,7 +64,7 @@ function addMaxiLayoutButton() {
 				'maxi-blocks__responsive-toolbar'
 			);
 
-			if (responsiveToolbar.style.display == 'block') {
+			if (responsiveToolbar.style.display === 'block') {
 				responsiveToolbar.style.display = 'none';
 				this.classList.remove('active-button');
 			} else {

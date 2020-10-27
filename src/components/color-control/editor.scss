@@ -1,4 +1,13 @@
 .maxi-color-control {
+	&__opacity {
+		.components-base-control__field {
+			flex-direction: column;
+			align-items: flex-start !important;
+			&__label {
+				margin: 0;
+			}
+		}
+	}
 	&__display {
 		display: flex;
 		justify-content: space-between;

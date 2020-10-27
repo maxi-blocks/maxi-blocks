@@ -12,11 +12,17 @@ import classnames from 'classnames';
 import { isObject, isNil, isNumber, round, isEmpty } from 'lodash';
 
 /**
+ * Styles
+ */
+import './editor.scss';
+
+/**
  * Component
  */
 const OpacityControl = props => {
 	const {
 		label,
+		fullWidthMode = false,
 		opacity,
 		defaultOpacity,
 		className,
@@ -30,7 +36,11 @@ const OpacityControl = props => {
 		? JSON.parse(defaultOpacity)
 		: defaultOpacity;
 
-	const classes = classnames('maxi-opacity-control', className);
+	const classes = classnames(
+		'maxi-opacity-control',
+		fullWidthMode && 'maxi-opacity-control--full-width',
+		className
+	);
 
 	const getValue = () => {
 		const response = getLastBreakpointValue(value, 'opacity', breakpoint);

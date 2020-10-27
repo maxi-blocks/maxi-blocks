@@ -22,7 +22,6 @@ import { isEmpty } from 'lodash';
  */
 const SVGLayer = props => {
 	const { SVGOptions, defaultSVGOptions, onChange } = props;
-
 	return (
 		<Fragment>
 			<SettingTabsControl
@@ -32,8 +31,11 @@ const SVGLayer = props => {
 						label: __('Shape', 'maxi-blocks'),
 						content: (
 							<__experimentalSVGDefaultsDisplayer
-								SVGData={SVGOptions.SVGData}
+								SVGOptions={SVGOptions}
+								SVGCurrentElement={SVGOptions.SVGCurrentElement}
 								onChange={obj => {
+									SVGOptions.SVGCurrentElement =
+										obj.SVGCurrentElement;
 									SVGOptions.SVGElement = obj.SVGElement;
 									SVGOptions.SVGMediaID = obj.SVGMediaID;
 									SVGOptions.SVGMediaURL = obj.SVGMediaURL;

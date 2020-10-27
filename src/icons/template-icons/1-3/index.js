@@ -4,15 +4,8 @@
 const { SVG, Path } = wp.primitives;
 
 const oneThree = (
-	<SVG
-		xmlns='http://www.w3.org/2000/svg'
-		x='0'
-		y='0'
-		version='1.1'
-		viewBox='0 0 112 36'
-		space='preserve'
-	>
-		<Path d='M0 1h42v34H0zM47.3 1H112v34H47.3z' />
+	<SVG xmlns='http://www.w3.org/2000/svg' viewBox='0 0 112 36'>
+		<Path d='M1 1h38.9v34H1zM46.3 1H111v34H46.3z' />
 	</SVG>
 );
 

@@ -19,6 +19,7 @@ import './editor.scss';
 const FancyRadioControl = props => {
 	const {
 		className,
+		fullWidthMode = false,
 		label = '',
 		selected,
 		options,
@@ -31,6 +32,7 @@ const FancyRadioControl = props => {
 		type === 'classic-border' &&
 			'maxi-classic-radio-control maxi-classic-radio-control__border',
 		type === 'fancy' && 'maxi-fancy-radio-control',
+		fullWidthMode && 'maxi-fancy-radio-control--full-width',
 		className
 	);
 

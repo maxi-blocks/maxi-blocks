@@ -76,6 +76,7 @@ const GradientControl = props => {
 			</BaseControl>
 			<__experimentalOpacityControl
 				label={__('Gradient Opacity', 'maxi-blocks')}
+				fullWidthMode
 				opacity={gradientOpacityValue.opacity}
 				defaultOpacity={defaultGradient}
 				onChange={val => {

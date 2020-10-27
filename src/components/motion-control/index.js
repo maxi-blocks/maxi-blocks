@@ -37,13 +37,26 @@ const MotionControl = props => {
 		switch (type) {
 			case 'move':
 			case 'rotate':
-			case 'skew':
-			case 'scale':
 				settings = {
 					effectPosition: time,
 					x: 0,
 					y: 0,
 					z: 0,
+				};
+				break;
+			case 'skew':
+				settings = {
+					effectPosition: time,
+					x: 0,
+					y: 0,
+				};
+				break;
+			case 'scale':
+				settings = {
+					effectPosition: time,
+					x: 1,
+					y: 1,
+					z: 1,
 				};
 				break;
 			case 'opacity':
@@ -97,18 +110,18 @@ const MotionControl = props => {
 				return o.type !== type;
 			});
 
-			setTimeline({
+			interaction.timeline = {
 				...interaction.timeline,
 				[time]: [...result],
-			});
+			};
 
 			if (isEmpty(result)) {
 				let newTimeline = { ...interaction.timeline };
 				delete newTimeline[time];
 
-				setTimeline({
+				interaction.timeline = {
 					...newTimeline,
-				});
+				};
 			}
 		}
 
@@ -243,7 +256,6 @@ const MotionControl = props => {
 				)}
 				{Object.entries(interaction.timeline).map((time, i, arr) => {
 					let prevValue = !isNil(arr[i - 1]) ? arr[i - 1][0] : 0;
-
 					return (
 						<Fragment>
 							<div
@@ -337,9 +349,7 @@ const MotionControl = props => {
 				)}
 				{!isNil(getCurrentTimelineItem()) &&
 					(getCurrentTimelineItem().type === 'move' ||
-						getCurrentTimelineItem().type === 'scale' ||
-						getCurrentTimelineItem().type === 'rotate' ||
-						getCurrentTimelineItem().type === 'skew') && (
+						getCurrentTimelineItem().type === 'rotate') && (
 						<Fragment>
 							<RangeControl
 								label={__('X', 'maxi-blocks')}
@@ -371,6 +381,64 @@ const MotionControl = props => {
 						</Fragment>
 					)}
 				{!isNil(getCurrentTimelineItem()) &&
+					getCurrentTimelineItem().type === 'skew' && (
+						<Fragment>
+							<RangeControl
+								label={__('X', 'maxi-blocks')}
+								value={getTimelineItemSettingValue('x')}
+								onChange={value =>
+									updateTimelineItemSettings(value, 'x')
+								}
+								min={-80}
+								max={80}
+							/>
+							<RangeControl
+								label={__('Y', 'maxi-blocks')}
+								value={getTimelineItemSettingValue('y')}
+								onChange={value =>
+									updateTimelineItemSettings(value, 'y')
+								}
+								min={-80}
+								max={80}
+							/>
+						</Fragment>
+					)}
+				{!isNil(getCurrentTimelineItem()) &&
+					getCurrentTimelineItem().type === 'scale' && (
+						<Fragment>
+							<RangeControl
+								label={__('X', 'maxi-blocks')}
+								value={getTimelineItemSettingValue('x')}
+								onChange={value =>
+									updateTimelineItemSettings(value, 'x')
+								}
+								min={-3}
+								max={3}
+								step={0.1}
+							/>
+							<RangeControl
+								label={__('Y', 'maxi-blocks')}
+								value={getTimelineItemSettingValue('y')}
+								onChange={value =>
+									updateTimelineItemSettings(value, 'y')
+								}
+								min={-3}
+								max={3}
+								step={0.1}
+							/>
+							<RangeControl
+								label={__('Z', 'maxi-blocks')}
+								value={getTimelineItemSettingValue('z')}
+								onChange={value =>
+									updateTimelineItemSettings(value, 'z')
+								}
+								min={-3}
+								max={3}
+								step={0.1}
+							/>
+						</Fragment>
+					)}
+				{!isNil(getCurrentTimelineItem()) &&
 					getCurrentTimelineItem().type === 'opacity' && (
 						<Fragment>
 							<RangeControl
@@ -397,8 +465,8 @@ const MotionControl = props => {
 								}
 								initialPosition={1}
 								min={0}
-								max={1}
-								step={0.1}
+								max={100}
+								step={1}
 							/>
 						</Fragment>
 					)}

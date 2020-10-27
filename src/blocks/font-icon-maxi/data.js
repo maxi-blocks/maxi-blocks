@@ -1,10 +1,10 @@
 const icon = {
 	label: 'icon',
-	// icon: '',
+	icon: '',
 	general: {
 		color: '',
 		'font-sizeUnit': 'px',
-		'font-size': '',
+		'font-size': '50',
 	},
 	xxl: {
 		color: '',

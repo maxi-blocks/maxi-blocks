@@ -847,7 +847,6 @@ export const setArrowStyles = (
 export const getButtonIconObject = icon => {
 	const response = {
 		label: icon.label,
-		position: icon.position || null,
 		general: {},
 		xxl: {},
 		xl: {},

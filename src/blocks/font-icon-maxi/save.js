@@ -28,6 +28,7 @@ const save = props => {
 	} = props;
 
 	const classes = classnames(
+		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
 		'maxi-block maxi-font-icon-block',
 		blockStyle,
 		extraClassName,

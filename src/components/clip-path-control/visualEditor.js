@@ -63,16 +63,16 @@ const ClipPathVisualEditor = props => {
 	const [size, changeSize] = useState(null);
 	const [isOpposite, changeIsOpposite] = useState(false);
 
+	useEffect(() => {
+		changeClipPath(getClipPath(clipPathOptions));
+	});
+
 	const setAxisLimits = value => {
 		if (value <= 0) return 0;
 		if (value >= 100) return 100;
 
 		return value;
 	};
-
-	useEffect(() => {
-		changeClipPath(getClipPath(clipPathOptions));
-	});
 
 	const onMouseMove = e => {
 		const {
@@ -81,8 +81,8 @@ const ClipPathVisualEditor = props => {
 			width: absWidth,
 			height: absHeight,
 		} = e.target.parentElement.getBoundingClientRect();
-		const newTop = round(((e.clientX - absXAxis) / absWidth) * 100);
-		const newLeft = round(((e.clientY - absYAxis) / absHeight) * 100);
+		const newTop = round(((e.clientY - absYAxis) / absHeight) * 100);
+		const newLeft = round(((e.clientX - absXAxis) / absWidth) * 100);
 
 		if (clipPathOptions.type === 'circle' && selectedItem === 0) {
 			const posTop = clipPathOptions.content[1][1];
@@ -92,7 +92,7 @@ const ClipPathVisualEditor = props => {
 				Math.min(
 					round(
 						Math.sqrt(
-							(newLeft - posLeft) ** 2 + (newTop - posTop) ** 2
+							(newTop - posTop) ** 2 + (newLeft - posLeft) ** 2
 						)
 					),
 					50
@@ -107,10 +107,11 @@ const ClipPathVisualEditor = props => {
 					isOpposite
 						? Math.abs(
 								100 -
-									setAxisLimits(newTop) -
+									setAxisLimits(newLeft) -
 									(100 - clipPathOptions.content[2][0])
 						  )
-						: setAxisLimits(newTop) - clipPathOptions.content[2][0],
+						: setAxisLimits(newLeft) -
+						  clipPathOptions.content[2][0],
 				];
 			}
 			if (selectedItem === 1) {
@@ -118,34 +119,33 @@ const ClipPathVisualEditor = props => {
 					isOpposite
 						? Math.abs(
 								100 -
-									setAxisLimits(newLeft) -
+									setAxisLimits(newTop) -
 									(100 - clipPathOptions.content[2][1])
 						  )
-						: setAxisLimits(newLeft) -
-						  clipPathOptions.content[2][1],
+						: setAxisLimits(newTop) - clipPathOptions.content[2][1],
 				];
 			}
 		} else if (clipPathOptions.type === 'inset') {
 			switch (selectedItem) {
 				case 0:
-					clipPathOptions.content[0] = [setAxisLimits(newLeft)];
+					clipPathOptions.content[0] = [setAxisLimits(newTop)];
 					break;
 				case 1:
-					clipPathOptions.content[1] = [100 - setAxisLimits(newTop)];
+					clipPathOptions.content[1] = [100 - setAxisLimits(newLeft)];
 					break;
 				case 2:
-					clipPathOptions.content[2] = [100 - setAxisLimits(newLeft)];
+					clipPathOptions.content[2] = [100 - setAxisLimits(newTop)];
 					break;
 				case 3:
-					clipPathOptions.content[3] = [setAxisLimits(newTop)];
+					clipPathOptions.content[3] = [setAxisLimits(newLeft)];
 					break;
 				default:
 					break;
 			}
 		} else {
 			clipPathOptions.content[selectedItem] = [
-				setAxisLimits(newTop),
 				setAxisLimits(newLeft),
+				setAxisLimits(newTop),
 			];
 		}
 

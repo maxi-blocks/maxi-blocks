@@ -517,8 +517,6 @@ export const icon = {
 	l: {
 		color: '',
 		'font-sizeUnit': '',
-		'default-font-sizeUnit': 'px',
-
 		'font-size': '',
 		spacing: '',
 	},

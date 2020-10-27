@@ -847,7 +847,7 @@ export const setArrowStyles = (
 export const getButtonIconObject = icon => {
 	const response = {
 		label: icon.label,
-		position: icon.position,
+		position: icon.position || null,
 		general: {},
 		xxl: {},
 		xl: {},
@@ -858,7 +858,7 @@ export const getButtonIconObject = icon => {
 	};
 
 	Object.entries(icon).forEach(([key, value]) => {
-		if (key === 'label') return;
+		if (key === 'label' || key === 'position') return;
 
 		if (value['font-size']) {
 			response[key]['font-size'] =

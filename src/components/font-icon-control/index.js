@@ -23,7 +23,14 @@ import FontIconPicker from '../font-icon-picker';
  * Component
  */
 const FontIconControl = props => {
-	const { className, icon, onChange, breakpoint } = props;
+	const {
+		className,
+		icon,
+		onChange,
+		breakpoint,
+		disableSpacing = false,
+		disablePosition = false,
+	} = props;
 
 	const value = !isObject(icon) ? JSON.parse(icon) : icon;
 
@@ -53,24 +60,26 @@ const FontIconControl = props => {
 						}}
 					/>
 
-					<SelectControl
-						label={__('Position', 'maxi-blocks')}
-						value={value.position}
-						options={[
-							{
-								label: __('Left', 'maxi-blocks'),
-								value: 'left',
-							},
-							{
-								label: __('Right', 'maxi-blocks'),
-								value: 'right',
-							},
-						]}
-						onChange={val => {
-							value.position = val;
-							onChange(JSON.stringify(value));
-						}}
-					/>
+					{!disablePosition && (
+						<SelectControl
+							label={__('Position', 'maxi-blocks')}
+							value={value.position}
+							options={[
+								{
+									label: __('Left', 'maxi-blocks'),
+									value: 'left',
+								},
+								{
+									label: __('Right', 'maxi-blocks'),
+									value: 'right',
+								},
+							]}
+							onChange={val => {
+								value.position = val;
+								onChange(JSON.stringify(value));
+							}}
+						/>
+					)}
 
 					<SizeControl
 						label={__('Size', 'maxi-blocks')}
@@ -114,27 +123,29 @@ const FontIconControl = props => {
 						}}
 					/>
 
-					<SizeControl
-						label={__('Spacing', 'maxi-blocks')}
-						unit={getLastBreakpointValue(
-							value,
-							'spacing',
-							breakpoint
-						)}
-						disableUnit
-						defaultValue=''
-						value={getLastBreakpointValue(
-							value,
-							'spacing',
-							breakpoint
-						)}
-						onChangeValue={val => {
-							value[breakpoint].spacing = val;
-							onChange(JSON.stringify(value));
-						}}
-						min={0}
-						max={99}
-					/>
+					{!disableSpacing && (
+						<SizeControl
+							label={__('Spacing', 'maxi-blocks')}
+							unit={getLastBreakpointValue(
+								value,
+								'spacing',
+								breakpoint
+							)}
+							disableUnit
+							defaultValue=''
+							value={getLastBreakpointValue(
+								value,
+								'spacing',
+								breakpoint
+							)}
+							onChangeValue={val => {
+								value[breakpoint].spacing = val;
+								onChange(JSON.stringify(value));
+							}}
+							min={0}
+							max={99}
+						/>
+					)}
 				</Fragment>
 			)}
 		</div>

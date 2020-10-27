@@ -13,6 +13,7 @@ import {
 	getTransformObject,
 	setBackgroundStyles,
 	getLastBreakpointValue,
+	getButtonIconObject,
 } from '../../utils';
 import {
 	MaxiBlock,
@@ -37,6 +38,7 @@ class edit extends MaxiBlock {
 		let response = {
 			[uniqueID]: this.getNormalObject,
 			[`${uniqueID}:hover`]: this.getHoverObject,
+			[`${uniqueID} i`]: this.getIconObject,
 		};
 
 		response = Object.assign(
@@ -44,6 +46,15 @@ class edit extends MaxiBlock {
 			setBackgroundStyles(uniqueID, background, backgroundHover)
 		);
 
+		return response;
+	}
+
+	get getIconObject() {
+		const { icon } = this.props.attributes;
+
+		const response = {
+			icon: { ...getButtonIconObject(JSON.parse(icon)) },
+		};
 		return response;
 	}
 

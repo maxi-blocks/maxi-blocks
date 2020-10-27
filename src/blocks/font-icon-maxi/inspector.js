@@ -25,6 +25,7 @@ import {
 	__experimentalTransformControl,
 	__experimentalEntranceAnimationControl,
 	__experimentalFancyRadioControl,
+	__experimentalFontIconControl,
 } from '../../components';
 import { getDefaultProp } from '../../utils';
 
@@ -58,6 +59,7 @@ const Inspector = props => {
 			display,
 			motion,
 			transform,
+			icon,
 		},
 		deviceType,
 		setAttributes,
@@ -93,6 +95,21 @@ const Inspector = props => {
 								<AccordionControl
 									isSecondary
 									items={[
+										{
+											label: __('Icon', 'maxi-blocks'),
+											content: (
+												<__experimentalFontIconControl
+													icon={icon}
+													onChange={icon => {
+														setAttributes({ icon });
+													}}
+													breakpoint={deviceType}
+													disableSpacing
+													disablePosition
+												/>
+											),
+										},
+
 										deviceType === 'general' && {
 											label: __(
 												'Background',

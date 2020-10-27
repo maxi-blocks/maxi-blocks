@@ -1,11 +1,10 @@
 const icon = {
 	label: 'icon',
-	icon: '',
+	// icon: '',
 	general: {
 		color: '',
 		'font-sizeUnit': 'px',
 		'font-size': '',
-		spacing: '',
 	},
 	xxl: {
 		color: '',
@@ -20,7 +19,6 @@ const icon = {
 	l: {
 		color: '',
 		'font-sizeUnit': '',
-		'default-font-sizeUnit': 'px',
 		'font-size': '',
 	},
 	m: {

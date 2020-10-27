@@ -68,6 +68,11 @@ const attributes = {
 		default: JSON.stringify(attributesData.__experimentalPosition),
 	},
 
+	size: {
+		type: 'string',
+		default: JSON.stringify(attributesData.size),
+	},
+
 	display: {
 		type: 'string',
 		default: JSON.stringify(attributesData.__experimentalDisplay),

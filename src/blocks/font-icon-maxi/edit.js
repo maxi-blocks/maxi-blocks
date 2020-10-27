@@ -56,6 +56,7 @@ class edit extends MaxiBlock {
 			position,
 			display,
 			transform,
+			boxShadow,
 			border,
 		} = this.props.attributes;
 
@@ -66,6 +67,7 @@ class edit extends MaxiBlock {
 			border: { ...JSON.parse(border) },
 			borderWidth: { ...JSON.parse(border).borderWidth },
 			borderRadius: { ...JSON.parse(border).borderRadius },
+			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
 			zIndex: { ...JSON.parse(zIndex) },
 			position: { ...JSON.parse(position) },
 			positionOptions: { ...JSON.parse(position).options },

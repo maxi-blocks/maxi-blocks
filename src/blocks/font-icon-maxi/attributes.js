@@ -2,7 +2,7 @@
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults';
-import icon from './data';
+import { icon, alignmentIcon } from './data';
 
 /**
  * Attributes
@@ -15,7 +15,7 @@ const attributes = {
 
 	alignment: {
 		type: 'string',
-		default: JSON.stringify(attributesData.alignment),
+		default: JSON.stringify(alignmentIcon),
 	},
 
 	opacity: {

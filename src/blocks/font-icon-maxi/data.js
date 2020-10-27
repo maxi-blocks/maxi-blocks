@@ -1,4 +1,4 @@
-const icon = {
+export const icon = {
 	label: 'icon',
 	icon: '',
 	general: {
@@ -38,4 +38,26 @@ const icon = {
 	},
 };
 
-export default icon;
+export const alignmentIcon = {
+	general: {
+		alignment: 'center',
+	},
+	xxl: {
+		alignment: '',
+	},
+	xl: {
+		alignment: '',
+	},
+	l: {
+		alignment: '',
+	},
+	m: {
+		alignment: '',
+	},
+	s: {
+		alignment: '',
+	},
+	xs: {
+		alignment: '',
+	},
+};

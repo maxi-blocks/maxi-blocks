@@ -45,7 +45,11 @@ const save = props => {
 			data-motion-id={uniqueID}
 		>
 			<__experimentalBackgroundDisplayer background={background} />
-			{iconValue.icon && <i className={iconValue.icon} />}
+			{iconValue.icon && (
+				<span className='maxi-font-icon-block__icon'>
+					<i className={iconValue.icon} />
+				</span>
+			)}
 		</div>
 	);
 };

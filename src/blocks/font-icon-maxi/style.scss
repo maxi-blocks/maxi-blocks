@@ -1,7 +1,6 @@
 body.maxi-blocks--active .maxi-font-icon-block {
-	text-align: center;
-	i {
+	&__icon {
+		display: block;
 		position: relative;
-		font-size: 50px;
 	}
 }

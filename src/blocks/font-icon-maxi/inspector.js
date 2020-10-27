@@ -16,6 +16,7 @@ import {
 	BoxShadowControl,
 	BorderControl,
 	SettingTabsControl,
+	AlignmentControl,
 	__experimentalZIndexControl,
 	__experimentalAxisControl,
 	__experimentalResponsiveControl,
@@ -60,6 +61,7 @@ const Inspector = props => {
 			motion,
 			transform,
 			icon,
+			alignment,
 		},
 		deviceType,
 		setAttributes,
@@ -110,17 +112,39 @@ const Inspector = props => {
 													'maxi-blocks'
 												),
 												content: (
-													<__experimentalFontIconControl
-														icon={icon}
-														onChange={icon => {
-															setAttributes({
-																icon,
-															});
-														}}
-														breakpoint={deviceType}
-														disableSpacing
-														disablePosition
-													/>
+													<Fragment>
+														<__experimentalFontIconControl
+															icon={icon}
+															onChange={icon => {
+																setAttributes({
+																	icon,
+																});
+															}}
+															breakpoint={
+																deviceType
+															}
+															disableSpacing
+															disablePosition
+														/>
+														<AlignmentControl
+															label={__(
+																'Alignment',
+																'maxi-blocks'
+															)}
+															alignment={
+																alignment
+															}
+															onChange={alignment =>
+																setAttributes({
+																	alignment,
+																})
+															}
+															breakpoint={
+																deviceType
+															}
+															disableJustify
+														/>
+													</Fragment>
 												),
 											},
 

@@ -14,6 +14,7 @@ import {
 	setBackgroundStyles,
 	getLastBreakpointValue,
 	getButtonIconObject,
+	getAlignmentTextObject,
 } from '../../utils';
 import {
 	MaxiBlock,
@@ -38,7 +39,8 @@ class edit extends MaxiBlock {
 		let response = {
 			[uniqueID]: this.getNormalObject,
 			[`${uniqueID}:hover`]: this.getHoverObject,
-			[`${uniqueID} i`]: this.getIconObject,
+			[`${uniqueID} .maxi-font-icon-block__icon`]: this.getWrapperObject,
+			[`${uniqueID} .maxi-font-icon-block__icon i`]: this.getIconObject,
 		};
 
 		response = Object.assign(
@@ -55,6 +57,16 @@ class edit extends MaxiBlock {
 		const response = {
 			icon: { ...getButtonIconObject(JSON.parse(icon)) },
 		};
+		return response;
+	}
+
+	get getWrapperObject() {
+		const { alignment } = this.props.attributes;
+
+		const response = {
+			alignment: { ...getAlignmentTextObject(JSON.parse(alignment)) },
+		};
+
 		return response;
 	}
 
@@ -133,7 +145,9 @@ class edit extends MaxiBlock {
 			<__experimentalBlock className={classes}>
 				<__experimentalBackgroundDisplayer background={background} />
 				{iconValue.icon ? (
-					<i className={iconValue.icon} />
+					<span className='maxi-font-icon-block__icon'>
+						<i className={iconValue.icon} />
+					</span>
 				) : (
 					<__experimentalFontIconPicker
 						onChange={icon => {

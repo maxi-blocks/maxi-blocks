@@ -13,7 +13,7 @@ function addMaxiLayoutButton() {
 
 	let buttonDiv = document.createElement('div');
 	let html = '<div class="maxi-toolbar-layout">';
-	html += `<a type="button" href="javascript:void(0)" target="_blank" id="maxi-button__show-responsive" class="button maxi-button maxi-button__toolbar active-button">\
+	html += `<a type="button" href="javascript:void(0)" target="_blank" id="maxi-button__show-responsive" class="button maxi-button maxi-button__toolbar">\
 	</i><img src="../wp-content/plugins/maxi-blocks/img/maxi-responsive.svg" /></a>`;
 	html += `<a type="button" id="maxi-button__layout" class="button maxi-button maxi-button__toolbar" aria-label="${__(
 		'Maxi Cloud Library',
@@ -64,10 +64,7 @@ function addMaxiLayoutButton() {
 				'maxi-blocks__responsive-toolbar'
 			);
 
-			if (
-				responsiveToolbar.style.display === '' ||
-				responsiveToolbar.style.display === 'block'
-			) {
+			if (responsiveToolbar.style.display === 'block') {
 				responsiveToolbar.style.display = 'none';
 				this.classList.remove('active-button');
 			} else {

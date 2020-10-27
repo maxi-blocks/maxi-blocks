@@ -32,10 +32,10 @@ const SVGLayer = props => {
 						content: (
 							<__experimentalSVGDefaultsDisplayer
 								SVGOptions={SVGOptions}
-								type='background'
+								SVGCurrentElement={SVGOptions.SVGCurrentElement}
 								onChange={obj => {
-									SVGOptions.SVGCurrentShape =
-										obj.SVGCurrentShape;
+									SVGOptions.SVGCurrentElement =
+										obj.SVGCurrentElement;
 									SVGOptions.SVGElement = obj.SVGElement;
 									SVGOptions.SVGMediaID = obj.SVGMediaID;
 									SVGOptions.SVGMediaURL = obj.SVGMediaURL;

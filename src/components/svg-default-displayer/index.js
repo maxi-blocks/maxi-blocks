@@ -26,7 +26,7 @@ import './editor.scss';
  * Component
  */
 const SVGDefaultsDisplayer = props => {
-	const { SVGOptions, type, SVGCurrentElement, onChange, className } = props;
+	const { SVGOptions, SVGCurrentElement, onChange, className } = props;
 
 	const classes = classnames('maxi-svg-defaults', className);
 
@@ -37,12 +37,8 @@ const SVGDefaultsDisplayer = props => {
 				return (
 					<Button
 						className={`maxi-svg-defaults__item ${
-							type === 'background' &&
-							SVGOptions.SVGCurrentShape === i
-								? 'maxi-svg-defaults__item--active'
-								: type === 'shape' && SVGCurrentElement === i
-								? 'maxi-svg-defaults__item--active'
-								: ''
+							SVGCurrentElement === i &&
+							'maxi-svg-defaults__item--active'
 						}
 						`}
 						onClick={() => {
@@ -58,7 +54,7 @@ const SVGDefaultsDisplayer = props => {
 							const resEl = injectImgSVG(svg, resData);
 
 							onChange({
-								SVGCurrentShape: i,
+								SVGCurrentElement: i,
 								SVGElement: resEl.outerHTML,
 								SVGMediaID: null,
 								SVGMediaURL: null,

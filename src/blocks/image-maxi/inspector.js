@@ -96,7 +96,7 @@ const Inspector = props => {
 		deviceType,
 		setAttributes,
 	} = props;
-	console.log(SVGCurrentElement);
+
 	const sizeValue = !isObject(size) ? JSON.parse(size) : size;
 
 	const defaultSize = JSON.parse(getDefaultProp(clientId, 'size'));
@@ -733,7 +733,6 @@ const Inspector = props => {
 											content: (
 												<__experimentalSVGDefaultsDisplayer
 													SVGOptions={SVGData}
-													type='shape'
 													SVGCurrentElement={
 														SVGCurrentElement
 													}
@@ -760,7 +759,7 @@ const Inspector = props => {
 														setAttributes({
 															...SVGOptions,
 															SVGCurrentElement:
-																SVGOptions.SVGCurrentShape,
+																SVGOptions.SVGCurrentElement,
 															SVGElement: injectImgSVG(
 																SVGOptions.SVGElement,
 																SVGValue

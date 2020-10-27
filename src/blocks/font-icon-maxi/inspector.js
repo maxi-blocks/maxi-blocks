@@ -4,7 +4,7 @@
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
 const { Fragment } = wp.element;
-const { SelectControl, TextControl } = wp.components;
+const { TextControl } = wp.components;
 
 /**
  * Internal dependencies
@@ -14,9 +14,8 @@ import {
 	BackgroundControl,
 	BlockStylesControl,
 	BoxShadowControl,
-	FullSizeControl,
+	BorderControl,
 	SettingTabsControl,
-	__experimentalDividerControl,
 	__experimentalZIndexControl,
 	__experimentalAxisControl,
 	__experimentalResponsiveControl,
@@ -48,6 +47,8 @@ const Inspector = props => {
 			backgroundHover,
 			boxShadow,
 			boxShadowHover,
+			border,
+			borderHover,
 			padding,
 			margin,
 			extraClassName,
@@ -196,6 +197,70 @@ const Inspector = props => {
 																		/>
 																	)}
 																</Fragment>
+															),
+														},
+													]}
+												/>
+											),
+										},
+										{
+											label: __('Border', 'maxi-blocks'),
+											disablePadding: true,
+											content: (
+												<SettingTabsControl
+													items={[
+														{
+															label: __(
+																'Normal',
+																'maxi-blocks'
+															),
+															content: (
+																<BorderControl
+																	border={
+																		border
+																	}
+																	defaultBorder={getDefaultProp(
+																		clientId,
+																		'border'
+																	)}
+																	onChange={border =>
+																		setAttributes(
+																			{
+																				border,
+																			}
+																		)
+																	}
+																	breakpoint={
+																		deviceType
+																	}
+																/>
+															),
+														},
+														{
+															label: __(
+																'Hover',
+																'maxi-blocks'
+															),
+															content: (
+																<BorderControl
+																	border={
+																		borderHover
+																	}
+																	defaultBorder={getDefaultProp(
+																		clientId,
+																		'borderHover'
+																	)}
+																	onChange={borderHover =>
+																		setAttributes(
+																			{
+																				borderHover,
+																			}
+																		)
+																	}
+																	breakpoint={
+																		deviceType
+																	}
+																/>
 															),
 														},
 													]}

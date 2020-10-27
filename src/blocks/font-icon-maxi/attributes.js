@@ -33,6 +33,16 @@ const attributes = {
 		default: JSON.stringify(attributesData.backgroundHover),
 	},
 
+	border: {
+		type: 'string',
+		default: JSON.stringify(attributesData.border),
+	},
+
+	borderHover: {
+		type: 'string',
+		default: JSON.stringify(attributesData.borderHover),
+	},
+
 	boxShadow: {
 		type: 'string',
 		default: JSON.stringify(attributesData.boxShadow),

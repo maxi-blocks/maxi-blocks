@@ -112,20 +112,18 @@ class edit extends MaxiBlock {
 			<__experimentalToolbar {...this.props} />,
 			<__experimentalBlock className={classes}>
 				<__experimentalBackgroundDisplayer background={background} />
-				<div className='maxi-font-icon-block__wrapper'>
-					{iconValue.icon ? (
-						<i className={iconValue.icon} />
-					) : (
-						<__experimentalFontIconPicker
-							onChange={icon => {
-								iconValue.icon = icon;
-								setAttributes({
-									icon: JSON.stringify(iconValue),
-								});
-							}}
-						/>
-					)}
-				</div>
+				{iconValue.icon ? (
+					<i className={iconValue.icon} />
+				) : (
+					<__experimentalFontIconPicker
+						onChange={icon => {
+							iconValue.icon = icon;
+							setAttributes({
+								icon: JSON.stringify(iconValue),
+							});
+						}}
+					/>
+				)}
 			</__experimentalBlock>,
 		];
 	}

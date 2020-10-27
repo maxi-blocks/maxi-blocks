@@ -31,6 +31,7 @@ const allowedBlocks = [
 	'maxi-blocks/container-maxi',
 	'maxi-blocks/svg-icon-maxi',
 	'maxi-blocks/icon-maxi',
+	'maxi-blocks/font-icon-maxi',
 ];
 
 document.addEventListener('DOMContentLoaded', () => {

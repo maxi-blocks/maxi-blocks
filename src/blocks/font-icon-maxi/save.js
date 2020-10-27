@@ -28,13 +28,11 @@ const save = props => {
 	} = props;
 
 	const classes = classnames(
-		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
-		'maxi-block maxi-divider-block',
+		'maxi-block maxi-font-icon-block',
 		blockStyle,
 		extraClassName,
 		uniqueID,
-		className,
-		fullWidth === 'full' ? 'alignfull' : null
+		className
 	);
 
 	const iconValue = !isObject(icon) ? JSON.parse(icon) : icon;
@@ -47,9 +45,7 @@ const save = props => {
 			data-motion-id={uniqueID}
 		>
 			<__experimentalBackgroundDisplayer background={background} />
-			<div className='maxi-font-icon-block__wrapper'>
-				{iconValue.icon && <i className={iconValue.icon} />}
-			</div>
+			{iconValue.icon && <i className={iconValue.icon} />}
 		</div>
 	);
 };

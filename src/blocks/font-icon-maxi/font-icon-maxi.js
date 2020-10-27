@@ -34,7 +34,6 @@ registerBlockType('maxi-blocks/font-icon-maxi', {
 	description: 'Insert, modify or style a font icon',
 	category: 'maxi-blocks',
 	supports: {
-		align: true,
 		lightBlockWrapper: true,
 	},
 	attributes: {

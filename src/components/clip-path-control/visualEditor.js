@@ -1,12 +1,11 @@
 /**
  * WordPress dependencies
  */
-const { useState } = wp.element;
+const { useState, useEffect } = wp.element;
 
 /**
  * Internal dependencies
  */
-import useDeepEffect from '../../extensions/hooks/useDeepEffect';
 import ClipPathRadiusPoint from './radiusPoint';
 import ClipPathSinglePoint from './singlePoint';
 import ClipPathDoublePoint from './doublePoint';
@@ -26,31 +25,34 @@ const ClipPathVisualEditor = props => {
 	const classes = classnames('maxi-clip-path-visual-editor', className);
 
 	const getClipPath = clipPathOptions => {
+		const { type, content } = clipPathOptions;
+		const arrayContent = Object.values(content);
+
 		let newContent = '';
 
-		if (!isEmpty(clipPathOptions.content))
-			switch (clipPathOptions.type) {
+		if (!isEmpty(content))
+			switch (type) {
 				case 'polygon':
-					newContent = clipPathOptions.content.reduce((a, b) => {
+					newContent = arrayContent.reduce((a, b) => {
 						if (isArray(a))
 							return `${a[0]}% ${a[1]}%, ${b[0]}% ${b[1]}%`;
 						return `${a}, ${b[0]}% ${b[1]}%`;
 					});
 					break;
 				case 'circle':
-					newContent = `${clipPathOptions.content[0][0]}% at ${clipPathOptions.content[1][0]}% ${clipPathOptions.content[1][1]}%`;
+					newContent = `${arrayContent[0][0]}% at ${arrayContent[1][0]}% ${arrayContent[1][1]}%`;
 					break;
 				case 'ellipse':
-					newContent = `${clipPathOptions.content[0]}% ${clipPathOptions.content[1]}% at ${clipPathOptions.content[2][0]}% ${clipPathOptions.content[2][1]}%`;
+					newContent = `${arrayContent[0]}% ${arrayContent[1]}% at ${arrayContent[2][0]}% ${arrayContent[2][1]}%`;
 					break;
 				case 'inset':
-					newContent = `${clipPathOptions.content[0]}% ${clipPathOptions.content[1]}% ${clipPathOptions.content[2]}% ${clipPathOptions.content[3]}%`;
+					newContent = `${arrayContent[0]}% ${arrayContent[1]}% ${arrayContent[2]}% ${arrayContent[3]}%`;
 					break;
 				default:
 					return false;
 			}
 
-		const newCP = `${clipPathOptions.type}(${newContent})`;
+		const newCP = `${type}(${newContent})`;
 
 		return newCP;
 	};
@@ -68,6 +70,10 @@ const ClipPathVisualEditor = props => {
 		return value;
 	};
 
+	useEffect(() => {
+		changeClipPath(getClipPath(clipPathOptions));
+	});
+
 	const onMouseMove = e => {
 		const {
 			x: absXAxis,
@@ -82,7 +88,7 @@ const ClipPathVisualEditor = props => {
 			const posTop = clipPathOptions.content[1][1];
 			const posLeft = clipPathOptions.content[1][0];
 
-			clipPathOptions.content[selectedItem] = [
+			clipPathOptions.content[0] = [
 				Math.min(
 					round(
 						Math.sqrt(
@@ -97,7 +103,7 @@ const ClipPathVisualEditor = props => {
 			(selectedItem === 0 || selectedItem === 1)
 		) {
 			if (selectedItem === 0) {
-				clipPathOptions.content[selectedItem] = [
+				clipPathOptions.content[0] = [
 					isOpposite
 						? Math.abs(
 								100 -
@@ -108,7 +114,7 @@ const ClipPathVisualEditor = props => {
 				];
 			}
 			if (selectedItem === 1) {
-				clipPathOptions.content[selectedItem] = [
+				clipPathOptions.content[1] = [
 					isOpposite
 						? Math.abs(
 								100 -
@@ -122,24 +128,16 @@ const ClipPathVisualEditor = props => {
 		} else if (clipPathOptions.type === 'inset') {
 			switch (selectedItem) {
 				case 0:
-					clipPathOptions.content[selectedItem] = [
-						setAxisLimits(newLeft),
-					];
+					clipPathOptions.content[0] = [setAxisLimits(newLeft)];
 					break;
 				case 1:
-					clipPathOptions.content[selectedItem] = [
-						100 - setAxisLimits(newTop),
-					];
+					clipPathOptions.content[1] = [100 - setAxisLimits(newTop)];
 					break;
 				case 2:
-					clipPathOptions.content[selectedItem] = [
-						100 - setAxisLimits(newLeft),
-					];
+					clipPathOptions.content[2] = [100 - setAxisLimits(newLeft)];
 					break;
 				case 3:
-					clipPathOptions.content[selectedItem] = [
-						setAxisLimits(newTop),
-					];
+					clipPathOptions.content[3] = [setAxisLimits(newTop)];
 					break;
 				default:
 					break;
@@ -172,13 +170,11 @@ const ClipPathVisualEditor = props => {
 					'components-popover__content'
 				)
 			)
-		)
+		) {
 			callback();
+			onChange(clipPathOptions);
+		}
 	};
-
-	useDeepEffect(() => {
-		changeClipPath(getClipPath(clipPathOptions));
-	}, [clipPathOptions]);
 
 	return (
 		<div
@@ -187,13 +183,19 @@ const ClipPathVisualEditor = props => {
 			onMouseMove={e => {
 				if (isMoving) onMouseMove(e);
 			}}
-			onMouseUp={() => changeIsMoving(false)}
+			onMouseUp={() => {
+				changeIsMoving(false);
+				onChange(clipPathOptions);
+			}}
 			style={{ height: `${size}px` }}
 		>
-			{clipPathOptions.content.map((handle, i) => {
+			{Object.entries(clipPathOptions.content).map(([key, handle]) => {
+				const i = Number(key);
+
 				if (clipPathOptions.type === 'circle' && i === 0)
 					return (
 						<ClipPathRadiusPoint
+							key={`maxi-clip-path-button--radius--${i}`}
 							radius={handle[0]}
 							color={colors[i]}
 							onMouseOut={onMouseOut}
@@ -201,7 +203,7 @@ const ClipPathVisualEditor = props => {
 								changeIsMoving(isMoving);
 								changeSelectedItem(item);
 
-								if (!isMoving) onChange(clipPath);
+								if (!isMoving) onChange(clipPathOptions);
 							}}
 							number={i}
 							position={clipPathOptions.content[i + 1]}
@@ -211,6 +213,7 @@ const ClipPathVisualEditor = props => {
 				if (clipPathOptions.type === 'ellipse' && (i === 0 || i === 1))
 					return (
 						<ClipPathSinglePoint
+							key={`maxi-clip-path-button--single--${i}`}
 							top={
 								i === 1
 									? clipPathOptions.content[2][1] + handle[0]
@@ -228,7 +231,7 @@ const ClipPathVisualEditor = props => {
 								changeIsMoving(isMoving);
 								changeSelectedItem(item);
 
-								if (!isMoving) onChange(clipPath);
+								if (!isMoving) onChange(clipPathOptions);
 							}}
 							number={i}
 							position={clipPathOptions.content[2]}
@@ -270,6 +273,7 @@ const ClipPathVisualEditor = props => {
 
 					return (
 						<ClipPathSinglePoint
+							key={`maxi-clip-path-button--single--${i}`}
 							top={getInsetTop(i)}
 							left={getInsetLeft(i)}
 							color={colors[i]}
@@ -279,7 +283,7 @@ const ClipPathVisualEditor = props => {
 								changeIsMoving(isMoving);
 								changeSelectedItem(item);
 
-								if (!isMoving) onChange(clipPath);
+								if (!isMoving) onChange(clipPathOptions);
 							}}
 							number={i}
 						/>
@@ -288,6 +292,7 @@ const ClipPathVisualEditor = props => {
 
 				return (
 					<ClipPathDoublePoint
+						key={`maxi-clip-path-button--double--${i}`}
 						handle={handle}
 						color={colors[i]}
 						isMoving={isMoving}
@@ -296,7 +301,7 @@ const ClipPathVisualEditor = props => {
 							changeIsMoving(isMoving);
 							changeSelectedItem(item);
 
-							if (!isMoving) onChange(clipPath);
+							if (!isMoving) onChange(clipPathOptions);
 						}}
 						number={i}
 					/>

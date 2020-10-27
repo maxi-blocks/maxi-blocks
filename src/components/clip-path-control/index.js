@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { useState, Fragment } = wp.element;
+const { useState, useEffect, Fragment } = wp.element;
 const { SelectControl, BaseControl, Button, Tooltip } = wp.components;
 
 /**
@@ -17,7 +17,7 @@ import SettingTabsControl from '../setting-tabs-control';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isArray, isEmpty, isNil, trim, uniqueId } from 'lodash';
+import { isArray, isEmpty, isNil, trim } from 'lodash';
 
 /**
  * Styles
@@ -91,6 +91,7 @@ const ClipPathOption = props => {
 						value={trim(Number(values[0]))}
 						onChange={e => {
 							values[0] = Number(e.target.value);
+
 							onChange(values);
 						}}
 						min={0}
@@ -102,6 +103,7 @@ const ClipPathOption = props => {
 							value={trim(Number(values[1]))}
 							onChange={e => {
 								values[1] = Number(e.target.value);
+
 								onChange(values);
 							}}
 							min={0}
@@ -123,15 +125,6 @@ const ClipPathControl = props => {
 	const { clipPath, className, onChange } = props;
 
 	const classes = classnames('maxi-clip-path-control', className);
-
-	const [hasClipPath, changeHasClipPath] = useState(
-		isEmpty(clipPath) ? 0 : 1
-	);
-	const [isCustom, changeIsCustom] = useState(
-		Object.values(clipPathDefaults).includes(clipPath) || isEmpty(clipPath)
-			? 0
-			: 1
-	);
 
 	const deconstructCP = () => {
 		if (isEmpty(clipPath))
@@ -214,70 +207,87 @@ const ClipPathControl = props => {
 
 		return {
 			type: cpType,
-			content: cpValues,
+			content: { ...cpValues },
 		};
 	};
 
-	const cp = deconstructCP();
+	const [hasClipPath, changeHasClipPath] = useState(
+		isEmpty(clipPath) ? 0 : 1
+	);
+	const [isCustom, changeIsCustom] = useState(
+		Object.values(clipPathDefaults).includes(clipPath) || isEmpty(clipPath)
+			? 0
+			: 1
+	);
+	const [clipPathOptions, changeClipPathOptions] = useState(deconstructCP());
 
-	const generateCP = (type = cp.type) => {
+	useEffect(() => {
+		if (JSON.stringify(clipPathOptions) !== JSON.stringify(deconstructCP()))
+			changeClipPathOptions(deconstructCP());
+	}, [clipPathOptions, deconstructCP]);
+
+	const generateCP = clipPath => {
+		const { type, content } = clipPath;
+		const arrayContent = Object.values(content);
+
 		let newContent = '';
 
 		switch (type) {
 			case 'polygon':
-				newContent = cp.content.reduce((a, b) => {
+				newContent = arrayContent.reduce((a, b) => {
 					if (isArray(a))
 						return `${a[0]}% ${a[1]}%, ${b[0]}% ${b[1]}%`;
 					return `${a}, ${b[0]}% ${b[1]}%`;
 				});
 				break;
 			case 'circle':
-				newContent = `${cp.content[0]}% at ${cp.content[1]}% ${cp.content[2]}%`;
+				newContent = `${arrayContent[0][0]}% at ${arrayContent[1][0]}% ${arrayContent[1][1]}%`;
 				break;
 			case 'ellipse':
-				newContent = `${cp.content[0]}% ${cp.content[1]}% at ${cp.content[2]}% ${cp.content[3]}%`;
+				newContent = `${arrayContent[0][0]}% ${arrayContent[1][0]}% at ${arrayContent[2][0]}% ${arrayContent[2][1]}%`;
 				break;
 			case 'inset':
-				newContent = `${cp.content[0]}% ${cp.content[1]}% ${cp.content[2]}% ${cp.content[3]}%`;
+				newContent = `${arrayContent[0][0]}% ${arrayContent[1][0]}% ${arrayContent[2][0]}% ${arrayContent[3][0]}%`;
 				break;
 			default:
-				return false;
+				break;
 		}
-		const newCP = `${cp.type}(${newContent})`;
+		const newCP = `${type}(${newContent})`;
 
 		onChange(newCP);
-
-		return true;
 	};
 
 	const onChangeType = newType => {
+		const newCP = clipPathOptions;
+
 		switch (newType) {
 			case 'polygon':
-				cp.content = [
-					[0, 0],
-					[100, 0],
-					[100, 100],
-					[0, 100],
-				];
-				generateCP(newType);
+				newCP.type = 'polygon';
+				newCP.content = {
+					0: [0, 0],
+					1: [100, 0],
+					2: [100, 100],
+					3: [0, 100],
+				};
 				break;
 			case 'circle':
-				cp.content = [[50], [50], [50]];
-				generateCP(newType);
+				newCP.type = 'circle';
+				newCP.content = { 0: [50], 1: [50, 50] };
 				break;
 			case 'ellipse':
-				cp.content = [[50], [50], [50], [50]];
-				generateCP(newType);
+				newCP.type = 'ellipse';
+				newCP.content = { 0: [25], 1: [50], 2: [50, 50] };
 				break;
 			case 'inset':
-				cp.content = [[15], [5], [15], [5]];
-				generateCP(newType);
+				newCP.type = 'inset';
+				newCP.content = { 0: [15], 1: [5], 2: [15], 3: [5] };
 				break;
 			default:
-				return false;
+				break;
 		}
 
-		return false;
+		changeClipPathOptions(newCP);
+		generateCP(newCP);
 	};
 
 	return (
@@ -328,7 +338,7 @@ const ClipPathControl = props => {
 						<div className='maxi-clip-path-control__handles'>
 							<SelectControl
 								label={__('Type', 'maxi-blocks')}
-								value={cp.type}
+								value={clipPathOptions.type}
 								options={[
 									{
 										label: __('Polygon', 'maxi-blocks'),
@@ -347,11 +357,7 @@ const ClipPathControl = props => {
 										value: 'inset',
 									},
 								]}
-								onChange={value => {
-									cp.type = value;
-									onChangeType(value);
-									generateCP();
-								}}
+								onChange={value => onChangeType(value)}
 							/>
 							<SettingTabsControl
 								items={[
@@ -359,10 +365,13 @@ const ClipPathControl = props => {
 										label: __('Visual', 'maxi-blocks'),
 										content: (
 											<ClipPathVisualEditor
-												clipPathOptions={cp}
+												clipPathOptions={
+													clipPathOptions
+												}
+												clipPath={clipPath}
 												colors={optionColors}
-												onChange={clipPath =>
-													onChange(clipPath)
+												onChange={clipPathOptions =>
+													generateCP(clipPathOptions)
 												}
 											/>
 										),
@@ -371,37 +380,52 @@ const ClipPathControl = props => {
 										label: __('Data', 'maxi-blocks'),
 										content: (
 											<Fragment>
-												{cp.content.map((handle, i) => (
-													<ClipPathOption
-														key={uniqueId(
-															'maxi-clip-path-control-'
-														)}
-														values={handle}
-														onChange={value => {
-															cp.content[
-																i
-															] = value;
-															generateCP();
-														}}
-														onRemove={number => {
-															delete cp.content[
-																number
-															];
-															generateCP();
-														}}
-														number={i}
-														type={cp.type}
-													/>
-												))}
-												{cp.type === 'polygon' &&
-													cp.content.length < 10 && (
+												{Object.entries(
+													clipPathOptions.content
+												).map(([key, handle]) => {
+													const i = Number(key);
+
+													return (
+														<ClipPathOption
+															key={`maxi-clip-path-control-${i}`}
+															values={handle}
+															onChange={value => {
+																clipPathOptions.content[
+																	i
+																] = value;
+																generateCP(
+																	clipPathOptions
+																);
+															}}
+															onRemove={number => {
+																delete clipPathOptions
+																	.content[
+																	number
+																];
+																generateCP(
+																	clipPathOptions
+																);
+															}}
+															number={i}
+															type={
+																clipPathOptions.type
+															}
+														/>
+													);
+												})}
+												{clipPathOptions.type ===
+													'polygon' &&
+													clipPathOptions.content
+														.length < 10 && (
 														<Button
 															className='maxi-clip-path-control__handles'
 															onClick={() => {
-																cp.content.push(
+																clipPathOptions.content.push(
 																	[0, 0]
 																);
-																generateCP();
+																generateCP(
+																	clipPathOptions
+																);
 															}}
 														>
 															Add new point

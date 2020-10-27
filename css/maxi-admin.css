@@ -21,6 +21,7 @@
 }
 
 /* Layout Button & Global Styles Button */
+#maxi-button__show-responsive,
 #maxi-button__layout,
 #maxi-button__go-to-customizer {
 	display: flex;
@@ -40,13 +41,22 @@
 	min-height: 45px;
 	transition: all 0.5s;
 }
+#maxi-button__show-responsive {
+	padding: 5px 10px;
+	margin-left: 0;
+}
 #maxi-button__layout img,
 #maxi-button__go-to-customizer img {
 	width: 18px;
 	height: 18px;
 	margin: 0 5px 0 0;
 }
+#maxi-button__show-responsive img {
+	width: 30px;
+}
 
+#maxi-button__show-responsive.active-button,
+#maxi-button__show-responsive:hover,
 #maxi-button__layout:hover,
 #maxi-button__go-to-customizer:hover {
 	border-color: #ff4a17;

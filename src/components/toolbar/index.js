@@ -3,6 +3,7 @@
  */
 const { Popover } = wp.components;
 const { Fragment, useEffect, useState } = wp.element;
+const { select } = wp.data;
 
 /**
  * Internal dependencies
@@ -118,19 +119,20 @@ const MaxiToolbar = props => {
 		document.getElementById(`block-${clientId}`)
 	);
 
+	const [parentAnchorRef, setParentAnchorRef] = useState();
+
 	useEffect(() => {
 		setAnchorRef(document.getElementById(`block-${clientId}`));
+		setParentAnchorRef(
+			document.getElementById(`block-${clientId}`).parentElement
+		);
 	});
 
 	if (!allowedBlocks.includes(name)) return null;
 
 	function getThirdSvgColor() {
-		const { clientId } = wp.data
-			.select('core/block-editor')
-			.getSelectedBlock();
-		const current_content = wp.data
-			.select('core/block-editor')
-			.getSelectedBlock().attributes.content;
+		const current_content = select('core/block-editor').getSelectedBlock()
+			.attributes.content;
 
 		if (current_content.indexOf('maxi-svg-color-third') !== -1) return true;
 		return false;
@@ -153,12 +155,10 @@ const MaxiToolbar = props => {
 		}
 
 		if (colorClass !== '') {
-			const { clientId } = wp.data
-				.select('core/block-editor')
-				.getSelectedBlock();
-			const current_content = wp.data
-				.select('core/block-editor')
-				.getSelectedBlock().attributes.content;
+			const { clientId } = select('core/block-editor').getSelectedBlock();
+			const current_content = select(
+				'core/block-editor'
+			).getSelectedBlock().attributes.content;
 			const regex_line_to_change = new RegExp(
 				`${colorClass}" fill=".+?(?= )`,
 				'g'
@@ -178,9 +178,9 @@ const MaxiToolbar = props => {
 				change_to2
 			);
 
-			wp.data
-				.dispatch('core/block-editor')
-				.updateBlockAttributes(clientId, { content: new_content });
+			dispatch('core/block-editor').updateBlockAttributes(clientId, {
+				content: new_content,
+			});
 		}
 	}
 

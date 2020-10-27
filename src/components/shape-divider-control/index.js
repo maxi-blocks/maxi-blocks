@@ -327,6 +327,7 @@ const ShapeDividerControl = props => {
 								disableGradient
 								disableVideo
 								disableClipPath
+								disableSVG
 							/>
 							<SizeControl
 								label={__('Divider Height', 'maxi-blocks')}
@@ -441,6 +442,7 @@ const ShapeDividerControl = props => {
 								disableImage
 								disableVideo
 								disableClipPath
+								disableSVG
 							/>
 							<SizeControl
 								label={__('Divider Height', 'maxi-blocks')}

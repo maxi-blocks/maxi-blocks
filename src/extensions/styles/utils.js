@@ -603,10 +603,10 @@ export const setBackgroundStyles = (
 	overlayHover
 ) => {
 	const response = {
-		[`${target}>.maxi-background-displayer .maxi-background-displayer__color`]: {
+		[`${target} > .maxi-background-displayer .maxi-background-displayer__color`]: {
 			background: { ...getColorBackgroundObject(JSON.parse(background)) },
 		},
-		[`${target}>.maxi-background-displayer .maxi-background-displayer__images`]: {
+		[`${target} > .maxi-background-displayer .maxi-background-displayer__images`]: {
 			imageBackground: {
 				...getImageBackgroundObject(JSON.parse(background)),
 			},
@@ -653,7 +653,7 @@ export const setBackgroundStyles = (
 		};
 	}
 
-	if (JSON.parse(backgroundHover).status) {
+	if (!!JSON.parse(backgroundHover).status) {
 		response[
 			`${target}:hover>.maxi-background-displayer .maxi-background-displayer__color`
 		] = {

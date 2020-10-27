@@ -77,7 +77,15 @@ class edit extends MaxiBlock {
 	}
 
 	get getObject() {
-		const { uniqueID, background, backgroundHover } = this.props.attributes;
+		const {
+			uniqueID,
+			background,
+			backgroundHover,
+			overlay,
+			overlayHover,
+			border,
+			borderHover,
+		} = this.props.attributes;
 
 		let response = {
 			[uniqueID]: this.getNormalObject,
@@ -86,7 +94,15 @@ class edit extends MaxiBlock {
 
 		response = Object.assign(
 			response,
-			setBackgroundStyles(uniqueID, background, backgroundHover)
+			setBackgroundStyles(
+				uniqueID,
+				background,
+				backgroundHover,
+				overlay,
+				overlayHover,
+				border,
+				borderHover
+			)
 		);
 
 		return response;

@@ -89,6 +89,7 @@ const Inspector = props => {
 			clipPath,
 			hover,
 			SVGData,
+			SVGCurrentElement,
 		},
 		imageData,
 		clientId,
@@ -445,6 +446,7 @@ const Inspector = props => {
 																			disableImage
 																			disableVideo
 																			disableGradient
+																			disableSVG
 																		/>
 																	)}
 																</Fragment>
@@ -731,7 +733,10 @@ const Inspector = props => {
 											label: __('Shape', 'maxi-blocks'),
 											content: (
 												<__experimentalSVGDefaultsDisplayer
-													SVGData={SVGData}
+													SVGOptions={SVGData}
+													SVGCurrentElement={
+														SVGCurrentElement
+													}
 													onChange={SVGOptions => {
 														const SVGValue = !isObject(
 															SVGOptions.SVGData
@@ -754,6 +759,8 @@ const Inspector = props => {
 
 														setAttributes({
 															...SVGOptions,
+															SVGCurrentElement:
+																SVGOptions.SVGCurrentElement,
 															SVGElement: injectImgSVG(
 																SVGOptions.SVGElement,
 																SVGValue

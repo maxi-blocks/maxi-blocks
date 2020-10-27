@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { SelectControl } = wp.components;
 
 /**
  * Internal dependencies
@@ -12,6 +11,7 @@ import __experimentalClipPath from '../clip-path-control';
 import __experimentalOpacityControl from '../opacity-control';
 import __experimentalNumberControl from '../number-control';
 import __experimentalTextControl from '../text-control';
+import __experimentalFancyRadioControl from '../fancy-radio-control';
 
 /**
  * Component
@@ -34,7 +34,6 @@ const VideoLayer = props => {
 				placeholder='Youtube, Vimeo, or Direct Link'
 				onChange={val => {
 					videoOptions.mediaURL = val;
-
 					onChange(videoOptions);
 				}}
 			/>
@@ -47,7 +46,6 @@ const VideoLayer = props => {
 				value={videoOptions.startTime}
 				onChange={val => {
 					videoOptions.startTime = val;
-
 					onChange(videoOptions);
 				}}
 			/>
@@ -59,17 +57,15 @@ const VideoLayer = props => {
 				value={videoOptions.endTime}
 				onChange={val => {
 					videoOptions.endTime = val;
-
 					if (val) {
 						videoOptions.loop = 0;
 					}
-
 					onChange(videoOptions);
 				}}
 			/>
-			<SelectControl
+			<__experimentalFancyRadioControl
 				label={__('Loop', 'maxi-blocks')}
-				value={videoOptions.loop}
+				selected={Number(videoOptions.loop)}
 				options={[
 					{
 						label: __('No', 'maxi-blocks'),
@@ -82,14 +78,13 @@ const VideoLayer = props => {
 				]}
 				disabled={!!Number(videoOptions.endTime)}
 				onChange={val => {
-					videoOptions.loop = val;
-
+					videoOptions.loop = Number(val);
 					onChange(videoOptions);
 				}}
 			/>
-			<SelectControl
+			<__experimentalFancyRadioControl
 				label={__('Play on Mobile', 'maxi-blocks')}
-				value={videoOptions.playOnMobile}
+				selected={Number(videoOptions.playOnMobile)}
 				options={[
 					{
 						label: __('No', 'maxi-blocks'),
@@ -101,8 +96,7 @@ const VideoLayer = props => {
 					},
 				]}
 				onChange={val => {
-					videoOptions.playOnMobile = val;
-
+					videoOptions.playOnMobile = Number(val);
 					onChange(videoOptions);
 				}}
 			/>
@@ -112,7 +106,6 @@ const VideoLayer = props => {
 					clipPath={videoOptions.clipPath}
 					onChange={val => {
 						videoOptions.clipPath = val;
-
 						onChange(videoOptions);
 					}}
 				/>
@@ -120,11 +113,11 @@ const VideoLayer = props => {
 
 			<__experimentalOpacityControl
 				label={__('Video Opacity', 'maxi-blocks')}
+				fullWidthMode
 				opacity={videoOptions.opacity}
 				defaultOpacity={defaultVideoOptions.opacity}
 				onChange={val => {
 					videoOptions.opacity = JSON.parse(val);
-
 					onChange(videoOptions);
 				}}
 			/>
@@ -135,13 +128,11 @@ const VideoLayer = props => {
 				onSelectImage={val => {
 					videoOptions.fallbackID = val.id;
 					videoOptions.fallbackURL = val.url;
-
 					onChange(videoOptions);
 				}}
 				onRemoveImage={() => {
 					videoOptions.fallbackID = '';
 					videoOptions.fallbackURL = '';
-
 					onChange(videoOptions);
 				}}
 			/>

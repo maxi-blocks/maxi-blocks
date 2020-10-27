@@ -3,12 +3,14 @@
 ***********/
 .maxi-sidebar {
 	.block-editor-block-inspector.maxi-controls {
+		.block-editor-multi-selection-inspector__card,
 		.block-editor-block-card {
 			padding: 9.5px 17px 20px;
 			padding-bottom: 9px;
 			box-shadow: 0px 5px 15px 0px rgba(119, 119, 119, 0.1);
 			position: relative;
 			border-bottom: 1px solid #f4f4f4;
+			background: #fff;
 
 			.block-editor-block-card__content {
 				min-width: 87%;

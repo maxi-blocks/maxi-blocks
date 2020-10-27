@@ -8,6 +8,9 @@ import size from './data';
  * Attributes
  */
 const attributes = {
+	SVGCurrentElement: {
+		type: 'number',
+	},
 	SVGElement: {
 		type: 'string',
 	},

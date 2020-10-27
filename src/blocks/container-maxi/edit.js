@@ -90,6 +90,7 @@ class edit extends MaxiBlock {
 			overlay,
 			overlayHover,
 			border,
+			borderHover,
 			boxShadow,
 		} = this.props.attributes;
 
@@ -137,7 +138,9 @@ class edit extends MaxiBlock {
 				background,
 				backgroundHover,
 				overlay,
-				overlayHover
+				overlayHover,
+				border,
+				borderHover
 			),
 			setArrowStyles(uniqueID, arrow, background, border, boxShadow)
 		);

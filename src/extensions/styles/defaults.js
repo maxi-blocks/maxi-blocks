@@ -1505,6 +1505,10 @@ export const __experimentalMotion = {
 			time: 0,
 			inde: 0,
 		},
+		transformOrigin: {
+			xAxis: 'center',
+			yAxis: 'center',
+		},
 	},
 	entrance: {
 		type: '',

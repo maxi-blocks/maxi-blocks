@@ -6,6 +6,11 @@ const { RangeControl, Button } = wp.components;
 const { Fragment, useState } = wp.element;
 
 /**
+ * Internal dependencies
+ */
+import { __experimentalFancyRadioControl } from '../../components';
+
+/**
  * External dependencies
  */
 import classnames from 'classnames';
@@ -68,7 +73,7 @@ const MotionControl = props => {
 			case 'blur':
 				settings = {
 					effectPosition: time,
-					blur: 1,
+					blur: 0,
 				};
 				break;
 		}
@@ -470,6 +475,63 @@ const MotionControl = props => {
 							/>
 						</Fragment>
 					)}
+				{!isNil(getCurrentTimelineItem()) && (
+					<Fragment>
+						<hr />
+						<__experimentalFancyRadioControl
+							label={__('X-Axis', 'maxi-blocks')}
+							selected={interaction.transformOrigin.xAxis}
+							options={[
+								{
+									label: __('Left', 'maxi-blocks'),
+									value: 'left',
+								},
+								{
+									label: __('Center', 'maxi-blocks'),
+									value: 'center',
+								},
+								{
+									label: __('Right', 'maxi-blocks'),
+									value: 'right',
+								},
+							]}
+							onChange={value => {
+								interaction.transformOrigin = {
+									...interaction.transformOrigin,
+									xAxis: value,
+								};
+
+								onChange(JSON.stringify(motionValue));
+							}}
+						/>
+						<__experimentalFancyRadioControl
+							label={__('Y-Axis', 'maxi-blocks')}
+							selected={interaction.transformOrigin.yAxis}
+							options={[
+								{
+									label: __('Top', 'maxi-blocks'),
+									value: 'top',
+								},
+								{
+									label: __('Center', 'maxi-blocks'),
+									value: 'center',
+								},
+								{
+									label: __('Bottom', 'maxi-blocks'),
+									value: 'bottom',
+								},
+							]}
+							onChange={value => {
+								interaction.transformOrigin = {
+									...interaction.transformOrigin,
+									yAxis: value,
+								};
+
+								onChange(JSON.stringify(motionValue));
+							}}
+						/>
+					</Fragment>
+				)}
 			</div>
 		</div>
 	);

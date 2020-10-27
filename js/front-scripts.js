@@ -138,8 +138,9 @@ motionElems.forEach(function (elem) {
 							x: act.settings.x,
 							y: act.settings.y,
 							z: act.settings.z,
-							transformPerspective: 400,
+							transformPerspective: 1000,
 							transformStyle: 'preserve-3d',
+							transformOrigin: `${act.settings.xAxis} ${act.settings.yAxis}`,
 						};
 					}
 					if (act.type === 'rotate') {
@@ -148,8 +149,9 @@ motionElems.forEach(function (elem) {
 							rotationX: act.settings.x,
 							rotationY: act.settings.y,
 							rotationZ: act.settings.z,
-							transformPerspective: 400,
+							transformPerspective: 1000,
 							transformStyle: 'preserve-3d',
+							transformOrigin: `${act.settings.xAxis} ${act.settings.yAxis}`,
 						};
 					}
 					if (act.type === 'scale') {
@@ -158,8 +160,9 @@ motionElems.forEach(function (elem) {
 							scaleX: act.settings.x,
 							scaleY: act.settings.y,
 							scaleZ: act.settings.z,
-							transformPerspective: 400,
+							transformPerspective: 1000,
 							transformStyle: 'preserve-3d',
+							transformOrigin: `${act.settings.xAxis} ${act.settings.yAxis}`,
 						};
 					}
 					if (act.type === 'skew') {
@@ -167,6 +170,7 @@ motionElems.forEach(function (elem) {
 							...actions,
 							skewX: act.settings.x,
 							skewY: act.settings.y,
+							transformOrigin: `${act.settings.xAxis} ${act.settings.yAxis}`,
 						};
 					}
 					if (act.type === 'opacity') {

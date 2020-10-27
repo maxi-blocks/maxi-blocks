@@ -85,6 +85,7 @@ const ResponsiveSelector = props => {
 
 	return (
 		<div className={classes}>
+			<span className='maxi-responsive-selector__close'>X</span>
 			<Button
 				className='maxi-responsive-selector__button'
 				onClick={() => setScreenSize('general')}

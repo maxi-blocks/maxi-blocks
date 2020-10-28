@@ -72,6 +72,10 @@ const attributes = {
 		type: 'string',
 		default: JSON.stringify(attributesData.border),
 	},
+	iconBackground: {
+		type: 'string',
+		default: JSON.stringify(attributesData.background),
+	},
 	content: {
 		type: 'string',
 		default: '',

@@ -857,12 +857,7 @@ export const getButtonIconObject = icon => {
 	};
 
 	Object.entries(icon).forEach(([key, value]) => {
-		if (['label', 'position', 'background-color', 'icon'].includes(key))
-			return;
-
-		if (icon['background-color']) {
-			response[key]['background-color'] = icon['background-color'];
-		}
+		if (['label', 'position', 'icon'].includes(key)) return;
 
 		if (value['font-size']) {
 			response[key]['font-size'] =

@@ -70,6 +70,7 @@ const Inspector = props => {
 			icon,
 			iconPadding,
 			iconBorder,
+			iconBackground,
 		},
 		deviceType,
 		setAttributes,
@@ -408,18 +409,24 @@ const Inspector = props => {
 													onChange={icon => {
 														setAttributes({ icon });
 													}}
-													onChangePadding={padding =>
+													onChangePadding={iconPadding =>
 														setAttributes({
-															iconPadding: padding,
+															iconPadding,
 														})
 													}
-													onChangeBorder={border =>
+													onChangeBorder={iconBorder =>
 														setAttributes({
-															iconBorder: border,
+															iconBorder,
+														})
+													}
+													onChangeBackground={iconBackground =>
+														setAttributes({
+															iconBackground,
 														})
 													}
 													border={iconBorder}
 													padding={iconPadding}
+													background={iconBackground}
 													breakpoint={deviceType}
 												/>
 											),

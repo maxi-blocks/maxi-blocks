@@ -20,6 +20,8 @@ import ColorControl from '../color-control';
 import FontIconPicker from '../font-icon-picker';
 import AxisControl from '../axis-control';
 import BorderControl from '../border-control';
+import BackgroundControl from '../background-control';
+import * as attributesData from '../../extensions/styles/defaults';
 
 /**
  * Component
@@ -36,221 +38,13 @@ const FontIconControl = props => {
 		onChangePadding,
 		border,
 		onChangeBorder,
+		background,
+		onChangeBackground,
 	} = props;
 
 	const value = !isObject(icon) ? JSON.parse(icon) : icon;
 
 	const classes = classnames('maxi-font-icon-control', className);
-
-	const defaultPadding = {
-		label: 'Padding',
-		general: {
-			'padding-top': '',
-			'padding-right': '',
-			'padding-bottom': '',
-			'padding-left': '',
-			sync: false,
-			unit: '',
-		},
-		xxl: {
-			'padding-top': '',
-			'padding-right': '',
-			'padding-bottom': '',
-			'padding-left': '',
-			sync: true,
-			unit: '',
-		},
-		xl: {
-			'padding-top': '',
-			'padding-right': '',
-			'padding-bottom': '',
-			'padding-left': '',
-			sync: true,
-			unit: '',
-		},
-		l: {
-			'padding-top': '',
-			'padding-right': '',
-			'padding-bottom': '',
-			'padding-left': '',
-			sync: true,
-			unit: '',
-		},
-		m: {
-			'padding-top': '',
-			'padding-right': '',
-			'padding-bottom': '',
-			'padding-left': '',
-			sync: true,
-			unit: '',
-		},
-		s: {
-			'padding-top': '',
-			'padding-right': '',
-			'padding-bottom': '',
-			'padding-left': '',
-			sync: true,
-			unit: '',
-		},
-		xs: {
-			'padding-top': '',
-			'padding-right': '',
-			'padding-bottom': '',
-			'padding-left': '',
-			sync: true,
-			unit: '',
-		},
-	};
-
-	const defaultBorder = {
-		label: 'Border',
-		general: {
-			'border-color': '#ffffff',
-			'border-style': 'none',
-		},
-		xxl: {
-			'border-color': '',
-			'border-style': '',
-		},
-		xl: {
-			'border-color': '',
-			'border-style': '',
-		},
-		l: {
-			'border-color': '',
-			'border-style': '',
-		},
-		m: {
-			'border-color': '',
-			'border-style': '',
-		},
-		s: {
-			'border-color': '',
-			'border-style': '',
-		},
-		xs: {
-			'border-color': '',
-			'border-style': '',
-		},
-		borderWidth: {
-			label: 'Border width',
-			general: {
-				'border-top-width': '',
-				'border-right-width': '',
-				'border-bottom-width': '',
-				'border-left-width': '',
-				sync: true,
-				unit: 'px',
-			},
-			xxl: {
-				'border-top-width': '',
-				'border-right-width': '',
-				'border-bottom-width': '',
-				'border-left-width': '',
-				sync: true,
-				unit: '',
-			},
-			xl: {
-				'border-top-width': '',
-				'border-right-width': '',
-				'border-bottom-width': '',
-				'border-left-width': '',
-				sync: true,
-				unit: '',
-			},
-			l: {
-				'border-top-width': '',
-				'border-right-width': '',
-				'border-bottom-width': '',
-				'border-left-width': '',
-				sync: true,
-				unit: '',
-			},
-			m: {
-				'border-top-width': '',
-				'border-right-width': '',
-				'border-bottom-width': '',
-				'border-left-width': '',
-				sync: true,
-				unit: '',
-			},
-			s: {
-				'border-top-width': '',
-				'border-right-width': '',
-				'border-bottom-width': '',
-				'border-left-width': '',
-				sync: true,
-				unit: '',
-			},
-			xs: {
-				'border-top-width': '',
-				'border-right-width': '',
-				'border-bottom-width': '',
-				'border-left-width': '',
-				sync: true,
-				unit: '',
-			},
-		},
-		borderRadius: {
-			label: 'Border radius',
-			general: {
-				'border-top-left-radius': '',
-				'border-top-right-radius': '',
-				'border-bottom-right-radius': '',
-				'border-bottom-left-radius': '',
-				sync: false,
-				unit: 'px',
-			},
-			xxl: {
-				'border-top-left-radius': '',
-				'border-top-right-radius': '',
-				'border-bottom-right-radius': '',
-				'border-bottom-left-radius': '',
-				sync: true,
-				unit: '',
-			},
-			xl: {
-				'border-top-left-radius': '',
-				'border-top-right-radius': '',
-				'border-bottom-right-radius': '',
-				'border-bottom-left-radius': '',
-				sync: true,
-				unit: '',
-			},
-			l: {
-				'border-top-left-radius': '',
-				'border-top-right-radius': '',
-				'border-bottom-right-radius': '',
-				'border-bottom-left-radius': '',
-				sync: true,
-				unit: '',
-			},
-			m: {
-				'border-top-left-radius': '',
-				'border-top-right-radius': '',
-				'border-bottom-right-radius': '',
-				'border-bottom-left-radius': '',
-				sync: true,
-				unit: '',
-			},
-			s: {
-				'border-top-left-radius': '',
-				'border-top-right-radius': '',
-				'border-bottom-right-radius': '',
-				'border-bottom-left-radius': '',
-				sync: true,
-				unit: '',
-			},
-			xs: {
-				'border-top-left-radius': '',
-				'border-top-right-radius': '',
-				'border-bottom-right-radius': '',
-				'border-bottom-left-radius': '',
-				sync: true,
-				unit: '',
-			},
-		},
-	};
 
 	return (
 		<div className={classes}>
@@ -273,16 +67,6 @@ const FontIconControl = props => {
 						defaultColor='#fff'
 						onChange={val => {
 							value[breakpoint].color = val;
-							onChange(JSON.stringify(value));
-						}}
-					/>
-
-					<ColorControl
-						label={__('Background', 'maxi-blocks')}
-						color={value['background-color']}
-						defaultColor='#fff'
-						onChange={val => {
-							value['background-color'] = val;
 							onChange(JSON.stringify(value));
 						}}
 					/>
@@ -376,7 +160,7 @@ const FontIconControl = props => {
 
 					<AxisControl
 						values={padding}
-						defaultValues={defaultPadding}
+						defaultValues={attributesData.padding}
 						onChange={padding => onChangePadding(padding)}
 						breakpoint={breakpoint}
 						disableAuto
@@ -384,9 +168,19 @@ const FontIconControl = props => {
 
 					<BorderControl
 						border={border}
-						defaultBorder={defaultBorder}
+						defaultBorder={attributesData.border}
 						onChange={border => onChangeBorder(border)}
 						breakpoint={breakpoint}
+					/>
+
+					<BackgroundControl
+						background={background}
+						defaultBackground={attributesData.background}
+						onChange={background => onChangeBackground(background)}
+						disableImage
+						disableVideo
+						disableClipPath
+						disableSVG
 					/>
 				</Fragment>
 			)}

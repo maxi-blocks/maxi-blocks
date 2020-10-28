@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { RangeControl, Button } = wp.components;
+const { RangeControl, Button, SelectControl } = wp.components;
 const { Fragment, useState } = wp.element;
 
 /**
@@ -14,7 +14,16 @@ import { __experimentalFancyRadioControl } from '../../components';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject, has, find, isNil, isEmpty, filter } from 'lodash';
+import {
+	isObject,
+	has,
+	find,
+	isNil,
+	isEmpty,
+	filter,
+	uniqueId,
+	forIn,
+} from 'lodash';
 
 /**
  * Styles and icons
@@ -34,6 +43,8 @@ const MotionControl = props => {
 
 	const [timelineType, setTimelineType] = useState('move');
 	const [timelineTime, setTimelineTime] = useState(0);
+	const [presetName, setPresetName] = useState('');
+	const [presetLoad, setPresetLoad] = useState('');
 
 	const classes = classnames('maxi-motion-control', className);
 
@@ -205,28 +216,122 @@ const MotionControl = props => {
 		}
 	};
 
+	const getPresets = () => {
+		let presetArr = [
+			{ label: __('Select your preset', 'maxi-blocks'), value: '' },
+		];
+		forIn(interaction.presets, (value, key) =>
+			presetArr.push({ label: value.name, value: key })
+		);
+		return presetArr;
+	};
+
+	function showPresetSettings() {
+		return (
+			<Fragment>
+				<__experimentalFancyRadioControl
+					label={__('Preset', 'maxi-blocks')}
+					selected={interaction.presetStatus}
+					options={[
+						{
+							label: __('Yes', 'maxi-blocks'),
+							value: 1,
+						},
+						{
+							label: __('No', 'maxi-blocks'),
+							value: 0,
+						},
+					]}
+					onChange={val => {
+						interaction.presetStatus = Number(val);
+						onChange(JSON.stringify(motionValue));
+					}}
+				/>
+				{!!interaction.presetStatus && (
+					<Fragment>
+						<div className='maxi-motion-control__preset__load'>
+							<SelectControl
+								value={presetLoad}
+								options={getPresets()}
+								onChange={val => setPresetLoad(val)}
+							></SelectControl>
+							<Button
+								disabled={isEmpty(presetLoad)}
+								onClick={() => {
+									{
+										interaction.timeline = {
+											...interaction.presets[presetLoad]
+												.preset,
+										};
+
+										onChange(JSON.stringify(motionValue));
+
+										setPresetLoad('');
+									}
+								}}
+							>
+								{__('Load Preset', 'maxi-blocks')}
+							</Button>
+						</div>
+						<div className='maxi-motion-control__preset__save'>
+							<input
+								type='text'
+								placeholder={__(
+									'Add your Preset Name here',
+									'maxi-blocks'
+								)}
+								value={presetName}
+								onChange={e => setPresetName(e.target.value)}
+							/>
+							<Button
+								disabled={isEmpty(presetName)}
+								onClick={() => {
+									interaction.presets = {
+										...interaction.presets,
+										[uniqueId('preset_')]: {
+											name: presetName,
+											preset: {
+												...interaction.timeline,
+											},
+										},
+									};
+
+									onChange(JSON.stringify(motionValue));
+									setPresetName('');
+								}}
+							>
+								{__('Save Preset', 'maxi-blocks')}
+							</Button>
+						</div>
+					</Fragment>
+				)}
+				<hr />
+			</Fragment>
+		);
+	}
+
 	function showAddTimelineSettings() {
 		return (
 			<Fragment>
-				<select
-					onChange={e => {
-						setTimelineType(e.target.value);
+				<SelectControl
+					onChange={val => {
+						setTimelineType(val);
 					}}
-				>
-					<option value='move'>{__('Move', 'maxi-blocks')}</option>
-					<option value='scale'>{__('Scale', 'maxi-blocks')}</option>
-					<option value='rotate'>
-						{__('Rotate', 'maxi-blocks')}
-					</option>
-					<option value='skew'>{__('Skew', 'maxi-blocks')}</option>
-					<option value='opacity'>
-						{__('Opacity', 'maxi-blocks')}
-					</option>
-					<option value='blur'>{__('Blur', 'maxi-blocks')}</option>
-				</select>
+					options={[
+						{ label: __('Move', 'maxi-blocks'), value: 'move' },
+						{ label: __('Scale', 'maxi-blocks'), value: 'scale' },
+						{ label: __('Rotate', 'maxi-blocks'), value: 'rotate' },
+						{ label: __('Skew', 'maxi-blocks'), value: 'skew' },
+						{ label: __('Blur', 'maxi-blocks'), value: 'blur' },
+						{
+							label: __('Opacity', 'maxi-blocks'),
+							value: 'opacity',
+						},
+					]}
+				></SelectControl>
 				<input
 					type='number'
-					placeholder='Position'
+					placeholder={__('Position', 'maxi-blocks')}
 					min={0}
 					max={100}
 					step={1}
@@ -321,6 +426,10 @@ const MotionControl = props => {
 
 	return (
 		<div className={classes}>
+			<div className='maxi-motion-control__preset'>
+				{showPresetSettings()}
+			</div>
+
 			<div className='maxi-motion-control__add-timeline'>
 				{showAddTimelineSettings()}
 			</div>

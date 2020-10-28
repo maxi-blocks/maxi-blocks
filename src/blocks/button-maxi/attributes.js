@@ -64,6 +64,14 @@ const attributes = {
 		type: 'string',
 		default: JSON.stringify(buttonAttributesData.padding),
 	},
+	iconPadding: {
+		type: 'string',
+		default: JSON.stringify(attributesData.padding),
+	},
+	iconBorder: {
+		type: 'string',
+		default: JSON.stringify(attributesData.border),
+	},
 	content: {
 		type: 'string',
 		default: '',

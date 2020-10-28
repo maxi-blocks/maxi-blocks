@@ -62,10 +62,14 @@ class edit extends MaxiBlock {
 	}
 
 	get getIconObject() {
-		const { icon } = this.props.attributes;
+		const { icon, iconPadding, iconBorder } = this.props.attributes;
 
 		const response = {
 			icon: { ...getButtonIconObject(JSON.parse(icon)) },
+			padding: { ...JSON.parse(iconPadding) },
+			border: { ...JSON.parse(iconBorder) },
+			borderWidth: { ...JSON.parse(iconBorder).borderWidth },
+			borderRadius: { ...JSON.parse(iconBorder).borderRadius },
 		};
 
 		return response;

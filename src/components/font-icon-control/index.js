@@ -60,6 +60,16 @@ const FontIconControl = props => {
 						}}
 					/>
 
+					<ColorControl
+						label={__('Background', 'maxi-blocks')}
+						color={value['background-color']}
+						defaultColor='#fff'
+						onChange={val => {
+							value['background-color'] = val;
+							onChange(JSON.stringify(value));
+						}}
+					/>
+
 					{!disablePosition && (
 						<SelectControl
 							label={__('Position', 'maxi-blocks')}

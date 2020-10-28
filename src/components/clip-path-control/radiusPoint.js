@@ -6,6 +6,11 @@ const { Fragment } = wp.element;
 const { Tooltip } = wp.components;
 
 /**
+ * External dependencies
+ */
+import classnames from 'classnames';
+
+/**
  * Component
  */
 const ClipPathRadiusPoint = props => {
@@ -20,10 +25,16 @@ const ClipPathRadiusPoint = props => {
 
 	const tooltipText = sprintf(__('Radius: %s', 'maxi-blocks'), radius);
 
+	const classes = classnames(
+		'maxi-clip-path-button',
+		'maxi-clip-path-button--radius',
+		`maxi-clip-path-visual-editor-${number}`
+	);
+
 	return (
 		<Fragment>
 			<span
-				className={`maxi-clip-path-button maxi-clip-path-button--radius maxi-clip-path-visual-editor-${number}`}
+				className={classes}
 				onMouseDown={e => {
 					e.preventDefault();
 					onChangeMoving(true, number);

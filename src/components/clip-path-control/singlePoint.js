@@ -6,6 +6,11 @@ const { Fragment } = wp.element;
 const { Tooltip } = wp.components;
 
 /**
+ * External dependencies
+ */
+import classnames from 'classnames';
+
+/**
  * Component
  */
 const ClipPathSinglePoint = props => {
@@ -26,10 +31,16 @@ const ClipPathSinglePoint = props => {
 			? sprintf(__('Top: %s', 'maxi-blocks'), top)
 			: sprintf(__('Left: %s', 'maxi-blocks'), left);
 
+	const classes = classnames(
+		'maxi-clip-path-button',
+		'maxi-clip-path-button--single',
+		`maxi-clip-path-visual-editor-${number}`
+	);
+
 	return (
 		<Fragment>
 			<span
-				className={`maxi-clip-path-button maxi-clip-path-button--single maxi-clip-path-visual-editor-${number}`}
+				className={classes}
 				onMouseDown={e => {
 					e.preventDefault();
 					setOpposite && setOpposite(false);

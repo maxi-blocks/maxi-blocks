@@ -5,6 +5,11 @@ const { __, sprintf } = wp.i18n;
 const { Tooltip } = wp.components;
 
 /**
+ * External dependencies
+ */
+import classnames from 'classnames';
+
+/**
  * Component
  */
 const ClipPathDoublePoint = props => {
@@ -23,9 +28,14 @@ const ClipPathDoublePoint = props => {
 		handle[0]
 	);
 
+	const classes = classnames(
+		'maxi-clip-path-button',
+		`maxi-clip-path-visual-editor-${number}`
+	);
+
 	return (
 		<span
-			className={`maxi-clip-path-button maxi-clip-path-visual-editor-${number}`}
+			className={classes}
 			onMouseDown={e => {
 				e.preventDefault();
 				onChangeMoving(true, number);

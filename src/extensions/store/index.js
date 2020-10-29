@@ -16,6 +16,25 @@ const controls = {
 	async RECEIVE_BREAKPOINTS() {
 		return apiFetch({ path: '/maxi-blocks/v1.0/breakpoints/' });
 	},
+	async RECEIVE_MOTION_PRESETS() {
+		return apiFetch({ path: '/maxi-blocks/v1.0/motion-presets/' });
+	},
+	async RECEIVE_DEVICE_TYPE() {
+		const originalDeviceType = select('maxiBlocks').receiveMaxiDeviceType();
+
+		return originalDeviceType === 'Desktop'
+			? 'general'
+			: originalDeviceType;
+	},
+	async SAVE_MOTION_PRESETS(action) {
+		await apiFetch({
+			path: '/maxi-blocks/v1.0/motion-presets/',
+			method: 'POST',
+			data: {
+				presets: JSON.stringify(action.presets),
+			},
+		});
+	},
 	async SAVE_POST_STYLES(action) {
 		const id = select('core/editor').getCurrentPostId();
 
@@ -29,17 +48,15 @@ const controls = {
 			},
 		});
 	},
-	async RECEIVE_DEVICE_TYPE() {
-		const originalDeviceType = select('maxiBlocks').receiveMaxiDeviceType();
-
-		return originalDeviceType === 'Desktop'
-			? 'general'
-			: originalDeviceType;
-	},
 };
 
 const reducer = (
-	state = { breakpoints: {}, meta: {}, deviceType: 'general' },
+	state = {
+		breakpoints: {},
+		meta: {},
+		deviceType: 'general',
+		presets: '',
+	},
 	action
 ) => {
 	switch (action.type) {
@@ -48,10 +65,21 @@ const reducer = (
 				...state,
 				meta: action.meta,
 			};
+		case 'SEND_MOTION_PRESETS':
+			return {
+				...state,
+				presets: action.presets,
+			};
 		case 'SEND_BREAKPOINTS':
 			return {
 				...state,
 				breakpoints: action.breakpoints,
+			};
+		case 'SAVE_MOTION_PRESETS':
+			controls.SAVE_MOTION_PRESETS(action);
+			return {
+				...state,
+				presets: action.presets,
 			};
 		case 'SAVE_POST_STYLES':
 			controls.SAVE_POST_STYLES(action);
@@ -89,6 +117,23 @@ const actions = {
 	receiveMaxiBreakpoints() {
 		return {
 			type: 'RECEIVE_BREAKPOINTS',
+		};
+	},
+	sendMaxiMotionPresets(presets) {
+		return {
+			type: 'SEND_MOTION_PRESETS',
+			presets,
+		};
+	},
+	receiveMaxiMotionPresets() {
+		return {
+			type: 'RECEIVE_MOTION_PRESETS',
+		};
+	},
+	saveMaxiMotionPresets(presets) {
+		return {
+			type: 'SAVE_MOTION_PRESETS',
+			presets,
 		};
 	},
 	sendMaxiBreakpoints(breakpoints) {
@@ -144,6 +189,10 @@ const selectors = {
 		if (state) return state.breakpoints;
 		return false;
 	},
+	receiveMaxiMotionPresets(state) {
+		if (state) return state.presets;
+		return false;
+	},
 	receiveMaxiDeviceType(state) {
 		if (state) return state.deviceType;
 		return false;
@@ -158,6 +207,10 @@ const resolvers = {
 	*receiveMaxiBreakpoints() {
 		const maxiBreakpoints = yield actions.receiveMaxiBreakpoints();
 		return actions.sendMaxiBreakpoints(maxiBreakpoints);
+	},
+	*receiveMaxiMotionPresets() {
+		const maxiMotionPresets = yield actions.receiveMaxiMotionPresets();
+		return actions.sendMaxiMotionPresets(maxiMotionPresets);
 	},
 	*receiveMaxiDeviceType() {
 		const maxiDeviceType = yield actions.receiveMaxiDeviceType();

@@ -4,6 +4,7 @@
 const { __ } = wp.i18n;
 const { RangeControl, Button, SelectControl } = wp.components;
 const { Fragment, useState } = wp.element;
+const { select, dispatch } = wp.data;
 
 /**
  * Internal dependencies
@@ -216,11 +217,22 @@ const MotionControl = props => {
 		}
 	};
 
+	const presets = select('maxiBlocks').receiveMaxiMotionPresets();
+
+	console.log(presets, typeof presets);
 	const getPresets = () => {
 		let presetArr = [
 			{ label: __('Select your preset', 'maxi-blocks'), value: '' },
 		];
-		forIn(interaction.presets, (value, key) =>
+
+		const presetsValue =
+			!isEmpty(presets) && typeof presets === 'string'
+				? JSON.parse(presets)
+				: !isEmpty(presets) && typeof presets === 'object'
+				? presets
+				: {};
+
+		forIn(presetsValue, (value, key) =>
 			presetArr.push({ label: value.name, value: key })
 		);
 		return presetArr;
@@ -286,8 +298,7 @@ const MotionControl = props => {
 							<Button
 								disabled={isEmpty(presetName)}
 								onClick={() => {
-									interaction.presets = {
-										...interaction.presets,
+									let newPreset = {
 										[uniqueId('preset_')]: {
 											name: presetName,
 											preset: {
@@ -296,8 +307,11 @@ const MotionControl = props => {
 										},
 									};
 
-									onChange(JSON.stringify(motionValue));
 									setPresetName('');
+
+									dispatch(
+										'maxiBlocks'
+									).saveMaxiMotionPresets(newPreset);
 								}}
 							>
 								{__('Save Preset', 'maxi-blocks')}

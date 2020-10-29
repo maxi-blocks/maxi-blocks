@@ -1,0 +1,15 @@
+.maxi-button-presets {
+	&__icons-group {
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: nowrap;
+	}
+
+	&__icon {
+		width: 32%;
+		cursor: pointer;
+		&:hover {
+			opacity: 0.7;
+		}
+	}
+}

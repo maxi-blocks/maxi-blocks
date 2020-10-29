@@ -29,6 +29,7 @@ import {
 	__experimentalEntranceAnimationControl,
 	__experimentalFancyRadioControl,
 	__experimentalFontIconControl,
+	__experimentalButtonPresets,
 } from '../../components';
 import { getDefaultProp } from '../../utils';
 
@@ -108,6 +109,12 @@ const Inspector = props => {
 									isSecondary
 									items={[
 										{
+											label: __('Style', 'maxi-blocks'),
+											content: (
+												<__experimentalButtonPresets />
+											),
+										},
+										{
 											label: __(
 												'Alignment',
 												'maxi-blocks'
@@ -146,6 +153,7 @@ const Inspector = props => {
 												</Fragment>
 											),
 										},
+
 										{
 											label: __(
 												'Typography',

@@ -207,7 +207,7 @@ motionElems.forEach(function (elem) {
 						})
 						.to('.maxi-motion-effect-' + motionID + '', actions),
 					scrub: true,
-					markers: true,
+					markers: false,
 				});
 			}
 		);

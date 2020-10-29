@@ -128,6 +128,8 @@ motionElems.forEach(function (elem) {
 		}
 
 		// Motion Effects
+		const xAxis = motionData.interaction.transformOrigin.xAxis;
+		const yAxis = motionData.interaction.transformOrigin.yAxis;
 		Object.entries(motionData.interaction.timeline).forEach(
 			(item, index, array) => {
 				let actions = {};
@@ -140,7 +142,7 @@ motionElems.forEach(function (elem) {
 							z: act.settings.z,
 							transformPerspective: 1000,
 							transformStyle: 'preserve-3d',
-							transformOrigin: `${act.settings.xAxis} ${act.settings.yAxis}`,
+							transformOrigin: `${xAxis} ${yAxis}`,
 						};
 					}
 					if (act.type === 'rotate') {
@@ -151,7 +153,7 @@ motionElems.forEach(function (elem) {
 							rotationZ: act.settings.z,
 							transformPerspective: 1000,
 							transformStyle: 'preserve-3d',
-							transformOrigin: `${act.settings.xAxis} ${act.settings.yAxis}`,
+							transformOrigin: `${xAxis} ${yAxis}`,
 						};
 					}
 					if (act.type === 'scale') {
@@ -162,7 +164,7 @@ motionElems.forEach(function (elem) {
 							scaleZ: act.settings.z,
 							transformPerspective: 1000,
 							transformStyle: 'preserve-3d',
-							transformOrigin: `${act.settings.xAxis} ${act.settings.yAxis}`,
+							transformOrigin: `${xAxis} ${yAxis}`,
 						};
 					}
 					if (act.type === 'skew') {
@@ -170,7 +172,7 @@ motionElems.forEach(function (elem) {
 							...actions,
 							skewX: act.settings.x,
 							skewY: act.settings.y,
-							transformOrigin: `${act.settings.xAxis} ${act.settings.yAxis}`,
+							transformOrigin: `${xAxis} ${yAxis}`,
 						};
 					}
 					if (act.type === 'opacity') {
@@ -188,11 +190,11 @@ motionElems.forEach(function (elem) {
 					}
 				});
 
-				const startTime = item[0];
+				const startTime = array[index][0];
 				const endTime =
 					typeof array[index + 1] !== 'undefined'
 						? array[index + 1][0]
-						: array[index][0];
+						: 100;
 
 				ScrollTrigger.create({
 					trigger: document.body,
@@ -205,7 +207,7 @@ motionElems.forEach(function (elem) {
 						})
 						.to('.maxi-motion-effect-' + motionID + '', actions),
 					scrub: true,
-					markers: false,
+					markers: true,
 				});
 			}
 		);

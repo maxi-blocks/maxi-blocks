@@ -111,7 +111,16 @@ const Inspector = props => {
 										{
 											label: __('Style', 'maxi-blocks'),
 											content: (
-												<__experimentalButtonPresets />
+												<__experimentalButtonPresets
+													buttonAttributes={
+														props.attributes
+													}
+													onChange={attributes => {
+														setAttributes(
+															attributes
+														);
+													}}
+												/>
 											),
 										},
 										{

@@ -1510,7 +1510,6 @@ export const __experimentalMotion = {
 			yAxis: 'center',
 		},
 		presetStatus: 0,
-		presets: {},
 	},
 	entrance: {
 		type: '',

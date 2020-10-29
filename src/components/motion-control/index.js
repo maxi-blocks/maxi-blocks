@@ -4,7 +4,7 @@
 const { __ } = wp.i18n;
 const { RangeControl, Button, SelectControl } = wp.components;
 const { Fragment, useState } = wp.element;
-const { select, dispatch } = wp.data;
+const { useSelect, useDispatch } = wp.data;
 
 /**
  * Internal dependencies
@@ -46,6 +46,15 @@ const MotionControl = props => {
 	const [timelineTime, setTimelineTime] = useState(0);
 	const [presetName, setPresetName] = useState('');
 	const [presetLoad, setPresetLoad] = useState('');
+	const { saveMaxiMotionPresets } = useDispatch('maxiBlocks');
+
+	const { presets } = useSelect(select => {
+		const { receiveMaxiMotionPresets } = select('maxiBlocks');
+
+		return {
+			presets: receiveMaxiMotionPresets(),
+		};
+	});
 
 	const classes = classnames('maxi-motion-control', className);
 
@@ -217,9 +226,6 @@ const MotionControl = props => {
 		}
 	};
 
-	const presets = select('maxiBlocks').receiveMaxiMotionPresets();
-
-	console.log(presets, typeof presets);
 	const getPresets = () => {
 		let presetArr = [
 			{ label: __('Select your preset', 'maxi-blocks'), value: '' },
@@ -272,12 +278,11 @@ const MotionControl = props => {
 								onClick={() => {
 									{
 										interaction.timeline = {
-											...interaction.presets[presetLoad]
+											...JSON.parse(presets)[presetLoad]
 												.preset,
 										};
 
 										onChange(JSON.stringify(motionValue));
-
 										setPresetLoad('');
 									}
 								}}
@@ -299,6 +304,7 @@ const MotionControl = props => {
 								disabled={isEmpty(presetName)}
 								onClick={() => {
 									let newPreset = {
+										...JSON.parse(presets),
 										[uniqueId('preset_')]: {
 											name: presetName,
 											preset: {
@@ -307,11 +313,8 @@ const MotionControl = props => {
 										},
 									};
 
+									saveMaxiMotionPresets(newPreset);
 									setPresetName('');
-
-									dispatch(
-										'maxiBlocks'
-									).saveMaxiMotionPresets(newPreset);
 								}}
 							>
 								{__('Save Preset', 'maxi-blocks')}

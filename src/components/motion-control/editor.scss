@@ -1,6 +1,5 @@
 .maxi-motion-control {
 	.components-base-control {
-		margin-bottom: 0 !important;
 		flex: 1;
 		&__field {
 			margin: 0 5px 0 0 !important;
@@ -24,7 +23,6 @@
 	}
 	&__preset {
 		&__load {
-			margin-bottom: 10px;
 			display: flex;
 		}
 		&__save {
@@ -35,9 +33,12 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+		.components-base-control {
+			margin-bottom: 0 !important;
+		}
 	}
 	&__timeline {
-		margin: 10px 0 10px auto;
+		margin: 10px 0 0 auto;
 		width: 85%;
 		min-height: 400px;
 		position: relative;

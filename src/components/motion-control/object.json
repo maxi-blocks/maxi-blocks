@@ -9,7 +9,8 @@
 		"transformOrigin": {
 			"xAxis": "center",
 			"yAxis": "center"
-		}
+		},
+		"presetStatus": 0
 	},
 	"entrance": {
 		"type": "",

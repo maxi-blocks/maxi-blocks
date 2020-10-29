@@ -4,7 +4,7 @@
 const { __ } = wp.i18n;
 const { RangeControl, Button, SelectControl } = wp.components;
 const { Fragment, useState } = wp.element;
-const { select, dispatch } = wp.data;
+const { useSelect, useDispatch } = wp.data;
 
 /**
  * Internal dependencies
@@ -40,7 +40,7 @@ const MotionControl = props => {
 
 	const motionValue = !isObject(motion) ? JSON.parse(motion) : motion;
 
-	let { interaction } = motionValue;
+	const { interaction } = motionValue;
 
 	const [timelineType, setTimelineType] = useState('move');
 	const [timelineTime, setTimelineTime] = useState(0);
@@ -88,6 +88,8 @@ const MotionControl = props => {
 					blur: 0,
 				};
 				break;
+			default:
+				break;
 		}
 
 		if (!has(interaction.timeline, time)) {
@@ -100,17 +102,15 @@ const MotionControl = props => {
 					},
 				],
 			};
-		} else {
-			if (isNil(find(interaction.timeline[time], { type }))) {
-				let newTimeline = { ...interaction.timeline };
-				newTimeline[time].unshift({
-					type,
-					settings,
-				});
-				interaction.timeline = {
-					...newTimeline,
-				};
-			}
+		} else if (isNil(find(interaction.timeline[time], { type }))) {
+			const newTimeline = { ...interaction.timeline };
+			newTimeline[time].unshift({
+				type,
+				settings,
+			});
+			interaction.timeline = {
+				...newTimeline,
+			};
 		}
 
 		interaction.activeTimeline = {
@@ -133,7 +133,7 @@ const MotionControl = props => {
 			};
 
 			if (isEmpty(result)) {
-				let newTimeline = { ...interaction.timeline };
+				const newTimeline = { ...interaction.timeline };
 				delete newTimeline[time];
 
 				interaction.timeline = {
@@ -154,8 +154,9 @@ const MotionControl = props => {
 	};
 
 	const updateTimelineItemPosition = (prevTime, newTime) => {
-		let newTimeline = { ...interaction.timeline };
-		let prevItem = newTimeline[prevTime][interaction.activeTimeline.index];
+		const newTimeline = { ...interaction.timeline };
+		const prevItem =
+			newTimeline[prevTime][interaction.activeTimeline.index];
 		prevItem.settings.effectPosition = newTime;
 
 		const result = filter(newTimeline[prevTime], function (o) {
@@ -196,7 +197,7 @@ const MotionControl = props => {
 
 	const updateTimelineItemSettings = (value, name) => {
 		if (!isEmpty(interaction.timeline[interaction.activeTimeline.time])) {
-			let newTimeline = { ...interaction.timeline };
+			const newTimeline = { ...interaction.timeline };
 			newTimeline[interaction.activeTimeline.time][
 				interaction.activeTimeline.index
 			].settings[name] = value;
@@ -217,11 +218,23 @@ const MotionControl = props => {
 		}
 	};
 
-	const presets = select('maxiBlocks').receiveMaxiMotionPresets();
+	// const presets = select('maxiBlocks').receiveMaxiMotionPresets();
 
-	console.log(presets, typeof presets);
+	const { presets } = useSelect(select => {
+		const { receiveMaxiMotionPresets } = select('maxiBlocks');
+		const presets = receiveMaxiMotionPresets();
+
+		return {
+			presets,
+		};
+	});
+
+	const { saveMaxiMotionPresets } = useDispatch('maxiBlocks');
+
+	console.log('Here you have SuperMan! lol', presets, typeof presets);
+
 	const getPresets = () => {
-		let presetArr = [
+		const presetArr = [
 			{ label: __('Select your preset', 'maxi-blocks'), value: '' },
 		];
 
@@ -266,20 +279,18 @@ const MotionControl = props => {
 								value={presetLoad}
 								options={getPresets()}
 								onChange={val => setPresetLoad(val)}
-							></SelectControl>
+							/>
 							<Button
 								disabled={isEmpty(presetLoad)}
 								onClick={() => {
-									{
-										interaction.timeline = {
-											...interaction.presets[presetLoad]
-												.preset,
-										};
+									interaction.timeline = {
+										...interaction.presets[presetLoad]
+											.preset,
+									};
 
-										onChange(JSON.stringify(motionValue));
+									onChange(JSON.stringify(motionValue));
 
-										setPresetLoad('');
-									}
+									setPresetLoad('');
 								}}
 							>
 								{__('Load Preset', 'maxi-blocks')}
@@ -298,7 +309,7 @@ const MotionControl = props => {
 							<Button
 								disabled={isEmpty(presetName)}
 								onClick={() => {
-									let newPreset = {
+									const newPreset = {
 										[uniqueId('preset_')]: {
 											name: presetName,
 											preset: {
@@ -309,9 +320,7 @@ const MotionControl = props => {
 
 									setPresetName('');
 
-									dispatch(
-										'maxiBlocks'
-									).saveMaxiMotionPresets(newPreset);
+									saveMaxiMotionPresets(newPreset);
 								}}
 							>
 								{__('Save Preset', 'maxi-blocks')}
@@ -342,7 +351,7 @@ const MotionControl = props => {
 							value: 'opacity',
 						},
 					]}
-				></SelectControl>
+				/>
 				<input
 					type='number'
 					placeholder={__('Position', 'maxi-blocks')}
@@ -379,7 +388,7 @@ const MotionControl = props => {
 					</div>
 				)}
 				{Object.entries(interaction.timeline).map((time, i, arr) => {
-					let prevValue = !isNil(arr[i - 1]) ? arr[i - 1][0] : 0;
+					const prevValue = !isNil(arr[i - 1]) ? arr[i - 1][0] : 0;
 					return (
 						<Fragment>
 							<div
@@ -390,7 +399,7 @@ const MotionControl = props => {
 											100
 									)}`,
 								}}
-							></div>
+							/>
 							<div className='maxi-motion-control__timeline__group'>
 								{time[1].map((item, i) => (
 									<div

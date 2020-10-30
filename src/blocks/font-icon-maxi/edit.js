@@ -13,7 +13,7 @@ import {
 	getTransformObject,
 	setBackgroundStyles,
 	getLastBreakpointValue,
-	getButtonIconObject,
+	getIconObject,
 	getAlignmentTextObject,
 } from '../../utils';
 import {
@@ -55,7 +55,7 @@ class edit extends MaxiBlock {
 		const { icon } = this.props.attributes;
 
 		const response = {
-			icon: { ...getButtonIconObject(JSON.parse(icon)) },
+			icon: { ...getIconObject(JSON.parse(icon)) },
 		};
 		return response;
 	}

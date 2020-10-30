@@ -17,7 +17,7 @@ import {
 	getAlignmentTextObject,
 	setTextCustomFormats,
 	getLastBreakpointValue,
-	getButtonIconObject,
+	getIconObject,
 } from '../../utils';
 import { MaxiBlock, __experimentalToolbar } from '../../components';
 import { __experimentalGetFormatValue } from '../../extensions/text/formats';
@@ -70,7 +70,7 @@ class edit extends MaxiBlock {
 		} = this.props.attributes;
 
 		const response = {
-			icon: { ...getButtonIconObject(JSON.parse(icon)) },
+			icon: { ...getIconObject(JSON.parse(icon)) },
 			padding: { ...JSON.parse(iconPadding) },
 			border: { ...JSON.parse(iconBorder) },
 			borderWidth: { ...JSON.parse(iconBorder).borderWidth },

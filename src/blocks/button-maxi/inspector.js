@@ -162,7 +162,6 @@ const Inspector = props => {
 												</Fragment>
 											),
 										},
-
 										{
 											label: __(
 												'Typography',

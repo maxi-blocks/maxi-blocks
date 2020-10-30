@@ -11,7 +11,7 @@ import {
 	PresetSeven,
 	PresetEight,
 } from '../../icons';
-import { getButtonAttributes } from './utils';
+import newButtonAttributes from './utils';
 
 /**
  * Styles
@@ -27,7 +27,7 @@ const PresetsIcons = props => {
 				<span
 					className='maxi-button-presets__icon'
 					onClick={() =>
-						onChange(getButtonAttributes(buttonAttributes, 1))
+						onChange(newButtonAttributes(buttonAttributes, 1))
 					}
 				>
 					<PresetOne />
@@ -35,7 +35,7 @@ const PresetsIcons = props => {
 				<span
 					className='maxi-button-presets__icon'
 					onClick={() =>
-						onChange(getButtonAttributes(buttonAttributes, 2))
+						onChange(newButtonAttributes(buttonAttributes, 2))
 					}
 				>
 					<PresetTwo />
@@ -43,7 +43,7 @@ const PresetsIcons = props => {
 				<span
 					className='maxi-button-presets__icon'
 					onClick={() =>
-						onChange(getButtonAttributes(buttonAttributes, 3))
+						onChange(newButtonAttributes(buttonAttributes, 3))
 					}
 				>
 					<PresetThree />
@@ -54,7 +54,7 @@ const PresetsIcons = props => {
 				<span
 					className='maxi-button-presets__icon'
 					onClick={() =>
-						onChange(getButtonAttributes(buttonAttributes, 4))
+						onChange(newButtonAttributes(buttonAttributes, 4))
 					}
 				>
 					<PresetFour />
@@ -62,7 +62,7 @@ const PresetsIcons = props => {
 				<span
 					className='maxi-button-presets__icon'
 					onClick={() =>
-						onChange(getButtonAttributes(buttonAttributes, 5))
+						onChange(newButtonAttributes(buttonAttributes, 5))
 					}
 				>
 					<PresetFive />
@@ -70,7 +70,7 @@ const PresetsIcons = props => {
 				<span
 					className='maxi-button-presets__icon'
 					onClick={() =>
-						onChange(getButtonAttributes(buttonAttributes, 6))
+						onChange(newButtonAttributes(buttonAttributes, 6))
 					}
 				>
 					<PresetSix />
@@ -81,7 +81,7 @@ const PresetsIcons = props => {
 				<span
 					className='maxi-button-presets__icon'
 					onClick={() =>
-						onChange(getButtonAttributes(buttonAttributes, 7))
+						onChange(newButtonAttributes(buttonAttributes, 7))
 					}
 				>
 					<PresetSeven />
@@ -89,7 +89,7 @@ const PresetsIcons = props => {
 				<span
 					className='maxi-button-presets__icon'
 					onClick={() =>
-						onChange(getButtonAttributes(buttonAttributes, 8))
+						onChange(newButtonAttributes(buttonAttributes, 8))
 					}
 				>
 					<PresetEight />

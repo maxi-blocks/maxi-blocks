@@ -844,7 +844,7 @@ export const setArrowStyles = (
 	};
 };
 
-export const getButtonIconObject = icon => {
+export const getIconObject = icon => {
 	const response = {
 		label: icon.label,
 		general: {},

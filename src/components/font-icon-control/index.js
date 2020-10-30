@@ -34,6 +34,9 @@ const FontIconControl = props => {
 		breakpoint,
 		disableSpacing = false,
 		disablePosition = false,
+		disablePadding = false,
+		disableBackground = false,
+		disableBorder = false,
 		padding,
 		onChangePadding,
 		border,
@@ -158,30 +161,38 @@ const FontIconControl = props => {
 						/>
 					)}
 
-					<AxisControl
-						values={padding}
-						defaultValues={attributesData.padding}
-						onChange={padding => onChangePadding(padding)}
-						breakpoint={breakpoint}
-						disableAuto
-					/>
+					{!disablePadding && (
+						<AxisControl
+							values={padding}
+							defaultValues={attributesData.padding}
+							onChange={padding => onChangePadding(padding)}
+							breakpoint={breakpoint}
+							disableAuto
+						/>
+					)}
 
-					<BorderControl
-						border={border}
-						defaultBorder={attributesData.border}
-						onChange={border => onChangeBorder(border)}
-						breakpoint={breakpoint}
-					/>
+					{!disableBorder && (
+						<BorderControl
+							border={border}
+							defaultBorder={attributesData.border}
+							onChange={border => onChangeBorder(border)}
+							breakpoint={breakpoint}
+						/>
+					)}
 
-					<BackgroundControl
-						background={background}
-						defaultBackground={attributesData.background}
-						onChange={background => onChangeBackground(background)}
-						disableImage
-						disableVideo
-						disableClipPath
-						disableSVG
-					/>
+					{!disableBackground && (
+						<BackgroundControl
+							background={background}
+							defaultBackground={attributesData.background}
+							onChange={background =>
+								onChangeBackground(background)
+							}
+							disableImage
+							disableVideo
+							disableClipPath
+							disableSVG
+						/>
+					)}
 				</Fragment>
 			)}
 		</div>

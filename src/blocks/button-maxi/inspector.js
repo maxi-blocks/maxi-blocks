@@ -108,7 +108,7 @@ const Inspector = props => {
 								<AccordionControl
 									isSecondary
 									items={[
-										{
+										deviceType === 'general' && {
 											label: __('Style', 'maxi-blocks'),
 											content: (
 												<__experimentalButtonPresets

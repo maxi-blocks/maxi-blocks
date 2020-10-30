@@ -1,4 +1,4 @@
-export const presetsSettings = {
+export const presetsStyles = {
 	1: {
 		border: {
 			borderWidth: 1,
@@ -348,7 +348,7 @@ export const presetsSettings = {
 	},
 };
 
-export const updateButtonAttributes = (attributes, presetNumber) => {
+export const getButtonAttributes = (attributes, presetNumber) => {
 	const newAttributes = { ...attributes };
 	const border = JSON.parse(newAttributes.border);
 	const background = JSON.parse(newAttributes.background);
@@ -362,29 +362,28 @@ export const updateButtonAttributes = (attributes, presetNumber) => {
 
 	// Set Padding
 	padding.general.unit = 'px';
-	padding.general['padding-top'] = presetsSettings[presetNumber].padding.top;
+	padding.general['padding-top'] = presetsStyles[presetNumber].padding.top;
 	padding.general['padding-right'] =
-		presetsSettings[presetNumber].padding.right;
+		presetsStyles[presetNumber].padding.right;
 	padding.general['padding-bottom'] =
-		presetsSettings[presetNumber].padding.bottom;
-	padding.general['padding-left'] =
-		presetsSettings[presetNumber].padding.left;
+		presetsStyles[presetNumber].padding.bottom;
+	padding.general['padding-left'] = presetsStyles[presetNumber].padding.left;
 
-	padding.general.unit = presetsSettings[presetNumber].padding.unit;
+	padding.general.unit = presetsStyles[presetNumber].padding.unit;
 	newAttributes.padding = JSON.stringify(padding);
 
 	// Set Box Shadow
 	boxShadow.general.shadowColor =
-		presetsSettings[presetNumber].boxShadow.shadowColor;
+		presetsStyles[presetNumber].boxShadow.shadowColor;
 
 	boxShadow.general.shadowHorizontal =
-		presetsSettings[presetNumber].boxShadow.shadowHorizontal;
+		presetsStyles[presetNumber].boxShadow.shadowHorizontal;
 
 	boxShadow.general.shadowVertical =
-		presetsSettings[presetNumber].boxShadow.shadowVertical;
+		presetsStyles[presetNumber].boxShadow.shadowVertical;
 
 	boxShadow.general.shadowBlur =
-		presetsSettings[presetNumber].boxShadow.shadowBlur;
+		presetsStyles[presetNumber].boxShadow.shadowBlur;
 
 	newAttributes.boxShadow = JSON.stringify(boxShadow);
 
@@ -392,24 +391,24 @@ export const updateButtonAttributes = (attributes, presetNumber) => {
 	border.general['border-style'] = 'solid';
 	border.general['border-color'] = '#ff4a17';
 	border.borderWidth.general['border-bottom-width'] =
-		presetsSettings[presetNumber].border.borderWidth;
+		presetsStyles[presetNumber].border.borderWidth;
 	border.borderWidth.general['border-top-width'] =
-		presetsSettings[presetNumber].border.borderWidth;
+		presetsStyles[presetNumber].border.borderWidth;
 	border.borderWidth.general['border-right-width'] =
-		presetsSettings[presetNumber].border.borderWidth;
+		presetsStyles[presetNumber].border.borderWidth;
 	border.borderWidth.general['border-left-width'] =
-		presetsSettings[presetNumber].border.borderWidth;
+		presetsStyles[presetNumber].border.borderWidth;
 	border.borderWidth.unit = 'px';
 
 	// Set Border Radius.
 	border.borderRadius.general['border-bottom-left-radius'] =
-		presetsSettings[presetNumber].border.borderRadius;
+		presetsStyles[presetNumber].border.borderRadius;
 	border.borderRadius.general['border-bottom-right-radius'] =
-		presetsSettings[presetNumber].border.borderRadius;
+		presetsStyles[presetNumber].border.borderRadius;
 	border.borderRadius.general['border-top-right-radius'] =
-		presetsSettings[presetNumber].border.borderRadius;
+		presetsStyles[presetNumber].border.borderRadius;
 	border.borderRadius.general['border-top-left-radius'] =
-		presetsSettings[presetNumber].border.borderRadius;
+		presetsStyles[presetNumber].border.borderRadius;
 	border.borderWidth.general.unit = 'px';
 
 	newAttributes.border = JSON.stringify(border);
@@ -418,20 +417,20 @@ export const updateButtonAttributes = (attributes, presetNumber) => {
 	background.activeMedia = 'color';
 
 	background.colorOptions.activeColor =
-		presetsSettings[presetNumber].background.color;
+		presetsStyles[presetNumber].background.color;
 	background.colorOptions.color =
-		presetsSettings[presetNumber].background.color;
+		presetsStyles[presetNumber].background.color;
 
 	newAttributes.background = JSON.stringify(background);
 
 	// Set Typography
-	typography.general.color = presetsSettings[presetNumber].typography.color;
+	typography.general.color = presetsStyles[presetNumber].typography.color;
 	newAttributes.typography = JSON.stringify(typography);
 
 	// Set Icon Settings
-	iconObject.icon = presetsSettings[presetNumber].icon.icon;
-	iconObject.position = presetsSettings[presetNumber].icon.position;
-	iconObject.general.spacing = presetsSettings[presetNumber].icon.spacing;
+	iconObject.icon = presetsStyles[presetNumber].icon.icon;
+	iconObject.position = presetsStyles[presetNumber].icon.position;
+	iconObject.general.spacing = presetsStyles[presetNumber].icon.spacing;
 
 	newAttributes.icon = JSON.stringify(iconObject);
 
@@ -439,49 +438,49 @@ export const updateButtonAttributes = (attributes, presetNumber) => {
 	iconBackground.activeMedia = 'color';
 
 	iconBackground.colorOptions.activeColor =
-		presetsSettings[presetNumber].icon.background;
+		presetsStyles[presetNumber].icon.background;
 	iconBackground.colorOptions.color =
-		presetsSettings[presetNumber].icon.background;
+		presetsStyles[presetNumber].icon.background;
 
 	newAttributes.iconBackground = JSON.stringify(iconBackground);
 
 	// Set Icon padding
 	iconPadding.general.unit = 'px';
 	iconPadding.general['padding-top'] =
-		presetsSettings[presetNumber].icon.padding;
+		presetsStyles[presetNumber].icon.padding;
 	iconPadding.general['padding-right'] =
-		presetsSettings[presetNumber].icon.padding;
+		presetsStyles[presetNumber].icon.padding;
 	iconPadding.general['padding-bottom'] =
-		presetsSettings[presetNumber].icon.padding;
+		presetsStyles[presetNumber].icon.padding;
 	iconPadding.general['padding-left'] =
-		presetsSettings[presetNumber].icon.padding;
+		presetsStyles[presetNumber].icon.padding;
 	newAttributes.iconPadding = JSON.stringify(iconPadding);
 
 	// Icon border
 	iconBorder.general['border-style'] = 'solid';
 	iconBorder.general['border-color'] =
-		presetsSettings[presetNumber].icon.borderColor;
+		presetsStyles[presetNumber].icon.borderColor;
 	iconBorder.borderWidth.general['border-bottom-width'] =
-		presetsSettings[presetNumber].icon.borderWidth;
+		presetsStyles[presetNumber].icon.borderWidth;
 	iconBorder.borderWidth.general['border-top-width'] =
-		presetsSettings[presetNumber].icon.borderWidth;
+		presetsStyles[presetNumber].icon.borderWidth;
 	iconBorder.borderWidth.general['border-right-width'] =
-		presetsSettings[presetNumber].icon.borderWidth;
+		presetsStyles[presetNumber].icon.borderWidth;
 	iconBorder.borderWidth.general['border-left-width'] =
-		presetsSettings[presetNumber].icon.borderWidth;
+		presetsStyles[presetNumber].icon.borderWidth;
 	iconBorder.borderWidth.unit = 'px';
 
 	// Set Border Radius.
 	iconBorder.borderRadius.general['border-bottom-left-radius'] =
-		presetsSettings[presetNumber].icon.borderRadius;
+		presetsStyles[presetNumber].icon.borderRadius;
 	iconBorder.borderRadius.general['border-bottom-right-radius'] =
-		presetsSettings[presetNumber].icon.borderRadius;
+		presetsStyles[presetNumber].icon.borderRadius;
 	iconBorder.borderRadius.general['border-top-right-radius'] =
-		presetsSettings[presetNumber].icon.borderRadius;
+		presetsStyles[presetNumber].icon.borderRadius;
 	iconBorder.borderRadius.general['border-top-left-radius'] =
-		presetsSettings[presetNumber].icon.borderRadius;
+		presetsStyles[presetNumber].icon.borderRadius;
 	iconBorder.borderRadius.general.unit =
-		presetsSettings[presetNumber].icon.borderRadiusUnit;
+		presetsStyles[presetNumber].icon.borderRadiusUnit;
 	newAttributes.iconBorder = JSON.stringify(iconBorder);
 
 	return newAttributes;

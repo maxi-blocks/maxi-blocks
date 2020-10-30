@@ -3,7 +3,7 @@
  */
 const { __, sprintf } = wp.i18n;
 const { ColorPicker, RangeControl, BaseControl, Button } = wp.components;
-const { useState } = wp.element;
+const { useState, useEffect } = wp.element;
 
 /**
  * External dependencies
@@ -27,13 +27,16 @@ const ColorControl = props => {
 
 	const getRGB = colorString => {
 		const rgbKeys = ['r', 'g', 'b', 'a'];
-		let output = {};
-		let color = colorString.replace(/^rgba?\(|\s+|\)$/g, '').split(',');
+		const output = {};
+		const color = colorString.replace(/^rgba?\(|\s+|\)$/g, '').split(',');
 
-		for (let i in rgbKeys) output[rgbKeys[i]] = color[i] || 1;
+		for (const i in rgbKeys) output[rgbKeys[i]] = color[i] || 1;
 
 		return { rgb: { ...output } };
 	};
+
+	const [colorAlpha, setColorAlpha] = useState(getRGB(color).rgb.a * 100);
+	const [currentColor, setCurrentColor] = useState(color);
 
 	const returnColor = (val, alpha) => {
 		return !isEmpty(val)
@@ -47,7 +50,12 @@ const ColorControl = props => {
 		if (!isEmpty(color)) onChange(returnColor(getRGB(color), 1));
 	};
 
-	const [colorAlpha, setColorAlpha] = useState(getRGB(color).rgb.a * 100);
+	useEffect(() => {
+		if (color !== currentColor) {
+			setCurrentColor(color);
+			setColorAlpha(getRGB(color).rgb.a * 100);
+		}
+	}, [color, currentColor, setCurrentColor, setColorAlpha, getRGB]);
 
 	return (
 		<div className={classes}>
@@ -82,6 +90,9 @@ const ColorControl = props => {
 				onChange={val => {
 					if (!isEmpty(color)) {
 						onChange(returnColor(getRGB(color), Number(val / 100)));
+						setCurrentColor(
+							returnColor(getRGB(color), Number(val / 100))
+						);
 					}
 					setColorAlpha(val);
 				}}
@@ -91,9 +102,10 @@ const ColorControl = props => {
 			/>
 			<div className='maxi-color-control__color'>
 				<ColorPicker
-					color={color}
+					color={currentColor}
 					onChangeComplete={val => {
 						onChange(returnColor(val, colorAlpha));
+						setCurrentColor(returnColor(val, colorAlpha));
 					}}
 					disableAlpha
 				/>

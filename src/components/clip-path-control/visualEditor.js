@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 const { useState, useEffect } = wp.element;
+const { withFallbackStyles } = wp.components;
 
 /**
  * Internal dependencies
@@ -20,7 +21,13 @@ import { round, isArray, isEmpty } from 'lodash';
  * Component
  */
 const ClipPathVisualEditor = props => {
-	const { clipPathOptions, colors, onChange, className } = props;
+	const {
+		clipPathOptions,
+		colors,
+		onChange,
+		className,
+		wrapperHeight,
+	} = props;
 
 	const classes = classnames('maxi-clip-path-visual-editor', className);
 
@@ -60,7 +67,6 @@ const ClipPathVisualEditor = props => {
 	const [clipPath, changeClipPath] = useState(getClipPath(clipPathOptions));
 	const [selectedItem, changeSelectedItem] = useState(null);
 	const [isMoving, changeIsMoving] = useState(false);
-	const [size, changeSize] = useState(null);
 	const [isOpposite, changeIsOpposite] = useState(false);
 
 	useEffect(() => {
@@ -178,7 +184,6 @@ const ClipPathVisualEditor = props => {
 
 	return (
 		<div
-			ref={e => e && !size && changeSize(e.offsetWidth)}
 			className={classes}
 			onMouseMove={e => {
 				if (isMoving) onMouseMove(e);
@@ -187,7 +192,7 @@ const ClipPathVisualEditor = props => {
 				changeIsMoving(false);
 				onChange(clipPathOptions);
 			}}
-			style={{ height: `${size}px` }}
+			style={{ height: `${wrapperHeight}px` }}
 		>
 			{Object.entries(clipPathOptions.content).map(([key, handle]) => {
 				const i = Number(key);
@@ -315,4 +320,11 @@ const ClipPathVisualEditor = props => {
 	);
 };
 
-export default ClipPathVisualEditor;
+export default withFallbackStyles(node => {
+	const visualEditorNode = node.querySelector(
+		'.maxi-clip-path-visual-editor'
+	);
+	return {
+		wrapperHeight: visualEditorNode.offsetHeight,
+	};
+})(ClipPathVisualEditor);

@@ -132,7 +132,7 @@ const MotionControl = props => {
 
 	const removeTimeline = (type, time) => {
 		if (has(interaction.timeline, time)) {
-			const result = filter(interaction.timeline[time], function (o) {
+			const result = filter(interaction.timeline[time], o => {
 				return o.type !== type;
 			});
 
@@ -168,7 +168,7 @@ const MotionControl = props => {
 			newTimeline[prevTime][interaction.activeTimeline.index];
 		prevItem.settings.effectPosition = newTime;
 
-		const result = filter(newTimeline[prevTime], function (o) {
+		const result = filter(newTimeline[prevTime], o => {
 			return o.type !== prevItem.type;
 		});
 
@@ -268,29 +268,34 @@ const MotionControl = props => {
 				/>
 				{!!interaction.presetStatus && (
 					<Fragment>
-						<div className='maxi-motion-control__preset__load'>
-							<SelectControl
-								value={presetLoad}
-								options={getPresets()}
-								onChange={val => setPresetLoad(val)}
-							/>
-							<Button
-								disabled={isEmpty(presetLoad)}
-								onClick={() => {
-									{
-										interaction.timeline = {
-											...JSON.parse(presets)[presetLoad]
-												.preset,
-										};
+						{getPresets().length > 1 && (
+							<div className='maxi-motion-control__preset__load'>
+								<SelectControl
+									value={presetLoad}
+									options={getPresets()}
+									onChange={val => setPresetLoad(val)}
+								/>
+								<Button
+									disabled={isEmpty(presetLoad)}
+									onClick={() => {
+										{
+											interaction.timeline = {
+												...JSON.parse(presets)[
+													presetLoad
+												].preset,
+											};
 
-										onChange(JSON.stringify(motionValue));
-										setPresetLoad('');
-									}
-								}}
-							>
-								{__('Load Preset', 'maxi-blocks')}
-							</Button>
-						</div>
+											onChange(
+												JSON.stringify(motionValue)
+											);
+											setPresetLoad('');
+										}
+									}}
+								>
+									{__('Load Preset', 'maxi-blocks')}
+								</Button>
+							</div>
+						)}
 						<div className='maxi-motion-control__preset__save'>
 							<input
 								type='text'
@@ -398,14 +403,14 @@ const MotionControl = props => {
 							<div className='maxi-motion-control__timeline__group'>
 								{time[1].map((item, i) => (
 									<div
-										className={`maxi-motion-control__timeline__group__item ${
+										className={classnames(
+											'maxi-motion-control__timeline__group__item',
 											interaction.activeTimeline.time ===
 												Number(time[0]) &&
-											interaction.activeTimeline.index ===
-												i
-												? 'maxi-motion-control__timeline__group__item--active-item'
-												: ''
-										}`}
+												interaction.activeTimeline
+													.index === i &&
+												'maxi-motion-control__timeline__group__item--active-item'
+										)}
 										onClick={() => {
 											interaction.activeTimeline = {
 												time: Number(time[0]),
@@ -444,6 +449,18 @@ const MotionControl = props => {
 
 	return (
 		<div className={classes}>
+			<__experimentalFancyRadioControl
+				label={__('Preview', 'maxi-blocks')}
+				selected={interaction.previewStatus}
+				options={[
+					{ label: __('Yes', 'maxi-blocks'), value: 1 },
+					{ label: __('No', 'maxi-blocks'), value: 0 },
+				]}
+				onChange={val => {
+					interaction.previewStatus = Number(val);
+					onChange(JSON.stringify(motionValue));
+				}}
+			/>
 			<div className='maxi-motion-control__preset'>
 				{showPresetSettings()}
 			</div>
@@ -485,30 +502,69 @@ const MotionControl = props => {
 						<Fragment>
 							<RangeControl
 								label={__('X', 'maxi-blocks')}
+								help={
+									getCurrentTimelineItem().type === 'rotate'
+										? 'deg'
+										: 'px'
+								}
 								value={getTimelineItemSettingValue('x')}
 								onChange={value =>
 									updateTimelineItemSettings(value, 'x')
 								}
-								min={-1000}
-								max={1000}
+								min={
+									getCurrentTimelineItem().type === 'rotate'
+										? -180
+										: -500
+								}
+								max={
+									getCurrentTimelineItem().type === 'rotate'
+										? 180
+										: 500
+								}
 							/>
 							<RangeControl
 								label={__('Y', 'maxi-blocks')}
+								help={
+									getCurrentTimelineItem().type === 'rotate'
+										? 'deg'
+										: 'px'
+								}
 								value={getTimelineItemSettingValue('y')}
 								onChange={value =>
 									updateTimelineItemSettings(value, 'y')
 								}
-								min={-1000}
-								max={1000}
+								min={
+									getCurrentTimelineItem().type === 'rotate'
+										? -180
+										: -500
+								}
+								max={
+									getCurrentTimelineItem().type === 'rotate'
+										? 180
+										: 500
+								}
 							/>
 							<RangeControl
 								label={__('Z', 'maxi-blocks')}
+								help={
+									getCurrentTimelineItem().type === 'rotate'
+										? 'deg'
+										: 'px'
+								}
 								value={getTimelineItemSettingValue('z')}
 								onChange={value =>
 									updateTimelineItemSettings(value, 'z')
 								}
-								min={-1000}
-								max={1000}
+								min={
+									getCurrentTimelineItem().type === 'rotate'
+										? -180
+										: -500
+								}
+								max={
+									getCurrentTimelineItem().type === 'rotate'
+										? 180
+										: 500
+								}
 							/>
 						</Fragment>
 					)}
@@ -517,6 +573,7 @@ const MotionControl = props => {
 						<Fragment>
 							<RangeControl
 								label={__('X', 'maxi-blocks')}
+								help={'deg'}
 								value={getTimelineItemSettingValue('x')}
 								onChange={value =>
 									updateTimelineItemSettings(value, 'x')
@@ -526,6 +583,7 @@ const MotionControl = props => {
 							/>
 							<RangeControl
 								label={__('Y', 'maxi-blocks')}
+								help={'deg'}
 								value={getTimelineItemSettingValue('y')}
 								onChange={value =>
 									updateTimelineItemSettings(value, 'y')
@@ -544,8 +602,8 @@ const MotionControl = props => {
 								onChange={value =>
 									updateTimelineItemSettings(value, 'x')
 								}
-								min={-3}
-								max={3}
+								min={-2}
+								max={2}
 								step={0.1}
 							/>
 							<RangeControl
@@ -554,8 +612,8 @@ const MotionControl = props => {
 								onChange={value =>
 									updateTimelineItemSettings(value, 'y')
 								}
-								min={-3}
-								max={3}
+								min={-2}
+								max={2}
 								step={0.1}
 							/>
 							<RangeControl
@@ -564,8 +622,8 @@ const MotionControl = props => {
 								onChange={value =>
 									updateTimelineItemSettings(value, 'z')
 								}
-								min={-3}
-								max={3}
+								min={-2}
+								max={2}
 								step={0.1}
 							/>
 						</Fragment>
@@ -575,6 +633,7 @@ const MotionControl = props => {
 						<Fragment>
 							<RangeControl
 								label={__('Opacity', 'maxi-blocks')}
+								help={'%'}
 								value={getTimelineItemSettingValue('opacity')}
 								onChange={value =>
 									updateTimelineItemSettings(value, 'opacity')
@@ -591,6 +650,7 @@ const MotionControl = props => {
 						<Fragment>
 							<RangeControl
 								label={__('Blur', 'maxi-blocks')}
+								help={'px'}
 								value={getTimelineItemSettingValue('blur')}
 								onChange={value =>
 									updateTimelineItemSettings(value, 'blur')

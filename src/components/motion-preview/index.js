@@ -67,7 +67,12 @@ const MotionPreview = props => {
 	const classes = classnames('maxi-motion-preview', className);
 
 	return (
-		<div className={classes} style={motionPreview}>
+		<div
+			className={classes}
+			style={
+				!!motionValue.interaction.previewStatus ? motionPreview : null
+			}
+		>
 			{children}
 		</div>
 	);

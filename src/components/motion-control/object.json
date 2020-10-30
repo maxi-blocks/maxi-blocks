@@ -10,7 +10,8 @@
 			"xAxis": "center",
 			"yAxis": "center"
 		},
-		"presetStatus": 0
+		"presetStatus": 0,
+		"previewStatus": 0
 	},
 	"entrance": {
 		"type": "",

@@ -131,75 +131,79 @@ motionElems.forEach(function (elem) {
 		const xAxis = motionData.interaction.transformOrigin.xAxis;
 		const yAxis = motionData.interaction.transformOrigin.yAxis;
 		Object.entries(motionData.interaction.timeline).forEach(
-			(item, index, array) => {
+			([key, value], index, array) => {
 				let actions = {};
-				item[1].forEach(act => {
-					if (act.type === 'move') {
-						actions = {
-							...actions,
-							x: act.settings.x,
-							y: act.settings.y,
-							z: act.settings.z,
-							transformPerspective: 1000,
-							transformStyle: 'preserve-3d',
-							transformOrigin: `${xAxis} ${yAxis}`,
-						};
-					}
-					if (act.type === 'rotate') {
-						actions = {
-							...actions,
-							rotationX: act.settings.x,
-							rotationY: act.settings.y,
-							rotationZ: act.settings.z,
-							transformPerspective: 1000,
-							transformStyle: 'preserve-3d',
-							transformOrigin: `${xAxis} ${yAxis}`,
-						};
-					}
-					if (act.type === 'scale') {
-						actions = {
-							...actions,
-							scaleX: act.settings.x,
-							scaleY: act.settings.y,
-							scaleZ: act.settings.z,
-							transformPerspective: 1000,
-							transformStyle: 'preserve-3d',
-							transformOrigin: `${xAxis} ${yAxis}`,
-						};
-					}
-					if (act.type === 'skew') {
-						actions = {
-							...actions,
-							skewX: act.settings.x,
-							skewY: act.settings.y,
-							transformOrigin: `${xAxis} ${yAxis}`,
-						};
-					}
-					if (act.type === 'opacity') {
-						actions = {
-							...actions,
-							autoAlpha: act.settings.opacity,
-						};
-					}
-					if (act.type === 'blur') {
-						actions = {
-							...actions,
-							webkitFilter: 'blur(' + act.settings.blur + 'px)',
-							filter: 'blur(' + act.settings.blur + 'px)',
-						};
+				value.forEach(act => {
+					switch (act.type) {
+						case 'move':
+							actions = {
+								...actions,
+								x: act.settings.x,
+								y: act.settings.y,
+								z: act.settings.z,
+								transformPerspective: 1000,
+								transformStyle: 'preserve-3d',
+								transformOrigin: `${xAxis} ${yAxis}`,
+							};
+							break;
+						case 'rotate':
+							actions = {
+								...actions,
+								rotationX: act.settings.x,
+								rotationY: act.settings.y,
+								rotationZ: act.settings.z,
+								transformPerspective: 1000,
+								transformStyle: 'preserve-3d',
+								transformOrigin: `${xAxis} ${yAxis}`,
+							};
+							break;
+
+						case 'scale':
+							actions = {
+								...actions,
+								scaleX: act.settings.x,
+								scaleY: act.settings.y,
+								scaleZ: act.settings.z,
+								transformPerspective: 1000,
+								transformStyle: 'preserve-3d',
+								transformOrigin: `${xAxis} ${yAxis}`,
+							};
+							break;
+						case 'skew':
+							actions = {
+								...actions,
+								skewX: act.settings.x,
+								skewY: act.settings.y,
+								transformOrigin: `${xAxis} ${yAxis}`,
+							};
+							break;
+						case 'opacity':
+							actions = {
+								...actions,
+								autoAlpha: act.settings.opacity,
+							};
+							break;
+						case 'blur':
+							actions = {
+								...actions,
+								webkitFilter:
+									'blur(' + act.settings.blur + 'px)',
+								filter: 'blur(' + act.settings.blur + 'px)',
+							};
+							break;
+						default:
+							return;
 					}
 				});
 
-				const startTime = array[index][0];
+				const startTime = key;
 				const endTime =
-					typeof array[index + 1] !== 'undefined'
-						? array[index + 1][0]
-						: 100;
+					(!!array[index + 1] && +array[index + 1]) || 100;
 
 				ScrollTrigger.create({
 					trigger: document.body,
-					start: '' + startTime + '% ' + startTime + '%',
-					end: '' + endTime + '% ' + endTime + '%',
+					start: `${startTime}% ${startTime}%`,
+					end: `${endTime}% ${endTime}%`,
 					animation: gsap
 						.timeline({
 							paused: true,

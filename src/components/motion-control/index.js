@@ -387,62 +387,66 @@ const MotionControl = props => {
 						</p>
 					</div>
 				)}
-				{Object.entries(interaction.timeline).map((time, i, arr) => {
-					const prevValue = !isNil(arr[i - 1]) ? arr[i - 1][0] : 0;
-					return (
-						<Fragment>
-							<div
-								className='maxi-motion-control__timeline__space'
-								style={{
-									flexGrow: `${parseFloat(
-										(Number(time[0]) - Number(prevValue)) /
-											100
-									)}`,
-								}}
-							/>
-							<div className='maxi-motion-control__timeline__group'>
-								{time[1].map((item, i) => (
-									<div
-										className={classnames(
-											'maxi-motion-control__timeline__group__item',
-											interaction.activeTimeline.time ===
-												Number(time[0]) &&
+				{Object.entries(interaction.timeline).map(
+					([key, value], i, arr) => {
+						const prevValue = !isNil(arr[i - 1])
+							? arr[i - 1][0]
+							: 0;
+						return (
+							<Fragment>
+								<div
+									className='maxi-motion-control__timeline__space'
+									style={{
+										flexGrow: `${parseFloat(
+											(Number(key) - Number(prevValue)) /
+												100
+										)}`,
+									}}
+								/>
+								<div className='maxi-motion-control__timeline__group'>
+									{value.map((item, i) => (
+										<div
+											className={classnames(
+												'maxi-motion-control__timeline__group__item',
 												interaction.activeTimeline
-													.index === i &&
-												'maxi-motion-control__timeline__group__item--active-item'
-										)}
-										onClick={() => {
-											interaction.activeTimeline = {
-												time: Number(time[0]),
-												index: i,
-											};
-											onChange(
-												JSON.stringify(motionValue)
-											);
-										}}
-									>
-										<span>{item.type}</span>
-										<div className='maxi-motion-control__timeline__group__item__actions'>
-											<i
-												onClick={() =>
-													removeTimeline(
-														item.type,
-														time[0]
-													)
-												}
-											>
-												{toolbarDelete}
-											</i>
+													.time === Number(key) &&
+													interaction.activeTimeline
+														.index === i &&
+													'maxi-motion-control__timeline__group__item--active-item'
+											)}
+											onClick={() => {
+												interaction.activeTimeline = {
+													time: Number(key),
+													index: i,
+												};
+												onChange(
+													JSON.stringify(motionValue)
+												);
+											}}
+										>
+											<span>{item.type}</span>
+											<div className='maxi-motion-control__timeline__group__item__actions'>
+												<i
+													onClick={() =>
+														removeTimeline(
+															item.type,
+															key
+														)
+													}
+												>
+													{toolbarDelete}
+												</i>
+											</div>
 										</div>
+									))}
+									<div className='maxi-motion-control__timeline__group__position'>
+										{key}%
 									</div>
-								))}
-								<div className='maxi-motion-control__timeline__group__position'>
-									{time[0]}%
 								</div>
-							</div>
-						</Fragment>
-					);
-				})}
+							</Fragment>
+						);
+					}
+				)}
 			</Fragment>
 		);
 	}

@@ -43,3 +43,4 @@ export { default as backgroundColor } from './background-color';
 export { default as backgroundVideo } from './background-video';
 export { default as backgroundImage } from './background-image';
 export { default as backgroundGradient } from './background-gradient';
+export { default as fontIconSettings } from './font-icon';

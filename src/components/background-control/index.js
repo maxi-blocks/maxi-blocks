@@ -48,6 +48,7 @@ const BackgroundControl = props => {
 		disableColor = false,
 		disableClipPath = false,
 		disableSVG = false,
+		disableNoneStyle = false,
 		onChange,
 	} = props;
 
@@ -103,7 +104,12 @@ const BackgroundControl = props => {
 
 	const getOptions = () => {
 		const options = [
-			{ label: <Icon icon={styleNone} />, value: '' },
+			...(!disableNoneStyle && [
+				{
+					label: <Icon icon={styleNone} />,
+					value: '',
+				},
+			]),
 			...(!disableColor && [
 				{
 					label: <Icon icon={backgroundColor} />,

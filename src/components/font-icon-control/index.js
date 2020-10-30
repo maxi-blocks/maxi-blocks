@@ -3,7 +3,8 @@
  */
 const { __ } = wp.i18n;
 const { SelectControl } = wp.components;
-const { Fragment } = wp.element;
+const { Fragment, useState } = wp.element;
+const { Icon } = wp.components;
 
 /**
  * External dependencies
@@ -21,7 +22,18 @@ import FontIconPicker from '../font-icon-picker';
 import AxisControl from '../axis-control';
 import BorderControl from '../border-control';
 import BackgroundControl from '../background-control';
+import __experimentalFancyRadioControl from '../fancy-radio-control';
 import * as attributesData from '../../extensions/styles/defaults';
+
+/**
+ * Styles and icons
+ */
+import {
+	backgroundColor,
+	solid,
+	backgroundGradient,
+	fontIconSettings,
+} from '../../icons';
 
 /**
  * Component
@@ -45,9 +57,49 @@ const FontIconControl = props => {
 		onChangeBackground,
 	} = props;
 
+	const [activeOption, setActiveOption] = useState('iconColor');
+
 	const value = !isObject(icon) ? JSON.parse(icon) : icon;
 
+	const backgroundValue =
+		!disableBackground && !isObject(background)
+			? JSON.parse(background)
+			: background;
+
+	const getOptions = () => {
+		const options = [
+			...[
+				{
+					label: <Icon icon={fontIconSettings} />,
+					value: 'iconColor',
+				},
+			],
+			...(!disableBackground && [
+				{
+					label: <Icon icon={backgroundColor} />,
+					value: 'backgroundColor',
+				},
+			]),
+			...(!disableBackground && [
+				{
+					label: <Icon icon={backgroundGradient()} />,
+					value: 'backgroundGradient',
+				},
+			]),
+			...(!disableBorder && [
+				{
+					label: <Icon icon={solid} />,
+					value: 'border',
+				},
+			]),
+		];
+
+		return options;
+	};
+
 	const classes = classnames('maxi-font-icon-control', className);
+
+	console.log(getOptions().length);
 
 	return (
 		<div className={classes}>
@@ -60,41 +112,6 @@ const FontIconControl = props => {
 			/>
 			{value.icon && (
 				<Fragment>
-					<ColorControl
-						label={__('Icon', 'maxi-blocks')}
-						color={getLastBreakpointValue(
-							value,
-							'color',
-							breakpoint
-						)}
-						defaultColor='#fff'
-						onChange={val => {
-							value[breakpoint].color = val;
-							onChange(JSON.stringify(value));
-						}}
-					/>
-
-					{!disablePosition && (
-						<SelectControl
-							label={__('Position', 'maxi-blocks')}
-							value={value.position}
-							options={[
-								{
-									label: __('Left', 'maxi-blocks'),
-									value: 'left',
-								},
-								{
-									label: __('Right', 'maxi-blocks'),
-									value: 'right',
-								},
-							]}
-							onChange={val => {
-								value.position = val;
-								onChange(JSON.stringify(value));
-							}}
-						/>
-					)}
-
 					<SizeControl
 						label={__('Size', 'maxi-blocks')}
 						unit={getLastBreakpointValue(
@@ -136,7 +153,6 @@ const FontIconControl = props => {
 							},
 						}}
 					/>
-
 					{!disableSpacing && (
 						<SizeControl
 							label={__('Spacing', 'maxi-blocks')}
@@ -161,17 +177,74 @@ const FontIconControl = props => {
 						/>
 					)}
 
-					{!disablePadding && (
-						<AxisControl
-							values={padding}
-							defaultValues={attributesData.padding}
-							onChange={padding => onChangePadding(padding)}
-							breakpoint={breakpoint}
-							disableAuto
+					{!disablePosition && (
+						<SelectControl
+							label={__('Position', 'maxi-blocks')}
+							value={value.position}
+							options={[
+								{
+									label: __('Left', 'maxi-blocks'),
+									value: 'left',
+								},
+								{
+									label: __('Right', 'maxi-blocks'),
+									value: 'right',
+								},
+							]}
+							onChange={val => {
+								value.position = val;
+								onChange(JSON.stringify(value));
+							}}
 						/>
 					)}
 
-					{!disableBorder && (
+					{getOptions().length > 1 && (
+						<__experimentalFancyRadioControl
+							label={__('Colour', 'maxi-blocks')}
+							selected={activeOption}
+							options={getOptions()}
+							onChange={item => {
+								if (item === 'iconColor')
+									setActiveOption('iconColor');
+								if (item === 'backgroundColor') {
+									backgroundValue.activeMedia = 'color';
+									onChangeBackground(
+										JSON.stringify(backgroundValue)
+									);
+									setActiveOption('backgroundColor');
+								}
+								if (item === 'backgroundGradient') {
+									backgroundValue.activeMedia = 'gradient';
+									onChangeBackground(
+										JSON.stringify(backgroundValue)
+									);
+									setActiveOption('backgroundGradient');
+								}
+								if (item === 'border')
+									setActiveOption('border');
+
+								onChange(JSON.stringify(value));
+							}}
+						/>
+					)}
+
+					{activeOption === 'iconColor' && (
+						<ColorControl
+							label={__('Icon', 'maxi-blocks')}
+							color={getLastBreakpointValue(
+								value,
+								'color',
+								breakpoint
+							)}
+							defaultColor='#fff'
+							onChange={val => {
+								value[breakpoint].color = val;
+								onChange(JSON.stringify(value));
+							}}
+						/>
+					)}
+
+					{!disableBorder && activeOption === 'border' && (
 						<BorderControl
 							border={border}
 							defaultBorder={attributesData.border}
@@ -180,17 +253,47 @@ const FontIconControl = props => {
 						/>
 					)}
 
-					{!disableBackground && (
-						<BackgroundControl
-							background={background}
-							defaultBackground={attributesData.background}
-							onChange={background =>
-								onChangeBackground(background)
-							}
-							disableImage
-							disableVideo
-							disableClipPath
-							disableSVG
+					{!disableBackground &&
+						activeOption === 'backgroundColor' && (
+							<BackgroundControl
+								background={background}
+								defaultBackground={attributesData.background}
+								onChange={background =>
+									onChangeBackground(background)
+								}
+								disableImage
+								disableVideo
+								disableClipPath
+								disableSVG
+								disableGradient
+								disableNoneStyle
+							/>
+						)}
+
+					{!disableBackground &&
+						activeOption === 'backgroundGradient' && (
+							<BackgroundControl
+								background={background}
+								defaultBackground={attributesData.background}
+								onChange={background =>
+									onChangeBackground(background)
+								}
+								disableImage
+								disableVideo
+								disableClipPath
+								disableSVG
+								disableColor
+								disableNoneStyle
+							/>
+						)}
+
+					{!disablePadding && (
+						<AxisControl
+							values={padding}
+							defaultValues={attributesData.padding}
+							onChange={padding => onChangePadding(padding)}
+							breakpoint={breakpoint}
+							disableAuto
 						/>
 					)}
 				</Fragment>

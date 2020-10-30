@@ -177,140 +177,152 @@ const ClipPathVisualEditor = props => {
 	};
 
 	return (
-		<div
-			ref={e => e && !size && changeSize(e.offsetWidth)}
-			className={classes}
-			onMouseMove={e => {
-				if (isMoving) onMouseMove(e);
-			}}
-			onMouseUp={() => {
-				changeIsMoving(false);
-				onChange(clipPathOptions);
-			}}
-			style={{ height: `${size}px` }}
-		>
-			{Object.entries(clipPathOptions.content).map(([key, handle]) => {
-				const i = Number(key);
-
-				if (clipPathOptions.type === 'circle' && i === 0)
-					return (
-						<ClipPathRadiusPoint
-							key={`maxi-clip-path-button--radius--${i}`}
-							radius={handle[0]}
-							color={colors[i]}
-							onMouseOut={onMouseOut}
-							onChangeMoving={(isMoving, item) => {
-								changeIsMoving(isMoving);
-								changeSelectedItem(item);
-
-								if (!isMoving) onChange(clipPathOptions);
-							}}
-							number={i}
-							position={clipPathOptions.content[i + 1]}
-						/>
-					);
-
-				if (clipPathOptions.type === 'ellipse' && (i === 0 || i === 1))
-					return (
-						<ClipPathSinglePoint
-							key={`maxi-clip-path-button--single--${i}`}
-							top={
-								i === 1
-									? clipPathOptions.content[2][1] + handle[0]
-									: clipPathOptions.content[2][1]
-							}
-							left={
-								i === 0
-									? clipPathOptions.content[2][0] + handle[0]
-									: clipPathOptions.content[2][0]
-							}
-							color={colors[i]}
-							isMoving={isMoving}
-							onMouseOut={onMouseOut}
-							onChangeMoving={(isMoving, item) => {
-								changeIsMoving(isMoving);
-								changeSelectedItem(item);
-
-								if (!isMoving) onChange(clipPathOptions);
-							}}
-							number={i}
-							position={clipPathOptions.content[2]}
-							setOpposite={isOpposite => {
-								changeIsOpposite(isOpposite);
-							}}
-						/>
-					);
-				if (clipPathOptions.type === 'inset') {
-					const getInsetTop = num => {
-						if (num === 0) return handle[0];
-						if (num === 2) return 100 - handle[0];
-
-						return (
-							Math.abs(
-								clipPathOptions.content[2][0] +
-									clipPathOptions.content[0][0] -
-									100
-							) /
-								2 +
-							clipPathOptions.content[0][0]
-						);
-					};
-
-					const getInsetLeft = num => {
-						if (num === 1) return 100 - handle[0];
-						if (num === 3) return handle[0];
-
-						return (
-							Math.abs(
-								clipPathOptions.content[1][0] +
-									clipPathOptions.content[3][0] -
-									100
-							) /
-								2 +
-							clipPathOptions.content[3][0]
-						);
-					};
-
-					return (
-						<ClipPathSinglePoint
-							key={`maxi-clip-path-button--single--${i}`}
-							top={getInsetTop(i)}
-							left={getInsetLeft(i)}
-							color={colors[i]}
-							isMoving={isMoving}
-							onMouseOut={onMouseOut}
-							onChangeMoving={(isMoving, item) => {
-								changeIsMoving(isMoving);
-								changeSelectedItem(item);
-
-								if (!isMoving) onChange(clipPathOptions);
-							}}
-							number={i}
-						/>
-					);
-				}
-
-				return (
-					<ClipPathDoublePoint
-						key={`maxi-clip-path-button--double--${i}`}
-						handle={handle}
-						color={colors[i]}
-						isMoving={isMoving}
-						onMouseOut={onMouseOut}
-						onChangeMoving={(isMoving, item) => {
-							changeIsMoving(isMoving);
-							changeSelectedItem(item);
-
-							if (!isMoving) onChange(clipPathOptions);
-						}}
-						number={i}
-					/>
-				);
-			})}
+		<div className='maxi-clip-path-visual-editor-wrapper'>
 			<div
-				className='maxi-clip-path-visual-editor__preview'
-				style={{ clipPath }}
-			/>
+				ref={e => e && !size && changeSize(e.offsetWidth)}
+				className={classes}
+				onMouseMove={e => {
+					if (isMoving) onMouseMove(e);
+				}}
+				onMouseUp={() => {
+					changeIsMoving(false);
+					onChange(clipPathOptions);
+				}}
+				style={{ height: `${size}px` }}
+			>
+				{Object.entries(clipPathOptions.content).map(
+					([key, handle]) => {
+						const i = Number(key);
+
+						if (clipPathOptions.type === 'circle' && i === 0)
+							return (
+								<ClipPathRadiusPoint
+									key={`maxi-clip-path-button--radius--${i}`}
+									radius={handle[0]}
+									color={colors[i]}
+									onMouseOut={onMouseOut}
+									onChangeMoving={(isMoving, item) => {
+										changeIsMoving(isMoving);
+										changeSelectedItem(item);
+
+										if (!isMoving)
+											onChange(clipPathOptions);
+									}}
+									number={i}
+									position={clipPathOptions.content[i + 1]}
+								/>
+							);
+
+						if (
+							clipPathOptions.type === 'ellipse' &&
+							(i === 0 || i === 1)
+						)
+							return (
+								<ClipPathSinglePoint
+									key={`maxi-clip-path-button--single--${i}`}
+									top={
+										i === 1
+											? clipPathOptions.content[2][1] +
+											  handle[0]
+											: clipPathOptions.content[2][1]
+									}
+									left={
+										i === 0
+											? clipPathOptions.content[2][0] +
+											  handle[0]
+											: clipPathOptions.content[2][0]
+									}
+									color={colors[i]}
+									isMoving={isMoving}
+									onMouseOut={onMouseOut}
+									onChangeMoving={(isMoving, item) => {
+										changeIsMoving(isMoving);
+										changeSelectedItem(item);
+
+										if (!isMoving)
+											onChange(clipPathOptions);
+									}}
+									number={i}
+									position={clipPathOptions.content[2]}
+									setOpposite={isOpposite => {
+										changeIsOpposite(isOpposite);
+									}}
+								/>
+							);
+						if (clipPathOptions.type === 'inset') {
+							const getInsetTop = num => {
+								if (num === 0) return handle[0];
+								if (num === 2) return 100 - handle[0];
+
+								return (
+									Math.abs(
+										clipPathOptions.content[2][0] +
+											clipPathOptions.content[0][0] -
+											100
+									) /
+										2 +
+									clipPathOptions.content[0][0]
+								);
+							};
+
+							const getInsetLeft = num => {
+								if (num === 1) return 100 - handle[0];
+								if (num === 3) return handle[0];
+
+								return (
+									Math.abs(
+										clipPathOptions.content[1][0] +
+											clipPathOptions.content[3][0] -
+											100
+									) /
+										2 +
+									clipPathOptions.content[3][0]
+								);
+							};
+
+							return (
+								<ClipPathSinglePoint
+									key={`maxi-clip-path-button--single--${i}`}
+									top={getInsetTop(i)}
+									left={getInsetLeft(i)}
+									color={colors[i]}
+									isMoving={isMoving}
+									onMouseOut={onMouseOut}
+									onChangeMoving={(isMoving, item) => {
+										changeIsMoving(isMoving);
+										changeSelectedItem(item);
+
+										if (!isMoving)
+											onChange(clipPathOptions);
+									}}
+									number={i}
+								/>
+							);
+						}
+
+						return (
+							<ClipPathDoublePoint
+								key={`maxi-clip-path-button--double--${i}`}
+								handle={handle}
+								color={colors[i]}
+								isMoving={isMoving}
+								onMouseOut={onMouseOut}
+								onChangeMoving={(isMoving, item) => {
+									changeIsMoving(isMoving);
+									changeSelectedItem(item);
+
+									if (!isMoving) onChange(clipPathOptions);
+								}}
+								number={i}
+							/>
+						);
+					}
+				)}
+				<div
+					className='maxi-clip-path-visual-editor__preview'
+					style={{ clipPath }}
+				/>
+			</div>
 		</div>
 	);
 };

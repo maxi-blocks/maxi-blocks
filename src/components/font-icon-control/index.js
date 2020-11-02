@@ -23,16 +23,21 @@ import AxisControl from '../axis-control';
 import BorderControl from '../border-control';
 import BackgroundControl from '../background-control';
 import __experimentalFancyRadioControl from '../fancy-radio-control';
+import presetsStyles from './presets';
 import * as attributesData from '../../extensions/styles/defaults';
 
 /**
  * Styles and icons
  */
+import './editor.scss';
 import {
 	backgroundColor,
 	solid,
 	backgroundGradient,
 	fontIconSettings,
+	PresetSeven,
+	PresetEight,
+	PresetNine,
 } from '../../icons';
 
 /**
@@ -49,6 +54,7 @@ const FontIconControl = props => {
 		disablePadding = false,
 		disableBackground = false,
 		disableBorder = false,
+		disablePresets = false,
 		padding,
 		onChangePadding,
 		border,
@@ -99,6 +105,63 @@ const FontIconControl = props => {
 
 	const classes = classnames('maxi-font-icon-control', className);
 
+	const onChangePreset = presetNumber => {
+		const paddingValue = !isObject(padding) ? JSON.parse(padding) : padding;
+
+		const backgroundValue = !isObject(background)
+			? JSON.parse(background)
+			: background;
+
+		const borderValue = !isObject(border) ? JSON.parse(border) : border;
+
+		// Set Icon Settings
+		value.icon = presetsStyles[presetNumber].icon;
+		value.position = presetsStyles[presetNumber].position;
+		value.general.spacing = presetsStyles[presetNumber].spacing;
+
+		onChange(JSON.stringify(value));
+
+		// Set Icon Background
+		backgroundValue.activeMedia = 'color';
+
+		backgroundValue.colorOptions.activeColor =
+			presetsStyles[presetNumber].background;
+		backgroundValue.colorOptions.color =
+			presetsStyles[presetNumber].background;
+
+		onChangeBackground(JSON.stringify(backgroundValue));
+
+		// Set Icon padding
+		paddingValue.general.unit = 'px';
+		paddingValue.general['padding-top'] =
+			presetsStyles[presetNumber].padding;
+		paddingValue.general['padding-right'] =
+			presetsStyles[presetNumber].padding;
+		paddingValue.general['padding-bottom'] =
+			presetsStyles[presetNumber].padding;
+		paddingValue.general['padding-left'] =
+			presetsStyles[presetNumber].padding;
+		onChangePadding(JSON.stringify(paddingValue));
+
+		// Icon border
+		borderValue.general['border-style'] = 'solid';
+		borderValue.general['border-color'] =
+			presetsStyles[presetNumber].borderColor;
+		borderValue.borderWidth.general['border-bottom-width'] =
+			presetsStyles[presetNumber].borderWidth;
+		borderValue.borderWidth.general['border-top-width'] =
+			presetsStyles[presetNumber].borderWidth;
+		borderValue.borderWidth.general['border-right-width'] =
+			presetsStyles[presetNumber].borderWidth;
+		borderValue.borderWidth.general['border-left-width'] =
+			presetsStyles[presetNumber].borderWidth;
+		borderValue.borderWidth.unit = 'px';
+
+		console.log(borderValue);
+
+		onChangeBorder(JSON.stringify(borderValue));
+	};
+
 	return (
 		<div className={classes}>
 			<FontIconPicker
@@ -110,6 +173,28 @@ const FontIconControl = props => {
 			/>
 			{value.icon && (
 				<Fragment>
+					{!disablePresets && (
+						<div className='maxi-font-icon-control__presets'>
+							<span
+								className='maxi-font-icon-control__icon'
+								onClick={() => onChangePreset(1)}
+							>
+								<PresetSeven />
+							</span>
+							<span
+								className='maxi-font-icon-control__icon'
+								onClick={() => onChangePreset(2)}
+							>
+								<PresetEight />
+							</span>
+							<span
+								className='maxi-font-icon-control__icon'
+								onClick={() => onChangePreset(3)}
+							>
+								<PresetNine />
+							</span>
+						</div>
+					)}
 					<SizeControl
 						label={__('Size', 'maxi-blocks')}
 						unit={getLastBreakpointValue(

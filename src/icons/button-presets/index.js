@@ -6,3 +6,4 @@ export { default as PresetFive } from './preset-5';
 export { default as PresetSix } from './preset-6';
 export { default as PresetSeven } from './preset-7';
 export { default as PresetEight } from './preset-8';
+export { default as PresetNine } from './preset-9';

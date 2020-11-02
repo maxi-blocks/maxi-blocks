@@ -7,7 +7,7 @@ import {
 	PresetThree,
 	PresetFour,
 	PresetFive,
-	PresetEight,
+	PresetSix,
 } from '../../icons';
 import newButtonAttributes from './utils';
 
@@ -68,10 +68,10 @@ const PresetsIcons = props => {
 				<span
 					className='maxi-button-presets__icon'
 					onClick={() =>
-						onChange(newButtonAttributes(buttonAttributes, 8))
+						onChange(newButtonAttributes(buttonAttributes, 6))
 					}
 				>
-					<PresetEight />
+					<PresetSix />
 				</span>
 			</div>
 		</div>

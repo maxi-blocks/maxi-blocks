@@ -1,4 +1,13 @@
 .maxi-motion-control {
+	&__timeline-item-settings {
+		&__setting {
+			height: 40px;
+			display: flex;
+			.components-range-control {
+				flex: 3 !important;
+			}
+		}
+	}
 	.components-base-control {
 		flex: 1;
 		&__field {

@@ -29,6 +29,9 @@ const AddTimeline = props => {
 					x: 0,
 					y: 0,
 					z: 0,
+					unitX: '',
+					unitY: '',
+					unitZ: '',
 				};
 				break;
 			case 'skew':

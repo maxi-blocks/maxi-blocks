@@ -2,7 +2,7 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject, flattenDeep, findIndex } from 'lodash';
+import { isObject, flattenDeep, findIndex, isEmpty } from 'lodash';
 
 /**
  * Component
@@ -14,41 +14,50 @@ const MotionPreview = props => {
 
 	const res = flattenDeep(Object.entries(motionValue.interaction.timeline));
 
+	const currentTime = motionValue.interaction.activeTimeline.time;
+	const currentIndex = motionValue.interaction.activeTimeline.index;
+	const currentItem =
+		motionValue.interaction.timeline[currentTime][currentIndex];
+
 	let transformStyle = '';
 
 	if (
-		findIndex(res, { type: 'move' }) !== -1 ||
-		findIndex(res, { type: 'scale' }) !== -1 ||
-		findIndex(res, { type: 'rotate' }) !== -1
+		currentItem.type === 'move' ||
+		currentItem.type === 'scale' ||
+		currentItem.type === 'rotate'
 	) {
 		transformStyle += 'perspective(1000px)';
 	}
-	if (findIndex(res, { type: 'move' }) !== -1) {
-		transformStyle += ` translate3d(${
-			res[findIndex(res, { type: 'move' })].settings.x
-		}px, ${res[findIndex(res, { type: 'move' })].settings.y}px, ${
-			res[findIndex(res, { type: 'move' })].settings.z
-		}px)`;
+
+	if (currentItem.type === 'move') {
+		const moveUnitX = isEmpty(currentItem.settings.unitX)
+			? 'px'
+			: currentItem.settings.unitX;
+
+		const moveUnitY = isEmpty(currentItem.settings.unitY)
+			? 'px'
+			: currentItem.settings.unitY;
+
+		const moveUnitZ = isEmpty(currentItem.settings.unitZ)
+			? 'px'
+			: currentItem.settings.unitZ;
+
+		transformStyle += ` translate3d(${currentItem.settings.x}${moveUnitX}, ${currentItem.settings.y}${moveUnitY}, ${currentItem.settings.z}${moveUnitZ})`;
 	}
-	if (findIndex(res, { type: 'scale' }) !== -1) {
-		transformStyle += ` scale3d(${
-			res[findIndex(res, { type: 'scale' })].settings.x
-		}, ${res[findIndex(res, { type: 'scale' })].settings.y}, ${
-			res[findIndex(res, { type: 'scale' })].settings.z
-		})`;
+
+	if (currentItem.type === 'scale') {
+		transformStyle += ` scale3d(${currentItem.settings.x}, ${currentItem.settings.y}, ${currentItem.settings.z})`;
 	}
-	if (findIndex(res, { type: 'rotate' }) !== -1) {
-		transformStyle += ` rotateX(${
-			res[findIndex(res, { type: 'rotate' })].settings.x
-		}deg)
-			rotateY(${res[findIndex(res, { type: 'rotate' })].settings.y}deg)
-			rotateZ(${res[findIndex(res, { type: 'rotate' })].settings.z}deg) `;
+
+	if (currentItem.type === 'rotate') {
+		transformStyle += ` rotateX(${currentItem.settings.x}deg)
+			rotateY(${currentItem.settings.y}deg)
+			rotateZ(${currentItem.settings.z}deg) `;
 	}
-	if (findIndex(res, { type: 'skew' }) !== -1) {
-		transformStyle += ` skewX(${
-			res[findIndex(res, { type: 'skew' })].settings.x
-		}deg)
-			skewY(${res[findIndex(res, { type: 'skew' })].settings.y}deg)
+
+	if (currentItem.type === 'skew') {
+		transformStyle += ` skewX(${currentItem.settings.x}deg)
+			skewY(${currentItem.settings.y}deg)
 			 `;
 	}
 
@@ -56,12 +65,10 @@ const MotionPreview = props => {
 		transformOrigin: `${motionValue.interaction.transformOrigin.xAxis} ${motionValue.interaction.transformOrigin.yAxis}`,
 		transformStyle: 'preserve-3d',
 		transform: transformStyle,
-		opacity:
-			findIndex(res, { type: 'opacity' }) !== -1 &&
-			res[findIndex(res, { type: 'opacity' })].settings.opacity,
+		opacity: currentItem.type === 'opacity' && currentItem.settings.opacity,
 		filter:
-			findIndex(res, { type: 'blur' }) !== -1 &&
-			`blur(${res[findIndex(res, { type: 'blur' })].settings.blur}px)`,
+			currentItem.type === 'blur' &&
+			`blur(${currentItem.settings.blur}px)`,
 	};
 
 	const classes = classnames('maxi-motion-preview', className);

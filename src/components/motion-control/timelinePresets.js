@@ -92,14 +92,12 @@ const TimelinePresets = props => {
 							<Button
 								disabled={isEmpty(presetLoad)}
 								onClick={() => {
-									{
-										interaction.timeline = {
-											...getPresets()[presetLoad].preset,
-										};
+									interaction.timeline = {
+										...getPresets()[presetLoad].preset,
+									};
 
-										onChange(interaction);
-										setPresetLoad('');
-									}
+									onChange(interaction);
+									setPresetLoad('');
 								}}
 							>
 								{__('Load Preset', 'maxi-blocks')}
@@ -119,7 +117,7 @@ const TimelinePresets = props => {
 						<Button
 							disabled={isEmpty(presetName)}
 							onClick={() => {
-								let newPreset = {
+								saveMaxiMotionPresets({
 									...JSON.parse(presets),
 									[uniqueId('preset_')]: {
 										name: presetName,
@@ -127,9 +125,8 @@ const TimelinePresets = props => {
 											...interaction.timeline,
 										},
 									},
-								};
+								});
 
-								saveMaxiMotionPresets(newPreset);
 								setPresetName('');
 							}}
 						>

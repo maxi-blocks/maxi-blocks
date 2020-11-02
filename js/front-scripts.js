@@ -138,9 +138,18 @@ motionElems.forEach(function (elem) {
 						case 'move':
 							actions = {
 								...actions,
-								x: act.settings.x,
-								y: act.settings.y,
-								z: act.settings.z,
+								x:
+									act.settings.unit !== ''
+										? `${act.settings.x}${act.settings.unitX}`
+										: act.settings.x,
+								y:
+									act.settings.unit !== ''
+										? `${act.settings.y}${act.settings.unitY}`
+										: act.settings.y,
+								z:
+									act.settings.unit !== ''
+										? `${act.settings.z}${act.settings.unitZ}`
+										: act.settings.z,
 								transformPerspective: 1000,
 								transformStyle: 'preserve-3d',
 								transformOrigin: `${xAxis} ${yAxis}`,
@@ -196,7 +205,7 @@ motionElems.forEach(function (elem) {
 					}
 				});
 
-				const startTime = key;
+				const startTime = Number(key);
 				const endTime =
 					(!!array[index + 1] && +array[index + 1]) || 100;
 

@@ -3,7 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
-const { RangeControl } = wp.components;
+const { RangeControl, SelectControl } = wp.components;
 
 /**
  * Internal dependencies
@@ -115,74 +115,171 @@ const TimelineSettings = props => {
 				</Fragment>
 			)}
 			{!isNil(getCurrentTimelineItem()) &&
-				(getCurrentTimelineItem().type === 'move' ||
-					getCurrentTimelineItem().type === 'rotate') && (
+				getCurrentTimelineItem().type === 'move' && (
+					<Fragment>
+						<div className='maxi-motion-control__timeline-item-settings__setting'>
+							<RangeControl
+								label={__('X', 'maxi-blocks')}
+								help={
+									isEmpty(
+										getTimelineItemSettingValue('unitX')
+									)
+										? 'px'
+										: getTimelineItemSettingValue('unitX')
+								}
+								value={getTimelineItemSettingValue('x')}
+								onChange={value =>
+									updateTimelineItemSettings(value, 'x')
+								}
+								min={-500}
+								max={500}
+							/>
+							<SelectControl
+								className='components-maxi-dimensions-control__units'
+								options={[
+									{
+										label: __('PX', 'maxi-blocks'),
+										value: 'px',
+									},
+									{
+										label: __('%', 'maxi-blocks'),
+										value: '%',
+									},
+									{
+										label: __('EM', 'maxi-blocks'),
+										value: 'em',
+									},
+									{
+										label: __('VW', 'maxi-blocks'),
+										value: 'vw',
+									},
+								]}
+								value={getTimelineItemSettingValue('unitX')}
+								onChange={value =>
+									updateTimelineItemSettings(value, 'unitX')
+								}
+							/>
+						</div>
+						<div className='maxi-motion-control__timeline-item-settings__setting'>
+							<RangeControl
+								label={__('Y', 'maxi-blocks')}
+								help={
+									isEmpty(
+										getTimelineItemSettingValue('unitY')
+									)
+										? 'px'
+										: getTimelineItemSettingValue('unitY')
+								}
+								value={getTimelineItemSettingValue('y')}
+								onChange={value =>
+									updateTimelineItemSettings(value, 'y')
+								}
+								min={-500}
+								max={500}
+							/>
+							<SelectControl
+								className='components-maxi-dimensions-control__units'
+								options={[
+									{
+										label: __('PX', 'maxi-blocks'),
+										value: 'px',
+									},
+									{
+										label: __('%', 'maxi-blocks'),
+										value: '%',
+									},
+									{
+										label: __('EM', 'maxi-blocks'),
+										value: 'em',
+									},
+									{
+										label: __('VW', 'maxi-blocks'),
+										value: 'vw',
+									},
+								]}
+								value={getTimelineItemSettingValue('unitY')}
+								onChange={value =>
+									updateTimelineItemSettings(value, 'unitY')
+								}
+							/>
+						</div>
+						<div className='maxi-motion-control__timeline-item-settings__setting'>
+							<RangeControl
+								label={__('Z', 'maxi-blocks')}
+								help={
+									isEmpty(
+										getTimelineItemSettingValue('unitZ')
+									)
+										? 'px'
+										: getTimelineItemSettingValue('unitZ')
+								}
+								value={getTimelineItemSettingValue('z')}
+								onChange={value =>
+									updateTimelineItemSettings(value, 'z')
+								}
+								min={-500}
+								max={500}
+							/>
+							<SelectControl
+								className='components-maxi-dimensions-control__units'
+								options={[
+									{
+										label: __('PX', 'maxi-blocks'),
+										value: 'px',
+									},
+									{
+										label: __('%', 'maxi-blocks'),
+										value: '%',
+									},
+									{
+										label: __('EM', 'maxi-blocks'),
+										value: 'em',
+									},
+									{
+										label: __('VW', 'maxi-blocks'),
+										value: 'vw',
+									},
+								]}
+								value={getTimelineItemSettingValue('unitZ')}
+								onChange={value =>
+									updateTimelineItemSettings(value, 'unitZ')
+								}
+							/>
+						</div>
+					</Fragment>
+				)}
+			{!isNil(getCurrentTimelineItem()) &&
+				getCurrentTimelineItem().type === 'rotate' && (
 					<Fragment>
 						<RangeControl
 							label={__('X', 'maxi-blocks')}
-							help={
-								getCurrentTimelineItem().type === 'rotate'
-									? 'deg'
-									: 'px'
-							}
+							help={'deg'}
 							value={getTimelineItemSettingValue('x')}
 							onChange={value =>
 								updateTimelineItemSettings(value, 'x')
 							}
-							min={
-								getCurrentTimelineItem().type === 'rotate'
-									? -180
-									: -500
-							}
-							max={
-								getCurrentTimelineItem().type === 'rotate'
-									? 180
-									: 500
-							}
+							min={-180}
+							max={180}
 						/>
 						<RangeControl
 							label={__('Y', 'maxi-blocks')}
-							help={
-								getCurrentTimelineItem().type === 'rotate'
-									? 'deg'
-									: 'px'
-							}
+							help={'deg'}
 							value={getTimelineItemSettingValue('y')}
 							onChange={value =>
 								updateTimelineItemSettings(value, 'y')
 							}
-							min={
-								getCurrentTimelineItem().type === 'rotate'
-									? -180
-									: -500
-							}
-							max={
-								getCurrentTimelineItem().type === 'rotate'
-									? 180
-									: 500
-							}
+							min={-180}
+							max={180}
 						/>
 						<RangeControl
 							label={__('Z', 'maxi-blocks')}
-							help={
-								getCurrentTimelineItem().type === 'rotate'
-									? 'deg'
-									: 'px'
-							}
+							help={'px'}
 							value={getTimelineItemSettingValue('z')}
 							onChange={value =>
 								updateTimelineItemSettings(value, 'z')
 							}
-							min={
-								getCurrentTimelineItem().type === 'rotate'
-									? -180
-									: -500
-							}
-							max={
-								getCurrentTimelineItem().type === 'rotate'
-									? 180
-									: 500
-							}
+							min={-180}
+							max={180}
 						/>
 					</Fragment>
 				)}

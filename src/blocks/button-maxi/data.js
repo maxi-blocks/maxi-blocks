@@ -496,6 +496,7 @@ export const icon = {
 	label: 'icon',
 	icon: '',
 	position: 'left',
+	customPadding: '0',
 	general: {
 		color: '',
 		'font-sizeUnit': 'px',

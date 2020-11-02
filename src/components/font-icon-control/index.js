@@ -99,8 +99,6 @@ const FontIconControl = props => {
 
 	const classes = classnames('maxi-font-icon-control', className);
 
-	console.log(getOptions().length);
-
 	return (
 		<div className={classes}>
 			<FontIconPicker
@@ -288,6 +286,30 @@ const FontIconControl = props => {
 						)}
 
 					{!disablePadding && (
+						<__experimentalFancyRadioControl
+							label={__('Use Custom Padding', 'maxi-blocks')}
+							selected={value.customPadding}
+							options={[
+								{
+									label: __('No', 'maxi-blocks'),
+									value: '0',
+								},
+								{
+									label: __('Yes', 'maxi-blocks'),
+									value: '1',
+								},
+							]}
+							onChange={customPadding => {
+								value.customPadding = customPadding;
+								onChange(JSON.stringify(value));
+								if (!Number(customPadding))
+									onChangePadding(
+										JSON.stringify(attributesData.padding)
+									);
+							}}
+						/>
+					)}
+					{!disablePadding && !!Number(value.customPadding) && (
 						<AxisControl
 							values={padding}
 							defaultValues={attributesData.padding}

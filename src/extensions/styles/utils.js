@@ -857,7 +857,8 @@ export const getIconObject = icon => {
 	};
 
 	Object.entries(icon).forEach(([key, value]) => {
-		if (['label', 'position', 'icon'].includes(key)) return;
+		if (['label', 'position', 'icon', 'customPadding'].includes(key))
+			return;
 
 		if (value['font-size']) {
 			response[key]['font-size'] =

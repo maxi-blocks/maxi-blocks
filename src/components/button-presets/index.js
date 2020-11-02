@@ -7,8 +7,6 @@ import {
 	PresetThree,
 	PresetFour,
 	PresetFive,
-	PresetSix,
-	PresetSeven,
 	PresetEight,
 } from '../../icons';
 import newButtonAttributes from './utils';
@@ -66,25 +64,6 @@ const PresetsIcons = props => {
 					}
 				>
 					<PresetFive />
-				</span>
-				<span
-					className='maxi-button-presets__icon'
-					onClick={() =>
-						onChange(newButtonAttributes(buttonAttributes, 6))
-					}
-				>
-					<PresetSix />
-				</span>
-			</div>
-
-			<div className='maxi-button-presets__icons-group'>
-				<span
-					className='maxi-button-presets__icon'
-					onClick={() =>
-						onChange(newButtonAttributes(buttonAttributes, 7))
-					}
-				>
-					<PresetSeven />
 				</span>
 				<span
 					className='maxi-button-presets__icon'

@@ -126,7 +126,7 @@ const Inspector = props => {
 															disableSpacing
 															disablePosition
 															disablePadding
-															disableBackgroundgit
+															disableBackground
 															disableBorder
 														/>
 														<AlignmentControl

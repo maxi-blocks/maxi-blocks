@@ -551,5 +551,5 @@ if (! function_exists('fa_custom_setup_kit') ) {
   }
 
  fa_custom_setup_kit(
-	'https://kit.fontawesome.com/edb89ea43a.js',
+	'https://kit.fontawesome.com/edb89ea43a.js'
   );

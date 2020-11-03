@@ -17,32 +17,31 @@ import newButtonAttributes from './utils';
 import './editor.scss';
 
 const PresetsIcons = props => {
-	const { buttonAttributes, onChange } = props;
+	const { buttonAttributes, onChange, resetBlockAttributes } = props;
+
+	const onChangePreset = presetNumber => {
+		resetBlockAttributes();
+		onChange(newButtonAttributes(buttonAttributes, presetNumber));
+	};
 
 	return (
 		<div className='maxi-button-presets'>
 			<div className='maxi-button-presets__icons-group'>
 				<span
 					className='maxi-button-presets__icon'
-					onClick={() =>
-						onChange(newButtonAttributes(buttonAttributes, 1))
-					}
+					onClick={() => onChangePreset(1)}
 				>
 					<PresetOne />
 				</span>
 				<span
 					className='maxi-button-presets__icon'
-					onClick={() =>
-						onChange(newButtonAttributes(buttonAttributes, 2))
-					}
+					onClick={() => onChangePreset(2)}
 				>
 					<PresetTwo />
 				</span>
 				<span
 					className='maxi-button-presets__icon'
-					onClick={() =>
-						onChange(newButtonAttributes(buttonAttributes, 3))
-					}
+					onClick={() => onChangePreset(3)}
 				>
 					<PresetThree />
 				</span>
@@ -51,25 +50,19 @@ const PresetsIcons = props => {
 			<div className='maxi-button-presets__icons-group'>
 				<span
 					className='maxi-button-presets__icon'
-					onClick={() =>
-						onChange(newButtonAttributes(buttonAttributes, 4))
-					}
+					onClick={() => onChangePreset(4)}
 				>
 					<PresetFour />
 				</span>
 				<span
 					className='maxi-button-presets__icon'
-					onClick={() =>
-						onChange(newButtonAttributes(buttonAttributes, 5))
-					}
+					onClick={() => onChangePreset(5)}
 				>
 					<PresetFive />
 				</span>
 				<span
 					className='maxi-button-presets__icon'
-					onClick={() =>
-						onChange(newButtonAttributes(buttonAttributes, 6))
-					}
+					onClick={() => onChangePreset(6)}
 				>
 					<PresetSix />
 				</span>

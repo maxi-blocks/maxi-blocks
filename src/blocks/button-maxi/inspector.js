@@ -121,6 +121,11 @@ const Inspector = props => {
 															attributes
 														);
 													}}
+													resetBlockAttributes={() =>
+														setAttributes(
+															defaultAttributes
+														)
+													}
 												/>
 											),
 										},

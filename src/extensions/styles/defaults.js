@@ -1503,7 +1503,7 @@ export const __experimentalMotion = {
 		timeline: {},
 		activeTimeline: {
 			time: 0,
-			inde: 0,
+			index: 0,
 		},
 		transformOrigin: {
 			xAxis: 'center',

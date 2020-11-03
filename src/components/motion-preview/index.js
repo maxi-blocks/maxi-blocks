@@ -2,7 +2,7 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject, flattenDeep, findIndex, isEmpty } from 'lodash';
+import { isObject, isEmpty } from 'lodash';
 
 /**
  * Component
@@ -12,64 +12,67 @@ const MotionPreview = props => {
 
 	const motionValue = !isObject(motion) ? JSON.parse(motion) : motion;
 
-	const res = flattenDeep(Object.entries(motionValue.interaction.timeline));
+	let motionPreview = {};
 
-	const currentTime = motionValue.interaction.activeTimeline.time;
-	const currentIndex = motionValue.interaction.activeTimeline.index;
-	const currentItem =
-		motionValue.interaction.timeline[currentTime][currentIndex];
+	if (!isEmpty(motionValue.interaction.timeline)) {
+		const currentTime = motionValue.interaction.activeTimeline.time;
+		const currentIndex = motionValue.interaction.activeTimeline.index;
+		const currentItem =
+			motionValue.interaction.timeline[currentTime][currentIndex];
 
-	let transformStyle = '';
+		let transformStyle = '';
 
-	if (
-		currentItem.type === 'move' ||
-		currentItem.type === 'scale' ||
-		currentItem.type === 'rotate'
-	) {
-		transformStyle += 'perspective(1000px)';
+		if (
+			currentItem.type === 'move' ||
+			currentItem.type === 'scale' ||
+			currentItem.type === 'rotate'
+		) {
+			transformStyle += 'perspective(1000px)';
+		}
+
+		if (currentItem.type === 'move') {
+			const moveUnitX = isEmpty(currentItem.settings.unitX)
+				? 'px'
+				: currentItem.settings.unitX;
+
+			const moveUnitY = isEmpty(currentItem.settings.unitY)
+				? 'px'
+				: currentItem.settings.unitY;
+
+			const moveUnitZ = isEmpty(currentItem.settings.unitZ)
+				? 'px'
+				: currentItem.settings.unitZ;
+
+			transformStyle += ` translate3d(${currentItem.settings.x}${moveUnitX}, ${currentItem.settings.y}${moveUnitY}, ${currentItem.settings.z}${moveUnitZ})`;
+		}
+
+		if (currentItem.type === 'scale') {
+			transformStyle += ` scale3d(${currentItem.settings.x}, ${currentItem.settings.y}, ${currentItem.settings.z})`;
+		}
+
+		if (currentItem.type === 'rotate') {
+			transformStyle += ` rotateX(${currentItem.settings.x}deg)
+				rotateY(${currentItem.settings.y}deg)
+				rotateZ(${currentItem.settings.z}deg) `;
+		}
+
+		if (currentItem.type === 'skew') {
+			transformStyle += ` skewX(${currentItem.settings.x}deg)
+				skewY(${currentItem.settings.y}deg)
+				 `;
+		}
+
+		motionPreview = {
+			transformOrigin: `${motionValue.interaction.transformOrigin.xAxis} ${motionValue.interaction.transformOrigin.yAxis}`,
+			transformStyle: 'preserve-3d',
+			transform: transformStyle,
+			opacity:
+				currentItem.type === 'opacity' && currentItem.settings.opacity,
+			filter:
+				currentItem.type === 'blur' &&
+				`blur(${currentItem.settings.blur}px)`,
+		};
 	}
-
-	if (currentItem.type === 'move') {
-		const moveUnitX = isEmpty(currentItem.settings.unitX)
-			? 'px'
-			: currentItem.settings.unitX;
-
-		const moveUnitY = isEmpty(currentItem.settings.unitY)
-			? 'px'
-			: currentItem.settings.unitY;
-
-		const moveUnitZ = isEmpty(currentItem.settings.unitZ)
-			? 'px'
-			: currentItem.settings.unitZ;
-
-		transformStyle += ` translate3d(${currentItem.settings.x}${moveUnitX}, ${currentItem.settings.y}${moveUnitY}, ${currentItem.settings.z}${moveUnitZ})`;
-	}
-
-	if (currentItem.type === 'scale') {
-		transformStyle += ` scale3d(${currentItem.settings.x}, ${currentItem.settings.y}, ${currentItem.settings.z})`;
-	}
-
-	if (currentItem.type === 'rotate') {
-		transformStyle += ` rotateX(${currentItem.settings.x}deg)
-			rotateY(${currentItem.settings.y}deg)
-			rotateZ(${currentItem.settings.z}deg) `;
-	}
-
-	if (currentItem.type === 'skew') {
-		transformStyle += ` skewX(${currentItem.settings.x}deg)
-			skewY(${currentItem.settings.y}deg)
-			 `;
-	}
-
-	let motionPreview = {
-		transformOrigin: `${motionValue.interaction.transformOrigin.xAxis} ${motionValue.interaction.transformOrigin.yAxis}`,
-		transformStyle: 'preserve-3d',
-		transform: transformStyle,
-		opacity: currentItem.type === 'opacity' && currentItem.settings.opacity,
-		filter:
-			currentItem.type === 'blur' &&
-			`blur(${currentItem.settings.blur}px)`,
-	};
 
 	const classes = classnames('maxi-motion-preview', className);
 

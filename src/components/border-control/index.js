@@ -124,103 +124,107 @@ const BorderControl = props => {
 					},
 				]}
 			/>
-			<ColorControl
-				label={__('Border', 'maxi-blocks')}
-				color={getLastBreakpointValue(
-					value,
-					'border-color',
-					breakpoint
-				)}
-				defaultColor={defaultValue[breakpoint]['border-color']}
-				onChange={val => {
-					value[breakpoint]['border-color'] = val;
-
-					onChange(JSON.stringify(value));
-				}}
-				disableImage
-				disableVideo
-				disableGradient
-				disableGradientAboveBackground
-			/>
-			{!disableAdvanced && (
+			{getIsActive() !== 'none' && (
 				<Fragment>
-					<SelectControl
-						label={__('Border Type', 'maxi-blocks')}
-						className='maxi-border-control__type'
-						value={getLastBreakpointValue(
+					<ColorControl
+						label={__('Border', 'maxi-blocks')}
+						color={getLastBreakpointValue(
 							value,
-							'border-style',
+							'border-color',
 							breakpoint
 						)}
-						options={[
-							{ label: 'None', value: 'none' },
-							{ label: 'Dotted', value: 'dotted' },
-							{ label: 'Dashed', value: 'dashed' },
-							{ label: 'Solid', value: 'solid' },
-							{ label: 'Double', value: 'double' },
-							{ label: 'Groove', value: 'groove' },
-							{ label: 'Ridge', value: 'ridge' },
-							{ label: 'Inset', value: 'inset' },
-							{ label: 'Outset', value: 'outset' },
-						]}
+						defaultColor={defaultValue[breakpoint]['border-color']}
 						onChange={val => {
-							value[breakpoint]['border-style'] = val;
+							value[breakpoint]['border-color'] = val;
+
 							onChange(JSON.stringify(value));
 						}}
+						disableImage
+						disableVideo
+						disableGradient
+						disableGradientAboveBackground
 					/>
-					<__experimentalAxisControl
-						values={value.borderWidth}
-						defaultValues={defaultValue.borderWidth}
-						onChange={val => {
-							value.borderWidth = JSON.parse(val);
-							onChange(JSON.stringify(value));
-						}}
-						breakpoint={breakpoint}
-						allowedUnits={['px', 'em', 'vw']}
-						minMaxSettings={{
-							px: {
-								min: 0,
-								max: 99,
-							},
-							em: {
-								min: 0,
-								max: 10,
-							},
-							vw: {
-								min: 0,
-								max: 10,
-							},
-						}}
-						disableAuto
-					/>
-					<__experimentalAxisControl
-						values={value.borderRadius}
-						defaultValues={defaultValue.borderRadius}
-						onChange={val => {
-							value.borderRadius = JSON.parse(val);
-							onChange(JSON.stringify(value));
-						}}
-						breakpoint={breakpoint}
-						minMaxSettings={{
-							px: {
-								min: 0,
-								max: 999,
-							},
-							em: {
-								min: 0,
-								max: 999,
-							},
-							vw: {
-								min: 0,
-								max: 999,
-							},
-							'%': {
-								min: 0,
-								max: 100,
-							},
-						}}
-						disableAuto
-					/>
+					{!disableAdvanced && (
+						<Fragment>
+							<SelectControl
+								label={__('Border Type', 'maxi-blocks')}
+								className='maxi-border-control__type'
+								value={getLastBreakpointValue(
+									value,
+									'border-style',
+									breakpoint
+								)}
+								options={[
+									{ label: 'None', value: 'none' },
+									{ label: 'Dotted', value: 'dotted' },
+									{ label: 'Dashed', value: 'dashed' },
+									{ label: 'Solid', value: 'solid' },
+									{ label: 'Double', value: 'double' },
+									{ label: 'Groove', value: 'groove' },
+									{ label: 'Ridge', value: 'ridge' },
+									{ label: 'Inset', value: 'inset' },
+									{ label: 'Outset', value: 'outset' },
+								]}
+								onChange={val => {
+									value[breakpoint]['border-style'] = val;
+									onChange(JSON.stringify(value));
+								}}
+							/>
+							<__experimentalAxisControl
+								values={value.borderWidth}
+								defaultValues={defaultValue.borderWidth}
+								onChange={val => {
+									value.borderWidth = JSON.parse(val);
+									onChange(JSON.stringify(value));
+								}}
+								breakpoint={breakpoint}
+								allowedUnits={['px', 'em', 'vw']}
+								minMaxSettings={{
+									px: {
+										min: 0,
+										max: 99,
+									},
+									em: {
+										min: 0,
+										max: 10,
+									},
+									vw: {
+										min: 0,
+										max: 10,
+									},
+								}}
+								disableAuto
+							/>
+							<__experimentalAxisControl
+								values={value.borderRadius}
+								defaultValues={defaultValue.borderRadius}
+								onChange={val => {
+									value.borderRadius = JSON.parse(val);
+									onChange(JSON.stringify(value));
+								}}
+								breakpoint={breakpoint}
+								minMaxSettings={{
+									px: {
+										min: 0,
+										max: 999,
+									},
+									em: {
+										min: 0,
+										max: 999,
+									},
+									vw: {
+										min: 0,
+										max: 999,
+									},
+									'%': {
+										min: 0,
+										max: 100,
+									},
+								}}
+								disableAuto
+							/>
+						</Fragment>
+					)}
 				</Fragment>
 			)}
 		</div>

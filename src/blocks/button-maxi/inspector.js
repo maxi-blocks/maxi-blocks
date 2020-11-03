@@ -32,6 +32,7 @@ import {
 	__experimentalButtonPresets,
 } from '../../components';
 import { getDefaultProp } from '../../utils';
+import defaultAttributes from './default-attributes';
 
 /**
  * External dependencies
@@ -439,6 +440,11 @@ const Inspector = props => {
 														setAttributes({
 															iconBackground,
 														})
+													}
+													resetBlockAttributes={() =>
+														setAttributes(
+															defaultAttributes
+														)
 													}
 													border={iconBorder}
 													padding={iconPadding}

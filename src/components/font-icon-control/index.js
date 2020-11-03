@@ -61,6 +61,7 @@ const FontIconControl = props => {
 		onChangeBorder,
 		background,
 		onChangeBackground,
+		resetBlockAttributes,
 	} = props;
 
 	const [activeOption, setActiveOption] = useState('iconColor');
@@ -106,6 +107,8 @@ const FontIconControl = props => {
 	const classes = classnames('maxi-font-icon-control', className);
 
 	const onChangePreset = presetNumber => {
+		resetBlockAttributes();
+
 		const paddingValue = !isObject(padding) ? JSON.parse(padding) : padding;
 
 		const backgroundValue = !isObject(background)
@@ -156,8 +159,6 @@ const FontIconControl = props => {
 		borderValue.borderWidth.general['border-left-width'] =
 			presetsStyles[presetNumber].borderWidth;
 		borderValue.borderWidth.unit = 'px';
-
-		console.log(borderValue);
 
 		onChangeBorder(JSON.stringify(borderValue));
 	};

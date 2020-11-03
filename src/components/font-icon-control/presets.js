@@ -13,7 +13,7 @@ export default {
 	2: {
 		icon: 'fas fa-arrow-right',
 		color: '#464a53',
-		background: '#d6d8da',
+		background: '#ffffff8a',
 		padding: 10,
 		spacing: 10,
 		borderWidth: 0,
@@ -28,7 +28,7 @@ export default {
 		padding: 10,
 		spacing: 10,
 		borderWidth: 1,
-		borderColor: '#585c64',
+		borderColor: '#ffffff',
 		position: 'right',
 	},
 };

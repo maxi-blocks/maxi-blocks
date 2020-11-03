@@ -128,6 +128,7 @@ const Inspector = props => {
 															disablePadding
 															disableBackground
 															disableBorder
+															disablePresets
 														/>
 														<AlignmentControl
 															label={__(

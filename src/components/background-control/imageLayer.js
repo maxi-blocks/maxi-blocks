@@ -91,6 +91,7 @@ export const ImageLayerClosed = props => {
 			)}
 			<__experimentalOpacityControl
 				label={__('Background Opacity', 'maxi-blocks')}
+				fullWidthMode
 				opacity={imageOptions.opacity}
 				defaultOpacity={defaultImageOptions.opacity}
 				onChange={val => {

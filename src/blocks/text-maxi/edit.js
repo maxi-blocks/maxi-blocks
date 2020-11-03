@@ -19,9 +19,9 @@ import {
 	getAlignmentTextObject,
 	getOpacityObject,
 	getTransformObject,
-	setBackgroundStyles,
 	setTextCustomFormats,
 	getLastBreakpointValue,
+	setBackgroundStyles,
 } from '../../utils';
 import {
 	MaxiBlock,
@@ -94,21 +94,19 @@ class edit extends MaxiBlock {
 		const {
 			alignment,
 			opacity,
-			boxShadow,
-			border,
 			size,
 			zIndex,
 			position,
 			display,
 			transform,
+			margin,
+			padding,
+			border,
+			boxShadow,
 		} = this.props.attributes;
 
 		const response = {
 			alignment: { ...getAlignmentTextObject(JSON.parse(alignment)) },
-			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
-			border: { ...JSON.parse(border) },
-			borderWidth: { ...JSON.parse(border).borderWidth },
-			borderRadius: { ...JSON.parse(border).borderRadius },
 			size: { ...JSON.parse(size) },
 			opacity: { ...getOpacityObject(JSON.parse(opacity)) },
 			zIndex: { ...JSON.parse(zIndex) },
@@ -116,33 +114,37 @@ class edit extends MaxiBlock {
 			positionOptions: { ...JSON.parse(position).options },
 			display: { ...JSON.parse(display) },
 			transform: { ...getTransformObject(JSON.parse(transform)) },
+			margin: { ...JSON.parse(margin) },
+			padding: { ...JSON.parse(padding) },
+			border: { ...JSON.parse(border) },
+			borderWidth: { ...JSON.parse(border).borderWidth },
+			borderRadius: { ...JSON.parse(border).borderRadius },
+			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
 		};
 
 		return response;
 	}
 
 	get getHoverObject() {
-		const { boxShadowHover, borderHover } = this.props.attributes;
+		const { borderHover, boxShadowHover } = this.props.attributes;
 
 		const response = {
 			boxShadowHover: {
 				...getBoxShadowObject(JSON.parse(boxShadowHover)),
 			},
 			borderHover: { ...JSON.parse(borderHover) },
-			borderWidth: { ...JSON.parse(borderHover).borderWidth },
-			borderRadius: { ...JSON.parse(borderHover).borderRadius },
+			borderWidthHover: { ...JSON.parse(borderHover).borderWidth },
+			borderRadiusHover: { ...JSON.parse(borderHover).borderRadius },
 		};
 
 		return response;
 	}
 
 	get getTypographyObject() {
-		const { typography, margin, padding } = this.props.attributes;
+		const { typography } = this.props.attributes;
 
 		const response = {
 			typography: { ...JSON.parse(typography) },
-			margin: { ...JSON.parse(margin) },
-			padding: { ...JSON.parse(padding) },
 		};
 
 		return response;

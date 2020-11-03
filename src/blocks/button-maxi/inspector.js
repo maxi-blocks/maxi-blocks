@@ -412,6 +412,7 @@ const Inspector = props => {
 														setAttributes({ size })
 													}
 													breakpoint={deviceType}
+													disableMinMaxControls
 												/>
 											),
 										},

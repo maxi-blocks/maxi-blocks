@@ -55,8 +55,6 @@ const MaxiModalIcon = props => {
 			localStorage.setItem('maxi-fa-icons', JSON.stringify(value));
 
 			setIconsState(JSON.parse(data));
-
-			console.log('Icons have been loaded from the API');
 		}
 
 		if (!response.ok) {
@@ -124,13 +122,9 @@ const MaxiModalIcon = props => {
 				const day = 1000 * 60 * 60 * 24;
 
 				if (now - date > day) {
-					console.log(
-						'localStorage Data is Expired, fetching again...'
-					);
 					fetchFaIcons();
 					setIsLoading(false);
 				} else {
-					console.log('localStorage Data is not expired');
 					setIconsState(JSON.parse(object.value));
 					setIsLoading(false);
 				}
@@ -139,7 +133,7 @@ const MaxiModalIcon = props => {
 		if (open) loadIcons();
 	}, [open]);
 
-	// Setting Page count when the displayed list changes
+	// Sets Page count when the displayed list changes
 	useEffect(() => {
 		setPageCount(Math.round(displayedList.length / perPage));
 	}, [displayedList]);
@@ -188,7 +182,6 @@ const MaxiModalIcon = props => {
 
 	return (
 		<Fragment>
-			{/* Launch the layout modal window */}
 			<Button onClick={onClick}>{btnText}</Button>
 			{open && (
 				<Modal

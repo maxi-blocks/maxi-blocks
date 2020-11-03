@@ -6,13 +6,14 @@
 
 		&__items {
 			cursor: pointer;
-			width: calc(20% - 4px);
 			border: 2px solid #dddfe1;
 			border-radius: 5px;
 			margin: 0 5px 5px 0;
-			height: 40px;
+			height: calc(48px - 4px);
+			width: calc(48px - 4px);
+			padding: 0;
 
-			&:nth-child(5n) {
+			&:nth-child(6n) {
 				margin-right: 0;
 			}
 			&[aria-pressed='true'],
@@ -21,9 +22,10 @@
 			}
 		}
 		&__clip-path {
-			width: 100%;
-			height: 100%;
+			width: 70%;
+			height: 70%;
 			background-color: #464a53;
+			margin: auto;
 		}
 	}
 
@@ -78,13 +80,12 @@
 
 	.maxi-clip-path-visual-editor-wrapper {
 		border: 2px solid #dddfe1;
-		border-radius: 3px;
+		border-radius: 5px;
 	}
 	.maxi-clip-path-visual-editor {
 		position: relative;
 		width: 100%;
 		min-height: 291px;
-		overflow: hidden;
 
 		&__preview {
 			position: absolute;

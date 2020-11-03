@@ -8,7 +8,7 @@ const { Fragment } = wp.element;
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNil, has, filter } from 'lodash';
+import { isEmpty, isNil, has, filter, flattenDeep } from 'lodash';
 
 /**
  * icons
@@ -41,6 +41,13 @@ const ShowTimeline = props => {
 				};
 			}
 		}
+
+		const res = flattenDeep(Object.entries(interaction.timeline));
+
+		interaction.activeTimeline = {
+			time: Number(res[0]),
+			index: 0,
+		};
 
 		onChange(interaction);
 	};
@@ -92,12 +99,13 @@ const ShowTimeline = props => {
 										<span>{item.type}</span>
 										<div className='maxi-motion-control__timeline__group__item__actions'>
 											<i
-												onClick={() =>
+												onClick={e => {
+													e.stopPropagation();
 													removeTimeline(
 														item.type,
 														key
-													)
-												}
+													);
+												}}
 											>
 												{toolbarDelete}
 											</i>

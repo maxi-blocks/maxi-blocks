@@ -87,7 +87,6 @@ const Inspector = props => {
 			motion,
 			transform,
 			clipPath,
-			clipPathCurentElement,
 			hover,
 			SVGData,
 			SVGCurrentElement,
@@ -721,17 +720,10 @@ const Inspector = props => {
 											),
 											content: (
 												<__experimentalClipPath
-													clipPathCurentElement={
-														clipPathCurentElement
-													}
 													clipPath={clipPath}
-													onChange={(
-														clipPath,
-														clipPathCurentElement
-													) =>
+													onChange={clipPath =>
 														setAttributes({
 															clipPath,
-															clipPathCurentElement,
 														})
 													}
 												/>

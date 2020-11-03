@@ -82,9 +82,9 @@
 	}
 	.maxi-clip-path-visual-editor {
 		position: relative;
-		width: 80%;
-		max-height: 150px;
-		margin: 20px auto;
+		width: 100%;
+		min-height: 291px;
+		overflow: hidden;
 
 		&__preview {
 			position: absolute;

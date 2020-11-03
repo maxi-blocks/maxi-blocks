@@ -11,7 +11,6 @@ const { SelectControl, BaseControl, Button, Tooltip } = wp.components;
 import clipPathDefaults from './defaults';
 import ClipPathVisualEditor from './visualEditor';
 import __experimentalFancyRadioControl from '../fancy-radio-control';
-import SettingTabsControl from '../setting-tabs-control';
 
 /**
  * External dependencies
@@ -122,7 +121,7 @@ const ClipPathOption = props => {
 };
 
 const ClipPathControl = props => {
-	const { clipPath, className, onChange, clipPathCurentElement } = props;
+	const { clipPath, className, onChange } = props;
 
 	const classes = classnames('maxi-clip-path-control', className);
 
@@ -213,6 +212,8 @@ const ClipPathControl = props => {
 
 	const [customMode, setCustomMode] = useState('visual');
 
+	const [clipPathOptions, changeClipPathOptions] = useState(deconstructCP());
+
 	const [hasClipPath, changeHasClipPath] = useState(
 		isEmpty(clipPath) ? 0 : 1
 	);
@@ -221,7 +222,6 @@ const ClipPathControl = props => {
 			? 0
 			: 1
 	);
-	const [clipPathOptions, changeClipPathOptions] = useState(deconstructCP());
 
 	useEffect(() => {
 		if (JSON.stringify(clipPathOptions) !== JSON.stringify(deconstructCP()))
@@ -317,23 +317,25 @@ const ClipPathControl = props => {
 					{!isCustom && (
 						<div className='clip-path-defaults'>
 							{Object.entries(clipPathDefaults).map(
-								([name, clipPath], i) => (
+								([name, newClipPath]) => (
 									<Tooltip
 										text={name}
 										position='bottom center'
 									>
 										<Button
 											aria-pressed={
-												clipPathCurentElement === i
+												newClipPath === clipPath
 											}
 											className='clip-path-defaults__items'
 											onClick={() =>
-												onChange(clipPath, i)
+												onChange(newClipPath)
 											}
 										>
 											<span
 												className='clip-path-defaults__clip-path'
-												style={{ clipPath }}
+												style={{
+													clipPath: newClipPath,
+												}}
 											/>
 										</Button>
 									</Tooltip>
@@ -373,7 +375,7 @@ const ClipPathControl = props => {
 								onChange={item => setCustomMode(item)}
 								options={[
 									{
-										label: __('Visaul', 'maxi-blocks'),
+										label: __('Visual', 'maxi-blocks'),
 										value: 'visual',
 									},
 									{

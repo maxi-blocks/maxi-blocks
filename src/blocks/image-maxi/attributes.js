@@ -129,9 +129,6 @@ const attributes = {
 		type: 'string',
 		default: '',
 	},
-	clipPathCurentElement: {
-		type: 'number',
-	},
 	motion: {
 		type: 'string',
 		default: JSON.stringify(attributesData.__experimentalMotion),

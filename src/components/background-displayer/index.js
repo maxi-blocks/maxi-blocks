@@ -43,21 +43,30 @@ const BackgroundDisplayer = props => {
 							return (
 								<div
 									key={`maxi-background-displayer__${layer.id}`}
-									className={`maxi-background-displayer__layer maxi-background-displayer__${layer.id}`}
+									className={classnames(
+										'maxi-background-displayer__layer',
+										`maxi-background-displayer__${layer.id}`
+									)}
 								/>
 							);
 						case 'video':
 							return (
 								<VideoLayer
-									videoOptions={layer}
+									videoOptions={layer.options}
 									blockClassName={blockClassName}
 								/>
 							);
 						case 'shape':
 							return (
-								(layer.SVGElement && (
-									<RawHTML className='maxi-background-displayer__layer maxi-background-displayer__svg'>
-										{layer.SVGElement}
+								(layer.options.SVGElement && (
+									<RawHTML
+										className={classnames(
+											'maxi-background-displayer__layer',
+											'maxi-background-displayer__svg',
+											`maxi-background-displayer__${layer.id}`
+										)}
+									>
+										{layer.options.SVGElement}
 									</RawHTML>
 								)) ||
 								null
@@ -68,10 +77,25 @@ const BackgroundDisplayer = props => {
 
 					return null;
 				})}
-			<div className='maxi-background-displayer__layer maxi-background-displayer__overlay' />
-			<div className='maxi-background-displayer__layer maxi-background-displayer__color' />
+			<div
+				className={classnames(
+					'maxi-background-displayer__layer',
+					'maxi-background-displayer__overlay'
+				)}
+			/>
+			<div
+				className={classnames(
+					'maxi-background-displayer__layer',
+					'maxi-background-displayer__color'
+				)}
+			/>
 			{backgroundValue.activeMedia === 'image' && (
-				<div className='maxi-background-displayer__layer maxi-background-displayer__images' />
+				<div
+					className={classnames(
+						'maxi-background-displayer__layer',
+						'maxi-background-displayer__images'
+					)}
+				/>
 			)}
 			{backgroundValue.activeMedia === 'video' && (
 				<VideoLayer
@@ -81,7 +105,12 @@ const BackgroundDisplayer = props => {
 			)}
 			{backgroundValue.activeMedia === 'svg' &&
 				backgroundValue.SVGOptions.SVGElement && (
-					<RawHTML className='maxi-background-displayer__layer maxi-background-displayer__svg'>
+					<RawHTML
+						className={classnames(
+							'maxi-background-displayer__layer',
+							'maxi-background-displayer__svg'
+						)}
+					>
 						{backgroundValue.SVGOptions.SVGElement}
 					</RawHTML>
 				)}

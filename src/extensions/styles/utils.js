@@ -604,7 +604,9 @@ const setBackgroundLayers = (response, layers, target) => {
 			case 'gradient':
 				Object.assign(response, {
 					[layerTarget]: {
-						background: { ...getColorBackgroundObject(layer) },
+						background: {
+							...getColorBackgroundObject(layer.options),
+						},
 					},
 				});
 				break;
@@ -612,7 +614,7 @@ const setBackgroundLayers = (response, layers, target) => {
 				Object.assign(response, {
 					[layerTarget]: {
 						imageBackground: {
-							...getImageBackgroundObject(layer),
+							...getImageBackgroundObject(layer.options),
 						},
 					},
 				});
@@ -621,7 +623,7 @@ const setBackgroundLayers = (response, layers, target) => {
 				Object.assign(response, {
 					[layerTarget]: {
 						videoBackground: {
-							...getVideoBackgroundObject(layer),
+							...getVideoBackgroundObject(layer.options),
 						},
 					},
 				});
@@ -630,12 +632,12 @@ const setBackgroundLayers = (response, layers, target) => {
 				Object.assign(response, {
 					[layerTarget]: {
 						SVGBackground: {
-							...getSVGWrapperBackgroundObject(layer),
+							...getSVGWrapperBackgroundObject(layer.options),
 						},
 					},
 					[`${layerTarget} svg`]: {
 						SVGBackground: {
-							...getSVGBackgroundObject(layer),
+							...getSVGBackgroundObject(layer.options),
 						},
 					},
 				});

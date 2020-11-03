@@ -41,11 +41,11 @@ const LayerCard = props => {
 
 	return (
 		<div className={classes}>
-			<div className='maxi-background-layer__row'>
-				<span
-					onClick={() => onOpen(isOpen)}
-					className='maxi-background-layer__arrow'
-				>
+			<div
+				className='maxi-background-layer__row'
+				onClick={() => onOpen(isOpen)}
+			>
+				<span className='maxi-background-layer__arrow'>
 					{chevronDown}
 				</span>
 				<p className='maxi-background-layer__tittle'>{tittle}</p>
@@ -54,43 +54,67 @@ const LayerCard = props => {
 				<div className='maxi-background-layer__content'>
 					{(type === 'color' && (
 						<ColorLayer
-							colorOptions={layer}
-							defaultColorOptions={backgroundLayers.colorOptions}
-							onChange={layer => onChange(layer)}
+							colorOptions={layer.options}
+							defaultColorOptions={
+								backgroundLayers.colorOptions.options
+							}
+							onChange={layerOptions => {
+								layer.options = layerOptions;
+
+								onChange(layer);
+							}}
 						/>
 					)) ||
 						(type === 'image' && (
 							<ImageLayer
-								imageOptions={layer}
+								imageOptions={layer.options}
 								defaultImageOptions={
-									backgroundLayers.imageOptions
+									backgroundLayers.imageOptions.options
 								}
-								onChange={layer => onChange(layer)}
+								onChange={layerOptions => {
+									layer.options = layerOptions;
+
+									onChange(layer);
+								}}
 							/>
 						)) ||
 						(type === 'video' && (
 							<VideoLayer
-								videoOptions={layer}
+								videoOptions={layer.options}
 								defaultVideoOptions={
-									backgroundLayers.videoOptions
+									backgroundLayers.videoOptions.options
 								}
-								onChange={layer => onChange(layer)}
+								onChange={layerOptions => {
+									layer.options = layerOptions;
+
+									onChange(layer);
+								}}
 							/>
 						)) ||
 						(type === 'gradient' && (
 							<GradientLayer
-								colorOptions={layer}
+								colorOptions={layer.options}
 								defaultColorOptions={
-									backgroundLayers.gradientOptions
+									backgroundLayers.gradientOptions.options
 								}
-								onChange={layer => onChange(layer)}
+								onChange={layerOptions => {
+									layer.options = layerOptions;
+
+									onChange(layer);
+								}}
 							/>
 						)) ||
 						(type === 'shape' && (
 							<SVGLayer
-								SVGOptions={layer}
-								defaultSVGOptions={backgroundLayers.SVGOptions}
-								onChange={layer => onChange(layer)}
+								SVGOptions={layer.options}
+								defaultSVGOptions={
+									backgroundLayers.SVGOptions.options
+								}
+								onChange={layerOptions => {
+									layer.options = layerOptions;
+
+									onChange(layer);
+								}}
 							/>
 						))}
 				</div>

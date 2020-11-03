@@ -26,6 +26,7 @@
 		"react-accessible-accordion": "^3.3.3",
 		"react-color": "^2.18.1",
 		"react-compound-slider": "^2.5.0",
+		"react-drag-listview": "^0.1.7",
 		"react-icons": "^3.11.0",
 		"react-iframe": "^1.8.0",
 		"react-image-crop": "^8.6.5",

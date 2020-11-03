@@ -2,15 +2,16 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { Fragment, useState } = wp.element;
+const { Fragment } = wp.element;
 const { Icon } = wp.components;
 
 /**
  * Internal dependencies
  */
+import BackgroundLayersControl from './backgroundLayersControl';
 import __experimentalFancyRadioControl from '../fancy-radio-control';
 import ColorLayer from './colorLayer';
-import { ImageLayerClosed, ImageLayerOpened } from './imageLayer';
+import ImageLayer from './imageLayer';
 import VideoLayer from './videoLayer';
 import GradientLayer from './gradientLayer';
 import SVGLayer from './svgLayer';
@@ -19,7 +20,7 @@ import SVGLayer from './svgLayer';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isObject, pullAt } from 'lodash';
+import { isEmpty, isObject } from 'lodash';
 
 /**
  * Styles and icons
@@ -51,55 +52,14 @@ const BackgroundControl = props => {
 		onChange,
 	} = props;
 
-	const [isOpen, setIsOpen] = useState(false);
-	const [selector, setSelector] = useState(0);
-
-	const value = !isObject(background) ? JSON.parse(background) : background;
-
-	const defaultValue = !isObject(defaultBackground)
+	const backgroundValue = !isObject(background)
+		? JSON.parse(background)
+		: background;
+	const backgroundDefaultValue = !isObject(defaultBackground)
 		? JSON.parse(defaultBackground)
 		: defaultBackground;
 
-	const classes = classnames(
-		'maxi-background-control',
-		className,
-		isOpen ? 'maxi-background-control__open' : null
-	);
-
-	const onOpenOptions = (e, i = null) => {
-		e.stopPropagation();
-		setIsOpen(true);
-		if (i) setSelector(i);
-	};
-
-	const onDoneEdition = () => {
-		setIsOpen(false);
-		setSelector(0);
-	};
-
-	const onRemoveImage = () => {
-		pullAt(value.imageOptions, selector);
-		onChange(JSON.stringify(value));
-		onDoneEdition();
-	};
-
-	const getAlternativeImage = i => {
-		try {
-			return {
-				source_url:
-					value.imageOptions.items[i].imageData.cropOptions.image
-						.source_url,
-				width:
-					value.imageOptions.items[i].imageData.cropOptions.image
-						.width,
-				height:
-					value.imageOptions.items[i].imageData.cropOptions.image
-						.height,
-			};
-		} catch (error) {
-			return false;
-		}
-	};
+	const classes = classnames('maxi-background-control', className);
 
 	const getOptions = () => {
 		const options = [
@@ -141,110 +101,105 @@ const BackgroundControl = props => {
 
 	return (
 		<div className={classes}>
+			<BackgroundLayersControl
+				layers={backgroundValue.layers}
+				onChange={layers => {
+					backgroundValue.layers = layers;
+
+					onChange(JSON.stringify(backgroundValue));
+				}}
+			/>
 			{getOptions().length > 1 && (
 				<__experimentalFancyRadioControl
 					label={__('Background', 'maxi-blocks')}
 					fullWidthMode
-					selected={value.activeMedia}
+					selected={backgroundValue.activeMedia}
 					options={getOptions()}
 					onChange={item => {
-						isOpen && setIsOpen(false);
-						value.activeMedia = item;
-						if (isEmpty(item)) value.colorOptions.activeColor = '';
+						backgroundValue.activeMedia = item;
+						if (isEmpty(item))
+							backgroundValue.colorOptions.activeColor = '';
 						if (item === 'color')
-							value.colorOptions.activeColor =
-								value.colorOptions.color;
+							backgroundValue.colorOptions.activeColor =
+								backgroundValue.colorOptions.color;
 						if (item === 'gradient')
-							value.colorOptions.activeColor =
-								value.colorOptions.gradient;
+							backgroundValue.colorOptions.activeColor =
+								backgroundValue.colorOptions.gradient;
 
-						onChange(JSON.stringify(value));
+						onChange(JSON.stringify(backgroundValue));
 					}}
 				/>
 			)}
-			{!isOpen && (
-				<Fragment>
-					{!disableColor && value.activeMedia === 'color' && (
-						<ColorLayer
-							colorOptions={value.colorOptions}
-							defaultColorOptions={defaultValue.colorOptions}
-							onChange={colorOptions => {
-								value.colorOptions = colorOptions;
+			<Fragment>
+				{!disableColor && backgroundValue.activeMedia === 'color' && (
+					<ColorLayer
+						colorOptions={backgroundValue.colorOptions}
+						defaultColorOptions={
+							backgroundDefaultValue.colorOptions
+						}
+						onChange={colorOptions => {
+							backgroundValue.colorOptions = colorOptions;
 
-								onChange(JSON.stringify(value));
-							}}
-							disableClipPath={disableClipPath}
-						/>
-					)}
-					{!disableImage && value.activeMedia === 'image' && (
-						<ImageLayerClosed
-							imageOptions={value.imageOptions}
-							defaultImageOptions={defaultValue.imageOptions}
-							onChange={imageOptions => {
-								value.imageOptions = imageOptions;
+							onChange(JSON.stringify(backgroundValue));
+						}}
+						disableClipPath={disableClipPath}
+					/>
+				)}
+				{!disableImage && backgroundValue.activeMedia === 'image' && (
+					<ImageLayer
+						imageOptions={backgroundValue.imageOptions}
+						defaultImageOptions={
+							backgroundDefaultValue.imageOptions
+						}
+						onChange={imageOptions => {
+							backgroundValue.imageOptions = imageOptions;
 
-								onChange(JSON.stringify(value));
-							}}
-							disableClipPath={disableClipPath}
-							onOpenOptions={onOpenOptions}
-							onRemoveImage={onRemoveImage}
-							getAlternativeImage={getAlternativeImage}
-							selector={selector}
-						/>
-					)}
-					{!disableVideo && value.activeMedia === 'video' && (
-						<VideoLayer
-							videoOptions={value.videoOptions}
-							defaultVideoOptions={defaultValue.videoOptions}
-							onChange={videoOptions => {
-								value.videoOptions = videoOptions;
+							onChange(JSON.stringify(backgroundValue));
+						}}
+						disableClipPath={disableClipPath}
+					/>
+				)}
+				{!disableVideo && backgroundValue.activeMedia === 'video' && (
+					<VideoLayer
+						videoOptions={backgroundValue.videoOptions}
+						defaultVideoOptions={
+							backgroundDefaultValue.videoOptions
+						}
+						onChange={videoOptions => {
+							backgroundValue.videoOptions = videoOptions;
 
-								onChange(JSON.stringify(value));
-							}}
-							disableClipPath={disableClipPath}
-							onOpenOptions={onOpenOptions}
-						/>
-					)}
-					{!disableGradient && value.activeMedia === 'gradient' && (
+							onChange(JSON.stringify(backgroundValue));
+						}}
+						disableClipPath={disableClipPath}
+					/>
+				)}
+				{!disableGradient &&
+					backgroundValue.activeMedia === 'gradient' && (
 						<GradientLayer
-							colorOptions={value.colorOptions}
-							defaultColorOptions={defaultValue.colorOptions}
+							colorOptions={backgroundValue.colorOptions}
+							defaultColorOptions={
+								backgroundDefaultValue.colorOptions
+							}
 							onChange={colorOptions => {
-								value.colorOptions = colorOptions;
+								backgroundValue.colorOptions = colorOptions;
 
-								onChange(JSON.stringify(value));
+								onChange(JSON.stringify(backgroundValue));
 							}}
 							disableClipPath={disableClipPath}
 						/>
 					)}
-					{!disableSVG && value.activeMedia === 'svg' && (
-						<SVGLayer
-							SVGOptions={value.SVGOptions}
-							defaultSVGOptions={defaultValue.SVGOptions}
-							onChange={SVGOptions => {
-								value.SVGOptions = SVGOptions;
+				{!disableSVG && backgroundValue.activeMedia === 'svg' && (
+					<SVGLayer
+						SVGOptions={backgroundValue.SVGOptions}
+						defaultSVGOptions={backgroundDefaultValue.SVGOptions}
+						onChange={SVGOptions => {
+							backgroundValue.SVGOptions = SVGOptions;
 
-								onChange(JSON.stringify(value));
-							}}
-						/>
-					)}
-				</Fragment>
-			)}
-			{isOpen && value.activeMedia === 'image' && (
-				<ImageLayerOpened
-					imageOptions={value.imageOptions}
-					defaultImageOptions={defaultValue.imageOptions}
-					onChange={imageOptions => {
-						value.imageOptions = imageOptions;
-
-						onChange(JSON.stringify(value));
-					}}
-					onDoneEdition={onDoneEdition}
-					onRemoveImage={onRemoveImage}
-					getAlternativeImage={getAlternativeImage}
-					selector={selector}
-				/>
-			)}
+							onChange(JSON.stringify(backgroundValue));
+						}}
+					/>
+				)}
+			</Fragment>
 		</div>
 	);
 };

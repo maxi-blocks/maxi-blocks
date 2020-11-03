@@ -12,7 +12,7 @@ const { getBlockAttributes } = wp.blocks;
 /**
  * External dependencies
  */
-import { isEmpty, isNil, isNumber, isString } from 'lodash';
+import { isEmpty, isNil, isNumber, isString, isObject } from 'lodash';
 
 /**
  * Returns default property of the block
@@ -380,22 +380,24 @@ export const getTransformObject = transform => {
  * @param {Object} background BackgroundControl related object
  *
  */
-export const getColorBackgroundObject = background => {
+export const getColorBackgroundObject = colorOptions => {
 	const response = {
-		label: background.label,
+		label: 'Background Color',
 		general: {},
 	};
 
-	if (!isNil(background.colorOptions.gradientOpacity.opacity))
+	if (
+		!isNil(colorOptions.gradientOpacity) &&
+		!isNil(colorOptions.gradientOpacity.opacity)
+	)
 		response.general.opacity =
-			background.colorOptions.gradientOpacity.opacity.general.opacity;
-	if (!isEmpty(background.colorOptions.gradient))
-		response.general.background = background.colorOptions.activeColor;
-	if (!isEmpty(background.colorOptions.color))
-		response.general['background-color'] =
-			background.colorOptions.activeColor;
-	if (!isEmpty(background.colorOptions.clipPath))
-		response.general['clip-path'] = background.colorOptions.clipPath;
+			colorOptions.gradientOpacity.opacity.general.opacity;
+	if (!isEmpty(colorOptions.gradient))
+		response.general.background = colorOptions.activeColor;
+	if (!isEmpty(colorOptions.color))
+		response.general['background-color'] = colorOptions.activeColor;
+	if (!isEmpty(colorOptions.clipPath))
+		response.general['clip-path'] = colorOptions.clipPath;
 
 	return response;
 };
@@ -420,13 +422,11 @@ export const getColorOverlayObject = overlay => {
 	return response;
 };
 
-export const getImageBackgroundObject = background => {
+export const getImageBackgroundObject = imageOptions => {
 	const response = {
-		label: background.label,
+		label: 'Background Image',
 		general: {},
 	};
-
-	const { imageOptions } = background;
 
 	if (!isNil(imageOptions.opacity))
 		response.general.opacity = imageOptions.opacity.general.opacity;
@@ -449,10 +449,10 @@ export const getImageBackgroundObject = background => {
 				response.general[
 					'background-image'
 				] = `url('${option.imageData.cropOptions.image.source_url}')`;
-			if (!isEmpty(background.colorOptions.gradient))
-				response.general[
-					'background-image'
-				] = `${response.general['background-image']}, ${background.colorOptions.gradient}`;
+			// if (!isEmpty(background.colorOptions.gradient))
+			// 	response.general[
+			// 		'background-image'
+			// 	] = `${response.general['background-image']}, ${background.colorOptions.gradient}`;
 		} else if (
 			(option.sizeSettings.size === 'custom' &&
 				isNil(option.imageData.cropOptions)) ||
@@ -467,10 +467,10 @@ export const getImageBackgroundObject = background => {
 				response.general[
 					'background-image'
 				] = `url('${option.imageData.mediaURL}')`;
-			if (!isEmpty(background.colorOptions.gradient))
-				response.general[
-					'background-image'
-				] = `${response.general['background-image']}, ${background.colorOptions.gradient}`;
+			// if (!isEmpty(background.colorOptions.gradient))
+			// 	response.general[
+			// 		'background-image'
+			// 	] = `${response.general['background-image']}, ${background.colorOptions.gradient}`;
 		}
 		// Size
 		if (option.sizeSettings.size !== 'custom') {
@@ -595,6 +595,59 @@ const getSVGBackgroundObject = SVGOptions => {
 	return response;
 };
 
+const setBackgroundLayers = (response, layers, target) => {
+	layers.forEach(layer => {
+		const layerTarget = `${target} > .maxi-background-displayer .maxi-background-displayer__${layer.id}`;
+
+		switch (layer.type) {
+			case 'color':
+			case 'gradient':
+				Object.assign(response, {
+					[layerTarget]: {
+						background: { ...getColorBackgroundObject(layer) },
+					},
+				});
+				break;
+			case 'image':
+				Object.assign(response, {
+					[layerTarget]: {
+						imageBackground: {
+							...getImageBackgroundObject(layer),
+						},
+					},
+				});
+				break;
+			case 'video':
+				Object.assign(response, {
+					[layerTarget]: {
+						videoBackground: {
+							...getVideoBackgroundObject(layer),
+						},
+					},
+				});
+				break;
+			case 'shape':
+				Object.assign(response, {
+					[layerTarget]: {
+						SVGBackground: {
+							...getSVGWrapperBackgroundObject(layer),
+						},
+					},
+					[`${layerTarget} svg`]: {
+						SVGBackground: {
+							...getSVGBackgroundObject(layer),
+						},
+					},
+				});
+				break;
+			default:
+				break;
+		}
+	});
+
+	return response;
+};
+
 export const setBackgroundStyles = (
 	target,
 	background,
@@ -602,45 +655,49 @@ export const setBackgroundStyles = (
 	overlay,
 	overlayHover
 ) => {
-	const response = {
+	const backgroundValue = !isObject(background)
+		? JSON.parse(background)
+		: background;
+
+	const backgroundHoverValue = !isObject(backgroundHover)
+		? JSON.parse(backgroundHover)
+		: backgroundHover;
+
+	let response = {
 		[`${target} > .maxi-background-displayer .maxi-background-displayer__color`]: {
-			background: { ...getColorBackgroundObject(JSON.parse(background)) },
+			background: {
+				...getColorBackgroundObject(backgroundValue.colorOptions),
+			},
 		},
 		[`${target} > .maxi-background-displayer .maxi-background-displayer__images`]: {
 			imageBackground: {
-				...getImageBackgroundObject(JSON.parse(background)),
+				...getImageBackgroundObject(backgroundValue.imageOptions),
 			},
 		},
 		[`${target}:hover>.maxi-background-displayer .maxi-background-displayer__images`]: {
 			imageBackgroundHover: {
-				...getImageBackgroundObject(JSON.parse(backgroundHover)),
+				...getImageBackgroundObject(backgroundHoverValue.imageOptions),
 			},
 		},
 		[`${target}>.maxi-background-displayer .maxi-background-displayer__video-player`]: {
 			videoBackground: {
-				...getVideoBackgroundObject(
-					JSON.parse(background).videoOptions
-				),
+				...getVideoBackgroundObject(backgroundValue.videoOptions),
 			},
 		},
 
 		[`${target}:hover>.maxi-background-displayer .maxi-background-displayer__video-player`]: {
 			videoBackgroundHover: {
-				...getVideoBackgroundObject(
-					JSON.parse(backgroundHover).videoOptions
-				),
+				...getVideoBackgroundObject(backgroundHoverValue.videoOptions),
 			},
 		},
 		[`${target}>.maxi-background-displayer .maxi-background-displayer__svg`]: {
 			SVGBackground: {
-				...getSVGWrapperBackgroundObject(
-					JSON.parse(background).SVGOptions
-				),
+				...getSVGWrapperBackgroundObject(backgroundValue.SVGOptions),
 			},
 		},
 		[`${target}>.maxi-background-displayer .maxi-background-displayer__svg svg`]: {
 			SVGBackground: {
-				...getSVGBackgroundObject(JSON.parse(background).SVGOptions),
+				...getSVGBackgroundObject(backgroundValue.SVGOptions),
 			},
 		},
 	};
@@ -653,12 +710,12 @@ export const setBackgroundStyles = (
 		};
 	}
 
-	if (!!JSON.parse(backgroundHover).status) {
+	if (backgroundHoverValue.status) {
 		response[
 			`${target}:hover>.maxi-background-displayer .maxi-background-displayer__color`
 		] = {
 			backgroundHover: {
-				...getColorBackgroundObject(JSON.parse(backgroundHover)),
+				...getColorBackgroundObject(backgroundHoverValue.colorOptions),
 			},
 		};
 	} else {
@@ -684,6 +741,13 @@ export const setBackgroundStyles = (
 			overlayHover: {},
 		};
 	}
+
+	if (backgroundValue.layers)
+		response = setBackgroundLayers(
+			response,
+			backgroundValue.layers,
+			target
+		);
 
 	return response;
 };

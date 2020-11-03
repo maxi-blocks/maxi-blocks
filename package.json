@@ -9,7 +9,6 @@
 		"lint": "eslint --fix src/*"
 	},
 	"dependencies": {
-		"@fortawesome/react-fontawesome": "^0.1.11",
 		"@wordpress/compose": "^3.19.3",
 		"@wordpress/icons": "^1.4.0",
 		"@wordpress/media-utils": "^1.15.0",

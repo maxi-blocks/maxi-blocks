@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { __ } = wp.i18n;
+const { __, sprintf } = wp.i18n;
 const { Button, SelectControl } = wp.components;
 const { Fragment } = wp.element;
 const { useState } = wp.element;
@@ -15,7 +15,7 @@ import { __experimentalFancyRadioControl } from '../../components';
 /**
  * External dependencies
  */
-import { isEmpty, uniqueId, forIn } from 'lodash';
+import { isEmpty, uniqueId, forIn, isObject } from 'lodash';
 
 /**
  * Component
@@ -100,7 +100,33 @@ const TimelinePresets = props => {
 									setPresetLoad('');
 								}}
 							>
-								{__('Load Preset', 'maxi-blocks')}
+								{__('Load', 'maxi-blocks')}
+							</Button>
+							<Button
+								className='maxi-motion-control__preset__load--delete'
+								disabled={isEmpty(presetLoad)}
+								onClick={() => {
+									const presetsValue = !isObject(presets)
+										? JSON.parse(presets)
+										: presets;
+
+									const confirmMessage = confirm(
+										sprintf(
+											__(
+												'Are you sure to delete "%s" preset?',
+												'maxi-blocks'
+											),
+											presetsValue[presetLoad].name
+										)
+									);
+									if (confirmMessage) {
+										delete presetsValue[presetLoad];
+										saveMaxiMotionPresets(presetsValue);
+										setPresetLoad('');
+									}
+								}}
+							>
+								{__('Delete', 'maxi-blocks')}
 							</Button>
 						</div>
 					)}
@@ -117,15 +143,29 @@ const TimelinePresets = props => {
 						<Button
 							disabled={isEmpty(presetName)}
 							onClick={() => {
-								saveMaxiMotionPresets({
-									...JSON.parse(presets),
-									[uniqueId('preset_')]: {
-										name: presetName,
-										preset: {
-											...interaction.timeline,
+								const presetsValue = !isObject(presets)
+									? JSON.parse(presets)
+									: presets;
+								if (isEmpty(presets)) {
+									saveMaxiMotionPresets({
+										[uniqueId('preset_')]: {
+											name: presetName,
+											preset: {
+												...interaction.timeline,
+											},
 										},
-									},
-								});
+									});
+								} else {
+									saveMaxiMotionPresets({
+										...presetsValue,
+										[uniqueId('preset_')]: {
+											name: presetName,
+											preset: {
+												...interaction.timeline,
+											},
+										},
+									});
+								}
 
 								setPresetName('');
 							}}

@@ -1529,6 +1529,8 @@ export const __experimentalMotion = {
 		},
 		presetStatus: 0,
 		previewStatus: 0,
+		tabletStatus: 1,
+		mobileStatus: 1,
 	},
 	entrance: {
 		type: '',

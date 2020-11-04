@@ -432,6 +432,45 @@ const TimelineSettings = props => {
 							onChange(interaction);
 						}}
 					/>
+					<hr />
+					<__experimentalFancyRadioControl
+						label={__('Tablet', 'maxi-blocks')}
+						selected={interaction.tabletStatus}
+						options={[
+							{
+								label: __('Yes', 'maxi-blocks'),
+								value: 1,
+							},
+							{
+								label: __('No', 'maxi-blocks'),
+								value: 0,
+							},
+						]}
+						onChange={value => {
+							interaction.tabletStatus = Number(value);
+
+							onChange(interaction);
+						}}
+					/>
+					<__experimentalFancyRadioControl
+						label={__('Mobile', 'maxi-blocks')}
+						selected={interaction.mobileStatus}
+						options={[
+							{
+								label: __('Yes', 'maxi-blocks'),
+								value: 1,
+							},
+							{
+								label: __('No', 'maxi-blocks'),
+								value: 0,
+							},
+						]}
+						onChange={value => {
+							interaction.mobileStatus = Number(value);
+
+							onChange(interaction);
+						}}
+					/>
 				</Fragment>
 			)}
 		</div>

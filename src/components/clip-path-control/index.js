@@ -11,7 +11,6 @@ const { SelectControl, BaseControl, Button, Tooltip } = wp.components;
 import clipPathDefaults from './defaults';
 import ClipPathVisualEditor from './visualEditor';
 import __experimentalFancyRadioControl from '../fancy-radio-control';
-import SettingTabsControl from '../setting-tabs-control';
 
 /**
  * External dependencies
@@ -211,6 +210,10 @@ const ClipPathControl = props => {
 		};
 	};
 
+	const [customMode, setCustomMode] = useState('visual');
+
+	const [clipPathOptions, changeClipPathOptions] = useState(deconstructCP());
+
 	const [hasClipPath, changeHasClipPath] = useState(
 		isEmpty(clipPath) ? 0 : 1
 	);
@@ -219,7 +222,6 @@ const ClipPathControl = props => {
 			? 0
 			: 1
 	);
-	const [clipPathOptions, changeClipPathOptions] = useState(deconstructCP());
 
 	useEffect(() => {
 		if (JSON.stringify(clipPathOptions) !== JSON.stringify(deconstructCP()))
@@ -307,7 +309,7 @@ const ClipPathControl = props => {
 			{!!hasClipPath && (
 				<Fragment>
 					<__experimentalFancyRadioControl
-						label={__('Use custom', 'maxi-blocks')}
+						label={__('Use Custom', 'maxi-blocks')}
 						selected={isCustom}
 						options={[
 							{ label: __('Yes', 'maxi-blocks'), value: 1 },
@@ -318,18 +320,25 @@ const ClipPathControl = props => {
 					{!isCustom && (
 						<div className='clip-path-defaults'>
 							{Object.entries(clipPathDefaults).map(
-								([name, clipPath]) => (
+								([name, newClipPath]) => (
 									<Tooltip
 										text={name}
 										position='bottom center'
 									>
 										<Button
+											aria-pressed={
+												newClipPath === clipPath
+											}
 											className='clip-path-defaults__items'
-											onClick={() => onChange(clipPath)}
+											onClick={() =>
+												onChange(newClipPath)
+											}
 										>
 											<span
 												className='clip-path-defaults__clip-path'
-												style={{ clipPath }}
+												style={{
+													clipPath: newClipPath,
+												}}
 											/>
 										</Button>
 									</Tooltip>
@@ -362,83 +371,78 @@ const ClipPathControl = props => {
 								]}
 								onChange={value => onChangeType(value)}
 							/>
-							<SettingTabsControl
-								items={[
+							<__experimentalFancyRadioControl
+								label=''
+								fullWidthMode
+								selected={customMode}
+								onChange={item => setCustomMode(item)}
+								options={[
 									{
 										label: __('Visual', 'maxi-blocks'),
-										content: (
-											<ClipPathVisualEditor
-												clipPathOptions={
-													clipPathOptions
-												}
-												clipPath={clipPath}
-												colors={optionColors}
-												onChange={clipPathOptions =>
-													generateCP(clipPathOptions)
-												}
-											/>
-										),
+										value: 'visual',
 									},
 									{
-										label: __('Data', 'maxi-blocks'),
-										content: (
-											<Fragment>
-												{Object.entries(
-													clipPathOptions.content
-												).map(([key, handle]) => {
-													const i = Number(key);
-
-													return (
-														<ClipPathOption
-															key={`maxi-clip-path-control-${i}`}
-															values={handle}
-															onChange={value => {
-																clipPathOptions.content[
-																	i
-																] = value;
-																generateCP(
-																	clipPathOptions
-																);
-															}}
-															onRemove={number => {
-																delete clipPathOptions
-																	.content[
-																	number
-																];
-																generateCP(
-																	clipPathOptions
-																);
-															}}
-															number={i}
-															type={
-																clipPathOptions.type
-															}
-														/>
-													);
-												})}
-												{clipPathOptions.type ===
-													'polygon' &&
-													clipPathOptions.content
-														.length < 10 && (
-														<Button
-															className='maxi-clip-path-control__handles'
-															onClick={() => {
-																clipPathOptions.content.push(
-																	[0, 0]
-																);
-																generateCP(
-																	clipPathOptions
-																);
-															}}
-														>
-															Add new point
-														</Button>
-													)}
-											</Fragment>
-										),
+										label: __('Edit Points', 'maxi-blocks'),
+										value: 'data',
 									},
 								]}
 							/>
+							{customMode === 'visual' && (
+								<ClipPathVisualEditor
+									clipPathOptions={clipPathOptions}
+									clipPath={clipPath}
+									colors={optionColors}
+									onChange={clipPathOptions =>
+										generateCP(clipPathOptions)
+									}
+								/>
+							)}
+							{customMode === 'data' && (
+								<Fragment>
+									{Object.entries(
+										clipPathOptions.content
+									).map(([key, handle]) => {
+										const i = Number(key);
+
+										return (
+											<ClipPathOption
+												key={`maxi-clip-path-control-${i}`}
+												values={handle}
+												onChange={value => {
+													clipPathOptions.content[
+														i
+													] = value;
+													generateCP(clipPathOptions);
+												}}
+												onRemove={number => {
+													delete clipPathOptions
+														.content[number];
+													generateCP(clipPathOptions);
+												}}
+												number={i}
+												type={clipPathOptions.type}
+											/>
+										);
+									})}
+									{clipPathOptions.type === 'polygon' &&
+										clipPathOptions.content.length < 10 && (
+											<Button
+												className='maxi-clip-path-control__handles'
+												onClick={() => {
+													clipPathOptions.content.push(
+														[0, 0]
+													);
+													generateCP(clipPathOptions);
+												}}
+											>
+												{__(
+													'Add new point',
+													'maxi-blocks'
+												)}
+											</Button>
+										)}
+								</Fragment>
+							)}
 						</div>
 					)}
 				</Fragment>

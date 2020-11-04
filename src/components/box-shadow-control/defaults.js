@@ -29,7 +29,7 @@ export const boxShadowSolid = {
 	shadowColor: 'rgba(162, 162, 162, 1)',
 	defaultShadowColor: '#000',
 	shadowHorizontal: 12,
-	shadowVertical: 24,
+	shadowVertical: 12,
 	shadowBlur: 0,
 	shadowSpread: 0,
 };

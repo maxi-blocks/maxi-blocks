@@ -1,6 +1,7 @@
 /**
  * WordPress dependencies
  */
+const { __ } = wp.i18n;
 const { Button } = wp.components;
 const { Fragment } = wp.element;
 
@@ -52,7 +53,7 @@ const FontIconPicker = props => {
 								onChange={iconClassName => {
 									onChange(iconClassName);
 								}}
-								btnText='Replace'
+								btnText={__('Replace', 'maxi-blocks')}
 							/>
 						</Button>
 						<Button
@@ -63,7 +64,7 @@ const FontIconPicker = props => {
 								onChange('');
 							}}
 						>
-							Remove
+							{__('Remove', 'maxi-blocks')}
 						</Button>
 					</div>
 				</Fragment>

@@ -20,7 +20,7 @@ const MaxiModalIcon = props => {
 	// Number of icons to display per page
 	const perPage = 55;
 
-	const { onChange, btnText = 'Choose an Icon' } = props;
+	const { onChange, btnText = __('Set Icon', 'maxi-blocks') } = props;
 
 	// Component State
 	const [open, setOpen] = useState(false);
@@ -272,6 +272,16 @@ const MaxiModalIcon = props => {
 															)} fa-${
 																icon.iconName
 															}`}
+															onClick={() => {
+																onChange(
+																	`fa${icon.cat.charAt(
+																		0
+																	)} fa-${
+																		icon.iconName
+																	}`
+																);
+																setOpen(!open);
+															}}
 														/>
 														<button
 															type='button'

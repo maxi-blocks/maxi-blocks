@@ -104,7 +104,7 @@ const FullSizeControl = props => {
 			/>
 
 			<__experimentalFancyRadioControl
-				label={__('Advanced Settings', 'maxi-blocks')}
+				label={__('Advanced Width/Height', 'maxi-blocks')}
 				selected={value[breakpoint].advancedOptions}
 				options={[
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },

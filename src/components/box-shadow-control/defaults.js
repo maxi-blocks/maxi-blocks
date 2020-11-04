@@ -28,8 +28,8 @@ export const boxShadowBottom = {
 export const boxShadowSolid = {
 	shadowColor: 'rgba(162, 162, 162, 1)',
 	defaultShadowColor: '#000',
-	shadowHorizontal: 12,
-	shadowVertical: 12,
+	shadowHorizontal: 5,
+	shadowVertical: 5,
 	shadowBlur: 0,
 	shadowSpread: 0,
 };

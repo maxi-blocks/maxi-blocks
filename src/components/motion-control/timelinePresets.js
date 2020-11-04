@@ -15,7 +15,7 @@ import { __experimentalFancyRadioControl } from '../../components';
 /**
  * External dependencies
  */
-import { isEmpty, uniqueId, forIn, isObject } from 'lodash';
+import { isEmpty, uniqueId, forIn } from 'lodash';
 
 /**
  * Component
@@ -106,22 +106,23 @@ const TimelinePresets = props => {
 								className='maxi-motion-control__preset__load--delete'
 								disabled={isEmpty(presetLoad)}
 								onClick={() => {
-									const presetsValue = !isObject(presets)
-										? JSON.parse(presets)
-										: presets;
+									const newPresets = {
+										...getPresets(),
+									};
 
-									const confirmMessage = confirm(
-										sprintf(
-											__(
-												'Are you sure to delete "%s" preset?',
-												'maxi-blocks'
-											),
-											presetsValue[presetLoad].name
+									if (
+										window.confirm(
+											sprintf(
+												__(
+													'Are you sure to delete "%s" preset?',
+													'maxi-blocks'
+												),
+												getPresets()[presetLoad].name
+											)
 										)
-									);
-									if (confirmMessage) {
-										delete presetsValue[presetLoad];
-										saveMaxiMotionPresets(presetsValue);
+									) {
+										delete newPresets[presetLoad];
+										saveMaxiMotionPresets(newPresets);
 										setPresetLoad('');
 									}
 								}}
@@ -143,9 +144,6 @@ const TimelinePresets = props => {
 						<Button
 							disabled={isEmpty(presetName)}
 							onClick={() => {
-								const presetsValue = !isObject(presets)
-									? JSON.parse(presets)
-									: presets;
 								if (isEmpty(presets)) {
 									saveMaxiMotionPresets({
 										[uniqueId('preset_')]: {
@@ -157,7 +155,7 @@ const TimelinePresets = props => {
 									});
 								} else {
 									saveMaxiMotionPresets({
-										...presetsValue,
+										...getPresets(),
 										[uniqueId('preset_')]: {
 											name: presetName,
 											preset: {

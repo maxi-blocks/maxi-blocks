@@ -128,6 +128,28 @@ if (!class_exists('MaxiBlocksAPI')) :
                     },
                 )
             );
+            register_rest_route(
+                $this->namespace,
+                '/motion-presets',
+                array(
+                    'methods'             => 'GET',
+                    'callback'            => array($this, 'get_maxi_blocks_current_global_motion_presets'),
+                    'permission_callback' => function () {
+                        return current_user_can('edit_posts');
+                    },
+                )
+            );
+            register_rest_route(
+                $this->namespace,
+                '/motion-presets',
+                array(
+                    'methods'             => 'POST',
+                    'callback'            => array($this, 'set_maxi_blocks_current_global_motion_presets'),
+                    'permission_callback' => function () {
+                        return current_user_can('edit_posts');
+                    },
+                )
+            );
         }
 
         /**
@@ -201,6 +223,21 @@ if (!class_exists('MaxiBlocksAPI')) :
                 'id' => 'style_cards_current_global_styles',
                 'object' => $styles,
             ));
+        }
+
+        public function get_maxi_blocks_current_global_motion_presets() {
+			return get_option('maxi_motion_interaction_presets');
+
+        }
+
+        public function set_maxi_blocks_current_global_motion_presets($request) {
+
+			$request_result = $request->get_json_params();
+			$result = $request_result;
+
+			return update_option('maxi_motion_interaction_presets', $result['presets']);
+
+
         }
     }
 

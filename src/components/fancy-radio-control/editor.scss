@@ -25,8 +25,8 @@
 	.components-radio-control {
 		width: 100%;
 
-		.components-base-control__field .components-base-control__label {
-			flex: 5;
+		.components-base-control__label {
+			flex: 2 !important;
 		}
 		&__option {
 			opacity: 1 !important;

@@ -22,7 +22,7 @@ import './style.scss';
  * Component
  */
 const VideoLayer = props => {
-	const { videoOptions, blockClassName } = props;
+	const { videoOptions, blockClassName, className } = props;
 
 	const parentEl = document.querySelector(`.${blockClassName}`);
 
@@ -78,7 +78,8 @@ const VideoLayer = props => {
 		'maxi-background-displayer__layer',
 		'maxi-background-displayer__video-player',
 		!videoOptions.playOnMobile &&
-			'maxi-background-displayer__video-player--mobile-hidden'
+			'maxi-background-displayer__video-player--mobile-hidden',
+		className
 	);
 
 	// Pasue vimeo at the endTime

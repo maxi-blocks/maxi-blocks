@@ -54,6 +54,7 @@ const BackgroundDisplayer = props => {
 								<VideoLayer
 									videoOptions={layer.options}
 									blockClassName={blockClassName}
+									className={`maxi-background-displayer__${layer.id}`}
 								/>
 							);
 						case 'shape':

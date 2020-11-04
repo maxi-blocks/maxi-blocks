@@ -31,7 +31,7 @@ import { chevronDown } from '../../icons';
  * Component
  */
 const LayerCard = props => {
-	const { layer, onChange, onOpen, isOpen } = props;
+	const { layer, onChange, onOpen, isOpen, onRemove } = props;
 	const { tittle, type } = layer;
 
 	const classes = classnames(
@@ -48,7 +48,13 @@ const LayerCard = props => {
 				<span className='maxi-background-layer__arrow'>
 					{chevronDown}
 				</span>
-				<p className='maxi-background-layer__tittle'>{tittle}</p>
+				<p className='maxi-background-layer__tittle'>
+					{tittle}
+					<span
+						className='maxi-background-layer__remover'
+						onClick={onRemove}
+					/>
+				</p>
 			</div>
 			{isOpen && (
 				<div className='maxi-background-layer__content'>
@@ -126,7 +132,7 @@ const LayerCard = props => {
 const BackgroundLayersControl = props => {
 	const { layers, onChange } = props;
 
-	const [useLayers, changeUseLayers] = useState(0);
+	const [useLayers, changeUseLayers] = useState(isEmpty(layers) ? 0 : 1);
 	const [selector, changeSelector] = useState(null);
 
 	const getObject = type => {
@@ -195,6 +201,7 @@ const BackgroundLayersControl = props => {
 										layer={layer}
 										onChange={layer => {
 											layers[i] = layer;
+
 											onChange(layers);
 										}}
 										onOpen={() =>
@@ -203,6 +210,11 @@ const BackgroundLayersControl = props => {
 												: changeSelector(null)
 										}
 										isOpen={selector === i}
+										onRemove={() => {
+											layers.splice(i, 1);
+
+											onChange(layers);
+										}}
 									/>
 								))}
 							</div>
@@ -227,7 +239,7 @@ const BackgroundLayersControl = props => {
 								value: 'gradient',
 							},
 							{
-								label: __('Background shape', 'maxi-blocks'),
+								label: __('Background Shape', 'maxi-blocks'),
 								value: 'shape',
 							},
 						]}

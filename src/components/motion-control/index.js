@@ -22,6 +22,7 @@ import { isObject } from 'lodash';
  * Styles and icons
  */
 import './editor.scss';
+import { Fragment } from 'react';
 
 /**
  * Component
@@ -38,53 +39,68 @@ const MotionControl = props => {
 	return (
 		<div className={classes}>
 			<__experimentalFancyRadioControl
-				label={__('Preview', 'maxi-blocks')}
-				selected={interaction.previewStatus}
+				label={__('Use Motion Effects', 'maxi-blocks')}
+				selected={interaction.interactionStatus}
 				options={[
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },
 					{ label: __('No', 'maxi-blocks'), value: 0 },
 				]}
 				onChange={val => {
-					interaction.previewStatus = Number(val);
+					interaction.interactionStatus = Number(val);
 					onChange(JSON.stringify(motionValue));
 				}}
 			/>
+			{!!interaction.interactionStatus && (
+				<Fragment>
+					<__experimentalFancyRadioControl
+						label={__('Preview', 'maxi-blocks')}
+						selected={interaction.previewStatus}
+						options={[
+							{ label: __('Yes', 'maxi-blocks'), value: 1 },
+							{ label: __('No', 'maxi-blocks'), value: 0 },
+						]}
+						onChange={val => {
+							interaction.previewStatus = Number(val);
+							onChange(JSON.stringify(motionValue));
+						}}
+					/>
+					<TimelinePresets
+						interaction={interaction}
+						onChange={interaction => {
+							motionValue.interaction = interaction;
 
-			<TimelinePresets
-				interaction={interaction}
-				onChange={interaction => {
-					motionValue.interaction = interaction;
+							onChange(JSON.stringify(motionValue));
+						}}
+					/>
 
-					onChange(JSON.stringify(motionValue));
-				}}
-			/>
+					<AddTimeline
+						interaction={interaction}
+						onChange={interaction => {
+							motionValue.interaction = interaction;
 
-			<AddTimeline
-				interaction={interaction}
-				onChange={interaction => {
-					motionValue.interaction = interaction;
+							onChange(JSON.stringify(motionValue));
+						}}
+					/>
 
-					onChange(JSON.stringify(motionValue));
-				}}
-			/>
+					<ShowTimeline
+						interaction={interaction}
+						onChange={interaction => {
+							motionValue.interaction = interaction;
 
-			<ShowTimeline
-				interaction={interaction}
-				onChange={interaction => {
-					motionValue.interaction = interaction;
+							onChange(JSON.stringify(motionValue));
+						}}
+					/>
 
-					onChange(JSON.stringify(motionValue));
-				}}
-			/>
+					<TimelineSettings
+						interaction={interaction}
+						onChange={interaction => {
+							motionValue.interaction = interaction;
 
-			<TimelineSettings
-				interaction={interaction}
-				onChange={interaction => {
-					motionValue.interaction = interaction;
-
-					onChange(JSON.stringify(motionValue));
-				}}
-			/>
+							onChange(JSON.stringify(motionValue));
+						}}
+					/>
+				</Fragment>
+			)}
 		</div>
 	);
 };

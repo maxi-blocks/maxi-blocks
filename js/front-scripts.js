@@ -143,15 +143,17 @@ motionElems.forEach(function (elem) {
 		}
 
 		// Motion Effects
+		const interactionStatus = motionData.interaction.interactionStatus;
 		const motionMobileStatus = motionData.interaction.mobileStatus;
 		const motionTabletStatus = motionData.interaction.tabletStatus;
 		const xAxis = motionData.interaction.transformOrigin.xAxis;
 		const yAxis = motionData.interaction.transformOrigin.yAxis;
 
 		if (
-			(!!motionMobileStatus && getDeviceType() === 'mobile') ||
-			(!!motionTabletStatus && getDeviceType() === 'tablet') ||
-			getDeviceType() === 'desktop'
+			!!interactionStatus &&
+			((!!motionMobileStatus && getDeviceType() === 'mobile') ||
+				(!!motionTabletStatus && getDeviceType() === 'tablet') ||
+				getDeviceType() === 'desktop')
 		) {
 			Object.entries(motionData.interaction.timeline).forEach(
 				([key, value], index, array) => {

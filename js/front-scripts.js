@@ -227,27 +227,34 @@ motionElems.forEach(function (elem) {
 								return;
 						}
 					});
-
+					console.log('key ', key);
+					console.log('value ', value);
+					console.log('index ', index);
+					console.log('array ', array);
+					console.log(array[index + 1]);
 					const startTime = Number(key);
-					const endTime =
-						(!!array[index + 1] && +array[index + 1]) || 100;
+					const endTime = !!array[index + 1]
+						? Number(array[index + 1][0])
+						: null;
+					console.log(startTime, endTime);
 
-					ScrollTrigger.create({
-						trigger: document.body,
-						start: `${startTime}% ${startTime}%`,
-						end: `${endTime}% ${endTime}%`,
-						animation: gsap
-							.timeline({
-								paused: true,
-								reversed: true,
-							})
-							.to(
-								'.maxi-motion-effect-' + motionID + '',
-								actions
-							),
-						scrub: true,
-						markers: false,
-					});
+					endTime !== null &&
+						ScrollTrigger.create({
+							trigger: document.body,
+							start: `${startTime}% ${startTime}%`,
+							end: `${endTime}% ${endTime}%`,
+							animation: gsap
+								.timeline({
+									paused: true,
+									reversed: true,
+								})
+								.to(
+									'.maxi-motion-effect-' + motionID + '',
+									actions
+								),
+							scrub: true,
+							markers: false,
+						});
 				}
 			);
 		}

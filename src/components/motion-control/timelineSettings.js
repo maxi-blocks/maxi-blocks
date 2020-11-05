@@ -273,7 +273,7 @@ const TimelineSettings = props => {
 						/>
 						<RangeControl
 							label={__('Z', 'maxi-blocks')}
-							help={'px'}
+							help={'deg'}
 							value={getTimelineItemSettingValue('z')}
 							onChange={value =>
 								updateTimelineItemSettings(value, 'z')

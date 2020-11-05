@@ -117,6 +117,26 @@
 				align-items: center;
 				margin-bottom: 1px;
 
+				&--alert {
+					position: relative;
+					cursor: help;
+					&:before {
+						content: '!';
+						position: absolute;
+						top: 50%;
+						left: 5px;
+						transform: translateY(-50%);
+						width: 14px;
+						height: 14px;
+						border-radius: 50%;
+						display: -ms-flexbox;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						background-color: #fbbd08;
+						color: #fff;
+					}
+				}
 				&--active-item {
 					background-color: #ff4a16;
 					svg path {

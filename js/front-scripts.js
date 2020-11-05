@@ -227,16 +227,11 @@ motionElems.forEach(function (elem) {
 								return;
 						}
 					});
-					console.log('key ', key);
-					console.log('value ', value);
-					console.log('index ', index);
-					console.log('array ', array);
-					console.log(array[index + 1]);
+
 					const startTime = Number(key);
 					const endTime = !!array[index + 1]
 						? Number(array[index + 1][0])
 						: null;
-					console.log(startTime, endTime);
 
 					endTime !== null &&
 						ScrollTrigger.create({

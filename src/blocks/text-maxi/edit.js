@@ -27,6 +27,7 @@ import {
 	MaxiBlock,
 	__experimentalToolbar,
 	__experimentalBackgroundDisplayer,
+	__experimentalMotionPreview,
 } from '../../components';
 import {
 	__experimentalGetFormatValue,
@@ -190,6 +191,7 @@ class edit extends MaxiBlock {
 				fullWidth,
 				typography,
 				display,
+				motion,
 			},
 			node,
 			className,
@@ -223,164 +225,169 @@ class edit extends MaxiBlock {
 		return [
 			<Inspector {...this.props} />,
 			<__experimentalToolbar {...this.props} />,
-			<__experimentalBlock
-				className={classes}
-				data-maxi_initial_block_class={defaultBlockStyle}
-				data-align={fullWidth}
-			>
-				<__experimentalBackgroundDisplayer background={background} />
-				{!isList && (
-					<RichText
-						className='maxi-text-block__content'
-						value={content}
-						onChange={content => {
-							setAttributes({ content });
-
-							const formatElement = {
-								element: node,
-								html: content,
-								multilineTag: isList ? 'li' : undefined,
-								multilineWrapperTags: isList
-									? typeOfList
-									: undefined,
-								__unstableIsEditableTree: false,
-							};
-							const formatValue = __experimentalGetFormatValue(
-								formatElement
-							);
-
-							/**
-							 * As Gutenberg doesn't allow to modify pasted content, let's do some cheats
-							 * and add some coding manually
-							 * This next script will check if there is any format directly related with
-							 * native format 'core/link' and if it's so, will format it in Maxi Blocks way
-							 */
-							const cleanCustomProps = __experimentalSetCustomFormatsWhenPaste(
-								{
-									formatValue,
-									typography: JSON.parse(typography),
-									isList,
-									typeOfList,
-									content,
-								}
-							);
-
-							if (cleanCustomProps)
-								setAttributes({
-									typography: JSON.stringify(
-										cleanCustomProps.typography
-									),
-									content: cleanCustomProps.content,
-								});
-						}}
-						tagName={textLevel}
-						onSplit={onSplit}
-						onReplace={onReplace}
-						onMerge={onMerge}
-						onRemove={onRemove}
-						placeholder={__(
-							'Set your Maxi Text here…',
-							'maxi-blocks'
-						)}
-						keepPlaceholderOnFocus
-						__unstableEmbedURLOnPaste
-						__unstableAllowPrefixTransformations
-						allowedFormats={getFormatTypes().filter(format => {
-							return format.name !== 'core/link';
-						})}
+			<__experimentalMotionPreview motion={motion}>
+				<__experimentalBlock
+					className={classes}
+					data-maxi_initial_block_class={defaultBlockStyle}
+					data-align={fullWidth}
+				>
+					<__experimentalBackgroundDisplayer
+						background={background}
 					/>
-				)}
-				{isList && (
-					<RichText
-						className='maxi-text-block__content'
-						identifier='content'
-						multiline='li'
-						__unstableMultilineRootTag={typeOfList}
-						tagName={typeOfList}
-						onChange={content => setAttributes({ content })}
-						value={content}
-						placeholder={__('Write list…', 'maxi-blocks')}
-						onMerge={onMerge}
-						onSplit={value => {
-							if (!value) {
+					{!isList && (
+						<RichText
+							className='maxi-text-block__content'
+							value={content}
+							onChange={content => {
+								setAttributes({ content });
+
+								const formatElement = {
+									element: node,
+									html: content,
+									multilineTag: isList ? 'li' : undefined,
+									multilineWrapperTags: isList
+										? typeOfList
+										: undefined,
+									__unstableIsEditableTree: false,
+								};
+								const formatValue = __experimentalGetFormatValue(
+									formatElement
+								);
+
+								/**
+								 * As Gutenberg doesn't allow to modify pasted content, let's do some cheats
+								 * and add some coding manually
+								 * This next script will check if there is any format directly related with
+								 * native format 'core/link' and if it's so, will format it in Maxi Blocks way
+								 */
+								const cleanCustomProps = __experimentalSetCustomFormatsWhenPaste(
+									{
+										formatValue,
+										typography: JSON.parse(typography),
+										isList,
+										typeOfList,
+										content,
+									}
+								);
+
+								if (cleanCustomProps)
+									setAttributes({
+										typography: JSON.stringify(
+											cleanCustomProps.typography
+										),
+										content: cleanCustomProps.content,
+									});
+							}}
+							tagName={textLevel}
+							onSplit={onSplit}
+							onReplace={onReplace}
+							onMerge={onMerge}
+							onRemove={onRemove}
+							placeholder={__(
+								'Set your Maxi Text here…',
+								'maxi-blocks'
+							)}
+							keepPlaceholderOnFocus
+							__unstableEmbedURLOnPaste
+							__unstableAllowPrefixTransformations
+							allowedFormats={getFormatTypes().filter(format => {
+								return format.name !== 'core/link';
+							})}
+						/>
+					)}
+					{isList && (
+						<RichText
+							className='maxi-text-block__content'
+							identifier='content'
+							multiline='li'
+							__unstableMultilineRootTag={typeOfList}
+							tagName={typeOfList}
+							onChange={content => setAttributes({ content })}
+							value={content}
+							placeholder={__('Write list…', 'maxi-blocks')}
+							onMerge={onMerge}
+							onSplit={value => {
+								if (!value) {
+									return createBlock(name, {
+										...this.props.attributes,
+										isList: false,
+									});
+								}
+
 								return createBlock(name, {
 									...this.props.attributes,
-									isList: false,
+									content: value,
 								});
+							}}
+							__unstableOnSplitMiddle={() =>
+								createBlock('maxi-blocks/text-maxi')
 							}
-
-							return createBlock(name, {
-								...this.props.attributes,
-								content: value,
-							});
-						}}
-						__unstableOnSplitMiddle={() =>
-							createBlock('maxi-blocks/text-maxi')
-						}
-						onReplace={onReplace}
-						onRemove={onRemove}
-						start={listStart}
-						reversed={!!listReversed}
-						type={typeOfList}
-						allowedFormats={getFormatTypes().filter(format => {
-							return format.name !== 'core/link';
-						})}
-					>
-						{({ value, onChange }) =>
-							isSelected && (
-								<Fragment>
-									<RichTextShortcut
-										type='primary'
-										character='['
-										onUse={() => {
-											onChange(
-												__unstableOutdentListItems(
-													value
-												)
-											);
-										}}
-									/>
-									<RichTextShortcut
-										type='primary'
-										character=']'
-										onUse={() => {
-											onChange(
-												__unstableIndentListItems(
-													value,
-													{ type: typeOfList }
-												)
-											);
-										}}
-									/>
-									<RichTextShortcut
-										type='primary'
-										character='m'
-										onUse={() => {
-											onChange(
-												__unstableIndentListItems(
-													value,
-													{ type: typeOfList }
-												)
-											);
-										}}
-									/>
-									<RichTextShortcut
-										type='primaryShift'
-										character='m'
-										onUse={() => {
-											onChange(
-												__unstableOutdentListItems(
-													value
-												)
-											);
-										}}
-									/>
-								</Fragment>
-							)
-						}
-					</RichText>
-				)}
-			</__experimentalBlock>,
+							onReplace={onReplace}
+							onRemove={onRemove}
+							start={listStart}
+							reversed={!!listReversed}
+							type={typeOfList}
+							allowedFormats={getFormatTypes().filter(format => {
+								return format.name !== 'core/link';
+							})}
+						>
+							{({ value, onChange }) =>
+								isSelected && (
+									<Fragment>
+										<RichTextShortcut
+											type='primary'
+											character='['
+											onUse={() => {
+												onChange(
+													__unstableOutdentListItems(
+														value
+													)
+												);
+											}}
+										/>
+										<RichTextShortcut
+											type='primary'
+											character=']'
+											onUse={() => {
+												onChange(
+													__unstableIndentListItems(
+														value,
+														{ type: typeOfList }
+													)
+												);
+											}}
+										/>
+										<RichTextShortcut
+											type='primary'
+											character='m'
+											onUse={() => {
+												onChange(
+													__unstableIndentListItems(
+														value,
+														{ type: typeOfList }
+													)
+												);
+											}}
+										/>
+										<RichTextShortcut
+											type='primaryShift'
+											character='m'
+											onUse={() => {
+												onChange(
+													__unstableOutdentListItems(
+														value
+													)
+												);
+											}}
+										/>
+									</Fragment>
+								)
+							}
+						</RichText>
+					)}
+				</__experimentalBlock>
+				,
+			</__experimentalMotionPreview>,
 		];
 	}
 }

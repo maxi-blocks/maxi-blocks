@@ -102,12 +102,17 @@ const TimelineSettings = props => {
 					<RangeControl
 						label={__('Position', 'maxi-blocks')}
 						value={getTimelineItemSettingValue('effectPosition')}
-						onChange={value =>
-							updateTimelineItemPosition(
-								getTimelineItemSettingValue('effectPosition'),
-								value
-							)
-						}
+						onChange={value => {
+							const re = /^(100|[1-9]?[0-9])$/;
+							if (re.test(value)) {
+								updateTimelineItemPosition(
+									getTimelineItemSettingValue(
+										'effectPosition'
+									),
+									value
+								);
+							}
+						}}
 						min={0}
 						max={100}
 					/>
@@ -273,7 +278,7 @@ const TimelineSettings = props => {
 						/>
 						<RangeControl
 							label={__('Z', 'maxi-blocks')}
-							help={'px'}
+							help={'deg'}
 							value={getTimelineItemSettingValue('z')}
 							onChange={value =>
 								updateTimelineItemSettings(value, 'z')
@@ -428,6 +433,45 @@ const TimelineSettings = props => {
 								...interaction.transformOrigin,
 								yAxis: value,
 							};
+
+							onChange(interaction);
+						}}
+					/>
+					<hr />
+					<__experimentalFancyRadioControl
+						label={__('Tablet', 'maxi-blocks')}
+						selected={interaction.tabletStatus}
+						options={[
+							{
+								label: __('Yes', 'maxi-blocks'),
+								value: 1,
+							},
+							{
+								label: __('No', 'maxi-blocks'),
+								value: 0,
+							},
+						]}
+						onChange={value => {
+							interaction.tabletStatus = Number(value);
+
+							onChange(interaction);
+						}}
+					/>
+					<__experimentalFancyRadioControl
+						label={__('Mobile', 'maxi-blocks')}
+						selected={interaction.mobileStatus}
+						options={[
+							{
+								label: __('Yes', 'maxi-blocks'),
+								value: 1,
+							},
+							{
+								label: __('No', 'maxi-blocks'),
+								value: 0,
+							},
+						]}
+						onChange={value => {
+							interaction.mobileStatus = Number(value);
 
 							onChange(interaction);
 						}}

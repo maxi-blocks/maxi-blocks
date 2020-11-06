@@ -215,6 +215,7 @@ class edit extends MaxiBlock {
 				{...this.props}
 			/>,
 			<__experimentalBreadcrumbs />,
+
 			<RowContext.Provider
 				value={{
 					displayHandlers: this.state.displayHandlers,

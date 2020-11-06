@@ -1518,6 +1518,7 @@ export const __experimentalHover = {
 export const __experimentalMotion = {
 	label: 'Motion Effects',
 	interaction: {
+		interactionStatus: 0,
 		timeline: {},
 		activeTimeline: {
 			time: 0,
@@ -1529,6 +1530,8 @@ export const __experimentalMotion = {
 		},
 		presetStatus: 0,
 		previewStatus: 0,
+		tabletStatus: 1,
+		mobileStatus: 1,
 	},
 	entrance: {
 		type: '',

@@ -119,7 +119,12 @@ const AddTimeline = props => {
 				max={100}
 				step={1}
 				onChange={e => {
-					setTimelineTime(e.target.value);
+					const re = /^(100|[1-9]?[0-9])$/;
+					if (re.test(e.target.value)) {
+						setTimelineTime(e.target.value);
+					} else {
+						setTimelineTime(0);
+					}
 				}}
 			/>
 			<Button

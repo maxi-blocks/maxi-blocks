@@ -24,6 +24,7 @@ import {
 	MaxiBlock,
 	__experimentalToolbar,
 	__experimentalBackgroundDisplayer,
+	__experimentalMotionPreview,
 } from '../../components';
 
 /**
@@ -173,6 +174,7 @@ class edit extends MaxiBlock {
 				extraClassName,
 				content,
 				background,
+				motion,
 			},
 			clientId,
 		} = this.props;
@@ -191,45 +193,47 @@ class edit extends MaxiBlock {
 			<MaxiProvider>
 				<Inspector {...this.props} />
 				<__experimentalToolbar {...this.props} />
-				<__experimentalBlock
-					className={classes}
-					data-maxi_initial_block_class={defaultBlockStyle}
-					key={clientId}
-				>
-					<Fragment>
-						{isEmpty(content) && (
-							<Placeholder
-								key='placeholder'
-								label={__(
-									'SVG Icon Cloud Library Maxi',
-									'maxi-blocks'
-								)}
-								instructions={__(
-									'Launch the library to browse pre-designed SVGs.',
-									'maxi-blocks'
-								)}
-								className='maxi-block-library__placeholder'
-							>
-								<MaxiModal clientId={clientId} />
-							</Placeholder>
-						)}
-						{!isEmpty(content) && (
-							<Fragment>
-								<__experimentalBackgroundDisplayer
-									background={background}
-								/>
-								<SandBox
-									html={content}
-									className={classes}
-									data-maxi_initial_block_class={
-										defaultBlockStyle
-									}
-								/>
-								<div className='block-library-html__preview-overlay' />
-							</Fragment>
-						)}
-					</Fragment>
-				</__experimentalBlock>
+				<__experimentalMotionPreview motion={motion}>
+					<__experimentalBlock
+						className={classes}
+						data-maxi_initial_block_class={defaultBlockStyle}
+						key={clientId}
+					>
+						<Fragment>
+							{isEmpty(content) && (
+								<Placeholder
+									key='placeholder'
+									label={__(
+										'SVG Icon Cloud Library Maxi',
+										'maxi-blocks'
+									)}
+									instructions={__(
+										'Launch the library to browse pre-designed SVGs.',
+										'maxi-blocks'
+									)}
+									className='maxi-block-library__placeholder'
+								>
+									<MaxiModal clientId={clientId} />
+								</Placeholder>
+							)}
+							{!isEmpty(content) && (
+								<Fragment>
+									<__experimentalBackgroundDisplayer
+										background={background}
+									/>
+									<SandBox
+										html={content}
+										className={classes}
+										data-maxi_initial_block_class={
+											defaultBlockStyle
+										}
+									/>
+									<div className='block-library-html__preview-overlay' />
+								</Fragment>
+							)}
+						</Fragment>
+					</__experimentalBlock>
+				</__experimentalMotionPreview>
 			</MaxiProvider>,
 		];
 	}

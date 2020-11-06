@@ -1,14 +1,15 @@
 /**
  * WordPress dependencies
  */
-const { __ } = wp.i18n;
+const { __, sprintf } = wp.i18n;
 const { Fragment } = wp.element;
+const { Tooltip } = wp.components;
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNil, has, filter, flattenDeep } from 'lodash';
+import { isEmpty, isNil, has, filter, flattenDeep, forIn } from 'lodash';
 
 /**
  * icons
@@ -51,6 +52,23 @@ const ShowTimeline = props => {
 
 		onChange(interaction);
 	};
+
+	const typeCount = {
+		move: 0,
+		scale: 0,
+		skew: 0,
+		rotate: 0,
+		opacity: 0,
+		blur: 0,
+	};
+	forIn(flattenDeep(Object.values(interaction.timeline)), value => {
+		if (value.type === 'move') typeCount.move++;
+		if (value.type === 'scale') typeCount.scale++;
+		if (value.type === 'skew') typeCount.skew++;
+		if (value.type === 'rotate') typeCount.rotate++;
+		if (value.type === 'opacity') typeCount.opacity++;
+		if (value.type === 'blur') typeCount.blur++;
+	});
 
 	return (
 		<div className='maxi-motion-control__timeline'>
@@ -96,7 +114,26 @@ const ShowTimeline = props => {
 											onChange(interaction);
 										}}
 									>
-										<span>{item.type}</span>
+										<span>
+											{item.type}
+											{typeCount[item.type] % 2 !== 0 && (
+												<Tooltip
+													text={sprintf(
+														__(
+															'You need two "%s" effects to animate it.',
+															'maxi-blocks'
+														),
+														item.type
+															.charAt(0)
+															.toUpperCase() +
+															item.type.slice(1)
+													)}
+													position='top right'
+												>
+													<span className='maxi-motion-control__timeline__group__item--alert'></span>
+												</Tooltip>
+											)}
+										</span>
 										<div className='maxi-motion-control__timeline__group__item__actions'>
 											<i
 												onClick={e => {

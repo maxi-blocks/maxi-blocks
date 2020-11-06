@@ -102,12 +102,17 @@ const TimelineSettings = props => {
 					<RangeControl
 						label={__('Position', 'maxi-blocks')}
 						value={getTimelineItemSettingValue('effectPosition')}
-						onChange={value =>
-							updateTimelineItemPosition(
-								getTimelineItemSettingValue('effectPosition'),
-								value
-							)
-						}
+						onChange={value => {
+							const re = /^(100|[1-9]?[0-9])$/;
+							if (re.test(value)) {
+								updateTimelineItemPosition(
+									getTimelineItemSettingValue(
+										'effectPosition'
+									),
+									value
+								);
+							}
+						}}
 						min={0}
 						max={100}
 					/>

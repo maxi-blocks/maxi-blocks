@@ -96,6 +96,15 @@ const TimelinePresets = props => {
 										...getPresets()[presetLoad].preset,
 									};
 
+									interaction.activeTimeline = {
+										time: Number(
+											Object.keys(
+												getPresets()[presetLoad].preset
+											)[0]
+										),
+										index: 0,
+									};
+
 									onChange(interaction);
 									setPresetLoad('');
 								}}
@@ -146,7 +155,7 @@ const TimelinePresets = props => {
 							onClick={() => {
 								if (isEmpty(presets)) {
 									saveMaxiMotionPresets({
-										[uniqueId('preset_')]: {
+										[`pre_${new Date().getTime()}`]: {
 											name: presetName,
 											preset: {
 												...interaction.timeline,
@@ -156,7 +165,7 @@ const TimelinePresets = props => {
 								} else {
 									saveMaxiMotionPresets({
 										...getPresets(),
-										[uniqueId('preset_')]: {
+										[`pre_${new Date().getTime()}`]: {
 											name: presetName,
 											preset: {
 												...interaction.timeline,

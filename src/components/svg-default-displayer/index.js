@@ -15,6 +15,7 @@ import * as SVGShapes from '../../icons/shape-icons';
  */
 import classnames from 'classnames';
 import DOMPurify from 'dompurify';
+import { isNil } from 'lodash';
 
 /**
  * Styles
@@ -25,28 +26,35 @@ import './editor.scss';
  * Component
  */
 const SVGDefaultsDisplayer = props => {
-	const { SVGData, onChange, className } = props;
+	const { SVGOptions, SVGCurrentElement, onChange, className } = props;
 
 	const classes = classnames('maxi-svg-defaults', className);
 
 	return (
 		<div className={classes}>
-			{Object.values(SVGShapes).map(svgEl => {
+			{Object.values(SVGShapes).map((svgEl, i) => {
 				const cleanedContent = DOMPurify.sanitize(svgEl);
-
 				return (
 					<Button
-						className='maxi-svg-defaults__item'
+						className={`maxi-svg-defaults__item ${
+							SVGCurrentElement === i &&
+							'maxi-svg-defaults__item--active'
+						}
+						`}
 						onClick={() => {
 							const svg = document
 								.createRange()
 								.createContextualFragment(cleanedContent)
 								.firstElementChild;
 
-							const resData = generateDataObject(SVGData, svg);
+							const resData = generateDataObject(
+								SVGOptions.SVGData,
+								svg
+							);
 							const resEl = injectImgSVG(svg, resData);
 
 							onChange({
+								SVGCurrentElement: i,
 								SVGElement: resEl.outerHTML,
 								SVGMediaID: null,
 								SVGMediaURL: null,

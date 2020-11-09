@@ -59,3 +59,4 @@ export { default as __experimentalFontIconControl } from './font-icon-control';
 export { default as __experimentalTextControl } from './text-control';
 export { default as __experimentalFontIconPicker } from './font-icon-picker';
 export { default as __experimentalButtonPresets } from './button-presets';
+export { default as __experimentalMotionPreview } from './motion-preview';

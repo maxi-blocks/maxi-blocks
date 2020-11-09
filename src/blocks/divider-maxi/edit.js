@@ -21,6 +21,7 @@ import {
 	MaxiBlock,
 	__experimentalToolbar,
 	__experimentalBackgroundDisplayer,
+	__experimentalMotionPreview,
 } from '../../components';
 
 /**
@@ -140,6 +141,7 @@ class edit extends MaxiBlock {
 				background,
 				divider,
 				display,
+				motion,
 			},
 			className,
 			isSelected,
@@ -217,20 +219,22 @@ class edit extends MaxiBlock {
 					});
 				}}
 			>
-				<__experimentalBlock
-					className={classes}
-					data-maxi_initial_block_class={defaultBlockStyle}
-					data-align={fullWidth}
-				>
-					<__experimentalBackgroundDisplayer
-						background={background}
-					/>
-					{dividerValue.general['border-style'] !== 'none' && (
-						<Fragment>
-							<hr className='maxi-divider-block__divider' />
-						</Fragment>
-					)}
-				</__experimentalBlock>
+				<__experimentalMotionPreview motion={motion}>
+					<__experimentalBlock
+						className={classes}
+						data-maxi_initial_block_class={defaultBlockStyle}
+						data-align={fullWidth}
+					>
+						<__experimentalBackgroundDisplayer
+							background={background}
+						/>
+						{dividerValue.general['border-style'] !== 'none' && (
+							<Fragment>
+								<hr className='maxi-divider-block__divider' />
+							</Fragment>
+						)}
+					</__experimentalBlock>
+				</__experimentalMotionPreview>
 			</ResizableBox>,
 		];
 	}

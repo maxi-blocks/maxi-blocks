@@ -363,6 +363,7 @@ export const size = {
 		height: '',
 		'min-heightUnit': 'px',
 		'min-height': '',
+		advancedOptions: 0,
 	},
 	xxl: {
 		'max-widthUnit': 'px',
@@ -377,6 +378,7 @@ export const size = {
 		height: '',
 		'min-heightUnit': 'px',
 		'min-height': '',
+		advancedOptions: 0,
 	},
 	xl: {
 		'max-widthUnit': 'px',
@@ -391,6 +393,7 @@ export const size = {
 		height: '',
 		'min-heightUnit': 'px',
 		'min-height': '',
+		advancedOptions: 0,
 	},
 	l: {
 		'max-widthUnit': 'px',
@@ -405,6 +408,7 @@ export const size = {
 		height: '',
 		'min-heightUnit': 'px',
 		'min-height': '',
+		advancedOptions: 0,
 	},
 	m: {
 		'max-widthUnit': 'px',
@@ -419,6 +423,7 @@ export const size = {
 		height: '',
 		'min-heightUnit': 'px',
 		'min-height': '',
+		advancedOptions: 0,
 	},
 	s: {
 		'max-widthUnit': 'px',
@@ -433,6 +438,7 @@ export const size = {
 		height: '',
 		'min-heightUnit': 'px',
 		'min-height': '',
+		advancedOptions: 0,
 	},
 	xs: {
 		'max-widthUnit': 'px',
@@ -447,6 +453,7 @@ export const size = {
 		height: '',
 		'min-heightUnit': 'px',
 		'min-height': '',
+		advancedOptions: 0,
 	},
 };
 
@@ -525,6 +532,7 @@ export const background = {
 		},
 	},
 	SVGOptions: {
+		SVGCurrentElement: '',
 		SVGElement: '',
 		SVGData: '{}',
 		SVGMediaID: '',
@@ -1474,14 +1482,23 @@ export const __experimentalHover = {
 	paddingStatus: 0,
 	marginStatus: 0,
 	border: { ...border },
-	background: { ...background },
+	background: {
+		...background,
+		activeMedia: 'color',
+		colorOptions: {
+			...background.colorOptions,
+			activeColor: 'rgba(0,0,0, 0.6)',
+			color: 'rgba(0,0,0, 0.6)',
+		},
+	},
 	margin: { ...margin },
 	padding: { ...padding },
 	titleTypography: {
 		...typography,
 		general: {
 			...typography.general,
-			'font-size': 33,
+			'font-size': 30,
+			color: '#fff',
 		},
 	},
 	contentTypography: {
@@ -1489,309 +1506,32 @@ export const __experimentalHover = {
 		general: {
 			...typography.general,
 			'font-size': 18,
+			color: '#fff',
 		},
 	},
 	titleStatus: 0,
-	titleText: 'Hello World',
 	contentStatus: 0,
-	contentText: 'This is a new world',
+	titleText: 'Add your Hover Title here',
+	contentText: 'Add your Hover Content here',
 };
 
 export const __experimentalMotion = {
 	label: 'Motion Effects',
-	vertical: {
-		status: 0,
-		direction: 'up',
-		viewport: [0, 50, 100],
-		amounts: [0, 100, 0],
-		preset: '',
-		presets: {
-			preset_1: {
-				viewport: [45, 50, 55],
-				amounts: [0, 100, 0],
-			},
-			preset_2: {
-				viewport: [35, 50, 65],
-				amounts: [0, 150, 0],
-			},
-			preset_3: {
-				viewport: [25, 50, 85],
-				amounts: [0, 200, 0],
-			},
-			preset_4: {
-				viewport: [15, 50, 95],
-				amounts: [250, 0, 0],
-			},
-			preset_5: {
-				viewport: [0, 50, 100],
-				amounts: [300, 0, 0],
-			},
-			preset_6: {
-				viewport: [45, 50, 55],
-				amounts: [0, 100, 0],
-			},
-			preset_7: {
-				viewport: [35, 50, 65],
-				amounts: [0, 150, 0],
-			},
-			preset_8: {
-				viewport: [25, 50, 85],
-				amounts: [0, 200, 0],
-			},
-			preset_9: {
-				viewport: [15, 50, 95],
-				amounts: [250, 0, 0],
-			},
-			preset_10: {
-				viewport: [0, 50, 100],
-				amounts: [300, 0, 0],
-			},
+	interaction: {
+		interactionStatus: 0,
+		timeline: {},
+		activeTimeline: {
+			time: 0,
+			index: 0,
 		},
-	},
-	horizontal: {
-		status: 0,
-		direction: 'left',
-		viewport: [0, 50, 100],
-		amounts: [0, 100, 0],
-		preset: '',
-		presets: {
-			preset_1: {
-				viewport: [45, 50, 55],
-				amounts: [0, 100, 0],
-			},
-			preset_2: {
-				viewport: [35, 50, 65],
-				amounts: [0, 150, 0],
-			},
-			preset_3: {
-				viewport: [25, 50, 85],
-				amounts: [0, 200, 0],
-			},
-			preset_4: {
-				viewport: [15, 50, 95],
-				amounts: [300, 0, 0],
-			},
-			preset_5: {
-				viewport: [0, 50, 100],
-				amounts: [400, 0, 0],
-			},
-			preset_6: {
-				viewport: [45, 50, 55],
-				amounts: [0, 100, 0],
-			},
-			preset_7: {
-				viewport: [35, 50, 65],
-				amounts: [0, 150, 0],
-			},
-			preset_8: {
-				viewport: [25, 50, 85],
-				amounts: [0, 200, 0],
-			},
-			preset_9: {
-				viewport: [15, 50, 95],
-				amounts: [300, 0, 0],
-			},
-			preset_10: {
-				viewport: [0, 50, 100],
-				amounts: [400, 0, 0],
-			},
+		transformOrigin: {
+			xAxis: 'center',
+			yAxis: 'center',
 		},
-	},
-	rotate: {
-		status: 0,
-		direction: 'left',
-		viewport: [0, 50, 100],
-		amounts: [0, 30, 0],
-		preset: '',
-		presets: {
-			preset_1: {
-				viewport: [30, 50, 55],
-				amounts: [0, 30, 0],
-			},
-			preset_2: {
-				viewport: [35, 50, 65],
-				amounts: [0, 45, 0],
-			},
-			preset_3: {
-				viewport: [25, 50, 85],
-				amounts: [0, 60, 0],
-			},
-			preset_4: {
-				viewport: [15, 50, 95],
-				amounts: [90, 0, 0],
-			},
-			preset_5: {
-				viewport: [0, 50, 100],
-				amounts: [180, 0, 0],
-			},
-			preset_6: {
-				viewport: [45, 50, 55],
-				amounts: [0, 30, 0],
-			},
-			preset_7: {
-				viewport: [35, 50, 65],
-				amounts: [0, 45, 0],
-			},
-			preset_8: {
-				viewport: [25, 50, 85],
-				amounts: [0, 60, 0],
-			},
-			preset_9: {
-				viewport: [15, 50, 95],
-				amounts: [90, 0, 0],
-			},
-			preset_10: {
-				viewport: [0, 50, 100],
-				amounts: [180, 0, 0],
-			},
-		},
-	},
-	scale: {
-		status: 0,
-		direction: 'up',
-		viewport: [0, 50, 100],
-		amounts: ['', 0, ''],
-		preset: '',
-		presets: {
-			preset_1: {
-				viewport: [45, 50, 55],
-				amounts: ['', 0, ''],
-			},
-			preset_2: {
-				viewport: [35, 50, 65],
-				amounts: ['', 2, ''],
-			},
-			preset_3: {
-				viewport: [25, 50, 85],
-				amounts: ['', 4, ''],
-			},
-			preset_4: {
-				viewport: [15, 50, 95],
-				amounts: [6, '', ''],
-			},
-			preset_5: {
-				viewport: [0, 50, 100],
-				amounts: [8, '', ''],
-			},
-			preset_6: {
-				viewport: [45, 50, 55],
-				amounts: ['', 0, ''],
-			},
-			preset_7: {
-				viewport: [35, 50, 65],
-				amounts: ['', 2, ''],
-			},
-			preset_8: {
-				viewport: [25, 50, 85],
-				amounts: ['', 4, ''],
-			},
-			preset_9: {
-				viewport: [15, 50, 95],
-				amounts: [6, '', ''],
-			},
-			preset_10: {
-				viewport: [0, 50, 100],
-				amounts: [8, '', ''],
-			},
-		},
-	},
-	fade: {
-		status: 0,
-		direction: 'in',
-		viewport: [0, 50, 100],
-		amounts: ['', 0, ''],
-		preset: '',
-		presets: {
-			preset_1: {
-				viewport: [45, 50, 55],
-				amounts: ['', 0, ''],
-			},
-			preset_2: {
-				viewport: [35, 50, 65],
-				amounts: ['', 2, ''],
-			},
-			preset_3: {
-				viewport: [25, 50, 85],
-				amounts: ['', 4, ''],
-			},
-			preset_4: {
-				viewport: [15, 50, 95],
-				amounts: [5, '', ''],
-			},
-			preset_5: {
-				viewport: [0, 50, 100],
-				amounts: [6, '', ''],
-			},
-			preset_6: {
-				viewport: [45, 50, 55],
-				amounts: ['', 0, ''],
-			},
-			preset_7: {
-				viewport: [35, 50, 65],
-				amounts: ['', 2, ''],
-			},
-			preset_8: {
-				viewport: [25, 50, 85],
-				amounts: ['', 4, ''],
-			},
-			preset_9: {
-				viewport: [15, 50, 95],
-				amounts: [5, '', ''],
-			},
-			preset_10: {
-				viewport: [0, 50, 100],
-				amounts: [6, '', ''],
-			},
-		},
-	},
-	blur: {
-		status: 0,
-		direction: 'in',
-		viewport: [0, 50, 100],
-		amounts: ['', 2, ''],
-		preset: '',
-		presets: {
-			preset_1: {
-				viewport: [45, 50, 55],
-				amounts: ['', 1, ''],
-			},
-			preset_2: {
-				viewport: [35, 50, 65],
-				amounts: ['', 2, ''],
-			},
-			preset_3: {
-				viewport: [25, 50, 85],
-				amounts: ['', 3, ''],
-			},
-			preset_4: {
-				viewport: [15, 50, 95],
-				amounts: [4, '', ''],
-			},
-			preset_5: {
-				viewport: [0, 50, 100],
-				amounts: [8, '', ''],
-			},
-			preset_6: {
-				viewport: [45, 50, 55],
-				amounts: ['', 1, ''],
-			},
-			preset_7: {
-				viewport: [35, 50, 65],
-				amounts: ['', 2, ''],
-			},
-			preset_8: {
-				viewport: [25, 50, 85],
-				amounts: ['', 3, ''],
-			},
-			preset_9: {
-				viewport: [15, 50, 95],
-				amounts: [4, '', ''],
-			},
-			preset_10: {
-				viewport: [0, 50, 100],
-				amounts: [8, '', ''],
-			},
-		},
+		presetStatus: 0,
+		previewStatus: 0,
+		tabletStatus: 1,
+		mobileStatus: 1,
 	},
 	entrance: {
 		type: '',

@@ -3,13 +3,14 @@
  */
 const { __ } = wp.i18n;
 const { Fragment, useState } = wp.element;
-const { RangeControl, SelectControl, Icon } = wp.components;
+const { RangeControl, Icon } = wp.components;
 
 /**
  * Internal dependencies
  */
 import ColorControl from '../color-control';
 import DefaultStylesControl from '../default-styles-control';
+import __experimentalFancyRadioControl from '../fancy-radio-control';
 
 /**
  * External dependencies
@@ -160,9 +161,9 @@ const TextShadowControl = props => {
 
 	return (
 		<div className={classes}>
-			<SelectControl
+			<__experimentalFancyRadioControl
 				label={__('Text Shadow', 'maxi-blocks')}
-				value={showOptions}
+				selected={Number(showOptions)}
 				options={[
 					{ label: __('No', 'maxi-blocks'), value: 0 },
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },
@@ -175,6 +176,7 @@ const TextShadowControl = props => {
 					} else onChange(lastValue);
 				}}
 			/>
+
 			{!!showOptions && (
 				<TextShadow
 					value={lastValue}

@@ -2,82 +2,128 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { useState, Fragment } = wp.element;
-const { SelectControl, BaseControl, Button } = wp.components;
+const { useState, useEffect, Fragment } = wp.element;
+const { SelectControl, BaseControl, Button, Tooltip } = wp.components;
+
+/**
+ * Internal dependencies
+ */
+import clipPathDefaults from './defaults';
+import ClipPathVisualEditor from './visualEditor';
+import __experimentalFancyRadioControl from '../fancy-radio-control';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isArray, isEmpty, isNil, trim, uniqueId } from 'lodash';
+import { isArray, isEmpty, isNil, trim } from 'lodash';
+
+/**
+ * Styles
+ */
+import './editor.scss';
 
 /**
  * Component
  */
-const ClipPathOption = props => {
-	const { values, onChange, number } = props;
+const optionColors = [
+	'red',
+	'blue',
+	'pink',
+	'green',
+	'yellow',
+	'grey',
+	'brown',
+	'orange',
+	'black',
+	'violet',
+];
 
-	const optionColors = ['red', 'blue', 'pink', 'green', 'yellow'];
+const ClipPathOption = props => {
+	const { values, onChange, onRemove, number, type } = props;
+
+	const getLabel = () => {
+		if (type === 'circle' && number === 0)
+			return __('Radius', 'maxi-blocks');
+		if (
+			(type === 'circle' && number === 1) ||
+			(type === 'ellipse' && number === 2)
+		)
+			return __('Center', 'maxi-blocks');
+		if (type === 'ellipse' && number === 0)
+			return __('Left', 'maxi-blocks');
+		if (type === 'ellipse' && number === 1) return __('Top', 'maxi-blocks');
+
+		if (type === 'inset')
+			switch (number) {
+				case 0:
+					return __('Top', 'maxi-blocks');
+				case 1:
+					return __('Right', 'maxi-blocks');
+				case 2:
+					return __('Bottom', 'maxi-blocks');
+				case 3:
+					return __('Left', 'maxi-blocks');
+				default:
+					break;
+			}
+
+		return `${__('Point', 'maxi-blocks')} ${number + 1}`;
+	};
 
 	return (
-		<BaseControl
-			label={`${__('Point', 'maxi-blocks')} ${number + 1}`}
-			className='maxi-clip-path-control__item'
-		>
-			<div className='maxi-clip-path-control__item__options'>
-				<input
-					type='number'
-					value={trim(Number(values[0]))}
-					onChange={e => {
-						values[0] = Number(e.target.value);
-						onChange(values);
-					}}
-					min={0}
-					max={100}
-				/>
-				{!isNil(values[1]) && (
-					<input
-						type='number'
-						value={trim(Number(values[1]))}
-						onChange={e => {
-							values[1] = Number(e.target.value);
-							onChange(values);
-						}}
-						min={0}
-						max={100}
-					/>
-				)}
+		<div className='maxi-clip-path-controller'>
+			<div className='maxi-clip-path-controller__handle maxi-clip-path-color-handle'>
 				<span
-					className='maxi-clip-path-control__item__options__handle-color'
 					style={{
 						backgroundColor: optionColors[number],
 					}}
 				/>
 			</div>
-		</BaseControl>
+			<BaseControl
+				label={getLabel()}
+				className='maxi-clip-path-controller__item'
+			>
+				<div className='maxi-clip-path-controller__settings'>
+					<input
+						type='number'
+						value={trim(Number(values[0]))}
+						onChange={e => {
+							values[0] = Number(e.target.value);
+
+							onChange(values);
+						}}
+						min={0}
+						max={100}
+					/>
+					{!isNil(values[1]) && (
+						<input
+							type='number'
+							value={trim(Number(values[1]))}
+							onChange={e => {
+								values[1] = Number(e.target.value);
+
+								onChange(values);
+							}}
+							min={0}
+							max={100}
+						/>
+					)}
+				</div>
+			</BaseControl>
+			{type === 'polygon' && number > 2 && (
+				<div className='maxi-clip-path-controller__handle maxi-clip-path-delete-handle'>
+					<span onClick={() => onRemove(number)} />
+				</div>
+			)}
+		</div>
 	);
 };
 
 const ClipPathControl = props => {
 	const { clipPath, className, onChange } = props;
 
-	const defaultCP = {
-		triangle: 'polygon(50% 0%, 0% 100%, 100% 100%)',
-		trapezoid: 'polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)',
-		circle: 'circle(50% at 50% 50%)',
-		frame:
-			'polygon(0% 0%, 0% 100%, 25% 100%, 25% 25%, 75% 25%, 75% 75%, 25% 75%, 25% 100%, 100% 100%, 100% 0%)',
-	};
-
-	const [hasClipPath, changeHasClipPath] = useState(
-		isEmpty(clipPath) ? 0 : 1
-	);
-
-	const [selectedCP, changeSelectedCP] = useState(() => {
-		if (Object.values(defaultCP).includes(clipPath)) return clipPath;
-		if (!isEmpty(clipPath)) return 'custom';
-		return '';
-	});
+	const classes = classnames('maxi-clip-path-control', className);
 
 	const deconstructCP = () => {
 		if (isEmpty(clipPath))
@@ -98,7 +144,7 @@ const ClipPathControl = props => {
 					.replace(')', '');
 
 				cpContent.split(', ').forEach(value => {
-					const newItem = value.replace(/%/g, '').split(' ');
+					const newItem = value.trim().replace(/%/g, '').split(' ');
 					newItem.forEach((item, i) => {
 						newItem[i] = Number(item);
 					});
@@ -106,7 +152,43 @@ const ClipPathControl = props => {
 				});
 				break;
 			case 'circle':
+				cpContent = clipPath
+					.replace(cpType, '')
+					.replace('(', '')
+					.replace(')', '');
+
+				cpContent.split('at ').forEach(value => {
+					const newItem = value.trim().replace(/%/g, '').split(' ');
+					newItem.forEach((item, i) => {
+						if (!isEmpty(item)) newItem[i] = Number(item);
+						else {
+							delete newItem[i];
+							newItem.length -= 1;
+						}
+					});
+					cpValues.push(newItem);
+				});
+				break;
 			case 'ellipse':
+				cpContent = clipPath
+					.replace(cpType, '')
+					.replace('(', '')
+					.replace(')', '');
+
+				cpContent.split('at ').forEach((value, i) => {
+					const newItem = value.trim().replace(/%/g, '').split(' ');
+					newItem.forEach((item, j) => {
+						if (i === 0) {
+							cpValues.push([Number(item)]);
+						} else if (!isEmpty(item)) newItem[j] = Number(item);
+						else {
+							delete newItem[j];
+							newItem.length -= 1;
+						}
+					});
+					if (i !== 0) cpValues.push(newItem);
+				});
+				break;
 			case 'inset':
 				cpContent = clipPath
 					.replace(cpType, '')
@@ -115,7 +197,7 @@ const ClipPathControl = props => {
 					.replace('at ', '');
 
 				cpContent.split(' ').forEach(value => {
-					cpValues.push([Number(value.replace(/%/g, ''))]);
+					cpValues.push([Number(value.trim().replace(/%/g, ''))]);
 				});
 				break;
 			default:
@@ -124,123 +206,151 @@ const ClipPathControl = props => {
 
 		return {
 			type: cpType,
-			content: cpValues,
+			content: { ...cpValues },
 		};
 	};
 
-	const cp = deconstructCP();
+	const [customMode, setCustomMode] = useState('visual');
 
-	const generateCP = (type = cp.type) => {
+	const [clipPathOptions, changeClipPathOptions] = useState(deconstructCP());
+
+	const [hasClipPath, changeHasClipPath] = useState(
+		isEmpty(clipPath) ? 0 : 1
+	);
+	const [isCustom, changeIsCustom] = useState(
+		Object.values(clipPathDefaults).includes(clipPath) || isEmpty(clipPath)
+			? 0
+			: 1
+	);
+
+	useEffect(() => {
+		if (JSON.stringify(clipPathOptions) !== JSON.stringify(deconstructCP()))
+			changeClipPathOptions(deconstructCP());
+	}, [clipPathOptions, deconstructCP]);
+
+	const generateCP = clipPath => {
+		const { type, content } = clipPath;
+		const arrayContent = Object.values(content);
+
 		let newContent = '';
 
 		switch (type) {
 			case 'polygon':
-				newContent = cp.content.reduce((a, b) => {
+				newContent = arrayContent.reduce((a, b) => {
 					if (isArray(a))
 						return `${a[0]}% ${a[1]}%, ${b[0]}% ${b[1]}%`;
 					return `${a}, ${b[0]}% ${b[1]}%`;
 				});
 				break;
 			case 'circle':
-				newContent = `${cp.content[0]}% at ${cp.content[1]}% ${cp.content[2]}%`;
+				newContent = `${arrayContent[0][0]}% at ${arrayContent[1][0]}% ${arrayContent[1][1]}%`;
 				break;
 			case 'ellipse':
-				newContent = `${cp.content[0]}% ${cp.content[1]}% at ${cp.content[2]}% ${cp.content[3]}%`;
+				newContent = `${arrayContent[0][0]}% ${arrayContent[1][0]}% at ${arrayContent[2][0]}% ${arrayContent[2][1]}%`;
 				break;
 			case 'inset':
-				newContent = `${cp.content[0]}% ${cp.content[1]}% ${cp.content[2]}% ${cp.content[3]}%`;
+				newContent = `${arrayContent[0][0]}% ${arrayContent[1][0]}% ${arrayContent[2][0]}% ${arrayContent[3][0]}%`;
 				break;
 			default:
-				return false;
+				break;
 		}
-		const newCP = `${cp.type}(${newContent})`;
+		const newCP = `${type}(${newContent})`;
 
 		onChange(newCP);
-
-		return true;
 	};
 
 	const onChangeType = newType => {
+		const newCP = clipPathOptions;
+
 		switch (newType) {
 			case 'polygon':
-				cp.content = [
-					[0, 0],
-					[100, 0],
-					[100, 100],
-					[0, 100],
-				];
-				generateCP(newType);
+				newCP.type = 'polygon';
+				newCP.content = {
+					0: [0, 0],
+					1: [100, 0],
+					2: [100, 100],
+					3: [0, 100],
+				};
 				break;
 			case 'circle':
-				cp.content = [[50], [50], [50]];
-				generateCP(newType);
+				newCP.type = 'circle';
+				newCP.content = { 0: [50], 1: [50, 50] };
 				break;
 			case 'ellipse':
-				cp.content = [[50], [50], [50], [50]];
-				generateCP(newType);
+				newCP.type = 'ellipse';
+				newCP.content = { 0: [25], 1: [50], 2: [50, 50] };
 				break;
 			case 'inset':
-				cp.content = [[15], [5], [15], [5]];
-				generateCP(newType);
+				newCP.type = 'inset';
+				newCP.content = { 0: [15], 1: [5], 2: [15], 3: [5] };
 				break;
 			default:
-				return false;
+				break;
 		}
 
-		return false;
+		changeClipPathOptions(newCP);
+		generateCP(newCP);
 	};
-
-	const classes = classnames('maxi-clip-path-control', className);
 
 	return (
 		<div className={classes}>
-			<SelectControl
+			<__experimentalFancyRadioControl
 				label={__('Use Clip-path', 'maxi-blocks')}
-				value={hasClipPath}
+				selected={hasClipPath}
 				options={[
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },
 					{ label: __('No', 'maxi-blocks'), value: 0 },
 				]}
-				onChange={value => changeHasClipPath(Number(value))}
+				onChange={value => {
+					onChange('');
+					changeHasClipPath(Number(value));
+				}}
 			/>
 			{!!hasClipPath && (
 				<Fragment>
-					<SelectControl
-						label={__('Clip path', 'maxi-blocks')}
-						value={selectedCP}
+					<__experimentalFancyRadioControl
+						label={__('Use Custom', 'maxi-blocks')}
+						selected={isCustom}
 						options={[
-							{ label: __('None', 'maxi-blocks'), value: '' },
-							{
-								label: __('Triangle', 'maxi-blocks'),
-								value: defaultCP.triangle,
-							},
-							{
-								label: __('Trapezoid', 'maxi-blocks'),
-								value: defaultCP.trapezoid,
-							},
-							{
-								label: __('Circle', 'maxi-blocks'),
-								value: defaultCP.circle,
-							},
-							{
-								label: __('Frame', 'maxi-blocks'),
-								value: defaultCP.frame,
-							},
-							{
-								label: __('Custom', 'maxi-blocks'),
-								value: 'custom',
-							},
+							{ label: __('Yes', 'maxi-blocks'), value: 1 },
+							{ label: __('No', 'maxi-blocks'), value: 0 },
 						]}
-						onChange={value => {
-							changeSelectedCP(value);
-							if (value !== 'custom') onChange(value);
-						}}
+						onChange={value => changeIsCustom(Number(value))}
 					/>
-					{selectedCP === 'custom' && (
+					{!isCustom && (
+						<div className='clip-path-defaults'>
+							{Object.entries(clipPathDefaults).map(
+								([name, newClipPath]) => (
+									<Tooltip
+										text={name}
+										position='bottom center'
+									>
+										<Button
+											aria-pressed={
+												newClipPath === clipPath
+											}
+											className='clip-path-defaults__items'
+											onClick={() =>
+												onChange(newClipPath)
+											}
+										>
+											<span
+												className='clip-path-defaults__clip-path'
+												style={{
+													clipPath: newClipPath,
+												}}
+											/>
+										</Button>
+									</Tooltip>
+								)
+							)}
+						</div>
+					)}
+					{!!isCustom && (
 						<div className='maxi-clip-path-control__handles'>
 							<SelectControl
 								label={__('Type', 'maxi-blocks')}
-								value={cp.type}
+								value={clipPathOptions.type}
 								options={[
 									{
 										label: __('Polygon', 'maxi-blocks'),
@@ -259,33 +369,79 @@ const ClipPathControl = props => {
 										value: 'inset',
 									},
 								]}
-								onChange={value => {
-									cp.type = value;
-									onChangeType(value);
-									generateCP();
-								}}
+								onChange={value => onChangeType(value)}
 							/>
-							{cp.content.map((handle, i) => (
-								<ClipPathOption
-									key={uniqueId('maxi-clip-path-control-')}
-									values={handle}
-									onChange={value => {
-										cp.content[i] = value;
-										generateCP();
-									}}
-									number={i}
+							<__experimentalFancyRadioControl
+								label=''
+								fullWidthMode
+								selected={customMode}
+								onChange={item => setCustomMode(item)}
+								options={[
+									{
+										label: __('Visual', 'maxi-blocks'),
+										value: 'visual',
+									},
+									{
+										label: __('Edit Points', 'maxi-blocks'),
+										value: 'data',
+									},
+								]}
+							/>
+							{customMode === 'visual' && (
+								<ClipPathVisualEditor
+									clipPathOptions={clipPathOptions}
+									clipPath={clipPath}
+									colors={optionColors}
+									onChange={clipPathOptions =>
+										generateCP(clipPathOptions)
+									}
 								/>
-							))}
-							{cp.type === 'polygon' && cp.content.length < 10 && (
-								<Button
-									className='maxi-clip-path-control__handles'
-									onClick={() => {
-										cp.content.push([0, 0]);
-										generateCP();
-									}}
-								>
-									Add new point
-								</Button>
+							)}
+							{customMode === 'data' && (
+								<Fragment>
+									{Object.entries(
+										clipPathOptions.content
+									).map(([key, handle]) => {
+										const i = Number(key);
+
+										return (
+											<ClipPathOption
+												key={`maxi-clip-path-control-${i}`}
+												values={handle}
+												onChange={value => {
+													clipPathOptions.content[
+														i
+													] = value;
+													generateCP(clipPathOptions);
+												}}
+												onRemove={number => {
+													delete clipPathOptions
+														.content[number];
+													generateCP(clipPathOptions);
+												}}
+												number={i}
+												type={clipPathOptions.type}
+											/>
+										);
+									})}
+									{clipPathOptions.type === 'polygon' &&
+										clipPathOptions.content.length < 10 && (
+											<Button
+												className='maxi-clip-path-control__handles'
+												onClick={() => {
+													clipPathOptions.content.push(
+														[0, 0]
+													);
+													generateCP(clipPathOptions);
+												}}
+											>
+												{__(
+													'Add new point',
+													'maxi-blocks'
+												)}
+											</Button>
+										)}
+								</Fragment>
 							)}
 						</div>
 					)}

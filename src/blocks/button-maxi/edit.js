@@ -19,7 +19,11 @@ import {
 	getLastBreakpointValue,
 	getIconObject,
 } from '../../utils';
-import { MaxiBlock, __experimentalToolbar } from '../../components';
+import {
+	MaxiBlock,
+	__experimentalToolbar,
+	__experimentalMotionPreview,
+} from '../../components';
 import { __experimentalGetFormatValue } from '../../extensions/text/formats';
 
 /**
@@ -169,6 +173,7 @@ class edit extends MaxiBlock {
 				content,
 				display,
 				icon,
+				motion,
 			},
 			setAttributes,
 			deviceType,
@@ -200,21 +205,23 @@ class edit extends MaxiBlock {
 		return [
 			<Inspector {...this.props} />,
 			<__experimentalToolbar {...this.props} />,
-			<__experimentalBlock
-				className={classes}
-				data-maxi_initial_block_class={defaultBlockStyle}
-			>
-				<div className={buttonClasses}>
-					{iconValue.icon && <i className={iconValue.icon} />}
-					<RichText
-						withoutInteractiveFormatting
-						placeholder={__('Set some text…', 'maxi-blocks')}
-						value={content}
-						onChange={content => setAttributes({ content })}
-						identifier='text'
-					/>
-				</div>
-			</__experimentalBlock>,
+			<__experimentalMotionPreview motion={motion}>
+				<__experimentalBlock
+					className={classes}
+					data-maxi_initial_block_class={defaultBlockStyle}
+				>
+					<div className={buttonClasses}>
+						{iconValue.icon && <i className={iconValue.icon} />}
+						<RichText
+							withoutInteractiveFormatting
+							placeholder={__('Set some text…', 'maxi-blocks')}
+							value={content}
+							onChange={content => setAttributes({ content })}
+							identifier='text'
+						/>
+					</div>
+				</__experimentalBlock>
+			</__experimentalMotionPreview>,
 		];
 	}
 }

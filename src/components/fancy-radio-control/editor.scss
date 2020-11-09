@@ -1,9 +1,23 @@
-.maxi-fancy-radio-control {
+.maxi-sidebar .maxi-fancy-radio-control {
 	display: inline-flex;
 	justify-content: space-between;
 	align-items: center;
 	width: 100%;
 	margin-bottom: 10px;
+
+	&--full-width {
+		.components-base-control {
+			&__field {
+				flex-wrap: wrap;
+			}
+			&__label {
+				margin: 0 0 5px 0 !important;
+				width: 100%;
+				display: block;
+				flex: auto !important;
+			}
+		}
+	}
 
 	.maxi-display-control {
 		width: 100%;
@@ -12,7 +26,7 @@
 		width: 100%;
 
 		.components-base-control__label {
-			flex: 5 !important;
+			flex: 2 !important;
 		}
 		&__option {
 			opacity: 1 !important;

@@ -32,6 +32,7 @@ const EXCLUDED_BLOCKS = [
 	'maxi-blocks/divider-maxi',
 	'maxi-blocks/column-maxi',
 	'maxi-blocks/svg-icon-maxi',
+	'maxi-blocks/font-icon-maxi',
 ];
 
 /**
@@ -92,8 +93,8 @@ const Size = props => {
 							value[breakpoint].widthUnit = val;
 							onChangeSize(JSON.stringify(value));
 						}}
-						defaultValue={defaultSize[breakpoint]['width']}
-						defaultUnit={defaultSize[breakpoint]['widthUnit']}
+						defaultValue={defaultSize[breakpoint].width}
+						defaultUnit={defaultSize[breakpoint].widthUnit}
 						value={getLastBreakpointValue(
 							value,
 							'width',

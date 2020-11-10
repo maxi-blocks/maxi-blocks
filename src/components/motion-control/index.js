@@ -2,11 +2,12 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
+const { Fragment } = wp.element;
 
 /**
  * Internal dependencies
  */
-import { __experimentalFancyRadioControl } from '../../components';
+import __experimentalFancyRadioControl from '../fancy-radio-control';
 import AddTimeline from './addTimeline';
 import ShowTimeline from './showTimeline';
 import TimelineSettings from './timelineSettings';
@@ -22,7 +23,6 @@ import { isObject } from 'lodash';
  * Styles and icons
  */
 import './editor.scss';
-import { Fragment } from 'react';
 
 /**
  * Component

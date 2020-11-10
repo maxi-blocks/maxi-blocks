@@ -10,7 +10,7 @@ const { useSelect, useDispatch } = wp.data;
 /**
  * Internal dependencies
  */
-import { __experimentalFancyRadioControl } from '../../components';
+import __experimentalFancyRadioControl from '../fancy-radio-control';
 
 /**
  * External dependencies

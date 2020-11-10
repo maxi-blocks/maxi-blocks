@@ -28,9 +28,12 @@ const save = props => {
 			content,
 			extraClassName,
 			motion,
+			icon,
 		},
 		className,
 	} = props;
+
+	const iconValue = !isObject(icon) ? JSON.parse(icon) : icon;
 
 	const classes = classnames(
 		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
@@ -51,6 +54,13 @@ const save = props => {
 		target: linkOpt.opensInNewTab ? '_blank' : '_self',
 	};
 
+	const buttonClasses = classnames(
+		'maxi-button-extra__button',
+		iconValue.position === 'left'
+			? 'maxi-button-extra__button--icon-left'
+			: 'maxi-button-extra__button--icon-right'
+	);
+
 	return (
 		<div
 			className={classes}
@@ -59,7 +69,8 @@ const save = props => {
 			data-motion-id={uniqueID}
 		>
 			<__experimentalBackgroundDisplayer background={background} />
-			<Button className='maxi-button-extra__button' {...linkProps}>
+			<Button className={buttonClasses} {...linkProps}>
+				{iconValue.icon && <i className={iconValue.icon} />}
 				{content}
 			</Button>
 		</div>

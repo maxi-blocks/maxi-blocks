@@ -17,6 +17,7 @@ import {
 	getAlignmentTextObject,
 	setTextCustomFormats,
 	getLastBreakpointValue,
+	getIconObject,
 } from '../../utils';
 import {
 	MaxiBlock,
@@ -44,6 +45,9 @@ class edit extends MaxiBlock {
 				.getNormalObject,
 			[`${this.props.attributes.uniqueID} .maxi-button-extra__button:hover`]: this
 				.getHoverObject,
+
+			[`${this.props.attributes.uniqueID} .maxi-button-extra__button i`]: this
+				.getIconObject,
 		};
 
 		response = Object.assign(
@@ -57,6 +61,28 @@ class edit extends MaxiBlock {
 				typographyHover
 			)
 		);
+
+		return response;
+	}
+
+	get getIconObject() {
+		const {
+			icon,
+			iconPadding,
+			iconBorder,
+			iconBackground,
+		} = this.props.attributes;
+
+		const response = {
+			icon: { ...getIconObject(JSON.parse(icon)) },
+			padding: { ...JSON.parse(iconPadding) },
+			border: { ...JSON.parse(iconBorder) },
+			borderWidth: { ...JSON.parse(iconBorder).borderWidth },
+			borderRadius: { ...JSON.parse(iconBorder).borderRadius },
+			background: {
+				...getColorBackgroundObject(JSON.parse(iconBackground)),
+			},
+		};
 
 		return response;
 	}
@@ -146,6 +172,7 @@ class edit extends MaxiBlock {
 				extraClassName,
 				content,
 				display,
+				icon,
 				motion,
 			},
 			setAttributes,
@@ -153,6 +180,8 @@ class edit extends MaxiBlock {
 		} = this.props;
 
 		const displayValue = !isObject(display) ? JSON.parse(display) : display;
+
+		const iconValue = !isObject(icon) ? JSON.parse(icon) : icon;
 
 		const classes = classnames(
 			'maxi-block',
@@ -166,6 +195,13 @@ class edit extends MaxiBlock {
 			className
 		);
 
+		const buttonClasses = classnames(
+			'maxi-button-extra__button',
+			iconValue.position === 'left'
+				? 'maxi-button-extra__button--icon-left'
+				: 'maxi-button-extra__button--icon-right'
+		);
+
 		return [
 			<Inspector {...this.props} />,
 			<__experimentalToolbar {...this.props} />,
@@ -174,14 +210,16 @@ class edit extends MaxiBlock {
 					className={classes}
 					data-maxi_initial_block_class={defaultBlockStyle}
 				>
-					<RichText
-						className='maxi-button-extra__button'
-						withoutInteractiveFormatting
-						placeholder={__('Set some text…', 'maxi-blocks')}
-						value={content}
-						onChange={content => setAttributes({ content })}
-						identifier='text'
-					/>
+					<div className={buttonClasses}>
+						{iconValue.icon && <i className={iconValue.icon} />}
+						<RichText
+							withoutInteractiveFormatting
+							placeholder={__('Set some text…', 'maxi-blocks')}
+							value={content}
+							onChange={content => setAttributes({ content })}
+							identifier='text'
+						/>
+					</div>
 				</__experimentalBlock>
 			</__experimentalMotionPreview>,
 		];

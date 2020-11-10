@@ -55,5 +55,7 @@ export { default as __experimentalColumnPattern } from './column-pattern';
 export { default as __experimentalImageAltControl } from './image-alt-control';
 export { default as __experimentalArrowDisplayer } from './arrow-displayer';
 export { default as __experimentalFancyRadioControl } from './fancy-radio-control';
+export { default as __experimentalFontIconControl } from './font-icon-control';
 export { default as __experimentalTextControl } from './text-control';
+export { default as __experimentalFontIconPicker } from './font-icon-picker';
 export { default as __experimentalMotionPreview } from './motion-preview';

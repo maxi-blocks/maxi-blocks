@@ -147,7 +147,6 @@ class edit extends MaxiBlock {
 		const response = {
 			typography: { ...JSON.parse(typography) },
 		};
-
 		return response;
 	}
 

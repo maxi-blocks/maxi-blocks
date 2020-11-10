@@ -491,3 +491,52 @@ export const alignmentText = {
 		alignment: '',
 	},
 };
+
+export const icon = {
+	label: 'icon',
+	icon: '',
+	position: 'left',
+	customPadding: '0',
+	general: {
+		color: '',
+		'font-sizeUnit': 'px',
+		'font-size': '',
+		spacing: '',
+	},
+	xxl: {
+		color: '',
+		'font-sizeUnit': '',
+		'font-size': '',
+		spacing: '',
+	},
+	xl: {
+		color: '',
+		'font-sizeUnit': '',
+		'font-size': '',
+		spacing: '',
+	},
+	l: {
+		color: '',
+		'font-sizeUnit': '',
+		'font-size': '',
+		spacing: '',
+	},
+	m: {
+		color: '',
+		'font-sizeUnit': '',
+		'font-size': '',
+		spacing: '',
+	},
+	s: {
+		color: '',
+		'font-sizeUnit': '',
+		'font-size': '',
+		spacing: '',
+	},
+	xs: {
+		color: '',
+		'font-sizeUnit': '',
+		'font-size': '',
+		spacing: '',
+	},
+};

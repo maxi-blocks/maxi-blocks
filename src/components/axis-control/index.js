@@ -114,7 +114,8 @@ const AxisControl = props => {
 		return inputValue;
 	};
 
-	let currentUnit = getLastBreakpointValue(value, 'unit', breakpoint) || 'px';
+	const currentUnit =
+		getLastBreakpointValue(value, 'unit', breakpoint) || 'px';
 
 	const onChangeValue = (newValue, target) => {
 		const finalValue = newValue;

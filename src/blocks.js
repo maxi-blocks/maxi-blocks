@@ -27,6 +27,8 @@ import './blocks/image-maxi/image-maxi';
 import './blocks/button-maxi/button-maxi';
 import './blocks/cloud-maxi/cloud-maxi';
 import './blocks/container-maxi/container-maxi';
+import './blocks/font-icon-maxi/font-icon-maxi';
+
 // import './blocks/icon-maxi/icon-maxi';
 import './blocks/svg-icon-maxi/svg-icon-maxi';
 

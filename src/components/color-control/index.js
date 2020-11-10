@@ -47,7 +47,8 @@ const ColorControl = props => {
 	const onReset = () => {
 		onChange(defaultColor);
 		setColorAlpha(100);
-		if (!isEmpty(color)) onChange(returnColor(getRGB(color), 1));
+		if (!isEmpty(defaultColor))
+			onChange(returnColor(getRGB(defaultColor), 1));
 	};
 
 	useEffect(() => {

@@ -125,7 +125,6 @@ class edit extends MaxiBlock {
 		} = this.props;
 
 		const displayValue = !isObject(display) ? JSON.parse(display) : display;
-
 		const iconValue = !isObject(icon) ? JSON.parse(icon) : icon;
 
 		const classes = classnames(
@@ -144,11 +143,11 @@ class edit extends MaxiBlock {
 			<__experimentalToolbar {...this.props} />,
 			<__experimentalBlock className={classes}>
 				<__experimentalBackgroundDisplayer background={background} />
-				{iconValue.icon ? (
+				{(!!iconValue.icon && (
 					<span className='maxi-font-icon-block__icon'>
 						<i className={iconValue.icon} />
 					</span>
-				) : (
+				)) || (
 					<__experimentalFontIconPicker
 						onChange={icon => {
 							iconValue.icon = icon;

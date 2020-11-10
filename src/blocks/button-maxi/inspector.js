@@ -16,6 +16,7 @@ import {
 	BorderControl,
 	BlockStylesControl,
 	BoxShadowControl,
+	DefaultStylesControl,
 	FullSizeControl,
 	SettingTabsControl,
 	TypographyControl,
@@ -29,15 +30,27 @@ import {
 	__experimentalEntranceAnimationControl,
 	__experimentalFancyRadioControl,
 	__experimentalFontIconControl,
-	__experimentalButtonPresets,
 } from '../../components';
 import { getDefaultProp } from '../../utils';
 import defaultAttributes from './default-attributes';
+import * as defaultPresets from './defaults';
 
 /**
  * External dependencies
  */
-import { isObject } from 'lodash';
+import { isObject, merge } from 'lodash';
+
+/**
+ * Icons
+ */
+import {
+	PresetOne,
+	PresetTwo,
+	PresetThree,
+	PresetFour,
+	PresetFive,
+	PresetSix,
+} from '../../icons';
 
 /**
  * Inspector
@@ -83,6 +96,49 @@ const Inspector = props => {
 	const backgroundHoverValue = !isObject(backgroundHover)
 		? JSON.parse(backgroundHover)
 		: backgroundHover;
+	const borderValue = !isObject(border) ? JSON.parse(border) : border;
+	const backgroundValue = !isObject(background)
+		? JSON.parse(background)
+		: background;
+	const paddingValue = !isObject(padding) ? JSON.parse(padding) : padding;
+	const typographyValue = !isObject(typography)
+		? JSON.parse(typography)
+		: typography;
+	const boxShadowValue = !isObject(boxShadow)
+		? JSON.parse(boxShadow)
+		: boxShadow;
+	const iconValue = !isObject(icon) ? JSON.parse(icon) : icon;
+	const iconBorderValue = !isObject(iconBorder)
+		? JSON.parse(iconBorder)
+		: iconBorder;
+	const iconBackgroundValue = !isObject(iconBackground)
+		? JSON.parse(iconBackground)
+		: iconBackground;
+	const iconPaddingValue = !isObject(iconPadding)
+		? JSON.parse(iconPadding)
+		: iconPadding;
+
+	const test = number => {
+		const response = {
+			border: borderValue,
+			background: backgroundValue,
+			padding: paddingValue,
+			typography: typographyValue,
+			boxShadow: boxShadowValue,
+			icon: iconValue,
+			iconBorder: iconBorderValue,
+			iconBackground: iconBackgroundValue,
+			iconPadding: iconPaddingValue,
+		};
+
+		const result = merge(response, defaultPresets[`preset${number}`]);
+
+		Object.entries(result).forEach(([key, value]) => {
+			result[key] = JSON.stringify(value);
+		});
+
+		setAttributes(result);
+	};
 
 	return (
 		<InspectorControls>
@@ -112,20 +168,70 @@ const Inspector = props => {
 										deviceType === 'general' && {
 											label: __('Style', 'maxi-blocks'),
 											content: (
-												<__experimentalButtonPresets
-													buttonAttributes={
-														props.attributes
-													}
-													onChange={attributes => {
-														setAttributes(
-															attributes
-														);
-													}}
-													resetBlockAttributes={() =>
-														setAttributes(
-															defaultAttributes
-														)
-													}
+												<DefaultStylesControl
+													className='maxi-button-default-styles'
+													items={[
+														{
+															activeItem: false,
+															className:
+																'maxi-button-presets__icon',
+															content: (
+																<PresetOne />
+															),
+															onChange: () =>
+																test(1),
+														},
+														{
+															activeItem: false,
+															className:
+																'maxi-button-presets__icon',
+															content: (
+																<PresetTwo />
+															),
+															onChange: () =>
+																test(2),
+														},
+														{
+															activeItem: false,
+															className:
+																'maxi-button-presets__icon',
+															content: (
+																<PresetThree />
+															),
+															onChange: () =>
+																test(3),
+														},
+														{
+															activeItem: false,
+															className:
+																'maxi-button-presets__icon',
+															content: (
+																<PresetFour />
+															),
+															onChange: () =>
+																test(4),
+														},
+														{
+															activeItem: false,
+															className:
+																'maxi-button-presets__icon',
+															content: (
+																<PresetFive />
+															),
+															onChange: () =>
+																test(5),
+														},
+														{
+															activeItem: false,
+															className:
+																'maxi-button-presets__icon',
+															content: (
+																<PresetSix />
+															),
+															onChange: () =>
+																test(6),
+														},
+													]}
 												/>
 											),
 										},

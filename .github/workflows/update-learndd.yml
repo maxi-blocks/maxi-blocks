@@ -19,6 +19,8 @@ jobs:
               run: npm install
             - name: Build
               run: npm run build
+            - name: reset package-lock.json
+              run: git checkout package-lock.json
             - name: FTP-Deploy-Action
               uses: SamKirkland/FTP-Deploy-Action@3.1.1
               with:

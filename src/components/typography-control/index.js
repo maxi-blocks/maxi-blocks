@@ -204,7 +204,9 @@ const TypographyControl = props => {
 					alignment={typographyValue.textAlign}
 					onChange={val => {
 						typographyValue.textAlign = JSON.parse(val);
-						onChange(JSON.stringify(typographyValue));
+						onChange({
+							typography: JSON.stringify(typographyValue),
+						});
 					}}
 				/>
 			)}

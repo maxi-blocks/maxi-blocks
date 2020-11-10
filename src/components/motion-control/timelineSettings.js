@@ -8,7 +8,7 @@ const { RangeControl, SelectControl } = wp.components;
 /**
  * Internal dependencies
  */
-import { __experimentalFancyRadioControl } from '../../components';
+import __experimentalFancyRadioControl from '../fancy-radio-control';
 
 /**
  * External dependencies
@@ -258,7 +258,7 @@ const TimelineSettings = props => {
 					<Fragment>
 						<RangeControl
 							label={__('X', 'maxi-blocks')}
-							help={'deg'}
+							help='deg'
 							value={getTimelineItemSettingValue('x')}
 							onChange={value =>
 								updateTimelineItemSettings(value, 'x')
@@ -268,7 +268,7 @@ const TimelineSettings = props => {
 						/>
 						<RangeControl
 							label={__('Y', 'maxi-blocks')}
-							help={'deg'}
+							help='deg'
 							value={getTimelineItemSettingValue('y')}
 							onChange={value =>
 								updateTimelineItemSettings(value, 'y')
@@ -278,7 +278,7 @@ const TimelineSettings = props => {
 						/>
 						<RangeControl
 							label={__('Z', 'maxi-blocks')}
-							help={'deg'}
+							help='deg'
 							value={getTimelineItemSettingValue('z')}
 							onChange={value =>
 								updateTimelineItemSettings(value, 'z')
@@ -293,7 +293,7 @@ const TimelineSettings = props => {
 					<Fragment>
 						<RangeControl
 							label={__('X', 'maxi-blocks')}
-							help={'deg'}
+							help='deg'
 							value={getTimelineItemSettingValue('x')}
 							onChange={value =>
 								updateTimelineItemSettings(value, 'x')
@@ -303,7 +303,7 @@ const TimelineSettings = props => {
 						/>
 						<RangeControl
 							label={__('Y', 'maxi-blocks')}
-							help={'deg'}
+							help='deg'
 							value={getTimelineItemSettingValue('y')}
 							onChange={value =>
 								updateTimelineItemSettings(value, 'y')
@@ -353,7 +353,7 @@ const TimelineSettings = props => {
 					<Fragment>
 						<RangeControl
 							label={__('Opacity', 'maxi-blocks')}
-							help={'%'}
+							help='%'
 							value={getTimelineItemSettingValue('opacity')}
 							onChange={value =>
 								updateTimelineItemSettings(value, 'opacity')
@@ -370,7 +370,7 @@ const TimelineSettings = props => {
 					<Fragment>
 						<RangeControl
 							label={__('Blur', 'maxi-blocks')}
-							help={'px'}
+							help='px'
 							value={getTimelineItemSettingValue('blur')}
 							onChange={value =>
 								updateTimelineItemSettings(value, 'blur')

@@ -843,3 +843,41 @@ export const setArrowStyles = (
 		},
 	};
 };
+
+export const getIconObject = icon => {
+	const response = {
+		label: icon.label,
+		general: {},
+		xxl: {},
+		xl: {},
+		l: {},
+		m: {},
+		s: {},
+		xs: {},
+	};
+
+	Object.entries(icon).forEach(([key, value]) => {
+		if (['label', 'position', 'icon', 'customPadding'].includes(key))
+			return;
+
+		if (value['font-size']) {
+			response[key]['font-size'] =
+				value['font-size'] + value['font-sizeUnit'];
+		}
+
+		if (value.color) {
+			response[key].color = value.color;
+		}
+
+		if (value.spacing) {
+			if (icon.position === 'left') {
+				response[key]['margin-right'] = `${value.spacing}px`;
+			}
+
+			if (icon.position === 'right') {
+				response[key]['margin-left'] = `${value.spacing}px`;
+			}
+		}
+	});
+	return response;
+};

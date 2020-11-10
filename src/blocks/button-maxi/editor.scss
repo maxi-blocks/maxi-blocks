@@ -1,0 +1,14 @@
+body.maxi-blocks--active .maxi-controls {
+	.maxi-button-default-styles {
+		.maxi-default-styles-control__button {
+			width: 32%;
+			margin: 0;
+			margin-bottom: 8px;
+			padding: 0;
+
+			&:hover {
+				opacity: 0.7;
+			}
+		}
+	}
+}

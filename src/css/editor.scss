@@ -21,8 +21,8 @@ h2.gx_error {
 }
 
 .maxi-sidebar,
-.maxi-sidebar *,
-.maxi-popover * {
+.maxi-sidebar *:not(i),
+.maxi-popover *:not(i) {
 	font-family: "Roboto", Helvetica, Arial, Lucida, sans-serif !important;
 	font-weight: 500 !important;
 	font-size: 13px;
@@ -64,6 +64,10 @@ body.maxi-blocks--active {
 			}
 		}
 	}
+}
+
+.editor-styles-wrapper i {
+	font-style: normal;
 }
 
 /*****************
@@ -256,6 +260,10 @@ body .toolbar-item__popover {
 	.components-panel {
 		background: transparent;
 		border: none;
+	}
+
+	.components-simple-tooltip {
+		color: #fff;
 	}
 }
 

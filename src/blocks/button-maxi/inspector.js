@@ -16,6 +16,7 @@ import {
 	BorderControl,
 	BlockStylesControl,
 	BoxShadowControl,
+	DefaultStylesControl,
 	FullSizeControl,
 	SettingTabsControl,
 	TypographyControl,
@@ -28,13 +29,27 @@ import {
 	__experimentalTransformControl,
 	__experimentalEntranceAnimationControl,
 	__experimentalFancyRadioControl,
+	__experimentalFontIconControl,
 } from '../../components';
 import { getDefaultProp } from '../../utils';
+import * as defaultPresets from './defaults';
 
 /**
  * External dependencies
  */
-import { isObject } from 'lodash';
+import { isObject, merge } from 'lodash';
+
+/**
+ * Icons
+ */
+import {
+	PresetOne,
+	PresetTwo,
+	PresetThree,
+	PresetFour,
+	PresetFive,
+	PresetSix,
+} from '../../icons';
 
 /**
  * Inspector
@@ -66,6 +81,10 @@ const Inspector = props => {
 			display,
 			motion,
 			transform,
+			icon,
+			iconPadding,
+			iconBorder,
+			iconBackground,
 		},
 		deviceType,
 		setAttributes,
@@ -76,6 +95,49 @@ const Inspector = props => {
 	const backgroundHoverValue = !isObject(backgroundHover)
 		? JSON.parse(backgroundHover)
 		: backgroundHover;
+	const borderValue = !isObject(border) ? JSON.parse(border) : border;
+	const backgroundValue = !isObject(background)
+		? JSON.parse(background)
+		: background;
+	const paddingValue = !isObject(padding) ? JSON.parse(padding) : padding;
+	const typographyValue = !isObject(typography)
+		? JSON.parse(typography)
+		: typography;
+	const boxShadowValue = !isObject(boxShadow)
+		? JSON.parse(boxShadow)
+		: boxShadow;
+	const iconValue = !isObject(icon) ? JSON.parse(icon) : icon;
+	const iconBorderValue = !isObject(iconBorder)
+		? JSON.parse(iconBorder)
+		: iconBorder;
+	const iconBackgroundValue = !isObject(iconBackground)
+		? JSON.parse(iconBackground)
+		: iconBackground;
+	const iconPaddingValue = !isObject(iconPadding)
+		? JSON.parse(iconPadding)
+		: iconPadding;
+
+	const onChangePreset = number => {
+		const response = {
+			border: borderValue,
+			background: backgroundValue,
+			padding: paddingValue,
+			typography: typographyValue,
+			boxShadow: boxShadowValue,
+			icon: iconValue,
+			iconBorder: iconBorderValue,
+			iconBackground: iconBackgroundValue,
+			iconPadding: iconPaddingValue,
+		};
+
+		const result = merge(response, defaultPresets[`preset${number}`]);
+
+		Object.entries(result).forEach(([key, value]) => {
+			result[key] = JSON.stringify(value);
+		});
+
+		setAttributes(result);
+	};
 
 	return (
 		<InspectorControls>
@@ -102,6 +164,76 @@ const Inspector = props => {
 								<AccordionControl
 									isSecondary
 									items={[
+										deviceType === 'general' && {
+											label: __('Style', 'maxi-blocks'),
+											content: (
+												<DefaultStylesControl
+													className='maxi-button-default-styles'
+													items={[
+														{
+															activeItem: false,
+															content: (
+																<PresetOne />
+															),
+															onChange: () =>
+																onChangePreset(
+																	1
+																),
+														},
+														{
+															activeItem: false,
+															content: (
+																<PresetTwo />
+															),
+															onChange: () =>
+																onChangePreset(
+																	2
+																),
+														},
+														{
+															activeItem: false,
+															content: (
+																<PresetThree />
+															),
+															onChange: () =>
+																onChangePreset(
+																	3
+																),
+														},
+														{
+															activeItem: false,
+															content: (
+																<PresetFour />
+															),
+															onChange: () =>
+																onChangePreset(
+																	4
+																),
+														},
+														{
+															activeItem: false,
+															content: (
+																<PresetFive />
+															),
+															onChange: () =>
+																onChangePreset(
+																	5
+																),
+														},
+														{
+															activeItem: false,
+															content: (
+																<PresetSix />
+															),
+															onChange: () =>
+																onChangePreset(
+																	6
+																),
+														},
+													]}
+												/>
+											),
+										},
 										{
 											label: __(
 												'Alignment',
@@ -393,6 +525,23 @@ const Inspector = props => {
 															),
 														},
 													]}
+												/>
+											),
+										},
+										{
+											label: __('Icon', 'maxi-blocks'),
+											content: (
+												<__experimentalFontIconControl
+													icon={icon}
+													onChange={obj => {
+														setAttributes(obj);
+													}}
+													iconBorder={iconBorder}
+													iconPadding={iconPadding}
+													iconBackground={
+														iconBackground
+													}
+													breakpoint={deviceType}
 												/>
 											),
 										},

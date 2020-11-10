@@ -115,20 +115,15 @@ const Inspector = props => {
 													<Fragment>
 														<__experimentalFontIconControl
 															icon={icon}
-															onChange={icon => {
-																setAttributes({
-																	icon,
-																});
+															onChange={obj => {
+																setAttributes(
+																	obj
+																);
 															}}
 															breakpoint={
 																deviceType
 															}
-															disableSpacing
-															disablePosition
-															disablePadding
-															disableBackground
-															disableBorder
-															disablePresets
+															simpleMode
 														/>
 														<AlignmentControl
 															label={__(

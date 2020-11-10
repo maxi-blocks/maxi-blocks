@@ -10,21 +10,20 @@ const { Icon } = wp.components;
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject } from 'lodash';
+import { isObject, merge } from 'lodash';
 
 /**
  * Internal dependencies
  */
 import SizeControl from '../size-control';
-import { getLastBreakpointValue } from '../../utils';
 import ColorControl from '../color-control';
 import FontIconPicker from '../font-icon-picker';
 import AxisControl from '../axis-control';
 import BorderControl from '../border-control';
 import BackgroundControl from '../background-control';
 import __experimentalFancyRadioControl from '../fancy-radio-control';
-import presetsStyles from './presets';
-import * as attributesData from '../../extensions/styles/defaults';
+import { getLastBreakpointValue, getDefaultProp } from '../../utils';
+import * as defaultPresets from './defaults';
 
 /**
  * Styles and icons
@@ -39,6 +38,7 @@ import {
 	PresetEight,
 	PresetNine,
 } from '../../icons';
+import DefaultStylesControl from '../default-styles-control';
 
 /**
  * Component
@@ -49,29 +49,29 @@ const FontIconControl = props => {
 		icon,
 		onChange,
 		breakpoint,
-		disableSpacing = false,
-		disablePosition = false,
-		disablePadding = false,
-		disableBackground = false,
-		disableBorder = false,
-		disablePresets = false,
-		padding,
-		onChangePadding,
-		border,
-		onChangeBorder,
-		background,
-		onChangeBackground,
-		resetBlockAttributes,
+		simpleMode = false,
+		iconPadding,
+		iconBorder,
+		iconBackground,
 	} = props;
 
 	const [activeOption, setActiveOption] = useState('iconColor');
 
-	const value = !isObject(icon) ? JSON.parse(icon) : icon;
+	const classes = classnames('maxi-font-icon-control', className);
 
+	const iconValue = !isObject(icon) ? JSON.parse(icon) : icon;
 	const backgroundValue =
-		!disableBackground && !isObject(background)
-			? JSON.parse(background)
-			: background;
+		!simpleMode && !isObject(iconBackground)
+			? JSON.parse(iconBackground)
+			: iconBackground;
+	const iconPaddingValue =
+		!simpleMode && !isObject(iconPadding)
+			? JSON.parse(iconPadding)
+			: iconPadding;
+	const iconBorderValue =
+		!simpleMode && !isObject(iconBorder)
+			? JSON.parse(iconBorder)
+			: iconBorder;
 
 	const getOptions = () => {
 		const options = [
@@ -81,19 +81,19 @@ const FontIconControl = props => {
 					value: 'iconColor',
 				},
 			],
-			...(!disableBackground && [
+			...(!simpleMode && [
 				{
 					label: <Icon icon={backgroundColor} />,
 					value: 'backgroundColor',
 				},
 			]),
-			...(!disableBackground && [
+			...(!simpleMode && [
 				{
 					label: <Icon icon={backgroundGradient()} />,
 					value: 'backgroundGradient',
 				},
 			]),
-			...(!disableBorder && [
+			...(!simpleMode && [
 				{
 					label: <Icon icon={solid} />,
 					value: 'border',
@@ -104,119 +104,77 @@ const FontIconControl = props => {
 		return options;
 	};
 
-	const classes = classnames('maxi-font-icon-control', className);
+	const onChangePreset = number => {
+		const response = {
+			icon: iconValue,
+			iconBackground: backgroundValue,
+			iconPadding: iconPaddingValue,
+			iconBorder: iconBorderValue,
+		};
 
-	const onChangePreset = presetNumber => {
-		resetBlockAttributes();
+		const result = merge(response, defaultPresets[`preset${number}`]);
 
-		const paddingValue = !isObject(padding) ? JSON.parse(padding) : padding;
+		Object.entries(result).forEach(([key, value]) => {
+			result[key] = JSON.stringify(value);
+		});
 
-		const backgroundValue = !isObject(background)
-			? JSON.parse(background)
-			: background;
-
-		const borderValue = !isObject(border) ? JSON.parse(border) : border;
-
-		// Set Icon Settings
-		value.icon = presetsStyles[presetNumber].icon;
-		value.position = presetsStyles[presetNumber].position;
-		value.general.spacing = presetsStyles[presetNumber].spacing;
-
-		onChange(JSON.stringify(value));
-
-		// Set Icon Background
-		backgroundValue.activeMedia = 'color';
-
-		backgroundValue.colorOptions.activeColor =
-			presetsStyles[presetNumber].background;
-		backgroundValue.colorOptions.color =
-			presetsStyles[presetNumber].background;
-
-		onChangeBackground(JSON.stringify(backgroundValue));
-
-		// Set Icon padding
-		paddingValue.general.unit = 'px';
-		paddingValue.general['padding-top'] =
-			presetsStyles[presetNumber].padding;
-		paddingValue.general['padding-right'] =
-			presetsStyles[presetNumber].padding;
-		paddingValue.general['padding-bottom'] =
-			presetsStyles[presetNumber].padding;
-		paddingValue.general['padding-left'] =
-			presetsStyles[presetNumber].padding;
-		onChangePadding(JSON.stringify(paddingValue));
-
-		// Icon border
-		borderValue.general['border-style'] = 'solid';
-		borderValue.general['border-color'] =
-			presetsStyles[presetNumber].borderColor;
-		borderValue.borderWidth.general['border-bottom-width'] =
-			presetsStyles[presetNumber].borderWidth;
-		borderValue.borderWidth.general['border-top-width'] =
-			presetsStyles[presetNumber].borderWidth;
-		borderValue.borderWidth.general['border-right-width'] =
-			presetsStyles[presetNumber].borderWidth;
-		borderValue.borderWidth.general['border-left-width'] =
-			presetsStyles[presetNumber].borderWidth;
-		borderValue.borderWidth.unit = 'px';
-
-		onChangeBorder(JSON.stringify(borderValue));
+		onChange(result);
 	};
 
 	return (
 		<div className={classes}>
 			<FontIconPicker
-				iconClassName={value.icon}
+				iconClassName={iconValue.icon}
 				onChange={iconClassName => {
-					value.icon = iconClassName;
-					onChange(JSON.stringify(value));
+					iconValue.icon = iconClassName;
+					onChange({ icon: JSON.stringify(iconValue) });
 				}}
 			/>
-			{value.icon && (
+			{iconValue.icon && (
 				<Fragment>
-					{!disablePresets && (
-						<div className='maxi-font-icon-control__presets'>
-							<span
-								className='maxi-font-icon-control__icon'
-								onClick={() => onChangePreset(1)}
-							>
-								<PresetSeven />
-							</span>
-							<span
-								className='maxi-font-icon-control__icon'
-								onClick={() => onChangePreset(2)}
-							>
-								<PresetEight />
-							</span>
-							<span
-								className='maxi-font-icon-control__icon'
-								onClick={() => onChangePreset(3)}
-							>
-								<PresetNine />
-							</span>
-						</div>
+					{!simpleMode && (
+						<DefaultStylesControl
+							className='maxi-icon-default-styles'
+							items={[
+								{
+									activeItem: false,
+									content: <PresetSeven />,
+									onChange: () => onChangePreset(1),
+								},
+								{
+									activeItem: false,
+									content: <PresetEight />,
+									onChange: () => onChangePreset(2),
+								},
+								{
+									activeItem: false,
+									content: <PresetNine />,
+									onChange: () => onChangePreset(3),
+								},
+							]}
+						/>
 					)}
 					<SizeControl
 						label={__('Size', 'maxi-blocks')}
 						unit={getLastBreakpointValue(
-							value,
+							iconValue,
 							'font-sizeUnit',
 							breakpoint
 						)}
 						defaultUnit='px'
 						onChangeUnit={val => {
-							value[breakpoint]['font-sizeUnit'] = val;
-							onChange(JSON.stringify(value));
+							iconValue[breakpoint]['font-sizeUnit'] = val;
+							onChange({ icon: JSON.stringify(iconValue) });
 						}}
 						defaultValue=''
 						value={getLastBreakpointValue(
-							value,
+							iconValue,
 							'font-size',
 							breakpoint
 						)}
 						onChangeValue={val => {
-							value[breakpoint]['font-size'] = val;
-							onChange(JSON.stringify(value));
+							iconValue[breakpoint]['font-size'] = val;
+							onChange({ icon: JSON.stringify(iconValue) });
 						}}
 						minMaxSettings={{
 							px: {
@@ -237,49 +195,52 @@ const FontIconControl = props => {
 							},
 						}}
 					/>
-					{!disableSpacing && (
-						<SizeControl
-							label={__('Spacing', 'maxi-blocks')}
-							unit={getLastBreakpointValue(
-								value,
-								'spacing',
-								breakpoint
-							)}
-							disableUnit
-							defaultValue=''
-							value={getLastBreakpointValue(
-								value,
-								'spacing',
-								breakpoint
-							)}
-							onChangeValue={val => {
-								value[breakpoint].spacing = val;
-								onChange(JSON.stringify(value));
-							}}
-							min={0}
-							max={99}
-						/>
-					)}
-
-					{!disablePosition && (
-						<SelectControl
-							label={__('Position', 'maxi-blocks')}
-							value={value.position}
-							options={[
-								{
-									label: __('Left', 'maxi-blocks'),
-									value: 'left',
-								},
-								{
-									label: __('Right', 'maxi-blocks'),
-									value: 'right',
-								},
-							]}
-							onChange={val => {
-								value.position = val;
-								onChange(JSON.stringify(value));
-							}}
-						/>
+					{!simpleMode && (
+						<Fragment>
+							<SizeControl
+								label={__('Spacing', 'maxi-blocks')}
+								unit={getLastBreakpointValue(
+									iconValue,
+									'spacing',
+									breakpoint
+								)}
+								disableUnit
+								defaultValue=''
+								value={getLastBreakpointValue(
+									iconValue,
+									'spacing',
+									breakpoint
+								)}
+								onChangeValue={val => {
+									iconValue[breakpoint].spacing = val;
+									onChange({
+										icon: JSON.stringify(iconValue),
+									});
+								}}
+								min={0}
+								max={99}
+							/>
+							<SelectControl
+								label={__('Position', 'maxi-blocks')}
+								value={iconValue.position}
+								options={[
+									{
+										label: __('Left', 'maxi-blocks'),
+										value: 'left',
+									},
+									{
+										label: __('Right', 'maxi-blocks'),
+										value: 'right',
+									},
+								]}
+								onChange={val => {
+									iconValue.position = val;
+									onChange({
+										icon: JSON.stringify(iconValue),
+									});
+								}}
+							/>
+						</Fragment>
 					)}
 
 					{getOptions().length > 1 && (
@@ -292,22 +253,26 @@ const FontIconControl = props => {
 									setActiveOption('iconColor');
 								if (item === 'backgroundColor') {
 									backgroundValue.activeMedia = 'color';
-									onChangeBackground(
-										JSON.stringify(backgroundValue)
-									);
+									onChange({
+										iconBackground: JSON.stringify(
+											backgroundValue
+										),
+									});
 									setActiveOption('backgroundColor');
 								}
 								if (item === 'backgroundGradient') {
 									backgroundValue.activeMedia = 'gradient';
-									onChangeBackground(
-										JSON.stringify(backgroundValue)
-									);
+									onChange({
+										iconBackground: JSON.stringify(
+											backgroundValue
+										),
+									});
 									setActiveOption('backgroundGradient');
 								}
 								if (item === 'border')
 									setActiveOption('border');
 
-								onChange(JSON.stringify(value));
+								onChange({ icon: JSON.stringify(iconValue) });
 							}}
 						/>
 					)}
@@ -316,65 +281,71 @@ const FontIconControl = props => {
 						<ColorControl
 							label={__('Icon', 'maxi-blocks')}
 							color={getLastBreakpointValue(
-								value,
+								iconValue,
 								'color',
 								breakpoint
 							)}
 							defaultColor='#fff'
 							onChange={val => {
-								value[breakpoint].color = val;
-								onChange(JSON.stringify(value));
+								iconValue[breakpoint].color = val;
+								onChange({ icon: JSON.stringify(iconValue) });
 							}}
 						/>
 					)}
 
-					{!disableBorder && activeOption === 'border' && (
+					{!simpleMode && activeOption === 'border' && (
 						<BorderControl
-							border={border}
-							defaultBorder={attributesData.border}
-							onChange={border => onChangeBorder(border)}
+							border={iconBorder}
+							defaultBorder={getDefaultProp(null, 'iconBorder')}
+							onChange={border =>
+								onChange({ iconBorder: border })
+							}
 							breakpoint={breakpoint}
 						/>
 					)}
 
-					{!disableBackground &&
-						activeOption === 'backgroundColor' && (
-							<BackgroundControl
-								background={background}
-								defaultBackground={attributesData.background}
-								onChange={background =>
-									onChangeBackground(background)
-								}
-								disableImage
-								disableVideo
-								disableClipPath
-								disableSVG
-								disableGradient
-								disableNoneStyle
-							/>
-						)}
+					{!simpleMode && activeOption === 'backgroundColor' && (
+						<BackgroundControl
+							background={iconBackground}
+							defaultBackground={getDefaultProp(
+								null,
+								'iconBackground'
+							)}
+							onChange={background =>
+								onChange({ iconBackground: background })
+							}
+							disableImage
+							disableVideo
+							disableClipPath
+							disableSVG
+							disableGradient
+							disableNoneStyle
+						/>
+					)}
 
-					{!disableBackground &&
-						activeOption === 'backgroundGradient' && (
-							<BackgroundControl
-								background={background}
-								defaultBackground={attributesData.background}
-								onChange={background =>
-									onChangeBackground(background)
-								}
-								disableImage
-								disableVideo
-								disableClipPath
-								disableSVG
-								disableColor
-								disableNoneStyle
-							/>
-						)}
+					{!simpleMode && activeOption === 'backgroundGradient' && (
+						<BackgroundControl
+							background={iconBackground}
+							defaultBackground={getDefaultProp(
+								null,
+								'iconBackground'
+							)}
+							onChange={background =>
+								onChange({ iconBackground: background })
+							}
+							disableImage
+							disableVideo
+							disableClipPath
+							disableSVG
+							disableColor
+							disableNoneStyle
+						/>
+					)}
 
-					{!disablePadding && (
+					{!simpleMode && (
 						<__experimentalFancyRadioControl
 							label={__('Use Custom Padding', 'maxi-blocks')}
-							selected={value.customPadding}
+							selected={iconValue.customPadding}
 							options={[
 								{
 									label: __('No', 'maxi-blocks'),
@@ -386,20 +357,24 @@ const FontIconControl = props => {
 								},
 							]}
 							onChange={customPadding => {
-								value.customPadding = customPadding;
-								onChange(JSON.stringify(value));
+								iconValue.customPadding = customPadding;
+								onChange({ icon: JSON.stringify(iconValue) });
 								if (!Number(customPadding))
-									onChangePadding(
-										JSON.stringify(attributesData.padding)
-									);
+									onChange({
+										iconPadding: JSON.stringify(
+											getDefaultProp(null, 'iconPadding')
+										),
+									});
 							}}
 						/>
 					)}
-					{!disablePadding && !!Number(value.customPadding) && (
+					{!simpleMode && !!Number(iconValue.customPadding) && (
 						<AxisControl
-							values={padding}
-							defaultValues={attributesData.padding}
-							onChange={padding => onChangePadding(padding)}
+							values={iconPadding}
+							defaultValues={getDefaultProp(null, 'iconPadding')}
+							onChange={padding =>
+								onChange({ iconPadding: padding })
+							}
 							breakpoint={breakpoint}
 							disableAuto
 						/>

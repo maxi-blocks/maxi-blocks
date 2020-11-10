@@ -32,7 +32,6 @@ import {
 	__experimentalFontIconControl,
 } from '../../components';
 import { getDefaultProp } from '../../utils';
-import defaultAttributes from './default-attributes';
 import * as defaultPresets from './defaults';
 
 /**
@@ -118,7 +117,7 @@ const Inspector = props => {
 		? JSON.parse(iconPadding)
 		: iconPadding;
 
-	const test = number => {
+	const onChangePreset = number => {
 		const response = {
 			border: borderValue,
 			background: backgroundValue,
@@ -173,63 +172,63 @@ const Inspector = props => {
 													items={[
 														{
 															activeItem: false,
-															className:
-																'maxi-button-presets__icon',
 															content: (
 																<PresetOne />
 															),
 															onChange: () =>
-																test(1),
+																onChangePreset(
+																	1
+																),
 														},
 														{
 															activeItem: false,
-															className:
-																'maxi-button-presets__icon',
 															content: (
 																<PresetTwo />
 															),
 															onChange: () =>
-																test(2),
+																onChangePreset(
+																	2
+																),
 														},
 														{
 															activeItem: false,
-															className:
-																'maxi-button-presets__icon',
 															content: (
 																<PresetThree />
 															),
 															onChange: () =>
-																test(3),
+																onChangePreset(
+																	3
+																),
 														},
 														{
 															activeItem: false,
-															className:
-																'maxi-button-presets__icon',
 															content: (
 																<PresetFour />
 															),
 															onChange: () =>
-																test(4),
+																onChangePreset(
+																	4
+																),
 														},
 														{
 															activeItem: false,
-															className:
-																'maxi-button-presets__icon',
 															content: (
 																<PresetFive />
 															),
 															onChange: () =>
-																test(5),
+																onChangePreset(
+																	5
+																),
 														},
 														{
 															activeItem: false,
-															className:
-																'maxi-button-presets__icon',
 															content: (
 																<PresetSix />
 															),
 															onChange: () =>
-																test(6),
+																onChangePreset(
+																	6
+																),
 														},
 													]}
 												/>
@@ -534,32 +533,14 @@ const Inspector = props => {
 											content: (
 												<__experimentalFontIconControl
 													icon={icon}
-													onChange={icon => {
-														setAttributes({ icon });
+													onChange={obj => {
+														setAttributes(obj);
 													}}
-													onChangePadding={iconPadding =>
-														setAttributes({
-															iconPadding,
-														})
+													iconBorder={iconBorder}
+													iconPadding={iconPadding}
+													iconBackground={
+														iconBackground
 													}
-													onChangeBorder={iconBorder =>
-														setAttributes({
-															iconBorder,
-														})
-													}
-													onChangeBackground={iconBackground =>
-														setAttributes({
-															iconBackground,
-														})
-													}
-													resetBlockAttributes={() =>
-														setAttributes(
-															defaultAttributes
-														)
-													}
-													border={iconBorder}
-													padding={iconPadding}
-													background={iconBackground}
 													breakpoint={deviceType}
 												/>
 											),

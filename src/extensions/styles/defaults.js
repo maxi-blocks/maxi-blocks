@@ -460,6 +460,10 @@ export const size = {
 export const background = {
 	label: 'Background',
 	activeMedia: '',
+	layersOptions: {
+		status: 0,
+		layers: [],
+	},
 	colorOptions: {
 		activeColor: '',
 		color: '',
@@ -553,6 +557,10 @@ export const background = {
 export const backgroundHover = {
 	label: 'Background Hover',
 	activeMedia: '',
+	layersOptions: {
+		status: 0,
+		layers: [],
+	},
 	// status: 0,
 	colorOptions: {
 		activeColor: '',

@@ -1,6 +1,10 @@
 {
 	"label": "Background",
 	"activeMedia": "",
+	"layersOptions": {
+		"status": 0,
+		"layers": []
+	},
 	"colorOptions": {
 		"activeColor": "",
 		"color": "",

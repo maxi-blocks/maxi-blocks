@@ -10,10 +10,7 @@
 	&__overlay {
 		z-index: 2;
 	}
-	&__overlay,
-	&__color,
-	&__images,
-	&__video-player {
+	&__layer {
 		position: absolute;
 		width: 100%;
 		height: 100%;

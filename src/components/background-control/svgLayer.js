@@ -22,6 +22,7 @@ import { isEmpty } from 'lodash';
  */
 const SVGLayer = props => {
 	const { SVGOptions, defaultSVGOptions, onChange } = props;
+
 	return (
 		<Fragment>
 			<SettingTabsControl

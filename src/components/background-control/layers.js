@@ -7,7 +7,7 @@ const { __ } = wp.i18n;
  * Layers
  */
 export const colorOptions = {
-	tittle: __('Background Colour', 'maxi-blocks'),
+	title: __('Background Colour', 'maxi-blocks'),
 	type: 'color',
 	options: {
 		activeColor: '',
@@ -17,7 +17,7 @@ export const colorOptions = {
 };
 
 export const imageOptions = {
-	tittle: __('Background Image', 'maxi-blocks'),
+	title: __('Background Image', 'maxi-blocks'),
 	type: 'image',
 	options: {
 		items: [
@@ -61,7 +61,7 @@ export const imageOptions = {
 };
 
 export const videoOptions = {
-	tittle: __('Background Video', 'maxi-blocks'),
+	title: __('Background Video', 'maxi-blocks'),
 	type: 'video',
 	options: {
 		mediaID: '',
@@ -83,7 +83,7 @@ export const videoOptions = {
 };
 
 export const gradientOptions = {
-	tittle: __('Background gradient', 'maxi-blocks'),
+	title: __('Background gradient', 'maxi-blocks'),
 	type: 'gradient',
 	options: {
 		gradient: '',
@@ -101,7 +101,7 @@ export const gradientOptions = {
 };
 
 export const SVGOptions = {
-	tittle: __('Background Shape', 'maxi-blocks'),
+	title: __('Background Shape', 'maxi-blocks'),
 	type: 'shape',
 	options: {
 		SVGElement: '',

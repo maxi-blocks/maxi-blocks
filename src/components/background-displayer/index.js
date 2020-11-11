@@ -28,13 +28,14 @@ const BackgroundDisplayer = props => {
 	const backgroundValue = !isObject(background)
 		? JSON.parse(background)
 		: background;
-	const { layers } = backgroundValue;
+	const { status, layers } = backgroundValue.layersOptions;
 
 	const classes = classnames('maxi-background-displayer', className);
 
 	return (
 		<div className={classes}>
-			{!!layers &&
+			{!!status &&
+				!!layers &&
 				layers.map(layer => {
 					switch (layer.type) {
 						case 'color':

@@ -102,9 +102,9 @@ const BackgroundControl = props => {
 	return (
 		<div className={classes}>
 			<BackgroundLayersControl
-				layers={backgroundValue.layers}
-				onChange={layers => {
-					backgroundValue.layers = layers;
+				layersOptions={backgroundValue.layersOptions}
+				onChange={layersOptions => {
+					backgroundValue.layersOptions = layersOptions;
 
 					onChange(JSON.stringify(backgroundValue));
 				}}

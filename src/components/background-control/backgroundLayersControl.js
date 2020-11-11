@@ -15,6 +15,7 @@ import ImageLayer from './imageLayer';
 import VideoLayer from './videoLayer';
 import GradientLayer from './gradientLayer';
 import SVGLayer from './svgLayer';
+
 /**
  * External dependencies
  */
@@ -32,7 +33,7 @@ import { chevronDown } from '../../icons';
  */
 const LayerCard = props => {
 	const { layer, onChange, onOpen, isOpen, onRemove } = props;
-	const { tittle, type } = layer;
+	const { title, type } = layer;
 
 	const classes = classnames(
 		'maxi-background-layer',
@@ -43,13 +44,13 @@ const LayerCard = props => {
 		<div className={classes}>
 			<div
 				className='maxi-background-layer__row'
-				onClick={() => onOpen(isOpen)}
+				onClick={() => onOpen(!!isOpen)}
 			>
 				<span className='maxi-background-layer__arrow'>
 					{chevronDown}
 				</span>
-				<p className='maxi-background-layer__tittle'>
-					{tittle}
+				<p className='maxi-background-layer__title'>
+					{title}
 					<span
 						className='maxi-background-layer__remover'
 						onClick={onRemove}
@@ -130,9 +131,9 @@ const LayerCard = props => {
 };
 
 const BackgroundLayersControl = props => {
-	const { layers, onChange } = props;
+	const { layersOptions, onChange } = props;
+	const { status, layers } = layersOptions;
 
-	const [useLayers, changeUseLayers] = useState(isEmpty(layers) ? 0 : 1);
 	const [selector, changeSelector] = useState(null);
 
 	const getObject = type => {
@@ -173,26 +174,34 @@ const BackgroundLayersControl = props => {
 		<div className='maxi-background-control__layers'>
 			<__experimentalFancyRadioControl
 				label={__('Use layers', 'maxi-blocks')}
-				selected={useLayers}
+				selected={status}
 				options={[
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },
 					{ label: __('No', 'maxi-blocks'), value: 0 },
 				]}
 				onChange={val => {
-					changeUseLayers(Number(val));
+					layersOptions.status = +val;
+
+					onChange(layersOptions);
 				}}
 			/>
-			{!!useLayers && (
+			{!!status && (
 				<div>
 					{!isEmpty(layers) && (
 						<ReactDragListView
 							onDragEnd={(fromIndex, toIndex) => {
 								const layer = layers.splice(fromIndex, 1)[0];
-								layers.splice(toIndex, 0, layer);
+								layersOptions.layers = layers.splice(
+									toIndex,
+									0,
+									layer
+								);
 
-								onChange(layers);
+								onChange(layersOptions);
 							}}
 							nodeSelector='div.maxi-background-layer'
+							handleSelector='div.maxi-background-layer__row'
+							ignoreSelector='div.maxi-background-layer__content'
 						>
 							<div className='maxi-background-layers'>
 								{layers.map((layer, i) => (
@@ -200,20 +209,25 @@ const BackgroundLayersControl = props => {
 										key={`maxi-background-layers__${layer.id}`}
 										layer={layer}
 										onChange={layer => {
-											layers[i] = layer;
+											layersOptions.layers[i] = layer;
 
-											onChange(layers);
+											onChange(layersOptions);
 										}}
-										onOpen={() =>
-											selector !== i
-												? changeSelector(i)
-												: changeSelector(null)
-										}
+										onOpen={isOpen => {
+											if (isOpen) changeSelector(null);
+											else
+												selector !== i
+													? changeSelector(i)
+													: changeSelector(null);
+										}}
 										isOpen={selector === i}
 										onRemove={() => {
-											layers.splice(i, 1);
+											layersOptions.layers = layers.splice(
+												i,
+												1
+											);
 
-											onChange(layers);
+											onChange(layersOptions);
 										}}
 									/>
 								))}
@@ -244,8 +258,8 @@ const BackgroundLayersControl = props => {
 							},
 						]}
 						onClick={value => {
-							layers.push(getObject(value));
-							onChange(layers);
+							layersOptions.layers.push(getObject(value));
+							onChange(layersOptions);
 						}}
 						forwards
 					/>

@@ -449,10 +449,6 @@ export const getImageBackgroundObject = imageOptions => {
 				response.general[
 					'background-image'
 				] = `url('${option.imageData.cropOptions.image.source_url}')`;
-			// if (!isEmpty(background.colorOptions.gradient))
-			// 	response.general[
-			// 		'background-image'
-			// 	] = `${response.general['background-image']}, ${background.colorOptions.gradient}`;
 		} else if (
 			(option.sizeSettings.size === 'custom' &&
 				isNil(option.imageData.cropOptions)) ||
@@ -467,10 +463,6 @@ export const getImageBackgroundObject = imageOptions => {
 				response.general[
 					'background-image'
 				] = `url('${option.imageData.mediaURL}')`;
-			// if (!isEmpty(background.colorOptions.gradient))
-			// 	response.general[
-			// 		'background-image'
-			// 	] = `${response.general['background-image']}, ${background.colorOptions.gradient}`;
 		}
 		// Size
 		if (option.sizeSettings.size !== 'custom') {
@@ -744,10 +736,10 @@ export const setBackgroundStyles = (
 		};
 	}
 
-	if (backgroundValue.layers)
+	if (backgroundValue.layersOptions && !!backgroundValue.layersOptions.status)
 		response = setBackgroundLayers(
 			response,
-			backgroundValue.layers,
+			backgroundValue.layersOptions.layers,
 			target
 		);
 

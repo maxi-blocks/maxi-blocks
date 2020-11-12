@@ -119,7 +119,11 @@ class edit extends MaxiBlock {
 			alignmentText: {
 				...getAlignmentTextObject(JSON.parse(alignmentText)),
 			},
-			background: { ...getColorBackgroundObject(JSON.parse(background)) },
+			background: {
+				...getColorBackgroundObject(
+					JSON.parse(background).colorOptions
+				),
+			},
 			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
 			border: { ...JSON.parse(border) },
 			borderWidth: { ...JSON.parse(border).borderWidth },
@@ -197,9 +201,10 @@ class edit extends MaxiBlock {
 
 		const buttonClasses = classnames(
 			'maxi-button-extra__button',
-			iconValue.position === 'left'
-				? 'maxi-button-extra__button--icon-left'
-				: 'maxi-button-extra__button--icon-right'
+			iconValue.position === 'left' &&
+				'maxi-button-extra__button--icon-left',
+			iconValue.position === 'right' &&
+				'maxi-button-extra__button--icon-right'
 		);
 
 		return [

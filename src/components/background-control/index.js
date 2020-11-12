@@ -43,6 +43,7 @@ const BackgroundControl = props => {
 		className,
 		background,
 		defaultBackground,
+		disableLayers = false,
 		disableImage = false,
 		disableVideo = false,
 		disableGradient = false,
@@ -107,14 +108,16 @@ const BackgroundControl = props => {
 
 	return (
 		<div className={classes}>
-			<BackgroundLayersControl
-				layersOptions={backgroundValue.layersOptions}
-				onChange={layersOptions => {
-					backgroundValue.layersOptions = layersOptions;
+			{!disableLayers && (
+				<BackgroundLayersControl
+					layersOptions={backgroundValue.layersOptions}
+					onChange={layersOptions => {
+						backgroundValue.layersOptions = layersOptions;
 
-					onChange(JSON.stringify(backgroundValue));
-				}}
-			/>
+						onChange(JSON.stringify(backgroundValue));
+					}}
+				/>
+			)}
 			{getOptions().length > 1 && (
 				<__experimentalFancyRadioControl
 					label={__('Background', 'maxi-blocks')}

@@ -84,6 +84,7 @@ const TextOptions = props => {
 					<div className='toolbar-item__popover__font-options__font'>
 						<FontFamilySelector
 							className='toolbar-item__popover__font-options__font__selector'
+							theme='dark'
 							font={__experimentalGetCustomFormatValue({
 								typography: typographyValue,
 								formatValue,

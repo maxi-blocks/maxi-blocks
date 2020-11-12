@@ -385,7 +385,6 @@ class edit extends MaxiBlock {
 						</RichText>
 					)}
 				</__experimentalBlock>
-				,
 			</__experimentalMotionPreview>,
 		];
 	}

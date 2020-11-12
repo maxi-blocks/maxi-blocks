@@ -86,6 +86,10 @@ const Inspector = props => {
 		? JSON.parse(backgroundHover)
 		: backgroundHover;
 
+	const typographyHoverValue = !isObject(typographyHover)
+		? JSON.parse(typographyHover)
+		: typographyHover;
+
 	return (
 		<InspectorControls>
 			<SettingTabsControl
@@ -302,41 +306,82 @@ const Inspector = props => {
 																'gutenberg-extra'
 															),
 															content: (
-																<TypographyControl
-																	typography={
-																		typographyHover
-																	}
-																	defaultTypography={getDefaultProp(
-																		clientId,
-																		'typographyHover'
-																	)}
-																	textLevel={
-																		textLevel
-																	}
-																	onChange={obj => {
-																		setAttributes(
+																<Fragment>
+																	<__experimentalFancyRadioControl
+																		label={__(
+																			'Enable Typography Hover',
+																			'maxi-blocks'
+																		)}
+																		selected={Number(
+																			typographyHoverValue.status
+																		)}
+																		options={[
 																			{
-																				typographyHover:
-																					obj.typography,
-																				...(obj.content && {
-																					content:
-																						obj.content,
-																				}),
+																				label: __(
+																					'Yes',
+																					'maxi-blocks'
+																				),
+																				value: 1,
+																			},
+																			{
+																				label: __(
+																					'No',
+																					'maxi-blocks'
+																				),
+																				value: 0,
+																			},
+																		]}
+																		onChange={val => {
+																			typographyHoverValue.status = Number(
+																				val
+																			);
+																			setAttributes(
+																				{
+																					typographyHover: JSON.stringify(
+																						typographyHoverValue
+																					),
+																				}
+																			);
+																		}}
+																	/>
+																	{!!typographyHoverValue.status && (
+																		<TypographyControl
+																			typography={
+																				typographyHover
 																			}
-																		);
-																	}}
-																	hideAlignment
-																	breakpoint={
-																		deviceType
-																	}
-																	formatValue={
-																		formatValue
-																	}
-																	isList={
-																		isList
-																	}
-																	isHover
-																/>
+																			defaultTypography={getDefaultProp(
+																				clientId,
+																				'typographyHover'
+																			)}
+																			textLevel={
+																				textLevel
+																			}
+																			onChange={obj => {
+																				setAttributes(
+																					{
+																						typographyHover:
+																							obj.typography,
+																						...(obj.content && {
+																							content:
+																								obj.content,
+																						}),
+																					}
+																				);
+																			}}
+																			hideAlignment
+																			breakpoint={
+																				deviceType
+																			}
+																			formatValue={
+																				formatValue
+																			}
+																			isList={
+																				isList
+																			}
+																			isHover
+																		/>
+																	)}
+																</Fragment>
 															),
 														},
 													]}

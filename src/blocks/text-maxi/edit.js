@@ -40,7 +40,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isObject } from 'lodash';
+import { isEmpty, isObject, isNil } from 'lodash';
 
 /**
  * Content
@@ -153,9 +153,13 @@ class edit extends MaxiBlock {
 	get getTypographyHoverObject() {
 		const { typographyHover } = this.props.attributes;
 
-		const response = {
-			typographyHover: { ...JSON.parse(typographyHover) },
-		};
+		const response = {};
+
+		if (!isNil(typographyHover) && !!JSON.parse(typographyHover).status) {
+			response.typographyHover = {
+				...JSON.parse(typographyHover),
+			};
+		}
 
 		return response;
 	}

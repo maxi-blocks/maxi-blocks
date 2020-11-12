@@ -169,6 +169,10 @@ export const typography = {
 export const background = {
 	label: 'Background',
 	activeMedia: 'color',
+	layersOptions: {
+		status: 0,
+		layers: [],
+	},
 	colorOptions: {
 		activeColor: '#ff4a17',
 		color: '#ff4a17',

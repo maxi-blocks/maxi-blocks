@@ -10,6 +10,11 @@ const { __experimentalLinkControl } = wp.blockEditor;
 import ToolbarPopover from '../toolbar-popover';
 
 /**
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
+
+/**
  * Icons
  */
 import './editor.scss';
@@ -27,13 +32,18 @@ const Link = props => {
 	)
 		return null;
 
+	const linkSettingsValue = JSON.parse(linkSettings);
+
 	return (
 		<ToolbarPopover
 			icon={toolbarLink}
 			tooltip={__('Link', 'maxi-blocks')}
+			className={
+				!isEmpty(linkSettingsValue.url) && 'toolbar-item__link--active'
+			}
 			content={
 				<__experimentalLinkControl
-					value={JSON.parse(linkSettings)}
+					value={linkSettingsValue}
 					onChange={value => onChange(JSON.stringify(value))}
 					settings={[
 						{

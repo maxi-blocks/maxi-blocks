@@ -1,0 +1,126 @@
+.maxi-library-modal {
+	width: 80%;
+	min-height: 90%;
+	max-width: 90%;
+
+	.components-modal__content {
+		position: absolute;
+		width: 100%;
+		min-height: 100%;
+		background: #f2f2f2;
+		padding: 0;
+		overflow-x: hidden;
+
+		.components-modal__header {
+			margin-bottom: 25px;
+			padding: 0 3rem;
+
+			h1 {
+				font-weight: bold;
+				font-size: 1rem;
+			}
+		}
+	}
+
+	.spinner {
+		display: none; // TEMPORARY
+		position: relative;
+		height: 100px;
+		width: 100px;
+
+		&:before,
+		&:after {
+			content: '';
+			border-bottom: 6px solid #ff4a17;
+			border-left: 6px solid transparent;
+			border-radius: 50%;
+			border-right: 6px solid #ff4a17;
+			border-top: 6px solid #ff4a17;
+			bottom: 0;
+			-webkit-box-sizing: border-box;
+			box-sizing: border-box;
+			left: 0;
+			margin: auto;
+			position: absolute;
+			right: 0;
+			top: 0;
+			-webkit-transform-origin: center center;
+			transform-origin: center center;
+		}
+
+		&:before {
+			-webkit-animation: rotate 1s ease-in-out infinite;
+			animation: rotate 1s ease-in-out infinite;
+			height: 100%;
+			width: 100%;
+		}
+
+		&:after {
+			animation: rotate 1s ease-in-out infinite reverse;
+			height: 50%;
+			width: 50%;
+		}
+	}
+
+	.maxi-cloud-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		width: 100%;
+		margin: 0;
+		padding: 6px 15px;
+		font-size: 16px;
+		line-height: 1;
+		word-spacing: 4px;
+		border-bottom: 2px solid #e8eaeb;
+		font-weight: 500;
+		background-color: #fff;
+
+		&__help-button {
+			background-color: #232533;
+			color: #fff;
+			text-decoration: none;
+			padding: 7px 14px;
+			font-size: 13px;
+			cursor: pointer;
+			display: -webkit-box;
+			display: -ms-flexbox;
+			display: flex;
+			-webkit-box-align: center;
+			-ms-flex-align: center;
+			align-items: center;
+			-webkit-box-pack: center;
+			-ms-flex-pack: center;
+			justify-content: center;
+
+			svg {
+				margin-left: 5px;
+			}
+
+			&:hover {
+				background-color: #ff4a17;
+			}
+		}
+
+		&__logo {
+			display: -webkit-box;
+			display: -ms-flexbox;
+			display: flex;
+			-webkit-box-align: center;
+			-ms-flex-align: center;
+			align-items: center;
+			-webkit-box-pack: center;
+			-ms-flex-pack: center;
+			justify-content: center;
+			color: #000;
+			text-decoration: none;
+
+			& svg {
+				display: block;
+				height: 30px;
+				width: 30px;
+				margin-right: 10px;
+			}
+		}
+	}
+}

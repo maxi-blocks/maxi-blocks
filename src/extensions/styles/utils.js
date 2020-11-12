@@ -109,7 +109,7 @@ export const getBoxShadowObject = boxShadow => {
 	};
 
 	Object.entries(boxShadow).forEach(([key, value]) => {
-		if (key !== 'label') {
+		if (key !== 'label' && key !== 'status') {
 			let boxShadowString = '';
 			isNumber(value.shadowHorizontal) &&
 				(boxShadowString += `${value.shadowHorizontal}px `);

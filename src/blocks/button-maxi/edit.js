@@ -45,7 +45,6 @@ class edit extends MaxiBlock {
 				.getNormalObject,
 			[`${this.props.attributes.uniqueID} .maxi-button-extra__button:hover`]: this
 				.getHoverObject,
-
 			[`${this.props.attributes.uniqueID} .maxi-button-extra__button i`]: this
 				.getIconObject,
 		};
@@ -113,7 +112,7 @@ class edit extends MaxiBlock {
 			zIndex,
 			position,
 		} = this.props.attributes;
-
+		console.log('normal');
 		const response = {
 			typography: { ...JSON.parse(typography) },
 			alignmentText: {
@@ -146,12 +145,9 @@ class edit extends MaxiBlock {
 			boxShadowHover,
 			borderHover,
 		} = this.props.attributes;
-
+		console.log('helooo');
 		const response = {
 			typographyHover: { ...JSON.parse(typographyHover) },
-			boxShadowHover: {
-				...getBoxShadowObject(JSON.parse(boxShadowHover)),
-			},
 			borderHover: { ...JSON.parse(borderHover) },
 			borderWidth: { ...JSON.parse(borderHover).borderWidth },
 			borderRadius: { ...JSON.parse(borderHover).borderRadius },
@@ -160,6 +156,12 @@ class edit extends MaxiBlock {
 		if (!isNil(backgroundHover) && !!JSON.parse(backgroundHover).status) {
 			response.backgroundHover = {
 				...getColorBackgroundObject(JSON.parse(backgroundHover)),
+			};
+		}
+
+		if (!isNil(boxShadowHover) && !!JSON.parse(boxShadowHover).status) {
+			response.boxShadowHover = {
+				...getBoxShadowObject(JSON.parse(boxShadowHover)),
 			};
 		}
 

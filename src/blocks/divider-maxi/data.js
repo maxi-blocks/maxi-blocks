@@ -13,6 +13,7 @@ const size = {
 		height: 100,
 		'min-heightUnit': 'px',
 		'min-height': '',
+		advancedOptions: 0,
 	},
 	xxl: {
 		'max-widthUnit': 'px',
@@ -27,6 +28,7 @@ const size = {
 		height: '',
 		'min-heightUnit': 'px',
 		'min-height': '',
+		advancedOptions: 0,
 	},
 	xl: {
 		'max-widthUnit': 'px',
@@ -41,6 +43,7 @@ const size = {
 		height: '',
 		'min-heightUnit': 'px',
 		'min-height': '',
+		advancedOptions: 0,
 	},
 	l: {
 		'max-widthUnit': 'px',
@@ -55,6 +58,7 @@ const size = {
 		height: '',
 		'min-heightUnit': 'px',
 		'min-height': '',
+		advancedOptions: 0,
 	},
 	m: {
 		'max-widthUnit': 'px',
@@ -69,6 +73,7 @@ const size = {
 		height: '',
 		'min-heightUnit': 'px',
 		'min-height': '',
+		advancedOptions: 0,
 	},
 	s: {
 		'max-widthUnit': 'px',
@@ -83,6 +88,7 @@ const size = {
 		height: '',
 		'min-heightUnit': 'px',
 		'min-height': '',
+		advancedOptions: 0,
 	},
 	xs: {
 		'max-widthUnit': 'px',
@@ -97,6 +103,7 @@ const size = {
 		height: '',
 		'min-heightUnit': 'px',
 		'min-height': '',
+		advancedOptions: 0,
 	},
 };
 

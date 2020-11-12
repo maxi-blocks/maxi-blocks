@@ -14,16 +14,6 @@
 			@at-root .rtl #{&} {
 				flex-direction: row-reverse;
 			}
-			// &:after {
-			// 	content: '';
-			// 	border-left: 0.5rem solid transparent;
-			// 	border-right: 0.5rem solid transparent;
-			// 	border-top: 0.5rem solid #232533;
-			// 	position: absolute;
-			// 	bottom: -0.5rem;
-			// 	left: 50%;
-			// 	transform: translateX(-50%);
-			// }
 			button:focus {
 				outline: none;
 				box-shadow: none;
@@ -63,6 +53,15 @@
 				}
 			}
 			.toolbar-item {
+				&__link {
+					&--active {
+						.toolbar-item__icon {
+							path {
+								stroke: #ff4a17;
+							}
+						}
+					}
+				}
 				&__text-options,
 				&__border {
 					.toolbar-item__icon {

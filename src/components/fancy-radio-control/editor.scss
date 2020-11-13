@@ -14,7 +14,7 @@
 				margin: 0 0 5px 0 !important;
 				width: 100%;
 				display: block;
-				flex: auto !important;
+				flex: 100% !important;
 			}
 		}
 	}
@@ -22,12 +22,16 @@
 	.maxi-display-control {
 		width: 100%;
 	}
+	.components-base-control {
+		.components-base-control__field {
+			.components-base-control__label {
+				flex: 2;
+			}
+		}
+	}
 	.components-radio-control {
 		width: 100%;
 
-		.components-base-control__label {
-			flex: 2 !important;
-		}
 		&__option {
 			opacity: 1 !important;
 			min-width: 40px;

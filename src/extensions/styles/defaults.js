@@ -200,6 +200,7 @@ export const border = {
 
 export const borderHover = {
 	label: 'Border',
+	status: 0,
 	general: {
 		'border-color': '',
 		'border-style': '',
@@ -951,38 +952,19 @@ export const typographyHover = {
 	label: 'Typography',
 	status: 0,
 	general: {
-		'font-family': 'Roboto',
-		'font-options': {
-			100: 'http://fonts.gstatic.com/s/roboto/v20/KFOkCnqEu92Fr1MmgWxPKTM1K9nz.ttf',
-			'100italic':
-				'http://fonts.gstatic.com/s/roboto/v20/KFOiCnqEu92Fr1Mu51QrIzcXLsnzjYk.ttf',
-			300: 'http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmSU5vAx05IsDqlA.ttf',
-			'300italic':
-				'http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TjARc9AMX6lJBP.ttf',
-			400: 'http://fonts.gstatic.com/s/roboto/v20/KFOmCnqEu92Fr1Me5WZLCzYlKw.ttf',
-			italic:
-				'http://fonts.gstatic.com/s/roboto/v20/KFOkCnqEu92Fr1Mu52xPKTM1K9nz.ttf',
-			500: 'http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmEU9vAx05IsDqlA.ttf',
-			'500italic':
-				'http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51S7ABc9AMX6lJBP.ttf',
-			700: 'http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmWUlvAx05IsDqlA.ttf',
-			'700italic':
-				'http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TzBhc9AMX6lJBP.ttf',
-			900: 'http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmYUtvAx05IsDqlA.ttf',
-			'900italic':
-				'http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TLBBc9AMX6lJBP.ttf',
-		},
-		color: '#9b9b9b',
+		'font-family': '',
+		'font-options': '',
+		color: '#',
 		'font-sizeUnit': 'px',
-		'font-size': 16,
+		'font-size': '',
 		'line-heightUnit': '',
-		'line-height': 1.56,
+		'line-height': '',
 		'letter-spacingUnit': 'px',
-		'letter-spacing': 0,
-		'font-weight': 400,
-		'text-transform': 'none',
-		'font-style': 'normal',
-		'text-decoration': 'none',
+		'letter-spacing': '',
+		'font-weight': '',
+		'text-transform': '',
+		'font-style': '',
+		'text-decoration': '',
 		'text-shadow': '',
 		'vertical-align': '',
 	},

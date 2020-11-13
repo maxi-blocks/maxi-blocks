@@ -200,6 +200,7 @@ export const border = {
 
 export const borderHover = {
 	label: 'Border',
+	status: 0,
 	general: {
 		'border-color': '',
 		'border-style': '',

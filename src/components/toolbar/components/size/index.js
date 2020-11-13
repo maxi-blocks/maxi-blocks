@@ -64,24 +64,27 @@ const Size = props => {
 			advancedOptions='width height'
 			content={
 				<Fragment>
-					{isFirstOnHierarchy && (
-						<RadioControl
-							className='toolbar-item__popover__toggle-btn'
-							label={__('Full Width', 'maxi-blocks')}
-							selected={fullWidth}
-							options={[
-								{
-									label: __('No', 'maxi-blocks'),
-									value: 'normal',
-								},
-								{
-									label: __('Yes', 'maxi-blocks'),
-									value: 'full',
-								},
-							]}
-							onChange={fullWidth => onChangeFullWidth(fullWidth)}
-						/>
-					)}
+					{isFirstOnHierarchy &&
+						blockName === 'maxi-blocks/container-maxi' && (
+							<RadioControl
+								className='toolbar-item__popover__toggle-btn'
+								label={__('Full Width', 'maxi-blocks')}
+								selected={fullWidth}
+								options={[
+									{
+										label: __('No', 'maxi-blocks'),
+										value: 'normal',
+									},
+									{
+										label: __('Yes', 'maxi-blocks'),
+										value: 'full',
+									},
+								]}
+								onChange={fullWidth =>
+									onChangeFullWidth(fullWidth)
+								}
+							/>
+						)}
 					<SizeControl
 						label={__('Width', 'maxi-blocks')}
 						unit={getLastBreakpointValue(

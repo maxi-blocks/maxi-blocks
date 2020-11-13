@@ -112,7 +112,7 @@ class edit extends MaxiBlock {
 			zIndex,
 			position,
 		} = this.props.attributes;
-		console.log('normal');
+
 		const response = {
 			typography: { ...JSON.parse(typography) },
 			alignmentText: {
@@ -145,7 +145,7 @@ class edit extends MaxiBlock {
 			boxShadowHover,
 			borderHover,
 		} = this.props.attributes;
-		console.log('helooo');
+
 		const response = {
 			typographyHover: { ...JSON.parse(typographyHover) },
 			borderHover: { ...JSON.parse(borderHover) },

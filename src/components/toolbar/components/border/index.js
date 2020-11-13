@@ -63,7 +63,11 @@ const Border = props => {
 										breakpoint
 								  ),
 						borderWidth: '1px',
-						borderColor: '#fff',
+						borderColor: getLastBreakpointValue(
+							value,
+							'border-color',
+							breakpoint
+						),
 					}}
 				>
 					<Icon

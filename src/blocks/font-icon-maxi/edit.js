@@ -27,7 +27,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject } from 'lodash';
+import { isObject, isNil } from 'lodash';
 
 /**
  * Content
@@ -108,10 +108,15 @@ class edit extends MaxiBlock {
 			boxShadowHover: {
 				...getBoxShadowObject(JSON.parse(boxShadowHover)),
 			},
-			borderHover: { ...JSON.parse(borderHover) },
 			borderWidth: { ...JSON.parse(borderHover).borderWidth },
 			borderRadius: { ...JSON.parse(borderHover).borderRadius },
 		};
+
+		if (!isNil(borderHover) && !!JSON.parse(borderHover).status) {
+			response.borderHover = {
+				...JSON.parse(borderHover),
+			};
+		}
 
 		return response;
 	}

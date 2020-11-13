@@ -236,6 +236,10 @@ const Inspector = props => {
 		? JSON.parse(backgroundHover)
 		: backgroundHover;
 
+	const borderHoverValue = !isObject(borderHover)
+		? JSON.parse(borderHover)
+		: borderHover;
+
 	return (
 		<InspectorControls>
 			<SettingTabsControl
@@ -430,25 +434,66 @@ const Inspector = props => {
 																'gutenberg-extra'
 															),
 															content: (
-																<BorderControl
-																	border={
-																		borderHover
-																	}
-																	defaultBorder={getDefaultProp(
-																		clientId,
-																		'borderHover'
-																	)}
-																	onChange={borderHover =>
-																		setAttributes(
+																<Fragment>
+																	<__experimentalFancyRadioControl
+																		label={__(
+																			'Enable Border Hover',
+																			'maxi-blocks'
+																		)}
+																		selected={Number(
+																			borderHoverValue.status
+																		)}
+																		options={[
 																			{
-																				borderHover,
+																				label: __(
+																					'Yes',
+																					'maxi-blocks'
+																				),
+																				value: 1,
+																			},
+																			{
+																				label: __(
+																					'No',
+																					'maxi-blocks'
+																				),
+																				value: 0,
+																			},
+																		]}
+																		onChange={val => {
+																			borderHoverValue.status = Number(
+																				val
+																			);
+																			setAttributes(
+																				{
+																					borderHover: JSON.stringify(
+																						borderHoverValue
+																					),
+																				}
+																			);
+																		}}
+																	/>
+																	{!!borderHoverValue.status && (
+																		<BorderControl
+																			border={
+																				borderHover
 																			}
-																		)
-																	}
-																	breakpoint={
-																		deviceType
-																	}
-																/>
+																			defaultBorder={getDefaultProp(
+																				clientId,
+																				'borderHover'
+																			)}
+																			onChange={borderHover =>
+																				setAttributes(
+																					{
+																						borderHover,
+																					}
+																				)
+																			}
+																			breakpoint={
+																				deviceType
+																			}
+																		/>
+																	)}
+																</Fragment>
 															),
 														},
 													]}

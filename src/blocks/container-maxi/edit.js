@@ -33,7 +33,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isObject } from 'lodash';
+import { isEmpty, isObject, isNil } from 'lodash';
 
 /**
  * InnerBlocks version
@@ -189,10 +189,15 @@ class edit extends MaxiBlock {
 			boxShadowHover: {
 				...getBoxShadowObject(JSON.parse(boxShadowHover)),
 			},
-			borderHover: { ...JSON.parse(borderHover) },
 			borderWidthHover: { ...JSON.parse(borderHover).borderWidth },
 			borderRadiusHover: { ...JSON.parse(borderHover).borderRadius },
 		};
+
+		if (!isNil(borderHover) && !!JSON.parse(borderHover).status) {
+			response.borderHover = {
+				...JSON.parse(borderHover),
+			};
+		}
 
 		return response;
 	}

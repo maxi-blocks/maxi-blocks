@@ -152,7 +152,6 @@ class edit extends MaxiBlock {
 			boxShadowHover: {
 				...getBoxShadowObject(JSON.parse(boxShadowHover)),
 			},
-			borderHover: { ...JSON.parse(borderHover) },
 			borderWidth: { ...JSON.parse(borderHover).borderWidth },
 			borderRadius: { ...JSON.parse(borderHover).borderRadius },
 		};
@@ -160,6 +159,12 @@ class edit extends MaxiBlock {
 		if (!isNil(backgroundHover) && !!JSON.parse(backgroundHover).status) {
 			response.backgroundHover = {
 				...getColorBackgroundObject(JSON.parse(backgroundHover)),
+			};
+		}
+
+		if (!isNil(borderHover) && !!JSON.parse(borderHover).status) {
+			response.borderHover = {
+				...JSON.parse(borderHover),
 			};
 		}
 

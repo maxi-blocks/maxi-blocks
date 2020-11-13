@@ -136,7 +136,11 @@ const Inspector = props => {
 			result[key] = JSON.stringify(value);
 		});
 
+		iconValue.buttonPreset = number;
 		setAttributes(result);
+		setAttributes({
+			icon: JSON.stringify(iconValue),
+		});
 	};
 
 	const borderHoverValue = !isObject(borderHover)
@@ -175,7 +179,9 @@ const Inspector = props => {
 													className='maxi-button-default-styles'
 													items={[
 														{
-															activeItem: false,
+															activeItem:
+																iconValue.buttonPreset ===
+																1,
 															content: (
 																<Icon
 																	icon={
@@ -189,7 +195,9 @@ const Inspector = props => {
 																),
 														},
 														{
-															activeItem: false,
+															activeItem:
+																iconValue.buttonPreset ===
+																2,
 															content: (
 																<Icon
 																	icon={
@@ -203,7 +211,9 @@ const Inspector = props => {
 																),
 														},
 														{
-															activeItem: false,
+															activeItem:
+																iconValue.buttonPreset ===
+																3,
 															content: (
 																<Icon
 																	icon={
@@ -217,7 +227,9 @@ const Inspector = props => {
 																),
 														},
 														{
-															activeItem: false,
+															activeItem:
+																iconValue.buttonPreset ===
+																4,
 															content: (
 																<Icon
 																	icon={
@@ -231,7 +243,9 @@ const Inspector = props => {
 																),
 														},
 														{
-															activeItem: false,
+															activeItem:
+																iconValue.buttonPreset ===
+																5,
 															content: (
 																<Icon
 																	icon={
@@ -245,7 +259,9 @@ const Inspector = props => {
 																),
 														},
 														{
-															activeItem: false,
+															activeItem:
+																iconValue.buttonPreset ===
+																6,
 															content: (
 																<Icon
 																	icon={

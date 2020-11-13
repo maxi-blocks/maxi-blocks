@@ -2,10 +2,12 @@ export const preset1 = {
 	border: {
 		borderWidth: {
 			general: {
-				'border-top-width': 1,
-				'border-right-width': 1,
-				'border-bottom-width': 1,
-				'border-left-width': 1,
+				'border-color': '',
+				'border-style': 'none',
+				'border-top-width': 0,
+				'border-right-width': 0,
+				'border-bottom-width': 0,
+				'border-left-width': 0,
 				sync: true,
 				unit: 'px',
 			},
@@ -29,10 +31,10 @@ export const preset1 = {
 	},
 	padding: {
 		general: {
-			top: 10,
-			right: 20,
-			bottom: 10,
-			left: 20,
+			'padding-top': 10,
+			'padding-right': 40,
+			'padding-bottom': 10,
+			'padding-left': 40,
 			unit: 'px',
 		},
 	},
@@ -59,9 +61,10 @@ export const preset1 = {
 		},
 	},
 	iconBorder: {
-		borderColor: '',
 		borderWidth: {
 			general: {
+				'border-color': '',
+				'border-style': 'none',
 				'border-top-width': '',
 				'border-right-width': '',
 				'border-bottom-width': '',
@@ -86,10 +89,10 @@ export const preset1 = {
 	},
 	iconPadding: {
 		general: {
-			top: '',
-			right: '',
-			bottom: '',
-			left: '',
+			'padding-top': 0,
+			'padding-right': 0,
+			'padding-bottom': 0,
+			'padding-left': 0,
 		},
 	},
 };
@@ -98,10 +101,12 @@ export const preset2 = {
 	border: {
 		borderWidth: {
 			general: {
-				'border-top-width': 1,
-				'border-right-width': 1,
-				'border-bottom-width': 1,
-				'border-left-width': 1,
+				'border-color': '#ff4a17',
+				'border-style': 'solid',
+				'border-top-width': 2,
+				'border-right-width': 2,
+				'border-bottom-width': 2,
+				'border-left-width': 2,
 				sync: true,
 				unit: 'px',
 			},
@@ -119,16 +124,16 @@ export const preset2 = {
 	},
 	background: {
 		colorOptions: {
-			activeColor: '#ffffff',
-			color: '#ffffff',
+			activeColor: '',
+			color: '',
 		},
 	},
 	padding: {
 		general: {
-			top: 10,
-			right: 20,
-			bottom: 10,
-			left: 20,
+			'padding-top': 10,
+			'padding-right': 40,
+			'padding-bottom': 10,
+			'padding-left': 40,
 			unit: 'px',
 		},
 	},
@@ -155,9 +160,10 @@ export const preset2 = {
 		},
 	},
 	iconBorder: {
-		borderColor: '',
 		borderWidth: {
 			general: {
+				'border-color': '',
+				'border-style': 'none',
 				'border-top-width': '',
 				'border-right-width': '',
 				'border-bottom-width': '',
@@ -182,10 +188,10 @@ export const preset2 = {
 	},
 	iconPadding: {
 		general: {
-			top: '',
-			right: '',
-			bottom: '',
-			left: '',
+			'padding-top': 0,
+			'padding-right': 0,
+			'padding-bottom': 0,
+			'padding-left': 0,
 		},
 	},
 };
@@ -194,10 +200,12 @@ export const preset3 = {
 	border: {
 		borderWidth: {
 			general: {
-				'border-top-width': 1,
-				'border-right-width': 1,
-				'border-bottom-width': 1,
-				'border-left-width': 1,
+				'border-color': '',
+				'border-style': 'none',
+				'border-top-width': 0,
+				'border-right-width': 0,
+				'border-bottom-width': 0,
+				'border-left-width': 0,
 				sync: true,
 				unit: 'px',
 			},
@@ -221,10 +229,10 @@ export const preset3 = {
 	},
 	padding: {
 		general: {
-			top: 10,
-			right: 20,
-			bottom: 10,
-			left: 20,
+			'padding-top': 8,
+			'padding-right': 10,
+			'padding-bottom': 8,
+			'padding-left': 15,
 			unit: 'px',
 		},
 	},
@@ -251,13 +259,14 @@ export const preset3 = {
 		},
 	},
 	iconBorder: {
-		borderColor: '',
 		borderWidth: {
 			general: {
-				'border-top-width': 10,
-				'border-right-width': 10,
-				'border-bottom-width': 10,
-				'border-left-width': 10,
+				'border-color': '',
+				'border-style': 'none',
+				'border-top-width': 0,
+				'border-right-width': 0,
+				'border-bottom-width': 0,
+				'border-left-width': 0,
 			},
 		},
 		borderRadius: {
@@ -279,10 +288,10 @@ export const preset3 = {
 	},
 	iconPadding: {
 		general: {
-			top: 10,
-			right: 10,
-			bottom: 10,
-			left: 10,
+			'padding-top': 10,
+			'padding-right': 10,
+			'padding-bottom': 10,
+			'padding-left': 10,
 		},
 	},
 };
@@ -291,10 +300,12 @@ export const preset4 = {
 	border: {
 		borderWidth: {
 			general: {
-				'border-top-width': 1,
-				'border-right-width': 1,
-				'border-bottom-width': 1,
-				'border-left-width': 1,
+				'border-color': '',
+				'border-style': 'none',
+				'border-top-width': 0,
+				'border-right-width': 0,
+				'border-bottom-width': 0,
+				'border-left-width': 0,
 				sync: true,
 				unit: 'px',
 			},
@@ -312,22 +323,22 @@ export const preset4 = {
 	},
 	background: {
 		colorOptions: {
-			activeColor: '#ffffff',
-			color: '#ffffff',
+			activeColor: '#ff4a17',
+			color: '#ff4a17',
 		},
 	},
 	padding: {
 		general: {
-			top: 10,
-			right: 20,
-			bottom: 10,
-			left: 20,
+			'padding-top': 10,
+			'padding-right': 40,
+			'padding-bottom': 10,
+			'padding-left': 40,
 			unit: 'px',
 		},
 	},
 	typography: {
 		general: {
-			color: '#ff4a17',
+			color: '#ffffff',
 		},
 	},
 	boxShadow: {
@@ -343,14 +354,15 @@ export const preset4 = {
 		icon: '',
 		position: 'left',
 		general: {
-			color: '#ff4a17', // ??
+			color: '',
 			spacing: '',
 		},
 	},
 	iconBorder: {
-		borderColor: '',
 		borderWidth: {
 			general: {
+				'border-color': '',
+				'border-style': 'none',
 				'border-top-width': '',
 				'border-right-width': '',
 				'border-bottom-width': '',
@@ -363,7 +375,6 @@ export const preset4 = {
 				'border-top-right-radius': '',
 				'border-bottom-right-radius': '',
 				'border-bottom-left-radius': '',
-				unit: 'px',
 			},
 		},
 	},
@@ -376,10 +387,10 @@ export const preset4 = {
 	},
 	iconPadding: {
 		general: {
-			top: '',
-			right: '',
-			bottom: '',
-			left: '',
+			'padding-top': 0,
+			'padding-right': 0,
+			'padding-bottom': 0,
+			'padding-left': 0,
 		},
 	},
 };
@@ -388,10 +399,12 @@ export const preset5 = {
 	border: {
 		borderWidth: {
 			general: {
-				'border-top-width': 1,
-				'border-right-width': 1,
-				'border-bottom-width': 1,
-				'border-left-width': 1,
+				'border-color': '#ff4a17',
+				'border-style': 'solid',
+				'border-top-width': 2,
+				'border-right-width': 2,
+				'border-bottom-width': 2,
+				'border-left-width': 2,
 				sync: true,
 				unit: 'px',
 			},
@@ -409,16 +422,16 @@ export const preset5 = {
 	},
 	background: {
 		colorOptions: {
-			activeColor: '#ffffff',
-			color: '#ffffff',
+			activeColor: '',
+			color: '',
 		},
 	},
 	padding: {
 		general: {
-			top: 3,
-			right: 3,
-			bottom: 3,
-			left: 20,
+			'padding-top': 8,
+			'padding-right': 10,
+			'padding-bottom': 8,
+			'padding-left': 15,
 			unit: 'px',
 		},
 	},
@@ -429,7 +442,7 @@ export const preset5 = {
 	},
 	boxShadow: {
 		general: {
-			shadowColor: '',
+			shadowColor: '#ffffff',
 			shadowHorizontal: '',
 			shadowVertical: '',
 			shadowBlur: '',
@@ -440,18 +453,19 @@ export const preset5 = {
 		icon: 'fas fa-arrow-right',
 		position: 'right',
 		general: {
-			color: '#ff4a17',
-			spacing: 8,
+			color: '#fffff',
+			spacing: 10,
 		},
 	},
 	iconBorder: {
-		borderColor: '',
 		borderWidth: {
 			general: {
-				'border-top-width': 1,
-				'border-right-width': 1,
-				'border-bottom-width': 1,
-				'border-left-width': 1,
+				'border-color': '#ff4a17',
+				'border-style': 'solid',
+				'border-top-width': 2,
+				'border-right-width': 2,
+				'border-bottom-width': 2,
+				'border-left-width': 2,
 			},
 		},
 		borderRadius: {
@@ -473,10 +487,10 @@ export const preset5 = {
 	},
 	iconPadding: {
 		general: {
-			top: 10,
-			right: 10,
-			bottom: 10,
-			left: 10,
+			'padding-top': 10,
+			'padding-right': 10,
+			'padding-bottom': 10,
+			'padding-left': 10,
 		},
 	},
 };
@@ -485,20 +499,22 @@ export const preset6 = {
 	border: {
 		borderWidth: {
 			general: {
-				'border-top-width': 1,
-				'border-right-width': 1,
-				'border-bottom-width': 1,
-				'border-left-width': 1,
+				'border-color': '',
+				'border-style': 'none',
+				'border-top-width': 0,
+				'border-right-width': 0,
+				'border-bottom-width': 0,
+				'border-left-width': 0,
 				sync: true,
 				unit: 'px',
 			},
 		},
 		borderRadius: {
 			general: {
-				'border-top-left-radius': '',
-				'border-top-right-radius': '',
-				'border-bottom-right-radius': '',
-				'border-bottom-left-radius': '',
+				'border-top-left-radius': 8,
+				'border-top-right-radius': 8,
+				'border-bottom-right-radius': 8,
+				'border-bottom-left-radius': 8,
 				sync: true,
 				unit: 'px',
 			},
@@ -512,10 +528,10 @@ export const preset6 = {
 	},
 	padding: {
 		general: {
-			top: 3,
-			right: 3,
-			bottom: 3,
-			left: 10,
+			'padding-top': 10,
+			'padding-right': 20,
+			'padding-bottom': 10,
+			'padding-left': 20,
 			unit: 'px',
 		},
 	},
@@ -526,7 +542,7 @@ export const preset6 = {
 	},
 	boxShadow: {
 		general: {
-			shadowColor: '',
+			shadowColor: '#ffffff',
 			shadowHorizontal: '',
 			shadowVertical: '',
 			shadowBlur: '',
@@ -534,29 +550,30 @@ export const preset6 = {
 		},
 	},
 	icon: {
-		icon: 'fas fa-arrow-right',
-		position: 'right',
+		icon: 'far fa-envelope',
+		position: 'left',
 		general: {
 			color: '#fffff',
-			spacing: 18,
+			spacing: 10,
 		},
 	},
 	iconBorder: {
-		borderColor: '#ffffff',
 		borderWidth: {
 			general: {
-				'border-top-width': 1,
-				'border-right-width': 1,
-				'border-bottom-width': 1,
-				'border-left-width': 1,
+				'border-color': '',
+				'border-style': 'none',
+				'border-top-width': 0,
+				'border-right-width': 0,
+				'border-bottom-width': 0,
+				'border-left-width': 0,
 			},
 		},
 		borderRadius: {
 			general: {
-				'border-top-left-radius': '',
-				'border-top-right-radius': '',
-				'border-bottom-right-radius': '',
-				'border-bottom-left-radius': '',
+				'border-top-left-radius': 0,
+				'border-top-right-radius': 0,
+				'border-bottom-right-radius': 0,
+				'border-bottom-left-radius': 0,
 				unit: 'px',
 			},
 		},
@@ -570,10 +587,10 @@ export const preset6 = {
 	},
 	iconPadding: {
 		general: {
-			top: 10,
-			right: 10,
-			bottom: 10,
-			left: 10,
+			'padding-top': 0,
+			'padding-right': 0,
+			'padding-bottom': 0,
+			'padding-left': 0,
 		},
 	},
 };

@@ -7,24 +7,19 @@
 	background: #fff;
 	width: 100%;
 
+	&__icon,
 	&__upload {
-		flex: 1;
-		display: block;
-		text-align: center;
-		box-shadow: none !important;
-		border: 2px solid #dddfe2;
-		border-radius: 5px;
-		color: #464a53;
-		min-height: 90px;
-		background-color: #f2f2f2;
-	}
-
-	&__icon {
-		width: 100%;
 		display: flex;
-		justify-content: center;
 		align-items: center;
-		padding: 40px;
+		justify-content: center;
+		box-shadow: none !important;
+		border: 1px dashed #b4bbc1;
+		border-radius: 3px;
+		color: #464a53;
+		width: 100%;
+		min-height: 100px;
+		background-color: #edeff0;
+
 		i {
 			font-size: 42px;
 		}
@@ -34,7 +29,30 @@
 		display: flex;
 		justify-content: space-around;
 		width: 100%;
-		margin-bottom: 8px;
+		margin: 8px 0;
+		&__replace,
+		&__remove {
+			border: 2px solid #dddfe1;
+			border-radius: 5px;
+			color: #464a53 !important;
+			box-shadow: none !important;
+			margin: 0 5px 0 0;
+			flex: 1;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			transition: all 0.5s;
+			.components-button {
+				padding: 0;
+				color: #464a53;
+			}
+			&:hover {
+				background-color: #edeff0;
+			}
+		}
+		&__remove {
+			margin-right: 0;
+		}
 	}
 
 	&__modal {

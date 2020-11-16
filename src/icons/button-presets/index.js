@@ -1,9 +1,8 @@
-export { default as PresetOne } from './preset-1';
-export { default as PresetTwo } from './preset-2';
-export { default as PresetThree } from './preset-3';
-export { default as PresetFour } from './preset-4';
-export { default as PresetFive } from './preset-5';
-export { default as PresetSix } from './preset-6';
-export { default as PresetSeven } from './preset-7';
-export { default as PresetEight } from './preset-8';
-export { default as PresetNine } from './preset-9';
+export { default as presetOne } from './preset-1';
+export { default as presetTwo } from './preset-2';
+export { default as presetThree } from './preset-3';
+export { default as presetFour } from './preset-4';
+export { default as presetFive } from './preset-5';
+export { default as presetSix } from './preset-6';
+export { default as presetSeven } from './preset-7';
+export { default as presetEight } from './preset-8';

@@ -3,7 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
-const { TextControl } = wp.components;
+const { TextControl, Icon } = wp.components;
 const { Fragment } = wp.element;
 
 /**
@@ -43,12 +43,12 @@ import { isObject, merge } from 'lodash';
  * Icons
  */
 import {
-	PresetOne,
-	PresetTwo,
-	PresetThree,
-	PresetFour,
-	PresetFive,
-	PresetSix,
+	presetOne,
+	presetTwo,
+	presetThree,
+	presetFour,
+	presetFive,
+	presetSix,
 } from '../../icons';
 
 /**
@@ -183,9 +183,13 @@ const Inspector = props => {
 													className='maxi-button-default-styles'
 													items={[
 														{
-															activeItem: false,
+															activeItem: 0,
 															content: (
-																<PresetOne />
+																<Icon
+																	icon={
+																		presetOne
+																	}
+																/>
 															),
 															onChange: () =>
 																onChangePreset(
@@ -193,9 +197,13 @@ const Inspector = props => {
 																),
 														},
 														{
-															activeItem: false,
+															activeItem: 0,
 															content: (
-																<PresetTwo />
+																<Icon
+																	icon={
+																		presetTwo
+																	}
+																/>
 															),
 															onChange: () =>
 																onChangePreset(
@@ -203,9 +211,13 @@ const Inspector = props => {
 																),
 														},
 														{
-															activeItem: false,
+															activeItem: 0,
 															content: (
-																<PresetThree />
+																<Icon
+																	icon={
+																		presetThree
+																	}
+																/>
 															),
 															onChange: () =>
 																onChangePreset(
@@ -213,9 +225,13 @@ const Inspector = props => {
 																),
 														},
 														{
-															activeItem: false,
+															activeItem: 0,
 															content: (
-																<PresetFour />
+																<Icon
+																	icon={
+																		presetFour
+																	}
+																/>
 															),
 															onChange: () =>
 																onChangePreset(
@@ -223,9 +239,13 @@ const Inspector = props => {
 																),
 														},
 														{
-															activeItem: false,
+															activeItem: 0,
 															content: (
-																<PresetFive />
+																<Icon
+																	icon={
+																		presetFive
+																	}
+																/>
 															),
 															onChange: () =>
 																onChangePreset(
@@ -233,9 +253,13 @@ const Inspector = props => {
 																),
 														},
 														{
-															activeItem: false,
+															activeItem: 0,
 															content: (
-																<PresetSix />
+																<Icon
+																	icon={
+																		presetSix
+																	}
+																/>
 															),
 															onChange: () =>
 																onChangePreset(
@@ -243,6 +267,23 @@ const Inspector = props => {
 																),
 														},
 													]}
+												/>
+											),
+										},
+										{
+											label: __('Icon', 'maxi-blocks'),
+											content: (
+												<__experimentalFontIconControl
+													icon={icon}
+													onChange={obj => {
+														setAttributes(obj);
+													}}
+													iconBorder={iconBorder}
+													iconPadding={iconPadding}
+													iconBackground={
+														iconBackground
+													}
+													breakpoint={deviceType}
 												/>
 											),
 										},
@@ -621,23 +662,6 @@ const Inspector = props => {
 															),
 														},
 													]}
-												/>
-											),
-										},
-										{
-											label: __('Icon', 'maxi-blocks'),
-											content: (
-												<__experimentalFontIconControl
-													icon={icon}
-													onChange={obj => {
-														setAttributes(obj);
-													}}
-													iconBorder={iconBorder}
-													iconPadding={iconPadding}
-													iconBackground={
-														iconBackground
-													}
-													breakpoint={deviceType}
 												/>
 											),
 										},

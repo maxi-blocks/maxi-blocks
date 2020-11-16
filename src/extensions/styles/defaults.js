@@ -1460,7 +1460,7 @@ export const __experimentalPosition = {
 export const __experimentalDisplay = {
 	label: 'Display block',
 	general: {
-		display: '',
+		display: 'flex',
 	},
 	xxl: {
 		display: '',

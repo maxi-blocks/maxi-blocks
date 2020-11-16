@@ -29,6 +29,10 @@ const ToggleBlock = props => {
 
 	const displayValue = !isObject(display) ? JSON.parse(display) : display;
 
+	const defaultDisplayValue = !isObject(defaultDisplay)
+		? JSON.parse(defaultDisplay)
+		: defaultDisplay;
+
 	return (
 		<Fragment>
 			{getLastBreakpointValue(displayValue, 'display', breakpoint) ===
@@ -40,7 +44,8 @@ const ToggleBlock = props => {
 					<Button
 						className='toolbar-item toolbar-item__toggle-block'
 						onClick={() => {
-							displayValue[breakpoint].display = defaultDisplay;
+							displayValue[breakpoint].display =
+								defaultDisplayValue[breakpoint].display;
 							onChange(JSON.stringify(displayValue));
 						}}
 					>

@@ -6,6 +6,11 @@ const { Fragment, useEffect, useState } = wp.element;
 const { select } = wp.data;
 
 /**
+ * External dependencies
+ */
+import { isObject } from 'lodash';
+
+/**
  * Internal dependencies
  */
 import { getDefaultProp } from '../../utils';
@@ -458,7 +463,7 @@ const MaxiToolbar = props => {
 							display={display}
 							breakpoint={deviceType}
 							onChange={display => setAttributes({ display })}
-							defaultDisplay='flex'
+							defaultDisplay={getDefaultProp(clientId, 'display')}
 						/>
 					</div>
 				</Popover>

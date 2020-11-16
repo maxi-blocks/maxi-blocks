@@ -833,7 +833,10 @@ const Inspector = props => {
 											setAttributes({ display })
 										}
 										breakpoint={deviceType}
-										defaultDisplay='flex'
+										defaultDisplay={getDefaultProp(
+											clientId,
+											'display'
+										)}
 									/>
 									<__experimentalClipPath
 										clipPath={clipPath}

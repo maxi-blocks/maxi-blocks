@@ -623,6 +623,10 @@ const Inspector = props => {
 															})
 														}
 														breakpoint={deviceType}
+														defaultDisplay={getDefaultProp(
+															clientId,
+															'display'
+														)}
 													/>
 												),
 											},

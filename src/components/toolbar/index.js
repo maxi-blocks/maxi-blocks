@@ -120,13 +120,8 @@ const MaxiToolbar = props => {
 		document.getElementById(`block-${clientId}`)
 	);
 
-	const [parentAnchorRef, setParentAnchorRef] = useState();
-
 	useEffect(() => {
 		setAnchorRef(document.getElementById(`block-${clientId}`));
-		setParentAnchorRef(
-			document.getElementById(`block-${clientId}`).parentElement
-		);
 	});
 
 	if (!allowedBlocks.includes(name)) return null;

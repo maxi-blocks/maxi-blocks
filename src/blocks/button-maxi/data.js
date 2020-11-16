@@ -499,7 +499,6 @@ export const alignmentText = {
 export const icon = {
 	label: 'icon',
 	icon: '',
-	buttonPreset: '',
 	position: 'left',
 	customPadding: '0',
 	general: {

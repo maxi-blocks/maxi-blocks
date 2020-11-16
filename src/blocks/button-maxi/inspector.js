@@ -136,11 +136,7 @@ const Inspector = props => {
 			result[key] = JSON.stringify(value);
 		});
 
-		iconValue.buttonPreset = number;
 		setAttributes(result);
-		setAttributes({
-			icon: JSON.stringify(iconValue),
-		});
 	};
 
 	const borderHoverValue = !isObject(borderHover)
@@ -179,9 +175,7 @@ const Inspector = props => {
 													className='maxi-button-default-styles'
 													items={[
 														{
-															activeItem:
-																iconValue.buttonPreset ===
-																1,
+															activeItem: 0,
 															content: (
 																<Icon
 																	icon={
@@ -195,9 +189,7 @@ const Inspector = props => {
 																),
 														},
 														{
-															activeItem:
-																iconValue.buttonPreset ===
-																2,
+															activeItem: 0,
 															content: (
 																<Icon
 																	icon={
@@ -211,9 +203,7 @@ const Inspector = props => {
 																),
 														},
 														{
-															activeItem:
-																iconValue.buttonPreset ===
-																3,
+															activeItem: 0,
 															content: (
 																<Icon
 																	icon={
@@ -227,9 +217,7 @@ const Inspector = props => {
 																),
 														},
 														{
-															activeItem:
-																iconValue.buttonPreset ===
-																4,
+															activeItem: 0,
 															content: (
 																<Icon
 																	icon={
@@ -243,9 +231,7 @@ const Inspector = props => {
 																),
 														},
 														{
-															activeItem:
-																iconValue.buttonPreset ===
-																5,
+															activeItem: 0,
 															content: (
 																<Icon
 																	icon={
@@ -259,9 +245,7 @@ const Inspector = props => {
 																),
 														},
 														{
-															activeItem:
-																iconValue.buttonPreset ===
-																6,
+															activeItem: 0,
 															content: (
 																<Icon
 																	icon={

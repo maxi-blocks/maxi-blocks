@@ -79,7 +79,9 @@ class edit extends MaxiBlock {
 			borderWidth: { ...JSON.parse(iconBorder).borderWidth },
 			borderRadius: { ...JSON.parse(iconBorder).borderRadius },
 			background: {
-				...getColorBackgroundObject(JSON.parse(iconBackground)),
+				...getColorBackgroundObject(
+					JSON.parse(iconBackground).colorOptions
+				),
 			},
 		};
 

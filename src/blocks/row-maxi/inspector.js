@@ -75,6 +75,10 @@ const Inspector = props => {
 		? JSON.parse(backgroundHover)
 		: backgroundHover;
 
+	const boxShadowHoverValue = !isObject(boxShadowHover)
+		? JSON.parse(boxShadowHover)
+		: boxShadowHover;
+
 	const borderHoverValue = !isObject(borderHover)
 		? JSON.parse(borderHover)
 		: borderHover;
@@ -549,25 +553,66 @@ const Inspector = props => {
 																'gutenberg-extra'
 															),
 															content: (
-																<BoxShadowControl
-																	boxShadow={
-																		boxShadowHover
-																	}
-																	defaultBoxShadow={getDefaultProp(
-																		clientId,
-																		'boxShadowHover'
-																	)}
-																	onChange={boxShadowHover =>
-																		setAttributes(
+																<Fragment>
+																	<__experimentalFancyRadioControl
+																		label={__(
+																			'Enable Border Hover',
+																			'maxi-blocks'
+																		)}
+																		selected={Number(
+																			boxShadowHoverValue.status
+																		)}
+																		options={[
 																			{
-																				boxShadowHover,
+																				label: __(
+																					'Yes',
+																					'maxi-blocks'
+																				),
+																				value: 1,
+																			},
+																			{
+																				label: __(
+																					'No',
+																					'maxi-blocks'
+																				),
+																				value: 0,
+																			},
+																		]}
+																		onChange={val => {
+																			boxShadowHoverValue.status = Number(
+																				val
+																			);
+																			setAttributes(
+																				{
+																					boxShadowHover: JSON.stringify(
+																						boxShadowHoverValue
+																					),
+																				}
+																			);
+																		}}
+																	/>
+																	{!!boxShadowHoverValue.status && (
+																		<BoxShadowControl
+																			boxShadow={
+																				boxShadowHover
 																			}
-																		)
-																	}
-																	breakpoint={
-																		deviceType
-																	}
-																/>
+																			defaultBoxShadow={getDefaultProp(
+																				clientId,
+																				'boxShadowHover'
+																			)}
+																			onChange={boxShadowHover =>
+																				setAttributes(
+																					{
+																						boxShadowHover,
+																					}
+																				)
+																			}
+																			breakpoint={
+																				deviceType
+																			}
+																		/>
+																	)}
+																</Fragment>
 															),
 														},
 													]}

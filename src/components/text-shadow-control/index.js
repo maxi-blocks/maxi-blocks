@@ -40,8 +40,8 @@ const TextShadow = props => {
 	const color = valueDecomposed[3];
 
 	const onChangeValue = (i, val) => {
-		if (isNil(val)) valueDecomposed[i] = `${0}px`;
-		else valueDecomposed[i] = `${val}px`;
+		if (isNil(val)) valueDecomposed[i] = `${0}`;
+		else valueDecomposed[i] = `${val}`;
 
 		if (
 			valueDecomposed[0] === '0px' &&
@@ -85,7 +85,7 @@ const TextShadow = props => {
 						activeItem: getActiveItem('0px 0px 5px #A2A2A2'),
 						content: (
 							<span className='maxi-textshadow-control__default maxi-textshadow-control__default__total'>
-								Maxi
+								{__('Maxi', 'maxi-blocks')}
 							</span>
 						),
 						onChange: () => onChange('0px 0px 5px #A2A2A2'),
@@ -94,7 +94,7 @@ const TextShadow = props => {
 						activeItem: getActiveItem('5px 0px 3px #A2A2A2'),
 						content: (
 							<span className='maxi-textshadow-control__default maxi-textshadow-control__default__bottom'>
-								Maxi
+								{__('Maxi', 'maxi-blocks')}
 							</span>
 						),
 						onChange: () => onChange('5px 0px 3px #A2A2A2'),
@@ -103,7 +103,7 @@ const TextShadow = props => {
 						activeItem: getActiveItem('2px 4px 0px #A2A2A2'),
 						content: (
 							<span className='maxi-textshadow-control__default maxi-textshadow-control__default__solid'>
-								Maxi
+								{__('Maxi', 'maxi-blocks')}
 							</span>
 						),
 						onChange: () => onChange('2px 4px 0px #A2A2A2'),
@@ -119,7 +119,7 @@ const TextShadow = props => {
 				disableGradientAboveBackground
 			/>
 			<RangeControl
-				label={__('X-axis', 'maxi-blocks')}
+				label={__('X', 'maxi-blocks')}
 				value={Number(trim(x))}
 				onChange={val => onChangeValue(0, val)}
 				min={0}
@@ -127,7 +127,7 @@ const TextShadow = props => {
 				allowReset
 			/>
 			<RangeControl
-				label={__('Y-axis', 'maxi-blocks')}
+				label={__('Y', 'maxi-blocks')}
 				value={Number(trim(y))}
 				onChange={val => onChangeValue(1, val)}
 				min={0}

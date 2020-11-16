@@ -729,6 +729,7 @@ export const boxShadow = {
 
 export const boxShadowHover = {
 	label: 'Box Shadow',
+	status: 0,
 	general: {
 		shadowColor: '#',
 		shadowHorizontal: '',

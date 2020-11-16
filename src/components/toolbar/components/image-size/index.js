@@ -3,7 +3,7 @@
  */
 const { Fragment } = wp.element;
 const { __ } = wp.i18n;
-const { Button, SelectControl, RangeControl } = wp.components;
+const { Button, SelectControl, RangeControl, RadioControl } = wp.components;
 const { useSelect, useDispatch } = wp.data;
 
 /**
@@ -98,9 +98,10 @@ const ImageSize = props => {
 						onChange={imageSize => onChangeImageSize(imageSize)}
 					/>
 					{isFirstOnHierarchy && (
-						<SelectControl
+						<RadioControl
+							className='toolbar-item__popover__toggle-btn'
 							label={__('Full Width', 'maxi-blocks')}
-							value={fullWidth}
+							selected={fullWidth}
 							options={[
 								{
 									label: __('No', 'maxi-blocks'),

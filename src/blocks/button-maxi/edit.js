@@ -148,7 +148,6 @@ class edit extends MaxiBlock {
 		} = this.props.attributes;
 
 		const response = {
-			typographyHover: { ...JSON.parse(typographyHover) },
 			boxShadowHover: {
 				...getBoxShadowObject(JSON.parse(boxShadowHover)),
 			},
@@ -159,6 +158,12 @@ class edit extends MaxiBlock {
 		if (!isNil(backgroundHover) && !!JSON.parse(backgroundHover).status) {
 			response.backgroundHover = {
 				...getColorBackgroundObject(JSON.parse(backgroundHover)),
+			};
+		}
+
+		if (!isNil(typographyHover) && !!JSON.parse(typographyHover).status) {
+			response.typographyHover = {
+				...JSON.parse(typographyHover),
 			};
 		}
 

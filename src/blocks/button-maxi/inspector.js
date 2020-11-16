@@ -143,6 +143,10 @@ const Inspector = props => {
 		? JSON.parse(boxShadowHover)
 		: boxShadowHover;
 
+	const typographyHoverValue = !isObject(typographyHover)
+		? JSON.parse(typographyHover)
+		: typographyHover;
+
 	const borderHoverValue = !isObject(borderHover)
 		? JSON.parse(borderHover)
 		: borderHover;
@@ -325,35 +329,76 @@ const Inspector = props => {
 																'maxi-blocks'
 															),
 															content: (
-																<TypographyControl
-																	typography={
-																		typographyHover
-																	}
-																	defaultTypography={getDefaultProp(
-																		clientId,
-																		'typographyHover'
-																	)}
-																	onChange={obj => {
-																		setAttributes(
+																<Fragment>
+																	<__experimentalFancyRadioControl
+																		label={__(
+																			'Enable Typography Hover',
+																			'maxi-blocks'
+																		)}
+																		selected={Number(
+																			typographyHoverValue.status
+																		)}
+																		options={[
 																			{
-																				typographyHover:
-																					obj.typography,
-																				...(obj.content && {
-																					content:
-																						obj.content,
-																				}),
+																				label: __(
+																					'Yes',
+																					'maxi-blocks'
+																				),
+																				value: 1,
+																			},
+																			{
+																				label: __(
+																					'No',
+																					'maxi-blocks'
+																				),
+																				value: 0,
+																			},
+																		]}
+																		onChange={val => {
+																			typographyHoverValue.status = Number(
+																				val
+																			);
+																			setAttributes(
+																				{
+																					typographyHover: JSON.stringify(
+																						typographyHoverValue
+																					),
+																				}
+																			);
+																		}}
+																	/>
+																	{!!typographyHoverValue.status && (
+																		<TypographyControl
+																			typography={
+																				typographyHover
 																			}
-																		);
-																	}}
-																	hideAlignment
-																	breakpoint={
-																		deviceType
-																	}
-																	formatValue={
-																		formatValue
-																	}
-																	isHover
-																/>
+																			defaultTypography={getDefaultProp(
+																				clientId,
+																				'typographyHover'
+																			)}
+																			onChange={obj => {
+																				setAttributes(
+																					{
+																						typographyHover:
+																							obj.typography,
+																						...(obj.content && {
+																							content:
+																								obj.content,
+																						}),
+																					}
+																				);
+																			}}
+																			hideAlignment
+																			breakpoint={
+																				deviceType
+																			}
+																			formatValue={
+																				formatValue
+																			}
+																			isHover
+																		/>
+																	)}
+																</Fragment>
 															),
 														},
 													]}

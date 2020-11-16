@@ -951,6 +951,7 @@ export const typography = {
 
 export const typographyHover = {
 	label: 'Typography',
+	status: 0,
 	general: {
 		'font-family': '',
 		'font-options': '',

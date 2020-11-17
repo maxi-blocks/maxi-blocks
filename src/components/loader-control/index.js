@@ -22,7 +22,7 @@ import './editor.scss';
 const LoaderControl = props => {
 	const {
 		options,
-		buttonText = __('Add', 'maxi-blocks'),
+		buttonText = __('Add New Layer', 'maxi-blocks'),
 		onChange,
 		onClick,
 		className,
@@ -36,6 +36,7 @@ const LoaderControl = props => {
 	return (
 		<div className={classes}>
 			<SelectControl
+				className='maxi-loader-control__options'
 				value={presetLoad}
 				options={options}
 				onChange={val => {
@@ -44,6 +45,7 @@ const LoaderControl = props => {
 				}}
 			/>
 			<Button
+				className='maxi-loader-control__add'
 				onClick={() => {
 					onClick(presetLoad);
 					!forwards && setPresetLoad('');

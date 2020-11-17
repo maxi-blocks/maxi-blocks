@@ -657,44 +657,7 @@ export const setBackgroundStyles = (
 		? JSON.parse(backgroundHover)
 		: backgroundHover;
 
-	let response = {
-		[`${target} > .maxi-background-displayer .maxi-background-displayer__color`]: {
-			background: {
-				...getColorBackgroundObject(backgroundValue.colorOptions),
-			},
-		},
-		[`${target} > .maxi-background-displayer .maxi-background-displayer__images`]: {
-			imageBackground: {
-				...getImageBackgroundObject(backgroundValue.imageOptions),
-			},
-		},
-		[`${target}:hover>.maxi-background-displayer .maxi-background-displayer__images`]: {
-			imageBackgroundHover: {
-				...getImageBackgroundObject(backgroundHoverValue.imageOptions),
-			},
-		},
-		[`${target}>.maxi-background-displayer .maxi-background-displayer__video-player`]: {
-			videoBackground: {
-				...getVideoBackgroundObject(backgroundValue.videoOptions),
-			},
-		},
-
-		[`${target}:hover>.maxi-background-displayer .maxi-background-displayer__video-player`]: {
-			videoBackgroundHover: {
-				...getVideoBackgroundObject(backgroundHoverValue.videoOptions),
-			},
-		},
-		[`${target}>.maxi-background-displayer .maxi-background-displayer__svg`]: {
-			SVGBackground: {
-				...getSVGWrapperBackgroundObject(backgroundValue.SVGOptions),
-			},
-		},
-		[`${target}>.maxi-background-displayer .maxi-background-displayer__svg svg`]: {
-			SVGBackground: {
-				...getSVGBackgroundObject(backgroundValue.SVGOptions),
-			},
-		},
-	};
+	let response = {};
 
 	if (!isNil(overlay)) {
 		response[
@@ -736,12 +699,61 @@ export const setBackgroundStyles = (
 		};
 	}
 
-	if (backgroundValue.layersOptions && !!backgroundValue.layersOptions.status)
+	if (
+		backgroundValue.layersOptions &&
+		!!backgroundValue.layersOptions.status
+	) {
 		response = setBackgroundLayers(
 			response,
 			backgroundValue.layersOptions.layers,
 			target
 		);
+	} else {
+		response = Object.assign(response, {
+			[`${target} > .maxi-background-displayer .maxi-background-displayer__color`]: {
+				background: {
+					...getColorBackgroundObject(backgroundValue.colorOptions),
+				},
+			},
+			[`${target} > .maxi-background-displayer .maxi-background-displayer__images`]: {
+				imageBackground: {
+					...getImageBackgroundObject(backgroundValue.imageOptions),
+				},
+			},
+			[`${target}:hover>.maxi-background-displayer .maxi-background-displayer__images`]: {
+				imageBackgroundHover: {
+					...getImageBackgroundObject(
+						backgroundHoverValue.imageOptions
+					),
+				},
+			},
+			[`${target}>.maxi-background-displayer .maxi-background-displayer__video-player`]: {
+				videoBackground: {
+					...getVideoBackgroundObject(backgroundValue.videoOptions),
+				},
+			},
+
+			[`${target}:hover>.maxi-background-displayer .maxi-background-displayer__video-player`]: {
+				videoBackgroundHover: {
+					...getVideoBackgroundObject(
+						backgroundHoverValue.videoOptions
+					),
+				},
+			},
+			[`${target}>.maxi-background-displayer .maxi-background-displayer__svg`]: {
+				SVGBackground: {
+					...getSVGWrapperBackgroundObject(
+						backgroundValue.SVGOptions
+					),
+				},
+			},
+			[`${target}>.maxi-background-displayer .maxi-background-displayer__svg svg`]: {
+				SVGBackground: {
+					...getSVGBackgroundObject(backgroundValue.SVGOptions),
+				},
+			},
+		});
+	}
 
 	return response;
 };

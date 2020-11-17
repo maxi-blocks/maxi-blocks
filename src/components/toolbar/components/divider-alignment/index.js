@@ -1,13 +1,12 @@
 /**
  * Internal dependencies
  */
-const { Fragment } = wp.element;
 const { __ } = wp.i18n;
 const { SelectControl, RadioControl } = wp.components;
 import ToolbarPopover from '../toolbar-popover';
 
 /**
- * Icons
+ * Styles & Icons
  */
 import './editor.scss';
 import {
@@ -53,12 +52,12 @@ const DividerAlignment = props => {
 
 	return (
 		<ToolbarPopover
-			className='toolbar-item__alignment'
+			className='toolbar-item__divider-alignment'
 			tooltip={__('Divider aligment', 'maxi-blocks')}
 			icon={toolbarDividerAlign}
 			advancedOptions='line'
 			content={
-				<Fragment>
+				<div className='toolbar-item__divider-alignment__popover'>
 					<SelectControl
 						label={__('Line Orientation', 'maxi-blocks')}
 						options={[
@@ -90,7 +89,7 @@ const DividerAlignment = props => {
 							onChange={value => onChangeHorizontal(value)}
 						/>
 					)}
-				</Fragment>
+				</div>
 			}
 		/>
 	);

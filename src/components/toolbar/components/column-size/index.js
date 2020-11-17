@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { Fragment } = wp.element;
 const { RangeControl, SelectControl } = wp.components;
 
 /**
@@ -17,8 +16,9 @@ import { getLastBreakpointValue, getDefaultProp } from '../../../../utils';
 import { isObject } from 'lodash';
 
 /**
- * Icons
+ * Styles & Icons
  */
+import './editor.scss';
 import { toolbarSizing } from '../../../../icons';
 
 /**
@@ -41,12 +41,12 @@ const ColumnSize = props => {
 
 	return (
 		<ToolbarPopover
-			className='toolbar-item__size'
+			className='toolbar-item__column-size'
 			tooltip={__('ColumnSize', 'maxi-blocks')}
 			icon={toolbarSizing}
 			advancedOptions='column settings'
 			content={
-				<Fragment>
+				<div className='toolbar-item__column-size__popover'>
 					<RangeControl
 						label={__('Column Size', 'maxi-blocks')}
 						value={getLastBreakpointValue(
@@ -107,7 +107,7 @@ const ColumnSize = props => {
 							})
 						}
 					/>
-				</Fragment>
+				</div>
 			}
 		/>
 	);

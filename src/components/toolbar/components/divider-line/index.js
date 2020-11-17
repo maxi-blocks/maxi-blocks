@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { Fragment } = wp.element;
 
 /**
  * Internal dependencies
@@ -11,13 +10,9 @@ import ToolbarPopover from '../toolbar-popover';
 import __experimentalDividerControl from '../../../divider-control';
 
 /**
- * External dependencies
+ * Styles & Icons
  */
-import classnames from 'classnames';
-
-/**
- * Icons
- */
+import './editor.scss';
 import { toolbarDividerSetting } from '../../../../icons';
 
 /**
@@ -37,12 +32,12 @@ const Divider = props => {
 
 	return (
 		<ToolbarPopover
-			className='toolbar-item__divider'
+			className='toolbar-item__divider-line'
 			tooltip={__('Divider', 'maxi-blocks')}
 			icon={toolbarDividerSetting}
 			advancedOptions='line'
 			content={
-				<Fragment>
+				<div className='toolbar-item__divider-line__popover'>
 					<__experimentalDividerControl
 						divider={divider}
 						defaultDivider={defaultDivider}
@@ -54,7 +49,7 @@ const Divider = props => {
 						disableLineStyle
 						disableBorderRadius
 					/>
-				</Fragment>
+				</div>
 			}
 		/>
 	);

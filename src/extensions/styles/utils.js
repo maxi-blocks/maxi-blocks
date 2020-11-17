@@ -668,11 +668,6 @@ export const setBackgroundStyles = (
 				...getImageBackgroundObject(backgroundValue.imageOptions),
 			},
 		},
-		[`${target}:hover>.maxi-background-displayer .maxi-background-displayer__images`]: {
-			imageBackgroundHover: {
-				...getImageBackgroundObject(backgroundHoverValue.imageOptions),
-			},
-		},
 		[`${target}>.maxi-background-displayer .maxi-background-displayer__video-player`]: {
 			videoBackground: {
 				...getVideoBackgroundObject(backgroundValue.videoOptions),

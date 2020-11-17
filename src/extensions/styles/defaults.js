@@ -562,7 +562,7 @@ export const backgroundHover = {
 		status: 0,
 		layers: [],
 	},
-	// status: 0,
+	status: 0,
 	colorOptions: {
 		activeColor: '',
 		color: '',

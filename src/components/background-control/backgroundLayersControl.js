@@ -26,7 +26,7 @@ import { isEmpty } from 'lodash';
 /**
  * Styles and icons
  */
-import { chevronDown } from '../../icons';
+import { moveRight } from '../../icons';
 
 /**
  * Component
@@ -47,12 +47,15 @@ const LayerCard = props => {
 				onClick={() => onOpen(!!isOpen)}
 			>
 				<span className='maxi-background-layer__arrow'>
-					{chevronDown}
+					{moveRight}
 				</span>
 				<p className='maxi-background-layer__title'>
-					{title}
+					<span className='maxi-background-layer__title__id'></span>
+					<span className='maxi-background-layer__title__text'>
+						{title}
+					</span>
 					<span
-						className='maxi-background-layer__remover'
+						className='maxi-background-layer__title__remover'
 						onClick={onRemove}
 					/>
 				</p>
@@ -190,13 +193,8 @@ const BackgroundLayersControl = props => {
 					{!isEmpty(layers) && (
 						<ReactDragListView
 							onDragEnd={(fromIndex, toIndex) => {
-								const layer = layers.splice(fromIndex, 1)[0];
-								layersOptions.layers = layers.splice(
-									toIndex,
-									0,
-									layer
-								);
-
+								let layer = layers.splice(fromIndex, 1)[0];
+								layers.splice(toIndex, 0, layer);
 								onChange(layersOptions);
 							}}
 							nodeSelector='div.maxi-background-layer'
@@ -222,10 +220,7 @@ const BackgroundLayersControl = props => {
 										}}
 										isOpen={selector === i}
 										onRemove={() => {
-											layersOptions.layers = layers.splice(
-												i,
-												1
-											);
+											layers.splice(i, 1);
 
 											onChange(layersOptions);
 										}}
@@ -258,7 +253,7 @@ const BackgroundLayersControl = props => {
 							},
 						]}
 						onClick={value => {
-							layersOptions.layers.push(getObject(value));
+							layersOptions.layers.unshift(getObject(value));
 							onChange(layersOptions);
 						}}
 						forwards

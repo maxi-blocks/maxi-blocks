@@ -451,9 +451,8 @@ const MaxiToolbar = props => {
 						<Delete clientId={clientId} />
 						<ToggleBlock
 							display={display}
-							breakpoint={deviceType}
 							onChange={display => setAttributes({ display })}
-							defaultDisplay='flex'
+							breakpoint={deviceType}
 						/>
 					</div>
 				</Popover>

@@ -19,6 +19,7 @@ import {
 	getAlignmentFlexObject,
 	getTransformObject,
 	setBackgroundStyles,
+	getLastBreakpointValue,
 } from '../../utils';
 import {
 	MaxiBlock,
@@ -183,14 +184,20 @@ class edit extends MaxiBlock {
 				content,
 				background,
 				motion,
+				display,
 			},
 			clientId,
+			deviceType,
 		} = this.props;
+
+		const displayValue = !isObject(display) ? JSON.parse(display) : display;
 
 		const classes = classnames(
 			'maxi-block',
 			'maxi-block--backend',
 			'maxi-svg-icon-block',
+			getLastBreakpointValue(displayValue, 'display', deviceType) ===
+				'none' && 'maxi-block-display-none',
 			blockStyle,
 			extraClassName,
 			uniqueID,

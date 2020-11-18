@@ -29,10 +29,51 @@ const ToggleBlock = props => {
 
 	const displayValue = !isObject(display) ? JSON.parse(display) : display;
 
+	const isHide = () => {
+		const objectKeys = Object.keys(displayValue);
+		const breakpointIndex = objectKeys.indexOf(breakpoint) - 1;
+
+		if (breakpointIndex === 0) return false;
+
+		let i = breakpointIndex;
+
+		do {
+			if (displayValue[objectKeys[i]].display === 'none') return true;
+			if (displayValue[objectKeys[i]].display === defaultDisplay)
+				return false;
+			i -= 1;
+		} while (i > 0);
+
+		return false;
+	};
+
+	const getValue = () => {
+		const isPrevHide = isHide();
+
+		return isPrevHide && displayValue[breakpoint].display === ''
+			? 'none'
+			: displayValue[breakpoint].display;
+	};
+
+	const getOptions = () => {
+		const isPrevHide = isHide();
+
+		if (isPrevHide) {
+			return {
+				show: defaultDisplay,
+				hiude: 'none',
+			};
+		} else {
+			return {
+				show: '',
+				hide: 'none',
+			};
+		}
+	};
+
 	return (
 		<Fragment>
-			{getLastBreakpointValue(displayValue, 'display', breakpoint) ===
-			'none' ? (
+			{getValue() === 'none' ? (
 				<Tooltip
 					text={__('Show', 'maxi-blocks')}
 					position='bottom center'
@@ -40,7 +81,9 @@ const ToggleBlock = props => {
 					<Button
 						className='toolbar-item toolbar-item__toggle-block'
 						onClick={() => {
-							displayValue[breakpoint].display = defaultDisplay;
+							displayValue[
+								breakpoint
+							].display = getOptions().show;
 							onChange(JSON.stringify(displayValue));
 						}}
 					>
@@ -58,7 +101,9 @@ const ToggleBlock = props => {
 					<Button
 						className='toolbar-item toolbar-item__toggle-block'
 						onClick={() => {
-							displayValue[breakpoint].display = 'none';
+							displayValue[
+								breakpoint
+							].display = getOptions().hide;
 							onChange(JSON.stringify(displayValue));
 						}}
 					>

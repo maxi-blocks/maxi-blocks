@@ -54,7 +54,7 @@ const ColorControl = props => {
 	useEffect(() => {
 		if (color !== currentColor) {
 			setCurrentColor(color);
-			setColorAlpha(getRGB(color).rgb.a * 100);
+			setColorAlpha(getRGB(color).rgb.a);
 		}
 	}, [color, currentColor, setCurrentColor, setColorAlpha, getRGB]);
 
@@ -87,7 +87,7 @@ const ColorControl = props => {
 			<RangeControl
 				label={__('Colour Opacity', 'maxi-blocks')}
 				className='maxi-color-control__opacity'
-				value={colorAlpha}
+				value={Number(colorAlpha)}
 				onChange={val => {
 					if (!isEmpty(color)) {
 						onChange(returnColor(getRGB(color), Number(val / 100)));

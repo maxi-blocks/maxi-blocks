@@ -15,7 +15,6 @@ import * as SVGShapes from '../../icons/shape-icons';
  */
 import classnames from 'classnames';
 import DOMPurify from 'dompurify';
-import { isNil } from 'lodash';
 
 /**
  * Styles

@@ -1,21 +1,8 @@
 /**
- * WordPress dependencies
- */
-const { __ } = wp.i18n;
-const { Fragment } = wp.element;
-const { RangeControl, RadioControl } = wp.components;
-
-/**
- * Internal dependencies
- */
-import { getLastBreakpointValue } from '../../utils';
-import SizeControl from '../size-control';
-
-/**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject, isNil } from 'lodash';
+import { isObject } from 'lodash';
 
 /**
  * Styles

@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { Fragment } = wp.element;
 
 /**
  * Internal dependencies
@@ -37,7 +36,7 @@ const PaddingMargin = props => {
 			tooltip={__('Padding & Margin', 'maxi-blocks')}
 			icon={toolbarPadding}
 			content={
-				<Fragment>
+				<div className='toolbar-item__padding-margin__popover'>
 					<__experimentalAxisControl
 						values={padding}
 						defaultValues={defaultPadding}
@@ -51,7 +50,7 @@ const PaddingMargin = props => {
 						onChange={margin => onChangeMargin(margin)}
 						breakpoint={breakpoint}
 					/>
-				</Fragment>
+				</div>
 			}
 		/>
 	);

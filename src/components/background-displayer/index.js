@@ -34,7 +34,7 @@ const BackgroundDisplayer = props => {
 
 	return (
 		<div className={classes}>
-			{!!status === false ? (
+			{!status ? (
 				<Fragment>
 					<div
 						className={classnames(

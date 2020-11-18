@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { Fragment } = wp.element;
 const { RadioControl } = wp.components;
 
 /**
@@ -63,7 +62,7 @@ const Size = props => {
 			icon={toolbarSizing}
 			advancedOptions='width height'
 			content={
-				<Fragment>
+				<div className='toolbar-item__size__popover'>
 					{isFirstOnHierarchy &&
 						blockName === 'maxi-blocks/container-maxi' && (
 							<RadioControl
@@ -131,7 +130,7 @@ const Size = props => {
 							onChangeSize(JSON.stringify(value));
 						}}
 					/>
-				</Fragment>
+				</div>
 			}
 		/>
 	);

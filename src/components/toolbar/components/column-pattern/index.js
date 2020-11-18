@@ -16,8 +16,9 @@ import { __experimentalColumnPattern } from '../../..';
 import { isObject } from 'lodash';
 
 /**
- * Styles and icons
+ * Styles & Icons
  */
+import './editor.scss';
 import { toolbarColumnPattern } from '../../../../icons';
 
 const ColumnPattern = props => {
@@ -37,17 +38,19 @@ const ColumnPattern = props => {
 					icon={toolbarColumnPattern}
 					tooltip={__('Column pattern', 'maxi-blocks')}
 					content={
-						<__experimentalColumnPattern
-							clientId={clientId}
-							blockName={blockName}
-							rowPattern={rowPattern}
-							onChange={rowPattern => {
-								onChange(rowPattern);
-							}}
-							toolbar
-							breakpoint={breakpoint}
-							{...props}
-						/>
+						<div className='toolbar-item__column-pattern__popover'>
+							<__experimentalColumnPattern
+								clientId={clientId}
+								blockName={blockName}
+								rowPattern={rowPattern}
+								onChange={rowPattern => {
+									onChange(rowPattern);
+								}}
+								toolbar
+								breakpoint={breakpoint}
+								{...props}
+							/>
+						</div>
 					}
 				/>
 			)}

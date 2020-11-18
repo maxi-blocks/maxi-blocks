@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { Fragment } = wp.element;
 const { SelectControl } = wp.components;
 
 /**
@@ -11,8 +10,9 @@ const { SelectControl } = wp.components;
 import ToolbarPopover from '../toolbar-popover';
 
 /**
- * Icons
+ * Styles & Icons
  */
+import './editor.scss';
 import { toolbarAdvancedSettings } from '../../../../icons';
 
 /**
@@ -30,7 +30,7 @@ const RowSettings = props => {
 			icon={toolbarAdvancedSettings}
 			advancedOptions='row settings'
 			content={
-				<Fragment>
+				<div className='toolbar-item__row-settings__popover'>
 					<SelectControl
 						label={__('Horizontal align', 'maxi-blocks')}
 						value={horizontalAlign}
@@ -93,7 +93,7 @@ const RowSettings = props => {
 							onChange({ horizontalAlign, verticalAlign })
 						}
 					/>
-				</Fragment>
+				</div>
 			}
 		/>
 	);

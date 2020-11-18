@@ -118,29 +118,28 @@ const BackgroundControl = props => {
 					}}
 				/>
 			)}
-			{getOptions().length > 1 &&
-				!!backgroundValue.layersOptions.status === false && (
-					<__experimentalFancyRadioControl
-						label={__('Background', 'maxi-blocks')}
-						fullWidthMode
-						selected={backgroundValue.activeMedia}
-						options={getOptions()}
-						onChange={item => {
-							backgroundValue.activeMedia = item;
-							if (isEmpty(item))
-								backgroundValue.colorOptions.activeColor = '';
-							if (item === 'color')
-								backgroundValue.colorOptions.activeColor =
-									backgroundValue.colorOptions.color;
-							if (item === 'gradient')
-								backgroundValue.colorOptions.activeColor =
-									backgroundValue.colorOptions.gradient;
+			{getOptions().length > 1 && !backgroundValue.layersOptions.status && (
+				<__experimentalFancyRadioControl
+					label={__('Background', 'maxi-blocks')}
+					fullWidthMode
+					selected={backgroundValue.activeMedia}
+					options={getOptions()}
+					onChange={item => {
+						backgroundValue.activeMedia = item;
+						if (isEmpty(item))
+							backgroundValue.colorOptions.activeColor = '';
+						if (item === 'color')
+							backgroundValue.colorOptions.activeColor =
+								backgroundValue.colorOptions.color;
+						if (item === 'gradient')
+							backgroundValue.colorOptions.activeColor =
+								backgroundValue.colorOptions.gradient;
 
-							onChange(JSON.stringify(backgroundValue));
-						}}
-					/>
-				)}
-			{!!backgroundValue.layersOptions.status === false && (
+						onChange(JSON.stringify(backgroundValue));
+					}}
+				/>
+			)}
+			{!backgroundValue.layersOptions.status && (
 				<Fragment>
 					{!disableColor && backgroundValue.activeMedia === 'color' && (
 						<ColorLayer

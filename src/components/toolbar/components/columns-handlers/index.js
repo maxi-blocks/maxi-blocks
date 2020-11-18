@@ -14,7 +14,7 @@ import classnames from 'classnames';
  */
 import { handlers } from '../../../../icons';
 
-const ColumnPattern = props => {
+const ColumnsHandlers = props => {
 	const { blockName, className, toggleHandlers } = props;
 
 	if (blockName !== 'maxi-blocks/row-maxi') return null;
@@ -39,4 +39,4 @@ const ColumnPattern = props => {
 	);
 };
 
-export default ColumnPattern;
+export default ColumnsHandlers;

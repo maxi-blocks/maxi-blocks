@@ -57,6 +57,7 @@ const BackgroundControl = props => {
 	const backgroundValue = !isObject(background)
 		? JSON.parse(background)
 		: background;
+
 	const backgroundDefaultValue = !isObject(defaultBackground)
 		? JSON.parse(defaultBackground)
 		: defaultBackground;
@@ -113,12 +114,11 @@ const BackgroundControl = props => {
 					layersOptions={backgroundValue.layersOptions}
 					onChange={layersOptions => {
 						backgroundValue.layersOptions = layersOptions;
-
 						onChange(JSON.stringify(backgroundValue));
 					}}
 				/>
 			)}
-			{getOptions().length > 1 && (
+			{getOptions().length > 1 && !backgroundValue.layersOptions.status && (
 				<__experimentalFancyRadioControl
 					label={__('Background', 'maxi-blocks')}
 					fullWidthMode
@@ -139,52 +139,10 @@ const BackgroundControl = props => {
 					}}
 				/>
 			)}
-			<Fragment>
-				{!disableColor && backgroundValue.activeMedia === 'color' && (
-					<ColorLayer
-						colorOptions={backgroundValue.colorOptions}
-						defaultColorOptions={
-							backgroundDefaultValue.colorOptions
-						}
-						onChange={colorOptions => {
-							backgroundValue.colorOptions = colorOptions;
-
-							onChange(JSON.stringify(backgroundValue));
-						}}
-						disableClipPath={disableClipPath}
-					/>
-				)}
-				{!disableImage && backgroundValue.activeMedia === 'image' && (
-					<ImageLayer
-						imageOptions={backgroundValue.imageOptions}
-						defaultImageOptions={
-							backgroundDefaultValue.imageOptions
-						}
-						onChange={imageOptions => {
-							backgroundValue.imageOptions = imageOptions;
-
-							onChange(JSON.stringify(backgroundValue));
-						}}
-						disableClipPath={disableClipPath}
-					/>
-				)}
-				{!disableVideo && backgroundValue.activeMedia === 'video' && (
-					<VideoLayer
-						videoOptions={backgroundValue.videoOptions}
-						defaultVideoOptions={
-							backgroundDefaultValue.videoOptions
-						}
-						onChange={videoOptions => {
-							backgroundValue.videoOptions = videoOptions;
-
-							onChange(JSON.stringify(backgroundValue));
-						}}
-						disableClipPath={disableClipPath}
-					/>
-				)}
-				{!disableGradient &&
-					backgroundValue.activeMedia === 'gradient' && (
-						<GradientLayer
+			{!backgroundValue.layersOptions.status && (
+				<Fragment>
+					{!disableColor && backgroundValue.activeMedia === 'color' && (
+						<ColorLayer
 							colorOptions={backgroundValue.colorOptions}
 							defaultColorOptions={
 								backgroundDefaultValue.colorOptions
@@ -197,18 +155,64 @@ const BackgroundControl = props => {
 							disableClipPath={disableClipPath}
 						/>
 					)}
-				{!disableSVG && backgroundValue.activeMedia === 'svg' && (
-					<SVGLayer
-						SVGOptions={backgroundValue.SVGOptions}
-						defaultSVGOptions={backgroundDefaultValue.SVGOptions}
-						onChange={SVGOptions => {
-							backgroundValue.SVGOptions = SVGOptions;
+					{!disableImage && backgroundValue.activeMedia === 'image' && (
+						<ImageLayer
+							imageOptions={backgroundValue.imageOptions}
+							defaultImageOptions={
+								backgroundDefaultValue.imageOptions
+							}
+							onChange={imageOptions => {
+								backgroundValue.imageOptions = imageOptions;
 
-							onChange(JSON.stringify(backgroundValue));
-						}}
-					/>
-				)}
-			</Fragment>
+								onChange(JSON.stringify(backgroundValue));
+							}}
+							disableClipPath={disableClipPath}
+						/>
+					)}
+					{!disableVideo && backgroundValue.activeMedia === 'video' && (
+						<VideoLayer
+							videoOptions={backgroundValue.videoOptions}
+							defaultVideoOptions={
+								backgroundDefaultValue.videoOptions
+							}
+							onChange={videoOptions => {
+								backgroundValue.videoOptions = videoOptions;
+
+								onChange(JSON.stringify(backgroundValue));
+							}}
+							disableClipPath={disableClipPath}
+						/>
+					)}
+					{!disableGradient &&
+						backgroundValue.activeMedia === 'gradient' && (
+							<GradientLayer
+								colorOptions={backgroundValue.colorOptions}
+								defaultColorOptions={
+									backgroundDefaultValue.colorOptions
+								}
+								onChange={colorOptions => {
+									backgroundValue.colorOptions = colorOptions;
+
+									onChange(JSON.stringify(backgroundValue));
+								}}
+								disableClipPath={disableClipPath}
+							/>
+						)}
+					{!disableSVG && backgroundValue.activeMedia === 'svg' && (
+						<SVGLayer
+							SVGOptions={backgroundValue.SVGOptions}
+							defaultSVGOptions={
+								backgroundDefaultValue.SVGOptions
+							}
+							onChange={SVGOptions => {
+								backgroundValue.SVGOptions = SVGOptions;
+
+								onChange(JSON.stringify(backgroundValue));
+							}}
+						/>
+					)}
+				</Fragment>
+			)}
 		</div>
 	);
 };

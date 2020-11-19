@@ -33,6 +33,8 @@ const ALLOWED_BLOCKS = [
 	'maxi-blocks/text-maxi',
 	'maxi-blocks/button-maxi',
 	'maxi-blocks/image-maxi',
+	'maxi-blocks/svg-icon-maxi',
+	'maxi-blocks/font-icon-maxi',
 ];
 
 const Alignment = props => {

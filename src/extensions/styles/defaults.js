@@ -1342,10 +1342,8 @@ export const __experimentalShapeDivider = {
 			},
 		},
 		shapeStyle: '',
-		colorOptions: {
-			color: '#000000',
-			gradient: '',
-			gradientAboveBackground: false,
+		background: {
+			...background,
 		},
 		effects: {
 			status: 0,
@@ -1362,10 +1360,8 @@ export const __experimentalShapeDivider = {
 			},
 		},
 		shapeStyle: '',
-		colorOptions: {
-			color: '#000000',
-			gradient: '',
-			gradientAboveBackground: false,
+		background: {
+			...background,
 		},
 		effects: {
 			status: 0,

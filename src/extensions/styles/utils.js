@@ -265,8 +265,12 @@ export const getShapeDividerSVGObject = shapeDivider => {
 		general: {},
 	};
 
-	if (!isEmpty(shapeDivider.colorOptions.color))
-		response.general.fill = shapeDivider.colorOptions.color;
+	const backgroundValue = !isObject(shapeDivider.background)
+		? JSON.parse(shapeDivider.background)
+		: shapeDivider.background;
+
+	if (!isEmpty(backgroundValue.colorOptions.color))
+		response.general.fill = backgroundValue.colorOptions.color;
 
 	return response;
 };

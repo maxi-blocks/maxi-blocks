@@ -93,6 +93,7 @@ class edit extends MaxiBlock {
 			border,
 			borderHover,
 			boxShadow,
+			shapeDivider,
 		} = this.props.attributes;
 
 		let response = {
@@ -104,29 +105,23 @@ class edit extends MaxiBlock {
 				.getContainerObject,
 			[`${uniqueID} .maxi-shape-divider__top`]: {
 				shapeDivider: {
-					...getShapeDividerObject(
-						JSON.parse(this.props.attributes.shapeDivider).top
-					),
+					...getShapeDividerObject(JSON.parse(shapeDivider).top),
 				},
 			},
 			[`${uniqueID} .maxi-shape-divider__top svg`]: {
 				shapeDivider: {
-					...getShapeDividerSVGObject(
-						JSON.parse(this.props.attributes.shapeDivider).top
-					),
+					...getShapeDividerSVGObject(JSON.parse(shapeDivider).top),
 				},
 			},
 			[`${uniqueID} .maxi-shape-divider__bottom`]: {
 				shapeDivider: {
-					...getShapeDividerObject(
-						JSON.parse(this.props.attributes.shapeDivider).bottom
-					),
+					...getShapeDividerObject(JSON.parse(shapeDivider).bottom),
 				},
 			},
 			[`${uniqueID} .maxi-shape-divider__bottom svg`]: {
 				shapeDivider: {
 					...getShapeDividerSVGObject(
-						JSON.parse(this.props.attributes.shapeDivider).bottom
+						JSON.parse(shapeDivider).bottom
 					),
 				},
 			},

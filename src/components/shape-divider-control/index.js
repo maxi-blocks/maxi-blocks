@@ -315,12 +315,12 @@ const ShapeDividerControl = props => {
 								}}
 							/>
 							<BackgroundControl
-								background={shapeDividerTopOptions}
+								background={shapeDividerTopOptions.background}
 								defaultBackground={
-									defaultShapeDividerTopOptions
+									defaultShapeDividerTopOptions.background
 								}
 								onChange={val => {
-									shapeDividerTopOptions = val;
+									shapeDividerTopOptions.background = val;
 									onChange(JSON.stringify(value));
 								}}
 								disableImage
@@ -328,6 +328,7 @@ const ShapeDividerControl = props => {
 								disableVideo
 								disableClipPath
 								disableSVG
+								disableLayers
 							/>
 							<SizeControl
 								label={__('Divider Height', 'maxi-blocks')}
@@ -431,18 +432,22 @@ const ShapeDividerControl = props => {
 								}}
 							/>
 							<BackgroundControl
-								background={shapeDividerBottomOptions}
+								background={
+									shapeDividerBottomOptions.background
+								}
 								defaultBackground={
-									defaultShapeDividerBottomOptions
+									defaultShapeDividerBottomOptions.background
 								}
 								onChange={val => {
-									shapeDividerBottomOptions = val;
+									shapeDividerBottomOptions.background = val;
 									onChange(JSON.stringify(value));
 								}}
 								disableImage
+								disableGradient
 								disableVideo
 								disableClipPath
 								disableSVG
+								disableLayers
 							/>
 							<SizeControl
 								label={__('Divider Height', 'maxi-blocks')}

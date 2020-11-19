@@ -40,7 +40,6 @@ export { default as __experimentalPositionControl } from './position-control';
 export { default as __experimentalDisplayControl } from './display-control';
 export { default as __experimentalMotionControl } from './motion-control';
 export { default as __experimentalArrowControl } from './arrow-control';
-export { default as __experimentalAdvancedRangeControl } from './advanced-range-control';
 export { default as __experimentalGroupInputControl } from './group-input-control';
 export { default as __experimentalTransformControl } from './transform-control';
 export { default as __experimentalClipPath } from './clip-path-control';

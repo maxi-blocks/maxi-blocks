@@ -126,7 +126,9 @@ class edit extends MaxiBlock {
 			: JSON.parse(hover).margin;
 
 		const response = {
-			background: { ...getColorBackgroundObject(background) },
+			background: {
+				...getColorBackgroundObject(background.colorOptions),
+			},
 			border: { ...border },
 			padding: { ...padding },
 			margin: { ...margin },

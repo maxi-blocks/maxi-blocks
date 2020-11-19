@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { dispatch } = wp.data;
+const { useDispatch } = wp.data;
 const { Fragment, useState } = wp.element;
 const {
 	Button,
@@ -43,7 +43,7 @@ const ToolbarPopover = props => {
 
 	const [isOpen, setIsOpen] = useState(false);
 
-	const { openGeneralSidebar } = dispatch('core/edit-post');
+	const { openGeneralSidebar } = useDispatch('core/edit-post');
 
 	const classes = classnames(
 		'toolbar-item',

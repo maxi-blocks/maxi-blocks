@@ -39,8 +39,8 @@ const AccordionControl = props => {
 	const classes = classnames(
 		'maxi-accordion-control',
 		className,
-		isPrimary ? 'is-primary' : '',
-		isSecondary ? 'is-secondary' : ''
+		isPrimary && 'is-primary',
+		isSecondary && 'is-secondary'
 	);
 
 	const [currentOpen, setCurrentOpen] = useState('');
@@ -53,7 +53,7 @@ const AccordionControl = props => {
 			preExpanded={currentOpen}
 			onChange={value => setCurrentOpen(value)}
 		>
-			{items.map(item => {
+			{items.map((item, id) => {
 				if (!item) return null;
 
 				const classesItem = classnames(
@@ -77,6 +77,7 @@ const AccordionControl = props => {
 						uuid={item.uuid ? item.uuid : undefined}
 						className={classesItem}
 						data-name={lowerCase(item.label)}
+						key={id}
 					>
 						<AccordionItemHeading className={classesItemHeading}>
 							<AccordionItemButton className='maxi-accordion-control__item__button'>

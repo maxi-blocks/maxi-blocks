@@ -116,6 +116,28 @@ const Inspector = props => {
 										items={[
 											{
 												label: __(
+													'Alignment',
+													'maxi-blocks'
+												),
+												content: (
+													<AlignmentControl
+														label={__(
+															'Alignment',
+															'maxi-blocks'
+														)}
+														alignment={alignment}
+														onChange={alignment =>
+															setAttributes({
+																alignment,
+															})
+														}
+														breakpoint={deviceType}
+														disableJustify
+													/>
+												),
+											},
+											{
+												label: __(
 													'Icon',
 													'maxi-blocks'
 												),
@@ -132,24 +154,6 @@ const Inspector = props => {
 																deviceType
 															}
 															simpleMode
-														/>
-														<AlignmentControl
-															label={__(
-																'Alignment',
-																'maxi-blocks'
-															)}
-															alignment={
-																alignment
-															}
-															onChange={alignment =>
-																setAttributes({
-																	alignment,
-																})
-															}
-															breakpoint={
-																deviceType
-															}
-															disableJustify
 														/>
 													</Fragment>
 												),

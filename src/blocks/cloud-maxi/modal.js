@@ -30,8 +30,6 @@ class MaxiModal extends Component {
 			this.setState({ isOpen: !this.state.isOpen });
 		};
 
-		console.log(`isOpen: ${isOpen2}`);
-
 		return (
 			<Fragment
 				key={`maxi-block-library__fragment--${this.props.clientId}`}

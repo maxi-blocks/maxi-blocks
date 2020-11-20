@@ -26,16 +26,6 @@ const controls = {
 			? 'general'
 			: originalDeviceType;
 	},
-	async RECEIVE_CLOUD_LIBRARY() {
-		return fetch(
-			'http://localhost/maxiblocks/wp-json/maxi-blocks-API/v0.1/patterns'
-		)
-			.then(response => response.json())
-			.then(data => {
-				return data;
-			})
-			.catch(err => console.error(err));
-	},
 	async SAVE_MOTION_PRESETS(action) {
 		await apiFetch({
 			path: '/maxi-blocks/v1.0/motion-presets/',
@@ -66,7 +56,6 @@ const reducer = (
 		meta: {},
 		deviceType: 'general',
 		presets: '',
-		cloudLibrary: {},
 	},
 	action
 ) => {
@@ -102,11 +91,6 @@ const reducer = (
 			return {
 				...state,
 				deviceType: action.deviceType,
-			};
-		case 'SEND_CLOUD_LIBRARY':
-			return {
-				...state,
-				cloudLibrary: action.cloudLibrary,
 			};
 		case 'SET_DEVICE_TYPE':
 			return {
@@ -176,17 +160,6 @@ const actions = {
 			deviceType,
 		};
 	},
-	receiveMaxiCloudLibrary() {
-		return {
-			type: 'RECEIVE_CLOUD_LIBRARY',
-		};
-	},
-	sendMaxiCloudLibrary(cloudLibrary) {
-		return {
-			type: 'SEND_CLOUD_LIBRARY',
-			cloudLibrary,
-		};
-	},
 	setMaxiDeviceType(deviceType, width) {
 		const {
 			__experimentalSetPreviewDeviceType: setPreviewDeviceType,
@@ -224,10 +197,6 @@ const selectors = {
 		if (state) return state.deviceType;
 		return false;
 	},
-	receiveMaxiCloudLibrary(state) {
-		if (state) return state.cloudLibrary;
-		return false;
-	},
 };
 
 const resolvers = {
@@ -246,10 +215,6 @@ const resolvers = {
 	*receiveMaxiDeviceType() {
 		const maxiDeviceType = yield actions.receiveMaxiDeviceType();
 		return actions.sendMaxiDeviceType(maxiDeviceType);
-	},
-	*receiveMaxiCloudLibrary() {
-		const maxiCloudLibrary = yield actions.receiveMaxiCloudLibrary();
-		return actions.sendMaxiCloudLibrary(maxiCloudLibrary);
 	},
 };
 

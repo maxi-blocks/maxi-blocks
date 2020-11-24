@@ -146,139 +146,6 @@ const Inspector = props => {
 								<AccordionControl
 									isPrimary
 									items={[
-										isFirstOnHierarchy &&
-											fullWidth === 'full' && {
-												label: __(
-													'Container',
-													'maxi-blocks'
-												),
-												content: (
-													<Fragment>
-														<SizeControl
-															label={__(
-																'Max Width',
-																'maxi-blocks'
-															)}
-															unit={
-																value[
-																	deviceType
-																][
-																	'max-widthUnit'
-																]
-															}
-															defaultUnit={
-																JSON.parse(
-																	getDefaultProp(
-																		clientId,
-																		'sizeContainer'
-																	)
-																)[deviceType][
-																	'max-widthUnit'
-																]
-															}
-															onChangeUnit={val => {
-																value[
-																	deviceType
-																][
-																	'max-widthUnit'
-																] = val;
-																setAttributes({
-																	sizeContainer: JSON.stringify(
-																		value
-																	),
-																});
-															}}
-															value={
-																value[
-																	deviceType
-																]['max-width']
-															}
-															defaultValue={
-																JSON.parse(
-																	getDefaultProp(
-																		clientId,
-																		'sizeContainer'
-																	)
-																)[deviceType][
-																	'max-width'
-																]
-															}
-															onChangeValue={val => {
-																value[
-																	deviceType
-																][
-																	'max-width'
-																] = val;
-																setAttributes({
-																	sizeContainer: JSON.stringify(
-																		value
-																	),
-																});
-															}}
-															minMaxSettings={
-																minMaxSettings
-															}
-														/>
-														<SizeControl
-															label={__(
-																'Width',
-																'maxi-blocks'
-															)}
-															unit={
-																value[
-																	deviceType
-																].widthUnit
-															}
-															defaultUnit={
-																JSON.parse(
-																	getDefaultProp(
-																		clientId,
-																		'sizeContainer'
-																	)
-																)[deviceType]
-																	.widthUnit
-															}
-															onChangeUnit={val => {
-																value[
-																	deviceType
-																].widthUnit = val;
-																setAttributes({
-																	sizeContainer: JSON.stringify(
-																		value
-																	),
-																});
-															}}
-															value={
-																value[
-																	deviceType
-																].width
-															}
-															defaultValue={
-																JSON.parse(
-																	getDefaultProp(
-																		clientId,
-																		'sizeContainer'
-																	)
-																)[deviceType]
-																	.width
-															}
-															onChangeValue={val => {
-																value[
-																	deviceType
-																].width = val;
-																setAttributes({
-																	sizeContainer: JSON.stringify(
-																		value
-																	),
-																});
-															}}
-															minMaxSettings={
-																minMaxSettings
-															}
-														/>
-													</Fragment>
-												),
-											},
 										{
 											label: __(
 												'Width / Height',
@@ -318,19 +185,164 @@ const Inspector = props => {
 															}
 														/>
 													)}
-													<FullSizeControl
-														size={size}
-														defaultSize={getDefaultProp(
-															clientId,
-															'size'
-														)}
-														onChange={size =>
-															setAttributes({
-																size,
-															})
-														}
-														breakpoint={deviceType}
-													/>
+													{fullWidth === 'full' ? (
+														<Fragment>
+															<SizeControl
+																label={__(
+																	'Max Width',
+																	'maxi-blocks'
+																)}
+																unit={
+																	value[
+																		deviceType
+																	][
+																		'max-widthUnit'
+																	]
+																}
+																defaultUnit={
+																	JSON.parse(
+																		getDefaultProp(
+																			clientId,
+																			'sizeContainer'
+																		)
+																	)[
+																		deviceType
+																	][
+																		'max-widthUnit'
+																	]
+																}
+																onChangeUnit={val => {
+																	value[
+																		deviceType
+																	][
+																		'max-widthUnit'
+																	] = val;
+																	setAttributes(
+																		{
+																			sizeContainer: JSON.stringify(
+																				value
+																			),
+																		}
+																	);
+																}}
+																value={
+																	value[
+																		deviceType
+																	][
+																		'max-width'
+																	]
+																}
+																defaultValue={
+																	JSON.parse(
+																		getDefaultProp(
+																			clientId,
+																			'sizeContainer'
+																		)
+																	)[
+																		deviceType
+																	][
+																		'max-width'
+																	]
+																}
+																onChangeValue={val => {
+																	value[
+																		deviceType
+																	][
+																		'max-width'
+																	] = val;
+																	setAttributes(
+																		{
+																			sizeContainer: JSON.stringify(
+																				value
+																			),
+																		}
+																	);
+																}}
+																minMaxSettings={
+																	minMaxSettings
+																}
+															/>
+															<SizeControl
+																label={__(
+																	'Width',
+																	'maxi-blocks'
+																)}
+																unit={
+																	value[
+																		deviceType
+																	].widthUnit
+																}
+																defaultUnit={
+																	JSON.parse(
+																		getDefaultProp(
+																			clientId,
+																			'sizeContainer'
+																		)
+																	)[
+																		deviceType
+																	].widthUnit
+																}
+																onChangeUnit={val => {
+																	value[
+																		deviceType
+																	].widthUnit = val;
+																	setAttributes(
+																		{
+																			sizeContainer: JSON.stringify(
+																				value
+																			),
+																		}
+																	);
+																}}
+																value={
+																	value[
+																		deviceType
+																	].width
+																}
+																defaultValue={
+																	JSON.parse(
+																		getDefaultProp(
+																			clientId,
+																			'sizeContainer'
+																		)
+																	)[
+																		deviceType
+																	].width
+																}
+																onChangeValue={val => {
+																	value[
+																		deviceType
+																	].width = val;
+																	setAttributes(
+																		{
+																			sizeContainer: JSON.stringify(
+																				value
+																			),
+																		}
+																	);
+																}}
+																minMaxSettings={
+																	minMaxSettings
+																}
+															/>
+														</Fragment>
+													) : (
+														<FullSizeControl
+															size={size}
+															defaultSize={getDefaultProp(
+																clientId,
+																'size'
+															)}
+															onChange={size =>
+																setAttributes({
+																	size,
+																})
+															}
+															breakpoint={
+																deviceType
+															}
+														/>
+													)}
 												</Fragment>
 											),
 										},

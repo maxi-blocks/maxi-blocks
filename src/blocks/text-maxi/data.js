@@ -40,6 +40,7 @@ export const margin = {
 		'margin-bottom': '',
 		'margin-left': '',
 		sync: true,
+		unit: '',
 	},
 	xl: {
 		'margin-top': '',

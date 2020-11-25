@@ -1262,19 +1262,19 @@ export const __experimentalContainer = {
 	label: 'Container size',
 	general: {
 		'max-widthUnit': 'px',
-		'max-width': 1170,
+		'max-width': 1784,
 		widthUnit: '%',
 		width: 92.9,
 	},
 	xxl: {
 		'max-widthUnit': 'px',
-		'max-width': 1785,
+		'max-width': 1784,
 		widthUnit: '%',
 		width: 92.9,
 	},
 	xl: {
 		'max-widthUnit': 'px',
-		'max-width': 1500,
+		'max-width': 1784,
 		widthUnit: '%',
 		width: 92.9,
 	},
@@ -1286,7 +1286,7 @@ export const __experimentalContainer = {
 	},
 	m: {
 		'max-widthUnit': 'px',
-		'max-width': 960,
+		'max-width': 940,
 		widthUnit: '%',
 		width: 91.8,
 	},

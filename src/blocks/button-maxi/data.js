@@ -198,7 +198,7 @@ export const background = {
 					widthUnit: '%',
 					height: 100,
 					heightUnit: '%',
-					colorOptions: {
+					cropOptions: {
 						image: {
 							source_url: '',
 							width: '',

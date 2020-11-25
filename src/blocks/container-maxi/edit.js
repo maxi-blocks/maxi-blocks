@@ -45,6 +45,8 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
 		className,
 		dataAlign,
 		maxiBlockClass,
+		uniqueID,
+		background,
 	} = props;
 
 	const shapeDividerValue = !isObject(shapeDivider)
@@ -58,16 +60,23 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
 			data-align={dataAlign}
 			data-gx_initial_block_class={maxiBlockClass}
 		>
+			<__experimentalBackgroundDisplayer
+				background={background}
+				blockClassName={uniqueID}
+			/>
+
 			{!!shapeDividerValue.top.status && (
 				<__experimentalShapeDivider
 					shapeDividerOptions={shapeDivider}
 				/>
 			)}
+
 			<div className='maxi-container-block__wrapper'>
 				<div className='maxi-container-block__container'>
 					{children}
 				</div>
 			</div>
+
 			{!!shapeDividerValue.bottom.status && (
 				<__experimentalShapeDivider
 					position='bottom'
@@ -330,6 +339,8 @@ class edit extends MaxiBlock {
 							dataAlign: fullWidth,
 							maxiBlockClass: defaultBlockStyle,
 							shapeDivider,
+							background,
+							uniqueID,
 						}}
 						renderAppender={
 							!hasInnerBlock

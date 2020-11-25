@@ -490,6 +490,21 @@ export const background = {
 					widthUnit: '%',
 					height: 100,
 					heightUnit: '%',
+					cropOptions: {
+						image: {
+							source_url: '',
+							width: '',
+							height: '',
+						},
+						crop: {
+							unit: '',
+							x: 0,
+							y: 0,
+							width: 0,
+							height: 0,
+							scale: 100,
+						},
+					},
 				},
 				sizeSettings: {
 					size: '',

@@ -9,6 +9,13 @@ const defaultMargin = {
 			'margin-left': '',
 			sync: true,
 		},
+		xxl: {
+			'margin-top': '',
+			'margin-right': '',
+			'margin-bottom': '',
+			'margin-left': '',
+			sync: true,
+		},
 		xl: {
 			'margin-top': '',
 			'margin-right': '',
@@ -101,6 +108,13 @@ const defaultMargin = {
 			'margin-left': '',
 			sync: true,
 		},
+		xxl: {
+			'margin-top': '',
+			'margin-right': '',
+			'margin-bottom': '',
+			'margin-left': '',
+			sync: true,
+		},
 		xl: {
 			'margin-top': '',
 			'margin-right': '',
@@ -141,6 +155,13 @@ const defaultMargin = {
 		label: 'Margin',
 		unit: 'px',
 		general: {
+			'margin-top': '',
+			'margin-right': '',
+			'margin-bottom': '',
+			'margin-left': '',
+			sync: true,
+		},
+		xxl: {
 			'margin-top': '',
 			'margin-right': '',
 			'margin-bottom': '',
@@ -193,6 +214,13 @@ const defaultMargin = {
 			'margin-left': '',
 			sync: true,
 		},
+		xxl: {
+			'margin-top': '',
+			'margin-right': '',
+			'margin-bottom': '',
+			'margin-left': '',
+			sync: true,
+		},
 		xl: {
 			'margin-top': '',
 			'margin-right': '',
@@ -233,6 +261,13 @@ const defaultMargin = {
 		label: 'Margin',
 		unit: 'px',
 		general: {
+			'margin-top': '',
+			'margin-right': '',
+			'margin-bottom': '',
+			'margin-left': '',
+			sync: true,
+		},
+		xxl: {
 			'margin-top': '',
 			'margin-right': '',
 			'margin-bottom': '',
@@ -285,6 +320,13 @@ const defaultMargin = {
 			'margin-left': '',
 			sync: true,
 		},
+		xxl: {
+			'margin-top': '',
+			'margin-right': '',
+			'margin-bottom': '',
+			'margin-left': '',
+			sync: true,
+		},
 		xl: {
 			'margin-top': '',
 			'margin-right': '',
@@ -325,6 +367,13 @@ const defaultMargin = {
 		label: 'Margin',
 		unit: 'px',
 		general: {
+			'margin-top': '',
+			'margin-right': '',
+			'margin-bottom': '',
+			'margin-left': '',
+			sync: true,
+		},
+		xxl: {
 			'margin-top': '',
 			'margin-right': '',
 			'margin-bottom': '',

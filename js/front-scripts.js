@@ -16,11 +16,16 @@ const getDeviceType = () => {
 	return 'desktop';
 };
 
+console.log(maxi_custom_data.custom_data);
+
 // Motion Effects
 const motionElems = document.querySelectorAll('.maxi-motion-effect');
 motionElems.forEach(function (elem) {
 	const motionID = elem.getAttribute('data-motion-id');
-	const motionData = JSON.parse(elem.getAttribute('data-motion'));
+	const motionData =
+		maxi_custom_data.custom_data[motionID] !== undefined
+			? JSON.parse(maxi_custom_data.custom_data[motionID].motion)
+			: null;
 	const shapeDividerData = JSON.parse(
 		elem.getAttribute('data-shape-divider')
 	);

@@ -32,7 +32,6 @@ const save = props => {
 			mediaAltWp,
 			mediaAltTitle,
 			altSelector,
-			motion,
 			hover,
 		},
 	} = props;
@@ -75,7 +74,6 @@ const save = props => {
 		<figure
 			className={classes}
 			data-maxi_initial_block_class={defaultBlockStyle}
-			data-motion={motion}
 			data-motion-id={uniqueID}
 		>
 			<__experimentalBackgroundDisplayer background={background} />

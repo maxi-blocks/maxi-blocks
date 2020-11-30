@@ -8,6 +8,11 @@ const { registerStore, select, dispatch } = wp.data;
  * Register Store
  */
 const controls = {
+	async RECEIVE_CUSTOM_DATA() {
+		const id = select('core/editor').getCurrentPostId();
+
+		return apiFetch({ path: `/maxi-blocks/v1.0/custom-data/${id}` });
+	},
 	async RECEIVE_POST_STYLES() {
 		const id = select('core/editor').getCurrentPostId();
 
@@ -44,6 +49,19 @@ const controls = {
 			data: {
 				id,
 				meta: JSON.stringify(action.meta),
+				update: action.update,
+			},
+		});
+	},
+	async SAVE_CUSTOM_DATA(action) {
+		const id = select('core/editor').getCurrentPostId();
+
+		await apiFetch({
+			path: '/maxi-blocks/v1.0/custom-data',
+			method: 'POST',
+			data: {
+				id,
+				data: JSON.stringify(action.data),
 				update: action.update,
 			},
 		});
@@ -87,6 +105,17 @@ const reducer = (
 				...state,
 				meta: action.meta,
 			};
+		case 'SAVE_CUSTOM_DATA':
+			controls.SAVE_CUSTOM_DATA(action);
+			return {
+				...state,
+				data: action.data,
+			};
+		case 'SEND_CUSTOM_DATA':
+			return {
+				...state,
+				data: action.data,
+			};
 		case 'SEND_DEVICE_TYPE':
 			return {
 				...state,
@@ -103,6 +132,17 @@ const reducer = (
 };
 
 const actions = {
+	receiveMaxiCustomData() {
+		return {
+			type: 'RECEIVE_CUSTOM_DATA',
+		};
+	},
+	sendMaxiCustomData(data) {
+		return {
+			type: 'SEND_CUSTOM_DATA',
+			data,
+		};
+	},
 	receiveMaxiStyles() {
 		return {
 			type: 'RECEIVE_POST_STYLES',
@@ -149,6 +189,13 @@ const actions = {
 			update,
 		};
 	},
+	saveMaxiCustomData(data, update = false) {
+		return {
+			type: 'SAVE_CUSTOM_DATA',
+			data,
+			update,
+		};
+	},
 	receiveMaxiDeviceType() {
 		return {
 			type: 'RECEIVE_DEVICE_TYPE',
@@ -181,6 +228,10 @@ const actions = {
 };
 
 const selectors = {
+	receiveMaxiCustomData(state) {
+		if (state) return state.data;
+		return false;
+	},
 	receiveMaxiStyles(state) {
 		if (state) return state.meta;
 		return false;
@@ -200,6 +251,10 @@ const selectors = {
 };
 
 const resolvers = {
+	*receiveMaxiCustomData() {
+		const customData = yield actions.receiveMaxiCustomData();
+		return actions.sendMaxiCustomData(customData);
+	},
 	*receiveMaxiStyles() {
 		const maxiStyles = yield actions.receiveMaxiStyles();
 		return actions.sendMaxiStyles(maxiStyles);

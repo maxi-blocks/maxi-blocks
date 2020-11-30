@@ -533,7 +533,7 @@ function maxi_output_css() {
 
 /**
  * Font Awesome Kit Setup
- * 
+ *
  * This will add your Font Awesome Kit to the front-end, the admin back-end,
  * and the login screen area.
  */

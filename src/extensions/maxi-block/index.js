@@ -64,6 +64,7 @@ class MaxiBlock extends Component {
 
 	componentWillUnmount() {
 		this.removeStyle();
+		this.removeCustomData();
 	}
 
 	uniqueIDChecker(idToCheck) {
@@ -129,6 +130,10 @@ class MaxiBlock extends Component {
 				unsubscribe();
 
 				dispatch('maxiBlocks').saveMaxiStyles(this.getMeta, true);
+				dispatch('maxiBlocks').saveMaxiCustomData(
+					this.getCustomData,
+					true
+				);
 			}
 		});
 	}
@@ -142,6 +147,22 @@ class MaxiBlock extends Component {
 				return {};
 			case 'object':
 				return meta;
+			case 'undefined':
+				return {};
+			default:
+				return {};
+		}
+	}
+
+	get getCustomData() {
+		const customData = select('maxiBlocks').receiveMaxiCustomData();
+
+		switch (typeof customData) {
+			case 'string':
+				if (!isEmpty(customData)) return JSON.parse(customData);
+				return {};
+			case 'object':
+				return customData;
 			case 'undefined':
 				return {};
 			default:
@@ -196,6 +217,15 @@ class MaxiBlock extends Component {
 		});
 
 		this.saveMeta(cleanMeta);
+	}
+
+	removeCustomData(uniqueID = this.props.attributes.uniqueID) {
+		let newCustomData = this.getCustomData;
+		if (newCustomData.hasOwnProperty(uniqueID)) {
+			delete newCustomData[uniqueID];
+		}
+
+		dispatch('maxiBlocks').saveMaxiCustomData(newCustomData, true);
 	}
 
 	saveMeta(newMeta) {

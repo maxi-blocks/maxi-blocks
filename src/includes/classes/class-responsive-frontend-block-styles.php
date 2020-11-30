@@ -36,7 +36,15 @@ class ResponsiveFrontendStyles
         // Inline styles
         wp_register_style('maxi-blocks', false);
         wp_enqueue_style('maxi-blocks');
-        wp_add_inline_style('maxi-blocks', $this->styles());
+		wp_add_inline_style('maxi-blocks', $this->styles());
+
+		wp_localize_script(
+			'maxi-front-scripts-js',
+			'maxi_custom_data',
+			array(
+				'custom_data' => $this->customMeta()
+			)
+		);
 
         $this->fonts();
     }
@@ -111,7 +119,7 @@ class ResponsiveFrontendStyles
         $meta = $this->getMeta();
         if (empty($meta))
             return;
-        $response = '';
+		$response = '';
 
         foreach ($meta as $target => $element) {
             $target = self::getTarget($target);
@@ -215,6 +223,28 @@ class ResponsiveFrontendStyles
                 );
             }
         }
+	}
+
+	/**
+     * Custom Meta
+     */
+    public function customMeta()
+    {
+        global $post;
+        if (!$post || !isset($post->ID))
+            return;
+
+        $custom_data = get_option("mb_custom_data_{$post->ID}");
+
+        if (!$custom_data)
+			return;
+
+		$result = $custom_data['custom_data'];
+
+        if (!$result || empty($result))
+            return;
+
+		return json_decode($result);
     }
 }
 

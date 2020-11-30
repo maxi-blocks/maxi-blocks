@@ -6,13 +6,48 @@
 /**
  * WordPress dependencies
  */
-const { select } = wp.data;
+const { select, dispatch } = wp.data;
 const { getBlockAttributes } = wp.blocks;
 
 /**
  * External dependencies
  */
 import { isEmpty, isNil, isNumber, isString, isObject } from 'lodash';
+
+export const setCustomData = (customData, uniqueID, ...data) => {
+	const getCustomData = () => {
+		switch (typeof customData) {
+			case 'string':
+				if (!isEmpty(customData)) return JSON.parse(customData);
+				return {};
+			case 'object':
+				return customData;
+			case 'undefined':
+				return {};
+			default:
+				return {};
+		}
+	};
+	const dataKeys = Object.keys(data[0]);
+	const dataValue = Object.values(data[0]);
+
+	if (!isNil(getCustomData())) {
+		if (
+			isNil(getCustomData()[uniqueID]) ||
+			dataValue.some(
+				(item, idx) => item !== getCustomData()[uniqueID][dataKeys[idx]]
+			)
+		) {
+			dispatch('maxiBlocks').saveMaxiCustomData({
+				...getCustomData(),
+				[uniqueID]: {
+					...data[0],
+				},
+			});
+		}
+	}
+	//console.log('saved');
+};
 
 /**
  * Returns default property of the block

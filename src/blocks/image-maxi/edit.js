@@ -3,7 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
-const { withSelect } = wp.data;
+const { withSelect, dispatch } = wp.data;
 const { Spinner, IconButton, ResizableBox, Placeholder } = wp.components;
 const { __experimentalBlock, MediaUpload } = wp.blockEditor;
 import { RawHTML } from '@wordpress/element';
@@ -20,6 +20,7 @@ import {
 	getAlignmentTextObject,
 	setBackgroundStyles,
 	getLastBreakpointValue,
+	setCustomData,
 } from '../../utils';
 import {
 	MaxiBlock,
@@ -276,7 +277,10 @@ class edit extends MaxiBlock {
 			imageData,
 			setAttributes,
 			deviceType,
+			customData,
 		} = this.props;
+
+		setCustomData(customData, uniqueID, { motion });
 
 		const displayValue = !isObject(display) ? JSON.parse(display) : display;
 
@@ -500,9 +504,11 @@ export default withSelect((select, ownProps) => {
 	const { mediaID } = ownProps.attributes;
 	const imageData = select('core').getMedia(mediaID);
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
+	const customData = select('maxiBlocks').receiveMaxiCustomData();
 
 	return {
 		imageData,
 		deviceType,
+		customData,
 	};
 })(edit);

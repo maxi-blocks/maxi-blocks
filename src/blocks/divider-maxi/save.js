@@ -28,7 +28,6 @@ const save = props => {
 			extraClassName,
 			fullWidth,
 			lineOrientation,
-			motion,
 			divider,
 		},
 	} = props;
@@ -53,7 +52,6 @@ const save = props => {
 		<div
 			className={classes}
 			data-maxi_initial_block_class={defaultBlockStyle}
-			data-motion={motion}
 			data-motion-id={uniqueID}
 		>
 			<__experimentalBackgroundDisplayer background={background} />

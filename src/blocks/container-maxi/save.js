@@ -33,7 +33,6 @@ const save = props => {
 			background,
 			extraClassName,
 			shapeDivider,
-			motion,
 			arrow,
 		},
 		className,
@@ -59,10 +58,7 @@ const save = props => {
 				<section
 					className={classes}
 					data-gx_initial_block_class={defaultBlockStyle}
-					data-motion={motion}
-					data-shape-divider={shapeDivider}
 					data-motion-id={uniqueID}
-					data-background={background}
 				>
 					<__experimentalBackgroundDisplayer
 						background={background}

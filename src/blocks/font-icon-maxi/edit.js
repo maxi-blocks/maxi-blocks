@@ -15,6 +15,7 @@ import {
 	getLastBreakpointValue,
 	getIconObject,
 	getAlignmentTextObject,
+	setCustomData,
 } from '../../utils';
 import {
 	MaxiBlock,
@@ -126,11 +127,21 @@ class edit extends MaxiBlock {
 
 	render() {
 		const {
-			attributes: { uniqueID, extraClassName, background, display, icon },
+			attributes: {
+				uniqueID,
+				extraClassName,
+				background,
+				display,
+				icon,
+				motion,
+			},
 			className,
 			deviceType,
 			setAttributes,
+			customData,
 		} = this.props;
+
+		setCustomData(customData, uniqueID, { motion });
 
 		const displayValue = !isObject(display) ? JSON.parse(display) : display;
 		const iconValue = !isObject(icon) ? JSON.parse(icon) : icon;
@@ -172,8 +183,10 @@ class edit extends MaxiBlock {
 
 export default withSelect(select => {
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
+	const customData = select('maxiBlocks').receiveMaxiCustomData();
 
 	return {
 		deviceType,
+		customData,
 	};
 })(edit);

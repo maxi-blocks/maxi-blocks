@@ -27,6 +27,7 @@ import {
 	setBackgroundStyles,
 	setArrowStyles,
 	getLastBreakpointValue,
+	setCustomData,
 } from '../../utils';
 
 /**
@@ -251,7 +252,10 @@ class edit extends MaxiBlock {
 			clientId,
 			hasInnerBlock,
 			deviceType,
+			customData,
 		} = this.props;
+
+		setCustomData(customData, uniqueID, { motion, shapeDivider });
 
 		const displayValue = !isObject(display) ? JSON.parse(display) : display;
 
@@ -367,9 +371,11 @@ export default withSelect((select, ownProps) => {
 		select('core/block-editor').getBlockOrder(clientId)
 	);
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
+	const customData = select('maxiBlocks').receiveMaxiCustomData();
 
 	return {
 		hasInnerBlock,
 		deviceType,
+		customData,
 	};
 })(edit);

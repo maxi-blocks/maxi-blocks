@@ -22,6 +22,7 @@ import {
 	setTextCustomFormats,
 	getLastBreakpointValue,
 	setBackgroundStyles,
+	setCustomData,
 } from '../../utils';
 import {
 	MaxiBlock,
@@ -213,7 +214,10 @@ class edit extends MaxiBlock {
 			onSplit,
 			onReplace,
 			deviceType,
+			customData,
 		} = this.props;
+
+		setCustomData(customData, uniqueID, { motion });
 
 		const name = 'maxi-blocks/text-maxi';
 
@@ -420,11 +424,13 @@ const editSelect = withSelect((select, ownProps) => {
 	const formatValue = __experimentalGetFormatValue(formatElement);
 
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
+	const customData = select('maxiBlocks').receiveMaxiCustomData();
 
 	return {
 		node,
 		formatValue,
 		deviceType,
+		customData,
 	};
 });
 

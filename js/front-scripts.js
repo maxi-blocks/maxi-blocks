@@ -16,19 +16,21 @@ const getDeviceType = () => {
 	return 'desktop';
 };
 
-console.log(maxi_custom_data.custom_data);
-
 // Motion Effects
 const motionElems = document.querySelectorAll('.maxi-motion-effect');
 motionElems.forEach(function (elem) {
 	const motionID = elem.getAttribute('data-motion-id');
 	const motionData =
-		maxi_custom_data.custom_data[motionID] !== undefined
+		maxi_custom_data.custom_data[motionID] !== undefined &&
+		maxi_custom_data.custom_data[motionID].hasOwnProperty('motion')
 			? JSON.parse(maxi_custom_data.custom_data[motionID].motion)
 			: null;
-	const shapeDividerData = JSON.parse(
-		elem.getAttribute('data-shape-divider')
-	);
+
+	const shapeDividerData =
+		maxi_custom_data.custom_data[motionID] !== undefined &&
+		maxi_custom_data.custom_data[motionID].hasOwnProperty('shapeDivider')
+			? JSON.parse(maxi_custom_data.custom_data[motionID].shapeDivider)
+			: null;
 
 	// Shape Divider
 	if (shapeDividerData !== null) {

@@ -18,6 +18,7 @@ import {
 	setTextCustomFormats,
 	getLastBreakpointValue,
 	getIconObject,
+	setCustomData,
 } from '../../utils';
 import {
 	MaxiBlock,
@@ -195,7 +196,10 @@ class edit extends MaxiBlock {
 			},
 			setAttributes,
 			deviceType,
+			customData,
 		} = this.props;
+
+		setCustomData(customData, uniqueID, { motion });
 
 		const displayValue = !isObject(display) ? JSON.parse(display) : display;
 
@@ -263,9 +267,11 @@ export default withSelect((select, ownProps) => {
 	const formatValue = __experimentalGetFormatValue(formatElement);
 
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
+	const customData = select('maxiBlocks').receiveMaxiCustomData();
 
 	return {
 		formatValue,
 		deviceType,
+		customData,
 	};
 })(edit);

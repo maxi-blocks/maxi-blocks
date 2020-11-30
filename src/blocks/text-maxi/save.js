@@ -32,7 +32,6 @@ const save = props => {
 			isList,
 			typeOfList,
 			content,
-			motion,
 		},
 	} = props;
 
@@ -50,11 +49,7 @@ const save = props => {
 
 	return (
 		<Fragment>
-			<div
-				className={classes}
-				data-motion={motion}
-				data-motion-id={uniqueID}
-			>
+			<div className={classes} data-motion-id={uniqueID}>
 				<__experimentalBackgroundDisplayer background={background} />
 				<RichText.Content
 					className='maxi-text-block__content'

@@ -19,6 +19,7 @@ import {
 	getAlignmentFlexObject,
 	getTransformObject,
 	setBackgroundStyles,
+	setCustomData,
 } from '../../utils';
 import {
 	MaxiBlock,
@@ -185,7 +186,10 @@ class edit extends MaxiBlock {
 				motion,
 			},
 			clientId,
+			customData,
 		} = this.props;
+
+		setCustomData(customData, uniqueID, { motion });
 
 		const classes = classnames(
 			'maxi-block',
@@ -249,8 +253,10 @@ class edit extends MaxiBlock {
 
 export default withSelect((select, ownProps) => {
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
+	const customData = select('maxiBlocks').receiveMaxiCustomData();
 
 	return {
 		deviceType,
+		customData,
 	};
 })(edit);

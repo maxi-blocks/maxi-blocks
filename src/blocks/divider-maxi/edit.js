@@ -16,6 +16,7 @@ import {
 	getTransformObject,
 	setBackgroundStyles,
 	getLastBreakpointValue,
+	setCustomData,
 } from '../../utils';
 import {
 	MaxiBlock,
@@ -149,9 +150,11 @@ class edit extends MaxiBlock {
 			deviceType,
 			onDeviceTypeChange,
 			setAttributes,
+			customData,
 		} = this.props;
 
 		onDeviceTypeChange();
+		setCustomData(customData, uniqueID, { motion });
 
 		const displayValue = !isObject(display) ? JSON.parse(display) : display;
 
@@ -243,9 +246,11 @@ class edit extends MaxiBlock {
 
 const editSelect = withSelect(select => {
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
+	const customData = select('maxiBlocks').receiveMaxiCustomData();
 
 	return {
 		deviceType,
+		customData,
 	};
 });
 

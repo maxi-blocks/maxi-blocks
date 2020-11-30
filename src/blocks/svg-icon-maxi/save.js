@@ -22,7 +22,6 @@ const save = props => {
 			defaultBlockStyle,
 			background,
 			extraClassName,
-			motion,
 			content,
 		},
 	} = props;
@@ -41,7 +40,6 @@ const save = props => {
 		<div
 			className={classes}
 			data-maxi_initial_block_class={defaultBlockStyle}
-			data-motion={motion}
 			data-motion-id={uniqueID}
 		>
 			<RawHTML>{content}</RawHTML>

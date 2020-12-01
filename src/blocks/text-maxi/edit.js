@@ -182,7 +182,6 @@ class edit extends MaxiBlock {
 		}
 
 		this.displayStyles();
-		this.saveProps();
 	}
 
 	render() {

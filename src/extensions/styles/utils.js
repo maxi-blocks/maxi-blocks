@@ -46,7 +46,6 @@ export const setCustomData = (customData, uniqueID, ...data) => {
 			});
 		}
 	}
-	//console.log('saved');
 };
 
 /**

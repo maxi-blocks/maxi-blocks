@@ -13,7 +13,7 @@ const slantBottomOpacity = (
 		<defs>
 			<Path
 				id='slant-bottom-opacity-a'
-				fillOpacity='.498'
+				opacity='.498'
 				d='M0 0v140h1280L0 0z'
 			/>
 			<Path id='slant-bottom-opacity-b' d='M0 42v98h1280L0 42z' />

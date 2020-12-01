@@ -64,9 +64,6 @@ const save = props => {
 					data-motion-id={uniqueID}
 					data-background={background}
 				>
-					<__experimentalBackgroundDisplayer
-						background={background}
-					/>
 					<__experimentalArrowDisplayer arrow={arrow} />
 					{!!shapeDividerValue.top.status && (
 						<__experimentalShapeDivider
@@ -74,6 +71,9 @@ const save = props => {
 						/>
 					)}
 					<div className='maxi-container-block__wrapper'>
+						<__experimentalBackgroundDisplayer
+							background={background}
+						/>
 						<div className='maxi-container-block__container'>
 							<InnerBlocks.Content />
 						</div>

@@ -111,7 +111,6 @@ const MaxiToolbar = props => {
 		name,
 		setAttributes,
 		formatValue,
-		// node,
 		deviceType,
 		toggleHandlers,
 	} = props;

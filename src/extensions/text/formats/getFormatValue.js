@@ -1,7 +1,6 @@
 /**
  * WordPress dependencies
  */
-const { select } = wp.data;
 const { create } = wp.richText;
 
 /**
@@ -9,16 +8,24 @@ const { create } = wp.richText;
  *
  * @param {Object} formatElement 		Preformatted object for RichText
  *
- * @returns {string} RichText format value
+ * @returns {Object} RichText format value
  */
 const getFormatValue = formatElement => {
-	const { getSelectionStart, getSelectionEnd } = select('core/block-editor');
+	const selection = window.getSelection();
 
-	const formatValue = create(formatElement);
-	formatValue.start = getSelectionStart().offset;
-	formatValue.end = getSelectionEnd().offset;
+	if (selection.anchorNode) {
+		const selectionNode = selection.anchorNode.parentNode;
+		const range = selection.rangeCount > 0 ? selection.getRangeAt(0) : null;
 
-	return formatValue;
+		formatElement.element = selectionNode;
+		formatElement.range = range;
+
+		const newFormat = create(formatElement);
+
+		return newFormat;
+	}
+
+	return create(formatElement);
 };
 
 export default getFormatValue;

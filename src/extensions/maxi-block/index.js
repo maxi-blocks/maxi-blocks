@@ -9,26 +9,23 @@
  */
 /* eslint-disable no-prototype-builtins */
 /* eslint-disable class-methods-use-this */
-/* eslint-disable react/no-did-update-set-state */
-/* eslint-disable prefer-rest-params */
-/* eslint-disable react/sort-comp */
 
 /**
  * WordPress dependencies
  */
 const { Component } = wp.element;
-const { dispatch, select, subscribe } = wp.data;
 
 /**
  * Internal dependencies
  */
-import { ResponsiveStylesResolver, BackEndResponsiveStyles } from '../styles';
 import { getDefaultProp } from '../styles/utils';
+
+import styleResolver from '../styles/stylesResolver';
 
 /**
  * External dependencies
  */
-import { isEmpty, uniqueId, isEqual, isNil, isObject } from 'lodash';
+import { isEmpty, uniqueId, isEqual, isObject } from 'lodash';
 
 /**
  * Class
@@ -36,34 +33,32 @@ import { isEmpty, uniqueId, isEqual, isNil, isObject } from 'lodash';
 class MaxiBlock extends Component {
 	state = {
 		styles: {},
-		updating: false,
 		breakpoints: this.getBreakpoints,
 	};
 
-	constructor() {
-		super(...arguments);
+	constructor(...args) {
+		super(...args);
 		this.uniqueIDChecker(this.props.attributes.uniqueID);
 		this.fixProps();
 	}
 
-	componentDidMount() {
-		this.displayStyles();
-		this.saveProps();
-	}
-
 	componentDidUpdate() {
 		this.displayStyles();
-
-		if (!select('core/editor').isSavingPost() && this.state.updating) {
-			this.setState({
-				updating: false,
-			});
-			this.saveProps();
-		}
 	}
 
 	componentWillUnmount() {
 		this.removeStyle();
+	}
+
+	get getBreakpoints() {
+		const { breakpoints } = this.props.attributes;
+
+		return JSON.parse(breakpoints);
+	}
+
+	// eslint-disable-next-line class-methods-use-this
+	get getObject() {
+		return null;
 	}
 
 	uniqueIDChecker(idToCheck) {
@@ -115,93 +110,30 @@ class MaxiBlock extends Component {
 	}
 
 	/**
-	 * Fix preview displays
+	 * Refresh the styles on Editor
 	 */
-	saveProps() {
-		const unsubscribe = subscribe(() => {
-			const isSavingPost = select('core/editor').isSavingPost();
-			const isPreviewing = select('core/editor').isPreviewingPost();
-
-			if (isSavingPost && !isPreviewing && !this.state.updating) {
-				this.setState({
-					updating: true,
-				});
-				unsubscribe();
-
-				dispatch('maxiBlocks').saveMaxiStyles(this.getMeta, true);
-			}
-		});
-	}
-
-	get getMeta() {
-		const meta = select('maxiBlocks').receiveMaxiStyles();
-
-		switch (typeof meta) {
-			case 'string':
-				if (!isEmpty(meta)) return JSON.parse(meta);
-				return {};
-			case 'object':
-				return meta;
-			case 'undefined':
-				return {};
-			default:
-				return {};
-		}
-	}
-
-	get getBreakpoints() {
-		const { breakpoints } = this.props.attributes;
-
-		return JSON.parse(breakpoints);
-	}
-
-	get getObject() {
-		return null;
-	}
-
-	metaValue() {
+	displayStyles() {
 		const obj = this.getObject;
 		const breakpoints = this.getBreakpoints;
 
 		if (
-			isEqual(obj, this.state.styles) &&
-			isEqual(breakpoints, this.state.breakpoints)
-		)
-			return null;
+			!isEqual(obj, this.state.styles) ||
+			!isEqual(breakpoints, this.state.breakpoints)
+		) {
+			this.setState({
+				styles: obj,
+				breakpoints,
+			});
 
-		const meta = this.getMeta;
-
-		this.setState({
-			styles: obj,
-			breakpoints,
-		});
-
-		return new ResponsiveStylesResolver(obj, meta, breakpoints);
+			styleResolver(obj, breakpoints);
+		}
 	}
 
-	/**
-	 * Refresh the styles on Editor
-	 */
-	displayStyles() {
-		const newMeta = this.metaValue();
+	removeStyle() {
+		const obj = this.getObject;
+		const breakpoints = this.getBreakpoints;
 
-		if (isNil(newMeta)) return;
-		this.saveMeta(newMeta);
-	}
-
-	removeStyle(target = this.props.attributes.uniqueID) {
-		const cleanMeta = { ...this.getMeta };
-		Object.keys(this.getMeta).forEach(key => {
-			if (key.indexOf(target) >= 0) delete cleanMeta[key];
-		});
-
-		this.saveMeta(cleanMeta);
-	}
-
-	saveMeta(newMeta) {
-		dispatch('maxiBlocks')
-			.saveMaxiStyles(newMeta)
-			.then(new BackEndResponsiveStyles(newMeta));
+		styleResolver(obj, breakpoints, true);
 	}
 }
 

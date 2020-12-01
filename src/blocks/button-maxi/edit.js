@@ -247,15 +247,10 @@ class edit extends MaxiBlock {
 
 export default withSelect((select, ownProps) => {
 	const {
-		attributes: { content, isList, typeOfList },
-		clientId,
+		attributes: { isList, typeOfList },
 	} = ownProps;
 
-	const node = document.getElementById(`block-${clientId}`);
-
 	const formatElement = {
-		element: node,
-		html: content,
 		multilineTag: isList ? 'li' : undefined,
 		multilineWrapperTags: isList ? typeOfList : undefined,
 		__unstableIsEditableTree: true,

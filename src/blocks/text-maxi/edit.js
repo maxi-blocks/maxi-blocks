@@ -204,7 +204,6 @@ class edit extends MaxiBlock {
 				display,
 				motion,
 			},
-			node,
 			className,
 			isSelected,
 			setAttributes,
@@ -253,13 +252,10 @@ class edit extends MaxiBlock {
 								setAttributes({ content });
 
 								const formatElement = {
-									element: node,
-									html: content,
 									multilineTag: isList ? 'li' : undefined,
 									multilineWrapperTags: isList
 										? typeOfList
 										: undefined,
-									__unstableIsEditableTree: false,
 								};
 								const formatValue = __experimentalGetFormatValue(
 									formatElement
@@ -404,25 +400,18 @@ class edit extends MaxiBlock {
 
 const editSelect = withSelect((select, ownProps) => {
 	const {
-		attributes: { content, isList, typeOfList },
-		clientId,
+		attributes: { isList, typeOfList },
 	} = ownProps;
 
-	const node = document.getElementById(`block-${clientId}`);
-
 	const formatElement = {
-		element: node,
-		html: content,
 		multilineTag: isList ? 'li' : undefined,
 		multilineWrapperTags: isList ? typeOfList : undefined,
-		__unstableIsEditableTree: false,
 	};
 	const formatValue = __experimentalGetFormatValue(formatElement);
 
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 	return {
-		node,
 		formatValue,
 		deviceType,
 	};
@@ -548,14 +537,10 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 					attributes: { content, isList, typeOfList },
 					clientId,
 				} = block.blocks[0];
-				const node = document.getElementById(`block-${clientId}`);
 
 				const formatElement = {
-					element: node,
-					html: content,
 					multilineTag: isList ? 'li' : undefined,
 					multilineWrapperTags: isList ? typeOfList : undefined,
-					__unstableIsEditableTree: false,
 				};
 				const formatValue = __experimentalGetFormatValue(formatElement);
 

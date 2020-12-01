@@ -1,6 +1,3 @@
-/* eslint-disable no-unused-expressions */
-/* eslint-disable no-sequences */
-/* eslint-disable no-continue */
 /**
  * WordPress dependencies
  */
@@ -29,12 +26,12 @@ const propsObjectManipulator = (value, newObject, breakpoint) => {
 
 	const nonAllowedProps = ['font-options', 'unit'];
 
-	for (const [target, prop] of Object.entries(object)) {
+	Object.entries(object).forEach(([target, prop]) => {
 		if (isNil(prop)) {
 			console.error(`Undefined property. Property: ${target}`);
-			continue;
+			return;
 		}
-		if (nonAllowedProps.includes(target)) continue;
+		if (nonAllowedProps.includes(target)) return;
 		// values with dimensions
 		if (
 			isNumber(prop) ||
@@ -44,12 +41,14 @@ const propsObjectManipulator = (value, newObject, breakpoint) => {
 		// avoid numbers with no related metric
 		if (unitChecker.indexOf(target) === 0) unit = '';
 		// values with metrics
-		if (prop.length <= 2 && !isEmpty(prop))
-			(unitChecker = target), (unit = prop);
+		if (prop.length <= 2 && !isEmpty(prop)) {
+			unitChecker = target;
+			unit = prop;
+		}
 		// values with strings && font-options object
 		if (prop.length > 2 || target === 'font-options')
 			newObject[breakpoint][target] = prop;
-	}
+	});
 
 	return newObject;
 };

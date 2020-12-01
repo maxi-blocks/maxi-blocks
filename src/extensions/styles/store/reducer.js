@@ -4,7 +4,7 @@
 import controls from './controls';
 
 /**
- * Reducer managing the format types
+ * Reducer managing the styles
  *
  * @param {Object} state  Current state.
  * @param {Object} action Dispatched action.

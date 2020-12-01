@@ -1,8 +1,7 @@
 /**
- * Returns an action object used in signalling that format types have been
- * added.
+ * Updates style object on the store
  *
- * @param {Array|Object} formatTypes Format types received.
+ * @param {Object} styles new/updated targets with styles
  *
  * @return {Object} Action object.
  */
@@ -14,10 +13,9 @@ export function updateStyles(styles) {
 }
 
 /**
- * Returns an action object used in signalling that format types have been
- * added.
+ * Targets to be removed from style object on the store
  *
- * @param {Array|Object} formatTypes Format types received.
+ * @param {Array} targets target items to be removed
  *
  * @return {Object} Action object.
  */
@@ -29,9 +27,9 @@ export function removeStyles(targets) {
 }
 
 /**
- * Returns an action object used to remove a registered format type.
+ * Triggers the saver to the DB from the style object on the store
  *
- * @param {string|Array} names Format name.
+ * @param {boolean} isUpdate discerns between previewing or posting
  *
  * @return {Object} Action object.
  */

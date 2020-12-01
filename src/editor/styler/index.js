@@ -1,32 +1,32 @@
 /**
  * WordPress dependencies
  */
-const { Component, render } = wp.element;
-const { subscribe } = wp.data;
+const { render, useEffect, useState } = wp.element;
+const { useSelect } = wp.data;
 
+/**
+ * Internal dependencies
+ */
 import stylesGenerator from '../../extensions/styles/stylesGenerator';
-
-import { isEqual } from 'lodash';
 
 /**
  * Component
  */
-class BlockStyles extends Component {
-	state = {
-		styles: '',
-	};
+const BlockStyles = () => {
+	const { newStyles } = useSelect(() => {
+		const newStyles = stylesGenerator();
 
-	render() {
-		subscribe(() => {
-			const newStyles = stylesGenerator();
+		return {
+			newStyles,
+		};
+	});
 
-			if (!isEqual(newStyles, this.state.styles))
-				this.setState({ styles: newStyles });
-		});
+	const [styles, setStyles] = useState(newStyles);
 
-		return <style id='testing-styles'>{this.state.styles}</style>;
-	}
-}
+	useEffect(() => setStyles(newStyles), [newStyles]);
+
+	return <style id='testing-styles'>{styles}</style>;
+};
 
 if (document.body.classList.contains('maxi-blocks--active')) {
 	const wrapper = document.createElement('div');

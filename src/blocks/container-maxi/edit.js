@@ -139,7 +139,7 @@ class edit extends MaxiBlock {
 		response = Object.assign(
 			response,
 			setBackgroundStyles(
-				uniqueID,
+				`${uniqueID} .maxi-container-block__wrapper`,
 				background,
 				backgroundHover,
 				overlay,
@@ -285,11 +285,6 @@ class edit extends MaxiBlock {
 							data-align={fullWidth}
 							data-maxi_initial_block_class={defaultBlockStyle}
 						>
-							<__experimentalBackgroundDisplayer
-								background={background}
-								blockClassName={uniqueID}
-							/>
-
 							<__experimentalArrowDisplayer arrow={arrow} />
 
 							{!!shapeDividerValue.top.status && (
@@ -299,6 +294,10 @@ class edit extends MaxiBlock {
 							)}
 
 							<div className='maxi-container-block__wrapper'>
+								<__experimentalBackgroundDisplayer
+									background={background}
+									blockClassName={uniqueID}
+								/>
 								<InnerBlocks
 									templateLock={false}
 									__experimentalTagName='div'

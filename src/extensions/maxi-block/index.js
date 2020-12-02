@@ -14,6 +14,7 @@
  * WordPress dependencies
  */
 const { Component } = wp.element;
+const { select } = wp.data;
 
 /**
  * Internal dependencies
@@ -38,7 +39,11 @@ class MaxiBlock extends Component {
 
 	constructor(...args) {
 		super(...args);
-		this.uniqueIDChecker(this.props.attributes.uniqueID);
+		const { attributes, clientId } = this.props;
+		const { uniqueID, blockStyle } = attributes;
+
+		this.uniqueIDChecker(uniqueID);
+		this.getDefaultBlockStyle(blockStyle, clientId);
 		this.fixProps();
 	}
 
@@ -59,6 +64,28 @@ class MaxiBlock extends Component {
 	// eslint-disable-next-line class-methods-use-this
 	get getObject() {
 		return null;
+	}
+
+	getDefaultBlockStyle(blockStyle, clientId) {
+		if (blockStyle) return;
+
+		let res;
+
+		const blockRootClientId = select(
+			'core/block-editor'
+		).getBlockRootClientId(clientId);
+
+		if (!blockRootClientId) res = 'maxi-light';
+		else {
+			const parentBlockStyle = select(
+				'core/block-editor'
+			).getBlockAttributes(blockRootClientId).blockStyle;
+
+			if (parentBlockStyle === 'maxi-custom') res = 'maxi-custom';
+			else res = 'maxi-parent';
+		}
+
+		this.props.setAttributes({ blockStyle: res });
 	}
 
 	uniqueIDChecker(idToCheck) {

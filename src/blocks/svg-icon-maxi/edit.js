@@ -179,6 +179,7 @@ class edit extends MaxiBlock {
 				uniqueID,
 				blockStyle,
 				defaultBlockStyle,
+				blockStyleBackground,
 				extraClassName,
 				content,
 				background,
@@ -192,6 +193,8 @@ class edit extends MaxiBlock {
 			'maxi-block--backend',
 			'maxi-svg-icon-block',
 			blockStyle,
+			blockStyle !== 'maxi-custom' &&
+				`maxi-background--${blockStyleBackground}`,
 			extraClassName,
 			uniqueID,
 			className

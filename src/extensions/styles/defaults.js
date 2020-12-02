@@ -1344,7 +1344,7 @@ export const __experimentalColumn = {
 	},
 };
 
-export const __experimentalShapeDivider = {
+export const ShapeDivider = {
 	label: 'Shape Divider',
 	top: {
 		status: 0,

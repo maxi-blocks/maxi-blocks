@@ -11,7 +11,7 @@ const { SelectControl, Icon } = wp.components;
 import { getLastBreakpointValue } from '../../utils';
 import ColorControl from '../color-control';
 import DefaultStylesControl from '../default-styles-control';
-import __experimentalAxisControl from '../axis-control';
+import AxisControl from '../axis-control';
 import {
 	borderNone,
 	borderSolid,
@@ -168,7 +168,7 @@ const BorderControl = props => {
 							onChange(JSON.stringify(value));
 						}}
 					/>
-					<__experimentalAxisControl
+					<AxisControl
 						values={value.borderWidth}
 						defaultValues={defaultValue.borderWidth}
 						onChange={val => {
@@ -193,7 +193,7 @@ const BorderControl = props => {
 						}}
 						disableAuto
 					/>
-					<__experimentalAxisControl
+					<AxisControl
 						values={value.borderRadius}
 						defaultValues={defaultValue.borderRadius}
 						onChange={val => {

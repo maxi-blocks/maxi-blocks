@@ -3,7 +3,7 @@ export { default as BackgroundColor } from './background-color';
 export { default as SvgColor } from './svg-colors';
 export { default as Border } from './border';
 export { default as BoxShadow } from './box-shadow';
-export { default as ColumnPattern } from './column-pattern';
+export { default as ToolbarColumnPattern } from './column-pattern';
 export { default as Delete } from './delete';
 export { default as Divider } from './divider-line';
 export { default as DividerColor } from './divider-color';

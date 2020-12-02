@@ -11,7 +11,7 @@ const { Fragment } = wp.element;
 import TypographyControl from '../typography-control';
 import BackgroundControl from '../background-control';
 import BorderControl from '../border-control';
-import __experimentalAxisControl from '../axis-control';
+import AxisControl from '../axis-control';
 import __experimentalFancyRadioControl from '../fancy-radio-control';
 
 /**
@@ -413,7 +413,7 @@ const HoverEffectControl = props => {
 						}}
 					/>
 					{!!hoverValue.paddingStatus && (
-						<__experimentalAxisControl
+						<AxisControl
 							values={hoverValue.padding}
 							defaultValues={defaultValue.padding}
 							disableAuto
@@ -436,7 +436,7 @@ const HoverEffectControl = props => {
 						}}
 					/>
 					{!!hoverValue.marginStatus && (
-						<__experimentalAxisControl
+						<AxisControl
 							values={hoverValue.margin}
 							defaultValues={defaultValue.margin}
 							disableAuto

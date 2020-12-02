@@ -7,9 +7,9 @@ const { __ } = wp.i18n;
  * Internal dependencies
  */
 import MediaUploaderControl from '../media-uploader-control';
-import __experimentalClipPath from '../clip-path-control';
-import __experimentalOpacityControl from '../opacity-control';
-import __experimentalNumberControl from '../number-control';
+import ClipPath from '../clip-path-control';
+import OpacityControl from '../opacity-control';
+import NumberControl from '../number-control';
 import __experimentalTextControl from '../text-control';
 import __experimentalFancyRadioControl from '../fancy-radio-control';
 
@@ -38,7 +38,7 @@ const VideoLayer = props => {
 				}}
 			/>
 
-			<__experimentalNumberControl
+			<NumberControl
 				label={__('Start Time (s)', 'maxi-blocks')}
 				min={0}
 				max={999}
@@ -49,7 +49,7 @@ const VideoLayer = props => {
 					onChange(videoOptions);
 				}}
 			/>
-			<__experimentalNumberControl
+			<NumberControl
 				label={__('End Time (s)', 'maxi-blocks')}
 				min={0}
 				max={999}
@@ -102,7 +102,7 @@ const VideoLayer = props => {
 			/>
 
 			{!disableClipPath && (
-				<__experimentalClipPath
+				<ClipPath
 					clipPath={videoOptions.clipPath}
 					onChange={val => {
 						videoOptions.clipPath = val;
@@ -111,7 +111,7 @@ const VideoLayer = props => {
 				/>
 			)}
 
-			<__experimentalOpacityControl
+			<OpacityControl
 				label={__('Video Opacity', 'maxi-blocks')}
 				fullWidthMode
 				opacity={videoOptions.opacity}

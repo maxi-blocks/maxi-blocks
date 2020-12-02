@@ -7,7 +7,7 @@ const { __ } = wp.i18n;
  * Internal dependencies
  */
 import ToolbarPopover from '../toolbar-popover';
-import __experimentalDividerControl from '../../../divider-control';
+import DividerControl from '../../../divider-control';
 
 /**
  * Styles & Icons
@@ -38,7 +38,7 @@ const Divider = props => {
 			advancedOptions='line'
 			content={
 				<div className='toolbar-item__divider-line__popover'>
-					<__experimentalDividerControl
+					<DividerControl
 						divider={divider}
 						defaultDivider={defaultDivider}
 						onChange={divider => {

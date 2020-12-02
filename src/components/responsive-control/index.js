@@ -6,7 +6,7 @@ const { __ } = wp.i18n;
 /**
  * Internal dependencies
  */
-import __experimentalNumberControl from '../number-control';
+import NumberControl from '../number-control';
 
 /**
  * External dependencies
@@ -38,7 +38,7 @@ const ResponsiveControl = props => {
 
 	return (
 		<div className={classes}>
-			<__experimentalNumberControl
+			<NumberControl
 				label={__('Breakpoint', 'maxi-blocks')}
 				className='maxi-responsive-control__breakpoint'
 				value={value[breakpoint]}

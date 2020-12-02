@@ -8,7 +8,7 @@ const { Fragment, useState } = wp.element;
 /**
  * Internal dependencies
  */
-import __experimentalOpacityControl from '../opacity-control';
+import OpacityControl from '../opacity-control';
 import __experimentalFancyRadioControl from '../fancy-radio-control';
 import BackgroundControl from '../background-control';
 import SizeControl from '../size-control';
@@ -302,7 +302,7 @@ const ShapeDividerControl = props => {
 									/>
 								)}
 							/>
-							<__experimentalOpacityControl
+							<OpacityControl
 								opacity={shapeDividerTopOptions.opacity}
 								defaultOpacity={
 									defaultShapeDividerTopOptions.opacity
@@ -419,7 +419,7 @@ const ShapeDividerControl = props => {
 									/>
 								)}
 							/>
-							<__experimentalOpacityControl
+							<OpacityControl
 								opacity={shapeDividerBottomOptions.opacity}
 								defaultOpacity={
 									defaultShapeDividerBottomOptions.opacity

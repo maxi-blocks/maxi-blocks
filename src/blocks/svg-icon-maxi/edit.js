@@ -22,8 +22,8 @@ import {
 } from '../../utils';
 import {
 	MaxiBlock,
-	__experimentalToolbar,
-	__experimentalBackgroundDisplayer,
+	Toolbar,
+	BackgroundDisplayer,
 	__experimentalMotionPreview,
 } from '../../components';
 
@@ -200,7 +200,7 @@ class edit extends MaxiBlock {
 		return [
 			<MaxiProvider>
 				<Inspector {...this.props} />
-				<__experimentalToolbar {...this.props} />
+				<Toolbar {...this.props} />
 				<__experimentalMotionPreview motion={motion}>
 					<__experimentalBlock
 						className={classes}
@@ -226,7 +226,7 @@ class edit extends MaxiBlock {
 							)}
 							{!isEmpty(content) && (
 								<Fragment>
-									<__experimentalBackgroundDisplayer
+									<BackgroundDisplayer
 										background={background}
 									/>
 									<SandBox

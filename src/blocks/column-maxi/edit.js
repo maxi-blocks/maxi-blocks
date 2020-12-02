@@ -12,9 +12,9 @@ const { InnerBlocks, __experimentalBlock } = wp.blockEditor;
  */
 import {
 	MaxiBlock,
-	__experimentalToolbar,
-	__experimentalBlockPlaceholder,
-	__experimentalBackgroundDisplayer,
+	Toolbar,
+	BlockPlaceholder,
+	BackgroundDisplayer,
 } from '../../components';
 import Inspector from './inspector';
 import {
@@ -46,7 +46,7 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
 			className={className}
 			data-gx_initial_block_class={maxiBlockClass}
 		>
-			<__experimentalBackgroundDisplayer background={background} />
+			<BackgroundDisplayer background={background} />
 			{children}
 		</__experimentalBlock.div>
 	);
@@ -232,7 +232,7 @@ class edit extends MaxiBlock {
 
 		return [
 			<Inspector {...this.props} />,
-			<__experimentalToolbar {...this.props} />,
+			<Toolbar {...this.props} />,
 			<RowContext.Consumer>
 				{context => (
 					<Fragment>
@@ -289,7 +289,7 @@ class edit extends MaxiBlock {
 									renderAppender={
 										!hasInnerBlock
 											? () => (
-													<__experimentalBlockPlaceholder
+													<BlockPlaceholder
 														clientId={clientId}
 													/>
 											  )

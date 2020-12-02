@@ -16,11 +16,7 @@ import {
 	getAlignmentTextObject,
 	setBackgroundStyles,
 } from '../../utils';
-import {
-	MaxiBlock,
-	__experimentalToolbar,
-	__experimentalBackgroundDisplayer,
-} from '../../components';
+import { MaxiBlock, Toolbar, BackgroundDisplayer } from '../../components';
 
 /**
  * External dependencies
@@ -295,13 +291,13 @@ class edit extends MaxiBlock {
 
 		return [
 			<Inspector {...this.props} />,
-			<__experimentalToolbar {...this.props} />,
+			<Toolbar {...this.props} />,
 			<div
 				className={classes}
 				data-maxi_initial_block_class={defaultBlockStyle}
 				data-align={fullWidth}
 			>
-				<__experimentalBackgroundDisplayer background={background} />
+				<BackgroundDisplayer background={background} />
 				<Fragment>
 					<div className='maxi-icon-block__icon'>
 						<div className='maxi-icon-block__icon_content'>

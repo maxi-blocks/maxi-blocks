@@ -8,7 +8,7 @@ const { Fragment } = wp.element;
  * Internal dependencies
  */
 import ColorControl from '../color-control';
-import __experimentalClipPath from '../clip-path-control';
+import ClipPath from '../clip-path-control';
 
 /**
  * Component
@@ -35,7 +35,7 @@ const colorLayer = props => {
 				}}
 			/>
 			{!disableClipPath && (
-				<__experimentalClipPath
+				<ClipPath
 					clipPath={colorOptions.clipPath}
 					onChange={val => {
 						colorOptions.clipPath = val;

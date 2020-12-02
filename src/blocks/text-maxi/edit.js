@@ -25,8 +25,8 @@ import {
 } from '../../utils';
 import {
 	MaxiBlock,
-	__experimentalToolbar,
-	__experimentalBackgroundDisplayer,
+	Toolbar,
+	BackgroundDisplayer,
 	__experimentalMotionPreview,
 } from '../../components';
 import {
@@ -233,16 +233,14 @@ class edit extends MaxiBlock {
 
 		return [
 			<Inspector {...this.props} />,
-			<__experimentalToolbar {...this.props} />,
+			<Toolbar {...this.props} />,
 			<__experimentalMotionPreview motion={motion}>
 				<__experimentalBlock
 					className={classes}
 					data-maxi_initial_block_class={defaultBlockStyle}
 					data-align={fullWidth}
 				>
-					<__experimentalBackgroundDisplayer
-						background={background}
-					/>
+					<BackgroundDisplayer background={background} />
 					{!isList && (
 						<RichText
 							className='maxi-text-block__content'

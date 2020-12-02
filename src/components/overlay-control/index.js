@@ -7,7 +7,7 @@ const { Icon } = wp.components;
 /**
  * Internal dependencies
  */
-import __experimentalOpacityControl from '../opacity-control';
+import OpacityControl from '../opacity-control';
 import __experimentalFancyRadioControl from '../fancy-radio-control';
 import ColorControl from '../color-control';
 import GradientControl from '../gradient-control';
@@ -68,7 +68,7 @@ const OverlayControl = props => {
 			/>
 			{/* {value.overlayOptions.overlay === 'gradient' && (
 				// ||				value.overlayOptions.overlay === 'color')
-				<__experimentalOpacityControl
+				<OpacityControl
 					opacity={value.overlayOptions.opacity}
 					defaultOpacity={defaultValue.overlayOptions.opacity}
 					onChange={val => {

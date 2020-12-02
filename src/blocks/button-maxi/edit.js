@@ -21,7 +21,7 @@ import {
 } from '../../utils';
 import {
 	MaxiBlock,
-	__experimentalToolbar,
+	Toolbar,
 	__experimentalMotionPreview,
 } from '../../components';
 import { __experimentalGetFormatValue } from '../../extensions/text/formats';
@@ -223,7 +223,7 @@ class edit extends MaxiBlock {
 
 		return [
 			<Inspector {...this.props} />,
-			<__experimentalToolbar {...this.props} />,
+			<Toolbar {...this.props} />,
 			<__experimentalMotionPreview motion={motion}>
 				<__experimentalBlock
 					className={classes}

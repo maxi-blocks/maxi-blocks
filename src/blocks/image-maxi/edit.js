@@ -23,8 +23,8 @@ import {
 } from '../../utils';
 import {
 	MaxiBlock,
-	__experimentalToolbar,
-	__experimentalBackgroundDisplayer,
+	Toolbar,
+	BackgroundDisplayer,
 	__experimentalMotionPreview,
 } from '../../components';
 
@@ -351,7 +351,7 @@ class edit extends MaxiBlock {
 
 		return [
 			<Inspector {...this.props} />,
-			<__experimentalToolbar {...this.props} />,
+			<Toolbar {...this.props} />,
 			<__experimentalMotionPreview motion={motion}>
 				<__experimentalBlock.figure
 					className={classes}
@@ -366,7 +366,7 @@ class edit extends MaxiBlock {
 							<Fragment>
 								{(!isNil(mediaID) && imageData) || mediaURL ? (
 									<Fragment>
-										<__experimentalBackgroundDisplayer
+										<BackgroundDisplayer
 											background={background}
 										/>
 										<ResizableBox

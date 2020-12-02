@@ -10,7 +10,7 @@ const { RangeControl, SelectControl, Icon } = wp.components;
  */
 import ColorControl from '../color-control';
 import DefaultStylesControl from '../default-styles-control';
-import __experimentalOpacityControl from '../opacity-control';
+import OpacityControl from '../opacity-control';
 import {
 	dividerSolidHorizontal,
 	dividerDottedHorizontal,
@@ -270,7 +270,7 @@ const DividerControl = props => {
 					/>
 				</Fragment>
 			)}
-			<__experimentalOpacityControl
+			<OpacityControl
 				opacity={value.opacity}
 				defaultOpacity={defaultValue.opacity}
 				onChange={val => {

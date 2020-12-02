@@ -139,7 +139,7 @@ class edit extends MaxiBlock {
 		response = Object.assign(
 			response,
 			setBackgroundStyles(
-				uniqueID,
+				`${uniqueID} .maxi-container-block__wrapper`,
 				background,
 				backgroundHover,
 				overlay,

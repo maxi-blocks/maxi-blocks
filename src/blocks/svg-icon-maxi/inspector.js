@@ -34,6 +34,7 @@ import {
 	__experimentalEntranceAnimationControl,
 	__experimentalHoverEffectControl,
 	__experimentalFancyRadioControl,
+	__experimentalCustomLabel,
 } from '../../components';
 
 /**
@@ -47,6 +48,7 @@ import { isEmpty, isObject } from 'lodash';
 const Inspector = props => {
 	const {
 		attributes: {
+			customLabel,
 			uniqueID,
 			isFirstOnHierarchy,
 			blockStyle,
@@ -254,6 +256,13 @@ const Inspector = props => {
 						content: (
 							<Fragment>
 								<div className='maxi-tab-content__box'>
+									<__experimentalCustomLabel
+										customLabel={customLabel}
+										onChange={customLabel =>
+											setAttributes({ customLabel })
+										}
+									/>
+									<hr />
 									<BlockStylesControl
 										blockStyle={blockStyle}
 										onChangeBlockStyle={blockStyle =>

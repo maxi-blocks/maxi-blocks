@@ -1,0 +1,13 @@
+.maxi-sidebar {
+	.maxi-custom-label {
+		.components-base-control {
+			&__field {
+				flex-direction: column;
+			}
+			&__label {
+				width: 100% !important;
+				margin: 0 0 5px !important;
+			}
+		}
+	}
+}

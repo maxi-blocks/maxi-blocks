@@ -5,7 +5,6 @@ const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
 const { Fragment } = wp.element;
 const { TextControl } = wp.components;
-const { select, dispatch } = wp.data;
 
 /**
  * Internal dependencies
@@ -31,7 +30,6 @@ import {
 	__experimentalDisplayControl,
 	__experimentalMotionControl,
 	__experimentalTransformControl,
-	__experimentalClipPath,
 	__experimentalEntranceAnimationControl,
 	__experimentalHoverEffectControl,
 	__experimentalFancyRadioControl,
@@ -40,7 +38,7 @@ import {
 /**
  * External dependencies
  */
-import { isEmpty, isObject } from 'lodash';
+import { isObject } from 'lodash';
 
 /**
  * Inspector
@@ -79,143 +77,12 @@ const Inspector = props => {
 		clientId,
 		deviceType,
 		setAttributes,
+		changeSVGSize,
+		changeSVGAnimationDuration,
+		changeSVGAnimation,
+		changeSVGStrokeWidth,
+		isAnimatedSVG,
 	} = props;
-
-	function isAnimatedSvg() {
-		if (
-			select('core/block-editor').getSelectedBlock() !== null &&
-			select('core/block-editor').getSelectedBlock().name ===
-				'maxi-blocks/svg-icon-maxi'
-		) {
-			const { clientId } = select('core/block-editor').getSelectedBlock();
-			const currentContent = select(
-				'core/block-editor'
-			).getSelectedBlock().attributes.content;
-			if (
-				currentContent.indexOf('<animate') !== -1 ||
-				currentContent.indexOf('<!--animate') !== -1
-			) {
-				const newContent = currentContent.replace(
-					/animateTransform'/g,
-					'animatetransform'
-				);
-
-				dispatch('core/block-editor').updateBlockAttributes(clientId, {
-					content: newContent,
-				});
-				return true;
-			}
-			return false;
-		}
-		return false;
-	}
-
-	function changeSvgStrokeWidth(width) {
-		if (width) {
-			const currentContent = select(
-				'core/block-editor'
-			).getSelectedBlock().attributes.content;
-			const regexLineToChange = new RegExp('stroke-width=".+?(?= )', 'g');
-			const changeTo = `stroke-width="${width}"`;
-			const newContent = currentContent.replace(
-				regexLineToChange,
-				changeTo
-			);
-
-			dispatch('core/block-editor').updateBlockAttributes(clientId, {
-				content: newContent,
-			});
-		}
-	}
-
-	function changeSvgAnimation(animation) {
-		const { clientId } = select('core/block-editor').getSelectedBlock();
-		const currentContent = select('core/block-editor').getSelectedBlock()
-			.attributes.content;
-		let newContent = '';
-
-		switch (animation) {
-			case 'loop':
-				newContent = currentContent.replace(
-					/repeatCount="1"/g,
-					'repeatCount="indefinite"'
-				);
-				newContent = newContent.replace(/dur="0"/g, 'dur="3.667s"');
-				break;
-			case 'load-once':
-				newContent = currentContent.replace(
-					/repeatCount="indefinite"/g,
-					'repeatCount="1"'
-				);
-				newContent = newContent.replace(/dur="0"/g, 'dur="3.667s"');
-				break;
-			case 'hover-loop':
-				newContent = currentContent.replace(
-					new RegExp('dur=".+?(?= )', 'g'),
-					'dur="0"'
-				);
-				break;
-			case 'hover-once':
-				break;
-			case 'hover-off':
-				break;
-			case 'off':
-				newContent = currentContent.replace(
-					new RegExp('dur=".+?(?= )', 'g'),
-					'dur="0"'
-				);
-				break;
-			default:
-				return;
-		}
-
-		if (!isEmpty(newContent))
-			dispatch('core/block-editor').updateBlockAttributes(clientId, {
-				content: newContent,
-			});
-	}
-
-	function changeSvgAnimationDuration(duration) {
-		const { clientId } = select('core/block-editor').getSelectedBlock();
-		const currentContent = select('core/block-editor').getSelectedBlock()
-			.attributes.content;
-		let newContent = '';
-
-		const regexLineToChange = new RegExp('dur=".+?(?= )', 'g');
-		const changeTo = `dur="${duration}s"`;
-		newContent = currentContent.replace(regexLineToChange, changeTo);
-
-		if (!isEmpty(newContent))
-			dispatch('core/block-editor').updateBlockAttributes(clientId, {
-				content: newContent,
-			});
-	}
-
-	function changeSvgSize(width) {
-		const { clientId } = select('core/block-editor').getSelectedBlock();
-		const currentContent = select('core/block-editor').getSelectedBlock()
-			.attributes.content;
-		let newContent = '';
-
-		const regexLineToChange = new RegExp('width=".+?(?=")');
-		const changeTo = `width="${width}`;
-
-		const regexLineToChange2 = new RegExp('height=".+?(?=")');
-		const changeTo2 = `height="${width}`;
-
-		newContent = currentContent.replace(regexLineToChange, changeTo);
-		newContent = newContent.replace(regexLineToChange2, changeTo2);
-
-		if (newContent.indexOf('viewBox') === -1) {
-			const changeTo3 = ' viewBox="0 0 64 64"><defs>';
-			newContent = newContent.replace(/><defs>/, changeTo3);
-		}
-
-		if (!isEmpty(newContent))
-			dispatch('core/block-editor').updateBlockAttributes(clientId, {
-				content: newContent,
-			});
-	}
 
 	const backgroundHoverValue = !isObject(backgroundHover)
 		? JSON.parse(backgroundHover)
@@ -272,7 +139,7 @@ const Inspector = props => {
 												/>
 											),
 										},
-										isAnimatedSvg() && {
+										isAnimatedSVG && {
 											label: __(
 												'SVG Animation',
 												'maxi-blocks'
@@ -285,7 +152,7 @@ const Inspector = props => {
 															setAttributes({
 																animation,
 															});
-															changeSvgAnimation(
+															changeSVGAnimation(
 																animation
 															);
 														}}
@@ -297,7 +164,7 @@ const Inspector = props => {
 																setAttributes({
 																	duration,
 																});
-																changeSvgAnimationDuration(
+																changeSVGAnimationDuration(
 																	duration
 																);
 															}}
@@ -321,7 +188,7 @@ const Inspector = props => {
 														setAttributes({
 															stroke,
 														});
-														changeSvgStrokeWidth(
+														changeSVGStrokeWidth(
 															stroke
 														);
 													}}
@@ -341,7 +208,7 @@ const Inspector = props => {
 														setAttributes({
 															width,
 														});
-														changeSvgSize(width);
+														changeSVGSize(width);
 													}}
 													breakpoint={deviceType}
 												/>

@@ -2,9 +2,10 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
+const { compose } = wp.compose;
 const { Fragment, RawHTML } = wp.element;
 const { Placeholder } = wp.components;
-const { withSelect } = wp.data;
+const { withSelect, withDispatch } = wp.data;
 const { __experimentalBlock } = wp.blockEditor;
 
 /**
@@ -176,10 +177,179 @@ class edit extends MaxiBlock {
 	}
 }
 
-export default withSelect((select, ownProps) => {
+const editSelect = withSelect((select, ownProps) => {
+	const {
+		attributes: { content },
+		setAttributes,
+	} = ownProps;
+
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
+
+	const isAnimatedSVG = () => {
+		if (
+			content.indexOf('<animate') !== -1 ||
+			content.indexOf('<!--animate') !== -1
+		) {
+			if (content.indexOf('animateTransform') === -1) {
+				const newContent = content.replace(
+					/animateTransform'/g,
+					'animatetransform'
+				);
+
+				setAttributes({ content: newContent });
+			}
+			return true;
+		}
+		return false;
+	};
+
+	const hasThirdColour =
+		(content.indexOf('maxi-svg-color-third') !== -1 && true) || false;
 
 	return {
 		deviceType,
+		isAnimatedSVG: isAnimatedSVG(),
+		hasThirdColour,
 	};
-})(edit);
+});
+
+const editDispatch = withDispatch((dispatch, ownProps) => {
+	const {
+		attributes: { content },
+		setAttributes,
+	} = ownProps;
+
+	const changeSVGSize = width => {
+		const regexLineToChange = new RegExp('width=".+?(?=")');
+		const changeTo = `width="${width}`;
+
+		const regexLineToChange2 = new RegExp('height=".+?(?=")');
+		const changeTo2 = `height="${width}`;
+
+		let newContent = content
+			.replace(regexLineToChange, changeTo)
+			.replace(regexLineToChange2, changeTo2);
+
+		if (newContent.indexOf('viewBox') === -1) {
+			const changeTo3 = ' viewBox="0 0 64 64"><defs>';
+			newContent = newContent.replace(/><defs>/, changeTo3);
+		}
+
+		if (!isEmpty(newContent))
+			setAttributes({
+				content: newContent,
+			});
+	};
+
+	const changeSVGAnimationDuration = duration => {
+		const regexLineToChange = new RegExp('dur=".+?(?= )', 'g');
+		const changeTo = `dur="${duration}s"`;
+		const newContent = content.replace(regexLineToChange, changeTo);
+
+		if (!isEmpty(newContent))
+			setAttributes({
+				content: newContent,
+			});
+	};
+
+	const changeSVGAnimation = animation => {
+		let newContent = '';
+
+		switch (animation) {
+			case 'loop':
+				newContent = content.replace(
+					/repeatCount="1"/g,
+					'repeatCount="indefinite"'
+				);
+				newContent = newContent.replace(/dur="0"/g, 'dur="3.667s"');
+				break;
+			case 'load-once':
+				newContent = content.replace(
+					/repeatCount="indefinite"/g,
+					'repeatCount="1"'
+				);
+				newContent = newContent.replace(/dur="0"/g, 'dur="3.667s"');
+				break;
+			case 'hover-loop':
+				newContent = content.replace(
+					new RegExp('dur=".+?(?= )', 'g'),
+					'dur="0"'
+				);
+				break;
+			case 'off':
+				newContent = content.replace(
+					new RegExp('dur=".+?(?= )', 'g'),
+					'dur="0"'
+				);
+				break;
+			case 'hover-once':
+			case 'hover-off':
+			default:
+				return;
+		}
+
+		if (!isEmpty(newContent))
+			setAttributes({
+				content: newContent,
+			});
+	};
+
+	const changeSVGStrokeWidth = width => {
+		if (width) {
+			const regexLineToChange = new RegExp('stroke-width=".+?(?= )', 'g');
+			const changeTo = `stroke-width="${width}"`;
+			const newContent = content.replace(regexLineToChange, changeTo);
+
+			setAttributes({
+				content: newContent,
+			});
+		}
+	};
+
+	const changeSVGContent = (color, colorNumber) => {
+		let colorClass = '';
+		switch (colorNumber) {
+			case 1:
+				colorClass = 'maxi-svg-color-first';
+				break;
+			case 2:
+				colorClass = 'maxi-svg-color-second';
+				break;
+			case 3:
+				colorClass = 'maxi-svg-color-third';
+				break;
+			default:
+				return;
+		}
+
+		if (colorClass !== '') {
+			const regexLineToChange = new RegExp(
+				`${colorClass}" fill=".+?(?= )`,
+				'g'
+			);
+			const regexLineToChange2 = new RegExp(
+				`${colorClass}" stroke=".+?(?= )`,
+				'g'
+			);
+
+			/// ^rgba?\(|\s+|\)$/g
+			const changeTo = `${colorClass}" fill="${color}"`;
+			const changeTo2 = `${colorClass}" stroke="${color}"`;
+			const newContent = content
+				.replace(regexLineToChange, changeTo)
+				.replace(regexLineToChange2, changeTo2);
+
+			setAttributes({ content: newContent });
+		}
+	};
+
+	return {
+		changeSVGSize,
+		changeSVGAnimationDuration,
+		changeSVGAnimation,
+		changeSVGStrokeWidth,
+		changeSVGContent,
+	};
+});
+
+export default compose(editSelect, editDispatch)(edit);

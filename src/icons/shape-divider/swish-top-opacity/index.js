@@ -13,12 +13,12 @@ const waveTopOpacity = (
 		<defs>
 			<Path
 				id='swish-top-opacity-a'
-				fillOpacity='.298'
+				opacity='.298'
 				d='M1280 140V0H0v60q35.8 5 100.6 12.5 129.5 15 274.3 27.5 463.25 40 905.1 40z'
 			/>
 			<Path
 				id='swish-top-opacity-b'
-				fillOpacity='.498'
+				opacity='.498'
 				d='M1280 140V0H0v30q35.8 6.9 100.6 17.2Q230.1 67.8 374.9 85q463.25 55 905.1 55z'
 			/>
 			<Path

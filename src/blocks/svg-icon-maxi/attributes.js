@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies
+ */
+const { __ } = wp.i18n;
+
+/**
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults';
@@ -7,6 +12,10 @@ import * as attributesData from '../../extensions/styles/defaults';
  * Attributes
  */
 const attributes = {
+	customLabel: {
+		type: 'string',
+		default: __('SVG Icon', 'maxi-blocks'),
+	},
 	alignment: {
 		type: 'string',
 		default: JSON.stringify(attributesData.alignment),

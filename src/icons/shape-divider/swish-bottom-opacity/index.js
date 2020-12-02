@@ -13,12 +13,12 @@ const swishBottomOpacity = (
 		<defs>
 			<Path
 				id='swish-bottom-opacity-a'
-				fillOpacity='.298'
+				opacity='.298'
 				d='M1157.7 139.3q-184.55-4.763-375.95-21.15Q577.55 100.6 374.9 70 230.15 48.15 100.6 21.9 35.8 8.75 0 0v140l1157.7-.7z'
 			/>
 			<Path
 				id='swish-bottom-opacity-b'
-				fillOpacity='.498'
+				opacity='.498'
 				d='M0 30v110l1113.55-1q-362.26-9.313-738.65-54-144.8-17.2-274.3-37.8Q35.8 36.9 0 30z'
 			/>
 			<Path

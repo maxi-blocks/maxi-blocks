@@ -73,6 +73,7 @@ const allowedBlocks = [
 const MaxiToolbar = props => {
 	const {
 		attributes: {
+			customLabel,
 			uniqueID,
 			typography,
 			typographyHover,
@@ -141,6 +142,9 @@ const MaxiToolbar = props => {
 					__unstableSlotName='block-toolbar'
 					shouldAnchorIncludePadding
 				>
+					<div className='toolbar-block-custom-label'>
+						{customLabel}
+					</div>
 					<div className='toolbar-wrapper'>
 						<Mover clientId={clientId} blockName={name} />
 						<__experimentalColumnMover

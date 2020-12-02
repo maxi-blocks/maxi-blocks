@@ -13,7 +13,7 @@ const asymmetricBottomOpacity = (
 		<defs>
 			<Path
 				id='asymmetric-bottom-opacity-a'
-				fillOpacity='.498'
+				opacity='.498'
 				d='M1280 140V0l-266 91.5q-15 5.2-30.8 3.7L0 0v140h1280z'
 			/>
 			<Path

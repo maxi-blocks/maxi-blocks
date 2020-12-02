@@ -665,7 +665,7 @@ export const setBackgroundStyles = (
 
 	if (!isNil(overlay)) {
 		response[
-			`${target}>.maxi-background-displayer .maxi-background-displayer__overlay`
+			`${target} > .maxi-background-displayer .maxi-background-displayer__overlay`
 		] = {
 			overlay: { ...getColorOverlayObject(JSON.parse(overlay)) },
 		};
@@ -673,7 +673,7 @@ export const setBackgroundStyles = (
 
 	if (backgroundHoverValue.status) {
 		response[
-			`${target}:hover>.maxi-background-displayer .maxi-background-displayer__color`
+			`${target}:hover > .maxi-background-displayer .maxi-background-displayer__color`
 		] = {
 			backgroundHover: {
 				...getColorBackgroundObject(backgroundHoverValue.colorOptions),
@@ -681,7 +681,7 @@ export const setBackgroundStyles = (
 		};
 	} else {
 		response[
-			`${target}:hover>.maxi-background-displayer .maxi-background-displayer__color`
+			`${target}:hover > .maxi-background-displayer .maxi-background-displayer__color`
 		] = {
 			backgroundHover: {},
 		};
@@ -689,7 +689,7 @@ export const setBackgroundStyles = (
 
 	if (!isNil(overlay) && !!JSON.parse(overlayHover).status) {
 		response[
-			`${target}:hover>.maxi-background-displayer .maxi-background-displayer__overlay`
+			`${target}:hover > .maxi-background-displayer .maxi-background-displayer__overlay`
 		] = {
 			overlayHover: {
 				...getColorOverlayObject(JSON.parse(overlayHover)),
@@ -697,7 +697,7 @@ export const setBackgroundStyles = (
 		};
 	} else {
 		response[
-			`${target}:hover>.maxi-background-displayer .maxi-background-displayer__overlay`
+			`${target}:hover > .maxi-background-displayer .maxi-background-displayer__overlay`
 		] = {
 			overlayHover: {},
 		};
@@ -724,34 +724,34 @@ export const setBackgroundStyles = (
 					...getImageBackgroundObject(backgroundValue.imageOptions),
 				},
 			},
-			[`${target}:hover>.maxi-background-displayer .maxi-background-displayer__images`]: {
+			[`${target}:hover > .maxi-background-displayer .maxi-background-displayer__images`]: {
 				imageBackgroundHover: {
 					...getImageBackgroundObject(
 						backgroundHoverValue.imageOptions
 					),
 				},
 			},
-			[`${target}>.maxi-background-displayer .maxi-background-displayer__video-player`]: {
+			[`${target} > .maxi-background-displayer .maxi-background-displayer__video-player`]: {
 				videoBackground: {
 					...getVideoBackgroundObject(backgroundValue.videoOptions),
 				},
 			},
 
-			[`${target}:hover>.maxi-background-displayer .maxi-background-displayer__video-player`]: {
+			[`${target}:hover > .maxi-background-displayer .maxi-background-displayer__video-player`]: {
 				videoBackgroundHover: {
 					...getVideoBackgroundObject(
 						backgroundHoverValue.videoOptions
 					),
 				},
 			},
-			[`${target}>.maxi-background-displayer .maxi-background-displayer__svg`]: {
+			[`${target} > .maxi-background-displayer .maxi-background-displayer__svg`]: {
 				SVGBackground: {
 					...getSVGWrapperBackgroundObject(
 						backgroundValue.SVGOptions
 					),
 				},
 			},
-			[`${target}>.maxi-background-displayer .maxi-background-displayer__svg svg`]: {
+			[`${target} > .maxi-background-displayer .maxi-background-displayer__svg svg`]: {
 				SVGBackground: {
 					...getSVGBackgroundObject(backgroundValue.SVGOptions),
 				},

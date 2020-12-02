@@ -2,8 +2,8 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { Fragment } = wp.element;
-const { Placeholder, SandBox } = wp.components;
+const { Fragment, RawHTML } = wp.element;
+const { Placeholder } = wp.components;
 const { withSelect } = wp.data;
 const { __experimentalBlock } = wp.blockEditor;
 
@@ -14,7 +14,6 @@ import MaxiProvider from './provider';
 import MaxiModal from './modal';
 import Inspector from './inspector';
 import {
-	getColorBackgroundObject,
 	getBoxShadowObject,
 	getAlignmentFlexObject,
 	getTransformObject,
@@ -31,7 +30,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isObject, isNil } from 'lodash';
+import { isEmpty, isNil } from 'lodash';
 
 /**
  * Content
@@ -43,12 +42,6 @@ class edit extends MaxiBlock {
 		let response = {
 			[uniqueID]: this.getNormalObject,
 			[`${uniqueID}:hover`]: this.getHoverObject,
-			[`${uniqueID} .maxi-hover-details .maxi-hover-details__content h3`]: this
-				.getHoverEffectTitleTextObject,
-			[`${uniqueID} .maxi-hover-details .maxi-hover-details__content p`]: this
-				.getHoverEffectContentTextObject,
-			[`${uniqueID} .maxi-hover-details`]: this
-				.getHoverEffectDetailsBoxObject,
 		};
 
 		response = Object.assign(
@@ -87,63 +80,6 @@ class edit extends MaxiBlock {
 			positionOptions: { ...JSON.parse(position).options },
 			display: { ...JSON.parse(display) },
 			transform: { ...getTransformObject(JSON.parse(transform)) },
-		};
-
-		return response;
-	}
-
-	get getHoverEffectDetailsBoxObject() {
-		const { hover } = this.props.attributes;
-
-		const background = !isObject(JSON.parse(hover).background)
-			? JSON.parse(JSON.parse(hover).background)
-			: JSON.parse(hover).background;
-
-		const border = !isObject(JSON.parse(hover).border)
-			? JSON.parse(JSON.parse(hover).border)
-			: JSON.parse(hover).border;
-
-		const padding = !isObject(JSON.parse(hover).padding)
-			? JSON.parse(JSON.parse(hover).padding)
-			: JSON.parse(hover).padding;
-
-		const margin = !isObject(JSON.parse(hover).margin)
-			? JSON.parse(JSON.parse(hover).margin)
-			: JSON.parse(hover).margin;
-
-		const response = {
-			background: { ...getColorBackgroundObject(background) },
-			border: { ...border },
-			padding: { ...padding },
-			margin: { ...margin },
-		};
-
-		return response;
-	}
-
-	get getHoverEffectTitleTextObject() {
-		const { hover } = this.props.attributes;
-
-		const titleTypography = !isObject(JSON.parse(hover).titleTypography)
-			? JSON.parse(JSON.parse(hover).titleTypography)
-			: JSON.parse(hover).titleTypography;
-
-		const response = {
-			typography: { ...titleTypography },
-		};
-
-		return response;
-	}
-
-	get getHoverEffectContentTextObject() {
-		const { hover } = this.props.attributes;
-
-		const contentTypography = !isObject(JSON.parse(hover).contentTypography)
-			? JSON.parse(JSON.parse(hover).contentTypography)
-			: JSON.parse(hover).contentTypography;
-
-		const response = {
-			typography: { ...contentTypography },
 		};
 
 		return response;
@@ -229,14 +165,7 @@ class edit extends MaxiBlock {
 									<__experimentalBackgroundDisplayer
 										background={background}
 									/>
-									<SandBox
-										html={content}
-										className={classes}
-										data-maxi_initial_block_class={
-											defaultBlockStyle
-										}
-									/>
-									<div className='block-library-html__preview-overlay' />
+									<RawHTML>{content}</RawHTML>
 								</Fragment>
 							)}
 						</Fragment>

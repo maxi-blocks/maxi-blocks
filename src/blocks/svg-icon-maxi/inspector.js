@@ -5,6 +5,7 @@ const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
 const { Fragment } = wp.element;
 const { TextControl } = wp.components;
+const { select, dispatch } = wp.data;
 
 /**
  * Internal dependencies
@@ -82,16 +83,14 @@ const Inspector = props => {
 
 	function isAnimatedSvg() {
 		if (
-			wp.data.select('core/block-editor').getSelectedBlock() !== null &&
-			wp.data.select('core/block-editor').getSelectedBlock().name ===
+			select('core/block-editor').getSelectedBlock() !== null &&
+			select('core/block-editor').getSelectedBlock().name ===
 				'maxi-blocks/svg-icon-maxi'
 		) {
-			const { clientId } = wp.data
-				.select('core/block-editor')
-				.getSelectedBlock();
-			const currentContent = wp.data
-				.select('core/block-editor')
-				.getSelectedBlock().attributes.content;
+			const { clientId } = select('core/block-editor').getSelectedBlock();
+			const currentContent = select(
+				'core/block-editor'
+			).getSelectedBlock().attributes.content;
 			if (
 				currentContent.indexOf('<animate') !== -1 ||
 				currentContent.indexOf('<!--animate') !== -1
@@ -100,9 +99,10 @@ const Inspector = props => {
 					/animateTransform'/g,
 					'animatetransform'
 				);
-				wp.data
-					.dispatch('core/block-editor')
-					.updateBlockAttributes(clientId, { content: newContent });
+
+				dispatch('core/block-editor').updateBlockAttributes(clientId, {
+					content: newContent,
+				});
 				return true;
 			}
 			return false;
@@ -112,12 +112,9 @@ const Inspector = props => {
 
 	function changeSvgStrokeWidth(width) {
 		if (width) {
-			const { clientId } = wp.data
-				.select('core/block-editor')
-				.getSelectedBlock();
-			const currentContent = wp.data
-				.select('core/block-editor')
-				.getSelectedBlock().attributes.content;
+			const currentContent = select(
+				'core/block-editor'
+			).getSelectedBlock().attributes.content;
 			const regexLineToChange = new RegExp('stroke-width=".+?(?= )', 'g');
 			const changeTo = `stroke-width="${width}"`;
 			const newContent = currentContent.replace(
@@ -125,21 +122,17 @@ const Inspector = props => {
 				changeTo
 			);
 
-			wp.data
-				.dispatch('core/block-editor')
-				.updateBlockAttributes(clientId, { content: newContent });
+			dispatch('core/block-editor').updateBlockAttributes(clientId, {
+				content: newContent,
+			});
 		}
 	}
 
 	function changeSvgAnimation(animation) {
-		const { clientId } = wp.data
-			.select('core/block-editor')
-			.getSelectedBlock();
-		const currentContent = wp.data
-			.select('core/block-editor')
-			.getSelectedBlock().attributes.content;
+		const { clientId } = select('core/block-editor').getSelectedBlock();
+		const currentContent = select('core/block-editor').getSelectedBlock()
+			.attributes.content;
 		let newContent = '';
-		const hoverContent = '';
 
 		switch (animation) {
 			case 'loop':
@@ -161,8 +154,6 @@ const Inspector = props => {
 					new RegExp('dur=".+?(?= )', 'g'),
 					'dur="0"'
 				);
-				// hoverContent = currentContent.replace(/repeatCount="1"/g,  'repeatCount="indefinite"');
-				// hoverContent = hoverContent.replace(/dur="0"/g, 'dur="3.667s"');
 				break;
 			case 'hover-once':
 				break;
@@ -179,18 +170,15 @@ const Inspector = props => {
 		}
 
 		if (!isEmpty(newContent))
-			wp.data
-				.dispatch('core/block-editor')
-				.updateBlockAttributes(clientId, { content: newContent });
+			dispatch('core/block-editor').updateBlockAttributes(clientId, {
+				content: newContent,
+			});
 	}
 
 	function changeSvgAnimationDuration(duration) {
-		const { clientId } = wp.data
-			.select('core/block-editor')
-			.getSelectedBlock();
-		const currentContent = wp.data
-			.select('core/block-editor')
-			.getSelectedBlock().attributes.content;
+		const { clientId } = select('core/block-editor').getSelectedBlock();
+		const currentContent = select('core/block-editor').getSelectedBlock()
+			.attributes.content;
 		let newContent = '';
 
 		const regexLineToChange = new RegExp('dur=".+?(?= )', 'g');
@@ -198,18 +186,15 @@ const Inspector = props => {
 		newContent = currentContent.replace(regexLineToChange, changeTo);
 
 		if (!isEmpty(newContent))
-			wp.data
-				.dispatch('core/block-editor')
-				.updateBlockAttributes(clientId, { content: newContent });
+			dispatch('core/block-editor').updateBlockAttributes(clientId, {
+				content: newContent,
+			});
 	}
 
 	function changeSvgSize(width) {
-		const { clientId } = wp.data
-			.select('core/block-editor')
-			.getSelectedBlock();
-		const currentContent = wp.data
-			.select('core/block-editor')
-			.getSelectedBlock().attributes.content;
+		const { clientId } = select('core/block-editor').getSelectedBlock();
+		const currentContent = select('core/block-editor').getSelectedBlock()
+			.attributes.content;
 		let newContent = '';
 
 		const regexLineToChange = new RegExp('width=".+?(?=")');
@@ -227,9 +212,9 @@ const Inspector = props => {
 		}
 
 		if (!isEmpty(newContent))
-			wp.data
-				.dispatch('core/block-editor')
-				.updateBlockAttributes(clientId, { content: newContent });
+			dispatch('core/block-editor').updateBlockAttributes(clientId, {
+				content: newContent,
+			});
 	}
 
 	const backgroundHoverValue = !isObject(backgroundHover)
@@ -283,6 +268,81 @@ const Inspector = props => {
 														})
 													}
 													disableJustify
+													breakpoint={deviceType}
+												/>
+											),
+										},
+										isAnimatedSvg() && {
+											label: __(
+												'SVG Animation',
+												'maxi-blocks'
+											),
+											content: (
+												<Fragment>
+													<SvgAnimationControl
+														animation={animation}
+														onChange={animation => {
+															setAttributes({
+																animation,
+															});
+															changeSvgAnimation(
+																animation
+															);
+														}}
+													/>
+													{animation !== 'off' && (
+														<SvgAnimationDurationControl
+															duration={duration}
+															onChange={duration => {
+																setAttributes({
+																	duration,
+																});
+																changeSvgAnimationDuration(
+																	duration
+																);
+															}}
+														/>
+													)}
+												</Fragment>
+											),
+										},
+										{
+											label: __(
+												'SVG Line Width',
+												'maxi-blocks'
+											),
+											content: (
+												<SvgStrokeWidthControl
+													stroke={stroke}
+													defaultStroke={
+														defaultStroke
+													}
+													onChange={stroke => {
+														setAttributes({
+															stroke,
+														});
+														changeSvgStrokeWidth(
+															stroke
+														);
+													}}
+													breakpoint={deviceType}
+												/>
+											),
+										},
+										{
+											label: __(
+												'SVG Width',
+												'maxi-blocks'
+											),
+											content: (
+												<SvgWidthControl
+													width={width}
+													onChange={width => {
+														setAttributes({
+															width,
+														});
+														changeSvgSize(width);
+													}}
 													breakpoint={deviceType}
 												/>
 											),
@@ -506,44 +566,6 @@ const Inspector = props => {
 										},
 										{
 											label: __(
-												'Line Width',
-												'maxi-blocks'
-											),
-											content: (
-												<SvgStrokeWidthControl
-													stroke={stroke}
-													defaultStroke={
-														defaultStroke
-													}
-													onChange={stroke => {
-														setAttributes({
-															stroke,
-														});
-														changeSvgStrokeWidth(
-															stroke
-														);
-													}}
-													breakpoint={deviceType}
-												/>
-											),
-										},
-										{
-											label: __('Width', 'maxi-blocks'),
-											content: (
-												<SvgWidthControl
-													width={width}
-													onChange={width => {
-														setAttributes({
-															width,
-														});
-														changeSvgSize(width);
-													}}
-													breakpoint={deviceType}
-												/>
-											),
-										},
-										{
-											label: __(
 												'Box Shadow',
 												'maxi-blocks'
 											),
@@ -684,40 +706,6 @@ const Inspector = props => {
 														}
 														breakpoint={deviceType}
 													/>
-												</Fragment>
-											),
-										},
-										isAnimatedSvg() && {
-											label: __(
-												'SVG Animation',
-												'maxi-blocks'
-											),
-											content: (
-												<Fragment>
-													<SvgAnimationControl
-														animation={animation}
-														onChange={animation => {
-															setAttributes({
-																animation,
-															});
-															changeSvgAnimation(
-																animation
-															);
-														}}
-													/>
-													{animation !== 'off' && (
-														<SvgAnimationDurationControl
-															duration={duration}
-															onChange={duration => {
-																setAttributes({
-																	duration,
-																});
-																changeSvgAnimationDuration(
-																	duration
-																);
-															}}
-														/>
-													)}
 												</Fragment>
 											),
 										},

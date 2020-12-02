@@ -3,7 +3,7 @@
  */
 const { Popover } = wp.components;
 const { Fragment, useEffect, useState } = wp.element;
-const { select } = wp.data;
+const { select, dispatch } = wp.data;
 
 /**
  * Internal dependencies

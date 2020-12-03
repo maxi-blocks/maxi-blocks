@@ -20,7 +20,7 @@ import {
 	getIconObject,
 } from '../../utils';
 import { MaxiBlock, Toolbar, MotionPreview } from '../../components';
-import { __experimentalGetFormatValue } from '../../extensions/text/formats';
+import { GetFormatValue } from '../../extensions/text/formats';
 
 /**
  * External dependencies
@@ -251,7 +251,7 @@ export default withSelect((select, ownProps) => {
 		multilineWrapperTags: isList ? typeOfList : undefined,
 		__unstableIsEditableTree: true,
 	};
-	const formatValue = __experimentalGetFormatValue(formatElement);
+	const formatValue = GetFormatValue(formatElement);
 
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 

@@ -128,11 +128,11 @@ const attributes = {
 	},
 	position: {
 		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalPosition),
+		default: JSON.stringify(attributesData.Position),
 	},
 	display: {
 		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalDisplay),
+		default: JSON.stringify(attributesData.Display),
 	},
 	clipPath: {
 		type: 'string',
@@ -140,15 +140,15 @@ const attributes = {
 	},
 	motion: {
 		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalMotion),
+		default: JSON.stringify(attributesData.Motion),
 	},
 	hover: {
 		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalHover),
+		default: JSON.stringify(attributesData.Hover),
 	},
 	transform: {
 		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalTransform),
+		default: JSON.stringify(attributesData.Transform),
 	},
 };
 

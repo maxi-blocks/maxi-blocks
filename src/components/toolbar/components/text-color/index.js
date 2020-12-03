@@ -10,8 +10,8 @@ const { ColorPicker, Icon } = wp.components;
 import { getLastBreakpointValue } from '../../../../utils';
 import ToolbarPopover from '../toolbar-popover';
 import {
-	__experimentalSetFormat,
-	__experimentalGetCustomFormatValue,
+	SetFormat,
+	GetCustomFormatValue,
 } from '../../../../extensions/text/formats';
 
 /**
@@ -44,7 +44,7 @@ const TextColor = props => {
 	const value =
 		(!isObject(typography) && JSON.parse(typography)) || typography;
 
-	const color = __experimentalGetCustomFormatValue({
+	const color = GetCustomFormatValue({
 		typography: value,
 		formatValue,
 		prop: 'color',
@@ -56,10 +56,7 @@ const TextColor = props => {
 	};
 
 	const onClick = val => {
-		const {
-			typography: newTypography,
-			content: newContent,
-		} = __experimentalSetFormat({
+		const { typography: newTypography, content: newContent } = SetFormat({
 			formatValue,
 			isList,
 			typography: value,

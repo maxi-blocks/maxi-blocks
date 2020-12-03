@@ -6,7 +6,7 @@ const { removeFormat } = wp.richText;
 /**
  * Internal dependencies
  */
-import __experimentalApplyLinkFormat from './applyLinkFormat';
+import ApplyLinkFormat from './applyLinkFormat';
 import setFormatWithClass from './setFormatWithClass';
 
 /**
@@ -101,7 +101,7 @@ const setLinkFormats = ({ formatValue, typography, isList }) => {
 			typography: preformattedTypography,
 			content: preformattedContent,
 			formatValue: preformattedFormatValue,
-		} = __experimentalApplyLinkFormat({
+		} = ApplyLinkFormat({
 			formatValue: newFormatValue,
 			typography: newTypography,
 			linkAttributes: newAttributes,

@@ -75,15 +75,15 @@ const attributes = {
 	},
 	position: {
 		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalPosition),
+		default: JSON.stringify(attributesData.Position),
 	},
 	display: {
 		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalDisplay),
+		default: JSON.stringify(attributesData.Display),
 	},
 	transform: {
 		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalTransform),
+		default: JSON.stringify(attributesData.Transform),
 	},
 };
 

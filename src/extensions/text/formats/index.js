@@ -1,12 +1,12 @@
 import './registerFormats';
 
-export { default as __experimentalGetFormatValue } from './getFormatValue';
-export { default as __experimentalIsFormatActive } from './isFormatActive';
-export { default as __experimentalGetUpdatedString } from './getUpdatedString';
-export { default as __experimentalApplyLinkFormat } from './applyLinkFormat';
-export { default as __experimentalGetCustomFormatValue } from './getCustomFormatValue';
-export { default as __experimentalSetCustomFormatsWhenPaste } from './setCustomFormatsWhenPaste';
-export { default as __experimentalSetFormat } from './setFormat';
-export { default as __experimentalRemoveLinkFormat } from './removeLinkFormat';
-export { fromListToText as __experimentalFromListToText } from './listUtils';
-export { fromTextToList as __experimentalFromTextToList } from './listUtils';
+export { default as GetFormatValue } from './getFormatValue';
+export { default as FormatActive } from './isFormatActive';
+export { default as GetUpdatedString } from './getUpdatedString';
+export { default as ApplyLinkFormat } from './applyLinkFormat';
+export { default as GetCustomFormatValue } from './getCustomFormatValue';
+export { default as SetCustomFormatsWhenPaste } from './setCustomFormatsWhenPaste';
+export { default as SetFormat } from './setFormat';
+export { default as RemoveLinkFormat } from './removeLinkFormat';
+export { fromListToText as FromListToText } from './listUtils';
+export { fromTextToList as FromTextToList } from './listUtils';

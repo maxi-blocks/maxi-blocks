@@ -12,9 +12,9 @@ const { Button } = wp.components;
  * Internal dependencies
  */
 import {
-	__experimentalGetUpdatedString,
-	__experimentalApplyLinkFormat,
-	__experimentalRemoveLinkFormat,
+	GetUpdatedString,
+	ApplyLinkFormat,
+	RemoveLinkFormat,
 } from '../../../../extensions/text/formats';
 import ToolbarPopover from '../toolbar-popover';
 
@@ -124,7 +124,7 @@ const Link = props => {
 		const {
 			typography: newTypography,
 			content: newContent,
-		} = __experimentalApplyLinkFormat({
+		} = ApplyLinkFormat({
 			formatValue,
 			typography: typographyValue,
 			linkAttributes: createLinkAttribute(attributes),
@@ -141,7 +141,7 @@ const Link = props => {
 		const {
 			typography: newTypography,
 			content: newContent,
-		} = __experimentalRemoveLinkFormat({
+		} = RemoveLinkFormat({
 			formatValue,
 			isList,
 			typography: typographyValue,
@@ -154,7 +154,7 @@ const Link = props => {
 	};
 
 	const updateLinkString = attributes => {
-		const newContent = __experimentalGetUpdatedString({
+		const newContent = GetUpdatedString({
 			formatValue: getUpdatedFormatValue(
 				formatValue,
 				createLinkAttribute(attributes)

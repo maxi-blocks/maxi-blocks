@@ -8,7 +8,7 @@ const { useState } = wp.element;
  * Internal dependencies
  */
 import FancyRadioControl from '../fancy-radio-control';
-import __experimentalLoaderControl from '../loader-control';
+import LoaderControl from '../loader-control';
 import * as backgroundLayers from './layers';
 import ColorLayer from './colorLayer';
 import ImageLayer from './imageLayer';
@@ -229,7 +229,7 @@ const BackgroundLayersControl = props => {
 							</div>
 						</ReactDragListView>
 					)}
-					<__experimentalLoaderControl
+					<LoaderControl
 						options={[
 							{
 								label: __('Background Colour', 'maxi-blocks'),

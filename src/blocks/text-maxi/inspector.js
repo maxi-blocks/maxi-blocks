@@ -51,6 +51,8 @@ const Inspector = props => {
 			uniqueID,
 			blockStyle,
 			defaultBlockStyle,
+			isHighlight,
+			blockStyleBackground,
 			alignment,
 			textLevel,
 			isList,
@@ -119,14 +121,13 @@ const Inspector = props => {
 									<hr />
 									<BlockStylesControl
 										blockStyle={blockStyle}
-										onChangeBlockStyle={blockStyle =>
-											setAttributes({ blockStyle })
+										isHighlight={isHighlight}
+										blockStyleBackground={
+											blockStyleBackground
 										}
 										defaultBlockStyle={defaultBlockStyle}
-										onChangeDefaultBlockStyle={defaultBlockStyle =>
-											setAttributes({ defaultBlockStyle })
-										}
 										isFirstOnHierarchy={isFirstOnHierarchy}
+										onChange={obj => setAttributes(obj)}
 									/>
 								</div>
 								<AccordionControl
@@ -158,18 +159,8 @@ const Inspector = props => {
 												content: (
 													<FontLevelControl
 														value={textLevel}
-														onChange={(
-															textLevel,
-															typography,
-															typographyHover,
-															margin
-														) =>
-															setAttributes({
-																textLevel,
-																typography,
-																typographyHover,
-																margin,
-															})
+														onChange={obj =>
+															setAttributes(obj)
 														}
 														fontOptions={typography}
 														fontOptionsHover={

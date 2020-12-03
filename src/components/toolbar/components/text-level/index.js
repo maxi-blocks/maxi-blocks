@@ -68,19 +68,7 @@ const TextLevel = props => {
 			content={
 				<FontLevelControl
 					value={textLevel}
-					onChange={(
-						textLevel,
-						typography,
-						typographyHover,
-						margin
-					) =>
-						onChange({
-							textLevel,
-							typography,
-							typographyHover,
-							margin,
-						})
-					}
+					onChange={obj => onChange(obj)}
 					fontOptions={typography}
 					fontOptionsHover={typographyHover}
 					marginOptions={margin}

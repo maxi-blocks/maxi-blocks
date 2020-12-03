@@ -27,6 +27,15 @@ import './editor.scss';
  * Component
  */
 const FontLevelControl = props => {
+	const {
+		className,
+		value,
+		fontOptions,
+		fontOptionsHover,
+		marginOptions,
+		onChange,
+	} = props;
+
 	const [state, setState] = useState({
 		lastLevel: value,
 		p: {},
@@ -51,15 +60,6 @@ const FontLevelControl = props => {
 		h6Hover: {},
 		h6Margin: {},
 	});
-
-	const {
-		className,
-		value,
-		fontOptions,
-		fontOptionsHover,
-		marginOptions,
-		onChange,
-	} = props;
 
 	const classes = classnames('maxi-font-level-control', className);
 
@@ -107,12 +107,12 @@ const FontLevelControl = props => {
 			marginOptResponse = defaultMargin[value];
 		}
 
-		onChange(
-			value,
-			JSON.stringify(fontOptResponse),
-			JSON.stringify(fontOptResponseHover),
-			JSON.stringify(marginOptResponse)
-		);
+		onChange({
+			textLevel: value,
+			typography: JSON.stringify(fontOptResponse),
+			typographyHover: JSON.stringify(fontOptResponseHover),
+			margin: JSON.stringify(marginOptResponse),
+		});
 	};
 
 	return (

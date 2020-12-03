@@ -1,0 +1,77 @@
+/**
+* Default and variables
+*/
+@import './maxi-themes-default.scss';
+
+$styles: 'dark', 'light';
+$levels: 'p', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6';
+
+/**
+* Styles
+*/
+body.maxi-blocks--active {
+	@each $style in $styles {
+		.maxi-#{$style} {
+			&.maxi-background-- {
+				&1 {
+					.maxi-background-displayer {
+						background-color: var(--maxi-#{$style}-background-1) !important;
+					}
+				}
+
+				&2 {
+					.maxi-background-displayer {
+						background-color: var(--maxi-#{$style}-background-2) !important;
+					}
+				}
+			}
+
+			@each $level in $levels {
+				#{$level} {
+					font-family: var(--maxi-#{$style}-#{$level}-font-family) !important;
+					color: var(--maxi-#{$style}-#{$level}-color) !important;
+					font-size: var(--maxi-#{$style}-#{$level}-font-size) !important;
+					line-height: var(--maxi-#{$style}-#{$level}-line-height) !important;
+					font-weight: var(--maxi-#{$style}-#{$level}-font-weight) !important;
+					text-transform: var(--maxi-#{$style}-#{$level}-text-transform) !important;
+					font-style: var(--maxi-#{$style}-#{$level}-font-style) !important;
+					text-decoration-line: var(--maxi-#{$style}-#{$level}-decoration-line) !important;
+					text-decoration-style: var(--maxi-#{$style}-#{$level}-text-decoration-style) !important;
+				}
+			}
+
+			a {
+				color: var(--maxi-#{$style}-link) !important;
+			}
+
+			&.maxi-highlight,
+			.maxi-highlight {
+				&--text {
+					@each $level in $levels {
+						#{$level} {
+							color: var(--maxi-#{$style}-highlight) !important;
+						}
+
+						&:hover {
+							#{$level} {
+								color: var(--maxi-#{$style}-hover) !important;
+							}
+						}
+					}
+				}
+
+				&--divider {
+					> .maxi-divider-block__divider {
+						border-color: var(--maxi-light-highlight) !important;
+					}
+
+					&:hover {
+						> .maxi-divider-block__divider {
+							border-color: var(--maxi-light-hover) !important;
+						}
+					}
+				}
+			}
+		}
+	}
+}

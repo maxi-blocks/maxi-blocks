@@ -30,13 +30,13 @@ body.maxi-blocks--active {
 				#{$level} {
 					font-family: var(--maxi-#{$style}-#{$level}-font-family) !important;
 					color: var(--maxi-#{$style}-#{$level}-color) !important;
-					font-size: var(--maxi-#{$style}-#{$level}-font-size) !important;
-					line-height: var(--maxi-#{$style}-#{$level}-line-height) !important;
+					font-size: var(--maxi-#{$style}-#{$level}-font-size-general) !important;
+					line-height: var(--maxi-#{$style}-#{$level}-line-height-general) !important;
 					font-weight: var(--maxi-#{$style}-#{$level}-font-weight) !important;
-					text-transform: var(--maxi-#{$style}-#{$level}-text-transform) !important;
-					font-style: var(--maxi-#{$style}-#{$level}-font-style) !important;
+					text-transform: var(--maxi-#{$style}-#{$level}-transform) !important;
+					font-style: var(--maxi-#{$style}-#{$level}-style) !important;
+					text-decoration-style: var(--maxi-#{$style}-#{$level}-decoration) !important;
 					text-decoration-line: var(--maxi-#{$style}-#{$level}-decoration-line) !important;
-					text-decoration-style: var(--maxi-#{$style}-#{$level}-text-decoration-style) !important;
 				}
 			}
 

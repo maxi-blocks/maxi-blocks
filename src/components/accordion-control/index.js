@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 const { Icon } = wp.components;
-const { Component } = wp.element;
+const { useState } = wp.element;
 
 /**
  * External dependencies
@@ -25,86 +25,77 @@ import './editor.scss';
 /**
  * Component
  */
-export default class AccordionControl extends Component {
-	state = {
-		currentOpen: this.props.preExpanded ? this.props.preExpanded : [],
-	};
+const AccordionControl = props => {
+	const {
+		className,
+		allowMultipleExpanded = false,
+		allowZeroExpanded = true,
+		items,
+		isPrimary = false,
+		isSecondary = false,
+		disablePadding = false,
+	} = props;
 
-	render() {
-		const {
-			className,
-			allowMultipleExpanded = false,
-			allowZeroExpanded = true,
-			items,
-			isPrimary = false,
-			isSecondary = false,
-			disablePadding = false,
-		} = this.props;
+	const classes = classnames(
+		'maxi-accordion-control',
+		className,
+		isPrimary && 'is-primary',
+		isSecondary && 'is-secondary'
+	);
 
-		const { currentOpen } = this.state;
+	const [currentOpen, setCurrentOpen] = useState('');
 
-		const classes = classnames(
-			'maxi-accordion-control',
-			className,
-			isPrimary ? 'is-primary' : '',
-			isSecondary ? 'is-secondary' : ''
-		);
+	return (
+		<Accordion
+			className={classes}
+			allowMultipleExpanded={allowMultipleExpanded}
+			allowZeroExpanded={allowZeroExpanded}
+			preExpanded={currentOpen}
+			onChange={value => setCurrentOpen(value)}
+		>
+			{items.map((item, id) => {
+				if (!item) return null;
 
-		const onOpen = value => {
-			this.setState({ currentOpen: value });
-		};
+				const classesItem = classnames(
+					'maxi-accordion-control__item',
+					item.classNameItem
+				);
+				const classesItemHeading = classnames(
+					'maxi-accordion-tab',
+					item.classNameHeading
+				);
 
-		return (
-			<Accordion
-				className={classes}
-				allowMultipleExpanded={allowMultipleExpanded}
-				allowZeroExpanded={allowZeroExpanded}
-				preExpanded={currentOpen}
-				onChange={onOpen}
-			>
-				{items.map(item => {
-					if (!item) return null;
+				const classesItemPanel = classnames(
+					'maxi-accordion-control__item__panel',
+					disablePadding || item.disablePadding
+						? 'maxi-accordion-control__item__panel--disable-padding'
+						: ''
+				);
 
-					const classesItem = classnames(
-						'maxi-accordion-control__item',
-						item.classNameItem
-					);
-					const classesItemHeading = classnames(
-						'maxi-accordion-tab',
-						item.classNameHeading
-					);
+				return (
+					<AccordionItem
+						uuid={item.uuid ? item.uuid : undefined}
+						className={classesItem}
+						data-name={lowerCase(item.label)}
+						key={`maxi-accordion-control__item_${item.label}`}
+					>
+						<AccordionItemHeading className={classesItemHeading}>
+							<AccordionItemButton className='maxi-accordion-control__item__button'>
+								<Icon
+									className='maxi-accordion-icon'
+									icon={item.icon}
+								/>
+								{item.label}
+							</AccordionItemButton>
+						</AccordionItemHeading>
+						<AccordionItemPanel className={classesItemPanel}>
+							{item.content}
+						</AccordionItemPanel>
+					</AccordionItem>
+				);
+			})}
+		</Accordion>
+	);
+};
 
-					const classesItemPanel = classnames(
-						'maxi-accordion-control__item__panel',
-						disablePadding || item.disablePadding
-							? 'maxi-accordion-control__item__panel--disable-padding'
-							: ''
-					);
-
-					return (
-						<AccordionItem
-							uuid={item.uuid ? item.uuid : undefined}
-							className={classesItem}
-							data-name={lowerCase(item.label)}
-						>
-							<AccordionItemHeading
-								className={classesItemHeading}
-							>
-								<AccordionItemButton className='maxi-accordion-control__item__button'>
-									<Icon
-										className='maxi-accordion-icon'
-										icon={item.icon}
-									/>
-									{item.label}
-								</AccordionItemButton>
-							</AccordionItemHeading>
-							<AccordionItemPanel className={classesItemPanel}>
-								{item.content}
-							</AccordionItemPanel>
-						</AccordionItem>
-					);
-				})}
-			</Accordion>
-		);
-	}
-}
+export default AccordionControl;

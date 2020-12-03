@@ -40,7 +40,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isObject } from 'lodash';
+import { isEmpty, isObject, isNil } from 'lodash';
 
 /**
  * Content
@@ -130,13 +130,21 @@ class edit extends MaxiBlock {
 		const { borderHover, boxShadowHover } = this.props.attributes;
 
 		const response = {
-			boxShadowHover: {
-				...getBoxShadowObject(JSON.parse(boxShadowHover)),
-			},
-			borderHover: { ...JSON.parse(borderHover) },
 			borderWidthHover: { ...JSON.parse(borderHover).borderWidth },
 			borderRadiusHover: { ...JSON.parse(borderHover).borderRadius },
 		};
+
+		if (!isNil(boxShadowHover) && !!JSON.parse(boxShadowHover).status) {
+			response.boxShadowHover = {
+				...getBoxShadowObject(JSON.parse(boxShadowHover)),
+			};
+		}
+
+		if (!isNil(borderHover) && !!JSON.parse(borderHover).status) {
+			response.borderHover = {
+				...JSON.parse(borderHover),
+			};
+		}
 
 		return response;
 	}
@@ -153,9 +161,13 @@ class edit extends MaxiBlock {
 	get getTypographyHoverObject() {
 		const { typographyHover } = this.props.attributes;
 
-		const response = {
-			typographyHover: { ...JSON.parse(typographyHover) },
-		};
+		const response = {};
+
+		if (!isNil(typographyHover) && !!JSON.parse(typographyHover).status) {
+			response.typographyHover = {
+				...JSON.parse(typographyHover),
+			};
+		}
 
 		return response;
 	}
@@ -170,7 +182,6 @@ class edit extends MaxiBlock {
 		}
 
 		this.displayStyles();
-		this.saveProps();
 	}
 
 	render() {
@@ -192,7 +203,6 @@ class edit extends MaxiBlock {
 				display,
 				motion,
 			},
-			node,
 			className,
 			isSelected,
 			setAttributes,
@@ -241,13 +251,10 @@ class edit extends MaxiBlock {
 								setAttributes({ content });
 
 								const formatElement = {
-									element: node,
-									html: content,
 									multilineTag: isList ? 'li' : undefined,
 									multilineWrapperTags: isList
 										? typeOfList
 										: undefined,
-									__unstableIsEditableTree: false,
 								};
 								const formatValue = __experimentalGetFormatValue(
 									formatElement
@@ -392,25 +399,18 @@ class edit extends MaxiBlock {
 
 const editSelect = withSelect((select, ownProps) => {
 	const {
-		attributes: { content, isList, typeOfList },
-		clientId,
+		attributes: { isList, typeOfList },
 	} = ownProps;
 
-	const node = document.getElementById(`block-${clientId}`);
-
 	const formatElement = {
-		element: node,
-		html: content,
 		multilineTag: isList ? 'li' : undefined,
 		multilineWrapperTags: isList ? typeOfList : undefined,
-		__unstableIsEditableTree: false,
 	};
 	const formatValue = __experimentalGetFormatValue(formatElement);
 
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 	return {
-		node,
 		formatValue,
 		deviceType,
 	};
@@ -536,14 +536,10 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 					attributes: { content, isList, typeOfList },
 					clientId,
 				} = block.blocks[0];
-				const node = document.getElementById(`block-${clientId}`);
 
 				const formatElement = {
-					element: node,
-					html: content,
 					multilineTag: isList ? 'li' : undefined,
 					multilineWrapperTags: isList ? typeOfList : undefined,
-					__unstableIsEditableTree: false,
 				};
 				const formatValue = __experimentalGetFormatValue(formatElement);
 

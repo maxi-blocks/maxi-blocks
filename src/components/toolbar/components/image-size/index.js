@@ -1,9 +1,8 @@
 /**
  * WordPress dependencies
  */
-const { Fragment } = wp.element;
 const { __ } = wp.i18n;
-const { Button, SelectControl, RangeControl } = wp.components;
+const { Button, SelectControl, RangeControl, RadioControl } = wp.components;
 const { useSelect, useDispatch } = wp.data;
 
 /**
@@ -86,7 +85,7 @@ const ImageSize = props => {
 			tooltip={__('Image size', 'maxi-blocks')}
 			icon={toolbarSizing}
 			content={
-				<Fragment>
+				<div className='toolbar-item__image-size__popover'>
 					<SelectControl
 						label={__('Image Size', 'maxi-blocks')}
 						value={
@@ -98,9 +97,10 @@ const ImageSize = props => {
 						onChange={imageSize => onChangeImageSize(imageSize)}
 					/>
 					{isFirstOnHierarchy && (
-						<SelectControl
+						<RadioControl
+							className='toolbar-item__popover__toggle-btn'
 							label={__('Full Width', 'maxi-blocks')}
-							value={fullWidth}
+							selected={fullWidth}
 							options={[
 								{
 									label: __('No', 'maxi-blocks'),
@@ -137,7 +137,7 @@ const ImageSize = props => {
 								)
 							}
 						>
-							Edit Image
+							{__('Edit Image', 'maxi-blocks')}
 						</Button>
 						<Button
 							className='toolbar-image-size-buttons__add-caption'
@@ -147,10 +147,10 @@ const ImageSize = props => {
 								)
 							}
 						>
-							Add Caption
+							{__('Add Caption', 'maxi-blocks')}
 						</Button>
 					</div>
-				</Fragment>
+				</div>
 			}
 		/>
 	);

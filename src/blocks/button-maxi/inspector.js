@@ -3,7 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
-const { TextControl } = wp.components;
+const { TextControl, Icon } = wp.components;
 const { Fragment } = wp.element;
 
 /**
@@ -30,6 +30,7 @@ import {
 	__experimentalEntranceAnimationControl,
 	__experimentalFancyRadioControl,
 	__experimentalFontIconControl,
+	__experimentalCustomLabel,
 } from '../../components';
 import { getDefaultProp } from '../../utils';
 import * as defaultPresets from './defaults';
@@ -43,12 +44,12 @@ import { isObject, merge } from 'lodash';
  * Icons
  */
 import {
-	PresetOne,
-	PresetTwo,
-	PresetThree,
-	PresetFour,
-	PresetFive,
-	PresetSix,
+	presetOne,
+	presetTwo,
+	presetThree,
+	presetFour,
+	presetFive,
+	presetSix,
 } from '../../icons';
 
 /**
@@ -57,6 +58,7 @@ import {
 const Inspector = props => {
 	const {
 		attributes: {
+			customLabel,
 			uniqueID,
 			isFirstOnHierarchy,
 			blockStyle,
@@ -139,6 +141,18 @@ const Inspector = props => {
 		setAttributes(result);
 	};
 
+	const boxShadowHoverValue = !isObject(boxShadowHover)
+		? JSON.parse(boxShadowHover)
+		: boxShadowHover;
+
+	const typographyHoverValue = !isObject(typographyHover)
+		? JSON.parse(typographyHover)
+		: typographyHover;
+
+	const borderHoverValue = !isObject(borderHover)
+		? JSON.parse(borderHover)
+		: borderHover;
+
 	return (
 		<InspectorControls>
 			<SettingTabsControl
@@ -149,6 +163,13 @@ const Inspector = props => {
 						content: (
 							<Fragment>
 								<div className='maxi-tab-content__box'>
+									<__experimentalCustomLabel
+										customLabel={customLabel}
+										onChange={customLabel =>
+											setAttributes({ customLabel })
+										}
+									/>
+									<hr />
 									<BlockStylesControl
 										blockStyle={blockStyle}
 										onChangeBlockStyle={blockStyle =>
@@ -171,9 +192,13 @@ const Inspector = props => {
 													className='maxi-button-default-styles'
 													items={[
 														{
-															activeItem: false,
+															activeItem: 0,
 															content: (
-																<PresetOne />
+																<Icon
+																	icon={
+																		presetOne
+																	}
+																/>
 															),
 															onChange: () =>
 																onChangePreset(
@@ -181,9 +206,13 @@ const Inspector = props => {
 																),
 														},
 														{
-															activeItem: false,
+															activeItem: 0,
 															content: (
-																<PresetTwo />
+																<Icon
+																	icon={
+																		presetTwo
+																	}
+																/>
 															),
 															onChange: () =>
 																onChangePreset(
@@ -191,9 +220,13 @@ const Inspector = props => {
 																),
 														},
 														{
-															activeItem: false,
+															activeItem: 0,
 															content: (
-																<PresetThree />
+																<Icon
+																	icon={
+																		presetThree
+																	}
+																/>
 															),
 															onChange: () =>
 																onChangePreset(
@@ -201,9 +234,13 @@ const Inspector = props => {
 																),
 														},
 														{
-															activeItem: false,
+															activeItem: 0,
 															content: (
-																<PresetFour />
+																<Icon
+																	icon={
+																		presetFour
+																	}
+																/>
 															),
 															onChange: () =>
 																onChangePreset(
@@ -211,9 +248,13 @@ const Inspector = props => {
 																),
 														},
 														{
-															activeItem: false,
+															activeItem: 0,
 															content: (
-																<PresetFive />
+																<Icon
+																	icon={
+																		presetFive
+																	}
+																/>
 															),
 															onChange: () =>
 																onChangePreset(
@@ -221,9 +262,13 @@ const Inspector = props => {
 																),
 														},
 														{
-															activeItem: false,
+															activeItem: 0,
 															content: (
-																<PresetSix />
+																<Icon
+																	icon={
+																		presetSix
+																	}
+																/>
 															),
 															onChange: () =>
 																onChangePreset(
@@ -231,6 +276,23 @@ const Inspector = props => {
 																),
 														},
 													]}
+												/>
+											),
+										},
+										{
+											label: __('Icon', 'maxi-blocks'),
+											content: (
+												<__experimentalFontIconControl
+													icon={icon}
+													onChange={obj => {
+														setAttributes(obj);
+													}}
+													iconBorder={iconBorder}
+													iconPadding={iconPadding}
+													iconBackground={
+														iconBackground
+													}
+													breakpoint={deviceType}
 												/>
 											),
 										},
@@ -317,35 +379,76 @@ const Inspector = props => {
 																'maxi-blocks'
 															),
 															content: (
-																<TypographyControl
-																	typography={
-																		typographyHover
-																	}
-																	defaultTypography={getDefaultProp(
-																		clientId,
-																		'typographyHover'
-																	)}
-																	onChange={obj => {
-																		setAttributes(
+																<Fragment>
+																	<__experimentalFancyRadioControl
+																		label={__(
+																			'Enable Typography Hover',
+																			'maxi-blocks'
+																		)}
+																		selected={Number(
+																			typographyHoverValue.status
+																		)}
+																		options={[
 																			{
-																				typographyHover:
-																					obj.typography,
-																				...(obj.content && {
-																					content:
-																						obj.content,
-																				}),
+																				label: __(
+																					'Yes',
+																					'maxi-blocks'
+																				),
+																				value: 1,
+																			},
+																			{
+																				label: __(
+																					'No',
+																					'maxi-blocks'
+																				),
+																				value: 0,
+																			},
+																		]}
+																		onChange={val => {
+																			typographyHoverValue.status = Number(
+																				val
+																			);
+																			setAttributes(
+																				{
+																					typographyHover: JSON.stringify(
+																						typographyHoverValue
+																					),
+																				}
+																			);
+																		}}
+																	/>
+																	{!!typographyHoverValue.status && (
+																		<TypographyControl
+																			typography={
+																				typographyHover
 																			}
-																		);
-																	}}
-																	hideAlignment
-																	breakpoint={
-																		deviceType
-																	}
-																	formatValue={
-																		formatValue
-																	}
-																	isHover
-																/>
+																			defaultTypography={getDefaultProp(
+																				clientId,
+																				'typographyHover'
+																			)}
+																			onChange={obj => {
+																				setAttributes(
+																					{
+																						typographyHover:
+																							obj.typography,
+																						...(obj.content && {
+																							content:
+																								obj.content,
+																						}),
+																					}
+																				);
+																			}}
+																			hideAlignment
+																			breakpoint={
+																				deviceType
+																			}
+																			formatValue={
+																				formatValue
+																			}
+																			isHover
+																		/>
+																	)}
+																</Fragment>
 															),
 														},
 													]}
@@ -505,45 +608,69 @@ const Inspector = props => {
 																'maxi-blocks'
 															),
 															content: (
-																<BorderControl
-																	border={
-																		borderHover
-																	}
-																	defaultBorder={getDefaultProp(
-																		clientId,
-																		'borderHover'
-																	)}
-																	onChange={borderHover =>
-																		setAttributes(
+																<Fragment>
+																	<__experimentalFancyRadioControl
+																		label={__(
+																			'Enable Border Hover',
+																			'maxi-blocks'
+																		)}
+																		selected={Number(
+																			borderHoverValue.status
+																		)}
+																		options={[
 																			{
-																				borderHover,
+																				label: __(
+																					'Yes',
+																					'maxi-blocks'
+																				),
+																				value: 1,
+																			},
+																			{
+																				label: __(
+																					'No',
+																					'maxi-blocks'
+																				),
+																				value: 0,
+																			},
+																		]}
+																		onChange={val => {
+																			borderHoverValue.status = Number(
+																				val
+																			);
+																			setAttributes(
+																				{
+																					borderHover: JSON.stringify(
+																						borderHoverValue
+																					),
+																				}
+																			);
+																		}}
+																	/>
+																	{!!borderHoverValue.status && (
+																		<BorderControl
+																			border={
+																				borderHover
 																			}
-																		)
-																	}
-																	breakpoint={
-																		deviceType
-																	}
-																/>
+																			defaultBorder={getDefaultProp(
+																				clientId,
+																				'borderHover'
+																			)}
+																			onChange={borderHover =>
+																				setAttributes(
+																					{
+																						borderHover,
+																					}
+																				)
+																			}
+																			breakpoint={
+																				deviceType
+																			}
+																		/>
+																	)}
+																</Fragment>
 															),
 														},
 													]}
-												/>
-											),
-										},
-										{
-											label: __('Icon', 'maxi-blocks'),
-											content: (
-												<__experimentalFontIconControl
-													icon={icon}
-													onChange={obj => {
-														setAttributes(obj);
-													}}
-													iconBorder={iconBorder}
-													iconPadding={iconPadding}
-													iconBackground={
-														iconBackground
-													}
-													breakpoint={deviceType}
 												/>
 											),
 										},
@@ -608,25 +735,66 @@ const Inspector = props => {
 																'maxi-blocks'
 															),
 															content: (
-																<BoxShadowControl
-																	boxShadow={
-																		boxShadowHover
-																	}
-																	defaultBoxShadow={getDefaultProp(
-																		clientId,
-																		'boxShadowHover'
-																	)}
-																	onChange={boxShadowHover =>
-																		setAttributes(
+																<Fragment>
+																	<__experimentalFancyRadioControl
+																		label={__(
+																			'Enable Border Hover',
+																			'maxi-blocks'
+																		)}
+																		selected={Number(
+																			boxShadowHoverValue.status
+																		)}
+																		options={[
 																			{
-																				boxShadowHover,
+																				label: __(
+																					'Yes',
+																					'maxi-blocks'
+																				),
+																				value: 1,
+																			},
+																			{
+																				label: __(
+																					'No',
+																					'maxi-blocks'
+																				),
+																				value: 0,
+																			},
+																		]}
+																		onChange={val => {
+																			boxShadowHoverValue.status = Number(
+																				val
+																			);
+																			setAttributes(
+																				{
+																					boxShadowHover: JSON.stringify(
+																						boxShadowHoverValue
+																					),
+																				}
+																			);
+																		}}
+																	/>
+																	{!!boxShadowHoverValue.status && (
+																		<BoxShadowControl
+																			boxShadow={
+																				boxShadowHover
 																			}
-																		)
-																	}
-																	breakpoint={
-																		deviceType
-																	}
-																/>
+																			defaultBoxShadow={getDefaultProp(
+																				clientId,
+																				'boxShadowHover'
+																			)}
+																			onChange={boxShadowHover =>
+																				setAttributes(
+																					{
+																						boxShadowHover,
+																					}
+																				)
+																			}
+																			breakpoint={
+																				deviceType
+																			}
+																		/>
+																	)}
+																</Fragment>
 															),
 														},
 													]}

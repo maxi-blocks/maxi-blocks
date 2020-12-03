@@ -200,6 +200,7 @@ export const border = {
 
 export const borderHover = {
 	label: 'Border',
+	status: 0,
 	general: {
 		'border-color': '',
 		'border-style': '',
@@ -489,6 +490,21 @@ export const background = {
 					widthUnit: '%',
 					height: 100,
 					heightUnit: '%',
+					cropOptions: {
+						image: {
+							source_url: '',
+							width: '',
+							height: '',
+						},
+						crop: {
+							unit: '',
+							x: 0,
+							y: 0,
+							width: 0,
+							height: 0,
+							scale: 100,
+						},
+					},
 				},
 				sizeSettings: {
 					size: '',
@@ -561,7 +577,7 @@ export const backgroundHover = {
 		status: 0,
 		layers: [],
 	},
-	// status: 0,
+	status: 0,
 	colorOptions: {
 		activeColor: '',
 		color: '',
@@ -728,6 +744,7 @@ export const boxShadow = {
 
 export const boxShadowHover = {
 	label: 'Box Shadow',
+	status: 0,
 	general: {
 		shadowColor: '#',
 		shadowHorizontal: '',
@@ -807,7 +824,7 @@ export const typography = {
 		'font-sizeUnit': 'px',
 		'font-size': 16,
 		'line-heightUnit': '',
-		'line-height': 1.56,
+		'line-height': 1.625,
 		'letter-spacingUnit': 'px',
 		'letter-spacing': 0,
 		'font-weight': 400,
@@ -823,9 +840,9 @@ export const typography = {
 		color: '',
 		'text-align': '',
 		'font-sizeUnit': 'px',
-		'font-size': '',
+		'font-size': 20,
 		'line-heightUnit': '',
-		'line-height': '',
+		'line-height': 1.5,
 		'letter-spacingUnit': 'px',
 		'letter-spacing': '',
 		'font-weight': '',
@@ -840,9 +857,9 @@ export const typography = {
 		'font-options': {},
 		color: '',
 		'font-sizeUnit': 'px',
-		'font-size': '',
+		'font-size': 18,
 		'line-heightUnit': '',
-		'line-height': '',
+		'line-height': 1.35,
 		'letter-spacingUnit': 'px',
 		'letter-spacing': '',
 		'font-weight': '',
@@ -857,9 +874,9 @@ export const typography = {
 		'font-options': {},
 		color: '',
 		'font-sizeUnit': 'px',
-		'font-size': '',
+		'font-size': 16,
 		'line-heightUnit': '',
-		'line-height': '',
+		'line-height': 1.625,
 		'letter-spacingUnit': 'px',
 		'letter-spacing': '',
 		'font-weight': '',
@@ -949,6 +966,7 @@ export const typography = {
 
 export const typographyHover = {
 	label: 'Typography',
+	status: 0,
 	general: {
 		'font-family': '',
 		'font-options': '',
@@ -1339,10 +1357,8 @@ export const __experimentalShapeDivider = {
 			},
 		},
 		shapeStyle: '',
-		colorOptions: {
-			color: '#000000',
-			gradient: '',
-			gradientAboveBackground: false,
+		background: {
+			...background,
 		},
 		effects: {
 			status: 0,
@@ -1359,10 +1375,8 @@ export const __experimentalShapeDivider = {
 			},
 		},
 		shapeStyle: '',
-		colorOptions: {
-			color: '#000000',
-			gradient: '',
-			gradientAboveBackground: false,
+		background: {
+			...background,
 		},
 		effects: {
 			status: 0,

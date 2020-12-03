@@ -109,7 +109,7 @@ export const getBoxShadowObject = boxShadow => {
 	};
 
 	Object.entries(boxShadow).forEach(([key, value]) => {
-		if (key !== 'label') {
+		if (key !== 'label' && key !== 'status') {
 			let boxShadowString = '';
 			isNumber(value.shadowHorizontal) &&
 				(boxShadowString += `${value.shadowHorizontal}px `);
@@ -265,8 +265,12 @@ export const getShapeDividerSVGObject = shapeDivider => {
 		general: {},
 	};
 
-	if (!isEmpty(shapeDivider.colorOptions.color))
-		response.general.fill = shapeDivider.colorOptions.color;
+	const backgroundValue = !isObject(shapeDivider.background)
+		? JSON.parse(shapeDivider.background)
+		: shapeDivider.background;
+
+	if (!isEmpty(backgroundValue.colorOptions.color))
+		response.general.fill = backgroundValue.colorOptions.color;
 
 	return response;
 };
@@ -657,48 +661,11 @@ export const setBackgroundStyles = (
 		? JSON.parse(backgroundHover)
 		: backgroundHover;
 
-	let response = {
-		[`${target} > .maxi-background-displayer .maxi-background-displayer__color`]: {
-			background: {
-				...getColorBackgroundObject(backgroundValue.colorOptions),
-			},
-		},
-		[`${target} > .maxi-background-displayer .maxi-background-displayer__images`]: {
-			imageBackground: {
-				...getImageBackgroundObject(backgroundValue.imageOptions),
-			},
-		},
-		[`${target}:hover>.maxi-background-displayer .maxi-background-displayer__images`]: {
-			imageBackgroundHover: {
-				...getImageBackgroundObject(backgroundHoverValue.imageOptions),
-			},
-		},
-		[`${target}>.maxi-background-displayer .maxi-background-displayer__video-player`]: {
-			videoBackground: {
-				...getVideoBackgroundObject(backgroundValue.videoOptions),
-			},
-		},
-
-		[`${target}:hover>.maxi-background-displayer .maxi-background-displayer__video-player`]: {
-			videoBackgroundHover: {
-				...getVideoBackgroundObject(backgroundHoverValue.videoOptions),
-			},
-		},
-		[`${target}>.maxi-background-displayer .maxi-background-displayer__svg`]: {
-			SVGBackground: {
-				...getSVGWrapperBackgroundObject(backgroundValue.SVGOptions),
-			},
-		},
-		[`${target}>.maxi-background-displayer .maxi-background-displayer__svg svg`]: {
-			SVGBackground: {
-				...getSVGBackgroundObject(backgroundValue.SVGOptions),
-			},
-		},
-	};
+	let response = {};
 
 	if (!isNil(overlay)) {
 		response[
-			`${target}>.maxi-background-displayer .maxi-background-displayer__overlay`
+			`${target} > .maxi-background-displayer .maxi-background-displayer__overlay`
 		] = {
 			overlay: { ...getColorOverlayObject(JSON.parse(overlay)) },
 		};
@@ -706,7 +673,7 @@ export const setBackgroundStyles = (
 
 	if (backgroundHoverValue.status) {
 		response[
-			`${target}:hover>.maxi-background-displayer .maxi-background-displayer__color`
+			`${target}:hover > .maxi-background-displayer .maxi-background-displayer__color`
 		] = {
 			backgroundHover: {
 				...getColorBackgroundObject(backgroundHoverValue.colorOptions),
@@ -714,7 +681,7 @@ export const setBackgroundStyles = (
 		};
 	} else {
 		response[
-			`${target}:hover>.maxi-background-displayer .maxi-background-displayer__color`
+			`${target}:hover > .maxi-background-displayer .maxi-background-displayer__color`
 		] = {
 			backgroundHover: {},
 		};
@@ -722,7 +689,7 @@ export const setBackgroundStyles = (
 
 	if (!isNil(overlay) && !!JSON.parse(overlayHover).status) {
 		response[
-			`${target}:hover>.maxi-background-displayer .maxi-background-displayer__overlay`
+			`${target}:hover > .maxi-background-displayer .maxi-background-displayer__overlay`
 		] = {
 			overlayHover: {
 				...getColorOverlayObject(JSON.parse(overlayHover)),
@@ -730,18 +697,67 @@ export const setBackgroundStyles = (
 		};
 	} else {
 		response[
-			`${target}:hover>.maxi-background-displayer .maxi-background-displayer__overlay`
+			`${target}:hover > .maxi-background-displayer .maxi-background-displayer__overlay`
 		] = {
 			overlayHover: {},
 		};
 	}
 
-	if (backgroundValue.layersOptions && !!backgroundValue.layersOptions.status)
+	if (
+		backgroundValue.layersOptions &&
+		!!backgroundValue.layersOptions.status
+	) {
 		response = setBackgroundLayers(
 			response,
 			backgroundValue.layersOptions.layers,
 			target
 		);
+	} else {
+		response = Object.assign(response, {
+			[`${target} > .maxi-background-displayer .maxi-background-displayer__color`]: {
+				background: {
+					...getColorBackgroundObject(backgroundValue.colorOptions),
+				},
+			},
+			[`${target} > .maxi-background-displayer .maxi-background-displayer__images`]: {
+				imageBackground: {
+					...getImageBackgroundObject(backgroundValue.imageOptions),
+				},
+			},
+			[`${target}:hover > .maxi-background-displayer .maxi-background-displayer__images`]: {
+				imageBackgroundHover: {
+					...getImageBackgroundObject(
+						backgroundHoverValue.imageOptions
+					),
+				},
+			},
+			[`${target} > .maxi-background-displayer .maxi-background-displayer__video-player`]: {
+				videoBackground: {
+					...getVideoBackgroundObject(backgroundValue.videoOptions),
+				},
+			},
+
+			[`${target}:hover > .maxi-background-displayer .maxi-background-displayer__video-player`]: {
+				videoBackgroundHover: {
+					...getVideoBackgroundObject(
+						backgroundHoverValue.videoOptions
+					),
+				},
+			},
+			[`${target} > .maxi-background-displayer .maxi-background-displayer__svg`]: {
+				SVGBackground: {
+					...getSVGWrapperBackgroundObject(
+						backgroundValue.SVGOptions
+					),
+				},
+			},
+			[`${target} > .maxi-background-displayer .maxi-background-displayer__svg svg`]: {
+				SVGBackground: {
+					...getSVGBackgroundObject(backgroundValue.SVGOptions),
+				},
+			},
+		});
+	}
 
 	return response;
 };

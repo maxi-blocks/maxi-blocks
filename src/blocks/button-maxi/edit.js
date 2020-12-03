@@ -45,7 +45,6 @@ class edit extends MaxiBlock {
 				.getNormalObject,
 			[`${this.props.attributes.uniqueID} .maxi-button-extra__button:hover`]: this
 				.getHoverObject,
-
 			[`${this.props.attributes.uniqueID} .maxi-button-extra__button i`]: this
 				.getIconObject,
 		};
@@ -80,7 +79,9 @@ class edit extends MaxiBlock {
 			borderWidth: { ...JSON.parse(iconBorder).borderWidth },
 			borderRadius: { ...JSON.parse(iconBorder).borderRadius },
 			background: {
-				...getColorBackgroundObject(JSON.parse(iconBackground)),
+				...getColorBackgroundObject(
+					JSON.parse(iconBackground).colorOptions
+				),
 			},
 		};
 
@@ -148,11 +149,6 @@ class edit extends MaxiBlock {
 		} = this.props.attributes;
 
 		const response = {
-			typographyHover: { ...JSON.parse(typographyHover) },
-			boxShadowHover: {
-				...getBoxShadowObject(JSON.parse(boxShadowHover)),
-			},
-			borderHover: { ...JSON.parse(borderHover) },
 			borderWidth: { ...JSON.parse(borderHover).borderWidth },
 			borderRadius: { ...JSON.parse(borderHover).borderRadius },
 		};
@@ -160,6 +156,24 @@ class edit extends MaxiBlock {
 		if (!isNil(backgroundHover) && !!JSON.parse(backgroundHover).status) {
 			response.backgroundHover = {
 				...getColorBackgroundObject(JSON.parse(backgroundHover)),
+			};
+		}
+
+		if (!isNil(boxShadowHover) && !!JSON.parse(boxShadowHover).status) {
+			response.boxShadowHover = {
+				...getBoxShadowObject(JSON.parse(boxShadowHover)),
+			};
+		}
+
+		if (!isNil(typographyHover) && !!JSON.parse(typographyHover).status) {
+			response.typographyHover = {
+				...JSON.parse(typographyHover),
+			};
+		}
+
+		if (!isNil(borderHover) && !!JSON.parse(borderHover).status) {
+			response.borderHover = {
+				...JSON.parse(borderHover),
 			};
 		}
 
@@ -233,15 +247,10 @@ class edit extends MaxiBlock {
 
 export default withSelect((select, ownProps) => {
 	const {
-		attributes: { content, isList, typeOfList },
-		clientId,
+		attributes: { isList, typeOfList },
 	} = ownProps;
 
-	const node = document.getElementById(`block-${clientId}`);
-
 	const formatElement = {
-		element: node,
-		html: content,
 		multilineTag: isList ? 'li' : undefined,
 		multilineWrapperTags: isList ? typeOfList : undefined,
 		__unstableIsEditableTree: true,

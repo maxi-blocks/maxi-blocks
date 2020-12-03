@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 const { ButtonBlockerAppender } = wp.blockEditor;
-const { dispatch } = wp.data;
+const { useDispatch } = wp.data;
 
 /**
  * External dependencies
@@ -22,11 +22,10 @@ const BlockPlaceholder = props => {
 
 	const classes = classnames('maxi-block-placeholder', className);
 
+	const { selectBlock } = useDispatch('core/editor');
+
 	return (
-		<div
-			className={classes}
-			onClick={() => dispatch('core/editor').selectBlock(clientId)}
-		>
+		<div className={classes} onClick={() => selectBlock(clientId)}>
 			<p className='maxi-block-placeholder__text'>{content}</p>
 			<ButtonBlockerAppender
 				rootClientId={clientId}

@@ -58,12 +58,9 @@ const ImageLayer = props => {
 	const getAlternativeImage = i => {
 		try {
 			return {
-				source_url:
-					imageOptions.items[i].imageData.cropOptions.image
-						.source_url,
-				width: imageOptions.items[i].imageData.cropOptions.image.width,
-				height:
-					imageOptions.items[i].imageData.cropOptions.image.height,
+				source_url: imageOptions.items[i].imageData.mediaURL,
+				width: imageOptions.items[i].imageData.width,
+				height: imageOptions.items[i].imageData.height,
 			};
 		} catch (error) {
 			return false;
@@ -82,6 +79,8 @@ const ImageLayer = props => {
 									onAddBackground();
 								option.imageData.mediaID = imageData.id;
 								option.imageData.mediaURL = imageData.url;
+								option.imageData.width = imageData.width;
+								option.imageData.height = imageData.height;
 
 								onChange(imageOptions);
 							}}

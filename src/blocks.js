@@ -14,6 +14,8 @@ import './extensions/dom';
 import './extensions/store';
 import './extensions/attributes';
 import './extensions/save';
+import './extensions/styles';
+import './extensions/text';
 
 // CSS
 import './css';
@@ -28,12 +30,11 @@ import './blocks/button-maxi/button-maxi';
 import './blocks/cloud-maxi/cloud-maxi';
 import './blocks/container-maxi/container-maxi';
 import './blocks/font-icon-maxi/font-icon-maxi';
-
-// import './blocks/icon-maxi/icon-maxi';
 import './blocks/svg-icon-maxi/svg-icon-maxi';
 
 // Sidebar
 import './blocks/customizer-maxi/index';
 
-// Text
-import './extensions/text';
+// Editor
+import './editor/saver';
+import './editor/styler';

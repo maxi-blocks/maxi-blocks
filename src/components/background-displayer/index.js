@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { RawHTML } = wp.element;
+const { RawHTML, Fragment } = wp.element;
 
 /**
  * External dependencies
@@ -34,9 +34,49 @@ const BackgroundDisplayer = props => {
 
 	return (
 		<div className={classes}>
-			{!!status &&
+			{!status ? (
+				<Fragment>
+					<div
+						className={classnames(
+							'maxi-background-displayer__layer',
+							'maxi-background-displayer__overlay'
+						)}
+					/>
+					<div
+						className={classnames(
+							'maxi-background-displayer__layer',
+							'maxi-background-displayer__color'
+						)}
+					/>
+					{backgroundValue.activeMedia === 'image' && (
+						<div
+							className={classnames(
+								'maxi-background-displayer__layer',
+								'maxi-background-displayer__images'
+							)}
+						/>
+					)}
+					{backgroundValue.activeMedia === 'video' && (
+						<VideoLayer
+							videoOptions={backgroundValue.videoOptions}
+							blockClassName={blockClassName}
+						/>
+					)}
+					{backgroundValue.activeMedia === 'svg' &&
+						backgroundValue.SVGOptions.SVGElement && (
+							<RawHTML
+								className={classnames(
+									'maxi-background-displayer__layer',
+									'maxi-background-displayer__svg'
+								)}
+							>
+								{backgroundValue.SVGOptions.SVGElement}
+							</RawHTML>
+						)}
+				</Fragment>
+			) : (
 				!!layers &&
-				layers.map(layer => {
+				layers.reverse().map(layer => {
 					switch (layer.type) {
 						case 'color':
 						case 'gradient':
@@ -78,44 +118,8 @@ const BackgroundDisplayer = props => {
 					}
 
 					return null;
-				})}
-			<div
-				className={classnames(
-					'maxi-background-displayer__layer',
-					'maxi-background-displayer__overlay'
-				)}
-			/>
-			<div
-				className={classnames(
-					'maxi-background-displayer__layer',
-					'maxi-background-displayer__color'
-				)}
-			/>
-			{backgroundValue.activeMedia === 'image' && (
-				<div
-					className={classnames(
-						'maxi-background-displayer__layer',
-						'maxi-background-displayer__images'
-					)}
-				/>
+				})
 			)}
-			{backgroundValue.activeMedia === 'video' && (
-				<VideoLayer
-					videoOptions={backgroundValue.videoOptions}
-					blockClassName={blockClassName}
-				/>
-			)}
-			{backgroundValue.activeMedia === 'svg' &&
-				backgroundValue.SVGOptions.SVGElement && (
-					<RawHTML
-						className={classnames(
-							'maxi-background-displayer__layer',
-							'maxi-background-displayer__svg'
-						)}
-					>
-						{backgroundValue.SVGOptions.SVGElement}
-					</RawHTML>
-				)}
 		</div>
 	);
 };

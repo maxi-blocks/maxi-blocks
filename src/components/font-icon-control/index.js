@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { SelectControl } = wp.components;
 const { Fragment, useState } = wp.element;
 const { Icon } = wp.components;
 
@@ -34,9 +33,9 @@ import {
 	solid,
 	backgroundGradient,
 	fontIconSettings,
-	PresetSeven,
-	PresetEight,
-	PresetNine,
+	presetThree,
+	presetSeven,
+	presetEight,
 } from '../../icons';
 import DefaultStylesControl from '../default-styles-control';
 
@@ -132,28 +131,6 @@ const FontIconControl = props => {
 			/>
 			{iconValue.icon && (
 				<Fragment>
-					{!simpleMode && (
-						<DefaultStylesControl
-							className='maxi-icon-default-styles'
-							items={[
-								{
-									activeItem: false,
-									content: <PresetSeven />,
-									onChange: () => onChangePreset(1),
-								},
-								{
-									activeItem: false,
-									content: <PresetEight />,
-									onChange: () => onChangePreset(2),
-								},
-								{
-									activeItem: false,
-									content: <PresetNine />,
-									onChange: () => onChangePreset(3),
-								},
-							]}
-						/>
-					)}
 					<SizeControl
 						label={__('Size', 'maxi-blocks')}
 						unit={getLastBreakpointValue(
@@ -179,15 +156,15 @@ const FontIconControl = props => {
 						minMaxSettings={{
 							px: {
 								min: 0,
-								max: 99,
+								max: 300,
 							},
 							em: {
 								min: 0,
-								max: 99,
+								max: 300,
 							},
 							vw: {
 								min: 0,
-								max: 99,
+								max: 100,
 							},
 							'%': {
 								min: 0,
@@ -220,9 +197,10 @@ const FontIconControl = props => {
 								min={0}
 								max={99}
 							/>
-							<SelectControl
-								label={__('Position', 'maxi-blocks')}
-								value={iconValue.position}
+
+							<__experimentalFancyRadioControl
+								label={__('Icon Position', 'maxi-blocks')}
+								selected={iconValue.position}
 								options={[
 									{
 										label: __('Left', 'maxi-blocks'),
@@ -242,12 +220,34 @@ const FontIconControl = props => {
 							/>
 						</Fragment>
 					)}
-
+					{!simpleMode && (
+						<DefaultStylesControl
+							className='maxi-icon-default-styles'
+							items={[
+								{
+									activeItem: false,
+									content: <Icon icon={presetSeven} />,
+									onChange: () => onChangePreset(1),
+								},
+								{
+									activeItem: false,
+									content: <Icon icon={presetThree} />,
+									onChange: () => onChangePreset(2),
+								},
+								{
+									activeItem: false,
+									content: <Icon icon={presetEight} />,
+									onChange: () => onChangePreset(3),
+								},
+							]}
+						/>
+					)}
 					{getOptions().length > 1 && (
 						<__experimentalFancyRadioControl
-							label={__('Colour', 'maxi-blocks')}
+							label=''
 							selected={activeOption}
 							options={getOptions()}
+							fullWidthMode
 							onChange={item => {
 								if (item === 'iconColor')
 									setActiveOption('iconColor');

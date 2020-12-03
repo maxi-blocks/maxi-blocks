@@ -26,6 +26,7 @@ import {
 	__experimentalTransformControl,
 	__experimentalColumnPattern,
 	__experimentalFancyRadioControl,
+	__experimentalCustomLabel,
 } from '../../components';
 import { getDefaultProp } from '../../utils';
 
@@ -40,6 +41,7 @@ import { isObject } from 'lodash';
 const Inspector = props => {
 	const {
 		attributes: {
+			customLabel,
 			uniqueID,
 			isFirstOnHierarchy,
 			blockStyle,
@@ -75,6 +77,14 @@ const Inspector = props => {
 		? JSON.parse(backgroundHover)
 		: backgroundHover;
 
+	const boxShadowHoverValue = !isObject(boxShadowHover)
+		? JSON.parse(boxShadowHover)
+		: boxShadowHover;
+
+	const borderHoverValue = !isObject(borderHover)
+		? JSON.parse(borderHover)
+		: borderHover;
+
 	return (
 		<InspectorControls>
 			<SettingTabsControl
@@ -85,6 +95,13 @@ const Inspector = props => {
 						content: (
 							<Fragment>
 								<div className='maxi-tab-content__box'>
+									<__experimentalCustomLabel
+										customLabel={customLabel}
+										onChange={customLabel =>
+											setAttributes({ customLabel })
+										}
+									/>
+									<hr />
 									<BlockStylesControl
 										blockStyle={blockStyle}
 										onChangeBlockStyle={blockStyle =>
@@ -382,25 +399,66 @@ const Inspector = props => {
 																'gutenberg-extra'
 															),
 															content: (
-																<BorderControl
-																	border={
-																		borderHover
-																	}
-																	defaultBorder={getDefaultProp(
-																		clientId,
-																		'borderHover'
-																	)}
-																	onChange={borderHover =>
-																		setAttributes(
+																<Fragment>
+																	<__experimentalFancyRadioControl
+																		label={__(
+																			'Enable Border Hover',
+																			'maxi-blocks'
+																		)}
+																		selected={Number(
+																			borderHoverValue.status
+																		)}
+																		options={[
 																			{
-																				borderHover,
+																				label: __(
+																					'Yes',
+																					'maxi-blocks'
+																				),
+																				value: 1,
+																			},
+																			{
+																				label: __(
+																					'No',
+																					'maxi-blocks'
+																				),
+																				value: 0,
+																			},
+																		]}
+																		onChange={val => {
+																			borderHoverValue.status = Number(
+																				val
+																			);
+																			setAttributes(
+																				{
+																					borderHover: JSON.stringify(
+																						borderHoverValue
+																					),
+																				}
+																			);
+																		}}
+																	/>
+																	{!!borderHoverValue.status && (
+																		<BorderControl
+																			border={
+																				borderHover
 																			}
-																		)
-																	}
-																	breakpoint={
-																		deviceType
-																	}
-																/>
+																			defaultBorder={getDefaultProp(
+																				clientId,
+																				'borderHover'
+																			)}
+																			onChange={borderHover =>
+																				setAttributes(
+																					{
+																						borderHover,
+																					}
+																				)
+																			}
+																			breakpoint={
+																				deviceType
+																			}
+																		/>
+																	)}
+																</Fragment>
 															),
 														},
 													]}
@@ -504,25 +562,66 @@ const Inspector = props => {
 																'gutenberg-extra'
 															),
 															content: (
-																<BoxShadowControl
-																	boxShadow={
-																		boxShadowHover
-																	}
-																	defaultBoxShadow={getDefaultProp(
-																		clientId,
-																		'boxShadowHover'
-																	)}
-																	onChange={boxShadowHover =>
-																		setAttributes(
+																<Fragment>
+																	<__experimentalFancyRadioControl
+																		label={__(
+																			'Enable Border Hover',
+																			'maxi-blocks'
+																		)}
+																		selected={Number(
+																			boxShadowHoverValue.status
+																		)}
+																		options={[
 																			{
-																				boxShadowHover,
+																				label: __(
+																					'Yes',
+																					'maxi-blocks'
+																				),
+																				value: 1,
+																			},
+																			{
+																				label: __(
+																					'No',
+																					'maxi-blocks'
+																				),
+																				value: 0,
+																			},
+																		]}
+																		onChange={val => {
+																			boxShadowHoverValue.status = Number(
+																				val
+																			);
+																			setAttributes(
+																				{
+																					boxShadowHover: JSON.stringify(
+																						boxShadowHoverValue
+																					),
+																				}
+																			);
+																		}}
+																	/>
+																	{!!boxShadowHoverValue.status && (
+																		<BoxShadowControl
+																			boxShadow={
+																				boxShadowHover
 																			}
-																		)
-																	}
-																	breakpoint={
-																		deviceType
-																	}
-																/>
+																			defaultBoxShadow={getDefaultProp(
+																				clientId,
+																				'boxShadowHover'
+																			)}
+																			onChange={boxShadowHover =>
+																				setAttributes(
+																					{
+																						boxShadowHover,
+																					}
+																				)
+																			}
+																			breakpoint={
+																				deviceType
+																			}
+																		/>
+																	)}
+																</Fragment>
 															),
 														},
 													]}

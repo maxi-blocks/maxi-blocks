@@ -33,7 +33,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isObject } from 'lodash';
+import { isEmpty, isObject, isNil } from 'lodash';
 
 /**
  * InnerBlocks version
@@ -45,6 +45,8 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
 		className,
 		dataAlign,
 		maxiBlockClass,
+		uniqueID,
+		background,
 	} = props;
 
 	const shapeDividerValue = !isObject(shapeDivider)
@@ -58,16 +60,23 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
 			data-align={dataAlign}
 			data-gx_initial_block_class={maxiBlockClass}
 		>
+			<__experimentalBackgroundDisplayer
+				background={background}
+				blockClassName={uniqueID}
+			/>
+
 			{!!shapeDividerValue.top.status && (
 				<__experimentalShapeDivider
 					shapeDividerOptions={shapeDivider}
 				/>
 			)}
+
 			<div className='maxi-container-block__wrapper'>
 				<div className='maxi-container-block__container'>
 					{children}
 				</div>
 			</div>
+
 			{!!shapeDividerValue.bottom.status && (
 				<__experimentalShapeDivider
 					position='bottom'
@@ -93,6 +102,7 @@ class edit extends MaxiBlock {
 			border,
 			borderHover,
 			boxShadow,
+			shapeDivider,
 		} = this.props.attributes;
 
 		let response = {
@@ -104,29 +114,23 @@ class edit extends MaxiBlock {
 				.getContainerObject,
 			[`${uniqueID} .maxi-shape-divider__top`]: {
 				shapeDivider: {
-					...getShapeDividerObject(
-						JSON.parse(this.props.attributes.shapeDivider).top
-					),
+					...getShapeDividerObject(JSON.parse(shapeDivider).top),
 				},
 			},
 			[`${uniqueID} .maxi-shape-divider__top svg`]: {
 				shapeDivider: {
-					...getShapeDividerSVGObject(
-						JSON.parse(this.props.attributes.shapeDivider).top
-					),
+					...getShapeDividerSVGObject(JSON.parse(shapeDivider).top),
 				},
 			},
 			[`${uniqueID} .maxi-shape-divider__bottom`]: {
 				shapeDivider: {
-					...getShapeDividerObject(
-						JSON.parse(this.props.attributes.shapeDivider).bottom
-					),
+					...getShapeDividerObject(JSON.parse(shapeDivider).bottom),
 				},
 			},
 			[`${uniqueID} .maxi-shape-divider__bottom svg`]: {
 				shapeDivider: {
 					...getShapeDividerSVGObject(
-						JSON.parse(this.props.attributes.shapeDivider).bottom
+						JSON.parse(shapeDivider).bottom
 					),
 				},
 			},
@@ -135,7 +139,7 @@ class edit extends MaxiBlock {
 		response = Object.assign(
 			response,
 			setBackgroundStyles(
-				uniqueID,
+				`${uniqueID} .maxi-container-block__wrapper`,
 				background,
 				backgroundHover,
 				overlay,
@@ -186,13 +190,21 @@ class edit extends MaxiBlock {
 		const { borderHover, boxShadowHover } = this.props.attributes;
 
 		const response = {
-			boxShadowHover: {
-				...getBoxShadowObject(JSON.parse(boxShadowHover)),
-			},
-			borderHover: { ...JSON.parse(borderHover) },
 			borderWidthHover: { ...JSON.parse(borderHover).borderWidth },
 			borderRadiusHover: { ...JSON.parse(borderHover).borderRadius },
 		};
+
+		if (!isNil(boxShadowHover) && !!JSON.parse(boxShadowHover).status) {
+			response.boxShadowHover = {
+				...getBoxShadowObject(JSON.parse(boxShadowHover)),
+			};
+		}
+
+		if (!isNil(borderHover) && !!JSON.parse(borderHover).status) {
+			response.borderHover = {
+				...JSON.parse(borderHover),
+			};
+		}
 
 		return response;
 	}
@@ -273,11 +285,6 @@ class edit extends MaxiBlock {
 							data-align={fullWidth}
 							data-maxi_initial_block_class={defaultBlockStyle}
 						>
-							<__experimentalBackgroundDisplayer
-								background={background}
-								blockClassName={uniqueID}
-							/>
-
 							<__experimentalArrowDisplayer arrow={arrow} />
 
 							{!!shapeDividerValue.top.status && (
@@ -287,6 +294,10 @@ class edit extends MaxiBlock {
 							)}
 
 							<div className='maxi-container-block__wrapper'>
+								<__experimentalBackgroundDisplayer
+									background={background}
+									blockClassName={uniqueID}
+								/>
 								<InnerBlocks
 									templateLock={false}
 									__experimentalTagName='div'
@@ -327,6 +338,8 @@ class edit extends MaxiBlock {
 							dataAlign: fullWidth,
 							maxiBlockClass: defaultBlockStyle,
 							shapeDivider,
+							background,
+							uniqueID,
 						}}
 						renderAppender={
 							!hasInnerBlock

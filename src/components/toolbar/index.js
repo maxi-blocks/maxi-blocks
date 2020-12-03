@@ -74,6 +74,7 @@ const allowedBlocks = [
 const MaxiToolbar = props => {
 	const {
 		attributes: {
+			customLabel,
 			uniqueID,
 			typography,
 			typographyHover,
@@ -111,7 +112,6 @@ const MaxiToolbar = props => {
 		name,
 		setAttributes,
 		formatValue,
-		// node,
 		deviceType,
 		toggleHandlers,
 	} = props;
@@ -120,13 +120,8 @@ const MaxiToolbar = props => {
 		document.getElementById(`block-${clientId}`)
 	);
 
-	const [parentAnchorRef, setParentAnchorRef] = useState();
-
 	useEffect(() => {
 		setAnchorRef(document.getElementById(`block-${clientId}`));
-		setParentAnchorRef(
-			document.getElementById(`block-${clientId}`).parentElement
-		);
 	});
 
 	if (!allowedBlocks.includes(name)) return null;
@@ -200,6 +195,9 @@ const MaxiToolbar = props => {
 					__unstableSlotName='block-toolbar'
 					shouldAnchorIncludePadding
 				>
+					<div className='toolbar-block-custom-label'>
+						{customLabel}
+					</div>
 					<div className='toolbar-wrapper'>
 						<Mover clientId={clientId} blockName={name} />
 						<__experimentalColumnMover

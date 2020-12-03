@@ -4,6 +4,15 @@
 		border: none;
 		overflow: visible;
 		box-shadow: none;
+		.toolbar-block-custom-label {
+			font-size: 13px;
+			background: #000;
+			color: #fff;
+			width: auto;
+			display: inline-block;
+			padding: 0 0.5rem;
+			border-radius: 5px;
+		}
 		.toolbar-wrapper {
 			display: flex;
 			width: min-content;
@@ -247,7 +256,7 @@ body .toolbar-item__popover {
 		background-color: #232433;
 		border-radius: 5px;
 		border: none;
-		min-width: 300px;
+		min-width: auto;
 		padding: 15px;
 		overflow: visible;
 		.maxi-color-control {

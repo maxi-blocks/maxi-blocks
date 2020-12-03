@@ -88,9 +88,6 @@ class ToolbarPopover extends Component {
 						position='top center'
 						focusOnMount
 						isAlternate
-						// anchorRef= anchorRef
-						// __unstableSticky={true}
-						// __unstableSlotName= "block-toolbar"
 						shouldAnchorIncludePadding
 					>
 						{content}

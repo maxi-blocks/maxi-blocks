@@ -10,7 +10,7 @@ const { Fragment } = wp.element;
 import {
 	ShapeDivider,
 	BackgroundDisplayer,
-	__experimentalArrowDisplayer,
+	ArrowDisplayer,
 } from '../../components';
 
 /**
@@ -64,7 +64,7 @@ const save = props => {
 					data-motion-id={uniqueID}
 					data-background={background}
 				>
-					<__experimentalArrowDisplayer arrow={arrow} />
+					<ArrowDisplayer arrow={arrow} />
 					{!!shapeDividerValue.top.status && (
 						<ShapeDivider shapeDividerOptions={shapeDivider} />
 					)}

@@ -25,7 +25,7 @@ import {
 	MaxiBlock,
 	Toolbar,
 	BackgroundDisplayer,
-	__experimentalMotionPreview,
+	MotionPreview,
 } from '../../components';
 
 /**
@@ -352,7 +352,7 @@ class edit extends MaxiBlock {
 		return [
 			<Inspector {...this.props} />,
 			<Toolbar {...this.props} />,
-			<__experimentalMotionPreview motion={motion}>
+			<MotionPreview motion={motion}>
 				<__experimentalBlock.figure
 					className={classes}
 					data-maxi_initial_block_class={defaultBlockStyle}
@@ -491,7 +491,7 @@ class edit extends MaxiBlock {
 						)}
 					/>
 				</__experimentalBlock.figure>
-			</__experimentalMotionPreview>,
+			</MotionPreview>,
 		];
 	}
 }

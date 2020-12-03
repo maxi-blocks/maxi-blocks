@@ -7,7 +7,7 @@ const { useState } = wp.element;
 /**
  * Internal dependencies
  */
-import __experimentalFancyRadioControl from '../fancy-radio-control';
+import FancyRadioControl from '../fancy-radio-control';
 import __experimentalLoaderControl from '../loader-control';
 import * as backgroundLayers from './layers';
 import ColorLayer from './colorLayer';
@@ -175,7 +175,7 @@ const BackgroundLayersControl = props => {
 
 	return (
 		<div className='maxi-background-control__layers'>
-			<__experimentalFancyRadioControl
+			<FancyRadioControl
 				label={__('Use layers', 'maxi-blocks')}
 				selected={status}
 				options={[

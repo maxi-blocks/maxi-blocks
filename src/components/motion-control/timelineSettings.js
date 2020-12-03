@@ -8,7 +8,7 @@ const { RangeControl, SelectControl } = wp.components;
 /**
  * Internal dependencies
  */
-import __experimentalFancyRadioControl from '../fancy-radio-control';
+import FancyRadioControl from '../fancy-radio-control';
 
 /**
  * External dependencies
@@ -385,7 +385,7 @@ const TimelineSettings = props => {
 			{!isNil(getCurrentTimelineItem()) && (
 				<Fragment>
 					<hr />
-					<__experimentalFancyRadioControl
+					<FancyRadioControl
 						label={__('X-Axis', 'maxi-blocks')}
 						selected={interaction.transformOrigin.xAxis}
 						options={[
@@ -411,7 +411,7 @@ const TimelineSettings = props => {
 							onChange(interaction);
 						}}
 					/>
-					<__experimentalFancyRadioControl
+					<FancyRadioControl
 						label={__('Y-Axis', 'maxi-blocks')}
 						selected={interaction.transformOrigin.yAxis}
 						options={[
@@ -438,7 +438,7 @@ const TimelineSettings = props => {
 						}}
 					/>
 					<hr />
-					<__experimentalFancyRadioControl
+					<FancyRadioControl
 						label={__('Tablet', 'maxi-blocks')}
 						selected={interaction.tabletStatus}
 						options={[
@@ -457,7 +457,7 @@ const TimelineSettings = props => {
 							onChange(interaction);
 						}}
 					/>
-					<__experimentalFancyRadioControl
+					<FancyRadioControl
 						label={__('Mobile', 'maxi-blocks')}
 						selected={interaction.mobileStatus}
 						options={[

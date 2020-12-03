@@ -20,7 +20,7 @@ import {
 	MaxiBlock,
 	Toolbar,
 	BackgroundDisplayer,
-	__experimentalFontIconPicker,
+	FontIconPicker,
 } from '../../components';
 
 /**
@@ -156,7 +156,7 @@ class edit extends MaxiBlock {
 						<i className={iconValue.icon} />
 					</span>
 				)) || (
-					<__experimentalFontIconPicker
+					<FontIconPicker
 						onChange={icon => {
 							iconValue.icon = icon;
 							setAttributes({

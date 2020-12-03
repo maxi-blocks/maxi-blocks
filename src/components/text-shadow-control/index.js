@@ -10,7 +10,7 @@ const { RangeControl, Icon } = wp.components;
  */
 import ColorControl from '../color-control';
 import DefaultStylesControl from '../default-styles-control';
-import __experimentalFancyRadioControl from '../fancy-radio-control';
+import FancyRadioControl from '../fancy-radio-control';
 
 /**
  * External dependencies
@@ -161,7 +161,7 @@ const TextShadowControl = props => {
 
 	return (
 		<div className={classes}>
-			<__experimentalFancyRadioControl
+			<FancyRadioControl
 				label={__('Text Shadow', 'maxi-blocks')}
 				selected={Number(showOptions)}
 				options={[

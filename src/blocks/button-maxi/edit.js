@@ -19,11 +19,7 @@ import {
 	getLastBreakpointValue,
 	getIconObject,
 } from '../../utils';
-import {
-	MaxiBlock,
-	Toolbar,
-	__experimentalMotionPreview,
-} from '../../components';
+import { MaxiBlock, Toolbar, MotionPreview } from '../../components';
 import { __experimentalGetFormatValue } from '../../extensions/text/formats';
 
 /**
@@ -224,7 +220,7 @@ class edit extends MaxiBlock {
 		return [
 			<Inspector {...this.props} />,
 			<Toolbar {...this.props} />,
-			<__experimentalMotionPreview motion={motion}>
+			<MotionPreview motion={motion}>
 				<__experimentalBlock
 					className={classes}
 					data-maxi_initial_block_class={defaultBlockStyle}
@@ -240,7 +236,7 @@ class edit extends MaxiBlock {
 						/>
 					</div>
 				</__experimentalBlock>
-			</__experimentalMotionPreview>,
+			</MotionPreview>,
 		];
 	}
 }

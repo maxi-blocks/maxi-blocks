@@ -21,7 +21,7 @@ import {
 	MaxiBlock,
 	Toolbar,
 	BackgroundDisplayer,
-	__experimentalMotionPreview,
+	MotionPreview,
 } from '../../components';
 
 /**
@@ -220,7 +220,7 @@ class edit extends MaxiBlock {
 					});
 				}}
 			>
-				<__experimentalMotionPreview motion={motion}>
+				<MotionPreview motion={motion}>
 					<__experimentalBlock
 						className={classes}
 						data-maxi_initial_block_class={defaultBlockStyle}
@@ -233,7 +233,7 @@ class edit extends MaxiBlock {
 							</Fragment>
 						)}
 					</__experimentalBlock>
-				</__experimentalMotionPreview>
+				</MotionPreview>
 			</ResizableBox>,
 		];
 	}

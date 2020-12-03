@@ -28,9 +28,9 @@ import {
 	MotionControl,
 	TransformControl,
 	EntranceAnimationControl,
-	__experimentalFancyRadioControl,
-	__experimentalFontIconControl,
-	__experimentalCustomLabel,
+	FancyRadioControl,
+	FontIconControl,
+	CustomLabel,
 } from '../../components';
 import { getDefaultProp } from '../../utils';
 import * as defaultPresets from './defaults';
@@ -163,7 +163,7 @@ const Inspector = props => {
 						content: (
 							<Fragment>
 								<div className='maxi-tab-content__box'>
-									<__experimentalCustomLabel
+									<CustomLabel
 										customLabel={customLabel}
 										onChange={customLabel =>
 											setAttributes({ customLabel })
@@ -282,7 +282,7 @@ const Inspector = props => {
 										{
 											label: __('Icon', 'maxi-blocks'),
 											content: (
-												<__experimentalFontIconControl
+												<FontIconControl
 													icon={icon}
 													onChange={obj => {
 														setAttributes(obj);
@@ -380,7 +380,7 @@ const Inspector = props => {
 															),
 															content: (
 																<Fragment>
-																	<__experimentalFancyRadioControl
+																	<FancyRadioControl
 																		label={__(
 																			'Enable Typography Hover',
 																			'maxi-blocks'
@@ -502,7 +502,7 @@ const Inspector = props => {
 															),
 															content: (
 																<Fragment>
-																	<__experimentalFancyRadioControl
+																	<FancyRadioControl
 																		label={__(
 																			'Enable Background Hover',
 																			'maxi-blocks'
@@ -609,7 +609,7 @@ const Inspector = props => {
 															),
 															content: (
 																<Fragment>
-																	<__experimentalFancyRadioControl
+																	<FancyRadioControl
 																		label={__(
 																			'Enable Border Hover',
 																			'maxi-blocks'
@@ -736,7 +736,7 @@ const Inspector = props => {
 															),
 															content: (
 																<Fragment>
-																	<__experimentalFancyRadioControl
+																	<FancyRadioControl
 																		label={__(
 																			'Enable Border Hover',
 																			'maxi-blocks'

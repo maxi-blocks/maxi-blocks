@@ -10,8 +10,8 @@ import MediaUploaderControl from '../media-uploader-control';
 import ClipPath from '../clip-path-control';
 import OpacityControl from '../opacity-control';
 import NumberControl from '../number-control';
-import __experimentalTextControl from '../text-control';
-import __experimentalFancyRadioControl from '../fancy-radio-control';
+import TextControl from '../text-control';
+import FancyRadioControl from '../fancy-radio-control';
 
 /**
  * Component
@@ -26,7 +26,7 @@ const VideoLayer = props => {
 
 	return (
 		<div className='maxi-background-control__video'>
-			<__experimentalTextControl
+			<TextControl
 				label='URL'
 				type='video-url'
 				help='add video'
@@ -63,7 +63,7 @@ const VideoLayer = props => {
 					onChange(videoOptions);
 				}}
 			/>
-			<__experimentalFancyRadioControl
+			<FancyRadioControl
 				label={__('Loop', 'maxi-blocks')}
 				selected={Number(videoOptions.loop)}
 				options={[
@@ -82,7 +82,7 @@ const VideoLayer = props => {
 					onChange(videoOptions);
 				}}
 			/>
-			<__experimentalFancyRadioControl
+			<FancyRadioControl
 				label={__('Play on Mobile', 'maxi-blocks')}
 				selected={Number(videoOptions.playOnMobile)}
 				options={[

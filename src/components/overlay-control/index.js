@@ -8,7 +8,7 @@ const { Icon } = wp.components;
  * Internal dependencies
  */
 import OpacityControl from '../opacity-control';
-import __experimentalFancyRadioControl from '../fancy-radio-control';
+import FancyRadioControl from '../fancy-radio-control';
 import ColorControl from '../color-control';
 import GradientControl from '../gradient-control';
 
@@ -39,7 +39,7 @@ const OverlayControl = props => {
 
 	return (
 		<div className={classes}>
-			<__experimentalFancyRadioControl
+			<FancyRadioControl
 				label={__('Overlay Type', 'maxi-blocks')}
 				selected={value.overlayOptions.overlay}
 				options={[

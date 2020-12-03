@@ -15,8 +15,8 @@ import {
 	BlockPlaceholder,
 	ShapeDivider,
 	BackgroundDisplayer,
-	__experimentalArrowDisplayer,
-	__experimentalMotionPreview,
+	ArrowDisplayer,
+	MotionPreview,
 } from '../../components';
 import Inspector from './inspector';
 import {
@@ -277,13 +277,13 @@ class edit extends MaxiBlock {
 			<Breadcrumbs />,
 			<Fragment>
 				{isFirstOnHierarchy && fullWidth && (
-					<__experimentalMotionPreview motion={motion}>
+					<MotionPreview motion={motion}>
 						<__experimentalBlock.section
 							className={classes}
 							data-align={fullWidth}
 							data-maxi_initial_block_class={defaultBlockStyle}
 						>
-							<__experimentalArrowDisplayer arrow={arrow} />
+							<ArrowDisplayer arrow={arrow} />
 
 							{!!shapeDividerValue.top.status && (
 								<ShapeDivider
@@ -325,7 +325,7 @@ class edit extends MaxiBlock {
 								/>
 							)}
 						</__experimentalBlock.section>
-					</__experimentalMotionPreview>
+					</MotionPreview>
 				)}
 				{(!isFirstOnHierarchy || !fullWidth) && (
 					<InnerBlocks

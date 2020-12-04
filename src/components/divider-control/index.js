@@ -8,9 +8,14 @@ const { RangeControl, SelectControl, Icon } = wp.components;
 /**
  * Internal dependencies
  */
-import ColorControl from '../color-control';
-import DefaultStylesControl from '../default-styles-control';
-import __experimentalOpacityControl from '../opacity-control';
+import {
+	ColorControl,
+	SizeControl,
+	DefaultStylesControl,
+	__experimentalOpacityControl,
+	__experimentalFancyRadioControl,
+} from '../../components';
+import { getLastBreakpointValue } from '../../utils';
 import {
 	dividerSolidHorizontal,
 	dividerDottedHorizontal,
@@ -43,7 +48,27 @@ const DividerControl = props => {
 		disableColor = false,
 		disableLineStyle = false,
 		disableBorderRadius = false,
+		breakpoint = 'general',
 	} = props;
+
+	const minMaxSettings = {
+		px: {
+			min: 0,
+			max: 999,
+		},
+		em: {
+			min: 0,
+			max: 999,
+		},
+		vw: {
+			min: 0,
+			max: 100,
+		},
+		'%': {
+			min: 0,
+			max: 100,
+		},
+	};
 
 	const [orientation, changeOrientation] = useState(lineOrientation);
 
@@ -179,13 +204,13 @@ const DividerControl = props => {
 				/>
 			)}
 			{!disableBorderRadius && value.general['border-style'] === 'solid' && (
-				<SelectControl
+				<__experimentalFancyRadioControl
 					label={__('Border Radius', 'maxi-blocks')}
+					selected={value.general['border-radius']}
 					options={[
 						{ label: __('No', 'maxi-blocks'), value: '' },
 						{ label: __('Yes', 'maxi-blocks'), value: '20px' },
 					]}
-					value={value.general['border-radius']}
 					onChange={val => {
 						value.general['border-radius'] = val;
 						onChange(JSON.stringify(value));
@@ -194,39 +219,63 @@ const DividerControl = props => {
 			)}
 			{orientation === 'horizontal' && (
 				<Fragment>
-					<RangeControl
-						label={__('Size', 'maxi-blocks')}
-						value={Number(value.general.width)}
-						onChange={val => {
-							isNil(val)
-								? (value.general.width =
-										defaultValue.general.width)
-								: (value.general.width = Number(val));
+					<SizeControl
+						label={__('Line Size', 'maxi-blocks')}
+						unit={getLastBreakpointValue(
+							value,
+							'widthUnit',
+							breakpoint
+						)}
+						defaultUnit={defaultValue[breakpoint].widthUnit}
+						onChangeUnit={val => {
+							value.general.widthUnit = val;
 
 							onChange(JSON.stringify(value));
 						}}
-						allowReset
-						initialPosition={defaultValue.general.width}
+						value={getLastBreakpointValue(
+							value,
+							'width',
+							breakpoint
+						)}
+						defaultValue={defaultValue[breakpoint].width}
+						onChangeValue={val => {
+							value.general.width = Number(val);
+
+							onChange(JSON.stringify(value));
+						}}
+						minMaxSettings={minMaxSettings}
 					/>
-					<RangeControl
-						label={__('Weight', 'maxi-blocks')}
-						value={Number(value.general['border-top-width'])}
-						onChange={val => {
-							isNil(val)
-								? (value.general['border-top-width'] =
-										defaultValue.general[
-											'border-top-width'
-										])
-								: (value.general['border-top-width'] = Number(
-										val
-								  ));
+
+					<SizeControl
+						label={__('Line Weight', 'maxi-blocks')}
+						disableUnit
+						unit={getLastBreakpointValue(
+							value,
+							'border-top-widthUnit',
+							breakpoint
+						)}
+						defaultUnit={
+							defaultValue[breakpoint]['border-top-widthUnit']
+						}
+						onChangeUnit={val => {
+							value.general['border-top-widthUnit'] = val;
 
 							onChange(JSON.stringify(value));
 						}}
-						allowReset
-						initialPosition={
-							defaultValue.general['border-top-width']
+						value={getLastBreakpointValue(
+							value,
+							'border-top-width',
+							breakpoint
+						)}
+						defaultValue={
+							defaultValue[breakpoint]['border-top-width']
 						}
+						onChangeValue={val => {
+							value.general['border-top-width'] = Number(val);
+
+							onChange(JSON.stringify(value));
+						}}
+						minMaxSettings={minMaxSettings}
 					/>
 				</Fragment>
 			)}

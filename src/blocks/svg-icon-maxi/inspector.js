@@ -3,8 +3,8 @@
  */
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
-const { Fragment } = wp.element;
-const { TextControl } = wp.components;
+const { Fragment, RawHTML } = wp.element;
+const { TextControl, Button } = wp.components;
 
 /**
  * Internal dependencies
@@ -35,11 +35,12 @@ import {
 	__experimentalFancyRadioControl,
 	__experimentalCustomLabel,
 } from '../../components';
+import MaxiModal from './modal';
 
 /**
  * External dependencies
  */
-import { isObject } from 'lodash';
+import { isObject, isEmpty } from 'lodash';
 
 /**
  * Inspector
@@ -76,6 +77,7 @@ const Inspector = props => {
 			animation,
 			duration,
 			width,
+			content,
 		},
 		clientId,
 		deviceType,
@@ -146,6 +148,40 @@ const Inspector = props => {
 													disableJustify
 													breakpoint={deviceType}
 												/>
+											),
+										},
+										{
+											label: __(
+												'SVG Icon',
+												'maxi-blocks'
+											),
+											content: isEmpty(content) ? (
+												<MaxiModal
+													clientId={clientId}
+												/>
+											) : (
+												<Fragment>
+													<div className='maxi-svg-icon-block__placeholder'>
+														<RawHTML>
+															{content}
+														</RawHTML>
+													</div>
+													<Button
+														isDefault
+														isLarge
+														className='maxi-svg-icon-block__change-button'
+														onClick={() =>
+															setAttributes({
+																content: '',
+															})
+														}
+													>
+														{__(
+															'Change SVG Icon',
+															'maxi-blocks'
+														)}
+													</Button>
+												</Fragment>
 											),
 										},
 										isAnimatedSVG && {

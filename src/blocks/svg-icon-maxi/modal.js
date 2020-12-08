@@ -28,16 +28,15 @@ class MaxiModalIcon extends Component {
 			<Fragment
 				key={`maxi-block-library__fragment--${this.props.clientId}`}
 			>
-				{/* Launch the layout modal window */}
-				<Button
-					key={`maxi-block-library__modal-button--${this.props.clientId}`}
-					isPrimary
-					isLarge
-					className='maxi-block-library__modal-button'
-					onClick={onClick}
-				>
-					{__('Launch the Library', 'maxi-blocks')}
-				</Button>
+				<div className='maxi-svg-icon-block__placeholder'>
+					<Button
+						key={`maxi-block-library__modal-button--${this.props.clientId}`}
+						className='maxi-block-library__modal-button'
+						onClick={onClick}
+					>
+						{__('Select SVG Icon', 'maxi-blocks')}
+					</Button>
+				</div>
 				{isOpen ? (
 					<MaxiContext.Consumer
 						key={`maxi-block-library__context-provider--${this.props.clientId}`}
@@ -65,7 +64,7 @@ class MaxiModalIcon extends Component {
 								/>
 								<Fragment>
 									<div className='maxi-block-library__modal__loading_message maxi-block__item--hidden'>
-										<p>Saving...</p>
+										<p>{__('Saving...', 'maxi-blocks')}</p>
 									</div>
 								</Fragment>
 							</Modal>

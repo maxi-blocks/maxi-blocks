@@ -4,7 +4,7 @@
 const { __ } = wp.i18n;
 const { compose } = wp.compose;
 const { Fragment, RawHTML } = wp.element;
-const { Placeholder } = wp.components;
+const { IconButton } = wp.components;
 const { withSelect, withDispatch } = wp.data;
 const { __experimentalBlock } = wp.blockEditor;
 
@@ -32,6 +32,11 @@ import {
  */
 import classnames from 'classnames';
 import { isEmpty, isNil } from 'lodash';
+
+/**
+ * Icons
+ */
+import { toolbarReplaceImage } from '../../icons';
 
 /**
  * Content
@@ -122,6 +127,7 @@ class edit extends MaxiBlock {
 				background,
 				motion,
 			},
+			setAttributes,
 			clientId,
 		} = this.props;
 
@@ -149,23 +155,17 @@ class edit extends MaxiBlock {
 					>
 						<Fragment>
 							{isEmpty(content) && (
-								<Placeholder
-									key='placeholder'
-									label={__(
-										'SVG Icon Cloud Library Maxi',
-										'maxi-blocks'
-									)}
-									instructions={__(
-										'Launch the library to browse pre-designed SVGs.',
-										'maxi-blocks'
-									)}
-									className='maxi-block-library__placeholder'
-								>
-									<MaxiModal clientId={clientId} />
-								</Placeholder>
+								<MaxiModal clientId={clientId} />
 							)}
 							{!isEmpty(content) && (
 								<Fragment>
+									<IconButton
+										className='maxi-svg-icon-block__change-icon'
+										onClick={() =>
+											setAttributes({ content: '' })
+										}
+										icon={toolbarReplaceImage}
+									/>
 									<__experimentalBackgroundDisplayer
 										background={background}
 									/>

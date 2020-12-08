@@ -20,17 +20,17 @@ class MaxiModalIcon extends Component {
 	render() {
 		const { isOpen } = this.state;
 
+		const { clientId } = this.props;
+
 		const onClick = () => {
 			this.setState({ isOpen: !isOpen });
 		};
 
 		return (
-			<Fragment
-				key={`maxi-block-library__fragment--${this.props.clientId}`}
-			>
+			<Fragment key={`maxi-block-library__fragment--${clientId}`}>
 				<div className='maxi-svg-icon-block__placeholder'>
 					<Button
-						key={`maxi-block-library__modal-button--${this.props.clientId}`}
+						key={`maxi-block-library__modal-button--${clientId}`}
 						className='maxi-block-library__modal-button'
 						onClick={onClick}
 					>
@@ -39,11 +39,11 @@ class MaxiModalIcon extends Component {
 				</div>
 				{isOpen ? (
 					<MaxiContext.Consumer
-						key={`maxi-block-library__context-provider--${this.props.clientId}`}
+						key={`maxi-block-library__context-provider--${clientId}`}
 					>
-						{context => (
+						{() => (
 							<Modal
-								key={`maxi-block-library__modal--${this.props.clientId}`}
+								key={`maxi-block-library__modal--${clientId}`}
 								className='maxi-block-library__modal'
 								title={__(
 									'Maxi Cloud Icons Library',
@@ -73,6 +73,6 @@ class MaxiModalIcon extends Component {
 				) : null}
 			</Fragment>
 		);
-	} // render END
-} // class MaxiModal END
+	}
+}
 export default MaxiModalIcon;

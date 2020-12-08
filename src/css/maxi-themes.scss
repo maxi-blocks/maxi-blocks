@@ -5,6 +5,10 @@
 
 $styles: 'dark', 'light';
 $levels: 'p', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6';
+$responsive_sizes: 'general', 'xxl', 'xl', 'l', 'm', 's', 'xs';
+$responsive_breakpoints: 1921, 1920, 1366, 1024, 768, 480;
+$responsive_width: '';
+$current_responsive_stage: 'general';
 
 /**
 * Styles
@@ -28,13 +32,13 @@ body.maxi-blocks--active {
 
 			@each $level in $levels {
 				#{$level} {
-					font-family: var(--maxi-#{$style}-#{$level}-font-family) !important;
-					color: var(--maxi-#{$style}-#{$level}-color) !important;
 					font-size: var(--maxi-#{$style}-#{$level}-font-size-general) !important;
 					line-height: var(--maxi-#{$style}-#{$level}-line-height-general) !important;
+					color: var(--maxi-#{$style}-#{$level}-color) !important;
+					font-family: var(--maxi-#{$style}-#{$level}-font-family) !important;
 					font-weight: var(--maxi-#{$style}-#{$level}-font-weight) !important;
-					text-transform: var(--maxi-#{$style}-#{$level}-transform) !important;
 					font-style: var(--maxi-#{$style}-#{$level}-style) !important;
+					text-transform: var(--maxi-#{$style}-#{$level}-transform) !important;
 					text-decoration-style: var(--maxi-#{$style}-#{$level}-decoration) !important;
 					text-decoration-line: var(--maxi-#{$style}-#{$level}-decoration-line) !important;
 				}
@@ -68,6 +72,71 @@ body.maxi-blocks--active {
 					&:hover {
 						> .maxi-divider-block__divider {
 							border-color: var(--maxi-light-hover) !important;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+/**
+* Responsive
+*/
+@each $responsive_size in $responsive_sizes {
+	body.maxi-blocks--active {
+		@each $style in $styles {
+			.edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="#{$responsive_size}"] {
+				.maxi-block--backend {
+					&.maxi-#{$style} {
+						@each $level in $levels {
+							#{$level} {
+								&.maxi-text-block__content {
+									font-size: var(--maxi-#{$style}-#{$level}-font-size-#{$responsive_size}) !important;
+									line-height: var(--maxi-#{$style}-#{$level}-line-height-#{$responsive_size}) !important;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+@each $responsive_breakpoint in $responsive_breakpoints {
+	@if $responsive_breakpoint == 480 {
+		$responsive_width: max-width;
+		$current_responsive_stage: 'xs';
+	}
+	@if $responsive_breakpoint == 768 {
+		$responsive_width: max-width;
+		$current_responsive_stage: 's';
+	}
+	@if $responsive_breakpoint == 1024 {
+		$responsive_width: max-width;
+		$current_responsive_stage: 'm';
+	}
+	@if $responsive_breakpoint == 1366 {
+		$responsive_width: max-width;
+		$current_responsive_stage: 'l';
+	}
+	@if $responsive_breakpoint == 1920 {
+		$responsive_width: max-width;
+		$current_responsive_stage: 'xl';
+	}
+	@if $responsive_breakpoint == 1921 {
+		$responsive_width: min-width;
+		$current_responsive_stage: 'xxl';
+	}
+	@media only screen and ($responsive_width: #{$responsive_breakpoint}px) {
+		body.maxi-blocks--active {
+			@each $style in $styles {
+				.maxi-#{$style} {
+					@each $level in $levels {
+						#{$level} {
+							font-size: var(--maxi-#{$style}-#{$level}-font-size-#{$current_responsive_stage}) !important;
+							line-height: var(--maxi-#{$style}-#{$level}-line-height-#{$current_responsive_stage}) !important;
 						}
 					}
 				}

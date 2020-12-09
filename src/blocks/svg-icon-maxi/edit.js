@@ -1,18 +1,15 @@
 /**
  * WordPress dependencies
  */
-const { __ } = wp.i18n;
 const { compose } = wp.compose;
 const { Fragment, RawHTML } = wp.element;
-const { IconButton } = wp.components;
+const { IconButton, Button, Modal } = wp.components;
 const { withSelect, withDispatch } = wp.data;
 const { __experimentalBlock } = wp.blockEditor;
 
 /**
  * Internal dependencies
  */
-import MaxiProvider from './provider';
-import MaxiModal from './modal';
 import Inspector from './inspector';
 import {
 	getBoxShadowObject,
@@ -32,6 +29,7 @@ import {
  */
 import classnames from 'classnames';
 import { isEmpty, isNil } from 'lodash';
+import Iframe from 'react-iframe';
 
 /**
  * Icons
@@ -42,6 +40,10 @@ import { toolbarReplaceImage } from '../../icons';
  * Content
  */
 class edit extends MaxiBlock {
+	state = {
+		isOpen: false,
+	};
+
 	get getObject() {
 		const { uniqueID, background, backgroundHover } = this.props.attributes;
 
@@ -127,9 +129,14 @@ class edit extends MaxiBlock {
 				background,
 				motion,
 			},
-			setAttributes,
 			clientId,
 		} = this.props;
+
+		const { isOpen } = this.state;
+
+		const onClick = () => {
+			this.setState({ isOpen: !isOpen });
+		};
 
 		const classes = classnames(
 			'maxi-block',
@@ -144,7 +151,7 @@ class edit extends MaxiBlock {
 		);
 
 		return [
-			<MaxiProvider>
+			<Fragment>
 				<Inspector {...this.props} />
 				<__experimentalToolbar {...this.props} />
 				<__experimentalMotionPreview motion={motion}>
@@ -154,16 +161,54 @@ class edit extends MaxiBlock {
 						key={clientId}
 					>
 						<Fragment>
+							{isOpen && (
+								<Modal
+									key={`maxi-block-library__modal--${clientId}`}
+									className='maxi-block-library__modal'
+									title={__(
+										'Maxi Cloud Icons Library',
+										'maxi-blocks'
+									)}
+									shouldCloseOnEsc
+									shouldCloseOnClickOutside={false}
+									onRequestClose={onClick}
+								>
+									<Iframe
+										url='https://ge-library.dev700.com/svg-search/'
+										width='100%'
+										height='90%'
+										id='maxi-block-library__modal-iframe'
+										className='maxi-block-library__modal-iframe'
+										display='initial'
+										position='relative'
+									/>
+
+									<div className='maxi-block-library__modal__loading_message maxi-block__item--hidden'>
+										<p>{__('Saving...', 'maxi-blocks')}</p>
+									</div>
+								</Modal>
+							)}
 							{isEmpty(content) && (
-								<MaxiModal clientId={clientId} />
+								<Fragment>
+									<div className='maxi-svg-icon-block__placeholder'>
+										<Button
+											key={`maxi-block-library__modal-button--${clientId}`}
+											className='maxi-block-library__modal-button'
+											onClick={onClick}
+										>
+											{__(
+												'Select SVG Icon',
+												'maxi-blocks'
+											)}
+										</Button>
+									</div>
+								</Fragment>
 							)}
 							{!isEmpty(content) && (
 								<Fragment>
 									<IconButton
-										className='maxi-svg-icon-block__change-icon'
-										onClick={() =>
-											setAttributes({ content: '' })
-										}
+										className='maxi-svg-icon-block__replace-icon'
+										onClick={onClick}
 										icon={toolbarReplaceImage}
 									/>
 									<__experimentalBackgroundDisplayer
@@ -175,7 +220,7 @@ class edit extends MaxiBlock {
 						</Fragment>
 					</__experimentalBlock>
 				</__experimentalMotionPreview>
-			</MaxiProvider>,
+			</Fragment>,
 		];
 	}
 }

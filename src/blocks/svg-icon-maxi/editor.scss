@@ -12,25 +12,7 @@
 		background-color: #edeff0;
 		font-size: 13px;
 	}
-	&__change-button {
-		width: 100%;
-		margin: 8px 0;
-		border: 2px solid #dddfe1;
-		border-radius: 5px;
-		color: #464a53 !important;
-		box-shadow: none !important;
-		margin: 0 5px 0 0;
-		flex: 1;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		transition: all 0.5s;
-		margin-top: 5px;
-		&:hover {
-			background-color: #edeff0;
-		}
-	}
-	&__change-icon {
+	&__replace-icon {
 		opacity: 1;
 		visibility: visible;
 		width: 40px;

@@ -14,11 +14,19 @@ const BlockStylesControl = props => {
 	const {
 		blockStyle,
 		defaultBlockStyle,
-		isHighlight,
 		blockStyleBackground,
 		onChange,
 		isFirstOnHierarchy,
-		disableHighlight = false,
+		isHighlightText,
+		isHighlightBackground,
+		isHighlightBorder,
+		isHighlightColor1,
+		isHighlightColor2,
+		disableHighlightText = false,
+		disableHighlightBackground = false,
+		disableHighlightBorder = false,
+		disableHighlightColor1 = false,
+		disableHighlightColor2 = false,
 	} = props;
 
 	const getSelectorOptions = () => {
@@ -64,16 +72,76 @@ const BlockStylesControl = props => {
 			)}
 			{blockStyle !== 'maxi-custom' && (
 				<Fragment>
-					{!disableHighlight && (
+					{!disableHighlightText && (
 						<__experimentalFancyRadioControl
-							label={__('Highlight', 'maxi-blocks')}
-							selected={isHighlight}
+							label={__('Highlight Text', 'maxi-blocks')}
+							selected={isHighlightText}
 							options={[
 								{ label: __('Yes', 'maxi-blocks'), value: 1 },
 								{ label: __('No', 'maxi-blocks'), value: 0 },
 							]}
-							onChange={isHighlight =>
-								onChange({ isHighlight: +isHighlight })
+							onChange={isHighlightText =>
+								onChange({ isHighlightText: +isHighlightText })
+							}
+						/>
+					)}
+					{!disableHighlightBackground && (
+						<__experimentalFancyRadioControl
+							label={__('Highlight Background', 'maxi-blocks')}
+							selected={isHighlightBackground}
+							options={[
+								{ label: __('Yes', 'maxi-blocks'), value: 1 },
+								{ label: __('No', 'maxi-blocks'), value: 0 },
+							]}
+							onChange={isHighlightBackground =>
+								onChange({
+									isHighlightBackground: +isHighlightBackground,
+								})
+							}
+						/>
+					)}
+					{!disableHighlightBorder && (
+						<__experimentalFancyRadioControl
+							label={__('Highlight Border', 'maxi-blocks')}
+							selected={isHighlightBorder}
+							options={[
+								{ label: __('Yes', 'maxi-blocks'), value: 1 },
+								{ label: __('No', 'maxi-blocks'), value: 0 },
+							]}
+							onChange={isHighlightBorder =>
+								onChange({
+									isHighlightBorder: +isHighlightBorder,
+								})
+							}
+						/>
+					)}
+					{!disableHighlightColor1 && (
+						<__experimentalFancyRadioControl
+							label={__('Highlight SVG Color 1', 'maxi-blocks')}
+							selected={isHighlightColor1}
+							options={[
+								{ label: __('Yes', 'maxi-blocks'), value: 1 },
+								{ label: __('No', 'maxi-blocks'), value: 0 },
+							]}
+							onChange={isHighlightColor1 =>
+								onChange({
+									isHighlightColor1: +isHighlightColor1,
+								})
+							}
+						/>
+					)}
+					{!disableHighlightColor2 && (
+						<__experimentalFancyRadioControl
+							label={__('Highlight SVG Color 2', 'maxi-blocks')}
+							selected={isHighlightColor2}
+							options={[
+								{ label: __('Yes', 'maxi-blocks'), value: 1 },
+								{ label: __('No', 'maxi-blocks'), value: 0 },
+							]}
+							onChange={isHighlightColor2 =>
+								onChange({
+									isHighlightColor2: +isHighlightColor2,
+								})
 							}
 						/>
 					)}

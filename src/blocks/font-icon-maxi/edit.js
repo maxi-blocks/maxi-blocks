@@ -129,6 +129,9 @@ class edit extends MaxiBlock {
 			attributes: {
 				uniqueID,
 				defaultBlockStyle,
+				isHighlightText,
+				isHighlightBackground,
+				isHighlightBorder,
 				blockStyle,
 				blockStyleBackground,
 				extraClassName,
@@ -150,9 +153,12 @@ class edit extends MaxiBlock {
 			'maxi-font-icon-block',
 			getLastBreakpointValue(displayValue, 'display', deviceType) ===
 				'none' && 'maxi-block-display-none',
-			defaultBlockStyle,
+			blockStyle,
 			blockStyle !== 'maxi-custom' &&
 				`maxi-background--${blockStyleBackground}`,
+			!!isHighlightText && 'maxi-highlight--text',
+			!!isHighlightBackground && 'maxi-highlight--background',
+			!!isHighlightBorder && 'maxi-highlight--border',
 			extraClassName,
 			uniqueID,
 			className

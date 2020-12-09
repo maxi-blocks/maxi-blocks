@@ -190,7 +190,9 @@ class edit extends MaxiBlock {
 				uniqueID,
 				blockStyle,
 				defaultBlockStyle,
-				isHighlight,
+				isHighlightText,
+				isHighlightBackground,
+				isHighlightBorder,
 				blockStyleBackground,
 				extraClassName,
 				background,
@@ -228,7 +230,9 @@ class edit extends MaxiBlock {
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&
 				`maxi-background--${blockStyleBackground}`,
-			!!isHighlight && 'maxi-highlight--text',
+			!!isHighlightText && 'maxi-highlight--text',
+			!!isHighlightBackground && 'maxi-highlight--background',
+			!!isHighlightBorder && 'maxi-highlight--border',
 			extraClassName,
 			uniqueID,
 			className

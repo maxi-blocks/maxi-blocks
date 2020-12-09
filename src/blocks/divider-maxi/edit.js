@@ -135,7 +135,7 @@ class edit extends MaxiBlock {
 				blockStyle,
 				defaultBlockStyle,
 				blockStyleBackground,
-				isHighlight,
+				isHighlightBorder,
 				lineOrientation,
 				extraClassName,
 				fullWidth,
@@ -165,7 +165,7 @@ class edit extends MaxiBlock {
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&
 				`maxi-background--${blockStyleBackground}`,
-			!!isHighlight && 'maxi-highlight--divider',
+			!!isHighlightBorder && 'maxi-highlight--border',
 			extraClassName,
 			uniqueID,
 			className,

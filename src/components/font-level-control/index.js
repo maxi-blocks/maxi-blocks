@@ -77,7 +77,7 @@ const FontLevelControl = props => {
 				? JSON.parse(marginOptions)
 				: marginOptions,
 
-			[state.lastLevel]: value,
+			lastLevel: value,
 		});
 	};
 
@@ -91,7 +91,9 @@ const FontLevelControl = props => {
 			fontOptResponse = state[value];
 			fontOptResponseHover = state[`${value}Hover`];
 			marginOptResponse = state[`${value}Margin`];
+			console.log('1');
 		} else if (!isNil(fontOptions)) {
+			console.log('2');
 			const oldFontOptions = !isObject(fontOptions)
 				? JSON.parse(fontOptions)
 				: fontOptions;

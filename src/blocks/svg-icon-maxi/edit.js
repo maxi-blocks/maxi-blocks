@@ -41,6 +41,8 @@ import { toolbarReplaceImage } from '../../icons';
  */
 class edit extends MaxiBlock {
 	state = {
+		styles: {},
+		breakpoints: this.getBreakpoints,
 		isOpen: false,
 	};
 

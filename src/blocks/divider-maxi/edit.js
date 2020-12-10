@@ -35,6 +35,8 @@ import { isNil, isObject } from 'lodash';
 class edit extends MaxiBlock {
 	state = {
 		isResizing: false,
+		styles: {},
+		breakpoints: this.getBreakpoints,
 	};
 
 	get getObject() {
@@ -237,7 +239,7 @@ class edit extends MaxiBlock {
 				onResizeStart={handleOnResizeStart}
 				onResizeStop={handleOnResizeStop}
 				showHandle={isSelected}
-				__experimentalShowTooltip={true}
+				__experimentalShowTooltip
 				__experimentalTooltipProps={{
 					axis: 'y',
 					position: 'bottom',

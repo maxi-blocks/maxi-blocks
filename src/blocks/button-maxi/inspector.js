@@ -30,6 +30,7 @@ import {
 	__experimentalEntranceAnimationControl,
 	__experimentalFancyRadioControl,
 	__experimentalFontIconControl,
+	__experimentalCustomLabel,
 } from '../../components';
 import { getDefaultProp } from '../../utils';
 import * as defaultPresets from './defaults';
@@ -57,10 +58,12 @@ import {
 const Inspector = props => {
 	const {
 		attributes: {
+			customLabel,
 			uniqueID,
 			isFirstOnHierarchy,
 			blockStyle,
 			defaultBlockStyle,
+			blockStyleBackground,
 			alignment,
 			alignmentText,
 			typography,
@@ -161,16 +164,22 @@ const Inspector = props => {
 						content: (
 							<Fragment>
 								<div className='maxi-tab-content__box'>
+									<__experimentalCustomLabel
+										customLabel={customLabel}
+										onChange={customLabel =>
+											setAttributes({ customLabel })
+										}
+									/>
+									<hr />
 									<BlockStylesControl
 										blockStyle={blockStyle}
-										onChangeBlockStyle={blockStyle =>
-											setAttributes({ blockStyle })
+										blockStyleBackground={
+											blockStyleBackground
 										}
 										defaultBlockStyle={defaultBlockStyle}
-										onChangeDefaultBlockStyle={defaultBlockStyle =>
-											setAttributes({ defaultBlockStyle })
-										}
 										isFirstOnHierarchy={isFirstOnHierarchy}
+										onChange={obj => setAttributes(obj)}
+										disableHighlight
 									/>
 								</div>
 								<AccordionControl

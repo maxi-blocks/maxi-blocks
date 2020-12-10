@@ -1,13 +1,22 @@
 /**
+ * WordPress dependencies
+ */
+const { __ } = wp.i18n;
+
+/**
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults';
-import { alignment, margin } from './data';
+import { alignment } from './data';
 
 /**
  * Attributes
  */
 const attributes = {
+	customLabel: {
+		type: 'string',
+		default: __('Text', 'maxi-blocks'),
+	},
 	alignment: {
 		type: 'string',
 		default: JSON.stringify(alignment),
@@ -78,7 +87,7 @@ const attributes = {
 	},
 	margin: {
 		type: 'string',
-		default: JSON.stringify(margin),
+		default: JSON.stringify(attributesData.margin),
 	},
 	padding: {
 		type: 'string',

@@ -60,9 +60,6 @@ const save = props => {
 					data-gx_initial_block_class={defaultBlockStyle}
 					data-motion-id={uniqueID}
 				>
-					<__experimentalBackgroundDisplayer
-						background={background}
-					/>
 					<__experimentalArrowDisplayer arrow={arrow} />
 					{!!shapeDividerValue.top.status && (
 						<__experimentalShapeDivider
@@ -70,6 +67,9 @@ const save = props => {
 						/>
 					)}
 					<div className='maxi-container-block__wrapper'>
+						<__experimentalBackgroundDisplayer
+							background={background}
+						/>
 						<div className='maxi-container-block__container'>
 							<InnerBlocks.Content />
 						</div>

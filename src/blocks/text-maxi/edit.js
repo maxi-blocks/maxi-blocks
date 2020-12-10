@@ -183,7 +183,6 @@ class edit extends MaxiBlock {
 		}
 
 		this.displayStyles();
-		this.saveProps();
 	}
 
 	render() {
@@ -192,6 +191,8 @@ class edit extends MaxiBlock {
 				uniqueID,
 				blockStyle,
 				defaultBlockStyle,
+				isHighlight,
+				blockStyleBackground,
 				extraClassName,
 				background,
 				textLevel,
@@ -205,7 +206,6 @@ class edit extends MaxiBlock {
 				display,
 				motion,
 			},
-			node,
 			className,
 			isSelected,
 			setAttributes,
@@ -230,6 +230,9 @@ class edit extends MaxiBlock {
 			getLastBreakpointValue(displayValue, 'display', deviceType) ===
 				'none' && 'maxi-block-display-none',
 			blockStyle,
+			blockStyle !== 'maxi-custom' &&
+				`maxi-background--${blockStyleBackground}`,
+			!!isHighlight && 'maxi-highlight--text',
 			extraClassName,
 			uniqueID,
 			className
@@ -257,13 +260,10 @@ class edit extends MaxiBlock {
 								setAttributes({ content });
 
 								const formatElement = {
-									element: node,
-									html: content,
 									multilineTag: isList ? 'li' : undefined,
 									multilineWrapperTags: isList
 										? typeOfList
 										: undefined,
-									__unstableIsEditableTree: false,
 								};
 								const formatValue = __experimentalGetFormatValue(
 									formatElement
@@ -408,18 +408,12 @@ class edit extends MaxiBlock {
 
 const editSelect = withSelect((select, ownProps) => {
 	const {
-		attributes: { content, isList, typeOfList },
-		clientId,
+		attributes: { isList, typeOfList },
 	} = ownProps;
 
-	const node = document.getElementById(`block-${clientId}`);
-
 	const formatElement = {
-		element: node,
-		html: content,
 		multilineTag: isList ? 'li' : undefined,
 		multilineWrapperTags: isList ? typeOfList : undefined,
-		__unstableIsEditableTree: false,
 	};
 	const formatValue = __experimentalGetFormatValue(formatElement);
 
@@ -427,7 +421,6 @@ const editSelect = withSelect((select, ownProps) => {
 	const customData = select('maxiBlocks').receiveMaxiCustomData();
 
 	return {
-		node,
 		formatValue,
 		deviceType,
 		customData,
@@ -554,14 +547,10 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 					attributes: { content, isList, typeOfList },
 					clientId,
 				} = block.blocks[0];
-				const node = document.getElementById(`block-${clientId}`);
 
 				const formatElement = {
-					element: node,
-					html: content,
 					multilineTag: isList ? 'li' : undefined,
 					multilineWrapperTags: isList ? typeOfList : undefined,
-					__unstableIsEditableTree: false,
 				};
 				const formatValue = __experimentalGetFormatValue(formatElement);
 

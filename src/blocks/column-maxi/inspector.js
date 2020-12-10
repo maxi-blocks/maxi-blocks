@@ -23,6 +23,7 @@ import {
 	__experimentalDisplayControl,
 	__experimentalTransformControl,
 	__experimentalFancyRadioControl,
+	__experimentalCustomLabel,
 } from '../../components';
 import { getDefaultProp, getLastBreakpointValue } from '../../utils';
 
@@ -37,10 +38,12 @@ import { isObject } from 'lodash';
 const Inspector = props => {
 	const {
 		attributes: {
+			customLabel,
 			uniqueID,
 			isFirstOnHierarchy,
 			blockStyle,
 			defaultBlockStyle,
+			blockStyleBackground,
 			columnSize,
 			verticalAlign,
 			opacity,
@@ -89,16 +92,22 @@ const Inspector = props => {
 						content: (
 							<Fragment>
 								<div className='maxi-tab-content__box'>
+									<__experimentalCustomLabel
+										customLabel={customLabel}
+										onChange={customLabel =>
+											setAttributes({ customLabel })
+										}
+									/>
+									<hr />
 									<BlockStylesControl
 										blockStyle={blockStyle}
-										onChangeBlockStyle={blockStyle =>
-											setAttributes({ blockStyle })
+										blockStyleBackground={
+											blockStyleBackground
 										}
 										defaultBlockStyle={defaultBlockStyle}
-										onChangeDefaultBlockStyle={defaultBlockStyle =>
-											setAttributes({ defaultBlockStyle })
-										}
 										isFirstOnHierarchy={isFirstOnHierarchy}
+										onChange={obj => setAttributes(obj)}
+										disableHighlight
 									/>
 								</div>
 								<AccordionControl

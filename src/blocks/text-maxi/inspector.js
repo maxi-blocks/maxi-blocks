@@ -31,6 +31,7 @@ import {
 	__experimentalTransformControl,
 	__experimentalEntranceAnimationControl,
 	__experimentalFancyRadioControl,
+	__experimentalCustomLabel,
 } from '../../components';
 import { getDefaultProp } from '../../utils';
 
@@ -45,10 +46,13 @@ import { isObject } from 'lodash';
 const Inspector = props => {
 	const {
 		attributes: {
+			customLabel,
 			isFirstOnHierarchy,
 			uniqueID,
 			blockStyle,
 			defaultBlockStyle,
+			isHighlight,
+			blockStyleBackground,
 			alignment,
 			textLevel,
 			isList,
@@ -108,16 +112,22 @@ const Inspector = props => {
 						content: (
 							<Fragment>
 								<div className='maxi-tab-content__box'>
+									<__experimentalCustomLabel
+										customLabel={customLabel}
+										onChange={customLabel =>
+											setAttributes({ customLabel })
+										}
+									/>
+									<hr />
 									<BlockStylesControl
 										blockStyle={blockStyle}
-										onChangeBlockStyle={blockStyle =>
-											setAttributes({ blockStyle })
+										isHighlight={isHighlight}
+										blockStyleBackground={
+											blockStyleBackground
 										}
 										defaultBlockStyle={defaultBlockStyle}
-										onChangeDefaultBlockStyle={defaultBlockStyle =>
-											setAttributes({ defaultBlockStyle })
-										}
 										isFirstOnHierarchy={isFirstOnHierarchy}
+										onChange={obj => setAttributes(obj)}
 									/>
 								</div>
 								<AccordionControl
@@ -149,18 +159,8 @@ const Inspector = props => {
 												content: (
 													<FontLevelControl
 														value={textLevel}
-														onChange={(
-															textLevel,
-															typography,
-															typographyHover,
-															margin
-														) =>
-															setAttributes({
-																textLevel,
-																typography,
-																typographyHover,
-																margin,
-															})
+														onChange={obj =>
+															setAttributes(obj)
 														}
 														fontOptions={typography}
 														fontOptionsHover={

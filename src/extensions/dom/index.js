@@ -235,23 +235,25 @@ document.addEventListener('DOMContentLoaded', () => {
 	 */
 	window.addEventListener('mouseover', e => {
 		let pathItem = null;
-		const hasPath = Array.from(e.path).some((path, i) => {
-			if (path && path.classList)
-				try {
-					if (
-						path.classList.contains('maxi-column-block') ||
-						path.classList.contains('maxi-container-block')
-					) {
-						pathItem = i;
-						return true;
+		const hasPath =
+			!!e.path &&
+			Array.from(e.path).some((path, i) => {
+				if (path && path.classList)
+					try {
+						if (
+							path.classList.contains('maxi-column-block') ||
+							path.classList.contains('maxi-container-block')
+						) {
+							pathItem = i;
+							return true;
+						}
+					} catch (error) {
+						pathItem = null;
+						return false;
 					}
-				} catch (error) {
-					pathItem = null;
-					return false;
-				}
 
-			return false;
-		});
+				return false;
+			});
 
 		if (hasPath) {
 			e.path[pathItem].classList.add('maxi-block--hovered');
@@ -265,22 +267,24 @@ document.addEventListener('DOMContentLoaded', () => {
 	});
 	window.addEventListener('mouseout', e => {
 		let pathItem = null;
-		const hasPath = Array.from(e.path).some((path, i) => {
-			if (path && path.classList)
-				try {
-					if (
-						path.classList.contains('maxi-column-block') ||
-						path.classList.contains('maxi-container-block')
-					) {
-						pathItem = i;
-						return true;
+		const hasPath =
+			!!e.path &&
+			Array.from(e.path).some((path, i) => {
+				if (path && path.classList)
+					try {
+						if (
+							path.classList.contains('maxi-column-block') ||
+							path.classList.contains('maxi-container-block')
+						) {
+							pathItem = i;
+							return true;
+						}
+					} catch (error) {
+						pathItem = null;
+						return false;
 					}
-				} catch (error) {
-					pathItem = null;
-					return false;
-				}
-			return false;
-		});
+				return false;
+			});
 
 		if (hasPath) {
 			e.path[pathItem].classList.remove('maxi-block--hovered');

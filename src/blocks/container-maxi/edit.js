@@ -27,7 +27,6 @@ import {
 	setBackgroundStyles,
 	setArrowStyles,
 	getLastBreakpointValue,
-	setCustomData,
 } from '../../utils';
 
 /**
@@ -140,7 +139,7 @@ class edit extends MaxiBlock {
 		response = Object.assign(
 			response,
 			setBackgroundStyles(
-				uniqueID,
+				`${uniqueID} .maxi-container-block__wrapper`,
 				background,
 				backgroundHover,
 				overlay,
@@ -233,6 +232,25 @@ class edit extends MaxiBlock {
 		return {};
 	}
 
+	get getCustomData() {
+		const { uniqueID, motion, shapeDivider } = this.props.attributes;
+
+		const motionValue = JSON.parse(motion);
+		const motionStatus =
+			!!motionValue.interaction.interactionStatus ||
+			!!motionValue.parallax.status;
+		const shapeValue = JSON.parse(shapeDivider);
+		const shapeStatus =
+			!!shapeValue.top.status || !!shapeValue.bottom.status;
+
+		return {
+			[uniqueID]: {
+				...(motionStatus && { motion }),
+				...(shapeStatus && { shapeDivider }),
+			},
+		};
+	}
+
 	render() {
 		const {
 			attributes: {
@@ -240,6 +258,7 @@ class edit extends MaxiBlock {
 				isFirstOnHierarchy,
 				blockStyle,
 				defaultBlockStyle,
+				blockStyleBackground,
 				fullWidth,
 				extraClassName,
 				background,
@@ -252,10 +271,7 @@ class edit extends MaxiBlock {
 			clientId,
 			hasInnerBlock,
 			deviceType,
-			customData,
 		} = this.props;
-
-		setCustomData(customData, uniqueID, { motion, shapeDivider });
 
 		const displayValue = !isObject(display) ? JSON.parse(display) : display;
 
@@ -269,6 +285,8 @@ class edit extends MaxiBlock {
 				'none' && 'maxi-block-display-none',
 			uniqueID,
 			blockStyle,
+			blockStyle !== 'maxi-custom' &&
+				`maxi-background--${blockStyleBackground}`,
 			extraClassName,
 			className
 		);
@@ -289,11 +307,6 @@ class edit extends MaxiBlock {
 							data-align={fullWidth}
 							data-maxi_initial_block_class={defaultBlockStyle}
 						>
-							<__experimentalBackgroundDisplayer
-								background={background}
-								blockClassName={uniqueID}
-							/>
-
 							<__experimentalArrowDisplayer arrow={arrow} />
 
 							{!!shapeDividerValue.top.status && (
@@ -303,6 +316,10 @@ class edit extends MaxiBlock {
 							)}
 
 							<div className='maxi-container-block__wrapper'>
+								<__experimentalBackgroundDisplayer
+									background={background}
+									blockClassName={uniqueID}
+								/>
 								<InnerBlocks
 									templateLock={false}
 									__experimentalTagName='div'
@@ -371,11 +388,9 @@ export default withSelect((select, ownProps) => {
 		select('core/block-editor').getBlockOrder(clientId)
 	);
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
-	const customData = select('maxiBlocks').receiveMaxiCustomData();
 
 	return {
 		hasInnerBlock,
 		deviceType,
-		customData,
 	};
 })(edit);

@@ -8,16 +8,6 @@ const { registerStore, select, dispatch } = wp.data;
  * Register Store
  */
 const controls = {
-	async RECEIVE_CUSTOM_DATA() {
-		const id = select('core/editor').getCurrentPostId();
-
-		return apiFetch({ path: `/maxi-blocks/v1.0/custom-data/${id}` });
-	},
-	async RECEIVE_POST_STYLES() {
-		const id = select('core/editor').getCurrentPostId();
-
-		return apiFetch({ path: `/maxi-blocks/v1.0/post/${id}` });
-	},
 	async RECEIVE_BREAKPOINTS() {
 		return apiFetch({ path: '/maxi-blocks/v1.0/breakpoints/' });
 	},
@@ -40,49 +30,17 @@ const controls = {
 			},
 		});
 	},
-	async SAVE_POST_STYLES(action) {
-		const id = select('core/editor').getCurrentPostId();
-
-		await apiFetch({
-			path: '/maxi-blocks/v1.0/post',
-			method: 'POST',
-			data: {
-				id,
-				meta: JSON.stringify(action.meta),
-				update: action.update,
-			},
-		});
-	},
-	async SAVE_CUSTOM_DATA(action) {
-		const id = select('core/editor').getCurrentPostId();
-
-		await apiFetch({
-			path: '/maxi-blocks/v1.0/custom-data',
-			method: 'POST',
-			data: {
-				id,
-				data: JSON.stringify(action.data),
-				update: action.update,
-			},
-		});
-	},
 };
 
 const reducer = (
 	state = {
 		breakpoints: {},
-		meta: {},
 		deviceType: 'general',
 		presets: '',
 	},
 	action
 ) => {
 	switch (action.type) {
-		case 'SEND_POST_STYLES':
-			return {
-				...state,
-				meta: action.meta,
-			};
 		case 'SEND_MOTION_PRESETS':
 			return {
 				...state,
@@ -98,23 +56,6 @@ const reducer = (
 			return {
 				...state,
 				presets: action.presets,
-			};
-		case 'SAVE_POST_STYLES':
-			controls.SAVE_POST_STYLES(action);
-			return {
-				...state,
-				meta: action.meta,
-			};
-		case 'SAVE_CUSTOM_DATA':
-			controls.SAVE_CUSTOM_DATA(action);
-			return {
-				...state,
-				data: action.data,
-			};
-		case 'SEND_CUSTOM_DATA':
-			return {
-				...state,
-				data: action.data,
 			};
 		case 'SEND_DEVICE_TYPE':
 			return {
@@ -132,28 +73,6 @@ const reducer = (
 };
 
 const actions = {
-	receiveMaxiCustomData() {
-		return {
-			type: 'RECEIVE_CUSTOM_DATA',
-		};
-	},
-	sendMaxiCustomData(data) {
-		return {
-			type: 'SEND_CUSTOM_DATA',
-			data,
-		};
-	},
-	receiveMaxiStyles() {
-		return {
-			type: 'RECEIVE_POST_STYLES',
-		};
-	},
-	sendMaxiStyles(meta) {
-		return {
-			type: 'SEND_POST_STYLES',
-			meta,
-		};
-	},
 	receiveMaxiBreakpoints() {
 		return {
 			type: 'RECEIVE_BREAKPOINTS',
@@ -180,20 +99,6 @@ const actions = {
 		return {
 			type: 'SEND_BREAKPOINTS',
 			breakpoints,
-		};
-	},
-	saveMaxiStyles(meta, update = false) {
-		return {
-			type: 'SAVE_POST_STYLES',
-			meta,
-			update,
-		};
-	},
-	saveMaxiCustomData(data, update = false) {
-		return {
-			type: 'SAVE_CUSTOM_DATA',
-			data,
-			update,
 		};
 	},
 	receiveMaxiDeviceType() {
@@ -228,14 +133,6 @@ const actions = {
 };
 
 const selectors = {
-	receiveMaxiCustomData(state) {
-		if (state) return state.data;
-		return false;
-	},
-	receiveMaxiStyles(state) {
-		if (state) return state.meta;
-		return false;
-	},
 	receiveMaxiBreakpoints(state) {
 		if (state) return state.breakpoints;
 		return false;
@@ -251,14 +148,6 @@ const selectors = {
 };
 
 const resolvers = {
-	*receiveMaxiCustomData() {
-		const customData = yield actions.receiveMaxiCustomData();
-		return actions.sendMaxiCustomData(customData);
-	},
-	*receiveMaxiStyles() {
-		const maxiStyles = yield actions.receiveMaxiStyles();
-		return actions.sendMaxiStyles(maxiStyles);
-	},
 	*receiveMaxiBreakpoints() {
 		const maxiBreakpoints = yield actions.receiveMaxiBreakpoints();
 		return actions.sendMaxiBreakpoints(maxiBreakpoints);

@@ -38,6 +38,7 @@ import {
 	__experimentalHoverEffectControl,
 	__experimentalImageAltControl,
 	__experimentalFancyRadioControl,
+	__experimentalCustomLabel,
 } from '../../components';
 
 /**
@@ -51,10 +52,12 @@ import { capitalize, isEmpty, isNil, isObject } from 'lodash';
 const Inspector = props => {
 	const {
 		attributes: {
+			customLabel,
 			uniqueID,
 			isFirstOnHierarchy,
 			blockStyle,
 			defaultBlockStyle,
+			blockStyleBackground,
 			imageSize,
 			cropOptions,
 			fullWidth,
@@ -83,7 +86,6 @@ const Inspector = props => {
 			transform,
 			clipPath,
 			hover,
-			content,
 		},
 		imageData,
 		clientId,
@@ -151,16 +153,22 @@ const Inspector = props => {
 						content: (
 							<Fragment>
 								<div className='maxi-tab-content__box'>
+									<__experimentalCustomLabel
+										customLabel={customLabel}
+										onChange={customLabel =>
+											setAttributes({ customLabel })
+										}
+									/>
+									<hr />
 									<BlockStylesControl
 										blockStyle={blockStyle}
-										onChangeBlockStyle={blockStyle =>
-											setAttributes({ blockStyle })
+										blockStyleBackground={
+											blockStyleBackground
 										}
 										defaultBlockStyle={defaultBlockStyle}
-										onChangeDefaultBlockStyle={defaultBlockStyle =>
-											setAttributes({ defaultBlockStyle })
-										}
 										isFirstOnHierarchy={isFirstOnHierarchy}
+										onChange={obj => setAttributes(obj)}
+										disableHighlight
 									/>
 									<__experimentalImageAltControl
 										mediaAlt={mediaAlt}

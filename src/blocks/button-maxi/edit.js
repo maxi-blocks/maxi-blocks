@@ -188,6 +188,7 @@ class edit extends MaxiBlock {
 				uniqueID,
 				blockStyle,
 				defaultBlockStyle,
+				blockStyleBackground,
 				extraClassName,
 				content,
 				display,
@@ -212,6 +213,8 @@ class edit extends MaxiBlock {
 			getLastBreakpointValue(displayValue, 'display', deviceType) ===
 				'none' && 'maxi-block-display-none',
 			blockStyle,
+			blockStyle !== 'maxi-custom' &&
+				`maxi-background--${blockStyleBackground}`,
 			extraClassName,
 			uniqueID,
 			className
@@ -251,15 +254,10 @@ class edit extends MaxiBlock {
 
 export default withSelect((select, ownProps) => {
 	const {
-		attributes: { content, isList, typeOfList },
-		clientId,
+		attributes: { isList, typeOfList },
 	} = ownProps;
 
-	const node = document.getElementById(`block-${clientId}`);
-
 	const formatElement = {
-		element: node,
-		html: content,
 		multilineTag: isList ? 'li' : undefined,
 		multilineWrapperTags: isList ? typeOfList : undefined,
 		__unstableIsEditableTree: true,

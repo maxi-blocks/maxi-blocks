@@ -110,7 +110,7 @@ body.maxi-blocks--active {
 
 				&--border {
 					&.maxi-text-block {
-						border-color: var(--maxi-#{$style}-highlight-border) !important;
+						border: 2px solid var(--maxi-#{$style}-highlight-border) !important;
 
 						&:hover {
 							border-color: var(--maxi-#{$style}-hover) !important;
@@ -118,7 +118,7 @@ body.maxi-blocks--active {
 					}
 
 					.maxi-button-extra__button {
-						border-color: var(--maxi-light-highlight-border) !important;
+						border: 2px solid var(--maxi-light-highlight-border) !important;
 
 						&:hover {
 							border-color: var(--maxi-#{$style}-hover) !important;
@@ -134,7 +134,7 @@ body.maxi-blocks--active {
 					}
 
 					&.maxi-font-icon-block {
-						border-color: var(--maxi-light-highlight-border) !important;
+						border: 2px solid var(--maxi-light-highlight-border) !important;
 
 						&:hover {
 							border-color: var(--maxi-light-hover) !important;
@@ -142,7 +142,7 @@ body.maxi-blocks--active {
 					}
 
 					&.maxi-svg-icon-block {
-						border-color: var(--maxi-light-highlight-border) !important;
+						border: 2px solid var(--maxi-light-highlight-border) !important;
 
 						&:hover {
 							border-color: var(--maxi-light-hover) !important;

@@ -9,7 +9,7 @@ const { RangeControl } = wp.components;
  */
 import { getLastBreakpointValue } from '../../utils';
 import classnames from 'classnames';
-import { isObject, isNil, isNumber, round, isEmpty } from 'lodash';
+import { isNil, isNumber, round, isEmpty } from 'lodash';
 
 /**
  * Styles
@@ -23,18 +23,13 @@ const OpacityControl = props => {
 	const {
 		label,
 		fullWidthMode = false,
-		opacity,
-		defaultOpacity,
 		className,
 		onChange,
 		breakpoint = 'general',
 	} = props;
 
-	const value = !isObject(opacity) ? JSON.parse(opacity) : opacity;
-
-	const defaultValue = !isObject(defaultOpacity)
-		? JSON.parse(defaultOpacity)
-		: defaultOpacity;
+	const opacity = { ...props.opacity };
+	const defaultOpacity = { ...props.defaultOpacity };
 
 	const classes = classnames(
 		'maxi-opacity-control',
@@ -43,7 +38,7 @@ const OpacityControl = props => {
 	);
 
 	const getValue = () => {
-		const response = getLastBreakpointValue(value, 'opacity', breakpoint);
+		const response = getLastBreakpointValue(opacity, 'opacity', breakpoint);
 
 		if (!isNumber(response)) return response;
 
@@ -57,15 +52,15 @@ const OpacityControl = props => {
 			value={getValue()}
 			onChange={val => {
 				isNil(val)
-					? (value[breakpoint].opacity =
-							defaultValue[breakpoint].opacity)
-					: (value[breakpoint].opacity = Number(val / 100));
-				onChange(JSON.stringify(value));
+					? (opacity[breakpoint].opacity =
+							defaultOpacity[breakpoint].opacity)
+					: (opacity[breakpoint].opacity = Number(val / 100));
+				onChange(opacity);
 			}}
 			min={0}
 			max={100}
 			allowReset
-			initialPosition={defaultValue[breakpoint].opacity}
+			initialPosition={defaultOpacity[breakpoint].opacity}
 		/>
 	);
 };

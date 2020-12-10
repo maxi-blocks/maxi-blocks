@@ -71,9 +71,31 @@ const addAttributes = settings => {
 				default: '',
 			},
 			zIndex: {
-				type: 'string',
-				default:
-					'{"label":"ZIndex","general":{"z-index":""},"xxl":{"z-index":""},"xl":{"z-index":""},"l":{"z-index":""},"m":{"z-index":""},"s":{"z-index":""},"xs":{"z-index":""}}',
+				type: 'object',
+				default: {
+					label: 'ZIndex',
+					general: {
+						'z-index': '',
+					},
+					xxl: {
+						'z-index': '',
+					},
+					xl: {
+						'z-index': '',
+					},
+					l: {
+						'z-index': '',
+					},
+					m: {
+						'z-index': '',
+					},
+					s: {
+						'z-index': '',
+					},
+					xs: {
+						'z-index': '',
+					},
+				},
 			},
 			breakpoints: {
 				type: 'string',

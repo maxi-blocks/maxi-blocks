@@ -23,7 +23,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject, isNumber } from 'lodash';
+import { isNumber } from 'lodash';
 
 /**
  * Icons
@@ -35,28 +35,23 @@ import { styleNone, dashed, dotted, solid } from '../../icons';
  */
 const BorderControl = props => {
 	const {
-		border,
-		defaultBorder,
 		className,
 		onChange,
 		breakpoint = 'general',
 		disableAdvanced = false,
 	} = props;
 
-	const value = !isObject(border) ? JSON.parse(border) : border;
-
-	const defaultValue = !isObject(defaultBorder)
-		? JSON.parse(defaultBorder)
-		: defaultBorder;
+	const border = { ...props.border };
+	const defaultBorder = { ...props.defaultBorder };
 
 	const classes = classnames('maxi-border-control', className);
 
 	const onChangeDefault = defaultProp => {
-		value[breakpoint] = defaultProp.border;
-		value.borderWidth.unit = defaultProp.borderWidth.unit;
-		value.borderWidth[breakpoint] = defaultProp.borderWidth.width;
+		border[breakpoint] = defaultProp.border;
+		border.borderWidth.unit = defaultProp.borderWidth.unit;
+		border.borderWidth[breakpoint] = defaultProp.borderWidth.width;
 
-		onChange(JSON.stringify(value));
+		onChange(border);
 	};
 
 	const getIsActive = () => {
@@ -69,12 +64,12 @@ const BorderControl = props => {
 
 		const hasBorderWidth = items.some(item => {
 			return isNumber(
-				getLastBreakpointValue(value.borderWidth, item, breakpoint)
+				getLastBreakpointValue(border.borderWidth, item, breakpoint)
 			);
 		});
 
 		if (hasBorderWidth)
-			return getLastBreakpointValue(value, 'border-style', breakpoint);
+			return getLastBreakpointValue(border, 'border-style', breakpoint);
 		return 'none';
 	};
 
@@ -127,15 +122,15 @@ const BorderControl = props => {
 			<ColorControl
 				label={__('Border', 'maxi-blocks')}
 				color={getLastBreakpointValue(
-					value,
+					border,
 					'border-color',
 					breakpoint
 				)}
-				defaultColor={defaultValue[breakpoint]['border-color']}
+				defaultColor={defaultBorder[breakpoint]['border-color']}
 				onChange={val => {
-					value[breakpoint]['border-color'] = val;
+					border[breakpoint]['border-color'] = val;
 
-					onChange(JSON.stringify(value));
+					onChange(border);
 				}}
 				disableImage
 				disableVideo
@@ -148,7 +143,7 @@ const BorderControl = props => {
 						label={__('Border Type', 'maxi-blocks')}
 						className='maxi-border-control__type'
 						value={getLastBreakpointValue(
-							value,
+							border,
 							'border-style',
 							breakpoint
 						)}
@@ -164,16 +159,16 @@ const BorderControl = props => {
 							{ label: 'Outset', value: 'outset' },
 						]}
 						onChange={val => {
-							value[breakpoint]['border-style'] = val;
-							onChange(JSON.stringify(value));
+							border[breakpoint]['border-style'] = val;
+							onChange(border);
 						}}
 					/>
 					<__experimentalAxisControl
-						values={value.borderWidth}
-						defaultValues={defaultValue.borderWidth}
-						onChange={val => {
-							value.borderWidth = JSON.parse(val);
-							onChange(JSON.stringify(value));
+						values={border.borderWidth}
+						defaultBorders={defaultBorder.borderWidth}
+						onChange={borderWidth => {
+							border.borderWidth = borderWidth;
+							onChange(border);
 						}}
 						breakpoint={breakpoint}
 						allowedUnits={['px', 'em', 'vw']}
@@ -194,11 +189,11 @@ const BorderControl = props => {
 						disableAuto
 					/>
 					<__experimentalAxisControl
-						values={value.borderRadius}
-						defaultValues={defaultValue.borderRadius}
-						onChange={val => {
-							value.borderRadius = JSON.parse(val);
-							onChange(JSON.stringify(value));
+						values={border.borderRadius}
+						defaultBorders={defaultBorder.borderRadius}
+						onChange={borderRadius => {
+							border.borderRadius = borderRadius;
+							onChange(border);
 						}}
 						breakpoint={breakpoint}
 						minMaxSettings={{

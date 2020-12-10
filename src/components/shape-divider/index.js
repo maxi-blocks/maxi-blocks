@@ -2,7 +2,7 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isObject } from 'lodash';
+import { isEmpty } from 'lodash';
 
 /**
  * Styles and icons
@@ -56,16 +56,14 @@ import {
  * Component
  */
 const ShapeDivider = props => {
-	const { position = 'top', shapeDividerOptions } = props;
+	const { position = 'top' } = props;
 
-	const value = !isObject(shapeDividerOptions)
-		? JSON.parse(shapeDividerOptions)
-		: shapeDividerOptions;
+	const shapeDividerOptions = { ...props.shapeDividerOptions };
 
 	const {
 		top: shapeDividerTopOptions,
 		bottom: shapeDividerBottomOptions,
-	} = value;
+	} = shapeDividerOptions;
 
 	const showShapes = position => {
 		switch (

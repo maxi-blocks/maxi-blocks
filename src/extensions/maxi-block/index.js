@@ -27,18 +27,12 @@ import styleResolver from '../styles/stylesResolver';
 /**
  * External dependencies
  */
-import { isEmpty, uniqueId, isEqual, isObject } from 'lodash';
+import { isEmpty, uniqueId, isObject } from 'lodash';
 
 /**
  * Class
  */
 class MaxiBlock extends Component {
-	state = {
-		styles: {},
-		breakpoints: this.getBreakpoints,
-		customData: {},
-	};
-
 	constructor(...args) {
 		super(...args);
 		const { attributes, clientId } = this.props;
@@ -46,7 +40,7 @@ class MaxiBlock extends Component {
 
 		this.uniqueIDChecker(uniqueID);
 		this.getDefaultBlockStyle(blockStyle, clientId);
-		this.fixProps();
+		// this.fixProps();
 	}
 
 	componentDidUpdate() {
@@ -158,20 +152,8 @@ class MaxiBlock extends Component {
 		const customData = this.getCustomData;
 		const breakpoints = this.getBreakpoints;
 
-		if (
-			!isEqual(obj, this.state.styles) ||
-			!isEqual(breakpoints, this.state.breakpoints) ||
-			!isEqual(customData, this.state.customData)
-		) {
-			this.setState({
-				styles: obj,
-				breakpoints,
-				customData,
-			});
-
-			styleResolver(obj, breakpoints);
-			dispatch('maxiBlocks/customData').updateCustomData(customData);
-		}
+		styleResolver(obj, breakpoints);
+		dispatch('maxiBlocks/customData').updateCustomData(customData);
 	}
 }
 

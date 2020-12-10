@@ -62,9 +62,6 @@ const ALLOWED_BLOCKS = ['maxi-blocks/column-maxi'];
 
 class edit extends MaxiBlock {
 	state = {
-		styles: {},
-		updating: false,
-		breakpoints: this.getBreakpoints,
 		displayHandlers: false,
 	};
 
@@ -126,18 +123,18 @@ class edit extends MaxiBlock {
 
 		const response = {
 			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
-			border: { ...JSON.parse(border) },
-			borderWidth: { ...JSON.parse(border).borderWidth },
-			borderRadius: { ...JSON.parse(border).borderRadius },
-			size: { ...JSON.parse(size) },
-			margin: { ...JSON.parse(margin) },
-			padding: { ...JSON.parse(padding) },
+			border,
+			borderWidth: border.borderWidth,
+			borderRadius: border.borderRadius,
+			size,
+			margin,
+			padding,
 			opacity: { ...getOpacityObject(JSON.parse(opacity)) },
-			zIndex: { ...JSON.parse(zIndex) },
-			position: { ...JSON.parse(position) },
-			positionOptions: { ...JSON.parse(position).options },
-			display: { ...JSON.parse(display) },
-			transform: { ...getTransformObject(JSON.parse(transform)) },
+			zIndex,
+			position,
+			positionOptions: position.options,
+			display,
+			transform: getTransformObject(transform),
 			row: {
 				label: 'Row',
 				general: {},
@@ -156,8 +153,8 @@ class edit extends MaxiBlock {
 		const { boxShadowHover, borderHover } = this.props.attributes;
 
 		const response = {
-			borderWidthHover: { ...JSON.parse(borderHover).borderWidth },
-			borderRadiusHover: { ...JSON.parse(borderHover).borderRadius },
+			borderWidthHover: borderHover.borderWidth,
+			borderRadiusHover: borderHover.borderRadius,
 		};
 
 		if (!isNil(boxShadowHover) && !!JSON.parse(boxShadowHover).status) {

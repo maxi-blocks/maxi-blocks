@@ -85,18 +85,18 @@ class edit extends MaxiBlock {
 		} = this.props.attributes;
 
 		const response = {
-			padding: { ...JSON.parse(padding) },
-			margin: { ...JSON.parse(margin) },
+			padding,
+			margin,
 			opacity: { ...JSON.parse(opacity) },
-			border: { ...JSON.parse(border) },
-			borderWidth: { ...JSON.parse(border).borderWidth },
-			borderRadius: { ...JSON.parse(border).borderRadius },
+			border,
+			borderWidth: border.borderWidth,
+			borderRadius: border.borderRadius,
 			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
-			zIndex: { ...JSON.parse(zIndex) },
-			position: { ...JSON.parse(position) },
-			positionOptions: { ...JSON.parse(position).options },
-			display: { ...JSON.parse(display) },
-			transform: { ...getTransformObject(JSON.parse(transform)) },
+			zIndex,
+			position,
+			positionOptions: position.options,
+			display,
+			transform,
 		};
 
 		return response;
@@ -106,8 +106,8 @@ class edit extends MaxiBlock {
 		const { boxShadowHover, borderHover } = this.props.attributes;
 
 		const response = {
-			borderWidth: { ...JSON.parse(borderHover).borderWidth },
-			borderRadius: { ...JSON.parse(borderHover).borderRadius },
+			borderWidth: borderHover.borderWidth,
+			borderRadius: borderHover.borderRadius,
 		};
 
 		if (!isNil(boxShadowHover) && !!JSON.parse(boxShadowHover).status) {

@@ -15,7 +15,7 @@ import __experimentalFancyRadioControl from '../fancy-radio-control';
 /**
  * External dependencies
  */
-import { isEmpty, uniqueId, forIn } from 'lodash';
+import { isEmpty, forIn } from 'lodash';
 
 /**
  * Component

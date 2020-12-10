@@ -24,12 +24,10 @@ const GroupInputControl = props => {
 		min = 0,
 		max = 998,
 		step = 0.1,
-		options,
 		onChange,
 	} = props;
 
-	const value = !isObject(options) ? JSON.parse(options) : options;
-
+	const options = { ...props.options };
 	const classes = classnames('maxi-group-input-control', className);
 
 	return (
@@ -40,10 +38,10 @@ const GroupInputControl = props => {
 					min={min}
 					max={max}
 					step={step}
-					value={trim(value[0])}
+					value={trim(options[0])}
 					onChange={e => {
-						value[0] = e.target.value;
-						onChange(JSON.stringify(value));
+						options[0] = e.target.value;
+						onChange(value);
 					}}
 				/>
 				<label>{__(`Starting ${label}`, 'maxi-blocks')}</label>
@@ -54,10 +52,10 @@ const GroupInputControl = props => {
 					min={min}
 					max={max}
 					step={step}
-					value={trim(value[1])}
+					value={trim(options[1])}
 					onChange={e => {
-						value[1] = e.target.value;
-						onChange(JSON.stringify(value));
+						options[1] = e.target.value;
+						onChange(value);
 					}}
 				/>
 				<label>{__(`Mid ${label}`, 'maxi-blocks')}</label>
@@ -68,10 +66,10 @@ const GroupInputControl = props => {
 					min={min}
 					max={max}
 					step={step}
-					value={trim(value[2])}
+					value={trim(options[2])}
 					onChange={e => {
-						value[2] = e.target.value;
-						onChange(JSON.stringify(value));
+						options[2] = e.target.value;
+						onChange(value);
 					}}
 				/>
 				<label>{__(`End ${label}`, 'maxi-blocks')}</label>

@@ -18,7 +18,6 @@ import {
 	setTextCustomFormats,
 	getLastBreakpointValue,
 	getIconObject,
-	setCustomData,
 } from '../../utils';
 import {
 	MaxiBlock,
@@ -31,7 +30,7 @@ import { __experimentalGetFormatValue } from '../../extensions/text/formats';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, isObject } from 'lodash';
+import { isNil } from 'lodash';
 
 /**
  * Content
@@ -74,15 +73,13 @@ class edit extends MaxiBlock {
 		} = this.props.attributes;
 
 		const response = {
-			icon: { ...getIconObject(JSON.parse(icon)) },
-			padding: { ...JSON.parse(iconPadding) },
-			border: { ...JSON.parse(iconBorder) },
-			borderWidth: { ...JSON.parse(iconBorder).borderWidth },
-			borderRadius: { ...JSON.parse(iconBorder).borderRadius },
+			icon: { ...getIconObject(icon) },
+			padding: iconPadding,
+			border: iconBorder,
+			borderWidth: iconBorder.borderWidth,
+			borderRadius: iconBorder.borderRadius,
 			background: {
-				...getColorBackgroundObject(
-					JSON.parse(iconBackground).colorOptions
-				),
+				...getColorBackgroundObject(iconBackground.colorOptions),
 			},
 		};
 
@@ -93,10 +90,10 @@ class edit extends MaxiBlock {
 		const { alignment, zIndex, transform, display } = this.props.attributes;
 
 		const response = {
-			alignment: { ...getAlignmentFlexObject(JSON.parse(alignment)) },
-			zIndex: { ...JSON.parse(zIndex) },
-			transform: { ...getTransformObject(JSON.parse(transform)) },
-			display: { ...JSON.parse(display) },
+			alignment: { ...getAlignmentFlexObject(alignment) },
+			zIndex,
+			transform: getTransformObject(transform),
+			display,
 		};
 
 		return response;
@@ -117,25 +114,23 @@ class edit extends MaxiBlock {
 		} = this.props.attributes;
 
 		const response = {
-			typography: { ...JSON.parse(typography) },
+			typography,
 			alignmentText: {
-				...getAlignmentTextObject(JSON.parse(alignmentText)),
+				...getAlignmentTextObject(alignmentText),
 			},
 			background: {
-				...getColorBackgroundObject(
-					JSON.parse(background).colorOptions
-				),
+				...getColorBackgroundObject(background.colorOptions),
 			},
-			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
-			border: { ...JSON.parse(border) },
-			borderWidth: { ...JSON.parse(border).borderWidth },
-			borderRadius: { ...JSON.parse(border).borderRadius },
-			size: { ...JSON.parse(size) },
-			padding: { ...JSON.parse(padding) },
-			margin: { ...JSON.parse(margin) },
-			zIndex: { ...JSON.parse(zIndex) },
-			position: { ...JSON.parse(position) },
-			positionOptions: { ...JSON.parse(position).options },
+			boxShadow: { ...getBoxShadowObject(boxShadow) },
+			border,
+			borderWidth: border.borderWidth,
+			borderRadius: border.borderRadius,
+			size,
+			padding,
+			margin,
+			zIndex,
+			position,
+			positionOptions: position.options,
 		};
 
 		return response;
@@ -150,35 +145,48 @@ class edit extends MaxiBlock {
 		} = this.props.attributes;
 
 		const response = {
-			borderWidth: { ...JSON.parse(borderHover).borderWidth },
-			borderRadius: { ...JSON.parse(borderHover).borderRadius },
+			borderWidth: borderHover.borderWidth,
+			borderRadius: borderHover.borderRadius,
 		};
 
-		if (!isNil(backgroundHover) && !!JSON.parse(backgroundHover).status) {
+		if (!isNil(backgroundHover) && !!backgroundHover.status) {
 			response.backgroundHover = {
-				...getColorBackgroundObject(JSON.parse(backgroundHover)),
+				...getColorBackgroundObject(backgroundHover),
 			};
 		}
 
-		if (!isNil(boxShadowHover) && !!JSON.parse(boxShadowHover).status) {
+		if (!isNil(boxShadowHover) && !!boxShadowHover.status) {
 			response.boxShadowHover = {
-				...getBoxShadowObject(JSON.parse(boxShadowHover)),
+				...getBoxShadowObject(boxShadowHover),
 			};
 		}
 
-		if (!isNil(typographyHover) && !!JSON.parse(typographyHover).status) {
+		if (!isNil(typographyHover) && !!typographyHover.status) {
 			response.typographyHover = {
-				...JSON.parse(typographyHover),
+				...typographyHover,
 			};
 		}
 
-		if (!isNil(borderHover) && !!JSON.parse(borderHover).status) {
+		if (!isNil(borderHover) && !!borderHover.status) {
 			response.borderHover = {
-				...JSON.parse(borderHover),
+				...borderHover,
 			};
 		}
 
 		return response;
+	}
+
+	get getCustomData() {
+		const { uniqueID, motion } = this.props.attributes;
+
+		const motionStatus =
+			!!motion.interaction.interactionStatus || !!motion.parallax.status;
+
+		return {
+			[uniqueID]: {
+				...(motionStatus && { motion }),
+			},
+		};
 	}
 
 	render() {
@@ -197,21 +205,14 @@ class edit extends MaxiBlock {
 			},
 			setAttributes,
 			deviceType,
-			customData,
 		} = this.props;
-
-		setCustomData(customData, uniqueID, { motion });
-
-		const displayValue = !isObject(display) ? JSON.parse(display) : display;
-
-		const iconValue = !isObject(icon) ? JSON.parse(icon) : icon;
 
 		const classes = classnames(
 			'maxi-block',
 			'maxi-block--backend',
 			'maxi-button-extra',
-			getLastBreakpointValue(displayValue, 'display', deviceType) ===
-				'none' && 'maxi-block-display-none',
+			getLastBreakpointValue(display, 'display', deviceType) === 'none' &&
+				'maxi-block-display-none',
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&
 				`maxi-background--${blockStyleBackground}`,
@@ -222,10 +223,8 @@ class edit extends MaxiBlock {
 
 		const buttonClasses = classnames(
 			'maxi-button-extra__button',
-			iconValue.position === 'left' &&
-				'maxi-button-extra__button--icon-left',
-			iconValue.position === 'right' &&
-				'maxi-button-extra__button--icon-right'
+			icon.position === 'left' && 'maxi-button-extra__button--icon-left',
+			icon.position === 'right' && 'maxi-button-extra__button--icon-right'
 		);
 
 		return [
@@ -237,7 +236,7 @@ class edit extends MaxiBlock {
 					data-maxi_initial_block_class={defaultBlockStyle}
 				>
 					<div className={buttonClasses}>
-						{iconValue.icon && <i className={iconValue.icon} />}
+						{icon.icon && <i className={icon.icon} />}
 						<RichText
 							withoutInteractiveFormatting
 							placeholder={__('Set some text…', 'maxi-blocks')}
@@ -265,11 +264,9 @@ export default withSelect((select, ownProps) => {
 	const formatValue = __experimentalGetFormatValue(formatElement);
 
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
-	const customData = select('maxiBlocks').receiveMaxiCustomData();
 
 	return {
 		formatValue,
 		deviceType,
-		customData,
 	};
 })(edit);

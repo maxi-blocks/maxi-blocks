@@ -13,31 +13,27 @@ import __experimentalNumberControl from '../number-control';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject } from 'lodash';
 
 /**
  * Component
  */
 const ZIndexControl = props => {
-	const { zIndex, defaultZIndex, onChange, className, breakpoint } = props;
+	const { onChange, className, breakpoint } = props;
 
 	const classes = classnames('maxi-zIndex-control', className);
 
-	const value = !isObject(zIndex) ? JSON.parse(zIndex) : zIndex;
-
-	const defaultValue = !isObject(defaultZIndex)
-		? JSON.parse(defaultZIndex)
-		: defaultZIndex;
+	const zIndex = { ...props.zIndex };
+	const defaultZIndex = { ...props.defaultZIndex };
 
 	return (
 		<__experimentalNumberControl
 			label={__('Z-index', 'maxi-blocks')}
 			className={classes}
-			value={getLastBreakpointValue(value, 'z-index', breakpoint)}
-			defaultValue={defaultValue[breakpoint]['z-index']}
+			value={getLastBreakpointValue(zIndex, 'z-index', breakpoint)}
+			defaultZIndex={defaultZIndex[breakpoint]['z-index']}
 			onChange={val => {
-				value[breakpoint]['z-index'] = val;
-				onChange(JSON.stringify(value));
+				zIndex[breakpoint]['z-index'] = val;
+				onChange(zIndex);
 			}}
 		/>
 	);

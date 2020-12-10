@@ -30,11 +30,11 @@ const ALLOWED_BLOCKS = ['maxi-blocks/button-maxi', 'maxi-blocks/image-maxi'];
  * Component
  */
 const Border = props => {
-	const { blockName, border, defaultBorder, onChange, breakpoint } = props;
+	const { blockName, defaultBorder, onChange, breakpoint } = props;
 
 	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
 
-	const value = !isObject(border) ? JSON.parse(border) : border;
+	const border = { ...props.border };
 
 	return (
 		<ToolbarPopover
@@ -46,25 +46,25 @@ const Border = props => {
 					className='toolbar-item__border__icon'
 					style={{
 						borderStyle: getLastBreakpointValue(
-							value,
+							border,
 							'border-style',
 							breakpoint
 						),
 						background:
 							getLastBreakpointValue(
-								value,
+								border,
 								'border-style',
 								breakpoint
 							) === 'none'
 								? 'transparent'
 								: getLastBreakpointValue(
-										value,
+										border,
 										'border-style',
 										breakpoint
 								  ),
 						borderWidth: '1px',
 						borderColor: getLastBreakpointValue(
-							value,
+							border,
 							'border-color',
 							breakpoint
 						),
@@ -80,7 +80,7 @@ const Border = props => {
 				<BorderControl
 					border={border}
 					defaultBorder={defaultBorder}
-					onChange={value => onChange(value)}
+					onChange={border => onChange(border)}
 					breakpoint={breakpoint}
 					disableAdvanced
 				/>

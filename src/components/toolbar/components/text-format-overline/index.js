@@ -15,7 +15,7 @@ import {
 /**
  * External dependencies
  */
-import { isObject, trim } from 'lodash';
+import { trim } from 'lodash';
 
 /**
  * Styles and icons
@@ -26,13 +26,12 @@ import { toolbarOverline } from '../../../../icons';
  * TextFormatOverline
  */
 const TextFormatOverline = props => {
-	const { typography, formatValue, onChange, isList, breakpoint } = props;
+	const { formatValue, onChange, isList, breakpoint } = props;
 
-	const typographyValue =
-		(!isObject(typography) && JSON.parse(typography)) || typography;
+	const typography = { ...props.typography };
 
 	const textDecorationValue = __experimentalGetCustomFormatValue({
-		typography: typographyValue,
+		typography,
 		formatValue,
 		prop: 'text-decoration',
 		breakpoint,
@@ -58,7 +57,7 @@ const TextFormatOverline = props => {
 			formatValue,
 			isActive,
 			isList,
-			typography: typographyValue,
+			typography,
 			value: {
 				'text-decoration': getTextDecorationValue(),
 			},
@@ -66,7 +65,7 @@ const TextFormatOverline = props => {
 		});
 
 		onChange({
-			typography: JSON.stringify(newTypography),
+			typography: newTypography,
 			...(newContent && { content: newContent }),
 		});
 	};

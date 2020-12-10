@@ -14,7 +14,6 @@ import { getLastBreakpointValue } from '../../utils';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject } from 'lodash';
 
 /**
  * Styles and icons
@@ -56,11 +55,8 @@ const AxisControl = props => {
 
 	const instanceId = useInstanceId(AxisControl);
 
-	const value = !isObject(values) ? JSON.parse(values) : values;
-
-	const defaultValue = !isObject(defaultValues)
-		? JSON.parse(defaultValues)
-		: defaultValues;
+	const value = values;
+	const defaultValue = defaultValues;
 
 	const classes = classnames('maxi-axis-control', className);
 
@@ -97,12 +93,12 @@ const AxisControl = props => {
 			value[breakpoint][key] = defaultValue[breakpoint][key];
 		}
 
-		onChange(JSON.stringify(value));
+		onChange(value);
 	};
 
 	const onChangeSync = () => {
 		value[breakpoint].sync = !value[breakpoint].sync;
-		onChange(JSON.stringify(value));
+		onChange(value);
 	};
 
 	const getDisplayValue = key => {
@@ -135,7 +131,7 @@ const AxisControl = props => {
 					: finalValue;
 		}
 
-		onChange(JSON.stringify(value));
+		onChange(value);
 	};
 
 	return (
@@ -150,7 +146,7 @@ const AxisControl = props => {
 					value={currentUnit}
 					onChange={val => {
 						value[breakpoint].unit = val;
-						onChange(JSON.stringify(value));
+						onChange(value);
 					}}
 				/>
 				<Button

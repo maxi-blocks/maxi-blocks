@@ -94,14 +94,15 @@ class edit extends MaxiBlock {
 		} = this.props.attributes;
 
 		const response = {
-			padding: { ...JSON.parse(padding) },
-			margin: { ...JSON.parse(margin) },
-			zIndex: { ...JSON.parse(zIndex) },
-			alignment: { ...getAlignmentFlexObject(JSON.parse(alignment)) },
-			position: { ...JSON.parse(position) },
-			positionOptions: { ...JSON.parse(position).options },
-			display: { ...JSON.parse(display) },
-			transform: { ...getTransformObject(JSON.parse(transform)) },
+			padding,
+			margin,
+			zIndex,
+			alignment: { ...getAlignmentFlexObject(alignment) },
+
+			position,
+			positionOptions: position.options,
+			display,
+			transform,
 		};
 
 		return response;
@@ -185,7 +186,7 @@ class edit extends MaxiBlock {
 
 		const response = {
 			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
-			imageSize: { ...JSON.parse(size) },
+			imagesize,
 			opacity: { ...JSON.parse(opacity) },
 		};
 
@@ -195,8 +196,8 @@ class edit extends MaxiBlock {
 	get getImageHoverObject() {
 		const { boxShadowHover, borderHover } = this.props.attributes;
 		const response = {
-			borderWidth: { ...JSON.parse(borderHover).borderWidth },
-			borderRadius: { ...JSON.parse(borderHover).borderRadius },
+			borderWidth: borderHover.borderWidth,
+			borderRadius: borderHover.borderRadius,
 		};
 
 		if (!isNil(boxShadowHover) && !!JSON.parse(boxShadowHover).status) {
@@ -220,9 +221,9 @@ class edit extends MaxiBlock {
 		const response = {
 			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
 			opacity: { ...JSON.parse(opacity) },
-			border: { ...JSON.parse(border) },
-			borderWidth: { ...JSON.parse(border).borderWidth },
-			borderRadius: { ...JSON.parse(border).borderRadius },
+			border,
+			borderWidth: border.borderWidth,
+			borderRadius: border.borderRadius,
 			image: {
 				label: 'Image settings',
 				general: {},

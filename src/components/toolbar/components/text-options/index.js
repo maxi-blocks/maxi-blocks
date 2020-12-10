@@ -24,7 +24,7 @@ import {
 /**
  * External dependencies
  */
-import { isObject, isEmpty, trim } from 'lodash';
+import { isEmpty, trim } from 'lodash';
 
 /**
  * Styles and icons
@@ -36,24 +36,12 @@ import { toolbarType, reset } from '../../../../icons';
  * TextOptions
  */
 const TextOptions = props => {
-	const {
-		blockName,
-		typography,
-		defaultTypography,
-		onChange,
-		breakpoint,
-		isList,
-		formatValue,
-	} = props;
+	const { blockName, onChange, breakpoint, isList, formatValue } = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
-	const typographyValue =
-		(!isObject(typography) && JSON.parse(typography)) || typography;
-
-	const defaultTypographyValue =
-		(!isObject(defaultTypography) && JSON.parse(defaultTypography)) ||
-		defaultTypography;
+	const typography = { ...props.typography };
+	const defaultTypography = { ...props.defaultTypography };
 
 	const onChangeFormat = value => {
 		const {
@@ -62,13 +50,13 @@ const TextOptions = props => {
 		} = __experimentalSetFormat({
 			formatValue,
 			isList,
-			typography: typographyValue,
+			typography,
 			value,
 			breakpoint,
 		});
 
 		onChange({
-			typography: JSON.stringify(newTypography),
+			typography: newTypography,
 			...(newContent && { content: newContent }),
 		});
 	};
@@ -86,7 +74,7 @@ const TextOptions = props => {
 							className='toolbar-item__popover__font-options__font__selector'
 							theme='dark'
 							font={__experimentalGetCustomFormatValue({
-								typography: typographyValue,
+								typography,
 								formatValue,
 								prop: 'font-family',
 								breakpoint,
@@ -103,9 +91,9 @@ const TextOptions = props => {
 							onClick={() => {
 								onChangeFormat({
 									'font-family':
-										defaultTypographyValue['font-family'],
+										defaultTypography['font-family'],
 									'font-options':
-										defaultTypographyValue['font-options'],
+										defaultTypography['font-options'],
 								});
 							}}
 							isSmall
@@ -128,7 +116,7 @@ const TextOptions = props => {
 								type='number'
 								value={trim(
 									__experimentalGetCustomFormatValue({
-										typography: typographyValue,
+										typography,
 										formatValue,
 										prop: 'font-size',
 										breakpoint,
@@ -141,7 +129,7 @@ const TextOptions = props => {
 
 									onChangeFormat({
 										'font-sizeUnit':
-											typographyValue[breakpoint][
+											typography[breakpoint][
 												'font-sizeUnit'
 											],
 										'font-size': newFontSize,
@@ -153,11 +141,11 @@ const TextOptions = props => {
 								onClick={() => {
 									onChangeFormat({
 										'font-sizeUnit':
-											defaultTypographyValue[breakpoint][
+											defaultTypography[breakpoint][
 												'font-sizeUnit'
 											],
 										'font-size':
-											defaultTypographyValue[breakpoint][
+											defaultTypography[breakpoint][
 												'font-size'
 											],
 									});
@@ -181,7 +169,7 @@ const TextOptions = props => {
 								type='number'
 								value={trim(
 									__experimentalGetCustomFormatValue({
-										typography: typographyValue,
+										typography,
 										formatValue,
 										prop: 'line-height',
 										breakpoint,
@@ -194,7 +182,7 @@ const TextOptions = props => {
 
 									onChangeFormat({
 										'line-heightUnit':
-											typographyValue[breakpoint][
+											typography[breakpoint][
 												'line-heightUnit'
 											],
 										'line-height': newFontSize,
@@ -206,11 +194,11 @@ const TextOptions = props => {
 								onClick={() => {
 									onChangeFormat({
 										'line-heightUnit':
-											defaultTypographyValue[breakpoint][
+											defaultTypography[breakpoint][
 												'line-heightUnit'
 											],
 										'line-height':
-											defaultTypographyValue[breakpoint][
+											defaultTypography[breakpoint][
 												'line-height'
 											],
 									});
@@ -234,7 +222,7 @@ const TextOptions = props => {
 								type='number'
 								value={trim(
 									__experimentalGetCustomFormatValue({
-										typography: typographyValue,
+										typography,
 										formatValue,
 										prop: 'letter-spacing',
 										breakpoint,
@@ -247,7 +235,7 @@ const TextOptions = props => {
 
 									onChangeFormat({
 										'letter-spacingUnit':
-											typographyValue[breakpoint][
+											typography[breakpoint][
 												'letter-spacingUnit'
 											],
 										'letter-spacing': newFontSize,
@@ -259,11 +247,11 @@ const TextOptions = props => {
 								onClick={() => {
 									onChangeFormat({
 										'letter-spacingUnit':
-											defaultTypographyValue[breakpoint][
+											defaultTypography[breakpoint][
 												'letter-spacingUnit'
 											],
 										'letter-spacing':
-											defaultTypographyValue[breakpoint][
+											defaultTypography[breakpoint][
 												'letter-spacing'
 											],
 									});
@@ -281,35 +269,35 @@ const TextOptions = props => {
 						</BaseControl>
 						<div>
 							<TextFormatOverline
-								typography={typographyValue}
+								typography={typography}
 								formatValue={formatValue}
 								onChange={obj => onChange(obj)}
 								isList={isList}
 								breakpoint={breakpoint}
 							/>
 							<TextFormatStrikethrough
-								typography={typographyValue}
+								typography={typography}
 								formatValue={formatValue}
 								onChange={obj => onChange(obj)}
 								isList={isList}
 								breakpoint={breakpoint}
 							/>
 							<TextFormatUnderline
-								typography={typographyValue}
+								typography={typography}
 								formatValue={formatValue}
 								onChange={obj => onChange(obj)}
 								isList={isList}
 								breakpoint={breakpoint}
 							/>
 							<TextFormatSubscript
-								typography={typographyValue}
+								typography={typography}
 								formatValue={formatValue}
 								onChange={obj => onChange(obj)}
 								isList={isList}
 								breakpoint={breakpoint}
 							/>
 							<TextFormatSuperscript
-								typography={typographyValue}
+								typography={typography}
 								formatValue={formatValue}
 								onChange={obj => onChange(obj)}
 								isList={isList}

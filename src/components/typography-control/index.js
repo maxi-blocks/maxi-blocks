@@ -23,7 +23,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject, trim } from 'lodash';
+import { trim } from 'lodash';
 
 /**
  * Styles
@@ -36,8 +36,6 @@ import './editor.scss';
 const TypographyControl = props => {
 	const {
 		className,
-		typography,
-		defaultTypography,
 		textLevel = 'p',
 		hideAlignment = false,
 		onChange,
@@ -47,13 +45,8 @@ const TypographyControl = props => {
 		isHover = false,
 	} = props;
 
-	const typographyValue = !isObject(typography)
-		? JSON.parse(typography)
-		: typography;
-
-	const defaultTypographyValue = !isObject(defaultTypography)
-		? JSON.parse(defaultTypography)
-		: defaultTypography;
+	const typography = { ...props.typography };
+	const defaultTypography = { ...props.defaultTypography };
 
 	const classes = classnames('maxi-typography-control', className);
 
@@ -79,9 +72,7 @@ const TypographyControl = props => {
 	};
 
 	const getWeightOptions = () => {
-		const fontOptions = Object.keys(
-			typographyValue[breakpoint]['font-options']
-		);
+		const fontOptions = Object.keys(typography[breakpoint]['font-options']);
 		if (fontOptions.length === 0) {
 			return [
 				{ label: __('Thin (Hairline)', 'maxi-blocks'), value: 100 },
@@ -142,7 +133,7 @@ const TypographyControl = props => {
 				return level === textLevel;
 			})
 		)
-			return defaultTypographyValue[breakpoint][prop];
+			return defaultTypography[breakpoint][prop];
 
 		return defaultTypographies[textLevel][breakpoint][prop];
 	};
@@ -154,13 +145,13 @@ const TypographyControl = props => {
 		} = __experimentalSetFormat({
 			formatValue,
 			isList,
-			typography: typographyValue,
+			typography,
 			value,
 			breakpoint,
 			isHover,
 		});
 		onChange({
-			typography: JSON.stringify(newTypography),
+			typography: newTypography,
 			...(newContent && { content: newContent }),
 		});
 	};
@@ -170,7 +161,7 @@ const TypographyControl = props => {
 			<FontFamilySelector
 				className='maxi-typography-control__font-family'
 				font={__experimentalGetCustomFormatValue({
-					typography: typographyValue,
+					typography,
 					formatValue,
 					prop: 'font-family',
 					breakpoint,
@@ -186,7 +177,7 @@ const TypographyControl = props => {
 				label={__('Font', 'maxi-blocks')}
 				className='maxi-typography-control__color'
 				color={__experimentalGetCustomFormatValue({
-					typography: typographyValue,
+					typography,
 					formatValue,
 					prop: 'color',
 					breakpoint,
@@ -201,11 +192,11 @@ const TypographyControl = props => {
 				<AlignmentControl
 					className='maxi-typography-control__text-alignment'
 					label={__('Alignment', 'maxi-blocks')}
-					alignment={typographyValue.textAlign}
-					onChange={val => {
-						typographyValue.textAlign = JSON.parse(val);
+					alignment={typography.textAlign}
+					onChange={textAlign => {
+						typography.textAlign = textAlign;
 						onChange({
-							typography: JSON.stringify(typographyValue),
+							typography,
 						});
 					}}
 				/>
@@ -214,7 +205,7 @@ const TypographyControl = props => {
 				className='maxi-typography-control__size'
 				label={__('Size', 'maxi-blocks')}
 				unit={__experimentalGetCustomFormatValue({
-					typography: typographyValue,
+					typography,
 					formatValue,
 					prop: 'font-sizeUnit',
 					breakpoint,
@@ -225,14 +216,14 @@ const TypographyControl = props => {
 				}}
 				value={trim(
 					__experimentalGetCustomFormatValue({
-						typography: typographyValue,
+						typography,
 						formatValue,
 						prop: 'font-size',
 						breakpoint,
 						isHover,
 					})
 				)}
-				defaultTypographyValue={getDefault('font-size')}
+				defaultTypography={getDefault('font-size')}
 				onChangeValue={val => {
 					onChangeFormat({ 'font-size': val });
 				}}
@@ -242,7 +233,7 @@ const TypographyControl = props => {
 				className='maxi-typography-control__line-height'
 				label={__('Line Height', 'maxi-blocks')}
 				unit={__experimentalGetCustomFormatValue({
-					typography: typographyValue,
+					typography,
 					formatValue,
 					prop: 'line-heightUnit',
 					breakpoint,
@@ -253,14 +244,14 @@ const TypographyControl = props => {
 				}}
 				value={trim(
 					__experimentalGetCustomFormatValue({
-						typography: typographyValue,
+						typography,
 						formatValue,
 						prop: 'line-height',
 						breakpoint,
 						isHover,
 					})
 				)}
-				defaultTypographyValue={getDefault('line-height')}
+				defaultTypography={getDefault('line-height')}
 				onChangeValue={val => {
 					onChangeFormat({ 'line-height': val });
 				}}
@@ -271,7 +262,7 @@ const TypographyControl = props => {
 				className='maxi-typography-control__letter-spacing'
 				label={__('Letter Spacing', 'maxi-blocks')}
 				unit={__experimentalGetCustomFormatValue({
-					typography: typographyValue,
+					typography,
 					formatValue,
 					prop: 'letter-spacingUnit',
 					breakpoint,
@@ -282,14 +273,14 @@ const TypographyControl = props => {
 				}}
 				value={trim(
 					__experimentalGetCustomFormatValue({
-						typography: typographyValue,
+						typography,
 						formatValue,
 						prop: 'letter-spacing',
 						breakpoint,
 						isHover,
 					})
 				)}
-				defaultTypographyValue={getDefault('letter-spacing')}
+				defaultTypography={getDefault('letter-spacing')}
 				onChangeValue={val => {
 					onChangeFormat({ 'letter-spacing': val });
 				}}
@@ -300,7 +291,7 @@ const TypographyControl = props => {
 				label={__('Weight', 'maxi-blocks')}
 				className='maxi-typography-control__weight'
 				value={__experimentalGetCustomFormatValue({
-					typography: typographyValue,
+					typography,
 					formatValue,
 					prop: 'font-weight',
 					breakpoint,
@@ -314,7 +305,7 @@ const TypographyControl = props => {
 				label={__('Transform', 'maxi-blocks')}
 				className='maxi-typography-control__transform'
 				value={__experimentalGetCustomFormatValue({
-					typography: typographyValue,
+					typography,
 					formatValue,
 					prop: 'text-transform',
 					breakpoint,
@@ -342,7 +333,7 @@ const TypographyControl = props => {
 				label={__('Style', 'maxi-blocks')}
 				className='maxi-typography-control__font-style'
 				value={__experimentalGetCustomFormatValue({
-					typography: typographyValue,
+					typography,
 					formatValue,
 					prop: 'font-style',
 					breakpoint,
@@ -360,7 +351,7 @@ const TypographyControl = props => {
 				label={__('Decoration', 'maxi-blocks')}
 				className='maxi-typography-control__decoration'
 				value={__experimentalGetCustomFormatValue({
-					typography: typographyValue,
+					typography,
 					formatValue,
 					prop: 'text-decoration',
 					breakpoint,
@@ -388,7 +379,7 @@ const TypographyControl = props => {
 			<TextShadowControl
 				className='maxi-typography-control__text-shadow'
 				textShadow={__experimentalGetCustomFormatValue({
-					typography: typographyValue,
+					typography,
 					formatValue,
 					prop: 'text-shadow',
 					breakpoint,
@@ -397,7 +388,7 @@ const TypographyControl = props => {
 					onChangeFormat({ 'text-shadow': val });
 				}}
 				defaultColor={getLastBreakpointValue(
-					typographyValue,
+					typography,
 					'color',
 					breakpoint
 				)}

@@ -23,6 +23,7 @@ const save = props => {
 		attributes: {
 			uniqueID,
 			blockStyle,
+			isHighlightBorder,
 			defaultBlockStyle,
 			background,
 			extraClassName,
@@ -39,6 +40,7 @@ const save = props => {
 		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
 		'maxi-block maxi-divider-block',
 		blockStyle,
+		!!isHighlightBorder && 'maxi-highlight--border',
 		extraClassName,
 		uniqueID,
 		className,

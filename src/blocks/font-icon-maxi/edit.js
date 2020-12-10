@@ -167,7 +167,10 @@ class edit extends MaxiBlock {
 		return [
 			<Inspector {...this.props} />,
 			<__experimentalToolbar {...this.props} />,
-			<__experimentalBlock className={classes}>
+			<__experimentalBlock
+				data-maxi_initial_block_class={defaultBlockStyle}
+				className={classes}
+			>
 				<__experimentalBackgroundDisplayer background={background} />
 				{(!!iconValue.icon && (
 					<span className='maxi-font-icon-block__icon'>

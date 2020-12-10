@@ -8,8 +8,8 @@ const { Icon, Button, Tooltip } = wp.components;
  * Internal dependencies
  */
 import {
-	SetFormat,
-	GetCustomFormatValue,
+	setFormat,
+	getCustomFormatValue,
 } from '../../../../extensions/text/formats';
 
 /**
@@ -31,7 +31,7 @@ const TextFormatStrikethrough = props => {
 	const typographyValue =
 		(!isObject(typography) && JSON.parse(typography)) || typography;
 
-	const textDecorationValue = GetCustomFormatValue({
+	const textDecorationValue = getCustomFormatValue({
 		typography: typographyValue,
 		formatValue,
 		prop: 'text-decoration',
@@ -51,7 +51,7 @@ const TextFormatStrikethrough = props => {
 	};
 
 	const onClick = () => {
-		const { typography: newTypography, content: newContent } = SetFormat({
+		const { typography: newTypography, content: newContent } = setFormat({
 			formatValue,
 			isActive,
 			isList,

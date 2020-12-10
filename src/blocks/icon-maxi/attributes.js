@@ -112,11 +112,11 @@ const attributes = {
 	},
 	position: {
 		type: 'string',
-		default: JSON.stringify(attributesData.Position),
+		default: JSON.stringify(attributesData.position),
 	},
 	display: {
 		type: 'string',
-		default: JSON.stringify(attributesData.Display),
+		default: JSON.stringify(attributesData.display),
 	},
 	clipPath: {
 		type: 'string',
@@ -124,11 +124,11 @@ const attributes = {
 	},
 	hover: {
 		type: 'string',
-		default: JSON.stringify(attributesData.Hover),
+		default: JSON.stringify(attributesData.hover),
 	},
 	transform: {
 		type: 'string',
-		default: JSON.stringify(attributesData.Transform),
+		default: JSON.stringify(attributesData.transform),
 	},
 	content: {
 		type: 'string',

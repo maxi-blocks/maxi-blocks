@@ -78,23 +78,23 @@ const attributes = {
 	},
 	position: {
 		type: 'string',
-		default: JSON.stringify(attributesData.Position),
+		default: JSON.stringify(attributesData.position),
 	},
 	display: {
 		type: 'string',
-		default: JSON.stringify(attributesData.Display),
+		default: JSON.stringify(attributesData.display),
 	},
 	motion: {
 		type: 'string',
-		default: JSON.stringify(attributesData.Motion),
+		default: JSON.stringify(attributesData.motion),
 	},
 	hover: {
 		type: 'string',
-		default: JSON.stringify(attributesData.Hover),
+		default: JSON.stringify(attributesData.hover),
 	},
 	transform: {
 		type: 'string',
-		default: JSON.stringify(attributesData.Transform),
+		default: JSON.stringify(attributesData.transform),
 	},
 	scale: {
 		type: 'number',

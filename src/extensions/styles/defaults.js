@@ -1250,7 +1250,7 @@ export const cropOptions = {
 	},
 };
 
-export const Divider = {
+export const divider = {
 	label: 'Divider',
 	general: {
 		'border-color': '#ff4a17',
@@ -1273,7 +1273,7 @@ export const Divider = {
 	},
 };
 
-export const Container = {
+export const container = {
 	label: 'Container size',
 	general: {
 		'max-widthUnit': 'px',
@@ -1319,7 +1319,7 @@ export const Container = {
 	},
 };
 
-export const Column = {
+export const column = {
 	label: 'Column size',
 	general: {
 		size: 90,
@@ -1344,7 +1344,7 @@ export const Column = {
 	},
 };
 
-export const ShapeDivider = {
+export const shapeDivider = {
 	label: 'Shape Divider',
 	top: {
 		status: 0,
@@ -1384,7 +1384,7 @@ export const ShapeDivider = {
 	},
 };
 
-export const Position = {
+export const position = {
 	label: 'Position',
 	general: {
 		position: '',
@@ -1468,7 +1468,7 @@ export const Position = {
 	},
 };
 
-export const Display = {
+export const display = {
 	label: 'Display block',
 	general: {
 		display: '',
@@ -1493,7 +1493,7 @@ export const Display = {
 	},
 };
 
-export const Hover = {
+export const hover = {
 	label: 'Hover Effects',
 	type: 'none',
 	basicEffectType: 'zoom-in',
@@ -1537,7 +1537,7 @@ export const Hover = {
 	contentText: 'Add your Hover Content here',
 };
 
-export const Motion = {
+export const motion = {
 	label: 'Motion Effects',
 	interaction: {
 		interactionStatus: 0,
@@ -1567,7 +1567,7 @@ export const Motion = {
 	},
 };
 
-export const Arrow = {
+export const arrow = {
 	label: 'Arrow',
 	active: 0,
 	general: {
@@ -1615,7 +1615,7 @@ export const Arrow = {
 	},
 };
 
-export const Transform = {
+export const transform = {
 	label: 'Transform',
 	general: {
 		scaleX: '',

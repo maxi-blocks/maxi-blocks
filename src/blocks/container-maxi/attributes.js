@@ -18,7 +18,7 @@ const attributes = {
 	},
 	sizeContainer: {
 		type: 'string',
-		default: JSON.stringify(attributesData.Container),
+		default: JSON.stringify(attributesData.container),
 	},
 	fullWidth: {
 		type: 'string',
@@ -74,27 +74,27 @@ const attributes = {
 	},
 	shapeDivider: {
 		type: 'string',
-		default: JSON.stringify(attributesData.ShapeDivider),
+		default: JSON.stringify(attributesData.shapeDivider),
 	},
 	position: {
 		type: 'string',
-		default: JSON.stringify(attributesData.Position),
+		default: JSON.stringify(attributesData.position),
 	},
 	display: {
 		type: 'string',
-		default: JSON.stringify(attributesData.Display),
+		default: JSON.stringify(attributesData.display),
 	},
 	motion: {
 		type: 'string',
-		default: JSON.stringify(attributesData.Motion),
+		default: JSON.stringify(attributesData.motion),
 	},
 	arrow: {
 		type: 'string',
-		default: JSON.stringify(attributesData.Arrow),
+		default: JSON.stringify(attributesData.arrow),
 	},
 	transform: {
 		type: 'string',
-		default: JSON.stringify(attributesData.Transform),
+		default: JSON.stringify(attributesData.transform),
 	},
 };
 

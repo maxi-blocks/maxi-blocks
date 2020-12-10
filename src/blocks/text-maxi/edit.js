@@ -30,10 +30,10 @@ import {
 	MotionPreview,
 } from '../../components';
 import {
-	GetFormatValue,
-	SetCustomFormatsWhenPaste,
-	FromListToText,
-	FromTextToList,
+	getFormatValue,
+	setCustomFormatsWhenPaste,
+	fromListToText,
+	fromTextToList,
 } from '../../extensions/text/formats';
 
 /**
@@ -254,7 +254,7 @@ class edit extends MaxiBlock {
 										? typeOfList
 										: undefined,
 								};
-								const formatValue = GetFormatValue(
+								const formatValue = getFormatValue(
 									formatElement
 								);
 
@@ -264,7 +264,7 @@ class edit extends MaxiBlock {
 								 * This next script will check if there is any format directly related with
 								 * native format 'core/link' and if it's so, will format it in Maxi Blocks way
 								 */
-								const cleanCustomProps = SetCustomFormatsWhenPaste(
+								const cleanCustomProps = setCustomFormatsWhenPaste(
 									{
 										formatValue,
 										typography: JSON.parse(typography),
@@ -404,7 +404,7 @@ const editSelect = withSelect((select, ownProps) => {
 		multilineTag: isList ? 'li' : undefined,
 		multilineWrapperTags: isList ? typeOfList : undefined,
 	};
-	const formatValue = GetFormatValue(formatElement);
+	const formatValue = getFormatValue(formatElement);
 
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
@@ -539,7 +539,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 					multilineTag: isList ? 'li' : undefined,
 					multilineWrapperTags: isList ? typeOfList : undefined,
 				};
-				const formatValue = GetFormatValue(formatElement);
+				const formatValue = getFormatValue(formatElement);
 
 				/**
 				 * As Gutenberg doesn't allow to modify pasted content, let's do some cheats
@@ -547,7 +547,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 				 * This next script will check if there is any format directly related with
 				 * native format 'core/link' and if it's so, will format it in Maxi Blocks way
 				 */
-				const cleanCustomProps = SetCustomFormatsWhenPaste({
+				const cleanCustomProps = setCustomFormatsWhenPaste({
 					formatValue,
 					typography: JSON.parse(typography),
 					isList,
@@ -582,8 +582,8 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 				setAttributes({
 					content: content.concat(
 						newBlockIsList
-							? FromListToText(nextBlockContent)
-							: FromTextToList(nextBlockContent)
+							? fromListToText(nextBlockContent)
+							: fromTextToList(nextBlockContent)
 					),
 				});
 
@@ -603,7 +603,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 				updateBlockAttributes(previousBlockClientId, {
 					content: previousBlockContent.concat(
 						ownProps.attributes.isList
-							? FromListToText(content)
+							? fromListToText(content)
 							: content
 					),
 				});

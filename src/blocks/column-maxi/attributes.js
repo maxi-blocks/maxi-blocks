@@ -18,7 +18,7 @@ const attributes = {
 	},
 	columnSize: {
 		type: 'string',
-		default: JSON.stringify(attributesData.Column),
+		default: JSON.stringify(attributesData.column),
 	},
 	verticalAlign: {
 		type: 'string',
@@ -77,11 +77,11 @@ const attributes = {
 	},
 	display: {
 		type: 'string',
-		default: JSON.stringify(attributesData.Display),
+		default: JSON.stringify(attributesData.display),
 	},
 	transform: {
 		type: 'string',
-		default: JSON.stringify(attributesData.Transform),
+		default: JSON.stringify(attributesData.transform),
 	},
 };
 

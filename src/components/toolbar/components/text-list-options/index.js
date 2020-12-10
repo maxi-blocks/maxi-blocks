@@ -16,8 +16,8 @@ const {
  */
 import ToolbarPopover from '../toolbar-popover';
 import {
-	FromListToText,
-	FromTextToList,
+	fromListToText,
+	fromTextToList,
 } from '../../../../extensions/text/formats';
 
 /**
@@ -47,8 +47,8 @@ const TextListOptions = props => {
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
 	const getContent = content => {
-		if (!isList) return FromTextToList(content);
-		return FromListToText(content);
+		if (!isList) return fromTextToList(content);
+		return fromListToText(content);
 	};
 
 	const onChangeIndent = type => {

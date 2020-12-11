@@ -34,7 +34,7 @@ const allowedBlocks = [
 	'maxi-blocks/font-icon-maxi',
 ];
 
-document.addEventListener('DOMContentLoaded', () => {
+window.onload = function () {
 	// Insert Maxi responsive toolbar
 	const responsiveWrapper = document.createElement('div');
 
@@ -296,7 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			);
 		}
 	});
-});
+};
 
 const openSidebar = item => {
 	const sidebar = document.querySelector('.maxi-sidebar');

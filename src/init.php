@@ -533,7 +533,7 @@ function maxi_output_css() {
 
 /**
  * Font Awesome Kit Setup
- * 
+ *
  * This will add your Font Awesome Kit to the front-end, the admin back-end,
  * and the login screen area.
  */
@@ -553,3 +553,7 @@ if (! function_exists('fa_custom_setup_kit') ) {
  fa_custom_setup_kit(
 	'https://kit.fontawesome.com/edb89ea43a.js'
   );
+
+
+
+

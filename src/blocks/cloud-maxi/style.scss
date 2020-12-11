@@ -29,6 +29,12 @@
 }
 
 /* GX Button */
+#maxi-toolbar-layout {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: row-reverse;
+}
 
 #maxi-button__layout {
 	color: #000;

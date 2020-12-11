@@ -4,6 +4,12 @@
 		padding-left: 0 !important;
 	}
 
+	.components-select-control {
+		.components-flex__item {
+			display: none;
+		}
+	}
+
 	& .maxi-mediauploader-control .maxi-mediauploader-control__toggle,
 	&
 		.maxi-mediauploader-control.maxi-mediauploader-control__video-fallback

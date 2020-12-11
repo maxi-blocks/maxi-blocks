@@ -226,14 +226,20 @@ body .toolbar-item__popover {
 				color: #fff;
 				border-color: #80828a !important;
 			}
-			.components-select-control__input {
-				background-color: transparent !important;
-				color: #fff !important;
-				border: 2px solid #80828a !important;
-				option {
-					color: 000 !important;
+			.components-select-control {
+				.components-input-control__container {
+					background-color: transparent !important;
+					.components-select-control__input {
+						background-color: transparent !important;
+						color: #fff !important;
+						border: 2px solid #80828a !important;
+						option {
+							color: 000 !important;
+						}
+					}
 				}
 			}
+
 			.components-button {
 				&.is-secondary {
 					background-color: transparent;

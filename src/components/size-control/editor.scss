@@ -1,6 +1,11 @@
 .maxi-size-control {
 	.components-base-control {
-		margin-bottom: 0;
+		margin-bottom: 0 !important;
+	}
+	.components-select-control {
+		.components-flex__item {
+			display: none;
+		}
 	}
 	.maxi-size-control__value {
 		width: 20%;

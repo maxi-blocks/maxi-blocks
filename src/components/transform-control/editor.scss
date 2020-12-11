@@ -30,6 +30,12 @@
 		flex-wrap: wrap;
 		position: relative;
 
+		.components-select-control {
+			.components-flex__item {
+				display: none;
+			}
+		}
+
 		&__canvas {
 			position: relative;
 			display: flex;

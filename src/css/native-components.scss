@@ -78,7 +78,8 @@
 
         .components-base-control__field {
             display: flex !important;
-            align-items: center;
+			align-items: center;
+			margin-bottom: 0 !important;
 
             .components-base-control__label {
                 margin-bottom: 0;
@@ -86,22 +87,41 @@
                 flex: 1;
             }
 
-            // SelectorControl
-            .components-select-control__input {
-                background: #fff url(../img/arrow-down.svg) no-repeat right 7px top 50%;
-                background-size: 9px 9px !important;
-                border-radius: 5px !important;
-                min-height: unset;
-                max-height: unset !important;
-                color: #464a53;
-                font-weight: 500;
-                height: 31px;
-                margin: 0 !important;
-                @at-root .rtl #{&} {
-                    background: #fff url(../img/arrow-down.svg) no-repeat left 7px top 50%;
-                    padding: 0 10px 0px 24px !important;
-                }
-            }
+			// SelectorControl
+			.components-input-control__container {
+				.components-input-control__suffix {
+					display: none;
+				}
+				.components-input-control__backdrop {
+					display: none;
+				}
+			}
+			.components-select-control {
+				margin-left: 0;
+				display: flex;
+    			flex-direction: row;
+				align-items: center;
+				.components-flex__item {
+					flex: 1;
+				}
+				&__input {
+					background: #fff url(../img/arrow-down.svg) no-repeat right 7px top 50%;
+					background-size: 9px 9px !important;
+					border-radius: 5px !important;
+					min-height: unset;
+					max-height: unset !important;
+					color: #464a53;
+					font-weight: 500;
+					height: 31px;
+					margin: 0 !important;
+					border: 2px solid #dddfe1;
+
+					@at-root .rtl #{&} {
+						background: #fff url(../img/arrow-down.svg) no-repeat left 7px top 50%;
+						padding: 0 10px 0px 24px !important;
+					}
+				}
+			}
 
             // RadioControl
             .components-radio-control__option:not(:last-child) {
@@ -235,7 +255,7 @@
         padding: 20px;
         min-width: 373px !important;
         box-shadow: 0 46px 133px rgba(150, 176, 203, 0.23) !important;
-        @at-root .rtl #{&} {  
+        @at-root .rtl #{&} {
             min-width: 0px !important;
         }
     }

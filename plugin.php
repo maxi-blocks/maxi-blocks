@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Plugin Name: Maxi Blocks - Last Github version
+ * Plugin Name: Maxi Blocks - issue 745
  * Plugin URI:
- * Description: MaxiBlocks — Last update: 14/10/20
+ * Description: MaxiBlocks — Last update: 9/12/20
  * Author: Gutenberg Den
  * Author URI:
  * Version: 0.1

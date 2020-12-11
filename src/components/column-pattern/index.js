@@ -310,7 +310,7 @@ const ColumnPatternsInspector = props => {
 			).style.width = sizesWithGaps[j];
 
 			if (columnsPositions[j].rowNumber > 1) {
-				newColumnMargin[breakpoint]['margin-top'] = 0.7;
+				newColumnMargin[breakpoint]['margin-top'] = 2.5;
 				newColumnMargin[breakpoint].unit = 'em';
 			}
 

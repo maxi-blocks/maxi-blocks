@@ -22,7 +22,7 @@ const attributes = {
 	},
 	fullWidth: {
 		type: 'string',
-		default: 'full',
+		default: 'normal',
 	},
 	size: {
 		type: 'string',

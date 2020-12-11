@@ -107,6 +107,7 @@ class edit extends MaxiBlock {
 
 		let response = {
 			[uniqueID]: this.getNormalObject,
+			[uniqueID]: this.getContainerSizeObject,
 			[`${uniqueID}:hover`]: this.getHoverObject,
 			[`${uniqueID}>.maxi-container-block__wrapper`]: this
 				.getWrapperObject,
@@ -228,6 +229,18 @@ class edit extends MaxiBlock {
 		};
 
 		if (isFirstOnHierarchy) return response;
+
+		return {};
+	}
+
+	get getContainerSizeObject() {
+		const { fullWidth, sizeContainer } = this.props.attributes;
+
+		const response = {
+			sizeContainer: { ...JSON.parse(sizeContainer) },
+		};
+
+		if (fullWidth !== 'full') return response;
 
 		return {};
 	}

@@ -57,6 +57,10 @@ const attributes = {
 		type: 'string',
 		default: JSON.stringify(attributesData.size),
 	},
+	sizeContainer: {
+		type: 'string',
+		default: JSON.stringify(attributesData.__experimentalContainer),
+	},
 	boxShadow: {
 		type: 'string',
 		default: JSON.stringify(attributesData.boxShadow),

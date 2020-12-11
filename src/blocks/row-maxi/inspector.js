@@ -67,12 +67,17 @@ const Inspector = props => {
 			display,
 			transform,
 			rowPattern,
+			sizeContainer,
 		},
 		deviceType,
 		setAttributes,
 		clientId,
 		name,
 	} = props;
+
+	const value = !isObject(sizeContainer)
+		? JSON.parse(sizeContainer)
+		: sizeContainer;
 
 	const backgroundHoverValue = !isObject(backgroundHover)
 		? JSON.parse(backgroundHover)
